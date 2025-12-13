@@ -80,34 +80,30 @@ SELECT abs(-0.5)
 0.5
 ```
 
-
-
 ## avg2 {#avg2}
 
-Introduced in: v25.11
+Добавлена в версии: v25.11
 
+Вычисляет и возвращает среднее значение переданных аргументов.
+Поддерживает числовые и временные типы.
 
-Computes and returns the average value of the provided arguments.
-Supports numerical and temporal types.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 avg2(x1, x2])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x1, x2]` — Accepts two values for averaging. 
+* `x1, x2]` — Принимает два значения и вычисляет их среднее.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the average value of the provided arguments, promoted to the largest compatible type.
+Возвращает среднее значение переданных аргументов, приведённое к наибольшему совместимому типу.
 
-**Examples**
+**Примеры**
 
-**Numeric types**
+**Числовые типы**
 
 ```sql title=Query
 SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
@@ -120,7 +116,7 @@ SELECT avg2(toUInt8(3), 1.0) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal types**
+**Типы Decimal**
 
 ```sql title=Query
 SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
@@ -132,7 +128,7 @@ SELECT avg2(toDecimal32(1, 2), 2) AS result, toTypeName(result) AS type;
 └────────┴───────────────┘
 ```
 
-**Date types**
+**Типы данных Date**
 
 ```sql title=Query
 SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -144,7 +140,7 @@ SELECT avg2(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(re
 └────────────┴──────┘
 ```
 
-**DateTime types**
+**Типы данных DateTime**
 
 ```sql title=Query
 SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -156,7 +152,7 @@ SELECT avg2(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')
 └─────────────────────┴──────────┘
 ```
 
-**Time64 types**
+**Типы данных Time64**
 
 ```sql title=Query
 SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -168,47 +164,43 @@ SELECT avg2(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeN
 └──────────┴───────────┘
 ```
 
-
-
 ## byteSwap {#byteSwap}
 
-Introduced in: v23.10
+Добавлена в: v23.10
 
+Переставляет байты целого числа в обратном порядке, т. е. изменяет его [порядок байтов (endianness)](https://en.wikipedia.org/wiki/Endianness).
 
-Reverses the bytes of an integer, i.e. changes its [endianness](https://en.wikipedia.org/wiki/Endianness).
+Пример ниже можно разобрать следующим образом:
 
-The below example can be worked out in the following manner:
+1. Преобразовать десятичное целое число в эквивалентное шестнадцатеричное представление в формате big-endian, т. е. 3351772109 -&gt; C7 C7 FB CD (4 байта)
+2. Обратить порядок байт, т. е. C7 C7 FB CD -&gt; CD FB C7 C7
+3. Преобразовать результат обратно в целое число, предполагая формат big-endian, т. е. CD FB C7 C7 -&gt; 3455829959
 
-1. Convert the base-10 integer to its equivalent hexadecimal format in big-endian format, i.e. 3351772109 -> C7 C7 FB CD (4 bytes)
-2. Reverse the bytes, i.e. C7 C7 FB CD -> CD FB C7 C7
-3. Convert the result back to an integer assuming big-endian, i.e. CD FB C7 C7 -> 3455829959
-One use case of this function is reversing IPv4s:
+   Один из вариантов использования этой функции — разворот IPv4-адресов:
 
 ```result
 ┌─toIPv4(byteSwap(toUInt32(toIPv4('205.251.199.199'))))─┐
 │ 199.199.251.205                                       │
 └───────────────────────────────────────────────────────┘
 ```
-    
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 byteSwap(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — An integer value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — целочисленное значение. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `x` с байтами в обратном порядке. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns `x` with bytes reversed. [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -218,7 +210,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**8-bit**
+**8-битный**
 
 ```sql title=Query
 SELECT byteSwap(54)
@@ -228,7 +220,7 @@ SELECT byteSwap(54)
 54
 ```
 
-**16-bit**
+**16 бит**
 
 ```sql title=Query
 SELECT byteSwap(4135)
@@ -238,7 +230,7 @@ SELECT byteSwap(4135)
 10000
 ```
 
-**32-bit**
+**32-битный**
 
 ```sql title=Query
 SELECT byteSwap(3351772109)
@@ -248,7 +240,7 @@ SELECT byteSwap(3351772109)
 3455829959
 ```
 
-**64-bit**
+**64-битный**
 
 ```sql title=Query
 SELECT byteSwap(123294967295)
@@ -258,38 +250,34 @@ SELECT byteSwap(123294967295)
 18439412204227788800
 ```
 
-
-
 ## divide {#divide}
 
-Introduced in: v1.1
+Добавлена в версии v1.1
 
-
-Calculates the quotient of two values `a` and `b`. The result type is always [Float64](/sql-reference/data-types/float).
-Integer division is provided by the `intDiv` function.
+Вычисляет частное от двух значений `a` и `b`. Тип результата всегда [Float64](/sql-reference/data-types/float).
+Целочисленное деление выполняется функцией `intDiv`.
 
 :::note
-Division by `0` returns `inf`, `-inf`, or `nan`.
+Деление на `0` возвращает `inf`, `-inf` или `nan`.
 :::
-    
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 divide(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Dividend - `y` — Divisor 
+* `x` — делимое, `y` — делитель
 
-**Returned value**
+**Возвращаемое значение**
 
-The quotient of x and y
+Частное от деления x на y
 
-**Examples**
+**Примеры**
 
-**Dividing two numbers**
+**Деление двух чисел**
 
 ```sql title=Query
 SELECT divide(25,5) AS quotient, toTypeName(quotient)
@@ -299,7 +287,7 @@ SELECT divide(25,5) AS quotient, toTypeName(quotient)
 5 Float64
 ```
 
-**Dividing by zero**
+**Деление на ноль**
 
 ```sql title=Query
 SELECT divide(25,0)
@@ -309,39 +297,37 @@ SELECT divide(25,0)
 inf
 ```
 
-
-
 ## divideDecimal {#divideDecimal}
 
-Introduced in: v22.12
+Впервые представлена в: v22.12
 
-
-Performs division on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
-Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
+Выполняет деление двух десятичных чисел. Результирующее значение будет иметь тип [Decimal256](/sql-reference/data-types/decimal).
+Масштаб результата может быть явно указан аргументом `result_scale` (константное целое число в диапазоне `[0, 76]`). Если он не указан, масштаб результата равен максимальному масштабу среди переданных аргументов.
 
 :::note
-These function work significantly slower than usual `divide`.
-In case you don't really need controlled precision and/or need fast computation, consider using [divide](#divide).
+Эти функции работают значительно медленнее, чем обычная `divide`.
+Если вам не нужна строго контролируемая точность и/или требуется быстрое выполнение вычислений, рассмотрите использование [divide](#divide).
 :::
-    
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 divideDecimal(x, y[, result_scale])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — First value: [Decimal](/sql-reference/data-types/decimal). - `y` — Second value: [Decimal](/sql-reference/data-types/decimal). - `result_scale` — Scale of result. Type [Int/UInt](/sql-reference/data-types/int-uint). 
+* `x` — первое значение: [Decimal](/sql-reference/data-types/decimal).
+* `y` — второе значение: [Decimal](/sql-reference/data-types/decimal).
+* `result_scale` — масштаб результата. Тип: [Int/UInt](/sql-reference/data-types/int-uint).
 
-**Returned value**
+**Возвращаемое значение**
 
-The result of division with given scale. [`Decimal256`](/sql-reference/data-types/decimal)
+Результат деления с указанным масштабом. Тип — [`Decimal256`](/sql-reference/data-types/decimal)
 
-**Examples**
+**Примеры**
 
-**Example 1**
+**Пример 1**
 
 ```sql title=Query
 divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
@@ -353,7 +339,7 @@ divideDecimal(toDecimal256(-12, 0), toDecimal32(2.1, 1), 10)
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**Example 2**
+**Пример 2**
 
 ```sql title=Query
 SELECT toDecimal64(-12, 1) / toDecimal32(2.1, 1);
@@ -369,33 +355,29 @@ SELECT toDecimal64(-12, 1) as a, toDecimal32(2.1, 1) as b, divideDecimal(a, b, 1
 └─────┴─────┴────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## divideOrNull {#divideOrNull}
 
-Introduced in: v25.5
+Введена в версии: v25.5
 
+Аналог функции `divide`, но возвращает NULL при делении на ноль.
 
-Same as `divide` but returns NULL when dividing by zero.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 divideOrNull(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Dividend - `y` — Divisor 
+* `x` — делимое, `y` — делитель
 
-**Returned value**
+**Возвращаемое значение**
 
-The quotient of x and y, or NULL.
+Частное от x и y или NULL.
 
-**Examples**
+**Примеры**
 
-**Dividing by zero**
+**Деление на ноль**
 
 ```sql title=Query
 SELECT divideOrNull(25, 0)
@@ -405,36 +387,32 @@ SELECT divideOrNull(25, 0)
 \N
 ```
 
-
-
 ## gcd {#gcd}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает наибольший общий делитель двух значений a и b.
 
-    Returns the greatest common divisor of two values a and b.
+Исключение выбрасывается при делении на ноль или при делении минимального
+отрицательного числа на минус один.
 
-    An exception is thrown when dividing by zero or when dividing a minimal
-    negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 gcd(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — First integer - `y` — Second integer 
+* `x` — первое целое число, `y` — второе целое число
 
-**Returned value**
+**Возвращаемое значение**
 
-The greatest common divisor of `x` and `y`.
+Наибольший общий делитель `x` и `y`.
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT gcd(12, 18)
@@ -444,38 +422,33 @@ SELECT gcd(12, 18)
 6
 ```
 
-
-
 ## ifNotFinite {#ifNotFinite}
 
-Introduced in: v20.3
+Введена в версии: v20.3
 
+Проверяет, является ли число с плавающей запятой конечным.
 
-Checks whether a floating point value is finite.
+Аналогичный результат можно получить с помощью [тернарного оператора](/sql-reference/functions/conditional-functions#if): `isFinite(x) ? x : y`.
 
-You can get a similar result by using the [ternary operator](/sql-reference/functions/conditional-functions#if): `isFinite(x) ? x : y`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ifNotFinite(x,y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Value to check if infinite. [`Float*`](/sql-reference/data-types/float)
-- `y` — Fallback value. [`Float*`](/sql-reference/data-types/float)
+* `x` — Значение для проверки, является ли оно бесконечным. [`Float*`](/sql-reference/data-types/float)
+* `y` — Альтернативное значение. [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+* `x`, если `x` является конечным.
+* `y`, если `x` не является конечным.
 
-- `x` if `x` is finite.
-- `y` if `x` is not finite.
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
@@ -485,39 +458,35 @@ SELECT 1/0 AS infimum, ifNotFinite(infimum,42)
 inf  42
 ```
 
-
-
 ## intDiv {#intDiv}
 
-Introduced in: v1.1
+Введено в: v1.1
 
+Выполняет целочисленное деление двух значений: `x` на `y`. Иными словами,
+вычисляет частное, округлённое вниз до ближайшего меньшего целого числа.
 
-Performs an integer division of two values `x` by `y`. In other words it
-computes the quotient rounded down to the next smallest integer.
+Результат имеет ту же разрядность, что и делимое (первый параметр).
 
-The result has the same width as the dividend (the first parameter).
+Исключение генерируется при делении на ноль, когда частное не помещается
+в диапазон значений делимого, или при делении минимального отрицательного числа на минус один.
 
-An exception is thrown when dividing by zero, when the quotient does not fit
-in the range of the dividend, or when dividing a minimal negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 intDiv(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Left hand operand. - `y` — Right hand operand. 
+* `x` — левый операнд. - `y` — правый операнд.
 
-**Returned value**
+**Возвращаемое значение**
 
-Result of integer division of `x` and `y`
+Результат целочисленного деления `x` на `y`.
 
-**Examples**
+**Примеры**
 
-**Integer division of two floats**
+**Целочисленное деление двух чисел с плавающей точкой**
 
 ```sql title=Query
 SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
@@ -529,7 +498,7 @@ SELECT intDiv(toFloat64(1), 0.001) AS res, toTypeName(res)
 └──────┴─────────────────────────────────────────┘
 ```
 
-**Quotient does not fit in the range of the dividend**
+**Частное выходит за пределы диапазона делимого**
 
 ```sql title=Query
 SELECT
@@ -545,36 +514,31 @@ toTypeName(res)
 (ILLEGAL_DIVISION)
 ```
 
-
-
 ## intDivOrNull {#intDivOrNull}
 
-Introduced in: v25.5
+Добавлена в: v25.5
 
+То же, что и `intDiv`, но возвращает NULL при делении на ноль или при делении
+минимального отрицательного числа на минус один.
 
-Same as `intDiv` but returns NULL when dividing by zero or when dividing a
-minimal negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 intDivOrNull(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `y` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — левый операнд. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `y` — правый операнд. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Результат целочисленного деления `x` на `y`, или NULL.
 
-Result of integer division of `x` and `y`, or NULL.
+**Примеры**
 
-**Examples**
-
-**Integer division by zero**
+**Целочисленное деление на ноль**
 
 ```sql title=Query
 SELECT intDivOrNull(1, 0)
@@ -584,7 +548,7 @@ SELECT intDivOrNull(1, 0)
 \N
 ```
 
-**Dividing a minimal negative number by minus 1**
+**Деление минимального отрицательного числа на −1**
 
 ```sql title=Query
 SELECT intDivOrNull(-9223372036854775808, -1)
@@ -594,36 +558,31 @@ SELECT intDivOrNull(-9223372036854775808, -1)
 \N
 ```
 
-
-
 ## intDivOrZero {#intDivOrZero}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+То же, что и `intDiv`, но возвращает ноль при делении на ноль или при делении
+минимально возможного отрицательного числа на минус один.
 
-Same as `intDiv` but returns zero when dividing by zero or when dividing a
-minimal negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 intDivOrZero(a, b)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `a` — Left hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `b` — Right hand operand. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `a` — левый операнд. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `b` — правый операнд. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Результат целочисленного деления a на b или ноль.
 
-Result of integer division of a and b, or zero.
+**Примеры**
 
-**Examples**
-
-**Integer division by zero**
+**Целочисленное деление на ноль**
 
 ```sql title=Query
 SELECT intDivOrZero(1, 0)
@@ -633,7 +592,7 @@ SELECT intDivOrZero(1, 0)
 0
 ```
 
-**Dividing a minimal negative number by minus 1**
+**Деление на минус 1 минимального отрицательного числа**
 
 ```sql title=Query
 SELECT intDivOrZero(0.05, -1)
@@ -643,35 +602,30 @@ SELECT intDivOrZero(0.05, -1)
 0
 ```
 
-
-
 ## isFinite {#isFinite}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Возвращает `1`, если аргумент типа Float32 или Float64 конечен и не равен `NaN`,
+в противном случае функция возвращает `0`.
 
-Returns `1` if the Float32 or Float64 argument not infinite and not a `NaN`,
-otherwise this function returns `0`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isFinite(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Number to check for finiteness. [`Float*`](/sql-reference/data-types/float)
+* `x` — число, проверяемое на конечность. [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+`1`, если `x` не является бесконечным значением и не равен `NaN`, в противном случае `0`.
 
-`1` if x is not infinite and not `NaN`, otherwise `0`.
+**Примеры**
 
-**Examples**
-
-**Test if a number is finite**
+**Проверка, является ли число конечным**
 
 ```sql title=Query
 SELECT isFinite(inf)
@@ -681,35 +635,30 @@ SELECT isFinite(inf)
 0
 ```
 
-
-
 ## isInfinite {#isInfinite}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Возвращает `1`, если аргумент типа Float32 или Float64 является бесконечным, в противном случае функция возвращает `0`.
+Обратите внимание, что для значения `NaN` возвращается `0`.
 
-    Returns `1` if the Float32 or Float64 argument is infinite, otherwise this function returns `0`.
-    Note that `0` is returned for a `NaN`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isInfinite(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Number to check for infiniteness. [`Float*`](/sql-reference/data-types/float)
+* `x` — число для проверки на бесконечность. [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+`1`, если `x` является бесконечным, иначе `0` (включая `NaN`).
 
-`1` if x is infinite, otherwise `0` (including for `NaN`).
+**Примеры**
 
-**Examples**
-
-**Test if a number is infinite**
+**Проверка, является ли число бесконечным**
 
 ```sql title=Query
 SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
@@ -719,32 +668,29 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 1 0 0
 ```
 
-
-
 ## isNaN {#isNaN}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
-Returns `1` if the Float32 and Float64 argument is `NaN`, otherwise returns `0`.
+Возвращает `1`, если аргумент типов Float32 или Float64 является `NaN`, в противном случае возвращает `0`.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 isNaN(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Argument to evaluate for if it is `NaN`. [`Float*`](/sql-reference/data-types/float)
+* `x` — аргумент, который проверяется на `NaN`. [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+`1`, если `NaN`, иначе `0`
 
-`1` if `NaN`, otherwise `0`
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT isNaN(NaN)
@@ -754,37 +700,32 @@ SELECT isNaN(NaN)
 1
 ```
 
-
-
 ## lcm {#lcm}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Возвращает наименьшее общее кратное двух значений `x` и `y`.
 
-Returns the least common multiple of two values `x` and `y`.
+Исключение выбрасывается при делении на ноль или при делении минимального отрицательного значения на минус один.
 
-An exception is thrown when dividing by zero or when dividing a minimal negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lcm(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — First integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `y` — Second integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — Первое целое число. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `y` — Второе целое число. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает наименьшее общее кратное `x` и `y`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns the least common multiple of `x` and `y`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT lcm(6, 8)
@@ -794,35 +735,30 @@ SELECT lcm(6, 8)
 24
 ```
 
-
-
 ## max2 {#max2}
 
-Introduced in: v21.11
+Добавлена в версии: v21.11
 
+Возвращает большее из двух числовых значений `x` и `y`.
 
-    Returns the bigger of two numeric values `x` and `y`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 max2(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — первое значение [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float), или [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — второе значение [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float), или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает большее из значений `x` и `y`. Тип результата — [`Float64`](/sql-reference/data-types/float)
 
-Returns the bigger value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT max2(-1, 2)
@@ -832,34 +768,30 @@ SELECT max2(-1, 2)
 2
 ```
 
-
-
 ## midpoint {#midpoint}
 
-Introduced in: v25.11
+Появилась в версии: v25.11
 
+Вычисляет и возвращает среднее значение переданных аргументов.
+Поддерживает числовые и временные типы.
 
-Computes and returns the average value of the provided arguments.
-Supports numerical and temporal types.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 midpoint(x1[, x2, ...])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x1[, x2, ...]` — Accepts a single value or multiple values for averaging. 
+* `x1[, x2, ...]` — Принимает одно или несколько значений, по которым вычисляется среднее.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the average value of the provided arguments, promoted to the largest compatible type.
+Возвращает среднее значение переданных аргументов, приведённое к наибольшему совместимому типу.
 
-**Examples**
+**Примеры**
 
-**Numeric types**
+**Числовые типы**
 
 ```sql title=Query
 SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
@@ -872,7 +804,7 @@ SELECT midpoint(1, toUInt8(3), 0.5) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**Decimal types**
+**Десятичные типы**
 
 ```sql title=Query
 SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName(result) AS type;
@@ -884,7 +816,7 @@ SELECT midpoint(toDecimal32(1.5, 2), toDecimal32(1, 1), 2) AS result, toTypeName
 └────────┴───────────────┘
 ```
 
-**Date types**
+**Типы данных Date**
 
 ```sql title=Query
 SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeName(result) AS type;
@@ -896,7 +828,7 @@ SELECT midpoint(toDate('2025-01-01'), toDate('2025-01-05')) AS result, toTypeNam
 └────────────┴──────┘
 ```
 
-**DateTime types**
+**Типы данных DateTime**
 
 ```sql title=Query
 SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:00')) AS result, toTypeName(result) AS type;
@@ -908,7 +840,7 @@ SELECT midpoint(toDateTime('2025-01-01 00:00:00'), toDateTime('2025-01-03 12:00:
 └─────────────────────┴──────────┘
 ```
 
-**Time64 types**
+**Типы данных Time64**
 
 ```sql title=Query
 SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toTypeName(result) AS type;
@@ -920,35 +852,30 @@ SELECT midpoint(toTime64('12:00:00', 0), toTime64('14:00:00', 0)) AS result, toT
 └──────────┴───────────┘
 ```
 
-
-
 ## min2 {#min2}
 
-Introduced in: v21.11
+Добавлена в версии v21.11.
 
+Возвращает наименьшее из двух числовых значений `x` и `y`.
 
-    Returns the smaller of two numeric values `x` and `y`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 min2(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — First value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — Second value [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — первое значение [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — второе значение [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает меньшее значение из `x` и `y`. [`Float64`](/sql-reference/data-types/float)
 
-Returns the smaller value of `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT min2(-1, 2)
@@ -958,35 +885,32 @@ SELECT min2(-1, 2)
 -1
 ```
 
-
-
 ## minus {#minus}
 
-Introduced in: v1.1
+Добавлено в версии: v1.1
 
+Вычисляет разность двух значений `a` и `b`. Результат всегда знаковый.
+Аналогично функции plus, можно вычитать целое число из даты или даты со временем.
+Также поддерживается вычитание дат со временем, в результате чего получается разница во времени между ними.
 
-Calculates the difference of two values `a` and `b`. The result is always signed.
-Similar to plus, it is possible to subtract an integer from a date or date with time.
-Additionally, subtraction between date with time is supported, resulting in the time difference between them.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 minus(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Minuend. - `y` — Subtrahend. 
+* `x` — уменьшаемое.
+* `y` — вычитаемое.
 
-**Returned value**
+**Возвращаемое значение**
 
-x minus y
+x минус y
 
-**Examples**
+**Примеры**
 
-**Subtracting two numbers**
+**Вычитание двух чисел**
 
 ```sql title=Query
 SELECT minus(10, 5)
@@ -996,7 +920,7 @@ SELECT minus(10, 5)
 5
 ```
 
-**Subtracting an integer and a date**
+**Вычитание целого числа из даты**
 
 ```sql title=Query
 SELECT minus(toDate('2025-01-01'),5)
@@ -1006,44 +930,40 @@ SELECT minus(toDate('2025-01-01'),5)
 2024-12-27
 ```
 
-
-
 ## modulo {#modulo}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Вычисляет остаток от деления двух значений a на b.
 
-    Calculates the remainder of the division of two values a by b.
+Тип результата — целое число, если оба аргумента являются целыми. Если
+один из аргументов является числом с плавающей запятой, то тип результата — Float64.
 
-    The result type is an integer if both inputs are integers. If one of the
-    inputs is a floating-point number, the result type is Float64.
+Остаток вычисляется так же, как в C++. Для отрицательных чисел используется усечённое деление.
 
-    The remainder is computed like in C++. Truncated division is used for
-    negative numbers.
+Исключение генерируется при делении на ноль или при делении минимального
+отрицательного числа на минус один.
 
-    An exception is thrown when dividing by zero or when dividing a minimal
-    negative number by minus one.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 modulo(a, b)
 ```
 
-**Aliases**: `mod`
+**Псевдонимы**: `mod`
 
-**Arguments**
+**Аргументы**
 
-- `a` — The dividend - `b` — The divisor (modulus) 
+* `a` — делимое
+* `b` — делитель (модуль)
 
-**Returned value**
+**Возвращаемое значение**
 
-The remainder of a % b
+Остаток от `a % b`
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT modulo(5, 2)
@@ -1053,38 +973,33 @@ SELECT modulo(5, 2)
 1
 ```
 
-
-
 ## moduloOrNull {#moduloOrNull}
 
-Introduced in: v25.5
+Впервые появилась в версии v25.5
 
+Вычисляет остаток от деления `a` на `b`. Аналогична функции `modulo`, за исключением того, что `moduloOrNull` возвращает NULL,
+если правый аргумент равен 0.
 
-Calculates the remainder when dividing `a` by `b`. Similar to function `modulo` except that `moduloOrNull` will return NULL
-if the right argument is 0.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 moduloOrNull(x, y)
 ```
 
-**Aliases**: `modOrNull`
+**Псевдонимы**: `modOrNull`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — Делимое. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `y` — Делитель (модуль). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает остаток от деления `x` на `y` или `NULL`, если делитель равен нулю.
 
-Returns the remainder of the division of `x` by `y`, or null when the divisor is zero.
+**Примеры**
 
-**Examples**
-
-**moduloOrNull by zero**
+**moduloOrNull при делении на ноль**
 
 ```sql title=Query
 SELECT moduloOrNull(5, 0)
@@ -1094,36 +1009,30 @@ SELECT moduloOrNull(5, 0)
 \N
 ```
 
-
-
 ## moduloOrZero {#moduloOrZero}
 
-Introduced in: v20.3
+Введена в версии v20.3
 
+Подобна `modulo`, но возвращает ноль, когда делитель равен нулю, в отличие от функции `modulo`, которая в этом случае генерирует исключение.
 
-Like modulo but returns zero when the divisor is zero, as opposed to an
-exception with the modulo function.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 moduloOrZero(a, b)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `a` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `b` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `a` — делимое. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `b` — делитель (модуль деления). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает остаток от `a % b` или `0`, если делитель равен `0`.
 
-Returns the remainder of a % b, or `0` when the divisor is `0`.
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT moduloOrZero(5, 0)
@@ -1133,33 +1042,30 @@ SELECT moduloOrZero(5, 0)
 0
 ```
 
-
-
 ## multiply {#multiply}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
-Calculates the product of two values `x` and `y`.
+Вычисляет произведение двух значений `x` и `y`.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 multiply(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — factor. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — множитель. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — множитель. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает произведение `x` и `y`.
 
-Returns the product of x and y
+**Примеры**
 
-**Examples**
-
-**Multiplying two numbers**
+**Умножение двух чисел**
 
 ```sql title=Query
 SELECT multiply(5,5)
@@ -1169,42 +1075,37 @@ SELECT multiply(5,5)
 25
 ```
 
-
-
 ## multiplyDecimal {#multiplyDecimal}
 
-Introduced in: v22.12
+Добавлена в версии: v22.12
 
-
-Performs multiplication on two decimals. Result value will be of type [Decimal256](/sql-reference/data-types/decimal).
-Result scale can be explicitly specified by `result_scale` argument (const Integer in range `[0, 76]`). If not specified, the result scale is the max scale of given arguments.
+Выполняет операцию умножения над двумя десятичными числами. Значение результата будет иметь тип [Decimal256](/sql-reference/data-types/decimal).
+Масштаб результата (scale) может быть явно задан аргументом `result_scale` (константное целочисленное значение типа Integer в диапазоне `[0, 76]`). Если он не задан, масштаб результата равен максимальному масштабу среди указанных аргументов.
 
 :::note
-These functions work significantly slower than usual `multiply`.
-In case you don't really need controlled precision and/or need fast computation, consider using [multiply](#multiply)
+Эти функции работают значительно медленнее, чем обычная `multiply`.
+Если вам не требуется контролируемая точность и/или необходима высокая скорость вычислений, рассмотрите возможность использования [multiply](#multiply)
 :::
-    
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 multiplyDecimal(a, b[, result_scale])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `a` — First value. [`Decimal`](/sql-reference/data-types/decimal)
-- `b` — Second value. [`Decimal`](/sql-reference/data-types/decimal)
-- `result_scale` — Scale of result. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `a` — Первое значение. [`Decimal`](/sql-reference/data-types/decimal)
+* `b` — Второе значение. [`Decimal`](/sql-reference/data-types/decimal)
+* `result_scale` — Масштаб результата. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Результат умножения с заданным масштабом. Тип: [`Decimal256`](/sql-reference/data-types/decimal)
 
-The result of multiplication with the given scale. Type: [`Decimal256`](/sql-reference/data-types/decimal)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1214,7 +1115,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 25.2
 ```
 
-**Difference with regular multiplication**
+**Отличия по сравнению с обычным умножением**
 
 ```sql title=Query
 SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
@@ -1229,7 +1130,7 @@ SELECT multiplyDecimal(toDecimal256(-12, 0), toDecimal32(-2.1, 1), 1)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**Decimal overflow**
+**Переполнение десятичного типа**
 
 ```sql title=Query
 SELECT
@@ -1251,31 +1152,29 @@ SELECT
 При обработке toDecimal64(-12.647987876, 9) AS a, toDecimal64(123.967645643, 9) AS b, a * b. (DECIMAL_OVERFLOW)
 ```
 
-
-
 ## negate {#negate}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
-Negates the argument `x`. The result is always signed.
+Изменяет знак аргумента `x`. Результат всегда знаковый.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 negate(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value to negate. 
+* `x` — значение, которое нужно изменить на противоположное.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns -x from x
+Возвращает -x (противоположное значение x)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT negate(10)
@@ -1285,36 +1184,32 @@ SELECT negate(10)
 -10
 ```
 
-
-
 ## plus {#plus}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Вычисляет сумму двух значений `x` и `y`. Псевдоним: `x + y` (оператор).
+Можно складывать целое число с датой или датой и временем. В первом случае
+операция увеличивает количество дней в дате, во втором случае
+операция увеличивает количество секунд в дате и времени.
 
-Calculates the sum of two values `x` and `y`. Alias: `x + y` (operator).
-It is possible to add an integer and a date or date with time. The former
-operation increments the number of days in the date, the latter operation
-increments the number of seconds in the date with time.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 plus(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Left hand operand. - `y` — Right hand operand. 
+* `x` — левый операнд. - `y` — правый операнд.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the sum of x and y
+Возвращает сумму x и y.
 
-**Examples**
+**Примеры**
 
-**Adding two numbers**
+**Сложение двух чисел**
 
 ```sql title=Query
 SELECT plus(5,5)
@@ -1324,7 +1219,7 @@ SELECT plus(5,5)
 10
 ```
 
-**Adding an integer and a date**
+**Добавление целого числа к дате**
 
 ```sql title=Query
 SELECT plus(toDate('2025-01-01'),5)
@@ -1334,39 +1229,33 @@ SELECT plus(toDate('2025-01-01'),5)
 2025-01-06
 ```
 
-
-
 ## positiveModulo {#positiveModulo}
 
-Introduced in: v22.11
+Появилась в: v22.11
 
+Вычисляет остаток от деления `x` на `y`. Функция аналогична
+`modulo`, за исключением того, что `positiveModulo` всегда возвращает неотрицательное число.
 
-Calculates the remainder when dividing `x` by `y`. Similar to function
-`modulo` except that `positiveModulo` always return non-negative number.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 positiveModulo(x, y)
 ```
 
-**Aliases**: `positive_modulo`, `pmod`
+**Псевдонимы**: `positive_modulo`, `pmod`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — Делимое. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `y` — Делитель (модуль). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает разность между `x` и ближайшим целым числом, которое не превосходит `x` и кратно `y`.
 
-Returns the difference between `x` and the nearest integer not greater than
-`x` divisible by `y`.
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT positiveModulo(-1, 10)
@@ -1376,35 +1265,31 @@ SELECT positiveModulo(-1, 10)
 9
 ```
 
-
-
 ## positiveModuloOrNull {#positiveModuloOrNull}
 
-Introduced in: v25.5
+Введена в версии: v25.5
 
+Вычисляет остаток от деления `a` на `b`. Аналогична функции `positiveModulo`, за исключением того, что `positiveModuloOrNull` вернёт NULL,
+если правый аргумент равен 0.
 
-Calculates the remainder when dividing `a` by `b`. Similar to function `positiveModulo` except that `positiveModuloOrNull` will return NULL
-if the right argument is 0.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 positiveModuloOrNull(x, y)
 ```
 
-**Aliases**: `positive_modulo_or_null`, `pmodOrNull`
+**Псевдонимы**: `positive_modulo_or_null`, `pmodOrNull`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The dividend. [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). - `x` — The divisor (modulus). [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float). 
+* `x` — Делимое. [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float).
+* `y` — Делитель (модуль). [`(U)Int*`](/sql-reference/data-types/int-uint)/[`Float32/64`](/sql-reference/data-types/float).
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the difference between `x` and the nearest integer not greater than
-`x` divisible by `y`, `null` when the divisor is zero.
+Возвращает разность между `x` и ближайшим целым числом, не превосходящим `x` и кратным `y`, или `null`, если делитель равен нулю.
 
-**Examples**
+**Примеры**
 
 **positiveModuloOrNull**
 

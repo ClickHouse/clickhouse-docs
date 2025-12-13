@@ -25,15 +25,15 @@ SET apply_mutations_on_fly = 1;
 CREATE TABLE test_on_fly_mutations (id UInt64, v String)
 ENGINE = MergeTree ORDER BY id;
 
--- Disable background materialization of mutations to showcase
--- default behavior when on-the-fly mutations are not enabled
+-- Отключаем фоновую материализацию мутаций для демонстрации
+-- поведения по умолчанию при отключённых мутациях на лету
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
--- Insert some rows in our new table
+-- Вставляем несколько строк в новую таблицу
 INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
--- Update the values of the rows
+-- Обновляем значения строк
 ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
 ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
 ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
@@ -43,7 +43,7 @@ ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
 Проверим результат внесённых изменений с помощью запроса `SELECT`:
 
 ```sql
--- Explicitly disable on-the-fly-mutations
+-- Явно отключаем мутации на лету
 SET apply_mutations_on_fly = 0;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
@@ -62,7 +62,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 Теперь посмотрим, что произойдёт, когда мы включим мутации на лету:
 
 ```sql
--- Enable on-the-fly mutations
+-- Включить мутации на лету
 SET apply_mutations_on_fly = 1;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;

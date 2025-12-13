@@ -142,7 +142,7 @@ SELECT * FROM stats ORDER BY key;
     <database>system</database>
     <table>azure_queue_log</table>
   </azure_queue_log>
-  ```
+```
 
 Эта постоянная таблица содержит ту же информацию, что и `system.s3queue`, но для обработанных и завершившихся ошибкой файлов.
 

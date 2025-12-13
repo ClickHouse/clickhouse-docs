@@ -34,7 +34,7 @@ SET dialect = 'clickhouse'
 Чтобы включить поддержку PRQL:
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- this SET statement is required only for ClickHouse versions >= v25.1
+SET allow_experimental_prql_dialect = 1; -- эта команда SET требуется только для версий ClickHouse >= v25.1
 SET dialect = 'prql'
 ```
 
@@ -57,7 +57,7 @@ aggregate {
 Чтобы включить поддержку KQL:
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only for ClickHouse versions >= 25.1
+SET allow_experimental_kusto_dialect = 1; -- эта инструкция SET требуется только для версий ClickHouse начиная с 25.1
 SET dialect = 'kusto'
 ```
 

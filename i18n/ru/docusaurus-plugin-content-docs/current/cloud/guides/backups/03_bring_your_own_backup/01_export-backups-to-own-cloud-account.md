@@ -30,13 +30,13 @@ ClickHouse Cloud поддерживает создание резервных к
 
 ```text
   s3://<bucket_name>.s3.amazonaws.com/<directory>
-  ```
+```
 
 Например:
 
 ```text
   s3://testchbackups.s3.amazonaws.com/backups/
-  ```
+```
 
 Где:
 
@@ -61,8 +61,8 @@ ClickHouse Cloud поддерживает создание резервных к
 1. Endpoint GCS в формате:
 
    ```text
-    https://storage.googleapis.com/<bucket_name>/
-    ```
+   https://storage.googleapis.com/<bucket_name>/
+   ```
 2. HMAC‑ключ и HMAC‑секрет для доступа.
 
 <hr/>

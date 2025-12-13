@@ -68,7 +68,7 @@ receivers:
     password: ${env:POSTGRES_PASSWORD}
     databases:
       - postgres
-      - your_application_db # Replace with your actual database names
+      - your_application_db # Замените на фактические имена ваших баз данных
     collection_interval: 30s
     tls:
       insecure: true
@@ -142,10 +142,10 @@ docker run -d \
 Загрузите заранее сгенерированные файлы метрик (24 часа метрик PostgreSQL с реалистичными паттернами):
 
 ```bash
-# Download gauge metrics (connections, database size)
+# Загрузка gauge-метрик (подключения, размер базы данных)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-gauge.csv
 
-# Download sum metrics (commits, rollbacks, operations)
+# Загрузка sum-метрик (коммиты, откаты, операции)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/postgres/postgres-metrics-sum.csv
 ```
 
@@ -172,11 +172,11 @@ docker run -d --name clickstack-postgres-demo \
 Загрузите метрики напрямую в ClickHouse:
 
 ```bash
-# Load gauge metrics
+# Загрузка gauge-метрик
 cat postgres-metrics-gauge.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Load sum metrics
+# Загрузка sum-метрик
 cat postgres-metrics-sum.csv | docker exec -i clickstack-postgres-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -231,13 +231,13 @@ HyperDX отображает временные метки в локальном
 Убедитесь, что задана переменная окружения:
 
 ```bash
-docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 Убедитесь, что файл пользовательской конфигурации смонтирован:
 
 ```bash
-docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### Метрики не отображаются в HyperDX {#no-metrics}

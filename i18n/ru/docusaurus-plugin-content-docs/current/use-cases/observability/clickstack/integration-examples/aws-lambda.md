@@ -74,29 +74,29 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   4. Выберите **Specify an ARN**
   5. Введите ARN слоя Rotel:
      ```text
-   arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-   ```
+     arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+     ```
   6. Нажмите **Add**
 
   ##### Вариант 2: AWS CLI
 
   ```bash
-aws lambda update-function-configuration \
-  --function-name my-function \
-  --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-```
+  aws lambda update-function-configuration \
+    --function-name my-function \
+    --layers arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+  ```
 
   ##### Вариант 3: AWS SAM
 
   ```yaml
-Resources:
-  MyFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      # ... other configuration ...
-      Layers:
-        - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
-```
+  Resources:
+    MyFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        # ... other configuration ...
+        Layers:
+          - arn:aws:lambda:{version}:418653438961:layer:rotel-extension-{arch}-alpha:{version}
+  ```
 
   #### Настройте расширение для экспорта данных в ClickStack
 
@@ -107,15 +107,15 @@ Resources:
   Добавьте следующие переменные окружения в вашу Lambda-функцию:
 
   ```bash
-# Required: ClickStack OTLP endpoint
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  # Required: ClickStack OTLP endpoint
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
 
-# Optional: Authentication headers
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+  # Optional: Authentication headers
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
 
-# Optional: Service name (defaults to Lambda function name)
-ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
-```
+  # Optional: Service name (defaults to Lambda function name)
+  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0"
+  ```
 
   ##### Расширенная конфигурация (через файл .env)
 
@@ -124,16 +124,16 @@ ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,service.version=1.0.0
   **rotel.env:**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
-ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=<YOUR_INGESTION_API_KEY>"
+  ROTEL_OTEL_RESOURCE_ATTRIBUTES="service.name=my-lambda-api,deployment.environment=production"
+  ```
 
   Затем задайте переменную окружения, указывающую на этот файл:
 
   ```bash
-ROTEL_ENV_FILE=/var/task/rotel.env
-```
+  ROTEL_ENV_FILE=/var/task/rotel.env
+  ```
 
   ##### Использование AWS Secrets Manager или AWS Systems Manager Parameter Store
 
@@ -142,16 +142,16 @@ ROTEL_ENV_FILE=/var/task/rotel.env
   **Пример использования AWS Secrets Manager:**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
+  ```
 
   **Пример хранилища параметров AWS (AWS Parameter Store):**
 
   ```bash
-ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
-ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
-```
+  ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
+  ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key}"
+  ```
 
   **Требуемые разрешения IAM:**
 
@@ -160,37 +160,37 @@ ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456
   Для Secrets Manager:
 
   ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:BatchGetSecretValue"
-      ],
-      "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
-    }
-  ]
-}
-```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:BatchGetSecretValue"
+        ],
+        "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-*"
+      }
+    ]
+  }
+  ```
 
   Для Parameter Store:
 
   ```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ssm:GetParameters"
-      ],
-      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
-    }
-  ]
-}
-```
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "ssm:GetParameters"
+        ],
+        "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/clickstack-api-key"
+      }
+    ]
+  }
+  ```
 
   :::note
   Вызовы AWS API для получения секретов добавляют 100-150 мс к задержке холодного старта. Секреты извлекаются пакетами (до 10) и только при инициализации, поэтому последующие вызовы не подвержены влиянию.
@@ -201,17 +201,17 @@ ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:ssm:us-east-1:123456
   Вызовите Lambda-функцию, чтобы убедиться, что логи отправляются в ClickStack:
 
   ```bash
-aws lambda invoke \
-  --function-name my-function \
-  --payload '{"test": "data"}' \
-  response.json
-```
+  aws lambda invoke \
+    --function-name my-function \
+    --payload '{"test": "data"}' \
+    response.json
+  ```
 
   Проверьте журналы Lambda на наличие ошибок:
 
   ```bash
-aws logs tail /aws/lambda/my-function --follow
-```
+  aws logs tail /aws/lambda/my-function --follow
+  ```
 
   #### Проверьте логи в HyperDX
 
@@ -254,7 +254,7 @@ aws logs tail /aws/lambda/my-function --follow
 2. Логи продолжают отображаться в ClickStack/HyperDX
 
 ```bash
-# This should show no new log streams after the policy change
+# После изменения политики здесь не должно появляться новых потоков логов
 aws logs describe-log-streams \
   --log-group-name /aws/lambda/my-function \
   --order-by LastEventTime \

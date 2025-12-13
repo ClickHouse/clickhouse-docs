@@ -238,42 +238,11 @@ GROUP BY type
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Выражение ((Projection + Before ORDER BY))                                                                                                │
-│ Действия: INPUT :: 0 -&gt; type String : 0                                                                                                   │
-│          INPUT : 1 -&gt; min(timestamp) DateTime : 1                                                                                          │
-│          INPUT : 2 -&gt; max(timestamp) DateTime : 2                                                                                          │
-│          INPUT : 3 -&gt; count() UInt64 : 3                                                                                                   │
-│          COLUMN Const(Nullable(UInt64)) -&gt; total&#95;rows Nullable(UInt64) : 4                                                                 │
-│          COLUMN Const(UInt8) -&gt; 100 UInt8 : 5                                                                                              │
-│          ALIAS min(timestamp) :: 1 -&gt; minimum&#95;date DateTime : 6                                                                            │
-│          ALIAS max(timestamp) :: 2 -&gt; maximum&#95;date DateTime : 1                                                                            │
-│          FUNCTION divide(count() :: 3, total&#95;rows :: 4) -&gt; divide(count(), total&#95;rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count(), total&#95;rows) :: 2, 100 :: 5) -&gt; multiply(divide(count(), total&#95;rows), 100) Nullable(Float64) : 4 │
-│          ALIAS multiply(divide(count(), total&#95;rows), 100) :: 4 -&gt; percentage Nullable(Float64) : 5                                         │
-│ Позиции: 0 6 1 5                                                                                                                          │
-│   Aggregating                                                                                                                              │
-│   Ключи: type                                                                                                                              │
-│   Агрегаты:                                                                                                                                │
-│       min(timestamp)                                                                                                                       │
-│         Функция: min(DateTime) → DateTime                                                                                                  │
-│         Аргументы: timestamp                                                                                                               │
-│       max(timestamp)                                                                                                                       │
-│         Функция: max(DateTime) → DateTime                                                                                                  │
-│         Аргументы: timestamp                                                                                                               │
-│       count()                                                                                                                              │
-│         Функция: count() → UInt64                                                                                                          │
-│         Аргументы: нет                                                                                                                     │
-│   Пропуск слияния: 0                                                                                                                       │
-│     Выражение (Before GROUP BY)                                                                                                            │
-│     Действия: INPUT :: 0 -&gt; timestamp DateTime : 0                                                                                         │
-│              INPUT :: 1 -&gt; type String : 1                                                                                                │
-│     Позиции: 0 1                                                                                                                          │
-│       ReadFromMergeTree (default.session&#95;events)                                                                                       │
-│       Тип чтения: Default                                                                                                                  │
-│       Частей: 1                                                                                                                            │
-│       Гранул: 1                                                                                                                            │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+Теперь вы можете видеть все входные данные, функции, псевдонимы и типы данных, которые используются. Некоторые оптимизации, которые будет применять планировщик, можно посмотреть [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
+
+## Конвейер запроса {#query-pipeline}
+
+Конвейер запроса генерируется из плана запроса. Конвейер запроса очень похож на план запроса, но представляет собой не дерево, а граф. Он показывает, как ClickHouse будет выполнять запрос и какие ресурсы будут использоваться. Анализ конвейера запроса очень полезен для выявления узких мест с точки зрения ввода/вывода. Возьмём наш предыдущий запрос и посмотрим на выполнение конвейера запроса:
 
 ```sql
 EXPLAIN PIPELINE
@@ -302,9 +271,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Конвейер запроса {#query-pipeline}
-
-Конвейер запроса генерируется из плана запроса. Конвейер запроса очень похож на план запроса, но представляет собой не дерево, а граф. Он показывает, как ClickHouse будет выполнять запрос и какие ресурсы будут использоваться. Анализ конвейера запроса очень полезен для выявления узких мест с точки зрения ввода/вывода. Возьмём наш предыдущий запрос и посмотрим на выполнение конвейера запроса:
+В скобках указан шаг плана запроса, а рядом — процессор. Это полезная информация, но, учитывая, что перед нами граф, было бы удобно визуализировать его соответственно. У нас есть настройка `graph`, которую можно установить в 1 и задать TSV в качестве формата вывода:
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -315,15 +282,13 @@ EXPLAIN PIPELINE graph=1 WITH
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type FORMAT TSV;
 ```
 
-В скобках указан шаг плана запроса, а рядом — процессор. Это полезная информация, но, учитывая, что перед нами граф, было бы удобно визуализировать его соответственно. У нас есть настройка `graph`, которую можно установить в 1 и задать TSV в качестве формата вывода:
-
 ```response
 digraph
 {
  rankdir="LR";
  { node [shape = rect]
    subgraph cluster_0 {
-     label ="Expression";
+     label ="Выражение";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -332,7 +297,7 @@ digraph
      }
    }
    subgraph cluster_1 {
-     label ="Aggregating";
+     label ="Агрегирование";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -342,7 +307,7 @@ digraph
      }
    }
    subgraph cluster_2 {
-     label ="Expression";
+     label ="Выражение";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -351,7 +316,7 @@ digraph
      }
    }
    subgraph cluster_3 {
-     label ="ReadFromMergeTree";
+     label ="ЧтениеИзMergeTree";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -366,6 +331,12 @@ digraph
  n1 -> n2 [label=""];
 }
 ```
+
+Затем вы можете скопировать этот вывод и вставить его [сюда](https://dreampuf.github.io/GraphvizOnline), после чего будет построен следующий граф:
+
+<Image img={analyzer3} alt="Graph output" size="md" />
+
+Белый прямоугольник соответствует узлу пайплайна, серый прямоугольник — шагам плана запроса, а `x`, за которым следует число, обозначает количество используемых входов/выходов. Если вы не хотите видеть граф в компактном виде, вы всегда можете добавить `compact=0`:
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -382,12 +353,6 @@ FROM session_events
 GROUP BY type
 FORMAT TSV
 ```
-
-Затем вы можете скопировать этот вывод и вставить его [сюда](https://dreampuf.github.io/GraphvizOnline), после чего будет построен следующий граф:
-
-<Image img={analyzer3} alt="Graph output" size="md" />
-
-Белый прямоугольник соответствует узлу пайплайна, серый прямоугольник — шагам плана запроса, а `x`, за которым следует число, обозначает количество используемых входов/выходов. Если вы не хотите видеть граф в компактном виде, вы всегда можете добавить `compact=0`:
 
 ```response
 digraph
@@ -409,6 +374,10 @@ digraph
 }
 ```
 
+<Image img={analyzer4} alt="Компактный вывод графика" size="md" />
+
+Почему ClickHouse не читает из таблицы, используя несколько потоков? Попробуем добавить больше данных в таблицу:
+
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    sessionId UUID,
@@ -417,9 +386,7 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000000;
 ```
 
-<Image img={analyzer4} alt="Компактный вывод графика" size="md" />
-
-Почему ClickHouse не читает из таблицы, используя несколько потоков? Попробуем добавить больше данных в таблицу:
+Теперь снова выполним запрос `EXPLAIN`:
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -435,37 +402,6 @@ SELECT
 FROM session_events
 GROUP BY type
 FORMAT TSV
-```
-
-Теперь снова выполним запрос `EXPLAIN`:
-
-```response
-digraph
-{
-  rankdir="LR";
-  { node [shape = rect]
-    n0[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
-    n1[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
-    n2[label="ExpressionTransform"];
-    n3[label="ExpressionTransform"];
-    n4[label="StrictResize"];
-    n5[label="AggregatingTransform"];
-    n6[label="AggregatingTransform"];
-    n7[label="Resize"];
-    n8[label="ExpressionTransform"];
-    n9[label="ExpressionTransform"];
-  }
-  n0 -> n2;
-  n1 -> n3;
-  n2 -> n4;
-  n3 -> n4;
-  n4 -> n5;
-  n4 -> n6;
-  n5 -> n7;
-  n6 -> n7;
-  n7 -> n8;
-  n7 -> n9;
-}
 ```
 
 ```response

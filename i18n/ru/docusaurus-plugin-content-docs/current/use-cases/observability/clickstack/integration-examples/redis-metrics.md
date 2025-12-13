@@ -49,20 +49,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Сначала убедитесь, что вы можете подключиться к Redis и что команда INFO работает:
 
   ```bash
-# Test connection
-redis-cli ping
-# Expected output: PONG
+  # Проверка подключения
+  redis-cli ping
+  # Ожидаемый результат: PONG
 
-# Test INFO command (used by metrics collector)
-redis-cli INFO server
-# Should display Redis server information
-```
+  # Проверка команды INFO (используется сборщиком метрик)
+  redis-cli INFO server
+  # Должна отобразиться информация о сервере Redis
+  ```
 
   Если Redis требует аутентификацию:
 
   ```bash
-redis-cli -a <your-password> ping
-```
+  redis-cli -a <your-password> ping
+  ```
 
   **Общие конечные точки Redis:**
 
@@ -77,48 +77,48 @@ redis-cli -a <your-password> ping
   Создайте файл `redis-metrics.yaml` со следующей конфигурацией:
 
   ```yaml title="redis-metrics.yaml"
-receivers:
-  redis:
-    endpoint: "localhost:6379"
-    collection_interval: 10s
-    # Uncomment if Redis requires authentication
-    # password: ${env:REDIS_PASSWORD}
-    
-    # Configure which metrics to collect
-    metrics:
-      redis.commands.processed:
-        enabled: true
-      redis.clients.connected:
-        enabled: true
-      redis.memory.used:
-        enabled: true
-      redis.keyspace.hits:
-        enabled: true
-      redis.keyspace.misses:
-        enabled: true
-      redis.keys.evicted:
-        enabled: true
-      redis.keys.expired:
-        enabled: true
+  receivers:
+    redis:
+      endpoint: "localhost:6379"
+      collection_interval: 10s
+      # Раскомментируйте, если Redis требует аутентификацию
+      # password: ${env:REDIS_PASSWORD}
+      
+      # Настройте, какие метрики необходимо собирать
+      metrics:
+        redis.commands.processed:
+          enabled: true
+        redis.clients.connected:
+          enabled: true
+        redis.memory.used:
+          enabled: true
+        redis.keyspace.hits:
+          enabled: true
+        redis.keyspace.misses:
+          enabled: true
+        redis.keys.evicted:
+          enabled: true
+        redis.keys.expired:
+          enabled: true
 
-processors:
-  resource:
-    attributes:
-      - key: service.name
-        value: "redis"
-        action: upsert
+  processors:
+    resource:
+      attributes:
+        - key: service.name
+          value: "redis"
+          action: upsert
 
-service:
-  pipelines:
-    metrics/redis:
-      receivers: [redis]
-      processors:
-        - resource
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-```
+  service:
+    pipelines:
+      metrics/redis:
+        receivers: [redis]
+        processors:
+          - resource
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
   Данная конфигурация:
 
@@ -165,58 +165,58 @@ service:
   Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
-services:
-  clickstack:
-    # ... existing configuration ...
-    environment:
-      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # Optional: If Redis requires authentication
-      # - REDIS_PASSWORD=your-redis-password
-      # ... other environment variables ...
-    volumes:
-      - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      # ... other volumes ...
-    # If Redis is in the same compose file:
-    depends_on:
-      - redis
+  services:
+    clickstack:
+      # ... существующая конфигурация ...
+      environment:
+        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+        # Опционально: если Redis требует аутентификации
+        # - REDIS_PASSWORD=ваш-пароль-redis
+        # ... другие переменные окружения ...
+      volumes:
+        - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        # ... другие тома ...
+      # Если Redis находится в том же compose-файле:
+      depends_on:
+        - redis
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    # Optional: Enable authentication
-    # command: redis-server --requirepass your-redis-password
-```
+    redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      # Опционально: включить аутентификацию
+      # command: redis-server --requirepass ваш-пароль-redis
+  ```
 
   ##### Вариант 2: Запуск через Docker (универсальный образ)
 
   При использовании универсального образа с `docker run`:
 
   ```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack-all-in-one:latest
-```
+  docker run --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   **Важно:** Если Redis запущен в другом контейнере, используйте сеть Docker:
 
   ```bash
-# Create a network
-docker network create monitoring
+  # Создайте сеть
+  docker network create monitoring
 
-# Run Redis on the network
-docker run -d --name redis --network monitoring redis:7-alpine
+  # Запустите Redis в сети
+  docker run -d --name redis --network monitoring redis:7-alpine
 
-# Run ClickStack on the same network (update endpoint to "redis:6379" in config)
-docker run --name clickstack \
-  --network monitoring \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack-all-in-one:latest
-```
+  # Запустите ClickStack в той же сети (обновите endpoint на "redis:6379" в конфигурации)
+  docker run --name clickstack \
+    --network monitoring \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   #### Проверка метрик в HyperDX
 
@@ -239,10 +239,10 @@ docker run --name clickstack \
 
 Скачайте заранее сгенерированные файлы метрик (24 часа Redis Metrics с реалистичными профилями):
 ```bash
-# Download gauge metrics (memory, fragmentation ratio)
+# Загрузить метрики gauge (память, коэффициент фрагментации)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# Download sum metrics (commands, connections, keyspace stats)
+# Загрузить метрики sum (команды, подключения, статистика пространства ключей)
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -267,11 +267,11 @@ docker run -d --name clickstack-demo \
 
 Загрузите метрики напрямую в ClickHouse:
 ```bash
-# Load gauge metrics (memory, fragmentation)
+# Загрузить метрики gauge (память, фрагментация)
 cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Load sum metrics (commands, connections, keyspace)
+# Загрузить метрики sum (команды, подключения, пространство ключей)
 cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -337,13 +337,13 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 Убедитесь, что пользовательский файл конфигурации смонтирован в `/etc/otelcol-contrib/custom.config.yaml`:
 
 ```bash
-docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
+docker exec <имя-контейнера> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 Просмотрите содержимое пользовательской конфигурации и убедитесь, что его можно прочитать:
 
 ```bash
-docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### Метрики не отображаются в HyperDX
@@ -351,29 +351,29 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 Убедитесь, что Redis доступен из коллектора:
 
 ```bash
-# From the ClickStack container
+# Из контейнера ClickStack {#download-sum-metrics-commands-connections-keyspace-stats}
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
-# Expected output: PONG
+# Ожидаемый результат: PONG
 ```
 
 Проверьте, работает ли команда INFO в Redis:
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
-# Should display Redis statistics
+# Должна отобразить статистику Redis
 ```
 
 Убедитесь, что эффективная конфигурация включает ваш ресивер Redis:
 
 ```bash
-docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
+docker exec <контейнер> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
 ```
 
 Проверьте журналы коллектора на наличие ошибок:
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# Look for connection errors or authentication failures
+# Проверьте наличие ошибок подключения или сбоев аутентификации {#load-gauge-metrics-memory-fragmentation}
 ```
 
 ### Ошибки аутентификации
@@ -381,13 +381,13 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 Если вы видите ошибки аутентификации в журналах:
 
 ```bash
-# Verify Redis requires authentication
+# Проверка требования аутентификации Redis
 redis-cli CONFIG GET requirepass
 
-# Test authentication
+# Тестирование аутентификации
 redis-cli -a <password> ping
 
-# Ensure password is set in ClickStack environment
+# Проверка установки пароля в окружении ClickStack
 docker exec <clickstack-container> printenv REDIS_PASSWORD
 ```
 
@@ -405,10 +405,10 @@ receivers:
 Если ClickStack не может подключиться к Redis:
 
 ```bash
-# Check if both containers are on the same network
+# Проверьте, находятся ли оба контейнера в одной сети
 docker network inspect <network-name>
 
-# Test connectivity
+# Проверьте соединение
 docker exec <clickstack-container> ping redis
 docker exec <clickstack-container> telnet redis 6379
 ```

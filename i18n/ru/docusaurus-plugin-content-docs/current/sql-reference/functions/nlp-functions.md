@@ -60,37 +60,32 @@ SELECT detectCharset('Я останусь на несколько дней.')
 WINDOWS-1252
 ```
 
-
-
 ## detectLanguage {#detectLanguage}
 
-Introduced in: v22.2
+Появилась в версии: v22.2
 
+Определяет язык входной строки в кодировке UTF-8.
+Функция использует библиотеку [CLD2](https://github.com/CLD2Owners/cld2) для определения языка и возвращает двухбуквенный языковой код ISO.
 
-Detects the language of the UTF8-encoded input string.
-The function uses the [CLD2 library](https://github.com/CLD2Owners/cld2) for detection and returns the 2-letter ISO language code.
+Чем длиннее входные данные, тем точнее будет определение языка.
 
-The longer the input, the more precise the language detection will be.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 detectLanguage(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `text_to_be_analyzed` — The text to analyze. [`String`](/sql-reference/data-types/string)
+* `text_to_be_analyzed` — Текст для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает двухбуквенный ISO‑код определённого языка. Другие возможные результаты: `un` = неизвестно, не удалось определить язык, `other` = для определённого языка нет двухбуквенного кода. [`String`](/sql-reference/data-types/string)
 
-Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Mixed language text**
+**Текст на смешанном языке**
 
 ```sql title=Query
 SELECT detectLanguage('Je pense que je ne parviendrai jamais à parler français comme un natif. Where there\'s a will, there\'s a way.')
@@ -100,34 +95,29 @@ SELECT detectLanguage('Je pense que je ne parviendrai jamais à parler français
 fr
 ```
 
-
-
 ## detectLanguageMixed {#detectLanguageMixed}
 
-Introduced in: v22.2
+Добавлено в: v22.2
 
+Аналогично функции [`detectLanguage`](#detectLanguage), но `detectLanguageMixed` возвращает `Map`, в котором двухбуквенным кодам языков сопоставлены значения с процентной долей соответствующего языка в тексте.
 
-Similar to the [`detectLanguage`](#detectLanguage) function, but `detectLanguageMixed` returns a `Map` of 2-letter language codes that are mapped to the percentage of the certain language in the text.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 detectLanguageMixed(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The text to analyze [`String`](/sql-reference/data-types/string)
+* `s` — текст для анализа [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает отображение (map), где ключами являются двухбуквенные ISO‑коды, а значениями — процент текста, относящийся к соответствующему языку [`Map(String, Float32)`](/sql-reference/data-types/map)
 
-Returns a map with keys which are 2-letter ISO codes and corresponding values which are a percentage of the text found for that language [`Map(String, Float32)`](/sql-reference/data-types/map)
+**Примеры**
 
-**Examples**
-
-**Mixed languages**
+**Смешанные языки**
 
 ```sql title=Query
 SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追う者は一兎をも得ず A vaincre sans peril, on triomphe sans gloire.')
@@ -137,35 +127,30 @@ SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追�
 {'ja':0.62,'fr':0.36}
 ```
 
-
-
 ## detectLanguageUnknown {#detectLanguageUnknown}
 
-Introduced in: v22.2
+Добавлена в версии: v22.2
 
+Аналогична функции [`detectLanguage`](#detectLanguage), за исключением того, что функция detectLanguageUnknown работает со строками, закодированными не в UTF-8.
+Используйте эту версию, когда набор символов — UTF-16 или UTF-32.
 
-Similar to the [`detectLanguage`](#detectLanguage) function, except the detectLanguageUnknown function works with non-UTF8-encoded strings.
-Prefer this version when your character set is UTF-16 or UTF-32.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 detectLanguageUnknown('s')
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The text to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — текст для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает двухбуквенный код ISO обнаруженного языка. Другие возможные результаты: `un` = неизвестно, не удалось определить язык; `other` = для обнаруженного языка не существует двухбуквенного кода. [`String`](/sql-reference/data-types/string)
 
-Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT detectLanguageUnknown('Я останусь на несколько дней.')
@@ -175,34 +160,29 @@ SELECT detectLanguageUnknown('Я останусь на несколько дне
 de
 ```
 
-
-
 ## detectProgrammingLanguage {#detectProgrammingLanguage}
 
-Introduced in: v22.2
+Впервые появилась в версии v22.2
 
+Определяет язык программирования по заданному фрагменту исходного кода.
 
-Determines the programming language from a given source code snippet.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 detectProgrammingLanguage('source_code')
 ```
 
-**Arguments**
+**Аргументы**
 
-- `source_code` — String representation of the source code to analyze. [`String`](/sql-reference/data-types/string)
+* `source_code` — строковое представление исходного кода для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает язык программирования в виде [`String`](/sql-reference/data-types/string)
 
-Returns programming language [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**C++ code detection**
+**Определение кода на C++**
 
 ```sql title=Query
 SELECT detectProgrammingLanguage('#include <iostream>')
@@ -212,38 +192,33 @@ SELECT detectProgrammingLanguage('#include <iostream>')
 C++
 ```
 
-
-
 ## detectTonality {#detectTonality}
 
-Introduced in: v22.2
+Появилась в версии: v22.2
 
+Определяет тональность (эмоциональную окраску) переданных текстовых данных.
 
-Determines the sentiment of the provided text data.
-
-:::note Limitation
-This function is limited in its current form in that it makes use of the embedded emotional dictionary and only works for the Russian language.
+:::note Ограничение
+Текущая реализация функции ограничена использованием встроенного словаря эмоциональной лексики и работает только для русского языка.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 detectTonality(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The text to be analyzed. [`String`](/sql-reference/data-types/string)
+* `s` — текст для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает среднее значение тональности слов в тексте. [`Float32`](/sql-reference/data-types/float)
 
-Returns the average sentiment value of the words in text [`Float32`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Russian sentiment analysis**
+**Анализ тональности текста на русском языке**
 
 ```sql title=Query
 SELECT
@@ -256,36 +231,31 @@ SELECT
 0.44445, 0, -0.3
 ```
 
-
-
 ## lemmatize {#lemmatize}
 
-Introduced in: v21.9
+Впервые представлена в версии v21.9
 
+Выполняет лемматизацию заданного слова.
+Для работы этой функции требуются словари, которые можно получить с [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). Подробнее о загрузке словаря из локального файла см. на странице [&quot;Определение словарей&quot;](/sql-reference/dictionaries#local-file).
 
-Performs lemmatization on a given word.
-This function needs dictionaries to operate, which can be obtained from [github](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). For more details on loading a dictionary from a local file see page ["Defining Dictionaries"](/sql-reference/dictionaries#local-file).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lemmatize(lang, word)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `lang` — Language which rules will be applied. [`String`](/sql-reference/data-types/string)
-- `word` — Lowercase word that needs to be lemmatized. [`String`](/sql-reference/data-types/string)
+* `lang` — Язык, к которому будут применены правила. [`String`](/sql-reference/data-types/string)
+* `word` — Слово в нижнем регистре, которое нужно лемматизировать. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает лемматизированную форму слова в виде [`String`](/sql-reference/data-types/string)
 
-Returns the lemmatized form of the word [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**English lemmatization**
+**Лемматизация на английском языке**
 
 ```sql title=Query
 SELECT lemmatize('en', 'wolves')
@@ -295,35 +265,30 @@ SELECT lemmatize('en', 'wolves')
 волк
 ```
 
-
-
 ## stem {#stem}
 
-Introduced in: v21.9
+Добавлено в: v21.9
 
+Выполняет стемминг для заданного слова.
 
-Performs stemming on a given word.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 stem(lang, word)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `lang` — Language which rules will be applied. Use the two letter ISO 639-1 code. [`String`](/sql-reference/data-types/string)
-- `word` — Lowercase word that needs to be stemmed. [`String`](/sql-reference/data-types/string)
+* `lang` — Язык, к которому будут применены правила. Используйте двухбуквенный код ISO 639-1. [`String`](/sql-reference/data-types/string)
+* `word` — Слово в нижнем регистре, которое нужно привести к основе (стеммировать). [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает стеммированную форму слова в виде [`String`](/sql-reference/data-types/string)
 
-Returns the stemmed form of the word [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**English stemming**
+**Стемминг английских слов**
 
 ```sql title=Query
 SELECT arrayMap(x -> stem('en', x),
@@ -334,45 +299,41 @@ SELECT arrayMap(x -> stem('en', x),
 ['Я','думаю','это','скрытое','благословение']
 ```
 
-
-
 ## synonyms {#synonyms}
 
-Introduced in: v21.9
+Введено в версии v21.9
 
+Находит синонимы заданного слова.
 
-Finds synonyms of a given word.
+Существует два типа расширений синонимов:
 
-There are two types of synonym extensions:
-- `plain`
-- `wordnet`
+* `plain`
+* `wordnet`
 
-With the `plain` extension type you need to provide a path to a simple text file, where each line corresponds to a certain synonym set.
-Words in this line must be separated with space or tab characters.
+Для типа расширения `plain` необходимо указать путь к простому текстовому файлу, в котором каждая строка соответствует определённому набору синонимов.
+Слова в этой строке должны быть разделены пробелом или символом табуляции.
 
-With the `wordnet` extension type you need to provide a path to a directory with the WordNet thesaurus in it.
-The thesaurus must contain a WordNet sense index.
+Для типа расширения `wordnet` необходимо указать путь к каталогу с тезаурусом WordNet.
+Тезаурус должен содержать индекс смыслов (WordNet sense index).
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 synonyms(ext_name, word)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `ext_name` — Name of the extension in which search will be performed. [`String`](/sql-reference/data-types/string)
-- `word` — Word that will be searched in extension. [`String`](/sql-reference/data-types/string)
+* `ext_name` — Название расширения, в котором будет выполняться поиск. [`String`](/sql-reference/data-types/string)
+* `word` — Слово, по которому выполняется поиск в расширении. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив синонимов для указанного слова. [`Array(String)`](/sql-reference/data-types/array)
 
-Returns array of synonyms for the given word. [`Array(String)`](/sql-reference/data-types/array)
+**Примеры**
 
-**Examples**
-
-**Find synonyms**
+**Поиск синонимов**
 
 ```sql title=Query
 SELECT synonyms('list', 'important')

@@ -129,15 +129,6 @@ arthur :) select _path, * from azure_table;
    └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
 ```
 
-┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
-
-1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
-2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
-   └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
-
-```
-```
-
 ## См. также {#see-also}
 
 [Табличная функция Azure Blob Storage](/sql-reference/table-functions/azureBlobStorage)

@@ -133,7 +133,7 @@ SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Let's see how much space our data is using:
+6. Давайте посмотрим, сколько места занимают наши данные:
 
 ```sql runnable
 SELECT
@@ -149,11 +149,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
+Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
 
-## Example queries {#example-queries}
+## Примеры запросов {#example-queries}
 
-7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:
+7. Давайте выполним несколько запросов. Ниже приведены 10 наиболее полезных отзывов в этом наборе данных:
 
 ```sql runnable
 SELECT
@@ -165,10 +165,10 @@ LIMIT 10
 ```
 
 :::note
-This query is using a [projection](/data-modeling/projections) to speed up performance.
+Этот запрос использует [проекцию](/data-modeling/projections) для повышения производительности.
 :::
 
-8. Here are the top 10 products in Amazon with the most reviews:
+8. Вот топ‑10 товаров на Amazon по количеству отзывов:
 
 ```sql runnable
 SELECT
@@ -180,7 +180,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. Here are the average review ratings per month for each product (an actual [Amazon job interview question](https://datalemur.com/questions/sql-avg-review-ratings)!):
+9. Вот средние рейтинги отзывов по месяцам для каждого товара (реальный [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -197,7 +197,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. Here are the total number of votes per product category. This query is fast because `product_category` is in the primary key:
+10. Вот общее число голосов по категориям товаров. Этот запрос выполняется быстро, потому что `product_category` входит в первичный ключ:
 
 ```sql runnable
 SELECT
@@ -208,7 +208,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. Let's find the products with the word **"awful"** occurring most frequently in the review. This is a big task - over 151M strings have to be parsed looking for a single word:
+11. Найдём товары, в отзывах на которые слово **«awful»** встречается чаще всего. Это большая задача — нужно разобрать более 151 млн строк в поисках одного слова:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -223,9 +223,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-Notice the query time for such a large amount of data. The results are also a fun read!
+Обратите внимание на время выполнения запроса для такого большого объёма данных. Результаты тоже любопытно почитать!
 
-12. We can run the same query again, except this time we search for **awesome** in the reviews:
+12. Мы можем выполнить тот же запрос ещё раз, только на этот раз будем искать **awesome** в отзывах:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

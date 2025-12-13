@@ -55,7 +55,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 Замените ваш текущий образ Nginx версией с поддержкой OpenTelemetry:
 
 ```yaml
-# In your docker-compose.yml or Dockerfile
+# В вашем docker-compose.yml или Dockerfile {#in-your-docker-composeyml-or-dockerfile}
 image: nginx:1.27-otel
 ```
 
@@ -85,32 +85,32 @@ events {
 }
 
 http {
-    # OpenTelemetry exporter configuration
+    # Конфигурация экспортера OpenTelemetry
     otel_exporter {
         endpoint <clickstack-host>:4317;
         header authorization ${CLICKSTACK_API_KEY};
     }
     
-    # Service name for identifying this nginx instance
+    # Имя сервиса для идентификации этого экземпляра nginx
     otel_service_name "nginx-proxy";
     
-    # Enable tracing
+    # Включение трассировки
     otel_trace on;
     
     server {
         listen 80;
         
         location / {
-            # Enable tracing for this location
+            # Включить трассировку для этого location
             otel_trace_context propagate;
             otel_span_name "$request_method $uri";
             
-            # Add request details to traces
+            # Добавить детали запроса в трейсы
             otel_span_attr http.status_code $status;
             otel_span_attr http.request.method $request_method;
             otel_span_attr http.route $uri;
             
-            # Your existing proxy or application configuration
+            # Ваша существующая конфигурация прокси или приложения
             proxy_pass http://your-backend;
         }
     }
@@ -156,10 +156,10 @@ nginx -t
 
 Если тест прошёл успешно, перезагрузите Nginx:
 ```bash
-# For Docker
+# Для Docker {#for-docker}
 docker-compose restart nginx
 
-# For systemd
+# Для systemd {#for-systemd}
 sudo systemctl reload nginx
 ```
 
@@ -198,7 +198,7 @@ docker run --name clickstack-demo \
 Скачайте файл с демонстрационными трассами и обновите метки времени на текущее время:
 
 ```bash
-# Download the traces
+# Загрузить трассы
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
@@ -312,10 +312,10 @@ echo $CLICKSTACK_API_KEY
 **Проверьте логи ошибок nginx:**
 
 ```bash
-# For Docker
+# Для Docker {#for-docker}
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# For systemd
+# Для systemd {#for-systemd}
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -324,7 +324,7 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 **Проверьте, что nginx получает запросы:**
 
 ```bash
-# Check access logs to confirm traffic
+# Проверьте журналы доступа для подтверждения трафика {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
 

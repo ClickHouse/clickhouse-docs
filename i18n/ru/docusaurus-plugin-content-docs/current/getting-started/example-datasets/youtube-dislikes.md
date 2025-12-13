@@ -147,16 +147,16 @@ FROM s3(
   Откройте новую вкладку в SQL Console ClickHouse Cloud (или новое окно `clickhouse-client`) и следите за увеличением счётчика.
   Вставка 4,56 млрд строк займёт некоторое время в зависимости от ресурсов сервера. (Без настройки параметров это занимает около 4,5 часов.)
 
-  ```sql
-SELECT formatReadableQuantity(count())
-FROM youtube
-```
+    ```sql
+    SELECT formatReadableQuantity(count())
+    FROM youtube
+    ```
 
-  ```response
-┌─formatReadableQuantity(count())─┐
-│ 4.56 billion                    │
-└─────────────────────────────────┘
-```
+    ```response
+    ┌─formatReadableQuantity(count())─┐
+    │ 4.56 billion                    │
+    └─────────────────────────────────┘
+    ```
 
   ### Изучение данных
 

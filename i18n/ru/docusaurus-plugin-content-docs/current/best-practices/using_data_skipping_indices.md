@@ -213,40 +213,6 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
-
-┌─explain────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                          │
-│   Aggregating                                                      │
-│     Expression (Before GROUP BY)                                   │
-│       Expression                                                   │
-│         ReadFromMergeTree (stackoverflow.posts)                    │
-│         Indexes:                                                   │
-│           MinMax                                                   │
-│             Keys:                                                  │
-│               CreationDate                                         │
-│             Condition: (CreationDate in ('1230768000', +Inf))      │
-│             Parts: 123/128                                         │
-│             Granules: 8513/8545                                    │
-│           Partition                                                │
-│             Keys:                                                  │
-│               toYear(CreationDate)                                 │
-│             Condition: (toYear(CreationDate) in [2009, +Inf))      │
-│             Parts: 123/123                                         │
-│             Granules: 8513/8513                                    │
-│           PrimaryKey                                               │
-│             Keys:                                                  │
-│               toDate(CreationDate)                                 │
-│             Condition: (toDate(CreationDate) in [14245, +Inf))     │
-│             Parts: 123/123                                         │
-│             Granules: 8513/8513                                    │
-│           Skip                                                     │
-│             Name: view_count_idx                                   │
-│             Description: minmax GRANULARITY 1                      │
-│             Parts: 5/123                                           │
-│             Granules: 23/8513                                      │
-└────────────────────────────────────────────────────────────────────┘
-
-29 rows in set. Elapsed: 0.211 sec.
 ```
 
 ┌─explain────────────────────────────────────────────────────────────┐

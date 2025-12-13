@@ -172,8 +172,8 @@ WHERE oid = 'postgres_table'::regclass;
 Для каждой таблицы можно указать подмножество реплицируемых столбцов в круглых скобках. Если подмножество столбцов не указано, реплицируются все столбцы этой таблицы.
 
 ```sql
-    materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
-    ```
+materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
+```
 
 Значение по умолчанию: пустой список — означает, что будет реплицирована вся база данных PostgreSQL.
 
@@ -204,18 +204,18 @@ WHERE oid = 'postgres_table'::regclass;
 Текстовая строка, идентифицирующая снимок, из которого будет выполнен [начальный дамп таблиц PostgreSQL](../../engines/database-engines/materialized-postgresql.md). Должен использоваться вместе с `materialized_postgresql_replication_slot`.
 
 ```sql
-    CREATE DATABASE database1
-    ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
-    SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
+CREATE DATABASE database1
+ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
+SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
 
-    SELECT * FROM database1.table1;
-    ```
+SELECT * FROM database1.table1;
+```
 
 При необходимости настройки можно изменить с помощью DDL‑запроса. Однако настройку `materialized_postgresql_tables_list` изменить нельзя. Чтобы обновить список таблиц в этой настройке, используйте запрос `ATTACH TABLE`.
 
 ```sql
-    ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
-    ```
+ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <новый_размер>;
+```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 

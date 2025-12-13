@@ -47,8 +47,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
-Peak memory usage: 510.71 MiB.
+5 строк в наборе. Прошло: 0.360 сек. Обработано 24.37 млн строк, 140.45 МБ (67.73 млн строк/с., 390.38 МБ/с.)
+Пиковое использование памяти: 510.71 МиБ.
 ```
 
 ```sql
@@ -91,7 +91,7 @@ LIMIT 5
 │ android       │ 4258320338 │
 └────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
+5 строк в наборе. Затрачено: 0.908 сек. Обработано 59.82 млн строк, 1.45 ГБ (65.87 млн строк/с., 1.59 ГБ/с.)
 ```
 
 ```sql
@@ -230,48 +230,10 @@ LIMIT 5
 │ azure         │       11996 │         14049 │ -14.613139725247349 │
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
-
 5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)
 Peak memory usage: 403.04 MiB.
 ```
 
-5 строк в наборе. Время выполнения: 0.247 сек. Обработано 5.08 млн строк, 155.73 MB (20.58 млн строк/с, 630.61 MB/с.)
-Пиковое использование памяти: 403.04 MiB.
-
-````sql
---Postgres
-SELECT
-        tag,
-        SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) AS count_2023,
-        SUM(CASE WHEN year = 2022 THEN count ELSE 0 END) AS count_2022,
-        ((SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) - SUM(CASE WHEN year = 2022 THEN count ELSE 0 END))
-        / SUM(CASE WHEN year = 2022 THEN count ELSE 0 END)::float) * 100 AS percent_change
-FROM (
-        SELECT
-        unnest(string_to_array(Tags, '|')) AS tag,
-        EXTRACT(YEAR FROM CreationDate) AS year,
-        COUNT(*) AS count
-        FROM public.posts
-        WHERE EXTRACT(YEAR FROM CreationDate) IN (2022, 2023)
-        AND Tags <> ''
-        GROUP BY tag, year
-) AS yearly_counts
-GROUP BY tag
-HAVING SUM(CASE WHEN year = 2022 THEN count ELSE 0 END) > 10000
-   AND SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) > 10000
-ORDER BY percent_change DESC
-LIMIT 5;
-
-        tag     | count_2023 | count_2022 |   percent_change
--------------+------------+------------+---------------------
- next.js        |       13712 |         10370 |   32.22757955641273
- spring-boot |          16482 |         17474 |  -5.677005837243905
- .net           |       11376 |         12750 | -10.776470588235295
- azure          |       11938 |         13966 | -14.520979521695546
- docker         |       13832 |         16701 | -17.178612059158134
-(5 rows)
-
-Time: 116750.131 ms (01:56.750)
 ```sql
 --Postgres
 SELECT
@@ -306,6 +268,6 @@ LIMIT 5;
 (5 rows)
 
 Time: 116750.131 ms (01:56.750)
-````
+```
 
 [Перейти к части 3](/migrations/postgresql/data-modeling-techniques)

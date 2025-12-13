@@ -60,35 +60,30 @@ SELECT fqdn()
 └─────────────────────────────────┘
 ```
 
-
-
 ## MACNumToString {#MACNumToString}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Интерпретирует число типа [`UInt64`](/sql-reference/data-types/int-uint) как MAC-адрес в порядке байтов big-endian.
+Возвращает соответствующий MAC-адрес в формате `AA:BB:CC:DD:EE:FF` (разделённые двоеточиями числа в шестнадцатеричном виде) в виде строки.
 
-Interprets a [`UInt64`](/sql-reference/data-types/int-uint) number as a MAC address in big endian format.
-Returns the corresponding MAC address in format `AA:BB:CC:DD:EE:FF` (colon-separated numbers in hexadecimal form) as string.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 MACNumToString(num)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `num` — UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+* `num` — число типа UInt64. [`UInt64`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает MAC-адрес в формате AA:BB:CC:DD:EE:FF. [`String`](/sql-reference/data-types/string)
 
-Returns a MAC address in format AA:BB:CC:DD:EE:FF. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT MACNumToString(149809441867716) AS mac_address;
@@ -100,34 +95,29 @@ SELECT MACNumToString(149809441867716) AS mac_address;
 └───────────────────┘
 ```
 
-
-
 ## MACStringToNum {#MACStringToNum}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Обратная функция для MACNumToString. Если MAC-адрес имеет неверный формат, возвращает 0.
 
-The inverse function of MACNumToString. If the MAC address has an invalid format, it returns 0.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 MACStringToNum(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
+* `s` — строка с MAC-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает число типа UInt64. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
@@ -137,34 +127,29 @@ SELECT MACStringToNum('01:02:03:04:05:06') AS mac_numeric;
 1108152157446
 ```
 
-
-
 ## MACStringToOUI {#MACStringToOUI}
 
-Introduced in: v1.1
+Впервые появилась в версии v1.1
 
+Принимает MAC-адрес в формате AA:BB:CC:DD:EE:FF (разделённые двоеточиями числа в шестнадцатеричном формате) и возвращает первые три октета в виде числа типа UInt64. Если MAC-адрес имеет некорректный формат, возвращает 0.
 
-Given a MAC address in format AA:BB:CC:DD:EE:FF (colon-separated numbers in hexadecimal form), returns the first three octets as a UInt64 number. If the MAC address has an invalid format, it returns 0.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 MACStringToOUI(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — MAC address string. [`String`](/sql-reference/data-types/string)
+* `s` — строка с MAC-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Первые три октета в виде числа типа UInt64. [`UInt64`](/sql-reference/data-types/int-uint)
 
-First three octets as UInt64 number. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
@@ -174,32 +159,30 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 20566
 ```
 
+## &#95;&#95;applyFilter {#&#95;&#95;applyFilter}
 
+Добавлена в версии: v25.10
 
-## __applyFilter {#__applyFilter}
+Специальная функция для runtime-фильтрации при выполнении JOIN.
 
-Introduced in: v25.10
-
-Special function for JOIN runtime filtering.
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 __applyFilter(filter_name, key)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `filter_name` — Internal name of runtime filter. It is built by BuildRuntimeFilterStep. [`String`](/sql-reference/data-types/string)
-- `key` — Value of any type that is checked to be present in the filter 
+* `filter_name` — Внутреннее имя фильтра времени выполнения (runtime-фильтра). Формируется на этапе BuildRuntimeFilterStep. [`String`](/sql-reference/data-types/string)
+* `key` — Значение любого типа, которое проверяется на наличие в фильтре
 
-**Returned value**
+**Возвращаемое значение**
 
-False if the key should be filtered [`Bool`](/sql-reference/data-types/boolean)
+False, если ключ должен быть отфильтрован [`Bool`](/sql-reference/data-types/boolean)
 
-**Examples**
+**Примеры**
 
-**Example**
+**Пример**
 
 ```sql title=Query
 Эта функция не предназначена для использования в пользовательских запросах. Она может быть добавлена в план запроса на этапе оптимизации.
@@ -208,61 +191,51 @@ False if the key should be filtered [`Bool`](/sql-reference/data-types/boolean)
 ```response title=Response
 ```
 
+## &#95;&#95;patchPartitionID {#&#95;&#95;patchPartitionID}
 
+Появилась в: v25.5
 
-## __patchPartitionID {#__patchPartitionID}
+Внутренняя функция. Получает на вход имя части и хеш имён столбцов патч-части. Возвращает имя партиции патч-части. Аргумент должен быть корректным именем части; в противном случае поведение не определено.
 
-Introduced in: v25.5
-
-
-Internal function. Receives the name of a part and a hash of patch part's column names. Returns the name of partition of patch part. The argument must be a correct name of part, the behaviour is undefined otherwise.
-        
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Отсутствуют.
 
-**Returned value**
+**Возвращаемое значение**
 
-
-
-**Examples**
-
-
+**Примеры**
 
 ## authenticatedUser {#authenticatedUser}
 
-Introduced in: v25.11
+Введена в версии: v25.11
 
+Если пользователь сессии был переключён с помощью команды EXECUTE AS, эта функция возвращает имя исходного пользователя, который использовался для аутентификации и создания сессии.
+Псевдоним: authUser()
 
-If the session user has been switched using the EXECUTE AS command, this function returns the name of the original user that was used for authentication and creating the session.
-Alias: authUser()
-        
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 authenticatedUser()
 ```
 
-**Aliases**: `authUser`
+**Псевдонимы**: `authUser`
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-The name of the authenticated user. [`String`](/sql-reference/data-types/string)
+Имя аутентифицированного пользователя. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 EXECUTE as u1;
@@ -275,39 +248,34 @@ EXECUTE as u1;
 └───────────────┴─────────────────────┘
 ```
 
-
-
 ## bar {#bar}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Строит столбчатую диаграмму.
+Рисует полосу с шириной, пропорциональной (x - min), и равной width символам, когда x = max.
+Полоса рисуется с точностью до одной восьмой символа.
 
-Builds a bar chart.
-Draws a band with width proportional to (x - min) and equal to width characters when x = max.
-The band is drawn with accuracy to one eighth of a symbol.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 bar(x, min, max[, width])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Size to display. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `min` — The minimum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `max` — The maximum value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `width` — Optional. The width of the bar in characters. The default is `80`. [`const (U)Int*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float) or [`const Decimal`](/sql-reference/data-types/decimal)
+* `x` — Отображаемое значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `min` — Минимальное значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `max` — Максимальное значение. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `width` — Необязательный параметр. Ширина полосы в символах. Значение по умолчанию — `80`. [`const (U)Int*`](/sql-reference/data-types/int-uint) или [`const Float*`](/sql-reference/data-types/float) или [`const Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с Unicode-гистограммой. [`String`](/sql-reference/data-types/string)
 
-Returns a unicode-art bar string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -348,34 +316,30 @@ ORDER BY h ASC
 └────┴────────┴────────────────────┘
 ```
 
-
-
 ## blockNumber {#blockNumber}
 
-Introduced in: v1.1
+Добавлено в версии: v1.1
 
+Возвращает монотонно возрастающий порядковый номер [блока](../../development/architecture.md#block), содержащего строку.
+Возвращаемый номер блока обновляется по принципу best effort, то есть может быть не полностью точным.
 
-Returns a monotonically increasing sequence number of the [block](../../development/architecture.md#block) containing the row.
-The returned block number is updated on a best-effort basis, i.e. it may not be fully accurate.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 blockNumber()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Sequence number of the data block where the row is located. [`UInt64`](/sql-reference/data-types/int-uint)
+Порядковый номер блока данных, в котором находится строка. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT blockNumber()
@@ -410,34 +374,29 @@ FROM
 └───────────────┘
 ```
 
-
-
 ## blockSerializedSize {#blockSerializedSize}
 
-Introduced in: v20.3
+Добавлено в версии: v20.3
 
+Возвращает несжатый размер в байтах блока значений, хранящегося на диске.
 
-Returns the uncompressed size in bytes of a block of values on disk.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 blockSerializedSize(x1[, x2[, ...]])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x1[, x2, ...]` — Any number of values for which to get the uncompressed size of the block. [`Any`](/sql-reference/data-types)
+* `x1[, x2, ...]` — Произвольное число значений, для которых нужно получить размер блока без сжатия. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество байт, которое будет записано на диск для блока значений без сжатия. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes that will be written to disk for a block of values without compression. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT blockSerializedSize(maxState(1)) AS x;
@@ -449,34 +408,30 @@ SELECT blockSerializedSize(maxState(1)) AS x;
 └───┘
 ```
 
-
-
 ## blockSize {#blockSize}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+В ClickHouse запросы обрабатываются в [блоках](/development/architecture#block) (фрагментах).
+Эта функция возвращает размер блока (число строк), к которому она применяется.
 
-In ClickHouse, queries are processed in [blocks](/development/architecture#block) (chunks).
-This function returns the size (row count) of the block the function is called on.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 blockSize()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет аргументов.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the number of rows in the current block. [`UInt64`](/sql-reference/data-types/int-uint)
+Возвращает количество строк в текущем блоке. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT blockSize()
@@ -493,36 +448,31 @@ FROM system.numbers LIMIT 5
 └─────────────┘
 ```
 
+## buildId {#buildId}
 
+Появилась в версии v20.5
 
-## byteSize {#byteSize}
+Возвращает идентификатор сборки (buildId), сгенерированный компилятором для исполняемого бинарного файла сервера ClickHouse.
+Если функция выполняется в контексте distributed таблицы, она формирует обычный столбец со значениями для каждого сегмента.
+В противном случае она возвращает константное значение.
 
-Introduced in: v21.1
-
-
-Returns an estimation of the uncompressed byte size of its arguments in memory.
-For `String` arguments, the function returns the string length + 8 (length).
-If the function has multiple arguments, the function accumulates their byte sizes.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 buildId()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `arg1[, arg2, ...]` — Values of any data type for which to estimate the uncompressed byte size. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает идентификатор сборки. [`String`](/sql-reference/data-types/string)
 
-Returns an estimation of the byte size of the arguments in memory. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT buildId()
@@ -534,33 +484,35 @@ SELECT buildId()
 └──────────────────────────────────────────┘
 ```
 
-**Multiple arguments**
+## byteSize {#byteSize}
+
+Появилась в версии: v21.1
+
+Возвращает оценку объёма памяти в байтах, занимаемой её аргументами в несжатом виде.
+Для аргументов типа `String` функция возвращает длину строки + 8 (длина).
+Если функция вызывается с несколькими аргументами, она суммирует их размеры в байтах.
+
+**Синтаксис**
 
 ```sql
 byteSize(arg1[, arg2, ...])
 ```
 
+**Аргументы**
+
+* `arg1[, arg2, ...]` — значения любого типа данных, для которых нужно оценить несжатый размер в байтах. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает примерный размер аргументов в памяти в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT byteSize('string')
 ```
-
-
-
-## catboostEvaluate {#catboostEvaluate}
-
-Introduced in: v22.9
-
-
-Evaluate an external catboost model. [CatBoost](https://catboost.ai) is an open-source gradient boosting library developed by Yandex for machine learning.
-Accepts a path to a catboost model and model arguments (features).
-
-**Prerequisites**
-
-1. Build the catboost evaluation library
-
-Before evaluating catboost models, the `libcatboostmodel.<so|dylib>` library must be made available. See [CatBoost documentation](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html) how to compile it.
-
-Next, specify the path to `libcatboostmodel.<so|dylib>` in the clickhouse configuration:
 
 ```response title=Response
 ┌─byteSize('string')─┐
@@ -568,21 +520,11 @@ Next, specify the path to `libcatboostmodel.<so|dylib>` in the clickhouse config
 └────────────────────┘
 ```
 
-For security and isolation reasons, the model evaluation does not run in the server process but in the clickhouse-library-bridge process.
-At the first execution of `catboostEvaluate()`, the server starts the library bridge process if it is not running already. Both processes
-communicate using a HTTP interface. By default, port `9012` is used. A different port can be specified as follows - this is useful if port
-`9012` is already assigned to a different service.
+**Несколько аргументов**
 
 ```sql title=Query
 SELECT byteSize(NULL, 1, 0.3, '')
 ```
-
-2. Train a catboost model using libcatboost
-
-See [Training and applying models](https://catboost.ai/docs/features/training.html#training) for how to train catboost models from a training data set.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─byteSize(NULL, 1, 0.3, '')─┐
@@ -590,19 +532,20 @@ See [Training and applying models](https://catboost.ai/docs/features/training.ht
 └────────────────────────────┘
 ```
 
-**Arguments**
+## catboostEvaluate {#catboostEvaluate}
 
-- `path_to_model` — Path to catboost model. [`const String`](/sql-reference/data-types/string)
-- `feature` — One or more model features/arguments. [`Float*`](/sql-reference/data-types/float)
+Добавлена в версии: v22.9
 
+Выполняет оценку внешней модели CatBoost. [CatBoost](https://catboost.ai) — это библиотека градиентного бустинга с открытым исходным кодом, разработанная компанией Яндекс для задач машинного обучения.
+Принимает путь к модели CatBoost и аргументы модели (признаки).
 
-**Returned value**
+**Предварительные требования**
 
-Returns the model evaluation result. [`Float64`](/sql-reference/data-types/float)
+1. Соберите библиотеку для оценки моделей CatBoost
 
-**Examples**
+Перед тем как оценивать модели CatBoost, необходимо сделать доступной библиотеку `libcatboostmodel.<so|dylib>`. См. в [документации CatBoost](https://catboost.ai/docs/concepts/c-plus-plus-api_dynamic-c-pluplus-wrapper.html), как её скомпилировать.
 
-**catboostEvaluate**
+Затем укажите путь к `libcatboostmodel.<so|dylib>` в конфигурации ClickHouse:
 
 ```xml
 <clickhouse>
@@ -612,59 +555,39 @@ Returns the model evaluation result. [`Float64`](/sql-reference/data-types/float
 </clickhouse>
 ```
 
+По соображениям безопасности и изоляции оценка модели выполняется не в серверном процессе, а в процессе clickhouse-library-bridge.
+При первом выполнении `catboostEvaluate()` сервер запускает процесс clickhouse-library-bridge, если он ещё не запущен. Оба процесса
+взаимодействуют через HTTP-интерфейс. По умолчанию используется порт `9012`. Другой порт можно указать следующим образом — это полезно, если порт
+`9012` уже занят другим сервисом.
+
 ```xml
 <library_bridge>
     <port>9019</port>
 </library_bridge>
 ```
 
+2. Обучите модель catboost с помощью libcatboost
 
+См. раздел [Training and applying models](https://catboost.ai/docs/features/training.html#training) о том, как обучать модели catboost на основе обучающего набора данных.
 
-## colorOKLCHToSRGB {#colorOKLCHToSRGB}
-
-Introduced in: v25.7
-
-
-Converts a colour from the **OKLCH** perceptual colour space to the familiar **sRGB** colour space.
-
-If `L` is outside the range `[0...1]`, `C` is negative, or `H` is outside the range `[0...360]`, the result is implementation-defined.
-
-:::note
-**OKLCH** is a cylindrical version of the OKLab colour space.
-It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (hue in degrees  from `[0...360]`)**.
-OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
-:::
-
-The conversion is the inverse of [`colorSRGBToOKLCH`](#colorSRGBToOKLCH):
-
-1) OKLCH to OKLab.
-2) OKLab to Linear sRGB
-3) Linear sRGB to sRGB
-
-The second argument gamma is used at the last stage.
-
-For references of colors in OKLCH space, and how they correspond to sRGB colors please see [https://oklch.com/](https://oklch.com/).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 catboostEvaluate(path_to_model, feature_1[, feature_2, ..., feature_n])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — A tuple of three numeric values `L`, `C`, `H`, where `L` is in the range `[0...1]`, `C >= 0` and `H` is in the range `[0...360]`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
-- `gamma` — Optional. The exponent that is used to transform linear sRGB back to sRGB by applying `(x ^ (1 / gamma)) * 255` for each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
+* `path_to_model` — Путь к модели CatBoost. [`const String`](/sql-reference/data-types/string)
+* `feature` — Один или несколько признаков/аргументов модели. [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает результат оценки модели. [`Float64`](/sql-reference/data-types/float)
 
-Returns a tuple (R, G, B) representing sRGB color values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Convert OKLCH to sRGB**
+**catboostEvaluate**
 
 ```sql title=Query
 SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, HumidityRatio) AS prediction FROM occupancy LIMIT 1
@@ -674,51 +597,48 @@ SELECT catboostEvaluate('/root/occupy.bin', Temperature, Humidity, Light, CO2, H
 4.695691092573497
 ```
 
+## colorOKLCHToSRGB {#colorOKLCHToSRGB}
 
+Добавлена в v25.7
 
-## colorSRGBToOKLCH {#colorSRGBToOKLCH}
+Преобразует цвет из перцептивного цветового пространства **OKLCH** в привычное цветовое пространство **sRGB**.
 
-Introduced in: v25.7
-
-
-Converts a colour encoded in the **sRGB** colour space to the perceptually uniform **OKLCH** colour space.
-
-If any input channel is outside `[0...255]` or the gamma value is non-positive, the behaviour is implementation-defined.
+Если `L` находится вне диапазона `[0...1]`, `C` отрицателен или `H` находится вне диапазона `[0...360]`, результат зависит от реализации.
 
 :::note
-**OKLCH** is a cylindrical version of the OKLab colour space.
-It's three coordinates are `L` (the lightness in the range `[0...1]`), `C` (chroma `>= 0`) and `H` (the hue in degrees from `[0...360]`).
-OKLab/OKLCH is designed to be perceptually uniform while remaining cheap to compute.
+**OKLCH** — это цилиндрическая версия цветового пространства OKLab.
+Его три координаты — `L` (светлота в диапазоне `[0...1]`), `C` (хрома `>= 0`) и `H` (тон в градусах из `[0...360]`)**.
+OKLab/OKLCH разработаны как перцептивно равномерные, при этом остаются вычислительно недорогими.
 :::
 
-The conversion consists of three stages:
-1) sRGB to Linear sRGB
-2) Linear sRGB to OKLab
-3) OKLab to OKLCH.
+Преобразование является обратным к [`colorSRGBToOKLCH`](#colorSRGBToOKLCH):
 
+1. OKLCH в OKLab.
+2. OKLab в линейный sRGB.
+3. Линейный sRGB в sRGB.
 
-For references of colors in the OKLCH space, and how they correspond to sRGB colors, please see [https://OKLCH.com/](https://OKLCH.com/).
-    
+Второй аргумент gamma используется на последнем этапе.
 
-**Syntax**
+Для примеров цветов в пространстве OKLCH и их соответствия цветам sRGB см. [https://oklch.com/](https://oklch.com/).
+
+**Синтаксис**
 
 ```sql
 colorOKLCHToSRGB(tuple [, gamma])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — Tuple of three values R, G, B in the range `[0...255]`. [`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
-- `gamma` — Optional. Exponent that is used to linearize sRGB by applying `(x / 255)^gamma` to each channel `x`. Defaults to `2.2`. [`Float64`](/sql-reference/data-types/float)
+* `tuple` — Кортеж из трёх числовых значений `L`, `C`, `H`, где `L` находится в диапазоне `[0...1]`, `C >= 0`, а `H` — в диапазоне `[0...360]`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+* `gamma` — Необязательный параметр. Показатель степени, который используется для преобразования линейного sRGB обратно в sRGB, применяя `(x ^ (1 / gamma)) * 255` для каждого канала `x`. Значение по умолчанию — `2.2`. [`Float64`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает кортеж (R, G, B), представляющий значения цвета в пространстве sRGB. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple (L, C, H) representing the OKLCH color space values. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Convert sRGB to OKLCH**
+**Преобразование OKLCH в sRGB**
 
 ```sql title=Query
 SELECT colorOKLCHToSRGB((0.4466, 0.0991, 45.44), 2.2) AS rgb
@@ -734,36 +654,46 @@ WITH colorOKLCHToSRGB((0.7, 0.1, 54)) as t SELECT tuple(toUInt8(t.1), toUInt8(t.
 └──────────────┘
 ```
 
+## colorSRGBToOKLCH {#colorSRGBToOKLCH}
 
+Добавлена в версии: v25.7
 
-## connectionId {#connectionId}
+Преобразует цвет, закодированный в цветовом пространстве **sRGB**, в перцептивно равномерное цветовое пространство **OKLCH**.
 
-Introduced in: v21.3
+Если какой-либо входной канал выходит за пределы диапазона `[0...255]` или значение гаммы неположительно, поведение определяется реализацией.
 
+:::note
+**OKLCH** — это цилиндрическая версия цветового пространства OKLab.
+Его три координаты — `L` (светлота в диапазоне `[0...1]`), `C` (цветность, chroma `>= 0`) и `H` (тон, hue, в градусах из диапазона `[0...360]`).
+OKLab/OKLCH спроектировано как перцептивно равномерное, при этом остаётся вычислительно недорогим.
+:::
 
-Returns the connection ID of the client that submitted the current query.
-This function is most useful in debugging scenarios.
-It was created for compatibility with MySQL's `CONNECTION_ID` function.
-It is not typically used in production queries.
+Преобразование состоит из трёх этапов:
 
+1. sRGB в линейное sRGB
+2. Линейное sRGB в OKLab
+3. OKLab в OKLCH.
 
-**Syntax**
+Для примеров цветов в пространстве OKLCH и их соответствия цветам в sRGB см. [https://OKLCH.com/](https://OKLCH.com/).
+
+**Синтаксис**
 
 ```sql
 colorSRGBToOKLCH(tuple[, gamma])
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `tuple` — кортеж из трёх компонент R, G, B в диапазоне `[0...255]`. [`Tuple(UInt8, UInt8, UInt8)`](/sql-reference/data-types/tuple)
+* `gamma` — необязательный параметр. Показатель степени, который используется для линеаризации sRGB путём применения `(x / 255)^gamma` к каждому каналу `x`. По умолчанию — `2.2`. [`Float64`](/sql-reference/data-types/float)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the connection ID of the current client. [`UInt64`](/sql-reference/data-types/int-uint)
+Возвращает кортеж (L, C, H), представляющий значения в цветовом пространстве OKLCH. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Преобразование sRGB в OKLCH**
 
 ```sql title=Query
 SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
@@ -775,48 +705,32 @@ SELECT colorSRGBToOKLCH((128, 64, 32), 2.2) AS lch
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## connectionId {#connectionId}
 
+Введена в версии v21.3
 
-## countDigits {#countDigits}
+Возвращает идентификатор соединения клиента, который отправил текущий запрос.
+Эта функция наиболее полезна при отладке.
+Она была создана для совместимости с функцией MySQL `CONNECTION_ID`.
+Обычно не используется в запросах в продакшене.
 
-Introduced in: v20.8
-
-
-Returns the number of decimal digits needed to represent a value.
-
-:::note
-This function takes into account the scales of decimal values i.e., it calculates the result over the underlying integer type which is `(value * scale)`.
-
-For example:
-- `countDigits(42) = 2`
-- `countDigits(42.000) = 5`
-- `countDigits(0.04200) = 4`
-:::
-
-:::tip
-You can check decimal overflow for `Decimal64` with `countDigits(x) > 18`,
-although it is slower than [`isDecimalOverflow`](#isDecimalOverflow).
-:::
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 connectionId()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — An integer or decimal value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
+* Отсутствуют.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает идентификатор соединения для текущего клиента. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of digits needed to represent `x`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT connectionId();
@@ -828,38 +742,44 @@ SELECT connectionId();
 └────────────────┘
 ```
 
+## countDigits {#countDigits}
 
+Введена в версии v20.8
 
-## currentDatabase {#currentDatabase}
+Возвращает количество десятичных цифр, необходимых для представления значения.
 
-Introduced in: v1.1
+:::note
+Эта функция учитывает масштаб десятичных значений, то есть вычисляет результат по базовому целочисленному типу, равному `(value * scale)`.
 
+Например:
 
-Returns the name of the current database.
-Useful in table engine parameters of `CREATE TABLE` queries where you need to specify the database.
+* `countDigits(42) = 2`
+* `countDigits(42.000) = 5`
+* `countDigits(0.04200) = 4`
+  :::
 
-Also see the [`SET` statement](/sql-reference/statements/use).
-    
+:::tip
+Вы можете проверять переполнение для `Decimal64` с помощью `countDigits(x) > 18`,
+однако это медленнее, чем [`isDecimalOverflow`](#isDecimalOverflow).
+:::
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 countDigits(x)
 ```
 
-**Aliases**: `current_database`, `SCHEMA`, `DATABASE`
+**Аргументы**
 
-**Arguments**
+* `x` — целое или десятичное число. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal`](/sql-reference/data-types/decimal)
 
-- None.
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество цифр, необходимых для представления числа `x`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the current database name. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
@@ -873,33 +793,34 @@ SELECT countDigits(toDecimal32(1, 9)), countDigits(toDecimal32(-1, 9)),
 └────────────────────────────────┴─────────────────────────────────┴─────────────────────────────────┴──────────────────────────────────┴──────────────────────────────────┴───────────────────────────────────┘
 ```
 
+## currentDatabase {#currentDatabase}
 
+Впервые появился в версии v1.1
 
-## currentProfiles {#currentProfiles}
+Возвращает имя текущей базы данных.
+Полезен в параметрах движка таблицы в запросах `CREATE TABLE`, когда нужно указать базу данных.
 
-Introduced in: v21.9
+См. также [команду `SET`](/sql-reference/statements/use).
 
-
-Returns an array of the setting profiles for the current user.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentDatabase()
 ```
 
-**Arguments**
+**Псевдонимы**: `current_database`, `SCHEMA`, `DATABASE`
 
-- None.
+**Аргументы**
 
-**Returned value**
+* Отсутствуют.
 
-Returns an array of setting profiles for the current user. [`Array(String)`](/sql-reference/data-types/array)
+**Возвращаемое значение**
 
-**Examples**
+Возвращает имя текущей базы данных. [`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 SELECT currentDatabase()
@@ -911,35 +832,29 @@ SELECT currentDatabase()
 └───────────────────┘
 ```
 
+## currentProfiles {#currentProfiles}
 
+Добавлена в версии: v21.9
 
-## currentQueryID {#currentQueryID}
+Возвращает массив профилей настроек для текущего пользователя.
 
-Introduced in: v
-
-
-Returns current Query id.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentProfiles()
 ```
 
-**Aliases**: `current_query_id`
+**Аргументы**
 
-**Arguments**
+* Отсутствуют.
 
-- None.
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив профилей настроек для текущего пользователя. [`Array(String)`](/sql-reference/data-types/array)
 
+**Примеры**
 
-
-**Examples**
-
-**Example**
+**Пример использования**
 
 ```sql title=Query
 SELECT currentProfiles();
@@ -951,33 +866,29 @@ SELECT currentProfiles();
 └───────────────────────────────────────────────┘
 ```
 
+## currentQueryID {#currentQueryID}
 
+Впервые появилось в версии: v
 
-## currentRoles {#currentRoles}
+Возвращает идентификатор текущего запроса.
 
-Introduced in: v21.9
-
-
-Returns an array of the roles which are assigned to the current user.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentQueryID()
 ```
 
-**Arguments**
+**Псевдонимы**: `current_query_id`
 
-- None.
+**Аргументы**
 
-**Returned value**
+* Нет.
 
-Returns an array of the roles which are assigned to the current user. [`Array(String)`](/sql-reference/data-types/array)
+**Возвращаемое значение**
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример**
 
 ```sql title=Query
 SELECT currentQueryID();
@@ -989,43 +900,29 @@ SELECT currentQueryID();
 └──────────────────────────────────────┘
 ```
 
+## currentRoles {#currentRoles}
 
+Добавлено в: v21.9
 
-## currentSchemas {#currentSchemas}
+Возвращает массив ролей, назначенных текущему пользователю.
 
-Introduced in: v23.7
-
-
-Same as function [`currentDatabase`](#currentDatabase) but
-- accepts a boolean argument which is ignored
-- returns the database name as an array with a single value.
-
-Function `currentSchemas` only exists for compatibility with PostgreSQL.
-Please use `currentDatabase` instead.
-
-Also see the [`SET` statement](/sql-reference/statements/use).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentRoles()
 ```
 
-**Aliases**: `current_schemas`
+**Аргументы**
 
-**Arguments**
+* Отсутствуют.
 
-- `bool` — A boolean value, which is ignored. [`Bool`](/sql-reference/data-types/boolean)
+**Возвращаемое значение**
 
+Возвращает массив ролей, назначенных текущему пользователю. [`Array(String)`](/sql-reference/data-types/array)
 
-**Returned value**
+**Примеры**
 
-Returns a single-element array with the name of the current database. [`Array(String)`](/sql-reference/data-types/array)
-
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT currentRoles();
@@ -1037,36 +934,39 @@ SELECT currentRoles();
 └────────────────────────────────────────────────┘
 ```
 
+## currentSchemas {#currentSchemas}
 
+Впервые появилась в версии v23.7
 
-## currentUser {#currentUser}
+Та же функция, что и [`currentDatabase`](#currentDatabase), но
 
-Introduced in: v20.1
+* принимает булевый аргумент, который игнорируется;
+* возвращает имя базы данных в виде массива с одним значением.
 
+Функция `currentSchemas` существует только для совместимости с PostgreSQL.
+Используйте вместо неё `currentDatabase`.
 
-Returns the name of the current user.
-In case of a distributed query, the name of the user who initiated the query is returned.
-    
+См. также [команду `SET`](/sql-reference/statements/use).
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentSchemas(bool)
 ```
 
-**Aliases**: `current_user`, `user`
+**Псевдонимы**: `current_schemas`
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `bool` — булево значение, которое не используется. [`Bool`](/sql-reference/data-types/boolean)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the name of the current user, otherwise the login of the user who initiated the query. [`String`](/sql-reference/data-types/string)
+Возвращает массив из одного элемента с именем текущей базы данных. [`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT currentSchemas(true)
@@ -1078,33 +978,32 @@ SELECT currentSchemas(true)
 └──────────────────────┘
 ```
 
+## currentUser {#currentUser}
 
+Впервые появилась в версии: v20.1
 
-## defaultProfiles {#defaultProfiles}
+Возвращает имя текущего пользователя.
+В случае распределённого запроса возвращается имя пользователя, который инициировал запрос.
 
-Introduced in: v21.9
-
-
-Returns an array of default setting profile names for the current user.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 currentUser()
 ```
 
-**Arguments**
+**Псевдонимы**: `current_user`, `user`
 
-- None.
+**Аргументы**
 
-**Returned value**
+* Нет.
 
-Returns an array of default setting profile names for the current user. [`Array(String)`](/sql-reference/data-types/array)
+**Возвращаемое значение**
 
-**Examples**
+Возвращает имя текущего пользователя, в противном случае — логин пользователя, который инициировал запрос. [`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 SELECT currentUser()
@@ -1116,33 +1015,29 @@ SELECT currentUser()
 └───────────────┘
 ```
 
+## defaultProfiles {#defaultProfiles}
 
+Появилось в версии: v21.9
 
-## defaultRoles {#defaultRoles}
+Возвращает массив имён профилей настроек по умолчанию для текущего пользователя.
 
-Introduced in: v21.9
-
-
-Returns an array of default roles for the current user.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 defaultProfiles()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns an array of default roles for the current user. [`Array(String)`](/sql-reference/data-types/array)
+Возвращает массив имён профилей настроек по умолчанию для текущего пользователя. [`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT defaultProfiles();
@@ -1154,35 +1049,29 @@ SELECT defaultProfiles();
 └───────────────────┘
 ```
 
+## defaultRoles {#defaultRoles}
 
+Добавлено в: v21.9
 
-## defaultValueOfArgumentType {#defaultValueOfArgumentType}
+Возвращает массив ролей по умолчанию для текущего пользователя.
 
-Introduced in: v1.1
-
-
-Returns the default value for a given data type.
-Does not include default values for custom columns set by the user.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 defaultRoles()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `expression` — Arbitrary type of value or an expression that results in a value of an arbitrary type. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив ролей по умолчанию для текущего пользователя. [`Array(String)`](/sql-reference/data-types/array)
 
-Returns `0` for numbers, an empty string for strings or `NULL` for Nullable types. [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT defaultRoles();
@@ -1194,27 +1083,34 @@ SELECT defaultRoles();
 └────────────────────────────────────────────────┘
 ```
 
-**Nullable example**
+## defaultValueOfArgumentType {#defaultValueOfArgumentType}
+
+Впервые появилась в: v1.1
+
+Возвращает значение по умолчанию для указанного типа данных.
+Не включает значения по умолчанию для пользовательских столбцов, заданных пользователем.
+
+**Синтаксис**
 
 ```sql
 defaultValueOfArgumentType(expression)
 ```
 
+**Аргументы**
+
+* `expression` — Значение произвольного типа или выражение, которое вычисляется в значение произвольного типа. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает значение `0` для чисел, пустую строку для строк или `NULL` для типов Nullable. Значение типа [`UInt8`](/sql-reference/data-types/int-uint) или [`String`](/sql-reference/data-types/string) или [`NULL`](/sql-reference/syntax#null)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Int8));
 ```
-
-
-
-## defaultValueOfTypeName {#defaultValueOfTypeName}
-
-Introduced in: v1.1
-
-
-Returns the default value for the given type name.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfArgumentType(CAST(1, 'Int8'))─┐
@@ -1222,18 +1118,7 @@ Returns the default value for the given type name.
 └─────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `type` — A string representing a type name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the default value for the given type name: `0` for numbers, an empty string for strings, or `NULL` for Nullable [`UInt8`](/sql-reference/data-types/int-uint) or [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
-
-**Examples**
-
-**Usage example**
+**Пример типа Nullable**
 
 ```sql title=Query
 SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
@@ -1245,27 +1130,33 @@ SELECT defaultValueOfArgumentType(CAST(1 AS Nullable(Int8)));
 └───────────────────────────────────────────────────────┘
 ```
 
-**Nullable example**
+## defaultValueOfTypeName {#defaultValueOfTypeName}
+
+Появилась в версии: v1.1
+
+Возвращает значение по умолчанию для указанного имени типа.
+
+**Синтаксис**
 
 ```sql
 defaultValueOfTypeName(type)
 ```
 
+**Аргументы**
+
+* `type` — строка, задающая имя типа. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает значение по умолчанию для заданного имени типа: `0` для чисел, пустую строку для строк или `NULL` для типов Nullable [`UInt8`](/sql-reference/data-types/int-uint) и [`String`](/sql-reference/data-types/string), а также для значения [`NULL`](/sql-reference/syntax#null).
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT defaultValueOfTypeName('Int8');
 ```
-
-
-
-## displayName {#displayName}
-
-Introduced in: v22.11
-
-
-Returns the value of `display_name` from [config](/operations/configuration-files) or the server's Fully Qualified Domain Name (FQDN) if not set.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─defaultValueOfTypeName('Int8')─┐
@@ -1273,17 +1164,7 @@ Returns the value of `display_name` from [config](/operations/configuration-file
 └────────────────────────────────┘
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the value of `display_name` from config or server FQDN if not set. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**Пример типа Nullable**
 
 ```sql title=Query
 SELECT defaultValueOfTypeName('Nullable(Int8)');
@@ -1295,34 +1176,29 @@ SELECT defaultValueOfTypeName('Nullable(Int8)');
 └──────────────────────────────────────────┘
 ```
 
+## displayName {#displayName}
 
+Добавлена в версии: v22.11
 
-## dumpColumnStructure {#dumpColumnStructure}
+Возвращает значение `display_name` из [config](/operations/configuration-files) или полное доменное имя сервера (FQDN), если параметр не задан.
 
-Introduced in: v1.1
-
-
-Outputs a detailed description of the internal structure of a column and its data type.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 displayName()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Value for which to get the description of. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение `display_name` из конфигурации или FQDN сервера, если оно не задано. [`String`](/sql-reference/data-types/string)
 
-Returns a description of the column structure used for representing the value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT displayName();
@@ -1334,33 +1210,29 @@ SELECT displayName();
 └───────────────┘
 ```
 
+## dumpColumnStructure {#dumpColumnStructure}
 
+Введено в версии: v1.1
 
-## enabledProfiles {#enabledProfiles}
+Выводит подробное описание внутренней структуры столбца и его типа данных.
 
-Introduced in: v21.9
-
-
-Returns an array of setting profile names which are enabled for the current user.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 dumpColumnStructure(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `x` — Значение, для которого нужно получить описание. [`Any`](/sql-reference/data-types)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns an array of setting profile names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
+Возвращает описание структуры столбца, используемой для представления этого значения. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
@@ -1372,33 +1244,29 @@ SELECT dumpColumnStructure(CAST('2018-01-01 01:02:03', 'DateTime'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
+## enabledProfiles {#enabledProfiles}
 
+Добавлена в версии: v21.9
 
-## enabledRoles {#enabledRoles}
+Возвращает массив названий профилей настроек, которые активированы для текущего пользователя.
 
-Introduced in: v21.9
-
-
-Returns an array of the roles which are enabled for the current user.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 enabledProfiles()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Отсутствуют.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns an array of role names which are enabled for the current user. [`Array(String)`](/sql-reference/data-types/array)
+Возвращает массив названий профилей настроек, которые включены для текущего пользователя. [`Array(String)`](/sql-reference/data-types/array)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT enabledProfiles();
@@ -1410,35 +1278,29 @@ SELECT enabledProfiles();
 └───────────────────────────────────────────────────────────────────┘
 ```
 
+## enabledRoles {#enabledRoles}
 
+Появилась в версии: v21.9
 
-## errorCodeToName {#errorCodeToName}
+Возвращает массив ролей, которые активированы для текущего пользователя.
 
-Introduced in: v20.12
-
-
-Returns the textual name of a numeric ClickHouse error code.
-The mapping from numeric error codes to error names is available [here](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 enabledRoles()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `error_code` — ClickHouse error code. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив названий ролей, которые активированы для текущего пользователя. [`Array(String)`](/sql-reference/data-types/array)
 
-Returns the textual name of `error_code`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT enabledRoles();
@@ -1450,38 +1312,30 @@ SELECT enabledRoles();
 └────────────────────────────────────────────────────────────────┘
 ```
 
+## errorCodeToName {#errorCodeToName}
 
+Введена в версии v20.12
 
-## file {#file}
+Возвращает текстовое имя числового кода ошибки ClickHouse.
+Соответствие числовых кодов ошибок их именам доступно [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp).
 
-Introduced in: v21.3
-
-
-Reads a file as a string and loads the data into the specified column.
-The file content is not interpreted.
-
-Also see the [`file`](../table-functions/file.md) table function.
-        
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 errorCodeToName(error_code)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `path` — The path of the file relative to the `user_files_path`. Supports wildcards `*`, `**`, `?`, `{abc,def}` and `{N..M}` where `N`, `M` are numbers and `'abc', 'def'` are strings. [`String`](/sql-reference/data-types/string)
-- `default` — The value returned if the file does not exist or cannot be accessed. [`String`](/sql-reference/data-types/string) or [`NULL`](/sql-reference/syntax#null)
+* `error_code` — код ошибки ClickHouse. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текстовое название `error_code`. [`String`](/sql-reference/data-types/string)
 
-Returns the file content as a string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Insert files into a table**
+**Пример использования**
 
 ```sql title=Query
 SELECT errorCodeToName(252);
@@ -1493,35 +1347,33 @@ SELECT errorCodeToName(252);
 └──────────────────────┘
 ```
 
+## file {#file}
 
+Появилась в версии v21.3
 
-## filesystemAvailable {#filesystemAvailable}
+Читает файл как строку и загружает данные в указанный столбец.
+Содержимое файла не интерпретируется.
 
-Introduced in: v20.1
+См. также табличную функцию [`file`](../table-functions/file.md).
 
-
-Returns the amount of free space in the filesystem hosting the database persistence.
-The returned value is always smaller than the total free space ([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)) because some space is reserved for the operating system.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 file(path[, default])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `disk_name` — Optional. The disk name to find the amount of free space for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `path` — Путь к файлу относительно `user_files_path`. Поддерживает шаблоны `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, а `'abc', 'def'` — строки. [`String`](/sql-reference/data-types/string)
+* `default` — Значение, которое возвращается, если файл не существует или к нему нет доступа. [`String`](/sql-reference/data-types/string) или [`NULL`](/sql-reference/syntax#null)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает содержимое файла в виде строки. [`String`](/sql-reference/data-types/string)
 
-Returns the amount of remaining space available in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Добавление файлов в таблицу**
 
 ```sql title=Query
 INSERT INTO table SELECT file('a.txt'), file('b.txt');
@@ -1530,35 +1382,30 @@ INSERT INTO table SELECT file('a.txt'), file('b.txt');
 ```response title=Response
 ```
 
+## filesystemAvailable {#filesystemAvailable}
 
+Добавлена в версии: v20.1
 
-## filesystemCapacity {#filesystemCapacity}
+Возвращает объём свободного места в файловой системе, на которой размещено хранилище базы данных.
+Возвращаемое значение всегда меньше общего свободного места ([`filesystemUnreserved`](../../sql-reference/functions/other-functions.md#filesystemUnreserved)), поскольку часть пространства зарезервирована для операционной системы.
 
-Introduced in: v20.1
-
-
-Returns the capacity of the filesystem in bytes.
-Needs the [path](../../operations/server-configuration-parameters/settings.md#path) to the data directory to be configured.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 filesystemAvailable([disk_name])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `disk_name` — Optional. The disk name to get the capacity for. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `disk_name` — необязательный параметр. Имя диска, для которого нужно определить объём свободного пространства. Если не указано, используется диск по умолчанию. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество оставшегося свободного пространства в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the capacity of the filesystem in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemAvailable()) AS "Доступное место";
@@ -1570,35 +1417,30 @@ SELECT formatReadableSize(filesystemAvailable()) AS "Доступное мест
 └─────────────────────────┘
 ```
 
+## filesystemCapacity {#filesystemCapacity}
 
+Введена в версии v20.1
 
-## filesystemUnreserved {#filesystemUnreserved}
+Возвращает ёмкость файловой системы в байтах.
+Требует настройки параметра [path](../../operations/server-configuration-parameters/settings.md#path) для каталога данных.
 
-Introduced in: v22.12
-
-
-Returns the total amount of free space on the filesystem hosting the database persistence (previously `filesystemFree`).
-See also [`filesystemAvailable`](#filesystemAvailable).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 filesystemCapacity([disk_name])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `disk_name` — Optional. The disk name for which to find the total amount of free space. If omitted, uses the default disk. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `disk_name` — необязательный параметр. Имя диска, для которого нужно получить ёмкость. Если не указано, используется диск по умолчанию. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает ёмкость файловой системы в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the amount of free space in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
@@ -1610,34 +1452,30 @@ SELECT formatReadableSize(filesystemCapacity()) AS "Capacity";
 └───────────┘
 ```
 
+## filesystemUnreserved {#filesystemUnreserved}
 
+Добавлен в: v22.12
 
-## finalizeAggregation {#finalizeAggregation}
+Возвращает общий объём свободного места в файловой системе, на которой размещено персистентное хранилище данных базы (ранее `filesystemFree`).
+См. также [`filesystemAvailable`](#filesystemAvailable).
 
-Introduced in: v1.1
-
-
-Given an aggregation state, this function returns the result of aggregation (or the finalized state when using a [-State](../../sql-reference/aggregate-functions/combinators.md#-state) combinator).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 filesystemUnreserved([disk_name])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `state` — State of aggregation. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* `disk_name` — необязательный параметр. Имя диска, для которого нужно определить общее количество свободного места. Если не указан, используется диск по умолчанию. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество свободного места в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the finalized result of aggregation. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT formatReadableSize(filesystemUnreserved()) AS "Свободное место";
@@ -1649,25 +1487,33 @@ SELECT formatReadableSize(filesystemUnreserved()) AS "Свободное мес�
 └─────────────────┘
 ```
 
-**Combined with initializeAggregation**
+## finalizeAggregation {#finalizeAggregation}
+
+Введена в версии v1.1
+
+Функция принимает состояние агрегации и возвращает результат агрегации (или финализированное состояние при использовании комбинатора [-State](../../sql-reference/aggregate-functions/combinators.md#-state)).
+
+**Синтаксис**
 
 ```sql
 finalizeAggregation(state)
 ```
 
+**Аргументы**
+
+* `state` — состояние агрегации. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+
+**Возвращаемое значение**
+
+Возвращает окончательный результат агрегации. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT finalizeAggregation(arrayReduce('maxState', [1, 2, 3]));
 ```
-
-
-
-## flipCoordinates {#flipCoordinates}
-
-Introduced in: v25.10
-
-Flips the coordinates of a Point, Ring, Polygon, or MultiPolygon. For a Point, it swaps the coordinates. For arrays, it recursively applies the same transformation for each coordinate pair.
-
-**Syntax**
 
 ```response title=Response
 ┌─finalizeAggregation(arrayReduce('maxState', [1, 2, 3]))─┐
@@ -1675,17 +1521,7 @@ Flips the coordinates of a Point, Ring, Polygon, or MultiPolygon. For a Point, i
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `geometry` — The geometry to transform. Supported types: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)). 
-
-**Returned value**
-
-The geometry with flipped coordinates. The type is the same as the input. [`Point`](/sql-reference/data-types/geo#point) or [`Ring`](/sql-reference/data-types/geo#ring) or [`Polygon`](/sql-reference/data-types/geo#polygon) or [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
-
-**Examples**
-
-**basic_point**
+**Совместно с initializeAggregation**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -1706,52 +1542,49 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
-**ring**
+## flipCoordinates {#flipCoordinates}
+
+Добавлена в версии: v25.10
+
+Меняет местами координаты `Point`, `Ring`, `Polygon` или `MultiPolygon`. Для `Point` просто переставляет координаты. Для массивов рекурсивно применяет то же преобразование к каждой паре координат.
+
+**Синтаксис**
 
 ```sql
 flipCoordinates(geometry)
 ```
 
+**Аргументы**
+
+* `geometry` — Геометрия для преобразования. Поддерживаемые типы: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)).
+
+**Возвращаемое значение**
+
+Геометрия с переставленными координатами. Тип совпадает с входным типом. [`Point`](/sql-reference/data-types/geo#point) или [`Ring`](/sql-reference/data-types/geo#ring) или [`Polygon`](/sql-reference/data-types/geo#polygon) или [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
+
+**Примеры**
+
+**basic&#95;point**
+
 ```sql title=Query
 SELECT flipCoordinates((1.0, 2.0));
 ```
-
-**polygon**
 
 ```response title=Response
 (2.0, 1.0)
 ```
 
+**кольцо**
+
 ```sql title=Query
 SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 ```
-
-
-
-## formatQuery {#formatQuery}
-
-Introduced in: v
-
-Returns a formatted, possibly multi-line, version of the given SQL query. Throws in case of a parsing error.
-[example:multiline]
-
-**Syntax**
 
 ```response title=Response
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**Arguments**
-
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
-
-**Returned value**
-
-The formatted query [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**multiline**
+**многоугольник**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -1761,30 +1594,28 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
 
+## formatQuery {#formatQuery}
 
+Введена в версии: v
 
-## formatQueryOrNull {#formatQueryOrNull}
-
-Introduced in: v
-
-Returns a formatted, possibly multi-line, version of the given SQL query. Returns NULL in case of a parsing error.
+Возвращает отформатированный вариант заданного SQL‑запроса, возможно в несколько строк. Выбрасывает исключение при ошибке разбора.
 [example:multiline]
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatQuery(query)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
+* `query` — SQL-запрос, который нужно отформатировать. [String](../../sql-reference/data-types/string.md)
 
-**Returned value**
+**Возвращаемое значение**
 
-The formatted query [`String`](/sql-reference/data-types/string)
+Отформатированный запрос типа [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
 **multiline**
 
@@ -1800,30 +1631,28 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQueryOrNull {#formatQueryOrNull}
 
+Добавлено в: v
 
-## formatQuerySingleLine {#formatQuerySingleLine}
-
-Introduced in: v
-
-Like formatQuery() but the returned formatted string contains no line breaks. Throws in case of a parsing error.
+Возвращает отформатированный SQL-запрос, который при необходимости может занимать несколько строк. В случае ошибки синтаксического анализа возвращает NULL.
 [example:multiline]
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatQueryOrNull(query)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `query` — The SQL query to be formatted. [String](../../sql-reference/data-types/string.md) 
+* `query` — SQL-запрос, который нужно отформатировать. [String](../../sql-reference/data-types/string.md)
 
-**Returned value**
+**Возвращаемое значение**
 
-The formatted query [`String`](/sql-reference/data-types/string)
+Отформатированный запрос типа [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
 **multiline**
 
@@ -1839,31 +1668,28 @@ FROM tab
 WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQuerySingleLine {#formatQuerySingleLine}
 
+Добавлено в: v
 
-## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
-
-Introduced in: v
-
-Like formatQuery() but the returned formatted string contains no line breaks. Returns NULL in case of a parsing error.
+Аналогично formatQuery(), но возвращаемая форматированная строка не содержит разрывов строк. Выбрасывает исключение при ошибке разбора.
 [example:multiline]
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatQuerySingleLine(query)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `query` — The SQL query to be formatted. [`String`](/sql-reference/data-types/string)
+* `query` — SQL-запрос, который нужно отформатировать. [String](../../sql-reference/data-types/string.md)
 
+**Возвращаемое значение**
 
-**Returned value**
+Отформатированный запрос [`String`](/sql-reference/data-types/string)
 
-The formatted query [`String`](/sql-reference/data-types/string)
-
-**Examples**
+**Примеры**
 
 **multiline**
 
@@ -1875,36 +1701,30 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
+## formatQuerySingleLineOrNull {#formatQuerySingleLineOrNull}
 
+Появилась в версии: v
 
-## formatReadableDecimalSize {#formatReadableDecimalSize}
+Аналогично функции formatQuery(), но возвращаемая отформатированная строка не содержит переводов строк. Возвращает NULL в случае ошибки разбора.
+[example:multiline]
 
-Introduced in: v22.11
-
-
-Given a size (number of bytes), this function returns a readable, rounded size with suffix (KB, MB, etc.) as a string.
-
-The opposite operations of this function are [`parseReadableSize`](#parseReadableSize).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatQuerySingleLineOrNull(query)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+* `query` — SQL-запрос для форматирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Отформатированный запрос [`String`](/sql-reference/data-types/string)
 
-Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Format file sizes**
+**многострочный**
 
 ```sql title=Query
 SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
@@ -1914,37 +1734,31 @@ SELECT formatQuerySingleLine('select a,    b FRom tab WHERE a > 3 and  b < 3');
 SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 ```
 
+## formatReadableDecimalSize {#formatReadableDecimalSize}
 
+Впервые появилась в версии: v22.11
 
-## formatReadableQuantity {#formatReadableQuantity}
+Получив размер (количество байт), эта функция возвращает удобочитаемый, округлённый размер с суффиксом (KB, MB и т. д.) в виде строки.
 
-Introduced in: v20.10
+Обратной операцией к этой функции является [`parseReadableSize`](#parseReadableSize).
 
-
-Given a number, this function returns a rounded number with suffix (thousand, million, billion, etc.) as a string.
-
-This function accepts any numeric type as input, but internally it casts them to `Float64`.
-Results might be suboptimal with large values.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatReadableDecimalSize(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A number to format. [`UInt64`](/sql-reference/data-types/int-uint)
+* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с удобочитаемым, округлённым размером и суффиксом. [`String`](/sql-reference/data-types/string)
 
-Returns a rounded number with suffix as a string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Format numbers with suffixes**
+**Форматирование размеров файлов**
 
 ```sql title=Query
 SELECT
@@ -1961,39 +1775,32 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+## formatReadableQuantity {#formatReadableQuantity}
 
+Введена в версии: v20.10
 
-## formatReadableSize {#formatReadableSize}
+Эта функция по заданному числу возвращает округлённое значение со строковым суффиксом (тысяча, миллион, миллиард и т. д.).
 
-Introduced in: v1.1
+Функция принимает на вход значение любого числового типа, но внутри преобразует его к `Float64`.
+При очень больших значениях результаты могут быть неидеальными.
 
-
-Given a size (number of bytes), this function returns a readable, rounded size with suffix (KiB, MiB, etc.) as string.
-
-The opposite operations of this function are [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), and [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
-This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatReadableQuantity(x)
 ```
 
-**Aliases**: `FORMAT_BYTES`
+**Аргументы**
 
-**Arguments**
+* `x` — число, которое нужно отформатировать. [`UInt64`](/sql-reference/data-types/int-uint)
 
-- `x` — Size in bytes. [`UInt64`](/sql-reference/data-types/int-uint)
+**Возвращаемое значение**
 
+Возвращает округлённое число с суффиксом в строковом формате. [`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**Примеры**
 
-Returns a readable, rounded size with suffix as a string. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Format file sizes**
+**Форматирование чисел с суффиксами**
 
 ```sql title=Query
 SELECT
@@ -2010,38 +1817,34 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+## formatReadableSize {#formatReadableSize}
 
+Впервые представлена в: v1.1
 
-## formatReadableTimeDelta {#formatReadableTimeDelta}
+Для заданного размера (количества байт) эта функция возвращает читаемый, округлённый размер с суффиксом единиц (KiB, MiB и т. д.) в виде строки.
 
-Introduced in: v20.12
+Обратными операциями к этой функции являются [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero) и [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
+Эта функция принимает любой числовой тип в качестве входного значения, но внутренне приводит значения к типу `Float64`. Результаты могут быть неоптимальными для очень больших значений.
 
-
-Given a time interval (delta) in seconds, this function returns a time delta with year/month/day/hour/minute/second/millisecond/microsecond/nanosecond as a string.
-
-This function accepts any numeric type as input, but internally it casts them to `Float64`. Results might be suboptimal with large values.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 formatReadableSize(x)
 ```
 
-**Arguments**
+**Псевдонимы**: `FORMAT_BYTES`
 
-- `column` — A column with a numeric time delta. [`Float64`](/sql-reference/data-types/float)
-- `maximum_unit` — Optional. Maximum unit to show. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Default value: `years`. [`const String`](/sql-reference/data-types/string)
-- `minimum_unit` — Optional. Minimum unit to show. All smaller units are truncated. Acceptable values: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. If explicitly specified value is bigger than `maximum_unit`, an exception will be thrown. Default value: `seconds` if `maximum_unit` is `seconds` or bigger, `nanoseconds` otherwise. [`const String`](/sql-reference/data-types/string)
+**Аргументы**
 
+* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns a time delta as a string. [`String`](/sql-reference/data-types/string)
+Возвращает человекочитаемый округлённый размер с суффиксом единицы измерения в виде значения типа строки. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Форматирование размеров файлов**
 
 ```sql title=Query
 SELECT
@@ -2058,29 +1861,39 @@ SELECT
 └────────────────┴────────────┘
 ```
 
-**With maximum unit**
+## formatReadableTimeDelta {#formatReadableTimeDelta}
+
+Добавлена в: v20.12
+
+Для заданного временного интервала (дельты) в секундах эта функция возвращает этот интервал в виде строки с годами/месяцами/днями/часами/минутами/секундами/миллисекундами/микросекундами/наносекундами.
+
+Эта функция принимает на вход любой числовой тип, но внутри преобразует его к `Float64`. Результаты могут быть неоптимальными при больших значениях.
+
+**Синтаксис**
 
 ```sql
 formatReadableTimeDelta(column[, maximum_unit, minimum_unit])
 ```
+
+**Аргументы**
+
+* `column` — Столбец с числовым значением дельты времени. [`Float64`](/sql-reference/data-types/float)
+* `maximum_unit` — Необязательный параметр. Максимальная единица времени для отображения. Допустимые значения: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Значение по умолчанию: `years`. [`const String`](/sql-reference/data-types/string)
+* `minimum_unit` — Необязательный параметр. Минимальная единица времени для отображения. Все более мелкие единицы усекаются. Допустимые значения: `nanoseconds`, `microseconds`, `milliseconds`, `seconds`, `minutes`, `hours`, `days`, `months`, `years`. Если явно заданное значение больше `maximum_unit`, будет сгенерировано исключение. Значение по умолчанию: `seconds`, если `maximum_unit` равно `seconds` или больше, иначе `nanoseconds`. [`const String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает дельту времени в виде строки. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 SELECT
     arrayJoin([100, 12345, 432546534]) AS elapsed,
     formatReadableTimeDelta(elapsed) AS time_delta
 ```
-
-
-
-## generateRandomStructure {#generateRandomStructure}
-
-Introduced in: v23.5
-
-
-Generates random table structure in the format `column1_name column1_type, column2_name column2_type, ...`.
-
-
-**Syntax**
 
 ```response title=Response
 ┌────elapsed─┬─time_delta─────────────────────────────────────────────────────┐
@@ -2090,19 +1903,7 @@ Generates random table structure in the format `column1_name column1_type, colum
 └────────────┴────────────────────────────────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `number_of_columns` — The desired number of columns in the resultant table structure. If set to 0 or `Null`, the number of columns will be random from 1 to 128. Default value: `Null`. [`UInt64`](/sql-reference/data-types/int-uint)
-- `seed` — Random seed to produce stable results. If seed is not specified or set to `Null`, it is randomly generated. [`UInt64`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Randomly generated table structure. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**С максимальной единицей измерения**
 
 ```sql title=Query
 SELECT
@@ -2118,58 +1919,50 @@ SELECT
 └────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
-**with specified number of columns**
+## generateRandomStructure {#generateRandomStructure}
+
+Впервые появилась в версии v23.5
+
+Генерирует случайную структуру таблицы в формате `column1_name column1_type, column2_name column2_type, ...`.
+
+**Синтаксис**
 
 ```sql
 generateRandomStructure([number_of_columns, seed])
 ```
 
+**Аргументы**
+
+* `number_of_columns` — требуемое количество столбцов в результирующей структуре таблицы. Если значение равно 0 или `Null`, количество столбцов выбирается случайным образом в диапазоне от 1 до 128. Значение по умолчанию: `Null`. [`UInt64`](/sql-reference/data-types/int-uint)
+* `seed` — начальное значение (seed) генератора случайных чисел для получения стабильных результатов. Если seed не задан или установлен в `Null`, он генерируется случайным образом. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Случайно сгенерированная структура таблицы. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT generateRandomStructure()
 ```
-
-**with specified seed**
 
 ```response title=Response
 c1 Decimal32(5), c2 Date, c3 Tuple(LowCardinality(String), Int128, UInt64, UInt16, UInt8, IPv6), c4 Array(UInt128), c5 UInt32, c6 IPv4, c7 Decimal256(64), c8 Decimal128(3), c9 UInt256, c10 UInt64, c11 DateTime
 ```
 
+**с заданным количеством столбцов**
+
 ```sql title=Query
 SELECT generateRandomStructure(1)
 ```
-
-
-
-## generateSerialID {#generateSerialID}
-
-Introduced in: v25.1
-
-
-Generates and returns sequential numbers starting from the previous counter value.
-This function takes a string argument - a series identifier, and an optional starting value.
-The server should be configured with Keeper.
-The series are stored in Keeper nodes under the path, which can be configured in [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) in the server configuration.
-    
-
-**Syntax**
 
 ```response title=Response
 c1 Map(UInt256, UInt16)
 ```
 
-**Arguments**
-
-- `series_identifier` — Series identifier [`const String`](/sql-reference/data-types/string)
-- `start_value` — Optional. Starting value for the counter. Defaults to 0. Note: this value is only used when creating a new series and is ignored if the series already exists [`UInt*`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Returns sequential numbers starting from the previous counter value. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**first call**
+**с заданным значением seed**
 
 ```sql title=Query
 SELECT generateRandomStructure(NULL, 33)
@@ -2179,17 +1972,37 @@ SELECT generateRandomStructure(NULL, 33)
 c1 DateTime, c2 Enum8('c2V0' = 0, 'c2V1' = 1, 'c2V2' = 2, 'c2V3' = 3), c3 LowCardinality(Nullable(FixedString(30))), c4 Int16, c5 Enum8('c5V0' = 0, 'c5V1' = 1, 'c5V2' = 2, 'c5V3' = 3), c6 Nullable(UInt8), c7 String, c8 Nested(e1 IPv4, e2 UInt8, e3 UInt16, e4 UInt16, e5 Int32, e6 Map(Date, Decimal256(70)))
 ```
 
-**second call**
+## generateSerialID {#generateSerialID}
+
+Впервые добавлена в: v25.1
+
+Генерирует и возвращает последовательные числа, начиная с предыдущего значения счётчика.
+Эта функция принимает строковый аргумент — идентификатор серии, а также необязательное начальное значение.
+Сервер должен быть настроен с Keeper.
+Серии хранятся в узлах Keeper по пути, который можно задать параметром [`series_keeper_path`](/operations/server-configuration-parameters/settings#series_keeper_path) в конфигурации сервера.
+
+**Синтаксис**
 
 ```sql
 generateSerialID(series_identifier[, start_value])
 ```
 
+**Аргументы**
+
+* `series_identifier` — идентификатор серии [`const String`](/sql-reference/data-types/string)
+* `start_value` — необязательный параметр. Начальное значение счётчика, по умолчанию 0. Примечание: это значение используется только при создании новой серии и игнорируется, если серия уже существует [`UInt*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает последовательность чисел, начиная с предыдущего значения счётчика. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**первый вызов**
+
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
-
-**column call**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2197,11 +2010,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
+**второй вызов**
+
 ```sql title=Query
 SELECT generateSerialID('id1')
 ```
-
-**with start value**
 
 ```response title=Response
 ┌─generateSerialID('id1')──┐
@@ -2209,11 +2022,11 @@ SELECT generateSerialID('id1')
 └──────────────────────────┘
 ```
 
+**обращение к столбцу**
+
 ```sql title=Query
 SELECT *, generateSerialID('id1') FROM test_table
 ```
-
-**with start value second call**
 
 ```response title=Response
 ┌─CounterID─┬─UserID─┬─ver─┬─generateSerialID('id1')──┐
@@ -2225,31 +2038,11 @@ SELECT *, generateSerialID('id1') FROM test_table
 └───────────┴────────┴─────┴──────────────────────────┘
 ```
 
+**с начальным значением**
+
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
 ```
-
-
-
-## getClientHTTPHeader {#getClientHTTPHeader}
-
-Introduced in: v24.5
-
-
-Gets the value of an HTTP header.
-If there is no such header or the current request is not performed via the HTTP interface, the function returns an empty string.
-Certain HTTP headers (e.g., `Authentication` and `X-ClickHouse-*`) are restricted.
-
-:::note Setting `allow_get_client_http_header` is required
-The function requires the setting `allow_get_client_http_header` to be enabled.
-The setting is not enabled by default for security reasons, because some headers, such as `Cookie`, could contain sensitive info.
-:::
-
-HTTP headers are case sensitive for this function.
-If the function is used in the context of a distributed query, it returns non-empty result only on the initiator node.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─generateSerialID('id2', 100)──┐
@@ -2257,18 +2050,7 @@ If the function is used in the context of a distributed query, it returns non-em
 └───────────────────────────────┘
 ```
 
-**Arguments**
-
-- `name` — The HTTP header name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the value of the header. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**со стартовым значением, второй вызов**
 
 ```sql title=Query
 SELECT generateSerialID('id2', 100)
@@ -2280,36 +2062,39 @@ SELECT generateSerialID('id2', 100)
 └───────────────────────────────┘
 ```
 
+## getClientHTTPHeader {#getClientHTTPHeader}
 
+Добавлено в: v24.5
 
-## getMacro {#getMacro}
+Получает значение HTTP-заголовка.
+Если такого заголовка нет или текущий запрос не выполняется через HTTP-интерфейс, функция возвращает пустую строку.
+Некоторые HTTP-заголовки (например, `Authentication` и `X-ClickHouse-*`) недоступны для получения.
 
-Introduced in: v20.1
+:::note Необходимо включить настройку `allow_get_client_http_header`
+Для работы функции необходимо, чтобы настройка `allow_get_client_http_header` была включена.
+По соображениям безопасности настройка по умолчанию отключена, так как некоторые заголовки, такие как `Cookie`, могут содержать конфиденциальную информацию.
+:::
 
+Для этой функции в HTTP-заголовках учитывается регистр.
+Если функция используется в контексте распределённого запроса, она возвращает непустой результат только на инициирующем узле.
 
-Returns the value of a macro from the server configuration file.
-Macros are defined in the [`<macros>`](/operations/server-configuration-parameters/settings#macros) section of the configuration file and can be used to distinguish servers by convenient names even if they have complicated hostnames.
-If the function is executed in the context of a distributed table, it generates a normal column with values relevant to each shard.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getClientHTTPHeader(name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `name` — The name of the macro to retrieve. [`const String`](/sql-reference/data-types/string)
+* `name` — имя HTTP-заголовка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение заголовка. [`String`](/sql-reference/data-types/string)
 
-Returns the value of the specified macro. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Пример использования**
 
 ```sql title=Query
 SELECT getClientHTTPHeader('Content-Type');
@@ -2321,32 +2106,31 @@ SELECT getClientHTTPHeader('Content-Type');
 └─────────────────────────────────────┘
 ```
 
+## getMacro {#getMacro}
 
+Впервые появилась в: v20.1
 
-## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
+Возвращает значение макроса из конфигурационного файла сервера.
+Макросы определяются в разделе [`<macros>`](/operations/server-configuration-parameters/settings#macros) конфигурационного файла и могут использоваться для различения серверов по удобным именам, даже если у них сложные hostnames.
+Если функция выполняется в контексте distributed таблицы, она генерирует обычный столбец со значениями, соответствующими каждому сегменту.
 
-Introduced in: v
-
-Returns the maximum table name length in a specified database.
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getMacro(name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `database_name` — The name of the specified database. [`String`](/sql-reference/data-types/string)
+* `name` — Имя макроса, значение которого нужно получить. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение указанного макроса. [`String`](/sql-reference/data-types/string)
 
-Returns the length of the maximum table name, an Integer
+**Примеры**
 
-**Examples**
-
-**typical**
+**Базовое использование**
 
 ```sql title=Query
 SELECT getMacro('test');
@@ -2358,34 +2142,29 @@ SELECT getMacro('test');
 └──────────────────┘
 ```
 
+## getMaxTableNameLengthForDatabase {#getMaxTableNameLengthForDatabase}
 
+Появилась в версии: v
 
-## getMergeTreeSetting {#getMergeTreeSetting}
+Возвращает максимально допустимую длину имени таблицы в указанной базе данных.
 
-Introduced in: v25.6
-
-
-Returns the current value of a MergeTree setting.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getMaxTableNameLengthForDatabase(database_name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
+* `database_name` — имя указанной базы данных. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает максимальную длину имени таблицы в виде целого числа.
 
-Returns the merge tree setting's current value.
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**типичный пример**
 
 ```sql title=Query
 SELECT getMaxTableNameLengthForDatabase('default');
@@ -2397,33 +2176,29 @@ SELECT getMaxTableNameLengthForDatabase('default');
             └─────────────────────────────────────────────┘
 ```
 
+## getMergeTreeSetting {#getMergeTreeSetting}
 
+Введена в версии: v25.6
 
-## getOSKernelVersion {#getOSKernelVersion}
+Возвращает текущее значение настройки MergeTree.
 
-Introduced in: v21.11
-
-
-Returns a string with the OS kernel version.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getMergeTreeSetting(setting_name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `setting_name` — имя настройки. [`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the current OS kernel version. [`String`](/sql-reference/data-types/string)
+Возвращает текущее значение настройки MergeTree.
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getMergeTreeSetting('index_granularity');
@@ -2435,34 +2210,29 @@ SELECT getMergeTreeSetting('index_granularity');
 └──────────────────────────────────────────┘
 ```
 
+## getOSKernelVersion {#getOSKernelVersion}
 
+Появилась в версии: v21.11
 
-## getServerPort {#getServerPort}
+Возвращает строку с версией ядра операционной системы.
 
-Introduced in: v21.10
-
-
-Returns the server's port number for a given protocol.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getOSKernelVersion()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `port_name` — The name of the port. [`String`](/sql-reference/data-types/string)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текущую версию ядра ОС. [`String`](/sql-reference/data-types/string)
 
-Returns the server port number. [`UInt16`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getOSKernelVersion();
@@ -2474,34 +2244,29 @@ SELECT getOSKernelVersion();
 └─────────────────────────┘
 ```
 
+## getServerPort {#getServerPort}
 
+Появилась в версии: v21.10
 
-## getServerSetting {#getServerSetting}
+Возвращает номер порта сервера для заданного протокола.
 
-Introduced in: v25.6
-
-
-Returns the currently set value, given a server setting name.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getServerPort(port_name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `setting_name` — The server setting name. [`String`](/sql-reference/data-types/string)
+* `port_name` — Имя порта. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает номер серверного порта. [`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the server setting's current value. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getServerPort('tcp_port');
@@ -2513,34 +2278,29 @@ SELECT getServerPort('tcp_port');
 └───────────────────────────┘
 ```
 
+## getServerSetting {#getServerSetting}
 
+Введено в: v25.6
 
-## getSetting {#getSetting}
+Возвращает текущее значение параметра сервера по его имени.
 
-Introduced in: v20.7
-
-
-Returns the current value of a setting.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getServerSetting(setting_name')
 ```
 
-**Arguments**
+**Аргументы**
 
-- `setting_Name` — The setting name. [`const String`](/sql-reference/data-types/string)
+* `setting_name` — Имя настройки сервера. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текущее значение настройки сервера. [`Any`](/sql-reference/data-types)
 
-Returns the setting's current value. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getServerSetting('allow_use_jemalloc_memory');
@@ -2552,34 +2312,29 @@ SELECT getServerSetting('allow_use_jemalloc_memory');
 └───────────────────────────────────────────────┘
 ```
 
+## getSetting {#getSetting}
 
+Появилась в версии: v20.7
 
-## getSettingOrDefault {#getSettingOrDefault}
+Возвращает текущее значение настройки.
 
-Introduced in: v24.10
-
-
-Returns the current value of a setting or returns the default value specified in the second argument if the setting is not set in the current profile.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getSetting(setting_name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `setting_name` — The setting name. [`String`](/sql-reference/data-types/string)
-- `default_value` — Value to return if custom_setting is not set. Value may be of any data type or Null. 
+* `setting_Name` — Имя настройки. [`const String`](/sql-reference/data-types/string)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the current value of the specified setting or `default_value` if the setting is not set.
+Возвращает текущее значение настройки. [`Any`](/sql-reference/data-types)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getSetting('enable_analyzer');
@@ -2596,34 +2351,30 @@ SELECT getSetting('enable_analyzer');
 └──────────────────────────┘
 ```
 
+## getSettingOrDefault {#getSettingOrDefault}
 
+Добавлена в: v24.10
 
-## getSizeOfEnumType {#getSizeOfEnumType}
+Возвращает текущее значение настройки или значение по умолчанию, указанное во втором аргументе, если настройка не задана в текущем профиле.
 
-Introduced in: v1.1
-
-
-Returns the number of fields in the given [`Enum`](../../sql-reference/data-types/enum.md).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getSettingOrDefault(setting_name, default_value)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Value of type `Enum`. [`Enum`](/sql-reference/data-types/enum)
+* `setting_name` — имя настройки. [`String`](/sql-reference/data-types/string)
+* `default_value` — значение, которое возвращается, если custom&#95;setting не задана. Значение может иметь любой тип данных или быть Null.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текущее значение указанной настройки или `default_value`, если настройка не задана.
 
-Returns the number of fields with `Enum` input values. [`UInt8/16`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT getSettingOrDefault('custom_undef1', 'my_value');
@@ -2637,35 +2388,29 @@ my_value
 NULL
 ```
 
+## getSizeOfEnumType {#getSizeOfEnumType}
 
+Впервые появилась в версии v1.1
 
-## getSubcolumn {#getSubcolumn}
+Возвращает количество элементов в заданном типе [`Enum`](../../sql-reference/data-types/enum.md).
 
-Introduced in: v
-
-
-Receives the expression or identifier and constant string with the name of subcolumn.
-
-Returns requested subcolumn extracted from the expression.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 getSizeOfEnumType(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `x` — значение типа `Enum`. [`Enum`](/sql-reference/data-types/enum)
 
-**Returned value**
+**Возвращаемое значение**
 
+Возвращает количество полей со значениями типа `Enum` на входе функции. [`UInt8/16`](/sql-reference/data-types/int-uint)
 
+**Примеры**
 
-**Examples**
-
-**getSubcolumn**
+**Пример использования**
 
 ```sql title=Query
 SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
@@ -2677,34 +2422,28 @@ SELECT getSizeOfEnumType(CAST('a' AS Enum8('a' = 1, 'b' = 2))) AS x;
 └───┘
 ```
 
+## getSubcolumn {#getSubcolumn}
 
+Введена в версии: v
 
-## getTypeSerializationStreams {#getTypeSerializationStreams}
+Принимает выражение или идентификатор и константную строку с именем подстолбца.
 
-Introduced in: v22.6
+Возвращает запрошенный подстолбец, извлечённый из выражения.
 
-
-Enumerates stream paths of a data type.
-This function is intended for developmental use.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ```
 
-**Arguments**
+**Аргументы**
 
-- `col` — Column or string representation of a data-type from which the data type will be detected. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+**Примеры**
 
-Returns an array with all the serialization sub-stream paths. [`Array(String)`](/sql-reference/data-types/array)
-
-**Examples**
-
-**tuple**
+**getSubcolumn**
 
 ```sql title=Query
 SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
@@ -2713,44 +2452,40 @@ SELECT getSubcolumn(array_col, 'size0'), getSubcolumn(tuple_col, 'elem_name')
 ```response title=Response
 ```
 
-**map**
+## getTypeSerializationStreams {#getTypeSerializationStreams}
+
+Добавлена в версии v22.6
+
+Перечисляет пути потоков сериализации типа данных.
+Эта функция предназначена для использования в процессе разработки.
+
+**Синтаксис**
 
 ```sql
 getTypeSerializationStreams(col)
 ```
 
+**Аргументы**
+
+* `col` — столбец или строковое представление типа данных, на основе которого определяется тип данных. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает массив со всеми путями подпотоков сериализации. [`Array(String)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**tuple**
+
 ```sql title=Query
 SELECT getTypeSerializationStreams(tuple('a', 1, 'b', 2))
 ```
-
-
-
-## globalVariable {#globalVariable}
-
-Introduced in: v20.5
-
-
-Takes a constant string argument and returns the value of the global variable with that name. This function is intended for compatibility with MySQL and not needed or useful for normal operation of ClickHouse. Only few dummy global variables are defined.
-    
-
-**Syntax**
 
 ```response title=Response
 ['{TupleElement(1), Regular}','{TupleElement(2), Regular}','{TupleElement(3), Regular}','{TupleElement(4), Regular}']
 ```
 
-**Arguments**
-
-- `name` — Global variable name. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns the value of variable `name`. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**globalVariable**
+**map**
 
 ```sql title=Query
 SELECT getTypeSerializationStreams('Map(String, Int64)')
@@ -2760,41 +2495,29 @@ SELECT getTypeSerializationStreams('Map(String, Int64)')
 ['{ArraySizes}','{ArrayElements, TupleElement(keys), Regular}','{ArrayElements, TupleElement(values), Regular}']
 ```
 
+## globalVariable {#globalVariable}
 
+Добавлено в: v20.5
 
-## hasColumnInTable {#hasColumnInTable}
+Принимает строковый константный аргумент и возвращает значение глобальной переменной с этим именем. Эта функция предназначена для совместимости с MySQL и не требуется и не полезна для нормальной работы ClickHouse. Задано лишь несколько фиктивных глобальных переменных.
 
-Introduced in: v1.1
-
-
-Checks if a specific column exists in a database table.
-For elements in a nested data structure, the function checks for the existence of a column.
-For the nested data structure itself, the function returns `0`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 globalVariable(name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `database` — Name of the database. [`const String`](/sql-reference/data-types/string)
-- `table` — Name of the table. [`const String`](/sql-reference/data-types/string)
-- `column` — Name of the column. [`const String`](/sql-reference/data-types/string)
-- `hostname` — Optional. Remote server name to perform the check on. [`const String`](/sql-reference/data-types/string)
-- `username` — Optional. Username for remote server. [`const String`](/sql-reference/data-types/string)
-- `password` — Optional. Password for remote server. [`const String`](/sql-reference/data-types/string)
+* `name` — имя глобальной переменной. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение переменной `name`. [`Any`](/sql-reference/data-types)
 
-Returns `1` if the given column exists, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Check an existing column**
+**globalVariable**
 
 ```sql title=Query
 SELECT globalVariable('max_allowed_packet')
@@ -2804,44 +2527,46 @@ SELECT globalVariable('max_allowed_packet')
 67108864
 ```
 
-**Check a non-existing column**
+## hasColumnInTable {#hasColumnInTable}
+
+Введена в версии: v1.1
+
+Проверяет, существует ли конкретный столбец в таблице базы данных.
+Для элементов вложенной структуры данных функция проверяет наличие столбца.
+Для самой вложенной структуры данных функция возвращает `0`.
+
+**Синтаксис**
 
 ```sql
 hasColumnInTable([hostname[, username[, password]],]database, table, column)
 ```
 
+**Аргументы**
+
+* `database` — Имя базы данных. [`const String`](/sql-reference/data-types/string)
+* `table` — Имя таблицы. [`const String`](/sql-reference/data-types/string)
+* `column` — Имя столбца. [`const String`](/sql-reference/data-types/string)
+* `hostname` — Необязательный параметр. Имя удалённого сервера, на котором выполняется проверка. [`const String`](/sql-reference/data-types/string)
+* `username` — Необязательный параметр. Имя пользователя для удалённого сервера. [`const String`](/sql-reference/data-types/string)
+* `password` — Необязательный параметр. Пароль для удалённого сервера. [`const String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает `1`, если указанный столбец существует, и `0` в противном случае. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Проверка существующего столбца**
+
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','metric')
 ```
-
-
-
-## hasThreadFuzzer {#hasThreadFuzzer}
-
-Introduced in: v20.6
-
-
-Returns whether the thread fuzzer is enabled.
-THis function is only useful for testing and debugging.
-    
-
-**Syntax**
 
 ```response title=Response
 1
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns whether Thread Fuzzer is effective. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Check Thread Fuzzer status**
+**Проверка отсутствующего столбца**
 
 ```sql title=Query
 SELECT hasColumnInTable('system','metrics','non-existing_column')
@@ -2851,38 +2576,30 @@ SELECT hasColumnInTable('system','metrics','non-existing_column')
 0
 ```
 
+## hasThreadFuzzer {#hasThreadFuzzer}
 
+Появилась в версии v20.6
 
-## hostName {#hostName}
+Возвращает, включён ли thread fuzzer.
+Эта функция полезна только для тестирования и отладки.
 
-Introduced in: v20.5
-
-
-Returns the name of the host on which this function was executed.
-If the function executes on a remote server (distributed processing), the remote server name is returned.
-If the function executes in the context of a distributed table, it generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 hasThreadFuzzer()
 ```
 
-**Aliases**: `hostname`
+**Аргументы**
 
-**Arguments**
+* Нет.
 
-- None.
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает, работает ли Thread Fuzzer. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the host name. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Проверка статуса Thread Fuzzer**
 
 ```sql title=Query
 SELECT hasThreadFuzzer()
@@ -2894,33 +2611,34 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## hostName {#hostName}
 
+Введена в версии: v20.5
 
-## icebergBucket {#icebergBucket}
+Возвращает имя хоста, на котором была выполнена эта функция.
+Если функция выполняется на удалённом сервере (распределённая обработка), возвращается имя удалённого сервера.
+Если функция выполняется в контексте distributed таблицы, она генерирует обычный столбец со значениями, соответствующими каждому сегменту.
+В противном случае она возвращает константное значение.
 
-Introduced in: v25.5
-
-Implements logic for the [iceberg bucket transform](https://iceberg.apache.org/spec/#bucket-transform-details.)
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 hostName()
 ```
 
-**Arguments**
+**Псевдонимы**: `hostname`
 
-- `N` — The number of buckets, modulo. [`const (U)Int*`](/sql-reference/data-types/int-uint)
-- `value` — The source value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
+**Аргументы**
 
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns a 32-bit hash of the source value. [`Int32`](/sql-reference/data-types/int-uint)
+Возвращает имя хоста. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Example**
+**Пример использования**
 
 ```sql title=Query
 SELECT hostName()
@@ -2932,32 +2650,30 @@ SELECT hostName()
 └────────────┘
 ```
 
+## icebergBucket {#icebergBucket}
 
+Введена в версии: v25.5
 
-## icebergTruncate {#icebergTruncate}
+Реализует логику [bucket-преобразования Iceberg](https://iceberg.apache.org/spec/#bucket-transform-details.)
 
-Introduced in: v25.3
-
-Implements logic of iceberg truncate transform: https://iceberg.apache.org/spec/#truncate-transform-details.
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 icebergBucket(N, value)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `value` — The value to transform. [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal)
+* `N` — Количество бакетов (модуль). [`const (U)Int*`](/sql-reference/data-types/int-uint)
+* `value` — Исходное значение для преобразования. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Bool`](/sql-reference/data-types/boolean) или [`Decimal`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float) или [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`UUID`](/sql-reference/data-types/uuid) или [`Date`](/sql-reference/data-types/date) или [`Time`](/sql-reference/data-types/time) или [`DateTime`](/sql-reference/data-types/datetime)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 32-битный хеш исходного значения. [`Int32`](/sql-reference/data-types/int-uint)
 
-The same type as the argument
+**Примеры**
 
-**Examples**
-
-**Example**
+**Пример**
 
 ```sql title=Query
 SELECT icebergBucket(5, 1.0 :: Float32)
@@ -2967,34 +2683,29 @@ SELECT icebergBucket(5, 1.0 :: Float32)
 4
 ```
 
+## icebergTruncate {#icebergTruncate}
 
+Добавлен в: v25.3
 
-## identity {#identity}
+Реализует логику Iceberg-трансформации truncate: [https://iceberg.apache.org/spec/#truncate-transform-details](https://iceberg.apache.org/spec/#truncate-transform-details).
 
-Introduced in: v1.1
-
-
-This function returns the argument you pass to it, which is useful for debugging and testing. It lets you bypass index usage to see full scan performance instead. The query analyzer ignores anything inside identity functions when looking for indexes to use, and it also disables constant folding.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 icebergTruncate(N, value)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Input value. [`Any`](/sql-reference/data-types)
+* `value` — значение для преобразования. [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Тип совпадает с типом аргумента.
 
-Returns the input value unchanged. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример**
 
 ```sql title=Query
 SELECT icebergTruncate(3, 'iceberg')
@@ -3004,34 +2715,29 @@ SELECT icebergTruncate(3, 'iceberg')
 ice
 ```
 
+## identity {#identity}
 
+Введена в версии v1.1
 
-## ignore {#ignore}
+Эта функция возвращает аргумент, который ей передаётся, что полезно для отладки и тестирования. Она позволяет обойти использование индексов, чтобы вместо этого оценить производительность полного сканирования. Анализатор запросов игнорирует всё, что находится внутри функций identity при поиске используемых индексов, а также отключает свёртку констант.
 
-Introduced in: v1.1
-
-
-Accepts arbitrary arguments and unconditionally returns `0`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 identity(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — An input value which is unused and passed only so as to avoid a syntax error. [`Any`](/sql-reference/data-types)
+* `x` — входное значение. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает входное значение без изменений. [`Any`](/sql-reference/data-types)
 
-Always returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT identity(42)
@@ -3041,40 +2747,29 @@ SELECT identity(42)
 42
 ```
 
+## ignore {#ignore}
 
+Появилась в версии v1.1
 
-## indexHint {#indexHint}
+Принимает произвольные аргументы и безусловно возвращает `0`.
 
-Introduced in: v1.1
-
-
-This function is intended for debugging and introspection.
-It ignores its argument and always returns 1.
-The arguments are not evaluated.
-
-But during index analysis, the argument of this function is assumed to be not wrapped in `indexHint`.
-This allows to select data in index ranges by the corresponding condition but without further filtering by this condition.
-The index in ClickHouse is sparse and using `indexHint` will yield more data than specifying the same condition directly.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ignore(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `expression` — Any expression for index range selection. [`Expression`](/sql-reference/data-types/special-data-types/expression)
+* `x` — входное значение, которое не используется и передаётся только для предотвращения синтаксической ошибки. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Всегда возвращает `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` in all cases. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example with date filtering**
+**Пример использования**
 
 ```sql title=Query
 SELECT ignore(0, 'ClickHouse', NULL)
@@ -3086,38 +2781,35 @@ SELECT ignore(0, 'ClickHouse', NULL)
 └───────────────────────────────┘
 ```
 
+## indexHint {#indexHint}
 
+Введена в версии: v1.1
 
-## initialQueryID {#initialQueryID}
+Эта функция предназначена для отладки и интроспекции.
+Она игнорирует свой аргумент и всегда возвращает 1.
+Аргументы не вычисляются.
 
-Introduced in: v1.1
+Однако при анализе индекса предполагается, что аргумент этой функции не обёрнут в `indexHint`.
+Это позволяет выбирать данные в диапазонах индекса по соответствующему условию, но без последующей фильтрации по этому условию.
+Индекс в ClickHouse разреженный, и использование `indexHint` приведёт к выбору большего объёма данных, чем при указании того же условия напрямую.
 
-
-Returns the ID of the initial current query.
-Other parameters of a query can be extracted from field `initial_query_id` in [`system.query_log`](../../operations/system-tables/query_log.md).
-
-In contrast to [`queryID`](/sql-reference/functions/other-functions#queryID) function, `initialQueryID` returns the same results on different shards.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 indexHint(expression)
 ```
 
-**Aliases**: `initial_query_id`
+**Аргументы**
 
-**Arguments**
+* `expression` — Любое выражение для выбора диапазона индекса. [`Expression`](/sql-reference/data-types/special-data-types/expression)
 
-- None.
+**Возвращаемое значение**
 
-**Returned value**
+Во всех случаях возвращает значение `1`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the ID of the initial current query. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования с фильтрацией по дате**
 
 ```sql title=Query
 SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GROUP BY k ORDER BY k ASC;
@@ -3132,36 +2824,34 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 └────────────┴─────────┘
 ```
 
+## initialQueryID {#initialQueryID}
 
+Впервые появилась в версии v1.1
 
-## initialQueryStartTime {#initialQueryStartTime}
+Возвращает ID исходного запроса для текущего запроса.
+Другие параметры запроса можно извлечь из поля `initial_query_id` в таблице [`system.query_log`](../../operations/system-tables/query_log.md).
 
-Introduced in: v25.4
+В отличие от функции [`queryID`](/sql-reference/functions/other-functions#queryID), `initialQueryID` возвращает одинаковые результаты на разных сегментах.
 
-
-Returns the start time of the initial current query.
-`initialQueryStartTime` returns the same results on different shards.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 initialQueryID()
 ```
 
-**Aliases**: `initial_query_start_time`
+**Псевдонимы**: `initial_query_id`
 
-**Arguments**
+**Аргументы**
 
-- None.
+* нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the start time of the initial current query. [`DateTime`](/sql-reference/data-types/datetime)
+Возвращает идентификатор исходного текущего запроса. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3175,37 +2865,32 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryID() AS t FROM remote('127.0.0
 └───────────────────┘
 ```
 
+## initialQueryStartTime {#initialQueryStartTime}
 
+Введено в: v25.4
 
-## initializeAggregation {#initializeAggregation}
+Возвращает время начала исходного запроса.
+`initialQueryStartTime` возвращает одинаковые результаты на разных сегментах.
 
-Introduced in: v20.6
-
-
-Calculates the result of an aggregate function based on a single value.
-This function can be used to initialize aggregate functions with combinator [-State](../../sql-reference/aggregate-functions/combinators.md#-state).
-You can create states of aggregate functions and insert them to columns of type [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) or use initialized aggregates as default values.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 initialQueryStartTime()
 ```
 
-**Arguments**
+**Псевдонимы**: `initial_query_start_time`
 
-- `aggregate_function` — Name of the aggregation function to initialize. [`String`](/sql-reference/data-types/string)
-- `arg1[, arg2, ...]` — Arguments of the aggregate function. [`Any`](/sql-reference/data-types)
+**Аргументы**
 
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the result of aggregation for every row passed to the function. The return type is the same as the return type of the function that `initializeAggregation` takes as a first argument. [`Any`](/sql-reference/data-types)
+Возвращает время начала исходного (первоначального) запроса. [`DateTime`](/sql-reference/data-types/datetime)
 
-**Examples**
+**Примеры**
 
-**Basic usage with uniqState**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -3219,30 +2904,36 @@ SELECT count(DISTINCT t) FROM (SELECT initialQueryStartTime() AS t FROM remote('
 └───────────────────┘
 ```
 
-**Usage with sumState and finalizeAggregation**
+## initializeAggregation {#initializeAggregation}
+
+Впервые появилась в: v20.6
+
+Вычисляет результат агрегатной функции на основании одного значения.
+Эта функция может использоваться для инициализации агрегатных функций с комбинатором [-State](../../sql-reference/aggregate-functions/combinators.md#-state).
+Вы можете создавать состояния агрегатных функций и вставлять их в столбцы типа [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) или использовать инициализированные агрегатные функции как значения по умолчанию.
+
+**Синтаксис**
 
 ```sql
 initializeAggregation(aggregate_function, arg1[, arg2, ...])
 ```
 
+**Аргументы**
+
+* `aggregate_function` — имя агрегатной функции для инициализации. [`String`](/sql-reference/data-types/string)
+* `arg1[, arg2, ...]` — аргументы агрегатной функции. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает результат агрегации для каждой строки, переданной функции. Тип возвращаемого значения совпадает с типом возвращаемого значения функции, которую `initializeAggregation` принимает в качестве первого аргумента. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Базовое использование с uniqState**
+
 ```sql title=Query
 SELECT uniqMerge(state) FROM (SELECT initializeAggregation('uniqState', number % 3) AS state FROM numbers(10000));
 ```
-
-
-
-## isConstant {#isConstant}
-
-Introduced in: v20.3
-
-
-Returns whether the argument is a constant expression.
-A constant expression is an expression whose result is known during query analysis, i.e. before execution.
-For example, expressions over [literals](/sql-reference/syntax#literals) are constant expressions.
-This function is mostly intended for development, debugging and demonstration.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─uniqMerge(state)─┐
@@ -3250,18 +2941,7 @@ This function is mostly intended for development, debugging and demonstration.
 └──────────────────┘
 ```
 
-**Arguments**
-
-- `x` — An expression to check. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns `1` if `x` is constant, `0` if `x` is non-constant. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Constant expression**
+**Использование с sumState и finalizeAggregation**
 
 ```sql title=Query
 SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggregation('sumState', number % 3) AS state FROM numbers(5));
@@ -3277,18 +2957,37 @@ SELECT finalizeAggregation(state), toTypeName(state) FROM (SELECT initializeAggr
 └────────────────────────────┴───────────────────────────────┘
 ```
 
-**Constant with function**
+## isConstant {#isConstant}
+
+Добавлена в версии: v20.3
+
+Возвращает, является ли аргумент константным выражением.
+Константное выражение — это выражение, результат которого известен во время анализа запроса, то есть до выполнения.
+Например, выражения с [литералами](/sql-reference/syntax#literals) являются константными выражениями.
+Эта функция в основном предназначена для разработки, отладки и демонстрации.
+
+**Синтаксис**
 
 ```sql
 isConstant(x)
 ```
 
+**Аргументы**
+
+* `x` — выражение для проверки. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает `1`, если `x` — константа, и `0`, если `x` — не константа. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Константное выражение**
+
 ```sql title=Query
 SELECT isConstant(x + 1)
 FROM (SELECT 43 AS x)
 ```
-
-**Non-constant expression**
 
 ```response title=Response
 ┌─isConstant(plus(x, 1))─┐
@@ -3296,12 +2995,12 @@ FROM (SELECT 43 AS x)
 └────────────────────────┘
 ```
 
+**Константа с использованием функции**
+
 ```sql title=Query
 WITH 3.14 AS pi
 SELECT isConstant(cos(pi))
 ```
-
-**Behavior of the now() function**
 
 ```response title=Response
 ┌─isConstant(cos(pi))─┐
@@ -3309,22 +3008,12 @@ SELECT isConstant(cos(pi))
 └─────────────────────┘
 ```
 
+**Неконстантное выражение**
+
 ```sql title=Query
 SELECT isConstant(number)
 FROM numbers(1)
 ```
-
-
-
-## isDecimalOverflow {#isDecimalOverflow}
-
-Introduced in: v20.8
-
-
-Checks if a decimal number has too many digits to fit properly in a Decimal data type with given precision.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─isConstant(number)─┐
@@ -3332,19 +3021,7 @@ Checks if a decimal number has too many digits to fit properly in a Decimal data
 └────────────────────┘
 ```
 
-**Arguments**
-
-- `value` — Decimal value to check. [`Decimal`](/sql-reference/data-types/decimal)
-- `precision` — Optional. The precision of the Decimal type. If omitted, the initial precision of the first argument is used. [`UInt8`](/sql-reference/data-types/int-uint)
-
-
-**Returned value**
-
-Returns `1` if the decimal value has more digits than allowed by its precision, `0` if the decimal value satisfies the specified precision. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**Поведение функции now()**
 
 ```sql title=Query
 SELECT isConstant(now())
@@ -3356,41 +3033,30 @@ SELECT isConstant(now())
 └───────────────────┘
 ```
 
+## isDecimalOverflow {#isDecimalOverflow}
 
+Добавлено в: v20.8
 
-## joinGet {#joinGet}
+Проверяет, содержит ли десятичное число слишком много цифр, чтобы корректно помещаться в тип данных Decimal с заданной точностью.
 
-Introduced in: v18.16
-
-
-Allows you to extract data from a table the same way as from a dictionary.
-Gets data from Join tables using the specified join key.
-
-:::note
-Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
-:::
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isDecimalOverflow(value[, precision])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter `default_database` in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
-- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
-- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
+* `value` — десятичное значение для проверки. [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — необязательный параметр. Точность типа Decimal. Если параметр опущен, используется исходная точность первого аргумента. [`UInt8`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если десятичное значение содержит больше цифр, чем допускается его точностью, и `0`, если десятичное значение соответствует указанной точности. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns list of values corresponded to list of keys. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
@@ -3405,11 +3071,36 @@ SELECT isDecimalOverflow(toDecimal32(1000000000, 0), 9),
 └──────────────────────────────────────────────────┴───────────────────────────────────────────────┴───────────────────────────────────────────────────┴────────────────────────────────────────────────┘
 ```
 
-**Usage with table from current database**
+## joinGet {#joinGet}
+
+Добавлена в версии: v18.16
+
+Позволяет извлекать данные из таблицы так же, как из словаря.
+Извлекает данные из таблиц с движком Join, используя указанный ключ соединения.
+
+:::note
+Поддерживает только таблицы, созданные с помощью оператора `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
+:::
+
+**Синтаксис**
 
 ```sql
 joinGet(join_storage_table_name, value_column, join_keys)
 ```
+
+**Аргументы**
+
+* `join_storage_table_name` — идентификатор, который указывает, где выполнять поиск. Идентификатор ищется в базе данных по умолчанию (см. параметр `default_database` в конфигурационном файле). Чтобы переопределить базу данных по умолчанию, используйте запрос `USE database_name` или укажите базу данных и таблицу через точку, например `database_name.table_name`. [`String`](/sql-reference/data-types/string)
+* `value_column` — имя столбца таблицы, который содержит требуемые данные. [`const String`](/sql-reference/data-types/string)
+* `join_keys` — список ключей соединения. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает список значений, соответствующих списку ключей. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3418,36 +3109,18 @@ INSERT INTO db_test.id_val VALUES (1,11)(2,12)(4,13);
 SELECT joinGet(db_test.id_val, 'val', toUInt32(1));
 ```
 
-**Using arrays as join keys**
-
 ```response title=Response
 ┌─joinGet(db_test.id_val, 'val', toUInt32(1))─┐
 │                                          11 │
 └─────────────────────────────────────────────┘
 ```
 
+**Использование с таблицей текущей базы данных**
+
 ```sql title=Query
 USE db_test;
 SELECT joinGet(id_val, 'val', toUInt32(2));
 ```
-
-
-
-## joinGetOrNull {#joinGetOrNull}
-
-Introduced in: v20.4
-
-
-Allows you to extract data from a table the same way as from a dictionary.
-Gets data from Join tables using the specified join key.
-Unlike [`joinGet`](#joinGet) it returns `NULL` when the key is missing.
-
-:::note
-Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [statement](/engines/table-engines/special/join).
-:::
-
-
-**Syntax**
 
 ```response title=Response
 ┌─joinGet(id_val, 'val', toUInt32(2))─┐
@@ -3455,20 +3128,7 @@ Only supports tables created with the `ENGINE = Join(ANY, LEFT, <join_keys>)` [s
 └─────────────────────────────────────┘
 ```
 
-**Arguments**
-
-- `join_storage_table_name` — An identifier which indicates where to perform the search. The identifier is searched in the default database (see parameter default_database in the config file). To override the default database, use the `USE database_name` query or specify the database and the table through a dot, like `database_name.table_name`. [`String`](/sql-reference/data-types/string)
-- `value_column` — The name of the column of the table that contains required data. [`const String`](/sql-reference/data-types/string)
-- `join_keys` — A list of join keys. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns a list of values corresponding to the list of keys, or `NULL` if a key is not found. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Usage example**
+**Использование массивов в качестве ключей соединения**
 
 ```sql title=Query
 CREATE TABLE some_table (id1 UInt32, id2 UInt32, name String) ENGINE = Join(ANY, LEFT, id1, id2);
@@ -3483,34 +3143,37 @@ SELECT joinGet(some_table, 'name', 1, 11);
 └────────────────────────────────────┘
 ```
 
+## joinGetOrNull {#joinGetOrNull}
 
+Введена в версии: v20.4
 
-## lowCardinalityIndices {#lowCardinalityIndices}
+Позволяет извлекать данные из таблицы так же, как из словаря.
+Извлекает данные из таблиц Join, используя указанный ключ соединения.
+В отличие от [`joinGet`](#joinGet), возвращает `NULL`, когда ключ отсутствует.
 
-Introduced in: v18.12
+:::note
+Поддерживает только таблицы, созданные с помощью оператора `ENGINE = Join(ANY, LEFT, &lt;join_keys&gt;)` [statement](/engines/table-engines/special/join).
+:::
 
-
-Returns the position of a value in the dictionary of a [LowCardinality](../data-types/lowcardinality.md) column. Positions start at 1. Since LowCardinality have per-part dictionaries, this function may return different positions for the same value in different parts.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 joinGetOrNull(join_storage_table_name, value_column, join_keys)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+* `join_storage_table_name` — идентификатор, определяющий, где выполнять поиск. По умолчанию поиск выполняется в базе данных по умолчанию (см. параметр default&#95;database в конфигурационном файле). Чтобы переопределить базу данных по умолчанию, используйте запрос `USE database_name` или укажите базу данных и таблицу через точку, например `database_name.table_name`. [`String`](/sql-reference/data-types/string)
+* `value_column` — имя столбца таблицы, который содержит требуемые данные. [`const String`](/sql-reference/data-types/string)
+* `join_keys` — список ключей соединения. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает список значений, соответствующих списку ключей, или `NULL`, если ключ не найден. [`Any`](/sql-reference/data-types)
 
-The position of the value in the dictionary of the current part. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage examples**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE db_test.id_val(`id` UInt32, `val` UInt32) ENGINE = Join(ANY, LEFT, id);
@@ -3525,36 +3188,29 @@ SELECT joinGetOrNull(db_test.id_val, 'val', toUInt32(1)), joinGetOrNull(db_test.
 └───────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ```
 
+## lowCardinalityIndices {#lowCardinalityIndices}
 
+Появилась в версии: v18.12
 
-## lowCardinalityKeys {#lowCardinalityKeys}
+Возвращает позицию значения в словаре столбца типа [LowCardinality](../data-types/lowcardinality.md). Отсчёт позиций начинается с 1. Поскольку у LowCardinality словари создаются отдельно для каждой части, эта функция может возвращать разные позиции для одного и того же значения в разных частях.
 
-Introduced in: v18.12
-
-
-Returns the dictionary values of a [LowCardinality](../data-types/lowcardinality.md) column.
-If the block is smaller or larger than the dictionary size, the result will be truncated or extended with default values.
-Since LowCardinality have per-part dictionaries, this function may return different dictionary values in different parts.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lowCardinalityIndices(col)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `col` — A low cardinality column. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
+* `col` — столбец с низкой кардинальностью. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
+**Возвращаемое значение**
 
-**Returned value**
+Позиция значения в словаре текущей части. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the dictionary keys. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**lowCardinalityKeys**
+**Примеры использования**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3585,37 +3241,31 @@ SELECT s, lowCardinalityIndices(s) FROM test;
 └────┴──────────────────────────┘
 ```
 
+## lowCardinalityKeys {#lowCardinalityKeys}
 
+Появилась в версии: v18.12
 
-## materialize {#materialize}
+Возвращает значения словаря для столбца [LowCardinality](../data-types/lowcardinality.md).
+Если блок меньше или больше размера словаря, результат будет обрезан или дополнен значениями по умолчанию.
+Поскольку LowCardinality имеют отдельные словари для каждой части, эта функция может возвращать разные значения словаря в разных частях.
 
-Introduced in: v1.1
-
-
-Turns a constant into a full column containing a single value.
-Full columns and constants are represented differently in memory.
-Functions usually execute different code for normal and constant arguments, although the result should typically be the same.
-This function can be used to debug this behavior.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lowCardinalityKeys(col)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A constant. [`Any`](/sql-reference/data-types)
+* `col` — столбец `LowCardinality`. [`LowCardinality`](/sql-reference/data-types/lowcardinality)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает ключи словаря. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a full column containing the constant value. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**lowCardinalityKeys**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test;
@@ -3646,45 +3296,32 @@ SELECT s, lowCardinalityKeys(s) FROM test;
 └────┴───────────────────────┘
 ```
 
+## materialize {#materialize}
 
+Добавлена в: v1.1
 
-## minSampleSizeContinuous {#minSampleSizeContinuous}
+Преобразует константу в полноценный столбец, содержащий одно значение.
+Полноценные столбцы и константы по-разному представляются в памяти.
+Функции обычно выполняют различный код для обычных и константных аргументов, хотя результат, как правило, должен быть одинаковым.
+Эту функцию можно использовать для отладки такого поведения.
 
-Introduced in: v23.10
-
-
-Calculates the minimum required sample size for an A/B test comparing means of a continuous metric in two samples.
-
-Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a).
-Assumes equal sizes of treatment and control groups.
-Returns the required sample size for one group (i.e. the sample size required for the whole experiment is twice the returned value).
-Also assumes equal variance of the test metric in treatment and control groups.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 materialize(x)
 ```
 
-**Aliases**: `minSampleSizeContinous`
+**Аргументы**
 
-**Arguments**
+* `x` — константа. [`Any`](/sql-reference/data-types)
 
-- `baseline` — Baseline value of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `sigma` — Baseline standard deviation of a metric. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `mde` — Minimum detectable effect (MDE) as percentage of the baseline value (e.g. for a baseline value 112.25 the MDE 0.03 means an expected change to 112.25 ± 112.25*0.03). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `power` — Required statistical power of a test (1 - probability of Type II error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
-- `alpha` — Required significance level of a test (probability of Type I error). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**Возвращаемое значение**
 
+Возвращает полный столбец, содержащий константное значение. [`Any`](/sql-reference/data-types)
 
-**Returned value**
+**Примеры**
 
-Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower` and  `detect_range_upper`. These are respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 - mde)`, and the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline * (1 + mde)` (Float64). [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**minSampleSizeContinuous**
+**Пример использования**
 
 ```sql title=Query
 -- В примере ниже функция `countMatches` ожидает константу в качестве второго аргумента.
@@ -3700,39 +3337,40 @@ SELECT countMatches('foobarfoo', materialize('foo'));
 Code: 44. DB::Exception: Received from localhost:9000. DB::Exception: Illegal type of argument #2 'pattern' of function countMatches, expected constant String, got String
 ```
 
+## minSampleSizeContinuous {#minSampleSizeContinuous}
 
+Добавлена в версии v23.10
 
-## minSampleSizeConversion {#minSampleSizeConversion}
+Вычисляет минимально необходимый размер выборки для A/B-теста, сравнивающего средние значения непрерывной метрики в двух выборках.
 
-Introduced in: v22.6
+Использует формулу, описанную в [этой статье](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a).
+Предполагает равные размеры экспериментальной и контрольной групп.
+Возвращает требуемый размер выборки для одной из групп (то есть размер выборки, необходимый для всего эксперимента, вдвое больше возвращаемого значения).
+Также предполагает равенство дисперсий тестируемой метрики в экспериментальной и контрольной группах.
 
-
-Calculates minimum required sample size for an A/B test comparing conversions (proportions) in two samples.
-
-Uses the formula described in [this article](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a). Assumes equal sizes of treatment and control groups. Returns the sample size required for one group (i.e. the sample size required for the whole experiment is twice the returned value).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 minSampleSizeContinuous(baseline, sigma, mde, power, alpha)
 ```
 
-**Arguments**
+**Псевдонимы**: `minSampleSizeContinous`
 
-- `baseline` — Baseline conversion. [`Float*`](/sql-reference/data-types/float)
-- `mde` — Minimum detectable effect (MDE) as percentage points (e.g. for a baseline conversion 0.25 the MDE 0.03 means an expected change to 0.25 ± 0.03). [`Float*`](/sql-reference/data-types/float)
-- `power` — Required statistical power of a test (1 - probability of Type II error). [`Float*`](/sql-reference/data-types/float)
-- `alpha` — Required significance level of a test (probability of Type I error). [`Float*`](/sql-reference/data-types/float)
+**Аргументы**
 
+* `baseline` — Базовое значение метрики. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `sigma` — Базовое стандартное отклонение метрики. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `mde` — Минимальный обнаруживаемый эффект (MDE) в долях от базового значения (например, для базового значения 112.25 значение MDE 0.03 означает ожидаемое изменение до 112.25 ± 112.25*0.03). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `power` — Требуемая статистическая мощность теста (1 − вероятность ошибки второго рода). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
+* `alpha` — Требуемый уровень значимости теста (вероятность ошибки первого рода). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns a named Tuple with 3 elements: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`. These are, respectively: the required sample size, the lower bound of the range of values not detectable with the returned required sample size, calculated as `baseline - mde`, the upper bound of the range of values not detectable with the returned required sample size, calculated as `baseline + mde`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+Возвращает именованный `Tuple` с 3 элементами: `minimum_sample_size`, `detect_range_lower` и `detect_range_upper`. Это соответственно: требуемый размер выборки, нижняя граница диапазона значений, не обнаруживаемых при возвращённом требуемом размере выборки и вычисляемая как `baseline * (1 - mde)`, и верхняя граница диапазона значений, не обнаруживаемых при возвращённом требуемом размере выборки и вычисляемая как `baseline * (1 + mde)` (Float64). [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-**Examples**
+**Примеры**
 
-**minSampleSizeConversion**
+**minSampleSizeContinuous**
 
 ```sql title=Query
 SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
@@ -3742,40 +3380,34 @@ SELECT minSampleSizeContinuous(112.25, 21.1, 0.03, 0.80, 0.05) AS sample_size
 (616.2931945826209,108.8825,115.6175)
 ```
 
+## minSampleSizeConversion {#minSampleSizeConversion}
 
+Добавлена в версии: v22.6
 
-## neighbor {#neighbor}
+Вычисляет минимально необходимый размер выборки для A/B‑теста, сравнивающего конверсии (доли) в двух выборках.
 
-Introduced in: v20.1
+Используется формула, описанная в [этой статье](https://towardsdatascience.com/required-sample-size-for-a-b-testing-6f6608dd330a). Предполагаются равные размеры экспериментальной и контрольной групп. Возвращает требуемый размер выборки для одной группы (т. е. требуемый размер выборки для всего эксперимента вдвое больше возвращаемого значения).
 
-
-Returns a value from a column at a specified offset from the current row.
-This function is deprecated and error-prone because it operates on the physical order of data blocks which may not correspond to the logical order expected by users.
-Consider using proper window functions instead.
-
-The function can be enabled by setting `allow_deprecated_error_prone_window_functions = 1`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 minSampleSizeConversion(baseline, mde, power, alpha)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `column` — The source column. [`Any`](/sql-reference/data-types)
-- `offset` — The offset from the current row. Positive values look forward, negative values look backward. [`Integer`](/sql-reference/data-types/int-uint)
-- `default_value` — Optional. The value to return if the offset goes beyond the data bounds. If not specified, uses the default value for the column type. [`Any`](/sql-reference/data-types)
+* `baseline` — Базовое значение конверсии. [`Float*`](/sql-reference/data-types/float)
+* `mde` — Минимальный обнаруживаемый эффект (MDE) в процентных пунктах (например, для базовой конверсии 0.25 значение MDE 0.03 означает ожидаемое изменение до 0.25 ± 0.03). [`Float*`](/sql-reference/data-types/float)
+* `power` — Требуемая статистическая мощность теста (1 — вероятность ошибки II рода). [`Float*`](/sql-reference/data-types/float)
+* `alpha` — Требуемый уровень значимости теста (вероятность ошибки I рода). [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает именованный кортеж (Tuple) с 3 элементами: `minimum_sample_size`, `detect_range_lower`, `detect_range_upper`. Это, соответственно: требуемый размер выборки; нижняя граница диапазона значений, не обнаруживаемых при полученном требуемом размере выборки, вычисляемая как `baseline - mde`; верхняя граница диапазона значений, не обнаруживаемых при полученном требуемом размере выборки, вычисляемая как `baseline + mde`. [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-Returns a value from the specified offset, or default if out of bounds. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**minSampleSizeConversion**
 
 ```sql title=Query
 SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
@@ -3785,32 +3417,39 @@ SELECT minSampleSizeConversion(0.25, 0.03, 0.80, 0.05) AS sample_size
 (3396.077603219163,0.22,0.28)
 ```
 
-**With default value**
+## neighbor {#neighbor}
+
+Введена в: v20.1
+
+Возвращает значение из столбца на заданном смещении от текущей строки.
+Эта функция устарела и подвержена ошибкам, поскольку она работает с физическим порядком блоков данных, который может не соответствовать логическому порядку, ожидаемому пользователями.
+Вместо неё рекомендуется использовать полноценные оконные функции.
+
+Функцию можно включить, установив `allow_deprecated_error_prone_window_functions = 1`.
+
+**Синтаксис**
 
 ```sql
 neighbor(column, offset[, default_value])
 ```
 
+**Аргументы**
+
+* `column` — Исходный столбец. [`Any`](/sql-reference/data-types)
+* `offset` — Смещение относительно текущей строки. Положительные значения — вперёд, отрицательные — назад. [`Integer`](/sql-reference/data-types/int-uint)
+* `default_value` — Необязательный аргумент. Значение, которое возвращается, если смещение выходит за границы данных. Если не указано, используется значение по умолчанию для типа столбца. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает значение по указанному смещению или значение по умолчанию, если смещение выходит за границы данных. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT number, neighbor(number, 2) FROM system.numbers LIMIT 10;
 ```
-
-
-
-## nested {#nested}
-
-Introduced in: v
-
-
-This is a function used internally by the ClickHouse engine and not meant to be used directly.
-
-Returns the array of tuples from multiple arrays.
-
-The first argument must be a constant array of Strings determining the names of the resulting Tuple.
-The other arguments must be arrays of the same size.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─number─┬─neighbor(number, 2)─┐
@@ -3827,17 +3466,7 @@ The other arguments must be arrays of the same size.
 └────────┴─────────────────────┘
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-
-
-**Examples**
-
-**nested**
+**Со значением по умолчанию**
 
 ```sql title=Query
 SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
@@ -3858,33 +3487,31 @@ SELECT number, neighbor(number, 2, 999) FROM system.numbers LIMIT 10;
 └────────┴──────────────────────────┘
 ```
 
+## nested {#nested}
 
+Впервые появилась в: v
 
-## normalizeQuery {#normalizeQuery}
+Эта функция используется внутри движка ClickHouse и не предназначена для непосредственного использования.
 
-Introduced in: v20.8
+Возвращает массив кортежей, сформированных из нескольких массивов.
 
+Первый аргумент должен быть константным массивом строк (`String`), задающим имена результирующего `Tuple`.
+Остальные аргументы должны быть массивами одинакового размера.
 
-Replaces literals, sequences of literals and complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with placeholder `?`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* Отсутствуют.
 
+**Возвращаемое значение**
 
-**Returned value**
+**Примеры**
 
-Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**Вложенный**
 
 ```sql title=Query
 SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
@@ -3893,35 +3520,29 @@ SELECT nested(['keys', 'values'], ['key_1', 'key_2'], ['value_1','value_2'])
 ```response title=Response
 ```
 
+## normalizeQuery {#normalizeQuery}
 
+Введено в: v20.8
 
-## normalizeQueryKeepNames {#normalizeQueryKeepNames}
+Заменяет литералы, последовательности литералов и сложные псевдонимы (содержащие пробелы, более двух цифр или имеющие длину не менее 36 байт, например, UUID) на подстановочный символ `?`.
 
-Introduced in: v21.2
-
-
-Replaces literals and sequences of literals with placeholder `?` but does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs).
-This helps better analyze complex query logs.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeQuery(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — последовательность символов. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает указанную последовательность символов с плейсхолдерами. [`String`](/sql-reference/data-types/string)
 
-Returns the given sequence of characters with placeholders. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT normalizeQuery('[1, 2, 3, x]') AS query
@@ -3933,35 +3554,30 @@ SELECT normalizeQuery('[1, 2, 3, x]') AS query
 └──────────┘
 ```
 
+## normalizeQueryKeepNames {#normalizeQueryKeepNames}
 
+Впервые появился в версии: v21.2
 
-## normalizedQueryHash {#normalizedQueryHash}
+Заменяет литералы и их последовательности на плейсхолдер `?`, но не затрагивает сложные псевдонимы (содержащие пробелы, более двух цифр или длиной не менее 36 байт, например UUID).
+Это помогает более эффективно анализировать сложные логи запросов.
 
-Introduced in: v20.8
-
-
-Returns identical 64 bit hash values without the values of literals for similar queries.
-Can be helpful in analyzing query logs.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeQueryKeepNames(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — последовательность символов. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает указанную последовательность символов с заполнителями. [`String`](/sql-reference/data-types/string)
 
-Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('SELECT 1 AS aComplexName123')
@@ -3973,35 +3589,30 @@ SELECT normalizeQuery('SELECT 1 AS aComplexName123'), normalizeQueryKeepNames('S
 └───────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
 ```
 
+## normalizedQueryHash {#normalizedQueryHash}
 
+Введена в версии: v20.8
 
-## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
+Возвращает одинаковые 64-битные хеш-значения для похожих запросов, не учитывая значения литералов.
+Может быть полезна при анализе логов запросов.
 
-Introduced in: v21.2
-
-
-Like [`normalizedQueryHash`](#normalizedQueryHash) it returns identical 64 bit hash values without the values of literals for similar queries, but it does not replace complex aliases (containing whitespace, more than two digits or at least 36 bytes long such as UUIDs) with a placeholder before hashing.
-Can be helpful in analyzing query logs.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizedQueryHash(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Sequence of characters. [`String`](/sql-reference/data-types/string)
+* `x` — последовательность символов. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 64-битное хэш-значение. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a 64 bit hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1 AS `abc`') AS res
@@ -4013,37 +3624,30 @@ SELECT normalizedQueryHash('SELECT 1 AS `xyz`') != normalizedQueryHash('SELECT 1
 └─────┘
 ```
 
+## normalizedQueryHashKeepNames {#normalizedQueryHashKeepNames}
 
+Впервые появилась в версии v21.2
 
-## parseReadableSize {#parseReadableSize}
+Как и [`normalizedQueryHash`](#normalizedQueryHash), возвращает одинаковые 64-битные хэши без учёта значений литералов для похожих запросов, но при этом не заменяет сложные псевдонимы (содержащие пробелы, более двух цифр или имеющие длину не менее 36 байт, например UUID) на плейсхолдер перед вычислением хэша.
+Может быть полезно при анализе логов запросов.
 
-Introduced in: v24.6
-
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it throws an exception.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizedQueryHashKeepNames(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — последовательность символов. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 64-битное значение хэша. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes, rounded up to the nearest integer. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT normalizedQueryHash('SELECT 1 AS `xyz123`') != normalizedQueryHash('SELECT 1 AS `abc123`') AS normalizedQueryHash;
@@ -4059,37 +3663,32 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
+## parseReadableSize {#parseReadableSize}
 
+Добавлена в версии: v24.6
 
-## parseReadableSizeOrNull {#parseReadableSizeOrNull}
+Если строка содержит размер в байтах и единицу измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т. д. (т. е. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или десятичную единицу объёма данных в байтах), эта функция возвращает соответствующее количество байт.
+Если функции не удаётся разобрать входное значение, она генерирует исключение.
 
-Introduced in: v24.6
+Обратными операциями к этой функции являются [`formatReadableSize`](#formatReadableSize) и [`formatReadableDecimalSize`](#formatReadableDecimalSize).
 
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it returns `NULL`.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 parseReadableSize(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — Человекочитаемый размер в единицах ISO/IEC 80000-13 или в десятичных единицах байта. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество байт, округлённое вверх до ближайшего целого числа. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the number of bytes, rounded up to the nearest integer, or `NULL` if unable to parse the input [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parseReadableSize(readable_sizes) AS sizes;
@@ -4104,37 +3703,32 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB']) AS readable_sizes, parse
 └────────────────┴─────────┘
 ```
 
+## parseReadableSizeOrNull {#parseReadableSizeOrNull}
 
+Добавлена в версии: v24.6
 
-## parseReadableSizeOrZero {#parseReadableSizeOrZero}
+Функция принимает строку, содержащую размер в байтах и единицу измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т. д. (т. е. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или десятичную единицу измерения объёма данных в байтах), и возвращает соответствующее количество байт.
+Если функция не может распарсить входное значение, она возвращает `NULL`.
 
-Introduced in: v24.6
+Обратными операциями для этой функции являются [`formatReadableSize`](#formatReadableSize) и [`formatReadableDecimalSize`](#formatReadableDecimalSize).
 
-
-Given a string containing a byte size and `B`, `KiB`, `KB`, `MiB`, `MB`, etc. as a unit (i.e. [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) or decimal byte unit), this function returns the corresponding number of bytes.
-If the function is unable to parse the input value, it returns `0`.
-
-The inverse operations of this function are [`formatReadableSize`](#formatReadableSize) and [`formatReadableDecimalSize`](#formatReadableDecimalSize).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 parseReadableSizeOrNull(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Readable size with ISO/IEC 80000-13 or decimal byte unit. [`String`](/sql-reference/data-types/string)
+* `x` — Размер в читаемом виде в единицах ISO/IEC 80000-13 или в десятичных единицах байта. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество байт, округлённое в большую сторону до ближайшего целого, или `NULL`, если не удаётся разобрать входную строку [`Nullable(UInt64)`](/sql-reference/data-types/nullable)
 
-Returns the number of bytes, rounded up to the nearest integer, or `0` if unable to parse the input. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrNull(readable_sizes) AS sizes;
@@ -4150,50 +3744,32 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
+## parseReadableSizeOrZero {#parseReadableSizeOrZero}
 
+Добавлено в: v24.6
 
-## parseTimeDelta {#parseTimeDelta}
+При передаче строки, содержащей размер в байтах и единицу измерения `B`, `KiB`, `KB`, `MiB`, `MB` и т. д. (т. е. в формате [ISO/IEC 80000-13](https://en.wikipedia.org/wiki/ISO/IEC_80000) или с десятичной единицей измерения байтов), эта функция возвращает соответствующее количество байт.
+Если функция не может распознать входную строку, она возвращает `0`.
 
-Introduced in: v22.7
+Обратными операциями к этой функции являются [`formatReadableSize`](#formatReadableSize) и [`formatReadableDecimalSize`](#formatReadableDecimalSize).
 
-
-Parse a sequence of numbers followed by something resembling a time unit.
-
-The time delta string uses these time unit specifications:
-- `years`, `year`, `yr`, `y`
-- `months`, `month`, `mo`
-- `weeks`, `week`, `w`
-- `days`, `day`, `d`
-- `hours`, `hour`, `hr`, `h`
-- `minutes`, `minute`, `min`, `m`
-- `seconds`, `second`, `sec`, `s`
-- `milliseconds`, `millisecond`, `millisec`, `ms`
-- `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
-- `nanoseconds`, `nanosecond`, `nanosec`, `ns`
-
-Multiple time units can be combined with separators (space, `;`, `-`, `+`, `,`, `:`).
-
-The length of years and months are approximations: year is 365 days, month is 30.5 days.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 parseReadableSizeOrZero(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `timestr` — A sequence of numbers followed by something resembling a time unit. [`String`](/sql-reference/data-types/string)
+* `x` — Размер в человекочитаемом формате с использованием единиц по ISO/IEC 80000-13 или десятичных единиц. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество байт, округлённое до ближайшего большего целого, или `0`, если не удалось распознать входное значение. [`UInt64`](/sql-reference/data-types/int-uint)
 
-The number of seconds. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_sizes, parseReadableSizeOrZero(readable_sizes) AS sizes;
@@ -4209,31 +3785,50 @@ SELECT arrayJoin(['1 B', '1 KiB', '3 MB', '5.314 KiB', 'invalid']) AS readable_s
 └────────────────┴─────────┘
 ```
 
-**Complex time units**
+## parseTimeDelta {#parseTimeDelta}
+
+Введена в версии: v22.7
+
+Разбирает последовательность чисел, после которых следует что‑то, напоминающее единицу времени.
+
+Строка временного интервала использует следующие обозначения единиц времени:
+
+* `years`, `year`, `yr`, `y`
+* `months`, `month`, `mo`
+* `weeks`, `week`, `w`
+* `days`, `day`, `d`
+* `hours`, `hour`, `hr`, `h`
+* `minutes`, `minute`, `min`, `m`
+* `seconds`, `second`, `sec`, `s`
+* `milliseconds`, `millisecond`, `millisec`, `ms`
+* `microseconds`, `microsecond`, `microsec`, `μs`, `µs`, `us`
+* `nanoseconds`, `nanosecond`, `nanosec`, `ns`
+
+Несколько единиц времени можно комбинировать, используя разделители (пробел, `;`, `-`, `+`, `,`, `:`).
+
+Длительности года и месяца являются приближенными: год — 365 дней, месяц — 30,5 дня.
+
+**Синтаксис**
 
 ```sql
 parseTimeDelta(timestr)
 ```
 
+**Аргументы**
+
+* `timestr` — последовательность цифр, за которой следует обозначение единицы времени. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Количество секунд. [`Float64`](/sql-reference/data-types/float)
+
+**Примеры**
+
+**Пример использования**
+
 ```sql title=Query
 SELECT parseTimeDelta('11s+22min')
 ```
-
-
-
-## partitionId {#partitionId}
-
-Introduced in: v21.4
-
-
-Computes the [partition ID](../../engines/table-engines/mergetree-family/custom-partitioning-key.md).
-
-:::note
-This function is slow and should not be called for large numbers of rows.
-:::
-
-
-**Syntax**
 
 ```response title=Response
 ┌─parseTimeDelta('11s+22min')─┐
@@ -4241,19 +3836,7 @@ This function is slow and should not be called for large numbers of rows.
 └─────────────────────────────┘
 ```
 
-**Aliases**: `partitionID`
-
-**Arguments**
-
-- `column1, column2, ...` — Column for which to return the partition ID. 
-
-**Returned value**
-
-Returns the partition ID that the row belongs to. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Usage example**
+**Составные единицы времени**
 
 ```sql title=Query
 SELECT parseTimeDelta('1yr2mo')
@@ -4265,38 +3848,35 @@ SELECT parseTimeDelta('1yr2mo')
 └──────────────────────────┘
 ```
 
+## partitionId {#partitionId}
 
+Появилась в версии: v21.4
 
-## queryID {#queryID}
+Вычисляет [ID партиции](../../engines/table-engines/mergetree-family/custom-partitioning-key.md).
 
-Introduced in: v21.9
+:::note
+Эта функция работает медленно и не должна вызываться для большого количества строк.
+:::
 
-
-Returns the ID of the current query.
-Other parameters of a query can be extracted from field `query_id` in the [`system.query_log`](../../operations/system-tables/query_log.md) table.
-
-In contrast to [`initialQueryID`](#initialQueryID) function, `queryID` can return different results on different shards.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 partitionId(column1[, column2, ...])
 ```
 
-**Aliases**: `query_id`
+**Псевдонимы**: `partitionID`
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `column1, column2, ...` — Столбцы, для которых возвращается идентификатор партиции.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the ID of the current query. [`String`](/sql-reference/data-types/string)
+Возвращает идентификатор партиции, к которой принадлежит строка. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 DROP TABLE IF EXISTS tab;
@@ -4326,33 +3906,34 @@ SELECT i, j, partitionId(i), _partition_id FROM tab ORDER BY i, j;
 └───┴───┴────────────────┴───────────────┘
 ```
 
+## queryID {#queryID}
 
+Введено в версии: v21.9
 
-## revision {#revision}
+Возвращает идентификатор текущего запроса.
+Другие параметры запроса можно извлечь из столбца `query_id` в таблице [`system.query_log`](../../operations/system-tables/query_log.md).
 
-Introduced in: v22.7
+В отличие от функции [`initialQueryID`](#initialQueryID), `queryID` может возвращать разные результаты на разных сегментах.
 
-
-Returns the current ClickHouse server revision.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 queryID()
 ```
 
-**Arguments**
+**Псевдонимы**: `query_id`
 
-- None.
+**Аргументы**
 
-**Returned value**
+* Нет.
 
-Returns the current ClickHouse server revision. [`UInt32`](/sql-reference/data-types/int-uint)
+**Возвращаемое значение**
 
-**Examples**
+Возвращает идентификатор текущего запроса. [`String`](/sql-reference/data-types/string)
 
-**Usage example**
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE tmp (str String) ENGINE = Log;
@@ -4366,33 +3947,29 @@ SELECT count(DISTINCT t) FROM (SELECT queryID() AS t FROM remote('127.0.0.{1..3}
 └───────────────────┘
 ```
 
+## revision {#revision}
 
+Добавлена в версии: v22.7
 
-## rowNumberInAllBlocks {#rowNumberInAllBlocks}
+Возвращает текущую ревизию сервера ClickHouse.
 
-Introduced in: v1.1
-
-
-Returns a unique row number for each row processed.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 revision()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Отсутствуют.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+Возвращает текущую ревизию сервера ClickHouse. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT revision()
@@ -4404,35 +3981,29 @@ SELECT revision()
 └────────────┘
 ```
 
+## rowNumberInAllBlocks {#rowNumberInAllBlocks}
 
+Добавлена в версии v1.1
 
-## rowNumberInBlock {#rowNumberInBlock}
+Возвращает уникальный номер для каждой обрабатываемой строки.
 
-Introduced in: v1.1
-
-
-For each [block](../../development/architecture.md#block) processed by `rowNumberInBlock`, returns the number of the current row.
-
-The returned number starts from 0 for each block.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rowNumberInAllBlocks()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the ordinal number of the row in the data block starting from `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+Возвращает порядковый номер строки в блоке данных, начиная с `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT rowNumberInAllBlocks()
@@ -4468,41 +4039,31 @@ SETTINGS max_block_size = 2
 └────────────────────────┘
 ```
 
+## rowNumberInBlock {#rowNumberInBlock}
 
+Добавлена в версии v1.1
 
-## runningAccumulate {#runningAccumulate}
+Для каждого [блока](../../development/architecture.md#block) функция `rowNumberInBlock` возвращает номер текущей строки.
 
-Introduced in: v1.1
+Возвращаемый номер начинается с 0 для каждого блока.
 
-
-Accumulates the states of an aggregate function for each row of a data block.
-
-:::warning Deprecated
-The state is reset for each new block of data.
-Due to this error-prone behavior the function has been deprecated, and you are advised to use [window functions](/sql-reference/window-functions) instead.
-You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
-:::
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rowNumberInBlock()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `agg_state` — State of the aggregate function. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-- `grouping` — Optional. Grouping key. The state of the function is reset if the `grouping` value is changed. It can be any of the supported data types for which the equality operator is defined. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает порядковый номер строки в блоке данных, начиная с `0`. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the accumulated result for each row. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example with initializeAggregation**
+**Пример использования**
 
 ```sql title=Query
 SELECT rowNumberInBlock()
@@ -4537,50 +4098,36 @@ FROM
 └────────────────────┘
 ```
 
+## runningAccumulate {#runningAccumulate}
 
+Впервые представлена в: v1.1
 
-## runningConcurrency {#runningConcurrency}
+Накопливает состояния агрегатной функции для каждой строки блока данных.
 
-Introduced in: v21.3
-
-
-Calculates the number of concurrent events.
-Each event has a start time and an end time.
-The start time is included in the event, while the end time is excluded.
-Columns with a start time and an end time must be of the same data type.
-The function calculates the total number of active (concurrent) events for each event start time.
-
-:::tip Requirements
-Events must be ordered by the start time in ascending order.
-If this requirement is violated the function raises an exception.
-Every data block is processed separately.
-If events from different data blocks overlap then they can not be processed correctly.
+:::warning Устарело
+Состояние сбрасывается для каждого нового блока данных.
+Из-за такого подверженного ошибкам поведения функция признана устаревшей, и вместо неё рекомендуется использовать [оконные функции](/sql-reference/window-functions).
+Вы можете использовать SETTING [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions), чтобы разрешить использование этой функции.
 :::
 
-:::warning Deprecated
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-:::
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 runningAccumulate(agg_state[, grouping])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `start` — A column with the start time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `end` — A column with the end time of events. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `agg_state` — состояние агрегатной функции. [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* `grouping` — необязательный параметр. Ключ группировки. Состояние функции сбрасывается, если значение `grouping` изменяется. Может иметь любой из поддерживаемых типов данных, для которых определён оператор сравнения на равенство. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает накопленный результат для каждой строки. [`Any`](/sql-reference/data-types)
 
-Returns the number of concurrent events at each event start time. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования initializeAggregation**
 
 ```sql title=Query
 WITH initializeAggregation('sumState', number) AS one_row_sum_state
@@ -4601,49 +4148,45 @@ FROM numbers(5);
 └────────┴─────────────┴────────────────┘
 ```
 
+## runningConcurrency {#runningConcurrency}
 
+Введена в версии v21.3
 
-## runningDifference {#runningDifference}
+Вычисляет количество одновременных событий.
+Каждое событие имеет время начала и время окончания.
+Время начала включается в событие, а время окончания исключается.
+Столбцы с временем начала и временем окончания должны быть одного типа данных.
+Функция вычисляет общее количество активных (одновременных) событий для каждого времени начала события.
 
-Introduced in: v1.1
-
-
-Calculates the difference between two consecutive row values in the data block.
-Returns `0` for the first row, and for subsequent rows the difference to the previous row.
-
-:::warning Deprecated
-Only returns differences inside the currently processed data block.
-Because of this error-prone behavior, the function is deprecated.
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-
-You can use setting [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions) to allow usage of this function.
+:::tip Требования
+События должны быть отсортированы по времени начала в порядке возрастания.
+Если это требование нарушено, функция выбрасывает исключение.
+Каждый блок данных обрабатывается отдельно.
+Если события из разных блоков данных перекрываются, то они не могут быть корректно обработаны.
 :::
 
-The result of the function depends on the affected data blocks and the order of data in the block.
-The order of rows during calculation of `runningDifference()` can differ from the order of rows returned to the user.
-To prevent that you can create a subquery with [`ORDER BY`](../../sql-reference/statements/select/order-by.md) and call the function from outside the subquery.
-Please note that the block size affects the result.
-The internal state of `runningDifference` state is reset for each new block.
+:::warning Устарело
+Рекомендуется вместо этого использовать [оконные функции](/sql-reference/window-functions).
+:::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 runningConcurrency(start, end)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
+* `start` — столбец с временем начала событий. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `end` — столбец с временем окончания событий. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество одновременных событий в момент начала каждого события. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the difference between consecutive values, with 0 for the first row.
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT start, runningConcurrency(start, end) FROM example_table;
@@ -4658,11 +4201,44 @@ SELECT start, runningConcurrency(start, end) FROM example_table;
 └────────────┴────────────────────────────────┘
 ```
 
-**Block size impact example**
+## runningDifference {#runningDifference}
+
+Впервые появилась в: v1.1
+
+Вычисляет разность между значениями двух последовательных строк в блоке данных.
+Возвращает `0` для первой строки и для последующих строк — разность с предыдущей строкой.
+
+:::warning Устарело
+Возвращает разности только внутри текущего обрабатываемого блока данных.
+Из-за такого потенциально ошибочного поведения функция признана устаревшей.
+Рекомендуется использовать вместо неё [оконные функции](/sql-reference/window-functions).
+
+Вы можете использовать настройку [`allow_deprecated_error_prone_window_functions`](/operations/settings/settings#allow_deprecated_error_prone_window_functions), чтобы разрешить использование этой функции.
+:::
+
+Результат функции зависит от затронутых блоков данных и порядка данных в блоке.
+Порядок строк при вычислении `runningDifference()` может отличаться от порядка строк, возвращаемых пользователю.
+Чтобы избежать этого, вы можете создать подзапрос с [`ORDER BY`](../../sql-reference/statements/select/order-by.md) и вызвать функцию во внешнем запросе.
+Обратите внимание, что размер блока влияет на результат.
+Внутреннее состояние `runningDifference` сбрасывается для каждого нового блока.
+
+**Синтаксис**
 
 ```sql
 runningDifference(x)
 ```
+
+**Аргументы**
+
+* `x` — столбец, для которого вычисляется разность между соседними значениями. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает разность между последовательными значениями, при этом для первой строки возвращается 0.
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -4681,26 +4257,6 @@ FROM
 );
 ```
 
-
-
-## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
-
-Introduced in: v1.1
-
-
-Calculates the difference between consecutive row values in a data block, but unlike [`runningDifference`](#runningDifference), it returns the actual value of the first row instead of `0`.
-
-:::warning Deprecated
-Only returns differences inside the currently processed data block.
-Because of this error-prone behavior, the function is deprecated.
-It is advised to use [window functions](/sql-reference/window-functions) instead.
-
-You can use setting `allow_deprecated_error_prone_window_functions` to allow usage of this function.
-:::
-
-
-**Syntax**
-
 ```response title=Response
 ┌─EventID─┬───────────EventTime─┬─delta─┐
 │    1106 │ 2025-11-24 00:00:04 │     0 │
@@ -4711,18 +4267,7 @@ You can use setting `allow_deprecated_error_prone_window_functions` to allow usa
 └─────────┴─────────────────────┴───────┘
 ```
 
-**Arguments**
-
-- `x` — Column for which to calculate the running difference. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns the difference between consecutive values, with the first row's value for the first row. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Usage example**
+**Пример влияния размера блока**
 
 ```sql title=Query
 SELECT
@@ -4741,34 +4286,37 @@ WHERE diff != 1;
 └────────┴──────┘
 ```
 
+## runningDifferenceStartingWithFirstValue {#runningDifferenceStartingWithFirstValue}
 
+Введена в: v1.1
 
-## serverUUID {#serverUUID}
+Вычисляет разность между значениями последовательных строк в блоке данных, но, в отличие от [`runningDifference`](#runningDifference), возвращает фактическое значение первой строки вместо `0`.
 
-Introduced in: v20.1
+:::warning Устарело
+Возвращает разности только внутри текущего обрабатываемого блока данных.
+Из‑за такого потенциально ошибочного поведения функция объявлена устаревшей.
+Рекомендуется вместо неё использовать [оконные функции](/sql-reference/window-functions).
 
+Вы можете использовать SETTING `allow_deprecated_error_prone_window_functions`, чтобы разрешить использование этой функции.
+:::
 
-Returns the random and unique UUID (v4) generated when the server is first started.
-The UUID is persisted, i.e. the second, third, etc. server start return the same UUID.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 runningDifferenceStartingWithFirstValue(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `x` — столбец, для которого вычисляется разность между последовательными значениями. [`Any`](/sql-reference/data-types)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the random UUID of the server. [`UUID`](/sql-reference/data-types/uuid)
+Возвращает разность между последовательными значениями; в первой строке возвращается значение первой строки. [`Any`](/sql-reference/data-types)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -4787,34 +4335,30 @@ FROM numbers(5);
 └────────┴──────┘
 ```
 
+## serverUUID {#serverUUID}
 
+Добавлено в: v20.1
 
-## shardCount {#shardCount}
+Возвращает случайный уникальный UUID (v4), сгенерированный при первом запуске сервера.
+UUID сохраняется, т.е. при втором, третьем и последующих запусках сервера возвращается тот же UUID.
 
-Introduced in: v21.9
-
-
-Returns the total number of shards for a distributed query.
-If a query is not distributed then constant value `0` is returned.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 serverUUID()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the total number of shards or `0`. [`UInt32`](/sql-reference/data-types/int-uint)
+Возвращает случайный UUID сервера. [`UUID`](/sql-reference/data-types/uuid)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT serverUUID();
@@ -4826,35 +4370,30 @@ SELECT serverUUID();
 └──────────────────────────────────────────┘
 ```
 
+## shardCount {#shardCount}
 
+Добавлена в версии v21.9
 
-## shardNum {#shardNum}
+Возвращает общее количество сегментов для распределённого запроса.
+Если запрос не является распределённым, возвращается константное значение `0`.
 
-Introduced in: v21.9
-
-
-Returns the index of a shard which processes a part of data in a distributed query.
-Indices begin from `1`.
-If a query is not distributed then a constant value `0` is returned.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 shardCount()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет аргументов.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the shard index or a constant `0`. [`UInt32`](/sql-reference/data-types/int-uint)
+Возвращает общее количество сегментов или `0`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 -- См. пример shardNum() выше, который также демонстрирует shardCount()
@@ -4870,34 +4409,31 @@ SELECT shardCount() FROM shard_count_example;
 └──────────────┘
 ```
 
+## shardNum {#shardNum}
 
+Появилось в версии: v21.9
 
-## showCertificate {#showCertificate}
+Возвращает индекс сегмента, который обрабатывает часть данных в распределённом запросе.
+Индексы начинаются с `1`.
+Если запрос не является распределённым, возвращается константное значение `0`.
 
-Introduced in: v22.6
-
-
-Shows information about the current server's Secure Sockets Layer (SSL) certificate if it has been configured.
-See [Configuring SSL-TLS](/guides/sre/configuring-ssl) for more information on how to configure ClickHouse to use OpenSSL certificates to validate connections.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 shardNum()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns map of key-value pairs relating to the configured SSL certificate. [`Map(String, String)`](/sql-reference/data-types/map)
+Возвращает индекс сегмента или константу `0`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE shard_num_example (dummy UInt8)
@@ -4912,48 +4448,30 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 └───────┴────────────┴──────────────┘
 ```
 
+## showCertificate {#showCertificate}
 
+Появился в версии: v22.6
 
-## sleep {#sleep}
+Отображает информацию о текущем SSL-сертификате (Secure Sockets Layer) сервера, если он настроен.
+См. раздел [Configuring SSL-TLS](/guides/sre/configuring-ssl) для получения дополнительной информации о том, как настроить ClickHouse на использование сертификатов OpenSSL для проверки подключений.
 
-Introduced in: v1.1
-
-
-Pauses the execution of a query by the specified number of seconds.
-The function is primarily used for testing and debugging purposes.
-
-The `sleep()` function should generally not be used in production environments, as it can negatively impact query performance and system responsiveness.
-However, it can be useful in the following scenarios:
-
-1. **Testing**: When testing or benchmarking ClickHouse, you may want to simulate delays or introduce pauses to observe how the system behaves under certain conditions.
-2. **Debugging**: If you need to examine the state of the system or the execution of a query at a specific point in time, you can use `sleep()` to introduce a pause, allowing you to inspect or collect relevant information.
-3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur, such as network latency or external system dependencies.
-
-:::warning
-It's important to use the `sleep()` function judiciously and only when necessary, as it can potentially impact the overall performance and responsiveness of your ClickHouse system.
-:::
-
-For security reasons, the function can only be executed in the default user profile (with `allow_sleep` enabled).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 showCertificate()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `seconds` — The number of seconds to pause the query execution to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
+* Отсутствуют.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает карту (map) пар ключ–значение, относящихся к настроенному SSL-сертификату. [`Map(String, String)`](/sql-reference/data-types/map)
 
-Returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT showCertificate() FORMAT LineAsString;
@@ -4963,45 +4481,43 @@ SELECT showCertificate() FORMAT LineAsString;
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
 
+## sleep {#sleep}
 
+Введена в версии v1.1
 
-## sleepEachRow {#sleepEachRow}
+Приостанавливает выполнение запроса на указанное количество секунд.
+Функция в первую очередь используется для тестирования и отладки.
 
-Introduced in: v1.1
+Функцию `sleep()` в целом не следует использовать в продуктивных средах, так как она может негативно повлиять на производительность запросов и отклик системы.
+Тем не менее она может быть полезна в следующих сценариях:
 
-
-Pauses the execution of a query for a specified number of seconds for each row in the result set.
-
-The `sleepEachRow()` function is primarily used for testing and debugging purposes, similar to the [`sleep()`](#sleep) function.
-It allows you to simulate delays or introduce pauses in the processing of each row, which can be useful in scenarios such as:
-
-1. **Testing**: When testing or benchmarking ClickHouse's performance under specific conditions, you can use `sleepEachRow()` to simulate delays or introduce pauses for each row processed.
-2. **Debugging**: If you need to examine the state of the system or the execution of a query for each row processed, you can use `sleepEachRow()` to introduce pauses, allowing you to inspect or collect relevant information.
-3. **Simulation**: In some cases, you may want to simulate real-world scenarios where delays or pauses occur for each row processed, such as when dealing with external systems or network latencies.
+1. **Тестирование**: При тестировании или бенчмаркинге ClickHouse может потребоваться смоделировать задержки или ввести паузы, чтобы наблюдать за поведением системы при определённых условиях.
+2. **Отладка**: Если необходимо изучить состояние системы или выполнение запроса в определённый момент времени, можно использовать `sleep()` для введения паузы, что позволит проанализировать или собрать необходимую информацию.
+3. **Моделирование**: В некоторых случаях может потребоваться смоделировать сценарии, близкие к реальным, в которых возникают задержки или паузы, например сетевые задержки или зависимости от внешних систем.
 
 :::warning
-Like the `sleep()` function, it's important to use `sleepEachRow()` judiciously and only when necessary, as it can significantly impact the overall performance and responsiveness of your ClickHouse system, especially when dealing with large result sets.
+Важно использовать функцию `sleep()` взвешенно и только при необходимости, так как она может повлиять на общую производительность и отзывчивость вашей системы ClickHouse.
 :::
 
+По соображениям безопасности функция может выполняться только в профиле пользователя по умолчанию (с включённым параметром `allow_sleep`).
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 sleep(seconds)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `seconds` — The number of seconds to pause the query execution for each row in the result set to a maximum of 3 seconds. It can be a floating-point value to specify fractional seconds. [`const UInt*`](/sql-reference/data-types/int-uint) or [`const Float*`](/sql-reference/data-types/float)
+* `seconds` — Количество секунд, на которое приостанавливается выполнение запроса, но не более 3 секунд. Может быть числом с плавающей запятой для указания дробных секунд. [`const UInt*`](/sql-reference/data-types/int-uint) или [`const Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `0` for each row. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 -- Этот запрос будет приостановлен на 2 секунды перед завершением.
@@ -5016,33 +4532,40 @@ SELECT sleep(2);
 Получена 1 строка. Прошло: 2.012 сек.
 ```
 
+## sleepEachRow {#sleepEachRow}
 
+Введено в версии v1.1
 
-## structureToCapnProtoSchema {#structureToCapnProtoSchema}
+Приостанавливает выполнение запроса на заданное количество секунд для каждой строки в результирующем наборе.
 
-Introduced in: v
+Функция `sleepEachRow()` в основном используется для тестирования и отладки, аналогично функции [`sleep()`](#sleep).
+Она позволяет моделировать задержки или вводить паузы при обработке каждой строки, что может быть полезно в следующих сценариях:
 
+1. **Тестирование**: При тестировании или бенчмаркинге производительности ClickHouse в определённых условиях вы можете использовать `sleepEachRow()` для моделирования задержек или введения пауз для каждой обрабатываемой строки.
+2. **Отладка**: Если вам нужно исследовать состояние системы или выполнение запроса для каждой обрабатываемой строки, вы можете использовать `sleepEachRow()` для введения пауз, что позволит вам проанализировать или собрать нужную информацию.
+3. **Моделирование**: В некоторых случаях может потребоваться смоделировать реальные сценарии, когда для каждой обрабатываемой строки возникают задержки или паузы, например, при работе с внешними системами или сетевыми задержками.
 
-Function that converts ClickHouse table structure to CapnProto format schema
+:::warning
+Как и в случае с функцией `sleep()`, важно использовать `sleepEachRow()` взвешенно и только при необходимости, поскольку она может существенно повлиять на общую производительность и отзывчивость вашей системы ClickHouse, особенно при работе с большими результирующими наборами.
+:::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sleepEachRow(seconds)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `seconds` — Количество секунд, на которое приостанавливается выполнение запроса для каждой строки в наборе результатов, но не более чем на 3 секунды. Может быть числом с плавающей запятой для указания долей секунды. [`const UInt*`](/sql-reference/data-types/int-uint) или [`const Float*`](/sql-reference/data-types/float)
 
-**Returned value**
+**Возвращаемое значение**
 
+Возвращает `0` для каждой строки. [`UInt8`](/sql-reference/data-types/int-uint)
 
+**Примеры**
 
-**Examples**
-
-**random**
+**Пример использования**
 
 ```sql title=Query
 -- Вывод будет задержан с паузой 0,5 секунды между каждой строкой.
@@ -5059,38 +4582,26 @@ SELECT number, sleepEachRow(0.5) FROM system.numbers LIMIT 5;
 └────────┴───────────────────┘
 ```
 
+## structureToCapnProtoSchema {#structureToCapnProtoSchema}
 
+Появилась в версии: v
 
-## structureToProtobufSchema {#structureToProtobufSchema}
+Функция, которая преобразует структуру таблицы ClickHouse в схему формата CapnProto
 
-Introduced in: v23.8
-
-
-Converts a ClickHouse table structure to Protobuf format schema.
-
-This function takes a ClickHouse table structure definition and converts it into a Protocol Buffers (Protobuf)
-schema definition in proto3 syntax. This is useful for generating Protobuf schemas that match your ClickHouse
-table structures for data interchange.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ```
 
-**Arguments**
+**Аргументы**
 
-- `structure` — ClickHouse table structure definition as a string (e.g., 'column1 Type1, column2 Type2'). [`String`](/sql-reference/data-types/string)
-- `message_name` — Name for the Protobuf message type in the generated schema. [`String`](/sql-reference/data-types/string)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+**Примеры**
 
-Returns a Protobuf schema definition in proto3 syntax that corresponds to the input ClickHouse structure. [`String`](/sql-reference/data-types/string)
-
-**Examples**
-
-**Converting ClickHouse structure to Protobuf schema**
+**random**
 
 ```sql title=Query
 SELECT structureToCapnProtoSchema('s String, x UInt32', 'MessageName') format TSVRaw
@@ -5104,35 +4615,34 @@ struct MessageName
 }
 ```
 
+## structureToProtobufSchema {#structureToProtobufSchema}
 
+Добавлена в версии v23.8
 
-## tcpPort {#tcpPort}
+Преобразует структуру таблицы ClickHouse в схему формата Protobuf.
 
-Introduced in: v20.12
+Эта функция принимает определение структуры таблицы ClickHouse и преобразует его в определение схемы Protocol Buffers (Protobuf)
+в синтаксисе proto3. Это полезно для генерации схем Protobuf, соответствующих структурам таблиц ClickHouse
+для обмена данными.
 
-
-Returns the [native interface](../../interfaces/tcp.md) TCP port number listened to by the server.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 structureToProtobufSchema(structure, message_name)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `structure` — определение структуры таблицы ClickHouse в виде строки (например, &#39;column1 Type1, column2 Type2&#39;). [`String`](/sql-reference/data-types/string)
+* `message_name` — имя для типа сообщения Protobuf в сгенерированной схеме. [`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the TCP port number. [`UInt16`](/sql-reference/data-types/int-uint)
+Возвращает определение схемы Protobuf в синтаксисе proto3, соответствующее входной структуре ClickHouse. [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Преобразование структуры ClickHouse в схему Protobuf**
 
 ```sql title=Query
 SELECT structureToProtobufSchema('s String, x UInt32', 'MessageName') FORMAT TSVRaw;
@@ -5148,37 +4658,31 @@ message MessageName
 }
 ```
 
+## tcpPort {#tcpPort}
 
+Появилась в версии: v20.12
 
-## throwIf {#throwIf}
+Возвращает номер TCP-порта [native интерфейса](../../interfaces/tcp.md), на котором слушает сервер.
+Если выполняется в контексте distributed таблицы, эта функция генерирует обычный столбец со значениями, соответствующими каждому сегменту.
+В противном случае она возвращает константное значение.
 
-Introduced in: v1.1
-
-
-Throw an exception if argument x is true.
-To use the `error_code` argument, configuration parameter `allow_custom_error_code_in_throw` must be enabled.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tcpPort()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The condition to check. [`Any`](/sql-reference/data-types)
-- `message` — Optional. Custom error message. [`const String`](/sql-reference/data-types/string)
-- `error_code` — Optional. Custom error code. [`const Int8/16/32`](/sql-reference/data-types/int-uint)
+* Отсутствуют.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает номер TCP-порта. [`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns `0` if the condition is false, throws an exception if the condition is true. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tcpPort()
@@ -5190,35 +4694,32 @@ SELECT tcpPort()
 └───────────┘
 ```
 
+## throwIf {#throwIf}
 
+Добавлена в версии: v1.1
 
-## toColumnTypeName {#toColumnTypeName}
+Генерирует исключение, если аргумент x равен true.
+Чтобы использовать аргумент `error_code`, необходимо включить параметр конфигурации `allow_custom_error_code_in_throw`.
 
-Introduced in: v1.1
-
-
-Returns the internal name of the data type of the given value.
-Unlike function [`toTypeName`](#toTypeName), the returned data type potentially includes internal wrapper columns like `Const` and `LowCardinality`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 throwIf(x[, message[, error_code]])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `value` — Value for which to return the internal data type. [`Any`](/sql-reference/data-types)
+* `x` — проверяемое условие. [`Any`](/sql-reference/data-types)
+* `message` — необязательный параметр. Пользовательское сообщение об ошибке. [`const String`](/sql-reference/data-types/string)
+* `error_code` — необязательный параметр. Пользовательский код ошибки. [`const Int8/16/32`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `0`, если условие ложно, и генерирует исключение, если условие истинно. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the internal data type used to represent the value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT throwIf(number = 3, 'Слишком много') FROM numbers(10);
@@ -5229,35 +4730,30 @@ SELECT throwIf(number = 3, 'Слишком много') FROM numbers(10);
 Code: 395. DB::Exception: Received from localhost:9000. DB::Exception: Too many.
 ```
 
+## toColumnTypeName {#toColumnTypeName}
 
+Введена в версии: v1.1
 
-## toTypeName {#toTypeName}
+Возвращает внутреннее имя типа данных у переданного значения.
+В отличие от функции [`toTypeName`](#toTypeName), возвращаемый тип данных потенциально включает внутренние обёртки столбцов, такие как `Const` и `LowCardinality`.
 
-Introduced in: v1.1
-
-
-Returns the type name of the passed argument.
-If `NULL` is passed, the function returns type `Nullable(Nothing)`, which corresponds to ClickHouse's internal `NULL` representation.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toColumnTypeName(value)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A value of arbitrary type. [`Any`](/sql-reference/data-types)
+* `value` — Значение, для которого возвращается внутренний тип данных. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает внутренний тип данных, используемый для представления значения. [`String`](/sql-reference/data-types/string)
 
-Returns the data type name of the input value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
@@ -5269,51 +4765,34 @@ SELECT toColumnTypeName(CAST('2025-01-01 01:02:03' AS DateTime));
 └───────────────────────────────────────────────────────────┘
 ```
 
+## toTypeName {#toTypeName}
 
+Впервые появилась в версии: v1.1
 
-## transactionID {#transactionID}
+Возвращает имя типа переданного аргумента.
+Если в функцию передан `NULL`, функция возвращает тип `Nullable(Nothing)`, который соответствует внутреннему представлению `NULL` в ClickHouse.
 
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the ID of a transaction.
-
-:::note
-This function is part of an experimental feature set.
-Enable experimental transaction support by adding this setting to your [configuration](/operations/configuration-files):
+**Синтаксис**
 
 ```sql
 toTypeName(x)
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
-    
+**Аргументы**
 
-**Syntax**
+* `x` — Значение произвольного типа. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает имя типа данных переданного значения. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 SELECT toTypeName(123)
 ```
-
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns a tuple consisting of `start_csn`, `local_tid` and `host_id`.
-- `start_csn`: Global sequential number, the newest commit timestamp that was seen when this transaction began.
-- `local_tid`: Local sequential number that is unique for each transaction started by this host within a specific start_csn.
-- `host_id`: UUID of the host that has started this transaction.
-     [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**Usage example**
 
 ```response title=Response
 ┌─toTypeName(123)─┐
@@ -5321,36 +4800,51 @@ Returns a tuple consisting of `start_csn`, `local_tid` and `host_id`.
 └─────────────────┘
 ```
 
+## transactionID {#transactionID}
+
+Появилась в версии: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+Возвращает идентификатор транзакции.
+
+:::note
+Эта функция является частью набора экспериментальных возможностей.
+Включите экспериментальную поддержку транзакций, добавив этот SETTING в вашу [конфигурацию](/operations/configuration-files):
+
 ```xml
 <clickhouse>
     <allow_experimental_transactions>1</allow_experimental_transactions>
 </clickhouse>
 ```
 
+Дополнительные сведения см. на странице [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
 
-
-## transactionLatestSnapshot {#transactionLatestSnapshot}
-
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the newest snapshot (Commit Sequence Number) of a [transaction](/guides/developer/transactional#transactions-commit-and-rollback) that is available for reading.
-
-:::note
-This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
+**Синтаксис**
 
 ```sql
 transactionID()
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
-    
+**Аргументы**
 
-**Syntax**
+* Отсутствуют.
+
+**Возвращаемое значение**
+
+Возвращает кортеж, состоящий из `start_csn`, `local_tid` и `host_id`.
+
+* `start_csn`: глобальный последовательный номер, последний commit timestamp, который был виден на момент начала этой транзакции.
+* `local_tid`: локальный последовательный номер, уникальный для каждой транзакции, запущенной этим хостом в пределах конкретного `start_csn`.
+* `host_id`: UUID хоста, на котором была запущена эта транзакция.\
+  [`Tuple(UInt64, UInt64, UUID)`](/sql-reference/data-types/tuple)
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5358,23 +4852,24 @@ SELECT transactionID();
 ROLLBACK;
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the latest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
-
 ```response title=Response
 ┌─transactionID()────────────────────────────────┐
 │ (32,34,'0ee8b069-f2bb-4748-9eae-069c85b5252b') │
 └────────────────────────────────────────────────┘
 ```
+
+## transactionLatestSnapshot {#transactionLatestSnapshot}
+
+Добавлена в версии: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+Возвращает самый новый снимок (Commit Sequence Number) [транзакции](/guides/developer/transactional#transactions-commit-and-rollback), доступный для чтения.
+
+:::note
+Эта функция является частью набора экспериментальных возможностей. Включите экспериментальную поддержку транзакций, добавив этот SETTING в конфигурацию:
 
 ```xml
 <clickhouse>
@@ -5382,30 +4877,26 @@ Returns the latest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/da
 </clickhouse>
 ```
 
+Дополнительную информацию см. на странице [Поддержка транзакций (ACID)](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
 
-
-## transactionOldestSnapshot {#transactionOldestSnapshot}
-
-Introduced in: v22.6
-
-
-<ExperimentalBadge/>
-<CloudNotSupportedBadge/>
-
-Returns the oldest snapshot (Commit Sequence Number) that is visible for some running [transaction](/guides/developer/transactional#transactions-commit-and-rollback).
-
-:::note
-This function is part of an experimental feature set. Enable experimental transaction support by adding this setting to your configuration:
+**Синтаксис**
 
 ```sql
 transactionLatestSnapshot()
 ```
 
-For more information see the page [Transactional (ACID) support](/guides/developer/transactional#transactions-commit-and-rollback).
-:::
+**Аргументы**
 
+* Отсутствуют.
 
-**Syntax**
+**Возвращаемое значение**
+
+Возвращает последний снимок (CSN) транзакции. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5413,23 +4904,24 @@ SELECT transactionLatestSnapshot();
 ROLLBACK;
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the oldest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
-
 ```response title=Response
 ┌─transactionLatestSnapshot()─┐
 │                          32 │
 └─────────────────────────────┘
 ```
+
+## transactionOldestSnapshot {#transactionOldestSnapshot}
+
+Добавлено в: v22.6
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+Возвращает самый ранний снимок (Commit Sequence Number), который виден для одной из выполняющихся [транзакций](/guides/developer/transactional#transactions-commit-and-rollback).
+
+:::note
+Эта функция является частью набора экспериментальных возможностей. Включите экспериментальную поддержку транзакций, добавив этот SETTING в конфигурацию:
 
 ```xml
 <clickhouse>
@@ -5437,50 +4929,26 @@ Returns the oldest snapshot (CSN) of a transaction. [`UInt64`](/sql-reference/da
 </clickhouse>
 ```
 
+Для получения дополнительной информации см. страницу [Поддержка транзакций (ACID)](/guides/developer/transactional#transactions-commit-and-rollback).
+:::
 
-
-## transform {#transform}
-
-Introduced in: v1.1
-
-
-Transforms a value according to the explicitly defined mapping of some elements to other elements.
-
-There are two variations of this function:
-- `transform(x, array_from, array_to, default)` - transforms `x` using mapping arrays with a default value for unmatched elements
-- `transform(x, array_from, array_to)` - same transformation but returns the original `x` if no match is found
-
-The function searches for `x` in `array_from` and returns the corresponding element from `array_to` at the same index.
-If `x` is not found in `array_from`, it returns either the `default` value (4-parameter version) or the original `x` (3-parameter version).
-If multiple matching elements exist in `array_from`, it returns the element corresponding to the first match.
-
-Requirements:
-- `array_from` and `array_to` must have the same number of elements
-- For 4-parameter version: `transform(T, Array(T), Array(U), U) -> U` where `T` and `U` can be different compatible types
-- For 3-parameter version: `transform(T, Array(T), Array(T)) -> T` where all types must be the same
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 transactionOldestSnapshot()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Value to transform. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
-- `array_from` — Constant array of values to search for matches. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
-- `array_to` — Constant array of values to return for corresponding matches in `array_from`. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Decimal)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array) or [`Array(Date)`](/sql-reference/data-types/array) or [`Array(DateTime)`](/sql-reference/data-types/array)
-- `default` — Optional. Value to return if `x` is not found in `array_from`. If omitted, returns x unchanged. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает самый ранний снимок (CSN) транзакции. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the corresponding value from `array_to` if x matches an element in `array_from`, otherwise returns default (if provided) or x (if default not provided). [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**transform(T, Array(T), Array(U), U) -> U**
+**Пример использования**
 
 ```sql title=Query
 BEGIN TRANSACTION;
@@ -5494,11 +4962,47 @@ ROLLBACK;
 └─────────────────────────────┘
 ```
 
-**transform(T, Array(T), Array(T)) -> T**
+## transform {#transform}
+
+Появилась в версии: v1.1
+
+Преобразует значение в соответствии с явно заданным отображением одних элементов в другие.
+
+Существует два варианта этой функции:
+
+* `transform(x, array_from, array_to, default)` — преобразует `x`, используя массивы отображения со значением по умолчанию для несовпадающих элементов
+* `transform(x, array_from, array_to)` — выполняет то же преобразование, но возвращает исходное `x`, если совпадение не найдено
+
+Функция ищет значение `x` в `array_from` и возвращает соответствующий элемент из `array_to` с тем же индексом.
+Если значение `x` не найдено в `array_from`, возвращается либо значение `default` (4‑параметрическая версия), либо исходное `x` (3‑параметрическая версия).
+Если в `array_from` существует несколько совпадающих элементов, возвращается элемент, соответствующий первому совпадению.
+
+Требования:
+
+* `array_from` и `array_to` должны иметь одинаковое количество элементов
+* Для 4‑параметрической версии: `transform(T, Array(T), Array(U), U) -> U`, где `T` и `U` могут быть разными, но совместимыми типами
+* Для 3‑параметрической версии: `transform(T, Array(T), Array(T)) -> T`, где все типы должны совпадать
+
+**Синтаксис**
 
 ```sql
 transform(x, array_from, array_to[, default])
 ```
+
+**Аргументы**
+
+* `x` — Значение для преобразования. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float) или [`String`](/sql-reference/data-types/string) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
+* `array_from` — Константный массив значений, в котором выполняется поиск совпадений. [`Array((U)Int*)`](/sql-reference/data-types/array) или [`Array(Decimal)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(Date)`](/sql-reference/data-types/array) или [`Array(DateTime)`](/sql-reference/data-types/array)
+* `array_to` — Константный массив значений, которые возвращаются для соответствующих совпадений в `array_from`. [`Array((U)Int*)`](/sql-reference/data-types/array) или [`Array(Decimal)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array) или [`Array(String)`](/sql-reference/data-types/array) или [`Array(Date)`](/sql-reference/data-types/array) или [`Array(DateTime)`](/sql-reference/data-types/array)
+* `default` — Необязательный аргумент. Значение, которое возвращается, если `x` не найден в `array_from`. Если аргумент опущен, возвращается `x` без изменений. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float) или [`String`](/sql-reference/data-types/string) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime)
+
+**Возвращаемое значение**
+
+Возвращает соответствующее значение из `array_to`, если `x` совпадает с элементом в `array_from`. В противном случае возвращает `default` (если он указан) или `x` (если `default` не указан). [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**transform(T, Array(T), Array(U), U) -&gt; U**
 
 ```sql title=Query
 SELECT
@@ -5510,18 +5014,6 @@ GROUP BY title
 ORDER BY c DESC
 ```
 
-
-
-## uniqThetaIntersect {#uniqThetaIntersect}
-
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do intersect calculation(set operation ∩), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
-
 ```response title=Response
 ┌─title─────┬──────c─┐
 │ Yandex    │ 498635 │
@@ -5530,18 +5022,7 @@ Two uniqThetaSketch objects to do intersect calculation(set operation ∩), the 
 └───────────┴────────┘
 ```
 
-**Arguments**
-
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-
-
-**Returned value**
-
-A new uniqThetaSketch containing the intersect result. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**transform(T, Array(T), Array(T)) -&gt; T**
 
 ```sql title=Query
 SELECT
@@ -5566,34 +5047,29 @@ LIMIT 10
 └────────────────┴─────────┘
 ```
 
+## uniqThetaIntersect {#uniqThetaIntersect}
 
+Добавлена в: v22.9
 
-## uniqThetaNot {#uniqThetaNot}
+Два объекта uniqThetaSketch для выполнения операции пересечения множеств (∩); результатом является новый uniqThetaSketch.
 
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do a_not_b calculation(set operation ×), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `uniqThetaSketch` — объект типа uniqThetaSketch. [`Tuple`](/sql-reference/data-types/tuple) или [`Array`](/sql-reference/data-types/array) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Новый объект uniqThetaSketch, содержащий результат пересечения. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a new uniqThetaSketch containing the a_not_b result. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaIntersect(a, b)) AS a_intersect_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5607,34 +5083,29 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
+## uniqThetaNot {#uniqThetaNot}
 
+Впервые представлено в: v22.9
 
-## uniqThetaUnion {#uniqThetaUnion}
+Два объекта uniqThetaSketch для вычисления выражения a&#95;not&#95;b (операция над множествами ×); результатом является новый uniqThetaSketch.
 
-Introduced in: v22.9
-
-
-Two uniqThetaSketch objects to do union calculation(set operation ∪), the result is a new uniqThetaSketch.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `uniqThetaSketch` — uniqThetaSketch object. [`Tuple`](/sql-reference/data-types/tuple) or [`Array`](/sql-reference/data-types/array) or [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string) or [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `uniqThetaSketch` — объект типа uniqThetaSketch. [`Tuple`](/sql-reference/data-types/tuple) или [`Array`](/sql-reference/data-types/array) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает новый uniqThetaSketch, содержащий результат операции `a_not_b`. Значение типа [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a new uniqThetaSketch containing the union result. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaNot(a, b)) AS a_not_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5648,35 +5119,29 @@ FROM
 └─────────┴───────────────┴───────────────┘
 ```
 
+## uniqThetaUnion {#uniqThetaUnion}
 
+Появилась в версии v22.9
 
-## uptime {#uptime}
+Выполняет операцию объединения множеств (∪) над двумя объектами uniqThetaSketch и возвращает новый uniqThetaSketch.
 
-Introduced in: v1.1
-
-
-Returns the server's uptime in seconds.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise it produces a constant value.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `uniqThetaSketch` — объект типа uniqThetaSketch. [`Tuple`](/sql-reference/data-types/tuple) или [`Array`](/sql-reference/data-types/array) или [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`String`](/sql-reference/data-types/string) или [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the server uptime in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
+Возвращает новый uniqThetaSketch, содержащий результат объединения. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT finalizeAggregation(uniqThetaUnion(a, b)) AS a_union_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
@@ -5690,36 +5155,31 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
+## uptime {#uptime}
 
+Добавлена в версии v1.1
 
-## variantElement {#variantElement}
+Возвращает время непрерывной работы сервера в секундах.
+Если выполняется в контексте distributed таблицы, эта функция генерирует обычный столбец со значениями, соответствующими каждому сегменту.
+В противном случае она возвращает константное значение.
 
-Introduced in: v25.2
-
-
-Extracts a column with specified type from a `Variant` column.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 uptime()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
-- `type_name` — The name of the variant type to extract. [`String`](/sql-reference/data-types/string)
-- `default_value` — The default value that will be used if variant doesn't have variant with specified type. Can be any type. Optional. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает время работы сервера в секундах. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a column with the specified variant type extracted from the Variant column. [`Any`](/sql-reference/data-types)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT uptime() AS Uptime
@@ -5731,34 +5191,31 @@ SELECT uptime() AS Uptime
 └────────┘
 ```
 
+## variantElement {#variantElement}
 
+Введена в версии: v25.2
 
-## variantType {#variantType}
+Извлекает столбец с указанным типом из столбца `Variant`.
 
-Introduced in: v24.2
-
-
-Returns the variant type name for each row of `Variant` column. If row contains NULL, it returns 'None' for it.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 variantElement(variant, type_name[, default_value])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `variant` — Variant column. [`Variant`](/sql-reference/data-types/variant)
+* `variant` — столбец типа Variant. [`Variant`](/sql-reference/data-types/variant)
+* `type_name` — имя варианта типа, который нужно извлечь. [`String`](/sql-reference/data-types/string)
+* `default_value` — значение по умолчанию, которое будет использовано, если в `variant` нет значения указанного варианта типа. Может быть любого типа. Необязательный аргумент. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает столбец с указанным вариантом типа, извлечённым из столбца Variant. [`Any`](/sql-reference/data-types)
 
-Returns an Enum column with variant type name for each row. [`Enum`](/sql-reference/data-types/enum)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5775,35 +5232,29 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 └───────────────┴─────────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
+## variantType {#variantType}
 
+Введена в версии: v24.2
 
-## version {#version}
+Возвращает имя типа `Variant` для каждой строки столбца `Variant`. Если строка содержит NULL, для неё возвращается &#39;None&#39;.
 
-Introduced in: v1.1
-
-
-Returns the current version of ClickHouse as a string in the form: `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`.
-If executed in the context of a distributed table, this function generates a normal column with values relevant to each shard.
-Otherwise, it produces a constant value.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 variantType(variant)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `variant` — столбец Variant. [`Variant`](/sql-reference/data-types/variant)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the current version of ClickHouse. [`String`](/sql-reference/data-types/string)
+Возвращает столбец Enum с именем типа Variant для каждой строки. [`Enum`](/sql-reference/data-types/enum)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -5820,36 +5271,31 @@ SELECT variantType(v) FROM test;
 └────────────────┘
 ```
 
+## version {#version}
 
+Добавлено в: v1.1
 
-## visibleWidth {#visibleWidth}
+Возвращает текущую версию ClickHouse в виде строки в формате: `major_version.minor_version.patch_version.number_of_commits_since_the_previous_stable_release`.
+Если выполняется в контексте distributed таблицы, эта функция формирует обычный столбец со значениями, относящимися к каждому сегменту.
+В противном случае возвращается константное значение.
 
-Introduced in: v1.1
-
-
-Calculates the approximate width when outputting values to the console in text format (tab-separated).
-This function is used by the system to implement Pretty formats.
-`NULL` is represented as a string corresponding to `NULL` in Pretty formats.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 version()
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A value of any data type. [`Any`](/sql-reference/data-types)
+* Нет.
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текущую версию ClickHouse. [`String`](/sql-reference/data-types/string)
 
-Returns the approximate width of the value when displayed in text format. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Calculate visible width of NULL**
+**Пример использования**
 
 ```sql title=Query
 SELECT version()
@@ -5861,33 +5307,31 @@ SELECT version()
 └───────────┘
 ```
 
+## visibleWidth {#visibleWidth}
 
+Появилась в версии: v1.1
 
-## zookeeperSessionUptime {#zookeeperSessionUptime}
+Вычисляет приблизительную ширину при выводе значений в консоль в текстовом формате (значения разделены табуляцией).
+Эта функция используется системой для реализации форматов Pretty.
+`NULL` представлен строкой, соответствующей `NULL` в форматах Pretty.
 
-Introduced in: v21.11
-
-
-Returns the uptime of the current ZooKeeper session in seconds.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 visibleWidth(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* `x` — значение любого типа данных. [`Any`](/sql-reference/data-types)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the uptime of the current ZooKeeper session in seconds. [`UInt32`](/sql-reference/data-types/int-uint)
+Возвращает приблизительную ширину значения при выводе в текстовом формате. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Вычисление видимой ширины значения NULL**
 
 ```sql title=Query
 SELECT visibleWidth(NULL)

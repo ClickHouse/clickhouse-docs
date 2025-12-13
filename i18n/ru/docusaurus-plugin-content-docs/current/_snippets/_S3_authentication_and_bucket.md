@@ -212,35 +212,29 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 ```json
 {
-  "Version" : "2012-10-17",
-  "Id" : "Policy123456",
-  "Statement" : [
+  "Version": "2012-10-17",
+  "Id": "Policy123456",
+  "Statement": [
     {
       "Sid" : "abc123",
       "Effect" : "Allow",
       "Principal" : {
         "AWS" : "arn:aws:iam::921234567898:user/mars-s3-user"
       },
-      "Action" : "s3:*",
-      "Resource" : [
-        "arn:aws:s3:::mars-doc-test",
-        "arn:aws:s3:::mars-doc-test/*"
-      ]
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*"]
     }
   ]
 }
 ```
-
-```response
-|Parameter | Description | Example Value |
+|Параметр | Описание | Пример значения |
 |----------|-------------|----------------|
-|Version | Version of the policy interpreter, leave as-is | 2012-10-17 |
-|Sid | User-defined policy id | abc123 |
-|Effect | Whether user requests will be allowed or denied | Allow |
-|Principal | The accounts or user that will be allowed | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | What operations are allowed on the bucket| s3:*|
-|Resource | Which resources in the bucket will operations be allowed in | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
-```
+|Version | Версия интерпретатора политики, оставьте без изменений | 2012-10-17 |
+|Sid | Определяемый пользователем идентификатор политики | abc123 |
+|Effect | Будут ли запросы пользователя разрешены или отклонены | Allow |
+|Principal | Учетные записи или пользователи, которым будет предоставлен доступ | arn:aws:iam::921234567898:user/mars-s3-user |
+|Action | Какие операции разрешены для корзины| s3:*|
+|Resource | Для каких ресурсов в корзине будут разрешены операции | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 
 :::note
 Рекомендуется согласовать используемые разрешения с вашей командой безопасности; приведенные настройки можно использовать в качестве отправной точки.

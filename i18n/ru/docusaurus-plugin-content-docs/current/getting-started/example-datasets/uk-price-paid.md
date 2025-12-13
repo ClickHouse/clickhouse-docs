@@ -102,7 +102,7 @@ SELECT count()
 FROM uk.uk_price_paid
 ```
 
-At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
+На момент выполнения этого запроса набор данных содержал 27 450 499 строк. Давайте посмотрим, какой объём занимает эта таблица в ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -110,13 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-Notice the size of the table is just 221.43 MiB!
+Обратите внимание, размер таблицы всего лишь 221,43 MiB!
 
-## Run some queries {#run-queries}
+## Выполним несколько запросов {#run-queries}
 
-Let's run some queries to analyze the data:
+Давайте выполним несколько запросов, чтобы проанализировать данные:
 
-### Query 1. Average price per year {#average-price}
+### Запрос 1. Средняя цена по годам {#average-price}
 
 ```sql runnable
 SELECT
@@ -129,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### Query 2. average price per year in London {#average-price-london}
+### Запрос 2. Средняя цена по годам в Лондоне {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -143,9 +143,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-Something happened to home prices in 2020! But that is probably not a surprise...
+Что-то произошло с ценами на жильё в 2020 году! Однако, вероятно, это не стало сюрпризом...
 
-### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
+### Запрос 3. Самые дорогие районы {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT

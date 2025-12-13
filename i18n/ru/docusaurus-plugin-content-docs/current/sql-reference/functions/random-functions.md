@@ -69,39 +69,34 @@ FROM numbers(3)
 └───────────────────────────────────────┘
 ```
 
-
-
 ## rand {#rand}
 
-Introduced in: v1.1
+Впервые добавлена в: v1.1
 
+Возвращает случайное число типа `UInt32` с равномерным распределением.
 
-Returns a random `UInt32` number with uniform distribution.
+Использует линейный конгруэнтный генератор с начальным состоянием, полученным из системы. Это означает, что, хотя результат выглядит случайным, он не является по-настоящему случайным и может быть предсказуем, если известно начальное состояние.
+В сценариях, где критична истинная случайность, рассмотрите использование альтернативных методов, таких как системные вызовы или интеграция с внешними библиотеками.
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rand([x])
 ```
 
-**Aliases**: `rand32`
+**Псевдонимы**: `rand32`
 
-**Arguments**
+**Аргументы**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — необязательный аргумент, который игнорируется. Единственная цель этого аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа `UInt32`. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a random number of type `UInt32`. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT rand();
@@ -111,37 +106,32 @@ SELECT rand();
 1569354847
 ```
 
-
-
 ## rand64 {#rand64}
 
-Introduced in: v1.1
+Впервые появилась в: v1.1
 
+Возвращает случайное число типа `UInt64` с равномерным распределением.
 
-Returns a random distributed `UInt64` number with uniform distribution.
+Использует линейный конгруэнтный генератор с начальным состоянием, полученным из системы. Это означает, что, хотя результат выглядит случайным, он не является по-настоящему случайным и может быть предсказуем, если начальное состояние известно.
+В сценариях, где критична истинная случайность, используйте альтернативные методы, такие как системные вызовы или интеграция с внешними библиотеками.
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rand64([x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — необязательный аргумент, значение игнорируется. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа UInt64 с равномерным распределением. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random UInt64 number with uniform distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT rand64();
@@ -151,35 +141,30 @@ SELECT rand64();
 15030268859237645412
 ```
 
-
-
 ## randBernoulli {#randBernoulli}
 
-Introduced in: v22.10
+Появилась в версии: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [распределению Бернулли](https://en.wikipedia.org/wiki/Bernoulli_distribution).
 
-Returns a random Float64 number drawn from a [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randBernoulli(probability[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `probability` — The probability of success as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `probability` — Вероятность успеха в виде значения в диапазоне от `0` до `1`. [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный аргумент, который игнорируется. Его единственная цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, сгенерированное согласно указанному распределению Бернулли. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Bernoulli distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randBernoulli(.75) FROM numbers(5)
@@ -195,36 +180,31 @@ SELECT randBernoulli(.75) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randBinomial {#randBinomial}
 
-Introduced in: v22.10
+Добавлена в версии v22.10
 
+Возвращает случайное число типа Float64, выбранное из [биномиального распределения](https://en.wikipedia.org/wiki/Binomial_distribution).
 
-Returns a random Float64 number drawn from a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randBinomial(experiments, probability[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `experiments` — The number of experiments [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — The probability of success in each experiment as a value between `0` and `1` [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — количество экспериментов [`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — вероятность успеха в каждом эксперименте как значение между `0` и `1` [`Float64`](/sql-reference/data-types/float)
+* `x` — необязательный аргумент, который игнорируется. Его единственная цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа `Float64`, выбранное из указанного биномиального распределения. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified binomial distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randBinomial(100, .75) FROM numbers(5)
@@ -240,34 +220,29 @@ SELECT randBinomial(100, .75) FROM numbers(5)
 └─────────────────────────┘
 ```
 
-
-
 ## randCanonical {#randCanonical}
 
-Introduced in: v22.11
+Появилась в версии: v22.11
 
+Возвращает случайное число типа `Float64` с равномерным распределением на отрезке от `0` (включительно) до `1` (не включительно).
 
-Returns a random distributed `Float64` number with uniform distribution between `0` (inclusive) and `1` (exclusive).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randCanonical([x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — необязательный аргумент, игнорируется. Единственная его цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число с плавающей запятой типа Float64. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randCanonical();
@@ -277,35 +252,30 @@ SELECT randCanonical();
 0.345217890123456
 ```
 
-
-
 ## randChiSquared {#randChiSquared}
 
-Introduced in: v22.10
+Появилась в: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [распределению хи-квадрат](https://en.wikipedia.org/wiki/Chi-squared_distribution).
 
-Returns a random Float64 number drawn from a [chi-square distribution](https://en.wikipedia.org/wiki/Chi-squared_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randChiSquared(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — Число степеней свободы. [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный аргумент, который игнорируется. Единственная его цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, выбранное из указанного распределения хи-квадрат. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified chi-square distribution. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randChiSquared(10) FROM numbers(5)
@@ -321,40 +291,36 @@ SELECT randChiSquared(10) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randConstant {#randConstant}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Генерирует одно случайное значение, которое остаётся неизменным для всех строк в рамках текущего выполнения запроса.
 
-Generates a single random value that remains constant across all rows in the current query execution.
+Эта функция:
 
-This function:
-- Returns the same random value for every row within a single query
-- Produces different values across separate query executions
+* Возвращает одно и то же случайное значение для каждой строки в пределах одного запроса
+* Выдаёт разные значения при отдельных выполненияx запроса
 
-It is useful for applying consistent random seeds or identifiers across all rows in a dataset
-    
+Полезна для применения единых случайных seed-значений или идентификаторов ко всем строкам в наборе данных.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 randConstant([x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — необязательный аргумент, значение которого игнорируется. Единственная его цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции повторно используется в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает столбец типа `UInt32`, содержащий одно и то же случайное значение в каждой строке. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a column of type `UInt32` containing the same random value in each row. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT randConstant() AS random_value;
@@ -366,7 +332,7 @@ SELECT randConstant() AS random_value;
 | 1234567890   |
 ```
 
-**Usage with parameter**
+**Использование с параметром**
 
 ```sql title=Query
 SELECT randConstant(10) AS random_value;
@@ -378,35 +344,30 @@ SELECT randConstant(10) AS random_value;
 | 9876543210   |
 ```
 
-
-
 ## randExponential {#randExponential}
 
-Introduced in: v22.10
+Появилась в версии v22.10
 
+Возвращает случайное число типа Float64, полученное из [экспоненциального распределения](https://en.wikipedia.org/wiki/Exponential_distribution).
 
-Returns a random Float64 number drawn from an [exponential distribution](https://en.wikipedia.org/wiki/Exponential_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randExponential(lambda[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `lambda` — Rate parameter or lambda value of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `lambda` — параметр интенсивности (значение λ) распределения [`Float64`](/sql-reference/data-types/float)
+* `x` — необязательный и игнорируемый аргумент. Его единственная цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, сгенерированное по указанному экспоненциальному распределению. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified exponential distribution. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randExponential(1/10) FROM numbers(5)
@@ -422,36 +383,31 @@ SELECT randExponential(1/10) FROM numbers(5)
 └────────────────────────────────┘
 ```
 
-
-
 ## randFisherF {#randFisherF}
 
-Introduced in: v22.10
+Появилась в версии: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [F-распределению](https://en.wikipedia.org/wiki/F-distribution).
 
-Returns a random Float64 number drawn from an [F-distribution](https://en.wikipedia.org/wiki/F-distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randFisherF(d1, d2[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `d1` — d1 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `d2` — d2 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `d1` — число степеней свободы d1 в `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
+* `d2` — число степеней свободы d2 в `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
+* `x` — необязательный аргумент, значение которого игнорируется. Единственное назначение аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, выбранное из указанного F-распределения. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified F-distribution [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randFisherF(10, 3) FROM numbers(5)
@@ -467,36 +423,31 @@ SELECT randFisherF(10, 3) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randLogNormal {#randLogNormal}
 
-Introduced in: v22.10
+Добавлена в версии: v22.10
 
+Возвращает случайное число с плавающей запятой типа Float64, полученное из [логнормального распределения](https://en.wikipedia.org/wiki/Log-normal_distribution).
 
-Returns a random Float64 number drawn from a [log-normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randLogNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `mean` — The mean value of distribution. [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — Среднее значение распределения. [`Float64`](/sql-reference/data-types/float)
+* `stddev` — Стандартное отклонение распределения. [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный аргумент, значение которого игнорируется. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число с плавающей запятой типа Float64, выбранное из указанного логнормального распределения. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified log-normal distribution. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randLogNormal(100, 5) FROM numbers(5)
@@ -512,36 +463,31 @@ SELECT randLogNormal(100, 5) FROM numbers(5)
 └───────────────────────┘
 ```
 
-
-
 ## randNegativeBinomial {#randNegativeBinomial}
 
-Introduced in: v22.10
+Добавлена в: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное из [отрицательного биномиального распределения](https://en.wikipedia.org/wiki/Negative_binomial_distribution).
 
-Returns a random Float64 number drawn from a [negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randNegativeBinomial(experiments, probability[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `experiments` — The number of experiments. [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — `The probability of failure in each experiment as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — Количество экспериментов. [`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — Вероятность неудачи в каждом эксперименте в виде значения от `0` до `1`. [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный аргумент, который игнорируется. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа `Float64`, сгенерированное по указанному отрицательному биномиальному распределению. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified negative binomial distribution [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randNegativeBinomial(100, .75) FROM numbers(5)
@@ -557,36 +503,31 @@ SELECT randNegativeBinomial(100, .75) FROM numbers(5)
 └─────────────────────────────────┘
 ```
 
-
-
 ## randNormal {#randNormal}
 
-Introduced in: v22.10
+Добавлено в: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [нормальному распределению](https://en.wikipedia.org/wiki/Normal_distribution).
 
-Returns a random Float64 number drawn from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `mean` — The mean value of distribution [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — Среднее значение распределения [`Float64`](/sql-reference/data-types/float)
+* `stddev` — Стандартное отклонение распределения [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный аргумент, игнорируется. Единственная цель этого аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, сгенерированное из заданного нормального распределения. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified normal distribution. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randNormal(10, 2) FROM numbers(5)
@@ -602,35 +543,30 @@ SELECT randNormal(10, 2) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randPoisson {#randPoisson}
 
-Introduced in: v22.10
+Впервые появился в: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [распределению Пуассона](https://en.wikipedia.org/wiki/Poisson_distribution).
 
-Returns a random Float64 number drawn from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) distribution.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randPoisson(n[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `n` — The mean number of occurrences. [`UInt64`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `n` — Среднее число событий (среднее количество наступлений события). [`UInt64`](/sql-reference/data-types/int-uint)
+* `x` — Необязательный аргумент, значение которого игнорируется. Единственная его цель — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, сгенерированное из указанного распределения Пуассона. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Poisson distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randPoisson(10) FROM numbers(5)
@@ -646,35 +582,30 @@ SELECT randPoisson(10) FROM numbers(5)
 └─────────────────┘
 ```
 
-
-
 ## randStudentT {#randStudentT}
 
-Introduced in: v22.10
+Появилась в версии: v22.10
 
+Возвращает случайное число типа Float64, сгенерированное по [t-распределению Стьюдента](https://en.wikipedia.org/wiki/Student%27s_t-distribution).
 
-Returns a random Float64 number drawn from a [Student's t-distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randStudentT(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — число степеней свободы. [`Float64`](/sql-reference/data-types/float)
+* `x` — необязательный аргумент, который игнорируется. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число типа Float64, выбранное из указанного распределения Стьюдента. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified Student's t-distribution. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randStudentT(10) FROM numbers(5)
@@ -690,36 +621,31 @@ SELECT randStudentT(10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randUniform {#randUniform}
 
-Introduced in: v22.10
+Впервые появилась в версии v22.10
 
+Возвращает случайное число типа Float64, равномерно распределённое на интервале $[\min, \max]$.
 
-Returns a random Float64 number drawn uniformly from the interval $[\min, \max]$.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randUniform(min, max[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `min` — Left boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `max` — Right boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `min` — Левая граница диапазона (включительно). [`Float64`](/sql-reference/data-types/float)
+* `max` — Правая граница диапазона (включительно). [`Float64`](/sql-reference/data-types/float)
+* `x` — Необязательный и игнорируемый аргумент. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает случайное число, равномерно распределённое по интервалу между `min` и `max`. [`Float64`](/sql-reference/data-types/float)
 
-Returns a random number drawn uniformly from the interval formed by `min` and `max`. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randUniform(5.5, 10) FROM numbers(5)
@@ -735,35 +661,30 @@ SELECT randUniform(5.5, 10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randomFixedString {#randomFixedString}
 
-Introduced in: v20.5
+Появилась в версии v20.5
 
+Генерирует случайную строку фиксированной длины с указанным количеством символов.
+Возвращаемые символы не обязательно являются символами ASCII, то есть они могут быть непечатаемыми.
 
-Generates a random fixed-size string with the specified number of character.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randomFixedString(length)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `length` — Length of the string in bytes. [`UInt*`](/sql-reference/data-types/int-uint)
+* `length` — длина строки в байтах. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, заполненную случайными байтами. [`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string filled with random bytes. [`FixedString`](/sql-reference/data-types/fixedstring)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
@@ -775,37 +696,32 @@ SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
 └──────────┴───────────────────────────────────┘
 ```
 
-
-
 ## randomPrintableASCII {#randomPrintableASCII}
 
-Introduced in: v20.1
+Введена в версии: v20.1
 
+Генерирует случайную строку [ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters) с указанным количеством символов.
 
-Generates a random [ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters) string with the specified number of characters.
+Если передать `length < 0`, поведение функции не определено.
 
-If you pass `length < 0`, the behavior of the function is undefined.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randomPrintableASCII(length[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `length` — String length in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — длина строки в байтах. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — необязательный аргумент, который игнорируется. Единственное назначение аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции используется несколько раз в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку со случайным набором печатных ASCII-символов. [`String`](/sql-reference/data-types/string)
 
-Returns a string with a random set of ASCII printable characters. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers LIMIT 3
@@ -819,36 +735,31 @@ SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers 
 └────────┴────────────────────────────────┴──────────────────────────────────┘
 ```
 
-
-
 ## randomString {#randomString}
 
-Introduced in: v20.5
+Введена в версии: v20.5
 
+Генерирует случайную строку с указанным количеством символов.
+Возвращаемые символы не обязательно относятся к ASCII, то есть они могут быть непечатаемыми.
 
-Generates a random string with the specified number of characters.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randomString(length[, x])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `length` — Length of the string in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — длина строки в байтах. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — необязательный аргумент, его значение игнорируется. Единственная цель аргумента — предотвратить [устранение общих подвыражений](/sql-reference/functions/overview#common-subexpression-elimination), когда один и тот же вызов функции многократно используется в запросе. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, заполненную случайными байтами. [`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random bytes. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randomString(5) AS str FROM numbers(2)
@@ -859,36 +770,31 @@ SELECT randomString(5) AS str FROM numbers(2)
 �v6B�
 ```
 
-
-
 ## randomStringUTF8 {#randomStringUTF8}
 
-Introduced in: v20.5
+Добавлена в: v20.5
 
+Генерирует случайную строку в кодировке [UTF-8](https://en.wikipedia.org/wiki/UTF-8) с указанным числом кодовых точек.
+Кодовые точки из неназначенных [плоскостей](https://en.wikipedia.org/wiki/Plane_\(Unicode\)) (плоскости с 4 по 13) не возвращаются.
+По‑прежнему возможно, что клиент, взаимодействующий с сервером ClickHouse, не сможет корректно отобразить полученную строку UTF-8.
 
-Generates a random [UTF-8](https://en.wikipedia.org/wiki/UTF-8) string with the specified number of codepoints.
-No codepoints from unassigned [planes](https://en.wikipedia.org/wiki/Plane_(Unicode)) (planes 4 to 13) are returned.
-It is still possible that the client interacting with ClickHouse server is not able to display the produced UTF-8 string correctly.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 randomStringUTF8(length)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `length` — Length of the string in code points. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — длина строки в кодовых точках. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, заполненную случайными кодовыми точками UTF-8. [`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random UTF-8 codepoints. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT randomStringUTF8(13)

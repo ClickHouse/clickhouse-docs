@@ -48,8 +48,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   Сначала проверьте конфигурацию логирования Redis. Подключитесь к Redis и проверьте расположение лог-файла:
 
   ```bash
-redis-cli CONFIG GET logfile
-```
+  redis-cli CONFIG GET logfile
+  ```
 
   Типичные расположения логов Redis:
 
@@ -60,22 +60,22 @@ redis-cli CONFIG GET logfile
   Если Redis записывает логи в stdout, настройте запись в файл, обновив `redis.conf`:
 
   ```bash
-# Log to file instead of stdout
-logfile /var/log/redis/redis-server.log
+  # Записывать логи в файл вместо stdout
+  logfile /var/log/redis/redis-server.log
 
-# Set log level (options: debug, verbose, notice, warning)
-loglevel notice
-```
+  # Задать уровень логирования (варианты: debug, verbose, notice, warning)
+  loglevel notice
+  ```
 
   После изменения конфигурации перезапустите Redis:
 
   ```bash
-# For systemd
-sudo systemctl restart redis
+  # Для systemd
+  sudo systemctl restart redis
 
-# For Docker
-docker restart <redis-container>
-```
+  # Для Docker
+  docker restart <redis-container>
+  ```
 
   #### Создайте пользовательскую конфигурацию OTel collector
 
@@ -84,40 +84,40 @@ docker restart <redis-container>
   Создайте файл `redis-monitoring.yaml` со следующей конфигурацией:
 
   ```yaml
-receivers:
-  filelog/redis:
-    include:
-      - /var/log/redis/redis-server.log
-    start_at: beginning
-    operators:
-      - type: regex_parser
-        regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
-        parse_from: body
-        parse_to: attributes
-      
-      - type: time_parser
-        parse_from: attributes.timestamp
-        layout: '%d %b %Y %H:%M:%S'
-      
-      - type: add
-        field: attributes.source
-        value: "redis"
-      
-      - type: add
-        field: resource["service.name"]
-        value: "redis-production"
+  receivers:
+    filelog/redis:
+      include:
+        - /var/log/redis/redis-server.log
+      start_at: beginning
+      operators:
+        - type: regex_parser
+          regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
+          parse_from: body
+          parse_to: attributes
+        
+        - type: time_parser
+          parse_from: attributes.timestamp
+          layout: '%d %b %Y %H:%M:%S'
+        
+        - type: add
+          field: attributes.source
+          value: "redis"
+        
+        - type: add
+          field: resource["service.name"]
+          value: "redis-production"
 
-service:
-  pipelines:
-    logs/redis:
-      receivers: [filelog/redis]
-      processors:
-        - memory_limiter
-        - transform
-        - batch
-      exporters:
-        - clickhouse
-```
+  service:
+    pipelines:
+      logs/redis:
+        receivers: [filelog/redis]
+        processors:
+          - memory_limiter
+          - transform
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
   Данная конфигурация:
 
@@ -147,30 +147,30 @@ service:
   Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
-services:
-  clickstack:
-    # ... existing configuration ...
-    environment:
-      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # ... other environment variables ...
-    volumes:
-      - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      - /var/log/redis:/var/log/redis:ro
-      # ... other volumes ...
-```
+  services:
+    clickstack:
+      # ... existing configuration ...
+      environment:
+        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+        # ... other environment variables ...
+      volumes:
+        - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        - /var/log/redis:/var/log/redis:ro
+        # ... other volumes ...
+  ```
 
   ##### Вариант 2: Docker Run (образ «всё в одном»)
 
   Если вы используете универсальный образ с Docker, выполните:
 
   ```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log/redis:/var/log/redis:ro \
-  clickhouse/clickstack-all-in-one:latest
-```
+  docker run --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log/redis:/var/log/redis:ro \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   :::note
   Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов журналов Redis. В производственной среде используйте монтирование только для чтения (`:ro`) и следуйте принципу минимальных привилегий.
@@ -209,7 +209,7 @@ receivers:
   filelog/redis:
     include:
       - /tmp/redis-demo/redis-server.log
-    start_at: beginning  # Read from beginning for demo data
+    start_at: beginning  # Читать с начала для демонстрационных данных
     operators:
       - type: regex_parser
         regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
@@ -313,28 +313,28 @@ HyperDX отображает временные метки в локальном
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
-# Expected output: /etc/otelcol-contrib/custom.config.yaml
+# Ожидаемый результат: /etc/otelcol-contrib/custom.config.yaml
 ```
 
 **Проверьте, что пользовательский конфигурационный файл примонтирован:**
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
-# Expected output: Should show file size and permissions
+# Ожидаемый результат: должен показать размер файла и права доступа
 ```
 
 **Просмотрите содержимое пользовательской конфигурации:**
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
-# Should display your redis-monitoring.yaml content
+# Должно отобразиться содержимое вашего файла redis-monitoring.yaml
 ```
 
 **Убедитесь, что в эффективной конфигурации указан ваш приёмник `filelog`:**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
-# Should show your filelog/redis receiver configuration
+# Должна отобразиться конфигурация вашего приёмника filelog/Redis
 ```
 
 ### В HyperDX не отображаются логи
@@ -343,37 +343,37 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 redis-cli CONFIG GET logfile
-# Expected output: Should show a file path, not empty string
-# Example: 1) "logfile" 2) "/var/log/redis/redis-server.log"
+# Ожидаемый результат: должен отобразиться путь к файлу, а не пустая строка
+# Пример: 1) "logfile" 2) "/var/log/redis/redis-server.log"
 ```
 
 **Проверьте, что Redis активно ведёт логирование:**
 
 ```bash
 tail -f /var/log/redis/redis-server.log
-# Should show recent log entries in Redis format
+# Должны отобразиться последние записи журнала в формате Redis
 ```
 
 **Убедитесь, что коллектор может читать логи:**
 
 ```bash
 docker exec <container> cat /var/log/redis/redis-server.log
-# Should display Redis log entries
+# Должны отобразиться записи лога Redis
 ```
 
 **Проверьте наличие ошибок в логах коллектора:**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
-# Look for any error messages related to filelog or Redis
+# Проверьте наличие сообщений об ошибках, связанных с filelog или Redis
 ```
 
 **Если используете docker-compose, проверьте общие тома:**
 
 ```bash
-# Check both containers are using the same volume
+# Проверьте, что оба контейнера используют один и тот же том {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# Verify both containers have the volume mounted
+# Убедитесь, что том подключен к обоим контейнерам {#expected-output-should-show-file-size-and-permissions}
 ```
 
 ### Логи разбираются некорректно
@@ -381,7 +381,7 @@ docker volume inspect <volume-name>
 **Убедитесь, что формат логов Redis соответствует ожидаемому формату:**
 
 ```bash
-# Redis Logs should look like:
+# Логи Redis должны выглядеть так: {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```

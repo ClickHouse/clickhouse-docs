@@ -15,56 +15,52 @@ doc_type: 'reference'
 
 ## Синтаксис {#syntax}
 
-```
-
-## Examples {#examples}
-
-To create a `DATABASE` with a comment:
-
+```sql
+ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
 ## Примеры {#examples}
 
 Чтобы создать базу данных (`DATABASE`) с комментарием:
 
-```
-
-To modify the comment:
-
+```sql
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'Временная база данных';
 ```
 
 Чтобы отредактировать комментарий:
 
-```
-
-To view the modified comment:
-
+```sql
+ALTER DATABASE database_with_comment 
+MODIFY COMMENT 'new comment on a database';
 ```
 
 Чтобы просмотреть изменённый комментарий:
 
+```sql
+SELECT comment 
+FROM system.databases 
+WHERE name = 'database_with_comment';
 ```
 
-```
-
-```
-
-To remove the database comment:
-
+```text
+┌─comment─────────────────┐
+│ новый комментарий к базе данных │
+└─────────────────────────┘
 ```
 
 Чтобы удалить комментарий к базе данных:
 
-```
-
-To verify that the comment was removed:
-
+```sql
+ALTER DATABASE database_with_comment 
+MODIFY COMMENT '';
 ```
 
 Чтобы убедиться, что комментарий был удалён:
 
-```
-
+```sql title="Query"
+SELECT comment 
+FROM system.databases 
+WHERE  name = 'database_with_comment';
 ```
 
 ```text title="Response"

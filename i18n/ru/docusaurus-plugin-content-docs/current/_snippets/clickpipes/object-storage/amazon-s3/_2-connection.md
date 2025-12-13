@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
   * **S3 file path**: S3 ClickPipe ожидает [URI в формате virtual-hosted-style](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access).
 
     ```bash
-        https://bucket-name.s3.region-code.amazonaws.com/key-name
-        ```
+    https://bucket-name.s3.region-code.amazonaws.com/key-name
+    ```
 
     Можно использовать подстановочные символы POSIX для сопоставления с несколькими файлами или префиксами. См. [справочную документацию](/integrations/clickpipes/object-storage/overview/#file-pattern-matching) для получения рекомендаций по поддерживаемым шаблонам.

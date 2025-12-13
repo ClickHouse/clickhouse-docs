@@ -17,44 +17,8 @@ doc_type: 'reference'
 
 **Синтаксис:**
 
-```
-
-Internally, `Time64` stores a signed 64-bit decimal (Decimal64) number of fractional seconds.
-The tick resolution is determined by the `precision` parameter.
-Time zones are not supported: specifying a time zone with `Time64` will throw an error.
-
-Unlike `DateTime64`, `Time64` does not store a date component.
-See also [`Time`](../../sql-reference/data-types/time.md).
-
-Text representation range: [-999:59:59.000, 999:59:59.999] for `precision = 3`. In general, the minimum is `-999:59:59` and the maximum is `999:59:59` with up to `precision` fractional digits (for `precision = 9`, the minimum is `-999:59:59.999999999`).
-
-## Implementation details {#implementation-details}
-
-**Representation**.
-Signed `Decimal64` value counting fractional second with `precision` fractional digits.
-
-**Normalization**.
-When parsing strings to `Time64`, the time components are normalized and not validated.
-For example, `25:70:70` is interpreted as `26:11:10`.
-
-**Negative values**.
-Leading minus signs are supported and preserved.
-Negative values typically arise from arithmetic operations on `Time64` values.
-For `Time64`, negative inputs are preserved for both text (e.g., `'-01:02:03.123'`) and numeric inputs (e.g., `-3723.123`).
-
-**Saturation**.
-The time-of-day component is capped to the range [-999:59:59.xxx, 999:59:59.xxx] when converting to components or serialising to text.
-The stored numeric value may exceed this range; however, any component extraction (hours, minutes, seconds) and textual representation use the saturated value.
-
-**Time zones**.
-`Time64` does not support time zones.
-Specifying a time zone when creating a `Time64` type or value throws an error.
-Likewise, attempts to apply or change the time zone on `Time64` columns is not supported and results in an error.
-
-## Examples {#examples}
-
-1. Creating a table with a `Time64`-type column and inserting data into it:
-
+```sql
+Time64(precision)
 ```
 
 Внутренне тип `Time64` хранит знаковое 64-битное десятичное число (Decimal64), представляющее дробные секунды.
@@ -93,48 +57,61 @@ Likewise, attempts to apply or change the time zone on `Time64` columns is not s
 
 1. Создание таблицы со столбцом типа `Time64` и вставка в неё данных:
 
+```sql
+CREATE TABLE tab64
+(
+    `event_id` UInt8,
+    `time` Time64(3)
+)
+ENGINE = TinyLog;
 ```
 
+```sql
+-- Разбор Time64
+-- - из строки,
+-- - из количества секунд с 00:00:00 (дробная часть согласно заданной точности).
+INSERT INTO tab64 VALUES (1, '14:30:25'), (2, 52225.123), (3, '14:30:25');
+
+SELECT * FROM tab64 ORDER BY event_id;
 ```
 
-```
-
-```
-
-```
-
-2. Filtering on `Time64` values
-
+```text
+   ┌─event_id─┬────────time─┐
+1. │        1 │ 14:30:25.000 │
+2. │        2 │ 14:30:25.123 │
+3. │        3 │ 14:30:25.000 │
+   └──────────┴──────────────┘
 ```
 
 2. Фильтрация по значениям типа `Time64`
 
+```sql
+SELECT * FROM tab64 WHERE time = toTime64('14:30:25', 3);
 ```
 
+```text
+   ┌─event_id─┬────────time─┐
+1. │        1 │ 14:30:25.000 │
+2. │        3 │ 14:30:25.000 │
+   └──────────┴──────────────┘
 ```
 
+```sql
+SELECT * FROM tab64 WHERE time = toTime64(52225.123, 3);
 ```
 
-```
-
-```
-
-```
-
-```
-
-Note: `toTime64` parses numeric literals as seconds with a fractional part according to the specified precision, so provide the intended fractional digits explicitly.
-
-3. Inspecting the resulting type:
-
+```text
+   ┌─event_id─┬────────time─┐
+1. │        2 │ 14:30:25.123 │
+   └──────────┴──────────────┘
 ```
 
 Примечание: `toTime64` разбирает числовые литералы как секунды с дробной частью в соответствии с указанной точностью, поэтому явно указывайте требуемое количество знаков после запятой.
 
 3. Проверка получившегося типа:
 
-```
-
+```sql
+SELECT CAST('14:30:25.250' AS Time64(3)) AS column, toTypeName(column) AS type;
 ```
 
 ```text

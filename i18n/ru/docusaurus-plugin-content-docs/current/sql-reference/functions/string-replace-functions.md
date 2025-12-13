@@ -62,7 +62,7 @@ SELECT format('{1} {0} {1}', 'World', 'Hello')
 └─────────────────────────────────────────┘
 ```
 
-**Implicit numbering**
+**Неявная нумерация**
 
 ```sql title=Query
 SELECT format('{} {}', 'Hello', 'World')
@@ -74,37 +74,32 @@ SELECT format('{} {}', 'Hello', 'World')
 └───────────────────────────────────┘
 ```
 
-
-
 ## overlay {#overlay}
 
-Introduced in: v24.9
+Добавлена в: v24.9
 
+Заменяет часть строки `input` строкой `replace`, начиная с индекса `offset`, отсчёт которого ведётся с 1.
 
-Replaces part of the string `input` with another string `replace`, starting at the 1-based index `offset`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 overlay(s, replace, offset[, length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the string `s`. [`Int`](/sql-reference/data-types/int-uint)
-- `length` — Optional. An integer type `Int`. `length` specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of bytes removed from `s` equals the length of `replace`; otherwise `length` bytes are removed. [`Int`](/sql-reference/data-types/int-uint)
+* `s` — Входная строка. [`String`](/sql-reference/data-types/string)
+* `replace` — Строка для замены. [`const String`](/sql-reference/data-types/string)
+* `offset` — Целочисленный тип `Int` (нумерация с 1). Если `offset` отрицательный, отсчёт ведётся с конца строки `s`. [`Int`](/sql-reference/data-types/int-uint)
+* `length` — Необязательный параметр. Целочисленный тип `Int`. `length` задаёт длину фрагмента во входной строке `s`, который требуется заменить. Если `length` не указан, количество байт, удаляемых из `s`, равно длине `replace`; иначе удаляется `length` байт. [`Int`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с выполненной заменой. [`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Basic replacement**
+**Базовая замена**
 
 ```sql title=Query
 SELECT overlay('Мой отец из Мексики.', 'мать', 4) AS res;
@@ -116,51 +111,46 @@ SELECT overlay('Мой отец из Мексики.', 'мать', 4) AS res;
 └──────────────────────────┘
 ```
 
-**Replacement with length**
+**Замена с заданной длиной**
 
 ```sql title=Query
-SELECT overlay('Мой отец родом из Мексики.', 'папа', 5, 8) AS res;
+SELECT overlay('My father is from Mexico.', 'dad', 4, 6) AS res;
 ```
 
 ```response title=Response
 ┌─res───────────────────┐
-│ Мой отец из Мексики.│
+│ My dad is from Mexico.│
 └───────────────────────┘
 ```
 
-
-
 ## overlayUTF8 {#overlayUTF8}
 
-Introduced in: v24.9
+Появилась в версии: v24.9
 
+Заменяет часть строки `s` другой строкой `replace`, начиная с позиции `offset` (индексация с 1).
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, а результат становится неопределённым.
 
-Replace part of the string `s` with another string `replace`, starting at the 1-based index `offset`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 overlayUTF8(s, replace, offset[, length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string. [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the input string `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. Specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of characters removed from `s` equals the length of `replace`, otherwise `length` characters are removed. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
+* `replace` — строка для замены. [`const String`](/sql-reference/data-types/string)
+* `offset` — целочисленный тип `Int` (нумерация с 1). Если `offset` отрицательный, он отсчитывается от конца входной строки `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — необязательный аргумент. Определяет длину фрагмента во входной строке `s`, который нужно заменить. Если `length` не указан, количество символов, удаляемых из `s`, равно длине `replace`, иначе удаляется `length` символов. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с произведённой заменой. [`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**UTF-8 replacement**
+**Замена в UTF-8**
 
 ```sql title=Query
 SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
@@ -172,38 +162,33 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 └───────────────────────────────┘
 ```
 
-
-
 ## printf {#printf}
 
-Introduced in: v24.8
+Добавлено в версии: v24.8
 
+Функция `printf` форматирует заданную строку, подставляя значения (строки, целые числа, числа с плавающей запятой и т. д.), перечисленные в аргументах, аналогично функции printf в C++.
+Строка формата может содержать спецификаторы формата, начинающиеся с символа `%`.
+Все, что не является символом `%` и следующим за ним спецификатором формата, считается литеральным текстом и копируется в вывод без изменений.
+Символ `%` как литерал можно экранировать с помощью `%%`.
 
-The `printf` function formats the given string with the values (strings, integers, floating-points etc.) listed in the arguments, similar to printf function in C++.
-The format string can contain format specifiers starting with `%` character.
-Anything not contained in `%` and the following format specifier is considered literal text and copied verbatim into the output.
-Literal `%` character can be escaped by `%%`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 printf(format[, sub1, sub2, ...])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `format` — The format string with `%` specifiers. [`String`](/sql-reference/data-types/string)
-- `sub1, sub2, ...` — Optional. Zero or more values to substitute into the format string. [`Any`](/sql-reference/data-types)
+* `format` — Форматная строка со спецификаторами `%`. [`String`](/sql-reference/data-types/string)
+* `sub1, sub2, ...` — Необязательный параметр. Ноль или более значений для подстановки в форматную строку. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает отформатированную строку. [`String`](/sql-reference/data-types/string)
 
-Returns a formatted string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**C++-style formatting**
+**Форматирование в стиле C++**
 
 ```sql title=Query
 SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
@@ -215,36 +200,31 @@ SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## regexpQuoteMeta {#regexpQuoteMeta}
 
-Introduced in: v20.1
+Введена в версии v20.1
 
+Добавляет обратный слеш перед следующими символами, которые имеют специальное значение в регулярных выражениях: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`.
+Эта реализация незначительно отличается от re2::RE2::QuoteMeta.
+Она экранирует нулевой байт как `\0` вместо `\x00` и экранирует только необходимые символы.
 
-Adds a backslash before these characters with special meaning in regular expressions: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`.
-This implementation slightly differs from re2::RE2::QuoteMeta.
-It escapes zero byte as `\0` instead of `\x00` and it escapes only required characters.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 regexpQuoteMeta(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The input string containing characters to be escaped for regex. [`String`](/sql-reference/data-types/string)
+* `s` — Входная строка, содержащая символы, подлежащие экранированию в регулярных выражениях (regex). [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой экранированы специальные символы регулярных выражений (regex). [`String`](/sql-reference/data-types/string)
 
-Returns a string with regex special characters escaped. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Escape regex special characters**
+**Экранирование специальных символов регулярных выражений (regex)**
 
 ```sql title=Query
 SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
@@ -256,38 +236,33 @@ SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
 └───────────────────────────────┘
 ```
 
-
-
 ## replaceAll {#replaceAll}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Заменяет все вхождения подстроки `pattern` в `haystack` строкой `replacement`.
 
-Replaces all occurrences of the substring `pattern` in `haystack` by the `replacement` string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 replaceAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `replace`
+**Псевдонимы**: `replace`
 
-**Arguments**
+**Аргументы**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — входная строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string)
+* `pattern` — подстрока, которую нужно найти и заменить. [`const String`](/sql-reference/data-types/string)
+* `replacement` — строка, которой будет заменена подстрока `pattern`. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой все вхождения `pattern` заменены. [`String`](/sql-reference/data-types/string)
 
-Returns a string with all occurrences of pattern replaced. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Replace all occurrences**
+**Замена всех вхождений**
 
 ```sql title=Query
 SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -299,36 +274,31 @@ SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
 └──────────────┘
 ```
 
-
-
 ## replaceOne {#replaceOne}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
+Заменяет первое вхождение подстроки `pattern` в `haystack` строкой `replacement`.
 
-Replaces the first occurrence of the substring `pattern` in `haystack` by the `replacement` string.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 replaceOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — входная строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string)
+* `pattern` — подстрока для поиска и замены. [`const String`](/sql-reference/data-types/string)
+* `replacement` — строка, которой будет заменена найденная подстрока. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой первое вхождение подстроки заменено. [`String`](/sql-reference/data-types/string)
 
-Returns a string with the first occurrence of pattern replaced. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Replace first occurrence**
+**Замена первого вхождения**
 
 ```sql title=Query
 SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -340,39 +310,34 @@ SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
 └─────────────────┘
 ```
 
-
-
 ## replaceRegexpAll {#replaceRegexpAll}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Аналог функции `replaceRegexpOne`, но заменяет все вхождения шаблона.
+В качестве исключения, если регулярное выражение сработало на пустой подстроке, замена выполняется не более одного раза.
 
-Like `replaceRegexpOne` but replaces all occurrences of the pattern.
-As an exception, if a regular expression worked on an empty substring, the replacement is not made more than once.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 replaceRegexpAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `REGEXP_REPLACE`
+**Псевдонимы**: `REGEXP_REPLACE`
 
-**Arguments**
+**Аргументы**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — Входная строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string)
+* `pattern` — Шаблон регулярного выражения для поиска. [`const String`](/sql-reference/data-types/string)
+* `replacement` — Строка, заменяющая найденный шаблон, может содержать подстановки. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой все совпадения с регулярным выражением заменены. [`String`](/sql-reference/data-types/string)
 
-Returns a string with all regex matches replaced. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Replace all characters with doubled version**
+**Заменить каждый символ на его удвоенную версию**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
@@ -384,7 +349,7 @@ SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
 └──────────────────────┘
 ```
 
-**Empty substring replacement example**
+**Пример замены пустой подстроки**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
@@ -396,40 +361,35 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 └─────────────────────┘
 ```
 
-
-
 ## replaceRegexpOne {#replaceRegexpOne}
 
-Introduced in: v1.1
+Введено в: v1.1
 
+Заменяет первое вхождение подстроки в `haystack`, совпадающей с регулярным выражением `pattern` (в синтаксисе re2), строкой `replacement`.
+`replacement` может содержать подстановки `\0-\9`.
+Подстановки `\1-\9` соответствуют 1-й–9-й захватывающим группам (подсовпадениям), подстановка `\0` соответствует полному совпадению.
+Чтобы использовать буквальный символ `\` в строках `pattern` или `replacement`, экранируйте его с помощью `\`.
+Также имейте в виду, что строковые литералы требуют дополнительного экранирования.
 
-Replaces the first occurrence of the substring matching the regular expression `pattern` (in re2 syntax) in `haystack` by the `replacement` string.
-`replacement` can contain substitutions `\0-\9`.
-Substitutions `\1-\9` correspond to the 1st to 9th capturing group (submatch), substitution `\0` corresponds to the entire match.
-To use a verbatim `\` character in the `pattern` or `replacement` strings, escape it using `\`.
-Also keep in mind that string literals require extra escaping.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 replaceRegexpOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — Входная строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string)
+* `pattern` — Шаблон регулярного выражения для поиска. [`const String`](/sql-reference/data-types/string)
+* `replacement` — Строка, на которую заменяется совпадение с шаблоном, может содержать подстановки. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой первая подстрока, соответствующая регулярному выражению, заменена. [`String`](/sql-reference/data-types/string)
 
-Returns a string with the first regex match replaced. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Converting ISO dates to American format**
+**Преобразование дат из формата ISO в американский формат**
 
 ```sql title=Query
 SELECT DISTINCT
@@ -450,7 +410,7 @@ FORMAT TabSeparated
 2014-03-23      03/23/2014
 ```
 
-**Copying a string ten times**
+**Копирование строки десять раз**
 
 ```sql title=Query
 SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0') AS res
@@ -462,43 +422,37 @@ SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## translate {#translate}
 
-Introduced in: v22.7
+Впервые появилась в: v22.7
 
+Заменяет символы в строке `s` по взаимно-однозначному соответствию символов, заданному строками `from` и `to`.
+`from` и `to` должны быть константными ASCII-строками.
+Если длины `from` и `to` совпадают, каждое вхождение первого символа `from` в `s` заменяется на первый символ `to`, каждого вхождения второго символа `from` в `s` — на второй символ `to` и так далее.
+Если `from` содержит больше символов, чем `to`, все вхождения символов из конца `from`, для которых нет соответствующего символа в `to`, удаляются из `s`.
+Не-ASCII-символы в `s` этой функцией не изменяются.
 
-Replaces characters in the string `s` using a one-to-one character mapping defined by `from` and `to` strings.
-`from` and `to` must be constant ASCII strings.
-If `from` and `to` have equal sizes, each occurrence of the first character of `first` in `s` is replaced by the first character of `to`, the second character of `first` in `s` is replaced by the second character of `to`, etc.
-If `from` contains more characters than `to`, all occurrences of the characters at the end of `from` that have no corresponding character in `to` are deleted from `s`.
-Non-ASCII characters in `s` are not modified by the function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 translate(s, from, to)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant ASCII string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant ASCII string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — входная строка для преобразования. [`String`](/sql-reference/data-types/string)
+* `from` — константная строка ASCII, содержащая символы для замены. [`const String`](/sql-reference/data-types/string)
+* `to` — константная строка ASCII, содержащая символы-заменители. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с применёнными заменами символов. [`String`](/sql-reference/data-types/string)
 
-Returns a string with character translations applied. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Character mapping**
-
+**Сопоставление символов**
 ```sql title=Query
-SELECT translate('Привет, мир!', 'delor', 'DELOR') AS res
+SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
 ```
 
 ```response title=Response
@@ -507,7 +461,7 @@ SELECT translate('Привет, мир!', 'delor', 'DELOR') AS res
 └───────────────┘
 ```
 
-**Different lengths**
+**Разная длина**
 
 ```sql title=Query
 SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
@@ -519,36 +473,31 @@ SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
 └───────┘
 ```
 
-
-
 ## translateUTF8 {#translateUTF8}
 
-Introduced in: v22.7
+Добавлена в версии: v22.7
 
+Аналог [`translate`](#translate), но предполагает, что `s`, `from` и `to` — строки в кодировке UTF-8.
 
-Like [`translate`](#translate) but assumes `s`, `from` and `to` are UTF-8 encoded strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 translateUTF8(s, from, to)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — UTF-8 input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant UTF-8 string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant UTF-8 string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — входная строка в кодировке UTF-8 для преобразования. [`String`](/sql-reference/data-types/string)
+* `from` — константная строка UTF-8, содержащая заменяемые символы. [`const String`](/sql-reference/data-types/string)
+* `to` — константная строка UTF-8, содержащая символы замены. [`const String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение типа данных `String`. [`String`](/sql-reference/data-types/string)
 
-Returns a `String` data type value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**UTF-8 character translation**
+**Преобразование символов UTF-8**
 
 ```sql title=Query
 SELECT translateUTF8('Münchener Straße', 'üß', 'us') AS res;

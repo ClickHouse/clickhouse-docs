@@ -42,32 +42,32 @@ ClickHouse оптимизирован для:
   <summary>Пример данных для следующих примеров</summary>
 
   ```sql
--- Create the products table
-CREATE TABLE products (
-    product_id UInt32,
-    product_name String,
-    price Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY product_id;
+  -- Создаём таблицу products
+  CREATE TABLE products (
+      product_id UInt32,
+      product_name String,
+      price Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY product_id;
 
--- Insert sample data
-INSERT INTO products (product_id, product_name, price) VALUES
-(1, 'Laptop', 899.99),
-(2, 'Wireless Mouse', 24.99),
-(3, 'USB-C Cable', 12.50),
-(4, 'Monitor', 299.00),
-(5, 'Keyboard', 79.99),
-(6, 'Webcam', 54.95),
-(7, 'Desk Lamp', 34.99),
-(8, 'External Hard Drive', 119.99),
-(9, 'Headphones', 149.00),
-(10, 'Phone Stand', 15.99);
-```
+  -- Вставляем пример данных
+  INSERT INTO products (product_id, product_name, price) VALUES
+  (1, 'Laptop', 899.99),
+  (2, 'Wireless Mouse', 24.99),
+  (3, 'USB-C Cable', 12.50),
+  (4, 'Monitor', 299.00),
+  (5, 'Keyboard', 79.99),
+  (6, 'Webcam', 54.95),
+  (7, 'Desk Lamp', 34.99),
+  (8, 'External Hard Drive', 119.99),
+  (9, 'Headphones', 149.00),
+  (10, 'Phone Stand', 15.99);
+  ```
 </details>
 
 ```sql
--- Simple calculation function
+-- Простая функция вычисления
 CREATE FUNCTION calculate_tax AS (price, rate) -> price * rate;
 
 SELECT
@@ -78,10 +78,10 @@ FROM products;
 ```
 
 ```sql
--- Conditional logic using if()
+-- Условная логика с использованием if()
 CREATE FUNCTION price_tier AS (price) ->
-    if(price < 100, 'Budget',
-       if(price < 500, 'Mid-range', 'Premium'));
+    if(price < 100, 'Эконом',
+       if(price < 500, 'Средний', 'Премиум'));
 
 SELECT
     product_name,
@@ -91,14 +91,14 @@ FROM products;
 ```
 
 ```sql
--- String manipulation
+-- Работа со строками
 CREATE FUNCTION format_phone AS (phone) ->
     concat('(', substring(phone, 1, 3), ') ',
            substring(phone, 4, 3), '-',
            substring(phone, 7, 4));
 
 SELECT format_phone('5551234567');
--- Result: (555) 123-4567
+-- Результат: (555) 123-4567
 ```
 
 **Ограничения:**
@@ -130,7 +130,7 @@ SELECT format_phone('5551234567');
 ```
 
 ```sql
--- Use the executable UDF
+-- Использование исполняемой UDF
 SELECT
     review_text,
     sentiment_score(review_text) AS score
@@ -150,49 +150,49 @@ FROM customer_reviews;
   <summary>Пример данных для демонстрации</summary>
 
   ```sql
--- Create the sales table
-CREATE TABLE sales (
-  date Date,
-  product_id UInt32,
-  product_name String,
-  category String,
-  quantity UInt32,
-  revenue Decimal(10, 2),
-  sales_amount Decimal(10, 2)
-)
-ENGINE = MergeTree()
-ORDER BY (date, product_id);
+  -- Создание таблицы sales
+  CREATE TABLE sales (
+    date Date,
+    product_id UInt32,
+    product_name String,
+    category String,
+    quantity UInt32,
+    revenue Decimal(10, 2),
+    sales_amount Decimal(10, 2)
+  )
+  ENGINE = MergeTree()
+  ORDER BY (date, product_id);
 
--- Insert sample data
-INSERT INTO sales VALUES
-('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
-('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
-('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
-('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
-('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
-('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
-('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
-('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
-('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
-```
+  -- Вставка примеров данных
+  INSERT INTO sales VALUES
+  ('2024-01-05', 12345, 'Laptop Pro', 'Electronics', 2, 1799.98, 1799.98),
+  ('2024-01-06', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-01-10', 12346, 'Wireless Mouse', 'Electronics', 5, 124.95, 124.95),
+  ('2024-01-15', 12347, 'USB-C Cable', 'Accessories', 10, 125.00, 125.00),
+  ('2024-01-20', 12345, 'Laptop Pro', 'Electronics', 3, 2699.97, 2699.97),
+  ('2024-01-25', 12348, 'Monitor 4K', 'Electronics', 2, 598.00, 598.00),
+  ('2024-02-01', 12345, 'Laptop Pro', 'Electronics', 1, 899.99, 899.99),
+  ('2024-02-05', 12349, 'Keyboard Mechanical', 'Accessories', 4, 319.96, 319.96),
+  ('2024-02-10', 12346, 'Wireless Mouse', 'Electronics', 8, 199.92, 199.92),
+  ('2024-02-15', 12350, 'Webcam HD', 'Electronics', 3, 164.85, 164.85);
+  ```
 </details>
 
 ```sql
--- Create a parameterized view
+-- Создать параметризованное представление
 CREATE VIEW sales_by_date AS
 SELECT
     date,
     product_id,
-    sum(quantity) AS total_quantity,
-    sum(revenue) AS total_revenue
+    sum(quantity) AS total_quantity, -- общее количество
+    sum(revenue) AS total_revenue -- общая выручка
 FROM sales
 WHERE date BETWEEN {start_date:Date} AND {end_date:Date}
 GROUP BY date, product_id;
 ```
 
 ```sql
--- Query the view with parameters
+-- Запрос представления с параметрами
 SELECT *
 FROM sales_by_date(start_date='2024-01-01', end_date='2024-01-31')
 WHERE product_id = 12345;
@@ -207,7 +207,7 @@ WHERE product_id = 12345;
 * [Маскирование данных](/cloud/guides/data-masking)
 
 ```sql
--- More complex parameterized view
+-- Более сложное параметризованное представление
 CREATE VIEW top_products_by_category AS
 SELECT
     category,
@@ -233,7 +233,7 @@ FROM (
 )
 WHERE rank <= {top_n:UInt32};
 
--- Use it
+-- Использование представления
 SELECT * FROM top_products_by_category(
     category='Electronics',
     min_date='2024-01-01',
@@ -248,7 +248,7 @@ SELECT * FROM top_products_by_category(
 Материализованные представления идеально подходят для предварительного вычисления дорогостоящих операций агрегации, которые традиционно выполнялись бы в хранимых процедурах. Если вы привыкли к традиционным СУБД, представляйте материализованное представление как **триггер INSERT**, который автоматически преобразует и агрегирует данные при их вставке в исходную таблицу:
 
 ```sql
--- Source table
+-- Исходная таблица
 CREATE TABLE page_views (
     user_id UInt64,
     page String,
@@ -258,7 +258,7 @@ CREATE TABLE page_views (
 ENGINE = MergeTree()
 ORDER BY (user_id, timestamp);
 
--- Materialized view that maintains aggregated statistics
+-- Материализованное представление, которое хранит агрегированную статистику
 CREATE MATERIALIZED VIEW daily_user_stats
 ENGINE = SummingMergeTree()
 ORDER BY (date, user_id)
@@ -271,7 +271,7 @@ AS SELECT
 FROM page_views
 GROUP BY date, user_id;
 
--- Insert sample data into source table
+-- Вставка примеров данных в исходную таблицу
 INSERT INTO page_views VALUES
 (101, '/home', '2024-01-15 10:00:00', 'session_a1'),
 (101, '/products', '2024-01-15 10:05:00', 'session_a1'),
@@ -286,7 +286,7 @@ INSERT INTO page_views VALUES
 (102, '/home', '2024-01-17 10:30:00', 'session_b2'),
 (102, '/contact', '2024-01-17 10:35:00', 'session_b2');
 
--- Query pre-aggregated data
+-- Запрос предагрегированных данных
 SELECT
     user_id,
     sum(page_views) AS total_views,
@@ -301,7 +301,7 @@ GROUP BY user_id;
 Для пакетной обработки по расписанию (например, для ночного запуска хранимых процедур):
 
 ```sql
--- Automatically refresh every day at 2 AM
+-- Автоматическое обновление каждый день в 2:00
 CREATE MATERIALIZED VIEW monthly_sales_report
 REFRESH EVERY 1 DAY OFFSET 2 HOUR
 AS SELECT
@@ -315,7 +315,7 @@ FROM orders
 WHERE order_date >= today() - INTERVAL 13 MONTH
 GROUP BY month, region, product_category;
 
--- Query always has fresh data
+-- Запрос всегда содержит актуальные данные
 SELECT * FROM monthly_sales_report
 WHERE month = toStartOfMonth(today());
 ```
@@ -334,78 +334,78 @@ WHERE month = toStartOfMonth(today());
 <Tabs>
   <TabItem value="mysql" label="Хранимая процедура в MySQL" default>
     ```sql
-DELIMITER $$
+    DELIMITER $$
 
-CREATE PROCEDURE process_order(
-    IN p_order_id INT,
-    IN p_customer_id INT,
-    IN p_order_total DECIMAL(10,2),
-    OUT p_status VARCHAR(50),
-    OUT p_loyalty_points INT
-)
-BEGIN
-    DECLARE v_customer_tier VARCHAR(20);
-    DECLARE v_previous_orders INT;
-    DECLARE v_discount DECIMAL(10,2);
+    CREATE PROCEDURE process_order(
+        IN p_order_id INT,
+        IN p_customer_id INT,
+        IN p_order_total DECIMAL(10,2),
+        OUT p_status VARCHAR(50),
+        OUT p_loyalty_points INT
+    )
+    BEGIN
+        DECLARE v_customer_tier VARCHAR(20);
+        DECLARE v_previous_orders INT;
+        DECLARE v_discount DECIMAL(10,2);
 
-    -- Start transaction
-    START TRANSACTION;
+        -- Начало транзакции
+        START TRANSACTION;
 
-    -- Get customer information
-    SELECT tier, total_orders
-    INTO v_customer_tier, v_previous_orders
-    FROM customers
-    WHERE customer_id = p_customer_id;
+        -- Получение информации о клиенте
+        SELECT tier, total_orders
+        INTO v_customer_tier, v_previous_orders
+        FROM customers
+        WHERE customer_id = p_customer_id;
 
-    -- Calculate discount based on tier
-    IF v_customer_tier = 'gold' THEN
-        SET v_discount = p_order_total * 0.15;
-    ELSEIF v_customer_tier = 'silver' THEN
-        SET v_discount = p_order_total * 0.10;
-    ELSE
-        SET v_discount = 0;
-    END IF;
+        -- Расчет скидки на основе уровня
+        IF v_customer_tier = 'gold' THEN
+            SET v_discount = p_order_total * 0.15;
+        ELSEIF v_customer_tier = 'silver' THEN
+            SET v_discount = p_order_total * 0.10;
+        ELSE
+            SET v_discount = 0;
+        END IF;
 
-    -- Insert order record
-    INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
-    VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
-            p_order_total - v_discount);
+        -- Вставка записи заказа
+        INSERT INTO orders (order_id, customer_id, order_total, discount, final_amount)
+        VALUES (p_order_id, p_customer_id, p_order_total, v_discount,
+                p_order_total - v_discount);
 
-    -- Update customer statistics
-    UPDATE customers
-    SET total_orders = total_orders + 1,
-        lifetime_value = lifetime_value + (p_order_total - v_discount),
-        last_order_date = NOW()
-    WHERE customer_id = p_customer_id;
+        -- Обновление статистики клиента
+        UPDATE customers
+        SET total_orders = total_orders + 1,
+            lifetime_value = lifetime_value + (p_order_total - v_discount),
+            last_order_date = NOW()
+        WHERE customer_id = p_customer_id;
 
-    -- Calculate loyalty points (1 point per dollar)
-    SET p_loyalty_points = FLOOR(p_order_total - v_discount);
+        -- Расчет баллов лояльности (1 балл за доллар)
+        SET p_loyalty_points = FLOOR(p_order_total - v_discount);
 
-    -- Insert loyalty points transaction
-    INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-    VALUES (p_customer_id, p_loyalty_points, NOW(),
-            CONCAT('Order #', p_order_id));
+        -- Вставка транзакции баллов лояльности
+        INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+        VALUES (p_customer_id, p_loyalty_points, NOW(),
+                CONCAT('Order #', p_order_id));
 
-    -- Check if customer should be upgraded
-    IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
-        UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
-        SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
-    ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
-        UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
-        SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
-    ELSE
-        SET p_status = 'ORDER_COMPLETE';
-    END IF;
+        -- Проверка необходимости повышения уровня клиента
+        IF v_previous_orders + 1 >= 10 AND v_customer_tier = 'bronze' THEN
+            UPDATE customers SET tier = 'silver' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER';
+        ELSEIF v_previous_orders + 1 >= 50 AND v_customer_tier = 'silver' THEN
+            UPDATE customers SET tier = 'gold' WHERE customer_id = p_customer_id;
+            SET p_status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD';
+        ELSE
+            SET p_status = 'ORDER_COMPLETE';
+        END IF;
 
-    COMMIT;
-END$$
+        COMMIT;
+    END$$
 
-DELIMITER ;
+    DELIMITER ;
 
--- Call the stored procedure
-CALL process_order(12345, 5678, 250.00, @status, @points);
-SELECT @status, @points;
-```
+    -- Вызов хранимой процедуры
+    CALL process_order(12345, 5678, 250.00, @status, @points);
+    SELECT @status, @points;
+    ```
   </TabItem>
 
   <TabItem value="ClickHouse" label="Код приложения, работающего с ClickHouse">
@@ -416,143 +416,143 @@ SELECT @status, @points;
     :::
 
     ```python
-# Python example using clickhouse-connect
-import clickhouse_connect
-from datetime import datetime
-from decimal import Decimal
+    # Пример на Python с использованием clickhouse-connect
+    import clickhouse_connect
+    from datetime import datetime
+    from decimal import Decimal
 
-client = clickhouse_connect.get_client(host='localhost')
+    client = clickhouse_connect.get_client(host='localhost')
 
-def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
-    """
-    Processes an order with business logic that would be in a stored procedure.
-    Returns: (status_message, loyalty_points)
-
-    Note: ClickHouse is optimized for analytics, not OLTP transactions.
-    For transactional workloads, use an OLTP database (PostgreSQL, MySQL)
-    and sync analytics data to ClickHouse for reporting.
-    """
-
-    # Step 1: Get customer information
-    result = client.query(
+    def process_order(order_id: int, customer_id: int, order_total: Decimal) -> tuple[str, int]:
         """
-        SELECT tier, total_orders
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id}
-    )
+        Обрабатывает заказ с бизнес-логикой, которая обычно реализуется в хранимой процедуре.
+        Возвращает: (status_message, loyalty_points)
 
-    if not result.result_rows:
-        raise ValueError(f"Customer {customer_id} not found")
-
-    customer_tier, previous_orders = result.result_rows[0]
-
-    # Step 2: Calculate discount based on tier (business logic in Python)
-    discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
-    discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
-    final_amount = order_total - discount
-
-    # Step 3: Insert order record
-    client.command(
+        Примечание: ClickHouse оптимизирован для аналитики, а не для OLTP-транзакций.
+        Для транзакционных нагрузок используйте OLTP-базу данных (PostgreSQL, MySQL)
+        и синхронизируйте аналитические данные с ClickHouse для формирования отчётов.
         """
-        INSERT INTO orders (order_id, customer_id, order_total, discount,
-                           final_amount, order_date)
-        VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
-                {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
-        """,
-        parameters={
-            'oid': order_id,
-            'cid': customer_id,
-            'total': float(order_total),
-            'disc': float(discount),
-            'final': float(final_amount)
-        }
-    )
 
-    # Step 4: Calculate new customer statistics
-    new_order_count = previous_orders + 1
-
-    # For analytics databases, prefer INSERT over UPDATE
-    # This uses a ReplacingMergeTree pattern
-    client.command(
-        """
-        INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                              update_time)
-        SELECT
-            customer_id,
-            tier,
-            {new_count: UInt32} AS total_orders,
-            now() AS last_order_date,
-            now() AS update_time
-        FROM customers
-        WHERE customer_id = {cid: UInt32}
-        """,
-        parameters={'cid': customer_id, 'new_count': new_order_count}
-    )
-
-    # Step 5: Calculate and record loyalty points
-    loyalty_points = int(final_amount)
-
-    client.command(
-        """
-        INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
-        VALUES ({cid: UInt32}, {pts: Int32}, now(),
-                {desc: String})
-        """,
-        parameters={
-            'cid': customer_id,
-            'pts': loyalty_points,
-            'desc': f'Order #{order_id}'
-        }
-    )
-
-    # Step 6: Check for tier upgrade (business logic in Python)
-    status = 'ORDER_COMPLETE'
-
-    if new_order_count >= 10 and customer_tier == 'bronze':
-        # Upgrade to silver
-        client.command(
+        # Шаг 1: Получение информации о клиенте
+        result = client.query(
             """
-            INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
-                                  update_time)
-            SELECT
-                customer_id, 'silver' AS tier, total_orders, last_order_date,
-                now() AS update_time
+            SELECT tier, total_orders
             FROM customers
             WHERE customer_id = {cid: UInt32}
             """,
             parameters={'cid': customer_id}
         )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
 
-    elif new_order_count >= 50 and customer_tier == 'silver':
-        # Upgrade to gold
+        if not result.result_rows:
+            raise ValueError(f"Клиент {customer_id} не найден")
+
+        customer_tier, previous_orders = result.result_rows[0]
+
+        # Шаг 2: Расчёт скидки на основе уровня (бизнес-логика в Python)
+        discount_rates = {'gold': 0.15, 'silver': 0.10, 'bronze': 0.0}
+        discount = order_total * Decimal(str(discount_rates.get(customer_tier, 0.0)))
+        final_amount = order_total - discount
+
+        # Шаг 3: Вставка записи заказа
+        client.command(
+            """
+            INSERT INTO orders (order_id, customer_id, order_total, discount,
+                               final_amount, order_date)
+            VALUES ({oid: UInt32}, {cid: UInt32}, {total: Decimal64(2)},
+                    {disc: Decimal64(2)}, {final: Decimal64(2)}, now())
+            """,
+            parameters={
+                'oid': order_id,
+                'cid': customer_id,
+                'total': float(order_total),
+                'disc': float(discount),
+                'final': float(final_amount)
+            }
+        )
+
+        # Шаг 4: Расчёт новой статистики клиента
+        new_order_count = previous_orders + 1
+
+        # Для аналитических баз данных предпочтительнее использовать INSERT вместо UPDATE
+        # Здесь используется паттерн ReplacingMergeTree
         client.command(
             """
             INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
                                   update_time)
             SELECT
-                customer_id, 'gold' AS tier, total_orders, last_order_date,
+                customer_id,
+                tier,
+                {new_count: UInt32} AS total_orders,
+                now() AS last_order_date,
                 now() AS update_time
             FROM customers
             WHERE customer_id = {cid: UInt32}
             """,
-            parameters={'cid': customer_id}
+            parameters={'cid': customer_id, 'new_count': new_order_count}
         )
-        status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
 
-    return status, loyalty_points
+        # Шаг 5: Расчёт и запись баллов лояльности
+        loyalty_points = int(final_amount)
 
-# Use the function
-status, points = process_order(
-    order_id=12345,
-    customer_id=5678,
-    order_total=Decimal('250.00')
-)
+        client.command(
+            """
+            INSERT INTO loyalty_points (customer_id, points, transaction_date, description)
+            VALUES ({cid: UInt32}, {pts: Int32}, now(),
+                    {desc: String})
+            """,
+            parameters={
+                'cid': customer_id,
+                'pts': loyalty_points,
+                'desc': f'Order #{order_id}'
+            }
+        )
 
-print(f"Status: {status}, Loyalty Points: {points}")
-```
+        # Шаг 6: Проверка повышения уровня (бизнес-логика в Python)
+        status = 'ORDER_COMPLETE'
+
+        if new_order_count >= 10 and customer_tier == 'bronze':
+            # Повышение до уровня silver
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'silver' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_SILVER'
+
+        elif new_order_count >= 50 and customer_tier == 'silver':
+            # Повышение до уровня gold
+            client.command(
+                """
+                INSERT INTO customers (customer_id, tier, total_orders, last_order_date,
+                                      update_time)
+                SELECT
+                    customer_id, 'gold' AS tier, total_orders, last_order_date,
+                    now() AS update_time
+                FROM customers
+                WHERE customer_id = {cid: UInt32}
+                """,
+                parameters={'cid': customer_id}
+            )
+            status = 'ORDER_COMPLETE_TIER_UPGRADED_GOLD'
+
+        return status, loyalty_points
+
+    # Использование функции
+    status, points = process_order(
+        order_id=12345,
+        customer_id=5678,
+        order_total=Decimal('250.00')
+    )
+
+    print(f"Статус: {status}, Баллы лояльности: {points}")
+    ```
   </TabItem>
 </Tabs>
 
@@ -604,36 +604,36 @@ print(f"Status: {status}, Loyalty Points: {points}")
   <summary>Пример таблицы и данных</summary>
 
   ```sql
--- Create the user_events table (ClickHouse syntax)
-CREATE TABLE user_events (
-    event_id UInt32,
-    user_id UInt64,
-    event_name String,
-    event_date Date,
-    event_timestamp DateTime
-) ENGINE = MergeTree()
-ORDER BY (user_id, event_date);
+  -- Создайте таблицу user_events (синтаксис ClickHouse)
+  CREATE TABLE user_events (
+      event_id UInt32,
+      user_id UInt64,
+      event_name String,
+      event_date Date,
+      event_timestamp DateTime
+  ) ENGINE = MergeTree()
+  ORDER BY (user_id, event_date);
 
--- Insert sample data for multiple users and events
-INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
-(1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
-(2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
-(3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
-(4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
-(5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
-(6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
-(7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
-(8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
-(9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
-(10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
-(11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
-(12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
-(13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
-(14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
-(15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
-(16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
-(17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
-```
+  -- Вставьте пример данных для нескольких пользователей и событий
+  INSERT INTO user_events (event_id, user_id, event_name, event_date, event_timestamp) VALUES
+  (1, 12345, 'page_view', '2024-01-05', '2024-01-05 10:30:00'),
+  (2, 12345, 'page_view', '2024-01-05', '2024-01-05 10:35:00'),
+  (3, 12345, 'add_to_cart', '2024-01-05', '2024-01-05 10:40:00'),
+  (4, 12345, 'page_view', '2024-01-10', '2024-01-10 14:20:00'),
+  (5, 12345, 'add_to_cart', '2024-01-10', '2024-01-10 14:25:00'),
+  (6, 12345, 'purchase', '2024-01-10', '2024-01-10 14:30:00'),
+  (7, 12345, 'page_view', '2024-01-15', '2024-01-15 09:15:00'),
+  (8, 12345, 'page_view', '2024-01-15', '2024-01-15 09:20:00'),
+  (9, 12345, 'page_view', '2024-01-20', '2024-01-20 16:45:00'),
+  (10, 12345, 'add_to_cart', '2024-01-20', '2024-01-20 16:50:00'),
+  (11, 12345, 'purchase', '2024-01-25', '2024-01-25 11:10:00'),
+  (12, 12345, 'page_view', '2024-01-28', '2024-01-28 13:30:00'),
+  (13, 67890, 'page_view', '2024-01-05', '2024-01-05 11:00:00'),
+  (14, 67890, 'add_to_cart', '2024-01-05', '2024-01-05 11:05:00'),
+  (15, 67890, 'purchase', '2024-01-05', '2024-01-05 11:10:00'),
+  (16, 12345, 'page_view', '2024-02-01', '2024-02-01 10:00:00'),
+  (17, 12345, 'add_to_cart', '2024-02-01', '2024-02-01 10:05:00');
+  ```
 </details>
 
 ```sql
@@ -675,7 +675,7 @@ clickhouse-client \
 <summary>Таблицы и пример данных</summary>
 
 ```sql
--- 1. Create a table for string and number tests
+-- 1. Создайте таблицу для тестирования строк и чисел
 CREATE TABLE IF NOT EXISTS users (
     name String,
     age UInt8,
@@ -687,7 +687,7 @@ INSERT INTO users VALUES
     ('Jane Smith', 30, 85000.75),
     ('Peter Jones', 20, 50000.00);
 
--- 2. Create a table for date and timestamp tests
+-- 2. Создайте таблицу для тестирования дат и временных меток
 CREATE TABLE IF NOT EXISTS events (
     event_date Date,
     event_timestamp DateTime
@@ -698,7 +698,7 @@ INSERT INTO events VALUES
     ('2024-01-15', '2024-01-15 15:00:00'),
     ('2024-01-16', '2024-01-16 10:00:00');
 
--- 3. Create a table for array tests
+-- 3. Создайте таблицу для тестирования массивов
 CREATE TABLE IF NOT EXISTS products (
     id UInt32,
     name String
@@ -706,7 +706,7 @@ CREATE TABLE IF NOT EXISTS products (
 
 INSERT INTO products VALUES (1, 'Laptop'), (2, 'Monitor'), (3, 'Mouse'), (4, 'Keyboard');
 
--- 4. Create a table for Map (struct-like) tests
+-- 4. Создайте таблицу для тестирования Map (аналог структур)
 CREATE TABLE IF NOT EXISTS accounts (
     user_id UInt32,
     status String,
@@ -718,7 +718,7 @@ INSERT INTO accounts VALUES
     (102, 'inactive', 'basic'),
     (103, 'active', 'basic');
 
--- 5. Create a table for Identifier tests
+-- 5. Создайте таблицу для тестирования Identifier
 CREATE TABLE IF NOT EXISTS sales_2024 (
     value UInt32
 ) ENGINE = Memory;
@@ -802,13 +802,13 @@ SELECT count() FROM {table: Identifier};
 **Что РАБОТАЕТ:**
 
 ```sql
--- ✓ Values in WHERE clause
+-- ✓ Значения в предложении WHERE
 SELECT * FROM users WHERE id = {user_id: UInt64};
 
--- ✓ Table/database names
+-- ✓ Имена таблиц и баз данных
 SELECT * FROM {db: Identifier}.{table: Identifier};
 
--- ✓ Values in IN clause
+-- ✓ Значения в предложении IN
 SELECT * FROM products WHERE id IN {ids: Array(UInt32)};
 
 -- ✓ CREATE TABLE
@@ -818,17 +818,17 @@ CREATE TABLE {table_name: Identifier} (id UInt64, name String) ENGINE = MergeTre
 **Что НЕ работает:**
 
 ```sql
--- ✗ Column names in SELECT (use Identifier carefully)
-SELECT {column: Identifier} FROM users;  -- Limited support
+-- ✗ Имена столбцов в SELECT (используйте Identifier с осторожностью)
+SELECT {column: Identifier} FROM users;  -- Ограниченная поддержка
 
--- ✗ Arbitrary SQL fragments
-SELECT * FROM users {where_clause: String};  -- NOT SUPPORTED
+-- ✗ Произвольные фрагменты SQL
+SELECT * FROM users {where_clause: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
 
--- ✗ ALTER TABLE statements
-ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- NOT SUPPORTED
+-- ✗ Инструкции ALTER TABLE
+ALTER TABLE {table: Identifier} ADD COLUMN new_col String;  -- НЕ ПОДДЕРЖИВАЕТСЯ
 
--- ✗ Multiple statements
-{statements: String};  -- NOT SUPPORTED
+-- ✗ Множественные инструкции
+{statements: String};  -- НЕ ПОДДЕРЖИВАЕТСЯ
 ```
 
 ### Рекомендации по безопасности {#data-type-examples}
@@ -843,7 +843,7 @@ result = client.query(
     parameters={'uid': user_input}
 )
 
-# ✗ DANGEROUS - SQL injection risk!
+# ✗ ОПАСНО — риск SQL-инъекции!
 user_input = request.get('user_id')
 result = client.query(f"SELECT * FROM orders WHERE user_id = {user_input}")
 ```
@@ -852,11 +852,11 @@ result = client.query(f"SELECT * FROM orders WHERE user_id = {user_input}")
 
 ```python
 def get_user_orders(user_id: int, start_date: str):
-    # Validate types before querying
+    # Проверка типов перед выполнением запроса
     if not isinstance(user_id, int) or user_id <= 0:
-        raise ValueError("Invalid user_id")
+        raise ValueError("Некорректный user_id")
 
-    # Parameters enforce type safety
+    # Параметры обеспечивают безопасность типов
     return client.query(
         """
         SELECT * FROM orders
@@ -880,16 +880,16 @@ def get_user_orders(user_id: int, start_date: str):
 **Пример того, что НЕ работает:**
 
 ```sql
--- This MySQL-style prepared statement with parameters does NOT work in ClickHouse
+-- Этот подготовленный оператор в стиле MySQL с параметрами НЕ работает в ClickHouse
 PREPARE stmt FROM 'SELECT * FROM users WHERE id = ?';
-EXECUTE stmt USING @user_id;  -- Parameter binding not supported
+EXECUTE stmt USING @user_id;  -- Привязка параметров не поддерживается
 ```
 
 :::tip
 **Вместо этого используйте родные параметры запросов ClickHouse.** Они обеспечивают полную поддержку привязки параметров, типобезопасность и защиту от SQL-инъекций во всех интерфейсах ClickHouse:
 
 ```sql
--- ClickHouse native query parameters (recommended)
+-- Нативные параметры запросов ClickHouse (рекомендуется)
 SET param_user_id = 12345;
 SELECT * FROM users WHERE id = {user_id: UInt64};
 ```

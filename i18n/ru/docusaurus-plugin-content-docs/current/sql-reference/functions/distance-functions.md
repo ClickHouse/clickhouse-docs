@@ -54,36 +54,31 @@ SELECT L1Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
-
-
 ## L1Norm {#L1Norm}
 
-Introduced in: v21.11
+Появилась в версии: v21.11
 
+Вычисляет сумму абсолютных значений элементов вектора.
 
-Calculates the sum of absolute elements of a vector.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L1Norm(vector)
 ```
 
-**Aliases**: `normL1`
+**Псевдонимы**: `normL1`
 
-**Arguments**
+**Аргументы**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — вектор или кортеж числовых значений. [`Array(T)`](/sql-reference/data-types/array) или [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает L1-норму или расстояние в [таксомоторной геометрии](https://en.wikipedia.org/wiki/Taxicab_geometry). [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-Returns the L1-norm or [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) distance. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Простейший пример**
 
 ```sql title=Query
 SELECT L1Norm((1, 2))
@@ -95,36 +90,31 @@ SELECT L1Norm((1, 2))
 └────────────────┘
 ```
 
-
-
 ## L1Normalize {#L1Normalize}
 
-Introduced in: v21.11
+Добавлено в версии: v21.11
 
+Вычисляет единичный вектор заданного вектора (элементы кортежа рассматриваются как координаты) в пространстве `L1` ([манхэттенская, или таксомоторная, метрика](https://en.wikipedia.org/wiki/Taxicab_geometry)).
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L1` space ([taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry)).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L1Normalize(tuple)
 ```
 
-**Aliases**: `normalizeL1`
+**Псевдонимы**: `normalizeL1`
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — кортеж числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает единичный вектор. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT L1Normalize((1, 2))
@@ -136,37 +126,32 @@ SELECT L1Normalize((1, 2))
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## L2Distance {#L2Distance}
 
-Introduced in: v21.11
+Появилась в версии: v21.11
 
+Вычисляет расстояние между двумя точками (элементы векторов — это координаты) в евклидовом пространстве ([евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2Distance(vector1, vector2)
 ```
 
-**Aliases**: `distanceL2`
+**Псевдонимы**: `distanceL2`
 
-**Arguments**
+**Аргументы**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние в 2-норме. [`Float64`](/sql-reference/data-types/float)
 
-Returns the 2-norm distance. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT L2Distance((1, 2), (2, 3))
@@ -178,37 +163,33 @@ SELECT L2Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
-
-
 ## L2DistanceTransposed {#L2DistanceTransposed}
 
-Introduced in: v25.10
+Добавлено в: v25.10
 
+Вычисляет приблизительное расстояние между двумя точками в евклидовом пространстве (значения векторов считаются их координатами) ([евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
-Calculates the approximate distance between two points (the values of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2DistanceTransposed(vector1, vector2, p)
 ```
 
-**Aliases**: `distanceL2Transposed`
+**Псевдонимы**: `distanceL2Transposed`
 
-**Arguments**
+**Аргументы**
 
-- `vectors` — Vectors. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
-- `reference` — Reference vector. [`Array(T)`](/sql-reference/data-types/array)
-- `p` — Number of bits from each vector element to use in the distance calculation (1 to element bit-width). The quantization level controls the precision-speed trade-off. Using fewer bits results in faster I/O and calculations with reduced accuracy, while using more bits increases accuracy at the cost of performance. [`UInt`](/sql-reference/data-types/int-uint)
+* `vectors` — Векторы. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
+* `reference` — Опорный вектор. [`Array(T)`](/sql-reference/data-types/array)
+* `p` — Количество бит каждого элемента вектора, используемых при вычислении расстояния (от 1 до разрядности элемента). Уровень квантизации определяет компромисс между точностью и скоростью. Использование меньшего числа бит приводит к более быстрым операциям ввода-вывода и вычислениям с меньшей точностью, тогда как использование большего числа бит повышает точность за счёт производительности. [`UInt`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает приближённое расстояние по 2-норме. [`Float64`](/sql-reference/data-types/float)
 
-Returns the approximate 2-norm distance. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 CREATE TABLE qbit (id UInt32, vec QBit(Float64, 2)) ENGINE = Memory;
@@ -222,36 +203,31 @@ SELECT L2DistanceTransposed(vec, array(1.0, 2.0), 16) FROM qbit;"
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## L2Norm {#L2Norm}
 
-Introduced in: v21.11
+Появилась в версии: v21.11
 
+Вычисляет квадратный корень из суммы квадратов элементов вектора.
 
-Calculates the square root of the sum of the squares of the vector elements.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2Norm(vector)
 ```
 
-**Aliases**: `normL2`
+**Синонимы**: `normL2`
 
-**Arguments**
+**Аргументы**
 
-- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector` — вектор или кортеж из числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает норму L2 или [евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance). [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
-Returns the L2-norm or [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance). [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT L2Norm((1, 2))
@@ -263,36 +239,31 @@ SELECT L2Norm((1, 2))
 └──────────────────┘
 ```
 
-
-
 ## L2Normalize {#L2Normalize}
 
-Introduced in: v21.11
+Появилась в версии: v21.11
 
+Вычисляет единичный вектор для заданного вектора (элементы кортежа — это координаты) в евклидовом пространстве (с использованием [евклидового расстояния](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in Euclidean space (using [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2Normalize(tuple)
 ```
 
-**Aliases**: `normalizeL2`
+**Псевдонимы**: `normalizeL2`
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — кортеж числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает единичный вектор в виде [`Tuple(Float64)`](/sql-reference/data-types/tuple).
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовый пример использования**
 
 ```sql title=Query
 SELECT L2Normalize((3, 4))
@@ -304,37 +275,32 @@ SELECT L2Normalize((3, 4))
 └─────────────────────┘
 ```
 
-
-
 ## L2SquaredDistance {#L2SquaredDistance}
 
-Introduced in: v22.7
+Появилась в версии: v22.7
 
+Вычисляет сумму квадратов разностей между соответствующими элементами двух векторов.
 
-Calculates the sum of the squares of the difference between the corresponding elements of two vectors.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2SquaredDistance(vector1, vector2)
 ```
 
-**Aliases**: `distanceL2Squared`
+**Псевдонимы**: `distanceL2Squared`
 
-**Arguments**
+**Аргументы**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает сумму квадратов разностей соответствующих элементов двух векторов. [`Float64`](/sql-reference/data-types/float)
 
-Returns the sum of the squares of the difference between the corresponding elements of two vectors. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
@@ -346,36 +312,31 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 └──────────────────────────┘
 ```
 
-
-
 ## L2SquaredNorm {#L2SquaredNorm}
 
-Introduced in: v22.7
+Введена в версии: v22.7
 
+Вычисляет квадратный корень из суммы квадратов элементов вектора (то есть [`L2Norm`](#L2Norm), возведённую в квадрат).
 
-Calculates the square root of the sum of the squares of the vector elements (the [`L2Norm`](#L2Norm)) squared.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 L2SquaredNorm(vector)
 ```
 
-**Aliases**: `normL2Squared`
+**Псевдонимы**: `normL2Squared`
 
-**Arguments**
+**Аргументы**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — вектор или кортеж числовых значений. [`Array(T)`](/sql-reference/data-types/array) или [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает квадрат L2-нормы. [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-Returns the L2-norm squared. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT L2SquaredNorm((1, 2))
@@ -387,37 +348,32 @@ SELECT L2SquaredNorm((1, 2))
 └───────────────────────┘
 ```
 
-
-
 ## LinfDistance {#LinfDistance}
 
-Introduced in: v21.11
+Добавлена в версии: v21.11
 
+Вычисляет расстояние между двумя точками (элементы векторов — их координаты) в пространстве `L_{inf}` ([максимальная норма](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))).
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in `L_{inf}` space ([maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 LinfDistance(vector1, vector2)
 ```
 
-**Aliases**: `distanceLinf`
+**Псевдонимы**: `distanceLinf`
 
-**Arguments**
+**Аргументы**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — Первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — Второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние в норме бесконечности (Infinity-norm). [`Float64`](/sql-reference/data-types/float)
 
-Returns the Infinity-norm distance. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT LinfDistance((1, 2), (2, 3))
@@ -429,36 +385,31 @@ SELECT LinfDistance((1, 2), (2, 3))
 └──────────────────────────────┘
 ```
 
-
-
 ## LinfNorm {#LinfNorm}
 
-Introduced in: v21.11
+Впервые появилось в: v21.11
 
+Вычисляет максимум абсолютных значений элементов вектора.
 
-Calculates the maximum of absolute elements of a vector.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 LinfNorm(vector)
 ```
 
-**Aliases**: `normLinf`
+**Псевдонимы**: `normLinf`
 
-**Arguments**
+**Аргументы**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — вектор или кортеж числовых значений. [`Array(T)`](/sql-reference/data-types/array) или [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает норму L∞ (Linf) или максимальное абсолютное значение. [`Float64`](/sql-reference/data-types/float)
 
-Returns the Linf-norm or the maximum absolute value. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT LinfNorm((1, -2))
@@ -470,36 +421,31 @@ SELECT LinfNorm((1, -2))
 └───────────────────┘
 ```
 
-
-
 ## LinfNormalize {#LinfNormalize}
 
-Introduced in: v21.11
+Добавлена в версии v21.11
 
+Вычисляет единичный вектор для заданного вектора (элементы кортежа являются координатами) в пространстве `L_{inf}` (с использованием [максимальной нормы](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))).
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L_{inf}` space (using [maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 LinfNormalize(tuple)
 ```
 
-**Aliases**: `normalizeLinf`
+**Псевдонимы**: `normalizeLinf`
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — кортеж числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает единичный вектор. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT LinfNormalize((3, 4))
@@ -511,38 +457,33 @@ SELECT LinfNormalize((3, 4))
 └───────────────────────┘
 ```
 
-
-
 ## LpDistance {#LpDistance}
 
-Introduced in: v21.11
+Впервые появилась в: v21.11
 
+Вычисляет расстояние между двумя точками (элементы векторов являются координатами) в пространстве `Lp` (расстояние по [p-норме](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)).
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in `Lp` space ([p-norm distance](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 LpDistance(vector1, vector2, p)
 ```
 
-**Aliases**: `distanceLp`
+**Псевдонимы**: `distanceLp`
 
-**Arguments**
+**Аргументы**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `p` — The power. Possible values: real number from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `vector1` — первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `p` — степень. Возможные значения: вещественное число в диапазоне `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние по p-норме. [`Float64`](/sql-reference/data-types/float)
 
-Returns the p-norm distance. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT LpDistance((1, 2), (2, 3), 3)
@@ -554,42 +495,38 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 └───────────────────────────────┘
 ```
 
-
-
 ## LpNorm {#LpNorm}
 
-Introduced in: v21.11
+Добавлена в версии: v21.11
 
+Вычисляет p-норму вектора, которая представляет собой p-й корень из суммы p-х степеней модулей его элементов.
 
-Calculates the p-norm of a vector, which is the p-th root of the sum of the p-th powers of the absolute elements of its elements.
+Частные случаи:
 
-Special cases:
-- When p=1, it's equivalent to L1Norm (Manhattan distance).
-- When p=2, it's equivalent to L2Norm (Euclidean distance).
-- When p=∞, it's equivalent to LinfNorm (maximum norm).
-    
+* Когда p=1, это эквивалентно L1Norm (манхэттенское расстояние).
+* Когда p=2, это эквивалентно L2Norm (евклидово расстояние).
+* Когда p=∞, это эквивалентно LinfNorm (максимальная норма).
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 LpNorm(vector, p)
 ```
 
-**Aliases**: `normLp`
+**Псевдонимы**: `normLp`
 
-**Arguments**
+**Аргументы**
 
-- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `p` — The power. Possible values are real numbers in the range `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `vector` — вектор или кортеж числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `p` — степень. Возможные значения — вещественные числа в диапазоне `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает [Lp-норму](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm). [`Float64`](/sql-reference/data-types/float)
 
-Returns the [Lp-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm). [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT LpNorm((1, -2), 2)
@@ -601,37 +538,32 @@ SELECT LpNorm((1, -2), 2)
 └────────────────────┘
 ```
 
-
-
 ## LpNormalize {#LpNormalize}
 
-Introduced in: v21.11
+Введена в версии: v21.11
 
+Вычисляет единичный вектор для заданного вектора (элементы кортежа являются координатами) в пространстве `Lp` (с использованием [p-нормы](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)).
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `Lp` space (using [p-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
-        
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 LpNormalize(tuple, p)
 ```
 
-**Aliases**: `normalizeLp`
+**Псевдонимы**: `normalizeLp`
 
-**Arguments**
+**Аргументы**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `p` — The power. Possible values are any number in the range range from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `tuple` — кортеж числовых значений. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `p` — степень. Возможные значения — любое число в диапазоне от `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает единичный вектор. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT LpNormalize((3, 4), 5)
@@ -643,35 +575,30 @@ SELECT LpNormalize((3, 4), 5)
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## cosineDistance {#cosineDistance}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Вычисляет косинусное расстояние между двумя векторами (элементы кортежей являются их координатами). Чем меньше возвращаемое значение, тем более сходны векторы.
 
-Calculates the cosine distance between two vectors (the elements of the tuples are the coordinates). The smaller the returned value is, the more similar are the vectors.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 cosineDistance(vector1, vector2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `vector1` — First tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — Первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — Второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает единицу минус косинус угла между двумя векторами. [`Float64`](/sql-reference/data-types/float)
 
-Returns the cosine of the angle between two vectors subtracted from one. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT cosineDistance((1, 2), (2, 3));

@@ -461,11 +461,10 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       }
     }'
     ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="JavaScript" label="JavaScript" default>
-
-```javascript
+  <TabItem value="JavaScript" label="JavaScript" default>
+    ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run",
       {
@@ -487,7 +486,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       .catch((error) => console.error("Ошибка:", error));
     ```
 
-```text title="Ответ"
+    ```text title="Response"
     OK
     ```
 

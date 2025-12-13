@@ -19,8 +19,8 @@ keywords: ['пример набора данных', 'hacker news', 'приме�
   CSV-версию набора данных можно загрузить из нашего публичного [S3-бакета](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz) или выполнив эту команду:
 
   ```bash
-wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
-```
+  wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+  ```
 
   При размере 4,6 ГБ и 28 млн строк загрузка этого сжатого файла должна занять 5–10 минут.
 
@@ -636,7 +636,7 @@ It's also possible to now efficiently search for one, or all of multiple terms:
   WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
   ```
 
-```response
+  ```response
   ┌─count()─┐
   │      22 │
   └─────────┘

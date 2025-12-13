@@ -58,34 +58,29 @@ SELECT CRC32('ClickHouse')
 └─────────────────────┘
 ```
 
-
-
 ## CRC32IEEE {#CRC32IEEE}
 
-Introduced in: v20.1
+Добавлено в версии: v20.1
 
+Вычисляет контрольную сумму CRC32 для строки с использованием полинома CRC-32-IEEE 802.3.
 
-Calculates the CRC32 checksum of a string using the CRC-32-IEEE 802.3 polynomial.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 CRC32IEEE(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to calculate CRC32 for. [`String`](/sql-reference/data-types/string)
+* `s` — строка, для которой нужно вычислить CRC32. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает CRC32-контрольную сумму строки. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the CRC32 checksum of the string. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT CRC32IEEE('ClickHouse');
@@ -97,34 +92,29 @@ SELECT CRC32IEEE('ClickHouse');
 └─────────────────────────┘
 ```
 
-
-
 ## CRC64 {#CRC64}
 
-Introduced in: v20.1
+Добавлена в версии: v20.1
 
+Вычисляет контрольную сумму CRC64 строки с использованием полинома CRC-64-ECMA.
 
-Calculates the CRC64 checksum of a string using the CRC-64-ECMA polynomial.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 CRC64(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to calculate CRC64 for. [`String`](/sql-reference/data-types/string)
+* `s` — строка, для которой вычисляется CRC64. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает контрольную сумму CRC64 строки. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the CRC64 checksum of the string. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT CRC64('ClickHouse');
@@ -136,35 +126,30 @@ SELECT CRC64('ClickHouse');
 └──────────────────────┘
 ```
 
-
-
 ## appendTrailingCharIfAbsent {#appendTrailingCharIfAbsent}
 
-Introduced in: v1.1
+Появилась в версии v1.1
 
+Добавляет символ `c` к строке `s`, если `s` не пуста и не оканчивается символом `c`.
 
-Appends character `c` to string `s` if `s` is non-empty and does not end with character `c`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 appendTrailingCharIfAbsent(s, c)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `c` — Character to append if absent. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
+* `c` — символ, который добавляется при отсутствии. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку `s` с добавленным символом `c`, если `s` не оканчивается на `c`. [`String`](/sql-reference/data-types/string)
 
-Returns string `s` with character `c` appended if `s` does not end with `c`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT appendTrailingCharIfAbsent('https://example.com', '/');
@@ -176,34 +161,29 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 └──────────────────────────┘
 ```
 
-
-
 ## ascii {#ascii}
 
-Introduced in: v22.11
+Появилась в версии: v22.11
 
+Возвращает код символа ASCII первого символа строки `s` в виде `Int32`.
 
-Returns the ASCII code point of the first character of string `s` as an `Int32`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 ascii(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String input. [`String`](/sql-reference/data-types/string)
+* `s` — Строковый аргумент. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает кодовую точку ASCII первого символа. Если `s` пустая, результат равен `0`. Если первый символ не является ASCII-символом или не входит в диапазон дополнения Latin-1 в UTF-16, результат не определён. [`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the ASCII code point of the first character. If `s` is empty, the result is `0`. If the first character is not an ASCII character or not part of the Latin-1 supplement range of UTF-16, the result is undefined. [`Int32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT ascii('234')
@@ -215,35 +195,30 @@ SELECT ascii('234')
 └──────────────┘
 ```
 
-
-
 ## base32Decode {#base32Decode}
 
-Introduced in: v25.6
+Появилась в версии: v25.6
 
+Декодирует строку, закодированную в формате [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648).
+Если строка не является корректной Base32-кодировкой, будет выброшено исключение.
 
-Decodes a [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) string.
-If the string is not valid Base32-encoded, an exception is thrown.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base32Decode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant. [`String`](/sql-reference/data-types/string)
+* `encoded` — столбец типа String или константа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с декодированным значением аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base32Decode('IVXGG33EMVSA====');
@@ -255,34 +230,29 @@ SELECT base32Decode('IVXGG33EMVSA====');
 └──────────────────────────────────┘
 ```
 
-
-
 ## base32Encode {#base32Encode}
 
-Introduced in: v25.6
+Появилась в версии: v25.6
 
+Кодирует строку с использованием [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
 
-Encodes a string using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base32Encode(plaintext)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — Текст в открытом виде для кодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую закодированное значение аргумента. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base32Encode('Encoded')
@@ -294,35 +264,30 @@ SELECT base32Encode('Encoded')
 └─────────────────────────┘
 ```
 
-
-
 ## base58Decode {#base58Decode}
 
-Introduced in: v22.7
+Добавлено в версии: v22.7
 
+Декодирует строку, закодированную в формате [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3).
+Если строка не является корректной Base58-последовательностью, выбрасывается исключение.
 
-Decodes a [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) string.
-If the string is not valid Base58-encoded, an exception is thrown.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base58Decode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `encoded` — Столбец типа String или константа для декодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую декодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base58Decode('JxF12TrwUP45BMd');
@@ -334,34 +299,29 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 └──────────────────────────┘
 ```
 
-
-
 ## base58Encode {#base58Encode}
 
-Introduced in: v22.7
+Добавлена в версии v22.7
 
+Кодирует строку в кодировке [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html).
 
-Encodes a string using [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) encoding.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base58Encode(plaintext)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — Исходный текст для кодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с закодированным значением аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base58Encode('ClickHouse');
@@ -373,38 +333,32 @@ SELECT base58Encode('ClickHouse');
 └────────────────────────────┘
 ```
 
-
-
 ## base64Decode {#base64Decode}
 
-Introduced in: v18.16
+Появилась в: v18.16
 
+Декодирует строку из представления [Base64](https://en.wikipedia.org/wiki/Base64) в соответствии с RFC 4648.
+В случае ошибки выбрасывает исключение.
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-Throws an exception in case of error.
-
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base64Decode(encoded)
 ```
 
-**Aliases**: `FROM_BASE64`
+**Псевдонимы**: `FROM_BASE64`
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — строковый столбец или константа для декодирования. Если строка не является корректной строкой в кодировке Base64, выбрасывается исключение. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает декодированную строку. [`String`](/sql-reference/data-types/string)
 
-Returns the decoded string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base64Decode('Y2xpY2tob3VzZQ==')
@@ -416,36 +370,31 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 └──────────────────────────────────┘
 ```
 
-
-
 ## base64Encode {#base64Encode}
 
-Introduced in: v18.16
+Добавлена в версии: v18.16
 
+Кодирует строку в представление [Base64](https://en.wikipedia.org/wiki/Base64) в соответствии с RFC 4648.
 
-Encodes a string using [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base64Encode(plaintext)
 ```
 
-**Aliases**: `TO_BASE64`
+**Псевдонимы**: `TO_BASE64`
 
-**Arguments**
+**Аргументы**
 
-- `plaintext` — Plaintext column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — Столбец или константа с исходным текстом для кодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую закодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base64Encode('clickhouse')
@@ -457,35 +406,30 @@ SELECT base64Encode('clickhouse')
 └────────────────────────────┘
 ```
 
-
-
 ## base64URLDecode {#base64URLDecode}
 
-Introduced in: v24.6
+Добавлена в версии: v24.6
 
+Декодирует строку из формата [Base64](https://en.wikipedia.org/wiki/Base64), используя URL-безопасный алфавит в соответствии с RFC 4648.
+В случае ошибки выбрасывает исключение.
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation using URL-safe alphabet, according to RFC 4648.
-Throws an exception in case of error.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base64URLDecode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to encode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — строковый столбец или константа для кодирования. Если строка не является корректной Base64-строкой, выбрасывается исключение. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую декодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -497,34 +441,29 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## base64URLEncode {#base64URLEncode}
 
-Introduced in: v18.16
+Добавлена в версии: v18.16
 
+Кодирует строку с использованием представления [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) с алфавитом, безопасным для URL.
 
-Encodes a string using [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) representation using URL-safe alphabet.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 base64URLEncode(plaintext)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `plaintext` — Plaintext column or constant to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — Столбец или константа с исходным текстом для кодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую закодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT base64URLEncode('https://clickhouse.com')
@@ -536,35 +475,30 @@ SELECT base64URLEncode('https://clickhouse.com')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## basename {#basename}
 
-Introduced in: v20.1
+Появилась в версии: v20.1
 
+Извлекает часть строки после последней косой черты (`/`) или обратной косой черты (`\`).
+Эта функция часто используется для получения имени файла из пути.
 
-Extracts the tail of a string following its last slash or backslash.
-This function is often used to extract the filename from a path.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 basename(expr)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `expr` — A string expression. Backslashes must be escaped. [`String`](/sql-reference/data-types/string)
+* `expr` — строковое выражение. Символы обратной косой черты должны экранироваться. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает часть входной строки после её последней прямой или обратной косой черты. Если входная строка заканчивается прямой или обратной косой чертой, функция возвращает пустую строку. Возвращает исходную строку, если в ней нет прямых или обратных косых черт. [`String`](/sql-reference/data-types/string)
 
-Returns the tail of the input string after its last slash or backslash. If the input string ends with a slash or backslash, the function returns an empty string. Returns the original string if there are no slashes or backslashes. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Extract filename from Unix path**
+**Извлечение имени файла из пути в стиле Unix**
 
 ```sql title=Query
 SELECT 'some/long/path/to/file' AS a, basename(a)
@@ -576,7 +510,7 @@ SELECT 'some/long/path/to/file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────┘
 ```
 
-**Extract filename from Windows path**
+**Извлечь имя файла из пути в Windows**
 
 ```sql title=Query
 SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
@@ -588,7 +522,7 @@ SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────────┘
 ```
 
-**String with no path separators**
+**Строка без разделителей пути**
 
 ```sql title=Query
 SELECT 'some-file-name' AS a, basename(a)
@@ -600,37 +534,32 @@ SELECT 'some-file-name' AS a, basename(a)
 └────────────────┴────────────────────────────┘
 ```
 
-
-
 ## byteHammingDistance {#byteHammingDistance}
 
-Introduced in: v23.9
+Добавлена в версии v23.9
 
+Вычисляет [расстояние Хэмминга](https://en.wikipedia.org/wiki/Hamming_distance) между двумя байтовыми строками.
 
-Calculates the [hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 byteHammingDistance(s1, s2)
 ```
 
-**Aliases**: `mismatches`
+**Псевдонимы**: `mismatches`
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние Хэмминга между двумя строками. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Hamming distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT byteHammingDistance('karolin', 'kathrin')
@@ -642,42 +571,38 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## compareSubstrings {#compareSubstrings}
 
-Introduced in: v25.2
+Введена в версии: v25.2
 
+Лексикографически сравнивает две строки.
 
-Compares two strings lexicographically.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — The first string to compare. [`String`](/sql-reference/data-types/string)
-- `s2` — The second string to compare. [`String`](/sql-reference/data-types/string)
-- `s1_offset` — The position (zero-based) in `s1` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `s2_offset` — The position (zero-based index) in `s2` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `num_bytes` — The maximum number of bytes to compare in both strings. If `s1_offset` (or `s2_offset`) + `num_bytes` exceeds the end of an input string, `num_bytes` will be reduced accordingly. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s1` — первая строка для сравнения. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая строка для сравнения. [`String`](/sql-reference/data-types/string)
+* `s1_offset` — позиция (начиная с нуля) в `s1`, с которой начинается сравнение. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — позиция (начиная с нуля) в `s2`, с которой начинается сравнение. [`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — максимальное количество байт, сравниваемых в обеих строках. Если `s1_offset` (или `s2_offset`) + `num_bytes` превышает длину входной строки, значение `num_bytes` будет соответственно уменьшено. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает:
 
-Returns:
-- `-1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] < `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `0` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] > `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-     [`Int8`](/sql-reference/data-types/int-uint)
+* `-1`, если `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &lt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
+* `0`, если `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
+* `1`, если `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &gt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
+  [`Int8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
@@ -689,37 +614,32 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 └────────┘
 ```
 
-
-
 ## concat {#concat}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Объединяет (конкатенирует) переданные аргументы.
 
-Concatenates the given arguments.
+Аргументы, которые не имеют типов [`String`](../data-types/string.md) или [`FixedString`](../data-types/fixedstring.md), преобразуются в строки с использованием их сериализации по умолчанию.
+Поскольку это снижает производительность, не рекомендуется использовать аргументы типов, отличных от String/FixedString.
 
-Arguments which are not of types [`String`](../data-types/string.md) or [`FixedString`](../data-types/fixedstring.md) are converted to strings using their default serialization.
-As this decreases performance, it is not recommended to use non-String/FixedString arguments.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 concat([s1, s2, ...])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`Any`](/sql-reference/data-types)
+* `s1, s2, ...` — Любое количество значений произвольного типа. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку типа String, полученную конкатенацией аргументов. Если хотя бы один из аргументов равен `NULL`, функция возвращает `NULL`. Если аргументы отсутствуют, возвращается пустая строка. [`Nullable(String)`](/sql-reference/data-types/nullable)
 
-Returns the String created by concatenating the arguments. If any of arguments is `NULL`, the function returns `NULL`. If there are no arguments, it returns an empty string. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**Примеры**
 
-**Examples**
-
-**String concatenation**
+**Конкатенация строк**
 
 ```sql title=Query
 SELECT concat('Hello, ', 'World!')
@@ -731,7 +651,7 @@ SELECT concat('Hello, ', 'World!')
 └─────────────────────────────┘
 ```
 
-**Number concatenation**
+**Конкатенация числовых значений**
 
 ```sql title=Query
 SELECT concat(42, 144)
@@ -743,37 +663,32 @@ SELECT concat(42, 144)
 └─────────────────┘
 ```
 
-
-
 ## concatAssumeInjective {#concatAssumeInjective}
 
-Introduced in: v1.1
+Добавлена в версии v1.1
 
+Аналог функции [`concat`](#concat), но предполагает, что `concat(s1, s2, ...) → sn` является инъективной,
+т. е. возвращает разные результаты для разных аргументов.
 
-Like [`concat`](#concat) but assumes that `concat(s1, s2, ...) → sn` is injective,
-i.e, it returns different results for different arguments.
+Может использоваться для оптимизации `GROUP BY`.
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 concatAssumeInjective([s1, s2, ...])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `s1, s2, ...` — Произвольное количество значений любого типа. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, созданную путём конкатенации аргументов. Если хотя бы одно из значений аргументов равно `NULL`, функция возвращает `NULL`. Если аргументы не переданы, возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-Returns the string created by concatenating the arguments. If any of argument values is `NULL`, the function returns `NULL`. If no arguments are passed, it returns an empty string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Group by optimization**
+**Оптимизация GROUP BY**
 
 ```sql title=Query
 SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjective(key1, key2)
@@ -787,37 +702,32 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 └────────────────────┴────────────┘
 ```
 
-
-
 ## concatWithSeparator {#concatWithSeparator}
 
-Introduced in: v22.12
+Впервые появилась в версии v22.12
 
+Объединяет переданные строки, разделяя их указанным разделителем.
 
-Concatenates the provided strings, separating them by the specified separator.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 concatWithSeparator(sep[, exp1, exp2, ...])
 ```
 
-**Aliases**: `concat_ws`
+**Псевдонимы**: `concat_ws`
 
-**Arguments**
+**Аргументы**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`Any`](/sql-reference/data-types)
+* `sep` — разделитель. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — выражения для конкатенации. Аргументы, тип которых не `String` и не `FixedString`, преобразуются в строки с использованием их сериализации по умолчанию. Поскольку это снижает производительность, не рекомендуется использовать аргументы типов, отличных от String/FixedString. [`Any`](/sql-reference/data-types)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, созданную путём конкатенации аргументов. Если какое-либо из значений аргументов равно `NULL`, функция возвращает `NULL`. [`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT concatWithSeparator('a', '1', '2', '3', '4')
@@ -829,38 +739,33 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## concatWithSeparatorAssumeInjective {#concatWithSeparatorAssumeInjective}
 
-Introduced in: v22.12
+Добавлена в: v22.12
 
+Похожа на [`concatWithSeparator`](#concatWithSeparator), но предполагает, что `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` является инъективной.
+Функция называется инъективной, если она возвращает разные результаты для разных аргументов.
 
-Like [`concatWithSeparator`](#concatWithSeparator) but assumes that `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` is injective.
-A function is called injective if it returns different results for different arguments.
+Может использоваться для оптимизации `GROUP BY`.
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 concatWithSeparatorAssumeInjective(sep[, exp1, exp2, ... ])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `sep` — Разделитель. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — Выражения для конкатенации. Аргументы, которые не относятся к типу `String` или `FixedString`, преобразуются в строки с использованием их сериализации по умолчанию. Поскольку это снижает производительность, не рекомендуется использовать аргументы типов, отличных от String/FixedString. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, полученную конкатенацией аргументов. Если любое из значений аргументов равно `NULL`, функция возвращает `NULL`. [`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 CREATE TABLE user_data (
@@ -893,38 +798,34 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 └─────────────┴─────────────┘
 ```
 
-
-
 ## conv {#conv}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Преобразует числа между различными системами счисления.
 
-Converts numbers between different number bases.
+Функция преобразует число из одной системы счисления в другую. Поддерживаются системы счисления с основанием от 2 до 36.
+Для оснований больше 10 используются буквы A–Z (без учета регистра) для представления цифр 10–35.
 
-The function converts a number from one base to another. It supports bases from 2 to 36.
-For bases higher than 10, letters A-Z (case insensitive) are used to represent digits 10-35.
+Эта функция совместима с функцией MySQL CONV().
 
-This function is compatible with MySQL's CONV() function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 conv(number, from_base, to_base)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `number` — The number to convert. Can be a string or numeric type. - `from_base` — The source base (2-36). Must be an integer. - `to_base` — The target base (2-36). Must be an integer. 
+* `number` — число для преобразования; может быть строкой или числом. - `from_base` — исходная система счисления (2-36); должен быть целым числом. - `to_base` — целевая система счисления (2-36); должен быть целым числом.
 
-**Returned value**
+**Возвращаемое значение**
 
-String representation of the number in the target base.
+Строковое представление числа в целевой системе счисления.
 
-**Examples**
+**Примеры**
 
-**Convert decimal to binary**
+**Преобразование из десятичной системы в двоичную**
 
 ```sql title=Query
 SELECT conv('10', 10, 2)
@@ -934,7 +835,7 @@ SELECT conv('10', 10, 2)
 1010
 ```
 
-**Convert hexadecimal to decimal**
+**Преобразование шестнадцатеричного числа в десятичное**
 
 ```sql title=Query
 SELECT conv('FF', 16, 10)
@@ -944,7 +845,7 @@ SELECT conv('FF', 16, 10)
 255
 ```
 
-**Convert with negative number**
+**Преобразование с отрицательным значением**
 
 ```sql title=Query
 SELECT conv('-1', 10, 16)
@@ -954,7 +855,7 @@ SELECT conv('-1', 10, 16)
 FFFFFFFFFFFFFFFF
 ```
 
-**Convert binary to octal**
+**Преобразование двоичного числа в восьмеричное**
 
 ```sql title=Query
 SELECT conv('1010', 2, 8)
@@ -964,36 +865,31 @@ SELECT conv('1010', 2, 8)
 12
 ```
 
-
-
 ## convertCharset {#convertCharset}
 
-Introduced in: v1.1
+Появилась в версии v1.1
 
+Возвращает строку `s`, перекодированную из кодировки `from` в кодировку `to`.
 
-Returns string `s` converted from the encoding `from` to encoding `to`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 convertCharset(s, from, to)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `from` — Source character encoding. [`String`](/sql-reference/data-types/string)
-- `to` — Target character encoding. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
+* `from` — исходная кодировка символов. [`String`](/sql-reference/data-types/string)
+* `to` — целевая кодировка символов. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку `s`, преобразованную из кодировки `from` в кодировку `to`. [`String`](/sql-reference/data-types/string)
 
-Returns string `s` converted from encoding `from` to encoding `to`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
@@ -1005,35 +901,30 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 └──────────────────────────┘
 ```
 
-
-
 ## damerauLevenshteinDistance {#damerauLevenshteinDistance}
 
-Introduced in: v24.1
+Добавлена в: v24.1
 
+Вычисляет [расстояние Дамерау — Левенштейна](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) между двумя байтовыми строками.
 
-Calculates the [Damerau-Levenshtein distance](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 damerauLevenshteinDistance(s1, s2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние Дамерау—Левенштейна между двумя строками. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Damerau-Levenshtein distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
@@ -1045,34 +936,29 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeHTMLComponent {#decodeHTMLComponent}
 
-Introduced in: v23.9
+Добавлена в версии: v23.9
 
+Преобразует HTML-сущности в строке в соответствующие символы.
 
-Decodes HTML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 decodeHTMLComponent(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String containing HTML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — строка, содержащая HTML-сущности для декодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с декодированными HTML-сущностями. [`String`](/sql-reference/data-types/string)
 
-Returns the string with HTML entities decoded. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;')
@@ -1084,34 +970,29 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeXMLComponent {#decodeXMLComponent}
 
-Introduced in: v21.2
+Впервые представлена в версии v21.2
 
+Декодирует XML-сущности в строке, заменяя их соответствующими символами.
 
-Decodes XML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 decodeXMLComponent(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String containing XML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — Строка, содержащая XML-сущности для декодирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает переданную строку с декодированными XML-сущностями. [`String`](/sql-reference/data-types/string)
 
-Returns the provided string with XML entities decoded. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
@@ -1123,37 +1004,32 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 └──────────────────────────┘
 ```
 
-
-
 ## editDistance {#editDistance}
 
-Introduced in: v23.9
+Введена в версии: v23.9
 
+Вычисляет [редакционное расстояние](https://en.wikipedia.org/wiki/Edit_distance) между двумя байтовыми строками.
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 editDistance(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistance`
+**Псевдонимы**: `levenshteinDistance`
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — Первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — Вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает редакционное расстояние между двумя строками. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT editDistance('clickhouse', 'mouse')
@@ -1165,37 +1041,32 @@ SELECT editDistance('clickhouse', 'mouse')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## editDistanceUTF8 {#editDistanceUTF8}
 
-Introduced in: v24.6
+Добавлена в версии v24.6
 
+Вычисляет [редакционное расстояние](https://en.wikipedia.org/wiki/Edit_distance) между двумя строками в кодировке UTF-8.
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two UTF8 strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 editDistanceUTF8(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistanceUTF8`
+**Псевдонимы**: `levenshteinDistanceUTF8`
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — Первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — Вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает расстояние Левенштейна между двумя строками в кодировке UTF-8. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two UTF8 strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT editDistanceUTF8('我是谁', '我是我')
@@ -1207,34 +1078,29 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## encodeXMLComponent {#encodeXMLComponent}
 
-Introduced in: v21.1
+Добавлена в версии v21.1
 
+Экранирует символы строки для помещения её в текстовый узел или атрибут XML.
 
-Escapes characters to place string into XML text node or attribute.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 encodeXMLComponent(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to escape. [`String`](/sql-reference/data-types/string)
+* `s` — строка для экранирования. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает экранированную строку. [`String`](/sql-reference/data-types/string)
 
-Returns the escaped string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -1248,35 +1114,30 @@ SELECT
 └────────────────────────────┴──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWith {#endsWith}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Проверяет, заканчивается ли строка указанным суффиксом.
 
-Checks whether a string ends with the provided suffix.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 endsWith(s, suffix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для проверки. [`String`](/sql-reference/data-types/string)
+* `suffix` — Суффикс, который нужно проверить. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` оканчивается на `suffix`, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT endsWith('ClickHouse', 'House');
@@ -1288,35 +1149,30 @@ SELECT endsWith('ClickHouse', 'House');
 └──────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitive {#endsWithCaseInsensitive}
 
-Introduced in: v25.9
+Добавлена в версии v25.9
 
+Проверяет, оканчивается ли строка на указанный суффикс без учета регистра.
 
-Checks whether a string ends with the provided case-insensitive suffix.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 endsWithCaseInsensitive(s, suffix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — строка для проверки. [`String`](/sql-reference/data-types/string)
+* `suffix` — суффикс для проверки (независимо от регистра). [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` оканчивается на `suffix` независимо от регистра, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
@@ -1328,37 +1184,32 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitiveUTF8 {#endsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+Впервые добавлена в: v25.9
 
+Возвращает, заканчивается ли строка `s` суффиксом `suffix` без учета регистра.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, а результат не определен.
 
-Returns whether string `s` ends with case-insensitive `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 endsWithCaseInsensitiveUTF8(s, suffix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — строка для проверки. [`String`](/sql-reference/data-types/string)
+* `suffix` — суффикс для проверки (сравнение без учёта регистра). [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` заканчивается на `suffix` при сравнении без учёта регистра, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
@@ -1370,37 +1221,32 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithUTF8 {#endsWithUTF8}
 
-Introduced in: v23.8
+Добавлена в: v23.8
 
+Возвращает, оканчивается ли строка `s` суффиксом `suffix`.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, а результат не определен.
 
-Returns whether string `s` ends with `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 endsWithUTF8(s, suffix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для проверки. [`String`](/sql-reference/data-types/string)
+* `suffix` — Суффикс для проверки. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` оканчивается на `suffix`, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT endsWithUTF8('данных', 'ых');
@@ -1412,43 +1258,39 @@ SELECT endsWithUTF8('данных', 'ых');
 └──────────────────────────────┘
 ```
 
-
-
 ## extractTextFromHTML {#extractTextFromHTML}
 
-Introduced in: v21.3
+Появилась в версии: v21.3
 
+Извлекает текстовое содержимое из HTML или XHTML.
 
-Extracts text content from HTML or XHTML.
+Эта функция удаляет HTML‑теги, комментарии и элементы script/style, оставляя только текст. Она выполняет:
 
-This function removes HTML tags, comments, and script/style elements, leaving only the text content. It handles:
-- Removal of all HTML/XML tags
-- Removal of comments (`<!-- -->`)
-- Removal of script and style elements with their content
-- Processing of CDATA sections (copied verbatim)
-- Proper whitespace handling and normalization
+* удаление всех HTML/XML‑тегов;
+* удаление комментариев (`<!-- -->`);
+* удаление элементов script и style вместе с их содержимым;
+* обработку CDATA‑секций (копируются дословно);
+* корректную обработку и нормализацию пробелов.
 
-Note: HTML entities are not decoded and should be processed with a separate function if needed.
+Примечание: HTML‑сущности не декодируются и при необходимости должны обрабатываться отдельной функцией.
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 extractTextFromHTML(html)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `html` — String containing HTML content to extract text from. [`String`](/sql-reference/data-types/string)
+* `html` — строка, содержащая HTML‑контент, из которого извлекается текст. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает извлечённый текст с нормализованными пробельными символами. [`String`](/sql-reference/data-types/string)
 
-Returns the extracted text content with normalized whitespace. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT extractTextFromHTML('
@@ -1469,34 +1311,29 @@ SELECT extractTextFromHTML('
 └────────────────────────────────────────┘
 ```
 
-
-
 ## firstLine {#firstLine}
 
-Introduced in: v23.7
+Добавлена в версии v23.7
 
+Возвращает первую строку многострочного текста.
 
-Returns the first line of a multi-line string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 firstLine(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает первую строку из входной строки или всю строку, если во входной строке нет разделителей строк. [`String`](/sql-reference/data-types/string)
 
-Returns the first line of the input string or the whole string if there are no line separators. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT firstLine('foo\\nbar\\nbaz')
@@ -1508,36 +1345,31 @@ SELECT firstLine('foo\\nbar\\nbaz')
 └────────────────────────────┘
 ```
 
-
-
 ## idnaDecode {#idnaDecode}
 
-Introduced in: v24.1
+Добавлена в версии: v24.1
 
+Возвращает представление доменного имени в Юникоде (UTF-8) (алгоритм ToUnicode) в соответствии с механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
+В случае ошибки (например, из-за некорректного входного значения) возвращается исходная строка.
+Обратите внимание, что повторное применение [`idnaEncode()`](#idnaEncode) и [`idnaDecode()`](#idnaDecode) не обязательно возвращает исходную строку из-за нормализации регистра.
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error (e.g. because the input is invalid), the input string is returned.
-Note that repeated application of [`idnaEncode()`](#idnaEncode) and [`idnaDecode()`](#idnaDecode) does not necessarily return the original string due to case normalization.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 idnaDecode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает Unicode-представление во входной строки в кодировке UTF-8 в соответствии с механизмом IDNA для этого значения. [`String`](/sql-reference/data-types/string)
 
-Returns a Unicode (UTF-8) representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
@@ -1549,39 +1381,34 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 └───────────────────────────────────────────────┘
 ```
 
-
-
 ## idnaEncode {#idnaEncode}
 
-Introduced in: v24.1
+Впервые представлена в: v24.1
 
-
-Returns the ASCII representation (ToASCII algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-The input string must be UTF-encoded and translatable to an ASCII string, otherwise an exception is thrown.
+Возвращает ASCII-представление (алгоритм ToASCII) доменного имени в соответствии с механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
+Входная строка должна быть в UTF-кодировке и может быть преобразована в ASCII-строку, в противном случае генерируется исключение.
 
 :::note
-No percent decoding or trimming of tabs, spaces or control characters is performed.
+Не выполняется декодирование percent-encoding и удаление табуляций, пробелов или управляющих символов.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 idnaEncode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает ASCII-представление входной строки в соответствии с механизмом IDNA для входного значения. [`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT idnaEncode('straße.münchen.de')
@@ -1593,40 +1420,35 @@ SELECT idnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## initcap {#initcap}
 
-Introduced in: v23.7
+Появилась в версии: v23.7
 
-
-Converts the first letter of each word to upper case and the rest to lower case.
-Words are sequences of alphanumeric characters separated by non-alphanumeric characters.
+Преобразует первую букву каждого слова в верхний регистр, а остальные — в нижний.
+Словами считаются последовательности буквенно-цифровых символов, разделённые небуквенно-цифровыми символами.
 
 :::note
-Because `initcap` converts only the first letter of each word to upper case you may observe unexpected behaviour for words containing apostrophes or capital letters.
-This is a known behaviour and there are no plans to fix it currently.
+Поскольку `initcap` преобразует только первую букву каждого слова в верхний регистр, вы можете наблюдать неожиданное поведение для слов, содержащих апострофы или заглавные буквы.
+Это ожидаемое поведение, и в настоящее время исправлять его не планируется.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 initcap(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `s`, в которой первая буква каждого слова преобразована в верхний регистр. [`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT initcap('строительство для быстрого')
@@ -1638,7 +1460,7 @@ SELECT initcap('строительство для быстрого')
 └──────────────────────────────┘
 ```
 
-**Example of known behavior for words containing apostrophes or capital letters**
+**Пример известного поведения при работе со словами, содержащими апострофы или заглавные буквы**
 
 ```sql title=Query
 SELECT initcap('John''s cat won''t eat.');
@@ -1650,41 +1472,36 @@ SELECT initcap('John''s cat won''t eat.');
 └──────────────────────────┘
 ```
 
-
-
 ## initcapUTF8 {#initcapUTF8}
 
-Introduced in: v23.7
+Добавлена в: v23.7
 
-
-Like [`initcap`](#initcap), `initcapUTF8` converts the first letter of each word to upper case and the rest to lower case.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+Подобно функции [`initcap`](#initcap), `initcapUTF8` преобразует первую букву каждого слова в верхний регистр, а остальные — в нижний.
+Предполагается, что строка содержит текст в корректной кодировке UTF-8.
+Если это предположение нарушается, исключение не выбрасывается, и результат является неопределённым.
 
 :::note
-This function does not detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point, the result may be incorrect for this code point.
+Эта функция не определяет язык, поэтому, например, для турецкого результат может быть не совсем корректным (i/İ vs. i/I).
+Если длина последовательности байт UTF-8 отличается для верхнего и нижнего регистра одной и той же точки кода (code point), результат для этого символа может быть некорректным.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 initcapUTF8(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `s` с первой буквой каждого слова, преобразованной в верхний регистр. [`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT initcapUTF8('не тормозит')
@@ -1696,30 +1513,26 @@ SELECT initcapUTF8('не тормозит')
 └────────────────────────────┘
 ```
 
-
-
 ## isValidASCII {#isValidASCII}
 
-Introduced in: v25.9
+Добавлено в: v25.9
 
-Returns 1 if the input String or FixedString contains only ASCII bytes (0x00–0x7F), otherwise 0.
+Возвращает 1, если входной String или FixedString содержит только ASCII-байты (0x00–0x7F), иначе 0.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 ```
 
-**Aliases**: `isASCII`
+**Псевдонимы**: `isASCII`
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-
-
-**Examples**
+**Примеры**
 
 **isValidASCII**
 
@@ -1730,34 +1543,29 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 ```response title=Response
 ```
 
-
-
 ## isValidUTF8 {#isValidUTF8}
 
-Introduced in: v20.1
+Добавлена в версии: v20.1
 
+Проверяет, представляет ли набор байтов корректный текст в кодировке UTF-8.
 
-Checks if the set of bytes constitutes valid UTF-8-encoded text.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isValidUTF8(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to check for UTF-8 encoded validity. [`String`](/sql-reference/data-types/string)
+* `s` — Строка, которую нужно проверить на корректность кодировки UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если набор байтов представляет собой корректный UTF-8-кодированный текст, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1`, if the set of bytes constitutes valid UTF-8-encoded text, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT isValidUTF8('\\xc3\\xb1') AS валидный, isValidUTF8('\\xc3\\x28') AS невалидный
@@ -1769,35 +1577,30 @@ SELECT isValidUTF8('\\xc3\\xb1') AS валидный, isValidUTF8('\\xc3\\x28') 
 └───────┴─────────┘
 ```
 
-
-
 ## jaroSimilarity {#jaroSimilarity}
 
-Introduced in: v24.1
+Добавлена в версии: v24.1
 
+Вычисляет [Jaro similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) между двумя байтовыми строками.
 
-Calculates the [Jaro similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 jaroSimilarity(s1, s2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает меру сходства Джаро между двумя строками. [`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT jaroSimilarity('clickhouse', 'click')
@@ -1809,35 +1612,30 @@ SELECT jaroSimilarity('clickhouse', 'click')
 └───────────────────────────────────────┘
 ```
 
-
-
 ## jaroWinklerSimilarity {#jaroWinklerSimilarity}
 
-Introduced in: v24.1
+Добавлена в версии v24.1
 
+Вычисляет [сходство Джаро–Винклера](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) между двумя байтовыми строками.
 
-Calculates the [Jaro-Winkler similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 jaroWinklerSimilarity(s1, s2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает сходство Джаро — Винклера между двумя строками. [`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro-Winkler similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT jaroWinklerSimilarity('clickhouse', 'click')
@@ -1849,39 +1647,35 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## left {#left}
 
-Introduced in: v22.1
+Введена в версии: v22.1
 
+Возвращает подстроку строки `s` со смещением `offset` от левого края.
 
-Returns a substring of string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 left(s, offset)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой вычисляется подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — Количество байт смещения. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* Для положительного `offset` — подстроку `s` длиной `offset` байт, начиная с левого края строки.
+* Для отрицательного `offset` — подстроку `s` длиной `length(s) - |offset|` байт, начиная с левого края строки.
+* Пустую строку, если `length` равен `0`.
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Positive offset**
+**Положительное смещение**
 
 ```sql title=Query
 SELECT left('Hello World', 5)
@@ -1891,7 +1685,7 @@ SELECT left('Hello World', 5)
 Hello
 ```
 
-**Negative offset**
+**Отрицательный сдвиг**
 
 ```sql title=Query
 SELECT left('Hello World', -6)
@@ -1901,38 +1695,33 @@ SELECT left('Hello World', -6)
 Hello
 ```
 
-
-
 ## leftPad {#leftPad}
 
-Introduced in: v21.8
+Добавлена в: v21.8
 
+Дополняет строку слева пробелами или указанной строкой (при необходимости многократно) до тех пор, пока её длина не достигнет заданного значения `length`.
 
-Pads a string from the left with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 leftPad(string, length[, pad_string])
 ```
 
-**Aliases**: `lpad`
+**Псевдонимы**: `lpad`
 
-**Arguments**
+**Аргументы**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — Входная строка, которую нужно дополнить. [`String`](/sql-reference/data-types/string)
+* `length` — Длина результирующей строки. Если значение меньше длины входной строки, входная строка укорачивается до `length` символов. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — Необязательный аргумент. Строка, которой дополняется входная строка. Если не указан, входная строка дополняется пробелами. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает дополненную слева строку заданной длины. [`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
@@ -1944,37 +1733,32 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 └────────────────────────┴───────────────────┘
 ```
 
-
-
 ## leftPadUTF8 {#leftPadUTF8}
 
-Introduced in: v21.8
+Введена в версии: v21.8
 
+Дополняет строку в кодировке UTF8 слева пробелами или указанной строкой (при необходимости несколько раз), пока результирующая строка не достигнет заданной длины.
+В отличие от [`leftPad`](#leftPad), который измеряет длину строки в байтах, здесь длина строки измеряется в кодовых точках.
 
-Pads a UTF8 string from the left with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`leftPad`](#leftPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 leftPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — Входная строка, которую необходимо дополнить. [`String`](/sql-reference/data-types/string)
+* `length` — Длина результирующей строки. Если значение меньше длины входной строки, то входная строка укорачивается до `length` символов. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — Необязательный параметр. Строка, которой дополняется входная строка. Если параметр не указан, входная строка дополняется пробелами. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, дополненную слева до заданной длины. [`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
@@ -1986,39 +1770,35 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 └─────────────────────────────┴────────────────────────┘
 ```
 
-
-
 ## leftUTF8 {#leftUTF8}
 
-Introduced in: v22.1
+Добавлена в: v22.1
 
+Возвращает подстроку строки `s` в кодировке UTF-8 с заданным `offset`, начиная слева.
 
-Returns a substring of a UTF-8-encoded string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 leftUTF8(s, offset)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — строка в кодировке UTF-8, для которой вычисляется подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — количество байт смещения. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.\n"
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.\n"
-- An empty string if `length` is 0.
-     [`String`](/sql-reference/data-types/string)
+* Для положительного `offset` — подстроку `s` длиной `offset` байт, начиная от начала строки.\n&quot;
+* Для отрицательного `offset` — подстроку `s` длиной `length(s) - |offset|` байт, начиная от начала строки.\n&quot;
+* Пустую строку, если `length` равно 0.
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Positive offset**
+**Положительное смещение**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', 4)
@@ -2028,7 +1808,7 @@ SELECT leftUTF8('Привет', 4)
 Прив
 ```
 
-**Negative offset**
+**Отрицательное смещение**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', -4)
@@ -2038,39 +1818,33 @@ SELECT leftUTF8('Привет', -4)
 Пр
 ```
 
-
-
 ## lengthUTF8 {#lengthUTF8}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Возвращает длину строки в кодовых точках Юникода, а не в байтах или символах.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не генерируется, а результат неопределён.
 
-Returns the length of a string in Unicode code points rather than in bytes or characters.
-It assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lengthUTF8(s)
 ```
 
-**Aliases**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
+**Псевдонимы**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
 
-**Arguments**
+**Аргументы**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — строка, содержащая корректный текст в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Длина строки `s` в кодовых точках Unicode. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Length of the string `s` in Unicode code points. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT lengthUTF8('Здравствуй, мир!')
@@ -2082,36 +1856,31 @@ SELECT lengthUTF8('Здравствуй, мир!')
 └────────────────────────────────┘
 ```
 
-
-
 ## lower {#lower}
 
-Introduced in: v1.1
+Впервые появилась в версии: v1.1
 
+Преобразует ASCII-строку в нижний регистр.
 
-Converts an ASCII string to lowercase.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lower(s)
 ```
 
-**Aliases**: `lcase`
+**Псевдонимы**: `lcase`
 
-**Arguments**
+**Аргументы**
 
-- `s` — A string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `s` — строка для преобразования в нижний регистр. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку `s` в нижнем регистре. [`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string from `s`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT lower('CLICKHOUSE')
@@ -2123,30 +1892,27 @@ SELECT lower('CLICKHOUSE')
 └─────────────────────┘
 ```
 
-
-
 ## lowerUTF8 {#lowerUTF8}
 
-Introduced in: v1.1
+Добавлена в: v1.1
 
-Converts a string to lowercase, assuming that the string contains valid UTF-8 encoded text. If this assumption is violated, no exception is thrown and the result is undefined.
+Преобразует строку в нижний регистр, предполагая, что строка содержит корректный текст в кодировке UTF-8. Если это предположение нарушено, исключение не выбрасывается, а результат не определён.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 lowerUTF8(input)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `input` — Input string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `input` — входная строка для преобразования в нижний регистр. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в нижнем регистре. [`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string. [`String`](/sql-reference/data-types/string)
-
-**Examples**
+**Примеры**
 
 **first**
 
@@ -2158,34 +1924,29 @@ SELECT lowerUTF8('München') as Lowerutf8;
 münchen
 ```
 
-
-
 ## normalizeUTF8NFC {#normalizeUTF8NFC}
 
-Introduced in: v21.11
+Добавлена в: v21.11
 
+Нормализует строку в кодировке UTF-8 в соответствии с [формой нормализации NFC](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
-Normalizes a UTF-8 string according to the [NFC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeUTF8NFC(str)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — входная строка в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в нормальной форме NFC (NFC-normalized) для UTF-8. [`String`](/sql-reference/data-types/string)
 
-Returns the NFC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -2201,34 +1962,29 @@ length(nfc_normalized);
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFD {#normalizeUTF8NFD}
 
-Introduced in: v21.11
+Добавлена в версии v21.11
 
+Нормализует строку в кодировке UTF-8 в соответствии с [нормальной формой NFD](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
-Normalizes a UTF-8 string according to the [NFD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeUTF8NFD(str)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — входная строка в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в нормализованной форме NFD для UTF-8. [`String`](/sql-reference/data-types/string)
 
-Returns the NFD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -2244,34 +2000,29 @@ SELECT
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKC {#normalizeUTF8NFKC}
 
-Introduced in: v21.11
+Появилась в версии v21.11
 
+Нормализует строку UTF‑8 в соответствии с [нормальной формой NFKC](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
-Normalizes a UTF-8 string according to the [NFKC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeUTF8NFKC(str)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — входная строка в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в нормализованной форме NFKC в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
-Returns the NFKC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -2285,34 +2036,29 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKD {#normalizeUTF8NFKD}
 
-Introduced in: v21.11
+Добавлено в версии v21.11
 
+Нормализует строку в кодировке UTF-8 в соответствии с [формой нормализации NFKD](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 
-Normalizes a UTF-8 string according to the [NFKD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 normalizeUTF8NFKD(str)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — входная строка в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в нормализованной форме NFKD исходной UTF-8-строки. [`String`](/sql-reference/data-types/string)
 
-Returns the NFKD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -2326,35 +2072,30 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## punycodeDecode {#punycodeDecode}
 
-Introduced in: v24.1
+Добавлено в версии: v24.1
 
+Возвращает исходный текст в кодировке UTF-8 для строки, закодированной в формате [Punycode](https://en.wikipedia.org/wiki/Punycode).
+Если передана некорректная строка в кодировке Punycode, генерируется исключение.
 
-Returns the UTF8-encoded plaintext of a [Punycode](https://en.wikipedia.org/wiki/Punycode)-encoded string.
-If no valid Punycode-encoded string is given, an exception is thrown.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 punycodeDecode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — строка в кодировке Punycode. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает исходное текстовое значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT punycodeDecode('Mnchen-3ya')
@@ -2366,35 +2107,30 @@ SELECT punycodeDecode('Mnchen-3ya')
 └──────────────────────────────┘
 ```
 
-
-
 ## punycodeEncode {#punycodeEncode}
 
-Introduced in: v24.1
+Появилась в: v24.1
 
+Возвращает представление строки в кодировке [Punycode](https://en.wikipedia.org/wiki/Punycode).
+Строка должна быть закодирована в UTF-8, иначе поведение не определено.
 
-Returns the [Punycode](https://en.wikipedia.org/wiki/Punycode) representation of a string.
-The string must be UTF8-encoded, otherwise the behavior is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 punycodeEncode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input value. [`String`](/sql-reference/data-types/string)
+* `s` — входное значение. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает представление входного значения в Punycode. [`String`](/sql-reference/data-types/string)
 
-Returns a Punycode representation of the input value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT punycodeEncode('München')
@@ -2406,38 +2142,33 @@ SELECT punycodeEncode('München')
 └───────────────────────────┘
 ```
 
-
-
 ## regexpExtract {#regexpExtract}
 
-Introduced in: v23.2
+Впервые появился в: v23.2
 
+Извлекает первую подстроку в `haystack`, которая соответствует шаблону регулярного выражения и указанному индексу группы.
 
-Extracts the first string in `haystack` that matches the regexp pattern and corresponds to the regex group index.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 regexpExtract(haystack, pattern[, index])
 ```
 
-**Aliases**: `REGEXP_EXTRACT`
+**Псевдонимы**: `REGEXP_EXTRACT`
 
-**Arguments**
+**Аргументы**
 
-- `haystack` — String, in which regexp pattern will be matched. [`String`](/sql-reference/data-types/string)
-- `pattern` — String, regexp expression. `pattern` may contain multiple regexp groups, `index` indicates which regex group to extract. An index of 0 means matching the entire regular expression. [`const String`](/sql-reference/data-types/string)
-- `index` — Optional. An integer number greater or equal 0 with default 1. It represents which regex group to extract. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `haystack` — Строка, в которой ищется шаблон регулярного выражения. [`String`](/sql-reference/data-types/string)
+* `pattern` — Строка, регулярное выражение. `pattern` может содержать несколько групп регулярного выражения, `index` указывает, какую группу извлечь. Индекс 0 означает совпадение со всем регулярным выражением. [`const String`](/sql-reference/data-types/string)
+* `index` — Необязательный параметр. Целое число больше или равно 0, по умолчанию — 1. Определяет, какую группу регулярного выражения извлечь. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с совпадением. [`String`](/sql-reference/data-types/string)
 
-Returns a string match [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -2453,35 +2184,30 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-
-
 ## repeat {#repeat}
 
-Introduced in: v20.1
+Введена в версии v20.1
 
+Повторяет строку заданное количество раз.
 
-Concatenates a string as many times with itself as specified.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 repeat(s, n)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to repeat. [`String`](/sql-reference/data-types/string)
-- `n` — The number of times to repeat the string. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — строка для повторения. [`String`](/sql-reference/data-types/string)
+* `n` — количество повторений строки. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Строка, содержащая строку `s`, повторённую `n` раз. Если `n` отрицательное, функция возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-A string containing string `s` repeated `n` times. If `n` is negative, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT repeat('abc', 10)
@@ -2493,36 +2219,31 @@ SELECT repeat('abc', 10)
 └────────────────────────────────┘
 ```
 
-
-
 ## reverseUTF8 {#reverseUTF8}
 
-Introduced in: v1.1
+Добавлено в: v1.1
 
+Разворачивает последовательность кодовых точек Unicode в строке.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не генерируется, и результат неопределён.
 
-Reverses a sequence of Unicode code points in a string.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 reverseUTF8(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — Строка, содержащая текст в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с последовательностью кодовых точек Unicode в обратном порядке. [`String`](/sql-reference/data-types/string)
 
-Returns a string with the sequence of Unicode code points reversed. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT reverseUTF8('ClickHouse')
@@ -2532,39 +2253,35 @@ SELECT reverseUTF8('ClickHouse')
 esuoHkcilC
 ```
 
-
-
 ## right {#right}
 
-Introduced in: v22.1
+Появилась в версии v22.1
 
+Возвращает подстроку строки `s` с заданным смещением `offset`, отсчитываемым справа.
 
-Returns a substring of string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 right(s, offset)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой извлекается подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — Величина смещения в байтах. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* Для положительного `offset` — подстроку `s` длиной `offset` байт, считая с правого края строки.
+* Для отрицательного `offset` — подстроку `s` длиной `length(s) - |offset|` байт, считая с правого края строки.
+* Пустую строку, если значение `length` равно `0`.
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Positive offset**
+**Положительное смещение**
 
 ```sql title=Query
 SELECT right('Hello', 3)
@@ -2574,7 +2291,7 @@ SELECT right('Hello', 3)
 llo
 ```
 
-**Negative offset**
+**Отрицательное смещение**
 
 ```sql title=Query
 SELECT right('Hello', -3)
@@ -2584,38 +2301,33 @@ SELECT right('Hello', -3)
 lo
 ```
 
-
-
 ## rightPad {#rightPad}
 
-Introduced in: v21.8
+Появилась в версии v21.8
 
+Дополняет строку справа пробелами или указанной строкой (при необходимости многократно) до тех пор, пока длина результирующей строки не достигнет заданного значения `length`.
 
-Pads a string from the right with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rightPad(string, length[, pad_string])
 ```
 
-**Aliases**: `rpad`
+**Псевдонимы**: `rpad`
 
-**Arguments**
+**Аргументы**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — Входная строка, которую нужно дополнить. [`String`](/sql-reference/data-types/string)
+* `length` — Длина результирующей строки. Если значение меньше длины входной строки, то входная строка укорачивается до `length` символов. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — Необязательный параметр. Строка, которой дополняется входная строка. Если параметр не указан, входная строка дополняется пробелами. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку заданной длины, дополненную справа. [`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
@@ -2627,37 +2339,32 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 └─────────────────────────┴────────────────────┘
 ```
 
-
-
 ## rightPadUTF8 {#rightPadUTF8}
 
-Introduced in: v21.8
+Добавлена в версии v21.8
 
+Дополняет строку справа пробелами или указанной строкой (при необходимости многократно) до тех пор, пока результирующая строка не достигнет заданной длины.
+В отличие от [`rightPad`](#rightPad), который измеряет длину строки в байтах, здесь длина строки измеряется в кодовых точках.
 
-Pads the string from the right with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`rightPad`](#rightPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rightPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — Входная строка, которую нужно дополнить. [`String`](/sql-reference/data-types/string)
+* `length` — Длина результирующей строки. Если значение меньше длины входной строки, то входная строка укорачивается до `length` символов. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — Необязательный параметр. Строка, которой дополняется входная строка. Если не указано, то входная строка дополняется пробелами. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку заданной длины, дополненную справа. [`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
@@ -2669,39 +2376,35 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 └──────────────────────────────┴─────────────────────────┘
 ```
 
-
-
 ## rightUTF8 {#rightUTF8}
 
-Introduced in: v22.1
+Впервые появилась в: v22.1
 
+Возвращает подстроку строки в кодировке UTF‑8 `s` с заданным `offset`, начиная с конца.
 
-Returns a substring of UTF-8 encoded string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 rightUTF8(s, offset)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — Строка в кодировке UTF-8, для которой вычисляется подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — Смещение в байтах. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает:
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* Для положительного значения `offset` — подстроку `s` длиной `offset` байт, начиная от правого края строки.
+* Для отрицательного значения `offset` — подстроку `s` длиной `length(s) - |offset|` байт, начиная от правого края строки.
+* Пустую строку, если `length` равно `0`.
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**Примеры**
 
-**Positive offset**
+**Положительное смещение**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', 4)
@@ -2711,7 +2414,7 @@ SELECT rightUTF8('Привет', 4)
 ивет
 ```
 
-**Negative offset**
+**Отрицательное смещение**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', -4)
@@ -2721,34 +2424,29 @@ SELECT rightUTF8('Привет', -4)
 ет
 ```
 
-
-
 ## soundex {#soundex}
 
-Introduced in: v23.4
+Впервые появилась в версии: v23.4
 
+Возвращает [код Soundex](https://en.wikipedia.org/wiki/Soundex) для строки.
 
-Returns the [Soundex code](https://en.wikipedia.org/wiki/Soundex) of a string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 soundex(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает код Soundex для входной строки. [`String`](/sql-reference/data-types/string)
 
-Returns the Soundex code of the input string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT soundex('aksel')
@@ -2760,34 +2458,29 @@ SELECT soundex('aksel')
 └──────────────────┘
 ```
 
-
-
 ## space {#space}
 
-Introduced in: v23.5
+Появилась в версии: v23.5
 
+Повторяет символ пробела (` `) указанное число раз.
 
-Concatenates a space (` `) as many times with itself as specified.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 space(n)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `n` — The number of times to repeat the space. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `n` — количество повторений символа пробела. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, в которой пробел повторяется `n` раз. Если `n <= 0`, функция возвращает пустую строку. [`String`](/sql-reference/data-types/string)
 
-Returns astring containing a space repeated `n` times. If `n <= 0`, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT space(3) AS res, length(res);
@@ -2799,39 +2492,34 @@ SELECT space(3) AS res, length(res);
 └─────┴─────────────┘
 ```
 
-
-
 ## sparseGrams {#sparseGrams}
 
-Introduced in: v25.5
+Добавлена в: v25.5
 
+Находит все подстроки заданной строки длиной не менее `n`,
+для которых хеши (n-1)-грамм на границах подстроки
+строго больше хешей любых (n-1)-грамм внутри подстроки.
+Использует `CRC32` в качестве хеш-функции.
 
-Finds all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sparseGrams(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — необязательный параметр. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — необязательный параметр. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Должно быть не меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив извлечённых подстрок. [`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sparseGrams('alice', 3)
@@ -2843,39 +2531,34 @@ SELECT sparseGrams('alice', 3)
 └────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashes {#sparseGramsHashes}
 
-Introduced in: v25.5
+Добавлена в: v25.5
 
+Находит хэши всех подстрок заданной строки длиной не менее `n`,
+для которых хэши (n-1)-грамм на границах подстроки
+строго больше хэшей любых (n-1)-грамм внутри подстроки.
+Использует `CRC32` в качестве хеш-функции.
 
-Finds hashes of all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — необязательный параметр. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — необязательный параметр. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив хэшей CRC32 выбранных подстрок. [`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sparseGramsHashes('alice', 3)
@@ -2887,38 +2570,33 @@ SELECT sparseGramsHashes('alice', 3)
 └────────────────────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
-Introduced in: v25.5
+Появилась в: v25.5
 
+Находит хэши всех подстрок заданной строки в кодировке UTF-8 длиной не менее `n`, для которых хэши (n-1)-грамм на границах подстроки строго больше хэшей любых (n-1)-грамм внутри подстроки.
+Ожидает строку в кодировке UTF-8, выбрасывает исключение при некорректной UTF-8-последовательности.
+Использует `CRC32` в качестве функции хеширования.
 
-Finds hashes of all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects UTF-8 string, throws an exception in case of invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — Входная строка. [`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — Необязательный параметр. Минимальная длина извлекаемых n-грамм. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — Необязательный параметр. Максимальная длина извлекаемых n-грамм. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив CRC32-хэшей выбранных подстрок в кодировке UTF-8. [`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sparseGramsHashesUTF8('алиса', 3)
@@ -2930,38 +2608,33 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 └───────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
-Introduced in: v25.5
+Появилась в: v25.5
 
+Находит все подстроки заданной строки в кодировке UTF-8 длиной не менее `n`, для которых хэши (n-1)-грамм на границах подстроки строго больше хэшей любых (n-1)-грамм внутри неё.
+Ожидает строку в кодировке UTF-8, выбрасывает исключение при обнаружении некорректной UTF-8-последовательности.
+Использует `CRC32` в качестве хэш-функции.
 
-Finds all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects a UTF-8 string, throws an exception in case of an invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — Входная строка. [`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — Необязательный аргумент. Минимальная длина извлекаемой n-граммы. Значение по умолчанию и минимальное значение — 3. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — Необязательный аргумент. Максимальная длина извлекаемой n-граммы. Значение по умолчанию — 100. Не должно быть меньше `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает массив выбранных подстрок в кодировке UTF-8. [`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings. [`Array(String)`](/sql-reference/data-types/array)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sparseGramsUTF8('алиса', 3)
@@ -2973,35 +2646,30 @@ SELECT sparseGramsUTF8('алиса', 3)
 └─────────────────────────────┘
 ```
 
-
-
 ## startsWith {#startsWith}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Проверяет, начинается ли строка с указанной строки.
 
-Checks whether a string begins with the provided string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 startsWith(s, prefix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — строка для проверки. [`String`](/sql-reference/data-types/string)
+* `prefix` — префикс для проверки. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` начинается с `prefix`, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT startsWith('ClickHouse', 'Click');
@@ -3013,35 +2681,30 @@ SELECT startsWith('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitive {#startsWithCaseInsensitive}
 
-Introduced in: v25.9
+Добавлена в версии: v25.9
 
+Проверяет, начинается ли строка с указанной подстроки без учета регистра.
 
-Checks whether a string begins with the provided case-insensitive string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 startsWithCaseInsensitive(s, prefix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для проверки. [`String`](/sql-reference/data-types/string)
+* `prefix` — Префикс, проверяемый без учета регистра. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` начинается с `prefix` (сравнение без учета регистра), иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
@@ -3053,37 +2716,32 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitiveUTF8 {#startsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+Добавлено в v25.9
 
+Проверяет, начинается ли строка с заданного префикса без учета регистра.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, и результат становится неопределённым.
 
-Checks if a string starts with the provided case-insensitive prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 startsWithCaseInsensitiveUTF8(s, prefix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для проверки. [`String`](/sql-reference/data-types/string)
+* `prefix` — Префикс для проверки без учета регистра. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` начинается с `prefix` (без учета регистра), иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
@@ -3095,37 +2753,32 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithUTF8 {#startsWithUTF8}
 
-Introduced in: v23.8
+Добавлена в: v23.8
 
+Проверяет, начинается ли строка с указанного префикса.
+Предполагается, что строка содержит валидный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, а результат не определён.
 
-Checks if a string starts with the provided prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 startsWithUTF8(s, prefix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — строка, которую нужно проверить. [`String`](/sql-reference/data-types/string)
+* `prefix` — префикс, наличие которого проверяется. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `s` начинается с `prefix`, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT startsWithUTF8('приставка', 'при')
@@ -3137,34 +2790,29 @@ SELECT startsWithUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## stringBytesEntropy {#stringBytesEntropy}
 
-Introduced in: v25.6
+Добавлена в версии: v25.6
 
+Вычисляет энтропию Шеннона распределения байтов в строке.
 
-Calculates Shannon's entropy of byte distribution in a string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 stringBytesEntropy(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — строка для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает энтропию Шеннона распределения байтов в строке. [`Float64`](/sql-reference/data-types/float)
 
-Returns Shannon's entropy of byte distribution in the string. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT stringBytesEntropy('Hello, world!')
@@ -3176,34 +2824,29 @@ SELECT stringBytesEntropy('Hello, world!')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## stringBytesUniq {#stringBytesUniq}
 
-Introduced in: v25.6
+Добавлена в: v25.6
 
+Считает количество различных байтов в строке.
 
-Counts the number of distinct bytes in a string.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 stringBytesUniq(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — строка для анализа. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает количество уникальных байт в строке. [`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the number of distinct bytes in the string. [`UInt16`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT stringBytesUniq('Hello')
@@ -3215,35 +2858,30 @@ SELECT stringBytesUniq('Hello')
 └──────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndex {#stringJaccardIndex}
 
-Introduced in: v23.11
+Добавлена в версии: v23.11
 
+Вычисляет [индекс сходства Жаккара](https://en.wikipedia.org/wiki/Jaccard_index) между двумя байтовыми строками.
 
-Calculates the [Jaccard similarity index](https://en.wikipedia.org/wiki/Jaccard_index) between two byte strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 stringJaccardIndex(s1, s2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает индекс сходства Жаккара между двумя строками. [`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two strings. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT stringJaccardIndex('clickhouse', 'mouse')
@@ -3255,35 +2893,30 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndexUTF8 {#stringJaccardIndexUTF8}
 
-Introduced in: v23.11
+Впервые представлена в: v23.11
 
+Аналог [`stringJaccardIndex`](#stringJaccardIndex), но для строк в кодировке UTF-8.
 
-Like [`stringJaccardIndex`](#stringJaccardIndex) but for UTF8-encoded strings.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 stringJaccardIndexUTF8(s1, s2)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s1` — First input UTF8 string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input UTF8 string. [`String`](/sql-reference/data-types/string)
+* `s1` — первая входная строка в кодировке UTF8. [`String`](/sql-reference/data-types/string)
+* `s2` — вторая входная строка в кодировке UTF8. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает индекс сходства Жаккара между двумя строками UTF8. [`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two UTF8 strings. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
@@ -3295,43 +2928,39 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## substring {#substring}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает подстроку строки `s`, начинающуюся с указанного байтового индекса `offset`.
+Подсчёт байтов начинается с 1 по следующим правилам:
 
-Returns the substring of a string `s` which starts at the specified byte index `offset`.
-Byte counting starts from 1 with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* Если `offset` равен `0`, возвращается пустая строка.
+* Если `offset` отрицательный, подстрока начинается на `pos` символов от конца строки, а не от начала.
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+Необязательный аргумент `length` задаёт максимальное количество байт, которое может содержать возвращаемая подстрока.
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 substring(s, offset[, length])
 ```
 
-**Aliases**: `byteSlice`, `mid`, `substr`
+**Псевдонимы**: `byteSlice`, `mid`, `substr`
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. The maximum length of the substring. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой извлекается подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Enum`](/sql-reference/data-types/enum)
+* `offset` — Начальная позиция подстроки в `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — Необязательный параметр. Максимальная длина подстроки. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает подстроку `s` длиной `length` байт, начиная с индекса `offset`. [`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
@@ -3343,38 +2972,33 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 └──────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-
 ## substringIndex {#substringIndex}
 
-Introduced in: v23.7
+Впервые появилась в: v23.7
 
+Возвращает подстроку `s`, расположенную перед `count`-м вхождением разделителя `delim`, как в Spark или MySQL.
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, as in Spark or MySQL.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 substringIndex(s, delim, count)
 ```
 
-**Aliases**: `SUBSTRING_INDEX`
+**Псевдонимы**: `SUBSTRING_INDEX`
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой извлекается подстрока. [`String`](/sql-reference/data-types/string)
+* `delim` — Разделитель, по которому выполняется разбиение строки. [`String`](/sql-reference/data-types/string)
+* `count` — Количество вхождений разделителя, которые нужно посчитать перед извлечением подстроки. Если `count` положительное, возвращается всё слева от последнего разделителя (считая слева). Если `count` отрицательное, возвращается всё справа от последнего разделителя (считая справа). [`UInt`](/sql-reference/data-types/int-uint) или [`Int`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает подстроку строки `s` до `count`-го вхождения `delim`. [`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT substringIndex('www.clickhouse.com', '.', 2)
@@ -3386,38 +3010,33 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## substringIndexUTF8 {#substringIndexUTF8}
 
-Introduced in: v23.7
+Появилась в версии: v23.7
 
+Возвращает подстроку `s` до `count`-го вхождения разделителя `delim`, предназначена для работы с Unicode code points.
+Предполагается, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушено, исключение не выбрасывается, и результат не определён.
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, specifically for Unicode code points.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 substringIndexUTF8(s, delim, count)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой извлекается подстрока. [`String`](/sql-reference/data-types/string)
+* `delim` — Символ, по которому выполняется разбиение. [`String`](/sql-reference/data-types/string)
+* `count` — Количество вхождений разделителя, которые нужно учесть перед извлечением подстроки. Если `count` положительно, возвращается всё слева от последнего разделителя (при подсчёте слева). Если `count` отрицательно, возвращается всё справа от последнего разделителя (при подсчёте справа). [`UInt`](/sql-reference/data-types/int-uint) или [`Int`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает подстроку `s` до `count` вхождений `delim`. [`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**UTF8 example**
+**Пример UTF-8**
 
 ```sql title=Query
 SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
@@ -3427,46 +3046,42 @@ SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
 www.straßen-in-europa
 ```
 
-
-
 ## substringUTF8 {#substringUTF8}
 
-Introduced in: v1.1
+Введено в: v1.1
 
+Возвращает подстроку строки `s`, которая начинается с указанного байтового смещения `offset` по кодовым точкам Unicode.
+Отсчёт байтов начинается с `1` по следующей логике:
 
-Returns the substring of a string `s` which starts at the specified byte index `offset` for Unicode code points.
-Byte counting starts from `1` with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* Если `offset` равен `0`, возвращается пустая строка.
+* Если `offset` отрицателен, подстрока начинается, отступив `pos` символов от конца строки, а не от её начала.
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+Необязательный аргумент `length` задаёт максимальное количество байт, которое может иметь возвращаемая подстрока.
 
 :::note
-This function assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+Эта функция предполагает, что строка содержит корректный текст в кодировке UTF-8.
+Если это предположение нарушается, исключение не выбрасывается, и результат неопределён.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 substringUTF8(s, offset[, length])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
-- `length` — The maximum length of the substring. Optional. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
+* `s` — Строка, из которой извлекается подстрока. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring) или [`Enum`](/sql-reference/data-types/enum)
+* `offset` — Начальная позиция подстроки в `s`. [`Int`](/sql-reference/data-types/int-uint) или [`UInt`](/sql-reference/data-types/int-uint)
+* `length` — Максимальная длина подстроки. Необязательный параметр. [`Int`](/sql-reference/data-types/int-uint) или [`UInt`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает подстроку `s` длиной `length` байт, начиная с индекса `offset`. [`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substringUTF8(str, 9, 5)
@@ -3476,35 +3091,30 @@ SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substri
 Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 ```
 
-
-
 ## toValidUTF8 {#toValidUTF8}
 
-Introduced in: v20.1
+Добавлено в: v20.1
 
+Преобразует строку в корректную кодировку UTF-8, заменяя любые некорректные символы в кодировке UTF-8 символом замены `�` (U+FFFD).
+Если обнаруживается несколько идущих подряд некорректных символов, они заменяются одним символом замены.
 
-Converts a string to valid UTF-8 encoding by replacing any invalid UTF-8 characters with the replacement character `�` (U+FFFD).
-When multiple consecutive invalid characters are found, they are collapsed into a single replacement character.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toValidUTF8(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Any set of bytes represented as the String data type object. [`String`](/sql-reference/data-types/string)
+* `s` — Произвольная последовательность байтов, представленная объектом типа данных String. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает корректную строку в кодировке UTF-8. [`String`](/sql-reference/data-types/string)
 
-Returns a valid UTF-8 string. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT toValidUTF8('\\x61\\xF0\\x80\\x80\\x80b')
@@ -3517,38 +3127,33 @@ c
 └───────────────────────┘
 ```
 
-
-
 ## trimBoth {#trimBoth}
 
-Introduced in: v20.1
+Введена в: v20.1
 
+Удаляет указанные символы из начала и конца строки.
+По умолчанию удаляет распространённые пробельные символы (ASCII).
 
-Removes the specified characters from the start and end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 trimBoth(s[, trim_characters])
 ```
 
-**Aliases**: `trim`
+**Псевдонимы**: `trim`
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для обрезки. [`String`](/sql-reference/data-types/string)
+* `trim_characters` — Необязательный параметр. Символы для обрезки. Если не указан, удаляются стандартные пробельные символы. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, у которой указанные символы обрезаны с начала и конца. [`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from both ends. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT trimBoth('$$ClickHouse$$', '$')
@@ -3560,38 +3165,33 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 └──────────────────────────┘
 ```
 
-
-
 ## trimLeft {#trimLeft}
 
-Introduced in: v20.1
+Появилась в версии: v20.1
 
+Удаляет указанные символы с начала строки.
+По умолчанию удаляет распространённые пробельные символы (ASCII).
 
-Removes the specified characters from the start of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 trimLeft(input[, trim_characters])
 ```
 
-**Aliases**: `ltrim`
+**Псевдонимы**: `ltrim`
 
-**Arguments**
+**Аргументы**
 
-- `input` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `input` — Строка, из которой нужно удалить символы. [`String`](/sql-reference/data-types/string)
+* `trim_characters` — Необязательный параметр. Набор символов для удаления. Если не указан, удаляются распространённые пробельные символы. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с указанными символами, удалёнными слева. [`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the left. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT trimLeft('ClickHouse', 'Click');
@@ -3603,38 +3203,33 @@ SELECT trimLeft('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## trimRight {#trimRight}
 
-Introduced in: v20.1
+Добавлена в версии: v20.1
 
+Удаляет указанные символы с конца строки.
+По умолчанию удаляет стандартные пробельные символы (ASCII).
 
-Removes the specified characters from the end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 trimRight(s[, trim_characters])
 ```
 
-**Aliases**: `rtrim`
+**Псевдонимы**: `rtrim`
 
-**Arguments**
+**Аргументы**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — Строка для обрезки. [`String`](/sql-reference/data-types/string)
+* `trim_characters` — Необязательные символы для обрезки. Если не указано, удаляются обычные пробельные символы. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с указанными символами, удалёнными справа. [`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the right. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT trimRight('ClickHouse','House');
@@ -3646,34 +3241,29 @@ SELECT trimRight('ClickHouse','House');
 └──────────────────────────┘
 ```
 
-
-
 ## tryBase32Decode {#tryBase32Decode}
 
-Introduced in: v25.6
+Впервые представлена в версии v25.6
 
+Принимает строку и декодирует её с использованием схемы кодирования [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
 
-Accepts a string and decodes it using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) encoding scheme.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryBase32Decode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base32-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — строковый столбец или константа для декодирования. Если строка не является корректной Base32-строкой, в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с декодированным значением аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryBase32Decode('IVXGG33EMVSA====');
@@ -3685,34 +3275,29 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase58Decode {#tryBase58Decode}
 
-Introduced in: v22.10
+Добавлена в версии v22.10
 
+Аналог [`base58Decode`](#base58Decode), но в случае ошибки возвращает пустую строку.
 
-Like [`base58Decode`](#base58Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryBase58Decode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant. If the string is not valid Base58-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — строковый столбец или константа. Если строка не является корректной строкой в кодировке Base58, в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую декодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_invalid;
@@ -3724,34 +3309,29 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 └─────────┴─────────────┘
 ```
 
-
-
 ## tryBase64Decode {#tryBase64Decode}
 
-Introduced in: v18.16
+Появилась в версии: v18.16
 
+Аналогична [`base64Decode`](#base64Decode), но в случае ошибки возвращает пустую строку.
 
-Like [`base64Decode`](#base64Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryBase64Decode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — столбец или константа типа String для декодирования. Если строка некорректно закодирована в Base64, то в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую декодированное значение аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
@@ -3763,34 +3343,29 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase64URLDecode {#tryBase64URLDecode}
 
-Introduced in: v18.16
+Впервые появилось в: v18.16
 
+Аналогично [`base64URLDecode`](#base64URLDecode), но в случае ошибки возвращает пустую строку.
 
-Like [`base64URLDecode`](#base64URLDecode), but returns an empty string in case of error.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryBase64URLDecode(encoded)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — строковый столбец или константа для декодирования. Если строка не является корректной в кодировке Base64, в случае ошибки возвращается пустая строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с декодированным значением аргумента. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -3802,35 +3377,30 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## tryIdnaEncode {#tryIdnaEncode}
 
-Introduced in: v24.1
+Введена в версии v24.1
 
+Возвращает представление доменного имени в Unicode (UTF-8) по алгоритму ToUnicode в соответствии с механизмом [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA).
+В случае ошибки функция возвращает пустую строку вместо выбрасывания исключения.
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error it returns an empty string instead of throwing an exception.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryIdnaEncode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — входная строка. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает ASCII-представление входной строки в соответствии с механизмом IDNA для входного значения или пустую строку, если входные данные некорректны. [`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryIdnaEncode('straße.münchen.de')
@@ -3842,34 +3412,29 @@ SELECT tryIdnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryPunycodeDecode {#tryPunycodeDecode}
 
-Introduced in: v24.1
+Появилась в версии: v24.1
 
+Аналог функции `punycodeDecode`, но возвращает пустую строку, если передана некорректная Punycode-строка.
 
-Like `punycodeDecode` but returns an empty string if no valid Punycode-encoded string is given.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tryPunycodeDecode(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — строка в кодировке Punycode. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает текстовое представление входного значения или пустую строку, если входное значение некорректно. [`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tryPunycodeDecode('Mnchen-3ya')
@@ -3881,36 +3446,31 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 └─────────────────────────────────┘
 ```
 
-
-
 ## upper {#upper}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Преобразует символы латинского алфавита в кодировке ASCII в строке в верхний регистр.
 
-Converts the ASCII Latin symbols in a string to uppercase.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 upper(s)
 ```
 
-**Aliases**: `ucase`
+**Псевдонимы**: `ucase`
 
-**Arguments**
+**Аргументы**
 
-- `s` — The string to convert to uppercase. [`String`](/sql-reference/data-types/string)
+* `s` — строка для преобразования в верхний регистр. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку в верхнем регистре, полученную из `s`. [`String`](/sql-reference/data-types/string)
 
-Returns an uppercase string from `s`. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT upper('clickhouse')
@@ -3922,40 +3482,35 @@ SELECT upper('clickhouse')
 └─────────────────────┘
 ```
 
-
-
 ## upperUTF8 {#upperUTF8}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
-
-Converts a string to uppercase, assuming that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+Преобразует строку в верхний регистр, предполагая, что строка содержит текст в корректной кодировке UTF-8.
+Если это предположение не выполняется, исключение не генерируется, а результат не определён.
 
 :::note
-This function doesn't detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point (such as `ẞ` and `ß`), the result may be incorrect for that code point.
+Эта функция не определяет язык; например, для турецкого результат может быть не совсем корректным (i/İ vs. i/I).
+Если длина последовательности байт UTF-8 различается для верхнего и нижнего регистра одной и той же кодовой точки (например, `ẞ` и `ß`), результат может быть некорректен для этой кодовой точки.
 :::
 
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 upperUTF8(s)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `s` — A string type. [`String`](/sql-reference/data-types/string)
+* `s` — тип String (строка). [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Значение типа данных String (строка). [`String`](/sql-reference/data-types/string)
 
-A String data type value. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT upperUTF8('München') AS Upperutf8

@@ -51,15 +51,15 @@ SELECT
 SELECT
     left,
     right,
-    multiIf(left < right, 'left is smaller', left > right, 'right is smaller', 'Both equal') AS faulty_result
+    multiIf(left < right, 'левое меньше', left > right, 'правое меньше', 'Оба равны') AS faulty_result
 FROM LEFT_RIGHT
 
 ┌─left─┬─right─┬─faulty_result────┐
-│ ᴺᵁᴸᴸ │     4 │ Both equal       │
-│    1 │     3 │ left is smaller  │
-│    2 │     2 │ Both equal       │
-│    3 │     1 │ right is smaller │
-│    4 │  ᴺᵁᴸᴸ │ Both equal       │
+│ ᴺᵁᴸᴸ │     4 │ Оба равны        │
+│    1 │     3 │ левое меньше     │
+│    2 │     2 │ Оба равны        │
+│    3 │     1 │ правое меньше    │
+│    4 │  ᴺᵁᴸᴸ │ Оба равны        │
 └──────┴───────┴──────────────────┘
 ```
 
@@ -84,7 +84,7 @@ SELECT
 FROM system.numbers
 WHERE number < 5;
 
--- is translated to
+-- преобразуется в
 SELECT
     number,
     multiIf((number % 2) = 0, number + 1, (number % 2) = 1, number * 10, number) AS result
@@ -99,7 +99,7 @@ WHERE number < 5
 │      4 │      5 │
 └────────┴────────┘
 
-5 rows in set. Elapsed: 0.002 sec.
+Получено 5 строк. Прошло: 0.002 сек.
 ```
 
 2. `CASE <expr> WHEN <val1> THEN ... WHEN <val2> THEN ... ELSE ... END`
@@ -119,21 +119,13 @@ SELECT
 FROM system.numbers
 WHERE number < 3;
 
--- is translated to
+-- транслируется в
 
 SELECT
     number,
     caseWithExpression(number, 0, 100, 1, 200, 0) AS result
 FROM system.numbers
 WHERE number < 3
-
-┌─number─┬─result─┐
-│      0 │    100 │
-│      1 │    200 │
-│      2 │      0 │
-└────────┴────────┘
-
-3 rows in set. Elapsed: 0.002 sec.
 ```
 
 ┌─number─┬─result─┐
@@ -144,32 +136,10 @@ WHERE number < 3
 
 3 строк в наборе. Прошло: 0.002 сек.
 
-````sql
-SELECT
-    number,
-    CASE number
-        WHEN 0 THEN number + 1
-        WHEN 1 THEN number * 10
-        ELSE number
-    END
-FROM system.numbers
-WHERE number < 3;
+````
 
--- is translated to
+Эта форма также не требует, чтобы возвращаемые выражения были константами.
 
-SELECT
-    number,
-    caseWithExpression(number, 0, number + 1, 1, number * 10, number)
-FROM system.numbers
-WHERE number < 3
-
-┌─number─┬─caseWithExpr⋯0), number)─┐
-│      0 │                        1 │
-│      1 │                       10 │
-│      2 │                        2 │
-└────────┴──────────────────────────┘
-
-3 rows in set. Elapsed: 0.001 sec.
 ```sql
 SELECT
     number,
@@ -196,32 +166,18 @@ WHERE number < 3
 └────────┴──────────────────────────┘
 
 Получено 3 строки. Затрачено: 0.001 сек.
-````sql
-SELECT
-    number,
-    CASE
-        WHEN number = 0 THEN fromUnixTimestamp64Milli(0, 'Asia/Kolkata')
-        WHEN number = 1 THEN fromUnixTimestamp64Milli(0, 'America/Los_Angeles')
-        ELSE fromUnixTimestamp64Milli(0, 'UTC')
-    END AS tz
-FROM system.numbers
-WHERE number < 3;
+````
 
--- is translated to
+#### Ограничения {#caveats}
 
-SELECT
-    number,
-    multiIf(number = 0, fromUnixTimestamp64Milli(0, 'Asia/Kolkata'), number = 1, fromUnixTimestamp64Milli(0, 'America/Los_Angeles'), fromUnixTimestamp64Milli(0, 'UTC')) AS tz
-FROM system.numbers
-WHERE number < 3
+ClickHouse определяет результирующий тип выражения CASE (или его внутреннего аналога, такого как `multiIf`) до вычисления каких‑либо условий. Это важно, когда возвращаемые выражения различаются по типу, например используют разные часовые пояса или числовые типы.
 
-┌─number─┬──────────────────────tz─┐
-│      0 │ 1970-01-01 05:30:00.000 │
-│      1 │ 1970-01-01 05:30:00.000 │
-│      2 │ 1970-01-01 05:30:00.000 │
-└────────┴─────────────────────────┘
+* Результирующий тип выбирается как наиболее общий совместимый тип среди всех ветвей.
+* После выбора этого типа все остальные ветви неявно приводятся к нему — даже если их логика никогда не будет выполнена во время выполнения.
+* Для типов вроде DateTime64, где часовой пояс является частью сигнатуры типа, это может приводить к неожиданному поведению: первый встреченный часовой пояс может использоваться для всех ветвей, даже если в других ветвях указаны другие часовые пояса.
 
-3 rows in set. Elapsed: 0.011 sec.
+Например, в приведённом ниже случае во всех строках будет возвращаться метка времени в часовом поясе первой совпавшей ветви, то есть `Asia/Kolkata`.
+
 ```sql
 SELECT
     number,
@@ -248,32 +204,12 @@ WHERE number < 3
 └────────┴─────────────────────────┘
 
 Получено 3 строки. Прошло: 0.011 сек.
-```sql
-SELECT
-    number,
-    multiIf(
-        number = 0, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'Asia/Kolkata'),
-        number = 1, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'America/Los_Angeles'),
-        formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'UTC')
-    ) AS tz
-FROM system.numbers
-WHERE number < 3;
+```
 
--- is translated to
+Здесь ClickHouse видит несколько возвращаемых типов `DateTime64(3, &lt;timezone&gt;)`. Он выводит общий тип как `DateTime64(3, 'Asia/Kolkata'` по первому встретившемуся варианту, неявно приводя остальные ветви к этому типу.
 
-SELECT
-    number,
-    multiIf(number = 0, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'Asia/Kolkata'), number = 1, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'America/Los_Angeles'), formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'UTC')) AS tz
-FROM system.numbers
-WHERE number < 3
+Эту проблему можно решить, преобразовав значение в строку, чтобы сохранить задуманное форматирование часового пояса:
 
-┌─number─┬─tz──────────────────┐
-│      0 │ 1970-01-01 05:30:00 │
-│      1 │ 1969-12-31 16:00:00 │
-│      2 │ 1970-01-01 00:00:00 │
-└────────┴─────────────────────┘
-
-3 rows in set. Elapsed: 0.002 sec.
 ```sql
 SELECT
     number,
@@ -292,8 +228,16 @@ SELECT
     multiIf(number = 0, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'Asia/Kolkata'), number = 1, formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'America/Los_Angeles'), formatDateTime(fromUnixTimestamp64Milli(0), '%F %T', 'UTC')) AS tz
 FROM system.numbers
 WHERE number < 3
-```sql
-clamp(value, min, max)
+```
+
+┌─number─┬─tz──────────────────┐
+│      0 │ 1970-01-01 05:30:00 │
+│      1 │ 1969-12-31 16:00:00 │
+│      2 │ 1970-01-01 00:00:00 │
+└────────┴─────────────────────┘
+
+3 строки в наборе. Прошло: 0.002 сек.
+
 ```
 
 <!-- 
@@ -303,11 +247,35 @@ clamp(value, min, max)
 -->
 ```
 
+{/*AUTOGENERATED_START*/ }
+
+## clamp {#clamp}
+
+Введена в версии: v24.5
+
+Ограничивает значение заданными минимальной и максимальной границами.
+
+Если значение меньше минимума, возвращается минимум. Если значение больше максимума, возвращается максимум. В противном случае возвращается само значение.
+
+Все аргументы должны быть сравнимых типов. Тип результата — наибольший совместимый тип среди всех аргументов.
+
+**Синтаксис**
+
 ```sql
 clamp(value, min, max)
 ```
 
-**Value below minimum**
+**Аргументы**
+
+* `value` — Значение, которое нужно ограничить. - `min` — Нижняя граница. - `max` — Верхняя граница.
+
+**Возвращаемое значение**
+
+Возвращает значение, ограниченное диапазоном [min, max].
+
+**Примеры**
+
+**Базовый пример использования**
 
 ```sql title=Query
 SELECT clamp(5, 1, 10) AS result;
@@ -319,7 +287,7 @@ SELECT clamp(5, 1, 10) AS result;
 └────────┘
 ```
 
-**Value above maximum**
+**Значение меньше минимального**
 
 ```sql title=Query
 SELECT clamp(-3, 0, 7) AS result;
@@ -331,43 +299,11 @@ SELECT clamp(-3, 0, 7) AS result;
 └────────┘
 ```
 
-
-
-## greatest {#greatest}
-
-Introduced in: v1.1
-
-
-Returns the greatest value among the arguments.
-`NULL` arguments are ignored.
-
-- For arrays, returns the lexicographically greatest array.
-- For `DateTime` types, the result type is promoted to the largest type (e.g., `DateTime64` if mixed with `DateTime32`).
-
-:::note Use setting `least_greatest_legacy_null_behavior` to change `NULL` behavior
-Version [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) introduced a backwards-incompatible change such that `NULL` values are ignored, while previously it returned `NULL` if one of the arguments was `NULL`.
-To retain the previous behavior, set setting `least_greatest_legacy_null_behavior` (default: `false`) to `true`.
-:::
-    
-
-**Syntax**
+**Значение превышает максимум**
 
 ```sql title=Query
 SELECT clamp(15, 0, 7) AS result;
 ```
-
-**Arguments**
-
-- `x1[, x2, ...]` — One or multiple values to compare. All arguments must be of comparable types. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns the greatest value among the arguments, promoted to the largest compatible type. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Numeric types**
 
 ```response title=Response
 ┌─result─┐
@@ -375,11 +311,38 @@ Returns the greatest value among the arguments, promoted to the largest compatib
 └────────┘
 ```
 
+## greatest {#greatest}
+
+Введена в версии: v1.1
+
+Возвращает наибольшее значение среди аргументов.
+Аргументы `NULL` игнорируются.
+
+* Для массивов возвращает лексикографически наибольший массив.
+* Для типов `DateTime` тип результата продвигается до наиболее «широкого» типа (например, до `DateTime64`, если он смешан с `DateTime32`).
+
+:::note Используйте настройку `least_greatest_legacy_null_behavior` для изменения поведения `NULL`
+Версия [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) внесла изменение, несовместимое с предыдущими версиями: значения `NULL` игнорируются, тогда как ранее возвращалось `NULL`, если один из аргументов был `NULL`.
+Чтобы сохранить прежнее поведение, установите настройку `least_greatest_legacy_null_behavior` (по умолчанию: `false`) в значение `true`.
+:::
+
+**Синтаксис**
+
 ```sql
 greatest(x1[, x2, ...])
 ```
 
-**Arrays**
+**Аргументы**
+
+* `x1[, x2, ...]` — Одного или нескольких значений для сравнения. Все аргументы должны иметь сопоставимые типы. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает наибольшее значение среди аргументов, приведённое к наибольшему совместимому типу. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Числовые типы**
 
 ```sql title=Query
 SELECT greatest(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
@@ -392,7 +355,7 @@ SELECT greatest(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**DateTime types**
+**Массивы**
 
 ```sql title=Query
 SELECT greatest(['hello'], ['there'], ['world']);
@@ -404,33 +367,12 @@ SELECT greatest(['hello'], ['there'], ['world']);
 └───────────────────────────────────────────┘
 ```
 
-
-
-## if {#if}
-
-Introduced in: v1.1
-
-
-Performs conditional branching.
-
-- If the condition `cond` evaluates to a non-zero value, the function returns the result of the expression `then`.
-- If `cond` evaluates to zero or NULL, the result of the `else` expression is returned.
-
-The setting [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) controls whether short-circuit evaluation is used.
-
-If enabled, the `then` expression is evaluated only on rows where `cond` is true and the `else` expression where `cond` is false.
-
-For example, with short-circuit evaluation, no division-by-zero exception is thrown when executing the following query:
+**Типы данных DateTime**
 
 ```sql title=Query
 SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
 -- Возвращаемый тип — DateTime64, так как DateTime32 необходимо преобразовать в 64-битный тип для выполнения сравнения.
 ```
-
-`then` and `else` must be of a similar type.
-
-
-**Syntax**
 
 ```response title=Response
 ┌─greatest(toD⋯(now(), 3))─┐
@@ -438,64 +380,50 @@ SELECT greatest(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
 └──────────────────────────┘
 ```
 
-**Arguments**
+## if {#if}
 
-- `cond` — The evaluated condition. [`UInt8`](/sql-reference/data-types/int-uint) or [`Nullable(UInt8)`](/sql-reference/data-types/nullable) or [`NULL`](/sql-reference/syntax#null)
-- `then` — The expression returned if `cond` is true. - `else` — The expression returned if `cond` is false or `NULL`. 
+Впервые появилась в версии v1.1
 
-**Returned value**
+Выполняет условное ветвление.
 
-The result of either the `then` or `else` expressions, depending on condition `cond`.
+* Если условие `cond` принимает ненулевое значение, функция возвращает результат выражения `then`.
+* Если `cond` равно нулю или NULL, возвращается результат выражения `else`.
 
-**Examples**
+Настройка [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) определяет, используется ли укороченное вычисление выражений (short-circuit evaluation).
 
-**Example usage**
+Если настройка включена, выражение `then` вычисляется только для строк, где `cond` истинно, а выражение `else` — только для строк, где `cond` ложно.
+
+Например, при укороченном вычислении выражений при выполнении следующего запроса не возникает исключения «деление на ноль»:
 
 ```sql
 SELECT if(number = 0, 0, intDiv(42, number)) FROM numbers(10)
 ```
 
+`then` и `else` должны быть одного типа.
+
+**Синтаксис**
+
 ```sql
 if(cond, then, else)
 ```
 
+**Аргументы**
 
+* `cond` — вычисляемое условие. [`UInt8`](/sql-reference/data-types/int-uint) или [`Nullable(UInt8)`](/sql-reference/data-types/nullable) или [`NULL`](/sql-reference/syntax#null)
+* `then` — выражение, возвращаемое, если `cond` истинно.
+* `else` — выражение, возвращаемое, если `cond` ложно или равно `NULL`.
 
-## least {#least}
+**Возвращаемое значение**
 
-Introduced in: v1.1
+Результат выражения `then` или `else` в зависимости от значения `cond`.
 
+**Примеры**
 
-Returns the smallest value among the arguments.
-`NULL` arguments are ignored.
-
-- For arrays, returns the lexicographically least array.
-- For DateTime types, the result type is promoted to the largest type (e.g., DateTime64 if mixed with DateTime32).
-
-:::note Use setting `least_greatest_legacy_null_behavior` to change `NULL` behavior
-Version [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) introduced a backwards-incompatible change such that `NULL` values are ignored, while previously it returned `NULL` if one of the arguments was `NULL`.
-To retain the previous behavior, set setting `least_greatest_legacy_null_behavior` (default: `false`) to `true`.
-:::
-    
-
-**Syntax**
+**Пример использования**
 
 ```sql title=Query
 SELECT if(1, 2 + 2, 2 + 6) AS res;
 ```
-
-**Arguments**
-
-- `x1[, x2, ...]` — A single value or multiple values to compare. All arguments must be of comparable types. [`Any`](/sql-reference/data-types)
-
-
-**Returned value**
-
-Returns the least value among the arguments, promoted to the largest compatible type. [`Any`](/sql-reference/data-types)
-
-**Examples**
-
-**Numeric types**
 
 ```response title=Response
 ┌─res─┐
@@ -503,11 +431,38 @@ Returns the least value among the arguments, promoted to the largest compatible 
 └─────┘
 ```
 
+## least {#least}
+
+Впервые появилось в версии v1.1
+
+Возвращает наименьшее значение среди аргументов.
+Аргументы `NULL` игнорируются.
+
+* Для массивов возвращает лексикографически наименьший массив.
+* Для типов DateTime тип результата повышается до наибольшего типа (например, DateTime64 при смешивании с DateTime32).
+
+:::note Используйте настройку `least_greatest_legacy_null_behavior` для изменения поведения `NULL`
+Версия [24.12](/whats-new/changelog/2024#a-id2412a-clickhouse-release-2412-2024-12-19) внесла несовместимое с предыдущими версиями изменение, в результате которого значения `NULL` игнорируются, тогда как ранее возвращалось `NULL`, если один из аргументов был `NULL`.
+Чтобы сохранить прежнее поведение, установите настройку `least_greatest_legacy_null_behavior` (по умолчанию: `false`) в значение `true`.
+:::
+
+**Синтаксис**
+
 ```sql
 least(x1[, x2, ...])
 ```
 
-**Arrays**
+**Аргументы**
+
+* `x1[, x2, ...]` — Одно значение или несколько значений для сравнения. Все аргументы должны быть сравнимых типов. [`Any`](/sql-reference/data-types)
+
+**Возвращаемое значение**
+
+Возвращает наименьшее значение среди аргументов, приведённое к наибольшему совместимому типу. [`Any`](/sql-reference/data-types)
+
+**Примеры**
+
+**Числовые типы**
 
 ```sql title=Query
 SELECT least(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
@@ -520,7 +475,7 @@ SELECT least(1, 2, toUInt8(3), 3.) AS result, toTypeName(result) AS type;
 └────────┴─────────┘
 ```
 
-**DateTime types**
+**Массивы**
 
 ```sql title=Query
 SELECT least(['hello'], ['there'], ['world']);
@@ -532,32 +487,12 @@ SELECT least(['hello'], ['there'], ['world']);
 └──────────────────────────┘
 ```
 
-
-
-## multiIf {#multiIf}
-
-Introduced in: v1.1
-
-
-Allows writing the [`CASE`](/sql-reference/operators#conditional-expression) operator more compactly in the query.
-Evaluates each condition in order. For the first condition that is true (non-zero and not `NULL`), returns the corresponding branch value.
-If none of the conditions are true, returns the `else` value.
-
-Setting [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) controls
-whether short-circuit evaluation is used. If enabled, the `then_i` expression is evaluated only on rows where
-`((NOT cond_1) AND ... AND (NOT cond_{i-1}) AND cond_i)` is true.
-
-For example, with short-circuit evaluation, no division-by-zero exception is thrown when executing the following query:
+**Типы данных DateTime**
 
 ```sql title=Query
 SELECT least(toDateTime32(now() + toIntervalDay(1)), toDateTime64(now(), 3));
 -- Возвращаемый тип — DateTime64, так как DateTime32 необходимо преобразовать в 64-битный формат для выполнения сравнения.
 ```
-
-All branch and else expressions must have a common supertype. `NULL` conditions are treated as false.
-    
-
-**Syntax**
 
 ```response title=Response
 ┌─least(toDate⋯(now(), 3))─┐
@@ -565,24 +500,27 @@ All branch and else expressions must have a common supertype. `NULL` conditions 
 └──────────────────────────┘
 ```
 
-**Aliases**: `caseWithoutExpression`, `caseWithoutExpr`
+## multiIf {#multiIf}
 
-**Arguments**
+Добавлена в версии: v1.1
 
-- `cond_N` — The N-th evaluated condition which controls if `then_N` is returned. [`UInt8`](/sql-reference/data-types/int-uint) or [`Nullable(UInt8)`](/sql-reference/data-types/nullable) or [`NULL`](/sql-reference/syntax#null)
-- `then_N` — The result of the function when `cond_N` is true. - `else` — The result of the function if none of the conditions is true. 
+Позволяет более компактно записывать оператор [`CASE`](/sql-reference/operators#conditional-expression) в запросе.
+Последовательно вычисляет каждое условие. Для первого условия, которое истинно (ненулевое и не `NULL`), возвращает соответствующее значение ветки.
+Если ни одно из условий не истинно, возвращается значение `else`.
 
-**Returned value**
+Настройка [`short_circuit_function_evaluation`](/operations/settings/settings#short_circuit_function_evaluation) управляет тем,
+используется ли укороченное вычисление. Если оно включено, выражение `then_i` вычисляется только для строк, для которых
+`((NOT cond_1) AND ... AND (NOT cond_{i-1}) AND cond_i)` истинно.
 
-Returns the result of `then_N` for matching `cond_N`, otherwise returns the `else` condition.
-
-**Examples**
-
-**Example usage**
+Например, при укороченном вычислении при выполнении следующего запроса не возникает исключения деления на ноль:
 
 ```sql
 SELECT multiIf(number = 2, intDiv(1, number), number = 5) FROM numbers(10)
 ```
+
+Все выражения ветвей и `else` должны иметь общий супертип. Условия, результатом которых является `NULL`, считаются ложными.
+
+**Синтаксис**
 
 ```sql
 multiIf(cond_1, then_1, cond_2, then_2, ..., else)

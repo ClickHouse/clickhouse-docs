@@ -58,7 +58,7 @@ SELECT ceiling(123.45, 1) AS округлено
 └─────────┘
 ```
 
-**Negative precision**
+**Отрицательная точность**
 
 ```sql title=Query
 SELECT ceiling(123.45, -1)
@@ -70,40 +70,35 @@ SELECT ceiling(123.45, -1)
 └─────────────────────┘
 ```
 
-
-
 ## floor {#floor}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Возвращает наибольшее число, меньшее либо равное `x`, при этом это число кратно `1 / 10 * N`, либо ближайшее число соответствующего типа данных, если `1 / 10 * N` не представимо точно.
 
-Returns the largest rounded number less than or equal to `x`, where the rounded number is a multiple of `1 / 10 * N`, or the nearest number of the appropriate data type if `1 / 10 * N` isn't exact.
+Целочисленные аргументы могут округляться при отрицательном значении аргумента `N`.
+При неотрицательном `N` функция возвращает `x`.
 
-Integer arguments may be rounded with a negative `N` argument.
-With non-negative `N` the function returns `x`.
+Если округление приводит к переполнению (например, `floor(-128, -1)`), результат не определён.
 
-If rounding causes an overflow (for example, `floor(-128, -1)`), the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 floor(x[, N])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. Can be negative. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — Значение для округления. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `N` — Необязательный параметр. Количество знаков после запятой, до которых нужно округлить. По умолчанию — ноль, что означает округление до целого числа. Может быть отрицательным. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает округлённое число того же типа, что и `x`. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT floor(123.45, 1) AS rounded
@@ -115,7 +110,7 @@ SELECT floor(123.45, 1) AS rounded
 └─────────┘
 ```
 
-**Negative precision**
+**Отрицательная точность**
 
 ```sql title=Query
 SELECT floor(123.45, -1)
@@ -127,44 +122,39 @@ SELECT floor(123.45, -1)
 └───────────────────┘
 ```
 
-
-
 ## round {#round}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Округляет значение до заданного количества знаков после запятой `N`.
 
-Rounds a value to a specified number of decimal places `N`.
+* Если `N > 0`, функция округляет вправо от десятичной запятой.
+* Если `N < 0`, функция округляет влево от десятичной запятой.
+* Если `N = 0`, функция округляет до ближайшего целого числа.
 
-- If `N > 0`, the function rounds to the right of the decimal point.
-- If `N < 0`, the function rounds to the left of the decimal point.
-- If `N = 0`, the function rounds to the next integer.
+Функция возвращает ближайшее число указанного порядка.
+Если входное значение находится на одинаковом расстоянии от двух соседних чисел, функция использует банковское округление для значений типа `Float*` и округление от нуля для остальных числовых типов (`Decimal*`).
 
-The function returns the nearest number of the specified order.
-If the input value has equal distance to two neighboring numbers, the function uses banker's rounding for `Float*` inputs and rounds away from zero for the other number types (`Decimal*`).
+Если округление приводит к переполнению (например, `round(255, -1)`), результат неопределён.
 
-If rounding causes an overflow (for example, `round(255, -1)`), the result is undefined.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 round(x[, N])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A number to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `N` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — Число для округления. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `N` — Необязательный параметр. Количество знаков после запятой, до которого выполняется округление. По умолчанию `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает округлённое число того же типа, что и `x`. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Float inputs**
+**Входные значения типа Float**
 
 ```sql title=Query
 SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
@@ -178,7 +168,7 @@ SELECT number / 2 AS x, round(x) FROM system.numbers LIMIT 3;
 └─────┴──────────┘
 ```
 
-**Decimal inputs**
+**Десятичные значения**
 
 ```sql title=Query
 SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIMIT 3;
@@ -192,42 +182,37 @@ SELECT cast(number / 2 AS  Decimal(10,4)) AS x, round(x) FROM system.numbers LIM
 └─────┴──────────┘
 ```
 
-
-
 ## roundAge {#roundAge}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Принимает число, обозначающее возраст человека, сравнивает его со стандартными возрастными диапазонами и возвращает либо нижнюю, либо верхнюю границу диапазона, в который попадает число.
 
-Takes a number representing a human age, compares it to standard age ranges, and returns either the highest or lowest value of the range the number falls within.
+* Возвращает `0` для `age < 1`.
+* Возвращает `17` для `1 ≤ age ≤ 17`.
+* Возвращает `18` для `18 ≤ age ≤ 24`.
+* Возвращает `25` для `25 ≤ age ≤ 34`.
+* Возвращает `35` для `35 ≤ age ≤ 44`.
+* Возвращает `45` для `45 ≤ age ≤ 54`.
+* Возвращает `55` для `age ≥ 55`.
 
-- Returns `0`, for `age < 1`.
-- Returns `17`, for `1 ≤ age ≤ 17`.
-- Returns `18`, for `18 ≤ age ≤ 24`.
-- Returns `25`, for `25 ≤ age ≤ 34`.
-- Returns `35`, for `35 ≤ age ≤ 44`.
-- Returns `45`, for `45 ≤ age ≤ 54`.
-- Returns `55`, for `age ≥ 55`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 roundAge(num)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `age` — A number representing an age in years. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `age` — число, обозначающее возраст в годах. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает нижнюю или верхнюю границу диапазона возрастов, в который попадает `age`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns either the highest or lowest age of the range `age` falls within. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54, 72);
@@ -245,57 +230,54 @@ SELECT *, roundAge(*) FROM system.numbers WHERE number IN (0, 5, 20, 31, 37, 54,
 └────────┴──────────────────┘
 ```
 
-
-
 ## roundBankers {#roundBankers}
 
-Introduced in: v20.1
+Введена в: v20.1
 
+Округляет число до заданной десятичной позиции `N`.
+Если округляемое число находится ровно посередине между двумя значениями, функция использует метод, называемый банковским округлением (banker&#39;s rounding), который является стандартным методом округления для чисел с плавающей запятой, определённым в IEEE 754.
 
-Rounds a number to a specified decimal position `N`.
-If the rounding number is halfway between two numbers, the function uses a method of rounding called banker's rounding, which is the default rounding method for floating point numbers defined in IEEE 754.
+* Если `N > 0`, функция округляет вправо от десятичной точки
+* Если `N < 0`, функция округляет влево от десятичной точки
+* Если `N = 0`, функция округляет до ближайшего целого числа
 
-- If `N > 0`, the function rounds to the right of the decimal point
-- If `N < 0`, the function rounds to the left of the decimal point
-- If `N = 0`, the function rounds to the next integer
+:::info Заметки
 
-:::info Notes
-- When the rounding number is halfway between two numbers, it's rounded to the nearest even digit at the specified decimal position.
-For example: `3.5` rounds up to `4`, `2.5` rounds down to `2`.
-- The `round` function performs the same rounding for floating point numbers.
-- The `roundBankers` function also rounds integers the same way, for example, `roundBankers(45, -1) = 40`.
-- In other cases, the function rounds numbers to the nearest integer.
-:::
+* Когда округляемое число находится ровно посередине между двумя значениями, оно округляется до ближайшей чётной цифры на заданной десятичной позиции.
+  Например: `3.5` округляется вверх до `4`, `2.5` округляется вниз до `2`.
+* Функция `round` использует такой же способ округления для чисел с плавающей запятой.
+* Функция `roundBankers` также округляет целые числа таким же образом, например, `roundBankers(45, -1) = 40`.
+* В остальных случаях функция округляет числа до ближайшего целого значения.
+  :::
 
-:::tip Use banker's rounding for summation or subtraction of numbers
-Using banker's rounding, you can reduce the effect that rounding numbers has on the results of summing or subtracting these numbers.
+:::tip Используйте банковское округление для суммирования или вычитания чисел
+С помощью банковского округления можно уменьшить влияние округления чисел на результат их суммирования или вычитания.
 
-For example, sum numbers `1.5, 2.5, 3.5, 4.5` with different rounding:
-- No rounding: `1.5 + 2.5 + 3.5 + 4.5 = 12`.
-- Banker's rounding: `2 + 2 + 4 + 4 = 12`.
-- Rounding to the nearest integer: `2 + 3 + 4 + 5 = 14`.
-:::
+Например, просуммируем числа `1.5, 2.5, 3.5, 4.5` с разными вариантами округления:
 
+* Без округления: `1.5 + 2.5 + 3.5 + 4.5 = 12`.
+* Банковское округление: `2 + 2 + 4 + 4 = 12`.
+* Округление до ближайшего целого: `2 + 3 + 4 + 5 = 14`.
+  :::
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 roundBankers(x[, N])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
-- `[, N]` — Optional. The number of decimal places to round to. Defaults to `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — число для округления. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal*`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float)
+* `[, N]` — необязательный аргумент. Количество знаков после запятой, до которых нужно округлить. По умолчанию — `0`. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение, округлённое методом банковского округления. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal*`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float)
 
-Returns a value rounded by the banker's rounding method. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
@@ -316,36 +298,31 @@ SELECT number / 2 AS x, roundBankers(x, 0) AS b FROM system.numbers LIMIT 10
 └─────┴───┘
 ```
 
-
-
 ## roundDown {#roundDown}
 
-Introduced in: v20.1
+Добавлена в версии: v20.1
 
+Округляет число вниз до элемента в указанном массиве.
+Если значение меньше нижней границы, возвращается нижняя граница.
 
-Rounds a number down to an element in the specified array.
-If the value is less than the lower bound, the lower bound is returned.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 roundDown(num, arr)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `num` — A number to round down. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
-- `arr` — Array of elements to round `num` down to. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
+* `num` — число, которое нужно округлить вниз. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal*`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float)
+* `arr` — массив значений, до одного из которых округляется `num` вниз. [`Array((U)Int*)`](/sql-reference/data-types/array) или [`Array(Float*)`](/sql-reference/data-types/array)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает число, округлённое вниз до одного из элементов `arr`. Если значение меньше нижней границы, возвращается нижняя граница. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
-Returns a number rounded down to an element in `arr`. If the value is less than the lowest bound, the lowest bound is returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 3, 4, 5)
@@ -362,35 +339,30 @@ SELECT *, roundDown(*, [3, 4, 5]) FROM system.numbers WHERE number IN (0, 1, 2, 
 └────────┴──────────────────────────────┘
 ```
 
-
-
 ## roundDuration {#roundDuration}
 
-Introduced in: v1.1
+Впервые появилась в: v1.1
 
+Округляет число вниз до ближайшего значения из набора часто используемых значений длительности: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`.
+Если число меньше единицы, возвращает `0`.
 
-Rounds a number down to the closest from a set of commonly used durations: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`.
-If the number is less than one, it returns `0`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 округлитьДлительность(num)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `num` — A number to round to one of the numbers in the set of common durations. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `num` — Число, округляемое до одного из чисел из набора стандартных длительностей. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `0` при `num` &lt; 1. В остальных случаях — одно из: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`. [`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns `0`, for `num` < 1. Otherwise, one of: `1, 10, 30, 60, 120, 180, 240, 300, 600, 1200, 1800, 3600, 7200, 18000, 36000`. [`UInt16`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 101, 149, 205, 271, 421, 789, 1423, 2345, 4567, 9876, 24680, 42573)
@@ -417,35 +389,30 @@ SELECT *, roundDuration(*) FROM system.numbers WHERE number IN (0, 9, 19, 47, 10
 └────────┴───────────────────────┘
 ```
 
-
-
 ## roundToExp2 {#roundToExp2}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Округляет число вниз до ближайшей (целой неотрицательной) степени двойки.
+Если число меньше единицы, возвращает `0`.
 
-Rounds a number down to the nearest (whole non-negative) power of two.
-If the number is less than one, it returns `0`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 roundToExp2(num)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `num` — A number to round. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `num` — число для округления. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `num`, округлённое в меньшую сторону до ближайшей (целой неотрицательной) степени двойки, или `0` для `num < 1`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
-Returns `num` rounded down to the nearest (whole non-negative) power of two, otherwise `0` for `num < 1`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 50)
@@ -462,37 +429,32 @@ SELECT *, roundToExp2(*) FROM system.numbers WHERE number IN (0, 2, 5, 10, 19, 5
 └────────┴─────────────────────┘
 ```
 
-
-
 ## trunc {#trunc}
 
-Introduced in: v1.1
+Впервые добавлена в версии v1.1
 
+Аналог функции [`floor`](#floor), но возвращает округлённое число с максимальным по модулю значением, не превышающим модуль `x`.
 
-Like [`floor`](#floor) but returns the rounded number with the largest absolute value less than or equal to that of `x`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 truncate(x[, N])
 ```
 
-**Aliases**: `truncate`
+**Псевдонимы**: `truncate`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value to round. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `N` — Optional. The number of decimal places to round to. Defaults to zero, which means rounding to an integer. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — значение, которое нужно округлить. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `N` — необязательный аргумент. Количество знаков после запятой, до которого выполняется округление. По умолчанию — ноль, что означает округление до целого числа. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает округлённое число того же типа, что и `x`. [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal) или [`(U)Int*`](/sql-reference/data-types/int-uint)
 
-Returns a rounded number of the same type as `x`. [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal) or [`(U)Int*`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT truncate(123.499, 1) AS res;

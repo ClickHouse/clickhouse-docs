@@ -48,34 +48,29 @@ SELECT acos(0.5);
 1.0471975511965979
 ```
 
-
-
 ## acosh {#acosh}
 
-Introduced in: v20.12
+Появилась в версии: v20.12
 
+Возвращает обратный гиперболический косинус.
 
-Returns the inverse hyperbolic cosine.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 acosh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Hyperbolic cosine of angle. Values from the interval: `1 ≤ x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — значение гиперболического косинуса угла. Значения из интервала: `1 ≤ x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает угол в радианах. Значения из интервала: `0 ≤ acosh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `0 ≤ acosh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT acosh(1)
@@ -85,35 +80,30 @@ SELECT acosh(1)
 0
 ```
 
-
-
 ## asin {#asin}
 
-Introduced in: v1.1
+Впервые появилась в версии v1.1
 
+Вычисляет арксинус переданного аргумента.
+Для аргументов в диапазоне `[-1, 1]` возвращает значение в диапазоне `[-pi() / 2, pi() / 2]`.
 
-Calculates the arcsine of the provided argument.
-For arguments in the range `[-1, 1]` it returns the value in the range of `[-pi() / 2, pi() / 2]`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 asin(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Argument for which to calculate arcsine of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — аргумент, для которого вычисляется арксинус. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает арксинус аргумента `x` в формате [`Float64`](/sql-reference/data-types/float)
 
-Returns the arcsine value of the provided argument `x` [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**inverse**
+**обратная функция**
 
 ```sql title=Query
 SELECT asin(1.0) = pi() / 2, sin(asin(1)), asin(sin(1))
@@ -143,34 +133,29 @@ SELECT asin(1.1), asin(-2), asin(inf), asin(nan)
 nan nan nan nan
 ```
 
-
-
 ## asinh {#asinh}
 
-Introduced in: v20.12
+Впервые добавлена в версии: v20.12
 
+Возвращает обратный гиперболический синус.
 
-Returns the inverse hyperbolic sine.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 asinh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Hyperbolic sine of angle. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — гиперболический синус угла. Значения из диапазона: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает угол в радианах. Значения из диапазона: `-∞ < asinh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `-∞ < asinh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT asinh(0)
@@ -180,34 +165,29 @@ SELECT asinh(0)
 0
 ```
 
-
-
 ## atan {#atan}
 
-Introduced in: v1.1
+Появился в версии v1.1
 
+Возвращает арктангенс аргумента.
 
-Returns the arc tangent of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 atan(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value for which to find arc tangent of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — значение, для которого нужно вычислить арктангенс. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает арктангенс числа `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the arc tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT atan(1);
@@ -217,35 +197,30 @@ SELECT atan(1);
 0.7853981633974483
 ```
 
-
-
 ## atan2 {#atan2}
 
-Introduced in: v20.12
+Появилась в версии: v20.12
 
+Возвращает значение функции atan2 — угол в евклидовой плоскости в радианах между положительным направлением оси x и лучом, проходящим через точку `(x, y) ≠ (0, 0)`.
 
-Returns the atan2 as the angle in the Euclidean plane, given in radians, between the positive x axis and the ray to the point `(x, y) ≠ (0, 0)`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 atan2(y, x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `y` — y-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `x` — x-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — координата y точки, через которую проходит луч. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — координата x точки, через которую проходит луч. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает угол `θ`, такой что `-π < θ ≤ π`, в радианах, типа [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle `θ` such that `-π < θ ≤ π`, in radians [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT atan2(1, 1)
@@ -255,34 +230,29 @@ SELECT atan2(1, 1)
 0.7853981633974483
 ```
 
-
-
 ## atanh {#atanh}
 
-Introduced in: v20.12
+Появилась в версии v20.12
 
+Возвращает обратный гиперболический тангенс.
 
-Returns the inverse hyperbolic tangent.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 atanh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Hyperbolic tangent of angle. Values from the interval: -1 < x < 1. `(U)Int*`, `Float*` or `Decimal*`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — гиперболический тангенс аргумента. Значения из диапазона: -1 &lt; x &lt; 1. `(U)Int*`, `Float*` или `Decimal*`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает угол в радианах. Значения из диапазона: -∞ &lt; atanh(x) &lt; +∞ [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: -∞ < atanh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT atanh(0)
@@ -292,34 +262,29 @@ SELECT atanh(0)
 0
 ```
 
-
-
 ## cbrt {#cbrt}
 
-Introduced in: v1.1
+Добавлена в версии v1.1
 
+Возвращает кубический корень аргумента.
 
-Returns the cubic root of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 cbrt(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value for which to find the cubic root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — Значение, для которого нужно найти кубический корень. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает кубический корень от `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the cubic root of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT cbrt(8);
@@ -329,34 +294,29 @@ SELECT cbrt(8);
 2
 ```
 
-
-
 ## cos {#cos}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает косинус аргумента.
 
-Returns the cosine of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 cos(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — угол в радианах. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает косинус `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the cosine of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT cos(0);
@@ -366,34 +326,29 @@ SELECT cos(0);
 1
 ```
 
-
-
 ## cosh {#cosh}
 
-Introduced in: v20.12
+Добавлена в: v20.12
 
+Возвращает гиперболический косинус аргумента.
 
-Returns the hyperbolic cosine of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 cosh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The angle, in radians. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — угол в радианах. Значения из интервала: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значения из интервала: `1 ≤ cosh(x) < +∞` [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: `1 ≤ cosh(x) < +∞` [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовый пример**
 
 ```sql title=Query
 SELECT cosh(0)
@@ -403,34 +358,29 @@ SELECT cosh(0)
 1
 ```
 
-
-
 ## degrees {#degrees}
 
-Introduced in: v22.2
+Добавлена в версии: v22.2
 
+Преобразует радианы в градусы.
 
-Converts radians to degrees.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 degrees(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Input in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — входное значение в радианах. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение `x` в градусах. [`Float64`](/sql-reference/data-types/float)
 
-Returns the value of `x` in degrees. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT degrees(3.141592653589793)
@@ -440,33 +390,29 @@ SELECT degrees(3.141592653589793)
 180
 ```
 
-
-
 ## e {#e}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает постоянную Эйлера e.
 
-Returns Euler's constant (e).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 e()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns Euler's constant [`Float64`](/sql-reference/data-types/float)
+Возвращает константу Эйлера типа [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT e();
@@ -476,34 +422,29 @@ SELECT e();
 2.718281828459045
 ```
 
-
-
 ## erf {#erf}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Если `x` неотрицательно, то `erf(x/(σ√2))` — это вероятность того, что случайная величина, имеющая нормальное распределение со стандартным отклонением `σ`, примет значение, которое отклоняется от математического ожидания более чем на `x`.
 
-If `x` is non-negative, then `erf(x/(σ√2))` is the probability that a random variable having a normal distribution with standard deviation `σ` takes the value that is separated from the expected value by more than `x`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 erf(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value for which to compute the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — Значение, для которого вычисляется значение функции ошибок. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение функции ошибок типа [`Float*`](/sql-reference/data-types/float)
 
-Returns the error function value [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Three sigma rule**
+**Правило трёх сигм**
 
 ```sql title=Query
 SELECT erf(3 / sqrt(2))
@@ -515,34 +456,29 @@ SELECT erf(3 / sqrt(2))
 └─────────────────────────┘
 ```
 
-
-
 ## erfc {#erfc}
 
-Introduced in: v1.1
+Впервые появилась в версии v1.1
 
+Возвращает значение, близкое к `1 - erf(x)`, без потери точности даже для больших значений `x`.
 
-Returns a number close to `1-erf(x)` without loss of precision for large `x` values.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 erfc(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The value for which to find the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — значение, для которого вычисляется дополнительная функция ошибок. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение дополнительной функции ошибок типа [`Float*`](/sql-reference/data-types/float)
 
-Returns the complementary error function value [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT erfc(0);
@@ -552,34 +488,29 @@ SELECT erfc(0);
 1
 ```
 
-
-
 ## exp {#exp}
 
-Introduced in: v1.1
+Добавлено в: v1.1
 
+Возвращает `e`, возведённое в степень `x`, где `x` — переданный функции аргумент.
 
-Returns e raised to the power of `x`, where `x` is the given argument to the function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 exp(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — показатель степени, тип [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `e^x` типа [`Float*`](/sql-reference/data-types/float)
 
-Returns `e^x` [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT round(exp(-1), 4)
@@ -591,34 +522,29 @@ SELECT round(exp(-1), 4)
 └───────────────────┘
 ```
 
-
-
 ## exp10 {#exp10}
 
-Introduced in: v1.1
+Появилась в версии v1.1
 
+Возвращает 10, возведённое в степень, заданную аргументом.
 
-Returns 10 to the power of the given argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 exp10(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — показатель степени. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 10^x типа [`Float*`](/sql-reference/data-types/float)
 
-Returns 10^x [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT exp10(2);
@@ -628,34 +554,29 @@ SELECT exp10(2);
 100
 ```
 
-
-
 ## exp2 {#exp2}
 
-Introduced in: v1.1
+Появилось в версии: v1.1
 
+Возвращает 2 в степени указанного аргумента.
 
-Returns 2 to the power of the given argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 exp2(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — показатель степени. Тип [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает число 2^x типа [`Float*`](/sql-reference/data-types/float)
 
-Returns 2^x [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT exp2(3);
@@ -665,36 +586,31 @@ SELECT exp2(3);
 8
 ```
 
-
-
 ## factorial {#factorial}
 
-Introduced in: v22.11
+Введена в версии v22.11
 
+Вычисляет факториал целочисленного значения.
+Факториал 0 равен 1. Аналогично, функция `factorial()` возвращает `1` для любого отрицательного значения.
+Максимальное положительное значение входного аргумента — `20`; значение `21` или больше вызовет исключение.
 
-Computes the factorial of an integer value.
-The factorial of 0 is 1. Likewise, the `factorial()` function returns `1` for any negative value.
-The maximum positive value for the input argument is `20`, a value of `21` or greater will cause an exception.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 factorial(n)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `n` — Integer value for which to calculate the factorial. Maximum value is 20. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `n` — целочисленное значение, факториал которого нужно вычислить. Максимальное значение — 20. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает факториал входного значения в виде UInt64. Возвращает 1, если на вход подано 0 или отрицательное значение. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the factorial of the input as UInt64. Returns 1 for input 0 or any negative value. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 factorial(10)
@@ -704,36 +620,31 @@ factorial(10)
 3628800
 ```
 
-
-
 ## hypot {#hypot}
 
-Introduced in: v20.12
+Добавлена в: v20.12
 
+Возвращает длину гипотенузы прямоугольного треугольника.
+Функция `hypot` предотвращает проблемы, возникающие при возведении в квадрат очень больших или очень малых чисел.
 
-Returns the length of the hypotenuse of a right-angle triangle.
-Hypot avoids problems that occur when squaring very large or very small numbers.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 hypot(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The first cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The second cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — первый катет прямоугольного треугольника. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — второй катет прямоугольного треугольника. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает длину гипотенузы прямоугольного треугольника. [`Float64`](/sql-reference/data-types/float)
 
-Returns the length of the hypotenuse of a right-angle triangle. [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Basic usage**
+**Базовое использование**
 
 ```sql title=Query
 SELECT hypot(1, 1)
@@ -743,34 +654,29 @@ SELECT hypot(1, 1)
 1.4142135623730951
 ```
 
-
-
 ## intExp10 {#intExp10}
 
-Introduced in: v1.1
+Добавлена в версии: v1.1
 
+Аналог функции [exp10](#exp10), но возвращает число типа `UInt64`.
 
-Like [exp10](#exp10) but returns a `UInt64` number.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 intExp10(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — показатель степени. [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 10^x в виде значения типа [`UInt64`](/sql-reference/data-types/int-uint).
 
-Returns 10^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT intExp10(2);
@@ -780,34 +686,29 @@ SELECT intExp10(2);
 100
 ```
 
-
-
 ## intExp2 {#intExp2}
 
-Introduced in: v1.1
+Добавлена в версии v1.1
 
+Как [exp2](#exp2), но возвращает число типа `UInt64`.
 
-Like [exp2](#exp2) but returns a `UInt64` number.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 intExp2(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — показатель степени. [`Int*`](/sql-reference/data-types/int-uint) или [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает 2^x. [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns 2^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT intExp2(3);
@@ -817,34 +718,29 @@ SELECT intExp2(3);
 8
 ```
 
-
-
 ## lgamma {#lgamma}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает логарифм гамма-функции.
 
-Returns the logarithm of the gamma function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 lgamma(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number for which to compute the logarithm of the gamma function. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, для которого вычисляется логарифм гамма-функции. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает логарифм гамма-функции от `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the logarithm of the gamma function of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT lgamma(5);
@@ -854,36 +750,31 @@ SELECT lgamma(5);
 3.1780538303479458
 ```
 
-
-
 ## log {#log}
 
-Introduced in: v1.1
+Впервые появилась в версии v1.1
 
+Возвращает натуральный логарифм аргумента.
 
-Returns the natural logarithm of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 log(x)
 ```
 
-**Aliases**: `ln`
+**Псевдонимы**: `ln`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number for which to compute the natural logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, для которого нужно вычислить натуральный логарифм. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает натуральный логарифм `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the natural logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT log(10);
@@ -893,34 +784,29 @@ SELECT log(10);
 2.302585092994046
 ```
 
-
-
 ## log10 {#log10}
 
-Introduced in: v1.1
+Впервые представлена в версии: v1.1
 
+Возвращает десятичный логарифм аргумента.
 
-Returns the decimal logarithm of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 log10(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Number for which to compute the decimal logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, для которого вычисляется десятичный логарифм. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает десятичный логарифм `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the decimal logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT log10(100);
@@ -930,35 +816,30 @@ SELECT log10(100);
 2
 ```
 
-
-
 ## log1p {#log1p}
 
-Introduced in: v20.12
+Добавлена в версии: v20.12
 
+Вычисляет log(1 + x).
+Вычисление log1p(x) даёт более точный результат, чем log(1 + x), для малых значений `x`.
 
-Calculates log(1+x).
-The calculation log1p(x) is more accurate than log(1+x) for small values of `x`.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 log1p(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Values from the interval: `-1 < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — значения из интервала `-1 < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значения из интервала: -∞ &lt; log1p(x) &lt; +∞ [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < log1p(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT log1p(0)
@@ -968,34 +849,29 @@ SELECT log1p(0)
 0
 ```
 
-
-
 ## log2 {#log2}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Возвращает двоичный логарифм аргумента.
 
-Returns the binary logarithm of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 log2(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number for which to compute the binary logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, для которого нужно вычислить двоичный логарифм. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает двоичный логарифм `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the binary logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT log2(8);
@@ -1005,33 +881,29 @@ SELECT log2(8);
 3
 ```
 
-
-
 ## pi {#pi}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает число π.
 
-Returns pi (π).
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 pi()
 ```
 
-**Arguments**
+**Аргументы**
 
-- None.
+* Нет.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns pi [`Float64`](/sql-reference/data-types/float)
+Возвращает число π типа [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**Примеры**
 
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT pi();
@@ -1041,37 +913,32 @@ SELECT pi();
 3.141592653589793
 ```
 
-
-
 ## pow {#pow}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Возвращает x, возведённый в степень y.
 
-Returns x raised to the power of y.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 pow(x, y)
 ```
 
-**Aliases**: `power`
+**Псевдонимы**: `power`
 
-**Arguments**
+**Аргументы**
 
-- `x` — The base. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The exponent. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — основание. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — показатель степени. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает x^y типа [`Float64`](/sql-reference/data-types/float)
 
-Returns x^y [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT pow(2, 3);
@@ -1081,34 +948,29 @@ SELECT pow(2, 3);
 8
 ```
 
-
-
 ## radians {#radians}
 
-Introduced in: v22.2
+Добавлена в версии: v22.2
 
+Преобразует градусы в радианы.
 
-Converts degrees to radians.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 radians(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Input in degrees. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — Входное значение в градусах. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение в радианах [`Float64`](/sql-reference/data-types/float)
 
-Returns value in radians [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT radians(180)
@@ -1118,34 +980,29 @@ SELECT radians(180)
 3.141592653589793
 ```
 
-
-
 ## sign {#sign}
 
-Introduced in: v21.2
+Добавлена в версии: v21.2
 
+Возвращает знак вещественного числа.
 
-Returns the sign of a real number.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sign(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — Values from -∞ to +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+* `x` — значения в диапазоне от -∞ до +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Decimal*`](/sql-reference/data-types/decimal) или [`Float*`](/sql-reference/data-types/float)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `-1` при `x < 0`, `0` при `x = 0`, `1` при `x > 0`. [`Int8`](/sql-reference/data-types/int-uint)
 
-Returns `-1` for `x < 0`, `0` for `x = 0`, `1` for `x > 0`. [`Int8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Sign for zero**
+**Знак для нуля**
 
 ```sql title=Query
 SELECT sign(0)
@@ -1155,7 +1012,7 @@ SELECT sign(0)
 0
 ```
 
-**Sign for positive**
+**Знак для положительных значений**
 
 ```sql title=Query
 SELECT sign(1)
@@ -1165,7 +1022,7 @@ SELECT sign(1)
 1
 ```
 
-**Sign for negative**
+**Знак отрицательных значений**
 
 ```sql title=Query
 SELECT sign(-1)
@@ -1175,32 +1032,29 @@ SELECT sign(-1)
 -1
 ```
 
-
-
 ## sin {#sin}
 
-Introduced in: v
+Появилась в версии: v
 
-Returns the sine of the argument.
+Возвращает синус аргумента.
 
-**Syntax**
+**Синтаксис**
 
 ```sql
 sin(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number whose sine will be returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, синус которого возвращается. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает синус `x`.
 
-Returns the sine of x.
+**Примеры**
 
-**Examples**
-
-**simple**
+**Простой пример**
 
 ```sql title=Query
 SELECT sin(1.23)
@@ -1210,34 +1064,29 @@ SELECT sin(1.23)
 0.9424888019316975
 ```
 
-
-
 ## sinh {#sinh}
 
-Introduced in: v20.12
+Добавлено в: v20.12
 
+Возвращает гиперболический синус.
 
-Returns the hyperbolic sine.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sinh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The angle, in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — угол в радианах. Значения из интервала: -∞ &lt; x &lt; +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение из интервала: -∞ &lt; sinh(x) &lt; +∞ [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < sinh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sinh(0)
@@ -1247,34 +1096,29 @@ SELECT sinh(0)
 0
 ```
 
-
-
 ## sqrt {#sqrt}
 
-Introduced in: v1.1
+Введена в версии v1.1
 
+Возвращает квадратный корень от аргумента.
 
-Returns the square root of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 sqrt(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number for which to find the square root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, квадратный корень которого нужно найти. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает квадратный корень числа x [`Float*`](/sql-reference/data-types/float)
 
-Returns the square root of x [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT sqrt(16);
@@ -1284,34 +1128,29 @@ SELECT sqrt(16);
 4
 ```
 
-
-
 ## tan {#tan}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Возвращает тангенс аргумента.
 
-Returns the tangent of the argument.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tan(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — угол в радианах. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает тангенс угла `x`. [`Float*`](/sql-reference/data-types/float)
 
-Returns the tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tan(0);
@@ -1321,34 +1160,29 @@ SELECT tan(0);
 0
 ```
 
-
-
 ## tanh {#tanh}
 
-Introduced in: v20.1
+Впервые появилась в версии: v20.1
 
+Возвращает гиперболический тангенс.
 
-Returns the hyperbolic tangent.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tanh(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The angle in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — угол в радианах. Значение из интервала: -∞ &lt; x &lt; +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение из интервала: -1 &lt; tanh(x) &lt; 1 [`Float*`](/sql-reference/data-types/float)
 
-Returns values from the interval: -1 < tanh(x) < 1 [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tanh(0)
@@ -1358,34 +1192,29 @@ SELECT tanh(0)
 0
 ```
 
-
-
 ## tgamma {#tgamma}
 
-Introduced in: v1.1
+Появилась в версии: v1.1
 
+Возвращает гамма-функцию.
 
-Returns the gamma function.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 tgamma(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — The number for which to compute the gamma function of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — число, для которого нужно вычислить гамма-функцию. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal*`](/sql-reference/data-types/decimal)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает значение гамма-функции типа [`Float*`](/sql-reference/data-types/float)
 
-Returns the gamma function value [`Float*`](/sql-reference/data-types/float)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT tgamma(5);
@@ -1395,40 +1224,35 @@ SELECT tgamma(5);
 24
 ```
 
-
-
 ## widthBucket {#widthBucket}
 
-Introduced in: v23.3
+Добавлена в: v23.3
 
+Возвращает номер корзины гистограммы, в которую попадает параметр `operand`, при условии, что гистограмма состоит из `count` корзин одинаковой ширины, охватывающих диапазон от `low` до `high`. Возвращает 0, если `operand` меньше `low`, и `count`+1, если `operand` больше либо равен `high`.
+Также существует регистронезависимый синоним `WIDTH_BUCKET` для обеспечения совместимости с другими системами управления базами данных.
 
-Returns the number of the bucket in which parameter `operand` falls in a histogram having count equal-width buckets spanning the range `low` to `high`. Returns 0 if `operand` is less than `low`, and returns `count`+1 if `operand` is greater than or equal to `high`.
-There is also a case insensitive alias called `WIDTH_BUCKET` to provide compatibility with other databases.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 widthBucket(operand, low, high, count)
 ```
 
-**Aliases**: `width_bucket`
+**Псевдонимы**: `width_bucket`
 
-**Arguments**
+**Аргументы**
 
-- `operand` — The value for which to determine the bucket. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `low` — The lower bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `high` — The upper bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `count` — The number of equal-width buckets. Cannot be zero. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `operand` — Значение, для которого нужно определить корзину. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `low` — Нижняя граница диапазона гистограммы. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `high` — Верхняя граница диапазона гистограммы. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `count` — Количество корзин одинаковой ширины. Не может быть равен нулю. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает номер корзины в виде целого числа. Возвращает 0, если `operand` &lt; `low`, возвращает `count` + 1, если `operand` &gt;= `high`. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-Returns the bucket number as an integer. Returns 0 if operand < low, returns count+1 if operand >= high. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 widthBucket(10.15, -8.6, 23, 18)

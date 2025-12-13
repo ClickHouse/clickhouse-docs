@@ -208,75 +208,9 @@ ORDER BY
 LIMIT 20
 read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
-
-Row 2:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:26:50
-query_duration_ms: 7325
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_no_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         150957260
-tables:            ['default.amazon_reviews_no_pk']
-
-Row 3:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:24:10
-query_duration_ms: 3270
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         6242304
-tables:            ['default.amazon_reviews_pk']
-
-Row 4:
-──────
-type:              QueryFinish
-event_time:        2024-12-23 11:28:10
-query_duration_ms: 2786
-query:             SELECT
-    toStartOfMonth(review_date) AS month,
-    any(product_title),
-    avg(star_rating) AS avg_stars
-FROM amazon_reviews_pk
-WHERE
-    product_category = 'Home'
-GROUP BY
-    month,
-    product_id
-ORDER BY
-    month DESC,
-    product_id ASC
-LIMIT 20
-read_rows:         6242304
-tables:            ['default.amazon_reviews_pk']
 ```
 
-Строка 2:
+Row 2:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:26:50
@@ -298,7 +232,7 @@ LIMIT 20
 read&#95;rows:         150957260
 tables:            [&#39;default.amazon&#95;reviews&#95;no&#95;pk&#39;]
 
-Строка 3:
+Row 3:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:24:10
@@ -320,7 +254,7 @@ LIMIT 20
 read&#95;rows:         6242304
 tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
 
-Строка 4:
+Row 4:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:28:10
@@ -341,7 +275,6 @@ product&#95;id ASC
 LIMIT 20
 read&#95;rows:         6242304
 tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
-
 ```
 
 В данном примере видно, что один и тот же запрос выполняется для двух 

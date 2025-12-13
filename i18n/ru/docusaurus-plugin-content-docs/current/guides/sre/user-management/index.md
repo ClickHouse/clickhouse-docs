@@ -238,8 +238,8 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 Например:
 
 ```sql
-  GRANT ALTER ON my_db.* WITH GRANT OPTION
-  ```
+GRANT ALTER ON my_db.* WITH GRANT OPTION
+```
 
 Чтобы выполнить `GRANT` или `REVOKE` привилегий, пользователь должен сначала сам обладать этими привилегиями.
 :::
@@ -490,17 +490,13 @@ Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 └─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-┌─имя─────┬─тип────┬─тип&#95;по&#95;умолчанию─┬─выражение&#95;по&#95;умолчанию─┬─комментарий─┬─выражение&#95;кодека─┬─выражение&#95;TTL─┐
-│ id      │ UInt64 │              │                    │             │                  │                  │
-│ column1 │ String │              │                    │             │                  │                  │
-│ column2 │ String │              │                    │             │                  │                  │
-└─────────┴────────┴─────────────────────┴────────────────────────────┴─────────────┴──────────────────┴──────────────────┘
+4. Тестирование удаления столбца
 
-````sql
-ALTER TABLE my_db.my_table DROP COLUMN column2;
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````response
+```
+
+```response
 ALTER TABLE my_db.my_table
     DROP COLUMN column2
 
@@ -520,43 +516,38 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 Получено исключение от сервера (версия 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Недостаточно прав. Для выполнения этого запроса необходима привилегия ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
+5. Проверка привилегии `ALTER ADMIN` путём выдачи соответствующих прав
+
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
-```sql
-GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
+```
+
+6. Войдите в систему под пользователем alter admin
+
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
-```bash
-clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
+```
+
+7. Предоставить подпривилегию
+
 ```sql
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
-```sql
-GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
+```
+
 ```response
 GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
 
 Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 
 Ok.
-```response
-GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user
+```
 
-Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
+8. Проверьте, что выдаваемая привилегия, которой у пользователя alter admin нет, не рассматривается как подпривилегия уже выданных этому администратору привилегий.
 
-Ok.
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
-```sql
-GRANT ALTER UPDATE ON my_db.my_table TO my_user;
-```response
-GRANT ALTER UPDATE ON my_db.my_table TO my_user
+```
 
-Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
-
-0 rows in set. Elapsed: 0.004 sec.
-
-Received exception from server (version 22.5.1):
-Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_alter_admin: Not enough privileges. To execute this query it's necessary to have grant ALTER UPDATE ON my_db.my_table WITH GRANT OPTION. (ACCESS_DENIED)
 ```response
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 

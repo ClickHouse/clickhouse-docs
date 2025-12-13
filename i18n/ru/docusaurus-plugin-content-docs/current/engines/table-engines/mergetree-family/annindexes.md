@@ -160,13 +160,13 @@ ORDER BY [...]
 Потребление хранилища векторным столбцом в таблице (без сжатия):
 
 ```text
-Storage consumption = Number of vectors * Dimension * Size of column data type
+Потребление хранилища = Количество векторов × Размерность × Размер типа данных столбца
 ```
 
 Пример для [датасета DBpedia](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M):
 
 ```text
-Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
+Потребление хранилища = 1 миллион * 1536 * 4 (для Float32) = 6,1 ГБ
 ```
 
 Индекс сходства векторов должен быть полностью загружен с диска в основную память для выполнения поиска.

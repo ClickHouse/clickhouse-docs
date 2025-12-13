@@ -24,6 +24,7 @@ ClickHouse можно настроить на использование LDAP д
     ```
 
     Ответ будет примерно таким:
+    
     ```response
     # extended LDIF
     #

@@ -83,12 +83,13 @@ SETTINGS send_logs_level='trace';
 ② <Debug> ...: чтение примерно 29564928 строк в 59 потоков
 ```
 
-We can see that
+Мы видим, что
 
-* ① ClickHouse needs to read 3,609 granules (indicated as marks in the trace logs) across 3 data ranges.
-* ② With 59 CPU cores, it distributes this work across 59 parallel processing streams—one per lane.
+* ① ClickHouse нужно прочитать 3 609 гранул (обозначенных как «marks» в журналах трассировки) в пределах 3 диапазонов данных.
+* ② Имея 59 ядер CPU, он распределяет эту работу между 59 параллельными потоками обработки — по одному на каждую линию.
 
-Alternatively, we can use the [EXPLAIN](/sql-reference/statements/explain#explain-pipeline) clause to inspect the [physical operator plan](/academic_overview#4-2-multi-core-parallelization)—also known as the "query pipeline"—for the aggregation query:
+В качестве альтернативы мы можем использовать оператор [EXPLAIN](/sql-reference/statements/explain#explain-pipeline), чтобы изучить [план физических операторов](/academic_overview#4-2-multi-core-parallelization) — также известный как «конвейер запроса» — для агрегирующего запроса:
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -112,21 +113,22 @@ FROM
     └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Note: Read the operator plan above from bottom to top. Each line represents a stage in the physical execution plan, starting with reading data from storage at the bottom and ending with the final processing steps at the top. Operators marked with `× 59` are executed concurrently on non-overlapping data regions across 59 parallel processing lanes. This reflects the value of `max_threads` and illustrates how each stage of the query is parallelized across CPU cores.
+Примечание: читайте план операторов выше снизу вверх. Каждая строка представляет собой стадию физического плана выполнения, начиная с чтения данных из хранилища внизу и заканчивая финальными этапами обработки вверху. Операторы, помеченные `× 59`, выполняются параллельно на непересекающихся диапазонах данных в 59 параллельных конвейерах обработки. Это отражает значение `max_threads` и показывает, как каждая стадия запроса распараллеливается по ядрам CPU.
 
-ClickHouse's [embedded web UI](/interfaces/http) (available at the `/play` endpoint) can render the physical plan from above as a graphical visualization. In this example, we set `max_threads` to `4` to keep the visualization compact, showing just 4 parallel processing lanes:
+[Встроенный веб-интерфейс](/interfaces/http) ClickHouse (доступен по эндпоинту `/play`) может отобразить приведённый выше физический план в виде графической визуализации. В этом примере мы установили `max_threads` равным `4`, чтобы сделать визуализацию компактной, показывая только 4 параллельных конвейера обработки:
 
-<Image img={visual05} alt="Query pipeline"/>
+<Image img={visual05} alt="Query pipeline" />
 
-Note: Read the visualization from left to right. Each row represents a parallel processing lane that streams data block by block, applying transformations such as filtering, aggregation, and final processing stages. In this example, you can see four parallel lanes corresponding to the `max_threads = 4` setting.
+Примечание: читайте визуализацию слева направо. Каждая строка представляет параллельный конвейер обработки, который передаёт данные блок за блоком, применяя преобразования, такие как фильтрация, агрегация и финальные стадии обработки. В этом примере вы видите четыре параллельных конвейера, соответствующих настройке `max_threads = 4`.
 
-### Load balancing across processing lanes {#load-balancing-across-processing-lanes}
+### Балансировка нагрузки между конвейерами обработки {#load-balancing-across-processing-lanes}
 
-Note that the `Resize` operators in the physical plan above [repartition and redistribute](/academic_overview#4-2-multi-core-parallelization) data block streams across processing lanes to keep them evenly utilized. This rebalancing is especially important when data ranges vary in how many rows match the query predicates, otherwise, some lanes may become overloaded while others sit idle. By redistributing the work, faster lanes effectively help out slower ones, optimizing overall query runtime.
+Обратите внимание, что операторы `Resize` в физическом плане выше [переразбивают на части и перераспределяют](/academic_overview#4-2-multi-core-parallelization) потоки блоков данных между конвейерами обработки, чтобы поддерживать их равномерную загрузку. Такое перебалансирование особенно важно, когда диапазоны данных различаются по количеству строк, удовлетворяющих предикатам запроса, иначе некоторые конвейеры могут быть перегружены, в то время как другие простаивают. Перераспределяя работу, более быстрые конвейеры фактически помогают более медленным, оптимизируя общее время выполнения запроса.
 
-## Why max_threads isn't always respected {#why-max-threads-isnt-always-respected}
+## Почему max&#95;threads не всегда соблюдается {#why-max-threads-isnt-always-respected}
 
-As mentioned above, the number of `n` parallel processing lanes is controlled by the `max_threads` setting, which by default matches the number of CPU cores available to ClickHouse on the server:
+Как отмечалось выше, количество параллельных потоков обработки `n` контролируется параметром `max_threads`, который по умолчанию равен числу ядер CPU, доступных ClickHouse на сервере:
+
 ```sql runnable=false
 SELECT getSetting('max_threads');
 ```
@@ -137,7 +139,8 @@ SELECT getSetting('max_threads');
    └───────────────────────────┘
 ```
 
-However, the `max_threads` value may be ignored depending on the amount of data selected for processing:
+Однако значение `max_threads` может игнорироваться в зависимости от объёма выбранных для обработки данных:
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT
@@ -153,9 +156,10 @@ WHERE town = 'LONDON';
 MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 30
 ```
 
-As shown in the operator plan extract above, even though `max_threads` is set to `59`, ClickHouse uses only **30** concurrent streams to scan the data.
+Как видно из приведённого выше фрагмента плана операторов, хотя значение `max_threads` установлено в `59`, ClickHouse использует только **30** параллельных потоков для сканирования данных.
 
-Now let's run the query:
+Теперь запустим запрос:
+
 ```sql runnable=false
 SELECT
    max(price)
@@ -166,14 +170,14 @@ WHERE town = 'LONDON';
 
 ```txt
    ┌─max(price)─┐
-1. │  594300000 │ -- 594,30 миллиона
+1. │  594300000 │ -- 594.30 million
    └────────────┘
    
-1 строка в наборе. Затрачено: 0,013 сек. Обработано 2,31 млн строк, 13,66 МБ (173,12 млн строк/сек., 1,02 ГБ/сек.)
-Пиковое использование памяти: 27,24 МиБ.   
+1 row in set. Elapsed: 0.013 sec. Processed 2.31 million rows, 13.66 MB (173.12 million rows/s., 1.02 GB/s.)
+Peak memory usage: 27.24 MiB.    
 ```
 
-As shown in the output above, the query processed 2.31 million rows and read 13.66MB of data. This is because, during the index analysis phase, ClickHouse selected **282 granules** for processing, each containing 8,192 rows, totaling approximately 2.31 million rows:
+Как видно из вывода выше, запрос обработал 2,31 миллиона строк и прочитал 13,66 МБ данных. Это связано с тем, что на этапе анализа индекса ClickHouse выбрал для обработки **282 гранулы**, каждая из которых содержит 8 192 строки, что в сумме дает приблизительно 2,31 миллиона строк:
 
 ```sql runnable=false
 EXPLAIN indexes = 1
@@ -201,26 +205,30 @@ WHERE town = 'LONDON';
     └───────────────────────────────────────────────────────┘  
 ```
 
-Regardless of the configured `max_threads` value, ClickHouse only allocates additional parallel processing lanes when there's enough data to justify them. The "max" in `max_threads` refers to an upper limit, not a guaranteed number of threads used.
+Независимо от заданного значения `max_threads`, ClickHouse выделяет дополнительные параллельные конвейеры обработки только тогда, когда данных достаточно, чтобы это было оправдано. «Max» в `max_threads` означает верхний предел, а не гарантированное количество используемых потоков.
 
-What "enough data" means is primarily determined by two settings, which define the minimum number of rows (163,840 by default) and the minimum number of bytes (2,097,152 by default) that each processing lane should handle:
+То, что считается «достаточным количеством данных», в первую очередь определяется двумя настройками, которые задают минимальное количество строк (163 840 по умолчанию) и минимальное количество байт (2 097 152 по умолчанию), обрабатываемых каждым конвейером:
 
-For shared-nothing clusters:
-* [merge_tree_min_rows_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
-* [merge_tree_min_bytes_for_concurrent_read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
+Для кластеров с архитектурой shared-nothing:
 
-For clusters with shared storage (e.g. ClickHouse Cloud):
-* [merge_tree_min_rows_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
-* [merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
+* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read)
+* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read)
 
-Additionally, there's a hard lower limit for read task size, controlled by:
-* [Merge_tree_min_read_task_size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge_tree_min_bytes_per_task_for_remote_reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
+Для кластеров с общей подсистемой хранения (shared storage), например ClickHouse Cloud:
 
-:::warning Don't modify these settings
-We don't recommend modifying these settings in production. They're shown here solely to illustrate why `max_threads` doesn't always determine the actual level of parallelism.
+* [merge&#95;tree&#95;min&#95;rows&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_rows_for_concurrent_read_for_remote_filesystem)
+* [merge&#95;tree&#95;min&#95;bytes&#95;for&#95;concurrent&#95;read&#95;for&#95;remote&#95;filesystem](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_for_concurrent_read_for_remote_filesystem)
+
+Кроме того, существует жёсткий нижний предел размера задачи чтения, который контролируется настройками:
+
+* [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
+
+:::warning Не изменяйте эти настройки
+Мы не рекомендуем изменять эти настройки в продакшене. Они приведены здесь только для того, чтобы показать, почему `max_threads` не всегда определяет фактический уровень параллелизма.
 :::
 
-For demonstration purposes, let's inspect the physical plan with these settings overridden to force maximum concurrency:
+В демонстрационных целях давайте рассмотрим физический план с переопределёнными настройками, чтобы принудительно задать максимальный уровень параллелизма:
+
 ```sql runnable=false
 EXPLAIN PIPELINE
 SELECT

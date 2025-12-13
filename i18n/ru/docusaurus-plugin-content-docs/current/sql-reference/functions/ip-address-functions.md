@@ -52,37 +52,32 @@ SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## IPv4NumToString {#IPv4NumToString}
 
-Introduced in: v1.1
+Добавлена в версии v1.1
 
+Преобразует 32-битное целое число в строковое представление IPv4-адреса в точечной десятичной нотации (формат A.B.C.D).
+Интерпретирует входное значение в порядке байт big-endian.
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format).
-Interprets the input using big-endian byte ordering.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv4NumToString(num)
 ```
 
-**Aliases**: `INET_NTOA`
+**Псевдонимы**: `INET_NTOA`
 
-**Arguments**
+**Аргументы**
 
-- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
+* `num` — IPv4-адрес в формате числа UInt32. [`UInt32`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает число, представляющее MAC-адрес, или `0`, если формат некорректен. [`String`](/sql-reference/data-types/string)
 
-Returns a number representing the MAC address, or `0` if the format is invalid. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 IPv4NumToString(3232235521)
@@ -92,35 +87,30 @@ IPv4NumToString(3232235521)
 192.168.0.1
 ```
 
-
-
 ## IPv4NumToStringClassC {#IPv4NumToStringClassC}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Преобразует 32-битное целое число в строковое представление IPv4-адреса в десятичной точечной записи (формат A.B.C.D),
+аналогично [`IPv4NumToString`](#IPv4NumToString), но с использованием `xxx` вместо последнего октета.
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format),
-similar to [`IPv4NumToString`](#IPv4NumToString) but using `xxx` instead of the last octet.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv4NumToStringClassC(num)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
+* `num` — IPv4-адрес в формате числа UInt32. [`UInt32`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку с IPv4-адресом, в которой последний октет заменён на xxx. [`String`](/sql-reference/data-types/string)
 
-Returns the IPv4 address string with xxx replacing the last octet. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Basic example with aggregation**
+**Базовый пример с агрегацией**
 
 ```sql title=Query
 SELECT
@@ -147,37 +137,32 @@ LIMIT 10
 └────────────────┴───────┘
 ```
 
-
-
 ## IPv4StringToNum {#IPv4StringToNum}
 
-Introduced in: v1.1
+Впервые появилась в версии: v1.1
 
+Преобразует строку с IPv4-адресом в десятичной точечной нотации (формат A.B.C.D) в соответствующее 32-битное целочисленное представление (обратная функция к [`IPv4NumToString`](#IPv4NumToString)).
+Если IPv4-адрес имеет неверный формат, выбрасывается исключение.
 
-Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation. (The reverse of [`IPv4NumToString`](#IPv4NumToString)).
-If the IPv4 address has an invalid format, an exception is thrown.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv4StringToNum(string)
 ```
 
-**Aliases**: `INET_ATON`
+**Псевдонимы**: `INET_ATON`
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка IPv4-адреса. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns theIPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 IPv4StringToNum('192.168.0.1')
@@ -187,34 +172,29 @@ IPv4StringToNum('192.168.0.1')
 3232235521
 ```
 
-
-
 ## IPv4StringToNumOrDefault {#IPv4StringToNumOrDefault}
 
-Introduced in: v22.3
+Добавлена в версии: v22.3
 
+Преобразует строку IPv4-адреса в десятичной точечной нотации (формат A.B.C.D) в соответствующее 32-битное целочисленное представление. Если IPv4-адрес имеет недопустимый формат, функция возвращает `0`.
 
-Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation but if the IPv4 address has an invalid format, it returns `0`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv4StringToNumOrDefault(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IPv4-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес или `0`, если адрес недопустим. [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the IPv4 address, or `0` if invalid. [`UInt32`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Example with an invalid address**
+**Пример с некорректным адресом**
 
 ```sql title=Query
 SELECT
@@ -228,34 +208,29 @@ SELECT
 └────────────┴─────────┘
 ```
 
-
-
 ## IPv4StringToNumOrNull {#IPv4StringToNumOrNull}
 
-Introduced in: v22.3
+Добавлена в версии: v22.3
 
+Преобразует 32-битное целое число в строковое представление IPv4-адреса в десятичной точечной нотации (формат A.B.C.D), а при недопустимом формате IPv4-адреса возвращает `NULL`.
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format) but if the IPv4 address has an invalid format, it returns `NULL`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
-IPv4StringToNumOrNull(строка)
+IPv4StringToNumOrNull(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IPv4-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес или `NULL`, если адрес некорректен. [`Nullable(UInt32)`](/sql-reference/data-types/nullable)
 
-Returns the IPv4 address, or `NULL` if invalid. [`Nullable(UInt32)`](/sql-reference/data-types/nullable)
+**Примеры**
 
-**Examples**
-
-**Example with an invalid address**
+**Пример с некорректным адресом**
 
 ```sql title=Query
 SELECT
@@ -269,34 +244,29 @@ IPv4StringToNumOrNull('invalid') AS невалидный;
 └────────────┴─────────┘
 ```
 
-
-
 ## IPv4ToIPv6 {#IPv4ToIPv6}
 
-Introduced in: v1.1
+Впервые появилось в версии: v1.1
 
+Интерпретирует 32-битное число в порядке big endian как IPv4-адрес, который затем трактуется как соответствующий IPv6-адрес в формате `FixedString(16)`.
 
-Interprets a (big endian) 32-bit number as an IPv4 address, which is then interpreted as the corresponding IPv6 address in `FixedString(16)` format.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv4ToIPv6(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — IPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
+* `x` — IPv4-адрес. [`UInt32`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес в бинарном формате. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns an IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
@@ -308,36 +278,31 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 └────────────────────┘
 ```
 
-
-
 ## IPv6CIDRToRange {#IPv6CIDRToRange}
 
-Introduced in: v20.1
+Добавлена в версии: v20.1
 
+Принимает IPv6-адрес с длиной префикса CIDR (Classless Inter-Domain Routing) и возвращает диапазон адресов подсети в виде кортежа из двух значений IPv6: минимального и максимального адресов в этой подсети.
+Версию для IPv4 см. в [`IPv4CIDRToRange`](#IPv4CIDRToRange).
 
-Takes an IPv6 address with its Classless Inter-Domain Routing (CIDR) prefix length and returns the subnet's address range as a tuple of two IPv6 values: the lowest and highest addresses in that subnet.
-For the IPv4 version see [`IPv4CIDRToRange`](#IPv4CIDRToRange).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv6CIDRToRange(ipv6, cidr)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `ipv6` — IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6) or [`String`](/sql-reference/data-types/string)
-- `cidr` — CIDR value. [`UInt8`](/sql-reference/data-types/int-uint)
+* `ipv6` — IPv6-адрес. [`IPv6`](/sql-reference/data-types/ipv6) или [`String`](/sql-reference/data-types/string)
+* `cidr` — значение CIDR. [`UInt8`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает кортеж из двух IPv6-адресов, представляющих диапазон подсети. [`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two IPv6 addresses representing the subnet range. [`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
@@ -349,37 +314,32 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## IPv6NumToString {#IPv6NumToString}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Преобразует IPv6-адрес из двоичного формата (FixedString(16)) в его стандартное текстовое представление.
+IPv6-адреса, сопоставленные с IPv4, отображаются в формате `::ffff:111.222.33.44`.
 
-Converts an IPv6 address from binary format (FixedString(16)) to its standard text representation.
-IPv4-mapped IPv6 addresses are displayed in the format `::ffff:111.222.33.44`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv6NumToString(x)
 ```
 
-**Aliases**: `INET6_NTOA`
+**Псевдонимы**: `INET6_NTOA`
 
-**Arguments**
+**Аргументы**
 
-- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
+* `x` — IPv6-адрес в двоичном виде. [`FixedString(16)`](/sql-reference/data-types/fixedstring) или [`IPv6`](/sql-reference/data-types/ipv6)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес в строковом формате. [`String`](/sql-reference/data-types/string)
 
-Returns the IPv6 address string in text format. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 16)) AS addr;
@@ -391,7 +351,7 @@ SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 
 └──────────────┘
 ```
 
-**IPv6 with hits analysis**
+**IPv6 с анализом обращений**
 
 ```sql title=Query
 SELECT
@@ -419,7 +379,7 @@ LIMIT 10
 └─────────────────────────────────────────┴───────┘
 ```
 
-**IPv6 mapped IPv4 addresses**
+**IPv4-адреса в формате IPv6**
 
 ```sql title=Query
 SELECT
@@ -447,41 +407,36 @@ LIMIT 10
 └────────────────────────────┴────────┘
 ```
 
-
-
 ## IPv6StringToNum {#IPv6StringToNum}
 
-Introduced in: v1.1
+Введена в версии: v1.1
 
+Преобразует IPv6-адрес из его стандартного текстового представления в бинарный формат (`FixedString(16)`).
+Поддерживает IPv4-картированные IPv6-адреса в формате `::ffff:111.222.33.44.`.
+Если IPv6-адрес имеет некорректный формат, генерируется исключение.
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, an exception is thrown.
+Если входная строка содержит корректный IPv4-адрес, возвращается его эквивалент в виде IPv6-адреса.
+Шестнадцатеричные символы могут быть в верхнем или нижнем регистре.
 
-If the input string contains a valid IPv4 address, returns its IPv6 equivalent.
-HEX can be uppercase or lowercase.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv6StringToNum(string)
 ```
 
-**Aliases**: `INET6_ATON`
+**Псевдонимы**: `INET6_ATON`
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IPv6-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес в двоичном виде. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns theIPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Примеры**
 
-**Examples**
-
-**Basic example**
+**Базовый пример**
 
 ```sql title=Query
 SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '127.0.0.1', '1111::ffff'] AS addr) ARRAY JOIN addr;
@@ -495,36 +450,31 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 └────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## IPv6StringToNumOrDefault {#IPv6StringToNumOrDefault}
 
-Introduced in: v22.3
+Добавлено в: v22.3
 
+Преобразует IPv6-адрес из его стандартного текстового представления в двоичный формат (`FixedString(16)`).
+Принимает IPv4-отображённые IPv6-адреса в формате `::ffff:111.222.33.44.`.
+Если формат IPv6-адреса некорректен, функция возвращает значение по умолчанию `::`.
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, it returns the default value `::`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv6StringToNumOrDefault(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IPv6-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+IPv6-адрес в двоичном представлении или строка FixedString(16), заполненная нулями, если адрес некорректен. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-IPv6 address in binary format, or zero-filled FixedString(16) if invalid. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**Примеры**
 
-**Examples**
-
-**Basic example with invalid address**
+**Базовый пример с некорректным адресом**
 
 ```sql title=Query
 SELECT
@@ -538,36 +488,31 @@ SELECT
 └─────────────┴─────────┘
 ```
 
-
-
 ## IPv6StringToNumOrNull {#IPv6StringToNumOrNull}
 
-Introduced in: v22.3
+Добавлено в версии: v22.3
 
+Преобразует IPv6-адрес из его стандартного текстового представления в двоичный формат (`FixedString(16)`).
+Принимает IPv4-отображённые IPv6-адреса в формате `::ffff:111.222.33.44.`.
+Если IPv6-адрес имеет недопустимый формат, функция возвращает `NULL`.
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, it returns `NULL`.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 IPv6StringToNumOrNull(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IPv6-адресом. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес в двоичном формате или `NULL`, если адрес некорректен. [`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
 
-Returns IPv6 address in binary format, or `NULL` if invalid. [`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
+**Примеры**
 
-**Examples**
-
-**Basic example with invalid address**
+**Базовый пример с некорректным адресом**
 
 ```sql title=Query
 SELECT
@@ -581,37 +526,32 @@ SELECT
 └─────────────┴─────────┘
 ```
 
-
-
 ## cutIPv6 {#cutIPv6}
 
-Introduced in: v1.1
+Впервые появилась в версии: v1.1
 
+Принимает значение типа `FixedString(16)`, содержащее IPv6-адрес в двоичном формате.
+Возвращает строку, содержащую адрес с удалённым заданным числом байт, в текстовом виде.
 
-Accepts a `FixedString(16)` value containing the IPv6 address in binary format.
-Returns a string containing the address of the specified number of bytes removed in text format.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 cutIPv6(x, bytesToCutForIPv6, bytesToCutForIPv4)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
-- `bytesToCutForIPv6` — Number of bytes to cut for IPv6. [`UInt8`](/sql-reference/data-types/int-uint)
-- `bytesToCutForIPv4` — Number of bytes to cut for IPv4. [`UInt8`](/sql-reference/data-types/int-uint)
+* `x` — IPv6-адрес в двоичном формате. [`FixedString(16)`](/sql-reference/data-types/fixedstring) или [`IPv6`](/sql-reference/data-types/ipv6)
+* `bytesToCutForIPv6` — Количество байт, которые нужно обрезать для IPv6-адреса. [`UInt8`](/sql-reference/data-types/int-uint)
+* `bytesToCutForIPv4` — Количество байт, которые нужно обрезать для IPv4-адреса. [`UInt8`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, содержащую IPv6-адрес в текстовом формате с удалёнными указанными байтами. [`String`](/sql-reference/data-types/string)
 
-Returns a string containing the IPv6 address in text format with specified bytes removed. [`String`](/sql-reference/data-types/string)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 WITH
@@ -628,37 +568,32 @@ SELECT
 └─────────────────────────────────────┴─────────────────────┘
 ```
 
-
-
 ## isIPAddressInRange {#isIPAddressInRange}
 
-Introduced in: v21.4
+Добавлена в версии: v21.4
 
+Определяет, находится ли IP-адрес в сети, заданной в формате [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing).
 
-Determines if an IP address is contained in a network represented in the [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation.
+Эта функция принимает как IPv4-, так и IPv6-адреса (и сети), представленные в виде строк. Она возвращает `0`, если версии IP-адреса и CIDR не совпадают.
 
-This function accepts both IPv4 and IPv6 addresses (and networks) represented as strings. It returns `0` if the IP version of the address and the CIDR don't match.
-        
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isIPAddressInRange(address, prefix)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `address` — An IPv4 or IPv6 address. [`String`](/sql-reference/data-types/string)
-- `prefix` — An IPv4 or IPv6 network prefix in CIDR. [`String`](/sql-reference/data-types/string)
+* `address` — адрес IPv4 или IPv6. [`String`](/sql-reference/data-types/string)
+* `prefix` — сетевой префикс IPv4 или IPv6 в формате CIDR. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если версия IP-адреса и CIDR совпадают, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the IP version of the address and the CIDR match, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**IPv4 address in range**
+**IPv4-адрес в диапазоне**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
@@ -668,7 +603,7 @@ SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
 1
 ```
 
-**IPv4 address not in range**
+**Адрес IPv4 вне допустимого диапазона**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
@@ -678,7 +613,7 @@ SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
 0
 ```
 
-**IPv6 address not in range**
+**IPv6-адрес вне допустимого диапазона**
 
 ```sql title=Query
 SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
@@ -688,35 +623,30 @@ SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
 0
 ```
 
-
-
 ## isIPv4String {#isIPv4String}
 
-Introduced in: v21.1
+Добавлено в версии: v21.1
 
+Определяет, является ли входная строка IPv4-адресом.
+Для версии IPv6 см. [`isIPv6String`](#isIPv6String).
 
-Determines whether the input string is an IPv4 address or not.
-For the IPv6 version see [`isIPv6String`](#isIPv6String).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isIPv4String(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IP-адресом для проверки. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если значение `string` является IPv4-адресом, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `string` is IPv4 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT addr, isIPv4String(addr)
@@ -734,35 +664,30 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
-
-
 ## isIPv6String {#isIPv6String}
 
-Introduced in: v21.1
+Введена в версии: v21.1
 
+Определяет, является ли входная строка IPv6-адресом.
+Функцию для IPv4 см. в [`isIPv4String`](#isIPv4String).
 
-Determines whether the input string is an IPv6 address or not.
-For the IPv4 version see [`isIPv4String`](#isIPv4String).
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 isIPv6String(string)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
+* `string` — строка с IP-адресом для проверки. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает `1`, если `string` содержит IPv6-адрес, иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `string` is IPv6 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT addr, isIPv6String(addr)
@@ -779,35 +704,30 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
-
-
 ## toIPv4 {#toIPv4}
 
-Introduced in: v20.1
+Добавлена в: v20.1
 
+Преобразует строку или значение IPv4-адреса типа UInt32 в тип IPv4.
+Похожа на функции [`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) и [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString), но поддерживает в качестве входных аргументов как строковый, так и беззнаковый целочисленный типы данных.
 
-Converts a string or a UInt32 form of IPv4 address to type IPv4.
-It is similar to [`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) and [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString) functions but it supports both string and unsigned integer data types as input arguments.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toIPv4(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — An IPv4 address [`String`](/sql-reference/data-types/string) or [`UInt8/16/32`](/sql-reference/data-types/int-uint)
+* `x` — IPv4-адрес типа [`String`](/sql-reference/data-types/string) или [`UInt8/16/32`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес типа [`IPv4`](/sql-reference/data-types/ipv4).
 
-Returns an IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT toIPv4('171.225.130.45');
@@ -819,7 +739,7 @@ SELECT toIPv4('171.225.130.45');
 └──────────────────────────┘
 ```
 
-**Comparison with IPv4StringToNum and IPv4NumToString functions.**
+**Сравнение с функциями IPv4StringToNum и IPv4NumToString.**
 
 ```sql title=Query
 WITH
@@ -835,7 +755,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────┘
 ```
 
-**Conversion from an integer**
+**Преобразование из целого типа**
 
 ```sql title=Query
 SELECT toIPv4(2130706433);
@@ -847,36 +767,31 @@ SELECT toIPv4(2130706433);
 └────────────────────┘
 ```
 
-
-
 ## toIPv4OrDefault {#toIPv4OrDefault}
 
-Introduced in: v22.3
+Введена в: v22.3
 
+Преобразует строку или значение IPv4-адреса типа `UInt32` в тип [`IPv4`](../data-types/ipv4.md).
+Если IPv4-адрес имеет некорректный формат, функция возвращает `0.0.0.0` (0 в формате IPv4) или заданное значение IPv4 по умолчанию.
 
-Converts a string or a UInt32 form of an IPv4 address to [`IPv4`](../data-types/ipv4.md) type.
-If the IPv4 address has an invalid format, it returns `0.0.0.0` (0 IPv4), or the provided IPv4 default.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toIPv4OrDefault(string[, default])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IP address string to convert. [`String`](/sql-reference/data-types/string)
-- `default` — Optional. The value to return if string is an invalid IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
+* `string` — строка с IPv4-адресом для преобразования. [`String`](/sql-reference/data-types/string)
+* `default` — необязательный параметр. Значение, которое будет возвращено, если `string` — некорректный IPv4-адрес. [`IPv4`](/sql-reference/data-types/ipv4)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает строку, преобразованную в IPv4-адрес, или значение по умолчанию, если преобразование не удалось. [`IPv4`](/sql-reference/data-types/ipv4)
 
-Returns a string converted to the current IPv4 address, or the default value if conversion fails. [`IPv4`](/sql-reference/data-types/ipv4)
+**Примеры**
 
-**Examples**
-
-**Valid and invalid IPv4 strings**
+**Корректные и некорректные строки IPv4**
 
 ```sql title=Query
 WITH
@@ -895,45 +810,42 @@ SELECT
 └───────────────┴───────────────┴──────────────────┘
 ```
 
-
-
 ## toIPv4OrNull {#toIPv4OrNull}
 
-Introduced in: v22.3
+Добавлена в версии: v22.3
 
+Преобразует входное значение в тип `IPv4`, но в случае ошибки возвращает `NULL`.
+Аналог функции [`toIPv4`](#toIPv4), но при ошибках преобразования вместо выбрасывания исключения возвращает `NULL`.
 
-Converts an input value to a value of type `IPv4` but returns `NULL` in case of an error.
-Like [`toIPv4`](#toIPv4) but returns `NULL` instead of throwing an exception on conversion errors.
+Поддерживаемые аргументы:
 
-Supported arguments:
-- String representations of IPv4 addresses in dotted decimal notation.
-- Integer representations of IPv4 addresses.
+* Строковые представления IPv4-адресов в десятичной точечной нотации.
+* Целочисленные представления IPv4-адресов.
 
-Unsupported arguments (return `NULL`):
-- Invalid IP address formats.
-- IPv6 addresses.
-- Out-of-range values.
-- Malformed addresses.
-    
+Неподдерживаемые аргументы (возвращают `NULL`):
 
-**Syntax**
+* Неверные форматы IP-адресов.
+* IPv6-адреса.
+* Значения вне допустимого диапазона.
+* Некорректно сформированные адреса.
+
+**Синтаксис**
 
 ```sql
 toIPv4OrNull(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
+* `x` — строковое или целочисленное представление IPv4-адреса. [`String`](/sql-reference/data-types/string) или [`Integer`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес при успешном преобразовании, в противном случае — `NULL`. [`IPv4`](/sql-reference/data-types/ipv4) или [`NULL`](/sql-reference/syntax#null)
 
-Returns an IPv4 address if successful, otherwise `NULL`. [`IPv4`](/sql-reference/data-types/ipv4) or [`NULL`](/sql-reference/syntax#null)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -947,44 +859,41 @@ SELECT
 └─────────────┴────────────┘
 ```
 
-
-
 ## toIPv4OrZero {#toIPv4OrZero}
 
-Introduced in: v23.1
+Введена в версии: v23.1
 
+Преобразует входное значение в значение типа [IPv4](../data-types/ipv4.md), но в случае ошибки возвращает нулевой IPv4-адрес.
+Аналог функции [`toIPv4`](#toIPv4), но вместо генерации исключения при ошибках преобразования возвращает нулевой IPv4-адрес (`0.0.0.0`).
 
-Converts an input value to a value of type [IPv4](../data-types/ipv4.md) but returns zero IPv4 address in case of an error.
-Like [`toIPv4`](#toIPv4) but returns zero IPv4 address (`0.0.0.0`) instead of throwing an exception on conversion errors.
+Поддерживаемые аргументы:
 
-Supported arguments:
-- String representations of IPv4 addresses in dotted decimal notation.
-- Integer representations of IPv4 addresses.
+* Строковые представления IPv4-адресов в точечной десятичной нотации.
+* Целочисленные представления IPv4-адресов.
 
-Unsupported arguments (return zero IPv4):
-- Invalid IP address formats.
-- IPv6 addresses.
-- Out-of-range values.
-    
+Неподдерживаемые аргументы (возвращается нулевой IPv4-адрес):
 
-**Syntax**
+* Неверные форматы IP-адресов.
+* IPv6-адреса.
+* Значения вне допустимого диапазона.
+
+**Синтаксис**
 
 ```sql
 toIPv4OrZero(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
+* `x` — строковое или целочисленное представление IPv4-адреса. [`String`](/sql-reference/data-types/string) или [`Integer`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv4-адрес при успешном преобразовании, в противном случае — нулевой IPv4-адрес (`0.0.0.0`). [`IPv4`](/sql-reference/data-types/ipv4)
 
-Returns an IPv4 address if successful, otherwise zero IPv4 address (`0.0.0.0`). [`IPv4`](/sql-reference/data-types/ipv4)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -998,38 +907,33 @@ SELECT
 └─────────────┴────────────┘
 ```
 
-
-
 ## toIPv6 {#toIPv6}
 
-Introduced in: v20.1
+Появилась в версии: v20.1
 
+Преобразует строку или `UInt128`-представление IPv6-адреса в тип [`IPv6`](../data-types/ipv6.md).
+Для строк: если IPv6-адрес имеет некорректный формат, возвращается пустое значение.
+Аналогична функциям [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) и [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString), которые преобразуют IPv6-адрес в двоичный формат и обратно (а именно в `FixedString(16)`).
 
-onverts a string or a `UInt128` form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
-For strings, if the IPv6 address has an invalid format, returns an empty value.
-Similar to [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) and [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) functions, which convert IPv6 address to and from binary format (i.e. `FixedString(16)`).
+Если входная строка содержит корректный IPv4-адрес, возвращается IPv6-эквивалент этого IPv4-адреса.
 
-If the input string contains a valid IPv4 address, then the IPv6 equivalent of the IPv4 address is returned.
-
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toIPv6(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — An IP address. [`String`](/sql-reference/data-types/string) or [`UInt128`](/sql-reference/data-types/int-uint)
+* `x` — IP-адрес. [`String`](/sql-reference/data-types/string) или [`UInt128`](/sql-reference/data-types/int-uint)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес. [`IPv6`](/sql-reference/data-types/ipv6)
 
-Returns an IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 WITH '2001:438:ffff::407d:1bc1' AS IPv6_string
@@ -1044,7 +948,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**IPv4-to-IPv6 mapping**
+**Отображение адресов IPv4 в IPv6**
 
 ```sql title=Query
 SELECT toIPv6('127.0.0.1');
@@ -1056,34 +960,31 @@ SELECT toIPv6('127.0.0.1');
 └─────────────────────┘
 ```
 
-
-
 ## toIPv6OrDefault {#toIPv6OrDefault}
 
-Introduced in: v22.3
+Впервые представлена в: v22.3
 
+Преобразует строку или целочисленное значение типа UInt128, представляющее IPv6-адрес, в тип [`IPv6`](../data-types/ipv6.md).
+Если IPv6-адрес имеет неверный формат, функция возвращает `::` (нулевой IPv6) или указанный IPv6 по умолчанию.
 
-Converts a string or a UInt128 form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
-If the IPv6 address has an invalid format, it returns `::` (0 IPv6) or the provided IPv6 default.
-    
-
-**Syntax**
+**Синтаксис**
 
 ```sql
 toIPv6OrDefault(string[, default])
 ```
 
-**Arguments**
+**Аргументы**
 
-- `string` — IP address string to convert. - `default` — Optional. The value to return if string has an invalid format. 
+* `string` — строка с IP-адресом для преобразования.
+* `default` — необязательный аргумент. Значение, которое будет возвращено, если `string` имеет некорректный формат.
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the IPv6 address, otherwise `::` or the provided optional default if argument `string` has an invalid format. [`IPv6`](/sql-reference/data-types/ipv6)
+Возвращает IPv6-адрес. Если аргумент `string` имеет некорректный формат, возвращает `::` или переданное необязательное значение по умолчанию. [`IPv6`](/sql-reference/data-types/ipv6)
 
-**Examples**
+**Примеры**
 
-**Valid and invalid IPv6 strings**
+**Корректные и некорректные строки IPv6**
 
 ```sql title=Query
 WITH
@@ -1102,46 +1003,43 @@ SELECT
 └────────────────────────────────────────┴───────────────┴──────────────────┘
 ```
 
-
-
 ## toIPv6OrNull {#toIPv6OrNull}
 
-Introduced in: v22.3
+Введена в версии: v22.3
 
+Преобразует входное значение в значение типа `IPv6`, но возвращает `NULL` в случае ошибки.
+Аналогична [`toIPv6`](#toIPv6), но возвращает `NULL` вместо выброса исключения при ошибках преобразования.
 
-Converts an input value to a value of type `IPv6` but returns `NULL` in case of an error.
-Like [`toIPv6`](#toIPv6) but returns `NULL` instead of throwing an exception on conversion errors.
+Поддерживаемые аргументы:
 
-Supported arguments:
-- String representations of IPv6 addresses in standard notation.
-- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
-- Binary representations of IPv6 addresses.
+* Строковые представления IPv6-адресов в стандартной записи.
+* Строковые представления IPv4-адресов (преобразуются в IPv4-mapped IPv6).
+* Бинарные представления IPv6-адресов.
 
-Unsupported arguments (return `NULL`):
-- Invalid IP address formats.
-- Malformed IPv6 addresses.
-- Out-of-range values.
-- Invalid notation.
-    
+Неподдерживаемые аргументы (возвращают `NULL`):
 
-**Syntax**
+* Неверные форматы IP-адресов.
+* Некорректные IPv6-адреса.
+* Значения вне допустимого диапазона.
+* Неверная запись.
+
+**Синтаксис**
 
 ```sql
 toIPv6OrNull(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
+* `x` — строковое представление IPv6- или IPv4-адреса. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес в случае успеха, иначе `NULL`. [`IPv6`](/sql-reference/data-types/ipv6) или [`NULL`](/sql-reference/syntax#null)
 
-Returns an IPv6 address if successful, otherwise `NULL`. [`IPv6`](/sql-reference/data-types/ipv6) or [`NULL`](/sql-reference/syntax#null)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT
@@ -1155,45 +1053,42 @@ SELECT
 └─────────────────────────────────────┴──────────────┘
 ```
 
-
-
 ## toIPv6OrZero {#toIPv6OrZero}
 
-Introduced in: v23.1
+Появилась в версии: v23.1
 
+Преобразует входное значение в значение типа [IPv6](../data-types/ipv6.md), но в случае ошибки возвращает нулевой IPv6-адрес.
+Аналогична [`toIPv6`](#toIPv6), но возвращает нулевой IPv6-адрес (`::`) вместо генерации исключения при ошибках преобразования.
 
-Converts an input value to a value of type [IPv6](../data-types/ipv6.md) but returns zero IPv6 address in case of an error.
-Like [`toIPv6`](#toIPv6) but returns zero IPv6 address (`::`) instead of throwing an exception on conversion errors.
+Поддерживаемые аргументы:
 
-Supported arguments:
-- String representations of IPv6 addresses in standard notation.
-- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
-- Binary representations of IPv6 addresses.
+* Строковые представления IPv6-адресов в стандартной нотации.
+* Строковые представления IPv4-адресов (преобразуются в IPv4-mapped IPv6).
+* Бинарные представления IPv6-адресов.
 
-Unsupported arguments (return zero IPv6):
-- Invalid IP address formats.
-- Malformed IPv6 addresses.
-- Out-of-range values.
-    
+Неподдерживаемые аргументы (функция возвращает нулевой IPv6-адрес):
 
-**Syntax**
+* Неверные форматы IP-адресов.
+* Некорректно сформированные IPv6-адреса.
+* Значения вне допустимого диапазона.
+
+**Синтаксис**
 
 ```sql
 toIPv6OrZero(x)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
+* `x` — строковое представление IPv6- или IPv4-адреса. [`String`](/sql-reference/data-types/string)
 
+**Возвращаемое значение**
 
-**Returned value**
+Возвращает IPv6-адрес при успешном выполнении, в противном случае — нулевой IPv6-адрес (`::`).  [`IPv6`](/sql-reference/data-types/ipv6)
 
-Returns an IPv6 address if successful, otherwise zero IPv6 address (`::`).  [`IPv6`](/sql-reference/data-types/ipv6)
+**Примеры**
 
-**Examples**
-
-**Usage example**
+**Пример использования**
 
 ```sql title=Query
 SELECT

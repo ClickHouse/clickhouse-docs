@@ -105,9 +105,9 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 Рекомендуется создать новую учетную запись пользователя, связанную с конкретным человеком, и назначить этому пользователю default&#95;role. Это нужно для того, чтобы операции, выполняемые пользователями, были привязаны к их пользовательским идентификаторам, а учетная запись `default` была зарезервирована для действий типа break-glass (аварийный доступ).
 
 ```sql
-  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-  GRANT default_role to userID;
-  ```
+CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+GRANT default_role to userID;
+```
 
 Пользователи могут использовать генератор хеша SHA256 или функцию в коде, такую как `hashlib` в Python, чтобы преобразовать пароль длиной 12+ символов с достаточной сложностью в строку SHA256 и передать её системному администратору в качестве пароля. Это гарантирует, что администратор не видит и не обрабатывает пароли в открытом виде.
 
@@ -120,7 +120,7 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 
   Выполните следующие запросы, чтобы получить список всех грантов в базе данных.
 
-  ```sql
+```sql
 SELECT grants.user_name,
 grants.role_name,
 users.name AS role_member,
