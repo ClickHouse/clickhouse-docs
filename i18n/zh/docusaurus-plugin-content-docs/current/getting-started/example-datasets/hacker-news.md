@@ -19,8 +19,8 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   该数据集的 CSV 版本可从我们的公共 [S3 存储桶](https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz)下载,或通过运行以下命令获取:
 
   ```bash
-wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
-```
+  wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+  ```
 
   该压缩文件大小为 4.6GB,包含 2800 万行数据,下载需要 5-10 分钟。
 

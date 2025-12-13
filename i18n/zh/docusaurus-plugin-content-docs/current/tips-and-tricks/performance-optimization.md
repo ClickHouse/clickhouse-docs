@@ -62,35 +62,35 @@ FROM github.github_events
 WHERE created_at >= '2024-01-01';
 ```
 
-## Focus on individual queries, not averages {#focus-on-individual-queries-not-averages}
+## 聚焦单条查询，而不是平均值 {#focus-on-individual-queries-not-averages}
 
-When debugging ClickHouse performance, don't rely on average query times or overall system metrics. Instead, identify why specific queries are slow. A system can have good average performance while individual queries suffer from memory exhaustion, poor filtering, or high cardinality operations.
+在排查 ClickHouse 性能问题时，不要依赖平均查询时间或系统整体指标。相反，要找出为什么某些特定查询会变慢。系统在平均意义上可能表现良好，但单条查询可能会因为内存耗尽、过滤不佳或高基数操作而表现很差。
 
-According to Alexey, CTO of ClickHouse: *"The right way is to ask yourself why this particular query was processed in five seconds... I don't care if median and other queries process quickly. I only care about my query"*
+ClickHouse 的 CTO Alexey 指出：*"正确的做法是问自己，为什么这条特定查询要花五秒钟才处理完……我不在乎中位数和其他查询处理得有多快。我只关心我的这条查询"*。
 
-When a query is slow, don't just look at averages. Ask "Why was THIS specific query slow?" and examine the actual resource usage patterns.
+当某条查询变慢时，不要只看平均值。要问“为什么偏偏是这条查询慢？”，并检查其实际的资源使用模式。
 
-## Memory and row scanning {#memory-and-row-scanning}
+## 内存与行扫描 {#memory-and-row-scanning}
 
-Sentry is a developer-first error tracking platform processing billions of events daily from 4+ million developers. Their key insight: *"The cardinality of the grouping key that's going to drive memory in this particular situation"* - High cardinality aggregations kill performance through memory exhaustion, not row scanning.
+Sentry 是一个面向开发者的错误跟踪平台，每天为 400 多万开发者处理数十亿个事件。他们的一个关键认识是：*“在这种特定情形下，驱动内存使用的是分组键的基数（cardinality）”*——高基数聚合拖垮性能，根本原因在于内存被耗尽，而不是扫描了太多行。
 
-When queries fail, determine if it's a memory problem (too many groups) or scanning problem (too many rows).
+当查询失败时，要先判断这是内存问题（分组过多）还是扫描问题（行数过多）。
 
-A query like `GROUP BY user_id, error_message, url_path` creates a separate memory state for every unique combination of all three values together. With a higher load of users, error types, and URL paths, you could easily generate millions of aggregation states that must be held in memory simultaneously.
+像 `GROUP BY user_id, error_message, url_path` 这样的查询，会为这三个值的每一种唯一组合创建一个独立的内存状态。随着用户数量、错误类型和 URL 路径的增加，你很容易就会生成数百万个必须同时保存在内存中的聚合状态。
 
-For extreme cases, Sentry uses deterministic sampling. A 10% sample reduces memory usage by 90% while maintaining roughly 5% accuracy for most aggregations:
+在极端场景下，Sentry 使用确定性采样。10% 的采样可以将内存使用量降低 90%，同时对大多数聚合仍能保持大约 5% 的精度：
 
 ```sql
 WHERE cityHash64(user_id) % 10 = 0  -- 始终为相同的 10% 用户
 ```
 
-This ensures the same users appear in every query, providing consistent results across time periods. The key insight: `cityHash64()` produces consistent hash values for the same input, so `user_id = 12345` will always hash to the same value, ensuring that user either always appears in your 10% sample or never does - no flickering between queries.
+这可以确保相同的用户在每次查询中都会以相同的方式出现，从而在不同时间段内提供一致的结果。关键在于：`cityHash64()` 会对相同输入生成一致的哈希值，因此 `user_id = 12345` 始终会被哈希到同一个值，保证该用户要么始终出现在你的 10% 样本中，要么从不出现——不会在不同查询之间时有时无。
 
-## Sentry's bit mask optimization {#bit-mask-optimization}
+## Sentry 的位掩码优化 {#bit-mask-optimization}
 
-When aggregating by high-cardinality columns (like URLs), each unique value creates a separate aggregation state in memory, leading to memory exhaustion. Sentry's solution: instead of grouping by the actual URL strings, group by boolean expressions that collapse into bit masks.
+当按高基数列（如 URL）进行聚合时，每个唯一值都会在内存中创建一个单独的聚合状态，最终可能导致内存耗尽。Sentry 的解决方案是：不再按实际的 URL 字符串分组，而是按会被归约为位掩码的布尔表达式分组。
 
-Here is a query that you can try on your own tables if this situation applies to you:
+如果你也遇到类似情况，可以在自己的表上运行下面的查询：
 
 ```sql
 -- 内存高效聚合模式：每个条件 = 每组一个整数

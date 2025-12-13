@@ -94,11 +94,11 @@ ClickStack 镜像现在以 `clickhouse/clickstack-*` 的名称发布（此前为
       CLICKHOUSE_PASSWORD: 'password'
       OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
     ports:
-      - '13133:13133' # health_check extension
-      - '24225:24225' # fluentd receiver
-      - '4317:4317' # OTLP gRPC receiver
-      - '4318:4318' # OTLP http receiver
-      - '8888:8888' # metrics extension
+      - '13133:13133' # health_check 扩展组件
+      - '24225:24225' # Fluentd 接收端
+      - '4317:4317' # OTLP gRPC 接收端
+      - '4318:4318' # OTLP HTTP 接收端
+      - '8888:8888' # 指标扩展组件
     restart: always
     networks:
       - internal
@@ -120,7 +120,7 @@ ClickStack 发行版的 OTel collector 支持通过挂载自定义配置文件�
 
 ```yaml
 receivers:
-  # Collect logs from local files
+  # 从本地文件收集日志
   filelog:
     include:
       - /var/log/**/*.log
@@ -128,7 +128,7 @@ receivers:
       - /var/log/messages
     start_at: beginning
 
-  # Collect host system metrics
+  # 收集主机系统指标
   hostmetrics:
     collection_interval: 30s
     scrapers:
@@ -149,7 +149,7 @@ receivers:
 
 service:
   pipelines:
-    # Logs pipeline
+    # 日志管道
     logs/host:
       receivers: [filelog]
       processors:
@@ -159,7 +159,7 @@ service:
       exporters:
         - clickhouse
     
-    # Metrics pipeline
+    # 指标管道
     metrics/hostmetrics:
       receivers: [hostmetrics]
       processors:
@@ -306,166 +306,167 @@ service:
 
 ```
 
-Note the need to include an [authorization header containing your ingestion API key](#securing-the-collector) in any OTLP communication.
+请注意，在任何 OTLP 通信中都需要包含[带有摄取 API key 的 Authorization 请求头](#securing-the-collector)。
 
-For more advanced configuration, we suggest the [OpenTelemetry collector documentation](https://opentelemetry.io/docs/collector/).
+如需更高级的配置，我们建议参考 [OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/)。
 
-## Optimizing inserts {#optimizing-inserts}
+## 优化插入 {#optimizing-inserts}
 
-In order to achieve high insert performance while obtaining strong consistency guarantees, users should adhere to simple rules when inserting Observability data into ClickHouse via the ClickStack collector. With the correct configuration of the OTel collector, the following rules should be straightforward to follow. This also avoids [common issues](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse) users encounter when using ClickHouse for the first time.
+为了在获得强一致性保证的同时实现高效的插入性能，用户在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
 
-### Batching {#batching}
+### 批处理 {#batching}
 
-By default, each insert sent to ClickHouse causes ClickHouse to immediately create a part of storage containing the data from the insert together with other metadata that needs to be stored. Therefore sending a smaller amount of inserts that each contain more data, compared to sending a larger amount of inserts that each contain less data, will reduce the number of writes required. We recommend inserting data in fairly large batches of at least 1,000 rows at a time. Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
+默认情况下，发送到 ClickHouse 的每个 insert 都会让 ClickHouse 立即创建一个存储部分（part），其中包含此次插入的数据以及需要存储的其他元数据。因此，相比发送大量每次只包含少量数据的 insert，发送较少次数但每次包含更多数据的 insert，可以减少所需的写入次数。我们建议一次插入至少 1,000 行的较大批次数据。更多详情见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
 
-By default, inserts into ClickHouse are synchronous and idempotent if identical. For tables of the merge tree engine family, ClickHouse will, by default, automatically [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). This means inserts are tolerant in cases like the following:
+默认情况下，对 ClickHouse 的 insert 是同步的，并且对于相同内容是幂等的。对于 merge tree 引擎族的表，ClickHouse 默认会自动[对 insert 进行去重](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着 insert 在如下情况中是可容错的：
 
-- (1) If the node receiving the data has issues, the insert query will time out (or get a more specific error) and not receive an acknowledgment.
-- (2) If the data got written by the node, but the acknowledgement can't be returned to the sender of the query because of network interruptions, the sender will either get a timeout or a network error.
+- (1) 如果接收数据的节点出现问题，insert 查询会超时（或返回更具体的错误），并且不会收到确认。
+- (2) 如果数据已经被该节点写入，但由于网络中断，确认无法返回给查询的发送方，则发送方会收到超时或网络错误。
 
-From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just be retried immediately. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the original (unacknowledged) insert succeeded.
+从 collector 的角度来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含的数据及其顺序与原始 insert 相同，如果原始（未被确认的）insert 实际上已成功，ClickHouse 就会自动忽略这次重试的 insert。
 
-For this reason, the ClickStack distribution of the OTel collector uses the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
+基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量（每秒事件数，events per second），并且每次 insert 至少可以发送 5000 个事件，那么通常这就是处理管道（pipeline）中唯一需要的批处理机制。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
-### Use asynchronous inserts {#use-asynchronous-inserts}
+### 使用异步插入 {#use-asynchronous-inserts}
 
-Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
+通常，当采集器的吞吐量较低时，用户不得不发送更小的批次，但他们仍然希望数据在端到端延迟尽可能低的情况下到达 ClickHouse。在这种情况下，当批处理器的 `timeout` 过期时会发送小批次。这可能导致问题，此时就需要异步插入。如果用户将数据发送到充当 Gateway 的 ClickStack 采集器，这个问题比较少见——采集器作为聚合器，可以缓解这一问题——参见 [Collector roles](#collector-roles)。
 
-If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
+如果无法保证足够大的批次，用户可以通过使用 [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) 将批处理工作委托给 ClickHouse。使用异步插入时，数据首先被插入到缓冲区，然后再写入数据库存储，写入过程会在稍后以异步方式完成。
 
-<Image img={observability_6} alt="Async inserts" size="md"/>
+<Image img={observability_6} alt="异步插入" size="md"/>
 
-With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
+在[启用异步插入](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)后，当 ClickHouse ① 接收到一条插入查询时，该查询的数据会 ② 立即写入内存缓冲区。随后在 ③ 下一次缓冲区刷新时，缓冲区中的数据会被[排序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)，并作为一个数据 part 写入数据库存储。请注意，在数据刷新到数据库存储之前，无法通过查询检索到这些数据；缓冲区刷新的行为是[可配置的](/optimize/asynchronous-inserts)。
 
-To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
+要为采集器启用异步插入，请在连接字符串中添加 `async_insert=1`。我们建议用户使用 `wait_for_async_insert=1`（默认值）以获得投递可靠性保证——更多细节参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
-Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
+异步插入的数据会在 ClickHouse 缓冲区被刷新时写入。这会在超过 [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) 后发生，或者在自首次 INSERT 查询以来经过 [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) 毫秒后发生。如果将 `async_insert_stale_timeout_ms` 设置为非零值，则数据会在自最后一条查询以来经过 `async_insert_stale_timeout_ms 毫秒` 后被插入。用户可以通过调优这些设置来控制其流水线的端到端延迟。用于进一步调优缓冲区刷新的设置文档在[此处](/operations/settings/settings#async_insert)。通常，默认值已经比较合适。
 
-:::note Consider Adaptive Asynchronous Inserts
-In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
+:::note 考虑自适应异步插入
+在仅使用少量 agent（代理）、吞吐量较低但端到端延迟要求严格的场景中，[自适应异步插入](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) 可能会有用。总体而言，对于 ClickHouse 常见的高吞吐量可观测性场景，这些设置通常并不适用。
 :::
 
-Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
+最后，之前与同步插入 ClickHouse 相关的去重行为，在使用异步插入时默认不会启用。如有需要，请参阅设置 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)。
 
-Full details on configuring this feature can be found on this [docs page](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), or with a deep dive [blog post](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
+关于配置此功能的完整细节，请参阅此[文档页面](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，或参考这篇更深入的[博客文章](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
-## Scaling {#scaling}
+## 扩展 {#scaling}
 
-The ClickStack OTel collector acts a Gateway instance - see [Collector roles](#collector-roles). These provide a standalone service, typically per data center or per region. These receive events from applications (or other collectors in the agent role) via a single OTLP endpoint. Typically a set of collector instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them.
+ClickStack OTel collector 充当网关（Gateway）实例——参见 [Collector roles](#collector-roles)。这些实例作为独立服务提供能力，通常按数据中心或区域进行部署。它们通过单一 OTLP 端点从应用程序（或以 agent 角色运行的其他 collector）接收事件。通常会部署一组 collector 实例，并使用开箱即用的负载均衡器在它们之间分发负载。
 
-<Image img={clickstack_with_gateways} alt="Scaling with gateways" size="lg"/>
+<Image img={clickstack_with_gateways} alt="通过网关实现扩展" size="lg"/>
 
-The objective of this architecture is to offload computationally intensive processing from the agents, thereby minimizing their resource usage. These ClickStack gateways can perform transformation tasks that would otherwise need to be done by agents. Furthermore, by aggregating events from many agents, the gateways can ensure large batches are sent to ClickHouse - allowing efficient insertion. These gateway collectors can easily be scaled as more agents and SDK sources are added and event throughput increases. 
+此架构的目标是将计算密集型处理从 agent 侧卸载，从而尽量减少其资源占用。这些 ClickStack 网关可以执行原本需要由 agent 完成的转换任务。此外，通过汇聚来自多个 agent 的事件，网关可以确保以大批量方式将数据发送到 ClickHouse，从而实现高效写入。随着更多 agent 和 SDK 数据源的接入以及事件吞吐量的增加，这些网关 collector 可以轻松扩展。 
 
-### Adding Kafka {#adding-kafka}
+### 添加 Kafka {#adding-kafka}
 
-Readers may notice the above architectures do not use Kafka as a message queue.
+读者可能已经注意到，上面的架构并未使用 Kafka 作为消息队列。
 
-Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits: principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message. In Elastic, for example, tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
+在日志架构中，使用 Kafka 队列作为消息缓冲是一种常见的设计模式，并由 ELK 技术栈推广。它带来了几方面优势：主要是可以提供更强的消息投递保证，并有助于处理背压问题。消息从采集代理发送到 Kafka 并写入磁盘。理论上，一个集群化的 Kafka 实例应该能够提供高吞吐量的消息缓冲区，因为顺序写入磁盘的数据在计算开销上要远小于对消息进行解析和处理。例如，在 Elastic 中，分词和索引会带来显著的开销。通过将数据从代理侧移出，你也可以降低由于源端日志轮转导致消息丢失的风险。最后，它还提供一定的消息重放和跨区域复制能力，这在某些用例中可能具有吸引力。
 
-However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Backpressure from ClickHouse is rare. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs do not need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
+然而，ClickHouse 能够非常快速地插入数据——在中等硬件上即可达到每秒数百万行。来自 ClickHouse 的背压情况较为少见。很多时候，引入 Kafka 队列只会带来更多架构复杂度和成本。如果你能够接受这样一个原则：日志并不需要像银行交易等关键任务数据那样的投递保证，我们建议避免引入 Kafka 带来的额外复杂度。
 
-However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
+不过，如果你需要很高的投递保证，或者需要重放数据（可能重放到多个下游），Kafka 依然可以是一个有用的架构组件。
 
-<Image img={observability_8} alt="Adding kafka" size="lg"/>
+<Image img={observability_8} alt="添加 Kafka" size="lg"/>
 
-In this case, OTel agents can be configured to send data to Kafka via the [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md). Gateway instances, in turn, consume messages using the [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md). We recommend the Confluent and OTel documentation for further details.
+在这种情况下，可以将 OTel 代理配置为通过 [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) 向 Kafka 发送数据。然后，网关实例使用 [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) 来消费消息。更多细节请参考 Confluent 和 OTel 文档。
 
-:::note OTel collector configuration
-The ClickStack OpenTelemetry collector distribution can be configured with Kafka using [custom collector configuration](#extending-collector-config).
+:::note OTel collector 配置
+ClickStack OpenTelemetry collector 发行版可以通过使用[自定义 collector 配置](#extending-collector-config)来配置对 Kafka 的支持。
 :::
 
-## Estimating resources {#estimating-resources}
+## 预估资源 {#estimating-resources}
 
-Resource requirements for the OTel collector will depend on the event throughput, the size of messages and amount of processing performed. The OpenTelemetry project maintains [benchmarks users](https://opentelemetry.io/docs/collector/benchmarks/) can use to estimate resource requirements.
+OTel collector 的资源需求取决于事件吞吐量、消息大小以及执行的处理量。OpenTelemetry 项目维护了[基准测试](https://opentelemetry.io/docs/collector/benchmarks/)，供用户用来预估资源需求。
 
-[In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a ClickStack gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions.
+[根据我们的经验](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)，一台具有 3 个核心和 12GB 内存的 ClickStack 网关实例大约可以处理每秒 60k 个事件。这里假设使用的是只负责重命名字段且不使用正则表达式的最小处理流水线。
 
-For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
+对于负责将事件发送到网关、且只在事件上设置时间戳的 agent 实例，我们建议用户根据预期的每秒日志数量来进行容量规划。以下数据可作为一个大致的起点参考：
 
-| Logging rate | Resources to collector agent |
-|--------------|------------------------------|
-| 1k/second    | 0.2CPU, 0.2GiB              |
-| 5k/second    | 0.5 CPU, 0.5GiB             |
-| 10k/second   | 1 CPU, 1GiB                 |
+| Logging rate | Resources to collector agent      |
+|--------------|-----------------------------------|
+| 1k/second    | 0.2 CPU, 0.2 GiB                 |
+| 5k/second    | 0.5 CPU, 0.5 GiB                 |
+| 10k/second   | 1 CPU, 1 GiB                     |
 
-## JSON support {#json-support}
+## JSON 支持 {#json-support}
 
 <BetaBadge/>
 
-:::warning Beta Feature
-JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
+:::warning 测试版功能
+**ClickStack** 中对 JSON 类型的支持目前为**测试版功能**。虽然在 ClickHouse 25.3+ 中，JSON 类型本身已可用于生产环境，但其在 ClickStack 中的集成仍在积极开发中，可能存在功能限制、未来变更或缺陷。
 :::
 
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
+自 `2.0.4` 版本起，ClickStack 对 [JSON 类型](/interfaces/formats/JSON) 提供测试版支持。
 
-### Benefits of the JSON type {#benefits-json-type}
+### JSON 类型的优势 {#benefits-json-type}
 
-The JSON type offers the following benefits to ClickStack users:
+JSON 类型为 ClickStack 用户提供了以下优势：
 
-- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
-- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
-- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
-- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
-- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
-- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
+- **类型保留** - 数字仍然是数字，布尔值仍然是布尔值——不再把所有内容都“压扁”成字符串。这意味着更少的类型转换、更简单的查询以及更精确的聚合。
+- **路径级列** - 每个 JSON 路径都会成为独立的子列，从而减少 I/O。查询只会读取所需字段，相比旧的 Map 类型需要读取整列才能查询特定字段，这带来了巨大的性能提升。
+- **深度嵌套直接可用** - 可以自然地处理复杂、深度嵌套的结构，无需像 Map 类型那样手动展开，也不再需要后续笨拙的 `JSONExtract` 函数。
+- **动态、可演进的模式** - 非常适合可观测性数据，因为团队会随着时间推移不断添加新的标签和属性。JSON 会自动处理这些变化，而无需进行模式迁移。
+- **更快的查询、更低的内存占用** - 对 `LogAttributes` 等属性进行典型聚合时，读取的数据量减少 5–10 倍，查询速度显著提升，同时降低查询时间和峰值内存使用量。
+- **简单管理** - 无需为性能预先物化列。每个字段都会成为独立的子列，提供与原生 ClickHouse 列相同的速度。
 
-### Enabling JSON support {#enabling-json-support}
+### 启用 JSON 支持 {#enabling-json-support}
 
-To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
+要为 collector 启用此支持，请在包含 collector 的任意部署上设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这样可以确保在 ClickHouse 中使用 JSON 类型创建这些 schema。
 
-:::note HyperDX support
-In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
+:::note HyperDX 支持
+为了对 JSON 类型执行查询，还必须在 HyperDX 应用层通过环境变量 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 启用对该类型的支持。
 :::
 
-For example:
+例如：
 
 ```shell
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
 
-:::important Backwards compatibility
-The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
+### 从基于 Map 的模式迁移到 JSON 类型 {#migrating-from-map-based-schemas-to-json}
+
+:::important 向后兼容性
+[JSON 类型](/interfaces/formats/JSON) 与现有的基于 Map 的模式**不向后兼容**。启用此功能后，新建表将使用 `JSON` 类型，并且需要手动迁移数据。
 :::
 
-To migrate from the Map-based schemas, follow these steps:
+要从基于 Map 的模式迁移，请按以下步骤操作：
 
 <VerticalStepper headerLevel="h4">
 
-#### Stop the OTel collector {#stop-the-collector}
+#### 停止 OTel collector {#stop-the-collector}
 
-#### Rename existing tables and update sources {#rename-existing-tables-sources}
+#### 重命名现有表并更新数据源 {#rename-existing-tables-sources}
 
-Rename existing tables and update data sources in HyperDX. 
+重命名现有表，并在 HyperDX 中更新数据源。 
 
-For example:
+例如：
 
 ```sql
 RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### Deploy the collector  {#deploy-the-collector}
+#### 部署 collector  {#deploy-the-collector}
 
-Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
+在设置了 `OTEL_AGENT_FEATURE_GATE_ARG` 的情况下部署 OTel collector。
 
-#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
+#### 重启支持 JSON schema 的 HyperDX 容器 {#restart-the-hyperdx-container}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 ```
 
-#### Create new data sources {#create-new-data-sources}
+#### 创建新的数据源 {#create-new-data-sources}
 
-Create new data sources in HyperDX pointing to the JSON tables.
+在 HyperDX 中创建指向 JSON 表的新数据源。
 
 </VerticalStepper>
 
-#### Migrating existing data (optional) {#migrating-existing-data}
+#### 迁移现有数据（可选） {#migrating-existing-data}
 
-To move old data into the new JSON tables:
+要将旧数据导入到新的 JSON 表中：
 
 ```sql
 INSERT INTO otel_logs SELECT * FROM otel_logs_map;

@@ -49,20 +49,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   首先,验证您可以连接到 Redis 并且 INFO 命令能够正常运行:
 
   ```bash
-# Test connection
-redis-cli ping
-# Expected output: PONG
+  # 测试连接
+  redis-cli ping
+  # 预期输出：PONG
 
-# Test INFO command (used by metrics collector)
-redis-cli INFO server
-# Should display Redis server information
-```
+  # 测试 INFO 命令（由指标收集器使用）
+  redis-cli INFO server
+  # 应显示 Redis 服务器信息
+  ```
 
   如果 Redis 需要身份验证：
 
   ```bash
-redis-cli -a <your-password> ping
-```
+  redis-cli -a <your-password> ping
+  ```
 
   **常见 Redis 端点：**
 
@@ -77,48 +77,48 @@ redis-cli -a <your-password> ping
   创建一个名为 `redis-metrics.yaml` 的文件,其中包含以下配置:
 
   ```yaml title="redis-metrics.yaml"
-receivers:
-  redis:
-    endpoint: "localhost:6379"
-    collection_interval: 10s
-    # Uncomment if Redis requires authentication
-    # password: ${env:REDIS_PASSWORD}
-    
-    # Configure which metrics to collect
-    metrics:
-      redis.commands.processed:
-        enabled: true
-      redis.clients.connected:
-        enabled: true
-      redis.memory.used:
-        enabled: true
-      redis.keyspace.hits:
-        enabled: true
-      redis.keyspace.misses:
-        enabled: true
-      redis.keys.evicted:
-        enabled: true
-      redis.keys.expired:
-        enabled: true
+  receivers:
+    redis:
+      endpoint: "localhost:6379"
+      collection_interval: 10s
+      # 如果 Redis 需要身份验证,请取消注释
+      # password: ${env:REDIS_PASSWORD}
+      
+      # 配置要收集的指标
+      metrics:
+        redis.commands.processed:
+          enabled: true
+        redis.clients.connected:
+          enabled: true
+        redis.memory.used:
+          enabled: true
+        redis.keyspace.hits:
+          enabled: true
+        redis.keyspace.misses:
+          enabled: true
+        redis.keys.evicted:
+          enabled: true
+        redis.keys.expired:
+          enabled: true
 
-processors:
-  resource:
-    attributes:
-      - key: service.name
-        value: "redis"
-        action: upsert
+  processors:
+    resource:
+      attributes:
+        - key: service.name
+          value: "redis"
+          action: upsert
 
-service:
-  pipelines:
-    metrics/redis:
-      receivers: [redis]
-      processors:
-        - resource
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-```
+  service:
+    pipelines:
+      metrics/redis:
+        receivers: [redis]
+        processors:
+          - resource
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
   此配置：
 
@@ -165,58 +165,58 @@ service:
   更新您的 ClickStack 部署配置：
 
   ```yaml
-services:
-  clickstack:
-    # ... existing configuration ...
-    environment:
-      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # Optional: If Redis requires authentication
-      # - REDIS_PASSWORD=your-redis-password
-      # ... other environment variables ...
-    volumes:
-      - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      # ... other volumes ...
-    # If Redis is in the same compose file:
-    depends_on:
-      - redis
+  services:
+    clickstack:
+      # ... 现有配置 ...
+      environment:
+        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+        # 可选:如果 Redis 需要身份验证
+        # - REDIS_PASSWORD=your-redis-password
+        # ... 其他环境变量 ...
+      volumes:
+        - ./redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        # ... 其他卷 ...
+      # 如果 Redis 在同一个 compose 文件中:
+      depends_on:
+        - redis
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    # Optional: Enable authentication
-    # command: redis-server --requirepass your-redis-password
-```
+    redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      # 可选:启用身份验证
+      # command: redis-server --requirepass your-redis-password
+  ```
 
   ##### 选项 2:Docker run(一体化镜像)
 
   如果使用 `docker run` 运行一体化镜像：
 
   ```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack-all-in-one:latest
-```
+  docker run --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   **重要提示：** 如果 Redis 运行在另一个容器中，请使用 Docker 网络：
 
   ```bash
-# Create a network
-docker network create monitoring
+  # 创建网络
+  docker network create monitoring
 
-# Run Redis on the network
-docker run -d --name redis --network monitoring redis:7-alpine
+  # 在该网络上运行 Redis
+  docker run -d --name redis --network monitoring redis:7-alpine
 
-# Run ClickStack on the same network (update endpoint to "redis:6379" in config)
-docker run --name clickstack \
-  --network monitoring \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack-all-in-one:latest
-```
+  # 在同一网络上运行 ClickStack（在配置中将端点更新为 "redis:6379"）
+  docker run --name clickstack \
+    --network monitoring \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-metrics.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   #### 在 HyperDX 中验证指标
 
@@ -239,10 +239,10 @@ docker run --name clickstack \
 
 下载预先生成的指标文件（包含 24 小时的、具有真实模式特征的 Redis Metrics）：
 ```bash
-# Download gauge metrics (memory, fragmentation ratio)
+# 下载 gauge 指标（内存、碎片率）
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-gauge.csv
 
-# Download sum metrics (commands, connections, keyspace stats)
+# 下载 sum 指标（命令、连接、键空间统计）
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/redis/redis-metrics-sum.csv
 ```
 
@@ -267,11 +267,11 @@ docker run -d --name clickstack-demo \
 
 将指标直接加载到 ClickHouse：
 ```bash
-# Load gauge metrics (memory, fragmentation)
+# 加载 gauge 指标（内存、碎片）
 cat redis-metrics-gauge.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_gauge FORMAT CSVWithNames"
 
-# Load sum metrics (commands, connections, keyspace)
+# 加载 sum 指标（命令、连接、键空间）
 cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
   clickhouse-client --query "INSERT INTO otel_metrics_sum FORMAT CSVWithNames"
 ```
@@ -337,13 +337,13 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 检查自定义配置文件是否已挂载在 `/etc/otelcol-contrib/custom.config.yaml`：
 
 ```bash
-docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
+docker exec <容器名称> ls -lh /etc/otelcol-contrib/custom.config.yaml
 ```
 
 查看自定义配置内容，以确认其是否可读：
 
 ```bash
-docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### 在 HyperDX 中没有显示指标
@@ -351,29 +351,29 @@ docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 验证 collector 是否可以访问 Redis：
 
 ```bash
-# From the ClickStack container
+# 从 ClickStack 容器中执行 {#download-sum-metrics-commands-connections-keyspace-stats}
 docker exec <clickstack-container> redis-cli -h <redis-host> ping
-# Expected output: PONG
+# 预期输出：PONG
 ```
 
 检查 `Redis INFO` 命令是否正常工作：
 
 ```bash
 docker exec <clickstack-container> redis-cli -h <redis-host> INFO stats
-# Should display Redis statistics
+# 应显示 Redis 统计信息
 ```
 
 验证当前生效的配置中已包含你的 Redis receiver：
 
 ```bash
-docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
+docker exec <容器> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 "redis:"
 ```
 
 检查采集器日志是否有错误：
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
-# Look for connection errors or authentication failures
+# 查找连接错误或认证失败 {#load-gauge-metrics-memory-fragmentation}
 ```
 
 ### 身份验证错误
@@ -381,13 +381,13 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i redis
 如果您在日志中看到身份验证错误：
 
 ```bash
-# Verify Redis requires authentication
+# 验证 Redis 是否要求身份验证
 redis-cli CONFIG GET requirepass
 
-# Test authentication
+# 测试身份验证
 redis-cli -a <password> ping
 
-# Ensure password is set in ClickStack environment
+# 确保在 ClickStack 环境中已设置密码
 docker exec <clickstack-container> printenv REDIS_PASSWORD
 ```
 
@@ -405,10 +405,10 @@ receivers:
 如果 ClickStack 无法访问 Redis：
 
 ```bash
-# Check if both containers are on the same network
+# 检查两个容器是否在同一网络上
 docker network inspect <network-name>
 
-# Test connectivity
+# 测试连通性
 docker exec <clickstack-container> ping redis
 docker exec <clickstack-container> telnet redis 6379
 ```

@@ -133,7 +133,7 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
 
-select * from myThirdReplacingMT final;
+SELECT * FROM myThirdReplacingMT final;
 
 0 rows in set. Elapsed: 0.003 sec.
 
@@ -142,37 +142,12 @@ OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
 
-select * from myThirdReplacingMT final;
+SELECT * FROM myThirdReplacingMT final;
 
 ┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
 ```
-
-select * from myThirdReplacingMT final;
-
-0 行记录。耗时：0.003 秒。
-
--- 删除带有 is&#95;deleted 的行
-OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
-
-INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
-
-select * from myThirdReplacingMT final;
-
-┌─key─┬─someCol─┬───────────eventTime─┬─is&#95;deleted─┐
-│   1 │ first   │ 2020-01-01 00:00:00 │          0 │
-└─────┴─────────┴─────────────────────┴────────────┘
-
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
-```
-
 ## 查询子句 {#query-clauses}
 
 在创建 `ReplacingMergeTree` 表时，需要使用与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。

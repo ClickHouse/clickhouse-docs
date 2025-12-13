@@ -29,39 +29,39 @@ keywords: ['示例数据集', 'youtube', '示例数据', '视频分析', '点踩
   让我们查看一下数据的结构。`s3cluster` 表函数返回一个表,因此我们可以使用 `DESCRIBE` 来查看结果:
 
   ```sql
-DESCRIBE s3(
-    'https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst',
-    'JSONLines'
-);
-```
+  DESCRIBE s3(
+      'https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst',
+      'JSONLines'
+  );
+  ```
 
   ClickHouse 从 JSON 文件中推断出以下架构：
 
   ```response
-┌─name────────────────┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
-│ id                  │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ fetch_date          │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ upload_date         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ title               │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ uploader_id         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ uploader            │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ uploader_sub_count  │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
-│ is_age_limit        │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ view_count          │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
-│ like_count          │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
-│ dislike_count       │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
-│ is_crawlable        │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ is_live_content     │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ has_subtitles       │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ is_ads_enabled      │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ is_comments_enabled │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
-│ description         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ rich_metadata       │ Array(Tuple(call Nullable(String), content Nullable(String), subtitle Nullable(String), title Nullable(String), url Nullable(String))) │              │                    │         │                  │                │
-│ super_titles        │ Array(Tuple(text Nullable(String), url Nullable(String)))                                                                              │              │                    │         │                  │                │
-│ uploader_badges     │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-│ video_badges        │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
-└─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-```
+  ┌─name────────────────┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+  │ id                  │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ fetch_date          │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ upload_date         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ title               │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ uploader_id         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ uploader            │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ uploader_sub_count  │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
+  │ is_age_limit        │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ view_count          │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
+  │ like_count          │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
+  │ dislike_count       │ Nullable(Int64)                                                                                                                        │              │                    │         │                  │                │
+  │ is_crawlable        │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ is_live_content     │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ has_subtitles       │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ is_ads_enabled      │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ is_comments_enabled │ Nullable(Bool)                                                                                                                         │              │                    │         │                  │                │
+  │ description         │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ rich_metadata       │ Array(Tuple(call Nullable(String), content Nullable(String), subtitle Nullable(String), title Nullable(String), url Nullable(String))) │              │                    │         │                  │                │
+  │ super_titles        │ Array(Tuple(text Nullable(String), url Nullable(String)))                                                                              │              │                    │         │                  │                │
+  │ uploader_badges     │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  │ video_badges        │ Nullable(String)                                                                                                                       │              │                    │         │                  │                │
+  └─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+  ```
 
   ### 创建表
 
@@ -69,33 +69,33 @@ DESCRIBE s3(
   定义以下表结构:
 
   ```sql
-CREATE TABLE youtube
-(
-    `id` String,
-    `fetch_date` DateTime,
-    `upload_date_str` String,
-    `upload_date` Date,
-    `title` String,
-    `uploader_id` String,
-    `uploader` String,
-    `uploader_sub_count` Int64,
-    `is_age_limit` Bool,
-    `view_count` Int64,
-    `like_count` Int64,
-    `dislike_count` Int64,
-    `is_crawlable` Bool,
-    `has_subtitles` Bool,
-    `is_ads_enabled` Bool,
-    `is_comments_enabled` Bool,
-    `description` String,
-    `rich_metadata` Array(Tuple(call String, content String, subtitle String, title String, url String)),
-    `super_titles` Array(Tuple(text String, url String)),
-    `uploader_badges` String,
-    `video_badges` String
-)
-ENGINE = MergeTree
-ORDER BY (uploader, upload_date)
-```
+  CREATE TABLE youtube
+  (
+      `id` String,
+      `fetch_date` DateTime,
+      `upload_date_str` String,
+      `upload_date` Date,
+      `title` String,
+      `uploader_id` String,
+      `uploader` String,
+      `uploader_sub_count` Int64,
+      `is_age_limit` Bool,
+      `view_count` Int64,
+      `like_count` Int64,
+      `dislike_count` Int64,
+      `is_crawlable` Bool,
+      `has_subtitles` Bool,
+      `is_ads_enabled` Bool,
+      `is_comments_enabled` Bool,
+      `description` String,
+      `rich_metadata` Array(Tuple(call String, content String, subtitle String, title String, url String)),
+      `super_titles` Array(Tuple(text String, url String)),
+      `uploader_badges` String,
+      `video_badges` String
+  )
+  ENGINE = MergeTree
+  ORDER BY (uploader, upload_date)
+  ```
 
   ### 插入数据
 
@@ -106,35 +106,35 @@ ORDER BY (uploader, upload_date)
   :::
 
   ```sql
-INSERT INTO youtube
-SETTINGS input_format_null_as_default = 1
-SELECT
-    id,
-    parseDateTimeBestEffortUSOrZero(toString(fetch_date)) AS fetch_date,
-    upload_date AS upload_date_str,
-    toDate(parseDateTimeBestEffortUSOrZero(upload_date::String)) AS upload_date,
-    ifNull(title, '') AS title,
-    uploader_id,
-    ifNull(uploader, '') AS uploader,
-    uploader_sub_count,
-    is_age_limit,
-    view_count,
-    like_count,
-    dislike_count,
-    is_crawlable,
-    has_subtitles,
-    is_ads_enabled,
-    is_comments_enabled,
-    ifNull(description, '') AS description,
-    rich_metadata,
-    super_titles,
-    ifNull(uploader_badges, '') AS uploader_badges,
-    ifNull(video_badges, '') AS video_badges
-FROM s3(
-    'https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst',
-    'JSONLines'
-)
-```
+  INSERT INTO youtube
+  SETTINGS input_format_null_as_default = 1
+  SELECT
+      id,
+      parseDateTimeBestEffortUSOrZero(toString(fetch_date)) AS fetch_date,
+      upload_date AS upload_date_str,
+      toDate(parseDateTimeBestEffortUSOrZero(upload_date::String)) AS upload_date,
+      ifNull(title, '') AS title,
+      uploader_id,
+      ifNull(uploader, '') AS uploader,
+      uploader_sub_count,
+      is_age_limit,
+      view_count,
+      like_count,
+      dislike_count,
+      is_crawlable,
+      has_subtitles,
+      is_ads_enabled,
+      is_comments_enabled,
+      ifNull(description, '') AS description,
+      rich_metadata,
+      super_titles,
+      ifNull(uploader_badges, '') AS uploader_badges,
+      ifNull(video_badges, '') AS video_badges
+  FROM s3(
+      'https://clickhouse-public-datasets.s3.amazonaws.com/youtube/original/files/*.zst',
+      'JSONLines'
+  )
+  ```
 
   关于 `INSERT` 命令的说明：
 
@@ -148,33 +148,33 @@ FROM s3(
   插入 45.6 亿行数据需要一定时间,具体取决于服务器资源。(在默认设置下,大约需要 4.5 小时。)
 
   ```sql
-SELECT formatReadableQuantity(count())
-FROM youtube
-```
+  SELECT formatReadableQuantity(count())
+  FROM youtube
+  ```
 
   ```response
-┌─formatReadableQuantity(count())─┐
-│ 4.56 billion                    │
-└─────────────────────────────────┘
-```
+  ┌─formatReadableQuantity(count())─┐
+  │ 45.6亿                          │
+  └─────────────────────────────────┘
+  ```
 
   ### 探索数据
 
   数据插入后,您可以统计喜爱的视频或频道的不喜欢数量。让我们看看 ClickHouse 上传了多少个视频:
 
   ```sql
-SELECT count()
-FROM youtube
-WHERE uploader = 'ClickHouse';
-```
+  SELECT count()
+  FROM youtube
+  WHERE uploader = 'ClickHouse';
+  ```
 
   ```response
-┌─count()─┐
-│      84 │
-└─────────┘
+  ┌─count()─┐
+  │      84 │
+  └─────────┘
 
-1 row in set. Elapsed: 0.570 sec. Processed 237.57 thousand rows, 5.77 MB (416.54 thousand rows/s., 10.12 MB/s.)
-```
+  返回 1 行结果。耗时:0.570 秒。已处理 23.757 万行,5.77 MB(41.654 万行/秒,10.12 MB/秒)
+  ```
 
   :::note
   上述查询运行如此迅速,是因为我们将 `uploader` 设置为主键的第一列——因此只需处理 237k 行数据。
@@ -183,60 +183,60 @@ WHERE uploader = 'ClickHouse';
   让我们查看 ClickHouse 视频的点赞和点踩数据：
 
   ```sql
-SELECT
-    title,
-    like_count,
-    dislike_count
-FROM youtube
-WHERE uploader = 'ClickHouse'
-ORDER BY dislike_count DESC;
-```
+  SELECT
+      title,
+      like_count,
+      dislike_count
+  FROM youtube
+  WHERE uploader = 'ClickHouse'
+  ORDER BY dislike_count DESC;
+  ```
 
   响应如下所示：
 
   ```response
-┌─title────────────────────────────────────────────────────────────────────────────────────────────────┬─like_count─┬─dislike_count─┐
-│ ClickHouse v21.11 Release Webinar                                                                    │         52 │             3 │
-│ ClickHouse Introduction                                                                              │         97 │             3 │
-│ Casa Modelo Algarve                                                                                  │        180 │             3 │
-│ Профайлер запросов:  трудный путь                                                                    │         33 │             3 │
-│ ClickHouse в Курсометре                                                                              │          4 │             2 │
-│ 10 Good Reasons to Use ClickHouse                                                                    │         27 │             2 │
-...
+  ┌─title────────────────────────────────────────────────────────────────────────────────────────────────┬─like_count─┬─dislike_count─┐
+  │ ClickHouse v21.11 发布网络研讨会                                                                        │         52 │             3 │
+  │ ClickHouse 简介                                                                                       │         97 │             3 │
+  │ Casa Modelo Algarve                                                                                  │        180 │             3 │
+  │ Профайлер запросов:  трудный путь                                                                    │         33 │             3 │
+  │ ClickHouse в Курсометре                                                                              │          4 │             2 │
+  │ 使用 ClickHouse 的 10 个理由                                                                           │         27 │             2 │
+  ...
 
-84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
-```
+  84 rows in set. Elapsed: 0.013 sec. Processed 155.65 thousand rows, 16.94 MB (11.96 million rows/s., 1.30 GB/s.)
+  ```
 
   以下是在 `title` 或 `description` 字段中搜索包含 **ClickHouse** 的视频：
 
   ```sql
-SELECT
-    view_count,
-    like_count,
-    dislike_count,
-    concat('https://youtu.be/', id) AS url,
-    title
-FROM youtube
-WHERE (title ILIKE '%ClickHouse%') OR (description ILIKE '%ClickHouse%')
-ORDER BY
-    like_count DESC,
-    view_count DESC;
-```
+  SELECT
+      view_count,
+      like_count,
+      dislike_count,
+      concat('https://youtu.be/', id) AS url,
+      title
+  FROM youtube
+  WHERE (title ILIKE '%ClickHouse%') OR (description ILIKE '%ClickHouse%')
+  ORDER BY
+      like_count DESC,
+      view_count DESC;
+  ```
 
   此查询必须处理每一行数据,并解析两列字符串。即便如此,仍可获得每秒 415 万行的良好性能:
 
   ```response
-1174 rows in set. Elapsed: 1099.368 sec. Processed 4.56 billion rows, 1.98 TB (4.15 million rows/s., 1.80 GB/s.)
-```
+  返回 1174 行。耗时:1099.368 秒。已处理 45.6 亿行,1.98 TB(每秒 415 万行,每秒 1.80 GB)
+  ```
 
   结果如下所示:
 
   ```response
-┌─view_count─┬─like_count─┬─dislike_count─┬─url──────────────────────────┬─title──────────────────────────────────────────────────────────────────────────────────────────────────┐
-│       1919 │         63 │             1 │ https://youtu.be/b9MeoOtAivQ │ ClickHouse v21.10 Release Webinar                                                                      │
-│       8710 │         62 │             4 │ https://youtu.be/PeV1mC2z--M │ What is JDBC DriverManager? | JDBC                                                                     │
-│       3534 │         62 │             1 │ https://youtu.be/8nWRhK9gw10 │ CLICKHOUSE - Arquitetura Modular                                                                       │
-```
+  ┌─view_count─┬─like_count─┬─dislike_count─┬─url──────────────────────────┬─title──────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │       1919 │         63 │             1 │ https://youtu.be/b9MeoOtAivQ │ ClickHouse v21.10 发布网络研讨会                                                                      │
+  │       8710 │         62 │             4 │ https://youtu.be/PeV1mC2z--M │ 什么是 JDBC DriverManager? | JDBC                                                                     │
+  │       3534 │         62 │             1 │ https://youtu.be/8nWRhK9gw10 │ CLICKHOUSE - 模块化架构                                                                       │
+  ```
 </VerticalStepper>
 
 ## 常见问题 {#questions}
@@ -291,7 +291,7 @@ ORDER BY
 │ < 10.00 million   │ true                │ 0.016917095718089584 │
 └───────────────────┴─────────────────────┴──────────────────────┘
 
-22 rows in set. Elapsed: 8.460 sec. Processed 4.56 billion rows, 77.48 GB (538.73 million rows/s., 9.16 GB/s.)
+22 行，耗时 8.460 秒。处理了 45.6 亿行，77.48 GB（5.3873 亿行/秒，9.16 GB/秒）
 ```
 
 启用评论似乎与更高的参与度有关。
@@ -310,7 +310,7 @@ ORDER BY month ASC;
 ```
 
 ```response
-┌──────month─┬─uploaders─┬─num_videos─┬───view_count─┐
+┌──────月份─┬─上传者─┬─视频数量─┬───观看次数─┐
 │ 2005-04-01 │         5 │          6 │    213597737 │
 │ 2005-05-01 │         6 │          9 │      2944005 │
 │ 2005-06-01 │       165 │        351 │     18624981 │
@@ -351,7 +351,7 @@ ORDER BY month ASC;
 ```
 
 ```response
-┌──────month─┬───percent_subtitles─┬────────────────previous─┐
+┌──────月份─┬───字幕百分比─┬────────────────前值─┐
 │ 2015-01-01 │  0.2652653881082824 │      0.2652653881082824 │
 │ 2015-02-01 │  0.3147556050309162 │    0.049490216922633834 │
 │ 2015-03-01 │ 0.32460464492371877 │    0.009849039892802558 │

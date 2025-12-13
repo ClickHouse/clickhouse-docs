@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
   * **GCS file path**：GCS ClickPipe 使用 Cloud Storage 的 [XML API](https://docs.cloud.google.com/storage/docs/interoperability) 以实现互操作性，这需要使用 `storage.googleapis.com` 端点：
 
     ```bash
-        https://storage.googleapis.com/bucket-name/key-name
-        ```
+    https://storage.googleapis.com/bucket-name/key-name
+    ```
 
     您可以使用 POSIX 通配符来匹配多个文件或前缀。有关支持的模式，请参阅[参考文档](/integrations/clickpipes/object-storage/overview/#file-pattern-matching)。

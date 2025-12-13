@@ -9,27 +9,27 @@ doc_type: 'guide'
 
 # chDB for Go {#chdb-for-go}
 
-chDB-go 为 chDB 提供 Go 语言绑定，使你能够在 Go 应用程序中直接运行 ClickHouse 查询，且完全不依赖任何外部组件。
+chDB-go 为 chDB 提供 Go 语言绑定,使你能够在 Go 应用程序中直接运行 ClickHouse 查询,且完全不依赖任何外部组件。
 
 ## 安装 {#installation}
 
-### 第 1 步：安装 libchdb {#install-libchdb}
+### 第 1 步:安装 libchdb {#install-libchdb}
 
-首先安装 chDB 库：
+首先安装 chDB 库:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-### 第 2 步：安装 chdb-go {#install-chdb-go}
+### 第 2 步:安装 chdb-go {#install-chdb-go}
 
-安装 Go 软件包：
+安装 Go 软件包:
 
 ```bash
 go install github.com/chdb-io/chdb-go@latest
 ```
 
-或者将它添加到你的 `go.mod` 中：
+或者将它添加到你的 `go.mod` 中:
 
 ```bash
 go get github.com/chdb-io/chdb-go
@@ -37,44 +37,27 @@ go get github.com/chdb-io/chdb-go
 
 ## 用法 {#usage}
 
-### 命令行界面（CLI） {#cli}
+### 命令行界面(CLI) {#cli}
 
-chDB-go 包含一个用于快速查询的命令行界面（CLI）：
+chDB-go 包含一个用于快速查询的命令行界面(CLI):
 
 ```bash
-# Simple query
+# 简单查询
 ./chdb-go "SELECT 123"
 
-# Interactive mode
+# 交互式模式
 ./chdb-go
 
-# Interactive mode with persistent storage
+# 启用持久化存储的交互式模式
 ./chdb-go --path /tmp/chdb
 ```
 
-# 交互式模式 {#interactive-mode}
-./chdb-go
+### Go 库 - 快速开始 {#quick-start}
 
-# 启用持久化存储的交互式模式 {#interactive-mode-with-persistent-storage}
+#### 无状态查询 {#stateless-queries}
 
-./chdb-go --path /tmp/chdb
+对于简单的一次性查询:
 
-````go
-package main
-
-import (
-    "fmt"
-    "github.com/chdb-io/chdb-go"
-)
-
-func main() {
-    // Execute a simple query
-    result, err := chdb.Query("SELECT version()", "CSV")
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(result)
-}
 ```go
 package main
 
@@ -91,53 +74,12 @@ func main() {
     }
     fmt.Println(result)
 }
-````go
-package main
+```
 
-import (
-    "fmt"
-    "github.com/chdb-io/chdb-go"
-)
+#### 基于会话的有状态查询 {#stateful-queries}
 
-func main() {
-    // Create a session with persistent storage
-    session, err := chdb.NewSession("/tmp/chdb-data")
-    if err != nil {
-        panic(err)
-    }
-    defer session.Cleanup()
+适用于需要持久状态的复杂查询:
 
-    // Create database and table
-    _, err = session.Query(`
-        CREATE DATABASE IF NOT EXISTS testdb;
-        CREATE TABLE IF NOT EXISTS testdb.test_table (
-            id UInt32,
-            name String
-        ) ENGINE = MergeTree() ORDER BY id
-    `, "")
-    
-    if err != nil {
-        panic(err)
-    }
-
-    // Insert data
-    _, err = session.Query(`
-        INSERT INTO testdb.test_table VALUES 
-        (1, 'Alice'), (2, 'Bob'), (3, 'Charlie')
-    `, "")
-    
-    if err != nil {
-        panic(err)
-    }
-
-    // Query data
-    result, err := session.Query("SELECT * FROM testdb.test_table ORDER BY id", "Pretty")
-    if err != nil {
-        panic(err)
-    }
-    
-    fmt.Println(result)
-}
 ```go
 package main
 
@@ -185,39 +127,12 @@ func main() {
     
     fmt.Println(result)
 }
-```go
-package main
+```
 
-import (
-    "database/sql"
-    "fmt"
-    _ "github.com/chdb-io/chdb-go/driver"
-)
+#### SQL 驱动接口 {#sql-driver}
 
-func main() {
-    // Open database connection
-    db, err := sql.Open("chdb", "")
-    if err != nil {
-        panic(err)
-    }
-    defer db.Close()
+chDB-go 实现了 Go 的 `database/sql` 接口:
 
-    // Query with standard database/sql interface
-    rows, err := db.Query("SELECT COUNT(*) FROM url('https://datasets.clickhouse.com/hits/hits.parquet')")
-    if err != nil {
-        panic(err)
-    }
-    defer rows.Close()
-
-    for rows.Next() {
-        var count int
-        err := rows.Scan(&count)
-        if err != nil {
-            panic(err)
-        }
-        fmt.Printf("Count: %d\n", count)
-    }
-}
 ```go
 package main
 
@@ -251,61 +166,12 @@ func main() {
         fmt.Printf("数量: %d\n", count)
     }
 }
-```go
-package main
+```
 
-import (
-    "fmt"
-    "log"
-    "github.com/chdb-io/chdb-go/chdb"
-)
+#### 针对大型数据集的流式查询 {#query-streaming}
 
-func main() {
-    // Create a session for streaming queries
-    session, err := chdb.NewSession("/tmp/chdb-stream")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer session.Cleanup()
+对于无法全部放入内存的大型数据集,请使用流式查询:
 
-    // Execute a streaming query for large dataset
-    streamResult, err := session.QueryStreaming(
-        "SELECT number, number * 2 as double FROM system.numbers LIMIT 1000000", 
-        "CSV",
-    )
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer streamResult.Free()
-
-    rowCount := 0
-    
-    // Process data in chunks
-    for {
-        chunk := streamResult.GetNext()
-        if chunk == nil {
-            // No more data
-            break
-        }
-        
-        // Check for streaming errors
-        if err := streamResult.Error(); err != nil {
-            log.Printf("Streaming error: %v", err)
-            break
-        }
-        
-        rowsRead := chunk.RowsRead()
-        // You can process the chunk data here
-        // For example, write to file, send over network, etc.
-        fmt.Printf("Processed chunk with %d rows\n", rowsRead)
-        rowCount += int(rowsRead)
-        if rowCount%100000 == 0 {
-            fmt.Printf("Processed %d rows so far...\n", rowCount)
-        }
-    }
-    
-    fmt.Printf("Total rows processed: %d\n", rowCount)
-}
 ```go
 package main
 
@@ -363,7 +229,7 @@ func main() {
 }
 ```
 
-**流式查询的优势：**
+**流式查询的优势:**
 - **内存高效** - 处理大型数据集而无需将所有数据一次性加载到内存中
 - **实时处理** - 从第一批数据到达时就可以开始处理
 - **支持取消** - 可以使用 `Cancel()` 取消长时间运行的查询
@@ -371,7 +237,7 @@ func main() {
 
 ## API 文档 {#api-documentation}
 
-chDB-go 提供高级和低级 API：
+chDB-go 提供高级和低级 API:
 
 - **[高级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - 推荐用于大多数使用场景
 - **[低级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - 适用于需要细粒度控制的高级使用场景

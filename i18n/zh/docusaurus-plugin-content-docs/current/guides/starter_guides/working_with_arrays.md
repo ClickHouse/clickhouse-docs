@@ -90,34 +90,34 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
   例如：
 
   ```sql
-SELECT
-    [1, 'ClickHouse', ['Another', 'Array']] AS array,
-    toTypeName(array)
-SETTINGS use_variant_as_common_type = 1;
-```
+  SELECT
+      [1, 'ClickHouse', ['Another', 'Array']] AS array,
+      toTypeName(array)
+  SETTINGS use_variant_as_common_type = 1;
+  ```
 
   ```response
-┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
-│ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
-└──────────────────────────────────────┴──────────────────────────────────────────────┘
-```
+  ┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
+  │ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
+  └──────────────────────────────────────┴──────────────────────────────────────────────┘
+  ```
 
   然后你还可以通过类型名称从数组中读取对应类型的元素：
 
   ```sql
-SELECT
-    [1, 'ClickHouse', ['Another', 'Array']] AS array,
-    array.UInt8,
-    array.String,
-    array.`Array(String)`
-SETTINGS use_variant_as_common_type = 1;
-```
+  SELECT
+      [1, 'ClickHouse', ['Another', 'Array']] AS array,
+      array.UInt8,
+      array.String,
+      array.`Array(String)`
+  SETTINGS use_variant_as_common_type = 1;
+  ```
 
   ```response
-┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
-│ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
-└──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
-```
+  ┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
+  │ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
+  └──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
+  ```
 </details>
 
 使用带方括号的索引提供了一种方便的方式来访问数组元素。
@@ -263,13 +263,13 @@ SELECT
 FROM ontime.ontime LIMIT 5
 ```
 
-Let's take a look at the top 10 busiest airports in the US on a particular day chosen at random, say '2024-01-01'.
-We're interested in understanding how many flights depart from each airport.
-Our data contains one row per flight, but it would be convenient if we could group the data by the origin airport and roll the destinations into an array.
+我们来看看在某个随机选取的日期（例如 &#39;2024-01-01&#39;）美国最繁忙的前 10 个机场。
+我们希望了解从每个机场出发的航班数量。
+我们的数据是每行对应一个航班，但如果能按始发机场对数据进行分组，并将所有目的地汇总到一个数组中会更加方便。
 
-To achieve this we can use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function, which takes values of the specified column from each row and groups them in an array.
+为此，我们可以使用 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 聚合函数，它会从每一行中获取指定列的值，并将它们收集到一个数组中。
 
-Run the query below to see how it works:
+运行下面的查询来看看它是如何工作的：
 
 ```sql runnable
 SELECT
@@ -282,9 +282,9 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-The [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) in the query above is used to remove null characters which appear after some of the airport's 3 letter designation.
+上面的查询中使用了 [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero)，用于去除出现在部分机场三字代码后面的空字符。
 
-With the data in this format, we can easily find the order of the busiest airports by finding the length of the rolled up "Destinations" arrays:
+在这种数据格式下，我们可以通过计算汇总后的 “Destinations” 数组长度，轻松确定各个最繁忙机场的先后顺序：
 
 ```sql runnable
 WITH
@@ -308,16 +308,16 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap and arrayZip {#arraymap}
+### arrayMap 和 arrayZip {#arraymap}
 
-We saw in the previous query that Denver International Airport was the airport with the most outward flights for our particular chosen day.
-Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
+在前一个查询中，我们看到丹佛国际机场是在我们选定的那一天中出港航班数量最多的机场。
+现在来看一下，这些航班中有多少是准点的，有多少延误了 15–30 分钟，以及有多少延误了超过 30 分钟。
 
-Many of the array functions in ClickHouse are so-called ["higher-order functions"](/sql-reference/functions/overview#higher-order-functions) and accept a lambda function as the first parameter.
-The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order function and returns a new array from the provided array by applying a lambda function to each element of the original array.
+ClickHouse 中的许多数组函数是所谓的[“高阶函数”](/sql-reference/functions/overview#higher-order-functions)，它们将 lambda 函数作为第一个参数。
+[`arrayMap`](/sql-reference/functions/array-functions#arrayMap) 函数就是此类高阶函数的一个示例，它通过对原始数组的每个元素应用一个 lambda 函数，在给定数组的基础上返回一个新的数组。
 
-Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time.
-For pairs of origin/destinations, it shows the tail number and status for every flight:
+运行下面使用 `arrayMap` 函数的查询，以查看哪些航班是延误的，哪些是准点的。
+对于每一对出发/到达机场组合，它都会显示每个航班的机尾编号和状态：
 
 ```sql runnable
 WITH arrayMap(
@@ -326,13 +326,16 @@ WITH arrayMap(
     ) AS statuses
 ```
 
-In the above query, the `arrayMap` function takes a single-element array `[DepDelayMinutes]` and applies the lambda function `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` to categorize it.
-Then the first element of the resulting array is extracted with `[DepDelayMinutes][1]`.
-The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function combines the `Tail_Number` array and the `statuses` array into a single array.
-
-### arrayFilter {#arrayfilter}
-
-Next we'll look only at the number of flights that were delayed by 30 minutes or more, for airports `DEN`, `ATL` and `DFW`:
+SELECT
+Origin,
+toStringCutToZero(Dest) AS Destination,
+arrayZip(groupArray(Tail&#95;Number), statuses) as tailNumberStatuses
+FROM ontime.ontime
+WHERE Origin = &#39;DEN&#39;
+AND FlightDate = &#39;2024-01-01&#39;
+AND DepTime IS NOT NULL
+AND DepDelayMinutes IS NOT NULL
+GROUP BY ALL
 
 ````
 
@@ -357,20 +360,20 @@ GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
 ````
 
-In the query above we pass a lambda function as the first argument to the [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) function.
-This lambda function itself takes the delay in minutes (d) and returns `1` if the condition is met, else `0`.
+在上面的查询中，我们将一个 lambda 函数作为第一个参数传递给 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 函数。
+这个 lambda 函数接收以分钟为单位的延迟时间 `d`，如果条件满足则返回 `1`，否则返回 `0`。
 
 ```sql
 d -> d >= 30
 ```
 
-### arraySort and arrayIntersect {#arraysort-and-arrayintersect}
+### arraySort 和 arrayIntersect {#arraysort-and-arrayintersect}
 
-Next, we'll figure out which pairs of major US airports serve the most common destinations with the help of the [`arraySort`](/sql-reference/functions/array-functions#arraySort) and [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) functions.
-`arraySort` takes an array and sorts the elements in ascending order by default, although you can also pass a lambda function to it to define the sorting order.
-`arrayIntersect` takes multiple arrays and returns an array which contains elements present in all the arrays.
+接下来，我们将借助 [`arraySort`](/sql-reference/functions/array-functions#arraySort) 和 [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) 函数，找出哪些美国主要机场对拥有最多共同目的地。
+`arraySort` 接收一个数组，并默认按升序对元素进行排序，你也可以向其传入一个 lambda 函数来自定义排序顺序。
+`arrayIntersect` 接收多个数组，并返回一个数组，其中包含所有这些数组中都存在的元素。
 
-Run the query below to see these two array functions in action:
+运行下面的查询来查看这两个数组函数的实际效果：
 
 ```sql runnable
 WITH airport_routes AS (
@@ -396,24 +399,23 @@ ORDER BY common_destinations DESC
 LIMIT 10
 ```
 
-The query works in two main stages.
-First, it creates a temporary dataset called `airport_routes` using a Common Table Expression (CTE) that looks at all flights on January 1, 2024, and for each origin airport, builds a sorted list of every unique destination which that airport serves.
-In the `airport_routes` result set, for example, DEN might have an array containing all the cities it flies to, like `['ATL', 'BOS', 'LAX', 'MIA', ...]` and so on.
+该查询分两个主要阶段执行。
+首先，它使用一个公共表表达式（CTE）创建一个名为 `airport_routes` 的临时数据集，从中筛选出 2024 年 1 月 1 日的所有航班，并针对每个始发机场构建一个排好序的、由该机场服务的所有唯一目的地组成的列表。
+例如，在 `airport_routes` 结果集中，DEN 可能有一个包含其飞往所有城市的数组，如 `['ATL', 'BOS', 'LAX', 'MIA', ...]` 等。
 
-In the second stage, the query takes five major US hub airports (`DEN`, `ATL`, `DFW`, `ORD`, and `LAS`) and compares every possible pair of them.
-It does this using a cross join, which creates all combinations of these airports.
-Then, for each pair, it uses the `arrayIntersect` function to find which destinations appear in both airports' lists.
-The length function counts how many destinations they have in common.
+在第二个阶段中，查询取出五个主要的美国枢纽机场（`DEN`、`ATL`、`DFW`、`ORD` 和 `LAS`），并比较它们之间的所有可能组合。
+它通过使用交叉连接（cross join）实现这一点，该操作会生成这些机场的所有组合。
+然后，对每一对机场，使用 `arrayIntersect` 函数找出在两个机场目的地列表中都出现的目的地。
+`length` 函数则统计它们共有多少个相同的目的地。
 
-The condition `a1.Origin < a2.Origin`, ensures that each pair only appears once.
-Without this, you'd get both JFK-LAX and LAX-JFK as separate results, which would be redundant since they represent the same comparison.
-Finally, the query sorts the results to show which airport pairs have the highest number of shared destinations and returns just the top 10.
-This reveals which major hubs have the most overlapping route networks, which could indicate competitive markets where multiple airlines are serving the same city pairs, or hubs that serve similar geographic regions and could potentially be used as alternative connection points for travelers.
+条件 `a1.Origin < a2.Origin` 确保每个机场对只出现一次。
+如果没有这个条件，你会同时得到 JFK-LAX 和 LAX-JFK 这两条单独的结果记录，而它们实际上表示的是同一组比较，因此是多余的。
+最后，查询会对结果进行排序，以展示哪些机场对拥有最多的共享目的地，并且只返回前 10 名。
+这可以揭示哪些主要枢纽机场的航线网络重叠最多，这可能表明多个航空公司在相同城市对之间存在竞争市场，或者这些枢纽服务于相似的地理区域，因此潜在地可以被旅客用作替代中转点。
 
 ### arrayReduce {#arrayReduce}
 
-While we're looking at delays, let's use yet another higher-order array function, `arrayReduce`, to find the average and maximum delay
-for each route from Denver International Airport:
+在继续研究延误数据的同时，让我们使用另一个高阶数组函数 `arrayReduce`，来计算从丹佛国际机场出发的每条航线的平均和最大延误时间：
 
 ```sql runnable
 SELECT
@@ -432,29 +434,29 @@ GROUP BY Origin, Destination
 ORDER BY avg_delay DESC
 ```
 
-In the example above, we used `arrayReduce` to find the average and maximum delays for various outward flights from `DEN`.
-`arrayReduce` applies an aggregate function, specified in the first parameter to the function, to the elements of the provided array, specified in the second parameter of the function.
+在上面的示例中，我们使用 `arrayReduce` 来计算从 `DEN` 出发的各个航班的平均和最大延误时间。
+`arrayReduce` 会将一个聚合函数（作为函数的第一个参数指定）应用到提供的数组（作为函数的第二个参数指定）的各个元素上。
 
 ### arrayJoin {#arrayJoin}
 
-Regular functions in ClickHouse have the property that they return the same number of rows than they receive.
-There is however, one interesting and unique function that breaks this rule, which is worth learning about - the `arrayJoin` function.
+ClickHouse 中的一般函数都有一个特性：返回的行数与输入的行数相同。
+不过，有一个有趣且独特的函数打破了这一规则，值得单独了解 —— `arrayJoin` 函数。
 
-`arrayJoin` "explodes" an array by taking it and creating a separate row for each element.
-This is similar to the `UNNEST` or `EXPLODE` SQL functions in other databases.
+`arrayJoin` 通过“展开”数组，为数组中的每个元素各生成一行。
+这类似于其他数据库中的 `UNNEST` 或 `EXPLODE` SQL 函数。
 
-Unlike most array functions that return arrays or scalar values, `arrayJoin` fundamentally changes the result set by multiplying the number of rows.
+与大多数返回数组或标量值的数组函数不同，`arrayJoin` 会从根本上改变结果集，将行数成倍放大。
 
-Consider the query below which returns an array of values from 0 to 100 in steps of 10.
-We could consider the array to be different delay times: 0 minutes, 10 minutes, 20 minutes, and so on.
+考虑下面的查询，它返回一个从 0 到 100、步长为 10 的值数组。
+我们可以将该数组视为不同的延误时间：0 分钟、10 分钟、20 分钟，等等。
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay
 SELECT delay
 ```
 
-We can write a query using `arrayJoin` to work out how many delays there were of up to that number of minutes between two airports.
-The query below creates a histogram showing the distribution of flight delays from Denver (DEN) to Miami (MIA) on January 1, 2024, using cumulative delay buckets:
+我们可以使用 `arrayJoin` 编写查询，计算两个机场之间在各个给定分钟数以内的航班延误次数。
+下面的查询使用累积延迟桶，创建了一个直方图，展示 2024 年 1 月 1 日从丹佛（DEN）到迈阿密（MIA）航班延误时长的分布情况：
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay,
@@ -469,17 +471,16 @@ GROUP BY delayTime
 ORDER BY flightsDelayed DESC
 ```
 
-In the query above we return an array of delays using a CTE clause (`WITH` clause).
-`Destination` converts the destination code to a string.
+在上面的查询中，我们使用一个 CTE（`WITH`）子句返回一个包含延迟时间的数组。
+`Destination` 会将目的地代码转换为字符串。
 
-We use `arrayJoin` to explode the delay array into separate rows.
-Each value from the `delay` array becomes its own row with alias `del`,
-and we get 10 rows: one for `del=0`, one for `del=10`, one for `del=20`, etc.
-For each delay threshold (`del`), the query counts how many flights had delays greater than or equal to that threshold
-using `countIf(DepDelayMinutes >= del)`.
+我们使用 `arrayJoin` 将延迟数组展开为多行。
+`delay` 数组中的每个值都会变成一行，并使用别名 `del`，
+因此得到 10 行：一行是 `del=0`，一行是 `del=10`，一行是 `del=20`，等等。
+对于每个延迟阈值（`del`），查询会使用 `countIf(DepDelayMinutes >= del)` 统计延迟时间大于等于该阈值的航班数量。
 
-`arrayJoin` also has a SQL command equivalent `ARRAY JOIN`.
-The query above is reproduced below with the SQL command equivalent for comparison:
+`arrayJoin` 在 SQL 中也有等价命令 `ARRAY JOIN`。
+上面的查询在下方使用等价的 SQL 命令进行了重现，以便对比：
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay, 

@@ -16,10 +16,8 @@ ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其�
 
 使用 [HTTP 接口](../../interfaces/http.md)：
 
-```
-
-Using [CLI interface](../../interfaces/cli.md):
-
+``` bash
+$ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
 ```
 
 使用[CLI 界面](../../interfaces/cli.md)：

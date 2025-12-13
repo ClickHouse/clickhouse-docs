@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
   * **S3 file path（S3 文件路径）**：S3 ClickPipe 需要使用[虚拟主机风格 URI](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html#virtual-hosted-style-access)。
 
     ```bash
-        https://bucket-name.s3.region-code.amazonaws.com/key-name
-        ```
+    https://bucket-name.s3.region-code.amazonaws.com/key-name
+    ```
 
     您可以使用 POSIX 通配符匹配多个文件或前缀。有关支持的模式的指导，请参阅 [参考文档](/integrations/clickpipes/object-storage/overview/#file-pattern-matching)。

@@ -294,19 +294,19 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   例如，下面的 SQL 定义了名为 `a`、`b`、`c` 和 `d` 的参数——每个都有不同的数据类型：
 
   ```sql
-SET param_a = 13;
-SET param_b = 'str';
-SET param_c = '2022-08-04 18:30:53';
-SET param_d = {'10': [11, 12], '13': [14, 15]};
+  SET param_a = 13;
+  SET param_b = 'str';
+  SET param_c = '2022-08-04 18:30:53';
+  SET param_d = {'10': [11, 12], '13': [14, 15]};
 
-SELECT
-   {a: UInt32},
-   {b: String},
-   {c: DateTime},
-   {d: Map(String, Array(UInt8))};
+  SELECT
+     {a: UInt32},
+     {b: String},
+     {c: DateTime},
+     {d: Map(String, Array(UInt8))};
 
-13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
-```
+  13    str    2022-08-04 18:30:53    {'10':[11,12],'13':[14,15]}
+  ```
 </details>
 
 <details>
@@ -315,17 +315,17 @@ SELECT
   如果使用 `clickhouse-client`，参数以 `--param_name=value` 的形式指定。例如，下面的参数名为 `message`，并以 `String` 类型获取：
 
   ```bash
-clickhouse-client --param_message='hello' --query="SELECT {message: String}"
+  clickhouse-client --param_message='hello' --query="SELECT {message: String}"
 
-hello
-```
+  hello
+  ```
 
   如果查询参数表示数据库、表、函数或其他标识符的名称，请将其类型设置为 `Identifier`。例如，下面的查询会返回名为 `uk_price_paid` 的表中的行：
 
   ```sql
-SET param_mytablename = "uk_price_paid";
-SELECT * FROM {mytablename:Identifier};
-```
+  SET param_mytablename = "uk_price_paid";
+  SELECT * FROM {mytablename:Identifier};
+  ```
 </details>
 
 :::note
@@ -459,8 +459,8 @@ SELECT
     sum(b) AS b
 FROM t;
 
-Received exception from server (version 18.14.17):
-Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: Aggregate function sum(b) is found inside another aggregate function in query.
+从服务器收到异常(版本 18.14.17):
+Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: 在查询中发现聚合函数 sum(b) 位于另一个聚合函数内部。
 ```
 
 在前面的示例中，我们声明了一个包含列 `b` 的表 `t`。

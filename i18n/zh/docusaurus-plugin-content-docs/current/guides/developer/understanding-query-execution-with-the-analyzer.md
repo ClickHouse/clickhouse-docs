@@ -238,42 +238,11 @@ GROUP BY type
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 表达式 ((Projection + ORDER BY 之前))                                                                                                       │
-│ 操作: INPUT :: 0 -&gt; type String : 0                                                                                                        │
-│          INPUT : 1 -&gt; min(timestamp) DateTime : 1                                                                                          │
-│          INPUT : 2 -&gt; max(timestamp) DateTime : 2                                                                                          │
-│          INPUT : 3 -&gt; count() UInt64 : 3                                                                                                   │
-│          COLUMN Const(Nullable(UInt64)) -&gt; total&#95;rows Nullable(UInt64) : 4                                                                 │
-│          COLUMN Const(UInt8) -&gt; 100 UInt8 : 5                                                                                              │
-│          ALIAS min(timestamp) :: 1 -&gt; minimum&#95;date DateTime : 6                                                                            │
-│          ALIAS max(timestamp) :: 2 -&gt; maximum&#95;date DateTime : 1                                                                            │
-│          FUNCTION divide(count() :: 3, total&#95;rows :: 4) -&gt; divide(count(), total&#95;rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count(), total&#95;rows) :: 2, 100 :: 5) -&gt; multiply(divide(count(), total&#95;rows), 100) Nullable(Float64) : 4 │
-│          ALIAS multiply(divide(count(), total&#95;rows), 100) :: 4 -&gt; percentage Nullable(Float64) : 5                                         │
-│ 位置: 0 6 1 5                                                                                                                                │
-│   聚合阶段                                                                                                                                    │
-│   键: type                                                                                                                                  │
-│   聚合:                                                                                                                                    │
-│       min(timestamp)                                                                                                                       │
-│         函数: min(DateTime) → DateTime                                                                                                     │
-│         参数: timestamp                                                                                                                    │
-│       max(timestamp)                                                                                                                       │
-│         函数: max(DateTime) → DateTime                                                                                                     │
-│         参数: timestamp                                                                                                                    │
-│       count()                                                                                                                              │
-│         函数: count() → UInt64                                                                                                             │
-│         参数: 无                                                                                                                           │
-│   跳过合并: 0                                                                                                                              │
-│     表达式 (GROUP BY 之前)                                                                                                                │
-│     操作: INPUT :: 0 -&gt; timestamp DateTime : 0                                                                                             │
-│              INPUT :: 1 -&gt; type String : 1                                                                                                 │
-│     位置: 0 1                                                                                                                              │
-│       ReadFromMergeTree (default.session&#95;events)                                                                                           │
-│       ReadType: Default                                                                                                                    │
-│       Parts: 1                                                                                                                             │
-│       Granules: 1                                                                                                                          │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+现在您可以查看所有正在使用的输入、函数、别名和数据类型。规划器将应用的部分优化可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)查看。
+
+## 查询管道 {#query-pipeline}
+
+查询管道是基于查询计划生成的。查询管道与查询计划非常相似，不同之处在于它不是树形结构，而是图结构。它可以直观展示 ClickHouse 将如何执行查询以及会使用哪些资源。分析查询管道对于定位输入/输出层面的瓶颈非常有帮助。下面我们拿之前的查询来看看其查询管道的执行情况：
 
 ```sql
 EXPLAIN PIPELINE
@@ -302,9 +271,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 查询管道 {#query-pipeline}
-
-查询管道是基于查询计划生成的。查询管道与查询计划非常相似，不同之处在于它不是树形结构，而是图结构。它可以直观展示 ClickHouse 将如何执行查询以及会使用哪些资源。分析查询管道对于定位输入/输出层面的瓶颈非常有帮助。下面我们拿之前的查询来看看其查询管道的执行情况：
+括号内的是查询计划步骤，旁边的是处理器。虽然这些信息已经很有价值，但既然这是一个图结构，我们也希望能以图的形式进行可视化。我们可以将 `graph` 设置为 1，并将输出格式指定为 TSV：
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -315,15 +282,13 @@ EXPLAIN PIPELINE graph=1 WITH
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type FORMAT TSV;
 ```
 
-括号内的是查询计划步骤，旁边的是处理器。虽然这些信息已经很有价值，但既然这是一个图结构，我们也希望能以图的形式进行可视化。我们可以将 `graph` 设置为 1，并将输出格式指定为 TSV：
-
 ```response
 digraph
 {
  rankdir="LR";
  { node [shape = rect]
    subgraph cluster_0 {
-     label ="Expression";
+     label ="表达式";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -332,7 +297,7 @@ digraph
      }
    }
    subgraph cluster_1 {
-     label ="Aggregating";
+     label ="聚合";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -342,7 +307,7 @@ digraph
      }
    }
    subgraph cluster_2 {
-     label ="Expression";
+     label ="表达式";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -351,7 +316,7 @@ digraph
      }
    }
    subgraph cluster_3 {
-     label ="ReadFromMergeTree";
+     label ="从 MergeTree 读取";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -366,6 +331,12 @@ digraph
  n1 -> n2 [label=""];
 }
 ```
+
+接着可以复制该输出并粘贴到[这里](https://dreampuf.github.io/GraphvizOnline)，即可生成如下图：
+
+<Image img={analyzer3} alt="Graph output" size="md" />
+
+白色矩形表示一个 pipeline 节点，灰色矩形表示查询计划步骤，而带有数字的 `x` 表示当前使用的输入/输出数量。如果不想以紧凑格式查看它们，可以添加 `compact=0`：
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -382,12 +353,6 @@ FROM session_events
 GROUP BY type
 FORMAT TSV
 ```
-
-接着可以复制该输出并粘贴到[这里](https://dreampuf.github.io/GraphvizOnline)，即可生成如下图：
-
-<Image img={analyzer3} alt="Graph output" size="md" />
-
-白色矩形表示一个 pipeline 节点，灰色矩形表示查询计划步骤，而带有数字的 `x` 表示当前使用的输入/输出数量。如果不想以紧凑格式查看它们，可以添加 `compact=0`：
 
 ```response
 digraph
@@ -409,6 +374,10 @@ digraph
 }
 ```
 
+<Image img={analyzer4} alt="紧凑图形输出" size="md" />
+
+为什么 ClickHouse 在从表中读取数据时没有使用多线程？让我们尝试向表中添加更多数据：
+
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    sessionId UUID,
@@ -417,9 +386,7 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000000;
 ```
 
-<Image img={analyzer4} alt="紧凑图形输出" size="md" />
-
-为什么 ClickHouse 在从表中读取数据时没有使用多线程？让我们尝试向表中添加更多数据：
+现在让我们再次运行 `EXPLAIN` 查询：
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -435,37 +402,6 @@ SELECT
 FROM session_events
 GROUP BY type
 FORMAT TSV
-```
-
-现在让我们再次运行 `EXPLAIN` 查询：
-
-```response
-digraph
-{
-  rankdir="LR";
-  { node [shape = rect]
-    n0[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
-    n1[label="MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread)"];
-    n2[label="ExpressionTransform"];
-    n3[label="ExpressionTransform"];
-    n4[label="StrictResize"];
-    n5[label="AggregatingTransform"];
-    n6[label="AggregatingTransform"];
-    n7[label="Resize"];
-    n8[label="ExpressionTransform"];
-    n9[label="ExpressionTransform"];
-  }
-  n0 -> n2;
-  n1 -> n3;
-  n2 -> n4;
-  n3 -> n4;
-  n4 -> n5;
-  n4 -> n6;
-  n5 -> n7;
-  n6 -> n7;
-  n7 -> n8;
-  n7 -> n9;
-}
 ```
 
 ```response

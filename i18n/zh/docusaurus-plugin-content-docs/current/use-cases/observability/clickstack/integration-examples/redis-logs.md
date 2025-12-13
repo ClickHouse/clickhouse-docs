@@ -48,8 +48,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
   首先,检查您的 Redis 日志配置。连接到 Redis 并检查日志文件位置:
 
   ```bash
-redis-cli CONFIG GET logfile
-```
+  redis-cli CONFIG GET logfile
+  ```
 
   Redis 常见日志位置：
 
@@ -60,22 +60,22 @@ redis-cli CONFIG GET logfile
   如果 Redis 正在将日志输出到 stdout,请通过更新 `redis.conf` 配置文件将其改为写入文件:
 
   ```bash
-# Log to file instead of stdout
-logfile /var/log/redis/redis-server.log
+  # 将日志记录到文件而非标准输出
+  logfile /var/log/redis/redis-server.log
 
-# Set log level (options: debug, verbose, notice, warning)
-loglevel notice
-```
+  # 设置日志级别（选项：debug、verbose、notice、warning）
+  loglevel notice
+  ```
 
   更改配置后,重新启动 Redis:
 
   ```bash
-# For systemd
-sudo systemctl restart redis
+  # 使用 systemd 时
+  sudo systemctl restart redis
 
-# For Docker
-docker restart <redis-container>
-```
+  # 使用 Docker 时
+  docker restart <redis-container>
+  ```
 
   #### 创建自定义 OTel collector 配置
 
@@ -84,40 +84,40 @@ docker restart <redis-container>
   创建一个名为 `redis-monitoring.yaml` 的文件，其中包含以下配置：
 
   ```yaml
-receivers:
-  filelog/redis:
-    include:
-      - /var/log/redis/redis-server.log
-    start_at: beginning
-    operators:
-      - type: regex_parser
-        regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
-        parse_from: body
-        parse_to: attributes
-      
-      - type: time_parser
-        parse_from: attributes.timestamp
-        layout: '%d %b %Y %H:%M:%S'
-      
-      - type: add
-        field: attributes.source
-        value: "redis"
-      
-      - type: add
-        field: resource["service.name"]
-        value: "redis-production"
+  receivers:
+    filelog/redis:
+      include:
+        - /var/log/redis/redis-server.log
+      start_at: beginning
+      operators:
+        - type: regex_parser
+          regex: '^(?P\d+):(?P\w+) (?P\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P[.\-*#]) (?P.*)$'
+          parse_from: body
+          parse_to: attributes
+        
+        - type: time_parser
+          parse_from: attributes.timestamp
+          layout: '%d %b %Y %H:%M:%S'
+        
+        - type: add
+          field: attributes.source
+          value: "redis"
+        
+        - type: add
+          field: resource["service.name"]
+          value: "redis-production"
 
-service:
-  pipelines:
-    logs/redis:
-      receivers: [filelog/redis]
-      processors:
-        - memory_limiter
-        - transform
-        - batch
-      exporters:
-        - clickhouse
-```
+  service:
+    pipelines:
+      logs/redis:
+        receivers: [filelog/redis]
+        processors:
+          - memory_limiter
+          - transform
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
   此配置：
 
@@ -147,30 +147,30 @@ service:
   更新您的 ClickStack 部署配置：
 
   ```yaml
-services:
-  clickstack:
-    # ... existing configuration ...
-    environment:
-      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-      # ... other environment variables ...
-    volumes:
-      - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-      - /var/log/redis:/var/log/redis:ro
-      # ... other volumes ...
-```
+  services:
+    clickstack:
+      # ... existing configuration ...
+      environment:
+        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+        # ... other environment variables ...
+      volumes:
+        - ./redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        - /var/log/redis:/var/log/redis:ro
+        # ... other volumes ...
+  ```
 
   ##### 选项 2:Docker Run(一体化镜像)
 
   如果您使用 Docker 的一体化镜像,请运行:
 
   ```bash
-docker run --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -v /var/log/redis:/var/log/redis:ro \
-  clickhouse/clickstack-all-in-one:latest
-```
+  docker run --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log/redis:/var/log/redis:ro \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
   :::note
   确保 ClickStack 采集器具有读取 Redis 日志文件的相应权限。在生产环境中,请使用只读挂载(`:ro`)并遵循最小权限原则。
@@ -209,7 +209,7 @@ receivers:
   filelog/redis:
     include:
       - /tmp/redis-demo/redis-server.log
-    start_at: beginning  # Read from beginning for demo data
+    start_at: beginning  # 为演示数据从头开始读取
     operators:
       - type: regex_parser
         regex: '^(?P<pid>\d+):(?P<role>\w+) (?P<timestamp>\d{2} \w+ \d{4} \d{2}:\d{2}:\d{2})\.\d+ (?P<log_level>[.\-*#]) (?P<message>.*)$'
@@ -313,28 +313,28 @@ HyperDX 会按浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 ```bash
 docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
-# Expected output: /etc/otelcol-contrib/custom.config.yaml
+# 预期输出:/etc/otelcol-contrib/custom.config.yaml
 ```
 
 **检查自定义配置文件是否已挂载：**
 
 ```bash
 docker exec <container-name> ls -lh /etc/otelcol-contrib/custom.config.yaml
-# Expected output: Should show file size and permissions
+# 预期输出:应显示文件大小和权限
 ```
 
 **查看自定义配置内容：**
 
 ```bash
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
-# Should display your redis-monitoring.yaml content
+# 应显示您的 redis-monitoring.yaml 内容
 ```
 
 **检查有效配置中是否包含你的 filelog 接收器：**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
-# Should show your filelog/redis receiver configuration
+# 应显示您的 filelog/Redis 接收器配置
 ```
 
 ### HyperDX 中没有日志显示
@@ -343,37 +343,37 @@ docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 1
 
 ```bash
 redis-cli CONFIG GET logfile
-# Expected output: Should show a file path, not empty string
-# Example: 1) "logfile" 2) "/var/log/redis/redis-server.log"
+# 预期输出:应显示文件路径,而非空字符串
+# 示例:1) "logfile" 2) "/var/log/redis/redis-server.log"
 ```
 
 **确认 Redis 是否正在输出日志：**
 
 ```bash
 tail -f /var/log/redis/redis-server.log
-# Should show recent log entries in Redis format
+# 应显示 Redis 格式的最近日志条目
 ```
 
 **验证 Collector 是否能够读取日志：**
 
 ```bash
 docker exec <container> cat /var/log/redis/redis-server.log
-# Should display Redis log entries
+# 应显示 Redis 日志条目
 ```
 
 **检查 Collector 日志是否有错误：**
 
 ```bash
 docker exec <container> cat /etc/otel/supervisor-data/agent.log
-# Look for any error messages related to filelog or Redis
+# 查找与 filelog 或 Redis 相关的错误消息
 ```
 
 **如果使用 docker-compose，请检查共享卷：**
 
 ```bash
-# Check both containers are using the same volume
+# 检查两个容器是否使用同一卷 {#expected-output-etcotelcol-contribcustomconfigyaml}
 docker volume inspect <volume-name>
-# Verify both containers have the volume mounted
+# 验证两个容器均已挂载该卷 {#expected-output-should-show-file-size-and-permissions}
 ```
 
 ### 日志解析不正确
@@ -381,7 +381,7 @@ docker volume inspect <volume-name>
 **检查 Redis 日志格式是否符合预期模式：**
 
 ```bash
-# Redis Logs should look like:
+# Redis 日志应类似如下： {#should-show-your-filelogredis-receiver-configuration}
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```
