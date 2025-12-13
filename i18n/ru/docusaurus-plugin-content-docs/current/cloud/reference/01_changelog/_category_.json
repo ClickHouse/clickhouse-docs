@@ -1,9 +1,0 @@
-{
-  "label": "Журнал изменений",
-  "collapsible": true,
-  "collapsed": true,
-  "link": {
-    "type": "документация",
-    "id": "cloud/reference/changelog/index"
-  }
-}
