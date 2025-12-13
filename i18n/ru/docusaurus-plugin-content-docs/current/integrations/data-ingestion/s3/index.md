@@ -99,54 +99,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 │ dropoff_puma          │ Nullable(Int64)    │
 └───────────────────────┴────────────────────┘
 ```
-
-┌─name──────────────────┬─type───────────────┐
-│ trip&#95;id               │ Nullable(Int64)    │
-│ vendor&#95;id             │ Nullable(Int64)    │
-│ pickup&#95;date           │ Nullable(Date)     │
-│ pickup&#95;datetime       │ Nullable(DateTime) │
-│ dropoff&#95;date          │ Nullable(Date)     │
-│ dropoff&#95;datetime      │ Nullable(DateTime) │
-│ store&#95;and&#95;fwd&#95;flag    │ Nullable(Int64)    │
-│ rate&#95;code&#95;id          │ Nullable(Int64)    │
-│ pickup&#95;longitude      │ Nullable(Float64)  │
-│ pickup&#95;latitude       │ Nullable(Float64)  │
-│ dropoff&#95;longitude     │ Nullable(Float64)  │
-│ dropoff&#95;latitude      │ Nullable(Float64)  │
-│ passenger&#95;count       │ Nullable(Int64)    │
-│ trip&#95;distance         │ Nullable(String)   │
-│ fare&#95;amount           │ Nullable(String)   │
-│ extra                 │ Nullable(String)   │
-│ mta&#95;tax               │ Nullable(String)   │
-│ tip&#95;amount            │ Nullable(String)   │
-│ tolls&#95;amount          │ Nullable(Float64)  │
-│ ehail&#95;fee             │ Nullable(Int64)    │
-│ improvement&#95;surcharge │ Nullable(String)   │
-│ total&#95;amount          │ Nullable(String)   │
-│ payment&#95;type          │ Nullable(String)   │
-│ trip&#95;type             │ Nullable(Int64)    │
-│ pickup                │ Nullable(String)   │
-│ dropoff               │ Nullable(String)   │
-│ cab&#95;type              │ Nullable(String)   │
-│ pickup&#95;nyct2010&#95;gid   │ Nullable(Int64)    │
-│ pickup&#95;ctlabel        │ Nullable(Float64)  │
-│ pickup&#95;borocode       │ Nullable(Int64)    │
-│ pickup&#95;ct2010         │ Nullable(String)   │
-│ pickup&#95;boroct2010     │ Nullable(String)   │
-│ pickup&#95;cdeligibil     │ Nullable(String)   │
-│ pickup&#95;ntacode        │ Nullable(String)   │
-│ pickup&#95;ntaname        │ Nullable(String)   │
-│ pickup&#95;puma           │ Nullable(Int64)    │
-│ dropoff&#95;nyct2010&#95;gid  │ Nullable(Int64)    │
-│ dropoff&#95;ctlabel       │ Nullable(Float64)  │
-│ dropoff&#95;borocode      │ Nullable(Int64)    │
-│ dropoff&#95;ct2010        │ Nullable(String)   │
-│ dropoff&#95;boroct2010    │ Nullable(String)   │
-│ dropoff&#95;cdeligibil    │ Nullable(String)   │
-│ dropoff&#95;ntacode       │ Nullable(String)   │
-│ dropoff&#95;ntaname       │ Nullable(String)   │
-│ dropoff&#95;puma          │ Nullable(Int64)    │
-└───────────────────────┴────────────────────┘
+Для работы с набором данных на основе S3 подготовим стандартную таблицу `MergeTree` в качестве целевой. Приведённая ниже инструкция создаёт таблицу с именем `trips` в базе данных по умолчанию. Обратите внимание, что мы изменили некоторые типы данных, определённые выше, в частности, отказались от использования модификатора типа данных [`Nullable()`](/sql-reference/data-types/nullable), который может привести к ненужному увеличению объёма хранимых данных и снижению производительности:
 
 ```sql
 CREATE TABLE trips
@@ -200,12 +153,6 @@ CREATE TABLE trips
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
-```
-
-```sql
-SELECT *
-FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames')
-LIMIT 10;
 ```
 
 Обратите внимание на использование [секционирования](/engines/table-engines/mergetree-family/custom-partitioning-key) по полю `pickup_date`. Обычно ключ секционирования используется для управления данными, но позже мы воспользуемся этим ключом для параллельной записи в S3.

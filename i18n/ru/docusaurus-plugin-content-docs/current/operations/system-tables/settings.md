@@ -130,61 +130,14 @@ default:     0
 alias_for:   
 is_obsolete: 0
 tier:        Production
- ```
+```
 
-Row 3:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: Задает минимальное количество строк в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
+Использование `WHERE changed` может быть полезно, например, для проверки:
 
-Possible values:
+- Корректно ли загружены настройки из конфигурационных файлов и применяются ли они.
+- Настроек, которые изменились в текущей сессии.
 
-* Любое положительное целое число.
-* 0 — объединение отключено.
-
-**See Also**
-
-* [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-Row 4:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: Задает минимальное количество байт в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
-
-Possible values:
-
-* Любое положительное целое число.
-* 0 — объединение отключено.
-
-**See also**
-
-* [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-````sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-```sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-````
+<!-- -->
 
 **См. также**
 

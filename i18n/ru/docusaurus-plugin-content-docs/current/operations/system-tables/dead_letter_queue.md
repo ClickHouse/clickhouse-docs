@@ -40,10 +40,8 @@ ClickHouse не удаляет данные из таблицы автомати
 
 Запрос:
 
-```
-
-Result:
-
+```sql
+SELECT * FROM system.dead_letter_queue LIMIT 1 \G;
 ```
 
 Результат:

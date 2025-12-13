@@ -43,37 +43,6 @@ cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X securi
 2. Убедитесь, что целевая таблица создана. Ниже мы используем базу данных по умолчанию.
 
 ```sql
-
-CREATE TABLE github
-(
-    file_time DateTime,
-    event_type Enum('CommitCommentEvent' = 1, 'CreateEvent' = 2, 'DeleteEvent' = 3, 'ForkEvent' = 4,
-                    'GollumEvent' = 5, 'IssueCommentEvent' = 6, 'IssuesEvent' = 7, 'MemberEvent' = 8, 'PublicEvent' = 9, 'PullRequestEvent' = 10, 'PullRequestReviewCommentEvent' = 11, 'PushEvent' = 12, 'ReleaseEvent' = 13, 'SponsorshipEvent' = 14, 'WatchEvent' = 15, 'GistEvent' = 16, 'FollowEvent' = 17, 'DownloadEvent' = 18, 'PullRequestReviewEvent' = 19, 'ForkApplyEvent' = 20, 'Event' = 21, 'TeamAddEvent' = 22),
-    actor_login LowCardinality(String),
-    repo_name LowCardinality(String),
-    created_at DateTime,
-    updated_at DateTime,
-    action Enum('none' = 0, 'created' = 1, 'added' = 2, 'edited' = 3, 'deleted' = 4, 'opened' = 5, 'closed' = 6, 'reopened' = 7, 'assigned' = 8, 'unassigned' = 9, 'labeled' = 10, 'unlabeled' = 11, 'review_requested' = 12, 'review_request_removed' = 13, 'synchronize' = 14, 'started' = 15, 'published' = 16, 'update' = 17, 'create' = 18, 'fork' = 19, 'merged' = 20),
-    comment_id UInt64,
-    path String,
-    ref LowCardinality(String),
-    ref_type Enum('none' = 0, 'branch' = 1, 'tag' = 2, 'repository' = 3, 'unknown' = 4),
-    creator_user_login LowCardinality(String),
-    number UInt32,
-    title String,
-    labels Array(LowCardinality(String)),
-    state Enum('none' = 0, 'open' = 1, 'closed' = 2),
-    assignee LowCardinality(String),
-    assignees Array(LowCardinality(String)),
-    closed_at DateTime,
-    merged_at DateTime,
-    merge_commit_sha String,
-    requested_reviewers Array(LowCardinality(String)),
-    merged_by LowCardinality(String),
-    review_comments UInt32,
-    member_login LowCardinality(String)
-) ENGINE = MergeTree ORDER BY (event_type, repo_name, created_at);
-
 ```
 
 CREATE TABLE github
@@ -106,32 +75,10 @@ review&#95;comments UInt32,
 member&#95;login LowCardinality(String)
 ) ENGINE = MergeTree ORDER BY (event&#95;type, repo&#95;name, created&#95;at);
 
-````toml
-[sources.github]
-type = "kafka"
-auto_offset_reset = "smallest"
-bootstrap_servers = "<kafka_host>:<kafka_port>"
-group_id = "vector"
-topics = [ "github" ]
-tls.enabled = true
-sasl.enabled = true
-sasl.mechanism = "PLAIN"
-sasl.username = "<username>"
-sasl.password = "<password>"
-decoding.codec = "json"
+````
 
-[sinks.clickhouse]
-type = "clickhouse"
-inputs = ["github"]
-endpoint = "http://localhost:8123"
-database = "default"
-table = "github"
-skip_unknown_fields = true
-auth.strategy = "basic"
-auth.user = "username"
-auth.password = "password"
-buffer.max_events = 10000
-batch.timeout_secs = 1
+3. [Скачайте и установите Vector](https://vector.dev/docs/setup/quickstart/). Создайте конфигурационный файл `kafka.toml` и измените значения для экземпляров Kafka и ClickHouse.
+
 ```toml
 [sources.github]
 type = "kafka"
@@ -158,12 +105,28 @@ auth.user = "username"
 auth.password = "password"
 buffer.max_events = 10000
 batch.timeout_secs = 1
-````bash
-vector --config ./kafka.toml
+````
+
+Несколько важных замечаний о данной конфигурации и поведении Vector:
+
+* Этот пример был протестирован с Confluent Cloud. Поэтому параметры безопасности `sasl.*` и `ssl.enabled` могут быть неприменимы в сценариях с самостоятельным управлением кластером.
+* Префикс протокола не требуется для параметра конфигурации `bootstrap_servers`, например: `pkc-2396y.us-east-1.aws.confluent.cloud:9092`.
+* Параметр источника `decoding.codec = "json"` гарантирует, что сообщение передается в ClickHouse sink как один JSON-объект. При обработке сообщений как строк (String) и использовании значения по умолчанию `bytes` содержимое сообщения будет добавлено в поле `message`. В большинстве случаев это потребует обработки в ClickHouse, как описано в руководстве [Vector getting started](../etl-tools/vector-to-clickhouse.md#4-parse-the-logs).
+* Vector [добавляет ряд полей](https://vector.dev/docs/reference/configuration/sources/kafka/#output-data) к сообщениям. В нашем примере мы игнорируем эти поля в ClickHouse sink с помощью параметра конфигурации `skip_unknown_fields = true`. Это приводит к игнорированию полей, которые не являются частью схемы целевой таблицы. При необходимости скорректируйте схему, чтобы такие мета-поля, как `offset`, также добавлялись.
+* Обратите внимание, как sink ссылается на источник событий через параметр `inputs`.
+* Обратите внимание на поведение ClickHouse sink, описанное [здесь](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#buffers-and-batches). Для оптимальной пропускной способности пользователи могут настроить параметры `buffer.max_events`, `batch.timeout_secs` и `batch.max_bytes`. Согласно [рекомендациям](/sql-reference/statements/insert-into#performance-considerations) ClickHouse, значение 1000 следует рассматривать как минимальное количество событий в одном пакете. Для сценариев с равномерно высокой пропускной способностью пользователи могут увеличить параметр `buffer.max_events`. При более переменной нагрузке могут потребоваться изменения параметра `batch.timeout_secs`.
+* Параметр `auto_offset_reset = "smallest"` заставляет источник Kafka начинать чтение с начала топика, гарантируя, что мы потребляем сообщения, опубликованные на шаге (1). Пользователям может потребоваться иное поведение. См. подробности [здесь](https://vector.dev/docs/reference/configuration/sources/kafka/#auto_offset_reset).
+
+4. Запустите Vector
+
 ```bash
 vector --config ./kafka.toml
-```sql
-SELECT count() AS count FROM github;
+```
+
+По умолчанию перед началом вставки данных в ClickHouse требуется [проверка работоспособности](https://vector.dev/docs/reference/configuration/sinks/clickhouse/#healthcheck). Это гарантирует, что можно установить соединение и прочитать схему. Добавьте перед командой `VECTOR_LOG=debug`, чтобы получить более подробные логи, которые могут быть полезны при возникновении проблем.
+
+5. Подтвердите вставку данных.
+
 ```sql
 SELECT count() AS count FROM github;
 ```

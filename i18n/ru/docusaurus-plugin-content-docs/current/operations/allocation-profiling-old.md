@@ -29,14 +29,14 @@ MALLOC_CONF=background_thread:true,prof:true
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC FLUSH PROFILE
-```
+    SYSTEM JEMALLOC FLUSH PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmfp | nc localhost 9181
-```
+    echo jmfp | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 
@@ -99,7 +99,7 @@ jeprof path/to/binary path/to/heap/profile --text > result.txt
 * если вы хотите создать PDF-файл с графом вызовов:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
+jeprof путь/к/исполняемому/файлу путь/к/профилю/heap --pdf > result.pdf
 ```
 
 ### Генерация flame-графа {#generating-flame-graph}
@@ -132,14 +132,14 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC DISABLE PROFILE
-```
+    SYSTEM JEMALLOC DISABLE PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmdp | nc localhost 9181
-```
+    echo jmdp | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 
@@ -148,14 +148,14 @@ echo jmdp | nc localhost 9181
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC ENABLE PROFILE
-```
+    SYSTEM JEMALLOC ENABLE PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmep | nc localhost 9181
-```
+    echo jmep | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 

@@ -35,19 +35,19 @@ stochasticLogisticRegression(1.0, 1.0, 10, 'SGD')
 Используя сохранённое состояние, мы можем предсказать вероятность того, что объект будет иметь метку `1`.
 
 ```sql
-    WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) FROM test_data
-    ```
+WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) FROM test_data
+```
 
 Запрос вернёт столбец вероятностей. Обратите внимание, что первый аргумент функции `evalMLMethod` — объект `AggregateFunctionState`, а затем идут столбцы признаков.
 
 Мы также можем задать порог вероятности, который распределяет элементы по разным меткам.
 
 ```sql
-    SELECT ans < 1.1 AND ans > 0.5 FROM
-    (WITH (SELECT state FROM your_model) AS model SELECT
-    evalMLMethod(model, param1, param2) AS ans FROM test_data)
-    ```
+SELECT ans < 1.1 AND ans > 0.5 FROM
+(WITH (SELECT state FROM your_model) AS model SELECT
+evalMLMethod(model, param1, param2) AS ans FROM test_data)
+```
 
 В результате будут получены метки.
 

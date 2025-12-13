@@ -114,9 +114,9 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
             <gcs>
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
-                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
-                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
-                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
+                <endpoint>https://storage.googleapis.com/ИМЯ_БАКЕТА/ИМЯ_ПАПКИ/</endpoint>
+                <access_key_id>HMAC-КЛЮЧ_СЕРВИСНОГО_АККАУНТА</access_key_id>
+                <secret_access_key>HMAC-СЕКРЕТ_СЕРВИСНОГО_АККАУНТА</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
         </disks>
@@ -298,14 +298,15 @@ ClickHouse Keeper для работы требует двух узлов, поэ
 </clickhouse>
 ```
 
-### Configure ClickHouse server {#configure-clickhouse-server}
+### Настройка сервера ClickHouse {#configure-clickhouse-server}
 
 :::note best practice
-Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
+На некоторых шагах этого руководства вам потребуется поместить конфигурационный файл в `/etc/clickhouse-server/config.d/`. Это каталог по умолчанию в системах Linux для файлов переопределения конфигурации. Когда вы помещаете эти файлы в этот каталог, ClickHouse объединяет их содержимое с конфигурацией по умолчанию. Размещая эти файлы в каталоге `config.d`, вы избежите потери настроек при обновлении.
 :::
 
-#### Networking {#networking}
-By default, ClickHouse listens on the loopback interface, in a replicated setup networking between machines is necessary.  Listen on all interfaces:
+#### Сеть {#networking}
+
+По умолчанию ClickHouse прослушивает только loopback‑интерфейс; в реплицированной конфигурации требуется сетевое взаимодействие между серверами. Включите прослушивание на всех сетевых интерфейсах:
 
 ```xml title=/etc/clickhouse-server/config.d/network.xml
 <clickhouse>
@@ -313,11 +314,11 @@ By default, ClickHouse listens on the loopback interface, in a replicated setup 
 </clickhouse>
 ```
 
-#### Remote ClickHouse Keeper servers {#remote-clickhouse-keeper-servers}
+#### Удалённые серверы ClickHouse Keeper {#remote-clickhouse-keeper-servers}
 
-Replication is coordinated by ClickHouse Keeper.  This configuration file identifies the ClickHouse Keeper nodes by hostname and port number.
+Репликация координируется ClickHouse Keeper. Этот конфигурационный файл идентифицирует узлы ClickHouse Keeper по имени хоста и номеру порта.
 
-- Edit the hostnames to match your Keeper hosts
+* Измените имена хостов так, чтобы они соответствовали вашим узлам Keeper
 
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
@@ -338,11 +339,11 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 </clickhouse>
 ```
 
-#### Remote ClickHouse servers {#remote-clickhouse-servers}
+#### Удалённые серверы ClickHouse {#remote-clickhouse-servers}
 
-This file configures the hostname and port of each ClickHouse server in the cluster.  The default configuration file contains sample cluster definitions, in order to show only the clusters that are completely configured the tag `replace="true"` is added to the `remote_servers` entry so that when this configuration is merged with the default it replaces the `remote_servers` section instead of adding to it.
+Этот файл задаёт имя хоста и порт каждого сервера ClickHouse в кластере. Конфигурационный файл по умолчанию содержит примеры описаний кластеров; чтобы отображались только полностью настроенные кластеры, к записи `remote_servers` добавляется тег `replace="true"`, чтобы при слиянии этой конфигурации с конфигурацией по умолчанию она заменяла секцию `remote_servers`, а не дополняла её.
 
-- Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes
+* Отредактируйте файл, указав ваши имена хостов, и убедитесь, что они корректно разрешаются с узлов серверов ClickHouse
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -363,9 +364,9 @@ This file configures the hostname and port of each ClickHouse server in the clus
 </clickhouse>
 ```
 
-#### Replica identification {#replica-identification}
+#### Идентификация реплики {#replica-identification}
 
-This file configures settings related to the ClickHouse Keeper path.  Specifically the macros used to identify which replica the data is part of.  On one server the replica should be specified as `replica_1`, and on the other server `replica_2`.  The names can be changed, based on our example of one replica being stored in South Carolina and the other in Northern Virginia the values could be `carolina` and `virginia`; just make sure that they are different on each machine.
+Этот файл настраивает параметры, связанные с путём в ClickHouse Keeper. В частности, в нём задаются макросы, используемые для идентификации реплики, к которой относятся данные. На одном сервере реплика должна быть указана как `replica_1`, а на другом сервере — как `replica_2`. Эти имена можно изменить: например, в нашем случае, когда одна реплика хранится в Южной Каролине, а другая — в Северной Вирджинии, значениями могут быть `carolina` и `virginia`; просто убедитесь, что на каждой машине они отличаются.
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>
@@ -381,19 +382,21 @@ This file configures settings related to the ClickHouse Keeper path.  Specifical
 </clickhouse>
 ```
 
-#### Storage in GCS {#storage-in-gcs}
+#### Хранение в GCS {#storage-in-gcs}
 
-ClickHouse storage configuration includes `disks` and `policies`. The disk being configured below is named `gcs`, and is of `type` `s3`.  The type is s3 because ClickHouse accesses the GCS bucket as if it was an AWS S3 bucket.  Two copies of this configuration will be needed, one for each of the ClickHouse server nodes.
+Конфигурация хранилища ClickHouse включает `disks` и `policies`. Диск, настраиваемый ниже, называется `gcs` и имеет `type` `s3`. Тип `s3` используется, потому что ClickHouse обращается к бакету GCS так, как если бы это был бакет AWS S3. Понадобятся две копии этой конфигурации — по одной для каждого узла сервера ClickHouse.
 
-These substitutions should be made in the configuration below.
+В конфигурации ниже необходимо выполнить следующие подстановки.
 
-These substitutions differ between the two ClickHouse server nodes:
-- `REPLICA 1 BUCKET` should be set to the name of the bucket in the same region as the server
-- `REPLICA 1 FOLDER` should be changed to `replica_1` on one of the servers, and `replica_2` on the other
+Эти подстановки различаются для двух узлов сервера ClickHouse:
 
-These substitutions are common across the two nodes:
-- The `access_key_id` should be set to the HMAC Key generated earlier
-- The `secret_access_key` should be set to HMAC Secret generated earlier
+* `REPLICA 1 BUCKET` должен быть задан именем бакета в том же регионе, что и сервер
+* `REPLICA 1 FOLDER` должен быть изменён на `replica_1` на одном из серверов и на `replica_2` на другом
+
+Эти подстановки общие для обоих узлов:
+
+* `access_key_id` должен быть установлен равным значению HMAC Key, сгенерированного ранее
+* `secret_access_key` должен быть установлен равным значению HMAC Secret, сгенерированного ранее
 
 ```xml title=/etc/clickhouse-server/config.d/storage.xml
 <clickhouse>
@@ -427,9 +430,9 @@ These substitutions are common across the two nodes:
 </clickhouse>
 ```
 
-### Start ClickHouse Keeper {#start-clickhouse-keeper}
+### Запустите ClickHouse Keeper {#start-clickhouse-keeper}
 
-Use the commands for your operating system, for example:
+Используйте команды, соответствующие вашей операционной системе, например:
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -437,13 +440,14 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
+#### Проверьте статус ClickHouse Keeper {#check-clickhouse-keeper-status}
 
-Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
+Отправляйте команды в ClickHouse Keeper с помощью `netcat`. Например, команда `mntr` возвращает состояние кластера ClickHouse Keeper. Если выполнить эту команду на каждом узле Keeper, вы увидите, что один из них является лидером, а два других — ведомыми:
 
 ```bash
 echo mntr | nc localhost 9181
 ```
+
 ```response
 zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
 zk_avg_latency  0
@@ -470,31 +474,34 @@ zk_synced_followers     2
 # highlight-end {#highlight-end}
 ```
 
-### Start ClickHouse server {#start-clickhouse-server}
+### Запуск сервера ClickHouse {#start-clickhouse-server}
 
-On `chnode1` and `chnode` run:
+На `chnode1` и `chnode` выполните:
 
 ```bash
 sudo service clickhouse-server start
 ```
+
 ```bash
 sudo service clickhouse-server status
 ```
 
-### Verification {#verification}
+### Проверка {#verification}
 
-#### Verify disk configuration {#verify-disk-configuration}
+#### Проверка конфигурации дисков {#verify-disk-configuration}
 
-`system.disks` should contain records for each disk:
-- default
-- gcs
-- cache
+`system.disks` должна содержать записи для каждого диска:
+
+* default
+* gcs
+* cache
 
 ```sql
 SELECT *
 FROM system.disks
 FORMAT Vertical
 ```
+
 ```response
 Строка 1:
 ──────
@@ -544,28 +551,78 @@ is_remote:        1
 is_broken:        0
 cache_path:
 ```
-#### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
+
+3 строки в наборе. Прошло: 0,002 сек.
+
 ````
 #### Убедитесь, что таблицы, созданные на кластере, создаются на обоих узлах                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
-```
+```sql
+-- highlight-next-line
+create table trips on cluster 'cluster_1S_2R' (
+ `trip_id` UInt32,
+ `pickup_date` Date,
+ `pickup_datetime` DateTime,
+ `dropoff_datetime` DateTime,
+ `pickup_longitude` Float64,
+ `pickup_latitude` Float64,
+ `dropoff_longitude` Float64,
+ `dropoff_latitude` Float64,
+ `passenger_count` UInt8,
+ `trip_distance` Float64,
+ `tip_amount` Float32,
+ `total_amount` Float32,
+ `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+ENGINE = ReplicatedMergeTree
+PARTITION BY toYYYYMM(pickup_date)
+ORDER BY pickup_datetime
+-- highlight-next-line
+SETTINGS storage_policy='gcs_main'
 ````
 
-```
+```response
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.us-east4-c.c.gcsqa-375100.internal │ 9000 │      0 │       │                   1 │                1 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1.us-east1-b.c.gcsqa-375100.internal │ 9000 │      0 │       │                   0 │                0 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-#### Verify that data can be inserted {#verify-that-data-can-be-inserted}
-
+2 строки в наборе. Затрачено: 0.641 сек.
 ```
 
 #### Убедитесь, что данные можно вставить {#verify-that-data-can-be-inserted}
 
-```
-
-#### Verify that the storage policy `gcs_main` is used for the table. {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
+```sql
+INSERT INTO trips SELECT
+    trip_id,
+    pickup_date,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    tip_amount,
+    total_amount,
+    payment_type
+FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames')
+LIMIT 1000000
 ```
 
 #### Убедитесь, что для таблицы используется политика хранения данных `gcs_main`. {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
 
-```
+```sql
+SELECT
+    engine,
+    data_paths,
+    metadata_path,
+    storage_policy,
+    formatReadableSize(total_bytes)
+FROM system.tables
+WHERE name = 'trips'
+FORMAT Vertical
 ```
 
 ```response
