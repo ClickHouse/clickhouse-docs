@@ -64,7 +64,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-我们在这里使用了 [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) 函数，它会将指定的时间转换为 `date` 类型。或者，我们也可以按小时分桶，然后按特定日期进行过滤：
+我们在这里使用了 [`toDate()`](/sql-reference/functions/type-conversion-functions#toDate) 函数，它会将指定的时间转换为 `date` 类型。或者，我们也可以按小时分桶，然后按特定日期进行过滤：
 
 ```sql
 SELECT
@@ -108,7 +108,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-或者，我们也可以使用 [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) 函数
+或者，我们也可以使用 [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#toIntervalHour) 函数
 
 ```sql
 SELECT

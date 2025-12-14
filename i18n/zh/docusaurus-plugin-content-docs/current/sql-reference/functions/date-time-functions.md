@@ -1794,7 +1794,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 可以通过两种方式调用：
 
-* 当传入一个类型为 [`Integer`](../data-types/int-uint.md) 的单个参数时，返回类型为 [`DateTime`](../data-types/datetime.md) 的值，即行为类似于 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime)。
+* 当传入一个类型为 [`Integer`](../data-types/int-uint.md) 的单个参数时，返回类型为 [`DateTime`](../data-types/datetime.md) 的值，即行为类似于 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime)。
 * 当传入两个或三个参数时，其中第一个参数是类型为 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回类型为 [`String`](../data-types/string.md) 的值，即行为类似于 [`formatDateTime`](#formatDateTime)。
   在这种情况下，使用 [MySQL 的 datetime 格式样式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
@@ -1851,7 +1851,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 可以以两种方式调用：
 
-当传入单个 [`Integer`](../data-types/int-uint.md) 类型的参数时，它返回 [`DateTime`](../data-types/datetime.md) 类型的值，即行为与 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) 相同。
+当传入单个 [`Integer`](../data-types/int-uint.md) 类型的参数时，它返回 [`DateTime`](../data-types/datetime.md) 类型的值，即行为与 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime) 相同。
 
 当传入两个或三个参数时，其中第一个参数是 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 类型的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回 [`String`](../data-types/string.md) 类型的值，即行为与 [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax) 相同。在这种情况下，使用 [Joda 日期时间格式样式](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 

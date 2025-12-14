@@ -23,9 +23,9 @@ The Elastic Stack provides a number of Observability data collection agents. Spe
 
 - The [Beats family](https://www.elastic.co/beats) - such as [Filebeat](https://www.elastic.co/beats/filebeat), [Metricbeat](https://www.elastic.co/beats/metricbeat), and [Packetbeat](https://www.elastic.co/beats/packetbeat) - all based on the `libbeat` library. These Beats support [sending data to Elasticsearch, Kafka, Redis, or Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output) over the Lumberjack protocol.
 - The [`Elastic Agent`](https://www.elastic.co/elastic-agent) provides a unified agent capable of collecting logs, metrics, and traces. This agent can be centrally managed via the [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) and supports output to Elasticsearch, Logstash, Kafka, or Redis.
-- Elastic also provides a distribution of the [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry). While it currently cannot be orchestrated by the Fleet Server, it offers a more flexible and open path for users migrating to ClickStack.
+- Elastic also provides a distribution of the [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry). While it currently cannot be orchestrated by the Fleet Server, it offers a more flexible and open path if you're migrating to ClickStack.
 
-The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow users to continue using their existing agents during the transition.
+The best migration path depends on the agent(s) currently in use. In the sections that follow, we document migration options for each major agent type. Our goal is to minimize friction and, where possible, allow you to continue using your existing agents during the transition.
 
 ## Preferred migration path {#prefered-migration-path}
 
@@ -71,7 +71,7 @@ Install Vector using the [official installation guide](https://vector.dev/docs/s
 
 This can be installed on the same instance as your Elastic Stack OTel collector.
 
-Users can follow best practices with regards to architecture and security when [moving Vector to production](https://vector.dev/docs/setup/going-to-prod/).
+You can follow best practices with regards to architecture and security when [moving Vector to production](https://vector.dev/docs/setup/going-to-prod/).
 
 ### Configure vector {#configure-vector}
 
@@ -319,7 +319,7 @@ The Elastic Agent consolidates the different Elastic Beats into a single package
 Users with Elastic Agents deployed have several migration paths:
 
 - Configure the agent to send to a Vector endpoint over the Lumberjack protocol. **This has currently been tested for users collecting log data with the Elastic Agent only.** This can be centrally configured via the Fleet UI in Kibana.
-- [Run the agent as Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/fleet/otel-agent). The Elastic Agent includes an embedded EDOT Collector that allows you to instrument your applications and infrastructure once and send data to multiple vendors and backends. In this configuration, users can simply configure the EDOT collector to forward events to the ClickStack OTel collector over OTLP. **This approach supports all event types.**
+- [Run the agent as Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/fleet/otel-agent). The Elastic Agent includes an embedded EDOT Collector that allows you to instrument your applications and infrastructure once and send data to multiple vendors and backends. In this configuration, you can simply configure the EDOT collector to forward events to the ClickStack OTel collector over OTLP. **This approach supports all event types.**
 
 We demonstrate both of these options below.
 

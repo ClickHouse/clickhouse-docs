@@ -92,7 +92,6 @@ CREATE TABLE laion
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS index_granularity = 8192
 ```
 
 CSV ファイルを ClickHouse にインポートするには、次の手順を実行します。

@@ -44,7 +44,7 @@ To create a search alert:
 
 <VerticalStepper headerLevel="h4">
 
-For an alert to be created for a search, the search must be saved. Users can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search is not saved.
+For an alert to be created for a search, the search must be saved. You can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search is not saved.
 
 #### Open alert creation dialog {#open-dialog}
 
@@ -67,7 +67,7 @@ Before saving, ClickStack visualizes the threshold condition so you can confirm 
 
 </VerticalStepper>
 
-Note that multiple alerts can be added to a search. If the above process is repeated, users will see the current alerts as tabs at the top of the edit alert dialog, with each alert assigned a number.
+Note that multiple alerts can be added to a search. If the above process is repeated, you will see the current alerts as tabs at the top of the edit alert dialog, with each alert assigned a number.
 
 <Image img={multiple_search_alerts} alt="Multiple alerts" size="md"/>
 
@@ -113,7 +113,7 @@ You can add a new webhook directly from this view. See [Adding a webhook](#add-w
 
 ## Adding a webhook {#add-webhook}
 
-During alert creation, users can either use an existing webhook or create one. Once created, the webhook will be available for reuse across other alerts.
+During alert creation, you can either use an existing webhook or create one. Once created, the webhook will be available for reuse across other alerts.
 
 A webhook can be created for different service types, including Slack and PagerDuty, as well as generic targets.
 
@@ -121,7 +121,7 @@ For example, consider the alert creation for a chart below. Before specifying th
 
 <Image img={add_new_webhook} alt="Add new webhook" size="lg"/>
 
-This opens the webhook creation dialog, where users can create a new webhook:
+This opens the webhook creation dialog, where you can create a new webhook:
 
 <Image img={add_webhook_dialog} alt="Webhook creation" size="md"/>
 
@@ -141,7 +141,7 @@ ClickStack alerts integrate out of the box with the following service types:
 The Slack API and PagerDuty integrations are only supported in ClickHouse Cloud.
 :::
 
-Depending on the service type, users will need to provide different details. Specifically:
+Depending on the service type, you will need to provide different details. Specifically:
 
 **Slack (Webhook URL)**
 
@@ -167,7 +167,7 @@ Alerts can be centrally managed through the alerts panel on the left-hand side o
 
 <Image img={manage_alerts} alt="Manage alerts" size="lg"/>
 
-From this view, users can see all alerts that have been created and are currently running in ClickStack.
+From this view, you can see all alerts that have been created and are currently running in ClickStack.
 
 <Image img={alerts_view} alt="Alerts view" size="lg"/>
 

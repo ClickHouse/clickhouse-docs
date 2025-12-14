@@ -3951,7 +3951,7 @@ SELECT
 
 ## toDateOrZero {#todateorzero}
 
-無効な引数が渡された場合に [Date](../data-types/date.md) の下限値を返す点を除き、[toDate](#todate) と同じです。[String](../data-types/string.md) 型の引数のみがサポートされています。
+無効な引数が渡された場合に [Date](../data-types/date.md) の下限値を返す点を除き、[toDate](#toDate) と同じです。[String](../data-types/string.md) 型の引数のみがサポートされています。
 
 **例**
 
@@ -3971,7 +3971,7 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 
 ## toDateOrNull {#todateornull}
 
-[toDate](#todate) と同様ですが、無効な引数を受け取った場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
+[toDate](#toDate) と同様ですが、無効な引数を受け取った場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
 
 **例**
 
@@ -3991,7 +3991,7 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 
 ## toDateOrDefault {#todateordefault}
 
-[toDate](#todate) と同様ですが、変換に失敗した場合はデフォルト値を返します。デフォルト値は、第 2 引数が指定されている場合はその値、指定されていない場合は [Date](../data-types/date.md) の最小値です。
+[toDate](#toDate) と同様ですが、変換に失敗した場合はデフォルト値を返します。デフォルト値は、第 2 引数が指定されている場合はその値、指定されていない場合は [Date](../data-types/date.md) の最小値です。
 
 **構文**
 
@@ -4058,7 +4058,7 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 
 ## toDateTimeOrZero {#todatetimeorzero}
 
-[toDateTime](#todatetime) と同様ですが、無効な引数を受け取った場合は [DateTime](../data-types/datetime.md) の最小値を返します。[String](../data-types/string.md) 型の引数のみがサポートされています。
+[toDateTime](#toDateTime) と同様ですが、無効な引数を受け取った場合は [DateTime](../data-types/datetime.md) の最小値を返します。[String](../data-types/string.md) 型の引数のみがサポートされています。
 
 **例**
 
@@ -4078,7 +4078,7 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 
 ## toDateTimeOrNull {#todatetimeornull}
 
-[toDateTime](#todatetime) と同様ですが、無効な引数が渡された場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
+[toDateTime](#toDateTime) と同様ですが、無効な引数が渡された場合は `NULL` を返します。[String](../data-types/string.md) 型の引数のみがサポートされます。
 
 **例**
 
@@ -4098,7 +4098,7 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 
 ## toDateTimeOrDefault {#todatetimeordefault}
 
-[toDateTime](#todatetime) と同様ですが、変換に失敗した場合はデフォルト値を返します。デフォルト値は、3 番目の引数が指定されていればその値、指定されていない場合は [DateTime](../data-types/datetime.md) の下限値です。
+[toDateTime](#toDateTime) と同様ですが、変換に失敗した場合はデフォルト値を返します。デフォルト値は、3 番目の引数が指定されていればその値、指定されていない場合は [DateTime](../data-types/datetime.md) の下限値です。
 
 **構文**
 
@@ -4312,7 +4312,7 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrZero {#todatetime64orzero}
 
-[toDateTime64](#todatetime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、無効な引数を受け取った場合は [DateTime64](../data-types/datetime64.md) の最小値を返します。
+[toDateTime64](#toDateTime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、無効な引数を受け取った場合は [DateTime64](../data-types/datetime64.md) の最小値を返します。
 
 **構文**
 
@@ -4348,13 +4348,13 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 
 **関連項目**
 
-* [toDateTime64](#todatetime64)。
+* [toDateTime64](#toDateTime64)。
 * [toDateTime64OrNull](#todatetime64ornull)。
 * [toDateTime64OrDefault](#todatetime64ordefault)。
 
 ## toDateTime64OrNull {#todatetime64ornull}
 
-[toDateTime64](#todatetime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、無効な引数を受け取った場合は `NULL` を返します。
+[toDateTime64](#toDateTime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、無効な引数を受け取った場合は `NULL` を返します。
 
 **構文**
 
@@ -4392,13 +4392,13 @@ SELECT
 
 **関連項目**
 
-* [toDateTime64](#todatetime64)
+* [toDateTime64](#toDateTime64)
 * [toDateTime64OrZero](#todatetime64orzero)
 * [toDateTime64OrDefault](#todatetime64ordefault)
 
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
-[toDateTime64](#todatetime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、
+[toDateTime64](#toDateTime64) と同様に、この関数は入力値を [DateTime64](../data-types/datetime64.md) 型の値に変換しますが、
 不正な引数を受け取った場合には、[DateTime64](../data-types/datetime64.md) 型のデフォルト値、
 または指定されたデフォルト値を返します。
 
@@ -4439,7 +4439,7 @@ SELECT
 
 **関連項目**
 
-* [toDateTime64](#todatetime64)。
+* [toDateTime64](#toDateTime64)。
 * [toDateTime64OrZero](#todatetime64orzero)。
 * [toDateTime64OrNull](#todatetime64ornull)。
 
@@ -5619,7 +5619,7 @@ SELECT toFixedString('foo', 8) AS s;
 └───────────────┘
 ```
 
-## toStringCutToZero {#tostringcuttozero}
+## toStringCutToZero {#toStringCutToZero}
 
 String または FixedString 型の引数を受け取り、最初に見つかったゼロバイト以降を切り捨てた String を返します。
 
@@ -6963,7 +6963,7 @@ SELECT date + interval_to_days AS result
 └────────────┘
 ```
 
-## toIntervalHour {#tointervalhour}
+## toIntervalHour {#toIntervalHour}
 
 長さ `n` 時間の間隔値を、データ型 [IntervalHour](../data-types/special-data-types/interval.md) として返します。
 
@@ -7477,8 +7477,8 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 **関連項目**
 
 * [RFC 1123](https://datatracker.ietf.org/doc/html/rfc1123)
-* [toDate](#todate)
-* [toDateTime](#todatetime)
+* [toDate](#toDate)
+* [toDateTime](#toDateTime)
 * [@xkcd による ISO 8601 に関するアナウンス](https://xkcd.com/1179/)
 * [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 

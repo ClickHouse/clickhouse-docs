@@ -3951,7 +3951,7 @@ SELECT
 
 ## toDateOrZero {#todateorzero}
 
-То же, что и [toDate](#todate), но при получении некорректного аргумента возвращает нижнюю границу типа [Date](../data-types/date.md). Поддерживается только аргумент типа [String](../data-types/string.md).
+То же, что и [toDate](#toDate), но при получении некорректного аргумента возвращает нижнюю границу типа [Date](../data-types/date.md). Поддерживается только аргумент типа [String](../data-types/string.md).
 
 **Пример**
 
@@ -3971,7 +3971,7 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 
 ## toDateOrNull {#todateornull}
 
-То же, что и [toDate](#todate), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
+То же, что и [toDate](#toDate), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
 
 **Пример**
 
@@ -3991,7 +3991,7 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 
 ## toDateOrDefault {#todateordefault}
 
-Аналог функции [toDate](#todate), но при неуспешном преобразовании возвращает значение по умолчанию — либо второй аргумент (если он указан), либо нижнюю границу типа [Date](../data-types/date.md).
+Аналог функции [toDate](#toDate), но при неуспешном преобразовании возвращает значение по умолчанию — либо второй аргумент (если он указан), либо нижнюю границу типа [Date](../data-types/date.md).
 
 **Синтаксис**
 
@@ -4058,7 +4058,7 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 
 ## toDateTimeOrZero {#todatetimeorzero}
 
-То же, что и [toDateTime](#todatetime), но возвращает нижнюю границу типа [DateTime](../data-types/datetime.md), если передан недопустимый аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
+То же, что и [toDateTime](#toDateTime), но возвращает нижнюю границу типа [DateTime](../data-types/datetime.md), если передан недопустимый аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
 
 **Пример**
 
@@ -4078,7 +4078,7 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 
 ## toDateTimeOrNull {#todatetimeornull}
 
-Такая же функция, как [toDateTime](#todatetime), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
+Такая же функция, как [toDateTime](#toDateTime), но возвращает `NULL`, если передан некорректный аргумент. Поддерживается только аргумент типа [String](../data-types/string.md).
 
 **Пример**
 
@@ -4098,7 +4098,7 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 
 ## toDateTimeOrDefault {#todatetimeordefault}
 
-Аналогично [toDateTime](#todatetime), но в случае неуспешного преобразования возвращает значение по умолчанию — либо третий аргумент (если он указан), либо нижнюю границу типа [DateTime](../data-types/datetime.md).
+Аналогично [toDateTime](#toDateTime), но в случае неуспешного преобразования возвращает значение по умолчанию — либо третий аргумент (если он указан), либо нижнюю границу типа [DateTime](../data-types/datetime.md).
 
 **Синтаксис**
 
@@ -4312,7 +4312,7 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrZero {#todatetime64orzero}
 
-Подобно функции [toDateTime64](#todatetime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но при некорректном аргументе возвращает минимальное значение [DateTime64](../data-types/datetime64.md).
+Подобно функции [toDateTime64](#toDateTime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но при некорректном аргументе возвращает минимальное значение [DateTime64](../data-types/datetime64.md).
 
 **Синтаксис**
 
@@ -4348,13 +4348,13 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 
 **См. также:**
 
-* [toDateTime64](#todatetime64).
+* [toDateTime64](#toDateTime64).
 * [toDateTime64OrNull](#todatetime64ornull).
 * [toDateTime64OrDefault](#todatetime64ordefault).
 
 ## toDateTime64OrNull {#todatetime64ornull}
 
-Подобно функции [toDateTime64](#todatetime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но возвращает `NULL`, если передан некорректный аргумент.
+Подобно функции [toDateTime64](#toDateTime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md), но возвращает `NULL`, если передан некорректный аргумент.
 
 **Синтаксис**
 
@@ -4392,13 +4392,13 @@ SELECT
 
 **См. также**
 
-* [toDateTime64](#todatetime64).
+* [toDateTime64](#toDateTime64).
 * [toDateTime64OrZero](#todatetime64orzero).
 * [toDateTime64OrDefault](#todatetime64ordefault).
 
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
-Как и [toDateTime64](#todatetime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md),
+Как и [toDateTime64](#toDateTime64), эта функция преобразует входное значение в значение типа [DateTime64](../data-types/datetime64.md),
 но возвращает либо значение по умолчанию типа [DateTime64](../data-types/datetime64.md),
 либо указанное значение по умолчанию, если передан некорректный аргумент.
 
@@ -4439,7 +4439,7 @@ SELECT
 
 **См. также**
 
-* [toDateTime64](#todatetime64).
+* [toDateTime64](#toDateTime64).
 * [toDateTime64OrZero](#todatetime64orzero).
 * [toDateTime64OrNull](#todatetime64ornull).
 
@@ -5619,7 +5619,7 @@ SELECT toFixedString('foo', 8) AS s;
 └───────────────┘
 ```
 
-## toStringCutToZero {#tostringcuttozero}
+## toStringCutToZero {#toStringCutToZero}
 
 Принимает аргумент типа String или FixedString. Возвращает строку типа String, усечённую на первом найденном нулевом байте.
 
@@ -6963,7 +6963,7 @@ SELECT date + interval_to_days AS result
 └────────────┘
 ```
 
-## toIntervalHour {#tointervalhour}
+## toIntervalHour {#toIntervalHour}
 
 Возвращает интервал продолжительностью `n` часов типа данных [IntervalHour](../data-types/special-data-types/interval.md).
 
@@ -7477,8 +7477,8 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 **См. также**
 
 * [RFC 1123](https://datatracker.ietf.org/doc/html/rfc1123)
-* [toDate](#todate)
-* [toDateTime](#todatetime)
+* [toDate](#toDate)
+* [toDateTime](#toDateTime)
 * [Анонс ISO 8601 от @xkcd](https://xkcd.com/1179/)
 * [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 

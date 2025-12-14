@@ -92,7 +92,6 @@ CREATE TABLE laion
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS index_granularity = 8192
 ```
 
 将 CSV 文件导入 ClickHouse：

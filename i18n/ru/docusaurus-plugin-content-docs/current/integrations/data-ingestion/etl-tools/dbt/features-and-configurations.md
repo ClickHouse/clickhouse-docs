@@ -617,8 +617,7 @@ CREATE TABLE db.table_local on cluster cluster (
     `item` String
 )
     ENGINE = ReplacingMergeTree
-    ORDER BY (id, created_at)
-    SETTINGS index_granularity = 8192;
+    ORDER BY (id, created_at);
 
 CREATE TABLE db.table on cluster cluster (
     `id` UInt64,
@@ -673,8 +672,7 @@ CREATE TABLE db.table_local on cluster cluster (
     `created_at` DateTime,
     `item` String
 )
-    ENGINE = MergeTree
-    SETTINGS index_granularity = 8192;
+    ENGINE = MergeTree;
 
 CREATE TABLE db.table on cluster cluster (
     `id` UInt64,

@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 
 ## Postgres vs ClickHouse: Equivalent and different concepts {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
-Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that users should be familiar with prior to working with ClickHouse from Postgres.
+Users coming from OLTP systems who are used to ACID transactions should be aware that ClickHouse makes deliberate compromises in not fully providing these in exchange for performance. ClickHouse semantics can deliver high durability guarantees and high write throughput if well understood. We highlight some key concepts below that you should be familiar with prior to working with ClickHouse from Postgres.
 
 ### Shards vs replicas {#shards-vs-replicas}
 
@@ -21,7 +21,7 @@ Unlike shards, replicas are additional Postgres instances that contain all or so
 
 **In contrast, ClickHouse shards and replicas are two key concepts related to data distribution and redundancy**. ClickHouse replicas can be thought of as analogous to Postgres replicas, although replication is eventually consistent with no notion of a primary. Sharding, unlike Postgres, is supported natively.
 
-A shard is a portion of your table data. You always have at least one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server with all shards used to run a query in parallel. Users can manually create shards for a table on different servers and insert data directly into them. Alternatively, a distributed table can be used with a sharding key defining to which shard data is routed. The sharding key can be random or as an output of a hash function. Importantly, a shard can consist of multiple replicas.
+A shard is a portion of your table data. You always have at least one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server with all shards used to run a query in parallel. You can manually create shards for a table on different servers and insert data directly into them. Alternatively, a distributed table can be used with a sharding key defining to which shard data is routed. The sharding key can be random or as an output of a hash function. Importantly, a shard can consist of multiple replicas.
 
 A replica is a copy of your data. ClickHouse always has at least one copy of your data, and so the minimum number of replicas is one. Adding a second replica of your data provides fault tolerance and potentially additional compute for processing more queries ([Parallel Replicas](https://clickhouse.com/blog/clickhouse-release-23-03#parallel-replicas-for-utilizing-the-full-power-of-your-replicas-nikita-mikhailov) can also be used to distribute the compute for a single query thus lowering latency). Replicas are achieved with the [ReplicatedMergeTree table engine](/engines/table-engines/mergetree-family/replication), which enables ClickHouse to keep multiple copies of data in sync across different servers. Replication is physical: only compressed parts are transferred between nodes, not queries.
 
@@ -43,7 +43,7 @@ PostgreSQL employs a different replication strategy compared to ClickHouse, prim
 
 ## User implications {#user-implications}
 
-In ClickHouse, the possibility of dirty reads - where users can write data to one replica and then read potentially unreplicated data from another—arises from its eventually consistent replication model managed via Keeper. This model emphasizes performance and scalability across distributed systems, allowing replicas to operate independently and sync asynchronously. As a result, newly inserted data might not be immediately visible across all replicas, depending on the replication lag and the time it takes for changes to propagate through the system.
+In ClickHouse, the possibility of dirty reads - where you can write data to one replica and then read potentially unreplicated data from another—arises from its eventually consistent replication model managed via Keeper. This model emphasizes performance and scalability across distributed systems, allowing replicas to operate independently and sync asynchronously. As a result, newly inserted data might not be immediately visible across all replicas, depending on the replication lag and the time it takes for changes to propagate through the system.
 
 Conversely, PostgreSQL's streaming replication model typically can prevent dirty reads by employing synchronous replication options where the primary waits for at least one replica to confirm the receipt of data before committing transactions. This ensures that once a transaction is committed, a guarantee exists that the data is available in another replica. In the event of primary failure, the replica will ensure queries see the committed data, thereby maintaining a stricter level of consistency.
 
@@ -55,7 +55,7 @@ Several options exist for increasing the consistency of reads should this be req
 
 ## Consistent routing {#consistent-routing}
 
-To overcome some of the limitations of eventual consistency, users can ensure clients are routed to the same replicas. This is useful in cases where multiple users are querying ClickHouse and results should be deterministic across requests. While results may differ, as new data inserted, the same replicas should be queried ensuring a consistent view.
+To overcome some of the limitations of eventual consistency, you can ensure clients are routed to the same replicas. This is useful in cases where multiple users are querying ClickHouse and results should be deterministic across requests. While results may differ, as new data inserted, the same replicas should be queried ensuring a consistent view.
 
 This can be achieved through several approaches depending on your architecture and whether you are using ClickHouse OSS or ClickHouse Cloud.
 
@@ -65,7 +65,7 @@ ClickHouse Cloud uses a single copy of data backed in S3 with multiple compute r
 
 Communication to the nodes of a ClickHouse Cloud service occurs through a proxy. HTTP and Native protocol connections will be routed to the same node for the period on which they are held open. In the case of HTTP 1.1 connections from most clients, this depends on the Keep-Alive window. This can be configured on most clients e.g. Node Js. This also requires a server side configuration, which will be higher than the client and is set to 10s in ClickHouse Cloud.
 
-To ensure consistent routing across connections e.g. if using a connection pool or if connections expire, users can either ensure the same connection is used (easier for native) or request the exposure of sticky endpoints. This provides a set of endpoints for each node in the cluster, thus allowing clients to ensure queries are deterministically routed.
+To ensure consistent routing across connections e.g. if using a connection pool or if connections expire, you can either ensure the same connection is used (easier for native) or request the exposure of sticky endpoints. This provides a set of endpoints for each node in the cluster, thus allowing clients to ensure queries are deterministically routed.
 
 > Contact support for access to sticky endpoints.
 
@@ -77,13 +77,13 @@ When you have only one shard and replicas (common since ClickHouse vertically sc
 
 While topologies with multiple shards and replicas are possible without a distributed table, these advanced deployments typically have their own routing infrastructure. We therefore assume deployments with more than one shard are using a Distributed table (distributed tables can be used with single shard deployments but are usually unnecessary).
 
-In this case, users should ensure consistent node routing is performed based on a property e.g. `session_id` or `user_id`. The settings [`prefer_localhost_replica=0`](/operations/settings/settings#prefer_localhost_replica), [`load_balancing=in_order`](/operations/settings/settings#load_balancing) should be [set in the query](/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
+In this case, you should ensure consistent node routing is performed based on a property e.g. `session_id` or `user_id`. The settings [`prefer_localhost_replica=0`](/operations/settings/settings#prefer_localhost_replica), [`load_balancing=in_order`](/operations/settings/settings#load_balancing) should be [set in the query](/operations/settings/query-level). This will ensure any local replicas of shards are preferred, with replicas preferred as listed in the configuration otherwise - provided they have the same number of errors - failover will occur with random selection if errors are higher. [`load_balancing=nearest_hostname`](/operations/settings/settings#load_balancing) can also be used as an alternative for this deterministic shard selection.
 
-> When creating a Distributed table, users will specify a cluster. This cluster definition, specified in config.xml, will list the shards (and their replicas) - thus allowing users to control the order in which they are used from each node. Using this, users can ensure selection is deterministic.
+> When creating a Distributed table, you will specify a cluster. This cluster definition, specified in config.xml, will list the shards (and their replicas) - thus allowing users to control the order in which they are used from each node. Using this, you can ensure selection is deterministic.
 
 ## Sequential consistency {#sequential-consistency}
 
-In exceptional cases, users may need sequential consistency.
+In exceptional cases, you may need sequential consistency.
 
 Sequential consistency in databases is where the operations on a database appear to be executed in some sequential order, and this order is consistent across all processes interacting with the database. This means that every operation appears to take effect instantaneously between its invocation and completion, and there is a single, agreed-upon order in which all operations are observed by any process.
 
@@ -99,7 +99,7 @@ This can be achieved in several ways (in order of preference):
 See [here](/cloud/reference/shared-merge-tree#consistency) for further details on enabling these settings.
 
 > Use of sequential consistency will place a greater load on ClickHouse Keeper.  The result can
-mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS users should use this approach cautiously and measure Keeper load.
+mean slower inserts and reads. SharedMergeTree, used in ClickHouse Cloud as the main table engine, sequential consistency [incurs less overhead and will scale better](/cloud/reference/shared-merge-tree#consistency). OSS you should use this approach cautiously and measure Keeper load.
 
 ## Transactional (ACID) support {#transactional-acid-support}
 
@@ -109,7 +109,7 @@ These properties are common for OLTP databases that act as a source of truth.
 
 While powerful, this comes with inherent limitations and makes PB scales challenging. ClickHouse compromises on these properties in order to provide fast analytical queries at scale while sustaining high write throughput.
 
-ClickHouse provides ACID properties under [limited configurations](/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. Users should not expect these properties outside of these cases and ensure these are not a requirement.
+ClickHouse provides ACID properties under [limited configurations](/guides/developer/transactional) - most simply when using a non-replicated instance of the MergeTree table engine with one partition. You should not expect these properties outside of these cases and ensure these are not a requirement.
 
 ## Compression {#compression}
 
@@ -187,4 +187,4 @@ The following table shows the equivalent ClickHouse data types for Postgres.
 | `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
 | `JSONB` | [String](/sql-reference/data-types/string) |
 
-*\* Production support for JSON in ClickHouse is under development. Currently users can either map JSON as String, and use [JSON functions](/sql-reference/functions/json-functions), or map the JSON directly to [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) if the structure is predictable. Read more about JSON [here](/integrations/data-formats/json/overview).*
+*\* Production support for JSON in ClickHouse is under development. Currently you can either map JSON as String, and use [JSON functions](/sql-reference/functions/json-functions), or map the JSON directly to [Tuples](/sql-reference/data-types/tuple) and [Nested](/sql-reference/data-types/nested-data-structures/nested) if the structure is predictable. Read more about JSON [here](/integrations/data-formats/json/overview).*

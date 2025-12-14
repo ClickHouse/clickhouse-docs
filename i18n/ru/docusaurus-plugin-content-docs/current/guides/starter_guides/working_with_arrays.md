@@ -283,7 +283,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-The [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) in the query above is used to remove null characters which appear after some of the airport's 3 letter designation.
+Функция [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero) в приведённом выше запросе используется для удаления нулевых символов, которые появляются после некоторых трёхбуквенных кодов аэропортов.
 
 With the data in this format, we can easily find the order of the busiest airports by finding the length of the rolled up "Destinations" arrays:
 

@@ -34,11 +34,11 @@ From the top-left **Analysis Mode** selector, choose **Event Deltas** (with a `T
 
 <Image img={event_deltas_no_selected} alt="Event Deltas not selected" size="lg"/>
 
-This view renders the distribution of spans over time, showing how latency varies alongside volume. The vertical axis represents latency, while the coloring indicates the density of traces at a given point with brighter yellow areas corresponding to a higher concentration of traces. With this visualization, users can quickly see how spans are distributed across both latency and count, making it easier to identify shifts or anomalies in performance.
+This view renders the distribution of spans over time, showing how latency varies alongside volume. The vertical axis represents latency, while the coloring indicates the density of traces at a given point with brighter yellow areas corresponding to a higher concentration of traces. With this visualization, you can quickly see how spans are distributed across both latency and count, making it easier to identify shifts or anomalies in performance.
 
 <Image img={event_deltas_highlighted} alt="Event Deltas highlighted" size="lg"/>
 
-Users can then select an area of the visualization - ideally one with higher duration spans and sufficient density, followed by **Filter by Selection**. This designates the "outliers" for analysis. Event Deltas will then identify the columns and key values most associated with those spans in this outlier subset compared to the rest of the dataset. By focusing on regions with meaningful outliers, ClickStack highlights the unique values that distinguish this subset from the overall corpus, surfacing the attributes most correlated with the observed performance differences.
+You can then select an area of the visualization - ideally one with higher duration spans and sufficient density, followed by **Filter by Selection**. This designates the "outliers" for analysis. Event Deltas will then identify the columns and key values most associated with those spans in this outlier subset compared to the rest of the dataset. By focusing on regions with meaningful outliers, ClickStack highlights the unique values that distinguish this subset from the overall corpus, surfacing the attributes most correlated with the observed performance differences.
 
 <Image img={event_deltas_selected} alt="Event Deltas selected" size="lg"/>
 
@@ -82,7 +82,7 @@ You can modify these parameters to explore different dimensions of your data:
 
 Event Deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event Deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g., two different services).
 
-When selecting an area, users should aim for subsets where there is a clear distribution of slower versus faster durations, allowing the higher-latency spans to be cleanly isolated for analysis. For example, note the selected area below clearly captures a set of slower spans for analysis.
+When selecting an area, you should aim for subsets where there is a clear distribution of slower versus faster durations, allowing the higher-latency spans to be cleanly isolated for analysis. For example, note the selected area below clearly captures a set of slower spans for analysis.
 
 <Image img={event_deltas_separation} alt="Event Deltas Separation" size="lg"/>
 

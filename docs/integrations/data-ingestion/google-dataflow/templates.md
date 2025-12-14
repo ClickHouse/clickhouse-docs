@@ -2,7 +2,7 @@
 sidebar_label: 'Templates'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: 'Users can ingest data into ClickHouse using Google Dataflow Templates'
+description: 'You can ingest data into ClickHouse using Google Dataflow Templates'
 title: 'Google Dataflow Templates'
 doc_type: 'guide'
 keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']

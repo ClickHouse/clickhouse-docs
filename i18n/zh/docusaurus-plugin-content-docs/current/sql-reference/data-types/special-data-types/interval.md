@@ -83,4 +83,4 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ## 另请参阅 {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) 运算符
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
+- [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数

@@ -64,7 +64,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-ここでは、指定した時刻を日付型に変換する [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) 関数を使用しています。別の方法として、1時間単位でバッチ化し、特定の日付でフィルタリングすることもできます。
+ここでは、指定した時刻を日付型に変換する [`toDate()`](/sql-reference/functions/type-conversion-functions#toDate) 関数を使用しています。別の方法として、1時間単位でバッチ化し、特定の日付でフィルタリングすることもできます。
 
 ```sql
 SELECT
@@ -108,7 +108,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-または [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) 関数を使用することもできます。
+または [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#toIntervalHour) 関数を使用することもできます。
 
 ```sql
 SELECT

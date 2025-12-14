@@ -98,7 +98,7 @@ differ in a few subtle ways:
   Cloud nodes have a 1 CPU-to-memory ratio, unlike Snowflake's 1.
   While a looser coupling is possible, services are coupled to the
   data, unlike Snowflake warehouses. Nodes will also pause if idle and
-  resume if subjected to queries. Users can also manually resize services if
+  resume if subjected to queries. You can also manually resize services if
   needed.
 
 * ClickHouse Cloud's query cache is node specific, unlike
@@ -109,7 +109,7 @@ differ in a few subtle ways:
 * Snowflake and ClickHouse Cloud take different approaches to scaling to
   increase query concurrency. Snowflake addresses this through a feature
   known as [multi-cluster warehouses](https://docs.snowflake.com/en/user-guide/warehouses-multicluster#benefits-of-multi-cluster-warehouses).
-  This feature allows users to add clusters to a warehouse. While this offers no
+  This feature allows you to add clusters to a warehouse. While this offers no
   improvement to query latency, it does provide additional parallelization and
   allows higher query concurrency. ClickHouse achieves this by adding more memory
   and CPU to a service through vertical or horizontal scaling. We don't explore the

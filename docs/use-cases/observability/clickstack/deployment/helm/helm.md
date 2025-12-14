@@ -321,7 +321,7 @@ For ingress-specific issues, TLS problems, or cloud deployment troubleshooting, 
 
 <JSONSupport/>
 
-Users can set these environment variables via either parameters or the `values.yaml` e.g.
+You can set these environment variables via either parameters or the `values.yaml` e.g.
 
 *values.yaml*
 ```yaml

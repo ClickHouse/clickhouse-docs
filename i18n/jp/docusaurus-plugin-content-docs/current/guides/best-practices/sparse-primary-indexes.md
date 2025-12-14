@@ -183,7 +183,7 @@ ENGINE = MergeTree
 -- highlight-next-line
 PRIMARY KEY (UserID, URL)
 ORDER BY (UserID, URL, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
+SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 [//]: # "<details open>"
@@ -912,7 +912,7 @@ ENGINE = MergeTree
 -- highlight-next-line
 PRIMARY KEY (URL, UserID)
 ORDER BY (URL, UserID, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
+SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 [元のテーブル](#a-table-with-a-primary-key) から 887 万行すべてを別のテーブルに挿入します。
