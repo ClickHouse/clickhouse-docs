@@ -5,14 +5,22 @@
     <link>https://clickhouse.com/docs/cloud/whats-new/cloud</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Nov 2025 18:25:53 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 14 Dec 2025 12:18:13 +0200</lastBuildDate>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ClickHouse Cloud - December 12, 2025</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#december-12-2025</link>
+      <description>- SAML SSO self-serve setup
+- Maximum replica size and scaling limits in Azure</description>
+      <pubDate>Fri, 12 Dec 2025 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-12-2025</guid>
+    </item>
     <item>
       <title>ClickHouse Cloud - November 21, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#november-21-2025</link>
       <description>- ClickHouse Cloud is now available in AWS Israel (Tel Aviv) — il-central-1
 - Improved the marketplace onboarding experience for setting up ClickHouse organizations to bill to marketplace pay-as-you-go subscriptions or private offers.</description>
-      <pubDate>Fri, 21 Nov 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 21 Nov 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-21-2025</guid>
     </item>
     <item>
@@ -22,7 +30,7 @@
 - GCP Japan (asia-northeast1)
 - AWS Seoul (Asia Pacific, ap-northeast-2): — now also supported in ClickPipes
 - Terraform and API now support adding tags to services and filtering services by tags.</description>
-      <pubDate>Fri, 14 Nov 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 14 Nov 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-14-2025</guid>
     </item>
     <item>
@@ -32,7 +40,7 @@
 - Custom hardware profiles (available on the Enterprise tier) now support idling.
 - ClickHouse Cloud now offers a simplified purchasing experience through AWS Marketplace, with separate options for pay-as-you-go and committed spend contracts.
 - Alerting is now available for ClickStack users in ClickHouse Cloud.</description>
-      <pubDate>Fri, 07 Nov 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 07 Nov 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-7-2025</guid>
     </item>
     <item>
@@ -40,14 +48,14 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#october-17-2025</link>
       <description>- Service Monitoring - Resource Utilization Dashboard
 - External Buckets</description>
-      <pubDate>Fri, 17 Oct 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 17 Oct 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#october-17-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - August 29, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-29-2025</link>
       <description>- ClickHouse Cloud Azure Private Link has switched from using Resource GUID to Resource ID filters for resource identification. You can still use the legacy Resource GUID, which is backward compatible, but we recommend switching to Resource ID filters. For migration details see the docs for Azure Private Link.</description>
-      <pubDate>Fri, 29 Aug 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 29 Aug 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-29-2025</guid>
     </item>
     <item>
@@ -55,40 +63,40 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-22-2025</link>
       <description>- ClickHouse Connector for AWS Glue
 - Change to the minimum number of replicas in a service
-- ClickHouse Cloud will begin to send notifications related to service scaling and service version upgrades, by default for administrator roles. Users can adjust their notification preferences in their notification settings.</description>
-      <pubDate>Fri, 22 Aug 2025 00:00:00 +0200</pubDate>
+- ClickHouse Cloud will begin to send notifications related to service scaling and service version upgrades, by default for administrator roles. You can adjust their notification preferences in their notification settings.</description>
+      <pubDate>Fri, 22 Aug 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-22-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - August 13, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-13-2025</link>
       <description>- ClickPipes for MongoDB CDC now in Private Preview</description>
-      <pubDate>Wed, 13 Aug 2025 00:00:00 +0200</pubDate>
+      <pubDate>Wed, 13 Aug 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-13-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - August 8, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#august-08-2025</link>
-      <description>- Notifications: : Users will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center.
+      <description>- Notifications: : You will now receive a UI notification when their service starts upgrading to a new ClickHouse version. Additional Email and Slack notifications can be added via the notification center.
 - ClickPipes: : Azure Blob Storage (ABS) ClickPipes support was added to the ClickHouse Terraform provider. See the provider documentation for an example of how to programmatically create an ABS ClickPipe.
 - [Bug fix] Object storage ClickPipes writing to a destination table using the Null engine now report &quot;Total records&quot; and &quot;Data ingested&quot; metrics in the UI.
 - [Bug fix] The “Time period” selector for metrics in the UI defaulted to “24 hours” regardless of the selected time period. This has now been fixed, and the UI correctly updates the charts for the selected time period.
 - Cross-region private link (AWS): is now Generally Available. Please refer to the documentation for the list of supported regions.</description>
-      <pubDate>Fri, 08 Aug 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 08 Aug 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-08-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - July 31, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#july-31-2025</link>
       <description>See full changelog for details.</description>
-      <pubDate>Thu, 31 Jul 2025 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 31 Jul 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#july-31-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - July 24, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#july-24-2025</link>
       <description>See full changelog for details.</description>
-      <pubDate>Thu, 24 Jul 2025 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 24 Jul 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#july-24-2025</guid>
     </item>
     <item>
@@ -100,7 +108,7 @@
 - Fast spin-up and wake-ups: as stateless nodes now launch with no disk dependencies
 - Stateless compute across both native and open formats: , including Iceberg and Delta Lake
 - We now support the ability to launch HIPAA compliant services in GCP europe-west4</description>
-      <pubDate>Fri, 11 Jul 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 11 Jul 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-11-2025</guid>
     </item>
     <item>
@@ -108,15 +116,15 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#june-27-2025</link>
       <description>- We now officially support a Terraform provider for managing database privileges
 - Enterprise tier services can now enlist in the slow release channel to defer</description>
-      <pubDate>Fri, 27 Jun 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 27 Jun 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-27-2025</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - June 13, 2025</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2025</link>
-      <description>- We&apos;re excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow users to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing.
+      <description>- We&apos;re excited to announce that ClickHouse Cloud Dashboards are now generally available. Dashboards allow you to visualize queries on dashboards, interact with data via filters and query parameters, and manage sharing.
 - API key IP filters: we are introducing an additional layer of protection for your interactions with ClickHouse Cloud. When generating an API key, you may setup an IP allow list to limit where the API key may be used. Please refer to the documentation for details.</description>
-      <pubDate>Fri, 13 Jun 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 13 Jun 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2025</guid>
     </item>
     <item>
@@ -132,7 +140,7 @@
 - For existing dashboards that have already been created, Organization Administrators can assign existing dashboards to themselves as owners.
 - You can now add a table or chart from the SQL console to a dashboard from the query view.
 - We are enlisting preview participants for Distributed cache</description>
-      <pubDate>Fri, 30 May 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 30 May 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-30-2025</guid>
     </item>
     <item>
@@ -142,7 +150,7 @@
 - Memory &amp; CPU: Graphs for CGroupMemoryTotal (Allocated Memory), CGroupMaxCPU (allocated CPU),
 - Data Transfer: Graphs showing data ingress and egress from ClickHouse Cloud. Learn more here.
 - We&apos;re excited to announce the launch of our new ClickHouse Cloud Prometheus/Grafana mix-in,</description>
-      <pubDate>Fri, 16 May 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 16 May 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-16-2025</guid>
     </item>
     <item>
@@ -153,7 +161,7 @@
 - Introduced user facing notifications for ClickPipes. This feature sends
 - MySQL CDC private preview: is now open. This lets customers replicate MySQL
 - Introduced AWS PrivateLink for ClickPipes. You can use AWS PrivateLink to</description>
-      <pubDate>Fri, 18 Apr 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 18 Apr 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-18-2025</guid>
     </item>
     <item>
@@ -161,7 +169,7 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#april-4-2025</link>
       <description>- Slack notifications for ClickHouse Cloud: ClickHouse Cloud now supports Slack notifications for billing, scaling, and ClickPipes events, in addition to in-console and email notifications. These notifications are sent via the ClickHouse Cloud Slack application. Organization admins can configure these notifications via the notification center by specifying slack channels to which notifications should be sent.
 - Users running Production and Development services will now see ClickPipes and data transfer usage price on their bills.</description>
-      <pubDate>Fri, 04 Apr 2025 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 04 Apr 2025 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-4-2025</guid>
     </item>
     <item>
@@ -169,7 +177,7 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#march-21-2025</link>
       <description>- Cross-region Private Link connectivity on AWS is now in Beta. Please refer to
 - The maximum replica size available for services on AWS is now set to 236 GiB RAM.</description>
-      <pubDate>Fri, 21 Mar 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 21 Mar 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-21-2025</guid>
     </item>
     <item>
@@ -177,7 +185,7 @@
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#march-7-2025</link>
       <description>- New UsageCost API endpoint: The API specification now supports a new endpoint
 - Terraform provider v2.1.0 release supports enabling the MySQL endpoint.</description>
-      <pubDate>Fri, 07 Mar 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 07 Mar 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-7-2025</guid>
     </item>
     <item>
@@ -201,7 +209,7 @@ AWS Middle East (UAE) availability:
 ClickHouse Cloud guardrails:
 - Refer to the usage limits
 - If your service is already above these limits, we will permit a 10% increase.</description>
-      <pubDate>Fri, 21 Feb 2025 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 21 Feb 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-21-2025</guid>
     </item>
     <item>
@@ -234,7 +242,7 @@ JWT token support:
 Prometheus integration improvements:
 - Organization-level endpoint: . We&apos;ve introduced an enhancement to our Prometheus integration for ClickHouse Cloud. In addition to service-level metrics, the API now includes an endpoint for organization-level metrics. This new endpoint automatically collects metrics for all services within your organization, streamlining the process of exporting metrics into your Prometheus collector. These metrics can be integrated with visualization tools like Grafana and Datadog for a more comprehensive view of your organization&apos;s performance.
 - Filtered metrics: . We&apos;ve added support for returning a filtered list of metrics in our Prometheus integration for ClickHouse Cloud. This feature helps reduce response payload size by enabling you to focus on metrics that are critical for monitoring the health of your service.</description>
-      <pubDate>Mon, 27 Jan 2025 00:00:00 +0100</pubDate>
+      <pubDate>Mon, 27 Jan 2025 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-27-2025</guid>
     </item>
     <item>
@@ -245,7 +253,7 @@ Prometheus integration improvements:
 Force OpenAPI key expiration:
 
 Custom emails for notifications:</description>
-      <pubDate>Fri, 20 Dec 2024 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 20 Dec 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-20-2024</guid>
     </item>
     <item>
@@ -277,7 +285,7 @@ ClickPipes now supports cross-VPC resource access on AWS:
 ClickPipes now supports IAM for AWS MSK:
 
 Maximum replica size for new services on AWS:</description>
-      <pubDate>Fri, 06 Dec 2024 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 06 Dec 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-6-2024</guid>
     </item>
     <item>
@@ -288,14 +296,14 @@ Maximum replica size for new services on AWS:</description>
 AI-powered SQL autocomplete:
 
 New &quot;billing&quot; role:</description>
-      <pubDate>Fri, 22 Nov 2024 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 22 Nov 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-22-2024</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - November 8, 2024</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#november-8-2024</link>
       <description>Customer Notifications in ClickHouse Cloud:</description>
-      <pubDate>Fri, 08 Nov 2024 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 08 Nov 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-8-2024</guid>
     </item>
     <item>
@@ -308,7 +316,7 @@ Compute-compute separation is now in private preview for GCP and Azure:
 Self-service MFA recovery codes:
 
 ClickPipes update: custom certificates, latency insights, and more.:</description>
-      <pubDate>Fri, 04 Oct 2024 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 04 Oct 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#october-4-2024</guid>
     </item>
     <item>
@@ -317,7 +325,7 @@ ClickPipes update: custom certificates, latency insights, and more.:</descriptio
       <description>New Terraform provider version - v1.0.0:
 
 2024 SOC 2 Type II report and updated ISO 27001 certificate:</description>
-      <pubDate>Thu, 29 Aug 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 29 Aug 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-29-2024</guid>
     </item>
     <item>
@@ -326,7 +334,7 @@ ClickPipes update: custom certificates, latency insights, and more.:</descriptio
       <description>Compute-compute separation is now in Private Preview for AWS:
 
 ClickPipes for S3 and GCS now in GA, Continuous mode support:</description>
-      <pubDate>Thu, 15 Aug 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 15 Aug 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#august-15-2024</guid>
     </item>
     <item>
@@ -339,7 +347,7 @@ Table inspector in Cloud console:
 New Java Client API:
 
 New Analyzer is enabled by default:</description>
-      <pubDate>Thu, 18 Jul 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 18 Jul 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#july-18-2024</guid>
     </item>
     <item>
@@ -356,21 +364,21 @@ Prometheus endpoint for metrics (private preview):
 
 Other features:
 - Configurable backups to configure custom backup policies like frequency, retention, and schedule are now Generally Available.</description>
-      <pubDate>Fri, 28 Jun 2024 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-28-2024</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - June 13, 2024</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2024</link>
       <description>Configurable offsets for Kafka ClickPipes Connector (Beta):
-- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal for users who need to reprocess all historical data.
-- From latest: Begin consuming data from the most recent offset. This is useful for users who are only interested in new messages.
-- From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling users to resume processing from an exact point in time.
+- From the beginning: Start consuming data from the very beginning of the Kafka topic. This option is ideal if you need to reprocess all historical data.
+- From latest: Begin consuming data from the most recent offset. This is useful if you are only interested in new messages.
+- From a timestamp: Start consuming data from messages that were produced at or after a specific timestamp. This feature allows for more precise control, enabling you to resume processing from an exact point in time.
 
 Enroll services to the Fast release channel:
 
 Terraform support for horizontal scaling:</description>
-      <pubDate>Thu, 13 Jun 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 13 Jun 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-13-2024</guid>
     </item>
     <item>
@@ -381,7 +389,7 @@ Terraform support for horizontal scaling:</description>
 ClickHouse Cloud for Microsoft Azure is now in beta:
 
 Set up Private Link via the Cloud console:</description>
-      <pubDate>Thu, 30 May 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 30 May 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-30-2024</guid>
     </item>
     <item>
@@ -394,7 +402,7 @@ Configurable backups (private preview):
 Create APIs from your SQL queries (Beta):
 
 Official ClickHouse Certification is now available:</description>
-      <pubDate>Fri, 17 May 2024 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 17 May 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-17-2024</guid>
     </item>
     <item>
@@ -408,7 +416,7 @@ Other changes:
 - Output formats support in the SQL console
 - ClickPipes Kafka connector supports multi-broker setup
 - PowerBI connector supports providing ODBC driver configuration options.</description>
-      <pubDate>Thu, 25 Apr 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 25 Apr 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-25-2024</guid>
     </item>
     <item>
@@ -427,14 +435,14 @@ Integrations changes:
 - DBT: Fixed model settings for custom materialization.
 - Java client: Fixed bug with incorrect error code parsing
 - Python client: Fixed parameters binding for numeric types, fixed bugs with number list in query binding, added SQLAlchemy Point support.</description>
-      <pubDate>Thu, 18 Apr 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-18-2024</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - April 4, 2024</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#april-4-2024</link>
       <description>Introducing the new ClickHouse Cloud console:</description>
-      <pubDate>Thu, 04 Apr 2024 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 04 Apr 2024 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-4-2024</guid>
     </item>
     <item>
@@ -465,7 +473,7 @@ Integrations changes:
 
 Security updates:
 - Updated ClickHouse Cloud to prevent &quot;Role-based Access Control is bypassed when query caching is enabled&quot; (CVE-2024-22412)</description>
-      <pubDate>Thu, 28 Mar 2024 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-28-2024</guid>
     </item>
     <item>
@@ -487,7 +495,7 @@ Integrations changes:
 - Kafka Connector: Fixed NPE in connection initialization, added ability to specify JDBC driver options
 - Golang client: Reduced the memory footprint for handling responses, fixed Date32 extreme values, fixed error reporting when compression is enabled
 - Python client: Improved timezone support in datetime parameters, improved performance for Pandas DataFrame</description>
-      <pubDate>Thu, 14 Mar 2024 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 14 Mar 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-14-2024</guid>
     </item>
     <item>
@@ -505,7 +513,7 @@ Integrations changes:
 - Metabase: Fixed incompatibility with ClickHouse lower than version 23.8
 - DBT: Added the ability to pass settings to model creation
 - Node.js client: Added support for long-running queries (&gt;1hr) and handling of empty values gracefully</description>
-      <pubDate>Thu, 29 Feb 2024 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 29 Feb 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-29-2024</guid>
     </item>
     <item>
@@ -534,7 +542,7 @@ Integrations changes:
 Settings changes:
 - usemysqltypesinshow_columns is no longer required. It will be automatically enabled when you connect through the MySQL interface.
 - asyncinsertmaxdatasize now has the default value of 10 MiB</description>
-      <pubDate>Thu, 15 Feb 2024 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 15 Feb 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-15-2024</guid>
     </item>
     <item>
@@ -560,7 +568,7 @@ Integrations changes:
 - Added support for string-based dates in DateTime64
 - Metabase
 - Added support for a connection to multiple databases</description>
-      <pubDate>Fri, 02 Feb 2024 00:00:00 +0100</pubDate>
+      <pubDate>Fri, 02 Feb 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-2-2024</guid>
     </item>
     <item>
@@ -586,7 +594,7 @@ Integrations changes:
 
 Reliability changes:
 - User-facing backward incompatible change: Previously, two features (isdeleted and `OPTIMIZE CLEANUP) under certain conditions could lead to corruption of the data in ClickHouse. To protect the integrity of the data of our users, while keeping the core of the functionality, we adjusted how this feature works. Specifically, the MergeTree setting cleandeletedrows is now deprecated and has no effect anymore. The CLEANUP keyword is not allowed by default (to use it you will need to enable allowexperimentalreplacingmergewithcleanup). If you decide to use CLEANUP, you need to make sure that it is always used together with FINAL, and you must guarantee that no rows with older versions will be inserted after you run OPTIMIZE FINAL CLEANUP`.</description>
-      <pubDate>Thu, 18 Jan 2024 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 18 Jan 2024 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-18-2024</guid>
     </item>
     <item>
@@ -597,7 +605,7 @@ Reliability changes:
 - Enabled ability to set up AWS Private Link and GCP Private Service Connect via OpenAPI
 
 Console changes:
-- Enabled seamless login to SQL console for users with the Developer role
+- Enabled seamless login to SQL console if you have the Developer role
 - Streamlined workflow for setting idling controls during onboarding
 
 Integrations changes:
@@ -616,7 +624,7 @@ Security announcements:
 - CVE 2023-47118 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
 - CVE-2023-48704 (CVSS 7.0) - a heap buffer overflow vulnerability affecting the native interface running by default on port 9000/tcp
 - CVE 2023-48298 (CVSS 5.9) - an integer underflow vulnerability in the FPC compressions codec</description>
-      <pubDate>Mon, 18 Dec 2023 00:00:00 +0100</pubDate>
+      <pubDate>Mon, 18 Dec 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-18-2023</guid>
     </item>
     <item>
@@ -638,7 +646,7 @@ Integrations changes:
 - Node.js client: Added support for Parquet format.
 - Metabase: Added datetimeDiff function support.
 - Python client: Added support for special characters in column names. Fixed timezone parameter binding.</description>
-      <pubDate>Wed, 22 Nov 2023 00:00:00 +0100</pubDate>
+      <pubDate>Wed, 22 Nov 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-22-2023</guid>
     </item>
     <item>
@@ -666,7 +674,7 @@ Integrations changes:
 - Fixed insertion of an empty map into JSON column, compression buffer cleanup, query escaping, panic on zero/nil for IPv4 and IPv6
 - Added watchdog on canceled inserts
 - Improved distributed table support with tests</description>
-      <pubDate>Thu, 02 Nov 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 02 Nov 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-2-2023</guid>
     </item>
     <item>
@@ -683,7 +691,7 @@ Integrations changes:
 - Added support for secure connections with using Trust Store
 - Node.js client: Fixed keep-alive behavior for insert queries
 - Metabase: Fixed IPv4/IPv6 column serialization</description>
-      <pubDate>Thu, 19 Oct 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 19 Oct 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#october-19-2023</guid>
     </item>
     <item>
@@ -700,7 +708,7 @@ Integrations changes:
 - Improved deduplication behavior to account for dynamic fields
 - Added support for tableRefreshInterval to re-fetch table changes from ClickHouse
 - Fixed an SSL connection issue and type mappings between PowerBI and ClickHouse data types</description>
-      <pubDate>Thu, 28 Sep 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 28 Sep 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#september-28-2023</guid>
     </item>
     <item>
@@ -716,7 +724,7 @@ Integrations changes:
 - Python client: Compatible with Pandas 2.1.0, dropped Python 3.7 support, added support for nullable JSON type
 - Node.js client: added default_format setting support
 - Golang client: fixed bool type handling, removed string limits</description>
-      <pubDate>Thu, 07 Sep 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 07 Sep 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#september-7-2023</guid>
     </item>
     <item>
@@ -741,7 +749,7 @@ Integrations changes:
 - Grafana: Improved filter logic, database name handling, and added support for TimeInteval with sub-second precision
 - Golang Client: Fixed several batch and async data loading issues
 - Metabase: Support v0.47, added connection impersonation, fixed data types mappings</description>
-      <pubDate>Thu, 24 Aug 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 24 Aug 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#aug-24-2023</guid>
     </item>
     <item>
@@ -757,7 +765,7 @@ Console changes:
 - Added a new data loading experience with more table creation configuration options
 - Introduced ability to load a file from a URL using the cloud console
 - Improved invitation flow with additional options to join a different organization and see all your outstanding invitations</description>
-      <pubDate>Thu, 27 Jul 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 27 Jul 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#july-27-2023</guid>
     </item>
     <item>
@@ -779,7 +787,7 @@ Integrations changes:
 
 Core database changes:
 - Query cache can be enabled in ClickHouse Cloud. When it is enabled, successful queries are cached for a minute by default and subsequent queries will use the cached result.</description>
-      <pubDate>Fri, 14 Jul 2023 00:00:00 +0200</pubDate>
+      <pubDate>Fri, 14 Jul 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#july-14-2023</guid>
     </item>
     <item>
@@ -804,7 +812,7 @@ ClickHouse 23.4 version upgrade:
 
 Administration changes:
 - Expanded local dictionary creation for non &quot;default&quot; users</description>
-      <pubDate>Tue, 20 Jun 2023 00:00:00 +0200</pubDate>
+      <pubDate>Tue, 20 Jun 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#june-20-2023</guid>
     </item>
     <item>
@@ -832,7 +840,7 @@ Integrations changes:
 Performance and reliability:
 - Improved efficiency and performance of write heavy workloads
 - Deployed incremental backup strategy to increase speed and efficiency of backups</description>
-      <pubDate>Tue, 30 May 2023 00:00:00 +0200</pubDate>
+      <pubDate>Tue, 30 May 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-30-2023</guid>
     </item>
     <item>
@@ -854,7 +862,7 @@ Console changes:
 
 Performance and reliability:
 - Added more granular control over terminate query permission for administrators</description>
-      <pubDate>Thu, 11 May 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 11 May 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-11-2023</guid>
     </item>
     <item>
@@ -876,7 +884,7 @@ Performance and reliability:
 
 Bug fixes:
 - Fixed a bug causing &apos;Cell Towers&apos; sample dataset import to fail</description>
-      <pubDate>Thu, 04 May 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 04 May 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#may-4-2023</guid>
     </item>
     <item>
@@ -899,7 +907,7 @@ ClickHouse 23.3 version upgrade:
 - Lightweight deletes are production-ready–see 23.3 release blog for details
 - Added support for multi-stage PREWHERE-see 23.2 release blog for details
 - Dozens of new features, performance improvements, and bug fixes–see detailed changelogs for 23.3 and 23.2</description>
-      <pubDate>Thu, 20 Apr 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 20 Apr 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-20-2023</guid>
     </item>
     <item>
@@ -923,7 +931,7 @@ Integrations changes:
 
 Bug fixes:
 - Fixed behavior where running INSERT INTO ... SELECT ... from the SQL console incorrectly applied the same row limit as select queries</description>
-      <pubDate>Thu, 06 Apr 2023 00:00:00 +0200</pubDate>
+      <pubDate>Thu, 06 Apr 2023 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-6-2023</guid>
     </item>
     <item>
@@ -957,7 +965,7 @@ Integrations changes:
 Bug fixes:
 - Fixed a bug resulting in slow initial provisioning and startup times for new services
 - Fixed a bug that resulted in slower query performance due to cache misconfiguration</description>
-      <pubDate>Thu, 23 Mar 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 23 Mar 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-23-2023</guid>
     </item>
     <item>
@@ -981,7 +989,7 @@ Integrations:
 - Metabase: Metabase 0.46.x compatibility and support for SimpleAggregateFunction
 - Kafka-Connect: Implicit date conversion and better handling for null columns
 - Java Client: Nested conversion to Java maps</description>
-      <pubDate>Thu, 09 Mar 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 09 Mar 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-9-2023</guid>
     </item>
     <item>
@@ -1018,7 +1026,7 @@ Reliability and performance:
 Bug fixes:
 - Fixed behavior where resetting service password did not adhere to the password policy
 - Made organization invite email validation case-insensitive</description>
-      <pubDate>Thu, 23 Feb 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 23 Feb 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-23-2023</guid>
     </item>
     <item>
@@ -1043,7 +1051,7 @@ Performance and reliability:
 - Improved the scale-down behavior via more accurate activity tracking
 - Fixed a bug where SQL console CSV export was truncated
 - Fixed a bug resulting in intermittent sample data upload failures</description>
-      <pubDate>Thu, 02 Feb 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 02 Feb 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-2-2023</guid>
     </item>
     <item>
@@ -1080,7 +1088,7 @@ Reliability and performance:
 - Set the compatibility setting to the version with which the service is initially launched, for newly launched services
 
 Bug fixes:</description>
-      <pubDate>Thu, 12 Jan 2023 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 12 Jan 2023 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-12-2023</guid>
     </item>
     <item>
@@ -1097,7 +1105,7 @@ Reliability and performance:
 
 Integrations changes:
 - The Metabase plugin got a long-awaited v0.9.1 major update. Now it is compatible with the latest Metabase version and has been thoroughly tested against ClickHouse Cloud.</description>
-      <pubDate>Tue, 20 Dec 2022 00:00:00 +0100</pubDate>
+      <pubDate>Tue, 20 Dec 2022 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-20-2022</guid>
     </item>
     <item>
@@ -1134,7 +1142,7 @@ Documentation changes:
 
 Bug fixes:
 - Addressed known issue where restore from backup did not always work due to dependency resolution</description>
-      <pubDate>Tue, 06 Dec 2022 00:00:00 +0100</pubDate>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#december-6-2022---general-availability</guid>
     </item>
     <item>
@@ -1166,7 +1174,7 @@ Bug fixes:
 
 Known issues in this release:
 - Restore from backup may not work due to dependency resolution</description>
-      <pubDate>Tue, 29 Nov 2022 00:00:00 +0100</pubDate>
+      <pubDate>Tue, 29 Nov 2022 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-29-2022</guid>
     </item>
     <item>
@@ -1188,7 +1196,7 @@ Bug fixes:
 
 Known issues:
 - Restore from backup may not work due to dependency resolution</description>
-      <pubDate>Thu, 17 Nov 2022 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 17 Nov 2022 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-17-2022</guid>
     </item>
     <item>
@@ -1213,7 +1221,7 @@ ClickHouse 22.10 version upgrade:
 - Added MySQL-compatible syntax to reset settings SET setting_name = DEFAULT.
 - Added functions for Morton curve encoding, Java integer hashing, and random number generation.
 - See the detailed 22.10 changelog for the complete list of changes.</description>
-      <pubDate>Thu, 03 Nov 2022 00:00:00 +0100</pubDate>
+      <pubDate>Thu, 03 Nov 2022 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#november-3-2022</guid>
     </item>
     <item>
@@ -1231,14 +1239,14 @@ Console changes:
 - Improved tooltips and help text, and added a link to the pricing page in the Usage view
 - Improved workflow when switching options for IP filtering
 - Added resend email confirmation button to the cloud console</description>
-      <pubDate>Tue, 25 Oct 2022 00:00:00 +0200</pubDate>
+      <pubDate>Tue, 25 Oct 2022 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#october-25-2022</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - October 4, 2022 - Beta</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#october-4-2022---beta</link>
       <description>See full changelog for details.</description>
-      <pubDate>Tue, 04 Oct 2022 00:00:00 +0200</pubDate>
+      <pubDate>Tue, 04 Oct 2022 00:00:00 +0300</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#october-4-2022---beta</guid>
     </item>
 
