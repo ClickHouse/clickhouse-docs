@@ -247,7 +247,7 @@ SELECT numericIndexedVectorGetValue(numericIndexedVectorBuild(mapFromArrays([1, 
 **语法**
 
 ```sql
-numericIndexedVector逐点相加(v1, v2)
+numericIndexedVectorPointwiseAdd(v1, v2)
 ```
 
 **参数**

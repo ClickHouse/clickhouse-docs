@@ -62,61 +62,55 @@ SELECT format('{1} {0} {1}', 'World', 'Hello')
 └─────────────────────────────────────────┘
 ```
 
-**Implicit numbering**
+**隐式编号**
 
 ```sql title=Query
-SELECT format('{} {}', '你好', '世界')
+SELECT format('{} {}', 'Hello', 'World')
 ```
 
 ```response title=Response
 ┌─format('{} {}', 'Hello', 'World')─┐
-│ 你好，世界                         │
+│ Hello World                       │
 └───────────────────────────────────┘
 ```
-
-
-
 ## overlay {#overlay}
 
-Introduced in: v24.9
+引入版本：v24.9
 
+从以 1 为起点的索引 `offset` 开始，将字符串 `input` 的一部分替换为另一个字符串 `replace`。
 
-Replaces part of the string `input` with another string `replace`, starting at the 1-based index `offset`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 overlay(s, replace, offset[, length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the string `s`. [`Int`](/sql-reference/data-types/int-uint)
-- `length` — Optional. An integer type `Int`. `length` specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of bytes removed from `s` equals the length of `replace`; otherwise `length` bytes are removed. [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `replace` — 用于替换的字符串。[`const String`](/sql-reference/data-types/string)
+* `offset` — 整数类型 `Int`（从 1 开始计数）。如果 `offset` 为负数，则从字符串 `s` 的末尾开始计数。[`Int`](/sql-reference/data-types/int-uint)
+* `length` — 可选。整数类型 `Int`。`length` 指定在输入字符串 `s` 中要替换的片段长度。如果未指定 `length`，则从 `s` 中移除的字节数等于 `replace` 的长度；否则移除 `length` 个字节。[`Int`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回替换后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Basic replacement**
+**基本替换**
 
 ```sql title=Query
-SELECT overlay('我的父亲来自墨西哥。', '母亲', 4) AS res;
+SELECT overlay('私の父はメキシコ出身です。', '母', 4) AS res;
 ```
 
 ```response title=Response
 ┌─res──────────────────────┐
-│ 我妈妈来自墨西哥。        │
+│ 私の母はメキシコ出身です。│
 └──────────────────────────┘
 ```
 
-**Replacement with length**
+**保留长度的替换**
 
 ```sql title=Query
 SELECT overlay('My dad is from Mexico.', 'dad', 4, 6) AS res;
@@ -128,39 +122,34 @@ SELECT overlay('My dad is from Mexico.', 'dad', 4, 6) AS res;
 └───────────────────────┘
 ```
 
-
-
 ## overlayUTF8 {#overlayUTF8}
 
-Introduced in: v24.9
+自 v24.9 引入
 
+从以 1 为起始的索引 `offset` 位置开始，将字符串 `s` 的一部分替换为另一个字符串 `replace`。
+假定该字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，则不会抛出异常，结果未定义。
 
-Replace part of the string `s` with another string `replace`, starting at the 1-based index `offset`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 overlayUTF8(s, replace, offset[, length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string. [`String`](/sql-reference/data-types/string)
-- `replace` — The replacement string. [`const String`](/sql-reference/data-types/string)
-- `offset` — An integer type `Int` (1-based). If `offset` is negative, it is counted from the end of the input string `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. Specifies the length of the snippet within the input string `s` to be replaced. If `length` is not specified, the number of characters removed from `s` equals the length of `replace`, otherwise `length` characters are removed. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `replace` — 用于替换的字符串。[`const String`](/sql-reference/data-types/string)
+* `offset` — 整数类型 `Int`（从 1 开始计数）。如果 `offset` 为负数，则从输入字符串 `s` 的末尾开始计数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 可选。指定在输入字符串 `s` 中要被替换的片段长度。如果未指定 `length`，则从 `s` 中移除的字符数等于 `replace` 的长度，否则移除 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回替换后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string with replacement. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**UTF-8 replacement**
+**UTF-8 替换**
 
 ```sql title=Query
 SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
@@ -172,38 +161,33 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 └───────────────────────────────┘
 ```
 
-
-
 ## printf {#printf}
 
-Introduced in: v24.8
+引入版本：v24.8
 
+`printf` 函数会使用参数中提供的值（字符串、整数、浮点数等）来格式化给定的字符串，类似于 C++ 中的 `printf` 函数。
+格式字符串可以包含以 `%` 字符开头的格式说明符。
+不属于 `%` 及其后续格式说明符的任何内容都被视为字面文本，并原样复制到输出中。
+要输出字面意义上的 `%` 字符，可以使用 `%%` 进行转义。
 
-The `printf` function formats the given string with the values (strings, integers, floating-points etc.) listed in the arguments, similar to printf function in C++.
-The format string can contain format specifiers starting with `%` character.
-Anything not contained in `%` and the following format specifier is considered literal text and copied verbatim into the output.
-Literal `%` character can be escaped by `%%`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 printf(format[, sub1, sub2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `format` — The format string with `%` specifiers. [`String`](/sql-reference/data-types/string)
-- `sub1, sub2, ...` — Optional. Zero or more values to substitute into the format string. [`Any`](/sql-reference/data-types)
+* `format` — 带有 `%` 说明符的格式字符串。[`String`](/sql-reference/data-types/string)
+* `sub1, sub2, ...` — 可选。要替换到格式字符串中的零个或多个值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个格式化后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a formatted string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**C++-style formatting**
+**C++ 风格的格式化**
 
 ```sql title=Query
 SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
@@ -215,36 +199,31 @@ SELECT printf('%%%s %s %d', 'Hello', 'World', 2024);
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## regexpQuoteMeta {#regexpQuoteMeta}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+为在正则表达式中具有特殊含义的这些字符添加反斜杠：`\0`、`\\`、`|`、`(`、`)`、`^`、`$`、`.`、`[`、`]`、`?`、`*`、`+`、`{`、`:`、`-`。
+该实现与 `re2::RE2::QuoteMeta` 略有不同。
+它将空字节转义为 `\0` 而不是 `\x00`，并且只转义必要的字符。
 
-Adds a backslash before these characters with special meaning in regular expressions: `\0`, `\\`, `|`, `(`, `)`, `^`, `$`, `.`, `[`, `]`, `?`, `*`, `+`, `{`, `:`, `-`.
-This implementation slightly differs from re2::RE2::QuoteMeta.
-It escapes zero byte as `\0` instead of `\x00` and it escapes only required characters.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 regexpQuoteMeta(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string containing characters to be escaped for regex. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串，其中包含需要在正则表达式中转义的字符。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中的正则表达式特殊字符已被转义。[`String`](/sql-reference/data-types/string)
 
-Returns a string with regex special characters escaped. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Escape regex special characters**
+**对正则表达式的特殊字符进行转义**
 
 ```sql title=Query
 SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
@@ -256,38 +235,33 @@ SELECT regexpQuoteMeta('Hello. [World]? (Yes)*') AS res
 └───────────────────────────────┘
 ```
 
-
-
 ## replaceAll {#replaceAll}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+将 `haystack` 中所有出现的子字符串 `pattern` 替换为字符串 `replacement`。
 
-Replaces all occurrences of the substring `pattern` in `haystack` by the `replacement` string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 replaceAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `replace`
+**别名**: `replace`
 
-**Arguments**
+**参数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 输入的待搜索字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 要查找并替换的子字符串（模式）。[`const String`](/sql-reference/data-types/string)
+* `replacement` — 用于替换该子字符串（模式）的字符串。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中所有出现的模式都会被替换。[`String`](/sql-reference/data-types/string)
 
-Returns a string with all occurrences of pattern replaced. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Replace all occurrences**
+**替换所有出现的模式**
 
 ```sql title=Query
 SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -299,36 +273,31 @@ SELECT replaceAll('Hello, Hello world', 'Hello', 'Hi') AS res;
 └──────────────┘
 ```
 
-
-
 ## replaceOne {#replaceOne}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
+将 `haystack` 中第一次出现的子字符串 `pattern` 替换为字符串 `replacement`。
 
-Replaces the first occurrence of the substring `pattern` in `haystack` by the `replacement` string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 replaceOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**参数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The substring to find and replace. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 要在其中进行搜索的输入字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 要查找并替换的子字符串。[`const String`](/sql-reference/data-types/string)
+* `replacement` — 用于替换该子字符串的字符串。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中第一个匹配到的子字符串已被替换。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the first occurrence of pattern replaced. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Replace first occurrence**
+**替换首次出现的子字符串**
 
 ```sql title=Query
 SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
@@ -340,39 +309,34 @@ SELECT replaceOne('Hello, Hello world', 'Hello', 'Hi') AS res;
 └─────────────────┘
 ```
 
-
-
 ## replaceRegexpAll {#replaceRegexpAll}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+与 `replaceRegexpOne` 类似，但会替换模式的所有匹配项。
+作为例外，如果正则表达式在空子串上匹配，则替换最多只执行一次。
 
-Like `replaceRegexpOne` but replaces all occurrences of the pattern.
-As an exception, if a regular expression worked on an empty substring, the replacement is not made more than once.
-
-
-**Syntax**
+**语法**
 
 ```sql
 replaceRegexpAll(haystack, pattern, replacement)
 ```
 
-**Aliases**: `REGEXP_REPLACE`
+**别名**: `REGEXP_REPLACE`
 
-**Arguments**
+**参数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 要在其中搜索的输入字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 要查找的正则表达式模式。[`const String`](/sql-reference/data-types/string)
+* `replacement` — 用于替换匹配模式的字符串，可以包含替换占位符。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中所有正则匹配项都已被替换。[`String`](/sql-reference/data-types/string)
 
-Returns a string with all regex matches replaced. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Replace all characters with doubled version**
+**将所有字符替换为双写形式**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
@@ -384,7 +348,7 @@ SELECT replaceRegexpAll('Hello123', '.', '\\\\0\\\\0') AS res
 └──────────────────────┘
 ```
 
-**Empty substring replacement example**
+**空字符串替换示例**
 
 ```sql title=Query
 SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
@@ -396,40 +360,35 @@ SELECT replaceRegexpAll('Hello, World!', '^', 'here: ') AS res
 └─────────────────────┘
 ```
 
-
-
 ## replaceRegexpOne {#replaceRegexpOne}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将 `haystack` 中第一个与正则表达式 `pattern`（re2 语法）匹配的子串替换为字符串 `replacement`。
+`replacement` 可以包含替换序列 `\0-\9`。
+替换序列 `\1-\9` 对应第 1 到第 9 个捕获组（子匹配），替换序列 `\0` 对应整个匹配结果。
+如果要在 `pattern` 或 `replacement` 字符串中使用字面量 `\` 字符，需要将其写作 `\\` 进行转义。
+同时请注意，字符串字面量本身还需要额外的转义。
 
-Replaces the first occurrence of the substring matching the regular expression `pattern` (in re2 syntax) in `haystack` by the `replacement` string.
-`replacement` can contain substitutions `\0-\9`.
-Substitutions `\1-\9` correspond to the 1st to 9th capturing group (submatch), substitution `\0` corresponds to the entire match.
-To use a verbatim `\` character in the `pattern` or `replacement` strings, escape it using `\`.
-Also keep in mind that string literals require extra escaping.
-
-
-**Syntax**
+**语法**
 
 ```sql
 replaceRegexpOne(haystack, pattern, replacement)
 ```
 
-**Arguments**
+**参数**
 
-- `haystack` — The input string to search in. [`String`](/sql-reference/data-types/string)
-- `pattern` — The regular expression pattern to find. [`const String`](/sql-reference/data-types/string)
-- `replacement` — The string to replace the pattern with, may contain substitutions. [`const String`](/sql-reference/data-types/string)
+* `haystack` — 要在其中进行搜索的输入字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 要匹配的正则表达式模式。[`const String`](/sql-reference/data-types/string)
+* `replacement` — 用于替换匹配结果的字符串，可包含替换引用。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中第一个正则表达式匹配项已被替换。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the first regex match replaced. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Converting ISO dates to American format**
+**将 ISO 日期转换为美国日期格式**
 
 ```sql title=Query
 SELECT DISTINCT
@@ -450,7 +409,7 @@ FORMAT TabSeparated
 2014-03-23      03/23/2014
 ```
 
-**Copying a string ten times**
+**将字符串复制 10 次**
 
 ```sql title=Query
 SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0') AS res
@@ -462,40 +421,35 @@ SELECT replaceRegexpOne('Hello, World!', '.*', '\\\\0\\\\0\\\\0\\\\0\\\\0\\\\0\\
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## translate {#translate}
 
-Introduced in: v22.7
+引入于：v22.7
 
+使用由字符串 `from` 和 `to` 定义的一对一字符映射，替换字符串 `s` 中的字符。
+`from` 和 `to` 必须是常量 ASCII 字符串。
+如果 `from` 和 `to` 的长度相同，则 `s` 中每个出现的 `from` 的第一个字符都会被替换为 `to` 的第一个字符，`from` 的第二个字符在 `s` 中的每次出现都会被替换为 `to` 的第二个字符，依此类推。
+如果 `from` 中包含的字符多于 `to`，那么 `from` 末尾中在 `to` 中没有对应字符的所有字符在 `s` 中的所有出现都会被删除。
+函数不会修改 `s` 中的非 ASCII 字符。
 
-Replaces characters in the string `s` using a one-to-one character mapping defined by `from` and `to` strings.
-`from` and `to` must be constant ASCII strings.
-If `from` and `to` have equal sizes, each occurrence of the first character of `first` in `s` is replaced by the first character of `to`, the second character of `first` in `s` is replaced by the second character of `to`, etc.
-If `from` contains more characters than `to`, all occurrences of the characters at the end of `from` that have no corresponding character in `to` are deleted from `s`.
-Non-ASCII characters in `s` are not modified by the function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 translate(s, from, to)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant ASCII string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant ASCII string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — 要进行转换的输入字符串。[`String`](/sql-reference/data-types/string)
+* `from` — 包含要替换字符的常量 ASCII 字符串。[`const String`](/sql-reference/data-types/string)
+* `to` — 包含替换后字符的常量 ASCII 字符串。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回应用了字符替换后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string with character translations applied. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Character mapping**
+**字符映射**
 
 ```sql title=Query
 SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
@@ -507,7 +461,7 @@ SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
 └───────────────┘
 ```
 
-**Different lengths**
+**不同长度**
 
 ```sql title=Query
 SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
@@ -519,36 +473,31 @@ SELECT translate('clickhouse', 'clickhouse', 'CLICK') AS res
 └───────┘
 ```
 
-
-
 ## translateUTF8 {#translateUTF8}
 
-Introduced in: v22.7
+自 v22.7 起提供
 
+与 [`translate`](#translate) 类似，但假定 `s`、`from` 和 `to` 是 UTF-8 编码的字符串。
 
-Like [`translate`](#translate) but assumes `s`, `from` and `to` are UTF-8 encoded strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 translateUTF8(s, from, to)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — UTF-8 input string to translate. [`String`](/sql-reference/data-types/string)
-- `from` — A constant UTF-8 string containing characters to replace. [`const String`](/sql-reference/data-types/string)
-- `to` — A constant UTF-8 string containing replacement characters. [`const String`](/sql-reference/data-types/string)
+* `s` — 要进行字符替换的 UTF-8 输入字符串。[`String`](/sql-reference/data-types/string)
+* `from` — 包含要被替换字符的常量 UTF-8 字符串。[`const String`](/sql-reference/data-types/string)
+* `to` — 包含替换后字符的常量 UTF-8 字符串。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个 `String` 数据类型的值。[`String`](/sql-reference/data-types/string)
 
-Returns a `String` data type value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**UTF-8 character translation**
+**UTF-8 字符替换**
 
 ```sql title=Query
 SELECT translateUTF8('Münchener Straße', 'üß', 'us') AS res;

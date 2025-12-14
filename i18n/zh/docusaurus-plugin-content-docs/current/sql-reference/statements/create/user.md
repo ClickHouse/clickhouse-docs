@@ -198,54 +198,54 @@ ClickHouse 会将 `user_name@'address'` 视为一个完整的用户名。因此�
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
-## GRANTEES Clause {#grantees-clause}
+## GRANTEES 子句 {#grantees-clause}
 
-Specifies users or roles which are allowed to receive [privileges](../../../sql-reference/statements/grant.md#privileges) from this user on the condition this user has also all required access granted with [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Options of the `GRANTEES` clause:
+指定允许从该用户处接收[权限](../../../sql-reference/statements/grant.md#privileges)的用户或角色，前提是该用户本身也已经通过 [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax) 获得了所有所需的访问权限。`GRANTEES` 子句的选项：
 
-- `user` — Specifies a user this user can grant privileges to.
-- `role` — Specifies a role this user can grant privileges to.
-- `ANY` — This user can grant privileges to anyone. It's the default setting.
-- `NONE` — This user can grant privileges to none.
+- `user` — 指定该用户可以向其授予权限的用户。
+- `role` — 指定该用户可以向其授予权限的角色。
+- `ANY` — 该用户可以向任意人授予权限。为默认设置。
+- `NONE` — 该用户不能向任何人授予权限。
 
-You can exclude any user or role by using the `EXCEPT` expression. For example, `CREATE USER user1 GRANTEES ANY EXCEPT user2`. It means if `user1` has some privileges granted with `GRANT OPTION` it will be able to grant those privileges to anyone except `user2`.
+你可以使用 `EXCEPT` 表达式排除任意用户或角色。例如，`CREATE USER user1 GRANTEES ANY EXCEPT user2`。这意味着如果 `user1` 拥有通过 `GRANT OPTION` 授予的某些权限，它就可以将这些权限授予除 `user2` 之外的任何人。
 
-## Examples {#examples-1}
+## 示例 {#examples-1}
 
-Create the user account `mira` protected by the password `qwerty`:
+创建一个名为 `mira`、受密码 `qwerty` 保护的用户账号：
 
 ```sql
 CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty';
 ```
 
-`mira` should start client app at the host where the ClickHouse server runs.
+应在运行 ClickHouse 服务器的主机上使用 `mira` 启动客户端应用程序。
 
-Create the user account `john`, assign roles to it and make this roles default:
+创建用户帐户 `john`，为其分配角色并将这些角色设为默认：
 
 ```sql
 CREATE USER john DEFAULT ROLE role1, role2;
 ```
 
-Create the user account `john` and make all his future roles default:
+创建用户账户 `john`，并将其今后获得的所有角色都设为默认角色：
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL;
 ```
 
-When some role is assigned to `john` in the future, it will become default automatically.
+将来为 `john` 分配的任何角色都会自动成为默认角色。
 
-Create the user account `john` and make all his future roles default excepting `role1` and `role2`:
+创建用户账户 `john`，并将其所有后续分配的角色都设为默认角色，但排除 `role1` 和 `role2`：
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ```
 
-Create the user account `john` and allow him to grant his privileges to the user with `jack` account:
+创建用户账号 `john`，并允许该用户将其权限授予账号 `jack` 的用户：
 
 ```sql
 CREATE USER john GRANTEES jack;
 ```
 
-Use a query parameter to create the user account `john`:
+使用查询参数创建用户账号 `john`：
 
 ```sql
 SET param_user=john;

@@ -60,46 +60,46 @@ ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
     文件 `test_function.xml`（在默认路径设置下路径为 `/etc/clickhouse-server/test_function.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function.xml"
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_sum</name>
-        <return_type>UInt64</return_type>
-        <argument>
-            <type>UInt64</type>
-            <name>lhs</name>
-        </argument>
-        <argument>
-            <type>UInt64</type>
-            <name>rhs</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure 'x UInt64, y UInt64' --query "SELECT x + y FROM table"</command>
-        <execute_direct>0</execute_direct>
-        <deterministic>true</deterministic>
-    </function>
-</functions>
-```
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_sum</name>
+            <return_type>UInt64</return_type>
+            <argument>
+                <type>UInt64</type>
+                <name>lhs</name>
+            </argument>
+            <argument>
+                <type>UInt64</type>
+                <name>rhs</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure 'x UInt64, y UInt64' --query "SELECT x + y FROM table"</command>
+            <execute_direct>0</execute_direct>
+            <deterministic>true</deterministic>
+        </function>
+    </functions>
+    ```
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
     文件 `test_function.yaml`（在默认路径设置下路径为 `/etc/clickhouse-server/test_function.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function.yaml"
-functions:
-  type: executable
-  name: test_function_sum
-  return_type: UInt64
-  argument:
-    - type: UInt64
-      name: lhs
-    - type: UInt64
-      name: rhs
-  format: TabSeparated
-  command: 'cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure ''x UInt64, y UInt64'' --query "SELECT x + y FROM table"'
-  execute_direct: 0
-  deterministic: true
-```
+    functions:
+      type: executable
+      name: test_function_sum
+      return_type: UInt64
+      argument:
+        - type: UInt64
+          name: lhs
+        - type: UInt64
+          name: rhs
+      format: TabSeparated
+      command: 'cd /; clickhouse-local --input-format TabSeparated --output-format TabSeparated --structure ''x UInt64, y UInt64'' --query "SELECT x + y FROM table"'
+      execute_direct: 0
+      deterministic: true
+    ```
   </TabItem>
 </Tabs>
 
@@ -126,36 +126,36 @@ SELECT test_function_sum(2, 2);
     文件 `test_function.xml`（在默认路径设置下为 `/etc/clickhouse-server/test_function.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function.xml"
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_python</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt64</type>
-            <name>value</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_function.py</command>
-    </function>
-</functions>
-```
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_python</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt64</type>
+                <name>value</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_function.py</command>
+        </function>
+    </functions>
+    ```
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
     文件 `test_function.yaml`（在默认路径设置下为 `/etc/clickhouse-server/test_function.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function.yaml"
-functions:
-  type: executable
-  name: test_function_python
-  return_type: String
-  argument:
-    - type: UInt64
-      name: value
-  format: TabSeparated
-  command: test_function.py
-```
+    functions:
+      type: executable
+      name: test_function_python
+      return_type: String
+      argument:
+        - type: UInt64
+          name: value
+      format: TabSeparated
+      command: test_function.py
+    ```
   </TabItem>
 </Tabs>
 
@@ -180,7 +180,7 @@ SELECT test_function_python(toUInt64(2));
 
 ```text title="Result"
 ┌─test_function_python(2)─┐
-│ Value 2                 │
+│ 值 2                    │
 └─────────────────────────┘
 ```
 
@@ -193,44 +193,44 @@ SELECT test_function_python(toUInt64(2));
     文件 `test_function.xml`（在默认路径配置下位于 `/etc/clickhouse-server/test_function.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function.xml"
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_function_sum_json</name>
-        <return_type>UInt64</return_type>
-        <return_name>result_name</return_name>
-        <argument>
-            <type>UInt64</type>
-            <name>argument_1</name>
-        </argument>
-        <argument>
-            <type>UInt64</type>
-            <name>argument_2</name>
-        </argument>
-        <format>JSONEachRow</format>
-        <command>test_function_sum_json.py</command>
-    </function>
-</functions>
-```
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_function_sum_json</name>
+            <return_type>UInt64</return_type>
+            <return_name>result_name</return_name>
+            <argument>
+                <type>UInt64</type>
+                <name>argument_1</name>
+            </argument>
+            <argument>
+                <type>UInt64</type>
+                <name>argument_2</name>
+            </argument>
+            <format>JSONEachRow</format>
+            <command>test_function_sum_json.py</command>
+        </function>
+    </functions>
+    ```
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
     文件 `test_function.yaml`（在默认路径配置下位于 `/etc/clickhouse-server/test_function.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function.yaml"
-functions:
-  type: executable
-  name: test_function_sum_json
-  return_type: UInt64
-  return_name: result_name
-  argument:
-    - type: UInt64
-      name: argument_1
-    - type: UInt64
-      name: argument_2
-  format: JSONEachRow
-  command: test_function_sum_json.py
-```
+    functions:
+      type: executable
+      name: test_function_sum_json
+      return_type: UInt64
+      return_name: result_name
+      argument:
+        - type: UInt64
+          name: argument_1
+        - type: UInt64
+          name: argument_2
+      format: JSONEachRow
+      command: test_function_sum_json.py
+    ```
   </TabItem>
 </Tabs>
 
@@ -274,36 +274,36 @@ SELECT test_function_sum_json(2, 2);
     文件 `test_function_parameter_python.xml`（在默认路径设置下为 `/etc/clickhouse-server/test_function_parameter_python.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function_parameter_python.xml"
-<functions>
-    <function>
-        <type>executable</type>
-        <execute_direct>true</execute_direct>
-        <name>test_function_parameter_python</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt64</type>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_function_parameter_python.py {test_parameter:UInt64}</command>
-    </function>
-</functions>
-```
+    <functions>
+        <function>
+            <type>executable</type>
+            <execute_direct>true</execute_direct>
+            <name>test_function_parameter_python</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt64</type>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_function_parameter_python.py {test_parameter:UInt64}</command>
+        </function>
+    </functions>
+    ```
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
     文件 `test_function_parameter_python.yaml`（在默认路径设置下为 `/etc/clickhouse-server/test_function_parameter_python.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function_parameter_python.yaml"
-functions:
-  type: executable
-  execute_direct: true
-  name: test_function_parameter_python
-  return_type: String
-  argument:
-    - type: UInt64
-  format: TabSeparated
-  command: test_function_parameter_python.py {test_parameter:UInt64}
-```
+    functions:
+      type: executable
+      execute_direct: true
+      name: test_function_parameter_python
+      return_type: String
+      argument:
+        - type: UInt64
+      format: TabSeparated
+      command: test_function_parameter_python.py {test_parameter:UInt64}
+    ```
   </TabItem>
 </Tabs>
 
@@ -328,7 +328,7 @@ SELECT test_function_parameter_python(1)(2);
 
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ Parameter 1 value 2                  │
+│ 参数 1 值 2                          │
 └──────────────────────────────────────┘
 ```
 
@@ -341,36 +341,36 @@ SELECT test_function_parameter_python(1)(2);
     文件 `test_function_shell.xml`（默认路径为 `/etc/clickhouse-server/test_function_shell.xml`）。
 
     ```xml title="/etc/clickhouse-server/test_function_shell.xml"
-<functions>
-    <function>
-        <type>executable</type>
-        <name>test_shell</name>
-        <return_type>String</return_type>
-        <argument>
-            <type>UInt8</type>
-            <name>value</name>
-        </argument>
-        <format>TabSeparated</format>
-        <command>test_shell.sh</command>
-    </function>
-</functions>
-```
+    <functions>
+        <function>
+            <type>executable</type>
+            <name>test_shell</name>
+            <return_type>String</return_type>
+            <argument>
+                <type>UInt8</type>
+                <name>value</name>
+            </argument>
+            <format>TabSeparated</format>
+            <command>test_shell.sh</command>
+        </function>
+    </functions>
+    ```
   </TabItem>
 
   <TabItem value="YAML" label="YAML">
     文件 `test_function_shell.yaml`（默认路径为 `/etc/clickhouse-server/test_function_shell.yaml`）。
 
     ```yml title="/etc/clickhouse-server/test_function_shell.yaml"
-functions:
-  type: executable
-  name: test_shell
-  return_type: String
-  argument:
-    - type: UInt8
-      name: value
-  format: TabSeparated
-  command: test_shell.sh
-```
+    functions:
+      type: executable
+      name: test_shell
+      return_type: String
+      argument:
+        - type: UInt8
+          name: value
+      format: TabSeparated
+      command: test_shell.sh
+    ```
   </TabItem>
 </Tabs>
 

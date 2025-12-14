@@ -58,34 +58,29 @@ SELECT CRC32('ClickHouse')
 └─────────────────────┘
 ```
 
-
-
 ## CRC32IEEE {#CRC32IEEE}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+使用 CRC-32-IEEE 802.3 多项式计算字符串的 CRC32 校验和。
 
-Calculates the CRC32 checksum of a string using the CRC-32-IEEE 802.3 polynomial.
-
-
-**Syntax**
+**语法**
 
 ```sql
 CRC32IEEE(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to calculate CRC32 for. [`String`](/sql-reference/data-types/string)
+* `s` — 要计算 CRC32 值的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回字符串的 CRC32 校验和。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the CRC32 checksum of the string. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT CRC32IEEE('ClickHouse');
@@ -97,34 +92,29 @@ SELECT CRC32IEEE('ClickHouse');
 └─────────────────────────┘
 ```
 
-
-
 ## CRC64 {#CRC64}
 
-Introduced in: v20.1
+自 v20.1 引入
 
+使用 CRC-64-ECMA 多项式计算字符串的 CRC64 校验和。
 
-Calculates the CRC64 checksum of a string using the CRC-64-ECMA polynomial.
-
-
-**Syntax**
+**语法**
 
 ```sql
 CRC64(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to calculate CRC64 for. [`String`](/sql-reference/data-types/string)
+* `s` — 要计算 CRC64 的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该字符串的 CRC64 校验和。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the CRC64 checksum of the string. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT CRC64('ClickHouse');
@@ -136,35 +126,30 @@ SELECT CRC64('ClickHouse');
 └──────────────────────┘
 ```
 
-
-
 ## appendTrailingCharIfAbsent {#appendTrailingCharIfAbsent}
 
-Introduced in: v1.1
+引入于：v1.1
 
+如果字符串 `s` 非空且不以字符 `c` 结尾，则将字符 `c` 追加到字符串 `s` 的末尾。
 
-Appends character `c` to string `s` if `s` is non-empty and does not end with character `c`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 appendTrailingCharIfAbsent(s, c)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `c` — Character to append if absent. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `c` — 当不存在时要追加的字符。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回字符串 `s`，如果 `s` 不以 `c` 结尾，则在末尾追加字符 `c`。[`String`](/sql-reference/data-types/string)
 
-Returns string `s` with character `c` appended if `s` does not end with `c`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT appendTrailingCharIfAbsent('https://example.com', '/');
@@ -176,34 +161,29 @@ SELECT appendTrailingCharIfAbsent('https://example.com', '/');
 └──────────────────────────┘
 ```
 
-
-
 ## ascii {#ascii}
 
-Introduced in: v22.11
+引入版本：v22.11
 
+返回字符串 `s` 的第一个字符的 ASCII 码点，返回类型为 `Int32`。
 
-Returns the ASCII code point of the first character of string `s` as an `Int32`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ascii(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String input. [`String`](/sql-reference/data-types/string)
+* `s` — 字符串输入。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回第一个字符的 ASCII 代码点。如果 `s` 为空，则结果为 `0`。如果第一个字符不是 ASCII 字符，或者不在 UTF-16 的 Latin-1 补充范围内，则结果未定义。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the ASCII code point of the first character. If `s` is empty, the result is `0`. If the first character is not an ASCII character or not part of the Latin-1 supplement range of UTF-16, the result is undefined. [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ascii('234')
@@ -215,35 +195,30 @@ SELECT ascii('234')
 └──────────────┘
 ```
 
-
-
 ## base32Decode {#base32Decode}
 
-Introduced in: v25.6
+引入版本：v25.6
 
+解码一个采用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6)（RFC 4648）编码的字符串。
+如果字符串不是有效的 Base32 编码，则会抛出异常。
 
-Decodes a [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) (RFC 4648) string.
-If the string is not valid Base32-encoded, an exception is thrown.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base32Decode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant. [`String`](/sql-reference/data-types/string)
+* `encoded` — 字符串列或常量。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含参数解码后值的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT base32Decode('IVXGG33EMVSA====');
@@ -255,34 +230,29 @@ SELECT base32Decode('IVXGG33EMVSA====');
 └──────────────────────────────────┘
 ```
 
-
-
 ## base32Encode {#base32Encode}
 
-Introduced in: v25.6
+自 v25.6 起提供
 
+使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 对字符串进行编码。
 
-Encodes a string using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6).
-
-
-**Syntax**
+**语法**
 
 ```sql
 base32Encode(plaintext)
 ```
 
-**Arguments**
+**参数**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — 要编码的明文。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中包含参数编码后的值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT base32Encode('Encoded')
@@ -294,35 +264,30 @@ SELECT base32Encode('Encoded')
 └─────────────────────────┘
 ```
 
-
-
 ## base58Decode {#base58Decode}
 
-Introduced in: v22.7
+自 v22.7 版本引入
 
+对 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 字符串进行解码。
+如果字符串不是有效的 Base58 编码格式，则会抛出异常。
 
-Decodes a [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) string.
-If the string is not valid Base58-encoded, an exception is thrown.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base58Decode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串类型列或常量值。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT base58Decode('JxF12TrwUP45BMd');
@@ -334,34 +299,29 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 └──────────────────────────┘
 ```
 
-
-
 ## base58Encode {#base58Encode}
 
-Introduced in: v22.7
+自 v22.7 版本引入
 
+对字符串进行 [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) 编码。
 
-Encodes a string using [Base58](https://tools.ietf.org/id/draft-msporny-base58-01.html) encoding.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base58Encode(plaintext)
 ```
 
-**Arguments**
+**参数**
 
-- `plaintext` — Plaintext to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — 要编码的明文。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含该参数编码值的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT base58Encode('ClickHouse');
@@ -373,38 +333,32 @@ SELECT base58Encode('ClickHouse');
 └────────────────────────────┘
 ```
 
-
-
 ## base64Decode {#base64Decode}
 
-Introduced in: v18.16
+引入版本：v18.16
 
+根据 RFC 4648，从 [Base64](https://en.wikipedia.org/wiki/Base64) 编码表示中解码字符串。
+如果发生错误，则抛出异常。
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-Throws an exception in case of error.
-
-
-
-**Syntax**
+**语法**
 
 ```sql
 base64Decode(encoded)
 ```
 
-**Aliases**: `FROM_BASE64`
+**别名**：`FROM_BASE64`
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串列或常量。如果该字符串不是有效的 Base64 编码格式，将抛出异常。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回解码后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the decoded string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT base64Decode('Y2xpY2tob3VzZQ==')
@@ -416,36 +370,31 @@ SELECT base64Decode('Y2xpY2tob3VzZQ==')
 └──────────────────────────────────┘
 ```
 
-
-
 ## base64Encode {#base64Encode}
 
-Introduced in: v18.16
+引入版本：v18.16
 
+使用 [Base64](https://en.wikipedia.org/wiki/Base64) 表示法对字符串进行编码，符合 RFC 4648 标准。
 
-Encodes a string using [Base64](https://en.wikipedia.org/wiki/Base64) representation, according to RFC 4648.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base64Encode(plaintext)
 ```
 
-**Aliases**: `TO_BASE64`
+**别名**：`TO_BASE64`
 
-**Arguments**
+**参数**
 
-- `plaintext` — Plaintext column or constant to decode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — 要解码的明文列或常量。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中包含参数的编码值。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT base64Encode('clickhouse')
@@ -457,35 +406,30 @@ SELECT base64Encode('clickhouse')
 └────────────────────────────┘
 ```
 
-
-
 ## base64URLDecode {#base64URLDecode}
 
-Introduced in: v24.6
+引入版本：v24.6
 
+使用符合 RFC 4648 的 URL 安全字母表，对 [Base64](https://en.wikipedia.org/wiki/Base64) 编码表示的字符串进行解码。
+在发生错误时抛出异常。
 
-Decodes a string from [Base64](https://en.wikipedia.org/wiki/Base64) representation using URL-safe alphabet, according to RFC 4648.
-Throws an exception in case of error.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base64URLDecode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to encode. If the string is not valid Base64-encoded, an exception is thrown. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的 Base64 编码字符串列或常量。如果字符串不是有效的 Base64 编码，将抛出异常。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -497,34 +441,29 @@ SELECT base64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## base64URLEncode {#base64URLEncode}
 
-Introduced in: v18.16
+自 v18.16 引入
 
+使用适用于 URL 的 Base64 字符集，将字符串编码为 [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4)（RFC 4648）表示形式。
 
-Encodes a string using [Base64](https://datatracker.ietf.org/doc/html/rfc4648#section-4) (RFC 4648) representation using URL-safe alphabet.
-
-
-**Syntax**
+**语法**
 
 ```sql
 base64URLEncode(plaintext)
 ```
 
-**Arguments**
+**参数**
 
-- `plaintext` — Plaintext column or constant to encode. [`String`](/sql-reference/data-types/string)
+* `plaintext` — 要编码的明文列或常量。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含该参数编码后值的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the encoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT base64URLEncode('https://clickhouse.com')
@@ -536,35 +475,30 @@ SELECT base64URLEncode('https://clickhouse.com')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## basename {#basename}
 
-Introduced in: v20.1
+自 v20.1 版本引入
 
+提取字符串中最后一个斜杠或反斜杠之后的子串。
+此函数常用于从路径中提取文件名。
 
-Extracts the tail of a string following its last slash or backslash.
-This function is often used to extract the filename from a path.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 basename(expr)
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — A string expression. Backslashes must be escaped. [`String`](/sql-reference/data-types/string)
+* `expr` — 字符串表达式。反斜杠必须转义。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串在最后一个正斜杠或反斜杠之后的尾部子串。如果输入字符串以正斜杠或反斜杠结尾，则函数返回空字符串。如果没有正斜杠或反斜杠，则返回原始字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the tail of the input string after its last slash or backslash. If the input string ends with a slash or backslash, the function returns an empty string. Returns the original string if there are no slashes or backslashes. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Extract filename from Unix path**
+**从 Unix 路径中提取文件名**
 
 ```sql title=Query
 SELECT 'some/long/path/to/file' AS a, basename(a)
@@ -576,7 +510,7 @@ SELECT 'some/long/path/to/file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────┘
 ```
 
-**Extract filename from Windows path**
+**从 Windows 路径中提取文件名**
 
 ```sql title=Query
 SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
@@ -588,7 +522,7 @@ SELECT 'some\\long\\path\\to\\file' AS a, basename(a)
 └────────────────────────┴────────────────────────────────────────┘
 ```
 
-**String with no path separators**
+**不含路径分隔符的字符串**
 
 ```sql title=Query
 SELECT 'some-file-name' AS a, basename(a)
@@ -600,37 +534,32 @@ SELECT 'some-file-name' AS a, basename(a)
 └────────────────┴────────────────────────────┘
 ```
 
-
-
 ## byteHammingDistance {#byteHammingDistance}
 
-Introduced in: v23.9
+自 v23.9 版本起引入
 
+计算两个字节串之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)。
 
-Calculates the [hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 byteHammingDistance(s1, s2)
 ```
 
-**Aliases**: `mismatches`
+**别名**: `mismatches`
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串的汉明距离值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Hamming distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT byteHammingDistance('karolin', 'kathrin')
@@ -642,42 +571,38 @@ SELECT byteHammingDistance('karolin', 'kathrin')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## compareSubstrings {#compareSubstrings}
 
-Introduced in: v25.2
+引入于：v25.2
 
+按字典序比较两个字符串。
 
-Compares two strings lexicographically.
-
-
-**Syntax**
+**语法**
 
 ```sql
 compareSubstrings(s1, s2, s1_offset, s2_offset, num_bytes)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — The first string to compare. [`String`](/sql-reference/data-types/string)
-- `s2` — The second string to compare. [`String`](/sql-reference/data-types/string)
-- `s1_offset` — The position (zero-based) in `s1` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `s2_offset` — The position (zero-based index) in `s2` from which the comparison starts. [`UInt*`](/sql-reference/data-types/int-uint)
-- `num_bytes` — The maximum number of bytes to compare in both strings. If `s1_offset` (or `s2_offset`) + `num_bytes` exceeds the end of an input string, `num_bytes` will be reduced accordingly. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s1` — 要比较的第一个字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 要比较的第二个字符串。[`String`](/sql-reference/data-types/string)
+* `s1_offset` — 在 `s1` 中开始比较的起始位置（从 0 开始计数）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `s2_offset` — 在 `s2` 中开始比较的起始位置（从 0 开始计数的索引）。[`UInt*`](/sql-reference/data-types/int-uint)
+* `num_bytes` — 在两个字符串中最多比较的字节数。如果 `s1_offset`（或 `s2_offset`）+ `num_bytes` 超过输入字符串的末尾，`num_bytes` 会相应减小。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- `-1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] < `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `0` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-- `1` if `s1`[`s1_offset` : `s1_offset` + `num_bytes`] > `s2`[`s2_offset` : `s2_offset` + `num_bytes`].
-     [`Int8`](/sql-reference/data-types/int-uint)
+* 当 `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &lt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`] 时返回 `-1`。
+* 当 `s1`[`s1_offset` : `s1_offset` + `num_bytes`] = `s2`[`s2_offset` : `s2_offset` + `num_bytes`] 时返回 `0`。
+* 当 `s1`[`s1_offset` : `s1_offset` + `num_bytes`] &gt; `s2`[`s2_offset` : `s2_offset` + `num_bytes`] 时返回 `1`。
+  [`Int8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
@@ -689,37 +614,32 @@ SELECT compareSubstrings('Saxony', 'Anglo-Saxon', 0, 6, 5) AS result
 └────────┘
 ```
 
-
-
 ## concat {#concat}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将给定的参数连接为一个字符串。
 
-Concatenates the given arguments.
+不是 [`String`](../data-types/string.md) 或 [`FixedString`](../data-types/fixedstring.md) 类型的参数会通过其默认序列化方式转换为字符串。
+由于这会降低性能，不推荐使用非 String/FixedString 类型的参数。
 
-Arguments which are not of types [`String`](../data-types/string.md) or [`FixedString`](../data-types/fixedstring.md) are converted to strings using their default serialization.
-As this decreases performance, it is not recommended to use non-String/FixedString arguments.
-
-
-**Syntax**
+**语法**
 
 ```sql
 concat([s1, s2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`Any`](/sql-reference/data-types)
+* `s1, s2, ...` — 任意数量的任意类型的值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回通过将各个参数连接起来所创建的 String。如果任一参数为 `NULL`，则函数返回 `NULL`。如果没有参数，则返回空字符串。[`Nullable(String)`](/sql-reference/data-types/nullable)
 
-Returns the String created by concatenating the arguments. If any of arguments is `NULL`, the function returns `NULL`. If there are no arguments, it returns an empty string. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**示例**
 
-**Examples**
-
-**String concatenation**
+**字符串拼接**
 
 ```sql title=Query
 SELECT concat('Hello, ', 'World!')
@@ -731,7 +651,7 @@ SELECT concat('Hello, ', 'World!')
 └─────────────────────────────┘
 ```
 
-**Number concatenation**
+**数值拼接**
 
 ```sql title=Query
 SELECT concat(42, 144)
@@ -743,37 +663,32 @@ SELECT concat(42, 144)
 └─────────────────┘
 ```
 
-
-
 ## concatAssumeInjective {#concatAssumeInjective}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+与 [`concat`](#concat) 类似，但假设 `concat(s1, s2, ...) → sn` 是单射，
+即对不同的参数返回不同的结果。
 
-Like [`concat`](#concat) but assumes that `concat(s1, s2, ...) → sn` is injective,
-i.e, it returns different results for different arguments.
+可用于优化 `GROUP BY`。
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 concatAssumeInjective([s1, s2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `s1, s2, ...` — Any number of values of arbitrary type. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `s1, s2, ...` — 任意数量、任意类型的值。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返回值**
 
-**Returned value**
+返回通过将各个参数连接起来创建的字符串。如果任一参数值为 `NULL`，则函数返回 `NULL`。如果未传入任何参数，则返回空字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the string created by concatenating the arguments. If any of argument values is `NULL`, the function returns `NULL`. If no arguments are passed, it returns an empty string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Group by optimization**
+**GROUP BY 优化**
 
 ```sql title=Query
 SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjective(key1, key2)
@@ -787,37 +702,32 @@ SELECT concat(key1, key2), sum(value) FROM key_val GROUP BY concatAssumeInjectiv
 └────────────────────┴────────────┘
 ```
 
-
-
 ## concatWithSeparator {#concatWithSeparator}
 
-Introduced in: v22.12
+自 v22.12 引入
 
+将提供的字符串连接起来，并使用指定的分隔符将它们分隔开。
 
-Concatenates the provided strings, separating them by the specified separator.
-
-
-**Syntax**
+**语法**
 
 ```sql
 concatWithSeparator(sep[, exp1, exp2, ...])
 ```
 
-**Aliases**: `concat_ws`
+**别名**: `concat_ws`
 
-**Arguments**
+**参数**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`Any`](/sql-reference/data-types)
+* `sep` — 要使用的分隔符。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — 要拼接的表达式。不是 `String` 或 `FixedString` 类型的参数会使用其默认序列化方式被转换为字符串。由于这会降低性能，不推荐使用非 String/FixedString 参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回由各参数拼接而成的字符串。如果任一参数值为 `NULL`，则函数返回 `NULL`。[`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT concatWithSeparator('a', '1', '2', '3', '4')
@@ -829,38 +739,33 @@ SELECT concatWithSeparator('a', '1', '2', '3', '4')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## concatWithSeparatorAssumeInjective {#concatWithSeparatorAssumeInjective}
 
-Introduced in: v22.12
+自 v22.12 引入
 
+类似于 [`concatWithSeparator`](#concatWithSeparator)，但假定 `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` 是单射。
+如果一个函数对不同的参数总是返回不同的结果，则称该函数为单射。
 
-Like [`concatWithSeparator`](#concatWithSeparator) but assumes that `concatWithSeparator(sep[,exp1, exp2, ... ]) → result` is injective.
-A function is called injective if it returns different results for different arguments.
+可用于优化 `GROUP BY`。
 
-Can be used for optimization of `GROUP BY`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 concatWithSeparatorAssumeInjective(sep[, exp1, exp2, ... ])
 ```
 
-**Arguments**
+**参数**
 
-- `sep` — The separator to use. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
-- `exp1, exp2, ...` — Expression to be concatenated. Arguments which are not of type `String` or `FixedString` are converted to strings using their default serialization. As this decreases performance, it is not recommended to use non-String/FixedString arguments. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `sep` — 要使用的分隔符。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `exp1, exp2, ...` — 要连接的表达式。非 `String` 或 `FixedString` 类型的参数会使用其默认序列化方式转换为字符串。由于这会降低性能，不建议使用非 String/FixedString 类型的参数。类型为 [`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返回值**
 
-**Returned value**
+返回由各参数连接而成的字符串。如果任意参数值为 `NULL`，则函数返回 `NULL`。返回类型为 [`String`](/sql-reference/data-types/string)
 
-Returns the String created by concatenating the arguments. If any of the argument values is `NULL`, the function returns `NULL`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 CREATE TABLE user_data (
@@ -893,38 +798,34 @@ GROUP BY concatWithSeparatorAssumeInjective('-', first_name, last_name);
 └─────────────┴─────────────┘
 ```
 
-
-
 ## conv {#conv}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+在不同进制之间转换数字。
 
-Converts numbers between different number bases.
+该函数将一个数从一种进制转换为另一种进制。支持的进制范围为 2 到 36。
+对于大于 10 的进制，使用字母 A-Z（不区分大小写）来表示数字 10-35。
 
-The function converts a number from one base to another. It supports bases from 2 to 36.
-For bases higher than 10, letters A-Z (case insensitive) are used to represent digits 10-35.
+此函数与 MySQL 的 CONV() 函数兼容。
 
-This function is compatible with MySQL's CONV() function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 conv(number, from_base, to_base)
 ```
 
-**Arguments**
+**参数**
 
-- `number` — The number to convert. Can be a string or numeric type. - `from_base` — The source base (2-36). Must be an integer. - `to_base` — The target base (2-36). Must be an integer. 
+* `number` — 要转换的数字，可以为字符串或数值类型。 - `from_base` — 源进制（2-36），必须为整数。 - `to_base` — 目标进制（2-36），必须为整数。
 
-**Returned value**
+**返回值**
 
-String representation of the number in the target base.
+该数字在目标进制下的字符串表示形式。
 
-**Examples**
+**示例**
 
-**Convert decimal to binary**
+**将十进制转换为二进制**
 
 ```sql title=Query
 SELECT conv('10', 10, 2)
@@ -934,7 +835,7 @@ SELECT conv('10', 10, 2)
 1010
 ```
 
-**Convert hexadecimal to decimal**
+**将十六进制转换为十进制**
 
 ```sql title=Query
 SELECT conv('FF', 16, 10)
@@ -944,7 +845,7 @@ SELECT conv('FF', 16, 10)
 255
 ```
 
-**Convert with negative number**
+**使用负数转换**
 
 ```sql title=Query
 SELECT conv('-1', 10, 16)
@@ -954,7 +855,7 @@ SELECT conv('-1', 10, 16)
 FFFFFFFFFFFFFFFF
 ```
 
-**Convert binary to octal**
+**将二进制转换为八进制**
 
 ```sql title=Query
 SELECT conv('1010', 2, 8)
@@ -964,36 +865,31 @@ SELECT conv('1010', 2, 8)
 12
 ```
 
-
-
 ## convertCharset {#convertCharset}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回将字符串 `s` 从编码 `from` 转换为编码 `to` 后的结果。
 
-Returns string `s` converted from the encoding `from` to encoding `to`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 convertCharset(s, from, to)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
-- `from` — Source character encoding. [`String`](/sql-reference/data-types/string)
-- `to` — Target character encoding. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `from` — 源字符编码。[`String`](/sql-reference/data-types/string)
+* `to` — 目标字符编码。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回将字符串 `s` 从编码 `from` 转换为编码 `to` 后得到的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns string `s` converted from encoding `from` to encoding `to`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
@@ -1005,35 +901,30 @@ SELECT convertCharset('Café', 'UTF-8', 'ISO-8859-1');
 └──────────────────────────┘
 ```
 
-
-
 ## damerauLevenshteinDistance {#damerauLevenshteinDistance}
 
-Introduced in: v24.1
+在 v24.1 中引入
 
+计算两个字节字符串之间的 [Damerau-Levenshtein 距离](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)。
 
-Calculates the [Damerau-Levenshtein distance](https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 damerauLevenshteinDistance(s1, s2)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串之间的 Damerau-Levenshtein 距离。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the Damerau-Levenshtein distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
@@ -1045,34 +936,29 @@ SELECT damerauLevenshteinDistance('clickhouse', 'mouse')
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeHTMLComponent {#decodeHTMLComponent}
 
-Introduced in: v23.9
+自 v23.9 版本引入
 
+将字符串中的 HTML 实体解码为对应的字符。
 
-Decodes HTML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**语法**
 
 ```sql
 decodeHTMLComponent(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String containing HTML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — 包含要解码的 HTML 实体的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 HTML 实体解码后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the string with HTML entities decoded. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;')
@@ -1084,34 +970,29 @@ SELECT decodeHTMLComponent('&lt;div&gt;Hello &amp; &quot;World&quot;&lt;/div&gt;
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## decodeXMLComponent {#decodeXMLComponent}
 
-Introduced in: v21.2
+自 v21.2 起引入
 
+将字符串中的 XML 实体解码为相应的字符。
 
-Decodes XML entities in a string to their corresponding characters.
-
-
-**Syntax**
+**语法**
 
 ```sql
 decodeXMLComponent(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String containing XML entities to decode. [`String`](/sql-reference/data-types/string)
+* `s` — 包含要解码 XML 实体的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回将其中 XML 实体解码后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the provided string with XML entities decoded. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
@@ -1123,37 +1004,32 @@ SELECT decodeXMLComponent('&lt;tag&gt;Hello &amp; World&lt;/tag&gt;')
 └──────────────────────────┘
 ```
 
-
-
 ## editDistance {#editDistance}
 
-Introduced in: v23.9
+自 v23.9 起引入
 
+计算两个字节字符串之间的[编辑距离](https://en.wikipedia.org/wiki/Edit_distance)。
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 editDistance(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistance`
+**别名**: `levenshteinDistance`
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串之间的编辑距离。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT editDistance('clickhouse', 'mouse')
@@ -1165,37 +1041,32 @@ SELECT editDistance('clickhouse', 'mouse')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## editDistanceUTF8 {#editDistanceUTF8}
 
-Introduced in: v24.6
+自 v24.6 版本引入
 
+计算两个 UTF-8 字符串之间的 [编辑距离](https://en.wikipedia.org/wiki/Edit_distance)。
 
-Calculates the [edit distance](https://en.wikipedia.org/wiki/Edit_distance) between two UTF8 strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 editDistanceUTF8(s1, s2)
 ```
 
-**Aliases**: `levenshteinDistanceUTF8`
+**别名**：`levenshteinDistanceUTF8`
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个 UTF8 字符串之间的编辑距离。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the edit distance between the two UTF8 strings. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT editDistanceUTF8('我是谁', '我是我')
@@ -1207,34 +1078,29 @@ SELECT editDistanceUTF8('我是谁', '我是我')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## encodeXMLComponent {#encodeXMLComponent}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+对字符串中的字符进行转义，以便将其放入 XML 文本节点或属性中。
 
-Escapes characters to place string into XML text node or attribute.
-
-
-**Syntax**
+**语法**
 
 ```sql
 encodeXMLComponent(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to escape. [`String`](/sql-reference/data-types/string)
+* `s` — 要转义的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回转义后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the escaped string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -1248,35 +1114,30 @@ SELECT
 └────────────────────────────┴──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWith {#endsWith}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+检查字符串是否以给定的后缀结尾。
 
-Checks whether a string ends with the provided suffix.
-
-
-**Syntax**
+**语法**
 
 ```sql
 endsWith(s, suffix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以 `suffix` 结尾，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT endsWith('ClickHouse', 'House');
@@ -1288,35 +1149,30 @@ SELECT endsWith('ClickHouse', 'House');
 └──────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitive {#endsWithCaseInsensitive}
 
-Introduced in: v25.9
+引入版本：v25.9
 
+检查字符串是否以指定的（不区分大小写的）后缀结尾。
 
-Checks whether a string ends with the provided case-insensitive suffix.
-
-
-**Syntax**
+**语法**
 
 ```sql
 endsWithCaseInsensitive(s, suffix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `suffix` — 检查用的后缀，比较时不区分大小写。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以（比较时不区分大小写的）`suffix` 结尾，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
@@ -1328,37 +1184,32 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithCaseInsensitiveUTF8 {#endsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+自 v25.9 引入
 
+返回字符串 `s` 是否以不区分大小写的 `suffix` 结尾。
+假设该字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，不会抛出异常，结果是未定义的。
 
-Returns whether string `s` ends with case-insensitive `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 endsWithCaseInsensitiveUTF8(s, suffix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Case-insensitive suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀字符串（不区分大小写）。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以（不区分大小写的）`suffix` 结尾，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with case-insensitive `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
@@ -1370,37 +1221,32 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## endsWithUTF8 {#endsWithUTF8}
 
-Introduced in: v23.8
+引入版本：v23.8
 
+返回字符串 `s` 是否以 `suffix` 结尾。
+假定该字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，则不会抛出异常，且结果未定义。
 
-Returns whether string `s` ends with `suffix`.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 endsWithUTF8(s, suffix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `suffix` — Suffix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以 `suffix` 结尾则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` ends with `suffix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT endsWithUTF8('данных', 'ых');
@@ -1412,43 +1258,39 @@ SELECT endsWithUTF8('данных', 'ых');
 └──────────────────────────────┘
 ```
 
-
-
 ## extractTextFromHTML {#extractTextFromHTML}
 
-Introduced in: v21.3
+引入于：v21.3
 
+从 HTML 或 XHTML 中提取文本内容。
 
-Extracts text content from HTML or XHTML.
+此函数会移除 HTML 标签、注释以及 script/style 元素，仅保留文本内容。它会处理：
 
-This function removes HTML tags, comments, and script/style elements, leaving only the text content. It handles:
-- Removal of all HTML/XML tags
-- Removal of comments (`<!-- -->`)
-- Removal of script and style elements with their content
-- Processing of CDATA sections (copied verbatim)
-- Proper whitespace handling and normalization
+* 移除所有 HTML/XML 标签
+* 移除注释（`<!-- -->`）
+* 移除 script 和 style 元素及其内容
+* 处理 CDATA 段（按原文复制）
+* 正确处理并规范化空白字符
 
-Note: HTML entities are not decoded and should be processed with a separate function if needed.
+注意：HTML 实体不会被解码，如有需要应使用单独的函数进行处理。
 
-
-**Syntax**
+**语法**
 
 ```sql
 extractTextFromHTML(html)
 ```
 
-**Arguments**
+**参数**
 
-- `html` — String containing HTML content to extract text from. [`String`](/sql-reference/data-types/string)
+* `html` — 包含要提取文本的 HTML 内容的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回提取出的文本内容，并对空白字符进行了规范化处理。[`String`](/sql-reference/data-types/string)
 
-Returns the extracted text content with normalized whitespace. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT extractTextFromHTML('
@@ -1469,34 +1311,29 @@ SELECT extractTextFromHTML('
 └────────────────────────────────────────┘
 ```
 
-
-
 ## firstLine {#firstLine}
 
-Introduced in: v23.7
+自 v23.7 起引入
 
+返回多行字符串的第一行。
 
-Returns the first line of a multi-line string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 firstLine(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串的第一行；如果没有换行符，则返回整个字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the first line of the input string or the whole string if there are no line separators. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT firstLine('foo\\nbar\\nbaz')
@@ -1508,36 +1345,31 @@ SELECT firstLine('foo\\nbar\\nbaz')
 └────────────────────────────┘
 ```
 
-
-
 ## idnaDecode {#idnaDecode}
 
-Introduced in: v24.1
+自 v24.1 起提供
 
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示形式（ToUnicode 算法）。
+如果出现错误（例如输入无效），则返回原始输入字符串。
+请注意，由于大小写归一化，反复应用 [`idnaEncode()`](#idnaEncode) 和 [`idnaDecode()`](#idnaDecode) 不一定会返回最初的字符串。
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error (e.g. because the input is invalid), the input string is returned.
-Note that repeated application of [`idnaEncode()`](#idnaEncode) and [`idnaDecode()`](#idnaDecode) does not necessarily return the original string due to case normalization.
-
-
-**Syntax**
+**语法**
 
 ```sql
 idnaDecode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据输入值的 IDNA 规则，返回输入字符串的 Unicode（UTF-8）表示形式。[`String`](/sql-reference/data-types/string)
 
-Returns a Unicode (UTF-8) representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
@@ -1549,39 +1381,34 @@ SELECT idnaDecode('xn--strae-oqa.xn--mnchen-3ya.de')
 └───────────────────────────────────────────────┘
 ```
 
-
-
 ## idnaEncode {#idnaEncode}
 
-Introduced in: v24.1
+引入于：v24.1
 
-
-Returns the ASCII representation (ToASCII algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-The input string must be UTF-encoded and translatable to an ASCII string, otherwise an exception is thrown.
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 ASCII 表示（ToASCII 算法）。
+输入字符串必须是 UTF 编码且能够转换为 ASCII 字符串，否则将抛出异常。
 
 :::note
-No percent decoding or trimming of tabs, spaces or control characters is performed.
+不会执行百分号解码，也不会去除制表符、空格或控制字符。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 idnaEncode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据输入值的 IDNA 规则，返回该输入字符串的 ASCII 表示形式。[`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT idnaEncode('straße.münchen.de')
@@ -1593,40 +1420,35 @@ SELECT idnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## initcap {#initcap}
 
-Introduced in: v23.7
+引入版本：v23.7
 
-
-Converts the first letter of each word to upper case and the rest to lower case.
-Words are sequences of alphanumeric characters separated by non-alphanumeric characters.
+将每个单词的首字母转换为大写，其余字母转换为小写。
+单词被视为由非字母数字字符分隔的字母数字字符序列。
 
 :::note
-Because `initcap` converts only the first letter of each word to upper case you may observe unexpected behaviour for words containing apostrophes or capital letters.
-This is a known behaviour and there are no plans to fix it currently.
+由于 `initcap` 仅将每个单词的首字母转换为大写，对于包含撇号或大写字母的单词，你可能会观察到意外的行为。
+这是已知行为，目前暂无修复计划。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 initcap(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其值为将 `s` 中每个单词的首字母转换为大写后的结果。[`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT initcap('building for fast')
@@ -1638,7 +1460,7 @@ SELECT initcap('building for fast')
 └──────────────────────────────┘
 ```
 
-**Example of known behavior for words containing apostrophes or capital letters**
+**带有撇号或大写字母的单词的已知行为示例**
 
 ```sql title=Query
 SELECT initcap('John''s cat won''t eat.');
@@ -1650,41 +1472,36 @@ SELECT initcap('John''s cat won''t eat.');
 └──────────────────────────┘
 ```
 
-
-
 ## initcapUTF8 {#initcapUTF8}
 
-Introduced in: v23.7
+引入于：v23.7
 
-
-Like [`initcap`](#initcap), `initcapUTF8` converts the first letter of each word to upper case and the rest to lower case.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+与 [`initcap`](#initcap) 类似，`initcapUTF8` 将每个单词的首字母转换为大写，其余字母转换为小写。
+假定字符串包含有效的 UTF-8 编码文本。
+如果这一假设不成立，不会抛出异常，结果是未定义的。
 
 :::note
-This function does not detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point, the result may be incorrect for this code point.
+此函数不会自动检测语言，例如对于土耳其语，结果可能不完全正确（i/İ 与 i/I）。
+如果某个码点在大小写形式下对应的 UTF-8 字节序列长度不同，则该码点的结果可能不正确。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 initcapUTF8(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回将 `s` 中每个单词的首字母转换为大写后的结果。[`String`](/sql-reference/data-types/string)
 
-Returns `s` with the first letter of each word converted to upper case. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT initcapUTF8('не тормозит')
@@ -1696,30 +1513,26 @@ SELECT initcapUTF8('не тормозит')
 └────────────────────────────┘
 ```
 
-
-
 ## isValidASCII {#isValidASCII}
 
-Introduced in: v25.9
+自 v25.9 起引入
 
-Returns 1 if the input String or FixedString contains only ASCII bytes (0x00–0x7F), otherwise 0.
+如果输入的 String 或 FixedString 仅包含 ASCII 字节（0x00–0x7F），则返回 1，否则返回 0。
 
-**Syntax**
+**语法**
 
 ```sql
 ```
 
-**Aliases**: `isASCII`
+**别名**: `isASCII`
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-
-
-**Examples**
+**示例**
 
 **isValidASCII**
 
@@ -1730,34 +1543,29 @@ SELECT isValidASCII('hello') AS is_ascii, isValidASCII('你好') AS is_not_ascii
 ```response title=Response
 ```
 
-
-
 ## isValidUTF8 {#isValidUTF8}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+检查该字节序列是否构成有效的 UTF-8 编码文本。
 
-Checks if the set of bytes constitutes valid UTF-8-encoded text.
-
-
-**Syntax**
+**语法**
 
 ```sql
 isValidUTF8(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to check for UTF-8 encoded validity. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查是否为有效 UTF-8 编码的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果该字节序列构成有效的 UTF-8 编码文本，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1`, if the set of bytes constitutes valid UTF-8-encoded text, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT isValidUTF8('\\xc3\\xb1') AS 有效, isValidUTF8('\\xc3\\x28') AS 无效
@@ -1769,35 +1577,30 @@ SELECT isValidUTF8('\\xc3\\xb1') AS 有效, isValidUTF8('\\xc3\\x28') AS 无效
 └───────┴─────────┘
 ```
 
-
-
 ## jaroSimilarity {#jaroSimilarity}
 
-Introduced in: v24.1
+引入于：v24.1
 
+计算两个字节串之间的 [Jaro 相似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity)。
 
-Calculates the [Jaro similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance#Jaro_similarity) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 jaroSimilarity(s1, s2)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串的 Jaro 相似度。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT jaroSimilarity('clickhouse', 'click')
@@ -1809,35 +1612,30 @@ SELECT jaroSimilarity('clickhouse', 'click')
 └───────────────────────────────────────┘
 ```
 
-
-
 ## jaroWinklerSimilarity {#jaroWinklerSimilarity}
 
-Introduced in: v24.1
+引入版本：v24.1
 
+计算两个字节串之间的 [Jaro-Winkler 相似度](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)。
 
-Calculates the [Jaro-Winkler similarity](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 jaroWinklerSimilarity(s1, s2)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串之间的 Jaro-Winkler 相似度。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaro-Winkler similarity between the two strings. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT jaroWinklerSimilarity('clickhouse', 'click')
@@ -1849,39 +1647,35 @@ SELECT jaroWinklerSimilarity('clickhouse', 'click')
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## left {#left}
 
-Introduced in: v22.1
+引入版本：v22.1
 
+返回字符串 `s` 中从左侧起、从指定 `offset` 位置开始的子字符串。
 
-Returns a substring of string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**语法**
 
 ```sql
 left(s, offset)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 要从中截取子字符串的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — 偏移量的字节数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 对于正的 `offset`，返回从字符串左侧开始、包含 `offset` 个字节的 `s` 的子字符串。
+* 对于负的 `offset`，返回从字符串左侧开始、包含 `length(s) - |offset|` 个字节的 `s` 的子字符串。
+* 当 `length` 为 `0` 时，返回空字符串。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**示例**
 
-**Positive offset**
+**正偏移量**
 
 ```sql title=Query
 SELECT left('Hello World', 5)
@@ -1891,7 +1685,7 @@ SELECT left('Hello World', 5)
 Hello
 ```
 
-**Negative offset**
+**负偏移量**
 
 ```sql title=Query
 SELECT left('Hello World', -6)
@@ -1901,38 +1695,33 @@ SELECT left('Hello World', -6)
 Hello
 ```
 
-
-
 ## leftPad {#leftPad}
 
-Introduced in: v21.8
+自 v21.8 起引入
 
+从左侧开始为字符串填充空格或指定的字符串（必要时可重复多次），直到结果字符串达到指定的 `length`。
 
-Pads a string from the left with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 leftPad(string, length[, pad_string])
 ```
 
-**Aliases**: `lpad`
+**别名**: `lpad`
 
-**Arguments**
+**参数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — 需要进行填充的输入字符串。[`String`](/sql-reference/data-types/string)
+* `length` — 结果字符串的长度。如果该值小于输入字符串的长度，则输入字符串会被截断为 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 可选。用于填充输入字符串的字符串。如果未指定，则使用空格对输入字符串进行填充。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个指定长度的左侧填充后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
@@ -1944,37 +1733,32 @@ SELECT leftPad('abc', 7, '*'), leftPad('def', 7)
 └────────────────────────┴───────────────────┘
 ```
 
-
-
 ## leftPadUTF8 {#leftPadUTF8}
 
-Introduced in: v21.8
+引入版本：v21.8
 
+从左侧开始使用空格或指定字符串（必要时可重复多次）填充一个 UTF-8 字符串，直到结果字符串达到给定长度。
+与按字节计算字符串长度的 [`leftPad`](#leftPad) 不同，此处的字符串长度按 Unicode 码点计算。
 
-Pads a UTF8 string from the left with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`leftPad`](#leftPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**语法**
 
 ```sql
 leftPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — 需要进行填充的输入字符串。[`String`](/sql-reference/data-types/string)
+* `length` — 结果字符串的长度。如果该值小于输入字符串的长度，则输入字符串会被截断为 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 可选。用于填充输入字符串的字符串。如果未指定，则使用空格对输入字符串进行填充。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回指定长度的左侧填充字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a left-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
@@ -1986,39 +1770,35 @@ SELECT leftPadUTF8('абвг', 7, '*'), leftPadUTF8('дежз', 7)
 └─────────────────────────────┴────────────────────────┘
 ```
 
-
-
 ## leftUTF8 {#leftUTF8}
 
-Introduced in: v22.1
+自 v22.1 起引入
 
+返回 UTF-8 编码字符串 `s` 中，从左侧开始、在指定 `offset` 处的子串。
 
-Returns a substring of a UTF-8-encoded string `s` with a specified `offset` starting from the left.
-
-
-**Syntax**
+**语法**
 
 ```sql
 leftUTF8(s, offset)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 要从中计算子字符串的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — 偏移量的字节数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the left of the string.\n"
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the left of the string.\n"
-- An empty string if `length` is 0.
-     [`String`](/sql-reference/data-types/string)
+* 当 `offset` 为正数时，返回从字符串左侧开始、包含 `offset` 个字节的 `s` 的子字符串。
+* 当 `offset` 为负数时，返回从字符串左侧开始、包含 `length(s) - |offset|` 个字节的 `s` 的子字符串。
+* 当 `length` 为 0 时，返回空字符串。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**示例**
 
-**Positive offset**
+**正偏移量**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', 4)
@@ -2028,7 +1808,7 @@ SELECT leftUTF8('Привет', 4)
 Прив
 ```
 
-**Negative offset**
+**负偏移量**
 
 ```sql title=Query
 SELECT leftUTF8('Привет', -4)
@@ -2038,39 +1818,33 @@ SELECT leftUTF8('Привет', -4)
 Пр
 ```
 
-
-
 ## lengthUTF8 {#lengthUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回字符串的长度，按 Unicode 码点计数，而不是按字节或字符计数。
+该函数假定字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，函数不会抛出异常，结果将是未定义的。
 
-Returns the length of a string in Unicode code points rather than in bytes or characters.
-It assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-
-**Syntax**
+**语法**
 
 ```sql
 lengthUTF8(s)
 ```
 
-**Aliases**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
+**别名**: `CHAR_LENGTH`, `CHARACTER_LENGTH`
 
-**Arguments**
+**参数**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — 包含有效 UTF-8 编码文本的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+字符串 `s` 的长度，以 Unicode 码点的数量表示。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Length of the string `s` in Unicode code points. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT lengthUTF8('Здравствуй, мир!')
@@ -2082,36 +1856,31 @@ SELECT lengthUTF8('Здравствуй, мир!')
 └────────────────────────────────┘
 ```
 
-
-
 ## lower {#lower}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
+将 ASCII 字符串转换为小写。
 
-Converts an ASCII string to lowercase.
-
-
-**Syntax**
+**语法**
 
 ```sql
 lower(s)
 ```
 
-**Aliases**: `lcase`
+**别名**：`lcase`
 
-**Arguments**
+**参数**
 
-- `s` — A string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `s` — 要转换为小写的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回由 `s` 转换得到的小写字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string from `s`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT lower('CLICKHOUSE')
@@ -2123,30 +1892,27 @@ SELECT lower('CLICKHOUSE')
 └─────────────────────┘
 ```
 
-
-
 ## lowerUTF8 {#lowerUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Converts a string to lowercase, assuming that the string contains valid UTF-8 encoded text. If this assumption is violated, no exception is thrown and the result is undefined.
+将字符串转换为小写，前提是假定该字符串包含有效的 UTF-8 编码文本。若该假设不成立，则不会抛出异常，其结果未定义。
 
-**Syntax**
+**语法**
 
 ```sql
 lowerUTF8(input)
 ```
 
-**Arguments**
+**参数**
 
-- `input` — Input string to convert to lowercase. [`String`](/sql-reference/data-types/string)
+* `input` — 要转换为小写形式的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个小写字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a lowercase string. [`String`](/sql-reference/data-types/string)
-
-**Examples**
+**示例**
 
 **first**
 
@@ -2158,34 +1924,29 @@ SELECT lowerUTF8('München') as Lowerutf8;
 münchen
 ```
 
-
-
 ## normalizeUTF8NFC {#normalizeUTF8NFC}
 
-Introduced in: v21.11
+引入于：v21.11
 
+根据 [NFC 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化。
 
-Normalizes a UTF-8 string according to the [NFC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**语法**
 
 ```sql
 normalizeUTF8NFC(str)
 ```
 
-**Arguments**
+**参数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — UTF-8 编码的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该 UTF-8 字符串的 NFC 归一化形式。[`String`](/sql-reference/data-types/string)
 
-Returns the NFC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -2201,34 +1962,29 @@ length(nfc_normalized);
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFD {#normalizeUTF8NFD}
 
-Introduced in: v21.11
+引入于：v21.11
 
+根据 [NFD 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化处理。
 
-Normalizes a UTF-8 string according to the [NFD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**语法**
 
 ```sql
 normalizeUTF8NFD(str)
 ```
 
-**Arguments**
+**参数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — 使用 UTF-8 编码的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 UTF-8 字符串的 NFD 规范形式。[`String`](/sql-reference/data-types/string)
 
-Returns the NFD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -2244,34 +2000,29 @@ SELECT
 └──────────┴──────────────────┴────────────────┴────────────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKC {#normalizeUTF8NFKC}
 
-Introduced in: v21.11
+首次在 v21.11 中引入。
 
+根据 [NFKC 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化处理。
 
-Normalizes a UTF-8 string according to the [NFKC normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**语法**
 
 ```sql
 normalizeUTF8NFKC(str)
 ```
 
-**Arguments**
+**参数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — 采用 UTF-8 编码的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该 UTF-8 字符串的 NFKC 规范化形式。[`String`](/sql-reference/data-types/string)
 
-Returns the NFKC normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -2285,34 +2036,29 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## normalizeUTF8NFKD {#normalizeUTF8NFKD}
 
-Introduced in: v21.11
+引入版本：v21.11
 
+按照 [NFKD 规范化形式](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms)对 UTF-8 字符串进行规范化处理。
 
-Normalizes a UTF-8 string according to the [NFKD normalization form](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-
-
-**Syntax**
+**语法**
 
 ```sql
 normalizeUTF8NFKD(str)
 ```
 
-**Arguments**
+**参数**
 
-- `str` — UTF-8 encoded input string. [`String`](/sql-reference/data-types/string)
+* `str` — 采用 UTF-8 编码的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该 UTF-8 字符串的 NFKD 规范化形式。[`String`](/sql-reference/data-types/string)
 
-Returns the NFKD normalized form of the UTF-8 string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -2326,35 +2072,30 @@ SELECT
 └──────────┴─────────────────┘
 ```
 
-
-
 ## punycodeDecode {#punycodeDecode}
 
-Introduced in: v24.1
+引入版本：v24.1
 
+返回 UTF-8 编码的明文字符串，该字符串是对 [Punycode](https://en.wikipedia.org/wiki/Punycode) 编码字符串解码得到的结果。
+如果未提供有效的 Punycode 编码字符串，则会抛出异常。
 
-Returns the UTF8-encoded plaintext of a [Punycode](https://en.wikipedia.org/wiki/Punycode)-encoded string.
-If no valid Punycode-encoded string is given, an exception is thrown.
-
-
-**Syntax**
+**语法**
 
 ```sql
 punycodeDecode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — 使用 Punycode 编码的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入值解码后的原始字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT punycodeDecode('Mnchen-3ya')
@@ -2366,35 +2107,30 @@ SELECT punycodeDecode('Mnchen-3ya')
 └──────────────────────────────┘
 ```
 
-
-
 ## punycodeEncode {#punycodeEncode}
 
-Introduced in: v24.1
+引入于：v24.1
 
+返回字符串的 [Punycode](https://en.wikipedia.org/wiki/Punycode) 表示形式。
+字符串必须为 UTF-8 编码，否则行为未定义。
 
-Returns the [Punycode](https://en.wikipedia.org/wiki/Punycode) representation of a string.
-The string must be UTF8-encoded, otherwise the behavior is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 punycodeEncode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input value. [`String`](/sql-reference/data-types/string)
+* `s` — 输入值。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入值的 Punycode 表示形式。[`String`](/sql-reference/data-types/string)
 
-Returns a Punycode representation of the input value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT punycodeEncode('München')
@@ -2406,38 +2142,33 @@ SELECT punycodeEncode('München')
 └───────────────────────────┘
 ```
 
-
-
 ## regexpExtract {#regexpExtract}
 
-Introduced in: v23.2
+自 v23.2 起引入
 
+从 `haystack` 中提取与正则表达式模式匹配且对应给定正则组索引的第一个字符串。
 
-Extracts the first string in `haystack` that matches the regexp pattern and corresponds to the regex group index.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 regexpExtract(haystack, pattern[, index])
 ```
 
-**Aliases**: `REGEXP_EXTRACT`
+**别名**: `REGEXP_EXTRACT`
 
-**Arguments**
+**参数**
 
-- `haystack` — String, in which regexp pattern will be matched. [`String`](/sql-reference/data-types/string)
-- `pattern` — String, regexp expression. `pattern` may contain multiple regexp groups, `index` indicates which regex group to extract. An index of 0 means matching the entire regular expression. [`const String`](/sql-reference/data-types/string)
-- `index` — Optional. An integer number greater or equal 0 with default 1. It represents which regex group to extract. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `haystack` — 将在其中匹配正则表达式模式的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式字符串。`pattern` 可以包含多个正则分组，`index` 指示要提取的正则分组。索引为 0 表示匹配整个正则表达式。[`const String`](/sql-reference/data-types/string)
+* `index` — 可选。一个大于或等于 0 的整数，默认值为 1。表示要提取的正则分组。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回匹配到的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string match [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -2453,35 +2184,30 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
-
-
 ## repeat {#repeat}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+按指定次数将字符串与自身连接。
 
-Concatenates a string as many times with itself as specified.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 repeat(s, n)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to repeat. [`String`](/sql-reference/data-types/string)
-- `n` — The number of times to repeat the string. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 要重复的字符串。[`String`](/sql-reference/data-types/string)
+* `n` — 重复该字符串的次数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+一个将字符串 `s` 重复 `n` 次得到的字符串。如果 `n` 为负数，则函数返回空字符串。[`String`](/sql-reference/data-types/string)
 
-A string containing string `s` repeated `n` times. If `n` is negative, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT repeat('abc', 10)
@@ -2493,36 +2219,31 @@ SELECT repeat('abc', 10)
 └────────────────────────────────┘
 ```
 
-
-
 ## reverseUTF8 {#reverseUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+反转字符串中 Unicode 码点的序列。
+假设字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，则不会抛出异常，结果未定义。
 
-Reverses a sequence of Unicode code points in a string.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 reverseUTF8(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String containing valid UTF-8 encoded text. [`String`](/sql-reference/data-types/string)
+* `s` — 包含有效 UTF-8 编码文本的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，内容为反转后的 Unicode 码点序列。[`String`](/sql-reference/data-types/string)
 
-Returns a string with the sequence of Unicode code points reversed. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT reverseUTF8('ClickHouse')
@@ -2532,39 +2253,35 @@ SELECT reverseUTF8('ClickHouse')
 esuoHkcilC
 ```
 
-
-
 ## right {#right}
 
-Introduced in: v22.1
+引入版本：v22.1
 
+返回字符串 `s` 末尾（从右侧开始）长度为指定 `offset` 的子字符串。
 
-Returns a substring of string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**语法**
 
 ```sql
 right(s, offset)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 要从中截取子字符串的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — 偏移量的字节数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 当 `offset` 为正数时，返回从字符串右侧开始、长度为 `offset` 个字节的 `s` 的子字符串。
+* 当 `offset` 为负数时，返回从字符串右侧开始、长度为 `length(s) - |offset|` 个字节的 `s` 的子字符串。
+* 当 `length` 为 `0` 时，返回空字符串。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**示例**
 
-**Positive offset**
+**正偏移量**
 
 ```sql title=Query
 SELECT right('Hello', 3)
@@ -2574,7 +2291,7 @@ SELECT right('Hello', 3)
 llo
 ```
 
-**Negative offset**
+**负偏移量**
 
 ```sql title=Query
 SELECT right('Hello', -3)
@@ -2584,38 +2301,33 @@ SELECT right('Hello', -3)
 lo
 ```
 
-
-
 ## rightPad {#rightPad}
 
-Introduced in: v21.8
+引入版本：v21.8
 
+在右侧使用空格或指定字符串（必要时可重复多次）对一个字符串进行填充，直到结果字符串达到指定的 `length`。
 
-Pads a string from the right with spaces or with a specified string (multiple times, if needed) until the resulting string reaches the specified `length`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 rightPad(string, length[, pad_string])
 ```
 
-**Aliases**: `rpad`
+**别名**: `rpad`
 
-**Arguments**
+**参数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — 需要进行填充的输入字符串。[`String`](/sql-reference/data-types/string)
+* `length` — 结果字符串的长度。如果该值小于输入字符串的长度，则输入字符串会被截断为 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 可选。用于填充输入字符串的字符串。如果未指定，则使用空格填充输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个在右侧填充到指定长度的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
@@ -2627,37 +2339,32 @@ SELECT rightPad('abc', 7, '*'), rightPad('abc', 7)
 └─────────────────────────┴────────────────────┘
 ```
 
-
-
 ## rightPadUTF8 {#rightPadUTF8}
 
-Introduced in: v21.8
+自 v21.8 引入
 
+从右侧使用空格或指定字符串进行填充（如有需要可多次重复），直到结果字符串达到给定长度。
+与按字节计字符串长度的 [`rightPad`](#rightPad) 不同，这里的字符串长度按 Unicode 码点计数。
 
-Pads the string from the right with spaces or a specified string (multiple times, if needed) until the resulting string reaches the given length.
-Unlike [`rightPad`](#rightPad) which measures the string length in bytes, the string length is measured in code points.
-
-
-**Syntax**
+**语法**
 
 ```sql
 rightPadUTF8(string, length[, pad_string])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — Input string that should be padded. [`String`](/sql-reference/data-types/string)
-- `length` — The length of the resulting string. If the value is smaller than the input string length, then the input string is shortened to `length` characters. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `pad_string` — Optional. The string to pad the input string with. If not specified, then the input string is padded with spaces. [`String`](/sql-reference/data-types/string)
+* `string` — 需要被填充的输入字符串。[`String`](/sql-reference/data-types/string)
+* `length` — 结果字符串的长度。如果该值小于输入字符串的长度，则输入字符串会被截断为 `length` 个字符。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pad_string` — 可选。用于对输入字符串进行填充的字符串。如果未指定，则使用空格对输入字符串进行填充。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回按指定长度右侧填充后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a right-padded string of the given length. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
@@ -2669,39 +2376,35 @@ SELECT rightPadUTF8('абвг', 7, '*'), rightPadUTF8('абвг', 7)
 └──────────────────────────────┴─────────────────────────┘
 ```
 
-
-
 ## rightUTF8 {#rightUTF8}
 
-Introduced in: v22.1
+引入于：v22.1
 
+返回 UTF-8 编码字符串 `s` 从右侧按指定 `offset` 开始的子字符串。
 
-Returns a substring of UTF-8 encoded string `s` with a specified `offset` starting from the right.
-
-
-**Syntax**
+**语法**
 
 ```sql
 rightUTF8(s, offset)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The UTF-8 encoded string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `offset` — The number of bytes of the offset. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 从中截取子字符串的 UTF-8 编码字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `offset` — 偏移量的字节数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- For positive `offset`, a substring of `s` with `offset` many bytes, starting from the right of the string.
-- For negative `offset`, a substring of `s` with `length(s) - |offset|` bytes, starting from the right of the string.
-- An empty string if `length` is `0`.
-     [`String`](/sql-reference/data-types/string)
+* 当 `offset` 为正数时，从字符串右侧开始的、长度为 `offset` 字节的 `s` 的子字符串。
+* 当 `offset` 为负数时，从字符串右侧开始的、长度为 `length(s) - |offset|` 字节的 `s` 的子字符串。
+* 当 `length` 为 `0` 时，返回空字符串。
+  [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**示例**
 
-**Positive offset**
+**正偏移量**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', 4)
@@ -2711,7 +2414,7 @@ SELECT rightUTF8('Привет', 4)
 ивет
 ```
 
-**Negative offset**
+**负偏移量**
 
 ```sql title=Query
 SELECT rightUTF8('Привет', -4)
@@ -2721,34 +2424,29 @@ SELECT rightUTF8('Привет', -4)
 ет
 ```
 
-
-
 ## soundex {#soundex}
 
-Introduced in: v23.4
+自 v23.4 版本起引入
 
+返回字符串的 [Soundex 代码](https://en.wikipedia.org/wiki/Soundex)。
 
-Returns the [Soundex code](https://en.wikipedia.org/wiki/Soundex) of a string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 soundex(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串的 Soundex 编码。[`String`](/sql-reference/data-types/string)
 
-Returns the Soundex code of the input string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT soundex('aksel')
@@ -2760,34 +2458,29 @@ SELECT soundex('aksel')
 └──────────────────┘
 ```
 
-
-
 ## space {#space}
 
-Introduced in: v23.5
+引入版本：v23.5
 
+按照指定次数将空格字符（` `）与自身连接。
 
-Concatenates a space (` `) as many times with itself as specified.
-
-
-**Syntax**
+**语法**
 
 ```sql
 space(n)
 ```
 
-**Arguments**
+**参数**
 
-- `n` — The number of times to repeat the space. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `n` — 空格重复的次数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由空格重复 `n` 次组成的字符串。如果 `n <= 0`，函数返回空字符串。[`String`](/sql-reference/data-types/string)
 
-Returns astring containing a space repeated `n` times. If `n <= 0`, the function returns the empty string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT space(3) AS res, length(res);
@@ -2799,39 +2492,34 @@ SELECT space(3) AS res, length(res);
 └─────┴─────────────┘
 ```
 
-
-
 ## sparseGrams {#sparseGrams}
 
-Introduced in: v25.5
+引入版本：v25.5
 
+查找给定字符串中所有长度至少为 `n` 的子串，
+其中该子串边界处的 (n-1)-gram 的哈希值
+都严格大于该子串内部任何 (n-1)-gram 的哈希值。
+使用 `CRC32` 作为哈希函数。
 
-Finds all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sparseGrams(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 可选。提取的 n-gram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 可选。提取的 n-gram 的最大长度。默认值为 100。值不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回选定子字符串的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT sparseGrams('alice', 3)
@@ -2843,39 +2531,34 @@ SELECT sparseGrams('alice', 3)
 └────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashes {#sparseGramsHashes}
 
-Introduced in: v25.5
+引入于：v25.5
 
+查找给定字符串中所有长度至少为 `n` 的子串的哈希值，
+并且这些子串在边界处的 (n-1)-gram 的哈希值
+都严格大于该子串内部任意 (n-1)-gram 的哈希值。
+使用 `CRC32` 作为哈希函数。
 
-Finds hashes of all substrings of a given string that have a length of at least `n`,
-where the hashes of the (n-1)-grams at the borders of the substring
-are strictly greater than those of any (n-1)-gram inside the substring.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sparseGramsHashes(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 可选。提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 可选。提取的 ngram 的最大长度。默认值为 100。应不小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由所选子串的 CRC32 哈希值组成的数组。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT sparseGramsHashes('alice', 3)
@@ -2887,38 +2570,33 @@ SELECT sparseGramsHashes('alice', 3)
 └────────────────────────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsHashesUTF8 {#sparseGramsHashesUTF8}
 
-Introduced in: v25.5
+引入版本：v25.5
 
+查找给定 UTF-8 字符串中所有长度至少为 `n` 的子字符串的哈希值，这些子字符串需满足：其边界处的 (n-1)-gram 的哈希值都严格大于该子字符串内部任意一个 (n-1)-gram 的哈希值。
+输入应为 UTF-8 字符串，如遇到无效 UTF-8 序列则抛出异常。
+使用 `CRC32` 作为哈希函数。
 
-Finds hashes of all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects UTF-8 string, throws an exception in case of invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sparseGramsHashesUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 可选。提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 可选。提取的 ngram 的最大长度。默认值为 100。其值不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个数组，包含选定 UTF-8 子串的 CRC32 哈希值。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings CRC32 hashes. [`Array(UInt32)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT sparseGramsHashesUTF8('алиса', 3)
@@ -2930,38 +2608,33 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 └───────────────────────────────────┘
 ```
 
-
-
 ## sparseGramsUTF8 {#sparseGramsUTF8}
 
-Introduced in: v25.5
+引入版本：v25.5
 
+在给定的 UTF-8 字符串中查找所有长度至少为 `n` 的子串，这些子串的边界处的 (n-1)-gram 的哈希值严格大于该子串内部任意 (n-1)-gram 的哈希值。
+该函数要求输入为 UTF-8 字符串，如果遇到无效的 UTF-8 序列则会抛出异常。
+使用 `CRC32` 作为哈希函数。
 
-Finds all substrings of a given UTF-8 string that have a length of at least `n`, where the hashes of the (n-1)-grams at the borders of the substring are strictly greater than those of any (n-1)-gram inside the substring.
-Expects a UTF-8 string, throws an exception in case of an invalid UTF-8 sequence.
-Uses `CRC32` as a hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — An input string. [`String`](/sql-reference/data-types/string)
-- `min_ngram_length` — Optional. The minimum length of extracted ngram. The default and minimal value is 3. [`UInt*`](/sql-reference/data-types/int-uint)
-- `max_ngram_length` — Optional. The maximum length of extracted ngram. The default value is 100. Should be not less than `min_ngram_length`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
+* `min_ngram_length` — 可选。要提取的 ngram 的最小长度。默认值和最小值为 3。[`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 可选。要提取的 ngram 的最大长度。默认值为 100，且不得小于 `min_ngram_length`。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回选定的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected UTF-8 substrings. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT sparseGramsUTF8('алиса', 3)
@@ -2973,35 +2646,30 @@ SELECT sparseGramsUTF8('алиса', 3)
 └─────────────────────────────┘
 ```
 
-
-
 ## startsWith {#startsWith}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+检查一个字符串是否以给定字符串开头。
 
-Checks whether a string begins with the provided string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 startsWith(s, prefix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以 `prefix` 开头，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT startsWith('ClickHouse', 'Click');
@@ -3013,35 +2681,30 @@ SELECT startsWith('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitive {#startsWithCaseInsensitive}
 
-Introduced in: v25.9
+自 v25.9 引入
 
+检查字符串是否以给定字符串（不区分大小写）开头。
 
-Checks whether a string begins with the provided case-insensitive string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 startsWithCaseInsensitive(s, prefix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀，大小写不敏感。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以大小写不敏感的 `prefix` 开头，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
@@ -3053,37 +2716,32 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## startsWithCaseInsensitiveUTF8 {#startsWithCaseInsensitiveUTF8}
 
-Introduced in: v25.9
+引入版本：v25.9
 
+检查字符串是否以给定的不区分大小写的前缀开头。
+假定字符串包含有效的 UTF-8 编码文本。
+当该假设不成立时，不会抛出异常，结果未定义。
 
-Checks if a string starts with the provided case-insensitive prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 startsWithCaseInsensitiveUTF8(s, prefix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Case-insensitive prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的不区分大小写的前缀。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以不区分大小写的 `prefix` 开头，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with case-insensitive `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
@@ -3095,37 +2753,32 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## startsWithUTF8 {#startsWithUTF8}
 
-Introduced in: v23.8
+引入自：v23.8
 
+检查字符串是否以指定前缀开头。
+假设该字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，则不会抛出异常，结果未定义。
 
-Checks if a string starts with the provided prefix.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 startsWithUTF8(s, prefix)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — String to check. [`String`](/sql-reference/data-types/string)
-- `prefix` — Prefix to check for. [`String`](/sql-reference/data-types/string)
+* `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `s` 以 `prefix` 开头，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `s` starts with `prefix`, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT startsWithUTF8('приставка', 'при')
@@ -3137,34 +2790,29 @@ SELECT startsWithUTF8('приставка', 'при')
 └──────────────────────────┘
 ```
 
-
-
 ## stringBytesEntropy {#stringBytesEntropy}
 
-Introduced in: v25.6
+自 v25.6 版本起引入
 
+计算字符串中字节分布的 Shannon 熵。
 
-Calculates Shannon's entropy of byte distribution in a string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 stringBytesEntropy(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — 要分析的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回字符串中字节分布的 Shannon 熵值。[`Float64`](/sql-reference/data-types/float)
 
-Returns Shannon's entropy of byte distribution in the string. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT stringBytesEntropy('Hello, world!')
@@ -3176,34 +2824,29 @@ SELECT stringBytesEntropy('Hello, world!')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## stringBytesUniq {#stringBytesUniq}
 
-Introduced in: v25.6
+在 v25.6 中引入
 
+统计字符串中不同字节的数量。
 
-Counts the number of distinct bytes in a string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 stringBytesUniq(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — 要分析的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回字符串中不同字节的个数。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the number of distinct bytes in the string. [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT stringBytesUniq('Hello')
@@ -3215,35 +2858,30 @@ SELECT stringBytesUniq('Hello')
 └──────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndex {#stringJaccardIndex}
 
-Introduced in: v23.11
+自 v23.11 引入
 
+计算两个字节串之间的 [Jaccard 相似系数](https://en.wikipedia.org/wiki/Jaccard_index)。
 
-Calculates the [Jaccard similarity index](https://en.wikipedia.org/wiki/Jaccard_index) between two byte strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 stringJaccardIndex(s1, s2)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — First input string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回两个字符串之间的 Jaccard 相似系数。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two strings. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT stringJaccardIndex('clickhouse', 'mouse')
@@ -3255,35 +2893,30 @@ SELECT stringJaccardIndex('clickhouse', 'mouse')
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## stringJaccardIndexUTF8 {#stringJaccardIndexUTF8}
 
-Introduced in: v23.11
+在 v23.11 中引入
 
+与 [`stringJaccardIndex`](#stringJaccardIndex) 类似，但用于 UTF8 编码的字符串。
 
-Like [`stringJaccardIndex`](#stringJaccardIndex) but for UTF8-encoded strings.
-
-
-**Syntax**
+**语法**
 
 ```sql
 stringJaccardIndexUTF8(s1, s2)
 ```
 
-**Arguments**
+**参数**
 
-- `s1` — First input UTF8 string. [`String`](/sql-reference/data-types/string)
-- `s2` — Second input UTF8 string. [`String`](/sql-reference/data-types/string)
+* `s1` — 第一个输入 UTF8 字符串。[`String`](/sql-reference/data-types/string)
+* `s2` — 第二个输入 UTF8 字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回这两个 UTF8 字符串之间的 Jaccard 相似系数。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard similarity index between the two UTF8 strings. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
@@ -3295,43 +2928,39 @@ SELECT stringJaccardIndexUTF8('我爱你', '我也爱你')
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## substring {#substring}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回字符串 `s` 中从指定字节索引 `offset` 开始的子串。
+字节计数从 1 开始，逻辑如下：
 
-Returns the substring of a string `s` which starts at the specified byte index `offset`.
-Byte counting starts from 1 with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* 如果 `offset` 为 `0`，则返回空字符串。
+* 如果 `offset` 为负数，则子串从字符串末尾起第 `pos` 个字符处开始，而不是从开头开始。
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+可选参数 `length` 指定返回子串所允许的最大字节数。
 
-
-**Syntax**
+**语法**
 
 ```sql
 substring(s, offset[, length])
 ```
 
-**Aliases**: `byteSlice`, `mid`, `substr`
+**别名**: `byteSlice`, `mid`, `substr`
 
-**Arguments**
+**参数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — Optional. The maximum length of the substring. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `s` — 要从中截取子字符串的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Enum`](/sql-reference/data-types/enum)
+* `offset` — 子字符串在 `s` 中的起始位置。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 可选。子字符串的最大长度。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回从索引 `offset` 开始、长度为 `length` 字节的 `s` 的子字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
@@ -3343,38 +2972,33 @@ SELECT 'database' AS db, substr(db, 5), substr(db, 5, 1)
 └──────────┴──────────────────────────┴─────────────────────────────┘
 ```
 
-
-
 ## substringIndex {#substringIndex}
 
-Introduced in: v23.7
+自 v23.7 引入
 
+返回字符串 `s` 中，在分隔符 `delim` 第 `count` 次出现之前的子串，其行为与 Spark 或 MySQL 中相同。
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, as in Spark or MySQL.
-
-
-**Syntax**
+**语法**
 
 ```sql
 substringIndex(s, delim, count)
 ```
 
-**Aliases**: `SUBSTRING_INDEX`
+**别名**: `SUBSTRING_INDEX`
 
-**Arguments**
+**参数**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 要从中提取子字符串的源字符串。[`String`](/sql-reference/data-types/string)
+* `delim` — 用于分割的分隔符字符串。[`String`](/sql-reference/data-types/string)
+* `count` — 在提取子字符串之前要统计的分隔符出现次数。如果 `count` 为正，则返回最后一个分隔符（从左侧计数）左边的所有内容。如果 `count` 为负，则返回最后一个分隔符（从右侧计数）右边的所有内容。[`UInt`](/sql-reference/data-types/int-uint) 或 [`Int`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 `s` 中在 `delim` 第 `count` 次出现之前的子字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT substringIndex('www.clickhouse.com', '.', 2)
@@ -3386,38 +3010,33 @@ SELECT substringIndex('www.clickhouse.com', '.', 2)
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## substringIndexUTF8 {#substringIndexUTF8}
 
-Introduced in: v23.7
+引入版本：v23.7
 
+返回字符串 `s` 中在分隔符 `delim` 第 `count` 次出现之前的子字符串，专门针对 Unicode 码位进行处理。
+假定字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，不会抛出异常，结果未定义。
 
-Returns the substring of `s` before `count` occurrences of the delimiter `delim`, specifically for Unicode code points.
-Assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
-
-
-**Syntax**
+**语法**
 
 ```sql
 substringIndexUTF8(s, delim, count)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to extract substring from. [`String`](/sql-reference/data-types/string)
-- `delim` — The character to split. [`String`](/sql-reference/data-types/string)
-- `count` — The number of occurrences of the delimiter to count before extracting the substring. If count is positive, everything to the left of the final delimiter (counting from the left) is returned. If count is negative, everything to the right of the final delimiter (counting from the right) is returned. [`UInt`](/sql-reference/data-types/int-uint) or [`Int`](/sql-reference/data-types/int-uint)
+* `s` — 要从中提取子字符串的字符串。[`String`](/sql-reference/data-types/string)
+* `delim` — 用于分隔的字符。[`String`](/sql-reference/data-types/string)
+* `count` — 在提取子字符串之前，需要统计的分隔符出现次数。如果 `count` 为正数，则返回从左侧开始计数时，最后一个分隔符左侧的所有内容。如果 `count` 为负数，则返回从右侧开始计数时，最后一个分隔符右侧的所有内容。[`UInt`](/sql-reference/data-types/int-uint) 或 [`Int`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 `s` 中在第 `count` 次出现 `delim` 之前的子字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` before `count` occurrences of `delim`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**UTF8 example**
+**UTF-8 示例**
 
 ```sql title=Query
 SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
@@ -3427,46 +3046,42 @@ SELECT substringIndexUTF8('www.straßen-in-europa.de', '.', 2)
 www.straßen-in-europa
 ```
 
-
-
 ## substringUTF8 {#substringUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回字符串 `s` 的子串，该子串从指定的字节索引 `offset`（按 Unicode 码点）开始。
+字节计数从 `1` 开始，遵循以下规则：
 
-Returns the substring of a string `s` which starts at the specified byte index `offset` for Unicode code points.
-Byte counting starts from `1` with the following logic:
-- If `offset` is `0`, an empty string is returned.
-- If `offset` is negative, the substring starts `pos` characters from the end of the string, rather than from the beginning.
+* 如果 `offset` 为 `0`，则返回空字符串。
+* 如果 `offset` 为负数，则子串从字符串末尾往前数 `pos` 个字符处开始，而不是从开头开始。
 
-An optional argument `length` specifies the maximum number of bytes the returned substring may have.
+可选参数 `length` 用于指定返回子串允许包含的最大字节数。
 
 :::note
-This function assumes that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+此函数假定字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，不会抛出异常，且结果未定义。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 substringUTF8(s, offset[, length])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to calculate a substring from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Enum`](/sql-reference/data-types/enum)
-- `offset` — The starting position of the substring in `s`. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
-- `length` — The maximum length of the substring. Optional. [`Int`](/sql-reference/data-types/int-uint) or [`UInt`](/sql-reference/data-types/int-uint)
+* `s` — 要从中截取子字符串的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Enum`](/sql-reference/data-types/enum)
+* `offset` — 子字符串在 `s` 中的起始位置。[`Int`](/sql-reference/data-types/int-uint) 或 [`UInt`](/sql-reference/data-types/int-uint)
+* `length` — 子字符串的最大长度（可选）。[`Int`](/sql-reference/data-types/int-uint) 或 [`UInt`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回从索引 `offset` 开始、长度为 `length` 字节的 `s` 的子字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a substring of `s` with `length` many bytes, starting at index `offset`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substringUTF8(str, 9, 5)
@@ -3476,35 +3091,30 @@ SELECT 'Täglich grüßt das Murmeltier.' AS str, substringUTF8(str, 9), substri
 Täglich grüßt das Murmeltier.    grüßt das Murmeltier.    grüßt
 ```
 
-
-
 ## toValidUTF8 {#toValidUTF8}
 
-Introduced in: v20.1
+引入于：v20.1
 
+通过将任何无效的 UTF-8 字符替换为替换字符 `�` (U+FFFD)，将字符串转换为有效的 UTF-8 编码。
+当发现多个连续的无效字符时，会被折叠为一个替换字符。
 
-Converts a string to valid UTF-8 encoding by replacing any invalid UTF-8 characters with the replacement character `�` (U+FFFD).
-When multiple consecutive invalid characters are found, they are collapsed into a single replacement character.
-
-
-**Syntax**
+**语法**
 
 ```sql
 toValidUTF8(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Any set of bytes represented as the String data type object. [`String`](/sql-reference/data-types/string)
+* `s` — 以 String 数据类型对象表示的任意字节序列。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个有效的 UTF-8 字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a valid UTF-8 string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toValidUTF8('\\x61\\xF0\\x80\\x80\\x80b')
@@ -3517,38 +3127,33 @@ c
 └───────────────────────┘
 ```
 
-
-
 ## trimBoth {#trimBoth}
 
-Introduced in: v20.1
+自 v20.1 版本引入。
 
+从字符串的开头和结尾删除指定的字符。
+默认情况下，删除常见的 ASCII 空白字符。
 
-Removes the specified characters from the start and end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**语法**
 
 ```sql
 trimBoth(s[, trim_characters])
 ```
 
-**Aliases**: `trim`
+**别名**: `trim`
 
-**Arguments**
+**参数**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — 要进行修剪的字符串。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 可选。要从字符串两端移除的字符。如果未指定，则会移除常见的空白字符。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回从两端移除了指定字符的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from both ends. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT trimBoth('$$ClickHouse$$', '$')
@@ -3560,38 +3165,33 @@ SELECT trimBoth('$$ClickHouse$$', '$')
 └──────────────────────────┘
 ```
 
-
-
 ## trimLeft {#trimLeft}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+从字符串开头移除指定字符。
+默认情况下，移除常见的空白（ASCII）字符。
 
-Removes the specified characters from the start of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**语法**
 
 ```sql
 trimLeft(input[, trim_characters])
 ```
 
-**Aliases**: `ltrim`
+**别名**: `ltrim`
 
-**Arguments**
+**参数**
 
-- `input` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional. Characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `input` — 要进行裁剪的字符串。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 可选。要裁剪的字符。如果未指定，则会移除常见的空白字符。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回在左侧裁剪了指定字符后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the left. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT trimLeft('ClickHouse', 'Click');
@@ -3603,38 +3203,33 @@ SELECT trimLeft('ClickHouse', 'Click');
 └──────────────────────────┘
 ```
 
-
-
 ## trimRight {#trimRight}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+从字符串末尾移除指定字符。
+默认情况下，移除常见的 ASCII 空白字符。
 
-Removes the specified characters from the end of a string.
-By default, removes common whitespace (ASCII) characters.
-
-
-**Syntax**
+**语法**
 
 ```sql
 trimRight(s[, trim_characters])
 ```
 
-**Aliases**: `rtrim`
+**别名**: `rtrim`
 
-**Arguments**
+**参数**
 
-- `s` — String to trim. [`String`](/sql-reference/data-types/string)
-- `trim_characters` — Optional characters to trim. If not specified, common whitespace characters are removed. [`String`](/sql-reference/data-types/string)
+* `s` — 待处理的字符串。[`String`](/sql-reference/data-types/string)
+* `trim_characters` — 可选，要去除的字符。如果未指定，则会移除常见的空白字符。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回从右侧去除指定字符后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the string with specified characters trimmed from the right. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT trimRight('ClickHouse','House');
@@ -3646,34 +3241,29 @@ SELECT trimRight('ClickHouse','House');
 └──────────────────────────┘
 ```
 
-
-
 ## tryBase32Decode {#tryBase32Decode}
 
-Introduced in: v25.6
+引入版本：v25.6
 
+接受一个字符串，并使用 [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) 编码方案对其进行解码。
 
-Accepts a string and decodes it using [Base32](https://datatracker.ietf.org/doc/html/rfc4648#section-6) encoding scheme.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryBase32Decode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base32-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串列或常量。如果字符串不是有效的 Base32 编码，则在出错时返回空字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT tryBase32Decode('IVXGG33EMVSA====');
@@ -3685,34 +3275,29 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase58Decode {#tryBase58Decode}
 
-Introduced in: v22.10
+自 v22.10 引入
 
+类似于 [`base58Decode`](#base58Decode)，但在发生错误时返回空字符串。
 
-Like [`base58Decode`](#base58Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryBase58Decode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant. If the string is not valid Base58-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — 字符串列或常量。如果字符串不是有效的 Base58 编码，出错时返回空字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含该参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_invalid;
@@ -3724,34 +3309,29 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 └─────────┴─────────────┘
 ```
 
-
-
 ## tryBase64Decode {#tryBase64Decode}
 
-Introduced in: v18.16
+自 v18.16 版本起提供
 
+类似于 [`base64Decode`](#base64Decode)，但在出错时返回空字符串。
 
-Like [`base64Decode`](#base64Decode), but returns an empty string in case of error.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryBase64Decode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的 String 列或常量。如果字符串不是有效的 Base64 编码，出错时返回空字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含参数解码后值的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
@@ -3763,34 +3343,29 @@ SELECT tryBase64Decode('Y2xpY2tob3VzZQ==')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryBase64URLDecode {#tryBase64URLDecode}
 
-Introduced in: v18.16
+引入版本：v18.16
 
+与 [`base64URLDecode`](#base64URLDecode) 类似，但在发生错误时返回空字符串。
 
-Like [`base64URLDecode`](#base64URLDecode), but returns an empty string in case of error.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryBase64URLDecode(encoded)
 ```
 
-**Arguments**
+**参数**
 
-- `encoded` — String column or constant to decode. If the string is not valid Base64-encoded, returns an empty string in case of error. [`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串列或常量。如果该字符串不是有效的 Base64 编码字符串，发生错误时返回空字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中包含参数解码后的结果。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the decoded value of the argument. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
@@ -3802,35 +3377,30 @@ SELECT tryBase64URLDecode('aHR0cHM6Ly9jbGlja2hvdXNlLmNvbQ')
 └──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## tryIdnaEncode {#tryIdnaEncode}
 
-Introduced in: v24.1
+自 v24.1 起提供
 
+根据 [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications)（IDNA）机制，返回域名的 Unicode（UTF-8）表示形式（ToUnicode 算法）。
+在发生错误时，会返回空字符串，而不是抛出异常。
 
-Returns the Unicode (UTF-8) representation (ToUnicode algorithm) of a domain name according to the [Internationalized Domain Names in Applications](https://en.wikipedia.org/wiki/Internationalized_domain_name#Internationalizing_Domain_Names_in_Applications) (IDNA) mechanism.
-In case of an error it returns an empty string instead of throwing an exception.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryIdnaEncode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回根据 IDNA 机制对输入值进行转换后得到的 ASCII 表示。如果输入无效，则返回空字符串。[`String`](/sql-reference/data-types/string)
 
-Returns an ASCII representation of the input string according to the IDNA mechanism of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT tryIdnaEncode('straße.münchen.de')
@@ -3842,34 +3412,29 @@ SELECT tryIdnaEncode('straße.münchen.de')
 └─────────────────────────────────────┘
 ```
 
-
-
 ## tryPunycodeDecode {#tryPunycodeDecode}
 
-Introduced in: v24.1
+自 v24.1 起提供
 
+与 `punycodeDecode` 类似，但如果未给出有效的 Punycode 编码字符串，则返回空字符串。
 
-Like `punycodeDecode` but returns an empty string if no valid Punycode-encoded string is given.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tryPunycodeDecode(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Punycode-encoded string. [`String`](/sql-reference/data-types/string)
+* `s` — 使用 Punycode 编码的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入值的明文；如果输入无效，则返回空字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the plaintext of the input value, or empty string if input is invalid. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT tryPunycodeDecode('Mnchen-3ya')
@@ -3881,36 +3446,31 @@ SELECT tryPunycodeDecode('Mnchen-3ya')
 └─────────────────────────────────┘
 ```
 
-
-
 ## upper {#upper}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将字符串中的 ASCII 拉丁字符转换为大写。
 
-Converts the ASCII Latin symbols in a string to uppercase.
-
-
-**Syntax**
+**语法**
 
 ```sql
 upper(s)
 ```
 
-**Aliases**: `ucase`
+**别名**：`ucase`
 
-**Arguments**
+**参数**
 
-- `s` — The string to convert to uppercase. [`String`](/sql-reference/data-types/string)
+* `s` — 要转换为大写形式的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回由 `s` 转换为大写形式得到的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns an uppercase string from `s`. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT upper('clickhouse')
@@ -3922,40 +3482,35 @@ SELECT upper('clickhouse')
 └─────────────────────┘
 ```
 
-
-
 ## upperUTF8 {#upperUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Converts a string to uppercase, assuming that the string contains valid UTF-8 encoded text.
-If this assumption is violated, no exception is thrown and the result is undefined.
+将字符串转换为大写，前提是假设该字符串包含有效的 UTF-8 编码文本。
+如果该假设不成立，不会抛出异常，其结果是未定义的。
 
 :::note
-This function doesn't detect the language, e.g. for Turkish the result might not be exactly correct (i/İ vs. i/I).
-If the length of the UTF-8 byte sequence is different for upper and lower case of a code point (such as `ẞ` and `ß`), the result may be incorrect for that code point.
+该函数不会检测具体语言，例如对于土耳其语，结果可能不完全正确（i/İ vs. i/I）。
+如果某个码点的大写和小写形式的 UTF-8 字节序列长度不同（例如 `ẞ` 和 `ß`），则该码点的结果可能不正确。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 upperUTF8(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — A string type. [`String`](/sql-reference/data-types/string)
+* `s` — 字符串类型。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+`String` 数据类型的值。[`String`](/sql-reference/data-types/string)
 
-A String data type value. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT upperUTF8('München') AS Upperutf8

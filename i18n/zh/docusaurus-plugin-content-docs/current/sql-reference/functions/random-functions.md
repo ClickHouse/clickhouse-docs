@@ -69,39 +69,34 @@ FROM numbers(3)
 └───────────────────────────────────────┘
 ```
 
-
-
 ## rand {#rand}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回一个服从均匀分布的随机 `UInt32` 数值。
 
-Returns a random `UInt32` number with uniform distribution.
+使用线性同余生成器，并从系统获取初始状态。这意味着尽管它看起来是随机的，但并不是真正意义上的随机，如果已知初始状态，其结果是可以预测的。
+在对真正随机性要求较高的场景中，建议使用诸如系统级调用或集成外部库等替代方法。
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 rand([x])
 ```
 
-**Aliases**: `rand32`
+**别名**: `rand32`
 
-**Arguments**
+**参数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 可选且会被忽略。该参数的唯一用途是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个 `UInt32` 类型的随机数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a random number of type `UInt32`. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT rand();
@@ -111,37 +106,32 @@ SELECT rand();
 1569354847
 ```
 
-
-
 ## rand64 {#rand64}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+返回一个服从均匀分布的随机生成 `UInt64` 数值。
 
-Returns a random distributed `UInt64` number with uniform distribution.
+使用线性同余生成器，其初始状态由系统获取。这意味着虽然其表现为随机，但并非真正的随机；如果初始状态已知，则可能被预测。
+在对真正随机性要求较高的场景中，请考虑使用其他方法，例如系统级调用或集成外部库。
 
-Uses a linear congruential generator with an initial state obtained from the system, which means that while it appears random, it's not truly random and can be predictable if the initial state is known.
-For scenarios where true randomness is crucial, consider using alternative methods like system-level calls or integrating with external libraries.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 rand64([x])
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 可选且会被忽略。该参数唯一的作用是，当在查询中多次使用相同的函数调用时，防止发生[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个服从均匀分布的随机 `UInt64` 数值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random UInt64 number with uniform distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT rand64();
@@ -151,35 +141,30 @@ SELECT rand64();
 15030268859237645412
 ```
 
-
-
 ## randBernoulli {#randBernoulli}
 
-Introduced in: v22.10
+引入版本：v22.10
 
+返回一个服从 [Bernoulli 分布](https://en.wikipedia.org/wiki/Bernoulli_distribution) 的随机 Float64 数值。
 
-Returns a random Float64 number drawn from a [Bernoulli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randBernoulli(probability[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `probability` — The probability of success as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `probability` — 成功的概率，取值范围为 `0` 到 `1`。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数唯一的作用是在同一个查询中多次使用相同函数调用时，用于防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个服从指定 Bernoulli 分布的随机 Float64 数值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Bernoulli distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT randBernoulli(.75) FROM numbers(5)
@@ -195,36 +180,31 @@ SELECT randBernoulli(.75) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randBinomial {#randBinomial}
 
-Introduced in: v22.10
+自 v22.10 起提供
 
+返回一个从 [二项分布](https://en.wikipedia.org/wiki/Binomial_distribution) 中抽取的随机 Float64 类型数值。
 
-Returns a random Float64 number drawn from a [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randBinomial(experiments, probability[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `experiments` — The number of experiments [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — The probability of success in each experiment as a value between `0` and `1` [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — 试验次数 [`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — 每次试验成功的概率，取值范围在 `0` 到 `1` 之间 [`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数唯一的用途是在查询中多次使用相同的函数调用时，防止执行[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定二项分布中采样得到的随机 Float64 数值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified binomial distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randBinomial(100, .75) FROM numbers(5)
@@ -240,34 +220,29 @@ SELECT randBinomial(100, .75) FROM numbers(5)
 └─────────────────────────┘
 ```
 
-
-
 ## randCanonical {#randCanonical}
 
-Introduced in: v22.11
+自 v22.11 起引入
 
+返回一个服从均匀分布的 `Float64` 随机数，范围在 `0`（包含）和 `1`（不包含）之间。
 
-Returns a random distributed `Float64` number with uniform distribution between `0` (inclusive) and `1` (exclusive).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randCanonical([x])
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 可选参数，其值会被忽略。该参数的唯一目的是在同一函数调用在查询中被多次使用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个随机的 Float64 数值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT randCanonical();
@@ -277,35 +252,30 @@ SELECT randCanonical();
 0.345217890123456
 ```
 
-
-
 ## randChiSquared {#randChiSquared}
 
-Introduced in: v22.10
+自 v22.10 引入
 
+返回一个从 [卡方分布](https://en.wikipedia.org/wiki/Chi-squared_distribution) 中抽取的随机 Float64 数值。
 
-Returns a random Float64 number drawn from a [chi-square distribution](https://en.wikipedia.org/wiki/Chi-squared_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randChiSquared(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — 自由度。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。此参数唯一的作用是在同一个查询中多次使用相同函数调用时，防止触发[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定卡方分布中抽取的随机 Float64 类型数值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified chi-square distribution. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randChiSquared(10) FROM numbers(5)
@@ -321,40 +291,36 @@ SELECT randChiSquared(10) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randConstant {#randConstant}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+生成一个在当前查询执行过程中对所有行都保持不变的随机值。
 
-Generates a single random value that remains constant across all rows in the current query execution.
+该函数：
 
-This function:
-- Returns the same random value for every row within a single query
-- Produces different values across separate query executions
+* 在单个查询中为每一行返回相同的随机值
+* 在不同次查询执行中产生不同的值
 
-It is useful for applying consistent random seeds or identifiers across all rows in a dataset
-    
+这对于在数据集的所有行中应用一致的随机种子或标识符非常有用。
 
-**Syntax**
+**语法**
 
 ```sql
 randConstant([x])
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `x` — 可选且会被忽略。该参数唯一的作用，是在查询中多次使用同一函数调用时，防止发生[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个类型为 `UInt32` 的列，每一行都包含相同的随机值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a column of type `UInt32` containing the same random value in each row. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT randConstant() AS random_value;
@@ -366,7 +332,7 @@ SELECT randConstant() AS random_value;
 | 1234567890   |
 ```
 
-**Usage with parameter**
+**参数化用法**
 
 ```sql title=Query
 SELECT randConstant(10) AS random_value;
@@ -378,35 +344,30 @@ SELECT randConstant(10) AS random_value;
 | 9876543210   |
 ```
 
-
-
 ## randExponential {#randExponential}
 
-Introduced in: v22.10
+自 v22.10 起提供
 
+返回一个从[指数分布](https://en.wikipedia.org/wiki/Exponential_distribution)中采样得到的随机 Float64 数值。
 
-Returns a random Float64 number drawn from an [exponential distribution](https://en.wikipedia.org/wiki/Exponential_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randExponential(lambda[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `lambda` — Rate parameter or lambda value of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `lambda` — 分布的速率参数或 lambda 值。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数的唯一作用是在查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定指数分布中抽样得到的随机 Float64 数值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified exponential distribution. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randExponential(1/10) FROM numbers(5)
@@ -422,36 +383,31 @@ SELECT randExponential(1/10) FROM numbers(5)
 └────────────────────────────────┘
 ```
 
-
-
 ## randFisherF {#randFisherF}
 
-Introduced in: v22.10
+引入版本：v22.10
 
+返回一个从 [F 分布](https://en.wikipedia.org/wiki/F-distribution) 中抽取的随机 Float64 浮点数。
 
-Returns a random Float64 number drawn from an [F-distribution](https://en.wikipedia.org/wiki/F-distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randFisherF(d1, d2[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `d1` — d1 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `d2` — d2 degree of freedom in `X = (S1 / d1) / (S2 / d2)`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `d1` — `X = (S1 / d1) / (S2 / d2)` 中自由度为 d1。[`Float64`](/sql-reference/data-types/float)
+* `d2` — `X = (S1 / d1) / (S2 / d2)` 中自由度为 d2。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选参数，调用时会被忽略。该参数唯一的用途是在同一查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定 F 分布中生成的随机 Float64 值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified F-distribution [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randFisherF(10, 3) FROM numbers(5)
@@ -467,36 +423,31 @@ SELECT randFisherF(10, 3) FROM numbers(5)
 └─────────────────────┘
 ```
 
-
-
 ## randLogNormal {#randLogNormal}
 
-Introduced in: v22.10
+自 v22.10 起引入
 
+返回一个从[对数正态分布](https://en.wikipedia.org/wiki/Log-normal_distribution)中采样得到的随机 Float64 数值。
 
-Returns a random Float64 number drawn from a [log-normal distribution](https://en.wikipedia.org/wiki/Log-normal_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randLogNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `mean` — The mean value of distribution. [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — 分布的均值。[`Float64`](/sql-reference/data-types/float)
+* `stddev` — 分布的标准差。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且将被忽略。该参数的唯一目的，是在同一查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定对数正态分布中抽取的随机 `Float64` 类型数值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified log-normal distribution. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randLogNormal(100, 5) FROM numbers(5)
@@ -512,36 +463,31 @@ SELECT randLogNormal(100, 5) FROM numbers(5)
 └───────────────────────┘
 ```
 
-
-
 ## randNegativeBinomial {#randNegativeBinomial}
 
-Introduced in: v22.10
+引入于：v22.10
 
+返回一个从 [负二项分布](https://en.wikipedia.org/wiki/Negative_binomial_distribution) 中抽取的 Float64 类型随机数。
 
-Returns a random Float64 number drawn from a [negative binomial distribution](https://en.wikipedia.org/wiki/Negative_binomial_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randNegativeBinomial(experiments, probability[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `experiments` — The number of experiments. [`UInt64`](/sql-reference/data-types/int-uint)
-- `probability` — `The probability of failure in each experiment as a value between `0` and `1`. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `experiments` — 实验次数。[`UInt64`](/sql-reference/data-types/int-uint)
+* `probability` — 每次实验失败的概率，取值在 `0` 与 `1` 之间。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数唯一的作用是在查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定负二项分布中抽取的随机 `UInt64` 数值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified negative binomial distribution [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randNegativeBinomial(100, .75) FROM numbers(5)
@@ -557,36 +503,31 @@ SELECT randNegativeBinomial(100, .75) FROM numbers(5)
 └─────────────────────────────────┘
 ```
 
-
-
 ## randNormal {#randNormal}
 
-Introduced in: v22.10
+自 v22.10 起提供
 
+返回一个从[正态分布](https://en.wikipedia.org/wiki/Normal_distribution)中抽取的随机 Float64 数值。
 
-Returns a random Float64 number drawn from a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randNormal(mean, stddev[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `mean` — The mean value of distribution [`Float64`](/sql-reference/data-types/float)
-- `stddev` — The standard deviation of the distribution [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `mean` — 分布的均值 [`Float64`](/sql-reference/data-types/float)
+* `stddev` — 分布的标准差 [`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数的唯一作用是在同一个查询中多次使用相同的函数调用时，防止发生[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回从指定正态分布中抽取的随机 Float64 数。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified normal distribution. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randNormal(10, 2) FROM numbers(5)
@@ -602,35 +543,30 @@ SELECT randNormal(10, 2) FROM numbers(5)
 └────────────────────┘
 ```
 
-
-
 ## randPoisson {#randPoisson}
 
-Introduced in: v22.10
+自 v22.10 引入
 
+返回一个从 [泊松分布](https://en.wikipedia.org/wiki/Poisson_distribution) 中抽取的随机 Float64 类型数值。
 
-Returns a random Float64 number drawn from a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) distribution.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randPoisson(n[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `n` — The mean number of occurrences. [`UInt64`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `n` — 平均发生次数。[`UInt64`](/sql-reference/data-types/int-uint)
+* `x` — 可选且会被忽略。此参数唯一的用途是在查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定泊松分布中抽取的随机 Float64 数值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a random Float64 number drawn from the specified Poisson distribution. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randPoisson(10) FROM numbers(5)
@@ -646,35 +582,30 @@ SELECT randPoisson(10) FROM numbers(5)
 └─────────────────┘
 ```
 
-
-
 ## randStudentT {#randStudentT}
 
-Introduced in: v22.10
+自 v22.10 起引入
 
+返回一个从 [学生 t 分布](https://en.wikipedia.org/wiki/Student%27s_t-distribution) 中抽取的随机 Float64 数值。
 
-Returns a random Float64 number drawn from a [Student's t-distribution](https://en.wikipedia.org/wiki/Student%27s_t-distribution).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randStudentT(degree_of_freedom[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `degree_of_freedom` — Degrees of freedom. [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `degree_of_freedom` — 自由度。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且将被忽略。此参数唯一的用途是在同一查询中多次使用相同函数调用时，防止发生[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个从指定 Student&#39;s t 分布中抽取的随机 Float64 数值。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random Float64 number drawn from the specified Student's t-distribution. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randStudentT(10) FROM numbers(5)
@@ -690,36 +621,31 @@ SELECT randStudentT(10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randUniform {#randUniform}
 
-Introduced in: v22.10
+在 v22.10 中引入
 
+返回在区间 $[\min, \max]$ 上服从均匀分布的 Float64 类型随机数。
 
-Returns a random Float64 number drawn uniformly from the interval $[\min, \max]$.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randUniform(min, max[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `min` — Left boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `max` — Right boundary of the range (inclusive). [`Float64`](/sql-reference/data-types/float)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `min` — 区间左边界（包含）。[`Float64`](/sql-reference/data-types/float)
+* `max` — 区间右边界（包含）。[`Float64`](/sql-reference/data-types/float)
+* `x` — 可选且会被忽略。该参数唯一的作用是在同一个查询中多次使用相同函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回从由 `min` 和 `max` 形成的区间中均匀抽取的随机数（服从均匀分布）。[`Float64`](/sql-reference/data-types/float)
 
-Returns a random number drawn uniformly from the interval formed by `min` and `max`. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT randUniform(5.5, 10) FROM numbers(5)
@@ -735,35 +661,30 @@ SELECT randUniform(5.5, 10) FROM numbers(5)
 └──────────────────────┘
 ```
 
-
-
 ## randomFixedString {#randomFixedString}
 
-Introduced in: v20.5
+引入版本：v20.5
 
+生成一个指定长度（字符数）的随机定长字符串。
+返回的字符不一定是 ASCII 字符，即它们可能是不可打印字符。
 
-Generates a random fixed-size string with the specified number of character.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-随机固定字符串(长度)
+randomFixedString(length)
 ```
 
-**Arguments**
+**参数**
 
-- `length` — Length of the string in bytes. [`UInt*`](/sql-reference/data-types/int-uint)
+* `length` — 字符串的长度（以字节为单位）。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由随机字节填充的字符串。[`FixedString`](/sql-reference/data-types/fixedstring)
 
-Returns a string filled with random bytes. [`FixedString`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
@@ -775,37 +696,32 @@ SELECT randomFixedString(13) AS rnd, toTypeName(rnd)
 └──────────┴───────────────────────────────────┘
 ```
 
-
-
 ## randomPrintableASCII {#randomPrintableASCII}
 
-Introduced in: v20.1
+自 v20.1 引入
 
+生成具有指定字符数的随机[ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters)字符串。
 
-Generates a random [ASCII](https://en.wikipedia.org/wiki/ASCII#Printable_characters) string with the specified number of characters.
+如果传入的 `length < 0`，则该函数的行为未定义。
 
-If you pass `length < 0`, the behavior of the function is undefined.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randomPrintableASCII(length[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `length` — String length in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — 字符串的字节长度。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 可选且会被忽略。该参数的唯一用途，是在同一个查询中多次使用相同的函数调用时，防止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个由随机 ASCII 可打印字符组成的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string with a random set of ASCII printable characters. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers LIMIT 3
@@ -819,36 +735,31 @@ SELECT number, randomPrintableASCII(30) AS str, length(str) FROM system.numbers 
 └────────┴────────────────────────────────┴──────────────────────────────────┘
 ```
 
-
-
 ## randomString {#randomString}
 
-Introduced in: v20.5
+自 v20.5 版本起引入。
 
+生成一个具有指定长度的随机字符串。
+返回的字符不一定是 ASCII 字符，即它们可能是不可打印字符。
 
-Generates a random string with the specified number of characters.
-The returned characters are not necessarily ASCII characters, i.e. they may not be printable.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randomString(length[, x])
 ```
 
-**Arguments**
+**参数**
 
-- `length` — Length of the string in bytes. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — Optional and ignored. The only purpose of the argument is to prevent [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) when the same function call is used multiple times in a query. [`Any`](/sql-reference/data-types)
+* `length` — 字符串的长度（以字节为单位）。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 可选且会被忽略。该参数唯一的作用是在同一查询中多次使用相同的函数调用时，用于阻止[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)优化。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个由随机字节填充的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random bytes. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT randomString(5) AS str FROM numbers(2)
@@ -859,36 +770,31 @@ SELECT randomString(5) AS str FROM numbers(2)
 �v6B�
 ```
 
-
-
 ## randomStringUTF8 {#randomStringUTF8}
 
-Introduced in: v20.5
+自 v20.5 起引入
 
+生成一个具有指定码点数量的随机 [UTF-8](https://en.wikipedia.org/wiki/UTF-8) 字符串。
+不会返回来自未分配的 [平面](https://en.wikipedia.org/wiki/Plane_\(Unicode\))（4 到 13 号平面）的码点。
+与 ClickHouse 服务器交互的客户端仍有可能无法正确显示生成的 UTF-8 字符串。
 
-Generates a random [UTF-8](https://en.wikipedia.org/wiki/UTF-8) string with the specified number of codepoints.
-No codepoints from unassigned [planes](https://en.wikipedia.org/wiki/Plane_(Unicode)) (planes 4 to 13) are returned.
-It is still possible that the client interacting with ClickHouse server is not able to display the produced UTF-8 string correctly.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 randomStringUTF8(length)
 ```
 
-**Arguments**
+**参数**
 
-- `length` — Length of the string in code points. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 字符串的长度（以码点为单位）。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由随机 UTF-8 码点组成的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns a string filled with random UTF-8 codepoints. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT randomStringUTF8(13)

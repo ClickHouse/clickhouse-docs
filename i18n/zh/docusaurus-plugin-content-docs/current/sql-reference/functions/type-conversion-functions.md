@@ -212,7 +212,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt8(-8):   -8
 toInt8(-8.8): -8
@@ -275,7 +275,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt8OrZero('-8'):  -8
 toInt8OrZero('abc'): 0
@@ -337,7 +337,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt8OrNull('-8'):  -8
 toInt8OrNull('abc'): ᴺᵁᴸᴸ
@@ -469,7 +469,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt16(-16):    -16
 toInt16(-16.16): -16
@@ -532,7 +532,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt16OrZero('-16'): -16
 toInt16OrZero('abc'): 0
@@ -594,7 +594,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt16OrNull('-16'): -16
 toInt16OrNull('abc'): ᴺᵁᴸᴸ
@@ -661,7 +661,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt16OrDefault('-16', CAST('-1', 'Int16')): -16
 toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
@@ -726,7 +726,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt32(-32):    -32
 toInt32(-32.32): -32
@@ -789,7 +789,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt32OrZero('-32'): -32
 toInt32OrZero('abc'): 0
@@ -851,7 +851,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt32OrNull('-32'): -32
 toInt32OrNull('abc'): ᴺᵁᴸᴸ
@@ -918,7 +918,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt32OrDefault('-32', CAST('-1', 'Int32')): -32
 toInt32OrDefault('abc', CAST('-1', 'Int32')): -1
@@ -983,7 +983,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt64(-64):    -64
 toInt64(-64.64): -64
@@ -1046,7 +1046,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt64OrZero('-64'): -64
 toInt64OrZero('abc'): 0
@@ -1108,7 +1108,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt64OrNull('-64'): -64
 toInt64OrNull('abc'): ᴺᵁᴸᴸ
@@ -1175,7 +1175,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt64OrDefault('-64', CAST('-1', 'Int64')): -64
 toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
@@ -1239,7 +1239,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt128(-128):   -128
 toInt128(-128.8): -128
@@ -1364,7 +1364,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt128OrNull('-128'): -128
 toInt128OrNull('abc'):  ᴺᵁᴸᴸ
@@ -1496,7 +1496,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt256(-256):     -256
 toInt256(-256.256): -256
@@ -1559,7 +1559,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toInt256OrZero('-256'): -256
 toInt256OrZero('abc'):  0
@@ -1621,7 +1621,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toInt256OrNull('-256'): -256
 toInt256OrNull('abc'):  ᴺᵁᴸᴸ
@@ -1753,7 +1753,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt8(8):   8
 toUInt8(8.8): 8
@@ -1816,7 +1816,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt8OrZero('-8'):  0
 toUInt8OrZero('abc'): 0
@@ -1878,7 +1878,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt8OrNull('8'):   8
 toUInt8OrNull('abc'): ᴺᵁᴸᴸ
@@ -2010,7 +2010,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt16(16):    16
 toUInt16(16.16): 16
@@ -2073,7 +2073,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt16OrZero('16'):  16
 toUInt16OrZero('abc'): 0
@@ -2135,7 +2135,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt16OrNull('16'):  16
 toUInt16OrNull('abc'): ᴺᵁᴸᴸ
@@ -2267,7 +2267,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt32(32):    32
 toUInt32(32.32): 32
@@ -2331,7 +2331,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt32OrZero('32'):  32
 toUInt32OrZero('abc'): 0
@@ -2393,7 +2393,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt32OrNull('32'):  32
 toUInt32OrNull('abc'): ᴺᵁᴸᴸ
@@ -2460,7 +2460,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt32OrDefault('32', CAST('0', 'UInt32')):  32
 toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
@@ -2525,7 +2525,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt64(64):    64
 toUInt64(64.64): 64
@@ -2588,7 +2588,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt64OrZero('64'):  64
 toUInt64OrZero('abc'): 0
@@ -2650,7 +2650,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt64OrNull('64'):  64
 toUInt64OrNull('abc'): ᴺᵁᴸᴸ
@@ -2781,7 +2781,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt128(128):   128
 toUInt128(128.8): 128
@@ -2844,7 +2844,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 toUInt128OrZero('128'): 128
 toUInt128OrZero('abc'): 0
@@ -2906,7 +2906,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt128OrNull('128'): 128
 toUInt128OrNull('abc'): ᴺᵁᴸᴸ
@@ -2974,7 +2974,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt128OrDefault('128', CAST('0', 'UInt128')): 128
 toUInt128OrDefault('abc', CAST('0', 'UInt128')): 0
@@ -3038,7 +3038,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toUInt256(256):     256
 toUInt256(256.256): 256
@@ -3101,7 +3101,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt256OrZero('256'): 256
 toUInt256OrZero('abc'): 0
@@ -3163,7 +3163,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt256OrNull('256'): 256
 toUInt256OrNull('abc'): ᴺᵁᴸᴸ
@@ -3230,7 +3230,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toUInt256OrDefault('-256', CAST('0', 'UInt256')): 0
 toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
@@ -3286,7 +3286,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toFloat32(42.7):   42.7
 toFloat32('42.7'): 42.7
@@ -3339,7 +3339,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 toFloat32OrZero('42.7'): 42.7
 toFloat32OrZero('abc'):  0
@@ -3391,7 +3391,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 toFloat32OrNull('42.7'): 42.7
 toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
@@ -3448,7 +3448,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toFloat32OrDefault('8', CAST('0', 'Float32')):   8
 toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
@@ -3504,7 +3504,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toFloat64(42.7):   42.7
 toFloat64('42.7'): 42.7
@@ -3557,7 +3557,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 toFloat64OrZero('42.7'): 42.7
 toFloat64OrZero('abc'):  0
@@ -3609,7 +3609,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toFloat64OrNull('42.7'): 42.7
 toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
@@ -3666,7 +3666,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 toFloat64OrDefault('8', CAST('0', 'Float64')):   8
 toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
@@ -3760,17 +3760,17 @@ toBFloat16OrZero(x)
 **示例**
 
 ```sql
-SELECT toBFloat16OrZero('0x5E'); -- unsupported arguments
+SELECT toBFloat16OrZero('0x5E'); -- 不支持的参数
 
 0
 
-SELECT toBFloat16OrZero('12.3'); -- typical use
+SELECT toBFloat16OrZero('12.3'); -- 典型用法
 
 12.25
 
 SELECT toBFloat16OrZero('12.3456789');
 
-12.3125 -- silent loss of precision
+12.3125 -- 精度静默损失
 ```
 
 **另见**
@@ -3813,17 +3813,17 @@ toBFloat16OrNull(x)
 **示例**
 
 ```sql
-SELECT toBFloat16OrNull('0x5E'); -- unsupported arguments
+SELECT toBFloat16OrNull('0x5E'); -- 不支持的参数
 
 \N
 
-SELECT toBFloat16OrNull('12.3'); -- typical use
+SELECT toBFloat16OrNull('12.3'); -- 典型用法
 
 12.25
 
 SELECT toBFloat16OrNull('12.3456789');
 
-12.3125 -- silent loss of precision
+12.3125 -- 精度静默损失
 ```
 
 **另请参阅**
@@ -3862,7 +3862,7 @@ SELECT
 │ 2022-12-30 │ Date                             │
 └────────────┴──────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回 1 行。用时:0.001 秒。
 ```
 
 ```sql
@@ -3892,7 +3892,7 @@ SELECT
 ```
 
 ```response
-Row 1:
+第 1 行：
 ──────
 current_time:     2022-12-30 13:51:54
 ts:               1672404714
@@ -4498,7 +4498,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 a:      2
 type_a: Decimal(9, 1)
@@ -4565,7 +4565,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 a:             -1.111
 toTypeName(a): Decimal(9, 5)
@@ -4702,7 +4702,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(9, 5)
@@ -4839,7 +4839,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(18, 18)
@@ -5046,7 +5046,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 a:      99
 type_a: Decimal(38, 1)
@@ -5113,7 +5113,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(38, 38)
@@ -5250,7 +5250,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 a:             0.023809523809523808
 toTypeName(a): Decimal(38, 18)
@@ -5320,7 +5320,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行：
 ──────
 a:      99
 type_a: Decimal(76, 1)
@@ -5387,7 +5387,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+行 1:
 ──────
 a:             0.0001
 toTypeName(a): Decimal(76, 76)
@@ -5524,7 +5524,7 @@ FORMAT Vertical;
 结果：
 
 ```response
-Row 1:
+第 1 行:
 ──────
 a:             0.023809523809523808
 toTypeName(a): Decimal(76, 76)
@@ -5546,7 +5546,7 @@ toTypeName(b): Decimal(76, 0)
 **语法**
 
 ```sql
-toString(value[, timezone])
+toString(值[, 时区])
 ```
 
 **参数**
@@ -6619,7 +6619,7 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 结果：
 
 ```response
-Code: 70. DB::Exception: Received from localhost:9000. DB::Exception: Value in column Int8 cannot be safely converted into type UInt8: While processing accurateCast(-1, 'UInt8') AS uint8.
+代码:70. DB::Exception:从 localhost:9000 接收。DB::Exception:Int8 列中的值无法安全地转换为 UInt8 类型:处理 accurateCast(-1, 'UInt8') AS uint8 时。
 ```
 
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
@@ -7068,7 +7068,7 @@ SELECT date + interval_to_seconds AS result
 结果：
 
 ```response
-┌──────────────result─┐
+┌──────────────结果─┐
 │ 2024-06-15 00:00:30 │
 └─────────────────────┘
 ```

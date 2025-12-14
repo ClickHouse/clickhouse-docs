@@ -1051,7 +1051,7 @@ SELECT
 └──────────────────┴──────────────────────────────────────┘
 ```
 
-**Microsoft variant**
+**Microsoft 版本**
 
 ```sql title=Query
 SELECT
@@ -1065,35 +1065,30 @@ SELECT
 └──────────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## UUIDStringToNum {#UUIDStringToNum}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+接受一个包含 36 个字符且格式为 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` 的字符串，并返回其二进制表示形式的 [FixedString(16)](../data-types/fixedstring.md)，其格式可以通过 `variant` 参数进行可选指定（默认使用 `Big-endian`）。
 
-Accepts a string containing 36 characters in the format `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`, and returns a [FixedString(16)](../data-types/fixedstring.md) as its binary representation, with its format optionally specified by `variant` (`Big-endian` by default).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 UUIDStringToNum(string[, variant = 1])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — A string or fixed-string of 36 characters) [`String`](/sql-reference/data-types/string) or [`FixedString(36)`](/sql-reference/data-types/fixedstring)
-- `variant` — Variant as specified by [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (default), 2 = `Microsoft`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `string` — 由 36 个字符组成的字符串或定长字符串 [`String`](/sql-reference/data-types/string) 或 [`FixedString(36)`](/sql-reference/data-types/fixedstring)
+* `variant` — 按 [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1) 定义的 Variant。1 = `Big-endian`（默认），2 = `Microsoft`。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 `string` 的二进制表示形式。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the binary representation of `string`. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -1107,7 +1102,7 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-**Microsoft variant**
+**Microsoft 变体**
 
 ```sql title=Query
 SELECT
@@ -1121,36 +1116,31 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-
-
 ## UUIDToNum {#UUIDToNum}
 
-Introduced in: v24.5
+引入版本：v24.5
 
+接受一个 [UUID](../data-types/uuid.md)，并返回其二进制表示形式，类型为 [FixedString(16)](../data-types/fixedstring.md)，其格式可以通过可选参数 `variant` 指定（默认是 `Big-endian`）。
+此函数取代了对两个独立函数 `UUIDStringToNum(toString(uuid))` 的组合调用，因此在从 UUID 中提取字节时，无需先将 UUID 中间转换为字符串。
 
-Accepts a [UUID](../data-types/uuid.md) and returns its binary representation as a [FixedString(16)](../data-types/fixedstring.md), with its format optionally specified by `variant` (`Big-endian` by default).
-This function replaces calls to two separate functions `UUIDStringToNum(toString(uuid))` so no intermediate conversion from UUID to string is required to extract bytes from a UUID.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 UUIDToNum(uuid[, variant = 1])
 ```
 
-**Arguments**
+**参数**
 
-- `uuid` — UUID. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `variant` — Variant as specified by [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1). 1 = `Big-endian` (default), 2 = `Microsoft`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `uuid` — UUID。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `variant` — 按照 [RFC4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.1) 定义的变体（Variant）。1 = `Big-endian`（默认），2 = `Microsoft`。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 UUID 的二进制表示形式。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns a binary representation of the UUID. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -1164,7 +1154,7 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-**Microsoft variant**
+**Microsoft 版本**
 
 ```sql title=Query
 SELECT
@@ -1178,35 +1168,30 @@ SELECT
 └──────────────────────────────────────┴──────────────────┘
 ```
 
-
-
 ## UUIDv7ToDateTime {#UUIDv7ToDateTime}
 
-Introduced in: v24.5
+引入于：v24.5
 
+返回 UUID 第 7 版的时间戳部分。
 
-Returns the timestamp component of a UUID version 7.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 UUIDv7ToDateTime(uuid[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `uuid` — A UUID version 7. [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. [Timezone name](../../operations/server-configuration-parameters/settings.md#timezone) for the returned value. [`String`](/sql-reference/data-types/string)
+* `uuid` — 版本 7 的 UUID。[`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。用于返回值的[时区名称](../../operations/server-configuration-parameters/settings.md#timezone)。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个具有毫秒级精度的时间戳。如果 UUID 不是有效的版本 7 UUID，则返回 `1970-01-01 00:00:00.000`。[`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns a timestamp with milliseconds precision. If the UUID is not a valid version 7 UUID, it returns `1970-01-01 00:00:00.000`. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))
@@ -1218,7 +1203,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**With timezone**
+**含时区**
 
 ```sql title=Query
 SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America/New_York')
@@ -1230,43 +1215,38 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 └─────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## dateTime64ToSnowflake {#dateTime64ToSnowflake}
 
-Introduced in: v21.10
+引入版本：v21.10
 
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-This function is deprecated and can only be used if setting [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) is enabled.
-The function will be removed at some point in future.
+该函数已弃用，且只有在启用 SETTING [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) 时才能使用。
+该函数将在未来的某个时间点被移除。
 
-Please use function [dateTime64ToSnowflakeID](#dateTime64ToSnowflakeID) instead.
+请改用函数 [dateTime64ToSnowflakeID](#dateTime64ToSnowflakeID)。
 :::
 
-Converts a [DateTime64](../data-types/datetime64.md) to the first [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) at the giving time.
-    
+将 [DateTime64](../data-types/datetime64.md) 在给定时间点转换为第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
-**Syntax**
+**语法**
 
 ```sql
 dateTime64ToSnowflake(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date with time. [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 日期时间值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回将输入值转换为该时间点对应的第一个 Snowflake ID。[`Int64`](/sql-reference/data-types/int-uint)
 
-Returns the input value converted as the first Snowflake ID at that time. [`Int64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT dateTime64ToSnowflake(dt64);
@@ -1278,37 +1258,32 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 └─────────────────────────────┘
 ```
 
-
-
 ## dateTime64ToSnowflakeID {#dateTime64ToSnowflakeID}
 
-Introduced in: v24.6
+自 v24.6 版本引入
 
+将 [`DateTime64`](../data-types/datetime64.md) 转换为给定时间点的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
-Converts a [`DateTime64`](../data-types/datetime64.md) to the first [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) at the giving time.
+有关实现细节，请参阅“[Snowflake ID generation](#snowflake-id-generation)”一节。
 
-See section ["Snowflake ID generation"](#snowflake-id-generation) for implementation details.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 dateTime64ToSnowflakeID(value[, epoch])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date with time. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `epoch` — Epoch of the Snowflake ID in milliseconds since 1970-01-01. Defaults to 0 (1970-01-01). For the Twitter/X epoch (2015-01-01), provide 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+* `value` — 带时间的日期。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `epoch` — Snowflake ID 的纪元时间，从 1970-01-01 起按毫秒计。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元时间（2015-01-01），请提供 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回该时间点对应的第一个 Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the input value as the first Snowflake ID at that time. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime64ToSnowflakeID(dt) AS res;
@@ -1320,44 +1295,38 @@ SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTi
 └─────────────────────────┴─────────────────────┘
 ```
 
-
-
 ## dateTimeToSnowflake {#dateTimeToSnowflake}
 
-Introduced in: v21.10
+引入版本：v21.10
 
-
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-This function is deprecated and can only be used if setting [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) is enabled.
-The function will be removed at some point in future.
+此函数已弃用，仅当启用了 [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) 该 SETTING 时才可使用。
+该函数将在未来的某个时间点被移除。
 
-Please use function [dateTimeToSnowflakeID](#dateTimeToSnowflakeID) instead.
+请改用函数 [dateTimeToSnowflakeID](#dateTimeToSnowflakeID)。
 :::
 
-Converts a [DateTime](../data-types/datetime.md) value to the first [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) at the giving time.
-    
+将一个 [DateTime](../data-types/datetime.md) 值转换为指定时间点对应的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
-**Syntax**
+**语法**
 
 ```sql
 dateTimeToSnowflake(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date with time. [`DateTime`](/sql-reference/data-types/datetime)
+* `value` — 日期时间值。[`DateTime`](/sql-reference/data-types/datetime)
 
+**返回值**
 
-**Returned value**
+返回输入值在该时间点对应的第一个 Snowflake ID。[`Int64`](/sql-reference/data-types/int-uint)
 
-Returns the input value as the first Snowflake ID at that time. [`Int64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToSnowflake(dt);
@@ -1369,35 +1338,30 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 └─────────────────────────┘
 ```
 
-
-
 ## dateTimeToSnowflakeID {#dateTimeToSnowflakeID}
 
-Introduced in: v24.6
+自 v24.6 引入
 
+将一个 [DateTime](../data-types/datetime.md) 值转换为该时间点对应的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
-Converts a [DateTime](../data-types/datetime.md) value to the first [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) at the giving time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 dateTimeToSnowflakeID(value[, epoch])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date with time. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `epoch` — Optional. Epoch of the Snowflake ID in milliseconds since 1970-01-01. Defaults to 0 (1970-01-01). For the Twitter/X epoch (2015-01-01), provide 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+* `value` — 带时间的日期。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `epoch` — 可选。Snowflake ID 的纪元时间（毫秒），自 1970-01-01 起算。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元时间（2015-01-01），请使用 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+将输入时间转换为该时间点的第一个 Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the input value as the first Snowflake ID at that time. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowflakeID(dt) AS res;
@@ -1409,40 +1373,35 @@ SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowf
 └─────────────────────┴─────────────────────┘
 ```
 
-
-
 ## dateTimeToUUIDv7 {#dateTimeToUUIDv7}
 
-Introduced in: v25.9
+引入版本：v25.9
 
+将给定时间点的 [DateTime](../data-types/datetime.md) 值转换为 [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7)。
 
-Converts a [DateTime](../data-types/datetime.md) value to a [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) at the given time.
-
-See section ["UUIDv7 generation"](#uuidv7-generation) for details on UUID structure, counter management, and concurrency guarantees.
+有关 UUID 结构、计数器管理以及并发保证的详细信息，请参阅 [&quot;UUIDv7 generation&quot;](#uuidv7-generation) 一节。
 
 :::note
-As of September 2025, version 7 UUIDs are in draft status and their layout may change in future.
+截至 2025 年 9 月，UUID 版本 7 仍处于草案阶段，其格式在未来可能会发生变化。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 dateTimeToUUIDv7(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date with time. [`DateTime`](/sql-reference/data-types/datetime)
+* `value` — 日期时间值。[`DateTime`](/sql-reference/data-types/datetime)
 
+**返回值**
 
-**Returned value**
+返回一个 UUIDv7。[`UUID`](/sql-reference/data-types/uuid)
 
-Returns a UUIDv7. [`UUID`](/sql-reference/data-types/uuid)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'));
@@ -1454,7 +1413,7 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'));
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**multiple UUIDs for the same timestamp**
+**同一时间戳对应多个 UUID**
 
 ```sql title=Query
 SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
@@ -1470,37 +1429,34 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 └──────────────────────────────────────┘
 ```
 
-
-
 ## generateSnowflakeID {#generateSnowflakeID}
 
-Introduced in: v24.6
+引入版本：v24.6
 
+生成一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
-Generates a [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID).
+函数 `generateSnowflakeID` 保证在并发运行的线程和查询中，同一时间戳内的计数字段在所有函数调用之间单调递增。
 
-Function `generateSnowflakeID` guarantees that the counter field within a timestamp increments monotonically across all function invocations in concurrently running threads and queries.
+有关实现细节，请参阅 [&quot;Snowflake ID generation&quot;](#snowflake-id-generation) 一节。
 
-See section ["Snowflake ID generation"](#snowflake-id-generation) for implementation details.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 generateSnowflakeID([expr, [machine_id]])
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — An arbitrary [expression](/sql-reference/syntax#expressions) used to bypass [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in a query. The value of the expression has no effect on the returned Snowflake ID. Optional. - `machine_id` — A machine ID, the lowest 10 bits are used. [Int64](../data-types/int-uint.md). Optional. 
+* `expr` — 任意[expression](/sql-reference/syntax#expressions)，在单个查询中多次调用该函数时，用于绕过[common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination)。该表达式的值不会影响返回的 Snowflake ID。可选。
+* `machine_id` — 机器 ID，会使用其最低的 10 位。[Int64](../data-types/int-uint.md)。可选。
 
-**Returned value**
+**返回值**
 
-Returns the Snowflake ID. [`UInt64`](/sql-reference/data-types/int-uint)
+返回 Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 CREATE TABLE tab (id UInt64)
@@ -1518,7 +1474,7 @@ SELECT * FROM tab;
 └─────────────────────┘
 ```
 
-**Multiple Snowflake IDs generated per row**
+**为每行生成多个 Snowflake ID**
 
 ```sql title=Query
 SELECT generateSnowflakeID(1), generateSnowflakeID(2);
@@ -1530,7 +1486,7 @@ SELECT generateSnowflakeID(1), generateSnowflakeID(2);
 └────────────────────────┴────────────────────────┘
 ```
 
-**With expression and a machine ID**
+**结合表达式和机器 ID**
 
 ```sql title=Query
 SELECT generateSnowflakeID('expr', 1);
@@ -1542,31 +1498,29 @@ SELECT generateSnowflakeID('expr', 1);
 └────────────────────────────────┘
 ```
 
-
-
 ## generateUUIDv4 {#generateUUIDv4}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-Generates a [version 4](https://tools.ietf.org/html/rfc4122#section-4.4) [UUID](../data-types/uuid.md).
+生成一个 [版本 4](https://tools.ietf.org/html/rfc4122#section-4.4) 的 [UUID](../data-types/uuid.md)。
 
-**Syntax**
+**语法**
 
 ```sql
 generateUUIDv4([expr])
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — Optional. An arbitrary expression used to bypass [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in a query. The value of the expression has no effect on the returned UUID. 
+* `expr` — 可选。任意表达式，用于在函数在同一查询中被多次调用时绕过[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。该表达式的值不会影响返回的 UUID。
 
-**Returned value**
+**返回值**
 
-Returns a UUIDv4. [`UUID`](/sql-reference/data-types/uuid)
+返回 UUIDv4。[`UUID`](/sql-reference/data-types/uuid)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT generateUUIDv4(number) FROM numbers(3);
@@ -1580,7 +1534,7 @@ SELECT generateUUIDv4(number) FROM numbers(3);
 └──────────────────────────────────────┘
 ```
 
-**Common subexpression elimination**
+**公共子表达式消除**
 
 ```sql title=Query
 SELECT generateUUIDv4(1), generateUUIDv4(1);
@@ -1592,40 +1546,35 @@ SELECT generateUUIDv4(1), generateUUIDv4(1);
 └──────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## generateUUIDv7 {#generateUUIDv7}
 
-Introduced in: v24.5
+引入于：v24.5
 
+生成一个 [版本 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) 的 [UUID](../data-types/uuid.md)。
 
-Generates a [version 7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04) [UUID](../data-types/uuid.md).
-
-See section ["UUIDv7 generation"](#uuidv7-generation) for details on UUID structure, counter management, and concurrency guarantees.
+关于 UUID 结构、计数器管理以及并发保证的详细信息，参见 [&quot;UUIDv7 generation&quot;](#uuidv7-generation) 一节。
 
 :::note
-As of September 2025, version 7 UUIDs are in draft status and their layout may change in future.
+截至 2025 年 9 月，版本 7 UUID 仍处于草案状态，其格式和布局在未来可能会发生变化。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 generateUUIDv7([expr])
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — Optional. An arbitrary expression used to bypass [common subexpression elimination](/sql-reference/functions/overview#common-subexpression-elimination) if the function is called multiple times in a query. The value of the expression has no effect on the returned UUID. [`Any`](/sql-reference/data-types)
+* `expr` — 可选。任意表达式，用于在函数在单个查询中被多次调用时绕过[公共子表达式消除](/sql-reference/functions/overview#common-subexpression-elimination)。该表达式的值不会影响返回的 UUID。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个 UUIDv7。[`UUID`](/sql-reference/data-types/uuid)
 
-Returns a UUIDv7. [`UUID`](/sql-reference/data-types/uuid)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT generateUUIDv7(number) FROM numbers(3);
@@ -1639,7 +1588,7 @@ SELECT generateUUIDv7(number) FROM numbers(3);
 └──────────────────────────────────────┘
 ```
 
-**Common subexpression elimination**
+**公共子表达式消除**
 
 ```sql title=Query
 SELECT generateUUIDv7(1), generateUUIDv7(1);
@@ -1651,34 +1600,29 @@ SELECT generateUUIDv7(1), generateUUIDv7(1);
 └──────────────────────────────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## readWKTLineString {#readWKTLineString}
 
-Introduced in: v
+自 v 版本引入
 
+解析 LineString 几何体的 Well-Known Text（WKT）表示，并以 ClickHouse 的内部格式返回。
 
-Parses a Well-Known Text (WKT) representation of a LineString geometry and returns it in the internal ClickHouse format.
-
-
-**Syntax**
+**语法**
 
 ```sql
 readWKTLineString(wkt_string)
 ```
 
-**Arguments**
+**参数**
 
-- `wkt_string` — The input WKT string representing a LineString geometry. [`String`](/sql-reference/data-types/string)
+* `wkt_string` — 表示 LineString 几何对象的输入 WKT 字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+该函数返回 ClickHouse 对 LineString 几何对象的内部表示形式。
 
-The function returns a ClickHouse internal representation of the linestring geometry.
+**示例**
 
-**Examples**
-
-**first call**
+**第一次调用**
 
 ```sql title=Query
 SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
@@ -1690,7 +1634,7 @@ SELECT readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)');
 └──────────────────────────────────────────────────────┘
 ```
 
-**second call**
+**第二次调用**
 
 ```sql title=Query
 SELECT toTypeName(readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)'));
@@ -1702,36 +1646,31 @@ SELECT toTypeName(readWKTLineString('LINESTRING (1 1, 2 2, 3 3, 1 1)'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## snowflakeIDToDateTime {#snowflakeIDToDateTime}
 
-Introduced in: v24.6
+自 v24.6 引入
 
+返回 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 中的时间戳部分，类型为 [DateTime](../data-types/datetime.md)。
 
-Returns the timestamp component of a [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) as a value of type [DateTime](../data-types/datetime.md).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 snowflakeIDToDateTime(value[, epoch[, time_zone]])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Snowflake ID. [`UInt64`](/sql-reference/data-types/int-uint)
-- `epoch` — Optional. Epoch of the Snowflake ID in milliseconds since 1970-01-01. Defaults to 0 (1970-01-01). For the Twitter/X epoch (2015-01-01), provide 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
-- `time_zone` — Optional. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). The function parses `time_string` according to the timezone. [`String`](/sql-reference/data-types/string)
+* `value` — Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
+* `epoch` — 可选。Snowflake ID 的纪元（自 1970-01-01 起的毫秒数）。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元（2015-01-01），请使用 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
+* `time_zone` — 可选。[时区](/operations/server-configuration-parameters/settings.md#timezone)。函数会根据该时区解析 `time_string`。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `value` 的时间戳部分。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the timestamp component of `value`. [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT snowflakeIDToDateTime(7204436857747984384) AS res
@@ -1743,36 +1682,31 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 └─────────────────────┘
 ```
 
-
-
 ## snowflakeIDToDateTime64 {#snowflakeIDToDateTime64}
 
-Introduced in: v24.6
+自 v24.6 版本引入
 
+返回 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 的时间戳部分，类型为 [DateTime64](../data-types/datetime64.md)。
 
-Returns the timestamp component of a [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) as a value of type [DateTime64](../data-types/datetime64.md).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 snowflakeIDToDateTime64(value[, epoch[, time_zone]])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Snowflake ID. [`UInt64`](/sql-reference/data-types/int-uint)
-- `epoch` — Optional. Epoch of the Snowflake ID in milliseconds since 1970-01-01. Defaults to 0 (1970-01-01). For the Twitter/X epoch (2015-01-01), provide 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
-- `time_zone` — Optional. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). The function parses `time_string` according to the timezone. [`String`](/sql-reference/data-types/string)
+* `value` — Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
+* `epoch` — 可选。Snowflake ID 的纪元（自 1970-01-01 起的毫秒数）。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元（2015-01-01），请使用 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
+* `time_zone` — 可选。[Timezone](/operations/server-configuration-parameters/settings.md#timezone)。函数会根据该时区解析 `time_string`。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `value` 的时间戳部分，类型为 `DateTime64`，scale = 3，即毫秒级精度。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the timestamp component of `value` as a `DateTime64` with scale = 3, i.e. millisecond precision. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
@@ -1784,44 +1718,39 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 └─────────────────────┘
 ```
 
-
-
 ## snowflakeToDateTime {#snowflakeToDateTime}
 
-Introduced in: v21.10
+引入版本：v21.10
 
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-This function is deprecated and can only be used if setting [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) is enabled.
-The function will be removed at some point in future.
+此函数已弃用，仅当启用了设置项 [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) 时才可使用。
+该函数将在未来的某个版本中移除。
 
-Please use function [`snowflakeIDToDateTime`](#snowflakeIDToDateTime) instead.
+请改用函数 [`snowflakeIDToDateTime`](#snowflakeIDToDateTime)。
 :::
 
-Extracts the timestamp component of a [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) in [DateTime](../data-types/datetime.md) format.
-    
+提取 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 中的时间戳部分，并以 [DateTime](../data-types/datetime.md) 格式返回。
 
-**Syntax**
+**语法**
 
 ```sql
 snowflakeToDateTime(value[, time_zone])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Snowflake ID. [`Int64`](/sql-reference/data-types/int-uint)
-- `time_zone` — Optional. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). The function parses `time_string` according to the timezone. [`String`](/sql-reference/data-types/string)
+* `value` — Snowflake ID。[`Int64`](/sql-reference/data-types/int-uint)
+* `time_zone` — 可选参数。[Timezone](/operations/server-configuration-parameters/settings.md#timezone)。函数会按照该时区解析 `time_string`。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `value` 的时间戳部分。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the timestamp component of `value`. [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
@@ -1833,45 +1762,39 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## snowflakeToDateTime64 {#snowflakeToDateTime64}
 
-Introduced in: v21.10
+引入版本：v21.10
 
-
-<DeprecatedBadge/>
+<DeprecatedBadge />
 
 :::warning
-This function is deprecated and can only be used if setting [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) is enabled.
-The function will be removed at some point in future.
+该函数已弃用，仅当启用设置项 [`allow_deprecated_snowflake_conversion_functions`](../../operations/settings/settings.md#allow_deprecated_snowflake_conversion_functions) 时才能使用。
+该函数将在未来的某个版本中移除。
 
-Please use function [`snowflakeIDToDateTime64`](#snowflakeIDToDateTime64) instead.
+请改用函数 [`snowflakeIDToDateTime64`](#snowflakeIDToDateTime64)。
 :::
 
-Extracts the timestamp component of a [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) in [DateTime64](../data-types/datetime64.md) format.
+提取 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) 中的时间戳部分，并以 [DateTime64](../data-types/datetime64.md) 格式返回。
 
-    
-
-**Syntax**
+**语法**
 
 ```sql
 snowflakeToDateTime64(value[, time_zone])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Snowflake ID. [`Int64`](/sql-reference/data-types/int-uint)
-- `time_zone` — Optional. [Timezone](/operations/server-configuration-parameters/settings.md#timezone). The function parses `time_string` according to the timezone. [`String`](/sql-reference/data-types/string)
+* `value` — Snowflake ID。[`Int64`](/sql-reference/data-types/int-uint)
+* `time_zone` — 可选。[Timezone](/operations/server-configuration-parameters/settings.md#timezone)。函数会根据 `time_zone` 指定的时区解析 `time_string`。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `value` 的时间戳部分。[`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns the timestamp component of `value`. [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
@@ -1883,36 +1806,33 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toUUIDOrDefault {#toUUIDOrDefault}
 
-Introduced in: v21.1
+引入自：v21.1
 
+将 String 值转换为 UUID 类型。如果转换失败，则返回默认 UUID 值，而不会抛出错误。
 
-Converts a String value to UUID type. If the conversion fails, returns a default UUID value instead of throwing an error.
+该函数会尝试将长度为 36 的字符串解析为标准 UUID 格式（xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx）。
+如果该字符串无法转换为有效 UUID，函数将返回提供的默认 UUID 值。
 
-This function attempts to parse a string of 36 characters in the standard UUID format (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx).
-If the string cannot be converted to a valid UUID, the function returns the provided default UUID value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toUUIDOrDefault(string, default)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String of 36 characters or FixedString(36) to be converted to UUID. - `default` — UUID value to be returned if the first argument cannot be converted to UUID type. 
+* `string` — 将要转换为 UUID 的 36 个字符的字符串或 FixedString(36)。
+* `default` — 当第一个参数无法转换为 UUID 类型时返回的 UUID 值。
 
-**Returned value**
+**返回值**
 
-Returns the converted UUID if successful, or the default UUID if conversion fails. [`UUID`](/sql-reference/data-types/uuid)
+转换成功时返回转换后的 UUID，转换失败时返回默认 UUID。[`UUID`](/sql-reference/data-types/uuid)
 
-**Examples**
+**示例**
 
-**Successful conversion returns the parsed UUID**
+**转换成功时返回解析得到的 UUID**
 
 ```sql title=Query
 SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'));
@@ -1924,7 +1844,7 @@ SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Failed conversion returns the default UUID**
+**转换失败时会返回默认 UUID**
 
 ```sql title=Query
 SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'));
@@ -1936,44 +1856,41 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toUUIDOrNull {#toUUIDOrNull}
 
-Introduced in: v20.12
+自 v20.12 引入
 
+将输入值转换为 `UUID` 类型的值，但在发生错误时返回 `NULL`。
+类似于 [`toUUID`](#touuid)，但在转换出错时返回 `NULL`，而不是抛出异常。
 
-Converts an input value to a value of type `UUID` but returns `NULL` in case of an error.
-Like [`toUUID`](#touuid) but returns `NULL` instead of throwing an exception on conversion errors.
+支持的参数：
 
-Supported arguments:
-- String representations of UUID in standard format (8-4-4-4-12 hexadecimal digits).
-- String representations of UUID without hyphens (32 hexadecimal digits).
+* 标准格式的 UUID 字符串表示（8-4-4-4-12 个十六进制数字）。
+* 去掉连字符的 UUID 字符串表示（32 个十六进制数字）。
 
-Unsupported arguments (return `NULL`):
-- Invalid string formats.
-- Non-string types.
-- Malformed UUIDs.
-    
+不支持的参数（返回 `NULL`）：
 
-**Syntax**
+* 无效的字符串格式。
+* 非字符串类型。
+* 格式错误的 UUID。
+
+**语法**
 
 ```sql
 toUUIDOrNull(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — A string representation of a UUID. [`String`](/sql-reference/data-types/string)
+* `x` — UUID 的字符串形式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+成功时返回 UUID 值，否则返回 `NULL`。[`UUID`](/sql-reference/data-types/uuid) 或 [`NULL`](/sql-reference/syntax#null)
 
-Returns a UUID value if successful, otherwise `NULL`. [`UUID`](/sql-reference/data-types/uuid) or [`NULL`](/sql-reference/syntax#null)
+**示例**
 
-**Examples**
-
-**Usage examples**
+**用法示例**
 
 ```sql title=Query
 SELECT

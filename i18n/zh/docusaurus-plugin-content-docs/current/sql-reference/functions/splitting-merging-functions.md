@@ -59,35 +59,30 @@ SELECT alphaTokens('abca1abc');
 └─────────────────────────┘
 ```
 
-
-
 ## arrayStringConcat {#arrayStringConcat}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+使用提供的分隔符连接数组中各个值的字符串表示形式。分隔符是一个可选参数，默认值为空字符串。
 
-Concatenates string representations of values listed in the array with the provided separator, which is an optional parameter set to an empty string by default.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayStringConcat(arr[, separator])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to concatenate. [`Array(T)`](/sql-reference/data-types/array)
-- `separator` — Optional. Separator string. By default an empty string. [`const String`](/sql-reference/data-types/string)
+* `arr` — 要拼接的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `separator` — 可选。分隔符字符串。默认值为空字符串。[`const String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回拼接后的字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the concatenated string. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
@@ -99,37 +94,32 @@ SELECT arrayStringConcat(['12/05/2021', '12:50:00'], ' ') AS DateString;
 └─────────────────────┘
 ```
 
-
-
 ## extractAllGroupsVertical {#extractAllGroupsVertical}
 
-Introduced in: v20.5
+引入于：v20.5
 
+使用正则表达式匹配字符串中的所有分组，并返回一个数组的数组，其中每个内部数组包含来自每个分组的匹配片段，这些片段按照它们在输入字符串中的出现顺序进行组织。
 
-Matches all groups of a string using a regular expression and returns an array of arrays, where each array includes matching fragments from every group, grouped in order of appearance in the input string.
-
-
-**Syntax**
+**语法**
 
 ```sql
 extractAllGroupsVertical(s, regexp)
 ```
 
-**Aliases**: `extractAllGroups`
+**别名**: `extractAllGroups`
 
-**Arguments**
+**参数**
 
-- `s` — Input string to extract from. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `regexp` — Regular expression to match by. [`const String`](/sql-reference/data-types/string) or [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `s` — 要从中提取内容的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 用于匹配的正则表达式。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
 
+**返回值**
 
-**Returned value**
+返回一个数组的数组，其中每个内部数组包含一次匹配中捕获的分组内容。每次匹配都会生成一个数组，其元素对应于正则表达式中的各个捕获组（第 1 组、第 2 组等）。如果未找到匹配，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
 
-Returns an array of arrays, where each inner array contains the captured groups from one match. Each match produces an array with elements corresponding to the capturing groups in the regular expression (group 1, group 2, etc.). If no matches are found, returns an empty array. [`Array(Array(String))`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 WITH '< Server: nginx
@@ -144,35 +134,30 @@ SELECT extractAllGroupsVertical(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 [['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
 ```
 
-
-
 ## ngrams {#ngrams}
 
-Introduced in: v21.11
+自 v21.11 起引入
 
+将 UTF-8 字符串拆分为长度为 `N` 的 n-gram。
 
-Splits a UTF-8 string into n-grams of length `N`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngrams(s, N)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — Input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `N` — The n-gram length. [`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `s` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `N` — n-gram 的长度。[`const UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由 n-gram 组成的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array with n-grams. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngrams('ClickHouse', 3);
@@ -182,46 +167,42 @@ SELECT ngrams('ClickHouse', 3);
 ['Cli','lic','ick','ckH','kHo','Hou','ous','use']
 ```
 
-
-
 ## splitByChar {#splitByChar}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Splits a string separated by a specified constant string `separator` of exactly one character into an array of substrings.
-Empty substrings may be selected if the separator occurs at the beginning or end of the string, or if there are multiple consecutive separators.
+将以指定的、长度恰为一个字符的常量字符串 `separator` 作为分隔符的字符串拆分为子字符串数组。
+如果分隔符出现在字符串的开头或结尾，或者存在多个连续分隔符，则可能产生空子字符串。
 
 :::note
-Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
+SETTING [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余字符串。
 :::
 
-Empty substrings may be selected when:
-- A separator occurs at the beginning or end of the string
-- There are multiple consecutive separators
-- The original string `s` is empty
+在以下情况下可能会选取空子字符串：
 
+* 分隔符出现在字符串的开头或结尾
+* 存在多个连续分隔符
+* 原始字符串 `s` 为空
 
-**Syntax**
+**语法**
 
 ```sql
 splitByChar(separator, s[, max_substrings])
 ```
 
-**Arguments**
+**参数**
 
-- `separator` — The separator must be a single-byte character. [`String`](/sql-reference/data-types/string)
-- `s` — The string to split. [`String`](/sql-reference/data-types/string)
-- `max_substrings` — Optional. If `max_substrings > 0`, the returned array will contain at most `max_substrings` substrings, otherwise the function will return as many substrings as possible. The default value is `0`.  [`Int64`](/sql-reference/data-types/int-uint)
+* `separator` — 分隔符，必须是单字节字符。[`String`](/sql-reference/data-types/string)
+* `s` — 要分割的字符串。[`String`](/sql-reference/data-types/string)
+* `max_substrings` — 可选。若 `max_substrings > 0`，返回的数组最多包含 `max_substrings` 个子字符串，否则函数将返回尽可能多的子字符串。默认值为 `0`。[`Int64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回包含所选子字符串的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT splitByChar(',', '1,2,3,abcde');
@@ -233,39 +214,34 @@ SELECT splitByChar(',', '1,2,3,abcde');
 └──────────────────────────┘
 ```
 
-
-
 ## splitByNonAlpha {#splitByNonAlpha}
 
-Introduced in: v21.9
+引入于：v21.9
 
-
-Splits a string separated by whitespace and punctuation characters into an array of substrings.
+将由空白和标点字符分隔的字符串拆分为子字符串数组。
 
 :::note
-Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
+[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余字符串。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 splitByNonAlpha(s[, max_substrings])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to split. [`String`](/sql-reference/data-types/string)
-- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+* `s` — 要拆分的字符串。[`String`](/sql-reference/data-types/string)
+* `max_substrings` — 可选。当 `max_substrings > 0` 时，返回的子串数量最多为 `max_substrings`；否则函数将返回尽可能多的子串。默认值：`0`。[`Int64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 `s` 中选定子串的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT splitByNonAlpha('user@domain.com');
@@ -275,47 +251,43 @@ SELECT splitByNonAlpha('user@domain.com');
 ['user','domain','com']
 ```
 
-
-
 ## splitByRegexp {#splitByRegexp}
 
-Introduced in: v21.6
+引入于：v21.6
 
+根据给定的正则表达式，将字符串拆分为子字符串数组。
+如果给定的正则表达式为空，则会将字符串拆分为由单个字符组成的数组。
+如果正则表达式没有任何匹配，字符串不会被拆分。
 
-Splits a string which is separated by the provided regular expression into an array of substrings.
-If the provided regular expression is empty, it will split the string into an array of single characters.
-If no match is found for the regular expression, the string won't be split.
+可能会选中空子字符串的情况包括：
 
-Empty substrings may be selected when:
-- a non-empty regular expression match occurs at the beginning or end of the string
-- there are multiple consecutive non-empty regular expression matches
-- the original string string is empty while the regular expression is not empty.
+* 在字符串开头或结尾出现非空正则表达式匹配
+* 存在多个连续的非空正则表达式匹配
+* 原始字符串为空而正则表达式不为空。
 
 :::note
-Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
+设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余字符串。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 splitByRegexp(regexp, s[, max_substrings])
 ```
 
-**Arguments**
+**参数**
 
-- `regexp` — Regular expression. Constant. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `s` — The string to split. [`String`](/sql-reference/data-types/string)
-- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+* `regexp` — 正则表达式常量。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `s` — 要拆分的字符串。[`String`](/sql-reference/data-types/string)
+* `max_substrings` — 可选。当 `max_substrings > 0` 时，返回的子字符串数量不超过 `max_substrings`，否则函数会返回尽可能多的子字符串。默认值：`0`。[`Int64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回 `s` 中选定子字符串的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT splitByRegexp('\\d+', 'a12bc23de345f');
@@ -327,7 +299,7 @@ SELECT splitByRegexp('\\d+', 'a12bc23de345f');
 └──────────────────────────┘
 ```
 
-**Empty regexp**
+**空正则表达式**
 
 ```sql title=Query
 SELECT splitByRegexp('', 'abcde');
@@ -339,46 +311,42 @@ SELECT splitByRegexp('', 'abcde');
 └────────────────────────────┘
 ```
 
-
-
 ## splitByString {#splitByString}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+使用由多个字符组成的常量分隔符 `separator` 将字符串拆分为子字符串数组。
+如果分隔符字符串 `separator` 为空，则会将字符串 `s` 拆分为由单个字符组成的数组。
 
-Splits a string with a constant `separator` consisting of multiple characters into an array of substrings.
-If the string `separator` is empty, it will split the string `s` into an array of single characters.
+在以下情况下可能会产生空子字符串：
 
-Empty substrings may be selected when:
-- A non-empty separator occurs at the beginning or end of the string
-- There are multiple consecutive non-empty separators
-- The original string `s` is empty while the separator is not empty
+* 非空分隔符出现在字符串的开头或结尾
+* 存在多个连续的非空分隔符
+* 原始字符串 `s` 为空，而分隔符不为空
 
 :::note
-Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
+当参数 `max_substrings > 0` 时，[`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制结果数组的最后一个元素中是否包含剩余字符串。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 splitByString(separator, s[, max_substrings])
 ```
 
-**Arguments**
+**参数**
 
-- `separator` — The separator. [`String`](/sql-reference/data-types/string)
-- `s` — The string to split. [`String`](/sql-reference/data-types/string)
-- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+* `separator` — 分隔符。[`String`](/sql-reference/data-types/string)
+* `s` — 要拆分的字符串。[`String`](/sql-reference/data-types/string)
+* `max_substrings` — 可选。当 `max_substrings > 0` 时，返回的子串数量不超过 `max_substrings`，否则函数将返回尽可能多的子串。默认值：`0`。[`Int64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回由 `s` 中选取的子串组成的数组 [`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of selected substrings of `s` [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
@@ -390,7 +358,7 @@ SELECT splitByString(', ', '1, 2 3, 4,5, abcde');
 └───────────────────────────┘
 ```
 
-**Empty separator**
+**空分隔符**
 
 ```sql title=Query
 SELECT splitByString('', 'abcde');
@@ -402,39 +370,34 @@ SELECT splitByString('', 'abcde');
 └────────────────────────────┘
 ```
 
-
-
 ## splitByWhitespace {#splitByWhitespace}
 
-Introduced in: v21.9
+自 v21.9 起引入
 
-
-Splits a string which is separated by whitespace characters into an array of substrings.
+将由空白字符分隔的字符串拆分为由子字符串组成的数组。
 
 :::note
-Setting [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string) (default: `0`) controls if the remaining string is included in the last element of the result array when argument `max_substrings > 0`.
+设置 [`splitby_max_substrings_includes_remaining_string`](../../operations/settings/settings.md#splitby_max_substrings_includes_remaining_string)（默认值：`0`）用于控制当参数 `max_substrings > 0` 时，结果数组的最后一个元素中是否包含剩余的字符串。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 splitByWhitespace(s[, max_substrings])
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The string to split. [`String`](/sql-reference/data-types/string)
-- `max_substrings` — Optional. When `max_substrings > 0`, the returned substrings will be no more than `max_substrings`, otherwise the function will return as many substrings as possible. Default value: `0`. [`Int64`](/sql-reference/data-types/int-uint)
+* `s` — 要拆分的字符串。[`String`](/sql-reference/data-types/string)
+* `max_substrings` — 可选参数。当 `max_substrings > 0` 时，返回的子串数量不超过 `max_substrings`，否则函数会返回尽可能多的子串。默认值：`0`。[`Int64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回由 `s` 中选取的子串构成的数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns an array of the selected substrings of `s`. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT splitByWhitespace('  1!  a,  b.  ');
@@ -444,42 +407,37 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 ['1!','a,','b.']
 ```
 
-
-
 ## tokens {#tokens}
 
-Introduced in: v21.11
+自 v21.11 起引入
 
+使用指定的 tokenizer 将字符串拆分为若干 token。
+默认的 tokenizer 会将非字母数字的 ASCII 字符视为分隔符。
 
-Splits a string into tokens using the given tokenizer.
-The default tokenizer uses non-alphanumeric ASCII characters as separators.
+在使用 `split` tokenizer 时，如果这些 token 并不构成一个 [prefix code](https://en.wikipedia.org/wiki/Prefix_code)，通常会希望在匹配时优先使用更长的分隔符。
+为此，请按分隔符长度从长到短的顺序传入分隔符。
+例如，当 `separators = ['%21', '%']` 时，字符串 `%21abc` 会被分词为 `['abc']`；而当 `separators = ['%', '%21']` 时，则会被分词为 `['21ac']`（这很可能不是你想要的结果）。
 
-In case of the `split` tokenizer, if the tokens do not form a [prefix code](https://en.wikipedia.org/wiki/Prefix_code), you likely want that the matching prefers longer separators first.
-To do so, pass the separators in order of descending length.
-For example, with separators = `['%21', '%']` string `%21abc` would be tokenized as `['abc']`, whereas separators = `['%', '%21']` would tokenize to `['21ac']` (which is likely not what you wanted).
-
-
-**Syntax**
+**语法**
 
 ```sql
 tokens(value[, tokenizer[, ngrams[, separators]]])
 ```
 
-**Arguments**
+**参数**
 
-- `value` — The input string. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
-- `tokenizer` — The tokenizer to use. Valid arguments are `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, and `sparseGrams`. Optional, if not set explicitly, defaults to `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
-- `ngrams` — Only relevant if argument `tokenizer` is `ngrams`: An optional parameter which defines the length of the ngrams. Must be between 1 and 8. If not set explicitly, defaults to `3`. [`const UInt8`](/sql-reference/data-types/int-uint)
-- `separators` — Only relevant if argument `tokenizer` is `split`: An optional parameter which defines the separator strings. If not set explicitly, defaults to `[' ']`. [`const Array(String)`](/sql-reference/data-types/array)
+* `value` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `tokenizer` — 要使用的分词器（tokenizer）。可选值包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array` 和 `sparseGrams`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `ngrams` — 仅当参数 `tokenizer` 为 `ngrams` 时生效：用于定义 n-grams 长度的可选参数。取值必须在 1 到 8 之间。如果未显式设置，则默认为 `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
+* `separators` — 仅当参数 `tokenizer` 为 `split` 时生效：用于定义分隔字符串的可选参数。如果未显式设置，则默认为 `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回由输入字符串拆分得到的 token 数组。[`Array`](/sql-reference/data-types/array)
 
-Returns the resulting array of tokens from input string. [`Array`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Default tokenizer**
+**默认分词器（tokenizer）**
 
 ```sql title=Query
 SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
@@ -489,7 +447,7 @@ SELECT tokens('test1,;\\\\ test2,;\\\\ test3,;\\\\   test4') AS tokens;
 ['test1','test2','test3','test4']
 ```
 
-**Ngram tokenizer**
+**N-gram 分词器**
 
 ```sql title=Query
 SELECT tokens('abc def', 'ngrams', 3) AS tokens;
