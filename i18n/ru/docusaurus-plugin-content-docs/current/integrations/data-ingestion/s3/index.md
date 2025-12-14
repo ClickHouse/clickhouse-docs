@@ -1213,7 +1213,8 @@ sudo service clickhouse-server start
 Эти тесты проверят, что данные реплицируются между двумя серверами и сохраняются в бакетах S3, а не на локальном диске.
 
 - Добавьте данные из набора данных о такси Нью-Йорка:
-```response
+  
+  ```response
   Query id: af7a3d1b-7730-49e0-9314-cc51c4cf053c
 
   Row 1:
@@ -1225,7 +1226,7 @@ sudo service clickhouse-server start
   formatReadableSize(total_bytes): 36.42 MiB
 
   1 row in set. Elapsed: 0.009 sec.
-  ````
+  ```
 
 * Убедитесь, что данные хранятся в S3.
 

@@ -142,7 +142,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 --highlight-next-line
 1 行结果。耗时 0.013 秒。处理了 196.53 千行，1.77 MB（14.64 百万行/秒，131.78 MB/秒）。
 
-````sql
+```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts_ordered
@@ -188,7 +188,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 
 13 rows in set. Elapsed: 0.004 sec.
-````
+```
 
 此外，我们还通过可视化展示了稀疏索引如何裁剪掉所有不可能包含示例查询匹配结果的行块：
 

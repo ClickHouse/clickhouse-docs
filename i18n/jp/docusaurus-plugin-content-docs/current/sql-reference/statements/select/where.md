@@ -100,20 +100,18 @@ WHERE price > 100 AND category = 'Electronics'
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
 -- リテラル + カラム + サブクエリ
-WHERE category = 'Electronics' 
+WHERE category = 'Electronics'
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
-```
 
 -- 3 つすべてに論理演算子を使用
-WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
-AND in&#95;stock = true
-AND name LIKE &#39;%Special%&#39;
+WHERE (price > 100 OR category IN (SELECT category FROM featured))
+  AND in_stock = true
+  AND name LIKE '%Special%'
+```
+## 例 {#examples}
 
-````
-## 例             {#examples}
-
-### `NULL` のテスト                              {#examples-testing-for-null}
+### `NULL` のテスト {#examples-testing-for-null}
 
 `NULL` 値を含むクエリ:
 
@@ -123,7 +121,7 @@ INSERT INTO t_null VALUES (1, NULL), (2, 3);
 
 SELECT * FROM t_null WHERE y IS NULL;
 SELECT * FROM t_null WHERE y != 0;
-````
+```
 
 ```response
 ┌─x─┬────y─┐

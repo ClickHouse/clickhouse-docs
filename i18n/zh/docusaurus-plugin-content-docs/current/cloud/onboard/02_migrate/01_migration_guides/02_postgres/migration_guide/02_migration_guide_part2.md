@@ -238,7 +238,7 @@ Peak memory usage: 403.04 MiB.
 5 行结果。耗时：0.247 秒。已处理 508 万行、155.73 MB（2058 万行/秒，630.61 MB/秒）。
 峰值内存使用：403.04 MiB。
 
-````sql
+```sql
 --Postgres
 SELECT
         tag,
@@ -306,6 +306,6 @@ LIMIT 5;
 (5 行)
 
 执行时间:116750.131 ms (01:56.750)
-````
+```
 
 [点击此处查看第3部分](/migrations/postgresql/data-modeling-techniques)

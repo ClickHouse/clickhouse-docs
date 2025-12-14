@@ -77,7 +77,7 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 
-````sql
+```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
@@ -99,7 +99,7 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 строка в наборе. Затраченное время: 1,519 с. Обработано 252,30 млн строк, 1,62 GB (166,06 млн строк/с, 1,07 GB/с.)
-````sql
+```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id

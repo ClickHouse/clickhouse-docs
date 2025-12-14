@@ -380,7 +380,7 @@ Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a
 代码：636。DB::Exception: 从 sql-clickhouse.clickhouse.com:9440 接收到。DB::Exception: 无法从 JSON 格式文件中提取表结构。错误：
 代码：53。DB::Exception: 为第 1 行列 &#39;a&#39; 自动推断的类型 Tuple(b Int64) 与之前行中定义的类型 Int64 不一致。你可以通过设置 schema&#95;inference&#95;hints 为该列指定类型。
 
-````sql
+```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1
 
@@ -398,7 +398,7 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 └──────┴──────┘
 
 返回 1 行。耗时:0.010 秒。
-````
+```
 
 ## 延伸阅读 {#further-reading}
 

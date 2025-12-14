@@ -991,11 +991,11 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 13:46:31
 13:46:31  完了。PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 
-````sql
+```sql
     SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
     ```sql
  SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-````response
+```response
     +------+----------+------------+----------+-------------------+-------------------+
     |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
     +------+----------+------------+----------+-------------------+-------------------+

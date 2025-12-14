@@ -554,7 +554,7 @@ cache_path:
 
 3 行数据，耗时 0.002 秒。
 
-````
+```
 #### 验证在集群上创建的表已在两个节点上创建                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
@@ -577,7 +577,7 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 -- highlight-next-line
 SETTINGS storage_policy='gcs_main'
-````
+```
 
 ```response
 ┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐

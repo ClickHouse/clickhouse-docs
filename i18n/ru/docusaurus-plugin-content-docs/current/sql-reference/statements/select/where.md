@@ -100,40 +100,30 @@ WHERE price > 100 AND category = 'Electronics'
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
 -- Literal + Column + Subquery
-WHERE category = 'Electronics' 
+WHERE category = 'Electronics'
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
 
--- All three with logical operators
+-- Все три условия с логическими операторами
 WHERE (price > 100 OR category IN (SELECT category FROM featured))
   AND in_stock = true
   AND name LIKE '%Special%'
 ```
 
--- Все три условия с логическими операторами
-WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
-AND in&#95;stock = true
-AND name LIKE &#39;%Special%&#39;
+## Примеры {#examples}
 
-````sql
-CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE=MergeTree() ORDER BY x;
-INSERT INTO t_null VALUES (1, NULL), (2, 3);
+### Проверка на `NULL` {#examples-testing-for-null}
 
-SELECT * FROM t_null WHERE y IS NULL;
-SELECT * FROM t_null WHERE y != 0;
+Запросы со значениями `NULL`:
+
 ```sql
 CREATE TABLE t_null(x Int8, y Nullable(Int8)) ENGINE=MergeTree() ORDER BY x;
 INSERT INTO t_null VALUES (1, NULL), (2, 3);
 
 SELECT * FROM t_null WHERE y IS NULL;
 SELECT * FROM t_null WHERE y != 0;
-````response
-┌─x─┬────y─┐
-│ 1 │ ᴺᵁᴸᴸ │
-└───┴──────┘
-┌─x─┬─y─┐
-│ 2 │ 3 │
-└───┴───┘
+```
+
 ```response
 ┌─x─┬────y─┐
 │ 1 │ ᴺᵁᴸᴸ │

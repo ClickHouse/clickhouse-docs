@@ -104,7 +104,7 @@ Code: 117. DB::Exception: JSON オブジェクトにあいまいなデータが�
 構造推論のために読み取る行数やバイト数の上限を増やすには、設定 input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference / input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference を使用してください。
 構造を手動で指定することもできます (ファイル/URI bluesky/file&#95;0001.json.gz 内)。 (CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE)
 
-````sql
+```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
 
@@ -122,7 +122,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 └─────────┘
 
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
-````bash
+```bash
 > cat list.json
 [
   {

@@ -105,7 +105,7 @@ auth.user = "username"
 auth.password = "password"
 buffer.max_events = 10000
 batch.timeout_secs = 1
-````
+```
 
 关于此配置和 Vector 行为，有几点重要说明：
 

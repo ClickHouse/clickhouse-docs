@@ -177,7 +177,7 @@ Peak memory usage: 28.45 MiB.
 11 行数据。耗时：0.373 秒。已处理 644 万行，25.77 MB（每秒 1,729 万行，69.17 MB/s）。
 峰值内存使用：28.45 MiB。
 
-````sql
+```sql
 SELECT
     hostname() AS host,
     count()
@@ -233,7 +233,7 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
-````sql
+```sql
 SELECT
     hostname() AS host,
     count()

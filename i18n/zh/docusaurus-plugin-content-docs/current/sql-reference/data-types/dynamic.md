@@ -101,9 +101,9 @@ SELECT toTypeName(d.String), toTypeName(d.Int64), toTypeName(d.`Array(Int64)`), 
 └──────────────────────┴─────────────────────┴────────────────────────────┴────────────────────┴─────────────────────────────┘
 ```
 
-````sql
+```sql
 SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'), dynamicElement(d, 'Array(Int64)'), dynamicElement(d, 'Date'), dynamicElement(d, 'Array(String)') FROM test;```
-````
+```
 
 ```text
 ┌─d─────────────┬─dynamicType(d)─┬─dynamicElement(d, 'String')─┬─dynamicElement(d, 'Int64')─┬─dynamicElement(d, 'Array(Int64)')─┬─dynamicElement(d, 'Date')─┬─dynamicElement(d, 'Array(String)')─┐
@@ -693,9 +693,9 @@ SELECT JSONExtract('{"obj" : {"a" : 42, "b" : "Hello", "c" : [1,2,3]}}', 'obj', 
 └──────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 
-````sql
+```sql
 SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Dynamic') AS dynamics, arrayMap(x -> (x.1, dynamicType(x.2)), dynamics) AS dynamic_types```
-````
+```
 
 ```text
 ┌─dynamics───────────────────────────────┬─dynamic_types─────────────────────────────────────────────────┐

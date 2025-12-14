@@ -98,7 +98,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 要增加用于结构推断的最大读取行数/字节数，请使用设置 input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference。
 可以手动指定结构：（在文件/URI bluesky/file&#95;0001.json.gz 中）。（CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE）
 
-````
+```
  
 相反,在这种情况下可以使用 `JSONAsObject`,因为 `JSON` 类型支持同一子列使用多种类型。
 
@@ -111,7 +111,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 └─────────┘
 
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
-````
+```
 
 ## JSON 对象数组 {#array-of-json-objects}
 

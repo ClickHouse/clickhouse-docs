@@ -84,7 +84,7 @@ ClickHouse 会持续[合并 part](https://clickhouse.com/blog/asynchronous-data-
 
 回到 ①
 
-````
+```
 
 请注意,[增加](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) CPU 核心数和 RAM 大小可提高后台合并吞吐量。
 
@@ -108,7 +108,7 @@ ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会
 ② 将该块写入存储上的新部分。
 
 转到 ①。 
-````
+```
 
 此类并行插入线程的数量可以通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 设置进行配置。开源版 ClickHouse 的默认值为 `1`，而 [ClickHouse Cloud](https://clickhouse.com/cloud) 的默认值为 `4`。
 

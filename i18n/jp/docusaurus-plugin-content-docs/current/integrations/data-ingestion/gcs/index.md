@@ -545,10 +545,10 @@ is_broken:        0
 cache_path:
 ```
 #### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
-````
+```
 #### クラスタ上で作成されたテーブルが両ノードに作成されていることを確認する                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```
-````
+```
 
 ```
 

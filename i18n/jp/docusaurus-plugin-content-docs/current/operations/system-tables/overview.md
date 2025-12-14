@@ -177,7 +177,7 @@ Peak memory usage: 28.45 MiB.
 11 行が返されました。経過時間: 0.373 秒。処理行数: 644 万行、25.77 MB（毎秒 1,729 万行、69.17 MB）。
 ピークメモリ使用量: 28.45 MiB。
 
-````sql
+```sql
 SELECT
     hostname() AS host,
     count()
@@ -233,7 +233,7 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
-````sql
+```sql
 SELECT
     hostname() AS host,
     count()

@@ -111,7 +111,7 @@ LIMIT 5
 5. │ max&#95;insert&#95;block&#95;size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 
-````sql title="Query"
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -159,7 +159,7 @@ SELECT * FROM crypto_prices
 WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
-````response title="Response"
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │

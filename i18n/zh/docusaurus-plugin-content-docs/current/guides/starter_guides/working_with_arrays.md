@@ -337,7 +337,7 @@ AND DepTime IS NOT NULL
 AND DepDelayMinutes IS NOT NULL
 GROUP BY ALL
 
-````
+```
 
 在上述查询中,`arrayMap` 函数接收单元素数组 `[DepDelayMinutes]`,并应用 lambda 函数 `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` 对其进行分类。
 然后通过 `[DepDelayMinutes][1]` 提取结果数组的第一个元素。
@@ -358,7 +358,7 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
 在上面的查询中，我们将一个 lambda 函数作为第一个参数传递给 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 函数。
 这个 lambda 函数接收以分钟为单位的延迟时间 `d`，如果条件满足则返回 `1`，否则返回 `0`。

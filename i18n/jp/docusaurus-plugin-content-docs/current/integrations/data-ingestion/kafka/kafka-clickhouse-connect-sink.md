@@ -483,7 +483,7 @@ consumer.fetch.min.bytes=1048576
 
 consumer.fetch.max.wait.ms=300
 
-````json
+```json
 {
   "name": "clickhouse-connect",
   "config": {
@@ -501,7 +501,7 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-````json
+```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"

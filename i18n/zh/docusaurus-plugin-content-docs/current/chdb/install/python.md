@@ -567,7 +567,7 @@ print(window_result)
 
 为特定数据源实现自定义数据读取器：
 
-````python
+```python
 import chdb
 from typing import List, Tuple, Any
 import json
@@ -668,7 +668,7 @@ complex_json = chdb.query("""
     FROM Python(df_with_json)
 """, "JSONEachRow")
 print(complex_json)
-````
+```
 
 ## Performance and optimization {#performance-optimization}
 

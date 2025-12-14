@@ -254,7 +254,7 @@ OK
 1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    [&quot;hello world&quot;,&quot;hello world&quot;]    [1.1,1.2]    [[1,2],[3,4]]    [[&quot;a&quot;,&quot;b&quot;],[&quot;c&quot;,&quot;d&quot;]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
 耗时：0.766 秒，获取：1 行记录
 
-````sql
+```sql
 CREATE TABLE test.test_parquet
 (
     `f_tinyint` Int8,
@@ -310,7 +310,7 @@ CREATE TABLE test.test_parquet
 )
 ENGINE = Hive('thrift://localhost:9083', 'test', 'test_parquet')
 PARTITION BY day
-````sql
+```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G
 ```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G

@@ -380,7 +380,7 @@ Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a
 Код: 636. DB::Exception: Получено от sql-clickhouse.clickhouse.com:9440. DB::Exception: Не удаётся извлечь структуру таблицы из файла в формате JSON. Ошибка:
 Код: 53. DB::Exception: Тип Tuple(b Int64), автоматически определённый для столбца &#39;a&#39; в строке 1, отличается от типа, определённого в предыдущих строках: Int64. Вы можете явно указать тип для этого столбца с помощью настройки schema&#95;inference&#95;hints.
 
-````sql
+```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1
 
@@ -398,7 +398,7 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 └──────┴──────┘
 
 1 row in set. Elapsed: 0.010 sec.
-````
+```
 
 ## Дополнительные материалы {#further-reading}
 

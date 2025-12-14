@@ -781,7 +781,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 
-````sql
+```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
@@ -815,7 +815,7 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // 結果
 1970-01-01 09:00:03    3   Gift // 基準点、Giftに一致
 1970-01-01 09:00:04    3   Basket // 基準点、Basketに一致
-````sql
+```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
                  dt   id   page
@@ -919,7 +919,7 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // Matched with Home
 1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-````
+```
 
 ```sql
 CREATE TABLE test_flow_basecond
@@ -934,7 +934,7 @@ PARTITION BY toYYYYMMDD(dt)
 ORDER BY id;
 
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
-````
+```
 
 **`base_condition` の挙動**
 
@@ -984,7 +984,7 @@ dt   id   page   ref
 1970-01-01 09:00:03    1   B      ref2 // 結果行
 1970-01-01 09:00:04    1   B      ref1
 
-````
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -994,4 +994,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // 結果
  1970-01-01 09:00:03    1   B      ref2 // 基準点
  1970-01-01 09:00:04    1   B      ref1 // この行は ref カラムが 'ref2' と一致しないため、基準点になりません。
-````
+```

@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ClickHouse может предоставлять собственные метрики для сбора Prometheus:
 
-````xml
+```xml
 <prometheus>
     <port>9363</port>
     <endpoint>/metrics</endpoint>
@@ -50,7 +50,7 @@ This section is similar to [<http_handlers>](/interfaces/http) but works for pro
         </my_rule_1>
     </handlers>
 </prometheus>
-````
+```
 
 Settings:
 

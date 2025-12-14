@@ -714,7 +714,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 行。経過時間: 132.118 秒。処理済み 323.43 百万行、4.69 GB (2.45 百万行/秒、35.49 MB/秒)。
 最大メモリ使用量: 1.99 GiB。
 
-````
+```
 
 また、今後のバッジ挿入も効率的に実行できることを意味します：
 
@@ -722,7 +722,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 1 row in set. Elapsed: 0.583 sec.
-````
+```
 
 上記の操作では、ユーザー ID `2936484` に対して `users` テーブルから 1 行だけが取得されます。このルックアップは、`Id` をテーブルの並び替えキーとして指定することで最適化されています。
 
@@ -863,7 +863,7 @@ GROUP BY UserId
 
 1 行が取得されました。経過時間: 0.005 秒。
 
-````
+```
 
 `badges`テーブルへの挿入はビューをトリガーしないため、`user_activity`は更新されません:
 
@@ -884,7 +884,7 @@ GROUP BY UserId;
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
 1 row in set. Elapsed: 0.005 sec.
-````
+```
 
 この問題を解決するには、各 `SELECT` 文ごとにマテリアライズドビューを作成するだけです。
 

@@ -57,7 +57,7 @@ table_dropped_time:    2023-04-05 14:12:12
 1 row in set. Elapsed: 0.001 sec. 
 ```
 
-````sql
+```sql
 UNDROP TABLE tab;
 
 SELECT *
@@ -68,7 +68,7 @@ FORMAT Vertical;
 Ok.
 
 0 rows in set. Elapsed: 0.001 sec. 
-````
+```
 
 ```sql
 DESCRIBE TABLE tab

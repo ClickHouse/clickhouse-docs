@@ -141,7 +141,7 @@ tier:        Production
 
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-````
+```
 
 **関連項目**
 

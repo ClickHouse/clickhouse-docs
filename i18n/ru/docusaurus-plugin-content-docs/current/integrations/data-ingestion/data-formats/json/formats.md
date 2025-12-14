@@ -104,7 +104,7 @@ Code: 117. DB::Exception: Объекты JSON содержат неоднозн�
 Чтобы увеличить максимальное количество строк/байт для чтения при определении структуры, используйте настройку input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference.
 Вы можете указать структуру вручную: (в файле/URI bluesky/file&#95;0001.json.gz). (CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE)
 
-````sql
+```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
 
@@ -122,7 +122,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 └─────────┘
 
 Получена 1 строка. Затрачено: 0,480 сек. Обработано 1,00 млн строк, 256,00 Б (2,08 млн строк/с., 533,76 Б/с.)
-````bash
+```bash
 > cat list.json
 [
   {

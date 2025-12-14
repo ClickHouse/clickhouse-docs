@@ -89,7 +89,7 @@ tools = await mcp_tool_spec.to_tool_list_async()
 
 tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
 
-````python
+```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
 
 agent_worker = FunctionCallingAgentWorker.from_tools(
@@ -105,7 +105,7 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     llm=llm, verbose=True, max_function_calls=10
 )
 agent = AgentRunner(agent_worker)
-````python
+```python
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```python

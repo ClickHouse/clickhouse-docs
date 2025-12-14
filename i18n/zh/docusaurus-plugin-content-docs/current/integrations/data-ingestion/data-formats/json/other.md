@@ -169,7 +169,7 @@ Peak memory usage: 205.98 MiB.
 
 而下面的示例将会被正确解析：
 
-````json
+```json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
@@ -199,7 +199,7 @@ LIMIT 10
 
 返回 10 行。用时:0.964 秒。处理了 248 万行,4.21 GB(258 万行/秒,4.36 GB/秒)。
 峰值内存使用:211.49 MiB。
-````
+```
 
 The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 

@@ -350,7 +350,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 
 5 строк в наборе. Затрачено: 0,059 сек.
 
-````sql
+```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/github/github-2022.ndjson.gz')
 SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_json_read_objects_as_strings = 1
 
@@ -376,7 +376,7 @@ SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_j
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
 Получено 5 строк. Затрачено: 0.611 сек
-````sql
+```sql
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
 ```sql
 SELECT schema, format, source FROM system.schema_inference_cache WHERE storage='S3'
@@ -1527,10 +1527,10 @@ SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
 │ c2   │ Nullable(String)       │              │                    │         │                  │                │
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-````
+```
 ```sql
 DESC format(TSV, 'Hello, World!    42    [1, 2, 3]') settings column_names_for_schema_inference = 'str,int,arr'
-````
+```
 
 ### Настройки для текстовых форматов {#settings-for-text-formats}
 

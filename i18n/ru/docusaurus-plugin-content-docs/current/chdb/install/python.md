@@ -567,7 +567,7 @@ print(window_result)
 
 Реализуйте пользовательские ридеры данных для специализированных источников данных:
 
-````python
+```python
 import chdb
 from typing import List, Tuple, Any
 import json
@@ -668,7 +668,7 @@ complex_json = chdb.query("""
     FROM Python(df_with_json)
 """, "JSONEachRow")
 print(complex_json)
-````
+```
 
 ## Performance and optimization {#performance-optimization}
 

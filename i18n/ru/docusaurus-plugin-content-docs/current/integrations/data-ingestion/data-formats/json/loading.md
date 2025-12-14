@@ -113,7 +113,7 @@ SELECT * FROM pypi LIMIT 2
 
 2 строки в наборе. Время выполнения: 0.005 сек. Обработано 8.19 тысяч строк, 908.03 KB (1.63 миллиона строк/с., 180.38 MB/с.)
 
-````sql
+```sql
 INSERT INTO pypi
 FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
@@ -121,7 +121,7 @@ FORMAT JSONEachRow
 INSERT INTO pypi
 FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
-````json
+```json
 {
   "date": "2022-09-22",
   "country_code": "IN",

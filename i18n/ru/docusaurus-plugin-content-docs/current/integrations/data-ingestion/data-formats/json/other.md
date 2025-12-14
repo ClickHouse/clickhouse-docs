@@ -169,7 +169,7 @@ Peak memory usage: 205.98 MiB.
 
 В то время как следующий пример будет успешно разобран:
 
-````json
+```json
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
@@ -199,7 +199,7 @@ LIMIT 10
 
 Получено 10 строк. Затрачено: 0.964 сек. Обработано 2.48 млн строк, 4.21 ГБ (2.58 млн строк/сек., 4.36 ГБ/сек.)
 Пиковое использование памяти: 211.49 МиБ.
-````
+```
 
 The above query uses the `simpleJSONExtractString` to extract the `created` key, exploiting the fact we want the first value only for the published date. In this case, the limitations of the `simpleJSON*` functions are acceptable for the gain in performance.
 

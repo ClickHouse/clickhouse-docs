@@ -1057,7 +1057,7 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 │ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-````
+```
 
 4.  Создайте распределённую таблицу
 
@@ -1068,7 +1068,7 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
      column1 String
    )
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
-````
+```
 
 ```response
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
@@ -1194,12 +1194,12 @@ ID запроса: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
 
 2 строки в наборе. Время выполнения: 1.175 сек.
 
-````
+```
 
 3. Убедитесь, что использованы настройки из конфигурации по умолчанию
 ```sql
 SHOW CREATE TABLE db_uuid.uuid_table1;
-````
+```
 
 ```response
 SHOW CREATE TABLE db_uuid.uuid_table1

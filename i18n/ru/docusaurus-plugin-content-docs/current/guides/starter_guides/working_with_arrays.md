@@ -335,7 +335,7 @@ The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function com
 
 Next we'll look only at the number of flights that were delayed by 30 minutes or more, for airports `DEN`, `ATL` and `DFW`:
 
-````
+```
 
 В приведённом выше запросе функция `arrayMap` принимает одноэлементный массив `[DepDelayMinutes]` и применяет лямбда-функцию `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` для его категоризации.
 Затем первый элемент полученного массива извлекается с помощью `[DepDelayMinutes][1]`.
@@ -356,7 +356,7 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
 In the query above we pass a lambda function as the first argument to the [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) function.
 This lambda function itself takes the delay in minutes (d) and returns `1` if the condition is met, else `0`.

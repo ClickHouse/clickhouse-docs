@@ -989,7 +989,7 @@ Notice that we define macros for `shard` and `replica`, but that `{uuid}` is not
 │ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-````
+```
 
 ```sql
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
@@ -998,7 +998,7 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
      column1 String
    )
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
-````
+```
 
 ### Testing {#testing}
 1.  Insert data into first node (e.g `chnode1`)
@@ -1108,7 +1108,7 @@ ENGINE = ReplicatedMergeTree
 ORDER BY id
 ```
 
-````
+```
 
 3. 验证其使用了默认配置中的设置
 ```
@@ -1116,7 +1116,7 @@ ORDER BY id
 ### Troubleshooting {#troubleshooting}
 
 Example command to get table information and UUID:
-````
+```
 
 ```
 
