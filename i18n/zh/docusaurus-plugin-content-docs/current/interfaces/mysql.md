@@ -74,8 +74,8 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 1. （可选）创建一个要应用于自定义用户的[设置配置文件](/sql-reference/statements/create/settings-profile)。例如，创建一个带有额外设置的 `my_custom_profile`，它会在稍后使用我们创建的用户连接时默认生效：
 
    ```sql
-    CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
-    ```
+   CREATE SETTINGS PROFILE my_custom_profile SETTINGS prefer_column_name_to_alias=1;
+   ```
 
    `prefer_column_name_to_alias` 只是一个示例，你也可以在这里使用其他设置。
 

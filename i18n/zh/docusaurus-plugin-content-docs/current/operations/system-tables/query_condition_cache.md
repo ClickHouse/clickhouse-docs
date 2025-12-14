@@ -29,8 +29,8 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 **示例**
 
-```
-
+```sql
+SELECT * FROM system.query_condition_cache FORMAT Vertical;
 ```
 
 ```text

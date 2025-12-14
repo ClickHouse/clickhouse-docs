@@ -114,9 +114,9 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
             <gcs>
                 <support_batch_delete>false</support_batch_delete>
                 <type>s3</type>
-                <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
-                <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
-                <secret_access_key>SERVICE ACCOUNT HMAC SECRET</secret_access_key>
+                <endpoint>https://storage.googleapis.com/存储桶名称/文件夹名称/</endpoint>
+                <access_key_id>服务账号 HMAC 密钥</access_key_id>
+                <secret_access_key>服务账号 HMAC 密钥</secret_access_key>
                 <metadata_path>/var/lib/clickhouse/disks/gcs/</metadata_path>
             </gcs>
         </disks>
@@ -298,14 +298,15 @@ ClickHouse Keeper 至少需要两个节点才能工作，因此为了实现高�
 </clickhouse>
 ```
 
-### Configure ClickHouse server {#configure-clickhouse-server}
+### 配置 ClickHouse 服务器 {#configure-clickhouse-server}
 
 :::note best practice
-Some of the steps in this guide will ask you to place a configuration file in `/etc/clickhouse-server/config.d/`.  This is the default location on Linux systems for configuration override files.  When you put these files into that directory ClickHouse will merge the content with the default configuration.  By placing these files in the `config.d` directory you will avoid losing your configuration during an upgrade.
+本指南中的某些步骤会要求你将配置文件放置在 `/etc/clickhouse-server/config.d/` 中。这是 Linux 系统上用于放置覆盖默认配置文件的默认位置。当你将这些文件放入该目录时，ClickHouse 会将其内容与默认配置进行合并。通过将这些文件放在 `config.d` 目录中，你可以在升级过程中避免丢失自己的配置。
 :::
 
-#### Networking {#networking}
-By default, ClickHouse listens on the loopback interface, in a replicated setup networking between machines is necessary.  Listen on all interfaces:
+#### 网络 {#networking}
+
+默认情况下，ClickHouse 监听回环接口；在副本部署环境中，机器之间需要进行网络通信。要监听所有接口：
 
 ```xml title=/etc/clickhouse-server/config.d/network.xml
 <clickhouse>
@@ -313,11 +314,11 @@ By default, ClickHouse listens on the loopback interface, in a replicated setup 
 </clickhouse>
 ```
 
-#### Remote ClickHouse Keeper servers {#remote-clickhouse-keeper-servers}
+#### 远程 ClickHouse Keeper 服务器 {#remote-clickhouse-keeper-servers}
 
-Replication is coordinated by ClickHouse Keeper.  This configuration file identifies the ClickHouse Keeper nodes by hostname and port number.
+副本复制由 ClickHouse Keeper 协调完成。此配置文件通过主机名和端口号来标识 ClickHouse Keeper 节点。
 
-- Edit the hostnames to match your Keeper hosts
+* 编辑主机名，使其与实际的 Keeper 主机相匹配
 
 ```xml title=/etc/clickhouse-server/config.d/use-keeper.xml
 <clickhouse>
@@ -338,11 +339,11 @@ Replication is coordinated by ClickHouse Keeper.  This configuration file identi
 </clickhouse>
 ```
 
-#### Remote ClickHouse servers {#remote-clickhouse-servers}
+#### 远程 ClickHouse 服务器 {#remote-clickhouse-servers}
 
-This file configures the hostname and port of each ClickHouse server in the cluster.  The default configuration file contains sample cluster definitions, in order to show only the clusters that are completely configured the tag `replace="true"` is added to the `remote_servers` entry so that when this configuration is merged with the default it replaces the `remote_servers` section instead of adding to it.
+此文件用于配置集群中每个 ClickHouse 服务器的主机名和端口。默认配置文件包含示例集群定义。为了只显示已完全配置的集群，会在 `remote_servers` 条目中添加标签 `replace="true"`，这样当此配置与默认配置合并时，会替换 `remote_servers` 部分，而不是在其基础上追加内容。
 
-- Edit the file with your hostnames, and make sure that they resolve from the ClickHouse server nodes
+* 根据你的主机名编辑该文件，并确保这些主机名可以从 ClickHouse 服务器节点正确解析
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -363,9 +364,9 @@ This file configures the hostname and port of each ClickHouse server in the clus
 </clickhouse>
 ```
 
-#### Replica identification {#replica-identification}
+#### 副本标识 {#replica-identification}
 
-This file configures settings related to the ClickHouse Keeper path.  Specifically the macros used to identify which replica the data is part of.  On one server the replica should be specified as `replica_1`, and on the other server `replica_2`.  The names can be changed, based on our example of one replica being stored in South Carolina and the other in Northern Virginia the values could be `carolina` and `virginia`; just make sure that they are different on each machine.
+此文件用于配置与 ClickHouse Keeper 路径相关的设置，尤其是用于标识数据属于哪个副本的宏。在一台服务器上，应将副本指定为 `replica_1`，在另一台服务器上指定为 `replica_2`。这些名称可以修改，例如在我们的示例中，一个副本存储在南卡罗来纳州，另一个存储在北弗吉尼亚州，则可以分别命名为 `carolina` 和 `virginia`；只需确保每台机器上的名称彼此不同即可。
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>
@@ -381,19 +382,21 @@ This file configures settings related to the ClickHouse Keeper path.  Specifical
 </clickhouse>
 ```
 
-#### Storage in GCS {#storage-in-gcs}
+#### 在 GCS 中配置存储 {#storage-in-gcs}
 
-ClickHouse storage configuration includes `disks` and `policies`. The disk being configured below is named `gcs`, and is of `type` `s3`.  The type is s3 because ClickHouse accesses the GCS bucket as if it was an AWS S3 bucket.  Two copies of this configuration will be needed, one for each of the ClickHouse server nodes.
+ClickHouse 的存储配置包括 `disks` 和 `policies`。下面配置的磁盘名为 `gcs`，其 `type` 为 `s3`。之所以使用 s3 类型，是因为 ClickHouse 访问 GCS bucket 的方式与访问 AWS S3 bucket 相同。此配置需要准备两份，分别应用于两个 ClickHouse 服务器节点。
 
-These substitutions should be made in the configuration below.
+需要在下方配置中进行以下替换。
 
-These substitutions differ between the two ClickHouse server nodes:
-- `REPLICA 1 BUCKET` should be set to the name of the bucket in the same region as the server
-- `REPLICA 1 FOLDER` should be changed to `replica_1` on one of the servers, and `replica_2` on the other
+以下替换项在两个 ClickHouse 服务器节点之间是不同的：
 
-These substitutions are common across the two nodes:
-- The `access_key_id` should be set to the HMAC Key generated earlier
-- The `secret_access_key` should be set to HMAC Secret generated earlier
+* `REPLICA 1 BUCKET` 应设置为与该服务器处于同一区域的 bucket 名称
+* `REPLICA 1 FOLDER` 应在其中一台服务器上改为 `replica_1`，在另一台服务器上改为 `replica_2`
+
+以下替换项在两个节点之间是通用的：
+
+* `access_key_id` 应设置为之前生成的 HMAC Key
+* `secret_access_key` 应设置为之前生成的 HMAC Secret
 
 ```xml title=/etc/clickhouse-server/config.d/storage.xml
 <clickhouse>
@@ -427,9 +430,9 @@ These substitutions are common across the two nodes:
 </clickhouse>
 ```
 
-### Start ClickHouse Keeper {#start-clickhouse-keeper}
+### 启动 ClickHouse Keeper {#start-clickhouse-keeper}
 
-Use the commands for your operating system, for example:
+根据所使用的操作系统运行相应的命令，例如：
 
 ```bash
 sudo systemctl enable clickhouse-keeper
@@ -437,13 +440,14 @@ sudo systemctl start clickhouse-keeper
 sudo systemctl status clickhouse-keeper
 ```
 
-#### Check ClickHouse Keeper status {#check-clickhouse-keeper-status}
+#### 检查 ClickHouse Keeper 状态 {#check-clickhouse-keeper-status}
 
-Send commands to the ClickHouse Keeper with `netcat`.  For example, `mntr` returns the state of the ClickHouse Keeper cluster.  If you run the command on each of the Keeper nodes you will see that one is a leader, and the other two are followers:
+通过 `netcat` 向 ClickHouse Keeper 发送命令。例如，`mntr` 会返回 ClickHouse Keeper 集群的状态。如果你在每个 Keeper 节点上执行该命令，你会看到其中一个是 leader，另外两个是 follower：
 
 ```bash
 echo mntr | nc localhost 9181
 ```
+
 ```response
 zk_version      v22.7.2.15-stable-f843089624e8dd3ff7927b8a125cf3a7a769c069
 zk_avg_latency  0
@@ -470,31 +474,34 @@ zk_synced_followers     2
 # highlight-end {#highlight-end}
 ```
 
-### Start ClickHouse server {#start-clickhouse-server}
+### 启动 ClickHouse 服务器 {#start-clickhouse-server}
 
-On `chnode1` and `chnode` run:
+在 `chnode1` 和 `chnode` 上运行：
 
 ```bash
 sudo service clickhouse-server start
 ```
+
 ```bash
 sudo service clickhouse-server status
 ```
 
-### Verification {#verification}
+### 验证 {#verification}
 
-#### Verify disk configuration {#verify-disk-configuration}
+#### 验证磁盘配置 {#verify-disk-configuration}
 
-`system.disks` should contain records for each disk:
-- default
-- gcs
-- cache
+`system.disks` 中应包含每个磁盘对应的一条记录：
+
+* default
+* gcs
+* cache
 
 ```sql
 SELECT *
 FROM system.disks
 FORMAT Vertical
 ```
+
 ```response
 Row 1:
 ──────
@@ -544,28 +551,78 @@ is_remote:        1
 is_broken:        0
 cache_path:
 ```
-#### Verify that tables created on the cluster are created on both nodes {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
+
+3 行数据，耗时 0.002 秒。
+
 ````
 #### 验证在集群上创建的表已在两个节点上创建                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
-```
+```sql
+-- highlight-next-line
+create table trips on cluster 'cluster_1S_2R' (
+ `trip_id` UInt32,
+ `pickup_date` Date,
+ `pickup_datetime` DateTime,
+ `dropoff_datetime` DateTime,
+ `pickup_longitude` Float64,
+ `pickup_latitude` Float64,
+ `dropoff_longitude` Float64,
+ `dropoff_latitude` Float64,
+ `passenger_count` UInt8,
+ `trip_distance` Float64,
+ `tip_amount` Float32,
+ `total_amount` Float32,
+ `payment_type` Enum8('UNK' = 0, 'CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4))
+ENGINE = ReplicatedMergeTree
+PARTITION BY toYYYYMM(pickup_date)
+ORDER BY pickup_datetime
+-- highlight-next-line
+SETTINGS storage_policy='gcs_main'
 ````
 
-```
+```response
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode2.us-east4-c.c.gcsqa-375100.internal │ 9000 │      0 │       │                   1 │                1 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+│ chnode1.us-east1-b.c.gcsqa-375100.internal │ 9000 │      0 │       │                   0 │                0 │
+└────────────────────────────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-#### Verify that data can be inserted {#verify-that-data-can-be-inserted}
-
+2 rows in set. Elapsed: 0.641 sec.
 ```
 
 #### 验证数据能否插入 {#verify-that-data-can-be-inserted}
 
-```
-
-#### Verify that the storage policy `gcs_main` is used for the table. {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
+```sql
+INSERT INTO trips SELECT
+    trip_id,
+    pickup_date,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    tip_amount,
+    total_amount,
+    payment_type
+FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames')
+LIMIT 1000000
 ```
 
 #### 验证该表是否使用了存储策略 `gcs_main`。 {#verify-that-the-storage-policy-gcs_main-is-used-for-the-table}
 
-```
+```sql
+SELECT
+    engine,
+    data_paths,
+    metadata_path,
+    storage_policy,
+    formatReadableSize(total_bytes)
+FROM system.tables
+WHERE name = 'trips'
+FORMAT Vertical
 ```
 
 ```response

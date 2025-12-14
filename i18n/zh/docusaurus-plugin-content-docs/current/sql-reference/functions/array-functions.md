@@ -57,7 +57,7 @@ SELECT array(toInt32(1), toUInt16(2), toInt8(3)) AS a, toTypeName(a)
 └─────────┴───────────────┘
 ```
 
-**Invalid usage**
+**用法无效**
 
 ```sql title=Query
 SELECT array(toInt32(5), toDateTime('1998-06-16'), toInt8(5)) AS a, toTypeName(a)
@@ -69,54 +69,50 @@ SELECT array(toInt32(5), toDateTime('1998-06-16'), toInt8(5)) AS a, toTypeName(a
 类型 Int32、DateTime、Int8 不存在超类型 ...
 ```
 
-
-
 ## arrayAUCPR {#arrayAUCPR}
 
-Introduced in: v20.4
+引入版本：v20.4
 
+计算精确率-召回率（PR）曲线下面积。
+精确率-召回率曲线是通过在所有阈值下，将精确率绘制在 y 轴、召回率绘制在 x 轴而得到的。
+结果值范围为 0 到 1，值越高表示模型性能越好。
+在处理类别分布不平衡的数据集时，PR AUC 尤其有用，相比 ROC AUC 能在这类场景下提供更清晰的性能对比。
+更多细节请参见[此处](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve)、[此处](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1)和[此处](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve)。
 
-Calculates the area under the precision-recall (PR) curve.
-A precision-recall curve is created by plotting precision on the y-axis and recall on the x-axis across all thresholds.
-The resulting value ranges from 0 to 1, with a higher value indicating better model performance.
-The PR AUC is particularly useful for imbalanced datasets, providing a clearer comparison of performance compared to ROC AUC on those cases.
-For more details, please see [here](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve), [here](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1) and [here](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve).
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayAUCPR(scores, labels[, partial_offsets])
 ```
 
-**Aliases**: `arrayPRAUC`
+**别名**: `arrayPRAUC`
 
-**Arguments**
+**参数**
 
-- `cores` — Scores prediction model gives. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `labels` — Labels of samples, usually 1 for positive sample and 0 for negative sample. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Enum)`](/sql-reference/data-types/array)
-- `partial_offsets` — 
-- Optional. An [`Array(T)`](/sql-reference/data-types/array) of three non-negative integers for calculating a partial area under the PR curve (equivalent to a vertical band of the PR space) instead of the whole AUC. This option is useful for distributed computation of the PR AUC. The array must contain the following elements [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`].
-    - `higher_partitions_tp`: The number of positive labels in the higher-scored partitions.
-    - `higher_partitions_fp`: The number of negative labels in the higher-scored partitions.
-    - `total_positives`: The total number of positive samples in the entire dataset.
+* `cores` — 预测模型输出的分数。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
+* `labels` — 样本标签，通常正样本为 1，负样本为 0。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Enum)`](/sql-reference/data-types/array)
+* `partial_offsets` —
+* 可选。一个由三个非负整数组成的 [`Array(T)`](/sql-reference/data-types/array)，用于计算 PR 曲线下的部分面积（等价于 PR 空间中的一个垂直带状区域），而不是整个 AUC。此选项对于分布式计算 PR AUC 很有用。该数组必须包含以下元素 [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`]。
+  * `higher_partitions_tp`：得分更高的各分区中正标签的数量。
+  * `higher_partitions_fp`：得分更高的各分区中负标签的数量。
+  * `total_positives`：整个数据集中正样本的总数。
 
 :::note
-When `arr_partial_offsets` is used, the `arr_scores` and `arr_labels` should be only a partition of the entire dataset, containing an interval of scores.
-The dataset should be divided into contiguous partitions, where each partition contains the subset of the data whose scores fall within a specific range.
-For example:
-- One partition could contain all scores in the range [0, 0.5).
-- Another partition could contain scores in the range [0.5, 1.0].
-:::
- 
+当使用 `arr_partial_offsets` 时，`arr_scores` 和 `arr_labels` 应仅对应整个数据集中的一个分区，并且该分区只包含某一分数区间内的样本。
+数据集应被划分为一系列相邻的连续分区，其中每个分区包含分数落在某个特定范围内的数据子集。
+例如：
 
-**Returned value**
+* 一个分区可以包含所有位于区间 [0, 0.5) 内的分数。
+* 另一个分区可以包含位于区间 [0.5, 1.0] 内的分数。
+  :::
 
-Returns area under the precision-recall (PR) curve. [`Float64`](/sql-reference/data-types/float)
+**返回值**
 
-**Examples**
+返回精确率-召回率（PR）曲线下的面积。[`Float64`](/sql-reference/data-types/float)
 
-**Usage example**
+**示例**
+
+**用法示例**
 
 ```sql title=Query
 SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
@@ -128,36 +124,31 @@ SELECT arrayAUCPR([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayAll {#arrayAll}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+如果 lambda `func(x [, y1, y2, ... yN])` 对所有元素的返回值都为 true，则返回 `1`；否则，返回 `0`。
 
-Returns `1` if lambda `func(x [, y1, y2, ... yN])` returns true for all elements. Otherwise, it returns `0`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayAll(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `cond1_arr, ...` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个对源数组（`x`）和条件数组（`y`）的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `cond1_arr, ...` — 可选。N 个条件数组，为 Lambda 函数提供额外参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+如果 Lambda 函数对所有元素都返回 true，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the lambda function returns true for all elements, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**All elements match**
+**所有元素都满足条件**
 
 ```sql title=Query
 SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 2, 3])
@@ -167,7 +158,7 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 2, 3])
 1
 ```
 
-**Not all elements match**
+**并非所有元素都相匹配**
 
 ```sql title=Query
 SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
@@ -177,38 +168,33 @@ SELECT arrayAll(x, y -> x=y, [1, 2, 3], [1, 1, 1])
 0
 ```
 
-
-
 ## arrayAvg {#arrayAvg}
 
-Introduced in: v21.1
+引入于：v21.1
 
+返回源数组中元素的平均值。
 
-Returns the average of elements in the source array.
+如果指定了 lambda 函数 `func`，则返回对元素应用该 lambda 函数后所得结果的平均值。
 
-If a lambda function `func` is specified, returns the average of elements of the lambda results.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayAvg([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 可选。作用于源数组（`x`）及条件数组（`y`）元素的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。提供给 Lambda 函数的 N 个条件数组，作为附加参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组中元素的平均值；如果提供了 Lambda 函数，则返回其结果元素的平均值。[`Float64`](/sql-reference/data-types/float)
 
-Returns the average of elements in the source array, or the average of elements of the lambda results if provided. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基础示例**
 
 ```sql title=Query
 SELECT arrayAvg([1, 2, 3, 4]);
@@ -218,7 +204,7 @@ SELECT arrayAvg([1, 2, 3, 4]);
 2.5
 ```
 
-**Usage with lambda function**
+**在 Lambda 函数中的用法**
 
 ```sql title=Query
 SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
@@ -228,32 +214,29 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 6.5
 ```
 
-
-
 ## arrayCompact {#arrayCompact}
 
-Introduced in: v20.1
+自 v20.1 版本引入
 
-Removes consecutive duplicate elements from an array, including `null` values. The order of values in the resulting array is determined by the order in the source array.
+从数组中移除连续的重复元素，包括 `null` 值。结果数组中各值的顺序与源数组中的顺序一致。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayCompact(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — An array to remove duplicates from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 需要去重的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个不包含重复值的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array without duplicate values [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
@@ -263,32 +246,29 @@ SELECT arrayCompact([1, 1, nan, nan, 2, 3, 3, 3]);
 [1,nan,2,3]
 ```
 
-
-
 ## arrayConcat {#arrayConcat}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
-Combines arrays passed as arguments.
+合并作为参数传入的数组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayConcat(arr1 [, arr2, ... , arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `arr1 [, arr2, ... , arrN]` — N number of arrays to concatenate. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1 [, arr2, ... , arrN]` — 要拼接的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个由提供的数组参数合并而成的单个数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a single combined array from the provided array arguments. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
@@ -298,38 +278,33 @@ SELECT arrayConcat([1, 2], [3, 4], [5, 6]) AS res
 [1, 2, 3, 4, 5, 6]
 ```
 
-
-
 ## arrayCount {#arrayCount}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回使 `func(arr1[i], ..., arrN[i])` 的结果为 true 的元素数量。
+如果未指定 `func`，则返回数组中非零元素的数量。
 
-Returns the number of elements for which `func(arr1[i], ..., arrN[i])` returns true.
-If `func` is not specified, it returns the number of non-zero elements in the array.
+`arrayCount` 是一个[高阶函数](/sql-reference/functions/overview#higher-order-functions)。
 
-`arrayCount` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayCount([func, ] arr1, ...)
 ```
 
-**Arguments**
+**参数**
 
-- `func` — Optional. Function to apply to each element of the array(s). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1, ..., arrN` — N arrays. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 可选。应用到每个数组元素上的函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1, ..., arrN` — N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回使 `func` 返回 true 的元素个数。否则，返回数组中非零元素的个数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of elements for which `func` returns true. Otherwise, returns the number of non-zero elements in the array. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
@@ -339,34 +314,31 @@ SELECT arrayCount(x -> (x % 2), groupArray(number)) FROM numbers(10)
 5
 ```
 
-
-
 ## arrayCumSum {#arrayCumSum}
 
-Introduced in: v1.1
+首次引入于：v1.1
 
-Returns an array of the partial (running) sums of the elements in the source array. If a lambda function is specified, the sum is computed from applying the lambda to the array elements at each position.
+返回一个数组，其中每个元素是源数组对应位置的前缀和（累计和）。如果指定了 lambda 函数，则在每个位置先对数组元素应用该 lambda，再对结果进行累计求和。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayCumSum([func,] arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `func` — Optional. A lambda function to apply to the array elements at each position. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1` — The source array of numeric values. [`Array(T)`](/sql-reference/data-types/array)
-- `[arr2, ..., arrN]` — Optional. Additional arrays of the same size, passed as arguments to the lambda function if specified. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 可选。应用于数组各位置元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1` — 源数值数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[arr2, ..., arrN]` — 可选。与 `arr1` 长度相同的附加数组，如果指定了 lambda 函数，这些数组会作为参数传递给该函数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其中包含源数组元素的部分和（前缀和）。结果类型与输入数组的数值类型相同。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the partial sums of the elements in the source array. The result type matches the input array's numeric type. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT arrayCumSum([1, 1, 1, 1]) AS res
@@ -376,7 +348,7 @@ SELECT arrayCumSum([1, 1, 1, 1]) AS res
 [1, 2, 3, 4]
 ```
 
-**With lambda**
+**使用 lambda 表达式**
 
 ```sql title=Query
 SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
@@ -386,34 +358,31 @@ SELECT arrayCumSum(x -> x * 2, [1, 2, 3]) AS res
 [2, 6, 12]
 ```
 
-
-
 ## arrayCumSumNonNegative {#arrayCumSumNonNegative}
 
-Introduced in: v18.12
+引入版本：v18.12
 
-Returns an array of the partial (running) sums of the elements in the source array, replacing any negative running sum with zero. If a lambda function is specified, the sum is computed from applying the lambda to the array elements at each position.
+返回一个数组，其中包含源数组元素的部分（逐步）累计和，并将任何为负的累计和替换为零。如果指定了 lambda 函数，则在每个位置先对数组元素应用该 lambda，再对结果进行累计求和。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayCumSumNonNegative([func,] arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `func` — Optional. A lambda function to apply to the array elements at each position. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1` — The source array of numeric values. [`Array(T)`](/sql-reference/data-types/array)
-- `[arr2, ..., arrN]` — Optional. Additional arrays of the same size, passed as arguments to the lambda function if specified. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 可选。一个应用于数组中各位置元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1` — 数值类型的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[arr2, ..., arrN]` — 可选。与 `arr1` 大小相同的其他数组，如果指定了 lambda 函数，这些数组会作为参数传递给该函数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组元素的部分和数组，其中任何为负的累积和都会被替换为零。结果类型与输入数组的数值类型一致。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the partial sums of the elements in the source array, with any negative running sum replaced by zero. The result type matches the input array's numeric type. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT arrayCumSumNonNegative([1, 1, -4, 1]) AS res
@@ -423,7 +392,7 @@ SELECT arrayCumSumNonNegative([1, 1, -4, 1]) AS res
 [1, 2, 0, 1]
 ```
 
-**With lambda**
+**使用 Lambda**
 
 ```sql title=Query
 SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
@@ -433,36 +402,31 @@ SELECT arrayCumSumNonNegative(x -> x * 2, [1, -2, 3]) AS res
 [2, 0, 6]
 ```
 
-
-
 ## arrayDifference {#arrayDifference}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+计算一个数组，其元素为原数组中相邻元素之间的差值。
+结果数组的第一个元素为 0，第二个元素为 `arr[1] - arr[0]`，第三个元素为 `arr[2] - arr[1]`，以此类推。
+结果数组中元素的类型由减法的类型推断规则决定（例如 `UInt8` - `UInt8` = `Int16`）。
 
-Calculates an array of differences between adjacent array elements.
-The first element of the result array will be 0, the second `arr[1] - arr[0]`, the third `arr[2] - arr[1]`, etc.
-The type of elements in the result array are determined by the type inference rules for subtraction (e.g. `UInt8` - `UInt8` = `Int16`).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayDifference(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array for which to calculate differences between adjacent elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要计算相邻元素差值的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个由相邻数组元素之间的差值组成的数组 [`UInt*`](/sql-reference/data-types/int-uint)
 
-Returns an array of differences between adjacent array elements [`UInt*`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayDifference([1, 2, 3, 4]);
@@ -472,7 +436,7 @@ SELECT arrayDifference([1, 2, 3, 4]);
 [0,1,1,1]
 ```
 
-**Example of overflow due to result type Int64**
+**结果类型为 Int64 时发生溢出的示例**
 
 ```sql title=Query
 SELECT arrayDifference([0, 10000000000000000000]);
@@ -484,32 +448,29 @@ SELECT arrayDifference([0, 10000000000000000000]);
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayDistinct {#arrayDistinct}
 
-Introduced in: v1.1
+引入于：v1.1
 
-Returns an array containing only the distinct elements of an array.
+返回一个仅包含数组中各不相同（去重后）元素的数组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayDistinct(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array for which to extract distinct elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要从中提取不同元素的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个包含不同元素的数组 [`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array containing the distinct elements [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayDistinct([1, 2, 2, 3, 1]);
@@ -519,45 +480,40 @@ SELECT arrayDistinct([1, 2, 2, 3, 1]);
 [1,2,3]
 ```
 
-
-
 ## arrayDotProduct {#arrayDotProduct}
 
-Introduced in: v23.5
+自 v23.5 引入
 
-
-Returns the dot product of two arrays.
+返回两个数组的点积。
 
 :::note
-The sizes of the two vectors must be equal. Arrays and Tuples may also contain mixed element types.
+两个向量的长度必须相等。`Array` 和 `Tuple` 中的元素类型也可以是混合的。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 arrayDotProduct(v1, v2)
 ```
 
-**Arguments**
+**参数**
 
-- `v1` — First vector. [`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) or [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
-- `v2` — Second vector. [`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) or [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
+* `v1` — 第一个向量。[`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) 或 [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
+* `v2` — 第二个向量。[`Array((U)Int* | Float* | Decimal)`](/sql-reference/data-types/array) 或 [`Tuple((U)Int* | Float* | Decimal)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
-
-The dot product of the two vectors.
+两个向量的点积。
 
 :::note
-The return type is determined by the type of the arguments. If Arrays or Tuples contain mixed element types then the result type is the supertype.
+返回类型由参数的类型确定。如果 Array 或 Tuple 中包含不同类型的元素，则结果类型为它们的超类型。
 :::
 
- [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**Examples**
+**示例**
 
-**Array example**
+**Array 示例**
 
 ```sql title=Query
 SELECT arrayDotProduct([1, 2, 3], [4, 5, 6]) AS res, toTypeName(res);
@@ -567,7 +523,7 @@ SELECT arrayDotProduct([1, 2, 3], [4, 5, 6]) AS res, toTypeName(res);
 32    UInt16
 ```
 
-**Tuple example**
+**元组示例**
 
 ```sql title=Query
 SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UInt8)) AS res, toTypeName(res);
@@ -577,43 +533,39 @@ SELECT dotProduct((1::UInt16, 2::UInt8, 3::Float32),(4::Int16, 5::Float32, 6::UI
 32    Float64
 ```
 
-
-
 ## arrayElement {#arrayElement}
 
-Introduced in: v1.1
+引入于：v1.1
 
-
-Gets the element of the provided array with index `n` where `n` can be any integer type.
-If the index falls outside of the bounds of an array, it returns a default value (0 for numbers, an empty string for strings, etc.),
-except for arguments of a non-constant array and a constant index 0. In this case there will be an error `Array indices are 1-based`.
+获取给定数组中索引为 `n` 的元素，其中 `n` 可以是任意整数类型。
+如果索引超出数组边界，则返回默认值（数字为 0，字符串为空字符串等），
+当数组参数为非常量且索引为常量 0 时除外。在这种情况下会报错 `Array indices are 1-based`。
 
 :::note
-Arrays in ClickHouse are one-indexed.
+ClickHouse 中的数组索引从 1 开始。
 :::
 
-Negative indexes are supported. In this case, the corresponding element is selected, numbered from the end. For example, `arr[-1]` is the last item in the array.
+支持负索引。在这种情况下，将从末尾开始计数，选取对应元素。例如，`arr[-1]` 是数组中的最后一个元素。
 
-Operator `[n]` provides the same functionality.
-    
+运算符 `[n]` 提供相同的功能。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayElement(arr, n)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to search. [`Array(T)`](/sql-reference/data-types/array). - `n` — Position of the element to get. [`(U)Int*`](/sql-reference/data-types/int-uint). 
+* `arr` — 要检索的数组。[`Array(T)`](/sql-reference/data-types/array)。- `n` — 要获取的元素位置。[`(U)Int*`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**返回值**
 
-Returns a single combined array from the provided array arguments [`Array(T)`](/sql-reference/data-types/array)
+返回由给定数组参数合并得到的单个数组 [`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayElement(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
@@ -623,7 +575,7 @@ SELECT arrayElement(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Negative indexing**
+**负索引**
 
 ```sql title=Query
 SELECT arrayElement(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
@@ -633,7 +585,7 @@ SELECT arrayElement(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
 3
 ```
 
-**Using [n] notation**
+**使用 [n] 记法**
 
 ```sql title=Query
 SELECT arr[2] FROM (SELECT [1, 2, 3] AS arr)
@@ -643,7 +595,7 @@ SELECT arr[2] FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Index out of array bounds**
+**数组下标越界**
 
 ```sql title=Query
 SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
@@ -653,41 +605,36 @@ SELECT arrayElement(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 0
 ```
 
-
-
 ## arrayElementOrNull {#arrayElementOrNull}
 
-Introduced in: v1.1
+引入于：v1.1
 
-
-Gets the element of the provided array with index `n` where `n` can be any integer type.
-If the index falls outside of the bounds of an array, `NULL` is returned instead of a default value.
+获取给定数组中索引为 `n` 的元素，其中 `n` 可以是任意整数类型。
+如果索引超出了数组的范围，则返回 `NULL`，而不是默认值。
 
 :::note
-Arrays in ClickHouse are one-indexed.
+ClickHouse 中的数组索引从 1 开始。
 :::
 
-Negative indexes are supported. In this case, it selects the corresponding element numbered from the end. For example, `arr[-1]` is the last item in the array.
+支持负索引。这时会从数组末尾开始计数来选择对应的元素。例如，`arr[-1]` 是数组中的最后一个元素。
 
-
-**Syntax**
+**语法**
 
 ```sql
 arrayElementOrNull(arrays)
 ```
 
-**Arguments**
+**参数**
 
-- `arrays` — Arbitrary number of array arguments. [`Array`](/sql-reference/data-types/array)
+* `arrays` — 任意数量的数组参数。[`Array`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回由提供的数组参数合并得到的单个数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns a single combined array from the provided array arguments. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
@@ -697,7 +644,7 @@ SELECT arrayElementOrNull(arr, 2) FROM (SELECT [1, 2, 3] AS arr)
 2
 ```
 
-**Negative indexing**
+**负索引**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
@@ -707,7 +654,7 @@ SELECT arrayElementOrNull(arr, -1) FROM (SELECT [1, 2, 3] AS arr)
 3
 ```
 
-**Index out of array bounds**
+**数组索引越界**
 
 ```sql title=Query
 SELECT arrayElementOrNull(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
@@ -717,38 +664,32 @@ SELECT arrayElementOrNull(arr, 4) FROM (SELECT [1, 2, 3] AS arr)
 NULL
 ```
 
-
-
 ## arrayEnumerate {#arrayEnumerate}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回数组 `[1, 2, 3, ..., length(arr)]`
 
-Returns the array `[1, 2, 3, ..., length (arr)]`
+此函数通常与 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 子句一起使用。它允许在应用 `ARRAY JOIN` 之后，对每个数组只统计一次。
+此函数也可以用于高阶函数。例如，你可以使用它来获取满足某个条件的元素在数组中的索引。
 
-This function is normally used with the [`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause. It allows counting something just
-once for each array after applying `ARRAY JOIN`.
-This function can also be used in higher-order functions. For example, you can use it to get array indexes for elements that match a condition.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayEnumerate(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to enumerate. [`Array`](/sql-reference/data-types/array)
+* `arr` — 要枚举的数组。[`Array`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回数组 `[1, 2, 3, ..., length (arr)]`。[`Array(UInt32)`](/sql-reference/data-types/array)
 
-Returns the array `[1, 2, 3, ..., length (arr)]`. [`Array(UInt32)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic example with ARRAY JOIN**
+**使用 ARRAY JOIN 的基本示例**
 
 ```sql title=Query
 CREATE TABLE test
@@ -782,32 +723,29 @@ ARRAY JOIN
 └────┴────────────────┴─────────────┴─────┘
 ```
 
-
-
 ## arrayEnumerateDense {#arrayEnumerateDense}
 
-Introduced in: v18.12
+自 v18.12 版本引入
 
-Returns an array of the same size as the source array, indicating where each element first appears in the source array.
+返回一个与源数组大小相同的数组，用于标记每个元素在源数组中首次出现的位置。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayEnumerateDense(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要枚举的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个与 `arr` 大小相同的数组，其中每个元素表示对应元素在源数组 [`Array(T)`](/sql-reference/data-types/array) 中首次出现的位置。
 
-Returns an array of the same size as `arr`, indicating where each element first appears in the source array [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayEnumerateDense([10, 20, 10, 30])
@@ -817,34 +755,31 @@ SELECT arrayEnumerateDense([10, 20, 10, 30])
 [1,2,1,3]
 ```
 
-
-
 ## arrayEnumerateDenseRanked {#arrayEnumerateDenseRanked}
 
-Introduced in: v20.1
+自 v20.1 引入
 
-Returns an array the same size as the source array, indicating where each element first appears in the source array. It allows for enumeration of a multidimensional array with the ability to specify how deep to look inside the array.
+返回一个与源数组大小相同的数组，用于标示每个元素在源数组中首次出现的索引位置。它支持对多维数组进行枚举，并且可以指定在数组中向内遍历的深度。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayEnumerateDenseRanked(clear_depth, arr, max_array_depth)
 ```
 
-**Arguments**
+**参数**
 
-- `clear_depth` — Enumerate elements at the specified level separately. Must be less than or equal to `max_arr_depth`. [`UInt*`](/sql-reference/data-types/int-uint)
-- `arr` — N-dimensional array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
-- `max_array_depth` — The maximum effective depth. Must be less than or equal to the depth of `arr`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `clear_depth` — 在指定层级分别枚举元素。必须小于或等于 `max_arr_depth`。[`UInt*`](/sql-reference/data-types/int-uint)
+* `arr` — 要枚举的 N 维数组。[`Array(T)`](/sql-reference/data-types/array)
+* `max_array_depth` — 最大有效深度。必须小于或等于 `arr` 的深度。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个数组，用于表示每个元素在源数组中首次出现的位置。[`Array`](/sql-reference/data-types/array)
 
-Returns an array denoting where each element first appears in the source array [`Array`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 -- 当 clear_depth=1 且 max_array_depth=1 时,结果与 arrayEnumerateDense 给出的结果相同。
@@ -856,7 +791,7 @@ SELECT arrayEnumerateDenseRanked(1,[10, 20, 10, 30],1);
 [1,2,1,3]
 ```
 
-**Usage with a multidimensional array**
+**与多维数组一起使用**
 
 ```sql title=Query
 -- 在此示例中,arrayEnumerateDenseRanked 用于获取一个数组,该数组指示多维数组中每个元素在具有相同值的元素中的排名位置。
@@ -874,7 +809,7 @@ SELECT arrayEnumerateDenseRanked(1,[[10,10,30,20],[40,50,10,30]],2);
 [[1,1,2,3],[4,5,1,2]]
 ```
 
-**Example with increased clear_depth**
+**使用更大 clear&#95;depth 的示例**
 
 ```sql title=Query
 -- 将 clear_depth 设置为 2 会导致每行的枚举单独重新开始。
@@ -886,39 +821,34 @@ SELECT arrayEnumerateDenseRanked(2,[[10,10,30,20],[40,50,10,30]],2);
 [[1, 1, 2, 3], [1, 2, 3, 4]]
 ```
 
-
-
 ## arrayEnumerateUniq {#arrayEnumerateUniq}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+返回一个与源数组大小相同的数组，其中每个元素表示源数组中对应元素在所有相同值元素中的位置。
 
-Returns an array the same size as the source array, indicating for each element what its position is among elements with the same value.
+在使用 `ARRAY JOIN` 和对数组元素进行聚合时，此函数非常有用。
 
-This function is useful when using `ARRAY JOIN` and aggregation of array elements.
+该函数可以接受多个大小相同的数组作为参数。在这种情况下，唯一性是基于所有数组中相同位置元素所组成的元组来确定的。
 
-The function can take multiple arrays of the same size as arguments. In this case, uniqueness is considered for tuples of elements in the same positions in all the arrays.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayEnumerateUniq(arr1[, arr2, ... , arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `arr1` — First array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `arr2, ...` — Optional. Additional arrays of the same size for tuple uniqueness. [`Array(UInt32)`](/sql-reference/data-types/array)
+* `arr1` — 要处理的第一个数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr2, ...` — 可选。用于确定元组唯一性的、与 `arr1` 具有相同大小的其他数组。[`Array(UInt32)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其中每个元素表示其在所有具有相同值或元组的元素中的位置。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array where each element is the position among elements with the same value or tuple. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT arrayEnumerateUniq([10, 20, 10, 30]);
@@ -928,7 +858,7 @@ SELECT arrayEnumerateUniq([10, 20, 10, 30]);
 [1, 1, 2, 1]
 ```
 
-**Multiple arrays**
+**多个数组**
 
 ```sql title=Query
 SELECT arrayEnumerateUniq([1, 1, 1, 2, 2, 2], [1, 1, 2, 1, 1, 2]);
@@ -938,7 +868,7 @@ SELECT arrayEnumerateUniq([1, 1, 1, 2, 2, 2], [1, 1, 2, 1, 1, 2]);
 [1,2,1,1,2,1]
 ```
 
-**ARRAY JOIN aggregation**
+**ARRAY JOIN 聚合**
 
 ```sql title=Query
 -- 每个目标 ID 计算了转化次数(Goals 嵌套数据结构中的每个元素代表一个已达成的目标,我们称之为转化)
@@ -975,38 +905,33 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-
-
 ## arrayEnumerateUniqRanked {#arrayEnumerateUniqRanked}
 
-Introduced in: v20.1
+自 v20.1 引入
 
+返回一个与源数组具有相同维度的一维或多维数组，
+对每个元素给出其在所有相同值元素中的位置。
+它支持对多维数组进行枚举，并且可以指定在数组中枚举的深度。
 
-Returns an array (or multi-dimensional array) with the same dimensions as the source array,
-indicating for each element what it's position is among elements with the same value.
-It allows for enumeration of a multi-dimensional array with the ability to specify how deep to look inside the array.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayEnumerateUniqRanked(clear_depth, arr, max_array_depth)
 ```
 
-**Arguments**
+**参数**
 
-- `clear_depth` — Enumerate elements at the specified level separately. Positive integer less than or equal to `max_arr_depth`. [`UInt*`](/sql-reference/data-types/int-uint)
-- `arr` — N-dimensional array to enumerate. [`Array(T)`](/sql-reference/data-types/array)
-- `max_array_depth` — The maximum effective depth. Positive integer less than or equal to the depth of `arr`. [`UInt*`](/sql-reference/data-types/int-uint)
+* `clear_depth` — 在指定层级分别枚举元素。为不大于 `max_arr_depth` 的正整数。[`UInt*`](/sql-reference/data-types/int-uint)
+* `arr` — 要枚举的 N 维数组。[`Array(T)`](/sql-reference/data-types/array)
+* `max_array_depth` — 最大生效深度。为不大于 `arr` 深度的正整数。[`UInt*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个与 `arr` 具有相同大小的 N 维数组，其中每个元素表示该元素在所有相同值元素中的位置。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an N-dimensional array the same size as `arr` with each element showing the position of that element in relation to other elements of the same value. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 -- 当 clear_depth=1 且 max_array_depth=1 时,arrayEnumerateUniqRanked 的结果
@@ -1019,7 +944,7 @@ SELECT arrayEnumerateUniqRanked(1, [1, 2, 1], 1);
 [1, 1, 2]
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 -- 当 clear_depth=1 且 max_array_depth=1 时,arrayEnumerateUniqRanked 的结果
@@ -1032,7 +957,7 @@ SELECT arrayEnumerateUniqRanked(1, [[1, 2, 3], [2, 2, 1], [3]], 2);", "[[1, 1, 1
 [1, 1, 2]
 ```
 
-**Example 3**
+**示例 3**
 
 ```sql title=Query
 -- 在此示例中,arrayEnumerateUniqRanked 用于获取一个数组,该数组指示
@@ -1050,7 +975,7 @@ SELECT arrayEnumerateUniqRanked(1, [[1, 2, 3], [2, 2, 1], [3]], 2);
 [[1, 1, 1], [2, 3, 2], [2]]
 ```
 
-**Example 4**
+**示例 4**
 
 ```sql title=Query
 -- 将 clear_depth 设置为 2，会使每行的元素被分别枚举。
@@ -1061,42 +986,38 @@ SELECT arrayEnumerateUniqRanked(2,[[1, 2, 3],[2, 2, 1],[3]], 2);
 [[1, 1, 1], [1, 2, 1], [1]]
 ```
 
-
-
 ## arrayExcept {#arrayExcept}
 
-Introduced in: v25.9
+自 v25.9 版本引入
 
+返回一个数组，其中包含 `source` 中在 `except` 中不存在的元素，并保留其原始顺序。
 
-Returns an array containing elements from `source` that are not present in `except`, preserving the original order.
+该函数对两个数组执行差集运算。对于 `source` 中的每个元素，会检查该元素是否存在于 `except` 中（使用精确比较）。如果不存在，则该元素会被包含在结果中。
 
-This function performs a set difference operation between two arrays. For each element in `source`, it checks if the element exists in `except` (using exact comparison). If not, the element is included in the result.
+该操作具有以下特性：
 
-The operation maintains these properties:
-1. Order of elements from `source` is preserved
-2. Duplicates in `source` are preserved if they don't exist in `except`
-3. NULL is handled as a separate value
-    
+1. 保留 `source` 中元素的顺序
+2. 如果 `source` 中的重复元素在 `except` 中不存在，则这些重复元素会被保留
+3. 将 NULL 作为一个独立的值进行处理
 
-**Syntax**
+**语法**
 
 ```sql
 arrayExcept(source, except)
 ```
 
-**Arguments**
+**参数**
 
-- `source` — The source array containing elements to filter.  [`Array(T)`](/sql-reference/data-types/array)
-- `except` — The array containing elements to exclude from the result.  [`Array(T)`](/sql-reference/data-types/array)
+* `source` — 包含要过滤元素的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `except` — 包含需要从结果中排除元素的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回与输入数组类型相同的数组，包含在 `source` 中但未在 `except` 中找到的元素。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same type as the input array containing elements from `source` that weren't found in `except`.  [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**basic**
+**基本示例**
 
 ```sql title=Query
 SELECT arrayExcept([1, 2, 3, 2, 4], [3, 5])
@@ -1106,7 +1027,7 @@ SELECT arrayExcept([1, 2, 3, 2, 4], [3, 5])
 [1, 2, 2, 4]
 ```
 
-**with_nulls1**
+**with&#95;nulls1**
 
 ```sql title=Query
 SELECT arrayExcept([1, NULL, 2, NULL], [2])
@@ -1116,7 +1037,7 @@ SELECT arrayExcept([1, NULL, 2, NULL], [2])
 [1, NULL, NULL]
 ```
 
-**with_nulls2**
+**with&#95;nulls2**
 
 ```sql title=Query
 SELECT arrayExcept([1, NULL, 2, NULL], [NULL, 2, NULL])
@@ -1126,7 +1047,7 @@ SELECT arrayExcept([1, NULL, 2, NULL], [NULL, 2, NULL])
 [1]
 ```
 
-**strings**
+**字符串**
 
 ```sql title=Query
 SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
@@ -1136,36 +1057,31 @@ SELECT arrayExcept(['apple', 'banana', 'cherry'], ['banana', 'date'])
 ['apple', 'cherry']
 ```
 
-
-
 ## arrayExists {#arrayExists}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+如果在源数组中至少存在一个元素，使得 `func(x[, y1, y2, ... yN])` 返回 true，则返回 `1`；否则返回 `0`。
 
-Returns `1` if there is at least one element in a source array for which `func(x[, y1, y2, ... yN])` returns true. Otherwise, it returns `0`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayExists(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个作用于源数组 (`x`) 和条件数组 (`y`) 元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。N 个条件数组，为 lambda 函数提供附加参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+如果 lambda 函数对至少一个元素返回 true，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the lambda function returns true for at least one element, `0` otherwise [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
@@ -1175,41 +1091,31 @@ SELECT arrayExists(x, y -> x=y, [1, 2, 3], [0, 0, 0])
 0
 ```
 
-
-
 ## arrayFill {#arrayFill}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+`arrayFill` 函数会从源数组的第一个元素开始，按顺序处理到最后一个元素，并在每个位置上使用源数组和条件数组中的元素，对一个 lambda 条件进行求值。当在位置 i 上该 lambda 函数的结果为 false 时，函数会将该元素替换为当前数组状态中位置 i-1 的元素。第一个元素始终会被保留，与任何条件无关。
 
-The `arrayFill` function sequentially processes a source array from the first element
-to the last, evaluating a lambda condition at each position using elements from
-the source and condition arrays. When the lambda function evaluates to false at
-position i, the function replaces that element with the element at position i-1
-from the current state of the array. The first element is always preserved
-regardless of any condition.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayFill(func(x [, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x [, y1, ..., yN])` — A lambda function `func(x [, y1, y2, ... yN]) → F(x [, y1, y2, ... yN])` which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x [, y1, ..., yN])` — 一个 Lambda 函数 `func(x [, y1, y2, ... yN]) → F(x [, y1, y2, ... yN])`，作用于源数组 `x` 和条件数组 `y` 的元素。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `[, cond1_arr, ... , condN_arr]` — 可选。作为额外参数传递给 Lambda 函数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组 [`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Example with single array**
+**单个数组示例**
 
 ```sql title=Query
 SELECT arrayFill(x -> not isNull(x), [1, null, 2, null]) AS res
@@ -1219,7 +1125,7 @@ SELECT arrayFill(x -> not isNull(x), [1, null, 2, null]) AS res
 [1, 1, 2, 2]
 ```
 
-**Example with two arrays**
+**包含两个数组的示例**
 
 ```sql title=Query
 SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2, 8, 5]) AS res
@@ -1229,34 +1135,31 @@ SELECT arrayFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2,
 [5, 5, 6, 6]
 ```
 
-
-
 ## arrayFilter {#arrayFilter}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-Returns an array containing only the elements in the source array for which a lambda function returns true.
+返回一个数组，其中仅包含源数组中使 lambda 函数返回 true 的元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayFilter(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])]
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。为 Lambda 函数提供额外参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组的一个子集，类型为 [`Array(T)`](/sql-reference/data-types/array)
 
-Returns a subset of the source array [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 SELECT arrayFilter(x -> x LIKE '%World%', ['Hello', 'abc World']) AS res
@@ -1266,7 +1169,7 @@ SELECT arrayFilter(x -> x LIKE '%World%', ['Hello', 'abc World']) AS res
 ['abc World']
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 SELECT
@@ -1281,33 +1184,29 @@ SELECT
 [2]
 ```
 
-
-
 ## arrayFirst {#arrayFirst}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回源数组中第一个使 `func(x[, y1, y2, ... yN])` 返回 `true` 的元素，否则返回默认值。
 
-Returns the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns a default value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayFirst(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — 对源数组（`x`）和条件数组（`y`）的元素进行操作的 Lambda 函数。[Lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)。- `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。- `[, cond1_arr, ... , condN_arr]` — 可选。作为附加参数传递给 Lambda 函数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns the first element of the source array for which `λ` is true, otherwise returns the default value of `T`.
+返回源数组中使 `λ` 结果为 true 的第一个元素，否则返回类型 `T` 的默认值。
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1317,7 +1216,7 @@ SELECT arrayFirst(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 b
 ```
 
-**No match**
+**无匹配结果**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1327,33 +1226,29 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 0 UInt8
 ```
 
-
-
 ## arrayFirstIndex {#arrayFirstIndex}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回源数组中第一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素的索引；如果不存在，则返回 &#39;0&#39;。
 
-Returns the index of the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns '0'.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayFirstIndex(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — 作用于源数组 (`x`) 及条件数组 (`y`) 元素的 lambda 函数。[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda)。- `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。- `[, cond1_arr, ... , condN_arr]` — 可选。作为附加参数传递给 lambda 函数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns the index of the first element of the source array for which `func` is true, otherwise returns `0` [`UInt32`](/sql-reference/data-types/int-uint)
+返回使 `func` 为 true 的源数组第一个元素的索引，否则返回 `0`。[`UInt32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1363,7 +1258,7 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 2
 ```
 
-**No match**
+**无匹配结果**
 
 ```sql title=Query
 SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
@@ -1373,36 +1268,31 @@ SELECT arrayFirstIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f'])
 0
 ```
 
-
-
 ## arrayFirstOrNull {#arrayFirstOrNull}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回源数组中第一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素，否则返回 `NULL`。
 
-Returns the first element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayFirstOrNull(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个用于对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。提供给 lambda 函数的 N 个条件数组，作为附加参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回使 `func` 为 `true` 的源数组中的第一个元素，否则返回 `NULL`。
 
-Returns the first element of the source array for which `func` is true, otherwise returns `NULL`.
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayFirstOrNull(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
@@ -1412,7 +1302,7 @@ SELECT arrayFirstOrNull(x, y -> x=y, ['a', 'b', 'c'], ['c', 'b', 'a'])
 b
 ```
 
-**No match**
+**无匹配结果**
 
 ```sql title=Query
 SELECT arrayFirstOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1422,43 +1312,38 @@ SELECT arrayFirstOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(re
 NULL Nullable(UInt8)
 ```
 
-
-
 ## arrayFlatten {#arrayFlatten}
 
-Introduced in: v20.1
+自 v20.1 引入
 
+将嵌套数组转换为扁平数组（一维数组）。
 
-Converts an array of arrays to a flat array.
+函数：
 
-Function:
+* 适用于任意深度的嵌套数组。
+* 不会改变已经是扁平结构的数组。
 
-- Applies to any depth of nested arrays.
-- Does not change arrays that are already flat.
+扁平化后的数组包含所有源数组中的全部元素。
 
-The flattened array contains all the elements from all source arrays.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayFlatten(arr)
 ```
 
-**Aliases**: `flatten`
+**别名**: `flatten`
 
-**Arguments**
+**参数**
 
-- `arr` — A multidimensional array. [`Array(Array(T))`](/sql-reference/data-types/array)
+* `arr` — 多维数组。[`Array(Array(T))`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+将多维数组扁平化后返回一维数组 [`Array(T)`](/sql-reference/data-types/array)
 
-Returns a flattened array from the multidimensional array [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayFlatten([[[1]], [[2], [3]]]);
@@ -1468,33 +1353,31 @@ SELECT arrayFlatten([[[1]], [[2], [3]]]);
 [1, 2, 3]
 ```
 
-
-
 ## arrayFold {#arrayFold}
 
-Introduced in: v23.10
+自 v23.10 引入
 
-Applies a lambda function to one or more equally-sized arrays and collects the result in an accumulator.
+将一个 lambda 函数应用于一个或多个等长数组，并将结果累积到一个累加器中。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayFold(λ(acc, x1 [, x2, x3, ... xN]), arr1 [, arr2, arr3, ... arrN], acc)
 ```
 
-**Arguments**
+**参数**
 
-- `λ(x, x1 [, x2, x3, ... xN])` — A lambda function `λ(acc, x1 [, x2, x3, ... xN]) → F(acc, x1 [, x2, x3, ... xN])` where `F` is an operation applied to `acc` and array values from `x` with the result of `acc` re-used. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr1 [, arr2, arr3, ... arrN]` — N arrays over which to operate. [`Array(T)`](/sql-reference/data-types/array)
-- `acc` — Accumulator value with the same type as the return type of the Lambda function. 
+* `λ(x, x1 [, x2, x3, ... xN])` — 形式为 `λ(acc, x1 [, x2, x3, ... xN]) → F(acc, x1 [, x2, x3, ... xN])` 的 lambda 函数，其中 `F` 是应用于 `acc` 和来自 `x` 的数组值的操作，其结果会再次作为 `acc` 参与后续计算。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr1 [, arr2, arr3, ... arrN]` — 要进行运算的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
+* `acc` — 累加器值，其类型与该 Lambda 函数的返回类型相同。
 
-**Returned value**
+**返回值**
 
-Returns the final `acc` value.
+返回最终的 `acc` 值。
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayFold(acc,x -> acc + x*2, [1, 2, 3, 4], 3::Int64) AS res;
@@ -1504,7 +1387,7 @@ SELECT arrayFold(acc,x -> acc + x*2, [1, 2, 3, 4], 3::Int64) AS res;
 23
 ```
 
-**Fibonacci sequence**
+**斐波那契数列**
 
 ```sql title=Query
 SELECT arrayFold(acc, x -> (acc.2, acc.2 + acc.1),range(number),(1::Int64, 0::Int64)).1 AS fibonacci FROM numbers(1,10);
@@ -1525,7 +1408,7 @@ SELECT arrayFold(acc, x -> (acc.2, acc.2 + acc.1),range(number),(1::Int64, 0::In
 └───────────┘
 ```
 
-**Example using multiple arrays**
+**多数组示例**
 
 ```sql title=Query
 SELECT arrayFold(
@@ -1540,31 +1423,29 @@ SELECT arrayFold(
 300
 ```
 
-
-
 ## arrayIntersect {#arrayIntersect}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-Takes multiple arrays and returns an array with elements which are present in all source arrays. The result contains only unique values.
+接收多个数组，并返回一个数组，其中包含在所有源数组中都出现的元素。结果仅包含唯一值。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayIntersect(arr, arr1, ..., arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array). 
+* `arrN` — 用于构造新数组的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns an array with distinct elements that are present in all N arrays [`Array(T)`](/sql-reference/data-types/array)
+返回一个数组，包含所有 N 个数组中共有的不重复元素。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -1578,33 +1459,30 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 └────────────────────────┴────────────────────┘
 ```
 
-
-
 ## arrayJaccardIndex {#arrayJaccardIndex}
 
-Introduced in: v23.7
+引入于：v23.7
 
-Returns the [Jaccard index](https://en.wikipedia.org/wiki/Jaccard_index) of two arrays.
+返回两个数组的 [Jaccard 指数](https://en.wikipedia.org/wiki/Jaccard_index)。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayJaccardIndex(arr_x, arr_y)
 ```
 
-**Arguments**
+**参数**
 
-- `arr_x` — First array. [`Array(T)`](/sql-reference/data-types/array)
-- `arr_y` — Second array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr_x` — 第一个数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr_y` — 第二个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回 `arr_x` 和 `arr_y` 的 Jaccard 指数。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Jaccard index of `arr_x` and `arr_y` [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
@@ -1614,40 +1492,35 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 0.3333333333333333
 ```
 
-
-
 ## arrayJoin {#arrayJoin}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+`arrayJoin` 函数接收一行包含数组的记录，并将该数组展开，为数组中的每个元素生成一行。
+这与 ClickHouse 中的常规函数不同，常规函数是在同一行内将输入值映射为输出值，
+而聚合函数则对一组行进行“压缩”或“归约”，将其变为单个汇总行
+（或在与 `GROUP BY` 一起使用时变为汇总行中的单个值）。
 
-The `arrayJoin` function takes a row that contains an array and unfolds it, generating multiple rows – one for each element in the array.
-This is in contrast to Regular Functions in ClickHouse which map input values to output values within the same row,
-and Aggregate Functions which take a group of rows and "compress" or "reduce" them into a single summary row
-(or a single value within a summary row if used with `GROUP BY`).
+除了应用此函数的列以外，所有列中的值都会被原样复制；
+在该列中，这些值会被对应的数组元素所替换。
 
-All the values in the columns are simply copied, except the values in the column where this function is applied;
-these are replaced with the corresponding array value.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayJoin(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — An array to unfold. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要展开的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回由 `arr` 展开的行集。
 
-Returns a set of rows unfolded from `arr`.
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
@@ -1661,7 +1534,7 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-**arrayJoin affects all sections of the query**
+**arrayJoin 会影响查询的所有部分**
 
 ```sql title=Query
 -- arrayJoin 函数会影响查询的所有部分,包括 WHERE 子句。请注意结果为 2,即使子查询仅返回了 1 行。
@@ -1680,7 +1553,7 @@ WHERE arrayJoin(cities) IN ['Istanbul', 'Berlin'];
 └─────────────┘
 ```
 
-**Using multiple arrayJoin functions**
+**同时使用多个 arrayJoin 函数**
 
 ```sql title=Query
 - 查询可以使用多个 arrayJoin 函数。在这种情况下,转换将执行多次,行数会成倍增加。
@@ -1711,7 +1584,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**Unexpected results due to optimizations**
+**优化导致的意外结果**
 
 ```sql title=Query
 -- 对同一表达式使用多个 arrayJoin 可能因优化而无法产生预期结果。
@@ -1768,7 +1641,7 @@ FROM (
 └─────────────┴──────────────┘
 ```
 
-**Using the ARRAY JOIN syntax**
+**使用 ARRAY JOIN 语法**
 
 ```sql title=Query
 -- 注意下面 `SELECT` 查询中的 ARRAY JOIN 语法,它提供了更强大的功能。
@@ -1800,7 +1673,7 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-**Using Tuple**
+**使用元组**
 
 ```sql title=Query
 -- 也可以使用元组（Tuple）
@@ -1828,33 +1701,29 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-
-
 ## arrayLast {#arrayLast}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回源数组中最后一个使 lambda `func(x [, y1, y2, ... yN])` 返回 true 的元素，否则返回默认值。
 
-Returns the last element in the source array for which a lambda `func(x [, y1, y2, ... yN])` returns true, otherwise it returns a default value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayLast(func(x[, y1, ..., yN]), source[, cond1, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1, ... , condN]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — 一个作用于源数组 (`x`) 及条件数组 (`y`) 元素的 Lambda 函数。[Lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)。- `source` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。- `[, cond1, ... , condN]` — 可选。提供给 Lambda 函数的 N 个条件数组，作为附加参数。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns the last element of the source array for which `func` is true, otherwise returns the default value of `T`.
+返回源数组中使 `func` 为 true 的最后一个元素，否则返回类型 `T` 的默认值。
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayLast(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
@@ -1864,7 +1733,7 @@ SELECT arrayLast(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
 c
 ```
 
-**No match**
+**未找到匹配项**
 
 ```sql title=Query
 SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1874,36 +1743,31 @@ SELECT arrayFirst(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
 0 UInt8
 ```
 
-
-
 ## arrayLastIndex {#arrayLastIndex}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回源数组中最后一个使 `func(x[, y1, y2, ... yN])` 返回 true 的元素的索引，否则返回 0。
 
-Returns the index of the last element in the source array for which `func(x[, y1, y2, ... yN])` returns true, otherwise it returns '0'.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayLastIndex(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个作用于源数组 (`x`) 和条件数组 (`y`) 元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。N 个条件数组，作为传递给 lambda 函数的附加参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回使 `func` 返回 true 的源数组中最后一个元素的索引，否则返回 `0` [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the index of the last element of the source array for which `func` is true, otherwise returns `0` [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c']);
@@ -1913,7 +1777,7 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c']);
 3
 ```
 
-**No match**
+**无匹配结果**
 
 ```sql title=Query
 SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
@@ -1923,33 +1787,31 @@ SELECT arrayLastIndex(x, y -> x=y, ['a', 'b', 'c'], ['d', 'e', 'f']);
 0
 ```
 
-
-
 ## arrayLastOrNull {#arrayLastOrNull}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回源数组中最后一个使得 lambda `func(x [, y1, y2, ... yN])` 返回 true 的元素，如果不存在这样的元素，则返回 `NULL`。
 
-Returns the last element in the source array for which a lambda `func(x [, y1, y2, ... yN])` returns true, otherwise it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayLastOrNull(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x [, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x [, y1, ..., yN])` — 作用于源数组 (`x`) 和条件数组 (`y`) 元素的 lambda 函数。[Lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)。
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)。
+* `[, cond1_arr, ... , condN_arr]` — 可选。提供给 lambda 函数的 N 个条件数组，作为额外参数。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns the last element of the source array for which `λ` is not true, otherwise returns `NULL`.
+返回源数组中最后一个不满足 `λ` 条件的元素，否则返回 `NULL`。
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayLastOrNull(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
@@ -1959,7 +1821,7 @@ SELECT arrayLastOrNull(x, y -> x=y, ['a', 'b', 'c'], ['a', 'b', 'c'])
 c
 ```
 
-**No match**
+**无匹配结果**
 
 ```sql title=Query
 SELECT arrayLastOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res)
@@ -1969,31 +1831,29 @@ SELECT arrayLastOrNull(x, y -> x=y, [0, 1, 2], [3, 3, 3]) AS res, toTypeName(res
 NULL Nullable(UInt8)
 ```
 
-
-
 ## arrayLevenshteinDistance {#arrayLevenshteinDistance}
 
-Introduced in: v25.4
+自 v25.4 引入
 
-Calculates the Levenshtein distance for two arrays.
+计算两个数组之间的 Levenshtein 距离。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayLevenshteinDistance(from, to)
 ```
 
-**Arguments**
+**参数**
 
-- `from` — The first array. [`Array(T)`](/sql-reference/data-types/array). - `to` — The second array. [`Array(T)`](/sql-reference/data-types/array). 
+* `from` — 第一个数组。[`Array(T)`](/sql-reference/data-types/array)。- `to` — 第二个数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Levenshtein distance between the first and the second arrays. [`Float64`](/sql-reference/data-types/float)
+第一个数组与第二个数组之间的 Levenshtein 距离。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
@@ -2003,36 +1863,31 @@ SELECT arrayLevenshteinDistance([1, 2, 4], [1, 2, 3])
 1
 ```
 
-
-
 ## arrayLevenshteinDistanceWeighted {#arrayLevenshteinDistanceWeighted}
 
-Introduced in: v25.4
+自 v25.4 版本引入
 
+计算两个数组的 Levenshtein 距离，并为每个元素使用自定义权重。
+数组的元素数量应与其对应的权重数量一致。
 
-Calculates Levenshtein distance for two arrays with custom weights for each element.
-The number of elements for the array and its weights should match.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayLevenshteinDistanceWeighted(from, to, from_weights, to_weights)
 ```
 
-**Arguments**
+**参数**
 
-- `from` — first array. [`Array(T)`](/sql-reference/data-types/array). - `to` — second array. [`Array(T)`](/sql-reference/data-types/array). - `from_weights` — weights for the first array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
-- `to_weights` — weights for the second array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `from` — 第一个数组。[`Array(T)`](/sql-reference/data-types/array)。 - `to` — 第二个数组。[`Array(T)`](/sql-reference/data-types/array)。 - `from_weights` — 第一个数组中各元素的权重。[`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `to_weights` — 第二个数组中各元素的权重。[`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+第一个数组和第二个数组之间的 Levenshtein 距离，并对每个元素应用自定义权重。[`Float64`](/sql-reference/data-types/float)
 
-Levenshtein distance between the first and the second arrays with custom weights for each element [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5])
@@ -2042,35 +1897,30 @@ SELECT arrayLevenshteinDistanceWeighted(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 
 14
 ```
 
-
-
 ## arrayMap {#arrayMap}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+通过对原始数组中的每个元素应用 lambda 函数，返回得到的新数组。
 
-Returns an array obtained from the original arrays by applying a lambda function to each element.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayMap(func, arr)
 ```
 
-**Arguments**
+**参数**
 
-- `func` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — N arrays to process. [`Array(T)`](/sql-reference/data-types/array)
+* `func` — 一个对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — 要处理的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回由 Lambda 函数结果组成的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array from the lambda results [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayMap(x -> (x + 2), [1, 2, 3]) as res;
@@ -2080,7 +1930,7 @@ SELECT arrayMap(x -> (x + 2), [1, 2, 3]) as res;
 [3, 4, 5]
 ```
 
-**Creating a tuple of elements from different arrays**
+**从不同数组的元素创建元组**
 
 ```sql title=Query
 SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
@@ -2090,38 +1940,33 @@ SELECT arrayMap((x, y) -> (x, y), [1, 2, 3], [4, 5, 6]) AS res
 [(1, 4),(2, 5),(3, 6)]
 ```
 
-
-
 ## arrayMax {#arrayMax}
 
-Introduced in: v21.1
+自 v21.1 引入
 
+返回源数组中的最大元素。
 
-Returns the maximum element in the source array.
+如果指定了 lambda 函数 `func`，则返回该 lambda 函数结果中的最大元素。
 
-If a lambda function `func` is specified, returns the maximum element of the lambda results.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 可选。对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。作为附加参数传递给 Lambda 函数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组中的最大元素；如果提供了 Lambda 函数，则返回其结果中的最大元素。
 
-Returns the maximum element in the source array, or the maximum element of the lambda results if provided.
+**示例**
 
-**Examples**
-
-**Basic example**
+**基本示例**
 
 ```sql title=Query
 SELECT arrayMax([5, 3, 2, 7]);
@@ -2131,7 +1976,7 @@ SELECT arrayMax([5, 3, 2, 7]);
 7
 ```
 
-**Usage with lambda function**
+**与 Lambda 函数配合使用**
 
 ```sql title=Query
 SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
@@ -2141,38 +1986,33 @@ SELECT arrayMax(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 12
 ```
 
-
-
 ## arrayMin {#arrayMin}
 
-Introduced in: v21.1
+自 v21.1 引入
 
+返回源数组中的最小元素。
 
-Returns the minimum element in the source array.
+如果指定了 lambda 函数 `func`，则返回该 lambda 函数结果中的最小元素。
 
-If a lambda function `func` is specified, returns the minimum element of the lambda results.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayMin([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `cond1_arr, ...` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 可选。对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `cond1_arr, ...` — 可选。N 个条件数组，为 Lambda 函数提供额外参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组中的最小元素；如果提供了 Lambda 函数，则返回其结果中的最小元素。
 
-Returns the minimum element in the source array, or the minimum element of the lambda results if provided.
+**示例**
 
-**Examples**
-
-**Basic example**
+**基本示例**
 
 ```sql title=Query
 SELECT arrayMin([5, 3, 2, 7]);
@@ -2182,7 +2022,7 @@ SELECT arrayMin([5, 3, 2, 7]);
 2
 ```
 
-**Usage with lambda function**
+**与 Lambda 函数配合使用**
 
 ```sql title=Query
 SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
@@ -2192,33 +2032,30 @@ SELECT arrayMin(x, y -> x/y, [4, 8, 12, 16], [1, 2, 1, 2]);
 4
 ```
 
-
-
 ## arrayNormalizedGini {#arrayNormalizedGini}
 
-Introduced in: v25.1
+引入自：v25.1
 
-Calculates the normalized Gini coefficient.
+计算归一化 Gini 系数。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayNormalizedGini(predicted, label)
 ```
 
-**Arguments**
+**参数**
 
-- `predicted` — The predicted value. [`Array(T)`](/sql-reference/data-types/array)
-- `label` — The actual value. [`Array(T)`](/sql-reference/data-types/array)
+* `predicted` — 预测值。[`Array(T)`](/sql-reference/data-types/array)
+* `label` — 实际值。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个元组，包含预测值的 Gini 系数、归一化值的 Gini 系数，以及归一化 Gini 系数（= 前两个 Gini 系数的比值）。[`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
-A tuple containing the Gini coefficients of the predicted values, the Gini coefficient of the normalized values, and the normalized Gini coefficient (= the ratio of the former two Gini coefficients) [`Tuple(Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
@@ -2228,42 +2065,37 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 (0.18055555555555558, 0.2638888888888889, 0.6842105263157896)
 ```
 
-
-
 ## arrayPartialReverseSort {#arrayPartialReverseSort}
 
-Introduced in: v23.2
+自 v23.2 版本引入
 
-
-This function is the same as `arrayReverseSort` but with an additional `limit` argument allowing partial sorting.
+此函数与 `arrayReverseSort` 相同，只是额外接受一个 `limit` 参数，用于进行部分排序。
 
 :::tip
-To retain only the sorted elements use `arrayResize`.
+若只需保留排序后的元素，请使用 `arrayResize`。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
 ```
 
-**Arguments**
+**参数**
 
-- `f(arr[, arr1, ... ,arrN])` — The lambda function to apply to elements of array `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — Array to be sorted. [`Array(T)`](/sql-reference/data-types/array)
-- `arr1, ... ,arrN` — N additional arrays, in the case when `f` accepts multiple arguments. [`Array(T)`](/sql-reference/data-types/array)
-- `limit` — Index value up until which sorting will occur. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `f(arr[, arr1, ... ,arrN])` — 应用于数组 `x` 各元素的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — 当 `f` 接受多个参数时使用的 N 个额外数组。[`Array(T)`](/sql-reference/data-types/array)
+* `limit` — 执行排序的索引上限值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个与原数组大小相同的数组，其中区间 `[1..limit]` 内的元素按降序排序。
+其余元素（区间 `(limit..N]`）的顺序未指定。
 
-Returns an array of the same size as the original array where elements in the range `[1..limit]` are sorted
-in descending order. The remaining elements `(limit..N]` are in an unspecified order.
+**示例**
 
-**Examples**
-
-**simple_int**
+**simple&#95;int**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort(2, [5, 9, 1, 3])
@@ -2273,7 +2105,7 @@ SELECT arrayPartialReverseSort(2, [5, 9, 1, 3])
 [9, 5, 1, 3]
 ```
 
-**simple_string**
+**simple&#95;string**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort(2, ['expenses','lasso','embolism','gladly'])
@@ -2283,7 +2115,7 @@ SELECT arrayPartialReverseSort(2, ['expenses','lasso','embolism','gladly'])
 ['lasso','gladly','expenses','embolism']
 ```
 
-**retain_sorted**
+**retain&#95;sorted**
 
 ```sql title=Query
 SELECT arrayResize(arrayPartialReverseSort(2, [5, 9, 1, 3]), 2)
@@ -2293,7 +2125,7 @@ SELECT arrayResize(arrayPartialReverseSort(2, [5, 9, 1, 3]), 2)
 [9, 5]
 ```
 
-**lambda_simple**
+**lambda&#95;simple**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort((x) -> -x, 2, [5, 9, 1, 3])
@@ -2303,7 +2135,7 @@ SELECT arrayPartialReverseSort((x) -> -x, 2, [5, 9, 1, 3])
 [1, 3, 5, 9]
 ```
 
-**lambda_complex**
+**lambda&#95;complex**
 
 ```sql title=Query
 SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
@@ -2313,44 +2145,38 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 [0, 1, 2]
 ```
 
-
-
 ## arrayPartialShuffle {#arrayPartialShuffle}
 
-Introduced in: v23.2
+引入于：v23.2
 
-
-Returns an array of the same size as the original array where elements in range `[1..limit]` are a random
-subset of the original array. Remaining `(limit..n]` shall contain the elements not in `[1..limit]` range in undefined order.
-Value of limit shall be in range `[1..n]`. Values outside of that range are equivalent to performing full `arrayShuffle`:
+返回一个与原数组长度相同的数组，其中区间 `[1..limit]` 内的元素是从原数组中随机选取的一个子集。剩余的 `(limit..n]` 区间将以未定义的顺序包含不在 `[1..limit]` 区间内的其他元素。
+`limit` 的取值范围为 `[1..n]`。超出该范围的取值等价于执行完整的 `arrayShuffle`：
 
 :::note
-This function will not materialize constants.
+此函数不会物化常量。
 
-The value of `limit` should be in the range `[1..N]`. Values outside of that range are equivalent to performing full [`arrayShuffle`](#arrayShuffle).
+`limit` 的取值范围应为 `[1..N]`。超出该范围的取值等价于执行完整的 [`arrayShuffle`](#arrayShuffle)。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPartialShuffle(arr [, limit[, seed]])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to shuffle. [`Array(T)`](/sql-reference/data-types/array)
-- `seed` — Optional. The seed to be used with random number generation. If not provided, a random one is used. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `limit` — Optional. The number to limit element swaps to, in the range `[1..N]`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要进行洗牌的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `seed` — 可选。用于随机数生成的种子。如果未提供，则会使用一个随机种子。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `limit` — 可选。用于限制元素交换次数的数值，范围为 `[1..N]`。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+元素被部分打乱顺序的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Array with elements partially shuffled. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**no_limit1**
+**no&#95;limit1**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 0)
@@ -2360,7 +2186,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 0)
 [2, 4, 3, 1]
 ```
 
-**no_limit2**
+**no&#95;limit2**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4])
@@ -2370,7 +2196,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4])
 [4, 1, 3, 2]
 ```
 
-**random_seed**
+**random&#95;seed**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 2)
@@ -2380,7 +2206,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 2)
 [3, 4, 1, 2]
 ```
 
-**explicit_seed**
+**explicit&#95;seed**
 
 ```sql title=Query
 SELECT arrayPartialShuffle([1, 2, 3, 4], 2, 41)
@@ -2390,7 +2216,7 @@ SELECT arrayPartialShuffle([1, 2, 3, 4], 2, 41)
 [3, 2, 1, 4]
 ```
 
-**materialize**
+**物化**
 
 ```sql title=Query
 SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffle([1, 2, 3], 2, 42) FROM numbers(10)
@@ -2411,42 +2237,36 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
-
 ## arrayPartialSort {#arrayPartialSort}
 
-Introduced in: v23.2
+引入版本：v23.2
 
-
-This function is the same as `arraySort` but with an additional `limit` argument allowing partial sorting.
+此函数与 `arraySort` 相同，但增加了一个 `limit` 参数，用于只对部分元素进行排序。
 
 :::tip
-To retain only the sorted elements use `arrayResize`.
+若只想保留排序后的元素，请使用 `arrayResize`。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
 ```
 
-**Arguments**
+**参数**
 
-- `f(arr[, arr1, ... ,arrN])` — The lambda function to apply to elements of array `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `arr` — Array to be sorted. [`Array(T)`](/sql-reference/data-types/array)
-- `arr1, ... ,arrN` — N additional arrays, in the case when `f` accepts multiple arguments. [`Array(T)`](/sql-reference/data-types/array)
-- `limit` — Index value up until which sorting will occur. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `f(arr[, arr1, ... ,arrN])` — 应用于数组 `x` 各元素的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — 当 `f` 接受多个参数时使用的 N 个附加数组。[`Array(T)`](/sql-reference/data-types/array)
+* `limit` — 进行排序的索引上限值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个与原数组大小相同的数组，其中区间 `[1..limit]` 中的元素按升序排序。其余索引在区间 `(limit..N]` 内的元素顺序不保证。
 
-Returns an array of the same size as the original array where elements in the range `[1..limit]` are sorted
-in ascending order. The remaining elements `(limit..N]` are in an unspecified order.
+**示例**
 
-**Examples**
-
-**simple_int**
+**simple&#95;int**
 
 ```sql title=Query
 SELECT arrayPartialSort(2, [5, 9, 1, 3])
@@ -2456,7 +2276,7 @@ SELECT arrayPartialSort(2, [5, 9, 1, 3])
 [1, 3, 5, 9]
 ```
 
-**simple_string**
+**simple&#95;string**
 
 ```sql title=Query
 SELECT arrayPartialSort(2, ['expenses', 'lasso', 'embolism', 'gladly'])
@@ -2466,7 +2286,7 @@ SELECT arrayPartialSort(2, ['expenses', 'lasso', 'embolism', 'gladly'])
 ['embolism', 'expenses', 'gladly', 'lasso']
 ```
 
-**retain_sorted**
+**retain&#95;sorted**
 
 ```sql title=Query
 SELECT arrayResize(arrayPartialSort(2, [5, 9, 1, 3]), 2)
@@ -2476,7 +2296,7 @@ SELECT arrayResize(arrayPartialSort(2, [5, 9, 1, 3]), 2)
 [1, 3]
 ```
 
-**lambda_simple**
+**lambda&#95;simple**
 
 ```sql title=Query
 SELECT arrayPartialSort((x) -> -x, 2, [5, 9, 1, 3])
@@ -2486,7 +2306,7 @@ SELECT arrayPartialSort((x) -> -x, 2, [5, 9, 1, 3])
 [9, 5, 1, 3]
 ```
 
-**lambda_complex**
+**lambda&#95;complex**
 
 ```sql title=Query
 SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
@@ -2496,32 +2316,29 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 [2, 1, 0]
 ```
 
-
-
 ## arrayPopBack {#arrayPopBack}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-Removes the last element from the array.
+从数组中移除最后一个元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPopBack(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to remove the last element from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要从中移除最后一个元素的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个与 `arr` 相同的数组，但不包含其最后一个元素。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array identical to `arr` but without the last element of `arr` [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayPopBack([1, 2, 3]) AS res;
@@ -2531,32 +2348,29 @@ SELECT arrayPopBack([1, 2, 3]) AS res;
 [1, 2]
 ```
 
-
-
 ## arrayPopFront {#arrayPopFront}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
-Removes the first item from the array.
+从数组中移除第一个元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPopFront(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to remove the first element from. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要删除第一个元素的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个与 `arr` 相同的数组，但不包含其第一个元素。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array identical to `arr` but without the first element of `arr` [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayPopFront([1, 2, 3]) AS res;
@@ -2566,38 +2380,33 @@ SELECT arrayPopFront([1, 2, 3]) AS res;
 [2, 3]
 ```
 
-
-
 ## arrayProduct {#arrayProduct}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+返回源数组中各元素的乘积。
 
-Returns the product of elements in the source array.
+如果指定了 lambda 函数 `func`，则返回该 lambda 函数结果数组中各元素的乘积。
 
-If a lambda function `func` is specified, returns the product of elements of the lambda results.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayProduct([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 可选。对源数组 (`x`) 及条件数组 (`y`) 的元素进行操作的 lambda 函数。[`Lambda 函数`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。传递给 lambda 函数的 N 个条件数组，用作额外参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组中各元素的乘积；如果提供了 lambda 函数，则返回其结果各元素的乘积。[`Float64`](/sql-reference/data-types/float)
 
-Returns the product of elements in the source array, or the product of elements of the lambda results if provided. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基础示例**
 
 ```sql title=Query
 SELECT arrayProduct([1, 2, 3, 4]);
@@ -2607,7 +2416,7 @@ SELECT arrayProduct([1, 2, 3, 4]);
 24
 ```
 
-**Usage with lambda function**
+**与 Lambda 函数配合使用**
 
 ```sql title=Query
 SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
@@ -2617,42 +2426,40 @@ SELECT arrayProduct(x, y -> x+y, [2, 2], [2, 2]) AS res;
 16
 ```
 
-
-
 ## arrayPushBack {#arrayPushBack}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Adds one item to the end of the array.
+在数组末尾追加一个元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPushBack(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to add value `x` to the end of. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — 
-- Single value to add to the end of the array. [`Array(T)`](/sql-reference/data-types/array).
+* `arr` — 要在其末尾添加值 `x` 的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `x` —
+* 要添加到数组末尾的单个值。[`Array(T)`](/sql-reference/data-types/array)。
 
 :::note
-- Only numbers can be added to an array with numbers, and only strings can be added to an array of strings.
-- When adding numbers, ClickHouse automatically sets the type of `x` for the data type of the array.
-- Can be `NULL`. The function adds a `NULL` element to an array, and the type of array elements converts to `Nullable`.
 
-For more information about the types of data in ClickHouse, see [Data types](/sql-reference/data-types).
+* 只能向数值数组中添加数值，且只能向字符串数组中添加字符串。
+* 在添加数值时，ClickHouse 会根据数组的数据类型自动设置 `x` 的类型。
+* 可以为 `NULL`。函数会向数组中添加一个 `NULL` 元素，并将数组元素的类型转换为 `Nullable`。
+
+有关 ClickHouse 中数据类型的更多信息，请参阅 [数据类型](/sql-reference/data-types)。
 :::
-     
 
-**Returned value**
+**返回值**
 
-Returns an array identical to `arr` but with an additional value `x` at the end of the array [`Array(T)`](/sql-reference/data-types/array)
+返回一个与 `arr` 相同的数组，但在数组末尾追加了一个值 `x` [`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayPushBack(['a'], 'b') AS res;
@@ -2662,41 +2469,39 @@ SELECT arrayPushBack(['a'], 'b') AS res;
 ['a','b']
 ```
 
-
-
 ## arrayPushFront {#arrayPushFront}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-Adds one element to the beginning of the array.
+在数组开头添加一个元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayPushFront(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to add value `x` to the end of. [`Array(T)`](/sql-reference/data-types/array). - `x` — 
-- Single value to add to the start of the array. [`Array(T)`](/sql-reference/data-types/array).
+* `arr` — 要在其末尾添加值 `x` 的数组。[`Array(T)`](/sql-reference/data-types/array)。
+* `x` — 要添加到数组开头的单个值。[`Array(T)`](/sql-reference/data-types/array)。
 
 :::note
-- Only numbers can be added to an array with numbers, and only strings can be added to an array of strings.
-- When adding numbers, ClickHouse automatically sets the type of `x` for the data type of the array.
-- Can be `NULL`. The function adds a `NULL` element to an array, and the type of array elements converts to `Nullable`.
 
-For more information about the types of data in ClickHouse, see [Data types](/sql-reference/data-types).
+* 只能向数值数组中添加数值，且只能向字符串数组中添加字符串。
+* 添加数值时，ClickHouse 会自动将 `x` 的类型设置为该数组的数据类型。
+* 可以为 `NULL`。该函数会向数组添加一个 `NULL` 元素，并将数组元素类型转换为 `Nullable`。
+
+有关 ClickHouse 中数据类型的更多信息，参见[数据类型](/sql-reference/data-types)。
 :::
-     
 
-**Returned value**
+**返回值**
 
-Returns an array identical to `arr` but with an additional value `x` at the beginning of the array [`Array(T)`](/sql-reference/data-types/array)
+返回一个与 `arr` 相同的数组，但在数组开头额外多了一个值 `x`。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayPushFront(['b'], 'a') AS res;
@@ -2706,57 +2511,53 @@ SELECT arrayPushFront(['b'], 'a') AS res;
 ['a','b']
 ```
 
-
-
 ## arrayROCAUC {#arrayROCAUC}
 
-Introduced in: v20.4
+引入版本：v20.4
 
+计算接收者操作特征（ROC）曲线下面积。
+ROC 曲线是通过在所有阈值下，以真正例率（TPR）为纵轴、假正例率（FPR）为横轴绘制得到的。
+结果数值范围为 0 到 1，数值越高表示模型性能越好。
 
-Calculates the area under the receiver operating characteristic (ROC) curve.
-A ROC curve is created by plotting True Positive Rate (TPR) on the y-axis and False Positive Rate (FPR) on the x-axis across all thresholds.
-The resulting value ranges from zero to one, with a higher value indicating better model performance.
+ROC AUC（也常被简称为 AUC）是机器学习中的一个概念。
+更多详情请参阅[此处](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve)、[此处](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1)以及[此处](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve)。
 
-The ROC AUC (also known as simply AUC) is a concept in machine learning.
-For more details, please see [here](https://developers.google.com/machine-learning/glossary#pr-auc-area-under-the-pr-curve), [here](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc#expandable-1) and [here](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve).
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayROCAUC(scores, labels[, scale[, partial_offsets]])
 ```
 
-**Aliases**: `arrayAUC`
+**别名**: `arrayAUC`
 
-**Arguments**
+**参数**
 
-- `scores` — Scores prediction model gives. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Array(Float*)`](/sql-reference/data-types/array)
-- `labels` — Labels of samples, usually 1 for positive sample and 0 for negative sample. [`Array((U)Int*)`](/sql-reference/data-types/array) or [`Enum`](/sql-reference/data-types/enum)
-- `scale` — Optional. Decides whether to return the normalized area. If false, returns the area under the TP (true positives) x FP (false positives) curve instead. Default value: true. [`Bool`](/sql-reference/data-types/boolean)
-- `partial_offsets` — 
-- An array of four non-negative integers for calculating a partial area under the ROC curve (equivalent to a vertical band of the ROC space) instead of the whole AUC. This option is useful for distributed computation of the ROC AUC. The array must contain the following elements [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`, `total_negatives`]. [Array](/sql-reference/data-types/array) of non-negative [Integers](../data-types/int-uint.md). Optional.
-    - `higher_partitions_tp`: The number of positive labels in the higher-scored partitions.
-    - `higher_partitions_fp`: The number of negative labels in the higher-scored partitions.
-    - `total_positives`: The total number of positive samples in the entire dataset.
-    - `total_negatives`: The total number of negative samples in the entire dataset.
+* `scores` — 预测模型给出的得分。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Array(Float*)`](/sql-reference/data-types/array)
+* `labels` — 样本的标签，通常正样本为 1，负样本为 0。[`Array((U)Int*)`](/sql-reference/data-types/array) 或 [`Enum`](/sql-reference/data-types/enum)
+* `scale` — 可选。决定是否返回归一化后的面积。如果为 false，则返回 TP（真阳性）- FP（假阳性）曲线下的面积。默认值：true。[`Bool`](/sql-reference/data-types/boolean)
+* `partial_offsets` —
+* 一个由四个非负整数组成的数组，用于计算 ROC 曲线下的局部面积（等价于 ROC 空间中的一条垂直带），而不是整个 AUC。此选项对 ROC AUC 的分布式计算非常有用。该数组必须包含以下元素 [`higher_partitions_tp`, `higher_partitions_fp`, `total_positives`, `total_negatives`]。非负 [整数](../data-types/int-uint.md) 的 [Array](/sql-reference/data-types/array)。可选。
+  * `higher_partitions_tp`: 高得分分区中正标签的数量。
+  * `higher_partitions_fp`: 高得分分区中负标签的数量。
+  * `total_positives`: 整个数据集中正样本的总数。
+  * `total_negatives`: 整个数据集中负样本的总数。
 
 :::note
-When `arr_partial_offsets` is used, the `arr_scores` and `arr_labels` should be only a partition of the entire dataset, containing an interval of scores.
-The dataset should be divided into contiguous partitions, where each partition contains the subset of the data whose scores fall within a specific range.
-For example:
-- One partition could contain all scores in the range [0, 0.5).
-- Another partition could contain scores in the range [0.5, 1.0].
-:::
- 
+当使用 `arr_partial_offsets` 时，`arr_scores` 和 `arr_labels` 应仅为整个数据集的一个分区，且包含某一得分区间内的数据。
+数据集应被划分为连续的分区，每个分区包含得分落在特定范围内的数据子集。
+例如：
 
-**Returned value**
+* 一个分区可以包含区间 [0, 0.5) 内的所有得分。
+* 另一个分区可以包含区间 [0.5, 1.0] 内的得分。
+  :::
 
-Returns area under the receiver operating characteristic (ROC) curve. [`Float64`](/sql-reference/data-types/float)
+**返回值**
 
-**Examples**
+返回 ROC（受试者工作特征）曲线下的面积。[`Float64`](/sql-reference/data-types/float)
 
-**Usage example**
+**示例**
+
+**使用示例**
 
 ```sql title=Query
 SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
@@ -2766,33 +2567,30 @@ SELECT arrayROCAUC([0.1, 0.4, 0.35, 0.8], [0, 0, 1, 1]);
 0.75
 ```
 
-
-
 ## arrayRandomSample {#arrayRandomSample}
 
-Introduced in: v23.10
+自 v23.10 版本引入
 
-Returns a subset with `samples`-many random elements of an input array. If `samples` exceeds the size of the input array, the sample size is limited to the size of the array, i.e. all array elements are returned but their order is not guaranteed. The function can handle both flat arrays and nested arrays.
+返回由输入数组中 `samples` 个随机元素组成的子集。如果 `samples` 大于输入数组的大小，则样本大小会被限制为数组大小，即会返回数组中的所有元素，但不保证其顺序。该函数既可以处理一维数组，也可以处理嵌套数组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayRandomSample(arr, samples)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The input array or multidimensional array from which to sample elements. [`Array(T)`](/sql-reference/data-types/array)
-- `samples` — The number of elements to include in the random sample. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要从中抽取元素的输入数组或多维数组。[`Array(T)`](/sql-reference/data-types/array)
+* `samples` — 随机样本中包含的元素数量（样本大小）。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+一个数组，包含从输入数组中随机抽取的元素样本。[`Array(T)`](/sql-reference/data-types/array)
 
-An array containing a random sample of elements from the input array [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayRandomSample(['apple', 'banana', 'cherry', 'date'], 2) as res;
@@ -2802,7 +2600,7 @@ SELECT arrayRandomSample(['apple', 'banana', 'cherry', 'date'], 2) as res;
 ['cherry','apple']
 ```
 
-**Using a multidimensional array**
+**使用多维数组**
 
 ```sql title=Query
 SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
@@ -2812,37 +2610,32 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 [[3,4],[5,6]]
 ```
 
-
-
 ## arrayReduce {#arrayReduce}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+对数组元素执行聚合函数计算，并返回结果。
+聚合函数的名称以单引号括起来的字符串形式传入，例如 `'max'`、`'sum'`。
+使用参数化聚合函数时，在函数名后通过括号指定参数，例如 `'uniqUpTo(6)'`。
 
-Applies an aggregate function to array elements and returns its result.
-The name of the aggregation function is passed as a string in single quotes `'max'`, `'sum'`.
-When using parametric aggregate functions, the parameter is indicated after the function name in parentheses `'uniqUpTo(6)'`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayReduce(agg_f, arr1 [, arr2, ... , arrN)])
 ```
 
-**Arguments**
+**参数**
 
-- `agg_f` — The name of an aggregate function which should be a constant. [`String`](/sql-reference/data-types/string)
-- `arr1 [, arr2, ... , arrN)]` — N arrays corresponding to the arguments of `agg_f`. [`Array(T)`](/sql-reference/data-types/array)
+* `agg_f` — 聚合函数的名称，必须为常量。[`String`](/sql-reference/data-types/string)
+* `arr1 [, arr2, ... , arrN)]` — 与 `agg_f` 的参数相对应的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回聚合函数的结果。
 
-Returns the result of the aggregate function
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayReduce('max', [1, 2, 3]);
@@ -2854,7 +2647,7 @@ SELECT arrayReduce('max', [1, 2, 3]);
 └───────────────────────────────┘
 ```
 
-**Example with aggregate function using multiple arguments**
+**使用多参数聚合函数的示例**
 
 ```sql title=Query
 --如果聚合函数接受多个参数,则必须将该函数应用于大小相同的多个数组。
@@ -2868,7 +2661,7 @@ SELECT arrayReduce('maxIf', [3, 5], [1, 0]);
 └──────────────────────────────────────┘
 ```
 
-**Example with a parametric aggregate function**
+**参数化聚合函数示例**
 
 ```sql title=Query
 SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -2880,37 +2673,32 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## arrayReduceInRanges {#arrayReduceInRanges}
 
-Introduced in: v20.4
+自 v20.4 引入
 
+对给定区间内的数组元素应用聚合函数，并返回一个数组，其中包含每个区间对应的结果。
+该函数返回的结果与对每个区间分别调用多次 `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)` 所得到的结果相同。
 
-Applies an aggregate function to array elements in the given ranges and returns an array containing the result corresponding to each range.
-The function will return the same result as multiple `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayReduceInRanges(agg_f, ranges, arr1 [, arr2, ... ,arrN)])
 ```
 
-**Arguments**
+**参数**
 
-- `agg_f` — The name of the aggregate function to use. [`String`](/sql-reference/data-types/string)
-- `ranges` — The range over which to aggregate. An array of tuples, `(i, r)` containing the index `i` from which to begin from and the range `r` over which to aggregate. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `arr1 [, arr2, ... ,arrN)]` — N arrays as arguments to the aggregate function. [`Array(T)`](/sql-reference/data-types/array)
+* `agg_f` — 要使用的聚合函数名称。[`String`](/sql-reference/data-types/string)
+* `ranges` — 要执行聚合的范围。为一个由元组 `(i, r)` 组成的数组，其中 `i` 为开始聚合的索引，`r` 为要聚合的范围。[`Array(T)`](/sql-reference/data-types/array) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `arr1 [, arr2, ... ,arrN)]` — 作为聚合函数参数的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其中包含在指定范围内执行聚合函数所得的结果。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array containing results of the aggregate function over the specified ranges [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayReduceInRanges(
@@ -2926,36 +2714,32 @@ SELECT arrayReduceInRanges(
 └─────────────────────────────┘
 ```
 
-
-
 ## arrayRemove {#arrayRemove}
 
-Introduced in: v25.11
+自 v25.11 引入
 
+从数组中删除所有与给定值相等的元素。
+NULL 也被视为相等。
 
-Removes all elements equal to a given value from an array.
-NULLs are treated as equal.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arrayRemove(arr, elem)
 ```
 
-**Aliases**: `array_remove`
+**别名**: `array_remove`
 
-**Arguments**
+**参数**
 
-- `arr` — Array(T) - `elem` — T 
+* `arr` — Array(T)，`elem` — T
 
-**Returned value**
+**返回值**
 
-Returns a subset of the source array [`Array(T)`](/sql-reference/data-types/array)
+返回源数组 [`Array(T)`](/sql-reference/data-types/array) 的子集
 
-**Examples**
+**示例**
 
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 SELECT arrayRemove([1, 2, 2, 3], 2)
@@ -2965,7 +2749,7 @@ SELECT arrayRemove([1, 2, 2, 3], 2)
 [1, 3]
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
@@ -2975,36 +2759,34 @@ SELECT arrayRemove(['a', NULL, 'b', NULL], NULL)
 ['a', 'b']
 ```
 
-
-
 ## arrayResize {#arrayResize}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
-Changes the length of the array.
+修改数组长度。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayResize(arr, size[, extender])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array to resize. [`Array(T)`](/sql-reference/data-types/array)
-- `size` — 
--The new length of the array.
-If `size` is less than the original size of the array, the array is truncated from the right.
-If `size` is larger than the initial size of the array, the array is extended to the right with `extender` values or default values for the data type of the array items.
- - `extender` — Value to use for extending the array. Can be `NULL`. 
+* `arr` — 要调整大小的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `size` —
+  数组的新长度。
+  如果 `size` 小于数组的原始长度，则从右侧截断数组。
+  如果 `size` 大于数组的原始长度，则从右侧使用 `extender` 值或数组元素数据类型的默认值进行扩展。
+* `extender` — 用于扩展数组的值。可以为 `NULL`。
 
-**Returned value**
+**返回值**
 
-An array of length `size`. [`Array(T)`](/sql-reference/data-types/array)
+长度为 `size` 的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 SELECT arrayResize([1], 3);
@@ -3014,7 +2796,7 @@ SELECT arrayResize([1], 3);
 [1,0,0]
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 SELECT arrayResize([1], 3, NULL);
@@ -3024,39 +2806,33 @@ SELECT arrayResize([1], 3, NULL);
 [1,NULL,NULL]
 ```
 
-
-
 ## arrayReverse {#arrayReverse}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Reverses the order of elements of a given array.
+将给定数组中的元素顺序反转。
 
 :::note
-Function `reverse(arr)` performs the same functionality but works on other data-types
-in addition to Arrays.
+函数 `reverse(arr)` 具有相同的功能，但除了数组之外，还适用于其他数据类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 arrayReverse(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to reverse. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 要反转顺序的数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个与原数组大小相同的数组，其中元素顺序被反转。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same size as the original array containing the elements in reverse order [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayReverse([1, 2, 3])
@@ -3066,41 +2842,31 @@ SELECT arrayReverse([1, 2, 3])
 [3,2,1]
 ```
 
-
-
 ## arrayReverseFill {#arrayReverseFill}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+`arrayReverseFill` 函数从源数组的最后一个元素开始依次处理到第一个元素，在每个位置上使用源数组和条件数组中的元素来对一个 lambda 表达式进行求值。当该条件在位置 i 上的结果为 false 时，函数会将该元素替换为当前数组状态下位置 i+1 的元素。无论条件如何，最后一个元素始终会被保留。
 
-The `arrayReverseFill` function sequentially processes a source array from the last
-element to the first, evaluating a lambda condition at each position using elements
-from the source and condition arrays. When the condition evaluates to false at
-position i, the function replaces that element with the element at position i+1
-from the current state of the array. The last element is always preserved
-regardless of any condition.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayReverseFill(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 一个对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, cond1_arr, ... , condN_arr]` — 可选。提供给 lambda 函数作为额外参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其中源数组的元素被 lambda 函数的结果替换。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array with elements of the source array replaced by the results of the lambda. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Example with a single array**
+**使用单个数组的示例**
 
 ```sql title=Query
 SELECT arrayReverseFill(x -> not isNull(x), [1, null, 2, null]) AS res
@@ -3110,7 +2876,7 @@ SELECT arrayReverseFill(x -> not isNull(x), [1, null, 2, null]) AS res
 [1, 2, 2, NULL]
 ```
 
-**Example with two arrays**
+**两个数组示例**
 
 ```sql title=Query
 SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], [10, 2, 8, 5]) AS res;
@@ -3120,47 +2886,42 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 [5, 6, 6, 2]
 ```
 
-
-
 ## arrayReverseSort {#arrayReverseSort}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+按降序对数组元素进行排序。
+如果指定了函数 `f`，则会根据该函数应用于数组元素的结果对输入数组进行排序，然后再将排序后的数组反转。
+如果 `f` 接受多个参数，则会向 `arrayReverseSort` 函数传入多个数组，这些数组将分别对应 `func` 的各个参数。
 
-Sorts the elements of an array in descending order.
-If a function `f` is specified, the provided array is sorted according to the result
-of the function applied to the elements of the array, and then the sorted array is reversed.
-If `f` accepts multiple arguments, the `arrayReverseSort` function is passed several arrays that
-the arguments of `func` will correspond to.
-
-If the array to sort contains `-Inf`, `NULL`, `NaN`, or `Inf` they will be sorted in the following order:
+如果待排序的数组包含 `-Inf`、`NULL`、`NaN` 或 `Inf`，它们将按以下顺序排序：
 
 1. `-Inf`
 2. `Inf`
 3. `NaN`
 4. `NULL`
 
-`arrayReverseSort` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
-    
+`arrayReverseSort` 是一个[高阶函数](/sql-reference/functions/overview#higher-order-functions)。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayReverseSort([f,] arr [, arr1, ... ,arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `f(y1[, y2 ... yN])` — The lambda function to apply to elements of array `x`. - `arr` — An array to be sorted. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — Optional. N additional arrays, in the case when `f` accepts multiple arguments. 
+* `f(y1[, y2 ... yN])` — 要应用于数组 `x` 元素的 lambda 函数。
+* `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ..., yN` — 可选。当 `f` 接受多个参数时传入的 N 个附加数组。
 
-**Returned value**
+**返回值**
 
-Returns the array `x` sorted in descending order if no lambda function is provided, otherwise
-it returns an array sorted according to the logic of the provided lambda function, and then reversed. [`Array(T)`](/sql-reference/data-types/array).
+如果未提供 lambda 函数，则返回按降序排序的数组 `x`；否则，先根据所提供的 lambda 函数的逻辑进行排序，然后将结果反转后的数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**示例**
 
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
@@ -3170,7 +2931,7 @@ SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
 [5,3,4]
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
@@ -3180,34 +2941,31 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 [4,3,5]
 ```
 
-
-
 ## arrayReverseSplit {#arrayReverseSplit}
 
-Introduced in: v20.1
+引入版本：v20.1
 
-Split a source array into multiple arrays. When `func(x[, y1, ..., yN])` returns something other than zero, the array will be split to the right of the element. The array will not be split after the last element.
+将源数组拆分为多个数组。当 `func(x[, y1, ..., yN])` 返回非零值时，数组会在该元素的右侧进行拆分。数组不会在最后一个元素之后被拆分。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayReverseSplit(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 对源数组 (`x`) 和条件数组 (`y`) 的元素进行操作的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `[, cond1_arr, ... , condN_arr]` — 可选。N 个条件数组，为 lambda 函数提供额外参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组的数组。[`Array(Array(T))`](/sql-reference/data-types/array)
 
-Returns an array of arrays. [`Array(Array(T))`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
@@ -3217,31 +2975,29 @@ SELECT arrayReverseSplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 [[1], [2, 3, 4], [5]]
 ```
 
-
-
 ## arrayRotateLeft {#arrayRotateLeft}
 
-Introduced in: v23.8
+引入版本：v23.8
 
-Rotates an array to the left by the specified number of elements. Negative values of `n` are treated as rotating to the right by the absolute value of the rotation.
+将数组按指定的元素个数向左旋转。`n` 为负值时，等价于按其绝对值向右旋转。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayRotateLeft(arr, n)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to rotate the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). 
+* `arr` — 要进行元素旋转的数组。[`Array(T)`](/sql-reference/data-types/array)。- `n` — 要旋转的元素个数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**返回值**
 
-An array rotated to the left by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+向左旋转指定数量元素后得到的数组 [`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayRotateLeft([1,2,3,4,5,6], 2) as res;
@@ -3251,7 +3007,7 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], 2) as res;
 [3,4,5,6,1,2]
 ```
 
-**Negative value of n**
+**n 的负值**
 
 ```sql title=Query
 SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
@@ -3261,31 +3017,29 @@ SELECT arrayRotateLeft([1,2,3,4,5,6], -2) as res;
 [5,6,1,2,3,4]
 ```
 
-
-
 ## arrayRotateRight {#arrayRotateRight}
 
-Introduced in: v23.8
+引入于：v23.8
 
-Rotates an array to the right by the specified number of elements. Negative values of `n` are treated as rotating to the left by the absolute value of the rotation.
+将数组向右旋转指定数量的元素。`n` 的负值被视为按其绝对值个元素向左旋转。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayRotateRight(arr, n)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to rotate the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to rotate. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). 
+* `arr` — 要进行元素旋转的数组。[`Array(T)`](/sql-reference/data-types/array)。 - `n` — 需要旋转的元素个数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)。
 
-**Returned value**
+**返回值**
 
-An array rotated to the right by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+向右旋转指定数量元素后的数组 [`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayRotateRight([1,2,3,4,5,6], 2) as res;
@@ -3295,7 +3049,7 @@ SELECT arrayRotateRight([1,2,3,4,5,6], 2) as res;
 [5,6,1,2,3,4]
 ```
 
-**Negative value of n**
+**n 的负值**
 
 ```sql title=Query
 SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
@@ -3305,35 +3059,33 @@ SELECT arrayRotateRight([1,2,3,4,5,6], -2) as res;
 [3,4,5,6,1,2]
 ```
 
-
-
 ## arrayShiftLeft {#arrayShiftLeft}
 
-Introduced in: v23.8
+自 v23.8 起引入
 
+将数组左移指定数量的元素。
+新填充的元素使用提供的参数或数组元素类型的默认值。
+如果该数量为负数，则将数组右移。
 
-Shifts an array to the left by the specified number of elements.
-New elements are filled with the provided argument or the default value of the array element type.
-If the number of elements is negative, the array is shifted to the right.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayShiftLeft(arr, n[, default])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to shift the elements.[`Array(T)`](/sql-reference/data-types/array). - `n` — Number of elements to shift.[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint). - `default` — Optional. Default value for new elements. 
+* `arr` — 要进行元素移位的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `n` — 要移位的元素数量。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `default` — 可选。新元素的默认值。
 
-**Returned value**
+**返回值**
 
-An array shifted to the left by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+一个向左移位指定数量元素的数组 [`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], 2) as res;
@@ -3343,7 +3095,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2) as res;
 [3,4,5,6,0,0]
 ```
 
-**Negative value of n**
+**n 为负数**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], -2) as res;
@@ -3353,7 +3105,7 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], -2) as res;
 [0,0,1,2,3,4]
 ```
 
-**Using a default value**
+**使用默认值**
 
 ```sql title=Query
 SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
@@ -3363,37 +3115,33 @@ SELECT arrayShiftLeft([1,2,3,4,5,6], 2, 42) as res;
 [3,4,5,6,42,42]
 ```
 
-
-
 ## arrayShiftRight {#arrayShiftRight}
 
-Introduced in: v23.8
+引入自：v23.8
 
+将数组向右移位指定数量的元素。
+新元素使用提供的参数或数组元素类型的默认值进行填充。
+如果元素数量为负值，数组将向左移位。
 
-Shifts an array to the right by the specified number of elements.
-New elements are filled with the provided argument or the default value of the array element type.
-If the number of elements is negative, the array is shifted to the left.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayShiftRight(arr, n[, default])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array for which to shift the elements. [`Array(T)`](/sql-reference/data-types/array)
-- `n` — Number of elements to shift. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `default` — Optional. Default value for new elements. 
+* `arr` — 要进行元素移位的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `n` — 向右移位的元素个数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `default` — 可选。新元素的默认值。
 
-**Returned value**
+**返回值**
 
-An array shifted to the right by the specified number of elements [`Array(T)`](/sql-reference/data-types/array)
+一个按指定元素个数向右移位后的数组 [`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2) as res;
@@ -3403,7 +3151,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2) as res;
 [0, 0, 1, 2, 3, 4]
 ```
 
-**Negative value of n**
+**n 的负值**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], -2) as res;
@@ -3413,7 +3161,7 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], -2) as res;
 [3, 4, 5, 6, 0, 0]
 ```
 
-**Using a default value**
+**使用默认值**
 
 ```sql title=Query
 SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
@@ -3423,33 +3171,30 @@ SELECT arrayShiftRight([1, 2, 3, 4, 5, 6], 2, 42) as res;
 [42, 42, 1, 2, 3, 4]
 ```
 
-
-
 ## arrayShingles {#arrayShingles}
 
-Introduced in: v24.1
+引入版本：v24.1
 
-Generates an array of shingles (similar to ngrams for strings), i.e. consecutive sub-arrays with a specified length of the input array.
+生成一个由 shingle 组成的数组（类似于字符串的 n-grams），即从输入数组中按指定长度提取的连续子数组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayShingles(arr, l)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array for which to generate an array of shingles. [`Array(T)`](/sql-reference/data-types/array)
-- `l` — The length of each shingle. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要从中生成 shingle 数组的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `l` — 每个 shingle 的长度。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+生成的 shingle 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-An array of generated shingles [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayShingles([1, 2, 3, 4], 3) as res;
@@ -3459,40 +3204,35 @@ SELECT arrayShingles([1, 2, 3, 4], 3) as res;
 [[1, 2, 3], [2, 3, 4]]
 ```
 
-
-
 ## arrayShuffle {#arrayShuffle}
 
-Introduced in: v23.2
+自 v23.2 起引入
 
-
-Returns an array of the same size as the original array containing the elements in shuffled order.
-Elements are reordered in such a way that each possible permutation of those elements has equal probability of appearance.
+返回一个与原数组大小相同的数组，其元素顺序被打乱。
+元素会以一种方式重新排列，使得这些元素的每一种可能排列出现的概率都相同。
 
 :::note
-This function will not materialize constants.
+此函数不会将常量物化。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 arrayShuffle(arr [, seed])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The array to shuffle. [`Array(T)`](/sql-reference/data-types/array)
-- `seed (optional)` — Optional. The seed to be used with random number generation. If not provided a random one is used. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要打乱的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `seed (optional)` — 可选。用于随机数生成的种子。如果未指定，则会使用随机种子。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+元素顺序被打乱的数组 [`Array(T)`](/sql-reference/data-types/array)
 
-Array with elements shuffled [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Example without seed (unstable results)**
+**未指定 seed 的示例（结果不稳定）**
 
 ```sql title=Query
 SELECT arrayShuffle([1, 2, 3, 4]);
@@ -3502,7 +3242,7 @@ SELECT arrayShuffle([1, 2, 3, 4]);
 [1,4,2,3]
 ```
 
-**Example without seed (stable results)**
+**未使用种子的示例（稳定结果）**
 
 ```sql title=Query
 SELECT arrayShuffle([1, 2, 3, 4], 41);
@@ -3512,37 +3252,32 @@ SELECT arrayShuffle([1, 2, 3, 4], 41);
 [3,2,1,4]
 ```
 
-
-
 ## arraySimilarity {#arraySimilarity}
 
-Introduced in: v25.4
+引入版本：v25.4
 
+基于加权 Levenshtein 距离计算两个数组的相似度，取值范围为 `0` 到 `1`。
 
-Calculates the similarity of two arrays from `0` to `1` based on weighted Levenshtein distance.
-
-
-**Syntax**
+**语法**
 
 ```sql
 arraySimilarity(from, to, from_weights, to_weights)
 ```
 
-**Arguments**
+**参数**
 
-- `from` — first array [`Array(T)`](/sql-reference/data-types/array)
-- `to` — second array [`Array(T)`](/sql-reference/data-types/array)
-- `from_weights` — weights for the first array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
-- `to_weights` — weights for the second array. [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `from` — 第一个数组 [`Array(T)`](/sql-reference/data-types/array)
+* `to` — 第二个数组 [`Array(T)`](/sql-reference/data-types/array)
+* `from_weights` — 第一个数组的权重 [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
+* `to_weights` — 第二个数组的权重 [`Array((U)Int*|Float*)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回两个数组之间的相似度（基于加权 Levenshtein 距离），取值范围为 `0` 到 `1`，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns the similarity between `0` and `1` of the two arrays based on the weighted Levenshtein distance [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5]);
@@ -3552,34 +3287,31 @@ SELECT arraySimilarity(['A', 'B', 'C'], ['A', 'K', 'L'], [1.0, 2, 3], [3.0, 4, 5
 0.2222222222222222
 ```
 
-
-
 ## arraySlice {#arraySlice}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-Returns a slice of the array, with `NULL` elements included.
+返回数组的一个切片，其中包含 `NULL` 元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arraySlice(arr, offset [, length])
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array to slice. [`Array(T)`](/sql-reference/data-types/array)
-- `offset` — Indent from the edge of the array. A positive value indicates an offset on the left, and a negative value is an indent on the right. Numbering of the array items begins with `1`. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `length` — The length of the required slice. If you specify a negative value, the function returns an open slice `[offset, array_length - length]`. If you omit the value, the function returns the slice `[offset, the_end_of_array]`. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arr` — 要进行切片的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `offset` — 从数组边界起算的偏移量。正值表示从左侧开始的偏移，负值表示从右侧开始的偏移。数组元素的编号从 `1` 开始。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `length` — 所需切片的长度。如果指定为负值，函数返回切片 `[offset, array_length - length]`。如果省略该值，函数返回切片 `[offset, 数组末尾]`。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回从指定 `offset` 开始、长度为 `length` 的数组切片 [`Array(T)`](/sql-reference/data-types/array)
 
-Returns a slice of the array with `length` elements from the specified `offset` [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
@@ -3589,47 +3321,40 @@ SELECT arraySlice([1, 2, NULL, 4, 5], 2, 3) AS res;
 [2, NULL, 4]
 ```
 
-
-
 ## arraySort {#arraySort}
 
-Introduced in: v1.1
+引入于：v1.1
 
+对给定数组的元素按升序排序。
+如果指定了 lambda 函数 `f`，则排序顺序由对数组中每个元素应用该 lambda 后得到的结果决定。
+如果该 lambda 接受多个参数，则会向 `arraySort` 函数传入多个数组，这些数组将与 `f` 的各个参数一一对应。
 
-Sorts the elements of the provided array in ascending order.
-If a lambda function `f` is specified, sorting order is determined by the result of
-the lambda applied to each element of the array.
-If the lambda accepts multiple arguments, the `arraySort` function is passed several
-arrays that the arguments of `f` will correspond to.
-
-If the array to sort contains `-Inf`, `NULL`, `NaN`, or `Inf` they will be sorted in the following order:
+如果要排序的数组包含 `-Inf`、`NULL`、`NaN` 或 `Inf`，它们将按照以下顺序排列：
 
 1. `-Inf`
 2. `Inf`
 3. `NaN`
 4. `NULL`
 
-`arraySort` is a [higher-order function](/sql-reference/functions/overview#higher-order-functions).
+`arraySort` 是一个[高阶函数](/sql-reference/functions/overview#higher-order-functions)。
 
-
-**Syntax**
+**语法**
 
 ```sql
 arraySort([f,] arr [, arr1, ... ,arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `f(y1[, y2 ... yN])` — The lambda function to apply to elements of array `x`. - `arr` — An array to be sorted. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — Optional. N additional arrays, in the case when `f` accepts multiple arguments. 
+* `f(y1[, y2 ... yN])` — 应用于数组 `x` 元素的 lambda 函数。- `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 可选。当 `f` 接受多个参数时使用的 N 个附加数组。
 
-**Returned value**
+**返回值**
 
-Returns the array `arr` sorted in ascending order if no lambda function is provided, otherwise
-it returns an array sorted according to the logic of the provided lambda function. [`Array(T)`](/sql-reference/data-types/array).
+如果未提供 lambda 函数，则返回按升序排序的数组 `arr`，否则返回根据所提供 lambda 函数逻辑排序的数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Examples**
+**示例**
 
-**Example 1**
+**示例 1**
 
 ```sql title=Query
 SELECT arraySort([1, 3, 3, 0]);
@@ -3639,7 +3364,7 @@ SELECT arraySort([1, 3, 3, 0]);
 [0,1,3,3]
 ```
 
-**Example 2**
+**示例 2**
 
 ```sql title=Query
 SELECT arraySort(['hello', 'world', '!']);
@@ -3649,7 +3374,7 @@ SELECT arraySort(['hello', 'world', '!']);
 ['!','hello','world']
 ```
 
-**Example 3**
+**示例 3**
 
 ```sql title=Query
 SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
@@ -3659,31 +3384,29 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
 
-
-
 ## arraySplit {#arraySplit}
 
-Introduced in: v20.1
+引入版本：v20.1
 
-Split a source array into multiple arrays. When `func(x [, y1, ..., yN])` returns something other than zero, the array will be split to the left of the element. The array will not be split before the first element.
+将源数组拆分为多个数组。当 `func(x [, y1, ..., yN])` 返回非零值时，数组会在该元素的左侧进行拆分。数组不会在第一个元素之前进行拆分。
 
-**Syntax**
+**语法**
 
 ```sql
 arraySplit(func(x[, y1, ..., yN]), source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`).[Lambda function](/sql-reference/functions/overview#arrow-operator-and-lambda). - `source_arr` — The source array to split [`Array(T)`](/sql-reference/data-types/array). - `[, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array). 
+* `func(x[, y1, ..., yN])` — 一个用于处理源数组 (`x`) 和条件数组 (`y`) 元素的 Lambda 函数。[Lambda 函数](/sql-reference/functions/overview#arrow-operator-and-lambda)。 - `source_arr` — 要拆分的源数组 [`Array(T)`](/sql-reference/data-types/array)。 - `[, cond1_arr, ... , condN_arr]` — 可选。作为传递给 Lambda 函数的附加参数的 N 个条件数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns an array of arrays [`Array(Array(T))`](/sql-reference/data-types/array)
+返回一个由数组组成的数组 [`Array(Array(T))`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
@@ -3693,38 +3416,33 @@ SELECT arraySplit((x, y) -> y, [1, 2, 3, 4, 5], [1, 0, 0, 1, 0]) AS res
 [[1, 2, 3], [4, 5]]
 ```
 
-
-
 ## arraySum {#arraySum}
 
-Introduced in: v21.1
+自 v21.1 引入
 
+返回源数组中各元素的总和。
 
-Returns the sum of elements in the source array.
+如果指定了 lambda 函数 `func`，则返回对数组元素应用该 lambda 后所得结果的总和。
 
-If a lambda function `func` is specified, returns the sum of elements of the lambda results.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayMax([func(x[, y1, ..., yN])], source_arr[, cond1_arr, ... , condN_arr])
 ```
 
-**Arguments**
+**参数**
 
-- `func(x[, y1, ..., yN])` — Optional. A lambda function which operates on elements of the source array (`x`) and condition arrays (`y`). [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
-- `source_arr` — The source array to process. [`Array(T)`](/sql-reference/data-types/array)
-- `, cond1_arr, ... , condN_arr]` — Optional. N condition arrays providing additional arguments to the lambda function. [`Array(T)`](/sql-reference/data-types/array)
+* `func(x[, y1, ..., yN])` — 可选。一个对源数组 (`x`) 及条件数组 (`y`) 的元素进行操作的 Lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `source_arr` — 要处理的源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `, cond1_arr, ... , condN_arr]` — 可选。N 个条件数组，为 Lambda 函数提供额外参数。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回源数组中元素的总和；如果提供了 Lambda 函数，则返回该函数结果中各元素的总和。
 
-Returns the sum of elements in the source array, or the sum of elements of the lambda results if provided.
+**示例**
 
-**Examples**
-
-**Basic example**
+**基本示例**
 
 ```sql title=Query
 SELECT arraySum([1, 2, 3, 4]);
@@ -3734,7 +3452,7 @@ SELECT arraySum([1, 2, 3, 4]);
 10
 ```
 
-**Usage with lambda function**
+**与 Lambda 函数配合使用**
 
 ```sql title=Query
 SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
@@ -3744,38 +3462,35 @@ SELECT arraySum(x, y -> x+y, [1, 1, 1, 1], [1, 1, 1, 1]);
 8
 ```
 
-
-
 ## arraySymmetricDifference {#arraySymmetricDifference}
 
-Introduced in: v25.4
+引入版本：v25.4
 
-Takes multiple arrays and returns an array with elements that are not present in all source arrays. The result contains only unique values.
+接受多个数组作为输入，并返回一个数组，其中包含未同时出现在所有源数组中的元素。结果仅包含不重复的值。
 
 :::note
-The symmetric difference of _more than two sets_ is [mathematically defined](https://en.wikipedia.org/wiki/Symmetric_difference#n-ary_symmetric_difference)
-as the set of all input elements which occur in an odd number of input sets.
-In contrast, function `arraySymmetricDifference` simply returns the set of input elements which do not occur in all input sets.
+*多于两个集合* 的对称差 [在数学上的定义](https://en.wikipedia.org/wiki/Symmetric_difference#n-ary_symmetric_difference)
+是由所有在奇数个输入集合中出现的输入元素构成的集合。
+相比之下，函数 `arraySymmetricDifference` 仅返回所有未在所有输入集合中同时出现的输入元素构成的集合。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 arraySymmetricDifference(arr1, arr2, ... , arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array). 
+* `arrN` — 用于构造新数组的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)。
 
-**Returned value**
+**返回值**
 
-Returns an array of distinct elements not present in all source arrays [`Array(T)`](/sql-reference/data-types/array)
+返回一个数组，包含未在所有源数组中同时出现的唯一元素。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -3789,32 +3504,29 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
-
-
 ## arrayUnion {#arrayUnion}
 
-Introduced in: v24.10
+自 v24.10 引入
 
-Takes multiple arrays and returns an array which contains all elements that are present in one of the source arrays.The result contains only unique values.
+接收多个数组作为参数，并返回一个数组，该数组包含所有源数组中出现过的元素。结果中仅包含不重复的元素。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayUnion(arr1, arr2, ..., arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `arrN` — N arrays from which to make the new array. [`Array(T)`](/sql-reference/data-types/array)
+* `arrN` — 用于构造新数组的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个由源数组中所有不重复元素组成的新数组（[`Array(T)`](/sql-reference/data-types/array)）。
 
-Returns an array with distinct elements from the source arrays [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -3829,51 +3541,45 @@ arrayUnion([1, 3, NULL], [2, 3, NULL]) as null_example
 └─────────────┴────────────────┴──────────────┘
 ```
 
-
-
 ## arrayUniq {#arrayUniq}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+对于传入的单个参数，统计数组中不同元素的数量。
+对于传入的多个参数，它会统计由多个数组中相同位置元素组成的不同**元组**的数量。
 
-For a single argument passed, counts the number of different elements in the array.
-For multiple arguments passed, it counts the number of different **tuples** made of elements at matching positions across multiple arrays.
+例如，`SELECT arrayUniq([1,2], [3,4], [5,6])` 会形成如下元组：
 
-For example `SELECT arrayUniq([1,2], [3,4], [5,6])` will form the following tuples:
-* Position 1: (1,3,5)
-* Position 2: (2,4,6)
+* 位置 1: (1,3,5)
+* 位置 2: (2,4,6)
 
-It will then count the number of unique tuples. In this case `2`.
+然后会统计唯一元组的数量。本例中为 `2`。
 
-All arrays passed must have the same length.
+所有传入的数组必须具有相同的长度。
 
 :::tip
-If you want to get a list of unique items in an array, you can use `arrayReduce('groupUniqArray', arr)`.
+如果需要获得数组中唯一元素的列表，可以使用 `arrayReduce('groupUniqArray', arr)`。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 arrayUniq(arr1[, arr2, ..., arrN])
 ```
 
-**Arguments**
+**参数**
 
-- `arr1` — Array for which to count the number of unique elements. [`Array(T)`](/sql-reference/data-types/array)
-- `[, arr2, ..., arrN]` — Optional. Additional arrays used to count the number of unique tuples of elements at corresponding positions in multiple arrays. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1` — 要统计其唯一元素数量的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `[, arr2, ..., arrN]` — 可选。用于统计多个数组中对应位置元素组成的唯一元组数量的附加数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+对于单个参数，返回唯一元素的数量。对于多个参数，返回由多个数组中对应位置元素组成的唯一元组的数量。
+[`UInt32`](/sql-reference/data-types/int-uint)
 
-For a single argument returns the number of unique
-elements. For multiple arguments returns the number of unique tuples made from
-elements at corresponding positions across the arrays.
- [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Single argument**
+**单个参数**
 
 ```sql title=Query
 SELECT arrayUniq([1, 1, 2, 2])
@@ -3883,7 +3589,7 @@ SELECT arrayUniq([1, 1, 2, 2])
 2
 ```
 
-**Multiple argument**
+**多个参数**
 
 ```sql title=Query
 SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
@@ -3893,34 +3599,30 @@ SELECT arrayUniq([1, 2, 3, 1], [4, 5, 6, 4])
 3
 ```
 
-
-
 ## arrayWithConstant {#arrayWithConstant}
 
-Introduced in: v20.1
+在 v20.1 版本中引入
 
+创建一个长度为 `length`，且所有元素都为常量 `x` 的数组。
 
-Creates an array of length `length` filled with the constant `x`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 arrayWithConstant(N, x)
 ```
 
-**Arguments**
+**参数**
 
-- `length` — Number of elements in the array. [`(U)Int*`](/sql-reference/data-types/int-uint)
-- `x` — The value of the `N` elements in the array, of any type. 
+* `length` — 数组中的元素个数。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `x` — 数组中 `N` 个元素的值，可以是任意类型。
 
-**Returned value**
+**返回值**
 
-Returns an Array with `N` elements of value `x`. [`Array(T)`](/sql-reference/data-types/array)
+返回一个包含 `N` 个元素、且每个元素的值为 `x` 的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayWithConstant(3, 1)
@@ -3930,32 +3632,29 @@ SELECT arrayWithConstant(3, 1)
 [1, 1, 1]
 ```
 
-
-
 ## arrayZip {#arrayZip}
 
-Introduced in: v20.1
+自 v20.1 引入
 
-Combines multiple arrays into a single array. The resulting array contains the corresponding elements of the source arrays grouped into tuples in the listed order of arguments.
+将多个数组组合为单个数组。结果数组包含源数组中对应位置的元素，这些元素按照参数列出的顺序被分组为元组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayZip(arr1, arr2, ... , arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `arr1, arr2, ... , arrN` — N arrays to combine into a single array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, arr2, ... , arrN` — 要合并成单个数组的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其中的元素是由源数组按位置组合成的元组。元组中的数据类型与输入数组的类型相同，且顺序与数组的传入顺序一致。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array with elements from the source arrays grouped in tuples. Data types in the tuple are the same as types of the input arrays and in the same order as arrays are passed [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
@@ -3965,32 +3664,29 @@ SELECT arrayZip(['a', 'b', 'c'], [5, 2, 1]);
 [('a', 5), ('b', 2), ('c', 1)]
 ```
 
-
-
 ## arrayZipUnaligned {#arrayZipUnaligned}
 
-Introduced in: v20.1
+自 v20.1 引入
 
-Combines multiple arrays into a single array, allowing for unaligned arrays (arrays of differing lengths). The resulting array contains the corresponding elements of the source arrays grouped into tuples in the listed order of arguments.
+将多个数组组合为一个数组，支持未对齐的数组（长度不同的数组）。结果数组包含源数组中对应位置的元素，并按参数列出的顺序将这些元素分组为元组。
 
-**Syntax**
+**语法**
 
 ```sql
 arrayZipUnaligned(arr1, arr2, ..., arrN)
 ```
 
-**Arguments**
+**参数**
 
-- `arr1, arr2, ..., arrN` — N arrays to combine into a single array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, arr2, ..., arrN` — 要合并成一个数组的 N 个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个数组，其元素为将源数组的元素分组后得到的元组。元组中的数据类型与输入数组的数据类型相同，且顺序与传入数组的顺序一致。[`Array(T)`](/sql-reference/data-types/array) 或 [`Tuple(T1, T2, ...)`](/sql-reference/data-types/tuple)
 
-Returns an array with elements from the source arrays grouped in tuples. Data types in the tuple are the same as types of the input arrays and in the same order as arrays are passed. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T1, T2, ...)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
@@ -4000,36 +3696,32 @@ SELECT arrayZipUnaligned(['a'], [1, 2, 3]);
 [('a', 1),(NULL, 2),(NULL, 3)]
 ```
 
-
-
 ## countEqual {#countEqual}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回数组中等于 `x` 的元素数量。等价于 `arrayCount(elem -> elem = x, arr)`。
 
-Returns the number of elements in the array equal to `x`. Equivalent to `arrayCount(elem -> elem = x, arr)`.
+将 `NULL` 元素视为独立的值进行处理。
 
-`NULL` elements are handled as separate values.
-
-
-**Syntax**
+**语法**
 
 ```sql
 countEqual(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Array to search. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value in the array to count. Any type. 
+* `arr` — 要搜索的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — 要在数组中统计的值。任意类型。
 
-**Returned value**
+**返回值**
 
-Returns the number of elements in the array equal to `x` [`UInt64`](/sql-reference/data-types/int-uint)
+返回数组中等于 `x` 的元素数量。类型为 [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT countEqual([1, 2, NULL, NULL], NULL)
@@ -4039,42 +3731,37 @@ SELECT countEqual([1, 2, NULL, NULL], NULL)
 2
 ```
 
-
-
 ## empty {#empty}
 
-Introduced in: v1.1
+引入于：v1.1
 
+检查输入数组是否为空。
 
-Checks whether the input array is empty.
-
-An array is considered empty if it does not contain any elements.
+如果数组不包含任何元素，则被视为空数组。
 
 :::note
-Can be optimized by enabling the [`optimize_functions_to_subcolumns` setting](/operations/settings/settings#optimize_functions_to_subcolumns). With `optimize_functions_to_subcolumns = 1` the function reads only [size0](/sql-reference/data-types/array#array-size) subcolumn instead of reading and processing the whole array column. The query `SELECT empty(arr) FROM TABLE;` transforms to `SELECT arr.size0 = 0 FROM TABLE;`.
+可以通过启用 [`optimize_functions_to_subcolumns` 设置](/operations/settings/settings#optimize_functions_to_subcolumns)来优化。将 `optimize_functions_to_subcolumns` 设置为 `1` 时，该函数只读取 [size0](/sql-reference/data-types/array#array-size) 子列，而无需读取并处理整个数组列。查询 `SELECT empty(arr) FROM TABLE;` 会被转换为 `SELECT arr.size0 = 0 FROM TABLE;`。
 :::
 
-The function also works for Strings or UUIDs.
-    
+该函数同样适用于 String 或 UUID 类型。
 
-**Syntax**
+**语法**
 
 ```sql
 empty(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Input array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 输入数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+如果数组为空则返回 `1`，如果数组非空则返回 `0`，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` for an empty array or `0` for a non-empty array [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT empty([]);
@@ -4084,31 +3771,29 @@ SELECT empty([]);
 1
 ```
 
-
-
 ## emptyArrayDate {#emptyArrayDate}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Returns an empty Date array
+返回空的 Date 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayDate()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Date array. [`Array(T)`](/sql-reference/data-types/array)
+空的 Date 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayDate
@@ -4118,31 +3803,29 @@ SELECT emptyArrayDate
 []
 ```
 
-
-
 ## emptyArrayDateTime {#emptyArrayDateTime}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-Returns an empty DateTime array
+返回一个空的 DateTime 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayDateTime()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty DateTime array. [`Array(T)`](/sql-reference/data-types/array)
+空 DateTime 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT emptyArrayDateTime
@@ -4152,31 +3835,29 @@ SELECT emptyArrayDateTime
 []
 ```
 
-
-
 ## emptyArrayFloat32 {#emptyArrayFloat32}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
-Returns an empty Float32 array
+返回一个空的 Float32 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayFloat32()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Float32 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 Float32 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayFloat32
@@ -4186,31 +3867,29 @@ SELECT emptyArrayFloat32
 []
 ```
 
-
-
 ## emptyArrayFloat64 {#emptyArrayFloat64}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
-Returns an empty Float64 array
+返回一个空的 Float64 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayFloat64()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Float64 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 Float64 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT emptyArrayFloat64
@@ -4220,31 +3899,29 @@ SELECT emptyArrayFloat64
 []
 ```
 
-
-
 ## emptyArrayInt16 {#emptyArrayInt16}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-Returns an empty Int16 array
+返回一个空的 Int16 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayInt16()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Int16 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 Int16 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayInt16
@@ -4254,31 +3931,29 @@ SELECT emptyArrayInt16
 []
 ```
 
-
-
 ## emptyArrayInt32 {#emptyArrayInt32}
 
-Introduced in: v1.1
+引入于：v1.1
 
-Returns an empty Int32 array
+返回一个空的 Int32 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayInt32()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Int32 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 Int32 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayInt32
@@ -4288,31 +3963,29 @@ SELECT emptyArrayInt32
 []
 ```
 
-
-
 ## emptyArrayInt64 {#emptyArrayInt64}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
-Returns an empty Int64 array
+返回一个空的 Int64 数组。
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayInt64()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Int64 array. [`Array(T)`](/sql-reference/data-types/array)
+一个 Int64 类型的空数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayInt64
@@ -4322,31 +3995,29 @@ SELECT emptyArrayInt64
 []
 ```
 
-
-
 ## emptyArrayInt8 {#emptyArrayInt8}
 
-Introduced in: v1.1
+引入于：v1.1
 
-Returns an empty Int8 array
+返回一个空的 Int8 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayInt8()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty Int8 array. [`Array(T)`](/sql-reference/data-types/array)
+返回一个空的 Int8 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayInt8
@@ -4356,31 +4027,29 @@ SELECT emptyArrayInt8
 []
 ```
 
-
-
 ## emptyArrayString {#emptyArrayString}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-Returns an empty String array
+返回一个空字符串数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayString()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty String array. [`Array(T)`](/sql-reference/data-types/array)
+一个空的 String 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayString
@@ -4390,34 +4059,29 @@ SELECT emptyArrayString
 []
 ```
 
-
-
 ## emptyArrayToSingle {#emptyArrayToSingle}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+接受一个空数组，并返回一个仅包含一个元素的数组，该元素等于默认值。
 
-Accepts an empty array and returns a one-element array that is equal to the default value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayToSingle(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — An empty array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 一个空数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+一个仅包含单个元素的数组，其元素为该数组元素类型的默认值。[`Array(T)`](/sql-reference/data-types/array)
 
-An array with a single value of the Array's default type. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基本示例**
 
 ```sql title=Query
 CREATE TABLE test (
@@ -4439,31 +4103,29 @@ SELECT emptyArrayToSingle(a), emptyArrayToSingle(b), emptyArrayToSingle(c) FROM 
 └───────────────────────┴───────────────────────┴─────────────────────────┘
 ```
 
-
-
 ## emptyArrayUInt16 {#emptyArrayUInt16}
 
-Introduced in: v1.1
+引入于：v1.1
 
-Returns an empty UInt16 array
+返回一个空的 UInt16 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayUInt16()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty UInt16 array. [`Array(T)`](/sql-reference/data-types/array)
+一个空的 UInt16 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayUInt16
@@ -4473,31 +4135,29 @@ SELECT emptyArrayUInt16
 []
 ```
 
-
-
 ## emptyArrayUInt32 {#emptyArrayUInt32}
 
-Introduced in: v1.1
+首次引入于：v1.1
 
-Returns an empty UInt32 array
+返回一个空的 UInt32 类型数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayUInt32()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty UInt32 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 UInt32 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT emptyArrayUInt32
@@ -4507,31 +4167,29 @@ SELECT emptyArrayUInt32
 []
 ```
 
-
-
 ## emptyArrayUInt64 {#emptyArrayUInt64}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Returns an empty UInt64 array
+返回一个空的 UInt64 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayUInt64()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty UInt64 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 UInt64 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayUInt64
@@ -4541,31 +4199,29 @@ SELECT emptyArrayUInt64
 []
 ```
 
-
-
 ## emptyArrayUInt8 {#emptyArrayUInt8}
 
-Introduced in: v1.1
+自 v1.1 版本起引入
 
-Returns an empty UInt8 array
+返回一个空的 UInt8 数组
 
-**Syntax**
+**语法**
 
 ```sql
 emptyArrayUInt8()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-An empty UInt8 array. [`Array(T)`](/sql-reference/data-types/array)
+空的 UInt8 数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT emptyArrayUInt8
@@ -4575,32 +4231,30 @@ SELECT emptyArrayUInt8
 []
 ```
 
-
-
 ## has {#has}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Returns whether the array contains the specified element.
+返回数组是否包含指定的元素。
 
-**Syntax**
+**语法**
 
 ```sql
 has(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — The source array. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — The value to search for in the array. 
+* `arr` — 源数组。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — 要在数组中搜索的值。
 
-**Returned value**
+**返回值**
 
-Returns `1` if the array contains the specified element, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+如果数组包含指定元素则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 2)
@@ -4610,7 +4264,7 @@ SELECT has([1, 2, 3], 2)
 1
 ```
 
-**Not found**
+**未找到**
 
 ```sql title=Query
 SELECT has([1, 2, 3], 4)
@@ -4620,42 +4274,37 @@ SELECT has([1, 2, 3], 4)
 0
 ```
 
-
-
 ## hasAll {#hasAll}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+检查一个数组是否为另一个数组的子集。
 
-Checks whether one array is a subset of another.
+* 空数组是任何数组的子集。
+* `Null` 会作为普通值进行处理。
+* 两个数组中元素的顺序无关紧要。
 
-- An empty array is a subset of any array.
-- `Null` is processed as a value.
-- The order of values in both the arrays does not matter.
-
-
-**Syntax**
+**语法**
 
 ```sql
 hasAll(set, subset)
 ```
 
-**Arguments**
+**参数**
 
-- `set` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `subset` — Array of any type that shares a common supertype with `set` containing elements that should be tested to be a subset of `set`. [`Array(T)`](/sql-reference/data-types/array)
+* `set` — 由任意类型元素组成的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `subset` — 由任意类型元素组成的数组，与 `set` 具有共同的超类型，包含需要检测是否为 `set` 子集的元素。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+* 如果 `set` 包含 `subset` 的所有元素，则返回 `1`。
+* 否则返回 `0`。
 
-- `1`, if `set` contains all of the elements from `subset`.
-- `0`, otherwise.
+如果 `set` 与 `subset` 中的元素没有共同的超类型，则抛出 `NO_COMMON_TYPE` 异常。
 
-Raises a `NO_COMMON_TYPE` exception if the set and subset elements do not share a common supertype.
+**示例**
 
-**Examples**
-
-**Empty arrays**
+**空数组**
 
 ```sql title=Query
 SELECT hasAll([], [])
@@ -4665,7 +4314,7 @@ SELECT hasAll([], [])
 1
 ```
 
-**Arrays containing NULL values**
+**含有 NULL 值的数组**
 
 ```sql title=Query
 SELECT hasAll([1, Null], [Null])
@@ -4675,7 +4324,7 @@ SELECT hasAll([1, Null], [Null])
 1
 ```
 
-**Arrays containing values of a different type**
+**包含不同类型元素的数组**
 
 ```sql title=Query
 SELECT hasAll([1.0, 2, 3, 4], [1, 3])
@@ -4685,7 +4334,7 @@ SELECT hasAll([1.0, 2, 3, 4], [1, 3])
 1
 ```
 
-**Arrays containing String values**
+**包含 String 类型值的数组**
 
 ```sql title=Query
 SELECT hasAll(['a', 'b'], ['a'])
@@ -4695,7 +4344,7 @@ SELECT hasAll(['a', 'b'], ['a'])
 1
 ```
 
-**Arrays without a common type**
+**没有共同类型的数组**
 
 ```sql title=Query
 SELECT hasAll([1], ['a'])
@@ -4705,7 +4354,7 @@ SELECT hasAll([1], ['a'])
 抛出 NO_COMMON_TYPE 异常
 ```
 
-**Array of arrays**
+**数组的数组（嵌套数组）**
 
 ```sql title=Query
 SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
@@ -4715,41 +4364,36 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [3, 5]])
 0
 ```
 
-
-
 ## hasAny {#hasAny}
 
-Introduced in: v1.1
+引入于：v1.1
 
+检查两个数组是否存在相同元素（是否有交集）。
 
-Checks whether two arrays have intersection by some elements.
+* `Null` 会被当作普通值处理。
+* 两个数组中元素的顺序不会影响结果。
 
-- `Null` is processed as a value.
-- The order of the values in both of the arrays does not matter.
-
-
-**Syntax**
+**语法**
 
 ```sql
 hasAny(arr_x, arr_y)
 ```
 
-**Arguments**
+**参数**
 
-- `arr_x` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `arr_y` — Array of any type that shares a common supertype with array `arr_x`. [`Array(T)`](/sql-reference/data-types/array)
+* `arr_x` — 包含一组元素的任意类型数组。[`Array(T)`](/sql-reference/data-types/array)
+* `arr_y` — 与数组 `arr_x` 具有共同超类型的任意类型数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+* 如果 `arr_x` 和 `arr_y` 至少有一个相同元素，则为 `1`。
+* 否则为 `0`。
 
-- `1`, if `arr_x` and `arr_y` have one similar element at least.
-- `0`, otherwise.
+如果两个数组中存在元素对之间不具有共同超类型，则会抛出 `NO_COMMON_TYPE` 异常。
 
-Raises a `NO_COMMON_TYPE` exception if any of the elements of the two arrays do not share a common supertype.
+**示例**
 
-**Examples**
-
-**One array is empty**
+**一个数组为空**
 
 ```sql title=Query
 SELECT hasAny([1], [])
@@ -4759,7 +4403,7 @@ SELECT hasAny([1], [])
 0
 ```
 
-**Arrays containing NULL values**
+**包含 NULL 值的数组**
 
 ```sql title=Query
 SELECT hasAny([Null], [Null, 1])
@@ -4769,7 +4413,7 @@ SELECT hasAny([Null], [Null, 1])
 1
 ```
 
-**Arrays containing values of a different type**
+**包含不同类型元素的数组**
 
 ```sql title=Query
 SELECT hasAny([-128, 1., 512], [1])
@@ -4779,7 +4423,7 @@ SELECT hasAny([-128, 1., 512], [1])
 1
 ```
 
-**Arrays without a common type**
+**没有共同类型的数组**
 
 ```sql title=Query
 SELECT hasAny([[1, 2], [3, 4]], ['a', 'c'])
@@ -4789,7 +4433,7 @@ SELECT hasAny([[1, 2], [3, 4]], ['a', 'c'])
 抛出 `NO_COMMON_TYPE` 异常
 ```
 
-**Array of arrays**
+**数组的数组**
 
 ```sql title=Query
 SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
@@ -4799,45 +4443,40 @@ SELECT hasAll([[1, 2], [3, 4]], [[1, 2], [1, 2]])
 1
 ```
 
-
-
 ## hasSubstr {#hasSubstr}
 
-Introduced in: v20.6
+引入于：v20.6
 
+检查 `array2` 的所有元素是否以完全相同的顺序出现在 `array1` 中。
+因此，当且仅当 `array1 = prefix + array2 + suffix` 时，该函数返回 `1`。
 
-Checks whether all the elements of array2 appear in a array1 in the same exact order.
-Therefore, the function will return `1`, if and only if array1 = prefix + array2 + suffix.
+换句话说，该函数会像 `hasAll` 函数一样检查 `array1` 中是否包含 `array2` 的所有元素。
+此外，它还会检查 `array1` 和 `array2` 中元素出现的顺序是否一致。
 
-In other words, the functions will check whether all the elements of array2 are contained in array1 like the `hasAll` function.
-In addition, it will check that the elements are observed in the same order in both array1 and array2.
+* 如果 `array2` 为空，函数返回 `1`。
+* `Null` 会作为一个值进行处理。换句话说，`hasSubstr([1, 2, NULL, 3, 4], [2,3])` 将返回 `0`。然而，`hasSubstr([1, 2, NULL, 3, 4], [2,NULL,3])` 将返回 `1`。
+* 两个数组中值的顺序会影响结果。
 
-- The function will return `1` if array2 is empty.
-- `Null` is processed as a value. In other words `hasSubstr([1, 2, NULL, 3, 4], [2,3])` will return `0`. However, `hasSubstr([1, 2, NULL, 3, 4], [2,NULL,3])` will return `1`
-- The order of values in both the arrays does matter.
+如果两个数组中的任意元素没有共享公共超类型，则抛出 `NO_COMMON_TYPE` 异常。
 
-Raises a `NO_COMMON_TYPE` exception if any of the elements of the two arrays do not share a common supertype.
-
-
-**Syntax**
+**语法**
 
 ```sql
 hasSubstr(arr1, arr2)
 ```
 
-**Arguments**
+**参数**
 
-- `arr1` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
-- `arr2` — Array of any type with a set of elements. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1` — 任意类型的数组，由一组元素组成。[`Array(T)`](/sql-reference/data-types/array)
+* `arr2` — 任意类型的数组，由一组元素组成。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+如果数组 `arr1` 包含数组 `arr2`，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if array `arr1` contains array `arr2`. Otherwise, returns `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Both arrays are empty**
+**两个数组都为空**
 
 ```sql title=Query
 SELECT hasSubstr([], [])
@@ -4847,7 +4486,7 @@ SELECT hasSubstr([], [])
 1
 ```
 
-**Arrays containing NULL values**
+**包含 NULL 值的数组**
 
 ```sql title=Query
 SELECT hasSubstr([1, Null], [Null])
@@ -4857,7 +4496,7 @@ SELECT hasSubstr([1, Null], [Null])
 1
 ```
 
-**Arrays containing values of a different type**
+**包含不同类型值的数组**
 
 ```sql title=Query
 SELECT hasSubstr([1.0, 2, 3, 4], [1, 3])
@@ -4867,7 +4506,7 @@ SELECT hasSubstr([1.0, 2, 3, 4], [1, 3])
 0
 ```
 
-**Arrays containing strings**
+**字符串数组**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b'], ['a'])
@@ -4877,7 +4516,7 @@ SELECT hasSubstr(['a', 'b'], ['a'])
 1
 ```
 
-**Arrays with valid ordering**
+**可有效排序的数组**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
@@ -4887,7 +4526,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'b'])
 1
 ```
 
-**Arrays with invalid ordering**
+**具有无效排序的数组**
 
 ```sql title=Query
 SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
@@ -4897,7 +4536,7 @@ SELECT hasSubstr(['a', 'b' , 'c'], ['a', 'c'])
 0
 ```
 
-**Array of arrays**
+**数组的数组**
 
 ```sql title=Query
 SELECT hasSubstr([[1, 2], [3, 4], [5, 6]], [[1, 2], [3, 4]])
@@ -4907,7 +4546,7 @@ SELECT hasSubstr([[1, 2], [3, 4], [5, 6]], [[1, 2], [3, 4]])
 1
 ```
 
-**Arrays without a common type**
+**没有共同类型的数组**
 
 ```sql title=Query
 SELECT hasSubstr([1, 2, NULL, 3, 4], ['a'])
@@ -4917,38 +4556,33 @@ SELECT hasSubstr([1, 2, NULL, 3, 4], ['a'])
 抛出 `NO_COMMON_TYPE` 异常
 ```
 
-
-
 ## indexOf {#indexOf}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+如果数组中存在值为 &#39;x&#39; 的元素，则返回第一个等于 &#39;x&#39; 的元素的索引（从 1 开始）。
+如果数组不包含要查找的值，函数返回 `0`。
 
-Returns the index of the first element with value 'x' (starting from 1) if it is in the array.
-If the array does not contain the searched-for value, the function returns `0`.
+设置为 `NULL` 的元素会被当作普通值处理。
 
-Elements set to `NULL` are handled as normal values.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 indexOf(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — An array to search in for `x`. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value of the first matching element in `arr` for which to return an index. [`UInt64`](/sql-reference/data-types/int-uint)
+* `arr` — 要在其中搜索 `x` 的数组。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — `arr` 中第一个匹配元素的值，将返回该元素的索引。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+如果存在，返回 `arr` 中第一个 `x` 的索引（从 1 开始编号）。否则返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the index (numbered from one) of the first `x` in `arr` if it exists. Otherwise, returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基础示例**
 
 ```sql title=Query
 SELECT indexOf([5, 4, 1, 3], 3)
@@ -4958,7 +4592,7 @@ SELECT indexOf([5, 4, 1, 3], 3)
 4
 ```
 
-**Array with nulls**
+**包含 NULL 值的数组**
 
 ```sql title=Query
 SELECT indexOf([1, 3, NULL, NULL], NULL)
@@ -4968,41 +4602,36 @@ SELECT indexOf([1, 3, NULL, NULL], NULL)
 3
 ```
 
-
-
 ## indexOfAssumeSorted {#indexOfAssumeSorted}
 
-Introduced in: v24.12
+引入于：v24.12
 
-
-Returns the index of the first element with value 'x' (starting from `1`) if it is in the array.
-If the array does not contain the searched-for value, the function returns `0`.
+如果数组中存在值为 &#39;x&#39; 的元素，则返回该元素第一次出现时的索引（从 `1` 开始计数）。\
+如果数组不包含要查找的值，则函数返回 `0`。
 
 :::note
-Unlike the `indexOf` function, this function assumes that the array is sorted in
-ascending order. If the array is not sorted, results are undefined.
+与 `indexOf` 函数不同，此函数假定数组按升序排序。\
+如果数组未排序，则结果未定义。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 indexOfAssumeSorted(arr, x)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — A sorted array to search. [`Array(T)`](/sql-reference/data-types/array)
-- `x` — Value of the first matching element in sorted `arr` for which to return an index. [`UInt64`](/sql-reference/data-types/int-uint)
+* `arr` — 要搜索的已排序数组。[`Array(T)`](/sql-reference/data-types/array)
+* `x` — 要匹配的值，函数将返回已排序 `arr` 中第一个等于该值的元素的索引。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+如果 `arr` 中存在 `x`，则返回第一个 `x` 的索引（从 1 开始编号）。否则，返回 `0`。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the index (numbered from one) of the first `x` in `arr` if it exists. Otherwise, returns `0`. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基础示例**
 
 ```sql title=Query
 SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
@@ -5012,46 +4641,39 @@ SELECT indexOfAssumeSorted([1, 3, 3, 3, 4, 4, 5], 4)
 5
 ```
 
-
-
 ## length {#length}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+计算字符串或数组的长度。
 
-Calculates the length of a string or array.
+* 对于 String 或 FixedString 参数：计算字符串中的字节数。
+* 对于 Array 参数：计算数组中的元素个数。
+* 如果应用于 FixedString 参数，该函数是一个常量表达式。
 
-- For String or FixedString arguments: calculates the number of bytes in the string.
-- For Array arguments: calculates the number of elements in the array.
-- If applied to a FixedString argument, the function is a constant expression.
+请注意，字符串中的字节数不同于 Unicode “code points”的数量，也不同于 Unicode “grapheme clusters”（通常所说的“字符”）的数量，也不同于字符串的可见宽度。
 
-Please note that the number of bytes in a string is not the same as the number of
-Unicode "code points" and it is not the same as the number of Unicode "grapheme clusters"
-(what we usually call "characters") and it is not the same as the visible string width.
+字符串中允许包含 ASCII 的 NULL 字节，这些字节也会被计入长度。
 
-It is ok to have ASCII NULL bytes in strings, and they will be counted as well.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 length(x)
 ```
 
-**Aliases**: `OCTET_LENGTH`
+**别名**: `OCTET_LENGTH`
 
-**Arguments**
+**参数**
 
-- `x` — Value for which to calculate the number of bytes (for String/FixedString) or elements (for Array). [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`Array(T)`](/sql-reference/data-types/array)
+* `x` — 要计算其字节数（对于 String/FixedString）或元素个数（对于 Array）的值。类型为 [`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个 [`UInt64`](/sql-reference/data-types/int-uint) 值，表示 String/FixedString `x` 中的字节数或数组 `x` 中的元素个数。
 
-Returns the number of number of bytes in the String/FixedString `x` / the number of elements in array `x` [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**String example**
+**String 示例**
 
 ```sql title=Query
 SELECT length('Hello, world!')
@@ -5061,7 +4683,7 @@ SELECT length('Hello, world!')
 13
 ```
 
-**Array example**
+**数组示例**
 
 ```sql title=Query
 SELECT length(['Hello', 'world'])
@@ -5071,7 +4693,7 @@ SELECT length(['Hello', 'world'])
 2
 ```
 
-**constexpr example**
+**constexpr 示例**
 
 ```sql title=Query
 WITH 'hello' || toString(number) AS str
@@ -5089,7 +4711,7 @@ FROM numbers(3)
 └────────┴────────────────────────┴──────────────────────────────┘
 ```
 
-**unicode example**
+**Unicode 示例**
 
 ```sql title=Query
 SELECT 'ёлка' AS str1, length(str1), lengthUTF8(str1), normalizeUTF8NFKD(str1) AS str2, length(str2), lengthUTF8(str2)
@@ -5101,7 +4723,7 @@ SELECT 'ёлка' AS str1, length(str1), lengthUTF8(str1), normalizeUTF8NFKD(str
 └──────┴──────────────┴──────────────────┴──────┴──────────────┴──────────────────┘
 ```
 
-**ascii_vs_utf8 example**
+**ASCII&#95;vs&#95;UTF-8 示例**
 
 ```sql title=Query
 SELECT 'ábc' AS str, length(str), lengthUTF8(str)
@@ -5113,42 +4735,37 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 └─────┴──────────────┴─────────────────┘
 ```
 
-
-
 ## notEmpty {#notEmpty}
 
-Introduced in: v1.1
+引入于：v1.1
 
+检查输入数组是否非空。
 
-Checks whether the input array is non-empty.
-
-An array is considered non-empty if it contains at least one element.
+如果数组至少包含一个元素，则被视为非空。
 
 :::note
-Can be optimized by enabling the [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) setting. With `optimize_functions_to_subcolumns = 1` the function reads only [size0](/sql-reference/data-types/array#array-size) subcolumn instead of reading and processing the whole array column. The query `SELECT notEmpty(arr) FROM table` transforms to `SELECT arr.size0 != 0 FROM TABLE`.
+可以通过启用 [`optimize_functions_to_subcolumns`](/operations/settings/settings#optimize_functions_to_subcolumns) 设置进行优化。设置 `optimize_functions_to_subcolumns = 1` 时，该函数只读取 [size0](/sql-reference/data-types/array#array-size) 子列，而不是读取并处理整个数组列。查询 `SELECT notEmpty(arr) FROM table` 会被转换为 `SELECT arr.size0 != 0 FROM TABLE`。
 :::
 
-The function also works for Strings or UUIDs.
-    
+该函数同样适用于字符串（String）或 UUID 类型。
 
-**Syntax**
+**语法**
 
 ```sql
 notEmpty(arr)
 ```
 
-**Arguments**
+**参数**
 
-- `arr` — Input array. [`Array(T)`](/sql-reference/data-types/array)
+* `arr` — 输入数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+当数组非空时返回 `1`，当数组为空时返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` for a non-empty array or `0` for an empty array [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT notEmpty([1,2]);
@@ -5158,41 +4775,41 @@ SELECT notEmpty([1,2]);
 1
 ```
 
-
-
 ## range {#range}
 
-Introduced in: v1.1
+引入于：v1.1
 
+按 `step` 返回一个从 `start` 到 `end - 1` 的数字数组。
 
-Returns an array of numbers from `start` to `end - 1` by `step`.
+支持的类型为：
 
-The supported types are:
-- `UInt8/16/32/64`
-- `Int8/16/32/64]`
+* `UInt8/16/32/64`
 
-- All arguments `start`, `end`, `step` must be one of the above supported types. Elements of the returned array will be a super type of the arguments.
-- An exception is thrown if the function returns an array with a total length more than the number of elements specified by setting [`function_range_max_elements_in_block`](../../operations/settings/settings.md#function_range_max_elements_in_block).
-- Returns `NULL` if any argument has Nullable(nothing) type. An exception is thrown if any argument has `NULL` value (Nullable(T) type).
-    
+* `Int8/16/32/64`
 
-**Syntax**
+* 所有参数 `start`、`end`、`step` 必须是上述支持类型之一。返回数组的元素类型将是这些参数类型的超类型。
+
+* 如果函数返回的数组总长度超过由设置 [`function_range_max_elements_in_block`](../../operations/settings/settings.md#function_range_max_elements_in_block) 指定的元素数量，则抛出异常。
+
+* 如果任一参数的类型为 Nullable(nothing)，则返回 `NULL`。如果任一参数的值为 `NULL`（Nullable(T) 类型），则抛出异常。
+
+**语法**
 
 ```sql
 range([start, ] end [, step])
 ```
 
-**Arguments**
+**参数**
 
-- `start` — Optional. The first element of the array. Required if `step` is used. Default value: `0`. - `end` — Required. The number before which the array is constructed. - `step` — Optional. Determines the incremental step between each element in the array. Default value: `1`. 
+* `start` — 可选。数组的第一个元素。如果使用了 `step`，则必填。默认值：`0`。 - `end` — 必填。构造数组时的上界（不包含该值）。 - `step` — 可选。指定数组中相邻元素之间的递增步长。默认值：`1`。
 
-**Returned value**
+**返回值**
 
-Array of numbers from `start` to `end - 1` by `step`. [`Array(T)`](/sql-reference/data-types/array)
+从 `start` 到 `end - 1`，按 `step` 递增的数字数组。[`Array(T)`](/sql-reference/data-types/array)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
@@ -5204,35 +4821,30 @@ SELECT range(5), range(1, 5), range(1, 5, 2), range(-1, 5, 2);
 └─────────────┴─────────────┴────────────────┴─────────────────┘
 ```
 
-
-
 ## replicate {#replicate}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+创建仅包含单个值的数组。
 
-Creates an array with a single value.
-
-
-**Syntax**
+**语法**
 
 ```sql
 replicate(x, arr)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The value to fill the result array with. [`Any`](/sql-reference/data-types)
-- `arr` — An array. [`Array(T)`](/sql-reference/data-types/array)
+* `x` — 用于填充结果数组的值。[`Any`](/sql-reference/data-types)
+* `arr` — 一个数组。[`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回一个与 `arr` 长度相同、全部由值 `x` 填充的数组。[`Array(T)`](/sql-reference/data-types/array)
 
-Returns an array of the same length as `arr` filled with value `x`. [`Array(T)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT replicate(1, ['a', 'b', 'c']);
@@ -5244,32 +4856,29 @@ SELECT replicate(1, ['a', 'b', 'c']);
 └─────────────────────────────────┘
 ```
 
-
-
 ## reverse {#reverse}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Reverses the order of the elements in the input array or the characters in the input string.
+将输入数组的元素顺序或输入字符串的字符顺序反转。
 
-**Syntax**
+**语法**
 
 ```sql
 reverse(arr | str)
 ```
 
-**Arguments**
+**参数**
 
-- `arr | str` — The source array or string. [`Array(T)`](/sql-reference/data-types/array) or [`String`](/sql-reference/data-types/string)
+* `arr | str` — 源数组或字符串。[`Array(T)`](/sql-reference/data-types/array) 或 [`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个数组或字符串，其元素或字符的顺序被反转。
 
-Returns an array or string with the order of elements or characters reversed.
+**示例**
 
-**Examples**
-
-**Reverse array**
+**反转数组**
 
 ```sql title=Query
 SELECT reverse([1, 2, 3, 4]);
@@ -5279,7 +4888,7 @@ SELECT reverse([1, 2, 3, 4]);
 [4, 3, 2, 1]
 ```
 
-**Reverse string**
+**字符串反转**
 
 ```sql title=Query
 SELECT reverse('abcd');

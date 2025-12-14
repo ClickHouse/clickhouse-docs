@@ -29,14 +29,14 @@ MALLOC_CONF=background_thread:true,prof:true
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC FLUSH PROFILE
-```
+    SYSTEM JEMALLOC FLUSH PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmfp | nc localhost 9181
-```
+    echo jmfp | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 
@@ -79,13 +79,13 @@ cp ./target/release/addr2line path/to/current/addr2line
 一般来说，`jeprof` 命令通常这样使用：
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
+jeprof 二进制文件路径 堆配置文件路径 --output_format [ > 输出文件]
 ```
 
 如果你想比较在两个性能分析结果之间新增了哪些内存分配，可以设置 `base` 参数：
 
 ```sh
-jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
+jeprof 二进制文件路径 --base 第一个堆配置文件路径 第二个堆配置文件路径 --output_format [ > 输出文件]
 ```
 
 ### 示例 {#examples}
@@ -93,7 +93,7 @@ jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/prof
 * 如果你想生成一个文本文件，每行写一个存储过程：
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --text > result.txt
+jeprof 二进制文件路径 堆配置文件路径 --text > result.txt
 ```
 
 * 如果需要生成包含调用图的 PDF 文件：
@@ -132,14 +132,14 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC DISABLE PROFILE
-```
+    SYSTEM JEMALLOC DISABLE PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmdp | nc localhost 9181
-```
+    echo jmdp | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 
@@ -148,14 +148,14 @@ echo jmdp | nc localhost 9181
 <Tabs groupId="binary">
   <TabItem value="clickhouse" label="ClickHouse">
     ```sql
-SYSTEM JEMALLOC ENABLE PROFILE
-```
+    SYSTEM JEMALLOC ENABLE PROFILE
+    ```
   </TabItem>
 
   <TabItem value="keeper" label="Keeper">
     ```sh
-echo jmep | nc localhost 9181
-```
+    echo jmep | nc localhost 9181
+    ```
   </TabItem>
 </Tabs>
 

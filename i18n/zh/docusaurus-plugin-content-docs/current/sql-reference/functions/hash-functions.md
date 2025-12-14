@@ -72,34 +72,29 @@ SELECT hex(BLAKE3('ABC'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## MD4 {#MD4}
 
-Introduced in: v21.11
+在 v21.11 中引入
 
+计算给定字符串的 MD4 哈希值。
 
-Calculates the MD4 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 MD4(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 MD4 哈希值，结果为定长字符串。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the MD4 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT HEX(MD4('abc'));
@@ -111,34 +106,29 @@ SELECT HEX(MD4('abc'));
 └──────────────────────────────────┘
 ```
 
-
-
 ## MD5 {#MD5}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+计算给定字符串的 MD5 哈希值。
 
-Calculates the MD5 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 MD5(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 用于计算哈希的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 MD5 哈希值，作为定长字符串。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the MD5 hash of the given input string as a fixed-length string. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(MD5('abc'));
@@ -150,32 +140,29 @@ SELECT HEX(MD5('abc'));
 └──────────────────────────────────┘
 ```
 
-
-
 ## RIPEMD160 {#RIPEMD160}
 
-Introduced in: v24.10
+自 v24.10 起引入
 
-Calculates the RIPEMD-160 hash of the given string.
+计算给定字符串的 RIPEMD-160 哈希值。
 
-**Syntax**
+**语法**
 
 ```sql
 RIPEMD160(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要计算哈希值的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 RIPEMD160 哈希值，作为定长字符串。[`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-Returns the RIPEMD160 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(RIPEMD160('敏捷的棕色狐狸跳过了懒狗'));
@@ -187,34 +174,29 @@ SELECT HEX(RIPEMD160('敏捷的棕色狐狸跳过了懒狗'));
 └───────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## SHA1 {#SHA1}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+计算给定字符串的 SHA1 哈希值。
 
-Calculates the SHA1 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 SHA1(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希运算的输入字符串 [`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA1 哈希值，类型为定长字符串。[`FixedString(20)`](/sql-reference/data-types/fixedstring)
 
-Returns the SHA1 hash of the given input string as a fixed-length string. [`FixedString(20)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA1('abc'));
@@ -226,34 +208,29 @@ SELECT HEX(SHA1('abc'));
 └──────────────────────────────────────────┘
 ```
 
-
-
 ## SHA224 {#SHA224}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+计算给定字符串的 SHA224 哈希值。
 
-Calculates the SHA224 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-SHA224(串)
+SHA224(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input value to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要计算哈希值的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA224 哈希值，以定长字符串形式表示。[`FixedString(28)`](/sql-reference/data-types/fixedstring)
 
-Returns the SHA224 hash of the given input string as a fixed-length string. [`FixedString(28)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA224('abc'));
@@ -265,34 +242,29 @@ SELECT HEX(SHA224('abc'));
 └──────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## SHA256 {#SHA256}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+计算给定字符串的 SHA256 哈希值。
 
-Calculates the SHA256 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-SHA256（s）
+SHA256(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA-256 哈希值，作为定长字符串。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-Returns the SHA256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA256('abc'));
@@ -304,34 +276,29 @@ SELECT HEX(SHA256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## SHA384 {#SHA384}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+计算给定字符串的 SHA384 哈希值。
 
-Calculates the SHA384 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 SHA384（字节）
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA384 哈希值，结果为定长字符串。[`FixedString(48)`](/sql-reference/data-types/fixedstring)
 
-Returns the SHA384 hash of the given input string as a fixed-length string. [`FixedString(48)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA384('abc'));
@@ -343,34 +310,29 @@ SELECT HEX(SHA384('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## SHA512 {#SHA512}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+计算给定字符串的 SHA512 哈希值。
 
-Calculates the SHA512 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 SHA512(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希计算的输入字符串 [`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA512 哈希，结果为定长字符串类型 [`FixedString(64)`](/sql-reference/data-types/fixedstring)。
 
-Returns the SHA512 hash of the given input string as a fixed-length string. [`FixedString(64)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA512('abc'));
@@ -382,34 +344,29 @@ SELECT HEX(SHA512('abc'));
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## SHA512&#95;256 {#SHA512&#95;256}
 
+在 v1.1 中引入
 
-## SHA512_256 {#SHA512_256}
+计算给定字符串的 SHA512&#95;256 哈希值。
 
-Introduced in: v1.1
-
-
-Calculates the SHA512_256 hash of the given string.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 SHA512_256(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `s` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定输入字符串的 SHA512&#95;256 哈希值，作为固定长度字符串。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-Returns the SHA512_256 hash of the given input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT HEX(SHA512_256('abc'));
@@ -421,42 +378,37 @@ SELECT HEX(SHA512_256('abc'));
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## URLHash {#URLHash}
 
-Introduced in: v1.1
+引入于：v1.1
 
+一种针对通过某种归一化方式从 URL 获取的字符串的快速、质量良好的非加密哈希函数。
 
-A fast, decent-quality non-cryptographic hash function for a string obtained from a URL using some type of normalization.
+此哈希函数有两种模式：
 
-This hash function has two modes:
+| 模式                | 描述                                                                                            |
+| ----------------- | --------------------------------------------------------------------------------------------- |
+| `URLHash(url)`    | 从字符串计算哈希值，如果末尾存在 `/`、`?` 或 `#` 中的一个符号，则会先去掉该符号。                                               |
+| `URLHash(url, N)` | 从字符串计算哈希值，计算到 URL 层级中的第 N 级为止；如果末尾存在 `/`、`?` 或 `#` 中的一个符号，则会先去掉该符号。层级的定义与 `URLHierarchy` 中相同。 |
 
-| Mode             | Description                                                                                                                                                                                 |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|`URLHash(url)`    | Calculates a hash from a string without one of the trailing symbols `/`,`?` or `#` at the end, if present.                                                                                  |
-|`URLHash(url, N)` | Calculates a hash from a string up to the N level in the URL hierarchy, without one of the trailing symbols `/`,`?` or `#` at the end, if present. Levels are the same as in `URLHierarchy`.|
-
-
-**Syntax**
+**语法**
 
 ```sql
 URLHash(url[, N])
 ```
 
-**Arguments**
+**参数**
 
-- `url` — URL string to hash. [`String`](/sql-reference/data-types/string)
-- `N` — Optional. Level in the URL hierarchy. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `url` — 要进行哈希计算的 URL 字符串。[`String`](/sql-reference/data-types/string)
+* `N` — 可选。URL 层级中的深度级别。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回对 `url` 计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of `url`. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com')
@@ -468,7 +420,7 @@ SELECT URLHash('https://www.clickhouse.com')
 └──────────────────────────┘
 ```
 
-**Hash of url with specified level**
+**按指定级别计算的 URL 哈希值**
 
 ```sql title=Query
 SELECT URLHash('https://www.clickhouse.com/docs', 0);
@@ -486,49 +438,44 @@ SELECT URLHash('https://www.clickhouse.com/docs', 1);
 └──────────────────────────┘
 ```
 
-
-
 ## cityHash64 {#cityHash64}
 
-Introduced in: v1.1
+引入于：v1.1
 
+生成 64 位的 [CityHash](https://github.com/google/cityhash) 哈希值。
 
-Produces a 64-bit [CityHash](https://github.com/google/cityhash) hash value.
-
-This is a fast non-cryptographic hash function.
-It uses the CityHash algorithm for string parameters and implementation-specific fast non-cryptographic hash function for parameters with other data types.
-The function uses the CityHash combinator to get the final results.
+这是一种快速的非加密哈希函数。
+它对字符串参数使用 CityHash 算法，对其他数据类型的参数使用依赖具体实现的快速非加密哈希函数。
+该函数使用 CityHash 组合函数来得到最终结果。
 
 :::info
-Google changed the algorithm of CityHash after it was added to ClickHouse.
-In other words, ClickHouse's cityHash64 and Google's upstream CityHash now produce different results.
-ClickHouse cityHash64 corresponds to CityHash v1.0.2.
+在 CityHash 被集成进 ClickHouse 之后，Google 更改了 CityHash 的算法。
+换句话说，ClickHouse 的 cityHash64 与 Google 上游的 CityHash 现在会产生不同的结果。
+ClickHouse 的 cityHash64 对应 CityHash v1.0.2。
 :::
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于相同输入值但参数类型不同的情况，计算得到的哈希值可能相同。
+例如，这会影响不同大小的整数类型、具有相同数据的具名和未具名 `Tuple`，以及具有相同数据的 `Map` 和对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 cityHash64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 用于计算哈希值的可变数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Call example**
+**调用示例**
 
 ```sql title=Query
 SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS CityHash, toTypeName(CityHash) AS type;
@@ -540,7 +487,7 @@ SELECT cityHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
-**Computing the checksum of the entire table with accuracy up to the row order**
+**计算整张表的校验和（精确到行顺序）**
 
 ```sql title=Query
 CREATE TABLE users (
@@ -566,43 +513,38 @@ SELECT groupBitXor(cityHash64(*)) FROM users;
 └──────────────────────────┘
 ```
 
-
-
 ## farmFingerprint64 {#farmFingerprint64}
 
-Introduced in: v20.12
+引入版本：v20.12
 
-
-Produces a 64-bit [FarmHash](https://github.com/google/farmhash) value using the `Fingerprint64` method.
+使用 `Fingerprint64` 方法生成一个 64 位的 [FarmHash](https://github.com/google/farmhash) 值。
 
 :::tip
-`farmFingerprint64` is preferred for a stable and portable value over [`farmHash64`](#farmHash64).
+与 [`farmHash64`](#farmHash64) 相比，`farmFingerprint64` 更适合用于生成稳定且可移植的值。
 :::
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型但输入值相同的情况，计算得到的哈希值可能相同。
+例如，这会影响不同大小的整数类型、具有相同数据的具名和未具名 `Tuple`，以及具有相同数据的 `Map` 类型和对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 farmFingerprint64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 数量可变的输入参数，用于计算其哈希值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmFingerprint, toTypeName(FarmFingerprint) AS type;
@@ -614,43 +556,38 @@ SELECT farmFingerprint64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 
 └─────────────────────┴────────┘
 ```
 
-
-
 ## farmHash64 {#farmHash64}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Produces a 64-bit [FarmHash](https://github.com/google/farmhash) using the `Hash64` method.
+使用 `Hash64` 方法生成 64 位的 [FarmHash](https://github.com/google/farmhash)。
 
 :::tip
-[`farmFingerprint64`](#farmFingerprint64) is preferred for a stable and portable value.
+如需稳定且可移植的值，推荐使用 [`farmFingerprint64`](#farmFingerprint64)。
 :::
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型但输入值相同的情况，计算得到的哈希值可能会相同。
+例如，不同大小的整数类型、具有相同数据的已命名和未命名 `Tuple`，以及具有相同数据的 `Map` 与对应的 `Array(Tuple(key, value))` 类型，都会受到影响。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 farmHash64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 需要计算哈希值的数量可变的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS FarmHash, toTypeName(FarmHash) AS type;
@@ -662,36 +599,31 @@ SELECT farmHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:0
 └──────────────────────┴────────┘
 ```
 
-
-
 ## gccMurmurHash {#gccMurmurHash}
 
-Introduced in: v20.1
+自 v20.1 引入
 
+使用与 [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191) 相同的种子，计算输入值的 64 位 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值。
 
-Computes the 64-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [GCC](https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/include/bits/functional_hash.h#L191).
+在使用 Clang 和 GCC 构建的程序之间具有可移植性。
 
-It is portable between Clang and GCC builds.
-
-
-**Syntax**
+**语法**
 
 ```sql
 gccMurmurHash(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 数量可变的参数，用于计算哈希值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算所得的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the calculated hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -705,43 +637,35 @@ SELECT
 └──────────────────────┴─────────────────────┘
 ```
 
-
-
 ## halfMD5 {#halfMD5}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将所有输入参数[重新解释](/sql-reference/functions/type-conversion-functions#reinterpretasstring)为字符串，并为每个参数计算 MD5 哈希值。然后将这些哈希值组合起来，对所得字符串计算哈希，取其前 8 个字节，并按大端字节序将其解释为 [UInt64](/sql-reference/data-types/int-uint)。该函数相对较慢（每个处理器核心每秒约 500 万个短字符串）。
 
-[Interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input
-parameters as strings and calculates the MD5 hash value for each of them. Then combines hashes, takes the first 8 bytes of the hash of the
-resulting string, and interprets them as [UInt64](/sql-reference/data-types/int-uint) in big-endian byte order. The function is
-relatively slow (5 million short strings per second per processor core).
+建议改用 [`sipHash64`](#sipHash64) 函数。
 
-Consider using the [`sipHash64`](#sipHash64) function instead.
+该函数接收可变数量的输入参数。
+参数可以是任意受支持的数据类型。
+对于某些数据类型，即使参数类型不同（不同大小的整数、具有相同数据的具名和未具名 Tuple、以及具有相同数据的 Map 与对应的 Array(Tuple(key, value)) 类型），在相同取值时计算得到的哈希值也可能相同。
 
-The function takes a variable number of input parameters.
-Arguments can be any of the supported data types.
-For some data types calculated value of hash function may be the same for the same values even if types of arguments differ (integers of different size, named and unnamed Tuple with the same data, Map and the corresponding Array(Tuple(key, value)) type with the same data).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 halfMD5(arg1[, arg2, ..., argN])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ..., argN]` — Variable number of arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ..., argN]` — 要计算哈希值的可变数量的参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对给定输入参数计算得到的半 MD5 哈希值，结果以大端字节序的 `UInt64` 类型返回。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed half MD5 hash of the given input params returned as a `UInt64` in big-endian byte order. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
@@ -753,41 +677,36 @@ SELECT HEX(halfMD5('abc', 'cde', 'fgh'));
 └───────────────────────────────────┘
 ```
 
-
-
 ## hiveHash {#hiveHash}
 
-Introduced in: v20.1
+引入于：v20.1
 
-
-Calculates a "HiveHash" from a string.
-This is just [`JavaHash`](#javaHash) with zeroed out sign bits.
-This function is used in [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive) for versions before 3.0.
+从字符串计算一个 “HiveHash” 值。
+它只是将符号位清零的 [`JavaHash`](#javaHash)。
+此函数用于 3.0 之前版本的 [Apache Hive](https://en.wikipedia.org/wiki/Apache_Hive)。
 
 :::caution
-This hash function is unperformant.
-Use it only when this algorithm is already used in another system and you need to calculate the same result.
+此哈希函数性能较差。
+仅在其他系统已使用该算法且你需要计算相同结果时才使用它。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 hiveHash(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
+* `arg` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串计算得到的 “Hive 哈希值”。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the computed "hive hash" of the input string. [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT hiveHash('Hello, world!');
@@ -799,32 +718,29 @@ SELECT hiveHash('Hello, world!');
 └───────────────────────────┘
 ```
 
-
-
 ## icebergHash {#icebergHash}
 
-Introduced in: v25.5
+自 v25.5 版本引入
 
-Implements the logic of the iceberg [hashing transform](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements)
+实现 iceberg [哈希变换](https://iceberg.apache.org/spec/#appendix-b-32-bit-hash-requirements) 的逻辑
 
-**Syntax**
+**语法**
 
 ```sql
-icebergHash(值)
+icebergHash(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Source value to take the hash of [`Integer`](/sql-reference/data-types/int-uint) or [`Bool`](/sql-reference/data-types/boolean) or [`Decimal`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float) or [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring) or [`UUID`](/sql-reference/data-types/uuid) or [`Date`](/sql-reference/data-types/date) or [`Time`](/sql-reference/data-types/time) or [`DateTime`](/sql-reference/data-types/datetime)
+* `value` — 要计算哈希值的源值，类型可以是 [`Integer`](/sql-reference/data-types/int-uint)、[`Bool`](/sql-reference/data-types/boolean)、[`Decimal`](/sql-reference/data-types/decimal)、[`Float*`](/sql-reference/data-types/float)、[`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring)、[`UUID`](/sql-reference/data-types/uuid)、[`Date`](/sql-reference/data-types/date)、[`Time`](/sql-reference/data-types/time) 或 [`DateTime`](/sql-reference/data-types/datetime)
 
+**返回值**
 
-**Returned value**
+返回一个 32 位的 Murmur3 哈希值，x86 变体，种子为 0，类型为 [`Int32`](/sql-reference/data-types/int-uint)
 
-Returns a 32-bit Murmur3 hash, x86 variant, seeded with 0 [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT icebergHash(1.0 :: Float32)
@@ -834,36 +750,31 @@ SELECT icebergHash(1.0 :: Float32)
 -142385009
 ```
 
-
-
 ## intHash32 {#intHash32}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
+计算整数的 32 位哈希值。
 
-Calculates a 32-bit hash of an integer.
+该哈希函数速度较快，但并非密码学哈希函数。
 
-The hash function is relatively fast but not cryptographic hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 intHash32(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `arg` — 要进行哈希的整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回输入整数计算得到的 32 位哈希码 [`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the computed 32-bit hash code of the input integer [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT intHash32(42);
@@ -875,36 +786,31 @@ SELECT intHash32(42);
 └───────────────┘
 ```
 
-
-
 ## intHash64 {#intHash64}
 
-Introduced in: v1.1
+自 v1.1 起引入。
 
+计算整数的 64 位哈希值。
 
-Calculates a 64-bit hash of an integer.
+该哈希函数相对较快（甚至比 [`intHash32`](#intHash32) 还要快），但不是加密哈希函数。
 
-The hash function is relatively fast (even faster than [`intHash32`](#intHash32)) but not a cryptographic hash function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 intHash64(int)
 ```
 
-**Arguments**
+**参数**
 
-- `int` — Integer to hash. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `int` — 用于哈希的整数。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+64 位哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-64-bit hash code. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT intHash64(42);
@@ -916,49 +822,45 @@ SELECT intHash64(42);
 └──────────────────────┘
 ```
 
-
-
 ## javaHash {#javaHash}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+从以下类型计算 JavaHash 值：
 
-Calculates JavaHash from:
-- [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452),
-- [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405),
-- [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410),
-- [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959),
-- [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060).
+* [string](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452)，
+* [Byte](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Byte.java#l405)，
+* [Short](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Short.java#l410)，
+* [Integer](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Integer.java#l959)，
+* [Long](https://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/Long.java#l1060)。
 
 :::caution
-This hash function is unperformant.
-Use it only when this algorithm is already in use in another system and you need to calculate the same result.
+此哈希函数性能不佳。
+仅当该算法已在其他系统中使用且你需要计算相同结果时才使用它。
 :::
 
 :::note
-Java only supports calculating the hash of signed integers,
-so if you want to calculate a hash of unsigned integers you must cast them to the proper signed ClickHouse types.
+Java 仅支持对有符号整数计算哈希，
+因此如果你想对无符号整数计算哈希，必须先将它们转换为 ClickHouse 中对应的有符号类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 javaHash(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — Input value to hash. [`Any`](/sql-reference/data-types)
+* `arg` — 用于哈希计算的输入值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回 `arg` 的哈希值。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of `arg` [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example 1**
+**用法示例 1**
 
 ```sql title=Query
 SELECT javaHash(toInt32(123));
@@ -970,7 +872,7 @@ SELECT javaHash(toInt32(123));
 └────────────────────────┘
 ```
 
-**Usage example 2**
+**使用示例 2**
 
 ```sql title=Query
 SELECT javaHash('Hello, world!');
@@ -982,34 +884,29 @@ SELECT javaHash('Hello, world!');
 └───────────────────────────┘
 ```
 
-
-
 ## javaHashUTF16LE {#javaHashUTF16LE}
 
-Introduced in: v20.1
+引入于：v20.1
 
+在假定字符串的字节表示为 UTF-16LE 编码的前提下，从字符串计算 [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452)。
 
-Calculates [JavaHash](http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/478a4add975b/src/share/classes/java/lang/String.java#l1452) from a string, assuming it contains bytes representing a string in UTF-16LE encoding.
-
-
-**Syntax**
+**语法**
 
 ```sql
 javaHashUTF16LE(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — A string in UTF-16LE encoding. [`String`](/sql-reference/data-types/string)
+* `arg` — 使用 UTF-16LE 编码的字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回对 UTF-16LE 编码字符串计算得到的哈希值。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the UTF-16LE encoded string. [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
@@ -1021,35 +918,30 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 └──────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## jumpConsistentHash {#jumpConsistentHash}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+为一个整数计算其 [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf)。
 
-Calculates the [jump consistent hash](https://arxiv.org/pdf/1406.2294.pdf) for an integer.
-
-
-**Syntax**
+**语法**
 
 ```sql
-jumpConsistentHash(键, 桶)
+jumpConsistentHash(key, buckets)
 ```
 
-**Arguments**
+**参数**
 
-- `key` — The input key. [`UInt64`](/sql-reference/data-types/int-uint)
-- `buckets` — The number of buckets. [`Int32`](/sql-reference/data-types/int-uint)
+* `key` — 输入键值。[`UInt64`](/sql-reference/data-types/int-uint)
+* `buckets` — 桶数。[`Int32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT jumpConsistentHash(256, 4)
@@ -1061,34 +953,29 @@ SELECT jumpConsistentHash(256, 4)
 └────────────────────────────┘
 ```
 
-
-
 ## kafkaMurmurHash {#kafkaMurmurHash}
 
-Introduced in: v23.4
+自 v23.4 起引入
 
+使用与 [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) 相同的种子，对输入值计算 32 位 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值，并清除最高位，以便与 [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328) 兼容。
 
-Calculates the 32-bit [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value using the same seed as used by [Kafka](https://github.com/apache/kafka/blob/461c5cfe056db0951d9b74f5adc45973670404d7/clients/src/main/java/org/apache/kafka/common/utils/Utils.java#L482) and without the highest bit to be compatible with [Default Partitioner](https://github.com/apache/kafka/blob/139f7709bd3f5926901a21e55043388728ccca78/clients/src/main/java/org/apache/kafka/clients/producer/internals/BuiltInPartitioner.java#L328).
-
-
-**Syntax**
+**语法**
 
 ```sql
 kafkaMurmurHash(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of parameters for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 需要计算哈希值的数量可变的参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回基于输入参数计算得到的哈希值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the calculated hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -1102,35 +989,30 @@ SELECT
 └────────────┴──────────┘
 ```
 
-
-
 ## keccak256 {#keccak256}
 
-Introduced in: v25.4
+引入版本：v25.4
 
+计算给定字符串的 Keccak-256 密码学哈希值。
+此哈希函数广泛应用于区块链场景，尤其是以太坊（Ethereum）。
 
-Calculates the Keccak-256 cryptographic hash of the given string.
-This hash function is widely used in blockchain applications, particularly Ethereum.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 keccak256(message)
 ```
 
-**Arguments**
+**参数**
 
-- `message` — The input string to hash. [`String`](/sql-reference/data-types/string)
+* `message` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串的 32 字节 Keccak-256 哈希值，作为固定长度字符串。[`FixedString(32)`](/sql-reference/data-types/fixedstring)
 
-Returns the 32-byte Keccak-256 hash of the input string as a fixed-length string. [`FixedString(32)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT hex(keccak256('hello'))
@@ -1142,38 +1024,33 @@ SELECT hex(keccak256('hello'))
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## kostikConsistentHash {#kostikConsistentHash}
 
-Introduced in: v22.6
+引入版本：v22.6
 
+由 Konstantin &#39;Kostik&#39; Oblakov 设计的 O(1) 时间和空间复杂度的一致性哈希算法。
+仅在 `n <= 32768` 时效率较高。
 
-An O(1) time and space consistent hash algorithm by Konstantin 'Kostik' Oblakov.
-Only efficient with `n <= 32768`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 kostikConsistentHash(input, n)
 ```
 
-**Aliases**: `yandexConsistentHash`
+**别名**：`yandexConsistentHash`
 
-**Arguments**
+**参数**
 
-- `input` — An integer key. [`UInt64`](/sql-reference/data-types/int-uint)
-- `n` — The number of buckets. [`UInt16`](/sql-reference/data-types/int-uint)
+* `input` — 整数键。[`UInt64`](/sql-reference/data-types/int-uint)
+* `n` — 桶的数量。[`UInt16`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT kostikConsistentHash(16045690984833335023, 2);
@@ -1185,39 +1062,34 @@ SELECT kostikConsistentHash(16045690984833335023, 2);
 └───────────────────────────────────────────────┘
 ```
 
-
-
 ## metroHash64 {#metroHash64}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Produces a 64-bit [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) hash value.
+生成一个 64 位的 [MetroHash](http://www.jandrewrogers.com/2015/05/27/metrohash/) 哈希值。
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型但输入值相同的情况，计算得到的哈希值可能相同。
+例如，这会影响不同大小的整数类型、包含相同数据的具名和非具名 `Tuple`，以及具有相同数据的 `Map` 与其对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 metroHash64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 数量可变的一组输入参数，用于计算哈希值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MetroHash, toTypeName(MetroHash) AS type;
@@ -1229,39 +1101,34 @@ SELECT metroHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:
 └──────────────────────┴────────┘
 ```
 
+## murmurHash2&#95;32 {#murmurHash2&#95;32}
 
+自 v18.5 版本引入
 
-## murmurHash2_32 {#murmurHash2_32}
-
-Introduced in: v18.5
-
-
-Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
+计算输入值的 [MurmurHash2](https://github.com/aappleby/smhasher) 哈希值。
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型但具有相同输入值的情况，计算得到的哈希值可能相同。
+例如，这会影响不同长度的整数类型、包含相同数据的具名和非具名 `Tuple`，以及包含相同数据的 `Map` 与其对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 murmurHash2_32(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 要计算哈希的数量可变的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的哈希值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1273,39 +1140,34 @@ SELECT murmurHash2_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
+## murmurHash2&#95;64 {#murmurHash2&#95;64}
 
+引入版本：v18.10
 
-## murmurHash2_64 {#murmurHash2_64}
-
-Introduced in: v18.10
-
-
-Computes the [MurmurHash2](https://github.com/aappleby/smhasher) hash of the input value.
+计算输入值的 [MurmurHash2](https://github.com/aappleby/smhasher) 散列值。
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型的相同输入值，计算得到的散列值可能会相同。
+例如，这会影响不同大小的整数类型、具有相同数据的具名和非具名 `Tuple`，以及具有相同数据的 `Map` 与对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 murmurHash2_64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 需要计算哈希值的一组数量可变的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回根据输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash2, toTypeName(MurmurHash2) AS type;
@@ -1317,34 +1179,29 @@ SELECT murmurHash2_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
+## murmurHash3&#95;128 {#murmurHash3&#95;128}
 
+在 v18.10 中引入
 
-## murmurHash3_128 {#murmurHash3_128}
+计算输入值的 128 位 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
-Introduced in: v18.10
-
-
-Computes the 128-bit [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
-
-
-**Syntax**
+**语法**
 
 ```sql
 murmurHash3_128(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 要计算哈希值的数量可变的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回输入参数计算得到的 128 位 `MurmurHash3` 哈希值。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the computed 128-bit `MurmurHash3` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
@@ -1356,39 +1213,34 @@ SELECT hex(murmurHash3_128('foo', 'foo', 'foo'));
 └───────────────────────────────────────────┘
 ```
 
+## murmurHash3&#95;32 {#murmurHash3&#95;32}
 
+自 v18.10 引入
 
-## murmurHash3_32 {#murmurHash3_32}
-
-Introduced in: v18.10
-
-
-Produces a [MurmurHash3](https://github.com/aappleby/smhasher) hash value.
+生成一个 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于参数类型不同但输入值相同的情况，计算得到的哈希值可能会相同。
+例如，这会影响不同大小的整数类型、具有相同数据的命名和未命名 `Tuple`，以及具有相同数据的 `Map` 与对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 murmurHash3_32(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 用于计算哈希值的数量不定的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的哈希值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of the input arguments. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1400,39 +1252,34 @@ SELECT murmurHash3_32(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └─────────────┴────────┘
 ```
 
+## murmurHash3&#95;64 {#murmurHash3&#95;64}
 
+引入于：v18.10
 
-## murmurHash3_64 {#murmurHash3_64}
-
-Introduced in: v18.10
-
-
-Computes the [MurmurHash3](https://github.com/aappleby/smhasher) hash of the input value.
+计算输入值的 [MurmurHash3](https://github.com/aappleby/smhasher) 哈希值。
 
 :::note
-The calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于不同参数类型但输入值相同的情况，计算得到的哈希值可能会相同。
+例如，这会影响不同大小的整数类型、具有相同数据的具名和非具名 `Tuple`，以及具有相同数据的 `Map` 和对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 murmurHash3_64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 需要计算哈希值的可变数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回输入参数的计算哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS MurmurHash3, toTypeName(MurmurHash3) AS type;
@@ -1444,41 +1291,36 @@ SELECT murmurHash3_64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:
 └──────────────────────┴────────┘
 ```
 
-
-
 ## ngramMinHash {#ngramMinHash}
 
-Introduced in: v21.1
+引入自：v21.1
 
+将一个 ASCII 字符串按 `ngramsize` 个字符拆分为 n-gram，并为每个 n-gram 计算哈希值，返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希值来计算最小哈希，使用 `hashnum` 个最大哈希值来计算最大哈希。
+区分大小写。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case sensitive.
+可与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 一起使用来检测近似重复字符串。
+对于两个字符串，如果返回的哈希值完全相同，则认为这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHash(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值范围为 `1` 到 `25`，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramMinHash('ClickHouse') AS Tuple;
@@ -1490,37 +1332,32 @@ SELECT ngramMinHash('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashArg {#ngramMinHashArg}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将 ASCII 字符串拆分成由 `ngramsize` 个符号组成的 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 [`ngramMinHash`](#ngramMinHash) 函数计算得到。
+区分大小写。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHash`](#ngramMinHash) function with the same input.
-It is case sensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHashArg(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 需要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值为 `1` 到 `25` 之间的任意整数，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值为 `1` 到 `25` 之间的任意整数，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组中包含 `hashnum` 个 n-gram。[`Tuple(String)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(String)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngramMinHashArg('ClickHouse') AS 元组;
@@ -1532,37 +1369,32 @@ SELECT ngramMinHashArg('ClickHouse') AS 元组;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashArgCaseInsensitive {#ngramMinHashArgCaseInsensitive}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将一个 ASCII 字符串拆分成由 `ngramsize` 个符号组成的 n-gram 片段，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) 函数计算得出。
+该函数对大小写不敏感。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the [`ngramMinHashCaseInsensitive`](#ngramMinHashCaseInsensitive) function with the same input.
-It is case insensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHashArgCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 需要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的长度，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组各包含 `hashnum` 个 n-gram。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
@@ -1574,37 +1406,32 @@ SELECT ngramMinHashArgCaseInsensitive('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashArgCaseInsensitiveUTF8 {#ngramMinHashArgCaseInsensitiveUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将 UTF-8 字符串按 `ngramsize` 个符号划分为若干 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 ngramMinHashCaseInsensitiveUTF8 函数计算得出。
+该函数不区分大小写。
 
-Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the ngramMinHashCaseInsensitiveUTF8 function with the same input.
-It is case insensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHashArgCaseInsensitiveUTF8(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值为 `1` 到 `25` 之间的任意数值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值为 `1` 到 `25` 之间的任意数值。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个元组，其中包含两个元组，每个元组中有 `hashnum` 个 n-gram。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1616,37 +1443,32 @@ SELECT ngramMinHashArgCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashArgUTF8 {#ngramMinHashArgUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将 UTF-8 字符串拆分为由 `ngramsize` 个符号组成的 n-gram，并返回哈希值最小和最大的 n-gram，这些哈希值由使用相同输入的 `ngramMinHashUTF8` 函数计算。
+区分大小写。
 
-Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-grams with minimum and maximum hashes, calculated by the `ngramMinHashUTF8` function with the same input.
-It is case sensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHashArgUTF8(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值为 `1` 到 `25` 之间的任意值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小哈希值和最大哈希值的数量，取值为 `1` 到 `25` 之间的任意值。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个元组，其中包含两个元组，每个元组包含 `hashnum` 个 n-gram。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` n-grams each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
@@ -1658,38 +1480,34 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashCaseInsensitive {#ngramMinHashCaseInsensitive}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 ASCII 字符串按长度为 `ngramsize` 的 n-gram 片段拆分，并计算每个 n-gram 的哈希值，返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希值来计算最小哈希，并使用 `hashnum` 个最大哈希值来计算最大哈希。
+该函数不区分大小写。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case insensitive.
+可以配合 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 用于检测近似重复的字符串。
+对于两个字符串，如果返回的哈希在两者之间完全相同，则这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-ngramMinHashCaseInsensitive(字符串[, n-gram大小, 哈希数])
+ngramMinHashCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String. [String](../data-types/string.md). - `ngramsize` — The size of an n-gram. Optional. Possible values: any number from `1` to `25`. Default value: `3`. [UInt8](../data-types/int-uint.md). - `hashnum` — The number of minimum and maximum hashes used to calculate the result. Optional. Possible values: any number from `1` to `25`. Default value: `6`. [UInt8](../data-types/int-uint.md). 
+* `string` — 字符串。[String](../data-types/string.md)。- `ngramsize` — n-gram 的大小。可选。可取值：从 `1` 到 `25` 的任意数。默认值：`3`。[UInt8](../data-types/int-uint.md)。- `hashnum` — 用于计算结果的最小和最大哈希值的数量。可选。可取值：从 `1` 到 `25` 的任意数。默认值：`6`。[UInt8](../data-types/int-uint.md)。
 
-**Returned value**
+**返回值**
 
-Tuple with two hashes — the minimum and the maximum. [Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md)). [`Tuple`](/sql-reference/data-types/tuple)
+包含两个哈希值（最小值和最大值）的 Tuple。[Tuple](../data-types/tuple.md)([UInt64](../data-types/int-uint.md), [UInt64](../data-types/int-uint.md)). [`Tuple`](/sql-reference/data-types/tuple)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
@@ -1701,41 +1519,36 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashCaseInsensitiveUTF8 {#ngramMinHashCaseInsensitiveUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将 UTF-8 字符串按 `ngramsize` 个字符拆分为 n-gram，并为每个 n-gram 计算哈希值，返回一个包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希值来计算最小哈希，并使用 `hashnum` 个最大哈希值来计算最大哈希。
+对大小写不敏感。
 
-Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes..
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case insensitive.
+可以与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 结合使用以检测近似重复字符串。
+对于两个字符串，如果返回的哈希在两者中完全相同，则这两个字符串被视为相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-ngramMinHashCaseInsensitiveUTF8(字符串 [, ngram大小, 哈希数])
+ngramMinHashCaseInsensitiveUTF8(string [, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的长度，取值为 `1` 到 `25` 之间的任意数。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的个数，取值为 `1` 到 `25` 之间的任意数。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
@@ -1747,41 +1560,36 @@ SELECT ngramMinHashCaseInsensitiveUTF8('ClickHouse') AS Tuple;
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramMinHashUTF8 {#ngramMinHashUTF8}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 UTF-8 字符串划分为由 `ngramsize` 个符号组成的 n-gram，并为每个 n-gram 计算哈希值，然后返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希来计算最小哈希，并使用 `hashnum` 个最大哈希来计算最大哈希。
+区分大小写。
 
-Splits a UTF-8 string into n-grams of `ngramsize` symbols and calculates hash values for each n-gram and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case sensitive.
+可与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 一起用于检测近似重复字符串。
+对于两个字符串，如果两者返回的哈希完全相同，则认为这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramMinHashUTF8(string[, ngramsize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值为 `1` 到 `25` 的任意数值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值为 `1` 到 `25` 的任意数值。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
@@ -1793,38 +1601,32 @@ SELECT ngramMinHashUTF8('ClickHouse') AS Tuple;
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## ngramSimHash {#ngramSimHash}
 
-Introduced in: v21.1
+在 v21.1 中引入
 
+将一个 ASCII 字符串拆分为由 `ngramsize` 个字符组成的 n-gram，并返回其 n-gram 的 `simhash` 值。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复字符串。两个字符串计算得到的 `simhash` 之间的 [汉明距离](https://en.wikipedia.org/wiki/Hamming_distance) 越小，这两个字符串越有可能相同。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramSimHash(string[, ngramsize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the case sensitive `simhash`. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is`3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算区分大小写 `simhash` 的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的长度，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回输入字符串的计算哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramSimHash('ClickHouse') AS Hash;
@@ -1836,39 +1638,34 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 └────────────┘
 ```
 
-
-
 ## ngramSimHashCaseInsensitive {#ngramSimHashCaseInsensitive}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 ASCII 字符串按 `ngramsize` 个符号拆分为 n-gram，并返回这些 n-gram 的 `simhash`。
+不区分大小写。
 
-Splits a ASCII string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
-It is case insensitive.
+可与 [`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance) 一起用于检测近似重复的字符串。
+两个字符串计算得到的 `simhash` 之间的 [汉明距离](https://en.wikipedia.org/wiki/Hamming_distance) 越小，这两个字符串相同的可能性就越大。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](/sql-reference/functions/bit-functions#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-ngramSimHashCaseInsensitive(字符串[, n元大小])
+ngramSimHashCaseInsensitive(string[, ngramsize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the case insensitive `simhash`. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算不区分大小写的 `simhash` 的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+哈希值。[UInt64](../data-types/int-uint.md)。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Hash value. [UInt64](../data-types/int-uint.md). [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
@@ -1880,82 +1677,72 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 └───────────┘
 ```
 
-
-
 ## ngramSimHashCaseInsensitiveUTF8 {#ngramSimHashCaseInsensitiveUTF8}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 UTF-8 字符串拆分为由 `ngramsize` 个符号组成的 n-gram，并返回这些 n-gram 的 `simhash` 值。\
+此函数不区分大小写。
 
-Splits a UTF-8 string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
-It is case insensitive.
+可与 [bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复字符串。两个字符串计算得到的 `simhashes` 之间的 [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) 越小，这两个字符串相同的可能性就越大。
 
-Can be used for detection of semi-duplicate strings with [bitHammingDistance](../functions/bit-functions.md/#bitHammingDistance). The smaller is the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-ngramSimHashCaseInsensitiveUTF8(字符串[, n元语法大小])
+ngramSimHashCaseInsensitiveUTF8(string[, ngramsize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值范围为 `1` 到 `25` 的任意数值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS 哈希值;
+SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 ```
 
 ```response title=Response
-┌───────哈希─┐
+┌───────Hash─┐
 │ 1636742693 │
 └────────────┘
 ```
 
-
-
 ## ngramSimHashUTF8 {#ngramSimHashUTF8}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 UTF-8 编码的字符串按 `ngramsize` 个字符拆分为 n-gram，并返回对应的 n-gram `simhash` 值。
+该函数区分大小写。
 
-Splits a UTF-8 encoded string into n-grams of `ngramsize` symbols and returns the n-gram `simhash`.
-It is case sensitive.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 搭配使用，以检测近似重复的字符串。
+两个字符串计算得到的 `simhashes` 的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)越小，这两个字符串相同的可能性就越大。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 ngramSimHashUTF8(string[, ngramsize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `ngramsize` — Optional. The size of an n-gram, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `ngramsize` — 可选。n-gram 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
@@ -1967,40 +1754,35 @@ SELECT ngramSimHashUTF8('ClickHouse') AS Hash;
 └────────────┘
 ```
 
-
-
 ## sipHash128 {#sipHash128}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+与 [`sipHash64`](#sipHash64) 类似，但会生成 128 位哈希值，即最终的异或折叠状态保留到 128 位。
 
-Like [`sipHash64`](#sipHash64) but produces a 128-bit hash value, i.e. the final xor-folding state is done up to 128 bits.
-
-:::tip use sipHash128Reference for new projects
-This 128-bit variant differs from the reference implementation and is weaker.
-This version exists because, when it was written, there was no official 128-bit extension for SipHash.
-New projects are advised to use [`sipHash128Reference`](#sipHash128Reference).
+:::tip 新项目请使用 sipHash128Reference
+这个 128 位变体与参考实现不同，且更弱。
+之所以存在该版本，是因为在编写它时，SipHash 还没有官方的 128 位扩展。
+建议新项目使用 [`sipHash128Reference`](#sipHash128Reference)。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash128(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 要计算哈希值的可变数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回一个 128 位的 `SipHash` 哈希值。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns a 128-bit `SipHash` hash value. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT hex(sipHash128('foo', '\x01', 3));
@@ -2012,41 +1794,36 @@ SELECT hex(sipHash128('foo', '\x01', 3));
 └──────────────────────────────────┘
 ```
 
-
-
 ## sipHash128Keyed {#sipHash128Keyed}
 
-Introduced in: v23.2
+引入于：v23.2
 
+与 [`sipHash128`](#sipHash128) 相同，但额外接受一个显式的密钥参数，而不是使用固定的密钥。
 
-Same as [`sipHash128`](#sipHash128) but additionally takes an explicit key argument instead of using a fixed key.
-
-:::tip use sipHash128ReferenceKeyed for new projects
-This 128-bit variant differs from the reference implementation and it's weaker.
-This version exists because, when it was written, there was no official 128-bit extension for SipHash.
-New projects should probably use [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed).
+:::tip 新项目请使用 sipHash128ReferenceKeyed
+这个 128 位变体与参考实现不同，安全性也更弱。
+该版本之所以存在，是因为在其编写时，SipHash 还没有官方的 128 位扩展。
+新项目应当优先使用 [`sipHash128ReferenceKeyed`](#sipHash128ReferenceKeyed)。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash128Keyed((k0, k1), [arg1, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `(k0, k1)` — A tuple of two UInt64 values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `(k0, k1)` — 表示键的两个 UInt64 值构成的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+* `arg1[, arg2, ...]` — 需要计算哈希的数量可变的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+类型为 [FixedString(16)](../data-types/fixedstring.md) 的 128 位 `SipHash` 哈希值。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-A 128-bit `SipHash` hash value of type [FixedString(16)](../data-types/fixedstring.md). [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x01', 3));
@@ -2058,34 +1835,29 @@ SELECT hex(sipHash128Keyed((506097522914230528, 1084818905618843912),'foo', '\x0
 └───────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## sipHash128Reference {#sipHash128Reference}
 
-Introduced in: v23.2
+在 v23.2 中引入
 
+与 [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128) 类似，但实现的是 SipHash 原作者提出的 128 位算法。
 
-Like [`sipHash128`](/sql-reference/functions/hash-functions#sipHash128) but implements the 128-bit algorithm from the original authors of SipHash.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash128Reference(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 个数不定的输入参数，用于计算哈希值。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的 128 位 `SipHash` 哈希值。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -2097,35 +1869,30 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
-
-
 ## sipHash128ReferenceKeyed {#sipHash128ReferenceKeyed}
 
-Introduced in: v23.2
+自 v23.2 引入
 
+与 [`sipHash128Reference`](#sipHash128Reference) 相同，但多接受一个显式的密钥参数，而不是使用固定密钥。
 
-Same as [`sipHash128Reference`](#sipHash128Reference) but additionally takes an explicit key argument instead of using a fixed key.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash128ReferenceKeyed((k0, k1), arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `(k0, k1)` — Tuple of two values representing the key [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-- `arg1[, arg2, ...]` — A variable number of input arguments for which to compute the hash. [`Any`](/sql-reference/data-types)
+* `(k0, k1)` — 由两个值组成、表示键的元组 [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+* `arg1[, arg2, ...]` — 需要计算哈希的一组可变数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入参数计算得到的 128 位 `SipHash` 哈希值。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns the computed 128-bit `SipHash` hash value of the input arguments. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT hex(sipHash128Reference('foo', '', 3));
@@ -2137,48 +1904,43 @@ SELECT hex(sipHash128Reference('foo', '', 3));
 └────────────────────────────────────────┘
 ```
 
-
-
 ## sipHash64 {#sipHash64}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+生成一个 64 位的 [SipHash](https://en.wikipedia.org/wiki/SipHash) 哈希值。
 
-Produces a 64-bit [SipHash](https://en.wikipedia.org/wiki/SipHash) hash value.
+这是一个密码学哈希函数。其运行速度至少是 [`MD5`](#MD5) 哈希函数的三倍。
 
-This is a cryptographic hash function. It works at least three times faster than the [`MD5`](#MD5) hash function.
+该函数会将所有输入参数都[按字符串解释](/sql-reference/functions/type-conversion-functions#reinterpretasstring)，并为每个参数计算哈希值。
+然后通过以下算法组合这些哈希值：
 
-The function [interprets](/sql-reference/functions/type-conversion-functions#reinterpretasstring) all the input parameters as strings and calculates the hash value for each of them.
-It then combines the hashes using the following algorithm:
-
-1. The first and the second hash value are concatenated to an array which is hashed.
-2. The previously calculated hash value and the hash of the third input parameter are hashed in a similar way.
-3. This calculation is repeated for all remaining hash values of the original input.
+1. 将第一个和第二个哈希值拼接成一个数组并对其进行哈希。
+2. 将前一步计算出的哈希值与第三个输入参数的哈希值以类似方式进行哈希。
+3. 对原始输入剩余的所有哈希值重复此计算。
 
 :::note
-the calculated hash values may be equal for the same input values of different argument types.
-This affects for example integer types of different size, named and unnamed `Tuple` with the same data, `Map` and the corresponding `Array(Tuple(key, value))` type with the same data.
+对于参数类型不同但输入值相同的情况，计算得到的哈希值可能会相同。
+这会影响例如不同大小的整数类型、具有相同数据的已命名和未命名 `Tuple`、以及具有相同数据的 `Map` 与对应的 `Array(Tuple(key, value))` 类型。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash64(arg1[, arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `arg1[, arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
+* `arg1[, arg2, ...]` — 不定数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回根据输入参数计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a computed hash value of the input arguments. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -2190,35 +1952,30 @@ SELECT sipHash64(array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00
 └──────────────────────┴────────┘
 ```
 
-
-
 ## sipHash64Keyed {#sipHash64Keyed}
 
-Introduced in: v23.2
+自 v23.2 起引入
 
+与 [`sipHash64`](#sipHash64) 类似，但多了一个显式密钥参数，而不是使用固定密钥。
 
-Like [`sipHash64`](#sipHash64) but additionally takes an explicit key argument instead of using a fixed key.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sipHash64Keyed((k0, k1), arg1[,arg2, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `(k0, k1)` — A tuple of two values representing the key. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
-- `arg1[,arg2, ...]` — A variable number of input arguments. [`Any`](/sql-reference/data-types)
+* `(k0, k1)` — 表示键的、由两个值组成的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+* `arg1[,arg2, ...]` — 可变数量的输入参数。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回对输入值计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash of the input values. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','a'), 'mple', 10, toDateTime('2019-06-15 23:00:00')) AS SipHash, toTypeName(SipHash) AS type;
@@ -2230,44 +1987,39 @@ SELECT sipHash64Keyed((506097522914230528, 1084818905618843912), array('e','x','
 └─────────────────────┴────────┘
 ```
 
-
-
 ## wordShingleMinHash {#wordShingleMinHash}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 ASCII 字符串按 `shinglesize` 个单词划分成若干片段（shingle），计算每个单词片段的哈希值，并返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希来计算最小哈希值，使用 `hashnum` 个最大哈希来计算最大哈希值。
+该函数区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case sensitive.
+可结合 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 用于检测部分重复的字符串。
+对于两个字符串，如果返回的哈希值完全相同，则认为这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHash(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的长度，取值范围为 `1` 到 `25` 的任意整数，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值数量，取值范围为 `1` 到 `25` 的任意整数，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHash('ClickHouse® 是用于联机分析处理（OLAP）查询的列式数据库管理系统（DBMS）。') AS Tuple;
+SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
 ```
 
 ```response title=Response
@@ -2276,212 +2028,187 @@ SELECT wordShingleMinHash('ClickHouse® 是用于联机分析处理（OLAP）查
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashArg {#wordShingleMinHashArg}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将一个 ASCII 字符串按每 `shinglesize` 个单词拆分为若干部分（shingle），并返回其中单词哈希值最小和最大的这些 shingle，这些哈希值是通过在相同输入上调用 wordShingleMinHash 函数计算得到的。
+区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the wordShingleMinHash function with the same input.
-It is case sensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashArg(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。单词 shingle 的大小，取值范围为 `1` 到 `25` 的任意数字，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值范围为 `1` 到 `25` 的任意数字，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组包含 `hashnum` 个单词 shingle。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArg('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于联机分析处理 (OLAP) 查询。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArg('ClickHouse®は、オンライン分析処理（OLAP）のための列指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple─────────────────────────────────────────────────────────────────┐
-│ (('OLAP','数据库','分析型'),('在线','面向','处理')) │
+│ (('OLAP','database','analytical'),('online','oriented','processing')) │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashArgCaseInsensitive {#wordShingleMinHashArgCaseInsensitive}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将一个 ASCII 字符串按每 `shinglesize` 个单词拆分为若干部分（shingles），并返回其中单词哈希值最小和最大的 shingles，这些哈希值是通过使用相同输入的 [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) 函数计算得到的。
+该函数不区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitive`](#wordShingleMinHashCaseInsensitive) function with the same input.
-It is case insensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashArgCaseInsensitive(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的长度，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希的数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组中包含 `hashnum` 个词 shingle。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® 是一款列式数据库管理系统（DBMS），用于对查询进行联机分析处理（OLAP）。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple──────────────────────────────────────────────────────────────────┐
-│ (('查询','数据库','分析型'),('面向','处理','数据库管理系统')) │
+│ (('queries','database','analytical'),('oriented','processing','DBMS')) │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashArgCaseInsensitiveUTF8 {#wordShingleMinHashArgCaseInsensitiveUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将一个 UTF-8 字符串按每段包含 `shinglesize` 个单词拆分为多个部分（shingle），并返回按单词哈希值计算出的最小和最大的 shingle。这些哈希值由在相同输入下调用的 [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) 函数计算。
+该函数对大小写不敏感。
 
-Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashCaseInsensitiveUTF8`](#wordShingleMinHashCaseInsensitiveUTF8) function with the same input.
-It is case insensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的长度，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小哈希和最小哈希数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组包含 `hashnum` 个词 shingle。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® 是一款面向联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple──────────────────────────────────────────────────────────────────┐
-│ (('查询','数据库','分析型'),('面向','处理','数据库管理系统')) │
+│ (('queries','database','analytical'),('oriented','processing','DBMS')) │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashArgUTF8 {#wordShingleMinHashArgUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将一个 UTF-8 字符串按每 `shinglesize` 个单词拆分为若干部分（shingles），并返回其中具有最小和最大单词哈希值的 shingles，这些哈希值由使用相同输入的 [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) 函数计算得到。
+区分大小写。
 
-Splits a UTF-8 string into parts (shingles) of `shinglesize` words each and returns the shingles with minimum and maximum word hashes, calculated by the [`wordShingleMinHashUTF8`](#wordShingleMinHashUTF8) function with the same input.
-It is case sensitive.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashArgUTF8(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。单词 shingle 的大小，取值为 `1` 到 `25` 之间的任意数值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值为 `1` 到 `25` 之间的任意数值。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个元组的元组，每个元组中有 `hashnum` 个单词 shingle。[`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two tuples with `hashnum` word shingles each. [`Tuple(Tuple(String))`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgUTF8('ClickHouse® 是一款用于联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple─────────────────────────────────────────────────────────────────┐
-│ (('OLAP','数据库','分析型'),('联机','面向','处理')) │
+│ (('OLAP','database','analytical'),('online','oriented','processing')) │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashCaseInsensitive {#wordShingleMinHashCaseInsensitive}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 ASCII 字符串按 `shinglesize` 个单词切分成若干部分（shingle），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希来计算最小哈希，使用 `hashnum` 个最大哈希来计算最大哈希。
+该函数不区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case insensitive.
+可与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 一起用于检测部分重复（近似重复）字符串。
+对于两个字符串，如果二者返回的哈希值完全相同，则这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-wordShingleMinHashCaseInsensitive(字符串[, 片段大小, 哈希数量])
+wordShingleMinHashCaseInsensitive(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。单词 shingle 的大小，取值为 `1` 到 `25` 之间的任意整数。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值为 `1` 到 `25` 之间的任意整数。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashCaseInsensitive('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于对查询执行联机分析处理 (OLAP)。') AS Tuple;
+SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
 ```
 
 ```response title=Response
@@ -2490,44 +2217,39 @@ SELECT wordShingleMinHashCaseInsensitive('ClickHouse® 是一款列式数据库�
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashCaseInsensitiveUTF8 {#wordShingleMinHashCaseInsensitiveUTF8}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将 UTF-8 字符串按 `shinglesize` 个单词拆分为若干单词片段（shingles），对每个单词 shingle 计算哈希值，并返回一个包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希来计算最小哈希值，使用 `hashnum` 个最大哈希来计算最大哈希值。
+该函数大小写不敏感。
 
-Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case insensitive.
+可与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 搭配使用，用于检测近似重复的字符串。
+对于两个字符串，如果它们返回的哈希完全一致，则认为这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希数量，取值范围为 `1` 到 `25`。默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希的元组——最小值和最大值。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® 是一款面向列的数据库管理系统（DBMS），用于执行查询的联机分析处理（OLAP）。') AS Tuple;
+SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。') AS Tuple;
 ```
 
 ```response title=Response
@@ -2536,44 +2258,38 @@ SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® 是一款面向列的
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleMinHashUTF8 {#wordShingleMinHashUTF8}
 
-Introduced in: v21.1
+引入自：v21.1
 
+将一个 UTF-8 字符串按 `shinglesize` 个单词拆分为若干片段（shingle），为每个单词 shingle 计算哈希值，并返回包含这些哈希值的元组。
+使用 `hashnum` 个最小哈希值来计算最小哈希，并使用 `hashnum` 个最大哈希值来计算最大哈希。
+区分大小写。
 
-Splits a UTF-8 string into parts (shingles) of `shinglesize` words, calculates hash values for each word shingle and returns a tuple with these hashes.
-Uses `hashnum` minimum hashes to calculate the minimum hash and `hashnum` maximum hashes to calculate the maximum hash.
-It is case sensitive.
+可与 [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance) 一起用于检测近似重复的字符串。
+对于两个字符串，如果二者返回的哈希值完全相同，则这两个字符串相同。
 
-Can be used to detect semi-duplicate strings with [`tupleHammingDistance`](../functions/tuple-functions.md#tupleHammingDistance).
-For two strings, if the returned hashes are the same for both strings, then those strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleMinHashUTF8(string[, shinglesize, hashnum])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `hashnum` — Optional. The number of minimum and maximum hashes used to calculate the result, any number from `1` to `25`. The default value is `6`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 需要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的长度，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `hashnum` — 可选。用于计算结果的最小和最大哈希值的数量，取值范围为 `1` 到 `25`，默认值为 `6`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个包含两个哈希值（最小值和最大值）的元组。[`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two hashes — the minimum and the maximum. [`Tuple(UInt64, UInt64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
-
+**使用示例**
 ```sql title=Query
-SELECT wordShingleMinHashUTF8('ClickHouse® 是一款面向联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。') AS Tuple;
+SELECT wordShingleMinHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Tuple;
 ```
 
 ```response title=Response
@@ -2582,42 +2298,37 @@ SELECT wordShingleMinHashUTF8('ClickHouse® 是一款面向联机分析处理 (O
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## wordShingleSimHash {#wordShingleSimHash}
 
-Introduced in: v21.1
+自 v21.1 起引入
 
+将 ASCII 字符串按每 `shinglesize` 个单词切分为若干片段（shingle），并返回这些单词 shingle 的 `simhash` 值。
+区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
-Is is case sensitive.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复字符串。
+两个字符串计算得到的 `simhash` 值之间的 [Hamming 距离](https://en.wikipedia.org/wiki/Hamming_distance) 越小，这两个字符串越有可能相同。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleSimHash(string[, shinglesize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。单词 shingle 的大小，取值范围为 `1` 到 `25`。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHash('ClickHouse® 是一款列式数据库管理系统（DBMS），用于联机分析处理（OLAP）查询。') AS Hash;
+SELECT wordShingleSimHash('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2626,42 +2337,37 @@ SELECT wordShingleSimHash('ClickHouse® 是一款列式数据库管理系统（D
 └────────────┘
 ```
 
-
-
 ## wordShingleSimHashCaseInsensitive {#wordShingleSimHashCaseInsensitive}
 
-Introduced in: v21.1
+引入版本：v21.1
 
+将一个 ASCII 字符串按 `shinglesize` 个单词拆分成若干部分（shingle），并返回这些单词 shingle 的 `simhash`。
+该函数不区分大小写。
 
-Splits a ASCII string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
-It is case insensitive.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测近似重复字符串。
+两个字符串计算得到的 `simhashes` 之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)越小，这两个字符串越有可能相同。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleSimHashCaseInsensitive(string[, shinglesize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词组（shingle）的长度，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashCaseInsensitive('ClickHouse® 是用于联机分析处理(OLAP)查询的列式数据库管理系统(DBMS)。') AS Hash;
+SELECT wordShingleSimHashCaseInsensitive('ClickHouse®は、オンライン分析処理(OLAP)クエリのためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2669,43 +2375,38 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® 是用于联机分析处�
 │ 2194812424 │
 └────────────┘
 ```
-
-
 
 ## wordShingleSimHashCaseInsensitiveUTF8 {#wordShingleSimHashCaseInsensitiveUTF8}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将 UTF-8 编码的字符串按 `shinglesize` 个单词拆分成多个部分（shingles），并返回这些单词 shingle 的 `simhash`。
+该函数不区分大小写。
 
-Splits a UTF-8 encoded string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
-It is case insensitive.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 一起用于检测部分重复的字符串。
+两个字符串计算得到的 `simhashes` 之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)越小，这两个字符串越有可能相同。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
-wordShingleSimHashCaseInsensitiveUTF8(字符串[, shingle大小])
+wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选。词 shingle 的长度，取值范围为 `1` 到 `25` 的任意数值。默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于联机分析处理 (OLAP) 查询。') AS Hash;
+SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2714,42 +2415,37 @@ SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® 是一款列式数据
 └────────────┘
 ```
 
-
-
 ## wordShingleSimHashUTF8 {#wordShingleSimHashUTF8}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 UTF-8 字符串按 `shinglesize` 个单词划分为若干部分（shingle），并返回这些词片段的 `simhash`。
+区分大小写。
 
-Splits a UTF-8 string into parts (shingles) of `shinglesize` words and returns the word shingle `simhash`.
-It is case sensitive.
+可与 [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance) 结合使用，用于检测近似重复字符串。
+两个字符串计算得到的 `simhash` 值之间的[汉明距离](https://en.wikipedia.org/wiki/Hamming_distance)越小，这两个字符串越有可能相同。
 
-Can be used for detection of semi-duplicate strings with [`bitHammingDistance`](../functions/bit-functions.md/#bitHammingDistance).
-The smaller the [Hamming distance](https://en.wikipedia.org/wiki/Hamming_distance) of the calculated `simhashes` of two strings, the more likely these strings are the same.
-
-
-**Syntax**
+**语法**
 
 ```sql
 wordShingleSimHashUTF8(string[, shinglesize])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — String for which to compute the hash. [`String`](/sql-reference/data-types/string)
-- `shinglesize` — Optional. The size of a word shingle, any number from `1` to `25`. The default value is `3`. [`UInt8`](/sql-reference/data-types/int-uint)
+* `string` — 需要计算哈希值的字符串。[`String`](/sql-reference/data-types/string)
+* `shinglesize` — 可选参数。单词 shingle 的长度，取值范围为 `1` 到 `25`，默认值为 `3`。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回计算得到的哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed hash value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashUTF8('ClickHouse® 是用于对查询进行联机分析处理 (OLAP) 的列式数据库管理系统 (DBMS)。') AS Hash;
+SELECT wordShingleSimHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2758,32 +2454,29 @@ SELECT wordShingleSimHashUTF8('ClickHouse® 是用于对查询进行联机分析
 └────────────┘
 ```
 
-
-
 ## wyHash64 {#wyHash64}
 
-Introduced in: v22.7
+自 v22.7 引入
 
-Computes a 64-bit [wyHash64](https://github.com/wangyi-fudan/wyhash) hash value.
+计算 64 位 [wyHash64](https://github.com/wangyi-fudan/wyhash) 哈希值。
 
-**Syntax**
+**语法**
 
 ```sql
 wyHash64(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — String argument for which to compute the hash. [`String`](/sql-reference/data-types/string)
+* `arg` — 要计算哈希值的字符串参数。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回计算得到的 64 位哈希值 [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed 64-bit hash value [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT wyHash64('ClickHouse') AS 哈希;
@@ -2793,36 +2486,31 @@ SELECT wyHash64('ClickHouse') AS 哈希;
 12336419557878201794
 ```
 
-
-
 ## xxHash32 {#xxHash32}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+计算字符串的 [xxHash](http://cyan4973.github.io/xxHash/) 哈希值。
 
-Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
+64 位版本请参见 [`xxHash64`](#xxHash64)
 
-For the 64-bit version see [`xxHash64`](#xxHash64)
-
-
-**Syntax**
+**语法**
 
 ```sql
 xxHash32(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
+* `arg` — 用于计算哈希值的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回输入字符串计算得到的 32 位哈希值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the computed 32-bit hash of the input string. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT xxHash32('Hello, world!');
@@ -2834,36 +2522,31 @@ SELECT xxHash32('Hello, world!');
 └───────────────────────────┘
 ```
 
-
-
 ## xxHash64 {#xxHash64}
 
-Introduced in: v20.1
+自 v20.1 起提供
 
+根据字符串计算一个 [xxHash](http://cyan4973.github.io/xxHash/)。
 
-Calculates a [xxHash](http://cyan4973.github.io/xxHash/) from a string.
+32 位版本请参阅 [`xxHash32`](#xxHash32)
 
-For the 32-bit version see [`xxHash32`](#xxHash32)
-
-
-**Syntax**
+**语法**
 
 ```sql
 xxHash64(arg)
 ```
 
-**Arguments**
+**参数**
 
-- `arg` — Input string to hash. [`String`](/sql-reference/data-types/string)
+* `arg` — 要进行哈希计算的输入字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回对输入字符串计算得到的 64 位哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed 64-bit hash of the input string. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT xxHash64('Hello, world!');
@@ -2875,32 +2558,29 @@ SELECT xxHash64('Hello, world!');
 └───────────────────────────┘
 ```
 
-
-
 ## xxh3 {#xxh3}
 
-Introduced in: v22.12
+自 v22.12 引入
 
-Computes a [XXH3](https://github.com/Cyan4973/xxHash) 64-bit hash value.
+计算一个 [XXH3](https://github.com/Cyan4973/xxHash) 64 位哈希值。
 
-**Syntax**
+**语法**
 
 ```sql
 xxh3(expr)
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — A list of expressions of any data type. [`Any`](/sql-reference/data-types)
+* `expr` — 任意数据类型的表达式列表。[`Any`](/sql-reference/data-types)
 
+**返回值**
 
-**Returned value**
+返回计算得到的 64 位 `xxh3` 哈希值 [`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the computed 64-bit `xxh3` hash value [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT xxh3('ClickHouse')

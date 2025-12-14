@@ -39,10 +39,8 @@ ClickHouse 不会自动从该表中删除数据。更多细节参见 [简介](..
 
 查询：
 
-```
-
-Result:
-
+```sql
+SELECT * FROM system.dead_letter_queue LIMIT 1 \G;
 ```
 
 结果：

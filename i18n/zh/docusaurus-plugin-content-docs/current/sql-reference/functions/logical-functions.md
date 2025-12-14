@@ -64,7 +64,7 @@ SELECT and(0, 1, -2);
 0
 ```
 
-**With NULL**
+**包含 NULL**
 
 ```sql title=Query
 SELECT and(NULL, 1, 10, -2);
@@ -74,39 +74,35 @@ SELECT and(NULL, 1, 10, -2);
 ᴺᵁᴸᴸ
 ```
 
-
-
 ## not {#not}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+对一个值进行逻辑取反运算。
+将参数为零视为 `false`，非零值视为 `true`。
 
-Calculates the logical negation of a value.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 not(val)
 ```
 
-**Arguments**
+**参数**
 
-- `val` — The value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `val` — 值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- `1`, if `val` evaluates to `false`
-- `0`, if `val` evaluates to `true`
-- `NULL`, if `val` is `NULL`.
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* 当 `val` 求值结果为 `false` 时，返回 `1`
+* 当 `val` 求值结果为 `true` 时，返回 `0`
+* 当 `val` 为 `NULL` 时，返回 `NULL`。
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**示例**
 
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT NOT(1);
@@ -116,44 +112,40 @@ SELECT NOT(1);
 0
 ```
 
-
-
 ## or {#or}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+计算两个或多个值的逻辑析取（逻辑“或”）。
 
-Calculates the logical disjunction of two or more values.
+设置 [`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) 用于控制是否使用短路求值。
+如果启用该设置，仅当 `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` 为 `true` 时才会计算 `val_i`。
 
-Setting [`short_circuit_function_evaluation`](https://clickhouse.com/docs/operations/settings/settings#short_circuit_function_evaluation) controls whether short-circuit evaluation is used.
-If enabled, `val_i` is evaluated only if `((NOT val_1) AND (NOT val_2) AND ... AND (NOT val_{i-1}))` is `true`.
+例如，在启用短路求值时，执行查询 `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)` 时不会抛出除以零异常。
+作为参数时，零被视为 `false`，非零值被视为 `true`。
 
-For example, with short-circuit evaluation, no division-by-zero exception is thrown when executing the query `SELECT or(number = 0, intDiv(1, number) != 0) FROM numbers(5)`.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 or(val1, val2[, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+* `val1, val2[, ...]` — 至少包含两个值的列表。类型为 [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) 或 [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- `1`, if at least one argument evaluates to `true`
-- `0`, if all arguments evaluate to `false`
-- `NULL`, if all arguments evaluate to `false` and at least one argument is `NULL`
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* `1`，如果至少有一个参数的求值结果为 `true`
+* `0`，如果所有参数的求值结果都为 `false`
+* `NULL`，如果所有参数的求值结果都为 `false` 且至少有一个参数为 `NULL`\
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**示例**
 
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT or(1, 0, 0, 2, NULL);
@@ -163,7 +155,7 @@ SELECT or(1, 0, 0, 2, NULL);
 1
 ```
 
-**With NULL**
+**包含 NULL**
 
 ```sql title=Query
 SELECT or(0, NULL);
@@ -173,40 +165,36 @@ SELECT or(0, NULL);
 ᴺᵁᴸᴸ
 ```
 
-
-
 ## xor {#xor}
 
-Introduced in: v1.1
+引入于：v1.1
 
+计算两个或多个值的逻辑异或。
+对于多于两个的输入值，函数先对前两个值执行 xor 运算，然后将结果与第三个值进行 xor 运算，依此类推。
+作为参数的零被视为 `false`，非零值被视为 `true`。
 
-Calculates the logical exclusive disjunction of two or more values.
-For more than two input values, the function first xor-s the first two values, then xor-s the result with the third value etc.
-Zero as an argument is considered `false`, non-zero values are considered `true`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 xor(val1, val2[, ...])
 ```
 
-**Arguments**
+**参数**
 
-- `val1, val2[, ...]` — List of at least two values. [`Nullable((U)Int*)`](/sql-reference/data-types/nullable) or [`Nullable(Float*)`](/sql-reference/data-types/nullable)
+* `val1, val2[, ...]` — 至少包含两个值的列表。[`Nullable((U)Int*)`](/sql-reference/data-types/nullable) 或 [`Nullable(Float*)`](/sql-reference/data-types/nullable)
 
+**返回值**
 
-**Returned value**
+返回：
 
-Returns:
-- `1`, for two values: if one of the values evaluates to `false` and other does not
-- `0`, for two values: if both values evaluate to `false` or to both `true`
-- `NULL`, if at least one of the inputs is `NULL`.
-         [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
+* `1`：对于两个参数的情况，当其中一个值求值为 `false` 且另一个不为 `false` 时
+* `0`：对于两个参数的情况，当两个值都求值为 `false` 或都为 `true` 时
+* `NULL`：当至少一个输入值为 `NULL` 时。
+  [`Nullable(UInt8)`](/sql-reference/data-types/nullable)
 
-**Examples**
+**示例**
 
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT xor(0, 1, 1);

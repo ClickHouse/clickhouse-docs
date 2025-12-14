@@ -30,7 +30,7 @@ ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
 
 ┌─count()─┐
-│       86 │
+│      86 │
 └─────────┘
 
 1 row in set. Elapsed: 8.209 sec. Processed 150.20 million rows, 56.05 GB (18.30 million rows/s., 6.83 GB/s.)
@@ -60,7 +60,6 @@ Peak memory usage: 323.52 MiB.
 尽管 ClickHouse 会尝试将过滤条件下推到所有 `JOIN` 子句和子查询中，但我们仍然建议用户在可能的情况下始终在所有相关子句中手动应用这些条件，从而最大限度减少参与 `JOIN` 的数据量。请看下面的示例，我们希望统计自 2020 年以来与 Java 相关的帖子获得的点赞数量。
 
 一个较为朴素的查询，将较大的表放在左侧，完成耗时为 56 秒：
-
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
@@ -74,20 +73,8 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
 
+重新调整此连接顺序可将性能显著提升至 1.5 秒:
 
-1 行结果。耗时 56.642 秒。已处理 2.523 亿行，1.62 GB（445 万行/秒，28.60 MB/秒）
-
-````sql
-SELECT countIf(VoteTypeId = 2) AS upvotes
-FROM stackoverflow.votes AS v
-INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
-WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
-
-┌─upvotes─┐
-│  261915 │
-└─────────┘
-
-1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
@@ -99,7 +86,11 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
-````sql
+```
+
+在左侧表格上添加筛选条件后，性能进一步提升到 0.5 秒。
+
+```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
@@ -111,18 +102,10 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
 Peak memory usage: 249.42 MiB.
-```sql
-SELECT countIf(VoteTypeId = 2) AS upvotes
-FROM stackoverflow.votes AS v
-INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
-WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
-┌─upvotes─┐
-│  261915 │
-└─────────┘
+正如前面所述，还可以通过将 `INNER JOIN` 移动到子查询中来进一步改进此查询，同时在外层查询和内层查询中都保留该过滤条件。
 
-返回 1 行。耗时: 0.597 秒。处理了 81.14 百万行，1.31 GB (135.82 百万行/秒，2.19 GB/秒)。
-峰值内存使用: 249.42 MiB。
 ```sql
 SELECT count() AS upvotes
 FROM stackoverflow.votes
@@ -138,23 +121,7 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 
 1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
 Peak memory usage: 250.66 MiB.
-```sql
-SELECT count() AS upvotes
-FROM stackoverflow.votes
-WHERE (VoteTypeId = 2) AND (PostId IN (
-        SELECT Id
-        FROM stackoverflow.posts
-        WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
-))
-
-┌─upvotes─┐
-│  261915 │
-└─────────┘
-
-返回 1 行。用时:0.383 秒。已处理 9964 万行,804.55 MB(2.5985 亿行/秒,2.10 GB/秒)。
-内存峰值:250.66 MiB。
 ```
-
 
 ## 选择 JOIN 算法 {#choosing-a-join-algorithm}
 

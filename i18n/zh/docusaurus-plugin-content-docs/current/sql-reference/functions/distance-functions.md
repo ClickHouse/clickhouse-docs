@@ -54,36 +54,31 @@ SELECT L1Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
-
-
 ## L1Norm {#L1Norm}
 
-Introduced in: v21.11
+引入版本：v21.11
 
+计算向量中所有元素绝对值的和。
 
-Calculates the sum of absolute elements of a vector.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L1Norm(vector)
 ```
 
-**Aliases**: `normL1`
+**别名**: `normL1`
 
-**Arguments**
+**参数**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — 由数值组成的向量或元组。[`Array(T)`](/sql-reference/data-types/array) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回 L1 范数或 [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry)（出租车几何）距离。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-Returns the L1-norm or [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) distance. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT L1Norm((1, 2))
@@ -95,36 +90,31 @@ SELECT L1Norm((1, 2))
 └────────────────┘
 ```
 
-
-
 ## L1Normalize {#L1Normalize}
 
-Introduced in: v21.11
+自 v21.11 引入
 
+在 `L1` 空间（[出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry)）中，计算给定向量（元组的元素为坐标）的单位向量。
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L1` space ([taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry)).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L1Normalize(tuple)
 ```
 
-**Aliases**: `normalizeL1`
+**别名**: `normalizeL1`
 
-**Arguments**
+**参数**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — 数值构成的元组。[`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回单位向量。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT L1Normalize((1, 2))
@@ -136,37 +126,32 @@ SELECT L1Normalize((1, 2))
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## L2Distance {#L2Distance}
 
-Introduced in: v21.11
+引入版本：v21.11
 
+计算欧几里得空间中两个点之间的距离（即[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)，向量的各元素为坐标）。
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L2Distance(vector1, vector2)
 ```
 
-**Aliases**: `distanceL2`
+**别名**: `distanceL2`
 
-**Arguments**
+**参数**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — 第一个向量。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 第二个向量。[`Tuple(T)`](/sql-reference/data-types/array) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回 L2 范数距离。[`Float64`](/sql-reference/data-types/float)
 
-Returns the 2-norm distance. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT L2Distance((1, 2), (2, 3))
@@ -178,37 +163,33 @@ SELECT L2Distance((1, 2), (2, 3))
 └────────────────────────────┘
 ```
 
-
-
 ## L2DistanceTransposed {#L2DistanceTransposed}
 
-Introduced in: v25.10
+引入版本：v25.10
 
+计算欧几里得空间中两点之间的近似欧几里得距离（向量的各分量表示点的坐标）（[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）。
 
-Calculates the approximate distance between two points (the values of the vectors are the coordinates) in Euclidean space ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).    
-
-**Syntax**
+**语法**
 
 ```sql
 L2DistanceTransposed(vector1, vector2, p)
 ```
 
-**Aliases**: `distanceL2Transposed`
+**别名**: `distanceL2Transposed`
 
-**Arguments**
+**参数**
 
-- `vectors` — Vectors. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
-- `reference` — Reference vector. [`Array(T)`](/sql-reference/data-types/array)
-- `p` — Number of bits from each vector element to use in the distance calculation (1 to element bit-width). The quantization level controls the precision-speed trade-off. Using fewer bits results in faster I/O and calculations with reduced accuracy, while using more bits increases accuracy at the cost of performance. [`UInt`](/sql-reference/data-types/int-uint)
+* `vectors` — 向量。[`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
+* `reference` — 参考向量。[`Array(T)`](/sql-reference/data-types/array)
+* `p` — 在距离计算中，从每个向量元素中使用的位数（1 到元素的位宽）。量化级别控制精度与速度之间的权衡。使用更少的位可加快 I/O 和计算速度，但精度会降低；使用更多的位则会提高精度，但以性能为代价。[`UInt`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回近似的 2-范数距离。[`Float64`](/sql-reference/data-types/float)
 
-Returns the approximate 2-norm distance. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 CREATE TABLE qbit (id UInt32, vec QBit(Float64, 2)) ENGINE = Memory;
@@ -222,36 +203,31 @@ SELECT L2DistanceTransposed(vec, array(1.0, 2.0), 16) FROM qbit;"
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## L2Norm {#L2Norm}
 
-Introduced in: v21.11
+自 v21.11 起引入
 
+计算向量各元素平方和的平方根。
 
-Calculates the square root of the sum of the squares of the vector elements.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L2Norm(vector)
 ```
 
-**Aliases**: `normL2`
+**别名**: `normL2`
 
-**Arguments**
+**参数**
 
-- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector` — 数值向量或元组。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回 L2 范数或[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
-Returns the L2-norm or [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance). [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基础用法**
 
 ```sql title=Query
 SELECT L2Norm((1, 2))
@@ -263,36 +239,31 @@ SELECT L2Norm((1, 2))
 └──────────────────┘
 ```
 
-
-
 ## L2Normalize {#L2Normalize}
 
-Introduced in: v21.11
+自 v21.11 引入
 
+在欧几里得空间中（使用[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)）计算给定向量（元组各元素为其坐标）的单位向量。
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in Euclidean space (using [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L2Normalize(tuple)
 ```
 
-**Aliases**: `normalizeL2`
+**别名**: `normalizeL2`
 
-**Arguments**
+**参数**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — 数值元组。[`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回单位向量。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT L2Normalize((3, 4))
@@ -304,37 +275,32 @@ SELECT L2Normalize((3, 4))
 └─────────────────────┘
 ```
 
-
-
 ## L2SquaredDistance {#L2SquaredDistance}
 
-Introduced in: v22.7
+引入于：v22.7
 
+计算两个向量对应元素之差的平方和。
 
-Calculates the sum of the squares of the difference between the corresponding elements of two vectors.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L2SquaredDistance(vector1, vector2)
 ```
 
-**Aliases**: `distanceL2Squared`
+**别名**：`distanceL2Squared`
 
-**Arguments**
+**参数**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — 第一个向量。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 第二个向量。[`Tuple(T)`](/sql-reference/data-types/array) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回两个向量对应元素之差的平方和。[`Float64`](/sql-reference/data-types/float)
 
-Returns the sum of the squares of the difference between the corresponding elements of two vectors. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基础用法**
 
 ```sql title=Query
 SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
@@ -346,36 +312,31 @@ SELECT L2SquaredDistance([1, 2, 3], [0, 0, 0])
 └──────────────────────────┘
 ```
 
-
-
 ## L2SquaredNorm {#L2SquaredNorm}
 
-Introduced in: v22.7
+引入版本：v22.7
 
+计算向量各元素平方和的平方根（即 [`L2Norm`](#L2Norm)）的平方。
 
-Calculates the square root of the sum of the squares of the vector elements (the [`L2Norm`](#L2Norm)) squared.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 L2SquaredNorm(vector)
 ```
 
-**Aliases**: `normL2Squared`
+**别名**：`normL2Squared`
 
-**Arguments**
+**参数**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — 数值向量或元组。[`Array(T)`](/sql-reference/data-types/array) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回 L2 范数的平方。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-Returns the L2-norm squared. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT L2SquaredNorm((1, 2))
@@ -387,37 +348,32 @@ SELECT L2SquaredNorm((1, 2))
 └───────────────────────┘
 ```
 
-
-
 ## LinfDistance {#LinfDistance}
 
-Introduced in: v21.11
+引入于：v21.11
 
+计算两个点在 `L_{inf}` 空间（[最大范数]([https://en.wikipedia.org/wiki/Norm&#95;(mathematics)#Maximum&#95;norm&#95;(special&#95;case&#95;of:&#95;infinity&#95;norm,&#95;uniform&#95;norm,&#95;or&#95;supremum&#95;norm)））下的距离（向量的元素为坐标）。](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\)））下的距离（向量的元素为坐标）。)
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in `L_{inf}` space ([maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 LinfDistance(vector1, vector2)
 ```
 
-**Aliases**: `distanceLinf`
+**别名**: `distanceLinf`
 
-**Arguments**
+**参数**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — 第一个向量。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 第二个向量。[`Tuple(T)`](/sql-reference/data-types/array) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回无穷范数距离。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Infinity-norm distance. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT LinfDistance((1, 2), (2, 3))
@@ -429,36 +385,31 @@ SELECT LinfDistance((1, 2), (2, 3))
 └──────────────────────────────┘
 ```
 
-
-
 ## LinfNorm {#LinfNorm}
 
-Introduced in: v21.11
+首次引入版本：v21.11
 
+计算向量中各元素绝对值的最大值。
 
-Calculates the maximum of absolute elements of a vector.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 LinfNorm(vector)
 ```
 
-**Aliases**: `normLinf`
+**别名**: `normLinf`
 
-**Arguments**
+**参数**
 
-- `vector` — Vector or tuple of numeric values. [`Array(T)`](/sql-reference/data-types/array) or [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `vector` — 数值向量或数值元组。[`Array(T)`](/sql-reference/data-types/array) 或 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回 Linf 范数或最大绝对值。[`Float64`](/sql-reference/data-types/float)
 
-Returns the Linf-norm or the maximum absolute value. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT LinfNorm((1, -2))
@@ -470,36 +421,31 @@ SELECT LinfNorm((1, -2))
 └───────────────────┘
 ```
 
-
-
 ## LinfNormalize {#LinfNormalize}
 
-Introduced in: v21.11
+引入版本：v21.11
 
+在 `L_{inf}` 空间下，使用[最大范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))，计算给定向量（元组的各元素作为坐标）的单位向量。
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `L_{inf}` space (using [maximum norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Maximum_norm_(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm))).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 LinfNormalize(tuple)
 ```
 
-**Aliases**: `normalizeLinf`
+**别名**: `normalizeLinf`
 
-**Arguments**
+**参数**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
+* `tuple` — 数值元组。[`Tuple(T)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回单位向量。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT LinfNormalize((3, 4))
@@ -511,38 +457,33 @@ SELECT LinfNormalize((3, 4))
 └───────────────────────┘
 ```
 
-
-
 ## LpDistance {#LpDistance}
 
-Introduced in: v21.11
+引入于：v21.11
 
+在 `Lp` 空间中计算两点之间的距离（其中向量的元素为坐标，即 [p-范数距离](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)）。
 
-Calculates the distance between two points (the elements of the vectors are the coordinates) in `Lp` space ([p-norm distance](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 LpDistance(vector1, vector2, p)
 ```
 
-**Aliases**: `distanceLp`
+**别名**: `distanceLp`
 
-**Arguments**
+**参数**
 
-- `vector1` — First vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second vector. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `p` — The power. Possible values: real number from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `vector1` — 第一个向量。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 第二个向量。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `p` — 幂指数。可选值：区间 `[1; inf)` 内的实数。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 p 范数距离。[`Float64`](/sql-reference/data-types/float)
 
-Returns the p-norm distance. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基础用法**
 
 ```sql title=Query
 SELECT LpDistance((1, 2), (2, 3), 3)
@@ -554,42 +495,38 @@ SELECT LpDistance((1, 2), (2, 3), 3)
 └───────────────────────────────┘
 ```
 
-
-
 ## LpNorm {#LpNorm}
 
-Introduced in: v21.11
+自 v21.11 起提供
 
+计算向量的 p 范数，即各元素绝对值的 p 次幂之和的 p 次方根。
 
-Calculates the p-norm of a vector, which is the p-th root of the sum of the p-th powers of the absolute elements of its elements.
+特殊情况：
 
-Special cases:
-- When p=1, it's equivalent to L1Norm (Manhattan distance).
-- When p=2, it's equivalent to L2Norm (Euclidean distance).
-- When p=∞, it's equivalent to LinfNorm (maximum norm).
-    
+* 当 p = 1 时，等价于 L1Norm（曼哈顿距离）。
+* 当 p = 2 时，等价于 L2Norm（欧氏距离）。
+* 当 p = ∞ 时，等价于 LinfNorm（最大范数）。
 
-**Syntax**
+**语法**
 
 ```sql
 LpNorm(vector, p)
 ```
 
-**Aliases**: `normLp`
+**别名**: `normLp`
 
-**Arguments**
+**参数**
 
-- `vector` — Vector or tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `p` — The power. Possible values are real numbers in the range `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `vector` — 数值向量或元组。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `p` — 幂指数。可以是区间 `[1; inf)` 内的任意实数。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 [Lp 范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)。[`Float64`](/sql-reference/data-types/float)
 
-Returns the [Lp-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm). [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT LpNorm((1, -2), 2)
@@ -601,37 +538,32 @@ SELECT LpNorm((1, -2), 2)
 └────────────────────┘
 ```
 
-
-
 ## LpNormalize {#LpNormalize}
 
-Introduced in: v21.11
+引入自：v21.11
 
+在 `Lp` 空间中使用 [p-范数](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)，计算给定向量（元组的元素为各坐标）的单位向量。
 
-Calculates the unit vector of a given vector (the elements of the tuple are the coordinates) in `Lp` space (using [p-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#p-norm)).
-        
-
-**Syntax**
+**语法**
 
 ```sql
 LpNormalize(tuple, p)
 ```
 
-**Aliases**: `normalizeLp`
+**别名**：`normalizeLp`
 
-**Arguments**
+**参数**
 
-- `tuple` — A tuple of numeric values. [`Tuple(T)`](/sql-reference/data-types/tuple)
-- `p` — The power. Possible values are any number in the range range from `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `tuple` — 数值元组。[`Tuple(T)`](/sql-reference/data-types/tuple)
+* `p` — 幂次。取值为区间 `[1; inf)` 内的任意数值。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回单位向量。[`Tuple(Float64)`](/sql-reference/data-types/tuple)
 
-Returns the unit vector. [`Tuple(Float64)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT LpNormalize((3, 4), 5)
@@ -643,35 +575,30 @@ SELECT LpNormalize((3, 4), 5)
 └─────────────────────────────────────────┘
 ```
 
-
-
 ## cosineDistance {#cosineDistance}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+计算两个向量之间的余弦距离（元组中的元素为坐标）。返回值越小，向量越相似。
 
-Calculates the cosine distance between two vectors (the elements of the tuples are the coordinates). The smaller the returned value is, the more similar are the vectors.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 cosineDistance(vector1, vector2)
 ```
 
-**Arguments**
+**参数**
 
-- `vector1` — First tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
-- `vector2` — Second tuple. [`Tuple(T)`](/sql-reference/data-types/tuple) or [`Array(T)`](/sql-reference/data-types/array)
+* `vector1` — 第一个元组。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 第二个元组。[`Tuple(T)`](/sql-reference/data-types/tuple) 或 [`Array(T)`](/sql-reference/data-types/array)
 
+**返回值**
 
-**Returned value**
+返回 1 减去两个向量夹角余弦的结果值。[`Float64`](/sql-reference/data-types/float)
 
-Returns the cosine of the angle between two vectors subtracted from one. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT cosineDistance((1, 2), (2, 3));

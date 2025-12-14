@@ -60,7 +60,7 @@ FROM system.view_refreshes;
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
-│ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:10:00 │ 2024-11-11 12:10:00 │ 2024-11-11 12:11:00 │   5491132 │       817718 │
+│ database │ table_name_mv    │ 已调度    │ 2024-11-11 12:10:00 │ 2024-11-11 12:10:00 │ 2024-11-11 12:11:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
@@ -77,7 +77,7 @@ MODIFY REFRESH EVERY 30 SECONDS;
 
 ```text
 ┌─database─┬─view─────────────┬─status────┬───last_success_time─┬───last_refresh_time─┬───next_refresh_time─┬─read_rows─┬─written_rows─┐
-│ database │ table_name_mv    │ Scheduled │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
+│ database │ table_name_mv    │ 已调度    │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
@@ -179,32 +179,6 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────┴──────┴─────────┘
 ```
 
-┌──────────────────ts─┬─uuid─┬───count─┐
-│ 2024-10-01 16:12:56 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:00 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:10 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:20 │ fff  │ 5424711 │
-│ 2024-10-01 16:13:30 │ fff  │ 5674669 │
-│ 2024-10-01 16:13:40 │ fff  │ 5947912 │
-│ 2024-10-01 16:13:50 │ fff  │ 6203361 │
-│ 2024-10-01 16:14:00 │ fff  │ 6501695 │
-└─────────────────────┴──────┴─────────┘
-
-```sql
-SELECT
-    posts.*,
-    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
-    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Duplicate' AND p.2 != 0, Related)) AS DuplicatePosts
-FROM posts
-LEFT JOIN (
-    SELECT
-         PostId,
-         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
-    FROM postlinks
-    GROUP BY PostId
-) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
-```
-
 ## 示例 {#examples}
 
 现在让我们通过一些示例数据集来看看如何使用可刷新物化视图。
@@ -216,8 +190,6 @@ LEFT JOIN (
 在该指南中，我们演示了如何使用以下查询将 `postlinks` 数据集反规范化到 `posts` 表中：
 
 ```sql
-CREATE MATERIALIZED VIEW posts_with_links_mv
-REFRESH EVERY 1 HOUR TO posts_with_links AS
 SELECT
     posts.*,
     arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
@@ -237,6 +209,35 @@ LEFT JOIN (
 `posts` 和 `postlinks` 两个表都有可能发生更新。因此，与其尝试使用增量物化视图来实现这个连接操作，不如简单地将该查询按固定时间间隔调度运行，例如每小时运行一次，并将结果存储到 `post_with_links` 表中，这样可能就足够了。
 
 这正是可刷新物化视图大显身手的场景，我们可以通过以下查询来创建这样一个视图：
+
+```sql
+CREATE MATERIALIZED VIEW posts_with_links_mv
+REFRESH EVERY 1 HOUR TO posts_with_links AS
+SELECT
+    posts.*,
+    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Linked' AND p.2 != 0, Related)) AS LinkedPosts,
+    arrayMap(p -> (p.1, p.2), arrayFilter(p -> p.3 = 'Duplicate' AND p.2 != 0, Related)) AS DuplicatePosts
+FROM posts
+LEFT JOIN (
+    SELECT
+         PostId,
+         groupArray((CreationDate, RelatedPostId, LinkTypeId)) AS Related
+    FROM postlinks
+    GROUP BY PostId
+) AS postlinks ON posts_types_codecs_ordered.Id = postlinks.PostId;
+```
+
+该视图会立即执行，并按照配置每小时执行一次，以确保源表中的更新得到反映。需要注意的是，当查询重新运行时，结果集会以原子且透明的方式更新。
+
+:::note
+此处的语法与增量物化视图完全相同，只是我们额外加入了一个 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
+:::
+
+### IMDb {#imdb}
+
+在 [dbt 和 ClickHouse 集成指南](/integrations/dbt) 中，我们使用下列表填充了一个 IMDb 数据集：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
+
+然后我们可以编写如下查询，用于统计每位演员的汇总信息，并按出演电影次数从高到低排序。
 
 ```sql
 SELECT
@@ -262,18 +263,6 @@ ORDER BY movies DESC
 LIMIT 5;
 ```
 
-该视图会立即执行，并按照配置每小时执行一次，以确保源表中的更新得到反映。需要注意的是，当查询重新运行时，结果集会以原子且透明的方式更新。
-
-:::note
-此处的语法与增量物化视图完全相同，只是我们额外加入了一个 [`REFRESH`](/sql-reference/statements/create/view#refreshable-materialized-view) 子句：
-:::
-
-### IMDb {#imdb}
-
-在 [dbt 和 ClickHouse 集成指南](/integrations/dbt) 中，我们使用下列表填充了一个 IMDb 数据集：`actors`、`directors`、`genres`、`movie_directors`、`movies` 和 `roles`。
-
-然后我们可以编写如下查询，用于统计每位演员的汇总信息，并按出演电影次数从高到低排序。
-
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
 │  45332 │ Mel Blanc    │        909 │ 5.7884792542982515 │            19 │            148 │ 2024-11-11 12:01:35 │
@@ -286,6 +275,11 @@ LIMIT 5;
 5 rows in set. Elapsed: 0.393 sec. Processed 5.45 million rows, 86.82 MB (13.87 million rows/s., 221.01 MB/s.)
 Peak memory usage: 1.38 GiB.
 ```
+
+返回结果所需的时间并不算长，但假设我们希望它更快一些、计算开销更低。
+再假设这个数据集也在持续更新——电影不断上映，新演员和新导演也不断涌现。
+
+现在是使用可刷新物化视图的时候了，先为结果创建一个目标表：
 
 ```sql
 CREATE TABLE imdb.actor_summary
@@ -302,10 +296,7 @@ ENGINE = MergeTree
 ORDER BY num_movies
 ```
 
-返回结果所需的时间并不算长，但假设我们希望它更快一些、计算开销更低。
-再假设这个数据集也在持续更新——电影不断上映，新演员和新导演也不断涌现。
-
-现在是使用可刷新物化视图的时候了，先为结果创建一个目标表：
+现在，我们可以来定义这个视图：
 
 ```sql
 CREATE MATERIALIZED VIEW imdb.actor_summary_mv
@@ -339,7 +330,7 @@ GROUP BY id
 ORDER BY num_movies DESC;
 ```
 
-现在，我们可以来定义这个视图：
+该视图会立即执行，并按配置此后每分钟执行一次，以确保源表中的更新能够被反映出来。我们之前用于获取演员汇总信息的查询在语法上更为简洁，执行速度也显著提升！
 
 ```sql
 SELECT *
@@ -347,8 +338,6 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5
 ```
-
-该视图会立即执行，并按配置此后每分钟执行一次，以确保源表中的更新能够被反映出来。我们之前用于获取演员汇总信息的查询在语法上更为简洁，执行速度也显著提升！
 
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -362,6 +351,8 @@ LIMIT 5
 5 rows in set. Elapsed: 0.007 sec.
 ```
 
+假设我们在源数据中添加了一位新演员 &quot;Clicky McClickHouse&quot;，并且他恰好出演了很多电影！
+
 ```sql
 INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
 INSERT INTO imdb.roles SELECT
@@ -373,7 +364,7 @@ FROM imdb.movies
 LIMIT 10000, 910;
 ```
 
-假设我们在源数据中添加了一位新演员 &quot;Clicky McClickHouse&quot;，并且他恰好出演了很多电影！
+不到 60 秒钟后，我们的目标表就已更新，充分体现了 Clicky 在表演方面的高产：
 
 ```sql
 SELECT *
@@ -381,8 +372,6 @@ FROM imdb.actor_summary
 ORDER BY num_movies DESC
 LIMIT 5;
 ```
-
-不到 60 秒钟后，我们的目标表就已更新，充分体现了 Clicky 在表演方面的高产：
 
 ```text
 ┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
@@ -394,16 +383,4 @@ LIMIT 5;
 └────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.006 sec.
-```
-
-```text
-┌─────id─┬─name────────────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
-│ 845466 │ Clicky McClickHouse │        910 │ 1.4687939 │            21 │            662 │ 2024-11-11 12:53:51 │
-│  45332 │ Mel Blanc           │        909 │ 5.7884793 │            19 │            148 │ 2024-11-11 12:01:35 │
-│ 621468 │ Bess Flowers        │        672 │  5.540605 │            20 │            301 │ 2024-11-11 12:01:35 │
-│ 283127 │ Tom London          │        549 │ 2.8057034 │            18 │            208 │ 2024-11-11 12:01:35 │
-│  41669 │ Adoor Bhasi         │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
-└────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
-
-5 行数据。耗时: 0.006 秒。
 ```

@@ -32,40 +32,40 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. 在 MySQL 中创建一个数据库：
 
 ```sql
-  CREATE DATABASE db1;
-  ```
+CREATE DATABASE db1;
+```
 
 2. 创建一个表：
 
 ```sql
-  CREATE TABLE db1.table1 (
-    id INT,
-    column1 VARCHAR(255)
-  );
-  ```
+CREATE TABLE db1.table1 (
+  id INT,
+  column1 VARCHAR(255)
+);
+```
 
 3. 插入示例数据行：
 
 ```sql
-  INSERT INTO db1.table1
-    (id, column1)
-  VALUES
-    (1, 'abc'),
-    (2, 'def'),
-    (3, 'ghi');
-  ```
+INSERT INTO db1.table1
+  (id, column1)
+VALUES
+  (1, 'abc'),
+  (2, 'def'),
+  (3, 'ghi');
+```
 
 4. 创建一个用于连接到 ClickHouse 的用户：
 
 ```sql
-  CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
-  ```
+CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
+```
 
 5. 根据需要授予权限。（在本示例中，为 `mysql_clickhouse` 用户授予了管理员权限。）
 
 ```sql
-  GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
-  ```
+GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
+```
 
 :::note
 如果您在 ClickHouse Cloud 中使用此功能，可能需要允许 ClickHouse Cloud 的 IP 地址访问您的 MySQL 实例。
@@ -77,12 +77,12 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. 现在让我们创建一个使用 `MySQL` 表引擎的 ClickHouse 表：
 
 ```sql
-  CREATE TABLE mysql_table1 (
-    id UInt64,
-    column1 String
-  )
-  ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
-  ```
+CREATE TABLE mysql_table1 (
+  id UInt64,
+  column1 String
+)
+ENGINE = MySQL('mysql-host.domain.com','db1','table1','mysql_clickhouse','Password123!')
+```
 
 最少需要的参数为：
 
@@ -103,65 +103,65 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. 在 MySQL 中插入一行示例数据：
 
 ```sql
-  INSERT INTO db1.table1
-    (id, column1)
-  VALUES
-    (4, 'jkl');
-  ```
+INSERT INTO db1.table1
+  (id, column1)
+VALUES
+  (4, 'jkl');
+```
 
 2. 请注意，来自 MySQL 表的现有行已经出现在 ClickHouse 表中，同时还有您刚刚添加的新行：
 
 ```sql
-  SELECT
-      id,
-      column1
-  FROM mysql_table1
-  ```
+SELECT
+    id,
+    column1
+FROM mysql_table1
+```
 
 此时应能看到 4 行：
 
 ```response
-  Query id: 6d590083-841e-4e95-8715-ef37d3e95197
+Query id: 6d590083-841e-4e95-8715-ef37d3e95197
 
-  ┌─id─┬─column1─┐
-  │  1 │ abc     │
-  │  2 │ def     │
-  │  3 │ ghi     │
-  │  4 │ jkl     │
-  └────┴─────────┘
+┌─id─┬─column1─┐
+│  1 │ abc     │
+│  2 │ def     │
+│  3 │ ghi     │
+│  4 │ jkl     │
+└────┴─────────┘
 
-  4 rows in set. Elapsed: 0.044 sec.
-  ```
+返回 4 行。耗时: 0.044 秒。
+```
 
 3. 现在向 ClickHouse 表中插入一行数据：
 
 ```sql
-  INSERT INTO mysql_table1
-    (id, column1)
-  VALUES
-    (5,'mno')
-  ```
+INSERT INTO mysql_table1
+  (id, column1)
+VALUES
+  (5,'mno')
+```
 
 4. 注意 MySQL 中已出现一条新记录：
 
 ```bash
-  mysql> select id,column1 from db1.table1;
-  ```
+mysql> select id,column1 from db1.table1;
+```
 
 此时应能看到新行：
 
 ```response
-  +------+---------+
-  | id   | column1 |
-  +------+---------+
-  |    1 | abc     |
-  |    2 | def     |
-  |    3 | ghi     |
-  |    4 | jkl     |
-  |    5 | mno     |
-  +------+---------+
-  5 rows in set (0.01 sec)
-  ```
++------+---------+
+| id   | column1 |
++------+---------+
+|    1 | abc     |
+|    2 | def     |
+|    3 | ghi     |
+|    4 | jkl     |
+|    5 | mno     |
++------+---------+
+5 rows in set (0.01 sec)
+```
 
 ### 总结 {#summary}
 

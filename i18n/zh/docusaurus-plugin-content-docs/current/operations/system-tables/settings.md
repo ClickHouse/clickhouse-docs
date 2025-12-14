@@ -130,58 +130,15 @@ default:     0
 alias_for:   
 is_obsolete: 0
 tier:        Production
- ```
+```
 
-Row 3:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小行数。更小的数据块会被合并成更大的数据块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存使用。
+使用 `WHERE changed` 在以下场景中很有用,例如需要检查:
 
-Possible values:
+- 配置文件中的设置是否已正确加载并生效。
+- 当前会话中已变更的设置。
 
-* 任意正整数。
-* 0 — 禁用合并。
+<!-- -->
 
-**See Also**
-
-* [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-Row 4:
-──────
-name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
-value:       0
-changed:     0
-description: 设置可通过 `INSERT` 查询插入到表中的数据块的最小字节数。更小的数据块会被合并成更大的数据块。此设置仅对插入到[物化视图](../../sql-reference/statements/create/view.md)中的数据块生效。通过调整此设置，可以在向物化视图写入时控制数据块合并行为，并避免过度的内存使用。
-
-Possible values:
-
-* 任意正整数。
-* 0 — 禁用合并。
-
-**See also**
-
-* [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-````sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ````

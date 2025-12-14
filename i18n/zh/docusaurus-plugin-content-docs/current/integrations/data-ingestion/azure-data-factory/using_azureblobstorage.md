@@ -86,29 +86,29 @@ SELECT * FROM azureBlobStorage(
 现在一切就绪，您可以直接从 Azure Blob Storage 查询数据：
 
 ```sql
-    SELECT *
-    FROM azureBlobStorage(
-        '<YOUR CONNECTION STRING>', 
-        'sensors',
-        '2019-06_bmp180.csv.zst', 
-        'CSVWithNames')
-    LIMIT 10
-    SETTINGS format_csv_delimiter = ';'
-    ```
+SELECT *
+FROM azureBlobStorage(
+    '<YOUR CONNECTION STRING>', 
+    'sensors',
+    '2019-06_bmp180.csv.zst', 
+    'CSVWithNames')
+LIMIT 10
+SETTINGS format_csv_delimiter = ';'
+```
 
 7. 要将数据加载到表中，请创建原始数据集所使用 schema 的简化版本：
    ```sql
-    CREATE TABLE sensors
-    (
-        sensor_id UInt16,
-        lat Float32,
-        lon Float32,
-        timestamp DateTime,
-        temperature Float32
-    )
-    ENGINE = MergeTree
-    ORDER BY (timestamp, sensor_id);
-    ```
+   CREATE TABLE sensors
+   (
+       sensor_id UInt16,
+       lat Float32,
+       lon Float32,
+       timestamp DateTime,
+       temperature Float32
+   )
+   ENGINE = MergeTree
+   ORDER BY (timestamp, sensor_id);
+   ```
 
 :::info
 有关在查询 Azure Blob Storage 等外部数据源时的配置选项和 schema 推断的更多信息，请参阅[从输入数据自动推断 schema](https://clickhouse.com/docs/interfaces/schema-inference)
@@ -116,15 +116,15 @@ SELECT * FROM azureBlobStorage(
 
 8. 现在将 Azure Blob Storage 中的数据插入到 sensors 表中：
    ```sql
-    INSERT INTO sensors
-    SELECT sensor_id, lat, lon, timestamp, temperature
-    FROM azureBlobStorage(
-        '<YOUR CONNECTION STRING>', 
-        'sensors',
-        '2019-06_bmp180.csv.zst', 
-        'CSVWithNames')
-    SETTINGS format_csv_delimiter = ';'
-    ```
+   INSERT INTO sensors
+   SELECT sensor_id, lat, lon, timestamp, temperature
+   FROM azureBlobStorage(
+       '<YOUR CONNECTION STRING>', 
+       'sensors',
+       '2019-06_bmp180.csv.zst', 
+       'CSVWithNames')
+   SETTINGS format_csv_delimiter = ';'
+   ```
 
 存储在 Azure Blob Storage 中的 `2019-06_bmp180.csv.zst` 文件数据现已写入 sensors 表。
 

@@ -60,37 +60,32 @@ SELECT detectCharset('我会待几天。')
 WINDOWS-1252
 ```
 
-
-
 ## detectLanguage {#detectLanguage}
 
-Introduced in: v22.2
+引入版本：v22.2
 
+检测 UTF-8 编码输入字符串的语言。
+该函数使用 [CLD2 库](https://github.com/CLD2Owners/cld2) 进行检测，并返回两个字母的 ISO 语言代码。
 
-Detects the language of the UTF8-encoded input string.
-The function uses the [CLD2 library](https://github.com/CLD2Owners/cld2) for detection and returns the 2-letter ISO language code.
+输入越长，语言检测的精度越高。
 
-The longer the input, the more precise the language detection will be.
-
-
-**Syntax**
+**语法**
 
 ```sql
 detectLanguage(s)
 ```
 
-**Arguments**
+**参数**
 
-- `text_to_be_analyzed` — The text to analyze. [`String`](/sql-reference/data-types/string)
+* `text_to_be_analyzed` — 要分析的文本。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回检测到的语言的 2 个字母的 ISO 代码。其他可能的结果：`un` = 未知，无法检测到任何语言；`other` = 检测到的语言不具有 2 个字母的代码。[`String`](/sql-reference/data-types/string)
 
-Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Mixed language text**
+**混合语言文本**
 
 ```sql title=Query
 SELECT detectLanguage('我觉得我永远无法像母语者那样说法语。有志者事竟成。')
@@ -100,34 +95,29 @@ SELECT detectLanguage('我觉得我永远无法像母语者那样说法语。有
 fr
 ```
 
-
-
 ## detectLanguageMixed {#detectLanguageMixed}
 
-Introduced in: v22.2
+引入版本：v22.2
 
+与 [`detectLanguage`](#detectLanguage) 函数类似，但 `detectLanguageMixed` 返回一个 `Map`，其中键为 2 字母语言代码，值为该语言在文本中所占的百分比。
 
-Similar to the [`detectLanguage`](#detectLanguage) function, but `detectLanguageMixed` returns a `Map` of 2-letter language codes that are mapped to the percentage of the certain language in the text.
-
-
-**Syntax**
+**语法**
 
 ```sql
 detectLanguageMixed(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The text to analyze [`String`](/sql-reference/data-types/string)
+* `s` — 要分析的文本 [`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个 `Map`，键是 2 个字母的 ISO 语言代码，对应的值是该语言在文本中所占的百分比 [`Map(String, Float32)`](/sql-reference/data-types/map)
 
-Returns a map with keys which are 2-letter ISO codes and corresponding values which are a percentage of the text found for that language [`Map(String, Float32)`](/sql-reference/data-types/map)
+**示例**
 
-**Examples**
-
-**Mixed languages**
+**混合语言**
 
 ```sql title=Query
 SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追う者は一兎をも得ず A vaincre sans peril, on triomphe sans gloire.')
@@ -137,35 +127,30 @@ SELECT detectLanguageMixed('二兎を追う者は一兎をも得ず二兎を追�
 {'ja':0.62,'fr':0.36}
 ```
 
-
-
 ## detectLanguageUnknown {#detectLanguageUnknown}
 
-Introduced in: v22.2
+自 v22.2 起引入
 
+与 [`detectLanguage`](#detectLanguage) 函数类似，不同之处在于 detectLanguageUnknown 函数可处理非 UTF-8 编码的字符串。
+当字符集为 UTF-16 或 UTF-32 时，建议优先使用此版本。
 
-Similar to the [`detectLanguage`](#detectLanguage) function, except the detectLanguageUnknown function works with non-UTF8-encoded strings.
-Prefer this version when your character set is UTF-16 or UTF-32.
-
-
-**Syntax**
+**语法**
 
 ```sql
 detectLanguageUnknown('s')
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The text to analyze. [`String`](/sql-reference/data-types/string)
+* `s` — 要分析的文本。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回检测到的语言的 2 个字母的 ISO 代码。其他可能的结果：`un` = 未知，无法检测到任何语言；`other` = 检测到的语言没有对应的 2 字母代码。[`String`](/sql-reference/data-types/string)
 
-Returns the 2-letter ISO code of the detected language. Other possible results: `un` = unknown, can not detect any language, `other` = the detected language does not have 2 letter code. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
@@ -175,34 +160,29 @@ SELECT detectLanguageUnknown('Ich bleibe für ein paar Tage.')
 de
 ```
 
-
-
 ## detectProgrammingLanguage {#detectProgrammingLanguage}
 
-Introduced in: v22.2
+自 v22.2 起提供
 
+根据给定的源代码片段确定其编程语言。
 
-Determines the programming language from a given source code snippet.
-
-
-**Syntax**
+**语法**
 
 ```sql
 detectProgrammingLanguage('source_code')
 ```
 
-**Arguments**
+**参数**
 
-- `source_code` — String representation of the source code to analyze. [`String`](/sql-reference/data-types/string)
+* `source_code` — 要分析的源代码的字符串形式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回表示编程语言的 [`String`](/sql-reference/data-types/string)
 
-Returns programming language [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**C++ code detection**
+**C++ 代码检测**
 
 ```sql title=Query
 SELECT detectProgrammingLanguage('#include <iostream>')
@@ -212,38 +192,33 @@ SELECT detectProgrammingLanguage('#include <iostream>')
 C++
 ```
 
-
-
 ## detectTonality {#detectTonality}
 
-Introduced in: v22.2
+引入于：v22.2
 
+用于判断提供的文本数据的情感倾向。
 
-Determines the sentiment of the provided text data.
-
-:::note Limitation
-This function is limited in its current form in that it makes use of the embedded emotional dictionary and only works for the Russian language.
+:::note 限制
+该函数目前存在如下限制：它使用内置的情感词典，并且仅适用于俄语。
 :::
 
-
-**Syntax**
+**语法**
 
 ```sql
 detectTonality(s)
 ```
 
-**Arguments**
+**参数**
 
-- `s` — The text to be analyzed. [`String`](/sql-reference/data-types/string)
+* `s` — 要分析的文本。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回文本中各个单词情感值的平均值 [`Float32`](/sql-reference/data-types/float)
 
-Returns the average sentiment value of the words in text [`Float32`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Russian sentiment analysis**
+**俄语情感分析**
 
 ```sql title=Query
 SELECT
@@ -256,36 +231,31 @@ SELECT
 0.44445, 0, -0.3
 ```
 
-
-
 ## lemmatize {#lemmatize}
 
-Introduced in: v21.9
+引入于：v21.9
 
+对给定单词执行词形还原（lemmatization）。
+此函数运行时需要依赖词典，可以从 [GitHub](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models) 获取。关于如何从本地文件加载词典的更多详情，请参阅页面 [“Defining Dictionaries”](/sql-reference/dictionaries#local-file)。
 
-Performs lemmatization on a given word.
-This function needs dictionaries to operate, which can be obtained from [github](https://github.com/vpodpecan/lemmagen3/tree/master/src/lemmagen3/models). For more details on loading a dictionary from a local file see page ["Defining Dictionaries"](/sql-reference/dictionaries#local-file).
-
-
-**Syntax**
+**语法**
 
 ```sql
 lemmatize(lang, word)
 ```
 
-**Arguments**
+**参数**
 
-- `lang` — Language which rules will be applied. [`String`](/sql-reference/data-types/string)
-- `word` — Lowercase word that needs to be lemmatized. [`String`](/sql-reference/data-types/string)
+* `lang` — 应用规则所针对的语言。[`String`](/sql-reference/data-types/string)
+* `word` — 需要进行词形还原的小写单词。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该单词词形还原后的形式 [`String`](/sql-reference/data-types/string)
 
-Returns the lemmatized form of the word [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**English lemmatization**
+**英文词形还原**
 
 ```sql title=Query
 SELECT lemmatize('en', 'wolves')
@@ -295,35 +265,30 @@ SELECT lemmatize('en', 'wolves')
 wolf
 ```
 
-
-
 ## stem {#stem}
 
-Introduced in: v21.9
+引入于：v21.9
 
+对给定单词执行词干提取。
 
-Performs stemming on a given word.
-
-
-**Syntax**
+**语法**
 
 ```sql
 stem(lang, word)
 ```
 
-**Arguments**
+**参数**
 
-- `lang` — Language which rules will be applied. Use the two letter ISO 639-1 code. [`String`](/sql-reference/data-types/string)
-- `word` — Lowercase word that needs to be stemmed. [`String`](/sql-reference/data-types/string)
+* `lang` — 应用规则所基于的语言。使用两个字母的 ISO 639-1 代码。[`String`](/sql-reference/data-types/string)
+* `word` — 需要进行词干提取的小写单词。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回该单词的词干形式 [`String`](/sql-reference/data-types/string)
 
-Returns the stemmed form of the word [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**English stemming**
+**英文词干提取**
 
 ```sql title=Query
 SELECT arrayMap(x -> stem('en', x),
@@ -334,45 +299,41 @@ SELECT arrayMap(x -> stem('en', x),
 ['I','think','it','is','a','bless','in','disguis']
 ```
 
-
-
 ## synonyms {#synonyms}
 
-Introduced in: v21.9
+自 v21.9 引入
 
+查找给定单词的同义词。
 
-Finds synonyms of a given word.
+有两种类型的同义词扩展：
 
-There are two types of synonym extensions:
-- `plain`
-- `wordnet`
+* `plain`
+* `wordnet`
 
-With the `plain` extension type you need to provide a path to a simple text file, where each line corresponds to a certain synonym set.
-Words in this line must be separated with space or tab characters.
+使用 `plain` 扩展类型时，需要提供一个纯文本文件的路径，其中每一行对应一个同义词集。
+该行中的单词必须以空格或制表符分隔。
 
-With the `wordnet` extension type you need to provide a path to a directory with the WordNet thesaurus in it.
-The thesaurus must contain a WordNet sense index.
+使用 `wordnet` 扩展类型时，需要提供一个包含 WordNet 同义词库的目录路径。
+该词库必须包含 WordNet 词义索引。
 
-
-**Syntax**
+**语法**
 
 ```sql
 synonyms(ext_name, word)
 ```
 
-**Arguments**
+**参数**
 
-- `ext_name` — Name of the extension in which search will be performed. [`String`](/sql-reference/data-types/string)
-- `word` — Word that will be searched in extension. [`String`](/sql-reference/data-types/string)
+* `ext_name` — 要在其中执行搜索的扩展的名称。[`String`](/sql-reference/data-types/string)
+* `word` — 要在扩展中搜索的词语。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回指定词语的同义词数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns array of synonyms for the given word. [`Array(String)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Find synonyms**
+**查找同义词**
 
 ```sql title=Query
 SELECT synonyms('list', 'important')

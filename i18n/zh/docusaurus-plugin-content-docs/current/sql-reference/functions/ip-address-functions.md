@@ -52,37 +52,32 @@ SELECT IPv4CIDRToRange(toIPv4('192.168.5.2'), 16);
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## IPv4NumToString {#IPv4NumToString}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+将一个 32 位整数转换为其点分十进制表示形式的 IPv4 地址字符串（A.B.C.D 格式）。
+采用大端字节序来解析输入值。
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format).
-Interprets the input using big-endian byte ordering.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv4NumToString(num)
 ```
 
-**Aliases**: `INET_NTOA`
+**别名**：`INET_NTOA`
 
-**Arguments**
+**参数**
 
-- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
+* `num` — 以 UInt32 数字表示的 IPv4 地址。[`UInt32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个表示 IPv4 地址的字符串；如果格式无效则返回 `0`。[`String`](/sql-reference/data-types/string)
 
-Returns a number representing the MAC address, or `0` if the format is invalid. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 IPv4NumToString(3232235521)
@@ -92,35 +87,30 @@ IPv4NumToString(3232235521)
 192.168.0.1
 ```
 
-
-
 ## IPv4NumToStringClassC {#IPv4NumToStringClassC}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+将一个 32 位整数转换为以点分十进制表示法（A.B.C.D 格式）的 IPv4 地址字符串，
+类似于 [`IPv4NumToString`](#IPv4NumToString)，但使用 `xxx` 替代最后一个八位组。
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format),
-similar to [`IPv4NumToString`](#IPv4NumToString) but using `xxx` instead of the last octet.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv4NumToStringClassC(num)
 ```
 
-**Arguments**
+**参数**
 
-- `num` — IPv4 address as UInt32 number. [`UInt32`](/sql-reference/data-types/int-uint)
+* `num` — 以 UInt32 无符号整数表示的 IPv4 地址。[`UInt32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回将最后一个八位组替换为 `xxx` 的 IPv4 地址字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the IPv4 address string with xxx replacing the last octet. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Basic example with aggregation**
+**包含聚合的基本示例**
 
 ```sql title=Query
 SELECT
@@ -147,37 +137,32 @@ LIMIT 10
 └────────────────┴───────┘
 ```
 
-
-
 ## IPv4StringToNum {#IPv4StringToNum}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将点分十进制表示（A.B.C.D 格式）的 IPv4 地址字符串转换为对应的 32 位整数表示。（是 [`IPv4NumToString`](#IPv4NumToString) 的逆操作）。
+如果 IPv4 地址格式无效，将抛出异常。
 
-Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation. (The reverse of [`IPv4NumToString`](#IPv4NumToString)).
-If the IPv4 address has an invalid format, an exception is thrown.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv4StringToNum(string)
 ```
 
-**Aliases**: `INET_ATON`
+**别名**：`INET_ATON`
 
-**Arguments**
+**参数**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv4 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 IPv4 地址的数值表示。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns theIPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 IPv4StringToNum('192.168.0.1')
@@ -187,34 +172,29 @@ IPv4StringToNum('192.168.0.1')
 3232235521
 ```
 
-
-
 ## IPv4StringToNumOrDefault {#IPv4StringToNumOrDefault}
 
-Introduced in: v22.3
+引入于：v22.3
 
+将点分十进制表示法（A.B.C.D 格式）的 IPv4 地址字符串转换为对应的 32 位整数表示形式。如果 IPv4 地址格式无效，则返回 `0`。
 
-Converts an IPv4 address string in dotted decimal notation (A.B.C.D format) to its corresponding 32-bit integer representation but if the IPv4 address has an invalid format, it returns `0`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv4StringToNumOrDefault(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv4 地址的字符串形式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 IPv4 地址，如果无效则返回 `0`。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the IPv4 address, or `0` if invalid. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Example with an invalid address**
+**无效地址示例**
 
 ```sql title=Query
 SELECT
@@ -228,34 +208,29 @@ SELECT
 └────────────┴─────────┘
 ```
 
-
-
 ## IPv4StringToNumOrNull {#IPv4StringToNumOrNull}
 
-Introduced in: v22.3
+引入于：v22.3
 
+将 32 位整数转换为其 IPv4 地址的点分十进制字符串表示（A.B.C.D 格式），但如果 IPv4 地址格式无效，则返回 `NULL`。
 
-Converts a 32-bit integer to its IPv4 address string representation in dotted decimal notation (A.B.C.D format) but if the IPv4 address has an invalid format, it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv4StringToNumOrNull(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IPv4 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv4 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 IPv4 地址，如果无效则返回 `NULL`。[`Nullable(UInt32)`](/sql-reference/data-types/nullable)
 
-Returns the IPv4 address, or `NULL` if invalid. [`Nullable(UInt32)`](/sql-reference/data-types/nullable)
+**示例**
 
-**Examples**
-
-**Example with an invalid address**
+**无效地址示例**
 
 ```sql title=Query
 SELECT
@@ -269,34 +244,29 @@ IPv4StringToNumOrNull('invalid') AS invalid;
 └────────────┴─────────┘
 ```
 
-
-
 ## IPv4ToIPv6 {#IPv4ToIPv6}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+将（大端序）32 位整数解释为 IPv4 地址，然后再将其转换为对应的 IPv6 地址，并以 `FixedString(16)` 格式表示。
 
-Interprets a (big endian) 32-bit number as an IPv4 address, which is then interpreted as the corresponding IPv6 address in `FixedString(16)` format.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-IPv4 转 IPv6(x)
+IPv4ToIPv6(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — IPv4 address. [`UInt32`](/sql-reference/data-types/int-uint)
+* `x` — IPv4 地址。[`UInt32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+以二进制格式返回 IPv6 地址。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns an IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
@@ -308,36 +278,31 @@ SELECT IPv6NumToString(IPv4ToIPv6(IPv4StringToNum('192.168.0.1'))) AS addr;
 └────────────────────┘
 ```
 
-
-
 ## IPv6CIDRToRange {#IPv6CIDRToRange}
 
-Introduced in: v20.1
+自 v20.1 版本引入。
 
+接受一个 IPv6 地址及其无类别域间路由（Classless Inter-Domain Routing，CIDR）前缀长度，并返回该子网的地址范围，形式为包含两个 IPv6 值的元组：该子网中的最小地址和最大地址。
+有关 IPv4 版本，请参见 [`IPv4CIDRToRange`](#IPv4CIDRToRange)。
 
-Takes an IPv6 address with its Classless Inter-Domain Routing (CIDR) prefix length and returns the subnet's address range as a tuple of two IPv6 values: the lowest and highest addresses in that subnet.
-For the IPv4 version see [`IPv4CIDRToRange`](#IPv4CIDRToRange).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv6CIDRToRange(ipv6, cidr)
 ```
 
-**Arguments**
+**参数**
 
-- `ipv6` — IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6) or [`String`](/sql-reference/data-types/string)
-- `cidr` — CIDR value. [`UInt8`](/sql-reference/data-types/int-uint)
+* `ipv6` — IPv6 地址。[`IPv6`](/sql-reference/data-types/ipv6) 或 [`String`](/sql-reference/data-types/string)
+* `cidr` — CIDR 值。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个由两个 IPv6 地址组成的元组，表示子网的地址范围。[`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
 
-Returns a tuple with two IPv6 addresses representing the subnet range. [`Tuple(IPv6, IPv6)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
@@ -349,37 +314,32 @@ SELECT IPv6CIDRToRange(toIPv6('2001:0db8:0000:85a3:0000:0000:ac1f:8001'), 32);
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## IPv6NumToString {#IPv6NumToString}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+将 IPv6 地址从二进制格式（FixedString(16)）转换为其标准文本表示法。
+IPv4 映射的 IPv6 地址以 `::ffff:111.222.33.44` 的格式显示。
 
-Converts an IPv6 address from binary format (FixedString(16)) to its standard text representation.
-IPv4-mapped IPv6 addresses are displayed in the format `::ffff:111.222.33.44`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv6NumToString(x)
 ```
 
-**Aliases**: `INET6_NTOA`
+**别名**：`INET6_NTOA`
 
-**Arguments**
+**参数**
 
-- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
+* `x` — 二进制格式的 IPv6 地址。[`FixedString(16)`](/sql-reference/data-types/fixedstring) 或 [`IPv6`](/sql-reference/data-types/ipv6)
 
+**返回值**
 
-**Returned value**
+返回文本格式的 IPv6 地址字符串。[`String`](/sql-reference/data-types/string)
 
-Returns the IPv6 address string in text format. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 16)) AS addr;
@@ -391,7 +351,7 @@ SELECT IPv6NumToString(toFixedString(unhex('2A0206B8000000000000000000000011'), 
 └──────────────┘
 ```
 
-**IPv6 with hits analysis**
+**基于 IPv6 的 hits 分析**
 
 ```sql title=Query
 SELECT
@@ -419,7 +379,7 @@ LIMIT 10
 └─────────────────────────────────────────┴───────┘
 ```
 
-**IPv6 mapped IPv4 addresses**
+**IPv6 映射的 IPv4 地址**
 
 ```sql title=Query
 SELECT
@@ -447,41 +407,36 @@ LIMIT 10
 └────────────────────────────┴────────┘
 ```
 
-
-
 ## IPv6StringToNum {#IPv6StringToNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将 IPv6 地址从其标准文本表示形式转换为二进制格式（`FixedString(16)`）。
+接受格式为 `::ffff:111.222.33.44.` 的 IPv4 映射 IPv6 地址。
+如果 IPv6 地址格式无效，则会抛出异常。
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, an exception is thrown.
+如果输入字符串包含有效的 IPv4 地址，则返回其对应的 IPv6 表示。
+十六进制字符可以是大写或小写。
 
-If the input string contains a valid IPv4 address, returns its IPv6 equivalent.
-HEX can be uppercase or lowercase.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-IPv6StringToNum(字符串)
+IPv6StringToNum(string)
 ```
 
-**Aliases**: `INET6_ATON`
+**别名**: `INET6_ATON`
 
-**Arguments**
+**参数**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv6 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回以二进制格式表示的 IPv6 地址。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-Returns theIPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Basic example**
+**基础示例**
 
 ```sql title=Query
 SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '127.0.0.1', '1111::ffff'] AS addr) ARRAY JOIN addr;
@@ -495,36 +450,31 @@ SELECT addr, cutIPv6(IPv6StringToNum(addr), 0, 0) FROM (SELECT ['notaddress', '1
 └────────────┴──────────────────────────────────────┘
 ```
 
-
-
 ## IPv6StringToNumOrDefault {#IPv6StringToNumOrDefault}
 
-Introduced in: v22.3
+自 v22.3 引入
 
+将 IPv6 地址从其标准文本表示转换为二进制格式（`FixedString(16)`）。
+接受 IPv4 映射的 IPv6 地址，格式为 `::ffff:111.222.33.44.`。
+如果 IPv6 地址格式无效，则返回默认值 `::`。
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, it returns the default value `::`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv6StringToNumOrDefault(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv6 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+二进制格式的 IPv6 地址；若无效则返回全零的 FixedString(16)。[`FixedString(16)`](/sql-reference/data-types/fixedstring)
 
-IPv6 address in binary format, or zero-filled FixedString(16) if invalid. [`FixedString(16)`](/sql-reference/data-types/fixedstring)
+**示例**
 
-**Examples**
-
-**Basic example with invalid address**
+**包含无效地址的基本示例**
 
 ```sql title=Query
 SELECT
@@ -538,36 +488,31 @@ SELECT
 └─────────────┴─────────┘
 ```
 
-
-
 ## IPv6StringToNumOrNull {#IPv6StringToNumOrNull}
 
-Introduced in: v22.3
+引入于：v22.3
 
+将 IPv6 地址从其标准文本表示形式转换为二进制格式（`FixedString(16)`）。
+接受以 `::ffff:111.222.33.44.` 形式表示的 IPv4 映射 IPv6 地址。
+如果 IPv6 地址格式无效，则返回 `NULL`。
 
-Converts an IPv6 address from its standard text representation to binary format (`FixedString(16)`).
-Accepts IPv4-mapped IPv6 addresses in the format `::ffff:111.222.33.44.`.
-If the IPv6 address has an invalid format, it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 IPv6StringToNumOrNull(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IPv6 address string. [`String`](/sql-reference/data-types/string)
+* `string` — IPv6 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 IPv6 地址的二进制表示形式，如果地址无效则返回 `NULL`。[`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
 
-Returns IPv6 address in binary format, or `NULL` if invalid. [`Nullable(FixedString(16))`](/sql-reference/data-types/nullable)
+**示例**
 
-**Examples**
-
-**Basic example with invalid address**
+**包含无效地址的基本示例**
 
 ```sql title=Query
 SELECT
@@ -581,37 +526,32 @@ SELECT
 └─────────────┴─────────┘
 ```
 
-
-
 ## cutIPv6 {#cutIPv6}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+接受一个以二进制格式存储 IPv6 地址的 `FixedString(16)` 值。
+返回一个字符串，其中包含删除指定字节数后的地址（文本格式）。
 
-Accepts a `FixedString(16)` value containing the IPv6 address in binary format.
-Returns a string containing the address of the specified number of bytes removed in text format.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 cutIPv6(x, bytesToCutForIPv6, bytesToCutForIPv4)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — IPv6 address in binary format. [`FixedString(16)`](/sql-reference/data-types/fixedstring) or [`IPv6`](/sql-reference/data-types/ipv6)
-- `bytesToCutForIPv6` — Number of bytes to cut for IPv6. [`UInt8`](/sql-reference/data-types/int-uint)
-- `bytesToCutForIPv4` — Number of bytes to cut for IPv4. [`UInt8`](/sql-reference/data-types/int-uint)
+* `x` — 二进制格式的 IPv6 地址。[`FixedString(16)`](/sql-reference/data-types/fixedstring) 或 [`IPv6`](/sql-reference/data-types/ipv6)
+* `bytesToCutForIPv6` — 要从 IPv6 地址中截去的字节数。[`UInt8`](/sql-reference/data-types/int-uint)
+* `bytesToCutForIPv4` — 要从 IPv4 地址中截去的字节数。[`UInt8`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个字符串，其中包含以文本格式表示的 IPv6 地址，且已移除指定的字节。[`String`](/sql-reference/data-types/string)
 
-Returns a string containing the IPv6 address in text format with specified bytes removed. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 WITH
@@ -628,37 +568,32 @@ SELECT
 └─────────────────────────────────────┴─────────────────────┘
 ```
 
-
-
 ## isIPAddressInRange {#isIPAddressInRange}
 
-Introduced in: v21.4
+引入版本：v21.4
 
+判断某个 IP 地址是否属于使用 [无类别域间路由（CIDR）](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) 表示法表示的网络。
 
-Determines if an IP address is contained in a network represented in the [Classless Inter-Domain Routing (CIDR)](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation.
+此函数接受以字符串形式表示的 IPv4 和 IPv6 地址及网络。如果地址与 CIDR 的 IP 版本不匹配，则返回 `0`。
 
-This function accepts both IPv4 and IPv6 addresses (and networks) represented as strings. It returns `0` if the IP version of the address and the CIDR don't match.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 isIPAddressInRange(address, prefix)
 ```
 
-**Arguments**
+**参数**
 
-- `address` — An IPv4 or IPv6 address. [`String`](/sql-reference/data-types/string)
-- `prefix` — An IPv4 or IPv6 network prefix in CIDR. [`String`](/sql-reference/data-types/string)
+* `address` — 一个 IPv4 或 IPv6 地址。[`String`](/sql-reference/data-types/string)
+* `prefix` — 采用 CIDR 表示法的 IPv4 或 IPv6 网络前缀。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果地址的 IP 版本与 CIDR 匹配，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if the IP version of the address and the CIDR match, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**IPv4 address in range**
+**位于范围内的 IPv4 地址**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
@@ -668,7 +603,7 @@ SELECT isIPAddressInRange('127.0.0.1', '127.0.0.0/8')
 1
 ```
 
-**IPv4 address not in range**
+**IPv4 地址超出范围**
 
 ```sql title=Query
 SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
@@ -678,7 +613,7 @@ SELECT isIPAddressInRange('127.0.0.1', 'ffff::/16')
 0
 ```
 
-**IPv6 address not in range**
+**IPv6 地址不在有效范围内**
 
 ```sql title=Query
 SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
@@ -688,35 +623,30 @@ SELECT isIPAddressInRange('::ffff:192.168.0.1', '::ffff:192.168.0.4/128')
 0
 ```
 
-
-
 ## isIPv4String {#isIPv4String}
 
-Introduced in: v21.1
+自 v21.1 起提供
 
+判断输入字符串是否为 IPv4 地址。
+IPv6 版本请参见 [`isIPv6String`](#isIPv6String)。
 
-Determines whether the input string is an IPv4 address or not.
-For the IPv6 version see [`isIPv6String`](#isIPv6String).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 isIPv4String(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
+* `string` — 要检查的 IP 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+若 `string` 为 IPv4 地址，则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `string` is IPv4 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT addr, isIPv4String(addr)
@@ -734,35 +664,30 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
-
-
 ## isIPv6String {#isIPv6String}
 
-Introduced in: v21.1
+引入自：v21.1
 
+用于判断输入字符串是否为 IPv6 地址。
+关于 IPv4 版本，请参阅 [`isIPv4String`](#isIPv4String)。
 
-Determines whether the input string is an IPv6 address or not.
-For the IPv4 version see [`isIPv4String`](#isIPv4String).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 isIPv6String(string)
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IP address string to check. [`String`](/sql-reference/data-types/string)
+* `string` — 要检查的 IP 地址字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+如果 `string` 是 IPv6 地址则返回 `1`，否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns `1` if `string` is IPv6 address, otherwise `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT addr, isIPv6String(addr)
@@ -779,35 +704,30 @@ ARRAY JOIN addr;
 └──────────────────┴────────────────────┘
 ```
 
-
-
 ## toIPv4 {#toIPv4}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+将 IPv4 地址的字符串形式或 `UInt32` 形式转换为 `IPv4` 类型。
+该函数类似于 [`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) 和 [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString)，但它同时支持字符串和无符号整数数据类型作为输入参数。
 
-Converts a string or a UInt32 form of IPv4 address to type IPv4.
-It is similar to [`IPv4StringToNum`](/sql-reference/functions/ip-address-functions#IPv4StringToNum) and [`IPv4NumToString`](/sql-reference/functions/ip-address-functions#IPv4NumToString) functions but it supports both string and unsigned integer data types as input arguments.
-
-
-**Syntax**
+**语法**
 
 ```sql
 toIPv4(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — An IPv4 address [`String`](/sql-reference/data-types/string) or [`UInt8/16/32`](/sql-reference/data-types/int-uint)
+* `x` — 一个 IPv4 地址，类型为 [`String`](/sql-reference/data-types/string) 或 [`UInt8/16/32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个 IPv4 地址。[`IPv4`](/sql-reference/data-types/ipv4)
 
-Returns an IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toIPv4('171.225.130.45');
@@ -819,7 +739,7 @@ SELECT toIPv4('171.225.130.45');
 └──────────────────────────┘
 ```
 
-**Comparison with IPv4StringToNum and IPv4NumToString functions.**
+**与 IPv4StringToNum 和 IPv4NumToString 函数的对比**
 
 ```sql title=Query
 WITH
@@ -835,7 +755,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────┘
 ```
 
-**Conversion from an integer**
+**从整数进行转换**
 
 ```sql title=Query
 SELECT toIPv4(2130706433);
@@ -847,36 +767,31 @@ SELECT toIPv4(2130706433);
 └────────────────────┘
 ```
 
-
-
 ## toIPv4OrDefault {#toIPv4OrDefault}
 
-Introduced in: v22.3
+自 v22.3 引入
 
+将 IPv4 地址的字符串或 `UInt32` 形式转换为 [`IPv4`](../data-types/ipv4.md) 类型。
+如果 IPv4 地址格式无效，则返回 `0.0.0.0`（IPv4 0），或返回提供的 IPv4 默认值。
 
-Converts a string or a UInt32 form of an IPv4 address to [`IPv4`](../data-types/ipv4.md) type.
-If the IPv4 address has an invalid format, it returns `0.0.0.0` (0 IPv4), or the provided IPv4 default.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toIPv4OrDefault(string[, default])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IP address string to convert. [`String`](/sql-reference/data-types/string)
-- `default` — Optional. The value to return if string is an invalid IPv4 address. [`IPv4`](/sql-reference/data-types/ipv4)
+* `string` — 要转换的 IPv4 地址字符串。[`String`](/sql-reference/data-types/string)
+* `default` — 可选。如果 `string` 不是有效的 IPv4 地址，则返回该值。[`IPv4`](/sql-reference/data-types/ipv4)
 
+**返回值**
 
-**Returned value**
+返回由字符串转换得到的 IPv4 地址；如果转换失败，则返回默认值。[`IPv4`](/sql-reference/data-types/ipv4)
 
-Returns a string converted to the current IPv4 address, or the default value if conversion fails. [`IPv4`](/sql-reference/data-types/ipv4)
+**示例**
 
-**Examples**
-
-**Valid and invalid IPv4 strings**
+**有效和无效的 IPv4 字符串**
 
 ```sql title=Query
 WITH
@@ -895,45 +810,42 @@ SELECT
 └───────────────┴───────────────┴──────────────────┘
 ```
 
-
-
 ## toIPv4OrNull {#toIPv4OrNull}
 
-Introduced in: v22.3
+自 v22.3 引入
 
+将输入值转换为 `IPv4` 类型的值，但在发生错误时返回 `NULL`。
+类似于 [`toIPv4`](#toIPv4)，但在转换出错时返回 `NULL`，而不是抛出异常。
 
-Converts an input value to a value of type `IPv4` but returns `NULL` in case of an error.
-Like [`toIPv4`](#toIPv4) but returns `NULL` instead of throwing an exception on conversion errors.
+支持的参数：
 
-Supported arguments:
-- String representations of IPv4 addresses in dotted decimal notation.
-- Integer representations of IPv4 addresses.
+* 以点分十进制表示的 IPv4 地址字符串。
+* IPv4 地址的整数表示。
 
-Unsupported arguments (return `NULL`):
-- Invalid IP address formats.
-- IPv6 addresses.
-- Out-of-range values.
-- Malformed addresses.
-    
+不支持的参数（返回 `NULL`）：
 
-**Syntax**
+* 无效的 IP 地址格式。
+* IPv6 地址。
+* 超出范围的值。
+* 格式错误的地址。
+
+**语法**
 
 ```sql
 toIPv4OrNull(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
+* `x` — IPv4 地址的字符串或整数表示形式。[`String`](/sql-reference/data-types/string) 或 [`Integer`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+成功时返回 IPv4 地址，否则返回 `NULL`。[`IPv4`](/sql-reference/data-types/ipv4) 或 [`NULL`](/sql-reference/syntax#null)
 
-Returns an IPv4 address if successful, otherwise `NULL`. [`IPv4`](/sql-reference/data-types/ipv4) or [`NULL`](/sql-reference/syntax#null)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -947,44 +859,41 @@ SELECT
 └─────────────┴────────────┘
 ```
 
-
-
 ## toIPv4OrZero {#toIPv4OrZero}
 
-Introduced in: v23.1
+引入版本：v23.1
 
+将输入值转换为 [IPv4](../data-types/ipv4.md) 类型的值，但在出错时返回全零 IPv4 地址。
+类似于 [`toIPv4`](#toIPv4)，但在转换出错时不会抛出异常，而是返回全零 IPv4 地址（`0.0.0.0`）。
 
-Converts an input value to a value of type [IPv4](../data-types/ipv4.md) but returns zero IPv4 address in case of an error.
-Like [`toIPv4`](#toIPv4) but returns zero IPv4 address (`0.0.0.0`) instead of throwing an exception on conversion errors.
+支持的参数：
 
-Supported arguments:
-- String representations of IPv4 addresses in dotted decimal notation.
-- Integer representations of IPv4 addresses.
+* 点分十进制表示的 IPv4 地址字符串。
+* IPv4 地址的整数表示。
 
-Unsupported arguments (return zero IPv4):
-- Invalid IP address formats.
-- IPv6 addresses.
-- Out-of-range values.
-    
+不支持的参数（返回全零 IPv4 地址）：
 
-**Syntax**
+* 无效的 IP 地址格式。
+* IPv6 地址。
+* 超出范围的值。
+
+**语法**
 
 ```sql
 toIPv4OrZero(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — A string or integer representation of an IPv4 address. [`String`](/sql-reference/data-types/string) or [`Integer`](/sql-reference/data-types/int-uint)
+* `x` — IPv4 地址的字符串或整数形式。[`String`](/sql-reference/data-types/string) 或 [`Integer`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+成功时返回 IPv4 地址，否则返回全零 IPv4 地址（`0.0.0.0`）。[`IPv4`](/sql-reference/data-types/ipv4)
 
-Returns an IPv4 address if successful, otherwise zero IPv4 address (`0.0.0.0`). [`IPv4`](/sql-reference/data-types/ipv4)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -998,38 +907,33 @@ SELECT
 └─────────────┴────────────┘
 ```
 
-
-
 ## toIPv6 {#toIPv6}
 
-Introduced in: v20.1
+引入于：v20.1
 
+将字符串或 `UInt128` 形式的 IPv6 地址转换为 [`IPv6`](../data-types/ipv6.md) 类型。
+对于字符串，如果 IPv6 地址格式无效，则返回空结果。
+类似于 [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) 和 [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) 函数，它们在 IPv6 地址与二进制格式（即 `FixedString(16)`）之间进行转换。
 
-onverts a string or a `UInt128` form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
-For strings, if the IPv6 address has an invalid format, returns an empty value.
-Similar to [`IPv6StringToNum`](/sql-reference/functions/ip-address-functions#IPv6StringToNum) and [`IPv6NumToString`](/sql-reference/functions/ip-address-functions#IPv6NumToString) functions, which convert IPv6 address to and from binary format (i.e. `FixedString(16)`).
+如果输入字符串中包含有效的 IPv4 地址，则返回对应的 IPv6 等价地址。
 
-If the input string contains a valid IPv4 address, then the IPv6 equivalent of the IPv4 address is returned.
-
-
-**Syntax**
+**语法**
 
 ```sql
 toIPv6(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — An IP address. [`String`](/sql-reference/data-types/string) or [`UInt128`](/sql-reference/data-types/int-uint)
+* `x` — IP 地址。[`String`](/sql-reference/data-types/string) 或 [`UInt128`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个 IPv6 地址。[`IPv6`](/sql-reference/data-types/ipv6)
 
-Returns an IPv6 address. [`IPv6`](/sql-reference/data-types/ipv6)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 WITH '2001:438:ffff::407d:1bc1' AS IPv6_string
@@ -1044,7 +948,7 @@ SELECT
 └───────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**IPv4-to-IPv6 mapping**
+**IPv4 到 IPv6 的映射**
 
 ```sql title=Query
 SELECT toIPv6('127.0.0.1');
@@ -1056,34 +960,31 @@ SELECT toIPv6('127.0.0.1');
 └─────────────────────┘
 ```
 
-
-
 ## toIPv6OrDefault {#toIPv6OrDefault}
 
-Introduced in: v22.3
+引入版本：v22.3
 
+将 IPv6 地址的字符串形式或 UInt128 形式转换为 [`IPv6`](../data-types/ipv6.md) 类型。
+如果 IPv6 地址格式无效，则返回 `::`（全零 IPv6 地址）或指定的 IPv6 默认值。
 
-Converts a string or a UInt128 form of IPv6 address to [`IPv6`](../data-types/ipv6.md) type.
-If the IPv6 address has an invalid format, it returns `::` (0 IPv6) or the provided IPv6 default.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toIPv6OrDefault(string[, default])
 ```
 
-**Arguments**
+**参数**
 
-- `string` — IP address string to convert. - `default` — Optional. The value to return if string has an invalid format. 
+* `string` — 要转换的 IP 地址字符串。
+* `default` — 可选。当 `string` 格式无效时返回的值。
 
-**Returned value**
+**返回值**
 
-Returns the IPv6 address, otherwise `::` or the provided optional default if argument `string` has an invalid format. [`IPv6`](/sql-reference/data-types/ipv6)
+返回 IPv6 地址；如果 `string` 参数格式无效，则返回 `::` 或提供的可选默认值。[`IPv6`](/sql-reference/data-types/ipv6)
 
-**Examples**
+**示例**
 
-**Valid and invalid IPv6 strings**
+**有效和无效的 IPv6 字符串**
 
 ```sql title=Query
 WITH
@@ -1102,46 +1003,43 @@ SELECT
 └────────────────────────────────────────┴───────────────┴──────────────────┘
 ```
 
-
-
 ## toIPv6OrNull {#toIPv6OrNull}
 
-Introduced in: v22.3
+引入于：v22.3
 
+将输入值转换为 `IPv6` 类型的值，但在发生错误时返回 `NULL`。
+与 [`toIPv6`](#toIPv6) 类似，但在转换出错时返回 `NULL`，而不是抛出异常。
 
-Converts an input value to a value of type `IPv6` but returns `NULL` in case of an error.
-Like [`toIPv6`](#toIPv6) but returns `NULL` instead of throwing an exception on conversion errors.
+支持的参数：
 
-Supported arguments:
-- String representations of IPv6 addresses in standard notation.
-- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
-- Binary representations of IPv6 addresses.
+* 标准表示法的 IPv6 地址字符串。
+* IPv4 地址的字符串表示（转换为 IPv4 映射的 IPv6 地址）。
+* IPv6 地址的二进制表示。
 
-Unsupported arguments (return `NULL`):
-- Invalid IP address formats.
-- Malformed IPv6 addresses.
-- Out-of-range values.
-- Invalid notation.
-    
+不支持的参数（返回 `NULL`）：
 
-**Syntax**
+* 无效的 IP 地址格式。
+* 格式错误的 IPv6 地址。
+* 超出取值范围的值。
+* 无效的表示法。
+
+**语法**
 
 ```sql
 toIPv6OrNull(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
+* `x` — IPv6 或 IPv4 地址的字符串表示形式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+成功时返回 IPv6 地址，否则返回 `NULL`。[`IPv6`](/sql-reference/data-types/ipv6) 或 [`NULL`](/sql-reference/syntax#null)
 
-Returns an IPv6 address if successful, otherwise `NULL`. [`IPv6`](/sql-reference/data-types/ipv6) or [`NULL`](/sql-reference/syntax#null)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT
@@ -1155,45 +1053,42 @@ SELECT
 └─────────────────────────────────────┴──────────────┘
 ```
 
-
-
 ## toIPv6OrZero {#toIPv6OrZero}
 
-Introduced in: v23.1
+引入于：v23.1
 
+将输入值转换为 [IPv6](../data-types/ipv6.md) 类型的值，但在出错时返回全零 IPv6 地址。
+类似于 [`toIPv6`](#toIPv6)，但在转换出错时返回全零 IPv6 地址（`::`），而不是抛出异常。
 
-Converts an input value to a value of type [IPv6](../data-types/ipv6.md) but returns zero IPv6 address in case of an error.
-Like [`toIPv6`](#toIPv6) but returns zero IPv6 address (`::`) instead of throwing an exception on conversion errors.
+支持的参数：
 
-Supported arguments:
-- String representations of IPv6 addresses in standard notation.
-- String representations of IPv4 addresses (converted to IPv4-mapped IPv6).
-- Binary representations of IPv6 addresses.
+* 标准表示法的 IPv6 地址字符串。
+* IPv4 地址的字符串表示（会转换为 IPv4 映射的 IPv6 地址）。
+* IPv6 地址的二进制表示。
 
-Unsupported arguments (return zero IPv6):
-- Invalid IP address formats.
-- Malformed IPv6 addresses.
-- Out-of-range values.
-    
+不支持的参数（将返回全零 IPv6 地址）：
 
-**Syntax**
+* 无效的 IP 地址格式。
+* 格式错误的 IPv6 地址。
+* 超出范围的值。
+
+**语法**
 
 ```sql
 toIPv6OrZero(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — A string representation of an IPv6 or IPv4 address. [`String`](/sql-reference/data-types/string)
+* `x` — IPv6 或 IPv4 地址的字符串形式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+成功时返回一个 IPv6 地址，否则返回全零 IPv6 地址 (`::`)。[`IPv6`](/sql-reference/data-types/ipv6)
 
-Returns an IPv6 address if successful, otherwise zero IPv6 address (`::`).  [`IPv6`](/sql-reference/data-types/ipv6)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT

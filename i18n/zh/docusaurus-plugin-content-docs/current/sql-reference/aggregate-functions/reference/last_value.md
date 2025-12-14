@@ -44,7 +44,7 @@ SELECT last_value(b) FROM test_data
 NULL 值会被忽略。
 
 ```sql
-SELECT last_value(b) ignore nulls FROM test_data
+SELECT last_value(b) IGNORE NULLS FROM test_data
 ```
 
 ```text
@@ -58,7 +58,7 @@ SELECT last_value(b) ignore nulls FROM test_data
 接受 NULL 值。
 
 ```sql
-SELECT last_value(b) respect nulls FROM test_data
+SELECT last_value(b) RESPECT NULLS FROM test_data
 ```
 
 ```text

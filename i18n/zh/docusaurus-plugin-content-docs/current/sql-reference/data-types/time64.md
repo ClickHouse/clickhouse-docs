@@ -17,44 +17,8 @@ doc_type: 'reference'
 
 **语法：**
 
-```
-
-Internally, `Time64` stores a signed 64-bit decimal (Decimal64) number of fractional seconds.
-The tick resolution is determined by the `precision` parameter.
-Time zones are not supported: specifying a time zone with `Time64` will throw an error.
-
-Unlike `DateTime64`, `Time64` does not store a date component.
-See also [`Time`](../../sql-reference/data-types/time.md).
-
-Text representation range: [-999:59:59.000, 999:59:59.999] for `precision = 3`. In general, the minimum is `-999:59:59` and the maximum is `999:59:59` with up to `precision` fractional digits (for `precision = 9`, the minimum is `-999:59:59.999999999`).
-
-## Implementation details {#implementation-details}
-
-**Representation**.
-Signed `Decimal64` value counting fractional second with `precision` fractional digits.
-
-**Normalization**.
-When parsing strings to `Time64`, the time components are normalized and not validated.
-For example, `25:70:70` is interpreted as `26:11:10`.
-
-**Negative values**.
-Leading minus signs are supported and preserved.
-Negative values typically arise from arithmetic operations on `Time64` values.
-For `Time64`, negative inputs are preserved for both text (e.g., `'-01:02:03.123'`) and numeric inputs (e.g., `-3723.123`).
-
-**Saturation**.
-The time-of-day component is capped to the range [-999:59:59.xxx, 999:59:59.xxx] when converting to components or serialising to text.
-The stored numeric value may exceed this range; however, any component extraction (hours, minutes, seconds) and textual representation use the saturated value.
-
-**Time zones**.
-`Time64` does not support time zones.
-Specifying a time zone when creating a `Time64` type or value throws an error.
-Likewise, attempts to apply or change the time zone on `Time64` columns is not supported and results in an error.
-
-## Examples {#examples}
-
-1. Creating a table with a `Time64`-type column and inserting data into it:
-
+```sql
+Time64(precision)
 ```
 
 在内部，`Time64` 以有符号 64 位十进制数（Decimal64）的形式存储秒的小数部分。

@@ -72,36 +72,31 @@ SELECT UTCTimestamp()
 └─────────────────────┘
 ```
 
-
-
 ## YYYYMMDDToDate {#YYYYMMDDToDate}
 
-Introduced in: v23.9
+引入版本：v23.9
 
+将一个包含年、月和日数字的数值转换为 `Date`。
+该函数是函数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 的反函数。
+如果输入不表示一个有效的 Date 值，则输出未定义。
 
-Converts a number containing the year, month and day number to a `Date`.
-This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
-The output is undefined if the input does not encode a valid Date value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 YYYYMMDDToDate(YYYYMMDD)
 ```
 
-**Arguments**
+**参数**
 
-- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `YYYYMMDD` — 包含年、月和日的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+根据提供的参数返回一个 `Date` 类型的值 [`Date`](/sql-reference/data-types/date)
 
-Returns a `Date` value from the provided arguments [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate(20230911);
@@ -113,36 +108,31 @@ SELECT YYYYMMDDToDate(20230911);
 └──────────────────────┘
 ```
 
-
-
 ## YYYYMMDDToDate32 {#YYYYMMDDToDate32}
 
-Introduced in: v23.9
+引入自：v23.9
 
+将包含年份、月份和日期数字的数值转换为 `Date32`。
+此函数与函数 [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD) 相反。
+如果输入不表示一个有效的 `Date32` 值，则输出是未定义的。
 
-Converts a number containing the year, month and day number to a `Date32`.
-This function is the opposite of function [`toYYYYMMDD()`](/sql-reference/functions/date-time-functions#toYYYYMMDD).
-The output is undefined if the input does not encode a valid `Date32` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 YYYYMMDDToDate32(YYYYMMDD)
 ```
 
-**Arguments**
+**参数**
 
-- `YYYYMMDD` — Number containing the year, month and day. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `YYYYMMDD` — 包含年、月、日的数字。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+根据提供的参数返回一个 `Date32` 值 [`Date32`](/sql-reference/data-types/date32)
 
-Returns a `Date32` value from the provided arguments [`Date32`](/sql-reference/data-types/date32)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT YYYYMMDDToDate32(20000507);
@@ -154,37 +144,32 @@ SELECT YYYYMMDDToDate32(20000507);
 └────────────────────────────┘
 ```
 
-
-
 ## YYYYMMDDhhmmssToDateTime {#YYYYMMDDhhmmssToDateTime}
 
-Introduced in: v23.9
+自 v23.9 起引入
 
+将包含年、月、日、时、分、秒的数字转换为 `DateTime`。
+此函数与函数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) 的作用相反。
+如果输入未表示有效的 `DateTime` 值，则输出是未定义的。
 
-Converts a number containing the year, month, day, hour, minute, and second to a `DateTime`.
-This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
-The output is undefined if the input does not encode a valid `DateTime` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 YYYYMMDDhhmmssToDateTime(YYYYMMDDhhmmss[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
+* `YYYYMMDDhhmmss` — 包含年份、月份、日、小时、分钟和秒的数字。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `timezone` — 时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据提供的参数返回 `DateTime` 类型的值。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns a `DateTime` value from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT YYYYMMDDToDateTime(20230911131415);
@@ -196,38 +181,33 @@ SELECT YYYYMMDDToDateTime(20230911131415);
 └───────────────────────────────────────────────┘
 ```
 
-
-
 ## YYYYMMDDhhmmssToDateTime64 {#YYYYMMDDhhmmssToDateTime64}
 
-Introduced in: v23.9
+引入于：v23.9
 
+将一个包含年、月、日、时、分、秒的数字转换为 `DateTime64`。
+此函数与函数 [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss) 相反。
+如果输入不表示有效的 `DateTime64` 值，则输出结果未定义。
 
-Converts a number containing the year, month, day, hour, minute, and second to a `DateTime64`.
-This function is the opposite of function [`toYYYYMMDDhhmmss()`](/sql-reference/functions/date-time-functions#toYYYYMMDDhhmmss).
-The output is undefined if the input does not encode a valid `DateTime64` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 YYYYMMDDhhmmssToDateTime64(YYYYMMDDhhmmss[, precision[, timezone]])
 ```
 
-**Arguments**
+**参数**
 
-- `YYYYMMDDhhmmss` — Number containing the year, month, day, hour, minute, and second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
+* `YYYYMMDDhhmmss` — 包含年、月、日、时、分和秒的数字。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 小数部分的精度 (0-9)。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据提供的参数返回一个 `DateTime64` 值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a `DateTime64` value from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
@@ -239,36 +219,31 @@ SELECT YYYYMMDDhhmmssToDateTime64(20230911131415, 3, 'Asia/Istanbul');
 └──────────────────────────┘
 ```
 
-
-
 ## addDate {#addDate}
 
-Introduced in: v23.9
+首次引入于：v23.9
 
+将时间间隔添加到指定的日期、日期时间，或它们的字符串编码形式。
+如果相加结果超出了该数据类型的取值范围，则结果是未定义的。
 
-Adds the time interval to the provided date, date with time or string-encoded date or date with time.
-If the addition results in a value outside the bounds of the data type, the result is undefined.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addDate(datetime, interval)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — The date or date with time to which `interval` is added. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `interval` — Interval to add. [`Interval`](/sql-reference/data-types/int-uint)
+* `datetime` — 要在其基础上添加 `interval` 的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `interval` — 要添加的时间区间。[`Interval`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回通过将 `interval` 加到 `datetime` 后得到的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns date or date with time obtained by adding `interval` to `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add interval to date**
+**向日期添加时间区间**
 
 ```sql title=Query
 SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -280,35 +255,30 @@ SELECT addDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────┘
 ```
 
-
-
 ## addDays {#addDays}
 
-Introduced in: v1.1
+引入自：v1.1 版本
 
+将指定的天数加到日期、日期时间，或字符串编码的日期或日期时间值上。
 
-Adds a specified number of days to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addDays(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of days to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of days to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要添加指定天数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的天数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 天后的结果。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` days. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add days to different date types**
+**向不同日期类型添加天数**
 
 ```sql title=Query
 WITH
@@ -327,7 +297,7 @@ SELECT
 └────────────────────┴─────────────────────────┴────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用替代的 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
@@ -339,35 +309,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
-
-
 ## addHours {#addHours}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将指定的小时数添加到日期、日期时间，或以字符串编码的日期或日期时间。
 
-Adds a specified number of hours to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addHours(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of hours to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of hours to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 需要增加指定小时数的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要增加的小时数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回在 `datetime` 上增加 `num` 小时后的结果，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add hours to different date types**
+**向不同日期类型增加小时数**
 
 ```sql title=Query
 WITH
@@ -386,7 +351,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
@@ -398,39 +363,34 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
-
-
 ## addInterval {#addInterval}
 
-Introduced in: v22.11
+自 v22.11 引入
 
-
-Adds an interval to another interval or tuple of intervals.
+将一个区间添加到另一个区间或区间元组中。
 
 :::note
-Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(1)` and `toIntervalDay(2)` are passed then the result will be `(3)` rather than `(1,1)`.
+相同类型的区间会被合并为一个区间。例如，如果传入 `toIntervalDay(1)` 和 `toIntervalDay(2)`，则结果为 `(3)` 而不是 `(1,1)`。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 addInterval(interval_1, interval_2)
 ```
 
-**Arguments**
+**参数**
 
-- `interval_1` — First interval or tuple of intervals. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-- `interval_2` — Second interval to be added. [`Interval`](/sql-reference/data-types/int-uint)
+* `interval_1` — 第一个时间间隔或时间间隔元组。[`Interval`](/sql-reference/data-types/int-uint) 或 [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+* `interval_2` — 要相加的第二个时间间隔。[`Interval`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回时间间隔元组 [`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
-Returns a tuple of intervals [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Add intervals**
+**时间间隔相加**
 
 ```sql title=Query
 SELECT addInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -450,35 +410,30 @@ SELECT addInterval(INTERVAL 2 DAY, INTERVAL 1 DAY)
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## addMicroseconds {#addMicroseconds}
 
-Introduced in: v22.6
+自 v22.6 起引入
 
+将指定数量的微秒添加到日期时间值或其字符串编码的日期时间值上。
 
-Adds a specified number of microseconds to a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addMicroseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to add specified number of microseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of microseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要增加指定微秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的微秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `date_time` 加上 `num` 微秒后的值，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `date_time` plus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add microseconds to different date time types**
+**为不同日期时间类型增加微秒**
 
 ```sql title=Query
 WITH
@@ -495,7 +450,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用其他 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -507,35 +462,30 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
-
-
 ## addMilliseconds {#addMilliseconds}
 
-Introduced in: v22.6
+引入版本：v22.6
 
+将指定数量的毫秒加到带时间的日期，或字符串编码的带时间日期上。
 
-Adds a specified number of milliseconds to a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addMilliseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to add specified number of milliseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of milliseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 需要增加指定毫秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要增加的毫秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 毫秒后的结果，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add milliseconds to different date time types**
+**为不同的日期时间类型添加毫秒**
 
 ```sql title=Query
 WITH
@@ -552,7 +502,7 @@ SELECT
 └─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -564,35 +514,30 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
-
-
 ## addMinutes {#addMinutes}
 
-Introduced in: v1.1
+引入自：v1.1
 
+为日期、日期时间或其字符串编码形式增加指定的分钟数。
 
-Adds a specified number of minutes to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addMinutes(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of minutes to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of minutes to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要添加指定分钟数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的分钟数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 分钟后的值，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add minutes to different date types**
+**为不同日期类型添加分钟数**
 
 ```sql title=Query
 WITH
@@ -611,7 +556,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
@@ -623,35 +568,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
-
-
 ## addMonths {#addMonths}
 
-Introduced in: v1.1
+引入于：v1.1
 
+向日期、日期时间或其字符串编码形式添加指定数量的月份。
 
-Adds a specified number of months to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addMonths(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of months to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of months to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要增加指定月数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要增加的月份数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 个月后的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add months to different date types**
+**为不同日期类型增加月份**
 
 ```sql title=Query
 WITH
@@ -670,7 +610,7 @@ SELECT
 └──────────────────────┴───────────────────────────┴──────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
@@ -682,35 +622,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
-
-
 ## addNanoseconds {#addNanoseconds}
 
-Introduced in: v22.6
+自 v22.6 引入
 
+为日期时间值或字符串编码的日期时间值增加指定数量的纳秒。
 
-Adds a specified number of nanoseconds to a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addNanoseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to add specified number of nanoseconds to. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of nanoseconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要在其上添加指定纳秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的纳秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回在 `datetime` 上加上 `num` 个纳秒后的结果，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add nanoseconds to different date time types**
+**为不同的日期时间类型添加纳秒**
 
 ```sql title=Query
 WITH
@@ -727,7 +662,7 @@ SELECT
 └────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
@@ -739,35 +674,30 @@ SELECT dateAdd('1998-06-16'::DateTime, INTERVAL 1000 nanosecond)
 └───────────────────────────────┘
 ```
 
-
-
 ## addQuarters {#addQuarters}
 
-Introduced in: v20.1
+引入于：v20.1
 
+将指定数量的季度加到日期、日期时间，或以字符串形式表示的日期或日期时间上。
 
-Adds a specified number of quarters to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addQuarters(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of quarters to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of quarters to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要在其上添加指定数量季度的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的季度数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回在 `datetime` 上加上 `num` 个季度后的结果，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add quarters to different date types**
+**为不同日期类型添加季度**
 
 ```sql title=Query
 WITH
@@ -786,7 +716,7 @@ SELECT
 └────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用其他 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -798,35 +728,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 quarter)
 └──────────────────────────┘
 ```
 
-
-
 ## addSeconds {#addSeconds}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+将指定的秒数加到日期、日期时间，或其字符串表示的日期或日期时间上。
 
-Adds a specified number of seconds to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addSeconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of seconds to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of seconds to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要增加指定秒数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 需要增加的秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 秒后的结果，为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add seconds to different date types**
+**对不同日期类型增加秒数**
 
 ```sql title=Query
 WITH
@@ -845,7 +770,7 @@ SELECT
 └───────────────────────┴────────────────────────────┴───────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
@@ -857,35 +782,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 second)
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## addTupleOfIntervals {#addTupleOfIntervals}
 
-Introduced in: v22.11
+引入版本：v22.11
 
+依次向日期或日期时间添加一个间隔元组。
 
-Consecutively adds a tuple of intervals to a date or a date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addTupleOfIntervals(datetime, intervals)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add intervals to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `intervals` — Tuple of intervals to add to `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+* `datetime` — 要向其添加时间区间的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `intervals` — 要添加到 `datetime` 的时间区间元组。[`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回在 `date` 上添加了 `intervals` 后的结果，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `date` with added `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add tuple of intervals to date**
+**为日期添加一组时间区间元组**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date
@@ -898,35 +818,30 @@ SELECT addTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 MONTH, INTERVAL 1 Y
 └──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## addWeeks {#addWeeks}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+为日期、日期时间或其字符串形式添加指定数量的周。
 
-Adds a specified number of weeks to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addWeeks(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of weeks to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of weeks to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 需要添加指定周数的日期或日期时间。可为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的周数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回在 `datetime` 基础上加上 `num` 周后的值，类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add weeks to different date types**
+**为不同日期类型添加周数**
 
 ```sql title=Query
 WITH
@@ -945,7 +860,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
@@ -957,35 +872,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
-
-
 ## addYears {#addYears}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+将指定的年数添加到日期、日期时间，或字符串形式的日期或日期时间。
 
-Adds a specified number of years to a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addYears(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to add specified number of years to. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of years to add. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要向其添加指定年数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要添加的年数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 加上 `num` 年后的值，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` plus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Add years to different date types**
+**为不同日期类型增加年份**
 
 ```sql title=Query
 WITH
@@ -1004,7 +914,7 @@ SELECT
 └─────────────────────┴──────────────────────────┴─────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 `INTERVAL` 语法**
 
 ```sql title=Query
 SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
@@ -1016,34 +926,30 @@ SELECT dateAdd('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
-
-
 ## age {#age}
 
-Introduced in: v23.1
+引入版本：v23.1
 
+返回 `startdate` 和 `enddate` 差值在指定单位下的数值分量。
+该差值以 1 纳秒为精度进行计算。
 
-Returns the unit component of the difference between `startdate` and `enddate`.
-The difference is calculated using a precision of 1 nanosecond.
+例如，2021-12-29 和 2022-01-01 之间的差值，对于天这一单位是 3 天，
+对于月这一单位是 0 个月，对于年这一单位是 0 年。
 
-For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for the day unit,
-0 months for the month unit, and 0 years for the year unit.
+如需 age 的替代函数，请参见 [`dateDiff`](#dateDiff)。
 
-For an alternative to age, see function [`dateDiff`](#dateDiff).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 age('unit', startdate, enddate[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `unit` — The type of interval for result.
+* `unit` — 结果所使用的时间间隔类型。
 
 | Unit        | Possible values                          |
-|-------------|------------------------------------------|
+| ----------- | ---------------------------------------- |
 | nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
 | microsecond | `microsecond`, `microseconds`, `us`, `u` |
 | millisecond | `millisecond`, `milliseconds`, `ms`      |
@@ -1055,18 +961,18 @@ age('unit', startdate, enddate[, timezone])
 | month       | `month`, `months`, `mm`, `m`             |
 | quarter     | `quarter`, `quarters`, `qq`, `q`         |
 | year        | `year`, `years`, `yyyy`, `yy`            |
- - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone name. If specified, it is applied to both startdate and enddate. If not specified, timezones of startdate and enddate are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
 
+* `startdate` — 第一个要减去的时间值（减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `enddate` — 要从中减去的第二个时间值（被减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。时区名称。如果指定，则同时应用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 各自的时区。如果二者时区不同，则结果未定义。[`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**返回值**
 
-Returns the difference between enddate and startdate expressed in unit. [`Int32`](/sql-reference/data-types/int-uint)
+返回 `enddate` 与 `startdate` 之间以 `unit` 表示的差值。[`Int32`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Calculate age in hours**
+**按小时计算年龄**
 
 ```sql title=Query
 SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:00:00'))
@@ -1078,7 +984,7 @@ SELECT age('hour', toDateTime('2018-01-01 22:30:00'), toDateTime('2018-01-02 23:
 └───────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Calculate age in different units**
+**按不同单位计算年龄**
 
 ```sql title=Query
 SELECT
@@ -1095,33 +1001,30 @@ SELECT
 └────────────┴────────────┴─────────┴───────────┴──────────┘
 ```
 
-
-
 ## changeDay {#changeDay}
 
-Introduced in: v24.7
+引入版本：v24.7
 
-Changes the day component of a date or date time.
+修改日期或日期时间的“日”部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeDay(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新的数值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同、但已修改日期中“日”部分的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a value of the same type as `date_or_datetime` with modified day component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT changeDay('2024-01-31'::DateTime, 15)
@@ -1131,33 +1034,30 @@ SELECT changeDay('2024-01-31'::DateTime, 15)
 2024-01-15 00:00:00
 ```
 
-
-
 ## changeHour {#changeHour}
 
-Introduced in: v24.7
+自 v24.7 起引入
 
-Changes the hour component of a date or date time.
+更改日期或日期时间的小时部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeHour(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同的值，其小时部分已被修改。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a value of the same type as `date_or_datetime` with modified hour component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
@@ -1167,33 +1067,30 @@ SELECT changeHour('2024-01-01 12:00:00'::DateTime, 5)
 2024-01-01 05:00:00
 ```
 
-
-
 ## changeMinute {#changeMinute}
 
-Introduced in: v24.7
+引入版本：v24.7
 
-Changes the minute component of a `date or date time`.
+更改 `date or date time` 值的分钟部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeMinute(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同、但分钟部分已修改的值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a value of the same type as `date_or_datetime` with modified minute component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
@@ -1203,33 +1100,30 @@ SELECT changeMinute('2024-01-01 12:30:00'::DateTime, 45)
 2024-01-01 12:45:00
 ```
 
-
-
 ## changeMonth {#changeMonth}
 
-Introduced in: v24.7
+引入版本：v24.7
 
-Changes the month component of a date or date time.
+更改日期或日期时间值的月份部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeMonth(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同且月份组件已修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a value of the same type as `date_or_datetime` with modified month component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT changeMonth('2024-01-01'::DateTime, 12)
@@ -1239,33 +1133,30 @@ SELECT changeMonth('2024-01-01'::DateTime, 12)
 2024-12-01 00:00:00
 ```
 
-
-
 ## changeSecond {#changeSecond}
 
-Introduced in: v24.7
+自 v24.7 引入
 
-Changes the second component of a date or date time.
+更改日期或日期时间的秒部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeSecond(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新的秒值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同的值，但其中的秒数部分已被修改，即 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)。
 
-Returns a value of the same type as `date_or_datetime` with modified seconds component. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
@@ -1275,33 +1166,30 @@ SELECT changeSecond('2024-01-01 12:30:45'::DateTime, 15)
 2024-01-01 12:30:15
 ```
 
-
-
 ## changeYear {#changeYear}
 
-Introduced in: v24.7
+自 v24.7 起引入
 
-Changes the year component of a date or date time.
+更改日期或日期时间的年份部分。
 
-**Syntax**
+**语法**
 
 ```sql
 changeYear(date_or_datetime, value)
 ```
 
-**Arguments**
+**参数**
 
-- `date_or_datetime` — The value to change. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `value` — The new value. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `date_or_datetime` — 要修改的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 新的年份值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与 `date_or_datetime` 类型相同的值，但年份部分已被修改。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a value of the same type as `date_or_datetime` with modified year component. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT changeYear('2024-01-01'::DateTime, 2023)
@@ -1311,61 +1199,56 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 2023-01-01 00:00:00
 ```
 
-
-
 ## dateDiff {#dateDiff}
 
-Introduced in: v23.4
+引入版本：v23.4
 
+返回从 `startdate` 到 `enddate` 之间跨越的指定 `unit` 边界的数量。
+差值是按相对单位计算的。例如，2021-12-29 和 2022-01-01 之间，对于单位 day（参见 [`toRelativeDayNum`](#toRelativeDayNum)）差值为 3 天，
+对于单位 month（参见 [`toRelativeMonthNum`](#toRelativeMonthNum)）差值为 1 个月，对于单位 year（参见 [`toRelativeYearNum`](#toRelativeYearNum)）差值为 1 年。
 
-Returns the count of the specified `unit` boundaries crossed between the `startdate` and the `enddate`.
-The difference is calculated using relative units. For example, the difference between 2021-12-29 and 2022-01-01 is 3 days for unit day
-(see [`toRelativeDayNum`](#toRelativeDayNum)), 1 month for unit month (see [`toRelativeMonthNum`](#toRelativeMonthNum)) and 1 year for unit year
-(see [`toRelativeYearNum`](#toRelativeYearNum)).
+如果指定的单位为 `week`，则 `dateDiff` 假定一周从星期一开始计算。
+注意，这与函数 `toWeek()` 的行为不同，后者默认从星期日开始一周。
 
-If the unit `week` was specified, then `dateDiff` assumes that weeks start on Monday.
-Note that this behavior is different from that of function `toWeek()` in which weeks start by default on Sunday.
+作为 `dateDiff` 的替代方案，请参见函数 [`age`](#age)。
 
-For an alternative to `dateDiff`, see function [`age`](#age).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**Aliases**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**别名**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
 
-**Arguments**
+**参数**
 
-- `unit` — The type of interval for result.
+* `unit` — 结果所使用的时间间隔单位类型。
 
-| Unit        | Possible values                           |
-|-------------|-------------------------------------------|
-| nanosecond  | `nanosecond`, `nanoseconds`, `ns`         |
-| microsecond | `microsecond`, `microseconds`, `us`, `u`  |
-| millisecond | `millisecond`, `milliseconds`, `ms`       |
-| second      | `second`, `seconds`, `ss`, `s`            |
-| minute      | `minute`, `minutes`, `mi`, `n`            |
-| hour        | `hour`, `hours`, `hh`, `h`                |
-| day         | `day`, `days`, `dd`, `d`                  |
-| week        | `week`, `weeks`, `wk`, `ww`               |
-| month       | `month`, `months`, `mm`, `m`              |
-| quarter     | `quarter`, `quarters`, `qq`, `q`          |
-| year        | `year`, `years`, `yyyy`, `yy`             |
- - `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone name. If specified, it is applied to both `startdate` and `enddate`. If not specified, timezones of `startdate` and `enddate` are used. If they are not the same, the result is unspecified. [`String`](/sql-reference/data-types/string)
+| 单位          | 可能的取值                                    |
+| ----------- | ---------------------------------------- |
+| nanosecond  | `nanosecond`, `nanoseconds`, `ns`        |
+| microsecond | `microsecond`, `microseconds`, `us`, `u` |
+| millisecond | `millisecond`, `milliseconds`, `ms`      |
+| second      | `second`, `seconds`, `ss`, `s`           |
+| minute      | `minute`, `minutes`, `mi`, `n`           |
+| hour        | `hour`, `hours`, `hh`, `h`               |
+| day         | `day`, `days`, `dd`, `d`                 |
+| week        | `week`, `weeks`, `wk`, `ww`              |
+| month       | `month`, `months`, `mm`, `m`             |
+| quarter     | `quarter`, `quarters`, `qq`, `q`         |
+| year        | `year`, `years`, `yyyy`, `yy`            |
 
+* `startdate` — 用于相减的第一个时间值（减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `enddate` — 用于相减的第二个时间值（被减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。时区名称。如果指定，则同时应用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 自身的时区。如果二者时区不同，则结果未指定。[`String`](/sql-reference/data-types/string)
 
-**Returned value**
+**返回值**
 
-Returns the difference between `enddate` and `startdate` expressed in `unit`. [`Int64`](/sql-reference/data-types/int-uint)
+返回 `enddate` 与 `startdate` 之间以 `unit` 为单位表示的差值。[`Int64`](/sql-reference/data-types/int-uint)
 
-**Examples**
+**示例**
 
-**Calculate date difference in hours**
+**按小时计算日期差**
 
 ```sql title=Query
 SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -1377,7 +1260,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**Calculate date difference in different units**
+**以不同单位计算日期差**
 
 ```sql title=Query
 SELECT
@@ -1394,48 +1277,44 @@ SELECT
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
 
-
-
 ## dateName {#dateName}
 
-Introduced in: v21.7
+自 v21.7 起引入
 
+返回日期的指定部分。
 
-Returns the specified part of the date.
+可选值：
 
-Possible values:
-- 'year'
-- 'quarter'
-- 'month'
-- 'week'
-- 'dayofyear'
-- 'day'
-- 'weekday'
-- 'hour'
-- 'minute'
-- 'second'
-    
+* &#39;year&#39;
+* &#39;quarter&#39;
+* &#39;month&#39;
+* &#39;week&#39;
+* &#39;dayofyear&#39;
+* &#39;day&#39;
+* &#39;weekday&#39;
+* &#39;hour&#39;
+* &#39;minute&#39;
+* &#39;second&#39;
 
-**Syntax**
+**语法**
 
 ```sql
 dateName(date_part, date[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `date_part` — The part of the date that you want to extract. [`String`](/sql-reference/data-types/string)
-- `datetime` — A date or date with time value. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone. [`String`](/sql-reference/data-types/string)
+* `date_part` — 要提取的日期部分。[`String`](/sql-reference/data-types/string)
+* `datetime` — 日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回指定的日期部分。[`String`](/sql-reference/data-types/string)
 
-Returns the specified part of date. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Extract different date parts**
+**提取不同的日期部分**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -1451,60 +1330,55 @@ SELECT
 └──────────────────────────────┴───────────────────────────────┴─────────────────────────────┘
 ```
 
-
-
 ## dateTrunc {#dateTrunc}
 
-Introduced in: v20.8
+自 v20.8 起引入
 
+将日期和时间值截断到指定的日期部分。
 
-Truncates a date and time value to the specified part of the date.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 dateTrunc(unit, datetime[, timezone])
 ```
 
-**Aliases**: `DATE_TRUNC`
+**别名**: `DATE_TRUNC`
 
-**Arguments**
+**参数**
 
-- `unit` — 
-The type of interval to truncate the result. `unit` argument is case-insensitive.
-| Unit         | Compatibility                   |
-|--------------|---------------------------------|
-| `nanosecond` | Compatible only with DateTime64 |
-| `microsecond`| Compatible only with DateTime64 |
-| `millisecond`| Compatible only with DateTime64 |
-| `second`     |                                 |
-| `minute`     |                                 |
-| `hour`       |                                 |
-| `day`        |                                 |
-| `week`       |                                 |
-| `month`      |                                 |
-| `quarter`    |                                 |
-| `year`       |                                 |
- [`String`](/sql-reference/data-types/string)
-- `datetime` — Date and time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone name for the returned datetime. If not specified, the function uses the timezone of the `datetime` parameter. [`String`](/sql-reference/data-types/string)
+* `unit` —
+  用于截断结果的时间单位类型。`unit` 参数不区分大小写。
+  | 单位                                           | 兼容性                |
+  | -------------------------------------------- | ------------------ |
+  | `nanosecond`                                 | 仅与 DateTime64 类型兼容 |
+  | `microsecond`                                | 仅与 DateTime64 类型兼容 |
+  | `millisecond`                                | 仅与 DateTime64 类型兼容 |
+  | `second`                                     |                    |
+  | `minute`                                     |                    |
+  | `hour`                                       |                    |
+  | `day`                                        |                    |
+  | `week`                                       |                    |
+  | `month`                                      |                    |
+  | `quarter`                                    |                    |
+  | `year`                                       |                    |
+  | [`String`](/sql-reference/data-types/string) |                    |
+* `datetime` — 日期和时间。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回的 datetime 值的时区名称。如果未指定，函数会使用 `datetime` 参数的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回截断后的日期和时间值。
 
-Returns the truncated date and time value.
+| Unit 参数                    | `datetime` 参数                                    | 返回类型                                                                                  |
+| -------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Year, Quarter, Month, Week | `Date32` or `DateTime64` or `Date` or `DateTime` | [`Date32`](../data-types/date32.md) 或 [`Date`](../data-types/date.md)                 |
+| Day, Hour, Minute, Second  | `Date32`, `DateTime64`, `Date`, or `DateTime`    | [`DateTime64`](../data-types/datetime64.md) 或 [`DateTime`](../data-types/datetime.md) |
+| Millisecond, Microsecond,  | Any                                              | [`DateTime64`](../data-types/datetime64.md)                                           |
+| Nanosecond                 |                                                  | 精度为 3、6 或 9                                                                           |
 
-| Unit Argument               | `datetime` Argument                   | Return Type                                                                            |
-|-----------------------------|---------------------------------------|----------------------------------------------------------------------------------------|
-| Year, Quarter, Month, Week  | `Date32` or `DateTime64` or `Date` or `DateTime` | [`Date32`](../data-types/date32.md) or [`Date`](../data-types/date.md)                 |
-| Day, Hour, Minute, Second   | `Date32`, `DateTime64`, `Date`, or `DateTime` | [`DateTime64`](../data-types/datetime64.md) or [`DateTime`](../data-types/datetime.md) |
-| Millisecond, Microsecond,   | Any                                   | [`DateTime64`](../data-types/datetime64.md)                                            |
-| Nanosecond                  |                                       | with scale 3, 6, or 9                                                                  |
+**示例**
 
-**Examples**
-
-**Truncate without timezone**
+**不包含时区的截断**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now());
@@ -1516,7 +1390,7 @@ SELECT now(), dateTrunc('hour', now());
 └─────────────────────┴───────────────────────────┘
 ```
 
-**Truncate with specified timezone**
+**按指定时区进行截断**
 
 ```sql title=Query
 SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
@@ -1528,91 +1402,86 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 └─────────────────────┴────────────────────────────────────────────┘
 ```
 
-
-
 ## formatDateTime {#formatDateTime}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+根据给定的格式字符串格式化日期或带时间的日期。`format` 是常量表达式，因此你不能为单个结果列使用多种格式。
 
-Formats a date or date with time according to the given format string. `format` is a constant expression, so you cannot have multiple formats for a single result column.
+`formatDateTime` 使用 MySQL datetime 格式样式，请参阅 [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
-`formatDateTime` uses MySQL datetime format style, refer to the [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
+该函数的反向操作是 [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime)。
 
-The opposite operation of this function is [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime).
+通过使用替换字段，你可以为结果字符串定义模式。
+下表中的示例列展示了对 `2018-01-02 22:33:44` 的格式化结果。
 
-Using replacement fields, you can define a pattern for the resulting string.
-The example column in the table below shows formatting result for `2018-01-02 22:33:44`.
+**替换字段：**
 
-**Replacement fields:**
+| 占位符 | 描述                                   | 示例         |
+| --- | ------------------------------------ | ---------- |
+| %a  | 缩写星期名称（Mon-Sun）                      | Mon        |
+| %b  | 缩写月份名称（Jan-Dec）                      | Jan        |
+| %c  | 以整数表示的月份（01-12）                      | 01         |
+| %C  | 年份除以 100 并截断为整数（00-99）               | 20         |
+| %d  | 月中的日期，零填充（01-31）                     | 02         |
+| %D  | 简写的 MM/DD/YY 日期，等价于 %m/%d/%y         | 01/02/18   |
+| %e  | 月中的日期，空格填充（1-31）                     | 2          |
+| %f  | 秒的小数部分                               | 123456     |
+| %F  | 简写的 YYYY-MM-DD 日期，等价于 %Y-%m-%d       | 2018-01-02 |
+| %g  | 与 ISO 8601 对齐的两位数年份格式                | 18         |
+| %G  | ISO 周数使用的四位数年份格式                     | 2018       |
+| %h  | 12 小时制小时（01-12）                      | 09         |
+| %H  | 24 小时制小时（00-23）                      | 22         |
+| %i  | 分钟（00-59）                            | 33         |
+| %I  | 12 小时制小时（01-12）                      | 10         |
+| %j  | 年中的第几天（001-366）                      | 002        |
+| %k  | 24 小时制小时（00-23）                      | 14         |
+| %l  | 12 小时制小时（01-12）                      | 09         |
+| %m  | 以整数表示的月份（01-12）                      | 01         |
+| %M  | 完整月份名称（January-December）             | January    |
+| %n  | 换行符                                  |            |
+| %p  | AM 或 PM 标记                           | PM         |
+| %Q  | 季度（1-4）                              | 1          |
+| %r  | 12 小时制 HH:MM AM/PM 时间，等价于 %h:%i %p   | 10:30 PM   |
+| %R  | 24 小时制 HH:MM 时间，等价于 %H:%i            | 22:33      |
+| %s  | 秒（00-59）                             | 44         |
+| %S  | 秒（00-59）                             | 44         |
+| %t  | 水平制表符                                |            |
+| %T  | ISO 8601 时间格式（HH:MM:SS），等价于 %H:%i:%S | 22:33:44   |
+| %u  | ISO 8601 星期几的数字表示，星期一为 1（1-7）        | 2          |
+| %V  | ISO 8601 周数（01-53）                   | 01         |
+| %w  | 星期几的整数表示，星期日为 0（0-6）                 | 2          |
+| %W  | 完整星期名称（Monday-Sunday）                | Monday     |
+| %y  | 年份后两位数字（00-99）                       | 18         |
+| %Y  | 年份                                   | 2018       |
+| %z  | 相对 UTC 的时区偏移，格式为 +HHMM 或 -HHMM       | -0500      |
+| %%  | 一个 % 符号                              | %          |
 
-| Placeholder | Description | Example |
-|-------------|-------------|---------|
-| %a | abbreviated weekday name (Mon-Sun) | Mon |
-| %b | abbreviated month name (Jan-Dec) | Jan |
-| %c | month as an integer number (01-12) | 01 |
-| %C | year divided by 100 and truncated to integer (00-99) | 20 |
-| %d | day of the month, zero-padded (01-31) | 02 |
-| %D | Short MM/DD/YY date, equivalent to %m/%d/%y | 01/02/18 |
-| %e | day of the month, space-padded (1-31) | 2 |
-| %f | fractional second | 123456 |
-| %F | short YYYY-MM-DD date, equivalent to %Y-%m-%d | 2018-01-02 |
-| %g | two-digit year format, aligned to ISO 8601 | 18 |
-| %G | four-digit year format for ISO week number | 2018 |
-| %h | hour in 12h format (01-12) | 09 |
-| %H | hour in 24h format (00-23) | 22 |
-| %i | minute (00-59) | 33 |
-| %I | hour in 12h format (01-12) | 10 |
-| %j | day of the year (001-366) | 002 |
-| %k | hour in 24h format (00-23) | 14 |
-| %l | hour in 12h format (01-12) | 09 |
-| %m | month as an integer number (01-12) | 01 |
-| %M | full month name (January-December) | January |
-| %n | new-line character | |
-| %p | AM or PM designation | PM |
-| %Q | Quarter (1-4) | 1 |
-| %r | 12-hour HH:MM AM/PM time, equivalent to %h:%i %p | 10:30 PM |
-| %R | 24-hour HH:MM time, equivalent to %H:%i | 22:33 |
-| %s | second (00-59) | 44 |
-| %S | second (00-59) | 44 |
-| %t | horizontal-tab character | |
-| %T | ISO 8601 time format (HH:MM:SS), equivalent to %H:%i:%S | 22:33:44 |
-| %u | ISO 8601 weekday as number with Monday as 1 (1-7) | 2 |
-| %V | ISO 8601 week number (01-53) | 01 |
-| %w | weekday as a integer number with Sunday as 0 (0-6) | 2 |
-| %W | full weekday name (Monday-Sunday) | Monday |
-| %y | Year, last two digits (00-99) | 18 |
-| %Y | Year | 2018 |
-| %z | Time offset from UTC as +HHMM or -HHMM | -0500 |
-| %% | a % sign | % |
+* 在 ClickHouse v23.4 之前的版本中，如果被格式化的值是 Date、Date32 或 DateTime（不包含秒的小数部分），或精度为 0 的 DateTime64，则 `%f` 会打印单个零（0）。
+* 在 ClickHouse v25.1 之前的版本中，`%f` 打印的位数与 DateTime64 的 scale 一致，而不是固定的 6 位。
+* 在 ClickHouse v23.4 之前的版本中，`%M` 打印的是分钟（00-59），而不是完整的月份名称（January-December）。
 
-- In ClickHouse versions earlier than v23.4, `%f` prints a single zero (0) if the formatted value is a Date, Date32 or DateTime (which have no fractional seconds) or a DateTime64 with a precision of 0.
-- In ClickHouse versions earlier than v25.1, `%f` prints as many digits as specified by the scale of the DateTime64 instead of fixed 6 digits.
-- In ClickHouse versions earlier than v23.4, `%M` prints the minute (00-59) instead of the full month name (January-December).
-    
-
-**Syntax**
+**语法**
 
 ```sql
 formatDateTime(datetime, format[, timezone])
 ```
 
-**Aliases**: `DATE_FORMAT`
+**别名**：`DATE_FORMAT`
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date time to format. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `format` — Format string with replacement fields. [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要格式化的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `format` — 包含替换字段的格式字符串。[`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。用于格式化时间的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据指定格式返回日期和时间值。[`String`](/sql-reference/data-types/string)
 
-Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Format date with year placeholder**
+**使用年份占位符格式化日期**
 
 ```sql title=Query
 SELECT formatDateTime(toDate('2010-01-04'), '%g')
@@ -1624,7 +1493,7 @@ SELECT formatDateTime(toDate('2010-01-04'), '%g')
 └────────────────────────────────────────────┘
 ```
 
-**Format DateTime64 with fractional seconds**
+**格式化包含小数秒的 DateTime64**
 
 ```sql title=Query
 SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
@@ -1636,7 +1505,7 @@ SELECT formatDateTime(toDateTime64('2010-01-04 12:34:56.123456', 7), '%f')
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Format with timezone**
+**带时区的格式化**
 
 ```sql title=Query
 SELECT
@@ -1663,68 +1532,63 @@ LIMIT 10
 └─────────────────────┴───────────────────┴─────────────┘
 ```
 
-
-
 ## formatDateTimeInJodaSyntax {#formatDateTimeInJodaSyntax}
 
-Introduced in: v20.1
+引入于：v20.1
 
+与 `formatDateTime` 类似，但它使用 Joda 风格而不是 MySQL 风格来格式化日期时间。参见 [Joda Time 文档](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 
-Similar to `formatDateTime`, except that it formats datetime in Joda style instead of MySQL style. Refer to [Joda Time documentation](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
+此函数的反向操作为 [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax)。
 
-The opposite operation of this function is [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
+通过使用替换字段，可以为结果字符串定义格式模式。
 
-Using replacement fields, you can define a pattern for the resulting string.
+**替换字段：**
 
-**Replacement fields:**
+| Placeholder | 描述                  | 呈现形式 | 示例                         |
+| ----------- | ------------------- | ---- | -------------------------- |
+| G           | 纪元                  | 文本   | AD                         |
+| C           | 世纪（&gt;=0）          | 数字   | 20                         |
+| Y           | 纪元中的年份（&gt;=0）      | 年    | 1996                       |
+| x           | 周年份（尚不支持）           | 年    | 1996                       |
+| w           | 周年份中的周（尚不支持）        | 数字   | 27                         |
+| e           | 一周中的第几天             | 数字   | 2                          |
+| E           | 一周中的第几天             | 文本   | Tuesday; Tue               |
+| y           | 年                   | 年    | 1996                       |
+| D           | 一年中的第几天             | 数字   | 189                        |
+| M           | 一年中的月份              | 月份   | July; Jul; 07              |
+| d           | 一个月中的第几天            | 数字   | 10                         |
+| a           | 上 / 下午              | 文本   | PM                         |
+| K           | 上 / 下午中的小时 (0~11)   | 数字   | 0                          |
+| h           | 上 / 下午中的时钟小时 (1~12) | 数字   | 12                         |
+| H           | 一天中的小时 (0~23)       | 数字   | 0                          |
+| k           | 一天中的时钟小时 (1~24)     | 数字   | 24                         |
+| m           | 分钟                  | 数字   | 30                         |
+| s           | 秒                   | 数字   | 55                         |
+| S           | 秒的小数部分              | 数字   | 978                        |
+| z           | 时区                  | 文本   | Eastern Standard Time; EST |
+| Z           | 时区偏移                | 时区   | -0800; -0812               |
+| &#39;       | 文本转义符               | 分隔符  |                            |
+| &#39;&#39;  | 单引号                 | 字面量  | &#39;                      |
 
-| Placeholder | Description | Presentation | Examples |
-|-------------|-------------|-------------|----------|
-| G | era | text | AD |
-| C | century of era (>=0) | number | 20 |
-| Y | year of era (>=0) | year | 1996 |
-| x | weekyear (not supported yet) | year | 1996 |
-| w | week of weekyear (not supported yet) | number | 27 |
-| e | day of week | number | 2 |
-| E | day of week | text | Tuesday; Tue |
-| y | year | year | 1996 |
-| D | day of year | number | 189 |
-| M | month of year | month | July; Jul; 07 |
-| d | day of month | number | 10 |
-| a | halfday of day | text | PM |
-| K | hour of halfday (0~11) | number | 0 |
-| h | clockhour of halfday (1~12) | number | 12 |
-| H | hour of day (0~23) | number | 0 |
-| k | clockhour of day (1~24) | number | 24 |
-| m | minute of hour | number | 30 |
-| s | second of minute | number | 55 |
-| S | fraction of second | number | 978 |
-| z | time zone | text | Eastern Standard Time; EST |
-| Z | time zone offset | zone | -0800; -0812 |
-| ' | escape for text | delimiter | |
-| '' | single quote | literal | ' |
-    
-
-**Syntax**
+**语法**
 
 ```sql
 formatDateTimeInJodaSyntax(datetime, format[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date time to format. [`DateTime`](/sql-reference/data-types/datetime) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `format` — Format string with Joda-style replacement fields. [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. Timezone name for the formatted time. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要格式化的日期或日期时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `format` — 带有 Joda 风格占位符的格式字符串。[`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。用于格式化时间的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据指定格式返回日期和时间值。[`String`](/sql-reference/data-types/string)
 
-Returns time and date values according to the determined format. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Format datetime using Joda syntax**
+**使用 Joda 语法格式化日期时间**
 
 ```sql title=Query
 SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd HH:mm:ss')
@@ -1736,38 +1600,33 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
-Introduced in: v23.11
+引入版本：v23.11
 
+对于给定的自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)起经过的天数，返回在[ISO 8601 定义的前推公历](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)中的对应日期。
 
-For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
+其计算方式与 MySQL 的 `FROM_DAYS()` FUNCTION 相同。如果结果无法在 [Date](../data-types/date.md) 类型的取值范围内表示，则结果未定义。
 
-The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [Date](../data-types/date.md) type.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromDaysSinceYearZero(days)
 ```
 
-**Aliases**: `FROM_DAYS`
+**别名**: `FROM_DAYS`
 
-**Arguments**
+**参数**
 
-- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
+* `days` — 自公元 0 年以来经过的天数。[`UInt32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回自公元 0 年以来经过指定天数所对应的日期。[`Date`](/sql-reference/data-types/date)
 
-Returns the date corresponding to the number of days passed since year zero. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Convert days since year zero to dates**
+**将自公元 0 年以来经过的天数转换为日期**
 
 ```sql title=Query
 SELECT
@@ -1781,35 +1640,30 @@ fromDaysSinceYearZero(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
-
-
 ## fromDaysSinceYearZero32 {#fromDaysSinceYearZero32}
 
-Introduced in: v23.11
+引入于：v23.11
 
+对于给定的自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)起经过的天数，返回在[ISO 8601 定义的前推公历](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)中的对应日期。
+计算方式与 MySQL 中的 `FROM_DAYS()` 函数相同。如果结果无法在 [`Date32`](../data-types/date32.md) 类型的取值范围内表示，则结果未定义。
 
-For a given number of days elapsed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero), returns the corresponding date in the [proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
-The calculation is the same as in MySQL's `FROM_DAYS()` function. The result is undefined if it cannot be represented within the bounds of the [`Date32`](../data-types/date32.md) type.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromDaysSinceYearZero32(days)
 ```
 
-**Arguments**
+**参数**
 
-- `days` — The number of days passed since year zero. [`UInt32`](/sql-reference/data-types/int-uint)
+* `days` — 自公元 0 年起经过的天数。[`UInt32`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回与自公元 0 年起经过的指定天数相对应的日期。[`Date32`](/sql-reference/data-types/date32)
 
-Returns the date corresponding to the number of days passed since year zero. [`Date32`](/sql-reference/data-types/date32)
+**示例**
 
-**Examples**
-
-**Convert days since year zero to dates**
+**将自公元 0 年起的天数转换为日期**
 
 ```sql title=Query
 SELECT
@@ -1823,34 +1677,29 @@ fromDaysSinceYearZero32(toDaysSinceYearZero(toDate('2023-09-08'))) AS date2
 └────────────┴────────────┘
 ```
 
-
-
 ## fromModifiedJulianDay {#fromModifiedJulianDay}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将一个 [修正儒略日](https://en.wikipedia.org/wiki/Julian_day#Variants) 数值转换为文本形式为 `YYYY-MM-DD` 的 [前推格里高利历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) 日期。该函数支持的日数范围为从 `-678941` 到 `2973483`（分别表示 0000-01-01 和 9999-12-31）。如果日数超出支持范围，将抛出异常。
 
-Converts a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number to a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD`. This function supports day number from `-678941` to `2973483` (which represent 0000-01-01 and 9999-12-31 respectively). It raises an exception if the day number is outside of the supported range.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromModifiedJulianDay(day)
 ```
 
-**Arguments**
+**参数**
 
-- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `day` — 修正儒略日（Modified Julian Day）编号。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+以文本形式返回日期。[`String`](/sql-reference/data-types/string)
 
-Returns date in text form. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Convert Modified Julian Day to date**
+**将修正儒略日转换为日期**
 
 ```sql title=Query
 SELECT fromModifiedJulianDay(58849)
@@ -1862,34 +1711,29 @@ SELECT fromModifiedJulianDay(58849)
 └──────────────────────────────┘
 ```
 
-
-
 ## fromModifiedJulianDayOrNull {#fromModifiedJulianDayOrNull}
 
-Introduced in: v21.1
+自 v21.1 引入
 
+与 [`fromModifiedJulianDay()`](#fromModifiedJulianDay) 类似，但不会抛出异常，而是返回 `NULL`。
 
-Similar to [`fromModifiedJulianDay()`](#fromModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromModifiedJulianDayOrNull(day)
 ```
 
-**Arguments**
+**参数**
 
-- `day` — Modified Julian Day number. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `day` — 修正儒略日（Modified Julian Day）编号。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+对于有效的 `day` 参数，返回字符串形式的日期，否则返回 `null`。[`Nullable(String)`](/sql-reference/data-types/nullable)
 
-Returns date in text form for valid `day` argument, otherwise `null`. [`Nullable(String)`](/sql-reference/data-types/nullable)
+**示例**
 
-**Examples**
-
-**Convert Modified Julian Day to date with null handling**
+**将修正儒略日转换为日期并处理 null 值**
 
 ```sql title=Query
 SELECT fromModifiedJulianDayOrNull(58849);
@@ -1905,37 +1749,32 @@ SELECT fromModifiedJulianDayOrNull(60000000); -- 无效参数，返回 NULL
 └──────────────────────────┘
 ```
 
-
-
 ## fromUTCTimestamp {#fromUTCTimestamp}
 
-Introduced in: v22.1
+引入版本：v22.1
 
+将 UTC 时区的日期或带时间的日期值转换为指定时区的日期或带时间的日期值。此函数主要用于与 Apache Spark 及类似框架保持兼容。
 
-Converts a date or date with time value from UTC timezone to a date or date with time value with the specified time zone. This function is mainly included for compatibility with Apache Spark and similar frameworks.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromUTCTimestamp(datetime, time_zone)
 ```
 
-**Aliases**: `from_utc_timestamp`
+**别名**: `from_utc_timestamp`
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
+* `datetime` — 一个日期或带时间的常量值，或一个表达式。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `time_zone` — 表示时区的 String 类型的常量值或表达式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回指定时区的 DateTime/DateTime64 值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns DateTime/DateTime64 in the specified timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Convert UTC timezone to specified timezone**
+**将 UTC 时间转换为指定时区的时间**
 
 ```sql title=Query
 SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
@@ -1947,45 +1786,40 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## fromUnixTimestamp {#fromUnixTimestamp}
 
-Introduced in: v20.8
+自 v20.8 起引入
 
+此函数将 Unix 时间戳转换为日历日期和一天中的时间。
 
-This function converts a Unix timestamp to a calendar date and a time of a day.
+可以通过两种方式调用：
 
-It can be called in two ways:
+* 当传入一个类型为 [`Integer`](../data-types/int-uint.md) 的单个参数时，返回类型为 [`DateTime`](../data-types/datetime.md) 的值，即行为类似于 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime)。
+* 当传入两个或三个参数时，其中第一个参数是类型为 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回类型为 [`String`](../data-types/string.md) 的值，即行为类似于 [`formatDateTime`](#formatDateTime)。
+  在这种情况下，使用 [MySQL 的 datetime 格式样式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
-- When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
-- When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTime`](#formatDateTime).
-  In this case, [MySQL's datetime format style](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) is used.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromUnixTimestamp(timestamp)
 fromUnixTimestamp(timestamp[, format[, timezone]])
 ```
 
-**Aliases**: `FROM_UNIXTIME`
+**别名**: `FROM_UNIXTIME`
 
-**Arguments**
+**参数**
 
-- `timestamp` — Unix timestamp or date/date with time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `format` — Optional. Constant format string for output formatting. [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
+* `timestamp` — Unix 时间戳或日期 / 日期时间值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `format` — 可选。用于输出格式化的常量格式字符串。[`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。表示时区的常量字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+以一个参数调用时，返回该时间戳对应的 `DateTime`；以两个或三个参数调用时，返回 `String`。[`DateTime`](/sql-reference/data-types/datetime) 或 [`String`](/sql-reference/data-types/string)
 
-Returns `DateTime` of the timestamp when called with one argument, or a String  when called with two or three arguments. [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Convert Unix timestamp to DateTime**
+**将 Unix 时间戳转换为 DateTime**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(423543535)
@@ -1997,7 +1831,7 @@ SELECT fromUnixTimestamp(423543535)
 └──────────────────────────────┘
 ```
 
-**Convert Unix timestamp with format**
+**按指定格式转换 Unix 时间戳**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
@@ -2009,43 +1843,38 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 └─────────────────────┘
 ```
 
-
-
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
-Introduced in: v23.1
+引入版本：v23.1
 
+此函数将 Unix 时间戳转换为日历日期和一天中的时间。
 
-This function converts a Unix timestamp to a calendar date and a time of a day.
+可以以两种方式调用：
 
-It can be called in two ways:
+当传入单个 [`Integer`](../data-types/int-uint.md) 类型的参数时，它返回 [`DateTime`](../data-types/datetime.md) 类型的值，即行为与 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) 相同。
 
-When given a single argument of type [`Integer`](../data-types/int-uint.md), it returns a value of type [`DateTime`](../data-types/datetime.md), i.e. behaves like [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
+当传入两个或三个参数时，其中第一个参数是 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 类型的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回 [`String`](../data-types/string.md) 类型的值，即行为与 [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax) 相同。在这种情况下，使用 [Joda 日期时间格式样式](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 
-When given two or three arguments where the first argument is a value of type [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) or [`DateTime64`](../data-types/datetime64.md), the second argument is a constant format string and the third argument is an optional constant time zone string, the function returns a value of type [`String`](../data-types/string.md), i.e. it behaves like [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). In this case, [Joda datetime format style](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) is used.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 fromUnixTimestampInJodaSyntax(timestamp)
 fromUnixTimestampInJodaSyntax(timestamp, format[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `timestamp` — Unix timestamp or date/time value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `format` — Optional. Constant format string using Joda syntax for output formatting. [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. Constant time zone string. [`String`](/sql-reference/data-types/string)
+* `timestamp` — Unix 时间戳或日期/时间值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `format` — 可选。使用 Joda 语法进行输出格式化的常量格式字符串。[`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。常量时区字符串。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+使用一个参数调用时返回带时间的日期，使用两个或三个参数调用时返回字符串。[`DateTime`](/sql-reference/data-types/datetime) 或 [`String`](/sql-reference/data-types/string)
 
-Returns a date with time when called with one argument, or a String when called with two or three arguments.} [`DateTime`](/sql-reference/data-types/datetime) or [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Convert Unix timestamp with Joda format**
+**使用 Joda 格式转换 Unix 时间戳**
 
 ```sql title=Query
 SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') AS DateTime
@@ -2057,40 +1886,36 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 └─────────────────────┘
 ```
 
-
-
 ## makeDate {#makeDate}
 
-Introduced in: v22.6
+引入版本：v22.6
 
+通过以下任一方式创建一个 `Date` 值：
 
-Creates a `Date` from either:
-- a year, month and day
-- a year and day of year
-    
+* 年、月和日
+* 年以及一年中的第几天
 
-**Syntax**
+**语法**
 
 ```sql
-makeDate(年, 月, 日)
-makeDate(年, 年积日)
+makeDate(year, month, day)
+makeDate(year, day_of_year)
 ```
 
-**Arguments**
+**参数**
 
-- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `year` — 年份。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `month` — 月份 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day` — 月份中的日 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day_of_year` — 一年中的第几天 (1-365)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回根据给定参数构造的 `Date` 值 [`Date`](/sql-reference/data-types/date)
 
-Returns a `Date` value constructed from the provided arguments [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Date from a year, month, day**
+**根据年、月、日构造 Date**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -2102,7 +1927,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**Date from year and day of year**
+**根据年份和一年中的第几天计算日期**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -2114,40 +1939,36 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
-
-
 ## makeDate32 {#makeDate32}
 
-Introduced in: v22.6
+自 v22.6 起引入
 
+通过以下任一方式创建一个 `Date32`：
 
-Creates a `Date32` from either:
-- a year, month and day
-- a year and day of year
-    
+* 年、月和日
+* 年和一年中的第几天
 
-**Syntax**
+**语法**
 
 ```sql
 makeDate32(year, month, day)
 makeDate32(year, day_of_year)
 ```
 
-**Arguments**
+**参数**
 
-- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day_of_year` — Day of the year (1-365). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `year` — 年份。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `month` — 月份（1-12）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day` — 月份中的日（1-31）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day_of_year` — 一年中的第几天（1-365）。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回由提供的参数构造的 `Date32` 值 [`Date32`](/sql-reference/data-types/date32)
 
-Returns a `Date32` value constructed from the provided arguments [`Date32`](/sql-reference/data-types/date32)
+**示例**
 
-**Examples**
-
-**Date32 from a year, month, day**
+**根据 year、month、day 构造 Date32**
 
 ```sql title=Query
 SELECT makeDate(2023, 2, 28) AS date;
@@ -2159,7 +1980,7 @@ SELECT makeDate(2023, 2, 28) AS date;
 └────────────┘
 ```
 
-**Date32 from year and day of year**
+**根据年份和一年中的第几天生成 Date32**
 
 ```sql title=Query
 SELECT makeDate(2023, 42) AS date;
@@ -2171,40 +1992,35 @@ SELECT makeDate(2023, 42) AS date;
 └────────────┘
 ```
 
-
-
 ## makeDateTime {#makeDateTime}
 
-Introduced in: v22.6
+引入自：v22.6
 
+根据年份、月份、日、小时、分钟和秒创建一个 `DateTime`，并可选指定时区。
 
-Creates a `DateTime` from year, month, day, hour, minute, and second, with optional timezone.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 makeDateTime(year, month, day, hour, minute, second[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
+* `year` — 年份。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `month` — 月份 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day` — 日期 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `hour` — 小时 (0-23)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `minute` — 分钟 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `second` — 秒 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `timezone` — 时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个由提供的参数构造的 `DateTime` 值 [`DateTime`](/sql-reference/data-types/datetime)
 
-Returns a `DateTime` value constructed from the provided arguments [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**DateTime from year, month, day, hour, minute, second**
+**根据 year、month、day、hour、minute、second 构造 DateTime**
 
 ```sql title=Query
 SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
@@ -2216,42 +2032,37 @@ SELECT makeDateTime(2023, 2, 28, 17, 12, 33) AS DateTime;
 └─────────────────────┘
 ```
 
-
-
 ## makeDateTime64 {#makeDateTime64}
 
-Introduced in: v22.6
+自 v22.6 起引入
 
+根据 year、month、day、hour、minute、second，以及可选的 fraction、precision 和 timezone 创建一个 `DateTime64`。
 
-Creates a `DateTime64` from year, month, day, hour, minute, second, with optional fraction, precision, and timezone.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 makeDateTime64(year, month, day, hour, minute, second[, fraction[, precision[, timezone]]])
 ```
 
-**Arguments**
+**参数**
 
-- `year` — Year number. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `month` — Month number (1-12). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `day` — Day of the month (1-31). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `hour` — Hour (0-23). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `minute` — Minute (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `second` — Second (0-59). [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `fraction` — Fractional part of the second. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
-- `precision` — Precision for the fractional part (0-9). [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Timezone name. [`String`](/sql-reference/data-types/string)
+* `year` — 年份。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `month` — 月份 (1-12)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `day` — 日期 (1-31)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `hour` — 小时 (0-23)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `minute` — 分钟 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `second` — 秒 (0-59)。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `fraction` — 秒的小数部分。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 小数部分的精度 (0-9)。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回由提供的参数构造的 `DateTime64` 值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a `DateTime64` value constructed from the provided arguments [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**DateTime64 from year, month, day, hour, minute, second**
+**根据 year、month、day、hour、minute、second 构造 DateTime64**
 
 ```sql title=Query
 SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
@@ -2263,34 +2074,29 @@ SELECT makeDateTime64(2023, 5, 15, 10, 30, 45, 779, 5);
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## monthName {#monthName}
 
-Introduced in: v22.1
+引入版本：v22.1
 
+从日期或日期时间值中返回月份名称（字符串）。
 
-Returns the name of the month as a string from a date or date with time value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 monthName(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回月份名称。[`String`](/sql-reference/data-types/string)
 
-Returns the name of the month. [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Get month name from date**
+**从日期获取月份名称**
 
 ```sql title=Query
 WITH toDateTime('2021-04-14 11:22:33') AS date_value
@@ -2303,36 +2109,31 @@ SELECT monthName(date_value)
 └───────────────────────┘
 ```
 
-
-
 ## now {#now}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+在查询解析阶段返回当前的日期和时间。该函数是一个常量表达式。
 
-Returns the current date and time at the moment of query analysis. The function is a constant expression.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 now([timezone])
 ```
 
-**Aliases**: `current_timestamp`
+**别名**: `current_timestamp`
 
-**Arguments**
+**参数**
 
-- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。返回值使用的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回当前的日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the current date and time. [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Query without timezone**
+**不带时区的查询**
 
 ```sql title=Query
 SELECT now()
@@ -2344,7 +2145,7 @@ SELECT now()
 └─────────────────────┘
 ```
 
-**Query with specified timezone**
+**按指定时区进行查询**
 
 ```sql title=Query
 SELECT now('Asia/Istanbul')
@@ -2356,35 +2157,30 @@ SELECT now('Asia/Istanbul')
 └──────────────────────┘
 ```
 
-
-
 ## now64 {#now64}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+在查询解析阶段返回当前日期和时间，具有子秒级精度。该函数是一个常量表达式。
 
-Returns the current date and time with sub-second precision at the moment of query analysis. The function is a constant expression.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 now64([scale[, timezone]])
 ```
 
-**Arguments**
+**参数**
 
-- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
+* `scale` — 可选。时间刻度（精度）：10^-precision 秒。有效范围：[0 : 9]。常用取值为 3（默认，毫秒）、6（微秒）、9（纳秒）。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 可选。返回值的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回具有子秒级精度的当前日期和时间。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns current date and time with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Query with default and custom precision**
+**使用默认和自定义精度的查询**
 
 ```sql title=Query
 SELECT now64(), now64(9, 'Asia/Istanbul')
@@ -2396,36 +2192,31 @@ SELECT now64(), now64(9, 'Asia/Istanbul')
 └─────────────────────────┴───────────────────────────────┘
 ```
 
-
-
 ## nowInBlock {#nowInBlock}
 
-Introduced in: v22.8
+自 v22.8 引入
 
+返回在处理每个数据块时的当前日期和时间。与函数 [`now`](#now) 相比，它不是常量表达式，对于长时间运行的查询，在不同数据块中返回的值会不同。
 
-Returns the current date and time at the moment of processing of each block of data. In contrast to the function [`now`](#now), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
+在长时间运行的 `INSERT SELECT` 查询中使用此函数生成当前时间是合理的。
 
-It makes sense to use this function to generate the current time in long-running `INSERT SELECT` queries.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 nowInBlock([timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。返回值使用的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回在处理每个数据块时的当前日期和时间。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the current date and time at the moment of processing of each block of data. [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Difference with the now() function**
+**与 now() 函数的区别**
 
 ```sql title=Query
 SELECT
@@ -2445,37 +2236,32 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────┴─────────────────────┴──────────┘
 ```
 
-
-
 ## nowInBlock64 {#nowInBlock64}
 
-Introduced in: v25.8
+首次引入版本：v25.8
 
+以毫秒为单位返回在处理每个数据块时的当前日期和时间。与函数 [now64](#now64) 相比，它不是常量表达式，对于长时间运行的查询，在不同数据块中返回的值会有所不同。
 
-Returns the current date and time at the moment of processing of each block of data in milliseconds. In contrast to the function [now64](#now64), it is not a constant expression, and the returned value will be different in different blocks for long-running queries.
+在长时间运行的 INSERT SELECT 查询中，使用此函数来生成当前时间是合理的。
 
-It makes sense to use this function to generate the current time in long-running INSERT SELECT queries.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 nowInBlock([scale[, timezone]])
 ```
 
-**Arguments**
+**参数**
 
-- `scale` — Optional. Tick size (precision): 10^-precision seconds. Valid range: [0 : 9]. Typically, are used - 3 (default) (milliseconds), 6 (microseconds), 9 (nanoseconds). [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Optional. Timezone name for the returned value. [`String`](/sql-reference/data-types/string)
+* `scale` — 可选。刻度（精度）：10^-scale 秒。有效范围：[0 : 9]。通常使用的值为：3（默认，毫秒）、6（微秒）、9（纳秒）。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 可选。返回值所使用的时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回在处理每个数据块时的当前日期和时间，精确到子秒级。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the current date and time at the moment of processing of each block of data with sub-second precision. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Difference with the now64() function**
+**与 now64() 函数的区别**
 
 ```sql title=Query
 SELECT
@@ -2495,36 +2281,32 @@ FORMAT PrettyCompactMonoBlock
 └─────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-
-
 ## serverTimezone {#serverTimezone}
 
-Introduced in: v23.6
+引入自：v23.6
 
+返回服务器的时区，即 [`timezone`](/operations/server-configuration-parameters/settings#timezone) 设置的值。
+如果在分布式表的上下文中执行该函数，则会生成一个普通列，其值对应于各个分片。否则，会生成一个常量值。
 
-Returns the timezone of the server, i.e. the value of the [`timezone`](/operations/server-configuration-parameters/settings#timezone) setting.
-If the function is executed in the context of a distributed table, then it generates a normal column with values relevant to each shard. Otherwise, it produces a constant value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 serverTimeZone()
 ```
 
-**Aliases**: `serverTimeZone`
+**别名**：`serverTimeZone`
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns the server timezone as a [`String`](/sql-reference/data-types/string)
+以 [`String`](/sql-reference/data-types/string) 形式返回服务器时区。
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT serverTimeZone()
@@ -2536,36 +2318,31 @@ SELECT serverTimeZone()
 └──────────────────┘
 ```
 
-
-
 ## subDate {#subDate}
 
-Introduced in: v23.9
+引入于：v23.9
 
+从给定的日期、日期时间或其字符串表示中减去一个时间间隔。
+如果减法结果超出了该数据类型的取值范围，则结果是未定义的。
 
-Subtracts the time interval from the provided date, date with time or string-encoded date or date with time.
-If the subtraction results in a value outside the bounds of the data type, the result is undefined.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subDate(datetime, interval)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — The date or date with time from which `interval` is subtracted. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `interval` — Interval to subtract. [`Interval`](/sql-reference/data-types/int-uint)
+* `datetime` — 要从中减去 `interval` 的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `interval` — 要减去的时间间隔值。[`Interval`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回通过从 `datetime` 中减去 `interval` 得到的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns date or date with time obtained by subtracting `interval` from `datetime`. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract interval from date**
+**从日期中减去时间间隔**
 
 ```sql title=Query
 SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
@@ -2577,35 +2354,30 @@ SELECT subDate(toDate('2018-01-01'), INTERVAL 3 YEAR)
 └──────────────────────────────────────────────────┘
 ```
 
-
-
 ## subtractDays {#subtractDays}
 
-Introduced in: v1.1
+引入于：v1.1
 
+从日期、日期时间或其字符串表示中减去指定的天数。
 
-Subtracts a specified number of days from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractDays(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of days from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of days to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定天数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的天数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 天后的结果，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` days [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract days from different date types**
+**从不同日期类型减去天数**
 
 ```sql title=Query
 WITH
@@ -2624,7 +2396,7 @@ SELECT
 └─────────────────────────┴──────────────────────────────┴─────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用其他 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
@@ -2636,35 +2408,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 day)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractHours {#subtractHours}
 
-Introduced in: v1.1
+引入于：v1.1
 
+从日期、日期时间值或其字符串表示中减去指定数量的小时。
 
-Subtracts a specified number of hours from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractHours(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of hours from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of hours to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定小时数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的小时数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 小时后的值，为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` hours [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract hours from different date types**
+**对不同日期类型减去小时数**
 
 ```sql title=Query
 WITH
@@ -2683,7 +2450,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用其他 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
@@ -2695,38 +2462,32 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 hour)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractInterval {#subtractInterval}
 
-Introduced in: v22.11
+自 v22.11 引入
 
+将取相反数的时间间隔加到另一个时间间隔或时间间隔元组上。
 
-Adds a negated interval to another interval or tuple of intervals.
+注意：相同类型的时间间隔会被合并为一个时间间隔。例如，如果传入 `toIntervalDay(2)` 和 `toIntervalDay(1)`，则结果为 `(1)` 而不是 `(2,1)`。
 
-Note: Intervals of the same type will be combined into a single interval. For instance if `toIntervalDay(2)` and `toIntervalDay(1)` are
-passed then the result will be `(1)` rather than `(2,1)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractInterval(interval_1, interval_2)
 ```
 
-**Arguments**
+**参数**
 
-- `interval_1` — First interval or interval of tuples. [`Interval`](/sql-reference/data-types/int-uint) or [`Tuple(Interval)`](/sql-reference/data-types/tuple)
-- `interval_2` — Second interval to be negated. [`Interval`](/sql-reference/data-types/int-uint)
+* `interval_1` — 第一个时间间隔或时间间隔元组。[`Interval`](/sql-reference/data-types/int-uint) 或 [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+* `interval_2` — 将被取负的第二个时间间隔。[`Interval`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回由时间间隔组成的元组 [`Tuple(T)`](/sql-reference/data-types/tuple)
 
-Returns a tuple of intervals [`Tuple(T)`](/sql-reference/data-types/tuple)
+**示例**
 
-**Examples**
-
-**Subtract intervals**
+**时间间隔相减**
 
 ```sql title=Query
 SELECT subtractInterval(INTERVAL 1 DAY, INTERVAL 1 MONTH);
@@ -2746,35 +2507,30 @@ SELECT subtractInterval(INTERVAL 2 DAY, INTERVAL 1 DAY);
 └──────────────────────────────────────────────────────┘
 ```
 
-
-
 ## subtractMicroseconds {#subtractMicroseconds}
 
-Introduced in: v22.6
+自 v22.6 起引入
 
+从日期时间值或其字符串形式中减去指定的微秒数。
 
-Subtracts a specified number of microseconds from a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractMicroseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to subtract specified number of microseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of microseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定微秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的微秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 微秒后的值，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract microseconds from different date time types**
+**从不同日期时间类型减去微秒**
 
 ```sql title=Query
 WITH
@@ -2791,7 +2547,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用其他 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
@@ -2803,35 +2559,30 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 microsecond)
 └────────────────────────────┘
 ```
 
-
-
 ## subtractMilliseconds {#subtractMilliseconds}
 
-Introduced in: v22.6
+引入于：v22.6
 
+从带时间的日期或其字符串形式中减去指定数量的毫秒。
 
-Subtracts a specified number of milliseconds from a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractMilliseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to subtract specified number of milliseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of milliseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定毫秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的毫秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 毫秒后的结果，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` milliseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract milliseconds from different date time types**
+**从不同的日期时间类型中减去毫秒数**
 
 ```sql title=Query
 WITH
@@ -2848,7 +2599,7 @@ SELECT
 └──────────────────────────────────────┴─────────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
@@ -2860,35 +2611,30 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 millisecond)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractMinutes {#subtractMinutes}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+从日期、日期时间，或其字符串编码形式中减去指定的分钟数。
 
-Subtracts a specified number of minutes from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractMinutes(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of minutes from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of minutes to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定分钟数的日期或日期时间。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的分钟数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回从 `datetime` 中减去 `num` 分钟后的结果，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` minutes [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract minutes from different date types**
+**对不同日期类型减去分钟数**
 
 ```sql title=Query
 WITH
@@ -2907,7 +2653,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
@@ -2919,35 +2665,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 minute)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractMonths {#subtractMonths}
 
-Introduced in: v1.1
+引入于：v1.1
 
+从日期、日期时间或字符串表示的日期/日期时间中减去指定数量的月份。
 
-Subtracts a specified number of months from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractMonths(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of months from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of months to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定月数的日期或日期时间值。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的月数。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 个月后的结果。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` months [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract months from different date types**
+**对不同日期类型减去月份**
 
 ```sql title=Query
 WITH
@@ -2966,7 +2707,7 @@ SELECT
 └───────────────────────────┴────────────────────────────────┴───────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
@@ -2978,35 +2719,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 month)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractNanoseconds {#subtractNanoseconds}
 
-Introduced in: v20.1
+自 v20.1 起引入
 
+从带时间的日期值或其字符串表示中减去指定数量的纳秒。
 
-Subtracts a specified number of nanoseconds from a date with time or a string-encoded date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractNanoseconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to subtract specified number of nanoseconds from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of nanoseconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定纳秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的纳秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 纳秒后的结果，类型为 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` nanoseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract nanoseconds from different date time types**
+**从不同日期时间类型减去纳秒**
 
 ```sql title=Query
 WITH
@@ -3023,7 +2759,7 @@ SELECT
 └─────────────────────────────────────┴────────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
@@ -3035,35 +2771,30 @@ SELECT dateSub('1998-06-16'::DateTime, INTERVAL 10 nanosecond)
 └───────────────────────────────┘
 ```
 
-
-
 ## subtractQuarters {#subtractQuarters}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+从日期、日期时间或其字符串形式中减去指定数量的季度。
 
-Subtracts a specified number of quarters from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractQuarters(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of quarters from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of quarters to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定季度数的日期或日期时间值。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime)、[`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的季度数。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 个季度后的结果，类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` quarters [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract quarters from different date types**
+**对不同日期类型减去季度数**
 
 ```sql title=Query
 WITH
@@ -3082,7 +2813,7 @@ SELECT
 └─────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
@@ -3094,35 +2825,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 quarter)
 └───────────────────────────┘
 ```
 
-
-
 ## subtractSeconds {#subtractSeconds}
 
-Introduced in: v1.1
+引入于：v1.1
 
+从日期、日期时间或字符串编码的日期/日期时间中减去指定的秒数。
 
-Subtracts a specified number of seconds from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractSeconds(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of seconds from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of seconds to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定秒数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的秒数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 秒后的结果，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64(3)`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` seconds [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64(3)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract seconds from different date types**
+**从不同日期类型减去秒数**
 
 ```sql title=Query
 WITH
@@ -3141,7 +2867,7 @@ SELECT
 └────────────────────────────┴─────────────────────────────────┴────────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
@@ -3153,35 +2879,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 second)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractTupleOfIntervals {#subtractTupleOfIntervals}
 
-Introduced in: v22.11
+引入版本：v22.11
 
+从日期或日期时间值中依次减去一个时间间隔元组。
 
-Consecutively subtracts a tuple of intervals from a date or a date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractTupleOfIntervals(datetime, intervals)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract intervals from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `intervals` — Tuple of intervals to subtract from `datetime`. [`Tuple(Interval)`](/sql-reference/data-types/tuple)
+* `datetime` — 要从中减去时间间隔的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `intervals` — 要从 `datetime` 中减去的时间间隔元组。[`Tuple(Interval)`](/sql-reference/data-types/tuple)
 
+**返回值**
 
-**Returned value**
+返回减去 `intervals` 之后的 `date` 值，可为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `date` with subtracted `intervals` [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract tuple of intervals from date**
+**从日期中减去时间间隔元组**
 
 ```sql title=Query
 WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVAL 1 DAY, INTERVAL 1 YEAR))
@@ -3193,35 +2914,30 @@ WITH toDate('2018-01-01') AS date SELECT subtractTupleOfIntervals(date, (INTERVA
 └──────────────────────────┘
 ```
 
-
-
 ## subtractWeeks {#subtractWeeks}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+从日期、日期时间或其字符串形式中减去指定周数。
 
-Subtracts a specified number of weeks from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractWeeks(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of weeks from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of weeks to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定周数的日期或日期时间。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的周数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 周后的结果，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` weeks [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract weeks from different date types**
+**对不同日期类型减去指定周数**
 
 ```sql title=Query
 WITH
@@ -3240,7 +2956,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**使用另一种 INTERVAL 语法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
@@ -3252,35 +2968,30 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 week)
 └──────────────────────────┘
 ```
 
-
-
 ## subtractYears {#subtractYears}
 
-Introduced in: v1.1
+引入于：v1.1
 
+从日期、日期时间或其字符串表示中减去指定数量的年份。
 
-Subtracts a specified number of years from a date, a date with time or a string-encoded date or date with time.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 subtractYears(datetime, num)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to subtract specified number of years from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `num` — Number of years to subtract. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `datetime` — 要从中减去指定年数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `num` — 要减去的年数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 减去 `num` 年后的结果，类型为 [`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns `datetime` minus `num` years [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Subtract years from different date types**
+**对不同日期类型减去年数**
 
 ```sql title=Query
 WITH
@@ -3299,7 +3010,7 @@ SELECT
 └──────────────────────────┴───────────────────────────────┴──────────────────────────────────────┘
 ```
 
-**Using alternative INTERVAL syntax**
+**INTERVAL 语法的替代写法**
 
 ```sql title=Query
 SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
@@ -3311,40 +3022,35 @@ SELECT dateSub('1998-06-16'::Date, INTERVAL 10 year)
 └──────────────────────────┘
 ```
 
-
-
 ## timeDiff {#timeDiff}
 
-Introduced in: v23.4
+自 v23.4 起引入
 
+返回两个日期或日期时间值之间的差值（以秒为单位）。
+差值的计算方式为 `enddate` - `startdate`。
 
-Returns the difference between two dates or dates with time values in seconds.
-The difference is calculated as `enddate` - `startdate`.
+此函数等价于 `dateDiff('second', startdate, enddate)`。
 
-This function is equivalent to `dateDiff('second', startdate, enddate)`.
+若要按其他单位（小时、天、月等）计算时间差，请改用 [`dateDiff`](#dateDiff) 函数。
 
-For calculating time differences in other units (hours, days, months, etc.), use the [`dateDiff`](#dateDiff) function instead.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timeDiff(startdate, enddate)
 ```
 
-**Arguments**
+**参数**
 
-- `startdate` — The first time value to subtract (the subtrahend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `enddate` — The second time value to subtract from (the minuend). [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `startdate` — 要减去的第一个时间值（减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `enddate` — 被减去的第二个时间值（被减数）。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回 `enddate` 与 `startdate` 之间的差值（以秒为单位）。[`Int64`](/sql-reference/data-types/int-uint)
 
-Returns the difference between `enddate` and `startdate` expressed in seconds. [`Int64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Calculate time difference in seconds**
+**以秒计算时间差**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) AS res
@@ -3356,7 +3062,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**Calculate time difference and convert to hours**
+**计算时间差并换算为小时**
 
 ```sql title=Query
 SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:00')) / 3600 AS hours
@@ -3368,7 +3074,7 @@ SELECT timeDiff(toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-02 23:00:
 └───────┘
 ```
 
-**Equivalent to dateDiff with seconds**
+**等同于以秒为单位的 dateDiff 函数**
 
 ```sql title=Query
 SELECT
@@ -3382,40 +3088,35 @@ SELECT
 └──────────────────┴──────────────────┘
 ```
 
-
-
 ## timeSlot {#timeSlot}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Round the time to the start of a half-an-hour length interval.
+将时间取整到以半小时为长度的时间区间起始时刻。
 
 :::note
-Although this function can take values of the extended types `Date32` and `DateTime64` as an argument,
-passing it a time outside the normal range (year 1970 to 2149 for `Date` / 2106 for `DateTime`) will produce wrong results.
+尽管该函数可以接受扩展类型 `Date32` 和 `DateTime64` 作为参数，
+但如果传入超出正常范围的时间（`Date` 的年份范围为 1970 到 2149 / `DateTime` 的年份到 2106），将会产生错误的结果。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 timeSlot(time[, time_zone])
 ```
 
-**Arguments**
+**参数**
 
-- `time` — Time to round to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `time_zone` — Optional. A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
+* `time` — 要舍入的时间，将被舍入到以半小时为长度的时间区间的起始时刻。[`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `time_zone` — 可选。表示时区的 `String` 类型常量值或表达式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回舍入到以半小时为长度的时间区间起始时刻的时间值。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the time rounded to the start of a half-an-hour length interval. [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Round time to half-hour interval**
+**将时间舍入到半小时区间**
 
 ```sql title=Query
 SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
@@ -3427,40 +3128,35 @@ SELECT timeSlot(toDateTime('2000-01-02 03:04:05', 'UTC'))
 └────────────────────────────────────────────────────┘
 ```
 
-
-
 ## timeSlots {#timeSlots}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+对于一个从 `StartTime` 开始并持续 `Duration` 秒的时间区间，该函数返回一个时间点数组，这些时间点是将该区间内的时刻向下取整到以秒为单位的 `Size` 所得到的各个点。`Size` 是一个可选参数，默认值为 1800（30 分钟）。
 
-For a time interval starting at `StartTime` and continuing for `Duration` seconds, it returns an array of moments in time, consisting of points from this interval rounded down to the `Size` in seconds. `Size` is an optional parameter set to 1800 (30 minutes) by default.
+例如，在搜索对应会话中的页面浏览（pageviews）时会用到它。
 
-This is necessary, for example, when searching for pageviews in the corresponding session.
+对于 `DateTime64`，返回值的精度（scale）可能与 `StartTime` 的精度不同，将采用所有传入参数中最高的精度。
 
-For `DateTime64`, the return value's scale can differ from the scale of `StartTime`. The highest scale among all given arguments is taken.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timeSlots(StartTime, Duration[, Size])
 ```
 
-**Arguments**
+**参数**
 
-- `StartTime` — Starting time for the interval. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `Duration` — Duration of the interval in seconds. [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `Size` — Optional. Size of time slots in seconds. Default is 1800 (30 minutes). [`UInt32`](/sql-reference/data-types/int-uint) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `StartTime` — 区间的起始时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `Duration` — 区间的时长（以秒为单位）。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `Size` — 可选。时间片段的大小（以秒为单位），默认值为 1800（30 分钟）。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回一个 `DateTime`/`DateTime64` 数组（返回类型与 `StartTime` 的类型一致）。对于 `DateTime64`，返回值的小数位精度可以不同于 `StartTime` 的小数位精度 —— 会取所有传入参数中最高的精度。[`Array(DateTime)`](/sql-reference/data-types/array) 或 [`Array(DateTime64)`](/sql-reference/data-types/array)
 
-Returns an array of DateTime/DateTime64 (return type matches the type of `StartTime`). For DateTime64, the return value's scale can differ from the scale of `StartTime` - the highest scale among all given arguments is taken. [`Array(DateTime)`](/sql-reference/data-types/array) or [`Array(DateTime64)`](/sql-reference/data-types/array)
+**示例**
 
-**Examples**
-
-**Generate time slots for an interval**
+**为一个时间区间生成时间片段**
 
 ```sql title=Query
 SELECT timeSlots(toDateTime('2012-01-01 12:20:00'), toUInt32(600));
@@ -3480,36 +3176,31 @@ SELECT timeSlots(toDateTime64('1980-12-12 21:01:02.1234', 4, 'UTC'), toDecimal64
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## timestamp {#timestamp}
 
-Introduced in: v23.9
+自 v23.9 版本引入
 
+将第一个参数 `expr` 转换为 [`DateTime64(6)`](/sql-reference/data-types/datetime64) 类型。
+如果提供了第二个参数 `expr_time`，则会将指定时间加到转换后的值上。
 
-Converts the first argument `expr` to type [`DateTime64(6)`](/sql-reference/data-types/datetime64).
-If a second argument `expr_time` is provided, it adds the specified time to the converted value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timestamp(expr[, expr_time])
 ```
 
-**Arguments**
+**参数**
 
-- `expr` — Date or date with time. [`String`](/sql-reference/data-types/string)
-- `expr_time` — Optional. Time to add to the converted value. [`String`](/sql-reference/data-types/string)
+* `expr` — 日期或日期时间值。[`String`](/sql-reference/data-types/string)
+* `expr_time` — 可选。要叠加到转换结果上的时间值。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `expr` 转换后的值，或在 `expr` 上叠加时间后的值，类型为 [`DateTime64(6)`](/sql-reference/data-types/datetime64)
 
-Returns the converted value of `expr`, or `expr` with added time [`DateTime64(6)`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Convert date string to DateTime64(6)**
+**将日期字符串转换为 DateTime64(6)**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31') AS ts;
@@ -3521,7 +3212,7 @@ SELECT timestamp('2023-12-31') AS ts;
 └────────────────────────────┘
 ```
 
-**Add time to date string**
+**在日期字符串中添加时间**
 
 ```sql title=Query
 SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
@@ -3533,36 +3224,31 @@ SELECT timestamp('2023-12-31 12:00:00', '12:00:00.11') AS ts;
 └────────────────────────────┘
 ```
 
-
-
 ## timezone {#timezone}
 
-Introduced in: v21.4
+自 v21.4 引入
 
+返回当前会话的时区名称，或将时区偏移量或名称转换为规范的时区名称。
 
-Returns the time zone name of the current session or converts a time zone
-offset or name to a canonical time zone name.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timezone()
 ```
 
-**Aliases**: `timeZone`
+**别名**：`timeZone`
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns the canonical time zone name as a [`String`](/sql-reference/data-types/string)
+返回规范时区名称，类型为 [`String`](/sql-reference/data-types/string)
 
-**Examples**
+**示例**
 
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT timezone()
@@ -3574,37 +3260,32 @@ SELECT timezone()
 └──────────────────┘
 ```
 
-
-
 ## timezoneOf {#timezoneOf}
 
-Introduced in: v21.4
+自 v21.4 起引入
 
+返回 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 值所在的时区名称。
 
-Returns the timezone name of a [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timeZoneOf(datetime)
 ```
 
-**Aliases**: `timeZoneOf`
+**别名**: `timeZoneOf`
 
-**Arguments**
+**参数**
 
-- `datetime` — A value of type. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone name to convert the `datetime` value's timezone to. [`String`](/sql-reference/data-types/string)
+* `datetime` — 类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 的值。
+* `timezone` — 可选。要将 `datetime` 值转换到的目标时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 的时区名称，类型为 [`String`](/sql-reference/data-types/string)
 
-Returns the timezone name for `datetime` [`String`](/sql-reference/data-types/string)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT timezoneOf(now());
@@ -3616,37 +3297,32 @@ SELECT timezoneOf(now());
 └───────────────────┘
 ```
 
-
-
 ## timezoneOffset {#timezoneOffset}
 
-Introduced in: v21.6
+引入版本：v21.6
 
+返回相对于 [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time) 的时区偏移量，单位为秒。
+在指定日期和时间下，该函数会考虑夏令时以及历史时区变更。
 
-Returns the timezone offset in seconds from [UTC](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
-The function takes daylight saving time and historical timezone changes at the specified date and time into account.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 timeZoneOffset(datetime)
 ```
 
-**Aliases**: `timeZoneOffset`
+**别名**：`timeZoneOffset`
 
-**Arguments**
+**参数**
 
-- `datetime` — `DateTime` value to get the timezone offset for. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要获取其时区偏移量的 `DateTime` 值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回相对于 UTC 的偏移量（以秒为单位），类型为 [`Int32`](/sql-reference/data-types/int-uint)
 
-Returns the offset from UTC in seconds [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toDateTime('2021-04-21 10:20:30', 'America/New_York') AS Time,
@@ -3661,36 +3337,31 @@ timeZoneOffset(Time) AS Offset_in_seconds,
 └─────────────────────┴──────────────────────────────┴───────────────────┴─────────────────┘
 ```
 
-
-
 ## toDayOfMonth {#toDayOfMonth}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回 `Date` 或 `DateTime` 值所在月份中的“日”（1-31）。
 
-Returns the day of the month (1-31) of a `Date` or `DateTime`.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toDayOfMonth(datetime)
 ```
 
-**Aliases**: `DAY`, `DAYOFMONTH`
+**别名**: `DAY`, `DAYOFMONTH`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the day of month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中获取所在月份中的第几天的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期/时间在其所在月份中的第几天 [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the day of the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3702,48 +3373,43 @@ SELECT toDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## toDayOfWeek {#toDayOfWeek}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回 `Date` 或 `DateTime` 值在一周中的第几天（数值）。
 
-Returns the number of the day within the week of a `Date` or `DateTime` value.
+`toDayOfWeek()` 的双参数形式允许指定一周是从周一还是周日开始，
+以及返回值是在 0 到 6 还是 1 到 7 的范围内。
 
-The two-argument form of `toDayOfWeek()` enables you to specify whether the week starts on Monday or Sunday,
-and whether the return value should be in the range from 0 to 6 or 1 to 7.
+| 模式 | 一周的第一天 | 范围                         |
+| -- | ------ | -------------------------- |
+| 0  | 周一     | 1-7：周一 = 1，周二 = 2，…，周日 = 7 |
+| 1  | 周一     | 0-6：周一 = 0，周二 = 1，…，周日 = 6 |
+| 2  | 周日     | 0-6：周日 = 0，周一 = 1，…，周六 = 6 |
+| 3  | 周日     | 1-7：周日 = 1，周一 = 2，…，周六 = 7 |
 
-| Mode | First day of week | Range                                          |
-|------|-------------------|------------------------------------------------|
-| 0    | Monday            | 1-7: Monday = 1, Tuesday = 2, ..., Sunday = 7  |
-| 1    | Monday            | 0-6: Monday = 0, Tuesday = 1, ..., Sunday = 6  |
-| 2    | Sunday            | 0-6: Sunday = 0, Monday = 1, ..., Saturday = 6 |
-| 3    | Sunday            | 1-7: Sunday = 1, Monday = 2, ..., Saturday = 7 |
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Aliases**: `DAYOFWEEK`
+**别名**: `DAYOFWEEK`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the day of week from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `mode` — Optional. Integer specifying the week mode (0-3). Defaults to 0 if omitted. [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Optional. Timezone to use for the conversion. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要获取其星期几的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `mode` — 可选。指定周模式的整数（0-3）。如果省略，默认为 0。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 可选。用于转换的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回给定 `Date` 或 `DateTime` 所对应的星期几，返回类型为 [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the day of the week for the given `Date` or `DateTime` [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 -- 以下日期为 2023 年 4 月 21 日，当天是星期五：
@@ -3758,36 +3424,31 @@ SELECT
 └───────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
-
-
 ## toDayOfYear {#toDayOfYear}
 
-Introduced in: v18.4
+自 v18.4 起可用
 
+返回 `Date` 或 `DateTime` 值在其所在年份中的第几天（1-366）。
 
-Returns the number of the day within the year (1-366) of a `Date` or `DateTime` value.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toDayOfYear(datetime)
 ```
 
-**Aliases**: `DAYOFYEAR`
+**别名**：`DAYOFYEAR`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the day of year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要获取其在一年中是第几天的日期或日期时间值。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定 Date 或 DateTime 在一年中的天数序号，类型为 [`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the day of the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -3799,40 +3460,35 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────────┘
 ```
 
-
-
 ## toDaysSinceYearZero {#toDaysSinceYearZero}
 
-Introduced in: v23.9
+引入版本：v23.9
 
+对于给定日期，返回自[公元 0000 年 1 月 1 日](https://en.wikipedia.org/wiki/Year_zero)以来已经过去的天数，按照
+[ISO 8601 定义的前推格里高利历（proleptic Gregorian calendar）](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar)进行计算。
 
-For a given date, returns the number of days which have passed since [1 January 0000](https://en.wikipedia.org/wiki/Year_zero) in the
-[proleptic Gregorian calendar defined by ISO 8601](https://en.wikipedia.org/wiki/Gregorian_calendar#Proleptic_Gregorian_calendar).
+该计算方式与 MySQL 的 [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) 函数相同。
 
-The calculation is the same as in MySQL's [`TO_DAYS`](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_to-days) function.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toDaysSinceYearZero(date[, time_zone])
 ```
 
-**Aliases**: `TO_DAYS`
+**别名**: `TO_DAYS`
 
-**Arguments**
+**参数**
 
-- `date` — The date or date with time for which to calculate the number of days since year zero from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `time_zone` — Time zone. [`String`](/sql-reference/data-types/string)
+* `date` — 用于计算自日期 `0000-01-01` 起已过去天数的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `time_zone` — 时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回自日期 `0000-01-01` 起已过去的天数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of days passed since date `0000-01-01`. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Calculate days since year zero**
+**计算自年份 0 起的天数**
 
 ```sql title=Query
 SELECT toDaysSinceYearZero(toDate('2023-09-08'))
@@ -3844,36 +3500,31 @@ SELECT toDaysSinceYearZero(toDate('2023-09-08'))
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## toHour {#toHour}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+返回 `DateTime` 或 `DateTime64` 值中的小时部分（0-23）。
 
-Returns the hour component (0-23) of a `DateTime` or `DateTime64` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toHour(datetime)
 ```
 
-**Aliases**: `HOUR`
+**别名**: `HOUR`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to get the hour from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中获取小时数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 的小时数（0-23）。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the hour (0-23) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toHour(toDateTime('2023-04-21 10:20:30'))
@@ -3885,34 +3536,29 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## toISOYear {#toISOYear}
 
-Introduced in: v18.4
+引入于：v18.4
 
+将日期或日期时间转换为 ISO 年份。
 
-Converts a date or date with time to the ISO year number.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toISOYear(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — The value with date or date with time. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 日期或日期时间类型的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回将输入值转换得到的 ISO 年份编号。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the input value converted to an ISO year number. [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get ISO year from date values**
+**从日期值获取 ISO 年份**
 
 ```sql title=Query
 SELECT
@@ -3926,40 +3572,35 @@ toISOYear(toDateTime('2024-10-02 01:30:00')) as year2
 └───────┴───────┘
 ```
 
-
-
 ## toLastDayOfMonth {#toLastDayOfMonth}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Rounds up a date or date with time to the last day of the month.
+将日期或日期时间向上取整到所在月份的最后一天。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toLastDayOfMonth(value)
 ```
 
-**Aliases**: `LAST_DAY`
+**别名**：`LAST_DAY`
 
-**Arguments**
+**参数**
 
-- `value` — The date or date with time to round up to the last day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 要向上取整到所在月份最后一天的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期或带时间的日期所在月份最后一天的日期。[`Date`](/sql-reference/data-types/date)
 
-Returns the date of the last day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round up to the last day of the month**
+**向上取整到所在月份的最后一天**
 
 ```sql title=Query
 SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -3971,40 +3612,35 @@ SELECT toLastDayOfMonth(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toLastDayOfWeek {#toLastDayOfWeek}
 
-Introduced in: v23.5
+引入版本：v23.5
 
-
-Rounds a date or date with time up to the nearest Saturday or Sunday.
+将日期或日期时间向上取整到最近的周六或周日。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toLastDayOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — Optional. The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要转换的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `mode` — 按 `toWeek()` 函数中的说明确定一周的第一天。默认值为 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 可选。用于转换的时区。如果未指定，则使用服务器的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据 `mode` 的取值，返回给定日期当天或之后距离最近的一个周六或周日的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date of the nearest Saturday or Sunday, on or after the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Round up to the nearest Saturday or Sunday**
+**向上取整到最近的周六或周日**
 
 ```sql title=Query
 SELECT
@@ -4024,36 +3660,31 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
-
-
 ## toMillisecond {#toMillisecond}
 
-Introduced in: v24.2
+自 v24.2 起引入
 
+返回 `DateTime` 或 `DateTime64` 值的毫秒部分（0-999）。
 
-Returns the millisecond component (0-999) of a `DateTime` or `DateTime64` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toMillisecond(datetime)
 ```
 
-**Aliases**: `MILLISECOND`
+**别名**：`MILLISECOND`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to get the millisecond from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中提取毫秒值的日期时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 所在分钟中的毫秒（0 - 59）。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the millisecond in the minute (0 - 59) of `datetime`. [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
@@ -4065,36 +3696,31 @@ SELECT toMillisecond(toDateTime64('2023-04-21 10:20:30.456', 3));
 └────────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toMinute {#toMinute}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回 `Date` 或 `DateTime` 值的分钟部分（0-59）。
 
-Returns the minute component (0-59) of a `Date` or `DateTime` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toMinute(datetime)
 ```
 
-**Aliases**: `MINUTE`
+**别名**: `MINUTE`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to get the minute from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中获取分钟的日期时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 中小时的分钟数（0 - 59）。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the minute of the hour (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
@@ -4106,34 +3732,29 @@ SELECT toMinute(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## toModifiedJulianDay {#toModifiedJulianDay}
 
-Introduced in: v21.1
+引入于：v21.1
 
+将以文本形式 `YYYY-MM-DD` 表示的[前推格里高利历](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar)日期转换为 `Int32` 类型的[修正儒略日](https://en.wikipedia.org/wiki/Julian_day#Variants)数值。该函数支持的日期范围为 `0000-01-01` 到 `9999-12-31`。如果参数无法解析为日期，或者日期无效，则会抛出异常。
 
-Converts a [Proleptic Gregorian calendar](https://en.wikipedia.org/wiki/Proleptic_Gregorian_calendar) date in text form `YYYY-MM-DD` to a [Modified Julian Day](https://en.wikipedia.org/wiki/Julian_day#Variants) number in `Int32`. This function supports date from `0000-01-01` to `9999-12-31`. It raises an exception if the argument cannot be parsed as a date, or the date is invalid.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toModifiedJulianDay(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — The date in String form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `date` — 以字符串形式表示的日期。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返回值**
 
-**Returned value**
+返回修正儒略日编号。[`Int32`](/sql-reference/data-types/int-uint)
 
-Returns Modified Julian Day number. [`Int32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Convert date to Modified Julian Day**
+**将日期转换为修正儒略日编号**
 
 ```sql title=Query
 SELECT toModifiedJulianDay('2020-01-01')
@@ -4145,34 +3766,29 @@ SELECT toModifiedJulianDay('2020-01-01')
 └───────────────────────────────────┘
 ```
 
-
-
 ## toModifiedJulianDayOrNull {#toModifiedJulianDayOrNull}
 
-Introduced in: v21.1
+自 v21.1 引入
 
+与 [`toModifiedJulianDay()`](#toModifiedJulianDay) 类似，但不会抛出异常，而是返回 `NULL`。
 
-Similar to [`toModifiedJulianDay()`](#toModifiedJulianDay), but instead of raising exceptions it returns `NULL`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toModifiedJulianDayOrNull(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date in text form. [`String`](/sql-reference/data-types/string) or [`FixedString`](/sql-reference/data-types/fixedstring)
+* `date` — 文本形式的日期。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 
+**返回值**
 
-**Returned value**
+对于有效的 `date`，返回对应的修正儒略日编号，否则返回 `null`。[`Nullable(Int32)`](/sql-reference/data-types/nullable)
 
-Returns the modified Julian day number for valid `date`, otherwise `null`. [`Nullable(Int32)`](/sql-reference/data-types/nullable)
+**示例**
 
-**Examples**
-
-**Convert date to Modified Julian Day with null handling**
+**将日期转换为修正儒略日并处理 null 值**
 
 ```sql title=Query
 SELECT toModifiedJulianDayOrNull('2020-01-01');
@@ -4188,38 +3804,33 @@ SELECT toModifiedJulianDayOrNull('0000-00-00'); -- 无效日期，返回 NULL
 └──────────────────────────┘
 ```
 
-
-
 ## toMonday {#toMonday}
 
-Introduced in: v1.1
+引入于：v1.1
 
-
-Rounds down a date or date with time to the Monday of the same week. Returns the date.
+将日期或带时间的日期向下取整到同一周的周一。返回日期。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toMonday(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — Date or date with time to round down to the Monday of the week. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 要向下取整到所在周星期一的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期或带时间日期所在周的星期一这一天的日期值。[`Date`](/sql-reference/data-types/date)
 
-Returns the date of the Monday of the same week for the given date or date with time. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round down to the Monday of the week**
+**向下取整到所在周的星期一**
 
 ```sql title=Query
 SELECT
@@ -4233,36 +3844,31 @@ toMonday(toDate('2023-04-24'));              -- 已经是星期一
 └─────────────────────────────────────────────┴────────────────────────────────┘
 ```
 
-
-
 ## toMonth {#toMonth}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回 `Date` 或 `DateTime` 值的月份部分（1-12）。
 
-Returns the month component (1-12) of a `Date` or `DateTime` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toMonth(datetime)
 ```
 
-**Aliases**: `MONTH`
+**别名**：`MONTH`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the month from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要获取月份的日期或日期时间。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期/时间对应的月份，类型为 [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the month of the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
@@ -4274,32 +3880,29 @@ SELECT toMonth(toDateTime('2023-04-21 10:20:30'))
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## toMonthNumSinceEpoch {#toMonthNumSinceEpoch}
 
-Introduced in: v25.3
+引入版本：v25.3
 
-Returns amount of months passed from year 1970
+返回自 1970 年以来已过去的月份数
 
-**Syntax**
+**语法**
 
 ```sql
 toMonthNumSinceEpoch(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — A date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+正整数
 
-Positive integer
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
@@ -4309,36 +3912,31 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 657
 ```
 
-
-
 ## toQuarter {#toQuarter}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+对给定的 `Date` 或 `DateTime` 值，返回其对应的季度（1-4）。
 
-Returns the quarter of the year (1-4) for a given `Date` or `DateTime` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toQuarter(datetime)
 ```
 
-**Aliases**: `QUARTER`
+**别名**：`QUARTER`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the quarter of the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要获取其所属季度的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期/时间在一年中的季度 [`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the quarter of the year for the given date/time [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -4350,36 +3948,31 @@ SELECT toQuarter(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────┘
 ```
 
-
-
 ## toRelativeDayNum {#toRelativeDayNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或日期时间转换为自某个固定过去时间点以来经过的天数。
+该时间点的确切值属于实现细节，因此不建议将此函数单独使用。
+该函数的主要用途是计算两个日期或日期时间之间相差的天数，例如：`toRelativeDayNum(dt1) - toRelativeDayNum(dt2)`。
 
-Converts a date or date with time to the number of days elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in days between two dates or dates with time, e.g., `toRelativeDayNum(dt1) - toRelativeDayNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeDayNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自过去某个固定参考时间点以来的天数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of days from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative day numbers**
+**获取相对天数序号**
 
 ```sql title=Query
 SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01-01'))
@@ -4391,36 +3984,31 @@ SELECT toRelativeDayNum(toDate('2023-04-01')) - toRelativeDayNum(toDate('2023-01
 └──────────────────────────┘
 ```
 
-
-
 ## toRelativeHourNum {#toRelativeHourNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或带时间的日期转换为自过去某个固定时间点以来经过的小时数。
+该具体时间点属于实现细节，因此不建议单独使用此函数。
+该函数的主要用途是计算两个日期或带时间的日期之间的小时差，例如：`toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`。
 
-Converts a date or date with time to the number of hours elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in hours between two dates or dates with time, e.g., `toRelativeHourNum(dt1) - toRelativeHourNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeHourNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回距离过去某个固定参考点的小时数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of hours from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative hour numbers**
+**获取相对小时数**
 
 ```sql title=Query
 SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(toDateTime('2023-01-01 00:00:00')) AS hours_difference
@@ -4432,36 +4020,31 @@ SELECT toRelativeHourNum(toDateTime('2023-01-01 12:00:00')) - toRelativeHourNum(
 └──────────────────┘
 ```
 
-
-
 ## toRelativeMinuteNum {#toRelativeMinuteNum}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将日期或日期时间值转换为自某个过去的固定时间点以来经过的分钟数。
+该时间点的确切值属于实现细节，因此不应将此函数单独使用。
+该函数的主要用途是计算两个日期或日期时间值之间相差的分钟数，例如：`toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)`。
 
-Converts a date or date with time to the number of minutes elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in minutes between two dates or dates with time, e.g., `toRelativeMinuteNum(dt1) - toRelativeMinuteNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeMinuteNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自过去某个固定参考时间点以来经过的分钟数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of minutes from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative minute numbers**
+**获取相对分钟编号**
 
 ```sql title=Query
 SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinuteNum(toDateTime('2023-01-01 00:00:00')) AS minutes_difference
@@ -4473,36 +4056,31 @@ SELECT toRelativeMinuteNum(toDateTime('2023-01-01 00:30:00')) - toRelativeMinute
 └────────────────────┘
 ```
 
-
-
 ## toRelativeMonthNum {#toRelativeMonthNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或带时间的日期转换为自过去某个固定时间点以来经过的月份数。
+该具体时间点属于实现细节，因此不建议单独使用此函数。
+该函数的主要用途是计算两个日期或带时间的日期之间相差的月份数，例如：`toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`。
 
-Converts a date or date with time to the number of months elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in months between two dates or dates with time, e.g., `toRelativeMonthNum(dt1) - toRelativeMonthNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeMonthNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自过去某个固定参考点起算的月份数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of months from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative month numbers**
+**获取相对月份序号**
 
 ```sql title=Query
 SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('2023-01-01')) AS months_difference
@@ -4514,36 +4092,31 @@ SELECT toRelativeMonthNum(toDate('2023-04-01')) - toRelativeMonthNum(toDate('202
 └───────────────────┘
 ```
 
-
-
 ## toRelativeQuarterNum {#toRelativeQuarterNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或日期时间转换为自某个固定过去时间点以来已经过去的季度数。
+该具体时间点属于实现细节，因此不建议单独使用此函数。
+该函数的主要用途是计算两个日期或日期时间之间相差的季度数，例如：`toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)`。
 
-Converts a date or date with time to the number of quarters elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in quarters between two dates or dates with time, e.g., `toRelativeQuarterNum(dt1) - toRelativeQuarterNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeQuarterNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或包含时间的日期值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自过去某个固定参考点起计算的季度数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of quarters from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative quarter numbers**
+**获取相对季度序号**
 
 ```sql title=Query
 SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate('2023-01-01')) AS quarters_difference
@@ -4555,36 +4128,31 @@ SELECT toRelativeQuarterNum(toDate('2023-04-01')) - toRelativeQuarterNum(toDate(
 └─────────────────────┘
 ```
 
-
-
 ## toRelativeSecondNum {#toRelativeSecondNum}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将日期或日期时间转换为自某个固定的历史时间点以来经过的秒数。
+该具体时间点属于实现细节，因此不建议将此函数单独使用。
+此函数的主要用途是计算两个日期或日期时间之间的秒数差，例如：`toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)`。
 
-Converts a date or date with time to the number of seconds elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in seconds between two dates or dates with time, e.g., `toRelativeSecondNum(dt1) - toRelativeSecondNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeSecondNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自过去固定参考点以来的秒数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of seconds from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative second numbers**
+**获取相对秒数**
 
 ```sql title=Query
 SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecondNum(toDateTime('2023-01-01 00:00:00')) AS seconds_difference
@@ -4596,36 +4164,31 @@ SELECT toRelativeSecondNum(toDateTime('2023-01-01 00:01:00')) - toRelativeSecond
 └────────────────────┘
 ```
 
-
-
 ## toRelativeWeekNum {#toRelativeWeekNum}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或带时间的日期转换为自某个固定的过去时间点起所经过的周数。
+这个具体时间点属于实现细节，因此不建议单独使用此函数。
+该函数的主要用途是计算两个日期或带时间的日期之间相差的周数，例如：`toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)`。
 
-Converts a date or date with time to the number of weeks elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used standalone.
-The main purpose of the function is to calculate the difference in weeks between two dates or dates with time, e.g., `toRelativeWeekNum(dt1) - toRelativeWeekNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeWeekNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回从过去某个固定参考点开始计算的周数。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the number of weeks from a fixed reference point in the past. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative week numbers**
+**获取相对周数**
 
 ```sql title=Query
 SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-01-01')) AS weeks_difference
@@ -4637,36 +4200,31 @@ SELECT toRelativeWeekNum(toDate('2023-01-08')) - toRelativeWeekNum(toDate('2023-
 └──────────────────┘
 ```
 
-
-
 ## toRelativeYearNum {#toRelativeYearNum}
 
-Introduced in: v1.1
+引入自：v1.1
 
+将日期或日期时间转换为自过去某个固定时间点以来经过的年份数。
+该固定时间点属于实现细节，因此不建议单独使用该函数。
+该函数主要用于计算两个日期或日期时间之间相差的年份数，例如：`toRelativeYearNum(dt1) - toRelativeYearNum(dt2)`。
 
-Converts a date or date with time to the number of years elapsed since a certain fixed point in the past.
-The exact point in time is an implementation detail, and therefore this function is not intended to be used
-standalone. The main purpose of the function is to calculate the difference in years between two dates or dates with time, e.g., `toRelativeYearNum(dt1) - toRelativeYearNum(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toRelativeYearNum(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date or date with time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回自某个固定历史参考点以来的年份数。[`UInt16`](/sql-reference/data-types/int-uint)
 
-Returns the number of years from a fixed reference point in the past. [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get relative year numbers**
+**获取相对年份数值**
 
 ```sql title=Query
 SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01'::DateTime)
@@ -4678,36 +4236,31 @@ SELECT toRelativeYearNum('2010-10-01'::DateTime) - toRelativeYearNum('2000-01-01
 └──────────────────────────┘
 ```
 
-
-
 ## toSecond {#toSecond}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回 `DateTime` 或 `DateTime64` 值中的秒部分（0-59）。
 
-Returns the second component (0-59) of a `DateTime` or `DateTime64` value.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toSecond(datetime)
 ```
 
-**Aliases**: `SECOND`
+**别名**: `SECOND`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date with time to get the second from. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中获取秒数的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回 `datetime` 所在分钟中的秒数（0 - 59）。[`UInt8`](/sql-reference/data-types/int-uint)
 
-Returns the second in the minute (0 - 59) of `datetime`. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
@@ -4719,38 +4272,33 @@ SELECT toSecond(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfDay {#toStartOfDay}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Rounds down a date with time to the start of the day.
+将带时间的日期向下取整到当天的开始时间。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfDay(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to round. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
+* `datetime` — 要舍入的日期或日期时间。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
 
+**返回值**
 
-**Returned value**
+返回向下取整到当天起始时刻的日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded down to the start of the day. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Round down to the start of the day**
+**向下取整到当天起始时刻**
 
 ```sql title=Query
 SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
@@ -4762,38 +4310,33 @@ SELECT toStartOfDay(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfFifteenMinutes {#toStartOfFifteenMinutes}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Rounds down the date with time to the start of the fifteen-minute interval.
+将日期时间向下取整到所在十五分钟时间区间的起始时刻。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfFifteenMinutes(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要进行取整的日期或带时间的日期。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回将时间向最近的十五分钟区间起始时刻取整后的日期时间值，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded to the start of the nearest fifteen-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT
@@ -4811,40 +4354,35 @@ toStartOfFifteenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:15:00
 toStartOfFifteenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:15:00
 ```
 
-
-
 ## toStartOfFiveMinutes {#toStartOfFiveMinutes}
 
-Introduced in: v22.6
+自 v22.6 引入
 
-
-Rounds down a date with time to the start of the nearest five-minute interval.
+将日期时间值向下取整到距离其最近的五分钟区间的起始时刻。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfFiveMinutes(datetime)
 ```
 
-**Aliases**: `toStartOfFiveMinute`
+**别名**: `toStartOfFiveMinute`
 
-**Arguments**
+**参数**
 
-- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 需要进行取整的日期时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回已取整到最近的 5 分钟区间起始时刻的日期时间值，[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded to the start of the nearest five-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT
@@ -4862,38 +4400,33 @@ toStartOfFiveMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfFiveMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
-
-
 ## toStartOfHour {#toStartOfHour}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
-
-Rounds down a date with time to the start of the hour.
+将日期时间向下取整到所在小时的起始时刻。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfHour(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要取整的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回向下取整到整点开始时刻的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded down to the start of the hour. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Round down to the start of the hour**
+**向下取整到整点开始时刻**
 
 ```sql title=Query
 SELECT
@@ -4906,38 +4439,33 @@ SELECT
 └─────────────────────┴─────────────────┘
 ```
 
-
-
 ## toStartOfISOYear {#toStartOfISOYear}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Rounds down a date or date with time to the first day of the ISO year, which can be different than a regular year. See [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date).
+将日期或日期时间向下取整到 ISO 年的第一天，该日期可能与公历年的第一天不同。参见 [ISO week date](https://en.wikipedia.org/wiki/ISO_week_date)。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfISOYear(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — The date or date with time to round down to the first day of the ISO year. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 需要向下取整到对应 ISO 年的第一天的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期或带时间的日期所属 ISO 年的第一天。[`Date`](/sql-reference/data-types/date)
 
-Returns the first day of the ISO year for the given date or date with time. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round down to the first day of the ISO year**
+**向下取整到 ISO 年的第一天**
 
 ```sql title=Query
 SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
@@ -4949,65 +4477,65 @@ SELECT toStartOfISOYear(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfInterval {#toStartOfInterval}
 
-Introduced in: v20.1
+引入版本：v20.1
 
+此函数通过 `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` 语法，对其他 `toStartOf*()` 函数进行了泛化。
 
-This function generalizes other `toStartOf*()` functions with `toStartOfInterval(date_or_date_with_time, INTERVAL x unit [, time_zone])` syntax.
+例如：
 
-For example,
-- `toStartOfInterval(t, INTERVAL 1 YEAR)` returns the same as `toStartOfYear(t)`,
-- `toStartOfInterval(t, INTERVAL 1 MONTH)` returns the same as `toStartOfMonth(t)`,
-- `toStartOfInterval(t, INTERVAL 1 DAY)` returns the same as `toStartOfDay(t)`,
-- `toStartOfInterval(t, INTERVAL 15 MINUTE)` returns the same as `toStartOfFifteenMinutes(t)`.
+* `toStartOfInterval(t, INTERVAL 1 YEAR)` 的返回结果与 `toStartOfYear(t)` 相同，
+* `toStartOfInterval(t, INTERVAL 1 MONTH)` 的返回结果与 `toStartOfMonth(t)` 相同，
+* `toStartOfInterval(t, INTERVAL 1 DAY)` 的返回结果与 `toStartOfDay(t)` 相同，
+* `toStartOfInterval(t, INTERVAL 15 MINUTE)` 的返回结果与 `toStartOfFifteenMinutes(t)` 相同。
 
-The calculation is performed relative to specific points in time:
+计算是相对于特定时间点进行的：
 
-| Interval    | Start                  |
-|-------------|------------------------|
-| YEAR        | year 0                 |
-| QUARTER     | 1900 Q1                |
-| MONTH       | 1900 January           |
-| WEEK        | 1970, 1st week (01-05) |
-| DAY         | 1970-01-01             |
-| HOUR        | (*)                    |
-| MINUTE      | 1970-01-01 00:00:00    |
-| SECOND      | 1970-01-01 00:00:00    |
-| MILLISECOND | 1970-01-01 00:00:00    |
-| MICROSECOND | 1970-01-01 00:00:00    |
-| NANOSECOND  | 1970-01-01 00:00:00    |
-(*) hour intervals are special: the calculation is always performed relative to 00:00:00 (midnight) of the current day. As a result, only
-hour values between 1 and 23 are useful.
+| Interval                               | Start                |
+| -------------------------------------- | -------------------- |
+| YEAR                                   | 年 0                  |
+| QUARTER                                | 1900 年第 1 季度         |
+| MONTH                                  | 1900 年 1 月           |
+| WEEK                                   | 1970 年，第 1 周 (01-05) |
+| DAY                                    | 1970-01-01           |
+| HOUR                                   | (*)                  |
+| MINUTE                                 | 1970-01-01 00:00:00  |
+| SECOND                                 | 1970-01-01 00:00:00  |
+| MILLISECOND                            | 1970-01-01 00:00:00  |
+| MICROSECOND                            | 1970-01-01 00:00:00  |
+| NANOSECOND                             | 1970-01-01 00:00:00  |
+| (*) 小时间隔是特殊的：计算始终相对于当日 00:00:00（午夜）进行。 |                      |
+|                                        |                      |
 
-If unit `WEEK` was specified, `toStartOfInterval` assumes that weeks start on Monday. Note that this behavior is different from that of function `toStartOfWeek` in which weeks start by default on Sunday.
+如果指定的单位为 `WEEK`，`toStartOfInterval` 假定星期从周一开始。请注意，此行为不同于函数 `toStartOfWeek`，后者默认从周日开始计周。
 
-The second overload emulates TimescaleDB's `time_bucket()` function, respectively PostgreSQL's `date_bin()` function.
-        
+第二个重载形式同时模拟了 TimescaleDB 的 `time_bucket()` 函数以及 PostgreSQL 的 `date_bin()` 函数。
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfInterval(value, INTERVAL x unit[, time_zone])
 toStartOfInterval(value, INTERVAL x unit[, origin[, time_zone]])
 ```
 
-**Aliases**: `time_bucket`, `date_bin`
+**别名**: `time_bucket`, `date_bin`
 
-**Arguments**
+**参数**
 
-- `value` — Date or date with time value to round down. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `x` — Interval length number. - `unit` — Interval unit: YEAR, QUARTER, MONTH, WEEK, DAY, HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND. - `time_zone` — Optional. Time zone name as a string. - `origin` — Optional. Origin point for calculation (second overload only). 
+* `value` — 要向下取整的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `x` — 间隔长度数值。
+  * `unit` — 间隔单位：YEAR、QUARTER、MONTH、WEEK、DAY、HOUR、MINUTE、SECOND、MILLISECOND、MICROSECOND、NANOSECOND。
+  * `time_zone` — 可选。时区名称，字符串类型。
+  * `origin` — 可选。用于计算的起始时间点（仅适用于第二个重载）。
 
-**Returned value**
+**返回值**
 
-Returns the start of the interval containing the input value. [`DateTime`](/sql-reference/data-types/datetime)
+返回包含输入值的时间间隔的起始时间。[`DateTime`](/sql-reference/data-types/datetime)
 
-**Examples**
+**示例**
 
-**Basic interval rounding**
+**基本间隔取整**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
@@ -5019,7 +4547,7 @@ SELECT toStartOfInterval(toDateTime('2023-01-15 14:30:00'), INTERVAL 1 MONTH)
 └──────────────────────────┘
 ```
 
-**Using origin point**
+**使用原点**
 
 ```sql title=Query
 SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, toDateTime('2023-01-01 14:35:30'))
@@ -5031,35 +4559,30 @@ SELECT toStartOfInterval(toDateTime('2023-01-01 14:45:00'), INTERVAL 1 MINUTE, t
 └──────────────────────────┘
 ```
 
-
-
 ## toStartOfMicrosecond {#toStartOfMicrosecond}
 
-Introduced in: v22.6
+引入版本：v22.6
 
+将日期时间值向下取整到所在微秒的起始时刻。
 
-Rounds down a date with time to the start of the microseconds.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toStartOfMicrosecond(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
+* `datetime` — 日期和时间。[`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回值所使用的时区。如果未指定，函数会使用 `value` 参数的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+带有亚微秒精度的输入值 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Input value with sub-microseconds [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Query without timezone**
+**未指定时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5072,7 +4595,7 @@ SELECT toStartOfMicrosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Query with timezone**
+**带时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5085,35 +4608,30 @@ SELECT toStartOfMicrosecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfMillisecond {#toStartOfMillisecond}
 
-Introduced in: v22.6
+自 v22.6 起引入
 
+将日期时间值向下取整到所在毫秒的起始时刻。
 
-Rounds down a date with time to the start of the milliseconds.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toStartOfMillisecond(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
+* `datetime` — 日期和时间。[`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回值所使用的时区。如果未指定，函数会使用 `value` 参数的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+带有亚毫秒精度的输入值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Input value with sub-milliseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Query without timezone**
+**不带时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5126,7 +4644,7 @@ SELECT toStartOfMillisecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Query with timezone**
+**带时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5139,38 +4657,33 @@ SELECT toStartOfMillisecond(dt64, 'Asia/Istanbul');
 └─────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfMinute {#toStartOfMinute}
 
-Introduced in: v1.1
+自 v1.1 引入
 
-
-Rounds down a date with time to the start of the minute.
+将日期时间值向下取整到该分钟的起始时刻。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfMinute(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date with time to round. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要进行取整的日期时间。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回将日期时间向下取整到该分钟起始时刻的结果。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded down to the start of the minute. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Round down to the start of the minute**
+**向下取整到该分钟的起始时刻**
 
 ```sql title=Query
 SELECT
@@ -5186,38 +4699,33 @@ toStartOfMinute(toDateTime('2023-04-21 10:20:30')):           2023-04-21 10:20:0
 toStartOfMinute(toDateTime64('2023-04-21 10:20:30.5300', 8)): 2023-04-21 10:20:00
 ```
 
-
-
 ## toStartOfMonth {#toStartOfMonth}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-
-Rounds down a date or date with time to the first day of the month.
+将日期或日期时间向下取整为其所在月份的第一天。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfMonth(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — The date or date with time to round down to the first day of the month. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 要向下取整到所在月份第一天的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期或日期时间值所在月份的第一天。[`Date`](/sql-reference/data-types/date)
 
-Returns the first day of the month for the given date or date with time. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round down to the first day of the month**
+**向下取整到所在月份的第一天**
 
 ```sql title=Query
 SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
@@ -5229,35 +4737,30 @@ SELECT toStartOfMonth(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfNanosecond {#toStartOfNanosecond}
 
-Introduced in: v22.6
+自 v22.6 引入
 
+将日期时间向下取整到纳秒的起始时刻。
 
-Rounds down a date with time to the start of the nanoseconds.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toStartOfNanosecond(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date and time. [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
+* `datetime` — 日期和时间。[`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回值使用的时区。如果未指定，函数会使用 `value` 参数的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+具有纳秒精度的输入值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Input value with nanoseconds. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Query without timezone**
+**未指定时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5270,7 +4773,7 @@ SELECT toStartOfNanosecond(dt64);
 └───────────────────────────────┘
 ```
 
-**Query with timezone**
+**使用时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999999999', 9) AS dt64
@@ -5283,38 +4786,33 @@ SELECT toStartOfNanosecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfQuarter {#toStartOfQuarter}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
-
-Rounds down a date or date with time to the first day of the quarter. The first day of the quarter is either 1 January, 1 April, 1 July, or 1 October.
+将日期或带时间的日期向下取整到其所在季度的第一天。季度的第一天为 1 月 1 日、4 月 1 日、7 月 1 日或 10 月 1 日。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfQuarter(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — The date or date with time to round down to the first day of the quarter. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 要向下舍入到其所在季度第一天的日期或带时间的日期值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期或带时间的日期值所在季度的第一天。[`Date`](/sql-reference/data-types/date)
 
-Returns the first day of the quarter for the given date or date with time. [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round down to the first day of the quarter**
+**向下舍入到该季度的第一天**
 
 ```sql title=Query
 SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
@@ -5326,35 +4824,30 @@ SELECT toStartOfQuarter(toDateTime('2023-04-21 10:20:30'))
 └─────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfSecond {#toStartOfSecond}
 
-Introduced in: v20.5
+首次引入：v20.5
 
+将日期时间值向下取整到该秒的起始时刻。
 
-Rounds down a date with time to the start of the seconds.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toStartOfSecond(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date and time to truncate sub-seconds from. [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the returned value. If not specified, the function uses the timezone of the `value` parameter. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要截断其子秒部分的日期时间值。[`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回值所使用的时区。如果未指定，函数将使用 `value` 参数的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回移除子秒部分后的输入值。[`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the input value without sub-seconds. [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Query without timezone**
+**不带时区的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -5367,7 +4860,7 @@ SELECT toStartOfSecond(dt64);
 └─────────────────────────┘
 ```
 
-**Query with timezone**
+**包含时区信息的查询**
 
 ```sql title=Query
 WITH toDateTime64('2020-01-01 10:20:30.999', 3) AS dt64
@@ -5380,38 +4873,33 @@ SELECT toStartOfSecond(dt64, 'Asia/Istanbul');
 └────────────────────────────────────────┘
 ```
 
-
-
 ## toStartOfTenMinutes {#toStartOfTenMinutes}
 
-Introduced in: v20.1
+引入版本：v20.1
 
-
-Rounds down a date with time to the start of the nearest ten-minute interval.
+将带时间的日期向下舍入到最近的 10 分钟区间的起始时间点。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfTenMinutes(datetime)
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date with time. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 带时间的日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回向最近的 10 分钟区间起始时刻取整的日期时间值，类型为 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date with time rounded to the start of the nearest ten-minute interval [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT
@@ -5429,40 +4917,35 @@ toStartOfTenMinutes(toDateTime('2023-04-21 10:20:00')): 2023-04-21 10:20:00
 toStartOfTenMinutes(toDateTime('2023-04-21 10:23:00')): 2023-04-21 10:20:00
 ```
 
-
-
 ## toStartOfWeek {#toStartOfWeek}
 
-Introduced in: v20.1
+引入版本：v20.1
 
-
-Rounds a date or date with time down to the nearest Sunday or Monday.
+将日期或日期时间向下取整到所在周的最近一个星期日或星期一。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfWeek(datetime[, mode[, timezone]])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `mode` — Determines the first day of the week as described in the `toWeek()` function. Default `0`. [`UInt8`](/sql-reference/data-types/int-uint)
-- `timezone` — The timezone to use for the conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要转换的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `mode` — 按照 `toWeek()` 函数中的说明确定一周的第一天。默认值为 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+* `timezone` — 用于转换的时区。如果未指定，则使用服务器的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据 `mode` 的取值，返回距离给定日期最近且不晚于该日期的周日或周一的日期值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the date of the nearest Sunday or Monday on, or prior to, the given date, depending on the mode [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Round down to the nearest Sunday or Monday**
+**向下舍入到最近的周日或周一**
 
 ```sql title=Query
 SELECT
@@ -5482,38 +4965,33 @@ SELECT
     toStartOfWeek(toDate('2023-04-24'), 1):                2023-04-24
 ```
 
-
-
 ## toStartOfYear {#toStartOfYear}
 
-Introduced in: v1.1
+引入于：v1.1
 
-
-Rounds down a date or date with time to the first day of the year. Returns the date as a `Date` object.
+将日期或带时间的日期向下舍入到所在年份的第一天。以 `Date` 对象的形式返回该日期。
 
 :::note
-The return type can be configured by setting [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions).
+可以通过设置 [`enable_extended_results_for_datetime_functions`](/operations/settings/settings#enable_extended_results_for_datetime_functions) 来配置返回类型。
 :::
-    
 
-**Syntax**
+**语法**
 
 ```sql
 toStartOfYear(value)
 ```
 
-**Arguments**
+**参数**
 
-- `value` — The date or date with time to round down. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 要向下取整的日期或日期时间。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+返回给定日期/时间所在年份的第一天，类型为 [`Date`](/sql-reference/data-types/date)
 
-Returns the first day of the year for the given date/time [`Date`](/sql-reference/data-types/date)
+**示例**
 
-**Examples**
-
-**Round down to the first day of the year**
+**向下取整到该年第一天**
 
 ```sql title=Query
 SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
@@ -5525,40 +5003,35 @@ SELECT toStartOfYear(toDateTime('2023-04-21 10:20:30'))
 └──────────────────────────────────────────────────┘
 ```
 
-
-
 ## toTimeWithFixedDate {#toTimeWithFixedDate}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+提取日期或日期时间值中的时间部分。
+返回结果是相对于一个固定时间点的偏移量，目前为 `1970-01-02`，
+但这一具体时间点属于实现细节，将来可能会发生变化。
 
-Extracts the time component of a date or date with time.
-The returned result is an offset to a fixed point in time, currently `1970-01-02`,
-but the exact point in time is an implementation detail which may change in future.
+因此不应单独使用 `toTime`。
+该函数的主要用途是计算两个日期或日期时间值之间的时间差，例如 `toTime(dt1) - toTime(dt2)`。
 
-`toTime` should therefore not be used standalone.
-The main purpose of the function is to calculate the time difference between two dates or dates with time, e.g., `toTime(dt1) - toTime(dt2)`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toTime(date[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Date to convert to a time. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the returned value. [`String`](/sql-reference/data-types/string)
+* `date` — 要转换为时间值的日期。[`Date`](/sql-reference/data-types/date)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。返回值所使用的时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回日期或日期时间的时间部分，形式为相对于固定时间点（目前选定为 1970-01-02）的偏移量。[`DateTime`](/sql-reference/data-types/datetime)
 
-Returns the time component of a date or date with time in the form of an offset to a fixed point in time (selected as 1970-01-02, currently). [`DateTime`](/sql-reference/data-types/datetime)
+**示例**
 
-**Examples**
-
-**Calculate the time difference between two dates**
+**计算两个日期之间的时间差**
 
 ```sql title=Query
 SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::DateTime) AS result, toTypeName(result)
@@ -5570,39 +5043,34 @@ SELECT toTime('2025-06-15 12:00:00'::DateTime) - toTime('2024-05-10 11:00:00'::D
 └────────┴────────────────────┘
 ```
 
-
-
 ## toTimezone {#toTimezone}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将 `DateTime` 或 `DateTime64` 转换为指定的时区。
+数据的内部值（Unix 秒数）不会改变。
+只会改变该值的时区属性以及其字符串形式。
 
-Converts a `DateTime` or `DateTime64` to the specified time zone.
-The internal value (number of unix seconds) of the data doesn't change.
-Only the value's time zone attribute and the value's string representation changes.
-        
-
-**Syntax**
+**语法**
 
 ```sql
 toTimeZone(datetime, timezone)
 ```
 
-**Aliases**: `toTimeZone`
+**别名**: `toTimeZone`
 
-**Arguments**
+**参数**
 
-- `date` — The value to convert. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — The target time zone name. [`String`](/sql-reference/data-types/string)
+* `date` — 要转换的值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 目标时区名称。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回与输入时间点相同、但使用指定时区的 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns the same timestamp as the input, but with the specified time zone [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT toDateTime('2019-01-01 00:00:00', 'UTC') AS time_utc,
@@ -5631,37 +5099,32 @@ type_samoa: DateTime('US/Samoa')
 int32samoa: 1546300800
 ```
 
-
-
 ## toUTCTimestamp {#toUTCTimestamp}
 
-Introduced in: v23.8
+自 v23.8 引入
 
+将指定时区的日期或日期时间值转换为 UTC 时区的时间戳。此函数主要为与 Apache Spark 及类似框架的兼容性而提供。
 
-Converts a date or date with time value from one time zone to UTC timezone timestamp. This function is mainly included for compatibility with Apache Spark and similar frameworks.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toUTCTimestamp(datetime, time_zone)
 ```
 
-**Aliases**: `to_utc_timestamp`
+**别名**：`to_utc_timestamp`
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time type const value or an expression. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `time_zone` — A String type const value or an expression representing the time zone. [`String`](/sql-reference/data-types/string)
+* `datetime` — 日期或日期时间类型的常量值或表达式。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `time_zone` — 表示时区的 String 类型常量值或表达式。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 UTC 时区的日期或日期时间值。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
-Returns a date or date with time in UTC timezone. [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+**示例**
 
-**Examples**
-
-**Convert timezone to UTC**
+**将时区转换为 UTC 时间**
 
 ```sql title=Query
 SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
@@ -5673,35 +5136,30 @@ SELECT toUTCTimestamp(toDateTime('2023-03-16'), 'Asia/Shanghai')
 └─────────────────────────────────────────────────────────┘
 ```
 
-
-
 ## toUnixTimestamp {#toUnixTimestamp}
 
-Introduced in: v1.1
+自 v1.1 起提供
 
+将 `String`、`Date` 或 `DateTime` 转换为 Unix 时间戳（自 `1970-01-01 00:00:00 UTC` 起的秒数），类型为 `UInt32`。
 
-Converts a `String`, `Date`, or `DateTime` to a Unix timestamp (seconds since `1970-01-01 00:00:00 UTC`) as `UInt32`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toUnixTimestamp(date[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `date` — Value to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64) or [`String`](/sql-reference/data-types/string)
-- `timezone` — Optional. Timezone to use for conversion. If not specified, the server's timezone is used. [`String`](/sql-reference/data-types/string)
+* `date` — 要转换的值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64) 或 [`String`](/sql-reference/data-types/string)
+* `timezone` — 可选。用于转换的时区。如果未指定，则使用服务器时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回 Unix 时间戳。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the Unix timestamp. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT
@@ -5727,66 +5185,61 @@ from_date:       1509840000
 from_date32:     1509840000
 ```
 
-
-
 ## toWeek {#toWeek}
 
-Introduced in: v20.1
+引入于：v20.1
 
+此函数返回日期或 datetime 的周序号。`toWeek()` 的双参数形式允许指定一周从星期日还是星期一开始，以及返回值是在 `0` 到 `53` 还是 `1` 到 `53` 的范围内。
 
-This function returns the week number for date or datetime. The two-argument form of `toWeek()` enables you to specify whether the week starts
-on Sunday or Monday and whether the return value should be in the range from `0` to `53` or from `1` to `53`.
+[`toISOWeek()`](#toWeek) 是一个兼容性函数，等价于 `toWeek(date,3)`。
 
-[`toISOWeek()`](#toWeek) is a compatibility function that is equivalent to `toWeek(date,3)`.
+下表描述了 `mode` 参数的工作方式。
 
-The following table describes how the mode argument works.
+| Mode | First day of week | Range | Week 1 is the first week ...  |
+| ---- | ----------------- | ----- | ----------------------------- |
+| 0    | Sunday            | 0-53  | with a Sunday in this year    |
+| 1    | Monday            | 0-53  | with 4 or more days this year |
+| 2    | Sunday            | 1-53  | with a Sunday in this year    |
+| 3    | Monday            | 1-53  | with 4 or more days this year |
+| 4    | Sunday            | 0-53  | with 4 or more days this year |
+| 5    | Monday            | 0-53  | with a Monday in this year    |
+| 6    | Sunday            | 1-53  | with 4 or more days this year |
+| 7    | Monday            | 1-53  | with a Monday in this year    |
+| 8    | Sunday            | 1-53  | contains January 1            |
+| 9    | Monday            | 1-53  | contains January 1            |
 
-| Mode | First day of week | Range | Week 1 is the first week ...    |
-|------|-------------------|-------|---------------------------------|
-| 0    | Sunday            | 0-53  | with a Sunday in this year      |
-| 1    | Monday            | 0-53  | with 4 or more days this year   |
-| 2    | Sunday            | 1-53  | with a Sunday in this year      |
-| 3    | Monday            | 1-53  | with 4 or more days this year   |
-| 4    | Sunday            | 0-53  | with 4 or more days this year   |
-| 5    | Monday            | 0-53  | with a Monday in this year      |
-| 6    | Sunday            | 1-53  | with 4 or more days this year   |
-| 7    | Monday            | 1-53  | with a Monday in this year      |
-| 8    | Sunday            | 1-53  | contains January 1              |
-| 9    | Monday            | 1-53  | contains January 1              |
+对于含义为“该周在本年度中包含 4 天或以上”的 `mode` 值，周的编号遵循 ISO 8601:1988：
 
-For mode values with a meaning of "with 4 or more days this year," weeks are numbered according to ISO 8601:1988:
+* 如果包含 1 月 1 日的那一周在新的一年中包含 4 天或以上，则该周为第 1 周。
+* 否则，该周是上一年的最后一周，而下一周为第 1 周。
 
-- If the week containing January 1 has 4 or more days in the new year, it is week 1.
-- Otherwise, it is the last week of the previous year, and the next week is week 1.
+对于含义为“包含 1 月 1 日”的 `mode` 值，包含 1 月 1 日的那一周就是第 1 周。
+这一周在新的一年中包含多少天无关紧要，即使只包含一天也是如此。
+也就是说，如果 12 月的最后一周包含下一年的 1 月 1 日，那么它将成为下一年的第 1 周。
 
-For mode values with a meaning of "contains January 1", the week contains January 1 is week 1.
-It does not matter how many days in the new year the week contained, even if it contained only one day.
-I.e. if the last week of December contains January 1 of the next year, it will be week 1 of the next year.
+第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式应为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) 所支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性原因，这是某些第三方工具所要求的。由于将来对字符串参数的支持可能会依赖新的 MySQL 兼容性 SETTING，并且字符串解析通常较慢，因此建议不要使用这种方式。
 
-The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toWeek(datetime[, mode[, time_zone]])
 ```
 
-**Aliases**: `week`
+**别名**：`week`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the week number from. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
-- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `time_zone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
+* `datetime` — 用于获取周编号的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
+* `mode` — 可选。`0` 到 `9` 的模式决定一周的第一天以及周编号的取值范围。默认值为 `0`。
+* `time_zone` — 可选。时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+根据指定的模式返回周编号。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns the week number according to the specified mode. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get week numbers with different modes**
+**使用不同模式获取周编号**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS week1, toWeek(date,9) AS week9
@@ -5798,38 +5251,33 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 └────────────┴───────┴───────┴───────┘
 ```
 
-
-
 ## toYYYYMM {#toYYYYMM}
 
-Introduced in: v1.1
+首次引入于：v1.1
 
+将日期或日期时间转换为一个 `UInt32` 数值，包含年份和月份（YYYY * 100 + MM）。
+可接受第二个可选的时区参数。如果提供，则该时区必须为字符串常量。
 
-Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 100 + MM).
-Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
+此函数与函数 `YYYYMMDDToDate()` 的作用相反。
 
-This function is the opposite of function `YYYYMMDDToDate()`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toYYYYMM(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要转换的日期或日期时间。可以是 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。用于转换的时区。如指定，时区必须是字符串常量。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含年份和月份的 UInt32 值（YYYY * 100 + MM）。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a UInt32 number containing the year and month number (YYYY * 100 + MM). [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Convert current date to YYYYMM format**
+**将当前日期转换为 YYYYMM 格式**
 
 ```sql title=Query
 SELECT toYYYYMM(now(), 'US/Eastern')
@@ -5841,35 +5289,30 @@ SELECT toYYYYMM(now(), 'US/Eastern')
 └───────────────────────────────┘
 ```
 
-
-
 ## toYYYYMMDD {#toYYYYMMDD}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+将日期或日期时间转换为一个 `UInt32` 类型的数值，数值中包含年份、月份和日期（YYYY * 10000 + MM * 100 + DD）。接受第二个可选的时区参数。如果提供，该时区必须是字符串常量。
 
-Converts a date or date with time to a `UInt32` number containing the year and month number (YYYY * 10000 + MM * 100 + DD). Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toYYYYMMDD(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要转换的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。用于转换的时区。如果提供，时区必须是字符串常量。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个包含年、月和日的 `UInt32` 数值（YYYY * 10000 + MM * 100 + DD）。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns a `UInt32` number containing the year, month and day (YYYY * 10000 + MM * 100 + DD). [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Convert current date to YYYYMMDD format**
+**将当前日期转换为 YYYYMMDD 格式**
 
 ```sql title=Query
 SELECT toYYYYMMDD(now(), 'US/Eastern')
@@ -5881,36 +5324,31 @@ SELECT toYYYYMMDD(now(), 'US/Eastern')
 └─────────────────────────────────┘
 ```
 
-
-
 ## toYYYYMMDDhhmmss {#toYYYYMMDDhhmmss}
 
-Introduced in: v1.1
+引入于：v1.1
 
+将日期或带时间的日期转换为一个 `UInt64` 数值，按 `YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss` 的方式编码年份、月份、日期、小时、分钟和秒。
+接受第二个可选的时区参数。如果提供，该时区必须是字符串常量。
 
-Converts a date or date with time to a `UInt64` number containing the year and month number (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss).
-Accepts a second optional timezone argument. If provided, the timezone must be a string constant.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toYYYYMMDDhhmmss(datetime[, timezone])
 ```
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
-- `timezone` — Optional. Timezone for the conversion. If provided, the timezone must be a string constant. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要转换的日期或日期时间值。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。转换所使用的时区。如果指定，时区必须是字符串常量。类型为 [`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回一个 `UInt64` 数值，包含年份、月份、日期、小时、分钟和秒（YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss）。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns a `UInt64` number containing the year, month, day, hour, minute and second (YYYY * 10000000000 + MM * 100000000 + DD * 1000000 + hh * 10000 + mm * 100 + ss). [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Convert current date and time to YYYYMMDDhhmmss format**
+**将当前日期和时间转换为 YYYYMMDDhhmmss 格式**
 
 ```sql title=Query
 SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
@@ -5922,36 +5360,31 @@ SELECT toYYYYMMDDhhmmss(now(), 'US/Eastern')
 └───────────────────────────────────────┘
 ```
 
-
-
 ## toYear {#toYear}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回 `Date` 或 `DateTime` 值的年份部分（公元年，AD）。
 
-Returns the year component (AD) of a `Date` or `DateTime` value.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toYear(datetime)
 ```
 
-**Aliases**: `YEAR`
+**别名**: `YEAR`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the year from. [`Date`](/sql-reference/data-types/date) or [`Date32`](/sql-reference/data-types/date32) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 要从中获取年份的日期或日期时间值。类型为 [`Date`](/sql-reference/data-types/date)、[`Date32`](/sql-reference/data-types/date32)、[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)。
 
+**返回值**
 
-**Returned value**
+返回给定 Date 或 DateTime 的年份，类型为 [`UInt16`](/sql-reference/data-types/int-uint)。
 
-Returns the year of the given Date or DateTime [`UInt16`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT toYear(toDateTime('2023-04-21 10:20:30'))
@@ -5963,32 +5396,29 @@ SELECT toYear(toDateTime('2023-04-21 10:20:30'))
 └───────────────────────────────────────────┘
 ```
 
-
-
 ## toYearNumSinceEpoch {#toYearNumSinceEpoch}
 
-Introduced in: v25.3
+引入版本：v25.3
 
-Returns amount of years passed from year 1970
+返回自 1970 年以来经过的年份数。
 
-**Syntax**
+**语法**
 
 ```sql
 toYearNumSinceEpoch(date)
 ```
 
-**Arguments**
+**参数**
 
-- `date` — A date or date with time to convert. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime) or [`DateTime64`](/sql-reference/data-types/datetime64)
+* `date` — 要转换的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
+**返回值**
 
-**Returned value**
+正整数
 
-Positive integer
+**示例**
 
-**Examples**
-
-**Example**
+**示例**
 
 ```sql title=Query
 SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
@@ -5998,43 +5428,38 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 54
 ```
 
-
-
 ## toYearWeek {#toYearWeek}
 
-Introduced in: v20.1
+引入于：v20.1
 
+返回某个日期对应的年份和周数。对于一年中的第一周和最后一周，结果中的年份可能与参数日期所在的年份不同。
 
-Returns the year and week for a date. The year in the result may be different from the year in the date argument for the first and the last week of the year.
+`mode` 参数的行为与 [`toWeek()`](/sql-reference/functions/date-time-functions#toWeek) 的 `mode` 参数相同。
 
-The mode argument works like the mode argument of [`toWeek()`](/sql-reference/functions/date-time-functions#toWeek).
+警告：`toYearWeek()` 返回的周数可能与 `toWeek()` 返回的不同。`toWeek()` 始终在给定年份的上下文中返回周数，如果 `toWeek()` 返回 `0`，则 `toYearWeek()` 会返回上一年最后一周对应的值。参见下面示例中的 `prev_yearWeek`。
 
-Warning: The week number returned by `toYearWeek()` can be different from what the `toWeek()` returns. `toWeek()` always returns week number in the context of the given year, and in case `toWeek()` returns `0`, `toYearWeek()` returns the value corresponding to the last week of previous year. See `prev_yearWeek` in example below.
+第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式需为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) 支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性考虑，这是某些第三方工具所期望的行为。由于未来对字符串参数的支持可能会依赖新的 MySQL 兼容性设置，并且字符串解析通常较慢，因此建议不要使用这种方式。
 
-The first argument can also be specified as [`String`](../data-types/string.md) in a format supported by [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Support for string arguments exists only for reasons of compatibility with MySQL which is expected by certain 3rd party tools. As string argument support may in future be made dependent on new MySQL-compatibility settings and because string parsing is generally slow, it is recommended to not use it.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 toYearWeek(datetime[, mode[, timezone]])
 ```
 
-**Aliases**: `yearweek`
+**别名**: `yearweek`
 
-**Arguments**
+**参数**
 
-- `datetime` — Date or date with time to get the year and week of. [`Date`](/sql-reference/data-types/date) or [`DateTime`](/sql-reference/data-types/datetime)
-- `mode` — Optional. A mode `0` to `9` determines the first day of the week and the range of the week number. Default `0`. - `timezone` — Optional. Time zone. [`String`](/sql-reference/data-types/string)
+* `datetime` — 要获取其年份和周数的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime)
+* `mode` — 可选。`0` 到 `9` 的模式决定一周的第一天以及周数的取值范围。默认值为 `0`。- `timezone` — 可选。时区。[`String`](/sql-reference/data-types/string)
 
+**返回值**
 
-**Returned value**
+返回由年份和周数组合而成的整数值。[`UInt32`](/sql-reference/data-types/int-uint)
 
-Returns year and week number as a combined integer value. [`UInt32`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Get year-week combinations with different modes**
+**使用不同模式获取 year-week 组合**
 
 ```sql title=Query
 SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(date,1) AS yearWeek1, toYearWeek(date,9) AS yearWeek9, toYearWeek(toDate('2022-01-01')) AS prev_yearWeek
@@ -6046,33 +5471,31 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
 
-
-
 ## today {#today}
 
-Introduced in: v1.1
+引入版本：v1.1
 
-Returns the current date at moment of query analysis. Same as `toDate(now())`.
+在对查询进行分析时返回当前日期。等同于 `toDate(now())`。
 
-**Syntax**
+**语法**
 
 ```sql
 today()
 ```
 
-**Aliases**: `curdate`, `current_date`
+**别名**: `curdate`, `current_date`
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns the current date [`Date`](/sql-reference/data-types/date)
+返回当前日期（[`Date`](/sql-reference/data-types/date) 类型）
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FORMAT Pretty
@@ -6086,15 +5509,11 @@ SELECT today() AS today, curdate() AS curdate, current_date() AS current_date FO
 └────────────┴────────────┴──────────────┘
 ```
 
-
-
 ## yesterday {#yesterday}
 
 Introduced in: v1.1
 
-
-Accepts zero arguments and returns yesterday's date at one of the moments of query analysis.
-    
+不接受任何参数，并在查询分析过程中的某个时刻返回昨天的日期。
 
 **Syntax**
 
@@ -6102,17 +5521,17 @@ Accepts zero arguments and returns yesterday's date at one of the moments of que
 yesterday()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns yesterday's date. [`Date`](/sql-reference/data-types/date)
+返回昨天的日期。[`Date`](/sql-reference/data-types/date)
 
-**Examples**
+**示例**
 
-**Get yesterday's date**
+**获取昨天的日期**
 
 ```sql title=Query
 SELECT yesterday();

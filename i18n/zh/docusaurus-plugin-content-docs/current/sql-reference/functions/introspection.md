@@ -50,7 +50,7 @@ ClickHouse 会将分析器生成的报告保存到 [trace&#95;log](/operations/s
 **语法**
 
 ```sql
-demangle(symbol)
+addressToLine(address_of_binary_instruction)
 ```
 
 **参数**
@@ -83,7 +83,7 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-**Getting a function name for a single address**
+**获取单个地址对应的源代码文件名和行号**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -96,7 +96,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-**Applying the function to the whole stack trace**
+**将该函数应用于完整堆栈跟踪**
 
 ```sql title=Query
 -- 此示例中的 arrayMap 函数通过 addressToLine 函数处理 trace 数组中的每个元素。
@@ -122,35 +122,35 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
+## addressToLineWithInlines {#addressToLineWithInlines}
 
+引入于：v22.2
 
-## isMergeTreePartCoveredBy {#isMergeTreePartCoveredBy}
+与 `addressToLine` 类似，但返回包含所有内联函数的数组（Array）。
+因此，它比 `addressToLine` 更慢。
 
-Introduced in: v25.6
+要启用此自省函数：
 
+* 安装 `clickhouse-common-static-dbg` 软件包。
+* 将设置项 [`allow_introspection_functions`](../../operations/settings/settings.md#allow_introspection_functions) 设为 `1`。
 
-Function which checks if the part of the first argument is covered by the part of the second argument.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 addressToLineWithInlines(address_of_binary_instruction)
 ```
 
-**Arguments**
+**参数**
 
-- `nested_part` — Name of expected nested part. [`String`](/sql-reference/data-types/string)
-- `covering_part` — Name of expected covering part. [`String`](/sql-reference/data-types/string)
+* `address_of_binary_instruction` — 正在运行的进程中某条指令的地址。[`UInt64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回一个数组，第一个元素为源代码文件名和行号，中间以冒号分隔。第二、第三等后续元素用于列出内联函数的源代码文件名、行号和函数名。如果找不到调试信息，则返回仅包含一个元素（等于二进制可执行文件名称）的数组；如果地址无效，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
 
-Returns `1` if it covers, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Basic example**
+**对某个地址应用该函数**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -163,17 +163,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-
-## logTrace {#logTrace}
-
-Introduced in: v20.12
-
-
-Emits a trace log message to the server log for each [Block](/development/architecture/#block).
-    
-
-**Syntax**
+**将该函数应用于整个堆栈跟踪**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -186,19 +176,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
-**Arguments**
-
-- `message` — Message that is emitted to the server log. [`const String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns `0` always. [`UInt8`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Basic example**
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -245,39 +222,34 @@ Returns `0` always. [`UInt8`](/sql-reference/data-types/int-uint)
 └───────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## addressToSymbol {#addressToSymbol}
+
+引入版本：v20.1
+
+将 ClickHouse 服务器进程中的虚拟内存地址转换为 ClickHouse 对象文件中的符号。
+
+**语法**
+
 ```sql
 addressToSymbol(address_of_binary_instruction)
 ```
 
+**参数**
 
+* `address_of_binary_instruction` — 正在运行的进程中指令的地址。[`UInt64`](/sql-reference/data-types/int-uint)
 
-## mergeTreePartInfo {#mergeTreePartInfo}
+**返回值**
 
-Introduced in: v25.6
+返回 ClickHouse 对象文件中的符号，如果地址无效则返回空字符串。[`String`](/sql-reference/data-types/string)
 
+**示例**
 
-Function that helps to cut the useful values out of the `MergeTree` part name.
-    
-
-**Syntax**
+**从 `trace_log` 系统表中选取第一条记录**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
-
-**Arguments**
-
-- `part_name` — Name of part to unpack. [`String`](/sql-reference/data-types/string)
-
-
-**Returned value**
-
-Returns a Tuple with subcolumns: `partition_id`, `min_block`, `max_block`, `level`, `mutation`. [`Tuple`](/sql-reference/data-types/tuple)
-
-**Examples**
-
-**Basic example**
 
 ```response title=Response
 -- `trace` 字段包含采样时刻的堆栈跟踪。
@@ -292,22 +264,12 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
+**获取单个地址的符号信息**
+
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT addressToSymbol(94138803686098) \G;
 ```
-
-
-
-## tid {#tid}
-
-Introduced in: v20.12
-
-
-Returns id of the thread, in which the current [Block](/development/architecture/#block) is processed.
-    
-
-**Syntax**
 
 ```response title=Response
 Row 1:
@@ -315,17 +277,7 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-**Arguments**
-
-- None.
-
-**Returned value**
-
-Returns the current thread id. [`UInt64`](/sql-reference/data-types/int-uint)
-
-**Examples**
-
-**Usage example**
+**将该函数应用于整个堆栈跟踪**
 
 ```sql title=Query
 SET allow_introspection_functions=1;

@@ -48,34 +48,29 @@ SELECT acos(0.5);
 1.0471975511965979
 ```
 
-
-
 ## acosh {#acosh}
 
-Introduced in: v20.12
+自 v20.12 版本引入
 
+返回反双曲余弦值。
 
-Returns the inverse hyperbolic cosine.
-
-
-**Syntax**
+**语法**
 
 ```sql
-反双双曲余弧函数 acosh(x)
+acosh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Hyperbolic cosine of angle. Values from the interval: `1 ≤ x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 角度的双曲余弦值。取值范围：`1 ≤ x < +∞`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回以弧度表示的角度。取值范围：`0 ≤ acosh(x) < +∞`。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `0 ≤ acosh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT acosh(1)
@@ -85,35 +80,30 @@ SELECT acosh(1)
 0
 ```
 
-
-
 ## asin {#asin}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+计算给定参数的反正弦值。
+对于范围在 `[-1, 1]` 内的参数，返回值位于 `[-pi() / 2, pi() / 2]` 范围内。
 
-Calculates the arcsine of the provided argument.
-For arguments in the range `[-1, 1]` it returns the value in the range of `[-pi() / 2, pi() / 2]`.
-    
-
-**Syntax**
+**语法**
 
 ```sql
 asin(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Argument for which to calculate arcsine of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `x` — 要求反正弦的参数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回给定参数 `x` 的反正弦值 [`Float64`](/sql-reference/data-types/float)
 
-Returns the arcsine value of the provided argument `x` [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**inverse**
+**反函数**
 
 ```sql title=Query
 SELECT asin(1.0) = pi() / 2, sin(asin(1)), asin(sin(1))
@@ -133,7 +123,7 @@ SELECT toTypeName(asin(1.0::Float32))
 Float64
 ```
 
-**nan**
+**NaN（非数字）**
 
 ```sql title=Query
 SELECT asin(1.1), asin(-2), asin(inf), asin(nan)
@@ -143,34 +133,29 @@ SELECT asin(1.1), asin(-2), asin(inf), asin(nan)
 nan nan nan nan
 ```
 
-
-
 ## asinh {#asinh}
 
-Introduced in: v20.12
+引入版本：v20.12
 
+返回反双曲正弦函数的值。
 
-Returns the inverse hyperbolic sine.
-
-
-**Syntax**
+**语法**
 
 ```sql
 asinh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Hyperbolic sine of angle. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 某一角度的双曲正弦值。取值范围：`-∞ < x < +∞`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回以弧度表示的角度。取值范围：`-∞ < asinh(x) < +∞`。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: `-∞ < asinh(x) < +∞`. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT asinh(0)
@@ -180,34 +165,29 @@ SELECT asinh(0)
 0
 ```
 
-
-
 ## atan {#atan}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回参数的反正切值。
 
-Returns the arc tangent of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 atan(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The value for which to find arc tangent of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算反正切的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的反正切。[`Float*`](/sql-reference/data-types/float)
 
-Returns the arc tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT atan(1);
@@ -217,35 +197,30 @@ SELECT atan(1);
 0.7853981633974483
 ```
 
-
-
 ## atan2 {#atan2}
 
-Introduced in: v20.12
+引入于：v20.12
 
+返回欧几里得平面中，从正 x 轴到指向点 `(x, y) ≠ (0, 0)` 的射线的夹角，结果以弧度表示。
 
-Returns the atan2 as the angle in the Euclidean plane, given in radians, between the positive x axis and the ray to the point `(x, y) ≠ (0, 0)`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 atan2(y, x)
 ```
 
-**Arguments**
+**参数**
 
-- `y` — y-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `x` — x-coordinate of the point through which the ray passes. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 射线经过的点的 y 坐标。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 射线经过的点的 x 坐标。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回一个弧度制角度 `θ`，满足 `-π < θ ≤ π`，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns the angle `θ` such that `-π < θ ≤ π`, in radians [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT atan2(1, 1)
@@ -255,34 +230,29 @@ SELECT atan2(1, 1)
 0.7853981633974483
 ```
 
-
-
 ## atanh {#atanh}
 
-Introduced in: v20.12
+引入版本：v20.12
 
+返回反双曲正切函数的值。
 
-Returns the inverse hyperbolic tangent.
-
-
-**Syntax**
+**语法**
 
 ```sql
 atanh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Hyperbolic tangent of angle. Values from the interval: -1 < x < 1. `(U)Int*`, `Float*` or `Decimal*`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 角度的双曲正切值。取值区间：-1 &lt; x &lt; 1。`(U)Int*`、`Float*` 或 `Decimal*` 类型。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回以弧度表示的角度值。取值区间：-∞ &lt; atanh(x) &lt; +∞。[`Float64`](/sql-reference/data-types/float)
 
-Returns the angle, in radians. Values from the interval: -∞ < atanh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT atanh(0)
@@ -292,34 +262,29 @@ SELECT atanh(0)
 0
 ```
 
-
-
 ## cbrt {#cbrt}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回参数的立方根。
 
-Returns the cubic root of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 cbrt(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The value for which to find the cubic root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算其立方根的值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的立方根。[`Float*`](/sql-reference/data-types/float)
 
-Returns the cubic root of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT cbrt(8);
@@ -329,34 +294,29 @@ SELECT cbrt(8);
 2
 ```
 
-
-
 ## cos {#cos}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回参数的余弦值。
 
-Returns the cosine of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 cos(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以弧度表示的角度。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的余弦值。[`Float*`](/sql-reference/data-types/float)
 
-Returns the cosine of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT cos(0);
@@ -366,34 +326,29 @@ SELECT cos(0);
 1
 ```
 
-
-
 ## cosh {#cosh}
 
-Introduced in: v20.12
+自 v20.12 版本引入
 
+返回参数的双曲余弦值。
 
-Returns the hyperbolic cosine of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 cosh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The angle, in radians. Values from the interval: `-∞ < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以弧度表示的角度。取值范围：`-∞ < x < +∞`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回取值范围：`1 ≤ cosh(x) < +∞` [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: `1 ≤ cosh(x) < +∞` [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基础用法**
 
 ```sql title=Query
 SELECT cosh(0)
@@ -403,34 +358,29 @@ SELECT cosh(0)
 1
 ```
 
-
-
 ## degrees {#degrees}
 
-Introduced in: v22.2
+引入版本：v22.2
 
+将弧度值转换为角度（度）。
 
-Converts radians to degrees.
-
-
-**Syntax**
+**语法**
 
 ```sql
 degrees(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Input in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以弧度为单位的输入。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回将 `x` 转换为角度（度）的值。[`Float64`](/sql-reference/data-types/float)
 
-Returns the value of `x` in degrees. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT degrees(3.141592653589793)
@@ -440,33 +390,29 @@ SELECT degrees(3.141592653589793)
 180
 ```
 
-
-
 ## e {#e}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回自然常数 (e)。
 
-Returns Euler's constant (e).
-
-
-**Syntax**
+**语法**
 
 ```sql
 e()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns Euler's constant [`Float64`](/sql-reference/data-types/float)
+返回欧拉常数，类型为 [`Float64`](/sql-reference/data-types/float)。
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT e();
@@ -476,34 +422,29 @@ SELECT e();
 2.718281828459045
 ```
 
-
-
 ## erf {#erf}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+如果 `x` 为非负数，则 `erf(x/(σ√2))` 表示：具有标准差 `σ` 的正态分布随机变量，其取值与期望值相差超过 `x` 的概率。
 
-If `x` is non-negative, then `erf(x/(σ√2))` is the probability that a random variable having a normal distribution with standard deviation `σ` takes the value that is separated from the expected value by more than `x`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 erf(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The value for which to compute the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 需要计算其误差函数值的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回误差函数的值 [`Float*`](/sql-reference/data-types/float)
 
-Returns the error function value [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Three sigma rule**
+**三西格玛法则**
 
 ```sql title=Query
 SELECT erf(3 / sqrt(2))
@@ -515,34 +456,29 @@ SELECT erf(3 / sqrt(2))
 └─────────────────────────┘
 ```
 
-
-
 ## erfc {#erfc}
 
-Introduced in: v1.1
+在 v1.1 中引入
 
+返回在 `x` 较大时仍能精确逼近 `1 - erf(x)` 的数值。
 
-Returns a number close to `1-erf(x)` without loss of precision for large `x` values.
-
-
-**Syntax**
+**语法**
 
 ```sql
 erfc(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The value for which to find the error function value. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算误差函数值的输入值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回余误差函数值 [`Float*`](/sql-reference/data-types/float)
 
-Returns the complementary error function value [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT erfc(0);
@@ -552,34 +488,29 @@ SELECT erfc(0);
 1
 ```
 
-
-
 ## exp {#exp}
 
-Introduced in: v1.1
+引入于：v1.1
 
+返回 `e` 的 `x` 次幂，其中 `x` 是传递给该函数的参数。
 
-Returns e raised to the power of `x`, where `x` is the given argument to the function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 exp(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回值为 `e^x`，类型为 [`Float*`](/sql-reference/data-types/float)
 
-Returns `e^x` [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT round(exp(-1), 4)
@@ -591,34 +522,29 @@ SELECT round(exp(-1), 4)
 └───────────────────┘
 ```
 
-
-
 ## exp10 {#exp10}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回 10 的给定参数次幂。
 
-Returns 10 to the power of the given argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 exp10(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 10^x，类型为 [`Float*`](/sql-reference/data-types/float)
 
-Returns 10^x [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT exp10(2);
@@ -628,34 +554,29 @@ SELECT exp10(2);
 100
 ```
 
-
-
 ## exp2 {#exp2}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回以 2 为底、给定参数为指数的幂。
 
-Returns 2 to the power of the given argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 exp2(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The exponent. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 指数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 2^x，类型为 [`Float*`](/sql-reference/data-types/float)
 
-Returns 2^x [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT exp2(3);
@@ -665,36 +586,31 @@ SELECT exp2(3);
 8
 ```
 
-
-
 ## factorial {#factorial}
 
-Introduced in: v22.11
+自 v22.11 起引入
 
+计算一个整数值的阶乘。
+0 的阶乘为 1。同样，`factorial()` 函数对任何负值也返回 `1`。
+输入参数的最大正值为 `20`，取值为 `21` 或更大时会抛出异常。
 
-Computes the factorial of an integer value.
-The factorial of 0 is 1. Likewise, the `factorial()` function returns `1` for any negative value.
-The maximum positive value for the input argument is `20`, a value of `21` or greater will cause an exception.
-    
-
-**Syntax**
+**语法**
 
 ```sql
-阶乘(n)
+factorial(n)
 ```
 
-**Arguments**
+**参数**
 
-- `n` — Integer value for which to calculate the factorial. Maximum value is 20. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `n` — 需要计算阶乘的整数值。最大值为 20。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回输入值的阶乘，类型为 UInt64。当输入为 0 或任何负数时，返回 1。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns the factorial of the input as UInt64. Returns 1 for input 0 or any negative value. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 factorial(10)
@@ -704,36 +620,31 @@ factorial(10)
 3628800
 ```
 
-
-
 ## hypot {#hypot}
 
-Introduced in: v20.12
+引入版本：v20.12
 
+返回直角三角形斜边的长度。
+hypot 函数可以避免在对非常大或非常小的数进行平方运算时出现的问题。
 
-Returns the length of the hypotenuse of a right-angle triangle.
-Hypot avoids problems that occur when squaring very large or very small numbers.
-
-
-**Syntax**
+**语法**
 
 ```sql
 hypot(x, y)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The first cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The second cathetus of a right-angle triangle. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 直角三角形的第一条直角边。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 直角三角形的第二条直角边。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回直角三角形斜边的长度。[`Float64`](/sql-reference/data-types/float)
 
-Returns the length of the hypotenuse of a right-angle triangle. [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Basic usage**
+**基本用法**
 
 ```sql title=Query
 SELECT hypot(1, 1)
@@ -743,34 +654,29 @@ SELECT hypot(1, 1)
 1.4142135623730951
 ```
 
-
-
 ## intExp10 {#intExp10}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+类似于 [exp10](#exp10)，但返回一个 `UInt64` 类型的数值。
 
-Like [exp10](#exp10) but returns a `UInt64` number.
-
-
-**Syntax**
+**语法**
 
 ```sql
 intExp10(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 指数。[`Int*`](/sql-reference/data-types/int-uint) 或 [`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 10^x。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns 10^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT intExp10(2);
@@ -780,34 +686,29 @@ SELECT intExp10(2);
 100
 ```
 
-
-
 ## intExp2 {#intExp2}
 
-Introduced in: v1.1
+引入自：v1.1
 
+与 [exp2](#exp2) 类似，但返回一个 `UInt64` 类型的数值。
 
-Like [exp2](#exp2) but returns a `UInt64` number.
-
-
-**Syntax**
+**语法**
 
 ```sql
 intExp2(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The exponent. [`Int*`](/sql-reference/data-types/int-uint) or [`UInt*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 指数。[`Int*`](/sql-reference/data-types/int-uint) 或 [`UInt*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回 2 的 x 次方。[`UInt64`](/sql-reference/data-types/int-uint)
 
-Returns 2^x. [`UInt64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT intExp2(3);
@@ -817,34 +718,29 @@ SELECT intExp2(3);
 8
 ```
 
-
-
 ## lgamma {#lgamma}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+返回伽马函数的对数。
 
-Returns the logarithm of the gamma function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 lgamma(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The number for which to compute the logarithm of the gamma function. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 用于计算其伽马函数对数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的伽马函数的对数值。[`Float*`](/sql-reference/data-types/float)
 
-Returns the logarithm of the gamma function of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT lgamma(5);
@@ -854,36 +750,31 @@ SELECT lgamma(5);
 3.1780538303479458
 ```
 
-
-
 ## log {#log}
 
-Introduced in: v1.1
+自 v1.1 版本引入
 
+返回参数的自然对数。
 
-Returns the natural logarithm of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 log(x)
 ```
 
-**Aliases**: `ln`
+**别名**: `ln`
 
-**Arguments**
+**参数**
 
-- `x` — The number for which to compute the natural logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算自然对数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的自然对数。[`Float*`](/sql-reference/data-types/float)
 
-Returns the natural logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT log(10);
@@ -893,34 +784,29 @@ SELECT log(10);
 2.302585092994046
 ```
 
-
-
 ## log10 {#log10}
 
-Introduced in: v1.1
+自 v1.1 起可用。
 
+返回参数的十进制对数。
 
-Returns the decimal logarithm of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 log10(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Number for which to compute the decimal logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算其常用对数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的常用对数。[`Float*`](/sql-reference/data-types/float)
 
-Returns the decimal logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT log10(100);
@@ -930,35 +816,30 @@ SELECT log10(100);
 2
 ```
 
-
-
 ## log1p {#log1p}
 
-Introduced in: v20.12
+自 v20.12 引入
 
+计算 log(1+x)。
+对于较小的 `x` 值，log1p(x) 比直接计算 log(1+x) 更精确。
 
-Calculates log(1+x).
-The calculation log1p(x) is more accurate than log(1+x) for small values of `x`.
-
-
-**Syntax**
+**语法**
 
 ```sql
 log1p(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Values from the interval: `-1 < x < +∞`. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 取值范围：`-1 < x < +∞`。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回值取自区间：-∞ &lt; log1p(x) &lt; +∞，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < log1p(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT log1p(0)
@@ -968,34 +849,29 @@ SELECT log1p(0)
 0
 ```
 
-
-
 ## log2 {#log2}
 
-Introduced in: v1.1
+首次引入于：v1.1
 
+返回其参数的二进制对数。
 
-Returns the binary logarithm of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 log2(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The number for which to compute the binary logarithm of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 需要计算二进制对数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的二进制对数。[`Float*`](/sql-reference/data-types/float)
 
-Returns the binary logarithm of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT log2(8);
@@ -1005,33 +881,29 @@ SELECT log2(8);
 3
 ```
 
-
-
 ## pi {#pi}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回数学常数 π。
 
-Returns pi (π).
-
-
-**Syntax**
+**语法**
 
 ```sql
 pi()
 ```
 
-**Arguments**
+**参数**
 
-- None.
+* 无。
 
-**Returned value**
+**返回值**
 
-Returns pi [`Float64`](/sql-reference/data-types/float)
+返回圆周率 π，类型为 [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT pi();
@@ -1041,37 +913,32 @@ SELECT pi();
 3.141592653589793
 ```
 
-
-
 ## pow {#pow}
 
-Introduced in: v1.1
+自 v1.1 引入
 
+返回 x 的 y 次幂。
 
-Returns x raised to the power of y.
-
-
-**Syntax**
+**语法**
 
 ```sql
 pow(x, y)
 ```
 
-**Aliases**: `power`
+**别名**: `power`
 
-**Arguments**
+**参数**
 
-- `x` — The base. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
-- `y` — The exponent. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 底数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
+* `y` — 指数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 x^y，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns x^y [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT pow(2, 3);
@@ -1081,34 +948,29 @@ SELECT pow(2, 3);
 8
 ```
 
-
-
 ## radians {#radians}
 
-Introduced in: v22.2
+引入版本：v22.2
 
+将角度转换为弧度。
 
-Converts degrees to radians.
-
-
-**Syntax**
+**语法**
 
 ```sql
-弧度(x)
+radians(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Input in degrees. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以度为单位的输入。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回以弧度为单位的值，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns value in radians [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT radians(180)
@@ -1118,34 +980,29 @@ SELECT radians(180)
 3.141592653589793
 ```
 
-
-
 ## sign {#sign}
 
-Introduced in: v21.2
+自 v21.2 版本引入。
 
+返回实数的符号。
 
-Returns the sign of a real number.
-
-
-**Syntax**
+**语法**
 
 ```sql
-符号(x)
+sign(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — Values from -∞ to +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Decimal*`](/sql-reference/data-types/decimal) or [`Float*`](/sql-reference/data-types/float)
+* `x` — 取值范围为 -∞ 到 +∞。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Decimal*`](/sql-reference/data-types/decimal) 或 [`Float*`](/sql-reference/data-types/float)
 
+**返回值**
 
-**Returned value**
+返回值类型为 [`Int8`](/sql-reference/data-types/int-uint)：`x < 0` 返回 `-1`，`x = 0` 返回 `0`，`x > 0` 返回 `1`。
 
-Returns `-1` for `x < 0`, `0` for `x = 0`, `1` for `x > 0`. [`Int8`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Sign for zero**
+**零的符号**
 
 ```sql title=Query
 SELECT sign(0)
@@ -1155,7 +1012,7 @@ SELECT sign(0)
 0
 ```
 
-**Sign for positive**
+**正号**
 
 ```sql title=Query
 SELECT sign(1)
@@ -1165,7 +1022,7 @@ SELECT sign(1)
 1
 ```
 
-**Sign for negative**
+**负号**
 
 ```sql title=Query
 SELECT sign(-1)
@@ -1175,32 +1032,29 @@ SELECT sign(-1)
 -1
 ```
 
-
-
 ## sin {#sin}
 
-Introduced in: v
+自版本 v 引入。
 
-Returns the sine of the argument.
+返回参数的正弦值。
 
-**Syntax**
+**语法**
 
 ```sql
 sin(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The number whose sine will be returned. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算正弦值的数值。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 x 的正弦值。
 
-Returns the sine of x.
+**示例**
 
-**Examples**
-
-**simple**
+**基本示例**
 
 ```sql title=Query
 SELECT sin(1.23)
@@ -1210,34 +1064,29 @@ SELECT sin(1.23)
 0.9424888019316975
 ```
 
-
-
 ## sinh {#sinh}
 
-Introduced in: v20.12
+引入于：v20.12
 
+返回双曲正弦值。
 
-Returns the hyperbolic sine.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sinh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The angle, in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以弧度表示的角度。取值范围：-∞ &lt; x &lt; +∞。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回值取值范围：-∞ &lt; sinh(x) &lt; +∞，类型为 [`Float64`](/sql-reference/data-types/float)
 
-Returns values from the interval: -∞ < sinh(x) < +∞ [`Float64`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT sinh(0)
@@ -1247,34 +1096,29 @@ SELECT sinh(0)
 0
 ```
 
-
-
 ## sqrt {#sqrt}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回参数的平方根。
 
-Returns the square root of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 sqrt(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The number for which to find the square root of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要求平方根的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 x 的平方根 [`Float*`](/sql-reference/data-types/float)
 
-Returns the square root of x [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT sqrt(16);
@@ -1284,34 +1128,29 @@ SELECT sqrt(16);
 4
 ```
 
-
-
 ## tan {#tan}
 
-Introduced in: v1.1
+自 v1.1 起引入
 
+返回参数的正切值。
 
-Returns the tangent of the argument.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tan(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The angle in radians. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 弧度制角度。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的正切值。[`Float*`](/sql-reference/data-types/float)
 
-Returns the tangent of `x`. [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 SELECT tan(0);
@@ -1321,34 +1160,29 @@ SELECT tan(0);
 0
 ```
 
-
-
 ## tanh {#tanh}
 
-Introduced in: v20.1
+首次引入于：v20.1
 
+返回双曲正切函数值。
 
-Returns the hyperbolic tangent.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tanh(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The angle in radians. Values from the interval: -∞ < x < +∞. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 以弧度表示的角度。取值范围：-∞ &lt; x &lt; +∞。类型为 [`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)。
 
+**返回值**
 
-**Returned value**
+返回值范围：-1 &lt; tanh(x) &lt; 1，类型为 [`Float*`](/sql-reference/data-types/float)。
 
-Returns values from the interval: -1 < tanh(x) < 1 [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT tanh(0)
@@ -1358,34 +1192,29 @@ SELECT tanh(0)
 0
 ```
 
-
-
 ## tgamma {#tgamma}
 
-Introduced in: v1.1
+引入版本：v1.1
 
+返回伽马函数值。
 
-Returns the gamma function.
-
-
-**Syntax**
+**语法**
 
 ```sql
 tgamma(x)
 ```
 
-**Arguments**
+**参数**
 
-- `x` — The number for which to compute the gamma function of. [`(U)Int*`](/sql-reference/data-types/int-uint) or [`Float*`](/sql-reference/data-types/float) or [`Decimal*`](/sql-reference/data-types/decimal)
+* `x` — 要计算伽马函数的数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal*`](/sql-reference/data-types/decimal)
 
+**返回值**
 
-**Returned value**
+返回 `x` 的伽马函数值，类型为 [`Float*`](/sql-reference/data-types/float)
 
-Returns the gamma function value [`Float*`](/sql-reference/data-types/float)
+**示例**
 
-**Examples**
-
-**Usage example**
+**使用示例**
 
 ```sql title=Query
 SELECT tgamma(5);
@@ -1395,40 +1224,35 @@ SELECT tgamma(5);
 24
 ```
 
-
-
 ## widthBucket {#widthBucket}
 
-Introduced in: v23.3
+引入于：v23.3
 
+在一个具有 `count` 个等宽桶、覆盖范围从 `low` 到 `high` 的直方图中，返回参数 `operand` 所落入的桶的编号。如果 `operand` 小于 `low`，则返回 0；如果 `operand` 大于或等于 `high`，则返回 `count`+1。
+同时还提供了一个不区分大小写的别名 `WIDTH_BUCKET`，用于与其他数据库保持兼容性。
 
-Returns the number of the bucket in which parameter `operand` falls in a histogram having count equal-width buckets spanning the range `low` to `high`. Returns 0 if `operand` is less than `low`, and returns `count`+1 if `operand` is greater than or equal to `high`.
-There is also a case insensitive alias called `WIDTH_BUCKET` to provide compatibility with other databases.
-
-
-**Syntax**
+**语法**
 
 ```sql
 widthBucket(operand, low, high, count)
 ```
 
-**Aliases**: `width_bucket`
+**别名**: `width_bucket`
 
-**Arguments**
+**参数**
 
-- `operand` — The value for which to determine the bucket. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `low` — The lower bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `high` — The upper bound of the histogram range. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
-- `count` — The number of equal-width buckets. Cannot be zero. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+* `operand` — 需要确定其所属桶的值。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `low` — 直方图范围的下界。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `high` — 直方图范围的上界。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `count` — 等宽桶的数量。不能为零。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
+**返回值**
 
-**Returned value**
+返回桶编号，类型为整数。若 `operand` &lt; `low`，返回 0；若 `operand` &gt;= `high`，返回 `count` + 1。[`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
 
-Returns the bucket number as an integer. Returns 0 if operand < low, returns count+1 if operand >= high. [`UInt8/16/32/64`](/sql-reference/data-types/int-uint)
+**示例**
 
-**Examples**
-
-**Usage example**
+**用法示例**
 
 ```sql title=Query
 widthBucket(10.15, -8.6, 23, 18)

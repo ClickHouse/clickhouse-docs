@@ -75,11 +75,11 @@ import Image from '@theme/IdealImage';
 编写一条 SQL 查询语句来检索你想要可视化的数据。例如，下面的查询会基于 `uk_price_paid` 数据集计算每年支付的平均价格：
 
 ```sql
-  SELECT toYear(date) AS year, avg(price) AS avg_price
-  FROM uk_price_paid
-  GROUP BY year
-  ORDER BY year;
-  ```
+SELECT toYear(date) AS year, avg(price) AS avg_price
+FROM uk_price_paid
+GROUP BY year
+ORDER BY year;
+```
 
 <Image img={chartbrew_07} size="lg" alt="在 Chartbrew 中执行 ClickHouse SQL 查询" />
 

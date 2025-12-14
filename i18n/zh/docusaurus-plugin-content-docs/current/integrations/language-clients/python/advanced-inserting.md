@@ -113,7 +113,8 @@ arrow_table = pa.table({
 client.insert_arrow("users", arrow_table)
 ```
 
-#### 基于 Arrow 的 DataFrame 插入（pandas 2.x） {#arrow-backed-dataframe-insert-pandas-2}
+#### 基于 Arrow 的 DataFrame 插入（pandas 2.x）{#arrow-backed-dataframe-insert-pandas-2}
+
 
 ```python
 import clickhouse_connect
