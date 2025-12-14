@@ -86,8 +86,6 @@ SELECT * FROM mySecondReplacingMT FINAL;
 └─────┴─────────┴───────── ────────────┘
 ```
 
-`is_deleted` {#is_deleted}
-
 `is_deleted` — マージ時に、この行のデータが状態を表すか削除対象かを判断するために使用される列の名前。`1`は「削除済み」行、`0`は「状態」行を示す。
 
   列のデータ型 — `UInt8`。

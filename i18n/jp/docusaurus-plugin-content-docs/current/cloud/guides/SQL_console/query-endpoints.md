@@ -550,60 +550,8 @@ SELECT name, database FROM system.tables;
 ```
 
 <Tabs>
-<TabItem value="TypeScript" label="TypeScript" default>
-
-```typescript
-    async function fetchAndLogChunks(
-      url: string,
-      openApiKeyId: string,
-      openApiKeySecret: string
-    ) {
-      const auth = Buffer.from(`${openApiKeyId}:${openApiKeySecret}`).toString(
-        "base64"
-      );
-
-      const headers = {
-        Authorization: `Basic ${auth}`,
-        "x-clickhouse-endpoint-version": "2",
-      };
-
-      const response = await fetch(url, {
-        headers,
-        method: "POST",
-        body: JSON.stringify({ format: "JSONEachRow" }),
-      });
-
-      if (!response.ok) {
-        console.error(`HTTP error! Status: ${response.status}`);
-        return;
-      }
-
-      const reader = response.body as unknown as Readable;
-      reader.on("data", (chunk) => {
-        console.log(chunk.toString());
-      });
-
-      reader.on("end", () => {
-        console.log("Stream ended.");
-      });
-
-      reader.on("error", (err) => {
-        console.error("Stream error:", err);
-      });
-    }
-
-    const endpointUrl =
-      "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONEachRow";
-    const openApiKeyId = "<myOpenApiKeyId>";
-    const openApiKeySecret = "<myOpenApiKeySecret>";
-    // 使用例
-    fetchAndLogChunks(endpointUrl, openApiKeyId, openApiKeySecret).catch((err) =>
-      console.error(err)
-    );
-    ```
-
-<Tabs>
   <TabItem value="TypeScript" label="TypeScript" default>
+
     ```typescript
     async function fetchAndLogChunks(
       url: string,
