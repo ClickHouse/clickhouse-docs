@@ -36,7 +36,7 @@ function findOrCreateGalaxyId(key) {
 }
 
 export function getUserId() {
-  // Use the cookie/storage name `glx_anonymous_id` for backwards compatability
+  // Use the cookie/storage name `glx_anonymous_id` for backwards compatibility
   return findOrCreateGalaxyId('glx_anonymous_id')
 }
 
