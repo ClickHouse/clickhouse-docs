@@ -241,18 +241,18 @@ PowerBI automatically generates SQL queries with nested subqueries, complex join
 - More predictable costs
 
 :::warning
-If your dashboards are slow, check ClickHouse's `query_log` to see what SQL queries Power BI is actually running. Common problems include nested subqueries, scanning entire tables, or inefficient joins. Once you identify the issue, create materialized views that solve those specific problems.
+If your dashboards are slow, check ClickHouse's [`query_log`](/operations/system-tables/query_log) to see what SQL queries Power BI is actually running. Common problems include nested subqueries, scanning entire tables, or inefficient joins. Once you identify the issue, create [materialized views](/materialized-views) that solve those specific problems.
 :::
 
-### Implementation Best Practices
-####  Pre-Aggregation Strategy
+### Implementation best practices {#implementation-best-practices}
+####  Pre-aggregation strategy {#pre-aggregation-strategy}
 Create materialized views at multiple aggregation levels:
 - Hourly aggregations for recent, detailed dashboards
 - Daily aggregations for historical trends
 - Monthly rollups for long-term reporting
 - Keep raw data with appropriate TTL for ad-hoc analysis
 
-#### Data Modeling Optimization
+#### Data modelling optimization {#data-modelling-optimization}
 - Define `ORDER BY` keys that match your query patterns
 - Use partitioning for time-series data
 - Convert small dimension tables to dictionaries for efficient lookups
