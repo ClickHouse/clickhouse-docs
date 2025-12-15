@@ -28,16 +28,16 @@ ACME protocol defines automatic certificate update process with services like Le
 Here is a configuration sample which may be used to enable ACME protocol in ClickHouse server:
 
 ```yaml
-    <http_port>80</http_port>
-    <https_port>443</https_port>
+<http_port>80</http_port>
+<https_port>443</https_port>
 
-    <acme>
-        <email>valid_email@example.com</email>
-        <terms_of_service_agreed>true</terms_of_service_agreed>
-        <domains>
-            <domain>example.com</domain>
-        </domains>
-    </acme>
+<acme>
+    <email>valid_email@example.com</email>
+    <terms_of_service_agreed>true</terms_of_service_agreed>
+    <domains>
+        <domain>example.com</domain>
+    </domains>
+</acme>
 ```
 
 First, we need to enable HTTP and HTTPS ports; former will be used during ACME challenge (current implementation supports only HTTP-01 challenge types), and the latter is for serving HTTPS traffic when certificate issuing process is complete.
