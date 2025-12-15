@@ -78,7 +78,7 @@ After the initial certificate has been issued or imported, certificate renewal d
 
 ## Keeper data structure {#keeper-data-structure}
 
-```
+```text
 /clickhouse/acme
 └── <acme-directory-host>
     ├── account_private_key          # ACME account private key (PEM)
