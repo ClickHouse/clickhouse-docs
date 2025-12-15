@@ -258,7 +258,6 @@ Create materialized views at multiple aggregation levels:
 - Convert small dimension tables to dictionaries for efficient lookups
 - Leverage projections for additional query optimization
 
-
 ## Known limitations {#known-limitations}
 
 ### UInt64 {#uint64}
