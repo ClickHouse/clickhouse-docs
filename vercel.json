@@ -3650,6 +3650,11 @@
       "source": "/docs/sql-reference/data-types/object-data-type",
       "destination": "/docs/sql-reference/data-types/newjson",
       "permanent": true
+    },
+    {
+      "source": "/docs/about-us/faq",
+      "destination": "/docs/concepts/faq",
+      "permanent": true
     }
   ]
 }
