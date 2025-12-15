@@ -75,7 +75,8 @@
     "sass": "^1.89.1",
     "search-insights": "^2.17.3",
     "short-uuid": "^5.2.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@argos-ci/cli": "^2.5.5",
