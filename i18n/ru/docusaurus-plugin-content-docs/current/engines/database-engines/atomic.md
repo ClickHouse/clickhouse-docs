@@ -65,7 +65,7 @@ RENAME TABLE new_table TO tmp, old_table TO new_table, tmp TO old_table;
 можно использовать атомарный вариант:
 
 ```sql title="Atomic"
-EXCHANGE TABLES новая_таблица AND старая_таблица;
+EXCHANGE TABLES new_table AND old_table;
 ```
 
 ### ReplicatedMergeTree в базе данных Atomic {#replicatedmergetree-in-atomic-database}

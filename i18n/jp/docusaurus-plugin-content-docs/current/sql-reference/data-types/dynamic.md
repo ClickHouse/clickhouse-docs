@@ -14,7 +14,7 @@ doc_type: 'guide'
 `Dynamic` 型のカラムを宣言するには、次の構文を使用します。
 
 ```sql
-<カラム名> Dynamic(max_types=N)
+<column_name> Dynamic(max_types=N)
 ```
 
 ここで `N` はオプションのパラメータで、`0` から `254` の範囲の値を取り、個別に保存される 1 つのデータブロック（たとえば MergeTree テーブルの 1 つのデータパート）内で、型が `Dynamic` のカラムに個別のサブカラムとして保存できる異なるデータ型の数を指定します。この上限を超えると、新しい型を持つすべての値は、バイナリ形式で特別な共有データ構造の中にまとめて保存されます。`max_types` のデフォルト値は `32` です。
@@ -102,9 +102,9 @@ SELECT toTypeName(d.String), toTypeName(d.Int64), toTypeName(d.`Array(Int64)`), 
 └──────────────────────┴─────────────────────┴────────────────────────────┴────────────────────┴─────────────────────────────┘
 ```
 
-````sql
+```sql
 SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'), dynamicElement(d, 'Array(Int64)'), dynamicElement(d, 'Date'), dynamicElement(d, 'Array(String)') FROM test;```
-````
+```
 
 ```text
 ┌─d─────────────┬─dynamicType(d)─┬─dynamicElement(d, 'String')─┬─dynamicElement(d, 'Int64')─┬─dynamicElement(d, 'Array(Int64)')─┬─dynamicElement(d, 'Date')─┬─dynamicElement(d, 'Array(String)')─┐
@@ -115,9 +115,9 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 └───────────────┴────────────────┴─────────────────────────────┴────────────────────────────┴───────────────────────────────────┴───────────────────────────┴────────────────────────────────────┘
 ```
 
-各行に格納されているバリアントを確認するには、関数 `dynamicType(dynamic_column)` を使用できます。各行ごとに値の型名を表す `String` を返します（行が `NULL` の場合は `'None'` を返します）。
+To know what variant is stored in each row function `dynamicType(dynamic_column)` can be used. It returns `String` with value type name for each row (or `'None'` if row is `NULL`).
 
-例：
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -134,11 +134,11 @@ SELECT dynamicType(d) FROM test;
 └────────────────┘
 ```
 
-## Dynamic 列と他の列との変換 {#conversion-between-dynamic-column-and-other-columns}
+## Conversion between Dynamic column and other columns {#conversion-between-dynamic-column-and-other-columns}
 
-`Dynamic` 列に対して行える変換は 4 種類あります。
+There are 4 possible conversions that can be performed with `Dynamic` column.
 
-### 通常の列を `Dynamic` 列に変換する {#converting-an-ordinary-column-to-a-dynamic-column}
+### Converting an ordinary column to a Dynamic column {#converting-an-ordinary-column-to-a-dynamic-column}
 
 ```sql
 SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
@@ -150,9 +150,9 @@ SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
 └───────────────┴────────────────┘
 ```
 
-### パースによる String 列から Dynamic 列への変換 {#converting-a-string-column-to-a-dynamic-column-through-parsing}
+### Converting a String column to a Dynamic column through parsing {#converting-a-string-column-to-a-dynamic-column-through-parsing}
 
-`String` 列に含まれる値を `Dynamic` 型としてパースするには、設定 `cast_string_to_dynamic_use_inference` を有効にします。
+To parse `Dynamic` type values from a `String` column you can enable setting `cast_string_to_dynamic_use_inference`:
 
 ```sql
 SET cast_string_to_dynamic_use_inference = 1;
@@ -165,9 +165,9 @@ SELECT CAST(materialize(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'))
 └─────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-### Dynamicカラムを通常カラムに変換する {#converting-a-dynamic-column-to-an-ordinary-column}
+### Converting a Dynamic column to an ordinary column {#converting-a-dynamic-column-to-an-ordinary-column}
 
-`Dynamic` カラムを通常カラムに変換できます。この場合、すべてのネストされた型は宛先の型に変換されます。
+It is possible to convert a `Dynamic` column to an ordinary column. In this case all nested types will be converted to a destination type:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -185,7 +185,7 @@ SELECT d::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Variant 型の列を Dynamic 型の列に変換する {#converting-a-variant-column-to-dynamic-column}
+### Converting a Variant column to Dynamic column {#converting-a-variant-column-to-dynamic-column}
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -202,9 +202,9 @@ SELECT v::Dynamic AS d, dynamicType(d) FROM test;
 └─────────┴────────────────┘
 ```
 
-### Dynamic(max&#95;types=N) 列を別の Dynamic(max&#95;types=K) に変換する {#converting-a-dynamicmax&#95;typesn-column-to-another-dynamicmax&#95;typesk}
+### Converting a Dynamic(max_types=N) column to another Dynamic(max_types=K) {#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk}
 
-`K >= N` の場合、変換してもデータは変わりません：
+If `K >= N` than during conversion the data doesn't change:
 
 ```sql
 CREATE TABLE test (d Dynamic(max_types=3)) ENGINE = Memory;
@@ -222,8 +222,7 @@ SELECT d::Dynamic(max_types=5) as d2, dynamicType(d2) FROM test;
 └───────┴────────────────┘
 ```
 
-`K < N` の場合、最も出現頻度の低い型を持つ値は 1 つの特別なサブカラムに挿入されますが、引き続きアクセス可能です。
-
+If `K < N`, then the values with the rarest types will be inserted into a single special subcolumn, but still will be accessible:
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), (43), ('42.42'), (true), ([1, 2, 3]);
@@ -241,9 +240,9 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=2) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-関数 `isDynamicElementInSharedData` は、`Dynamic` 内の特別な共有データ構造に保存されている行に対して `true` を返します。ここからわかるように、結果のカラムには共有データ構造に保存されていない 2 種類の型のみが含まれます。
+Functions `isDynamicElementInSharedData` returns `true` for rows that are stored in a special shared data structure inside `Dynamic` and as we can see, resulting column contains only 2 types that are not stored in shared data structure.
 
-`K=0` の場合、すべての型は 1 つの特別なサブカラムに挿入されます。
+If `K=0`, all types will be inserted into single special subcolumn:
 
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
@@ -262,11 +261,11 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=0) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-## データからの Dynamic 型の読み取り {#reading-dynamic-type-from-the-data}
+## Reading Dynamic type from the data {#reading-dynamic-type-from-the-data}
 
-すべてのテキスト形式（TSV、CSV、CustomSeparated、Values、JSONEachRow など）は `Dynamic` 型の読み取りをサポートします。データの解析中に、ClickHouse は各値の型を推論し、その型情報を `Dynamic` 列への挿入時に使用します。
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Dynamic` type. During data parsing ClickHouse tries to infer the type of each value and use it during insertion to `Dynamic` column. 
 
-例:
+Example:
 
 ```sql
 SELECT
@@ -296,12 +295,12 @@ $$)
 └───────────────┴────────────────┴───────────────┴──────┴───────┴────────────┴─────────┘
 ```
 
-## 関数での Dynamic 型の使用 {#using-dynamic-type-in-functions}
+## Using Dynamic type in functions {#using-dynamic-type-in-functions}
 
-ほとんどの関数は、`Dynamic` 型の引数を受け付けます。この場合、関数は `Dynamic` 列の内部に格納されている各データ型ごとに個別に実行されます。
-関数の結果型が引数の型に依存する場合、`Dynamic` 引数で実行されたその関数の結果型は `Dynamic` になります。関数の結果型が引数の型に依存しない場合は、その結果型は `Nullable(T)` となり、ここで `T` はその関数の通常の結果型です。
+Most of the functions support arguments with type `Dynamic`. In this case the function is executed separately on each internal data type stored inside `Dynamic` column.
+When the result type of the function depends on the arguments types, the result of such function executed with `Dynamic` arguments will be `Dynamic`. When the result type of the function doesn't depend on the arguments types - the result will be `Nullable(T)` where `T` the usual result type of this function.
 
-例:
+Examples:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -442,7 +441,7 @@ SELECT d, d[1] AS res, toTypeName(res), dynamicType(res) FROM test;
 └───────┴──────┴─────────────────┴──────────────────┘
 ```
 
-`Dynamic` 列内の一部の型に対して関数を実行できない場合は、例外がスローされます。
+If function cannot be executed on some type inside `Dynamic` column, the exception will be thrown:
 
 ```sql
 INSERT INTO test VALUES (42), (43), ('str_1');
@@ -471,7 +470,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(d) FROM test;
 Code: 43. DB::Exception: 関数plusの引数の型が不正です Array(Int64) と UInt8: 'FUNCTION plus(__table1.d : 3, 1_UInt8 :: 1) -> plus(__table1.d, 1_UInt8) Dynamic : 0' の実行中。(ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
-不要な型を除外できます：
+We can filter out unneeded types:
 
 ```sql
 SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynamicType(d) NOT IN ('String', 'Array(Int64)', 'None')
@@ -484,7 +483,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynami
 └────┴─────┴─────────────────┴──────────────────┘
 ```
 
-または、必要な型のみをサブカラムとして抽出します：
+Or extract required type as subcolumn:
 
 ```sql
 SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
@@ -503,18 +502,16 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 └───────┴──────┴─────────────────┘
 ```
 
-## ORDER BY と GROUP BY における Dynamic 型の使用 {#using-dynamic-type-in-order-by-and-group-by}
+## Using Dynamic type in ORDER BY and GROUP BY {#using-dynamic-type-in-order-by-and-group-by}
 
-`ORDER BY` および `GROUP BY` において `Dynamic` 型の値は、`Variant` 型の値と同様に比較されます。
-型 `Dynamic` の値 `d1`（基底型 `T1`）と `d2`（基底型 `T2`）に対する演算子 `<` の結果は、次のように定義されます。
+During `ORDER BY` and `GROUP BY` values of `Dynamic` types are compared similar to values of `Variant` type:
+The result of operator `<` for values `d1` with underlying type `T1` and `d2` with underlying type `T2`  of a type `Dynamic` is defined as follows:
+- If `T1 = T2 = T`, the result will be `d1.T < d2.T` (underlying values will be compared).
+- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
-* `T1 = T2 = T` の場合、結果は `d1.T < d2.T` になります（基底となる値同士が比較されます）。
-* `T1 != T2` の場合、結果は `T1 < T2` になります（型名同士が比較されます）。
+By default `Dynamic` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-デフォルトでは、`Dynamic` 型は `GROUP BY`/`ORDER BY` のキーとしては許可されていません。使用したい場合は、この特別な比較ルールを考慮しつつ、`allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 設定を有効にしてください。
-
-例：
-
+Examples:
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
 INSERT INTO test VALUES (42), (43), ('abc'), ('abd'), ([1, 2, 3]), ([]), (NULL);
@@ -552,9 +549,9 @@ SELECT d, dynamicType(d) FROM test ORDER BY d SETTINGS allow_suspicious_types_in
 └─────────┴────────────────┘
 ```
 
-**注記:** 異なる数値型を持つ Dynamic 型の値は、別個の値として扱われ、相互に比較されません。その代わりに、型名が比較されます。
+**Note:** values of dynamic types with different numeric types are considered as different values and not compared between each other, their type names are compared instead.
 
-例:
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -584,18 +581,18 @@ SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in
 └─────┴────────────────┘
 ```
 
-**注:** ここで説明した比較ルールは、`<` / `>` / `=` などの比較演算の実行時には適用されません。これは、`Dynamic` 型に対する関数の[特殊な動作](#using-dynamic-type-in-functions)によるものです。
+**Note:** the described comparison rule is not applied during execution of comparison functions like `<`/`>`/`=` and others because of [special work](#using-dynamic-type-in-functions) of functions with `Dynamic` type
 
-## Dynamic 内部に格納される異なるデータ型数の上限に達した場合 {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
+## Reaching the limit in number of different data types stored inside Dynamic {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
 
-`Dynamic` データ型は、異なるデータ型を個別のサブカラムとして格納できる数に上限があります。デフォルトではこの上限は 32 ですが、型宣言で `Dynamic(max_types=N)` という構文を使うことで変更できます。このときの N は 0 から 254 の間の値です（実装上の制約により、Dynamic 内に個別のサブカラムとして格納可能な異なるデータ型の数は 254 を超えることはできません）。
-上限に達すると、`Dynamic` カラムに挿入される新しいデータ型はすべて、異なるデータ型の値をバイナリ形式で格納する単一の共有データ構造に挿入されます。
+`Dynamic` data type can store only limited number of different data types as separate subcolumns. By default, this limit is 32, but you can change it in type declaration using syntax `Dynamic(max_types=N)` where N is between 0 and 254 (due to implementation details, it's impossible to have more than 254 different data types that can be stored as separate subcolumns inside Dynamic).
+When the limit is reached, all new data types inserted to `Dynamic` column will be inserted into a single shared data structure that stores values with different data types in binary form.
 
-さまざまなケースでこの上限に達した場合に何が起こるかを見ていきます。
+Let's see what happens when the limit is reached in different scenarios.
 
-### データのパース中に上限に達した場合 {#reaching-the-limit-during-data-parsing}
+### Reaching the limit during data parsing {#reaching-the-limit-during-data-parsing}
 
-データから `Dynamic` の値をパースしている際に、現在のデータブロックで上限に達した場合は、新しい値はすべて共有データ構造に挿入されます。
+During parsing of `Dynamic` values from the data, when the limit is reached for current block of data, all new values will be inserted into shared data structure:
 
 ```sql
 SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRow, 'd Dynamic(max_types=3)', '
@@ -619,14 +616,14 @@ SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRo
 └────────────────────────┴────────────────────────────────┴─────────────────────────────────┘
 ```
 
-ご覧のとおり、3 つの異なるデータ型 `Int64`、`Array(Int64)`、`String` を挿入すると、すべての新しい型が特殊な共有データ構造に格納されました。
+As we can see, after inserting 3 different data types `Int64`, `Array(Int64)` and `String` all new types were inserted into special shared data structure.
 
-### MergeTree テーブルエンジンでのデータパーツのマージ中 {#during-merges-of-data-parts-in-mergetree-table-engines}
+### During merges of data parts in MergeTree table engines {#during-merges-of-data-parts-in-mergetree-table-engines}
 
-MergeTree テーブル内で複数のデータパーツをマージする際、結果のデータパーツにおける `Dynamic` 列は、内部で別個のサブカラムとして保持できる異なるデータ型の上限に達してしまい、元のパーツに含まれるすべての型をサブカラムとして保持できなくなる可能性があります。
-この場合、ClickHouse は、マージ後も別個のサブカラムとして残す型と、共有データ構造に格納する型を選択します。多くの場合、ClickHouse は最も出現頻度の高い型をサブカラムとして保持し、出現頻度の低い型を共有データ構造に保存しようとしますが、これは実装によって異なります。
+During merge of several data parts in MergeTree table the `Dynamic` column in the resulting data part can reach the limit of different data types that can be stored in separate subcolumns inside and won't be able to store all types as subcolumns from source parts.
+In this case ClickHouse chooses what types will remain as separate subcolumns after merge and what types will be inserted into shared data structure. In most cases ClickHouse tries to keep the most frequent types and store the rarest types in shared data structure, but it depends on the implementation.
 
-このようなマージの例を見てみましょう。まず、`Dynamic` 列を持つテーブルを作成し、異なるデータ型数の上限を `3` に設定してから、`5` 種類の異なる型の値を挿入します。
+Let's see an example of such merge. First, let's create a table with `Dynamic` column, set the limit of different data types to `3` and insert values with `5` different types:
 
 ```sql
 CREATE TABLE test (id UInt64, d Dynamic(max_types=3)) ENGINE=MergeTree ORDER BY id;
@@ -638,8 +635,7 @@ INSERT INTO test SELECT number, map(number, number) FROM numbers(2);
 INSERT INTO test SELECT number, 'str_' || toString(number) FROM numbers(1);
 ```
 
-各 INSERT によって、単一の型のみを含む `Dynamic` 列を持つ個別のデータパートが作成されます。
-
+Each insert will create a separate data pert with `Dynamic` column containing single type:
 ```sql
 SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test GROUP BY _part, dynamicType(d), isDynamicElementInSharedData(d) ORDER BY _part, count();
 ```
@@ -654,7 +650,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-では、これらをすべてひとつにまとめて、どうなるか確認してみましょう。
+Now, let's merge all parts into one and see what will happen:
 
 ```sql
 SYSTEM START MERGES test;
@@ -672,11 +668,11 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-ここからわかるように、ClickHouse は最も頻繁に現れる型である `UInt64` と `Array(UInt64)` をサブカラムとして保持し、それ以外のすべての型は共有データに格納しました。
+As we can see, ClickHouse kept the most frequent types `UInt64` and `Array(UInt64)` as subcolumns and inserted all other types into shared data.
 
-## Dynamic 型での JSONExtract 関数 {#jsonextract-functions-with-dynamic}
+## JSONExtract functions with Dynamic {#jsonextract-functions-with-dynamic}
 
-すべての `JSONExtract*` 関数は `Dynamic` 型をサポートします。
+All `JSONExtract*` functions support `Dynamic` type:
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Dynamic') AS dynamic, dynamicType(dynamic) AS dynamic_type;
@@ -698,9 +694,9 @@ SELECT JSONExtract('{"obj" : {"a" : 42, "b" : "Hello", "c" : [1,2,3]}}', 'obj', 
 └──────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ```
 
-````sql
+```sql
 SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Dynamic') AS dynamics, arrayMap(x -> (x.1, dynamicType(x.2)), dynamics) AS dynamic_types```
-````
+```
 
 ```text
 ┌─dynamics───────────────────────────────┬─dynamic_types─────────────────────────────────────────────────┐

@@ -82,22 +82,22 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 2. 使用以下格式[创建用户](/sql-reference/statements/create/user)：`mysql4<subdomain>_<username>`（[见上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。密码必须为 double SHA1 格式。例如：
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
+    ```
 
    或者，如果你希望为该用户使用自定义配置文件：
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
+    ```
 
    其中 `my_custom_profile` 是你之前创建的配置文件名称。
 
 3. 为新用户[授予](/sql-reference/statements/grant)与目标表或数据库交互所需的权限。例如，如果你只想授予对 `system.query_log` 的访问权限：
 
    ```sql
-   GRANT SELECT ON system.query_log TO mysql4foobar_team1;
-   ```
+    GRANT SELECT ON system.query_log TO mysql4foobar_team1;
+    ```
 
 4. 使用你创建的用户，通过 MySQL 接口连接到你的 ClickHouse Cloud 服务。
 
@@ -106,7 +106,7 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 如果你创建了一个新的 MySQL 用户，并且在通过 MySQL CLI 客户端连接时看到如下错误：
 
 ```sql
-ERROR 2013 (HY000): 在'读取授权数据包'时与 MySQL 服务器失去连接,系统错误: 54
+ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
 在这种情况下，请确保用户名符合 `mysql4<subdomain>_<username>` 格式，如[上文](#creating-multiple-mysql-users-in-clickhouse-cloud)所述。
@@ -124,7 +124,7 @@ ERROR 2013 (HY000): 在'读取授权数据包'时与 MySQL 服务器失去连接
 启动 ClickHouse 服务器，并在日志中查找类似如下的信息，其中包含 “Listening for MySQL compatibility protocol”：
 
 ```bash
-{} <Information> Application: 正在监听 MySQL 兼容协议：127.0.0.1:9004
+{} <Information> Application: Listening for MySQL compatibility protocol: 127.0.0.1:9004
 ```
 
 ## 将 MySQL 连接到 ClickHouse {#connect-mysql-to-clickhouse}
@@ -144,16 +144,17 @@ $ mysql --protocol tcp -h 127.0.0.1 -u default -P 9004 default
 连接成功时的输出：
 
 ```text
-欢迎使用 MySQL 监视器。命令以 ; 或 \g 结束。
-您的 MySQL 连接 ID 为 4
-服务器版本:20.2.1.1-ClickHouse
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 20.2.1.1-ClickHouse
 
-版权所有 (c) 2000, 2019, Oracle 和/或其关联公司。保留所有权利。
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
 
-Oracle 是 Oracle Corporation 和/或其关联公司的注册商标。
-其他名称可能是其各自所有者的商标。
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-输入 'help;' 或 '\h' 获取帮助。输入 '\c' 清除当前输入语句。
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```

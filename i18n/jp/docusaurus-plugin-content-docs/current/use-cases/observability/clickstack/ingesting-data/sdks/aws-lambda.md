@@ -78,9 +78,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
 
 </Tabs>
 
-_レイヤーの最新リリースは、[OpenTelemetry Lambda Layers の GitHub リポジトリ](https://github.com/open-telemetry/opentelemetry-lambda/releases)で確認できます。_
+_The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
 
-3. Lambda 関数の「Configuration」>「Environment variables」で、次の環境変数を設定します。
+3. Configure the following environment variables in your Lambda function under "Configuration" > "Environment variables".
 
 <Tabs groupId="install-language-env">
 <TabItem value="javascript" label="Javascript" default>
@@ -128,30 +128,37 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### OpenTelemetry collector Lambda レイヤーのインストール {#installing-the-otel-collector-layer}
+### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
-collector Lambda レイヤーを使用すると、エクスポーターのレイテンシによる応答時間への影響を抑えつつ、Lambda 関数から ClickStack へログ、メトリクス、トレースを転送できます。
+The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
+to exporter latency.
 
-**collector レイヤーをインストールするには**:
+**To install the collector layer**:
 
-1. Layers セクションで「Add a layer」をクリックします。
-2. 「Specify an ARN」を選択し、アーキテクチャに応じて正しい ARN を選択します。必ず `<region>` を自身のリージョン（例: `us-east-2`）に置き換えてください:
+1. In the Layers section click "Add a layer"
+2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
 
 <Tabs groupId="install-language-layer">
-  <TabItem value="x86_64" label="x86_64" default>
-    ```shell
+
+<TabItem value="x86_64" label="x86_64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
     ```
-  </TabItem>
 
-  <TabItem value="arm64" label="arm64" default>
-    ```shell
+</TabItem>
+
+<TabItem value="arm64" label="arm64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
     ```
-  </TabItem>
+
+</TabItem>
+
 </Tabs>
 
-3. 次の `collector.yaml` ファイルをプロジェクトに追加し、collector が ClickStack へ送信するように構成します:
+3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 
 ```yaml
 # collector.yaml {#collectoryaml}
@@ -190,32 +197,40 @@ service:
       exporters: [otlphttp]
 ```
 
-4. 次の環境変数を追加します：
+4. Add the following environment variable:
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
-## インストールの確認 {#checking-the-installation}
+## Checking the installation {#checking-the-installation}
 
-レイヤーをデプロイした後、Lambda 関数からのトレースが自動的に収集され、HyperDX 上で確認できるようになっているはずです。`decouple` と `batching` プロセッサによってテレメトリ収集に遅延が生じる場合があるため、トレースの表示が遅れることがあります。カスタムログやメトリクスを出力するには、利用しているプログラミング言語向けの OpenTelemetry SDKS を使用してコードをインストルメントする必要があります。
+After deploying the layers, you should now see traces automatically
+collected from your Lambda function in HyperDX. The `decouple` and `batching` 
+processor may introduce a delay in telemetry collection, so traces may be 
+delayed in showing up. To emit custom logs or metrics, you'll need to instrument your code your language-specific 
+OpenTelemetry SDKs.
 
-## トラブルシューティング {#troubleshoting}
+## Troubleshooting {#troubleshoting}
 
-### カスタムインストルメンテーションからデータが送信されない {#custom-instrumentation-not-sending}
+### Custom instrumentation not sending {#custom-instrumentation-not-sending}
 
-手動で定義したトレースやその他のテレメトリが表示されない場合、
-使用している OpenTelemetry API パッケージのバージョンに互換性の問題がある可能性があります。使用している
-OpenTelemetry API パッケージのバージョンが、AWS Lambda に含まれている
-バージョンと同じか、それ以下であることを確認してください。
+If you're not seeing your manually defined traces or other telemetry, you may
+be using an incompatible version of the OpenTelemetry API package. Ensure your
+OpenTelemetry API package is at least the same or lower version than the 
+version included in the AWS lambda.
 
-### SDK のデバッグログを有効化する {#enabling-sdk-debug-logs}
+### Enabling SDK debug logs {#enabling-sdk-debug-logs}
 
-OpenTelemetry SDK からのデバッグログを有効にするには、環境変数 `OTEL_LOG_LEVEL` を `DEBUG` に設定します。これにより、自動インスツルメンテーションレイヤーがアプリケーションを正しく計測できているかを確認しやすくなります。
+Set the `OTEL_LOG_LEVEL` environment variable to `DEBUG` to enable debug logs from
+the OpenTelemetry SDK. This will help ensure that the auto-instrumentation layer
+is correctly instrumenting your application.
 
-### コレクターのデバッグログを有効化する {#enabling-collector-debug-logs}
+### Enabling collector debug logs {#enabling-collector-debug-logs}
 
-コレクターの問題をデバッグするには、コレクターの設定ファイルを変更し、`logging` エクスポーターを追加してテレメトリのログレベルを `debug` に設定します。これにより、コレクターの Lambda レイヤーからのより詳細なログ出力が有効になります。
+To debug collector issues, you can enable debug logs by modifying your collector
+configuration file to add the `logging` exporter and setting the telemetry 
+log level to `debug` to enable more verbose logging from the collector lambda layer.
 
 ```yaml
 # collector.yaml {#collectoryaml}

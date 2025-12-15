@@ -450,7 +450,7 @@ LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.f
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
 
-同様に、トレースイベントについては`otel_traces`テーブルを確認できます:
+Likewise, for trace events, users can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
@@ -669,11 +669,11 @@ exporters:
   otlp:
     endpoint: localhost:4317
     tls:
-      insecure: true # セキュアな接続を使用する場合はfalseに設定
+      insecure: true # Set to false if you are using a secure connection
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 同一ホスト上で2つのコレクターを実行するため変更
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

@@ -55,7 +55,7 @@ name:        min_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: 写入数据粒度时,如果缓冲区中待压缩数据的大小大于或等于指定阈值,则压缩缓冲区中的数据。如果未设置此参数,则使用相应的全局设置。
+description: When granule is written, compress the data in buffer if the size of pending uncompressed data is larger or equal than the specified threshold. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -69,7 +69,7 @@ name:        max_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: 如果缓冲区中待压缩数据的大小大于或等于指定阈值,则压缩缓冲区中的待压缩数据。即使当前数据粒度未完成,数据块也会被压缩。如果未设置此参数,则使用相应的全局设置。
+description: Compress the pending uncompressed data in buffer if its size is larger or equal than the specified threshold. Block of data will be compressed even if the current granule is not finished. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -83,7 +83,7 @@ name:        index_granularity
 value:       8192
 default:     8192
 changed:     0
-description: 一个主键值对应的行数。
+description: How many rows correspond to one primary key value.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -91,5 +91,5 @@ type:        UInt64
 is_obsolete: 0
 tier:        Production
 
-返回 3 行。用时:0.001 秒。 
+3 rows in set. Elapsed: 0.001 sec. 
 ```

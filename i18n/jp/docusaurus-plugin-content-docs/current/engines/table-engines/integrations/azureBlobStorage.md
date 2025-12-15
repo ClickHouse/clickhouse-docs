@@ -91,7 +91,7 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 <clickhouse>
     <filesystem_caches>
         <cache_for_azure>
-            <path>キャッシュディレクトリへのパス</path>
+            <path>path to cache directory</path>
             <max_size>10Gi</max_size>
         </cache_for_azure>
     </filesystem_caches>
@@ -122,15 +122,11 @@ arthur :) create table azure_table (year UInt16, country String, counter UInt8) 
 arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2);
 
 arthur :) select _path, * from azure_table;
-```
 
-┌─&#95;path──────────────────────────────────────────────────────────────────────┬─年─┬─国─┬─カウンタ─┐
-
-1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
-2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
+   ┌─_path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
+1. │ cont/hive_partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
+2. │ cont/hive_partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
    └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
-
-```
 ```
 
 ## 関連項目 {#see-also}

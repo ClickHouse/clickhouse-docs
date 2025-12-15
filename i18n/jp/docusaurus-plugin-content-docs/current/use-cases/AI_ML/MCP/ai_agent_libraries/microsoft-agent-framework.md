@@ -32,35 +32,35 @@ doc_type: 'guide'
   以下のコマンドを実行して、Microsoft Agent Frameworkライブラリをインストールします：
 
   ```python
-  pip install -q --upgrade pip
-  pip install -q agent-framework --pre
-  pip install -q ipywidgets
-  ```
+pip install -q --upgrade pip
+pip install -q agent-framework --pre
+pip install -q ipywidgets
+```
 
   ## 認証情報の設定
 
   次に、OpenAI APIキーを指定する必要があります:
 
   ```python
-  import os, getpass
-  os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
-  ```
+import os, getpass
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
+```
 
   ```response title="Response"
-  OpenAI APIキーを入力: ········
-  ```
+Enter OpenAI API Key: ········
+```
 
   次に、ClickHouse SQLプレイグラウンドへの接続に必要な認証情報を定義します：
 
   ```python
-  env = {
-      "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-      "CLICKHOUSE_PORT": "8443",
-      "CLICKHOUSE_USER": "demo",
-      "CLICKHOUSE_PASSWORD": "",
-      "CLICKHOUSE_SECURE": "true"
-  }
-  ```
+env = {
+    "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+    "CLICKHOUSE_PORT": "8443",
+    "CLICKHOUSE_USER": "demo",
+    "CLICKHOUSE_PASSWORD": "",
+    "CLICKHOUSE_SECURE": "true"
+}
+```
 
   ## MCPサーバーとMicrosoft Agent Frameworkエージェントの初期化
 
@@ -68,79 +68,80 @@ doc_type: 'guide'
   エージェントを初期化して質問します:
 
   ```python
-  from agent_framework import ChatAgent, MCPStdioTool
-  from agent_framework.openai import OpenAIResponsesClient
-  ```
+from agent_framework import ChatAgent, MCPStdioTool
+from agent_framework.openai import OpenAIResponsesClient
+```
 
   ```python
-  clickhouse_mcp_server = MCPStdioTool(
-      name="clickhouse",
-      command="uv",
-      args=[
-          "run",
-          "--with",
-          "mcp-clickhouse",
-          "--python",
-          "3.10",
-          "mcp-clickhouse"
-      ],
-      env=env
-  )
+clickhouse_mcp_server = MCPStdioTool(
+    name="clickhouse",
+    command="uv",
+    args=[
+        "run",
+        "--with",
+        "mcp-clickhouse",
+        "--python",
+        "3.10",
+        "mcp-clickhouse"
+    ],
+    env=env
+)
 
 
-  async with ChatAgent(
-      chat_client=OpenAIResponsesClient(model_id="gpt-5-mini-2025-08-07"),
-      name="HousePricesAgent",
-      instructions="ClickHouseデータベースへのクエリをサポートする支援アシスタントです",
-      tools=clickhouse_mcp_server,
-  ) as agent:
-      query = "過去5年間の英国の不動産価格について教えてください"
-      print(f"ユーザー: {query}")
-      async for chunk in agent.run_stream(query):
-          print(chunk.text, end="", flush=True)
-      print("\n\n")
-  ```
+async with ChatAgent(
+    chat_client=OpenAIResponsesClient(model_id="gpt-5-mini-2025-08-07"),
+    name="HousePricesAgent",
+    instructions="You are a helpful assistant that can help query a ClickHouse database",
+    tools=clickhouse_mcp_server,
+) as agent:
+    query = "Tell me about UK property prices over the last five years"
+    print(f"User: {query}")
+    async for chunk in agent.run_stream(query):
+        print(chunk.text, end="", flush=True)
+    print("\n\n")
+```
 
   このスクリプトを実行した結果は以下の通りです:
 
   ```response title="Response"
-  ユーザー: 過去5年間の英国不動産価格について教えてください
-  uk.uk_price_paid_simple_partitionedテーブルの過去5年間（2020年10月～2025年8月、toStartOfMonth(date)使用）の英国月次売却価格記録を分析しました。概要と主要ポイント:
+User: Tell me about UK property prices over the last five years
+I looked at monthly UK sold-price records in the uk.uk_price_paid_simple_partitioned table for the last five years (toStartOfMonth(date), from Oct 2020 → Aug 2025). Summary and key points:
 
-  測定項目
-  - 指標: 月次中央値価格、平均価格、取引件数（支払価格記録）
-  - 対象期間: 2020年10月1日～2025年8月1日（本日から過去5年間）
+What I measured
+- Metrics: monthly median price, mean price, and transaction count (price paid records).
+- Period covered: months starting 2020-10-01 through 2025-08-01 (last five years from today).
 
-  主要な分析結果
-  - 中央値価格は£255,000（2020年10月）から£294,500（2025年8月）に上昇 — 5年間で約+15.4%の増加
-    - 中央値の年平均成長率（CAGR）≈ +2.9%
-  - 平均価格は約£376,538（2020年10月）から£364,653（2025年8月）にわずかに下落 — 5年間で≈ −3.2%の減少
-    - 平均価格のCAGR ≈ −0.6%
-  - この乖離（中央値は上昇、平均はわずかに下落）は、取引構成の変化（超高額物件の売却減少など）を示唆しています。平均値は外れ値の影響を受けやすい一方、中央値は影響を受けにくいためです。
+High-level findings
+- Median price rose from £255,000 (2020-10) to £294,500 (2025-08) — an increase of about +15.4% over five years.
+  - Equivalent compound annual growth rate (CAGR) for the median ≈ +2.9% per year.
+- Mean price fell slightly from about £376,538 (2020-10) to £364,653 (2025-08) — a decline of ≈ −3.2% over five years.
+  - Mean-price CAGR ≈ −0.6% per year.
+- The divergence (median up, mean slightly down) suggests changes in the mix of transactions (fewer very-high-value sales or other compositional effects), since the mean is sensitive to outliers while the median is not.
 
-  データから見られる注目すべきパターンと事象
-  - 2020年～2021年にかけての大幅な上昇（中央値・平均値の両方で確認）は、この期間に見られたパンデミック後/印紙税優遇/需要主導型市場の急騰と一致しています。
-  - 2022年半ばごろに平均価格がピーク（平均値約£440k）に達し、その後2022年～2023年にかけて全般的に軟化、2023年～2024年ごろに安定化しました。
-  - 一部の月では大きな変動や異常な件数が見られます（例: 2021年6月は非常に高い取引件数を記録、2025年3月は高い中央値を示すが2025年4月～5月は低い件数）。直近の月（2025年半ば）はテーブル内の取引件数が大幅に少なくなっています — これは最新月のデータ報告が不完全であることを示す場合が多く、直近の月次数値は慎重に扱う必要があります。
+Notable patterns and events in the data
+- Strong rises in 2020–2021 (visible in both median and mean), consistent with the post‑pandemic / stamp‑duty / demand-driven market surge seen in that period.
+- Peaks in mean prices around mid‑2022 (mean values ~£440k), then a general softening through 2022–2023 and stabilisation around 2023–2024.
+- Some months show large volatility or unusual counts (e.g., June 2021 and June 2021 had very high transaction counts; March 2025 shows a high median but April–May 2025 show lower counts). Recent months (mid‑2025) have much lower transaction counts in the table — this often indicates incomplete reporting for the most recent months and means recent monthly figures should be treated cautiously.
 
-  データポイントの例（クエリ結果より）
-  - 2020年10月: 中央値£255,000、平均£376,538、取引件数89,125
-  - 2022年8月: 平均ピーク約£441,209（中央値約£295,000）
-  - 2025年3月: 中央値約£314,750（最高中央値の一つ）
-  - 2025年8月: 中央値£294,500、平均£364,653、取引件数18,815（低件数 — データ不完全の可能性が高い）
+Example datapoints (from the query)
+- 2020-10: median £255,000, mean £376,538, transactions 89,125
+- 2022-08: mean peak ~£441,209 (median ~£295,000)
+- 2025-03: median ~£314,750 (one of the highest medians)
+- 2025-08: median £294,500, mean £364,653, transactions 18,815 (low count — likely incomplete)
 
-  注意事項
-  - これらは取引価格（Price Paidデータセット）であり、実際の住宅「評価額」とは異なる場合があります。
-  - 平均値は構成と外れ値の影響を受けやすくなっています。売却される物件タイプの変化（例: フラットと一戸建ての割合、地域構成）は、平均値と中央値に異なる影響を与えます。
-  - 直近の月はデータが不完全な場合があります。異常に低い取引件数を示す月は慎重に扱う必要があります。
-  - これは全国集計データです — 地域差は大きい可能性があります。
+Caveats
+- These are transaction prices (Price Paid dataset) — actual house “values” may differ.
+- Mean is sensitive to composition and outliers. Changes in the types of properties sold (e.g., mix of flats vs detached houses, regional mix) will affect mean and median differently.
+- Recent months can be incomplete; months with unusually low transaction counts should be treated with caution.
+- This is a national aggregate — regional differences can be substantial.
 
-  ご希望であれば、以下の分析を実行できます:
-  - 時系列での中央値と平均値のチャート作成
-  - 前年比の比較、または異なる開始/終了月のCAGR計算
-  - 地域/郡/町、物件タイプ（フラット、テラスハウス、セミデタッチド、一戸建て）、または価格帯別の分析
-  - 過去5年間の価格上昇率上位/下位地域の表示
+If you want I can:
+- Produce a chart of median and mean over time.
+- Compare year-on-year or compute CAGR for a different start/end month.
+- Break the analysis down by region/county/town, property type (flat, terraced, semi, detached), or by price bands.
+- Show a table of top/bottom regions for price growth over the last 5 years.
 
-  どの分析をご希望ですか？
-  ```
+Which follow-up would you like?
+
+```
 </VerticalStepper>

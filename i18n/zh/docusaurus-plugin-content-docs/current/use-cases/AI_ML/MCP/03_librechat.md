@@ -53,12 +53,12 @@ cp .env.example .env
 
 ```text title=".venv"
 #============#
-# Anthropic  # {#anthropic}
+# Anthropic  #
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
-# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
+# ANTHROPIC_REVERSE_PROXY=
 ```
 
 将 `user_provided` 替换为你想要使用的 LLM 提供商的 API key。
@@ -215,8 +215,8 @@ docker compose up
 
 现在您可以提示 LLM 探索 ClickHouse 示例数据集。试试看:
 
-```text title="提示"
-你可以访问哪些数据集?
+```text title="Prompt"
+What datasets do you have access to?
 ```
 
 </VerticalStepper>

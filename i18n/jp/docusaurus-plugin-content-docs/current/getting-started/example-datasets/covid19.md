@@ -42,7 +42,7 @@ CSV ファイルには 10 個の列があります：
 │ cumulative_tested    │ Nullable(Int64)  │
 └──────────────────────┴──────────────────┘
 
-10行が設定されています。経過時間: 0.745秒
+10 rows in set. Elapsed: 0.745 sec.
 ```
 
 2. 次に、いくつかの行を表示してみましょう。
@@ -118,7 +118,7 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 1253万                          │
+│ 12.53 million                   │
 └─────────────────────────────────┘
 ```
 
@@ -131,7 +131,7 @@ FROM covid19;
 
 ```response
 ┌─formatReadableQuantity(sum(new_confirmed))─┐
-│ 13億9000万                                  │
+│ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
 
@@ -223,9 +223,9 @@ SELECT
   new_confirmed,
   percent_change,
   CASE
-    WHEN percent_change > 0 THEN '増加'
-    WHEN percent_change = 0 THEN '変化なし'
-    ELSE '減少'
+    WHEN percent_change > 0 THEN 'increase'
+    WHEN percent_change = 0 THEN 'no change'
+    ELSE 'decrease'
   END AS trend
 FROM confirmed_percent_change
 WHERE location_key = 'US_DC';
@@ -236,33 +236,33 @@ WHERE location_key = 'US_DC';
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
-│ 2020-03-08 │             0 │            nan │ 減少  │
-│ 2020-03-09 │             2 │            inf │ 増加  │
-│ 2020-03-10 │             0 │           -100 │ 減少  │
-│ 2020-03-11 │             6 │            inf │ 増加  │
-│ 2020-03-12 │             0 │           -100 │ 減少  │
-│ 2020-03-13 │             0 │            nan │ 減少  │
-│ 2020-03-14 │             6 │            inf │ 増加  │
-│ 2020-03-15 │             1 │            -83 │ 減少  │
-│ 2020-03-16 │             5 │            400 │ 増加  │
-│ 2020-03-17 │             9 │             80 │ 増加  │
-│ 2020-03-18 │             8 │            -11 │ 減少  │
-│ 2020-03-19 │            32 │            300 │ 増加  │
-│ 2020-03-20 │             6 │            -81 │ 減少  │
-│ 2020-03-21 │            21 │            250 │ 増加  │
-│ 2020-03-22 │            18 │            -14 │ 減少  │
-│ 2020-03-23 │            21 │             17 │ 増加  │
-│ 2020-03-24 │            46 │            119 │ 増加  │
-│ 2020-03-25 │            48 │              4 │ 増加  │
-│ 2020-03-26 │            36 │            -25 │ 減少  │
-│ 2020-03-27 │            37 │              3 │ 増加  │
-│ 2020-03-28 │            38 │              3 │ 増加  │
-│ 2020-03-29 │            59 │             55 │ 増加  │
-│ 2020-03-30 │            94 │             59 │ 増加  │
-│ 2020-03-31 │            91 │             -3 │ 減少  │
-│ 2020-04-01 │            67 │            -26 │ 減少  │
-│ 2020-04-02 │           104 │             55 │ 増加  │
-│ 2020-04-03 │           145 │             39 │ 増加  │
+│ 2020-03-08 │             0 │            nan │ decrease  │
+│ 2020-03-09 │             2 │            inf │ increase  │
+│ 2020-03-10 │             0 │           -100 │ decrease  │
+│ 2020-03-11 │             6 │            inf │ increase  │
+│ 2020-03-12 │             0 │           -100 │ decrease  │
+│ 2020-03-13 │             0 │            nan │ decrease  │
+│ 2020-03-14 │             6 │            inf │ increase  │
+│ 2020-03-15 │             1 │            -83 │ decrease  │
+│ 2020-03-16 │             5 │            400 │ increase  │
+│ 2020-03-17 │             9 │             80 │ increase  │
+│ 2020-03-18 │             8 │            -11 │ decrease  │
+│ 2020-03-19 │            32 │            300 │ increase  │
+│ 2020-03-20 │             6 │            -81 │ decrease  │
+│ 2020-03-21 │            21 │            250 │ increase  │
+│ 2020-03-22 │            18 │            -14 │ decrease  │
+│ 2020-03-23 │            21 │             17 │ increase  │
+│ 2020-03-24 │            46 │            119 │ increase  │
+│ 2020-03-25 │            48 │              4 │ increase  │
+│ 2020-03-26 │            36 │            -25 │ decrease  │
+│ 2020-03-27 │            37 │              3 │ increase  │
+│ 2020-03-28 │            38 │              3 │ increase  │
+│ 2020-03-29 │            59 │             55 │ increase  │
+│ 2020-03-30 │            94 │             59 │ increase  │
+│ 2020-03-31 │            91 │             -3 │ decrease  │
+│ 2020-04-01 │            67 │            -26 │ decrease  │
+│ 2020-04-02 │           104 │             55 │ increase  │
+│ 2020-04-03 │           145 │             39 │ increase  │
 ```
 
 :::note

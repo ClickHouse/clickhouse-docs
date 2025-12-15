@@ -68,7 +68,7 @@ PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'source_table'))
 LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
-COMMENT '临时字典';
+COMMENT 'The temporary dictionary';
 ```
 
 请确保字典已加载。
@@ -103,5 +103,5 @@ loading_start_time:          1970-01-01 00:00:00
 last_successful_update_time: 1970-01-01 00:00:00
 loading_duration:            0
 last_exception:
-comment:                     临时字典
+comment:                     The temporary dictionary
 ```

@@ -93,8 +93,8 @@ GROUP BY
 ```sql
 SELECT
     arrayJoin(dice) AS first_throw,
-    /* arrayJoin(dice) as second_throw */ -- 技术上正确,但会使结果集为空
-    arrayJoin(arrayConcat(dice, [])) AS second_throw -- 有意更改表达式以强制重新计算
+    /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
+    arrayJoin(arrayConcat(dice, [])) AS second_throw -- intentionally changed expression to force re-evaluation
 FROM (
     SELECT [1, 2, 3, 4, 5, 6] AS dice
 );

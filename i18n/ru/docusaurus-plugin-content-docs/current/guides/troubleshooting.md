@@ -36,18 +36,18 @@ sudo apt-get install gnupg
 Полные сообщения предупреждений выглядят как один из следующих вариантов:
 
 ```shell
-N: Пропускается получение настроенного файла 'main/binary-i386/Packages', так как репозиторий 'https://packages.clickhouse.com/deb stable InRelease' не поддерживает архитектуру 'i386'
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```shell
-E: Не удалось загрузить https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  Неожиданный размер файла (30451 != 28154). Возможно, идёт синхронизация зеркала?
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```shell
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение 'Origin' с 'Artifactory' на 'ClickHouse'
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение 'Label' с 'Artifactory' на 'ClickHouse'
-N: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение 'Suite' с 'stable' на ''
-N: Это изменение необходимо явно подтвердить перед применением обновлений из данного репозитория. Подробности см. в справочной странице apt-secure(8).
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```shell
@@ -109,29 +109,29 @@ sudo service clickhouse-server start
 Если запуск `clickhouse-server` завершился ошибкой конфигурации, вы увидите строку `<Error>` с описанием ошибки. Например:
 
 ```plaintext
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Ошибка перезагрузки внешнего словаря 'event2id': Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 Если в конце файла нет сообщения об ошибке, просмотрите весь файл, начиная со строки:
 
 ```plaintext
-<Information> Application: запускается.
+<Information> Application: starting up.
 ```
 
 Если вы попытаетесь запустить второй экземпляр `clickhouse-server` на сервере, вы увидите следующую запись в журнале:
 
 ```plaintext
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Запуск ClickHouse 19.1.0 с ревизией 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: запуск приложения
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Файл статуса ./status уже существует — некорректный перезапуск. Содержимое:
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
 PID: 8510
-Запущен в: 2019-01-11 15:24:23
+Started at: 2019-01-11 15:24:23
 Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Невозможно заблокировать файл ./status. Другой экземпляр сервера в этом же каталоге уже запущен.
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: завершение работы приложения
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Деинициализация подсистемы: Logging Subsystem
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Остановка потока SignalListener
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 #### Просмотр журналов system.d {#see-systemd-logs}

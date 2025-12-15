@@ -28,7 +28,7 @@ doc_type: 'reference'
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
-ZooKeeperに接続しました [::1]:9181 session_id 137
+Connected to ZooKeeper at [::1]:9181 with session_id 137
 / :) ls
 keeper foo bar
 / :) cd 'keeper'
@@ -38,7 +38,7 @@ api_version
 /keeper/api_version :) ls
 
 /keeper/api_version :) cd 'xyz'
-パス /keeper/api_version/xyz は存在しません
+Path /keeper/api_version/xyz does not exist
 /keeper/api_version :) cd ../../
 / :) ls
 keeper foo bar

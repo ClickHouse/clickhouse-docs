@@ -24,7 +24,7 @@ ClickHouse 主要将与安全相关的数据库事件记录在 session 日志和
 用于展示登录失败的示例查询
 
 ```sql
-SELECT event_time
+select event_time
     ,type
     ,user
     ,auth_type

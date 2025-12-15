@@ -27,7 +27,7 @@ groupBitOr(expr)
 测试数据：
 
 ```text
-二进制     十进制
+binary     decimal
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -45,6 +45,6 @@ SELECT groupBitOr(num) FROM t
 结果：
 
 ```text
-二进制     十进制
+binary     decimal
 01111101 = 125
 ```

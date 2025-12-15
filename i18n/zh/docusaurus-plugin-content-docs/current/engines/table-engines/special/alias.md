@@ -81,7 +81,7 @@ ENGINE = Alias(target_db, target_table)
 在同一数据库中创建一个简单的别名：
 
 ```sql
--- 创建源表
+-- Create source table
 CREATE TABLE source_data (
     id UInt32,
     name String,
@@ -89,13 +89,13 @@ CREATE TABLE source_data (
 ) ENGINE = MergeTree
 ORDER BY id;
 
--- 插入数据
+-- Insert some data
 INSERT INTO source_data VALUES (1, 'one', 10.1), (2, 'two', 20.2);
 
--- 创建别名
+-- Create alias
 CREATE TABLE data_alias ENGINE = Alias('source_data');
 
--- 通过别名查询
+-- Query through alias
 SELECT * FROM data_alias;
 ```
 
@@ -111,11 +111,11 @@ SELECT * FROM data_alias;
 创建一个指向不同数据库中某个表的别名：
 
 ```sql
--- 创建数据库
+-- Create databases
 CREATE DATABASE db1;
 CREATE DATABASE db2;
 
--- 在 db1 中创建源表
+-- Create source table in db1
 CREATE TABLE db1.events (
     timestamp DateTime,
     event_type String,
@@ -123,13 +123,13 @@ CREATE TABLE db1.events (
 ) ENGINE = MergeTree
 ORDER BY timestamp;
 
--- 在 db2 中创建指向 db1.events 的别名表
+-- Create alias in db2 pointing to db1.events
 CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 
--- 或使用 database.table 格式
+-- Or using database.table format
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
--- 两个别名表的功能完全相同
+-- Both aliases work identically
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
@@ -148,20 +148,20 @@ ORDER BY ts;
 
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
--- 通过别名插入
+-- Insert through alias
 INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
 
--- 使用 SELECT 插入
+-- Insert with SELECT
 INSERT INTO metrics_alias 
 SELECT now(), 'disk_usage', number * 10 
 FROM system.numbers 
 LIMIT 5;
 
--- 验证目标表中的数据
-SELECT count() FROM metrics;  -- 返回 7
-SELECT count() FROM metrics_alias;  -- 返回 7
+-- Verify data is in the target table
+SELECT count() FROM metrics;  -- Returns 7
+SELECT count() FROM metrics_alias;  -- Returns 7
 ```
 
 ### 表结构修改 {#schema-modification}
@@ -177,10 +177,10 @@ ORDER BY id;
 
 CREATE TABLE users_alias ENGINE = Alias('users');
 
--- 通过别名添加列
+-- Add column through alias
 ALTER TABLE users_alias ADD COLUMN email String DEFAULT '';
 
--- 列已添加至目标表
+-- Column is added to target table
 DESCRIBE users;
 ```
 
@@ -212,13 +212,13 @@ INSERT INTO products_alias VALUES
     (2, 'item_two', 200.0, 'active'),
     (3, 'item_three', 300.0, 'inactive');
 
--- 通过别名进行更新
+-- Update through alias
 ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 
--- 通过别名进行删除
+-- Delete through alias
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- 更改将应用到目标表
+-- Changes are applied to target table
 SELECT * FROM products ORDER BY id;
 ```
 
@@ -249,15 +249,15 @@ INSERT INTO logs_alias VALUES
     ('2024-02-15', 'ERROR', 'message2'),
     ('2024-03-15', 'INFO', 'message3');
 
--- 通过别名分离分区
+-- Detach partition through alias
 ALTER TABLE logs_alias DETACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- 返回 2（分区 202402 已分离）
+SELECT count() FROM logs_alias;  -- Returns 2 (partition 202402 detached)
 
--- 重新附加分区
+-- Attach partition back
 ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- 返回 3
+SELECT count() FROM logs_alias;  -- Returns 3
 ```
 
 ### 表优化 {#table-optimization}
@@ -273,25 +273,25 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- 多次插入创建多个部分
+-- Multiple inserts create multiple parts
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- 检查部分数量
+-- Check parts count
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
   AND active;
 
--- 通过别名优化
+-- Optimize through alias
 OPTIMIZE TABLE events_alias FINAL;
 
--- 部分在目标表中合并
+-- Parts are merged in target table
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
-  AND active;  -- 返回 1
+  AND active;  -- Returns 1
 ```
 
 ### 别名管理 {#alias-management}
@@ -309,15 +309,15 @@ INSERT INTO important_data VALUES (1, 'critical'), (2, 'important');
 
 CREATE TABLE old_alias ENGINE = Alias('important_data');
 
--- 重命名别名（目标表保持不变）
+-- Rename alias (target table unchanged)
 RENAME TABLE old_alias TO new_alias;
 
--- 为同一张表创建另一个别名
+-- Create another alias to same table
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- 删除一个别名（目标表和其他别名保持不变）
+-- Drop one alias (target table and other aliases unchanged)
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- 仍然有效
-SELECT count() FROM important_data;  -- 数据完整，返回 2
+SELECT * FROM another_alias;  -- Still works
+SELECT count() FROM important_data;  -- Data intact, returns 2
 ```

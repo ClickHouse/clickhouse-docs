@@ -136,5 +136,5 @@ ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 **Синтаксис**
 
 ```sql
-ATTACH DATABASE [IF NOT EXISTS] имя [ENGINE=<движок_базы_данных>] [ON CLUSTER кластер]
+ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
 ```

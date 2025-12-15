@@ -149,12 +149,12 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ ```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ ```
 
 注意：在同一个查询中无法同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
@@ -176,7 +176,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 请考虑以下操作顺序：
 
 ```sql
- -- 创建一个包含两列的表
+ -- Create a table with two columns
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
   order_number bigint, 
   product_code string
@@ -184,23 +184,23 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- 向表中插入数据
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES 
     (1, 'Mars')
 
-  ts1 = now() // 伪代码示例
+  ts1 = now() // A piece of pseudo code
 
--- 修改表以添加新列
+- - Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
  
   ts2 = now()
 
--- 向表中插入数据
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
    ts3 = now()
 
--- 在每个时间戳查询表
+- - Query the table at each timestamp
   SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
@@ -237,7 +237,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 在当前时刻执行的时间回溯查询，其显示的模式可能与当前表不同：
 
 ```sql
--- 创建表
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number bigint, 
   product_code string
@@ -245,15 +245,15 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- 向表中插入初始数据
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- 修改表以添加新列
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- 使用时间戳语法查询表的当前状态
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -263,7 +263,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
     |           2|       Venus|
     +------------+------------+
 
--- 查询表的当前状态
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -280,7 +280,7 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 第二个问题是，在进行时间回溯（time travel）时，你无法获取在尚未向表写入任何数据之前的表状态：
 
 ```sql
--- 创建表
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number bigint, 
   product_code string
@@ -290,8 +290,8 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
   ts = now();
 
--- 在特定时间戳查询表
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- 以错误结束:找不到早于 ts 的快照。
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 在 ClickHouse 中，其行为与 Spark 一致。你可以直接将 Spark 的 Select 查询类比为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
@@ -396,12 +396,12 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Pavel
 y: 777
 
-行 2:
+Row 2:
 ──────
 x: Ivanov
 y: 993
@@ -426,7 +426,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -469,7 +469,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -490,7 +490,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
@@ -512,7 +512,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-行 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993

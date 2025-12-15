@@ -22,10 +22,10 @@ keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 ```sql
 CREATE MATERIALIZED VIEW posts_final
 REFRESH EVERY 10 second ENGINE = ReplacingMergeTree(_peerdb_version)
-ORDER BY (owneruserid,id) -- 排序键不同，但使用带后缀的 Postgres 主键
+ORDER BY (owneruserid,id) -- different ordering key but with suffixed postgres pkey
 AS
 SELECT * FROM posts FINAL 
-WHERE _peerdb_is_deleted = 0; -- 这里负责执行去重
+WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
 ## 在不使用可刷新物化视图时自定义排序键 {#custom-ordering-keys-without-refreshable-materialized-views}
@@ -49,8 +49,8 @@ WHERE _peerdb_is_deleted = 0; -- 这里负责执行去重
 下面是在 `events` 表上执行此操作的示例。请确保将此操作应用于所有修改过排序键的表。
 
 ```sql
--- 在 (owneruserid, id) 上创建一个唯一索引 UNIQUE INDEX
+-- Create a UNIQUE INDEX on (owneruserid, id)
 CREATE UNIQUE INDEX posts_unique_owneruserid_idx ON posts(owneruserid, id);
--- 将 REPLICA IDENTITY 设置为使用该索引
+-- Set REPLICA IDENTITY to use this index
 ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 ```

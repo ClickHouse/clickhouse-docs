@@ -19,7 +19,7 @@ ClickHouse が複数のクエリを同時に実行する場合、それらは共
 
 ```sql
 CREATE RESOURCE resource_name (WRITE DISK disk_name, READ DISK disk_name)
--- または
+-- or
 CREATE RESOURCE read_resource_name (WRITE DISK write_disk_name)
 CREATE RESOURCE write_resource_name (READ DISK read_disk_name)
 ```
@@ -90,18 +90,18 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 graph TD
     subgraph network_read
     nr_root(("/"))
-    -->|同時リクエスト100件| nr_fair("fair")
-    -->|帯域幅75%| nr_prod["prod"]
+    -->|100 concurrent requests| nr_fair("fair")
+    -->|75% bandwidth| nr_prod["prod"]
     nr_fair
-    -->|帯域幅25%| nr_dev["dev"]
+    -->|25% bandwidth| nr_dev["dev"]
     end
 
     subgraph network_write
     nw_root(("/"))
-    -->|同時リクエスト100件| nw_fair("fair")
-    -->|帯域幅75%| nw_prod["prod"]
+    -->|100 concurrent requests| nw_fair("fair")
+    -->|75% bandwidth| nw_prod["prod"]
     nw_fair
-    -->|帯域幅25%| nw_dev["dev"]
+    -->|25% bandwidth| nw_dev["dev"]
     end
 ```
 
@@ -265,9 +265,9 @@ master スレッドの同時実行数を制限しても、同時実行クエリ�
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
 CREATE WORKLOAD all
 CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 10
-CREATE WORKLOAD 本番環境 IN all SETTINGS max_concurrent_threads = 100
-CREATE WORKLOAD analytics IN 本番環境 SETTINGS max_concurrent_threads = 60, weight = 9
-CREATE WORKLOAD ingestion IN 本番環境
+CREATE WORKLOAD production IN all SETTINGS max_concurrent_threads = 100
+CREATE WORKLOAD analytics IN production SETTINGS max_concurrent_threads = 60, weight = 9
+CREATE WORKLOAD ingestion IN production
 ```
 
 この構成例では、admin と production 用に独立した CPU スロットプールが用意されています。production プールは analytics とインジェストで共有されます。さらに、production プールが過負荷になった場合、解放されたスロットのうち 10 個中 9 個は、必要に応じて分析クエリに再スケジューリングされます。インジェストクエリは、過負荷期間中は 10 個中 1 個のスロットしか割り当てを受けません。これにより、ユーザー向けクエリのレイテンシが改善される可能性があります。Analytics ワークロードには同時実行スレッド数 60 個という独自の上限があり、インジェストを支えるために少なくとも 40 個のスレッドが常に確保されます。過負荷がない場合、インジェストは 100 個すべてのスレッドを使用できます。
@@ -313,10 +313,10 @@ CPU スロットリングとスレッド数制限の両方を組み合わせた�
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
 CREATE WORKLOAD all SETTINGS max_concurrent_threads_ratio_to_cores = 2
 CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 2, priority = -1
-CREATE WORKLOAD 本番 IN all SETTINGS weight = 4
-CREATE WORKLOAD analytics IN 本番 SETTINGS max_cpu_share = 0.7, weight = 3
-CREATE WORKLOAD ingestion IN 本番
-CREATE WORKLOAD 開発 IN all SETTINGS max_cpu_share = 0.3
+CREATE WORKLOAD production IN all SETTINGS weight = 4
+CREATE WORKLOAD analytics IN production SETTINGS max_cpu_share = 0.7, weight = 3
+CREATE WORKLOAD ingestion IN production
+CREATE WORKLOAD development IN all SETTINGS max_cpu_share = 0.3
 ```
 
 ここでは、すべてのクエリに対するスレッドの総数を、利用可能な CPU 数の 2 倍に制限しています。管理（admin）ワークロードは、利用可能な CPU 数に関係なく、最大でも 2 スレッドに制限されます。Admin の優先度は -1（デフォルトの 0 より低い）であり、必要な場合にはどの CPU スロットよりも優先して割り当てを受けます。Admin がクエリを実行していないときは、CPU リソースは本番（production）と開発（development）のワークロードの間で分配されます。CPU 時間の保証された持分は重み（4 対 1）に基づいており、少なくとも 80% が本番に（必要な場合）、少なくとも 20% が開発に（必要な場合）割り当てられます。重みが下限（保証）を定める一方で、CPU スロットルが上限（制限）を定めます。本番には上限がなく 100% まで消費できますが、開発には 30% の上限があり、これは他のワークロードからクエリがまったくない場合でも適用されます。本番ワークロードはリーフではないため、そのリソースは分析（analytics）とインジェスト（ingestion）の間で重み（3 対 1）に従って分割されます。つまり、分析には少なくとも 0.8 * 0.75 = 60% の保証があり、`max_cpu_share` に基づいて、合計 CPU リソースの 70% の上限があります。一方で、インジェストには少なくとも 0.8 * 0.25 = 20% の保証が与えられますが、上限はありません。

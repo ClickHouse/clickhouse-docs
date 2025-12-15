@@ -121,5 +121,5 @@ ClickHouse SQL を使用してデータを取得するには、クライアン�
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 出力: [(2000, -50.9035)] {#output-2000-509035}
+# Output: [(2000, -50.9035)]
 ```

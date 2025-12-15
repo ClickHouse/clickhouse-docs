@@ -143,8 +143,8 @@ FINAL
 ORDER BY Day ASC
 LIMIT 10
 
-10行を取得しました。経過時間: 0.004秒。処理済み: 8.97千行、89.68 KB (209万行/秒、20.89 MB/秒)
-ピークメモリ使用量: 289.75 KiB
+10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
+Peak memory usage: 289.75 KiB.
 
 SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
 FROM up_down_votes_per_day
@@ -164,8 +164,8 @@ LIMIT 10
 │ 2008-08-09 │     576 │        46 │
 └────────────┴─────────┴───────────┘
 
-10行を取得しました。経過時間: 0.010秒。処理済み: 8.97千行、89.68 KB (90.73万行/秒、9.07 MB/秒)
-ピークメモリ使用量: 567.61 KiB
+10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
+Peak memory usage: 567.61 KiB.
 ```
 
 これにより、クエリの実行時間は 0.133 秒から 0.004 秒へ短縮され、25 倍以上の高速化が実現しました！
@@ -203,8 +203,8 @@ LIMIT 10
 │ 2024-03-22 00:00:00 │ 9.310999999999694 │ 1.2388059701492538 │
 └─────────────────────┴───────────────────┴────────────────────┘
 
-10行を取得しました。経過時間: 0.113秒。処理: 5982万行、777.65 MB (5億2848万行/秒、6.87 GB/秒)
-ピークメモリ使用量: 658.84 MiB
+10 rows in set. Elapsed: 0.113 sec. Processed 59.82 million rows, 777.65 MB (528.48 million rows/s., 6.87 GB/s.)
+Peak memory usage: 658.84 MiB.
 ```
 
 前と同様に、`posts` テーブルに新しい投稿が挿入されるたびに、上記のクエリを実行するマテリアライズドビューを作成できます。
@@ -554,7 +554,7 @@ WHERE DisplayName = 'brand_new_user'
 │ 2025-04-13 │ 23923286 │ brand_new_user │    0 │      0 │      1 │
 └────────────┴──────────┴────────────────┴──────┴────────┴────────┘
 
-1行のセット。経過時間: 0.018秒。処理済み: 32.77千行、644.48 KB (187万行/秒、36.72 MB/秒)
+1 row in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 644.48 KB (1.87 million rows/s., 36.72 MB/s.)
 ```
 
 ただし、この結果は正しくありません。
@@ -714,7 +714,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 行。経過時間: 132.118 秒。処理済み 323.43 百万行、4.69 GB (2.45 百万行/秒、35.49 MB/秒)。
 最大メモリ使用量: 1.99 GiB。
 
-````
+```
 
 また、今後のバッジ挿入も効率的に実行できることを意味します：
 
@@ -722,7 +722,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 1 row in set. Elapsed: 0.583 sec.
-````
+```
 
 上記の操作では、ユーザー ID `2936484` に対して `users` テーブルから 1 行だけが取得されます。このルックアップは、`Id` をテーブルの並び替えキーとして指定することで最適化されています。
 
@@ -863,7 +863,7 @@ GROUP BY UserId
 
 1 行が取得されました。経過時間: 0.005 秒。
 
-````
+```
 
 `badges`テーブルへの挿入はビューをトリガーしないため、`user_activity`は更新されません:
 
@@ -884,7 +884,7 @@ GROUP BY UserId;
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
 1 row in set. Elapsed: 0.005 sec.
-````
+```
 
 この問題を解決するには、各 `SELECT` 文ごとにマテリアライズドビューを作成するだけです。
 

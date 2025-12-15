@@ -55,15 +55,15 @@ ClickPipes поддерживает Postgres, начиная с версии 12.
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- Возможно, потребуется предоставить эти разрешения дополнительным схемам в зависимости от переносимых таблиц
+-- You may need to grant these permissions on more schemas depending on the tables you're moving
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Предоставить пользователю права на репликацию
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- Создать публикацию. Она будет использоваться при создании пайплайна
--- При добавлении новых таблиц в ClickPipe их также необходимо вручную добавить в публикацию. 
+-- Create a publication. We will use this when creating the pipe
+-- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
 ```
 

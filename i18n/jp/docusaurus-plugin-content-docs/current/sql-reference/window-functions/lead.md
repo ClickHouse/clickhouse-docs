@@ -59,14 +59,14 @@ LIMIT 9
 
 ```response title="Query"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │ Anne L Huillier  │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
-2. │ Pierre Agostini  │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
-3. │ Ferenc Krausz    │ 2023 │ 物理学  │ 物質中の電子動力学研究のためのアト秒光パルス生成実験手法に対して                     │
-4. │ Alain Aspect     │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
-5. │ Anton Zeilinger  │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
-6. │ John Clauser     │ 2022 │ 物理学  │ ベルの不等式の破れを実証し量子情報科学を開拓した、もつれ合った光子による実験に対して │
-7. │ Giorgio Parisi   │ 2021 │ 物理学  │ 原子スケールから惑星スケールに至る物理系における無秩序とゆらぎの相互作用の発見に対して                │
-8. │ Klaus Hasselmann │ 2021 │ 物理学  │ 地球気候の物理モデリング、変動の定量化、および地球温暖化の信頼性の高い予測に対して                        │
-9. │ Syukuro Manabe   │ 2021 │ 物理学  │ 地球気候の物理モデリング、変動の定量化、および地球温暖化の信頼性の高い予測に対して                        │
+1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+3. │ Ferenc Krausz    │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+4. │ Alain Aspect     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+5. │ Anton Zeilinger  │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+6. │ John Clauser     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+7. │ Giorgio Parisi   │ 2021 │ physics  │ for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales                │
+8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
+9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

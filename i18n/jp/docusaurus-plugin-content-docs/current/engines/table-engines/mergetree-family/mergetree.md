@@ -131,14 +131,14 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上記で説明した方法に切り替えてください。
   :::
 
-  ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   **MergeTree() のパラメータ**
 
@@ -150,8 +150,8 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   **例**
 
   ```sql
-  MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
-  ```
+MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
+```
 
   `MergeTree` エンジンは、メインのエンジン構成方法について上記の例と同様に設定されます。
 </details>
@@ -910,9 +910,9 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 <storage_configuration>
     ...
     <policies>
-        <hdd_in_order> <!-- ポリシー名 -->
+        <hdd_in_order> <!-- policy name -->
             <volumes>
-                <single> <!-- ボリューム名 -->
+                <single> <!-- volume name -->
                     <disk>disk1</disk>
                     <disk>disk2</disk>
                 </single>

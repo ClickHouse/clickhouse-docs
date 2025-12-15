@@ -32,17 +32,17 @@ doc_type: 'reference'
 
 ```yaml
 ┌─name────────────────────────────────┬─type──────┬─help──────────────────────────────────────┬─labels─────────────────────────┬────value─┬─────timestamp─┐
-│ http_request_duration_seconds       │ histogram │ 请求持续时间直方图。                      │ {'le':'0.05'}                  │    24054 │             0 │
+│ http_request_duration_seconds       │ histogram │ A histogram of the request duration.      │ {'le':'0.05'}                  │    24054 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.1'}                   │    33444 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.2'}                   │   100392 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'0.5'}                   │   129389 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'1'}                     │   133988 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'le':'+Inf'}                  │   144320 │             0 │
 │ http_request_duration_seconds       │ histogram │                                           │ {'sum':''}                     │    53423 │             0 │
-│ http_requests_total                 │ counter   │ HTTP 请求总数                             │ {'method':'post','code':'200'} │     1027 │ 1395066363000 │
+│ http_requests_total                 │ counter   │ Total number of HTTP requests             │ {'method':'post','code':'200'} │     1027 │ 1395066363000 │
 │ http_requests_total                 │ counter   │                                           │ {'method':'post','code':'400'} │        3 │ 1395066363000 │
 │ metric_without_timestamp_and_labels │           │                                           │ {}                             │    12.47 │             0 │
-│ rpc_duration_seconds                │ summary   │ RPC 持续时间(秒)摘要。                    │ {'quantile':'0.01'}            │     3102 │             0 │
+│ rpc_duration_seconds                │ summary   │ A summary of the RPC duration in seconds. │ {'quantile':'0.01'}            │     3102 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.05'}            │     3272 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.5'}             │     4773 │             0 │
 │ rpc_duration_seconds                │ summary   │                                           │ {'quantile':'0.9'}             │     9001 │             0 │
@@ -56,8 +56,8 @@ doc_type: 'reference'
 格式如下：
 
 ```text
-# HELP http_request_duration_seconds 请求持续时间的直方图。 {#help-http_request_duration_seconds-a-histogram-of-the-request-duration}
-# TYPE http_request_duration_seconds histogram {#type-http_request_duration_seconds-histogram}
+# HELP http_request_duration_seconds A histogram of the request duration.
+# TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
 http_request_duration_seconds_bucket{le="0.5"} 129389
@@ -66,15 +66,15 @@ http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
 http_request_duration_seconds_count 144320
 
-# HELP http_requests_total HTTP 请求总数 {#help-http_requests_total-total-number-of-http-requests}
-# TYPE http_requests_total counter {#type-http_requests_total-counter}
+# HELP http_requests_total Total number of HTTP requests
+# TYPE http_requests_total counter
 http_requests_total{code="200",method="post"} 1027 1395066363000
 http_requests_total{code="400",method="post"} 3 1395066363000
 
 metric_without_timestamp_and_labels 12.47
 
-# HELP rpc_duration_seconds RPC 调用时长（秒）的概要。 {#help-rpc_duration_seconds-a-summary-of-the-rpc-duration-in-seconds}
-# TYPE rpc_duration_seconds summary {#type-rpc_duration_seconds-summary}
+# HELP rpc_duration_seconds A summary of the RPC duration in seconds.
+# TYPE rpc_duration_seconds summary
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
 rpc_duration_seconds{quantile="0.5"} 4773

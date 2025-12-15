@@ -104,7 +104,7 @@ RESTORE TABLE test_db.my_table FROM Disk('backups_disk', '1.zip')
 
 ```response
 ┌─id───────────────────────────────────┬─status───┐
-│ cdf1f731-52ef-42da-bc65-2e1bfcd4ce90 │ ВОССТАНОВЛЕН │
+│ cdf1f731-52ef-42da-bc65-2e1bfcd4ce90 │ RESTORED │
 └──────────────────────────────────────┴──────────┘
 ```
 
@@ -113,7 +113,7 @@ SELECT * FROM system.backup_log WHERE id = 'cdf1f731-52ef-42da-bc65-2e1bfcd4ce90
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -132,7 +132,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-Строка 2:
+Row 2:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19

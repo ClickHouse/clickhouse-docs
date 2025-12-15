@@ -69,8 +69,8 @@ UInt8 day = (s[8] - '0') * 10 + (s[9] - '0');
 ```cpp
 if (elapsed_ns)
     message << " ("
-        << rows_read_on_server * 1000000000 / elapsed_ns << " 行/秒，"
-        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/秒）";
+        << rows_read_on_server * 1000000000 / elapsed_ns << " rows/s., "
+        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/s.) ";
 ```
 
 **9.** 如有需要，可以在同一行内使用空格进行对齐。
@@ -106,7 +106,7 @@ template <typename T>
 class MultiVersion
 {
 public:
-    /// 用于使用的对象版本。shared_ptr 管理版本的生命周期。
+    /// Version of object for usage. shared_ptr manage lifetime of version.
     using Version = std::shared_ptr<const T>;
     ...
 }
@@ -119,7 +119,7 @@ public:
 但如果内部的 `statement` 本身包含花括号或 `else`，则外层代码块应使用花括号书写。
 
 ```cpp
-/// 完成写入操作。
+/// Finish write.
 for (auto & stream : streams)
     stream.second->finalize();
 ```
@@ -143,19 +143,19 @@ for (auto & stream : streams)
 **24.** 与值相关的 `A const` 必须写在类型名之前。
 
 ```cpp
-//正确
+//correct
 const char * pos
 const std::string & s
-//不正确
+//incorrect
 char const * pos
 ```
 
 **25.** 在声明指针或引用时，`*` 和 `&` 符号左右两侧都应有空格。
 
 ```cpp
-//正确
+//correct
 const char * pos
-//错误
+//incorrect
 const char* pos
 const char *pos
 ```
@@ -167,26 +167,26 @@ const char *pos
 `using` 可以在局部作用域中声明，例如在函数内部。
 
 ```cpp
-//正确
+//correct
 using FileStreams = std::map<std::string, std::shared_ptr<Stream>>;
 FileStreams streams;
-//错误
+//incorrect
 std::map<std::string, std::shared_ptr<Stream>> streams;
 ```
 
 **27.** 不要在同一条语句中同时声明多个不同类型的变量。
 
 ```cpp
-//不正确
+//incorrect
 int x, *y;
 ```
 
 **28.** 不要使用 C 风格的类型转换。
 
 ```cpp
-//不正确
+//incorrect
 std::cerr << (int)c <<; std::endl;
-//正确
+//correct
 std::cerr << static_cast<int>(c) << std::endl;
 ```
 
@@ -213,10 +213,10 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 这非常重要。编写注释的过程可能会让你意识到这段代码其实没有必要，或者它的设计存在问题。
 
 ```cpp
-/** 可使用的内存片段部分。
-  * 例如,若 internal_buffer 为 1MB,但从文件加载到缓冲区用于读取的数据仅有 10 字节,
-  * 则 working_buffer 的大小将仅为 10 字节
-  * (working_buffer.end() 将指向这 10 个可读字节之后的位置)。
+/** Part of piece of memory, that can be used.
+  * For example, if internal_buffer is 1MB, and there was only 10 bytes loaded to buffer from file for reading,
+  * then working_buffer will have size of only 10 bytes
+  * (working_buffer.end() will point to position right after those 10 bytes available for read).
   */
 ```
 
@@ -225,14 +225,14 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 **3.** 将注释放在其描述的代码前面。极少数情况下，注释可以写在代码之后，与代码位于同一行。
 
 ```cpp
-/** 解析并执行查询。
+/** Parses and executes the query.
 */
 void executeQuery(
-    ReadBuffer & istr, /// 读取查询的来源(如适用,还包括 INSERT 的数据)
-    WriteBuffer & ostr, /// 写入结果的目标位置
-    Context & context, /// 数据库、表、数据类型、引擎、函数、聚合函数等
-    BlockInputStreamPtr & query_plan, /// 可在此处写入查询执行方式的描述
-    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// SELECT 查询处理到哪个阶段
+    ReadBuffer & istr, /// Where to read the query from (and data for INSERT, if applicable)
+    WriteBuffer & ostr, /// Where to write the result
+    Context & context, /// DB, tables, data types, engines, functions, aggregate functions...
+    BlockInputStreamPtr & query_plan, /// Here could be written the description on how query was executed
+    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// Up to which stage process the SELECT query
     )
 ```
 
@@ -244,22 +244,22 @@ void executeQuery(
 
 ```cpp
 /*
-* 过程名称:
-* 原始过程名称:
-* 作者:
-* 创建日期:
-* 修改日期:
-* 修改作者:
-* 原始文件名:
-* 用途:
-* 意图:
-* 说明:
-* 使用的类:
-* 常量:
-* 局部变量:
-* 参数:
-* 创建日期:
-* 用途:
+* Procedure Name:
+* Original procedure name:
+* Author:
+* Date of creation:
+* Dates of modification:
+* Modification authors:
+* Original file name:
+* Purpose:
+* Intent:
+* Designation:
+* Classes used:
+* Constants:
+* Local variables:
+* Parameters:
+* Date of creation:
+* Purpose:
 */
 ```
 
@@ -282,7 +282,7 @@ void executeQuery(
 **13.** 不要使用大写字母，也不要使用过多的标点符号。
 
 ```cpp
-/// 这是什么鬼???
+/// WHAT THE FAIL???
 ```
 
 **14.** 不要使用注释作为分隔符。
@@ -294,7 +294,7 @@ void executeQuery(
 **15.** 不要在评论中发起讨论。
 
 ```cpp
-/// 为什么要执行这些操作？
+/// Why did you do this stuff?
 ```
 
 **16.** 无需在代码块末尾再写注释来说明该块的作用。
@@ -392,7 +392,7 @@ FileQueueProcessor(
 **13.** 局部变量和类成员在命名方式上不作区分（不需要任何前缀）。
 
 ```cpp
-timer(而非 m_timer)
+timer (not m_timer)
 ```
 
 **14.** 对于 `enum` 中的常量，使用首字母大写的 CamelCase 命名。也可以使用 ALL&#95;CAPS。如果 `enum` 为非局部枚举，请使用 `enum class`。
@@ -452,13 +452,13 @@ enum class CompressionMethod
 在线程函数中，应捕获并保存所有异常，以便在 `join` 之后在主线程中重新抛出它们。
 
 ```cpp
-/// 如果尚未进行任何计算,则同步计算第一个数据块
+/// If there weren't any calculations yet, calculate the first block synchronously
 if (!started)
 {
     calculate();
     started = true;
 }
-else /// 如果计算正在进行中,则等待结果
+else /// If calculations are already in progress, wait for the result
     pool.wait();
 
 if (exception)
@@ -468,7 +468,7 @@ if (exception)
 切勿在未适当处理时直接吞掉异常；也不要盲目地把所有异常都写入日志。
 
 ```cpp
-//不正确
+//Not correct
 catch (...) {}
 ```
 
@@ -488,7 +488,7 @@ catch (const DB::Exception & e)
 
 ```cpp
 if (0 != close(fd))
-    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "无法关闭文件 {}", file_name);
+    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "Cannot close file {}", file_name);
 ```
 
 你可以使用 `assert` 在代码中检查不变量。
@@ -587,7 +587,7 @@ ready_any.set();
 ```cpp
 using AggregateFunctionPtr = std::shared_ptr<IAggregateFunction>;
 
-/** 允许根据名称创建聚合函数。
+/** Allows creating an aggregate function by its name.
   */
 class AggregateFunctionFactory
 {
@@ -619,7 +619,7 @@ public:
 ```cpp
 Loader(DB::Connection * connection_, const std::string & query, size_t max_block_size_);
 
-/// 用于延迟初始化
+/// For deferred initialization
 Loader() {}
 ```
 
@@ -678,11 +678,11 @@ auto f() -> void
 **25.** 变量声明和初始化。
 
 ```cpp
-//正确方式
+//right way
 std::string s = "Hello";
 std::string s{"Hello"};
 
-//错误方式
+//wrong way
 auto s = std::string{"Hello"};
 ```
 
@@ -695,11 +695,11 @@ auto s = std::string{"Hello"};
 **2.** 在现代 C++ 中具有便捷语法糖的构造，例如：
 
 ```cpp
-// 不使用语法糖的传统方式
-template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // 通过 std::enable_if 实现 SFINAE，使用 ::value
-std::pair<int, int> func(const E<G> & e) // 显式指定返回类型
+// Traditional way without syntactic sugar
+template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // SFINAE via std::enable_if, usage of ::value
+std::pair<int, int> func(const E<G> & e) // explicitly specified return type
 {
-    if (elements.count(e)) // .count() 成员资格测试
+    if (elements.count(e)) // .count() membership test
     {
         // ...
     }
@@ -710,17 +710,17 @@ std::pair<int, int> func(const E<G> & e) // 显式指定返回类型
             [&](const auto x){
                 return x == 1;
             }),
-        elements.end()); // remove-erase 惯用法
+        elements.end()); // remove-erase idiom
 
-    return std::make_pair(1, 2); // 通过 make_pair() 创建 pair
+    return std::make_pair(1, 2); // create pair via make_pair()
 }
 
-// 使用语法糖 (C++14/17/20)
+// With syntactic sugar (C++14/17/20)
 template <typename G>
-requires std::same_v<G, F> // 通过 C++20 concept 实现 SFINAE，使用 C++14 模板别名
-auto func(const E<G> & e) // auto 返回类型 (C++14)
+requires std::same_v<G, F> // SFINAE via C++20 concept, usage of C++14 template alias
+auto func(const E<G> & e) // auto return type (C++14)
 {
-    if (elements.contains(e)) // C++20 .contains 成员资格测试
+    if (elements.contains(e)) // C++20 .contains membership test
     {
         // ...
     }
@@ -731,7 +731,7 @@ auto func(const E<G> & e) // auto 返回类型 (C++14)
             return x == 1;
         }); // C++20 std::erase_if
 
-    return {1, 2}; // 或者：return std::pair(1, 2); // 通过初始化列表或值初始化创建 pair (C++17)
+    return {1, 2}; // or: return std::pair(1, 2); // create pair via initialization list or value initialization (C++17)
 }
 ```
 

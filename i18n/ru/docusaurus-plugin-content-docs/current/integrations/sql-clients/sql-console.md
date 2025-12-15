@@ -271,7 +271,7 @@ SQL-консоль может преобразовать ваши сортиро
 1. Консоль сгенерирует нужный нам запрос и отобразит его в новой вкладке. В нашем примере GenAI создал следующий запрос:
 
    ```sql
-   -- Покажи мне общую сумму цен и общее количество всех транзакций uk_price_paid по годам.
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
@@ -286,11 +286,11 @@ SQL-консоль может преобразовать ваши сортиро
 1. Создайте новый запрос, нажав на значок _+_, и вставьте следующий код:
 
 ```sql
-   -- Показать общую стоимость и общее количество всех транзакций uk_price_paid по годам.
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
-```
+   ```
 
 1. Нажмите **Run**. Запрос завершится с ошибкой, так как мы пытаемся получить значения из `pricee` вместо `price`.
 2. Нажмите **Fix Query**.

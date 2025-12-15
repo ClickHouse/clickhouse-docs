@@ -12,7 +12,7 @@ doc_type: 'reference'
 **構文**
 
 ```sql
-テーブル|ビュー|ディクショナリ|データベースを切り離す（DETACH） [IF EXISTS] [db.]name [ON CLUSTER cluster] [PERMANENTLY] [SYNC]
+DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster] [PERMANENTLY] [SYNC]
 ```
 
 テーブル、マテリアライズドビュー、ディクショナリ、データベースをデタッチしても、そのデータやメタデータは削除されません。エンティティを `PERMANENTLY` を付けずにデタッチした場合、次回のサーバー起動時にサーバーはメタデータを読み込み、テーブル/ビュー/ディクショナリ/データベースを再び認識します。エンティティを `PERMANENTLY` を付けてデタッチした場合、自動的に再認識されることはありません。
@@ -68,8 +68,8 @@ SELECT * FROM test;
 結果：
 
 ```text
-サーバー (バージョン 21.4.1) から例外を受信しました:
-コード: 60. DB::Exception: localhost:9000 から受信しました。DB::Exception: テーブル default.test は存在しません。
+Received exception from server (version 21.4.1):
+Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table default.test does not exist.
 ```
 
 :::note

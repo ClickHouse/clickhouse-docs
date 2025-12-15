@@ -212,7 +212,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt8(-8):   -8
 toInt8(-8.8): -8
@@ -275,7 +275,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt8OrZero('-8'):  -8
 toInt8OrZero('abc'): 0
@@ -469,7 +469,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt16(-16):    -16
 toInt16(-16.16): -16
@@ -532,7 +532,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt16OrZero('-16'): -16
 toInt16OrZero('abc'): 0
@@ -594,7 +594,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt16OrNull('-16'): -16
 toInt16OrNull('abc'): ᴺᵁᴸᴸ
@@ -661,7 +661,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt16OrDefault('-16', CAST('-1', 'Int16')): -16
 toInt16OrDefault('abc', CAST('-1', 'Int16')): -1
@@ -726,7 +726,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt32(-32):    -32
 toInt32(-32.32): -32
@@ -789,7 +789,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt32OrZero('-32'): -32
 toInt32OrZero('abc'): 0
@@ -983,8 +983,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toInt64(-64):    -64
 toInt64(-64.64): -64
 toInt64('-64'):  -64
@@ -1046,7 +1046,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt64OrZero('-64'): -64
 toInt64OrZero('abc'): 0
@@ -1108,7 +1108,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt64OrNull('-64'): -64
 toInt64OrNull('abc'): ᴺᵁᴸᴸ
@@ -1175,7 +1175,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt64OrDefault('-64', CAST('-1', 'Int64')): -64
 toInt64OrDefault('abc', CAST('-1', 'Int64')): -1
@@ -1239,8 +1239,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toInt128(-128):   -128
 toInt128(-128.8): -128
 toInt128('-128'): -128
@@ -1302,7 +1302,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt128OrZero('-128'): -128
 toInt128OrZero('abc'):  0
@@ -1364,8 +1364,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toInt128OrNull('-128'): -128
 toInt128OrNull('abc'):  ᴺᵁᴸᴸ
 ```
@@ -1432,7 +1432,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt128OrDefault('-128', CAST('-1', 'Int128')): -128
 toInt128OrDefault('abc', CAST('-1', 'Int128')):  -1
@@ -1496,7 +1496,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toInt256(-256):     -256
 toInt256(-256.256): -256
@@ -1559,8 +1559,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toInt256OrZero('-256'): -256
 toInt256OrZero('abc'):  0
 ```
@@ -1753,8 +1753,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt8(8):   8
 toUInt8(8.8): 8
 toUInt8('8'): 8
@@ -1816,7 +1816,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt8OrZero('-8'):  0
 toUInt8OrZero('abc'): 0
@@ -1945,7 +1945,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt8OrDefault('8', CAST('0', 'UInt8')):   8
 toUInt8OrDefault('abc', CAST('0', 'UInt8')): 0
@@ -2010,8 +2010,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt16(16):    16
 toUInt16(16.16): 16
 toUInt16('16'):  16
@@ -2073,7 +2073,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt16OrZero('16'):  16
 toUInt16OrZero('abc'): 0
@@ -2267,8 +2267,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt32(32):    32
 toUInt32(32.32): 32
 toUInt32('32'):  32
@@ -2331,7 +2331,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt32OrZero('32'):  32
 toUInt32OrZero('abc'): 0
@@ -2394,7 +2394,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt32OrNull('32'):  32
 toUInt32OrNull('abc'): ᴺᵁᴸᴸ
@@ -2461,7 +2461,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt32OrDefault('32', CAST('0', 'UInt32')):  32
 toUInt32OrDefault('abc', CAST('0', 'UInt32')): 0
@@ -2526,8 +2526,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt64(64):    64
 toUInt64(64.64): 64
 toUInt64('64'):  64
@@ -2589,7 +2589,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt64OrZero('64'):  64
 toUInt64OrZero('abc'): 0
@@ -2651,8 +2651,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt64OrNull('64'):  64
 toUInt64OrNull('abc'): ᴺᵁᴸᴸ
 ```
@@ -2718,7 +2718,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt64OrDefault('64', CAST('0', 'UInt64')):  64
 toUInt64OrDefault('abc', CAST('0', 'UInt64')): 0
@@ -2782,8 +2782,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt128(128):   128
 toUInt128(128.8): 128
 toUInt128('128'): 128
@@ -2845,7 +2845,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt128OrZero('128'): 128
 toUInt128OrZero('abc'): 0
@@ -2907,7 +2907,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt128OrNull('128'): 128
 toUInt128OrNull('abc'): ᴺᵁᴸᴸ
@@ -3039,8 +3039,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toUInt256(256):     256
 toUInt256(256.256): 256
 toUInt256('256'):   256
@@ -3102,7 +3102,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt256OrZero('256'): 256
 toUInt256OrZero('abc'): 0
@@ -3164,7 +3164,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt256OrNull('256'): 256
 toUInt256OrNull('abc'): ᴺᵁᴸᴸ
@@ -3231,7 +3231,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toUInt256OrDefault('-256', CAST('0', 'UInt256')): 0
 toUInt256OrDefault('abc', CAST('0', 'UInt256')):  0
@@ -3287,7 +3287,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat32(42.7):   42.7
 toFloat32('42.7'): 42.7
@@ -3340,8 +3340,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toFloat32OrZero('42.7'): 42.7
 toFloat32OrZero('abc'):  0
 ```
@@ -3392,8 +3392,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 toFloat32OrNull('42.7'): 42.7
 toFloat32OrNull('abc'):  ᴺᵁᴸᴸ
 ```
@@ -3449,7 +3449,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat32OrDefault('8', CAST('0', 'Float32')):   8
 toFloat32OrDefault('abc', CAST('0', 'Float32')): 0
@@ -3505,7 +3505,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat64(42.7):   42.7
 toFloat64('42.7'): 42.7
@@ -3558,7 +3558,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat64OrZero('42.7'): 42.7
 toFloat64OrZero('abc'):  0
@@ -3610,7 +3610,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat64OrNull('42.7'): 42.7
 toFloat64OrNull('abc'):  ᴺᵁᴸᴸ
@@ -3667,7 +3667,7 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 toFloat64OrDefault('8', CAST('0', 'Float64')):   8
 toFloat64OrDefault('abc', CAST('0', 'Float64')): 0
@@ -3761,17 +3761,17 @@ toBFloat16OrZero(x)
 **Пример**
 
 ```sql
-SELECT toBFloat16OrZero('0x5E'); -- неподдерживаемые аргументы
+SELECT toBFloat16OrZero('0x5E'); -- unsupported arguments
 
 0
 
-SELECT toBFloat16OrZero('12.3'); -- типичное использование
+SELECT toBFloat16OrZero('12.3'); -- typical use
 
 12.25
 
 SELECT toBFloat16OrZero('12.3456789');
 
-12.3125 -- неявная потеря точности
+12.3125 -- silent loss of precision
 ```
 
 **См. также**
@@ -3814,17 +3814,17 @@ toBFloat16OrNull(x)
 **Пример**
 
 ```sql
-SELECT toBFloat16OrNull('0x5E'); -- неподдерживаемые аргументы
+SELECT toBFloat16OrNull('0x5E'); -- unsupported arguments
 
 \N
 
-SELECT toBFloat16OrNull('12.3'); -- типичное использование
+SELECT toBFloat16OrNull('12.3'); -- typical use
 
 12.25
 
 SELECT toBFloat16OrNull('12.3456789');
 
-12.3125 -- неявная потеря точности
+12.3125 -- silent loss of precision
 ```
 
 **См. также**
@@ -3863,7 +3863,7 @@ SELECT
 │ 2022-12-30 │ Date                             │
 └────────────┴──────────────────────────────────┘
 
-Получена 1 строка. Время выполнения: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -3893,7 +3893,7 @@ SELECT
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 current_time:     2022-12-30 13:51:54
 ts:               1672404714
@@ -4499,8 +4499,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:      2
 type_a: Decimal(9, 1)
 b:      4.2
@@ -4566,8 +4566,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             -1.111
 toTypeName(a): Decimal(9, 5)
 b:             0
@@ -4773,8 +4773,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:      2
 type_a: Decimal(18, 1)
 b:      4.2
@@ -4840,8 +4840,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             0.0001
 toTypeName(a): Decimal(18, 18)
 b:             0
@@ -5047,8 +5047,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:      99
 type_a: Decimal(38, 1)
 b:      99.67
@@ -5114,8 +5114,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             0.0001
 toTypeName(a): Decimal(38, 38)
 b:             0
@@ -5251,8 +5251,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             0.023809523809523808
 toTypeName(a): Decimal(38, 18)
 b:             -1
@@ -5321,8 +5321,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:      99
 type_a: Decimal(76, 1)
 b:      99.67
@@ -5388,8 +5388,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             0.0001
 toTypeName(a): Decimal(76, 76)
 b:             0
@@ -5525,8 +5525,8 @@ FORMAT Vertical;
 Результат:
 
 ```response
-Строка 1:
-─────────
+Row 1:
+──────
 a:             0.023809523809523808
 toTypeName(a): Decimal(76, 76)
 b:             -1
@@ -6457,9 +6457,9 @@ reinterpret(x, type)
 Запрос:
 
 ```sql
-SELECT reinterpret(toInt8(-1), 'UInt8') AS целое_в_беззнаковое,
-    reinterpret(toInt8(1), 'Float32') AS целое_в_вещественное,
-    reinterpret('1', 'UInt32') AS строка_в_целое;
+SELECT reinterpret(toInt8(-1), 'UInt8') AS int_to_uint,
+    reinterpret(toInt8(1), 'Float32') AS int_to_float,
+    reinterpret('1', 'UInt32') AS string_to_int;
 ```
 
 Результат:
@@ -6620,7 +6620,7 @@ SELECT accurateCast(-1, 'UInt8') AS uint8;
 Результат:
 
 ```response
-Код: 70. DB::Exception: Получено от localhost:9000. DB::Exception: Значение в столбце Int8 невозможно безопасно преобразовать в тип UInt8: При обработке accurateCast(-1, 'UInt8') AS uint8.
+Code: 70. DB::Exception: Received from localhost:9000. DB::Exception: Value in column Int8 cannot be safely converted into type UInt8: While processing accurateCast(-1, 'UInt8') AS uint8.
 ```
 
 ## accurateCastOrNull(x, T) {#accuratecastornullx-t}
@@ -6738,7 +6738,7 @@ SELECT
 **Синтаксис**
 
 ```sql
-toInterval(значение, единица_измерения)
+toInterval(value, unit)
 ```
 
 **Аргументы**
@@ -8001,7 +8001,7 @@ formatRow(format, x, y, ...)
 Запрос:
 
 ```sql
-SELECT formatRow('CSV', number, 'хорошо')
+SELECT formatRow('CSV', number, 'good')
 FROM numbers(3);
 ```
 

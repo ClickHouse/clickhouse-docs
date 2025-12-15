@@ -35,26 +35,26 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 1. Такая мутация позволяет обновлять `visitor_ids`, заменяя их новыми с помощью словарного поиска:
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
+     WHERE visit_date < '2022-01-01'
+     ```
 
 2. Изменение нескольких значений в одной команде может быть более эффективным, чем выполнение нескольких отдельных команд:
 
    ```sql
-   ALTER TABLE website.clicks
-   UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
-   WHERE visit_date < '2022-01-01'
-   ```
+     ALTER TABLE website.clicks
+     UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
+     WHERE visit_date < '2022-01-01'
+     ```
 
 3. Мутации могут выполняться `ON CLUSTER` для шардированных таблиц:
 
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster
-   UPDATE click_count = click_count / 2
-   WHERE visitor_id ILIKE '%robot%'
-   ```
+     ALTER TABLE clicks ON CLUSTER main_cluster
+     UPDATE click_count = click_count / 2
+     WHERE visitor_id ILIKE '%robot%'
+     ```
 
 :::note
 Нельзя обновлять столбцы, которые входят в первичный или сортировочный ключ.
@@ -65,7 +65,7 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 Используйте команду `ALTER TABLE`, чтобы удалить строки:
 
 ```sql
-ALTER TABLE [<база_данных>.]<таблица> DELETE WHERE <условие_фильтрации>
+ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 ```
 
 `<filter_expr>` должен возвращать значение типа UInt8 для каждой строки данных.
@@ -74,13 +74,13 @@ ALTER TABLE [<база_данных>.]<таблица> DELETE WHERE <услов�
 
 1. Удалить все записи, где значение столбца содержится в массиве значений:
    ```sql
-   ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
-   ```
+    ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
+    ```
 
 2. Что изменяет этот запрос?
    ```sql
-   ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
-   ```
+    ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
+    ```
 
 :::note
 Чтобы удалить все данные в таблице, будет эффективнее использовать команду `TRUNCATE TABLE [<database>.]<table>`. Эту команду также можно выполнить с модификатором `ON CLUSTER`.
@@ -92,8 +92,10 @@ ALTER TABLE [<база_данных>.]<таблица> DELETE WHERE <услов�
 
 Другой вариант удаления строк — использование команды `DELETE FROM`, которая называется **легковесным удалением**. Удалённые строки помечаются как удалённые немедленно и будут автоматически исключаться из всех последующих запросов, поэтому вам не нужно ждать слияния частей или использовать ключевое слово `FINAL`. Очистка данных выполняется асинхронно в фоновом режиме.
 
-```sql
-DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
+```
+
+For example, the following query deletes all rows from the `hits` table where the `Title` column contains the text `hello`:
+
 ```
 
 Например, следующий запрос удаляет все строки таблицы `hits`, в которых столбец `Title` содержит текст `hello`:

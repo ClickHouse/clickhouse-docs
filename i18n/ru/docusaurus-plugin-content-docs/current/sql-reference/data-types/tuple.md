@@ -87,8 +87,8 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- по имени
-SELECT a.2 FROM named_tuples; -- по индексу
+SELECT a.s FROM named_tuples; -- by name
+SELECT a.2 FROM named_tuples; -- by index
 ```
 
 Результат:
@@ -167,7 +167,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- Найдём значение для каждого ключа с максимальной длительностью; если длительности равны, выберем максимальное значение
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,

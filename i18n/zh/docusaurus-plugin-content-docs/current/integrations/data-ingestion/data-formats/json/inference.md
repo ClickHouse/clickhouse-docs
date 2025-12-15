@@ -26,14 +26,14 @@ ClickHouse 可以自动确定 JSON 数据的结构。利用此功能，可以直
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "每秒千兆字节级数字解析",
-  "comments": "软件位于 https://github.com/fastfloat/fast_float 和\n https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "随着磁盘和网络提供每秒千兆字节级的吞吐量....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
       "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -142,7 +142,7 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-返回 18 行。用时:20.172 秒。已处理 252 万行,1.39 GB(12.472 万行/秒,68.76 MB/秒)。
+18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
 模式推断使我们无需显式定义模式即可查询 JSON 文件，从而加速即席数据分析。
@@ -250,13 +250,13 @@ FORMAT PrettyJSONEachRow
   "submitter": "David Callan",
   "authors": "David Callan",
   "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-  "comments": "11 页",
+  "comments": "11 pages",
   "journal-ref": "",
   "doi": "",
   "report-no": "",
   "categories": "math.CO",
   "license": "",
-  "abstract": "  我们证明了 Stirling 循环数的行列式可以计数无标签无环单源自动机。",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
   "versions": [
     {
       "created": "Sat, 31 Mar 2007 03:16:14 GMT",
@@ -272,7 +272,7 @@ FORMAT PrettyJSONEachRow
   ]
 }
 
-返回 1 行。耗时:0.009 秒。
+1 row in set. Elapsed: 0.009 sec.
 ```
 
 ## 处理错误 {#handling-errors}
@@ -311,7 +311,7 @@ ClickHouse 通过专门的 [`JSON`](/sql-reference/data-types/newjson) 类型来
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- 为简洁起见,此处省略结果
+-- result omitted for brevity
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
@@ -350,7 +350,7 @@ SETTINGS describe_compact_output = 1
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
 
-1 行结果集。用时:0.081 秒。
+1 row in set. Elapsed: 0.081 sec.
 ```
 
 :::note 类型强制转换
@@ -369,16 +369,16 @@ SETTINGS describe_compact_output = 1
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
-耗时：0.755 秒。
+Elapsed: 0.755 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
+Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
 从服务器接收到异常（版本 24.12.1）：
 代码：636。DB::Exception: 从 sql-clickhouse.clickhouse.com:9440 接收到。DB::Exception: 无法从 JSON 格式文件中提取表结构。错误：
 代码：53。DB::Exception: 为第 1 行列 &#39;a&#39; 自动推断的类型 Tuple(b Int64) 与之前行中定义的类型 Int64 不一致。你可以通过设置 schema&#95;inference&#95;hints 为该列指定类型。
-
-````
-
-在这种情况下,`JSONAsObject` 将每一行视为单个 [`JSON`](/sql-reference/data-types/newjson) 类型(该类型支持同一列包含多种类型)。这一点至关重要:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
@@ -388,8 +388,17 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 │ json │ JSON │
 └──────┴──────┘
 
+1 row in set. Elapsed: 0.010 sec.
+```sql
+DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
+SETTINGS enable_json_type = 1, describe_compact_output = 1
+
+┌─name─┬─type─┐
+│ json │ JSON │
+└──────┴──────┘
+
 返回 1 行。耗时:0.010 秒。
-````
+```
 
 ## 延伸阅读 {#further-reading}
 

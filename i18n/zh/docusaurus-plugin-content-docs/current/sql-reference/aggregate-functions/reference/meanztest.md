@@ -14,7 +14,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-meanZTest(总体方差_x, 总体方差_y, 置信度)(样本数据, 样本索引)
+meanZTest(population_variance_x, population_variance_y, confidence_level)(sample_data, sample_index)
 ```
 
 两个样本的值都在 `sample_data` 列中。如果 `sample_index` 等于 0，则该行的值属于第一个总体的样本；否则，该行的值属于第二个总体的样本。

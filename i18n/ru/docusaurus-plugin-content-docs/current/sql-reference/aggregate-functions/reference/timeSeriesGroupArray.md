@@ -31,11 +31,11 @@ timeSeriesGroupArray(timestamp, value)
 ```sql
 WITH
     [110, 120, 130, 140, 140, 100]::Array(UInt32) AS timestamps,
-    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- массив значений, соответствующих временным меткам выше
+    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- array of values corresponding to timestamps above
 SELECT timeSeriesGroupArray(timestamp, value)
 FROM
 (
-    -- Данный подзапрос преобразует массивы временных меток и значений в строки с полями `timestamp` и `value`
+    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -56,7 +56,7 @@ FROM
 ```sql
 WITH
     [110, 120, 130, 140, 140, 100]::Array(UInt32) AS timestamps,
-    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- массив значений, соответствующих указанным выше временным меткам
+    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- array of values corresponding to timestamps above
 SELECT timeSeriesGroupArray(timestamps, values);
 ```
 

@@ -57,11 +57,11 @@ CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- Начальное значение для состояния суммы (1 для положительной оценки, 0 в остальных случаях)
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- Начальное значение для состояния суммы (1 для отрицательной оценки, 0 в остальных случаях)
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- Начальное значение для состояния суммы (1 для положительной оценки, -1 для отрицательной)
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
@@ -86,17 +86,17 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- Запрос к целевой таблице
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```
 
 ```response
-┌─post_id─┬─всего_голосов_за─┬─всего_голосов_против─┬─общий_балл─┐
-│       1 │                2 │                     1 │          1 │
-│       2 │                1 │                     1 │          0 │
-│       3 │                0 │                     1 │         -1 │
-└─────────┴──────────────────┴───────────────────────┴────────────┘
+┌─post_id─┬─total_upvotes─┬─total_downvotes─┬─total_score─┐
+│       1 │             2 │               1 │           1 │
+│       2 │             1 │               1 │           0 │
+│       3 │             0 │               1 │          -1 │
+└─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
 ## См. также {#see-also}

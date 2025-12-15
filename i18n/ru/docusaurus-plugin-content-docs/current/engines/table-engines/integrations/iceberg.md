@@ -103,14 +103,14 @@ ClickHouse поддерживает отсечение партиций в за�
 ### Базовое использование {#basic-usage}
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_timestamp_ms = 1714636800000
+ ```
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_snapshot_id = 3547395809148285433
+ ```
 
 Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` в одном запросе одновременно.
 
@@ -131,47 +131,47 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 Рассмотрим следующую последовательность операций:
 
 ```sql
--- Создать таблицу с двумя столбцами
- CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
- order_number int, 
- product_code string
- ) 
- USING iceberg 
- OPTIONS ('format-version'='2')
+ -- Create a table with two columns
+  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+  order_number int, 
+  product_code string
+  ) 
+  USING iceberg 
+  OPTIONS ('format-version'='2')
 
--- Вставить данные в таблицу
- INSERT INTO spark_catalog.db.time_travel_example VALUES 
-   (1, 'Mars')
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES 
+    (1, 'Mars')
 
- ts1 = now() // Фрагмент псевдокода
+  ts1 = now() // A piece of pseudo code
 
--- Изменить таблицу, добавив новый столбец
- ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+-- Alter table to add a new column
+  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+ 
+  ts2 = now()
 
- ts2 = now()
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
--- Вставить данные в таблицу
- INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+   ts3 = now()
 
-  ts3 = now()
-
--- Запросить таблицу для каждой временной метки
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
-
-+------------+------------+
-|order_number|product_code|
-+------------+------------+
-|           1|        Mars|
-+------------+------------+
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+-- Query the table at each timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
++------------+------------+
+|order_number|product_code|
++------------+------------+
+|           1|        Mars|
++------------+------------+
+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -191,7 +191,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 Запрос time travel, выполненный в текущий момент времени, может показать схему, отличающуюся от текущей схемы таблицы:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number int, 
   product_code string
@@ -199,15 +199,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Вставка начальных данных в таблицу
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- Изменение таблицы для добавления нового столбца
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- Запрос таблицы на текущий момент с использованием синтаксиса временной метки
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -217,7 +217,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     |           2|       Venus|
     +------------+------------+
 
--- Запрос таблицы на текущий момент
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -233,7 +233,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 Второй момент заключается в том, что при выполнении операции time travel вы не можете получить состояние таблицы до того, как в неё были записаны какие-либо данные:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number int, 
   product_code string
@@ -243,8 +243,8 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
   ts = now();
 
--- Запрос таблицы на определённую временную метку
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Завершается ошибкой: Cannot find a snapshot older than ts.
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 В ClickHouse поведение аналогично Spark. Вы можете мысленно заменить запросы Select в Spark на запросы Select в ClickHouse — и всё будет работать так же.
@@ -283,7 +283,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 **Примечание**: Все упомянутые параметры являются настройками на уровне движка и должны указываться при создании таблицы, как показано ниже:
 
-```sql
+```sql 
 CREATE TABLE example_table ENGINE = Iceberg(
     's3://bucket/path/to/iceberg_table'
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';

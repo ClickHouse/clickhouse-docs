@@ -76,12 +76,12 @@ VALUES
 
 ##### Проверьте таблицу {#verify}
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT *
 FROM db1.table1
 ```
 
-```response title="Ответ"
+```response title="Response"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -167,7 +167,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 ##### Предоставьте явные разрешения другим ролям для сохранения доступа ко всем строкам {#grant-other-roles-access}
 
     ```sql
-    CREATE ROW POLICY allow_other_users_filter
+    CREATE ROW POLICY allow_other_users_filter 
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 
@@ -400,7 +400,7 @@ SHOW ROW POLICIES
 ```
 
 ```response
-Идентификатор запроса: f2c636e9-f955-4d79-8e80-af40ea227ebc
+Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 
 ┌─name───────────────────────────────────┐
 │ A_row_filter ON db1.table1             │

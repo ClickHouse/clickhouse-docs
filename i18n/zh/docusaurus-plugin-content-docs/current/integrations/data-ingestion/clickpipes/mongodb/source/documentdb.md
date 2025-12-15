@@ -62,7 +62,7 @@ aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <P
 ```javascript
 db.getSiblingDB("admin").createUser({
     user: "clickpipes_user",
-    pwd: "安全密码",
+    pwd: "some_secure_password",
     roles: ["readAnyDatabase", "clusterMonitor"],
 })
 ```

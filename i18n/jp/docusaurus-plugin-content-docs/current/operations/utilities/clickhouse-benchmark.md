@@ -136,9 +136,9 @@ $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhous
 ```
 
 ```text
-1件のクエリを読み込みました。
+Loaded 1 queries.
 
-実行されたクエリ: 5件
+Queries executed: 5.
 
 localhost:9001, queries 2, QPS: 3.764, RPS: 75446929.370, MiB/s: 575.614, result RPS: 37639659.982, result MiB/s: 287.168.
 localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result RPS: 38148392.297, result MiB/s: 291.049.
@@ -158,5 +158,5 @@ localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result
 99.900%         0.273 sec.      0.269 sec.
 99.990%         0.273 sec.      0.269 sec.
 
-99.5%信頼水準で有意差なし
+No difference proven at 99.5% confidence
 ```

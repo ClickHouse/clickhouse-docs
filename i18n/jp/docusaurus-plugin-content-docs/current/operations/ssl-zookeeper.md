@@ -55,7 +55,7 @@ sudo update-ca-certificates
 `clickhouse-server` を起動します。ログに次のような出力が表示されるはずです：
 
 ```text
-<Trace> ZooKeeper: 初期化済み、ホスト: secure://localhost:2281
+<Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
 ```
 
 `secure://` プレフィックスは、接続が SSL によって保護されていることを示します。

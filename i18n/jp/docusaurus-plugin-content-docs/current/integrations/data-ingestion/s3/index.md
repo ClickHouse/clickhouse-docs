@@ -1214,7 +1214,7 @@ SELECT trip_id,
        total_amount,
        payment_type
    FROM s3('https://ch-nyc-taxi.s3.eu-west-3.amazonaws.com/tsv/trips_{0..9}.tsv.gz', 'TabSeparatedWithNames') LIMIT 1000000;
-````
+```
 
 * データが S3 に保存されていることを確認します。
 

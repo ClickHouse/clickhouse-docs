@@ -40,9 +40,9 @@ doc_type: 'guide'
 5. 在 “Create new case” 界面中输入以下内容：
 
 ```text
-优先级：严重程度 3
-主题：请关闭我的 ClickHouse 账户
-描述：如果您能简要说明取消原因，我们将不胜感激。
+Priority: Severity 3
+Subject: Please close my ClickHouse account
+Description: We would appreciate it if you would share a brief note about why you are cancelling.
 ```
 
 5. 点击“Create new case”

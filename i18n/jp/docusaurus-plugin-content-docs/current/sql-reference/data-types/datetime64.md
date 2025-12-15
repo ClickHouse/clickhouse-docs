@@ -17,7 +17,7 @@ doc_type: 'reference'
 **構文:**
 
 ```sql
-DateTime64(精度, [タイムゾーン])
+DateTime64(precision, [timezone])
 ```
 
 内部的には、エポック開始（1970-01-01 00:00:00 UTC）からの「ティック」数としてデータを Int64 で格納します。ティックの分解能は precision パラメータによって決まります。さらに、`DateTime64` 型では列全体で共通のタイムゾーンを保持でき、このタイムゾーンが `DateTime64` 型の値のテキスト形式での表示方法や、文字列として指定された値（&#39;2020-01-01 05:00:01.000&#39;）のパース方法に影響します。タイムゾーンはテーブルの行（または結果セット）には保存されず、列メタデータとして保存されます。詳細は [DateTime](../../sql-reference/data-types/datetime.md) を参照してください。
@@ -42,10 +42,10 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- DateTime を解析する
--- - 整数値を（精度 3 のため）1970-01-01 からのマイクロ秒数として解釈する
--- - 小数値を、小数点より前の部分を秒数として、小数点以下の桁数に基づいて解釈する
--- - 文字列から解釈する
+-- Parse DateTime
+-- - from integer interpreted as number of microseconds (because of precision 3) since 1970-01-01,
+-- - from decimal interpreted as number of seconds before the decimal part, and based on the precision after the decimal point,
+-- - from string.
 INSERT INTO dt64 VALUES (1546300800123, 1), (1546300800.123, 2), ('2019-01-01 00:00:00', 3);
 
 SELECT * FROM dt64;
@@ -111,7 +111,7 @@ FROM dt64;
 ```
 
 ```text
-┌────────────────ロンドン_time─┬───────────イスタンブール_time─┐
+┌────────────────lon_time─┬───────────istanbul_time─┐
 │ 2019-01-01 00:00:00.123 │ 2019-01-01 03:00:00.123 │
 │ 2019-01-01 00:00:00.123 │ 2019-01-01 03:00:00.123 │
 │ 2018-12-31 21:00:00.000 │ 2019-01-01 00:00:00.000 │

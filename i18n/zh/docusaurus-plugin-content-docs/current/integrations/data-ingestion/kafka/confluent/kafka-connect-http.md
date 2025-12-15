@@ -126,7 +126,7 @@ ORDER BY tuple()
 如果在向 `String` 列插入 JSON 对象时，HTTP Sink 失败并出现以下消息：
 
 ```response
-Code: 26. DB::ParsingException: 无法解析 JSON 字符串：缺少起始引号（在读取键 key_name 的值时）：执行 JSONEachRowRowInputFormat 时（第 1 行）。（CANNOT_PARSE_QUOTED_STRING）
+Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
 在 URL 中将 `input_format_json_read_objects_as_strings=1` 设置为编码后的字符串 `SETTINGS%20input_format_json_read_objects_as_strings%3D1`

@@ -41,7 +41,7 @@ SETTINGS max_suspicious_broken_parts = 500;
 ```sql
 ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 
--- сброс до глобального значения по умолчанию (значение из system.merge_tree_settings)
+-- reset to global default (value from system.merge_tree_settings)
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
@@ -130,7 +130,7 @@ time DateTime,
 key Int32,
 value String
 ) ENGINE = MergeTree
-ORDER BY (time DESC, key)  -- Сортировка по убыванию по полю 'time'
+ORDER BY (time DESC, key)  -- Descending order on 'time' field
 SETTINGS allow_experimental_reverse_key = 1;
 
 SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
@@ -655,14 +655,14 @@ INDEX idx_b b TYPE set(3)
 )
 ENGINE = MergeTree ORDER BY tuple() SETTINGS exclude_materialize_skip_indexes_on_merge = 'idx_a';
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- настройка не действует на INSERT
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- setting has no effect on INSERTs
 
--- idx_a будет исключён из обновления при фоновом или явном слиянии через OPTIMIZE TABLE FINAL
+-- idx_a will be excluded from update during background or explicit merge via OPTIMIZE TABLE FINAL
 
--- можно исключить несколько индексов, указав их списком
+-- can exclude multiple indexes by providing a list
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_a, idx_b';
 
--- настройка по умолчанию, индексы не исключаются из обновления при слиянии
+-- default setting, no indexes excluded from being updated during merge
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
 
@@ -2248,7 +2248,7 @@ WHERE table LIKE 'my_sparse_table';
 Вы можете увидеть, какие части `s` были сохранены в разрежённом формате сериализации:
 
 ```response
-┌─столбец─┬─serialization_kind─┐
+┌─column─┬─serialization_kind─┐
 │ id     │ Default            │
 │ s      │ Default            │
 │ id     │ Default            │

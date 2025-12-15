@@ -56,10 +56,10 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 {
     "conf": {
         "spark.sql.catalog.clickhouse": "com.clickhouse.spark.ClickHouseCatalog",
-        "spark.sql.catalog.clickhouse.host": "<ClickHouse 主机地址>",
+        "spark.sql.catalog.clickhouse.host": "<clickhouse host>",
         "spark.sql.catalog.clickhouse.protocol": "https",
-        "spark.sql.catalog.clickhouse.http_port": "<端口号>",
-        "spark.sql.catalog.clickhouse.user": "<用户名>",
+        "spark.sql.catalog.clickhouse.http_port": "<port>",
+        "spark.sql.catalog.clickhouse.user": "<username>",
         "spark.sql.catalog.clickhouse.password": "password",
         "spark.sql.catalog.clickhouse.database": "default"
     }

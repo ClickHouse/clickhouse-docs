@@ -92,7 +92,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 ```sql
 CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'здесь-ваш-пароль'
+IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
 SETTINGS readonly = 1;
 ```
 
@@ -150,7 +150,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- увеличивает ограничение до 2 ТБ
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::

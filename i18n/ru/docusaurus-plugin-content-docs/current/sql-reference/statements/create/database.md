@@ -41,7 +41,7 @@ ClickHouse создаёт базу данных `db_name` на всех серв
 **Синтаксис**
 
 ```sql
-CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Комментарий'
+CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 ```
 
 **Пример**
@@ -49,7 +49,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Комментарий'
 Запрос:
 
 ```sql
-CREATE DATABASE db_comment ENGINE = Memory COMMENT 'Временная база данных';
+CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
@@ -57,6 +57,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ Временная база данных  │
+│ db_comment │ The temporary database │
 └────────────┴────────────────────────┘
 ```

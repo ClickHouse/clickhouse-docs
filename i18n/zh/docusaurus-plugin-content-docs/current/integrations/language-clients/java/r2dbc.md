@@ -27,10 +27,10 @@ import CodeBlock from '@theme/CodeBlock';
 ```xml
 <dependency>
     <groupId>com.clickhouse</groupId>
-    <!-- 若使用 SPI 0.9.1.RELEASE,请改为 clickhouse-r2dbc_0.9.1 -->
+    <!-- change to clickhouse-r2dbc_0.9.1 for SPI 0.9.1.RELEASE -->
     <artifactId>clickhouse-r2dbc</artifactId>
     <version>0.7.1</version>
-    <!-- 使用包含所有依赖项的 uber jar;如需更小的 jar 包,可将 classifier 改为 http 或 grpc -->
+    <!-- use uber jar with all dependencies included, change classifier to http or grpc for smaller jar -->
     <classifier>all</classifier>
     <exclusions>
         <exclusion>
@@ -51,7 +51,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### 查询 {#query}
+### Query {#query}
 
 ```java showLineNumbers
 connection
@@ -68,7 +68,7 @@ connection
     .subscribe();
 ```
 
-### 插入 {#insert}
+### Insert {#insert}
 
 ```java showLineNumbers
 connection

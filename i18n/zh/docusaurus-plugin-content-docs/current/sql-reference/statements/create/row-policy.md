@@ -66,8 +66,8 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 通用公式如下：
 
 ```text
-row_is_visible = (一个或多个宽松策略的条件为非零) AND
-                 (所有限制性策略的条件均为非零)
+row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
+                 (all of the restrictive policies's conditions are non-zero)
 ```
 
 例如，下面的策略：

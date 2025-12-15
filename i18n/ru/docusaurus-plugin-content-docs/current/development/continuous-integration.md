@@ -108,7 +108,7 @@ python -m ci.praktika run "Style check" --test cpp
 #### Запуск быстрого теста локально: {#running-fast-test-locally}
 
 ```sh
-python -m ci.praktika run "Fast test" [--test имя_теста]
+python -m ci.praktika run "Fast test" [--test some_test_name]
 ```
 
 Эти команды загружают Docker-образ `clickhouse/fast-test` и запускают задачу в контейнеризированной среде.
@@ -123,7 +123,7 @@ python -m ci.praktika run "Fast test" [--test имя_теста]
 Сборку можно запустить локально в среде, имитирующей CI, с помощью:
 
 ```bash
-python -m ci.praktika run "<ИМЯ_ЗАДАНИЯ_СБОРКИ>"
+python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 Никаких дополнительных зависимостей, кроме Python 3 и Docker, не требуется.

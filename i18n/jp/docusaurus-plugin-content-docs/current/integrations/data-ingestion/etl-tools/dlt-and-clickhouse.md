@@ -71,16 +71,16 @@ GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 
 ```bash
 [destination.clickhouse.credentials]
-database = "dlt"                         # 作成したデータベース名
-username = "dlt"                         # ClickHouseユーザー名、デフォルトは通常「default」
-password = "Dlt*12345789234567"          # ClickHouseパスワード（設定されている場合）
-host = "localhost"                       # ClickHouseサーバーホスト
-port = 9000                              # ClickHouseネイティブポート、デフォルトは9000
-http_port = 8443                         # ClickHouseサーバーのHTTPインターフェースに接続するためのHTTPポート。デフォルトは8443。
-secure = 1                               # HTTPSを使用する場合は1、それ以外は0に設定
+database = "dlt"                         # The database name you created
+username = "dlt"                         # ClickHouse username, default is usually "default"
+password = "Dlt*12345789234567"          # ClickHouse password if any
+host = "localhost"                       # ClickHouse server host
+port = 9000                              # ClickHouse HTTP port, default is 9000
+http_port = 8443                         # HTTP Port to connect to ClickHouse server's HTTP interface. Defaults to 8443.
+secure = 1                               # Set to 1 if using HTTPS, else 0.
 
 [destination.clickhouse]
-dataset_table_separator = "___"          # データセットからデータセットテーブル名を区切るセパレーター
+dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
 :::note HTTP_PORT
@@ -94,7 +94,7 @@ ClickHouseサーバーが`http_port`で指定されたポートでHTTP接続を�
 `clickhouse-driver`ライブラリで使用されるものと同様のデータベース接続文字列を渡すこともできます。上記の認証情報は次のようになります。
 
 ```bash
-# tomlファイルの先頭、セクション開始前に記述してください。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
+# keep it at the top of your toml file, before any section starts.
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 
@@ -178,7 +178,7 @@ ClickHouse は、ファイルのステージング先として Amazon S3、Googl
 pipeline = dlt.pipeline(
   pipeline_name='chess_pipeline',
   destination='clickhouse',
-  staging='filesystem',  # ステージングを有効にするにはこれを追加
+  staging='filesystem',  # add this to activate staging
   dataset_name='chess_data'
 )
 ```

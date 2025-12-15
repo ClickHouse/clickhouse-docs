@@ -346,7 +346,7 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/git
 
 5 行の結果セット。経過時間: 0.059 秒。
 
-````
+```
 
 ご覧のとおり、2回目のクエリはほぼ瞬時に成功しました。
 
@@ -365,7 +365,7 @@ SETTINGS input_format_json_try_infer_named_tuples_from_objects=0, input_format_j
 └────────────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 
 5 rows in set. Elapsed: 0.611 sec
-````
+```
 
 ご覧のとおり、同じファイルに対してキャッシュからのスキーマは使用されていません。これは、推論されるスキーマに影響を与える設定が変更されたためです。
 
@@ -1489,14 +1489,14 @@ SET format_regexp = '^Line: value_1=(.+?), value_2=(.+?), value_3=(.+?)',
 DESC format(Regexp, $$Line: value&#95;1=42, value&#95;2=&quot;Some string 1&quot;, value&#95;3=&quot;[1, NULL, 3]&quot;
 Line: value&#95;1=2, value&#95;2=&quot;Some string 2&quot;, value&#95;3=&quot;[4, 5, NULL]&quot;$$)
 
-````
+```
 ```response
 ┌─name─┬─type───────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ c1   │ Nullable(Int64)        │              │                    │         │                  │                │
 │ c2   │ Nullable(String)       │              │                    │         │                  │                │
 │ c3   │ Array(Nullable(Int64)) │              │                    │         │                  │                │
 └──────┴────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
-````
+```
 
 ### テキスト形式用の設定 {#settings-for-text-formats}
 

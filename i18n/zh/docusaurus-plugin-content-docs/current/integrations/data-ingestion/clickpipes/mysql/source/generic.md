@@ -24,11 +24,11 @@ keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.
 要在 MySQL 实例上启用二进制日志，请确保已配置以下设置：
 
 ```sql
-log_bin = ON                        -- 默认值
-binlog_format = ROW                 -- 默认值
-binlog_row_image = FULL             -- 默认值
+log_bin = ON                        -- default value
+binlog_format = ROW                 -- default value
+binlog_row_image = FULL             -- default value
 binlog_row_metadata = FULL
-binlog_expire_logs_seconds = 86400  -- 1 天或更长；默认为 30 天
+binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
 要检查这些设置，请运行以下 SQL 命令：
@@ -60,11 +60,11 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 要在 MySQL 5.7 实例上启用二进制日志，请确保已配置以下设置：
 
 ```sql
-server_id = 1            -- 大于等于 1；任何非 0 值
+server_id = 1            -- or greater; anything but 0
 log_bin = ON
-binlog_format = ROW      -- 默认值
-binlog_row_image = FULL  -- 默认值
-expire_logs_days = 1     -- 大于等于 1；0 表示永久保留日志
+binlog_format = ROW      -- default value
+binlog_row_image = FULL  -- default value
+expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
 若要检查这些设置，请运行以下 SQL 命令：

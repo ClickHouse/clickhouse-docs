@@ -38,7 +38,7 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 2. 在 `Connect` 视图或下方复制 ClickHouse Cloud MCP 服务器的 URL
 
-```bash
+```bash 
 https://mcp.clickhouse.cloud/mcp
 ```
 

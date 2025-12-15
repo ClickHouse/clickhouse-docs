@@ -123,8 +123,8 @@ SETTINGS optimize_move_to_prewhere = false;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-返回 3 行。用时:0.056 秒。已处理 231 万行,23.36 MB(每秒 4109 万行,415.43 MB/秒)。
-内存峰值:132.10 MiB。
+3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+Peak memory usage: 132.10 MiB.
 ```
 
 在执行该查询时，ClickHouse 共读取了 **23.36 MB** 的列数据，处理了 231 万行记录。
@@ -148,8 +148,8 @@ SETTINGS optimize_move_to_prewhere = true;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-返回 3 行。用时:0.017 秒。已处理 231 万行,6.74 MB(每秒 1.3529 亿行,394.44 MB/秒)。
-峰值内存使用量:132.11 MiB。
+3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+Peak memory usage: 132.11 MiB.
 ```
 
 处理的行数相同（231 万），但得益于 PREWHERE，ClickHouse 读取的列数据量减少到不到原来的三分之一——仅 6.74 MB，而非 23.36 MB——从而将总运行时间缩短了约 3 倍。
@@ -158,7 +158,7 @@ SETTINGS optimize_move_to_prewhere = true;
 
 我们使用 [EXPLAIN](/sql-reference/statements/explain#explain-plan) 子句检查查询的逻辑计划：
 
-```sql
+```sql 
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -170,8 +170,8 @@ WHERE
 
 ```txt
 ...
-Prewhere 信息                                                                                                                                                                                                                                          
-  Prewhere 筛选列: 
+Prewhere info                                                                                                                                                                                                                                          
+  Prewhere filter column: 
     and(greater(__table1.date, '2024-12-31'_String), 
     less(__table1.price, 10000_UInt16), 
     equals(__table1.town, 'LONDON'_String)) 
@@ -196,12 +196,12 @@ SETTINGS send_logs_level = 'test';
 
 ```txt
 ...
-<Trace> ... 条件 greater(date, '2024-12-31'_String) 已移至 PREWHERE
-<Trace> ... 条件 less(price, 10000_UInt16) 已移至 PREWHERE
-<Trace> ... 条件 equals(town, 'LONDON'_String) 已移至 PREWHERE
+<Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
+<Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
+<Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
 ...
-<Test> ... 在数据块上执行 prewhere 操作:greater(__table1.date, '2024-12-31'_String)
-<Test> ... 在数据块上执行 prewhere 操作:less(__table1.price, 10000_UInt16)
+<Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
+<Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
 ...
 ```
 

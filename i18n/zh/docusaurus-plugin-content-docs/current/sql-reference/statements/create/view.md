@@ -187,7 +187,7 @@ AS SELECT ...
 其中 `interval` 是由简单区间组成的序列：
 
 ```sql
-数值 SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
+number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
 定期运行相应的查询，并将其结果存储在一个表中。
@@ -207,23 +207,23 @@ AS SELECT ...
 刷新计划示例：
 
 ```sql
-REFRESH EVERY 1 DAY -- 每天午夜(UTC)执行
-REFRESH EVERY 1 MONTH -- 每月1日午夜执行
-REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 每月6日凌晨2:00执行
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 每隔一周的星期六下午3:10执行
-REFRESH EVERY 30 MINUTE -- 在00:00、00:30、01:00、01:30等时刻执行
-REFRESH AFTER 30 MINUTE -- 上一次刷新完成后30分钟执行,不与每日时间对齐
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 语法错误,OFFSET不能与AFTER一起使用
-REFRESH EVERY 1 WEEK 2 DAYS -- 每9天执行一次,不固定在每周或每月的特定日期;
-                            -- 具体而言,当天数(自1969-12-29起算)能被9整除时执行
-REFRESH EVERY 5 MONTHS -- 每5个月执行一次,每年月份不同(因为12不能被5整除);
-                       -- 具体而言,当月份数(自1970-01起算)能被5整除时执行
+REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
+REFRESH EVERY 1 MONTH -- on 1st day of every month, at midnight
+REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- on 6th day of every month, at 2:00 am
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- every other Saturday, at 3:10 pm
+REFRESH EVERY 30 MINUTE -- at 00:00, 00:30, 01:00, 01:30, etc
+REFRESH AFTER 30 MINUTE -- 30 minutes after the previous refresh completes, no alignment with time of day
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- syntax error, OFFSET is not allowed with AFTER
+REFRESH EVERY 1 WEEK 2 DAYS -- every 9 days, not on any particular day of the week or month;
+                            -- specifically, when day number (since 1969-12-29) is divisible by 9
+REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is not divisible by 5);
+                       -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
 `RANDOMIZE FOR` 会随机调整每次刷新的时间，例如：
 
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 每天在 01:30 至 02:30 之间的随机时间刷新
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
 对于给定的视图，同一时间最多只能运行一个刷新任务。比如，如果一个带有 `REFRESH EVERY 1 MINUTE` 的视图需要 2 分钟才能刷新完成，那么它实际上就会每 2 分钟刷新一次。如果之后刷新变快，开始在 10 秒内完成刷新，它就会恢复为每分钟刷新一次。（特别地，它不会为了“追赶”错过的刷新而每 10 秒刷新一次——系统中并不存在这样的积压队列。）
@@ -514,7 +514,7 @@ SHOW CREATE TEMPORARY VIEW tview;
 将其删除：
 
 ```sql
-DROP TEMPORARY VIEW IF EXISTS tview;  -- 临时视图需使用 TEMPORARY TABLE 语法进行删除
+DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
 
 ### 不允许的用法 / 限制 {#temporary-views-limitations}
@@ -532,18 +532,18 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- 临时视图需使用 TEMPORARY TABLE �
 #### 示例 {#temporary-views-distributed-example}
 
 ```sql
--- 会话级内存表
+-- A session-scoped, in-memory table
 CREATE TEMPORARY TABLE temp_ids (id UInt64) ENGINE = Memory;
 
 INSERT INTO temp_ids VALUES (1), (5), (42);
 
--- 基于临时表的会话级视图(纯逻辑)
+-- A session-scoped view over the temp table (purely logical)
 CREATE TEMPORARY VIEW v_ids AS
 SELECT id FROM temp_ids;
 
--- 将 'test' 替换为您的集群名称。
--- GLOBAL JOIN 强制 ClickHouse 将较小的连接端(通过 v_ids 访问的 temp_ids)
--- 分发到执行左侧查询的每个远程服务器。
+-- Replace 'test' with your cluster name.
+-- GLOBAL JOIN forces ClickHouse to *ship* the small join-side (temp_ids via v_ids)
+-- to every remote server that executes the left side.
 SELECT count()
 FROM cluster('test', system.numbers) AS n
 GLOBAL ANY INNER JOIN v_ids USING (id)

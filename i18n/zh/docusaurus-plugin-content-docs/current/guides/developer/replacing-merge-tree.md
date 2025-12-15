@@ -45,7 +45,7 @@ ReplacingMergeTree 还允许指定一个 deleted 列。该列的值可以是 0 �
 <br />
 
 ```sql
-SYSTEM SYNC REPLICA 表名
+SYSTEM SYNC REPLICA table
 ```
 
 我们建议在确保条件 (1) 已满足后暂停插入，并保持暂停状态，直到此命令及后续清理操作全部完成。
@@ -111,7 +111,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
 
-返回 0 行。用时:1.980 秒。已处理 8.19 千行,3.52 MB(4.14 千行/秒,1.78 MB/秒)
+0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
 现在来确认一下行数：
@@ -154,11 +154,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --选择 100 个随机行
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-返回 0 行。耗时:4.056 秒。已处理 142 万行,2.20 GB(每秒 34.96 万行,每秒 543.39 MB)。
+0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
 此外，我们通过重新插入这些行、但将 `deleted` 列的值设为 1，来“删除”1000 条随机帖子。同样，这一步也可以通过一个简单的 `INSERT INTO SELECT` 来模拟。
@@ -189,11 +189,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --随机选择 100 行
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-返回 0 行。耗时:0.166 秒。已处理 13.553 万行,212.65 MB(81.63 万行/秒,1.28 GB/秒)
+0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
 上述操作的结果将是 16,000 行，即 10,000 + 5,000 + 1,000。实际上，这里的正确总数应该是：我们理应只比原始总数少 1,000 行，即 10,000 - 1,000 = 9,000。
@@ -219,8 +219,8 @@ FINAL
 │    9000 │
 └─────────┘
 
-返回 1 行。耗时: 0.006 秒。处理了 11.81 千行，212.54 KB (214 万行/秒，38.61 MB/秒)。
-峰值内存使用: 8.14 MiB。
+1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
+Peak memory usage: 8.14 MiB.
 ```
 
 ## FINAL 性能 {#final-performance}
@@ -299,7 +299,7 @@ ENGINE = ReplacingMergeTree
 PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
-// 已省略填充和更新操作
+// populate & update omitted
 
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
 FROM posts_with_part
@@ -316,7 +316,7 @@ ORDER BY year ASC
 │ 2024 │       127765  │
 └──────┴───────────────┘
 
-返回 17 行。用时:0.994 秒。处理了 6465 万行,983.64 MB(6502 万行/秒,989.23 MB/秒)。
+17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
 如上所示，在本例中，通过在分区级别并行执行去重过程，分区显著提升了查询性能。

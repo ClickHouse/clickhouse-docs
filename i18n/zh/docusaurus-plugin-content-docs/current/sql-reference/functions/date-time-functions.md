@@ -1898,8 +1898,8 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 **语法**
 
 ```sql
-makeDate(年, 月, 日)
-makeDate(年, 年积日)
+makeDate(year, month, day)
+makeDate(year, day_of_year)
 ```
 
 **参数**

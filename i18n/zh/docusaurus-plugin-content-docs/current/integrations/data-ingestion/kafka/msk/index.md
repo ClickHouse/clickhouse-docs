@@ -81,7 +81,7 @@ schemas.enable=false
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "MSK集群访问",
+      "Sid": "MSKClusterAccess",
       "Effect": "Allow",
       "Action": [
         "kafka:DescribeCluster",
@@ -93,7 +93,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "Kafka授权",
+      "Sid": "KafkaAuthorization",
       "Effect": "Allow",
       "Action": [
         "kafka-cluster:Connect",
@@ -105,7 +105,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "可选Glue模式注册表",
+      "Sid": "OptionalGlueSchemaRegistry",
       "Effect": "Allow",
       "Action": [
         "glue:GetSchema*",
@@ -115,7 +115,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "可选Secrets Manager",
+      "Sid": "OptionalSecretsManager",
       "Effect": "Allow",
       "Action": [
         "secretsmanager:GetSecretValue"
@@ -125,7 +125,7 @@ schemas.enable=false
       ]
     },
     {
-      "Sid": "可选S3读取",
+      "Sid": "OptionalS3Read",
       "Effect": "Allow",
       "Action": [
         "s3:GetObject"
@@ -148,8 +148,8 @@ schemas.enable=false
 提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
 
 ```yml
-consumer.max.poll.records=[记录数]
-consumer.max.partition.fetch.bytes=[记录数 * 单条记录字节数]
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
 ```
 
 您使用的具体数值会因期望的记录数量和记录大小而有所不同。例如，默认值为：

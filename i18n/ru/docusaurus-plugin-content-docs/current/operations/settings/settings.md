@@ -3320,7 +3320,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- возвращает ошибку о неоднозначности ALL
+SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3626,17 +3626,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a не будет обновляться при вставке
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- ни один из индексов не будет обновляться при вставке
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- обновляется только idx_b
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
 
--- поскольку это настройка сеанса, её можно установить на уровне отдельного запроса
+-- since it is a session setting it can be set on a per-query level
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- этот запрос можно использовать для явной материализации индекса
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- сброс настройки на значение по умолчанию
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
 ```
 
 
@@ -3969,12 +3969,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- запрос приведет к ошибке CANNOT_PARSE_TEXT.
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- запрос приведет к ошибке INDEX_NOT_USED.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Корректно.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Корректно (пример полнофункционального парсера).
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- запрос приведет к ошибке INDEX_NOT_USED, так как индекс d1_null_idx не используется.
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Корректно.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
 ```
 
 
@@ -4131,7 +4131,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-Получена 1 строка. Прошло: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 Возможные значения:
@@ -4153,7 +4153,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 │ ᴺᵁᴸᴸ                                   │
 └────────────────────────────────────────┘
 
-Получена 1 строка. Прошло: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 Возможные значения:
@@ -4684,11 +4684,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- запрос приведёт к ошибке CANNOT_PARSE_TEXT.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ок.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ок.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- запрос приведёт к ошибке INDEX_NOT_USED, так как индекс xy_idx явно игнорируется.
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4893,11 +4893,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- следующая вставка не будет дедуплицирована, поскольку insert_deduplication_token отличается
+-- the next insert won't be deduplicated because insert_deduplication_token is different
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- следующая вставка будет дедуплицирована, поскольку insert_deduplication_token
--- совпадает с одним из предыдущих
+-- the next insert will be deduplicated because insert_deduplication_token
+-- is the same as one of the previous
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -6306,7 +6306,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 Результат:
 
 ```text
-Исключение: Длина регулярного выражения слишком велика.
+Exception: Regexp length too large.
 ```
 
 **Смотрите также**
@@ -6350,7 +6350,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 Результат:
 
 ```text
-Исключение: Суммарная длина регулярных выражений слишком велика.
+Exception: Total regexp lengths too large.
 ```
 
 **См. также**
@@ -6904,15 +6904,15 @@ leaf-узлах и игнорироваться на этапе слияния �
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- Пользователь Alice может подключаться к серверу ClickHouse не более одного раза одновременно. -->
+    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- Пользователь Bob может использовать 2 одновременных сессии. -->
+    <!-- User Bob can use 2 simultaneous sessions. -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- Пользователь Charles может использовать неограниченное количество одновременных сессий. -->
+    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -8864,8 +8864,8 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 Результат:
 
 ```text
-Получено исключение от сервера (версия 21.5.1):
-Код: 184. DB::Exception: Получено от localhost:9000. DB::Exception: Агрегатная функция avg(number) обнаружена внутри другой агрегатной функции в запросе: При обработке avg(number) AS number.
+Received exception from server (version 21.5.1):
+Code: 184. DB::Exception: Received from localhost:9000. DB::Exception: Aggregate function avg(number) is found inside another aggregate function in query: While processing avg(number) AS number.
 ```
 
 Запрос:
@@ -9991,7 +9991,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 строк в наборе. ...
+6666 rows in set. ...
 ```
 
 
@@ -10467,7 +10467,7 @@ SELECT toDateTime64(toDateTime64('1999-12-12 23:23:23.123', 3), 3, 'Europe/Zuric
 CREATE TABLE test_tz (`d` DateTime('UTC')) ENGINE = Memory AS SELECT toDateTime('2000-01-01 00:00:00', 'UTC');
 
 SELECT *, timeZone() FROM test_tz WHERE d = toDateTime('2000-01-01 00:00:00') SETTINGS session_timezone = 'Asia/Novosibirsk'
-0 строк в результате.
+0 rows in set.
 
 SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS session_timezone = 'Asia/Novosibirsk'
 ┌───────────────────d─┬─timeZone()───────┐
@@ -10792,7 +10792,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ Количество превышений лимита памяти для запроса. │
+│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 

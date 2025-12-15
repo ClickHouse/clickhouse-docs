@@ -148,8 +148,8 @@ schemas.enable=false
 パフォーマンスを向上させる 1 つの方法は、**worker** の設定に次の項目を追加し、Kafka から取得するバッチサイズとレコード数を調整することです。
 
 ```yml
-consumer.max.poll.records=[レコード数]
-consumer.max.partition.fetch.bytes=[レコード数 × バイト単位のレコードサイズ]
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
 ```
 
 使用する具体的な値は、必要とするレコード数やレコードサイズによって異なります。たとえば、デフォルト値は次のとおりです。

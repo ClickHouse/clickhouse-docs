@@ -68,7 +68,7 @@ PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'source_table'))
 LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
-COMMENT 'Временный словарь';
+COMMENT 'The temporary dictionary';
 ```
 
 Убедитесь, что словарь загружен.
@@ -103,5 +103,5 @@ loading_start_time:          1970-01-01 00:00:00
 last_successful_update_time: 1970-01-01 00:00:00
 loading_duration:            0
 last_exception:
-comment:                     Временный словарь
+comment:                     The temporary dictionary
 ```

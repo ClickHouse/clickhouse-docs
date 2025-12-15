@@ -44,7 +44,7 @@ description: 'Практические примеры использования
 * **Множитель хранения** = во сколько раз больше/меньше будет занимать место ваше материализованное представление
 
 ```sql
--- Замените на вашу фактическую таблицу и столбцы
+-- Replace with your actual table and columns
 SELECT 
     count() as total_rows,
     uniq(your_group_by_columns) as unique_combinations,
@@ -52,8 +52,8 @@ SELECT
 FROM your_table
 WHERE your_filter_conditions;
 
--- Если aggregation_ratio > 70%, пересмотрите схему вашего материализованного представления
--- Если aggregation_ratio < 10%, вы получите хорошую степень сжатия
+-- If aggregation_ratio > 70%, reconsider your MV design
+-- If aggregation_ratio < 10%, you'll get good compression
 ```
 
 ## Когда материализованные представления становятся проблемой {#mv-problems}

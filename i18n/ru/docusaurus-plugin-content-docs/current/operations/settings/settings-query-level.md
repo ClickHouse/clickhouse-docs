@@ -42,7 +42,7 @@ doc_type: 'reference'
 Если вы изменили настройку и хотите вернуть её к значению по умолчанию, укажите значение `DEFAULT`. Синтаксис следующий:
 
 ```sql
-SET имя_настройки = DEFAULT
+SET setting_name = DEFAULT
 ```
 
 Например, по умолчанию `async_insert` имеет значение `0`. Предположим, вы измените его на `1`:
@@ -117,13 +117,13 @@ SETTINGS async_insert = 1
 #### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment}
 
 ```sql
-ПОКАЗАТЬ ДОСТУП
+SHOW ACCESS
 ```
 
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
@@ -175,7 +175,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment-1}
+#### Examine the settings profile and assignment {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 ПОКАЗАТЬ ДОСТУП
@@ -194,7 +194,7 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Назначьте настройку сеансу {#assign-a-setting-to-a-session}
+### Assign a setting to a session {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -207,7 +207,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-### Назначение настройки в запросе {#assign-a-setting-during-a-query}
+### Assign a setting during a query {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

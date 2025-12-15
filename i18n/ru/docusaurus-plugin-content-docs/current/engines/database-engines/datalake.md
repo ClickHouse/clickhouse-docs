@@ -36,10 +36,10 @@ SET allow_experimental_database_hms_catalog = 1;
 Базы данных с движком `DataLakeCatalog` можно создавать с помощью следующего синтаксиса:
 
 ```sql
-CREATE DATABASE имя_базы_данных
-ENGINE = DataLakeCatalog(адрес_каталога[, пользователь, пароль])
+CREATE DATABASE database_name
+ENGINE = DataLakeCatalog(catalog_endpoint[, user, password])
 SETTINGS
-тип_каталога,
+catalog_type,
 [...]
 ```
 

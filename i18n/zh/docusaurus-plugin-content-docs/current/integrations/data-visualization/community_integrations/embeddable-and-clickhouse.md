@@ -28,13 +28,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 您可以使用 Embeddable API 添加数据库连接。该连接用于连接到您的 ClickHouse 服务。您可以使用以下 API 调用来添加连接：
 
 ```javascript
-// 出于安全考虑，切勿在客户端代码中调用此接口
+// for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${apiKey}` /* 请确保妥善保管你的 API Key，避免泄露 */,
+    Authorization: `Bearer ${apiKey}` /* keep your API Key secure */,
   },
   body: JSON.stringify({
     name: 'my-clickhouse-db',
@@ -48,7 +48,7 @@ fetch('https://api.embeddable.com/api/v1/connections', {
   }),
 });
 
-响应：
+Response:
 Status 201 { errorMessage: null }
 ```
 

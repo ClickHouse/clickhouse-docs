@@ -62,8 +62,8 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- 如需要,可以将这些 GRANT 权限细化到单个表,而不是整个模式
-  -- 但向 ClickPipe 添加新表时,也需要将这些表的权限授予该用户。
+  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
+  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 ```
@@ -75,7 +75,7 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 2. 以 Postgres 超级用户或管理员用户身份，在源实例上创建一个 publication，其中包含你想要复制的表和 hypertable，**并且还必须包含整个 `_timescaledb_internal` schema**。创建 ClickPipe 时，你需要选择这个 publication。
 
 ```sql
--- 向 ClickPipe 添加新表时,需要手动将这些表同时添加到发布中。 
+-- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
@@ -93,7 +93,7 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 3. 为之前创建的用户授予复制权限。
 
 ```sql
--- 为 USER 授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 ```
 

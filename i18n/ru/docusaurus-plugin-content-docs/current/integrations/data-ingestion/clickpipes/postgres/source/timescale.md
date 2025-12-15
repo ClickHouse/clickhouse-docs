@@ -65,8 +65,8 @@ Hypertable в Timescale не хранят данные, вставляемые �
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- При необходимости можно ограничить эти права GRANT только отдельными таблицами, а не всей схемой
-  -- Однако при добавлении новых таблиц в ClickPipe потребуется также предоставить права на них этому пользователю.
+  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
+  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 ```
@@ -79,7 +79,7 @@ Hypertable в Timescale не хранят данные, вставляемые �
    которые вы хотите реплицировать, **а также всю схему `_timescaledb_internal`**. При создании ClickPipe необходимо выбрать эту публикацию.
 
 ```sql
--- При добавлении новых таблиц в ClickPipe их также необходимо вручную добавить в публикацию. 
+-- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
@@ -97,7 +97,7 @@ Hypertable в Timescale не хранят данные, вставляемые �
 3. Предоставьте пользователю, созданному ранее, права на репликацию.
 
 ```sql
--- Предоставить пользователю права репликации
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 ```
 

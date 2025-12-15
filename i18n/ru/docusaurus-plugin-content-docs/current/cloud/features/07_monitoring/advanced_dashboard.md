@@ -187,7 +187,7 @@ FORMAT VERTICAL
 ```
 
 ```response title="Response"
-Строка 1:
+Row 1:
 ──────
 type:              QueryFinish
 event_time:        2024-12-23 11:22:55
@@ -210,7 +210,7 @@ read_rows:         150957260
 tables:            ['default.amazon_reviews_no_pk']
 ```
 
-Строка 2:
+Row 2:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:26:50
@@ -232,7 +232,7 @@ LIMIT 20
 read&#95;rows:         150957260
 tables:            [&#39;default.amazon&#95;reviews&#95;no&#95;pk&#39;]
 
-Строка 3:
+Row 3:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:24:10
@@ -254,7 +254,7 @@ LIMIT 20
 read&#95;rows:         6242304
 tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
 
-Строка 4:
+Row 4:
 ──────
 type:              QueryFinish
 event&#95;time:        2024-12-23 11:28:10
@@ -275,7 +275,6 @@ product&#95;id ASC
 LIMIT 20
 read&#95;rows:         6242304
 tables:            [&#39;default.amazon&#95;reviews&#95;pk&#39;]
-
 ```
 
 В данном примере видно, что один и тот же запрос выполняется для двух 

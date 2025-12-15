@@ -31,10 +31,10 @@ view(subquery)
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ 1月  │   31 │
-│  2 │ 2月 │   29 │
-│  3 │ 3月    │   31 │
-│  4 │ 4月    │   30 │
+│  1 │ January  │   31 │
+│  2 │ February │   29 │
+│  3 │ March    │   31 │
+│  4 │ April    │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -48,10 +48,10 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ 1月  │
-│ 2月 │
-│ 3月    │
-│ 4月    │
+│ January  │
+│ February │
+│ March    │
+│ April    │
 └──────────┘
 ```
 

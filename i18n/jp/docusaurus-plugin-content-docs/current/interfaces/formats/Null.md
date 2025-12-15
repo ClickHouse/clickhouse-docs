@@ -62,7 +62,7 @@ FORMAT Null
 このクエリはデータを処理しますが、何も出力しません。
 
 ```response
-0行のセット。経過時間: 0.154秒
+0 rows in set. Elapsed: 0.154 sec.
 ```
 
 ## フォーマット設定 {#format-settings}

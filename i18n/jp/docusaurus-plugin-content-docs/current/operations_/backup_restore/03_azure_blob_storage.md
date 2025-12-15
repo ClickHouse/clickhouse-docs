@@ -27,7 +27,7 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 バックアップの保存先は次のように指定します。
 
 ```sql
-AzureBlobStorage('<接続文字列>/<URL>', '<コンテナー>', '<パス>', '<アカウント名>', '<アカウントキー>')
+AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
 ```
 
 ```sql

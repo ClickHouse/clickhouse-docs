@@ -71,8 +71,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, системное исключение: невозможно создать поток, трассировка стека (при копировании этого сообщения всегда включайте строки, приведённые ниже):
-```
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
@@ -81,14 +80,13 @@ Poco::Exception. Code: 1000, e.code() = 0, системное исключени
 4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
 5. Poco::Util::Application::run() @ 0x000000001581cfda
 6. DB::Server::run() @ 0x000000000d1288f0
-7. Poco::Util::ServerApplication::run(int, char\*\*) @ 0x0000000015825e27
-8. mainEntryClickHouseServer(int, char\*\*) @ 0x000000000d125b38
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
 9. main @ 0x0000000007ea4eee
 10. ? @ 0x00007f67ff946d90
 11. ? @ 0x00007f67ff946e40
-12. \_start @ 0x00000000062e802e
-    (version 24.10.1.2812 (official build))
-
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 Причина — устаревший демон Docker версии ниже `20.10.10`. Исправить это можно либо обновив Docker, либо запустив `docker run [--privileged | --security-opt seccomp=unconfined]`. Второй вариант несет риски для безопасности.

@@ -55,13 +55,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   Все параметры имеют то же значение, что и в `MergeTree`.
 </details>
@@ -157,7 +157,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 Выполните запрос `SELECT` ещё раз — будет выведен следующий результат:
 
 ```text
-┌───────────────ДатаНачала─┬─Посещения─┬─Пользователи─┐
+┌───────────────StartDate─┬─Visits─┬─Users─┐
 │ 2022-11-03 03:27:11.000 │     16 │     3 │
 │ 2022-11-26 07:00:31.000 │      5 │     1 │
 └─────────────────────────┴────────┴───────┘

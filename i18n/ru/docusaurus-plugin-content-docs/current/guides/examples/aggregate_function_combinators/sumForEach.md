@@ -27,7 +27,9 @@ doc_type: 'reference'
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-Мы воспользуемся агрегатным комбинатором `sumForEach`, чтобы проанализировать, как по часам суток отличается трафик с десктопных и мобильных устройств. Нажмите кнопку воспроизведения ниже, чтобы интерактивно выполнить запрос:
+We'll use the `sumForEach` aggregate combinator function to analyze how 
+desktop versus mobile traffic varies by hour of the day. Click the play button 
+below to run the query interactively:
 
 ```sql runnable
 SELECT

@@ -84,7 +84,7 @@ SELECT toDecimal32(4.2, 8) AS x, x * x
 ```
 
 ```text
-DB::Exception: 小数位数超出范围。
+DB::Exception: Scale is out of bounds.
 ```
 
 ```sql
@@ -92,7 +92,7 @@ SELECT toDecimal32(4.2, 8) AS x, 6 * x
 ```
 
 ```text
-DB::Exception: 十进制数值运算溢出。
+DB::Exception: Decimal math overflow.
 ```
 
 溢出检查会导致运算变慢。如果能够确定不会发生溢出，则可以通过 `decimal_check_overflow` 设置来禁用检查。当检查被禁用且发生溢出时，结果将会不正确：
@@ -115,7 +115,7 @@ SELECT toDecimal32(1, 8) < 100
 ```
 
 ```text
-DB::Exception: 无法进行比较。
+DB::Exception: Can't compare.
 ```
 
 **另请参阅**

@@ -11,7 +11,7 @@ doc_type: 'reference'
 执行简单（一维）线性回归。
 
 ```sql
-简单线性回归(x, y)
+simpleLinearRegression(x, y)
 ```
 
 参数：

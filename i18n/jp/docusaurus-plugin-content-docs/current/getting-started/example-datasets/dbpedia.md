@@ -36,9 +36,9 @@ CREATE TABLE dbpedia
 
 ```shell
 for i in $(seq 0 25); do
-  echo "ファイル ${i} を処理中..."
+  echo "Processing file ${i}..."
   clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
-  echo "ファイル ${i} の処理が完了しました。"
+  echo "File ${i} complete."
 done
 ```
 
@@ -115,7 +115,7 @@ LIMIT 20
 20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
     └───────────────────────────────────────────┴─────────────────────────────────┘
 #highlight-next-line
-20行のセット。経過時間: 0.261秒。処理済み: 100万行、6.22 GB (384万行/秒、23.81 GB/秒)
+20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
 クエリレイテンシを記録しておき、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにします。
@@ -178,7 +178,7 @@ LIMIT 20
 20. │ <dbpedia:Schynige_Platte_railway>               │ Schynige Platte railway               │
     └─────────────────────────────────────────────────┴───────────────────────────────────────┘
 #highlight-next-line
-20行を取得しました。経過時間: 0.025秒。処理: 32.03千行、2.10 MB (1.29百万行/秒、84.80 MB/秒)
+20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
 ```
 
 ## 検索クエリ用の埋め込みベクトルの生成 {#generating-embeddings-for-search-query}
@@ -203,17 +203,17 @@ def get_embedding(text, model):
 
 
 while True:
-    # ユーザーから検索クエリを受け取る
-    print("検索クエリを入力してください:")
+    # Accept the search query from user
+    print("Enter a search query :")
     input_query = sys.stdin.readline();
 
-    # OpenAI APIエンドポイントを呼び出して埋め込みを取得
-    print("埋め込みを生成中:", input_query);
+    # Call OpenAI API endpoint to get the embedding
+    print("Generating the embedding for ", input_query);
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
-    # ClickHouseでベクトル検索クエリを実行
-    print("ClickHouseへクエリ実行中...")
+    # Execute vector search query in ClickHouse
+    print("Querying clickhouse...")
     params = {'v1':embedding, 'v2':10}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
@@ -242,18 +242,18 @@ OpenAI API キーは、[https://platform.openai.com](https://platform.openai.com
 ```shell
 $ python3 QandA.py
 
-トピックを入力してください : FIFA world cup 1990
-'FIFA world cup 1990' の埋め込みを生成し、ClickHouseから関連する100件の記事を収集しています...
+Enter a topic : FIFA world cup 1990
+Generating the embedding for 'FIFA world cup 1990' and collecting 100 articles related to it from ClickHouse...
 
-質問を入力してください : Who won the golden boot
-イタリアのサルヴァトーレ・スキラッチが1990年FIFAワールドカップでゴールデンブーツを獲得しました。
+Enter your question : Who won the golden boot
+Salvatore Schillaci of Italy won the Golden Boot at the 1990 FIFA World Cup.
 
 
-トピックを入力してください : Cricket world cup
-'Cricket world cup' の埋め込みを生成し、ClickHouseから関連する100件の記事を収集しています...
+Enter a topic : Cricket world cup
+Generating the embedding for 'Cricket world cup' and collecting 100 articles related to it from ClickHouse...
 
-質問を入力してください : Which country has hosted the world cup most times
-イングランドとウェールズがクリケットワールドカップを最も多く開催しており、1975年、1979年、1983年、1999年、2019年の5回にわたってこれらの国で大会が開催されました。
+Enter your question : Which country has hosted the world cup most times
+England and Wales have hosted the Cricket World Cup the most times, with the tournament being held in these countries five times - in 1975, 1979, 1983, 1999, and 2019.
 
 $
 ```
@@ -266,56 +266,56 @@ import time
 from openai import OpenAI
 import clickhouse_connect
 
-ch_client = clickhouse_connect.get_client(compress=False) # ここにClickHouseの認証情報を渡す
-openai_client = OpenAI() # OPENAI_API_KEY環境変数を設定
+ch_client = clickhouse_connect.get_client(compress=False) # Pass ClickHouse credentials here
+openai_client = OpenAI() # Set the OPENAI_API_KEY environment variable
 
 def get_embedding(text, model):
   text = text.replace("\n", " ")
   return openai_client.embeddings.create(input = [text], model=model, dimensions=1536).data[0].embedding
 
 while True:
-    # ユーザーから対象トピックを取得
-    print("トピックを入力: ", end="", flush=True)
+    # Take the topic of interest from user
+    print("Enter a topic : ", end="", flush=True)
     input_query = sys.stdin.readline()
     input_query = input_query.rstrip()
 
-    # 検索トピックの埋め込みベクトルを生成し、ClickHouseにクエリを実行
-    print("'" + input_query + "'の埋め込みを生成し、ClickHouseから関連記事100件を収集中...");
+    # Generate an embedding vector for the search topic and query ClickHouse
+    print("Generating the embedding for '" + input_query + "' and collecting 100 articles related to it from ClickHouse...");
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
     params = {'v1':embedding, 'v2':100}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # マッチしたすべての記事/ドキュメントを収集
+    # Collect all the matching articles/documents
     results = ""
     for row in result.result_rows:
         results = results + row[2]
 
-    print("\n質問を入力: ", end="", flush=True)
+    print("\nEnter your question : ", end="", flush=True)
     question = sys.stdin.readline();
 
-    # OpenAI Chat APIのプロンプト
-    query = f"""以下のコンテンツを使用して質問に回答してください。回答が見つからない場合は「わかりません」と記述してください。
+    # Prompt for the OpenAI Chat API
+    query = f"""Use the below content to answer the subsequent question. If the answer cannot be found, write "I don't know."
 
-コンテンツ:
+Content:
 \"\"\"
 {results}
 \"\"\"
 
-質問: {question}"""
+Question: {question}"""
 
     GPT_MODEL = "gpt-3.5-turbo"
     response = openai_client.chat.completions.create(
         messages=[
-        {'role': 'system', 'content': "{input_query}に関する質問に回答します。"},
+        {'role': 'system', 'content': "You answer questions about {input_query}."},
         {'role': 'user', 'content': query},
        ],
        model=GPT_MODEL,
        temperature=0,
     )
 
-    # 質問への回答を出力
+    # Print the answer to the question!
     print(response.choices[0].message.content)
     print("\n")
 ```

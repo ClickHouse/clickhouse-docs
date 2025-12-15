@@ -96,7 +96,7 @@ LIMIT 5
 ```
 
 ```response
-┌─路径───────────────────────────┬──────月份─┬─访问次数─┐
+┌─path───────────────────────────┬──────month─┬─hits─┐
 │ Bangor_City_Forest             │ 2015-07-01 │   34 │
 │ Alireza_Afzal                  │ 2017-02-01 │   24 │
 │ Akhaura-Laksam-Chittagong_Line │ 2015-09-01 │   30 │
@@ -184,10 +184,10 @@ FORMAT MsgPack
 ```protobuf
 syntax = "proto3";
 
-message 消息类型 {
-  string 路径 = 1;
-  date 月份 = 2;
-  uint32 访问量 = 3;
+message MessageType {
+  string path = 1;
+  date month = 2;
+  uint32 hits = 3;
 };
 ```
 

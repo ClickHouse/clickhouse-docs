@@ -29,14 +29,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT '一時テーブル';
+COMMENT 'The temporary table';
 ```
 
 テーブルのコメントを変更するには:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'テーブルの新しいコメント';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 変更されたコメントを表示するには:
@@ -49,7 +49,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ テーブルに対する新しいコメント │
+│ new comment on a table │
 └────────────────────────┘
 ```
 

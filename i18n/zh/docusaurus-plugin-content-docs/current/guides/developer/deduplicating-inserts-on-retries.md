@@ -210,11 +210,11 @@ ORDER BY all;
 │ from dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
 └────────────┴─────┴───────┴───────────┘
 
-````
+```
 
 使用上述设置，select 会产生两个数据块——因此应该有两个数据块插入到表 `dst` 中。然而，我们看到只有一个数据块被插入到表 `dst` 中。这是因为第二个数据块已被去重。它具有相同的数据和去重键 `block_id`，该键是根据插入数据的哈希值计算得出的。这种行为不符合预期。此类情况很少发生，但理论上是可能的。为了正确处理此类情况，用户必须提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
 
-### 使用 `insert_deduplication_token` 插入相同数据块                                                                  {#identical-blocks-in-insertion-with-insert_deduplication_token}
+### 使用 `insert_deduplication_token` 插入相同数据块               {#identical-blocks-in-insertion-with-insert_deduplication_token}
 
 ```sql
 CREATE TABLE dst
@@ -229,7 +229,7 @@ SETTINGS non_replicated_deduplication_window=1000;
 SET max_block_size=1;
 SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
-````
+```
 
 插入：
 
@@ -385,7 +385,7 @@ ORDER by all;
 │ from mv&#95;dst   │   0 │ A     │ all&#95;1&#95;1&#95;0 │
 └───────────────┴─────┴───────┴───────────┘
 
-````
+```
 
 我们每次插入不同的数据。然而,相同的数据被插入到 `mv_dst` 表中。由于源数据不同,数据未被去重。
 
@@ -426,66 +426,64 @@ FROM dst;
 
 SET deduplicate_blocks_in_dependent_materialized_views=1;
 
-select '第一次尝试';
+select 'first attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-    '来自 dst',
+    'from dst',
     *,
     _part
 FROM dst
 ORDER by all;
 
-┌─'来自 dst'─┬─key─┬─value─┬─_part─────┐
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-    '来自 mv_dst',
+    'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
 
-┌─'来自 mv_dst'─┬─key─┬─value─┬─_part─────┐
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
-````
+```
 
 两个相同的数据块已插入表 `mv_dst`（符合预期）。
 
 ```sql
-SELECT '第二次尝试';
+SELECT 'second attempt';
 
 INSERT INTO dst VALUES (1, 'A');
 
 SELECT
-    '来自 dst',
+    'from dst',
     *,
     _part
 FROM dst
 ORDER BY all;
-```
 
-┌─&#39;from dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from dst   │   1 │ A     │ all&#95;0&#95;0&#95;0 │
+┌─'from dst'─┬─key─┬─value─┬─_part─────┐
+│ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 
 SELECT
-&#39;from mv&#95;dst&#39;,
-*,
-&#95;part
-FROM mv&#95;dst
+    'from mv_dst',
+    *,
+    _part
+FROM mv_dst
 ORDER by all;
 
-┌─&#39;from mv&#95;dst&#39;─┬─key─┬─value─┬─&#95;part─────┐
-│ from mv&#95;dst   │   0 │ A     │ all&#95;0&#95;0&#95;0 │
-│ from mv&#95;dst   │   0 │ A     │ all&#95;1&#95;1&#95;0 │
+┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
+│ from mv_dst   │   0 │ A     │ all_0_0_0 │
+│ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
-
 ```
+
 
 该重试操作在 `dst` 和 `mv_dst` 两个表上均已去重。
-```

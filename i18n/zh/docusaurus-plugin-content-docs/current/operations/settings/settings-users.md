@@ -19,10 +19,10 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
 
 ```xml
 <users>
-    <!-- 如果未指定用户名，则会使用名为 'default' 的用户。 -->
+    <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
         <password></password>
-        <!-- 或者 -->
+        <!-- Or -->
         <password_sha256_hex></password_sha256_hex>
 
         <ssh_keys>
@@ -52,7 +52,7 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
         <databases>
             <database_name>
                 <table_name>
-                    <filter>过滤表达式</filter>
+                    <filter>expression</filter>
                 </table_name>
             </database_name>
         </databases>
@@ -61,7 +61,7 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
             <query>GRANT SELECT ON system.*</query>
         </grants>
     </user_name>
-    <!-- 其他用户的设置 -->
+    <!-- Other users settings -->
 </users>
 ```
 
@@ -82,8 +82,8 @@ ClickHouse 也支持用于管理用户的 [基于 SQL 的工作流](/operations/
 在 shell 中生成密码的示例：
 
 ```bash
-PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
-```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
+    ```
 
 结果的第一行是密码。第二行是对应的 SHA256 哈希值。
 
@@ -96,8 +96,8 @@ PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWO
   从 shell 生成密码的示例：
 
   ```bash
-  PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
-  ```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+    ```
 
   结果的第一行是密码。第二行是对应的双重 SHA1 哈希值。
 

@@ -554,7 +554,7 @@ cache_path:
 
 3 строки в наборе. Прошло: 0,002 сек.
 
-````
+```
 #### Убедитесь, что таблицы, созданные на кластере, создаются на обоих узлах                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
@@ -577,7 +577,7 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 -- highlight-next-line
 SETTINGS storage_policy='gcs_main'
-````
+```
 
 ```response
 ┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐

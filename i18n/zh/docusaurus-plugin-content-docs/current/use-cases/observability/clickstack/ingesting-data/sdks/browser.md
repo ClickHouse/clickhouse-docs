@@ -51,9 +51,9 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // 配置用于将前端与后端请求的链路关联起来
-    consoleCapture: true, // 捕获 console 日志（默认 false）
-    advancedNetworkCapture: true, // 捕获完整 HTTP 请求/响应头和请求/响应体（默认 false）
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+    consoleCapture: true, // Capture console logs (default false)
+    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
 });
 ```
 
@@ -75,7 +75,7 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // 配置用于将前端与后端请求的链路关联起来
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });
 </script>
 ```
@@ -111,7 +111,7 @@ HyperDX.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // 其他自定义属性...
+  // Other custom properties...
 });
 ```
 
@@ -120,10 +120,11 @@ HyperDX.setGlobalAttributes({
 如果你使用 React，可以通过将错误边界组件传入 `attachToReactErrorBoundary` 函数，自动捕获出现在 React 错误边界内的错误。
 
 ```javascript
-// 导入您的 ErrorBoundary(此处以 react-error-boundary 为例)
+// Import your ErrorBoundary (we're using react-error-boundary as an example)
 import { ErrorBoundary } from 'react-error-boundary';
 
-// 这将接入 ErrorBoundary 组件并捕获其任何实例中发生的所有错误
+// This will hook into the ErrorBoundary component and capture any errors that occur
+// within any instance of it.
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
@@ -137,7 +138,7 @@ HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```javascript
 HyperDX.addAction('Form-Completed', {
   formId: 'signup-form',
-  formName: '注册表单',
+  formName: 'Signup Form',
   formType: 'signup',
 });
 ```
@@ -160,7 +161,7 @@ HyperDX.enableAdvancedNetworkCapture();
 var cors = require('cors');
 var onHeaders = require('on-headers');
 
-// ... 您的其他代码
+// ... all your stuff
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {

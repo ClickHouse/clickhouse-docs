@@ -253,7 +253,7 @@ IPv4StringToNumOrNull('invalid') AS invalid;
 **语法**
 
 ```sql
-IPv4 转 IPv6(x)
+IPv4ToIPv6(x)
 ```
 
 **参数**
@@ -421,7 +421,7 @@ LIMIT 10
 **语法**
 
 ```sql
-IPv6StringToNum(字符串)
+IPv6StringToNum(string)
 ```
 
 **别名**: `INET6_ATON`

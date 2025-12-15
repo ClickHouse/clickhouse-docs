@@ -17,7 +17,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-加权精确分位数(level)(expr, weight)
+quantileExactWeighted(level)(expr, weight)
 ```
 
 别名：`medianExactWeighted`。

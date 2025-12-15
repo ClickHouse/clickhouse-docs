@@ -47,7 +47,7 @@ FROM product_sales;
 
 ```response title="Response"
    ┌─most_expensi⋯lar_product─┐
-1. │ 笔记本电脑                │
+1. │ Laptop                   │
    └──────────────────────────┘
 ```
 

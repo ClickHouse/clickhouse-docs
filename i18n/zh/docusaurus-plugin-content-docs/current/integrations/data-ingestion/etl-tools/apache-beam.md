@@ -66,7 +66,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // 创建 Pipeline 对象。
+        // Create a Pipeline object.
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -76,10 +76,10 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // 将转换应用到管道。
-        PCollection<String> lines = p.apply("读取行", TextIO.read().from("src/main/resources/input.csv"));
+        // Apply transforms to the pipeline.
+        PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
-        PCollection<Row> rows = lines.apply("转换为行", ParDo.of(new DoFn<String, Row>() {
+        PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
             public void processElement(@Element String line, OutputReceiver<Row> out) {
 
@@ -91,10 +91,10 @@ public class Main {
             }
         })).setRowSchema(SCHEMA);
 
-        rows.apply("写入 ClickHouse",
+        rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // 运行管道。
+        // Run the pipeline.
         p.run().waitUntilFinish();
     }
 }

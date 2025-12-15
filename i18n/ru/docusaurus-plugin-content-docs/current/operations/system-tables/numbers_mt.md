@@ -31,5 +31,5 @@ SELECT * FROM system.numbers_mt LIMIT 10;
 │      9 │
 └────────┘
 
-10 строк в наборе. Затрачено: 0.001 сек.
+10 rows in set. Elapsed: 0.001 sec.
 ```

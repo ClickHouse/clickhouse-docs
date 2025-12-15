@@ -120,7 +120,7 @@ SETTINGS
 下面是响应结果——显示了行数和处理速度。其写入速率超过每秒 600 万行！
 
 ```response
-返回 0 行。耗时:3419.330 秒。已处理 206.9 亿行,1.67 TB(每秒 605 万行,488.52 MB/秒)
+0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
 4. 来看看 `sensors` 表需要多少磁盘存储空间：

@@ -56,10 +56,10 @@ bash -i <(curl -fsSL https://fiveonefour.com/install.sh) moose
 **重要**: 本番環境の ClickHouse には一切変更を加えません。これは、ClickHouse テーブルから派生したデータモデルを含む新しい Moose OLAP プロジェクトを初期化するだけです。
 
 ```bash
-# TypeScript 用 {#typescript}
+# TypeScript
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language typescript
 
-# Python 用 {#python}
+# Python
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language python
 ```
 
@@ -74,21 +74,21 @@ https://username:password@host:port/?database=database_name
 まだ ClickHouse を稼働させていない場合は、ClickHouse Playground を使って Moose OLAP を試してみてください。
 
 ```bash
-# TypeScript 用 {#typescript}
+# TypeScript
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language typescript
 
-# Python 用 {#python}
+# Python
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language python
 ```
 
 ### 依存関係のインストール {#step-3-install-dependencies}
 
 ```bash
-# TypeScript 用 {#typescript}
+# TypeScript
 cd my-project
 npm install
 
-# Python 用 {#python}
+# Python
 cd my-project
 python3 -m venv .venv
 source .venv/bin/activate

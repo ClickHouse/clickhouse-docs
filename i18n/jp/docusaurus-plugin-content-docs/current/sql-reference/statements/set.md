@@ -24,7 +24,7 @@ SET profile = 'profile-name-from-the-settings-file'
 boolean 型の設定を true にする場合、値の指定を省略して短縮記法を使うことができます。設定名だけが指定されていると、自動的に `1`（true）として解釈されます。
 
 ```sql
--- これらは同等です:
+-- These are equivalent:
 SET force_index_by_date = 1
 SET force_index_by_date
 ```

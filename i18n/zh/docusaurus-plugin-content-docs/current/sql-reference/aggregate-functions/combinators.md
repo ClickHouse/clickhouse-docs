@@ -277,7 +277,7 @@ FROM
 考虑包含如下数据的 `people` 表：
 
 ```text
-┌─姓名───┬─年龄─┬─工资─┐
+┌─name───┬─age─┬─wage─┐
 │ John   │  16 │   10 │
 │ Alice  │  30 │   15 │
 │ Mary   │  35 │    8 │

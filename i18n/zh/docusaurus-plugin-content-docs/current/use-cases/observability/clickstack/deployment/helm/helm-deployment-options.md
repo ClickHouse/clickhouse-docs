@@ -29,13 +29,13 @@ ClickStack 的 Helm 图表支持多种部署配置：
 此方法适用于快速测试或非生产环境：
 
 ```yaml
-# values-external-clickhouse.yaml {#values-external-clickhouseyaml}
+# values-external-clickhouse.yaml
 clickhouse:
-  enabled: false  # 禁用内置 ClickHouse
+  enabled: false  # Disable the built-in ClickHouse
 
 otel:
   clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # 可选
+  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # Optional
 
 hyperdx:
   defaultConnections: |
@@ -64,7 +64,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.y
 
 #### 创建配置文件 {#create-configuration}
 ```bash
-# 创建 connections.json {#create-connectionsjson}
+# Create connections.json
 cat <<EOF > connections.json
 [
   {
@@ -77,7 +77,7 @@ cat <<EOF > connections.json
 ]
 EOF
 
-# 创建 sources.json {#create-sourcesjson}
+# Create sources.json
 cat <<EOF > sources.json
 [
   {
@@ -125,13 +125,13 @@ kubectl create secret generic hyperdx-external-config \
   --from-file=connections.json=connections.json \
   --from-file=sources.json=sources.json
 
-# 清理本地文件 {#clean-up-local-files}
+# Clean up local files
 rm connections.json sources.json
 ```
 
 #### 配置 Helm 使用该 Secret {#configure-helm-secret}
 ```yaml
-# values-external-clickhouse-secret.yaml {#values-external-clickhouse-secretyaml}
+# values-external-clickhouse-secret.yaml
 clickhouse:
   enabled: false
 
@@ -155,7 +155,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 专门针对 ClickHouse Cloud：
 
 ```yaml
-# values-clickhouse-cloud.yaml {#values-clickhouse-cloudyaml}
+# values-clickhouse-cloud.yaml
 clickhouse:
   enabled: false
   persistence:
@@ -178,9 +178,9 @@ hyperdx:
 如果你已经有现成的 OTel collector 基础设施：
 
 ```yaml
-# values-external-otel.yaml {#values-external-otelyaml}
+# values-external-otel.yaml
 otel:
-  enabled: false  # 禁用内置的 OTel collector
+  enabled: false  # Disable the built-in OTEL collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -197,7 +197,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 对于已有基础设施的组织，只需部署 HyperDX 即可：
 
 ```yaml
-# values-minimal.yaml {#values-minimalyaml}
+# values-minimal.yaml
 clickhouse:
   enabled: false
 
@@ -207,7 +207,7 @@ otel:
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
   
-  # 选项 1：内联配置（用于测试）
+  # Option 1: Inline (for testing)
   defaultConnections: |
     [
       {
@@ -219,7 +219,7 @@ hyperdx:
       }
     ]
   
-  # 选项 2：外部 Secret（生产环境）
+  # Option 2: External secret (production)
   # useExistingConfigSecret: true
   # existingConfigSecret: "my-external-config"
   # existingConfigConnectionsKey: "connections.json"

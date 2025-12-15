@@ -56,10 +56,10 @@ bash -i <(curl -fsSL https://fiveonefour.com/install.sh) moose
 **重要**：你的生产 ClickHouse 不会被修改。此操作只会基于你的 ClickHouse 表初始化一个新的 Moose OLAP 项目，并从中派生数据模型。
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language typescript
 
-# Python {#python}
+# Python
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language python
 ```
 
@@ -74,21 +74,21 @@ https://username:password@host:port/?database=database_name
 还没有正在运行的 ClickHouse 实例？使用 ClickHouse Playground 来试用 Moose OLAP！
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language typescript
 
-# Python {#python}
+# Python
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language python
 ```
 
 ### 安装依赖 {#step-3-install-dependencies}
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 cd my-project
 npm install
 
-# Python {#python}
+# Python
 cd my-project
 python3 -m venv .venv
 source .venv/bin/activate

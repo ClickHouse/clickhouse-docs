@@ -271,7 +271,7 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 1. コンソールは目的のクエリを生成し、新しいタブに表示します。この例では、GenAI により次のクエリが作成されました:
 
    ```sql
-   -- uk_price_paid のすべてのトランザクションについて、年ごとの合計価格と件数を表示してください。
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
@@ -286,11 +286,11 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 1. _+_ アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます:
 
 ```sql
-   -- uk_price_paid の全トランザクションについて、年ごとの合計金額とトランザクション総数を表示する。
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
-```
+   ```
 
 1. **Run** をクリックします。`price` ではなく `pricee` から値を取得しようとしているため、クエリは失敗します。
 2. **Fix Query** をクリックします。

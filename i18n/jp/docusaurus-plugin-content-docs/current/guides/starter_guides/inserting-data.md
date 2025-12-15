@@ -122,9 +122,9 @@ ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用で
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
     (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
-    (102, 'バッチごとに大量の行を挿入する',                     yesterday(), 1.41421 ),
-    (102, 'よく使用するクエリに基づいてデータをソートする', today(),     2.718   ),
-    (101, 'グラニュールはデータ読み取りの最小単位である',      now() + 5,   3.14159 )
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
 ```
 
 正常に動作したことを確認するため、次の `SELECT` クエリを実行します。
@@ -138,9 +138,9 @@ SELECT * FROM helloworld.my_first_table
 ```response
 user_id message                                             timestamp           metric
 101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
-101         グラニュールは読み取られるデータの最小チャンクです           2024-11-13 20:01:27 3.14159
-102         バッチごとに多数の行を挿入してください                          2024-11-12 00:00:00 1.41421
-102         よく使用するクエリに基づいてデータをソートしてください  2024-11-13 00:00:00     2.718
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
 ## Postgres からのデータロード {#loading-data-from-postgres}

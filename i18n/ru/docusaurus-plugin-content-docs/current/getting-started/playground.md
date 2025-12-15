@@ -37,7 +37,7 @@ doc_type: 'guide'
 Пример HTTPS-эндпоинта с использованием `curl`:
 
 ```bash
-curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Попробовать ClickHouse'"
+curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play ClickHouse'"
 ```
 
 Пример TCP-эндпоинта с помощью [CLI](../interfaces/cli.md):

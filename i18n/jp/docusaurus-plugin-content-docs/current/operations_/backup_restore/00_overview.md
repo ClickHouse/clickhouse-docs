@@ -210,7 +210,7 @@ BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
 │ 7678b0b3-f519-4e6e-811f-5a0781a4eb52 │ CREATING_BACKUP │
 └──────────────────────────────────────┴─────────────────┘
 
-1行が返されました。経過時間: 0.001秒
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -232,7 +232,7 @@ num_files:         0
 uncompressed_size: 0
 compressed_size:   0
 #highlight-next-line
-error:             コード: 598. DB::Exception: バックアップ Disk('backups', '1.zip') は既に存在します。(BACKUP_ALREADY_EXISTS) (バージョン 22.8.2.11 (公式ビルド))
+error:             Code: 598. DB::Exception: Backup Disk('backups', '1.zip') already exists. (BACKUP_ALREADY_EXISTS) (version 22.8.2.11 (official build))
 start_time:        2022-08-30 09:21:46
 end_time:          2022-08-30 09:21:46
 
@@ -251,7 +251,7 @@ FORMAT Vertical
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.097414
@@ -269,7 +269,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-行 2:
+Row 2:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.174782
@@ -288,5 +288,5 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-2行のセット。経過時間: 0.075秒
+2 rows in set. Elapsed: 0.075 sec.
 ```

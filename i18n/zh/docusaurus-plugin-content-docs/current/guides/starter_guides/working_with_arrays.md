@@ -59,15 +59,15 @@ SELECT array(tuple(1, 2), tuple(3, 4))
 你可能会想像这样创建一个包含不同类型的数组：
 
 ```sql
-SELECT array('你好', '世界', 1, 2, 3)
+SELECT array('Hello', 'world', 1, 2, 3)
 ```
 
 但是，数组元素始终应具有一个公共超类型，即在不丢失信息的情况下，可以同时表示两种或多种不同类型的值的最小数据类型，从而允许它们一起使用。
 如果不存在公共超类型，在尝试构造该数组时将会抛出异常：
 
 ```sql
-收到异常：
-Code: 386. DB::Exception: 类型 String、String、UInt8、UInt8、UInt8 不存在公共超类型，因为其中部分为 String/FixedString/Enum 类型，而其余部分不是：位于 SELECT ['Hello', 'world', 1, 2, 3] 作用域中。(NO_COMMON_TYPE)
+Received exception:
+Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
 
 在动态创建数组时，ClickHouse 会选择能够容纳所有元素的最窄类型。
@@ -337,7 +337,7 @@ AND DepTime IS NOT NULL
 AND DepDelayMinutes IS NOT NULL
 GROUP BY ALL
 
-````
+```
 
 在上述查询中,`arrayMap` 函数接收单元素数组 `[DepDelayMinutes]`,并应用 lambda 函数 `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` 对其进行分类。
 然后通过 `[DepDelayMinutes][1]` 提取结果数组的第一个元素。
@@ -358,7 +358,7 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
 在上面的查询中，我们将一个 lambda 函数作为第一个参数传递给 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 函数。
 这个 lambda 函数接收以分钟为单位的延迟时间 `d`，如果条件满足则返回 `1`，否则返回 `0`。

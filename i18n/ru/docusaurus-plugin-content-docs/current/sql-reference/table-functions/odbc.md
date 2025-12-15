@@ -14,9 +14,9 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-odbc(источник_данных, внешняя_база_данных, внешняя_таблица)
-odbc(источник_данных, внешняя_таблица)
-odbc(именованная_коллекция)
+odbc(datasource, external_database, external_table)
+odbc(datasource, external_table)
+odbc(named_collection)
 ```
 
 ## Аргументы {#arguments}
@@ -70,7 +70,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Подключено!                           |
+| Connected!                            |
 |                                       |
 ...
 ```

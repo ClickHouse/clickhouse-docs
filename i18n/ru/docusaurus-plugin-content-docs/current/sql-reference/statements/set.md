@@ -24,7 +24,7 @@ SET profile = 'profile-name-from-the-settings-file'
 Для булевых настроек со значением `true` можно использовать сокращённый синтаксис, опуская указание значения. Если задано только имя настройки, она автоматически устанавливается в `1` (`true`).
 
 ```sql
--- Эти команды эквивалентны:
+-- These are equivalent:
 SET force_index_by_date = 1
 SET force_index_by_date
 ```

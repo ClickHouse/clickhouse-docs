@@ -50,17 +50,17 @@ import random
 
 def main():
 
-    # 入力値を読み込む
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # ランダムな行を生成する
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # 結果を標準出力にフラッシュする
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":

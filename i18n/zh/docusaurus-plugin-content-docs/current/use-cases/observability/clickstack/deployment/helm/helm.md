@@ -57,25 +57,25 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   添加 ClickStack Helm 仓库：
 
   ```shell
-  helm repo add clickstack https://hyperdxio.github.io/helm-charts
-  helm repo update
-  ```
+helm repo add clickstack https://hyperdxio.github.io/helm-charts
+helm repo update
+```
 
   ### 安装 ClickStack
 
   使用默认值安装 ClickStack Chart：
 
   ```shell
-  helm install my-clickstack clickstack/clickstack
-  ```
+helm install my-clickstack clickstack/clickstack
+```
 
   ### 验证安装
 
   验证安装:
 
   ```shell
-  kubectl get pods -l "app.kubernetes.io/name=clickstack"
-  ```
+kubectl get pods -l "app.kubernetes.io/name=clickstack"
+```
 
   当所有 Pod（容器组）就绪后，继续操作。
 
@@ -84,10 +84,10 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   端口转发可用于访问和配置 HyperDX。生产环境部署时,应通过入口或负载均衡器暴露服务,以确保正确的网络访问、TLS 终止和可扩展性。端口转发仅适用于本地开发或临时管理任务,不适合长期运行或高可用性环境。
 
   ```shell
-  kubectl port-forward \
-    pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
-    8080:3000
-  ```
+kubectl port-forward \
+  pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
+  8080:3000
+```
 
   :::tip 生产环境入口配置
   在生产环境部署时,应配置带 TLS 的入口,而非使用端口转发。详细配置说明请参阅[入口配置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup)。
@@ -114,40 +114,40 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   您可以通过 `--set` 标志自定义设置。例如：
 
   ```shell
-  helm install my-clickstack clickstack/clickstack --set key=value
-  ```
+helm install my-clickstack clickstack/clickstack --set key=value
+```
 
   或者,编辑 `values.yaml` 文件。获取默认值的方法如下:
 
   ```shell
-  helm show values clickstack/clickstack > values.yaml
-  ```
+helm show values clickstack/clickstack > values.yaml
+```
 
   配置示例：
 
   ```yaml
-  replicaCount: 2
-  resources:
-    limits:
-      cpu: 500m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 256Mi
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-    hosts:
-      - host: hyperdx.example.com
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-  ```
+replicaCount: 2
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: hyperdx.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+```
 
   ```shell
-  helm install my-clickstack clickstack/clickstack -f values.yaml
-  ```
+helm install my-clickstack clickstack/clickstack -f values.yaml
+```
 
   ### 使用 Secret(可选)
 
@@ -160,44 +160,44 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
   如果需要手动应用 Secret,请修改并应用所提供的 `secrets.yaml` 模板:
 
   ```yaml
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: hyperdx-secret
-    annotations:
-      "helm.sh/resource-policy": keep
-  type: Opaque
-  data:
-    API_KEY: <base64-encoded-api-key>
-  ```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hyperdx-secret
+  annotations:
+    "helm.sh/resource-policy": keep
+type: Opaque
+data:
+  API_KEY: <base64-encoded-api-key>
+```
 
   将 Secret 应用到集群：
 
   ```shell
-  kubectl apply -f secrets.yaml
-  ```
+kubectl apply -f secrets.yaml
+```
 
   #### 创建自定义 Secret
 
   如果需要,您也可以手动创建自定义 Kubernetes Secret:
 
   ```shell
-  kubectl create secret generic hyperdx-secret \
-    --from-literal=API_KEY=my-secret-api-key
-  ```
+kubectl create secret generic hyperdx-secret \
+  --from-literal=API_KEY=my-secret-api-key
+```
 
   #### 引用 Secret
 
   在 `values.yaml` 中引用 Secret：
 
   ```yaml
-  hyperdx:
-    apiKey:
-      valueFrom:
-        secretKeyRef:
-          name: hyperdx-secret
-          key: API_KEY
-  ```
+hyperdx:
+  apiKey:
+    valueFrom:
+      secretKeyRef:
+        name: hyperdx-secret
+        key: API_KEY
+```
 
   :::tip API 密钥管理
   有关 API 密钥设置的详细说明（包括多种配置方法和 pod（容器组）重启步骤），请参阅 [API 密钥设置指南](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup)。
@@ -209,12 +209,12 @@ HyperDX 的 Helm 图表可以在 [此处](https://github.com/hyperdxio/helm-char
 如果使用 ClickHouse Cloud，应禁用由 Helm 图表部署的 ClickHouse 实例，并配置 ClickHouse Cloud 凭证：
 
 ```shell
-# 指定 ClickHouse Cloud 凭证
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # 完整的 HTTPS URL
+# specify ClickHouse Cloud credentials
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-# 如何覆盖默认连接配置
+# how to overwrite default connection
 helm install my-clickstack clickstack/clickstack \
   --set clickhouse.enabled=false \
   --set clickhouse.persistence.enabled=false \
@@ -242,7 +242,7 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "外部 ClickHouse",
+        "name": "External ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -253,7 +253,7 @@ hyperdx:
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
-# 或者如果已安装...
+# or if installed...
 # helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 

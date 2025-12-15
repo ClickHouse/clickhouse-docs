@@ -78,32 +78,32 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b' は最初の非NULL値であるため。max(b) は別の行から取得されます!
+│ b            │      3 │ -- argMax = 'b' because it the first not Null value, max(b) is from another row!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
 ┌─argMax(tuple(a), b)─┐
-│ (NULL)              │ -- `NULL` 値のみを含む `Tuple` は `NULL` ではないため、集約関数はその `NULL` 値によってその行をスキップしません
+│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └─────────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- Tuple を使用して、対応する max(b) の両方(すべて - tuple(*))の列を取得できます
+│ ᴺᵁᴸᴸ    │       3 │ -- you can use Tuple and get both (all - tuple(*)) columns for the according max(b)
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- フィルタにより集約されたすべての行に少なくとも1つの `NULL` 値が含まれるため、すべての行がスキップされ、結果は `NULL` になります
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- b=2 の行が2つあります。`Max` 内の `Tuple` を使用すると、最初の `arg` 以外を取得できます
+│ c                      │ -- There are two rows with b=2, `Tuple` in the `Max` allows to get not the first `arg`
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
 ┌─argMax(a, tuple(b))─┐
-│ b                   │ -- `Max` 内で `Tuple` を使用することで、`Max` で NULL をスキップしないようにできます
+│ b                   │ -- `Tuple` can be used in `Max` to not skip Nulls in `Max`
 └─────────────────────┘
 ```
 

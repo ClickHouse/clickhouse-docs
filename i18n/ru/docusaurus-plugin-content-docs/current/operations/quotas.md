@@ -24,16 +24,16 @@ doc_type: 'guide'
 Рассмотрим раздел файла &#39;users.xml&#39;, который определяет квоты.
 
 ```xml
-<!-- Квоты -->
+<!-- Quotas -->
 <quotas>
-    <!-- Название квоты. -->
+    <!-- Quota name. -->
     <default>
-        <!-- Ограничения для временного периода. Вы можете задать несколько интервалов с разными ограничениями. -->
+        <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
         <interval>
-            <!-- Длительность интервала. -->
+            <!-- Length of the interval. -->
             <duration>3600</duration>
 
-            <!-- Без ограничений. Только сбор данных за указанный интервал времени. -->
+            <!-- Unlimited. Just collect data for the specified time interval. -->
             <queries>0</queries>
             <query_selects>0</query_selects>
             <query_inserts>0</query_inserts>
@@ -50,9 +50,9 @@ doc_type: 'guide'
 
 ```xml
 <statbox>
-    <!-- Ограничения для временного периода. Вы можете задать несколько интервалов с разными ограничениями. -->
+    <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
     <interval>
-        <!-- Длительность интервала. -->
+        <!-- Length of the interval. -->
         <duration>3600</duration>
 
         <queries>1000</queries>
@@ -116,16 +116,16 @@ doc_type: 'guide'
 Квоты могут использовать механизм «quota key» для раздельного учета использования ресурсов по нескольким ключам. Вот пример этого:
 
 ```xml
-<!-- Для глобального конструктора отчётов. -->
+<!-- For the global reports designer. -->
 <web_global>
-    <!-- keyed – Параметр quota_key "key" передаётся в параметре запроса,
-            и квота отслеживается отдельно для каждого значения ключа.
-        Например, можно передать имя пользователя в качестве ключа,
-            и тогда квота будет учитываться отдельно для каждого имени пользователя.
-        Использование ключей имеет смысл только в том случае, если quota_key передаётся программой, а не пользователем.
+    <!-- keyed – The quota_key "key" is passed in the query parameter,
+            and the quota is tracked separately for each key value.
+        For example, you can pass a username as the key,
+            so the quota will be counted separately for each username.
+        Using keys makes sense only if quota_key is transmitted by the program, not by a user.
 
-        Также можно указать <keyed_by_ip />, и тогда IP-адрес будет использоваться в качестве ключа квоты.
-        (Но учтите, что пользователи могут довольно легко изменить IPv6-адрес.)
+        You can also write <keyed_by_ip />, so the IP address is used as the quota key.
+        (But keep in mind that users can change the IPv6 address fairly easily.)
     -->
     <keyed />
 ```

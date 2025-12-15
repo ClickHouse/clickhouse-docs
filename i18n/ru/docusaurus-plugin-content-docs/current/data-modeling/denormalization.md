@@ -176,11 +176,11 @@ ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
 
-0 строк в наборе. Прошло: 26.229 сек. Обработано 22.48 млн строк, 1.36 ГБ (857.21 тыс. строк/с., 51.99 МБ/с.)
+0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
 
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-0 строк в наборе. Прошло: 18.126 сек. Обработано 51.29 млн строк, 797.05 МБ (2.83 млн строк/с., 43.97 МБ/с.)
+0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
 Хотя пользователи могут часто получать бейджи, маловероятно, что этот набор данных нам нужно будет обновлять чаще одного раза в день. Связь между бейджами и пользователями — «один ко многим». Может быть, мы просто денормализуем бейджи на пользователей как список кортежей? Хотя это возможно, быстрая проверка максимального количества бейджей на одного пользователя показывает, что это не лучший вариант:
@@ -270,7 +270,7 @@ FROM
 CREATE TABLE posts_with_duplicate_count
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -- другие столбцы
+   ... -other columns
    `DuplicatePosts` UInt16
 ) ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
@@ -309,7 +309,7 @@ SET flatten_nested=0
 CREATE TABLE posts_with_links
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -остальные столбцы
+   ... -other columns
    `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
    `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
 ) ENGINE = MergeTree

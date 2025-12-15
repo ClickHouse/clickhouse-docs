@@ -15,8 +15,8 @@ ClickHouse を手動でコンパイルするには、[Linux](/development/build.
 パッケージをコンパイルしてインストールすることも、パッケージをインストールせずにプログラムを利用することもできます。
 
 ```xml
-クライアント: <build_directory>/programs/clickhouse-client
-サーバー: <build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 `data` ディレクトリと `metadata` ディレクトリを手動で作成し、対象ユーザーに対して `chown` する必要があります。これらのパスはサーバーの設定ファイル（src/programs/server/config.xml）で変更できます。デフォルトでは次のとおりです。

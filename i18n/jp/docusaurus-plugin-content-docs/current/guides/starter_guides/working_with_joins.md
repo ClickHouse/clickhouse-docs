@@ -77,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ ハリー・ポッターと謎のプリンス │ アクション    │
-│ ハリー・ポッターと謎のプリンス │ アドベンチャー │
-│ ハリー・ポッターと謎のプリンス │ ファミリー    │
-│ ハリー・ポッターと謎のプリンス │ ファンタジー   │
-│ ハリー・ポッターと謎のプリンス │ スリラー  │
-│ ドラゴンボールZ                           │ アクション    │
-│ ドラゴンボールZ                           │ アドベンチャー │
-│ ドラゴンボールZ                           │ コメディ    │
-│ ドラゴンボールZ                           │ ファンタジー   │
-│ ドラゴンボールZ                           │ SF    │
+│ Harry Potter and the Half-Blood Prince │ Action    │
+│ Harry Potter and the Half-Blood Prince │ Adventure │
+│ Harry Potter and the Half-Blood Prince │ Family    │
+│ Harry Potter and the Half-Blood Prince │ Fantasy   │
+│ Harry Potter and the Half-Blood Prince │ Thriller  │
+│ DragonBall Z                           │ Action    │
+│ DragonBall Z                           │ Adventure │
+│ DragonBall Z                           │ Comedy    │
+│ DragonBall Z                           │ Fantasy   │
+│ DragonBall Z                           │ Sci-Fi    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -125,16 +125,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋戦争"""                          │
-│ """トリノ2006:第20回オリンピック冬季競技大会""" │
-│ アーサー・ザ・ムービー                    │
-│ テラビシアにかける橋                      │
-│ 牡羊座の火星                              │
-│ 時空の支配者                              │
-│ ルイス・ドラックスの9番目の人生          │
-│ パラドックス                              │
-│ レミーのおいしいレストラン                │
-│ """アメリカン・ダッド"""                  │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -298,16 +298,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋戦争"""                          │
-│ """トリノ2006:第20回オリンピック冬季競技大会""" │
-│ アーサー・ザ・ムービー                    │
-│ テラビシアにかける橋                      │
-│ 牡羊座の火星                              │
-│ 時空の支配者                              │
-│ ルイス・ドラックスの9番目の人生          │
-│ パラドックス                              │
-│ レミーのおいしいレストラン                │
-│ """アメリカン・ダッド"""                  │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -420,7 +420,7 @@ FORMAT Vertical;
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 symbol:             ABC
 volume:             200
@@ -429,7 +429,7 @@ closest_quote_time: 2023-02-22 14:09:00
 quote_price:        32.11
 final_price:        6422
 
-行 2:
+Row 2:
 ──────
 symbol:             ABC
 volume:             300

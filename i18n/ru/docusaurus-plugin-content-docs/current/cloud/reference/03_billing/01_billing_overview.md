@@ -219,7 +219,7 @@ ClickHouse Cloud использует облачное объектное хра
 ```sql title="Estimating compression"
 SELECT formatReadableSize(total_bytes) 
 FROM system.tables 
-WHERE name = <имя_вашей_таблицы>
+WHERE name = <your table name>
 ```
 
 ### Какие инструменты предоставляет ClickHouse для оценки стоимости работы сервиса в облаке, если у меня есть самостоятельное развертывание? {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}

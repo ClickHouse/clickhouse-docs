@@ -33,7 +33,7 @@ SELECT * FROM system.database_replicas FORMAT Vertical;
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 database:            db_2
 is_readonly:         0

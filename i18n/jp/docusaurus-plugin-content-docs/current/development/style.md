@@ -69,8 +69,8 @@ UInt8 day = (s[8] - '0') * 10 + (s[9] - '0');
 ```cpp
 if (elapsed_ns)
     message << " ("
-        << rows_read_on_server * 1000000000 / elapsed_ns << " 行/秒、"
-        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/秒) ";
+        << rows_read_on_server * 1000000000 / elapsed_ns << " rows/s., "
+        << bytes_read_on_server * 1000.0 / elapsed_ns << " MB/s.) ";
 ```
 
 **9.** 必要に応じて、同一行内の配置調整にスペースを使用してもかまいません。
@@ -106,7 +106,7 @@ template <typename T>
 class MultiVersion
 {
 public:
-    /// 使用するオブジェクトのバージョン。shared_ptrがバージョンの生存期間を管理します。
+    /// Version of object for usage. shared_ptr manage lifetime of version.
     using Version = std::shared_ptr<const T>;
     ...
 }
@@ -119,7 +119,7 @@ public:
 ただし、内側の `statement` が中括弧または `else` を含む場合、外側のブロックは中括弧で記述する必要があります。
 
 ```cpp
-/// 書き込みを完了する。
+/// Finish write.
 for (auto & stream : streams)
     stream.second->finalize();
 ```
@@ -143,19 +143,19 @@ for (auto & stream : streams)
 **24.** 値に対する `const` 修飾子は、型名の前に書かなければなりません。
 
 ```cpp
-//正しい
+//correct
 const char * pos
 const std::string & s
-//誤り
+//incorrect
 char const * pos
 ```
 
 **25.** ポインタや参照を宣言する際は、`*` および `&` 記号の両側にスペースを入れること。
 
 ```cpp
-//正しい
+//correct
 const char * pos
-//誤り
+//incorrect
 const char* pos
 const char *pos
 ```
@@ -167,26 +167,26 @@ const char *pos
 `using` は関数内などのローカルスコープに宣言してもよい。
 
 ```cpp
-//正しい
+//correct
 using FileStreams = std::map<std::string, std::shared_ptr<Stream>>;
 FileStreams streams;
-//誤り
+//incorrect
 std::map<std::string, std::shared_ptr<Stream>> streams;
 ```
 
 **27.** 1 つのステートメントで異なる型の複数の変数を宣言しないこと。
 
 ```cpp
-//不正解
+//incorrect
 int x, *y;
 ```
 
 **28.** C スタイルのキャストを使用しないでください。
 
 ```cpp
-//誤り
+//incorrect
 std::cerr << (int)c <<; std::endl;
-//正しい
+//correct
 std::cerr << static_cast<int>(c) << std::endl;
 ```
 
@@ -213,10 +213,10 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 これは非常に重要です。コメントを書こうとすると、そのコードが不要であることや、設計が誤っていることに気づく場合があります。
 
 ```cpp
-/** 使用可能なメモリ領域の一部。
-  * 例えば、internal_bufferが1MBで、ファイルから読み込み用にバッファへロードされたデータが10バイトのみの場合、
-  * working_bufferのサイズは10バイトのみとなります
-  * (working_buffer.end()は、読み込み可能なこれら10バイトの直後の位置を指します)。
+/** Part of piece of memory, that can be used.
+  * For example, if internal_buffer is 1MB, and there was only 10 bytes loaded to buffer from file for reading,
+  * then working_buffer will have size of only 10 bytes
+  * (working_buffer.end() will point to position right after those 10 bytes available for read).
   */
 ```
 
@@ -225,14 +225,14 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 **3.** コメントは、それが説明するコードの前に記述してください。例外的に、コメントを同じ行でコードの後に記述してもかまいません。
 
 ```cpp
-/** クエリを解析して実行します。
+/** Parses and executes the query.
 */
 void executeQuery(
-    ReadBuffer & istr, /// クエリの読み取り元（該当する場合はINSERTのデータも含む）
-    WriteBuffer & ostr, /// 結果の書き込み先
-    Context & context, /// DB、テーブル、データ型、エンジン、関数、集約関数など
-    BlockInputStreamPtr & query_plan, /// クエリの実行方法に関する説明を記述可能
-    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// SELECTクエリを処理する段階
+    ReadBuffer & istr, /// Where to read the query from (and data for INSERT, if applicable)
+    WriteBuffer & ostr, /// Where to write the result
+    Context & context, /// DB, tables, data types, engines, functions, aggregate functions...
+    BlockInputStreamPtr & query_plan, /// Here could be written the description on how query was executed
+    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// Up to which stage process the SELECT query
     )
 ```
 
@@ -244,22 +244,22 @@ void executeQuery(
 
 ```cpp
 /*
-* プロシージャ名:
-* 元のプロシージャ名:
-* 作成者:
-* 作成日:
-* 変更日:
-* 変更者:
-* 元のファイル名:
-* 目的:
-* 用途:
-* 区分:
-* 使用クラス:
-* 定数:
-* ローカル変数:
-* パラメータ:
-* 作成日:
-* 目的:
+* Procedure Name:
+* Original procedure name:
+* Author:
+* Date of creation:
+* Dates of modification:
+* Modification authors:
+* Original file name:
+* Purpose:
+* Intent:
+* Designation:
+* Classes used:
+* Constants:
+* Local variables:
+* Parameters:
+* Date of creation:
+* Purpose:
 */
 ```
 
@@ -282,7 +282,7 @@ void executeQuery(
 **13.** 大文字を使用しないこと。過度な句読点や記号を使用しないこと。
 
 ```cpp
-/// 何が失敗したのか???
+/// WHAT THE FAIL???
 ```
 
 **14.** 区切り線としてコメントを使用しないでください。
@@ -294,7 +294,7 @@ void executeQuery(
 **15.** コメント欄で議論を始めないこと。
 
 ```cpp
-/// なぜこれを行ったのですか？
+/// Why did you do this stuff?
 ```
 
 **16.** ブロックの末尾に、その内容を説明するコメントを付ける必要はありません。
@@ -392,7 +392,7 @@ FileQueueProcessor(
 **13.** ローカル変数とクラスメンバーで名前の付け方に違いは設けません（接頭辞は不要です）。
 
 ```cpp
-timer (m_timer ではなく)
+timer (not m_timer)
 ```
 
 **14.** `enum` 内の定数には、先頭を大文字にした CamelCase を使用します。ALL&#95;CAPS も許容されます。`enum` が非ローカルの場合は、`enum class` を使用します。
@@ -452,13 +452,13 @@ T&#95;PAAMAYIM&#95;NEKUDOTAYIM のような名前は使用しないでくださ�
 スレッド関数では、すべての例外をキャッチして保持しておき、`join` の後でメインスレッド内で再スローする必要があります。
 
 ```cpp
-/// まだ計算が実行されていない場合は、最初のブロックを同期的に計算する
+/// If there weren't any calculations yet, calculate the first block synchronously
 if (!started)
 {
     calculate();
     started = true;
 }
-else /// 計算が既に実行中の場合は、結果を待機する
+else /// If calculations are already in progress, wait for the result
     pool.wait();
 
 if (exception)
@@ -468,7 +468,7 @@ if (exception)
 例外を処理せずに握りつぶしてはいけません。すべての例外を、ただ闇雲にログへ書き出すだけにしてもいけません。
 
 ```cpp
-//不適切
+//Not correct
 catch (...) {}
 ```
 
@@ -488,7 +488,7 @@ catch (const DB::Exception & e)
 
 ```cpp
 if (0 != close(fd))
-    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "ファイル {} をクローズできません", file_name);
+    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "Cannot close file {}", file_name);
 ```
 
 コード内の不変条件（インバリアント）をチェックするために assert を使用できます。
@@ -587,7 +587,7 @@ ready_any.set();
 ```cpp
 using AggregateFunctionPtr = std::shared_ptr<IAggregateFunction>;
 
-/** 名前から集約関数を作成します。
+/** Allows creating an aggregate function by its name.
   */
 class AggregateFunctionFactory
 {
@@ -619,7 +619,7 @@ public:
 ```cpp
 Loader(DB::Connection * connection_, const std::string & query, size_t max_block_size_);
 
-/// 遅延初期化用
+/// For deferred initialization
 Loader() {}
 ```
 
@@ -678,11 +678,11 @@ auto f() -> void
 **25.** 変数の宣言と初期化。
 
 ```cpp
-//正しい方法
+//right way
 std::string s = "Hello";
 std::string s{"Hello"};
 
-//間違った方法
+//wrong way
 auto s = std::string{"Hello"};
 ```
 
@@ -695,11 +695,11 @@ auto s = std::string{"Hello"};
 **2.** 現代的なC++で便利なシンタックスシュガーが用意されているような構文は使用しない。例:
 
 ```cpp
-// 構文糖衣なしの従来の方法
-template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // std::enable_ifを使用したSFINAE、::valueの使用
-std::pair<int, int> func(const E<G> & e) // 戻り値の型を明示的に指定
+// Traditional way without syntactic sugar
+template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // SFINAE via std::enable_if, usage of ::value
+std::pair<int, int> func(const E<G> & e) // explicitly specified return type
 {
-    if (elements.count(e)) // .count()による存在確認
+    if (elements.count(e)) // .count() membership test
     {
         // ...
     }
@@ -710,17 +710,17 @@ std::pair<int, int> func(const E<G> & e) // 戻り値の型を明示的に指定
             [&](const auto x){
                 return x == 1;
             }),
-        elements.end()); // remove-eraseイディオム
+        elements.end()); // remove-erase idiom
 
-    return std::make_pair(1, 2); // make_pair()でペアを作成
+    return std::make_pair(1, 2); // create pair via make_pair()
 }
 
-// 構文糖衣を使用した方法(C++14/17/20)
+// With syntactic sugar (C++14/17/20)
 template <typename G>
-requires std::same_v<G, F> // C++20コンセプトを使用したSFINAE、C++14テンプレートエイリアスの使用
-auto func(const E<G> & e) // auto戻り値型(C++14)
+requires std::same_v<G, F> // SFINAE via C++20 concept, usage of C++14 template alias
+auto func(const E<G> & e) // auto return type (C++14)
 {
-    if (elements.contains(e)) // C++20 .containsによる存在確認
+    if (elements.contains(e)) // C++20 .contains membership test
     {
         // ...
     }
@@ -731,7 +731,7 @@ auto func(const E<G> & e) // auto戻り値型(C++14)
             return x == 1;
         }); // C++20 std::erase_if
 
-    return {1, 2}; // または: return std::pair(1, 2); // 初期化リストまたは値初期化でペアを作成(C++17)
+    return {1, 2}; // or: return std::pair(1, 2); // create pair via initialization list or value initialization (C++17)
 }
 ```
 

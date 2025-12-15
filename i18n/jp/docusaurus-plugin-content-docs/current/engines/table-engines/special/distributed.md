@@ -103,30 +103,30 @@ SETTINGS
 ```xml
 <remote_servers>
     <logs>
-        <!-- 分散クエリ用の、クラスタごとのサーバ間シークレット。
-             既定値: シークレットなし (認証は行われません)。
+        <!-- Inter-server per-cluster secret for Distributed queries
+             default: no secret (no authentication will be performed)
 
-             設定した場合、分散クエリはシャード側で検証されるため、少なくとも次を満たす必要があります:
-             - 対応するクラスタがシャード上に存在していること
-             - そのクラスタが同じシークレットを持っていること
+             If set, then Distributed queries will be validated on shards, so at least:
+             - such cluster should exist on the shard,
+             - such cluster should have the same secret.
 
-             さらに (より重要な点として)、initial_user が
-             クエリの現在のユーザーとして使用されます。
+             And also (and which is more important), the initial_user will
+             be used as current user for the query.
         -->
         <!-- <secret></secret> -->
         
-        <!-- 任意。このクラスタで分散DDLクエリ (ON CLUSTER 句) を許可するかどうか。既定値: true (許可)。 -->        
+        <!-- Optional. Whether distributed DDL queries (ON CLUSTER clause) are allowed for this cluster. Default: true (allowed). -->        
         <!-- <allow_distributed_ddl_queries>true</allow_distributed_ddl_queries> -->
         
         <shard>
-            <!-- 任意。データ書き込み時のシャードの重み。既定値: 1。 -->
+            <!-- Optional. Shard weight when writing data. Default: 1. -->
             <weight>1</weight>
-            <!-- 任意。シャード名。空ではなく、かつクラスタ内の他のシャードと重複しない必要があります。指定しない場合は空になります。 -->
+            <!-- Optional. The shard name.  Must be non-empty and unique among shards in the cluster. If not specified, will be empty. -->
             <name>shard_01</name>
-            <!-- 任意。データを1つのレプリカのみに書き込むかどうか。既定値: false (すべてのレプリカに書き込む)。 -->
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
             <internal_replication>false</internal_replication>
             <replica>
-                <!-- 任意。負荷分散時のレプリカの優先度 (load_balancing 設定も参照)。既定値: 1 (値が小さいほど優先度が高い)。 -->
+                <!-- Optional. Priority of the replica for load balancing (see also load_balancing setting). Default: 1 (less value has more priority). -->
                 <priority>1</priority>
                 <host>example01-01-1</host>
                 <port>9000</port>

@@ -69,12 +69,12 @@ Terraform の例は [こちら](https://github.com/ClickHouse/terraform-provider
 ClickHouse Cloud サービスに関する情報を取得する必要があります。これは ClickHouse Cloud コンソールまたは ClickHouse API のいずれかで取得できます。ClickHouse API を使用する場合は、先に進む前に次の環境変数を設定してください：
 
 ```shell
-REGION=<GCP形式を使用したリージョンコード（例: us-central1）>
+REGION=<Your region code using the GCP format, for example: us-central1>
 PROVIDER=gcp
-KEY_ID=<ClickHouseキーID>
-KEY_SECRET=<ClickHouseキーシークレット>
-ORG_ID=<ClickHouse組織ID>
-SERVICE_NAME=<ClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 [新しい ClickHouse Cloud API キーを作成](/cloud/manage/openapi)するか、既存のキーを使用できます。
@@ -203,7 +203,7 @@ resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
 
 output "psc_connection_id" {
   value       = google_compute_forwarding_rule.clickhouse_cloud_psc.psc_connection_id
-  description = "GCP PSC接続IDをインスタンスレベルの許可リストに追加してください。"
+  description = "Add GCP PSC Connection ID to allow list on instance level."
 }
 ```
 
@@ -245,7 +245,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "gcp",
         "id": "${ENDPOINT_ID:?}",
-        "description": "GCPプライベートエンドポイント",
+        "description": "A GCP private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -370,9 +370,9 @@ nslookup $DNS_NAME
 ```
 
 ```response
-非権威的な回答:
+Non-authoritative answer:
 ...
-アドレス: 10.128.0.2
+Address: 10.128.0.2
 ```
 
 ### ピアによる接続リセット {#connection-reset-by-peer}
@@ -392,24 +392,24 @@ openssl s_client -connect ${DNS_NAME}:9440
 ```
 
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-ピア証明書が利用できません
+no peer certificate available
 ---
-クライアント証明書のCA名が送信されませんでした
+No client certificate CA names sent
 ---
-SSLハンドシェイクは0バイトを読み取り、335バイトを書き込みました
-検証: OK
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-新規、(なし)、暗号は(なし)
-セキュア再ネゴシエーションはサポートされていません
-圧縮: なし
-拡張: なし
-ALPNネゴシエーションなし
-早期データは送信されませんでした
-検証リターンコード: 0 (ok)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### エンドポイントフィルターの確認 {#checking-endpoint-filters}

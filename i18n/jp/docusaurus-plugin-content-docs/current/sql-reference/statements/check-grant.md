@@ -14,7 +14,7 @@ doc_type: 'reference'
 クエリの基本構文は以下のとおりです。
 
 ```sql
-CHECK GRANT 権限[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*}
+CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*}
 ```
 
 * `privilege` — 権限のタイプ。

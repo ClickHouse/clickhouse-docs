@@ -32,35 +32,35 @@ your_profile_name:
       type: clickhouse
 
       # Optional
-      schema: [default] # База данных ClickHouse для моделей dbt
-      driver: [http] # http или native. Если не указано, определяется автоматически на основе настройки порта
+      schema: [default] # ClickHouse database for dbt models
+      driver: [http] # http or native.  If not set this will be autodetermined based on port setting
       host: [localhost] 
-      port: [8123]  # Если не указано, по умолчанию используется 8123, 8443, 9000 или 9440 в зависимости от настроек secure и driver 
-      user: [default] # Пользователь для всех операций с базой данных
-      password: [<empty string>] # Пароль пользователя
-      cluster: [<empty string>] # Если указано, определённые DDL-операции и операции с таблицами будут выполняться с конструкцией `ON CLUSTER` для данного кластера. Распределённые материализации требуют этой настройки. Подробнее см. раздел о кластере ClickHouse ниже.
-      verify: [True] # Проверять TLS-сертификат при использовании TLS/SSL
-      secure: [False] # Использовать TLS (нативный протокол) или HTTPS (протокол http)
-      client_cert: [null] # Путь к клиентскому TLS-сертификату в формате .pem
-      client_cert_key: [null] # Путь к закрытому ключу клиентского TLS-сертификата
-      retries: [1] # Количество повторных попыток при возникновении повторяемого исключения базы данных (например, ошибки 503 'Service Unavailable')
-      compression: [<empty string>] # Использовать сжатие gzip, если указано (http), или тип сжатия для нативного соединения
-      connect_timeout: [10] # Тайм-аут в секундах для установления соединения с ClickHouse
-      send_receive_timeout: [300] # Тайм-аут в секундах для получения данных от сервера ClickHouse
-      cluster_mode: [False] # Использовать специальные настройки для улучшения работы с реплицируемыми базами данных (рекомендуется для ClickHouse Cloud)
-      use_lw_deletes: [False] # Использовать стратегию `delete+insert` в качестве инкрементной стратегии по умолчанию.
-      check_exchange: [True] # Проверить, что ClickHouse поддерживает атомарную команду EXCHANGE TABLES. (Не требуется для большинства версий ClickHouse)
-      local_suffix: [_local] # Суффикс локальных таблиц на сегментах для распределённых материализаций.
-      local_db_prefix: [<empty string>] # Префикс базы данных для локальных таблиц на сегментах при распределённых материализациях. Если не указано, используется та же база данных, что и для распределённой таблицы.
-      allow_automatic_deduplication: [False] # Включить автоматическую дедупликацию ClickHouse для реплицируемых таблиц
-      tcp_keepalive: [False] # Только для нативного клиента, задаёт конфигурацию TCP keepalive. Укажите пользовательские настройки keepalive в формате [idle_time_sec, interval_sec, probes].
-      custom_settings: [{}] # Словарь пользовательских настроек ClickHouse для соединения — по умолчанию пустой.
-      database_engine: '' # Движок базы данных для создания новых схем (баз данных) ClickHouse. Если не указано (по умолчанию), новые базы данных будут использовать движок базы данных ClickHouse по умолчанию (обычно Atomic).
-      threads: [1] # Количество потоков для выполнения запросов. Перед установкой значения больше 1 обязательно прочитайте раздел [согласованность чтения после записи](#read-after-write-consistency).
+      port: [8123]  # If not set, defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [default] # User for all database operations
+      password: [<empty string>] # Password for the user
+      cluster: [<empty string>] # If set, certain DDL/table operations will be executed with the `ON CLUSTER` clause using this cluster. Distributed materializations require this setting to work. See the following ClickHouse Cluster section for more details.
+      verify: [True] # Validate TLS certificate if using TLS/SSL
+      secure: [False] # Use TLS (native protocol) or HTTPS (http protocol)
+      client_cert: [null] # Path to a TLS client certificate in .pem format
+      client_cert_key: [null] # Path to the private key for the TLS client certificate
+      retries: [1] # Number of times to retry a "retriable" database exception (such as a 503 'Service Unavailable' error)
+      compression: [<empty string>] # Use gzip compression if truthy (http), or compression type for a native connection
+      connect_timeout: [10] # Timeout in seconds to establish a connection to ClickHouse
+      send_receive_timeout: [300] # Timeout in seconds to receive data from the ClickHouse server
+      cluster_mode: [False] # Use specific settings designed to improve operation on Replicated databases (recommended for ClickHouse Cloud)
+      use_lw_deletes: [False] # Use the strategy `delete+insert` as the default incremental strategy.
+      check_exchange: [True] # Validate that clickhouse support the atomic EXCHANGE TABLES command.  (Not needed for most ClickHouse versions)
+      local_suffix: [_local] # Table suffix of local tables on shards for distributed materializations.
+      local_db_prefix: [<empty string>] # Database prefix of local tables on shards for distributed materializations. If empty, it uses the same database as the distributed table.
+      allow_automatic_deduplication: [False] # Enable ClickHouse automatic deduplication for Replicated tables
+      tcp_keepalive: [False] # Native client only, specify TCP keepalive configuration. Specify custom keepalive settings as [idle_time_sec, interval_sec, probes].
+      custom_settings: [{}] # A dictionary/mapping of custom ClickHouse settings for the connection - default is empty.
+      database_engine: '' # Database engine to use when creating new ClickHouse schemas (databases).  If not set (the default), new databases will use the default ClickHouse database engine (usually Atomic).
+      threads: [1] # Number of threads to use when running queries. Before setting it to a number higher than 1, make sure to read the [read-after-write consistency](#read-after-write-consistency) section.
       
-      # Настройки нативного соединения (clickhouse-driver)
-      sync_request_timeout: [5] # Тайм-аут для проверки связи с сервером
-      compress_block_size: [1048576] # Размер блока сжатия, если сжатие включено
+      # Native (clickhouse-driver) connection settings
+      sync_request_timeout: [5] # Timeout for server ping
+      compress_block_size: [1048576] # Compression block size if compression is enabled
 ```
 
 
@@ -86,7 +86,7 @@ your_profile_name:
 
 ```yaml
 seeds:
-  +quote_columns: false  #или `true`, если в заголовках столбцов CSV есть пробелы
+  +quote_columns: false  #or `true` if you have CSV column headers with spaces
 ```
 
 
@@ -240,7 +240,7 @@ Data skipping индексы доступны только для материа
 ```yaml
 models:
   - name: table_column_configs
-    description: 'Тестирование конфигураций на уровне столбцов'
+    description: 'Testing column-level configurations'
     config:
       contract:
         enforced: true
@@ -268,11 +268,11 @@ dbt автоматически определяет тип данных кажд
 }}
 
 select
-  -- event_type может быть выведен как String, но предпочтительнее использовать LowCardinality(String):
+  -- event_type may be infered as a String but we may prefer LowCardinality(String):
   CAST(event_type, 'LowCardinality(String)') as event_type,
-  -- countState() может быть выведен как `AggregateFunction(count)`, но предпочтительнее изменить тип используемого аргумента:
+  -- countState() may be infered as `AggregateFunction(count)` but we may prefer to change the type of the argument used:
   CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
-  -- maxSimpleState() может быть выведен как `SimpleAggregateFunction(max, String)`, но предпочтительнее также изменить тип используемого аргумента:
+  -- maxSimpleState() may be infered as `SimpleAggregateFunction(max, String)` but we may prefer to also change the type of the argument used:
   CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
 from {{ ref('user_events') }}
 group by event_type
@@ -353,10 +353,10 @@ models:
 ```python
 {{ config(
     materialized = "incremental",
-    engine = "<тип-движка>",
-    order_by = [ "<имя-столбца>", ... ],
-    partition_by = [ "<имя-столбца>", ... ],
-    unique_key = [ "<имя-столбца>", ... ],
+    engine = "<engine-type>",
+    order_by = [ "<column-name>", ... ],
+    partition_by = [ "<column-name>", ... ],
+    unique_key = [ "<column-name>", ... ],
     inserts_only = [ True|False ],
       ...
     ]
@@ -692,10 +692,10 @@ CREATE TABLE db.table on cluster cluster (
 ```python
 {{
    config(
-     schema = "<имя-схемы>",
-     unique_key = "<имя-столбца>",
-     strategy = "<стратегия>",
-     updated_at = "<имя-столбца-updated-at>",
+     schema = "<schema-name>",
+     unique_key = "<column-name>",
+     strategy = "<strategy>",
+     updated_at = "<updated-at-column-name>",
    )
 }}
 ```
@@ -783,7 +783,7 @@ dbt-clickhouse поддерживает большинство межбазов�
 1. **Создать базу данных, указывающую на внешний каталог:**
 
 ```sql
--- Пример с REST-каталогом
+-- Example with REST Catalog
 SET allow_experimental_database_iceberg = 1;
 
 CREATE DATABASE iceberg_catalog

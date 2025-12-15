@@ -113,11 +113,11 @@ use_query_cache = true`), но при этом следует иметь в ви
 ```xml
 <profiles>
     <default>
-        <!-- Максимальный размер кеша в байтах для пользователя/профиля 'default' -->
+        <!-- The maximum cache size in bytes for user/profile 'default' -->
         <query_cache_max_size_in_bytes>10000</query_cache_max_size_in_bytes>
-        <!-- Максимальное количество результатов SELECT-запросов, сохраняемых в кеше для пользователя/профиля 'default' -->
+        <!-- The maximum number of SELECT query results stored in the cache for user/profile 'default' -->
         <query_cache_max_entries>100</query_cache_max_entries>
-        <!-- Сделать обе настройки доступными только для чтения, чтобы пользователь не мог их изменять -->
+        <!-- Make both settings read-only so the user cannot change them -->
         <constraints>
             <query_cache_max_size_in_bytes>
                 <readonly/>
@@ -161,7 +161,7 @@ SETTINGS use_query_cache = true, query_cache_min_query_duration = 5000;
 Пример создания трех разных записей в кэше запросов для одного и того же запроса:
 
 ```sql
-SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag неявно '' (пустая строка)
+SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag is implicitly '' (empty string)
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```

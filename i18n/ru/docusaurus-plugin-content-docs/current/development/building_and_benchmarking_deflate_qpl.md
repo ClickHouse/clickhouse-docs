@@ -63,8 +63,8 @@ $ accel-config list | grep -P 'iax|state'
 
 ```bash
     "dev":"iax1",
-    "state":"включен",
-            "state":"включен",
+    "state":"enabled",
+            "state":"enabled",
 ```
 
 Если вывода нет, это означает, что IAA еще не готов к работе. Пожалуйста, проверьте настройку IAA.
@@ -139,13 +139,13 @@ SELECT count() FROM lineorder_flat
 При первом выполнении операции вставки или запроса с клиента в консоли сервера ClickHouse должно появиться следующее сообщение в логе:
 
 ```text
-Аппаратно-ускоренный кодек DeflateQpl готов!
+Hardware-assisted DeflateQpl codec is ready!
 ```
 
 Если это сообщение так и не появится, но вы увидите другую запись лога, как показано ниже:
 
 ```text
-Не удалось инициализировать аппаратно-ускоренный кодек DeflateQpl
+Initialization of hardware-assisted DeflateQpl codec failed
 ```
 
 Это означает, что устройства IAA не готовы; вам нужно заново проверить их настройку.

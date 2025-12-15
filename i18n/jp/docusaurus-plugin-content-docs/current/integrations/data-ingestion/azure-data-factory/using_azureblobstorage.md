@@ -58,7 +58,7 @@ ClickHouse クエリコンソールの両方を準備できたら、Azure Blob S
 
 ```sql
 SELECT * FROM azureBlobStorage(
-    '<接続文字列>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
@@ -70,7 +70,7 @@ SELECT * FROM azureBlobStorage(
 ```sql
 INSERT INTO my_table
 SELECT * FROM azureBlobStorage(
-    '<接続文字列を入力>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
@@ -113,18 +113,19 @@ SETTINGS format_csv_delimiter = ';'
 
 7. テーブルにデータを読み込むには、元のデータセットで使用されている
    スキーマの簡略版を作成します:
-   ```sql
-   CREATE TABLE sensors
-   (
-       sensor_id UInt16,
-       lat Float32,
-       lon Float32,
-       timestamp DateTime,
-       temperature Float32
-   )
-   ENGINE = MergeTree
-   ORDER BY (timestamp, sensor_id);
-   ```
+
+```sql
+CREATE TABLE sensors
+(
+    sensor_id UInt16,
+    lat Float32,
+    lon Float32,
+    timestamp DateTime,
+    temperature Float32
+)
+ENGINE = MergeTree
+ORDER BY (timestamp, sensor_id);
+```
 
 :::info
 Azure Blob Storage のような外部ソースに対してクエリを実行する際の構成オプションや
@@ -133,16 +134,16 @@ Azure Blob Storage のような外部ソースに対してクエリを実行す�
 :::
 
 8. 次に、Azure Blob Storage から sensors テーブルにデータを挿入します:
-   ```sql
-   INSERT INTO sensors
-   SELECT sensor_id, lat, lon, timestamp, temperature
-   FROM azureBlobStorage(
-       '<YOUR CONNECTION STRING>', 
-       'sensors',
-       '2019-06_bmp180.csv.zst', 
-       'CSVWithNames')
-   SETTINGS format_csv_delimiter = ';'
-   ```
+```sql
+INSERT INTO sensors
+SELECT sensor_id, lat, lon, timestamp, temperature
+FROM azureBlobStorage(
+    '<YOUR CONNECTION STRING>', 
+    'sensors',
+    '2019-06_bmp180.csv.zst', 
+    'CSVWithNames')
+SETTINGS format_csv_delimiter = ';'
+```
 
 `sensors` テーブルには、Azure Blob Storage に保存されている `2019-06_bmp180.csv.zst`
 ファイルのデータが取り込まれました。

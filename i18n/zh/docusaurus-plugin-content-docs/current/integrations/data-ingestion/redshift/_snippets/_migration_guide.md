@@ -116,7 +116,7 @@ Query id: 1b7de211-c0f6-4117-86a2-276484f9f4c0
 │ MSD36KVR │ Mufutau   │ Watkins  │
 └──────────┴───────────┴──────────┘
 
-结果包含 5 行。耗时：0.438 秒。
+5 rows in set. Elapsed: 0.438 sec.
 ```
 
 ```sql
@@ -131,7 +131,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 │ 172456 │
 └────────┘
 
-结果包含 1 行。耗时：0.304 秒。
+1 rows in set. Elapsed: 0.304 sec.
 ```
 
 #### 将数据从 Redshift 导入 ClickHouse {#import-data-from-redshift-to-clickhouse}
@@ -139,7 +139,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 下面展示如何使用 `INSERT INTO ... SELECT` 语句导入数据：
 
 ```sql
-# 创建包含 3 列的表 {#table-creation-with-3-columns}
+# TABLE CREATION with 3 columns
 CREATE TABLE users_imported
 (
    `username` String,
@@ -155,7 +155,7 @@ Query id: c7c4c44b-cdb2-49cf-b319-4e569976ab05
 
 Ok.
 
-0 行已写入。耗时：0.233 秒。
+0 rows in set. Elapsed: 0.233 sec.
 ```
 
 ```sql
@@ -168,7 +168,7 @@ Query id: 9d3a688d-b45a-40f4-a7c7-97d93d7149f1
 
 Ok.
 
-0 行已写入。耗时：4.498 秒。已处理 49.99 千行，2.49 MB（11.11 千行/秒，554.27 KB/秒）。
+0 rows in set. Elapsed: 4.498 sec. Processed 49.99 thousand rows, 2.49 MB (11.11 thousand rows/s., 554.27 KB/s.)
 ```
 
 </VerticalStepper>
@@ -242,9 +242,9 @@ FROM s3('https://your-bucket.s3.amazonaws.com/unload/users/*', '<aws_access_key>
 ```response
 Query id: 2e7e219a-6124-461c-8d75-e4f5002c8557
 
-完成。
+Ok.
 
-0 行已返回。耗时: 0.545 秒。已处理 49.99 千行，2.34 MB (91.72 千行/秒, 4.30 MB/秒。)
+0 rows in set. Elapsed: 0.545 sec. Processed 49.99 thousand rows, 2.34 MB (91.72 thousand rows/s., 4.30 MB/s.)
 ```
 
 :::note

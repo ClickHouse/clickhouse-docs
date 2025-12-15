@@ -77,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ Harry Potter and the Half-Blood Prince │ Боевик    │
-│ Harry Potter and the Half-Blood Prince │ Приключения │
-│ Harry Potter and the Half-Blood Prince │ Семейный    │
-│ Harry Potter and the Half-Blood Prince │ Фэнтези   │
-│ Harry Potter and the Half-Blood Prince │ Триллер  │
-│ DragonBall Z                           │ Боевик    │
-│ DragonBall Z                           │ Приключения │
-│ DragonBall Z                           │ Комедия    │
-│ DragonBall Z                           │ Фэнтези   │
-│ DragonBall Z                           │ Фантастика    │
+│ Harry Potter and the Half-Blood Prince │ Action    │
+│ Harry Potter and the Half-Blood Prince │ Adventure │
+│ Harry Potter and the Half-Blood Prince │ Family    │
+│ Harry Potter and the Half-Blood Prince │ Fantasy   │
+│ Harry Potter and the Half-Blood Prince │ Thriller  │
+│ DragonBall Z                           │ Action    │
+│ DragonBall Z                           │ Adventure │
+│ DragonBall Z                           │ Comedy    │
+│ DragonBall Z                           │ Fantasy   │
+│ DragonBall Z                           │ Sci-Fi    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -125,16 +125,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Тихоокеанская война"""                 │
-│ """Турин 2006: XX Зимние Олимпийские игры""" │
-│ Артур, фильм                              │
-│ Мост в Терабитию                          │
-│ Марс в Овне                               │
-│ Повелитель пространства и времени         │
-│ Девятая жизнь Луи Дракса                  │
-│ Парадокс                                  │
-│ Рататуй                                   │
-│ """Американский папаша"""                 │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -298,16 +298,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Тихоокеанская война"""                 │
-│ """Турин 2006: XX Зимние Олимпийские игры""" │
-│ Артур, фильм                              │
-│ Мост в Терабитию                          │
-│ Марс в Овне                               │
-│ Повелитель пространства и времени         │
-│ Девятая жизнь Луи Дракса                  │
-│ Парадокс                                  │
-│ Рататуй                                   │
-│ """Американский папаша"""                 │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
@@ -420,7 +420,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 symbol:             ABC
 volume:             200
@@ -429,7 +429,7 @@ closest_quote_time: 2023-02-22 14:09:00
 quote_price:        32.11
 final_price:        6422
 
-Строка 2:
+Row 2:
 ──────
 symbol:             ABC
 volume:             300

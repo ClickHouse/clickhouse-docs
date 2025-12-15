@@ -90,18 +90,18 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 graph TD
     subgraph network_read
     nr_root(("/"))
-    -->|100 个并发请求| nr_fair("fair")
-    -->|75% 带宽| nr_prod["prod"]
+    -->|100 concurrent requests| nr_fair("fair")
+    -->|75% bandwidth| nr_prod["prod"]
     nr_fair
-    -->|25% 带宽| nr_dev["dev"]
+    -->|25% bandwidth| nr_dev["dev"]
     end
 
     subgraph network_write
     nw_root(("/"))
-    -->|100 个并发请求| nw_fair("fair")
-    -->|75% 带宽| nw_prod["prod"]
+    -->|100 concurrent requests| nw_fair("fair")
+    -->|75% bandwidth| nw_prod["prod"]
     nw_fair
-    -->|25% 带宽| nw_dev["dev"]
+    -->|25% bandwidth| nw_dev["dev"]
     end
 ```
 
@@ -311,12 +311,12 @@ CPU 调度目前尚不支持 merges 和 mutations。
 
 ```sql
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
-CREATE WORKLOAD 全部 SETTINGS max_concurrent_threads_ratio_to_cores = 2
-CREATE WORKLOAD 管理 IN 全部 SETTINGS max_concurrent_threads = 2, priority = -1
-CREATE WORKLOAD 生产 IN 全部 SETTINGS weight = 4
-CREATE WORKLOAD 分析 IN 生产 SETTINGS max_cpu_share = 0.7, weight = 3
-CREATE WORKLOAD 摄取 IN 生产
-CREATE WORKLOAD 开发 IN 全部 SETTINGS max_cpu_share = 0.3
+CREATE WORKLOAD all SETTINGS max_concurrent_threads_ratio_to_cores = 2
+CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 2, priority = -1
+CREATE WORKLOAD production IN all SETTINGS weight = 4
+CREATE WORKLOAD analytics IN production SETTINGS max_cpu_share = 0.7, weight = 3
+CREATE WORKLOAD ingestion IN production
+CREATE WORKLOAD development IN all SETTINGS max_cpu_share = 0.3
 ```
 
 在这里，我们将所有查询的线程总数限制为可用 CPU 数量的 2 倍。Admin 工作负载最多限制为 2 个线程，而不受可用 CPU 数量影响。Admin 的优先级为 -1（低于默认的 0），如果需要，它会优先获得任何 CPU 槽位。当 Admin 不执行查询时，CPU 资源会在生产和开发工作负载之间分配。基于权重（4 比 1）来保证 CPU 时间的份额：至少 80% 分配给生产（如果需要），至少 20% 分配给开发（如果需要）。权重决定了“保证份额”，而 CPU 限流决定了“上限”：生产没有上限，可以消耗 100%；开发则有 30% 的上限，即使没有来自其他工作负载的查询，该上限也会生效。生产工作负载不是叶节点，因此其资源会按权重（3 比 1）在 analytics 和摄取之间划分。这意味着 analytics 至少有 0.8 * 0.75 = 60% 的保证份额，并且基于 `max_cpu_share`，它的上限是总 CPU 资源的 70%。而摄取至少有 0.8 * 0.25 = 20% 的保证份额，但没有上限。

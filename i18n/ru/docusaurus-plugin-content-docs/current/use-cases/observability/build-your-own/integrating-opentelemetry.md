@@ -255,17 +255,17 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 В результате в stdout будут выводиться сообщения трассировки, похожие на приведённый ниже пример:
 
 ```response
-Спан #86
-        ID трассировки  : 1bb5cdd2c9df5f0da320ca22045c60d9
-        ID родителя     : ce129e5c2dd51378
+Span #86
+        Trace ID        : 1bb5cdd2c9df5f0da320ca22045c60d9
+        Parent ID       : ce129e5c2dd51378
         ID              : fbb14077b5e149a0
-        Имя             : okey-dokey-0
-        Тип             : Сервер
-        Время начала    : 2024-06-19 18:03:41.603868 +0000 UTC
-        Время окончания : 2024-06-19 18:03:41.603991 +0000 UTC
-        Код статуса     : Не установлен
-        Сообщение статуса :
-Атрибуты:
+        Name            : okey-dokey-0
+        Kind            : Server
+        Start time      : 2024-06-19 18:03:41.603868 +0000 UTC
+        End time        : 2024-06-19 18:03:41.603991 +0000 UTC
+        Status code     : Unset
+        Status message :
+Attributes:
         -> net.peer.ip: Str(1.2.3.4)
         -> peer.service: Str(telemetrygen-client)
 ```
@@ -447,10 +447,10 @@ ScopeVersion:
 ScopeAttributes:        {}
 LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
 
-Получена 1 строка. Время выполнения: 0.012 сек. Обработано 5.04 тыс. строк, 4.62 МБ (414.14 тыс. строк/с., 379.48 МБ/с.)
-Пиковое использование памяти: 5.41 МиБ.
+1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
+Peak memory usage: 5.41 MiB.
 
-Аналогично, для событий трассировки можно проверить таблицу `otel_traces`:
+Likewise, for trace events, users can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
@@ -669,11 +669,11 @@ exporters:
   otlp:
     endpoint: localhost:4317
     tls:
-      insecure: true # Установите false при использовании защищённого соединения
+      insecure: true # Set to false if you are using a secure connection
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Изменено, так как на одном хосте запущено 2 коллектора
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

@@ -66,7 +66,7 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 :::tip
@@ -181,13 +181,13 @@ REFRESH EVERY|AFTER interval [OFFSET interval]
 [EMPTY]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 ここで、`interval` は一連の単純なインターバルです。
 
 ```sql
-number 秒|分|時間|日|週|月|年
+number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
 対応するクエリを定期的に実行し、その結果をテーブルに保存します。
@@ -209,23 +209,23 @@ number 秒|分|時間|日|週|月|年
 リフレッシュスケジュールの例:
 
 ```sql
-REFRESH EVERY 1 DAY -- 毎日、UTC の午前0時に
-REFRESH EVERY 1 MONTH -- 毎月1日の午前0時に
-REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 毎月6日の午前2時に
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 隔週の土曜日の午後3時10分に
-REFRESH EVERY 30 MINUTE -- 00:00、00:30、01:00、01:30 などの時刻に
-REFRESH AFTER 30 MINUTE -- 前回のリフレッシュ完了から30分後。特定の時刻には揃えない。
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 構文エラー。AFTER と組み合わせて OFFSET は使用できない。
-REFRESH EVERY 1 WEEK 2 DAYS -- 9日ごとで、特定の曜日や月の日付には紐づかない;
-                            -- 具体的には、（1969-12-29 からの）日数が 9 で割り切れる場合
-REFRESH EVERY 5 MONTHS -- 5か月ごと。12 は 5 で割り切れないため、毎年異なる月になる;
-                       -- 具体的には、（1970-01 からの）月数が 5 で割り切れる場合
+REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
+REFRESH EVERY 1 MONTH -- on 1st day of every month, at midnight
+REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- on 6th day of every month, at 2:00 am
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- every other Saturday, at 3:10 pm
+REFRESH EVERY 30 MINUTE -- at 00:00, 00:30, 01:00, 01:30, etc
+REFRESH AFTER 30 MINUTE -- 30 minutes after the previous refresh completes, no alignment with time of day
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- syntax error, OFFSET is not allowed with AFTER
+REFRESH EVERY 1 WEEK 2 DAYS -- every 9 days, not on any particular day of the week or month;
+                            -- specifically, when day number (since 1969-12-29) is divisible by 9
+REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is not divisible by 5);
+                       -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
 `RANDOMIZE FOR` は各リフレッシュのタイミングをランダムに調整します。例:
 
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 02:30 の間のランダムな時刻にリフレッシュ
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
 特定のビューについて、同時に実行できるリフレッシュは最大でも 1 つだけです。たとえば、`REFRESH EVERY 1 MINUTE` を指定したビューのリフレッシュに 2 分かかる場合、実際には 2 分ごとにリフレッシュされることになります。その後、処理が高速化されて 10 秒でリフレッシュできるようになった場合は、再び 1 分ごとのリフレッシュに戻ります。（特に、スケジュールどおりに行えなかったリフレッシュを取り戻すために 10 秒ごとにリフレッシュされることはなく、そのようなバックログの概念もありません。）
@@ -334,7 +334,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 CREATE WINDOW VIEW [IF NOT EXISTS] [db.]table_name [TO [db.]table_name] [INNER ENGINE engine] [ENGINE engine] [WATERMARK strategy] [ALLOWED_LATENESS interval_function] [POPULATE]
 AS SELECT ...
 GROUP BY time_window_function
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 Window view は、時間ウィンドウごとにデータを集約し、ウィンドウがトリガーされる準備が整った時点で結果を出力できます。レイテンシーを下げるために、中間の集約結果を内部（または指定された）テーブルに保存し、処理結果を指定したテーブルにプッシュしたり、WATCH クエリを使用して通知をプッシュしたりできます。
@@ -354,7 +354,7 @@ Window view は **processing time** と **event time** の 2 種類の処理に�
 **Processing time** は、ローカルマシンの時刻に基づいて window view が結果を生成できるようにするもので、デフォルトで使用されます。最も単純な時間の概念ですが、決定的な結果を保証するものではありません。Processing time 属性は、time window function の `time_attr` をテーブル列に設定するか、関数 `now()` を使用することで定義できます。次のクエリは、processing time を用いた window view を作成します。
 
 ```sql
-ウィンドウ VIEW wv を作成 AS SELECT count(number), tumbleStart(w_id) を w_start として date から取得 GROUP BY tumble(now(), INTERVAL '5' SECOND) を w_id として
+CREATE WINDOW VIEW wv AS SELECT count(number), tumbleStart(w_id) as w_start from date GROUP BY tumble(now(), INTERVAL '5' SECOND) as w_id
 ```
 
 **イベント時刻 (event time)** は、各イベントが生成元デバイス上で実際に発生した時刻です。この時刻は通常、レコードが生成される際にそのレコード内に埋め込まれます。イベント時刻に基づいて処理を行うことで、順序が前後したイベントや遅延して到着するイベントが存在する場合でも、一貫した結果を得ることができます。Window View は `WATERMARK` 構文を使用することで、イベント時刻処理をサポートします。
@@ -487,7 +487,7 @@ ClickHouse は、以下の特徴を持つ **一時ビュー (temporary view)** �
 ### 構文 {#temporary-views-syntax}
 
 ```sql
-一時ビューを作成 [IF NOT EXISTS] view_name AS <select_query>
+CREATE TEMPORARY VIEW [IF NOT EXISTS] view_name AS <select_query>
 ```
 
 `OR REPLACE` は一時テーブルとの整合性を保つため、一時ビューでは**サポートされていません**。一時ビューを「置き換える」必要がある場合は、削除してから再作成してください。
@@ -511,13 +511,13 @@ SELECT * FROM tview ORDER BY id;
 DDL を表示します:
 
 ```sql
-一時ビュー tview の作成文を表示;
+SHOW CREATE TEMPORARY VIEW tview;
 ```
 
 削除するには:
 
 ```sql
-DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構文を使って削除されます
+DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
 
 ### 禁止事項 / 制限事項 {#temporary-views-limitations}
@@ -535,18 +535,18 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構�
 #### 例 {#temporary-views-distributed-example}
 
 ```sql
--- セッション単位のインメモリテーブル
+-- A session-scoped, in-memory table
 CREATE TEMPORARY TABLE temp_ids (id UInt64) ENGINE = Memory;
 
 INSERT INTO temp_ids VALUES (1), (5), (42);
 
--- 一時テーブルに対するセッション単位のビュー（純粋に論理的なオブジェクト）
+-- A session-scoped view over the temp table (purely logical)
 CREATE TEMPORARY VIEW v_ids AS
 SELECT id FROM temp_ids;
 
--- 'test' をクラスタ名に置き換えてください。
--- GLOBAL JOIN により、ClickHouse は小さい結合側（v_ids を介した temp_ids）を
--- 左側を実行するすべてのリモートサーバーへ送信するよう強制されます。
+-- Replace 'test' with your cluster name.
+-- GLOBAL JOIN forces ClickHouse to *ship* the small join-side (temp_ids via v_ids)
+-- to every remote server that executes the left side.
 SELECT count()
 FROM cluster('test', system.numbers) AS n
 GLOBAL ANY INNER JOIN v_ids USING (id)

@@ -47,7 +47,7 @@ SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 
 ```response title="Response"
 ┌─Escaping_test────────────────────────┐
-│ 包含 'quotes' 和      字符的字符串 │
+│ String with 'quotes' and      character │
 └──────────────────────────────────────┘
 ```
 
@@ -82,12 +82,12 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1046491 │
 └────────────┴─────────┘
 
-总计：
+Totals:
 ┌──EventDate─┬───────c─┐
 │ 1970-01-01 │ 8873898 │
 └────────────┴─────────┘
 
-极值：
+Extremes:
 ┌──EventDate─┬───────c─┐
 │ 2014-03-17 │ 1031592 │
 │ 2014-03-23 │ 1406958 │

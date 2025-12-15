@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-инструкция1 PARALLEL WITH инструкция2 [PARALLEL WITH инструкция3 ...]
+statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
 Выполняет операторы `statement1`, `statement2`, `statement3`, ... параллельно друг с другом. Результат выполнения этих операторов отбрасывается.

@@ -68,8 +68,8 @@ ENGINE = Log
 データの挿入：
 
 ```sql
-INSERT INTO log_table VALUES (now(),'REGULAR','1つ目の通常メッセージ')
-INSERT INTO log_table VALUES (now(),'REGULAR','2つ目の通常メッセージ'),(now(),'WARNING','1つ目の警告メッセージ')
+INSERT INTO log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 `<column>.bin` ファイル内に 2 つのデータブロックを作成するために、2 つの `INSERT` クエリを使用しました。
@@ -82,11 +82,11 @@ SELECT * FROM log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ 2番目の通常メッセージ │
-│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -98,8 +98,8 @@ SELECT * FROM log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ  │
-│ 2019-01-18 14:27:32 │ REGULAR      │ 2番目の通常メッセージ │
-│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ  │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

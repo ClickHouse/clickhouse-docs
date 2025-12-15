@@ -19,7 +19,7 @@ wsl --install
 Вас попросят ввести новое имя пользователя UNIX и пароль. После ввода выбранных имени пользователя и пароля должно появиться сообщение, подобное следующему:
 
 ```bash
-Добро пожаловать в Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
 ## Установите ClickHouse с помощью скрипта curl {#install-clickhouse-via-script-using-curl}
@@ -33,7 +33,7 @@ curl https://clickhouse.com/ | sh
 Если скрипт успешно выполнен, вы увидите сообщение:
 
 ```bash
-Бинарный файл ClickHouse успешно загружен. Запустите его следующим образом:
+Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 

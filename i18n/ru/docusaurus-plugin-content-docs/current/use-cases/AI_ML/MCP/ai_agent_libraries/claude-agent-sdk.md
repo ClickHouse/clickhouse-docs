@@ -45,11 +45,11 @@ pip install -q ipywidgets
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ Anthropic:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Введите ключ API Anthropic: ········
+Enter Anthropic API Key: ········
 ```
 
 Далее задайте учетные данные, необходимые для подключения к песочнице ClickHouse SQL:
@@ -77,7 +77,7 @@ from claude_agent_sdk import query, ClaudeAgentOptions, AssistantMessage, UserMe
 options = ClaudeAgentOptions(
     allowed_tools=[
         "mcp__mcp-clickhouse__list_databases",
-        "mcp__mcp-clickhouse__list_tables",
+        "mcp__mcp-clickhouse__list_tables", 
         "mcp__mcp-clickhouse__run_select_query",
         "mcp__mcp-clickhouse__run_chdb_select_query"
     ],
@@ -111,18 +111,18 @@ async for message in query(prompt="Tell me something interesting about UK proper
 
 Обратите внимание, что код внутри блока `for` фильтрует вывод для краткости.
 
-```response title="Ответ"
-🤖 Я выполню запрос к базе данных ClickHouse, чтобы найти что-то интересное о продажах недвижимости в Великобритании.
+```response title="Response"
+🤖 I'll query the ClickHouse database to find something interesting about UK property sales.
 
-Сначала посмотрю, какие базы данных доступны:
+Let me first see what databases are available:
 🛠️ mcp__mcp-clickhouse__list_databases {}
-🤖 Отлично! Есть база данных "uk". Посмотрю, какие таблицы доступны:
+🤖 Great! There's a "uk" database. Let me see what tables are available:
 🛠️ mcp__mcp-clickhouse__list_tables {'database': 'uk'}
-🤖 Превосходно! Таблица `uk_price_paid` содержит более 30 миллионов записей о продажах недвижимости. Найду что-то интересное:
+🤖 Perfect! The `uk_price_paid` table has over 30 million property sales records. Let me find something interesting:
 🛠️ mcp__mcp-clickhouse__run_select_query {'query': "\nSELECT \n    street,\n    town,\n    max(price) as max_price,\n    min(price) as min_price,\n    max(price) - min(price) as price_difference,\n    count() as sales_count\nFROM uk.uk_price_paid\nWHERE street != ''\nGROUP BY street, town\nHAVING sales_count > 100\nORDER BY price_difference DESC\nLIMIT 1\n"}
-🤖 Вот что удивительно: **Бейкер-стрит в Лондоне** (да, та самая знаменитая улица Шерлока Холмса!) имеет самый большой разброс цен среди всех улиц с более чем 100 продажами — недвижимость продавалась по цене от **£2 500** до **£594,3 млн**, ошеломляющая разница более £594 млн!
+🤖 Here's something fascinating: **Baker Street in London** (yes, the famous Sherlock Holmes street!) has the largest price range of any street with over 100 sales - properties sold for as low as **£2,500** and as high as **£594.3 million**, a staggering difference of over £594 million!
 
-Это объяснимо, учитывая, что Бейкер-стрит является одним из самых престижных адресов Лондона, проходящим через богатые районы, такие как Мэрилебон, и в этом наборе данных зафиксировано 541 продажа.
+This makes sense given Baker Street is one of London's most prestigious addresses, running through wealthy areas like Marylebone, and has had 541 recorded sales in this dataset.
 ```
 
 </VerticalStepper>

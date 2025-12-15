@@ -129,10 +129,10 @@ LIMIT 10
 Эту настройку можно задавать как для отдельного запроса, так и для всей сессии.
 
 ```sql
--- Настройка FINAL для конкретного запроса
+-- Per query FINAL setting
 SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
--- Установка FINAL для сессии
+-- Set FINAL for the session
 SET final = 1;
 SELECT count(*) FROM posts; 
 ```
@@ -142,7 +142,7 @@ SELECT count(*) FROM posts;
 Простой способ скрыть избыточный фильтр `_peerdb_is_deleted = 0` — использовать [политику строк (ROW policy).](/docs/operations/access-rights#row-policy-management) Ниже приведён пример, который создаёт политику строк для исключения удалённых строк из всех запросов к таблице votes.
 
 ```sql
--- Применить политику строк для всех пользователей
+-- Apply row policy to all users
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
@@ -170,7 +170,7 @@ CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_delet
 Затем мы можем обращаться к представлениям тем же запросом, который использовали бы в PostgreSQL.
 
 ```sql
--- Посты с наибольшим количеством просмотров
+-- Most viewed posts
 SELECT
     sum(viewcount) AS viewcount,
     owneruserid
@@ -190,10 +190,10 @@ LIMIT 10
 Однако недостатком является то, что данные в целевой таблице актуальны только на момент последнего обновления. Тем не менее для многих сценариев использования интервалы обновления от нескольких минут до нескольких часов могут быть вполне достаточными.
 
 ```sql
--- Создать таблицу дедуплицированных постов 
+-- Create deduplicated posts table 
 CREATE TABLE deduplicated_posts AS posts;
 
--- Создать материализованное представление с запуском каждый час
+-- Create the Materialized view and schedule to run every hour
 CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS 
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```

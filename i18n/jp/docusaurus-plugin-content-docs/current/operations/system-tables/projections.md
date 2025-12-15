@@ -30,7 +30,7 @@ SELECT * FROM system.projections LIMIT 2 FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 database:    default
 table:       landing
@@ -39,7 +39,7 @@ type:        Normal
 sorting_key: ['user_id','date']
 query:       SELECT * ORDER BY user_id, date
 
-行 2:
+Row 2:
 ──────
 database:    default
 table:       landing

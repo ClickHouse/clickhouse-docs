@@ -157,7 +157,7 @@ clickhouse-keeper --config /etc/your_path_to_config/config.xml
 Если у вас нет символической ссылки (`clickhouse-keeper`), вы можете создать её или указать `keeper` в качестве аргумента для `clickhouse`:
 
 ```bash
-clickhouse keeper --config /etc/путь_к_вашему_конфигу/config.xml
+clickhouse keeper --config /etc/your_path_to_config/config.xml
 ```
 
 ### Команды из четырёх букв {#four-letter-word-commands}
@@ -205,38 +205,38 @@ zk_synced_followers     0
 * `srvr`: Отображает полную информацию о сервере.
 
 ```response
-Версия ClickHouse Keeper: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-Задержка мин/сред/макс: 0/0/0
-Получено: 2
-Отправлено: 2
-Подключений: 1
-Необработанных: 0
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Latency min/avg/max: 0/0/0
+Received: 2
+Sent : 2
+Connections: 1
+Outstanding: 0
 Zxid: 34
-Режим: leader
-Количество узлов: 4
+Mode: leader
+Node count: 4
 ```
 
 * `stat`: Выводит краткую информацию о сервере и подключенных клиентах.
 
 ```response
-Версия ClickHouse Keeper: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
-Клиенты:
+ClickHouse Keeper version: v21.11.1.1-prestable-7a4a0b0edef0ad6e0aa662cd3b90c3f4acf796e7
+Clients:
  192.168.1.1:52852(recved=0,sent=0)
  192.168.1.1:52042(recved=24,sent=48)
-Задержка мин/сред/макс: 0/0/0
-Получено: 4
-Отправлено: 4
-Подключений: 1
-Необработанных: 0
+Latency min/avg/max: 0/0/0
+Received: 4
+Sent : 4
+Connections: 1
+Outstanding: 0
 Zxid: 36
-Режим: leader
-Количество узлов: 4
+Mode: leader
+Node count: 4
 ```
 
 * `srst`: Сбрасывает статистику сервера. Команда повлияет на результаты `srvr`, `mntr` и `stat`.
 
 ```response
-Статистика сервера сброшена.
+Server stats reset.
 ```
 
 * `conf`: Вывести подробные сведения о конфигурации сервиса.
@@ -282,7 +282,7 @@ configuration_change_tries_count=20
 * `crst`: Сбросить статистику соединений/сеансов для всех подключений.
 
 ```response
-Статистика подключений сброшена.
+Connection stats reset.
 ```
 
 * `envi`: Вывести сведения о рабочем окружении сервиса
@@ -317,8 +317,8 @@ rw
 * `wchs`: Выводит краткую сводную информацию о наблюдениях на сервере.
 
 ```response
-1 соединение отслеживает 1 путь
-Всего отслеживаемых объектов: 1
+1 connections watching 1 paths
+Total watches:1
 ```
 
 * `wchc`: Выводит подробную информацию о наблюдениях (watches) на сервере, сгруппированную по сессиям. Возвращает список сессий (подключений) с соответствующими наблюдениями (путями). Обратите внимание: в зависимости от количества наблюдений эта операция может быть ресурсоёмкой (влиять на производительность сервера), поэтому используйте её с осторожностью.
@@ -338,10 +338,10 @@ rw
 * `dump`: Выводит список незавершённых сессий и эфемерных узлов. Работает только на лидере.
 
 ```response
-Дамп сессий (2):
+Sessions dump (2):
 0x0000000000000001
 0x0000000000000002
-Сессии с эфемерными узлами (1):
+Sessions with Ephemerals (1):
 0x0000000000000001
  /clickhouse/task_queue/ddl
 ```
@@ -368,7 +368,7 @@ last_snapshot_idx   50
 * `rqld`: Запрос на избрание новым лидером. Возвращает `Sent leadership request to leader.` если запрос отправлен, или `Failed to send leadership request to leader.` если запрос не отправлен. Обратите внимание, что если узел уже является лидером, результат будет таким же, как и при успешной отправке запроса.
 
 ```response
-Запрос на лидерство отправлен лидеру.
+Sent leadership request to leader.
 ```
 
 * `ftfl`: Отображает список всех feature-флагов и показывает, включены ли они для экземпляра Keeper.
@@ -382,29 +382,29 @@ check_not_exists    0
 * `ydld`: Запрос на передачу лидерства и переход в состояние последователя. Если сервер, получающий запрос, является лидером, он сначала приостановит операции записи, затем дождётся, пока преемник (текущий лидер никогда не может быть преемником) не завершит догон по последним записям журнала, и после этого откажется от лидерства. Преемник будет выбран автоматически. Будет возвращено `Sent yield leadership request to leader.` если запрос отправлен, или `Failed to send yield leadership request to leader.` если запрос не был отправлен. Обратите внимание, что если узел уже является последователем, результат будет таким же, как если бы запрос был отправлен.
 
 ```response
-Отправлен запрос на передачу лидерства лидеру.
+Sent yield leadership request to leader.
 ```
 
 * `pfev`: Возвращает значения для всех собранных событий. Для каждого события возвращает его имя, значение и описание.
 
 ```response
-FileOpen        62      Количество открытых файлов.
-Seek    4       Количество вызовов функции 'lseek'.
-ReadBufferFromFileDescriptorRead        126     Количество операций чтения (read/pread) из файлового дескриптора. Не включает сокеты.
-ReadBufferFromFileDescriptorReadFailed  0       Количество неудачных попыток чтения (read/pread) из файлового дескриптора.
-ReadBufferFromFileDescriptorReadBytes   178846  Количество байтов, прочитанных из файловых дескрипторов. Если файл сжат, отображается размер сжатых данных.
-WriteBufferFromFileDescriptorWrite      7       Количество операций записи (write/pwrite) в файловый дескриптор. Не включает сокеты.
-WriteBufferFromFileDescriptorWriteFailed        0       Количество неудачных попыток записи (write/pwrite) в файловый дескриптор.
-WriteBufferFromFileDescriptorWriteBytes 153     Количество байтов, записанных в файловые дескрипторы. Если файл сжат, отображается размер сжатых данных.
-FileSync        2       Количество вызовов функции F_FULLFSYNC/fsync/fdatasync для файлов.
-DirectorySync   0       Количество вызовов функции F_FULLFSYNC/fsync/fdatasync для каталогов.
-FileSyncElapsedMicroseconds     12756   Общее время ожидания системного вызова F_FULLFSYNC/fsync/fdatasync для файлов.
-DirectorySyncElapsedMicroseconds        0       Общее время ожидания системного вызова F_FULLFSYNC/fsync/fdatasync для каталогов.
-ReadCompressedBytes     0       Количество байтов (до декомпрессии), прочитанных из сжатых источников (файлы, сеть).
-CompressedReadBufferBlocks      0       Количество сжатых блоков (блоков данных, сжатых независимо друг от друга), прочитанных из сжатых источников (файлы, сеть).
-CompressedReadBufferBytes       0       Количество несжатых байтов (после декомпрессии), прочитанных из сжатых источников (файлы, сеть).
-AIOWrite        0       Количество операций записи через интерфейс AIO в Linux или FreeBSD
-AIOWriteBytes   0       Количество байтов, записанных через интерфейс AIO в Linux или FreeBSD
+FileOpen        62      Number of files opened.
+Seek    4       Number of times the 'lseek' function was called.
+ReadBufferFromFileDescriptorRead        126     Number of reads (read/pread) from a file descriptor. Does not include sockets.
+ReadBufferFromFileDescriptorReadFailed  0       Number of times the read (read/pread) from a file descriptor have failed.
+ReadBufferFromFileDescriptorReadBytes   178846  Number of bytes read from file descriptors. If the file is compressed, this will show the compressed data size.
+WriteBufferFromFileDescriptorWrite      7       Number of writes (write/pwrite) to a file descriptor. Does not include sockets.
+WriteBufferFromFileDescriptorWriteFailed        0       Number of times the write (write/pwrite) to a file descriptor have failed.
+WriteBufferFromFileDescriptorWriteBytes 153     Number of bytes written to file descriptors. If the file is compressed, this will show compressed data size.
+FileSync        2       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for files.
+DirectorySync   0       Number of times the F_FULLFSYNC/fsync/fdatasync function was called for directories.
+FileSyncElapsedMicroseconds     12756   Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for files.
+DirectorySyncElapsedMicroseconds        0       Total time spent waiting for F_FULLFSYNC/fsync/fdatasync syscall for directories.
+ReadCompressedBytes     0       Number of bytes (the number of bytes before decompression) read from compressed sources (files, network).
+CompressedReadBufferBlocks      0       Number of compressed blocks (the blocks of data that are compressed independent of each other) read from compressed sources (files, network).
+CompressedReadBufferBytes       0       Number of uncompressed bytes (the number of bytes after decompression) read from compressed sources (files, network).
+AIOWrite        0       Number of writes with Linux or FreeBSD AIO interface
+AIOWriteBytes   0       Number of bytes written with Linux or FreeBSD AIO interface
 ...
 ```
 
@@ -1057,7 +1057,7 @@ Query id: 8f542664-4548-4a02-bd2a-6f2c973d0dc4
 │ chnode2.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
 └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
 
-````
+```
 
 4.  Создайте распределённую таблицу
 
@@ -1068,7 +1068,7 @@ CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER 'cluster_1S_2R'
      column1 String
    )
    ENGINE = Distributed('cluster_1S_2R', 'db_uuid', 'uuid_table1' );
-````
+```
 
 ```response
 CREATE TABLE db_uuid.dist_uuid_table1 ON CLUSTER cluster_1S_2R
@@ -1194,12 +1194,12 @@ ID запроса: ab68cda9-ae41-4d6d-8d3b-20d8255774ee
 
 2 строки в наборе. Время выполнения: 1.175 сек.
 
-````
+```
 
 3. Убедитесь, что использованы настройки из конфигурации по умолчанию
 ```sql
 SHOW CREATE TABLE db_uuid.uuid_table1;
-````
+```
 
 ```response
 SHOW CREATE TABLE db_uuid.uuid_table1

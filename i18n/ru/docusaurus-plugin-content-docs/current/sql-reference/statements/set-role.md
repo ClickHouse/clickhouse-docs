@@ -10,7 +10,7 @@ doc_type: 'reference'
 Активирует роли для текущего пользователя.
 
 ```sql
-SET ROLE {DEFAULT | NONE | роль [,...] | ALL | ALL EXCEPT роль [,...]}
+SET ROLE {DEFAULT | NONE | role [,...] | ALL | ALL EXCEPT role [,...]}
 ```
 
 ## SET DEFAULT ROLE {#set-default-role}
@@ -20,7 +20,7 @@ SET ROLE {DEFAULT | NONE | роль [,...] | ALL | ALL EXCEPT роль [,...]}
 Роли по умолчанию автоматически активируются при входе пользователя в систему. В качестве ролей по умолчанию можно указать только ранее назначенные роли. Если роль не назначена пользователю, ClickHouse выбрасывает исключение.
 
 ```sql
-SET DEFAULT ROLE {NONE | роль [,...] | ALL | ALL EXCEPT роль [,...]} TO {пользователь|CURRENT_USER} [,...]
+SET DEFAULT ROLE {NONE | role [,...] | ALL | ALL EXCEPT role [,...]} TO {user|CURRENT_USER} [,...]
 ```
 
 ## Примеры {#examples}
@@ -28,7 +28,7 @@ SET DEFAULT ROLE {NONE | роль [,...] | ALL | ALL EXCEPT роль [,...]} TO 
 Назначение пользователю нескольких ролей по умолчанию:
 
 ```sql
-SET DEFAULT ROLE роль1, роль2, ... TO пользователь
+SET DEFAULT ROLE role1, role2, ... TO user
 ```
 
 Назначьте все выданные роли ролями по умолчанию для пользователя:

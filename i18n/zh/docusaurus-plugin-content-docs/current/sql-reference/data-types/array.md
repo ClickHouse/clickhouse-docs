@@ -72,8 +72,8 @@ SELECT array(1, 'a')
 ```
 
 ```text
-从服务器收到异常(版本 1.1.54388):
-代码: 386. DB::Exception: 从 localhost:9000, 127.0.0.1 收到。DB::Exception: 类型 UInt8 和 String 之间不存在公共超类型,因为其中部分为 String/FixedString 类型,而其余部分不是。
+Received exception from server (version 1.1.54388):
+Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
 ## 数组大小 {#array-size}

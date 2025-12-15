@@ -84,7 +84,7 @@ unixODBC のインストールに含まれる `isql` ユーティリティを使
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 接続に成功しました!                  |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -93,7 +93,7 @@ MySQL のテーブル:
 
 ```text
 mysql> CREATE DATABASE test;
-クエリ OK, 1 行が影響を受けました (0,01 秒)
+Query OK, 1 row affected (0,01 sec)
 
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
@@ -101,10 +101,10 @@ mysql> CREATE TABLE `test`.`test` (
     ->   `float` FLOAT NOT NULL,
     ->   `float_nullable` FLOAT NULL DEFAULT NULL,
     ->   PRIMARY KEY (`int_id`));
-クエリ OK, 0 行が影響を受けました (0,09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into test.test (`int_id`, `float`) VALUES (1,2);
-クエリ OK, 1 行が影響を受けました (0,00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from test.test;
 +------+----------+-----+----------+
@@ -112,7 +112,7 @@ mysql> select * from test.test;
 +------+----------+-----+----------+
 |      1 |         NULL |     2 |           NULL |
 +------+----------+-----+----------+
-1 行が取得されました (0,00 秒)
+1 row in set (0,00 sec)
 ```
 
 MySQL テーブルからデータを取得する ClickHouse テーブル:

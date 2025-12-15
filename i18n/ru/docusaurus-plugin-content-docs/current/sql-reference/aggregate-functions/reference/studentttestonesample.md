@@ -16,7 +16,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-studentTTestOneSample([уровень_доверия])(данные_выборки, среднее_генеральной_совокупности)
+studentTTestOneSample([confidence_level])(sample_data, population_mean)
 ```
 
 Необязательный параметр `confidence_level` включает вычисление доверительного интервала.

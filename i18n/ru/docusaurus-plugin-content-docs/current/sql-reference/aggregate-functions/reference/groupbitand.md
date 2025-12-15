@@ -27,7 +27,7 @@ groupBitAnd(expr)
 Тестовые данные:
 
 ```text
-двоичное   десятичное
+binary     decimal
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -45,6 +45,6 @@ SELECT groupBitAnd(num) FROM t
 Результат:
 
 ```text
-двоичная   десятичная
+binary     decimal
 00000100 = 4
 ```

@@ -28,17 +28,17 @@ doc_type: 'reference'
 
 ```sql
 WITH
-    -- 注意：140 和 190 之间的间隔用于演示如何根据窗口参数为 ts = 150、165、180 填充值
+    -- NOTE: the gap between 140 and 190 is to show how values are filled for ts = 150, 165, 180 according to window parameter
     [110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
-    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- 与上述时间戳对应的值数组
-    90 AS start_ts,       -- 时间戳网格起始值
-    90 + 120 AS end_ts,   -- 时间戳网格结束值
-    15 AS step_seconds,   -- 时间戳网格步长
-    45 AS window_seconds  -- "陈旧性"窗口
+    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- array of values corresponding to timestamps above
+    90 AS start_ts,       -- start of timestamp grid
+    90 + 120 AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    45 AS window_seconds  -- "staleness" window
 SELECT timeSeriesInstantRateToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- 此子查询将时间戳和值数组转换为 `timestamp`、`value` 行
+    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,

@@ -61,8 +61,8 @@ ENGINE = TinyLog
 ```
 
 ```text
-服务器异常：
-代码：69. DB::Exception：元素 'hello' 的值 -129 超出了 Enum8 的取值范围。
+Exception on server:
+Code: 69. DB::Exception: Value -129 for element 'hello' exceeds range of Enum8.
 ```
 
 列 `x` 只能存储在类型定义中列出的值：`'hello'` 或 `'world'`。如果尝试保存其他任何值，ClickHouse 会引发异常。该 `Enum` 的 8 位大小是自动确定的。
@@ -80,8 +80,8 @@ INSERT INTO t_enum VALUES('a')
 ```
 
 ```text
-客户端异常：
-代码：49. DB::Exception：类型 Enum('hello' = 1, 'world' = 2) 的未知元素 'a'
+Exception on client:
+Code: 49. DB::Exception: Unknown element 'a' for type Enum('hello' = 1, 'world' = 2)
 ```
 
 当从该表查询数据时，ClickHouse 会输出 `Enum` 中的字符串值。

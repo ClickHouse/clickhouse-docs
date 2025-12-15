@@ -1,27 +1,27 @@
 ---
-description: 'Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。'
+description: 'Hiveエンジンを使用すると、HDFS Hiveテーブルに対して`SELECT`クエリを実行できます。'
 sidebar_label: 'Hive'
 sidebar_position: 84
 slug: /engines/table-engines/integrations/hive
-title: 'Hive テーブルエンジン'
+title: 'Hiveテーブルエンジン'
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Hive テーブルエンジン {#hive-table-engine}
+# Hiveテーブルエンジン
 
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
-Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。現在、以下の入力フォーマットをサポートしています。
+Hiveエンジンを使用すると、HDFS Hiveテーブルに対して`SELECT`クエリを実行できます。現在、以下の入力フォーマットをサポートしています：
 
-* Text: `binary` を除く単純なスカラー列型のみをサポート
+- Text: `binary`を除くシンプルなスカラーカラム型のみをサポート
 
-* ORC: `char` を除く単純なスカラー列型をサポートし、複合型は `array` のみサポート
+- ORC: `char`を除くシンプルなスカラーカラム型をサポート。`array`などの複合型のみをサポート
 
-* Parquet: すべての単純なスカラー列型をサポートし、複合型は `array` のみサポート
+- Parquet: すべてのシンプルなスカラーカラム型をサポート。`array`などの複合型のみをサポート
 
-## テーブルを作成する {#creating-a-table}
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -32,31 +32,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Hive('thrift://host:port', 'database', 'table');
 PARTITION BY expr
 ```
+[CREATE TABLE](/sql-reference/statements/create/table)クエリの詳細な説明を参照してください。
 
-[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
-
-テーブル構造は、元の Hive テーブル構造と異なる場合があります。
-
-* 列名は元の Hive テーブルと同じである必要がありますが、その一部の列だけを任意の順序で使用できます。また、他の列から計算されたエイリアス列を使用することもできます。
-* 列の型は元の Hive テーブルのものと同じである必要があります。
-* `PARTITION BY` 句の式は元の Hive テーブルと整合している必要があり、`PARTITION BY` 句で使用される列はテーブル構造内に含まれていなければなりません。
+テーブル構造は元のHiveテーブル構造と異なる場合があります：
+- カラム名は元のHiveテーブルと同じである必要がありますが、これらのカラムの一部のみを任意の順序で使用でき、他のカラムから計算されるエイリアスカラムも使用できます。
+- カラム型は元のHiveテーブルと同じである必要があります。
+- パーティション式は元のHiveテーブルと一致している必要があり、パーティション式内のカラムはテーブル構造に含まれている必要があります。
 
 **エンジンパラメータ**
 
-* `thrift://host:port` — Hive Metastore のアドレス
+- `thrift://host:port` — Hive Metastoreアドレス
 
-* `database` — リモートデータベース名。
+- `database` — リモートデータベース名。
 
-* `table` — リモートテーブル名。
+- `table` — リモートテーブル名。
 
 ## 使用例 {#usage-example}
 
-### HDFS ファイルシステムでローカルキャッシュを使用する方法 {#how-to-use-local-cache-for-hdfs-filesystem}
+### HDFSファイルシステム用のローカルキャッシュの使用方法 {#how-to-use-local-cache-for-hdfs-filesystem}
 
-リモートファイルシステムに対しては、ローカルキャッシュを有効にすることを強く推奨します。ベンチマークでは、キャッシュありの場合はほぼ 2 倍高速になることが示されています。
+リモートファイルシステムにはローカルキャッシュを有効にすることを強くお勧めします。ベンチマークによると、キャッシュを使用するとほぼ2倍高速になります。
 
-キャッシュを使用する前に、`config.xml` に設定を追加します。
-
+キャッシュを使用する前に、`config.xml`に追加してください
 ```xml
 <local_cache_for_remote_fs>
     <enable>true</enable>
@@ -66,14 +63,14 @@ PARTITION BY expr
 </local_cache_for_remote_fs>
 ```
 
-* enable: true の場合、ClickHouse は起動後にリモートファイルシステム (HDFS) 用のローカルキャッシュを保持します。
-* root&#95;dir: 必須。リモートファイルシステム用のローカルキャッシュファイルを保存するルートディレクトリです。
-* limit&#95;size: 必須。ローカルキャッシュファイルの最大サイズ (バイト単位) です。
-* bytes&#95;read&#95;before&#95;flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムへフラッシュするまでの読み取りバイト数を制御します。デフォルト値は 1MB です。
+- enable: trueの場合、起動後にClickHouseはリモートファイルシステム（HDFS）用のローカルキャッシュを維持します。
+- root_dir: 必須。リモートファイルシステム用のローカルキャッシュファイルを保存するルートディレクトリ。
+- limit_size: 必須。ローカルキャッシュファイルの最大サイズ（バイト単位）。
+- bytes_read_before_flush: リモートファイルシステムからファイルをダウンロードする際に、ローカルファイルシステムにフラッシュする前のバイト数を制御します。デフォルト値は1MBです。
 
-### ORC 入力フォーマットで Hive テーブルをクエリする {#query-hive-table-with-orc-input-format}
+### ORC入力フォーマットでHiveテーブルをクエリ {#query-hive-table-with-orc-input-format}
 
-#### Hive でテーブルを作成する {#create-table-in-hive}
+#### Hiveでテーブルを作成 {#create-table-in-hive}
 
 ```text
 hive > CREATE TABLE `test`.`test_orc`(
@@ -121,10 +118,9 @@ OK
 Time taken: 0.295 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouse でテーブルを作成 {#create-table-in-clickhouse}
+#### ClickHouseでテーブルを作成 {#create-table-in-clickhouse}
 
-次の ClickHouse テーブルは、上で作成した Hive テーブルからデータを取得します：
-
+上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル：
 ```sql
 CREATE TABLE test.test_orc
 (
@@ -194,9 +190,9 @@ day:                  2021-09-18
 1 rows in set. Elapsed: 0.078 sec.
 ```
 
-### Parquet 入力フォーマットの Hive テーブルをクエリする {#query-hive-table-with-parquet-input-format}
+### Parquet入力フォーマットでHiveテーブルをクエリ {#query-hive-table-with-parquet-input-format}
 
-#### Hive でテーブルを作成する {#create-table-in-hive-1}
+#### Hiveでテーブルを作成 {#create-table-in-hive-1}
 
 ```text
 hive >
@@ -234,22 +230,20 @@ LOCATION
   'hdfs://testcluster/data/hive/test.db/test_parquet'
 OK
 Time taken: 0.51 seconds
+
+hive >  insert into test.test_parquet partition(day='2021-09-18') select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current_timestamp(), current_date(), 'hello world', 'hello world', 'hello world', true, 'hello world', array(1, 2, 3), array('hello world', 'hello world'), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array('a', 'b'), array('c', 'd')), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
+OK
+Time taken: 36.025 seconds
+
+hive > select * from test.test_parquet;
+OK
+1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    ["hello world","hello world"]    [1.1,1.2]    [[1,2],[3,4]]    [["a","b"],["c","d"]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
+Time taken: 0.766 seconds, Fetched: 1 row(s)
 ```
 
-hive &gt;  insert into test.test&#95;parquet partition(day=&#39;2021-09-18&#39;) select 1, 2, 3, 4, 5, 6.11, 7.22, 8.333, current&#95;timestamp(), current&#95;date(), &#39;hello world&#39;, &#39;hello world&#39;, &#39;hello world&#39;, true, &#39;hello world&#39;, array(1, 2, 3), array(&#39;hello world&#39;, &#39;hello world&#39;), array(float(1.1), float(1.2)), array(array(1, 2), array(3, 4)), array(array(&#39;a&#39;, &#39;b&#39;), array(&#39;c&#39;, &#39;d&#39;)), array(array(float(1.11), float(2.22)), array(float(3.33), float(4.44)));
-OK
-処理時間: 36.025秒
+#### ClickHouseでテーブルを作成 {#create-table-in-clickhouse-1}
 
-hive &gt; select * from test.test&#95;parquet;
-OK
-1    2    3    4    5    6.11    7.22    8    2021-12-14 17:54:56.743    2021-12-14    hello world    hello world    hello world                                                                                             true    hello world    [1,2,3]    [&quot;hello world&quot;,&quot;hello world&quot;]    [1.1,1.2]    [[1,2],[3,4]]    [[&quot;a&quot;,&quot;b&quot;],[&quot;c&quot;,&quot;d&quot;]]    [[1.11,2.22],[3.33,4.44]]    2021-09-18
-処理時間: 0.766秒, 取得件数: 1 行
-
-````
-
-#### ClickHouseでテーブルを作成する
-
-上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル:
+上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル：
 ```sql
 CREATE TABLE test.test_parquet
 (
@@ -278,7 +272,7 @@ CREATE TABLE test.test_parquet
 )
 ENGINE = Hive('thrift://localhost:9083', 'test', 'test_parquet')
 PARTITION BY day
-````
+```
 
 ```sql
 SELECT * FROM test.test_parquet settings input_format_parquet_allow_missing_columns = 1\G
@@ -316,12 +310,12 @@ f_array_array_string: [['a','b'],['c','d']]
 f_array_array_float:  [[1.11,2.22],[3.33,4.44]]
 day:                  2021-09-18
 
-1行が結果セットに含まれています。経過時間: 0.357秒
+1 rows in set. Elapsed: 0.357 sec.
 ```
 
-### Text 入力フォーマットを使用して Hive テーブルをクエリする
+### Text入力フォーマットでHiveテーブルをクエリ {#query-hive-table-with-text-input-format}
 
-#### Hive でテーブルを作成する
+#### Hiveでテーブルを作成 {#create-table-in-hive-2}
 
 ```text
 hive >
@@ -370,10 +364,9 @@ OK
 Time taken: 0.624 seconds, Fetched: 1 row(s)
 ```
 
-#### ClickHouse でテーブルを作成する {#create-table-in-hive-2}
+#### ClickHouseでテーブルを作成 {#create-table-in-clickhouse-2}
 
-上で作成した Hive テーブルからデータを取得する ClickHouse テーブル:
-
+上記で作成したHiveテーブルからデータを取得するClickHouseのテーブル：
 ```sql
 CREATE TABLE test.test_text
 (
@@ -407,25 +400,22 @@ FROM test.test_text
 SETTINGS input_format_skip_unknown_fields = 1, input_format_with_names_use_header = 1, date_time_input_format = 'best_effort'
 
 Query id: 55b79d35-56de-45b9-8be6-57282fbf1f44
-```
 
 Row 1:
 ──────
-f&#95;tinyint:   1
-f&#95;smallint:  2
-f&#95;int:       3
-f&#95;integer:   4
-f&#95;bigint:    5
-f&#95;float:     6.11
-f&#95;double:    7.22
-f&#95;decimal:   8
-f&#95;timestamp: 2021-12-14 18:11:17
-f&#95;date:      2021-12-14
-f&#95;string:    hello world
-f&#95;varchar:   hello world
-f&#95;char:      hello world
-f&#95;bool:      true
+f_tinyint:   1
+f_smallint:  2
+f_int:       3
+f_integer:   4
+f_bigint:    5
+f_float:     6.11
+f_double:    7.22
+f_decimal:   8
+f_timestamp: 2021-12-14 18:11:17
+f_date:      2021-12-14
+f_string:    hello world
+f_varchar:   hello world
+f_char:      hello world
+f_bool:      true
 day:         2021-09-18
-
-```
 ```

@@ -173,7 +173,7 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 │               │
 └───────────────┘
 
-返回 3 行。用时:0.003 秒。
+3 rows in set. Elapsed: 0.003 sec.
 ```
 
 那么，我们试试用 `Merge` 后缀来获取 `sumCountViews` 的值：
@@ -189,7 +189,7 @@ FROM analytics.monthly_aggregated_data;
 │            12 │
 └───────────────┘
 
-1 行在集合中。耗时：0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 在 `AggregatingMergeTree` 中，我们将 `AggregateFunction` 定义为 `sum`，因此可以使用 `sumMerge`。当我们对 `AggregateFunction` 使用函数 `avg` 时，则会使用 `avgMerge`，以此类推。
@@ -296,7 +296,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
-    0 clicks         ---<<<--- 如果省略此项,结果将相同为 0
+    0 clicks         ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.impressions
 GROUP BY
@@ -311,7 +311,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS clicks,
-    0 impressions    ---<<<--- 如果省略此项,结果将相同为 0
+    0 impressions    ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.clicks
 GROUP BY
@@ -362,5 +362,5 @@ GROUP BY
 │ 2019-02-01 │ clickhouse.com │           1 │      0 │
 └────────────┴────────────────┴─────────────┴────────┘
 
-返回了 3 行。耗时：0.018 秒。
+3 rows in set. Elapsed: 0.018 sec.
 ```

@@ -28,7 +28,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-расплющитьКортеж(input)
+flattenTuple(input)
 ```
 
 **Аргументы**
@@ -172,7 +172,7 @@ SELECT tupleDivide((1, 2), (2, 3))
 **Синтаксис**
 
 ```sql
-tupleРазделитьНаЧисло(tuple, number)
+tupleDivideByNumber(tuple, number)
 ```
 
 **Аргументы**
@@ -213,7 +213,7 @@ SELECT tupleDivideByNumber((1, 2), 0.5)
 **Синтаксис**
 
 ```sql
-tupleElement(кортеж, индекс|имя[, значение_по_умолчанию])
+tupleElement(tuple, index|name[, default_value])
 ```
 
 **Аргументы**

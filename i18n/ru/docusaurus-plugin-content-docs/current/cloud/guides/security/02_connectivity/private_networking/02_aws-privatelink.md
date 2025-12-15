@@ -98,12 +98,12 @@ ClickHouse пытается группировать ваши сервисы, ч
 Сначала задайте следующие переменные окружения перед выполнением любых команд:
 
 ```shell
-REGION=<Код вашего региона в формате AWS, например: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<Идентификатор ключа ClickHouse>
-KEY_SECRET=<Секретный ключ ClickHouse>
-ORG_ID=<Идентификатор организации ClickHouse>
-SERVICE_NAME=<Имя сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Получите значение `INSTANCE_ID` для вашего ClickHouse, отфильтровав ресурсы по региону, провайдеру и имени сервиса:
@@ -181,7 +181,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: <Имя сервиса (endpointServiceId), см. выше>
+      ServiceName: <Service name(endpointServiceId), pls see above>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -209,7 +209,7 @@ resource "aws_vpc_endpoint" "this" {
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
-  service_region      = "(Необязательно) Если указан, конечная точка VPC будет подключаться к сервису в указанном регионе. Укажите это значение для мультирегиональных соединений PrivateLink."
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
@@ -246,12 +246,12 @@ resource "aws_vpc_endpoint" "this" {
 Перед выполнением любых команд установите следующие переменные окружения:
 
 ```bash
-REGION=<Код региона в формате AWS, например: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ID ключа ClickHouse>
-KEY_SECRET=<Секретный ключ ClickHouse>
-ORG_ID=<ID организации ClickHouse>
-SERVICE_NAME=<Имя сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Чтобы добавить идентификатор конечной точки в список разрешённых:
@@ -309,10 +309,10 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<Ваш ID ключа ClickHouse>
-KEY_SECRET=<Ваш секретный ключ ClickHouse>
-ORG_ID=<ID вашей организации ClickHouse>
-INSTANCE_ID=<Имя вашего сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 Вы можете получить `INSTANCE_ID` на [этом шаге](#option-2-api).
@@ -360,10 +360,10 @@ jq .result
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<ID ключа>
-KEY_SECRET=<Секретный ключ>
-ORG_ID=<укажите ID организации ClickHouse>
-INSTANCE_ID=<ID экземпляра>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 `INSTANCE_ID` можно получить на [шаге](#option-2-api).

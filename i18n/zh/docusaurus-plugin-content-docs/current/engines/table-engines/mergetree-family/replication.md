@@ -177,13 +177,13 @@ SAMPLE BY intHash32(UserID);
   <summary>已弃用语法示例</summary>
 
   ```sql
-  CREATE TABLE table_name
-  (
-      EventDate DateTime,
-      CounterID UInt32,
-      UserID UInt32
-  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-  ```
+CREATE TABLE table_name
+(
+    EventDate DateTime,
+    CounterID UInt32,
+    UserID UInt32
+) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+```
 </details>
 
 如该示例所示，这些参数可以在花括号中包含可替换的占位符。替换后的值取自配置文件的 [macros](/operations/server-configuration-parameters/settings.md/#macros) 部分。

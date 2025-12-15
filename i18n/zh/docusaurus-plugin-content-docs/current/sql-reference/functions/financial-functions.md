@@ -37,7 +37,7 @@ $$
 **语法**
 
 ```sql
-financialInternalRateOfReturn(现金流[, 估计值])
+financialInternalRateOfReturn(cashflows[, guess])
 ```
 
 **参数**

@@ -40,7 +40,7 @@ doc_type: 'reference'
 Когда на вход `RawBLOB` подаются пустые данные, ClickHouse генерирует исключение:
 
 ```text
-Код: 108. DB::Exception: Отсутствуют данные для вставки
+Code: 108. DB::Exception: No data to insert
 ```
 
 ## Пример использования {#example-usage}
