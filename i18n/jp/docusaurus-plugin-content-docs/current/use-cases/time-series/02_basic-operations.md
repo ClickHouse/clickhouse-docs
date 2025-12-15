@@ -1,7 +1,7 @@
 ---
 title: '基本操作 - 時系列'
 sidebar_label: '基本操作'
-description: 'ClickHouse における基本的な時系列の基本操作。'
+description: 'ClickHouse における基本的な時系列操作。'
 slug: /use-cases/time-series/basic-operations
 keywords: ['時系列', '基本操作', 'データインジェスト', 'クエリ', 'フィルタリング', 'グルーピング', '集約']
 show_related_blogs: true

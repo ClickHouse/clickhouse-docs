@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: '用户可以使用 dbt 在 ClickHouse 中对其数据进行转换和建模'
+description: '您可以使用 dbt 在 ClickHouse 中对您的数据进行转换和建模'
 title: 'Fivetran 与 ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -12,6 +12,7 @@ keywords: ['fivetran', '数据迁移', 'etl', 'ClickHouse 目标端', '自动化
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Fivetran 与 ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 

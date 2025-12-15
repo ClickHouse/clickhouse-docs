@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['コンソールのロール', '権限', 'アクセス制御', 'セキュリティ', 'RBAC']
 ---
 
-
-
 ## 組織ロール {#organization-roles}
 組織ロールの割り当て方法については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users) を参照してください。
 
@@ -21,21 +19,18 @@ ClickHouse には、ユーザー管理用として 4 種類の組織レベルの
 | Billing   | 利用状況や請求書を閲覧し、支払い方法を管理します。                                                                                                                                                                           |
 | Member    | サインインのみが可能で、自身のプロフィール設定を管理できます。SAML SSO ユーザーにはデフォルトで割り当てられます。                                                                                                              |
 
-
-
 ## サービスロール {#service-roles}
 サービスロールの割り当て方法については、[クラウドユーザーの管理](/cloud/security/manage-cloud-users) を参照してください。
 
-サービス権限は、admin 以外のロールのユーザーには、管理者が明示的に付与する必要があります。Service Admin ロールにはあらかじめ SQL コンソールの管理アクセス権が付与されていますが、権限を制限または削除するように変更できます。
+サービス権限は、admin ロール以外のロールのユーザーには、管理者が明示的に付与する必要があります。Service admin ロールにはあらかじめ SQL コンソールの管理アクセス権が付与されていますが、権限を制限または削除するように変更できます。
 
 | Role              | Description                    |
 |-------------------|--------------------------------|
 | Service read only | サービスおよび設定を閲覧できます。 |
 | Service admin     | サービス設定を管理できます。     |
 
-
-
 ## SQL コンソールのロール {#sql-console-roles}
+
 SQL コンソールのロールを割り当てる手順については、[SQL コンソールロールの管理](/cloud/guides/sql-console/manage-sql-console-role-assignments)を参照してください。
 
 | ロール                | 説明                                                                                           |

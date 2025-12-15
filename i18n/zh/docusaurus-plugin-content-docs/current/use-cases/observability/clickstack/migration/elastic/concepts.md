@@ -73,7 +73,7 @@ Elasticsearch 使用带有处理器（例如 `enrich`、`rename`、`grok`）的�
 
 ### 查询语言 {#query-languages}
 
-Elasticsearch 支持[多种查询语言](https://www.elastic.co/docs/explore-analyze/query-filter/languages)，包括 [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) 和 [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 风格），但对 join 的支持有限——目前仅在 [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join) 中提供**左外连接（left outer join）**。ClickHouse 支持**完整 SQL 语法**，包括[所有连接类型](/sql-reference/statements/select/join#supported-types-of-join)、[窗口函数](/sql-reference/window-functions)、子查询（包括关联子查询）以及 CTE。这对需要在可观测性信号与业务或基础设施数据之间进行关联分析的用户来说是一个重要优势。
+Elasticsearch 支持[多种查询语言](https://www.elastic.co/docs/explore-analyze/query-filter/languages)，包括 [DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql) 和 [KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 风格），但对 join 的支持有限——目前仅在 [`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join) 中提供**左外连接（left outer join）**。ClickHouse 支持**完整 SQL 语法**，包括[所有连接类型](/sql-reference/statements/select/join#supported-types-of-join)、[窗口函数](/sql-reference/window-functions)、子查询（包括关联子查询）以及 CTE。如果你需要在可观测性信号与业务或基础设施数据之间进行关联分析，这是一个重要优势。
 
 在 ClickStack 中，[HyperDX 提供了兼容 Lucene 的搜索界面](/use-cases/observability/clickstack/search)，便于从现有系统平滑迁移，同时通过 ClickHouse 后端提供完整 SQL 支持。其语法与 [Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 语法类似。要对这套语法进行精确对比，请参阅[《在 ClickStack 和 Elastic 中进行搜索》](/use-cases/observability/clickstack/migration/elastic/search)。
 
@@ -105,7 +105,7 @@ Elasticsearch 会将所有字段索引到 [**inverted indices（倒排索引）*
 
 <Image img={clickhouse} alt="ClickHouse" size="lg"/>
 
-ClickHouse 还支持 [**skip indexes（跳过索引）**](/optimize/skipping-indexes)，通过为选定列预计算索引数据来加速过滤。这些索引需要显式定义，但可以显著提升性能。此外，ClickHouse 允许用户按列指定 [compression codecs](/use-cases/observability/schema-design#using-codecs) 和压缩算法 —— 这是 Elasticsearch 所不支持的（其[压缩](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules) 仅适用于 `_source` 的 JSON 存储）。
+ClickHouse 还支持 [**skip indexes（跳过索引）**](/optimize/skipping-indexes)，通过为选定列预计算索引数据来加速过滤。这些索引需要显式定义，但可以显著提升性能。此外，ClickHouse 允许你按列指定 [compression codecs](/use-cases/observability/schema-design#using-codecs) 和压缩算法 —— 这是 Elasticsearch 所不支持的（其[压缩](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules) 仅适用于 `_source` 的 JSON 存储）。
 
 ClickHouse 也支持分片（sharding），但其模型被设计为优先进行**纵向扩展（vertical scaling）**。单个分片可以存储**数万亿行**数据，并且只要内存、CPU 和磁盘资源允许，就能持续保持高效性能。与 Elasticsearch 不同，每个分片**没有硬性的行数上限**。ClickHouse 中的分片是逻辑概念——本质上是独立的数据表——仅当数据集超过单个节点的容量时才需要进行分片。通常这是由于磁盘容量限制所致，只有在需要进行水平扩展时才引入 sharding ①，从而降低复杂性和开销。在这种情况下，与 Elasticsearch 类似，一个分片将持有数据的一个子集。单个分片内的数据被组织为 ② 不可变数据部分（immutable data parts）的集合，这些部分包含 ③ 若干数据结构。
 
@@ -138,7 +138,7 @@ Elasticsearch 使用 **主-从（primary-secondary）** 复制模型。当数据
 
 Elasticsearch 基于文档的 `_id` 进行去重，并相应地将其路由到分片。ClickHouse 不会存储默认的行标识符，但支持**写入时去重（insert-time deduplication）**，从而允许用户安全地重试失败的插入操作。如需更细粒度的控制，可以使用 `ReplacingMergeTree` 和其他表引擎按特定列进行去重。
 
-Elasticsearch 中的索引路由可以确保特定文档始终被路由到特定分片。在 ClickHouse 中，用户可以定义**分片键（shard keys）**或使用 `Distributed` 表来实现类似的数据局部性。
+Elasticsearch 中的索引路由可以确保特定文档始终被路由到特定分片。在 ClickHouse 中，你可以定义**分片键（shard keys）**或使用 `Distributed` 表来实现类似的数据局部性。
 
 ### 聚合与执行模型 {#aggregations-execution-model}
 
@@ -193,7 +193,7 @@ Elasticsearch 和 ClickHouse 在管理时间序列可观测性数据时采用了
 
 在 Elasticsearch 中，长期数据管理是通过 **Index Lifecycle Management (ILM)** 和 **Data Streams** 来实现的。这些功能允许用户定义策略，以控制索引在何时滚动（例如在达到一定大小或存在时间之后）、何时将较旧的索引迁移到更低成本的存储（例如 warm 或 cold 分层），以及何时最终删除它们。之所以需要这样做，是因为 Elasticsearch **不支持重新分片（re-sharding）**，并且分片不能无限制增长，否则会导致性能下降。为了管理分片大小并支持高效删除，必须定期创建新索引并移除旧索引——本质上是在索引级别进行数据轮转。
 
-ClickHouse 采用了不同的方法。数据通常存储在 **单个表** 中，并通过在列或分区级别定义的 **TTL（time-to-live，存活时间）表达式** 进行管理。数据可以按 **日期分区**，从而在无需创建新表或执行索引滚动的情况下实现高效删除。随着数据变旧并满足 TTL 条件，ClickHouse 会自动将其移除——不需要额外的基础设施来管理数据轮转。
+ClickHouse 采用了不同的方法。数据通常存储在 **单个表** 中，并通过在列或分区级别定义的 **TTL（time-to-live，生存时间）表达式** 进行管理。数据可以按 **日期分区**，从而在无需创建新表或执行索引滚动的情况下实现高效删除。随着数据变旧并满足 TTL 条件，ClickHouse 会自动将其移除——不需要额外的基础设施来管理数据轮转。
 
 #### 存储层级与热-温架构 {#storage-tiers}
 
@@ -237,7 +237,7 @@ ClickHouse 方法的优势包括：
 - **可组合性强**：物化视图可以与其他视图和数据表进行分层或关联，用于实现更复杂的查询加速策略。
 - **不同的 TTL**：可以为物化视图的源表和目标表设置不同的 TTL 设置。
 
-这种模式在可观测性场景中尤其强大，用户可以计算每分钟错误率、延迟或 Top-N 细分等指标，而无需在每次查询时扫描数十亿条原始记录。
+这种模式在可观测性场景中尤其强大，当你需要计算每分钟错误率、延迟或 Top-N 细分等指标时，无需在每次查询时扫描数十亿条原始记录。
 
 ### Lakehouse 支持 {#lakehouse-support}
 

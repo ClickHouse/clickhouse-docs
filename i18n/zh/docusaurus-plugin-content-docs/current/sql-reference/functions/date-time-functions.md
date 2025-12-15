@@ -1218,7 +1218,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**别名**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**别名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **参数**
 
@@ -1276,6 +1276,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │          1 │         1 │
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
+
 
 ## dateName {#dateName}
 
@@ -1898,8 +1899,8 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 **语法**
 
 ```sql
-makeDate(year, month, day)
-makeDate(year, day_of_year)
+makeDate(年, 月, 日)
+makeDate(年, 年积日)
 ```
 
 **参数**

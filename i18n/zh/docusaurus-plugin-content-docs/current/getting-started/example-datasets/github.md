@@ -207,7 +207,7 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 INSERT INTO git.line_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz', 'TSV', '    sign Int8, line_number_old UInt32, line_number_new UInt32, hunk_num UInt32, hunk_start_line_number_old UInt32, hunk_start_line_number_new UInt32, hunk_lines_added UInt32,\n    hunk_lines_deleted UInt32, hunk_context LowCardinality(String), line LowCardinality(String), indent UInt8, line_type Enum(\'Empty\' = 0, \'Comment\' = 1, \'Punct\' = 2, \'Code\' = 3), prev_commit_hash String, prev_author LowCardinality(String), prev_time DateTime, file_change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6),\n    path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), file_lines_added UInt32, file_lines_deleted UInt32, file_hunks_added UInt32, file_hunks_removed UInt32, file_hunks_changed UInt32, commit_hash String,\n    author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
+返回 0 行。耗时：50.535 秒。处理了 754 万行，2.09 GB（每秒 14.911 万行，41.40 MB/s）。
 ```
 
 ## 查询 {#queries}
@@ -239,19 +239,19 @@ ORDER BY time DESC
 LIMIT 10
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path────────────────────────────────────────┬─old_path─┬─lines_added─┬─lines_deleted─┬─commit_message───────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ fix accessing part in Deleting state             │
-│ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ better semantic of constsness of DataPartStorage │
-│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ remove DataPartStorageBuilder                    │
-│ 2022-10-21 13:35:37 │ 851f556d65a │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Remove unused parameter                          │
-│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ Replicated merge tree polishing                  │
-│ 2022-10-21 12:25:19 │ 4e76629aafc │ Modify      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Fixes for -Wshorten-64-to-32                     │
-│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ Polishing                                        │
-│ 2022-10-19 13:34:20 │ e5408aac991 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ Simplify logic                                   │
-│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ Update StorageReplicatedMergeTree.cpp            │
-│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ Update StorageReplicatedMergeTree.cpp            │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ 修改        │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ 修复删除状态下访问数据部分的问题                  │
+│ 2022-10-23 16:24:20 │ b40d9200d20 │ 修改        │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ 改进 DataPartStorage 常量性语义                  │
+│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ 修改        │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ 移除 DataPartStorageBuilder                      │
+│ 2022-10-21 13:35:37 │ 851f556d65a │ 修改        │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 移除未使用的参数                                  │
+│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ 修改        │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ ReplicatedMergeTree 优化                         │
+│ 2022-10-21 12:25:19 │ 4e76629aafc │ 修改        │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 修复 -Wshorten-64-to-32 警告                     │
+│ 2022-10-19 13:59:28 │ 05e6b94b541 │ 修改        │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ 代码优化                                          │
+│ 2022-10-19 13:34:20 │ e5408aac991 │ 修改        │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ 简化逻辑                                          │
+│ 2022-10-18 15:36:11 │ 7befe2825c9 │ 修改        │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ 更新 StorageReplicatedMergeTree.cpp              │
+│ 2022-10-18 15:35:44 │ 0623ad4e374 │ 修改        │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ 更新 StorageReplicatedMergeTree.cpp              │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴─────────────────────────────────────────────┴──────────┴─────────────┴───────────────┴──────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
+返回 10 行。耗时:0.006 秒。处理了 12.10 千行,1.60 MB(193 万行/秒,255.40 MB/秒)。
 ```
 
 我们还可以查看行级变更，并排除重命名操作。也就是说，当文件曾以不同名称存在时，我们不会展示重命名之前的变更：
@@ -285,7 +285,7 @@ LIMIT 10
 │ 2022-04-21 20:19:13 │ 9133e398b8c │    1 │              11 │              12 │ Nikolai Kochetov │ #include <Storages/MergeTree/DataPartStorageOnDisk.h> │
 └─────────────────────┴─────────────┴──────┴─────────────────┴─────────────────┴──────────────────┴───────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.258 sec. Processed 7.54 million rows, 654.92 MB (29.24 million rows/s., 2.54 GB/s.)
+返回 10 行。用时:0.258 秒。已处理 754 万行,654.92 MB(2924 万行/秒,2.54 GB/秒)。
 ```
 
 请注意，还有一个更复杂的查询版本，它会在考虑重命名的情况下查找文件的[逐行提交历史](#line-by-line-commit-history-of-a-file)。
@@ -333,7 +333,7 @@ LIMIT 10
 │ src/Dictionaries/Embedded/GeodataProviders/Types.h              │
 └─────────────────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
+返回 10 行。用时:0.085 秒。已处理 53.21 万行,8.68 MB(630 万行/秒,102.64 MB/秒)。
 ```
 
 请注意，这样做允许文件被重命名后，再次被重命名回其原始名称。首先，我们对因重命名而被删除的文件，按照其 `old_path` 进行聚合。然后，将其与每个 `path` 的最后一次操作进行 `UNION`。最后，我们筛选出其中最终事件不是 `Delete` 的记录。
@@ -401,19 +401,19 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
   WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
 
   ┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
-  │ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
-  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
-  │ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
+  │ 添加         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
+  │ 修改      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
+  │ 重命名      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
   └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
-  11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
+  返回 11 行。用时:0.030 秒。已处理 26.605 万行,6.61 MB(889 万行/秒,220.82 MB/秒)。
 ```
 
 * 提交历史不完整——缺少删除事件。来源和原因有待确定。
@@ -472,7 +472,7 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │          8197 │
 └────────────────────────────────────────────────────────┴───────────────┘
 
-10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
+返回 10 行。用时:0.134 秒。已处理 79.815 万行,16.46 MB(595 万行/秒,122.62 MB/秒)。
 ```
 
 ### 通常在一周中的哪一天进行代码提交？ {#what-day-of-the-week-do-commits-usually-occur}
@@ -531,7 +531,7 @@ LIMIT 10
 │ 2020-05-24 │        2851 │          1812 │          74 │      18 │
 │ 2020-05-31 │        2771 │          2077 │          77 │      16 │
 └────────────┴─────────────┴───────────────┴─────────────┴─────────┘
-10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
+返回 10 行。耗时:0.043 秒。已处理 26.605 万行,15.85 MB(612 万行/秒,364.61 MB/秒)。
 ```
 
 这些数据非常适合可视化展示。下面我们使用 Superset。
@@ -596,7 +596,7 @@ LIMIT 10
 │ src/Interpreters/InterpreterSelectQuery.cpp │          59 │
 └─────────────────────────────────────────────┴─────────────┘
 
-10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
+返回 10 行。用时:0.239 秒。已处理 79.815 万行,14.13 MB(335 万行/秒,59.22 MB/秒)。
 ```
 
 ### 仓库中最早的代码行 {#oldest-lines-of-code-in-the-repository}
@@ -641,19 +641,19 @@ ORDER BY latest_change ASC
 LIMIT 10
 
 ┌─file_path───────────────────────────────────┬─line────────────────────────────────────────────────────────┬───────latest_change─┬─any(file_change_type)─┐
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ 修改                │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ 修改                │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ 添加                   │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ 添加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ 添加                   │
 └─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┴─────────────────────┴───────────────────────┘
 
-10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
+返回 10 行。用时:1.101 秒。处理了 807 万行,905.86 MB(733 万行/秒,823.13 MB/秒)。
 ```
 
 ### 历史最悠久的文件 {#files-with-longest-history}
@@ -709,7 +709,7 @@ LIMIT 10
 │ 350 │ src/CMakeLists.txt                          │ 2022-10-24 09:22:37 │
 └─────┴─────────────────────────────────────────────┴─────────────────────┘
 
-10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
+返回 10 行。用时:0.124 秒。处理了 79.815 万行,14.71 MB(644 万行/秒,118.61 MB/秒)。
 ```
 
 我们的核心数据结构 MergeTree 显然也在持续演进，迄今已经历了大量改进！
@@ -772,7 +772,7 @@ FROM
 │  31 │ █████████████████████████████████▏                              │
 └─────┴─────────────────────────────────────────────────────────────────┘
 
-31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
+返回了 31 行。耗时：0.043 秒。处理了 754 万行，40.53 MB（1.7671 亿行/秒，950.40 MB/秒）。
 ```
 
 在月底时可能会稍微多一点，但整体来看分布比较均匀。需要再次说明的是，由于在数据插入过程中应用了 docs 过滤器进行筛选，因此这些结果并不可靠。
@@ -806,7 +806,7 @@ LIMIT 10
 │ alexey-milovidov   │      1581 │
 └────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
+返回 10 行。用时:0.041 秒。已处理 26.605 万行,4.92 MB(656 万行/秒,121.21 MB/秒)。
 ```
 
 让我们看看最近的工作中谁的提交最为多样。与其按日期限制，我们将限定为某个作者最近的 N 次提交（本例中使用的是 3，您可以根据需要修改）：
@@ -851,7 +851,7 @@ LIMIT 10
 │ liyang               │        36 │
 └──────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
+10 行在集合中。耗时：0.106 秒。处理了 266.05 千行，21.04 MB（252 万行/秒，198.93 MB/秒）。
 ```
 
 ### 作者的常用文件 {#favorite-files-for-an-author}
@@ -906,7 +906,7 @@ LIMIT 10
 │ programs/install/Install.cpp                │  37 │
 └─────────────────────────────────────────────┴─────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
+返回 10 行。用时:0.106 秒。已处理 79.815 万行,13.97 MB(751 万行/秒,131.41 MB/秒)。
 ```
 
 这很合理，因为 Alexey 一直负责维护变更日志。但如果我们使用文件的基名来识别他最受欢迎的文件呢——这种做法允许文件在重命名后仍能被识别，并且应当更能体现代码层面的贡献。
@@ -935,7 +935,7 @@ LIMIT 10
 │ Settings.h                     │ 225 │
 │ TCPHandler.cpp                 │ 205 │
 └────────────────────────────────┴─────┘
-10 rows in set. Elapsed: 0.032 sec. Processed 266.05 thousand rows, 5.68 MB (8.22 million rows/s., 175.50 MB/s.)
+返回 10 行。用时:0.032 秒。已处理 26.605 万行,5.68 MB(822 万行/秒,175.50 MB/秒)。
 ```
 
 这可能更能体现他的兴趣领域。
@@ -1050,7 +1050,7 @@ LIMIT 10
 │ src/Planner/PlannerJoins.cpp          │       695 │           1 │                695 │
 │ src/Analyzer/QueryNode.h              │       607 │           1 │                607 │
 └───────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
-10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
+返回 10 行。用时:0.140 秒。已处理 79.815 万行,16.84 MB(570 万行/秒,120.32 MB/秒)。
 ```
 
 这里存在一定的近期偏差——较新的文件本来就没有太多提交记录。如果我们把范围限制在至少已有 1 年历史的文件上呢？
@@ -1107,7 +1107,7 @@ LIMIT 10
 │ 2020-11-06 15:45:13 │ src/Storages/Rocksdb/StorageEmbeddedRocksdb.cpp                │       611 │           2 │              305.5 │
 └─────────────────────┴────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
+返回了 10 行。耗时: 0.143 秒。处理了 79.815 万行,18.00 MB (558 万行/秒,125.87 MB/秒)。
 ```
 
 ### 按时间、按星期几、按作者以及按特定子目录统计提交与代码行数分布 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
@@ -1136,7 +1136,7 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 │         7 │     294 │       11938 │          6451 │
 └───────────┴─────────┴─────────────┴───────────────┘
 
-7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
+返回 7 行。耗时:0.034 秒。处理了 26.605 万行,14.66 MB(773 万行/秒,425.56 MB/秒)。
 ```
 
 并按一天中的时段，
@@ -1232,7 +1232,7 @@ FROM
 │        23 │ ████████████▌                 │ █████▌                                             │ █████▋                                             │
 └───────────┴───────────────────────────────┴────────────────────────────────────────────────────┴────────────────────────────────────────────────────┘
 
-24 rows in set. Elapsed: 0.038 sec. Processed 266.05 thousand rows, 14.66 MB (7.09 million rows/s., 390.69 MB/s.)
+返回 24 行。耗时:0.038 秒。已处理 26.605 万行,14.66 MB(每秒 709 万行,390.69 MB/秒)
 ```
 
 ### 用于展示不同作者之间谁更倾向于重写他人代码的矩阵 {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
@@ -1278,7 +1278,7 @@ LIMIT 100
 │ Anton Popov          │ Amos Bird        │  2127 │
 └──────────────────────┴──────────────────┴───────┘
 
-20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
+返回 20 行。用时:0.098 秒。已处理 754 万行,42.16 MB(7667 万行/秒,428.99 MB/秒)。
 ```
 
 使用 Superset 的桑基图可以很好地进行可视化。注意我们将 `LIMIT BY` 增加到 3，以获取每位作者删除代码最多的前 3 名，从而让可视化效果更加丰富。
@@ -1319,7 +1319,7 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 2400 │
 └─────────────┴──────────────────┴──────┘
 
-7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
+7 行数据。耗时: 0.012 秒。处理了 62.78 千行，395.47 KB (5.44 百万行/秒，34.27 MB/秒)
 ```
 
 好吧，这里对资历最深的贡献者——我们的创始人 Alexey——来说可能有一些优势。我们把分析范围限定在过去一年。
@@ -1351,7 +1351,7 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 243 │
 └─────────────┴──────────────────┴─────┘
 
-7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
+返回 7 行。耗时:0.004 秒。已处理 21.82 千行,140.02 KB(488 万行/秒,31.29 MB/秒)
 ```
 
 这仍然有点简单，并不能很好地反映人们的实际工作。
@@ -1484,7 +1484,7 @@ LIMIT 5 BY root
 │ utils/self-extr-exec             │              224 │           224 │           224 │    2 │
 └──────────────────────────────────┴──────────────────┴───────────────┴───────────────┴──────┘
 
-24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
+返回 24 行。用时:0.129 秒。处理了 79.815 万行,15.11 MB(619 万行/秒,117.08 MB/秒)。
 ```
 
 ### 某位作者的代码中，有多少百分比被其他作者删除？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
@@ -1534,7 +1534,7 @@ LIMIT 10
 │ kreuzerkrieg       │  3406 │           2468 │  0.724603640634175 │
 └────────────────────┴───────┴────────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
+返回 10 行。用时:0.126 秒。已处理 1507 万行,73.51 MB(119.97 百万行/秒,585.16 MB/秒)
 ```
 
 ### 列出被重写次数最多的文件 {#list-files-that-were-rewritten-most-number-of-times}
@@ -1587,7 +1587,7 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │  8197 │
 └────────────────────────────────────────────────────────┴───────┘
 
-10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
+返回 10 行。用时:0.160 秒。已处理 807 万行,98.99 MB(5049 万行/秒,619.49 MB/秒)。
 ```
 
 不过，这还没有体现出“重写（re-write）”这一概念，即在一次提交中，文件有大部分内容发生变化的情况。为此需要一个更复杂的查询。假定我们将“重写”定义为：超过 50% 的行被删除，且超过 50% 的行被新增。你可以根据自己对“重写”的理解调整查询条件。
@@ -1675,7 +1675,7 @@ LIMIT 10
 │ src/Functions/polygonsSymDifference.cpp               │            4 │
 └───────────────────────────────────────────────────────┴──────────────┘
 
-10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
+10 行数据。耗时: 0.299 秒。处理了 798.15 千行，31.52 MB (2.67 百万行/秒，105.29 MB/秒)。
 ```
 
 ### 在一周中的哪一天，代码留存在代码库中的概率最高？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
@@ -1827,14 +1827,14 @@ LIMIT 10
 │ src/Interpreters/createBlockSelector.cpp                        │               795 │
 └─────────────────────────────────────────────────────────────────┴───────────────────┘
 
-10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
+返回 10 行。用时:3.134 秒。已处理 1613 万行,1.83 GB(515 万行/秒,582.99 MB/秒)。
 ```
 
 ### 谁更倾向于编写更多的测试 / CPP 代码 / 注释？ {#who-tends-to-write-more-tests--cpp-code--comments}
 
 我们可以用几种方式来回答这个问题。若聚焦于代码与测试的比例，这个查询相对简单——统计对包含 `tests` 的文件夹的贡献次数，并计算其占总贡献次数的比例。
 
-请注意，我们只统计更改次数超过 20 次的用户，以聚焦于常规提交者，并避免一次性贡献带来的偏差。
+在这里，我们将查询限定为更改次数超过 20 次的用户，以聚焦于常规提交者，并避免一次性贡献带来的偏差。
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -1879,6 +1879,7 @@ LIMIT 20
 我们可以将此分布绘制成直方图。
 
 [play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
+
 
 ```sql
 WITH (
@@ -1956,7 +1957,7 @@ LIMIT 10
 │ kssenii            │ 0.07455322590796751 │  131143 │
 │ Artur              │ 0.12383737231074826 │  121484 │
 └────────────────────┴─────────────────────┴─────────┘
-10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
+返回 10 行。用时:0.290 秒。已处理 754 万行,394.57 MB(2600 万行/秒,1.36 GB/秒)
 ```
 
 请注意，我们是按代码贡献排序的。对于所有主要贡献者来说，这个比例都出奇地高，这也是我们代码之所以如此易读的原因之一。
@@ -1994,7 +1995,7 @@ LIMIT 10
 │ ANDREI STAROVEROV           │         32 │       12 │ 0.7272727272727273 │ 2021-05-09 │
 └─────────────────────────────┴────────────┴──────────┴────────────────────┴────────────┘
 
-10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
+返回 10 行。用时:0.145 秒。已处理 754 万行,51.09 MB(每秒 5183 万行,351.44 MB/秒)。
 ```
 
 不过，在理想情况下，我们希望从作者开始提交的第一天算起，按所有作者的整体情况来看这一变化。他们会逐渐减少自己编写的注释数量吗？
@@ -2072,7 +2073,7 @@ LIMIT 20
 │         190 │ 0.20677550885049117 │
 └─────────────┴─────────────────────┘
 
-20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
+返回 20 行。用时:0.167 秒。处理了 1507 万行,101.74 MB(每秒 9051 万行,610.98 MB/秒)。
 ```
 
 令人鼓舞的是，我们的评论比例相当稳定，并不会随着作者贡献时间的增加而下降。
@@ -2198,7 +2199,7 @@ GROUP BY dayOfWeek
 │         7 │            46 │
 └───────────┴───────────────┘
 
-7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
+返回 7 行。用时:0.466 秒。已处理 754 万行,701.52 MB(1615 万行/秒,1.50 GB/秒)
 ```
 
 ### 哪位作者的代码「黏性」最高？ {#which-authors-code-is-the-most-sticky}
@@ -2330,7 +2331,7 @@ LIMIT 10
 │ Nikita Vasilev   │                   11 │
 └──────────────────┴──────────────────────┘
 
-10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
+返回 10 行。耗时:0.025 秒。处理了 62.78 千行,395.47 KB(254 万行/秒,16.02 MB/秒)。
 ```
 
 ### 文件的逐行提交历史 {#line-by-line-commit-history-of-a-file}
@@ -2353,7 +2354,7 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 │ 2020-04-03 16:14:31 │ src/Storages/StorageReplicatedMergeTree.cpp │ dbms/Storages/StorageReplicatedMergeTree.cpp │ 06446b4f08a142d6f1bc30664c47ded88ab51782 │ dbms/ → src/   │
 └─────────────────────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────┴────────────────┘
 
-1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
+返回 1 行。用时:0.135 秒。已处理 26.605 万行,20.73 MB(198 万行/秒,154.04 MB/秒)。
 ```
 
 这使得查看文件的完整历史变得比较困难，因为我们没有一个单一的值来串联所有行或文件的变更。
@@ -2382,7 +2383,7 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
+返回 1 行。用时:0.074 秒。已处理 34.406 万行,6.27 MB(465 万行/秒,84.71 MB/秒)。
 ```
 
 我们现在可以利用这一能力构建出某个文件完整历史中的所有提交记录。在本示例中，我们针对每个 `path` 值各展示一个提交记录。
@@ -2402,12 +2403,12 @@ LIMIT 1 BY path
 FORMAT PrettyCompactMonoBlock
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path─────────────────────────────────────────────┬─commit_message──────────────────────────────────────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ fix accessing part in Deleting state                                            │
-│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ Remove empty line                                                               │
-│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ Tried to add ability to rename primary key columns but just banned this ability │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ 修复访问处于删除状态的数据部分                                            │
+│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ 删除空行                                                               │
+│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ 尝试添加重命名主键列的功能,但最终禁用了该功能 │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 
-3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
+返回 3 行。耗时:0.170 秒。处理了 61.153 万行,41.76 MB(每秒 360 万行,246.07 MB/秒)。
 ```
 
 ## 未解决的问题 {#unsolved-questions}
@@ -2451,7 +2452,7 @@ LIMIT 20
 │              19 │ s-kat                │ #include <Storages/MergeTree/PinnedPartUUIDs.h>               │
 │              20 │ Nikita Mikhaylov     │ #include <Storages/MergeTree/MergeMutateExecutor.h>           │
 └─────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────┘
-20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
+返回 20 行。用时:0.547 秒。已处理 788 万行,679.20 MB(1442 万行/秒,1.24 GB/秒)。
 ```
 
 我们欢迎在此提交精确或更完善的解决方案。

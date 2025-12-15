@@ -49,9 +49,9 @@ sudo ./clickhouse install
 ```bash
 $ clickhouse-client --host server
 
-ClickHouse client version 24.12.2.29 (official build).
-Connecting to server:9000 as user default.
-Connected to ClickHouse server version 24.12.2.
+ClickHouse 客户端版本 24.12.2.29（官方构建）。
+正在以用户 default 身份连接到 server:9000。
+已连接到 ClickHouse 服务器版本 24.12.2。
 
 :)
 ```
@@ -134,9 +134,9 @@ clickhouse-client
 连接成功后，你会看到一个提示符，在那里即可输入查询：
 
 ```bash
-ClickHouse client version 25.x.x.x
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 25.x.x.x
+ClickHouse 客户端版本 25.x.x.x
+正在以 default 用户身份连接到 localhost:9000。
+已连接到 ClickHouse 服务器版本 25.x.x.x
 
 hostname :)
 ```
@@ -298,7 +298,7 @@ $ clickhouse-client --param_parName="[1, 2]" --query "SELECT {parName: Array(UIn
 
 ```text
 $ clickhouse-client
-ClickHouse client version 25.X.X.XXX (official build).
+ClickHouse 客户端版本 25.X.X.XXX（官方构建）。
 
 #highlight-next-line
 :) SET param_parName='[1, 2]';
@@ -307,9 +307,9 @@ SET param_parName = '[1, 2]'
 
 Query id: 7ac1f84e-e89a-4eeb-a4bb-d24b8f9fd977
 
-Ok.
+完成。
 
-0 rows in set. Elapsed: 0.000 sec.
+结果集包含 0 行。耗时：0.000 秒。
 
 #highlight-next-line
 :) SELECT {parName:Array(UInt16)}
@@ -322,7 +322,7 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 1. │ [1,2]                    │
    └──────────────────────────┘
 
-1 row in set. Elapsed: 0.006 sec.
+结果集包含 1 行。耗时：0.006 秒。
 ```
 
 ### 查询语法 {#cli-queries-with-parameters-syntax}
@@ -359,7 +359,7 @@ ClickHouse 客户端内置了 AI 助手，可以根据自然语言描述生成 S
 要使用 AI SQL 生成功能，请在自然语言查询前添加前缀 `??`：
 
 ```bash
-:) ?? show all users who made purchases in the last 30 days
+:) ?? 显示过去 30 天内有购买记录的所有用户
 ```
 
 AI 将会：
@@ -373,7 +373,7 @@ AI 将会：
 ```bash
 :) ?? count orders by product category
 
-Starting AI SQL generation with schema discovery...
+正在启动 AI SQL 生成并进行架构发现...
 ──────────────────────────────────────────────────
 
 🔍 list_databases
@@ -388,7 +388,7 @@ Starting AI SQL generation with schema discovery...
    table: orders
    ➜ CREATE TABLE orders (order_id UInt64, product_id UInt64, quantity UInt32, ...)
 
-✨ SQL query generated successfully!
+✨ SQL 查询生成成功！
 ──────────────────────────────────────────────────
 
 SELECT 
@@ -416,11 +416,11 @@ ORDER BY order_count DESC
 这样无需配置文件即可快速完成设置：
 
 ```bash
-# Using OpenAI
+# 使用 OpenAI {#using-openai}
 export OPENAI_API_KEY=your-openai-key
 clickhouse-client
 
-# Using Anthropic
+# 使用 Anthropic {#using-anthropic}
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
@@ -440,28 +440,28 @@ clickhouse-client
     ```xml
     <config>
         <ai>
-            <!-- Required: Your API key (or set via environment variable) -->
+            <!-- 必填：您的 API 密钥（或通过环境变量设置） -->
             <api_key>your-api-key-here</api_key>
 
-            <!-- Required: Provider type (openai, anthropic) -->
+            <!-- 必填：提供方类型（openai, anthropic） -->
             <provider>openai</provider>
 
-            <!-- Model to use (defaults vary by provider) -->
+            <!-- 要使用的模型（默认值因提供方而异） -->
             <model>gpt-4o</model>
 
-            <!-- Optional: Custom API endpoint for OpenAI-compatible services -->
+            <!-- 可选：用于兼容 OpenAI 的服务的自定义 API 端点 -->
             <!-- <base_url>https://openrouter.ai/api</base_url> -->
 
-            <!-- Schema exploration settings -->
+            <!-- Schema 探索设置 -->
             <enable_schema_access>true</enable_schema_access>
 
-            <!-- Generation parameters -->
+            <!-- 生成参数 -->
             <temperature>0.0</temperature>
             <max_tokens>1000</max_tokens>
             <timeout_seconds>30</timeout_seconds>
             <max_steps>10</max_steps>
 
-            <!-- Optional: Custom system prompt -->
+            <!-- 可选：自定义 system prompt -->
             <!-- <system_prompt>You are an expert ClickHouse SQL assistant...</system_prompt> -->
         </ai>
     </config>
@@ -471,28 +471,28 @@ clickhouse-client
   <TabItem value="yaml" label="YAML">
     ```yaml
     ai:
-      # Required: Your API key (or set via environment variable)
+      # 必填：您的 API 密钥（或通过环境变量设置）
       api_key: your-api-key-here
 
-      # Required: Provider type (openai, anthropic)
+      # 必填：提供方类型（openai, anthropic）
       provider: openai
 
-      # Model to use
+      # 要使用的模型
       model: gpt-4o
 
-      # Optional: Custom API endpoint for OpenAI-compatible services
+      # 可选：用于兼容 OpenAI 的服务的自定义 API 端点
       # base_url: https://openrouter.ai/api
 
-      # Enable schema access - allows AI to query database/table information
+      # 启用 schema 访问 —— 允许 AI 查询数据库/数据表信息
       enable_schema_access: true
 
-      # Generation parameters
-      temperature: 0.0      # Controls randomness (0.0 = deterministic)
-      max_tokens: 1000      # Maximum response length
-      timeout_seconds: 30   # Request timeout
-      max_steps: 10         # Maximum schema exploration steps
+      # 生成参数
+      temperature: 0.0      # 控制随机性（0.0 = 确定性）
+      max_tokens: 1000      # 最大响应长度
+      timeout_seconds: 30   # 请求超时时间
+      max_steps: 10         # 最大 schema 探索步数
 
-      # Optional: Custom system prompt
+      # 可选：自定义 system prompt
       # system_prompt: |
       #   You are an expert ClickHouse SQL assistant. Convert natural language to SQL.
       #   Focus on performance and use ClickHouse-specific optimizations.
@@ -507,23 +507,23 @@ clickhouse-client
 
 ```yaml
 ai:
-  provider: openai  # Use 'openai' for compatibility
+  provider: openai  # 使用 'openai' 以确保兼容性
   api_key: your-openrouter-api-key
   base_url: https://openrouter.ai/api/v1
-  model: anthropic/claude-3.5-sonnet  # Use OpenRouter model naming
+  model: anthropic/claude-3.5-sonnet  # 使用 OpenRouter 模型命名规范
 ```
 
 **最小化配置示例：**
 
 ```yaml
-# Minimal config - uses environment variable for API key
+# 最小配置 - 使用环境变量提供 API 密钥 {#minimal-config-uses-environment-variable-for-api-key}
 ai:
-  provider: openai  # Will use OPENAI_API_KEY env var
+  provider: openai  # 将使用 OPENAI_API_KEY 环境变量
 
-# No config at all - automatic fallback
-# (Empty or no ai section - will try OPENAI_API_KEY then ANTHROPIC_API_KEY)
+# 无配置 - 自动回退 {#no-config-at-all-automatic-fallback}
+# (空配置或无 ai 部分 - 将依次尝试 OPENAI_API_KEY 然后 ANTHROPIC_API_KEY) {#empty-or-no-ai-section-will-try-openai_api_key-then-anthropic_api_key}
 
-# Only override model - uses env var for API key
+# 仅覆盖模型 - 使用环境变量提供 API 密钥 {#only-override-model-uses-env-var-for-api-key}
 ai:
   provider: openai
   model: gpt-3.5-turbo
@@ -700,7 +700,7 @@ clickhouse-client clickhouse://localhost:9000 '-m'
 ```bash
 clickhouse-client clickhouse://default@localhost:9000
 
-# equivalent to:
+# 等同于： {#equivalent-to}
 clickhouse-client clickhouse://localhost:9000 --user default
 ```
 
@@ -709,7 +709,7 @@ clickhouse-client clickhouse://localhost:9000 --user default
 ```bash
 clickhouse-client clickhouse://localhost:9000/my_database
 
-# equivalent to:
+# 等效于： {#equivalent-to}
 clickhouse-client clickhouse://localhost:9000 --database my_database
 ```
 
@@ -718,7 +718,7 @@ clickhouse-client clickhouse://localhost:9000 --database my_database
 ```bash
 clickhouse-client clickhouse://localhost/my_database?s
 
-# equivalent to:
+# 等同于： {#equivalent-to}
 clickhouse-client clickhouse://localhost/my_database -s
 ```
 
@@ -733,7 +733,7 @@ clickhouse-client clickhouse:
 ```bash
 clickhouse-client clickhouse://my_user@
 
-# Using a blank password between : and @ means to asking the user to enter the password before starting the connection.
+# 在 : 和 @ 之间使用空密码表示在建立连接前提示用户输入密码。 {#using-a-blank-password-between-and-means-to-asking-the-user-to-enter-the-password-before-starting-the-connection}
 clickhouse-client clickhouse://my_user:@
 ```
 
@@ -754,7 +754,7 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 在交互模式下，ClickHouse 客户端会为每个查询显示其查询 ID。默认情况下，ID 的格式如下：
 
 ```sql
-Query id: 927f137d-00f1-4175-8914-0dd066365e96
+查询 ID：927f137d-00f1-4175-8914-0dd066365e96
 ```
 
 可以在配置文件的 `query_id_formats` 标签中指定自定义格式。格式字符串中的 `{query_id}` 占位符会被替换为查询 ID。该标签中可以包含多个格式字符串。
@@ -844,6 +844,7 @@ ClickHouse 客户端会按以下顺序查找，并使用第一个存在的配置
 | `-d [ --database ] <database>`   | 选择此连接默认使用的数据库。                                                                                                                                                                                                                                                                                                        | 来自服务器设置的当前数据库（默认是 `default`）                                                                   |
 | `-h [ --host ] <host>`           | 要连接的 ClickHouse 服务器的主机名。可以是主机名，也可以是 IPv4 或 IPv6 地址。可以通过多次传入该参数来指定多个主机。                                                                                                                                                                                                                | `localhost`                                                                                                      |
 | `--jwt <value>`                  | 使用 JSON Web Token (JWT) 进行身份验证。<br/><br/>服务器端 JWT 授权仅在 ClickHouse Cloud 中可用。                                                                                                                                                                                                                                  | -                                                                                                                |
+| `login`                  | 调用设备授权 OAuth 流程，以通过身份提供商（IdP）进行身份验证。<br/><br/>对于 ClickHouse Cloud 主机，OAuth 变量会被自动推断，否则必须通过 `--oauth-url`、`--oauth-client-id` 和 `--oauth-audience` 提供。                                                                                                                                                                                                            | -                                                                                                                |
 | `--no-warnings`                  | 在客户端连接到服务器时，不显示来自 `system.warnings` 的警告。                                                                                                                                                                                                                                                                        | -                                                                                                                |
 | `--no-server-client-version-message`                  | 在客户端连接到服务器时，抑制服务器与客户端版本不匹配的提示信息。                                                                                                                                                                                                                                                                  | -                                                                                                                |
 | `--password <password>`          | 数据库用户的密码。也可以在配置文件中为连接指定密码。如果未指定密码，客户端会提示输入。                                                                                                                                                                                                                                              | -                                                                                                                |

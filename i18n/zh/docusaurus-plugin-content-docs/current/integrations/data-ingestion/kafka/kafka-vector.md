@@ -10,6 +10,7 @@ keywords: ['kafka', 'vector', '日志采集', '可观测性', '集成']
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
+
 ## 在 Kafka 和 ClickHouse 中使用 Vector {#using-vector-with-kafka-and-clickhouse}
 
 Vector 是一个与厂商无关的数据管道，能够从 Kafka 读取数据并将事件发送到 ClickHouse。
@@ -24,7 +25,7 @@ Vector 还支持对数据进行[转换](https://vector.dev/docs/reference/config
 
 ### 许可证 {#license}
 
-Vector 根据 [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/master/LICENSE) 进行分发。
+Vector 按 [MPL-2.0 许可证](https://github.com/vectordotdev/vector/blob/master/LICENSE) 分发。
 
 ### 收集连接信息 {#gather-your-connection-details}
 
@@ -32,16 +33,15 @@ Vector 根据 [MPL-2.0 License](https://github.com/vectordotdev/vector/blob/mast
 
 ### 步骤 {#steps}
 
-1. 创建 Kafka `github` topic 并写入 [GitHub 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
+1. 创建 Kafka 中的 `github` 主题，并写入 [GitHub 数据集](https://datasets-documentation.s3.eu-west-3.amazonaws.com/kafka/github_all_columns.ndjson)。
 
 ```bash
 cat /opt/data/github/github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username> -X sasl.password=<password> -t github
 ```
 
-该数据集包含 200,000 行，聚焦于 `ClickHouse/ClickHouse` 仓库。
+该数据集包含 200,000 行数据，针对 `ClickHouse/ClickHouse` 仓库。
 
-2. 确保目标表已创建。下面我们将使用默认数据库。
-
+2. 确保目标表已创建。下面我们使用默认数据库。
 
 ```sql
 
@@ -107,7 +107,8 @@ buffer.max_events = 10000
 batch.timeout_secs = 1
 ```
 
-关于此配置和 Vector 行为，有几点重要说明：
+关于此配置以及 Vector 的行为，有几个重要注意事项：
+
 
 * 此示例已在 Confluent Cloud 上进行测试。因此，`sasl.*` 和 `ssl.enabled` 安全选项在自行管理部署的场景中可能并不适用。
 * 配置参数 `bootstrap_servers` 不需要协议前缀，例如 `pkc-2396y.us-east-1.aws.confluent.cloud:9092`。

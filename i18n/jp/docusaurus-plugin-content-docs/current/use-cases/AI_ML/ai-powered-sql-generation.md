@@ -10,9 +10,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-ClickHouse 25.7 以降では、[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) と [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) に、自然言語による説明を SQL クエリに変換する [AI 搭載機能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation) が含まれています。この機能により、ユーザーはデータ要件を平易なテキストで記述でき、システムがそれに対応する SQL ステートメントへと変換します。
+ClickHouse 25.7 以降では、[ClickHouse Client](https://clickhouse.com/docs/interfaces/cli) と [clickhouse-local](https://clickhouse.com/docs/operations/utilities/clickhouse-local) に、自然言語による説明を SQL クエリに変換する [AI 搭載機能](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation) が含まれています。この機能により、データ要件を平易なテキストで記述でき、システムがそれに対応する SQL ステートメントへと変換します。
 
-この機能は、複雑な SQL 構文に詳しくないユーザーや、探索的なデータ分析のためにクエリを素早く生成する必要があるユーザーに特に有用です。この機能は標準的な ClickHouse テーブルで動作し、フィルタリング、集約、結合（JOIN）といった一般的なクエリパターンをサポートします。
+この機能は、複雑な SQL 構文に詳しくない場合や、探索的なデータ分析のためにクエリを素早く生成する必要がある場合に特に有用です。この機能は標準的な ClickHouse テーブルで動作し、フィルタリング、集約、結合（JOIN）といった一般的なクエリパターンをサポートします。
 
 この処理は、次の組み込みツール/関数の助けを借りて行われます。
 
@@ -31,6 +31,7 @@ export OPENAI_API_KEY=your_api_key
 
 または、[設定ファイルを指定する](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration)こともできます。
 
+
 ## ClickHouse SQL playground への接続 {#connecting-to-the-clickhouse-sql-playground}
 
 この機能を試すにあたっては、[ClickHouse SQL playground](https://sql.clickhouse.com/) を使用します。
@@ -47,6 +48,7 @@ clickhouse client -mn \
 :::note
 ClickHouse がすでにインストールされていることを前提とします。まだインストールしていない場合は、[インストールガイド](https://clickhouse.com/docs/install) を参照してください。
 :::
+
 
 ## 自然言語で ClickHouse に質問する {#asking-clickhouse-questions-in-natural-language}
 
@@ -66,7 +68,7 @@ text-to-SQL 機能は、実質的にワンショットのクエリ生成ツー�
 ?? Can you tell me the most expensive place to buy a house in 2021?;
 ```
 
-Enter キーを押すと、AI が質問に答えようとする際の思考過程が表示されます。
+Enter キーを押すと、質問に回答するために AI がどのように考えているかが表示されます。
 
 ```text
 • Starting AI SQL generation with schema discovery...
@@ -111,6 +113,7 @@ AI は次の手順で処理を行います。
 ここで、`uk_price_paid` テーブルが見つかり、実行用のクエリが生成されていることが分かります。
 そのクエリを実行すると、次のような出力が得られます。
 
+
 ```text
 ┌─town───────────┬─district───────────────┬─county──────────┬──avg_price─┬─total_sales─┐
 │ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
@@ -126,18 +129,19 @@ AI は次の手順で処理を行います。
 └────────────────┴────────────────────────┴─────────────────┴────────────┴─────────────┘
 ```
 
-フォローアップの質問をしたい場合は、質問を最初から組み立て直す必要があります。
+フォローアップの質問をしたい場合も、毎回一から質問し直す必要があります。
 
-### グレーター・ロンドンにおける高額な物件の特定 {#finding-expensive-properties-in-greater-london}
 
-この機能は会話履歴を保持しないため、各クエリは自己完結している必要があります。フォローアップの質問をする際には、以前のクエリに言及するのではなく、必要なコンテキストをすべて含めて指定する必要があります。
-たとえば、前の結果を確認したあとで、グレーター・ロンドンの物件に絞り込みたくなるかもしれません。「グレーター・ロンドンはどうですか？」とだけ尋ねるのではなく、次のように完全なコンテキストを含める必要があります。
+### グレーター・ロンドンの高額物件を見つける {#finding-expensive-properties-in-greater-london}
+
+この機能は会話履歴を保持しないため、各クエリは自己完結型である必要があります。フォローアップの質問を行う場合は、以前のクエリを参照するのではなく、必要なコンテキストをすべて含めて指定する必要があります。
+たとえば、先ほどの結果を確認したあと、グレーター・ロンドンの物件に絞り込みたくなるかもしれません。このとき「グレーター・ロンドンはどうですか？」とだけ尋ねるのではなく、完全なコンテキストを含める必要があります。
 
 ```sql
 ?? Can you tell me the most expensive place to buy a house in Greater London across the years?;
 ```
 
-AI はこのデータを見たばかりなのに、同じ探索プロセスをもう一度実行していることに注目してください。
+AI は、このデータを直前に調べたばかりにもかかわらず、同じスキーマ検出プロセスを繰り返していることに注目してください。
 
 ```text
 • Starting AI SQL generation with schema discovery...
@@ -173,8 +177,9 @@ AI はこのデータを見たばかりなのに、同じ探索プロセスを�
 :) SELECT     district,     toYear(date) AS year,     round(avg(price), 2) AS avg_price,     count() AS total_sales FROM uk.uk_price_paid WHERE county = 'GREATER LONDON' GROUP BY district, year HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10;
 ```
 
-これにより、グレーター・ロンドンのみを対象としてフィルタリングし、結果を年ごとに集計する、より的を絞ったクエリが生成されます。
+これにより、グレーター・ロンドンのみを対象にフィルタリングし、結果を年別に集計する、より的を絞ったクエリが生成されます。
 クエリの実行結果を以下に示します。
+
 
 ```text
 ┌─district────────────┬─year─┬───avg_price─┬─total_sales─┐

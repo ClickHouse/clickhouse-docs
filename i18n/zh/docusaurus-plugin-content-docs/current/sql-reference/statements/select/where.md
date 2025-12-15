@@ -7,7 +7,7 @@ doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
-# WHERE 子句
+# WHERE 子句 {#where-clause}
 
 `WHERE` 子句允许您过滤来自 `SELECT` 的 [`FROM`](../../../sql-reference/statements/select/from.md) 子句的数据。
 

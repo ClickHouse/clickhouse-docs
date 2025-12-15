@@ -1219,7 +1219,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**Псевдонимы**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**Псевдонимы**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **Аргументы**
 
@@ -1261,7 +1261,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**Вычисление разницы между датами в разных единицах измерения**
+**Вычисление разницы между датами в разных единицах времени**
 
 ```sql title=Query
 SELECT
@@ -1277,6 +1277,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │          1 │         1 │
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
+
 
 ## dateName {#dateName}
 

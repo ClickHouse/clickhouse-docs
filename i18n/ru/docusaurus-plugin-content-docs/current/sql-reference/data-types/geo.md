@@ -10,6 +10,7 @@ doc_type: 'reference'
 ClickHouse поддерживает геометрические типы данных для представления географических объектов — местоположений, территорий и т. д.
 
 **См. также**
+
 - [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
 
 ## Point {#point}
@@ -34,6 +35,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 └─────────┴───────────────┘
 ```
 
+
 ## Кольцо {#ring}
 
 `Ring` — это простой многоугольник без отверстий, хранящийся в виде массива точек: [Array](array.md)([Point](#point)).
@@ -55,6 +57,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 │ [(0,0),(10,0),(10,10),(0,10)] │ Ring          │
 └───────────────────────────────┴───────────────┘
 ```
+
 
 ## LineString {#linestring}
 
@@ -78,6 +81,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 └───────────────────────────────┴───────────────┘
 ```
 
+
 ## MultiLineString {#multilinestring}
 
 `MultiLineString` — это несколько линий, хранящихся в виде массива `LineString`: [Array](array.md)([LineString](#linestring)).
@@ -99,6 +103,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 │ [[(0,0),(10,0),(10,10),(0,10)],[(1,1),(2,2),(3,3)]] │ MultiLineString │
 └─────────────────────────────────────────────────────┴─────────────────┘
 ```
+
 
 ## Многоугольник {#polygon}
 
@@ -122,6 +127,7 @@ SELECT pg, toTypeName(pg) FROM geo_polygon;
 └───────────────────────────────────────────────────────────────┴────────────────┘
 ```
 
+
 ## MultiPolygon {#multipolygon}
 
 `MultiPolygon` состоит из нескольких полигонов и хранится как массив полигонов: [Array](array.md)([Polygon](#polygon)).
@@ -143,6 +149,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 │ [[[(0,0),(10,0),(10,10),(0,10)]],[[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]]] │ MultiPolygon    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
+
 
 ## Геометрия {#geometry}
 
@@ -175,7 +182,7 @@ INSERT INTO geo VALUES ('POINT(0 0)', 2);
 INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
 INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
 INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
-INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+INSERT INTO geo_dst SELECT readWKT(geom) FROM geo ORDER BY id;
 
 SELECT * FROM geo_dst;
 ```
@@ -191,6 +198,7 @@ SELECT * FROM geo_dst;
 5. │ [[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]]                                            │
    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## Связанные материалы {#related-content}
 
