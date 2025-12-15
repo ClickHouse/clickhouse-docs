@@ -60,12 +60,11 @@ Configuration options available in `acme` section:
 | `refresh_certificates_before`        | `2592000` (one month, in seconds)         | Time before certificate expiration when ClickHouse will attempt to renew the certificate. |
 | `refresh_certificates_task_interval` | `3600000` (one hour, in milliseconds)          | Interval at which ClickHouse checks whether certificates need renewal. |
 
-
 Note that configuration uses Let's Encrypt production directory by default. To avoid hitting request quota due to probable misconfiguration, it is recommended to test certificate issuing process with [staging directory](https://letsencrypt.org/docs/staging-environment/) first.
 
 # Administration
 
-## Initial deployment
+## Initial deployment {#initial-deployment}
 
 When enabling the ACME client on a cluster with multiple replicas, additional care is required during the initial certificate issuance.
 
@@ -77,7 +76,7 @@ If routing traffic to a single replica is not feasible, an alternative approach 
 
 After the initial certificate has been issued or imported, certificate renewal does not require special handling, as all replicas will already be running the ACME client and sharing state through Keeper.
 
-## Keeper data structure
+## Keeper data structure {#keeper-data-structure}
 
 ```
 /clickhouse/acme
@@ -90,7 +89,7 @@ After the initial certificate has been issued or imported, certificate renewal d
             └── private_key          # Domain private key (PEM)
 ```
 
-## Migrating from other ACME clients
+## Migrating from other ACME clients {#migrating-from-other-acme-clients}
 
 It is possible to migrate current TLS certificate and key to Keeper for easier migration.
 At the moment, server supports only RSA2048 keys.
