@@ -3542,11 +3542,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/audit-logging",
-      "destination": "/docs/cloud/security/audit-logging/console-audit-log",
-      "permanent": true
-    },
-    {
       "source": "/docs/cloud/security/cloud-access-management/overview",
       "destination": "/docs/cloud/security/manage-database-users",
       "permanent": true
