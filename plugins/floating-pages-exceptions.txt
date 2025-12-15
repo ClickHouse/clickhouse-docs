@@ -11,3 +11,6 @@ integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
 integrations/data-ingestion/clickpipes/postgres/maintenance.md
 operations/backup.md
+
+# Temporary add configuring-ssl page to exceptions due to refactoring
+guides/sre/configuring-ssl
