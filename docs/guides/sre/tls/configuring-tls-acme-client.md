@@ -1,6 +1,6 @@
 ---
 slug: /guides/sre/configuring-tls-acme-client
-sidebar_label: 'Configuring ACME client'
+sidebar_label: 'Configuring automatic TLS provisioning via ACME'
 sidebar_position: 20
 title: 'Configuring ACME client'
 description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
@@ -13,8 +13,7 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Configuring ACME client
+# Configuring automatic TLS provisioning via ACME
 
 <ExperimentalBadge/>
 <SelfManaged />
