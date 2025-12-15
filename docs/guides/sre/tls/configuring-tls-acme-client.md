@@ -13,19 +13,20 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
 
 # Configuring ACME client
 
+<ExperimentalBadge/>
 <SelfManaged />
 
-This guide provides describes how to configure ClickHouse to use ACME (RFC8555) protocol to automatically update TLS certificates.
+This guide provides describes how to configure ClickHouse to use ACME (RFC8555) protocol.
+With ACME support, ClickHouse can obtain and renew certificates from providers like Let's Encrypt or ZeroSSL automatically.
 
-# Overview
+## Overview {#overview}
 
 ACME protocol defines automatic certificate update process with services like Let's Encrypt or ZeroSSL. In short, certificate requester needs to confirm domain ownership via predefined challenge types in order to get a certificate.
 
-Here is a configuration sample which may be used to enable ACME protocol in ClickHouse server:
+To enable ACME, configure HTTP and HTTPS ports along with the `acme` block:
 
 ```yaml
 <http_port>80</http_port>
@@ -40,13 +41,20 @@ Here is a configuration sample which may be used to enable ACME protocol in Clic
 </acme>
 ```
 
-First, we need to enable HTTP and HTTPS ports; former will be used during ACME challenge (current implementation supports only HTTP-01 challenge types), and the latter is for serving HTTPS traffic when certificate issuing process is complete.
-HTTP port should not necessarily be configured to `80`, you may want to remap it with other ways, like `nftables`. Consult your ACME provider documentation for accepted ports for HTTP-01 challenge.
+The HTTP port serves ACME `HTTP-01` challenge requests during domain validation. Once validation completes and a certificate is issued, the HTTPS port serves encrypted traffic using the obtained certificate.
+
+The HTTP port does not need to be 80 on the server itself; it may be remapped using `nftables` or similar tools. Check your ACME provider's documentation for accepted ports for `HTTP-01` challenges.
 
 In the `acme` block, we're defining `email` for account creation, and accepting ACME service terms of service.
 After that, the only thing we need is a list of domains.
 
-# Configuration parameters
+### Current limitations {#current-limitations}
+
+- Only `HTTP-01` challenge type is supported.
+- Only `RSA 2048` keys are supported.
+- Rate limiting is not handled.
+
+## Configuration parameters {#configuration-parameters}
 
 Configuration options available in `acme` section:
 
@@ -54,9 +62,9 @@ Configuration options available in `acme` section:
 |--------------------------------------|---------------|-------------|
 | `zookeeper_path`                     | `/clickhouse/acme`   | ZooKeeper path used to store ACME account data, certificates, and coordination state between ClickHouse nodes. |
 | `directory_url`                     | `https://acme-v02.api.letsencrypt.org/directory` | ACME directory endpoint used for certificate issuance. Defaults to the Let’s Encrypt production server. |
-| `email`                              | —             | Email address used to create and manage the ACME account. ACME providers may use it for expiration notices and important updates. |
+| `email`                              |              | Email address used to create and manage the ACME account. ACME providers may use it for expiration notices and important updates. |
 | `terms_of_service_agreed`            | `false`       | Indicates whether the ACME provider’s Terms of Service are accepted. Must be set to `true` to enable ACME. |
-| `domains`                            | —             | List of domain names for which TLS certificates should be issued. Each domain is specified as a `<domain>` entry. |
+| `domains`                            |              | List of domain names for which TLS certificates should be issued. Each domain is specified as a `<domain>` entry. |
 | `refresh_certificates_before`        | `2592000` (one month, in seconds)         | Time before certificate expiration when ClickHouse will attempt to renew the certificate. |
 | `refresh_certificates_task_interval` | `3600000` (one hour, in milliseconds)          | Interval at which ClickHouse checks whether certificates need renewal. |
 
@@ -92,7 +100,7 @@ After the initial certificate has been issued or imported, certificate renewal d
 ## Migrating from other ACME clients {#migrating-from-other-acme-clients}
 
 It is possible to migrate current TLS certificate and key to Keeper for easier migration.
-At the moment, server supports only RSA2048 keys.
+At the moment, server supports only `RSA 2048` keys.
 
 Assuming we're migrating from `certbot` and using `/etc/letsencrypt/live` directory, one may use the following set of commands:
 
