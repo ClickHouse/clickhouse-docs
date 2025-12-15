@@ -228,6 +228,37 @@ Finally, you should see the databases and tables in the Navigator view. Select t
 
 Once the import is complete, your ClickHouse Data should be accessible in Power BI as usual.
 
+## Optimizing work with large datasets {#optimizing-work-with-large-datasets}
+
+PowerBI is designed for traditional row-based databases with moderate data volumes. When working with ClickHouse at scale (billions of rows), specific architectural patterns are required for optimal performance.
+
+PowerBI automatically generates SQL queries with nested subqueries, complex joins, and on-the-fly transformations. These patterns work well with traditional SQL databases but can be inefficient when querying large-scale columnar databases like ClickHouse at scale.
+
+**Recommended approach for large datasets:** Instead of querying raw tables directly, create dedicated `materialized views` in ClickHouse for each dashboard visualization. This gives you:
+
+- Consistent, fast performance regardless of data volume
+- Lower load on your ClickHouse cluster
+- More predictable costs
+
+:::warning
+If your dashboards are slow, check ClickHouse's `query_log` to see what SQL queries Power BI is actually running. Common problems include nested subqueries, scanning entire tables, or inefficient joins. Once you identify the issue, create materialized views that solve those specific problems.
+:::
+
+### Implementation Best Practices
+####  Pre-Aggregation Strategy
+Create materialized views at multiple aggregation levels:
+- Hourly aggregations for recent, detailed dashboards
+- Daily aggregations for historical trends
+- Monthly rollups for long-term reporting
+- Keep raw data with appropriate TTL for ad-hoc analysis
+
+#### Data Modeling Optimization
+- Define `ORDER BY` keys that match your query patterns
+- Use partitioning for time-series data
+- Convert small dimension tables to dictionaries for efficient lookups
+- Leverage projections for additional query optimization
+
+
 ## Known limitations {#known-limitations}
 
 ### UInt64 {#uint64}
