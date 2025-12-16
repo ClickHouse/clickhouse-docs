@@ -71,9 +71,9 @@ doc_type: 'guide'
 Такое сообщение об ошибке ожидаемо, когда в реплицируемой среде одновременно работают несколько версий ClickHouse. Вы перестанете видеть эти сообщения, когда все реплики будут обновлены до одной и той же версии.
 
 ```text
-MergeFromLogEntryTask: Code: 40. DB::Exception: Контрольные суммы частей не совпадают:
-хеш несжатых файлов не совпадает. (CHECKSUM_DOESNT_MATCH)  Данные после слияния побайтово
-не идентичны данным на других репликах.
+MergeFromLogEntryTask: Code: 40. DB::Exception: Checksums of parts don't match:
+hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  Data after merge is not
+byte-identical to data on another replicas.
 ```
 
 :::

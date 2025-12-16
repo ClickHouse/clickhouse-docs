@@ -26,7 +26,7 @@ CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|t
 Если `table_1.col1` существует и у текущего пользователя есть привилегия `SELECT`/`SELECT(con)` или роль с такой привилегией, значение в ответе будет равно `1`.
 
 ```sql
-ПРОВЕРИТЬ ПРАВО GRANT SELECT(col1) НА table_1;
+CHECK GRANT SELECT(col1) ON table_1;
 ```
 
 ```text

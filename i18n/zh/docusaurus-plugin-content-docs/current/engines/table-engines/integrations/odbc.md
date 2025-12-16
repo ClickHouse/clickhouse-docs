@@ -28,7 +28,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(数据源, external_database, external_table)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
@@ -84,7 +84,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 已连接！                            |
+| Connected!                            |
 |                                       |
 ...
 ```

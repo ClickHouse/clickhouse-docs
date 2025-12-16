@@ -16,7 +16,7 @@ For details of how ClickHouse Cloud backups work, including "full" vs. "incremen
 In this guide, we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
-Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we do not support cross cloud backups.
+Any usage where backups are being exported to a different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we don't support cross cloud backups.
 :::
 
 ## Requirements {#requirements}

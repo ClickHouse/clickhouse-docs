@@ -44,7 +44,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 index:                 0
 database:              default
@@ -54,10 +54,10 @@ engine:                MergeTree
 metadata_dropped_path: /var/lib/clickhouse/metadata_dropped/default.tab.aa696a1a-1d70-4e60-a841-4c80827706cc.sql
 table_dropped_time:    2023-04-05 14:12:12
 
-Получена 1 строка. Прошло: 0.001 сек. 
+1 row in set. Elapsed: 0.001 sec. 
 ```
 
-````sql
+```sql
 UNDROP TABLE tab;
 
 SELECT *
@@ -68,7 +68,7 @@ FORMAT Vertical;
 Ok.
 
 0 rows in set. Elapsed: 0.001 sec. 
-````
+```
 
 ```sql
 DESCRIBE TABLE tab

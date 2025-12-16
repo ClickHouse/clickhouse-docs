@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # dbt 模型使用的 ClickHouse 数据库
+      schema: [ default ] # ClickHouse database for dbt models
 
-      # 可选项
+      # Optional
       host: [ localhost ]
-      port: [ 8123 ]  # 默认端口为 8123、8443、9000 或 9440,取决于 secure 和 driver 配置 
-      user: [ default ] # 执行所有数据库操作的用户
-      password: [ <empty string> ] # 该用户的密码
-      secure: True  # 使用 TLS(原生协议)或 HTTPS(HTTP 协议)
+      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [ default ] # User for all database operations
+      password: [ <empty string> ] # Password for the user
+      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
 ```
 
 

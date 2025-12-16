@@ -19,10 +19,10 @@ ClickHouse также поддерживает [SQL-управляемый по�
 
 ```xml
 <users>
-    <!-- Если имя пользователя не указано, используется пользователь «default». -->
+    <!-- If user name was not specified, 'default' user is used. -->
     <user_name>
         <password></password>
-        <!-- Или -->
+        <!-- Or -->
         <password_sha256_hex></password_sha256_hex>
 
         <ssh_keys>
@@ -61,7 +61,7 @@ ClickHouse также поддерживает [SQL-управляемый по�
             <query>GRANT SELECT ON system.*</query>
         </grants>
     </user_name>
-    <!-- Настройки других пользователей -->
+    <!-- Other users settings -->
 </users>
 ```
 
@@ -82,8 +82,8 @@ ClickHouse также поддерживает [SQL-управляемый по�
 Пример генерации пароля в командной оболочке:
 
 ```bash
-PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
-```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
+    ```
 
 Первая строка результата — это пароль. Вторая строка — соответствующий хэш SHA256.
 
@@ -96,8 +96,8 @@ PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWO
   Пример генерации пароля в командной оболочке:
 
   ```bash
-  PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
-  ```
+    PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
+    ```
 
   Первая строка результата — это пароль. Вторая строка — соответствующий двойной хэш SHA1.
 

@@ -49,7 +49,7 @@ doc_type: 'reference'
                         <field>8267016</field>
                 </row>
                 <row>
-                        <SearchPhrase>дизайн интерьера ванной</SearchPhrase>
+                        <SearchPhrase>bathroom interior design</SearchPhrase>
                         <field>2166</field>
                 </row>
                 <row>
@@ -57,31 +57,31 @@ doc_type: 'reference'
                         <field>1655</field>
                 </row>
                 <row>
-                        <SearchPhrase>весенняя мода 2014</SearchPhrase>
+                        <SearchPhrase>2014 spring fashion</SearchPhrase>
                         <field>1549</field>
                 </row>
                 <row>
-                        <SearchPhrase>фото в свободной форме</SearchPhrase>
+                        <SearchPhrase>freeform photos</SearchPhrase>
                         <field>1480</field>
                 </row>
                 <row>
-                        <SearchPhrase>анджелина джоли</SearchPhrase>
+                        <SearchPhrase>angelina jolie</SearchPhrase>
                         <field>1245</field>
                 </row>
                 <row>
-                        <SearchPhrase>омск</SearchPhrase>
+                        <SearchPhrase>omsk</SearchPhrase>
                         <field>1112</field>
                 </row>
                 <row>
-                        <SearchPhrase>фото пород собак</SearchPhrase>
+                        <SearchPhrase>photos of dog breeds</SearchPhrase>
                         <field>1091</field>
                 </row>
                 <row>
-                        <SearchPhrase>дизайн штор</SearchPhrase>
+                        <SearchPhrase>curtain designs</SearchPhrase>
                         <field>1064</field>
                 </row>
                 <row>
-                        <SearchPhrase>баку</SearchPhrase>
+                        <SearchPhrase>baku</SearchPhrase>
                         <field>1000</field>
                 </row>
         </data>

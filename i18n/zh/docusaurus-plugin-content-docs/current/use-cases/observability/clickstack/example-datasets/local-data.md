@@ -33,10 +33,10 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 receivers:
   filelog:
     include:
-      - /host/var/log/**/*.log        # 主机 Linux 日志
+      - /host/var/log/**/*.log        # Linux logs from host
       - /host/var/log/syslog
       - /host/var/log/messages
-      - /host/private/var/log/*.log   # 主机 macOS 日志
+      - /host/private/var/log/*.log   # macOS logs from host
     start_at: beginning
     resource:
       service.name: "system-logs"

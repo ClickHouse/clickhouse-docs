@@ -35,10 +35,10 @@ CDC に適した必要な権限を付与した ClickPipes 用の新しいユー�
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- ユーザーにレプリケーション権限を付与
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- パブリケーションを作成します。ミラー作成時に使用します
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 

@@ -22,7 +22,7 @@ This guide provides enterprise teams evaluating ClickHouse Cloud with comprehens
 
 ClickHouse Cloud provides comprehensive monitoring through built-in dashboard interfaces accessible via the Monitoring section. These dashboards visualize system and performance metrics in real-time without requiring additional setup and serve as the primary tools for real-time production monitoring within ClickHouse Cloud.
 
-- **Advanced Dashboard**: The main dashboard interface accessible via Monitoring → Advanced dashboard provides real-time visibility into query rates, resource usage, system health, and storage performance. This dashboard doesn't require separate authentication, won't prevent instances from idling, and doesn't add query load to your production system. Each visualization is powered by customizable SQL queries, with out-of-the-box charts grouped into ClickHouse-specific, system health, and Cloud-specific metrics. Users can extend monitoring by creating custom queries directly in the SQL console.
+- **Advanced Dashboard**: The main dashboard interface accessible via Monitoring → Advanced dashboard provides real-time visibility into query rates, resource usage, system health, and storage performance. This dashboard doesn't require separate authentication, won't prevent instances from idling, and doesn't add query load to your production system. Each visualization is powered by customizable SQL queries, with out-of-the-box charts grouped into ClickHouse-specific, system health, and Cloud-specific metrics. You can extend monitoring by creating custom queries directly in the SQL console.
 
 :::note
 Accessing these metrics does not issue a query to the underlying service and will not wake idle services. 
@@ -32,7 +32,7 @@ Accessing these metrics does not issue a query to the underlying service and wil
 
 Users looking to extend these visualizations can use the dashboards feature in ClickHouse Cloud, querying system tables directly.
 
-- **Native advanced dashboard**: An alternative dashboard interface accessible through "You can still access the native advanced dashboard" within the Monitoring section. This opens in a separate tab with authentication and provides an alternative UI for system and service health monitoring. This dashboard allows advanced analytics, where users can modify the underlying SQL queries.
+- **Native advanced dashboard**: An alternative dashboard interface accessible through "You can still access the native advanced dashboard" within the Monitoring section. This opens in a separate tab with authentication and provides an alternative UI for system and service health monitoring. This dashboard allows advanced analytics, where you can modify the underlying SQL queries.
 
 <Image img={NativeAdvancedDashboard} size="lg" alt="Advanced dashboard"/>
 
@@ -51,7 +51,7 @@ See the [query insights](/cloud/get-started/query-insights) and [resource utiliz
 
 ## Prometheus-compatible metrics endpoint {#prometheus}
 
-ClickHouse Cloud provides a Prometheus endpoint. This allows users to maintain current workflows, leverage existing team expertise, and integrate ClickHouse metrics into enterprise monitoring platforms including Grafana, Datadog, and other Prometheus-compatible tools. 
+ClickHouse Cloud provides a Prometheus endpoint. This allows you to maintain current workflows, leverage existing team expertise, and integrate ClickHouse metrics into enterprise monitoring platforms including Grafana, Datadog, and other Prometheus-compatible tools. 
 
 The organization-level endpoint federates metrics from all services, while per-service endpoints provide granular monitoring. Key features include:
 - Filtered metrics option: The optional filtered_metrics=true parameter reduces payload from 1000+ available metrics to 125 'mission critical' metrics for cost optimization and easier monitoring focus
@@ -67,13 +67,13 @@ This approach respects service idling behavior, allowing for cost optimization w
 
 - **HyperDX in Clickhouse Cloud**  (private preview): HyperDX can be launched on any Clickhouse Cloud service.
 - [Helm](/use-cases/observability/clickstack/deployment/helm): Recommended for Kubernetes-based debugging environments. Supports integration with ClickHouse Cloud and allows for environment-specific configuration, resource limits, and scaling via `values.yaml`.
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Deploys each component (ClickHouse, HyperDX, OTel collector, MongoDB) individually. Users can modify the compose file to remove any unused components when integrating with ClickHouse Cloud, specifically ClickHouse and the Open Telemetry Collector.
+- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose): Deploys each component (ClickHouse, HyperDX, OTel collector, MongoDB) individually. You can modify the compose file to remove any unused components when integrating with ClickHouse Cloud, specifically ClickHouse and the Open Telemetry Collector.
 - [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only): Standalone HyperDX container.
 
 For complete deployment options and architecture details, see the [ClickStack documentation](/use-cases/observability/clickstack/overview) and [data ingestion guide](/use-cases/observability/clickstack/ingesting-data/overview).
 
 :::note
-Users can also collect metrics from the ClickHouse Cloud Prometheus endpoint via an OpenTelemetry Collector and forward them to a separate ClickStack deployment for visualization.
+You can also collect metrics from the ClickHouse Cloud Prometheus endpoint via an OpenTelemetry Collector and forward them to a separate ClickStack deployment for visualization.
 :::
 
 <DirectIntegrations/>

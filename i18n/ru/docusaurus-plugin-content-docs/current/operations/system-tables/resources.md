@@ -20,14 +20,14 @@ FORMAT Vertical
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 name:         io_read
 read_disks:   ['s3']
 write_disks:  []
 create_query: CREATE RESOURCE io_read (READ DISK s3)
 
-Строка 2:
+Row 2:
 ──────
 name:         io_write
 read_disks:   []

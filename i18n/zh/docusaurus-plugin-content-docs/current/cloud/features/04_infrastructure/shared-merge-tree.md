@@ -88,8 +88,8 @@ ORDER BY key;
 
 对于某个表，可以通过执行 `SHOW CREATE TABLE` 命令来查看其 `CREATE TABLE` 语句中使用的表引擎：
 
-```sql
-SHOW CREATE TABLE myFirstReplacingMT;
+```
+
 ```
 
 ```sql

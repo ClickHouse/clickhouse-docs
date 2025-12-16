@@ -65,7 +65,7 @@ To ingest data see ["Ingesting data"](/use-cases/observability/clickstack/ingest
 
 ## Persisting data and settings {#persisting-data-and-settings}
 
-To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
+To persist data and settings across restarts of the container, you can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. For example:
 
 ```shell
 # ensure directories exist

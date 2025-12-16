@@ -26,7 +26,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 <clickhouse>
     <!- ... -->
     <ldap_servers>
-        <!-- 典型 LDAP 服务器配置示例 -->
+        <!- Typical LDAP server. -->
         <my_ldap_server>
             <host>localhost</host>
             <port>636</port>
@@ -42,7 +42,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
             <tls_cipher_suite>ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:AES256-GCM-SHA384</tls_cipher_suite>
         </my_ldap_server>
 
-        <!-- 典型 Active Directory 配置示例,已配置用户 DN 检测以支持角色映射 -->
+        <!- Typical Active Directory with configured user DN detection for further role mapping. -->
         <my_ad_server>
             <host>localhost</host>
             <port>389</port>
@@ -137,7 +137,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 <clickhouse>
     <!- ... -->
     <user_directories>
-        <!-- 典型 LDAP 服务器。 -->
+        <!- Typical LDAP server. -->
         <ldap>
             <server>my_ldap_server</server>
             <roles>
@@ -153,7 +153,7 @@ CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
             </role_mapping>
         </ldap>
 
-        <!-- 典型 Active Directory,角色映射基于检测到的用户 DN。 -->
+        <!- Typical Active Directory with role mapping that relies on the detected user DN. -->
         <ldap>
             <server>my_ad_server</server>
             <role_mapping>

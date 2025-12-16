@@ -27,7 +27,7 @@ impact storage space and is offset with compression. A `Float64` type offers a
 wider range of values with a loss of precision.
 
 Contrast this with ClickHouse, which offers multiple signed and unsigned 
-precision for floats and integers. With these, ClickHouse users can be explicit about
+precision for floats and integers. With these, you can be explicit about
 the precision required for integers to optimize storage and memory overhead. A 
 Decimal type, equivalent to Snowflake’s Number type, also offers twice the 
 precision and scale at 76 digits. In addition to a similar `Float64` value, 

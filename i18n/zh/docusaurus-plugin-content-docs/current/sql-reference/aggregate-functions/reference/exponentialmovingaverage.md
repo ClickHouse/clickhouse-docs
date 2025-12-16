@@ -38,7 +38,7 @@ exponentialMovingAverage(x)(value, timeunit)
 输入表：
 
 ```text
-┌──温度────────┬─时间戳─────┐
+┌──temperature─┬─timestamp──┐
 │          95  │         1  │
 │          95  │         2  │
 │          95  │         3  │
@@ -97,7 +97,7 @@ FROM
 结果：
 
 ```text
-┌─值────┬─时间─┬─round(exp_smooth, 3)─┬─条形图─────────────────────────────────────┐
+┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────────────────────────────────────┐
 │     1 │    0 │                0.067 │ ███▎                                       │
 │     0 │    1 │                0.062 │ ███                                        │
 │     0 │    2 │                0.058 │ ██▊                                        │
@@ -158,7 +158,7 @@ SELECT
     10 AS value,
     toDateTime('2020-01-01') + (3600 * number) AS time
 FROM numbers_mt(10);
--- 使用 intDiv 计算时间单元
+-- Calculate timeunit using intDiv
 SELECT
     value,
     time,
@@ -179,7 +179,7 @@ ORDER BY time ASC;
 │    10 │ 2020-01-01 08:00:00 │  9.98046875 │   438296 │
 │    10 │ 2020-01-01 09:00:00 │ 9.990234375 │   438297 │
 └───────┴─────────────────────┴─────────────┴──────────┘
--- 使用 toRelativeHourNum 计算时间单元
+-- Calculate timeunit using toRelativeHourNum
 SELECT
     value,
     time,

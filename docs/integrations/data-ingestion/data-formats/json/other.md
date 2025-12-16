@@ -16,9 +16,9 @@ Different techniques may be applied to different objects in the same schema. For
 
 ## Using the String type {#using-string}
 
-If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, users should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
+If the objects are highly dynamic, with no predictable structure and contain arbitrary nested objects, you should use the `String` type. Values can be extracted at query time using JSON functions as we show below.
 
-Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema is not well understood. For absolute flexibility, users can simply store JSON as `String`s before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
+Handling data using the structured approach described above is often not viable for those users with dynamic JSON, which is either subject to change or for which the schema is not well understood. For absolute flexibility, you can simply store JSON as `String`s before using functions to extract fields as required. This represents the extreme opposite of handling JSON as a structured object. This flexibility incurs costs with significant disadvantages - primarily an increase in query syntax complexity as well as degraded performance.
 
 As noted earlier, for the [original person object](/integrations/data-formats/json/schema#static-vs-dynamic-json), we cannot ensure the structure of the `tags` column. We insert the original row (including `company.labels`, which we ignore for now), declaring the `Tags` column as a `String`:
 

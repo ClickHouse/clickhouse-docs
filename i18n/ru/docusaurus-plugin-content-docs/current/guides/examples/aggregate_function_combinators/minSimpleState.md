@@ -44,8 +44,8 @@ CREATE TABLE temperature_extremes
 (
     location_id UInt32,
     location_name String,
-    min_temp SimpleAggregateFunction(min, Int32),  -- Хранит минимальную температуру
-    max_temp SimpleAggregateFunction(max, Int32)   -- Хранит максимальную температуру
+    min_temp SimpleAggregateFunction(min, Int32),  -- Stores minimum temperature
+    max_temp SimpleAggregateFunction(max, Int32)   -- Stores maximum temperature
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
@@ -60,8 +60,8 @@ TO temperature_extremes
 AS SELECT
     location_id,
     location_name,
-    minSimpleState(temperature) AS min_temp,     -- Используется комбинатор SimpleState
-    maxSimpleState(temperature) AS max_temp      -- Используется комбинатор SimpleState
+    minSimpleState(temperature) AS min_temp,     -- Using SimpleState combinator
+    maxSimpleState(temperature) AS max_temp      -- Using SimpleState combinator
 FROM raw_temperature_readings
 GROUP BY location_id, location_name;
 ```
@@ -70,10 +70,10 @@ GROUP BY location_id, location_name;
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-(1, 'Север', 5),
-(2, 'Юг', 15),
-(3, 'Запад', 10),
-(4, 'Восток', 8);
+(1, 'North', 5),
+(2, 'South', 15),
+(3, 'West', 10),
+(4, 'East', 8);
 ```
 
 Эти данные автоматически обрабатываются материализованным представлением. Проверим
@@ -83,18 +83,18 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 SELECT
     location_id,
     location_name,
-    min_temp,     -- Прямой доступ к значениям SimpleAggregateFunction
-    max_temp      -- Функция финализации не нужна при использовании SimpleAggregateFunction
+    min_temp,     -- Directly accessing the SimpleAggregateFunction values
+    max_temp      -- No need for finalization function with SimpleAggregateFunction
 FROM temperature_extremes
 ORDER BY location_id;
 ```
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ Север         │        5 │        5 │
-│           2 │ Юг            │       15 │       15 │
-│           3 │ Запад         │       10 │       10 │
-│           4 │ Восток        │        8 │        8 │
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
@@ -102,11 +102,11 @@ ORDER BY location_id;
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-    (1, 'Север', 3),
-    (2, 'Юг', 18),
-    (3, 'Запад', 10),
-    (1, 'Север', 8),
-    (4, 'Восток', 2);
+    (1, 'North', 3),
+    (2, 'South', 18),
+    (3, 'West', 10),
+    (1, 'North', 8),
+    (4, 'East', 2);
 ```
 
 Просмотрите обновлённые экстремумы после поступления новых данных:
@@ -123,14 +123,14 @@ ORDER BY location_id;
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ Север         │        3 │        8 │
-│           1 │ Север         │        5 │        5 │
-│           2 │ Юг            │       18 │       18 │
-│           2 │ Юг            │       15 │       15 │
-│           3 │ Запад         │       10 │       10 │
-│           3 │ Запад         │       10 │       10 │
-│           4 │ Восток        │        2 │        2 │
-│           4 │ Восток        │        8 │        8 │
+│           1 │ North         │        3 │        8 │
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       18 │       18 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        2 │
+│           4 │ East          │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
@@ -140,8 +140,8 @@ ORDER BY location_id;
 SELECT
     location_id,
     location_name,
-    min(min_temp) AS min_temp,  -- Агрегирование по всем партам 
-    max(max_temp) AS max_temp   -- Агрегирование по всем партам
+    min(min_temp) AS min_temp,  -- Aggregate across all parts 
+    max(max_temp) AS max_temp   -- Aggregate across all parts
 FROM temperature_extremes
 GROUP BY location_id, location_name
 ORDER BY location_id;
@@ -151,10 +151,10 @@ ORDER BY location_id;
 
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ Север         │        3 │        8 │
-│           2 │ Юг            │       15 │       18 │
-│           3 │ Запад         │       10 │       10 │
-│           4 │ Восток        │        2 │        8 │
+│           1 │ North         │        3 │        8 │
+│           2 │ South         │       15 │       18 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 

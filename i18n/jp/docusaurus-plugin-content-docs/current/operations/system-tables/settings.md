@@ -48,12 +48,12 @@ Row 1:
 name:        min_insert_block_size_rows
 value:       1048449
 changed:     0
-description: `INSERT`クエリでテーブルに挿入可能なブロック内の最小行数を設定します。小さいブロックは大きなブロックに統合されます。
+description: Sets the minimum number of rows in the block that can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-設定可能な値:
+Possible values:
 
-- 正の整数。
-- 0 — 統合無効。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -68,12 +68,12 @@ Row 2:
 name:        min_insert_block_size_bytes
 value:       268402944
 changed:     0
-description: `INSERT`クエリでテーブルに挿入可能なブロック内の最小バイト数を設定します。小さいブロックは大きなブロックに統合されます。
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-設定可能な値:
+Possible values:
 
-- 正の整数。
-- 0 — 統合無効。
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -82,57 +82,55 @@ default:     268402944
 alias_for:   
 is_obsolete: 0
 tier:        Production
-```
 
 Row 3:
 ──────
-name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
+name:        min_insert_block_size_rows_for_materialized_views
 value:       0
 changed:     0
-description: `INSERT` クエリでテーブルに挿入できるブロック内の最小行数を設定します。より小さいサイズのブロックは、より大きなブロックにまとめられます。この設定は、[マテリアライズドビュー](../../sql-reference/statements/create/view.md) に挿入されるブロックに対してのみ適用されます。この設定を調整することで、マテリアライズドビューへの書き込み時のブロックのまとめを制御し、過剰なメモリ使用を回避できます。
+description: Sets the minimum number of rows in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
 
 Possible values:
 
-* 任意の正の整数。
-* 0 — まとめ処理を無効にします。
+- Any positive integer.
+- 0 — Squashing disabled.
 
 **See Also**
 
-* [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
+- [min_insert_block_size_rows](/operations/settings/settings#min_insert_block_size_rows)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
 
 Row 4:
 ──────
-name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
+name:        min_insert_block_size_bytes_for_materialized_views
 value:       0
 changed:     0
-description: `INSERT` クエリでテーブルに挿入できるブロック内の最小バイト数を設定します。より小さいサイズのブロックは、より大きなブロックにまとめられます。この設定は、[マテリアライズドビュー](../../sql-reference/statements/create/view.md) に挿入されるブロックに対してのみ適用されます。この設定を調整することで、マテリアライズドビューへの書き込み時のブロックのまとめを制御し、過剰なメモリ使用を回避できます。
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
 
 Possible values:
 
-* 任意の正の正の整数。
-* 0 — まとめ処理を無効にします。
+- Any positive integer.
+- 0 — Squashing disabled.
 
 **See also**
 
-* [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-````
+- [min_insert_block_size_bytes](/operations/settings/settings#min_insert_block_size_bytes)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+```
 
 `WHERE changed` は、例えば以下を確認する際に有用です：
 
@@ -143,7 +141,7 @@ Possible values:
 
 ```sql
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-````
+```
 
 **関連項目**
 

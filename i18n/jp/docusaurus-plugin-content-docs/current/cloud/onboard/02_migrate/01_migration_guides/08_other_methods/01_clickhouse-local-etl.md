@@ -117,7 +117,7 @@ ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テー�
 INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table', 'default', 'PASS')
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
-```
+  ```
 
 :::note
 `clickhouse-local` ホストマシン上にデータがローカル保存されることはありません。代わりに、データはソースの MySQL テーブルから読み込まれ、そのまま ClickHouse Cloud サービス上の宛先テーブルに書き込まれます。

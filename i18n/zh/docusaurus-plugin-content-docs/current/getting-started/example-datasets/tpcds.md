@@ -32,7 +32,7 @@ make
 然后生成查询（使用相同的规模因子）：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
 现在在 ClickHouse 中创建表。

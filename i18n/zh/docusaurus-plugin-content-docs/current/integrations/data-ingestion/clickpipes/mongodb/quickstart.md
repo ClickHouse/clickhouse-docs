@@ -198,7 +198,7 @@ ClickHouse 中的[聚合函数](https://clickhouse.com/docs/sql-reference/aggreg
 
 ```sql
 SELECT sum(doc.shipping.cost) AS shipping_cost FROM t1;
--- DB::Exception: 聚合函数 sum 的参数类型 Dynamic 非法。(ILLEGAL_TYPE_OF_ARGUMENT)
+-- DB::Exception: Illegal type Dynamic of argument for aggregate function sum. (ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
 要使用聚合函数，请使用 `CAST` 函数或 `::` 语法将字段转换为正确的类型：

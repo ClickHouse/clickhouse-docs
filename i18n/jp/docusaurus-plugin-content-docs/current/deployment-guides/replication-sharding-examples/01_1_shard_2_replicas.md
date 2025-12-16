@@ -47,94 +47,94 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   この例のディレクトリ構造をセットアップするには、以下のコマンドを実行します:
 
   ```bash
-  mkdir cluster_1S_2R
-  cd cluster_1S_2R
+mkdir cluster_1S_2R
+cd cluster_1S_2R
 
-  # clickhouse-keeperディレクトリを作成
-  for i in {01..03}; do
-    mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
-  done
+# Create clickhouse-keeper directories
+for i in {01..03}; do
+  mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
+done
 
-  # clickhouse-serverディレクトリを作成
-  for i in {01..02}; do
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
-  done
-  ```
+# Create clickhouse-server directories
+for i in {01..02}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
+done
+```
 
   以下の `docker-compose.yml` ファイルを `cluster_1S_2R` ディレクトリに追加します：
 
   ```yaml title="docker-compose.yml"
-  version: '3.8'
-  services:
-    clickhouse-01:
-      image: "clickhouse/clickhouse-server:latest"
-      user: "101:101"
-      container_name: clickhouse-01
-      hostname: clickhouse-01
-      volumes:
-        - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
-        - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
-      ports:
-        - "127.0.0.1:8123:8123"
-        - "127.0.0.1:9000:9000"
-      depends_on:
-        - clickhouse-keeper-01
-        - clickhouse-keeper-02
-        - clickhouse-keeper-03
-    clickhouse-02:
-      image: "clickhouse/clickhouse-server:latest"
-      user: "101:101"
-      container_name: clickhouse-02
-      hostname: clickhouse-02
-      volumes:
-        - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
-        - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
-      ports:
-        - "127.0.0.1:8124:8123"
-        - "127.0.0.1:9001:9000"
-      depends_on:
-        - clickhouse-keeper-01
-        - clickhouse-keeper-02
-        - clickhouse-keeper-03
-    clickhouse-keeper-01:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-01
-      hostname: clickhouse-keeper-01
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9181:9181"
-    clickhouse-keeper-02:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-02
-      hostname: clickhouse-keeper-02
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9182:9181"
-    clickhouse-keeper-03:
-      image: "clickhouse/clickhouse-keeper:latest-alpine"
-      user: "101:101"
-      container_name: clickhouse-keeper-03
-      hostname: clickhouse-keeper-03
-      volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
-      ports:
-          - "127.0.0.1:9183:9181"
-  ```
+version: '3.8'
+services:
+  clickhouse-01:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-01
+    hostname: clickhouse-01
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-02:
+    image: "clickhouse/clickhouse-server:latest"
+    user: "101:101"
+    container_name: clickhouse-02
+    hostname: clickhouse-02
+    volumes:
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml:/etc/clickhouse-server/config.d/config.xml
+      - ${PWD}/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml:/etc/clickhouse-server/users.d/users.xml
+    ports:
+      - "127.0.0.1:8124:8123"
+      - "127.0.0.1:9001:9000"
+    depends_on:
+      - clickhouse-keeper-01
+      - clickhouse-keeper-02
+      - clickhouse-keeper-03
+  clickhouse-keeper-01:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-01
+    hostname: clickhouse-keeper-01
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9181:9181"
+  clickhouse-keeper-02:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-02
+    hostname: clickhouse-keeper-02
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9182:9181"
+  clickhouse-keeper-03:
+    image: "clickhouse/clickhouse-keeper:latest-alpine"
+    user: "101:101"
+    container_name: clickhouse-keeper-03
+    hostname: clickhouse-keeper-03
+    volumes:
+     - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+    ports:
+        - "127.0.0.1:9183:9181"
+```
 
   以下のサブディレクトリとファイルを作成します：
 
   ```bash
-  for i in {01..02}; do
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d
-    mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d
-    touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d/config.xml
-    touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d/users.xml
-  done
-  ```
+for i in {01..02}; do
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d
+  mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/config.d/config.xml
+  touch fs/volumes/clickhouse-${i}/etc/clickhouse-server/users.d/users.xml
+done
+```
 
   <ConfigExplanation />
 
@@ -145,68 +145,68 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`に配置されている各空の設定ファイル`config.xml`を修正します。以下で強調表示されている行は、各ノードに固有の内容に変更する必要があります:
 
   ```xml
-  <clickhouse replace="true">
-      <logger>
-          <level>debug</level>
-          <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-          <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-          <size>1000M</size>
-          <count>3</count>
-      </logger>
-      <!--highlight-next-line-->
-      <display_name>cluster_1S_2R node 1</display_name>
-      <listen_host>0.0.0.0</listen_host>
-      <http_port>8123</http_port>
-      <tcp_port>9000</tcp_port>
-      <user_directories>
-          <users_xml>
-              <path>users.xml</path>
-          </users_xml>
-          <local_directory>
-              <path>/var/lib/clickhouse/access/</path>
-          </local_directory>
-      </user_directories>
-      <distributed_ddl>
-          <path>/clickhouse/task_queue/ddl</path>
-      </distributed_ddl>
-      <remote_servers>
-          <cluster_1S_2R>
-              <shard>
-                  <internal_replication>true</internal_replication>
-                  <replica>
-                      <host>clickhouse-01</host>
-                      <port>9000</port>
-                  </replica>
-                  <replica>
-                      <host>clickhouse-02</host>
-                      <port>9000</port>
-                  </replica>
-              </shard>
-          </cluster_1S_2R>
-      </remote_servers>
-      <zookeeper>
-          <node>
-              <host>clickhouse-keeper-01</host>
-              <port>9181</port>
-          </node>
-          <node>
-              <host>clickhouse-keeper-02</host>
-              <port>9181</port>
-          </node>
-          <node>
-              <host>clickhouse-keeper-03</host>
-              <port>9181</port>
-          </node>
-      </zookeeper>
-      <!--highlight-start-->
-      <macros>
-          <shard>01</shard>
-          <replica>01</replica>
-          <cluster>cluster_1S_2R</cluster>
-      </macros>
-      <!--highlight-end-->
-  </clickhouse>
-  ```
+<clickhouse replace="true">
+    <logger>
+        <level>debug</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
+    <!--highlight-next-line-->
+    <display_name>cluster_1S_2R node 1</display_name>
+    <listen_host>0.0.0.0</listen_host>
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+    <user_directories>
+        <users_xml>
+            <path>users.xml</path>
+        </users_xml>
+        <local_directory>
+            <path>/var/lib/clickhouse/access/</path>
+        </local_directory>
+    </user_directories>
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+    <remote_servers>
+        <cluster_1S_2R>
+            <shard>
+                <internal_replication>true</internal_replication>
+                <replica>
+                    <host>clickhouse-01</host>
+                    <port>9000</port>
+                </replica>
+                <replica>
+                    <host>clickhouse-02</host>
+                    <port>9000</port>
+                </replica>
+            </shard>
+        </cluster_1S_2R>
+    </remote_servers>
+    <zookeeper>
+        <node>
+            <host>clickhouse-keeper-01</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-02</host>
+            <port>9181</port>
+        </node>
+        <node>
+            <host>clickhouse-keeper-03</host>
+            <port>9181</port>
+        </node>
+    </zookeeper>
+    <!--highlight-start-->
+    <macros>
+        <shard>01</shard>
+        <replica>01</replica>
+        <cluster>cluster_1S_2R</cluster>
+    </macros>
+    <!--highlight-end-->
+</clickhouse>
+```
 
   | ディレクトリ                                                    | ファイル                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -222,14 +222,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ログ記録は `<logger>` ブロックで定義します。この設定例では、1000Mに達すると3回ローテーションするデバッグログが出力されます:
 
   ```xml
-  <logger>
-      <level>debug</level>
-      <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-      <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-      <size>1000M</size>
-      <count>3</count>
-  </logger>
-  ```
+<logger>
+    <level>debug</level>
+    <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+    <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    <size>1000M</size>
+    <count>3</count>
+</logger>
+```
 
   ログ設定の詳細については、デフォルトのClickHouse[設定ファイル](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に含まれているコメントを参照してください。
 
@@ -243,25 +243,25 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   `internal_replication` を true に設定すると、データはレプリカの1つにのみ書き込まれます。
 
   ```xml
-  <remote_servers>
-      <!-- クラスタ名（ドットを含めないでください） -->
-      <cluster_1S_2R>
-          <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
-          <shard>
-              <!-- オプション。レプリカの1つのみにデータを書き込むかどうかを指定します。デフォルト: false（すべてのレプリカにデータを書き込みます）。 -->
-              <internal_replication>true</internal_replication>
-              <replica>
-                  <host>clickhouse-01</host>
-                  <port>9000</port>
-              </replica>
-              <replica>
-                  <host>clickhouse-02</host>
-                  <port>9000</port>
-              </replica>
-          </shard>
-      </cluster_1S_2R>
-  </remote_servers>
-  ```
+<remote_servers>
+    <!-- cluster name (should not contain dots) -->
+    <cluster_1S_2R>
+        <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
+        <shard>
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
+            <internal_replication>true</internal_replication>
+            <replica>
+                <host>clickhouse-01</host>
+                <port>9000</port>
+            </replica>
+            <replica>
+                <host>clickhouse-02</host>
+                <port>9000</port>
+            </replica>
+        </shard>
+    </cluster_1S_2R>
+</remote_servers>
+```
 
   <ServerParameterTable />
 
@@ -274,21 +274,21 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ClickHouse Keeperのセットアップは、チュートリアルの次のステップで説明されています。
 
   ```xml
-  <zookeeper>
-      <node>
-          <host>clickhouse-keeper-01</host>
-          <port>9181</port>
-      </node>
-      <node>
-          <host>clickhouse-keeper-02</host>
-          <port>9181</port>
-      </node>
-      <node>
-          <host>clickhouse-keeper-03</host>
-          <port>9181</port>
-      </node>
-  </zookeeper>
-  ```
+<zookeeper>
+    <node>
+        <host>clickhouse-keeper-01</host>
+        <port>9181</port>
+    </node>
+    <node>
+        <host>clickhouse-keeper-02</host>
+        <port>9181</port>
+    </node>
+    <node>
+        <host>clickhouse-keeper-03</host>
+        <port>9181</port>
+    </node>
+</zookeeper>
+```
 
   :::note
   ClickHouse KeeperをClickHouse Serverと同じサーバー上で実行することは可能ですが、本番環境では専用ホスト上で実行することを強く推奨します。
@@ -299,12 +299,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   また、`<macros>` セクションは、レプリケーテッドテーブルのパラメータ置換を定義するために使用されます。これらは `system.macros` に記載され、クエリ内で `{shard}` や `{replica}` などの置換を使用できます。
 
   ```xml
-  <macros>
-      <shard>01</shard>
-      <replica>01</replica>
-      <cluster>cluster_1S_2R</cluster>
-  </macros>
-  ```
+<macros>
+    <shard>01</shard>
+    <replica>01</replica>
+    <cluster>cluster_1S_2R</cluster>
+</macros>
+```
 
   :::note
   これらはクラスタの構成に応じて個別に定義する必要があります。
@@ -315,44 +315,44 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を以下の内容で変更します:
 
   ```xml title="/users.d/users.xml"
-  <?xml version="1.0"?>
-  <clickhouse replace="true">
-      <profiles>
-          <default>
-              <max_memory_usage>10000000000</max_memory_usage>
-              <use_uncompressed_cache>0</use_uncompressed_cache>
-              <load_balancing>in_order</load_balancing>
-              <log_queries>1</log_queries>
-          </default>
-      </profiles>
-      <users>
-          <default>
-              <access_management>1</access_management>
-              <profile>default</profile>
-              <networks>
-                  <ip>::/0</ip>
-              </networks>
-              <quota>default</quota>
-              <access_management>1</access_management>
-              <named_collection_control>1</named_collection_control>
-              <show_named_collections>1</show_named_collections>
-              <show_named_collections_secrets>1</show_named_collections_secrets>
-          </default>
-      </users>
-      <quotas>
-          <default>
-              <interval>
-                  <duration>3600</duration>
-                  <queries>0</queries>
-                  <errors>0</errors>
-                  <result_rows>0</result_rows>
-                  <read_rows>0</read_rows>
-                  <execution_time>0</execution_time>
-              </interval>
-          </default>
-      </quotas>
-  </clickhouse>
-  ```
+<?xml version="1.0"?>
+<clickhouse replace="true">
+    <profiles>
+        <default>
+            <max_memory_usage>10000000000</max_memory_usage>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>in_order</load_balancing>
+            <log_queries>1</log_queries>
+        </default>
+    </profiles>
+    <users>
+        <default>
+            <access_management>1</access_management>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <quota>default</quota>
+            <access_management>1</access_management>
+            <named_collection_control>1</named_collection_control>
+            <show_named_collections>1</show_named_collections>
+            <show_named_collections_secrets>1</show_named_collections_secrets>
+        </default>
+    </users>
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+</clickhouse>
+```
 
   | ディレクトリ                                                   | ファイル                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -388,71 +388,71 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   `cluster_1S_2R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスターを起動します:
 
   ```bash
-  docker-compose up -d
-  ```
+docker-compose up -d
+```
 
   dockerがClickHouseとKeeperのイメージをプルし、
   その後コンテナを起動する様子が確認できます:
 
   ```bash
-  [+] Running 6/6
-   ✔ Network cluster_1s_2r_default   作成済み
-   ✔ Container clickhouse-keeper-03  起動済み
-   ✔ Container clickhouse-keeper-02  起動済み
-   ✔ Container clickhouse-keeper-01  起動済み
-   ✔ Container clickhouse-01         起動済み
-   ✔ Container clickhouse-02         起動済み
-  ```
+[+] Running 6/6
+ ✔ Network cluster_1s_2r_default   Created
+ ✔ Container clickhouse-keeper-03  Started
+ ✔ Container clickhouse-keeper-02  Started
+ ✔ Container clickhouse-keeper-01  Started
+ ✔ Container clickhouse-01         Started
+ ✔ Container clickhouse-02         Started
+```
 
   クラスタが稼働していることを確認するには、`clickhouse-01` または `clickhouse-02` のいずれかに接続し、以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
 
   ```bash
-  # 任意のノードに接続
-  docker exec -it clickhouse-01 clickhouse-client
-  ```
+# Connect to any node
+docker exec -it clickhouse-01 clickhouse-client
+```
 
   成功すると、ClickHouseクライアントのプロンプトが表示されます：
 
   ```response
-  cluster_1S_2R node 1 :)
-  ```
+cluster_1S_2R node 1 :)
+```
 
   以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します：
 
   ```sql title="Query"
-  SELECT 
-      cluster,
-      shard_num,
-      replica_num,
-      host_name,
-      port
-  FROM system.clusters;
-  ```
+SELECT 
+    cluster,
+    shard_num,
+    replica_num,
+    host_name,
+    port
+FROM system.clusters;
+```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
-  1. │ cluster_1S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
-  2. │ cluster_1S_2R │         1 │           2 │ clickhouse-02 │ 9000 │
-  3. │ default       │         1 │           1 │ localhost     │ 9000 │
-     └───────────────┴───────────┴─────────────┴───────────────┴──────┘
-  ```
+   ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+1. │ cluster_1S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
+2. │ cluster_1S_2R │         1 │           2 │ clickhouse-02 │ 9000 │
+3. │ default       │         1 │           1 │ localhost     │ 9000 │
+   └───────────────┴───────────┴─────────────┴───────────────┴──────┘
+```
 
   以下のクエリを実行して、ClickHouse Keeperクラスタのステータスを確認します：
 
   ```sql title="Query"
-  SELECT *
-  FROM system.zookeeper
-  WHERE path IN ('/', '/clickhouse')
-  ```
+SELECT *
+FROM system.zookeeper
+WHERE path IN ('/', '/clickhouse')
+```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
-  1. │ sessions   │       │ /clickhouse │
-  2. │ task_queue │       │ /clickhouse │
-  3. │ keeper     │       │ /           │
-  4. │ clickhouse │       │ /           │
-     └────────────┴───────┴─────────────┘
-  ```
+   ┌─name───────┬─value─┬─path────────┐
+1. │ sessions   │       │ /clickhouse │
+2. │ task_queue │       │ /clickhouse │
+3. │ keeper     │       │ /           │
+4. │ clickhouse │       │ /           │
+   └────────────┴───────┴─────────────┘
+```
 
   <VerifyKeeperStatus />
 
@@ -466,49 +466,49 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   各ホストのクライアントに接続するには、以下の各コマンドを別々のターミナルタブまたはウィンドウから実行します:
 
   ```bash
-  docker exec -it clickhouse-01 clickhouse-client
-  docker exec -it clickhouse-02 clickhouse-client
-  ```
+docker exec -it clickhouse-01 clickhouse-client
+docker exec -it clickhouse-02 clickhouse-client
+```
 
   各ホストのclickhouse-clientから以下のクエリを実行して、デフォルトのデータベース以外にデータベースが作成されていないことを確認してください:
 
   ```sql title="Query"
-  SHOW DATABASES;
-  ```
+SHOW DATABASES;
+```
 
   ```response title="Response"
-  ┌─name───────────────┐
-  1. │ INFORMATION_SCHEMA │
-  2. │ default            │
-  3. │ information_schema │
-  4. │ system             │
-     └────────────────────┘
-  ```
+   ┌─name───────────────┐
+1. │ INFORMATION_SCHEMA │
+2. │ default            │
+3. │ information_schema │
+4. │ system             │
+   └────────────────────┘
+```
 
   `clickhouse-01` クライアントから、`ON CLUSTER` 句を使用して以下の**分散型** DDL クエリを実行し、`uk` という名前の新しいデータベースを作成します：
 
   ```sql
-  CREATE DATABASE IF NOT EXISTS uk 
-  -- highlight-next-line
-  ON CLUSTER cluster_1S_2R;
-  ```
+CREATE DATABASE IF NOT EXISTS uk 
+-- highlight-next-line
+ON CLUSTER cluster_1S_2R;
+```
 
   各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`でのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されていることを確認できます。
 
   ```sql
-  SHOW DATABASES;
-  ```
+SHOW DATABASES;
+```
 
   ```response
-  ┌─name───────────────┐
-  1. │ INFORMATION_SCHEMA │
-  2. │ default            │
-  3. │ information_schema │
-  4. │ system             │
-  #highlight-next-line
-  5. │ uk                 │
-     └────────────────────┘
-  ```
+   ┌─name───────────────┐
+1. │ INFORMATION_SCHEMA │
+2. │ default            │
+3. │ information_schema │
+4. │ system             │
+#highlight-next-line
+5. │ uk                 │
+   └────────────────────┘
+```
 
   ## クラスタ上にテーブルを作成する
 
@@ -516,29 +516,29 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   任意のホストクライアントから以下のクエリを実行してください:
 
   ```sql
-  CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
-  --highlight-next-line
-  ON CLUSTER cluster_1S_2R
-  (
-      price UInt32,
-      date Date,
-      postcode1 LowCardinality(String),
-      postcode2 LowCardinality(String),
-      type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
-      is_new UInt8,
-      duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
-      addr1 String,
-      addr2 String,
-      street LowCardinality(String),
-      locality LowCardinality(String),
-      town LowCardinality(String),
-      district LowCardinality(String),
-      county LowCardinality(String)
-  )
-  --highlight-next-line
-  ENGINE = ReplicatedMergeTree
-  ORDER BY (postcode1, postcode2, addr1, addr2);
-  ```
+CREATE TABLE IF NOT EXISTS uk.uk_price_paid_local
+--highlight-next-line
+ON CLUSTER cluster_1S_2R
+(
+    price UInt32,
+    date Date,
+    postcode1 LowCardinality(String),
+    postcode2 LowCardinality(String),
+    type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
+    is_new UInt8,
+    duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
+    addr1 String,
+    addr2 String,
+    street LowCardinality(String),
+    locality LowCardinality(String),
+    town LowCardinality(String),
+    district LowCardinality(String),
+    county LowCardinality(String)
+)
+--highlight-next-line
+ENGINE = ReplicatedMergeTree
+ORDER BY (postcode1, postcode2, addr1, addr2);
+```
 
   これは、[英国不動産価格](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと同一です。ただし、`ON CLUSTER`句と`ReplicatedMergeTree`エンジンの使用が異なる点に注意してください。
 
@@ -549,14 +549,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   `clickhouse-01` または `clickhouse-02` のいずれかのクライアントから以下のクエリを実行して、クラスタ全体でテーブルが作成されたことを確認します:
 
   ```sql title="Query"
-  SHOW TABLES IN uk;
-  ```
+SHOW TABLES IN uk;
+```
 
   ```response title="Response"
-  ┌─name────────────────┐
-  1. │ uk_price_paid.      │
-     └─────────────────────┘
-  ```
+   ┌─name────────────────┐
+1. │ uk_price_paid.      │
+   └─────────────────────┘
+```
 
   ## データの挿入
 
@@ -565,191 +565,191 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   `clickhouse-01` から以下のクエリを使用して、データの一部を挿入します:
 
   ```sql
-  INSERT INTO uk.uk_price_paid_local
-  SELECT
-      toUInt32(price_string) AS price,
-      parseDateTimeBestEffortUS(time) AS date,
-      splitByChar(' ', postcode)[1] AS postcode1,
-      splitByChar(' ', postcode)[2] AS postcode2,
-      transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-      b = 'Y' AS is_new,
-      transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-      addr1,
-      addr2,
-      street,
-      locality,
-      town,
-      district,
-      county
-  FROM url(
-      'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-      'CSV',
-      'uuid_string String,
-      price_string String,
-      time String,
-      postcode String,
-      a String,
-      b String,
-      c String,
-      addr1 String,
-      addr2 String,
-      street String,
-      locality String,
-      town String,
-      district String,
-      county String,
-      d String,
-      e String'
-  ) LIMIT 10000
-  SETTINGS max_http_get_redirects=10;
-  ```
+INSERT INTO uk.uk_price_paid_local
+SELECT
+    toUInt32(price_string) AS price,
+    parseDateTimeBestEffortUS(time) AS date,
+    splitByChar(' ', postcode)[1] AS postcode1,
+    splitByChar(' ', postcode)[2] AS postcode2,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    b = 'Y' AS is_new,
+    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    addr1,
+    addr2,
+    street,
+    locality,
+    town,
+    district,
+    county
+FROM url(
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'CSV',
+    'uuid_string String,
+    price_string String,
+    time String,
+    postcode String,
+    a String,
+    b String,
+    c String,
+    addr1 String,
+    addr2 String,
+    street String,
+    locality String,
+    town String,
+    district String,
+    county String,
+    d String,
+    e String'
+) LIMIT 10000
+SETTINGS max_http_get_redirects=10;
+```
 
   各ホストでデータが完全にレプリケートされていることに注意してください:
 
   ```sql
-  -- clickhouse-01
-  SELECT count(*)
-  FROM uk.uk_price_paid_local
+-- clickhouse-01
+SELECT count(*)
+FROM uk.uk_price_paid_local
 
-  --   ┌─count()─┐
-  -- 1.│   10000 │
-  --   └─────────┘
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
 
-  -- clickhouse-02
-  SELECT count(*)
-  FROM uk.uk_price_paid_local
+-- clickhouse-02
+SELECT count(*)
+FROM uk.uk_price_paid_local
 
-  --   ┌─count()─┐
-  -- 1.│   10000 │
-  --   └─────────┘
-  ```
+--   ┌─count()─┐
+-- 1.│   10000 │
+--   └─────────┘
+```
 
   ホストの1つに障害が発生した場合の動作を確認するため、いずれかのホストから簡単なテストデータベースとテストテーブルを作成します:
 
   ```sql
-  CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_1S_2R;
-  CREATE TABLE test.test_table ON CLUSTER cluster_1S_2R
-  (
-      `id` UInt64,
-      `name` String
-  )
-  ENGINE = ReplicatedMergeTree
-  ORDER BY id;
-  ```
+CREATE DATABASE IF NOT EXISTS test ON CLUSTER cluster_1S_2R;
+CREATE TABLE test.test_table ON CLUSTER cluster_1S_2R
+(
+    `id` UInt64,
+    `name` String
+)
+ENGINE = ReplicatedMergeTree
+ORDER BY id;
+```
 
   `uk_price_paid`テーブルと同様に、いずれのホストからでもデータを挿入できます：
 
   ```sql
-  INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
-  ```
+INSERT INTO test.test_table (id, name) VALUES (1, 'Clicky McClickface');
+```
 
   ホストの1台がダウンした場合、何が起こるでしょうか？これをシミュレートするには、以下を実行して`clickhouse-01`を停止します：
 
   ```bash
-  docker stop clickhouse-01
-  ```
+docker stop clickhouse-01
+```
 
   以下を実行してホストがダウンしていることを確認します：
 
   ```bash
-  docker-compose ps
-  ```
+docker-compose ps
+```
 
   ```response title="Response"
-  NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
-  clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
-  clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
-  clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
-  clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
-  ```
+NAME                   IMAGE                                        COMMAND            SERVICE                CREATED          STATUS          PORTS
+clickhouse-02          clickhouse/clickhouse-server:latest          "/entrypoint.sh"   clickhouse-02          X minutes ago    Up X minutes    127.0.0.1:8124->8123/tcp, 127.0.0.1:9001->9000/tcp
+clickhouse-keeper-01   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-01   X minutes ago    Up X minutes    127.0.0.1:9181->9181/tcp
+clickhouse-keeper-02   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-02   X minutes ago    Up X minutes    127.0.0.1:9182->9181/tcp
+clickhouse-keeper-03   clickhouse/clickhouse-keeper:latest-alpine   "/entrypoint.sh"   clickhouse-keeper-03   X minutes ago    Up X minutes    127.0.0.1:9183->9181/tcp
+```
 
   `clickhouse-01` が停止している状態で、テストテーブルに別のデータ行を挿入し、
   テーブルをクエリします:
 
   ```sql
-  INSERT INTO test.test_table (id, name) VALUES (2, 'Alexey Milovidov');
-  SELECT * FROM test.test_table;
-  ```
+INSERT INTO test.test_table (id, name) VALUES (2, 'Alexey Milovidov');
+SELECT * FROM test.test_table;
+```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
-  1. │  1 │ Clicky McClickface │
-  2. │  2 │ Alexey Milovidov   │
-     └────┴────────────────────┘
-  ```
+   ┌─id─┬─name───────────────┐
+1. │  1 │ Clicky McClickface │
+2. │  2 │ Alexey Milovidov   │
+   └────┴────────────────────┘
+```
 
   次のコマンドで `clickhouse-01` を再起動します（確認のため、その後 `docker-compose ps` を再度実行できます）：
 
   ```sql
-  docker start clickhouse-01
-  ```
+docker start clickhouse-01
+```
 
   `docker exec -it clickhouse-01 clickhouse-client` を実行した後、`clickhouse-01` からテストテーブルに再度クエリを実行します:
 
   ```sql title="Query"
-  SELECT * FROM test.test_table
-  ```
+SELECT * FROM test.test_table
+```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
-  1. │  1 │ Clicky McClickface │
-  2. │  2 │ Alexey Milovidov   │
-     └────┴────────────────────┘
-  ```
+   ┌─id─┬─name───────────────┐
+1. │  1 │ Clicky McClickface │
+2. │  2 │ Alexey Milovidov   │
+   └────┴────────────────────┘
+```
 
   この段階で英国不動産価格データセット全体を取り込んで操作してみたい場合は、以下のクエリを実行してください。
 
   ```sql
-  TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
-  INSERT INTO uk.uk_price_paid_local
-  SELECT
-      toUInt32(price_string) AS price,
-      parseDateTimeBestEffortUS(time) AS date,
-      splitByChar(' ', postcode)[1] AS postcode1,
-      splitByChar(' ', postcode)[2] AS postcode2,
-      transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-      b = 'Y' AS is_new,
-      transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-      addr1,
-      addr2,
-      street,
-      locality,
-      town,
-      district,
-      county
-  FROM url(
-      'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-      'CSV',
-      'uuid_string String,
-      price_string String,
-      time String,
-      postcode String,
-      a String,
-      b String,
-      c String,
-      addr1 String,
-      addr2 String,
-      street String,
-      locality String,
-      town String,
-      district String,
-      county String,
-      d String,
-      e String'
-      ) SETTINGS max_http_get_redirects=10;
-  ```
+TRUNCATE TABLE uk.uk_price_paid_local ON CLUSTER cluster_1S_2R;
+INSERT INTO uk.uk_price_paid_local
+SELECT
+    toUInt32(price_string) AS price,
+    parseDateTimeBestEffortUS(time) AS date,
+    splitByChar(' ', postcode)[1] AS postcode1,
+    splitByChar(' ', postcode)[2] AS postcode2,
+    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+    b = 'Y' AS is_new,
+    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+    addr1,
+    addr2,
+    street,
+    locality,
+    town,
+    district,
+    county
+FROM url(
+    'http://prod1.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+    'CSV',
+    'uuid_string String,
+    price_string String,
+    time String,
+    postcode String,
+    a String,
+    b String,
+    c String,
+    addr1 String,
+    addr2 String,
+    street String,
+    locality String,
+    town String,
+    district String,
+    county String,
+    d String,
+    e String'
+    ) SETTINGS max_http_get_redirects=10;
+```
 
   `clickhouse-02` または `clickhouse-01` からテーブルをクエリします：
 
   ```sql title="Query"
-  SELECT count(*) FROM uk.uk_price_paid_local;
-  ```
+SELECT count(*) FROM uk.uk_price_paid_local;
+```
 
   ```response title="Response"
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021万
-     └──────────┘
-  ```
+   ┌──count()─┐
+1. │ 30212555 │ -- 30.21 million
+   └──────────┘
+```
 </VerticalStepper>
 
 ## まとめ {#conclusion}

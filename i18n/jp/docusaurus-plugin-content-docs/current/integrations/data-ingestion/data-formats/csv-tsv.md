@@ -219,7 +219,7 @@ FORMAT CSVWithNames
 ```
 
 ```response
-36838935行のセット。経過時間: 1.304秒。処理済み: 3684万行、1.42 GB (2824万行/秒、1.09 GB/秒)
+36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
 ClickHouse が 3,600 万行を CSV ファイルに保存するのに **約 1** 秒しかかかっていない点に注目してください。

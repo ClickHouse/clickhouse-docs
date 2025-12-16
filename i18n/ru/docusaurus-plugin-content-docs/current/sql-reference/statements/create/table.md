@@ -219,7 +219,7 @@ id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
 
-````
+```
 
 ### ALIAS {#alias}
 
@@ -256,7 +256,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ┌─id─┬─size_bytes─┬─size─────┐
 │  1 │    4678899 │ 4.46 MiB │
 └────┴────────────┴──────────┘
-````
+```
 
 ## Первичный ключ {#primary-key}
 

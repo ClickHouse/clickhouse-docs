@@ -69,7 +69,7 @@ def apply_styles():
 Установите ключ API Anthropic в переменную окружения:
 
 ```bash
-export ANTHROPIC_API_KEY="ваш_ключ_api"
+export ANTHROPIC_API_KEY="your_api_key_here"
 ```
 
 :::note Использование другого провайдера LLM
@@ -134,10 +134,10 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    Вы — ассистент ClickHouse. Помогайте пользователям выполнять запросы и работать с данными в ClickHouse.
-                    - Выполняйте SQL-запросы с помощью инструмента ClickHouse MCP
-                    - Представляйте результаты в виде таблиц markdown, когда это уместно
-                    - Выводите информацию кратко, полезно и в удобном формате
+                    You are a ClickHouse assistant. Help users query and understand data using ClickHouse.
+                    - Run SQL queries using the ClickHouse MCP tool
+                    - Present results in markdown tables when relevant
+                    - Keep output concise, useful, and well-formatted
                 """),
                 markdown=True,
                 show_tool_calls=True,
@@ -160,7 +160,7 @@ def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # Сигнальное значение для завершения потока
+        queue.put(None)  # Sentinel to end stream
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -178,9 +178,9 @@ async def _agent_stream_to_queue(message, queue):
 Добавьте компоненты пользовательского интерфейса Streamlit и функции чата:
 
 ```python
-st.title("ИИ-агент на базе ClickHouse")
+st.title("A ClickHouse-backed AI agent")
 
-if st.button("💬 Новый чат"):
+if st.button("💬 New Chat"):
   st.session_state.messages = []
   st.rerun()
 
@@ -193,7 +193,7 @@ for message in st.session_state.messages:
   with st.chat_message(message["role"]):
     st.markdown(message["content"])
 
-if prompt := st.chat_input("Чем могу помочь?"):
+if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.chat_message("user"):
     st.markdown(prompt)

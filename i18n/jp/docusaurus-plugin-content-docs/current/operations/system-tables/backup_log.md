@@ -43,7 +43,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 **Example**
 
 ```sql
-バックアップ TABLE test_db.my_table TO Disk('backups_disk', '1.zip')
+BACKUP TABLE test_db.my_table TO Disk('backups_disk', '1.zip')
 ```
 
 ```response
@@ -57,7 +57,7 @@ SELECT * FROM system.backup_log WHERE id = 'e5b74ecb-f6f1-426a-80be-872f90043885
 ```
 
 ```response
-1 行目:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -76,7 +76,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-2 行目:
+Row 2:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -98,7 +98,7 @@ bytes_read:              0
 ```
 
 ```sql
-ディスク('backups_disk', '1.zip')から test_db.my_table テーブルを復元
+RESTORE TABLE test_db.my_table FROM Disk('backups_disk', '1.zip')
 ```
 
 ```response
@@ -112,7 +112,7 @@ SELECT * FROM system.backup_log WHERE id = 'cdf1f731-52ef-42da-bc65-2e1bfcd4ce90
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19
@@ -131,7 +131,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-行 2:
+Row 2:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2023-08-19

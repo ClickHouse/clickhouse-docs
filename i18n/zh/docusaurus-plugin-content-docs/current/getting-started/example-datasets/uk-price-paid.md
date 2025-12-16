@@ -102,7 +102,7 @@ SELECT count()
 FROM uk.uk_price_paid
 ```
 
-在运行此查询时，数据集包含 27,450,499 行。我们来看一下该表在 ClickHouse 中占用的存储空间：
+At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -110,13 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-请注意，这张表的大小只有 221.43 MiB！
+Notice the size of the table is just 221.43 MiB!
 
-## 运行一些查询 {#run-queries}
+## Run some queries {#run-queries}
 
-我们来运行一些查询来分析数据：
+Let's run some queries to analyze the data:
 
-### 查询 1：各年份的平均价格 {#average-price}
+### Query 1. Average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -129,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### 查询 2：伦敦每年的平均价格 {#average-price-london}
+### Query 2. average price per year in London {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -143,9 +143,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020 年房价发生了点变化！不过这大概不算什么意外……
+Something happened to home prices in 2020! But that is probably not a surprise...
 
-### 查询 3：最昂贵的街区 {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT

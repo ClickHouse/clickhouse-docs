@@ -87,7 +87,7 @@ PRIMARY KEY key
 Пример:
 
 ```sql
-INSERT INTO keeper_map_table VALUES ('какой-то ключ', 1, 'значение', 3.2);
+INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
 ```
 
 ### Удаления {#deletes}

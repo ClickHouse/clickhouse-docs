@@ -65,9 +65,9 @@ ClickHouse автоматически создаст таблицу `pp_complete
 ### Настройка учётных данных {#setting-up-credentials}
 
 ```bash
-export CLICKHOUSE_CLOUD_HOSTNAME=<ИМЯ_ХОСТА>
+export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
 export CLICKHOUSE_CLOUD_USER=default
-export CLICKHOUSE_CLOUD_PASSWORD=ваш_реальный_пароль
+export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 ```
 
 :::note
@@ -115,7 +115,7 @@ import plotly.graph_objects as go
 Добавьте новую ячейку и выполните простой запрос, чтобы убедиться, что всё настроено правильно:
 
 ```python
-result = chdb.query("SELECT 'Привет, ClickHouse, от Marimo!'", "DataFrame")
+result = chdb.query("SELECT 'Hello ClickHouse from Marimo!'", "DataFrame")
 result
 ```
 
@@ -186,8 +186,8 @@ fig = px.line(
     df, 
     x='year', 
     y='price',
-    title='Средние цены на недвижимость в Лондоне по годам',
-    labels={'price': 'Средняя цена (£)', 'year': 'Год'}
+    title='Average Property Prices in London Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig.update_traces(mode='lines+markers')
@@ -209,7 +209,7 @@ fig
 town_selector = mo.ui.dropdown(
     options=['LONDON', 'MANCHESTER', 'BIRMINGHAM', 'LEEDS', 'LIVERPOOL'],
     value='LONDON',
-    label='Выберите город:'
+    label='Select a town:'
 )
 town_selector
 ```
@@ -245,8 +245,8 @@ fig_reactive = px.line(
     df_reactive,
     x='year',
     y='price',
-    title=f'Средние цены на недвижимость в {town_selector.value} по годам',
-    labels={'price': 'Средняя цена (£)', 'year': 'Год'}
+    title=f'Average Property Prices in {town_selector.value} Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig_reactive.update_traces(mode='lines+markers')
@@ -272,7 +272,7 @@ year_slider = mo.ui.slider(
     stop=2024,
     value=2020,
     step=1,
-    label='Выберите год:',
+    label='Select Year:',
     show_value=True
 )
 year_slider
@@ -300,23 +300,23 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# Создадим интерактивную диаграмму размаха {#create-an-interactive-box-plot}
+# create an interactive box plot.
 fig_box = go.Figure()
 
 fig_box.add_trace(
     go.Box(
         y=df_distribution['price'],
         name=f'London {year_slider.value}',
-        boxmean='sd',  # Показать среднее значение и стандартное отклонение
+        boxmean='sd',  # Show mean and standard deviation
         marker_color='lightblue',
-        boxpoints='outliers'  # Показать значения-выбросы
+        boxpoints='outliers'  # Show outlier points
     )
 )
 
 fig_box.update_layout(
-    title=f'Распределение цен на недвижимость в Лондоне ({year_slider.value})',
+    title=f'Distribution of Property Prices in London ({year_slider.value})',
     yaxis=dict(
-        title='Цена (£)',
+        title='Price (£)',
         tickformat=',.0f'
     ),
     showlegend=False,

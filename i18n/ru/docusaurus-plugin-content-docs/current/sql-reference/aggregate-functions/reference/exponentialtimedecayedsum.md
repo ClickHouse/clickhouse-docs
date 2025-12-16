@@ -35,16 +35,16 @@ exponentialTimeDecayedSum(x)(v, t)
 
 ```sql
 SELECT
-    значение,
-    время,
-    round(эксп_сглаживание, 3),
-    диаграмма(эксп_сглаживание, 0, 10, 50) AS диаграмма
+    value,
+    time,
+    round(exp_smooth, 3),
+    bar(exp_smooth, 0, 10, 50) AS bar
 FROM
     (
     SELECT
-    (number = 0) OR (number >= 25) AS значение,
-    number AS время,
-    exponentialTimeDecayedSum(10)(значение, время) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS эксп_сглаживание
+    (number = 0) OR (number >= 25) AS value,
+    number AS time,
+    exponentialTimeDecayedSum(10)(value, time) OVER (ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS exp_smooth
     FROM numbers(50)
     );
 ```
@@ -52,7 +52,7 @@ FROM
 Результат:
 
 ```response
-┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar───────────────────────────────────────────────┐
+    ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar───────────────────────────────────────────────┐
  1. │     1 │    0 │                    1 │ █████                                             │
  2. │     0 │    1 │                0.905 │ ████▌                                             │
  3. │     0 │    2 │                0.819 │ ████                                              │

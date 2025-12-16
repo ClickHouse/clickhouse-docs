@@ -45,7 +45,7 @@ class CSVHTTPServer(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/csv')
         self.end_headers()
 
-        self.wfile.write(bytes('Привет,1\nмир,2\n', "utf-8"))
+        self.wfile.write(bytes('Hello,1\nWorld,2\n', "utf-8"))
 
 if __name__ == "__main__":
     server_address = ('127.0.0.1', 12345)

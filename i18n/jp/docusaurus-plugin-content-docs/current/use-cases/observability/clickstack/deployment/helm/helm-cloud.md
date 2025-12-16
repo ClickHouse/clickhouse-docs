@@ -37,19 +37,19 @@ helm install my-clickstack clickstack/clickstack \
 ### GKE に関するその他の考慮事項 {#other-gke-considerations}
 
 ```yaml
-# values-gke.yaml {#values-gkeyaml}
+# values-gke.yaml
 hyperdx:
-  frontendUrl: "http://34.123.61.99"  # LoadBalancerの外部IPを使用
+  frontendUrl: "http://34.123.61.99"  # Use your LoadBalancer external IP
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 
-# 必要に応じてGKEポッドネットワーク用に調整 {#adjust-for-gke-pod-networking-if-needed}
+# Adjust for GKE pod networking if needed
 clickhouse:
   config:
     clusterCidrs:
-      - "10.8.0.0/16"  # GKEで一般的に使用される範囲
-      - "10.0.0.0/8"   # その他の設定用のフォールバック
+      - "10.8.0.0/16"  # GKE commonly uses this range
+      - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
 ## Amazon EKS {#amazon-eks}
@@ -57,18 +57,18 @@ clickhouse:
 EKS にデプロイする場合は、次の一般的な構成を検討してください。
 
 ```yaml
-# values-eks.yaml {#values-eksyaml}
+# values-eks.yaml
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
 
-# EKSでは通常、以下のポッドCIDRを使用します {#eks-typically-uses-these-pod-cidrs}
+# EKS typically uses these pod CIDRs
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-# 本番環境ではイングレスを有効化します {#enable-ingress-for-production}
+# Enable ingress for production
 hyperdx:
   ingress:
     enabled: true
@@ -82,15 +82,15 @@ hyperdx:
 AKS にデプロイする場合:
 
 ```yaml
-# values-aks.yaml {#values-aksyaml}
+# values-aks.yaml
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
 
-# AKS ポッドネットワーキング {#aks-pod-networking}
+# AKS pod networking
 clickhouse:
   config:
     clusterCidrs:
-      - "10.244.0.0/16"  # 一般的な AKS ポッド CIDR
+      - "10.244.0.0/16"  # Common AKS pod CIDR
       - "10.0.0.0/8"
 ```
 
@@ -152,7 +152,7 @@ clickhouse:
   persistence:
     enabled: true
     size: 100Gi
-    storageClass: "fast-ssd"  # クラウド固有のストレージクラスを使用する
+    storageClass: "fast-ssd"  # Use cloud-specific storage class
 ```
 
 **クラウドごとの StorageClass:**

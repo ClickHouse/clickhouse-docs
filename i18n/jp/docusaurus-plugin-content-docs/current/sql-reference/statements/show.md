@@ -628,7 +628,7 @@ SHOW SETTING <name>
 ### 使用例 {#examples-7}
 
 ```sql title="Query"
-ファイルシステムキャッシュを表示
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"

@@ -41,7 +41,7 @@ SETTINGS max_suspicious_broken_parts = 500;
 ```sql
 ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 
--- グローバルデフォルトにリセット（system.merge_tree_settings の値）
+-- reset to global default (value from system.merge_tree_settings)
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
 
@@ -119,7 +119,7 @@ time DateTime,
 key Int32,
 value String
 ) ENGINE = MergeTree
-ORDER BY (time DESC, key)  -- time フィールドを降順でソート
+ORDER BY (time DESC, key)  -- Descending order on 'time' field
 SETTINGS allow_experimental_reverse_key = 1;
 
 SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
@@ -625,14 +625,14 @@ INDEX idx_b b TYPE set(3)
 )
 ENGINE = MergeTree ORDER BY tuple() SETTINGS exclude_materialize_skip_indexes_on_merge = 'idx_a';
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- この設定はINSERT時には影響しません
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- setting has no effect on INSERTs
 
--- idx_aはバックグラウンドマージまたはOPTIMIZE TABLE FINALによる明示的なマージ時の更新から除外されます
+-- idx_a will be excluded from update during background or explicit merge via OPTIMIZE TABLE FINAL
 
--- リストを指定することで複数の索引を除外できます
+-- can exclude multiple indexes by providing a list
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_a, idx_b';
 
--- デフォルト設定、マージ時の更新から除外される索引はありません
+-- default setting, no indexes excluded from being updated during merge
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
 

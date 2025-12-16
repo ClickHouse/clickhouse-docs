@@ -12,8 +12,8 @@ doc_type: 'reference'
 可以使用以下语法添加或删除约束条件：
 
 ```sql
-ALTER TABLE [db].name [ON CLUSTER cluster] 添加 约束 [IF NOT EXISTS] constraint_name CHECK expression;
-ALTER TABLE [db].name [ON CLUSTER cluster] 删除 约束 [IF EXISTS] constraint_name;
+ALTER TABLE [db].name [ON CLUSTER cluster] ADD CONSTRAINT [IF NOT EXISTS] constraint_name CHECK expression;
+ALTER TABLE [db].name [ON CLUSTER cluster] DROP CONSTRAINT [IF EXISTS] constraint_name;
 ```
 
 在[约束](../../../sql-reference/statements/create/table.md#constraints)部分查看更多内容。

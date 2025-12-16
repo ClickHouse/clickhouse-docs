@@ -29,19 +29,19 @@ Helm-чарт ClickStack поддерживает несколько вариа�
 Используйте этот подход для быстрого тестирования или в непродуктивных средах:
 
 ```yaml
-# values-external-clickhouse.yaml {#values-external-clickhouseyaml}
+# values-external-clickhouse.yaml
 clickhouse:
-  enabled: false  # Отключить встроенный ClickHouse
+  enabled: false  # Disable the built-in ClickHouse
 
 otel:
   clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # Опционально
+  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # Optional
 
 hyperdx:
   defaultConnections: |
     [
       {
-        "name": "Внешний ClickHouse",
+        "name": "External ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -64,7 +64,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.y
 
 #### Создайте файлы конфигурации {#create-configuration}
 ```bash
-# Создайте connections.json {#create-connectionsjson}
+# Create connections.json
 cat <<EOF > connections.json
 [
   {
@@ -77,7 +77,7 @@ cat <<EOF > connections.json
 ]
 EOF
 
-# Создайте sources.json {#create-sourcesjson}
+# Create sources.json
 cat <<EOF > sources.json
 [
   {
@@ -125,13 +125,13 @@ kubectl create secret generic hyperdx-external-config \
   --from-file=connections.json=connections.json \
   --from-file=sources.json=sources.json
 
-# Удалите локальные файлы {#clean-up-local-files}
+# Clean up local files
 rm connections.json sources.json
 ```
 
 #### Настройте Helm для использования секрета {#configure-helm-secret}
 ```yaml
-# values-external-clickhouse-secret.yaml {#values-external-clickhouse-secretyaml}
+# values-external-clickhouse-secret.yaml
 clickhouse:
   enabled: false
 
@@ -155,7 +155,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 Для ClickHouse Cloud:
 
 ```yaml
-# values-clickhouse-cloud.yaml {#values-clickhouse-cloudyaml}
+# values-clickhouse-cloud.yaml
 clickhouse:
   enabled: false
   persistence:
@@ -178,9 +178,9 @@ hyperdx:
 Если у вас уже есть инфраструктура OTel collector:
 
 ```yaml
-# values-external-otel.yaml {#values-external-otelyaml}
+# values-external-otel.yaml
 otel:
-  enabled: false  # Отключить встроенный OTel collector
+  enabled: false  # Disable the built-in OTEL collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -197,7 +197,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 Для организаций с уже существующей инфраструктурой достаточно развернуть только HyperDX:
 
 ```yaml
-# values-minimal.yaml {#values-minimalyaml}
+# values-minimal.yaml
 clickhouse:
   enabled: false
 
@@ -207,7 +207,7 @@ otel:
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
   
-  # Вариант 1: Встроенная конфигурация (для тестирования)
+  # Option 1: Inline (for testing)
   defaultConnections: |
     [
       {
@@ -219,7 +219,7 @@ hyperdx:
       }
     ]
   
-  # Вариант 2: Внешний секрет (для production)
+  # Option 2: External secret (production)
   # useExistingConfigSecret: true
   # existingConfigSecret: "my-external-config"
   # existingConfigConnectionsKey: "connections.json"

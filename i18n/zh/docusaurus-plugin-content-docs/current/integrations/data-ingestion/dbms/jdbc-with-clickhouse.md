@@ -61,25 +61,25 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 为了能够连接到 MySQL，我们将创建一个具名数据源：
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-mkdir -p config/datasources
-touch config/datasources/mysql8.json
-```
+ cd ~/clickhouse-jdbc-bridge
+ mkdir -p config/datasources
+ touch config/datasources/mysql8.json
+ ```
 
 现在可以将以下配置复制并粘贴到文件 `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` 中：
 
 ```json
-{
-  "mysql8": {
-  "driverUrls": [
-    "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
-  ],
-  "jdbcUrl": "jdbc:mysql://<host>:<port>",
-  "username": "<用户名>",
-  "password": "<密码>"
-  }
-}
-```
+ {
+   "mysql8": {
+   "driverUrls": [
+     "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
+   ],
+   "jdbcUrl": "jdbc:mysql://<host>:<port>",
+   "username": "<username>",
+   "password": "<password>"
+   }
+ }
+ ```
 
 :::note
 在上面的配置文件中：
@@ -95,9 +95,9 @@ touch config/datasources/mysql8.json
 现在我们可以启动 ClickHouse JDBC Bridge 了：
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
-```
+ cd ~/clickhouse-jdbc-bridge
+ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
+ ```
 
 :::note
 我们已在前台模式下启动了 ClickHouse JDBC Bridge。要停止该 Bridge，可以将上面的 Unix shell 窗口切换到前台，然后按下 `CTRL+C`。
@@ -112,8 +112,8 @@ ClickHouse 现在可以通过使用 [jdbc 表函数](/sql-reference/table-functi
 * jdbc 表函数：
 
 ```sql
-SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
-```
+ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
+ ```
 
 :::note
 作为 `jdbc` 表函数的第一个参数，我们使用的是上面配置的命名数据源名称。
@@ -122,14 +122,14 @@ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
 * JDBC 表引擎：
 
 ```sql
-CREATE TABLE mytable (
-     <column> <column_type>,
-     ...
-)
-ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
+ CREATE TABLE mytable (
+      <column> <column_type>,
+      ...
+ )
+ ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
-SELECT * FROM mytable;
-```
+ SELECT * FROM mytable;
+ ```
 
 :::note
 作为 `jdbc` 引擎子句的第一个参数，我们使用的是上面配置的命名数据源名称。

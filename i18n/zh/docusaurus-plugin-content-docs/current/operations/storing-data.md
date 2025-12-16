@@ -608,7 +608,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3 配置 ...
+                ... s3 configuration ...
             </s3>
             <cache>
                 <type>cache</type>
@@ -638,7 +638,7 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3 配置 ...
+                ... s3 configuration ...
                 <data_cache_enabled>1</data_cache_enabled>
                 <data_cache_max_size>10737418240</data_cache_max_size>
             </s3>
@@ -711,11 +711,11 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 （对于版本小于或等于 `22.8`，该命令名称为 `SHOW CACHES`）
 
 ```sql title="Query"
-显示文件系统缓存
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
-┌─缓存──────┐
+┌─Caches────┐
 │ s3_cache  │
 └───────────┘
 ```

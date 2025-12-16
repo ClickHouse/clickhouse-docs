@@ -32,58 +32,58 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 1. 在 `postgresql.conf` 中添加以下条目，以便让 PostgreSQL 监听网络接口：
 
 ```text
-listen_addresses = '*'
-```
+  listen_addresses = '*'
+  ```
 
 2. 创建一个供 ClickHouse 连接使用的用户。出于演示目的，本示例授予完整的超级用户权限。
 
 ```sql
-CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
-```
+  CREATE ROLE clickhouse_user SUPERUSER LOGIN PASSWORD 'ClickHouse_123';
+  ```
 
 3. 在 PostgreSQL 中创建新数据库：
 
 ```sql
-CREATE DATABASE db_in_psg;
-```
+  CREATE DATABASE db_in_psg;
+  ```
 
 4. 创建新表：
 
 ```sql
-CREATE TABLE table1 (
-    id         integer primary key,
-    column1    varchar(10)
-);
-```
+  CREATE TABLE table1 (
+      id         integer primary key,
+      column1    varchar(10)
+  );
+  ```
 
 5. 让我们添加几行测试数据：
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (1, 'abc'),
-  (2, 'def');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (1, 'abc'),
+    (2, 'def');
+  ```
 
 6. 要配置 PostgreSQL 以允许使用新用户连接到新数据库进行复制，请在 `pg_hba.conf` 文件中添加以下条目。将其中的地址行更新为 PostgreSQL 服务器所在的子网或 IP 地址：
 
 ```text
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-host    db_in_psg             clickhouse_user 192.168.1.0/24          password
-```
+  # TYPE  DATABASE        USER            ADDRESS                 METHOD
+  host    db_in_psg             clickhouse_user 192.168.1.0/24          password
+  ```
 
 7. 重新加载 `pg_hba.conf` 配置（根据您的版本调整此命令）：
 
 ```text
-/usr/pgsql-12/bin/pg_ctl reload
-```
+  /usr/pgsql-12/bin/pg_ctl reload
+  ```
 
 8. 验证新的 `clickhouse_user` 是否能登录：
 
 ```text
-psql -U clickhouse_user -W -d db_in_psg -h <你的_postgresql_主机地址>
-```
+  psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
+  ```
 
 :::note
 如果您在 ClickHouse Cloud 中使用此功能，可能需要将 ClickHouse Cloud 的 IP 地址加入允许列表，以便访问您的 PostgreSQL 实例。
@@ -95,25 +95,25 @@ psql -U clickhouse_user -W -d db_in_psg -h <你的_postgresql_主机地址>
 1. 登录 `clickhouse-client`：
 
 ```bash
-clickhouse-client --user default --password ClickHouse123!
-```
+  clickhouse-client --user default --password ClickHouse123!
+  ```
 
 2. 创建一个新数据库：
 
 ```sql
-CREATE DATABASE db_in_ch;
-```
+  CREATE DATABASE db_in_ch;
+  ```
 
 3. 创建一个使用 `PostgreSQL` 的表：
 
 ```sql
-CREATE TABLE db_in_ch.table1
-(
-    id UInt64,
-    column1 String
-)
-ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
-```
+  CREATE TABLE db_in_ch.table1
+  (
+      id UInt64,
+      column1 String
+  )
+  ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'clickhouse_user', 'ClickHouse_123');
+  ```
 
 至少需要以下参数：
 
@@ -133,73 +133,73 @@ ENGINE = PostgreSQL('postgres-host.domain.com:5432', 'db_in_psg', 'table1', 'cli
 1. 在 ClickHouse 中查看初始数据行：
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 ClickHouse 表会自动填充上此前在 PostgreSQL 表中已存在的两行记录：
 
 ```response
-查询 ID: 34193d31-fe21-44ac-a182-36aaefbd78bf
+  Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  └────┴─────────┘
+  ```
 
 2. 回到 PostgreSQL，向表中再添加几行记录：
 
 ```sql
-INSERT INTO table1
-  (id, column1)
-VALUES
-  (3, 'ghi'),
-  (4, 'jkl');
-```
+  INSERT INTO table1
+    (id, column1)
+  VALUES
+    (3, 'ghi'),
+    (4, 'jkl');
+  ```
 
 4. 这两条新记录现在应该已经出现在您的 ClickHouse 表中：
 
 ```sql
-SELECT * FROM db_in_ch.table1
-```
+  SELECT * FROM db_in_ch.table1
+  ```
 
 响应应如下：
 
 ```response
-Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
+  Query id: 86fa2c62-d320-4e47-b564-47ebf3d5d27b
 
-┌─id─┬─column1─┐
-│  1 │ abc     │
-│  2 │ def     │
-│  3 │ ghi     │
-│  4 │ jkl     │
-└────┴─────────┘
-```
+  ┌─id─┬─column1─┐
+  │  1 │ abc     │
+  │  2 │ def     │
+  │  3 │ ghi     │
+  │  4 │ jkl     │
+  └────┴─────────┘
+  ```
 
 5. 我们来看看向 ClickHouse 表中插入数据时会发生什么：
 
 ```sql
-INSERT INTO db_in_ch.table1
-  (id, column1)
-VALUES
-  (5, 'mno'),
-  (6, 'pqr');
-```
+  INSERT INTO db_in_ch.table1
+    (id, column1)
+  VALUES
+    (5, 'mno'),
+    (6, 'pqr');
+  ```
 
 6. 在 ClickHouse 中新增的行应当出现在 PostgreSQL 的表中：
 
 ```sql
-db_in_psg=# SELECT * FROM table1;
-id | column1
-----+---------
-  1 | abc
-  2 | def
-  3 | ghi
-  4 | jkl
-  5 | mno
-  6 | pqr
-(6 rows)
-```
+  db_in_psg=# SELECT * FROM table1;
+  id | column1
+  ----+---------
+    1 | abc
+    2 | def
+    3 | ghi
+    4 | jkl
+    5 | mno
+    6 | pqr
+  (6 rows)
+  ```
 
 本示例演示了使用 `PostrgeSQL` 表引擎在 PostgreSQL 和 ClickHouse 之间进行基础集成。
 
@@ -287,7 +287,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 9. 使用新的 `clickhouse_user` 账户测试登录：
 
 ```text
- psql -U clickhouse_user -W -d db1 -h <你的_postgresql_主机>
+ psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
 ### 2. 在 ClickHouse 中 {#2-in-clickhouse}

@@ -266,8 +266,8 @@ SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
 在函数的 `ENTRY` 或 `EXIT` 处打印作为参数传入的文本和调用栈。
 
 ```sql
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY '这是在入口处打印的日志'
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT '这是在出口处打印的日志'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'this is a log printed at entry'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'this is a log printed at exit'
 ```
 
 
@@ -635,7 +635,7 @@ CREATE TABLE repl_db.test_table (n UInt32)
 ENGINE = ReplicatedMergeTree
 ORDER BY n PARTITION BY n % 10;
 
--- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- 根路径丢失。
+-- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- root loss.
 
 SYSTEM RESTORE DATABASE REPLICA repl_db;
 ```
@@ -663,7 +663,7 @@ ORDER BY n PARTITION BY n % 10;
 
 INSERT INTO test SELECT * FROM numbers(1000);
 
--- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- 根路径丢失。
+-- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- root loss.
 
 SYSTEM RESTART REPLICA test;
 SYSTEM RESTORE REPLICA test;

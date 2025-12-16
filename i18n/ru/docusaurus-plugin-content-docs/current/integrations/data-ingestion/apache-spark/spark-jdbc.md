@@ -142,7 +142,7 @@ df = (spark.read
 
 df.show()
 
-````
+```
 
 </TabItem>
 <TabItem value="SparkSQL" label="Spark SQL">
@@ -159,7 +159,7 @@ df.show()
            );
 
    SELECT * FROM jdbcTable;
-````
+```
 
 </TabItem>
 </Tabs>
@@ -314,7 +314,7 @@ df.write \
  .mode("append") \
  .save()
 
-````
+```
 
 </TabItem>
 <TabItem value="SparkSQL" label="Spark SQL">
@@ -333,7 +333,7 @@ df.write \
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
 
-````
+```
 
 </TabItem>
 </Tabs>

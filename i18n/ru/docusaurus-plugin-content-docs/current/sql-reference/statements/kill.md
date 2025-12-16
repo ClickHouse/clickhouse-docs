@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
-  WHERE <выражение WHERE для запроса SELECT FROM system.processes>
+  WHERE <where expression to SELECT FROM system.processes query>
   [SYNC|ASYNC|TEST]
   [FORMAT format]
 ```
@@ -56,10 +56,10 @@ SELECT
 Прервать выполнение запроса:
 
 ```sql
--- Принудительно завершает все запросы с указанным query_id:
+-- Forcibly terminates all queries with the specified query_id:
 KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90'
 
--- Синхронно завершает все запросы, запущенные пользователем 'username':
+-- Synchronously terminates all queries run by 'username':
 KILL QUERY WHERE user='username' SYNC
 ```
 
@@ -89,7 +89,7 @@ KILL QUERY WHERE user='username' SYNC
 
 ```sql
 KILL MUTATION
-  WHERE <выражение WHERE для запроса SELECT FROM system.mutations>
+  WHERE <where expression to SELECT FROM system.mutations query>
   [TEST]
   [FORMAT format]
 ```
@@ -139,10 +139,10 @@ WHERE is_done = 0;
 При необходимости остановите мутации:
 
 ```sql
--- Отменить и удалить все мутации одной таблицы:
+-- Cancel and remove all mutations of the single table:
 KILL MUTATION WHERE database = 'default' AND table = 'table'
 
--- Отменить конкретную мутацию:
+-- Cancel the specific mutation:
 KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
 ```
 

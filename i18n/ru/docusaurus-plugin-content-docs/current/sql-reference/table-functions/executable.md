@@ -23,7 +23,7 @@ doc_type: 'reference'
 Табличная функция `executable` принимает три обязательных параметра и необязательный список входных запросов:
 
 ```sql
-executable(имя_скрипта, формат, структура, [входной_запрос...] [,SETTINGS ...])
+executable(script_name, format, structure, [input_query...] [,SETTINGS ...])
 ```
 
 * `script_name`: имя файла скрипта, который сохраняется в папке `user_scripts` (папка по умолчанию для настройки `user_scripts_path`)
@@ -46,17 +46,17 @@ import random
 
 def main():
 
-    # Чтение входного значения
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # Генерация случайных строк
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # Сброс результатов в stdout
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":

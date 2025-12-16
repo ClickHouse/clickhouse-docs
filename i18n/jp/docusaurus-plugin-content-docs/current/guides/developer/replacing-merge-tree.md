@@ -42,7 +42,7 @@ ReplacingMergeTree では、さらに `deleted` 列を指定することもで�
 <br />
 
 ```sql
-SYSTEM SYNC REPLICA テーブル
+SYSTEM SYNC REPLICA table
 ```
 
 (1) が満たされていることが保証されてからインサート処理を一時停止し、このコマンドとその後のクリーンアップが完了するまで継続することを推奨します。
@@ -151,11 +151,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --ランダムに100行を選択
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-0行が返されました。経過時間: 4.056秒。処理行数: 142万行、2.20 GB (34万9630行/秒、543.39 MB/秒)
+0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
 さらに、行を再挿入する際に deleted 列の値を 1 に設定することで、ランダムな 1000 件の投稿を削除します。同様に、これは単純な `INSERT INTO SELECT` でシミュレートできます。
@@ -186,11 +186,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --ランダムに100行を選択
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-0行が返されました。経過時間: 0.166秒。処理行数: 135.53千行、212.65 MB (816.30千行/秒、1.28 GB/秒)
+0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
 上記の操作の結果は 16,000 行、すなわち 10,000 + 5000 + 1000 行になります。本来の正しい合計は、元の合計より 1000 行少ないだけであるべきなので、10,000 - 1000 = 9000 行になります。
@@ -216,8 +216,8 @@ FINAL
 │    9000 │
 └─────────┘
 
-1行が返されました。経過時間: 0.006秒。処理された行数: 11.81千行、212.54 KB (2.14百万行/秒、38.61 MB/秒)
-ピークメモリ使用量: 8.14 MiB。
+1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
+Peak memory usage: 8.14 MiB.
 ```
 
 ## FINAL のパフォーマンス {#final-performance}

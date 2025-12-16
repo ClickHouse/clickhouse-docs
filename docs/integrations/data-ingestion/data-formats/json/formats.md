@@ -27,7 +27,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.449 sec.
 ```
 
-While this is generally the most commonly used format for JSON, users will encounter other formats or need to read the JSON as a single object.
+While this is generally the most commonly used format for JSON, you will encounter other formats or need to read the JSON as a single object.
 
 We provide examples of reading and loading JSON in other common formats below.
 

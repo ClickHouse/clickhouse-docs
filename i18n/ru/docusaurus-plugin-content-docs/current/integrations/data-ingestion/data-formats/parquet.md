@@ -31,11 +31,11 @@ DESCRIBE TABLE file('data.parquet', Parquet);
 Мы использовали [Parquet](/interfaces/formats/Parquet) в качестве второго аргумента, чтобы указать ClickHouse формат файла. Будут выведены столбцы и их типы:
 
 ```response
-┌─имя──┬─тип──────────────┬─тип_по_умолчанию─┬─выражение_по_умолчанию─┬─комментарий─┬─выражение_кодека─┬─выражение_ttl─┐
-│ path │ Nullable(String) │                  │                         │             │                  │               │
-│ date │ Nullable(String) │                  │                         │             │                  │               │
-│ hits │ Nullable(Int64)  │                  │                         │             │                  │               │
-└──────┴──────────────────┴──────────────────┴─────────────────────────┴─────────────┴──────────────────┴───────────────┘
+┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path │ Nullable(String) │              │                    │         │                  │                │
+│ date │ Nullable(String) │              │                    │         │                  │                │
+│ hits │ Nullable(Int64)  │              │                    │         │                  │                │
+└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 Мы также можем исследовать файлы перед импортом данных, используя всю мощь SQL:
@@ -124,11 +124,11 @@ DESCRIBE TABLE imported_from_parquet;
 ```
 
 ```response
-┌─имя──┬─тип──────────────┬─тип_по_умолчанию─┬─выражение_по_умолчанию─┬─комментарий─┬─выражение_кодека─┬─выражение_ttl─┐
-│ path │ Nullable(String) │                  │                         │             │                  │               │
-│ date │ Nullable(String) │                  │                         │             │                  │               │
-│ hits │ Nullable(Int64)  │                  │                         │             │                  │               │
-└──────┴──────────────────┴──────────────────┴─────────────────────────┴─────────────┴──────────────────┴───────────────┘
+┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path │ Nullable(String) │              │                    │         │                  │                │
+│ date │ Nullable(String) │              │                    │         │                  │                │
+│ hits │ Nullable(Int64)  │              │                    │         │                  │                │
+└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 По умолчанию ClickHouse строго проверяет имена столбцов, их типы и значения. Но иногда при импорте можно игнорировать несуществующие столбцы или неподдерживаемые значения. Это можно настроить с помощью [настроек Parquet](/interfaces/formats/Parquet#format-settings).
@@ -173,7 +173,7 @@ SELECT * FROM file('time.parquet', Parquet);
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- преобразование целого числа в DateTime
+    toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
 ```
 

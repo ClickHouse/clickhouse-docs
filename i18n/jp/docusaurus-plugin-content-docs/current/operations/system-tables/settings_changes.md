@@ -34,7 +34,7 @@ Row 1:
 ──────
 type:    Core
 version: 23.5
-changes: [('input_format_parquet_preserve_order','1','0','並列処理の向上のため、Parquetリーダーによる行の並べ替えを許可します。'),('parallelize_output_from_storages','0','1','file/url/S3などから読み取るクエリの実行時に並列処理を許可します。これにより行が並べ替えられる場合があります。'),('use_with_fill_by_sorting_prefix','0','1','ORDER BY句でWITH FILL列より前にある列がソートプレフィックスを構成します。ソートプレフィックスの値が異なる行は独立して補完されます'),('output_format_parquet_compliant_nested_types','0','1','出力Parquetファイルスキーマ内の内部フィールド名を変更します。')]
+changes: [('input_format_parquet_preserve_order','1','0','Allow Parquet reader to reorder rows for better parallelism.'),('parallelize_output_from_storages','0','1','Allow parallelism when executing queries that read from file/url/s3/etc. This may reorder rows.'),('use_with_fill_by_sorting_prefix','0','1','Columns preceding WITH FILL columns in ORDER BY clause form sorting prefix. Rows with different values in sorting prefix are filled independently'),('output_format_parquet_compliant_nested_types','0','1','Change an internal field name in output Parquet file schema.')]
 ```
 
 **関連項目**

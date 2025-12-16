@@ -30,7 +30,7 @@ head error.log
 このデータをインポートするには、[Template](/interfaces/formats/Template) フォーマットを使用できます。入力データの各行ごとに、値のプレースホルダーを含むテンプレート文字列を定義する必要があります。
 
 ```response
-<time> [error] クライアント: <ip>, サーバー: <host> "リクエスト: <request>"
+<time> [error] client: <ip>, server: <host> "<request>"
 ```
 
 データを取り込むためのテーブルを作成します：
@@ -100,15 +100,15 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 [結果セットテンプレート](assets/output.results)、結果セット全体のレイアウトを定義します。
 
 ```response
-== 上位10件のIP ==
+== Top 10 IPs ==
 ${data}
---- ${time:XML} で ${rows_read:XML} 行を読み取りました ---
+--- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
 ここで `rows_read` と `time` は、各リクエストごとに利用できるシステムメトリクスです。一方で `data` は、[**row template file**](assets/output.rows) で定義されたテンプレートに基づいて生成される行を表し（このファイルでは `${data}` は常に最初のプレースホルダーとして指定する必要があります）、
 
 ```response
-${ip:Escaped} からのリクエストは合計 ${total:Escaped} 件です
+${ip:Escaped} generated ${total:Escaped} requests
 ```
 
 では、これらのテンプレートを使って次のクエリをエクスポートしてみましょう。
@@ -121,20 +121,20 @@ FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 FORMAT Template SETTINGS format_template_resultset = 'output.results',
                          format_template_row = 'output.rows';
 
-== 上位10件のIP ==
+== Top 10 IPs ==
 
-9.8.4.6 が3件のリクエストを生成
-9.5.1.1 が3件のリクエストを生成
-2.4.8.9 が3件のリクエストを生成
-4.8.8.2 が3件のリクエストを生成
-4.5.4.4 が3件のリクエストを生成
-3.3.6.4 が2件のリクエストを生成
-8.9.5.9 が2件のリクエストを生成
-2.5.1.8 が2件のリクエストを生成
-6.8.3.6 が2件のリクエストを生成
-6.6.3.5 が2件のリクエストを生成
+9.8.4.6 generated 3 requests
+9.5.1.1 generated 3 requests
+2.4.8.9 generated 3 requests
+4.8.8.2 generated 3 requests
+4.5.4.4 generated 3 requests
+3.3.6.4 generated 2 requests
+8.9.5.9 generated 2 requests
+2.5.1.8 generated 2 requests
+6.8.3.6 generated 2 requests
+6.6.3.5 generated 2 requests
 
---- 1000行を0.001380604秒で読み取り ---
+--- 1000 rows read in 0.001380604 ---
 ```
 
 ### HTML ファイルへのエクスポート {#exporting-to-html-files}

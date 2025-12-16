@@ -24,7 +24,7 @@ Users coming from OLTP databases often look for the equivalent concept in ClickH
 
 ### How are ClickHouse Primary keys different? {#how-are-clickhouse-primary-keys-different}
 
-To understand why using your OLTP primary key in ClickHouse is not appropriate, users should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
+To understand why using your OLTP primary key in ClickHouse is not appropriate, you should understand the basics of ClickHouse indexing. We use Postgres as an example comparison, but these general concepts apply to other OLTP databases.
 
 - Postgres primary keys are, by definition, unique per row. The use of [B-tree structures](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) allows the efficient lookup of single rows by this key. While ClickHouse can be optimized for the lookup of a single row value, analytics workloads will typically require the reading of a few columns but for many rows. Filters will more often need to identify **a subset of rows** on which an aggregation will be performed.
 - Memory and disk efficiency are paramount to the scale at which ClickHouse is often used. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, the merged part's primary indexes are also merged. Unlike Postgres, these indexes are not built for each row. Instead, the primary index for a part has one index entry per group of rows - this technique is called **sparse indexing**.
@@ -48,7 +48,7 @@ When using real-time replication with CDC, there are additional constraints to t
 
 ## Partitions {#partitions}
 
-Postgres users will be familiar with the concept of table partitioning for enhancing performance and manageability for large databases by dividing tables into smaller, more manageable pieces called partitions. This partitioning can be achieved using either a range on a specified column (e.g., dates), defined lists, or via hash on a key. This allows administrators to organize data based on specific criteria like date ranges or geographical locations. Partitioning helps in improving query performance by enabling faster data access through partition pruning and more efficient indexing. It also helps maintenance tasks such as backups and data purges by allowing operations on individual partitions rather than the entire table. Additionally, partitioning can significantly improve the scalability of PostgreSQL databases by distributing the load across multiple partitions.
+If you're coming from Postgres, you will be familiar with the concept of table partitioning for enhancing performance and manageability for large databases by dividing tables into smaller, more manageable pieces called partitions. This partitioning can be achieved using either a range on a specified column (e.g., dates), defined lists, or via hash on a key. This allows administrators to organize data based on specific criteria like date ranges or geographical locations. Partitioning helps in improving query performance by enabling faster data access through partition pruning and more efficient indexing. It also helps maintenance tasks such as backups and data purges by allowing operations on individual partitions rather than the entire table. Additionally, partitioning can significantly improve the scalability of PostgreSQL databases by distributing the load across multiple partitions.
 
 In ClickHouse, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any columns, the results of which will define which partition a row is sent to.
 
@@ -77,7 +77,7 @@ For a full description of partitioning see ["Table partitions"](/partitions).
 
 Partitioning in ClickHouse has similar applications as in Postgres but with some subtle differences. More specifically:
 
-- **Data management** - In ClickHouse, users should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition). In example, below we remove posts from 2008.
+- **Data management** - In ClickHouse, you should principally consider partitioning to be a data management feature, not a query optimization technique. By separating data logically based on a key, each partition can be operated on independently e.g. deleted. This allows you to move partitions, and thus subsets, between [storage tiers](/integrations/s3#storage-tiers) efficiently on time or [expire data/efficiently delete from the cluster](/sql-reference/statements/alter/partition). In example, below we remove posts from 2008.
 
 ```sql
 SELECT DISTINCT partition
@@ -114,11 +114,11 @@ Ok.
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
+- **Query optimization** - While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries that need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts as a result of partitioning). The benefit of targeting a single partition will be even less pronounced to non-existence if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the day, e.g., partitioning by day, with most queries in the last day.
 
 ### Recommendations for partitions {#recommendations-for-partitions}
 
-Users should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
+You should consider partitioning a data management technique. It is ideal when data needs to be expired from the cluster when operating with time series data e.g. the oldest partition can [simply be dropped](/sql-reference/statements/alter/partition#drop-partitionpart).
 
 **Important:** Ensure your partitioning key expression does not result in a high cardinality set i.e. creating more than 100 partitions should be avoided. For example, do not partition your data by high cardinality columns such as client identifiers or names. Instead, make a client identifier or name the first column in the ORDER BY expression.
 
@@ -128,7 +128,7 @@ Users should consider partitioning a data management technique. It is ideal when
 
 ## Materialized views vs projections {#materialized-views-vs-projections}
 
-Postgres allows for the creation of multiple indices on a single table, enabling optimization for a variety of access patterns. This flexibility allows administrators and developers to tailor database performance to specific queries and operational needs. ClickHouse's concept of projections, while not fully analogous to this, allows users to specify multiple `ORDER BY` clauses for a table.
+Postgres allows for the creation of multiple indices on a single table, enabling optimization for a variety of access patterns. This flexibility allows administrators and developers to tailor database performance to specific queries and operational needs. ClickHouse's concept of projections, while not fully analogous to this, allows you to specify multiple `ORDER BY` clauses for a table.
 
 In ClickHouse [data modeling docs](/data-modeling/schema-design), we explore how materialized views can be used in ClickHouse to pre-compute aggregations, transform rows, and optimize queries for different access patterns.
 
@@ -184,7 +184,7 @@ ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-If the projection is created via an `ALTER`, the creation is asynchronous when the `MATERIALIZE PROJECTION` command is issued. Users can confirm the progress of this operation with the following query, waiting for `is_done=1`.
+If the projection is created via an `ALTER`, the creation is asynchronous when the `MATERIALIZE PROJECTION` command is issued. You can confirm the progress of this operation with the following query, waiting for `is_done=1`.
 
 ```sql
 SELECT
@@ -255,7 +255,7 @@ appropriate optimized target table or rewrite their query, depending on the filt
 This places greater emphasis on user applications and increases client-side complexity.
 
 Despite these advantages, projections come with some [inherent limitations](/data-modeling/projections#when-to-use-projections) 
-which users should be aware of and thus should be deployed sparingly.
+which you should be aware of and thus should be deployed sparingly.
 
 We recommend using projections when:
 
@@ -263,7 +263,7 @@ We recommend using projections when:
   projection can, in theory, use a `GROUP BY,` materialized views are more 
   effective for maintaining aggregates. The query optimizer is also more likely 
   to exploit projections that use a simple reordering, i.e., `SELECT * ORDER BY x`. 
-  Users can select a subset of columns in this expression to reduce storage footprint.
+  You can select a subset of columns in this expression to reduce storage footprint.
 - Users are comfortable with the associated increase in storage footprint and 
   overhead of writing data twice. Test the impact on insertion speed and 
   [evaluate the storage overhead](/data-compression/compression-in-clickhouse).
@@ -281,4 +281,4 @@ Since Postgres is a relational database, its data model is heavily [normalized](
 
 You can refer to this [guide](/data-modeling/denormalization) that shows the benefits of denormalizing the Stack Overflow dataset in ClickHouse.
 
-This concludes our basic guide for users migrating from Postgres to ClickHouse. We recommend users migrating from Postgres read the [guide for modeling data in ClickHouse](/data-modeling/schema-design) to learn more about advanced ClickHouse features.
+This concludes our basic guide if you're migrating from Postgres to ClickHouse. We recommend reading the [guide for modeling data in ClickHouse](/data-modeling/schema-design) to learn more about advanced ClickHouse features.

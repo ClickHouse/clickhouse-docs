@@ -82,7 +82,7 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 use clickhouse::Client;
 
 let client = Client::default()
-    // 应包括协议和端口
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
@@ -101,7 +101,7 @@ URL 应同时包含协议和端口，例如 `https://instance.clickhouse.cloud:8
 
 ```rust
 fn read_env_var(key: &str) -> String {
-    env::var(key).unwrap_or_else(|_| panic!("必须设置 {key} 环境变量"))
+    env::var(key).unwrap_or_else(|_| panic!("{key} env variable should be set"))
 }
 
 let client = Client::default()
@@ -207,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// 请勿忘记在应用程序关闭时完成插入器的终结操作
-// 并提交剩余行。`.end()` 方法同样会返回统计信息。
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -252,8 +252,8 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // 此设置仅应用于当前查询；
-    // 将覆盖全局客户端设置。
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
@@ -320,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // 客户端保持特定空闲套接字存活的时长(以毫秒为单位)。
-    // 该值应明显小于 ClickHouse 服务器的 KeepAlive 超时时间,
-    // 23.11 之前版本默认为 3 秒,之后版本为 10 秒。
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // 设置连接池中允许的最大空闲 Keep-Alive 连接数。
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -459,15 +459,15 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // 根据 `DateTime64(X)` 的精度表示经过的秒/微秒/毫秒/纳秒
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
-    dt64s: OffsetDateTime,  // `DateTime64(0)` 秒级精度
+    dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
-    dt64ms: OffsetDateTime, // `DateTime64(3)` 毫秒级精度
+    dt64ms: OffsetDateTime, // `DateTime64(3)`
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
-    dt64us: OffsetDateTime, // `DateTime64(6)` 微秒级精度
+    dt64us: OffsetDateTime, // `DateTime64(6)`
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
-    dt64ns: OffsetDateTime, // `DateTime64(9)` 纳秒级精度
+    dt64ns: OffsetDateTime, // `DateTime64(9)`
 }
 ```
 
@@ -488,7 +488,7 @@ struct MyRow {
 * 通过提供多个数组并重命名来实现对 `Nested` 的支持。
 
 ```rust
-// 创建表 test(items Nested(name String, count UInt32))
+// CREATE TABLE test(items Nested(name String, count UInt32))
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
     #[serde(rename = "items.name")]
@@ -546,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- 应改为 u32 类型！
+    id: String, // <- should be u32 instead!
 }
 ```
 
 在插入数据时，可能会遇到如下错误：
 
 ```response
-错误：BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 在本示例中，通过正确定义 `EventLog` 结构体即可解决该问题：

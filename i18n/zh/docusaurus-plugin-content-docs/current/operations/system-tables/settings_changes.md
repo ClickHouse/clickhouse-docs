@@ -34,7 +34,7 @@ Row 1:
 ──────
 type:    Core
 version: 23.5
-changes: [('input_format_parquet_preserve_order','1','0','允许 Parquet 读取器对行重新排序以提升并行性能。'),('parallelize_output_from_storages','0','1','允许在执行从 file/url/S3 等读取数据的查询时启用并行处理。这可能导致行顺序发生变化。'),('use_with_fill_by_sorting_prefix','0','1','ORDER BY 子句中 WITH FILL 列之前的列构成排序前缀。具有不同排序前缀值的行将独立填充'),('output_format_parquet_compliant_nested_types','0','1','更改输出 Parquet 文件架构中的内部字段名称。')]
+changes: [('input_format_parquet_preserve_order','1','0','Allow Parquet reader to reorder rows for better parallelism.'),('parallelize_output_from_storages','0','1','Allow parallelism when executing queries that read from file/url/s3/etc. This may reorder rows.'),('use_with_fill_by_sorting_prefix','0','1','Columns preceding WITH FILL columns in ORDER BY clause form sorting prefix. Rows with different values in sorting prefix are filled independently'),('output_format_parquet_compliant_nested_types','0','1','Change an internal field name in output Parquet file schema.')]
 ```
 
 **另请参阅**

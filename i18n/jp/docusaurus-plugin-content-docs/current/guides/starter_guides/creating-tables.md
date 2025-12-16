@@ -21,17 +21,17 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 以下のテーブル `my_first_table` は、`helloworld` データベース内に作成されます。
 
-```sql
-CREATE TABLE helloworld.my_first_table
-(
-    user_id UInt32,
-    message String,
-    timestamp DateTime,
-    metric Float32
-)
-ENGINE = MergeTree()
-PRIMARY KEY (user_id, timestamp)
-```
+  ```sql
+  CREATE TABLE helloworld.my_first_table
+  (
+      user_id UInt32,
+      message String,
+      timestamp DateTime,
+      metric Float32
+  )
+  ENGINE = MergeTree()
+  PRIMARY KEY (user_id, timestamp)
+  ```
 
 上記の例では、`my_first_table` は 4 つのカラムを持つ `MergeTree` テーブルです。
 

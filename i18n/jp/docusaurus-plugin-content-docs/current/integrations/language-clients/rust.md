@@ -82,7 +82,7 @@ examples や以下のドキュメントに不明な点や不足している点�
 use clickhouse::Client;
 
 let client = Client::default()
-    // プロトコルとポートの両方を含める必要があります
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
@@ -207,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// アプリケーションのシャットダウン時には、inserterを終了して
-// 残りの行をコミットすることを忘れないでください。`.end()`も統計情報を返します。
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -252,8 +252,8 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // この設定はこの特定のクエリにのみ適用されます。
-    // グローバルクライアント設定を上書きします。
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
@@ -320,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // クライアント側で特定のアイドルソケットを生存させる時間（ミリ秒単位）。
-    // ClickHouseサーバーのKeepAliveタイムアウトよりもかなり短く設定することが推奨されます。
-    // デフォルトでは23.11以前のバージョンでは3秒、それ以降のバージョンでは10秒です。
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // プール内で許可されるアイドル状態のKeep-Alive接続の最大数を設定します。
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -459,15 +459,15 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // `DateTime64(X)` に応じた経過時間 (秒/マイクロ秒/ミリ秒/ナノ秒)
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
-    dt64s: OffsetDateTime,  // `DateTime64(0)` (秒単位)
+    dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
-    dt64ms: OffsetDateTime, // `DateTime64(3)` (ミリ秒単位)
+    dt64ms: OffsetDateTime, // `DateTime64(3)`
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
-    dt64us: OffsetDateTime, // `DateTime64(6)` (マイクロ秒単位)
+    dt64us: OffsetDateTime, // `DateTime64(6)`
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
-    dt64ns: OffsetDateTime, // `DateTime64(9)` (ナノ秒単位)
+    dt64ns: OffsetDateTime, // `DateTime64(9)`
 }
 ```
 
@@ -546,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- 本来は u32 型にすべきです！
+    id: String, // <- should be u32 instead!
 }
 ```
 
 データを挿入する際、次のエラーが発生することがあります:
 
 ```response
-エラー: BadResponse("Code: 33. DB::Exception: すべてのデータを読み取れません。読み取ったバイト数: 5。期待されるバイト数: 23.: (行 1)\n: BinaryRowInputFormat の実行中。 (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 この例では、`EventLog` 構造体を正しく定義することで、この問題は解決されます。

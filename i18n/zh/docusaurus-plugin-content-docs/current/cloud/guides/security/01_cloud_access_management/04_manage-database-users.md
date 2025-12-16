@@ -104,9 +104,9 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 我们建议创建一个与具体个人关联的新用户账户，并为该用户授予 `default_role`。这样可以确保用户执行的操作能够映射到其各自的用户 ID，同时将 `default` 账户保留用于紧急兜底（break-glass）类操作场景。
 
 ```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
-```
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
+  ```
 
 用户可以使用 SHA256 哈希生成器，或使用 Python 中的 `hashlib` 等代码函数，将一个长度不少于 12 个字符且复杂度足够的密码转换为 SHA256 字符串，并将该字符串作为密码提供给系统管理员。这样可以确保管理员不会看到或接触明文密码。
 
@@ -120,26 +120,26 @@ GRANT default_role to userID;
   运行以下查询以获取数据库中所有授权的列表。
 
   ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  UNION ALL
+UNION ALL
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
   #### 将授权列表关联到拥有 SQL 控制台访问权限的 Console 用户
 

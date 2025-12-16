@@ -264,7 +264,7 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 **语法**
 
 ```sql
-bitmaskToArray(数字)
+bitmaskToArray(num)
 ```
 
 **参数**
@@ -310,7 +310,7 @@ SELECT bitmaskToArray(8) AS powers_of_two
 **语法**
 
 ```sql
-bitmaskToList(数字)
+bitmaskToList(num)
 ```
 
 **参数**
@@ -548,7 +548,7 @@ CREATE TABLE hilbert_numbers(
     n2 UInt32
 )
 ENGINE=MergeTree()
-ORDER BY n1 SETTINGS index_granularity = 8192, index_granularity_bytes = '10Mi';
+ORDER BY n1 SETTINGS index_granularity_bytes = '10Mi';
 insert into hilbert_numbers (*) values(1,2);
 
 -- 使用列名而非常量作为函数参数

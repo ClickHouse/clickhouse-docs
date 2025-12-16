@@ -2,7 +2,7 @@
 sidebar_label: 'Manage my account'
 slug: /cloud/security/manage-my-account
 title: 'Manage my account'
-description: 'This page describes how users can accept invitations, manage MFA settings, and reset passwords'
+description: 'This page describes how you can accept invitations, manage MFA settings, and reset passwords'
 doc_type: 'guide'
 keywords: ['account management', 'user profile', 'security', 'cloud console', 'settings']
 ---
@@ -11,7 +11,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ## Accept an invitation {#accept-invitation}
 
-Users may use multiple methods to accept an invitation to join an organization. If this is your first invitation, select the appropriate authentication method for your organization below. 
+You may use multiple methods to accept an invitation to join an organization. If this is your first invitation, select the appropriate authentication method for your organization below. 
 
 If this is not your first organization, either sign in with your existing organization then accept the invitation from the lower left hand side of the page OR accept the invitation from your email and sign in with your existing account. 
 

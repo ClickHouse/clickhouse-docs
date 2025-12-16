@@ -33,10 +33,10 @@ CDC に適した必要な権限を付与した ClickPipes 用の新しいユー�
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- ユーザーにレプリケーション権限を付与
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- パブリケーションを作成します。ミラー作成時に使用します
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -58,9 +58,9 @@ Neon では、UI からロジカルレプリケーションを有効化できま
 Neon の Postgres インスタンスで、次の設定を確認しましょう:
 
 ```sql
-SHOW wal_level; -- logical である必要があります
-SHOW max_wal_senders; -- 10 である必要があります
-SHOW max_replication_slots; -- 10 である必要があります
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## IP ホワイトリスト登録（Neon Enterprise プラン向け） {#ip-whitelisting-for-neon-enterprise-plan}

@@ -68,8 +68,8 @@ SELECT * FROM test;
 结果：
 
 ```text
-服务器返回异常（版本 21.4.1）：
-代码：60. DB::Exception: 来自 localhost:9000。DB::Exception: 表 default.test 不存在。
+Received exception from server (version 21.4.1):
+Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table default.test does not exist.
 ```
 
 :::note

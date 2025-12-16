@@ -26,11 +26,11 @@ SELECT number AS x, number + 1 AS y, 'Hello' AS z FROM numbers(10) FORMAT SQLIns
 ```
 
 ```sql
-INSERT INTO table (x, y, z) VALUES (0, 1, 'こんにちは'), (1, 2, 'こんにちは');
-INSERT INTO table (x, y, z) VALUES (2, 3, 'こんにちは'), (3, 4, 'こんにちは');
-INSERT INTO table (x, y, z) VALUES (4, 5, 'こんにちは'), (5, 6, 'こんにちは');
-INSERT INTO table (x, y, z) VALUES (6, 7, 'こんにちは'), (7, 8, 'こんにちは');
-INSERT INTO table (x, y, z) VALUES (8, 9, 'こんにちは'), (9, 10, 'こんにちは');
+INSERT INTO table (x, y, z) VALUES (0, 1, 'Hello'), (1, 2, 'Hello');
+INSERT INTO table (x, y, z) VALUES (2, 3, 'Hello'), (3, 4, 'Hello');
+INSERT INTO table (x, y, z) VALUES (4, 5, 'Hello'), (5, 6, 'Hello');
+INSERT INTO table (x, y, z) VALUES (6, 7, 'Hello'), (7, 8, 'Hello');
+INSERT INTO table (x, y, z) VALUES (8, 9, 'Hello'), (9, 10, 'Hello');
 ```
 
 このフォーマットで出力されたデータを読み取るには、[MySQLDump](../formats/MySQLDump.md) 入力フォーマットを使用できます。

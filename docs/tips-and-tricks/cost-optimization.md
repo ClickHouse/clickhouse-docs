@@ -72,7 +72,7 @@ Analytics platforms often face a storage challenge with categorical data that ap
 
 In Microsoft's web analytics system, search results trigger different types of answers - weather cards, sports information, news articles, and factual responses. Each query result was tagged with descriptive strings like "weather_answer," "sports_answer," or "factual_answer." With billions of search queries processed, these string values were being stored repeatedly in ClickHouse, consuming massive amounts of storage space and requiring expensive string comparisons during queries.
 
-Microsoft implemented a string-to-integer mapping system using a separate MySQL database. Instead of storing the actual strings in ClickHouse, they store only integer IDs. When users run queries through the UI and request data for `weather_answer`, their query optimizer first consults the MySQL mapping table to get the corresponding integer ID, then converts the query to use that integer before sending it to ClickHouse.
+Microsoft implemented a string-to-integer mapping system using a separate MySQL database. Instead of storing the actual strings in ClickHouse, they store only integer IDs. When you run queries through the UI and request data for `weather_answer`, the query optimizer first consults the MySQL mapping table to get the corresponding integer ID, then converts the query to use that integer before sending it to ClickHouse.
 
 This architecture preserves the user experience - people still see meaningful labels like `weather_answer` in their dashboards - while the backend storage and queries operate on much more efficient integers. The mapping system handles all translation transparently, requiring no changes to the user interface or user workflows.
 

@@ -187,7 +187,7 @@ AS SELECT ...
 где `interval` — последовательность простых интервалов:
 
 ```sql
-число СЕКУНДА|МИНУТА|ЧАС|ДЕНЬ|НЕДЕЛЯ|МЕСЯЦ|ГОД
+number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
 Периодически выполняет соответствующий запрос и сохраняет его результат в таблице.
@@ -209,23 +209,23 @@ AS SELECT ...
 Примеры расписаний обновления:
 
 ```sql
-REFRESH EVERY 1 DAY -- каждый день в полночь (UTC)
-REFRESH EVERY 1 MONTH -- 1-го числа каждого месяца в полночь
-REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 6-го числа каждого месяца в 2:00 ночи
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- каждую вторую субботу в 15:10
-REFRESH EVERY 30 MINUTE -- в 00:00, 00:30, 01:00, 01:30 и т. д.
-REFRESH AFTER 30 MINUTE -- через 30 минут после завершения предыдущего обновления, без привязки ко времени суток
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- синтаксическая ошибка, OFFSET недопустим с AFTER
-REFRESH EVERY 1 WEEK 2 DAYS -- каждые 9 дней, без привязки к конкретному дню недели или месяца;
-                            -- а именно, когда номер дня (с 1969-12-29) делится на 9
-REFRESH EVERY 5 MONTHS -- каждые 5 месяцев, в разные месяцы каждого года (так как 12 не делится на 5);
-                       -- а именно, когда номер месяца (с 1970-01) делится на 5
+REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
+REFRESH EVERY 1 MONTH -- on 1st day of every month, at midnight
+REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- on 6th day of every month, at 2:00 am
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- every other Saturday, at 3:10 pm
+REFRESH EVERY 30 MINUTE -- at 00:00, 00:30, 01:00, 01:30, etc
+REFRESH AFTER 30 MINUTE -- 30 minutes after the previous refresh completes, no alignment with time of day
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- syntax error, OFFSET is not allowed with AFTER
+REFRESH EVERY 1 WEEK 2 DAYS -- every 9 days, not on any particular day of the week or month;
+                            -- specifically, when day number (since 1969-12-29) is divisible by 9
+REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is not divisible by 5);
+                       -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
 `RANDOMIZE FOR` случайным образом изменяет время каждого обновления, например:
 
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- ежедневно в случайное время с 01:30 до 02:30
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
 В каждый момент времени для заданного представления может выполняться не более одного обновления. Например, если представление с `REFRESH EVERY 1 MINUTE` обновляется за 2 минуты, фактически оно будет обновляться каждые 2 минуты. Если затем обновление станет быстрее и начнёт выполняться за 10 секунд, период обновления снова вернётся к одной минуте. (В частности, обновление не будет выполняться каждые 10 секунд, чтобы «наверстать» пропущенные обновления — никакого подобного «долга» нет.)
@@ -301,7 +301,7 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 Чтобы изменить параметры обновления:
 
 ```sql
-ALTER TABLE [db.]имя_таблицы MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
+ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
 :::note
@@ -487,7 +487,7 @@ ClickHouse поддерживает **временные представлен�
 ### Синтаксис {#temporary-views-syntax}
 
 ```sql
-CREATE TEMPORARY VIEW [IF NOT EXISTS] имя_представления AS <запрос_select>
+CREATE TEMPORARY VIEW [IF NOT EXISTS] view_name AS <select_query>
 ```
 
 `OR REPLACE` **не** поддерживается для временных представлений (по аналогии с временными таблицами). Если вам нужно «заменить» временное представление, удалите его и создайте заново.
@@ -517,7 +517,7 @@ SHOW CREATE TEMPORARY VIEW tview;
 Удалите его:
 
 ```sql
-DROP TEMPORARY VIEW IF EXISTS tview;  -- временные представления удаляются с использованием синтаксиса TEMPORARY TABLE
+DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
 
 ### Запрещено / ограничения {#temporary-views-limitations}
@@ -535,18 +535,18 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- временные представле
 #### Пример {#temporary-views-distributed-example}
 
 ```sql
--- Таблица в памяти с областью видимости сессии
+-- A session-scoped, in-memory table
 CREATE TEMPORARY TABLE temp_ids (id UInt64) ENGINE = Memory;
 
 INSERT INTO temp_ids VALUES (1), (5), (42);
 
--- Представление с областью видимости сессии над временной таблицей (чисто логическое)
+-- A session-scoped view over the temp table (purely logical)
 CREATE TEMPORARY VIEW v_ids AS
 SELECT id FROM temp_ids;
 
--- Замените 'test' на имя вашего кластера.
--- GLOBAL JOIN заставляет ClickHouse *отправить* малую сторону соединения (temp_ids через v_ids)
--- на каждый удалённый сервер, выполняющий левую сторону.
+-- Replace 'test' with your cluster name.
+-- GLOBAL JOIN forces ClickHouse to *ship* the small join-side (temp_ids via v_ids)
+-- to every remote server that executes the left side.
 SELECT count()
 FROM cluster('test', system.numbers) AS n
 GLOBAL ANY INNER JOIN v_ids USING (id)

@@ -98,7 +98,7 @@ FROM file('reviews.tsv')"
 ```
 
 ```response
-大富翁少年版桌游    5
+Monopoly Junior Board Game    5
 ```
 
 ## 在 AWS S3 中查询 Parquet 文件中的数据 {#query-data-in-a-parquet-file-in-aws-s3}
@@ -246,7 +246,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
-读取 2 行，32.00 B，耗时 0.000 秒，5182 行/秒，80.97 KiB/秒。
+Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 1   2
 3   4
 ```
@@ -258,7 +258,7 @@ $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
     DROP TABLE table;"
-已读取 2 行，32.00 B，用时 0.000 秒，4987 行/秒，77.93 KiB/秒。
+Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 1   2
 3   4
 ```
@@ -292,7 +292,7 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 结果：
 
 ```text
-读取 186 行，4.15 KiB，用时 0.035 秒，5302 行/秒，118.34 KiB/秒。
+Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━┩

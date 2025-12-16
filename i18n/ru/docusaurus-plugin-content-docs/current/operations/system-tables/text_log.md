@@ -57,7 +57,7 @@ SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10
@@ -66,14 +66,14 @@ event_time_microseconds: 2020-09-10 11:23:07.871397
 microseconds:            871397
 thread_name:             clickhouse-serv
 thread_id:               564917
-level:                   Информация
+level:                   Information
 query_id:
 logger_name:             DNSCacheUpdater
-message:                 Период обновления 15 секунд
+message:                 Update period 15 seconds
 revision:                54440
 source_file:             /ClickHouse/src/Interpreters/DNSCacheUpdater.cpp; void DB::DNSCacheUpdater::start()
 source_line:             45
-message_format_string:   Период обновления {} секунд
+message_format_string:   Update period {} seconds
 value1:                  15
 value2:                  
 value3:                  

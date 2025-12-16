@@ -129,10 +129,10 @@ LIMIT 10
 此设置既可以按单个查询应用，也可以作用于整个会话。
 
 ```sql
--- 针对单个查询的 FINAL 设置
+-- Per query FINAL setting
 SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
--- 为会话设置 FINAL
+-- Set FINAL for the session
 SET final = 1;
 SELECT count(*) FROM posts; 
 ```
@@ -142,7 +142,7 @@ SELECT count(*) FROM posts;
 隐藏多余的 `_peerdb_is_deleted = 0` 过滤条件的一种简便方法是使用[行策略](/docs/operations/access-rights#row-policy-management)。下面是一个示例，演示如何创建行策略，使对 votes 表的所有查询自动排除已删除的行。
 
 ```sql
--- 对所有用户应用行策略
+-- Apply row policy to all users
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
@@ -170,7 +170,7 @@ CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_delet
 然后，我们可以使用与在 PostgreSQL 中相同的查询来查询这些视图。
 
 ```sql
--- 浏览量最高的帖子
+-- Most viewed posts
 SELECT
     sum(viewcount) AS viewcount,
     owneruserid
@@ -190,10 +190,10 @@ LIMIT 10
 然而，其缺点是目标表中的数据只能更新到最近一次刷新的时间点。尽管如此，对于许多使用场景而言，从几分钟到几小时不等的刷新间隔通常已经足够。
 
 ```sql
--- 创建去重后的 posts 表 
+-- Create deduplicated posts table 
 CREATE TABLE deduplicated_posts AS posts;
 
--- 创建物化视图并设置为每小时刷新一次
+-- Create the Materialized view and schedule to run every hour
 CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS 
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```

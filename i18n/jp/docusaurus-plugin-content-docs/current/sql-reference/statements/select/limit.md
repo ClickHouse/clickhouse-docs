@@ -23,7 +23,7 @@ LIMIT m
 **代替 TOP 構文（MS SQL Server 互換）：**
 
 ```sql
--- SELECT TOP 数値|パーセント カラム名 FROM テーブル名
+-- SELECT TOP number|percent column_name(s) FROM table_name
 SELECT TOP 10 * FROM numbers(100);
 SELECT TOP 0.1 * FROM numbers(100);
 ```
@@ -34,7 +34,7 @@ SELECT TOP 0.1 * FROM numbers(100);
 
 ```sql
 LIMIT m OFFSET n
--- または同等に:
+-- or equivalently:
 LIMIT n, m
 ```
 
@@ -76,8 +76,8 @@ LIMIT n, m
 標準の整数と小数や負のオフセットを組み合わせて使用できます。
 
 ```sql
-LIMIT 10 OFFSET 0.5    -- 中間地点から10行
-LIMIT 10 OFFSET -20    -- 最後の20行をスキップした後の10行
+LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
+LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
 ```
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}

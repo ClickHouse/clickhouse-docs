@@ -223,15 +223,15 @@ IO 线程池是一个简单的 `ThreadPool`，可通过 `IOThreadPool::get()` �
 ```mermaid
 stateDiagram-v2
     direction LR
-    [*] --> 空闲
-    空闲 --> 已分配: 分配
-    state 已分配 {
+    [*] --> free
+    free --> allocated: allocate
+    state allocated {
         direction LR
-        [*] --> 已授予
-        已授予 --> 已获取: 获取
-        已获取 --> [*]
+        [*] --> granted
+        granted --> acquired: acquire
+        acquired --> [*]
     }
-    已分配 --> 空闲: 释放
+    allocated --> free: release
 ```
 
 `ConcurrencyControl` 的 API 由以下函数组成：

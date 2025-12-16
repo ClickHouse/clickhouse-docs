@@ -34,7 +34,7 @@ import Image from '@theme/IdealImage';
 
 ## Настройка {#setup}
 
-<VerticalStepper headerLevel="h3"/>
+<VerticalStepper headerLevel="h3">
 
 ### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -121,3 +121,5 @@ import Image from '@theme/IdealImage';
    ```
 
 - 4. После создания скопируйте новый **ARN роли IAM**. Он понадобится для доступа к вашему потоку Kinesis.
+
+</VerticalStepper>

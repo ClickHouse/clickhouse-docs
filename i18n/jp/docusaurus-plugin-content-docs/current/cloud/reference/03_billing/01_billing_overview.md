@@ -219,7 +219,7 @@ ClickHouse Cloud はクラウドオブジェクトストレージを使用して
 ```sql title="Estimating compression"
 SELECT formatReadableSize(total_bytes) 
 FROM system.tables 
-WHERE name = <任意のテーブル名>
+WHERE name = <your table name>
 ```
 
 ### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}

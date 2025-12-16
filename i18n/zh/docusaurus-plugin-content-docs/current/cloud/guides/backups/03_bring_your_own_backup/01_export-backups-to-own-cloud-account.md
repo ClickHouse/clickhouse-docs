@@ -30,13 +30,13 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 
 ```text
   s3://<bucket_name>.s3.amazonaws.com/<directory>
-```
+  ```
 
 例如：
 
 ```text
   s3://testchbackups.s3.amazonaws.com/backups/
-```
+  ```
 
 Where:
 
@@ -61,8 +61,8 @@ Where:
 1. GCS endpoint，格式如下：
 
    ```text
-   https://storage.googleapis.com/<bucket_name>/
-   ```
+    https://storage.googleapis.com/<bucket_name>/
+    ```
 2. 用于访问的 HMAC key 和 HMAC secret。
 
 <hr/>

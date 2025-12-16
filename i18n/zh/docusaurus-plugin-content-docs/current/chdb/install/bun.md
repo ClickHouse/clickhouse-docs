@@ -30,8 +30,14 @@ curl -sL https://lib.chdb.io | bash
 ### 步骤 2：安装 chDB-bun {#install-chdb-bun}
 
 ```bash
-# 从 GitHub 仓库安装
+# Install from the GitHub repository
 bun add github:chdb-io/chdb-bun
+
+# Or clone and build locally
+git clone https://github.com/chdb-io/chdb-bun.git
+cd chdb-bun
+bun install
+bun run build
 ```
 
 # 或者在本地克隆并构建 {#install-from-the-github-repository}
@@ -41,7 +47,24 @@ cd chdb-bun
 bun install
 bun run build
 
-```
+```typescript
+import { query } from 'chdb-bun';
+
+// Basic query
+const result = query("SELECT version()", "CSV");
+console.log(result); // "23.10.1.1"
+
+// Query with different output formats
+const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
+console.log(jsonResult);
+
+// Query with calculations
+const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
+console.log(mathResult);
+
+// Query system information
+const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
+console.log(systemInfo);
 ```
 
 ## 用法
@@ -53,37 +76,13 @@ chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以�
 适用于不需要保留状态的简单一次性查询：
 
 ```typescript
-import { query } from 'chdb-bun';
-
-// 基本查询
-const result = query("SELECT version()", "CSV");
-console.log(result); // "23.10.1.1"
-
-// 使用不同输出格式查询
-const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
-console.log(jsonResult);
-
-// 执行计算查询
-const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
-console.log(mathResult);
-
-// 查询系统信息
-const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
-console.log(systemInfo);
-```
-
-### 持久化会话 {#ephemeral-queries}
-
-对于需要在多个查询之间保持状态的复杂操作：
-
-```typescript
 import { Session } from 'chdb-bun';
 
-// 创建持久化存储会话
+// Create a session with persistent storage
 const sess = new Session('./chdb-bun-tmp');
 
 try {
-    // 创建数据库和表
+    // Create a database and table
     sess.query(`
         CREATE DATABASE IF NOT EXISTS mydb;
         CREATE TABLE IF NOT EXISTS mydb.users (
@@ -93,7 +92,7 @@ try {
         ) ENGINE = MergeTree() ORDER BY id
     `, "CSV");
 
-    // 插入数据
+    // Insert data
     sess.query(`
         INSERT INTO mydb.users VALUES 
         (1, 'Alice', 'alice@example.com'),
@@ -101,16 +100,16 @@ try {
         (3, 'Charlie', 'charlie@example.com')
     `, "CSV");
 
-    // 查询数据
+    // Query the data
     const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON");
-    console.log("用户:", users);
+    console.log("Users:", users);
 
-    // 创建并使用自定义函数
+    // Create and use custom functions
     sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
     const greeting = sess.query("SELECT hello() as message", "Pretty");
     console.log(greeting);
 
-    // 聚合查询
+    // Aggregate queries
     const stats = sess.query(`
         SELECT 
             COUNT(*) as total_users,
@@ -118,10 +117,10 @@ try {
             MIN(id) as min_id
         FROM mydb.users
     `, "JSON");
-    console.log("统计信息:", stats);
+    console.log("Statistics:", stats);
 
 } finally {
-    // 务必清理会话以释放资源
-    sess.cleanup(); // 此操作将删除数据库文件
+    // Always cleanup the session to free resources
+    sess.cleanup(); // This deletes the database files
 }
 ```

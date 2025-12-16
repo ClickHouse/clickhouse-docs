@@ -73,14 +73,14 @@ DynamoDB からのスナップショットデータは次のような形式に�
 上記の DynamoDB データの例では、ClickHouse のテーブルは次のようになります。
 
 ```sql
-/* スナップショットテーブル */
+/* Snapshot table */
 CREATE TABLE IF NOT EXISTS "default"."snapshot"
 (
     `item` String
 )
 ORDER BY tuple();
 
-/* 最終的なフラット化データ用のテーブル */
+/* Table for final flattened data */
 CREATE MATERIALIZED VIEW IF NOT EXISTS "default"."snapshot_mv" TO "default"."destination" AS
 SELECT
     JSONExtractString(item, 'id', 'S') AS id,
@@ -88,7 +88,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* 最終的なフラット化データ用のテーブル */
+/* Table for final flattened data */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,

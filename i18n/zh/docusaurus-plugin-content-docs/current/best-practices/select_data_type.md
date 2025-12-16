@@ -65,7 +65,7 @@ SETTINGS describe_compact_output = 1
 │ ClosedDate                 │ Nullable(DateTime64(3, 'UTC'))    │
 └────────────────────────────┴───────────────────────────────────┘
 
-共 22 行。耗时：0.130 秒。
+22 rows in set. Elapsed: 0.130 sec.
 ```
 
 :::note

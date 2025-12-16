@@ -126,7 +126,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
-│ B    │ Текст B │     15 │
+│ B    │ Text B │     15 │
 └──────┴────────┴────────┘
 ```
 
@@ -278,9 +278,9 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 
 ```markdown
 ┌─name────┬─score─┐
-│ Алиса   │    90 │
-│ Боб     │     0 │
-│ Чарли │    88 │
+│ Alice   │    90 │
+│ Bob     │     0 │
+│ Charlie │    88 │
 └─────────┴───────┘
 ```
 
@@ -297,10 +297,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 Синтаксис `ASOF JOIN ... ON`:
 
 ```sql
-SELECT список_выражений
-FROM таблица_1
-ASOF LEFT JOIN таблица_2
-ON условие_равенства AND условие_ближайшего_соответствия
+SELECT expressions_list
+FROM table_1
+ASOF LEFT JOIN table_2
+ON equi_cond AND closest_match_cond
 ```
 
 Вы можете использовать любое количество условий равенства и ровно одно условие ближайшего соответствия. Например, `SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`.
@@ -310,10 +310,10 @@ ON условие_равенства AND условие_ближайшего_с�
 Синтаксис `ASOF JOIN ... USING`:
 
 ```sql
-SELECT список_выражений
-FROM таблица_1
-ASOF JOIN таблица_2
-USING (столбец_равенства1, ... столбец_равенстваN, столбец_asof)
+SELECT expressions_list
+FROM table_1
+ASOF JOIN table_2
+USING (equi_column1, ... equi_columnN, asof_column)
 ```
 
 `ASOF JOIN` использует `equi_columnX` для соединения по условию равенства и `asof_column` для соединения по ближайшему совпадению с условием `table_1.asof_column >= table_2.asof_column`. Столбец `asof_column` всегда должен быть последним в предложении `USING`.

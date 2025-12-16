@@ -38,7 +38,7 @@ In the push scenario, the idea is to leverage a third-party tool or service (eit
 
 ### Cons {#cons}
 
-* Users need to set up and maintain an ETL/ELT infrastructure.
+* You need to set up and maintain an ETL/ELT infrastructure.
 * Introduces a third-party element in the architecture which can turn into a potential scalability bottleneck.
 
 ## Pull Data from Redshift to ClickHouse {#pull-data-from-redshift-to-clickhouse}

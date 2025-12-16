@@ -63,7 +63,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.079 秒。已处理 1 亿行,800.10 MB(12.6 亿行/秒,10.10 GB/秒)。
+8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
 现在添加一个非常简单的跳过索引（skip index）：
@@ -91,7 +91,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.051 秒。已处理 32.77 千行,360.45 KB(643.75 千行/秒,7.08 MB/秒)
+8192 rows in set. Elapsed: 0.051 sec. Processed 32.77 thousand rows, 360.45 KB (643.75 thousand rows/s., 7.08 MB/s.)
 ```
 
 相比处理 1 亿行、800 兆字节的数据，ClickHouse 只读取并分析了 32768 行、360 千字节的数据——
@@ -112,7 +112,7 @@ SET send_logs_level='trace';
 在调优查询 SQL 和表索引时，这将提供有用的调试信息。根据上面的示例，调试日志显示跳过索引过滤掉了除两个 granule 以外的所有 granule：
 
 ```sql
-<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): 索引 `vix` 已丢弃 6102/6104 个颗粒。
+<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 
 ## 跳过索引类型 {#skip-index-types}

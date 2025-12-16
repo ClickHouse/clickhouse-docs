@@ -34,16 +34,16 @@ SELECT * FROM system.metrics LIMIT 10
 
 ```text
 ┌─metric───────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────┐
-│ Query                                │     1 │ Количество выполняющихся запросов                                            │
-│ Merge                                │     0 │ Количество выполняющихся фоновых слияний                                  │
-│ PartMutation                         │     0 │ Количество мутаций (ALTER DELETE/UPDATE)                              │
-│ ReplicatedFetch                      │     0 │ Количество частей данных, запрашиваемых с реплик                       │
-│ ReplicatedSend                       │     0 │ Количество частей данных, отправляемых на реплики                            │
-│ ReplicatedChecks                     │     0 │ Количество частей данных, проверяемых на согласованность                          │
-│ BackgroundMergesAndMutationsPoolTask │     0 │ Количество активных слияний и мутаций в связанном фоновом пуле │
-│ BackgroundFetchesPoolTask            │     0 │ Количество активных операций выборки в связанном фоновом пуле              │
-│ BackgroundCommonPoolTask             │     0 │ Количество активных задач в связанном фоновом пуле                │
-│ BackgroundMovePoolTask               │     0 │ Количество активных задач в BackgroundProcessingPool для перемещения данных           │
+│ Query                                │     1 │ Number of executing queries                                            │
+│ Merge                                │     0 │ Number of executing background merges                                  │
+│ PartMutation                         │     0 │ Number of mutations (ALTER DELETE/UPDATE)                              │
+│ ReplicatedFetch                      │     0 │ Number of data parts being fetched from replicas                       │
+│ ReplicatedSend                       │     0 │ Number of data parts being sent to replicas                            │
+│ ReplicatedChecks                     │     0 │ Number of data parts checking for consistency                          │
+│ BackgroundMergesAndMutationsPoolTask │     0 │ Number of active merges and mutations in an associated background pool │
+│ BackgroundFetchesPoolTask            │     0 │ Number of active fetches in an associated background pool              │
+│ BackgroundCommonPoolTask             │     0 │ Number of active tasks in an associated background pool                │
+│ BackgroundMovePoolTask               │     0 │ Number of active tasks in BackgroundProcessingPool for moves           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
 

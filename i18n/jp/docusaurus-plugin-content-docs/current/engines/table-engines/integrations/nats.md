@@ -217,16 +217,16 @@ NATS JetStream とともに NATS エンジンを使用する前に、NATS スト
 
                   Subjects: stream_subject
                   Replicas: 1
-                   Storage: File
+                  Storage: File
 
   Options:
 
-                 Retention: Limits
-           Acknowledgments: true
+                Retention: Limits
+          Acknowledgments: true
             Discard Policy: Old
           Duplicate Window: 2m0s
                 Direct Get: true
-         Allows Msg Delete: true
+        Allows Msg Delete: true
               Allows Purge: true
     Allows Per-Message TTL: false
             Allows Rollups: false
@@ -234,18 +234,18 @@ NATS JetStream とともに NATS エンジンを使用する前に、NATS スト
   Limits:
 
           Maximum Messages: unlimited
-       Maximum Per Subject: unlimited
-             Maximum Bytes: unlimited
-               Maximum Age: unlimited
+      Maximum Per Subject: unlimited
+            Maximum Bytes: unlimited
+              Maximum Age: unlimited
       Maximum Message Size: unlimited
-         Maximum Consumers: unlimited
+        Maximum Consumers: unlimited
 
   State:
 
                   Messages: 0
-                     Bytes: 0 B
+                    Bytes: 0 B
             First Sequence: 0
-             Last Sequence: 0
+            Last Sequence: 0
           Active Consumers: 0
   ```
 </details>
@@ -271,13 +271,13 @@ NATS JetStream とともに NATS エンジンを使用する前に、NATS スト
   Configuration:
 
                       Name: consumer_name
-                 Pull Mode: true
+                Pull Mode: true
             Deliver Policy: All
                 Ack Policy: Explicit
                   Ack Wait: 30.00s
-             Replay Policy: Instant
-           Max Ack Pending: 1,000
-         Max Waiting Pulls: 512
+            Replay Policy: Instant
+          Max Ack Pending: 1,000
+        Max Waiting Pulls: 512
 
   State:
 
@@ -286,7 +286,7 @@ NATS JetStream とともに NATS エンジンを使用する前に、NATS スト
           Outstanding Acks: 0 out of maximum 1,000
       Redelivered Messages: 0
       Unprocessed Messages: 0
-             Waiting Pulls: 0 of maximum 512
+            Waiting Pulls: 0 of maximum 512
   ```
 </details>
 

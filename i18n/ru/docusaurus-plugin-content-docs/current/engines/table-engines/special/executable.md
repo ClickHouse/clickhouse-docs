@@ -23,7 +23,7 @@ doc_type: 'reference'
 Движку таблицы `Executable` требуются два параметра: имя скрипта и формат входящих данных. При необходимости можно передать один или несколько входных запросов:
 
 ```sql
-Executable(имя_скрипта, формат, [входной_запрос...])
+Executable(script_name, format, [input_query...])
 ```
 
 Ниже приведены соответствующие параметры для таблицы `Executable`:
@@ -52,17 +52,17 @@ import random
 
 def main():
 
-    # Чтение входного значения
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # Генерация случайных строк
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # Сброс результатов в stdout
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":

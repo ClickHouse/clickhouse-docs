@@ -3950,7 +3950,7 @@ SELECT
 
 ## toDateOrZero {#todateorzero}
 
-与 [toDate](#todate) 相同，但在收到无效参数时返回 [Date](../data-types/date.md) 的下界值。仅支持 [String](../data-types/string.md) 类型的参数。
+与 [toDate](#toDate) 相同，但在收到无效参数时返回 [Date](../data-types/date.md) 的下界值。仅支持 [String](../data-types/string.md) 类型的参数。
 
 **示例**
 
@@ -3970,7 +3970,7 @@ SELECT toDateOrZero('2022-12-30'), toDateOrZero('');
 
 ## toDateOrNull {#todateornull}
 
-与 [toDate](#todate) 相同，但在收到无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
+与 [toDate](#toDate) 相同，但在收到无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
 
 **示例**
 
@@ -3990,7 +3990,7 @@ SELECT toDateOrNull('2022-12-30'), toDateOrNull('');
 
 ## toDateOrDefault {#todateordefault}
 
-与 [toDate](#todate) 类似，但在转换失败时会返回一个默认值。该默认值为第二个参数（如果提供），否则为 [Date](../data-types/date.md) 的下边界。
+与 [toDate](#toDate) 类似，但在转换失败时会返回一个默认值。该默认值为第二个参数（如果提供），否则为 [Date](../data-types/date.md) 的下边界。
 
 **语法**
 
@@ -4057,7 +4057,7 @@ SELECT toDateTime('2022-12-30 13:44:17'), toDateTime(1685457500, 'UTC');
 
 ## toDateTimeOrZero {#todatetimeorzero}
 
-与 [toDateTime](#todatetime) 相同，但在收到无效参数时返回 [DateTime](../data-types/datetime.md) 的下界值。仅支持 [String](../data-types/string.md) 参数。
+与 [toDateTime](#toDateTime) 相同，但在收到无效参数时返回 [DateTime](../data-types/datetime.md) 的下界值。仅支持 [String](../data-types/string.md) 参数。
 
 **示例**
 
@@ -4077,7 +4077,7 @@ SELECT toDateTimeOrZero('2022-12-30 13:44:17'), toDateTimeOrZero('');
 
 ## toDateTimeOrNull {#todatetimeornull}
 
-与 [toDateTime](#todatetime) 相同，但在传入无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
+与 [toDateTime](#toDateTime) 相同，但在传入无效参数时返回 `NULL`。仅支持 [String](../data-types/string.md) 类型参数。
 
 **示例**
 
@@ -4097,7 +4097,7 @@ SELECT toDateTimeOrNull('2022-12-30 13:44:17'), toDateTimeOrNull('');
 
 ## toDateTimeOrDefault {#todatetimeordefault}
 
-类似于 [toDateTime](#todatetime)，但在转换失败时会返回一个默认值：如果指定了第三个参数，则使用该参数，否则使用 [DateTime](../data-types/datetime.md) 的最小值。
+类似于 [toDateTime](#toDateTime)，但在转换失败时会返回一个默认值：如果指定了第三个参数，则使用该参数，否则使用 [DateTime](../data-types/datetime.md) 的最小值。
 
 **语法**
 
@@ -4311,7 +4311,7 @@ SELECT toDateTime64('2019-01-01 00:00:00', 3, 'Asia/Istanbul') AS value, toTypeN
 
 ## toDateTime64OrZero {#todatetime64orzero}
 
-与 [toDateTime64](#todatetime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但若参数无效，则返回 [DateTime64](../data-types/datetime64.md) 的最小值。
+与 [toDateTime64](#toDateTime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但若参数无效，则返回 [DateTime64](../data-types/datetime64.md) 的最小值。
 
 **语法**
 
@@ -4347,13 +4347,13 @@ SELECT toDateTime64OrZero('2008-10-12 00:00:00 00:30:30', 3) AS invalid_arg
 
 **另请参阅**
 
-* [toDateTime64](#todatetime64)。
+* [toDateTime64](#toDateTime64)。
 * [toDateTime64OrNull](#todatetime64ornull)。
 * [toDateTime64OrDefault](#todatetime64ordefault)。
 
 ## toDateTime64OrNull {#todatetime64ornull}
 
-与 [toDateTime64](#todatetime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但如果接收到无效参数则返回 `NULL`。
+与 [toDateTime64](#toDateTime64) 类似，此函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，但如果接收到无效参数则返回 `NULL`。
 
 **语法**
 
@@ -4391,13 +4391,13 @@ SELECT
 
 **另请参阅**
 
-* [toDateTime64](#todatetime64)。
+* [toDateTime64](#toDateTime64)。
 * [toDateTime64OrZero](#todatetime64orzero)。
 * [toDateTime64OrDefault](#todatetime64ordefault)。
 
 ## toDateTime64OrDefault {#todatetime64ordefault}
 
-与 [toDateTime64](#todatetime64) 类似，该函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，
+与 [toDateTime64](#toDateTime64) 类似，该函数将输入值转换为 [DateTime64](../data-types/datetime64.md) 类型的值，
 但在接收到无效参数时，会返回 [DateTime64](../data-types/datetime64.md) 的默认值，
 或返回提供的默认值。
 
@@ -4438,7 +4438,7 @@ SELECT
 
 **另请参阅**
 
-* [toDateTime64](#todatetime64)。
+* [toDateTime64](#toDateTime64)。
 * [toDateTime64OrZero](#todatetime64orzero)。
 * [toDateTime64OrNull](#todatetime64ornull)。
 
@@ -5618,7 +5618,7 @@ SELECT toFixedString('foo', 8) AS s;
 └───────────────┘
 ```
 
-## toStringCutToZero {#tostringcuttozero}
+## toStringCutToZero {#toStringCutToZero}
 
 接受一个 String 或 FixedString 参数。返回将内容在遇到的第一个零字节处截断后的 String。
 
@@ -6962,7 +6962,7 @@ SELECT date + interval_to_days AS result
 └────────────┘
 ```
 
-## toIntervalHour {#tointervalhour}
+## toIntervalHour {#toIntervalHour}
 
 返回一个表示 `n` 小时的 [IntervalHour](../data-types/special-data-types/interval.md) 类型时间间隔。
 
@@ -7476,8 +7476,8 @@ FROM (SELECT arrayJoin([ts_now - 30, ts_now + 30]) AS ts_around);
 **另请参阅**
 
 * [RFC 1123](https://datatracker.ietf.org/doc/html/rfc1123)
-* [toDate](#todate)
-* [toDateTime](#todatetime)
+* [toDate](#toDate)
+* [toDateTime](#toDateTime)
 * [由 @xkcd 发布的 ISO 8601 公告](https://xkcd.com/1179/)
 * [RFC 3164](https://datatracker.ietf.org/doc/html/rfc3164#section-4.1.2)
 

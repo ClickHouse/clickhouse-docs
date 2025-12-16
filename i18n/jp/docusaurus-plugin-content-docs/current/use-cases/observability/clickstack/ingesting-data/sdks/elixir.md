@@ -40,7 +40,7 @@ end
 次の内容を `config.exs` ファイルに追加してください。
 
 ```elixir
-# config/releases.exs {#configreleasesexs}
+# config/releases.exs
 
 config :logger,
   level: :info,
@@ -52,8 +52,8 @@ config :logger,
 ClickStack にテレメトリを送信するために、シェル環境で次の環境変数を設定します。
 
 ```shell
-export HYPERDX_API_KEY='<インジェストAPIキー>' \
-OTEL_SERVICE_NAME='<アプリまたはサービスの名前>'
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリケーション内でサービスを識別するために使用されます。任意の名前を指定できます。*

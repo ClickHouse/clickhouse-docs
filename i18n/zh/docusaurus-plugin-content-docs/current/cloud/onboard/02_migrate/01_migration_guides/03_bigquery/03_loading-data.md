@@ -37,7 +37,7 @@ DECLARE n INT64;
 DECLARE i INT64;
 SET i = 0;
 
--- 建议将 n 设置为对应的十亿行数。例如 50 亿行时,n = 5
+-- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
 SET n = 100;
 
 WHILE i < n DO
@@ -70,8 +70,8 @@ END WHILE;
 首先，需要在 ClickHouse 中[创建表](/sql-reference/statements/create/table)：
 
 ```sql
--- 如果您的 BigQuery 表包含 STRUCT 类型的列，必须启用此设置
--- 以将该列映射到 ClickHouse 的 Nested 类型列
+-- If your BigQuery table contains a column of type STRUCT, you must enable this setting
+-- to map that column to a ClickHouse column of type Nested
 SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable

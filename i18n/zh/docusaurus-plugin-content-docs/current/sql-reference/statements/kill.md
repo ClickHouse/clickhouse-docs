@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
-  WHERE <用于在 system.processes 查询中执行 SELECT 的 WHERE 表达式>
+  WHERE <where expression to SELECT FROM system.processes query>
   [SYNC|ASYNC|TEST]
   [FORMAT format]
 ```
@@ -56,10 +56,10 @@ SELECT
 终止该查询：
 
 ```sql
--- 强制终止所有 query_id 为指定值的查询：
+-- Forcibly terminates all queries with the specified query_id:
 KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90'
 
--- 同步终止由用户名为 'username' 的用户运行的所有查询：
+-- Synchronously terminates all queries run by 'username':
 KILL QUERY WHERE user='username' SYNC
 ```
 
@@ -89,7 +89,7 @@ KILL QUERY WHERE user='username' SYNC
 
 ```sql
 KILL MUTATION
-  WHERE <用于 SELECT FROM system.mutations 查询的 WHERE 表达式>
+  WHERE <where expression to SELECT FROM system.mutations query>
   [TEST]
   [FORMAT format]
 ```
@@ -139,10 +139,10 @@ WHERE is_done = 0;
 按需终止这些 mutation：
 
 ```sql
--- 取消并删除该单个表的所有变更：
+-- Cancel and remove all mutations of the single table:
 KILL MUTATION WHERE database = 'default' AND table = 'table'
 
--- 取消指定的变更：
+-- Cancel the specific mutation:
 KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
 ```
 

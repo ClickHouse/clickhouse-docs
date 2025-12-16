@@ -33,10 +33,10 @@ import Image from '@theme/IdealImage';
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- 为用户授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- 创建发布。创建镜像时将使用此发布
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -58,9 +58,9 @@ import Image from '@theme/IdealImage';
 接下来在 Neon Postgres 实例中验证以下设置：
 
 ```sql
-SHOW wal_level; -- 应为 logical
-SHOW max_wal_senders; -- 应为 10
-SHOW max_replication_slots; -- 应为 10
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## IP 白名单（适用于 Neon 企业计划） {#ip-whitelisting-for-neon-enterprise-plan}

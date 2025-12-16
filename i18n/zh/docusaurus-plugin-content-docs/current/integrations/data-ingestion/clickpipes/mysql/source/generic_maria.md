@@ -22,12 +22,12 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 要在 MariaDB 实例上启用二进制日志，请确保配置了以下设置：
 
 ```sql
-server_id = 1               -- 大于等于 1;任何非 0 的值
+server_id = 1               -- or greater; anything but 0
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  -- 10.5.0 版本引入
-expire_logs_days = 1        -- 大于等于 1;设为 0 表示日志永久保留
+binlog_row_metadata = FULL  -- introduced in 10.5.0
+expire_logs_days = 1        -- or higher; 0 would mean logs are preserved forever
 ```
 
 要验证这些配置，请运行以下 SQL 命令：
@@ -49,7 +49,7 @@ server_id = 1
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  ; 仅在 10.5.0 及更新版本中可用
+binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 

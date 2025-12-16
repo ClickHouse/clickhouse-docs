@@ -28,21 +28,21 @@ chDB-node поддерживает два режима выполнения за
 ```javascript
 const { query } = require("chdb");
 
-// Базовый запрос
+// Basic query
 const result = query("SELECT version()", "CSV");
-console.log("Версия ClickHouse:", result);
+console.log("ClickHouse version:", result);
 
-// Запрос с несколькими столбцами
-const multiResult = query("SELECT 'Привет' as greeting, 'chDB' as engine, 42 as answer", "CSV");
-console.log("Результат с несколькими столбцами:", multiResult);
+// Query with multiple columns
+const multiResult = query("SELECT 'Hello' as greeting, 'chDB' as engine, 42 as answer", "CSV");
+console.log("Multi-column result:", multiResult);
 
-// Математические операции
+// Mathematical operations
 const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "JSON");
-console.log("Результат математических операций:", mathResult);
+console.log("Math result:", mathResult);
 
-// Системная информация
+// System information
 const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
-console.log("Системные функции:", systemInfo);
+console.log("System functions:", systemInfo);
 ```
 
 ### Запросы по сессиям {#session-based-queries}
@@ -50,11 +50,11 @@ console.log("Системные функции:", systemInfo);
 ```javascript
 const { Session } = require("chdb");
 
-// Создание сессии с постоянным хранилищем
+// Create a session with persistent storage
 const session = new Session("./chdb-node-data");
 
 try {
-    // Создание базы данных и таблицы
+    // Create database and table
     session.query(`
         CREATE DATABASE IF NOT EXISTS myapp;
         CREATE TABLE IF NOT EXISTS myapp.users (
@@ -65,7 +65,7 @@ try {
         ) ENGINE = MergeTree() ORDER BY id
     `);
 
-    // Вставка примеров данных
+    // Insert sample data
     session.query(`
         INSERT INTO myapp.users (id, name, email) VALUES 
         (1, 'Alice', 'alice@example.com'),
@@ -73,14 +73,14 @@ try {
         (3, 'Charlie', 'charlie@example.com')
     `);
 
-    // Запрос данных в различных форматах
+    // Query the data with different formats
     const csvResult = session.query("SELECT * FROM myapp.users ORDER BY id", "CSV");
-    console.log("Результат CSV:", csvResult);
+    console.log("CSV Result:", csvResult);
 
     const jsonResult = session.query("SELECT * FROM myapp.users ORDER BY id", "JSON");
-    console.log("Результат JSON:", jsonResult);
+    console.log("JSON Result:", jsonResult);
 
-    // Агрегирующие запросы
+    // Aggregate queries
     const stats = session.query(`
         SELECT 
             COUNT(*) as total_users,
@@ -88,11 +88,11 @@ try {
             MIN(created_at) as earliest_signup
         FROM myapp.users
     `, "Pretty");
-    console.log("Статистика пользователей:", stats);
+    console.log("User Statistics:", stats);
 
 } finally {
-    // Всегда выполняйте очистку сессии
-    session.cleanup(); // Удаляет файлы базы данных
+    // Always cleanup the session
+    session.cleanup(); // This deletes the database files
 }
 ```
 
@@ -104,7 +104,7 @@ const { Session } = require("chdb");
 const session = new Session("./data-processing");
 
 try {
-    // Обработка CSV-данных по URL
+    // Process CSV data from URL
     const result = session.query(`
         SELECT 
             COUNT(*) as total_records,
@@ -113,16 +113,16 @@ try {
         LIMIT 1000
     `, "JSON");
     
-    console.log("Анализ внешних данных:", result);
+    console.log("External data analysis:", result);
 
-    // Создание таблицы из внешних данных
+    // Create table from external data
     session.query(`
         CREATE TABLE web_analytics AS
         SELECT * FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV')
         LIMIT 10000
     `);
 
-    // Анализ импортированных данных
+    // Analyze the imported data
     const analysis = session.query(`
         SELECT 
             toDate("EventTime") as date,
@@ -134,7 +134,7 @@ try {
         LIMIT 10
     `, "Pretty");
     
-    console.log("Ежедневная аналитика:", analysis);
+    console.log("Daily analytics:", analysis);
 
 } finally {
     session.cleanup();
@@ -148,37 +148,37 @@ try {
 ```javascript
 const { query, Session } = require("chdb");
 
-// Обработка ошибок для отдельных запросов
+// Error handling for standalone queries
 function safeQuery(sql, format = "CSV") {
     try {
         const result = query(sql, format);
         return { success: true, data: result };
     } catch (error) {
-        console.error("Ошибка запроса:", error.message);
+        console.error("Query error:", error.message);
         return { success: false, error: error.message };
     }
 }
 
-// Пример использования
+// Example usage
 const result = safeQuery("SELECT invalid_syntax");
 if (result.success) {
-    console.log("Результат запроса:", result.data);
+    console.log("Query result:", result.data);
 } else {
-    console.log("Запрос не выполнен:", result.error);
+    console.log("Query failed:", result.error);
 }
 
-// Обработка ошибок для сессий
+// Error handling for sessions
 function safeSessionQuery() {
     const session = new Session("./error-test");
     
     try {
-        // Это вызовет ошибку из-за некорректного синтаксиса
+        // This will throw an error due to invalid syntax
         const result = session.query("CREATE TABLE invalid syntax", "CSV");
-        console.log("Неожиданный успех:", result);
+        console.log("Unexpected success:", result);
     } catch (error) {
-        console.error("Ошибка запроса в сессии:", error.message);
+        console.error("Session query error:", error.message);
     } finally {
-        // Всегда выполняйте очистку, даже при возникновении ошибки
+        // Always cleanup, even if an error occurred
         session.cleanup();
     }
 }

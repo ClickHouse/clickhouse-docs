@@ -43,7 +43,7 @@ SELECT * FROM system.opentelemetry_span_log LIMIT 1 FORMAT Vertical;
 结果：
 
 ```text
-第 1 行：
+Row 1:
 ──────
 trace_id:         cdab0847-0d62-61d5-4d38-dd65b19a1914
 span_id:          701487461015578150

@@ -24,7 +24,7 @@ ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierar
 ### 语法 {#common-table-expressions-syntax}
 
 ```sql
-WITH <标识符> AS <子查询表达式>
+WITH <identifier> AS <subquery expression>
 ```
 
 ### 示例 {#common-table-expressions-example}
@@ -109,13 +109,13 @@ ORDER BY extension
 AS SELECT '.sql';
 
 WITH
-    '.txt' AS 扩展名,
-    generated_names AS (
+    '.txt' as extension,
+    generated_names as (
         WITH
-            (id) -> concat(lower(id), 扩展名) AS gen名
-        SELECT gen名('test') AS 文件名 FROM extension_list
+            (id) -> concat(lower(id), extension) AS gen_name
+        SELECT gen_name('test') as file_name FROM extension_list
     )
-SELECT 文件名 FROM generated_names;
+SELECT file_name FROM generated_names;
 ```
 
 ```response
@@ -139,7 +139,7 @@ ORDER BY s;
 **示例 5：** 使用标量子查询结果
 
 ```sql
-/* 此示例将返回占用磁盘空间最大的前 10 个表 */
+/* this example would return TOP 10 of most huge tables */
 WITH
     (
         SELECT sum(bytes)
@@ -210,7 +210,7 @@ CREATE TABLE tree
     data String
 ) ENGINE = MergeTree ORDER BY id;
 
-INSERT INTO tree VALUES (0, NULL, '根节点'), (1, 0, '子节点_1'), (2, 0, '子节点_2'), (3, 1, '子节点_1_1');
+INSERT INTO tree VALUES (0, NULL, 'ROOT'), (1, 0, 'Child_1'), (2, 0, 'Child_2'), (3, 1, 'Child_1_1');
 ```
 
 我们可以通过以下查询遍历这棵树：
@@ -232,10 +232,10 @@ SELECT * FROM search_tree;
 
 ```text
 ┌─id─┬─parent_id─┬─data──────┐
-│  0 │      ᴺᵁᴸᴸ │ 根节点    │
-│  1 │         0 │ 子节点_1  │
-│  2 │         0 │ 子节点_2  │
-│  3 │         1 │ 子节点_1_1│
+│  0 │      ᴺᵁᴸᴸ │ ROOT      │
+│  1 │         0 │ Child_1   │
+│  2 │         0 │ Child_2   │
+│  3 │         1 │ Child_1_1 │
 └────┴───────────┴───────────┘
 ```
 
@@ -260,10 +260,10 @@ SELECT * FROM search_tree ORDER BY path;
 
 ```text
 ┌─id─┬─parent_id─┬─data──────┬─path────┐
-│  0 │      ᴺᵁᴸᴸ │ 根节点     │ [0]     │
-│  1 │         0 │ 子节点_1  │ [0,1]   │
-│  3 │         1 │ 子节点_1_1│ [0,1,3] │
-│  2 │         0 │ 子节点_2  │ [0,2]   │
+│  0 │      ᴺᵁᴸᴸ │ ROOT      │ [0]     │
+│  1 │         0 │ Child_1   │ [0,1]   │
+│  3 │         1 │ Child_1_1 │ [0,1,3] │
+│  2 │         0 │ Child_2   │ [0,2]   │
 └────┴───────────┴───────────┴─────────┘
 ```
 
@@ -285,11 +285,11 @@ SELECT * FROM search_tree ORDER BY depth;
 ```
 
 ```text
-┌─id─┬─链接─┬─数据──────┬─路径────┬─深度─┐
-│  0 │ ᴺᵁᴸᴸ │ 根节点     │ [0]     │     0 │
-│  1 │    0 │ 子节点_1   │ [0,1]   │     1 │
-│  2 │    0 │ 子节点_2   │ [0,2]   │     1 │
-│  3 │    1 │ 子节点_1_1 │ [0,1,3] │     2 │
+┌─id─┬─link─┬─data──────┬─path────┬─depth─┐
+│  0 │ ᴺᵁᴸᴸ │ ROOT      │ [0]     │     0 │
+│  1 │    0 │ Child_1   │ [0,1]   │     1 │
+│  2 │    0 │ Child_2   │ [0,2]   │     1 │
+│  3 │    1 │ Child_1_1 │ [0,1,3] │     2 │
 └────┴──────┴───────────┴─────────┴───────┘
 ```
 
@@ -315,13 +315,13 @@ INSERT INTO graph VALUES (1, 2, '1 -> 2'), (1, 3, '1 -> 3'), (2, 3, '2 -> 3'), (
 
 ```sql
 WITH RECURSIVE search_graph AS (
-    SELECT "from", "to", label FROM graph g
+    SELECT from, to, label FROM graph g
     UNION ALL
-    SELECT g."from", g."to", g.label
+    SELECT g.from, g.to, g.label
     FROM graph g, search_graph sg
-    WHERE g."from" = sg."to"
+    WHERE g.from = sg.to
 )
-SELECT DISTINCT * FROM search_graph ORDER BY "from";
+SELECT DISTINCT * FROM search_graph ORDER BY from;
 ```
 
 ```text
@@ -340,17 +340,17 @@ SELECT DISTINCT * FROM search_graph ORDER BY "from";
 INSERT INTO graph VALUES (5, 1, '5 -> 1');
 
 WITH RECURSIVE search_graph AS (
-    SELECT "from", "to", label FROM graph g
+    SELECT from, to, label FROM graph g
 UNION ALL
-    SELECT g."from", g."to", g.label
+    SELECT g.from, g.to, g.label
     FROM graph g, search_graph sg
-    WHERE g."from" = sg."to"
+    WHERE g.from = sg.to
 )
-SELECT DISTINCT * FROM search_graph ORDER BY "from";
+SELECT DISTINCT * FROM search_graph ORDER BY from;
 ```
 
 ```text
-代码：306。DB::Exception: 收到来自 localhost:9000 的响应。DB::Exception: 在求值 search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to) 时，已超出递归 CTE 的最大求值深度 (1000)。请考虑提高 max_recursive_cte_evaluation_depth 设置。在执行 RecursiveCTESource 时出错。(TOO_DEEP_RECURSION)
+Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum recursive CTE evaluation depth (1000) exceeded, during evaluation of search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Consider raising max_recursive_cte_evaluation_depth setting.: While executing RecursiveCTESource. (TOO_DEEP_RECURSION)
 ```
 
 处理循环的标准方法是构建一个记录已访问节点的数组：

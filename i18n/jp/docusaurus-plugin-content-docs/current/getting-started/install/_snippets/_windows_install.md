@@ -19,7 +19,7 @@ wsl --install
 新しい UNIX ユーザー名とパスワードを入力するよう求められます。希望するユーザー名とパスワードを入力すると、次のようなメッセージが表示されます。
 
 ```bash
-Ubuntu 24.04.1 LTS へようこそ (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
 
 ## curl を使ったスクリプトで ClickHouse をインストールする {#install-clickhouse-via-script-using-curl}
@@ -33,7 +33,7 @@ curl https://clickhouse.com/ | sh
 スクリプトの実行が正常に完了すると、次のメッセージが表示されます。
 
 ```bash
-ClickHouseバイナリのダウンロードが完了しました。以下のコマンドで実行できます:
+Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
 

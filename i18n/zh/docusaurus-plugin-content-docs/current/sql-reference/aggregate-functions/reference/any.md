@@ -21,7 +21,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-any(列) [RESPECT NULLS]
+any(column) [RESPECT NULLS]
 ```
 
 别名 `any(column)`（不带 `RESPECT NULLS`）

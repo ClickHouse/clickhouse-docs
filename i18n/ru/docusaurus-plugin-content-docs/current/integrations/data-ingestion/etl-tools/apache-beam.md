@@ -66,7 +66,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // Создайте объект Pipeline.
+        // Create a Pipeline object.
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -76,10 +76,10 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // Примените преобразования к конвейеру.
-        PCollection<String> lines = p.apply("Чтение строк", TextIO.read().from("src/main/resources/input.csv"));
+        // Apply transforms to the pipeline.
+        PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
-        PCollection<Row> rows = lines.apply("Преобразование в Row", ParDo.of(new DoFn<String, Row>() {
+        PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
             public void processElement(@Element String line, OutputReceiver<Row> out) {
 
@@ -91,10 +91,10 @@ public class Main {
             }
         })).setRowSchema(SCHEMA);
 
-        rows.apply("Запись в ClickHouse",
+        rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // Запустите конвейер.
+        // Run the pipeline.
         p.run().waitUntilFinish();
     }
 }

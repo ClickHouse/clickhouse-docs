@@ -20,7 +20,7 @@ This guide explores how you can use ClickHouse and S3 to implement an architectu
 
 Separation of storage and compute means that computing resources and storage resources are managed independently. In ClickHouse, this allows for better scalability, cost-efficiency, and flexibility. You can scale storage and compute resources separately as needed, optimizing performance and costs.
 
-Using ClickHouse backed by S3 is especially useful for use cases where query performance on "cold" data is less critical. ClickHouse provides support for using S3 as the storage for the `MergeTree` engine using `S3BackedMergeTree`. This table engine enables users to exploit the scalability and cost benefits of S3 while maintaining the insert and query performance of the `MergeTree` engine.
+Using ClickHouse backed by S3 is especially useful for use cases where query performance on "cold" data is less critical. ClickHouse provides support for using S3 as the storage for the `MergeTree` engine using `S3BackedMergeTree`. This table engine enables you to exploit the scalability and cost benefits of S3 while maintaining the insert and query performance of the `MergeTree` engine.
 
 Please note that implementing and managing a separation of storage and compute architecture is more complicated compared to standard ClickHouse deployments. While self-managed ClickHouse allows for separation of storage and compute as discussed in this guide, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which allows you to use ClickHouse in this architecture without configuration using the [`SharedMergeTree` table engine](/cloud/reference/shared-merge-tree).
 

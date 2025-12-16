@@ -68,8 +68,8 @@ ENGINE = Log
 Вставка данных:
 
 ```sql
-INSERT INTO log_table VALUES (now(),'REGULAR','Первое обычное сообщение')
-INSERT INTO log_table VALUES (now(),'REGULAR','Второе обычное сообщение'),(now(),'WARNING','Первое предупреждение')
+INSERT INTO log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 Мы использовали два запроса `INSERT`, чтобы создать два блока данных внутри файлов `<column>.bin`.
@@ -82,11 +82,11 @@ SELECT * FROM log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -98,8 +98,8 @@ SELECT * FROM log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение   │
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение   │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение      │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

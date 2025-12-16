@@ -51,7 +51,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-countMatches(строка, шаблон)
+countMatches(haystack, pattern)
 ```
 
 **Аргументы**
@@ -1309,7 +1309,7 @@ SELECT multiFuzzyMatchAny('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'ClickHos
 **Синтаксис**
 
 ```sql
-multiFuzzyMatchAnyIndex(стог_сена, расстояние, [шаблон1, шаблон2, ..., шаблонn])
+multiFuzzyMatchAnyIndex(haystack, distance, [pattern1, pattern2, ..., patternn])
 ```
 
 **Аргументы**
@@ -1382,7 +1382,7 @@ SELECT multiMatchAllIndices('ClickHouse', ['[0-9]', 'House', 'Click', 'ouse']);
 **Синтаксис**
 
 ```sql
-multiMatchAny(строка, шаблон1[, шаблон2, ...])
+multiMatchAny(haystack, pattern1[, pattern2, ...])
 ```
 
 **Аргументы**
@@ -1608,7 +1608,7 @@ SELECT multiSearchAllPositionsUTF8('ClickHouse',['C','H'])
 **Синтаксис**
 
 ```sql
-multiSearchAny(стог_сена, искомая1[, искомая2, ...])
+multiSearchAny(haystack, needle1[, needle2, ...])
 ```
 
 **Аргументы**
@@ -1643,7 +1643,7 @@ SELECT multiSearchAny('ClickHouse',['C','H'])
 **Синтаксис**
 
 ```sql
-multiSearchAnyCaseInsensitive(строка, [подстрока1, подстрока2, ..., подстрокаN])
+multiSearchAnyCaseInsensitive(haystack, [needle1, needle2, ..., needleN])
 ```
 
 **Аргументы**
@@ -1678,7 +1678,7 @@ SELECT multiSearchAnyCaseInsensitive('ClickHouse',['c','h'])
 **Синтаксис**
 
 ```sql
-multiSearchAnyCaseInsensitiveUTF8(иглаВСтоге, [игла1, игла2, ..., иглаN])
+multiSearchAnyCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
 **Аргументы**
@@ -1808,7 +1808,7 @@ SELECT multiSearchFirstIndex('Привет, мир', ['прощай', 'тест'
 **Синтаксис**
 
 ```sql
-multiSearchFirstIndexCaseInsensitive(струя, [игла1, игла2, ..., иглаN]
+multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN]
 ```
 
 **Аргументы**
@@ -2271,7 +2271,7 @@ SELECT ngramSearch('ClickHouse', 'Click')
 **Синтаксис**
 
 ```sql
-ngramSearchCaseInsensitive(строка, подстрока)
+ngramSearchCaseInsensitive(haystack, needle)
 ```
 
 **Аргументы**
@@ -2416,7 +2416,7 @@ SELECT notILike('ClickHouse', '%house%');
 
 ```sql
 notLike(haystack, pattern)
--- haystack НЕ СООТВЕТСТВУЕТ шаблону pattern (NOT LIKE)
+-- haystack NOT LIKE pattern
 ```
 
 **Аргументы**
@@ -2618,7 +2618,7 @@ SELECT positionCaseInsensitiveUTF8('Привет мир', 'МИР')
 **Синтаксис**
 
 ```sql
-positionUTF8(строка, подстрока[, начальная_позиция])
+positionUTF8(haystack, needle[, start_pos])
 ```
 
 **Аргументы**

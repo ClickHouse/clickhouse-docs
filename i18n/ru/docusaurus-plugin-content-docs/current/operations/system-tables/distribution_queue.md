@@ -34,16 +34,16 @@ SELECT * FROM system.distribution_queue LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
-база_данных:           default
-таблица:               dist
-путь_данных:           ./store/268/268bc070-3aad-4b1a-9cf2-4987580161af/default@127%2E0%2E0%2E2:9000/
-заблокирована:         1
-количество_ошибок:     0
-файлов_данных:         1
-сжатых_байт_данных:    499
-последнее_исключение:
+database:              default
+table:                 dist
+data_path:             ./store/268/268bc070-3aad-4b1a-9cf2-4987580161af/default@127%2E0%2E0%2E2:9000/
+is_blocked:            1
+error_count:           0
+data_files:            1
+data_compressed_bytes: 499
+last_exception:
 ```
 
 **См. также**

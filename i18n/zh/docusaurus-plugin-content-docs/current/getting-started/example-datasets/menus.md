@@ -21,9 +21,9 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum 2021_08_01_07_01_17_data.tgz
-# 校验和应为:db6126724de939a5481e3160a2d67d15 {#checksum-should-be-equal-to-db6126724de939a5481e3160a2d67d15}
+# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
 如有需要，请将链接替换为来自 [http://menus.nypl.org/data](http://menus.nypl.org/data) 的最新更新链接。

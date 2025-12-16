@@ -88,6 +88,7 @@ doc_type: 'guide'
   FROM hackernews
   ORDER BY cosineDistance( vector, <search vector>)
   LIMIT 10
+
   ```
 
   ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
@@ -101,104 +102,105 @@ doc_type: 'guide'
   以下に、`sentence_transformers` Pythonパッケージを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索用の埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数に引数として渡されます。
 
   ```python
-  from sentence_transformers import SentenceTransformer
-  import sys
+from sentence_transformers import SentenceTransformer
+import sys
 
-  import clickhouse_connect
+import clickhouse_connect
 
-  print("初期化中...")
+print("Initializing...")
 
-  model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-  chclient = clickhouse_connect.get_client() # ClickHouse credentials here
+chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
-  while True:
-      # ユーザーから検索クエリを取得
-      print("検索クエリを入力してください:")
-      input_query = sys.stdin.readline();
-      texts = [input_query]
+while True:
+    # Take the search query from user
+    print("Enter a search query :")
+    input_query = sys.stdin.readline();
+    texts = [input_query]
 
-      # モデルを実行して検索ベクトルを取得
-      print("埋め込みを生成中:", input_query);
-      embeddings = model.encode(texts)
+    # Run the model and obtain search vector
+    print("Generating the embedding for ", input_query);
+    embeddings = model.encode(texts)
 
-      print("ClickHouseへクエリ実行中...")
-      params = {'v1':list(embeddings[0]), 'v2':20}
-      result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-      print("結果:")
-      for row in result.result_rows:
-          print(row[0], row[2][:100])
-          print("---------")
-  ```
+    print("Querying ClickHouse...")
+    params = {'v1':list(embeddings[0]), 'v2':20}
+    result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
+    print("Results :")
+    for row in result.result_rows:
+        print(row[0], row[2][:100])
+        print("---------")
+
+```
 
   上記のPythonスクリプトの実行例と類似検索の結果を以下に示します
   (上位20件の投稿からそれぞれ100文字のみを出力):
 
   ```text
-  初期化中...
+Initializing...
 
-  検索クエリを入力:
-  OLAPキューブは有用か
+Enter a search query :
+Are OLAP cubes useful
 
-  "OLAPキューブは有用か" の埋め込みを生成中
+Generating the embedding for  "Are OLAP cubes useful"
 
-  ClickHouseへクエリ実行中...
+Querying ClickHouse...
 
-  結果:
+Results :
 
-  27742647 smartmic:
-  slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
-  ---------
-  27744260 georgewfraser:A data mart is a logical organization of data to help humans understand the schema. Wh
-  ---------
-  27761434 mwexler:&quot;We model data according to rigorous frameworks like Kimball or Inmon because we must r
-  ---------
-  28401230 chotmat:
-  erosenbe0: OLAP database is just a copy, replica, or archive of data with a schema designe
-  ---------
-  22198879 Merick:+1 for Apache Kylin, it&#x27;s a great project and awesome open source community. If anyone i
-  ---------
-  27741776 crazydoggers:I always felt the value of an OLAP cube was uncovering questions you may not know to as
-  ---------
-  22189480 shadowsun7:
-  _Codemonkeyism: After maintaining an OLAP cube system for some years, I&#x27;m not that
-  ---------
-  27742029 smartmic:
-  gengstrand: My first exposure to OLAP was on a team developing a front end to Essbase that
-  ---------
-  22364133 irfansharif:
-  simo7: I&#x27;m wondering how this technology could work for OLAP cubes.<p>An OLAP cube
-  ---------
-  23292746 scoresmoke:When I was developing my pet project for Web analytics (<a href="https:&#x2F;&#x2F;github
-  ---------
-  22198891 js8:It seems that the article makes a categorical error, arguing that OLAP cubes were replaced by co
-  ---------
-  28421602 chotmat:
-  7thaccount: Is there any advantage to OLAP cube over plain SQL (large historical database r
-  ---------
-  22195444 shadowsun7:
-  lkcubing: Thanks for sharing. Interesting write up.<p>While this article accurately capt
-  ---------
-  22198040 lkcubing:Thanks for sharing. Interesting write up.<p>While this article accurately captures the issu
-  ---------
-  3973185 stefanu:
-  sgt: Interesting idea. Ofcourse, OLAP isn't just about the underlying cubes and dimensions,
-  ---------
-  22190903 shadowsun7:
-  js8: It seems that the article makes a categorical error, arguing that OLAP cubes were r
-  ---------
-  28422241 sradman:OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the history of
-  ---------
-  28421480 chotmat:
-  sradman: OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the
-  ---------
-  27742515 BadInformatics:
-  quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the actual titl
-  ---------
-  28422935 chotmat:
-  rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
-  ---------
-  ```
+27742647 smartmic:
+slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
+---------
+27744260 georgewfraser:A data mart is a logical organization of data to help humans understand the schema. Wh
+---------
+27761434 mwexler:&quot;We model data according to rigorous frameworks like Kimball or Inmon because we must r
+---------
+28401230 chotmat:
+erosenbe0: OLAP database is just a copy, replica, or archive of data with a schema designe
+---------
+22198879 Merick:+1 for Apache Kylin, it&#x27;s a great project and awesome open source community. If anyone i
+---------
+27741776 crazydoggers:I always felt the value of an OLAP cube was uncovering questions you may not know to as
+---------
+22189480 shadowsun7:
+_Codemonkeyism: After maintaining an OLAP cube system for some years, I&#x27;m not that
+---------
+27742029 smartmic:
+gengstrand: My first exposure to OLAP was on a team developing a front end to Essbase that
+---------
+22364133 irfansharif:
+simo7: I&#x27;m wondering how this technology could work for OLAP cubes.<p>An OLAP cube
+---------
+23292746 scoresmoke:When I was developing my pet project for Web analytics (<a href="https:&#x2F;&#x2F;github
+---------
+22198891 js8:It seems that the article makes a categorical error, arguing that OLAP cubes were replaced by co
+---------
+28421602 chotmat:
+7thaccount: Is there any advantage to OLAP cube over plain SQL (large historical database r
+---------
+22195444 shadowsun7:
+lkcubing: Thanks for sharing. Interesting write up.<p>While this article accurately capt
+---------
+22198040 lkcubing:Thanks for sharing. Interesting write up.<p>While this article accurately captures the issu
+---------
+3973185 stefanu:
+sgt: Interesting idea. Ofcourse, OLAP isn't just about the underlying cubes and dimensions,
+---------
+22190903 shadowsun7:
+js8: It seems that the article makes a categorical error, arguing that OLAP cubes were r
+---------
+28422241 sradman:OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the history of
+---------
+28421480 chotmat:
+sradman: OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the
+---------
+27742515 BadInformatics:
+quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the actual titl
+---------
+28422935 chotmat:
+rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
+---------
+```
 
   ## 要約デモアプリケーション
 
@@ -221,25 +223,32 @@ doc_type: 'guide'
   ```shell
   $ python3 summarize.py
 
-  検索トピックを入力してください:
-  ClickHouseのパフォーマンス事例
+  Enter a search topic :
+  ClickHouse performance experiences
 
-  埋め込みを生成中 ---->  ClickHouseのパフォーマンス事例
+  Generating the embedding for ---->  ClickHouse performance experiences
 
-  関連記事を取得するためClickHouseへクエリを実行中...
+  Querying ClickHouse to retrieve relevant articles...
 
-  chatgpt-3.5-turboモデルを初期化中...
+  Initializing chatgpt-3.5-turbo model...
 
-  ClickHouseから取得した検索結果を要約中...
+  Summarizing search results retrieved from ClickHouse...
 
-  chatgpt-3.5による要約:
-  この議論では、ClickHouseをTimescaleDB、Apache Spark、AWS Redshift、QuestDBなどの各種データベースと比較しており、ClickHouseのコスト効率に優れた高性能と分析アプリケーションへの適合性を強調しています。ユーザーは、大規模な分析ワークロードを処理する際のClickHouseのシンプルさ、速度、リソース効率を高く評価していますが、DML操作やバックアップの難しさといった課題も指摘されています。ClickHouseは、リアルタイム集計計算機能と堅牢なエンジニアリングで評価されており、DruidやMemSQLなどの他のデータベースとの比較も行われています。全体として、ClickHouseはリアルタイムデータ処理、分析、大量データの効率的な処理のための強力なツールと見なされており、その優れたパフォーマンスとコスト効率性により人気を集めています。
+  Summary from chatgpt-3.5:
+  The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
+  AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
+  for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
+  in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
+  are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
+  engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
+  as a powerful tool for real-time data processing, analytics, and handling large volumes of data
+  efficiently, gaining popularity for its impressive performance and cost-effectiveness.
   ```
 
   上記アプリケーションのコード：
 
   ```python
-  print("初期化中...")
+  print("Initializing...")
 
   import sys
   import json
@@ -266,25 +275,25 @@ doc_type: 'guide'
   chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
   while True:
-      # ユーザーから検索クエリを取得
-      print("検索トピックを入力してください:")
+      # Take the search query from user
+      print("Enter a search topic :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # モデルを実行して検索ベクトルまたは参照ベクトルを取得
-      print("埋め込みを生成中 ----> ", input_query);
+      # Run the model and obtain search or reference vector
+      print("Generating the embedding for ----> ", input_query);
       embeddings = model.encode(texts)
 
-      print("ClickHouseへクエリ実行中...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':100}
       result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-      # すべての検索結果を結合
+      # Just join all the search results
       doc_results = ""
       for row in result.result_rows:
           doc_results = doc_results + "\n" + row[2]
 
-      print("chatgpt-3.5-turboモデルを初期化中")
+      print("Initializing chatgpt-3.5-turbo model")
       model_name = "gpt-3.5-turbo"
 
       text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
@@ -298,13 +307,13 @@ doc_type: 'guide'
       llm = ChatOpenAI(temperature=0, model_name=model_name)
 
       prompt_template = """
-  以下の内容を10文以内で簡潔に要約してください:
+  Write a concise summary of the following in not more than 10 sentences:
 
 
   {text}
 
 
-  簡潔な要約:
+  CONSCISE SUMMARY :
   """
 
       prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
@@ -314,7 +323,7 @@ doc_type: 'guide'
       gpt_35_turbo_max_tokens = 4096
       verbose = False
 
-      print("ClickHouseから取得した検索結果を要約中...")
+      print("Summarizing search results retrieved from ClickHouse...")
 
       if num_tokens <= gpt_35_turbo_max_tokens:
           chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
@@ -323,6 +332,6 @@ doc_type: 'guide'
 
       summary = chain.run(docs)
 
-      print(f"chatgpt-3.5による要約: {summary}")
+      print(f"Summary from chatgpt-3.5: {summary}")
   ```
 </VerticalStepper>

@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ## 语法 {#syntax}
 
 ```sql
-file([path_to_archive ::] 路径 [,格式] [,结构] [,压缩])
+file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
 
 ## 参数 {#arguments}
@@ -49,7 +49,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 因此，数据被写入 `test.tsv` 文件：
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
+# cat /var/lib/clickhouse/user_files/test.tsv
 1    2    3
 3    2    1
 1    3    2
@@ -69,8 +69,14 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 因此，数据会写入三个文件：`test_1.tsv`、`test_2.tsv` 和 `test_3.tsv`。
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
+# cat /var/lib/clickhouse/user_files/test_1.tsv
 3    2    1
+
+# cat /var/lib/clickhouse/user_files/test_2.tsv
+1    3    2
+
+# cat /var/lib/clickhouse/user_files/test_3.tsv
+1    2    3
 ```
 
 # cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
@@ -79,15 +85,6 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 # cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
-
-```
-```
-
-## 从文件读取的示例 {#examples-for-reading-from-a-file}
-
-### 对 CSV 文件执行 SELECT 查询 {#select-from-a-csv-file}
-
-首先，在服务器配置中设置 `user_files_path`，并准备一个名为 `test.csv` 的文件：
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
@@ -99,13 +96,19 @@ $ cat /var/lib/clickhouse/user_files/test.csv
     78,43,45
 ```
 
-然后，将 `test.csv` 中的数据读取到一张表中，并查询其前两行：
+## 从文件读取的示例 {#examples-for-reading-from-a-file}
+
+### 对 CSV 文件执行 SELECT 查询 {#select-from-a-csv-file}
+
+首先，在服务器配置中设置 `user_files_path`，并准备一个名为 `test.csv` 的文件：
 
 ```sql
 SELECT * FROM
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 LIMIT 2;
 ```
+
+然后，将 `test.csv` 中的数据读取到一张表中，并查询其前两行：
 
 ```text
 ┌─column1─┬─column2─┬─column3─┐
@@ -114,13 +117,13 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### 从文件插入数据到表中 {#inserting-data-from-a-file-into-a-table}
-
 ```sql
 INSERT INTO FUNCTION
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 VALUES (1, 2, 3), (3, 2, 1);
 ```
+
+### 从文件插入数据到表中 {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 SELECT * FROM
@@ -134,10 +137,14 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
+```sql
+SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
+```
+
 从 `archive1.zip` 和/或 `archive2.zip` 压缩包中的 `table.csv` 读取数据：
 
 ```sql
-SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
+SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
 ## 路径中的通配符 {#globs-in-path}
@@ -168,19 +175,19 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 查询所有文件中的总行数：
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
 另一种具有相同效果的路径表达式：
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 ```
 
 使用隐式通配符 `*` 查询 `some_dir` 中的总行数：
 
 ```sql
-SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
 ```
 
 :::note
@@ -192,7 +199,7 @@ SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 查询名为 `file000`、`file001`、...、`file999` 这些文件的总行数：
 
 ```sql
-SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ```
 
 **示例**
@@ -200,7 +207,7 @@ SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String,
 递归统计目录 `big_dir/` 中所有文件的总行数：
 
 ```sql
-SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
 **示例**
@@ -208,7 +215,7 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 递归查询目录 `big_dir/` 中任意子目录下所有名为 `file002` 的文件中的总行数：
 
 ```sql
-SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
+SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
 ## 虚拟列 {#virtual-columns}

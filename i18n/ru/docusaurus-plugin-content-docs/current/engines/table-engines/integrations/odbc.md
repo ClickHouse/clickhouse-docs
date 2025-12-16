@@ -28,7 +28,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(источник_данных, внешняя_база_данных, внешняя_таблица)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
@@ -84,7 +84,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Подключено!                           |
+| Connected!                            |
 |                                       |
 ...
 ```

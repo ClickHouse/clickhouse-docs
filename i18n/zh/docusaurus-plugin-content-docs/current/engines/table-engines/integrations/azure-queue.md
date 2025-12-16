@@ -141,7 +141,7 @@ SELECT * FROM stats ORDER BY key;
     <database>system</database>
     <table>azure_queue_log</table>
   </azure_queue_log>
-```
+  ```
 
 这个持久化表与 `system.s3queue` 表包含相同的信息，但记录的是已处理和失败的文件。
 
@@ -167,7 +167,6 @@ CREATE TABLE system.azure_queue_log
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
-SETTINGS index_granularity = 8192
 COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
 
 ```

@@ -20,9 +20,9 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
 Crunchy Bridge では、論理レプリケーションが[既定](https://docs.crunchybridge.com/how-to/logical-replication)で有効になっています。以下の設定が正しく構成されていることを確認してください。そうでない場合は、必要に応じて調整してください。
 
 ```sql
-SHOW wal_level; -- logical に設定する必要があります
-SHOW max_wal_senders; -- 10 に設定する必要があります
-SHOW max_replication_slots; -- 10 に設定する必要があります
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## ClickPipes 用ユーザーの作成と権限付与 {#creating-clickpipes-user-and-granting-permissions}

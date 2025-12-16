@@ -63,7 +63,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-8192 строк в наборе. Затрачено: 0.079 сек. Обработано 100.00 миллионов строк, 800.10 МБ (1.26 миллиардов строк/сек., 10.10 ГБ/сек.
+8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
 Теперь добавьте самый простой пропускающий индекс:
@@ -112,7 +112,7 @@ SET send_logs_level='trace';
 Это позволит получить полезную отладочную информацию при настройке SQL‑запроса и индексов таблицы. Из приведённого выше примера видно, что в отладочном логе указано, что индекс пропуска (skip index) отбросил все гранулы, кроме двух:
 
 ```sql
-<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Индекс `vix` пропустил 6102/6104 гранул.
+<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 
 ## Типы индексов пропуска данных {#skip-index-types}

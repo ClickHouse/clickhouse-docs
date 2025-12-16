@@ -118,7 +118,7 @@ DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 **構文**
 
 ```sql
-DROP FUNCTION [IF EXISTS] 関数名 [ON CLUSTER クラスター]
+DROP FUNCTION [IF EXISTS] function_name [on CLUSTER cluster]
 ```
 
 **例**
@@ -135,7 +135,7 @@ DROP FUNCTION linear_equation;
 **構文**
 
 ```sql
-NAMED COLLECTION を削除 [IF EXISTS] name [on CLUSTER cluster]
+DROP NAMED COLLECTION [IF EXISTS] name [on CLUSTER cluster]
 ```
 
 **例**

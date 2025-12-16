@@ -85,7 +85,7 @@ SELECT toDecimal32(4.2, 8) AS x, x * x
 ```
 
 ```text
-DB::Exception: スケールが範囲外です。
+DB::Exception: Scale is out of bounds.
 ```
 
 ```sql
@@ -93,7 +93,7 @@ SELECT toDecimal32(4.2, 8) AS x, 6 * x
 ```
 
 ```text
-DB::Exception: Decimal演算オーバーフロー。
+DB::Exception: Decimal math overflow.
 ```
 
 オーバーフローのチェックは演算を遅くします。オーバーフローが発生しないことが分かっている場合は、`decimal_check_overflow` 設定を使用してチェックを無効化するのが有効です。チェックを無効化した状態でオーバーフローが発生すると、結果は正しくなくなります。
@@ -116,7 +116,7 @@ SELECT toDecimal32(1, 8) < 100
 ```
 
 ```text
-DB::Exception: 比較できません。
+DB::Exception: Can't compare.
 ```
 
 **関連項目**

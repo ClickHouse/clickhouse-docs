@@ -10,7 +10,7 @@ keywords: ['troubleshooting', 'debugging', 'problem solving', 'errors', 'diagnos
 
 ### Cannot import GPG keys from keyserver.ubuntu.com with apt-key {#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key}
 
-The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). Users should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
+The `apt-key` feature with the [Advanced package tool (APT) has been deprecated](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html). You should use the `gpg` command instead. Please refer the [install guide](../getting-started/install/install.mdx) article.
 
 ### Cannot import GPG keys from keyserver.ubuntu.com with gpg {#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg}
 

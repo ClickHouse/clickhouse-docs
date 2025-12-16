@@ -159,7 +159,7 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 20566
 ```
 
-## &#95;&#95;applyFilter {#&#95;&#95;applyFilter}
+## __applyFilter {#__applyFilter}
 
 引入于：v25.10
 
@@ -179,8 +179,6 @@ __applyFilter(filter_name, key)
 **返回值**
 
 如果应当过滤该 key，则返回 False [`Bool`](/sql-reference/data-types/boolean)
-
-**示例**
 
 **示例**
 

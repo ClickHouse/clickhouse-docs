@@ -353,25 +353,22 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
-┌─explain─────────────────────────────────────────────┐
-
-1. │ Выражение ((Projection + перед ORDER BY))          │
-2. │   Агрегирование                                    │
-3. │   Фильтр                                           │
-4. │           ReadFromMergeTree (comments&#95;user&#95;id)      │
-5. │           Индексы:                                 │
-6. │           PrimaryKey                                │
-7. │           Ключи:                                   │
-8. │           UserId                                    │
-9. │           Условие: (UserId in [8592047, 8592047])  │
-10. │           Части: 2/2                               │
-11. │           Гранулы: 2/11360                         │
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
     └─────────────────────────────────────────────────────┘
 
-11 строк в наборе. Затрачено: 0.004 сек.
-
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ### Когда использовать проекции {#when-to-use-projections}
@@ -429,8 +426,8 @@ LIMIT 5
 5. │ John             │    17638812 │
    └──────────────────┴─────────────┘
 
-Получено 5 строк. Время выполнения: 0.076 сек. Обработано 24.35 млн строк, 140.21 МБ (320.82 млн строк/с., 1.85 ГБ/с.)
-Пиковое потребление памяти: 323.37 МиБ.
+5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
+Peak memory usage: 323.37 MiB.
 ```
 
 **Какие теги набирают больше всего просмотров:**
@@ -461,8 +458,8 @@ LIMIT 5
 5. │ android    │ 4258320338 │
    └────────────┴────────────┘
 
-Выбрано 5 строк. Прошло: 0,318 сек. Обработано 59,82 млн строк, 1,45 ГБ (188,01 млн строк/сек., 4,54 ГБ/сек.)
-Пиковое использование памяти: 567,41 МиБ.
+5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
+Peak memory usage: 567.41 MiB.
 ```
 
 ## Агрегатные функции {#aggregate-functions}
@@ -492,13 +489,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                    2008
-MostViewedQuestionTitle: Как найти индекс элемента в списке?
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:            6316987
 
 Row 2:
 ──────
 Year:                    2009
-MostViewedQuestionTitle: Как отменить последние локальные коммиты в Git?
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
 ...
@@ -506,13 +503,13 @@ MaxViewCount:            13962748
 Row 16:
 ───────
 Year:                    2023
-MostViewedQuestionTitle: Как исправить ошибку "error: externally-managed-environment" при использовании pip 3?
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:            506822
 
 Row 17:
 ───────
 Year:                    2024
-MostViewedQuestionTitle: Предупреждение "Third-party cookie will be blocked. Learn more in the Issues tab"
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:            66975
 
 17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
@@ -550,8 +547,8 @@ LIMIT 5
 │ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
-Получено 5 строк. Время выполнения: 0.096 сек. Обработано 5.08 млн строк, 155.73 МБ (53.10 млн строк/сек., 1.63 ГБ/сек.)
-Пиковое потребление памяти: 410.37 МиБ.
+5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
+Peak memory usage: 410.37 MiB.
 ```
 
 На этом заканчивается наше базовое руководство для пользователей, переходящих с BigQuery на ClickHouse. Мы рекомендуем таким пользователям ознакомиться с руководством по [моделированию данных в ClickHouse](/data-modeling/schema-design), чтобы узнать больше о расширенных возможностях ClickHouse.

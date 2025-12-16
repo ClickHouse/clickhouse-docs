@@ -81,7 +81,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 
 ```text
 ┌─map───────────────────────────┐
-│ {1:'Готово',2:'Внимание',3:'Марш'} │
+│ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
 
@@ -97,8 +97,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   то же, что mapKeys(m)
-SELECT m.values FROM tab; -- то же, что mapValues(m)
+SELECT m.keys FROM tab; --   same as mapKeys(m)
+SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
 Результат:

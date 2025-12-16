@@ -68,7 +68,7 @@ PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() TABLE 'source_table'))
 LAYOUT(FLAT())
 LIFETIME(MIN 0 MAX 1000)
-COMMENT '一時的な辞書';
+COMMENT 'The temporary dictionary';
 ```
 
 辞書が読み込まれていることを確認してください。
@@ -78,7 +78,7 @@ SELECT * FROM system.dictionaries LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-1 行目:
+Row 1:
 ──────
 database:                    default
 name:                        dictionary_with_comment
@@ -103,5 +103,5 @@ loading_start_time:          1970-01-01 00:00:00
 last_successful_update_time: 1970-01-01 00:00:00
 loading_duration:            0
 last_exception:
-comment:                     一時ディクショナリ
+comment:                     The temporary dictionary
 ```

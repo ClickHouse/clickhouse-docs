@@ -66,8 +66,8 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 Общая формула выглядит так:
 
 ```text
-row_is_visible = (одно или несколько условий разрешающих политик не равно нулю) AND
-                 (все условия ограничивающих политик не равны нулю)
+row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
+                 (all of the restrictive policies's conditions are non-zero)
 ```
 
 Например, следующие политики:

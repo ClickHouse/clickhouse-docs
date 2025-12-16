@@ -108,7 +108,7 @@ hyperdx:
 
 ```yaml
 hyperdx:
-  frontendUrl: "https://hyperdx.yourdomain.com"  # イングレスのホストと一致させる必要があります
+  frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
   ingress:
     enabled: true
     host: "hyperdx.yourdomain.com"
@@ -240,7 +240,7 @@ OTEL collector を外部公開する必要がない場合は、この設定を�
 
 ```shell
 kubectl get ingress -A
-kubectl describe ingress <イングレス名>
+kubectl describe ingress <ingress-name>
 ```
 
 **イングレスコントローラーのログを確認する：**
@@ -255,7 +255,7 @@ kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx
 
 ```shell
 curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
-# Content-Type: application/javascript が返される必要があります {#should-return-content-type-applicationjavascript}
+# Should return Content-Type: application/javascript
 ```
 
 **ブラウザ開発者ツール:**

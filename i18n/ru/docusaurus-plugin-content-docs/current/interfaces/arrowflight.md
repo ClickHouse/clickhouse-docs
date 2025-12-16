@@ -43,7 +43,7 @@ ClickHouse поддерживает интеграцию с протоколом
 Перезапустите сервер ClickHouse. После успешного запуска вы должны увидеть в логах сообщение, похожее на следующее:
 
 ```bash
-{} <Information> Application: Протокол совместимости Arrow Flight: 0.0.0.0:9005
+{} <Information> Application: Arrow Flight compatibility protocol: 0.0.0.0:9005
 ```
 
 ## Подключение к ClickHouse через Arrow Flight SQL {#connecting-to-clickhouse}

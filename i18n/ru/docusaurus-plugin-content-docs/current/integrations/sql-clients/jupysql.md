@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Интеграция между JupySQL и ClickHouse стала возможной благодаря использованию библиотеки clickhouse&#95;sqlalchemy. Эта библиотека обеспечивает удобное взаимодействие между двумя системами и позволяет пользователям подключаться к ClickHouse и указывать используемый SQL-диалект. После подключения пользователи могут выполнять SQL-запросы непосредственно из штатного интерфейса ClickHouse или напрямую из блокнота Jupyter.
 
 ```python
-# Установите необходимые пакеты
+# Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
@@ -37,7 +37,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import pandas as pd
 from sklearn_evaluation import plot
 
-# Импортируем расширение jupysql Jupyter для создания SQL-ячеек
+# Import jupysql Jupyter extension to create SQL cells
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
@@ -385,7 +385,7 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Количество'>
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
 
 <Image img={jupysql_plot_1} size="md" alt="Гистограмма распределения длины поездок по 10 бинам из набора данных short-trips" border />
@@ -393,8 +393,8 @@ WHERE trip_distance < 6.3
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Расстояние поездки из поездок < 6.3")
-_ = ax.set_xlabel("Расстояние поездки")
+ax.set_title("Trip distance from trips < 6.3")
+_ = ax.set_xlabel("Trip distance")
 ```
 
 <Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение длины поездок с 50 столбцами и сеткой, с заголовком «Дистанция поездки для поездок < 6.3»" border />

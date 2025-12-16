@@ -162,14 +162,14 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- 控制台输出器 -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 文件输出器 -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -178,13 +178,13 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
         </encoder>
     </appender>
 
-    <!-- 根日志记录器 -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- 特定包的自定义日志级别 -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

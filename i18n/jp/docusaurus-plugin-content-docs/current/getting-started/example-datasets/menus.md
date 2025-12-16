@@ -21,9 +21,9 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-# オプション: チェックサムの検証 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum 2021_08_01_07_01_17_data.tgz
-# チェックサムは次と一致する必要があります: db6126724de939a5481e3160a2d67d15 {#checksum-should-be-equal-to-db6126724de939a5481e3160a2d67d15}
+# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
 必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。

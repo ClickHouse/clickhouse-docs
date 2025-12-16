@@ -43,8 +43,8 @@ opentelemetry-bootstrap -a install
 Далее в оболочке необходимо задать следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
-export HYPERDX_API_KEY='<ВАШ_API_КЛЮЧ_ДЛЯ_ПРИЕМА_ДАННЫХ>' \
-OTEL_SERVICE_NAME='<ИМЯ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>' \
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
 

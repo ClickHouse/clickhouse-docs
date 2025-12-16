@@ -121,10 +121,10 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
-    (101, '你好,ClickHouse!',                                 now(),       -1.0    ),
-    (102, '每批次插入大量数据行',                     yesterday(), 1.41421 ),
-    (102, '根据常用查询对数据进行排序', today(),     2.718   ),
-    (101, 'Granule 是数据读取的最小单元',      now() + 5,   3.14159 )
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
 ```
 
 为验证其是否已生效，我们将运行以下 `SELECT` 查询：
@@ -137,10 +137,10 @@ SELECT * FROM helloworld.my_first_table
 
 ```response
 user_id message                                             timestamp           metric
-101         你好，ClickHouse！                                  2024-11-13 20:01:22     -1
-101         颗粒是读取的最小数据块           2024-11-13 20:01:27 3.14159
-102         每批次插入大量数据行                          2024-11-12 00:00:00 1.41421
-102         根据常用查询对数据进行排序  2024-11-13 00:00:00     2.718
+101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
 ## 从 Postgres 加载数据 {#loading-data-from-postgres}

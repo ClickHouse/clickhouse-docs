@@ -41,7 +41,7 @@ pub unsafe extern "C" fn blake3_apply_shim(
     out_char_data: *mut u8,
 ) -> *mut c_char {
     if begin.is_null() {
-        let err_str = CString::new("входные данные являются нулевым указателем").unwrap();
+        let err_str = CString::new("input was a null pointer").unwrap();
         return err_str.into_raw();
     }
     let mut hasher = blake3::Hasher::new();

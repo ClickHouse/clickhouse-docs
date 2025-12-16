@@ -15,7 +15,7 @@ keywords: ['индексы пропуска данных', 'пропуск да�
 **Синтаксис индекса:**
 
 ```sql
-INDEX имя выражение TYPE тип(...) [GRANULARITY N]
+INDEX name expr TYPE type(...) [GRANULARITY N]
 ```
 
 ClickHouse поддерживает пять типов индексов пропуска данных:
@@ -35,7 +35,7 @@ ClickHouse поддерживает пять типов индексов про�
 Индекс `minmax` лучше всего подходит для диапазонных предикатов по слабо упорядоченным данным или по столбцам, коррелированным с `ORDER BY`.
 
 ```sql
--- Определение при создании таблицы (CREATE TABLE)
+-- Define in CREATE TABLE
 CREATE TABLE events
 (
   ts DateTime,
@@ -46,14 +46,14 @@ CREATE TABLE events
 ENGINE=MergeTree
 ORDER BY ts;
 
--- Или добавить позже и материализовать
+-- Or add later and materialize
 ALTER TABLE events ADD INDEX ts_minmax ts TYPE minmax GRANULARITY 1;
 ALTER TABLE events MATERIALIZE INDEX ts_minmax;
 
--- Запрос, который использует индекс
+-- Query that benefits from the index
 SELECT count() FROM events WHERE ts >= now() - 3600;
 
--- Проверка использования
+-- Verify usage
 EXPLAIN indexes = 1
 SELECT count() FROM events WHERE ts >= now() - 3600;
 ```
@@ -95,11 +95,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 Индекс `ngrambf_v1` разбивает строки на n-граммы. Он хорошо подходит для запросов вида `LIKE '%...%'`. Поддерживаются типы String/FixedString/Map (через mapKeys/mapValues), а также настраиваемые размер, количество хэшей и значение seed. Дополнительные сведения см. в документации по [N-граммному фильтру Блума](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter).
 
 ```sql
--- Создать индекс для поиска подстроки
+-- Create index for substring search
 ALTER TABLE logs ADD INDEX msg_ngram msg TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_ngram;
 
--- Поиск подстроки
+-- Substring search
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 
 EXPLAIN indexes = 1
@@ -119,7 +119,7 @@ CREATE FUNCTION bfEstimateFunctions AS
 CREATE FUNCTION bfEstimateBmSize AS
 (total_grams, p_false) -> ceil((total_grams * log(p_false)) / log(1 / pow(2, log(2))));
 
--- Пример расчёта размера для 4300 n-грамм, p_false = 0.0001
+-- Example sizing for 4300 ngrams, p_false = 0.0001
 SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_bytes;  -- ~10304
 SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 ```
@@ -136,7 +136,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 ALTER TABLE logs ADD INDEX msg_token lower(msg) TYPE tokenbf_v1(10000, 7, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_token;
 
--- Поиск слова (без учёта регистра через lower)
+-- Word search (case-insensitive via lower)
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 EXPLAIN indexes = 1
@@ -176,7 +176,7 @@ ALTER TABLE t MATERIALIZE INDEX idx_bf;
 EXPLAIN indexes = 1
 SELECT count() FROM t WHERE u64 IN (123, 456);
 
--- Опционально: подробная информация о прунинге
+-- Optional: detailed pruning info
 SET send_logs_level = 'trace';
 ```
 
@@ -204,7 +204,7 @@ SET send_logs_level = 'trace';
 Отключайте отдельные индексы по имени для конкретных запросов во время тестирования и устранения неполадок. Также доступны настройки для принудительного использования индексов при необходимости. См. [`ignore_data_skipping_indices`](/operations/settings/settings#ignore_data_skipping_indices).
 
 ```sql
--- Игнорирование индекса по имени
+-- Ignore an index by name
 SELECT * FROM logs
 WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';

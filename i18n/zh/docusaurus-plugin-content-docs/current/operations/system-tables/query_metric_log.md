@@ -31,7 +31,7 @@ SELECT * FROM system.query_metric_log LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-第 1 行：
+Row 1:
 ──────
 query_id:                                                        97c8ba04-b6d4-4bd7-b13e-6201c5c6e49d
 hostname:                                                        clickhouse.eu-central1.internal

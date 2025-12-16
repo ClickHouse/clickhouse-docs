@@ -109,8 +109,8 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ 文本 A │
-│ B    │ 文本 B │
+│ A    │ Text A │
+│ B    │ Text B │
 │ C    │        │
 └──────┴────────┘
 ```
@@ -126,7 +126,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
-│ B    │ 文本 B │     15 │
+│ B    │ Text B │     15 │
 └──────┴────────┴────────┘
 ```
 
@@ -297,10 +297,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 `ASOF JOIN ... ON` 语法：
 
 ```sql
-SELECT 表达式列表
-FROM 表_1
-ASOF LEFT JOIN 表_2
-ON 等值条件 AND 最近匹配条件
+SELECT expressions_list
+FROM table_1
+ASOF LEFT JOIN table_2
+ON equi_cond AND closest_match_cond
 ```
 
 你可以使用任意数量的等值条件，但最多只能使用一个最近匹配条件。例如：`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
@@ -310,10 +310,10 @@ ON 等值条件 AND 最近匹配条件
 语法 `ASOF JOIN ... USING`：
 
 ```sql
-SELECT 表达式列表
-FROM 表_1
-ASOF JOIN 表_2
-USING (等值列_1, ... 等值列_N, asof_列)
+SELECT expressions_list
+FROM table_1
+ASOF JOIN table_2
+USING (equi_column1, ... equi_columnN, asof_column)
 ```
 
 `ASOF JOIN` 使用 `equi_columnX` 进行等值连接，并使用 `asof_column` 在满足 `table_1.asof_column >= table_2.asof_column` 条件的情况下进行最接近的匹配连接。`asof_column` 列在 `USING` 子句中始终是最后一列。
@@ -321,13 +321,13 @@ USING (等值列_1, ... 等值列_N, asof_列)
 例如，考虑下列表：
 
 ```text
-         表_1                              表_2
-      事件    | 事件时间 | 用户ID       事件    | 事件时间 | 用户ID
+         table_1                           table_2
+      event   | ev_time | user_id       event   | ev_time | user_id
     ----------|---------|----------   ----------|---------|----------
                   ...                               ...
-    事件_1_1  |  12:00  |  42         事件_2_1  |  11:59  |   42
-                  ...                 事件_2_2  |  12:30  |   42
-    事件_1_2  |  13:00  |  42         事件_2_3  |  13:00  |   42
+    event_1_1 |  12:00  |  42         event_2_1 |  11:59  |   42
+                  ...                 event_2_2 |  12:30  |   42
+    event_1_2 |  13:00  |  42         event_2_3 |  13:00  |   42
                   ...                               ...
 ```
 

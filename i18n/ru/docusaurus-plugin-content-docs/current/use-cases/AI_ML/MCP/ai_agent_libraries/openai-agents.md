@@ -44,11 +44,11 @@ pip install -q openai-agents
 
 ```python
 import os, getpass
-os.environ["OPENAI_API_KEY"] = getpass.getpass("Введите API-ключ OpenAI:")
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
 ```
 
 ```response title="Response"
-Введите API-ключ OpenAI: ········
+Enter OpenAI API Key: ········
 ```
 
 ## Инициализация MCP Server и агента OpenAI {#initialize-mcp-and-agent}
@@ -62,59 +62,59 @@ from agents import Agent, Runner, trace
 import json
 
 def simple_render_chunk(chunk):
-    """Упрощённая версия, фильтрующая только важные события"""
+    """Simple version that just filters important events"""
 
-    # Вызовы инструментов
+    # Tool calls
     if (hasattr(chunk, 'type') and
             chunk.type == 'run_item_stream_event'):
 
         if chunk.name == 'tool_called':
             tool_name = chunk.item.raw_item.name
             args = chunk.item.raw_item.arguments
-            print(f"🔧 Инструмент: {tool_name}({args})")
+            print(f"🔧 Tool: {tool_name}({args})")
 
         elif chunk.name == 'tool_output':
             try:
-                # Обработка строкового и уже разобранного вывода
+                # Handle both string and already-parsed output
                 if isinstance(chunk.item.output, str):
                     output = json.loads(chunk.item.output)
                 else:
                     output = chunk.item.output
 
-                # Обработка форматов dict и list
+                # Handle both dict and list formats
                 if isinstance(output, dict):
                     if output.get('type') == 'text':
                         text = output['text']
                         if 'Error' in text:
-                            print(f"❌ Ошибка: {text}")
+                            print(f"❌ Error: {text}")
                         else:
-                            print(f"✅ Результат: {text[:100]}...")
+                            print(f"✅ Result: {text[:100]}...")
                 elif isinstance(output, list) and len(output) > 0:
-                    # Обработка формата списка
+                    # Handle list format
                     first_item = output[0]
                     if isinstance(first_item, dict) and first_item.get('type') == 'text':
                         text = first_item['text']
                         if 'Error' in text:
-                            print(f"❌ Ошибка: {text}")
+                            print(f"❌ Error: {text}")
                         else:
-                            print(f"✅ Результат: {text[:100]}...")
+                            print(f"✅ Result: {text[:100]}...")
                 else:
-                    # Резервный вариант — вывод необработанных данных
-                    print(f"✅ Результат: {str(output)[:100]}...")
+                    # Fallback - just print the raw output
+                    print(f"✅ Result: {str(output)[:100]}...")
 
             except (json.JSONDecodeError, AttributeError, KeyError) as e:
-                # Резервный вариант: вывод необработанных данных при ошибке разбора
-                print(f"✅ Результат: {str(chunk.item.output)[:100]}...")
+                # Fallback to raw output if parsing fails
+                print(f"✅ Result: {str(chunk.item.output)[:100]}...")
 
         elif chunk.name == 'message_output_created':
             try:
                 content = chunk.item.raw_item.content
                 if content and len(content) > 0:
-                    print(f"💬 Ответ: {content[0].text}")
+                    print(f"💬 Response: {content[0].text}")
             except (AttributeError, IndexError):
-                print(f"💬 Ответ: {str(chunk.item)[:100]}...")
+                print(f"💬 Response: {str(chunk.item)[:100]}...")
 
-    # Текстовые дельты для потоковой передачи
+    # Text deltas for streaming
     elif (hasattr(chunk, 'type') and
           chunk.type == 'raw_response_event' and
           hasattr(chunk, 'data') and
@@ -136,21 +136,21 @@ async with MCPServerStdio(
         }, client_session_timeout_seconds = 60
 ) as server:
     agent = Agent(
-        name="Ассистент",
-        instructions="Используйте инструменты для выполнения запросов к ClickHouse и ответов на вопросы на основе этих файлов.",
+        name="Assistant",
+        instructions="Use the tools to query ClickHouse and answer questions based on those files.",
         mcp_servers=[server],
     )
 
-    message = "Какой самый крупный проект на GitHub в 2025 году?"
-    print(f"\n\nВыполнение: {message}")
-    with trace("Рабочий процесс поиска крупнейшего проекта"):
+    message = "What's the biggest GitHub project so far in 2025?"
+    print(f"\n\nRunning: {message}")
+    with trace("Biggest project workflow"):
         result = Runner.run_streamed(starting_agent=agent, input=message, max_turns=20)
         async for chunk in result.stream_events():
             simple_render_chunk(chunk)
 ```
 
-```response title="Ответ"
-Выполняется: Какой самый крупный проект на GitHub на данный момент в 2025 году?
+```response title="Response"
+Running: What's the biggest GitHub project so far in 2025?
 🔧 Tool: list_databases({})
 ✅ Result: amazon
 bluesky
@@ -184,7 +184,7 @@ log...
   "repo_name": "sindresorhus/awesome",
   "stars": 402893
 }...
-Самый крупный проект на GitHub в 2025 году по количеству звёзд — «[sindresorhus/awesome](https://github.com/sindresorhus/awesome)» с 402 893 звёздами.💬 Ответ: Самый крупный проект на GitHub в 2025 году по количеству звёзд — «[sindresorhus/awesome](https://github.com/sindresorhus/awesome)» с 402 893 звёздами.
+The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.💬 Response: The biggest GitHub project in 2025, based on stars, is "[sindresorhus/awesome](https://github.com/sindresorhus/awesome)" with 402,893 stars.
 ```
 
 </VerticalStepper>

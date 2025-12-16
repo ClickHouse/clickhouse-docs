@@ -83,7 +83,7 @@ pip install notebook
 次のコマンドで Jupyter Notebook を起動します：
 
 ```python
-Jupyter Notebook
+jupyter notebook
 ```
 
 新しいブラウザーウィンドウが開き、`localhost:8888` 上に Jupyter インターフェースが表示されます。
@@ -129,7 +129,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# .env ファイルから環境変数を読み込む {#load-environment-variables-from-env-file}
+# Load environment variables from .env file
 load_dotenv()
 
 username = os.environ.get('CLICKHOUSE_USER')
@@ -200,8 +200,8 @@ plt.xlabel('Year')
 plt.ylabel('Price (£)')
 plt.title('Price of London property over time')
 
-# ラベルの重複を避けるため、2年ごとに表示 {#show-every-2nd-year-to-avoid-crowding}
-years_to_show = df['year'][::2]  # 2年ごと
+# Show every 2nd year to avoid crowding
+years_to_show = df['year'][::2]  # Every 2nd year
 plt.xticks(years_to_show, rotation=45)
 
 plt.grid(True, alpha=0.3)
@@ -240,30 +240,30 @@ df_2.head()
   1 回のステップで複数のソースから読み込むことも可能です。次のクエリのように `JOIN` を使用して実行できます:
 
   ```python
-  query = f"""
+query = f"""
+SELECT 
+    toYear(date) AS year,
+    avg(price) AS avg_price, housesSold
+FROM remoteSecure(
+'****.europe-west4.gcp.clickhouse.cloud',
+default.pp_complete,
+'{username}',
+'{password}'
+) AS remote
+JOIN (
   SELECT 
-      toYear(date) AS year,
-      avg(price) AS avg_price, housesSold
-  FROM remoteSecure(
-  '****.europe-west4.gcp.clickhouse.cloud',
-  default.pp_complete,
-  '{username}',
-  '{password}'
-  ) AS remote
-  JOIN (
-    SELECT 
-      toYear(date) AS year,
-      sum(houses_sold)*1000 AS housesSold
-      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-    WHERE area = 'city of london' AND houses_sold IS NOT NULL
-    GROUP BY toYear(date)
-    ORDER BY year
-  ) AS local ON local.year = remote.year
-  WHERE town = 'LONDON'
+    toYear(date) AS year,
+    sum(houses_sold)*1000 AS housesSold
+    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+  WHERE area = 'city of london' AND houses_sold IS NOT NULL
   GROUP BY toYear(date)
-  ORDER BY year;
-  """
-  ```
+  ORDER BY year
+) AS local ON local.year = remote.year
+WHERE town = 'LONDON'
+GROUP BY toYear(date)
+ORDER BY year;
+"""
+```
 </details>
 
 <Image size="md" img={image_8} alt="データフレームのプレビュー" />
@@ -272,39 +272,39 @@ df_2.head()
 新しいセルで次のコマンドを実行します:
 
 ```python
-# 2つのy軸を持つ図を作成 {#create-a-figure-with-two-y-axes}
+# Create a figure with two y-axes
 fig, ax1 = plt.subplots(figsize=(14, 8))
 
-# 左側のy軸に販売戸数をプロット {#plot-houses-sold-on-the-left-y-axis}
+# Plot houses sold on the left y-axis
 color = 'tab:blue'
 ax1.set_xlabel('Year')
-ax1.set_ylabel('販売戸数', color=color)
-ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='販売戸数', linewidth=2)
+ax1.set_ylabel('Houses Sold', color=color)
+ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='Houses Sold', linewidth=2)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.grid(True, alpha=0.3)
 
-# 価格データ用の第2y軸を作成 {#create-a-second-y-axis-for-price-data}
+# Create a second y-axis for price data
 ax2 = ax1.twinx()
 color = 'tab:red'
-ax2.set_ylabel('平均価格(£)', color=color)
+ax2.set_ylabel('Average Price (£)', color=color)
 
-# 2019年までの価格データをプロット {#plot-price-data-up-until-2019}
-ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='平均価格', linewidth=2)
+# Plot price data up until 2019
+ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='Average Price', linewidth=2)
 ax2.tick_params(axis='y', labelcolor=color)
 
-# 価格軸を通貨形式でフォーマット {#format-price-axis-with-currency-formatting}
+# Format price axis with currency formatting
 ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'£{x:,.0f}'))
 
-# タイトルを設定し、2年ごとに表示 {#set-title-and-show-every-2nd-year}
-plt.title('ロンドン住宅市場:販売量と価格の推移', fontsize=14, pad=20)
+# Set title and show every 2nd year
+plt.title('London Housing Market: Sales Volume vs Prices Over Time', fontsize=14, pad=20)
 
-# 両データセットで2019年までの年のみを使用 {#use-years-only-up-to-2019-for-both-datasets}
+# Use years only up to 2019 for both datasets
 all_years = sorted(list(set(df_2[df_2['year'] <= 2019]['year']).union(set(df[df['year'] <= 2019]['year']))))
-years_to_show = all_years[::2]  # 2年ごと
+years_to_show = all_years[::2]  # Every 2nd year
 ax1.set_xticks(years_to_show)
 ax1.set_xticklabels(years_to_show, rotation=45)
 
-# 凡例を追加 {#add-legends}
+# Add legends
 ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 

@@ -28,7 +28,7 @@ SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 
 ┌────count()─┐
-│ 2039988137 │ -- 2,04 миллиарда
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 32.726 sec. Processed 2.04 billion rows, 170.05 KB (62.34 million rows/s., 5.20 KB/s.)
@@ -122,26 +122,26 @@ GROUP BY project
 INSERT INTO pypi SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{000..100}.parquet')
 
-0 строк в наборе. Время выполнения: 15.702 сек. Обработано 41.23 млн строк, 3.94 ГБ (2.63 млн строк/с., 251.01 МБ/с.)
-Пиковое использование памяти: 977.49 МиБ.
+0 rows in set. Elapsed: 15.702 sec. Processed 41.23 million rows, 3.94 GB (2.63 million rows/s., 251.01 MB/s.)
+Peak memory usage: 977.49 MiB.
 
 SELECT count() FROM pypi
 
 ┌──count()─┐
-│ 20612750 │ -- 20,61 млн
+│ 20612750 │ -- 20.61 million
 └──────────┘
 
-1 строка в наборе. Время выполнения: 0.004 сек.
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   20612750 │ -- 20,61 млн
+│   20612750 │ -- 20.61 million
 └────────────┘
 
-1 строка в наборе. Время выполнения: 0.006 сек. Обработано 96.15 тыс. строк, 769.23 КБ (16.53 млн строк/с., 132.26 МБ/с.)
-Пиковое использование памяти: 682.38 КиБ.
+1 row in set. Elapsed: 0.006 sec. Processed 96.15 thousand rows, 769.23 KB (16.53 million rows/s., 132.26 MB/s.)
+Peak memory usage: 682.38 KiB.
 ```
 
 Предположим, мы хотим загрузить другое подмножество `{101..200}`. Хотя мы могли бы вставлять данные напрямую в `pypi`, мы можем выполнить этот бэкфилл изолированно, создав дублирующие таблицы.
@@ -169,27 +169,27 @@ GROUP BY project
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
 
-0 строк в наборе. Прошло: 17,545 сек. Обработано 40,80 млн строк, 3,90 ГБ (2,33 млн строк/сек., 222,29 МБ/сек.)
-Пиковое потребление памяти: 991,50 МиБ.
+0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
+Peak memory usage: 991.50 MiB.
 
 SELECT count()
 FROM pypi_v2
 
 ┌──count()─┐
-│ 20400020 │ -- 20,40 миллиона
+│ 20400020 │ -- 20.40 million
 └──────────┘
 
-1 строка в наборе. Прошло: 0,004 сек.
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads_v2
 
 ┌─sum(count)─┐
-│   20400020 │ -- 20,40 миллиона
+│   20400020 │ -- 20.40 million
 └────────────┘
 
-1 строка в наборе. Прошло: 0,006 сек. Обработано 95,49 тыс. строк, 763,90 КБ (14,81 млн строк/сек., 118,45 МБ/сек.)
-Пиковое потребление памяти: 688,77 КиБ.
+1 row in set. Elapsed: 0.006 sec. Processed 95.49 thousand rows, 763.90 KB (14.81 million rows/s., 118.45 MB/s.)
+Peak memory usage: 688.77 KiB.
 ```
 
 Если бы мы столкнулись с ошибкой на любом этапе второй загрузки, мы могли бы просто [очистить](/managing-data/truncate) таблицы `pypi_v2` и `pypi_downloads_v2` и повторить загрузку данных.
@@ -199,11 +199,11 @@ FROM pypi_downloads_v2
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-0 строк в наборе. Прошло: 1.401 сек.
+0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
-0 строк в наборе. Прошло: 0.389 сек.
+0 rows in set. Elapsed: 0.389 sec.
 ```
 
 :::note Имена партиций
@@ -217,19 +217,19 @@ SELECT count()
 FROM pypi
 
 ┌──count()─┐
-│ 41012770 │ -- 41,01 миллиона
+│ 41012770 │ -- 41.01 million
 └──────────┘
 
-1 строка в наборе. Время выполнения: 0.003 с.
+1 row in set. Elapsed: 0.003 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   41012770 │ -- 41,01 миллиона
+│   41012770 │ -- 41.01 million
 └────────────┘
 
-1 строка в наборе. Время выполнения: 0.007 с. Обработано 191,64 тыс. строк, 1,53 МБ (27,34 млн строк/с, 218,74 МБ/с).
+1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
 
 SELECT count()
 FROM pypi_v2
@@ -250,7 +250,7 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
---продолжается до загрузки всех файлов ИЛИ выполнения команды MOVE PARTITION
+--continued to all files loaded OR MOVE PARTITION call is performed
 ```
 
 :::note
@@ -279,8 +279,8 @@ FROM pypi
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
 
-Получена 1 строка. Время выполнения: 0.163 сек. Обработано 1.34 млрд строк, 5.37 ГБ (8.24 млрд строк/сек., 32.96 ГБ/сек.)
-Пиковое потребление памяти: 227.84 МиБ.
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
 Из сказанного выше мы знаем, что нам нужно загрузить данные с временными метками до `2024-12-17 09:00:00`. Используя описанный ранее процесс, мы создаём дубликаты таблиц и представлений и загружаем подмножество данных с помощью фильтра по временной метке.
@@ -391,7 +391,7 @@ GROUP BY
 Ok.
 
 0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
-Пик использования памяти: 543.71 MiB.
+Peak memory usage: 543.71 MiB.
 ```
 
 :::note
@@ -453,8 +453,8 @@ GROUP BY
 ```sql
 INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
 
-0 строк в наборе. Прошло: 27.325 сек. Обработано 1.50 млрд строк, 33.48 ГБ (54.73 млн строк/сек., 1.23 ГБ/сек.)
-Пиковое потребление памяти: 639.47 МиБ.
+0 rows in set. Elapsed: 27.325 sec. Processed 1.50 billion rows, 33.48 GB (54.73 million rows/s., 1.23 GB/s.)
+Peak memory usage: 639.47 MiB.
 ```
 
 Обратите внимание, что здесь использование памяти составляет `639.47 MiB`.
@@ -496,10 +496,10 @@ FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1, max_threads = 1
 
-Ок.
+Ok.
 
-0 строк в наборе. Прошло: 43.907 сек. Обработано 1.50 миллиарда строк, 33.48 ГБ (34.06 миллиона строк/с., 762.54 МБ/с.)
-Пиковое использование памяти: 272.53 МиБ.
+0 rows in set. Elapsed: 43.907 sec. Processed 1.50 billion rows, 33.48 GB (34.06 million rows/s., 762.54 MB/s.)
+Peak memory usage: 272.53 MiB.
 ```
 
 Наконец, мы можем ещё больше сократить потребление памяти, установив `min_insert_block_size_rows` равным 0 (что отключает использование этого параметра при определении размера блока) и `min_insert_block_size_bytes` равным 10485760 (10 МиБ).
@@ -536,30 +536,30 @@ Peak memory usage: 218.64 MiB.
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988137 │ -- 2,04 миллиарда
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
 
--- (1) Приостановите вставки
--- (2) Создайте дубликат целевой таблицы
+-- (1) Pause inserts
+-- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
 
 ┌────count()─┐
-│ 2039988137 │ -- 2,04 миллиарда
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.004 sec.
 
--- (3) Присоедините партиции из исходной целевой таблицы к дубликату.
+-- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
  (ATTACH PARTITION tuple() FROM pypi)
 
--- (4) Создайте новые материализованные представления
+-- (4) Create our new materialized views
 
 CREATE TABLE pypi_downloads_per_day
 (
@@ -580,7 +580,7 @@ GROUP BY
     hour,
  project
 
--- (4) Возобновите вставки. Здесь мы имитируем это, вставляя одну строку.
+-- (4) Restart inserts. We replicate here by inserting a single row.
 
 INSERT INTO pypi SELECT *
 FROM pypi
@@ -589,19 +589,19 @@ LIMIT 1
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988138 │ -- 2,04 миллиарда
+│ 2039988138 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
 
--- обратите внимание, что pypi_v2 содержит то же количество строк, что и ранее
+-- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
 ┌────count()─┐
-│ 2039988137 │ -- 2,04 миллиарда
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
--- (5) Заполните представление, используя резервную копию pypi_v2
+-- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
  toStartOfHour(timestamp) as hour,
@@ -612,7 +612,9 @@ GROUP BY
     hour,
  project
 
-0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548,57 млн строк/с., 12,68 ГБ/с.)
+0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
+
+DROP TABLE pypi_v2;
 ```
 
 DROP TABLE pypi&#95;v2;

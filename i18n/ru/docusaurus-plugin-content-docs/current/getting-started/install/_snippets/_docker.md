@@ -46,7 +46,7 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 clickh
 
 ```bash
 docker run -it --rm --network=container:some-clickhouse-server --entrypoint clickhouse-client clickhouse/clickhouse-server
-# ИЛИ {#or}
+# OR
 docker exec -it some-clickhouse-server clickhouse-client
 ```
 
@@ -143,7 +143,7 @@ docker run -d --name some-clickhouse-server --ulimit nofile=262144:262144 -v /pa
 ### Запуск сервера от имени отдельного пользователя {#start-server-custom-user}
 
 ```bash
-# Директория $PWD/data/clickhouse должна существовать и принадлежать текущему пользователю {#pwddataclickhouse-should-exist-and-be-owned-by-current-user}
+# $PWD/data/clickhouse should exist and be owned by current user
 docker run --rm --user "${UID}:${GID}" --name some-clickhouse-server --ulimit nofile=262144:262144 -v "$PWD/logs/clickhouse:/var/log/clickhouse-server" -v "$PWD/data/clickhouse:/var/lib/clickhouse" clickhouse/clickhouse-server
 ```
 

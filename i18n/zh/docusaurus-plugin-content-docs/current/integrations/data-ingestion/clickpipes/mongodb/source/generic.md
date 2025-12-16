@@ -43,7 +43,7 @@ db.adminCommand({
 ```javascript
 db.getSiblingDB("admin").createUser({
     user: "clickpipes_user",
-    pwd: "安全密码",
+    pwd: "some_secure_password",
     roles: ["readAnyDatabase", "clusterMonitor"],
 })
 ```

@@ -234,7 +234,7 @@ ATTACH TABLE github_queue;
 首先，在向目标表添加列之前，我们需要先执行上文所述的停止操作。
 
 ```sql
-分离 表 github_queue;
+DETACH TABLE github_queue;
 ```
 
 下面我们添加信息列，用于标识源主题以及该行来源的分区。
@@ -252,7 +252,7 @@ ALTER TABLE github
 要用虚拟列更新我们的表，我们需要先删除物化视图，重新附加 Kafka 引擎表，然后重新创建物化视图。
 
 ```sql
-删除视图 github_mv;
+DROP VIEW github_mv;
 ```
 
 ```sql
@@ -434,24 +434,24 @@ FORMAT JsonEachRow;
 ```sql
 head -n 10 github_all_columns.ndjson |
 kcat -P \
-  -b &lt;host&gt;:&lt;port&gt; \
+  -b <host>:<port> \
   -t github
   -X security.protocol=sasl_ssl \
   -X sasl.mechanisms=PLAIN \
-  -X sasl.username=&lt;username&gt; \
-  -X sasl.password=&lt;password&gt;
+  -X sasl.username=<username> \
+  -X sasl.password=<password>
 ```
 
 从 `github_out` 主题中读取应能确认消息已成功投递。
 
 ```sql
 kcat -C \
-  -b &lt;host&gt;:&lt;port&gt; \
+  -b <host>:<port> \
   -t github_out \
   -X security.protocol=sasl_ssl \
   -X sasl.mechanisms=PLAIN \
-  -X sasl.username=&lt;username&gt; \
-  -X sasl.password=&lt;password&gt; \
+  -X sasl.username=<username> \
+  -X sasl.password=<password> \
   -e -q |
 wc -l
 ```

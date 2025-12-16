@@ -69,12 +69,12 @@ ClickHouse пытается группировать ваши сервисы, ч
 Вам потребуется получить сведения о своем сервисе ClickHouse Cloud. Это можно сделать либо через консоль ClickHouse Cloud, либо через ClickHouse API. Если вы собираетесь использовать ClickHouse API, перед продолжением установите следующие переменные среды:
 
 ```shell
-REGION=<Код региона в формате GCP, например: us-central1>
+REGION=<Your region code using the GCP format, for example: us-central1>
 PROVIDER=gcp
-KEY_ID=<ID ключа ClickHouse>
-KEY_SECRET=<Секретная часть ключа ClickHouse>
-ORG_ID=<ID организации ClickHouse>
-SERVICE_NAME=<Имя сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Вы можете [создать новый API-ключ ClickHouse Cloud](/cloud/manage/openapi) или использовать уже существующий.
@@ -203,7 +203,7 @@ resource "google_compute_forwarding_rule" "clickhouse_cloud_psc" {
 
 output "psc_connection_id" {
   value       = google_compute_forwarding_rule.clickhouse_cloud_psc.psc_connection_id
-  description = "Добавьте идентификатор подключения GCP PSC в список разрешений на уровне экземпляра."
+  description = "Add GCP PSC Connection ID to allow list on instance level."
 }
 ```
 
@@ -245,7 +245,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "gcp",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Приватная конечная точка GCP",
+        "description": "A GCP private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -370,9 +370,9 @@ nslookup $DNS_NAME
 ```
 
 ```response
-Неавторитативный ответ:
+Non-authoritative answer:
 ...
-Адрес: 10.128.0.2
+Address: 10.128.0.2
 ```
 
 ### Сброс соединения удалённой стороной (Connection reset by peer) {#connection-reset-by-peer}
@@ -392,24 +392,24 @@ openssl s_client -connect ${DNS_NAME}:9440
 ```
 
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-сертификат узла недоступен
+no peer certificate available
 ---
-Имена CA сертификата клиента не отправлены
+No client certificate CA names sent
 ---
-SSL-рукопожатие прочитало 0 байт и записало 335 байт
-Проверка: OK
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-Новое, (НЕТ), Шифр (НЕТ)
-Безопасное переподключение НЕ поддерживается
-Сжатие: НЕТ
-Расширение: НЕТ
-ALPN не согласован
-Ранние данные не отправлены
-Код возврата проверки: 0 (ok)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### Проверка фильтров конечных точек {#checking-endpoint-filters}

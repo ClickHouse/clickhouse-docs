@@ -56,11 +56,11 @@ CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- 合計状態の初期値（upvoteの場合は1、それ以外は0）
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- 合計状態の初期値（downvoteの場合は1、それ以外は0）
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- 合計状態の初期値（upvoteの場合は1、downvoteの場合は-1）
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
@@ -85,7 +85,7 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- ターゲットテーブルに対してクエリを実行
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```

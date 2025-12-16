@@ -22,9 +22,9 @@ ClickHouse рекомендует использовать встроенные 
 ## Синтаксис {#syntax}
 
 ```sql
-jdbc(источник_данных, внешняя_база_данных, внешняя_таблица)
-jdbc(источник_данных, внешняя_таблица)
-jdbc(именованная_коллекция)
+jdbc(datasource, external_database, external_table)
+jdbc(datasource, external_table)
+jdbc(named_collection)
 ```
 
 ## Примеры {#examples}

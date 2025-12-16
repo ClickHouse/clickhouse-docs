@@ -52,7 +52,7 @@ FROM
 响应：
 
 ```sql
-┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
+   ┌─value─┬─time─┬─round(exp_smooth, 3)─┬─bar────────┐
 1. │     1 │    0 │                    1 │ ██████████ │
 2. │     0 │    1 │                0.475 │ ████▊      │
 3. │     0 │    2 │                0.301 │ ███        │

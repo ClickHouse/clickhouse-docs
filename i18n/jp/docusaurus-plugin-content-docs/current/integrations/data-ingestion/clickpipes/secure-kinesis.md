@@ -34,7 +34,7 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
 
 ## セットアップ {#setup}
 
-<VerticalStepper headerLevel="h3"/>
+<VerticalStepper headerLevel="h3">
 
 ### ClickHouse サービスの IAM ロール ARN の取得 {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -121,3 +121,5 @@ Kinesis へのセキュアなアクセス設定の説明に入る前に、その
    ```
 
 - 4. 作成後、新しい **IAM Role ARN** をコピーします。これは Kinesis ストリームへアクセスするために必要となる ARN です。
+
+</VerticalStepper>

@@ -383,26 +383,26 @@ import Image from '@theme/IdealImage';
 
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-```
+  ```
 
 ```response
-СОЕДИНЕНО(00000003)
-depth=0 CN = chnode1
-verify error:num=20:не удаётся получить локальный сертификат центра сертификации
-verify return:1
-depth=0 CN = chnode1
-verify error:num=21:не удаётся проверить первый сертификат
-verify return:1
----
-Цепочка сертификатов
- 0 s:CN = chnode1
-   i:CN = marsnet.local CA
----
-Сертификат сервера
------BEGIN CERTIFICATE-----
-MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-...
-```
+  CONNECTED(00000003)
+  depth=0 CN = chnode1
+  verify error:num=20:unable to get local issuer certificate
+  verify return:1
+  depth=0 CN = chnode1
+  verify error:num=21:unable to verify the first certificate
+  verify return:1
+  ---
+  Certificate chain
+   0 s:CN = chnode1
+     i:CN = marsnet.local CA
+  ---
+  Server certificate
+  -----BEGIN CERTIFICATE-----
+  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+  ...
+  ```
 
 * Отправьте команды 4LW в сеансе openssl
 
@@ -444,13 +444,13 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 4. Запустите клиент ClickHouse, используя флаг `--secure` и SSL-порт:
    ```bash
-   root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
-   ClickHouse client version 22.3.3.44 (official build).
-   Connecting to chnode1.marsnet.local:9440 as user default.
-   Connected to ClickHouse server version 22.3.3 revision 54455.
+    root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
+    ClickHouse client version 22.3.3.44 (official build).
+    Connecting to chnode1.marsnet.local:9440 as user default.
+    Connected to ClickHouse server version 22.3.3 revision 54455.
 
-   clickhouse :)
-   ```
+    clickhouse :)
+    ```
 
 5. Войдите в Play UI, используя интерфейс `https` по адресу `https://chnode1.marsnet.local:8443/play`.
 
@@ -464,31 +464,31 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 6. Создайте реплицируемую таблицу:
 
    ```sql
-   clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
-               (
-                   id UInt64,
-                   column1 Date,
-                   column2 String
-               )
-               ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
-               ORDER BY (id);
-   ```
+    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
+                (
+                    id UInt64,
+                    column1 Date,
+                    column2 String
+                )
+                ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
+                ORDER BY (id);
+    ```
 
    ```response
-   ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-   │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-   │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-   └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-   ```
+    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 
 7. Добавьте пару строк на `chnode1`:
    ```sql
-   INSERT INTO repl_table
-   (id, column1, column2)
-   VALUES
-   (1,'2022-04-01','abc'),
-   (2,'2022-04-02','def');
-   ```
+    INSERT INTO repl_table
+    (id, column1, column2)
+    VALUES
+    (1,'2022-04-01','abc'),
+    (2,'2022-04-02','def');
+    ```
 
 8. Проверьте репликацию, просмотрев строки на узле `chnode2`:
     ```sql

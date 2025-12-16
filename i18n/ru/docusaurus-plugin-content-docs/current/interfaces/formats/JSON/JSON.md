@@ -71,17 +71,17 @@ SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase WITH TOTA
         [
                 {
                         "num": 42,
-                        "str": "привет",
+                        "str": "hello",
                         "arr": [0,1]
                 },
                 {
                         "num": 43,
-                        "str": "привет",
+                        "str": "hello",
                         "arr": [0,1,2]
                 },
                 {
                         "num": 44,
-                        "str": "привет",
+                        "str": "hello",
                         "arr": [0,1,2,3]
                 }
         ],

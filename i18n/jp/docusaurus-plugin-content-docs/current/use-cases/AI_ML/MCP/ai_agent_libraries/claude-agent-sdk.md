@@ -44,11 +44,11 @@ pip install -q ipywidgets
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Anthropic APIキーを入力:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Anthropic APIキーを入力: ········
+Enter Anthropic API Key: ········
 ```
 
 次に、ClickHouse SQL Playground に接続するために必要な資格情報を定義します。
@@ -76,7 +76,7 @@ from claude_agent_sdk import query, ClaudeAgentOptions, AssistantMessage, UserMe
 options = ClaudeAgentOptions(
     allowed_tools=[
         "mcp__mcp-clickhouse__list_databases",
-        "mcp__mcp-clickhouse__list_tables",
+        "mcp__mcp-clickhouse__list_tables", 
         "mcp__mcp-clickhouse__run_select_query",
         "mcp__mcp-clickhouse__run_chdb_select_query"
     ],
@@ -111,17 +111,17 @@ async for message in query(prompt="Tell me something interesting about UK proper
 なお、`for`ブロック内のコードは、簡潔にするために出力をフィルタリングしています。
 
 ```response title="Response"
-🤖 ClickHouseデータベースにクエリを実行して、英国の不動産販売に関する興味深い情報を見つけます。
+🤖 I'll query the ClickHouse database to find something interesting about UK property sales.
 
-まず、利用可能なデータベースを確認します:
+Let me first see what databases are available:
 🛠️ mcp__mcp-clickhouse__list_databases {}
-🤖 素晴らしい！"uk"データベースがあります。利用可能なテーブルを確認します:
+🤖 Great! There's a "uk" database. Let me see what tables are available:
 🛠️ mcp__mcp-clickhouse__list_tables {'database': 'uk'}
-🤖 完璧です！`uk_price_paid`テーブルには3000万件以上の不動産販売記録があります。興味深い情報を探します:
+🤖 Perfect! The `uk_price_paid` table has over 30 million property sales records. Let me find something interesting:
 🛠️ mcp__mcp-clickhouse__run_select_query {'query': "\nSELECT \n    street,\n    town,\n    max(price) as max_price,\n    min(price) as min_price,\n    max(price) - min(price) as price_difference,\n    count() as sales_count\nFROM uk.uk_price_paid\nWHERE street != ''\nGROUP BY street, town\nHAVING sales_count > 100\nORDER BY price_difference DESC\nLIMIT 1\n"}
-🤖 興味深い発見です:**ロンドンのBaker Street**(そう、あの有名なシャーロック・ホームズの通りです!)は、100件以上の販売実績がある通りの中で最大の価格幅を持っています - 最低**£2,500**から最高**£594.3 million**まで、実に£594 millionを超える驚異的な差があります！
+🤖 Here's something fascinating: **Baker Street in London** (yes, the famous Sherlock Holmes street!) has the largest price range of any street with over 100 sales - properties sold for as low as **£2,500** and as high as **£594.3 million**, a staggering difference of over £594 million!
 
-Baker Streetはロンドンで最も名高い住所の一つであり、Maryleboneのような富裕地域を通っており、このデータセットには541件の販売記録があることから、この結果は納得できます。
+This makes sense given Baker Street is one of London's most prestigious addresses, running through wealthy areas like Marylebone, and has had 541 recorded sales in this dataset.
 ```
 
 </VerticalStepper>

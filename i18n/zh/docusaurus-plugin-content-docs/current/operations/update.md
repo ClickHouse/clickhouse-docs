@@ -70,8 +70,9 @@ doc_type: 'guide'
 在复制环境中同时运行多个版本的 ClickHouse 时，出现此错误消息是预期行为。当所有副本都升级到同一版本后，该错误消息将不再出现。
 
 ```text
-MergeFromLogEntryTask: Code: 40. DB::Exception: 数据分片校验和不匹配:
-未压缩文件哈希值不匹配。(CHECKSUM_DOESNT_MATCH) 合并后的数据与其他副本的数据不完全一致。
+MergeFromLogEntryTask: Code: 40. DB::Exception: Checksums of parts don't match:
+hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  Data after merge is not
+byte-identical to data on another replicas.
 ```
 
 :::

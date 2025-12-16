@@ -246,7 +246,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
-2行読み込み、32.00 B、0.000秒、5182行/秒、80.97 KiB/秒
+Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 1   2
 3   4
 ```
@@ -258,7 +258,7 @@ $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
     DROP TABLE table;"
-2行読み込み、32.00 B、0.000秒、4987行/秒、77.93 KiB/秒。
+Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 1   2
 3   4
 ```
@@ -292,7 +292,7 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 結果：
 
 ```text
-186行、4.15 KiBを0.035秒で読み込み、5302行/秒、118.34 KiB/秒
+Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━┩

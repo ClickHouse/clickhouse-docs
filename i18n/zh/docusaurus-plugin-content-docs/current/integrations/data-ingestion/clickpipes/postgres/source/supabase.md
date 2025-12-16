@@ -35,10 +35,10 @@ ClickPipes 原生通过 IPv6 支持 Supabase，可实现无缝复制。
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- 为用户授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- 创建发布。创建镜像时将使用此发布
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 

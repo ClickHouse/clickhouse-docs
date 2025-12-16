@@ -75,11 +75,11 @@ import Image from '@theme/IdealImage';
 Напишите SQL-запрос для получения данных, которые вы хотите визуализировать. Например, этот запрос вычисляет среднюю уплаченную цену по годам из набора данных `uk_price_paid`:
 
 ```sql
-SELECT toYear(date) AS year, avg(price) AS avg_price
-FROM uk_price_paid
-GROUP BY year
-ORDER BY year;
-```
+  SELECT toYear(date) AS year, avg(price) AS avg_price
+  FROM uk_price_paid
+  GROUP BY year
+  ORDER BY year;
+  ```
 
 <Image img={chartbrew_07} size="lg" alt="SQL-запрос ClickHouse в Chartbrew" />
 

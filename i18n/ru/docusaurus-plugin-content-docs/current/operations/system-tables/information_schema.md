@@ -12,7 +12,7 @@ doc_type: 'reference'
 ```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
 
--- или:
+-- or:
 SHOW TABLES FROM information_schema;
 ```
 
@@ -97,7 +97,7 @@ FORMAT Vertical;
 Результат:
 
 ```text
-Строка 1:
+Row 1:
 ──────
 table_catalog:            default
 table_schema:             default
@@ -212,7 +212,7 @@ FORMAT Vertical;
 Результат:
 
 ```text
-Строка 1:
+Row 1:
 ──────
 table_catalog:   default
 table_schema:    default

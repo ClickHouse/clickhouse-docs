@@ -19,7 +19,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 ## 例 {#examples}
 
 ```sql
--- `Title` 列に `hello` という文字列を含むすべての行を `hits` テーブルから削除します
+-- Deletes all rows from the `hits` table where the `Title` column contains the text `hello`
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 

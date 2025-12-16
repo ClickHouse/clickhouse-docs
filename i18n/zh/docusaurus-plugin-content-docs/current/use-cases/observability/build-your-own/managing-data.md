@@ -53,8 +53,8 @@ ORDER BY c DESC
 │ 2019-01-25 │ 1821770 │
 └────────────┴─────────┘
 
-返回 5 行。用时:0.058 秒。已处理 1037 万行,82.92 MB(1.7796 亿行/秒,1.42 GB/秒)。
-内存峰值:4.41 MiB。
+5 rows in set. Elapsed: 0.058 sec. Processed 10.37 million rows, 82.92 MB (177.96 million rows/s., 1.42 GB/s.)
+Peak memory usage: 4.41 MiB.
 ```
 
 可以通过一条简单的系统表查询语句来查看当前分区：
@@ -79,10 +79,10 @@ WHERE `table` = 'otel_logs'
 
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
---将数据移至归档表
+--move data to archive table
 ALTER TABLE otel_logs
         (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
---确认数据已移动
+--confirm data has been moved
 SELECT
         Timestamp::Date AS day,
         count() AS c
@@ -340,7 +340,7 @@ LIMIT 5
 │ 41483 │
 └───────┘
 
-共 5 行。用时:0.012 秒。
+5 rows in set. Elapsed: 0.012 sec.
 ```
 
 为了确保今后所有数据都会插入该值，我们可以按下面所示使用 `ALTER TABLE` 语法来修改我们的物化视图：
@@ -392,7 +392,7 @@ LIMIT 5
 │   301  │   270212 │
 └────────┴──────────┘
 
-返回 5 行。用时:0.137 秒。已处理 4146 万行,82.92 MB(302.43 百万行/秒,604.85 MB/秒)。
+5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
 ```
 
 如果用户希望避免使用 `merge` 函数，同时向最终用户提供一张合并多张表的结果表，则可以使用 [Merge 表引擎](/engines/table-engines/special/merge)。示例如下：
@@ -440,5 +440,5 @@ LIMIT 5
 │   301  │   276960 │
 └────────┴──────────┘
 
-返回 5 行。用时:0.068 秒。已处理 4246 万行,84.92 MB(每秒 6.2045 亿行,1.24 GB/秒)。
+5 rows in set. Elapsed: 0.068 sec. Processed 42.46 million rows, 84.92 MB (620.45 million rows/s., 1.24 GB/s.)
 ```

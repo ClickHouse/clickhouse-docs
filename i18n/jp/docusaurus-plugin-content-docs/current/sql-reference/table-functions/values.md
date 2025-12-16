@@ -124,7 +124,7 @@ FROM VALUES(
 例：
 
 ```sql title="Query"
--- 値としてのタプル
+-- tuples as values
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -156,7 +156,7 @@ FROM VALUES(
 ```
 
 ```sql
--- 単一値
+-- single values
 SELECT *
 FROM VALUES(
     'Noah',

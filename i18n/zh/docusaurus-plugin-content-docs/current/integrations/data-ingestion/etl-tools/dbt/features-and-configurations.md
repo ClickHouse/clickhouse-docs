@@ -35,32 +35,32 @@ your_profile_name:
       schema: [default] # ClickHouse database for dbt models
       driver: [http] # http or native.  If not set this will be autodetermined based on port setting
       host: [localhost] 
-      port: [8123]  # 若未设置,根据 secure 和 driver 设置默认为 8123、8443、9000 或 9440 
-      user: [default] # 执行所有数据库操作的用户
-      password: [<empty string>] # 用户密码
-      cluster: [<empty string>] # 若设置,某些 DDL/表操作将使用此集群通过 `ON CLUSTER` 子句执行。分布式物化需要此设置。详见下文 ClickHouse 集群部分。
-      verify: [True] # 使用 TLS/SSL 时验证 TLS 证书
-      secure: [False] # 使用 TLS(native 协议)或 HTTPS(http 协议)
-      client_cert: [null] # .pem 格式 TLS 客户端证书的路径
-      client_cert_key: [null] # TLS 客户端证书私钥的路径
-      retries: [1] # 重试"可重试"数据库异常(如 503 'Service Unavailable' 错误)的次数
-      compression: [<empty string>] # 若为真值则使用 gzip 压缩(http),或指定 native 连接的压缩类型
-      connect_timeout: [10] # 建立 ClickHouse 连接的超时时间(秒)
-      send_receive_timeout: [300] # 从 ClickHouse 服务器接收数据的超时时间(秒)
-      cluster_mode: [False] # 使用专为优化 Replicated 数据库操作设计的特定设置(推荐用于 ClickHouse Cloud)
-      use_lw_deletes: [False] # 使用 `delete+insert` 策略作为默认增量策略。
-      check_exchange: [True] # 验证 ClickHouse 是否支持原子 EXCHANGE TABLES 命令。(大多数 ClickHouse 版本无需此项)
-      local_suffix: [_local] # 分布式物化中分片本地表的表后缀。
-      local_db_prefix: [<empty string>] # 分布式物化中分片本地表的数据库前缀。若为空,则使用与分布式表相同的数据库。
-      allow_automatic_deduplication: [False] # 为 Replicated 表启用 ClickHouse 自动去重
-      tcp_keepalive: [False] # 仅限 Native 客户端,指定 TCP keepalive 配置。自定义 keepalive 设置格式为 [idle_time_sec, interval_sec, probes]。
-      custom_settings: [{}] # 连接的自定义 ClickHouse 设置字典/映射 - 默认为空。
-      database_engine: '' # 创建新 ClickHouse 模式(数据库)时使用的数据库引擎。若未设置(默认),新数据库将使用默认 ClickHouse 数据库引擎(通常为 Atomic)。
-      threads: [1] # 运行查询时使用的线程数。将其设置为大于 1 之前,请务必阅读[读后写一致性](#read-after-write-consistency)部分。
+      port: [8123]  # If not set, defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [default] # User for all database operations
+      password: [<empty string>] # Password for the user
+      cluster: [<empty string>] # If set, certain DDL/table operations will be executed with the `ON CLUSTER` clause using this cluster. Distributed materializations require this setting to work. See the following ClickHouse Cluster section for more details.
+      verify: [True] # Validate TLS certificate if using TLS/SSL
+      secure: [False] # Use TLS (native protocol) or HTTPS (http protocol)
+      client_cert: [null] # Path to a TLS client certificate in .pem format
+      client_cert_key: [null] # Path to the private key for the TLS client certificate
+      retries: [1] # Number of times to retry a "retriable" database exception (such as a 503 'Service Unavailable' error)
+      compression: [<empty string>] # Use gzip compression if truthy (http), or compression type for a native connection
+      connect_timeout: [10] # Timeout in seconds to establish a connection to ClickHouse
+      send_receive_timeout: [300] # Timeout in seconds to receive data from the ClickHouse server
+      cluster_mode: [False] # Use specific settings designed to improve operation on Replicated databases (recommended for ClickHouse Cloud)
+      use_lw_deletes: [False] # Use the strategy `delete+insert` as the default incremental strategy.
+      check_exchange: [True] # Validate that clickhouse support the atomic EXCHANGE TABLES command.  (Not needed for most ClickHouse versions)
+      local_suffix: [_local] # Table suffix of local tables on shards for distributed materializations.
+      local_db_prefix: [<empty string>] # Database prefix of local tables on shards for distributed materializations. If empty, it uses the same database as the distributed table.
+      allow_automatic_deduplication: [False] # Enable ClickHouse automatic deduplication for Replicated tables
+      tcp_keepalive: [False] # Native client only, specify TCP keepalive configuration. Specify custom keepalive settings as [idle_time_sec, interval_sec, probes].
+      custom_settings: [{}] # A dictionary/mapping of custom ClickHouse settings for the connection - default is empty.
+      database_engine: '' # Database engine to use when creating new ClickHouse schemas (databases).  If not set (the default), new databases will use the default ClickHouse database engine (usually Atomic).
+      threads: [1] # Number of threads to use when running queries. Before setting it to a number higher than 1, make sure to read the [read-after-write consistency](#read-after-write-consistency) section.
       
-      # Native (clickhouse-driver) 连接设置
-      sync_request_timeout: [5] # 服务器 ping 超时时间
-      compress_block_size: [1048576] # 启用压缩时的压缩块大小
+      # Native (clickhouse-driver) connection settings
+      sync_request_timeout: [5] # Timeout for server ping
+      compress_block_size: [1048576] # Compression block size if compression is enabled
 ```
 
 
@@ -79,7 +79,7 @@ dbt 模型关系标识符 `database.schema.table` 与 ClickHouse 不兼容，因
 
 ```yaml
 seeds:
-  +quote_columns: false  #若 CSV 列标题含有空格,则设为 `true`
+  +quote_columns: false  #or `true` if you have CSV column headers with spaces
 ```
 
 
@@ -223,7 +223,7 @@ ClickHouse 中有数百个设置，而且并不总是很清楚哪些是“表”
 ```yaml
 models:
   - name: table_column_configs
-    description: '测试列级别配置'
+    description: 'Testing column-level configurations'
     config:
       contract:
         enforced: true
@@ -251,11 +251,11 @@ dbt 会通过分析用于创建模型的 SQL，自动推断每一列的数据类
 }}
 
 select
-  -- event_type 可能会被推断为 String 类型,但我们可能更希望使用 LowCardinality(String):
+  -- event_type may be infered as a String but we may prefer LowCardinality(String):
   CAST(event_type, 'LowCardinality(String)') as event_type,
-  -- countState() 可能会被推断为 `AggregateFunction(count)`,但我们可能更希望更改所用参数的类型:
+  -- countState() may be infered as `AggregateFunction(count)` but we may prefer to change the type of the argument used:
   CAST(countState(), 'AggregateFunction(count, UInt32)') as response_count, 
-  -- maxSimpleState() 可能会被推断为 `SimpleAggregateFunction(max, String)`,但我们可能也更希望更改所用参数的类型:
+  -- maxSimpleState() may be infered as `SimpleAggregateFunction(max, String)` but we may prefer to also change the type of the argument used:
   CAST(maxSimpleState(event_type), 'SimpleAggregateFunction(max, LowCardinality(String))') as max_event_type
 from {{ ref('user_events') }}
 group by event_type
@@ -304,9 +304,9 @@ models:
 ```python
 {{ config(
     materialized = "table",
-    engine = "<引擎类型>",
-    order_by = [ "<列名>", ... ],
-    partition_by = [ "<列名>", ... ],
+    engine = "<engine-type>",
+    order_by = [ "<column-name>", ... ],
+    partition_by = [ "<column-name>", ... ],
       ...
     ]
 ) }}
@@ -577,8 +577,7 @@ CREATE TABLE db.table_local on cluster cluster (
     `item` String
 )
     ENGINE = ReplacingMergeTree
-    ORDER BY (id, created_at)
-    SETTINGS index_granularity = 8192;
+    ORDER BY (id, created_at);
 
 CREATE TABLE db.table on cluster cluster (
     `id` UInt64,
@@ -633,8 +632,7 @@ CREATE TABLE db.table_local on cluster cluster (
     `created_at` DateTime,
     `item` String
 )
-    ENGINE = MergeTree
-    SETTINGS index_granularity = 8192;
+    ENGINE = MergeTree;
 
 CREATE TABLE db.table on cluster cluster (
     `id` UInt64,
@@ -654,10 +652,10 @@ dbt 快照允许对可变模型随时间发生的变更进行记录。这样一�
 ```python
 {{
    config(
-     schema = "<架构名称>",
-     unique_key = "<列名>",
-     strategy = "<策略>",
-     updated_at = "<更新时间列名>",
+     schema = "<schema-name>",
+     unique_key = "<column-name>",
+     strategy = "<strategy>",
+     updated_at = "<updated-at-column-name>",
    )
 }}
 ```
@@ -739,7 +737,7 @@ ClickHouse 最近增加了对 Apache Iceberg 表和数据目录的原生支持�
 1. **创建一个指向外部 Catalog 的数据库：**
 
 ```sql
--- REST Catalog 示例
+-- Example with REST Catalog
 SET allow_experimental_database_iceberg = 1;
 
 CREATE DATABASE iceberg_catalog

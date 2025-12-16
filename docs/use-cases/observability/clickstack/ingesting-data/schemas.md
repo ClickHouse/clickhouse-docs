@@ -11,7 +11,7 @@ keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 
 The ClickStack OpenTelemetry (OTel) collector uses the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) to create tables in ClickHouse and insert data.
 
-The following tables are created for each data type in the `default` database. Users can change this target database by modifying the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` for the image hosting the OTel collector.
+The following tables are created for each data type in the `default` database. You can change this target database by modifying the environment variable `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` for the image hosting the OTel collector.
 
 ## Logs {#logs}
 
@@ -215,7 +215,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ### Exponential histograms {#exponential-histograms}
 
 :::note
-HyperDX does not support fetching/displaying exponential histogram metrics yet. Users may configure them in the metrics source but future support is forthcoming.
+HyperDX does not support fetching/displaying exponential histogram metrics yet. You may configure them in the metrics source but future support is forthcoming.
 :::
 
 ```sql

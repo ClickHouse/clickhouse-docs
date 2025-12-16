@@ -459,8 +459,8 @@ SELECT
     sum(b) AS b
 FROM t;
 
-サーバーから例外を受信しました (バージョン 18.14.17):
-Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: クエリ内で集約関数 sum(b) が別の集約関数の内部に見つかりました。
+Received exception from server (version 18.14.17):
+Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: Aggregate function sum(b) is found inside another aggregate function in query.
 ```
 
 前の例では、列 `b` を持つテーブル `t` を宣言しました。

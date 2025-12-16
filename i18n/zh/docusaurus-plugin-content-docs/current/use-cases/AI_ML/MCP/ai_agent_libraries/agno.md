@@ -48,7 +48,7 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-输入 Anthropic API 密钥：········
+Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
@@ -89,7 +89,7 @@ async with MCPTools(command="uv run --with mcp-clickhouse --python 3.13 mcp-clic
 await agent.aprint_response("What's the most starred project in 2025?", stream=True)
 ```
 
-```response title="响应"
+```response title="Response"
 ▰▱▱▱▱▱▱ Thinking...
 ┏━ Message ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
@@ -113,25 +113,26 @@ await agent.aprint_response("What's the most starred project in 2025?", stream=T
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ┏━ Response (34.9s) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
-┃ 要回答您关于 2025 年获星最多项目的问题,我需要查询 ClickHouse 数据库。     ┃
-┃ 但在此之前,我需要收集一些信息并确保查看的是正确的数据。 ┃
-┃ 让我先检查可用的数据库和表。感谢您提供数据库列表。我看到  ┃
-┃ 有一个 "github" 数据库,它很可能包含我们要查找的信息。让我们检查 ┃
-┃ 该数据库中的表。现在我们已经获得了 github 数据库中表的信息,可以查询  ┃
-┃ 相关数据来回答您关于 2025 年获星最多项目的问题。我们将使用 repo_events_per_day ┃
-┃ 表,该表包含每个仓库的每日事件计数,包括星标事件 (WatchEvents)。              ┃
+┃ To answer your question about the most starred project in 2025, I'll need to query the ClickHouse database.     ┃
+┃ However, before I can do that, I need to gather some information and make sure we're looking at the right data. ┃
+┃ Let me check the available databases and tables first.Thank you for providing the list of databases. I can see  ┃
+┃ that there's a "github" database, which is likely to contain the information we're looking for. Let's check the ┃
+┃ tables in this database.Now that we have information about the tables in the github database, we can query the  ┃
+┃ relevant data to answer your question about the most starred project in 2025. We'll use the repo_events_per_day ┃
+┃ table, which contains daily event counts for each repository, including star events (WatchEvents).              ┃
 ┃                                                                                                                 ┃
-┃ 让我们创建一个查询来查找 2025 年获星最多的项目:根据查询结果,我可以回答您     ┃
-┃ 关于 2025 年获星最多项目的问题:                                                                ┃
+┃ Let's create a query to find the most starred project in 2025:Based on the query results, I can answer your     ┃
+┃ question about the most starred project in 2025:                                                                ┃
 ┃                                                                                                                 ┃
-┃ 2025 年获星最多的项目是 deepseek-ai/DeepSeek-R1,该年度获得了 84,962 个星标。     ┃
+┃ The most starred project in 2025 was deepseek-ai/DeepSeek-R1, which received 84,962 stars during that year.     ┃
 ┃                                                                                                                 ┃
-┃ 该项目 DeepSeek-R1 似乎是来自 DeepSeek AI 组织的一个 AI 相关仓库。它在  ┃
-┃ 2025 年获得了 GitHub 社区的广泛关注和欢迎,获得了该年度所有项目中最多的星标。    ┃
+┃ This project, DeepSeek-R1, appears to be an AI-related repository from the DeepSeek AI organization. It gained  ┃
+┃ significant attention and popularity among the GitHub community in 2025, earning the highest number of stars    ┃
+┃ for any project during that year.                                                                               ┃
 ┃                                                                                                                 ┃
-┃ 值得注意的是,此数据基于数据库中记录的 GitHub 事件,它表示  ┃
-┃ 专门在 2025 年期间累积的星标 (WatchEvents)。如果考虑该项目的整个生命周期,   ┃
-┃ 其星标总数可能会更高。                                                             ┃
+┃ It's worth noting that this data is based on the GitHub events recorded in the database, and it represents the  ┃
+┃ stars (WatchEvents) accumulated specifically during the year 2025. The total number of stars for this project   ┃
+┃ might be higher if we consider its entire lifespan.                                                             ┃
 ┃                                                                                                                 ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```

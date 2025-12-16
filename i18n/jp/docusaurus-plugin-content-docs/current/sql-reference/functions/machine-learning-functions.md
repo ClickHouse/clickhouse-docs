@@ -47,7 +47,7 @@ naiveBayesClassifier(model_name, input_text);
 言語検出モデルを用いてテキストを分類します：
 
 ```sql
-SELECT naiveBayesClassifier('language', 'お元気ですか?');
+SELECT naiveBayesClassifier('language', 'How are you?');
 ```
 
 ```response

@@ -33,10 +33,10 @@ import Image from '@theme/IdealImage';
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Предоставить пользователю права на репликацию
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- Создать публикацию. Она будет использоваться при создании зеркала
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -58,9 +58,9 @@ import Image from '@theme/IdealImage';
 Давайте проверим следующие настройки в вашем экземпляре Neon Postgres:
 
 ```sql
-SHOW wal_level; -- должно быть logical
-SHOW max_wal_senders; -- должно быть 10
-SHOW max_replication_slots; -- должно быть 10
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## Разрешение IP-адресов (для тарифа Neon Enterprise) {#ip-whitelisting-for-neon-enterprise-plan}

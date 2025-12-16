@@ -43,13 +43,13 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 **Пример**
 
 ```sql title="Query"
--- Создать таблицы
+-- Create tables
 CREATE TABLE a (a UInt8) ENGINE=Memory;
 CREATE TABLE b (b UInt8) ENGINE=Memory;
 CREATE TABLE c (c UInt8) ENGINE=Memory;
 CREATE TABLE d (d UInt8) ENGINE=Memory;
 
--- Обменять две пары таблиц в одном запросе
+-- Exchange two pairs of tables in one query
 EXCHANGE TABLES a AND b, c AND d;
 
 SHOW TABLE a;
@@ -59,7 +59,7 @@ SHOW TABLE d;
 ```
 
 ```sql title="Response"
--- Теперь таблица 'a' имеет структуру таблицы 'b', а таблица 'b' — структуру таблицы 'a'
+-- Now table 'a' has the structure of 'b', and table 'b' has the structure of 'a'
 ┌─statement──────────────┐
 │ CREATE TABLE default.a↴│
 │↳(                     ↴│
@@ -75,7 +75,7 @@ SHOW TABLE d;
 │↳ENGINE = Memory        │
 └────────────────────────┘
 
--- Теперь таблица 'c' имеет структуру таблицы 'd', а таблица 'd' — структуру таблицы 'c'
+-- Now table 'c' has the structure of 'd', and table 'd' has the structure of 'c'
 ┌─statement──────────────┐
 │ CREATE TABLE default.c↴│
 │↳(                     ↴│

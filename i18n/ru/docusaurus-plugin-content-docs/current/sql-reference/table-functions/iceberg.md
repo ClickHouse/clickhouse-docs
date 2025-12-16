@@ -149,12 +149,12 @@ ClickHouse поддерживает механизм time travel для табл
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ ```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ ```
 
 Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` одновременно в одном запросе.
 
@@ -176,7 +176,7 @@ ClickHouse поддерживает механизм time travel для табл
 Рассмотрим следующую последовательность операций:
 
 ```sql
- -- Создать таблицу с двумя столбцами
+ -- Create a table with two columns
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
   order_number bigint, 
   product_code string
@@ -184,23 +184,23 @@ ClickHouse поддерживает механизм time travel для табл
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Вставить данные в таблицу
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES 
     (1, 'Mars')
 
-  ts1 = now() // Фрагмент псевдокода
+  ts1 = now() // A piece of pseudo code
 
--- Изменить таблицу, добавив новый столбец
+- - Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
  
   ts2 = now()
 
--- Вставить данные в таблицу
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
    ts3 = now()
 
--- Выполнить запрос к таблице для каждой временной метки
+- - Query the table at each timestamp
   SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
@@ -237,7 +237,7 @@ ClickHouse поддерживает механизм time travel для табл
 Запрос time travel, выполненный в текущий момент времени, может показать схему, отличающуюся от текущей схемы таблицы:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number bigint, 
   product_code string
@@ -245,15 +245,15 @@ ClickHouse поддерживает механизм time travel для табл
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Вставка начальных данных в таблицу
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- Изменение таблицы для добавления нового столбца
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- Запрос таблицы на текущий момент с использованием синтаксиса временной метки
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -263,7 +263,7 @@ ClickHouse поддерживает механизм time travel для табл
     |           2|       Venus|
     +------------+------------+
 
--- Запрос таблицы на текущий момент
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -280,7 +280,7 @@ ClickHouse поддерживает механизм time travel для табл
 Второе ограничение состоит в том, что при использовании механизма time travel нельзя получить состояние таблицы до того, как в неё были записаны какие‑либо данные:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number bigint, 
   product_code string
@@ -290,8 +290,8 @@ ClickHouse поддерживает механизм time travel для табл
 
   ts = now();
 
--- Запрос таблицы на определённую временную метку
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Завершается с ошибкой: Cannot find a snapshot older than ts.
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 В ClickHouse поведение такое же, как в Spark. Вы можете мысленно заменить запросы SELECT в Spark на запросы SELECT в ClickHouse — и всё будет работать так же.
@@ -400,12 +400,12 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-Строка 1:
+Row 1:
 ──────
 x: Pavel
 y: 777
 
-Строка 2:
+Row 2:
 ──────
 x: Ivanov
 y: 993
@@ -430,7 +430,7 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-Строка 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993

@@ -44,7 +44,7 @@ SELECT * FROM system.replicated_fetches LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 database:                    default
 table:                       t

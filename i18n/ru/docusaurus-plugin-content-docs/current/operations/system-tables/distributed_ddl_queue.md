@@ -40,9 +40,9 @@ WHERE cluster = 'test_cluster'
 LIMIT 2
 FORMAT Vertical
 
-ID запроса: f544e72a-6641-43f1-836b-24baa1c9632a
+Query id: f544e72a-6641-43f1-836b-24baa1c9632a
 
-Строка 1:
+Row 1:
 ──────
 entry:             query-0000000000
 entry_version:     5
@@ -60,7 +60,7 @@ exception_text:
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
-Строка 2:
+Row 2:
 ──────
 entry:             query-0000000001
 entry_version:     5
@@ -78,5 +78,5 @@ exception_text:    Code: 630. DB::Exception: Cannot drop or rename test_db, beca
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
-Получено 2 строки. Прошло: 0.025 сек.
+2 rows in set. Elapsed: 0.025 sec.
 ```

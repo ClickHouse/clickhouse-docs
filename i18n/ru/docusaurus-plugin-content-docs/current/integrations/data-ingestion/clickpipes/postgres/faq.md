@@ -334,7 +334,7 @@ WITH (publish_via_partition_root = true);
 Да! Перед созданием вашего Postgres ClickPipe создайте publication без операций DELETE. Например:
 
 ```sql
-CREATE PUBLICATION <имя_публикации> FOR TABLES IN SCHEMA <имя_схемы> WITH (publish = 'insert,update');
+CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
 
 Затем при [настройке](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings) вашего Postgres ClickPipe убедитесь, что выбрана эта публикация.

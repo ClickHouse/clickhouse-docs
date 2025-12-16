@@ -50,7 +50,7 @@ FROM numbers(1)
 1. │ UInt64   │ Int32          │ Float32          │ Float64          │ Int64          │
    └──────────┴────────────────┴──────────────────┴──────────────────┴────────────────┘
 
-1行が結果セットに含まれています。経過時間: 0.002秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 * 入力値が `Date` 型の場合は [Date](../../../sql-reference/data-types/date.md)。

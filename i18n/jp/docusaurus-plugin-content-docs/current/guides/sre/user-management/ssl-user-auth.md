@@ -85,7 +85,7 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
             </networks>
             <profile>default</profile>
             <access_management>1</access_management>
-            <!-- 追加オプション -->
+            <!-- additional options-->
         </cert_user>
     </users>
     ```

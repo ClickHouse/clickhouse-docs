@@ -152,7 +152,7 @@ SELECT * FROM my_s3_table;
 │  2 │ xyz     │
 └────┴─────────┘
 
-返回 2 行。耗时: 0.284 秒。
+2 rows in set. Elapsed: 0.284 sec.
 ```
 
 在 AWS 控制台中，如果数据已经成功写入 S3，你应该能看到 ClickHouse 已在你指定的 S3 存储桶中创建了新的文件。
