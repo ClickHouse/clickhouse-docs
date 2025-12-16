@@ -112,7 +112,7 @@ If you are managing your own ClickHouse instance, it's essential to enable **TLS
 
 ClickHouse OSS provides robust security features out of the box. However, these require configuration:
 
-- **Use TLS** via `tcp_port_secure` and `<openSSL>` in `config.xml`. See [guides/sre/configuring-tls](/guides/sre/configuring-tls).
+- **Use TLS** via `tcp_port_secure` and `<openSSL>` in `config.xml`. See [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls).
 - **Set a strong password** for the `default` user or disable it.
 - **Avoid exposing ClickHouse externally** unless explicitly intended. By default, ClickHouse binds only to `localhost` unless `listen_host` is modified.
 - **Use authentication methods** such as passwords, certificates, SSH keys, or [external authenticators](/operations/external-authenticators).

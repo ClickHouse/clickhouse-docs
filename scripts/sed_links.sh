@@ -24,7 +24,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
     sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i '' 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
-    sed -i '' 's|(/guides/sre/tls/configuring-tls)|(/guides/sre/configuring-tls)|g' docs/sql-reference/functions/other-functions.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
@@ -38,5 +37,4 @@ else
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
-    sed -i 's|(/guides/sre/tls/configuring-tls)|(/guides/sre/configuring-tls)|g' docs/sql-reference/functions/other-functions.md
 fi
