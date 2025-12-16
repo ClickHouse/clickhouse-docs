@@ -7,7 +7,7 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# chDB для Bun
+# chDB для Bun {#chdb-for-bun}
 
 chDB-bun предоставляет экспериментальные FFI (Foreign Function Interface) привязки для chDB, позволяя запускать запросы ClickHouse напрямую в ваших Bun-приложениях без внешних зависимостей.
 

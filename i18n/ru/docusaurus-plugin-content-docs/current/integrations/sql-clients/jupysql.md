@@ -31,7 +31,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-Примечание: возможно, вам потребуется перезапустить ядро, чтобы задействовать обновлённые пакеты.
+Примечание: вам может потребоваться перезапустить ядро, чтобы начали использоваться обновлённые пакеты.
 
 ```python
 import pandas as pd
@@ -385,7 +385,7 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' из 'short-trips'"}, xlabel='trip_distance', ylabel='Количество'>
 ```
 
 <Image img={jupysql_plot_1} size="md" alt="Гистограмма распределения длины поездок по 10 бинам из набора данных short-trips" border />
@@ -393,8 +393,8 @@ WHERE trip_distance < 6.3
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Trip distance from trips < 6.3")
-_ = ax.set_xlabel("Trip distance")
+ax.set_title("Расстояние поездки из поездок < 6.3")
+_ = ax.set_xlabel("Расстояние поездки")
 ```
 
 <Image img={jupysql_plot_2} size="md" alt="Гистограмма, показывающая распределение длины поездок с 50 столбцами и сеткой, с заголовком «Дистанция поездки для поездок < 6.3»" border />

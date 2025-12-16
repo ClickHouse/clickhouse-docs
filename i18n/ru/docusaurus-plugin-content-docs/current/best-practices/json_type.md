@@ -29,7 +29,7 @@ ClickHouse теперь предлагает нативный тип столб�
 
 ## Рекомендации и советы по использованию JSON {#considerations-and-tips-for-using-json}
 
-Тип JSON обеспечивает эффективное колонночное хранение за счёт разворачивания путей в подстолбцы. Но вместе с гибкостью приходит и ответственность. Чтобы использовать его эффективно:
+Тип JSON обеспечивает эффективное столбцовое хранение за счёт разворачивания путей в подстолбцы. Но вместе с гибкостью приходит и ответственность. Чтобы использовать его эффективно:
 
 * **Указывайте типы путей**, используя [подсказки в определении столбца](/sql-reference/data-types/newjson), чтобы задать типы для известных подстолбцов и избежать ненужного вывода типов.
 * **Пропускайте пути**, если вам не нужны их значения, с помощью [SKIP и SKIP REGEXP](/sql-reference/data-types/newjson), чтобы уменьшить объём хранения и повысить производительность.
@@ -89,7 +89,7 @@ INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-Рассмотрим [датасет arXiv](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download), содержащий 2,5 млн научных статей. Каждая строка этого датасета в формате NDJSON соответствует одной опубликованной научной статье. Пример строки показан ниже:
+Рассмотрим [набор данных arXiv](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download), содержащий 2,5 млн научных статей. Каждая строка этого набора данных в формате NDJSON соответствует одной опубликованной научной статье. Пример строки показан ниже:
 
 ```json
 {
@@ -151,12 +151,13 @@ ORDER BY update_date
 
 Снова вставим данные в формате JSON:
 
+
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-Предположим, что был добавлен дополнительный столбец `tags`. Если бы это был просто список строк, мы могли бы представить его в виде `Array(String)`, но допустим, пользователи могут добавлять произвольные структуры тегов со смешанными типами данных (обратите внимание, что `score` — это строка или целое число). Наш обновлённый JSON-документ:
+Предположим, что был добавлен ещё один столбец `tags`. Если бы это был просто список строк, мы могли бы представить его в виде `Array(String)`, но допустим, вы можете добавлять произвольные структуры тегов со смешанными типами данных (обратите внимание, что `score` — это строка или целое число). Наш обновлённый JSON-документ:
 
 ```sql
 {
@@ -210,7 +211,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-В этом случае мы могли бы представить документы arXiv либо целиком в формате JSON, либо просто добавить JSON-столбец `tags`. Ниже мы приводим оба примера:
+В этом случае мы могли бы смоделировать документы arXiv либо как полностью JSON-документы, либо просто добавить столбец JSON `tags`. Ниже мы приводим оба примера:
 
 ```sql
 CREATE TABLE arxiv
@@ -227,9 +228,10 @@ ORDER BY doc.update_date
 
 Мы можем выполнить вставку в эту таблицу и просмотреть впоследствии автоматически выведенную схему с помощью функции [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) и формата вывода [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow):
 
+
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Парсинг чисел со скоростью гигабайт в секунду","comments":"Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"Учитывая, что диски и сети обеспечивают гигабайты в секунду ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Полезное чтение, применимо к ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Мало что нового узнал","updates":[{"name":"professor X","comment":"Росомаха счёл более интересным"}]}}}
 ```
 
 ```sql
@@ -262,7 +264,7 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-1 row in set. Elapsed: 0.003 sec.
+Получена 1 строка. Время выполнения: 0.003 сек.
 ```
 
 В качестве альтернативы мы можем смоделировать это, используя нашу предыдущую схему и JSON-столбец `tags`. Такой подход обычно предпочтительнее, поскольку он минимизирует объём интерпретации данных, требуемой от ClickHouse:
@@ -292,7 +294,7 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Полезное чтение, применимо к ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Мало что нового узнал","updates":[{"name":"professor X","comment":"Росомаха счёл более интересным"}]}}}
 ```
 
 Теперь мы можем определить типы подколонки `tags`.

@@ -60,7 +60,7 @@ doc_type: 'reference'
 
 `Array` 可以嵌套，其元素可以为 `Nullable` 类型。`Tuple` 和 `Map` 类型也可以嵌套。
 
-ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段的数据类型不同。插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#cast)为 ClickHouse 表列所设置的数据类型。例如，可以将一个 `UINT_32` Parquet 列读取到一个 [IPv4](/sql-reference/data-types/ipv4.md) ClickHouse 列中。
+ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段的数据类型不同。插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#CAST)为 ClickHouse 表列所设置的数据类型。例如，可以将一个 `UINT_32` Parquet 列读取到一个 [IPv4](/sql-reference/data-types/ipv4.md) ClickHouse 列中。
 
 对于某些 Parquet 类型，没有与之紧密匹配的 ClickHouse 类型。我们按如下方式读取它们：
 
@@ -102,7 +102,6 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 以 `Parquet` 格式读取数据：
@@ -115,10 +114,10 @@ FORMAT Parquet
 ```
 
 :::tip
-Parquet 是一种二进制格式，无法在终端中以人类可读的形式显示。请使用 `INTO OUTFILE` 语句导出 Parquet 文件。
+Parquet 是一种二进制格式，无法在终端中以人类可读的形式显示。请使用 `INTO OUTFILE` 输出 Parquet 文件。
 :::
 
-要与 Hadoop 进行数据交换，可以使用 [`HDFS table engine`](/engines/table-engines/integrations/hdfs.md)。
+要与 Hadoop 进行数据交换，可以使用 [`HDFS 表引擎`](/engines/table-engines/integrations/hdfs.md)。
 
 
 ## 格式设置 {#format-settings}

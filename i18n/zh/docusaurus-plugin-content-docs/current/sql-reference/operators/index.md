@@ -286,7 +286,7 @@ FROM test.Orders;
 在设置 `INTERVAL` 的值时，也可以使用字符串字面量。例如，`INTERVAL 1 HOUR` 等同于 `INTERVAL '1 hour'` 或 `INTERVAL '1' hour`。
 
 :::tip
-不同类型的区间不能组合使用。不能使用 `INTERVAL 4 DAY 1 HOUR` 这样的表达式。请使用不大于该区间中最小单位的单位来指定区间，例如 `INTERVAL 25 HOUR`。可以像下面的示例一样使用连续运算。
+不同类型的区间不能组合使用。不能使用 `INTERVAL 4 DAY 1 HOUR` 这样的表达式。请使用小于或等于该区间中最小单位的时间单位来指定区间，例如 `INTERVAL 25 HOUR`。可以像下面的示例一样使用连续运算。
 :::
 
 示例:
@@ -341,6 +341,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
+
 
 ## 逻辑 AND 运算符 {#logical-and-operator}
 

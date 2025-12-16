@@ -2,7 +2,7 @@
 sidebar_label: 'Обзор'
 slug: /integrations/dbt
 sidebar_position: 1
-description: 'Пользователи могут преобразовывать и моделировать данные в ClickHouse с помощью dbt'
+description: 'Вы можете преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
 title: 'Интеграция ClickHouse с dbt'
 keywords: ['dbt', 'преобразование данных', 'аналитический инжиниринг', 'SQL-моделирование', 'конвейер ELT']
 doc_type: 'guide'
@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # ClickHouse database for dbt models
+      schema: [ default ] # База данных ClickHouse для моделей dbt
 
-      # Optional
+      # Необязательные параметры
       host: [ localhost ]
-      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
-      user: [ default ] # User for all database operations
-      password: [ <empty string> ] # Password for the user
-      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
+      port: [ 8123 ]  # По умолчанию 8123, 8443, 9000, 9440 в зависимости от настроек secure и driver 
+      user: [ default ] # Пользователь для всех операций с базой данных
+      password: [ <empty string> ] # Пароль для этого пользователя
+      secure: True  # Использовать TLS (нативный протокол) или HTTPS (http-протокол)
 ```
 
 
@@ -176,12 +176,12 @@ profile: 'clickhouse-service'
 
 ## Ограничения {#limitations}
 
-Текущий адаптер ClickHouse для dbt имеет несколько ограничений, о которых пользователям следует знать:
+Текущий адаптер ClickHouse для dbt имеет несколько ограничений, о которых вам следует знать:
 
 - Плагин использует синтаксис, который требует ClickHouse версии 25.3 или новее. Мы не тестируем более старые версии ClickHouse. В настоящее время мы также не тестируем реплицируемые таблицы (Replicated).
 - Разные запуски `dbt-adapter` могут конфликтовать, если выполняются одновременно, так как внутри они могут использовать одинаковые имена таблиц для одних и тех же операций. Дополнительную информацию см. в задаче [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420).
 - В настоящее время адаптер материализует модели как таблицы, используя [INSERT INTO SELECT](https://clickhouse.com/docs/sql-reference/statements/insert-into#inserting-the-results-of-select). Это фактически приводит к дублированию данных при повторном запуске. Очень большие наборы данных (петабайтного масштаба) могут приводить к чрезвычайно долгому времени выполнения, делая некоторые модели непрактичными. Для повышения производительности используйте материализованные представления ClickHouse, реализуя представление как `materialized: materialization_view`. Кроме того, стремитесь минимизировать количество строк, возвращаемых любым запросом, используя `GROUP BY`, где это возможно. Отдавайте предпочтение моделям, которые агрегируют данные, а не тем, которые лишь трансформируют их, сохраняя количество строк источника.
-- Чтобы использовать Distributed-таблицы для представления модели, пользователи должны вручную создать базовые реплицируемые таблицы на каждом узле. Distributed-таблица, в свою очередь, может быть создана поверх них. Адаптер не управляет созданием кластера.
+- Чтобы использовать Distributed-таблицы для представления модели, вы должны вручную создать базовые реплицируемые таблицы на каждом узле. Distributed-таблица, в свою очередь, может быть создана поверх них. Адаптер не управляет созданием кластера.
 - Когда dbt создаёт relation (table/view) в базе данных, он обычно создаёт его как: `{{ database }}.{{ schema }}.{{ table/view id }}`. В ClickHouse нет понятия схем. Поэтому адаптер использует `{{schema}}.{{ table/view id }}`, где `schema` — это база данных ClickHouse.
 - Эфемерные модели/CTE не работают, если они размещены перед `INSERT INTO` в операторе вставки ClickHouse, см. https://github.com/ClickHouse/ClickHouse/issues/30323. Это не должно затрагивать большинство моделей, но следует внимательно относиться к месту размещения эфемерной модели в определениях моделей и других SQL-операторах. <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
 

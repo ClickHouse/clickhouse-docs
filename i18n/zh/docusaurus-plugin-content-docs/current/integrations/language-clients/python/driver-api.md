@@ -86,7 +86,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 print(client.server_version)
-# Output: '22.10.1.98'
+# 输出：'22.10.1.98' {#output-2210198}
 ```
 
 * 连接到使用 HTTPS 的外部 ClickHouse 服务器
@@ -96,7 +96,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='play.clickhouse.com', secure=True, port=443, user='play', password='clickhouse')
 print(client.command('SELECT timezone()'))
-# Output: 'Etc/UTC'
+# 输出：'Etc/UTC' {#output-etcutc}
 ```
 
 * 使用会话 ID 及其他自定义连接参数和 ClickHouse 设置建立连接。
@@ -115,7 +115,7 @@ client = clickhouse_connect.get_client(
     settings={'distributed_ddl_task_timeout':300},
 )
 print(client.database)
-# Output: 'github'
+# 输出：'github' {#output-github}
 ```
 
 ## 客户端生命周期和最佳实践 {#client-lifecycle-and-best-practices}
@@ -136,21 +136,21 @@ print(client.database)
 ```python
 import clickhouse_connect
 
-# Create once at startup
+# 启动时创建一次 {#create-once-at-startup}
 client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
 
-# Reuse for all queries
+# 所有查询重复使用 {#reuse-for-all-queries}
 for i in range(1000):
     result = client.query('SELECT count() FROM users')
 
-# Close on shutdown
+# 关闭时释放连接 {#close-on-shutdown}
 client.close()
 ```
 
 **❌ 错误示例：重复创建客户端**
 
 ```python
-# BAD: Creates 1000 clients with expensive initialization overhead
+# 错误示例:创建 1000 个客户端会产生高昂的初始化开销 {#bad-creates-1000-clients-with-expensive-initialization-overhead}
 for i in range(1000):
     client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
     result = client.query('SELECT count() FROM users')
@@ -169,16 +169,16 @@ for i in range(1000):
 import clickhouse_connect
 import threading
 
-# Option 1: Disable sessions (recommended for shared clients)
+# 选项 1：禁用会话（推荐用于共享客户端） {#option-1-disable-sessions-recommended-for-shared-clients}
 client = clickhouse_connect.get_client(
     host='my-host',
     username='default',
     password='password',
-    autogenerate_session_id=False  # Required for thread safety
+    autogenerate_session_id=False  # 线程安全必需
 )
 
 def worker(thread_id):
-    # All threads can now safely use the same client
+    # 所有线程现在都可以安全地使用同一个客户端
     result = client.query(f"SELECT {thread_id}")
     print(f"Thread {thread_id}: {result.result_rows[0][0]}")
 
@@ -190,27 +190,27 @@ for t in threads:
     t.join()
 
 client.close()
-# Output:
-# Thread 0: 0
-# Thread 7: 7
-# Thread 1: 1
-# Thread 9: 9
-# Thread 4: 4
-# Thread 2: 2
-# Thread 8: 8
-# Thread 5: 5
-# Thread 6: 6
-# Thread 3: 3
+# 输出： {#output}
+# Thread 0: 0 {#thread-0-0}
+# Thread 7: 7 {#thread-7-7}
+# Thread 1: 1 {#thread-1-1}
+# Thread 9: 9 {#thread-9-9}
+# Thread 4: 4 {#thread-4-4}
+# Thread 2: 2 {#thread-2-2}
+# Thread 8: 8 {#thread-8-8}
+# Thread 5: 5 {#thread-5-5}
+# Thread 6: 6 {#thread-6-6}
+# Thread 3: 3 {#thread-3-3}
 ```
 
 **会话的替代方案：** 如果需要使用会话（例如用于临时表），请为每个线程创建一个单独的客户端：
 
 ```python
 def worker(thread_id):
-    # Each thread gets its own client with isolated session
+    # 每个线程拥有独立的客户端和隔离会话
     client = clickhouse_connect.get_client(host='my-host', username='default', password='password')
     client.command('CREATE TEMPORARY TABLE temp (id UInt32) ENGINE = Memory')
-    # ... use temp table ...
+    # ... 使用临时表 ...
     client.close()
 ```
 
@@ -328,16 +328,16 @@ WHERE metric >= 35200.44
 
 * 将 Python `datetime.datetime` 值封装到 DT64Param 类中，例如：
   ```python
-    query = 'SELECT {p1:DateTime64(3)}'  # Server-side binding with dictionary
+    query = 'SELECT {p1:DateTime64(3)}'  # 使用字典进行服务端绑定
     parameters={'p1': DT64Param(dt_value)}
-  
-    query = 'SELECT %s as string, toDateTime64(%s,6) as dateTime' # Client-side binding with list 
+
+    query = 'SELECT %s as string, toDateTime64(%s,6) as dateTime' # 使用列表进行客户端绑定
     parameters=['a string', DT64Param(datetime.now())]
   ```
   * 如果使用参数值字典，请在参数名后追加字符串 `_64`
   ```python
-    query = 'SELECT {p1:DateTime64(3)}, {a1:Array(DateTime(3))}'  # Server-side binding with dictionary
-  
+    query = 'SELECT {p1:DateTime64(3)}, {a1:Array(DateTime(3))}'  # 使用字典进行服务端绑定
+
     parameters={'p1_64': dt_value, 'a1_64': [dt_value1, dt_value2]}
   ```
 
@@ -400,6 +400,7 @@ print(result)
 client.command("DROP TABLE test_command")
 ```
 
+
 #### 返回单个值的简单查询 {#simple-queries-returning-single-values}
 
 ```python
@@ -407,15 +408,15 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Single value result
+# 单值结果 {#single-value-result}
 count = client.command("SELECT count() FROM system.tables")
 print(count)
-# Output: 151
+# 输出：151 {#output-151}
 
-# Server version
+# 服务器版本 {#server-version}
 version = client.command("SELECT version()")
 print(version)
-# Output: "25.8.2.29"
+# 输出："25.8.2.29" {#output-258229}
 ```
 
 #### 带参数的命令 {#commands-with-parameters}
@@ -425,14 +426,14 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Using client-side parameters
+# 使用客户端侧参数 {#using-client-side-parameters}
 table_name = "system"
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = %(db)s",
     parameters={"db": table_name}
 )
 
-# Using server-side parameters
+# 使用服务器侧参数 {#using-server-side-parameters}
 result = client.command(
     "SELECT count() FROM system.tables WHERE database = {db:String}",
     parameters={"db": "system"}
@@ -446,7 +447,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Execute command with specific settings
+# 执行带有特定设置的命令 {#execute-command-with-specific-settings}
 result = client.command(
     "OPTIMIZE TABLE large_table FINAL",
     settings={"optimize_throw_if_noop": 1}
@@ -482,22 +483,22 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Simple SELECT query
+# 简单的 SELECT 查询 {#simple-select-query}
 result = client.query("SELECT name, database FROM system.tables LIMIT 3")
 
-# Access results as rows
+# 按行访问结果 {#access-results-as-rows}
 for row in result.result_rows:
     print(row)
-# Output:
-# ('CHARACTER_SETS', 'INFORMATION_SCHEMA')
-# ('COLLATIONS', 'INFORMATION_SCHEMA')
-# ('COLUMNS', 'INFORMATION_SCHEMA')
+# 输出： {#output}
+# ('CHARACTER_SETS', 'INFORMATION_SCHEMA') {#character_sets-information_schema}
+# ('COLLATIONS', 'INFORMATION_SCHEMA') {#collations-information_schema}
+# ('COLUMNS', 'INFORMATION_SCHEMA') {#columns-information_schema}
 
-# Access column names and types
+# 访问列名和类型 {#access-column-names-and-types}
 print(result.column_names)
-# Output: ("name", "database")
+# 输出： ("name", "database") {#output-name-database}
 print([col_type.name for col_type in result.column_types])
-# Output: ['String', 'String']
+# 输出： ['String', 'String'] {#output-string-string}
 ```
 
 #### 获取查询结果 {#accessing-query-results}
@@ -509,29 +510,29 @@ client = clickhouse_connect.get_client()
 
 result = client.query("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
 
-# Row-oriented access (default)
+# 按行访问结果（默认） {#row-oriented-access-default}
 print(result.result_rows)
-# Output: [[0, "0"], [1, "1"], [2, "2"]]
+# 输出：[[0, "0"], [1, "1"], [2, "2"]] {#output-0-0-1-1-2-2}
 
-# Column-oriented access
+# 按列访问结果 {#column-oriented-access}
 print(result.result_columns)
-# Output: [[0, 1, 2], ["0", "1", "2"]]
+# 输出：[[0, 1, 2], ["0", "1", "2"]] {#output-0-1-2-0-1-2}
 
-# Named results (list of dictionaries)
+# 具名结果（字典列表） {#named-results-list-of-dictionaries}
 for row_dict in result.named_results():
     print(row_dict)
-# Output: 
-# {"number": 0, "str": "0"}
-# {"number": 1, "str": "1"}
-# {"number": 2, "str": "2"}
+# 输出：  {#output}
+# {"number": 0, "str": "0"} {#number-0-str-0}
+# {"number": 1, "str": "1"} {#number-1-str-1}
+# {"number": 2, "str": "2"} {#number-2-str-2}
 
-# First row as dictionary
+# 第一行作为字典 {#first-row-as-dictionary}
 print(result.first_item)
-# Output: {"number": 0, "str": "0"}
+# 输出： {"number": 0, "str": "0"} {#output-number-0-str-0}
 
-# First row as tuple
+# 第一行作为元组 {#first-row-as-tuple}
 print(result.first_row)
-# Output: (0, "0")
+# 输出： (0, "0") {#output-0-0}
 ```
 
 #### 使用客户端参数查询 {#query-with-client-side-parameters}
@@ -541,12 +542,12 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Using dictionary parameters (printf-style)
+# 使用字典参数（printf 风格） {#using-dictionary-parameters-printf-style}
 query = "SELECT * FROM system.tables WHERE database = %(db)s AND name LIKE %(pattern)s"
 parameters = {"db": "system", "pattern": "%query%"}
 result = client.query(query, parameters=parameters)
 
-# Using tuple parameters
+# 使用元组参数 {#using-tuple-parameters}
 query = "SELECT * FROM system.tables WHERE database = %s LIMIT %s"
 parameters = ("system", 5)
 result = client.query(query, parameters=parameters)
@@ -559,7 +560,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Server-side binding (more secure, better performance for SELECT queries)
+# 服务器端绑定(更安全,SELECT 查询性能更佳) {#server-side-binding-more-secure-better-performance-for-select-queries}
 query = "SELECT * FROM system.tables WHERE database = {db:String} AND name = {tbl:String}"
 parameters = {"db": "system", "tbl": "query_log"}
 
@@ -573,7 +574,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Pass ClickHouse settings with the query
+# 通过查询传递 ClickHouse 设置 {#pass-clickhouse-settings-with-the-query}
 result = client.query(
     "SELECT sum(number) FROM numbers(1000000)",
     settings={
@@ -648,7 +649,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Row-oriented data: each inner list is a row
+# 面向行的数据:每个内部列表代表一行 {#row-oriented-data-each-inner-list-is-a-row}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -665,11 +666,11 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Column-oriented data: each inner list is a column
+# Column-oriented data: each inner list is a column {#column-oriented-data-each-inner-list-is-a-column}
 data = [
-    [1, 2, 3],  # id column
-    ["Alice", "Bob", "Joe"],  # name column
-    [25, 30, 28],  # age column
+    [1, 2, 3],  # id 列
+    ["Alice", "Bob", "Joe"],  # name 列
+    [25, 30, 28],  # age 列
 ]
 
 client.insert("users", data, column_names=["id", "name", "age"], column_oriented=True)
@@ -682,7 +683,7 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Useful when you want to avoid a DESCRIBE query to the server
+# 当您想避免向服务器发送 DESCRIBE 查询时使用 {#useful-when-you-want-to-avoid-a-describe-query-to-the-server}
 data = [
     [1, "Alice", 25],
     [2, "Bob", 30],
@@ -709,7 +710,7 @@ data = [
     [2, "Bob", 30],
 ]
 
-# Insert into a table in a specific database
+# 向指定数据库中的表插入数据 {#insert-into-a-table-in-a-specific-database}
 client.insert(
     "users",
     data,

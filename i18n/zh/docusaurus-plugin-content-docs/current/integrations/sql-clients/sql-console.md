@@ -47,6 +47,7 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
+
 # SQL 控制台 {#sql-console}
 
 SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快、最简便方式。您可以使用 SQL 控制台：
@@ -281,21 +282,21 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 
 ### 调试 {#debugging}
 
-现在，我们来测试 GenAI 的查询调试能力。
+现在，我们来测试 GenAI 的查询调试功能。
 
-1. 点击 _+_ 图标创建一个新查询，并粘贴以下代码：
+1. 点击 _+_ 图标创建一个新的查询，并粘贴以下代码：
 
-```sql
-   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   ```sql
+   -- 按年份显示 uk_price_paid 表中所有交易的总价格和总交易数。
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
    ```
 
 1. 点击 **Run**。查询会失败，因为我们尝试从 `pricee` 而不是 `price` 中获取值。
-2. 点击 **Fix Query**。
-3. GenAI 会尝试修复查询。在这个例子中，它将 `pricee` 修改为 `price`，并判断在这种场景下使用 `toYear` 是更合适的函数。
-4. 选择 **Apply** 将建议的更改应用到查询中，然后点击 **Run**。
+1. 点击 **Fix Query**。
+1. GenAI 会尝试修复查询。在这个例子中，它将 `pricee` 修改为 `price`，并判断在这种场景下使用 `toYear` 是更合适的函数。
+1. 选择 **Apply** 将建议的更改应用到查询中，然后点击 **Run**。
 
 请注意，GenAI 是一项实验性功能。在对任何数据集运行由 GenAI 生成的查询时，请务必谨慎。
 
@@ -348,6 +349,7 @@ ORDER BY
 <Image img={tabular_query_results} size="lg" border alt="表格查询结果" />
 
 在没有可视化的情况下，这些结果很难理解和分析。我们将它们转换成图表。
+
 
 ### 创建图表 {#creating-charts}
 

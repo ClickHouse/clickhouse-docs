@@ -50,7 +50,7 @@ HyperDX 是 ClickStack 的用户界面。它提供：
 - 仪表板创建和告警配置
 - 用于高级分析的 SQL 查询界面
 
-HyperDX 专为 ClickHouse 设计，将强大的搜索能力与直观的工作流相结合，使用户能够快速发现异常、排查问题并获取洞察。 
+HyperDX 专为 ClickHouse 设计，将强大的搜索能力与直观的工作流相结合，使你能够快速发现异常、排查问题并获取洞察。 
 
 ## MongoDB：应用状态 {#mongo}
 

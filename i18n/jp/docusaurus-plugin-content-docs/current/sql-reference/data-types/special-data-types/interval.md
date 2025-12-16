@@ -30,7 +30,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します。
+各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します:
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -41,6 +41,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
+
 
 ## 使用上の注意 {#usage-remarks}
 
@@ -68,7 +69,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-また、異なる間隔の値を比較するには、次のようにします：
+また、異なるインターバル同士の値を比較するには、次のようにします：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -79,6 +80,7 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 │                                                           1 │
 └─────────────────────────────────────────────────────────────┘
 ```
+
 
 ## 関連項目 {#see-also}
 
