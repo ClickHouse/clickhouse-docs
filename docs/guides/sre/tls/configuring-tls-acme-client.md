@@ -19,7 +19,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <SelfManaged />
 
 This guide provides describes how to configure ClickHouse to use [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) (described by [RFC8555](https://www.rfc-editor.org/rfc/rfc8555)) protocol.
-With ACME support, ClickHouse can obtain and renew certificates from providers like Let's Encrypt or ZeroSSL automatically.
+With ACME support, ClickHouse can obtain and renew certificates from providers like [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/) automatically.
 TLS encryption protects data in transit between clients and ClickHouse servers, preventing eavesdropping on sensitive queries and results.
 
 ## Overview {#overview}
