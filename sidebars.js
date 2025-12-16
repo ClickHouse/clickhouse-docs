@@ -505,7 +505,7 @@ const sidebars = {
       collapsible: false,
       link: { type: "doc", id: "integrations/language-clients/index" },
       items: [
-        "interfaces/cpp",
+        "integrations/language-clients/cpp",
         "integrations/language-clients/go/index",
         "integrations/language-clients/js",
         {
@@ -759,18 +759,18 @@ const sidebars = {
           label: "Drivers and Interfaces",
           collapsed: true,
           collapsible: true,
-          link: { type: "doc", id: "interfaces/overview" },
+          link: { type: "doc", id: "integrations/interfaces/overview" },
           items: [
-            "interfaces/http",
-            "interfaces/tcp",
-            "interfaces/jdbc",
-            "interfaces/mysql",
-            "interfaces/odbc",
-            "interfaces/postgresql",
-            "interfaces/prometheus",
-            "interfaces/ssh",
-            "interfaces/grpc",
-            "interfaces/arrowflight"
+            "integrations/interfaces/http",
+            "integrations/interfaces/tcp",
+            "integrations/interfaces/jdbc",
+            "integrations/interfaces/mysql",
+            "integrations/interfaces/odbc",
+            "integrations/interfaces/postgresql",
+            "integrations/interfaces/prometheus",
+            "integrations/interfaces/ssh",
+            "integrations/interfaces/grpc",
+            "integrations/interfaces/arrowflight"
           ],
         },
         "integrations/sql-clients/sql-console",
