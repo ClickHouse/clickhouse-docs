@@ -22,7 +22,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 使用 ClickStack 监控 EC2 主机日志 {#ec2-host-logs-clickstack}
 
 :::note[TL;DR]
@@ -507,7 +506,6 @@ sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetectio
 # If running in foreground, check stdout
 ```
 
-
 ### HyperDX 中未显示日志
 
 **检查 syslog 文件是否存在并正在写入：**
@@ -542,7 +540,6 @@ curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
 
-
 ### 日志解析错误
 
 **检查你的 syslog 格式：**
@@ -563,7 +560,6 @@ tail -5 /var/log/messages
 
 如果你的格式不匹配，请根据你使用的发行版，在[创建 collector 配置](#create-config)部分中选择相应的配置标签页。
 
-
 ### Collector 作为 systemd 服务未启动
 
 **检查服务状态：**
@@ -583,7 +579,6 @@ sudo journalctl -u otelcol-contrib -n 50
 * 环境中未正确设置 API 密钥
 * 配置文件语法错误
 * 读取日志文件时的权限问题
-
 
 ## 后续步骤 {#next-steps}
 

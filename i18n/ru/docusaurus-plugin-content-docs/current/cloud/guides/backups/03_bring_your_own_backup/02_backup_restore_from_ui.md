@@ -21,10 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
 # Резервное копирование и восстановление с помощью пользовательского интерфейса {#ui-experience}
-
-
 
 ## AWS {#AWS}
 
@@ -166,7 +163,6 @@ AWS использует аутентификацию на основе роле
 
 ##### Создайте новый сервис для восстановления {#create-new-service-to-restore-to}
 
-
 Создайте новый сервис для восстановления резервной копии.
 
 ##### Добавление ARN сервиса {#add-service-arn}
@@ -205,7 +201,6 @@ Cloud) в политику доверия для роли IAM. Это анало
 восстановления резервной копии.
 
 </VerticalStepper>
-
 
 ## GCP {#gcp}
 
@@ -314,7 +309,6 @@ Cloud) в политику доверия для роли IAM. Это анало
 Если вы переместите резервные копии в другое расположение, вам потребуется изменить команду восстановления, указав новое расположение.
 :::
 
-
 :::tip Команда ASYNC
 Для команды Restore можно дополнительно добавить команду `ASYNC` в конце при восстановлении больших объемов данных.
 Это позволяет выполнять восстановление асинхронно, благодаря чему при потере соединения процесс восстановления продолжит выполняться.
@@ -329,7 +323,6 @@ Cloud) в политику доверия для роли IAM. Это анало
 восстановления резервной копии.
 
 </VerticalStepper>
-
 
 ## Azure {#azure}
 

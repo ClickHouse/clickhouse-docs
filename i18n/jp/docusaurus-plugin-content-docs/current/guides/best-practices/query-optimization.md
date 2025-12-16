@@ -10,7 +10,7 @@ keywords: ['クエリ最適化', 'パフォーマンス', 'ベストプラクテ
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-# クエリ最適化のシンプルガイド
+# クエリ最適化のシンプルガイド {#a-simple-guide-for-query-optimization}
 
 このセクションでは、[アナライザー](/operations/analyzer)、[クエリプロファイリング](/operations/optimizing-performance/sampling-query-profiler)、[Nullable列の回避](/optimize/avoid-nullable-columns)などの様々なパフォーマンスと最適化テクニックを使用して、ClickHouseのクエリパフォーマンスを向上させる方法を一般的なシナリオを通じて説明します。
 

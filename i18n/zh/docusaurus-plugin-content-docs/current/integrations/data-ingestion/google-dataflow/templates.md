@@ -2,13 +2,14 @@
 sidebar_label: '模板'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: '用户可以通过 Google Dataflow 模板将数据摄取到 ClickHouse'
+description: '您可以通过 Google Dataflow 模板将数据摄取到 ClickHouse'
 title: 'Google Dataflow 模板'
 doc_type: 'guide'
 keywords: ['Google Dataflow', 'GCP', '数据管道', '模板', '批处理']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Google Dataflow 模板 {#google-dataflow-templates}
 
@@ -28,6 +29,7 @@ Google Dataflow 模板提供了一种便捷方式，使您无需编写自定义�
 有关详细的分步操作说明，请参阅 [Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates)。
 
 ## ClickHouse 模板列表 {#list-of-clickhouse-templates}
+
 * [BigQuery 到 ClickHouse](./templates/bigquery-to-clickhouse)
 * [GCS 到 ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3)（即将推出！）
 * [Pub Sub 到 ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4)（即将推出！）

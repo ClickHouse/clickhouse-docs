@@ -1217,7 +1217,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**別名**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**別名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **引数**
 
@@ -1259,7 +1259,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**日付の差をさまざまな単位で計算する**
+**日付の差を異なる単位で計算する**
 
 ```sql title=Query
 SELECT
@@ -1275,6 +1275,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │          1 │         1 │
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
+
 
 ## dateName {#dateName}
 
@@ -1409,7 +1410,7 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 
 `formatDateTime` は MySQL の datetime フォーマットスタイルを使用します。[mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format) を参照してください。
 
-この関数の逆操作は [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime) です。
+この関数の逆操作は [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parseDateTime) です。
 
 置換フィールドを使用して、結果文字列のパターンを定義できます。
 以下の表の「例」カラムは、`2018-01-02 22:33:44` をフォーマットした結果を示します。
@@ -1469,6 +1470,7 @@ formatDateTime(datetime, format[, timezone])
 **別名**: `DATE_FORMAT`
 
 **引数**
+
 
 * `datetime` — 書式設定する日付または日時。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 * `format` — 置換フィールドを含む書式文字列。[`String`](/sql-reference/data-types/string)
@@ -1537,7 +1539,7 @@ LIMIT 10
 
 `formatDateTime` と似ていますが、MySQL スタイルではなく Joda スタイルで日時をフォーマットします。[Joda Time ドキュメント](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)を参照してください。
 
-この関数の逆の操作は [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax) です。
+この関数の逆の操作は [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parseDateTimeInJodaSyntax) です。
 
 置換フィールドを使用して、結果の文字列のパターンを定義できます。
 
@@ -1598,6 +1600,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 │ 2010-01-04 12:34:56                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
@@ -1830,7 +1833,7 @@ SELECT fromUnixTimestamp(423543535)
 └──────────────────────────────┘
 ```
 
-**Unix タイムスタンプを指定フォーマットに変換**
+**Unix タイムスタンプを指定したフォーマットに変換**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
@@ -1841,6 +1844,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 │ 2009-02-11 14:42:23 │
 └─────────────────────┘
 ```
+
 
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
@@ -1884,6 +1888,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 │ 2009-02-11 06:42:23 │
 └─────────────────────┘
 ```
+
 
 ## makeDate {#makeDate}
 
@@ -3534,6 +3539,61 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 │                                        10 │
 └───────────────────────────────────────────┘
 ```
+
+## toISOWeek {#toISOWeek}
+
+導入バージョン: v20.1
+
+日付または日時から ISO 週番号を返します。
+
+この関数は互換性維持のためのもので、`toWeek(date, 3)` と等価です。
+ISO 週は月曜日から始まり、その年の最初の週は 1 月 4 日を含む週です。
+ISO 8601 によると、週番号の範囲は 1 から 53 までです。
+
+年の始めや終わり付近の日付では、前の年または次の年の週番号が返される場合があることに注意してください。例えば、
+2025 年 12 月 29 日は、2026 年 1 月 4 日を含む最初の週に属するため、週番号 1 を返します。
+
+**構文**
+
+```sql
+toISOWeek(datetime[, timezone])
+```
+
+**引数**
+
+* `datetime` — ISO 週番号を取得する対象となる日付または日時の値。[`Date`](/sql-reference/data-types/date) または [`DateTime`](/sql-reference/data-types/datetime) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 省略可能。タイムゾーンを指定します。[`String`](/sql-reference/data-types/string)
+
+**返り値**
+
+ISO 8601 規格に従った ISO 週番号を返します。1 から 53 の範囲の数値を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**ISO 週番号を取得する**
+
+```sql title=Query
+SELECT toDate('2016-12-27') AS date, toISOWeek(date) AS isoWeek
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┐
+│ 2016-12-27 │      52 │
+└────────────┴─────────┘
+```
+
+**ISO 週番号は別の年に属する場合がある**
+
+```sql title=Query
+SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS year
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┬─year─┐
+│ 2025-12-29 │       1 │ 2025 │
+└────────────┴─────────┴──────┘
+```
+
 
 ## toISOYear {#toISOYear}
 
@@ -5213,7 +5273,7 @@ from_date32:     1509840000
 その週が新しい年に属する日を何日含むかは関係なく、1 日しか含まない場合でも同様です。
 すなわち、12 月の最終週に翌年の 1 月 1 日が含まれる場合、その週は翌年の第 1 週となります。
 
-第 1 引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) でサポートされる形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティツールが想定している MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性用 SETTING に依存するよう変更される可能性があること、および一般に文字列のパースは低速であることから、文字列引数の使用は推奨されません。
+第 1 引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort) でサポートされる形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティツールが想定している MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性用 SETTING に依存するよう変更される可能性があること、および一般に文字列のパースは低速であることから、文字列引数の使用は推奨されません。
 
 **構文**
 
@@ -5246,6 +5306,7 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 │ 2016-12-27 │    52 │    52 │     1 │
 └────────────┴───────┴───────┴───────┘
 ```
+
 
 ## toYYYYMM {#toYYYYMM}
 
@@ -5434,7 +5495,7 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 
 警告: `toYearWeek()` が返す週番号は、`toWeek()` が返すものと異なる場合があります。`toWeek()` は常に与えられた年のコンテキストで週番号を返し、`toWeek()` が `0` を返す場合、`toYearWeek()` は前年の最終週に対応する値を返します。下記の例にある `prev_yearWeek` を参照してください。
 
-最初の引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) がサポートする形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティーツールが期待する MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性 SETTING に依存するようになる可能性があり、また一般に文字列のパースは低速であるため、使用しないことを推奨します。
+最初の引数は、[`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort) がサポートする形式の [`String`](../data-types/string.md) として指定することもできます。文字列引数のサポートは、一部のサードパーティーツールが期待する MySQL との互換性のためにのみ存在します。将来的には、文字列引数のサポートが新しい MySQL 互換性 SETTING に依存するようになる可能性があり、また一般に文字列のパースは低速であるため、使用しないことを推奨します。
 
 **構文**
 
@@ -5467,6 +5528,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 │ 2016-12-27 │    201652 │    201652 │    201701 │        202152 │
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
+
 
 ## today {#today}
 

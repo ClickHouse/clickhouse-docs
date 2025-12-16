@@ -7,9 +7,8 @@ doc_type: 'reference'
 keywords: ['控制台角色', '权限', '访问控制', '安全', 'rbac']
 ---
 
-
-
 ## 组织角色 {#organization-roles}
+
 有关分配组织角色的说明，请参阅[管理云用户](/cloud/security/manage-cloud-users)。
 
 ClickHouse 提供四种组织级角色用于用户管理。只有 Admin 角色默认具备对服务的访问权限。所有其他角色都必须与服务级角色组合后才能与服务交互。
@@ -21,21 +20,19 @@ ClickHouse 提供四种组织级角色用于用户管理。只有 Admin 角色�
 | Billing   | 查看使用情况和发票，并管理支付方式。                                                                                                                                                                                        |
 | Member    | 仅可登录，并可管理个人资料设置。默认分配给 SAML SSO 用户。                                                                                                                                                                  |
 
-
-
 ## 服务角色 {#service-roles}
+
 有关分配服务角色的操作说明，请参阅 [管理云用户](/cloud/security/manage-cloud-users)。
 
-对于除 admin 之外角色的用户，服务权限必须由管理员显式授予。Service Admin 角色预先配置了 SQL 控制台管理员权限，但可以进行修改以减少或移除权限。
+对于除 admin 之外角色的用户，服务权限必须由管理员显式授予。Service admin 角色预先配置了 SQL 控制台管理员权限，但可以进行修改以减少或移除权限。
 
 | 角色              | 说明                       |
 |-------------------|----------------------------|
 | Service read only | 查看服务和设置。          |
 | Service admin     | 管理服务设置。            |
 
-
-
 ## SQL 控制台角色 {#sql-console-roles}
+
 有关如何分配 SQL 控制台角色的操作说明，请参阅[管理 SQL 控制台角色分配](/cloud/guides/sql-console/manage-sql-console-role-assignments)。
 
 | 角色                  | 描述                                                                                           |

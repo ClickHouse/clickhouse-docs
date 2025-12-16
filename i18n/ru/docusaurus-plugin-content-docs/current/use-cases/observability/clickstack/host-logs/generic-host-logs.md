@@ -20,7 +20,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Мониторинг журналов хоста с помощью ClickStack {#host-logs-clickstack}
 
 :::note[Кратко]
@@ -424,7 +423,6 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
-
 ### В HyperDX не отображаются логи
 
 **Проверьте, что файлы syslog существуют и в них ведётся запись:**
@@ -461,7 +459,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i "filel
 docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 ```
 
-
 ### Логи разбираются некорректно
 
 **Убедитесь, что формат сообщений syslog соответствует выбранной конфигурации:**
@@ -483,7 +480,6 @@ tail -5 /var/log/system.log
 ```
 
 Если ваш формат отличается, выберите соответствующую вкладку конфигурации в разделе [Создание пользовательской конфигурации OTel collector](#custom-otel).
-
 
 ## Дальнейшие шаги {#next-steps}
 

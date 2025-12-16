@@ -31,8 +31,8 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Only if needed for the API
-# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
+  - "8080:8080"  # 仅在 API 需要时
+# 避免暴露内部端口，如 ClickHouse 8123 或 MongoDB 27017。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 有关隔离容器和强化访问安全性的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
@@ -69,13 +69,14 @@ ports:
       - db1
 ```
 
-你可以使用 openssl 生成一个强随机密钥：
+你可以使用 `openssl` 生成一个强随机密钥：
 
 ```shell
 openssl rand -hex 32
 ```
 
-避免将机密信息提交到源代码版本控制系统中。在生产环境中，建议使用环境变量管理工具（例如 Docker Secrets、HashiCorp Vault，或按环境划分的 CI/CD 配置）来管理这些值。
+避免将机密信息提交到源代码仓库。在生产环境中，建议使用环境变量管理工具（例如 Docker Secrets、HashiCorp Vault，或按环境划分的 CI/CD 配置）。
+
 
 ## 安全摄取 {#secure-ingestion}
 
@@ -108,11 +109,11 @@ HyperDX 对应的 ClickHouse 用户只需要是一个 `readonly` 用户，并且
 
 ### 自托管环境的安全性 {#self-managed-security}
 
-如果你在自行管理 ClickHouse 实例，务必要启用 **SSL/TLS**、强制身份验证，并遵循强化访问控制的最佳实践。有关真实环境中错误配置及其规避方法的更多背景信息，请参阅[这篇博客文章](https://www.wiz.io/blog/clickhouse-and-wiz)。
+如果你在自行管理 ClickHouse 实例，务必要启用 **TLS**、强制身份验证，并遵循强化访问控制的最佳实践。有关真实环境中错误配置及其规避方法的更多背景信息，请参阅[这篇博客文章](https://www.wiz.io/blog/clickhouse-and-wiz)。
 
 ClickHouse OSS 开箱即用地提供了完善的安全功能，但这些功能都需要进行配置：
 
-- 通过 `tcp_port_secure` 和 `config.xml` 中的 `<openSSL>` **启用 SSL/TLS**。参见 [guides/sre/configuring-ssl](/guides/sre/configuring-ssl)。
+- 通过 `tcp_port_secure` 和 `config.xml` 中的 `<openSSL>` **启用 TLS**。参见 [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls)。
 - 为 `default` 用户**设置强密码**或将其禁用。
 - **避免将 ClickHouse 暴露到外网**，除非有明确需求。默认情况下，ClickHouse 只绑定到 `localhost`，除非修改了 `listen_host`。
 - **使用身份验证方法**，例如密码、证书、SSH 密钥或[外部认证器](/operations/external-authenticators)。
@@ -141,7 +142,7 @@ ClickHouse OSS 开箱即用地提供了完善的安全功能，但这些功能�
 
 ### 创建服务 {#create-a-service}
 
-按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service)创建一个服务。
+按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service) 创建一个服务。
 
 ### 复制连接信息 {#copy-connection-details}
 
@@ -175,7 +176,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 部署 ClickStack——推荐使用 [Helm](/use-cases/observability/clickstack/deployment/helm) 或 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)（修改为排除 ClickHouse）的部署模型。 
 
 :::note 单独部署组件
-高级用户可以分别使用各自的独立部署模式部署 [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) 和 [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)。
+如果您是高级用户，可以分别使用各自的独立部署模式部署 [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) 和 [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)。
 :::
 
 使用 ClickHouse Cloud 搭配 Helm 图表的说明见 [此处](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。使用 Docker Compose 的等效说明见 [此处](/use-cases/observability/clickstack/deployment/docker-compose)。

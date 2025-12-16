@@ -148,6 +148,7 @@ SELECT * FROM myThirdReplacingMT final;
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
 ```
+
 ## 查询子句 {#query-clauses}
 
 在创建 `ReplacingMergeTree` 表时，需要使用与创建 `MergeTree` 表时相同的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)。

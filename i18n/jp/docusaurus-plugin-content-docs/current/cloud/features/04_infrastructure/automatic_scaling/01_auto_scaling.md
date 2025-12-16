@@ -16,6 +16,7 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
+
 # 自動スケーリング {#automatic-scaling}
 
 スケーリングとは、クライアントからの需要に応じて利用可能なリソースを調整する機能を指します。Scale および Enterprise（標準 1:4 プロファイル）ティアのサービスは、API をプログラム経由で呼び出すか、UI 上の設定を変更してシステムリソースを調整することで、水平スケーリングが可能です。これらのサービスは、アプリケーションの需要に合わせて**垂直方向に自動スケーリング**することもできます。
@@ -23,7 +24,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 :::note
-Scale および Enterprise ティアは単一レプリカとマルチレプリカの両方のサービスをサポートしますが、Basic ティアは単一レプリカのサービスのみをサポートします。単一レプリカのサービスはサイズが固定されており、垂直・水平どちらのスケーリングもできません。ユーザーは、サービスをスケーリングするために Scale または Enterprise ティアへアップグレードできます。
+Scale および Enterprise ティアは単一レプリカとマルチレプリカの両方のサービスをサポートしますが、Basic ティアは単一レプリカのサービスのみをサポートします。単一レプリカのサービスはサイズが固定されており、垂直・水平どちらのスケーリングもできません。サービスをスケーリングするには、Scale または Enterprise ティアにアップグレードできます。
 :::
 
 ## ClickHouse Cloud におけるスケーリングの仕組み {#how-scaling-works-in-clickhouse-cloud}

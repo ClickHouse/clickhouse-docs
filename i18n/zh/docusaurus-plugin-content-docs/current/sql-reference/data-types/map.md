@@ -65,9 +65,10 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
+
 ## 将 Tuple 转换为 Map {#converting-tuple-to-map}
 
-类型为 `Tuple()` 的值可以通过函数 [CAST](/sql-reference/functions/type-conversion-functions#cast) 转换为 `Map()` 类型的值：
+类型为 `Tuple()` 的值可以通过函数 [CAST](/sql-reference/functions/type-conversion-functions#CAST) 转换为 `Map()` 类型的值：
 
 **示例**
 
@@ -84,6 +85,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 │ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
+
 
 ## 读取 Map 的子列 {#reading-subcolumns-of-map}
 
@@ -116,8 +118,9 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 **另请参阅**
 
 * [map()](/sql-reference/functions/tuple-map-functions#map) 函数
-* [CAST()](/sql-reference/functions/type-conversion-functions#cast) 函数
+* [CAST()](/sql-reference/functions/type-conversion-functions#CAST) 函数
 * [用于 Map 数据类型的 -Map 组合器](../aggregate-functions/combinators.md#-map)
+
 
 ## 相关内容 {#related-content}
 

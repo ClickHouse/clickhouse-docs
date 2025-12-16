@@ -16,6 +16,7 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
+
 # Автоматическое масштабирование {#automatic-scaling}
 
 Масштабирование — это возможность изменять доступные ресурсы в соответствии с запросами клиентов. Сервисы уровней Scale и Enterprise (со стандартным профилем 1:4) могут масштабироваться горизонтально через программные вызовы API или путем изменения настроек в пользовательском интерфейсе для регулирования системных ресурсов. Эти сервисы также могут **автоматически масштабироваться** вертикально в соответствии с потребностями приложений.
@@ -125,6 +126,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 <Image img={scaling_memory_allocation} size="md" alt="Распределение памяти при масштабировании" border />
 
 ## Автоматический переход в режим ожидания {#automatic-idling}
+
 На странице **Settings** вы также можете выбрать, разрешать ли автоматический переход сервиса в режим ожидания, когда он неактивен, как показано на изображении выше (то есть когда сервис не выполняет никаких пользовательских запросов). Автоматический переход в режим ожидания снижает стоимость работы сервиса, так как с вас не взимается плата за вычислительные ресурсы, пока сервис приостановлен.
 
 :::note

@@ -2,7 +2,7 @@
 sidebar_label: '数据库审计日志'
 slug: /cloud/security/audit-logging/database-audit-log
 title: '数据库审计日志'
-description: '本页介绍用户如何查看数据库审计日志'
+description: '本页介绍您如何查看数据库审计日志'
 doc_type: 'guide'
 keywords: ['审计日志', '数据库日志', '合规', '安全', '监控']
 ---
@@ -49,6 +49,7 @@ FROM clusterAllReplicas('default', system.query_log)
 WHERE user=’compromised_account’
 ```
 
+
 ## 在服务内部保留日志数据 {#reatining-log-data-within-services}
 
 需要更长时间保留或更高日志持久性的客户可以使用物化视图来实现这些目标。有关物化视图的更多信息，包括概念、优势以及实现方式，请参阅我们关于[物化视图](/materialized-views)的视频和文档。
@@ -56,6 +57,7 @@ WHERE user=’compromised_account’
 ## 导出日志 {#exporting-logs}
 
 可以采用多种与 SIEM 系统兼容的格式，将系统日志写入或导出到存储位置。有关更多信息，请参阅我们的[表函数](/sql-reference/table-functions)文档。最常见的方法包括：
+
 - [写入 S3](/sql-reference/table-functions/s3)
 - [写入 GCS](/sql-reference/table-functions/gcs)
 - [写入 Azure Blob Storage](/sql-reference/table-functions/azureBlobStorage)

@@ -22,11 +22,12 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+
 # Подключение Chartbrew к ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
-[Chartbrew](https://chartbrew.com) — это платформа визуализации данных, которая позволяет пользователям создавать дашборды и мониторить данные в режиме реального времени. Она поддерживает различные источники данных, включая ClickHouse, и предоставляет интерфейс без необходимости писать код для создания графиков и отчётов.
+[Chartbrew](https://chartbrew.com) — это платформа визуализации данных, которая позволяет вам создавать дашборды и мониторить данные в режиме реального времени. Она поддерживает различные источники данных, включая ClickHouse, и предоставляет интерфейс без необходимости писать код для создания графиков и отчётов.
 
 ## Цель {#goal}
 
@@ -79,7 +80,7 @@ import Image from '@theme/IdealImage';
   FROM uk_price_paid
   GROUP BY year
   ORDER BY year;
-  ```
+```
 
 <Image img={chartbrew_07} size="lg" alt="SQL-запрос ClickHouse в Chartbrew" />
 
@@ -90,6 +91,7 @@ import Image from '@theme/IdealImage';
 <Image img={chartbrew_06} size="lg" alt="AI-помощник по SQL для ClickHouse в Chartbrew" />
 
 После того как данные будут получены, нажмите **Configure dataset**, чтобы настроить параметры визуализации.
+
 
 ## 4. Создание визуализации {#4-create-a-visualization}
    
@@ -105,14 +107,14 @@ import Image from '@theme/IdealImage';
   <Image img={chartbrew_01} size="lg" alt="Дашборд Chartbrew с данными ClickHouse" />
 
 ## 5. Автоматизация обновления данных {#5-automate-data-updates}
-   
-  Чтобы панель мониторинга всегда отображала актуальные данные, вы можете запланировать автоматическое обновление:
 
-  1. Нажмите на значок календаря рядом с кнопкой обновления набора данных.
+Чтобы панель мониторинга всегда отображала актуальные данные, вы можете запланировать автоматическое обновление:
+
+1. Нажмите на значок календаря рядом с кнопкой обновления набора данных.
   2. Настройте интервал обновления (например, каждый час или каждый день).
   3. Сохраните настройки, чтобы включить автоматическое обновление.
 
-  <Image img={chartbrew_09} size="lg" alt="Настройки обновления набора данных в Chartbrew" />
+<Image img={chartbrew_09} size="lg" alt="Настройки обновления набора данных в Chartbrew" />
 
 ## Дополнительные материалы {#learn-more}
 

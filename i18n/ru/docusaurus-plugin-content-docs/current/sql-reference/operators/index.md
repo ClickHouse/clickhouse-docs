@@ -344,6 +344,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
 * функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear)
 
+
 ## Оператор логического AND {#logical-and-operator}
 
 Синтаксис `SELECT a AND b` — вычисляет логическую конъюнкцию выражений `a` и `b` с помощью функции [and](/sql-reference/functions/logical-functions#and).

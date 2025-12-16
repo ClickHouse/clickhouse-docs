@@ -31,7 +31,6 @@ SETTINGS format_csv_delimiter = ';';
 
 データは CSV ファイルですが、区切り文字にはセミコロンが使われています。行は次のような形式です：
 
-
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │
@@ -48,7 +47,6 @@ SETTINGS format_csv_delimiter = ';';
 ```
 
 2. ClickHouse にデータを保存するために、次の `MergeTree` テーブルを使用します。
-
 
 ```sql
 CREATE TABLE sensors
@@ -175,6 +173,5 @@ ORDER BY day ASC;
 ```
 
 結果の可視化は次のとおりです。
-
 
 <Image img={sensors_02} size="md" alt="暑くて蒸し暑い日"/>

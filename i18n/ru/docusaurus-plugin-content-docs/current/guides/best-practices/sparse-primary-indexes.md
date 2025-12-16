@@ -147,9 +147,9 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.022 sec.
-# highlight-next-line
-Processed 8.87 million rows,
-70.45 MB (398.53 million rows/s., 3.17 GB/s.)
+# highlight-next-line {#highlight-next-line}
+Обработано 8,87 млн строк,
+70,45 МБ (398,53 млн строк/с., 3,17 ГБ/с.)
 ```
 
 Вывод клиента ClickHouse показывает, что ClickHouse выполнил полное сканирование таблицы! Каждая из 8,87 миллиона строк нашей таблицы была построчно передана в ClickHouse. Такой подход не масштабируется.
@@ -238,6 +238,7 @@ SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 
 Затем вставьте данные:
 
+
 ```sql
 INSERT INTO hits_UserID_URL SELECT
    intHash32(UserID) AS UserID,
@@ -250,7 +251,7 @@ WHERE URL != '';
 Ответ будет выглядеть примерно так:
 
 ```response
-0 rows in set. Elapsed: 149.432 sec. Processed 8.87 million rows, 18.40 GB (59.38 thousand rows/s., 123.16 MB/s.)
+0 строк в наборе. Затрачено: 149,432 сек. Обработано 8,87 млн строк, 18,40 ГБ (59,38 тыс. строк/сек., 123,16 МБ/сек.)
 ```
 
 <br />
@@ -285,14 +286,14 @@ FORMAT Vertical;
 ```response
 part_type:                   Wide
 path:                        ./store/d9f/d9f36a1a-d2e6-46d4-8fb5-ffe9ad0d5aed/all_1_9_2/
-rows:                        8.87 million
+строк:                        8.87 million
 data_uncompressed_bytes:     733.28 MiB
 data_compressed_bytes:       206.94 MiB
 primary_key_bytes_in_memory: 96.93 KiB
 marks:                       1083
 bytes_on_disk:               207.07 MiB
 
-1 rows in set. Elapsed: 0.003 sec.
+Получена 1 строка. Время выполнения: 0.003 сек.
 ```
 
 Вывод клиента ClickHouse показывает:
@@ -521,9 +522,9 @@ LIMIT 10;
 └────────────────────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.005 sec.
-# highlight-next-line
-Processed 8.19 thousand rows,
-740.18 KB (1.53 million rows/s., 138.59 MB/s.)
+# highlight-next-line {#highlight-next-line}
+Обработано 8,19 тыс. строк,
+740,18 КБ (1,53 млн. строк/с., 138,59 МБ/с.)
 ```
 
 Вывод клиента ClickHouse теперь показывает, что вместо полного сканирования таблицы в ClickHouse было обработано всего 8,19 тысячи строк.
@@ -532,13 +533,13 @@ Processed 8.19 thousand rows,
 
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
 ...Executor): Found (LEFT) boundary mark: 176
 ...Executor): Found (RIGHT) boundary mark: 177
 ...Executor): Found continuous range in 19 steps
 ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
               1/1083 marks by primary key, 1 marks to read from 1 ranges
 ...Reading ...approx. 8192 rows starting from 1441792
 ```
@@ -571,14 +572,14 @@ LIMIT 10;
 
 ```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────┐
-│ Expression (Projection)                                                               │
-│   Limit (preliminary LIMIT (without OFFSET))                                          │
-│     Sorting (Sorting for ORDER BY)                                                    │
-│       Expression (Before ORDER BY)                                                    │
+│ Expression (Проекция)                                                                 │
+│   Limit (предварительный LIMIT (без OFFSET))                                          │
+│     Sorting (Сортировка для ORDER BY)                                                 │
+│       Expression (Перед ORDER BY)                                                     │
 │         Aggregating                                                                   │
-│           Expression (Before GROUP BY)                                                │
+│           Expression (Перед GROUP BY)                                                 │
 │             Filter (WHERE)                                                            │
-│               SettingQuotaAndLimits (Set limits and quota after reading from storage) │
+│               SettingQuotaAndLimits (Установка лимитов и квот после чтения из хранилища) │
 │                 ReadFromMergeTree                                                     │
 │                 Indexes:                                                              │
 │                   PrimaryKey                                                          │
@@ -586,11 +587,11 @@ LIMIT 10;
 │                       UserID                                                          │
 │                     Condition: (UserID in [749927693, 749927693])                     │
 │                     Parts: 1/1                                                        │
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 │                     Granules: 1/1083                                                  │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 
-16 rows in set. Elapsed: 0.003 sec.
+Получено 16 строк. Затрачено: 0.003 сек.
 ```
 
 Вывод клиента показывает, что одна из 1083 гранул была выбрана как потенциально содержащая строки со значением столбца UserID, равным 749927693.
@@ -749,10 +750,10 @@ LIMIT 10;
 │  765730816 │   536 │
 └────────────┴───────┘
 
-10 rows in set. Elapsed: 0.086 sec.
-# highlight-next-line
-Processed 8.81 million rows,
-799.69 MB (102.11 million rows/s., 9.27 GB/s.)
+10 строк в наборе. Прошло: 0.086 сек.
+# highlight-next-line {#highlight-next-line}
+Обработано 8.81 млн строк,
+799.69 МБ (102.11 млн строк/с., 9.27 ГБ/с.)
 ```
 
 Вывод клиента показывает, что ClickHouse почти выполнил полное сканирование таблицы, несмотря на то, что [столбец URL является частью составного первичного ключа](#a-table-with-a-primary-key)! ClickHouse прочитал 8,81 миллиона строк из 8,87 миллиона строк таблицы.
@@ -760,15 +761,15 @@ Processed 8.81 million rows,
 Если параметр [trace&#95;logging](/operations/server-configuration-parameters/settings#logger) включён, то в журнале сервера ClickHouse видно, что был использован <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1444" target="_blank">универсальный алгоритм исключающего поиска</a> по 1083 меткам индекса по URL, чтобы определить те гранулы, которые потенциально могут содержать строки со значением столбца URL &quot;[http://public&#95;search](http://public\&#95;search)&quot;:
 
 ```response
-...Executor): Key condition: (column 1 in ['http://public_search',
+...Executor): Условие по ключу: (столбец 1 в ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
-...Executor): Used generic exclusion search over index for part all_1_9_2
-              with 1537 steps
-...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
-              1076/1083 marks by primary key, 1076 marks to read from 5 ranges
-...Executor): Reading approx. 8814592 rows with 10 streams
+# highlight-next-line {#highlight-next-line}
+...Executor): Использован общий поиск с исключениями по индексу для части all_1_9_2
+              за 1537 шагов
+...Executor): Выбрано 1/1 частей по ключу партиционирования, 1 часть по первичному ключу,
+# highlight-next-line {#highlight-next-line}
+              1076/1083 засечек по первичному ключу, 1076 засечек для чтения из 5 диапазонов
+...Executor): Чтение примерно 8814592 строк в 10 потоков
 ```
 
 Мы видим в приведённом выше примере трассировочного лога, что 1076 (по меткам) из 1083 гранул были выбраны как потенциально содержащие строки с совпадающим значением URL.
@@ -990,18 +991,19 @@ Processed 319.49 thousand rows,
 При URL в качестве первого столбца в первичном индексе ClickHouse теперь выполняет <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">двоичный поиск</a> по меткам индекса.
 Соответствующая запись трассировки в журнале сервера ClickHouse подтверждает это:
 
+
 ```response
-...Executor): Key condition: (column 0 in ['http://public_search',
+...Executor): Условие по ключу: (столбец 0 в ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
-...Executor): Running binary search on index range for part all_1_9_2 (1083 marks)
-...Executor): Found (LEFT) boundary mark: 644
-...Executor): Found (RIGHT) boundary mark: 683
-...Executor): Found continuous range in 19 steps
-...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
-              39/1083 marks by primary key, 39 marks to read from 1 ranges
-...Executor): Reading approx. 319488 rows with 2 streams
+# highlight-next-line {#highlight-next-line}
+...Executor): Выполняется бинарный поиск по диапазону индекса для части all_1_9_2 (1083 гранулы)
+...Executor): Найдена (ЛЕВАЯ) граничная гранула: 644
+...Executor): Найдена (ПРАВАЯ) граничная гранула: 683
+...Executor): Найден непрерывный диапазон за 19 шагов
+...Executor): Выбрано 1/1 частей по ключу партиционирования, 1 часть по первичному ключу,
+# highlight-next-line {#highlight-next-line}
+              39/1083 гранул по первичному ключу, 39 гранул для чтения из 1 диапазона
+...Executor): Чтение примерно 319488 строк с использованием 2 потоков
 ```
 
 ClickHouse выбрал только 39 меток индекса вместо 1076, которые были выбраны при использовании generic exclusion search.
@@ -1018,48 +1020,48 @@ ClickHouse выбрал только 39 меток индекса вместо 1
 
   <p>
     ```sql
-SELECT URL, count(URL) AS Count
-FROM hits_URL_UserID
-WHERE UserID = 749927693
-GROUP BY URL
-ORDER BY Count DESC
-LIMIT 10;
-```
+    SELECT URL, count(URL) AS Count
+    FROM hits_URL_UserID
+    WHERE UserID = 749927693
+    GROUP BY URL
+    ORDER BY Count DESC
+    LIMIT 10;
+    ```
 
     Ответ:
 
     ```response
-┌─URL────────────────────────────┬─Count─┐
-│ http://auto.ru/chatay-barana.. │   170 │
-│ http://auto.ru/chatay-id=371...│    52 │
-│ http://public_search           │    45 │
-│ http://kovrik-medvedevushku-...│    36 │
-│ http://forumal                 │    33 │
-│ http://korablitz.ru/L_1OFFER...│    14 │
-│ http://auto.ru/chatay-id=371...│    14 │
-│ http://auto.ru/chatay-john-D...│    13 │
-│ http://auto.ru/chatay-john-D...│    10 │
-│ http://wot/html?page/23600_m...│     9 │
-└────────────────────────────────┴───────┘
+    ┌─URL────────────────────────────┬─Count─┐
+    │ http://auto.ru/chatay-barana.. │   170 │
+    │ http://auto.ru/chatay-id=371...│    52 │
+    │ http://public_search           │    45 │
+    │ http://kovrik-medvedevushku-...│    36 │
+    │ http://forumal                 │    33 │
+    │ http://korablitz.ru/L_1OFFER...│    14 │
+    │ http://auto.ru/chatay-id=371...│    14 │
+    │ http://auto.ru/chatay-john-D...│    13 │
+    │ http://auto.ru/chatay-john-D...│    10 │
+    │ http://wot/html?page/23600_m...│     9 │
+    └────────────────────────────────┴───────┘
 
-10 rows in set. Elapsed: 0.024 sec.
-# highlight-next-line
-Processed 8.02 million rows,
-73.04 MB (340.26 million rows/s., 3.10 GB/s.)
-```
+    10 rows in set. Elapsed: 0.024 sec.
+    # highlight-next-line
+    Processed 8.02 million rows,
+    73.04 MB (340.26 million rows/s., 3.10 GB/s.)
+    ```
 
     Журнал сервера:
 
     ```response
-...Executor): Key condition: (column 1 in [749927693, 749927693])
-# highlight-next-line
-...Executor): Used generic exclusion search over index for part all_1_9_2
-              with 1453 steps
-...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
-              980/1083 marks by primary key, 980 marks to read from 23 ranges
-...Executor): Reading approx. 8028160 rows with 10 streams
-```
+    ...Executor): Key condition: (column 1 in [749927693, 749927693])
+    # highlight-next-line
+    ...Executor): Used generic exclusion search over index for part all_1_9_2
+                  with 1453 steps
+    ...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
+    # highlight-next-line
+                  980/1083 marks by primary key, 980 marks to read from 23 ranges
+    ...Executor): Reading approx. 8028160 rows with 10 streams
+    ```
   </p>
 </details>
 
@@ -1132,10 +1134,10 @@ LIMIT 10;
 │  765730816 │   536 │
 └────────────┴───────┘
 
-10 rows in set. Elapsed: 0.026 sec.
-# highlight-next-line
-Processed 335.87 thousand rows,
-13.54 MB (12.91 million rows/s., 520.38 MB/s.)
+10 строк в наборе. Прошло: 0.026 сек.
+# highlight-next-line {#highlight-next-line}
+Обработано 335.87 тыс. строк,
+13.54 МБ (12.91 млн строк/с., 520.38 МБ/с.)
 ```
 
 Поскольку по сути неявно созданная таблица (и её первичный индекс), лежащая в основе материализованного представления, идентична [вторичной таблице, которую мы создали явно](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables), запрос выполняется столь же эффективно, как и с явно созданной таблицей.
@@ -1145,7 +1147,7 @@ Processed 335.87 thousand rows,
 ```response
 ...Executor): Key condition: (column 0 in ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
+# highlight-next-line {#highlight-next-line}
 ...Executor): Running binary search on index range ...
 ...
 ...Executor): Selected 4/4 parts by partition key, 4 parts by primary key,
@@ -1220,10 +1222,10 @@ LIMIT 10;
 │  765730816 │   536 │
 └────────────┴───────┘
 
-10 rows in set. Elapsed: 0.029 sec.
-# highlight-next-line
-Processed 319.49 thousand rows, 1
-1.38 MB (11.05 million rows/s., 393.58 MB/s.)
+10 строк в наборе. Прошло: 0.029 сек.
+# highlight-next-line {#highlight-next-line}
+Обработано 319.49 тыс. строк, 1
+1.38 МБ (11.05 млн строк/сек., 393.58 МБ/сек.)
 ```
 
 Поскольку скрытая таблица (и её первичный индекс), создаваемая проекцией, по сути идентична [вторичной таблице, которую мы создали явно](/guides/best-practices/sparse-primary-indexes#option-1-secondary-tables), запрос выполняется столь же эффективно, как и с явно созданной таблицей.
@@ -1231,18 +1233,18 @@ Processed 319.49 thousand rows, 1
 Соответствующая трассировочная запись в серверном журнале ClickHouse подтверждает, что ClickHouse выполняет двоичный поиск по меткам индекса:
 
 ```response
-...Executor): Key condition: (column 0 in ['http://public_search',
+...Executor): Условие по ключу: (столбец 0 в ['http://public_search',
                                            'http://public_search'])
-# highlight-next-line
-...Executor): Running binary search on index range for part prj_url_userid (1083 marks)
+# highlight-next-line {#highlight-next-line}
+...Executor): Выполняется бинарный поиск по диапазону индекса для части prj_url_userid (1083 гранулы)
 ...Executor): ...
 # highlight-next-line
-...Executor): Choose complete Normal projection prj_url_userid
-...Executor): projection required columns: URL, UserID
-...Executor): Selected 1/1 parts by partition key, 1 parts by primary key,
-# highlight-next-line
-              39/1083 marks by primary key, 39 marks to read from 1 ranges
-...Executor): Reading approx. 319488 rows with 2 streams
+...Executor): Выбрана полная обычная проекция prj_url_userid
+...Executor): требуемые столбцы проекции: URL, UserID
+...Executor): Выбрано 1/1 частей по ключу партиции, 1 частей по первичному ключу,
+# highlight-next-line {#highlight-next-line}
+              39/1083 гранул по первичному ключу, 39 гранул для чтения из 1 диапазона
+...Executor): Чтение приблизительно 319488 строк с использованием 2 потоков
 ```
 
 ### Итоги {#summary}
@@ -1281,9 +1283,9 @@ Processed 319.49 thousand rows, 1
 
 ```sql
 SELECT
-    formatReadableQuantity(uniq(URL)) AS cardinality_URL,
-    formatReadableQuantity(uniq(UserID)) AS cardinality_UserID,
-    formatReadableQuantity(uniq(IsRobot)) AS cardinality_IsRobot
+    formatReadableQuantity(uniq(URL)) AS кардинальность_URL,
+    formatReadableQuantity(uniq(UserID)) AS кардинальность_UserID,
+    formatReadableQuantity(uniq(IsRobot)) AS кардинальность_IsRobot
 FROM
 (
     SELECT
@@ -1299,10 +1301,10 @@ FROM
 
 ```response
 ┌─cardinality_URL─┬─cardinality_UserID─┬─cardinality_IsRobot─┐
-│ 2.39 million    │ 119.08 thousand    │ 4.00                │
+│ 2,39 млн        │ 119,08 тыс.        │ 4,00                │
 └─────────────────┴────────────────────┴─────────────────────┘
 
-1 row in set. Elapsed: 118.334 sec. Processed 8.87 million rows, 15.88 GB (74.99 thousand rows/s., 134.21 MB/s.)
+1 строка. Затрачено: 118,334 сек. Обработано 8,87 млн строк, 15,88 ГБ (74,99 тыс. строк/с., 134,21 МБ/с.)
 ```
 
 Мы видим, что существует большая разница в кардинальности (числе различных значений), особенно между столбцами `URL` и `IsRobot`, и поэтому порядок этих столбцов в составном первичном ключе важен как для эффективного ускорения запросов, которые фильтруют по этим столбцам, так и для достижения оптимальных коэффициентов сжатия для файлов данных столбцов этой таблицы.
@@ -1340,7 +1342,7 @@ WHERE URL != '';
 Это ответ:
 
 ```response
-0 rows in set. Elapsed: 104.729 sec. Processed 8.87 million rows, 15.88 GB (84.73 thousand rows/s., 151.64 MB/s.)
+0 строк в наборе. Прошло: 104,729 сек. Обработано 8,87 млн строк, 15,88 ГБ (84,73 тыс. строк/с., 151,64 МБ/с.)
 ```
 
 Далее создайте таблицу `hits_IsRobot_UserID_URL` со составным первичным ключом `(IsRobot, UserID, URL)`:
@@ -1371,7 +1373,7 @@ WHERE URL != '';
 Ответ:
 
 ```response
-0 rows in set. Elapsed: 95.959 sec. Processed 8.87 million rows, 15.88 GB (92.48 thousand rows/s., 165.50 MB/s.)
+0 строк в наборе. Прошло: 95,959 сек. Обработано 8,87 млн строк, 15,88 ГБ (92,48 тыс. строк/сек., 165,50 МБ/сек.)
 ```
 
 ### Эффективная фильтрация по вторичным столбцам ключа {#efficient-filtering-on-secondary-key-columns}
@@ -1399,8 +1401,8 @@ WHERE UserID = 112304
 
 1 row in set. Elapsed: 0.026 sec.
 # highlight-next-line
-Processed 7.92 million rows,
-31.67 MB (306.90 million rows/s., 1.23 GB/s.)
+Обработано 7,92 млн строк,
+31,67 МБ (306,90 млн строк/с, 1,23 ГБ/с)
 ```
 
 Это тот же запрос к таблице, в которой ключевые столбцы `(IsRobot, UserID, URL)` упорядочены по возрастанию кардинальности:
@@ -1420,8 +1422,8 @@ WHERE UserID = 112304
 
 1 row in set. Elapsed: 0.003 sec.
 # highlight-next-line
-Processed 20.32 thousand rows,
-81.28 KB (6.61 million rows/s., 26.44 MB/s.)
+Обработано 20,32 тыс. строк,
+81,28 КБ (6,61 млн строк/с., 26,44 МБ/с.)
 ```
 
 Мы видим, что выполнение запроса значительно эффективнее и быстрее на таблице, в которой столбцы ключа отсортированы по кардинальности по возрастанию.
@@ -1434,11 +1436,11 @@ Processed 20.32 thousand rows,
 
 ```sql
 SELECT
-    table AS Table,
-    name AS Column,
-    formatReadableSize(data_uncompressed_bytes) AS Uncompressed,
-    formatReadableSize(data_compressed_bytes) AS Compressed,
-    round(data_uncompressed_bytes / data_compressed_bytes, 0) AS Ratio
+    table AS Таблица,
+    name AS Столбец,
+    formatReadableSize(data_uncompressed_bytes) AS Несжатые,
+    formatReadableSize(data_compressed_bytes) AS Сжатые,
+    round(data_uncompressed_bytes / data_compressed_bytes, 0) AS Коэффициент
 FROM system.columns
 WHERE (table = 'hits_URL_UserID_IsRobot' OR table = 'hits_IsRobot_UserID_URL') AND (name = 'UserID')
 ORDER BY Ratio ASC
@@ -1452,7 +1454,7 @@ ORDER BY Ratio ASC
 │ hits_IsRobot_UserID_URL │ UserID │ 33.83 MiB    │ 877.47 KiB │    39 │
 └─────────────────────────┴────────┴──────────────┴────────────┴───────┘
 
-2 rows in set. Elapsed: 0.006 sec.
+Выбрано 2 строки. Затрачено: 0.006 сек.
 ```
 
 Мы видим, что коэффициент сжатия для столбца `UserID` значительно выше для таблицы, в которой мы упорядочили ключевые столбцы `(IsRobot, UserID, URL)` по возрастанию кардинальности.

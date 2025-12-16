@@ -1,5 +1,5 @@
 ---
-description: 'NOT IN、GLOBAL IN、GLOBAL NOT IN 演算子（これらについては別途説明します）を除く IN 演算子に関するドキュメント'
+description: 'NOT IN、GLOBAL IN、GLOBAL NOT IN 演算子（これらについては別途説明）を除く IN 演算子のドキュメント'
 slug: /sql-reference/operators/in
 title: 'IN 演算子'
 doc_type: 'reference'
@@ -25,7 +25,7 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 演算子の右辺には、定数式の集合、定数式を含むタプルの集合（上記の例で示したもの）、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
 
 ClickHouse では、`IN` サブクエリの左辺と右辺で型が異なることを許容します。
-この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accuratecastornullx-t) 関数が適用されたかのように動作します。
+この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 関数が適用されたかのように動作します。
 
 つまり、データ型は [Nullable](../../sql-reference/data-types/nullable.md) となり、変換を
 実行できない場合には [NULL](/operations/settings/formats#input_format_null_as_default) が返されます。
@@ -89,8 +89,8 @@ ORDER BY EventDate ASC
 └────────────┴──────────┘
 ```
 
-3月17日以降の各日について、3月17日にサイトを訪問したユーザーによるページビューが占める割合を集計します。
-`IN` 句内のサブクエリは、常に単一のサーバー上で一度だけ実行されます。依存サブクエリはありません。
+3月17日以降の各日について、3月17日にサイトを訪問したユーザーによるページビューの割合を算出します。
+`IN` 句内のサブクエリは、常に単一のサーバー上で一度だけ実行されます。相関サブクエリはありません。
 
 ## NULL の処理 {#null-processing}
 
@@ -113,7 +113,7 @@ ORDER BY EventDate ASC
 └───┘
 ```
 
-`y = NULL` の行がクエリ結果から除外されていることがわかります。これは、ClickHouse が `NULL` が `(NULL,3)` のセットに含まれるかどうかを判断できないため、演算結果として `0` を返し、その結果 `SELECT` によってこの行が最終出力から除外されるためです。
+`y = NULL` の行がクエリ結果から除外されていることがわかります。これは、ClickHouse が `NULL` が `(NULL,3)` のセットに含まれるかどうかを判定できず、その演算結果として `0` を返すため、`SELECT` によってこの行は最終的な出力から除外されるためです。
 
 ```sql
 SELECT y IN (NULL, 3)
@@ -153,13 +153,13 @@ FROM t_null
 SELECT uniq(UserID) FROM distributed_table
 ```
 
-として、すべてのリモートサーバーに送信されます
+という形で、すべてのリモートサーバーに送信されます
 
 ```sql
 SELECT uniq(UserID) FROM local_table
 ```
 
-そして、それぞれのサーバー上で並列に実行され、中間結果を結合できる段階に到達するまで処理されます。次に、その中間結果がリクエスト元のサーバーに返され、そのサーバー上でマージされ、最終結果がクライアントに送信されます。
+そして、それぞれのサーバー上で並列に実行され、中間結果を結合できる段階に到達するまで処理されます。次に、その中間結果がリクエスト元サーバーに返され、そのサーバー上でマージされ、最終結果がクライアントに送信されます。
 
 では、`IN` を用いたクエリを見てみましょう。
 
@@ -167,7 +167,7 @@ SELECT uniq(UserID) FROM local_table
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM local_table WHERE CounterID = 34)
 ```
 
-* 2つのサイトのオーディエンスの共通部分を計算。
+* 2つのサイトのオーディエンスの共通部分を計算する。
 
 このクエリは、次のようにすべてのリモートサーバーに送信されます。
 
@@ -185,13 +185,13 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-このクエリは、すべてのリモートサーバーに対して次のような形で送信されます
+このクエリは、次のようにすべてのリモートサーバーに送信されます
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-サブクエリは各リモートサーバー上で実行を開始します。サブクエリは分散テーブルを使用しているため、各リモートサーバー上のサブクエリは、次のようにすべてのリモートサーバーに再送されます。
+サブクエリの実行が各リモートサーバー上で開始されます。サブクエリは分散テーブルを使用しているため、各リモートサーバー上のサブクエリは、次のようにすべてのリモートサーバーに再送信されます。
 
 ```sql
 SELECT UserID FROM local_table WHERE CounterID = 34
@@ -205,13 +205,13 @@ SELECT UserID FROM local_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID GLOBAL IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-リクエスト元サーバーがサブクエリを実行します。
+リクエスト元のサーバーがサブクエリを実行します。
 
 ```sql
 SELECT UserID FROM distributed_table WHERE CounterID = 34
 ```
 
-そして結果は RAM 上の一時テーブルに格納されます。その後、リクエストは次のように各リモートサーバーに送信されます。
+その結果は RAM 上の一時テーブルに格納されます。その後、そのリクエストは次のように各リモートサーバーに送信されます。
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
@@ -239,7 +239,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 SELECT * FROM table1 WHERE col1 GLOBAL IN (SELECT col1 FROM table2 WHERE <some_predicate>)
 ```
 
-`some_predicate` が十分に選択的でない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値に達したときに例外がスローされることに注意してください。
+`some_predicate` の選択度が十分に高くない場合、大量のデータが返され、パフォーマンスの問題を引き起こします。このような場合、ネットワーク上のデータ転送量を制限するのが望ましいです。また、[`set_overflow_mode`](/operations/settings/settings#set_overflow_mode) は（デフォルトで）`throw` に設定されており、これらのしきい値を超えたときに例外がスローされることに注意してください。
 
 ### Distributed Subqueries と max&#95;parallel&#95;replicas {#distributed-subqueries-and-max&#95;parallel&#95;replicas}
 
@@ -252,7 +252,7 @@ SELECT CounterID, count() FROM distributed_table_1 WHERE UserID IN (SELECT UserI
 SETTINGS max_parallel_replicas=3
 ```
 
-各サーバーごとに次のように変換されます：
+各サーバー上で次のように変換されます：
 
 ```sql
 SELECT CounterID, count() FROM local_table_1 WHERE UserID IN (SELECT UserID FROM local_table_2 WHERE CounterID < 100)

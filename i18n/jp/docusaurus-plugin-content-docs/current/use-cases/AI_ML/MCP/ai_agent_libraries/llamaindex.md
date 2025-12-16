@@ -97,6 +97,7 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     llm=llm, verbose=True, max_function_calls=10
 )
 agent = AgentRunner(agent_worker)
+
 ```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
 
@@ -108,6 +109,7 @@ agent = AgentRunner(agent_worker)
 ```python
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
+
 ```python
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")

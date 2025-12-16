@@ -20,6 +20,7 @@ ClickStack は、オブザーバビリティデータを ClickHouse インスタ
 | [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | EC2 インスタンスのログを監視する |
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Rotel で Lambda ログを転送する |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | CloudWatch のロググループを転送する |
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | JVM のパフォーマンスを監視する |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Kafka のパフォーマンスを監視する |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | K8s クラスターを監視する |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Nginx のアクセス/エラーログを収集する |

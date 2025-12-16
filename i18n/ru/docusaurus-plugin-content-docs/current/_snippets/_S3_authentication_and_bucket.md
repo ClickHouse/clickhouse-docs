@@ -133,7 +133,6 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
    :::
 3. Оставьте параметр `Block all Public Access` включённым; публичный доступ не требуется.
 
-
 <Image
   size='md'
   img={s3_a}

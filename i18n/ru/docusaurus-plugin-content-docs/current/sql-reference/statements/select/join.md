@@ -22,6 +22,7 @@ FROM <left_table>
 
 Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
 
+
 ## Поддерживаемые типы JOIN {#supported-types-of-join}
 
 Поддерживаются все стандартные типы [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)):
@@ -160,9 +161,9 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-По умолчанию условия с операторами неравенства поддерживаются, если в них используются столбцы из одной и той же таблицы.
+By default, non-equal conditions are supported as long as they use columns from the same table.
 Например, `t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`, поскольку `t1.b > 0` использует столбцы только из `t1`, а `t2.b > t2.c` использует столбцы только из `t2`.
-Однако вы можете включить экспериментальную поддержку условий вида `t1.a = t2.key AND t1.b > t2.key`; подробности см. в разделе ниже.
+However, you can try experimental support for conditions like `t1.a = t2.key AND t1.b > t2.key`, check out the section below for more details.
 
 :::
 
@@ -179,6 +180,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
+
 
 ## JOIN с условиями неравенства для столбцов из разных таблиц {#join-with-inequality-conditions-for-columns-from-different-tables}
 
@@ -229,6 +231,7 @@ key1    e    5    5    5            0    0    \N
 key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
+
 
 ## Значения NULL в ключах JOIN {#null-values-in-join-keys}
 
@@ -284,6 +287,7 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 └─────────┴───────┘
 ```
 
+
 ## Использование ASOF JOIN {#asof-join-usage}
 
 `ASOF JOIN` полезен, когда нужно соединить записи, для которых нет точного совпадения.
@@ -337,6 +341,7 @@ USING (equi_column1, ... equi_columnN, asof_column)
 `ASOF JOIN` поддерживается только алгоритмами соединения `hash` и `full_sorting_merge`.
 Он **не** поддерживается в табличном движке [Join](../../../engines/table-engines/special/join.md).
 :::
+
 
 ## Использование PASTE JOIN {#paste-join-usage}
 
@@ -396,6 +401,7 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
+
 ## Распределённый JOIN {#distributed-join}
 
 Существует два способа выполнить JOIN с участием распределённых таблиц:
@@ -420,7 +426,7 @@ SETTINGS max_block_size = 2;
 └───┴───┴───────────────┴───────────────┘
 ```
 
-и таблица `t_2`:
+и таблицу `t_2`:
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -446,6 +452,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
+
 
 ## Рекомендации по использованию {#usage-recommendations}
 
@@ -536,6 +543,7 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
+
 
 ## Связанные материалы {#related-content}
 

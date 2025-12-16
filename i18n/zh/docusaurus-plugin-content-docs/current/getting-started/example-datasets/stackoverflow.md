@@ -21,6 +21,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 该数据集的模式说明可在[此处](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)找到。
 
+
 ## 预置数据 {#pre-prepared-data}
 
 我们提供了一份 Parquet 格式的数据副本，内容更新至 2024 年 4 月。虽然从行数规模来看（6,000 万条帖子），这个数据集对 ClickHouse 来说并不算大，但其中包含了大量文本以及体积较大的 String 类型列。
@@ -158,7 +159,7 @@ ORDER BY UserId
 
 INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
+返回 0 行。用时:6.635 秒。已处理 5129 万行,797.05 MB(773 万行/秒,120.13 MB/秒)
 ```
 
 ### 文章链接 {#postlinks}
@@ -245,7 +246,7 @@ pip install yq
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-以下操作会将该 XML 文件拆分为多个文件，每个文件包含 10000 行。
+以下命令会将该 XML 文件拆分为多个文件，每个文件包含 10,000 行。
 
 ```bash
 mkdir posts
@@ -267,6 +268,7 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
+
 
 ## 示例查询 {#example-queries}
 
@@ -297,8 +299,8 @@ LIMIT 10
 │ css        │  803755 │
 └────────────┴─────────┘
 
-10 rows in set. Elapsed: 1.013 sec. Processed 59.82 million rows, 1.21 GB (59.07 million rows/s., 1.19 GB/s.)
-Peak memory usage: 224.03 MiB.
+返回了 10 行。耗时：1.013 秒。处理了 5982 万行，1.21 GB（5907 万行/秒，1.19 GB/秒）。
+峰值内存使用：224.03 MiB。
 ```
 
 ### 回答数最多的用户（活跃账户） {#user-with-the-most-answers-active-accounts}
@@ -323,8 +325,8 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
-Peak memory usage: 206.45 MiB.
+返回 5 行。耗时：0.154 秒。处理了 35.83 百万行，193.39 MB（232.33 百万行/秒，1.25 GB/秒）。
+峰值内存使用：206.45 MiB。
 ```
 
 ### 阅读量最高的 ClickHouse 相关文章 {#clickhouse-related-posts-with-the-most-views}
@@ -341,20 +343,20 @@ ORDER BY ViewCount DESC
 LIMIT 10
 
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
-│ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
-│ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
-│ 37901642 │ Updating data in Clickhouse                                                      │     36236 │           6 │
-│ 58422110 │ Pandas: How to insert dataframe into Clickhouse                                  │     29731 │           4 │
-│ 63621318 │ DBeaver - Clickhouse - SQL Error [159] .. Read timed out                         │     27350 │           1 │
-│ 47591813 │ How to filter clickhouse table by array column contents?                         │     27078 │           2 │
-│ 58728436 │ How to search the string in query with case insensitive on Clickhouse database?  │     26567 │           3 │
-│ 65316905 │ Clickhouse: DB::Exception: Memory limit (for query) exceeded                     │     24899 │           2 │
-│ 49944865 │ How to add a column in clickhouse                                                │     24424 │           1 │
-│ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
+│ 52355143 │ 是否可以从 ClickHouse 表中删除旧记录?                      │     41462 │           3 │
+│ 37954203 │ ClickHouse 数据导入                                                           │     38735 │           3 │
+│ 37901642 │ 在 ClickHouse 中更新数据                                                      │     36236 │           6 │
+│ 58422110 │ Pandas: 如何将 DataFrame 插入 ClickHouse                                  │     29731 │           4 │
+│ 63621318 │ DBeaver - ClickHouse - SQL 错误 [159] .. 读取超时                         │     27350 │           1 │
+│ 47591813 │ 如何根据数组列内容过滤 ClickHouse 表?                         │     27078 │           2 │
+│ 58728436 │ 如何在 ClickHouse 数据库中执行不区分大小写的字符串查询?  │     26567 │           3 │
+│ 65316905 │ ClickHouse: DB::Exception: 内存限制(查询)已超出                     │     24899 │           2 │
+│ 49944865 │ 如何在 ClickHouse 中添加列                                                │     24424 │           1 │
+│ 59712399 │ 如何在 ClickHouse 中使用扩展解析将日期字符串转换为 DateTime 格式? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
-Peak memory usage: 240.01 MiB.
+返回 10 行。用时:0.472 秒。处理了 5982 万行,1.91 GB(每秒 1.2663 亿行,4.03 GB/秒)。
+峰值内存使用量:240.01 MiB。
 ```
 
 ### 最具争议的帖子 {#most-controversial-posts}
@@ -387,10 +389,10 @@ LIMIT 3
 │ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
-Peak memory usage: 6.05 GiB.
+返回 3 行。用时:4.779 秒。已处理 2.988 亿行,3.16 GB(6252 万行/秒,661.05 MB/秒)。
+内存峰值:6.05 GiB。
 ```
 
 ## 致谢 {#attribution}
 
-我们感谢 Stack Overflow 按照 `cc-by-sa 4.0` 许可证提供这些数据，并对其付出和在 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 提供的原始数据来源表示认可。
+我们感谢 Stack Overflow 按照 `cc-by-sa 4.0` 许可证提供这些数据，并在此对其付出以及位于 [https://archive.org/details/stackexchange](https://archive.org/details/stackexchange) 的原始数据来源表示致谢。
