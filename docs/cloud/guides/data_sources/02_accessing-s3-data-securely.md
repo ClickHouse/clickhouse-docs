@@ -147,7 +147,7 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 We recommend that your source S3 is in the same region as your ClickHouse Cloud Service to reduce on data transfer costs. For more information, refer to [S3 pricing]( https://aws.amazon.com/s3/pricing/)
 :::
 
-## Advanced action control
+## Advanced action control {#advanced-action-control}
 
 Customers wishing to only allow an object to be returned if the request originates from ClickHouse's VPC may add the following policy to the [IAM assume role](#setting-up-iam-assume-role) created above. Please review [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) for instructions on how to obtain ClickHouse Cloud's VPC endpoints.
 
