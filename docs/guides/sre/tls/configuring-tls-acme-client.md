@@ -18,7 +18,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge/>
 <SelfManaged />
 
-This guide provides describes how to configure ClickHouse to use ACME (RFC8555) protocol.
+This guide provides describes how to configure ClickHouse to use [ACME (RFC8555)](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) protocol.
 With ACME support, ClickHouse can obtain and renew certificates from providers like Let's Encrypt or ZeroSSL automatically.
 
 ## Overview {#overview}
