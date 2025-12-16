@@ -568,6 +568,7 @@ const sidebars = {
               type: "category",
               label: "Source",
               items: [
+				"integrations/data-ingestion/clickpipes/postgres/source/alloydb",
                 "integrations/data-ingestion/clickpipes/postgres/source/rds",
                 "integrations/data-ingestion/clickpipes/postgres/source/aurora",
                 "integrations/data-ingestion/clickpipes/postgres/source/supabase",
