@@ -113,7 +113,7 @@ SQL Console では、テーブルに対してフィルタリングとソート�
 
 SQL Console は、ソートとフィルタの設定をワンクリックでクエリに変換できます。ツールバーから、任意のソートおよびフィルタパラメータを指定した状態で「Create Query」ボタンを選択します。「Create query」をクリックすると、新しいクエリタブが開き、現在のテーブルビューの内容に対応した SQL コマンドがあらかじめ入力されています。
 
-<Image img={create_a_query_from_sorts-and-filters} size="lg" border alt="フィルタとソートから SQL を生成する Create Query ボタンを示すインターフェース"/>
+<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="フィルタとソートから SQL を生成する Create Query ボタンを示すインターフェース"/>
 
 :::note
 「Create Query」機能を使用する際に、フィルタやソートは必須ではありません。
