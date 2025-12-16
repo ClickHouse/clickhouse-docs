@@ -18,16 +18,17 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 <ExperimentalBadge/>
 <SelfManaged />
 
-This guide provides describes how to configure ClickHouse to use ACME (RFC8555) protocol.
+This guide provides describes how to configure ClickHouse to use [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) (described by [RFC8555](https://www.rfc-editor.org/rfc/rfc8555)) protocol.
 With ACME support, ClickHouse can obtain and renew certificates from providers like Let's Encrypt or ZeroSSL automatically.
+TLS encryption protects data in transit between clients and ClickHouse servers, preventing eavesdropping on sensitive queries and results.
 
 ## Overview {#overview}
 
-ACME protocol defines automatic certificate update process with services like Let's Encrypt or ZeroSSL. In short, certificate requester needs to confirm domain ownership via predefined challenge types in order to get a certificate.
+ACME protocol defines automatic certificate update process with services like [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/). In short, ClickHouse as certificate requester needs to confirm domain ownership via predefined challenge types in order to get a certificate.
 
 To enable ACME, configure HTTP and HTTPS ports along with the `acme` block:
 
-```yaml
+```xml
 <http_port>80</http_port>
 <https_port>443</https_port>
 
@@ -40,7 +41,7 @@ To enable ACME, configure HTTP and HTTPS ports along with the `acme` block:
 </acme>
 ```
 
-The HTTP port serves ACME `HTTP-01` challenge requests during domain validation. Once validation completes and a certificate is issued, the HTTPS port serves encrypted traffic using the obtained certificate.
+The HTTP port serves ACME `HTTP-01` challenge (more on challenge types [here](https://letsencrypt.org/docs/challenge-types/)) requests during domain validation. Once validation completes and a certificate is issued, the HTTPS port serves encrypted traffic using the obtained certificate.
 
 The HTTP port does not need to be 80 on the server itself; it may be remapped using `nftables` or similar tools. Check your ACME provider's documentation for accepted ports for `HTTP-01` challenges.
 
