@@ -12,7 +12,6 @@ import CloudDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/s
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Словари {#dictionaries}
 
 Словарь — это отображение (`key -> attributes`), удобное для различных типов справочных списков.
@@ -1115,7 +1114,6 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [PostgreSQL](#postgresql)
   * [YTsaurus](#ytsaurus)
 
-
 ### Локальный файл {#local-file}
 
 Пример настроек:
@@ -1939,7 +1937,6 @@ SOURCE(YTSAURUS(
 * `http_proxy_urls` – URL HTTP-прокси YTsaurus.
 * `cypress_path` – путь Cypress к таблице-источнику.
 * `oauth_token` – OAuth-токен.
-
 
 ### Null {#null}
 

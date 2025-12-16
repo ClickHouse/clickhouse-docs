@@ -66,7 +66,7 @@ docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-o
 
 ## Сохранение данных и настроек {#persisting-data-and-settings}
 
-Чтобы сохранять данные и настройки между перезапусками контейнера, пользователи могут изменить приведённую выше команду docker, чтобы смонтировать каталоги по путям `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. Например:
+Чтобы сохранять данные и настройки между перезапусками контейнера, вы можете изменить приведённую выше команду docker, чтобы смонтировать каталоги по путям `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. Например:
 
 ```shell
 # ensure directories exist

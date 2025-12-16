@@ -50,8 +50,8 @@ sudo ./clickhouse install
 $ clickhouse-client --host server
 
 ClickHouse client version 24.12.2.29 (official build).
-Connecting to server:9000 as user default.
-Connected to ClickHouse server version 24.12.2.
+Подключение к server:9000 как пользователь default.
+Подключено к серверу ClickHouse версии 24.12.2.
 
 :)
 ```
@@ -134,9 +134,9 @@ clickhouse-client
 После подключения вы увидите приглашение командной строки, где сможете вводить запросы:
 
 ```bash
-ClickHouse client version 25.x.x.x
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 25.x.x.x
+Клиент ClickHouse версии 25.x.x.x
+Подключение к localhost:9000 от имени пользователя default.
+Подключено к серверу ClickHouse версии 25.x.x.x
 
 hostname :)
 ```
@@ -298,7 +298,7 @@ $ clickhouse-client --param_parName="[1, 2]" --query "SELECT {parName: Array(UIn
 
 ```text
 $ clickhouse-client
-ClickHouse client version 25.X.X.XXX (official build).
+Клиент ClickHouse версии 25.X.X.XXX (официальная сборка).
 
 #highlight-next-line
 :) SET param_parName='[1, 2]';
@@ -307,9 +307,9 @@ SET param_parName = '[1, 2]'
 
 Query id: 7ac1f84e-e89a-4eeb-a4bb-d24b8f9fd977
 
-Ok.
+ОК.
 
-0 rows in set. Elapsed: 0.000 sec.
+0 строк в наборе. Прошло: 0.000 сек.
 
 #highlight-next-line
 :) SELECT {parName:Array(UInt16)}
@@ -322,7 +322,7 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 1. │ [1,2]                    │
    └──────────────────────────┘
 
-1 row in set. Elapsed: 0.006 sec.
+1 строка в наборе. Прошло: 0.006 сек.
 ```
 
 ### Синтаксис запроса {#cli-queries-with-parameters-syntax}
@@ -359,7 +359,7 @@ ClickHouse Client включает встроенную поддержку ИИ 
 Чтобы использовать генерацию SQL с ИИ, добавьте префикс `??` к запросу на естественном языке:
 
 ```bash
-:) ?? show all users who made purchases in the last 30 days
+:) ?? показать всех пользователей, совершивших покупки за последние 30 дней
 ```
 
 ИИ будет:
@@ -371,9 +371,9 @@ ClickHouse Client включает встроенную поддержку ИИ 
 ### Пример {#ai-sql-generation-example}
 
 ```bash
-:) ?? count orders by product category
+:) ?? подсчитать заказы по категориям продуктов
 
-Starting AI SQL generation with schema discovery...
+Запуск генерации SQL с обнаружением схемы...
 ──────────────────────────────────────────────────
 
 🔍 list_databases
@@ -388,7 +388,7 @@ Starting AI SQL generation with schema discovery...
    table: orders
    ➜ CREATE TABLE orders (order_id UInt64, product_id UInt64, quantity UInt32, ...)
 
-✨ SQL query generated successfully!
+✨ SQL-запрос успешно сгенерирован!
 ──────────────────────────────────────────────────
 
 SELECT 
@@ -416,11 +416,11 @@ ORDER BY order_count DESC
 Это позволяет быстро выполнить настройку без конфигурационных файлов:
 
 ```bash
-# Using OpenAI
+# Использование OpenAI {#using-openai}
 export OPENAI_API_KEY=your-openai-key
 clickhouse-client
 
-# Using Anthropic
+# Использование Anthropic {#using-anthropic}
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
@@ -440,28 +440,28 @@ clickhouse-client
     ```xml
     <config>
         <ai>
-            <!-- Required: Your API key (or set via environment variable) -->
+            <!-- Обязательно: ваш API-ключ (или задайте через переменную окружения) -->
             <api_key>your-api-key-here</api_key>
 
-            <!-- Required: Provider type (openai, anthropic) -->
+            <!-- Обязательно: тип провайдера (openai, anthropic) -->
             <provider>openai</provider>
 
-            <!-- Model to use (defaults vary by provider) -->
+            <!-- Используемая модель (значения по умолчанию зависят от провайдера) -->
             <model>gpt-4o</model>
 
-            <!-- Optional: Custom API endpoint for OpenAI-compatible services -->
+            <!-- Необязательно: пользовательская конечная точка API для сервисов, совместимых с OpenAI -->
             <!-- <base_url>https://openrouter.ai/api</base_url> -->
 
-            <!-- Schema exploration settings -->
+            <!-- Настройки исследования схемы -->
             <enable_schema_access>true</enable_schema_access>
 
-            <!-- Generation parameters -->
+            <!-- Параметры генерации -->
             <temperature>0.0</temperature>
             <max_tokens>1000</max_tokens>
             <timeout_seconds>30</timeout_seconds>
             <max_steps>10</max_steps>
 
-            <!-- Optional: Custom system prompt -->
+            <!-- Необязательно: пользовательский системный промпт -->
             <!-- <system_prompt>You are an expert ClickHouse SQL assistant...</system_prompt> -->
         </ai>
     </config>
@@ -471,28 +471,28 @@ clickhouse-client
   <TabItem value="yaml" label="YAML">
     ```yaml
     ai:
-      # Required: Your API key (or set via environment variable)
+      # Обязательно: ваш API-ключ (или задайте через переменную окружения)
       api_key: your-api-key-here
 
-      # Required: Provider type (openai, anthropic)
+      # Обязательно: тип провайдера (openai, anthropic)
       provider: openai
 
-      # Model to use
+      # Используемая модель
       model: gpt-4o
 
-      # Optional: Custom API endpoint for OpenAI-compatible services
+      # Необязательно: пользовательская конечная точка API для сервисов, совместимых с OpenAI
       # base_url: https://openrouter.ai/api
 
-      # Enable schema access - allows AI to query database/table information
+      # Включить доступ к схеме — позволяет ИИ запрашивать информацию о базах данных и таблицах
       enable_schema_access: true
 
-      # Generation parameters
-      temperature: 0.0      # Controls randomness (0.0 = deterministic)
-      max_tokens: 1000      # Maximum response length
-      timeout_seconds: 30   # Request timeout
-      max_steps: 10         # Maximum schema exploration steps
+      # Параметры генерации
+      temperature: 0.0      # Управляет степенью случайности (0.0 = детерминированно)
+      max_tokens: 1000      # Максимальная длина ответа
+      timeout_seconds: 30   # Тайм-аут запроса
+      max_steps: 10         # Максимальное количество шагов исследования схемы
 
-      # Optional: Custom system prompt
+      # Необязательно: пользовательский системный промпт
       # system_prompt: |
       #   You are an expert ClickHouse SQL assistant. Convert natural language to SQL.
       #   Focus on performance and use ClickHouse-specific optimizations.
@@ -507,23 +507,23 @@ clickhouse-client
 
 ```yaml
 ai:
-  provider: openai  # Use 'openai' for compatibility
+  provider: openai  # Используйте 'openai' для обеспечения совместимости
   api_key: your-openrouter-api-key
   base_url: https://openrouter.ai/api/v1
-  model: anthropic/claude-3.5-sonnet  # Use OpenRouter model naming
+  model: anthropic/claude-3.5-sonnet  # Используйте схему именования моделей OpenRouter
 ```
 
 **Примеры минимальных конфигураций:**
 
 ```yaml
-# Minimal config - uses environment variable for API key
+# Минимальная конфигурация — использует переменную окружения для API-ключа {#minimal-config-uses-environment-variable-for-api-key}
 ai:
-  provider: openai  # Will use OPENAI_API_KEY env var
+  provider: openai  # Будет использована переменная окружения OPENAI_API_KEY
 
-# No config at all - automatic fallback
-# (Empty or no ai section - will try OPENAI_API_KEY then ANTHROPIC_API_KEY)
+# Без конфигурации — автоматический резервный вариант {#no-config-at-all-automatic-fallback}
+# (Пустая или отсутствующая секция ai — будет использована OPENAI_API_KEY, затем ANTHROPIC_API_KEY) {#empty-or-no-ai-section-will-try-openai_api_key-then-anthropic_api_key}
 
-# Only override model - uses env var for API key
+# Переопределение только модели — использует переменную окружения для API-ключа {#only-override-model-uses-env-var-for-api-key}
 ai:
   provider: openai
   model: gpt-3.5-turbo
@@ -700,7 +700,7 @@ clickhouse-client clickhouse://localhost:9000 '-m'
 ```bash
 clickhouse-client clickhouse://default@localhost:9000
 
-# equivalent to:
+# эквивалентно: {#equivalent-to}
 clickhouse-client clickhouse://localhost:9000 --user default
 ```
 
@@ -709,7 +709,7 @@ clickhouse-client clickhouse://localhost:9000 --user default
 ```bash
 clickhouse-client clickhouse://localhost:9000/my_database
 
-# equivalent to:
+# эквивалентно: {#equivalent-to}
 clickhouse-client clickhouse://localhost:9000 --database my_database
 ```
 
@@ -718,7 +718,7 @@ clickhouse-client clickhouse://localhost:9000 --database my_database
 ```bash
 clickhouse-client clickhouse://localhost/my_database?s
 
-# equivalent to:
+# эквивалентно: {#equivalent-to}
 clickhouse-client clickhouse://localhost/my_database -s
 ```
 
@@ -733,7 +733,7 @@ clickhouse-client clickhouse:
 ```bash
 clickhouse-client clickhouse://my_user@
 
-# Using a blank password between : and @ means to asking the user to enter the password before starting the connection.
+# Пустой пароль между : и @ означает, что пользователю будет предложено ввести пароль перед установкой соединения. {#using-a-blank-password-between-and-means-to-asking-the-user-to-enter-the-password-before-starting-the-connection}
 clickhouse-client clickhouse://my_user:@
 ```
 
@@ -754,7 +754,7 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 В интерактивном режиме ClickHouse Client показывает ID для каждого запроса. По умолчанию ID имеет следующий формат:
 
 ```sql
-Query id: 927f137d-00f1-4175-8914-0dd066365e96
+ID запроса: 927f137d-00f1-4175-8914-0dd066365e96
 ```
 
 Пользовательский формат можно задать в конфигурационном файле внутри тега `query_id_formats`. Заполнитель `{query_id}` в строке формата заменяется на идентификатор запроса. Внутри тега можно указать несколько строк формата.
@@ -844,6 +844,7 @@ ClickHouse Client использует первый найденный файл 
 | `-d [ --database ] <database>`  | База данных, используемая по умолчанию для этого подключения.                                                                                                                                                                                                                                                                       | Текущая база данных из настроек сервера (по умолчанию `default`)                                                 |
 | `-h [ --host ] <host>`          | Имя хоста сервера ClickHouse, к которому выполняется подключение. Может быть именем хоста или IPv4/IPv6-адресом. Можно передать несколько хостов, указав параметр несколько раз.                                                                                                                                                  | `localhost`                                                                                                       |
 | `--jwt <value>`                 | Использовать JSON Web Token (JWT) для аутентификации. <br/><br/>Авторизация JWT на стороне сервера доступна только в ClickHouse Cloud.                                                                                                                                                                                            | -                                                                                                                 |
+| `login`                         | Запускает OAuth-поток device grant для аутентификации через IdP. <br/><br/>Для хостов ClickHouse Cloud значения OAuth-переменных определяются автоматически, в остальных случаях их необходимо указать с помощью `--oauth-url`, `--oauth-client-id` и `--oauth-audience`.                                                          | -                                                                                                                 |
 | `--no-warnings`                 | Отключить показ предупреждений из `system.warnings` при подключении клиента к серверу.                                                                                                                                                                                                                                             | -                                                                                                                 |
 | `--no-server-client-version-message` | Скрывать сообщение о несовпадении версий сервера и клиента при подключении клиента к серверу.                                                                                                                                                                                                                                   | -                                                                                                                 |
 | `--password <password>`         | Пароль пользователя базы данных. Пароль для подключения также можно указать в конфигурационном файле. Если пароль не указан, клиент запросит его интерактивно.                                                                                                                                                                   | -                                                                                                                 |

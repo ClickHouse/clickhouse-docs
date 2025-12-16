@@ -34,6 +34,7 @@ SELECT p, toTypeName(p) FROM geo_point;
 └─────────┴───────────────┘
 ```
 
+
 ## 环 {#ring}
 
 `Ring` 是一种没有孔洞的简单多边形，表示为点的数组：[Array](array.md)([Point](#point))。
@@ -55,6 +56,7 @@ SELECT r, toTypeName(r) FROM geo_ring;
 │ [(0,0),(10,0),(10,10),(0,10)] │ Ring          │
 └───────────────────────────────┴───────────────┘
 ```
+
 
 ## LineString {#linestring}
 
@@ -78,6 +80,7 @@ SELECT l, toTypeName(l) FROM geo_linestring;
 └───────────────────────────────┴───────────────┘
 ```
 
+
 ## MultiLineString {#multilinestring}
 
 `MultiLineString` 是由多条线构成的 `LineString` 数组：[Array](array.md)([LineString](#linestring))。
@@ -100,6 +103,7 @@ SELECT l, toTypeName(l) FROM geo_multilinestring;
 └─────────────────────────────────────────────────────┴─────────────────┘
 ```
 
+
 ## Polygon {#polygon}
 
 `Polygon` 是一种带孔多边形，存储为由环组成的数组：[Array](array.md)([Ring](#ring))。外层数组的第一个元素是多边形的外边界，其后的所有元素表示孔。
@@ -114,13 +118,14 @@ INSERT INTO geo_polygon VALUES([[(20, 20), (50, 20), (50, 50), (20, 50)], [(30, 
 SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
 
-Result：
+结果：
 
 ```text
 ┌─pg────────────────────────────────────────────────────────────┬─toTypeName(pg)─┐
 │ [[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]] │ Polygon        │
 └───────────────────────────────────────────────────────────────┴────────────────┘
 ```
+
 
 ## MultiPolygon {#multipolygon}
 
@@ -143,6 +148,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 │ [[[(0,0),(10,0),(10,10),(0,10)]],[[(20,20),(50,20),(50,50),(20,50)],[(30,30),(50,50),(50,30)]]] │ MultiPolygon    │
 └─────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────┘
 ```
+
 
 ## Geometry {#geometry}
 
@@ -175,7 +181,7 @@ INSERT INTO geo VALUES ('POINT(0 0)', 2);
 INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
 INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
 INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
-INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+INSERT INTO geo_dst SELECT readWKT(geom) FROM geo ORDER BY id;
 
 SELECT * FROM geo_dst;
 ```
@@ -191,6 +197,7 @@ SELECT * FROM geo_dst;
 5. │ [[(1,0),(10,0),(10,10),(0,10),(1,0)],[(4,4),(5,4),(5,5),(4,5),(4,4)]]                                            │
    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## 相关内容 {#related-content}
 

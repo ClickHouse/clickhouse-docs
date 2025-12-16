@@ -29,6 +29,7 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Power BI {#power-bi}
 
 <ClickHouseSupportedBadge/>
@@ -82,6 +83,7 @@ Power BI Desktop でデータのクエリを開始するには、次の手順を
 提供されている `.msi` インストーラを実行し、ウィザードに従います。
 
 <Image size="md" img={powerbi_odbc_install} alt="インストールオプションを表示している ClickHouse ODBC ドライバのインストールウィザード" border />
+
 <br/>
 
 :::note
@@ -95,11 +97,13 @@ Power BI Desktop でデータのクエリを開始するには、次の手順を
 スタートメニューで ODBC を検索し、「ODBC Data Sources **(64-bit)**」を選択します。
 
 <Image size="md" img={powerbi_odbc_search} alt="ODBC Data Sources (64-bit) オプションを表示している Windows の検索画面" border />
+
 <br/>
 
 ClickHouse ドライバが一覧に表示されていることを確認します。
 
 <Image size="md" img={powerbi_odbc_verify} alt="Drivers タブで ClickHouse ドライバを表示している ODBC Data Source Administrator" border />
+
 <br/>
 
 ### ClickHouse コネクタの検索 {#find-the-clickhouse-connector}
@@ -110,11 +114,13 @@ Power BI Desktop バージョン `2.137.751.0` で利用可能です。
 Power BI Desktop のスタート画面で、「Get Data」をクリックします。
 
 <Image size="md" img={powerbi_get_data} alt="Get Data ボタンを表示している Power BI Desktop のホーム画面" border />
+
 <br/>
 
 「ClickHouse」を検索します。
 
 <Image size="md" img={powerbi_search_clickhouse} alt="検索バーで ClickHouse を検索している Power BI の Get Data ダイアログ" border />
+
 <br/>
 
 ### ClickHouse への接続 {#connect-to-clickhouse}
@@ -128,6 +134,7 @@ Power BI Desktop のスタート画面で、「Get Data」をクリックしま�
 * Data Connectivity mode - DirectQuery
 
 <Image size="md" img={powerbi_connect_db} alt="ホスト、ポート、データベースおよび接続モードのフィールドを表示している ClickHouse 接続ダイアログ" border />
+
 <br/>
 
 :::note
@@ -139,6 +146,7 @@ ClickHouse に直接クエリする場合は、DirectQuery を選択すること
 * ユーザー名とパスワードを指定します。
 
 <Image size="md" img={powerbi_connect_user} alt="ユーザー名とパスワードを入力する ClickHouse 接続認証情報ダイアログ" border />
+
 <br/>
 
 ### データのクエリおよび可視化 {#query-and-visualise-data}
@@ -147,9 +155,11 @@ ClickHouse に直接クエリする場合は、DirectQuery を選択すること
 ClickHouse からデータをインポートします。
 
 <Image size="md" img={powerbi_table_navigation} alt="ClickHouse のデータベーステーブルとサンプルデータを表示している Power BI Navigator ビュー" border />
+
 <br/>
 
 インポートが完了すると、ClickHouse のデータは他のデータと同様に Power BI から利用できるようになります。
+
 <br/>
 
 ## Power BI サービス {#power-bi-service}
@@ -169,28 +179,32 @@ DirectQuery を使用する ClickHouse Connector の使用を推奨します。
 ドライバーのインストールが完了すると、ODBC データ ソースを作成できるようになります。スタート メニューで ODBC を検索し、「ODBC データ ソース (64 ビット)」を選択します。
 
 <Image size="md" img={powerbi_odbc_search} alt="Windows 検索で「ODBC データ ソース (64 ビット)」オプションが表示されている画面" border />
+
 <br/>
 
 ここで新しいユーザー DSN を追加する必要があります。左側の「追加」ボタンをクリックします。
 
 <Image size="md" img={powerbi_add_dsn} alt="新しい DSN 作成のために「追加」ボタンが強調表示されている ODBC データ ソース アドミニストレーター画面" border />
+
 <br/>
 
 ODBC ドライバーの Unicode バージョンを選択します。
 
 <Image size="md" img={powerbi_select_unicode} alt="新しいデータ ソース作成ダイアログで ClickHouse Unicode Driver が選択されている画面" border />
+
 <br/>
 
 接続情報を入力します。
 
 <Image size="sm" img={powerbi_connection_details} alt="接続パラメータが表示されている ClickHouse ODBC Driver 設定ダイアログ" border />
+
 <br/>
 
 :::note
 SSL が有効なデプロイメント（例: ClickHouse Cloud やセルフマネージド インスタンス）を使用している場合は、`SSLMode` フィールドに `require` を指定する必要があります。
 
 - `Host` には、常にプロトコル（`http://` や `https://`）を含めないでください。
-- `Timeout` は秒数を表す整数です。既定値: `30 seconds`。
+- `Timeout` は秒数を表す整数です。既定値は `30 seconds`（30 秒）です。
 :::
 
 ### Power BI にデータを取り込む {#get-data-into-power-bi}
@@ -200,16 +214,19 @@ SSL が有効なデプロイメント（例: ClickHouse Cloud やセルフマネ
 Power BI Desktop の開始画面で「データの取得」をクリックします。
 
 <Image size="md" img={powerbi_get_data} alt="Power BI Desktop ホーム画面で「データの取得」ボタンが表示されている画面" border />
+
 <br/>
 
 「その他」 -> 「ODBC」を選択します。
 
 <Image size="md" img={powerbi_select_odbc} alt="Power BI の「データの取得」ダイアログで、［その他］カテゴリ内の ODBC オプションが選択されている画面" border />
+
 <br/>
 
 先ほど作成したデータ ソースを一覧から選択します。
 
 <Image size="md" img={powerbi_select_dsn} alt="設定済みの ClickHouse DSN が表示されている ODBC ドライバー選択ダイアログ" border />
+
 <br/>
 
 :::note
@@ -217,14 +234,50 @@ Power BI Desktop の開始画面で「データの取得」をクリックしま
 :::
 
 <Image size="md" img={powerbi_dsn_credentials} alt="ODBC DSN 接続用の認証情報ダイアログ" border />
+
 <br/>
 
 最終的に、ナビゲーター ビューにデータベースとテーブルが表示されます。目的のテーブルを選択し、「読み込み」をクリックして ClickHouse からデータをインポートします。
 
 <Image size="md" img={powerbi_table_navigation} alt="ClickHouse のデータベース テーブルとサンプル データが表示されている Power BI ナビゲーター ビュー" border />
+
 <br/>
 
 インポートが完了すると、通常どおり Power BI から ClickHouse のデータにアクセスできるようになります。
+
+## 大規模データセットでの作業の最適化 {#optimizing-work-with-large-datasets}
+
+Power BI は、中程度のデータ量を対象とした従来型の行指向データベース向けに設計されています。ClickHouse を数十億行規模で運用する場合、最適なパフォーマンスを得るには特定のアーキテクチャパターンの採用が必要です。
+
+Power BI は、入れ子のサブクエリ、複雑な結合、実行時の変換を含む SQL クエリを自動生成します。これらのパターンは従来の SQL データベースでは有効ですが、大規模な列指向データベースである ClickHouse に対して大規模なクエリを実行する場合には非効率になることがあります。
+
+**大規模データセット向けの推奨アプローチ:** 生のテーブルを直接クエリするのではなく、各ダッシュボードのビジュアル（可視化）ごとに ClickHouse 上に専用の `materialized views` を作成します。これにより、次のメリットが得られます。
+
+- データ量に依存しない一貫した高速パフォーマンス
+- ClickHouse クラスターへの負荷の軽減
+- コストの予測可能性向上
+
+:::warning
+ダッシュボードの動作が遅い場合は、ClickHouse の [`query_log`](/operations/system-tables/query_log) を確認して、Power BI が実際にどのような SQL クエリを実行しているかを確認してください。よくある問題としては、入れ子のサブクエリ、テーブル全体のスキャン、非効率な結合などがあります。問題を特定したら、その問題を解決するための [materialized views](/materialized-views) を作成してください。
+:::
+
+### 実装のベストプラクティス {#implementation-best-practices}
+
+####  事前集約戦略 {#pre-aggregation-strategy}
+
+複数の集約レベルで materialized view を作成します：
+
+- 直近の詳細なダッシュボード向けに 1 時間単位の集約
+- 過去のトレンド分析向けに 1 日単位の集約
+- 長期的なレポーティング向けに月次ロールアップ
+- アドホック分析のために、適切な有効期限 (TTL) を設定した生データを保持
+
+#### データモデリングの最適化 {#data-modelling-optimization}
+
+- クエリパターンに合致する `ORDER BY` キーを定義する
+- 時系列データにはパーティションを利用する
+- 効率的なルックアップのために、小規模なディメンションテーブルを辞書に変換する
+- さらなるクエリ最適化のためにプロジェクションを活用する
 
 ## 既知の制限事項 {#known-limitations}
 
@@ -241,6 +294,7 @@ UInt64 やそれより大きい符号なし整数型は、Power BI がサポー�
 テキストとして設定できます。
 
 <Image size="md" img={powerbi_16} alt="UInt64 列のデータ型変換を表示している Power Query Editor" border />
+
 <br/>
 
 変更が完了したら、左上隅の「閉じて適用」をクリックし、データの読み込みに進みます。

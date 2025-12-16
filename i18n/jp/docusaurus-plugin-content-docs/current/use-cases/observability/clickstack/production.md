@@ -31,8 +31,8 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Only if needed for the API
-# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
+  - "8080:8080"  # API に必要な場合のみ
+# ClickHouse 8123 や MongoDB 27017 などの内部ポートは公開しないでください。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 コンテナの分離やアクセス制御の強化の詳細については、[Docker ネットワークに関するドキュメント](https://docs.docker.com/network/)を参照してください。
@@ -69,13 +69,14 @@ ports:
       - db1
 ```
 
-openssl を使用して強度の高いシークレットを生成できます：
+`openssl` を使って強力なシークレットを生成できます：
 
 ```shell
 openssl rand -hex 32
 ```
 
 機密情報をバージョン管理システムにコミットしないようにしてください。本番環境では、Docker Secrets、HashiCorp Vault、環境ごとの CI/CD 設定などの環境変数管理ツールの利用を検討してください。
+
 
 ## セキュアなインジェスト {#secure-ingestion}
 
@@ -108,11 +109,11 @@ OTel collector が ClickHouse にデータをインジェストするための�
 
 ### 自前運用時のセキュリティ {#self-managed-security}
 
-自前で ClickHouse インスタンスを運用している場合は、**SSL/TLS** を有効化し、認証を必須とし、アクセスの堅牢化に関するベストプラクティスに従うことが不可欠です。実際の誤った設定例とその回避方法については、[このブログ記事](https://www.wiz.io/blog/clickhouse-and-wiz)も参照してください。
+自前で ClickHouse インスタンスを運用している場合は、**TLS** を有効化し、認証を必須とし、アクセスの堅牢化に関するベストプラクティスに従うことが不可欠です。実際の誤った設定例とその回避方法については、[このブログ記事](https://www.wiz.io/blog/clickhouse-and-wiz)も参照してください。
 
 ClickHouse OSS は標準で堅牢なセキュリティ機能を提供します。ただし、これらは適切な設定が必要です。
 
-- `config.xml` の `tcp_port_secure` と `<openSSL>` を使用して **SSL/TLS を利用** します。詳しくは [guides/sre/configuring-ssl](/guides/sre/configuring-ssl) を参照してください。
+- `config.xml` の `tcp_port_secure` と `<openSSL>` を使用して **TLS を利用** します。詳しくは [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
 - `default` ユーザーに対して **強力なパスワードを設定** するか、無効化します。
 - 明示的な意図がない限り、**ClickHouse を外部に公開しないようにします**。デフォルトでは、`listen_host` が変更されない限り、ClickHouse は `localhost` のみにバインドされます。
 - パスワード、証明書、SSH 鍵、または [external authenticators](/operations/external-authenticators) などの **認証方式を利用** します。

@@ -326,7 +326,7 @@ FORMAT PrettyCompact"
 
 ## 日付と時刻の文字列を DateTime64 型に変換する {#convert-the-date-and-time-string-to-a-datetime64-type}
 
-このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。さらに、日付は `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式へ変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort) を使用して実行できます。
+このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。さらに、日付は `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式へ変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort) を使用して実行できます。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -341,9 +341,10 @@ LIMIT 25
 FORMAT PrettyCompact"
 ```
 
-上記の 2 行目と 3 行目には前のステップで連結した結果があり、4 行目と 5 行目でそれらの文字列を `DateTime64` にパースしています。苦情の終了時刻は必ずしも存在するとは限らないため、`parseDateTime64BestEffortOrNull` を使用します。
+上記の 2 行目と 3 行目には前のステップで連結した結果が含まれており、4 行目と 5 行目でそれらの文字列を `DateTime64` 型にパースしています。苦情の終了時刻は必ずしも存在するとは限らないため、`parseDateTime64BestEffortOrNull` を使用します。
 
 結果:
+
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -498,14 +499,14 @@ FORMAT Vertical
 ```response
 Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 
-Row 1:
+行 1:
 ──────
-partition_key:
-sorting_key:   borough, offense_description, date_reported
-primary_key:   borough, offense_description, date_reported
-table:         NYPD_Complaint
+パーティションキー:
+ソートキー:   borough, offense_description, date_reported
+プライマリキー:   borough, offense_description, date_reported
+テーブル:         NYPD_Complaint
 
-1 row in set. Elapsed: 0.001 sec.
+1 行を取得しました。経過時間: 0.001 秒。
 ```
 
 ## データの前処理とインポート {#preprocess-import-data}
@@ -625,18 +626,18 @@ ORDER BY complaints DESC
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
-│ March     │      34536 │ ███████████████████████████████████████████████████████▎ │
-│ May       │      34250 │ ██████████████████████████████████████████████████████▋  │
-│ April     │      32541 │ ████████████████████████████████████████████████████     │
-│ January   │      30806 │ █████████████████████████████████████████████████▎       │
-│ February  │      28118 │ ████████████████████████████████████████████▊            │
-│ November  │       7474 │ ███████████▊                                             │
-│ December  │       7223 │ ███████████▌                                             │
-│ October   │       7070 │ ███████████▎                                             │
-│ September │       6910 │ ███████████                                              │
-│ August    │       6801 │ ██████████▊                                              │
-│ June      │       6779 │ ██████████▋                                              │
-│ July      │       6485 │ ██████████▍                                              │
+│ 3月        │      34536 │ ███████████████████████████████████████████████████████▎ │
+│ 5月        │      34250 │ ██████████████████████████████████████████████████████▋  │
+│ 4月        │      32541 │ ████████████████████████████████████████████████████     │
+│ 1月        │      30806 │ █████████████████████████████████████████████████▎       │
+│ 2月        │      28118 │ ████████████████████████████████████████████▊            │
+│ 11月       │       7474 │ ███████████▊                                             │
+│ 12月       │       7223 │ ███████████▌                                             │
+│ 10月       │       7070 │ ███████████▎                                             │
+│ 9月        │       6910 │ ███████████                                              │
+│ 8月        │       6801 │ ██████████▊                                              │
+│ 6月        │       6779 │ ██████████▋                                              │
+│ 7月        │       6485 │ ██████████▍                                              │
 └───────────┴────────────┴──────────────────────────────────────────────────────────┘
 
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)

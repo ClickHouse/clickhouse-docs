@@ -47,6 +47,7 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
+
 # SQL コンソール {#sql-console}
 
 SQL コンソールは、ClickHouse Cloud 上のデータベースを調査し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
@@ -112,7 +113,7 @@ SQL Console では、テーブルに対してフィルタリングとソート�
 
 SQL Console は、ソートとフィルタの設定をワンクリックでクエリに変換できます。ツールバーから、任意のソートおよびフィルタパラメータを指定した状態で「Create Query」ボタンを選択します。「Create query」をクリックすると、新しいクエリタブが開き、現在のテーブルビューの内容に対応した SQL コマンドがあらかじめ入力されています。
 
-<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="フィルタとソートから SQL を生成する Create Query ボタンを示すインターフェース"/>
+<Image img={create_a_query_from_sorts-and-filters} size="lg" border alt="フィルタとソートから SQL を生成する Create Query ボタンを示すインターフェース"/>
 
 :::note
 「Create Query」機能を使用する際に、フィルタやソートは必須ではありません。
@@ -161,7 +162,7 @@ SQL コンソールで新しいクエリを作成する方法は 2 つありま�
 
 ### クエリのキャンセル {#canceling-a-query}
 
-クエリが実行中の場合、Query Editor ツールバーの「Run」ボタンは「Cancel」ボタンに置き換えられます。このボタンをクリックするか、`Esc` を押すだけでクエリをキャンセルできます。注意：すでに返されている結果は、キャンセル後も保持されます。
+クエリが実行中の場合、Query Editor ツールバーの「Run」ボタンは「Cancel」ボタンに置き換えられます。このボタンをクリックするか、`Esc` を押すだけでクエリをキャンセルできます。注意: すでに返されている結果は、キャンセル後も残ります。
 
 <Image img={cancel_a_query} size="lg" border alt="クエリ実行中に表示される Cancel ボタン"/>
 
@@ -271,7 +272,7 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 1. コンソールは目的のクエリを生成し、新しいタブに表示します。この例では、GenAI により次のクエリが作成されました:
 
    ```sql
-   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   -- uk_price_paid のすべてのトランザクションについて、年ごとの合計価格と件数を表示してください。
    SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
@@ -281,21 +282,21 @@ UK Price Paid のサンプルデータセットをインポートし、それを
 
 ### デバッグ {#debugging}
 
-次に、GenAI のクエリデバッグ機能を試してみましょう。
+ここでは、GenAI のクエリデバッグ機能を試してみます。
 
-1. _+_ アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます:
+1. _+_ アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます。
 
-```sql
-   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   ```sql
+   -- uk_price_paid の全トランザクションについて、年ごとの合計金額とトランザクション総数を表示する。
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
    ```
 
 1. **Run** をクリックします。`price` ではなく `pricee` から値を取得しようとしているため、クエリは失敗します。
-2. **Fix Query** をクリックします。
-3. GenAI がクエリの修正を試みます。この例では、`pricee` を `price` に変更しました。また、このケースでは `toYear` 関数を使用する方が適切であることも認識しました。
-4. 提案された変更をクエリに適用するために **Apply** をクリックし、**Run** をクリックします。
+1. **Fix Query** をクリックします。
+1. GenAI がクエリの修正を試みます。この例では、`pricee` を `price` に変更しました。また、このケースでは `toYear` 関数を使用する方が適切であることも認識しました。
+1. 提案された変更をクエリに適用するために **Apply** をクリックし、**Run** をクリックします。
 
 GenAI は実験的な機能であることに注意してください。GenAI によって生成されたクエリをいかなるデータセットに対して実行する場合も、十分注意して実行してください。
 
@@ -349,6 +350,7 @@ ORDER BY
 
 可視化しないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
+
 ### チャートの作成 {#creating-charts}
 
 可視化の作成を開始するには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
@@ -375,9 +377,9 @@ SQL コンソールでは 10 種類のチャートタイプをサポートして
 
 より高度なチャートの特性も、チャート設定ペインの「Advanced」セクションで調整できます。ここでは、次の設定を調整します。
 
-* サブタイトル
-* 軸タイトル
-* x 軸のラベルの向き
+- サブタイトル
+- 軸タイトル
+- x 軸のラベルの向き
 
 チャートはそれに応じて更新されます。
 

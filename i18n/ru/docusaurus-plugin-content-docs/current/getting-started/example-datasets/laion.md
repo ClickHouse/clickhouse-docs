@@ -21,10 +21,10 @@ number=${1}
 if [[ $number == '' ]]; then
     number=1
 fi;
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # download image embedding
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # download text embedding
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # download metadata
-python3 process.py $number # merge files and convert to CSV
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # скачать эмбеддинг изображения
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # скачать эмбеддинг текста
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # скачать метаданные
+python3 process.py $number # объединить файлы и преобразовать в CSV
 ```
 
 Скрипт `process.py` выглядит следующим образом:
@@ -40,28 +40,28 @@ npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
-# load all files
+# загрузка всех файлов {#load-all-files}
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-# combine files
+# объединение файлов {#combine-files}
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-# columns to be imported into ClickHouse
+# столбцы для импорта в ClickHouse {#columns-to-be-imported-into-clickhouse}
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
-# transform np.arrays to lists
+# преобразование np.arrays в списки {#transform-nparrays-to-lists}
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# this small hack is needed because caption sometimes contains all kind of quotes
+# этот небольшой хак необходим, поскольку caption иногда содержит различные типы кавычек {#this-small-hack-is-needed-because-caption-sometimes-contains-all-kind-of-quotes}
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-# export data as CSV file
+# экспорт данных в CSV-файл {#export-data-as-csv-file}
 data.to_csv(str_i + '.csv', header=False)
 
-# removed raw data files
+# удаление исходных файлов данных {#removed-raw-data-files}
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
@@ -102,6 +102,7 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 
 Обратите внимание, что столбец `id` служит лишь для иллюстрации и заполняется скриптом неуникальными значениями.
 
+
 ## Запуск векторного поиска методом перебора {#run-a-brute-force-vector-similarity-search}
 
 Чтобы выполнить векторный поиск методом перебора, выполните:
@@ -130,7 +131,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
+Получено 10 строк. Время выполнения: 4.605 сек. Обработано 100.38 млн строк, 309.98 ГБ (21.80 млн строк/сек., 67.31 ГБ/сек.)
 ```
 
 ## Выполните приближённый поиск по сходству векторов с использованием индекса сходства векторов {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
@@ -177,7 +178,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
+Получено 10 строк. Прошло: 0.019 сек. Обработано 137.27 тыс. строк, 24.42 МБ (7.38 млн строк/с., 1.31 ГБ/с.)
 ```
 
 Задержка выполнения запроса значительно уменьшилась, потому что ближайшие соседи были получены с использованием векторного индекса.
@@ -196,7 +197,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 
 ```python
 #!/usr/bin/python3
-#!Note: Change the above python3 executable location if a virtual env is being used.
+#!Примечание: Измените путь к исполняемому файлу python3 выше, если используется виртуальное окружение.
 import clip
 import torch
 import numpy as np
@@ -257,7 +258,7 @@ LIMIT 10
 
 ```python
 #!/usr/bin/python3
-#!Note: Change the above python3 executable location if a virtual env is being used.
+#!Примечание: Измените путь к исполняемому файлу python3 выше, если используется виртуальное окружение.
 import clip
 import torch
 import numpy as np
@@ -297,7 +298,7 @@ if __name__ == '__main__':
 Загрузите пример изображения для поиска:
 
 ```shell
-# get a random image of a LEGO set
+# получить случайное изображение набора LEGO {#get-a-random-image-of-a-lego-set}
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 

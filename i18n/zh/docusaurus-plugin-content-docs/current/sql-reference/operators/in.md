@@ -26,7 +26,7 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 在这种情况下，它会将右侧的值转换为左侧的类型，
-就像在右侧应用了 [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accuratecastornullx-t) 函数一样。
+就像在右侧应用了 [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 函数一样。
 
 这意味着数据类型会变为 [Nullable](../../sql-reference/data-types/nullable.md)，并且如果无法完成转换，则返回 [NULL](/operations/settings/formats#input_format_null_as_default)。
 
@@ -46,9 +46,9 @@ SELECT '1' IN (SELECT 1);
 └──────────────────────┘
 ```
 
-如果运算符右侧是表名（例如 `UserID IN users`），这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，然后对其进行过滤。
+如果运算符右侧是表名（例如 `UserID IN users`），这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，并需要对其进行过滤。
 
-如果运算符右侧是使用 Set 引擎（始终驻留在 RAM 中的预先准备的数据集）的表名，则不会在每个查询中重复创建该数据集。
+如果运算符右侧是使用 Set 引擎（始终驻留在 RAM 中的预先准备的数据集）的表名，则不会在每次查询时重复创建该数据集。
 
 子查询可以指定多列来过滤元组。
 
@@ -89,8 +89,8 @@ ORDER BY EventDate ASC
 └────────────┴──────────┘
 ```
 
-对于 3 月 17 日之后的每一天，统计页面浏览量中来自在 3 月 17 日访问过该网站的用户所占的百分比。
-`IN` 子句中的子查询始终只在单个服务器上执行一次。不存在相关子查询。
+对于 3 月 17 日之后的每一天，统计页面浏览量中来自在 3 月 17 日访问过该站点的用户的占比。
+`IN` 子句中的子查询始终只会在单个服务器上执行一次。不存在相关子查询。
 
 ## NULL 处理 {#null-processing}
 
@@ -153,7 +153,7 @@ FROM t_null
 SELECT uniq(UserID) FROM distributed_table
 ```
 
-将作为发送到所有远程服务器
+将以如下形式发送到所有远程服务器
 
 ```sql
 SELECT uniq(UserID) FROM local_table
@@ -179,7 +179,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 
 如果你事先为这种情况做好准备，并且在集群服务器之间分布数据，使得单个 UserID 的数据完全存放在同一台服务器上，那么该机制会正确且高效地工作。在这种情况下，每台服务器上所需的数据都可以在本地获取。否则，结果将会不准确。我们将这种形式的查询称为 “local IN”。
 
-当数据随机分布在集群服务器上时，为了纠正查询的行为，你可以在子查询中指定 **distributed&#95;table**。查询将类似如下：
+当数据随机分布在集群服务器上时，为了修正查询的执行方式，你可以在子查询中指定 **distributed&#95;table**。查询将如下所示：
 
 ```sql
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
@@ -191,7 +191,7 @@ SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID I
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-子查询会在每台远程服务器上开始执行。由于子查询使用了分布式表，位于每台远程服务器上的子查询会再次发送到所有远程服务器，如下所示：
+子查询会在每台远程服务器上开始执行。由于子查询使用了分布式表，每台远程服务器上的该子查询会被重新发送到所有远程服务器，如下所示：
 
 ```sql
 SELECT UserID FROM local_table WHERE CounterID = 34
@@ -211,7 +211,7 @@ SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID G
 SELECT UserID FROM distributed_table WHERE CounterID = 34
 ```
 
-其结果会被放入 RAM 中的临时表中。然后请求将按如下方式发送到每个远程服务器：
+其结果会被放入 RAM 中的临时表。然后将请求按如下方式发送到每个远程服务器：
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
@@ -219,7 +219,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL 
 
 临时表 `_data1` 将随查询一起发送到每个远程服务器（临时表的名称由具体实现决定）。
 
-这比使用普通的 `IN` 更高效。不过，请注意以下几点：
+这比使用普通的 `IN` 更高效，但请注意以下几点：
 
 1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。（对于普通的 `IN`，不需要这样做。）
 2. 临时表会被发送到所有远程服务器。传输时不会考虑网络拓扑结构。例如，如果有 10 台远程服务器位于距离发起请求的服务器很远的数据中心，则数据会通过与该远程数据中心的网络链路被发送 10 次。在使用 `GLOBAL IN` 时，尽量避免使用大型数据集。
@@ -252,7 +252,7 @@ SELECT CounterID, count() FROM distributed_table_1 WHERE UserID IN (SELECT UserI
 SETTINGS max_parallel_replicas=3
 ```
 
-在每台服务器上会被转换为：
+在每台服务器上被转换为：
 
 ```sql
 SELECT CounterID, count() FROM local_table_1 WHERE UserID IN (SELECT UserID FROM local_table_2 WHERE CounterID < 100)

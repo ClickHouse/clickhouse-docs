@@ -126,25 +126,25 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 * 通过在 Compose 文件中设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USER` 和 `CLICKHOUSE_PASSWORD`，修改 OTel collector 以使用 ClickHouse Cloud 实例。具体来说，将这些环境变量添加到 OTel collector 服务中：
 
   ```shell
-    otel-collector:
-        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-        environment:
-          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
-          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
-          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-        ports:
-          - '13133:13133' # health_check extension
-          - '24225:24225' # fluentd receiver
-          - '4317:4317' # OTLP gRPC receiver
-          - '4318:4318' # OTLP http receiver
-          - '8888:8888' # metrics extension
-        restart: always
-        networks:
-          - internal
-    ```
+  otel-collector:
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      environment:
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
+        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+        HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
+        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+        OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+      ports:
+        - '13133:13133' # health_check extension
+        - '24225:24225' # fluentd receiver
+        - '4317:4317' # OTLP gRPC receiver
+        - '4318:4318' # OTLP http receiver
+        - '8888:8888' # metrics extension
+      restart: always
+      networks:
+        - internal
+  ```
 
   `CLICKHOUSE_ENDPOINT` 应设置为 ClickHouse Cloud 的 HTTPS endpoint，并包含端口 `8443`，例如 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`。
 

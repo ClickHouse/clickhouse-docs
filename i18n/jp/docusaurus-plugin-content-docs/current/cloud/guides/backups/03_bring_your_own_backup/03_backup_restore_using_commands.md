@@ -14,7 +14,7 @@ import TabItem from '@theme/TabItem';
 
 # コマンドを使用してバックアップの取得および復元を行う {#commands-experience}
 
-ユーザーは、`BACKUP` および `RESTORE` コマンドを使用してバックアップをストレージバケットにエクスポートできます。これは、[ユーザーインターフェイス経由](/cloud/manage/backups/backup-restore-via-ui)でバックアップや復元を行う方法に加えて利用できます。
+`BACKUP` および `RESTORE` コマンドを使用してバックアップをストレージバケットにエクスポートできます。これは、[ユーザーインターフェイス経由](/cloud/manage/backups/backup-restore-via-ui)でバックアップや復元を行う方法に加えて利用できます。
 本ガイドでは、3 つすべての CSP 向けのコマンドを紹介します。
 
 ## 必要条件 {#requirements}

@@ -161,7 +161,8 @@ service:
 ./otelcol-contrib --config config-logs.yaml
 ```
 
-構造化ログを使用している場合、出力されるメッセージは次の形式になります。
+構造化ログを使用している場合、メッセージは次のような形式で出力されます。
+
 
 ```response
 LogRecord #98
@@ -208,7 +209,7 @@ Kubernetes ログの収集については、[OpenTelemetry のドキュメント
 
 ## トレースの収集 {#collecting-traces}
 
-コードにインストルメンテーションを施してトレースを収集したい場合は、公式の [OTel ドキュメント](https://opentelemetry.io/docs/languages/) に従うことを推奨します。
+コードにインストルメンテーションを施してトレースを収集したい場合は、公式の [OTel ドキュメント](https://opentelemetry.io/docs/languages/) を参照することを推奨します。
 
 イベントを ClickHouse に送信するには、適切なレシーバー (`receiver`) を介して OTLP プロトコル経由でトレースイベントを受信する OTel collector をデプロイする必要があります。OpenTelemetry のデモでは、[サポートされている各言語へのインストルメンテーション例](https://opentelemetry.io/docs/demo/) と、イベントを collector に送信する方法を示しています。標準出力 (`stdout`) にイベントを出力する、適切な collector 設定の例を以下に示します。
 
@@ -276,7 +277,7 @@ Attributes:
 
 ## 処理 - フィルタリング、変換、およびエンリッチ {#processing---filtering-transforming-and-enriching}
 
-先ほどのログイベントのタイムスタンプ設定の例で示したように、ユーザーは必然的にイベントメッセージをフィルタリング、変換し、エンリッチしたくなります。これは OpenTelemetry の複数の機能を利用することで実現できます。
+先ほどのログイベントのタイムスタンプ設定の例で示したように、イベントメッセージをフィルタリング、変換し、エンリッチしたくなる場面が必ず出てきます。これは OpenTelemetry の複数の機能を利用することで実現できます。
 
 - **Processors** - Processor は、[receivers が収集したデータを、エクスポータに送信する前に修正または変換](https://opentelemetry.io/docs/collector/transforming-telemetry/)します。Processor は、collector 設定の `processors` セクションで指定された順序で適用されます。これらは任意ですが、最小限のセットが[一般的に推奨](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)されています。OTel collector を ClickHouse と併用する場合、Processor は次のものに限定することを推奨します:
 
@@ -339,7 +340,7 @@ service:
 エクスポーターは、1 つ以上のバックエンドまたは送信先にデータを送信します。エクスポーターには、プル型とプッシュ型があります。イベントを ClickHouse に送信するには、プッシュ型の [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用する必要があります。
 
 :::note OpenTelemetry Collector Contrib を使用する
-ClickHouse exporter は [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main) の一部であり、コアディストリビューションには含まれていません。ユーザーは contrib ディストリビューションを使用するか、[独自の Collector をビルド](https://opentelemetry.io/docs/collector/custom-collector/) できます。
+ClickHouse exporter は [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main) の一部であり、コアディストリビューションには含まれていません。contrib ディストリビューションを使用するか、[独自の Collector をビルド](https://opentelemetry.io/docs/collector/custom-collector/) できます。
 :::
 
 完全な設定ファイルを以下に示します。
@@ -394,7 +395,8 @@ service:
       exporters: [clickhouse]
 ```
 
-以下の主な設定を確認してください：
+次の主な設定に注意してください：
+
 
 * **pipelines** - 上記の設定では、[pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines) の利用が重要です。これはレシーバー、プロセッサー、エクスポーターのセットで構成されており、ログ用とトレース用にそれぞれ 1 つずつ定義されています。
 * **endpoint** - ClickHouse との通信は `endpoint` パラメーターで設定します。接続文字列 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` により、通信は TCP 経由で行われます。トラフィック切り替えなどの理由で HTTP を利用したい場合は、この接続文字列を[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)で説明されている方法に従って変更してください。ユーザー名とパスワードをこの接続文字列内で指定できる、より完全な接続設定の詳細は[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)に記載されています。
@@ -403,13 +405,13 @@ service:
 
 * **ttl** - ここでの値はデータ保持期間を決定します。詳細は「Managing data」を参照してください。時間単位で指定する必要があります（例: 72h）。以下の例では、データが 2019 年のものであり、挿入すると ClickHouse により即座に削除されてしまうため、TTL を無効にしています。
 * **traces&#95;table&#95;name** および **logs&#95;table&#95;name** - ログテーブルおよびトレーステーブルの名前を決定します。
-* **create&#95;schema** - 起動時にデフォルトスキーマでテーブルを作成するかどうかを決定します。初期セットアップでは true がデフォルトです。ユーザーはこれを false に設定し、自身のスキーマを定義する必要があります。
+* **create&#95;schema** - 起動時にデフォルトスキーマでテーブルを作成するかどうかを決定します。初期セットアップでは true がデフォルトです。これを false に設定し、自身でスキーマを定義してください。
 * **database** - 対象のデータベース。
 * **retry&#95;on&#95;failure** - 失敗したバッチを再試行するかどうかを決定する設定です。
 * **batch** - バッチプロセッサーはイベントをバッチ単位で送信します。約 5000 のサイズと 5s のタイムアウトを推奨します。いずれかの条件を先に満たした時点で、エクスポーターへのフラッシュが開始されます。これらの値を下げると、より低レイテンシーなパイプラインとなり、クエリ可能になるまでの時間は短くなりますが、ClickHouse への接続数と送信バッチ数が増加します。[asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) を使用していない場合、ClickHouse で [too many parts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) の問題を引き起こす可能性があるため、これは推奨されません。逆に、asynchronous inserts を使用している場合、クエリ可能となるデータの可用性は非同期インサートの設定にも依存しますが、コネクタからのフラッシュ自体は早く行われます。詳細は [Batching](#batching) を参照してください。
 * **sending&#95;queue** - 送信キューのサイズを制御します。キュー内の各アイテムは 1 つのバッチを保持します。たとえば ClickHouse に到達できない状況でイベントの到着が継続し、このキューがあふれた場合、バッチは破棄されます。
 
-ユーザーが構造化ログファイルを抽出済みで、（デフォルト認証の）[local instance of ClickHouse](/install) が稼働していると仮定すると、この設定は次のコマンドで実行できます。
+構造化ログファイルを抽出済みで、（デフォルト認証の）[local instance of ClickHouse](/install) が稼働している場合、この設定は次のコマンドで実行できます。
 
 ```bash
 ./otelcol-contrib --config clickhouse-config.yaml
@@ -422,6 +424,7 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
 起動したら、次のような簡単なクエリでログイベントが存在することを確認します。
+
 
 ```sql
 SELECT *
@@ -450,7 +453,7 @@ LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.f
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
 
-Likewise, for trace events, users can check the `otel_traces` table:
+Likewise, for trace events, you can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
@@ -482,6 +485,7 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
+
 
 ## 既定のスキーマ {#out-of-the-box-schema}
 
@@ -534,9 +538,9 @@ SETTINGS ttl_only_drop_parts = 1
 - デフォルトでは、テーブルは `PARTITION BY toDate(Timestamp)` によって日付でパーティション分割されます。これにより、有効期限切れのデータを効率的に削除できます。
 - TTL は `TTL toDateTime(Timestamp) + toIntervalDay(3)` によって設定されており、collector の設定で指定した値に対応します。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) は、含まれるすべての行が有効期限切れになった場合にのみ、そのパーツ全体を削除することを意味します。これは、パーツ内の行単位で削除する（高コストな delete を伴う）よりも効率的です。常にこの設定にすることを推奨します。詳細は [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) を参照してください。
 - テーブルは標準的な [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree) を使用します。これはログおよびトレースに推奨されており、通常変更する必要はありません。
-- テーブルは `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` で並べ替えられます。これは、`ServiceName`、`SeverityText`、`Timestamp`、`TraceId` に対するフィルタにクエリが最適化されることを意味します。リストの前方にあるカラムの方が後方のカラムより高速にフィルタされます。たとえば `ServiceName` によるフィルタは `TraceId` によるフィルタよりもかなり高速です。ユーザーは、想定されるアクセスパターンに応じてこの ORDER BY を調整してください。詳細は [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key) を参照してください。
+- テーブルは `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` で並べ替えられます。これは、`ServiceName`、`SeverityText`、`Timestamp`、`TraceId` に対するフィルタにクエリが最適化されることを意味します。リストの前方にあるカラムの方が後方のカラムより高速にフィルタされます。たとえば `ServiceName` によるフィルタは `TraceId` によるフィルタよりもかなり高速です。想定されるアクセスパターンに応じてこの ORDER BY を調整してください。詳細は [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key) を参照してください。
 - 上記のスキーマでは、カラムに `ZSTD(1)` を適用しています。これはログに対して最も優れた圧縮率を提供します。より高い圧縮率を得るために（デフォルトの 1 より）ZSTD の圧縮レベルを上げることもできますが、恩恵があるケースはまれです。この値を大きくすると、挿入時（圧縮処理時）の CPU オーバーヘッドが増加しますが、伸長（およびクエリ性能）はほぼ変わらないはずです。詳細は [こちら](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) を参照してください。さらに、ディスク上のサイズ削減を目的として Timestamp には追加の [delta encoding](/sql-reference/statements/create/table#delta) が適用されています。
-- [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes)、[`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) がマップ型である点に注意してください。ユーザーはこれらの違いに慣れておく必要があります。これらのマップへのアクセス方法や、その中のキーへのアクセス最適化については [Using maps](/use-cases/observability/schema-design#using-maps) を参照してください。
+- [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes)、[`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) がマップ型である点に注意してください。これらの違いを理解しておくことが重要です。これらのマップへのアクセス方法や、その中のキーへのアクセス最適化については ["Using maps"](/use-cases/observability/schema-design#using-maps) を参照してください。
 - ここでのその他の型、たとえば LowCardinality としての `ServiceName` などは最適化されています。例のログで JSON である `Body` は String として保存される点に注意してください。
 - Bloom filter はマップのキーおよび値、さらに `Body` カラムにも適用されています。これは、これらのカラムにアクセスするクエリの実行時間を改善することを目的としていますが、多くの場合必須ではありません。詳細は [Secondary/Data skipping indices](/use-cases/observability/schema-design#secondarydata-skipping-indices) を参照してください。
 
@@ -604,7 +608,7 @@ collector 経由で Observability データを ClickHouse に挿入する際に�
 
 一般的に、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーが許容範囲内のうちにデータが ClickHouse に到達することを期待します。このような場合、バッチプロセッサの `timeout` が期限切れになると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期インサートが必要になります。このケースは、**エージェント役割のコレクターが ClickHouse に直接送信するように構成されている**場合によく発生します。ゲートウェイはアグリゲーターとして動作することでこの問題を軽減できます。詳細は [Scaling with Gateways](#scaling-with-gateways) を参照してください。
 
-大きなバッチを保証できない場合、ユーザーは [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期インサートでは、データはまずバッファに挿入され、その後にデータベースストレージへと後から（非同期に）書き込まれます。
+大きなバッチを保証できない場合は、[Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期インサートでは、データはまずバッファに挿入され、その後にデータベースストレージへと後から（非同期に）書き込まれます。
 
 <Image img={observability_6} alt="非同期インサート" size="md"/>
 
@@ -612,10 +616,10 @@ collector 経由で Observability データを ClickHouse に挿入する際に�
 
 コレクターで非同期インサートを有効にするには、接続文字列に `async_insert=1` を追加します。配信の保証を得るために、`wait_for_async_insert=1`（デフォルト）の使用を推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-非同期インサートによるデータは、ClickHouse のバッファがフラッシュされた時点で挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合に発生します。`async_insert_stale_timeout_ms` がゼロ以外の値に設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms ミリ秒` 経過後にデータが挿入されます。ユーザーはこれらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュのチューニングに使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
+非同期インサートによるデータは、ClickHouse のバッファがフラッシュされた時点で挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_busy_timeout_ms) ミリ秒経過した場合に発生します。`async_insert_stale_timeout_ms` がゼロ以外の値に設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms` ミリ秒経過後にデータが挿入されます。これらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュのチューニングに使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
 
 :::note 適応的非同期インサートの検討
-使用しているエージェント数が少なく、スループットは低いがエンドツーエンドレイテンシー要件が厳しいケースでは、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般に、これらは ClickHouse を用いた高スループットの Observability ユースケースには適用されないことが多いです。
+使用しているエージェント数が少なく、スループットは低いがエンドツーエンドレイテンシー要件が厳しいケースでは、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般に、これらは ClickHouse を用いた高スループットのオブザーバビリティユースケースには適用されないことが多いです。
 :::
 
 最後に、ClickHouse への同期インサートに関連付けられていた従来の重複排除（デデュープ）動作は、非同期インサート使用時にはデフォルトでは有効化されません。必要に応じて、設定 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate) を参照してください。
@@ -634,11 +638,11 @@ OTel collector を ClickHouse と併用する場合、いくつかのデプロ�
 
 このアーキテクチャは、小規模から中規模のデプロイメントに適しています。主な利点は、追加のハードウェアを必要とせず、アプリケーションとコレクターの対応関係をシンプルに保ったまま、ClickHouse ベースのオブザーバビリティソリューション全体のリソース使用量を最小限に抑えられる点です。
 
-エージェント数が数百を超えるようになったら、ユーザーはゲートウェイベースのアーキテクチャへの移行を検討すべきです。このアーキテクチャには、スケールさせる際に課題となるいくつかの欠点があります。
+エージェント数が数百を超えるようになったら、ゲートウェイベースのアーキテクチャへの移行を検討してください。このアーキテクチャには、スケールさせる際に課題となるいくつかの欠点があります。
 
-- **接続数のスケーリング** - 各エージェントが ClickHouse への接続を確立します。ClickHouse は数百（場合によっては数千）の同時インサート接続を維持できますが、最終的にはこれが制約となり、インサートの効率が低下します。つまり、接続の維持に ClickHouse のより多くのリソースが消費されます。ゲートウェイを使用することで接続数を最小限に抑え、インサートをより効率的にできます。
-- **エッジでの処理** - このアーキテクチャでは、あらゆる変換やイベント処理をエッジ、または ClickHouse 内で実行する必要があります。これは制約が大きいだけでなく、複雑な ClickHouse のマテリアライズドビューが必要になったり、重要なサービスに影響が及びリソースも限られるエッジ側に多大な計算処理を押し付けたりすることにつながります。
-- **小さなバッチとレイテンシー** - エージェント型コレクターは、個別にはごく少数のイベントしか収集しない場合があります。通常これは、配信のSLAを満たすために、一定の間隔でフラッシュするよう設定する必要があることを意味します。その結果として、コレクターが小さなバッチを ClickHouse に送信することになります。これは欠点ではありますが、非同期インサートを用いることで軽減できます。詳細は [インサートの最適化](#optimizing-inserts) を参照してください。
+- **接続数のスケーリング** - 各エージェントが ClickHouse への接続を確立します。ClickHouse は数百（場合によっては数千）の同時インサート接続を維持できますが、最終的にはこれが制約となり、インサートの効率が低下します。つまり、接続の維持に ClickHouse のより多くのリソースが消費されます。ゲートウェイを使用することで接続数を最小限に抑え、インサートをより効率的に行えます。
+- **エッジでの処理** - このアーキテクチャでは、あらゆる変換やイベント処理をエッジ、または ClickHouse 内で実行する必要があります。これは制約が大きいだけでなく、複雑な ClickHouse の materialized view が必要になったり、重要なサービスに影響が及びリソースも限られるエッジ側に多大な計算処理を押し付けたりすることにつながります。
+- **小さなバッチとレイテンシー** - エージェント型コレクターは、個別にはごく少数のイベントしか収集しない場合があります。通常これは、配信の SLA を満たすために、一定の間隔でフラッシュするよう設定する必要があることを意味します。その結果として、コレクターが小さなバッチを ClickHouse に送信することになります。これは欠点ではありますが、非同期インサートを用いることで軽減できます。詳細は [インサートの最適化](#optimizing-inserts) を参照してください。
 
 ### ゲートウェイによるスケーリング {#scaling-with-gateways}
 
@@ -669,11 +673,11 @@ exporters:
   otlp:
     endpoint: localhost:4317
     tls:
-      insecure: true # Set to false if you are using a secure connection
+      insecure: true # セキュアな接続を使用する場合はfalseに設定
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
+      address: 0.0.0.0:9888 # 同一ホスト上で2つのコレクターを実行するため変更
   pipelines:
     logs:
       receivers: [filelog]

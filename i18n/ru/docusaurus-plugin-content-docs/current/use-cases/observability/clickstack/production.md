@@ -31,8 +31,8 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Only if needed for the API
-# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
+  - "8080:8080"  # Только при необходимости для API
+# Не открывайте внутренние порты, такие как ClickHouse 8123 или MongoDB 27017. {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 Обратитесь к [документации по сетевому взаимодействию Docker](https://docs.docker.com/network/), чтобы узнать подробности об изоляции контейнеров и повышении безопасности доступа.
@@ -69,13 +69,14 @@ ports:
       - db1
 ```
 
-Вы можете сгенерировать надёжный секретный ключ с помощью OpenSSL:
+Вы можете сгенерировать надёжный секретный ключ с помощью `openssl`:
 
 ```shell
 openssl rand -hex 32
 ```
 
-Не добавляйте секреты в систему контроля версий. В рабочей (production) среде рассмотрите использование инструментов управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигураций CI/CD, специфичных для конкретных окружений).
+Не добавляйте секреты в систему контроля версий. В продуктивной среде рекомендуется использовать инструменты управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигурации CI/CD, зависящие от окружения).
+
 
 ## Безопасная ингестия {#secure-ingestion}
 
@@ -108,11 +109,11 @@ openssl rand -hex 32
 
 ### Самостоятельное управление безопасностью {#self-managed-security}
 
-Если вы управляете собственным экземпляром ClickHouse, важно включить **SSL/TLS**, обеспечить обязательную аутентификацию и следовать передовым практикам по укреплению защиты доступа. См. [эту запись в блоге](https://www.wiz.io/blog/clickhouse-and-wiz) о типичных ошибках конфигурации в реальных системах и способах их избежать.
+Если вы управляете собственным экземпляром ClickHouse, важно включить **TLS**, обеспечить обязательную аутентификацию и следовать передовым практикам по укреплению защиты доступа. См. [эту запись в блоге](https://www.wiz.io/blog/clickhouse-and-wiz) о типичных ошибках конфигурации в реальных системах и способах их избежать.
 
 ClickHouse OSS предоставляет мощные средства безопасности «из коробки». Однако они требуют настройки:
 
-- **Используйте SSL/TLS** через `tcp_port_secure` и `<openSSL>` в `config.xml`. См. [guides/sre/configuring-ssl](/guides/sre/configuring-ssl).
+- **Используйте TLS** через `tcp_port_secure` и `<openSSL>` в `config.xml`. См. [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls).
 - **Задайте надёжный пароль** для пользователя `default` или отключите его.
 - **Избегайте внешней публикации ClickHouse**, если это не требуется явно. По умолчанию ClickHouse привязывается только к `localhost`, пока не изменён `listen_host`.
 - **Используйте методы аутентификации**, такие как пароли, сертификаты, SSH-ключи или [external authenticators](/operations/external-authenticators).
