@@ -53,7 +53,7 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 为了让 collector 能够连接到 OpAMP 端口，该端口必须由 HyperDX 容器暴露，例如 `-p 4320:4320`。在本地测试中，macOS 用户可以将 `OPAMP_SERVER_URL` 设置为 `http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动 collector 容器。
 :::
 
-在生产环境中，应使用具备[相应凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的专用用户。
+在生产环境中，你应使用具备[相应凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的专用用户。
 
 
 ### 修改配置 {#modifying-otel-collector-configuration}
@@ -206,7 +206,7 @@ docker run -d \
 
 ## 保护 collector {#securing-the-collector}
 
-ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，用户必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
+ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，您必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
 
 此集成确保 OTLP 端点通过在部署 HyperDX 应用时自动生成的摄取 API key 得到保护。所有发送到 collector 的遥测数据都必须包含此 API key 以完成身份验证。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该 key。
 
@@ -239,7 +239,7 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 
 如果使用 OTel collector 进行处理，我们建议在网关实例上执行转换工作，并尽量减少在 agent 实例上的工作负载。这样可以确保在边缘、运行在服务器上的 agent 所需资源尽可能少。通常，我们看到用户只在 agent 中执行过滤（以减少不必要的网络使用）、时间戳设置（通过 operators），以及需要上下文的富化操作。例如，如果网关实例位于不同的 Kubernetes 集群中，则需要在 agent 中执行 k8s 富化。
 
-OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
+OpenTelemetry 支持以下可供使用的处理和过滤功能：
 
 - **Processors** - Processors 获取由 [receivers 收集到的数据并对其进行修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/)，然后再发送给 exporters。Processors 按照在 collector 配置中 `processors` 部分指定的顺序应用。这些是可选的，但[通常建议使用一个最小集合](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。在将 OTel collector 与 ClickHouse 一起使用时，我们建议将 processors 限制为：
 
@@ -251,7 +251,7 @@ OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 提供了在 receiver 侧可用的最基本处理单元。支持基础解析，允许设置诸如 Severity 和 Timestamp 等字段。此处支持 JSON 和正则解析，以及事件过滤和基础转换。我们建议在此执行事件过滤。
 
-我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过物化视图和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
+我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过 materialized view 和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
 
 ### 示例 {#example-processing}
 
@@ -312,7 +312,7 @@ service:
 
 ## 优化插入 {#optimizing-inserts}
 
-为了在获得强一致性保证的同时实现高效的插入性能，用户在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
+为了在获得强一致性保证的同时实现高效的插入性能，你在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
 
 ### 批处理 {#batching}
 

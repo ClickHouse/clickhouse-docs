@@ -63,7 +63,6 @@ FROM dbpedia
    └─────────┘
 ```
 
-
 ## Семантический поиск {#semantic-search}
 
 Рекомендуемая литература: [руководство OpenAPI по векторным эмбеддингам](https://platform.openai.com/docs/guides/embeddings)

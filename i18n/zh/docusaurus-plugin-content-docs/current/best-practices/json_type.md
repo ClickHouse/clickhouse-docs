@@ -82,14 +82,14 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-并插入 JSON 记录：
+并插入 JSON 行：
 
 ```sql
 INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-以包含 250 万篇学术论文的 [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)为例。该数据集以 NDJSON 格式分发，其中每一行代表一篇已发表的学术论文。下面是一行示例数据：
+考虑包含 250 万篇学术论文的 [arXiv 数据集](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)。该数据集以 NDJSON 格式分发，其中每一行代表一篇已发表的学术论文。下面是一行示例数据：
 
 ```json
 {
@@ -151,12 +151,13 @@ ORDER BY update_date
 
 同样，我们可以以 JSON 格式插入数据：
 
+
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-假设新增了一列名为 `tags`。如果它只是一个字符串列表，我们可以将其建模为 `Array(String)`，但假设用户可以添加具有混合类型的任意标签结构（注意 `score` 可能是字符串或整数）。我们修改后的 JSON 文档如下：
+假设新增了一列名为 `tags`。如果它只是一个字符串列表，我们可以将其建模为 `Array(String)`，但假设你可以添加具有混合类型的任意标签结构（注意 `score` 可能是字符串或整数）。我们修改后的 JSON 文档如下：
 
 ```sql
 {
@@ -210,7 +211,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-在本例中，我们可以将 arXiv 文档建模为全部使用 JSON，或者仅添加一个 JSON 类型的 `tags` 列。下面给出这两种示例：
+在本例中，我们可以将 arXiv 文档建模为完全使用 JSON，或者只新增一个 JSON 类型的 `tags` 列。下面分别给出这两种示例：
 
 ```sql
 CREATE TABLE arxiv
@@ -227,9 +228,10 @@ ORDER BY doc.update_date
 
 我们可以向该表插入数据，并使用 [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 函数和 [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 输出格式查看后续推断出的 schema：
 
+
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"每秒千兆字节的数字解析","comments":"软件位于 https://github.com/fastfloat/fast_float 和\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"随着磁盘和网络提供每秒千兆字节的速度....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"值得一读,适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"Wolverine 觉得更有趣"}]}}}
 ```
 
 ```sql
@@ -262,7 +264,7 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-1 row in set. Elapsed: 0.003 sec.
+返回 1 行。用时:0.003 秒。
 ```
 
 或者，我们也可以使用之前的 schema，并通过一个 JSON `tags` 列来建模。通常更推荐这种方式，因为它可以最大程度减少 ClickHouse 所需的推断工作：
@@ -292,7 +294,7 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse 用户","score":"A+","comment":"值得一读，适用于 ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"收获不大","updates":[{"name":"professor X","comment":"金刚狼认为更有意思"}]}}}
 ```
 
 现在我们就可以推断出子列 `tags` 的类型了。

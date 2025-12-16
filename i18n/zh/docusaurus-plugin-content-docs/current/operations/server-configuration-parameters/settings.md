@@ -1002,26 +1002,26 @@ ZooKeeper 中表的路径。
 
 ```xml
 <distributed_ddl>
-    <!-- Path in ZooKeeper to queue with DDL queries -->
+    <!-- ZooKeeper 中 DDL 查询队列的路径 -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- Settings from this profile will be used to execute DDL queries -->
+    <!-- 执行 DDL 查询时将使用此配置文件中的设置 -->
     <profile>default</profile>
 
-    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
+    <!-- 控制可同时运行的 ON CLUSTER 查询数量 -->
     <pool_size>1</pool_size>
 
     <!--
-         Cleanup settings (active tasks will not be removed)
+         清理设置(活动任务不会被删除)
     -->
 
-    <!-- Controls task TTL (default 1 week) -->
+    <!-- 控制任务生存时间 (TTL)(默认为 1 周) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- Controls how often cleanup should be performed (in seconds) -->
+    <!-- 控制清理执行频率(单位:秒) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- Controls how many tasks could be in the queue -->
+    <!-- 控制队列中可容纳的任务数量 -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
@@ -1196,7 +1196,7 @@ ZooKeeper 中表的路径。
 **示例**
 
 ```xml
-<!-- Directory containing schema files for various input formats. -->
+<!-- 包含各种输入格式架构文件的目录。 -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
 
@@ -1983,7 +1983,7 @@ ClickHouse 企业版许可证密钥
 <logger>
     <formatting>
         <type>json</type>
-        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
+        <!-- 可按通道单独配置(log、errorlog、console、syslog),或为所有通道全局配置(省略此项即可)。 -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -2881,9 +2881,9 @@ SSL 客户端/服务器配置。
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
+        <!-- 用于自签名证书: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
+            <!-- 用于自签名证书: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
@@ -2914,6 +2914,10 @@ SSL 客户端/服务器配置。
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
+
+## os_collect_psi_metrics {#os_collect_psi_metrics} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />启用从 /proc/pressure/ 文件收集 PSI 指标。
 
 ## os_cpu_busy_time_threshold {#os_cpu_busy_time_threshold} 
 
@@ -3379,7 +3383,7 @@ ClickHouse 将根据请求协议检查优先级最高的解析器类型。若未
 ```xml
 <query_masking_rules>
     <rule>
-        <name>hide SSN</name>
+        <name>隐藏 SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -3549,7 +3553,7 @@ DDL 查询只会等待同一副本组内的副本。
 **示例**
 
 ```xml
-<replica_group_name>backups</replica_group_name>
+<replica_group_name>备份</replica_group_name>
 ```
 
 ## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
@@ -3693,10 +3697,10 @@ Keeper 中带有自增编号的路径，由 `generateSerialID` 函数生成。�
 ```xml
 <storage_configuration>
     <disks>
-        <!-- configuration -->
+        <!-- 配置 -->
     </disks>
     <policies>
-        <!-- configuration -->
+        <!-- 配置 -->
     </policies>
 </storage_configuration>
 ```
@@ -4518,9 +4522,9 @@ ZooKeeper 节点的路径，用于存储所有 `CREATE WORKLOAD` 和 `CREATE RES
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- Optional. Chroot suffix. Should exist. -->
+    <!-- 可选。Chroot 后缀。该路径必须存在。 -->
     <root>/path/to/zookeeper/node</root>
-    <!-- Optional. Zookeeper digest ACL string. -->
+    <!-- 可选。Zookeeper digest ACL 字符串。 -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>

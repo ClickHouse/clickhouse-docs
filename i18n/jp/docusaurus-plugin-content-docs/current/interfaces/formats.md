@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # 入力および出力データのフォーマット {#formats-for-input-and-output-data}
 
 ClickHouse は、一般的なテキスト形式およびバイナリ形式のほとんどをサポートしています。これにより、運用中のほぼあらゆるデータパイプラインに容易に統合し、ClickHouse の利点を活用できます。
@@ -34,6 +35,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 ## 出力形式 {#output-formats}
 
 出力としてサポートされている形式は、次の用途に使用されます:
+
 - `SELECT` クエリ結果の整形
 - ファイルベースのテーブルへの `INSERT` 操作の実行
 
@@ -115,6 +117,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔  | ✔  |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔  | ✗  |
 | [Native](./formats/Native.md)                                                                              | ✔  | ✔  |
+| [Buffers](./formats/Buffers.md)                                                                            | ✔  | ✔  |
 | [Null](./formats/Null.md)                                                                                  | ✗  | ✔  |
 | [Hash](./formats/Hash.md)                                                                                  | ✗  | ✔  |
 | [XML](./formats/XML.md)                                                                                    | ✗  | ✔  |
@@ -152,5 +155,6 @@ ClickHouse の設定を使用して、一部のフォーマット処理パラメ
 `CSV`、`TabSeparated`、`TSKV`、`JSONEachRow`、`Template`、`CustomSeparated`、`Protobuf` などの一部の形式では、パースエラーが発生した場合に不正な行をスキップし、次の行の先頭からパースを継続できます。詳細は [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) および
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio) 設定を参照してください。
 制限事項:
+
 - パースエラーが発生した場合、`JSONEachRow` は改行（または EOF）までのすべてのデータをスキップするため、エラーを正しくカウントするには、行を `\n` で区切る必要があります。
 - `Template` と `CustomSeparated` は、次の行の先頭を見つけるために、最後の列の後の区切り文字と行間の区切り文字を使用するため、少なくとも一方が空でない場合にのみエラーをスキップできます。

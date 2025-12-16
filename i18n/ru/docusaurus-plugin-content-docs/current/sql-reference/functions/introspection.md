@@ -122,8 +122,6 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-
-
 ## isMergeTreePartCoveredBy {#isMergeTreePartCoveredBy}
 
 Introduced in: v25.6

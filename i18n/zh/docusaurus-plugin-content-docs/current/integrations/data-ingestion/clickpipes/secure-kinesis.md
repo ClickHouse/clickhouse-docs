@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 
 本文演示 ClickPipes 客户如何利用基于角色的访问机制，与 Amazon Kinesis 进行身份验证，并安全访问其数据流。
 
-
 ## 前提条件 {#prerequisite}
 
 要按照本指南操作，你需要：
 - 一个已开通的 ClickHouse Cloud 服务
 - 一个 AWS 账户
-
-
 
 ## 简介 {#introduction}
 
@@ -29,8 +26,6 @@ import Image from '@theme/IdealImage';
 <Image img={secure_kinesis} alt="Secure Kinesis" size="lg" border/>
 
 通过这种方式，客户可以在单一位置（被假设角色的 IAM 策略）统一管理对其 Kinesis 数据流的所有访问，而无需单独修改每个流的访问策略。
-
-
 
 ## 设置 {#setup}
 

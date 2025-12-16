@@ -24,7 +24,7 @@ ClickHouse は標準 SQL の JOIN を完全にサポートしており、効率�
 ## テストデータとリソース {#test-data-and-resources}
 
 テーブルの作成とロード手順は[こちら](/integrations/dbt/guides)にあります。
-テーブルをローカルで作成・ロードしたくないユーザー向けに、このデータセットは [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) からも利用できます。
+テーブルをローカルで作成・ロードしたくない場合は、このデータセットは [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) からも利用できます。
 
 以下のサンプルデータセット内の 4 つのテーブルを使用します。
 
@@ -77,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ Harry Potter and the Half-Blood Prince │ Action    │
-│ Harry Potter and the Half-Blood Prince │ Adventure │
-│ Harry Potter and the Half-Blood Prince │ Family    │
-│ Harry Potter and the Half-Blood Prince │ Fantasy   │
-│ Harry Potter and the Half-Blood Prince │ Thriller  │
-│ DragonBall Z                           │ Action    │
-│ DragonBall Z                           │ Adventure │
-│ DragonBall Z                           │ Comedy    │
-│ DragonBall Z                           │ Fantasy   │
-│ DragonBall Z                           │ Sci-Fi    │
+│ ハリー・ポッターと謎のプリンス │ アクション    │
+│ ハリー・ポッターと謎のプリンス │ アドベンチャー │
+│ ハリー・ポッターと謎のプリンス │ ファミリー    │
+│ ハリー・ポッターと謎のプリンス │ ファンタジー   │
+│ ハリー・ポッターと謎のプリンス │ スリラー  │
+│ ドラゴンボールZ                           │ アクション    │
+│ ドラゴンボールZ                           │ アドベンチャー │
+│ ドラゴンボールZ                           │ コメディ    │
+│ ドラゴンボールZ                           │ ファンタジー   │
+│ ドラゴンボールZ                           │ SF    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -125,16 +125,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Pacific War, The"""                    │
-│ """Turin 2006: XX Olympic Winter Games""" │
-│ Arthur, the Movie                         │
-│ Bridge to Terabithia                      │
-│ Mars in Aries                             │
-│ Master of Space and Time                  │
-│ Ninth Life of Louis Drax, The             │
-│ Paradox                                   │
-│ Ratatouille                               │
-│ """American Dad"""                        │
+│ """太平洋戦争"""                          │
+│ """トリノ2006:第20回オリンピック冬季競技大会""" │
+│ アーサー・ザ・ムービー                    │
+│ テラビシアにかける橋                      │
+│ 牡羊座の火星                              │
+│ 時空の支配者                              │
+│ ルイス・ドラックスの9番目の人生          │
+│ パラドックス                              │
+│ レミーのおいしいレストラン                │
+│ """アメリカン・ダッド"""                  │
 └───────────────────────────────────────────┘
 ```
 
@@ -298,16 +298,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Pacific War, The"""                    │
-│ """Turin 2006: XX Olympic Winter Games""" │
-│ Arthur, the Movie                         │
-│ Bridge to Terabithia                      │
-│ Mars in Aries                             │
-│ Master of Space and Time                  │
-│ Ninth Life of Louis Drax, The             │
-│ Paradox                                   │
-│ Ratatouille                               │
-│ """American Dad"""                        │
+│ """太平洋戦争"""                          │
+│ """トリノ2006:第20回オリンピック冬季競技大会""" │
+│ アーサー・ザ・ムービー                    │
+│ テラビシアにかける橋                      │
+│ 牡羊座の火星                              │
+│ 時空の支配者                              │
+│ ルイス・ドラックスの9番目の人生          │
+│ パラドックス                              │
+│ レミーのおいしいレストラン                │
+│ """アメリカン・ダッド"""                  │
 └───────────────────────────────────────────┘
 ```
 
@@ -420,7 +420,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Row 1:
+行 1:
 ──────
 symbol:             ABC
 volume:             200
@@ -429,7 +429,7 @@ closest_quote_time: 2023-02-22 14:09:00
 quote_price:        32.11
 final_price:        6422
 
-Row 2:
+行 2:
 ──────
 symbol:             ABC
 volume:             300

@@ -269,7 +269,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
-
 ```json
 [
   {
@@ -500,7 +499,6 @@ Expression ((Project names + Projection))
 ```
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
-
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 

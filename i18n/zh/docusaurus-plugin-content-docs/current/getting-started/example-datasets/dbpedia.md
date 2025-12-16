@@ -63,7 +63,6 @@ FROM dbpedia
    └─────────┘
 ```
 
-
 ## 语义搜索 {#semantic-search}
 
 推荐阅读：["Vector embeddings" OpenAPI 指南](https://platform.openai.com/docs/guides/embeddings)

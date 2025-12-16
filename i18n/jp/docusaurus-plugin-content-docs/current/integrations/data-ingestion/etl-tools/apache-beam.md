@@ -12,6 +12,7 @@ keywords: ['apache beam', 'ストリーム処理', 'バッチ処理', 'JDBC コ�
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Apache Beam と ClickHouse の統合 {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -44,6 +45,7 @@ Apache Beam と ClickHouse を統合するために必要なインテグレー�
 :::
 
 アーティファクトは [公式 Maven リポジトリ](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)から入手できます。
+
 
 ### コード例 {#code-example}
 
@@ -101,6 +103,7 @@ public class Main {
 
 ```
 
+
 ## サポートされているデータ型 {#supported-data-types}
 
 | ClickHouse                         | Apache Beam                | サポート有無 | 備考                                                                                                                                     |
@@ -123,7 +126,7 @@ public class Main {
 | `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`   | ✅            |                                                                                                                                          |
 | `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN`  | ✅            |                                                                                                                                          |
 | `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`      | ✅            |                                                                                                                                          |
-| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅            | `FixedBytes` は固定長バイト配列を表す `LogicalType` であり、<br/> `org.apache.beam.sdk.schemas.logicaltypes` に定義されています          |
+| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅            | `FixedBytes` は `LogicalType` であり、固定長 <br/> バイト配列を表します。<br/> `org.apache.beam.sdk.schemas.logicaltypes` に定義されています |
 |                                    | `Schema.TypeName#DECIMAL`  | ❌            |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌            |                                                                                                                                          |
 
@@ -150,5 +153,6 @@ public class Main {
 * コネクタは DDL ステートメントを一切実行しないため、対象テーブルはデータを挿入する前に存在している必要があります。
 
 ## 関連コンテンツ {#related-content}
+
 * `ClickHouseIO` クラスの[ドキュメント](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)。
 * サンプルコード用の `GitHub` リポジトリ [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector)。

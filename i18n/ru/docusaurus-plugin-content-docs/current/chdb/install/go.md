@@ -7,7 +7,7 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-# chDB для Go
+# chDB для Go {#chdb-for-go}
 
 chDB-go предоставляет привязки Go для chDB, позволяя запускать запросы ClickHouse напрямую в ваших Go-приложениях без внешних зависимостей.
 

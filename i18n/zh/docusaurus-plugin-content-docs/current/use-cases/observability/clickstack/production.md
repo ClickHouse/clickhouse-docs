@@ -31,8 +31,8 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Only if needed for the API
-# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
+  - "8080:8080"  # 仅在 API 需要时
+# 避免暴露内部端口，如 ClickHouse 8123 或 MongoDB 27017。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 有关隔离容器和强化访问安全性的详细信息，请参阅 [Docker 网络文档](https://docs.docker.com/network/)。
@@ -141,7 +141,7 @@ ClickHouse OSS 开箱即用地提供了完善的安全功能，但这些功能�
 
 ### 创建服务 {#create-a-service}
 
-按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service)创建一个服务。
+按照 [ClickHouse Cloud 入门指南](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service) 创建一个服务。
 
 ### 复制连接信息 {#copy-connection-details}
 
@@ -175,7 +175,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 部署 ClickStack——推荐使用 [Helm](/use-cases/observability/clickstack/deployment/helm) 或 [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)（修改为排除 ClickHouse）的部署模型。 
 
 :::note 单独部署组件
-高级用户可以分别使用各自的独立部署模式部署 [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) 和 [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)。
+如果您是高级用户，可以分别使用各自的独立部署模式部署 [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) 和 [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only)。
 :::
 
 使用 ClickHouse Cloud 搭配 Helm 图表的说明见 [此处](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。使用 Docker Compose 的等效说明见 [此处](/use-cases/observability/clickstack/deployment/docker-compose)。

@@ -50,12 +50,12 @@ ClickStack のイメージは現在 `clickhouse/clickstack-*`（以前は `docke
 :::
 
 :::tip データと設定の永続化
-コンテナの再起動後もデータと設定を保持するには、上記の docker コマンドを変更して、`/data/db`、`/var/lib/clickhouse`、`/var/log/clickhouse-server` のパスをマウントします。
+コンテナの再起動後もデータと設定を保持するには、上記の docker コマンドを変更して、`/data/db`、`/var/lib/clickhouse`、`/var/log/clickhouse-server` のパスをマウントできます。
 
 例:
 
 ```shell
-# modify command to mount paths
+# パスをマウントするようにコマンドを変更
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -95,7 +95,7 @@ HyperDX はローカルクラスターに自動的に接続し、ログ・トレ
 
 ## ClickHouse Cloud でデプロイする {#deploy-with-clickhouse-cloud}
 
-ユーザーは ClickHouse Cloud をバックエンドとして ClickStack をデプロイでき、完全にマネージドで安全なバックエンドの利点を享受しつつ、インジェスト、スキーマ、オブザーバビリティのワークフローを完全に制御できます。
+ClickHouse Cloud をバックエンドとして ClickStack をデプロイでき、完全にマネージドで安全なバックエンドの利点を享受しつつ、インジェスト、スキーマ、オブザーバビリティのワークフローを完全に制御できます。
 
 <VerticalStepper headerLevel="h3">
 

@@ -22,13 +22,14 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # 将 ClickHouse Cloud 审计日志存储到 Splunk 中 {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>
 
 [Splunk](https://www.splunk.com/) 是一个数据分析和监控平台。
 
-此附加组件允许用户将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 下载审计日志。
+此附加组件允许您将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 下载审计日志。
 
 此附加组件仅包含模块化输入，不提供任何额外的 UI。
 

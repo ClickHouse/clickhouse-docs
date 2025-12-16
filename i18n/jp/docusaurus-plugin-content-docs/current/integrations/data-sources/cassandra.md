@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # Cassandra 連携 {#cassandra-integration}
 
-Cassandra との連携は辞書を介して行えます。詳細は[こちら](/sql-reference/dictionaries#cassandra)を参照してください。
+Cassandra との連携は Dictionary を介して行えます。詳細は[こちら](/sql-reference/dictionaries#cassandra)を参照してください。

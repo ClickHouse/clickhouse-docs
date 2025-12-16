@@ -1003,26 +1003,26 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 
 ```xml
 <distributed_ddl>
-    <!-- Path in ZooKeeper to queue with DDL queries -->
+    <!-- ZooKeeper内のDDLクエリキューへのパス -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- Settings from this profile will be used to execute DDL queries -->
+    <!-- このプロファイルの設定を使用してDDLクエリを実行します -->
     <profile>default</profile>
 
-    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
+    <!-- ON CLUSTERクエリの同時実行数を制御します -->
     <pool_size>1</pool_size>
 
     <!--
-         Cleanup settings (active tasks will not be removed)
+         クリーンアップ設定（アクティブなタスクは削除されません）
     -->
 
-    <!-- Controls task TTL (default 1 week) -->
+    <!-- タスクの有効期限 (TTL) を制御します（デフォルト: 1週間） -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- Controls how often cleanup should be performed (in seconds) -->
+    <!-- クリーンアップの実行間隔を制御します（秒単位） -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- Controls how many tasks could be in the queue -->
+    <!-- キューに保持できるタスク数を制御します -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
@@ -1197,7 +1197,7 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 **例**
 
 ```xml
-<!-- Directory containing schema files for various input formats. -->
+<!-- 各種入力フォーマットのスキーマファイルを格納するディレクトリ。 -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
 
@@ -1984,7 +1984,7 @@ JSON ログのサポートを有効にするには、次のスニペットを使
 <logger>
     <formatting>
         <type>json</type>
-        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
+        <!-- チャネルごと(log、errorlog、console、syslog)に設定することも、全チャネルに対してグローバルに設定すること(その場合は省略)も可能です。 -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -2882,9 +2882,9 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
+        <!-- 自己署名証明書を使用する場合: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
+            <!-- 自己署名証明書を使用する場合: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
@@ -2915,6 +2915,10 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
+
+## os_collect_psi_metrics {#os_collect_psi_metrics} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />/proc/pressure/ ファイルから PSI メトリクスを収集する機能を有効にします。
 
 ## os_cpu_busy_time_threshold {#os_cpu_busy_time_threshold} 
 
@@ -3382,7 +3386,7 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 ```xml
 <query_masking_rules>
     <rule>
-        <name>hide SSN</name>
+        <name>SSNを隠す</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -3552,7 +3556,7 @@ DDL クエリは同じグループ内のレプリカのみを待機します。
 **例**
 
 ```xml
-<replica_group_name>backups</replica_group_name>
+<replica_group_name>バックアップ</replica_group_name>
 ```
 
 ## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
@@ -3696,10 +3700,10 @@ Host Key Configurations はデフォルトでは無効になっています。
 ```xml
 <storage_configuration>
     <disks>
-        <!-- configuration -->
+        <!-- 設定 -->
     </disks>
     <policies>
-        <!-- configuration -->
+        <!-- 設定 -->
     </policies>
 </storage_configuration>
 ```
@@ -4520,9 +4524,9 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- Optional. Chroot suffix. Should exist. -->
+    <!-- オプション。Chroot サフィックス。存在している必要があります。 -->
     <root>/path/to/zookeeper/node</root>
-    <!-- Optional. Zookeeper digest ACL string. -->
+    <!-- オプション。Zookeeper ダイジェスト ACL 文字列。 -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>

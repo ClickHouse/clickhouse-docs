@@ -55,7 +55,7 @@ ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（之前为 `docker.h
 例如：
 
 ```shell
-# modify command to mount paths
+# 修改命令以挂载路径
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -95,7 +95,7 @@ HyperDX 会自动连接到本地集群，并为日志、追踪、指标和会话
 
 ## 使用 ClickHouse Cloud 部署 {#deploy-with-clickhouse-cloud}
 
-用户可以将 ClickStack 部署在 ClickHouse Cloud 之上，在享受完全托管且安全的后端的同时，依然对数据摄取、schema 以及可观测性工作流保持完全控制。
+你可以将 ClickStack 部署在 ClickHouse Cloud 之上，在享受完全托管且安全的后端的同时，依然对数据摄取、schema 以及可观测性工作流保持完全控制。
 
 <VerticalStepper headerLevel="h3">
 
