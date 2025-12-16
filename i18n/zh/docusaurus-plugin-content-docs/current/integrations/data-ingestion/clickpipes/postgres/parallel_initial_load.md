@@ -19,6 +19,7 @@ import Image from '@theme/IdealImage';
 然而，Postgres ClickPipe 可以将这一过程并行化，从而显著加快初始加载。
 
 ### Postgres 中的 CTID 列 {#ctid-pg-snapshot}
+
 在 Postgres 中，表中的每一行都有一个名为 CTID 的唯一标识符。它是一个系统列，默认对用户不可见，但可以用来在表中唯一标识行。CTID 由块号和块内偏移量组成，这种结构使得访问行非常高效。
 
 ### 逻辑分区 {#logical-partitioning-pg-snapshot}
@@ -46,6 +47,6 @@ Postgres ClickPipe 使用 CTID 列对源表进行逻辑分区。它首先对源�
 
 ### 限制 {#limitations-parallel-pg-snapshot}
 
-- 在创建 ClickPipe 之后，快照参数无法编辑。如果你想更改这些参数，必须创建一个新的 ClickPipe。
+- 在创建 ClickPipe 之后，快照参数无法修改。如果你想更改这些参数，必须创建一个新的 ClickPipe。
 - 当向已有的 ClickPipe 中添加表时，你不能更改快照参数。ClickPipe 会对新表沿用已有参数。
 - 分区键列不应包含 `NULL`，因为分区逻辑会跳过这些值。

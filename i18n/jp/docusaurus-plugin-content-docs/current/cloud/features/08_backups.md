@@ -36,8 +36,6 @@ Basic、Scale、Enterprise の各ティアでは、バックアップはスト�
 
 詳細については「[バックアップの確認とリストア](/cloud/manage/backups/overview)」を参照してください。
 
-
-
 ## 設定可能なバックアップ {#configurable-backups}
 
 <ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
@@ -55,8 +53,6 @@ ClickHouse Cloud では、**Scale** および **Enterprise** ティアのサー�
 :::
 
 バックアップの設定手順については、["バックアップスケジュールの構成"](/cloud/manage/backups/configurable-backups) を参照してください。
-
-
 
 ## Bring Your Own Bucket (BYOB) バックアップ {#byob}
 

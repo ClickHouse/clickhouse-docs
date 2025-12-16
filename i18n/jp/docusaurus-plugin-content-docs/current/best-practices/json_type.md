@@ -125,7 +125,7 @@ INSERT INTO pypi FORMAT JSONEachRow
 }
 ```
 
-ここで示している JSON はネスト構造を含んでいるため複雑ですが、構造は一定で、フィールドの数や型が変化することはありません。この例では `JSON` 型を使うこともできますが、[Tuples](/sql-reference/data-types/tuple) 型や [Nested](/sql-reference/data-types/nested-data-structures/nested) 型を使って構造を明示的に定義することも可能です。
+ここで示している JSON はネストされた構造を含むため複雑ですが、構造は一定で、フィールド数や型が変化することはありません。この例では `JSON` 型を使うこともできますが、[Tuples](/sql-reference/data-types/tuple) 型や [Nested](/sql-reference/data-types/nested-data-structures/nested) 型を使って構造を明示的に定義することも可能です。
 
 ```sql
 CREATE TABLE arxiv
@@ -149,7 +149,8 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-ここでも、データを JSON 形式で挿入できます：
+ここでもデータを JSON 形式で挿入できます：
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
@@ -210,7 +211,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-この場合、arXiv ドキュメントは、すべてを JSON としてモデリングすることも、単に JSON 型の `tags` 列を追加することもできます。以下に両方の例を示します。
+この場合、arXiv ドキュメントは、すべてを JSON としてモデリングすることも、単に JSON の `tags` カラムを追加することもできます。以下に両方の例を示します。
 
 ```sql
 CREATE TABLE arxiv
@@ -227,9 +228,10 @@ ORDER BY doc.update_date
 
 このテーブルにデータを挿入し、そこから自動推論されたスキーマを [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 関数と [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 出力フォーマットを使って確認できます。
 
+
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"ギガバイト毎秒での数値パース","comments":"ソフトウェアは https://github.com/fastfloat/fast_float および\n  https://github.com/lemire/simple_fastfloat_benchmark/ で入手可能","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"ディスクとネットワークが毎秒ギガバイトを提供する環境において....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouseユーザー","score":"A+","comment":"良い読み物、ClickHouseに適用可能"},"28_03_2025":{"name":"professor X","score":10,"comment":"あまり学ぶことがなかった","updates":[{"name":"professor X","comment":"ウルヴァリンの方がより興味深かった"}]}}}
 ```
 
 ```sql
@@ -292,7 +294,7 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"ギガバイト毎秒の数値パース","comments":"ソフトウェアは https://github.com/fastfloat/fast_float および\n  https://github.com/lemire/simple_fastfloat_benchmark/ で入手可能","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"ディスクとネットワークがギガバイト毎秒を提供する環境において....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouseユーザー","score":"A+","comment":"良い読み物、ClickHouseに適用可能"},"28_03_2025":{"name":"professor X","score":10,"comment":"あまり学ぶことがなかった","updates":[{"name":"professor X","comment":"ウルヴァリンの方がより興味深かった"}]}}}
 ```
 
 これでサブカラム `tags` の型を推論できるようになりました。

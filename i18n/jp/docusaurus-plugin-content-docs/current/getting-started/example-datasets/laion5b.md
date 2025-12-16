@@ -32,168 +32,167 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
 ## 手順 {#steps}
 
 <VerticalStepper headerLevel="h3">
+  ### テーブルの作成
 
-### テーブルの作成
+  埋め込みベクトルと関連属性を格納する`laion_5b_100m`テーブルを作成します:
 
-埋め込みベクトルと関連属性を格納する`laion_5b_100m`テーブルを作成します:
+  ```sql
+  CREATE TABLE laion_5b_100m
+  (
+      id UInt32,
+      image_path String,
+      caption String,
+      NSFW Nullable(String) default 'unknown',
+      similarity Float32,
+      LICENSE Nullable(String),
+      url String,
+      key String,
+      status LowCardinality(String),
+      width Int32,
+      height Int32,
+      original_width Int32,
+      original_height Int32,
+      exif Nullable(String),
+      md5 String,
+      vector Array(Float32) CODEC(NONE)
+  ) ENGINE = MergeTree ORDER BY (id)
+  ```
 
-```sql
-CREATE TABLE laion_5b_100m
-(
-  id UInt32,
-  image_path String,
-  caption String,
-  NSFW Nullable(String) default 'unknown',
-  similarity Float32,
-  LICENSE Nullable(String),
-  url String,
-  key String,
-  status LowCardinality(String),
-  width Int32,
-  height Int32,
-  original_width Int32,
-  original_height Int32,
-  exif Nullable(String),
-  md5 String,
-  vector Array(Float32) CODEC(NONE)
-) ENGINE = MergeTree ORDER BY (id)
-```
+  `id` は単なる増分整数です。追加の属性は述語内で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を理解するために活用できます
 
-`id` は単なる増分整数です。追加の属性は述語内で使用でき、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)で説明されているポストフィルタリング/プレフィルタリングと組み合わせたベクトル類似検索を理解するために活用できます
+  ### データのロード
 
-### データのロード
+  すべての`Parquet`ファイルからデータセットをロードするには、次のSQLステートメントを実行します:
 
-すべての`Parquet`ファイルからデータセットをロードするには、次のSQLステートメントを実行します:
+  ```sql
+  INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
+  ```
 
-```sql
-INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_*.parquet');
-```
+  テーブルへの1億行のロードには数分かかります。
 
-テーブルへの1億行のロードには数分かかります。
+  または、個別のSQL文を実行して、特定の数のファイルや行をロードすることもできます。
 
-または、個別のSQLステートメントを実行して、特定の数のファイルや行をロードすることもできます。
+  ```sql
+  INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
+  INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_2_of_10.parquet');
+  ⋮
+  ```
 
-```sql
-INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
-INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_2_of_10.parquet');
-⋮
-```
+  ### ブルートフォースベクトル類似検索を実行する
 
-### ブルートフォースベクトル類似検索を実行する
+  KNN（k最近傍探索）またはブルートフォース探索では、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得します。データセット自体のベクトルの1つを検索ベクトルとして使用できます。例：
 
-KNN（k最近傍探索）またはブルートフォース探索では、データセット内の各ベクトルと検索埋め込みベクトルとの距離を計算し、距離を順序付けして最近傍を取得します。データセット自体のベクトルの1つを検索ベクトルとして使用できます。例：
+  ```sql title="Query"
+  SELECT id, url 
+  FROM laion_5b_100m
+  ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
+  LIMIT 20
 
-```sql title="Query"
-SELECT id, url 
-FROM laion_5b_100m
-ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
-LIMIT 20
+  The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
+  ```
 
-The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
-```
+  ```response title="Response"
+      ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+   1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
+   2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
+   3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
+   4. │ 51559839 │ https://img1.mashed.com/img/gallery/how-rich-is-the-mcalisters-deli-ceo-and-whats-the-average-pay-of-its-employees/intro-1619793841.jpg                                                                                           │
+   5. │ 22104014 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/04/Largest-McAlisters-Deli-Franchisee-to-Expand-into-Nebraska.jpg                                                                                                      │
+   6. │ 54337236 │ http://www.restaurantnews.com/wp-content/uploads/2015/11/McAlisters-Deli-Giving-Away-Gift-Cards-With-Win-One-Gift-One-Holiday-Promotion.jpg                                                                                       │
+   7. │ 20770867 │ http://www.restaurantnews.com/wp-content/uploads/2016/04/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Florida-as-Chain-Enters-New-Markets.jpg                                                                               │
+   8. │ 22493966 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/06/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Columbus-Ohio-as-Chain-Expands-feature.jpg                                                                       │
+   9. │  2224351 │ https://holttribe.com/wp-content/uploads/2019/10/60880046-879A-49E4-8E13-1EE75FB24980-900x675.jpeg                                                                                                                                │
+  10. │ 30779663 │ https://www.gannett-cdn.com/presto/2018/10/29/PMUR/685f3e50-cce5-46fb-9a66-acb93f6ea5e5-IMG_6587.jpg?crop=2166,2166,x663,y0&amp;width=80&amp;height=80&amp;fit=bounds                                                             │
+  11. │ 54939148 │ https://www.priceedwards.com/sites/default/files/styles/staff_property_listing_block/public/for-lease/images/IMG_9674%20%28Custom%29_1.jpg?itok=sa8hrVBT                                                                          │
+  12. │ 95371605 │ http://www.restaurantmagazine.com/wp-content/uploads/2015/08/McAlisters-Deli-Signs-Development-Agreement-with-Kingdom-Foods-to-Grow-in-Southern-Mississippi.jpg                                                                   │
+  13. │ 79564563 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/05/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Denver-as-Chain-Expands.jpg                                                                                      │
+  14. │ 76429939 │ http://www.restaurantnews.com/wp-content/uploads/2016/08/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Pennsylvania-as-Chain-Expands.jpg                                                                                     │
+  15. │ 96680635 │ https://img.claz.org/tc/400x320/9w3hll-UQNHGB9WFlhSGAVCWhheBQkeWh5SBAkUWh9SBgsJFxRcBUMNSR4cAQENXhJARwgNTRYcBAtDWh5WRQEJXR5SR1xcFkYKR1tYFkYGR1pVFiVyP0ImaTA                                                                        │
+  16. │ 48716846 │ http://tse2.mm.bing.net/th?id=OIP.nN2qJqGUJs_fVNdTiFyGnQHaEc                                                                                                                                                                      │
+  17. │  4472333 │ https://sgi.offerscdn.net/i/zdcs-merchants/05lG0FpXPIvsfiHnT3N8FQE.h200.w220.flpad.v22.bffffff.png                                                                                                                                │
+  18. │ 82667887 │ https://irs2.4sqi.net/img/general/200x200/11154479_OEGbrkgWB5fEGrrTkktYvCj1gcdyhZn7TSQSAqN2Yqw.jpg                                                                                                                                │
+  19. │ 57525607 │ https://knoji.com/images/logo/mcalistersdelicom.jpg                                                                                                                                                                               │
+  20. │ 15785896 │ https://www.groupnimb.com/mimg/merimg/mcalister-s-deli_1446088739.jpg                                                                                                                                                             │
+      └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-```response title="Response"
-  ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
-2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
-3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
-4. │ 51559839 │ https://img1.mashed.com/img/gallery/how-rich-is-the-mcalisters-deli-ceo-and-whats-the-average-pay-of-its-employees/intro-1619793841.jpg                                                                                           │
-5. │ 22104014 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/04/Largest-McAlisters-Deli-Franchisee-to-Expand-into-Nebraska.jpg                                                                                                      │
-6. │ 54337236 │ http://www.restaurantnews.com/wp-content/uploads/2015/11/McAlisters-Deli-Giving-Away-Gift-Cards-With-Win-One-Gift-One-Holiday-Promotion.jpg                                                                                       │
-7. │ 20770867 │ http://www.restaurantnews.com/wp-content/uploads/2016/04/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Florida-as-Chain-Enters-New-Markets.jpg                                                                               │
-8. │ 22493966 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/06/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Columbus-Ohio-as-Chain-Expands-feature.jpg                                                                       │
-9. │  2224351 │ https://holttribe.com/wp-content/uploads/2019/10/60880046-879A-49E4-8E13-1EE75FB24980-900x675.jpeg                                                                                                                                │
-10. │ 30779663 │ https://www.gannett-cdn.com/presto/2018/10/29/PMUR/685f3e50-cce5-46fb-9a66-acb93f6ea5e5-IMG_6587.jpg?crop=2166,2166,x663,y0&amp;width=80&amp;height=80&amp;fit=bounds                                                             │
-11. │ 54939148 │ https://www.priceedwards.com/sites/default/files/styles/staff_property_listing_block/public/for-lease/images/IMG_9674%20%28Custom%29_1.jpg?itok=sa8hrVBT                                                                          │
-12. │ 95371605 │ http://www.restaurantmagazine.com/wp-content/uploads/2015/08/McAlisters-Deli-Signs-Development-Agreement-with-Kingdom-Foods-to-Grow-in-Southern-Mississippi.jpg                                                                   │
-13. │ 79564563 │ https://www.restaurantmagazine.com/wp-content/uploads/2016/05/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Denver-as-Chain-Expands.jpg                                                                                      │
-14. │ 76429939 │ http://www.restaurantnews.com/wp-content/uploads/2016/08/McAlisters-Deli-Aims-to-Attract-New-Franchisees-in-Pennsylvania-as-Chain-Expands.jpg                                                                                     │
-15. │ 96680635 │ https://img.claz.org/tc/400x320/9w3hll-UQNHGB9WFlhSGAVCWhheBQkeWh5SBAkUWh9SBgsJFxRcBUMNSR4cAQENXhJARwgNTRYcBAtDWh5WRQEJXR5SR1xcFkYKR1tYFkYGR1pVFiVyP0ImaTA                                                                        │
-16. │ 48716846 │ http://tse2.mm.bing.net/th?id=OIP.nN2qJqGUJs_fVNdTiFyGnQHaEc                                                                                                                                                                      │
-17. │  4472333 │ https://sgi.offerscdn.net/i/zdcs-merchants/05lG0FpXPIvsfiHnT3N8FQE.h200.w220.flpad.v22.bffffff.png                                                                                                                                │
-18. │ 82667887 │ https://irs2.4sqi.net/img/general/200x200/11154479_OEGbrkgWB5fEGrrTkktYvCj1gcdyhZn7TSQSAqN2Yqw.jpg                                                                                                                                │
-19. │ 57525607 │ https://knoji.com/images/logo/mcalistersdelicom.jpg                                                                                                                                                                               │
-20. │ 15785896 │ https://www.groupnimb.com/mimg/merimg/mcalister-s-deli_1446088739.jpg                                                                                                                                                             │
-  └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  #highlight-next-line
+  20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
+  ```
 
-#highlight-next-line
-20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
-```
+  Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
+  1億行のデータの場合、ベクトルインデックスを使用しない上記のクエリは、完了までに数秒から数分かかる可能性があります。
 
-クエリのレイテンシを記録し、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにしてください。
-1億行のデータの場合、ベクトルインデックスを使用しない上記のクエリは、完了までに数秒から数分かかる可能性があります。
+  ### ベクトル類似性インデックスを構築する
 
-### ベクトル類似性インデックスを構築する
+  以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`カラムにベクトル類似度インデックスを定義および構築します:
 
-以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`列にベクトル類似度インデックスを定義および構築します：
+  ```sql
+  ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
 
-```sql
-ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
+  ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
+  ```
 
-ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
-```
+  インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
-インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-これらのパラメータの最適な値を選択する際は、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、慎重に決定する必要があります。
+  完全な1億件のデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、数時間を要する場合があります。
 
-完全な1億件のデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅によって、数時間を要する場合があります。
+  ### ANN検索を実行する
 
-### ANN検索を実行する
+  ベクトル類似性インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
 
-ベクトル類似性インデックスが構築されると、ベクトル検索クエリは自動的にインデックスを使用します:
+  ```sql title="Query"
+  SELECT id, url 
+  FROM laion_5b_100m
+  ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
+  LIMIT 20
 
-```sql title="Query"
-SELECT id, url 
-FROM laion_5b_100m
-ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
-LIMIT 20
+  ```
 
-```
+  ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
 
-ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
+  ### 検索クエリの埋め込みを生成する
 
-### 検索クエリの埋め込みを生成する
+  `LAION 5b`データセットの埋め込みベクトルは、`OpenAI CLIP`モデル`ViT-L/14`を使用して生成されています。
 
-`LAION 5b`データセットの埋め込みベクトルは、`OpenAI CLIP`モデル`ViT-L/14`を使用して生成されています。
+  以下は、`CLIP` APIを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例です。検索用埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数に引数として渡されます。
 
-以下は、`CLIP` APIを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例です。検索用埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数に引数として渡されます。
+  `clip`パッケージをインストールするには、[OpenAI GitHubリポジトリ](https://github.com/openai/clip)を参照してください。
 
-`clip`パッケージをインストールするには、[OpenAI GitHubリポジトリ](https://github.com/openai/clip)を参照してください。
+  ```python
+  import torch
+  import clip
+  import numpy as np
+  import sys
+  import clickhouse_connect
 
-```python
-import torch
-import clip
-import numpy as np
-import sys
-import clickhouse_connect
+  device = "cuda" if torch.cuda.is_available() else "cpu"
+  model, preprocess = clip.load("ViT-L/14", device=device)
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-L/14", device=device)
+  # Search for images that contain both a dog and a cat
+  text = clip.tokenize(["a dog and a cat"]).to(device)
 
-# Search for images that contain both a dog and a cat
-text = clip.tokenize(["a dog and a cat"]).to(device)
+  with torch.no_grad():
+      text_features = model.encode_text(text)
+      np_arr = text_features.detach().cpu().numpy()
 
-with torch.no_grad():
-  text_features = model.encode_text(text)
-  np_arr = text_features.detach().cpu().numpy()
+      # Pass ClickHouse credentials here
+      chclient = clickhouse_connect.get_client()
 
-  # Pass ClickHouse credentials here
-  chclient = clickhouse_connect.get_client()
+      params = {'v1': list(np_arr[0])}
+      result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
+                              parameters=params)
 
-  params = {'v1': list(np_arr[0])}
-  result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
-                          parameters=params)
+      # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
+      print("<html>")
+      for r in result.result_rows:
+          print("<img src = ", r[1], 'width="200" height="200">')
+      print("</html>")
+  ```
 
-  # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
-  print("<html>")
-  for r in result.result_rows:
-      print("<img src = ", r[1], 'width="200" height="200">')
-  print("</html>")
-```
+  上記の検索結果を以下に示します:
 
-上記の検索結果を以下に示します：
-
-<Image img={search_results_image} alt="ベクトル類似検索結果" size="md" />
-
+  <Image img={search_results_image} alt="ベクトル類似検索の結果" size="md" />
 </VerticalStepper>

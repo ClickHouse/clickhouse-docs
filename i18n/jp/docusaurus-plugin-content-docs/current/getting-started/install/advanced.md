@@ -28,12 +28,13 @@ Server: <build_directory>/programs/clickhouse-server
 
 Gentoo では、`emerge clickhouse` を実行するだけで、ソースから ClickHouse をインストールできます。
 
+
 ## CI で生成されたバイナリをインストールする {#install-a-ci-generated-binary}
 
 ClickHouse の継続的インテグレーション (CI) 基盤は、[ClickHouse
 リポジトリ](https://github.com/clickhouse/clickhouse/) の各コミットごとに、例えば [sanitized](https://github.com/google/sanitizers) ビルド、最適化なしの (Debug)
 ビルド、クロスコンパイル済みビルドなどの特殊なビルドを生成します。これらのビルドは通常は開発中にのみ有用ですが、状況によっては
-ユーザーにとっても有用となる場合があります。
+あなたにとっても有用となる場合があります。
 
 :::note
 ClickHouse の CI は時間の経過とともに変化していくため、CI で生成されたビルドをダウンロードするための具体的な手順は変わる可能性があります。

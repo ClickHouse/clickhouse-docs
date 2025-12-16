@@ -15,11 +15,12 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 import AsyncInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_async_inserts.md';
 import BulkInserts from '@site/i18n/zh/docusaurus-plugin-content-docs/current/best-practices/_snippets/_bulk_inserts.md';
 
-高效的数据摄取是高性能 ClickHouse 部署的基础。选择合适的插入策略可以显著影响吞吐量、成本和可靠性。本节概述了最佳实践、权衡取舍和配置选项,帮助您为工作负载做出正确的决策。
+高效的数据摄取是高性能 ClickHouse 部署的基础。选择合适的插入策略可以显著影响吞吐量、成本和可靠性。本节概述了最佳实践、权衡取舍和配置选项，帮助您为工作负载做出正确的决策。
 
 :::note
-以下内容假设您通过客户端将数据推送到 ClickHouse。如果您是将数据拉取到 ClickHouse,例如使用内置表函数如 [s3](/sql-reference/table-functions/s3) 和 [gcs](/sql-reference/table-functions/gcs),我们推荐参考指南 [&quot;优化 S3 插入和读取性能&quot;](/integrations/s3/performance)。
+以下内容假设您通过客户端将数据推送到 ClickHouse。如果您是将数据拉取到 ClickHouse，例如使用内置表函数如 [s3](/sql-reference/table-functions/s3) 和 [gcs](/sql-reference/table-functions/gcs)，我们推荐参考指南 [《优化 S3 插入和读取性能》](/integrations/s3/performance)。
 :::
+
 
 ## 默认情况下为同步写入 {#synchronous-inserts-by-default}
 
@@ -71,7 +72,7 @@ ClickHouse 将写入的数据存储在磁盘上，并按照表的主键列[排�
 * 直接写入 **MergeTree** 或 **ReplicatedMergeTree** 表。当客户端可以在分片之间执行负载均衡时，这是最高效的选项。设置 `internal_replication = true` 时，ClickHouse 会透明地处理复制。
 * 写入一个 [Distributed 表](/engines/table-engines/special/distributed)。这样客户端可以将数据发送到任意节点，由 ClickHouse 将其转发到正确的分片。这更简单，但由于多了一次转发步骤，性能会略低。仍然建议将 `internal_replication` 设为 `true`。
 
-**在 ClickHouse Cloud 中，所有节点都会对同一个分片进行读写。插入负载会在各节点间自动均衡分布。用户只需将插入请求发送到对外暴露的端点即可。**
+**在 ClickHouse Cloud 中，所有节点都对同一个单分片进行读写。写入会在节点之间自动负载均衡。只需将写入发送到对外暴露的 endpoint 即可。**
 
 ### 选择合适的格式 {#choose-the-right-format}
 
@@ -124,7 +125,7 @@ ClickHouse 在数据传输过程中支持多种压缩编解码器。两种常见
 
 **不过，预排序是一种可选优化——不是必需条件。** ClickHouse 通过并行处理对数据进行高效排序，在许多情况下，服务端排序比在客户端进行预排序更快或更方便。 
 
-**我们仅在数据本身已经接近有序，或客户端侧资源（CPU、内存）充足且有富余时，才建议进行预排序。** 在对延迟敏感或高吞吐量的场景（例如可观测性）中，数据往往是乱序到达或来自大量 Agent，此时通常更好的做法是跳过预排序，直接依赖 ClickHouse 的内置性能。
+**我们仅在数据已经接近有序，或客户端资源（CPU、内存）充足且未被充分利用时才建议进行预排序。** 在对延迟敏感或高吞吐的用例中（例如可观测性场景），数据通常是乱序到达或来自大量代理 / agent，此时往往更好的做法是跳过预排序，而依赖 ClickHouse 内建的高性能能力。
 
 ## 异步插入 {#asynchronous-inserts}
 

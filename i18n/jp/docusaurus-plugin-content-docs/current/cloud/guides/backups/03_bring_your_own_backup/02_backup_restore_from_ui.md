@@ -21,10 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
 # ユーザーインターフェイスからのバックアップ／リストア {#ui-experience}
-
-
 
 ## AWS {#AWS}
 
@@ -164,7 +161,6 @@ AWSからバックアップを復元するには、以下の手順を実行し�
 
 ##### 復元先の新しいサービスの作成 {#create-new-service-to-restore-to}
 
-
 バックアップを復元する新しいサービスを作成します。
 
 ##### サービスARNの追加 {#add-service-arn}
@@ -198,7 +194,6 @@ ASYNCコマンドは即座に成功ステータスを返すことに注意して
 新しく作成したサービスのSQLコンソールから復元コマンドを実行して、バックアップを復元します。
 
 </VerticalStepper>
-
 
 ## GCP {#gcp}
 
@@ -300,7 +295,6 @@ UI内のバックアップリストの上にある`access or restore a backup`�
 バックアップを別の場所に移動する場合、新しい場所を参照するように復元コマンドをカスタマイズする必要があります。
 :::
 
-
 :::tip ASYNCコマンド
 大規模なリストアを行う場合、Restoreコマンドの末尾にオプションで`ASYNC`コマンドを追加できます。
 これにより、リストアが非同期で実行されるため、接続が切断されてもリストア処理は継続されます。
@@ -315,7 +309,6 @@ ASYNCコマンドは即座に成功ステータスを返すことに注意が必
 バックアップをリストアします。
 
 </VerticalStepper>
-
 
 ## Azure {#azure}
 

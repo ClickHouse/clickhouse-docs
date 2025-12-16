@@ -47,5 +47,5 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 ```
 
 :::tip
-エンドポイントタグ内の「//」に注意してください。バケットのルートを示すために必要です。
+`&lt;endpoint&gt;` タグ内の「//」に注意してください。バケットのルートを指すために必要です。
 :::

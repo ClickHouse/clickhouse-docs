@@ -329,9 +329,9 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 ### 非同期挿入を使用する {#use-asynchronous-inserts}
 
-通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ユーザーが Gateway として動作する ClickStack コレクターにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
+通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ClickStack コレクターを Gateway として動作させてそこにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
 
-大きなバッチを保証できない場合、ユーザーは [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期挿入では、データはまずバッファに挿入され、その後データベースストレージに後から、すなわち非同期に書き込まれます。
+大きなバッチを保証できない場合、[Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期挿入では、データはまずバッファに挿入され、その後データベースストレージに後から、すなわち非同期に書き込まれます。
 
 <Image img={observability_6} alt="非同期挿入" size="md"/>
 
@@ -339,10 +339,10 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 コレクターで非同期挿入を有効にするには、接続文字列に `async_insert=1` を追加します。到達保証を得るために、`wait_for_async_insert=1`（デフォルト）の使用を推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-非同期挿入によるデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` にゼロ以外の値が設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms milliseconds` 経過後にデータが挿入されます。ユーザーはこれらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュの調整に使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
+非同期挿入によるデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` にゼロ以外の値が設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms milliseconds` 経過後にデータが挿入されます。これらの設定を調整することで、パイプラインのエンドツーエンドのレイテンシーを制御できます。バッファフラッシュの調整に使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
 
 :::note 適応型非同期挿入の検討
-エージェント数が少なく、スループットも低い一方でエンドツーエンドレイテンシーに厳しい要件がある場合、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse で見られるような高スループットの Observability ユースケースにはあまり適していません。
+エージェント数が少なく、スループットも低い一方でエンドツーエンドのレイテンシーに厳しい要件がある場合、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse で見られるような高スループットのオブザーバビリティユースケースにはあまり適していません。
 :::
 
 最後に、ClickHouse への同期挿入に関連付けられていた従来の重複排除動作は、非同期挿入を使用する場合はデフォルトでは有効になりません。必要に応じて、設定 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate) を参照してください。

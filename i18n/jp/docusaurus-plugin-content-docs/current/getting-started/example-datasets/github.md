@@ -207,7 +207,7 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 INSERT INTO git.line_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz', 'TSV', '    sign Int8, line_number_old UInt32, line_number_new UInt32, hunk_num UInt32, hunk_start_line_number_old UInt32, hunk_start_line_number_new UInt32, hunk_lines_added UInt32,\n    hunk_lines_deleted UInt32, hunk_context LowCardinality(String), line LowCardinality(String), indent UInt8, line_type Enum(\'Empty\' = 0, \'Comment\' = 1, \'Punct\' = 2, \'Code\' = 3), prev_commit_hash String, prev_author LowCardinality(String), prev_time DateTime, file_change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6),\n    path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), file_lines_added UInt32, file_lines_deleted UInt32, file_hunks_added UInt32, file_hunks_removed UInt32, file_hunks_changed UInt32, commit_hash String,\n    author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
+0行が返されました。経過時間: 50.535秒。処理された行数: 754万行、2.09 GB (14万9110行/秒、41.40 MB/秒)
 ```
 
 ## クエリ {#queries}
@@ -239,19 +239,19 @@ ORDER BY time DESC
 LIMIT 10
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path────────────────────────────────────────┬─old_path─┬─lines_added─┬─lines_deleted─┬─commit_message───────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ fix accessing part in Deleting state             │
-│ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ better semantic of constsness of DataPartStorage │
-│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ remove DataPartStorageBuilder                    │
-│ 2022-10-21 13:35:37 │ 851f556d65a │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Remove unused parameter                          │
-│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ Replicated merge tree polishing                  │
-│ 2022-10-21 12:25:19 │ 4e76629aafc │ Modify      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Fixes for -Wshorten-64-to-32                     │
-│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ Polishing                                        │
-│ 2022-10-19 13:34:20 │ e5408aac991 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ Simplify logic                                   │
-│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ Update StorageReplicatedMergeTree.cpp            │
-│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ Update StorageReplicatedMergeTree.cpp            │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ Deleting状態のパートへのアクセスを修正             │
+│ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ DataPartStorageの定数性のセマンティクスを改善 │
+│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ DataPartStorageBuilderを削除                    │
+│ 2022-10-21 13:35:37 │ 851f556d65a │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ 未使用のパラメータを削除                          │
+│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ ReplicatedMergeTreeの改良                  │
+│ 2022-10-21 12:25:19 │ 4e76629aafc │ Modify      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ -Wshorten-64-to-32の修正                     │
+│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ 改良                                        │
+│ 2022-10-19 13:34:20 │ e5408aac991 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ ロジックを簡素化                                   │
+│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ StorageReplicatedMergeTree.cppを更新            │
+│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ StorageReplicatedMergeTree.cppを更新            │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴─────────────────────────────────────────────┴──────────┴─────────────┴───────────────┴──────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
+10行のセット。経過時間: 0.006秒。処理済み: 12.10千行、1.60 MB (193万行/秒、255.40 MB/秒)
 ```
 
 ファイル名の変更を除外して、行ごとの変更も確認できます。具体的には、ファイルが別の名前で存在していた時点でのリネーム前の変更は表示されません。
@@ -333,7 +333,7 @@ LIMIT 10
 │ src/Dictionaries/Embedded/GeodataProviders/Types.h              │
 └─────────────────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
+10行のセット。経過時間: 0.085秒。処理済み: 532.10千行、8.68 MB (6.30百万行/秒、102.64 MB/秒)
 ```
 
 このアプローチでは、ファイル名を変更したあとに、再度元の名前に戻すことも可能である点に注意してください。まず、リネームによって削除されたファイルの一覧に対して `old_path` を集約します。次に、これを各 `path` に対する最後の操作とユニオンします。最後に、この一覧から最終イベントが `Delete` ではないものだけを残すようにフィルタリングします。
@@ -472,7 +472,7 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │          8197 │
 └────────────────────────────────────────────────────────┴───────────────┘
 
-10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
+10行が結果セットに含まれています。経過時間: 0.134秒。処理された行数: 798.15千行、16.46 MB (5.95百万行/秒、122.62 MB/秒)
 ```
 
 ### コミットは通常、週のどの曜日に行われることが多いですか？ {#what-day-of-the-week-do-commits-usually-occur}
@@ -531,7 +531,7 @@ LIMIT 10
 │ 2020-05-24 │        2851 │          1812 │          74 │      18 │
 │ 2020-05-31 │        2771 │          2077 │          77 │      16 │
 └────────────┴─────────────┴───────────────┴─────────────┴─────────┘
-10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
+10行のセット。経過時間: 0.043秒。処理済み: 266.05千行、15.85 MB (6.12百万行/秒、364.61 MB/秒)
 ```
 
 このデータは可視化に適しています。ここでは Superset を使用します。
@@ -596,7 +596,7 @@ LIMIT 10
 │ src/Interpreters/InterpreterSelectQuery.cpp │          59 │
 └─────────────────────────────────────────────┴─────────────┘
 
-10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
+10行のセット。経過時間: 0.239秒。処理済み: 798.15千行、14.13 MB (3.35百万行/秒、59.22 MB/秒)
 ```
 
 ### リポジトリ内で最も古いコード行 {#oldest-lines-of-code-in-the-repository}
@@ -641,19 +641,19 @@ ORDER BY latest_change ASC
 LIMIT 10
 
 ┌─file_path───────────────────────────────────┬─line────────────────────────────────────────────────────────┬───────latest_change─┬─any(file_change_type)─┐
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Modify                │
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ Add                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ 変更                │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ 変更                │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ 追加                   │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ 追加                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ 追加                   │
 └─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┴─────────────────────┴───────────────────────┘
 
-10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
+10行のセット。経過時間: 1.101秒。処理: 807万行、905.86 MB (733万行/秒、823.13 MB/秒)
 ```
 
 ### 履歴が最も長いファイル {#files-with-longest-history}
@@ -709,7 +709,7 @@ LIMIT 10
 │ 350 │ src/CMakeLists.txt                          │ 2022-10-24 09:22:37 │
 └─────┴─────────────────────────────────────────────┴─────────────────────┘
 
-10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
+10行のセット。経過時間: 0.124秒。処理された行数: 798.15千行、14.71 MB (6.44百万行/秒、118.61 MB/秒)
 ```
 
 コアとなるデータ構造である MergeTree は、言うまでもなく、長年にわたる数多くの改良を経て、今もなお進化し続けています。
@@ -772,7 +772,7 @@ FROM
 │  31 │ █████████████████████████████████▏                              │
 └─────┴─────────────────────────────────────────────────────────────────┘
 
-31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
+31行のセット。経過時間: 0.043秒。処理された行数: 754万行、40.53 MB (1億7671万行/秒、950.40 MB/秒)
 ```
 
 月末にかけてやや多くなるかもしれませんが、全体としては概ね均等に分布しています。とはいえ、データ挿入時に `docs` フィルタで絞り込んでいるため、この結果の信頼性は高くありません。
@@ -806,7 +806,7 @@ LIMIT 10
 │ alexey-milovidov   │      1581 │
 └────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
+10行を返しました。経過時間: 0.041秒。処理行数: 266.05千行、4.92 MB (6.56百万行/秒、121.21 MB/秒)
 ```
 
 最近の作業の中で、最も多様なコミットをしているのは誰かを確認してみましょう。日付で制限する代わりに、特定のコミッターの直近 N 件のコミットに絞り込みます（この例では 3 件を使用していますが、任意に変更できます）:
@@ -851,7 +851,7 @@ LIMIT 10
 │ liyang               │        36 │
 └──────────────────────┴───────────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
+10行のセット。経過時間: 0.106秒。処理された行数: 266.05千行、21.04 MB (2.52百万行/秒、198.93 MB/秒)
 ```
 
 ### 著者のお気に入りファイル {#favorite-files-for-an-author}
@@ -906,7 +906,7 @@ LIMIT 10
 │ programs/install/Install.cpp                │  37 │
 └─────────────────────────────────────────────┴─────┘
 
-10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
+10行のセット。経過時間: 0.106秒。処理済み: 798.15千行、13.97 MB (7.51百万行/秒、131.41 MB/秒)
 ```
 
 これは理にかなっています。というのも、Alexey が変更ログの保守を担当してきたためです。では、彼の人気のあるファイルを特定するのに、ファイルのベース名を使ったらどうでしょうか。こうすることでファイル名が変更されても追跡でき、コードへの貢献に焦点を当てられます。
@@ -935,7 +935,7 @@ LIMIT 10
 │ Settings.h                     │ 225 │
 │ TCPHandler.cpp                 │ 205 │
 └────────────────────────────────┴─────┘
-10 rows in set. Elapsed: 0.032 sec. Processed 266.05 thousand rows, 5.68 MB (8.22 million rows/s., 175.50 MB/s.)
+10行を取得しました。経過時間: 0.032秒。処理済み: 266.05千行、5.68 MB (8.22百万行/秒、175.50 MB/秒)
 ```
 
 こちらの方が、彼の関心のある分野をより適切に反映しているかもしれません。
@@ -996,7 +996,7 @@ LIMIT 10
 │ src/Analyzer/QueryAnalysisPass.cpp                                    │      5686 │           1 │               5686 │
 └───────────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.138 sec. Processed 798.15 thousand rows, 16.57 MB (5.79 million rows/s., 120.11 MB/s.)
+10行のセット。経過時間: 0.138秒。処理: 798.15千行、16.57 MB (5.79百万行/秒、120.11 MB/秒)
 ```
 
 テキスト辞書はあまり現実的ではなさそうなので、ファイル拡張子フィルターでコードのみに限定しましょう！
@@ -1050,7 +1050,7 @@ LIMIT 10
 │ src/Planner/PlannerJoins.cpp          │       695 │           1 │                695 │
 │ src/Analyzer/QueryNode.h              │       607 │           1 │                607 │
 └───────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
-10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
+10行を取得しました。経過時間: 0.140秒。処理済み: 798.15千行、16.84 MB (5.70百万行/秒、120.32 MB/秒)
 ```
 
 これは多少「直近バイアス」があります。新しいファイルほどコミットの機会が少ないためです。少なくとも 1 年以上前から存在するファイルに限定したらどうなるでしょうか？
@@ -1107,7 +1107,7 @@ LIMIT 10
 │ 2020-11-06 15:45:13 │ src/Storages/Rocksdb/StorageEmbeddedRocksdb.cpp                │       611 │           2 │              305.5 │
 └─────────────────────┴────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
+10行を返しました。経過時間: 0.143秒。処理行数: 798.15千行、18.00 MB (558万行/秒、125.87 MB/秒)
 ```
 
 ### 時間帯別、曜日別、作者別、特定サブディレクトリ別のコミット数とコード行数の分布 {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
@@ -1136,7 +1136,7 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 │         7 │     294 │       11938 │          6451 │
 └───────────┴─────────┴─────────────┴───────────────┘
 
-7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
+7行のセット。経過時間: 0.034秒。処理された行数: 266.05千行、14.66 MB (7.73百万行/秒、425.56 MB/秒)
 ```
 
 時間帯別では、
@@ -1278,7 +1278,7 @@ LIMIT 100
 │ Anton Popov          │ Amos Bird        │  2127 │
 └──────────────────────┴──────────────────┴───────┘
 
-20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
+20行のセット。経過時間: 0.098秒。処理済み: 754万行、42.16 MB (7667万行/秒、428.99 MB/秒)
 ```
 
 Sankey チャート（Superset）を使うと、これを見やすく可視化できます。ビジュアルの多様性を高めるため、各著者ごとに上位 3 名のコード削除者を取得できるよう、`LIMIT BY` を 3 に設定しています。
@@ -1319,7 +1319,7 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 2400 │
 └─────────────┴──────────────────┴──────┘
 
-7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
+7行を取得。経過時間: 0.012秒。処理: 62.78千行、395.47 KB (5.44百万行/秒、34.27 MB/秒)
 ```
 
 さて、ここでは最も貢献歴の長いコントリビューター ― 創業者の Alexey ― に有利に働く可能性があります。分析対象を直近1年間に限定しましょう。
@@ -1484,7 +1484,7 @@ LIMIT 5 BY root
 │ utils/self-extr-exec             │              224 │           224 │           224 │    2 │
 └──────────────────────────────────┴──────────────────┴───────────────┴───────────────┴──────┘
 
-24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
+24行のセット。経過時間: 0.129秒。処理行数: 798.15千行、15.11 MB (6.19百万行/秒、117.08 MB/秒)
 ```
 
 ### ある著者のコードのうち、どれだけの割合が他の著者によって削除されたか？ {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
@@ -1534,7 +1534,7 @@ LIMIT 10
 │ kreuzerkrieg       │  3406 │           2468 │  0.724603640634175 │
 └────────────────────┴───────┴────────────────┴────────────────────┘
 
-10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
+10行のセット。経過時間: 0.126秒。処理: 1507万行、73.51 MB (毎秒1億1997万行、毎秒585.16 MB)
 ```
 
 ### 最も多く書き換えられたファイルを一覧表示するには？ {#list-files-that-were-rewritten-most-number-of-times}
@@ -1587,7 +1587,7 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │  8197 │
 └────────────────────────────────────────────────────────┴───────┘
 
-10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
+10行を取得しました。経過時間: 0.160秒。処理済み: 807万行、98.99 MB (5049万行/秒、619.49 MB/秒)
 ```
 
 しかし、これはコミットごとにファイルの大部分が変更される「書き換え」の概念は捉えていません。これを扱うには、より複雑なクエリが必要です。ここでは書き換えを、ファイルの 50% 超が削除され、かつ 50% 超が追加される場合とみなします。何を書き換えと見なすかは任意なので、この定義に応じてクエリを調整してください。
@@ -1675,7 +1675,7 @@ LIMIT 10
 │ src/Functions/polygonsSymDifference.cpp               │            4 │
 └───────────────────────────────────────────────────────┴──────────────┘
 
-10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
+10行のセット。経過時間: 0.299秒。処理: 798.15千行、31.52 MB (2.67百万行/秒、105.29 MB/秒)
 ```
 
 ### どの曜日に追加されたコードが最もリポジトリ内に残りやすいか？ {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
@@ -1827,14 +1827,14 @@ LIMIT 10
 │ src/Interpreters/createBlockSelector.cpp                        │               795 │
 └─────────────────────────────────────────────────────────────────┴───────────────────┘
 
-10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
+10行を取得しました。経過時間: 3.134秒。処理: 1,613万行、1.83 GB (515万行/秒、582.99 MB/秒)
 ```
 
 ### 誰がより多くのテスト / C++ コード / コメントを書く傾向があるのか？ {#who-tends-to-write-more-tests--cpp-code--comments}
 
 この問いにはいくつかのアプローチがあります。コードとテストの比率に着目すると、このクエリは比較的単純で、`tests` を含むフォルダへのコントリビューション数を数え、それを全コントリビューション数で割って比率を算出します。
 
-単発のコントリビューションによるバイアスを避け、継続的なコミッターに焦点を当てるため、変更回数が 20 回を超えるユーザーに限定している点に注意してください。
+ここでは、単発のコントリビューションによるバイアスを避けて継続的なコミッターに焦点を当てるため、変更回数が 20 回を超えるユーザーに対するクエリに限定しています。
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -1879,6 +1879,7 @@ LIMIT 20
 この分布をヒストグラムとしてプロットできます。
 
 [実行](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
+
 
 ```sql
 WITH (
@@ -1956,7 +1957,7 @@ LIMIT 10
 │ kssenii            │ 0.07455322590796751 │  131143 │
 │ Artur              │ 0.12383737231074826 │  121484 │
 └────────────────────┴─────────────────────┴─────────┘
-10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
+10行のセット。経過時間: 0.290秒。処理済み: 754万行、394.57 MB (2600万行/秒、1.36 GB/秒)
 ```
 
 コードへの貢献数でソートしている点に注意してください。上位の主要なコントリビューターはいずれも、驚くほど高い割合を占めており、これがコードの可読性の高さにもつながっています。
@@ -1994,7 +1995,7 @@ LIMIT 10
 │ ANDREI STAROVEROV           │         32 │       12 │ 0.7272727272727273 │ 2021-05-09 │
 └─────────────────────────────┴────────────┴──────────┴────────────────────┴────────────┘
 
-10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
+10行のセット。経過時間: 0.145秒。処理: 754万行、51.09 MB (5183万行/秒、351.44 MB/秒)
 ```
 
 しかし理想的には、各著者が最初にコミットを始めた日から見て、全著者をまとめたときにこれがどのように変化するかを確認したいところです。コメントの数は徐々に減っていくのでしょうか？
@@ -2072,7 +2073,7 @@ LIMIT 20
 │         190 │ 0.20677550885049117 │
 └─────────────┴─────────────────────┘
 
-20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
+20行のセット。経過時間: 0.167秒。処理された行数: 1507万行、101.74 MB (9051万行/秒、610.98 MB/秒)
 ```
 
 励みになることに、コメント率はほぼ一定で、著者が長期間にわたって貢献しても低下していません。
@@ -2198,7 +2199,7 @@ GROUP BY dayOfWeek
 │         7 │            46 │
 └───────────┴───────────────┘
 
-7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
+7行のセット。経過時間: 0.466秒。処理済み: 754万行、701.52 MB (1615万行/秒、1.50 GB/秒)
 ```
 
 ### どの著者のコードが最も「定着」しているか？ {#which-authors-code-is-the-most-sticky}
@@ -2382,7 +2383,7 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
+1行のセット。経過時間: 0.074秒。処理: 344.06千行、6.27 MB (4.65百万行/秒、84.71 MB/秒)
 ```
 
 この機能を使うことで、ファイルの全履歴にわたるコミットをまとめて取得できます。次の例では、各 `path` の値ごとに 1 つのコミットを表示しています。
@@ -2402,9 +2403,9 @@ LIMIT 1 BY path
 FORMAT PrettyCompactMonoBlock
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path─────────────────────────────────────────────┬─commit_message──────────────────────────────────────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ fix accessing part in Deleting state                                            │
-│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ Remove empty line                                                               │
-│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ Tried to add ability to rename primary key columns but just banned this ability │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ Deleting状態のパートへのアクセスを修正                                            │
+│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ 空行を削除                                                               │
+│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ プライマリキー列の名前変更機能を追加しようとしたが、この機能を禁止した │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 
 3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
@@ -2451,7 +2452,7 @@ LIMIT 20
 │              19 │ s-kat                │ #include <Storages/MergeTree/PinnedPartUUIDs.h>               │
 │              20 │ Nikita Mikhaylov     │ #include <Storages/MergeTree/MergeMutateExecutor.h>           │
 └─────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────┘
-20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
+20行のセット。経過時間: 0.547秒。処理済み: 788万行、679.20 MB (1442万行/秒、1.24 GB/秒)
 ```
 
 ここでは、厳密な解決策や、それを改良した解決策を歓迎します。

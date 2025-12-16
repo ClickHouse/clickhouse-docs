@@ -51,7 +51,7 @@ Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
 
-假设 `LogAttributes` 已可用，用于统计站点中哪些 URL 路径收到最多 POST 请求的查询如下：
+假设 `LogAttributes` 可用，用于统计站点上哪些 URL 路径接收到最多 POST 请求的查询如下：
 
 ```sql
 SELECT path(LogAttributes['request_path']) AS path, count() AS c
@@ -81,6 +81,7 @@ Peak memory usage: 153.71 MiB.
 我们通常建议用户在 ClickHouse 中对结构化日志进行 JSON 解析。我们有信心 ClickHouse 提供了最快的 JSON 解析实现。不过，我们也意识到，有些用户可能希望将日志发送到其他系统，而不希望将这部分逻辑写在 SQL 中。
 :::
 
+
 ```sql
 SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
 FROM otel_logs
@@ -101,7 +102,7 @@ LIMIT 5
 Peak memory usage: 172.30 MiB.
 ```
 
-现在来看非结构化日志的情况：
+现在再来看非结构化日志：
 
 ```sql
 SELECT Body, LogAttributes
@@ -115,7 +116,7 @@ Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105
 LogAttributes: {'log.file.name':'access-unstructured.log'}
 ```
 
-对非结构化日志进行类似查询时，需要在 `extractAllGroupsVertical` 函数中使用正则表达式。
+对非结构化日志进行类似查询时，需要通过 `extractAllGroupsVertical` 函数来使用正则表达式。
 
 ```sql
 SELECT
@@ -153,6 +154,7 @@ LIMIT 5
 :::note 使用 OTel 还是 ClickHouse 进行处理？
 用户也可以按[此处](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching)所述，使用 OTel Collector 的 processors 和 operators 进行处理。在大多数情况下，用户会发现 ClickHouse 在资源利用率和速度方面都明显优于 collector 的 processors。使用 SQL 执行所有事件处理的主要缺点是会将你的解决方案与 ClickHouse 紧密耦合。例如，用户可能希望从 OTel collector 将已处理日志发送到其他目的地，例如 S3。
 :::
+
 
 ### 物化列 {#materialized-columns}
 
@@ -225,7 +227,7 @@ Peak memory usage: 3.16 MiB.
 
 [物化视图](/materialized-views) 提供了一种更强大的方式，用于对日志和追踪应用 SQL 过滤和转换。
 
-物化视图允许用户将计算成本从查询时转移到插入时。ClickHouse 中的物化视图本质上是一个触发器，在数据块插入表时对其运行查询。该查询的结果会被插入到第二个 &quot;target&quot; 表中。
+物化视图允许你将计算成本从查询时转移到插入时。ClickHouse 中的物化视图本质上是一个触发器，在数据块插入表时对其运行查询。该查询的结果会被插入到第二个 &quot;target&quot; 表中。
 
 <Image img={observability_10} alt="物化视图" size="md" />
 
@@ -233,9 +235,9 @@ Peak memory usage: 3.16 MiB.
 ClickHouse 中的物化视图会在数据流入其所依赖的表时实时更新，更像是持续更新的索引。相比之下，在其他数据库中，物化视图通常是某个查询的静态快照，必须刷新（类似于 ClickHouse 的 Refreshable Materialized Views）。
 :::
 
-与物化视图关联的查询理论上可以是任意查询，包括聚合查询，尽管[在 Join 方面存在一些限制](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins)。对于日志和追踪所需的转换和过滤工作负载，用户可以认为任意 `SELECT` 语句都是可行的。
+与物化视图关联的查询理论上可以是任意查询，包括聚合查询，尽管[在 Join 方面存在一些限制](https://clickhouse.com/blog/using-materialized-views-in-clickhouse#materialized-views-and-joins)。对于日志和追踪所需的转换和过滤工作负载，你可以认为任意 `SELECT` 语句都是可行的。
 
-用户应当记住，该查询只是一个触发器，对插入到表中的行（源表）执行，并将结果发送到一个新表（目标表）。
+你应当记住，该查询只是一个触发器，对插入到表中的行（源表）执行，并将结果发送到一个新表（目标表）。
 
 为了确保我们不会在源表和目标表中各持久化一份数据，我们可以将源表的表引擎修改为 [Null table engine](/engines/table-engines/special/null)，同时保留原有的表结构（schema）。我们的 OTel collectors 将继续向该表发送数据。例如，对于日志，`otel_logs` 表会变为：
 
@@ -260,9 +262,10 @@ CREATE TABLE otel_logs
 ) ENGINE = Null
 ```
 
-Null 表引擎是一种强大的优化手段——可以把它类比为 `/dev/null`。这个表本身不会存储任何数据，但任何附加其上的物化视图仍然会在行被丢弃之前，基于插入的行继续执行。
+Null 表引擎是一种强大的优化手段——可以把它类比为 `/dev/null`。这个表本身不会存储任何数据，但任何附加在其上的物化视图仍然会在行被丢弃之前，在插入的行上继续执行。
 
-来看下面的查询。它将我们的行转换为希望保留的格式，从 `LogAttributes` 中提取所有列（我们假设这是由采集器使用 `json_parser` 算子设置的），并设置 `SeverityText` 和 `SeverityNumber`（基于一些简单条件以及对[这些列](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)的定义）。在这个例子中，我们还仅选择那些我们确定会被填充的列——忽略诸如 `TraceId`、`SpanId` 和 `TraceFlags` 等列。
+来看下面的查询。它将我们的行转换为希望保留的格式，从 `LogAttributes` 中提取所有列（我们假设这是由采集器使用 `json_parser` 运算符设置的），并设置 `SeverityText` 和 `SeverityNumber`（基于一些简单条件以及对[这些列](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-severitytext)的定义）。在这个例子中，我们还仅选择那些我们确定会被填充的列——忽略诸如 `TraceId`、`SpanId` 和 `TraceFlags` 等列。
+
 
 ```sql
 SELECT
@@ -349,6 +352,7 @@ ORDER BY (ServiceName, Timestamp)
 请注意，我们在这里对 schema（模式）进行了大幅调整。实际场景中，用户很可能还会有希望保留的 Trace 列，以及 `ResourceAttributes` 列（通常包含 Kubernetes 元数据）。Grafana 可以利用这些 Trace 列在日志与 Trace 之间提供跳转/关联功能——参见 [&quot;Using Grafana&quot;](/observability/grafana)。
 :::
 
+
 下面，我们创建一个物化视图 `otel_logs_mv`，它对 `otel_logs` 表执行上述 SELECT 查询，并将结果写入 `otel_logs_v2`。
 
 ```sql
@@ -406,7 +410,7 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-1 row in set. Elapsed: 0.010 sec.
+返回 1 行。用时：0.010 秒。
 ```
 
 下面展示了一个等效的物化视图，它通过使用 JSON 函数从 `Body` 列中解析并提取各个字段：
@@ -449,10 +453,10 @@ FROM otel_logs
 
 在提取出所需列之后，就可以开始优化排序键 / 主键了。
 
-可以遵循一些简单规则来帮助选择排序键。下面这些规则有时会互相冲突，因此请按顺序权衡考虑。通过这个过程，用户通常可以识别出若干个键，一般 4–5 个就足够：
+可以遵循一些简单规则来帮助选择排序键。下面这些规则有时会互相冲突，因此请按顺序权衡考虑。通过这个过程，你通常可以识别出若干个键，一般 4–5 个就足够：
 
-1. 选择与常见过滤条件和访问模式相匹配的列。如果用户在开始可观测性排查时，通常会先按某一特定列（例如 pod（容器组）名称）进行过滤，那么该列将频繁出现在 `WHERE` 子句中。优先将这些列包含在键中，而不是那些使用频率较低的列。
-2. 优先选择在过滤时能排除掉总行数中很大比例的列，从而减少需要读取的数据量。服务名和状态码通常是不错的候选——状态码只有在用户会按能排除大部分行的取值进行过滤时才适用，例如按 2xx 状态码过滤在大多数系统中会匹配大多数行，而 5xx 错误通常只对应一个很小的子集。
+1. 选择与常见过滤条件和访问模式相匹配的列。如果你在开始可观测性排查时，通常会先按某一特定列（例如 pod（容器组）名称）进行过滤，那么该列将频繁出现在 `WHERE` 子句中。优先将这些列包含在键中，而不是那些使用频率较低的列。
+2. 优先选择在过滤时能排除掉总行数中很大比例的列，从而减少需要读取的数据量。服务名和状态码通常是不错的候选——状态码只有在你会按能排除大部分行的取值进行过滤时才适用，例如按 2xx 状态码过滤在大多数系统中会匹配大多数行，而 5xx 错误通常只对应一个很小的子集。
 3. 优先选择很可能与表中其他列高度关联的列。这有助于确保这些值也能被连续存储，从而提升压缩效果。
 4. 对排序键中的列执行 `GROUP BY` 和 `ORDER BY` 操作时，可以更高效地使用内存。
 
@@ -475,12 +479,12 @@ SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
 
-Row 1:
+第 1 行：
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
 
-1 row in set. Elapsed: 1.139 sec. Processed 5.63 million rows, 2.53 GB (4.94 million rows/s., 2.22 GB/s.)
-Peak memory usage: 71.90 MiB.
+结果共 1 行。耗时 1.139 秒。已处理 563 万行，2.53 GB（494 万行/秒，2.22 GB/秒）。
+峰值内存占用：71.90 MiB。
 ```
 
 :::note 避免使用点号
@@ -489,7 +493,7 @@ Peak memory usage: 71.90 MiB.
 
 ## 使用别名 {#using-aliases}
 
-查询 `map` 类型列比查询普通列要慢——参见 [&quot;加速查询&quot;](#accelerating-queries)。此外，其语法更为复杂，用户书写起来也较为繁琐。为了解决这一问题，我们建议使用别名（ALIAS）列。
+查询 `map` 类型列比查询普通列要慢——参见 [“加速查询”](#accelerating-queries)。此外，其语法更为复杂，你在书写时也会较为繁琐。为了解决这一问题，我们建议使用别名（ALIAS）列。
 
 ALIAS 列在查询时计算且不会存储在表中。因此，无法向此类列执行 INSERT 写入值。通过使用别名，我们可以引用 map 的键并简化语法，将 map 中的条目透明地暴露为普通列。请看以下示例：
 
@@ -560,9 +564,10 @@ LIMIT 5
 5 rows in set. Elapsed: 0.014 sec.
 ```
 
-:::note 默认排除 Alias
-默认情况下，`SELECT *` 会排除 ALIAS 列。可以通过将 `asterisk_include_alias_columns` 设置为 `1` 来关闭此行为。
+:::note 默认排除 ALIAS
+默认情况下，`SELECT *` 会排除 ALIAS 列。可以通过将 `asterisk_include_alias_columns` 设置为 `1` 来禁用此行为。
 :::
+
 
 ## 优化类型 {#optimizing-types}
 
@@ -652,7 +657,7 @@ CREATE TABLE geoip_url(
 select count() from geoip_url;
 
 ┌─count()─┐
-│ 3261621 │ -- 3.26 million
+│ 3261621 │ -- 326 万
 └─────────┘
 ```
 
@@ -681,7 +686,7 @@ LIMIT 4;
 │ 1.0.8.0        │ 1.0.15.255   │ 1.0.8.0/21 │
 └────────────────┴──────────────┴────────────┘
 
-4 rows in set. Elapsed: 0.259 sec.
+4 行数据。耗时: 0.259 秒。
 ```
 
 :::note
@@ -741,7 +746,7 @@ SELECT * FROM ip_trie LIMIT 3
 │ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU           │
 └────────────┴──────────┴───────────┴──────────────┘
 
-3 rows in set. Elapsed: 4.662 sec.
+返回 3 行。用时:4.662 秒。
 ```
 
 :::note 定期刷新
@@ -757,7 +762,7 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 │ ('PT',38.7944,-9.34284) │
 └─────────────────────────┘
 
-1 row in set. Elapsed: 0.003 sec.
+返回 1 行。用时:0.003 秒。
 ```
 
 注意这里的检索速度。这使我们可以对日志进行富化。在本例中，我们选择在 **查询时进行富化（query time enrichment）**。
@@ -825,10 +830,10 @@ ORDER BY (ServiceName, Timestamp)
 
 [User agent 字符串](https://en.wikipedia.org/wiki/User_agent) 的解析是一个经典的正则表达式问题，也是基于日志和追踪数据集中的常见需求。ClickHouse 通过正则表达式树字典（Regular Expression Tree Dictionaries）高效解析 user agent。
 
-在 ClickHouse 开源版中，正则表达式树字典通过 `YAMLRegExpTree` 字典源类型定义，该类型指定包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，可以在[此处](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到所需结构的详细说明。下面我们重点介绍如何使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 user-agent 解析，并加载适用于受支持 CSV 格式的字典。此方法兼容 OSS 和 ClickHouse Cloud。
+在 ClickHouse 开源版中，正则表达式树字典通过 `YAMLRegExpTree` 字典源类型定义，该类型指定包含正则表达式树的 YAML 文件路径。如果你希望提供自己的正则表达式字典，可以在[此处](/sql-reference/dictionaries#use-regular-expression-tree-dictionary-in-clickhouse-open-source)找到所需结构的详细说明。下面我们重点介绍如何使用 [uap-core](https://github.com/ua-parser/uap-core) 进行 user-agent 解析，并将字典加载为受支持的 CSV 格式。此方法兼容 OSS 和 ClickHouse Cloud。
 
 :::note
-在下列示例中，我们使用了截至 2024 年 6 月的最新 uap-core user-agent 解析正则表达式快照。最新（不定期更新）的文件可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。用户可以按照[此处](/sql-reference/dictionaries#collecting-attribute-values)中的步骤，将其加载到下文使用的 CSV 文件中。
+在下列示例中，我们使用了截至 2024 年 6 月的最新 uap-core user-agent 解析正则表达式快照。最新（不定期更新）的文件可以在[这里](https://raw.githubusercontent.com/ua-parser/uap-core/master/regexes.yaml)找到。你可以按照[此处](/sql-reference/dictionaries#collecting-attribute-values)中的步骤，将其加载到下文使用的 CSV 文件中。
 :::
 
 创建以下 Memory 表。这些表存储用于解析设备、浏览器和操作系统的正则表达式。
@@ -862,7 +867,7 @@ CREATE TABLE regexp_device
 ) ENGINE=Memory;
 ```
 
-可以使用 `url` 表函数，将以下公开托管的 CSV 文件中的数据导入这些表：
+可以使用 `url` 表函数，将以下公开托管的 CSV 文件加载到这些表中：
 
 ```sql
 INSERT INTO regexp_os SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_os.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
@@ -872,7 +877,7 @@ INSERT INTO regexp_device SELECT * FROM s3('https://datasets-documentation.s3.eu
 INSERT INTO regexp_browser SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/user_agent_regex/regexp_browser.csv', 'CSV', 'id UInt64, parent_id UInt64, regexp String, keys Array(String), values Array(String)')
 ```
 
-在内存表填充完成后，我们就可以加载正则表达式字典了。请注意，我们需要将键值指定为列——这些将是我们可以从 User-Agent 中提取的属性。
+在这些 Memory 表填充完成后，我们就可以加载正则表达式字典了。请注意，我们需要将键对应的值声明为各个列——这些列就是我们可以从 User-Agent 中提取的属性。
 
 ```sql
 CREATE DICTIONARY regexp_os_dict
@@ -914,7 +919,8 @@ LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
 
-在加载了这些字典之后，我们可以提供一个示例 user-agent 字符串，并测试我们新的字典提取能力：
+在加载了这些字典之后，我们可以给出一个示例 user-agent 字符串，并测试我们新的字典提取能力：
+
 
 ```sql
 WITH 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0' AS user_agent
@@ -998,7 +1004,7 @@ FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
 
-Row 1:
+行 1:
 ──────
 Device:  ('Spider','Spider','Desktop')
 Browser: ('AhrefsBot','6','1')
@@ -1121,7 +1127,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.008 sec.
+返回 5 行数据。用时：0.008 秒。
 
 SELECT
         Hour,
@@ -1139,7 +1145,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5 rows in set. Elapsed: 0.005 sec.
+返回 5 行数据。用时：0.005 秒。
 ```
 
 这将我们的查询耗时从 0.6s 缩短到了 0.008s —— 提速超过 75 倍！
@@ -1165,7 +1171,7 @@ ORDER BY Hour DESC
 │ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
-113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
+结果集包含 113 行。耗时:0.667 秒。已处理 1037 万行,4.73 GB(每秒 1553 万行,7.09 GB/秒)
 ```
 
 为了在增量更新时持久化基数统计，需要使用 AggregatingMergeTree。
@@ -1297,6 +1303,7 @@ WHERE TraceId != ''
 GROUP BY TraceId
 ```
 
+
 该视图可以有效确保表 `otel_traces_trace_id_ts` 记录了每个 trace 的最小和最大时间戳。该表按 `TraceId` 排序，使得这些时间戳可以被高效检索。随后，在查询主表 `otel_traces` 时可以利用这些时间戳范围。更具体地说，当通过 id 检索某个 trace 时，Grafana 会使用以下查询：
 
 ```sql
@@ -1343,12 +1350,12 @@ ClickHouse 投影允许用户为表指定多个 `ORDER BY` 子句。
 理论上,此功能可用于为表提供多个排序键,但存在一个明显的缺点:数据冗余。具体而言,除了按主键顺序写入数据外,还需要按每个投影指定的顺序写入数据。这会降低插入性能并占用更多磁盘空间。
 
 :::note 投影与物化视图
-投影提供了许多与物化视图相同的功能,但应谨慎使用,后者通常是更优选择。用户应了解投影的局限性以及适用场景。例如,虽然投影可用于预计算聚合,但我们建议用户使用物化视图来实现此目的。
+投影提供了许多与物化视图相同的功能,但应谨慎使用,后者通常是更优选择。您应了解投影的局限性以及适用场景。例如,虽然投影可用于预计算聚合,但我们建议用户使用物化视图来实现此目的。
 :::
 
 <Image img={observability_13} alt="可观测性与投影" size="md" />
 
-请参考以下查询,该查询根据 500 错误代码筛选 `otel_logs_v2` 表。这是日志查询中的常见访问模式,用户通常需要按错误代码进行筛选:
+请参考以下查询,该查询根据 500 错误代码筛选 `otel_logs_v2` 表。这是日志记录中的常见访问模式,用户通常需要按错误代码进行筛选:
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
@@ -1411,7 +1418,7 @@ ENGINE = MergeTree
 ORDER BY (ServiceName, Timestamp)
 ```
 
-需要注意的是,如果投影是通过 `ALTER` 命令创建的,那么在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步进行的。用户可以通过以下查询来确认该操作的进度,直到 `is_done=1` 为止。
+需要注意的是,如果投影是通过 `ALTER` 命令创建的,那么在执行 `MATERIALIZE PROJECTION` 命令时,其创建过程是异步进行的。您可以通过以下查询来确认该操作的进度,直到 `is_done=1` 为止。
 
 ```sql
 SELECT parts_to_do, is_done, latest_fail_reason
@@ -1433,8 +1440,8 @@ FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
 
-0 rows in set. Elapsed: 0.031 sec. Processed 51.42 thousand rows, 22.85 MB (1.65 million rows/s., 734.63 MB/s.)
-Peak memory usage: 27.85 MiB.
+返回 0 行。耗时：0.031 秒。处理了 51.42 千行，22.85 MB（1.65 百万行/秒，734.63 MB/秒）。
+峰值内存使用：27.85 MiB。
 ```
 
 在上面的示例中，我们在投影中指定了先前查询中使用的列。这意味着只有这些指定的列会作为投影的一部分存储在磁盘上，并按照 Status 排序。或者，如果我们在这里使用 `SELECT *`，则所有列都会被包含在投影中并存储。这样虽然可以让更多查询（使用任意列子集）从该投影中获益，但会带来额外的存储开销。有关磁盘空间占用和压缩情况的衡量，请参见 [&quot;Measuring table size &amp; compression&quot;](#measuring-table-size--compression)。
@@ -1445,13 +1452,13 @@ Peak memory usage: 27.85 MiB.
 
 默认的 OTel schema 会尝试使用二级索引来加速对 `map` 字段的访问。我们发现这些索引整体上效果并不理想，因此不建议在自定义 schema 中照搬；不过，跳过索引在某些场景下依然是有用的。
 
-在尝试应用这些索引之前，用户应先阅读并理解[二级索引指南](/optimize/skipping-indexes)。
+在尝试应用这些索引之前，你应先阅读并理解[二级索引指南](/optimize/skipping-indexes)。
 
 **一般而言，当主键与目标的非主键列/表达式之间存在较强相关性，并且用户要查找的是稀有值（即在许多 granule 中并不常见的值）时，这些索引才会较为有效。**
 
 ### 用于文本搜索的布隆过滤器 {#bloom-filters-for-text-search}
 
-对于可观测性查询,当用户需要执行文本搜索时,辅助索引会非常有用。具体而言,基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。这意味着在查询时只能匹配 token(即完整单词)。如需更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。该索引将字符串拆分为指定大小的 ngram,从而支持子词匹配。
+对于可观测性查询,当需要执行文本搜索时,辅助索引会非常有用。具体而言,基于 ngram 和 token 的布隆过滤器索引 [`ngrambf_v1`](/optimize/skipping-indexes#bloom-filter-types) 和 [`tokenbf_v1`](/optimize/skipping-indexes#bloom-filter-types) 可用于加速在 String 列上使用 `LIKE`、`IN` 和 hasToken 操作符的搜索。需要注意的是,基于 token 的索引使用非字母数字字符作为分隔符来生成 token。这意味着在查询时只能匹配 token(即完整单词)。如需更细粒度的匹配,可以使用 [N-gram 布隆过滤器](/optimize/skipping-indexes#bloom-filter-types)。该索引将字符串拆分为指定大小的 ngram,从而支持子词匹配。
 
 要评估将生成并进行匹配的 token,可以使用 `tokens` 函数:
 
@@ -1495,7 +1502,7 @@ WHERE Referer LIKE '%ultra%'
 1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
 ```
 
-此处需要匹配 ngram 大小为 3，因此创建一个 `ngrambf_v1` 索引。
+此处需要匹配 ngram 大小为 3,因此创建一个 `ngrambf_v1` 索引。
 
 ```sql
 CREATE TABLE otel_logs_bloom
@@ -1566,7 +1573,7 @@ WHERE Referer LIKE '%ultra%'
 │               Granules: 1278/1278                                  │
 └────────────────────────────────────────────────────────────────────┘
 
-10 rows in set. Elapsed: 0.016 sec.
+返回 10 行。耗时：0.016 秒。
 
 EXPLAIN indexes = 1
 SELECT count()
@@ -1627,9 +1634,10 @@ WHERE `table` = 'otel_logs_bloom'
 
 在上面的示例中，我们可以看到二级 Bloom filter 索引的大小为 12MB——几乎只有该列本身压缩后 56MB 的五分之一。
 
-Bloom filter 可能需要进行较为细致的调优。我们建议参考[此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter)的说明，以帮助确定最优配置。Bloom filter 在插入和合并阶段的开销也可能较大。用户应在将 Bloom filter 引入生产环境之前，先评估其对插入性能的影响。
+Bloom filter 可能需要进行较为细致的调优。我们建议参考[此处](/engines/table-engines/mergetree-family/mergetree#bloom-filter)的说明，以帮助确定最优配置。Bloom filter 在插入和合并阶段的开销也可能较大。你应当在将 Bloom filter 引入生产环境之前，先评估其对插入性能的影响。
 
 关于二级跳过索引的更多细节可以在[此处](/optimize/skipping-indexes#skip-index-functions)找到。
+
 
 ### 从 Map 中提取数据 {#extracting-from-maps}
 

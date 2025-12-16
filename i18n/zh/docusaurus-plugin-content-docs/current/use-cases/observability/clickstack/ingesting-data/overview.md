@@ -22,7 +22,7 @@ import architecture_with_flow from '@site/static/images/use-cases/observability/
 * **HTTP** - 端口 `4318`
 * **gRPC** - 端口 `4317`
 
-用户可以直接从[语言 SDKs](/use-cases/observability/clickstack/sdks) 或兼容 OTel 的数据采集代理（例如采集基础设施指标和日志的其他 OTel collectors）向这些端点发送数据。
+你可以直接从[语言 SDKs](/use-cases/observability/clickstack/sdks) 或兼容 OTel 的数据采集代理（例如采集基础设施指标和日志的其他 OTel collectors）向这些端点发送数据。
 
 更具体地说：
 
@@ -31,5 +31,5 @@ import architecture_with_flow from '@site/static/images/use-cases/observability/
 * **数据采集代理** 是部署在边缘的代理——例如在服务器、Kubernetes 节点上，或与应用一起部署。它们采集基础设施遥测数据（如日志、指标），或直接接收通过 SDKs 接入的应用发出的事件。在这种场景下，代理与应用运行在同一主机上，通常以 sidecar 或 DaemonSet 守护进程集的形式运行。这些代理将数据转发到中心 ClickStack OTel collector，该 collector 作为一个[网关](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)，通常在每个集群、数据中心或区域部署一份。[网关](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) 从代理或应用接收 OTLP 事件，并负责将数据摄取到 ClickHouse。更多详情请参见 [OTel collector](/use-cases/observability/clickstack/ingesting-data/otel-collector)。这些代理可以是其他实例的 OTel collector，或 [Fluentd](https://www.fluentd.org/) 和 [Vector](https://vector.dev/) 等替代技术。
 
 :::note OpenTelemetry 兼容性
-虽然 ClickStack 提供了自有的语言 SDKs 和定制版 OpenTelemetry，具备增强的遥测能力和特性，但用户也可以无缝使用现有的 OpenTelemetry SDKs 和代理。
+虽然 ClickStack 提供了自有的语言 SDKs 和定制版 OpenTelemetry，具备增强的遥测能力和特性，但你也可以无缝使用现有的 OpenTelemetry SDKs 和代理。
 :::

@@ -102,7 +102,6 @@ ClickHouse 表列的数据类型可以与插入的 Parquet 数据中对应字段
 INSERT INTO football FROM INFILE 'football.parquet' FORMAT Parquet;
 ```
 
-
 ### 读取数据 {#reading-data}
 
 以 `Parquet` 格式读取数据：
@@ -119,7 +118,6 @@ Parquet 是一种二进制格式，无法在终端中以人类可读的形式显
 :::
 
 要与 Hadoop 进行数据交换，可以使用 [`HDFS table engine`](/engines/table-engines/integrations/hdfs.md)。
-
 
 ## 格式设置 {#format-settings}
 

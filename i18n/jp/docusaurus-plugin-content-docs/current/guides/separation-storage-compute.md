@@ -12,6 +12,7 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
+
 # ストレージとコンピュートの分離 {#separation-of-storage-and-compute}
 
 ## 概要 {#overview}
@@ -73,9 +74,9 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 </clickhouse>
 ```
 
-S3 ディスクの設定をさらに細かく行う必要がある場合、たとえば `region` を指定したりカスタム HTTP `header` を送信したりするには、関連する設定の一覧を[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
+S3 ディスクの設定をさらに詳細に指定する必要がある場合、たとえば `region` を指定したりカスタム HTTP `header` を送信したりするには、関連する設定の一覧を[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
 
-また、`access_key_id` と `secret_access_key` を次のものに置き換えることもでき、この場合は環境変数および Amazon EC2 メタデータから認証情報の取得が試行されます。
+また、`access_key_id` と `secret_access_key` を次の設定に置き換えることもでき、この場合は環境変数および Amazon EC2 メタデータから認証情報の取得が試行されます。
 
 ```bash
 <use_environment_credentials>true</use_environment_credentials>
@@ -92,6 +93,7 @@ chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 ```bash
 service clickhouse-server restart
 ```
+
 
 ## 2. S3 をバックエンドにしたテーブルを作成する {#2-create-a-table-backed-by-s3}
 
@@ -140,7 +142,7 @@ INSERT INTO my_s3_table (id, column1)
   VALUES (1, 'abc'), (2, 'xyz');
 ```
 
-行が挿入されたことを確認します:
+挿入された行を確認します：
 
 ```sql
 SELECT * FROM my_s3_table;
@@ -161,6 +163,7 @@ AWS コンソールで、データが正常に S3 に書き込まれていれば
 
 <Image img={s3_bucket_example} size="md" alt="コンピュートとストレージの分離を利用した S3 バケットの例" border />
 
+
 ## 3. フォールトトレランスのためのレプリケーションの実装（オプション） {#3-implementing-replication-for-fault-tolerance-optional}
 
 :::warning
@@ -170,6 +173,7 @@ AWS/GCS のライフサイクルポリシーは設定しないでください。
 フォールトトレランスを実現するには、複数の AWS リージョンに分散した複数の ClickHouse サーバーノードを使用し、各ノードごとに 1 つの S3 バケットを用意できます。
 
 S3 ディスクを使ったレプリケーションは、`ReplicatedMergeTree` テーブルエンジンを使用することで実現できます。詳細は次のガイドを参照してください。
+
 - [S3 オブジェクトストレージを使用して単一シャードを 2 つの AWS リージョン間でレプリケーションする](/integrations/s3#s3-multi-region)。
 
 ## 参考資料 {#further-reading}

@@ -11,7 +11,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Обзор Java-клиентов {#java-clients-overview}
 
 - [Клиент 0.8+](./client/client.mdx)
@@ -154,7 +153,6 @@ JDBC-драйвер наследует те же возможности, что 
     </dependency>
 </dependencies>
 ```
-
 
 #### Настройка логирования {#configuring-logging}
 
