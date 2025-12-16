@@ -58,7 +58,6 @@ ORDER BY expr
 
 パラメータの詳細については、[CREATE TABLE](/sql-reference/statements/create/table.md) ステートメントを参照してください。
 
-
 ### クエリ構文 {#mergetree-query-clauses}
 
 #### ENGINE {#engine}
@@ -156,7 +155,6 @@ MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)
   `MergeTree` エンジンは、メインのエンジン構成方法について上記の例と同様に設定されます。
 </details>
 
-
 ## データストレージ {#mergetree-data-storage}
 
 テーブルは、主キーでソートされたデータパーツから構成されます。
@@ -201,7 +199,6 @@ Marks numbers:   0      1      2      3      4      5      6      7      8      
 ClickHouse では、一意なプライマリキーは不要です。同じプライマリキーを持つ複数の行を挿入できます。
 
 `PRIMARY KEY` および `ORDER BY` 句では `Nullable` 型の式を使用できますが、これは強く非推奨です。この機能を許可するには、[allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key) 設定を有効にします。`ORDER BY` 句での `NULL` 値には、[NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) の原則が適用されます。
-
 
 ### 主キーの選択 {#selecting-a-primary-key}
 
@@ -286,7 +283,6 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
 
-
 ### 部分的に単調な主キーに対するインデックスの利用 {#use-of-index-for-partially-monotonic-primary-keys}
 
 例として、月の日付を考えてみます。1 か月の中では [単調な数列](https://en.wikipedia.org/wiki/Monotonic_function) を形成しますが、より長い期間では単調ではありません。これは部分的に単調な数列です。ユーザーが部分的に単調な主キーでテーブルを作成した場合、ClickHouse は通常どおりスパースインデックスを作成します。ユーザーがこの種のテーブルからデータを `SELECT` する際、ClickHouse はクエリ条件を解析します。ユーザーがインデックスの 2 つのマークの間のデータを取得しようとしており、その両方のマークが同じ 1 か月の範囲内に収まる場合、ClickHouse はこの特定のケースではインデックスを利用できます。これは、クエリパラメータとインデックスマークとの距離を計算できるためです。
@@ -349,7 +345,6 @@ INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
-
 ### スキップインデックスの種類 {#skip-index-types}
 
 `MergeTree` テーブルエンジンは、次の種類のスキップインデックスをサポートします。
@@ -371,7 +366,6 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
-
 #### Set {#set}
 
 各インデックスグラニュールごとに、指定された式のユニークな値が最大 `max_rows` 個まで保存されます。
@@ -380,7 +374,6 @@ minmax
 ```text title="Syntax"
 set(max_rows)
 ```
-
 
 #### ブルームフィルタ {#bloom-filter}
 
@@ -410,7 +403,6 @@ bloom_filter([false_positive_rate])
 :::note Map データ型: キーまたは値に対するインデックス作成の指定
 `Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 関数を使用して、キーに対してインデックスを作成するか、値に対してインデックスを作成するかを指定できます。
 :::
-
 
 #### N-gram ブルームフィルタ {#n-gram-bloom-filter}
 
@@ -480,7 +472,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 もちろん、これらの関数は他の条件のパラメータを見積もるためにも使用できます。
 上記の関数は、ブルームフィルター計算ツール[こちら](https://hur.st/bloomfilter)を参照しています。
 
-
 #### トークンブルームフィルター {#token-bloom-filter}
 
 トークンブルームフィルターは `ngrambf_v1` と同様ですが、n-gram ではなく、英数字以外の文字で区切られたトークン（文字列のまとまり）を保存します。
@@ -489,7 +480,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
-
 #### スパースグラム Bloom フィルター {#sparse-grams-bloom-filter}
 
 スパースグラム Bloom フィルターは `ngrambf_v1` と似ていますが、n-gram の代わりに [スパースグラムトークン](/sql-reference/functions/string-functions.md/#sparseGrams) を使用します。
@@ -497,7 +487,6 @@ tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```text title="Syntax"
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
-
 
 ### テキストインデックス {#text}
 
@@ -586,7 +575,6 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
 
-
 ### プロジェクションのストレージ {#projection-storage}
 
 プロジェクションはパーツディレクトリ内に保存されます。インデックスに似ていますが、匿名の `MergeTree` テーブルのパーツを保存するサブディレクトリを含みます。このテーブルは、プロジェクションの定義クエリに基づいて定義されます。`GROUP BY` 句がある場合、下層のストレージエンジンは [AggregatingMergeTree](aggregatingmergetree.md) になり、すべての集約関数は `AggregateFunction` に変換されます。`ORDER BY` 句がある場合、`MergeTree` テーブルはそれを主キー式として使用します。マージ処理中、プロジェクションのパーツは、そのストレージのマージルーチンによってマージされます。親テーブルのパーツのチェックサムは、プロジェクションのパーツと組み合わされます。その他のメンテナンス処理はスキップインデックスと同様です。
@@ -627,7 +615,6 @@ TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
 
-
 ### カラム TTL {#mergetree-column-ttl}
 
 カラム内の値の有効期限が切れると、ClickHouse はそれらをカラムのデータ型におけるデフォルト値に置き換えます。データパート内のそのカラムの値がすべて有効期限切れになった場合、ClickHouse はファイルシステム上のそのデータパートからこのカラムを削除します。
@@ -651,7 +638,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
-
 #### 既存のテーブルの列に TTL を追加する {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
@@ -660,7 +646,6 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 DAY;
 ```
 
-
 #### 列のTTLを変更する {#altering-ttl-of-the-column}
 
 ```sql
@@ -668,7 +653,6 @@ ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 MONTH;
 ```
-
 
 ### テーブルの TTL {#mergetree-table-ttl}
 
@@ -701,7 +685,6 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 
 **例**
 
-
 #### `TTL` を指定したテーブルの作成: {#creating-a-table-with-ttl-1}
 
 ```sql
@@ -717,7 +700,6 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
-
 
 #### テーブルの `TTL` を変更する: {#altering-ttl-of-the-table}
 
@@ -739,7 +721,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
-
 
 #### 期限切れの行が再圧縮されるテーブルの作成: {#creating-a-table-where-expired-rows-are-recompressed}
 
@@ -771,7 +752,6 @@ ENGINE = MergeTree
 ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
-
 
 ### 期限切れデータの削除 {#mergetree-removing-expired-data}
 
@@ -887,7 +867,6 @@ ClickHouse がデータの期限切れを検出すると、スケジュール外
 ```
 
 タグ:
-
 
 * `policy_name_N` — ポリシー名。ポリシー名は一意である必要があります。
 * `volume_name_N` — ボリューム名。ボリューム名は一意である必要があります。
@@ -1055,7 +1034,6 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
 :::
 
-
 ## 仮想カラム {#virtual-columns}
 
 * `_part` — パーツ名。
@@ -1099,7 +1077,6 @@ ALTER TABLE tab DROP STATISTICS a;
 
 これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
 `set allow_statistics_optimize = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
-
 
 ### 利用可能な列統計の種類 {#available-types-of-column-statistics}
 

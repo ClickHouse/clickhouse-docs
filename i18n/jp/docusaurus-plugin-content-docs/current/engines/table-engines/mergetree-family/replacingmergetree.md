@@ -1,4 +1,6 @@
-# ReplacingMergeTree テーブルエンジン
+
+
+# ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
 このエンジンは[MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)と異なり、同一の[ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)値を持つ重複エントリを削除します（`ORDER BY`テーブルセクションのキーであり、`PRIMARY KEY`ではありません）。
 
@@ -163,7 +165,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `ver` - バージョンを保持する列。オプションパラメータ。詳細は上記の説明を参照してください。
 
 </details>
-
 
 ## クエリ実行時の重複排除 & 最終版 {#query-time-de-duplication--final}
 

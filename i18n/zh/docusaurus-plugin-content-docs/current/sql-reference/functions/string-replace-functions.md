@@ -73,6 +73,7 @@ SELECT format('{} {}', 'Hello', 'World')
 │ Hello World                       │
 └───────────────────────────────────┘
 ```
+
 ## overlay {#overlay}
 
 引入版本：v24.9

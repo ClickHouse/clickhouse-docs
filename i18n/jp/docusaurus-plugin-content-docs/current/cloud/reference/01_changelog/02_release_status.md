@@ -32,7 +32,7 @@ ClickHouse Cloud では、安定性、新機能へのアクセス、アップグ
 
 </details>
 
-Enterprise ティアのサービスでは、すべてのリリースチャネルでスケジュールされたアップグレードを利用できます。この機能により、ユーザーはアップグレードを実施する曜日と時間帯の時間枠を設定できます。
+Enterprise ティアのサービスでは、すべてのリリースチャネルでスケジュールされたアップグレードを利用できます。この機能により、アップグレードを実施する曜日と時間帯の時間枠を設定できます。
 
 ## リリーススケジュール {#release-schedule}
 
@@ -42,12 +42,12 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
    {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
-    fast_date: '2025-12-11',
+    fast_date: '2025-12-11 から開始予定',
     regular_date: '2026-01-05',
     slow_date: 'TBD',
-    fast_progress: 'orange',
+    fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: '社内テストで検出された問題を解消するため延期されました。',
+    fast_delay_note: '進行中',
   }
 ]} />

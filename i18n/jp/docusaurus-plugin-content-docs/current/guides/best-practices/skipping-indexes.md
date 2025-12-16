@@ -12,7 +12,8 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse のデータスキップインデックスを理解する {#understanding-clickhouse-data-skipping-indexes}
+
+# ClickHouse のデータスキッピングインデックスを理解する {#understanding-clickhouse-data-skipping-indexes}
 
 ## はじめに {#introduction}
 
@@ -66,7 +67,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
-では、ごく基本的なスキップインデックスを追加します：
+ここで、ごく基本的なスキップインデックスを追加してみます：
 
 ```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
@@ -102,23 +103,24 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 
 <Image img={simple_skip} size="md" alt="Simple Skip" />
 
-ユーザーは、クエリ実行時にトレースを有効にすることで、スキップインデックスの使用状況に関する詳細情報を確認できます。
+クエリ実行時にトレースを有効にすると、スキップインデックスの使用状況に関する詳細な情報を確認できます。
 clickhouse-client では、`send_logs_level` を設定します:
 
 ```sql
 SET send_logs_level='trace';
 ```
 
-これは、クエリ SQL やテーブルインデックスのチューニングを行う際に有用なデバッグ情報を提供します。上記の
-例では、デバッグログから、スキップインデックスによって 2 つのグラニュールを除くすべてがスキップされたことが分かります。
+これは、SQL クエリやテーブルインデックスのチューニングを行う際に有益なデバッグ情報を提供します。上記の例では、デバッグログから、スキップインデックスによって 2 つのグラニュールを除くすべてがスキップされたことが分かります。
 
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 
+
 ## スキップインデックスのタイプ {#skip-index-types}
 
 {/* vale off */ }
+
 
 ### minmax {#minmax}
 
@@ -130,6 +132,7 @@ SET send_logs_level='trace';
 
 {/* vale off */ }
 
+
 ### set {#set}
 
 {/* vale on */ }
@@ -137,6 +140,7 @@ SET send_logs_level='trace';
 この軽量なインデックスタイプは、ブロックごとの値集合の `max_size`（最大サイズ）を表す 1 つのパラメータを受け取ります（0 を指定すると、個別値の数は無制限になります）。この集合には、そのブロック内のすべての値が含まれます（値の数が `max_size` を超えた場合は空集合になります）。このインデックスタイプは、各グラニュール集合内のカーディナリティは低い（本質的に「固まっている」）が、全体としてはカーディナリティが高い列に対して有効に機能します。
 
 このインデックスのコスト、性能、および有効性は、ブロック内のカーディナリティに依存します。各ブロックに多数のユニークな値が含まれる場合、大きなインデックス集合に対してクエリ条件を評価するのが非常に高コストになるか、あるいは `max_size` を超えた結果としてインデックスが空になり、インデックスが適用されない可能性があります。
+
 
 ### Bloom フィルター型 {#bloom-filter-types}
 
@@ -188,6 +192,16 @@ Bloom フィルターに基づくデータスキッピングインデックス�
 SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 ```
 
+スキップインデックスは必ずしも直感的ではなく、特に RDBMS の行ベースのセカンダリインデックスやドキュメントストアの転置インデックスに慣れたユーザーにはわかりにくいものです。効果を得るには、ClickHouse のデータスキップインデックスを適用することで、インデックスを計算するコストを上回るだけの十分なグラニュールの読み取りを回避する必要があります。重要なのは、インデックス化されたブロック内にある値が 1 回でも出現すると、そのブロック全体をメモリに読み込んで評価しなければならず、その場合インデックスのコストが無駄に発生してしまうという点です。
+
+次のようなデータ分布を考えてみます:
+
+<Image img={bad_skip} size="md" alt="不適切なスキップインデックス" />
+
+`timestamp` が primary/ORDER BY キーであり、`visitor_id` にインデックスがあるとします。次のクエリを考えてみます:
+
+SELECT timestamp, url FROM table WHERE visitor&#95;id = 1001`
+
 このようなデータ分布では、従来型のセカンダリインデックスは非常に有利に働きます。要求された visitor&#95;id を持つ 5 行を見つけるために
 32768 行すべてを読み取る代わりに、セカンダリインデックスには 5 行分の位置だけが格納され、それら 5 行だけがディスクから
 読み込まれます。ClickHouse のデータスキップインデックスでは、状況はまったく逆になります。`visitor_id` 列の 32768 個すべての値が、
@@ -218,8 +232,10 @@ SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 型、granularity サイズ、その他のパラメータのバリエーションも含めて検証する必要があります。テストによって、
 単なる思考実験だけでは明らかにならないパターンや落とし穴が明らかになることが多いでしょう。
 
+
 ## 関連ドキュメント {#related-docs}
-- [ベストプラクティス ガイド](/best-practices/use-data-skipping-indices-where-appropriate)
+
+- [ベストプラクティスガイド](/best-practices/use-data-skipping-indices-where-appropriate)
 - [データスキッピングインデックスの例](/optimize/skipping-indexes/examples)
 - [データスキッピングインデックスの操作](/sql-reference/statements/alter/skipping-index)
 - [システムテーブルに関する情報](/operations/system-tables/data_skipping_indices)

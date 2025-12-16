@@ -70,7 +70,6 @@ WHERE metric_id = 3 AND timestamp BETWEEN '2024-12-12 12:00:12' AND '2024-12-12 
 ORDER BY metric_id, timestamp;
 ```
 
-
 ```response
 3    2024-12-12 12:00:12.870    29
 3    2024-12-12 12:00:13.770    8
@@ -131,7 +130,6 @@ GROUP BY metric_id;
 ```response
 3    [11,8,-18,8,11]    [12.222222222222221,8.88888888888889,1.1111111111111112,8.88888888888889,12.222222222222221]
 ```
-
 
 ```sql
 -- Calculate idelta and irate from the re-sampled data

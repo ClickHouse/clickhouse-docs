@@ -32,15 +32,15 @@ keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi
 首先，让我们创建一个共享表，并在主键中包含字段 `tenant_id`。
 
 ```sql
---- Create table events. Using tenant_id as part of the primary key
+--- 创建表 events。使用 tenant_id 作为主键的一部分
 CREATE TABLE events
 (
-    tenant_id UInt32,                 -- Tenant identifier
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    tenant_id UInt32,                 -- 租户标识符
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
 ORDER BY (tenant_id, timestamp)
 ```
@@ -48,7 +48,7 @@ ORDER BY (tenant_id, timestamp)
 现在我们来插入一些示例数据。
 
 ```sql
--- Insert some dummy rows
+-- 插入一些虚拟数据行
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -66,7 +66,7 @@ VALUES
 接下来创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- Create users 
+-- 创建用户
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -74,7 +74,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 我们[创建行策略](/sql-reference/statements/create/row-policy)，使 `user_1` 和 `user_2` 只能访问各自租户的数据。
 
 ```sql
--- Create row policies
+-- 创建行级策略
 CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
@@ -82,10 +82,10 @@ CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 然后使用一个通用角色，为共享表授予 [`GRANT SELECT`](/sql-reference/statements/grant#usage) 权限。
 
 ```sql
--- Create role
+-- 创建角色
 CREATE ROLE user_role
 
--- Grant read only to events table.
+-- 授予 events 表的只读权限
 GRANT SELECT ON default.events TO user_role
 GRANT user_role TO user_1
 GRANT user_role TO user_2
@@ -94,7 +94,7 @@ GRANT user_role TO user_2
 现在，你可以以 `user_1` 身份连接并运行一个简单的 select 查询。只会返回来自第一个租户的行。
 
 ```sql
--- Logged as user_1
+-- 以 user_1 登录
 SELECT *
 FROM events
 
@@ -124,27 +124,27 @@ FROM events
 首先,创建两个表,一个用于 `tenant_1` 的事件,另一个用于 `tenant_2` 的事件。
 
 ```sql
--- Create table for tenant 1 
+-- 为租户 1 创建表 
 CREATE TABLE events_tenant_1
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- 主键可以侧重于其他属性
 
--- Create table for tenant 2 
+-- 为租户 2 创建表 
 CREATE TABLE events_tenant_2
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- 主键可以侧重于其他属性
 ```
 
 插入模拟数据。
@@ -170,7 +170,7 @@ VALUES
 接下来创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- Create users 
+-- 创建用户 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -178,7 +178,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 然后在相应的表上 `GRANT SELECT` 权限。
 
 ```sql
--- Grant read only to events table.
+-- 授予事件表的只读权限。
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
@@ -186,7 +186,7 @@ GRANT SELECT ON default.events_tenant_2 TO user_2
 现在您可以以 `user_1` 身份连接并对该用户对应的表运行简单的 select 查询。仅会返回第一个租户的行数据。 
 
 ```sql
--- Logged as user_1
+-- 以 user_1 登录
 SELECT *
 FROM default.events_tenant_1
 
@@ -216,33 +216,33 @@ FROM default.events_tenant_1
 首先，让我们创建两个数据库，一个用于 `tenant_1`，另一个用于 `tenant_2`。
 
 ```sql
--- Create database for tenant_1
+-- 为 tenant_1 创建数据库
 CREATE DATABASE tenant_1;
 
--- Create database for tenant_2
+-- 为 tenant_2 创建数据库
 CREATE DATABASE tenant_2;
 ```
 
 ```sql
--- Create table for tenant_1
+-- 为 tenant_1 创建表
 CREATE TABLE tenant_1.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
 ORDER BY (timestamp, user_id);
 
--- Create table for tenant_2
+-- 为 tenant_2 创建表
 CREATE TABLE tenant_2.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -270,7 +270,7 @@ VALUES
 接下来，我们创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- Create users 
+-- 创建用户 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -278,7 +278,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 然后在相应的表上授予 `SELECT` 权限。
 
 ```sql
--- Grant read only to events table.
+-- 授予 events 表的只读权限。
 GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
@@ -286,7 +286,7 @@ GRANT SELECT ON tenant_2.events TO user_2
 现在，你可以以 `user_1` 身份连接，并在相应数据库中的 events 表上执行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
 
 ```sql
--- Logged as user_1
+-- 以 user_1 用户身份记录
 SELECT *
 FROM tenant_1.events
 
@@ -324,14 +324,14 @@ FROM tenant_1.events
 首先，让我们创建表 `events`
 
 ```sql
--- Create table for tenant_1
+-- 为 tenant_1 创建表
 CREATE TABLE events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- 唯一事件 ID
+    type LowCardinality(String), -- 事件类型
+    timestamp DateTime,          -- 事件的时间戳
+    user_id UInt32,               -- 触发事件的用户 ID
+    data String,                 -- 事件数据
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -351,21 +351,21 @@ VALUES
 然后创建两个用户 `user_1`
 
 ```sql
--- Create users 
+-- 创建用户 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
 然后为相应的表授予 `SELECT` 权限。
 
 ```sql
--- Grant read only to events table.
+-- 授予 user_1 对 events 表的只读权限。
 GRANT SELECT ON events TO user_1
 ```
 
 现在，你可以连接到租户 1 的服务上，以 `user_1` 身份运行一个简单的 SELECT 查询。结果中只会返回来自租户 1 的行。
 
 ```sql
--- Logged as user_1
+-- 以 user_1 登录
 SELECT *
 FROM events
 
