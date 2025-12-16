@@ -51,9 +51,9 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Используется для связывания трейсов от фронтенда с бэкенд-запросами
-    consoleCapture: true, // Собирать логи консоли (по умолчанию false)
-    advancedNetworkCapture: true, // Собирать полные HTTP-заголовки и тела запросов/ответов (по умолчанию false)
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+    consoleCapture: true, // Capture console logs (default false)
+    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
 });
 ```
 
@@ -75,7 +75,7 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // Используется для связывания трейсов от фронтенда с бэкенд-запросами
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });
 </script>
 ```
@@ -122,7 +122,7 @@ HyperDX.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // Другие пользовательские свойства...
+  // Other custom properties...
 });
 ```
 
@@ -133,11 +133,11 @@ React error boundary, передав ваш компонент error boundary
 в функцию `attachToReactErrorBoundary`.
 
 ```javascript
-// Импортируйте ErrorBoundary (в качестве примера используется react-error-boundary)
+// Import your ErrorBoundary (we're using react-error-boundary as an example)
 import { ErrorBoundary } from 'react-error-boundary';
 
-// Это подключится к компоненту ErrorBoundary и будет перехватывать все ошибки,
-// возникающие в любом его экземпляре.
+// This will hook into the ErrorBoundary component and capture any errors that occur
+// within any instance of it.
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
@@ -152,7 +152,7 @@ HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```javascript
 HyperDX.addAction('Form-Completed', {
   formId: 'signup-form',
-  formName: 'Форма регистрации',
+  formName: 'Signup Form',
   formType: 'signup',
 });
 ```
@@ -179,7 +179,7 @@ HyperDX.enableAdvancedNetworkCapture();
 var cors = require('cors');
 var onHeaders = require('on-headers');
 
-// ... весь ваш код
+// ... all your stuff
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {

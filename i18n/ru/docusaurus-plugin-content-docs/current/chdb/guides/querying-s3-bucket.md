@@ -97,14 +97,14 @@ SETTINGS output_format_pretty_row_numbers=0
 
 ```text
 ┌─_file───────────────────────────────┬────count─┬─readableCount───┐
-│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 28,03 млн       │
-│ amazon_reviews_1990s.snappy.parquet │   639532 │ 639,53 тыс.     │
-│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 6,11 млн        │
-│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 41,91 млн       │
-│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 11,54 млн       │
-│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 14,73 млн       │
-│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 44,13 млн       │
-│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 3,87 млн        │
+│ amazon_reviews_2013.snappy.parquet  │ 28034255 │ 28.03 million   │
+│ amazon_reviews_1990s.snappy.parquet │   639532 │ 639.53 thousand │
+│ amazon_reviews_2011.snappy.parquet  │  6112495 │ 6.11 million    │
+│ amazon_reviews_2015.snappy.parquet  │ 41905631 │ 41.91 million   │
+│ amazon_reviews_2012.snappy.parquet  │ 11541011 │ 11.54 million   │
+│ amazon_reviews_2000s.snappy.parquet │ 14728295 │ 14.73 million   │
+│ amazon_reviews_2014.snappy.parquet  │ 44127569 │ 44.13 million   │
+│ amazon_reviews_2010.snappy.parquet  │  3868472 │ 3.87 million    │
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
@@ -164,16 +164,16 @@ LIMIT 10
 
 ```text
     ┌─product_category─┬──reviews─┬──avg─┐
- 1. │ Игрушки          │  4864056 │ 4.21 │
- 2. │ Одежда           │  5906085 │ 4.11 │
- 3. │ Багаж            │   348644 │ 4.22 │
- 4. │ Кухня            │  4880297 │ 4.21 │
- 5. │ Книги            │ 19530930 │ 4.34 │
- 6. │ Товары для отдыха│  2302327 │ 4.24 │
- 7. │ Видео            │   380596 │ 4.19 │
- 8. │ Продукты         │  2402365 │ 4.31 │
- 9. │ Обувь            │  4366757 │ 4.24 │
-10. │ Ювелирные изделия│  1767667 │ 4.14 │
+ 1. │ Toys             │  4864056 │ 4.21 │
+ 2. │ Apparel          │  5906085 │ 4.11 │
+ 3. │ Luggage          │   348644 │ 4.22 │
+ 4. │ Kitchen          │  4880297 │ 4.21 │
+ 5. │ Books            │ 19530930 │ 4.34 │
+ 6. │ Outdoors         │  2302327 │ 4.24 │
+ 7. │ Video            │   380596 │ 4.19 │
+ 8. │ Grocery          │  2402365 │ 4.31 │
+ 9. │ Shoes            │  4366757 │ 4.24 │
+10. │ Jewelry          │  1767667 │ 4.14 │
     └──────────────────┴──────────┴──────┘
 ```
 

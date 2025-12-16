@@ -23,7 +23,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 句は任意です
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -160,13 +160,13 @@ ORDER BY [...]
 テーブル内のベクター列のストレージ使用量（非圧縮）:
 
 ```text
-ストレージ消費量 = ベクトル数 × 次元数 × カラムデータ型のサイズ
+Storage consumption = Number of vectors * Dimension * Size of column data type
 ```
 
 [dbpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
 
 ```text
-ストレージ消費量 = 100万 × 1536 × 4（Float32の場合）= 6.1 GB
+Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
 ベクトル類似度インデックスで検索を行うには、ディスクから主メモリに完全に読み込まれている必要があります。
@@ -175,19 +175,19 @@ ORDER BY [...]
 ベクトルインデックスをロードする際に必要なメモリ使用量:
 
 ```text
-インデックス内のベクトル用メモリ (mv) = ベクトル数 * 次元数 * 量子化データ型のサイズ
-インメモリグラフ用メモリ (mg) = ベクトル数 * hnsw_max_connections_per_layer * ノードIDあたりのバイト数 (= 4) * レイヤーノード繰り返し係数 (= 2)
+Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
+Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_layer * Bytes_per_node_id (= 4) * Layer_node_repetition_factor (= 2)
 
-メモリ消費量: mv + mg
+Memory consumption: mv + mg
 ```
 
 [DBpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
 
 ```text
-インデックス内のベクトル用メモリ (mv) = 100万 × 1536 × 2 (BFloat16の場合) = 3072 MB
-インメモリグラフ用メモリ (mg) = 100万 × 64 × 2 × 4 = 512 MB
+Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
+Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 
-メモリ消費量 = 3072 + 512 = 3584 MB
+Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 上記の式には、事前割り当てバッファやキャッシュなど、ベクトル類似性インデックスがランタイムのデータ構造を割り当てるために必要となる追加メモリは含まれていません。
@@ -204,7 +204,7 @@ ORDER BY [...]
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 句は任意
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -237,10 +237,10 @@ LIMIT 10;
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (プロジェクト名)                                                                      │
- 2. │   Limit (予備LIMIT (OFFSETなし))                                                    │
- 3. │     Sorting (ORDER BY用のソート)                                                              │
- 4. │       Expression ((ORDER BY前 + (射影 + 列名を列識別子に変更))) │
+ 1. │ Expression (Project names)                                                                      │
+ 2. │   Limit (preliminary LIMIT (without OFFSET))                                                    │
+ 3. │     Sorting (Sorting for ORDER BY)                                                              │
+ 4. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers))) │
  5. │         ReadFromMergeTree (default.tab)                                                         │
  6. │         Indexes:                                                                                │
  7. │           PrimaryKey                                                                            │
@@ -327,7 +327,7 @@ ClickHouse は、2025 年のパーティション以外をすべてプルーニ�
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代アジアの帝国に関する書籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 ```
 
@@ -379,15 +379,15 @@ SETTINGS vector_search_with_rescoring = 0
 Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (名前の射影)                                                                              │
+ 1. │ Expression (Project names)                                                                              │
  2. │ Header: id Int32                                                                                        │
- 3. │   Limit (予備的LIMIT(OFFSETなし))                                                            │
+ 3. │   Limit (preliminary LIMIT (without OFFSET))                                                            │
  4. │   Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64     │
  5. │           __table1.id Int32                                                                             │
- 6. │     Sorting (ORDER BYのソート)                                                                      │
+ 6. │     Sorting (Sorting for ORDER BY)                                                                      │
  7. │     Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64   │
  8. │             __table1.id Int32                                                                           │
- 9. │       Expression ((ORDER BY前 + (射影 + カラム名のカラム識別子への変更)))         │
+ 9. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers)))         │
 10. │       Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64 │
 11. │               __table1.id Int32                                                                         │
 12. │         ReadFromMergeTree (default.tab)                                                                 │

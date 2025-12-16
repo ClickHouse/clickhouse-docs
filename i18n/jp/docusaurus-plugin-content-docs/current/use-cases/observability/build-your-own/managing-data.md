@@ -53,8 +53,8 @@ ORDER BY c DESC
 │ 2019-01-25 │ 1821770 │
 └────────────┴─────────┘
 
-5行のセット。経過時間: 0.058秒。処理済み: 1037万行、82.92 MB (毎秒1億7796万行、1.42 GB/秒)
-ピークメモリ使用量: 4.41 MiB。
+5 rows in set. Elapsed: 0.058 sec. Processed 10.37 million rows, 82.92 MB (177.96 million rows/s., 1.42 GB/s.)
+Peak memory usage: 4.41 MiB.
 ```
 
 現在のパーティションは、システムテーブルに対する簡単なクエリで確認できます。
@@ -72,17 +72,17 @@ WHERE `table` = 'otel_logs'
 │ 2019-01-26 │
 └────────────┘
 
-5行が返されました。経過時間: 0.005秒。
+5 rows in set. Elapsed: 0.005 sec.
 ```
 
 古いデータの保存用に、`otel_logs_archive` という別のテーブルを用意しておくこともできます。データはパーティション単位で効率的にこのテーブルへ移動でき（メタデータの変更だけで済みます）、処理されます。
 
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
---アーカイブテーブルにデータを移動
+--move data to archive table
 ALTER TABLE otel_logs
         (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
---データが移動されたことを確認
+--confirm data has been moved
 SELECT
         Timestamp::Date AS day,
         count() AS c
@@ -97,8 +97,8 @@ ORDER BY c DESC
 │ 2019-01-25 │ 1821770 │
 └────────────┴─────────┘
 
-4行を取得。経過時間: 0.051秒。処理済み: 838万行、67.03 MB (1億6352万行/秒、1.31 GB/秒)
-ピークメモリ使用量: 4.40 MiB。
+4 rows in set. Elapsed: 0.051 sec. Processed 8.38 million rows, 67.03 MB (163.52 million rows/s., 1.31 GB/s.)
+Peak memory usage: 4.40 MiB.
 
 SELECT Timestamp::Date AS day,
         count() AS c
@@ -110,8 +110,8 @@ ORDER BY c DESC
 │ 2019-01-26 │ 1986456 │
 └────────────┴─────────┘
 
-1行を取得。経過時間: 0.024秒。処理済み: 199万行、15.89 MB (8386万行/秒、670.87 MB/秒)
-ピークメモリ使用量: 4.99 MiB。
+1 row in set. Elapsed: 0.024 sec. Processed 1.99 million rows, 15.89 MB (83.86 million rows/s., 670.87 MB/s.)
+Peak memory usage: 4.99 MiB.
 ```
 
 これは、`INSERT INTO SELECT` を使用してデータを新しい対象テーブルに書き換える必要がある他の手法とは対照的です。
@@ -392,7 +392,7 @@ LIMIT 5
 │   301  │   270212 │
 └────────┴──────────┘
 
-5行のセット。経過時間: 0.137秒。処理済み: 4146万行、82.92 MB (302.43百万行/秒、604.85 MB/秒)
+5 rows in set. Elapsed: 0.137 sec. Processed 41.46 million rows, 82.92 MB (302.43 million rows/s., 604.85 MB/s.)
 ```
 
 `merge` 関数の使用を避けつつ、複数のテーブルを統合した単一のテーブルをエンドユーザーに提供したい場合は、[Merge テーブルエンジン](/engines/table-engines/special/merge) を使用できます。以下でその例を示します。

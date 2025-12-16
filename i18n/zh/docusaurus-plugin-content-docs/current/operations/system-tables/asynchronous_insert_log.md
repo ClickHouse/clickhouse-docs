@@ -52,21 +52,21 @@ SELECT * FROM system.asynchronous_insert_log LIMIT 1 \G;
 结果：
 
 ```text
-主机名:                clickhouse.eu-central1.internal
-事件日期:              2023-06-08
-事件时间:              2023-06-08 10:08:53
-事件时间_微秒:         2023-06-08 10:08:53.199516
-查询:                  INSERT INTO public.data_guess (user_id, datasource_id, timestamp, path, type, num, str) FORMAT CSV
-数据库:                public
-表:                    data_guess
-格式:                  CSV
-查询_id:               b46cd4c4-0269-4d0b-99f5-d27668c6102e
-字节:                  133223
-异常:
-状态:                  Ok
-刷新时间:              2023-06-08 10:08:55
-刷新时间_微秒:         2023-06-08 10:08:55.139676
-刷新查询_id:           cd2c1e43-83f5-49dc-92e4-2fbc7f8d3716
+hostname:                clickhouse.eu-central1.internal
+event_date:              2023-06-08
+event_time:              2023-06-08 10:08:53
+event_time_microseconds: 2023-06-08 10:08:53.199516
+query:                   INSERT INTO public.data_guess (user_id, datasource_id, timestamp, path, type, num, str) FORMAT CSV
+database:                public
+table:                   data_guess
+format:                  CSV
+query_id:                b46cd4c4-0269-4d0b-99f5-d27668c6102e
+bytes:                   133223
+exception:
+status:                  Ok
+flush_time:              2023-06-08 10:08:55
+flush_time_microseconds: 2023-06-08 10:08:55.139676
+flush_query_id:          cd2c1e43-83f5-49dc-92e4-2fbc7f8d3716
 ```
 
 **另请参阅**

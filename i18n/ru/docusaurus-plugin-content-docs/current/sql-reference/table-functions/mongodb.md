@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-mongodb(хост:порт, база_данных, коллекция, пользователь, пароль, структура[, опции[, oid_столбцы]])
+mongodb(host:port, database, collection, user, password, structure[, options[, oid_columns]])
 ```
 
 ## Аргументы {#arguments}

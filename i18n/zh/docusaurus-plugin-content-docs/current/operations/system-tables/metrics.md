@@ -34,16 +34,16 @@ SELECT * FROM system.metrics LIMIT 10
 
 ```text
 ┌─metric───────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────┐
-│ Query                                │     1 │ 正在执行的查询数量                                            │
-│ Merge                                │     0 │ 正在执行的后台合并数量                                  │
-│ PartMutation                         │     0 │ 变更操作数量 (ALTER DELETE/UPDATE)                              │
-│ ReplicatedFetch                      │     0 │ 正在从副本拉取的数据分片数量                       │
-│ ReplicatedSend                       │     0 │ 正在发送至副本的数据分片数量                            │
-│ ReplicatedChecks                     │     0 │ 正在进行一致性检查的数据分片数量                          │
-│ BackgroundMergesAndMutationsPoolTask │     0 │ 关联后台池中活跃的合并和变更任务数量 │
-│ BackgroundFetchesPoolTask            │     0 │ 关联后台池中活跃的拉取任务数量              │
-│ BackgroundCommonPoolTask             │     0 │ 关联后台池中活跃的任务数量                │
-│ BackgroundMovePoolTask               │     0 │ BackgroundProcessingPool 中用于移动操作的活跃任务数量           │
+│ Query                                │     1 │ Number of executing queries                                            │
+│ Merge                                │     0 │ Number of executing background merges                                  │
+│ PartMutation                         │     0 │ Number of mutations (ALTER DELETE/UPDATE)                              │
+│ ReplicatedFetch                      │     0 │ Number of data parts being fetched from replicas                       │
+│ ReplicatedSend                       │     0 │ Number of data parts being sent to replicas                            │
+│ ReplicatedChecks                     │     0 │ Number of data parts checking for consistency                          │
+│ BackgroundMergesAndMutationsPoolTask │     0 │ Number of active merges and mutations in an associated background pool │
+│ BackgroundFetchesPoolTask            │     0 │ Number of active fetches in an associated background pool              │
+│ BackgroundCommonPoolTask             │     0 │ Number of active tasks in an associated background pool                │
+│ BackgroundMovePoolTask               │     0 │ Number of active tasks in BackgroundProcessingPool for moves           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
 

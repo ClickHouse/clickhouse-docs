@@ -137,7 +137,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 ClickHouse には、異なるデータ型同士を変換するための一連の関数も用意されています。
 
-たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#todate) を使って、`DateTime` の値を `Date` 型に変換できます。
+たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#toDate) を使って、`DateTime` の値を `Date` 型に変換できます。
 
 ```sql
 SELECT
@@ -157,7 +157,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-[`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) を使用して、`DateTime` を `DateTime64` に変換できます。
+[`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) を使用して、`DateTime` を `DateTime64` に変換できます。
 
 ```sql
 SELECT
@@ -177,7 +177,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-[`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) を使用すると、`Date` または `DateTime64` から `DateTime` に変換し直すことができます。
+[`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) を使用すると、`Date` または `DateTime64` から `DateTime` に変換し直すことができます。
 
 ```sql
 SELECT

@@ -25,15 +25,15 @@ SET apply_mutations_on_fly = 1;
 CREATE TABLE test_on_fly_mutations (id UInt64, v String)
 ENGINE = MergeTree ORDER BY id;
 
--- 禁用后台 mutation 物化以演示
--- 未启用即时 mutation 时的默认行为
+-- Disable background materialization of mutations to showcase
+-- default behavior when on-the-fly mutations are not enabled
 SYSTEM STOP MERGES test_on_fly_mutations;
 SET mutations_sync = 0;
 
--- 向新表中插入若干行数据
+-- Insert some rows in our new table
 INSERT INTO test_on_fly_mutations VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
--- 更新行中的值
+-- Update the values of the rows
 ALTER TABLE test_on_fly_mutations UPDATE v = 'd' WHERE id = 1;
 ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'd';
 ALTER TABLE test_on_fly_mutations UPDATE v = 'e' WHERE id = 2;
@@ -43,7 +43,7 @@ ALTER TABLE test_on_fly_mutations DELETE WHERE v = 'e';
 让我们通过执行一条 `SELECT` 查询来检查更新的结果：
 
 ```sql
--- 显式禁用即时变更
+-- Explicitly disable on-the-fly-mutations
 SET apply_mutations_on_fly = 0;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;
@@ -62,7 +62,7 @@ SELECT id, v FROM test_on_fly_mutations ORDER BY id;
 现在来看一下启用即时变更后会发生什么：
 
 ```sql
--- 启用即时变更
+-- Enable on-the-fly mutations
 SET apply_mutations_on_fly = 1;
 
 SELECT id, v FROM test_on_fly_mutations ORDER BY id;

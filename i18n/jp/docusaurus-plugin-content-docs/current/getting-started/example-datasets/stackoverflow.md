@@ -250,7 +250,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# 以下は入力XMLファイルを10000行ごとのサブファイルに分割します {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
+# the following splits the input xml file into sub files of 10000 rows
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -323,8 +323,8 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-5行を取得しました。経過時間: 0.154秒。処理済み: 3,583万行、193.39 MB (毎秒2億3,233万行、1.25 GB/秒)
-ピークメモリ使用量: 206.45 MiB。
+5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
+Peak memory usage: 206.45 MiB.
 ```
 
 ### 閲覧数が多い ClickHouse 関連記事 {#clickhouse-related-posts-with-the-most-views}
@@ -341,20 +341,20 @@ ORDER BY ViewCount DESC
 LIMIT 10
 
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
-│ 52355143 │ ClickHouseテーブルから古いレコードを削除することは可能ですか?                      │     41462 │           3 │
-│ 37954203 │ ClickHouseデータインポート                                                           │     38735 │           3 │
-│ 37901642 │ ClickHouseでのデータ更新                                                      │     36236 │           6 │
-│ 58422110 │ Pandas: データフレームをClickHouseに挿入する方法                                  │     29731 │           4 │
-│ 63621318 │ DBeaver - ClickHouse - SQLエラー [159] .. 読み取りタイムアウト                         │     27350 │           1 │
-│ 47591813 │ 配列カラムの内容でClickHouseテーブルをフィルタリングする方法は?                         │     27078 │           2 │
-│ 58728436 │ ClickHouseデータベースで大文字小文字を区別せずにクエリ内の文字列を検索する方法は?  │     26567 │           3 │
-│ 65316905 │ ClickHouse: DB::Exception: メモリ制限(クエリ用)を超過しました                     │     24899 │           2 │
-│ 49944865 │ ClickHouseでカラムを追加する方法                                                │     24424 │           1 │
-│ 59712399 │ ClickHouseで拡張解析を使用して日付文字列をDateTime形式にキャストする方法は? │     22620 │           1 │
+│ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
+│ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
+│ 37901642 │ Updating data in Clickhouse                                                      │     36236 │           6 │
+│ 58422110 │ Pandas: How to insert dataframe into Clickhouse                                  │     29731 │           4 │
+│ 63621318 │ DBeaver - Clickhouse - SQL Error [159] .. Read timed out                         │     27350 │           1 │
+│ 47591813 │ How to filter clickhouse table by array column contents?                         │     27078 │           2 │
+│ 58728436 │ How to search the string in query with case insensitive on Clickhouse database?  │     26567 │           3 │
+│ 65316905 │ Clickhouse: DB::Exception: Memory limit (for query) exceeded                     │     24899 │           2 │
+│ 49944865 │ How to add a column in clickhouse                                                │     24424 │           1 │
+│ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-10行を取得しました。経過時間: 0.472秒。処理済み: 5982万行、1.91 GB (1億2663万行/秒、4.03 GB/秒)
-ピークメモリ使用量: 240.01 MiB。
+10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
+Peak memory usage: 240.01 MiB.
 ```
 
 ### 最も物議を醸した投稿 {#most-controversial-posts}
@@ -382,13 +382,13 @@ ORDER BY Controversial_ratio ASC
 LIMIT 3
 
 ┌───────Id─┬─Title─────────────────────────────────────────────┬─UpVotes─┬─DownVotes─┬─Controversial_ratio─┐
-│   583177 │ VB.NET 無限Forループ                               │      12 │        12 │                   0 │
-│  9756797 │ コンソール入力を列挙可能として読み取る - 1つのステートメント? │      16 │        16 │                   0 │
-│ 13329132 │ RubyにおけるARGVの意義とは?                        │      22 │        22 │                   0 │
+│   583177 │ VB.NET Infinite For Loop                          │      12 │        12 │                   0 │
+│  9756797 │ Read console input as enumerable - one statement? │      16 │        16 │                   0 │
+│ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-3行を取得。経過時間: 4.779秒。処理: 2億9880万行、3.16 GB (6252万行/秒、661.05 MB/秒)
-ピークメモリ使用量: 6.05 GiB。
+3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
+Peak memory usage: 6.05 GiB.
 ```
 
 ## 謝辞 {#attribution}

@@ -31,7 +31,7 @@ SELECT * FROM file(data.tmp, Form) FORMAT vertical;
 ```
 
 ```response title="Response"
-Строка 1:
+Row 1:
 ──────
 t_page:   116
 c.e:      ls7xfkpm

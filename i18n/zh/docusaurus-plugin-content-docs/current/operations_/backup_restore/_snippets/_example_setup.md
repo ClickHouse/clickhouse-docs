@@ -53,13 +53,13 @@ FROM numbers(1000);
         <disks>
             <backups>
                 <type>local</type>
-                <path>/backups/</path> -- 在 MacOS 上使用：/Users/backups/
+                <path>/backups/</path> -- for MacOS choose: /Users/backups/
             </backups>
         </disks>
     </storage_configuration>
     <backups>
         <allowed_disk>backups</allowed_disk>
-        <allowed_path>/backups/</allowed_path> -- 在 MacOS 上使用：/Users/backups/
+        <allowed_path>/backups/</allowed_path> -- for MacOS choose: /Users/backups/
     </backups>
 </clickhouse>
 ```

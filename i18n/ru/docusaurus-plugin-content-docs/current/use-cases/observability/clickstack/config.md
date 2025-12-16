@@ -39,7 +39,7 @@ services:
     environment:
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      # ... прочие настройки
+      # ... other settings
 ```
 
 ### Helm {#helm}

@@ -72,7 +72,7 @@ FROM salaries;
 Результат:
 
 ```response
-   ┌─игрок───────────┬─зарплата─┬─самый_высокооплачиваемый_игрок─┐
+   ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │
 3. │ Charles Juarez  │ 190000 │ Gary Chen           │
@@ -80,5 +80,5 @@ FROM salaries;
 5. │ Douglas Benson  │ 150000 │ Gary Chen           │
 6. │ James Henderson │ 140000 │ Gary Chen           │
 7. │ Michael Stanley │ 100000 │ Gary Chen           │
-   └─────────────────┴──────────┴─────────────────────────────────┘
+   └─────────────────┴────────┴─────────────────────┘
 ```

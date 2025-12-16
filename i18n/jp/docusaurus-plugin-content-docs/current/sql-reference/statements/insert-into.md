@@ -88,7 +88,7 @@ ClickHouse は、データの前にあるすべてのスペースと、（存在
 
 ```sql
 INSERT INTO t FORMAT TabSeparated
-11  こんにちは、世界！
+11  Hello, world!
 22  Qwerty
 ```
 
@@ -208,7 +208,7 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 ```sql
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
-    VALUES (100, 'remote()経由で挿入');
+    VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 

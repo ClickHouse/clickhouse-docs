@@ -102,8 +102,8 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid');
 
-SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --输出结果为 1。
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --输出结果为 0
+SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will output 1.
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
 在这种情况下，输出将是 `0`，因为 ClickHouse 并不知道列 `another_oid_column` 的类型是 `oid`，所以我们来修正一下：
@@ -115,7 +115,7 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid', '_id,another_oid_column');
 
--- 或
+-- or
 
 CREATE TABLE sample_oid
 (
@@ -123,7 +123,7 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('host', 'db', 'sample_oid', 'user', 'pass', '', '_id,another_oid_column');
 
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- 现在将输出 1
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
 ## 支持的子句 {#supported-clauses}
@@ -183,10 +183,10 @@ SELECT count() FROM sample_mflix_table
 ```
 
 ```sql
--- JSONExtractString 无法下推至 MongoDB
+-- JSONExtractString cannot be pushed down to MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
--- 查找评分 > 7.5 的所有《回到未来》系列电影
+-- Find all 'Back to the Future' sequels with rating > 7.5
 SELECT title, plot, genres, directors, released FROM sample_mflix_table
 WHERE title IN ('Back to the Future', 'Back to the Future Part II', 'Back to the Future Part III')
     AND toFloat32(JSONExtractString(imdb, 'rating')) > 7.5
@@ -198,7 +198,7 @@ FORMAT Vertical;
 Row 1:
 ──────
 title:     Back to the Future
-plot:      一个年轻人意外地被他的朋友埃米特·布朗博士发明的时光旅行DeLorean汽车送回到30年前,他必须确保他高中时期的父母结合,以保证自己的存在。
+plot:      A young man is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown, and must make sure his high-school-age parents unite in order to save his own existence.
 genres:    ['Adventure','Comedy','Sci-Fi']
 directors: ['Robert Zemeckis']
 released:  1985-07-03
@@ -206,14 +206,14 @@ released:  1985-07-03
 Row 2:
 ──────
 title:     Back to the Future Part II
-plot:      在访问2015年之后,马蒂·麦克弗莱必须再次回到1955年,以防止1985年发生灾难性的变化……同时不能干扰他的第一次旅行。
+plot:      After visiting 2015, Marty McFly must repeat his visit to 1955 to prevent disastrous changes to 1985... without interfering with his first trip.
 genres:    ['Action','Adventure','Comedy']
 directors: ['Robert Zemeckis']
 released:  1989-11-22
 ```
 
 ```sql
--- 查找基于 Cormac McCarthy 作品改编的前 3 部电影
+-- Find top 3 movies based on Cormac McCarthy's books
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) AS rating
 FROM sample_mflix_table
 WHERE arrayExists(x -> x LIKE 'Cormac McCarthy%', writers)
@@ -222,10 +222,10 @@ LIMIT 3;
 ```
 
 ```text
-   ┌─标题───────────────────┬─评分───┐
-1. │ 老无所依               │    8.1 │
-2. │ 日落有限公司           │    7.4 │
-3. │ 末日危途               │    7.3 │
+   ┌─title──────────────────┬─rating─┐
+1. │ No Country for Old Men │    8.1 │
+2. │ The Sunset Limited     │    7.4 │
+3. │ The Road               │    7.3 │
    └────────────────────────┴────────┘
 ```
 

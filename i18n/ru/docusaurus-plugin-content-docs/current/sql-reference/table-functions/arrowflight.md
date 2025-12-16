@@ -14,7 +14,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-arrowFlight('хост:порт', 'имя_набора_данных' [, 'имя_пользователя', 'пароль'])
+arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 ```
 
 **Аргументы**

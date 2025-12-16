@@ -40,9 +40,9 @@ ClickHouse MCP Server を追加すると、さらに面白くなります。
 ```toml
 [features.mcp.stdio]
     enabled = true
-    # 許可リストに登録された実行可能ファイルのみMCP stdioサーバーで使用できます。
-    # 実行可能ファイルのベース名のみを指定してください（例: "npx"。"/usr/bin/npx"ではありません）。
-    # 実行可能ファイル名の解析に必要なため、現時点ではこの行をコメントアウトしないでください。
+    # Only the executables in the allow list can be used for MCP stdio server.
+    # Only need the base name of the executable, e.g. "npx", not "/usr/bin/npx".
+    # Please don't comment this line for now, we need it to parse the executable name.
     allowed_executables = [ "npx", "uvx", "uv" ]
 ```
 

@@ -78,32 +78,32 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ b            │      3 │ -- argMax = 'b',因为它是第一个非 NULL 值,max(b) 来自另一行!
+│ b            │      3 │ -- argMax = 'b' because it the first not Null value, max(b) is from another row!
 └──────────────┴────────┘
 
 SELECT argMax(tuple(a), b) FROM test;
 ┌─argMax(tuple(a), b)─┐
-│ (NULL)              │ -- 仅包含一个 `NULL` 值的 `Tuple` 本身不是 `NULL`,因此聚合函数不会因该 `NULL` 值而跳过该行
+│ (NULL)              │ -- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └─────────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA─┬─argMaxB─┐
-│ ᴺᵁᴸᴸ    │       3 │ -- 可以使用 Tuple 获取对应 max(b) 的两列(全部列 - tuple(*))
+│ ᴺᵁᴸᴸ    │       3 │ -- you can use Tuple and get both (all - tuple(*)) columns for the according max(b)
 └─────────┴─────────┘
 
 SELECT argMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argMax(a, b)─┬─max(b)─┐
-│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- 由于过滤条件,所有聚合行都至少包含一个 `NULL` 值,因此所有行都被跳过,结果为 `NULL`
+│ ᴺᵁᴸᴸ         │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └──────────────┴────────┘
 
 SELECT argMax(a, (b,a)) FROM test;
 ┌─argMax(a, tuple(b, a))─┐
-│ c                      │ -- 有两行 b=2,在 `Max` 中使用 `Tuple` 可以获取非第一个 `arg`
+│ c                      │ -- There are two rows with b=2, `Tuple` in the `Max` allows to get not the first `arg`
 └────────────────────────┘
 
 SELECT argMax(a, tuple(b)) FROM test;
 ┌─argMax(a, tuple(b))─┐
-│ b                   │ -- 可以在 `Max` 中使用 `Tuple` 以避免跳过 NULL 值
+│ b                   │ -- `Tuple` can be used in `Max` to not skip Nulls in `Max`
 └─────────────────────┘
 ```
 

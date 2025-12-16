@@ -135,10 +135,10 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    あなたはClickHouseアシスタントです。ClickHouseを使用したデータのクエリと理解をサポートしてください。
-                    - ClickHouse MCPツールを使用してSQLクエリを実行してください
-                    - 該当する場合は結果をマークダウンテーブル形式で表示してください
-                    - 出力は簡潔で有用、かつ適切にフォーマットされた状態を保ってください
+                    You are a ClickHouse assistant. Help users query and understand data using ClickHouse.
+                    - Run SQL queries using the ClickHouse MCP tool
+                    - Present results in markdown tables when relevant
+                    - Keep output concise, useful, and well-formatted
                 """),
                 markdown=True,
                 show_tool_calls=True,
@@ -161,7 +161,7 @@ def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # ストリーム終了のセンチネル
+        queue.put(None)  # Sentinel to end stream
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -179,9 +179,9 @@ async def _agent_stream_to_queue(message, queue):
 Streamlit の UI コンポーネントとチャット機能を追加します。
 
 ```python
-st.title("ClickHouseを基盤としたAIエージェント")
+st.title("A ClickHouse-backed AI agent")
 
-if st.button("💬 新しいチャット"):
+if st.button("💬 New Chat"):
   st.session_state.messages = []
   st.rerun()
 
@@ -194,7 +194,7 @@ for message in st.session_state.messages:
   with st.chat_message(message["role"]):
     st.markdown(message["content"])
 
-if prompt := st.chat_input("何かご質問はありますか?"):
+if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.chat_message("user"):
     st.markdown(prompt)

@@ -127,7 +127,7 @@ ALTER TABLE test DELETE WHERE key LIKE 'some%' AND v1 > 1;
 ```
 
 ```sql
-テーブル test の全データを削除;
+TRUNCATE TABLE test;
 ```
 
 ### 更新 {#updates}

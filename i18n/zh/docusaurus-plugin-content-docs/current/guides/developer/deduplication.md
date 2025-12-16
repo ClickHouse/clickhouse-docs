@@ -66,8 +66,8 @@ INSERT INTO hackernews_rmt VALUES
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', '这是帖子 #1', 100),
-   (2, 'ch_fan', '这是帖子 #2', 200)
+   (1, 'ricardo', 'This is post #1', 100),
+   (2, 'ch_fan', 'This is post #2', 200)
 ```
 
 该表现在包含 4 行数据：
@@ -79,12 +79,12 @@ FROM hackernews_rmt
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是帖子 #2 │     0 │
-│  1 │ ricardo │ 这是帖子 #1 │     0 │
+│  2 │ ch_fan  │ This is post #2 │     0 │
+│  1 │ ricardo │ This is post #1 │     0 │
 └────┴─────────┴─────────────────┴───────┘
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是帖子 #2 │   200 │
-│  1 │ ricardo │ 这是帖子 #1 │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -98,8 +98,8 @@ FINAL
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是第 2 条帖子  │   200 │
-│  1 │ ricardo │ 这是第 1 条帖子  │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -157,8 +157,8 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ 这是第 2 篇帖子 │        250 │
-│  1 │ ricardo │ 这是第 1 篇帖子 │        150 │
+│  2 │ ch_fan  │ This is post #2 │        250 │
+│  1 │ ricardo │ This is post #1 │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 

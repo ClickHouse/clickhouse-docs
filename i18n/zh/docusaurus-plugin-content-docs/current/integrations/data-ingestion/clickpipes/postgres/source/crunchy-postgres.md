@@ -20,9 +20,9 @@ ClickPipes 支持 Postgres 12 及更高版本。
 Crunchy Bridge 默认已[启用](https://docs.crunchybridge.com/how-to/logical-replication)逻辑复制。请确保以下设置配置正确；如有不符，请进行相应调整。
 
 ```sql
-SHOW wal_level; -- 应为 logical
-SHOW max_wal_senders; -- 应为 10
-SHOW max_replication_slots; -- 应为 10
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## 创建 ClickPipes 用户并授予权限 {#creating-clickpipes-user-and-granting-permissions}

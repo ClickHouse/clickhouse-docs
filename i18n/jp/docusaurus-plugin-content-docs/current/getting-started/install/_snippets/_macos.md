@@ -73,13 +73,13 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 これで `clickhouse` 実行ファイルを実行できるようになったはずです。
 
 ```shell
-ClickHouse
+clickhouse
 ```
 
 次のような出力が得られるはずです:
 
 ```bash
-以下のいずれかのコマンドを使用します：
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]

@@ -52,12 +52,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   mkdir cluster_2S_1R
   cd cluster_2S_1R
 
-  # clickhouse-keeperディレクトリを作成
+  # Create clickhouse-keeper directories
   for i in {01..03}; do
     mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
   done
 
-  # clickhouse-serverディレクトリを作成
+  # Create clickhouse-server directories
   for i in {01..02}; do
     mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
   done
@@ -113,7 +113,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
         cluster_2S_1R:
           ipv4_address: 192.168.7.5
       volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - ${PWD}/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
       ports:
           - "127.0.0.1:9181:9181"
     clickhouse-keeper-02:
@@ -125,7 +125,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
         cluster_2S_1R:
           ipv4_address: 192.168.7.6
       volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - ${PWD}/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
       ports:
           - "127.0.0.1:9182:9181"
     clickhouse-keeper-03:
@@ -137,7 +137,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
         cluster_2S_1R:
           ipv4_address: 192.168.7.7
       volumes:
-       - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
+      - ${PWD}/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml:/etc/clickhouse-keeper/keeper_config.xml
       ports:
           - "127.0.0.1:9183:9181"
   networks:
@@ -409,54 +409,54 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   `cluster_2S_1R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスタを起動します:
 
   ```bash
-  docker-compose up -d
-  ```
+docker-compose up -d
+```
 
   dockerがClickHouseとKeeperのイメージをプルし、
   その後コンテナを起動する様子が確認できます:
 
   ```bash
   [+] Running 6/6
-   ✔ Network cluster_2s_1r_default   Created
-   ✔ Container clickhouse-keeper-03  Started
-   ✔ Container clickhouse-keeper-02  Started
-   ✔ Container clickhouse-keeper-01  Started
-   ✔ Container clickhouse-01         Started
-   ✔ Container clickhouse-02         Started
+  ✔ Network cluster_2s_1r_default   Created
+  ✔ Container clickhouse-keeper-03  Started
+  ✔ Container clickhouse-keeper-02  Started
+  ✔ Container clickhouse-keeper-01  Started
+  ✔ Container clickhouse-01         Started
+  ✔ Container clickhouse-02         Started
   ```
 
   クラスタが稼働していることを確認するには、`clickhouse-01` または `clickhouse-02` のいずれかに接続し、以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
 
   ```bash
-  # 任意のノードに接続
+  # Connect to any node
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
   成功すると、ClickHouseクライアントのプロンプトが表示されます：
 
   ```response
-  cluster_2S_1R node 1 :)
-  ```
+cluster_2S_1R node 1 :)
+```
 
   以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します：
 
   ```sql title="Query"
-  SELECT 
-      cluster,
-      shard_num,
-      replica_num,
-      host_name,
-      port
-  FROM system.clusters;
-  ```
+SELECT 
+    cluster,
+    shard_num,
+    replica_num,
+    host_name,
+    port
+FROM system.clusters;
+```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
-  1. │ cluster_2S_1R │         1 │           1 │ clickhouse-01 │ 9000 │
-  2. │ cluster_2S_1R │         2 │           1 │ clickhouse-02 │ 9000 │
-  3. │ default       │         1 │           1 │ localhost     │ 9000 │
-     └───────────────┴───────────┴─────────────┴───────────────┴──────┘
-  ```
+   ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+1. │ cluster_2S_1R │         1 │           1 │ clickhouse-01 │ 9000 │
+2. │ cluster_2S_1R │         2 │           1 │ clickhouse-02 │ 9000 │
+3. │ default       │         1 │           1 │ localhost     │ 9000 │
+   └───────────────┴───────────┴─────────────┴───────────────┴──────┘
+```
 
   以下のクエリを実行して、ClickHouse Keeperクラスタのステータスを確認します：
 
@@ -467,12 +467,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
+    ┌─name───────┬─value─┬─path────────┐
   1. │ task_queue │       │ /clickhouse │
   2. │ sessions   │       │ /clickhouse │
   3. │ clickhouse │       │ /           │
   4. │ keeper     │       │ /           │
-     └────────────┴───────┴─────────────┘
+    └────────────┴───────┴─────────────┘
   ```
 
   <VerifyKeeperStatus />
@@ -498,12 +498,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────────────┐
+    ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
-     └────────────────────┘
+    └────────────────────┘
   ```
 
   `clickhouse-01` クライアントから、`ON CLUSTER` 句を使用して以下の**分散型** DDL クエリを実行し、`uk` という名前の新しいデータベースを作成します：
@@ -521,14 +521,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌─name───────────────┐
+    ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
   #highlight-next-line
   5. │ uk                 │
-     └────────────────────┘
+    └────────────────────┘
   ```
 
   ## クラスタ上にテーブルを作成する
@@ -571,9 +571,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name────────────────┐
+    ┌─name────────────────┐
   1. │ uk_price_paid_local │
-     └─────────────────────┘
+    └─────────────────────┘
   ```
 
   英国の不動産取引価格データを挿入する前に、各ホストから通常のテーブルにデータを挿入した際の動作を確認するため、簡単な実験を実施します。
@@ -606,13 +606,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   次に、`clickhouse-01` または `clickhouse-02` から以下のクエリを実行してください:
 
   ```sql
-  -- clickhouse-01 から
+  -- from clickhouse-01
   SELECT * FROM test.test_table;
   --   ┌─id─┬─name───────────────┐
   -- 1.│  1 │ Clicky McClickface │
   --   └────┴────────────────────┘
 
-  -- clickhouse-02 から
+  --from clickhouse-02
   SELECT * FROM test.test_table;
   --   ┌─id─┬─name───────────────┐
   -- 1.│  1 │ Alexey Milovidov   │
@@ -643,11 +643,11 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
-  ┌─id─┬─name───────────────┐
+    ```sql
+    ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │
-     └────┴────────────────────┘
+    └────┴────────────────────┘
   ```
 
   UK不動産価格データについても同様に実行します。任意のホストクライアントから、
@@ -710,22 +710,22 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021万
-     └──────────┘
+    ┌──count()─┐
+  1. │ 30212555 │ -- 30.21 million
+    └──────────┘
   ```
 
   いずれかのホストで以下のクエリを実行すると、データがシャード間でほぼ均等に分散されていることが確認できます（挿入先のシャードの選択は `rand()` で設定されているため、結果が異なる可能性があります）:
 
   ```sql
-  -- clickhouse-01 より
+  -- from clickhouse-01
   SELECT count(*)
   FROM uk.uk_price_paid_local
   --    ┌──count()─┐
   -- 1. │ 15107353 │ -- 15.11 million
   --    └──────────┘
 
-  -- clickhouse-02 より
+  --from clickhouse-02
   SELECT count(*)
   FROM uk.uk_price_paid_local
   --    ┌──count()─┐
@@ -761,15 +761,15 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  サーバーから例外を受信しました (version 25.5.2):
-  Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: すべての接続試行が失敗しました。Log:
+  Received exception from server (version 25.5.2):
+  Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: All connection tries failed. Log:
 
-  Code: 32. DB::Exception: ファイル終端後の読み取り試行。(ATTEMPT_TO_READ_AFTER_EOF) (version 25.5.2.47 (official build))
-  Code: 209. DB::NetException: Timeout: 接続タイムアウト: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET_TIMEOUT) (version 25.5.2.47 (official build))
+  Code: 32. DB::Exception: Attempt to read after eof. (ATTEMPT_TO_READ_AFTER_EOF) (version 25.5.2.47 (official build))
+  Code: 209. DB::NetException: Timeout: connect timed out: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET_TIMEOUT) (version 25.5.2.47 (official build))
   #highlight-next-line
-  Code: 198. DB::NetException: ホストのアドレスが見つかりません: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS_ERROR) (version 25.5.2.47 (official build))
+  Code: 198. DB::NetException: Not found address of host: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS_ERROR) (version 25.5.2.47 (official build))
 
-  : Remote 実行中。(ALL_CONNECTION_TRIES_FAILED)
+  : While executing Remote. (ALL_CONNECTION_TRIES_FAILED)
   ```
 
   残念ながら、このクラスタには耐障害性がありません。ホストの1つに障害が発生すると、クラスタは異常状態と見なされ、クエリは失敗します。これは、[前の例](/architecture/replication)で見たレプリケーテッドテーブルとは対照的です。レプリケーテッドテーブルでは、ホストの1つに障害が発生してもデータを挿入できました。

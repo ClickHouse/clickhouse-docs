@@ -49,7 +49,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 その結果、データはファイル `test.tsv` に書き込まれます。
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
+# cat /var/lib/clickhouse/user_files/test.tsv
 1    2    3
 3    2    1
 1    3    2
@@ -69,8 +69,14 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 その結果、データは次の3つのファイルに書き込まれます：`test_1.tsv`、`test_2.tsv`、`test_3.tsv`。
 
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
+# cat /var/lib/clickhouse/user_files/test_1.tsv
 3    2    1
+
+# cat /var/lib/clickhouse/user_files/test_2.tsv
+1    3    2
+
+# cat /var/lib/clickhouse/user_files/test_3.tsv
+1    2    3
 ```
 
 # cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
@@ -79,15 +85,6 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 # cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
-
-```
-```
-
-## ファイルから読み込む例 {#examples-for-reading-from-a-file}
-
-### CSV ファイルからの SELECT {#select-from-a-csv-file}
-
-まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
@@ -99,13 +96,19 @@ $ cat /var/lib/clickhouse/user_files/test.csv
     78,43,45
 ```
 
-次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
+## ファイルから読み込む例 {#examples-for-reading-from-a-file}
+
+### CSV ファイルからの SELECT {#select-from-a-csv-file}
+
+まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
 ```sql
 SELECT * FROM
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 LIMIT 2;
 ```
+
+次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
 
 ```text
 ┌─column1─┬─column2─┬─column3─┐
@@ -114,13 +117,13 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
-
 ```sql
 INSERT INTO FUNCTION
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 VALUES (1, 2, 3), (3, 2, 1);
 ```
+
+### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 SELECT * FROM
@@ -134,10 +137,14 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
+```sql
+SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
+```
+
 `archive1.zip` および/または `archive2.zip` に含まれている `table.csv` からデータを読み込む:
 
 ```sql
-SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
+SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
 ```
 
 ## パス内のグロブ {#globs-in-path}
@@ -168,19 +175,19 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 すべてのファイルに含まれる行数の合計を問い合わせます：
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
 同じ結果が得られる別のパス式:
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 ```
 
 暗黙的な `*` を用いて、`some_dir` の総行数を取得します:
 
 ```sql
-SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
 ```
 
 :::note
@@ -192,7 +199,7 @@ SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 `file000`、`file001`、...、`file999` という名前のファイルに含まれる行数の合計をクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
@@ -200,7 +207,7 @@ SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String,
 `big_dir/` ディレクトリ配下のすべてのファイルに対して、再帰的に行数の合計をクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
@@ -208,7 +215,7 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ディレクトリ `big_dir/` 以下のすべてのフォルダに含まれる `file002` ファイルの全行数を、再帰的にクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
+SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
 ## 仮想カラム {#virtual-columns}

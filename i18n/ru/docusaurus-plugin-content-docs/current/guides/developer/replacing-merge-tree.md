@@ -42,7 +42,7 @@ ReplacingMergeTree дополнительно позволяет указать 
 <br />
 
 ```sql
-Таблица SYSTEM SYNC REPLICA
+SYSTEM SYNC REPLICA table
 ```
 
 Мы рекомендуем приостановить вставки после того, как выполнение условия (1) гарантировано, и до завершения этой команды и последующей очистки.
@@ -108,7 +108,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
 
-0 строк в наборе. Время: 1,980 с. Обработано 8,19 тыс. строк, 3,52 МБ (4,14 тыс. строк/с, 1,78 МБ/с).
+0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
 Давайте проверим количество строк:
@@ -120,7 +120,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 │   10000 │
 └─────────┘
 
-1 строка в наборе. Время выполнения: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Теперь обновим нашу статистику по публикациям и ответам. Вместо того чтобы изменять существующие значения, мы вставляем новые копии 5000 строк и увеличиваем их номер версии на единицу (это означает, что в таблице будет существовать 150 строк). Это можно смоделировать с помощью простого `INSERT INTO SELECT`:
@@ -151,11 +151,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --выбор 100 случайных строк
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-0 строк в результирующем наборе. Время выполнения: 4.056 с. Обработано 1.42 млн строк, 2.20 ГБ (349.63 тыс. строк/с, 543.39 МБ/с).
+0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
 Кроме того, мы удаляем 1000 случайных постов, повторно вставляя строки, но уже со значением столбца `deleted`, равным 1. Это также можно смоделировать с помощью простого `INSERT INTO SELECT`.
@@ -186,11 +186,11 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --выборка 100 случайных строк
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-0 строк в наборе. Прошло: 0.166 сек. Обработано 135.53 тыс. строк, 212.65 МБ (816.30 тыс. строк/с, 1.28 ГБ/с.)
+0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
 Результатом вышеописанных операций будет 16 000 строк, т.е. 10 000 + 5 000 + 1 000. Однако правильный итог должен быть таким: у нас должно быть всего на 1 000 строк меньше исходного количества, т.е. 10 000 − 1 000 = 9 000.
@@ -202,7 +202,7 @@ FROM posts_updateable
 ┌─count()─┐
 │   10000 │
 └─────────┘
-1 строка в выборке. Затрачено: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Ваши результаты здесь будут различаться в зависимости от выполненных слияний. Мы видим, что общий итог отличается, так как у нас есть дублирующиеся строки. Применение `FINAL` к таблице даёт корректный результат.
@@ -216,8 +216,8 @@ FINAL
 │    9000 │
 └─────────┘
 
-1 строка в наборе. Время выполнения: 0.006 сек. Обработано 11.81 тысячи строк, 212.54 KB (2.14 миллиона строк/с, 38.61 MB/с.)
-Пиковое потребление памяти: 8.14 MiB.
+1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
+Peak memory usage: 8.14 MiB.
 ```
 
 ## Производительность с `FINAL` {#final-performance}
@@ -252,7 +252,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-0 строк в наборе. Время: 182.895 сек. Обработано 59.82 млн строк, 38.07 ГБ (327.07 тыс. строк/с., 208.17 МБ/с.)
+0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
 Чтобы гарантировать, что `FINAL` вынужден выполнять некоторую работу, мы обновляем 1 млн строк — увеличиваем их `AnswerCount`, вставляя дублирующиеся строки.
@@ -278,8 +278,8 @@ ORDER BY year ASC
 │ 2024 │        127765 │
 └──────┴───────────────┘
 
-17 строк в выборке. Время выполнения: 2.338 с. Обработано 122.94 млн строк, 1.84 ГБ (52.57 млн строк/с, 788.58 МБ/с).
-Пиковое потребление памяти: 2.09 ГиБ.
+17 rows in set. Elapsed: 2.338 sec. Processed 122.94 million rows, 1.84 GB (52.57 million rows/s., 788.58 MB/s.)
+Peak memory usage: 2.09 GiB.
 ```
 
 Повторите те же шаги для таблицы, секционированной по годам, и снова выполните приведённый выше запрос с `do_not_merge_across_partitions_select_final=1`.
@@ -296,7 +296,7 @@ ENGINE = ReplacingMergeTree
 PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
-// загрузка данных и обновление опущены
+// populate & update omitted
 
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
 FROM posts_with_part
@@ -313,7 +313,7 @@ ORDER BY year ASC
 │ 2024 │       127765  │
 └──────┴───────────────┘
 
-17 строк в наборе результатов. Время выполнения: 0,994 с. Обработано 64,65 млн строк, 983,64 МБ (65,02 млн строк/с, 989,23 МБ/с.)
+17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
 Как видно, секционирование в данном случае значительно улучшило производительность запроса, позволив выполнять процесс дедупликации параллельно на уровне партиций.

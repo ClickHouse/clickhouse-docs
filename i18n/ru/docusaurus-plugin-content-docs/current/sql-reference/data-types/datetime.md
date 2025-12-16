@@ -58,9 +58,9 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- Парсинг DateTime
--- - из строки,
--- - из целого числа, интерпретируемого как количество секунд с 1970-01-01.
+-- Parse DateTime
+-- - from string,
+-- - from integer interpreted as number of seconds since 1970-01-01.
 INSERT INTO dt VALUES ('2019-01-01 00:00:00', 1), (1546300800, 2);
 
 SELECT * FROM dt;
@@ -117,7 +117,7 @@ SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
 ```sql
 SELECT
 toDateTime(timestamp, 'Europe/London') AS lon_time,
-toDateTime(timestamp, 'Asia/Istanbul') AS ist_time
+toDateTime(timestamp, 'Asia/Istanbul') AS mos_time
 FROM dt
 ```
 

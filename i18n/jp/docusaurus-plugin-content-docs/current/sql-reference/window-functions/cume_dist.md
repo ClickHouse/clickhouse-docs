@@ -80,7 +80,7 @@ FROM salaries;
 `cume_dist()` 関数は、次の式を使用して相対位置を計算します。
 
 ```text
-cume_dist = (現在の行の値以下の行数) / (パーティション内の総行数)
+cume_dist = (number of rows ≤ current row value) / (total number of rows in partition)
 ```
 
 同じ値を持つ行（ピア）には同一の累積分布値が割り当てられ、その値はピアグループ内での最大の順位に対応します。

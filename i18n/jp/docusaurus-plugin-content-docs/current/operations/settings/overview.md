@@ -44,7 +44,7 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 │ max_threads │ 'auto(8)' │
 └─────────────┴───────────┘
 
-1 行の結果。経過時間: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 ## 関連情報 {#further-reading}

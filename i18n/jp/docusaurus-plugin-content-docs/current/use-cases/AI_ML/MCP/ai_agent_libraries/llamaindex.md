@@ -47,7 +47,7 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Anthropic APIキーを入力: ········
+Enter Anthropic API Key: ········
 ```
 
 :::note 別の LLM プロバイダーを使用する場合
@@ -83,14 +83,11 @@ mcp_client = BasicMCPClient(
 mcp_tool_spec = McpToolSpec(
     client=mcp_client,
 )
+
+tools = await mcp_tool_spec.to_tool_list_async()
 ```
 
 tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
-
-````
-## エージェントの作成 {#create-agent}
-
-これで、これらのツールにアクセス可能なエージェントを作成する準備が整いました。1回の実行におけるツール呼び出しの最大数を10に設定します。このパラメータは必要に応じて変更可能です:
 
 ```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
@@ -100,27 +97,57 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     llm=llm, verbose=True, max_function_calls=10
 )
 agent = AgentRunner(agent_worker)
-````
+```python
+from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
 
-## LLM を初期化する {#initialize-llm}
-
-次のコードで Claude Sonnet 4.0 モデルを初期化します。
-
+agent_worker = FunctionCallingAgentWorker.from_tools(
+    tools=tools,
+    llm=llm, verbose=True, max_function_calls=10
+)
+agent = AgentRunner(agent_worker)
 ```python
 from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
-```
-
-## エージェントの実行 {#run-agent}
-
-最後に、エージェントに質問することができます：
-
+```python
+from llama_index.llms.anthropic import Anthropic
+llm = Anthropic(model="claude-sonnet-4-0")
 ```python
 response = agent.query("What's the most popular repository?")
-```
+```python
+response = agent.query("What's the most popular repository?")
+```response title="Response"
+Added user message to memory: What's the most popular repository?
+=== LLM Response ===
+I'll help you find the most popular repository. Let me first explore the available databases and tables to understand the data structure.
+=== Calling Function ===
+Calling function: list_databases with args: {}
+=== Function Output ===
+meta=None content=[TextContent(type='text', text='amazon\nbluesky\ncountry\ncovid\ndefault\ndns\nenvironmental\nfood\nforex\ngeo\ngit\ngithub\nhackernews\nimdb\nlogs\nmetrica\nmgbench\nmta\nnoaa\nnyc_taxi\nnypd\nontime\nopensky\notel\notel_v2\npypi\nrandom\nreddit\nrubygems\nstackoverflow\nstar_schema\nstock\nsystem\ntw_weather\ntwitter\nuk\nwiki\nwords\nyoutube', annotations=None)] isError=False
+=== LLM Response ===
+I can see there's a `github` database which likely contains repository data. Let me explore the tables in that database.
+=== Calling Function ===
+Calling function: list_tables with args: {"database": "github"}
+=== Function Output ===
+...
+...
+...
+=== LLM Response ===
+Based on the GitHub data, **the most popular repository is `sindresorhus/awesome`** with **402,292 stars**.
 
-応答は長いため、以下の例では一部省略されています：
+Here are the top 10 most popular repositories by star count:
 
+1. **sindresorhus/awesome** - 402,292 stars
+2. **996icu/996.ICU** - 388,413 stars  
+3. **kamranahmedse/developer-roadmap** - 349,097 stars
+4. **donnemartin/system-design-primer** - 316,524 stars
+5. **jwasham/coding-interview-university** - 313,767 stars
+6. **public-apis/public-apis** - 307,227 stars
+7. **EbookFoundation/free-programming-books** - 298,890 stars
+8. **facebook/react** - 286,034 stars
+9. **vinta/awesome-python** - 269,320 stars
+10. **freeCodeCamp/freeCodeCamp** - 261,824 stars
+
+The `sindresorhus/awesome` repository is a curated list of awesome lists, which explains its popularity as it serves as a comprehensive directory of resources across many different topics in software development.
 ```response title="Response"
 Added user message to memory: What's the most popular repository?
 === LLM Response ===

@@ -243,7 +243,7 @@ ALTER TABLE my_table
 6. 使用 `system.parts` 表验证您的数据是否已迁移到预期的磁盘上：
 
 ```sql
-使用 system.parts 表查看 crypto_prices 表的数据分片位于哪些磁盘上：
+Using the system.parts table, view which disks the parts are on for the crypto_prices table:
 
 SELECT
     name,

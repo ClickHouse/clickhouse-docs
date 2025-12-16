@@ -141,7 +141,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 │ query_log_9  │
 └──────────────┘
 
-11 строк в наборе. Затрачено: 0.004 сек.
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ### Выполнение запросов к нескольким версиям {#querying-multiple-versions}
@@ -169,30 +169,13 @@ ORDER BY most_recent DESC
 │ query_log_10 │ 2025-03-18 14:01:33 │
 │ query_log_9  │ 2025-03-18 14:01:32 │
 └──────────────┴─────────────────────┘
+
+11 rows in set. Elapsed: 0.373 sec. Processed 6.44 million rows, 25.77 MB (17.29 million rows/s., 69.17 MB/s.)
+Peak memory usage: 28.45 MiB.
 ```
 
 11 строк в наборе. Прошло: 0.373 сек. Обработано 6.44 миллиона строк, 25.77 МБ (17.29 миллиона строк/с, 69.17 МБ/с).
 Пиковое потребление памяти: 28.45 МиБ.
-
-````
-
-:::note Не полагайтесь на числовой суффикс для упорядочивания
-Хотя числовой суффикс в таблицах может указывать на порядок данных, на него никогда не следует полагаться. По этой причине всегда используйте табличную функцию merge в сочетании с фильтром по дате при работе с конкретными диапазонами дат.
-:::
-
-Важно отметить, что эти таблицы по-прежнему являются **локальными для каждого узла**.
-
-### Запросы к нескольким узлам                          {#querying-across-nodes}
-
-Для комплексного просмотра всего кластера пользователи могут использовать функцию [`clusterAllReplicas`](/sql-reference/table-functions/cluster) в сочетании с функцией `merge`. Функция `clusterAllReplicas` позволяет выполнять запросы к системным таблицам на всех репликах в кластере «default», объединяя данные отдельных узлов в единый результат. В сочетании с функцией `merge` это можно использовать для получения всех системных данных для конкретной таблицы в кластере. 
-
-Этот подход особенно ценен для мониторинга и отладки операций на уровне кластера, позволяя пользователям эффективно анализировать работоспособность и производительность развертывания ClickHouse Cloud.
-
-:::note
-ClickHouse Cloud предоставляет кластеры с несколькими репликами для обеспечения избыточности и отказоустойчивости. Это обеспечивает такие возможности, как динамическое автомасштабирование и обновления без простоя. В определенный момент времени новые узлы могут находиться в процессе добавления в кластер или удаления из кластера. Чтобы пропустить эти узлы, добавьте `SETTINGS skip_unavailable_shards = 1` к запросам, использующим `clusterAllReplicas`, как показано ниже.
-:::
-
-Например, рассмотрим разницу при запросе к таблице `query_log` — часто необходимой для анализа.
 
 ```sql
 SELECT
@@ -222,12 +205,49 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
-````
+```sql
+SELECT
+    hostname() AS host,
+    count()
+FROM system.query_log
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host
 
-### Запросы по узлам и версиям {#querying-across-nodes-and-versions}
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+└───────────────────────────────┴─────────┘
 
-Из‑за версионности системных таблиц это по‑прежнему не отражает все данные в кластере. Если совместить приведённое выше с функцией `merge`, мы получим точный результат для нашего диапазона дат:
+1 row in set. Elapsed: 0.010 sec. Processed 17.87 thousand rows, 71.51 KB (1.75 million rows/s., 7.01 MB/s.)
 
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', system.query_log)
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
+
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+│ c-ecru-qn-34-server-6em4y4t-0 │  656029 │
+│ c-ecru-qn-34-server-iejrkg0-0 │  641155 │
+└───────────────────────────────┴─────────┘
+
+3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
+```sql
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', merge('system', '^query_log'))
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
+
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │ 3008000 │
+│ c-ecru-qn-34-server-6em4y4t-0 │ 3659443 │
+│ c-ecru-qn-34-server-iejrkg0-0 │ 1078287 │
+└───────────────────────────────┴─────────┘
+
+3 rows in set. Elapsed: 0.462 sec. Processed 7.94 million rows, 31.75 MB (17.17 million rows/s., 68.67 MB/s.)
 ```sql
 SELECT
     hostname() AS host,

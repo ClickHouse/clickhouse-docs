@@ -53,13 +53,13 @@ WHERE (B = 0) AND (C = 'x');
 
 1 row in set. Elapsed: 0.074 sec. Processed 10.00 million rows, 168.89 MB (134.98 million rows/s., 2.28 GB/s.)
 
--- включим трассировку, чтобы увидеть, какие предикаты перемещаются в PREWHERE
+-- let's enable tracing to see which predicate are moved to PREWHERE
 set send_logs_level='debug';
 
 MergeTreeWhereOptimizer: condition "B = 0" moved to PREWHERE  
--- ClickHouse автоматически перемещает `B = 0` в PREWHERE, но это не имеет смысла, поскольку B всегда равно 0.
+-- Clickhouse moves automatically `B = 0` to PREWHERE, but it has no sense because B is always 0.
 
--- Переместим другой предикат `C = 'x'` 
+-- Let's move other predicate `C = 'x'` 
 
 SELECT count()
 FROM mydata
@@ -68,5 +68,5 @@ WHERE B = 0;
 
 1 row in set. Elapsed: 0.069 sec. Processed 10.00 million rows, 158.89 MB (144.90 million rows/s., 2.30 GB/s.)
 
--- Этот запрос с явным указанием `PREWHERE` обрабатывает немного меньше данных: 158.89 МБ против 168.89 МБ
+-- This query with manual `PREWHERE` processes slightly less data: 158.89 MB VS 168.89 MB
 ```

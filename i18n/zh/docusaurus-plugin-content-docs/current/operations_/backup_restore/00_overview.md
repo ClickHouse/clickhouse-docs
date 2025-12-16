@@ -183,7 +183,7 @@ BACKUP TABLE helloworld.my_first_table TO Disk('backups', '1.zip') ASYNC
 │ 7678b0b3-f519-4e6e-811f-5a0781a4eb52 │ CREATING_BACKUP │
 └──────────────────────────────────────┴─────────────────┘
 
-返回 1 行。耗时: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ```sql
@@ -195,7 +195,7 @@ FORMAT Vertical
 ```
 
 ```response
-第 1 行:
+Row 1:
 ──────
 id:                7678b0b3-f519-4e6e-811f-5a0781a4eb52
 name:              Disk('backups', '1.zip')
@@ -209,7 +209,7 @@ error:             Code: 598. DB::Exception: Backup Disk('backups', '1.zip') alr
 start_time:        2022-08-30 09:21:46
 end_time:          2022-08-30 09:21:46
 
-返回 1 行。用时:0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 除了 [`system.backups`](/operations/system-tables/backups) 表之外，所有备份和恢复操作同样会记录在系统日志表 [`system.backup_log`](/operations/system-tables/backup_log) 中：
@@ -223,7 +223,7 @@ FORMAT Vertical
 ```
 
 ```response
-第 1 行:
+Row 1:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.097414
@@ -241,7 +241,7 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-第 2 行:
+Row 2:
 ──────
 event_date:              2023-08-18
 event_time_microseconds: 2023-08-18 11:13:43.174782
@@ -260,5 +260,5 @@ compressed_size:         0
 files_read:              0
 bytes_read:              0
 
-结果集包含 2 行。用时:0.075 秒。
+2 rows in set. Elapsed: 0.075 sec.
 ```

@@ -32,7 +32,7 @@ FROM system.dropped_tables\G
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 index:                 0
 database:              default

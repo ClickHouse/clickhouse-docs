@@ -173,8 +173,8 @@ WHERE oid = 'postgres_table'::regclass;
 每个表可以在方括号中指定要复制的列子集。如果省略列子集，则会复制该表的所有列。
 
 ```sql
-materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
-```
+    materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
+    ```
 
 默认值：空列表 —— 表示将复制整个 PostgreSQL 数据库。
 
@@ -205,18 +205,18 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 用于标识快照的文本字符串，将基于该快照执行 [PostgreSQL 表的初始导出](../../engines/database-engines/materialized-postgresql.md)。必须与 `materialized_postgresql_replication_slot` 一起使用。
 
 ```sql
-CREATE DATABASE database1
-ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
-SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
+    CREATE DATABASE database1
+    ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
+    SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
 
-SELECT * FROM database1.table1;
-```
+    SELECT * FROM database1.table1;
+    ```
 
 如有需要，可以通过 DDL 查询修改这些设置。但无法更改 `materialized_postgresql_tables_list` 这一设置。要更新该设置中的表列表，请使用 `ATTACH TABLE` 查询。
 
 ```sql
-ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <新大小>;
-```
+    ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
+    ```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 

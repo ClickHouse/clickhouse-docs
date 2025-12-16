@@ -86,7 +86,7 @@ kubectl apply -f secrets.yaml
 
 ```shell
 kubectl create secret generic hyperdx-secret \
-  --from-literal=API_KEY=我的密钥
+  --from-literal=API_KEY=my-secret-api-key
 ```
 
 ### 在 values.yaml 中引用 Secret {#referencing-a-secret}
@@ -108,7 +108,7 @@ hyperdx:
 
 ```yaml
 hyperdx:
-  frontendUrl: "https://hyperdx.yourdomain.com"  # 必须与 Ingress 主机匹配
+  frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
   ingress:
     enabled: true
     host: "hyperdx.yourdomain.com"
@@ -240,7 +240,7 @@ hyperdx:
 
 ```shell
 kubectl get ingress -A
-kubectl describe ingress <ingress-名称>
+kubectl describe ingress <ingress-name>
 ```
 
 **查看入口控制器日志：**
@@ -255,7 +255,7 @@ kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx
 
 ```shell
 curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
-# 应返回 Content-Type: application/javascript {#should-return-content-type-applicationjavascript}
+# Should return Content-Type: application/javascript
 ```
 
 **浏览器开发者工具：**

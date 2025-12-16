@@ -63,8 +63,8 @@ $ accel-config list | grep -P 'iax|state'
 
 ```bash
     "dev":"iax1",
-    "state":"有効",
-            "state":"有効",
+    "state":"enabled",
+            "state":"enabled",
 ```
 
 何も出力されない場合は、IAA の準備がまだ整っていないことを意味します。IAA のセットアップを再度確認してください。
@@ -139,13 +139,13 @@ SELECT count() FROM lineorder_flat
 クライアントから初めて挿入やクエリを実行した際に、ClickHouse サーバーのコンソールには次のログが出力されるはずです:
 
 ```text
-ハードウェアアクセラレーション対応DeflateQplコーデックが利用可能になりました！
+Hardware-assisted DeflateQpl codec is ready!
 ```
 
 もしこれが一度も出力されず、代わりに次のような別のログが表示される場合:
 
 ```text
-ハードウェアアクセラレーション対応DeflateQplコーデックの初期化に失敗しました
+Initialization of hardware-assisted DeflateQpl codec failed
 ```
 
 これは IAA デバイスが使用可能な状態になっていないことを意味します。IAA のセットアップをもう一度確認する必要があります。

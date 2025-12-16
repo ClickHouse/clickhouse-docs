@@ -73,14 +73,14 @@ import Image from '@theme/IdealImage';
 对于上面示例的 DynamoDB 数据，对应的 ClickHouse 表结构如下：
 
 ```sql
-/* 快照表 */
+/* Snapshot table */
 CREATE TABLE IF NOT EXISTS "default"."snapshot"
 (
     `item` String
 )
 ORDER BY tuple();
 
-/* 最终展平数据表 */
+/* Table for final flattened data */
 CREATE MATERIALIZED VIEW IF NOT EXISTS "default"."snapshot_mv" TO "default"."destination" AS
 SELECT
     JSONExtractString(item, 'id', 'S') AS id,
@@ -88,7 +88,7 @@ SELECT
     JSONExtractString(item, 'first_name', 'S') AS first_name
 FROM "default"."snapshot";
 
-/* 最终展平数据表 */
+/* Table for final flattened data */
 CREATE TABLE IF NOT EXISTS "default"."destination" (
     "id" String,
     "first_name" String,

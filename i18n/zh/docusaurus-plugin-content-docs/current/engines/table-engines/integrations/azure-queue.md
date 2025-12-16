@@ -141,7 +141,7 @@ SELECT * FROM stats ORDER BY key;
     <database>system</database>
     <table>azure_queue_log</table>
   </azure_queue_log>
-```
+  ```
 
 这个持久化表与 `system.s3queue` 表包含相同的信息，但记录的是已处理和失败的文件。
 

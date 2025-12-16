@@ -61,7 +61,7 @@ FROM salaries;
 
 ```response
 
-   ┌─プレイヤー──────┬─給与───┬───────パーセント順位─┐
+   ┌─player──────────┬─salary─┬───────percent_rank─┐
 1. │ Gary Chen       │ 195000 │                  0 │
 2. │ Robert George   │ 195000 │                  0 │
 3. │ Charles Juarez  │ 190000 │ 0.3333333333333333 │

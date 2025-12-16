@@ -94,7 +94,7 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```
 
 ```response
-curl: (35) error:02FFF036:system library:func(4095):接続がピアによってリセットされました
+curl: (35) error:02FFF036:system library:func(4095):Connection reset by peer
 ```
 
 または

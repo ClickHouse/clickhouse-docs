@@ -28,7 +28,7 @@ CREATE TABLE raw_page_views
 (
     page_id UInt32,
     page_name String,
-    response_time_ms UInt32,  -- Время ответа страницы в миллисекундах
+    response_time_ms UInt32,  -- Page response time in milliseconds
     viewed_at DateTime DEFAULT now()
 )
 ENGINE = MergeTree()
@@ -44,7 +44,7 @@ CREATE TABLE page_performance
 (
     page_id UInt32,
     page_name String,
-    avg_response_time AggregateFunction(avg, UInt32)  -- Хранит состояние для вычисления среднего значения
+    avg_response_time AggregateFunction(avg, UInt32)  -- Stores the state needed for avg calculation
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
@@ -59,7 +59,7 @@ TO page_performance
 AS SELECT
     page_id,
     page_name,
-    avgState(response_time_ms) AS avg_response_time  -- Использование комбинатора -State
+    avgState(response_time_ms) AS avg_response_time  -- Using -State combinator
 FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
@@ -68,23 +68,23 @@ GROUP BY page_id, page_name;
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
-    (1, 'Главная', 120),
-    (1, 'Главная', 135),
-    (2, 'Продукты', 95),
-    (2, 'Продукты', 105),
-    (3, 'О нас', 80),
-    (3, 'О нас', 90);
+    (1, 'Homepage', 120),
+    (1, 'Homepage', 135),
+    (2, 'Products', 95),
+    (2, 'Products', 105),
+    (3, 'About', 80),
+    (3, 'About', 90);
 ```
 
 Добавьте ещё немного данных, чтобы создать вторую часть на диске:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
-(1, 'Главная', 150),
-(2, 'Продукты', 110),
-(3, 'О нас', 70),
-(4, 'Контакты', 60),
-(4, 'Контакты', 65);
+(1, 'Homepage', 150),
+(2, 'Products', 110),
+(3, 'About', 70),
+(4, 'Contact', 60),
+(4, 'Contact', 65);
 ```
 
 Ознакомьтесь с целевой таблицей `page_performance`:
@@ -100,13 +100,13 @@ FROM page_performance
 
 ```response
 ┌─page_id─┬─page_name─┬─avg_response_time─┬─toTypeName(avg_response_time)──┐
-│       1 │ Главная страница  │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ Продукция  │ �                 │ AggregateFunction(avg, UInt32) │
-│       3 │ О компании     │ �                 │ AggregateFunction(avg, UInt32) │
-│       1 │ Главная страница  │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ Продукция  │ n                 │ AggregateFunction(avg, UInt32) │
-│       3 │ О компании     │ F                 │ AggregateFunction(avg, UInt32) │
-│       4 │ Контакты   │ }                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ �                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ �                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ n                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ F                 │ AggregateFunction(avg, UInt32) │
+│       4 │ Contact   │ }                 │ AggregateFunction(avg, UInt32) │
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
@@ -134,10 +134,10 @@ ORDER BY page_id;
 
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
-│       1 │ Главная   │                      135 │
-│       2 │ Продукты  │       103.33333333333333 │
-│       3 │ О нас     │                       80 │
-│       4 │ Контакты  │                     62.5 │
+│       1 │ Homepage  │                      135 │
+│       2 │ Products  │       103.33333333333333 │
+│       3 │ About     │                       80 │
+│       4 │ Contact   │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
 

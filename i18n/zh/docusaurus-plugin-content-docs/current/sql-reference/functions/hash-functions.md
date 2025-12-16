@@ -217,7 +217,7 @@ SELECT HEX(SHA1('abc'));
 **语法**
 
 ```sql
-SHA224(串)
+SHA224(s)
 ```
 
 **参数**
@@ -251,7 +251,7 @@ SELECT HEX(SHA224('abc'));
 **语法**
 
 ```sql
-SHA256（s）
+SHA256(s)
 ```
 
 **参数**
@@ -727,7 +727,7 @@ SELECT hiveHash('Hello, world!');
 **语法**
 
 ```sql
-icebergHash(值)
+icebergHash(value)
 ```
 
 **参数**
@@ -927,7 +927,7 @@ SELECT javaHashUTF16LE(convertCharset('test', 'utf-8', 'utf-16le'));
 **语法**
 
 ```sql
-jumpConsistentHash(键, 桶)
+jumpConsistentHash(key, buckets)
 ```
 
 **参数**
@@ -1494,7 +1494,7 @@ SELECT ngramMinHashArgUTF8('ClickHouse') AS Tuple;
 **语法**
 
 ```sql
-ngramMinHashCaseInsensitive(字符串[, n-gram大小, 哈希数])
+ngramMinHashCaseInsensitive(string[, ngramsize, hashnum])
 ```
 
 **参数**
@@ -1533,7 +1533,7 @@ SELECT ngramMinHashCaseInsensitive('ClickHouse') AS Tuple;
 **语法**
 
 ```sql
-ngramMinHashCaseInsensitiveUTF8(字符串 [, ngram大小, 哈希数])
+ngramMinHashCaseInsensitiveUTF8(string [, ngramsize, hashnum])
 ```
 
 **参数**
@@ -1651,7 +1651,7 @@ SELECT ngramSimHash('ClickHouse') AS Hash;
 **语法**
 
 ```sql
-ngramSimHashCaseInsensitive(字符串[, n元大小])
+ngramSimHashCaseInsensitive(string[, ngramsize])
 ```
 
 **参数**
@@ -1689,7 +1689,7 @@ SELECT ngramSimHashCaseInsensitive('ClickHouse') AS Hash;
 **语法**
 
 ```sql
-ngramSimHashCaseInsensitiveUTF8(字符串[, n元语法大小])
+ngramSimHashCaseInsensitiveUTF8(string[, ngramsize])
 ```
 
 **参数**
@@ -1706,11 +1706,11 @@ ngramSimHashCaseInsensitiveUTF8(字符串[, n元语法大小])
 **使用示例**
 
 ```sql title=Query
-SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS 哈希值;
+SELECT ngramSimHashCaseInsensitiveUTF8('ClickHouse') AS Hash;
 ```
 
 ```response title=Response
-┌───────哈希─┐
+┌───────Hash─┐
 │ 1636742693 │
 └────────────┘
 ```
@@ -2019,7 +2019,7 @@ wordShingleMinHash(string[, shinglesize, hashnum])
 **使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHash('ClickHouse® 是用于联机分析处理（OLAP）查询的列式数据库管理系统（DBMS）。') AS Tuple;
+SELECT wordShingleMinHash('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
 ```
 
 ```response title=Response
@@ -2056,12 +2056,12 @@ wordShingleMinHashArg(string[, shinglesize, hashnum])
 **使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArg('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于联机分析处理 (OLAP) 查询。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArg('ClickHouse®は、オンライン分析処理（OLAP）のための列指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple─────────────────────────────────────────────────────────────────┐
-│ (('OLAP','数据库','分析型'),('在线','面向','处理')) │
+│ (('OLAP','database','analytical'),('online','oriented','processing')) │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -2093,12 +2093,12 @@ wordShingleMinHashArgCaseInsensitive(string[, shinglesize, hashnum])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse® 是一款列式数据库管理系统（DBMS），用于对查询进行联机分析处理（OLAP）。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgCaseInsensitive('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple──────────────────────────────────────────────────────────────────┐
-│ (('查询','数据库','分析型'),('面向','处理','数据库管理系统')) │
+│ (('queries','database','analytical'),('oriented','processing','DBMS')) │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -2130,12 +2130,12 @@ wordShingleMinHashArgCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 **使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse® 是一款面向联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple──────────────────────────────────────────────────────────────────┐
-│ (('查询','数据库','分析型'),('面向','处理','数据库管理系统')) │
+│ (('queries','database','analytical'),('oriented','processing','DBMS')) │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -2167,12 +2167,12 @@ wordShingleMinHashArgUTF8(string[, shinglesize, hashnum])
 **使用示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashArgUTF8('ClickHouse® 是一款用于联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。', 1, 3) AS Tuple;
+SELECT wordShingleMinHashArgUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。', 1, 3) AS Tuple;
 ```
 
 ```response title=Response
 ┌─Tuple─────────────────────────────────────────────────────────────────┐
-│ (('OLAP','数据库','分析型'),('联机','面向','处理')) │
+│ (('OLAP','database','analytical'),('online','oriented','processing')) │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -2190,7 +2190,7 @@ SELECT wordShingleMinHashArgUTF8('ClickHouse® 是一款用于联机分析处理
 **语法**
 
 ```sql
-wordShingleMinHashCaseInsensitive(字符串[, 片段大小, 哈希数量])
+wordShingleMinHashCaseInsensitive(string[, shinglesize, hashnum])
 ```
 
 **参数**
@@ -2208,7 +2208,7 @@ wordShingleMinHashCaseInsensitive(字符串[, 片段大小, 哈希数量])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashCaseInsensitive('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于对查询执行联机分析处理 (OLAP)。') AS Tuple;
+SELECT wordShingleMinHashCaseInsensitive('ClickHouse® is a column-oriented database management system (DBMS) for online analytical processing of queries (OLAP).') AS Tuple;
 ```
 
 ```response title=Response
@@ -2249,7 +2249,7 @@ wordShingleMinHashCaseInsensitiveUTF8(string[, shinglesize, hashnum])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse® 是一款面向列的数据库管理系统（DBMS），用于执行查询的联机分析处理（OLAP）。') AS Tuple;
+SELECT wordShingleMinHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理（OLAP）のためのカラム指向データベース管理システム（DBMS）です。') AS Tuple;
 ```
 
 ```response title=Response
@@ -2288,9 +2288,8 @@ wordShingleMinHashUTF8(string[, shinglesize, hashnum])
 **示例**
 
 **使用示例**
-
 ```sql title=Query
-SELECT wordShingleMinHashUTF8('ClickHouse® 是一款面向联机分析处理 (OLAP) 查询的列式数据库管理系统 (DBMS)。') AS Tuple;
+SELECT wordShingleMinHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Tuple;
 ```
 
 ```response title=Response
@@ -2329,7 +2328,7 @@ wordShingleSimHash(string[, shinglesize])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHash('ClickHouse® 是一款列式数据库管理系统（DBMS），用于联机分析处理（OLAP）查询。') AS Hash;
+SELECT wordShingleSimHash('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2368,7 +2367,7 @@ wordShingleSimHashCaseInsensitive(string[, shinglesize])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashCaseInsensitive('ClickHouse® 是用于联机分析处理(OLAP)查询的列式数据库管理系统(DBMS)。') AS Hash;
+SELECT wordShingleSimHashCaseInsensitive('ClickHouse®は、オンライン分析処理(OLAP)クエリのためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2390,7 +2389,7 @@ SELECT wordShingleSimHashCaseInsensitive('ClickHouse® 是用于联机分析处�
 **语法**
 
 ```sql
-wordShingleSimHashCaseInsensitiveUTF8(字符串[, shingle大小])
+wordShingleSimHashCaseInsensitiveUTF8(string[, shinglesize])
 ```
 
 **参数**
@@ -2407,7 +2406,7 @@ wordShingleSimHashCaseInsensitiveUTF8(字符串[, shingle大小])
 **用法示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse® 是一款列式数据库管理系统 (DBMS)，用于联机分析处理 (OLAP) 查询。') AS Hash;
+SELECT wordShingleSimHashCaseInsensitiveUTF8('ClickHouse®は、オンライン分析処理(OLAP)のためのカラム指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response
@@ -2446,7 +2445,7 @@ wordShingleSimHashUTF8(string[, shinglesize])
 **使用示例**
 
 ```sql title=Query
-SELECT wordShingleSimHashUTF8('ClickHouse® 是用于对查询进行联机分析处理 (OLAP) 的列式数据库管理系统 (DBMS)。') AS Hash;
+SELECT wordShingleSimHashUTF8('ClickHouse®は、オンライン分析処理(OLAP)のための列指向データベース管理システム(DBMS)です。') AS Hash;
 ```
 
 ```response title=Response

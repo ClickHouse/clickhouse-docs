@@ -28,7 +28,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-AggregateFunction(имя_агрегатной_функции, типы_аргументов...)
+AggregateFunction(aggregate_function_name, types_of_arguments...)
 ```
 
 **Параметры**

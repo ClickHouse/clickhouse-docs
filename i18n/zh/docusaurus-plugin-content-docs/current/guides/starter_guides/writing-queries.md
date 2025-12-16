@@ -25,13 +25,13 @@ ORDER BY timestamp
 
 ```response
 ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-│     102 │ 每批次插入大量行                                    │ 2022-03-21 00:00:00 │ 1.41421 │
-│     102 │ 根据常用查询对数据进行排序                          │ 2022-03-22 00:00:00 │   2.718 │
-│     101 │ 你好,ClickHouse!                                   │ 2022-03-22 14:04:09 │      -1 │
-│     101 │ 颗粒是读取的最小数据块                              │ 2022-03-22 14:04:14 │ 3.14159 │
+│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
+│     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
+│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
 └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
-返回 4 行。耗时:0.008 秒。
+4 rows in set. Elapsed: 0.008 sec.
 ```
 
 添加 `FORMAT` 子句，以指定 [ClickHouse 支持的众多输出格式中的一种](/interfaces/formats#formats-overview)：
@@ -48,10 +48,10 @@ FORMAT TabSeparated
 ```response
 Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-102 每批插入大量行      2022-03-21 00:00:00     1.41421
-102 根据常用查询对数据进行排序  2022-03-22 00:00:00     2.718
-101 你好,ClickHouse!  2022-03-22 14:04:09     -1
-101 Granule 是读取数据的最小块       2022-03-22 14:04:14     3.14159
+102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
 
 4 rows in set. Elapsed: 0.005 sec.
 ```

@@ -17,7 +17,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ## 语法 {#syntax}
 
 ```sql
-hdfs(URI, 格式, 结构)
+hdfs(URI, format, structure)
 ```
 
 ## 参数 {#arguments}

@@ -142,7 +142,7 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 │      10 │
 └─────────┘
 
-返回 1 行。用时：0.425 秒。
+1 row in set. Elapsed: 0.425 sec.
 ```
 
 或者，您可以使用生成的 [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers)：
@@ -155,7 +155,7 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 │      10 │
 └─────────┘
 
-1 行结果，耗时 0.153 秒。
+1 row in set. Elapsed: 0.153 sec.
 ```
 
 ## 相关内容 {#related}

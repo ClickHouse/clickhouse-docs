@@ -261,10 +261,10 @@ Span #86
         Parent ID       : ce129e5c2dd51378
         ID              : fbb14077b5e149a0
         Name            : okey-dokey-0
-        Kind            : 服务器
+        Kind            : Server
         Start time      : 2024-06-19 18:03:41.603868 +0000 UTC
         End time        : 2024-06-19 18:03:41.603991 +0000 UTC
-        Status code     : 未设置
+        Status code     : Unset
         Status message :
 Attributes:
         -> net.peer.ip: Str(1.2.3.4)
@@ -448,10 +448,10 @@ ScopeVersion:
 ScopeAttributes:        {}
 LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
 
-返回 1 行。用时:0.012 秒。已处理 5.04 千行,4.62 MB(414.14 千行/秒,379.48 MB/秒)。
-内存峰值:5.41 MiB。
+1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
+Peak memory usage: 5.41 MiB.
 
-同样,对于追踪事件,用户可以查询 `otel_traces` 表:
+Likewise, for trace events, users can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
@@ -670,11 +670,11 @@ exporters:
   otlp:
     endpoint: localhost:4317
     tls:
-      insecure: true # 如果使用安全连接，请设置为 false
+      insecure: true # Set to false if you are using a secure connection
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 因同一主机上运行 2 个采集器而修改
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

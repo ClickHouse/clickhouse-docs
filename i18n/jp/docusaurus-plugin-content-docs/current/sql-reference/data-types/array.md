@@ -72,8 +72,8 @@ SELECT array(1, 'a')
 ```
 
 ```text
-サーバーから例外を受信しました (バージョン 1.1.54388):
-Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: UInt8 型と String 型に共通のスーパータイプが存在しません。一部が String/FixedString 型であり、一部がそうでないためです。
+Received exception from server (version 1.1.54388):
+Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
 ## 配列サイズ {#array-size}

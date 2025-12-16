@@ -124,7 +124,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ## COMMENT 列 {#comment-column}
 
 ```sql
-COMMENT COLUMN [IF EXISTS] name 'テキストコメント'
+COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```
 
 カラムにコメントを追加します。`IF EXISTS` 句が指定されている場合、カラムが存在しない場合でもクエリはエラーを返しません。
@@ -136,7 +136,7 @@ COMMENT COLUMN [IF EXISTS] name 'テキストコメント'
 例:
 
 ```sql
-ALTER TABLE visits COMMENT COLUMN browser 'この列はサイトへのアクセスに使用されたブラウザを表示します。'
+ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
 ## MODIFY COLUMN {#modify-column}
@@ -265,7 +265,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 構文:
 
 ```sql
-ALTER TABLE テーブル名 MODIFY COLUMN カラム名 RESET SETTING 設定名,...;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ```
 
 **例**

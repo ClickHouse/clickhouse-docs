@@ -26,21 +26,21 @@ ClickHouse может автоматически определять струк
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "Парсинг чисел со скоростью гигабайт в секунду",
-  "comments": "ПО доступно по адресам https://github.com/fastfloat/fast_float и\n https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "При том, что диски и сети обеспечивают пропускную способность в гигабайты в секунду ....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
-      "created": "Пн, 11 янв. 2021 20:31:27 GMT",
+      "created": "Mon, 11 Jan 2021 20:31:27 GMT",
       "version": "v1"
     },
     {
-      "created": "Сб, 30 янв. 2021 23:57:29 GMT",
+      "created": "Sat, 30 Jan 2021 23:57:29 GMT",
       "version": "v2"
     }
   ],
@@ -142,7 +142,7 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-18 строк в наборе. Прошло: 20.172 сек. Обработано 2.52 млн строк, 1.39 ГБ (124.72 тыс. строк/с., 68.76 МБ/с.)
+18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
 Автоматическое определение схемы позволяет выполнять запросы к JSON-файлам без необходимости явно её задавать, что ускоряет выполнение разовых задач по анализу данных.
@@ -250,13 +250,13 @@ FORMAT PrettyJSONEachRow
   "submitter": "David Callan",
   "authors": "David Callan",
   "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-  "comments": "11 страниц",
+  "comments": "11 pages",
   "journal-ref": "",
   "doi": "",
   "report-no": "",
   "categories": "math.CO",
   "license": "",
-  "abstract": "  Мы показываем, что определитель чисел циклов Стирлинга считает немаркированные ациклические\nавтоматы с одним источником.",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
   "versions": [
     {
       "created": "Sat, 31 Mar 2007 03:16:14 GMT",
@@ -272,7 +272,7 @@ FORMAT PrettyJSONEachRow
   ]
 }
 
-Получена 1 строка. Прошло: 0.009 сек.
+1 row in set. Elapsed: 0.009 sec.
 ```
 
 ## Обработка ошибок {#handling-errors}
@@ -311,7 +311,7 @@ ClickHouse обрабатывает такие случаи с помощью с
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- результат опущен для краткости
+-- result omitted for brevity
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
@@ -350,7 +350,7 @@ SETTINGS describe_compact_output = 1
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
 
-1 строка. Затрачено: 0,081 сек.
+1 row in set. Elapsed: 0.081 sec.
 ```
 
 :::note Приведение типов
@@ -369,16 +369,16 @@ SETTINGS describe_compact_output = 1
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
-Прошло: 0.755 сек.
+Elapsed: 0.755 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
+Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
 Получено исключение от сервера (версия 24.12.1):
 Код: 636. DB::Exception: Получено от sql-clickhouse.clickhouse.com:9440. DB::Exception: Не удаётся извлечь структуру таблицы из файла в формате JSON. Ошибка:
 Код: 53. DB::Exception: Тип Tuple(b Int64), автоматически определённый для столбца &#39;a&#39; в строке 1, отличается от типа, определённого в предыдущих строках: Int64. Вы можете явно указать тип для этого столбца с помощью настройки schema&#95;inference&#95;hints.
-
-````
-
-В данном случае `JSONAsObject` рассматривает каждую строку как единый тип [`JSON`](/sql-reference/data-types/newjson) (который поддерживает использование нескольких типов в одном столбце). Это важно:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
@@ -389,7 +389,16 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 └──────┴──────┘
 
 1 row in set. Elapsed: 0.010 sec.
-````
+```sql
+DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
+SETTINGS enable_json_type = 1, describe_compact_output = 1
+
+┌─name─┬─type─┐
+│ json │ JSON │
+└──────┴──────┘
+
+1 row in set. Elapsed: 0.010 sec.
+```
 
 ## Дополнительные материалы {#further-reading}
 

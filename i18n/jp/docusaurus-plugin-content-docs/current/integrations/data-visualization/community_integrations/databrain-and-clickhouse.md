@@ -88,10 +88,10 @@ ClickHouse Cloud をご利用の場合:
 接続に使用する ClickHouse ユーザーに、必要な権限が付与されていることを確認します。
 
 ```sql
--- スキーマ情報を読み取る権限を付与します
+-- Grant permissions to read schema information
 GRANT SELECT ON information_schema.* TO your_databrain_user;
 
--- データベースおよびテーブルを読み取る権限を付与します
+-- Grant read access to your database and tables
 GRANT SELECT ON your_database.* TO your_databrain_user;
 ```
 

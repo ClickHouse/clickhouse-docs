@@ -50,51 +50,51 @@ SELECT * FROM system.columns LIMIT 2 FORMAT Vertical;
 
 
 ```text
-行 1:
+Row 1:
 ──────
-データベース:                INFORMATION_SCHEMA
-テーブル:                   COLUMNS
-名前:                       table_catalog
-型:                         String
-位置:                       1
-デフォルト種別:
-デフォルト式:
-圧縮後データバイト数:       0
-非圧縮データバイト数:       0
-マークバイト数:             0
-コメント:
-パーティションキーに含まれるか: 0
-ソートキーに含まれるか:           0
-主キーに含まれるか:               0
-サンプリングキーに含まれるか:     0
-圧縮コーデック:
-文字オクテット長:           ᴺᵁᴸᴸ
-数値精度:                   ᴺᵁᴸᴸ
-数値精度の基数:             ᴺᵁᴸᴸ
-数値スケール:               ᴺᵁᴸᴸ
-日時精度:                   ᴺᵁᴸᴸ
+database:                INFORMATION_SCHEMA
+table:                   COLUMNS
+name:                    table_catalog
+type:                    String
+position:                1
+default_kind:
+default_expression:
+data_compressed_bytes:   0
+data_uncompressed_bytes: 0
+marks_bytes:             0
+comment:
+is_in_partition_key:     0
+is_in_sorting_key:       0
+is_in_primary_key:       0
+is_in_sampling_key:      0
+compression_codec:
+character_octet_length:  ᴺᵁᴸᴸ
+numeric_precision:       ᴺᵁᴸᴸ
+numeric_precision_radix: ᴺᵁᴸᴸ
+numeric_scale:           ᴺᵁᴸᴸ
+datetime_precision:      ᴺᵁᴸᴸ
 
-行 2:
+Row 2:
 ──────
-データベース:                INFORMATION_SCHEMA
-テーブル:                   COLUMNS
-名前:                       table_schema
-型:                         String
-位置:                       2
-デフォルト種別:
-デフォルト式:
-圧縮後データバイト数:       0
-非圧縮データバイト数:       0
-マークバイト数:             0
-コメント:
-パーティションキーに含まれるか: 0
-ソートキーに含まれるか:           0
-主キーに含まれるか:               0
-サンプリングキーに含まれるか:     0
-圧縮コーデック:
-文字オクテット長:           ᴺᵁᴸᴸ
-数値精度:                   ᴺᵁᴸᴸ
-数値精度の基数:             ᴺᵁᴸᴸ
-数値スケール:               ᴺᵁᴸᴸ
-日時精度:                   ᴺᵁᴸᴸ
+database:                INFORMATION_SCHEMA
+table:                   COLUMNS
+name:                    table_schema
+type:                    String
+position:                2
+default_kind:
+default_expression:
+data_compressed_bytes:   0
+data_uncompressed_bytes: 0
+marks_bytes:             0
+comment:
+is_in_partition_key:     0
+is_in_sorting_key:       0
+is_in_primary_key:       0
+is_in_sampling_key:      0
+compression_codec:
+character_octet_length:  ᴺᵁᴸᴸ
+numeric_precision:       ᴺᵁᴸᴸ
+numeric_precision_radix: ᴺᵁᴸᴸ
+numeric_scale:           ᴺᵁᴸᴸ
+datetime_precision:      ᴺᵁᴸᴸ
 ```

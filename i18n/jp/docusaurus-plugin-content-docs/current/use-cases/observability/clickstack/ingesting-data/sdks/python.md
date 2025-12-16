@@ -41,8 +41,8 @@ opentelemetry-bootstrap -a install
 その後、ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
 
 ```shell
-export HYPERDX_API_KEY='<あなたの取り込みAPIキー>' \
-OTEL_SERVICE_NAME='<アプリまたはサービスの名前>' \
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
 

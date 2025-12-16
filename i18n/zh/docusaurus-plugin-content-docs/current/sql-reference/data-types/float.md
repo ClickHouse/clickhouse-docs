@@ -11,7 +11,6 @@ doc_type: 'reference'
 如果您需要进行精确计算，特别是处理需要高精度的金融或业务数据时，应考虑改用 [Decimal](../data-types/decimal.md)。
 
 [浮点数](https://en.wikipedia.org/wiki/IEEE_754) 可能会导致不精确的结果，如下所示：
-
 ```sql
 CREATE TABLE IF NOT EXISTS float_vs_decimal
 (
@@ -20,13 +19,11 @@ CREATE TABLE IF NOT EXISTS float_vs_decimal
 )
 ENGINE=MergeTree
 ORDER BY tuple();
+
+# Generate 1 000 000 random numbers with 2 decimal places and store them as a float and as a decimal
+INSERT INTO float_vs_decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 ```
 
-# 生成 1 000 000 个保留 2 位小数的随机数，并分别以 float 和 decimal 类型存储 {#generate-1-000-000-random-numbers-with-2-decimal-places-and-store-them-as-a-float-and-as-a-decimal}
-
-INSERT INTO float&#95;vs&#95;decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
-
-````
 ```sql
 SELECT sum(my_float), sum(my_decimal) FROM float_vs_decimal;
 
@@ -39,7 +36,7 @@ SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
 ┌─sumKahan(my_float)─┬─sumKahan(my_decimal)─┐
 │         499693.605 │           499693.605 │
 └────────────────────┴──────────────────────┘
-````
+```
 
 :::
 

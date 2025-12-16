@@ -115,7 +115,7 @@ SHOW DATABASES LIMIT 2
 ### Синтаксис {#syntax-2}
 
 ```sql title="Syntax"
-SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<шаблон>'] [LIMIT <N>] [INTO OUTFILE <имя_файла>] [FORMAT <формат>]
+SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
 Если предложение `FROM` не указано, запрос возвращает список таблиц из текущей базы данных.
@@ -123,7 +123,7 @@ SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<шабл
 Данный оператор эквивалентен следующему запросу:
 
 ```sql
-SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<шаблон>'] [LIMIT <N>] [INTO OUTFILE <имя_файла>] [FORMAT <формат>]
+SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
 ### Примеры {#examples-1}
@@ -378,7 +378,7 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 ### Синтаксис {#syntax-8}
 
 ```sql title="Syntax"
-SHOW CREATE USER [имя1 [, имя2 ...] | CURRENT_USER]
+SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
 
 ## SHOW CREATE ROLE {#show-create-role}
@@ -388,7 +388,7 @@ SHOW CREATE USER [имя1 [, имя2 ...] | CURRENT_USER]
 ### Синтаксис {#syntax-9}
 
 ```sql title="Syntax"
-SHOW CREATE ROLE имя1 [, имя2 ...]
+SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
 ## SHOW CREATE ROW POLICY {#show-create-row-policy}
@@ -418,7 +418,7 @@ SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ### Синтаксис {#syntax-12}
 
 ```sql title="Syntax"
-SHOW CREATE [SETTINGS] PROFILE имя1 [, имя2 ...]
+SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
 
 ## SHOW USERS {#show-users}
@@ -564,7 +564,7 @@ port:                    9000
 ### Синтаксис {#syntax-21}
 
 ```sql title="Syntax"
-SHOW [CHANGED] SETTINGS LIKE|ILIKE <имя>
+SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
 ### Условия {#clauses}
@@ -595,9 +595,9 @@ SHOW SETTINGS ILIKE '%CONNECT_timeout%'
 
 ```text title="Response"
 ┌─name────────────────────────────────────┬─type─────────┬─value─┐
-│ connect_timeout                         │ Секунды      │ 10    │
-│ connect_timeout_with_failover_ms        │ Миллисекунды │ 50    │
-│ connect_timeout_with_failover_secure_ms │ Миллисекунды │ 100   │
+│ connect_timeout                         │ Seconds      │ 10    │
+│ connect_timeout_with_failover_ms        │ Milliseconds │ 50    │
+│ connect_timeout_with_failover_secure_ms │ Milliseconds │ 100   │
 └─────────────────────────────────────────┴──────────────┴───────┘
 ```
 
@@ -620,7 +620,7 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ### Синтаксис {#syntax-22}
 
 ```sql title="Syntax"
-SHOW SETTING <имя>
+SHOW SETTING <name>
 ```
 
 ### См. также {#see-also-4}
@@ -636,7 +636,7 @@ SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
-┌─Кэши──────┐
+┌─Caches────┐
 │ s3_cache  │
 └───────────┘
 ```
@@ -653,7 +653,7 @@ SHOW FILESYSTEM CACHES
 ### Синтаксис {#syntax-23}
 
 ```sql title="Syntax"
-SHOW ENGINES [INTO OUTFILE имя_файла] [FORMAT формат]
+SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
 ### См. также {#see-also-6}

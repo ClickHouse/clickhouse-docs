@@ -56,7 +56,7 @@ name:        min_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: При записи гранулы сжимать данные в буфере, если размер накопленных несжатых данных больше или равен указанному порогу. Если параметр не задан, используется соответствующая глобальная настройка.
+description: When granule is written, compress the data in buffer if the size of pending uncompressed data is larger or equal than the specified threshold. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -70,7 +70,7 @@ name:        max_compress_block_size
 value:       0
 default:     0
 changed:     0
-description: Сжимать накопленные несжатые данные в буфере, если их размер больше или равен указанному порогу. Блок данных будет сжат, даже если текущая гранула не завершена. Если параметр не задан, используется соответствующая глобальная настройка.
+description: Compress the pending uncompressed data in buffer if its size is larger or equal than the specified threshold. Block of data will be compressed even if the current granule is not finished. If this setting is not set, the corresponding global setting is used.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -84,7 +84,7 @@ name:        index_granularity
 value:       8192
 default:     8192
 changed:     0
-description: Количество строк, соответствующих одному значению первичного ключа.
+description: How many rows correspond to one primary key value.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -92,5 +92,5 @@ type:        UInt64
 is_obsolete: 0
 tier:        Production
 
-Получено 3 строки. Затрачено: 0.001 сек. 
+3 rows in set. Elapsed: 0.001 sec. 
 ```

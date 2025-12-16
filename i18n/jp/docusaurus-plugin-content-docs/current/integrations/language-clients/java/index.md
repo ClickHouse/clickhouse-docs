@@ -162,14 +162,14 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- コンソールアペンダー -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- ファイルアペンダー -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -178,13 +178,13 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
         </encoder>
     </appender>
 
-    <!-- ルートロガー -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- 特定のパッケージに対するカスタムログレベル -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

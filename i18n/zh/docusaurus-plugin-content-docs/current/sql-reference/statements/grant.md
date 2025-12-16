@@ -101,22 +101,22 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 已授予权限
-SELECT * FROM db.my_tables_0 -- 已授予权限
-SELECT * FROM db.my_tables_1 -- 已授予权限
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
 
-SELECT * FROM db.other_table -- 未授予权限
-SELECT * FROM db2.my_tables -- 未授予权限
+SELECT * FROM db.other_table -- not_granted
+SELECT * FROM db2.my_tables -- not_granted
 ```
 
 `GRANT SELECT ON db*.* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 已授权
-SELECT * FROM db.my_tables_0 -- 已授权
-SELECT * FROM db.my_tables_1 -- 已授权
-SELECT * FROM db.other_table -- 已授权
-SELECT * FROM db2.my_tables -- 已授权
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
+SELECT * FROM db.other_table -- granted
+SELECT * FROM db2.my_tables -- granted
 ```
 
 在已授权路径中新创建的所有表都会自动继承其父对象的所有权限。
@@ -126,12 +126,12 @@ SELECT * FROM db2.my_tables -- 已授权
 
 ```sql
 GRANT SELECT ON db.* TO john -- correct
-GRANT SELECT ON db*.* TO john -- 正确
+GRANT SELECT ON db*.* TO john -- correct
 
-GRANT SELECT ON *.my_table TO john -- 错误
-GRANT SELECT ON foo*bar TO john -- 错误
-GRANT SELECT ON *suffix TO john -- 错误
-GRANT SELECT(foo) ON db.table* TO john -- 错误
+GRANT SELECT ON *.my_table TO john -- wrong
+GRANT SELECT ON foo*bar TO john -- wrong
+GRANT SELECT ON *suffix TO john -- wrong
+GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
 
 ## 权限 {#privileges}
@@ -491,7 +491,7 @@ GRANT CLUSTER ON *.* TO <username>
 如果在未先授予 `CLUSTER` 权限的情况下尝试在查询中使用 `ON CLUSTER`，则会收到如下错误：
 
 ```text
-权限不足。执行此查询需要 CLUSTER ON *.* 授权。 
+Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
 可以通过在 `config.xml` 的 `access_control_improvements` 部分（见下文）中将 `on_cluster_queries_require_cluster_grant` 设置项设为 `false` 来更改默认行为。
@@ -682,13 +682,13 @@ GRANT READ ON S3('regexp_pattern') TO user
 授予对特定 S3 bucket 路径的访问权限：
 
 ```sql
--- 允许用户仅从 s3://foo/ 路径读取
+-- Allow user to read only from s3://foo/ paths
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- 允许用户从特定文件模式读取
+-- Allow user to read from specific file patterns
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
--- 可以向同一用户授予多个过滤器
+-- Multiple filters can be granted to the same user
 GRANT READ ON S3('s3://foo/.*') TO john
 GRANT READ ON S3('s3://bar/.*') TO john
 ```
@@ -718,10 +718,10 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 如果原有授权带有 `WITH GRANT OPTION`，则可以使用 `GRANT CURRENT GRANTS` 重新授予权限：
 
 ```sql
--- 带有 GRANT OPTION 的原始授权
+-- Original grant with GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- John 现在可以将此访问权限再授予其他人
+-- John can now regrant this access to others
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 

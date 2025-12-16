@@ -45,5 +45,5 @@ is_generic_compression: 1
 is_encryption:          0
 is_timeseries_codec:    0
 is_experimental:        0
-description:            極めて高速、優れた圧縮率、速度と効率のバランスが良い。
+description:            Extremely fast; good compression; balanced speed and efficiency.
 ```

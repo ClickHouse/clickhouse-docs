@@ -102,11 +102,11 @@ constraints](settings/constraints-on-settings.md) 来限制单个用户的缓存
 ```xml
 <profiles>
     <default>
-        <!-- 用户/配置文件 'default' 的最大缓存大小(以字节为单位) -->
+        <!-- The maximum cache size in bytes for user/profile 'default' -->
         <query_cache_max_size_in_bytes>10000</query_cache_max_size_in_bytes>
-        <!-- 用户/配置文件 'default' 缓存中存储的 SELECT 查询结果的最大条目数 -->
+        <!-- The maximum number of SELECT query results stored in the cache for user/profile 'default' -->
         <query_cache_max_entries>100</query_cache_max_entries>
-        <!-- 将这两项设置设为只读,使用户无法修改 -->
+        <!-- Make both settings read-only so the user cannot change them -->
         <constraints>
             <query_cache_max_size_in_bytes>
                 <readonly/>
@@ -141,7 +141,7 @@ SETTINGS use_query_cache = true, query_cache_min_query_duration = 5000;
 为同一个查询创建三个不同查询缓存条目的示例：
 
 ```sql
-SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag 隐式为 ''(空字符串)
+SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag is implicitly '' (empty string)
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```

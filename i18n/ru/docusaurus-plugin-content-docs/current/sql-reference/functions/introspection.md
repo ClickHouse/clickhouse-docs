@@ -50,7 +50,7 @@ ClickHouse сохраняет отчёты профилировщика в си�
 **Синтаксис**
 
 ```sql
-addressToLine(address_of_binary_instruction)
+demangle(symbol)
 ```
 
 **Аргументы**
@@ -83,7 +83,7 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-**Получение имени файла исходного кода и номера строки для одного адреса**
+**Getting a function name for a single address**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -96,7 +96,7 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-**Применение функции ко всему стеку вызовов**
+**Applying the function to the whole stack trace**
 
 ```sql title=Query
 -- Функция arrayMap в этом примере обрабатывает каждый элемент массива trace с помощью функции addressToLine.
@@ -122,35 +122,35 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-## addressToLineWithInlines {#addressToLineWithInlines}
 
-Добавлена в: v22.2
 
-Похожа на `addressToLine`, но возвращает массив со всеми inline-функциями.
-Из-за этого работает медленнее, чем `addressToLine`.
+## isMergeTreePartCoveredBy {#isMergeTreePartCoveredBy}
 
-Чтобы включить эту функцию интроспекции:
+Introduced in: v25.6
 
-* Установите пакет `clickhouse-common-static-dbg`.
-* Установите настройку [`allow_introspection_functions`](../../operations/settings/settings.md#allow_introspection_functions) в значение `1`.
 
-**Синтаксис**
+Function which checks if the part of the first argument is covered by the part of the second argument.
+    
+
+**Syntax**
 
 ```sql
 addressToLineWithInlines(address_of_binary_instruction)
 ```
 
-**Аргументы**
+**Arguments**
 
-* `address_of_binary_instruction` — Адрес инструкции в работающем процессе. [`UInt64`](/sql-reference/data-types/int-uint)
+- `nested_part` — Name of expected nested part. [`String`](/sql-reference/data-types/string)
+- `covering_part` — Name of expected covering part. [`String`](/sql-reference/data-types/string)
 
-**Возвращаемое значение**
 
-Возвращает массив, первый элемент которого — имя файла исходного кода и номер строки, разделённые двоеточием. Второй, третий и последующие элементы содержат имена файлов исходного кода, номера строк и имена функций для inline-функций. Если отладочная информация не найдена, возвращается массив с одним элементом, равным имени исполняемого файла, в противном случае, если адрес недействителен, возвращается пустой массив. [`Array(String)`](/sql-reference/data-types/array)
+**Returned value**
 
-**Примеры**
+Returns `1` if it covers, `0` otherwise. [`UInt8`](/sql-reference/data-types/int-uint)
 
-**Применение функции к адресу**
+**Examples**
+
+**Basic example**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -163,7 +163,17 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Применение функции ко всему стеку вызовов**
+
+
+## logTrace {#logTrace}
+
+Introduced in: v20.12
+
+
+Emits a trace log message to the server log for each [Block](/development/architecture/#block).
+    
+
+**Syntax**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -176,6 +186,19 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
+
+**Arguments**
+
+- `message` — Message that is emitted to the server log. [`const String`](/sql-reference/data-types/string)
+
+
+**Returned value**
+
+Returns `0` always. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Basic example**
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -222,34 +245,39 @@ WHERE
 └───────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## addressToSymbol {#addressToSymbol}
-
-Впервые появилась в версии v20.1
-
-Преобразует адрес виртуальной памяти внутри серверного процесса ClickHouse в символ из объектных файлов ClickHouse.
-
-**Синтаксис**
-
 ```sql
 addressToSymbol(address_of_binary_instruction)
 ```
 
-**Аргументы**
 
-* `address_of_binary_instruction` — Адрес инструкции в выполняющемся процессе. [`UInt64`](/sql-reference/data-types/int-uint)
 
-**Возвращаемое значение**
+## mergeTreePartInfo {#mergeTreePartInfo}
 
-Возвращает символ из объектных файлов ClickHouse или пустую строку, если адрес недопустим. [`String`](/sql-reference/data-types/string)
+Introduced in: v25.6
 
-**Примеры**
 
-**Выбор первой строки из системной таблицы `trace_log`**
+Function that helps to cut the useful values out of the `MergeTree` part name.
+    
+
+**Syntax**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
+
+**Arguments**
+
+- `part_name` — Name of part to unpack. [`String`](/sql-reference/data-types/string)
+
+
+**Returned value**
+
+Returns a Tuple with subcolumns: `partition_id`, `min_block`, `max_block`, `level`, `mutation`. [`Tuple`](/sql-reference/data-types/tuple)
+
+**Examples**
+
+**Basic example**
 
 ```response title=Response
 -- Поле `trace` содержит трассировку стека в момент сэмплирования.
@@ -264,12 +292,22 @@ query_id:      724028bf-f550-45aa-910d-2af6212b94ac
 trace:         [94138803686098,94138815010911,94138815096522,94138815101224,94138815102091,94138814222988,94138806823642,94138814457211,94138806823642,94138814457211,94138806823642,94138806795179,94138806796144,94138753770094,94138753771646,94138753760572,94138852407232,140399185266395,140399178045583]
 ```
 
-**Получение символа для отдельного адреса**
-
 ```sql title=Query
 SET allow_introspection_functions=1;
 SELECT addressToSymbol(94138803686098) \G;
 ```
+
+
+
+## tid {#tid}
+
+Introduced in: v20.12
+
+
+Returns id of the thread, in which the current [Block](/development/architecture/#block) is processed.
+    
+
+**Syntax**
 
 ```response title=Response
 Row 1:
@@ -277,7 +315,17 @@ Row 1:
 addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20AggregateFunctionSumImmNS_24AggregateFunctionSumDataImEEEEE19addBatchSinglePlaceEmPcPPKNS_7IColumnEPNS_5ArenaE
 ```
 
-**Применение функции ко всему стеку вызовов**
+**Arguments**
+
+- None.
+
+**Returned value**
+
+Returns the current thread id. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Examples**
+
+**Usage example**
 
 ```sql title=Query
 SET allow_introspection_functions=1;

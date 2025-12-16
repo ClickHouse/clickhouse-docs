@@ -46,17 +46,17 @@ import random
 
 def main():
 
-    # 读取输入内容
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # 生成一些随机行
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # 将结果刷新到标准输出
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":

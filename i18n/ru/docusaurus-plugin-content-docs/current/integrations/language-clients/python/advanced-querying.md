@@ -68,7 +68,7 @@ ClickHouse Connect обрабатывает все данные из основ�
 with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as stream:
     for block in stream:
         for row in block:
-            <обработайте каждую строку данных о поездках>
+            <do something with each row of Python trip data>
 ```
 
 Обратите внимание, что попытка использовать `StreamContext` без оператора `with` приведёт к ошибке. Использование контекстного менеджера Python гарантирует, что поток (в данном случае потоковый HTTP‑ответ) будет корректно закрыт, даже если не все данные были прочитаны и/или во время обработки было выброшено исключение. Также `StreamContext` может быть использован только один раз для чтения потока. Попытка использовать `StreamContext` после выхода из него приведёт к `StreamClosedError`.
@@ -92,7 +92,7 @@ df_stream = client.query_df_stream('SELECT * FROM hits')
 column_names = df_stream.source.column_names
 with df_stream:
     for df in df_stream:
-        <выполните действия с pandas DataFrame>
+        <do something with the pandas DataFrame>
 ```
 
 Метод `query_df_arrow_stream` возвращает каждый блок ClickHouse в виде DataFrame с бэкендом типов данных PyArrow. Этот метод поддерживает как Pandas (версии 2.x и выше), так и Polars DataFrame через параметр `dataframe_library` (по умолчанию `"pandas"`). Каждая итерация возвращает DataFrame, полученный из пакетов записей (record batches) PyArrow, что обеспечивает более высокую производительность и эффективное использование памяти для отдельных типов данных.
@@ -108,11 +108,11 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Потоковая передача больших наборов результатов построчно {#stream-large-result-sets-row-by-row}
+# Stream large result sets row by row
 with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.numbers LIMIT 100000") as stream:
     for row in stream:
-        print(row)  # Обработать каждую строку
-        # Вывод:
+        print(row)  # Process each row
+        # Output:
         # (0, 0)
         # (1, 2)
         # (2, 4)
@@ -126,13 +126,13 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Потоковая передача блоками строк (эффективнее построчной обработки) {#stream-in-blocks-of-rows-more-efficient-than-row-by-row}
+# Stream in blocks of rows (more efficient than row-by-row)
 with client.query_row_block_stream("SELECT number, number * 2 FROM system.numbers LIMIT 100000") as stream:
     for block in stream:
-        print(f"Получен блок из {len(block)} строк")
-        # Вывод:
-        # Получен блок из 65409 строк
-        # Получен блок из 34591 строк
+        print(f"Received block with {len(block)} rows")
+        # Output:
+        # Received block with 65409 rows
+        # Received block with 34591 rows
 ```
 
 #### Потоковая передача DataFrame из Pandas {#stream-pandas-dataframes}
@@ -142,19 +142,19 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Потоковая передача результатов запроса в виде Pandas DataFrames {#stream-query-results-as-pandas-dataframes}
+# Stream query results as Pandas DataFrames
 with client.query_df_stream("SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000") as stream:
     for df in stream:
-        # Обработка каждого блока DataFrame
-        print(f"Получен DataFrame с {len(df)} строк")
+        # Process each DataFrame block
+        print(f"Received DataFrame with {len(df)} rows")
         print(df.head(3))
-        # Вывод:
-        # Получен DataFrame с 65409 строк
+        # Output:
+        # Received DataFrame with 65409 rows
         #    number str
         # 0       0   0
         # 1       1   1
         # 2       2   2
-        # Получен DataFrame с 34591 строк
+        # Received DataFrame with 34591 rows
         #    number    str
         # 0   65409  65409
         # 1   65410  65410
@@ -168,14 +168,14 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Потоковая передача результатов запроса в виде пакетов записей Arrow {#stream-query-results-as-arrow-record-batches}
+# Stream query results as Arrow record batches
 with client.query_arrow_stream("SELECT * FROM large_table") as stream:
     for arrow_batch in stream:
-        # Обработка каждого пакета Arrow
-        print(f"Получен пакет Arrow с {arrow_batch.num_rows} строк")
-        # Вывод:
-        # Получен пакет Arrow с 65409 строк
-        # Получен пакет Arrow с 34591 строк
+        # Process each Arrow batch
+        print(f"Received Arrow batch with {arrow_batch.num_rows} rows")
+        # Output:
+        # Received Arrow batch with 65409 rows
+        # Received Arrow batch with 34591 rows
 ```
 
 ## Запросы с использованием NumPy, Pandas и Arrow {#numpy-pandas-and-arrow-queries}
@@ -191,20 +191,20 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Запрос возвращает массив NumPy {#query-returns-a-numpy-array}
+# Query returns a NumPy array
 np_array = client.query_np("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
 
 print(type(np_array))
-# Вывод: {#output}
-# <class "numpy.ndarray"> {#class-numpyndarray}
+# Output:
+# <class "numpy.ndarray">
 
 print(np_array)
-# Вывод: {#output}
-# [[0 0] {#0-0}
-#  [1 2] {#1-2}
-#  [2 4] {#2-4}
-#  [3 6] {#3-6}
-#  [4 8]] {#4-8}
+# Output:
+# [[0 0]
+#  [1 2]
+#  [2 4]
+#  [3 6]
+#  [4 8]]
 ```
 
 ### Запросы Pandas {#pandas-queries}
@@ -216,19 +216,19 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Запрос возвращает Pandas DataFrame {#query-returns-a-pandas-dataframe}
+# Query returns a Pandas DataFrame
 df = client.query_df("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
 
 print(type(df))
-# Вывод: <class "pandas.core.frame.DataFrame"> {#output-class-pandascoreframedataframe}
+# Output: <class "pandas.core.frame.DataFrame">
 print(df)
-# Вывод: {#output}
-#    number  doubled {#number-doubled}
-# 0       0        0 {#0-0-0}
-# 1       1        2 {#1-1-2}
-# 2       2        4 {#2-2-4}
-# 3       3        6 {#3-3-6}
-# 4       4        8 {#4-4-8}
+# Output:
+#    number  doubled
+# 0       0        0
+# 1       1        2
+# 2       2        4
+# 3       3        6
+# 4       4        8
 ```
 
 ### Запросы PyArrow {#pyarrow-queries}
@@ -240,21 +240,21 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Запрос возвращает таблицу PyArrow {#query-returns-a-pyarrow-table}
+# Query returns a PyArrow Table
 arrow_table = client.query_arrow("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
 
 print(type(arrow_table))
-# Результат: {#output}
-# <class "pyarrow.lib.Table"> {#class-pyarrowlibtable}
+# Output:
+# <class "pyarrow.lib.Table">
 
 print(arrow_table)
-# Результат: {#output}
-# pyarrow.Table {#pyarrowtable}
-# number: uint64 not null {#number-uint64-not-null}
-# str: string not null {#str-string-not-null}
+# Output:
+# pyarrow.Table
+# number: uint64 not null
+# str: string not null
 # ----
-# number: [[0,1,2]] {#number-012}
-# str: [["0","1","2"]] {#str-012}
+# number: [[0,1,2]]
+# str: [["0","1","2"]]
 ```
 
 ### DataFrame на базе Arrow {#arrow-backed-dataframes}
@@ -273,37 +273,37 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# Запрос возвращает Pandas DataFrame с типами данных Arrow (требуется pandas 2.x) {#query-returns-a-pandas-dataframe-with-arrow-dtypes-requires-pandas-2x}
+# Query returns a Pandas DataFrame with Arrow dtypes (requires pandas 2.x)
 df = client.query_df_arrow(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
     dataframe_library="pandas"
 )
 
 print(df.dtypes)
-# Вывод: {#output}
-# number    uint64[pyarrow] {#number-uint64pyarrow}
-# str       string[pyarrow] {#str-stringpyarrow}
-# dtype: object {#dtype-object}
+# Output:
+# number    uint64[pyarrow]
+# str       string[pyarrow]
+# dtype: object
 
-# Или используйте Polars {#or-use-polars}
+# Or use Polars
 polars_df = client.query_df_arrow(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
     dataframe_library="polars"
 )
 print(df.dtypes)
-# Вывод: {#output}
-# [UInt64, String] {#uint64-string}
+# Output:
+# [UInt64, String]
 
 
-# Потоковая передача пакетами DataFrames (показан пример с polars) {#streaming-into-batches-of-dataframes-polars-shown}
+# Streaming into batches of DataFrames (polars shown)
 with client.query_df_arrow_stream(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000", dataframe_library="polars"
 ) as stream:
     for df_batch in stream:
-        print(f"Получен пакет {type(df_batch)} с {len(df_batch)} строками и типами данных: {df_batch.dtypes}")
-        # Вывод:
-        # Получен пакет <class 'polars.dataframe.frame.DataFrame'> с 65409 строками и типами данных: [UInt64, String]
-        # Получен пакет <class 'polars.dataframe.frame.DataFrame'> с 34591 строками и типами данных: [UInt64, String]
+        print(f"Received {type(df_batch)} batch with {len(df_batch)} rows and dtypes: {df_batch.dtypes}")
+        # Output:
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 65409 rows and dtypes: [UInt64, String]
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 34591 rows and dtypes: [UInt64, String]
 ```
 
 #### Примечания и особенности {#notes-and-caveats}
@@ -322,35 +322,35 @@ with client.query_df_arrow_stream(
 Столбцы `Date` могут приходить как `UINT16` (количество дней с начала эпохи Unix, 1970‑01‑01). Преобразование внутри DataFrame эффективно и несложно:
 
 ```python
-# Polars {#polars}
+# Polars
 df = df.with_columns(pl.col("event_date").cast(pl.Date))
 
-# Pandas {#pandas}
+# Pandas
 df["event_date"] = pd.to_datetime(df["event_date"], unit="D")
 ```
 
 Столбцы типа `Int128` могут поступать в виде `FIXED_SIZE_BINARY` с сырыми байтами. Polars предоставляет встроенную поддержку 128-битных целых чисел:
 
 ```python
-# Polars — нативная поддержка {#polars-native-support}
+# Polars - native support
 df = df.with_columns(pl.col("data").bin.reinterpret(dtype=pl.Int128, endianness="little"))
 ```
 
 Начиная с NumPy 2.3 нет общедоступного 128-битного целочисленного типа dtype, поэтому приходится использовать чистый Python и, например, сделать что-то вроде этого:
 
 ```python
-# Предположим, у нас есть pandas dataframe со столбцом Int128 типа данных fixed_size_binary[16][pyarrow] {#assuming-we-have-a-pandas-dataframe-with-an-int128-column-of-dtype-fixed_size_binary16pyarrow}
+# Assuming we have a pandas dataframe with an Int128 column of dtype fixed_size_binary[16][pyarrow]
 
 print(df)
-# Вывод: {#output}
-#   str_col                                        int_128_col {#str_col-int_128_col}
-# 0    num1  b'\\x15}\\xda\\xeb\\x18ZU\\x0fn\\x05\\x01\\x00\\x00\\x00... {#0-num1-bx15xdaxebx18zux0fnx05x01x00x00x00}
-# 1    num2  b'\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00... {#1-num2-bx08x00x00x00x00x00x00x00x00x00x00}
-# 2    num3  b'\\x15\\xdfp\\x81r\\x9f\\x01\\x00\\x00\\x00\\x00\\x00\\x... {#2-num3-bx15xdfpx81rx9fx01x00x00x00x00x00x}
+# Output:
+#   str_col                                        int_128_col
+# 0    num1  b'\\x15}\\xda\\xeb\\x18ZU\\x0fn\\x05\\x01\\x00\\x00\\x00...
+# 1    num2  b'\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00...
+# 2    num3  b'\\x15\\xdfp\\x81r\\x9f\\x01\\x00\\x00\\x00\\x00\\x00\\x...
 
 print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list()])
-# Вывод: {#output}
-# [1234567898765432123456789, 8, 456789123456789] {#1234567898765432123456789-8-456789123456789}
+# Output:
+# [1234567898765432123456789, 8, 456789123456789]
 ```
 
 Основной вывод: прикладной код должен выполнять эти преобразования в зависимости от возможностей выбранной библиотеки DataFrame и приемлемых компромиссов по производительности. Когда нативные для DataFrame преобразования недоступны, вариант с использованием чистого Python по‑прежнему остается рабочим.
@@ -368,24 +368,24 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 ```python
 from clickhouse_connect.datatypes.format import set_read_format
 
-# Возвращать значения IPv6 и IPv4 в виде строк {#return-both-ipv6-and-ipv4-values-as-strings}
+# Return both IPv6 and IPv4 values as strings
 set_read_format('IPv*', 'string')
 
-# Возвращать все типы Date как базовые значения epoch (в секундах или днях) {#return-all-date-types-as-the-underlying-epoch-second-or-epoch-day}
+# Return all Date types as the underlying epoch second or epoch day
 set_read_format('Date*', 'int')
 ```
 
 * Для всего запроса целиком, используя необязательный аргумент-словарь `query_formats`. В этом случае любой столбец (или подстолбец) указанных типов данных будет использовать настроенный формат.
 
 ```python
-# Возвращать все столбцы UUID в виде строки {#return-any-uuid-column-as-a-string}
+# Return any UUID column as a string
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})
 ```
 
 * Для значений в определённом столбце, используя необязательный аргумент-словарь `column_formats`. Ключом является имя столбца, возвращаемое ClickHouse, а значением — либо формат для данных этого столбца, либо вложенный словарь второго уровня `format`, где ключом является имя типа ClickHouse, а значением — формат(ы) запроса. Этот дополнительный словарь можно использовать для вложенных типов столбцов, таких как Tuples или Maps.
 
 ```python
-# Возвращать значения IPv6 из столбца `dev_address` в виде строк {#return-ipv6-values-in-the-dev_address-column-as-strings}
+# Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
 

@@ -286,11 +286,11 @@ SQL 控制台可以一键将当前的排序和筛选条件转换为查询。只�
 1. 点击 _+_ 图标创建一个新查询，并粘贴以下代码：
 
 ```sql
-   -- 按年份显示 uk_price_paid 表中所有交易的总价格和总交易数。
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
    SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
    FROM uk_price_paid
    GROUP BY year(date)
-```
+   ```
 
 1. 点击 **Run**。查询会失败，因为我们尝试从 `pricee` 而不是 `price` 中获取值。
 2. 点击 **Fix Query**。

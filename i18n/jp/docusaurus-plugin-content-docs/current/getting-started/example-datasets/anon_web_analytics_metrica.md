@@ -19,9 +19,9 @@ doc_type: 'guide'
 
 ```bash
 curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
-# チェックサムを検証する {#validate-the-checksum}
+# Validate the checksum
 md5sum hits_v1.tsv
-# チェックサムは次の値と一致する必要があります: f3631b6295bf06989c1437491f7592cb {#checksum-should-be-equal-to-f3631b6295bf06989c1437491f7592cb}
+# Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
 
 ### データベースとテーブルを作成 {#create-the-database-and-table}
@@ -62,9 +62,9 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 
 ```bash
 curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
-# チェックサムを検証する {#validate-the-checksum}
+# Validate the checksum
 md5sum visits_v1.tsv
-# チェックサムは次の値と一致する必要があります: 6dafe1a0f24e59e3fc2d0fed85601de6 {#checksum-should-be-equal-to-6dafe1a0f24e59e3fc2d0fed85601de6}
+# Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
 
 ### visits テーブルの作成 {#create-the-visits-table}

@@ -383,26 +383,26 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
 
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-```
+  ```
 
 ```response
-CONNECTED(00000003)
-depth=0 CN = chnode1
-verify error:num=20:无法获取本地颁发机构证书
-verify return:1
-depth=0 CN = chnode1
-verify error:num=21:无法验证第一个证书
-verify return:1
----
-证书链
- 0 s:CN = chnode1
-   i:CN = marsnet.local CA
----
-服务器证书
------BEGIN CERTIFICATE-----
-MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-...
-```
+  CONNECTED(00000003)
+  depth=0 CN = chnode1
+  verify error:num=20:unable to get local issuer certificate
+  verify return:1
+  depth=0 CN = chnode1
+  verify error:num=21:unable to verify the first certificate
+  verify return:1
+  ---
+  Certificate chain
+   0 s:CN = chnode1
+     i:CN = marsnet.local CA
+  ---
+  Server certificate
+  -----BEGIN CERTIFICATE-----
+  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+  ...
+  ```
 
 * 在 `openssl` 会话中发送 4LW 命令
 
@@ -444,13 +444,13 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 4. 使用 `--secure` 参数和 SSL 端口启动 ClickHouse 客户端：
    ```bash
-   root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
-   ClickHouse client version 22.3.3.44 (official build).
-   Connecting to chnode1.marsnet.local:9440 as user default.
-   Connected to ClickHouse server version 22.3.3 revision 54455.
+    root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
+    ClickHouse client version 22.3.3.44 (official build).
+    Connecting to chnode1.marsnet.local:9440 as user default.
+    Connected to ClickHouse server version 22.3.3 revision 54455.
 
-   clickhouse :)
-   ```
+    clickhouse :)
+    ```
 
 5. 使用 `https` 接口，通过 `https://chnode1.marsnet.local:8443/play` 登录 Play UI。
 
@@ -464,31 +464,31 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 6. 创建一个复制表：
 
    ```sql
-   clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
-               (
-                   id UInt64,
-                   column1 Date,
-                   column2 String
-               )
-               ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
-               ORDER BY (id);
-   ```
+    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
+                (
+                    id UInt64,
+                    column1 Date,
+                    column2 String
+                )
+                ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
+                ORDER BY (id);
+    ```
 
    ```response
-   ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-   │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-   │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-   └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-   ```
+    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 
 7. 在 `chnode1` 上插入几行数据：
    ```sql
-   INSERT INTO repl_table
-   (id, column1, column2)
-   VALUES
-   (1,'2022-04-01','abc'),
-   (2,'2022-04-02','def');
-   ```
+    INSERT INTO repl_table
+    (id, column1, column2)
+    VALUES
+    (1,'2022-04-01','abc'),
+    (2,'2022-04-02','def');
+    ```
 
 8. 通过在 `chnode2` 上查看行数据来验证复制情况：
     ```sql

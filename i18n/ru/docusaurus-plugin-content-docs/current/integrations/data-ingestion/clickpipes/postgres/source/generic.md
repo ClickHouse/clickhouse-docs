@@ -65,10 +65,10 @@ ClickPipes поддерживает Postgres версий 12 и выше.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Предоставить пользователю права на репликацию
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- Создать публикацию. Она будет использоваться при создании ClickPipe
+-- Create a publication. We will use this when creating the pipe
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 

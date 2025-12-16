@@ -34,7 +34,7 @@ INSERT INTO metrics VALUES
 
 SELECT
     timeslot,
-    maxMap(status)
+    maxMap(status),
 FROM metrics
 GROUP BY timeslot;
 ```
@@ -54,7 +54,7 @@ GROUP BY timeslot;
   * 状态 &#39;g&#39;：max(115, 125) = 125
 
 ```response title="Response"
-   ┌────────────时间段─┬─最大映射(状态)───────────────────────┐
+   ┌────────────timeslot─┬─maxMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':105,'g':125}      │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':45,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘

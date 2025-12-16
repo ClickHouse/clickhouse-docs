@@ -14,9 +14,9 @@ doc_type: 'reference'
 ## 構文 {#syntax}
 
 ```sql
-odbc(データソース, 外部データベース, 外部テーブル)
-odbc(データソース, 外部テーブル)
-odbc(名前付きコレクション)
+odbc(datasource, external_database, external_table)
+odbc(datasource, external_table)
+odbc(named_collection)
 ```
 
 ## 引数 {#arguments}
@@ -70,7 +70,7 @@ unixODBC のインストールに含まれる `isql` ユーティリティを使
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 接続しました!                            |
+| Connected!                            |
 |                                       |
 ...
 ```

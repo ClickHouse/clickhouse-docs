@@ -63,8 +63,8 @@ $ accel-config list | grep -P 'iax|state'
 
 ```bash
     "dev":"iax1",
-    "state":"已启用",
-            "state":"已启用",
+    "state":"enabled",
+            "state":"enabled",
 ```
 
 如果没有任何输出，说明 IAA 尚未就绪。请重新检查 IAA 的配置。
@@ -139,13 +139,13 @@ SELECT count() FROM lineorder_flat
 当你首次从客户端执行插入或查询操作时，ClickHouse 服务器控制台应输出如下日志：
 
 ```text
-硬件加速 DeflateQpl 编解码器已就绪！
+Hardware-assisted DeflateQpl codec is ready!
 ```
 
 如果你始终没有看到这条日志，而是看到了如下所示的另一条日志：
 
 ```text
-硬件辅助 DeflateQpl 编解码器初始化失败
+Initialization of hardware-assisted DeflateQpl codec failed
 ```
 
 这表示 IAA 设备尚未准备就绪，你需要重新检查 IAA 的配置。

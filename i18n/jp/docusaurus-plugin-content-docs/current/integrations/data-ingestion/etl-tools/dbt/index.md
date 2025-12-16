@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # dbtモデル用ClickHouseデータベース
+      schema: [ default ] # ClickHouse database for dbt models
 
-      # オプション
+      # Optional
       host: [ localhost ]
-      port: [ 8123 ]  # secureおよびdriverの設定に応じてデフォルト値は8123、8443、9000、9440 
-      user: [ default ] # 全データベース操作用ユーザー
-      password: [ <empty string> ] # ユーザーパスワード
-      secure: True  # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用
+      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [ default ] # User for all database operations
+      password: [ <empty string> ] # Password for the user
+      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
 ```
 
 

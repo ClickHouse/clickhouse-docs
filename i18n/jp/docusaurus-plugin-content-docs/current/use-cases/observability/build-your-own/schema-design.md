@@ -69,8 +69,8 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-5行のセット。経過時間: 0.735秒。処理: 1036万行、4.65 GB (1410万行/秒、6.32 GB/秒)
-ピークメモリ使用量: 153.71 MiB。
+5 rows in set. Elapsed: 0.735 sec. Processed 10.36 million rows, 4.65 GB (14.10 million rows/s., 6.32 GB/s.)
+Peak memory usage: 153.71 MiB.
 ```
 
 ここで使用しているマップ構文（例: `LogAttributes['request_path']`）と、URL からクエリパラメータを取り除くための [`path` 関数](/sql-reference/functions/url-functions#path) に注目してください。
@@ -97,8 +97,8 @@ LIMIT 5
 │ /site/productModelImages │ 10866 │
 └──────────────────────────┴───────┘
 
-5行が返されました。経過時間: 0.668秒。処理済み: 1037万行、5.13 GB (1552万行/秒、7.68 GB/秒)
-ピークメモリ使用量: 172.30 MiB。
+5 rows in set. Elapsed: 0.668 sec. Processed 10.37 million rows, 5.13 GB (15.52 million rows/s., 7.68 GB/s.)
+Peak memory usage: 172.30 MiB.
 ```
 
 次に、非構造化ログについても同様のことを考えてみましょう。
@@ -139,7 +139,7 @@ LIMIT 5
 │ /site/productAdditives   │ 10866 │
 └──────────────────────────┴───────┘
 
-5行のセット。経過時間: 1.953秒。処理済み: 1037万行、3.59 GB (531万行/秒、1.84 GB/秒)
+5 rows in set. Elapsed: 1.953 sec. Processed 10.37 million rows, 3.59 GB (5.31 million rows/s., 1.84 GB/s.)
 ```
 
 非構造化ログを解析するクエリの複雑さとコスト（パフォーマンス差に注目してください）の増大が理由で、可能な限り常に構造化ログを使用することを推奨します。
@@ -386,7 +386,7 @@ FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
 
-行 1:
+Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
@@ -406,7 +406,7 @@ RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
 
-1行のデータセット。経過時間: 0.010秒
+1 row in set. Elapsed: 0.010 sec.
 ```
 
 `Body` カラムから JSON 関数を使って列を抽出することで構成される、同等のマテリアライズドビューを次に示します。
@@ -475,12 +475,12 @@ SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
 
-行 1:
+Row 1:
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
 
-1行のセット。経過時間: 1.139秒。処理済み 563万行、2.53 GB (494万行/秒、2.22 GB/秒)
-ピークメモリ使用量: 71.90 MiB。
+1 row in set. Elapsed: 1.139 sec. Processed 5.63 million rows, 2.53 GB (4.94 million rows/s., 2.22 GB/s.)
+Peak memory usage: 71.90 MiB.
 ```
 
 :::note ドットを避ける
@@ -536,7 +536,7 @@ LIMIT 5
 │ 91.99.72.15   │
 └───────────────┘
 
-5行が返されました。経過時間: 0.011秒
+5 rows in set. Elapsed: 0.011 sec.
 ```
 
 さらに、`ALTER TABLE` コマンドを使えば `ALIAS` の追加は容易です。これらのカラムはすぐに利用可能になり、例えば次のように利用できます。
@@ -619,7 +619,7 @@ SELECT *
 FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n           \tip_range_start IPv4, \n       \tip_range_end IPv4, \n         \tcountry_code Nullable(String), \n     \tstate1 Nullable(String), \n           \tstate2 Nullable(String), \n           \tcity Nullable(String), \n     \tpostcode Nullable(String), \n         \tlatitude Float64, \n          \tlongitude Float64, \n         \ttimezone Nullable(String)\n   \t')
 LIMIT 1
 FORMAT Vertical
-行 1:
+Row 1:
 ──────
 ip_range_start: 1.0.0.0
 ip_range_end:   1.0.0.255
@@ -652,7 +652,7 @@ CREATE TABLE geoip_url(
 select count() from geoip_url;
 
 ┌─count()─┐
-│ 3261621 │ -- 326万件
+│ 3261621 │ -- 3.26 million
 └─────────┘
 ```
 
@@ -741,7 +741,7 @@ SELECT * FROM ip_trie LIMIT 3
 │ 1.0.4.0/22 │ -38.0267 │   145.301 │ AU           │
 └────────────┴──────────┴───────────┴──────────────┘
 
-3行のデータセット。経過時間: 4.662秒
+3 rows in set. Elapsed: 4.662 sec.
 ```
 
 :::note 定期的な更新
@@ -1092,7 +1092,7 @@ FINAL
 │     113 │
 └─────────┘
 
-1行のセット。経過時間: 0.039秒
+1 row in set. Elapsed: 0.039 sec.
 ```
 
 ここでは、クエリ結果を保存することで、`otel_logs` の 1,000 万行から 113 行まで行数を効果的に削減しました。ここで重要なのは、新しいログが `otel_logs` テーブルに挿入されると、それぞれの時間帯に対応する新しい値が `bytes_per_hour` に書き込まれ、バックグラウンドで非同期に自動マージされる点です。1 時間あたり 1 行のみを保持することで、`bytes_per_hour` は常に小さく、かつ最新の状態に保たれます。
@@ -1121,7 +1121,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5行のセット。経過時間: 0.008秒
+5 rows in set. Elapsed: 0.008 sec.
 
 SELECT
         Hour,
@@ -1139,7 +1139,7 @@ LIMIT 5
 │ 2019-01-26 12:00:00 │ 1736840933 │
 └─────────────────────┴────────────┘
 
-5行のセット。経過時間: 0.005秒
+5 rows in set. Elapsed: 0.005 sec.
 ```
 
 これにより、クエリの実行時間は 0.6 秒から 0.008 秒へと短縮され、75 倍以上高速化されました。
@@ -1165,7 +1165,7 @@ ORDER BY Hour DESC
 │ 2019-01-22 00:00:00 │     536     │
 └─────────────────────┴─────────────┘
 
-113行を取得。経過時間: 0.667秒。処理: 1037万行、4.73 GB (1553万行/秒、7.09 GB/秒)
+113 rows in set. Elapsed: 0.667 sec. Processed 10.37 million rows, 4.73 GB (15.53 million rows/s., 7.09 GB/s.)
 ```
 
 インクリメンタル更新でカーディナリティのカウントを永続的に保持するには、AggregatingMergeTree が必要です。
@@ -1492,7 +1492,7 @@ WHERE Referer LIKE '%ultra%'
 │  114514 │
 └─────────┘
 
-1行が返されました。経過時間: 0.177秒。処理済み: 1037万行、908.49 MB (5857万行/秒、5.13 GB/秒)
+1 row in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 908.49 MB (58.57 million rows/s., 5.13 GB/s.)
 ```
 
 ここでは、ngramサイズ3でマッチングを行う必要があります。そのため、`ngrambf_v1`インデックスを作成します。

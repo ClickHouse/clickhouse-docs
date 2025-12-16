@@ -124,7 +124,7 @@ SHOW ACCESS
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
@@ -176,7 +176,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### 設定プロファイルとその割り当てを確認する {#examine-the-settings-profile-and-assignment-1}
+#### Examine the settings profile and assignment {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 アクセスを表示
@@ -195,7 +195,7 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### セッションに設定を適用する {#assign-a-setting-to-a-session}
+### Assign a setting to a session {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -208,7 +208,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-### クエリ実行時に設定を指定する {#assign-a-setting-during-a-query}
+### Assign a setting during a query {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

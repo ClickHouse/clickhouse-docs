@@ -162,7 +162,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 ```
 
 ```response
-36838935行が取得されました。経過時間: 2.220秒。処理済み: 3684万行、1.27 GB (1660万行/秒、572.47 MB/秒)
+36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
 ClickHouse は約 3,700 万件のレコードを JSON ファイルにエクスポートするのに、わずか 2 秒しかかかりませんでした。`COMPRESSION` 句を使用して、その場で圧縮しながらエクスポートすることもできます。
@@ -172,7 +172,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 ```
 
 ```response
-36838935行のセット。経過時間: 22.680秒。処理済み: 3684万行、1.27 GB (162万行/秒、56.02 MB/秒)
+36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
 完了までに時間はかかりますが、圧縮後のファイルサイズは大幅に小さくなります。

@@ -190,7 +190,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
 
 ```xml
   <kafka>
-    <!-- Kafkaエンジンタイプの全テーブルに対するグローバル設定オプション -->
+    <!-- Global configuration options for all tables of Kafka engine type -->
     <debug>cgrp</debug>
     <statistics_interval_ms>3000</statistics_interval_ms>
 
@@ -199,7 +199,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
         <statistics_interval_ms>4000</statistics_interval_ms>
     </kafka_topic>
 
-    <!-- コンシューマー設定 -->
+    <!-- Settings for consumer -->
     <consumer>
         <auto_offset_reset>smallest</auto_offset_reset>
         <kafka_topic>
@@ -213,7 +213,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
         </kafka_topic>
     </consumer>
 
-    <!-- プロデューサー設定 -->
+    <!-- Settings for producer -->
     <producer>
         <kafka_topic>
             <name>logs</name>
@@ -238,7 +238,7 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理
 例:
 
 ```xml
-<!-- Kerberos対応Kafka -->
+<!-- Kerberos-aware Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>

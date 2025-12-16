@@ -57,7 +57,7 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 
 ## List of Static IPs {#list-of-static-ips}
 
-The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic.
+The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic. In the case of object storage pipes you should also add the [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) to your IP allow list.
 
 For all services, ClickPipes traffic will originate from a default region based on your service's location:
 - **eu-central-1**: For all services in EU regions. (this includes GCP and Azure EU regions)

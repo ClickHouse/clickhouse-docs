@@ -47,7 +47,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 Вы можете использовать значения типа `Interval` в арифметических операциях над значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете прибавить 4 дня к текущему времени:
 
 ```sql
-SELECT now() AS текущая_дата_время, текущая_дата_время + INTERVAL 4 DAY
+SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 ```
 
 ```text
@@ -83,4 +83,4 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ## См. также {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) — оператор
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) — функции преобразования типов
+- [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) — функции преобразования типов

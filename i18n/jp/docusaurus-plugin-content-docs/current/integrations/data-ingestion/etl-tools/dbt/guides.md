@@ -171,7 +171,7 @@ LIMIT 5;
 
 ```response
 +------+------------+----------+------------------+-------------+--------------+-------------------+
-|ID    |名前        |映画数    |平均ランク        |ユニークジャンル|ユニーク監督数|更新日時           |
+|id    |name        |num_movies|avg_rank          |unique_genres|uniq_directors|updated_at         |
 +------+------------+----------+------------------+-------------+--------------+-------------------+
 |45332 |Mel Blanc   |832       |6.175853582979779 |18           |84            |2022-04-26 14:01:45|
 |621468|Bess Flowers|659       |5.57727638854796  |19           |293           |2022-04-26 14:01:46|
@@ -363,44 +363,44 @@ LIMIT 5;
     15:05:37  Completed successfully
     15:05:37
     15:05:37  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-```
+    ```
 
 5. 指定どおり、dbt は ClickHouse 上でこのモデルをビューとして作成します。これで、このビューを直接クエリできるようになりました。このビューは `imdb_dbt` データベース内に作成されます。どのデータベースに作成されるかは、`clickhouse_imdb` プロファイル配下のファイル `~/.dbt/profiles.yml` 内にある schema パラメータによって決まります。
 
    ```sql
-   SHOW DATABASES;
-   ```
+    SHOW DATABASES;
+    ```
 
    ```response
-   +------------------+
-   |name              |
-   +------------------+
-   |INFORMATION_SCHEMA|
-   |default           |
-   |imdb              |
-   |imdb_dbt          |  <---dbt によって作成！
-   |information_schema|
-   |system            |
-   +------------------+
-   ```
+    +------------------+
+    |name              |
+    +------------------+
+    |INFORMATION_SCHEMA|
+    |default           |
+    |imdb              |
+    |imdb_dbt          |  <---created by dbt!
+    |information_schema|
+    |system            |
+    +------------------+
+    ```
 
    このビューに対してクエリを実行することで、より簡潔な構文で先ほどのクエリ結果を再現できます:
 
    ```sql
-   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-   ```
+    SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+    ```
 
    ```response
-   +------+------------+----------+------------------+------+---------+-------------------+
-   |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
-   +------+------------+----------+------------------+------+---------+-------------------+
-   |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
-   |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
-   |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
-   |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
-   |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
-   +------+------------+----------+------------------+------+---------+-------------------+
-   ```
+    +------+------------+----------+------------------+------+---------+-------------------+
+    |id    |name        |num_movies|avg_rank          |genres|directors|updated_at         |
+    +------+------------+----------+------------------+------+---------+-------------------+
+    |45332 |Mel Blanc   |832       |6.175853582979779 |18    |84       |2022-04-26 15:26:55|
+    |621468|Bess Flowers|659       |5.57727638854796  |19    |293      |2022-04-26 15:26:57|
+    |372839|Lee Phelps  |527       |5.032976449684617 |18    |261      |2022-04-26 15:26:56|
+    |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
+    |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
+    +------+------------+----------+------------------+------+---------+-------------------+
+    ```
 
 ## テーブルマテリアライゼーションの作成 {#creating-a-table-materialization}
 
@@ -476,8 +476,8 @@ LIMIT 5;
 このモデルに対して、他のクエリも自由に実行してください。たとえば、5 本以上の映画に出演していて、その出演作の中で最も評価の高い作品を持つ俳優は誰かを問い合わせることができます。
 
 ```sql
-SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
-```
+    SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DESC LIMIT 10;
+    ```
 
 ## インクリメンタルマテリアライゼーションの作成 {#creating-an-incremental-materialization}
 
@@ -530,32 +530,32 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
     {% endif %}
-```
+    ```
 
 `roles` テーブルと `actors` テーブルに対する更新や追加にのみ、このモデルが反応する点に注意してください。すべてのテーブルの変更に対応させるには、このモデルを複数のサブモデルに分割し、それぞれに独自のインクリメンタル条件を設定することを推奨します。これらのモデルは相互に参照し、接続できます。モデル間の相互参照の詳細については[こちら](https://docs.getdbt.com/reference/dbt-jinja-functions/ref)を参照してください。
 
 2. `dbt run` を実行し、生成されたテーブルの結果を確認します:
 
-   ```response
-   clickhouse-user@clickhouse:~/imdb$  dbt run
-   15:33:34  Running with dbt=1.1.0
-   15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
-   15:33:34
-   15:33:35  Concurrency: 1 threads (target='dev')
-   15:33:35
-   15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
-   15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
-   15:33:41
-   15:33:41  Finished running 1 incremental model in 7.30s.
-   15:33:41
-   15:33:41  Completed successfully
-   15:33:41
-   15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-   ```
+```response
+clickhouse-user@clickhouse:~/imdb$  dbt run
+15:33:34  Running with dbt=1.1.0
+15:33:34  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 6 sources, 0 exposures, 0 metrics
+15:33:34
+15:33:35  Concurrency: 1 threads (target='dev')
+15:33:35
+15:33:35  1 of 1 START incremental model imdb_dbt.actor_summary........................... [RUN]
+15:33:41  1 of 1 OK created incremental model imdb_dbt.actor_summary...................... [OK in 6.33s]
+15:33:41
+15:33:41  Finished running 1 incremental model in 7.30s.
+15:33:41
+15:33:41  Completed successfully
+15:33:41
+15:33:41  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+```
 
-   ```sql
-   SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
-   ```
+```sql
+SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 5;
+```
 
 ```response
     +------+------------+----------+------------------+------+---------+-------------------+
@@ -567,61 +567,61 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     |283127|Tom London  |525       |2.8721716524875673|17    |203      |2022-04-26 15:26:56|
     |356804|Bud Osborne |515       |2.0389507108727773|15    |149      |2022-04-26 15:26:56|
     +------+------------+----------+------------------+------+---------+-------------------+
-```
+    ```
 
 3. ここではインクリメンタル更新を説明するために、モデルにデータを追加します。`actors` テーブルに俳優「Clicky McClickHouse」を追加します:
 
-   ```sql
-   INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
-   ```
+```sql
+INSERT INTO imdb.actors VALUES (845466, 'Clicky', 'McClickHouse', 'M');
+```
 
 4. 次に「Clicky」をランダムな 910 本の映画に出演させます:
 
-   ```sql
-   INSERT INTO imdb.roles
-   SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
-   FROM imdb.movies
-   LIMIT 910 OFFSET 10000;
-   ```
+```sql
+INSERT INTO imdb.roles
+SELECT now() as created_at, 845466 as actor_id, id as movie_id, 'Himself' as role
+FROM imdb.movies
+LIMIT 910 OFFSET 10000;
+```
 
 5. 元のソーステーブルをクエリし、dbt モデルを経由せずに、彼が実際に最も多く出演している俳優になっていることを確認します:
 
-   ```sql
-   SELECT id,
-       any(actor_name)          as name,
-       uniqExact(movie_id)    as num_movies,
-       avg(rank)                as avg_rank,
-       uniqExact(genre)         as unique_genres,
-       uniqExact(director_name) as uniq_directors,
-       max(created_at)          as updated_at
-   FROM (
-           SELECT imdb.actors.id                                                   as id,
-                   concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
-                   imdb.movies.id as movie_id,
-                   imdb.movies.rank                                                 as rank,
-                   genre,
-                   concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
-                   created_at
-           FROM imdb.actors
-                   JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-                   LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-                   LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-                   LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-                   LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-           )
-   GROUP BY id
-   ORDER BY num_movies DESC
-   LIMIT 2;
-   ```
+```sql
+SELECT id,
+    any(actor_name)          as name,
+    uniqExact(movie_id)    as num_movies,
+    avg(rank)                as avg_rank,
+    uniqExact(genre)         as unique_genres,
+    uniqExact(director_name) as uniq_directors,
+    max(created_at)          as updated_at
+FROM (
+        SELECT imdb.actors.id                                                   as id,
+                concat(imdb.actors.first_name, ' ', imdb.actors.last_name)       as actor_name,
+                imdb.movies.id as movie_id,
+                imdb.movies.rank                                                 as rank,
+                genre,
+                concat(imdb.directors.first_name, ' ', imdb.directors.last_name) as director_name,
+                created_at
+        FROM imdb.actors
+                JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+                LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+                LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+                LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+                LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+        )
+GROUP BY id
+ORDER BY num_movies DESC
+LIMIT 2;
+```
 
-   ```response
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   |id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
-   |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
-   +------+-------------------+----------+------------------+------+---------+-------------------+
-   ```
+```response
++------+-------------------+----------+------------------+------+---------+-------------------+
+|id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
++------+-------------------+----------+------------------+------+---------+-------------------+
+|845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
+|45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
++------+-------------------+----------+------------------+------+---------+-------------------+
+```
 
 6. `dbt run` を実行し、モデルが更新され、上記の結果と一致していることを確認します:
 
@@ -640,7 +640,7 @@ SELECT * FROM imdb_dbt.actor_summary WHERE num_movies > 5 ORDER BY avg_rank  DES
     16:12:24  Completed successfully
     16:12:24
     16:12:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-```
+    ```
 
 ```sql
 SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
@@ -648,7 +648,7 @@ SELECT * FROM imdb_dbt.actor_summary ORDER BY num_movies DESC LIMIT 2;
 
 ```response
 +------+-------------------+----------+------------------+------+---------+-------------------+
-|id    |名前               |映画数    |平均ランク        |ジャンル|監督     |更新日時           |
+|id    |name               |num_movies|avg_rank          |genres|directors|updated_at         |
 +------+-------------------+----------+------------------+------+---------+-------------------+
 |845466|Clicky McClickHouse|910       |1.4687938697032283|21    |662      |2022-04-26 16:20:36|
 |45332 |Mel Blanc          |909       |5.7884792542982515|19    |148      |2022-04-26 16:17:42|
@@ -699,10 +699,10 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 3. Danny を 920 本のランダムな映画に出演させます。
 
 ```sql
-   INSERT INTO imdb.roles
-   SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
-   FROM imdb.movies
-   LIMIT 920 OFFSET 10000;
+INSERT INTO imdb.roles
+SELECT now() as created_at, 845467 as actor_id, id as movie_id, 'Himself' as role
+FROM imdb.movies
+LIMIT 920 OFFSET 10000;
 ```
 
 4. `dbt run` を実行し、Danny が actor-summary テーブルに追加されたことを確認します
@@ -745,36 +745,36 @@ AND event_time > subtractMinutes(now(), 15) ORDER BY event_time LIMIT 100;
 ```sql
 INSERT INTO imdb_dbt.actor_summary ("id", "name", "num_movies", "avg_rank", "genres", "directors", "updated_at")
 WITH actor_summary AS (
-SELECT id,
-   any(actor_name) AS name,
-   uniqExact(movie_id)    AS num_movies,
-   avg(rank)                AS avg_rank,
-   uniqExact(genre)         AS genres,
-   uniqExact(director_name) AS directors,
-   max(created_at) AS updated_at
-FROM (
-   SELECT imdb.actors.id AS id,
-      concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
-      imdb.movies.id AS movie_id,
-      imdb.movies.rank AS rank,
-      genre,
-      concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
-      created_at
-   FROM imdb.actors
-      JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
-      LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
-      LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
-      LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
-      LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
-)
-GROUP BY id
+   SELECT id,
+      any(actor_name) AS name,
+      uniqExact(movie_id)    AS num_movies,
+      avg(rank)                AS avg_rank,
+      uniqExact(genre)         AS genres,
+      uniqExact(director_name) AS directors,
+      max(created_at) AS updated_at
+   FROM (
+      SELECT imdb.actors.id AS id,
+         concat(imdb.actors.first_name, ' ', imdb.actors.last_name) AS actor_name,
+         imdb.movies.id AS movie_id,
+         imdb.movies.rank AS rank,
+         genre,
+         concat(imdb.directors.first_name, ' ', imdb.directors.last_name) AS director_name,
+         created_at
+      FROM imdb.actors
+         JOIN imdb.roles ON imdb.roles.actor_id = imdb.actors.id
+         LEFT OUTER JOIN imdb.movies ON imdb.movies.id = imdb.roles.movie_id
+         LEFT OUTER JOIN imdb.genres ON imdb.genres.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.movie_directors ON imdb.movie_directors.movie_id = imdb.movies.id
+         LEFT OUTER JOIN imdb.directors ON imdb.directors.id = imdb.movie_directors.director_id
+   )
+   GROUP BY id
 )
 
 SELECT *
 FROM actor_summary
--- このフィルターは増分実行時にのみ適用されます
+-- this filter will only be applied on an incremental run
 WHERE id > (SELECT max(id) FROM imdb_dbt.actor_summary) OR updated_at > (SELECT max(updated_at) FROM imdb_dbt.actor_summary)
-```
+   ```
 
 この実行では、新しい行だけが直接 `imdb_dbt.actor_summary` テーブルに追加され、テーブルの作成は行われません。
 
@@ -827,67 +827,67 @@ dbt のスナップショット機能を使用すると、更新可能なモデ�
 この例では、[増分テーブルモデルの作成](#creating-an-incremental-materialization) を完了していることを前提とします。actor&#95;summary.sql で inserts&#95;only=True を設定していないことを確認してください。models/actor&#95;summary.sql は次のようになっている必要があります。
 
 ```sql
-{{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
+   {{ config(order_by='(updated_at, id, name)', engine='MergeTree()', materialized='incremental', unique_key='id') }}
 
-with actor_summary as (
-    SELECT id,
-        any(actor_name) as name,
-        uniqExact(movie_id)    as num_movies,
-        avg(rank)                as avg_rank,
-        uniqExact(genre)         as genres,
-        uniqExact(director_name) as directors,
-        max(created_at) as updated_at
-    FROM (
-        SELECT {{ source('imdb', 'actors') }}.id as id,
-            concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
-            {{ source('imdb', 'movies') }}.id as movie_id,
-            {{ source('imdb', 'movies') }}.rank as rank,
-            genre,
-            concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
-            created_at
-    FROM {{ source('imdb', 'actors') }}
-        JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
-        LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
-        LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
-        LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
-        LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
-    )
-    GROUP BY id
-)
-select *
-from actor_summary
+   with actor_summary as (
+       SELECT id,
+           any(actor_name) as name,
+           uniqExact(movie_id)    as num_movies,
+           avg(rank)                as avg_rank,
+           uniqExact(genre)         as genres,
+           uniqExact(director_name) as directors,
+           max(created_at) as updated_at
+       FROM (
+           SELECT {{ source('imdb', 'actors') }}.id as id,
+               concat({{ source('imdb', 'actors') }}.first_name, ' ', {{ source('imdb', 'actors') }}.last_name) as actor_name,
+               {{ source('imdb', 'movies') }}.id as movie_id,
+               {{ source('imdb', 'movies') }}.rank as rank,
+               genre,
+               concat({{ source('imdb', 'directors') }}.first_name, ' ', {{ source('imdb', 'directors') }}.last_name) as director_name,
+               created_at
+       FROM {{ source('imdb', 'actors') }}
+           JOIN {{ source('imdb', 'roles') }} ON {{ source('imdb', 'roles') }}.actor_id = {{ source('imdb', 'actors') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'movies') }} ON {{ source('imdb', 'movies') }}.id = {{ source('imdb', 'roles') }}.movie_id
+           LEFT OUTER JOIN {{ source('imdb', 'genres') }} ON {{ source('imdb', 'genres') }}.movie_id = {{ source('imdb', 'movies') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'movie_directors') }} ON {{ source('imdb', 'movie_directors') }}.movie_id = {{ source('imdb', 'movies') }}.id
+           LEFT OUTER JOIN {{ source('imdb', 'directors') }} ON {{ source('imdb', 'directors') }}.id = {{ source('imdb', 'movie_directors') }}.director_id
+       )
+       GROUP BY id
+   )
+   select *
+   from actor_summary
 
-{% if is_incremental() %}
+   {% if is_incremental() %}
 
--- this filter will only be applied on an incremental run
-where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
+   -- this filter will only be applied on an incremental run
+   where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_at) from {{this}})
 
-{% endif %}
-```
+   {% endif %}
+   ```
 
 1. snapshots ディレクトリ内に `actor_summary` ファイルを作成します。
 
    ```bash
-    touch snapshots/actor_summary.sql
-   ```
+     touch snapshots/actor_summary.sql
+    ```
 
 2. `actor_summary.sql` ファイルの内容を、次の内容に更新します:
    ```sql
-   {% snapshot actor_summary_snapshot %}
+    {% snapshot actor_summary_snapshot %}
 
-   {{
-   config(
-   target_schema='snapshots',
-   unique_key='id',
-   strategy='timestamp',
-   updated_at='updated_at',
-   )
-   }}
+    {{
+    config(
+    target_schema='snapshots',
+    unique_key='id',
+    strategy='timestamp',
+    updated_at='updated_at',
+    )
+    }}
 
-   select * from {{ref('actor_summary')}}
+    select * from {{ref('actor_summary')}}
 
-   {% endsnapshot %}
-   ```
+    {% endsnapshot %}
+    ```
 
 この内容について、いくつか補足します:
 
@@ -911,54 +911,69 @@ where id > (select max(id) from {{ this }}) or updated_at > (select max(updated_
     13:26:25  Completed successfully
     13:26:25
     13:26:25  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
-```
+    ```
 
 snapshots データベース内に target&#95;schema パラメータで指定されたテーブル actor&#95;summary&#95;snapshot が作成されていることに注目してください。
 
 4. このデータをサンプリングすると、dbt によって dbt&#95;valid&#95;from と dbt&#95;valid&#95;to というカラムが含まれていることが分かります。後者には null が設定されています。以降の実行でこの値が更新されます。
 
    ```sql
-   SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-   ```
+    SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
+    ```
 
    ```response
-   +------+----------+------------+----------+-------------------+------------+
-   |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to|
-   +------+----------+------------+----------+-------------------+------------+
-   |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL        |
-   |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|NULL        |
-   |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL        |
-   |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL        |
-   |283127|Tom       |London      |549       |2022-05-25 19:31:47|NULL        |
-   +------+----------+------------+----------+-------------------+------------+
-   ```
+    +------+----------+------------+----------+-------------------+------------+
+    |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to|
+    +------+----------+------------+----------+-------------------+------------+
+    |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL        |
+    |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|NULL        |
+    |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL        |
+    |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL        |
+    |283127|Tom       |London      |549       |2022-05-25 19:31:47|NULL        |
+    +------+----------+------------+----------+-------------------+------------+
+    ```
 
 5. お気に入りの俳優 Clicky McClickHouse を、さらに 10 本の映画に出演させます。
 
    ```sql
-   INSERT INTO imdb.roles
-   SELECT now() as created_at, 845466 as actor_id, rand(number) % 412320 as movie_id, 'Himself' as role
-   FROM system.numbers
-   LIMIT 10;
-   ```
+    INSERT INTO imdb.roles
+    SELECT now() as created_at, 845466 as actor_id, rand(number) % 412320 as movie_id, 'Himself' as role
+    FROM system.numbers
+    LIMIT 10;
+    ```
 
 6. `imdb` ディレクトリから `dbt run` コマンドを再実行します。これによりインクリメンタルモデルが更新されます。完了したら、変更をキャプチャするために dbt snapshot を実行します。
 
    ```response
-   clickhouse-user@clickhouse:~/imdb$ dbt run
-   13:46:14  Running with dbt=1.1.0
-   13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
-   13:46:14
-   13:46:15  Concurrency: 1 threads (target='dev')
-   13:46:15
-   13:46:15  1 of 1 START incremental model imdb_dbt.actor_summary....................... [RUN]
-   13:46:18  1 of 1 OK created incremental model imdb_dbt.actor_summary.................. [OK in 2.76s]
-   13:46:18
-   13:46:18  Finished running 1 incremental model in 3.73s.
-   13:46:18
-   13:46:18  Completed successfully
-   13:46:18
-   13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+    clickhouse-user@clickhouse:~/imdb$ dbt run
+    13:46:14  Running with dbt=1.1.0
+    13:46:14  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
+    13:46:14
+    13:46:15  Concurrency: 1 threads (target='dev')
+    13:46:15
+    13:46:15  1 of 1 START incremental model imdb_dbt.actor_summary....................... [RUN]
+    13:46:18  1 of 1 OK created incremental model imdb_dbt.actor_summary.................. [OK in 2.76s]
+    13:46:18
+    13:46:18  Finished running 1 incremental model in 3.73s.
+    13:46:18
+    13:46:18  Completed successfully
+    13:46:18
+    13:46:18  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
+
+    clickhouse-user@clickhouse:~/imdb$ dbt snapshot
+    13:46:26  Running with dbt=1.1.0
+    13:46:26  Found 1 model, 0 tests, 1 snapshot, 0 analyses, 181 macros, 0 operations, 0 seed files, 3 sources, 0 exposures, 0 metrics
+    13:46:26
+    13:46:27  Concurrency: 1 threads (target='dev')
+    13:46:27
+    13:46:27  1 of 1 START snapshot snapshots.actor_summary_snapshot...................... [RUN]
+    13:46:31  1 of 1 OK snapshotted snapshots.actor_summary_snapshot...................... [OK in 4.05s]
+    13:46:31
+    13:46:31  Finished running 1 snapshot in 5.02s.
+    13:46:31
+    13:46:31  Completed successfully
+    13:46:31
+    13:46:31  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
    ```
 
 clickhouse-user@clickhouse:~/imdb$ dbt snapshot
@@ -976,15 +991,21 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 13:46:31
 13:46:31  完了。PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
 
-````
-
-7. スナップショットをクエリすると、Clicky McClickHouseに対して2行存在することに注目してください。以前のエントリには`dbt_valid_to`値が設定されています。新しい値は`dbt_valid_from`列に同じ値が記録され、`dbt_valid_to`値は`null`になっています。新しい行が存在する場合、それらもスナップショットに追加されます。
-
- ```sql
+```sql
+    SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
+    ```sql
  SELECT id, name, num_movies, dbt_valid_from, dbt_valid_to FROM snapshots.actor_summary_snapshot ORDER BY num_movies DESC LIMIT 5;
-````
-
 ```response
+    +------+----------+------------+----------+-------------------+-------------------+
+    |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
+    +------+----------+------------+----------+-------------------+-------------------+
+    |845467|Danny     |DeBito      |920       |2022-05-25 19:33:32|NULL               |
+    |845466|Clicky    |McClickHouse|920       |2022-05-25 19:34:37|NULL               |
+    |845466|Clicky    |McClickHouse|910       |2022-05-25 19:32:34|2022-05-25 19:34:37|
+    |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
+    |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
+    +------+----------+------------+----------+-------------------+-------------------+
+    ```response
 +------+----------+------------+----------+-------------------+-------------------+
 |id    |first_name|last_name   |num_movies|dbt_valid_from     |dbt_valid_to       |
 +------+----------+------------+----------+-------------------+-------------------+
@@ -1028,29 +1049,29 @@ dbt には、CSV ファイルからデータをロードする機能がありま
     17:03:24
     17:03:24  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 TOTAL=1
     ```
+
 3. データがロードされたことを確認します:
 
-    ```sql
-    SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
-    ```
+```sql
+SELECT * FROM imdb_dbt.genre_codes LIMIT 10;
+```
+```response
++-------+----+
+|genre  |code|
++-------+----+
+|Drama  |DRA |
+|Romance|ROM |
+|Short  |SHO |
+|Mystery|MYS |
+|Adult  |ADU |
+|Family |FAM |
 
-    ```response
-    +-------+----+
-    |genre  |code|
-    +-------+----+
-    |Drama  |DRA |
-    |Romance|ROM |
-    |Short  |SHO |
-    |Mystery|MYS |
-    |Adult  |ADU |
-    |Family |FAM |
-
-    |Action |ACT |
-    |Sci-Fi |SCI |
-    |Horror |HOR |
-    |War    |WAR |
-    +-------+----+=
-    ```
+|Action |ACT |
+|Sci-Fi |SCI |
+|Horror |HOR |
+|War    |WAR |
++-------+----+=
+```
 
 ## さらに詳しい情報 {#further-information}
 

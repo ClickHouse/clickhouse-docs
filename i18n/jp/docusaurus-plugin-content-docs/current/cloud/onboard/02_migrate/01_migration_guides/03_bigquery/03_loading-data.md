@@ -37,7 +37,7 @@ DECLARE n INT64;
 DECLARE i INT64;
 SET i = 0;
 
--- n は x 十億行に対応する値に設定することを推奨します。例えば 50 億行の場合は n = 5 とします
+-- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
 SET n = 100;
 
 WHILE i < n DO
@@ -70,8 +70,8 @@ END WHILE;
 まず ClickHouse で[テーブルを作成](/sql-reference/statements/create/table)しておく必要があります。
 
 ```sql
--- BigQuery のテーブルに STRUCT 型の列が含まれている場合、この設定を有効化する必要があります
--- その列を ClickHouse の Nested 型の列にマッピングするためです
+-- If your BigQuery table contains a column of type STRUCT, you must enable this setting
+-- to map that column to a ClickHouse column of type Nested
 SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable

@@ -69,9 +69,9 @@ ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（此前为 `docker.h
 为了在容器重启后仍然保留数据和设置，用户可以修改上面的 docker 命令，将路径 `/data/db`、`/var/lib/clickhouse` 和 `/var/log/clickhouse-server` 挂载为卷。例如：
 
 ```shell
-# 确保目录存在
+# ensure directories exist
 mkdir -p .volumes/db .volumes/ch_data .volumes/ch_logs
-# 修改命令以挂载路径
+# modify command to mount paths
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

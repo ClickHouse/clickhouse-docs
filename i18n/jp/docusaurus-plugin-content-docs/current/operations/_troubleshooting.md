@@ -24,18 +24,18 @@
 * 実際の警告メッセージは次のいずれかになります:
 
 ```bash
-N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' はアーキテクチャ 'i386' に対応していないため、設定ファイル 'main/binary-i386/Packages' の取得をスキップします
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```bash
-E: https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz の取得に失敗しました  ファイルサイズが想定と異なります (30451 != 28154)。ミラー同期中ですか?
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```text
-E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Origin' 値が 'Artifactory' から 'ClickHouse' に変更されました
-E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Label' 値が 'Artifactory' から 'ClickHouse' に変更されました
-N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Suite' 値が 'stable' から '' に変更されました
-N: このリポジトリの更新を適用するには、明示的に承認する必要があります。詳細は apt-secure(8) マニュアルページを参照してください。
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```bash
@@ -71,7 +71,22 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (このメッセージをコピーする際は、以下の行を必ず含めてください):
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
+
+0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
+1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
+2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
+3. BaseDaemon::initialize(Poco::Util::Application&) @ 0x000000000d2652cb
+4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
+5. Poco::Util::Application::run() @ 0x000000001581cfda
+6. DB::Server::run() @ 0x000000000d1288f0
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
+9. main @ 0x0000000007ea4eee
+10. ? @ 0x00007f67ff946d90
+11. ? @ 0x00007f67ff946e40
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
@@ -89,10 +104,8 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 12. \_start @ 0x00000000062e802e
     (version 24.10.1.2812 (official build))
 
-```
-
-原因は、`20.10.10`より古いバージョンのDockerデーモンです。修正するには、アップグレードするか、`docker run [--privileged | --security-opt seccomp=unconfined]`を実行してください。後者にはセキュリティ上の影響があります。
-
+```bash
+$ sudo service clickhouse-server status
 ```
 
 ## サーバーへの接続 {#troubleshooting-accepts-no-connections}
@@ -109,13 +122,13 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 コマンド:
 
 ```bash
-$ sudo service clickhouse-server status
+$ sudo service clickhouse-server start
 ```
 
 サーバーが起動していない場合は、次のコマンドで起動してください。
 
-```bash
-$ sudo service clickhouse-server start
+```text
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 **ログを確認する**
@@ -130,16 +143,10 @@ $ sudo service clickhouse-server start
 `clickhouse-server` の起動が設定エラーで失敗した場合は、エラー内容の説明とともに `<Error>` という行が表示されます。例えば、次のようになります。
 
 ```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 外部ディクショナリ 'event2id' の再読み込みに失敗しました: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+<Information> Application: starting up.
 ```
 
 ファイルの末尾にエラーが表示されていない場合は、次の文字列以降を起点にファイル全体を確認してください。
-
-```text
-<Information> Application: 起動中。
-```
-
-サーバー上で 2 つ目の `clickhouse-server` インスタンスを起動しようとすると、次のようなログが表示されます。
 
 ```text
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -155,18 +162,25 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-**systemd のログを確認する**
-
-`clickhouse-server` のログに有用な情報が見つからない場合や、ログ自体が存在しない場合は、次のコマンドを実行して `systemd` のログを確認できます。
+サーバー上で 2 つ目の `clickhouse-server` インスタンスを起動しようとすると、次のようなログが表示されます。
 
 ```bash
 $ sudo journalctl -u clickhouse-server
 ```
 
-**対話モードで clickhouse-server を起動する**
+**systemd のログを確認する**
+
+`clickhouse-server` のログに有用な情報が見つからない場合や、ログ自体が存在しない場合は、次のコマンドを実行して `systemd` のログを確認できます。
 
 ```bash
 $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
+```
+
+**対話モードで clickhouse-server を起動する**
+
+```bash
+$ curl 'http://localhost:8123/' --data-binary "SELECT a"
+Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 このコマンドは、autostart スクリプトの標準パラメータを使用してサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。

@@ -108,7 +108,7 @@ ClickHouse をビルドし、一部を除くほとんどの [stateless functiona
 #### Fast test をローカルで実行する: {#running-fast-test-locally}
 
 ```sh
-python -m ci.praktika run "Fast test" [--test テスト名]
+python -m ci.praktika run "Fast test" [--test some_test_name]
 ```
 
 これらのコマンドは `clickhouse/fast-test` の Docker イメージを取得し、コンテナ化された環境でジョブを実行します。
@@ -123,7 +123,7 @@ Python 3 と Docker 以外の依存関係は必要ありません。
 ビルドは、次のコマンドを使用して CI 環境に近い形でローカル実行できます。
 
 ```bash
-python -m ci.praktika run "<ビルドジョブ名>"
+python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 Python 3 と Docker 以外に必要な依存関係はありません。

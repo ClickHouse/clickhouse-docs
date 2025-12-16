@@ -1005,26 +1005,26 @@ ClickHouse перезагружает встроенные словари каж
 
 ```xml
 <distributed_ddl>
-    <!-- Путь в ZooKeeper к очереди DDL-запросов -->
+    <!-- Path in ZooKeeper to queue with DDL queries -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- Настройки из этого профиля будут использованы для выполнения DDL-запросов -->
+    <!-- Settings from this profile will be used to execute DDL queries -->
     <profile>default</profile>
 
-    <!-- Определяет, сколько запросов ON CLUSTER может выполняться одновременно. -->
+    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
     <pool_size>1</pool_size>
 
     <!--
-         Настройки очистки (активные задачи не удаляются)
+         Cleanup settings (active tasks will not be removed)
     -->
 
-    <!-- Определяет TTL задачи (по умолчанию 1 неделя) -->
+    <!-- Controls task TTL (default 1 week) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- Определяет частоту выполнения очистки (в секундах) -->
+    <!-- Controls how often cleanup should be performed (in seconds) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- Определяет максимальное количество задач в очереди -->
+    <!-- Controls how many tasks could be in the queue -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
@@ -1199,7 +1199,7 @@ ClickHouse перезагружает встроенные словари каж
 **Пример**
 
 ```xml
-<!-- Директория, содержащая файлы схем для различных входных форматов. -->
+<!-- Directory containing schema files for various input formats. -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
 
@@ -1986,7 +1986,7 @@ ClickHouse поддерживает динамическую ротацию ме
 <logger>
     <formatting>
         <type>json</type>
-        <!-- Можно настроить для каждого канала отдельно (log, errorlog, console, syslog) или глобально для всех каналов (в этом случае просто опустите параметр). -->
+        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -2884,9 +2884,9 @@ ClickHouse использует потоки из глобального пул�
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- Для самоподписанных сертификатов: <verificationMode>none</verificationMode> -->
+        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- Для самоподписанных сертификатов: <name>AcceptCertificateHandler</name> -->
+            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
@@ -3386,7 +3386,7 @@ ClickHouse проверит тип резолвера с наивысшим пр
 ```xml
 <query_masking_rules>
     <rule>
-        <name>скрыть номер SSN</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -3701,10 +3701,10 @@ DDL-запросы будут дожидаться только реплик и�
 ```xml
 <storage_configuration>
     <disks>
-        <!-- конфигурация -->
+        <!-- configuration -->
     </disks>
     <policies>
-        <!-- конфигурация -->
+        <!-- configuration -->
     </policies>
 </storage_configuration>
 ```
@@ -4527,9 +4527,9 @@ ClickHouse использует этот параметр для всех таб
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- Необязательный параметр. Суффикс chroot. Должен существовать. -->
+    <!-- Optional. Chroot suffix. Should exist. -->
     <root>/path/to/zookeeper/node</root>
-    <!-- Необязательный параметр. Строка digest ACL для Zookeeper. -->
+    <!-- Optional. Zookeeper digest ACL string. -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>

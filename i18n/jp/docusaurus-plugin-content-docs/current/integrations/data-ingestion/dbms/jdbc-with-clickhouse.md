@@ -69,17 +69,17 @@ touch config/datasources/mysql8.json
 これで、以下の設定を `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` ファイルにコピーして貼り付けることができます：
 
 ```json
-{
-  "mysql8": {
-  "driverUrls": [
-    "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
-  ],
-  "jdbcUrl": "jdbc:mysql://<host>:<port>",
-  "username": "<ユーザー名>",
-  "password": "<パスワード>"
-  }
-}
-```
+ {
+   "mysql8": {
+   "driverUrls": [
+     "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
+   ],
+   "jdbcUrl": "jdbc:mysql://<host>:<port>",
+   "username": "<username>",
+   "password": "<password>"
+   }
+ }
+ ```
 
 :::note
 上記の設定ファイルでは、
@@ -122,14 +122,14 @@ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
 * JDBC テーブルエンジン:
 
 ```sql
-CREATE TABLE mytable (
-     <column> <column_type>,
-     ...
-)
-ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
+ CREATE TABLE mytable (
+      <column> <column_type>,
+      ...
+ )
+ ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
-SELECT * FROM mytable;
-```
+ SELECT * FROM mytable;
+ ```
 
 :::note
 `jdbc` エンジン句の最初のパラメータには、上で設定した名前付きデータソースの名前を指定しています。

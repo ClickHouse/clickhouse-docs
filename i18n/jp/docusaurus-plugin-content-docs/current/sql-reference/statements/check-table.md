@@ -126,7 +126,7 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
@@ -139,7 +139,7 @@ Output:
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 checksums.txt ファイルが存在しない場合は、復元できます。特定のパーティションに対して `CHECK TABLE` コマンドを実行する際に再計算および再書き込みされ、ステータスは引き続き &#39;is&#95;passed = 1&#39; として報告されます。
 

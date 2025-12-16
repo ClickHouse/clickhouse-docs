@@ -16,7 +16,7 @@ doc_type: 'reference'
 ## 構文 {#syntax}
 
 ```sql
-hudiCluster(cluster_name, URL[, aws_access_key_id, aws_secret_access_key][, format][, structure][, compression])
+hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
 ```
 
 ## 引数 {#arguments}

@@ -83,7 +83,7 @@ ORDER BY (VoteTypeId, CreationDate, PostId)
 
 INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
 
-返回 0 行。用时:26.272 秒。已处理 2.3898 亿行,2.13 GB(每秒 910 万行,80.97 MB/秒)
+0 rows in set. Elapsed: 26.272 sec. Processed 238.98 million rows, 2.13 GB (9.10 million rows/s., 80.97 MB/s.)
 ```
 
 乍一看，这些字段似乎是可以在 posts 表中进行反规范化处理的候选项。不过，这种做法也存在一些挑战。
@@ -176,11 +176,11 @@ ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
 
-共 0 行。耗时：26.229 秒。已处理 22.48 百万行数据，1.36 GB（857.21 千行/秒，51.99 MB/秒）。
+0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
 
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-共 0 行。耗时：18.126 秒。已处理 51.29 百万行数据，797.05 MB（2.83 百万行/秒，43.97 MB/秒）。
+0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
 虽然用户可能频繁获得徽章，但这不太可能是一个需要我们每天更新多次的数据集。徽章和用户之间的关系是一对多。也许我们可以简单地将徽章反规范化到用户记录中，作为一个元组列表存储？虽然可行，但对单个用户徽章数量上限的快速检查表明，这并不理想：
@@ -270,7 +270,7 @@ FROM
 CREATE TABLE posts_with_duplicate_count
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -其他列
+   ... -other columns
    `DuplicatePosts` UInt16
 ) ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
@@ -309,7 +309,7 @@ SET flatten_nested=0
 CREATE TABLE posts_with_links
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... - 其他列
+   ... -other columns
    `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
    `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
 ) ENGINE = MergeTree

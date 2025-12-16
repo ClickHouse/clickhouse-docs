@@ -72,7 +72,8 @@ ClickHouse では 1年間の互換性ウィンドウ（2つの LTS バージョ�
 
 ```text
 MergeFromLogEntryTask: Code: 40. DB::Exception: Checksums of parts don't match:
-hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  マージ後のデータが他のレプリカのデータとバイト単位で同一ではありません。
+hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  Data after merge is not
+byte-identical to data on another replicas.
 ```
 
 :::

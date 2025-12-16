@@ -72,13 +72,13 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 现在应该已经可以运行 `clickhouse` 可执行文件：
 
 ```shell
-ClickHouse
+clickhouse
 ```
 
 应该输出类似下面的内容：
 
 ```bash
-使用以下命令之一：
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]

@@ -246,7 +246,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 ```bash
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
-Прочитано 2 строки, 32,00 Б за 0,000 сек., 5182 строк/сек., 80,97 КиБ/сек.
+Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 1   2
 3   4
 ```
@@ -258,7 +258,7 @@ $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
     DROP TABLE table;"
-Прочитано 2 строки, 32,00 Б за 0,000 сек., 4987 строк/сек., 77,93 КиБ/сек.
+Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 1   2
 3   4
 ```
@@ -292,7 +292,7 @@ $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
 Результат:
 
 ```text
-Прочитано 186 строк, 4,15 КиБ за 0,035 сек., 5302 строк/сек., 118,34 КиБ/сек.
+Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
 ┡━━━━━━━━━━╇━━━━━━━━━━┩

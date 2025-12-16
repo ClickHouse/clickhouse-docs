@@ -93,7 +93,7 @@ npm i @clickhouse/client-web
 import { createClient } from '@clickhouse/client' // or '@clickhouse/client-web'
 
 const client = createClient({
-  /* 設定 */
+  /* configuration */
 })
 ```
 
@@ -235,19 +235,19 @@ const client = createClient({
 
 ```ts
 interface BaseQueryParams {
-  // クエリレベルで適用できるClickHouse設定
+  // ClickHouse settings that can be applied on query level.
   clickhouse_settings?: ClickHouseSettings
-  // クエリバインディング用パラメータ
+  // Parameters for query binding.
   query_params?: Record<string, unknown>
-  // 実行中のクエリをキャンセルするためのAbortSignalインスタンス
+  // AbortSignal instance to cancel a query in progress.
   abort_signal?: AbortSignal
-  // query_idのオーバーライド。指定しない場合、ランダムな識別子が自動生成されます
+  // query_id override; if not specified, a random identifier will be generated automatically.
   query_id?: string
-  // session_idのオーバーライド。指定しない場合、セッションIDはクライアント設定から取得されます
+  // session_id override; if not specified, the session id will be taken from the client configuration.
   session_id?: string
-  // 認証情報のオーバーライド。指定しない場合、クライアントの認証情報が使用されます
+  // credentials override; if not specified, the client's credentials will be used.
   auth?: { username: string, password: string }
-  // このクエリで使用するロールの指定リスト。クライアント設定で設定されたロールをオーバーライドします
+  // A specific list of roles to use for this query. Overrides the roles set in the client configuration.
   role?: string | Array<string>
 }
 ```
@@ -262,9 +262,9 @@ interface BaseQueryParams {
 
 ```ts
 interface QueryParams extends BaseQueryParams {
-  // 実行するクエリ（データを返す可能性があります）。
+  // Query to execute that might return some data.
   query: string
-  // 結果データセットの形式。デフォルト: JSON。
+  // Format of the resulting dataset. Default: JSON.
   format?: DataFormat
 }
 
@@ -299,30 +299,30 @@ Node.js の `ResultSet` 実装は内部的に `Stream.Readable` を使用し、W
 
 ```ts
 interface BaseResultSet<Stream> {
-  // 上記の「クエリID」セクションを参照してください
+  // See "Query ID" section above
   query_id: string
 
-  // ストリーム全体を読み取り、内容を文字列として取得します
-  // 任意のDataFormatで使用できます
-  // 一度のみ呼び出してください
+  // Consume the entire stream and get the contents as a string
+  // Can be used with any DataFormat
+  // Should be called only once
   text(): Promise<string>
 
-  // ストリーム全体を読み取り、内容をJSオブジェクトとして解析します
-  // JSON形式でのみ使用できます
-  // 一度のみ呼び出してください
+  // Consume the entire stream and parse the contents as a JS object
+  // Can be used only with JSON formats
+  // Should be called only once
   json<T>(): Promise<T>
 
-  // ストリーミング可能なレスポンスに対して読み取り可能なストリームを返します
-  // ストリームの各イテレーションで、選択されたDataFormat形式のRow[]配列が提供されます
-  // 一度のみ呼び出してください
+  // Returns a readable stream for responses that can be streamed
+  // Every iteration over the stream provides an array of Row[] in the selected DataFormat
+  // Should be called only once
   stream(): Stream
 }
 
 interface Row {
-  // 行の内容をプレーン文字列として取得します
+  // Get the content of the row as a plain string
   text: string
 
-  // 行の内容をJSオブジェクトとして解析します
+  // Parse the content of the row as a JS object
   json<T>(): T
 }
 ```
@@ -335,7 +335,7 @@ const resultSet = await client.query({
   query: 'SELECT * FROM my_table',
   format: 'JSONEachRow',
 })
-const dataset = await resultSet.json() // JSON解析を回避する場合は `row.text` を使用
+const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
 **例:** (Node.js のみ) 従来の `on('data')` アプローチを使って、`JSONEachRow` フォーマットのクエリ結果をストリーミングします。これは `for await const` 構文と置き換えて使用できます。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
@@ -343,17 +343,17 @@ const dataset = await resultSet.json() // JSON解析を回避する場合は `ro
 ```ts
 const rows = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
-  format: 'JSONEachRow', // または JSONCompactEachRow、JSONStringsEachRow など
+  format: 'JSONEachRow', // or JSONCompactEachRow, JSONStringsEachRow, etc.
 })
 const stream = rows.stream()
 stream.on('data', (rows: Row[]) => {
   rows.forEach((row: Row) => {
-    console.log(row.json()) // JSON のパースを回避するには `row.text` を使用
+    console.log(row.json()) // or `row.text` to avoid parsing JSON
   })
 })
 await new Promise((resolve, reject) => {
   stream.on('end', () => {
-    console.log('完了')
+    console.log('Completed!')
     resolve(0)
   })
   stream.on('error', reject)
@@ -366,7 +366,7 @@ await new Promise((resolve, reject) => {
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers_mt LIMIT 5',
-  format: 'CSV', // または TabSeparated、CustomSeparated など
+  format: 'CSV', // or TabSeparated, CustomSeparated, etc.
 })
 const stream = resultSet.stream()
 stream.on('data', (rows: Row[]) => {
@@ -376,7 +376,7 @@ stream.on('data', (rows: Row[]) => {
 })
 await new Promise((resolve, reject) => {
   stream.on('end', () => {
-    console.log('完了しました!')
+    console.log('Completed!')
     resolve(0)
   })
   stream.on('error', reject)
@@ -389,7 +389,7 @@ await new Promise((resolve, reject) => {
 ```ts
 const resultSet = await client.query({
   query: 'SELECT number FROM system.numbers LIMIT 10',
-  format: 'JSONEachRow', // または JSONCompactEachRow、JSONStringsEachRow など
+  format: 'JSONEachRow', // or JSONCompactEachRow, JSONStringsEachRow, etc.
 })
 for await (const rows of resultSet.stream()) {
   rows.forEach(row => {
@@ -407,14 +407,14 @@ for await (const rows of resultSet.stream()) {
 
 ```ts
 const resultSet = await client.query({
-  query: 'SELECT * FROM system.numbers LIMIT 10', // system.numbersテーブルから10件取得
-  format: 'JSONEachRow' // 各行をJSON形式で出力
+  query: 'SELECT * FROM system.numbers LIMIT 10',
+  format: 'JSONEachRow'
 })
 
-const reader = resultSet.stream().getReader() // ストリームリーダーを取得
+const reader = resultSet.stream().getReader()
 while (true) {
-  const { done, value: rows } = await reader.read() // 次のデータチャンクを読み込み
-  if (done) { break } // ストリーム終端に達したらループを終了
+  const { done, value: rows } = await reader.read()
+  if (done) { break }
   rows.forEach(row => {
     console.log(row.json())
   })
@@ -456,17 +456,17 @@ insert メソッドは `await` されることを想定していますが、入�
 
 ```ts
 interface InsertParams<T> extends BaseQueryParams {
-  // データを挿入するテーブル名
+  // Table name to insert the data into
   table: string
-  // 挿入するデータセット
+  // A dataset to insert.
   values: ReadonlyArray<T> | Stream.Readable
-  // 挿入するデータセットのフォーマット
+  // Format of the dataset to insert.
   format?: DataFormat
-  // データを挿入する列を指定します。
-  // - `['a', 'b']` のような配列の場合: `INSERT INTO table (a, b) FORMAT DataFormat` が生成されます
-  // - `{ except: ['a', 'b'] }` のようなオブジェクトの場合: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat` が生成されます
-  // デフォルトでは、データはテーブルのすべての列に挿入され、
-  // 生成されるステートメントは `INSERT INTO table FORMAT DataFormat` となります。
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
@@ -483,7 +483,7 @@ interface InsertParams<T> extends BaseQueryParams {
 ```ts
 await client.insert({
   table: 'my_table',
-  // 構造は目的のフォーマットと一致する必要があります。この例ではJSONEachRowです
+  // structure should match the desired format, JSONEachRow in this example
   values: [
     { id: 42, name: 'foo' },
     { id: 42, name: 'bar' },
@@ -517,12 +517,12 @@ ORDER BY (id)
 特定の列のみを挿入する:
 
 ```ts
-// 生成されるステートメント: INSERT INTO mytable (message) FORMAT JSONEachRow
+// Generated statement: INSERT INTO mytable (message) FORMAT JSONEachRow
 await client.insert({
   table: 'mytable',
   values: [{ message: 'foo' }],
   format: 'JSONEachRow',
-  // この行の `id` カラムの値はゼロになります（UInt32 のデフォルト）
+  // `id` column value for this row will be zero (default for UInt32)
   columns: ['message'],
 })
 ```
@@ -530,12 +530,12 @@ await client.insert({
 特定の列を除外する：
 
 ```ts
-// 生成されるステートメント: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
+// Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
 await client.insert({
   table: tableName,
   values: [{ id: 144 }],
   format: 'JSONEachRow',
-  // この行の `message` 列の値は空文字列となります
+  // `message` column value for this row will be an empty string
   columns: {
     except: ['message'],
   },
@@ -548,7 +548,7 @@ await client.insert({
 
 ```ts
 await client.insert({
-  table: 'mydb.mytable', // データベース名を含む完全修飾名
+  table: 'mydb.mytable', // Fully qualified name including the database
   values: [{ id: 42, message: 'foo' }],
   format: 'JSONEachRow',
 })
@@ -564,17 +564,17 @@ await client.insert({
 
 ```ts
 interface InsertParams<T> extends BaseQueryParams {
-  // データを挿入するテーブル名
+  // Table name to insert the data into
   table: string
-  // 挿入するデータセット
+  // A dataset to insert.
   values: ReadonlyArray<T>
-  // 挿入するデータセットのフォーマット
+  // Format of the dataset to insert.
   format?: DataFormat
-  // データを挿入する列を指定します。
-  // - `['a', 'b']` のような配列を指定すると、次のステートメントが生成されます: `INSERT INTO table (a, b) FORMAT DataFormat`
-  // - `{ except: ['a', 'b'] }` のようなオブジェクトを指定すると、次のステートメントが生成されます: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
-  // デフォルトでは、テーブルのすべての列にデータが挿入され、
-  // 生成されるステートメントは次のようになります: `INSERT INTO table FORMAT DataFormat`
+  // Allows to specify which columns the data will be inserted into.
+  // - An array such as `['a', 'b']` will generate: `INSERT INTO table (a, b) FORMAT DataFormat`
+  // - An object such as `{ except: ['a', 'b'] }` will generate: `INSERT INTO table (* EXCEPT (a, b)) FORMAT DataFormat`
+  // By default, the data is inserted into all columns of the table,
+  // and the generated statement will be: `INSERT INTO table FORMAT DataFormat`.
   columns?: NonEmptyArray<string> | { except: NonEmptyArray<string> }
 }
 ```
@@ -591,7 +591,7 @@ interface InsertParams<T> extends BaseQueryParams {
 
 ```ts
 interface CommandParams extends BaseQueryParams {
-  // 実行するステートメント。
+  // Statement to execute.
   query: string
 }
 
@@ -616,9 +616,9 @@ await client.command({
     (id UInt64, name String)
     ORDER BY (id)
   `,
-  // クラスタ使用時に推奨。レスポンスコード送信後にクエリ処理エラーが発生し、
-  // HTTPヘッダーが既にクライアントへ送信済みとなる状況を回避します。
-  // 詳細: https://clickhouse.com/docs/interfaces/http/#response-buffering
+  // Recommended for cluster usage to avoid situations where a query processing error occurred after the response code, 
+  // and HTTP headers were already sent to the client.
+  // See https://clickhouse.com/docs/interfaces/http/#response-buffering
   clickhouse_settings: {
     wait_end_of_query: 1,
   },
@@ -660,7 +660,7 @@ await client.command({
 
 ```ts
 interface ExecParams extends BaseQueryParams {
-  // 実行するステートメント。
+  // Statement to execute.
   query: string
 }
 
@@ -702,19 +702,19 @@ type PingResult =
   | { success: true }
   | { success: false; error: Error }
 
-/** ヘルスチェックリクエストのパラメータ - 組み込みの `/ping` エンドポイントを使用。
- *  Node.jsバージョンのデフォルト動作です。 */
+/** Parameters for the health-check request - using the built-in `/ping` endpoint. 
+ *  This is the default behavior for the Node.js version. */
 export type PingParamsWithEndpoint = {
   select: false
-  /** 進行中のリクエストをキャンセルするためのAbortSignalインスタンス。 */
+  /** AbortSignal instance to cancel a request in progress. */
   abort_signal?: AbortSignal
-  /** このリクエストに付加する追加のHTTPヘッダー。 */
+  /** Additional HTTP headers to attach to this particular request. */
   http_headers?: Record<string, string>
 }
-/** ヘルスチェックリクエストのパラメータ - SELECTクエリを使用。
- *  `/ping` エンドポイントはCORSをサポートしていないため、Webバージョンのデフォルト動作です。
- *  標準的な `query` メソッドのパラメータのほとんど（例: `query_id`、`abort_signal`、`http_headers` など）が使用できますが、
- *  `query_params` はこのメソッドでは意味がないため除外されています。 */
+/** Parameters for the health-check request - using a SELECT query.
+ *  This is the default behavior for the Web version, as the `/ping` endpoint does not support CORS.
+ *  Most of the standard `query` method params, e.g., `query_id`, `abort_signal`, `http_headers`, etc. will work, 
+ *  except for `query_params`, which does not make sense to allow in this method. */
 export type PingParamsWithSelectQuery = { select: true } & Omit<
   BaseQueryParams,
   'query_params'
@@ -736,14 +736,14 @@ Ping は、特に ClickHouse Cloud でインスタンスがアイドル状態に
 ```ts
 const result = await client.ping();
 if (!result.success) {
-  // result.error を処理する
+  // process result.error
 }
 ```
 
 **例：** `ping` メソッドを呼び出すときに認証情報も検証したい場合や、`query_id` などの追加パラメータを指定したい場合は、次のように利用できます。
 
 ```ts
-const result = await client.ping({ select: true, /* query_id、abort_signal、http_headers、その他のクエリパラメータ */ });
+const result = await client.ping({ select: true, /* query_id, abort_signal, http_headers, or any other query params */ });
 ```
 
 `ping` メソッドでは、標準的な `query` メソッドのパラメータのほとんどを指定できます。詳細は `PingParamsWithSelectQuery` の型定義を参照してください。
@@ -1110,7 +1110,7 @@ Node.js クライアントは、オプションで基本（認証局のみ）お
 const client = createClient({
   url: 'https://<hostname>:<port>',
   username: '<username>',
-  password: '<password>', // 必要に応じて
+  password: '<password>', // if required
   tls: {
     ca_cert: fs.readFileSync('certs/CA.pem'),
   },
@@ -1184,14 +1184,14 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 
   ```ts
   const client = createClient({
-    // 実行時間が 5 分を超えるクエリがあることを想定しています
+    // Here we assume that we will have some queries with more than 5 minutes of execution time
     request_timeout: 400_000,
-    /** これらの設定を組み合わせることで、入出力データのない長時間実行クエリにおいて LB のタイムアウト問題を回避できます。
-     *  例えば `INSERT FROM SELECT` のようなクエリでは、LB によって接続がアイドルとみなされ、突然クローズされる可能性があります。
-     *  ここでは、LB のアイドル接続タイムアウトが 120 秒であると仮定し、「安全な」値として 110 秒を設定しています。 */
+    /** These settings in combination allow to avoid LB timeout issues in case of long-running queries without data coming in or out,
+     *  such as `INSERT FROM SELECT` and similar ones, as the connection could be marked as idle by the LB and closed abruptly.
+     *  In this case, we assume that the LB has idle connection timeout of 120s, so we set 110s as a "safe" value. */
     clickhouse_settings: {
       send_progress_in_http_headers: 1,
-      http_headers_progress_interval_ms: '110000', // UInt64、文字列として渡す必要があります
+      http_headers_progress_interval_ms: '110000', // UInt64, should be passed as a string
     },
   })
   ```
@@ -1216,7 +1216,7 @@ curl -v --data-binary "SELECT 1" <clickhouse_url>
 ```ts
 const client = createClient({
   compression: {
-    response: true, // readonly=1 ユーザーでは機能しません
+    response: true, // won't work with a readonly=1 user
   },
 })
 ```
@@ -1289,12 +1289,12 @@ const agent = new https.Agent({
 const client = createClient({
   url: 'https://myserver:8443',
   http_agent: agent,
-  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しません。ヘッダーは手動で指定する必要があります
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
   http_headers: {
     'X-ClickHouse-User': 'username',
     'X-ClickHouse-Key': 'password',
   },
-  // 重要: authorizationヘッダーはTLSヘッダーと競合するため、無効化する必要があります。
+  // Important: authorization header conflicts with the TLS headers; disable it.
   set_basic_auth_header: false,
 })
 ```
@@ -1314,13 +1314,13 @@ const agent = new https.Agent({
 const client = createClient({
   url: 'https://myserver:8443',
   http_agent: agent,
-  // カスタムHTTPSエージェントを使用する場合、クライアントはデフォルトのHTTPS接続実装を使用しないため、ヘッダーを手動で指定する必要があります
+  // With a custom HTTPS agent, the client won't use the default HTTPS connection implementation; the headers should be provided manually
   http_headers: {
     'X-ClickHouse-User': 'username',
     'X-ClickHouse-Key': 'password',
     'X-ClickHouse-SSL-Certificate-Auth': 'on',
   },
-  // 重要: authorizationヘッダーはTLSヘッダーと競合するため、無効にする必要があります。
+  // Important: authorization header conflicts with the TLS headers; disable it.
   set_basic_auth_header: false,
 })
 ```

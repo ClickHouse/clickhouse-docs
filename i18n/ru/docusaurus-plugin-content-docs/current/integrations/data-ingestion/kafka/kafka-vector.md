@@ -75,7 +75,7 @@ review&#95;comments UInt32,
 member&#95;login LowCardinality(String)
 ) ENGINE = MergeTree ORDER BY (event&#95;type, repo&#95;name, created&#95;at);
 
-````
+```
 
 3. [Скачайте и установите Vector](https://vector.dev/docs/setup/quickstart/). Создайте конфигурационный файл `kafka.toml` и измените значения для экземпляров Kafka и ClickHouse.
 
@@ -105,7 +105,7 @@ auth.user = "username"
 auth.password = "password"
 buffer.max_events = 10000
 batch.timeout_secs = 1
-````
+```
 
 Несколько важных замечаний о данной конфигурации и поведении Vector:
 

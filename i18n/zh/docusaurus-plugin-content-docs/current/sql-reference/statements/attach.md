@@ -24,7 +24,7 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 **语法**
 
 ```sql
-附加表 [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
+ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
 在启动服务器时会使用此查询。服务器将表的元数据存储为包含 `ATTACH` 语句的文件，并在启动时直接运行这些语句（部分系统表除外，这些系统表会在服务器上显式创建）。
@@ -70,7 +70,7 @@ SELECT * FROM test;
 **语法**
 
 ```sql
-附加表 name UUID '<uuid>' (col1 Type1, ...)
+ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 ```
 
 ## 将 MergeTree 表附加为 ReplicatedMergeTree {#attach-mergetree-table-as-replicatedmergetree}
@@ -84,7 +84,7 @@ SELECT * FROM test;
 **语法**
 
 ```sql
-附加表 [db.]name 为 [NOT] REPLICATED
+ATTACH TABLE [db.]name AS [NOT] REPLICATED
 ```
 
 **将表转换为复制表**
@@ -126,7 +126,7 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 **语法**
 
 ```sql
-附加字典 [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
+ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
 ## 附加现有数据库 {#attach-existing-database}
@@ -136,5 +136,5 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 **语法**
 
 ```sql
-ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<数据库引擎>] [ON CLUSTER cluster]
+ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
 ```

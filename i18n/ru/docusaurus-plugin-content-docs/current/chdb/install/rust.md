@@ -33,19 +33,19 @@ chDB для Rust предоставляет как статический, та�
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Выполнить простой запрос
+    // Execute a simple query
     let result = execute(
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("Версия ClickHouse: {}", result.data_utf8()?);
+    println!("ClickHouse version: {}", result.data_utf8()?);
     
-    // Запрос к CSV‑файлу
+    // Query with CSV file
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("Данные из CSV: {}", result.data_utf8()?);
+    println!("CSV data: {}", result.data_utf8()?);
     
     Ok(())
 }
@@ -65,17 +65,17 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Создайте временный каталог для хранения данных базы
+    // Create a temporary directory for database storage
     let tmp = TempDir::new("chdb-rust")?;
     
-    // Создайте сеанс с заданной конфигурацией
+    // Build session with configuration
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // Автоочистка при уничтожении объекта
+        .with_auto_cleanup(true)  // Cleanup on drop
         .build()?;
 
-    // Создайте базу данных и таблицу
+    // Create database and table
     session.execute(
         "CREATE DATABASE demo; USE demo", 
         Some(&[Arg::MultiQuery])
@@ -86,24 +86,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // Вставьте данные
+    // Insert data
     session.execute(
-        "INSERT INTO logs (id, msg) VALUES (1, 'Привет'), (2, 'Мир')",
+        "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
         None,
     )?;
 
-    // Выполните запрос
+    // Query data
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("Результаты запроса:\n{}", result.data_utf8()?);
+    println!("Query results:\n{}", result.data_utf8()?);
     
-    // Выведите статистику запроса
-    println!("Прочитано строк: {}", result.rows_read());
-    println!("Прочитано байт: {}", result.bytes_read());
-    println!("Время выполнения запроса: {:?}", result.elapsed());
+    // Get query statistics
+    println!("Rows read: {}", result.rows_read());
+    println!("Bytes read: {}", result.bytes_read());
+    println!("Query time: {:?}", result.elapsed());
 
     Ok(())
 }
@@ -140,19 +140,19 @@ use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("Успешно: {}", result.data_utf8()?);
+        println!("Success: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("Ошибка запроса: {}", msg);
+        eprintln!("Query failed: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("Результат не получен");
+        eprintln!("No result returned");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("Недопустимая последовательность UTF-8: {}", e);
+        eprintln!("Invalid UTF-8: {}", e);
     },
     Err(e) => {
-        eprintln!("Другая ошибка: {}", e);
+        eprintln!("Other error: {}", e);
     }
 }
 ```

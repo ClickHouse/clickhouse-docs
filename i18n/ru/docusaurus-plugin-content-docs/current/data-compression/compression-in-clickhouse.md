@@ -76,19 +76,19 @@ GROUP BY name
 
 Для демонстрации:
 
-```sql title="Запрос"
--- Создание таблицы с компактными частями
+```sql title="Query"
+-- Create a table with compact parts
 CREATE TABLE compact (
   number UInt32
 )
 ENGINE = MergeTree()
-ORDER BY number
-AS SELECT * FROM numbers(100000); -- Недостаточно большой объём для превышения значения по умолчанию min_bytes_for_wide_part = 10485760
+ORDER BY number 
+AS SELECT * FROM numbers(100000); -- Not big enough to exceed default of min_bytes_for_wide_part = 10485760
 
--- Проверка типа частей данных
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'compact';
 
--- Получение сжатых и несжатых размеров столбцов для компактной таблицы
+-- Get the compressed and uncompressed column sizes for the compact table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -97,7 +97,7 @@ FROM system.columns
 WHERE table = 'compact'
 GROUP BY name;
 
--- Создание таблицы с широкими частями
+-- Create a table with wide parts 
 CREATE TABLE wide (
   number UInt32
 )
@@ -106,10 +106,10 @@ ORDER BY number
 SETTINGS min_bytes_for_wide_part=0
 AS SELECT * FROM numbers(100000);
 
--- Проверка типа частей данных
+-- Check the type of the parts
 SELECT table, name, part_type from system.parts where table = 'wide';
 
--- Получение сжатых и несжатых размеров для широкой таблицы
+-- Get the compressed and uncompressed sizes for the wide table
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -119,7 +119,7 @@ WHERE table = 'wide'
 GROUP BY name;
 ```
 
-```response title="Ответ"
+```response title="Response"
    ┌─table───┬─name──────┬─part_type─┐
 1. │ compact │ all_1_1_0 │ Compact   │
    └─────────┴───────────┴───────────┘
@@ -143,13 +143,13 @@ GROUP BY name;
 Для получения общего размера таблицы можно упростить приведённый выше запрос:
 
 ```sql
-SELECT formatReadableSize(sum(data_compressed_bytes)) AS размер_сжатых_данных,
-    formatReadableSize(sum(data_uncompressed_bytes)) AS размер_несжатых_данных,
-    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS коэффициент_сжатия
+SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
+    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
+    round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table = 'posts'
 
-┌─размер_сжатых_данных─┬─размер_несжатых_данных─┬─коэффициент_сжатия─┐
+┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
@@ -180,9 +180,8 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
-```
 
-┌─name──────────────────┬─compressed&#95;size─┬─uncompressed&#95;size─┬───ratio─┐
+┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
 │ Score                 │ 40.28 MiB       │ 227.38 MiB        │    5.65 │
@@ -206,9 +205,6 @@ GROUP BY name
 │ LastEditorDisplayName │ 2.15 MiB        │ 6.25 MiB          │    2.91 │
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
-
-```
-```
 
 ## Выбор подходящего кодека сжатия столбцов {#choosing-the-right-column-compression-codec}
 
@@ -264,7 +260,8 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-Улучшения сжатия для этих столбцов приведены ниже:
+
+Улучшения сжатия для этих столбцов показаны ниже:
 
 ```sql
 SELECT
@@ -291,9 +288,10 @@ ORDER BY
 │ posts_v4 │ ViewCount   │ 52.72 MiB       │ 222.63 MiB        │  4.22 │
 └──────────┴─────────────┴─────────────────┴───────────────────┴───────┘
 
-6 строк в наборе. Затрачено: 0.008 сек
+6 rows in set. Elapsed: 0.008 sec
 ```
 
 ### Сжатие в ClickHouse Cloud {#compression-in-clickhouse-cloud}
 
-В ClickHouse Cloud по умолчанию используется алгоритм сжатия `ZSTD` (с уровнем 1 по умолчанию). Скорость сжатия для этого алгоритма может меняться в зависимости от выбранного уровня (чем выше уровень, тем медленнее), однако у него есть преимущество в виде стабильно высокой скорости декомпрессии (разброс около 20%), а также возможности эффективной параллелизации. Результаты наших прошлых тестов также показывают, что этот алгоритм часто достаточно эффективен и даже может превосходить `LZ4`, используемый вместе с дополнительным кодеком. Он хорошо работает для большинства типов данных и распределений, поэтому является разумным вариантом сжатия общего назначения по умолчанию и объясняет, почему начальное сжатие уже обеспечивает отличный результат даже без дополнительной оптимизации.
+В ClickHouse Cloud мы по умолчанию используем алгоритм сжатия `ZSTD` (со значением по умолчанию 1). Хотя скорость сжатия может варьироваться для этого алгоритма в зависимости от уровня сжатия (выше = медленнее), он имеет преимущество в том, что обеспечивает стабильно быструю декомпрессию (около 20% отклонения), а также выигрывает от возможности распараллеливания. Наши исторические тесты также показывают, что этот алгоритм часто достаточно эффективен и может даже превзойти `LZ4` в сочетании с кодеком. Он эффективен для большинства типов данных и распределений информации, и поэтому является разумным универсальным выбором по умолчанию и объясняет, почему наше начальное сжатие уже превосходно даже без оптимизации.
+

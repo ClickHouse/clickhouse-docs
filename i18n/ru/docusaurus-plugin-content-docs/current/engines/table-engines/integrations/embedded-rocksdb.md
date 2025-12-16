@@ -109,7 +109,7 @@ FROM system.rocksdb
 Пример:
 
 ```sql
-INSERT INTO test VALUES ('некоторый ключ', 1, 'значение', 3.2);
+INSERT INTO test VALUES ('some key', 1, 'value', 3.2);
 ```
 
 ### Удаление {#deletes}

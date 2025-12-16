@@ -45,16 +45,16 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
+          SettingQuotaAndLimits (Set limits and quota after reading from storage)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
-    MergingSorted (ORDER BY用ソート済みストリームのマージ)
-      MergeSorting (ORDER BY用ソート済みブロックのマージ)
-        PartialSorting (ORDER BY用各ブロックのソート)
+    MergingSorted (Merge sorted streams for ORDER BY)
+      MergeSorting (Merge sorted blocks for ORDER BY)
+        PartialSorting (Sort each block for ORDER BY)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
+                SettingQuotaAndLimits (Set limits and quota after reading from storage)
                   ReadFromStorage (SystemNumbers)
 ```
 
@@ -375,7 +375,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Projections": [
   {
     "Name": "region_proj",
-    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(region in ['us_west', 'us_west'])",
     "Search Algorithm": "binary search",
     "Selected Parts": 3,
@@ -386,7 +386,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   },
   {
     "Name": "user_id_proj",
-    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(user_id in [107, 107])",
     "Search Algorithm": "binary search",
     "Selected Parts": 1,

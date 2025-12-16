@@ -37,7 +37,7 @@ SELECT * FROM system.query_cache FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 query:       SELECT 1 SETTINGS use_query_cache = 1
 query_id:    7c28bbbb-753b-4eba-98b1-efcbe2b9bdf6
@@ -49,5 +49,5 @@ compressed:  1
 expires_at:  2023-10-13 13:35:45
 key_hash:    12188185624808016954
 
-Получена 1 строка. Время выполнения: 0.004 сек.
+1 row in set. Elapsed: 0.004 sec.
 ```

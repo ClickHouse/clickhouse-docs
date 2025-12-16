@@ -135,8 +135,8 @@ clickhouse-client
 
 ```bash
 ClickHouse client version 25.x.x.x
-localhost:9000 にユーザー default として接続しています。
-ClickHouse サーバー バージョン 25.x.x.x に接続しました
+Connecting to localhost:9000 as user default.
+Connected to ClickHouse server version 25.x.x.x
 
 hostname :)
 ```
@@ -359,7 +359,7 @@ ClickHouse クライアントには、自然言語による説明から SQL ク�
 AI SQL 生成機能を利用するには、自然言語のクエリの先頭に `??` を付けてください：
 
 ```bash
-:) ?? 過去30日間に購入したすべてのユーザーを表示
+:) ?? show all users who made purchases in the last 30 days
 ```
 
 AI は次のことを行います：
@@ -373,7 +373,7 @@ AI は次のことを行います：
 ```bash
 :) ?? count orders by product category
 
-スキーマ検出を伴うAI SQL生成を開始しています...
+Starting AI SQL generation with schema discovery...
 ──────────────────────────────────────────────────
 
 🔍 list_databases
@@ -388,7 +388,7 @@ AI は次のことを行います：
    table: orders
    ➜ CREATE TABLE orders (order_id UInt64, product_id UInt64, quantity UInt32, ...)
 
-✨ SQLクエリが正常に生成されました!
+✨ SQL query generated successfully!
 ──────────────────────────────────────────────────
 
 SELECT 
@@ -416,11 +416,11 @@ AI による SQL 生成を行うには、ClickHouse Client の設定ファイル
 これにより、設定ファイルなしで迅速にセットアップできます。
 
 ```bash
-# OpenAIを使用する場合 {#using-openai}
+# Using OpenAI
 export OPENAI_API_KEY=your-openai-key
 clickhouse-client
 
-# Anthropicを使用する場合 {#using-anthropic}
+# Using Anthropic
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
@@ -440,28 +440,28 @@ AI 設定をより細かく制御するには、次の場所にある ClickHouse
     ```xml
     <config>
         <ai>
-            <!-- 必須: API キー（または環境変数で設定） -->
+            <!-- Required: Your API key (or set via environment variable) -->
             <api_key>your-api-key-here</api_key>
 
-            <!-- 必須: プロバイダータイプ (openai, anthropic) -->
+            <!-- Required: Provider type (openai, anthropic) -->
             <provider>openai</provider>
 
-            <!-- 使用するモデル（デフォルトはプロバイダーごとに異なる） -->
+            <!-- Model to use (defaults vary by provider) -->
             <model>gpt-4o</model>
 
-            <!-- オプション: OpenAI 互換サービス向けのカスタム API エンドポイント -->
+            <!-- Optional: Custom API endpoint for OpenAI-compatible services -->
             <!-- <base_url>https://openrouter.ai/api</base_url> -->
 
-            <!-- スキーマ探索設定 -->
+            <!-- Schema exploration settings -->
             <enable_schema_access>true</enable_schema_access>
 
-            <!-- 生成パラメータ -->
+            <!-- Generation parameters -->
             <temperature>0.0</temperature>
             <max_tokens>1000</max_tokens>
             <timeout_seconds>30</timeout_seconds>
             <max_steps>10</max_steps>
 
-            <!-- オプション: カスタム system prompt -->
+            <!-- Optional: Custom system prompt -->
             <!-- <system_prompt>You are an expert ClickHouse SQL assistant...</system_prompt> -->
         </ai>
     </config>
@@ -471,28 +471,28 @@ AI 設定をより細かく制御するには、次の場所にある ClickHouse
   <TabItem value="yaml" label="YAML">
     ```yaml
     ai:
-      # 必須: API キー（または環境変数で設定）
+      # Required: Your API key (or set via environment variable)
       api_key: your-api-key-here
 
-      # 必須: プロバイダータイプ (openai, anthropic)
+      # Required: Provider type (openai, anthropic)
       provider: openai
 
-      # 使用するモデル
+      # Model to use
       model: gpt-4o
 
-      # オプション: OpenAI 互換サービス向けのカスタム API エンドポイント
+      # Optional: Custom API endpoint for OpenAI-compatible services
       # base_url: https://openrouter.ai/api
 
-      # スキーマアクセスを有効化 - AI にデータベース／テーブル情報の参照を許可
+      # Enable schema access - allows AI to query database/table information
       enable_schema_access: true
 
-      # 生成パラメータ
-      temperature: 0.0      # ランダム性を制御 (0.0 = 決定的)
-      max_tokens: 1000      # 応答の最大長
-      timeout_seconds: 30   # リクエストのタイムアウト
-      max_steps: 10         # スキーマ探索ステップの最大回数
+      # Generation parameters
+      temperature: 0.0      # Controls randomness (0.0 = deterministic)
+      max_tokens: 1000      # Maximum response length
+      timeout_seconds: 30   # Request timeout
+      max_steps: 10         # Maximum schema exploration steps
 
-      # オプション: カスタム system prompt
+      # Optional: Custom system prompt
       # system_prompt: |
       #   You are an expert ClickHouse SQL assistant. Convert natural language to SQL.
       #   Focus on performance and use ClickHouse-specific optimizations.
@@ -507,23 +507,23 @@ AI 設定をより細かく制御するには、次の場所にある ClickHouse
 
 ```yaml
 ai:
-  provider: openai  # 互換性のため 'openai' を使用してください
+  provider: openai  # Use 'openai' for compatibility
   api_key: your-openrouter-api-key
   base_url: https://openrouter.ai/api/v1
-  model: anthropic/claude-3.5-sonnet  # OpenRouter のモデル命名規則を使用してください
+  model: anthropic/claude-3.5-sonnet  # Use OpenRouter model naming
 ```
 
 **最小限の設定例：**
 
 ```yaml
-# 最小構成 - 環境変数のAPIキーを使用 {#minimal-config-uses-environment-variable-for-api-key}
+# Minimal config - uses environment variable for API key
 ai:
-  provider: openai  # OPENAI_API_KEY環境変数を使用
+  provider: openai  # Will use OPENAI_API_KEY env var
 
-# 設定なし - 自動フォールバック {#no-config-at-all-automatic-fallback}
-# (aiセクションが空または存在しない場合、OPENAI_API_KEY、次にANTHROPIC_API_KEYを試行) {#empty-or-no-ai-section-will-try-openai_api_key-then-anthropic_api_key}
+# No config at all - automatic fallback
+# (Empty or no ai section - will try OPENAI_API_KEY then ANTHROPIC_API_KEY)
 
-# モデルのみ上書き - 環境変数のAPIキーを使用 {#only-override-model-uses-env-var-for-api-key}
+# Only override model - uses env var for API key
 ai:
   provider: openai
   model: gpt-3.5-turbo
@@ -700,7 +700,7 @@ clickhouse-client clickhouse://localhost:9000 '-m'
 ```bash
 clickhouse-client clickhouse://default@localhost:9000
 
-# 以下と同等: {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost:9000 --user default
 ```
 
@@ -709,7 +709,7 @@ clickhouse-client clickhouse://localhost:9000 --user default
 ```bash
 clickhouse-client clickhouse://localhost:9000/my_database
 
-# 次と同等: {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost:9000 --database my_database
 ```
 
@@ -718,7 +718,7 @@ clickhouse-client clickhouse://localhost:9000 --database my_database
 ```bash
 clickhouse-client clickhouse://localhost/my_database?s
 
-# 以下と同等: {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost/my_database -s
 ```
 
@@ -733,7 +733,7 @@ clickhouse-client clickhouse:
 ```bash
 clickhouse-client clickhouse://my_user@
 
-# :と@の間に空のパスワードを指定すると、接続開始前にユーザーにパスワードの入力を求めます。 {#using-a-blank-password-between-and-means-to-asking-the-user-to-enter-the-password-before-starting-the-connection}
+# Using a blank password between : and @ means to asking the user to enter the password before starting the connection.
 clickhouse-client clickhouse://my_user:@
 ```
 
@@ -754,7 +754,7 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 インタラクティブモードでは、ClickHouse Client は各クエリに対してクエリ ID を表示します。既定では、ID は次のような形式です。
 
 ```sql
-クエリ ID: 927f137d-00f1-4175-8914-0dd066365e96
+Query id: 927f137d-00f1-4175-8914-0dd066365e96
 ```
 
 設定ファイル内の `query_id_formats` タグでカスタムフォーマットを指定できます。フォーマット文字列内の `{query_id}` プレースホルダーはクエリ ID に置き換えられます。タグ内には複数のフォーマット文字列を指定できます。

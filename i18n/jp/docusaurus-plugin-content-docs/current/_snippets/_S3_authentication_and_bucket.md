@@ -212,31 +212,34 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Id": "Policy123456",
-  "Statement": [
+  "Version" : "2012-10-17",
+  "Id" : "Policy123456",
+  "Statement" : [
     {
-      "Sid": "abc123",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::921234567898:user/mars-s3-user"
+      "Sid" : "abc123",
+      "Effect" : "Allow",
+      "Principal" : {
+        "AWS" : "arn:aws:iam::921234567898:user/mars-s3-user"
       },
-      "Action": "s3:*",
-      "Resource": ["arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*"]
+      "Action" : "s3:*",
+      "Resource" : [
+        "arn:aws:s3:::mars-doc-test",
+        "arn:aws:s3:::mars-doc-test/*"
+      ]
     }
   ]
 }
 ```
 
 ```response
-|パラメータ | 説明 | 例の値 |
+|Parameter | Description | Example Value |
 |----------|-------------|----------------|
-|Version | ポリシーインタープリタのバージョン、そのままにする | 2012-10-17 |
-|Sid | ユーザー定義のポリシーID | abc123 |
-|Effect | ユーザーリクエストを許可するか拒否するか | Allow |
-|Principal | 許可されるアカウントまたはユーザー | arn:aws:iam::921234567898:user/mars-s3-user |
-|Action | バケットで許可される操作 | s3:*|
-|Resource | バケット内で操作が許可されるリソース | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
+|Version | Version of the policy interpreter, leave as-is | 2012-10-17 |
+|Sid | User-defined policy id | abc123 |
+|Effect | Whether user requests will be allowed or denied | Allow |
+|Principal | The accounts or user that will be allowed | arn:aws:iam::921234567898:user/mars-s3-user |
+|Action | What operations are allowed on the bucket| s3:*|
+|Resource | Which resources in the bucket will operations be allowed in | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
 ```
 
 :::note

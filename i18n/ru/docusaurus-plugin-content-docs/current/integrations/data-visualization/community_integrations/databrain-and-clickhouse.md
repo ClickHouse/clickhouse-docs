@@ -88,10 +88,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Убедитесь, что у пользователя ClickHouse, с которым вы выполняете подключение, есть необходимые права доступа:
 
 ```sql
--- Предоставить права на чтение информации о схеме
+-- Grant permissions to read schema information
 GRANT SELECT ON information_schema.* TO your_databrain_user;
 
--- Предоставить права на чтение для вашей базы данных и таблиц
+-- Grant read access to your database and tables
 GRANT SELECT ON your_database.* TO your_databrain_user;
 ```
 

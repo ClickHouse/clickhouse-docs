@@ -215,7 +215,7 @@ SELECT * FROM database1.table1;
 必要に応じて、設定は DDL クエリを使用して変更できます。ただし、`materialized_postgresql_tables_list` 設定そのものを変更することはできません。この設定のテーブルリストを更新するには、`ATTACH TABLE` クエリを使用してください。
 
 ```sql
-ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <新しいサイズ>;
+ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
 ```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}

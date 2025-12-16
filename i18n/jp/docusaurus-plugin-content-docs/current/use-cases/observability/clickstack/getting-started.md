@@ -55,7 +55,7 @@ ClickStack のイメージは現在 `clickhouse/clickstack-*`（以前は `docke
 例:
 
 ```shell
-# パスをマウントするようにコマンドを変更 {#modify-command-to-mount-paths}
+# modify command to mount paths
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \

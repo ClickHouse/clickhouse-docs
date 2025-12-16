@@ -73,10 +73,10 @@ mysql> CREATE TABLE `test`.`test` (
     ->   `float` FLOAT NOT NULL,
     ->   `float_nullable` FLOAT NULL DEFAULT NULL,
     ->   PRIMARY KEY (`int_id`));
-クエリ OK, 0 行が影響しました (0.09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into test (`int_id`, `float`) VALUES (1,2);
-クエリ OK, 1 行が影響しました (0.00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from test;
 +------+----------+-----+----------+
@@ -84,7 +84,7 @@ mysql> select * from test;
 +------+----------+-----+----------+
 |      1 |         NULL |     2 |           NULL |
 +------+----------+-----+----------+
-1 行取得 (0.00 秒)
+1 row in set (0,00 sec)
 ```
 
 通常の引数を使って ClickHouse にテーブルを作成する：

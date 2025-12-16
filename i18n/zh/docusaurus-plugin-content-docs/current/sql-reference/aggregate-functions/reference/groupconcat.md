@@ -12,7 +12,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-groupConcat[(分隔符 [, 限制])](表达式);
+groupConcat[(delimiter [, limit])](expression);
 ```
 
 Alias: `group_concat`

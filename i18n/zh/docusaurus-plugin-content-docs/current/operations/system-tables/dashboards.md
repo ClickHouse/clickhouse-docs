@@ -26,7 +26,7 @@ WHERE title ILIKE '%CPU%'
 Row 1:
 ──────
 dashboard: overview
-title:     CPU 使用量(核心)
+title:     CPU Usage (cores)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUVirtualTimeMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -36,7 +36,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 2:
 ──────
 dashboard: overview
-title:     CPU 等待时间
+title:     CPU Wait
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUWaitMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -46,7 +46,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 3:
 ──────
 dashboard: overview
-title:     操作系统 CPU 使用量(用户态)
+title:     OS CPU Usage (Userspace)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSUserTimeNormalized'
@@ -56,7 +56,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 4:
 ──────
 dashboard: overview
-title:     操作系统 CPU 使用量(内核态)
+title:     OS CPU Usage (Kernel)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSSystemTimeNormalized'

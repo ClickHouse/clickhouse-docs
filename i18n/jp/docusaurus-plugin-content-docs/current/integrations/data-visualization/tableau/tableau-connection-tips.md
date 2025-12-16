@@ -48,13 +48,13 @@ LEFT([myUInt256], 2) // Error!
 大きな整数型フィールドを文字列として扱うには、そのフィールドを明示的にSTR() 関数で囲む必要があります
 
 ```text
-LEFT(STR([myUInt256]), 2) // 正常に動作します
+LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
 しかし、この種のフィールドは、多くの場合、ユニークな値の数を求めるため *(Yandex.Metrica における Watch ID や Visit ID などの ID)* や、可視化の詳細度を指定する *Dimension* として使用されるため、そのような用途では問題なく機能します。
 
 ```text
-COUNTD([myUInt256]) // これも問題なく動作します!
+COUNTD([myUInt256]) // Works well too!
 ```
 
 UInt64 フィールドを含むテーブルのデータプレビュー（View data）を使用しても、エラーは発生しなくなりました。

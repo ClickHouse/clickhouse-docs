@@ -67,7 +67,7 @@ SELECT * FROM system.query_views_log LIMIT 1 \G;
 结果：
 
 ```text
-第 1 行:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2021-06-22

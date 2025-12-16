@@ -103,14 +103,14 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许您在指定的时间
 ### 基本用法 {#basic-usage}
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_timestamp_ms = 1714636800000
+ ```
 
 ```sql
-SELECT * FROM example_table ORDER BY 1 
-SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ SELECT * FROM example_table ORDER BY 1 
+ SETTINGS iceberg_snapshot_id = 3547395809148285433
+ ```
 
 注意：你不能在同一个查询中同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
 
@@ -131,47 +131,47 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 考虑以下一系列操作：
 
 ```sql
--- 创建一个包含两列的表
- CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
- order_number int, 
- product_code string
- ) 
- USING iceberg 
- OPTIONS ('format-version'='2')
+ -- Create a table with two columns
+  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+  order_number int, 
+  product_code string
+  ) 
+  USING iceberg 
+  OPTIONS ('format-version'='2')
 
--- 向表中插入数据
- INSERT INTO spark_catalog.db.time_travel_example VALUES 
-   (1, 'Mars')
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES 
+    (1, 'Mars')
 
- ts1 = now() // 一段伪代码
+  ts1 = now() // A piece of pseudo code
 
--- 修改表，添加一个新列
- ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+-- Alter table to add a new column
+  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+ 
+  ts2 = now()
 
- ts2 = now()
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
--- 向表中插入数据
- INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+   ts3 = now()
 
-  ts3 = now()
-
--- 在各个时间点查询该表
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
-
-+------------+------------+
-|order_number|product_code|
-+------------+------------+
-|           1|        Mars|
-+------------+------------+
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+-- Query the table at each timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
++------------+------------+
+|order_number|product_code|
++------------+------------+
+|           1|        Mars|
++------------+------------+
+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -191,7 +191,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 在当前时刻执行的时间旅行查询，可能会显示与当前表不同的表结构：
 
 ```sql
--- 创建一个表
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number int, 
   product_code string
@@ -199,15 +199,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- 向表中插入初始数据
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- 修改表，添加一个新列
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- 使用时间戳语法在当前时间点查询该表
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -217,7 +217,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     |           2|       Venus|
     +------------+------------+
 
--- 在当前时间点查询该表
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -233,7 +233,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 第二点是在进行时间旅行时，你无法获取表在尚未写入任何数据之前的状态：
 
 ```sql
--- 创建表
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number int, 
   product_code string
@@ -243,8 +243,8 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
   ts = now();
 
--- 在指定时间戳查询该表
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- 将报错：找不到早于 ts 的快照。
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 在 ClickHouse 中，其行为与 Spark 保持一致。你可以在概念上将 Spark 的 Select 查询替换为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
@@ -283,7 +283,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
 **注意**：上述所有设置都是引擎级别设置，必须在创建表时进行指定，如下所示：
 
-```sql
+```sql 
 CREATE TABLE example_table ENGINE = Iceberg(
     's3://bucket/path/to/iceberg_table'
 ) SETTINGS iceberg_metadata_table_uuid = '6f6f6407-c6a5-465f-a808-ea8900e35a38';

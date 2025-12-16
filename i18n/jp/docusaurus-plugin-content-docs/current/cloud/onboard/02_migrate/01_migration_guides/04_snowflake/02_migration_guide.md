@@ -43,14 +43,14 @@ CREATE TABLE MYDATASET (
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- コピー先のS3バケットを指定する外部ステージを作成する
+-- Create the external stage that specifies the S3 bucket to copy into
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- すべてのファイルに "mydataset" プレフィックスを適用し、最大ファイルサイズを150MBに指定する
--- カラム名を取得するには `header=true` パラメータが必須
+-- Apply "mydataset" prefix to all files and specify a max file size of 150mb
+-- The `header=true` parameter is required to get column names
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
@@ -92,8 +92,8 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- 値がnullの場合、カラムにデフォルト値を挿入
-input_format_parquet_case_insensitive_column_matching = 1 -- ソースデータとターゲットテーブル間のカラムマッチングで大文字小文字を区別しない
+SETTINGS input_format_null_as_default = 1, -- Ensure columns are inserted as default if values are null
+input_format_parquet_case_insensitive_column_matching = 1 -- Column matching between source data and target table should be case insensitive
 ```
 
 :::note ネストした列構造に関する注意

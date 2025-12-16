@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # База данных ClickHouse для моделей dbt
+      schema: [ default ] # ClickHouse database for dbt models
 
-      # Необязательные параметры
+      # Optional
       host: [ localhost ]
-      port: [ 8123 ]  # По умолчанию 8123, 8443, 9000, 9440 в зависимости от настроек secure и driver 
-      user: [ default ] # Пользователь для всех операций с базой данных
-      password: [ <empty string> ] # Пароль для этого пользователя
-      secure: True  # Использовать TLS (нативный протокол) или HTTPS (http-протокол)
+      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [ default ] # User for all database operations
+      password: [ <empty string> ] # Password for the user
+      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
 ```
 
 

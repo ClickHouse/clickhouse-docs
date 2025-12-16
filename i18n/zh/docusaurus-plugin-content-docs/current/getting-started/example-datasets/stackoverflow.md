@@ -158,7 +158,7 @@ ORDER BY UserId
 
 INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-返回 0 行。用时:6.635 秒。已处理 5129 万行,797.05 MB(773 万行/秒,120.13 MB/秒)
+0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
 ### 文章链接 {#postlinks}
@@ -250,7 +250,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# 以下命令将输入的 XML 文件拆分为每个 10000 行的子文件 {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
+# the following splits the input xml file into sub files of 10000 rows
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -297,8 +297,8 @@ LIMIT 10
 │ css        │  803755 │
 └────────────┴─────────┘
 
-返回了 10 行。耗时：1.013 秒。处理了 5982 万行，1.21 GB（5907 万行/秒，1.19 GB/秒）。
-峰值内存使用：224.03 MiB。
+10 rows in set. Elapsed: 1.013 sec. Processed 59.82 million rows, 1.21 GB (59.07 million rows/s., 1.19 GB/s.)
+Peak memory usage: 224.03 MiB.
 ```
 
 ### 回答数最多的用户（活跃账户） {#user-with-the-most-answers-active-accounts}
@@ -323,8 +323,8 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-返回 5 行。耗时：0.154 秒。处理了 35.83 百万行，193.39 MB（232.33 百万行/秒，1.25 GB/秒）。
-峰值内存使用：206.45 MiB。
+5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
+Peak memory usage: 206.45 MiB.
 ```
 
 ### 阅读量最高的 ClickHouse 相关文章 {#clickhouse-related-posts-with-the-most-views}
@@ -341,20 +341,20 @@ ORDER BY ViewCount DESC
 LIMIT 10
 
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
-│ 52355143 │ 是否可以从 ClickHouse 表中删除旧记录?                      │     41462 │           3 │
-│ 37954203 │ ClickHouse 数据导入                                                           │     38735 │           3 │
-│ 37901642 │ 在 ClickHouse 中更新数据                                                      │     36236 │           6 │
-│ 58422110 │ Pandas: 如何将 DataFrame 插入 ClickHouse                                  │     29731 │           4 │
-│ 63621318 │ DBeaver - ClickHouse - SQL 错误 [159] .. 读取超时                         │     27350 │           1 │
-│ 47591813 │ 如何根据数组列内容过滤 ClickHouse 表?                         │     27078 │           2 │
-│ 58728436 │ 如何在 ClickHouse 数据库中执行不区分大小写的字符串查询?  │     26567 │           3 │
-│ 65316905 │ ClickHouse: DB::Exception: 内存限制(查询)已超出                     │     24899 │           2 │
-│ 49944865 │ 如何在 ClickHouse 中添加列                                                │     24424 │           1 │
-│ 59712399 │ 如何在 ClickHouse 中使用扩展解析将日期字符串转换为 DateTime 格式? │     22620 │           1 │
+│ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
+│ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
+│ 37901642 │ Updating data in Clickhouse                                                      │     36236 │           6 │
+│ 58422110 │ Pandas: How to insert dataframe into Clickhouse                                  │     29731 │           4 │
+│ 63621318 │ DBeaver - Clickhouse - SQL Error [159] .. Read timed out                         │     27350 │           1 │
+│ 47591813 │ How to filter clickhouse table by array column contents?                         │     27078 │           2 │
+│ 58728436 │ How to search the string in query with case insensitive on Clickhouse database?  │     26567 │           3 │
+│ 65316905 │ Clickhouse: DB::Exception: Memory limit (for query) exceeded                     │     24899 │           2 │
+│ 49944865 │ How to add a column in clickhouse                                                │     24424 │           1 │
+│ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-返回 10 行。用时:0.472 秒。处理了 5982 万行,1.91 GB(每秒 1.2663 亿行,4.03 GB/秒)。
-峰值内存使用量:240.01 MiB。
+10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
+Peak memory usage: 240.01 MiB.
 ```
 
 ### 最具争议的帖子 {#most-controversial-posts}
@@ -387,8 +387,8 @@ LIMIT 3
 │ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-返回 3 行。用时:4.779 秒。已处理 2.988 亿行,3.16 GB(6252 万行/秒,661.05 MB/秒)。
-内存峰值:6.05 GiB。
+3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
+Peak memory usage: 6.05 GiB.
 ```
 
 ## 致谢 {#attribution}

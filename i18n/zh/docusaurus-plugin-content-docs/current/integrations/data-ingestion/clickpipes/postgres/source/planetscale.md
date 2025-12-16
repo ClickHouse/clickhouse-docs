@@ -55,15 +55,15 @@ ClickPipes 支持 Postgres 12 及更高版本。
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- 根据要迁移的表,可能需要在更多架构上授予这些权限
+-- You may need to grant these permissions on more schemas depending on the tables you're moving
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- 为该用户授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- 创建发布。创建 ClickPipe 时将使用此发布
--- 向 ClickPipe 添加新表时,还需要手动将它们添加到该发布中。 
+-- Create a publication. We will use this when creating the pipe
+-- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
 ```
 

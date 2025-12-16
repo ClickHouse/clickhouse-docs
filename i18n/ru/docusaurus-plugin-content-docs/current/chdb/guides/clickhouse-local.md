@@ -86,7 +86,7 @@ FROM foo.randomNumbers
 Если этого не сделать, при попытке подключиться к базе данных через chDB мы получим следующую ошибку:
 
 ```text
-ChdbError: Код: 76. DB::Exception: Не удается заблокировать файл demo.chdb/status. Другой экземпляр сервера в этом каталоге уже запущен. (CANNOT_OPEN_FILE)
+ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
 ## Подключение к базе данных clickhouse-local {#connecting-to-a-clickhouse-local-database}
@@ -111,7 +111,7 @@ SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
 FROM foo.randomNumbers
 """, "Vertical")
 
-Строка 1:
+Row 1:
 ──────
 quants: [0,9976599,2147776478,4209286886]
 ```

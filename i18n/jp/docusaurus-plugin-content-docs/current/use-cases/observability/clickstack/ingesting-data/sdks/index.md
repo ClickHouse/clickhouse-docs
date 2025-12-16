@@ -49,7 +49,7 @@ ClickStack は強化されたテレメトリ機能を備えた独自の言語 SD
 OTel collector 経由で ClickStack にデータを送信するには、SDK でインジェスト API key を指定する必要があります。これは SDK の `init` 関数で設定するか、`OTEL_EXPORTER_OTLP_HEADERS` 環境変数で指定します。
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<あなたのインジェストAPIキー>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 この API キーは HyperDX アプリケーションで生成され、アプリの `Team Settings → API Keys` から取得できます。

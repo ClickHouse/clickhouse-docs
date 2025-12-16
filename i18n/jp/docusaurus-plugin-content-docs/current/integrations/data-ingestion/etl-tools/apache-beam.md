@@ -66,7 +66,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // Pipeline オブジェクトを作成します。
+        // Create a Pipeline object.
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -76,7 +76,7 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // パイプラインにトランスフォームを適用します。
+        // Apply transforms to the pipeline.
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
@@ -94,7 +94,7 @@ public class Main {
         rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // パイプラインを実行します。
+        // Run the pipeline.
         p.run().waitUntilFinish();
     }
 }

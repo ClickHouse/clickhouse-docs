@@ -56,7 +56,7 @@ Confluent Platform 上でトピックを作成するのは比較的容易で、�
 ```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
-'Sensitive properties' - 'password'。これにより、設定中にClickHouseパスワードの入力がマスクされます。
+'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
 ```
 
 例:

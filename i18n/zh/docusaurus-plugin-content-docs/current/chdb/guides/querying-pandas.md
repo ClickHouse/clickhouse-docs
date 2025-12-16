@@ -31,7 +31,7 @@ pip install "chdb>=2.0.2"
 接下来我们要安装 Pandas 和另外几个库：
 
 ```bash
-pip 安装 pandas requests ipython
+pip install pandas requests ipython
 ```
 
 接下来我们将使用 `ipython` 来运行本指南其余部分中的命令，你可以通过运行以下命令来启动：
@@ -79,37 +79,37 @@ last_updated                                           2024-07-15T15:50:08.67135
 last_updated_360                                                             None
 match_week                                                                      6
 competition_competition_id                                                    223
-competition_country_name                                            南美洲
-competition_competition_name                                         美洲杯
+competition_country_name                                            South America
+competition_competition_name                                         Copa America
 season_season_id                                                              282
 season_season_name                                                           2024
 home_team_home_team_id                                                        779
-home_team_home_team_name                                                阿根廷
+home_team_home_team_name                                                Argentina
 home_team_home_team_gender                                                   male
 home_team_home_team_group                                                    None
 home_team_country_id                                                           11
-home_team_country_name                                                  阿根廷
+home_team_country_name                                                  Argentina
 home_team_managers              [{'id': 5677, 'name': 'Lionel Sebastián Scalon...
 away_team_away_team_id                                                        769
-away_team_away_team_name                                                 哥伦比亚
+away_team_away_team_name                                                 Colombia
 away_team_away_team_gender                                                   male
 away_team_away_team_group                                                    None
 away_team_country_id                                                           49
-away_team_country_name                                                   哥伦比亚
+away_team_country_name                                                   Colombia
 away_team_managers              [{'id': 5905, 'name': 'Néstor Gabriel Lorenzo'...
 metadata_data_version                                                       1.1.0
 metadata_shot_fidelity_version                                                  2
 metadata_xy_fidelity_version                                                    2
 competition_stage_id                                                           26
-competition_stage_name                                                      决赛
+competition_stage_name                                                      Final
 stadium_id                                                                   5337
 stadium_name                                                    Hard Rock Stadium
 stadium_country_id                                                            241
-stadium_country_name                                         美国
+stadium_country_name                                     United States of America
 referee_id                                                                   2638
 referee_name                                                        Raphael Claus
 referee_country_id                                                             31
-referee_country_name                                                       巴西
+referee_country_name                                                       Brazil
 Name: 0, dtype: object
 ```
 
@@ -142,11 +142,11 @@ second                                                                  0
 possession                                                              1
 duration                                                              0.0
 type_id                                                                35
-type_name                                                     首发阵容
+type_name                                                     Starting XI
 possession_team_id                                                    779
 possession_team_name                                            Argentina
 play_pattern_id                                                         1
-play_pattern_name                                            常规比赛
+play_pattern_name                                            Regular Play
 team_id                                                               779
 team_name                                                       Argentina
 tactics_formation                                                   442.0
@@ -181,7 +181,7 @@ SETTINGS describe_compact_output=1
 ```
 
 ```text
-                              名称    类型
+                              name    type
 0                         match_id   Int64
 1                       match_date  String
 2                         kick_off  String
@@ -239,7 +239,7 @@ ORDER BY count DESC
 ```
 
 ```text
-                    裁判姓名  计数
+                    referee_name  count
 0  César Arturo Ramos Palazuelos      3
 1               Maurizio Mariani      3
 2               Piero Maza Gomez      3
@@ -266,17 +266,17 @@ LIMIT 10
 ```
 
 ```text
-               传球接收者姓名  次数()
-0            达文森 桑切斯 米纳       76
-1  安赫尔 法比安 迪 马利亚 赫南德斯       64
-2              亚历克西斯 马克·阿里斯特       62
-3                   恩佐 费尔南德斯       57
-4      詹姆斯 大卫 罗德里格斯 鲁比奥       56
-5      约翰 安德烈斯 莫希卡 帕拉西奥       55
-6           罗德里戈 哈维尔 德保罗       54
-7     杰斐逊 安德烈斯 勒尔马 索利斯       53
-8        约翰 阿道夫 奥 阿里亚斯 安德拉德       52
-9  卡洛斯 埃塞霍莫 库埃斯塔 菲格罗阿       50
+               pass_recipient_name  count()
+0            Davinson Sánchez Mina       76
+1  Ángel Fabián Di María Hernández       64
+2              Alexis Mac Allister       62
+3                   Enzo Fernandez       57
+4      James David Rodríguez Rubio       56
+5      Johan Andrés Mojica Palacio       55
+6           Rodrigo Javier De Paul       54
+7     Jefferson Andrés Lerma Solís       53
+8        Jhon Adolfo Arias Andrade       52
+9  Carlos Eccehomo Cuesta Figueroa       50
 ```
 
 ## 连接 Pandas DataFrame {#joining-pandas-dataframes}
@@ -299,8 +299,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    阿根廷
-away_team_away_team_name     哥倫比亞
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527
@@ -389,8 +389,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    阿根廷
-away_team_away_team_name     哥伦比亚
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527

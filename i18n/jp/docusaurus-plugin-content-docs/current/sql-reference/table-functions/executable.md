@@ -23,7 +23,7 @@ doc_type: 'reference'
 `executable` テーブル関数は 3 つのパラメーターを必須とし、オプションで入力クエリのリストを引数として受け取ります。
 
 ```sql
-executable(スクリプト名, フォーマット, 構造, [入力クエリ...] [,SETTINGS ...])
+executable(script_name, format, structure, [input_query...] [,SETTINGS ...])
 ```
 
 * `script_name`: スクリプトのファイル名。`user_scripts` ディレクトリ（`user_scripts_path` 設定のデフォルトディレクトリ）に保存されます
@@ -46,17 +46,17 @@ import random
 
 def main():
 
-    # 入力値を読み取る
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # ランダムな行を生成
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # 結果を標準出力にフラッシュ
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":

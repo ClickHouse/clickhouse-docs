@@ -197,16 +197,16 @@ CREATE TABLE noaa
 (
    `station_id` LowCardinality(String),
    `date` Date32,
-   `tempAvg` Int32 COMMENT '平均気温（0.1℃単位）',
-   `tempMax` Int32 COMMENT '最高気温（0.1℃単位）',
-   `tempMin` Int32 COMMENT '最低気温（0.1℃単位）',
-   `precipitation` UInt32 COMMENT '降水量（0.1mm単位）',
-   `snowfall` UInt32 COMMENT '降雪量（mm）',
-   `snowDepth` UInt32 COMMENT '積雪深（mm）',
-   `percentDailySun` UInt8 COMMENT '日照率（可能日照時間に対する割合、%）',
-   `averageWindSpeed` UInt32 COMMENT '日平均風速（0.1m/s単位）',
-   `maxWindSpeed` UInt32 COMMENT '最大瞬間風速（0.1m/s単位）',
-   `weatherType` Enum8('通常' = 0, '霧' = 1, '濃霧' = 2, '雷' = 3, '小雹' = 4, '雹' = 5, '雨氷' = 6, '砂塵/火山灰' = 7, '煙霧/霞' = 8, '地吹雪/吹き溜まり' = 9, '竜巻' = 10, '強風' = 11, '飛沫' = 12, '靄' = 13, '霧雨' = 14, '凍結霧雨' = 15, '雨' = 16, '凍雨' = 17, '雪' = 18, '不明な降水' = 19, '地霧' = 21, '凍霧' = 22),
+   `tempAvg` Int32 COMMENT 'Average temperature (tenths of a degrees C)',
+   `tempMax` Int32 COMMENT 'Maximum temperature (tenths of degrees C)',
+   `tempMin` Int32 COMMENT 'Minimum temperature (tenths of degrees C)',
+   `precipitation` UInt32 COMMENT 'Precipitation (tenths of mm)',
+   `snowfall` UInt32 COMMENT 'Snowfall (mm)',
+   `snowDepth` UInt32 COMMENT 'Snow depth (mm)',
+   `percentDailySun` UInt8 COMMENT 'Daily percent of possible sunshine (percent)',
+   `averageWindSpeed` UInt32 COMMENT 'Average daily wind speed (tenths of meters per second)',
+   `maxWindSpeed` UInt32 COMMENT 'Peak gust wind speed (tenths of meters per second)',
+   `weatherType` Enum8('Normal' = 0, 'Fog' = 1, 'Heavy Fog' = 2, 'Thunder' = 3, 'Small Hail' = 4, 'Hail' = 5, 'Glaze' = 6, 'Dust/Ash' = 7, 'Smoke/Haze' = 8, 'Blowing/Drifting Snow' = 9, 'Tornado' = 10, 'High Winds' = 11, 'Blowing Spray' = 12, 'Mist' = 13, 'Drizzle' = 14, 'Freezing Drizzle' = 15, 'Rain' = 16, 'Freezing Rain' = 17, 'Snow' = 18, 'Unknown Precipitation' = 19, 'Ground Fog' = 21, 'Freezing Fog' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
@@ -263,7 +263,7 @@ LIMIT 5
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1952-09-04 │
 └─────────┴───────────────────┴────────────────────────────────────────────────┴────────────┘
 
-5行。経過時間: 0.514秒。処理: 10.6億行、4.27 GB (20.6億行/秒、8.29 GB/秒)
+5 rows in set. Elapsed: 0.514 sec. Processed 1.06 billion rows, 4.27 GB (2.06 billion rows/s., 8.29 GB/s.)
 ```
 
 2023 年時点での [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) における[記録上の最高気温](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と比べても、安心できるほどよく一致しています。
@@ -333,8 +333,8 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-5行のデータセット。経過時間: 0.750秒。処理行数: 6億8910万行、3.20 GB (9億1820万行/秒、4.26 GB/秒)
-ピークメモリ使用量: 67.66 MiB。
+5 rows in set. Elapsed: 0.750 sec. Processed 689.10 million rows, 3.20 GB (918.20 million rows/s., 4.26 GB/s.)
+Peak memory usage: 67.66 MiB.
 ```
 
 ## 謝辞 {#credits}

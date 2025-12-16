@@ -37,10 +37,10 @@ DB ClickPipes のデフォルト構成は、ほとんどのワークロードを
 コマンドを実行する前に、以下の環境変数を設定します。
 
 ```bash
-ORG_ID=<ClickHouse組織ID>
-SERVICE_ID=<ClickHouseサービスID>
-KEY_ID=<ClickHouseキーID>
-KEY_SECRET=<ClickHouseキーシークレット>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_ID=<Your ClickHouse service ID>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
 ```
 
 現在のスケーリング設定を取得します（省略可）:
@@ -50,7 +50,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 結果例： {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -84,7 +84,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# 結果例: {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 24000,

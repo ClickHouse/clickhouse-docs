@@ -56,7 +56,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Пример:
 
 ```sql
--- без ver - «побеждает» последняя вставленная запись
+-- without ver - the last inserted 'wins'
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -66,17 +66,17 @@ CREATE TABLE myFirstReplacingMT
 ENGINE = ReplacingMergeTree
 ORDER BY key;
 
-INSERT INTO myFirstReplacingMT Values (1, 'первая', '2020-01-01 01:01:01');
-INSERT INTO myFirstReplacingMT Values (1, 'вторая', '2020-01-01 00:00:00');
+INSERT INTO myFirstReplacingMT Values (1, 'first', '2020-01-01 01:01:01');
+INSERT INTO myFirstReplacingMT Values (1, 'second', '2020-01-01 00:00:00');
 
 SELECT * FROM myFirstReplacingMT FINAL;
 
 ┌─key─┬─someCol─┬───────────eventTime─┐
-│   1 │ вторая  │ 2020-01-01 00:00:00 │
+│   1 │ second  │ 2020-01-01 00:00:00 │
 └─────┴─────────┴─────────────────────┘
 
 
--- с ver - «побеждает» запись с наибольшим значением ver
+-- with ver - the row with the biggest ver 'wins'
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -86,13 +86,13 @@ CREATE TABLE mySecondReplacingMT
 ENGINE = ReplacingMergeTree(eventTime)
 ORDER BY key;
 
-INSERT INTO mySecondReplacingMT Values (1, 'первая', '2020-01-01 01:01:01');
-INSERT INTO mySecondReplacingMT Values (1, 'вторая', '2020-01-01 00:00:00');
+INSERT INTO mySecondReplacingMT Values (1, 'first', '2020-01-01 01:01:01');
+INSERT INTO mySecondReplacingMT Values (1, 'second', '2020-01-01 00:00:00');
 
 SELECT * FROM mySecondReplacingMT FINAL;
 
 ┌─key─┬─someCol─┬───────────eventTime─┐
-│   1 │ первая   │ 2020-01-01 01:01:01 │
+│   1 │ first   │ 2020-01-01 01:01:01 │
 └─────┴─────────┴─────────────────────┘
 ```
 
@@ -120,7 +120,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 Пример:
 
 ```sql
--- с ver и is_deleted
+-- with ver and is_deleted
 CREATE OR REPLACE TABLE myThirdReplacingMT
 (
     `key` Int64,
@@ -134,6 +134,21 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
+
+select * from myThirdReplacingMT final;
+
+0 rows in set. Elapsed: 0.003 sec.
+
+-- delete rows with is_deleted
+OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
+
+INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
+
+select * from myThirdReplacingMT final;
+
+┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
+│   1 │ first   │ 2020-01-01 00:00:00 │          0 │
+└─────┴─────────┴─────────────────────┴────────────┘
 ```
 
 select * from myThirdReplacingMT final;
@@ -151,7 +166,13 @@ select * from myThirdReplacingMT final;
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
 
-```
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
 ```
 
 ## Части запроса {#query-clauses}
@@ -167,12 +188,17 @@ select * from myThirdReplacingMT final;
 :::
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+CREATE TABLE rmt_example
 (
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
+    `number` UInt16
+)
+ENGINE = ReplacingMergeTree
+ORDER BY number
+
+INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
+FROM numbers(1000000000)
+
+0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
 ```
 
 Все параметры, за исключением `ver`, имеют тот же смысл, что и в `MergeTree`.
@@ -188,17 +214,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Для получения корректных результатов пользователям необходимо дополнять фоновые слияния дедупликацией и удалением строк при выполнении запроса. Это можно сделать с помощью оператора `FINAL`. Например, рассмотрим следующий пример:
 
 ```sql
-CREATE TABLE rmt_example
-(
-    `number` UInt16
-)
-ENGINE = ReplacingMergeTree
-ORDER BY number
+SELECT count()
+FROM rmt_example
 
-INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
-FROM numbers(1000000000)
+┌─count()─┐
+│     200 │
+└─────────┘
 
-0 строк в наборе. Затрачено: 19.958 сек. Обработано 1.00 миллиард строк, 8.00 ГБ (50.11 миллионов строк/с., 400.84 МБ/с.)
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Запрос без `FINAL` возвращает некорректный результат подсчёта (точное значение будет отличаться в зависимости от выполняемых слияний):
@@ -206,9 +229,10 @@ FROM numbers(1000000000)
 ```sql
 SELECT count()
 FROM rmt_example
+FINAL
 
 ┌─count()─┐
-│     200 │
+│     100 │
 └─────────┘
 
 1 row in set. Elapsed: 0.002 sec.

@@ -35,7 +35,7 @@ The Elastic Stack предоставляет два типа языковых SD
 Типичная конфигурация EDOT SDK может выглядеть следующим образом:
 
 ```shell
-export OTEL_RESOURCE_ATTRIBUTES=service.name=<имя-приложения>
+export OTEL_RESOURCE_ATTRIBUTES=service.name=<app-name>
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://my-deployment.ingest.us-west1.gcp.cloud.es.io
 export OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey P....l"
 ```
@@ -43,9 +43,9 @@ export OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey P....l"
 Для миграции на ClickStack обновите endpoint так, чтобы он указывал на локальный OTLP Collector, и измените заголовок авторизации:
 
 ```shell
-export OTEL_RESOURCE_ATTRIBUTES=service.name=<имя-приложения>
+export OTEL_RESOURCE_ATTRIBUTES=service.name=<app-name>
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-export OTEL_EXPORTER_OTLP_HEADERS="authorization=<ВАШ_КЛЮЧ_API_ПРИЁМА>"
+export OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>"
 ```
 
 Ваш ключ API для приёма данных генерируется приложением HyperDX и его можно найти в разделе Team Settings → API Keys.

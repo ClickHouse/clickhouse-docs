@@ -58,16 +58,16 @@ PRIMARY KEY (author, id)
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', 'Это пост #1', 0),
-   (2, 'ch_fan', 'Это пост #2', 0)
+   (1, 'ricardo', 'This is post #1', 0),
+   (2, 'ch_fan', 'This is post #2', 0)
 ```
 
 Чтобы обновить столбец `views`, вставьте новую строку с тем же первичным ключом (обратите внимание на новые значения столбца `views`).
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', 'Это пост №1', 100),
-   (2, 'ch_fan', 'Это пост №2', 200)
+   (1, 'ricardo', 'This is post #1', 100),
+   (2, 'ch_fan', 'This is post #2', 200)
 ```
 
 В таблице теперь 4 строки:
@@ -79,12 +79,12 @@ FROM hackernews_rmt
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост #2 │     0 │
-│  1 │ ricardo │ Это пост #1 │     0 │
+│  2 │ ch_fan  │ This is post #2 │     0 │
+│  1 │ ricardo │ This is post #1 │     0 │
 └────┴─────────┴─────────────────┴───────┘
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост #2 │   200 │
-│  1 │ ricardo │ Это пост #1 │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -98,8 +98,8 @@ FINAL
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост №2     │   200 │
-│  1 │ ricardo │ Это пост №1     │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -157,8 +157,8 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ Это пост №2     │        250 │
-│  1 │ ricardo │ Это пост №1     │        150 │
+│  2 │ ch_fan  │ This is post #2 │        250 │
+│  1 │ ricardo │ This is post #1 │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 
