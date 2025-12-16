@@ -1,46 +1,47 @@
 ---
-'sidebar_position': 1
-'slug': '/tips-and-tricks/materialized-views'
-'sidebar_label': 'Materialized Views'
-'doc_type': 'guide'
-'keywords':
-- 'clickhouse materialized views'
-- 'materialized view optimization'
-- 'materialized view storage issues'
-- 'materialized view best practices'
-- 'database aggregation patterns'
-- 'materialized view anti-patterns'
-- 'storage explosion problems'
-- 'materialized view performance'
-- 'database view optimization'
-- 'aggregation strategy'
-- 'materialized view troubleshooting'
-- 'view storage overhead'
-'title': 'レッスン - Materialized Views'
-'description': '実世界の例に基づくMaterialized Views、問題と解決策'
+sidebar_position: 1
+slug: /tips-and-tricks/materialized-views
+sidebar_label: 'マテリアライズドビュー'
+doc_type: 'guide'
+keywords: [
+  'ClickHouse マテリアライズドビュー',
+  'マテリアライズドビューの最適化',
+  'マテリアライズドビューのストレージ問題',
+  'マテリアライズドビューのベストプラクティス',
+  'データベース集約パターン',
+  'マテリアライズドビューのアンチパターン',
+  'ストレージの爆発的増加問題',
+  'マテリアライズドビューのパフォーマンス',
+  'データベースビューの最適化',
+  '集約戦略',
+  'マテリアライズドビューのトラブルシューティング',
+  'ビューによるストレージオーバーヘッド'
+]
+title: '実践から学ぶマテリアライズドビュー'
+description: 'マテリアライズドビューの実例と、発生しうる問題およびその解決策'
 ---
 
+# マテリアライズドビュー: 諸刃の剣になり得る理由 {#materialized-views-the-double-edged-sword}
 
-# Materialized views: how they can become a double edged sword {#materialized-views-the-double-edged-sword}
+*このガイドは、コミュニティミートアップで得られた知見をまとめたコレクションの一部です。より実践的なソリューションや知見については、[特定の問題別に閲覧](./community-wisdom.md)できます。*
+*大量のパーツがデータベースのパフォーマンスを低下させていませんか？[Too Many Parts](./too-many-parts.md) コミュニティインサイトガイドを参照してください。*
+*[マテリアライズドビュー](/materialized-views) についてさらに詳しく学びましょう。*
 
-*このガイドは、コミュニティミートアップから得られた知見のコレクションの一部です。現実的なソリューションと洞察については、[特定の問題でブラウズする](./community-wisdom.md)ことができます。*
-*データベースのパーツが多すぎて困っていますか？ [パーツが多すぎる](./too-many-parts.md)コミュニティの洞察ガイドをチェックしてください。*
-*より詳細な情報は、[Materialized Views](/materialized-views)をご覧ください。*
+## 10倍ストレージアンチパターン {#storage-antipattern}
 
-## The 10x storage anti-pattern {#storage-antipattern}
+**実際の本番環境で発生した問題:** *「マテリアライズドビューを使っていました。生ログテーブルは約20GBでしたが、そのログテーブルを元にしたビューが190GBまで膨れ上がり、生テーブルのほぼ10倍のサイズになってしまいました。これは、属性ごとに1行ずつ作成しており、各ログが最大で10個の属性を持つ可能性があったために起きました。」*
 
-**実際のプロダクション問題:** *「マテリアライズド ビューがありました。生のログテーブルは約20ギガですが、そのログテーブルからのビューは190ギガに膨れ上がり、生のテーブルのサイズの10倍近くになりました。これは、属性ごとに1行を作成していて、各ログには10の属性があるために発生しました。」*
+**ルール:** `GROUP BY` によって削減される行数よりも多くの行が生成される場合、それはマテリアライズドビューではなく、高コストなインデックスを作っていることになります。
 
-**ルール:** `GROUP BY` が削除する行よりも多くの行を作成する場合、高価なインデックスを構築しているだけで、マテリアライズドビューを構築しているわけではありません。
+## 本番環境マテリアライズドビューの健全性検証 {#mv-health-validation}
 
-## Production materialized view health validation {#mv-health-validation}
+このクエリを使うと、マテリアライズドビューを作成する前に、それがデータを圧縮するのか、あるいは肥大化させてしまうのかを予測できます。実際のテーブルとカラムに対して実行し、「190GB への肥大化」シナリオを回避してください。
 
-このクエリは、マテリアライズド ビューを作成する前に、そのビューがデータを圧縮するか、膨張するかを予測するのに役立ちます。実際のテーブルとカラムに対して実行して、「190GBの爆発」を回避してください。
+**このクエリで分かること:**
 
-**表示内容:**
-- **低い集約比** (\<10%) = 良いMV、重要な圧縮
-- **高い集約比** (\>70%) = 悪いMV、ストレージ爆発のリスク
-- **ストレージ倍率** = MVがどれほど大きくまたは小さくなるか
+* **低い集約率** (&lt;10%) = 良い MV であり、圧縮効果が大きい
+* **高い集約率** (&gt;70%) = 悪い MV であり、ストレージ肥大化のリスクが高い
+* **ストレージ倍率** = MV のサイズがどれだけ増減するか
 
 ```sql
 -- Replace with your actual table and columns
@@ -55,15 +56,15 @@ WHERE your_filter_conditions;
 -- If aggregation_ratio < 10%, you'll get good compression
 ```
 
-## When materialized views become a problem {#mv-problems}
+## マテリアライズドビューが問題になるとき {#mv-problems}
 
-**監視する警告サイン:**
-- 挿入のレイテンシが増加（10msかかっていたクエリが現在は100ms以上かかる）
-- 「パーツが多すぎる」エラーが頻繁に発生
-- 挿入操作中のCPUスパイク
-- 以前は発生しなかった挿入タイムアウト
+**監視すべき警告サイン:**
+- 挿入レイテンシの増加（以前は 10ms だったクエリが 100ms 以上かかるようになる）
+- "Too many parts" エラーの発生頻度が増加する
+- 挿入処理中の CPU 使用率のスパイク
+- これまで発生していなかった挿入タイムアウト
 
-`system.query_log` を使用して、MVを追加する前後の挿入パフォーマンスを比較し、クエリの所要時間の傾向を追跡できます。
+`system.query_log` を使用してクエリ実行時間の推移を追跡することで、マテリアライズドビューを追加する前後の挿入パフォーマンスを比較できます。
 
-## Video sources {#video-sources}
-- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - 「マテリアライズドビューに過剰に熱心」および「20GB→190GBの爆発」ケーススタディの出典
+## 動画資料 {#video-sources}
+- [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - 「マテリアライズドビューに過度に熱狂した」事例と「20GB から 190GB への爆発的増加」事例の出典

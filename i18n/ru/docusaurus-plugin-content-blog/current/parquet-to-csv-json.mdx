@@ -1,0 +1,141 @@
+---
+title: Как преобразовать файлы Parquet в CSV или JSON?
+description: "Узнайте, как использовать инструмент ClickHouse `clickhouse-local` для удобного преобразования файлов Parquet в форматы CSV или JSON."
+date: 2023-03-22
+tags: ['Источники данных', 'Форматы данных']
+keywords: ['Преобразование', 'Parquet', 'CSV', 'JSON']
+---
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## Конвертация файлов из Parquet в CSV или JSON \{#converting-files-from-parquet-to-csv-or-json\}
+
+Вы можете использовать `clickhouse-local` для конвертации файлов между любыми [форматами ввода и вывода](https://clickhouse.com/docs/interfaces/formats), которые поддерживает ClickHouse (а их более 70!). В этой статье мы конвертируем файл Parquet в S3 в файлы CSV и JSON.
+
+Начнём с основ. В ClickHouse есть набор [табличных функций](https://clickhouse.com/docs/sql-reference/table-functions/), которые читают данные из файлов, баз данных и других ресурсов и преобразуют их в таблицу. Для примера предположим, что у нас есть файл Parquet в S3. Мы будем использовать табличную функцию `s3`, чтобы прочитать его (ClickHouse понимает, что это файл Parquet, исходя из имени файла).
+
+Но сначала давайте загрузим исполняемый файл `clickhouse`:
+
+```bash
+curl https://clickhouse.com/ | sh
+```
+
+## Доступ к данным с помощью табличной функции \{#accessing-the-data-using-a-table-function\}
+
+Проверим, что мы можем прочитать файл, выполнив команду `DESCRIBE` над результирующей таблицей, которую создаёт табличная функция `s3`:
+
+```bash
+./clickhouse local -q "DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')"
+```
+
+Этот файл содержит данные о ценах на жильё, проданное в Соединённом Королевстве. Ответ выглядит следующим образом:
+
+```response
+price	Nullable(Int64)
+date	Nullable(UInt16)
+postcode1	Nullable(String)
+postcode2	Nullable(String)
+type	Nullable(String)
+is_new	Nullable(UInt8)
+duration	Nullable(String)
+addr1	Nullable(String)
+addr2	Nullable(String)
+street	Nullable(String)
+locality	Nullable(String)
+town	Nullable(String)
+district	Nullable(String)
+county	Nullable(String)
+```
+
+Вы можете выполнять любые запросы к данным. Например, давайте посмотрим, в каких населённых пунктах самая высокая средняя стоимость жилья:
+
+```bash
+./clickhouse local -q "SELECT
+   town,
+   avg(price) AS avg_price
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+GROUP BY town
+ORDER BY avg_price DESC
+LIMIT 10"
+```
+
+Ответ будет выглядеть примерно так:
+
+```bash
+ГАТВИК	16818750
+ЧАЛФОНТ-СЕН-ДЖАЙЛС	938090.0985915493
+ВИРДЖИНИЯ-УОТЕР	789301.1320224719
+КОБЭМ	699874.7111622555
+БИКONSФИЛД	677247.5483146068
+ЭШЕР	616004.6888297872
+КЕСТОН	607585.8597560975
+ДЖЕРРАРДС-КРОСС	566330.2959086584
+АСКОТ	551491.2975753123
+УЭЙБРИДЖ	548974.828692494
+```
+
+## Преобразуйте файл Parquet в CSV \{#convert-the-parquet-file-to-a-csv\}
+
+Вы можете сохранить результат любого SQL-запроса в файл. Давайте получим все столбцы из нашего файла Parquet в S3 и запишем вывод в новый CSV-файл. Поскольку имя выходного файла оканчивается на `.csv`, ClickHouse понимает, что нужно использовать формат вывода `CSV`:
+
+```bash
+./clickhouse local -q "SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+INTO OUTFILE 'house_prices.csv'"
+```
+
+Проверим, что всё сработало:
+
+```response
+$ tail house_prices.csv
+70000,10508,"YO8","9XN","detached",0,"freehold","7","","POPPY CLOSE","SELBY","SELBY","SELBY","NORTH YORKSHIRE"
+130000,14274,"YO8","9XP","detached",0,"freehold","10","","HEATHER CLOSE","","SELBY","SELBY","NORTH YORKSHIRE"
+150000,18180,"YO8","9XP","detached",0,"freehold","11","","HEATHER CLOSE","","SELBY","SELBY","NORTH YORKSHIRE"
+157000,18088,"YO8","9XP","detached",0,"freehold","12","","HEATHER CLOSE","","SELBY","SELBY","NORTH YORKSHIRE"
+134000,17333,"YO8","9XP","semi-detached",0,"freehold","16","","HEATHER CLOSE","","SELBY","SELBY","NORTH YORKSHIRE"
+250000,13405,"YO8","9YA","detached",0,"freehold","6","","YORKDALE COURT","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
+59500,11166,"YO8","9YB","semi-detached",0,"freehold","4","","YORKDALE DRIVE","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
+142500,17648,"YO8","9YB","semi-detached",0,"freehold","4A","","YORKDALE DRIVE","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
+230000,15125,"YO8","9YD","detached",0,"freehold","1","","ONE ACRE GARTH","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
+250000,15950,"YO8","9YD","detached",0,"freehold","3","","ONE ACRE GARTH","HAMBLETON","SELBY","SELBY","NORTH YORKSHIRE"
+```
+
+## Преобразование файла Parquet в JSON \{#convert-the-parquet-file-to-a-json\}
+
+Чтобы преобразовать файл Parquet в JSON, просто измените расширение выходного файла:
+
+```bash
+./clickhouse local -q "SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/house_parquet/house_0.parquet')
+INTO OUTFILE 'house_prices.ndjson'"
+```
+
+Убедимся, что всё сработало:
+
+```response
+ $ tail house_prices.ndjson
+{"price":"70000","date":10508,"postcode1":"YO8","postcode2":"9XN","type":"detached","is_new":0,"duration":"freehold","addr1":"7","addr2":"","street":"POPPY CLOSE","locality":"SELBY","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"130000","date":14274,"postcode1":"YO8","postcode2":"9XP","type":"detached","is_new":0,"duration":"freehold","addr1":"10","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"150000","date":18180,"postcode1":"YO8","postcode2":"9XP","type":"detached","is_new":0,"duration":"freehold","addr1":"11","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"157000","date":18088,"postcode1":"YO8","postcode2":"9XP","type":"detached","is_new":0,"duration":"freehold","addr1":"12","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"134000","date":17333,"postcode1":"YO8","postcode2":"9XP","type":"semi-detached","is_new":0,"duration":"freehold","addr1":"16","addr2":"","street":"HEATHER CLOSE","locality":"","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"250000","date":13405,"postcode1":"YO8","postcode2":"9YA","type":"detached","is_new":0,"duration":"freehold","addr1":"6","addr2":"","street":"YORKDALE COURT","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"59500","date":11166,"postcode1":"YO8","postcode2":"9YB","type":"semi-detached","is_new":0,"duration":"freehold","addr1":"4","addr2":"","street":"YORKDALE DRIVE","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"142500","date":17648,"postcode1":"YO8","postcode2":"9YB","type":"semi-detached","is_new":0,"duration":"freehold","addr1":"4A","addr2":"","street":"YORKDALE DRIVE","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"230000","date":15125,"postcode1":"YO8","postcode2":"9YD","type":"detached","is_new":0,"duration":"freehold","addr1":"1","addr2":"","street":"ONE ACRE GARTH","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+{"price":"250000","date":15950,"postcode1":"YO8","postcode2":"9YD","type":"detached","is_new":0,"duration":"freehold","addr1":"3","addr2":"","street":"ONE ACRE GARTH","locality":"HAMBLETON","town":"SELBY","district":"SELBY","county":"NORTH YORKSHIRE"}
+```
+
+## Преобразование CSV в Parquet \{#convert-csv-to-parquet\}
+
+Это работает в обе стороны — мы можем легко прочитать новый CSV-файл и сохранить его в файл Parquet. Локальный файл `house_prices.csv` может быть прочитан в ClickHouse с использованием табличной функции `file`, а ClickHouse выводит файл в формате Parquet на основании расширения имени файла `.parquet` (или мы могли бы добавить конструкцию `FORMAT Parquet`):
+
+```bash
+./clickhouse local -q "SELECT *
+FROM file('house_prices.csv')
+INTO OUTFILE 'house_prices.parquet'"
+```
+
+Как мы уже отмечали выше, вы можете использовать любые [форматы ввода и вывода](https://clickhouse.com/docs/interfaces/formats) ClickHouse вместе с `clickhouse local`, чтобы легко преобразовывать файлы в разные форматы.

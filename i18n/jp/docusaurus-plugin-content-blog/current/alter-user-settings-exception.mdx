@@ -1,0 +1,33 @@
+---
+title: ユーザー設定変更時の例外
+description: ユーザー設定を変更する際に発生する例外の処理方法
+date: 2023-08-26
+tags: ['設定', 'エラーと例外']
+keywords: ['例外', 'ユーザー設定']
+---
+
+{frontMatter.description}
+
+{/* トランケート */}
+
+## DB::Exception: Cannot update user `default` in users.xml because this storage is readonly. (ACCESS&#95;STORAGE&#95;READONLY) \{#dbexception-cannot-update-user-default-in-usersxml-because-this-storage-is-readonly-access&#95;storage&#95;readonly\}
+
+ユーザーの設定を変更しようとすると、上記の例外が発生することがあります。
+
+このエラーのトラブルシューティングに利用できる対処方法をいくつか示します。
+
+## users.xml を直接編集する \{#edit-usersxml-directly\}
+
+`/etc/clickhouse-server/users.d` ディレクトリ内の `users.xml` ファイルを直接編集して、特定ユーザー向けの必要な設定を追加・変更できます。
+
+`users.xml` についての詳細は[こちら](/operations/settings/settings-profiles)を参照してください。
+
+## 別のユーザーを作成する \{#create-another-user\}
+
+指定した設定で別のユーザーを作成し、そのユーザーを使って ClickHouse に接続できます。
+
+ユーザーの作成方法については、[このページ](/sql-reference/statements/create/user)を参照してください。
+
+## SQL ベースのアクセス制御を有効化する \{#enable-sql-driven-access-control\}
+
+default ユーザーに対して、SQL ベースのアクセス制御とアカウント管理を有効にできます。これを有効にするための手順は、この[ページ](/operations/access-rights#enabling-access-control)で説明されています。

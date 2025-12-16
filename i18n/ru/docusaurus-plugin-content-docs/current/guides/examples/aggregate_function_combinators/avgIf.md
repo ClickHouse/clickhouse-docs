@@ -1,20 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
-sidebar_label: avgIf
-description: 'Пример использования комбиниратора avgIf'
-title: avgIf
-keywords: ['avg', 'if', 'комбинатор', 'примеры', 'avgIf']
-doc_type: reference
+title: 'avgIf'
+description: 'Пример использования комбинатора avgIf'
+keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
+sidebar_label: 'avgIf'
+doc_type: 'reference'
 ---
+
 # avgIf {#avgif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применен к функции [`avg`](/sql-reference/aggregate-functions/reference/avg) для вычисления арифметического среднего значений по строкам, где условие истинно, используя агрегатную функцию комбинатора `avgIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)
+для вычисления арифметического среднего значений в строках, для которых выполняется условие,
+с помощью агрегатной функции-комбинатора `avgIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `avgIf` для вычисления средней суммы продажи для успешных транзакций.
+В этом примере мы создадим таблицу, которая хранит данные о продажах и признак успешности,
+и используем `avgIf` для вычисления среднего размера продажи по успешным транзакциям.
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -36,7 +40,8 @@ SELECT
 FROM sales;
 ```
 
-Функция `avgIf` будет вычислять среднюю сумму только для строк, где `is_successful = 1`. В этом случае она будет усреднять суммы: 100.50, 200.75, 300.00 и 175.25.
+Функция `avgIf` вычислит среднее значение только по строкам, где `is_successful = 1`.
+В этом случае она вычислит среднее по значениям: 100.50, 200.75, 300.00 и 175.25.
 
 ```response title="Response"
    ┌─avg_successful_sale─┐

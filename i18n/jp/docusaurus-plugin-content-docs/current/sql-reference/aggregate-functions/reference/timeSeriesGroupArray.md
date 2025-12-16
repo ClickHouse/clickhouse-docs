@@ -1,15 +1,14 @@
 ---
-'description': 'タイムシリーズをタイムスタンプで昇順にソートします。'
-'sidebar_position': 146
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesGroupArray'
-'title': 'timeSeriesGroupArray'
-'doc_type': 'reference'
+description: 'タイムスタンプで時系列データを昇順にソートします。'
+sidebar_position: 146
+slug: /sql-reference/aggregate-functions/reference/timeSeriesGroupArray
+title: 'timeSeriesGroupArray'
+doc_type: 'reference'
 ---
 
+# timeSeriesGroupArray {#timeseriesgrouparray}
 
-# timeSeriesGroupArray
-
-時系列データをタイムスタンプの昇順でソートします。
+タイムスタンプ順に時系列データを昇順で並べ替えます。
 
 **構文**
 
@@ -19,13 +18,13 @@ timeSeriesGroupArray(timestamp, value)
 
 **引数**
 
-- `timestamp` - サンプルのタイムスタンプ
-- `value` - タイムスタンプに対応する時系列の値
+* `timestamp` - サンプルのタイムスタンプ
+* `value` - `timestamp` に対応する時系列の値
 
 **戻り値**
 
-この関数は、`timestamp` によって昇順にソートされたタプルの配列（`timestamp`, `value`）を返します。
-同じ `timestamp` に複数の値がある場合、関数はこれらの中で最大の値を選択します。
+この関数は、`timestamp` を昇順にソートしたタプル (`timestamp`, `value`) の配列を返します。
+同じ `timestamp` に複数の値がある場合、関数はそれらの中で最大の値を選択します。
 
 **例**
 
@@ -52,7 +51,7 @@ FROM
    └──────────────────────────────────────────────┘
 ```
 
-また、タイムスタンプと値の複数のサンプルを、等しいサイズの配列として渡すこともできます。配列引数を使用した同じクエリ:
+複数のタイムスタンプと値のサンプルを、同じ長さの配列として渡すこともできます。配列引数を用いた同じクエリは次のとおりです：
 
 ```sql
 WITH
@@ -62,5 +61,5 @@ SELECT timeSeriesGroupArray(timestamps, values);
 ```
 
 :::note
-この関数は実験的です。 `allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
+この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
 :::

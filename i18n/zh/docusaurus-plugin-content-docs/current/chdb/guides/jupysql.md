@@ -1,27 +1,25 @@
 ---
-'title': 'JupySQL 和 chDB'
-'sidebar_label': 'JupySQL'
-'slug': '/chdb/guides/jupysql'
-'description': '如何为 Bun 安装 chDB'
-'keywords':
-- 'chdb'
-- 'JupySQL'
-'doc_type': 'guide'
+title: 'JupySQL 和 chDB'
+sidebar_label: 'JupySQL'
+slug: /chdb/guides/jupysql
+description: '如何为 Bun 安装 chDB'
+keywords: ['chdb', 'JupySQL']
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) 是一个 Python 库，允许您在 Jupyter notebooks 和 IPython shell 中运行 SQL。
-在本指南中，我们将学习如何使用 chDB 和 JupySQL 查询数据。
+[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) 是一个 Python 库，用于在 Jupyter Notebook 和 IPython shell 中运行 SQL。
+在本指南中，我们将学习如何使用 chDB 和 JupySQL 来查询数据。
 
-<div class='vimeo-container'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="vimeo-container">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
-## 设置 {#setup}
+## 环境准备 {#setup}
 
-让我们首先创建一个虚拟环境：
+首先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
@@ -34,26 +32,26 @@ source .venv/bin/activate
 pip install jupysql ipython jupyterlab
 ```
 
-我们可以在 IPython 中使用 JupySQL，通过运行以下命令启动：
+我们可以在 IPython 中使用 JupySQL，并可通过运行以下命令来启动：
 
 ```bash
 ipython
 ```
 
-或者在 Jupyter Lab 中，运行：
+或者在 JupyterLab 中运行：
 
 ```bash
 jupyter lab
 ```
 
 :::note
-如果您使用 Jupyter Lab，您需要先创建一个笔记本，然后再按照其余指南进行操作。
+如果你使用的是 Jupyter Lab，在继续阅读本指南其余内容之前，需要先创建一个 notebook。
 :::
 
 ## 下载数据集 {#downloading-a-dataset}
 
-我们将使用 [Jeff Sackmann的 tennis_atp](https://github.com/JeffSackmann/tennis_atp) 数据集，其中包含有关选手及其排名的元数据。
-让我们首先下载排名文件：
+我们将使用 [Jeff Sackmann 的 tennis&#95;atp](https://github.com/JeffSackmann/tennis_atp) 其中一个数据集，其中包含关于球员及其排名随时间变化的元数据。
+首先下载排名文件：
 
 ```python
 from urllib.request import urlretrieve
@@ -78,29 +76,29 @@ from chdb import dbapi
 ```
 
 然后我们将创建一个 chDB 连接。
-我们持久化的任何数据将保存到 `atp.chdb` 目录中：
+我们持久化的任何数据都会保存到 `atp.chdb` 目录中：
 
 ```python
 conn = dbapi.connect(path="atp.chdb")
 ```
 
-现在让我们加载 `sql` 魔法并创建与 chDB 的连接：
+现在我们来加载 `sql` 魔法命令，并建立与 chDB 的连接：
 
 ```python
 %load_ext sql
 %sql conn --alias chdb
 ```
 
-接下来，我们将显示显示限制，以便查询的结果不会被截断：
+接下来，我们将提高显示上限，以免查询结果被截断：
 
 ```python
 %config SqlMagic.displaylimit = None
 ```
 
-## 在 CSV 文件中查询数据 {#querying-data-in-csv-files}
+## 在 CSV 文件中查询数据 {#querying-data-in-csv-files}
 
-我们下载了一批以 `atp_rankings` 为前缀的文件。
-让我们使用 `DESCRIBE` 子句了解模式：
+我们已经下载了一批带有 `atp_rankings` 前缀的文件。
+让我们使用 `DESCRIBE` 子句来了解其表结构（schema）：
 
 ```python
 %%sql
@@ -120,7 +118,7 @@ SETTINGS describe_compact_output=1,
 +--------------+-------+
 ```
 
-我们还可以直接对这些文件写一个 `SELECT` 查询，以查看数据的样子：
+我们也可以直接对这些文件执行 `SELECT` 查询，来查看其中的数据：
 
 ```python
 %sql SELECT * FROM file('atp_rankings*.csv') LIMIT 1
@@ -134,8 +132,8 @@ SETTINGS describe_compact_output=1,
 +--------------+------+--------+--------+
 ```
 
-数据的格式有点奇怪。
-让我们清理一下日期，并使用 `REPLACE` 子句返回清理后的 `ranking_date`：
+数据格式有点奇怪。
+我们来整理一下这个日期，并使用 `REPLACE` 子句返回整理后的 `ranking_date`：
 
 ```python
 %%sql
@@ -164,16 +162,16 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-## 将 CSV 文件导入 chDB {#importing-csv-files-into-chdb}
+## 将 CSV 文件导入 chDB {#querying-data-in-csv-files}
 
-现在我们将把这些 CSV 文件中的数据存储到一个表中。
-默认数据库不会将数据持久化到磁盘，因此我们需要先创建另一个数据库：
+现在我们要把这些 CSV 文件中的数据存储到一张表中。
+默认的数据库不会将数据持久化到磁盘，因此我们需要先创建一个新的数据库：
 
 ```python
 %sql CREATE DATABASE atp
 ```
 
-现在我们将创建一个名为 `rankings` 的表，其模式将基于 CSV 文件中数据的结构：
+现在我们要创建一个名为 `rankings` 的表，其表结构将根据 CSV 文件中数据的结构推断而来：
 
 ```python
 %%sql
@@ -187,7 +185,7 @@ FROM file('atp_rankings*.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-让我们快速检查一下表中的数据：
+我们先简单检查一下表中的数据：
 
 ```python
 %sql SELECT * FROM atp.rankings LIMIT 10
@@ -210,10 +208,10 @@ SETTINGS schema_inference_make_columns_nullable=0
 +--------------+------+--------+--------+
 ```
 
-看起来不错——输出与直接查询 CSV 文件时预期的结果相同。
+看起来不错——输出结果如预期，与直接查询 CSV 文件时相同。
 
-我们将对选手的元数据执行相同的过程。
-这次数据全部在一个单一的 CSV 文件中，因此让我们下载那个文件：
+我们接下来要对球员元数据执行相同的流程。
+这次所有数据都在一个单个的 CSV 文件中，所以先下载该文件：
 
 ```python
 _ = urlretrieve(
@@ -222,10 +220,10 @@ _ = urlretrieve(
 )
 ```
 
-然后根据 CSV 文件的内容创建一个名为 `players` 的表。
-我们还将清理 `dob` 字段，使其成为 `Date32` 类型。
+然后基于该 CSV 文件的内容创建一个名为 `players` 的表。
+我们还将对 `dob` 字段进行规范化处理，将其转换为 `Date32` 类型。
 
-> 在 ClickHouse 中，`Date` 类型仅支持1970年以后的日期。由于 `dob` 列包含1970年之前的日期，因此我们将使用 `Date32` 类型。
+> 在 ClickHouse 中，`Date` 类型仅支持从 1970 年开始的日期。由于 `dob` 列包含 1970 年之前的日期，因此我们将改用 `Date32` 类型。
 
 ```python
 %%sql
@@ -243,7 +241,7 @@ FROM file('atp_players.csv')
 SETTINGS schema_inference_make_columns_nullable=0
 ```
 
-一旦运行完成，我们可以查看我们所摄取的数据：
+运行完成后，就可以查看已经摄取的数据：
 
 ```python
 %sql SELECT * FROM atp.players LIMIT 10
@@ -266,13 +264,13 @@ SETTINGS schema_inference_make_columns_nullable=0
 +-----------+------------+-----------+------+------------+-----+--------+-------------+
 ```
 
-## 查询 chDB {#querying-chdb}
+## 查询 chDB {#importing-csv-files-into-chdb}
 
-数据摄取完成，现在是有趣的部分——查询数据！
+数据摄取已经完成，现在进入有趣的部分 —— 查询这些数据！
 
-网球选手根据他们在比赛中的表现获得积分。
-每位选手在 52 周内的积分累计。
-我们将编写一个查询，以找到每位选手的最高积分及其当时的排名：
+网球运动员会根据他们在所参加比赛中的表现获得积分。
+我们掌握了每位球员在一个 52 周滚动周期内的积分情况。
+我们将编写一个查询，用于查找每位球员在该期间累计的最高积分，以及当时对应的排名：
 
 ```python
 %%sql
@@ -304,12 +302,12 @@ LIMIT 10
 +------------+-----------+-----------+------+------------+
 ```
 
-有趣的是，这个列表中的一些选手在积分总数上未能成为第一。
+有趣的是，这个名单中的一些球员累积了大量得分，却从未凭这一得分总数登上第一名。
 
-## 保存查询 {#saving-queries}
+## 保存查询 {#querying-chdb}
 
-我们可以使用 `--save` 参数在与 `%%sql` 魔法相同的行上保存查询。
-`--no-execute` 参数意味着将跳过查询执行。
+我们可以在与 `%%sql` 魔法命令同一行中使用 `--save` 参数来保存查询。
+`--no-execute` 参数表示将跳过查询的执行。
 
 ```python
 %%sql --save best_points --no-execute
@@ -323,8 +321,8 @@ GROUP BY ALL
 ORDER BY maxPoints DESC
 ```
 
-当我们运行保存的查询时，它将在执行之前被转换为公共表表达式 (CTE)。
-在以下查询中，我们计算当选手排名第一时所获得的最高积分：
+当我们运行已保存的查询时，它会在执行前被转换为公共表表达式（Common Table Expression，CTE）。
+在下面的查询中，我们计算玩家在排名为 1 时获得的最高分数：
 
 ```python
 %sql select * FROM best_points WHERE rank=1
@@ -351,17 +349,17 @@ ORDER BY maxPoints DESC
 +-------------+-----------+-----------+------+------------+
 ```
 
-## 使用参数查询 {#querying-with-parameters}
+## 使用参数进行查询 {#saving-queries}
 
 我们也可以在查询中使用参数。
-参数只是普通变量：
+参数其实就是普通变量：
 
 ```python
 rank = 10
 ```
 
-然后我们可以在查询中使用 `{{variable}}` 语法。
-以下查询找到这些选手，他们首次进入前 10 名和最后一次进入前 10 名之间的天数最少：
+然后我们就可以在查询中使用 `{{variable}}` 语法。
+下面的查询会找出这样一些球员：他们第一次进入前 10 名排名到最后一次进入前 10 名排名之间间隔的天数最少：
 
 ```python
 %%sql
@@ -395,13 +393,13 @@ LIMIT 10
 +------------+-----------+---------------+------------------+------+-------+
 ```
 
-## 绘制直方图 {#plotting-histograms}
+## 绘制直方图 {#querying-with-parameters}
 
-JupySQL 也具有有限的图表功能。
+JupySQL 也提供了有限的绘图功能。
 我们可以创建箱线图或直方图。
 
-我们将创建一个直方图，但首先让我们编写 (并保存) 一个查询，该查询计算每位选手在前 100 名中所达到的排名。
-我们将能够利用此查询创建一个直方图，以计算每个排名上有多少选手：
+接下来我们要创建一个直方图，但首先先编写（并保存）一个查询，用来计算每位球员在前 100 名中取得过的各次名次。
+之后我们将使用这个查询来创建一个直方图，用于统计每个名次有多少球员达到：
 
 ```python
 %%sql --save players_per_rank --no-execute
@@ -410,7 +408,7 @@ FROM atp.rankings
 WHERE rank <= 100
 ```
 
-然后我们可以通过运行以下命令创建直方图：
+现在我们可以运行以下命令来创建直方图：
 
 ```python
 from sql.ggplot import ggplot, geom_histogram, aes
@@ -424,4 +422,4 @@ plot = (
 )
 ```
 
-<Image img={PlayersPerRank} size="md" alt="ATP 数据集中选手排名的直方图" />
+<Image img={PlayersPerRank} size="md" alt="ATP 数据集中球员排名直方图" />

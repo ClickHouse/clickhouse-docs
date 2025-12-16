@@ -1,24 +1,23 @@
 ---
-'description': 'ClickHouse 中 Tuple 数据类型的文档'
-'sidebar_label': 'Tuple(T1, T2, ... )'
-'sidebar_position': 34
-'slug': '/sql-reference/data-types/tuple'
-'title': 'Tuple(T1, T2, ... )'
-'doc_type': 'reference'
+description: 'ClickHouse 中 Tuple 数据类型文档'
+sidebar_label: 'Tuple(T1, T2, ...)'
+sidebar_position: 34
+slug: /sql-reference/data-types/tuple
+title: 'Tuple(T1, T2, ...)'
+doc_type: 'reference'
 ---
 
+# Tuple(T1, T2, ...) {#tuplet1-t2}
 
-# Tuple(T1, T2, ...)
+一个由多个元素组成的元组，每个元素都有各自的[类型](/sql-reference/data-types)。元组必须至少包含一个元素。
 
-一个元素的元组，每个元素都有一个单独的 [类型](/sql-reference/data-types)。元组必须至少包含一个元素。
+元组用于对列进行临时分组。在查询中使用 IN 表达式时可以对列进行分组，也可用于指定 lambda 函数的某些形式参数。更多信息请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 章节。
 
-元组用于临时列分组。当在查询中使用 IN 表达式时，可以对列进行分组，并用于指定 lambda 函数的某些形式参数。有关更多信息，请参见 [IN 运算符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 部分。
-
-元组可以是查询的结果。在这种情况下，除了 JSON 的文本格式外，值在括号中以逗号分隔。在 JSON 格式中，元组作为数组输出（在方括号中）。
+元组可以作为查询结果返回。在这种情况下，对于除 JSON 以外的文本格式，值会以逗号分隔并包裹在圆括号中。在 JSON 格式中，元组会以数组形式输出（使用方括号）。
 
 ## 创建元组 {#creating-tuples}
 
-您可以使用一个函数来创建一个元组：
+你可以使用函数创建元组：
 
 ```sql
 tuple(T1, T2, ...)
@@ -36,7 +35,7 @@ SELECT tuple(1, 'a') AS x, toTypeName(x)
 └─────────┴───────────────────────────┘
 ```
 
-元组可以包含一个单独的元素
+一个元组（Tuple）可以只包含一个元素
 
 示例：
 
@@ -50,7 +49,7 @@ SELECT tuple('a') AS x;
 └───────┘
 ```
 
-语法 `(tuple_element1, tuple_element2)` 可用于在不调用 `tuple()` 函数的情况下创建多个元素的元组。
+语法 `(tuple_element1, tuple_element2)` 可用于在不调用 `tuple()` 函数的情况下创建一个包含多个元素的元组。
 
 示例：
 
@@ -66,9 +65,9 @@ SELECT (1, 'a') AS x, (today(), rand(), 'someString') AS y, ('a') AS not_a_tuple
 
 ## 数据类型检测 {#data-type-detection}
 
-在动态创建元组时，ClickHouse 会将元组参数的类型推断为可以容纳提供的参数值的最小类型。如果值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
+在动态创建 tuple 时，ClickHouse 会将 tuple 参数的类型推断为能够容纳给定参数值的最小类型。 如果该值为 [NULL](/operations/settings/formats#input_format_null_as_default)，则推断出的类型为 [Nullable](../../sql-reference/data-types/nullable.md)。
 
-自动数据类型检测的示例：
+自动数据类型检测示例：
 
 ```sql
 SELECT tuple(1, NULL) AS x, toTypeName(x)
@@ -80,9 +79,9 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 └───────────┴─────────────────────────────────┘
 ```
 
-## 引用元组元素 {#referring-to-tuple-elements}
+## 引用 Tuple 元素 {#referring-to-tuple-elements}
 
-可以通过名称或索引引用元组元素：
+Tuple 元素可以通过名称或索引进行引用：
 
 ```sql
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
@@ -106,9 +105,9 @@ SELECT a.2 FROM named_tuples; -- by index
 └────────────────────┘
 ```
 
-## 与元组的比较操作 {#comparison-operations-with-tuple}
+## 使用 Tuple 的比较操作 {#comparison-operations-with-tuple}
 
-两个元组通过顺序比较其从左到右的元素进行比较。如果第一个元组的某个元素大于（小于）第二个元组的相应元素，则第一个元组大于（小于）第二个元组；否则（两个元素相等），比较下一个元素。
+两个 Tuple 的比较是通过从左到右依次比较它们的元素来完成的。若第一个 Tuple 的某个元素大于（小于）第二个 Tuple 中对应的元素，则认为第一个 Tuple 大于（小于）第二个 Tuple；否则（当这两个元素相等时），继续比较下一个元素。
 
 示例：
 
@@ -122,7 +121,7 @@ SELECT (1, 'z') > (1, 'a') c1, (2022, 01, 02) > (2023, 04, 02) c2, (1,2,3) = (3,
 └────┴────┴────┘
 ```
 
-现实世界示例：
+实际案例：
 
 ```sql
 CREATE TABLE test

@@ -1,14 +1,12 @@
 ---
-'description': '系统表与 `system.numbers` 相似，但读取是并行化的，并且数字可以以任意顺序返回。'
-'keywords':
-- 'system table'
-- 'numbers_mt'
-'slug': '/operations/system-tables/numbers_mt'
-'title': 'system.numbers_mt'
-'doc_type': 'reference'
+description: '与 `system.numbers` 类似的系统表，但读取操作是并行的，且返回的数字顺序不固定。'
+keywords: ['system table', 'numbers_mt']
+slug: /operations/system-tables/numbers_mt
+title: 'system.numbers_mt'
+doc_type: 'reference'
 ---
 
-与 [`system.numbers`](../../operations/system-tables/numbers.md) 相同，但读取是并行化的。数字可以按任意顺序返回。
+与 [`system.numbers`](../../operations/system-tables/numbers.md) 相同，但读取操作是并行的。返回的数字可以是任意顺序。
 
 用于测试。
 

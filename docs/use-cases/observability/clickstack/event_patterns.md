@@ -29,7 +29,7 @@ From the top-left **Analysis Mode** selector, choose **Event Patterns** to switc
 
 <Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
 
-This provides an alternative to the default **Results Table** which allows users to scroll through every individual log or trace.
+This provides an alternative to the default **Results Table** which allows you to scroll through every individual log or trace.
 
 ## Recommendations {#recommendations}
 

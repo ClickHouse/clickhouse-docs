@@ -1,31 +1,35 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/golang'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 2
-'description': 'Golang SDK для ClickStack - Стек мониторинга ClickHouse'
-'title': 'Golang'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/golang
+pagination_prev: null
+pagination_next: null
+sidebar_position: 2
+description: 'Golang SDK для ClickStack — ClickHouse Observability Stack'
+title: 'Golang'
+doc_type: 'guide'
+keywords: ['Golang ClickStack SDK', 'интеграция Go с OpenTelemetry', 'наблюдаемость в Golang', 'инструментирование трассировки в Go', 'ClickStack Go SDK']
 ---
-ClickStack использует стандарт OpenTelemetry для сбора телеметрических данных (журналов и трасс). Трассировки автоматически генерируются с помощью автоматической инструментализации, поэтому ручная инструментализация не требуется для получения информации из трассировок.
 
-**Этот Гид Интегрирует:**
+ClickStack использует стандарт OpenTelemetry для сбора телеметрии (логов и
+трейсов). Трейсы автоматически генерируются с помощью автоматического инструментирования, поэтому
+ручное инструментирование не требуется, чтобы извлекать пользу из трассировки.
+
+**Это руководство охватывает интеграцию:**
 
 <table>
   <tbody>
     <tr>
-      <td className="pe-2">✅ Журналы</td>
+      <td className="pe-2">✅ Логи</td>
       <td className="pe-2">✅ Метрики</td>
-      <td className="pe-2">✅ Трассировки</td>
+      <td className="pe-2">✅ Трейсы</td>
     </tr>
   </tbody>
 </table>
 
-## Начало работы {#getting-started}
+## Первые шаги {#getting-started}
 
-### Установите пакеты инструментализации OpenTelemetry {#install-opentelemetry}
+### Установите пакеты инструментации OpenTelemetry {#install-opentelemetry}
 
-Чтобы установить пакеты OpenTelemetry и HyperDX для Go, используйте команду ниже. Рекомендуется ознакомиться с [текущими пакетами инструментализации](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) и установить необходимые пакеты, чтобы убедиться, что информация о трассировке прикреплена правильно.
+Чтобы установить пакеты OpenTelemetry и HyperDX для Go, используйте следующую команду. Рекомендуется ознакомиться с [актуальными пакетами инструментации](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages) и установить необходимые пакеты, чтобы обеспечить корректную привязку информации о трассировках.
 
 ```shell
 go get -u go.opentelemetry.io/otel
@@ -34,15 +38,15 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-### Пример нативного HTTP сервера (net/http) {#native-http-server-example}
+### Пример HTTP-сервера на базе стандартной библиотеки (net/http) {#native-http-server-example}
 
-В этом примере мы будем использовать `net/http/otelhttp`.
+В этом примере используется `net/http/otelhttp`.
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
-Обратитесь к комментируемым разделам, чтобы узнать, как инструментировать ваше приложение на Go.
+См. закомментированные фрагменты, чтобы узнать, как инструментировать ваше Go-приложение.
 
 ```go
 
@@ -142,15 +146,15 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-### Пример приложения Gin {#gin-application-example}
+### Пример приложения на Gin {#gin-application-example}
 
-В этом примере мы будем использовать `gin-gonic/gin`.
+В этом примере используется `gin-gonic/gin`.
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ```
 
-Обратитесь к комментируемым разделам, чтобы узнать, как инструментировать ваше приложение на Go.
+Обратитесь к разделам с комментариями, чтобы узнать, как инструментировать Go‑приложение.
 
 ```go
 
@@ -228,7 +232,7 @@ func main() {
 
 ### Настройка переменных окружения {#configure-environment-variables}
 
-После этого вам нужно будет настроить следующие переменные окружения в вашем терминале для отправки телеметрии в ClickStack:
+Далее необходимо задать в оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
@@ -237,4 +241,4 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит API-ключ, доступный через приложение HyperDX в `Настройки команды → API-ключи`.
+Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` должна содержать API-ключ, который можно получить в приложении HyperDX в разделе `Team Settings → API Keys`.

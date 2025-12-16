@@ -1,36 +1,33 @@
 ---
-'slug': '/migrations/postgresql/rewriting-queries'
-'title': 'PostgreSQL クエリの再構築'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'rewriting queries'
-'description': 'PostgreSQL から ClickHouse への移行に関するガイドのパート 2'
-'sidebar_label': 'パート 2'
-'doc_type': 'guide'
+slug: /migrations/postgresql/rewriting-queries
+title: 'PostgreSQLクエリの書き換え'
+keywords: ['postgres', 'postgresql', 'rewriting queries']
+description: 'PostgreSQLからClickHouseへの移行ガイドのパート2'
+sidebar_label: 'パート2'
+doc_type: 'guide'
 ---
 
-> これは、PostgreSQL から ClickHouse への移行に関するガイドの **パート 2** です。実用的な例を用いて、リアルタイムレプリケーション (CDC) アプローチを使って効率的に移行を実行する方法を示します。取り上げる多くの概念は、PostgreSQL から ClickHouse への手動バルクデータ転送にも適用可能です。
+> これはPostgreSQLからClickHouseへの移行ガイドの**パート2**です。実践的な例を使用して、リアルタイムレプリケーション（CDC）アプローチで効率的に移行を行う方法を示します。ここで説明する概念の多くは、PostgreSQLからClickHouseへの手動による一括データ転送にも適用できます。
 
-PostgreSQL のセットアップからのほとんどの SQL クエリは、変更なしで ClickHouse でも実行され、実行速度も速くなるでしょう。
+PostgreSQLセットアップからのほとんどのSQLクエリは、変更なしでClickHouseで実行でき、おそらくより高速に実行されます。
 
-## CDC を利用した重複排除 {#deduplication-cdc}
+## CDCを使用した重複排除 {#deduplication-cdc}
 
-リアルタイムレプリケーションを CDC で使用する場合、更新および削除が重複行を引き起こす可能性があることを考慮してください。これを管理するために、Views や Refreshable Materialized Views を利用する技術を使用できます。
+CDCによるリアルタイムレプリケーションを使用する場合、更新と削除により重複行が発生する可能性があることに注意してください。これを管理するには、ビューとリフレッシュ可能なマテリアライズドビューを使用するテクニックを使用できます。
 
-この [ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) を参照して、CDC を使用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へのアプリケーション移行を最小限の摩擦で行う方法を学んでください。
+CDCによるリアルタイムレプリケーションを使用して移行する際に、PostgreSQLからClickHouseへのアプリケーション移行を最小限の摩擦で行う方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
 
-## ClickHouse でのクエリ最適化 {#optimize-queries-in-clickhouse}
+## ClickHouseでのクエリ最適化 {#optimize-queries-in-clickhouse}
 
-最小限のクエリの書き直しで移行することは可能ですが、ClickHouse の機能を活用してクエリを大幅に簡素化し、クエリパフォーマンスをさらに向上させることをお勧めします。
+最小限のクエリ書き換えで移行することは可能ですが、ClickHouseの機能を活用してクエリを大幅に簡素化し、クエリパフォーマンスをさらに向上させることを推奨します。
 
-ここでの例は、一般的なクエリパターンをカバーし、ClickHouse を使用してそれらを最適化する方法を示します。これらは、PostgreSQL および ClickHouse における同等のリソース (8 コア、32GiB RAM) に基づく、全 [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow) (2024 年 4 月まで) を使用しています。
+ここでの例では、一般的なクエリパターンを取り上げ、ClickHouseでそれらを最適化する方法を示します。PostgreSQLとClickHouseの同等のリソース（8コア、32GiB RAM）で、完全な[Stack Overflowデータセット](/getting-started/example-datasets/stackoverflow)（2024年4月まで）を使用しています。
 
-> 単純さのために、以下のクエリはデータの重複排除手法の使用を省略しています。 
+> 簡素化のため、以下のクエリではデータの重複排除テクニックの使用を省略しています。
 
-> ここでのカウントはわずかに異なる場合があります。Postgres データには、外部キーの参照整合性を満たす行のみが含まれています。ClickHouse にはそのような制約がなく、したがって完全なデータセットが存在します。例として匿名ユーザーを含みます。
+> ここでのカウントはわずかに異なります。Postgresデータには外部キーの参照整合性を満たす行のみが含まれているためです。ClickHouseはそのような制約を課さないため、完全なデータセット（匿名ユーザーを含む）を持っています。
 
-質問数が 10 件を超えるユーザーで最もビューを受け取ったユーザー:
+最も多くのビューを獲得したユーザー（質問が10件を超えるもの）：
 
 ```sql
 -- ClickHouse
@@ -75,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-最も多くのビューを受け取る `tags`:
+最も多くの`views`を獲得した`tags`：
 
 ```sql
 --ClickHouse
@@ -131,9 +128,9 @@ LIMIT 5;
 Time: 112508.083 ms (01:52.508)
 ```
 
-**集約関数**
+**集計関数**
 
-可能な限り、ユーザーは ClickHouse 集約関数を活用すべきです。以下では、[argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用して、各年で最も閲覧された質問を計算する方法を示します。
+可能な限り、ClickHouseの集計関数を活用してください。以下では、各年で最も閲覧された質問を計算するための[argMax](/sql-reference/aggregate-functions/reference/argmax)関数の使用を示します。
 
 ```sql
 --ClickHouse
@@ -175,7 +172,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-これは、同等の Postgres クエリよりも大幅に簡単 (かつ高速) です:
+これは同等のPostgresクエリよりも大幅にシンプル（かつ高速）です：
 
 ```sql
 --Postgres
@@ -209,9 +206,9 @@ ORDER BY Year;
 Time: 125822.015 ms (02:05.822)
 ```
 
-**条件分岐と配列**
+**条件式と配列**
 
-条件と配列関数は、クエリを大幅に簡素化します。以下のクエリは、2022 年から 2023 年にかけての割合の増加が最も大きい (10000 回以上の出現) タグを計算します。条件分岐、配列関数、HAVING および SELECT 句でのエイリアスの再利用機能のおかげで、以下の ClickHouse クエリが簡潔であることに注意してください。
+条件関数と配列関数により、クエリが大幅にシンプルになります。以下のクエリは、2022年から2023年にかけて最大の増加率を示したタグ（出現回数が10000回を超えるもの）を計算します。以下のClickHouseクエリが、条件式、配列関数、およびHAVINGとSELECT句でエイリアスを再利用できる機能により、いかに簡潔であるかに注目してください。
 
 ```sql
 --ClickHouse
@@ -274,4 +271,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[パート 3はこちら](/migrations/postgresql/data-modeling-techniques)
+[パート3はこちらをクリック](/migrations/postgresql/data-modeling-techniques)

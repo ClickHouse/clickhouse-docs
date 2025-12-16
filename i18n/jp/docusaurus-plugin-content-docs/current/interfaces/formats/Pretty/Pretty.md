@@ -1,30 +1,33 @@
 ---
-'alias': []
-'description': 'PrettyフォーマットのDocumentation'
-'input_format': false
-'keywords':
-- 'Pretty'
-'output_format': true
-'slug': '/interfaces/formats/Pretty'
-'title': 'Pretty'
-'doc_type': 'reference'
+alias: []
+description: 'Pretty 形式に関するドキュメント'
+input_format: false
+keywords: ['Pretty']
+output_format: true
+slug: /interfaces/formats/Pretty
+title: 'Pretty'
+doc_type: 'リファレンス'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| 入力 | 出力 | エイリアス |
+| -- | -- | ----- |
+| ✗  | ✔  |       |
 
 ## 説明 {#description}
 
-`Pretty` フォーマットは、データをユニコードアートテーブルとして出力し、端末で色を表示するためにANSIエスケープシーケンスを使用します。テーブルの完全なグリッドが描画され、各行は端末で2行を占めます。各結果ブロックは、別々のテーブルとして出力されます。これは、バッファリングなしでブロックを出力できるようにするために必要です（すべての値の表示幅を事前に計算するためにはバッファリングが必要になります）。
+`Pretty` フォーマットは、Unicode アートによるテーブルとしてデータを出力し、
+ターミナルで色を表示するために ANSI エスケープシーケンスを使用します。
+テーブルは完全なグリッドとして描画され、各行はターミナル上で 2 行分を占有します。
+各結果ブロックは個別のテーブルとして出力されます。
+これは、結果をバッファリングせずにブロックを出力できるようにするためです（すべての値の見た目上の幅を事前計算するにはバッファリングが必要になります）。
 
 [NULL](/sql-reference/syntax.md) は `ᴺᵁᴸᴸ` として出力されます。
 
 ## 使用例 {#example-usage}
 
-例（[`PrettyCompact`](./PrettyCompact.md) フォーマットのために表示）：
+例（[`PrettyCompact`](./PrettyCompact.md) 形式の場合）：
 
 ```sql title="Query"
 SELECT * FROM t_null
@@ -36,7 +39,7 @@ SELECT * FROM t_null
 └───┴──────┘
 ```
 
-行は `Pretty` フォーマットのいずれにおいてもエスケープされません。以下の例は、[`PrettyCompact`](./PrettyCompact.md) フォーマットのために示されています：
+`Pretty` 系のいずれのフォーマットでも、行はエスケープされません。次の例は、[`PrettyCompact`](./PrettyCompact.md) フォーマットの場合を示しています。
 
 ```sql title="Query"
 SELECT 'String with \'quotes\' and \t character' AS Escaping_test
@@ -48,13 +51,16 @@ SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 └──────────────────────────────────────┘
 ```
 
-端末にデータをdumpしすぎないように、最初の `10,000` 行のみが印刷されます。行の数が `10,000` 以上の場合、「最初の 10 000 を表示しました」というメッセージが印刷されます。
+ターミナルへの過剰なデータ出力を避けるため、最初の `10,000` 行のみが表示されます。
+行数が `10,000` 以上の場合は、メッセージ &quot;Showed first 10 000&quot; が出力されます。
 
 :::note
-このフォーマットは、クエリ結果を出力するためには適切ですが、データを解析するためには適していません。
+このフォーマットはクエリ結果を出力する用途にのみ適しており、データのパースには適していません。
 :::
 
-Prettyフォーマットは、合計値（`WITH TOTALS` を使用する場合）やエクストリーム（'extremes' が 1 に設定されている場合）を出力することをサポートしています。この場合、合計値とエクストリーム値は、メインデータの後に別々のテーブルとして出力されます。以下の例は、[`PrettyCompact`](./PrettyCompact.md) フォーマットを使用しています：
+Pretty フォーマットは、合計値（`WITH TOTALS` を使用する場合）および極値（&#39;extremes&#39; が 1 に設定されている場合）の出力をサポートします。
+この場合、合計値と極値はメインデータの後に、別々のテーブルとして出力されます。
+これは、[`PrettyCompact`](./PrettyCompact.md) フォーマットを使用した次の例で示されています。
 
 ```sql title="Query"
 SELECT EventDate, count() AS c 
@@ -88,6 +94,6 @@ Extremes:
 └────────────┴─────────┘
 ```
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}
 
 <PrettyFormatSettings/>

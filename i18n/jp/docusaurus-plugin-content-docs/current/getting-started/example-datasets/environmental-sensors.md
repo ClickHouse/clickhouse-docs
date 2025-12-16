@@ -1,22 +1,23 @@
 ---
-'description': 'Sensor.Communityからの200億を超えるデータレコード。参加者主導のグローバルセンサーネットワークが作成したオープンな環境データ。'
-'sidebar_label': '環境センサーのデータ'
-'slug': '/getting-started/example-datasets/environmental-sensors'
-'title': '環境センサーのデータ'
-'doc_type': 'reference'
+description: 'Sensor.Community の貢献者主導によるグローバルセンサーネットワークが生成した、200 億件超のデータレコードを含むオープンな環境データ。'
+sidebar_label: '環境センサーデータ'
+slug: /getting-started/example-datasets/environmental-sensors
+title: '環境センサーデータ'
+doc_type: 'guide'
+keywords: ['環境センサー', 'Sensor.Community', '大気質データ', '環境データ', 'はじめに']
 ---
 
 import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
-[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを作成する寄稿者主導のグローバルセンサーネットワークです。データは、世界中のセンサーから収集されます。誰でもセンサーを購入し、好きな場所に設置することができます。データをダウンロードするためのAPIは[GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)にあり、データは[Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/)の下で自由に利用可能です。
+[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを生成する、コントリビューター主導のグローバルなセンサーネットワークです。データは世界中のセンサーから収集されています。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするための API は [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) に公開されており、データは [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) に基づいて自由に利用できます。
 
 :::important
-データセットには200億件以上のレコードがあるため、リソースがそのボリュームに対応できる場合を除いて、以下のコマンドをコピーして貼り付ける際は注意が必要です。以下のコマンドは、**Production** インスタンスの[ClickHouse Cloud](https://clickhouse.cloud)で実行されました。
+このデータセットには 200 億件を超えるレコードがあるため、下記のコマンドをそのままコピー&amp;ペーストする場合は、この規模のデータ量を処理できるリソースがあることを確認してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されました。
 :::
 
-1. データはS3にあるので、`s3` テーブル関数を使用してファイルからテーブルを作成できます。また、データをその場でクエリすることもできます。ClickHouseに挿入する前に、いくつかの行を見てみましょう：
+1. データは S3 にあるため、`s3` テーブル関数を使用してファイルからテーブルを作成できます。また、データをその場でクエリすることも可能です。ClickHouse への挿入を行う前に、いくつかのレコードを確認してみましょう。
 
 ```sql
 SELECT *
@@ -28,7 +29,8 @@ LIMIT 10
 SETTINGS format_csv_delimiter = ';';
 ```
 
-データはCSVファイルですが、区切り文字にはセミコロンが使用されています。行は以下のようになります：
+データは CSV ファイルですが、区切り文字にはセミコロンが使われています。行は次のような形式です：
+
 
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
@@ -45,7 +47,8 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. ClickHouseにデータを保存するために、以下の`MergeTree`テーブルを使用します：
+2. ClickHouse にデータを保存するために、次の `MergeTree` テーブルを使用します。
+
 
 ```sql
 CREATE TABLE sensors
@@ -74,9 +77,9 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloudサービスには`default`という名前のクラスターがあります。クラスター内のノードからS3ファイルを並行して読み取る`s3Cluster`テーブル関数を使用します。（クラスターがない場合は、`s3`関数を使用してクラスター名を削除してください。）
+3. ClickHouse Cloud のサービスには `default` という名前のクラスタがあり、クラスタ内のノードから並列に S3 ファイルを読み取る `s3Cluster` テーブル関数を使用します。（クラスタがない場合は、`s3` 関数のみを使用し、クラスタ名の指定は行わないでください。）
 
-このクエリはしばらく時間がかかります - 圧縮されていないデータは約1.67Tです：
+このクエリの実行にはしばらく時間がかかります。非圧縮のデータ量は約 1.67T あります。
 
 ```sql
 INSERT INTO sensors
@@ -114,13 +117,13 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-ここに応答があります - 行数と処理速度を示しています。毎秒6M行以上の入力速度で処理されています！
+こちらがレスポンスで、行数と処理速度が表示されています。1 秒あたり 600 万行以上のレートでデータが取り込まれています！
 
 ```response
 0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
-4. `sensors`テーブルに必要なストレージディスクの量を見てみましょう：
+4. `sensors` テーブルに必要なストレージ容量を確認します。
 
 ```sql
 SELECT
@@ -137,7 +140,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67Tは圧縮されて310 GiBに減少し、20.69億行があります：
+1.67T のデータは圧縮されて 310 GiB となり、総行数は 206.9 億行です。
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -145,7 +148,7 @@ ORDER BY size DESC;
 └───────────┴────────────┴──────────────┴────────────┴─────────────┴────────────┘
 ```
 
-5. ClickHouseにデータが入ったので、分析してみましょう。センサーが展開されるにつれてデータの量が時間と共に増加することに注意してください：
+5. データが ClickHouse に取り込まれたので、これから分析してみましょう。センサーの設置数が増えるにつれて、時間の経過とともにデータ量が増加していることに注目してください。
 
 ```sql
 SELECT
@@ -156,11 +159,11 @@ GROUP BY date
 ORDER BY date ASC;
 ```
 
-SQLコンソールで結果を視覚化するためのチャートを作成できます：
+SQL コンソールでチャートを作成して、結果を可視化できます。
 
-<Image img={no_events_per_day} size="md" alt="毎日のイベント数"/>
+<Image img={no_events_per_day} size="md" alt="Number of events per day" />
 
-6. このクエリは、過度に暑く湿度の高い日の数をカウントします：
+6. このクエリは、非常に暑く蒸し暑い日の数を集計します。
 
 ```sql
 WITH
@@ -171,6 +174,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-結果の視覚化は以下の通りです：
+結果の可視化は次のとおりです。
 
-<Image img={sensors_02} size="md" alt="暑く湿度の高い日"/>
+
+<Image img={sensors_02} size="md" alt="暑くて蒸し暑い日"/>

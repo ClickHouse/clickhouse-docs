@@ -1,48 +1,47 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/pydantic-ai'
-'sidebar_label': 'Сборка PydanticAI'
-'title': 'Как создать один из применений ClickHouse MCP сервера PydanticAI драйвера.'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать одну из возможностей взаимодействия с ClickHouse
-  MCP сервером PydanticAI драйвера.'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'PydanticAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
+sidebar_label: 'Интеграция PydanticAI'
+title: 'Как создать агента PydanticAI с помощью ClickHouse MCP Server.'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать агента PydanticAI, который может взаимодействовать с ClickHouse MCP Server.'
+keywords: ['ClickHouse', 'MCP', 'PydanticAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Как создать агента PydanticAI с использованием сервера ClickHouse MCP
 
-В этом руководстве вы узнаете, как создать агента [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1), который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [сервера MCP ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
+# Как создать агента PydanticAI с использованием сервера ClickHouse MCP {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
-:::note Пример блокнота
-Этот пример можно найти в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
+В этом руководстве вы узнаете, как создать агента [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1),
+который может взаимодействовать с [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
+
+:::note Пример ноутбука
+Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb).
 :::
 
 ## Предварительные требования {#prerequisites}
-- Вам нужно установить Python на ваш компьютер.
-- Вам нужно установить `pip` на ваш компьютер.
-- Вам нужен ключ API Anthropic или ключ API от другого провайдера LLM.
 
-Вы можете выполнить следующие шаги как в вашем Python REPL, так и через скрипт.
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ Anthropic или API-ключ от другого провайдера LLM.
+
+Следующие шаги можно выполнить либо из Python REPL, либо через скрипт.
 
 <VerticalStepper headerLevel="h2">
 
-## Установите библиотеки {#install-libraries}
+## Установка библиотек {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q "pydantic-ai-slim[mcp]"
-!pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
+pip install -q --upgrade pip
+pip install -q "pydantic-ai-slim[mcp]"
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
 
 ## Настройка учетных данных {#setup-credentials}
 
-Далее вам нужно предоставить ваш ключ API Anthropic:
+Далее необходимо указать ключ API Anthropic:
 
 ```python
 import os, getpass
@@ -54,10 +53,11 @@ Enter Anthropic API Key: ········
 ```
 
 :::note Использование другого провайдера LLM
-Если у вас нет ключа API Anthropic и вы хотите использовать другого провайдера LLM, вы можете найти инструкции по настройке ваших учетных данных в [документации PydanticAI](https://ai.pydantic.dev/models/).
+Если у вас нет ключа API Anthropic и вы хотите использовать другого провайдера LLM,
+вы можете найти инструкции по настройке учетных данных в [документации PydanticAI](https://ai.pydantic.dev/models/)
 :::
 
-Затем определите учетные данные, необходимые для подключения к SQL-песочнице ClickHouse:
+Затем определите учетные данные, необходимые для подключения к демо-среде ClickHouse SQL playground:
 
 ```python
 env = {
@@ -69,9 +69,9 @@ env = {
 }
 ```
 
-## Инициализация сервера MCP и агента PydanticAI {#initialize-mcp}
+## Инициализация MCP Server и агента PydanticAI {#initialize-mcp}
 
-Теперь настройте сервер ClickHouse MCP, чтобы указать на SQL-песочницу ClickHouse:
+Теперь настройте ClickHouse MCP Server так, чтобы он использовал песочницу ClickHouse SQL:
 
 ```python
 from pydantic_ai import Agent
@@ -93,7 +93,7 @@ agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 
 ## Задайте вопрос агенту {#ask-agent}
 
-Наконец, вы можете задать агенту вопрос:
+Наконец, вы можете задать вопрос агенту:
 
 ```python
 async with agent.run_mcp_servers():
@@ -101,7 +101,7 @@ async with agent.run_mcp_servers():
     print(result.output)
 ```
 
-Вы получите ответ, похожий на следующий:
+Вы получите ответ, аналогичный приведенному ниже:
 
 ```response title="Response"
 Based on the data from the ClickHouse GitHub repository, here are the top contributors by number of pull requests created:

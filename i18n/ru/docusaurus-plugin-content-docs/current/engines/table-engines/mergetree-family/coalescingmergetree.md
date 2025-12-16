@@ -1,27 +1,25 @@
 ---
-'description': 'CoalescingMergeTree наследуется от движка MergeTree. Его ключевая
-  особенность заключается в способности автоматически хранить последнее ненулевое
-  значение каждой колонки во время слияния частей.'
-'sidebar_label': 'CoalescingMergeTree'
-'sidebar_position': 50
-'slug': '/engines/table-engines/mergetree-family/coalescingmergetree'
-'title': 'CoalescingMergeTree'
-'keywords':
-- 'CoalescingMergeTree'
-'show_related_blogs': true
-'doc_type': 'reference'
+description: 'CoalescingMergeTree наследует от движка MergeTree. Его ключевая особенность — возможность автоматически сохранять последнее ненулевое значение каждого столбца при слиянии частей.'
+sidebar_label: 'CoalescingMergeTree'
+sidebar_position: 50
+slug: /engines/table-engines/mergetree-family/coalescingmergetree
+title: 'Движок таблицы CoalescingMergeTree'
+keywords: ['CoalescingMergeTree']
+show_related_blogs: true
+doc_type: 'reference'
 ---
-# CoalescingMergeTree
 
-:::note Доступно с версии 25.6
-Этот движок таблиц доступен с версии 25.6 и выше как в OSS, так и в Cloud.
+# Движок таблицы CoalescingMergeTree {#coalescingmergetree-table-engine}
+
+:::note Доступно начиная с версии 25.6
+Этот движок таблицы доступен начиная с версии 25.6 как в OSS, так и в Cloud.
 :::
 
-Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/mergetree). Ключевое отличие заключается в том, как сливаются части данных: для таблиц `CoalescingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, скорее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) на одну строку, содержащую последние ненулевые значения для каждого столбца.
+Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/mergetree). Ключевое отличие заключается в том, как сливаются части данных: для таблиц `CoalescingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой, содержащей последние значения, отличные от NULL, для каждого столбца.
 
-Это позволяет выполнять обновления на уровне столбцов, что означает, что вы можете обновлять только определенные столбцы, а не целые строки.
+Это позволяет выполнять upsert-операции на уровне отдельных столбцов, то есть вы можете обновлять только отдельные столбцы, а не целые строки.
 
-`CoalescingMergeTree` предназначен для использования с Nullable типами в неключевых столбцах. Если столбцы не являются Nullable, поведение будет таким же, как у [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
+`CoalescingMergeTree` предназначен для использования с типами Nullable в неклю́чевых столбцах. Если столбцы не являются Nullable, поведение такое же, как у [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree).
 
 ## Создание таблицы {#creating-a-table}
 
@@ -38,30 +36,29 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-Для описания параметров запроса см. [описание запроса](../../../sql-reference/statements/create/table.md).
+Описание параметров запроса см. в разделе [описание запроса](../../../sql-reference/statements/create/table.md).
 
-### Параметры CoalescingMergeTree {#parameters-of-coalescingmergetree}
+### Параметры движка CoalescingMergeTree {#parameters-of-coalescingmergetree}
 
 #### Столбцы {#columns}
 
-`columns` - кортеж с именами столбцов, значения которых будут объединены. Необязательный параметр.
-    Столбцы должны быть числового типа и не должны входить в ключ партиционирования или сортировки.
+`columns` — кортеж имен столбцов, значения в которых будут объединены. Необязательный параметр.
+Столбцы должны иметь числовой тип и не должны входить в ключ партиционирования или сортировки.
 
-Если `columns` не указан, ClickHouse объединяет значения во всех столбцах, которые не находятся в ключе сортировки.
+Если `columns` не указан, ClickHouse объединяет значения во всех столбцах, которые не входят в ключ сортировки.
 
-### Операторные части запроса {#query-clauses}
+### Части запроса {#query-clauses}
 
-При создании таблицы `CoalescingMergeTree` требуются те же [операторные части](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
+При создании таблицы `CoalescingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
+  <summary>Устаревший метод создания таблицы</summary>
 
-<summary>Устаревший метод создания таблицы</summary>
+  :::note
+  Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
+  :::
 
-:::note
-Не используйте этот метод в новых проектах и, если возможно, переключите старые проекты на описанный выше метод.
-:::
-
-```sql
+  ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -70,10 +67,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] CoalescingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
-Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
+  Все параметры, за исключением `columns`, имеют то же значение, что и в `MergeTree`.
 
-- `columns` — кортеж с именами столбцов, значения которых будут суммироваться. Необязательный параметр. Для описания см. текст выше.
-
+  * `columns` — кортеж имен столбцов, значения которых будут суммироваться. Необязательный параметр. Описание см. в тексте выше.
 </details>
 
 ## Пример использования {#usage-example}
@@ -92,7 +88,7 @@ ENGINE = CoalescingMergeTree()
 ORDER BY key
 ```
 
-Вставим в нее данные:
+Добавьте в неё данные:
 
 ```sql
 INSERT INTO test_table VALUES(1, NULL, NULL, '2025-01-01'), (2, 10, 'test', NULL);
@@ -115,7 +111,7 @@ SELECT * FROM test_table ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-Рекомендуемый запрос для получения правильного и окончательного результата:
+Рекомендуемый запрос для получения корректного итогового результата:
 
 ```sql
 SELECT * FROM test_table FINAL ORDER BY key;
@@ -128,11 +124,11 @@ SELECT * FROM test_table FINAL ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-Использование модификатора `FINAL` заставляет ClickHouse применять логику слияния во время выполнения запроса, гарантируя, что вы получите правильное, объединенное "последнее" значение для каждого столбца. Это самый безопасный и точный метод при запросах из таблицы CoalescingMergeTree.
+Использование модификатора `FINAL` указывает ClickHouse применять логику слияния на этапе выполнения запроса, гарантируя получение корректного, объединённого «последнего» значения для каждого столбца. Это самый безопасный и точный метод при выполнении запросов к таблице CoalescingMergeTree.
 
 :::note
 
-Подход с `GROUP BY` может возвращать некорректные результаты, если основные части еще не были полностью объединены.
+Подход с использованием `GROUP BY` может возвращать некорректные результаты, если части данных в таблице ещё не были полностью слиты.
 
 ```sql
 SELECT key, last_value(value_int), last_value(value_string), last_value(value_date)  FROM test_table GROUP BY key; -- Not recommended.

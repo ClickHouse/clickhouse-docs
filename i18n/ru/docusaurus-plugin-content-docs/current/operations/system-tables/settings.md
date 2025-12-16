@@ -1,36 +1,39 @@
 ---
-slug: '/operations/system-tables/settings'
-description: 'Системная таблица, содержащая информацию о настройках сессии для текущего'
-title: system.settings
+description: 'Системная таблица, содержащая информацию о настройках сеанса для текущего пользователя.'
 keywords: ['системная таблица', 'настройки']
-doc_type: reference
+slug: /operations/system-tables/settings
+title: 'system.settings'
+doc_type: 'reference'
 ---
-# system.settings
+
+# system.settings {#systemsettings}
 
 Содержит информацию о настройках сессии для текущего пользователя.
 
 Столбцы:
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — Название настройки.
-- `value` ([String](../../sql-reference/data-types/string.md)) — Значение настройки.
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, была ли настройка явно определена в конфигурации или явно изменена.
-- `description` ([String](../../sql-reference/data-types/string.md)) — Краткое описание настройки.
-- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки, если оно установлено через [constraints](/operations/settings/constraints-on-settings). Если у настройки нет минимального значения, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
-- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки, если оно установлено через [constraints](/operations/settings/constraints-on-settings). Если у настройки нет максимального значения, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
-- `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, может ли текущий пользователь изменить настройку:
-  - `0` — Текущий пользователь может изменить настройку.
-  - `1` — Текущий пользователь не может изменить настройку.
-- `default` ([String](../../sql-reference/data-types/string.md)) — Значение по умолчанию для настройки.
-- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - Показывает, является ли настройка устаревшей.
-- `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — Уровень поддержки для этой функции. Функции ClickHouse организованы по уровням, которые варьируются в зависимости от текущего состояния их разработки и ожиданий, которые могут возникнуть при их использовании. Значения:
-  - `'Production'` — Функция стабильна, безопасна для использования и не имеет проблем взаимодействия с другими **производственными** функциями.
-  - `'Beta'` — Функция стабильна и безопасна. Результат ее совместного использования с другими функциями неизвестен, и корректность не гарантируется. Тестирование и отчеты приветствуются.
-  - `'Experimental'` — Функция находится в разработке. Предназначена только для разработчиков и энтузиастов ClickHouse. Функция может работать или не работать и может быть удалена в любой момент.
-  - `'Obsolete'` — Больше не поддерживается. Либо она уже удалена, либо будет удалена в будущих релизах.
+* `name` ([String](../../sql-reference/data-types/string.md)) — Имя настройки.
+* `value` ([String](../../sql-reference/data-types/string.md)) — Значение настройки.
+* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, была ли настройка явно задана в конфигурации или явно изменена.
+* `description` ([String](../../sql-reference/data-types/string.md)) — Краткое описание настройки.
+* `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Минимальное значение настройки, если оно задано через [constraints](/operations/settings/constraints-on-settings). Если для настройки не задано минимальное значение, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
+* `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — Максимальное значение настройки, если оно задано через [constraints](/operations/settings/constraints-on-settings). Если для настройки не задано максимальное значение, содержит [NULL](/operations/settings/formats#input_format_null_as_default).
+* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — Список недопустимых значений.
+* `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, может ли текущий пользователь изменять настройку:
+  * `0` — Текущий пользователь может изменить настройку.
+  * `1` — Текущий пользователь не может изменить настройку.
+* `default` ([String](../../sql-reference/data-types/string.md)) — Значение настройки по умолчанию.
+* `alias_for` ([String](../../sql-reference/data-types/string.md)) — Имя исходной настройки, если данная настройка является псевдонимом другой настройки.
+* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, является ли настройка устаревшей.
+* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — Уровень поддержки этой возможности. Возможности ClickHouse организованы по уровням, которые различаются в зависимости от текущего статуса их разработки и ожидаемого поведения при их использовании. Значения:
+  * `'Production'` — Функция стабильна, безопасна в использовании и не имеет проблем во взаимодействии с другими **production**‑функциями.
+  * `'Beta'` — Функция стабильна и безопасна. Результат её совместного использования с другими функциями неизвестен и корректность не гарантируется. Тестирование и отчёты приветствуются.
+  * `'Experimental'` — Функция находится в разработке. Предназначена только для разработчиков и энтузиастов ClickHouse. Функция может как работать, так и не работать и может быть удалена в любой момент.
+  * `'Obsolete'` — Больше не поддерживается. Либо уже удалена, либо будет удалена в будущих релизах.
 
 **Пример**
 
-Следующий пример показывает, как получить информацию о настройках, название которых содержит `min_i`.
+В следующем примере показано, как получить информацию о настройках, имя которых содержит `min_i`.
 
 ```sql
 SELECT *
@@ -129,20 +132,16 @@ is_obsolete: 0
 tier:        Production
 ```
 
-Использование `WHERE changed` может быть полезным, например, когда вы хотите проверить:
+Использование `WHERE changed` может быть полезно, например, для проверки:
 
-- Загружены ли настройки из файлов конфигурации правильно и используются ли они.
-- Настройки, которые изменились в текущей сессии.
+- Корректно ли загружены настройки из конфигурационных файлов и применяются ли они.
+- Настроек, которые изменились в текущей сессии.
 
 <!-- -->
 
-```sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-```
-
 **См. также**
 
-- [Настройки](/operations/system-tables/overview#system-tables-introduction)
-- [Разрешения для запросов](/operations/settings/permissions-for-queries)
-- [Ограничения на настройки](../../operations/settings/constraints-on-settings.md)
-- Команда [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings)
+* [Настройки](/operations/system-tables/overview#system-tables-introduction)
+* [Права на выполнение запросов](/operations/settings/permissions-for-queries)
+* [Ограничения для настроек](../../operations/settings/constraints-on-settings.md)
+* Оператор [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings)

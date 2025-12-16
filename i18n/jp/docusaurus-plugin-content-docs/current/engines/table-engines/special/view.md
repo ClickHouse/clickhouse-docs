@@ -1,13 +1,12 @@
 ---
-'description': 'ビューを実装するために使用されます（詳細については、`CREATE VIEW クエリ`を参照してください）。データを保存するのではなく、指定された`SELECT`クエリのみを保存します。テーブルから読み込むときに、このクエリを実行し（クエリからすべての不要なカラムを削除します）、します。'
-'sidebar_label': 'ビュー'
-'sidebar_position': 90
-'slug': '/engines/table-engines/special/view'
-'title': 'ビュー テーブル エンジン'
-'doc_type': 'reference'
+description: 'ビューの実装に使用されます（詳細は `CREATE VIEW` クエリを参照してください）。データ自体は保存せず、指定された `SELECT` クエリのみを保持します。このエンジンを使用するテーブルから読み取る際には、このクエリを実行し（クエリから不要な列をすべて削除した上で）、結果を返します。'
+sidebar_label: 'View'
+sidebar_position: 90
+slug: /engines/table-engines/special/view
+title: 'View テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# View テーブルエンジン {#view-table-engine}
 
-# ビュー テーブル エンジン
-
-ビューを実装するために使用されます (詳細については、`CREATE VIEW クエリ`を参照してください)。データは保存せず、指定された `SELECT` クエリのみを保存します。テーブルから読み取るとき、このクエリを実行し (クエリから不要なすべてのカラムを削除します)。
+ビューを実装するために使用されます（詳細は `CREATE VIEW query` を参照してください）。データ自体は保存せず、指定された `SELECT` クエリだけを保持します。テーブルから読み取る際には、このクエリを実行し（不要なカラムはクエリからすべて削除され）、結果を返します。

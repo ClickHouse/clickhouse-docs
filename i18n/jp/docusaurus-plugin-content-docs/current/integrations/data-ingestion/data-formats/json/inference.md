@@ -1,29 +1,25 @@
 ---
-'title': 'JSON スキーマ推論'
-'slug': '/integrations/data-formats/json/inference'
-'description': 'JSON スキーマ推論の使用方法'
-'keywords':
-- 'json'
-- 'schema'
-- 'inference'
-- 'schema inference'
-'doc_type': 'guide'
+title: 'JSONスキーマ推論'
+slug: /integrations/data-formats/json/inference
+description: 'JSONスキーマ推論の使い方'
+keywords: ['json', 'schema', 'inference', 'schema inference']
+doc_type: 'guide'
 ---
 
-ClickHouseは、JSONデータの構造を自動的に判別することができます。これにより、`clickhouse-local`やS3バケット上のJSONデータを直接クエリすることが可能であり、またClickHouseにデータをロードする前にスキーマを自動的に作成することも可能です。
+ClickHouseは、JSONデータの構造を自動的に判断できます。これは、`clickhouse-local`を使用したディスク上やS3バケット内のJSONデータを直接クエリするため、および/またはClickHouseにデータをロードする前にスキーマを自動的に作成するために使用できます。
 
 ## 型推論を使用するタイミング {#when-to-use-type-inference}
 
-* **一貫した構造** - タイプを推論するためのデータには、興味のある全てのキーが含まれています。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることに基づいています。サンプル以降のデータは、追加のカラムを含む場合には無視され、クエリすることはできません。
-* **一貫したタイプ** - 特定のキーのデータ型は互換性がある必要があります。すなわち、一方のタイプから他方のタイプに自動的に変換できなければなりません。
+* **一貫した構造** - 型を推論しようとするデータに、興味のあるすべてのキーが含まれている必要があります。型推論は、[最大行数](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)または[バイト数](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)までデータをサンプリングすることに基づいています。サンプル後の追加の列を持つデータは無視され、クエリできません。
+* **一貫した型** - 特定のキーのデータ型は互換性がある必要があります。つまり、ある型を別の型に自動的に強制変換できる必要があります。
 
-もしより動的なJSONがあり、新しいキーが追加され、同じパスに対して複数のタイプが存在する場合は、["半構造化データや動的データの扱い"](/integrations/data-formats/json/inference#working-with-semi-structured-data)を参照してください。
+新しいキーが追加され、同じパスに対して複数の型が可能な、より動的なJSONがある場合は、["半構造化および動的データの操作"](/integrations/data-formats/json/inference#working-with-semi-structured-data)を参照してください。
 
 ## 型の検出 {#detecting-types}
 
-以下は、JSONが一貫した構造を持ち、各パスに対して単一の型があると仮定しています。
+以下では、JSONが一貫して構造化され、各パスに単一の型があることを前提としています。
 
-前の例では、`NDJSON`形式の単純な[Python PyPIデータセット](https://clickpy.clickhouse.com/)を使用しました。このセクションでは、ネストされた構造を持つより複雑なデータセット、すなわち250万件の学術論文を含む[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探ります。このデータセットの各行は、発表された学術論文を表しています。以下に例となる行を示します。
+以前の例では、`NDJSON`形式の[Python PyPIデータセット](https://clickpy.clickhouse.com/)の簡単なバージョンを使用しました。このセクションでは、ネストされた構造を持つより複雑なデータセット、250万件の学術論文を含む[arXivデータセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download)を探索します。`NDJSON`として配布されるこのデータセットの各行は、公開された学術論文を表しています。例の行を以下に示します:
 
 ```json
 {
@@ -59,17 +55,17 @@ ClickHouseは、JSONデータの構造を自動的に判別することができ
 }
 ```
 
-このデータは、前の例よりもはるかに複雑なスキーマを必要とします。スキーマを定義するプロセスを以下に示し、`Tuple`や`Array`などの複雑なタイプを導入します。
+このデータは、以前の例よりもはるかに複雑なスキーマを必要とします。以下では、このスキーマを定義するプロセスの概要を説明し、`Tuple`や`Array`などの複雑な型を紹介します。
 
-このデータセットは、公共のS3バケット` s3://datasets-documentation/arxiv/arxiv.json.gz `に保存されています。
+このデータセットは、`s3://datasets-documentation/arxiv/arxiv.json.gz`のパブリックS3バケットに保存されています。
 
-上記のデータセットにはネストされたJSONオブジェクトが含まれていることがわかります。ユーザーはスキーマを策定し、バージョン管理を行うべきですが、推論によりデータから型を推定できます。これにより、スキーマDDLが自動生成され、手動で構築する必要がなくなり、開発プロセスが加速されます。
+上記のデータセットにはネストされたJSONオブジェクトが含まれていることがわかります。スキーマをドラフトしてバージョン管理する必要がありますが、推論により型をデータから推論できます。これにより、スキーマDDLを自動生成でき、手動で構築する必要がなくなり、開発プロセスが加速されます。
 
 :::note 自動フォーマット検出
-スキーマを検出するだけでなく、JSONスキーマの推論は、ファイル拡張子および内容からデータのフォーマットも自動的に推測します。上記のファイルは、結果として自動的にNDJSONとして検出されます。
+スキーマの検出に加えて、JSONスキーマ推論は、ファイル拡張子と内容からデータのフォーマットを自動的に推論します。上記のファイルは、その結果として自動的にNDJSONとして検出されます。
 :::
 
-[s3関数](/sql-reference/table-functions/s3)を使用して`DESCRIBE`コマンドを実行すると、推論される型が表示されます。
+[s3関数](/sql-reference/table-functions/s3)を`DESCRIBE`コマンドと共に使用すると、推論される型が表示されます。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
@@ -93,21 +89,21 @@ SETTINGS describe_compact_output = 1
 │ authors_parsed │ Array(Array(Nullable(String)))                                          │
 └────────────────┴─────────────────────────────────────────────────────────────────────────┘
 ```
-:::note NULLを避ける
-多くのカラムがNullableとして検出されていることがわかります。絶対に必要でない場合は、[Nullableタイプの使用を推奨しません](/sql-reference/data-types/nullable#storage-features)。Nullableが適用される際の動作を制御するには、[schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)を使用できます。
+:::note Nullの回避
+多くの列がNullableとして検出されていることがわかります。絶対に必要でない限り、[Nullable型の使用はお勧めしません](/sql-reference/data-types/nullable#storage-features)。[schema_inference_make_columns_nullable](/operations/settings/formats#schema_inference_make_columns_nullable)を使用して、Nullableが適用されるタイミングの動作を制御できます。
 :::
 
-ほとんどのカラムは自動的に`String`として検出され、正しく`update_date`カラムは`Date`として検出されました。`versions`カラムはオブジェクトのリストを保存するために`Array(Tuple(created String, version String))`として作成され、`authors_parsed`はネストされた配列用に`Array(Array(String))`として定義されています。
+ほとんどの列が自動的に`String`として検出され、`update_date`列は正しく`Date`として検出されていることがわかります。`versions`列は、オブジェクトのリストを保存するために`Array(Tuple(created String, version String))`として作成され、`authors_parsed`はネストされた配列に対して`Array(Array(String))`として定義されています。
 
 :::note 型検出の制御
-日付と日時の自動検出は、設定[`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates)および[`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes)を通じて制御できます（両方ともデフォルトで有効です）。オブジェクトをタプルとして推論することは、設定[`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects)によって制御されます。数字の自動検出など、JSONのスキーマ推論を制御する他の設定については、[こちら](/interfaces/schema-inference#text-formats)を参照してください。
+日付と日時の自動検出は、設定[`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates)と[`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes)でそれぞれ制御できます(両方ともデフォルトで有効)。オブジェクトをタプルとして推論することは、設定[`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects)によって制御されます。数値の自動検出など、JSONのスキーマ推論を制御するその他の設定は、[こちら](/interfaces/schema-inference#text-formats)で見つけることができます。
 :::
 
 ## JSONのクエリ {#querying-json}
 
-以下は、JSONが一貫した構造を持ち、各パスに対して単一の型があると仮定しています。
+以下では、JSONが一貫して構造化され、各パスに単一の型があることを前提としています。
 
-スキーマ推論を利用して、インプレースでJSONデータをクエリすることができます。以下では、日付と配列が自動的に検出される事実を利用して、各年のトップ著者を見つけます。
+スキーマ推論を利用して、JSONデータをその場でクエリできます。以下では、日付と配列が自動的に検出されることを利用して、各年のトップ著者を見つけます。
 
 ```sql
 SELECT
@@ -147,11 +143,11 @@ LIMIT 1 BY year
 18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
-スキーマ推論を使用することで、スキーマを指定することなくJSONファイルをクエリできるため、AD-HOCデータ分析タスクが加速されます。
+スキーマ推論により、スキーマを指定せずにJSONファイルをクエリでき、アドホックなデータ分析タスクが加速されます。
 
 ## テーブルの作成 {#creating-tables}
 
-スキーマ推論を利用して、テーブルのスキーマを作成できます。以下の`CREATE AS EMPTY`コマンドを実行すると、テーブルのDDLが推論され、テーブルが作成されます。これはデータをロードしません：
+スキーマ推論を利用して、テーブルのスキーマを作成できます。次の`CREATE AS EMPTY`コマンドにより、テーブルのDDLが推論され、テーブルが作成されます。これはデータをロードしません:
 
 ```sql
 CREATE TABLE arxiv
@@ -162,7 +158,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 SETTINGS schema_inference_make_columns_nullable = 0
 ```
 
-テーブルスキーマを確認するために、`SHOW CREATE TABLE`コマンドを使用します：
+テーブルスキーマを確認するには、`SHOW CREATE TABLE`コマンドを使用します:
 
 ```sql
 SHOW CREATE TABLE arxiv
@@ -188,11 +184,11 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-上記がこのデータの正しいスキーマです。スキーマ推論は、データをサンプリングし、行ごとにデータを読み込むことに基づいています。カラム値はフォーマットに従って抽出され、各値の型を決定するために再帰的なパーサーおよびヒューリスティックが使用されます。スキーマ推論においてデータから読み取る最大行数とバイト数は、設定[`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)(デフォルトは25000)と[`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)(デフォルトは32MB)によって制御されます。検出が正しくない場合、ユーザーは[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているようにヒントを提供することができます。
+上記は、このデータの正しいスキーマです。スキーマ推論は、データのサンプリングと行ごとのデータ読み取りに基づいています。列の値はフォーマットに従って抽出され、再帰パーサーとヒューリスティックを使用して各値の型が決定されます。スキーマ推論でデータから読み取られる最大行数とバイト数は、設定[`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)(デフォルトで25000)と[`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)(デフォルトで32MB)によって制御されます。検出が正しくない場合は、[こちら](/operations/settings/formats#schema_inference_make_columns_nullable)で説明されているようにヒントを提供できます。
 
-### スニペットからのテーブル作成 {#creating-tables-from-snippets}
+### スニペットからテーブルを作成する {#creating-tables-from-snippets}
 
-上記の例では、S3上のファイルを使用してテーブルスキーマを作成しました。ユーザーは単一行のスニペットからスキーマを作成したい場合があります。これは、[format](/sql-reference/table-functions/format)関数を使用することで実現できます。以下のように：
+上記の例では、S3上のファイルを使用してテーブルスキーマを作成しています。1行のスニペットからスキーマを作成したい場合もあるでしょう。これは、以下に示すように[format](/sql-reference/table-functions/format)関数を使用して実現できます:
 
 ```sql
 CREATE TABLE arxiv
@@ -225,9 +221,9 @@ ORDER BY update_date
 
 ## JSONデータのロード {#loading-json-data}
 
-以下は、JSONが一貫した構造を持ち、各パスに対して単一の型があると仮定しています。
+以下では、JSONが一貫して構造化され、各パスに単一の型があることを前提としています。
 
-前のコマンドは、データをロードするためのテーブルを作成しました。以下の`INSERT INTO SELECT`を使用して、テーブルにデータを挿入できます：
+前のコマンドは、データをロードできるテーブルを作成しました。次の`INSERT INTO SELECT`を使用して、データをテーブルに挿入できます:
 
 ```sql
 INSERT INTO arxiv SELECT *
@@ -237,9 +233,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.j
 Peak memory usage: 870.67 MiB.
 ```
 
-他のソースからデータをロードする例については、[こちら](/sql-reference/statements/insert-into)を参照してください。
+ファイルなどの他のソースからデータをロードする例については、[こちら](/sql-reference/statements/insert-into)を参照してください。
 
-データがロードされたら、元の構造で行を表示するためにオプションで`PrettyJSONEachRow`フォーマットを使用してクエリを実行できます：
+ロード後、データをクエリでき、オプションで`PrettyJSONEachRow`フォーマットを使用して、行を元の構造で表示できます:
 
 ```sql
 SELECT *
@@ -277,19 +273,19 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.009 sec.
 ```
 
-## エラー処理 {#handling-errors}
+## エラーの処理 {#handling-errors}
 
-時には、不正なデータが存在する場合があります。特定のカラムが正しい型を持っていないか、不適切にフォーマットされたJSONオブジェクトが含まれていることがあります。そのためには、設定[`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num)および[`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio)を使用して、データが挿入エラーを引き起こす場合に無視できる特定の行数を許可できます。さらに、推論を支援するために[ヒント](/operations/settings/formats#schema_inference_hints)を提供することができます。
+不正なデータがある場合があります。たとえば、正しい型を持たない特定の列や、不適切にフォーマットされたJSONオブジェクトなどです。このような場合、データが挿入エラーを引き起こしている場合に、一定数の行を無視できるようにする設定[`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num)と[`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio)を使用できます。さらに、[ヒント](/operations/settings/formats#schema_inference_hints)を提供して推論を支援できます。
 
-## 半構造化データおよび動的データの扱い {#working-with-semi-structured-data}
+## 半構造化および動的データの操作 {#working-with-semi-structured-data}
 
-前の例では、キー名とタイプがよく知られている静的なJSONを使用しましたが、これが常に当てはまるわけではありません。キーが追加されたり、その型が変わったりすることがあります。これは、観測可能性データなどのユースケースで一般的です。
+前の例では、既知のキー名と型を持つ静的なJSONを使用しました。これは必ずしもそうではありません - キーが追加されたり、型が変更されたりする可能性があります。これは、観測性データなどのユースケースで一般的です。
 
 ClickHouseは、専用の[`JSON`](/sql-reference/data-types/newjson)型を通じてこれを処理します。
 
-JSONが非常に動的で、多くのユニークなキーと同じキーに対する複数の型が存在することがわかっている場合は、`JSONEachRow`を使用して型推論を試みて、それぞれのキーにカラムを推定することはお勧めしません。たとえデータが改行区切りのJSON形式であってもです。
+JSONが多くのユニークなキーと同じキーに対する複数の型を持つ非常に動的であることがわかっている場合、データが改行区切りのJSON形式であっても、各キーに対して列を推論しようとする`JSONEachRow`でスキーマ推論を使用することはお勧めしません。
 
-以下は、上記の[Python PyPIデータセット](https://clickpy.clickhouse.com/)の拡張バージョンからの例です。ここでは、任意の`tags`カラムにランダムなキー値ペアを追加しました。
+上記の[Python PyPIデータセット](https://clickpy.clickhouse.com/)データセットの拡張バージョンからの次の例を考えてみましょう。ここでは、ランダムなキーと値のペアを持つ任意の`tags`列を追加しました。
 
 ```json
 {
@@ -308,21 +304,21 @@ JSONが非常に動的で、多くのユニークなキーと同じキーに対�
 }
 ```
 
-このデータのサンプルは、改行区切りのJSON形式で公開されています。このファイルでスキーマ推論を試みると、パフォーマンスが悪く、非常に冗長な応答が返されることがわかります：
+このデータのサンプルは、改行区切りのJSON形式で公開されています。このファイルでスキーマ推論を試みると、非常に冗長な応答でパフォーマンスが低下することがわかります:
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- result omitted for brevity
+-- 簡潔にするため結果は省略
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-ここでの主な問題は、推論に`JSONEachRow`フォーマットが使用されていることです。これは**JSON内の各キーごとにカラム型を推測しようとします** - 実質的に、[`JSON`](/sql-reference/data-types/newjson)型を使用せずにデータに静的なスキーマを適用しようとしています。
+ここでの主な問題は、推論に`JSONEachRow`形式が使用されていることです。これは、[`JSON`](/sql-reference/data-types/newjson)型を使用せずに、**JSONの各キーに対して列の型を推論**しようとします - 事実上、データに静的スキーマを適用しようとします。
 
-ユニークなカラムが何千もある場合、このアプローチの推論は遅くなります。代わりに、ユーザーは`JSONAsObject`フォーマットを使用できます。
+数千のユニークな列がある場合、この推論へのアプローチは遅くなります。代わりに、`JSONAsObject`形式を使用できます。
 
-`JSONAsObject`は、全ての入力を単一のJSONオブジェクトとして扱い、型[`JSON`](/sql-reference/data-types/newjson)の単一カラムに保存します。これにより、高度に動的またはネストされたJSONペイロードに対してより適しています。
+`JSONAsObject`は、入力全体を単一のJSONオブジェクトとして扱い、[`JSON`](/sql-reference/data-types/newjson)型の単一の列に保存するため、高度に動的またはネストされたJSONペイロードに適しています。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz', 'JSONAsObject')
@@ -335,14 +331,14 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-このフォーマットは、カラムが調整できない複数の型を持つ場合にも重要です。たとえば、以下の改行区切りのJSONを持つ`sample.json`ファイルを考えてみてください：
+この形式は、調整できない複数の型を持つ列がある場合にも不可欠です。たとえば、次の改行区切りJSONを含む`sample.json`ファイルを考えてみましょう:
 
 ```json
 {"a":1}
 {"a":"22"}
 ```
 
-この場合、ClickHouseは型の衝突を強制的に解決し、カラム`a`を`Nullable(String)`として解決できることがわかります。
+この場合、ClickHouseは型の衝突を強制変換し、列`a`を`Nullable(String)`として解決できます。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')
@@ -355,18 +351,18 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.081 sec.
 ```
 
-:::note 型の強制変換
-この型の強制変換は、いくつかの設定を通じて制御できます。上記の例は、設定[`input_format_json_read_numbers_as_strings`](/operations/settings/formats#input_format_json_read_numbers_as_strings)に依存しています。
+:::note 型強制変換
+この型強制変換は、多くの設定を通じて制御できます。上記の例は、設定[`input_format_json_read_numbers_as_strings`](/operations/settings/formats#input_format_json_read_numbers_as_strings)に依存しています。
 :::
 
-ただし、一部の型は互換性がありません。次の例を考えてみてください：
+ただし、一部の型は互換性がありません。次の例を考えてみましょう:
 
 ```json
 {"a":1}
 {"a":{"b":2}}
 ```
 
-この場合、ここでの型変換のどの形式も不可能です。そのため、`DESCRIBE`コマンドは失敗します：
+この場合、ここでの型変換は不可能です。したがって、`DESCRIBE`コマンドは失敗します:
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
@@ -378,7 +374,7 @@ Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-この場合、`JSONAsObject`は各行を単一の[`JSON`](/sql-reference/data-types/newjson)型として扱います（これは同じカラムが複数の型を持つことをサポートします）。これは不可欠です：
+この場合、`JSONAsObject`は各行を単一の[`JSON`](/sql-reference/data-types/newjson)型として扱います(同じ列が複数の型を持つことをサポート)。これは不可欠です:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
@@ -393,4 +389,4 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 
 ## さらに読む {#further-reading}
 
-データ型推論について詳しく知りたい場合は、[こちら](/interfaces/schema-inference)のドキュメントページを参照してください。
+データ型推論の詳細については、[こちら](/interfaces/schema-inference)のドキュメントページを参照してください。

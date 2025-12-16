@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONCompactEachRow'
-description: 'Документация для формата JSONCompactEachRow'
-title: JSONCompactEachRow
-keywords: ['JSONCompactEachRow']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONCompactEachRow'
 input_format: true
+keywords: ['JSONCompactEachRow']
 output_format: true
+slug: /interfaces/formats/JSONCompactEachRow
+title: 'JSONCompactEachRow'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что данные строк выводятся в виде массивов, а не объектов.
+Отличается от [`JSONEachRow`](./JSONEachRow.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя JSON-файл с следующими данными, названный `football.json`:
+Используйте JSON‑файл со следующими данными под названием `football.json`:
 
 ```json
 ["2022-04-30", 2021, "Sutton United", "Bradford City", 1, 4]
@@ -49,7 +51,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRow;
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `JSONCompactEachRow`:
+Считайте данные в формате `JSONCompactEachRow`:
 
 ```sql
 SELECT *
@@ -79,4 +81,4 @@ FORMAT JSONCompactEachRow
 ["2022-05-07", 2021, "Walsall", "Swindon Town", 0, 3]
 ```
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

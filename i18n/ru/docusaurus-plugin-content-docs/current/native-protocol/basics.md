@@ -1,45 +1,46 @@
 ---
-slug: '/native-protocol/basics'
+slug: /native-protocol/basics
 sidebar_position: 1
+title: 'Основы'
 description: 'Основы нативного протокола'
-title: Основы
-doc_type: guide
+keywords: ['нативный протокол', 'протокол TCP', 'основы протокола', 'двоичный протокол', 'клиент-серверное взаимодействие']
+doc_type: 'guide'
 ---
+
+# Основы {#basics}
+
+:::note
+Справочник по клиентскому протоколу находится в разработке.
+
+Большинство примеров приведено только на Go.
+:::
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# Основы
-
-:::note
-Справка по клиентскому протоколу в процессе разработки.
-
-Большинство примеров только на Go.
-:::
-
-Этот документ описывает бинарный протокол для TCP-клиентов ClickHouse.
+Этот документ описывает бинарный протокол для TCP‑клиентов ClickHouse.
 
 ## Varint {#varint}
 
-Для длин, кодов пакетов и других случаев используется *беззнаковая varint* кодировка.
+Для длин, кодов пакетов и в других случаях используется кодирование в формате *unsigned varint*.
 Используйте [binary.PutUvarint](https://pkg.go.dev/encoding/binary#PutUvarint) и [binary.ReadUvarint](https://pkg.go.dev/encoding/binary#ReadUvarint).
 
 :::note
-*Знаковая* varint не используется.
+*Signed* varint не используется.
 :::
 
 ## Строка {#string}
 
-Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — это строка в кодировке utf8.
+Строки переменной длины кодируются как *(длина, значение)*, где *длина* — это [varint](#varint), а *значение* — строка в кодировке UTF-8.
 
 :::important
-Проверьте длину, чтобы предотвратить OOM:
+Проверяйте длину, чтобы избежать OOM:
 
 `0 ≤ len < MAX`
 :::
 
 <Tabs>
-<TabItem value="encode" label="Кодировать">
+<TabItem value="encode" label="Кодирование">
 
 ```go
 s := "Hello, world!"
@@ -54,7 +55,7 @@ buf = append(buf, s...)
 ```
 
 </TabItem>
-<TabItem value="decode" label="Декодировать">
+<TabItem value="decode" label="Декодирование">
 
 ```go
 r := bytes.NewReader([]byte{
@@ -87,7 +88,7 @@ fmt.Println(string(buf))
 </Tabs>
 
 <Tabs>
-<TabItem value="hexdump" label="Hex дамп">
+<TabItem value="hexdump" label="Шестнадцатеричный дамп">
 
 ```hexdump
 00000000  0d 48 65 6c 6c 6f 2c 20  77 6f 72 6c 64 21        |.Hello, world!|
@@ -116,10 +117,11 @@ data := []byte{
 ## Целые числа {#integers}
 
 :::tip
-ClickHouse использует **Младший порядок** для целых чисел фиксированного размера.
+ClickHouse использует **Little Endian** для целых чисел фиксированной длины.
 :::
 
 ### Int32 {#int32}
+
 ```go
 v := int32(1000)
 
@@ -133,22 +135,19 @@ fmt.Println(d) // 1000
 ```
 
 <Tabs>
-<TabItem value="hexdump" label="Hex дамп">
-
-```hexdump
+  <TabItem value="hexdump" label="Hex-дамп">
+    ```hexdump
 00000000  e8 03 00 00 00 00 00 00                           |........|
 ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="base64" label="Base64">
-
-```text
+  <TabItem value="base64" label="Base64">
+    ```text
 6AMAAAAAAAA
 ```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
-## Логическое значение {#boolean}
+## Boolean {#boolean}
 
-Логические значения представлены одним байтом, `1` — это `true`, а `0` — это `false`.
+Булевы значения представлены одним байтом: значение `1` соответствует `true`, а `0` — `false`.

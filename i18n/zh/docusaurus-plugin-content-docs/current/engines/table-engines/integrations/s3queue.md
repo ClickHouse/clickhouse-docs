@@ -1,20 +1,19 @@
 ---
-'description': '此引擎提供与 Amazon S3 生态系统的集成，并允许流式导入。类似于 Kafka 和 RabbitMQ 引擎，但提供 S3 特定的功能。'
-'sidebar_label': 'S3Queue'
-'sidebar_position': 181
-'slug': '/engines/table-engines/integrations/s3queue'
-'title': 'S3Queue 表引擎'
-'doc_type': 'reference'
+description: '此引擎提供与 Amazon S3 生态系统的集成，并支持流式导入。类似于 Kafka 和 RabbitMQ 引擎，但提供 S3 专属特性。'
+sidebar_label: 'S3Queue'
+sidebar_position: 181
+slug: /engines/table-engines/integrations/s3queue
+title: 'S3Queue 表引擎'
+doc_type: 'reference'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
+# S3Queue 表引擎 {#s3queue-table-engine}
 
-# S3Queue 表引擎
+该引擎提供与 [Amazon S3](https://aws.amazon.com/s3/) 生态系统的集成，并支持流式导入。该引擎类似于 [Kafka](../../../engines/table-engines/integrations/kafka.md)、[RabbitMQ](../../../engines/table-engines/integrations/rabbitmq.md) 引擎，但提供了 S3 特有的功能。
 
-该引擎提供与 [Amazon S3](https://aws.amazon.com/s3/) 生态系统的集成，并允许流式导入。该引擎类似于 [Kafka](../../../engines/table-engines/integrations/kafka.md) 和 [RabbitMQ](../../../engines/table-engines/integrations/rabbitmq.md) 引擎，但提供了 S3 特定的功能。
-
-重要的是要理解 [S3Queue 实现的原始 PR 中的说明](https://github.com/ClickHouse/ClickHouse/pull/49086/files#diff-e1106769c9c8fbe48dd84f18310ef1a250f2c248800fde97586b3104e9cd6af8R183)：当 `MATERIALIZED VIEW` 连接到引擎时，S3Queue 表引擎开始在后台收集数据。
+需要特别注意 [S3Queue 实现的原始 PR](https://github.com/ClickHouse/ClickHouse/pull/49086/files#diff-e1106769c9c8fbe48dd84f18310ef1a250f2c248800fde97586b3104e9cd6af8R183) 中的这一说明：当有 `MATERIALIZED VIEW` 关联到该引擎时，S3Queue 表引擎会在后台开始收集数据。
 
 ## 创建表 {#creating-a-table}
 
@@ -47,12 +46,12 @@ CREATE TABLE s3_queue_engine_table (name String, value UInt32)
 ```
 
 :::warning
-在 `24.7` 之前，除了 `mode`、`after_processing` 和 `keeper_path` 外，所有设置都需要使用 `s3queue_` 前缀。
+在 `24.7` 版本之前，除 `mode`、`after_processing` 和 `keeper_path` 之外的所有配置项都必须使用 `s3queue_` 前缀。
 :::
 
 **引擎参数**
 
-`S3Queue` 参数与 `S3` 表引擎支持的参数相同。有关参数的详细信息，请参见 [此处](../../../engines/table-engines/integrations/s3.md#parameters)。
+`S3Queue` 的参数与 `S3` 表引擎支持的参数相同。请参见[此处](../../../engines/table-engines/integrations/s3.md#parameters)的参数部分。
 
 **示例**
 
@@ -84,160 +83,268 @@ SETTINGS
     mode = 'ordered';
 ```
 
+
 ## 设置 {#settings}
 
-要获取已为表配置的设置列表，请使用 `system.s3_queue_settings` 表。从 `24.10` 开始可用。
+要获取为该表配置的设置列表，请查询 `system.s3_queue_settings` 系统表。自 `24.10` 版本起可用。
 
-### 模式 {#mode}
+:::note 设置名称（24.7+）
+从 24.7 版本开始，S3Queue 的设置项既可以带有 `s3queue_` 前缀，也可以不带：
 
-可选值：
+- **现代语法**（24.7+）：`processing_threads_num`、`tracked_file_ttl_sec` 等。
+- **旧版语法**（所有版本）：`s3queue_processing_threads_num`、`s3queue_tracked_file_ttl_sec` 等。
 
-- unordered — 在无序模式下，所有已处理文件的集合通过 ZooKeeper 中的持久节点进行跟踪。
-- ordered — 在有序模式下，文件按字典顺序处理。这意味着如果名为 'BBB' 的文件在某个时刻被处理，而后名为 'AA' 的文件添加到桶中，则该文件将被忽略。只有成功消费的文件的最大名称（按字典顺序）和在不成功加载尝试后将会重试的文件名会被存储在 ZooKeeper 中。
+在 24.7+ 中两种形式都受支持。本页中的示例均使用不带前缀的现代语法。
+:::
 
-默认值：在 24.6 之前为 `ordered`。从 24.6 开始没有默认值，设置成为必需手动指定。对于在早期版本上创建的表，默认值将保持为 `Ordered` 以保持兼容性。
+### Mode {#mode}
+
+可能的取值：
+
+* unordered — 在 `unordered` 模式下，所有已处理文件的集合会通过 ZooKeeper 中的持久节点进行跟踪和持久化。
+* ordered — 在 `ordered` 模式下，文件按照字典序进行处理。这意味着如果名为 `BBB` 的文件在某个时间点被处理了，之后又向 bucket 中添加了名为 `AA` 的文件，那么该文件将被忽略。ZooKeeper 中只会存储已成功消费文件中的最大文件名（按字典序），以及那些在加载失败后需要重试的文件名。
+
+默认值：在 24.6 之前的版本中默认为 `ordered`。从 24.6 开始不再提供默认值，该设置必须手动指定。对于在更早版本中创建的表，为了兼容性其默认值仍为 `Ordered`。
 
 ### `after_processing` {#after_processing}
 
-在成功处理后删除或保留文件。
-可选值：
+如何在文件成功处理后进行后续操作。
 
-- keep.
-- delete.
+可能的取值：
+
+* keep。
+* delete。
+* move。
+* tag。
 
 默认值：`keep`。
 
+`move` 需要额外配置。若在同一 bucket 内移动，必须通过 `after_processing_move_prefix` 提供新的路径前缀。
+
+移动到另一个 S3 bucket 时，需要通过 `after_processing_move_uri` 提供目标 bucket 的 URI，并通过 `after_processing_move_access_key_id` 和 `after_processing_move_secret_access_key` 提供 S3 凭证。
+
+示例：
+
+```sql
+CREATE TABLE s3queue_engine_table (name String, value UInt32)
+ENGINE=S3Queue('https://clickhouse-public-datasets.s3.amazonaws.com/my-test-bucket-768/*', 'CSV', 'gzip')
+SETTINGS
+    mode = 'unordered',
+    after_processing = 'move',
+    after_processing_retries = 20,
+    after_processing_move_prefix = 'dst_prefix',
+    after_processing_move_uri = 'https://clickhouse-public-datasets.s3.amazonaws.com/dst-bucket',
+    after_processing_move_access_key_id = 'test',
+    after_processing_move_secret_access_key = 'test';
+```
+
+从一个 Azure 容器移动到另一个 Azure 容器时，需要提供 Blob Storage 连接字符串作为 `after_processing_move_connection_string`，以及容器名称作为 `after_processing_move_container`。参见 [AzureQueue 设置](../../../engines/table-engines/integrations/azure-queue.md#settings)。
+
+标记操作需要提供标签键和值，分别通过 `after_processing_tag_key` 和 `after_processing_tag_value` 配置。
+
+
+### `after_processing_retries` {#after_processing_retries}
+
+在放弃之前，对所请求的后处理操作进行重试的次数。
+
+可能的取值：
+
+* 非负整数。
+
+默认值：`10`。
+
+### `after_processing_move_access_key_id` {#after_processing_move_access_key_id}
+
+如果目标是另一个 S3 bucket，则该选项指定用于将成功处理的文件移动到目标 S3 bucket 的 Access Key ID。
+
+可能的取值：
+
+* 字符串。
+
+默认值：空字符串。
+
+### `after_processing_move_prefix` {#after&#95;processing&#95;move&#95;prefix}
+
+成功处理后用于存放文件的路径前缀。适用于两种情况：在同一 bucket 内移动文件，或移动到另一个 bucket。
+
+可能的值：
+
+* 字符串。
+
+默认值：空字符串。
+
+### `after_processing_move_secret_access_key` {#after_processing_move_secret_access_key}
+
+当目标是另一个 S3 bucket 时，用于将成功处理的文件移动到该目标 bucket 的 Secret Access Key。
+
+可能的取值：
+
+* 字符串。
+
+默认值：空字符串。
+
+### `after_processing_move_uri` {#after_processing_move_uri}
+
+当目标是另一个 S3 bucket 时，用于存放已成功处理文件的 S3 bucket 的 URI。
+
+可能的取值：
+
+* 字符串。
+
+默认值：空字符串。
+
+### `after_processing_tag_key` {#after_processing_tag_key}
+
+当 `after_processing='tag'` 时，用于给成功处理的文件打标签的标签键。
+
+可能的取值：
+
+* 字符串。
+
+默认值：空字符串。
+
+### `after_processing_tag_value` {#after_processing_tag_value}
+
+当 `after_processing='tag'` 时，为成功处理的文件设置标签时使用的标签值。
+
+可能的取值：
+
+* 字符串。
+
+默认值：空字符串。
+
 ### `keeper_path` {#keeper_path}
 
-ZooKeeper 中的路径可以作为表引擎设置指定，或者默认路径可以从全局配置提供的路径和表 UUID 生成。
-可选值：
+ZooKeeper 中的路径可以通过表引擎设置单独指定；如果未指定，则默认路径由全局配置中提供的路径和表的 UUID 组成。
+可能的取值：
 
-- 字符串。
+* 字符串。
 
 默认值：`/`。
 
-### `s3queue_loading_retries` {#loading_retries}
+### `loading_retries` {#loading_retries}
 
-最多重试指定次数的文件加载。默认情况下，没有重试。
-可选值：
+对文件加载操作最多重试指定的次数。默认情况下，不进行重试。
+可能的取值：
 
 - 正整数。
 
 默认值：`0`。
 
-### `s3queue_processing_threads_num` {#processing_threads_num}
+### `processing_threads_num` {#processing_threads_num}
 
-执行处理的线程数。仅适用于 `Unordered` 模式。
+用于处理的线程数。仅适用于 `Unordered` 模式。
 
-默认值：CPU 数或 16。
+默认值：CPU 数量或 16。
 
-### `s3queue_parallel_inserts` {#parallel_inserts}
+### `parallel_inserts` {#parallel_inserts}
 
-默认情况下，`processing_threads_num` 将产生一个 `INSERT`，因此它只会下载文件并在多个线程中解析。
-但这会限制并行性，因此为了更好的吞吐率使用 `parallel_inserts=true`，这将允许并行插入数据（但请注意，这将导致生成更多的 MergeTree 家族的数据部分）。
+默认情况下，`processing_threads_num` 只会产生一个 `INSERT`，因此只是以多线程方式下载文件并进行解析。
+但这会限制并行度，因此为获得更高吞吐量，应使用 `parallel_inserts=true`，这将允许并行插入数据（但请注意，这会导致为 MergeTree 系列表引擎生成更多分区片段）。
 
 :::note
-`INSERT`s 将根据 `max_process*_before_commit` 设置生成。
+`INSERT` 的触发会受 `max_process*_before_commit` 相关设置约束。
 :::
 
 默认值：`false`。
 
-### `s3queue_enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
+### `enable_logging_to_s3queue_log` {#enable_logging_to_s3queue_log}
 
-启用日志记录到 `system.s3queue_log`。
+启用将日志记录写入 `system.s3queue_log`。
 
 默认值：`0`。
 
-### `s3queue_polling_min_timeout_ms` {#polling_min_timeout_ms}
+### `polling_min_timeout_ms` {#polling_min_timeout_ms}
 
-指定 ClickHouse 在进行下一个轮询尝试之前等待的最短时间（以毫秒为单位）。
+指定 ClickHouse 在进行下一次轮询尝试之前等待的最短时间（以毫秒为单位）。
 
-可选值：
+可能的取值：
 
 - 正整数。
 
 默认值：`1000`。
 
-### `s3queue_polling_max_timeout_ms` {#polling_max_timeout_ms}
+### `polling_max_timeout_ms` {#polling_max_timeout_ms}
 
-定义 ClickHouse 在启动下一个轮询尝试之前等待的最长时间（以毫秒为单位）。
+定义 ClickHouse 在发起下一次轮询尝试之前的最大等待时间（以毫秒为单位）。
 
-可选值：
+可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`10000`。
 
-### `s3queue_polling_backoff_ms` {#polling_backoff_ms}
+### `polling_backoff_ms` {#polling_backoff_ms}
 
-确定在未找到新文件时，添加到上一个轮询间隔的额外等待时间。下一个轮询在上一个间隔与此退避值的总和，或最大间隔中取较小者后发生。
+确定在未发现新文件时，需要加到上一次轮询间隔上的额外等待时间。下一次轮询会在上一次间隔与该退避时间之和或最大间隔（取二者中较小值）之后触发。
 
-可选值：
+可能的取值：
 
 - 正整数。
 
 默认值：`0`。
 
-### `s3queue_tracked_files_limit` {#tracked_files_limit}
+### `tracked_files_limit` {#tracked_files_limit}
 
-如果使用了 'unordered' 模式，可以限制 ZooKeeper 节点的数量，对于 'ordered' 模式则无效。
-如果达到限制，将从 ZooKeeper 节点删除最旧的已处理文件并重新处理。
+在使用 `unordered` 模式时，用于限制 ZooKeeper 节点的数量，对 `ordered` 模式不起作用。
+一旦达到该限制，最早已处理的文件会从 ZooKeeper 节点中删除，并再次被处理。
 
-可选值：
+可能的取值：
 
-- 正整数。
+* 正整数。
 
 默认值：`1000`。
 
-### `s3queue_tracked_file_ttl_sec` {#tracked_file_ttl_sec}
+### `tracked_file_ttl_sec` {#tracked_file_ttl_sec}
 
-最大以秒为单位在 ZooKeeper 节点中存储已处理文件的时间（默认永久存储）对于 'unordered' 模式无效，对于 'ordered' 模式同样无效。
-在指定的秒数之后，文件将被重新导入。
+在“unordered”模式下，在 ZooKeeper 节点中保留已处理文件的最长时间（以秒为单位，默认永久保存）。对“ordered”模式无效。
+在经过指定秒数后，该文件会被重新导入。
 
-可选值：
+可能的取值：
 
 - 正整数。
 
 默认值：`0`。
 
-### `s3queue_cleanup_interval_min_ms` {#cleanup_interval_min_ms}
+### `cleanup_interval_min_ms` {#cleanup_interval_min_ms}
 
-对于 'Ordered' 模式。定义后台任务的重新调度间隔的最小边界，该任务负责维护跟踪文件的 TTL 和最大跟踪文件集。
+用于 `Ordered` 模式。定义负责维护已跟踪文件生存时间 (TTL) 和最大已跟踪文件集合的后台任务的重新调度间隔下限。
 
 默认值：`10000`。
 
-### `s3queue_cleanup_interval_max_ms` {#cleanup_interval_max_ms}
+### `cleanup_interval_max_ms` {#cleanup_interval_max_ms}
 
-对于 'Ordered' 模式。定义后台任务的重新调度间隔的最大边界，该任务负责维护跟踪文件的 TTL 和最大跟踪文件集。
+用于 “Ordered” 模式。定义后台任务重新调度时间间隔的上限，该后台任务负责维护已跟踪文件的生存时间 (TTL)，以及已跟踪文件集合的最大大小。
 
 默认值：`30000`。
 
-### `s3queue_buckets` {#buckets}
+### `buckets` {#buckets}
 
-对于 'Ordered' 模式。从 `24.6` 开始可用。如果有多个 S3Queue 表的副本，每个副本都在 keeper 中使用相同的元数据目录，则 `s3queue_buckets` 的值至少需要等于副本的数量。如果同时使用了 `s3queue_processing_threads` 设置，进一步增加 `s3queue_buckets` 的值是有意义的，因为它定义了 `S3Queue` 处理的实际并行性。
+用于 Ordered 模式。自 `24.6` 版本起可用。如果存在多个 S3Queue 表副本，并且它们都使用 Keeper 中相同的元数据目录，那么 `buckets` 的值至少应等于副本数量。如果同时使用了 `processing_threads` 设置，那么将 `buckets` 的值进一步增大是有意义的，因为它决定了 `S3Queue` 处理的实际并行度。
 
 ### `use_persistent_processing_nodes` {#use_persistent_processing_nodes}
 
-默认情况下，S3Queue 表始终使用临时处理节点，这可能导致数据重复，因为如果 ZooKeeper 会话在 S3Queue 提交已处理文件之前过期，但在开始处理之后则会出现这种情况。此设置强制服务器在会话过期的情况下消除重复的可能性。
+默认情况下，S3Queue 表一直使用临时处理节点。如果在 S3Queue 将已处理文件提交到 ZooKeeper 之前、但在其开始处理之后，ZooKeeper 会话过期，就可能导致数据重复。此设置会强制服务器在 Keeper 会话过期时避免出现重复数据。
 
 ### `persistent_processing_nodes_ttl_seconds` {#persistent_processing_nodes_ttl_seconds}
 
-在非正常的服务器终止情况下，如果启用 `use_persistent_processing_nodes`，可能会有未删除的处理节点。此设置定义了可以安全清理这些处理节点的时间段。
+在服务器异常终止的情况下，如果启用了 `use_persistent_processing_nodes`，就有可能出现尚未被移除的处理节点（processing nodes）。此设置用于定义一个时间段，在该时间段内，这些处理节点可以被安全清理。
 
-默认值：`3600`（1小时）。
+默认值：`3600`（1 小时）。
 
-## S3 相关设置 {#s3-settings}
+## 与 S3 相关的设置 {#s3-settings}
 
-引擎支持所有 S3 相关设置。有关 S3 设置的更多信息，请参见 [此处](../../../engines/table-engines/integrations/s3.md)。
+该引擎支持所有与 S3 相关的设置。有关 S3 设置的更多信息，请参阅[此处](../../../engines/table-engines/integrations/s3.md)。
 
-## S3 基于角色的访问 {#s3-role-based-access}
+## 基于角色的 S3 访问 {#s3-role-based-access}
 
 <ScalePlanFeatureBadge feature="S3 Role-Based Access" />
 
-s3Queue 表引擎支持基于角色的访问。
-有关配置角色以访问您的存储桶的步骤，请参阅文档 [此处](/cloud/security/secure-s3)。
+`s3Queue` 表引擎支持基于角色的访问控制。
+请参阅[此处](/cloud/data-sources/secure-s3)的文档，了解如何配置用于访问您的 bucket 的角色。
 
-角色配置完成后，可以通过 `extra_credentials` 参数传递 `roleARN`，如下所示：
+角色配置完成后，可以通过 `extra_credentials` 参数传递一个 `roleARN`，如下所示：
+
 ```sql
 CREATE TABLE s3_table
 (
@@ -245,87 +352,96 @@ CREATE TABLE s3_table
     value UInt64
 )
 ENGINE = S3Queue(
-                'https://<your_bucket>/*.csv', 
+                'https://<your_bucket>/*.csv',
                 extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/<your_role>')
                 ,'CSV')
-SETTINGS 
+SETTINGS
     ...
 ```
 
+
 ## S3Queue 有序模式 {#ordered-mode}
 
-`S3Queue` 处理模式允许在 ZooKeeper 中存储更少的元数据，但有一个限制，即后添加的文件名称必须在字母数字顺序上大于之前的名称。
+`S3Queue` 处理模式可以在 ZooKeeper 中存储更少的元数据，但有一个限制：按时间更晚添加的文件，其名称在字母数字顺序上必须更大。
 
-`S3Queue` `ordered` 模式和 `unordered` 一样，支持 `(s3queue_)processing_threads_num` 设置（`s3queue_` 前缀为可选），该设置允许控制在服务器上本地处理 `S3` 文件的线程数。
-此外，`ordered` 模式还引入了名为 `(s3queue_)buckets` 的另一个设置，表示“逻辑线程”。这意味着在分布式场景下，当有多个服务器与 `S3Queue` 表的副本时，此设置定义了处理单元的数量。例如，每个 `S3Queue` 副本上的每个处理线程将尝试锁定某个 `bucket` 以进行处理，每个 `bucket` 通过文件名的哈希与特定文件相关联。因此，在分布式场景中，强烈建议将 `(s3queue_)buckets` 设置至少设置为副本的数量或更大。桶的数量大于副本的数量也是可以的。最优场景是将 `(s3queue_)buckets` 设置等于 `number_of_replicas` 和 `(s3queue_)processing_threads_num` 的乘积。
+`S3Queue` 的 `ordered` 模式与 `unordered` 模式一样，支持 `(s3queue_)processing_threads_num` 设置（`s3queue_` 前缀是可选的），用于控制在服务器本地处理 `S3` 文件的线程数量。
+此外，`ordered` 模式还引入了另一个名为 `(s3queue_)buckets` 的设置，表示“逻辑线程”。在分布式场景中，当存在多个带有 `S3Queue` 表副本的服务器时，该设置定义了处理单元的数量。比如，每个 `S3Queue` 副本上的每个处理线程都会尝试锁定某个用于处理的 `bucket`，每个 `bucket` 通过文件名的哈希与特定文件关联。因此，在分布式场景下，强烈建议将 `(s3queue_)buckets` 设置为至少等于副本数量或更大。`buckets` 数量大于副本数量是可以的。最优的情况是将 `(s3queue_)buckets` 设置为 `number_of_replicas` 与 `(s3queue_)processing_threads_num` 的乘积。
+
 不建议在 `24.6` 版本之前使用 `(s3queue_)processing_threads_num` 设置。
-`(s3queue_)buckets` 设置自 `24.6` 版本起可用。
+`(s3queue_)buckets` 设置从 `24.6` 版本开始可用。
+
+## 从 S3Queue 表引擎中执行 SELECT 查询 {#select}
+
+默认情况下，S3Queue 表禁止执行 SELECT 查询。这符合常见的队列模式：数据只被读取一次，随后从队列中移除。禁止 SELECT 是为了防止意外数据丢失。
+但在某些情况下，执行 SELECT 查询可能是有用的。要实现这一点，需要将设置 `stream_like_engine_allow_direct_select` 设为 `True`。
+S3Queue 引擎为 SELECT 查询提供了一个特殊设置：`commit_on_select`。将其设为 `False` 可以在读取后保留队列中的数据，将其设为 `True` 则会在读取后移除数据。
 
 ## 描述 {#description}
 
-`SELECT` 对于流式导入并不是特别有用（除非用于调试），因为每个文件只能被导入一次。使用 [物化视图](../../../sql-reference/statements/create/view.md) 创建实时线程更实用。为此：
+`SELECT` 对于流式导入并不是特别有用（除调试外），因为每个文件只能被导入一次。更实用的做法是使用[物化视图](../../../sql-reference/statements/create/view.md)来创建实时数据流。为此：
 
-1. 使用引擎创建一个表以从 S3 中指定路径进行消费，并将其视为数据流。
-2. 创建一个具有所需结构的表。
-3. 创建一个物化视图，将引擎中的数据转换并放入先前创建的表中。
+1. 使用该引擎创建一张表，从 S3 中指定的路径消费数据，并将其视为数据流。
+2. 创建一张具有所需结构的表。
+3. 创建一个物化视图，将来自该引擎的数据转换后写入事先创建好的表中。
 
-当 `MATERIALIZED VIEW` 连接到引擎时，将开始在后台收集数据。
+当 `MATERIALIZED VIEW` 与该引擎关联后，它会在后台开始收集数据。
 
 示例：
 
 ```sql
-CREATE TABLE s3queue_engine_table (name String, value UInt32)
-  ENGINE=S3Queue('https://clickhouse-public-datasets.s3.amazonaws.com/my-test-bucket-768/*', 'CSV', 'gzip')
-  SETTINGS
-      mode = 'unordered';
+  CREATE TABLE s3queue_engine_table (name String, value UInt32)
+    ENGINE=S3Queue('https://clickhouse-public-datasets.s3.amazonaws.com/my-test-bucket-768/*', 'CSV', 'gzip')
+    SETTINGS
+        mode = 'unordered';
 
-CREATE TABLE stats (name String, value UInt32)
-  ENGINE = MergeTree() ORDER BY name;
+  CREATE TABLE stats (name String, value UInt32)
+    ENGINE = MergeTree() ORDER BY name;
 
-CREATE MATERIALIZED VIEW consumer TO stats
-  AS SELECT name, value FROM s3queue_engine_table;
+  CREATE MATERIALIZED VIEW consumer TO stats
+    AS SELECT name, value FROM s3queue_engine_table;
 
-SELECT * FROM stats ORDER BY name;
+  SELECT * FROM stats ORDER BY name;
 ```
+
 
 ## 虚拟列 {#virtual-columns}
 
-- `_path` — 文件路径。
-- `_file` — 文件名。
-- `_size` — 文件大小。
-- `_time` — 文件创建时间。
+* `_path` — 文件路径。
+* `_file` — 文件名。
+* `_size` — 文件大小。
+* `_time` — 文件创建时间。
 
-有关虚拟列的更多信息，请参见 [此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
+有关虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 
 ## 路径中的通配符 {#wildcards-in-path}
 
-`path` 参数可以使用类似 bash 的通配符指定多个文件。要进行处理，文件必须存在并与整个路径模式匹配。文件列出在 `SELECT` 时决定（而不是在 `CREATE` 时）。
+`path` 参数可以使用类似 bash 的通配符来指定多个文件。要参与处理，文件必须存在并且与整个路径模式完全匹配。文件列表在执行 `SELECT` 时确定（而不是在 `CREATE` 时）。
 
-- `*` — 替代任何数量的任意字符（不包括 `/`），包括空字符串。
-- `**` — 替代任何数量的任意字符（包括 `/`），包括空字符串。
-- `?` — 替代任意单个字符。
-- `{some_string,another_string,yet_another_one}` — 替代任意字符串 `'some_string', 'another_string', 'yet_another_one'`。
-- `{N..M}` — 替代范围内的任何数值，从 N 到 M，包括两个边界。N 和 M 可以有前导零，例如 `000..078`。
+* `*` — 匹配除 `/` 之外的任意数量任意字符，包括空字符串。
+* `**` — 匹配包括 `/` 在内的任意数量任意字符，包括空字符串。
+* `?` — 匹配任意单个字符。
+* `{some_string,another_string,yet_another_one}` — 匹配字符串 `'some_string'、'another_string'、'yet_another_one'` 中的任意一个。
+* `{N..M}` — 匹配从 N 到 M（包含两端）范围内的任意数字。N 和 M 可以有前导零，例如 `000..078`。
 
 带有 `{}` 的结构类似于 [remote](../../../sql-reference/table-functions/remote.md) 表函数。
 
 ## 限制 {#limitations}
 
-1. 重复行可能会导致：
+1. 出现重复行可能是由于以下原因导致：
 
-- 在文件处理过程中发生解析异常，并且启用了通过 `s3queue_loading_retries` 的重试；
+* 在文件处理中途解析时发生异常，并且通过 `s3queue_loading_retries` 启用了重试；
 
-- `S3Queue` 在多个服务器上配置，指向 ZooKeeper 中的相同路径，而 Keeper 会话在一台服务器成功提交已处理文件之前过期，这可能导致另一台服务器接管文件处理，该文件可能已被第一台服务器部分或完全处理；然而，自 25.8 版本以来，如果 `use_persistent_processing_nodes = 1`，则不再存在这种情况。
+* 在多个服务器上配置了 `S3Queue`，它们在 zookeeper 中指向同一路径，并且在某个服务器成功提交已处理文件之前 Keeper 会话过期，这可能导致另一台服务器接手处理该文件，而该文件可能已被第一台服务器部分或全部处理；然而，自 25.8 版本起，如果 `use_persistent_processing_nodes = 1`，则不会出现此问题。
 
-- 异常的服务器终止。
+* 服务器异常终止。
 
-2. 当 `S3Queue` 在多个服务器上配置并指向 ZooKeeper 中的相同路径，并且使用 `Ordered` 模式时，则 `s3queue_loading_retries` 将无效。这个问题将很快修复。
+2. 在多个服务器上配置了 `S3Queue` 且它们在 zookeeper 中指向同一路径，并使用 `Ordered` 模式时，`s3queue_loading_retries` 将不会生效。该问题将在后续版本中修复。
 
-## 内省 {#introspection}
+## 自省 {#introspection}
 
-要进行内省，请使用 `system.s3queue` 无状态表和 `system.s3queue_log` 持久表。
+要进行自省，请使用无状态表 `system.s3queue` 和持久化表 `system.s3queue_log`。
 
-1. `system.s3queue`。此表不是持久的，显示 `S3Queue` 的内存状态：当前正在处理的文件、已处理的文件或失败的文件。
+1. `system.s3queue`。此表为非持久化表，用于显示 `S3Queue` 的内存中状态：当前正在处理哪些文件、哪些文件已处理完成或处理失败。
 
 ```sql
 ┌─statement──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -365,7 +481,7 @@ ProfileEvents:         {'ZooKeeperTransactions':3,'ZooKeeperGet':2,'ZooKeeperMul
 exception:
 ```
 
-2. `system.s3queue_log`。持久表。具有与 `system.s3queue` 相同的信息，但针对 `processed` 和 `failed` 文件。
+2. `system.s3queue_log`。持久化表。包含与 `system.s3queue` 相同的信息，但仅针对 `processed` 和 `failed` 状态的文件。
 
 该表的结构如下：
 
@@ -391,17 +507,17 @@ Query id: 0ad619c3-0f2a-4ee4-8b40-c73d86e04314
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
-SETTINGS index_granularity = 8192 │
+│
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-为了使用 `system.s3queue_log`，请在服务器配置文件中定义其配置：
+要使用 `system.s3queue_log`，需要在服务器配置文件中定义其配置：
 
 ```xml
-<s3queue_log>
-    <database>system</database>
-    <table>s3queue_log</table>
-</s3queue_log>
+    <s3queue_log>
+        <database>system</database>
+        <table>s3queue_log</table>
+    </s3queue_log>
 ```
 
 示例：

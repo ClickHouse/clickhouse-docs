@@ -1,17 +1,16 @@
 ---
-'description': '集約関数で、maxIntersections 関数の発生位置を計算します。'
-'sidebar_position': 164
-'slug': '/sql-reference/aggregate-functions/reference/maxintersectionsposition'
-'title': 'maxIntersectionsPosition'
-'doc_type': 'reference'
+description: 'maxIntersections 関数の結果が出現する位置を計算する集約関数。'
+sidebar_position: 164
+slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
+title: 'maxIntersectionsPosition'
+doc_type: 'reference'
 ---
 
+# maxIntersectionsPosition {#maxintersectionsposition}
 
-# maxIntersectionsPosition
+[`maxIntersections` 関数](./maxintersections.md) が出現する位置を計算する集計関数です。
 
-集約関数で、[`maxIntersections` 関数](./maxintersections.md) の出現位置を計算します。
-
-構文は次のとおりです：
+構文は次のとおりです。
 
 ```sql
 maxIntersectionsPosition(start_column, end_column)
@@ -19,13 +18,13 @@ maxIntersectionsPosition(start_column, end_column)
 
 **引数**
 
-- `start_column` – 各インターバルの開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
+* `start_column` – 各インターバルの開始を表す数値型の列。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-- `end_column` - 各インターバルの終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
+* `end_column` - 各インターバルの終了を表す数値型の列。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
 **戻り値**
 
-交差するインターバルの最大数の開始位置を返します。
+最大数のインターバルが互いに重なり合う区間の開始位置を返します。
 
 **例**
 
@@ -44,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-インターバルは次のようになります：
+インターバルは以下のようになります。
 
 ```response
 1 - 3
@@ -53,15 +52,16 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-これらのインターバルのうち、3つが共通して値4を持ち、2番目のインターバルから始まっています：
+これらの区間のうち 3 つはいずれも値 4 を含んでおり、それが 2 番目の区間から始まっていることに注目してください。
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
 ```
 
-応答：
+レスポンス:
+
 ```response
 2
 ```
 
-言い換えれば、 `(1,6)` 行は、交差する3つのインターバルの開始を示しており、3は交差するインターバルの最大数です。
+言い換えると、`(1,6)` の行は互いに交差する 3 つの区間が始まる位置であり、3 は交差する区間の最大本数です。

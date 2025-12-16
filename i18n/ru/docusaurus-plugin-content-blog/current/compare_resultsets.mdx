@@ -1,0 +1,80 @@
+---
+title: Как проверить, что два запроса возвращают одинаковые наборы результатов
+description: Узнайте, как убедиться, что два запроса ClickHouse возвращают идентичные наборы результатов с помощью хеш-функций и методов сравнения.
+date: 2023-05-04
+tags: ['Функции']
+keywords: ['Проверка', 'Наборы результатов', 'Хеш-функции']
+---
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## Вопрос \{#question\}
+
+Как проверить, что два запроса возвращают одинаковые результаты?
+
+## Ответ \{#answer\}
+
+Вы можете использовать следующий подход:
+
+```sql
+WITH
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            -- здесь ваш запрос 1
+            -- SELECT ...
+        )
+    ) AS q1_resultset_hash,
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            -- здесь ваш запрос 2
+            -- SELECT ...
+        )
+    ) AS q2_resultset_hash
+SELECT equals(q1_resultset_hash,q2_resultset_hash) as Q1_equals_Q2
+```
+
+В этом примере используется [CTE](https://clickhouse.com/docs/sql-reference/statements/select/with) для вычисления сумм значения [cityHash](https://clickhouse.com/docs/sql-reference/functions/hash-functions#cityhash64) для каждой строки в двух запросах и возвращает `1`, если два результирующих набора идентичны.
+
+Используя данные в виде некоторой последовательности целых чисел и немного наглядного форматирования:
+
+```sql
+WITH
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            SELECT *
+            FROM numbers(10)
+            ORDER BY number DESC
+        )
+    ) AS q1_resultset_hash,
+    (
+        SELECT sum(cityHash64(*))
+        FROM
+        (
+            SELECT *
+            FROM numbers(10)
+            ORDER BY number ASC
+        )
+    ) AS q2_resultset_hash
+SELECT q1_resultset_hash = q2_resultset_hash AS Q1_equals_Q2
+FORMAT Pretty
+```
+
+выведет:
+
+```
+┏━━━━━━━━━━━━━━┓
+┃ Q1_equals_Q2 ┃
+┡━━━━━━━━━━━━━━┩
+│            1 │
+└──────────────┘
+```
+
+Хотя это может быть полезно во многих сценариях, это нельзя считать универсальным решением для проверки равенства наборов результатов для всех типов, и при его использовании есть нюансы: например, если какая-либо строка содержит значения `NULL`, описанный выше подход не сработает.

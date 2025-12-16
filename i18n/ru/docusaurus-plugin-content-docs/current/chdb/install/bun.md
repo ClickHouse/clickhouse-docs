@@ -1,40 +1,39 @@
 ---
-slug: '/chdb/install/bun'
-sidebar_label: Bun
-description: 'Как установить и использовать chDB с средой выполнения Bun'
-title: 'Установка chDB для Bun'
-keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'bun', 'установка']
-doc_type: guide
+title: 'chDB для Bun'
+sidebar_label: 'Bun'
+slug: /chdb/install/bun
+description: 'How to install and use chDB with Bun runtime'
+keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
+
 # chDB для Bun
 
-chDB-bun предоставляет экспериментальные привязки FFI (интерфейс внешних функций) для chDB, позволяя вам выполнять запросы ClickHouse непосредственно в ваших приложениях на Bun без внешних зависимостей.
+chDB-bun предоставляет экспериментальные FFI (Foreign Function Interface) привязки для chDB, позволяя запускать запросы ClickHouse напрямую в ваших Bun-приложениях без внешних зависимостей.
 
 ## Установка {#installation}
 
-### Шаг 1: Установите системные зависимости {#install-system-dependencies}
+### Шаг 1: Установка системных зависимостей {#install-system-dependencies}
 
 Сначала установите необходимые системные зависимости:
 
-#### Установите libchdb {#install-libchdb}
+#### Установка libchdb {#install-libchdb}
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-#### Установите инструменты для сборки {#install-build-tools}
+#### Установка инструментов сборки {#install-build-tools}
 
-Вам потребуется установить `gcc` или `clang` на вашу систему:
+Вам потребуется установить либо `gcc`, либо `clang` в вашей системе:
 
-### Шаг 2: Установите chDB-bun {#install-chdb-bun}
+### Шаг 2: Установка chDB-bun {#install-chdb-bun}
 
 ```bash
-
-# Install from the GitHub repository
+# Установка из репозитория GitHub
 bun add github:chdb-io/chdb-bun
 
-
-# Or clone and build locally
+# Или клонирование и локальная сборка
 git clone https://github.com/chdb-io/chdb-bun.git
 cd chdb-bun
 bun install
@@ -47,40 +46,40 @@ chDB-bun поддерживает два режима запросов: эфем
 
 ### Эфемерные запросы {#ephemeral-queries}
 
-Для простых одноразовых запросов, которые не требуют постоянного состояния:
+Для простых одноразовых запросов, не требующих постоянного состояния:
 
 ```typescript
 import { query } from 'chdb-bun';
 
-// Basic query
+// Базовый запрос
 const result = query("SELECT version()", "CSV");
 console.log(result); // "23.10.1.1"
 
-// Query with different output formats
+// Запрос с различными форматами вывода
 const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
 console.log(jsonResult);
 
-// Query with calculations
+// Запрос с вычислениями
 const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
 console.log(mathResult);
 
-// Query system information
+// Запрос системной информации
 const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
 ### Постоянные сессии {#persistent-sessions}
 
-Для сложных операций, которые требуют поддержания состояния между запросами:
+Для сложных операций, требующих сохранения состояния между запросами:
 
 ```typescript
 import { Session } from 'chdb-bun';
 
-// Create a session with persistent storage
+// Создание сессии с постоянным хранилищем
 const sess = new Session('./chdb-bun-tmp');
 
 try {
-    // Create a database and table
+    // Создание базы данных и таблицы
     sess.query(`
         CREATE DATABASE IF NOT EXISTS mydb;
         CREATE TABLE IF NOT EXISTS mydb.users (
@@ -90,26 +89,26 @@ try {
         ) ENGINE = MergeTree() ORDER BY id
     `, "CSV");
 
-    // Insert data
+    // Вставка данных
     sess.query(`
-        INSERT INTO mydb.users VALUES 
+        INSERT INTO mydb.users VALUES
         (1, 'Alice', 'alice@example.com'),
         (2, 'Bob', 'bob@example.com'),
         (3, 'Charlie', 'charlie@example.com')
     `, "CSV");
 
-    // Query the data
+    // Запрос данных
     const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON");
     console.log("Users:", users);
 
-    // Create and use custom functions
+    // Создание и использование пользовательских функций
     sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
     const greeting = sess.query("SELECT hello() as message", "Pretty");
     console.log(greeting);
 
-    // Aggregate queries
+    // Агрегационные запросы
     const stats = sess.query(`
-        SELECT 
+        SELECT
             COUNT(*) as total_users,
             MAX(id) as max_id,
             MIN(id) as min_id
@@ -118,7 +117,7 @@ try {
     console.log("Statistics:", stats);
 
 } finally {
-    // Always cleanup the session to free resources
-    sess.cleanup(); // This deletes the database files
+    // Всегда очищайте сессию для освобождения ресурсов
+    sess.cleanup(); // Это удаляет файлы базы данных
 }
 ```

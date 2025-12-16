@@ -1,72 +1,76 @@
 ---
-'slug': '/primary-indexes'
-'title': '主键索引'
-'description': '在 ClickHouse 中，稀疏主键索引是如何工作的'
-'keywords':
-- 'sparse primary index'
-- 'primary index'
-- 'index'
-'doc_type': 'guide'
+slug: /primary-indexes
+title: '主索引'
+description: 'ClickHouse 中稀疏主索引的工作机制'
+keywords: ['稀疏主索引', '主索引', '索引']
+doc_type: 'guide'
 ---
 
 import visual01 from '@site/static/images/managing-data/core-concepts/primary-index-light_01.gif';
 import visual02 from '@site/static/images/managing-data/core-concepts/primary-index-light_02.gif';
 import visual03 from '@site/static/images/managing-data/core-concepts/primary-index-light_03.gif';
+
 import Image from '@theme/IdealImage';
 
-:::tip 寻找高级索引细节？
-本页面介绍了 ClickHouse 的稀疏主索引，它是如何构建的，如何工作以及它如何加速查询。
+:::tip 想了解更进阶的索引内容？
+本页介绍 ClickHouse 的稀疏主索引，包括其构建方式、工作原理，以及如何提升查询性能。
 
-有关高级索引策略和更深入的技术细节，请参见 [主索引深入探讨](/guides/best-practices/sparse-primary-indexes)。
+如需了解更进阶的索引策略和更深入的技术细节，请参阅[主索引深度剖析](/guides/best-practices/sparse-primary-indexes)。
 :::
 
-## ClickHouse 中稀疏主索引如何工作？ {#how-does-the-sparse-primary-index-work-in-clickHouse}
+## ClickHouse 中的稀疏主键索引是如何工作的？ \{#how-does-the-sparse-primary-index-work-in-clickHouse\}
 
-<br/>
+<br />
 
-ClickHouse 中的稀疏主索引帮助有效识别 [granules](https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)—可能包含匹配查询条件的数据行块，这些条件基于表的 ^^主键^^ 列。在下一节中，我们将解释如何从这些列中的值构建该索引。
+ClickHouse 中的稀疏主键索引用于高效定位[粒度（granules）](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)——由多行组成的数据块——这些数据块可能包含满足查询在表 ^^primary key^^ 列上条件的数据。下一节将说明该索引是如何根据这些列中的值构建的。
 
-### 稀疏主索引创建 {#sparse-primary-index-creation}
+### 稀疏主索引的创建 \{#sparse-primary-index-creation\}
 
-为了说明稀疏主索引是如何构建的，我们使用 [uk_price_paid_simple](https://clickhouse.com/docs/parts) 表并配合一些动画演示。
+为了演示稀疏主索引是如何构建的，我们会结合一些动画来说明 [uk&#95;price&#95;paid&#95;simple](/parts) 表。
 
-作为一个 [提醒](https://clickhouse.com/docs/parts)，在我们的 ① 示例表中，其 ^^主键^^ 为 (town, street)，② 插入的数据是 ③ 存储在磁盘上，按 ^^主键^^ 列值排序并压缩，分别存储在每列的文件中：
+作为[回顾](/parts)，在我们的示例表①中，^^primary key^^ 为 (town, street)，② 插入的数据会被③存储到磁盘上，根据 ^^primary key^^ 列的取值排序并压缩，每一列单独存储在各自的文件中：
 
-<Image img={visual01} size="lg"/>
+<Image img={visual01} size="lg" />
 
-<br/><br/>
+<br />
 
-在处理过程中，每列的数据被 ④ 逻辑上划分为 granules——每个 granule 覆盖 8,192 行——这是 ClickHouse 的数据处理机制所使用的最小单位。
+<br />
 
-这种 ^^granule^^ 结构也正是使主索引 **稀疏** 的原因：ClickHouse 仅从每个 ^^granule^^ 中存储一行的 ^^主键^^ 值——具体来说，就是第一行。这导致每个 ^^granule^^ 只有一个索引条目：
+在处理时，每一列的数据会被④在逻辑上划分为多个 granule——每个 granule 覆盖 8,192 行——这是 ClickHouse 数据处理机制所使用的最小单元。
 
-<Image img={visual02} size="lg"/>
+这种 ^^granule^^ 结构也是主索引之所以是**稀疏的**：ClickHouse 并不会为每一行建立索引，而是只存储每个 ^^granule^^ 中一行的 ^^primary key^^ 值——具体来说，是第一行的值。这样每个 ^^granule^^ 就对应一个索引项：
 
-<br/><br/>
+<Image img={visual02} size="lg" />
 
-由于其稀疏性，主索引足够小，可以完全放入内存中，从而使基于 ^^主键^^ 列的查询谓词的快速过滤成为可能。在下一节中，我们将展示它如何加速这些查询。
+<br />
 
-### 主索引使用 {#primary-index-usage}
+<br />
 
-我们用另一个动画简要说明稀疏主索引如何用于查询加速：
+得益于这种稀疏性，主索引足够小，可以完整地放入内存中，从而为在 ^^primary key^^ 列上带有谓词条件的查询提供快速过滤。在下一节中，我们将展示它如何帮助加速此类查询。
 
-<Image img={visual03} size="lg"/>
+### 主索引的使用 \{#primary-index-usage\}
 
-<br/><br/>
+下面通过另一段动画概述稀疏主索引是如何用于加速查询的：
 
-① 示例查询包含对两个 ^^主键^^ 列的谓词：`town = 'LONDON' AND street = 'OXFORD STREET'`。
+<Image img={visual03} size="lg" />
 
-② 为了加速查询，ClickHouse 将表的主索引加载到内存中。
+<br />
 
-③ 然后扫描索引条目，以识别哪些 granules 可能包含匹配谓词的行——换句话说，哪些 granules 不能被跳过。
+<br />
 
-④ 这些潜在相关的 granules 随后被加载并 [处理](/optimize/query-parallelism) 到内存中，以及查询所需的其他列的相应 granules。
+① 示例查询在两个 ^^primary key^^ 列上都包含过滤条件：`town = 'LONDON' AND street = 'OXFORD STREET'`。
 
-## 监控主索引 {#monitoring-primary-indexes}
+② 为了加速查询，ClickHouse 会将表的主索引加载到内存中。
 
-表中的每个 [数据部分](/parts) 都有其自己的主索引。我们可以使用 [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) 表函数检查这些索引的内容。
+③ 随后扫描索引项，以确定哪些 granule 可能包含满足过滤条件的行——换句话说，哪些 granule 不能被跳过。
 
-以下查询列出了我们示例表中每个数据部分的主索引条目数量：
+④ 然后将这些潜在相关的 granule 以及查询所需其他列中对应的 granule 一并加载到内存中并进行[处理](/optimize/query-parallelism)。
+
+## 监控主索引 \{#monitoring-primary-indexes\}
+
+表中的每个[数据部分](/parts)都有自己的主索引。我们可以使用 [mergeTreeIndex](/sql-reference/table-functions/mergeTreeIndex) 表函数来查看这些索引的内容。
+
+下面的查询会列出示例表中每个数据部分的主索引中的条目数量：
 
 ```sql
 SELECT
@@ -84,7 +88,7 @@ GROUP BY part_name;
    └───────────┴─────────┘
 ```
 
-此查询显示了当前一个数据 ^^parts^^ 的主索引的前 10 个条目。请注意，这些 ^^parts^^ 在后台持续被 [合并](/merges) 成更大的 ^^parts^^：
+此查询显示了当前某个数据 ^^parts^^ 的主索引中的前 10 条记录。请注意，这些 ^^parts^^ 会在后台持续被[合并](/merges)为更大的 ^^parts^^：
 
 ```sql
 SELECT 
@@ -112,7 +116,8 @@ LIMIT 10;
     └───────┴────────────────┴──────────────────┘
 ```
 
-最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句查看所有数据 ^^parts^^ 的主索引如何用于跳过无法包含匹配示例查询谓词的行的 granules。这些 granules 被排除在加载和处理之外：
+最后，我们使用 [EXPLAIN](/sql-reference/statements/explain) 子句来查看如何利用所有数据 ^^parts^^ 的主索引来跳过那些不可能包含满足示例查询谓词的行的 granule。这些 granule 将不会被加载和处理：
+
 ```sql
 EXPLAIN indexes = 1
 SELECT
@@ -141,9 +146,10 @@ WHERE
     └────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-请注意，上面的 EXPLAIN 输出中的第 13 行显示，从所有数据 ^^parts^^ 中，只有 3 个 granules 被主索引分析选择用于处理，剩余的 granules 被完全跳过。
+请注意，上面 EXPLAIN 输出的第 13 行显示，在所有数据 ^^parts^^ 中的 3,609 个 granule 里，只有 3 个被主键索引的分析选中参与处理。其余 granule 则被完全跳过。
 
-我们还可以通过简单地运行查询来观察到大部分数据被跳过：
+我们还可以通过直接运行该查询来观察到，大部分数据都会被跳过：
+
 ```sql
 SELECT max(price)
 FROM uk.uk_price_paid_simple
@@ -152,38 +158,39 @@ WHERE (town = 'LONDON') AND (street = 'OXFORD STREET');
 
 ```txt
    ┌─max(price)─┐
-1. │  263100000 │ -- 263.10 million
+1. │  263100000 │ -- 2.631 亿
    └────────────┘
 
-1 row in set. Elapsed: 0.010 sec. Processed 24.58 thousand rows, 159.04 KB (2.53 million rows/s., 16.35 MB/s.)
-Peak memory usage: 13.00 MiB.
+返回 1 行。耗时:0.010 秒。已处理 24.58 千行,159.04 KB(253 万行/秒,16.35 MB/秒)。
+峰值内存使用:13.00 MiB。
 ```
 
-如上所示，示例表中约 3000 万行中，仅处理了约 25,000 行：
+如上所示，在该示例表的大约 3,000 万行记录中，实际只处理了约 25,000 行：
+
 ```sql
 SELECT count() FROM uk.uk_price_paid_simple;
 ```
 
 ```txt
    ┌──count()─┐
-1. │ 29556244 │ -- 29.56 million
+1. │ 29556244 │ -- 2956 万
    └──────────┘
 ```
 
-##  关键要点 {#key-takeaways}
+## 关键要点 \{#key-takeaways\}
 
-* **稀疏主索引** 帮助 ClickHouse 跳过不必要的数据，通过识别哪些 granules 可能包含匹配 ^^主键^^ 列查询条件的行来实现。
+* **稀疏主索引（sparse primary index）** 帮助 ClickHouse 通过识别哪些 ^^granule^^ 可能包含满足查询条件的 ^^primary key^^ 列的行，从而跳过不必要的数据。
 
-* 每个索引仅存储 **每个 ^^granule^^ 的第一行** 的 ^^主键^^ 值（默认情况下一个 ^^granule^^ 有 8,192 行），使其紧凑到足以放入内存中。
+* 每个索引只存储 **每个 ^^granule^^ 的首行的 ^^primary key^^ 值**（一个 ^^granule^^ 默认包含 8,192 行），因此足够紧凑，可以完全放入内存。
 
-* 每个 ^^MergeTree^^ 表中的 **每个数据部分** 都有其 **自己的主索引**，在查询执行过程中独立使用。
+* ^^MergeTree^^ 表中的 **每个数据 part** 都有其 **自己的主索引**，并在查询执行期间独立使用。
 
-* 在查询过程中，索引允许 ClickHouse **跳过 granules**，减少 I/O 和内存使用，同时加速性能。
+* 在查询过程中，索引使 ClickHouse 能够 **跳过 ^^granule^^**，从而降低 I/O 和内存使用，同时提升性能。
 
-* 您可以使用 `mergeTreeIndex` 表函数 **检查索引内容**，并使用 `EXPLAIN` 子句监控索引使用情况。
+* 你可以使用 `mergeTreeIndex` 表函数来 **检查索引内容**，并通过 `EXPLAIN` 子句监控索引使用情况。
 
-## 在哪里找到更多信息 {#where-to-find-more-information}
+## 在哪里可以了解更多信息 \{#where-to-find-more-information\}
 
-若要深入了解 ClickHouse 中稀疏主索引的工作原理，包括它们与传统数据库索引的不同以及最佳实践，请查看我们的详细索引 [深入探讨](/guides/best-practices/sparse-primary-indexes)。
+若想更深入了解 ClickHouse 中稀疏主键索引的工作机制，包括其与传统数据库索引的差异以及使用它们的最佳实践，请查阅我们的索引[深度解析](/guides/best-practices/sparse-primary-indexes)。
 
-如果您对 ClickHouse 如何以高度并行的方式处理主索引扫描选择的数据感兴趣，请查看查询并行性指南 [在这里](/optimize/query-parallelism)。
+如果你对 ClickHouse 如何以高度并行的方式处理经主键索引扫描选取的数据感兴趣，请参阅[查询并行性指南](/optimize/query-parallelism)。

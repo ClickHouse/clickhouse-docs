@@ -135,7 +135,7 @@ Initial installation, server configuration, database creation, data ingestion is
 - [Set up data replication](/docs/engines/table-engines/mergetree-family/replication)
 - [Configure distributed tables](/docs/engines/table-engines/special/distributed)
 <!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
-- [Set up backup and recovery](/docs/operations/backup)
+- [Set up backup and recovery](/docs/operations/backup/overview)
 - [Configure monitoring](/docs/operations/system-tables/overview)
 
 </details>

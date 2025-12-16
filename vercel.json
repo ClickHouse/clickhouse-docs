@@ -2847,6 +2847,26 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/clickpipes/object-storage",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/reference",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/amazon-s3/overview",
+      "destination": "/docs/integrations/clickpipes/object-storage/s3/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
+      "destination": "/docs/integrations/clickpipes/object-storage/s3/get-started",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/marketplace",
       "destination": "/docs/cloud/manage/marketplace/",
       "permanent": true
@@ -3522,11 +3542,6 @@
       "permanent": true
     },
     {
-      "source": "/docs/cloud/security/audit-logging",
-      "destination": "/docs/cloud/security/audit-logging/console-audit-log",
-      "permanent": true
-    },
-    {
       "source": "/docs/cloud/security/cloud-access-management/overview",
       "destination": "/docs/cloud/security/manage-database-users",
       "permanent": true
@@ -3619,6 +3634,21 @@
     {
       "source": "/docs/use-cases/observability/clickstack/ingesting-data/kubernetes",
       "destination": "/docs/use-cases/observability/clickstack/integrations/kubernetes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/backup",
+      "destination": "/docs/operations/backup/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/data-types/object-data-type",
+      "destination": "/docs/sql-reference/data-types/newjson",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-us/faq",
+      "destination": "/docs/concepts/faq",
       "permanent": true
     }
   ]

@@ -1,10 +1,12 @@
 ---
-slug: '/integrations/clickpipes/mysql/source/rds'
 sidebar_label: 'Amazon RDS MySQL'
-description: 'Пошаговое руководство, объясняющее, как установить Amazon RDS MySQL'
-title: 'Руководство по настройке источника RDS MySQL'
-doc_type: guide
+description: 'Пошаговое руководство по настройке Amazon RDS MySQL в качестве источника для ClickPipes'
+slug: /integrations/clickpipes/mysql/source/rds
+title: 'Руководство по настройке источника данных RDS MySQL'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
 ---
+
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
@@ -17,134 +19,133 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
+# Руководство по настройке источника RDS MySQL {#rds-mysql-source-setup-guide}
 
-# Руководство по настройке источника RDS MySQL
+Это пошаговое руководство описывает, как настроить Amazon RDS MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на распространённые вопросы по CDC для MySQL см. на [странице часто задаваемых вопросов по MySQL](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
-В этом пошаговом руководстве показано, как настроить Amazon RDS MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Для общих вопросов по MySQL CDC смотрите [страницу часто задаваемых вопросов по MySQL](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+## Включение хранения бинарного лога {#enable-binlog-retention-rds}
 
-## Включение хранения бинарных логов {#enable-binlog-retention-rds}
-
-Бинарный лог — это набор лог-файлов, содержащих информацию о модификациях данных, сделанных на экземпляре MySQL сервера, и бинарные лог-файлы необходимы для репликации. Чтобы настроить хранение бинарного лога в RDS MySQL, необходимо [включить бинарное логирование](#enable-binlog-logging) и [увеличить интервал хранения бинарного лога](#binlog-retention-interval).
+Бинарный лог — это набор файлов журнала, содержащих информацию об изменениях данных, внесённых в экземпляр сервера MySQL; файлы бинарного лога необходимы для репликации. Чтобы настроить хранение бинарного лога в RDS MySQL, необходимо [включить бинарное логирование](#enable-binlog-logging) и [увеличить интервал хранения binlog](#binlog-retention-interval).
 
 ### 1. Включите бинарное логирование через автоматическое резервное копирование {#enable-binlog-logging}
 
-Функция автоматических резервных копий определяет, включено ли бинарное логирование для MySQL. Автоматические резервные копии можно настроить для вашего экземпляра в консоли RDS, перейдя в **Изменить** > **Дополнительная конфигурация** > **Резервное копирование** и выбрав флажок **Включить автоматические резервные копии** (если он еще не выбран).
+Функция автоматического резервного копирования определяет, включено или отключено бинарное логирование для MySQL. Автоматическое резервное копирование можно настроить для вашего экземпляра в консоли RDS, перейдя в **Modify** &gt; **Additional configuration** &gt; **Backup** и установив флажок **Enable automated backups** (если он ещё не установлен).
 
-<Image img={rds_backups} alt="Включение автоматических резервных копий в RDS" size="lg" border/>
+<Image img={rds_backups} alt="Включение автоматических резервных копий в RDS" size="lg" border />
 
-Рекомендуем установить **Период хранения резервных копий** на разумно длительное значение, в зависимости от сценария использования репликации.
+Рекомендуется задать для параметра **Backup retention period** достаточно большое значение в зависимости от сценария использования репликации.
 
-### 2. Увеличьте интервал хранения бинарного лога {#binlog-retention-interval}
+### 2. Увеличьте интервал хранения binlog {#binlog-retention-interval}
 
 :::warning
-Если ClickPipes пытается возобновить репликацию, и необходимые бинарные лог-файлы были очищены из-за установленного значения хранения бинарного лога, ClickPipe перейдет в состояние ошибки, и потребуется повторная синхронизация.
+Если ClickPipes попытается возобновить репликацию и нужные файлы binlog будут удалены из-за настроенного значения хранения binlog, ClickPipe перейдёт в состояние ошибки, и потребуется повторная синхронизация.
 :::
 
-По умолчанию Amazon RDS очищает бинарный лог как можно быстрее (т.е. _ленивое очищение_). Рекомендуем увеличить интервал хранения бинарного лога как минимум до **72 часов**, чтобы обеспечить доступность бинарных лог-файлов для репликации в сценариях сбоев. Чтобы установить интервал хранения бинарного лога ([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)), используйте процедуру [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration):
+По умолчанию Amazon RDS очищает бинарный лог как можно скорее (т. е. использует *lazy purging*). Рекомендуется увеличить интервал хранения binlog как минимум до **72 часов**, чтобы обеспечить доступность файлов бинарного лога для репликации в аварийных сценариях. Чтобы задать интервал хранения бинарного лога ([`binlog retention hours`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration-usage-notes.binlog-retention-hours)), используйте процедуру [`mysql.rds_set_configuration`](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring.html#mysql_rds_set_configuration):
 
-[//]: # "ПРИМЕЧАНИЕ: большинство поставщиков CDC рекомендуют максимальный срок хранения для RDS (7 дней/168 часов). Поскольку это влияет на использование диска, мы консервативно рекомендуем минимум 3 дня/72 часа."
+[//]: # "ПРИМЕЧАНИЕ Большинство провайдеров CDC рекомендуют максимальный период хранения для RDS (7 дней/168 часов). Поскольку это влияет на использование диска, мы консервативно рекомендуем минимум 3 дня/72 часа."
 
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-Если эта конфигурация не установлена или установлена на низкий интервал, это может привести к пробелам в бинарных логах, что подорвет способность ClickPipes возобновить репликацию.
+Если эта конфигурация не задана или для неё установлен слишком малый интервал, это может привести к пропускам в бинарных логах, что нарушит возможность ClickPipes возобновлять репликацию.
 
-## Настройка параметров бинарного лога {#binlog-settings}
+## Настройка параметров binlog {#binlog-settings}
 
-Группа параметров может быть найдена, когда вы нажимаете на ваш экземпляр MySQL в консоли RDS, а затем переходите на вкладку **Конфигурация**.
+Группу параметров можно найти, выбрав экземпляр MySQL в консоли RDS, а затем перейдя на вкладку **Configuration**.
 
 :::tip
-Если у вас есть кластер MySQL, параметры ниже могут быть найдены в группе параметров [DB кластера](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе экземпляров БД.
+Если у вас кластер MySQL, параметры ниже можно найти в группе параметров [DB cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html), а не в группе параметров экземпляра БД.
 :::
 
 <Image img={rds_config} alt="Где найти группу параметров в RDS" size="lg" border/>
 
 <br/>
-Нажмите на ссылку группы параметров, которая переведет вас на ее страницу. Вы должны увидеть кнопку **Изменить** в верхнем правом углу.
+Нажмите на ссылку группы параметров — откроется её отдельная страница. В правом верхнем углу вы увидите кнопку **Edit**.
 
-<Image img={edit_button} alt="Изменить группу параметров" size="lg" border/>
+<Image img={edit_button} alt="Редактирование группы параметров" size="lg" border/>
 
-Следующие параметры необходимо установить следующим образом:
+Следующие параметры необходимо настроить следующим образом:
 
-1. `binlog_format` на `ROW`.
+1. `binlog_format` — `ROW`.
 
-<Image img={binlog_format} alt="Формат бинарного лога на ROW" size="lg" border/>
+<Image img={binlog_format} alt="Binlog format со значением ROW" size="lg" border/>
 
-2. `binlog_row_metadata` на `FULL`
+2. `binlog_row_metadata` — `FULL`
 
-<Image img={binlog_row_metadata} alt="Метаданные строк бинарного лога на FULL" size="lg" border/>
+<Image img={binlog_row_metadata} alt="Binlog row metadata со значением FULL" size="lg" border/>
 
-3. `binlog_row_image` на `FULL`
+3. `binlog_row_image` — `FULL`
 
-<Image img={binlog_row_image} alt="Изображение строки бинарного лога на FULL" size="lg" border/>
+<Image img={binlog_row_image} alt="Binlog row image со значением FULL" size="lg" border/>
 
 <br/>
-Затем нажмите на **Сохранить изменения** в верхнем правом углу. Возможно, вам потребуется перезагрузить ваш экземпляр, чтобы изменения вступили в силу — признаком этого является наличие `Ожидает перезагрузку` рядом со ссылкой группы параметров на вкладке **Конфигурация** экземпляра RDS.
+Затем нажмите **Save Changes** в правом верхнем углу. Возможно, потребуется перезагрузить экземпляр, чтобы изменения вступили в силу — о необходимости этого будет свидетельствовать статус `Pending reboot` рядом со ссылкой на группу параметров на вкладке **Configuration** экземпляра RDS.
 
-## Включите режим GTID {#gtid-mode}
+## Включение режима GTID {#gtid-mode}
 
 :::tip
-MySQL ClickPipe также поддерживает репликацию без режима GTID. Однако рекомендуется включить режим GTID для повышения производительности и упрощения устранения неполадок.
+MySQL ClickPipe также поддерживает репликацию без режима GTID. Однако включение режима GTID рекомендуется для повышения производительности и упрощения устранения неполадок.
 :::
 
-[Глобальные идентификаторы транзакций (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) — это уникальные идентификаторы, присваиваемые каждой завершенной транзакции в MySQL. Они упрощают репликацию бинарного лога и делают устранение неполадок более простым. Мы **рекомендуем** включить режим GTID, чтобы MySQL ClickPipe мог использовать репликацию на основе GTID.
+[Глобальные идентификаторы транзакций (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids.html) — это уникальные идентификаторы, назначаемые каждой зафиксированной транзакции в MySQL. Они упрощают репликацию на основе binlog и делают процесс устранения неполадок более простым. Мы **рекомендуем** включить режим GTID, чтобы MySQL ClickPipe мог использовать репликацию на основе GTID.
 
-Репликация на основе GTID поддерживается для Amazon RDS для MySQL версий 5.7, 8.0 и 8.4. Чтобы включить режим GTID для вашего экземпляра Aurora MySQL, выполните следующие шаги:
+Репликация на основе GTID поддерживается для Amazon RDS for MySQL версий 5.7, 8.0 и 8.4. Чтобы включить режим GTID для экземпляра Aurora MySQL, выполните следующие действия:
 
-1. В консоли RDS нажмите на ваш экземпляр MySQL.
-2. Перейдите на вкладку **Конфигурация**.
-3. Нажмите на ссылку группы параметров.
-4. Нажмите на кнопку **Изменить** в верхнем правом углу.
-5. Установите `enforce_gtid_consistency` в `ON`.
-6. Установите `gtid-mode` в `ON`.
-7. Нажмите на **Сохранить изменения** в верхнем правом углу.
-8. Перезагрузите ваш экземпляр, чтобы изменения вступили в силу.
+1. В консоли RDS выберите экземпляр MySQL.
+2. Перейдите на вкладку **Configuration**.
+3. Нажмите на ссылку группы параметров (parameter group).
+4. Нажмите кнопку **Edit** в правом верхнем углу.
+5. Установите для `enforce_gtid_consistency` значение `ON`.
+6. Установите для `gtid-mode` значение `ON`.
+7. Нажмите **Save Changes** в правом верхнем углу.
+8. Перезагрузите экземпляр, чтобы изменения вступили в силу.
 
-<Image img={enable_gtid} alt="Режим GTID включен" size="lg" border/>
+<Image img={enable_gtid} alt="GTID включён" size="lg" border/>
 
 <br/>
 :::tip
-MySQL ClickPipe также поддерживает репликацию без режима GTID. Однако рекомендуется включить режим GTID для повышения производительности и упрощения устранения неполадок.
+MySQL ClickPipe также поддерживает репликацию без режима GTID. Однако включение режима GTID рекомендуется для повышения производительности и упрощения устранения неполадок.
 :::
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
-Подключитесь к вашему экземпляру RDS MySQL как администратор и выполните следующие команды:
+Подключитесь к экземпляру RDS MySQL под учетной записью с правами администратора и выполните следующие команды:
 
 1. Создайте отдельного пользователя для ClickPipes:
 
-```sql
-CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
-```
+    ```sql
+    CREATE USER 'clickpipes_user'@'host' IDENTIFIED BY 'some-password';
+    ```
 
-2. Предоставьте права на схему. Пример ниже показывает права для базы данных `mysql`. Повторите эти команды для каждой базы данных и хоста, которые вы хотите реплицировать:
+2. Предоставьте права на схему. В следующем примере показаны права для базы данных `mysql`. Повторите эти команды для каждой базы данных и каждого хоста, которые нужно реплицировать:
 
-```sql
-GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
-```
+    ```sql
+    GRANT SELECT ON `mysql`.* TO 'clickpipes_user'@'host';
+    ```
 
 3. Предоставьте пользователю права на репликацию:
 
-```sql
-GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
-GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-```
+    ```sql
+    GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
+    GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
+    ```
 
 ## Настройка сетевого доступа {#configure-network-access}
 
-### Контроль доступа на основе IP адресов {#ip-based-access-control}
+### Управление доступом на основе IP-адресов {#ip-based-access-control}
 
-Чтобы ограничить трафик к вашему экземпляру Aurora MySQL, добавьте [записанные статические NAT IP адреса](../../index.md#list-of-static-ips) в **Правила входящего трафика** вашей группы безопасности RDS.
+Чтобы ограничить трафик к экземпляру Aurora MySQL, добавьте [задокументированные статические IP-адреса NAT](../../index.md#list-of-static-ips) в **Inbound rules** группы безопасности RDS.
 
 <Image img={security_group_in_rds_mysql} alt="Где найти группу безопасности в RDS MySQL?" size="lg" border/>
 
-<Image img={edit_inbound_rules} alt="Изменить правила входящего трафика для вышеуказанной группы безопасности" size="lg" border/>
+<Image img={edit_inbound_rules} alt="Изменение правил входящего трафика (Inbound rules) для этой группы безопасности" size="lg" border/>
 
 ### Частный доступ через AWS PrivateLink {#private-access-via-aws-privatelink}
 
-Чтобы подключиться к вашему экземпляру RDS через частную сеть, вы можете использовать AWS PrivateLink. Следуйте [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить соединение.
+Чтобы подключиться к экземпляру RDS через частную сеть, используйте AWS PrivateLink. Следуйте [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить подключение.
 
-## Следующие шаги {#next-steps}
+## Дальнейшие шаги {#next-steps}
 
-Теперь, когда ваш экземпляр Amazon RDS MySQL настроен для репликации бинарного лога и безопасного подключения к ClickHouse Cloud, вы можете [создать ваш первый MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe). Для общих вопросов по MySQL CDC смотрите [страницу часто задаваемых вопросов по MySQL](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+Теперь, когда ваш экземпляр Amazon RDS MySQL настроен для репликации через binlog и безопасно подключается к ClickHouse Cloud, вы можете [создать свой первый MySQL ClickPipe](/integrations/clickpipes/mysql/#create-your-clickpipe). Ответы на распространённые вопросы по MySQL CDC см. на [странице MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).

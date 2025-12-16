@@ -1,20 +1,21 @@
 ---
-'sidebar_label': 'Confluent Cloud上のKafkaコネクタシンク'
-'sidebar_position': 2
-'slug': '/integrations/kafka/cloud/confluent/sink-connector'
-'description': 'フルマネージドのClickHouseコネクタシンクをConfluent Cloudで使用するためのガイド'
-'title': 'Confluent CloudとClickHouseの統合'
-'keywords':
-- 'Kafka'
-- 'Confluent Cloud'
-'doc_type': 'guide'
+sidebar_label: 'Confluent Cloud 上の Kafka Connector Sink'
+sidebar_position: 2
+slug: /integrations/kafka/cloud/confluent/sink-connector
+description: 'Confluent Cloud 上でフルマネージドの ClickHouse Connector Sink を利用するためのガイド'
+title: 'Confluent Cloud と ClickHouse の統合'
+keywords: ['Kafka', 'Confluent Cloud']
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+  - website: 'https://clickhouse.com/cloud/clickpipes'
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
-# Confluent CloudとClickHouseの統合
+# Confluent Cloud と ClickHouse との連携 {#integrating-confluent-cloud-with-clickhouse}
 
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
@@ -29,35 +30,35 @@ import Image from '@theme/IdealImage';
 </div>
 
 ## 前提条件 {#prerequisites}
-以下に精通していることを前提としています：
+以下の内容について理解していることを前提とします:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
 
-## Confluent Cloudとの公式Kafkaコネクタ {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
+## Confluent Cloud 向け ClickHouse 公式 Kafka コネクタ {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
-#### トピックの作成 {#create-a-topic}
-Confluent Cloudでトピックを作成するのは非常に簡単で、詳細な手順は[こちら](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)にあります。
+#### トピックを作成する {#create-a-topic}
+Confluent Cloud 上でトピックを作成するのは比較的簡単で、詳細な手順は[こちら](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html)に記載されています。
 
 #### 重要な注意事項 {#important-notes}
 
-* Kafkaのトピック名はClickHouseのテーブル名と同じでなければなりません。この調整方法はトランスフォーマーを使用することです（例えば [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)）。
-* パーティションが多いことが常にパフォーマンスを向上させるわけではありません - 詳細やパフォーマンスのヒントについては、今後のガイドを参照してください。
+* Kafka のトピック名は ClickHouse のテーブル名と同一である必要があります。これを調整するには、トランスフォーマー（たとえば [`ExtractTopic`](https://docs.confluent.io/platform/current/connect/transforms/extracttopic.html)）を使用します。
+* パーティション数が多ければ常にパフォーマンスが向上するとは限りません。詳細およびパフォーマンス向上のためのヒントについては、今後公開予定のガイドを参照してください。
 
 #### 接続情報を収集する {#gather-your-connection-details}
 <ConnectionDetails />
 
-#### コネクタのインストール {#install-connector}
-Confluent Cloud上に完全に管理されたClickHouse Sink Connectorをインストールするには、[公式ドキュメント](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)に従ってください。
+#### コネクタをインストールする {#install-connector}
+[公式ドキュメント](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html)に従って、Confluent Cloud 上に完全マネージド型の ClickHouse Sink Connector をインストールします。
 
-#### コネクタの設定 {#configure-the-connector}
-ClickHouse Sink Connectorの設定中に、以下の情報を提供する必要があります：
-- ClickHouseサーバーのホスト名
-- ClickHouseサーバーのポート（デフォルトは8443）
-- ClickHouseサーバーのユーザー名とパスワード
-- データが書き込まれるClickHouseのデータベース名
-- ClickHouseにデータを書き込むために使用されるKafkaのトピック名
+#### コネクタを設定する {#configure-the-connector}
+ClickHouse Sink Connector を設定する際に、次の情報を指定する必要があります:
+- ClickHouse サーバーのホスト名
+- ClickHouse サーバーのポート（デフォルトは 8443）
+- ClickHouse サーバーのユーザー名とパスワード
+- データを書き込む ClickHouse 上のデータベース名
+- ClickHouse へのデータ書き込みに使用する Kafka のトピック名
 
-Confluent CloudのUIは、パフォーマンスを最適化するためにポーリング間隔、バッチサイズ、およびその他のパラメータを調整するための高度な設定オプションをサポートしています。
+Confluent Cloud の UI では、ポーリング間隔、バッチサイズ、そのほかのパラメータを調整してパフォーマンスを最適化するための高度な設定オプションを利用できます。
 
-#### 知られている制限事項 {#known-limitations}
-* [公式ドキュメントのコネクタの制限事項のリスト](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)を参照してください。
+#### 既知の制限事項 {#known-limitations}
+* [公式ドキュメントに記載されている Connectors の制限事項一覧](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)を参照してください。

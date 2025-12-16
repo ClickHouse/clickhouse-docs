@@ -1,11 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data/otel-collector'
-'pagination_prev': null
-'pagination_next': null
-'description': '用于 ClickStack 的 OpenTelemetry 收集器 - ClickHouse 可观察性栈'
-'sidebar_label': 'OpenTelemetry Collector'
-'title': 'ClickStack OpenTelemetry Collector'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/ingesting-data/otel-collector
+pagination_prev: null
+pagination_next: null
+description: '适用于 ClickStack 的 OpenTelemetry collector - ClickHouse 可观测性栈'
+sidebar_label: 'OpenTelemetry collector'
+title: 'ClickStack OpenTelemetry Collector'
+doc_type: 'guide'
+keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse 可观测性', 'OTel collector 配置', 'OpenTelemetry ClickHouse']
 ---
 
 import Image from '@theme/IdealImage';
@@ -16,51 +17,52 @@ import clickstack_with_gateways from '@site/static/images/use-cases/observabilit
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
-此页面包含有关配置官方 ClickStack OpenTelemetry (OTel) 收集器的详细信息。
+本页详细介绍如何配置官方 ClickStack OpenTelemetry（OTel）收集器。
 
-## 收集器角色 {#collector-roles}
+## Collector 角色 {#collector-roles}
 
-OpenTelemetry 收集器可以以两种主要角色部署：
+OpenTelemetry collector 可以以两种主要角色进行部署：
 
-- **代理** - 代理实例在边缘收集数据，例如在服务器或 Kubernetes 节点上，或直接从应用程序接收事件 - 这些应用程序通过 OpenTelemetry SDK 进行工具化。在后者中，代理实例与应用程序一起运行，或者与应用程序在同一主机上运行（例如作为侧车或 DaemonSet）。代理可以直接将数据发送到 ClickHouse 或发送到网关实例。在前一种情况下，这被称为 [代理部署模式](https://opentelemetry.io/docs/collector/deployment/agent/)。
+- **Agent** - Agent 实例在边缘侧收集数据，例如在服务器或 Kubernetes 节点上，或者直接从通过 OpenTelemetry SDK 接入的应用程序接收事件。在后一种情况下，Agent 实例与应用程序一起运行，或运行在与应用程序相同的主机上（例如作为 sidecar 或 DaemonSet 守护进程集）。Agent 可以将其数据直接发送到 ClickHouse，或者发送到网关实例。在前一种情况下，这被称为 [Agent 部署模式](https://opentelemetry.io/docs/collector/deployment/agent/)。 
 
-- **网关** - 网关实例提供独立服务（例如，在 Kubernetes 中的部署），通常按集群、数据中心或区域提供。这些实例通过单个 OTLP 端点接收来自应用程序（或作为代理的其他收集器）的事件。通常会部署一组网关实例，并使用开箱即用的负载均衡器在它们之间分配负载。如果所有代理和应用程序都将其信号发送到这个单一端点，通常被称为 [网关部署模式](https://opentelemetry.io/docs/collector/deployment/gateway/)。
+- **Gateway** - Gateway 实例提供一个独立的服务（例如在 Kubernetes 中的一个部署），通常按集群、数据中心或区域划分。这些实例通过单个 OTLP 端点接收来自应用程序（或作为 Agent 的其他 collector）的事件。通常会部署一组 Gateway 实例，并使用开箱即用的负载均衡器在它们之间分发负载。如果所有 Agent 和应用程序都将信号发送到这一单一端点，则通常称为 [Gateway 部署模式](https://opentelemetry.io/docs/collector/deployment/gateway/)。 
 
-**重要：包括在 ClickStack 的默认分发中，收集器假定如下所述的 [网关角色](#collector-roles)，接收来自代理或 SDK 的数据。**
+**重要：Collector（包括 ClickStack 的默认发行版）默认采用下面描述的 [Gateway 角色](#collector-roles)，从 Agent 或 SDK 接收数据。**
 
-以代理角色部署 OTel 收集器的用户通常使用 [收集器的默认贡献分发版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，而不是 ClickStack 版本，但可以自由使用其他兼容 OTLP 的技术，例如 [Fluentd](https://www.fluentd.org/) 和 [Vector](https://vector.dev/)。
+以 Agent 角色部署 OTel collector 的用户通常会使用 [collector 的默认 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，而非 ClickStack 版本，但也可以自由选择其他兼容 OTLP 的技术，例如 [Fluentd](https://www.fluentd.org/) 和 [Vector](https://vector.dev/)。
 
 ## 部署收集器 {#configuring-the-collector}
 
-如果您在独立部署中管理自己的 OpenTelemetry 收集器 - 例如，使用仅限 HyperDX 的发行版 - 我们 [建议仍然使用官方 ClickStack 的收集器分发版](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) 作为可能的网关角色，但如果您选择自带，请确保它包含 [ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
+如果你以独立部署的方式自行管理 OpenTelemetry collector（例如仅使用 HyperDX 发行版时），我们[仍然建议在条件允许的情况下使用官方 ClickStack 发行版的 collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) 来承担网关角色。但如果你选择自行提供 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
 
 ### 独立模式 {#standalone}
 
-要在独立模式下部署 ClickStack 发行版的 OTel 连接器，请运行以下 docker 命令：
+要以独立模式部署 ClickStack 发行版提供的 OTel 连接器，请运行以下 Docker 命令：
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-请注意，我们可以使用环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 重写目标 ClickHouse 实例。`CLICKHOUSE_ENDPOINT` 应该是完整的 ClickHouse HTTP 端点，包括协议和端口 - 例如 `http://localhost:8123`。
+请注意，我们可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 来覆盖目标 ClickHouse 实例的配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse HTTP 端点，包括协议和端口，例如：`http://localhost:8123`。
 
-**这些环境变量可以与包含连接器的任何 docker 发行版一起使用。**
+**这些环境变量可用于任何包含该连接器的 Docker 发行版。**
 
-`OPAMP_SERVER_URL` 应指向您的 HyperDX 部署 - 例如 `http://localhost:4320`。HyperDX 默认在端口 `4320` 的 `/v1/opamp` 上暴露一个 OpAMP（开放代理管理协议）服务器。确保从运行 HyperDX 的容器中暴露此端口（例如，使用 `-p 4320:4320`）。
+`OPAMP_SERVER_URL` 应指向你的 HyperDX 部署，例如 `http://localhost:4320`。HyperDX 默认在端口 `4320` 的 `/v1/opamp` 上暴露一个 OpAMP（Open Agent Management Protocol，开放代理管理协议）服务器。请确保在运行 HyperDX 的容器中暴露此端口（例如使用 `-p 4320:4320`）。
 
 :::note 暴露并连接到 OpAMP 端口
-为了让收集器连接到 OpAMP 端口，必须通过 HyperDX 容器暴露该端口，例如 `-p 4320:4320`。对于本地测试，OSX 用户可以设置 `OPAMP_SERVER_URL=http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动收集器容器。
+为了让 collector 能够连接到 OpAMP 端口，该端口必须由 HyperDX 容器暴露，例如 `-p 4320:4320`。在本地测试中，macOS 用户可以将 `OPAMP_SERVER_URL` 设置为 `http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动 collector 容器。
 :::
 
-用户在生产中应使用 [适当凭据的用户](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)。
+在生产环境中，应使用具备[相应凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的专用用户。
+
 
 ### 修改配置 {#modifying-otel-collector-configuration}
 
-#### 使用 docker {#using-docker}
+#### 使用 Docker {#using-docker}
 
-所有包含 OpenTelemetry 收集器的 docker 镜像都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为使用 ClickHouse 实例：
+所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为连接到某个 ClickHouse 实例：
 
-例如，所有功能合并的镜像：
+例如，all-in-one 镜像：
 
 ```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
@@ -70,97 +72,192 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note 镜像名称更新
+ClickStack 镜像现在以 `clickhouse/clickstack-*` 的名称发布（此前为 `docker.hyperdx.io/hyperdx/*`）。
+:::
+
 
 #### Docker Compose {#docker-compose-otel}
 
-使用 Docker Compose，通过上面相同的环境变量修改收集器配置：
+在 Docker Compose 中，使用与上文相同的环境变量来修改收集器配置：
 
 ```yaml
-otel-collector:
-  image: hyperdx/hyperdx-otel-collector
-  environment:
-    CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
-    HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-    CLICKHOUSE_USER: 'default'
-    CLICKHOUSE_PASSWORD: 'password'
-    OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-  ports:
-    - '13133:13133' # health_check extension
-    - '24225:24225' # fluentd receiver
-    - '4317:4317' # OTLP gRPC receiver
-    - '4318:4318' # OTLP http receiver
-    - '8888:8888' # metrics extension
-  restart: always
-  networks:
-    - internal
+  otel-collector:
+    image: hyperdx/hyperdx-otel-collector
+    environment:
+      CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
+      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+      CLICKHOUSE_USER: 'default'
+      CLICKHOUSE_PASSWORD: 'password'
+      OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+    ports:
+      - '13133:13133' # health_check 扩展组件
+      - '24225:24225' # Fluentd 接收端
+      - '4317:4317' # OTLP gRPC 接收端
+      - '4318:4318' # OTLP HTTP 接收端
+      - '8888:8888' # 指标扩展组件
+    restart: always
+    networks:
+      - internal
 ```
 
 ### 高级配置 {#advanced-configuration}
 
-目前，ClickStack 发行版的 OTel 收集器不支持修改其配置文件。如果您需要更复杂的配置，例如 [配置 TLS](#securing-the-collector)，或修改批处理大小，我们建议复制和修改 [默认配置](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)，并使用文档中记录的 ClickHouse 导出器自行部署 OTel 收集器 [在这里](/observability/integrating-opentelemetry#exporting-to-clickhouse) 和 [这里](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
+ClickStack 发行版的 OTel collector 支持通过挂载自定义配置文件并设置环境变量来扩展基础配置。自定义配置会与由 HyperDX 通过 OpAMP 管理的基础配置合并。
 
-OpenTelemetry (OTel) 收集器的默认 ClickStack 配置可以在 [这里](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) 找到。
+#### 扩展 collector 配置 {#extending-collector-config}
+
+要添加自定义 receivers、processors 或 pipelines：
+
+1. 创建一个包含额外配置的自定义配置文件
+2. 将该文件挂载到 `/etc/otelcol-contrib/custom.config.yaml`
+3. 将环境变量设置为 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+
+**自定义配置示例：**
+
+```yaml
+receivers:
+  # 从本地文件收集日志
+  filelog:
+    include:
+      - /var/log/**/*.log
+      - /var/log/syslog
+      - /var/log/messages
+    start_at: beginning
+
+  # 收集主机系统指标
+  hostmetrics:
+    collection_interval: 30s
+    scrapers:
+      cpu:
+        metrics:
+          system.cpu.utilization:
+            enabled: true
+      memory:
+        metrics:
+          system.memory.utilization:
+            enabled: true
+      disk:
+      network:
+      filesystem:
+        metrics:
+          system.filesystem.utilization:
+            enabled: true
+
+service:
+  pipelines:
+    # 日志管道
+    logs/host:
+      receivers: [filelog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+    
+    # 指标管道
+    metrics/hostmetrics:
+      receivers: [hostmetrics]
+      processors:
+        - memory_limiter
+        - batch
+      exporters:
+        - clickhouse
+```
+
+**使用一体化镜像部署：**
+
+```bash
+docker run -d --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  clickhouse/clickstack-all-in-one:latest
+```
+
+**使用独立采集器部署：**
+
+```bash
+docker run -d \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+  -e CLICKHOUSE_USER=default \
+  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -p 4317:4317 -p 4318:4318 \
+  clickhouse/clickstack-otel-collector:latest
+```
+
+:::note
+你只需在自定义配置中定义新的 receivers、processors 和 pipelines。基础 processors（`memory_limiter`、`batch`）和 exporter（`clickhouse`）已预先定义——通过名称引用它们即可。自定义配置会与基础配置合并，且不能覆盖已有组件。
+:::
+
+对于更复杂的配置，请参考 [默认的 ClickStack 收集器配置](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) 和 [ClickHouse exporter 文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
+
 
 #### 配置结构 {#configuration-structure}
 
-有关配置 OTel 收集器的详细信息，包括 [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/)、[`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 和 [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors)，我们建议参考 [官方 OpenTelemetry 收集器文档](https://opentelemetry.io/docs/collector/configuration)。
+有关如何配置 OTel collector 的详细说明，包括 [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/)、[`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 和 [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors)，建议参考 [官方 OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/configuration)。
 
-## 保护收集器 {#securing-the-collector}
+## 保护 collector {#securing-the-collector}
 
-ClickStack 发行版的 OpenTelemetry 收集器包括对 OpAMP（开放代理管理协议）的内置支持，它用于安全配置和管理 OTLP 端点。启动时，用户必须提供 `OPAMP_SERVER_URL` 环境变量 - 这应指向 HyperDX 应用程序，该应用程序在 `/v1/opamp` 处托管 OpAMP API。
+ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，用户必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
 
-此集成确保 OTLP 端点通过在 HyperDX 应用程序部署时生成的自动生成的接收 API 密钥进行保护。发送到收集器的所有遥测数据必须包括此 API 密钥以进行身份验证。您可以在 HyperDX 应用程序的 `团队设置 → API 密钥` 中找到此密钥。
+此集成确保 OTLP 端点通过在部署 HyperDX 应用时自动生成的摄取 API key 得到保护。所有发送到 collector 的遥测数据都必须包含此 API key 以完成身份验证。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该 key。
 
 <Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
 为了进一步保护您的部署，我们建议：
 
-- 配置收集器通过 HTTPS 与 ClickHouse 通信。
-- 创建一个具有有限权限的专用接收用户 - 见下文。
-- 启用 OTLP 端点的 TLS，确保 SDK/代理与收集器之间的加密通信。**目前，这要求用户自行部署收集器的默认分发版并管理配置**。
+- 将 collector 配置为通过 HTTPS 与 ClickHouse 通信。
+- 为摄取创建一个权限受限的专用用户——参见下文。
+- 为 OTLP 端点启用 TLS，确保 SDK/agent 与 collector 之间的通信经过加密。您可以通过[自定义 collector 配置](#extending-collector-config)进行配置。
 
-### 创建接收用户 {#creating-an-ingestion-user}
+### 创建摄取用户 {#creating-an-ingestion-user}
 
-我们建议为 OTel 收集器在 ClickHouse 中创建一个专用数据库和用户用于接收。这应该具有在 [ClickStack 创建和使用的表中创建和插入的能力](/use-cases/observability/clickstack/ingesting-data/schemas)。
+我们建议为 OTel collector 在向 ClickHouse 摄取数据时使用，单独创建一个专用数据库和用户。该用户应具有在[由 ClickStack 创建和使用的表](/use-cases/observability/clickstack/ingesting-data/schemas)中创建表并插入数据的权限。
 
 ```sql
 CREATE DATABASE otel;
 CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
-这假设收集器已配置为使用数据库 `otel`。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 控制此项。将此项传递给托管收集器的镜像 [类似于其他环境变量](#modifying-otel-collector-configuration)。
+这里假定 collector 已配置为使用数据库 `otel`。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该环境变量传递给运行 collector 的镜像，[方式与其他环境变量类似](#modifying-otel-collector-configuration)。
 
-## 处理 - 过滤、转换和丰富 {#processing-filtering-transforming-enriching}
+## 处理 —— 过滤、转换和富化 {#processing-filtering-transforming-enriching}
 
-用户通常希望在接收过程中过滤、转换和丰富事件消息。由于 ClickStack 连接器的配置无法修改，我们建议需要进一步事件过滤和处理的用户：
+用户在数据摄取过程中通常会希望对事件消息进行过滤、转换和富化。由于无法修改 ClickStack connector 的配置，我们建议需要进一步进行事件过滤和处理的用户采用以下任一方式：
 
-- 部署自己版本的 OTel 收集器，执行过滤和处理，通过 OTLP 将事件发送到 ClickStack 收集器以接收进入 ClickHouse。
-- 部署自己版本的 OTel 收集器，直接使用 ClickHouse 导出器将事件发送到 ClickHouse。
+- 部署自有版本的 OTel collector，在其中执行过滤和处理，然后通过 OTLP 将事件发送到 ClickStack collector，以摄取到 ClickHouse 中。
+- 部署自有版本的 OTel collector，并使用 ClickHouse exporter 将事件直接发送到 ClickHouse。
 
-如果通过 OTel 收集器进行处理，我们建议在网关实例执行转换任务，并尽量减少在代理实例上进行的任何工作。这将确保在边缘运行的代理所需的资源尽可能少。通常，我们看到用户仅执行过滤（以最小化不必要的网络使用）、时间戳设置（通过运算符）和丰富，这需要代理中的上下文。例如，如果网关实例位于不同的 Kubernetes 集群中，将需要在代理中进行 k8s 丰富。
+如果使用 OTel collector 进行处理，我们建议在网关实例上执行转换工作，并尽量减少在 agent 实例上的工作负载。这样可以确保在边缘、运行在服务器上的 agent 所需资源尽可能少。通常，我们看到用户只在 agent 中执行过滤（以减少不必要的网络使用）、时间戳设置（通过 operators），以及需要上下文的富化操作。例如，如果网关实例位于不同的 Kubernetes 集群中，则需要在 agent 中执行 k8s 富化。
 
-OpenTelemetry 支持以下处理和过滤特性，用户可以利用：
+OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
 
-- **处理器** - 处理器从 [接收器收集的数据并修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/) 后发送到导出器。处理器按配置在收集器配置的 `processors` 部分中的顺序应用。这些是可选的，但通常建议最小集合为 [推荐处理器](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。在与 ClickHouse 一起使用 OTel 收集器时，我们建议将处理器限制为：
+- **Processors** - Processors 获取由 [receivers 收集到的数据并对其进行修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/)，然后再发送给 exporters。Processors 按照在 collector 配置中 `processors` 部分指定的顺序应用。这些是可选的，但[通常建议使用一个最小集合](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。在将 OTel collector 与 ClickHouse 一起使用时，我们建议将 processors 限制为：
 
-- 使用 [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) 防止收集器出现内存不足问题。有关建议，请参见 [估算资源](#estimating-resources)。
-- 任何基于上下文进行丰富的处理器。例如， [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) 允许自动设置跨度、度量和日志资源属性，使用 k8s 元数据丰富事件，例如通过源 pod ID 丰富事件。
-- 如果需要针对跟踪的 [尾部或头部抽样](https://opentelemetry.io/docs/concepts/sampling/)。
-- [基本过滤](https://opentelemetry.io/docs/collector/transforming-telemetry/) - 如果无法通过运算符（见下文）执行，丢弃不需要的事件。
-- [批量处理](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - 在与 ClickHouse 一起工作时确保以批处理方式发送数据的关键。请参阅 ["优化插入"](#optimizing-inserts)。
+- 一个 [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md)，用于防止 collector 出现内存耗尽情况。建议参见 [Estimating Resources](#estimating-resources)。
+- 任何基于上下文执行富化的 processor。例如，[Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) 允许使用 k8s 元数据自动为 span、metrics 和 logs 设置 resource 属性，例如用源 pod id 富化事件。
+- 如需要 trace 时使用的 [尾部或头部采样（tail/head sampling）](https://opentelemetry.io/docs/concepts/sampling/)。
+- [基本过滤](https://opentelemetry.io/docs/collector/transforming-telemetry/) —— 如果无法通过 operator 完成（见下文），则丢弃不需要的事件。
+- [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) —— 在与 ClickHouse 一起使用时必不可少，以确保数据以批量方式发送。参见 ["Optimizing inserts"](#optimizing-inserts)。
 
-- **运算符** - [运算符](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 提供接收器可用的最基本的处理单元。支持基本解析，允许设置字段如严重性和时间戳。支持 JSON 和正则表达式的解析，以及事件过滤和基本转换。我们建议在此执行事件过滤。
+- **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 提供了在 receiver 侧可用的最基本处理单元。支持基础解析，允许设置诸如 Severity 和 Timestamp 等字段。此处支持 JSON 和正则解析，以及事件过滤和基础转换。我们建议在此执行事件过滤。
 
-我们建议用户避免使用运算符或 [转换处理器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过量的事件处理。这可能会造成 considerable memory 和 CPU 开销，特别是 JSON 解析。在插入时可以在 ClickHouse 中进行所有处理， materialized views 和具有一些例外的列 - 特别是上下文感知丰富，例如添加 k8s 元数据。有关更多详细信息，请参见 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
+我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过物化视图和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
 
-### 例子 {#example-processing}
+### 示例 {#example-processing}
 
-以下配置显示了如何收集此 [非结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)。此配置可以被在代理角色中发送数据到 ClickStack 网关的收集器使用。
+以下配置演示了如何采集这个[非结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)。该配置可用于以 agent 身份运行的 collector，将数据发送到 ClickStack 网关。
 
-注意使用运算符从日志行提取结构（`regex_parser`）和过滤事件，以及使用处理器对事件进行批处理和限制内存使用。
+请注意，这里使用算子从日志行中提取结构（`regex_parser`）并过滤事件，同时使用处理器对事件进行批处理，以限制内存占用。
 
 ```yaml file=code_snippets/ClickStack/config-unstructured-logs-with-processor.yaml
 receivers:
@@ -184,14 +281,14 @@ processors:
     limit_mib: 2048
     spike_limit_mib: 256
 exporters:
-  # HTTP setup
+  # HTTP 配置
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
 
-  # gRPC setup (alternative)
+  # gRPC 配置（备选）
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -200,7 +297,7 @@ exporters:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
+      address: 0.0.0.0:9888 # 已修改，因同一主机上运行 2 个采集器
   pipelines:
     logs:
       receivers: [filelog]
@@ -209,135 +306,140 @@ service:
 
 ```
 
-请注意，在任何 OTLP 通信中需要包含 [包含您的接收 API 密钥的授权头](#securing-the-collector)。
+请注意，在任何 OTLP 通信中都需要包含[带有摄取 API key 的 Authorization 请求头](#securing-the-collector)。
 
-有关更高级的配置，我们建议查看 [OpenTelemetry 收集器文档](https://opentelemetry.io/docs/collector/)。
+如需更高级的配置，我们建议参考 [OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/)。
 
 ## 优化插入 {#optimizing-inserts}
 
-为了在将可观察性数据通过 ClickStack 收集器插入 ClickHouse 时实现高插入性能，同时获得强一致性保证，用户在插入时应遵循一些简单规则。通过正确配置 OTel 收集器，以下规则应该容易遵循。这也避免了用户在首次使用 ClickHouse 时遇到的 [常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
+为了在获得强一致性保证的同时实现高效的插入性能，用户在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
 
 ### 批处理 {#batching}
 
-默认情况下，每个插入到 ClickHouse 的请求都会导致 ClickHouse 立即创建一个存储部分，其中包含插入的数据以及需要存储的其他元数据。因此，发送较小数量的插入，每个插入包含更多数据，相比之下发送较多数量的插入，每个插入包含较少数据，将减少所需的写入次数。我们建议以至少 1,000 行的相当大批量插入数据。有关更进一步的信息，请参见 [这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
+默认情况下，发送到 ClickHouse 的每个 insert 都会让 ClickHouse 立即创建一个存储部分（part），其中包含此次插入的数据以及需要存储的其他元数据。因此，相比发送大量每次只包含少量数据的 insert，发送较少次数但每次包含更多数据的 insert，可以减少所需的写入次数。我们建议一次插入至少 1,000 行的较大批次数据。更多详情见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)。
 
-默认情况下，插入到 ClickHouse 是同步且相同的时是幂等的。对于 MergeTree 引擎系列的表，ClickHouse 默认情况下会自动 [去重插入](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着在以下情况下，插入是容忍的：
+默认情况下，对 ClickHouse 的 insert 是同步的，并且对于相同内容是幂等的。对于 merge tree 引擎族的表，ClickHouse 默认会自动[对 insert 进行去重](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)。这意味着 insert 在如下情况中是可容错的：
 
-- (1) 如果接收数据的节点出现问题，插入查询将超时（或收到更具体的错误），并且不会收到确认。
-- (2) 如果数据已由节点写入，但由于网络中断无法将确认返回给查询发送方，发送方将获得超时或网络错误。
+- (1) 如果接收数据的节点出现问题，insert 查询会超时（或返回更具体的错误），并且不会收到确认。
+- (2) 如果数据已经被该节点写入，但由于网络中断，确认无法返回给查询的发送方，则发送方会收到超时或网络错误。
 
-从收集器的角度来看，(1) 和 (2) 可能难以区分。然而，在两种情况下，未确认的插入可以立即重试。只要重试的插入查询包含相同的数据且顺序相同，即使原始（未确认的）插入成功，ClickHouse 也会自动忽略重试的插入。
+从 collector 的角度来看，(1) 和 (2) 可能很难区分。不过，在这两种情况下，未被确认的 insert 都可以立即重试。只要重试的 insert 查询包含的数据及其顺序与原始 insert 相同，如果原始（未被确认的）insert 实际上已成功，ClickHouse 就会自动忽略这次重试的 insert。
 
-因此，ClickStack 发行版的 OTel 收集器使用 [批处理处理器](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这确保插入作为一致的行批次发送，以满足上述要求。如果预计收集器的吞吐量很高（事件每秒），并且每次插入可以发送至少 5000 个事件，那么通常这就是管道中所需的唯一批处理。在这种情况下，收集器将在达到批处理处理器的 `timeout` 之前刷新批量，确保管道的端到端延迟保持低且批次大小一致。
+基于上述原因，ClickStack 发行版中的 OTel collector 使用了[batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)。这可以确保 insert 以满足上述要求的一致批次形式发送。如果预期某个 collector 具有较高吞吐量（每秒事件数，events per second），并且每次 insert 至少可以发送 5000 个事件，那么通常这就是处理管道（pipeline）中唯一需要的批处理机制。在这种情况下，collector 会在 batch processor 的 `timeout` 达到之前刷新批次，从而确保整个管道的端到端延迟保持较低，并且批次大小保持一致。
 
 ### 使用异步插入 {#use-asynchronous-inserts}
 
-通常，当收集器的吞吐量低时，用户被迫发送较小的批量，而他们仍然期望数据在最低的端到端延迟内到达 ClickHouse。在这种情况下，当批处理处理器的 `timeout` 到期时，会发送小批量。这可能会导致问题，并且这是需要异步插入的情况。如果用户向充当网关的 ClickStack 收集器发送数据，就会较少出现这个问题 - 作为聚合器，它们缓解了这个问题 - 请参见 [收集器角色](#collector-roles)。
+通常，当采集器的吞吐量较低时，用户不得不发送更小的批次，但他们仍然希望数据在端到端延迟尽可能低的情况下到达 ClickHouse。在这种情况下，当批处理器的 `timeout` 过期时会发送小批次。这可能导致问题，此时就需要异步插入。如果用户将数据发送到充当 Gateway 的 ClickStack 采集器，这个问题比较少见——采集器作为聚合器，可以缓解这一问题——参见 [Collector roles](#collector-roles)。
 
-如果大批量无法得到保证，用户可以使用 [异步插入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) 将批处理委托给 ClickHouse。使用异步插入时，数据首先插入到缓冲区，然后在稍后或异步地写入到数据库存储。
+如果无法保证足够大的批次，用户可以通过使用 [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) 将批处理工作委托给 ClickHouse。使用异步插入时，数据首先被插入到缓冲区，然后再写入数据库存储，写入过程会在稍后以异步方式完成。
 
-<Image img={observability_6} alt="Async inserts" size="md"/>
+<Image img={observability_6} alt="异步插入" size="md"/>
 
-如果 [启用异步插入](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，当 ClickHouse ① 收到插入查询时，该查询的数据会立即写入内存缓冲区。然后当 ③ 下一个缓冲区刷新发生时，缓冲区的数据会 [排序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) 并作为部分写入数据库存储。请注意，在刷新到数据库存储之前，数据在查询中不可搜索；缓冲区刷新是 [可配置的](/optimize/asynchronous-inserts)。
+在[启用异步插入](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)后，当 ClickHouse ① 接收到一条插入查询时，该查询的数据会 ② 立即写入内存缓冲区。随后在 ③ 下一次缓冲区刷新时，缓冲区中的数据会被[排序](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)，并作为一个数据 part 写入数据库存储。请注意，在数据刷新到数据库存储之前，无法通过查询检索到这些数据；缓冲区刷新的行为是[可配置的](/optimize/asynchronous-inserts)。
 
-要为收集器启用异步插入，请将 `async_insert=1` 添加到连接字符串中。我们建议用户使用 `wait_for_async_insert=1`（默认值）以获得交付保证 - 查询详情请见 [这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
+要为采集器启用异步插入，请在连接字符串中添加 `async_insert=1`。我们建议用户使用 `wait_for_async_insert=1`（默认值）以获得投递可靠性保证——更多细节参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
-异步插入的数据在 ClickHouse 缓冲区刷新后插入。这发生在超过 [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) 或在第一次 INSERT 查询以来超过 [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) 毫秒的情况下。如果设置 `async_insert_stale_timeout_ms` 为非零值，则数据将在上次查询以来的 `async_insert_stale_timeout_ms 毫秒` 后插入。用户可以调整这些设置以控制其管道的端到端延迟。有关可以用来调整缓冲区刷新的进一步设置，请在 [这里](/operations/settings/settings#async_insert) 查看。通常，默认值是合适的。
+异步插入的数据会在 ClickHouse 缓冲区被刷新时写入。这会在超过 [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) 后发生，或者在自首次 INSERT 查询以来经过 [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) 毫秒后发生。如果将 `async_insert_stale_timeout_ms` 设置为非零值，则数据会在自最后一条查询以来经过 `async_insert_stale_timeout_ms 毫秒` 后被插入。用户可以通过调优这些设置来控制其流水线的端到端延迟。用于进一步调优缓冲区刷新的设置文档在[此处](/operations/settings/settings#async_insert)。通常，默认值已经比较合适。
 
 :::note 考虑自适应异步插入
-在少量代理使用且吞吐量低，但具有严格的端到端延迟要求的情况下，自适应异步插入可能会有用。通常，这些不适用于高吞吐量的可观察性用例，如 ClickHouse。
+在仅使用少量 agent（代理）、吞吐量较低但端到端延迟要求严格的场景中，[自适应异步插入](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) 可能会有用。总体而言，对于 ClickHouse 常见的高吞吐量可观测性场景，这些设置通常并不适用。
 :::
 
-最后，当使用异步插入时，不会默认启用与同步插入到 ClickHouse 相关的去重行为。如果需要，请参见设置 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)。
+最后，之前与同步插入 ClickHouse 相关的去重行为，在使用异步插入时默认不会启用。如有需要，请参阅设置 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)。
 
-有关配置此功能的完整详细信息，请参见此 [文档页面](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，或深入的 [博客文章](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
+关于配置此功能的完整细节，请参阅此[文档页面](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，或参考这篇更深入的[博客文章](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 
 ## 扩展 {#scaling}
 
-ClickStack OTel 收集器充当网关实例 - 请参见 [收集器角色](#collector-roles)。这些提供独立服务，通常按数据中心或区域提供。这些通过单个 OTLP 端点接收来自应用程序（或在代理角色中的其他收集器）的事件。通常会部署一组收集器实例，并使用开箱即用的负载均衡器在它们之间分配负载。
+ClickStack OTel collector 充当网关（Gateway）实例——参见 [Collector roles](#collector-roles)。这些实例作为独立服务提供能力，通常按数据中心或区域进行部署。它们通过单一 OTLP 端点从应用程序（或以 agent 角色运行的其他 collector）接收事件。通常会部署一组 collector 实例，并使用开箱即用的负载均衡器在它们之间分发负载。
 
-<Image img={clickstack_with_gateways} alt="Scaling with gateways" size="lg"/>
+<Image img={clickstack_with_gateways} alt="通过网关实现扩展" size="lg"/>
 
-此架构的目标是将计算密集型处理从代理中卸载，从而最小化它们的资源使用。这些 ClickStack 网关可以执行本来需要代理进行的转换任务。此外，网关可以聚合来自许多代理的事件，确保以大批量发送到 ClickHouse - 允许高效插入。这些网关收集器可以轻松扩展，以便随着添加更多代理和 SDK 源并增加事件吞吐量。
+此架构的目标是将计算密集型处理从 agent 侧卸载，从而尽量减少其资源占用。这些 ClickStack 网关可以执行原本需要由 agent 完成的转换任务。此外，通过汇聚来自多个 agent 的事件，网关可以确保以大批量方式将数据发送到 ClickHouse，从而实现高效写入。随着更多 agent 和 SDK 数据源的接入以及事件吞吐量的增加，这些网关 collector 可以轻松扩展。 
 
 ### 添加 Kafka {#adding-kafka}
 
-读者可能会注意到上述架构没有使用 Kafka 作为消息队列。
+读者可能已经注意到，上面的架构并未使用 Kafka 作为消息队列。
 
-使用 Kafka 队列作为消息缓冲区是在日志架构中看到的一种流行设计模式，并由 ELK 堆栈推广。它提供了一些好处：主要是，它有助于提供更强的消息交付保证，并有助于处理反馈压力。消息从收集代理发送到 Kafka 并写入磁盘。理论上，集群 Kafka 实例应提供高吞吐量的消息缓冲，因为它比解析和处理消息开销更小，线性写入数据到磁盘的效率更高。在 Elastic 中，例如， tokenization 和索引会造成显著开销。通过将数据移出代理，您也就减少了因源头日志轮替而丢失消息的风险。最后，它提供了一些消息重发和跨区域复制能力，这对某些用例可能具有吸引力。
+在日志架构中，使用 Kafka 队列作为消息缓冲是一种常见的设计模式，并由 ELK 技术栈推广。它带来了几方面优势：主要是可以提供更强的消息投递保证，并有助于处理背压问题。消息从采集代理发送到 Kafka 并写入磁盘。理论上，一个集群化的 Kafka 实例应该能够提供高吞吐量的消息缓冲区，因为顺序写入磁盘的数据在计算开销上要远小于对消息进行解析和处理。例如，在 Elastic 中，分词和索引会带来显著的开销。通过将数据从代理侧移出，你也可以降低由于源端日志轮转导致消息丢失的风险。最后，它还提供一定的消息重放和跨区域复制能力，这在某些用例中可能具有吸引力。
 
-但是，ClickHouse 可以非常快速地处理数据的插入 - 在适度硬件上每秒数百万行。ClickHouse 的反馈压力是罕见的。通常，利用 Kafka 队列意味着更多的架构复杂性和成本。如果您能接受日志与银行交易和其他关键数据不需要相同的交付保证这一原则，那么我们建议避免 Kafka 的复杂性。
+然而，ClickHouse 能够非常快速地插入数据——在中等硬件上即可达到每秒数百万行。来自 ClickHouse 的背压情况较为少见。很多时候，引入 Kafka 队列只会带来更多架构复杂度和成本。如果你能够接受这样一个原则：日志并不需要像银行交易等关键任务数据那样的投递保证，我们建议避免引入 Kafka 带来的额外复杂度。
 
-但是，如果您需要高交付保证或能够重放数据（可能给多个源），Kafka 可以是一个有用的架构补充。
+不过，如果你需要很高的投递保证，或者需要重放数据（可能重放到多个下游），Kafka 依然可以是一个有用的架构组件。
 
-<Image img={observability_8} alt="Adding kafka" size="lg"/>
+<Image img={observability_8} alt="添加 Kafka" size="lg"/>
 
-在这种情况下，可以配置 OTel 代理通过 [Kafka 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) 将数据发送到 Kafka。网关实例反过来使用 [Kafka 接收器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) 消费消息。我们建议查看 Confluent 和 OTel 文档以获取更多详细信息。
+在这种情况下，可以将 OTel 代理配置为通过 [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) 向 Kafka 发送数据。然后，网关实例使用 [Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) 来消费消息。更多细节请参考 Confluent 和 OTel 文档。
 
-:::note OTel 收集器配置
-ClickStack OpenTelemetry 收集器发行版无法与 Kafka 一起使用，因为它需要配置修改。用户需要使用 ClickHouse 导出器部署默认的 OTel 收集器。
+:::note OTel collector 配置
+ClickStack OpenTelemetry collector 发行版可以通过使用[自定义 collector 配置](#extending-collector-config)来配置对 Kafka 的支持。
 :::
 
-## 估算资源 {#estimating-resources}
+## 预估资源 {#estimating-resources}
 
-OTel 收集器的资源需求将取决于事件吞吐量、消息大小和处理量。OpenTelemetry 项目维护 [基准](https://opentelemetry.io/docs/collector/benchmarks/)，用户可以用来估算资源需求。
+OTel collector 的资源需求取决于事件吞吐量、消息大小以及执行的处理量。OpenTelemetry 项目维护了[基准测试](https://opentelemetry.io/docs/collector/benchmarks/)，供用户用来预估资源需求。
 
-[根据我们的经验](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)，具有 3 个核心和 12GB RAM 的 ClickStack 网关实例可以处理约 60,000 个事件每秒。这假设一个负责重命名字段的最小处理管道，并且没有正则表达式。
+[根据我们的经验](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)，一台具有 3 个核心和 12GB 内存的 ClickStack 网关实例大约可以处理每秒 60k 个事件。这里假设使用的是只负责重命名字段且不使用正则表达式的最小处理流水线。
 
-对于负责将事件发送到网关的代理实例，只需设置事件的时间戳，我们建议用户根据预期的每秒日志数量来进行大小选择。以下代表用户可以作为起点使用的近似值：
+对于负责将事件发送到网关、且只在事件上设置时间戳的 agent 实例，我们建议用户根据预期的每秒日志数量来进行容量规划。以下数据可作为一个大致的起点参考：
 
-| 日志采集率 | 收集器代理的资源 |
-|--------------|------------------------------|
-| 1k/秒        | 0.2CPU，0.2GiB                |
-| 5k/秒        | 0.5 CPU，0.5GiB               |
-| 10k/秒       | 1 CPU，1GiB                   |
+| Logging rate | Resources to collector agent      |
+|--------------|-----------------------------------|
+| 1k/second    | 0.2 CPU, 0.2 GiB                 |
+| 5k/second    | 0.5 CPU, 0.5 GiB                 |
+| 10k/second   | 1 CPU, 1 GiB                     |
 
 ## JSON 支持 {#json-support}
 
 <BetaBadge/>
 
-ClickStack 从版本 `2.0.4` 开始对 [JSON 类型](/interfaces/formats/JSON) 提供 beta 支持。
+:::warning 测试版功能
+**ClickStack** 中对 JSON 类型的支持目前为**测试版功能**。虽然在 ClickHouse 25.3+ 中，JSON 类型本身已可用于生产环境，但其在 ClickStack 中的集成仍在积极开发中，可能存在功能限制、未来变更或缺陷。
+:::
 
-### JSON 类型的好处 {#benefits-json-type}
+自 `2.0.4` 版本起，ClickStack 对 [JSON 类型](/interfaces/formats/JSON) 提供测试版支持。
 
-JSON 类型为 ClickStack 用户提供了以下好处：
+### JSON 类型的优势 {#benefits-json-type}
 
-- **类型保留** - 数字保持数字，布尔值保持布尔值 - 不再将所有内容扁平化为字符串。这意味着更少的类型转换，更简单的查询，以及更准确的聚合。
-- **路径级别列** - 每个 JSON 路径成为自己的子列，减少 I/O。查询仅读取所需的字段，相比于旧的 Map 类型，大幅提高了性能，因为只有在查询特定字段时才需要读取整个列。
-- **深度嵌套自然有效** - 自然处理复杂的、深层嵌套的结构，而无需像 Map 类型那样手动扁平化及后续尴尬的 JSONExtract 函数。
-- **动态、演变的模式** - 非常适合可观察性数据，因为团队随着时间的推移添加新的标签和属性。JSON 会自动处理这些变化，无需模式迁移。
-- **更快的查询，降低内存** - 针对 `LogAttributes` 等属性的典型聚合，减少读取 5-10 倍的数据，实现显著加速，减少查询时间和内存峰值使用。
-- **简单管理** - 不需要为了性能而预先材料化列。每个字段成为自己的子列，提供与原生 ClickHouse 列相同的速度。
+JSON 类型为 ClickStack 用户提供了以下优势：
+
+- **类型保留** - 数字仍然是数字，布尔值仍然是布尔值——不再把所有内容都“压扁”成字符串。这意味着更少的类型转换、更简单的查询以及更精确的聚合。
+- **路径级列** - 每个 JSON 路径都会成为独立的子列，从而减少 I/O。查询只会读取所需字段，相比旧的 Map 类型需要读取整列才能查询特定字段，这带来了巨大的性能提升。
+- **深度嵌套直接可用** - 可以自然地处理复杂、深度嵌套的结构，无需像 Map 类型那样手动展开，也不再需要后续笨拙的 `JSONExtract` 函数。
+- **动态、可演进的模式** - 非常适合可观测性数据，因为团队会随着时间推移不断添加新的标签和属性。JSON 会自动处理这些变化，而无需进行模式迁移。
+- **更快的查询、更低的内存占用** - 对 `LogAttributes` 等属性进行典型聚合时，读取的数据量减少 5–10 倍，查询速度显著提升，同时降低查询时间和峰值内存使用量。
+- **简单管理** - 无需为性能预先物化列。每个字段都会成为独立的子列，提供与原生 ClickHouse 列相同的速度。
 
 ### 启用 JSON 支持 {#enabling-json-support}
 
-要为收集器启用此支持，请在任何包含收集器的部署中设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这确保在 ClickHouse 中使用 JSON 类型创建模式。
+要为 collector 启用此支持，请在包含 collector 的任意部署上设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这样可以确保在 ClickHouse 中使用 JSON 类型创建这些 schema。
 
 :::note HyperDX 支持
-为了查询 JSON 类型，支持还必须通过环境变量 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 在 HyperDX 应用层启用。
+为了对 JSON 类型执行查询，还必须在 HyperDX 应用层通过环境变量 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 启用对该类型的支持。
 :::
 
 例如：
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
+
 
 ### 从基于 Map 的模式迁移到 JSON 类型 {#migrating-from-map-based-schemas-to-json}
 
-:::重要 向后兼容性
-[JSON 类型](/interfaces/formats/JSON) 与现有的基于 Map 的模式不向后兼容。将使用 `JSON` 类型创建新表。
+:::important 向后兼容性
+[JSON 类型](/interfaces/formats/JSON) 与现有的基于 Map 的模式**不向后兼容**。启用此功能后，新建表将使用 `JSON` 类型，并且需要手动迁移数据。
 :::
 
-要从基于 Map 的模式迁移，请按照以下步骤操作：
+要从基于 Map 的模式迁移，请按以下步骤操作：
 
 <VerticalStepper headerLevel="h4">
 
-#### 停止 OTel 收集器 {#stop-the-collector}
+#### 停止 OTel collector {#stop-the-collector}
 
 #### 重命名现有表并更新数据源 {#rename-existing-tables-sources}
 
-重命名现有表并更新 HyperDX 中的数据源。
+重命名现有表，并在 HyperDX 中更新数据源。 
 
 例如：
 
@@ -346,11 +448,11 @@ RENAME TABLE otel_logs TO otel_logs_map;
 RENAME TABLE otel_metrics TO otel_metrics_map;
 ```
 
-#### 部署收集器  {#deploy-the-collector}
+#### 部署 collector  {#deploy-the-collector}
 
-设置 `OTEL_AGENT_FEATURE_GATE_ARG` 部署收集器。
+在设置了 `OTEL_AGENT_FEATURE_GATE_ARG` 的情况下部署 OTel collector。
 
-#### 使用 JSON 模式支持重启 HyperDX 容器 {#restart-the-hyperdx-container}
+#### 重启支持 JSON schema 的 HyperDX 容器 {#restart-the-hyperdx-container}
 
 ```shell
 export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
@@ -358,19 +460,19 @@ export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
 
 #### 创建新的数据源 {#create-new-data-sources}
 
-在 HyperDX 中创建新的数据源，指向 JSON 表。
+在 HyperDX 中创建指向 JSON 表的新数据源。
 
 </VerticalStepper>
 
 #### 迁移现有数据（可选） {#migrating-existing-data}
 
-要将旧数据移动到新的 JSON 表中：
+要将旧数据导入到新的 JSON 表中：
 
 ```sql
 INSERT INTO otel_logs SELECT * FROM otel_logs_map;
 INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
 ```
 
-:::警告
-建议仅用于小于 ~100 亿行的数据集。先前使用 Map 类型存储的数据未能保留类型精度（所有值均为字符串）。因此，这些旧数据将在新模式中表现为字符串，直到过期，前端可能需要一些转换。新数据将使用 JSON 类型保留类型。
+:::warning
+仅建议用于小于约 100 亿行规模的数据集。以前使用 `Map` 类型存储的数据无法保留类型精度（所有值都被存为字符串）。因此，在这些旧数据过期之前，它们在新的 schema 中会继续显示为字符串，前端可能需要做一定的类型转换。使用 `JSON` 类型存储的新数据则会保留其类型精度。
 :::

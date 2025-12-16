@@ -1,16 +1,9 @@
 ---
-'title': 'デモアプリケーション'
-'description': '観測可能性のためのデモアプリケーション'
-'slug': '/observability/demo-application'
-'keywords':
-- 'observability'
-- 'logs'
-- 'traces'
-- 'metrics'
-- 'OpenTelemetry'
-- 'Grafana'
-- 'OTel'
-'doc_type': 'guide'
+title: 'デモアプリケーション'
+description: 'オブザーバビリティ向けデモアプリケーション'
+slug: /observability/demo-application
+keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+doc_type: 'guide'
 ---
 
-The OpenTelemetry project includes a [デモアプリケーション](https://opentelemetry.io/docs/demo/). ClickHouseをログとトレースのデータソースとして使用するこのアプリケーションのメンテナンスされたフォークは[こちら](https://github.com/ClickHouse/opentelemetry-demo)で見つけることができます。[公式デモ手順](https://opentelemetry.io/docs/demo/docker-deployment/)に従って、このデモをdockerでデプロイできます。[既存のコンポーネント](https://opentelemetry.io/docs/demo/collector-data-flow-dashboard/)に加えて、ClickHouseのインスタンスがデプロイされ、ログとトレースのストレージとして使用されます。
+OpenTelemetry プロジェクトには[デモアプリケーション](https://opentelemetry.io/docs/demo/)が提供されています。ClickHouse をログおよびトレースのデータソースとして利用する、このアプリケーションの継続的にメンテナンスされているフォーク版は[こちら](https://github.com/ClickHouse/opentelemetry-demo)にあります。[公式ドキュメントのデモ手順](https://opentelemetry.io/docs/demo/docker-deployment/)に従うことで、このデモを Docker でデプロイできます。[既存のコンポーネント](https://opentelemetry.io/docs/demo/collector-data-flow-dashboard/)に加えて、ログおよびトレースのストレージとして使用される ClickHouse インスタンスもデプロイされます。

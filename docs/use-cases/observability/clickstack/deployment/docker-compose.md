@@ -50,7 +50,7 @@ These ports enable integrations with a variety of telemetry sources and make the
 To deploy with Docker Compose clone the ClickStack repo, change into the directory and run `docker-compose up`:
 
 ```shell
-git clone git@github.com:ClickHouse/clickstack.git
+git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
@@ -60,7 +60,7 @@ Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
 Create a user, providing a username and password which meets the requirements. 
 
-On clicking `Create` data sources will be created for the ClickHouse instance deployed with the Helm chart.
+On clicking `Create` data sources will be created for the ClickHouse instance deployed with Docker Compose.
 
 :::note Overriding default connection
 You can override the default connection to the integrated ClickHouse instance. For details, see ["Using ClickHouse Cloud"](#using-clickhouse-cloud).
@@ -84,20 +84,16 @@ If prompted to create a source, retain all default values and complete the `Tabl
 
 ## Modifying compose settings {#modifying-settings}
 
-Users can modify settings for the stack, such as the version used, through the environment variable file:
+You can modify settings for the stack, such as the version used, through the environment variable file:
 
 ```shell
-user@example-host hyperdx % cat .env
+user@example-host clickstack % cat .env
+
 # Used by docker-compose.yml
-# Used by docker-compose.yml
-HDX_IMAGE_REPO=docker.hyperdx.io
-IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-NEXT_LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
-LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
-NEXT_ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
-ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
-NEXT_OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
-OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
+IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
+ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
 CODE_VERSION=2.8.0
 IMAGE_VERSION_SUB_TAG=.8.0
 IMAGE_VERSION=2
@@ -122,14 +118,14 @@ The OTel collector configuration can be modified if required - see ["Modifying c
 
 ## Using ClickHouse Cloud {#using-clickhouse-cloud}
 
-This distribution can be used with ClickHouse Cloud. Users should:
+This distribution can be used with ClickHouse Cloud. You should:
 
-- Remove the ClickHouse service from the `docker-compose.yaml` file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure any references to the service such as `depends_on` are removed.
+- Remove the ClickHouse service from the `docker-compose.yml` file. This is optional if testing, as the deployed ClickHouse instance will simply be ignored - although waste local resources. If removing the service, ensure any references to the service such as `depends_on` are removed.
 - Modify the OTel collector to use a ClickHouse Cloud instance by setting the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` and `CLICKHOUSE_PASSWORD` in the compose file. Specifically, add the environment variables to the OTel collector service:
 
     ```shell
     otel-collector:
-        image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
+        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
         environment:
           CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
           CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
@@ -154,11 +150,11 @@ This distribution can be used with ClickHouse Cloud. Users should:
 
 <JSONSupport/>
 
-To set these, modify the relevant services in the `docker-compose.yaml`:
+To set these, modify the relevant services in the `docker-compose.yml`:
 
 ```yaml
   app:
-    image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     ports:
       - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
       - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
@@ -170,7 +166,7 @@ To set these, modify the relevant services in the `docker-compose.yaml`:
     # truncated for brevity
 
   otel-collector:
-    image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     environment:
       OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
       CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 

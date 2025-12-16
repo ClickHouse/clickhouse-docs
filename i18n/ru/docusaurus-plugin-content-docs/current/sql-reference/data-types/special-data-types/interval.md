@@ -1,33 +1,34 @@
 ---
-slug: '/sql-reference/data-types/special-data-types/interval'
-sidebar_label: Interval
+description: 'Документация по специальному типу данных Interval'
+sidebar_label: 'Interval'
 sidebar_position: 61
-description: 'Документация для специального типа данных Interval'
-title: Interval
-doc_type: reference
+slug: /sql-reference/data-types/special-data-types/interval
+title: 'Interval'
+doc_type: 'reference'
 ---
-# Интервал
 
-Семейство типов данных, представляющих интервалы времени и даты. Результирующие типы оператора [INTERVAL](/sql-reference/operators#interval).
+# Interval {#interval}
+
+Семейство типов данных для представления временных и календарных интервалов. Типы, возвращаемые оператором [INTERVAL](/sql-reference/operators#interval).
 
 Структура:
 
-- Интервал времени в виде беззнакового целочисленного значения.
-- Тип интервала.
+* Интервал в виде беззнакового целого числа.
+* Тип интервала.
 
 Поддерживаемые типы интервалов:
 
-- `NANOSECOND`
-- `MICROSECOND`
-- `MILLISECOND`
-- `SECOND`
-- `MINUTE`
-- `HOUR`
-- `DAY`
-- `WEEK`
-- `MONTH`
-- `QUARTER`
-- `YEAR`
+* `NANOSECOND`
+* `MICROSECOND`
+* `MILLISECOND`
+* `SECOND`
+* `MINUTE`
+* `HOUR`
+* `DAY`
+* `WEEK`
+* `MONTH`
+* `QUARTER`
+* `YEAR`
 
 Для каждого типа интервала существует отдельный тип данных. Например, интервал `DAY` соответствует типу данных `IntervalDay`:
 
@@ -41,9 +42,9 @@ SELECT toTypeName(INTERVAL 4 DAY)
 └──────────────────────────────┘
 ```
 
-## Замечания по использованию {#usage-remarks}
+## Примечания по использованию {#usage-remarks}
 
-Вы можете использовать значения типа `Interval` в арифметических операциях с значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете добавить 4 дня к текущему времени:
+Вы можете использовать значения типа `Interval` в арифметических операциях над значениями типов [Date](../../../sql-reference/data-types/date.md) и [DateTime](../../../sql-reference/data-types/datetime.md). Например, вы можете прибавить 4 дня к текущему времени:
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
@@ -55,7 +56,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL 4 DAY
 └─────────────────────┴───────────────────────────────┘
 ```
 
-Также возможно использовать несколько интервалов одновременно:
+Также можно одновременно использовать несколько интервалов:
 
 ```sql
 SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVAL 3 HOUR)
@@ -67,7 +68,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-И сравнивать значения с различными интервалами:
+А чтобы сравнить значения на разных интервалах:
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -81,5 +82,5 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 
 ## См. также {#see-also}
 
-- Оператор [INTERVAL](/sql-reference/operators#interval)
-- Функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)
+- [INTERVAL](/sql-reference/operators#interval) — оператор
+- [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) — функции преобразования типов

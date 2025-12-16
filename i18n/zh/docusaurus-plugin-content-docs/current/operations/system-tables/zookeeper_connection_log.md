@@ -1,21 +1,18 @@
 ---
-'description': '显示 ZooKeeper 连接的历史记录（包括辅助 ZooKeeper）。'
-'keywords':
-- 'system table'
-- 'zookeeper_connection_log'
-'slug': '/operations/system-tables/zookeeper_connection_log'
-'title': 'system.zookeeper_connection_log'
-'doc_type': 'reference'
+description: '显示 ZooKeeper 连接历史（包括辅助 ZooKeeper）。'
+keywords: ['system table', 'zookeeper_connection_log']
+slug: /operations/system-tables/zookeeper_connection_log
+title: 'system.zookeeper_connection_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.zookeeper&#95;connection&#95;log {#systemzookeeper&#95;connection&#95;log}
 
-# system.zookeeper_connection_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-'system.zookeeper_connection_log' 表显示了 ZooKeeper 连接的历史记录（包括辅助 ZooKeeper）。每一行显示关于一个连接事件的信息。
+`system.zookeeper&#95;connection&#95;log` 表显示 ZooKeeper 连接（包括辅助 ZooKeeper）的历史记录。每一行对应一个与连接相关的事件。
 
 :::note
 该表不包含由于服务器关闭导致的断开连接事件。
@@ -23,22 +20,22 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 列：
 
--   `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 连接到或从 ZooKeeper 断开的服务器的主机名。
--   `type` ([Enum8](../../sql-reference/data-types/enum.md)) - 事件的类型。可能的值：`Connected`, `Disconnected`。
--   `event_date` ([Date](../../sql-reference/data-types/date.md)) - 条目的日期。
--   `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - 条目的时间。
--   `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - 带有微秒精度的条目时间。
--   `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper 集群的名称。
--   `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 连接的 ZooKeeper 节点的主机名/IP。
--   `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse 连接的 ZooKeeper 节点的端口。
--   `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ClickHouse 连接或断开连接的 ZooKeeper 节点的索引。索引来源于 ZooKeeper 配置。
--   `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 连接的会话 ID。
--   `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API 版本。
--   `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 启用的功能标志。仅适用于 ClickHouse Keeper。可能的值有 `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE`。
--   `availability_zone` ([String](../../sql-reference/data-types/string.md)) — 可用区域。
--   `reason` ([String](../../sql-reference/data-types/string.md)) — 连接或断开的原因。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 与 ZooKeeper 建立连接或断开连接的服务器主机名。
+* `type` ([Enum8](../../sql-reference/data-types/enum.md)) - 事件类型。可能的取值：`Connected`、`Disconnected`。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) - 记录的日期。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - 记录的时间。
+* `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - 具有微秒精度的记录时间。
+* `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper 集群名称。
+* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse 所连接的 ZooKeeper 节点的主机名/IP。
+* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse 所连接的 ZooKeeper 节点的端口。
+* `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ClickHouse 连接到或从其断开连接的 ZooKeeper 节点索引。该索引来自 ZooKeeper 配置。
+* `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 该连接的会话 ID。
+* `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API 版本。
+* `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 已启用的功能标志。仅适用于 ClickHouse Keeper。可能的取值为 `FILTERED_LIST`、`MULTI_READ`、`CHECK_NOT_EXISTS`、`CREATE_IF_NOT_EXISTS`、`REMOVE_RECURSIVE`。
+* `availability_zone` ([String](../../sql-reference/data-types/string.md)) — 可用区。
+* `reason` ([String](../../sql-reference/data-types/string.md)) — 连接或断开连接的原因。
 
-示例：
+Example:
 
 ```sql
 SELECT * FROM system.zookeeper_connection_log;

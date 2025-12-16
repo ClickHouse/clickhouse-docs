@@ -1,32 +1,31 @@
 ---
-'alias': []
-'description': 'CSVWithNamesAndTypes 格式的文档'
-'input_format': true
-'keywords':
-- 'CSVWithNamesAndTypes'
-'output_format': true
-'slug': '/interfaces/formats/CSVWithNamesAndTypes'
-'title': 'CSVWithNamesAndTypes'
-'doc_type': 'reference'
+alias: []
+description: 'CSVWithNamesAndTypes 格式文档'
+input_format: true
+keywords: ['CSVWithNamesAndTypes']
+output_format: true
+slug: /interfaces/formats/CSVWithNamesAndTypes
+title: 'CSVWithNamesAndTypes'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-还会打印两行标题，包含列名称和类型，类似于 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes)。
+还会输出两行表头，其中包含列名和类型，类似于 [TabSeparatedWithNamesAndTypes](../formats/TabSeparatedWithNamesAndTypes)。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
 :::tip
-从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，使用 `CSV` 格式时，ClickHouse 将自动检测 CSV 文件中的标题，因此不需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
+从 [版本](https://github.com/ClickHouse/ClickHouse/releases) 23.1 开始，ClickHouse 在使用 `CSV` 格式时会自动检测 CSV 文件中的标题行，因此不再需要使用 `CSVWithNames` 或 `CSVWithNamesAndTypes`。
 :::
 
-使用以下 CSV 文件，命名为 `football_types.csv`：
+使用以下名为 `football_types.csv` 的 CSV 文件：
 
 ```csv
 date,season,home_team,away_team,home_team_goals,away_team_goals
@@ -50,7 +49,7 @@ Date,Int16,LowCardinality(String),LowCardinality(String),Int8,Int8
 2022-05-07,2021,Walsall,Swindon Town,0,3
 ```
 
-创建一个表：
+创建表：
 
 ```sql
 CREATE TABLE football
@@ -74,7 +73,7 @@ INSERT INTO football FROM INFILE 'football_types.csv' FORMAT CSVWithNamesAndType
 
 ### 读取数据 {#reading-data}
 
-使用 `CSVWithNamesAndTypes` 格式读取数据：
+使用 `CSVWithNamesAndTypes` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -82,7 +81,7 @@ FROM football
 FORMAT CSVWithNamesAndTypes
 ```
 
-输出将是一个具有两行标题的 CSV，用于列名称和类型：
+输出将是一个包含两行表头的 CSV 文件：第一行为列名，第二行为列类型：
 
 ```csv
 "date","season","home_team","away_team","home_team_goals","away_team_goals"
@@ -109,12 +108,12 @@ FORMAT CSVWithNamesAndTypes
 ## 格式设置 {#format-settings}
 
 :::note
-如果设置 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 为 `1`，
-则输入数据的列将根据列名称映射到表中的列，如果设置 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 为 `1`，则名称未知的列将被跳过。
-否则，第一行将被跳过。
+如果将 [input_format_with_names_use_header](/operations/settings/settings-formats.md/#input_format_with_names_use_header) 设置为 `1`，
+则会根据列名将输入数据中的列映射到表中的列；如果将 [input_format_skip_unknown_fields](../../../operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过名称未知的列。
+否则，将跳过第一行。
 :::
 
 :::note
-如果设置 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 为 `1`，
-则输入数据的类型将与表中相应列的类型进行比较。否则，第二行将被跳过。
+如果将 [input_format_with_types_use_header](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，
+则会将输入数据中的类型与表中对应列的类型进行比较。否则，将跳过第二行。
 :::

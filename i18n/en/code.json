@@ -1,188 +1,942 @@
 {
   "theme.NotFound.title": {
-    "message": "Page Not Found",
-    "description": "The title of the 404 page"
+    "message": "Page not found",
+    "description": "404 page title"
+  },
+  "theme.admonition.note": {
+    "message": "Note",
+    "description": "The default label for the note admonition (:::note)"
+  },
+  "theme.admonition.tip": {
+    "message": "Tip",
+    "description": "The default label used for the Tip admonition block (:::tip)"
+  },
+  "theme.admonition.danger": {
+    "message": "Danger",
+    "description": "Default label for the danger admonition (:::danger)"
+  },
+  "theme.admonition.info": {
+    "message": "References",
+    "description": "The default label used for the Info admonition block (:::info)"
+  },
+  "theme.admonition.caution": {
+    "message": "Note",
+    "description": "The default label for the caution admonition (:::caution)"
+  },
+  "theme.admonition.experimental": {
+    "message": "Experimental",
+    "description": "The default label for the Experimental admonition (:::experimental)"
+  },
+  "theme.admonition.obsolete": {
+    "message": "Old",
+    "description": "The default label for the obsolete admonition (:::obsolete)"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "Breadcrumb navigation",
+    "description": "The ARIA label for breadcrumb navigation"
+  },
+  "theme.docs.DocCard.categoryDescription": {
+    "message": "{count} items",
+    "description": "The default description displayed on a category card in the generated index, indicating how many items it contains"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "Other versions",
+    "description": "The label for the navbar versions dropdown in mobile view"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "View all {count} results",
+    "description": "View all in the search bar"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "Found {count} documents",
+    "description": "Pluralized label for \"{count} documents found\". Use as many plural forms (separated by \"|\") as are supported for your language (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Search results for \"{query}\"",
+    "description": "The search page title for a non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the documentation",
+    "description": "Search page title for an empty query"
+  },
+  "theme.SearchPage.inputPlaceholder": {
+    "message": "Enter a search term",
+    "description": "Placeholder text for the search page input field"
+  },
+  "theme.SearchPage.inputLabel": {
+    "message": "Search",
+    "description": "The ARIA label for the search field on the search page"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Search using Algolia",
+    "description": "ARIA label for Algolia mentions"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No results found",
+    "description": "Text shown when no search results are found"
+  },
+  "theme.SearchPage.fetchingNewResults": {
+    "message": "Fetching new search results...",
+    "description": "The paragraph for fetching new search results"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "Recent blog posts navigation",
+    "description": "The ARIA label for recent posts in the blog sidebar"
+  },
+  "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
+    "message": "Toggle collapse for “{label}”",
+    "description": "ARIA label for toggling the collapsible sidebar category"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "Navigation",
+    "description": "The ARIA label for the main navigation"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "Other languages",
+    "description": "Label for the mobile language switcher dropdown"
+  },
+  "theme.blog.post.readMore": {
+    "message": "See more",
+    "description": "The label displayed in blog post excerpts that links to the full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Learn more about {title}",
+    "description": "The ARIA label for links from excerpts to full blog posts"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "Approx. {readingTime} min read",
+    "description": "Pluralized label for \"{readingTime} min read\". Use as many plural forms as your language supports (separated by \"|\"); see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "Home",
+    "description": "ARIA label for the home page in the breadcrumb trail"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "Docs sidebar",
+    "description": "ARIA label for sidebar navigation"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "Close the sidebar",
+    "description": "Title attribute for the doc sidebar collapse button"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Close the sidebar",
+    "description": "Title attribute for the doc sidebar collapse button"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "Close navigation",
+    "description": "ARIA label for the mobile sidebar close button"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← Back to Main Menu",
+    "description": "Label for the back button that returns to the main menu, inside the mobile navbar sidebar’s secondary menu (commonly used to display the docs sidebar)"
+  },
+  "theme.ErrorPageContent.title": {
+    "message": "An error occurred",
+    "description": "Title of the fallback page shown when the page crashes"
+  },
+  "theme.BackToTopButton.buttonAriaLabel": {
+    "message": "Back to top",
+    "description": "ARIA label for the “Back to top” button"
+  },
+  "theme.blog.title": {
+    "message": "Knowledge Base",
+    "description": "The blog title — “Knowledge Base” by default"
+  },
+  "theme.blog.archive.title": {
+    "message": "Archive",
+    "description": "The page title and hero title of the blog archive page"
+  },
+  "theme.blog.archive.description": {
+    "message": "Archive",
+    "description": "Page and hero description for the blog archive page"
+  },
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "Blog post list navigation",
+    "description": "ARIA label for blog pagination"
+  },
+  "theme.blog.paginator.newerEntries": {
+    "message": "New Article",
+    "description": "Label for navigating to the newer blog posts page (previous page)"
+  },
+  "theme.blog.paginator.olderEntries": {
+    "message": "Previous articles",
+    "description": "Label for navigating to older blog posts (next page)"
+  },
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "Blog post navigation",
+    "description": "ARIA label for blog post pagination"
+  },
+  "theme.blog.post.paginator.newerPost": {
+    "message": "New article",
+    "description": "Label for the button that navigates to the next/previous blog post"
+  },
+  "theme.blog.post.paginator.olderPost": {
+    "message": "Previous articles",
+    "description": "The label for the blog post navigation button to go to the previous/next post"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "View all tags",
+    "description": "Label for the link to the tag list page"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "Toggle dark mode (currently {mode})",
+    "description": "ARIA label for the navbar color mode toggle"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "Dark mode",
+    "description": "The name of the dark color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "Light mode",
+    "description": "Name for light color mode"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "{count} items",
+    "description": "The default description shown on a category card in the generated index indicating how many items it contains"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "Documentation pagination",
+    "description": "The ARIA label for documentation pagination"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "Previous",
+    "description": "The label used to navigate to the previous document"
+  },
+  "theme.docs.paginator.next": {
+    "message": "Next",
+    "description": "The label used to navigate to the next document"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "{count} tagged documents",
+    "description": "Pluralized label for \"{count} docs tagged\". Use as many plural forms (separated by \"|\") as your language supports (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "{nDocsTagged} docs tagged \"{tagName}\"",
+    "description": "Page title for a documentation tag"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "This documentation is for the pre-release version {versionLabel} of {siteTitle}.",
+    "description": "The label displayed to indicate that the user is viewing an unreleased version of the documentation"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "This documentation is for {siteTitle} version {versionLabel} and is no longer being maintained.",
+    "description": "The label shown to users when they are viewing an unmaintained documentation version"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "Refer to the latest documentation at {latestVersionLink} ({versionLabel}).",
+    "description": "Label prompting the user to check for the latest version"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "Latest version",
+    "description": "The label used for the “suggest latest version” link"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "Version: {versionLabel}",
+    "description": "Version label"
+  },
+  "theme.common.editThisPage": {
+    "message": "Edit this page",
+    "description": "The label for the link to edit the current page"
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "Permalink to {heading}",
+    "description": "Link to this heading"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": "on {date}",
+    "description": "The text used to display the date a page was last updated"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": "{user}",
+    "description": "The label used to indicate who last updated the page"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "Last updated {atDate}{byUser}",
+    "description": "The text displayed indicating when a page was last updated and by whom"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "Tags:",
+    "description": "The label shown next to the tag list"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "Close",
+    "description": "ARIA label for the announcement bar close button"
+  },
+  "theme.admonition.warning": {
+    "message": "Warning",
+    "description": "The default label for the warning admonition (:::warning)"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "Copied!",
+    "description": "The “Copy” button label on code blocks"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "Copy code",
+    "description": "ARIA label for the Copy code button"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "Copy",
+    "description": "Label for the copy button on code blocks"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "Toggle word wrap",
+    "description": "Title attribute for the code block line wrap toggle button"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "Open the table of contents for “{label}”",
+    "description": "ARIA label for expanding the sidebar category"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "Close the '{label}' table of contents",
+    "description": "ARIA label for collapsing the sidebar category"
+  },
+  "theme.NotFound.p1": {
+    "message": "The page you are looking for could not be found",
+    "description": "The first paragraph on the 404 page"
+  },
+  "theme.NotFound.p2": {
+    "message": "Please inform the owner of the site that links to this page that the link is broken.",
+    "description": "The second paragraph of the 404 page"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "Headings on this page",
+    "description": "The label used for the button in the collapsible TOC component"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "Open navigation bar",
+    "description": "ARIA label for the hamburger menu button in the mobile navigation"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "Open the sidebar",
+    "description": "ARIA label and title attribute for the documentation sidebar expand button"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "Open the sidebar",
+    "description": "The ARIA label and title attribute used for the expand button in the documentation sidebar"
+  },
+  "theme.SearchBar.label": {
+    "message": "Search",
+    "description": "The ARIA label and placeholder for the search button"
+  },
+  "theme.SearchModal.searchBox.resetButtonTitle": {
+    "message": "Clear",
+    "description": "Label and ARIA label for the search box reset button"
+  },
+  "theme.SearchModal.searchBox.cancelButtonText": {
+    "message": "Cancel",
+    "description": "The label and ARIA label for the search box cancel button"
+  },
+  "theme.SearchModal.startScreen.recentSearchesTitle": {
+    "message": "Recent searches",
+    "description": "Title of recent searches"
+  },
+  "theme.SearchModal.startScreen.noRecentSearchesText": {
+    "message": "No recent searches",
+    "description": "Text shown when there are no recent searches"
+  },
+  "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
+    "message": "Save this search",
+    "description": "Label for the “Save recent search” button"
+  },
+  "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
+    "message": "Delete this search from your history",
+    "description": "Label for the “Clear recent searches” button"
+  },
+  "theme.SearchModal.startScreen.favoriteSearchesTitle": {
+    "message": "Saved searches",
+    "description": "Title for favorite searches"
+  },
+  "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
+    "message": "Remove this search from your favorites",
+    "description": "Label for the “Remove favorite search” button"
+  },
+  "theme.SearchModal.errorScreen.titleText": {
+    "message": "Failed to fetch search results",
+    "description": "Title for the search modal error screen"
+  },
+  "theme.SearchModal.errorScreen.helpText": {
+    "message": "Please check your network connection.",
+    "description": "Help text for the search modal’s error screen"
+  },
+  "theme.SearchModal.footer.selectText": {
+    "message": "Select",
+    "description": "Description of the Enter key action"
+  },
+  "theme.SearchModal.footer.selectKeyAriaLabel": {
+    "message": "Enter key",
+    "description": "The ARIA label for the Enter key button that confirms the selection"
+  },
+  "theme.SearchModal.footer.navigateText": {
+    "message": "Go",
+    "description": "Description text for the Up Arrow and Down Arrow key actions"
+  },
+  "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
+    "message": "Up arrow key",
+    "description": "The ARIA label for the Up Arrow key button used for navigation"
+  },
+  "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
+    "message": "Down arrow key",
+    "description": "The ARIA label for the Down Arrow key button that controls navigation"
+  },
+  "theme.SearchModal.footer.closeText": {
+    "message": "Close",
+    "description": "Description of the Escape key action"
+  },
+  "theme.SearchModal.footer.closeKeyAriaLabel": {
+    "message": "Escape key",
+    "description": "ARIA label for the Escape key button used to close the modal"
+  },
+  "theme.SearchModal.footer.searchByText": {
+    "message": "Search",
+    "description": "The text explains that the search functionality is powered by Algolia."
+  },
+  "theme.SearchModal.noResultsScreen.noResultsText": {
+    "message": "No results found",
+    "description": "This text indicates that there are no results for the following search"
+  },
+  "theme.SearchModal.noResultsScreen.suggestedQueryText": {
+    "message": "Try these searches:",
+    "description": "The text for the suggested query displayed when no results are found for the following search"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
+    "message": "Are there any better search results?",
+    "description": "The text for the prompt shown when the user believes some results are missing"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
+    "message": "Report",
+    "description": "Link label for reporting missing results"
+  },
+  "theme.SearchModal.placeholder": {
+    "message": "Search the documentation",
+    "description": "The placeholder text for the input field in the DocSearch pop-up modal"
+  },
+  "theme.blog.post.plurals": {
+    "message": "{count} items",
+    "description": "Pluralized label for \"{count} posts\". Use as many plural forms (separated by \"|\") as your language supports (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.blog.tagTitle": {
+    "message": "There are {nPosts} posts tagged “{tagName}”",
+    "description": "The page title for a blog tag"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - {nPosts}",
+    "description": "Title of the blog author’s page"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "Authors",
+    "description": "Title of the authors page"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "View all authors",
+    "description": "Label for the link to the blog authors page"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "This author has not posted anything yet.",
+    "description": "Text for authors with no blog posts"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "Private page",
+    "description": "Title for the unlisted content banner"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "This page is private. It is excluded from search results, and only users with a direct link to this page can view it.",
+    "description": "Message for the unlisted content banner"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "Draft page",
+    "description": "Draft content banner title"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "This page is a draft and is not included in the production content visible in public environments.",
+    "description": "Draft content banner message"
+  },
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "Try again.",
+    "description": "Label for the button that retries rendering when the React error boundary catches an error"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "Skip to main content",
+    "description": "The “skip to content” label used for accessibility, enabling users to quickly navigate to the main content using keyboard Tab/Enter navigation"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "Tags",
+    "description": "Title of the tag list page"
   },
   "topNav.navItems.Products": {
     "message": "Products"
   },
   "topNav.navItems.Use cases": {
-    "message": "Solutions"
-  },
-  "topNav.navItems.Docs": {
-    "message": "Docs"
-  },
-  "topNav.navItems.Resources": {
-    "message": "Resources"
+    "message": "Use cases"
   },
   "topNav.navItems.Pricing": {
     "message": "Pricing"
   },
+  "topNav.navItems.Resources": {
+    "message": "Resources"
+  },
+  "topNav.navItems.Docs": {
+    "message": "Documentation"
+  },
   "topNav.navItems.Contact us": {
-    "message": "Contact us"
-  },
-  "theme.admonition.note": {
-    "message": "Note",
-    "description": "The default label used for the Note admonition (:::note)"
-  },
-  "theme.admonition.tip": {
-    "message": "Tip",
-    "description": "The default label used for the Tip admonition (:::tip)"
-  },
-  "theme.admonition.danger": {
-    "message": "Danger",
-    "description": "The default label used for the Danger admonition (:::danger)"
-  },
-  "theme.admonition.info": {
-    "message": "Info",
-    "description": "The default label used for the Info admonition (:::info)"
-  },
-  "theme.admonition.caution": {
-    "message": "Caution",
-    "description": "The default label used for the Caution admonition (:::caution)"
-  },
-  "theme.admonition.experimental": {
-    "message": "EXPERIMENTAL",
-    "description": "The default label used for the Experimental admonition (:::experimental)"
-  },
-  "theme.admonition.obsolete": {
-    "message": "OBSOLETE",
-    "description": "The default label used for the Obsolete admonition (:::obsolete)"
-  },
-  "theme.blog.title": {
-    "message": "Knowledge Base"
-  },
-  "theme.docs.breadcrumbs.navAriaLabel": {
-    "message": "Breadcrumbs",
-    "description": "The ARIA label for the breadcrumbs"
-  },
-  "theme.docs.DocCard.categoryDescription": {
-    "message": "{count} items",
-    "description": "The default description for a category card in the generated index about how many items this category includes"
-  },
-  "theme.navbar.mobileVersionsDropdown.label": {
-    "message": "Versions",
-    "description": "The label for the navbar versions dropdown on mobile view"
-  },
-  "theme.SearchBar.seeAll": {
-    "message": "See all {count} results"
-  },
-  "theme.SearchPage.documentsFound.plurals": {
-    "message": "One document found|{count} documents found",
-    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.SearchPage.existingResultsTitle": {
-    "message": "Search results for \"{query}\"",
-    "description": "The search page title for non-empty query"
-  },
-  "theme.SearchPage.emptyResultsTitle": {
-    "message": "Search the documentation",
-    "description": "The search page title for empty query"
-  },
-  "theme.SearchPage.inputPlaceholder": {
-    "message": "Type your search here",
-    "description": "The placeholder for search page input"
-  },
-  "theme.SearchPage.inputLabel": {
-    "message": "Search",
-    "description": "The ARIA label for search page input"
-  },
-  "theme.SearchPage.algoliaLabel": {
-    "message": "Search by Algolia",
-    "description": "The ARIA label for Algolia mention"
-  },
-  "theme.SearchPage.noResultsText": {
-    "message": "No results were found",
-    "description": "The paragraph for empty search result"
-  },
-  "theme.SearchPage.fetchingNewResults": {
-    "message": "Fetching new results...",
-    "description": "The paragraph for fetching new search results"
+    "message": "Contact"
   },
   "topNav.navItems.products.clickhouse_cloud_1": {
-    "message": "The best way to use ClickHouse."
+    "message": "Best way to use ClickHouse."
   },
   "topNav.navItems.products.clickhouse_cloud_2": {
     "message": "Available on AWS, GCP, and Azure."
   },
   "topNav.navItems.products.byoc_1": {
-    "message": "Bring Your Own Cloud"
+    "message": "BYOC (Bring Your Own Cloud)"
   },
   "topNav.navItems.products.byoc_2": {
-    "message": "A fully managed ClickHouse Cloud service,"
+    "message": "The fully managed ClickHouse Cloud service,"
   },
   "topNav.navItems.products.byoc_3": {
-    "message": "deployed in your own AWS account."
+    "message": "Can be deployed in your AWS account."
   },
   "topNav.navItems.products.oss": {
-    "message": "Spin up a database with open-source"
-  },
-  "topNav.navItems.products.oss_2": {
-    "message": "ClickHouse"
+    "message": "Set up a database with open-source ClickHouse."
   },
   "topNav.navItems.products.integrations": {
-    "message": "View 100+ integrations"
-  },
-  "topNav.navItems.resources.User stories": {
-    "message": "User stories"
-  },
-  "topNav.navItems.resources.Blog": {
-    "message": "Blog"
-  },
-  "topNav.navItems.resources.Learning and Certification": {
-    "message": "Learning and Certification"
-  },
-  "topNav.navItems.resources.ClickHouse Academy": {
-    "message": "ClickHouse Academy"
-  },
-  "topNav.navItems.resources.Free live training": {
-    "message": "Free live training"
-  },
-  "topNav.navItems.resources.ClickHouse Certification": {
-    "message": "ClickHouse Certification"
-  },
-  "topNav.navItems.resources.Comparisons": {
-    "message": "Comparisons"
-  },
-  "topNav.navItems.resources.BigQuery": {
-    "message": "BigQuery"
-  },
-  "topNav.navItems.resources.PostgreSQL": {
-    "message": "PostgreSQL"
-  },
-  "topNav.navItems.resources.Redshift": {
-    "message": "Redshift"
-  },
-  "topNav.navItems.resources.Rockset": {
-    "message": "Rockset"
-  },
-  "topNav.navItems.resources.Snowflake": {
-    "message": "Snowflake"
-  },
-  "topNav.navItems.resources.Videos": {
-    "message": "Videos"
-  },
-  "topNav.navItems.resources.Demos": {
-    "message": "Demos"
+    "message": "Discover more than 100 integrations."
   },
   "topNav.navItems.use_cases.Real-time analytics": {
     "message": "Real-time analytics"
   },
   "topNav.navItems.use_cases.Machine learning and GenAI": {
-    "message": "Machine learning and GenAI"
+    "message": "Machine Learning & Generative AI"
   },
   "topNav.navItems.use_cases.Business intelligence": {
-    "message": "Data warehousing"
+    "message": "Business Intelligence"
   },
   "topNav.navItems.use_cases.Logs, events, and traces": {
-    "message": "Observability"
+    "message": "Logs, Events, Traces"
   },
   "topNav.navItems.use_cases.All use cases": {
     "message": "All use cases"
   },
-  "theme.blog.sidebar.navAriaLabel": {
-    "message": "Blog recent posts navigation",
-    "description": "The ARIA label for recent posts in the blog sidebar"
+  "topNav.navItems.resources.Blog": {
+    "message": "Blog"
+  },
+  "topNav.navItems.resources.Comparisons": {
+    "message": "Comparison"
+  },
+  "topNav.navItems.resources.Videos": {
+    "message": "Video"
+  },
+  "topNav.navItems.resources.Demos": {
+    "message": "Demo"
+  },
+  "sidebar.dropdownCategories.category.Getting Started": {
+    "message": "Introduction",
+    "description": "Getting Started"
+  },
+  "sidebar.dropdownCategories.category.description.Getting Started": {
+    "message": "Learn how to use ClickHouse",
+    "description": "Learn to use ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction": {
+    "message": "Introduction",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Introduction.description": {
+    "message": "ClickHouse overview",
+    "description": "Introduction to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides": {
+    "message": "Getting Started Guide",
+    "description": "Getting Started Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Starter Guides.description": {
+    "message": "Getting started with ClickHouse",
+    "description": "Start here to learn about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts": {
+    "message": "Fundamentals",
+    "description": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Concepts.description": {
+    "message": "Key concepts to know",
+    "description": "Key concepts to understand"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides": {
+    "message": "Migration Guide",
+    "description": "Migration Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Migration Guides.description": {
+    "message": "Migrate your database to ClickHouse",
+    "description": "Migrate your database to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides": {
+    "message": "Use Case Guides",
+    "description": "Use Case Guides"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Use Case Guides.description": {
+    "message": "Guide to common ClickHouse use cases",
+    "description": "Guides for common ClickHouse use cases"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets": {
+    "message": "Sample datasets",
+    "description": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Getting Started.Example datasets.description": {
+    "message": "Helpful datasets and tutorials",
+    "description": "Useful datasets and tutorials"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "Cloud",
+    "description": "Cloud"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "The fastest way to deploy ClickHouse",
+    "description": "The fastest way to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "Introduction",
+    "description": "Get started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "Get started with ClickHouse Cloud now",
+    "description": "Quickly get started with ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud": {
+    "message": "Cloud Management",
+    "description": "Cloud Management"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Managing Cloud.description": {
+    "message": "Managing ClickHouse Cloud service",
+    "description": "Manage your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API": {
+    "message": "Cloud API",
+    "description": "Cloud API"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud API.description": {
+    "message": "Automating ClickHouse Cloud",
+    "description": "Automate your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference": {
+    "message": "Cloud Reference",
+    "description": "Cloud Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Cloud Reference.description": {
+    "message": "Understanding How ClickHouse Cloud Works",
+    "description": "How ClickHouse Cloud works"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices": {
+    "message": "Best practices",
+    "description": "Best Practices"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Best Practices.description": {
+    "message": "How to Make the Most of ClickHouse Cloud",
+    "description": "Making the most of ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security": {
+    "message": "Security",
+    "description": "Security"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Security.description": {
+    "message": "Securing ClickHouse Cloud",
+    "description": "Secure your ClickHouse Cloud services"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud": {
+    "message": "Migrating to the cloud",
+    "description": "Migrating to the Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Migrating to Cloud.description": {
+    "message": "Migrate your database to ClickHouse Cloud",
+    "description": "Migrate your database to ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Manage Data": {
+    "message": "Data Management",
+    "description": "Manage Data"
+  },
+  "sidebar.dropdownCategories.category.description.Manage Data": {
+    "message": "Managing data in ClickHouse",
+    "description": "Managing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts": {
+    "message": "Fundamental data concepts",
+    "description": "Core Data Concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Core Data Concepts.description": {
+    "message": "Understanding internal ClickHouse concepts",
+    "description": "Understand core internal concepts in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data": {
+    "message": "Data updates",
+    "description": "Updating Data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Updating Data.description": {
+    "message": "Updating and replacing data in ClickHouse",
+    "description": "Updating and replacing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data": {
+    "message": "Data deletion",
+    "description": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Deleting data.description": {
+    "message": "Delete data in ClickHouse",
+    "description": "Deleting data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling": {
+    "message": "Data modeling",
+    "description": "Data Modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Data Modeling.description": {
+    "message": "Optimize the schema and data model",
+    "description": "Optimize your schema and data model"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations": {
+    "message": "Performance and Optimization",
+    "description": "Performance and Optimization"
+  },
+  "sidebar.dropdownCategories.category.Manage Data.Performance and Optimizations.description": {
+    "message": "ClickHouse optimization guide",
+    "description": "Guides to help you get the most out of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin": {
+    "message": "Server Administration",
+    "description": "Server Admin"
+  },
+  "sidebar.dropdownCategories.category.description.Server Admin": {
+    "message": "Managing and Deploying ClickHouse",
+    "description": "Manage and deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling": {
+    "message": "Deployment and Scaling",
+    "description": "Deployments and Scaling"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Deployments and Scaling.description": {
+    "message": "How to Deploy ClickHouse",
+    "description": "How to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication": {
+    "message": "Security and Authentication",
+    "description": "Security and Authentication"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Security and Authentication.description": {
+    "message": "Securing your ClickHouse deployment",
+    "description": "Secure your ClickHouse deployment"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings": {
+    "message": "Configuration",
+    "description": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Settings.description": {
+    "message": "Configure ClickHouse",
+    "description": "Configure ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities": {
+    "message": "Tools and Utilities",
+    "description": "Tools and Utilities"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.Tools and Utilities.description": {
+    "message": "Tools for Managing ClickHouse",
+    "description": "Tools for managing ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables": {
+    "message": "System tables",
+    "description": "System Tables"
+  },
+  "sidebar.dropdownCategories.category.Server Admin.System Tables.description": {
+    "message": "Metadata tables for managing ClickHouse",
+    "description": "Metadata tables to help you administer ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "Reference",
+    "description": "Reference"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "Reference documentation for ClickHouse features",
+    "description": "ClickHouse feature reference documentation"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "Introduction",
+    "description": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "Learn the ClickHouse syntax",
+    "description": "Learn the ClickHouse syntax"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "Functions",
+    "description": "Functions"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "Hundreds of built-in functions for data analysis",
+    "description": "Hundreds of built-in functions for analyzing your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "Engine",
+    "description": "Engines"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "Use table and database engines suited to your data",
+    "description": "Choose the right table and database engines for your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features": {
+    "message": "Additional features",
+    "description": "Other Features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Other Features.description": {
+    "message": "Learn more about other ClickHouse features",
+    "description": "Explore additional ClickHouse features"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "Integrations",
+    "description": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "Integrations, clients, and drivers for ClickHouse",
+    "description": "Integrations, clients, and drivers for ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations": {
+    "message": "All integrations",
+    "description": "All Integrations"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All Integrations.description": {
+    "message": "Integrating ClickHouse with other databases and applications",
+    "description": "Integrate ClickHouse with other databases and applications"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients": {
+    "message": "Client libraries",
+    "description": "Language Clients"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language Clients.description": {
+    "message": "Work with ClickHouse in your favorite programming language",
+    "description": "Work with ClickHouse using your favorite programming language"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes",
+    "description": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "The easiest way to ingest data into ClickHouse",
+    "description": "The easiest way to ingest data into ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces": {
+    "message": "Native Clients and Interfaces",
+    "description": "Native Clients & Interfaces"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native Clients & Interfaces.description": {
+    "message": "Choose a client and interface to connect to ClickHouse",
+    "description": "Select a client and interface for connecting to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources": {
+    "message": "Data sources",
+    "description": "Data Sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Sources.description": {
+    "message": "Load data into ClickHouse from your preferred data source",
+    "description": "Ingest data into ClickHouse from your preferred sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization": {
+    "message": "Data visualization",
+    "description": "Data Visualization"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Visualization.description": {
+    "message": "Connect ClickHouse to your favorite visualization tool",
+    "description": "Connect ClickHouse to your visualization tool of choice"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats": {
+    "message": "Data format",
+    "description": "Data Formats"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Formats.description": {
+    "message": "Exploring data formats supported by ClickHouse",
+    "description": "Explore the data formats supported by ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion": {
+    "message": "Data ingestion",
+    "description": "Data Ingestion"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data Ingestion.description": {
+    "message": "Using various ELT tools to ingest data into ClickHouse",
+    "description": "Ingest data into ClickHouse using a variety of ELT tools"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB",
+    "description": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB is an embedded version of ClickHouse.",
+    "description": "chDB is an embedded ClickHouse database"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "Learn about chDB",
+    "description": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "Learn to use chDB",
+    "description": "Using chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations": {
+    "message": "Language integrations",
+    "description": "Language Integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language Integrations.description": {
+    "message": "Connect to chDB with a language client",
+    "description": "Connect to chDB using a language client library"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "Guides",
+    "description": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "Guide to Using chDB",
+    "description": "Guides for using chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "Overview",
+    "description": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "Learn more about ClickHouse",
+    "description": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "Implementation examples",
+    "description": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "Companies Using ClickHouse",
+    "description": "ClickHouse users"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "Changelog",
+    "description": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "View the latest ClickHouse changes",
+    "description": "View recent changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "Support",
+    "description": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "Get support from ClickHouse engineers",
+    "description": "Get help from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing": {
+    "message": "Development and Contribution",
+    "description": "Development and Contribution"
+  },
+  "sidebar.dropdownCategories.category.About.Development and Contributing.description": {
+    "message": "Learn how to contribute to ClickHouse",
+    "description": "How to contribute to ClickHouse"
+  },
+  "This documentation is translated with the help of AI": {
+    "message": "This document has been translated with the help of AI."
+  },
+  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
+    "message": "Did you spot a translation issue? Report it to help us improve."
+  },
+  "Report an issue": {
+    "message": "Report an issue"
   },
   "theme.DocSidebarItem.toggleCollapsedCategoryAriaLabel": {
     "message": "Toggle the collapsible sidebar category '{label}'",
@@ -196,22 +950,13 @@
     "message": "Languages",
     "description": "The label for the mobile language switcher dropdown"
   },
-  "This documentation is translated with the help of AI": {
-    "message": "This documentation is translated with the help of AI"
+  "theme.NotFound.p1": {
+    "message": "We could not find what you were looking for.",
+    "description": "The first paragraph of the 404 page"
   },
-  "Spotted a translation issue? Help us to improve it by reporting translation issues.": {
-    "message": "Spotted a translation issue? Help us to improve it by reporting translation issues."
-  },
-  "Report an issue": {
-    "message": "Report an issue"
-  },
-  "theme.blog.post.readMore": {
-    "message": "Read more",
-    "description": "The label used in blog post item excerpts to link to full blog posts"
-  },
-  "theme.blog.post.readMoreLabel": {
-    "message": "Read more about {title}",
-    "description": "The ARIA label for the link to full blog posts from excerpts"
+  "theme.NotFound.p2": {
+    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+    "description": "The 2nd paragraph of the 404 page"
   },
   "theme.blog.post.readingTime.plurals": {
     "message": "One min read|{readingTime} min read",
@@ -220,6 +965,14 @@
   "theme.docs.breadcrumbs.home": {
     "message": "Home page",
     "description": "The ARIA label for the home page in the breadcrumbs"
+  },
+  "theme.blog.post.readMore": {
+    "message": "Read more",
+    "description": "The label used in blog post item excerpts to link to full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Read more about {title}",
+    "description": "The ARIA label for the link to full blog posts from excerpts"
   },
   "theme.docs.sidebar.collapseButtonTitle": {
     "message": "Collapse sidebar",
@@ -396,14 +1149,6 @@
     "message": "Collapse sidebar category '{label}'",
     "description": "The ARIA label to collapse the sidebar category"
   },
-  "theme.NotFound.p1": {
-    "message": "We could not find what you were looking for.",
-    "description": "The first paragraph of the 404 page"
-  },
-  "theme.NotFound.p2": {
-    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
-    "description": "The 2nd paragraph of the 404 page"
-  },
   "theme.TOCCollapsible.toggleButtonLabel": {
     "message": "On this page",
     "description": "The label used by the button on the collapsible TOC component"
@@ -419,6 +1164,10 @@
   "theme.docs.sidebar.expandButtonAriaLabel": {
     "message": "Expand sidebar",
     "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Search by Algolia",
+    "description": "The ARIA label for Algolia mention"
   },
   "theme.SearchBar.label": {
     "message": "Search",
@@ -567,5 +1316,416 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "sidebar.dropdownCategories.category.Get started": {
+    "message": "Get started"
+  },
+  "sidebar.dropdownCategories.category.description.Get started": {
+    "message": "Learn how to use ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction": {
+    "message": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Get started.Introduction.description": {
+    "message": "An introduction to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts": {
+    "message": "Concepts"
+  },
+  "sidebar.dropdownCategories.category.Get started.Concepts.description": {
+    "message": "Core concepts to know"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides": {
+    "message": "Starter guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Starter guides.description": {
+    "message": "Start here when learning ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices": {
+    "message": "Best practices"
+  },
+  "sidebar.dropdownCategories.category.Get started.Best practices.description": {
+    "message": "Follow best practices with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides": {
+    "message": "Migration guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Migration guides.description": {
+    "message": "Migrate your database to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides": {
+    "message": "Use case guides"
+  },
+  "sidebar.dropdownCategories.category.Get started.Use case guides.description": {
+    "message": "Common use case guides for ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets": {
+    "message": "Example datasets"
+  },
+  "sidebar.dropdownCategories.category.Get started.Example datasets.description": {
+    "message": "Helpful datasets and tutorials"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom": {
+    "message": "Tips and community wisdom"
+  },
+  "sidebar.dropdownCategories.category.Get started.Tips and community wisdom.description": {
+    "message": "Tips and tricks from the community"
+  },
+  "sidebar.dropdownCategories.category.Cloud": {
+    "message": "Cloud"
+  },
+  "sidebar.dropdownCategories.category.description.Cloud": {
+    "message": "The fastest way to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started": {
+    "message": "Get Started"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Get Started.description": {
+    "message": "Start quickly with ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features": {
+    "message": "Features"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Features.description": {
+    "message": "Features offered by ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides": {
+    "message": "Guides"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Guides.description": {
+    "message": "ClickHouse Cloud guides"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference": {
+    "message": "Reference"
+  },
+  "sidebar.dropdownCategories.category.Cloud.Reference.description": {
+    "message": "Reference docs for ClickHouse Cloud"
+  },
+  "sidebar.dropdownCategories.category.Manage data": {
+    "message": "Manage data"
+  },
+  "sidebar.dropdownCategories.category.description.Manage data": {
+    "message": "How to manage data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts": {
+    "message": "Core data concepts"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Core data concepts.description": {
+    "message": "Understand internal concepts in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data": {
+    "message": "Updating data"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Updating data.description": {
+    "message": "Updating and replacing data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data": {
+    "message": "Deleting data"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Deleting data.description": {
+    "message": "Deleting data in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling": {
+    "message": "Data modeling"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Data modeling.description": {
+    "message": "Optimize your schema and data model"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations": {
+    "message": "Performance and optimizations"
+  },
+  "sidebar.dropdownCategories.category.Manage data.Performance and optimizations.description": {
+    "message": "Guides to help you optimize ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin": {
+    "message": "Server admin"
+  },
+  "sidebar.dropdownCategories.category.description.Server admin": {
+    "message": "Manage and deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling": {
+    "message": "Deployments and scaling"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Deployments and scaling.description": {
+    "message": "How to deploy ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication": {
+    "message": "Security and authentication"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Security and authentication.description": {
+    "message": "Secure your ClickHouse deployment"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings": {
+    "message": "Settings"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Settings.description": {
+    "message": "Configure ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities": {
+    "message": "Tools and utilities"
+  },
+  "sidebar.dropdownCategories.category.Server admin.Tools and utilities.description": {
+    "message": "Tools to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables": {
+    "message": "System tables"
+  },
+  "sidebar.dropdownCategories.category.Server admin.System tables.description": {
+    "message": "Metadata tables to help you manage ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Reference": {
+    "message": "Reference"
+  },
+  "sidebar.dropdownCategories.category.description.Reference": {
+    "message": "Reference documentation for ClickHouse features"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction": {
+    "message": "Introduction"
+  },
+  "sidebar.dropdownCategories.category.Reference.Introduction.description": {
+    "message": "Learn ClickHouse syntax"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions": {
+    "message": "Functions"
+  },
+  "sidebar.dropdownCategories.category.Reference.Functions.description": {
+    "message": "Hundreds of built-in functions to help you analyze your data"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines": {
+    "message": "Engines"
+  },
+  "sidebar.dropdownCategories.category.Reference.Engines.description": {
+    "message": "Use the right table and database engines for your data"
+  },
+  "sidebar.dropdownCategories.category.Integrations": {
+    "message": "Integrations"
+  },
+  "sidebar.dropdownCategories.category.description.Integrations": {
+    "message": "Integrations, clients, and drivers to use with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations": {
+    "message": "All integrations"
+  },
+  "sidebar.dropdownCategories.category.Integrations.All integrations.description": {
+    "message": "Integrate ClickHouse with other databases and applications"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients": {
+    "message": "Language clients"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Language clients.description": {
+    "message": "Use your favorite language to work with ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes": {
+    "message": "ClickPipes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.ClickPipes.description": {
+    "message": "The easiest way to ingest data into ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces": {
+    "message": "Native clients & interfaces"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Native clients & interfaces.description": {
+    "message": "Choose a client and interface to connect to ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources": {
+    "message": "Data sources"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
+    "message": "Load data into ClickHouse from your prefered source"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization": {
+    "message": "Data visualization"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data visualization.description": {
+    "message": "Connect ClickHouse to your favorite visualization tool"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats": {
+    "message": "Data formats"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data formats.description": {
+    "message": "Explore data formats supported by ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion": {
+    "message": "Data ingestion"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data ingestion.description": {
+    "message": "Ingest data into ClickHouse with a range of ELT tools"
+  },
+  "sidebar.dropdownCategories.category.ClickStack": {
+    "message": "ClickStack"
+  },
+  "sidebar.dropdownCategories.category.description.ClickStack": {
+    "message": "ClickStack - The ClickHouse Observability Stack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started": {
+    "message": "Getting started"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Getting started.description": {
+    "message": "Get started with ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets": {
+    "message": "Sample datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Sample datasets.description": {
+    "message": "Learn ClickStack with sample datasets"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture": {
+    "message": "Architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Architecture.description": {
+    "message": "Familiarize yourself with the ClickStack architecture"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment": {
+    "message": "Deployment"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Deployment.description": {
+    "message": "Choose a ClickStack deployment mode"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data": {
+    "message": "Ingesting data"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Ingesting data.description": {
+    "message": "Ingest data into ClickStack"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options": {
+    "message": "Configuration options"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Configuration options.description": {
+    "message": "Deploy ClickStack in production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production": {
+    "message": "Production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Production.description": {
+    "message": "Deploy ClickStack in production"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples": {
+    "message": "Integration examples"
+  },
+  "sidebar.dropdownCategories.category.ClickStack.Integration examples.description": {
+    "message": "Integration quick start guides"
+  },
+  "sidebar.dropdownCategories.category.chDB": {
+    "message": "chDB"
+  },
+  "sidebar.dropdownCategories.category.description.chDB": {
+    "message": "chDB is an embedded version of ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB": {
+    "message": "Learn chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Learn chDB.description": {
+    "message": "Learn how to use chDB"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations": {
+    "message": "Language integrations"
+  },
+  "sidebar.dropdownCategories.category.chDB.Language integrations.description": {
+    "message": "Connect to chDB using a language client"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides": {
+    "message": "Guides"
+  },
+  "sidebar.dropdownCategories.category.chDB.Guides.description": {
+    "message": "Guides to help you use chDB"
+  },
+  "sidebar.dropdownCategories.category.About": {
+    "message": "About"
+  },
+  "sidebar.dropdownCategories.category.description.About": {
+    "message": "Learn more about ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters": {
+    "message": "Adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Adopters.description": {
+    "message": "ClickHouse adopters"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs": {
+    "message": "Changelogs"
+  },
+  "sidebar.dropdownCategories.category.About.Changelogs.description": {
+    "message": "View the latest changes in ClickHouse"
+  },
+  "sidebar.dropdownCategories.category.About.Support": {
+    "message": "Support"
+  },
+  "sidebar.dropdownCategories.category.About.Support.description": {
+    "message": "Get support from ClickHouse engineers"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing": {
+    "message": "Development and contributing"
+  },
+  "sidebar.dropdownCategories.category.About.Development and contributing.description": {
+    "message": "Learn how to contribute to ClickHouse"
+  },
+  "homepage.hero.description": {
+    "message": "Learn how to use ClickHouse through guides, reference documentation, and videos"
+  },
+  "homepage.hero.quickStart": {
+    "message": "Quick Start"
+  },
+  "homepage.hero.getStartedCloud": {
+    "message": "Get Started with Cloud"
+  },
+  "homepage.hero.installLocally": {
+    "message": "Install Locally"
+  },
+  "homepage.hero.getStartedOSS": {
+    "message": "Get Started with OSS"
+  },
+  "homepage.search.title": {
+    "message": "Search Documentation"
+  },
+  "homepage.connect.title": {
+    "message": "Connect to ClickHouse"
+  },
+  "homepage.connect.description": {
+    "message": "Connect your application to ClickHouse in minutes"
+  },
+  "homepage.connect.viewAll": {
+    "message": "View All Clients and Drivers"
+  },
+  "homepage.connect.clickhouseCli": {
+    "message": "ClickHouse CLI"
+  },
+  "homepage.connect.cloudSqlConsole": {
+    "message": "Cloud SQL Console"
+  },
+  "homepage.migrate.title": {
+    "message": "Migrate to ClickHouse"
+  },
+  "homepage.migrate.description": {
+    "message": "Load data from other databases, data warehouses, and object storage"
+  },
+  "homepage.migrate.viewAll": {
+    "message": "View All Integrations"
+  },
+  "homepage.deploy.title": {
+    "message": "Deploy ClickHouse"
+  },
+  "homepage.deploy.description": {
+    "message": "Deploy ClickHouse to the cloud or your own infrastructure"
+  },
+  "homepage.deploy.cloud": {
+    "message": "Cloud"
+  },
+  "homepage.deploy.nodeDeployment": {
+    "message": "Node Deployment"
+  },
+  "homepage.deploy.clusterDeployment": {
+    "message": "Cluster Deployment"
+  },
+  "homepage.resources.title": {
+    "message": "Other Resources"
+  },
+  "homepage.resources.contactSupport": {
+    "message": "Contact Support"
+  },
+  "homepage.resources.changelog": {
+    "message": "Changelog"
+  },
+  "homepage.resources.sampleDatasets": {
+    "message": "Sample Datasets"
   }
 }

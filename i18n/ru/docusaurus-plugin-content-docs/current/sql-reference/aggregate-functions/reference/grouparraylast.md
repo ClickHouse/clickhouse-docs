@@ -1,17 +1,19 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/grouparraylast'
+description: 'Создаёт массив из последних значений аргумента.'
 sidebar_position: 142
-description: 'Создает массив значений последних аргументов.'
-title: groupArrayLast
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/grouparraylast
+title: 'groupArrayLast'
+doc_type: 'reference'
 ---
-# groupArrayLast
+
+# groupArrayLast {#grouparraylast}
 
 Синтаксис: `groupArrayLast(max_size)(x)`
 
-Создает массив последних значений аргументов. Например, `groupArrayLast(1)(x)` эквивалентно `[anyLast (x)]`.
+Создаёт массив из последних значений аргумента.
+Например, `groupArrayLast(1)(x)` эквивалентен `[anyLast (x)]`.
 
-В некоторых случаях вы все еще можете полагаться на порядок выполнения. Это относится к случаям, когда `SELECT` поступает из подзапроса, использующего `ORDER BY`, если результат подзапроса достаточно мал.
+В некоторых случаях вы всё ещё можете полагаться на порядок выполнения. Это относится к случаям, когда оператор `SELECT` получает данные из подзапроса, использующего `ORDER BY`, если результат подзапроса достаточно мал.
 
 **Пример**
 
@@ -29,7 +31,7 @@ SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
 └─────────┘
 ```
 
-В отличие от `groupArray`:
+По сравнению с `groupArray`:
 
 ```sql
 SELECT groupArray(2)(number+1) numbers FROM numbers(10)

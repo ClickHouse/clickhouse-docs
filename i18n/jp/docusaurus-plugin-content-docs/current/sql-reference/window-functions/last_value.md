@@ -1,16 +1,15 @@
 ---
-'description': 'last_value ウィンドウ関数のドキュメント'
-'sidebar_label': 'last_value'
-'sidebar_position': 4
-'slug': '/sql-reference/window-functions/last_value'
-'title': 'last_value'
-'doc_type': 'reference'
+description: 'last_value ウィンドウ関数に関するドキュメント'
+sidebar_label: 'last_value'
+sidebar_position: 4
+slug: /sql-reference/window-functions/last_value
+title: 'last_value'
+doc_type: 'reference'
 ---
 
+# last&#95;value {#last&#95;value}
 
-# last_value
-
-順序付けられたフレーム内で評価された最後の値を返します。デフォルトでは、NULL引数はスキップされますが、`RESPECT NULLS` 修飾子を使用することでこの動作を上書きできます。
+順序付けされたフレーム内で評価された最後の値を返します。デフォルトでは NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用すると、この動作を変更できます。
 
 **構文**
 
@@ -22,24 +21,24 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-エイリアス: `anyLast`.
+別名: `anyLast`.
 
 :::note
-オプションの修飾子 `RESPECT NULLS` を `first_value(column_name)` の後に使用することで、`NULL` 引数がスキップされないことが保証されます。
-詳細については、[NULL処理](../aggregate-functions/index.md/#null-processing)を参照してください。
+`first_value(column_name)` の後にオプションの修飾子 `RESPECT NULLS` を付けると、`NULL` 引数がスキップされなくなります。
+詳細は [NULL processing](../aggregate-functions/index.md/#null-processing) を参照してください。
 
-エイリアス: `lastValueRespectNulls`
+別名: `lastValueRespectNulls`
 :::
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**返される値**
+**戻り値**
 
-- 順序付けられたフレーム内で評価された最後の値。
+* 並べ替えられたフレーム内で評価される最後の値。
 
 **例**
 
-この例では、`last_value` 関数を使用して架空のプレミアリーグのサッカー選手の給与データセットから最低給与のサッカー選手を見つけます。
+この例では、架空のプレミアリーグのサッカー選手の給与データセットから、最も給与の低い選手を見つけるために `last_value` 関数を使用します。
 
 クエリ:
 

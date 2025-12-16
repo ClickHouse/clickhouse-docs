@@ -1,17 +1,15 @@
 ---
-'description': '系统表包含关于和状态的 replicated tables 在本地服务器上。对于监控非常有用。'
-'keywords':
-- 'system table'
-- 'replicas'
-'slug': '/operations/system-tables/replicas'
-'title': 'system.replicas'
-'doc_type': 'reference'
+description: '包含本地服务器上各复制表信息和状态的系统表，适用于监控。'
+keywords: ['system table', 'replicas']
+slug: /operations/system-tables/replicas
+title: 'system.replicas'
+doc_type: 'reference'
 ---
 
+# system.replicas {#systemreplicas}
 
-# system.replicas
-
-包含本地服务器上复制表的信息和状态。该表可用于监控。该表为每个 Replicated\* 表包含一行。
+包含本地服务器上所有复制表的相关信息和状态。
+此表可用于监控。表中每个使用 Replicated* 引擎的表对应一行记录。
 
 示例：
 
@@ -65,48 +63,48 @@ replica_is_active:           {'r1':1,'r2':1}
 
 列：
 
-- `database` (`String`) - 数据库名称
-- `table` (`String`) - 表名称
-- `engine` (`String`) - 表引擎名称
-- `is_leader` (`UInt8`) - 副本是否为领导者。
-    多个副本可以同时是领导者。可以通过 `merge_tree` 设置 `replicated_can_become_leader` 来阻止副本成为领导者。领导者负责调度后台合并。
-    注意，写入可以在任何可用且在 ZK 中有会话的副本上执行，而不管它是否为领导者。
-- `can_become_leader` (`UInt8`) - 副本是否可以成为领导者。
-- `is_readonly` (`UInt8`) - 副本是否处于只读模式。
-    如果配置中没有包含 ClickHouse Keeper 的部分，如果在重新初始化 ClickHouse Keeper 中的会话时发生未知错误，以及在 ClickHouse Keeper 中重新初始化会话时，则会开启此模式。
-- `is_session_expired` (`UInt8`) - 与 ClickHouse Keeper 的会话已过期。基本上与 `is_readonly` 相同。
-- `future_parts` (`UInt32`) - 将作为尚未完成的 INSERT 或合并的结果出现的数据部分数量。
-- `parts_to_check` (`UInt32`) - 等待验证的数据部分数量。如果怀疑某个部分可能损坏，则该部分放入验证队列中。
-- `zookeeper_path` (`String`) - ClickHouse Keeper 中表数据的路径。
-- `replica_name` (`String`) - ClickHouse Keeper 中的副本名称。相同表的不同副本具有不同的名称。
-- `replica_path` (`String`) - ClickHouse Keeper 中副本数据的路径。与连接 'zookeeper_path/replicas/replica_path' 相同。
-- `columns_version` (`Int32`) - 表结构的版本号。指示 ALTER 操作执行的次数。如果副本具有不同的版本，表示某些副本尚未进行所有 ALTER。
-- `queue_size` (`UInt32`) - 等待执行操作的队列大小。操作包括插入数据块、合并和某些其他操作。通常与 `future_parts` 一致。
-- `inserts_in_queue` (`UInt32`) - 需要进行的数据块插入数量。插入通常复制的相当迅速。如果这个数字很大，意味着出现了问题。
-- `merges_in_queue` (`UInt32`) - 等待进行的合并数量。有时合并非常耗时，因此该值可能会长时间大于零。
-- `part_mutations_in_queue` (`UInt32`) - 等待进行的突变数量。
-- `queue_oldest_time` (`DateTime`) - 如果 `queue_size` 大于 0，显示最早操作被添加到队列的时间。
-- `inserts_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
-- `merges_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
-- `part_mutations_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
+* `database` (`String`) - 数据库名称
+* `table` (`String`) - 表名
+* `engine` (`String`) - 表引擎名称
+* `is_leader` (`UInt8`) - 该副本是否为 leader。
+  多个副本可以同时为 leader。可以通过在 `merge_tree` 设置中使用 `replicated_can_become_leader` 来阻止某个副本成为 leader。leader 负责调度后台合并。
+  请注意，只要副本可用并且在 ZK 中有会话，就可以对其执行写入操作，而不论其是否为 leader。
+* `can_become_leader` (`UInt8`) - 该副本是否可以成为 leader。
+* `is_readonly` (`UInt8`) - 该副本是否处于只读模式。
+  如果配置中没有 ClickHouse Keeper 相关的配置段，或者在 ClickHouse Keeper 中重新初始化会话时发生未知错误，或者在 ClickHouse Keeper 中会话正在重新初始化时，该模式会被启用。
+* `is_session_expired` (`UInt8`) - 与 ClickHouse Keeper 的会话是否已过期。基本上与 `is_readonly` 含义相同。
+* `future_parts` (`UInt32`) - 作为尚未完成的 INSERT 或合并操作结果将出现的数据分片数量。
+* `parts_to_check` (`UInt32`) - 等待验证队列中的数据分片数量。如果怀疑某个分片可能已损坏，则会将其放入验证队列。
+* `zookeeper_path` (`String`) - 在 ClickHouse Keeper 中的表数据路径。
+* `replica_name` (`String`) - 在 ClickHouse Keeper 中的副本名称。同一张表的不同副本具有不同的名称。
+* `replica_path` (`String`) - 在 ClickHouse Keeper 中的副本数据路径。等同于拼接得到的路径 `'zookeeper_path/replicas/replica_path'`。
+* `columns_version` (`Int32`) - 表结构的版本号。表示执行 ALTER 的次数。如果副本具有不同的版本，说明某些副本尚未完成所有 ALTER 操作。
+* `queue_size` (`UInt32`) - 等待执行的操作队列大小。操作包括插入数据块、合并以及某些其他操作。通常该值与 `future_parts` 一致。
+* `inserts_in_queue` (`UInt32`) - 需要执行的数据块插入数量。插入通常会被相当快速地复制。如果该值较大，则表示存在问题。
+* `merges_in_queue` (`UInt32`) - 等待执行的合并数量。有时合并会很耗时，因此该值可能长时间大于零。
+* `part_mutations_in_queue` (`UInt32`) - 等待执行的变更（mutation）数量。
+* `queue_oldest_time` (`DateTime`) - 当 `queue_size` 大于 0 时，表示最早的操作被加入队列的时间。
+* `inserts_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
+* `merges_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
+* `part_mutations_oldest_time` (`DateTime`) - 参见 `queue_oldest_time`
 
-接下来的 4 列仅在与 ZK 有活动会话的情况下具有非零值。
+接下来的 4 列只有在与 ZK 存在活动会话时才为非零值。
 
-- `log_max_index` (`UInt64`) - 一般活动日志中最大条目编号。
-- `log_pointer` (`UInt64`) - 副本复制到其执行队列的活动日志中最大条目编号，加一。如果 `log_pointer` 远小于 `log_max_index`，则有问题。
-- `last_queue_update` (`DateTime`) - 上次更新队列的时间。
-- `absolute_delay` (`UInt64`) - 当前副本的延迟，单位为秒。
-- `total_replicas` (`UInt8`) - 此表的已知副本总数。
-- `active_replicas` (`UInt8`) - 此表在 ClickHouse Keeper 中有会话的副本数量（即正常工作的副本数量）。
-- `lost_part_count` (`UInt64`) - 自表创建以来，所有副本中丢失的数据部分数量。该值保存在 ClickHouse Keeper 中，只会增加。
-- `last_queue_update_exception` (`String`) - 当队列包含损坏的条目时。尤其重要，当 ClickHouse 在版本之间打破向后兼容性，并且新版本写入的日志条目不能被旧版本解析时。
-- `zookeeper_exception` (`String`) - 最后一次异常消息，如果在从 ClickHouse Keeper 获取信息时发生错误。
-- `replica_is_active` ([Map(String, UInt8)](../../sql-reference/data-types/map.md)) — 副本名称与副本是否处于活动状态之间的映射。
+* `log_max_index` (`UInt64`) - 全局活动日志中的最大条目编号。
+* `log_pointer` (`UInt64`) - 副本已复制到其执行队列中的全局活动日志最大条目编号再加一。如果 `log_pointer` 远小于 `log_max_index`，则说明存在问题。
+* `last_queue_update` (`DateTime`) - 队列最后一次更新的时间。
+* `absolute_delay` (`UInt64`) - 当前副本的滞后时长（秒）。
+* `total_replicas` (`UInt8`) - 该表已知副本的总数量。
+* `active_replicas` (`UInt8`) - 该表在 ClickHouse Keeper 中具有会话的副本数量（即正常工作的副本数量）。
+* `lost_part_count` (`UInt64`) - 自建表以来所有副本在该表中丢失的数据分片总数。该值保存在 ClickHouse Keeper 中，只会增加。
+* `last_queue_update_exception` (`String`) - 当队列中包含损坏条目时记录的最后异常消息。当 ClickHouse 在版本之间破坏向后兼容性，导致由新版本写入的日志条目无法被旧版本解析时，该字段尤其重要。
+* `zookeeper_exception` (`String`) - 在从 ClickHouse Keeper 获取信息时发生错误时记录的最后异常消息。
+* `replica_is_active` ([Map(String, UInt8)](../../sql-reference/data-types/map.md)) — 一个从副本名称到该副本是否处于活动状态的映射。
 
-如果您请求所有列，表的性能可能会稍慢，因为每一行都需要执行多次与 ClickHouse Keeper 的读取。
-如果您不请求最后 4 列（log_max_index，log_pointer，total_replicas，active_replicas），表的性能会更快。
+如果你查询所有列，访问该表的速度可能会稍微慢一些，因为每一行都需要从 ClickHouse Keeper 进行多次读取。
+如果你不查询最后 4 列（log&#95;max&#95;index、log&#95;pointer、total&#95;replicas、active&#95;replicas），访问该表会更快。
 
-例如，您可以这样检查一切是否正常：
+例如，你可以像下面这样检查一切是否正常工作：
 
 ```sql
 SELECT
@@ -138,4 +136,4 @@ WHERE
     OR active_replicas < total_replicas
 ```
 
-如果此查询不返回任何内容，则表示一切正常。
+如果此查询未返回任何结果，就表示一切正常。

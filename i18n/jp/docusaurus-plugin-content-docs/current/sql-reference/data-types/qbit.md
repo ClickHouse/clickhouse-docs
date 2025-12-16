@@ -1,40 +1,38 @@
 ---
-'description': 'QBit データ型に関する Documentation in ClickHouse、これは近似ベクトル検索のための細かい量子化を可能にします'
-'keywords':
-- 'qbit'
-- 'data type'
-'sidebar_label': 'QBit'
-'sidebar_position': 64
-'slug': '/sql-reference/data-types/qbit'
-'title': 'QBit データ型'
-'doc_type': 'reference'
+description: 'ClickHouse における QBit データ型のドキュメントです。QBit データ型は、近似ベクトル検索のための細粒度な量子化を可能にします'
+keywords: ['qbit', 'data type']
+sidebar_label: 'QBit'
+sidebar_position: 64
+slug: /sql-reference/data-types/qbit
+title: 'QBit データ型'
+doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
-`QBit` データ型は、ベクトルストレージを再編成して、より高速な近似検索を可能にします。各ベクトルの要素を一緒に保存する代わりに、すべてのベクトルにわたって同じバイナリ桁位置をグループ化します。
-これにより、ベクトルは完全な精度で保存され、検索時に詳細な量子化レベルを選択できます: より少ないビットを読み込むことで I/O を減らし、計算を高速化するか、より高い精度のためにより多くのビットを読み取ることができます。量子化から得られるデータ転送と計算の速度向上の利点を享受しつつ、必要なときに元のデータはすべて利用可能です。
+`QBit` データ型は、近似検索を高速化するためにベクトルの格納方式を再構成します。各ベクトルの要素をまとめて保存する代わりに、すべてのベクトルにわたって同じビット位置をグループ化して格納します。
+これにより、ベクトルはフル精度のまま保持しつつ、検索時にきめ細かな量子化レベルを選択できます。読み込むビット数を少なくすれば I/O が減って計算が高速になり、多く読めば精度が向上します。量子化によるデータ転送量および計算量削減の高速化メリットを得ながら、必要に応じて元のデータをすべて参照できます。
 
 :::note
-`QBit` データ型およびそれに関連する距離関数は、現在実験的です。
-これらを有効にするには、最初に `SET allow_experimental_qbit_type = 1` を実行してください。
-問題が発生した場合は、[ClickHouse リポジトリ](https://github.com/clickhouse/clickhouse/issues)に問題をオープンしてください。
+`QBit` データ型とそれに関連する距離関数は、現在は実験的機能です。
+これらを有効にするには、まず `SET allow_experimental_qbit_type = 1` を実行してください。
+問題が発生した場合は、[ClickHouse repository](https://github.com/clickhouse/clickhouse/issues) に issue を作成してください。
 :::
 
-`QBit` 型のカラムを宣言するには、以下の構文を使用します:
+`QBit` 型のカラムを宣言するには、次の構文を使用します。
 
 ```sql
 column_name QBit(element_type, dimension)
 ```
 
-* `element_type` – 各ベクトル要素の型。許可される型は `BFloat16`、`Float32` および `Float64` です
-* `dimension` – 各ベクトルの要素数
+* `element_type` – 各ベクトル要素の型。利用可能な型は `BFloat16`、`Float32`、`Float64` です
+* `dimension` – 各ベクトル内の要素数。
 
 ## QBit の作成 {#creating-qbit}
 
-テーブルカラム定義で `QBit` 型を使用する:
+テーブルの列を定義する際に `QBit` 型を使用します：
 
 ```sql
 CREATE TABLE test (id UInt32, vec QBit(Float32, 8)) ENGINE = Memory;
@@ -51,7 +49,7 @@ SELECT vec FROM test ORDER BY id;
 
 ## QBit サブカラム {#qbit-subcolumns}
 
-`QBit` は、格納されたベクトルの個々のビットプレーンにアクセスできるサブカラムアクセスパターンを実装しています。各ビット位置は、`.N` 構文を使用してアクセスでき、ここで `N` はビット位置です:
+`QBit` は、格納されたベクトルの個々のビットプレーンにアクセスできるサブカラムアクセスパターンを実装しています。各ビット位置には `.N` 構文を使用してアクセスでき、`N` はビット位置を表します。
 
 ```sql
 CREATE TABLE test (id UInt32, vec QBit(Float32, 8)) ENGINE = Memory;
@@ -67,14 +65,14 @@ SELECT bin(vec.1) FROM test;
 └───────────────────────────┘
 ```
 
-アクセス可能なサブカラムの数は、要素型によって異なります:
+アクセス可能なサブカラムの数は要素型に依存します。
 
-* `BFloat16`: 16 サブカラム (1-16)
-* `Float32`: 32 サブカラム (1-32)
-* `Float64`: 64 サブカラム (1-64)
+* `BFloat16`: サブカラム 16 個 (1〜16)
+* `Float32`: サブカラム 32 個 (1〜32)
+* `Float64`: サブカラム 64 個 (1〜64)
 
 ## ベクトル検索関数 {#vector-search-functions}
 
-これは、`QBit` データ型を使用したベクトル類似検索のための距離関数です:
+`QBit` データ型を使用するベクトル類似度検索向けの距離関数は次のとおりです。
 
 * [`L2DistanceTransposed`](../functions/distance-functions.md#L2DistanceTransposed)

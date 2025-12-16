@@ -161,7 +161,7 @@ Start a ClickStack instance:
 ```bash
 docker run -d --name clickstack-postgres-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 Wait approximately 30 seconds for ClickStack to fully start.

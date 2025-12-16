@@ -1,17 +1,17 @@
 {
   "a": {
-    "path":"April_25,_2017",
-    "month":"2018-01-01",
-    "hits":2
+    "path": "4月_25日,_2017年",
+    "month": "2018-01-01",
+    "hits": 2
   },
   "b": {
-    "path":"Akahori_Station",
-    "month":"2016-06-01",
-    "hits":11
+    "path": "赤堀_站",
+    "month": "2016-06-01",
+    "hits": 11
   },
   "c": {
-    "path": "Abducens_palsy",
-    "month":"2016-05-01",
-    "hits":28
+    "path": "外展神经麻痹",
+    "month": "2016-05-01",
+    "hits": 28
   }
 }

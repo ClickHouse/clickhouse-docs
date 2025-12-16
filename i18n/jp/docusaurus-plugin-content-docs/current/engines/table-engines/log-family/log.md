@@ -1,22 +1,25 @@
 ---
-'description': 'Logに関するDocumentation'
-'slug': '/engines/table-engines/log-family/log'
-'toc_priority': 33
-'toc_title': 'Log'
-'title': 'ログ'
-'doc_type': 'reference'
+description: 'Log テーブルエンジンのドキュメント'
+slug: /engines/table-engines/log-family/log
+toc_priority: 33
+toc_title: 'Log'
+title: 'Log テーブルエンジン'
+doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Log
+# Log テーブルエンジン {#log-table-engine}
 
-エンジンは `Log` エンジンのファミリーに属します。`Log` エンジンの一般的なプロパティとその違いについては、[Log Engine Family](../../../engines/table-engines/log-family/index.md)の記事を参照してください。
+<CloudNotSupportedBadge/>
 
-`Log` は、[TinyLog](../../../engines/table-engines/log-family/tinylog.md) とは異なり、カラムファイルとともに小さな「マーク」ファイルが存在します。これらのマークは、各データブロックに書き込まれ、指定された行数をスキップするためにファイルを読み始めるオフセットを含んでいます。これにより、テーブルデータを複数のスレッドで読み取ることが可能になります。
-同時データアクセスのため、読み取り操作は同時に実行できますが、書き込み操作は読み取りと互いをブロックします。
-`Log` エンジンはインデックスをサポートしていません。同様に、テーブルへの書き込みが失敗した場合、そのテーブルは壊れ、読み取り時にエラーが返されます。`Log` エンジンは、一時的なデータや一度書き込み専用のテーブル、テストやデモ目的に適しています。
+このエンジンは `Log` エンジンファミリーに属します。`Log` エンジンの共通の特性や相違点については、[Log エンジンファミリー](../../../engines/table-engines/log-family/index.md) の記事を参照してください。
 
-## テーブルの作成 {#table_engines-log-creating-a-table}
+`Log` は [TinyLog](../../../engines/table-engines/log-family/tinylog.md) と異なり、カラムファイルに付随して小さな「マーク」ファイルを持ちます。これらのマークは各データブロックごとに書き込まれ、指定された行数をスキップするためにファイルのどこから読み始めるべきかを示すオフセットを含みます。これにより、テーブルデータを複数スレッドで読み取ることが可能になります。
+同時データアクセスを可能にするために、読み取り操作は同時に実行できますが、書き込み操作は読み取りおよび他の書き込みをブロックします。
+`Log` エンジンはインデックスをサポートしません。また、テーブルへの書き込みが失敗した場合、そのテーブルは破損し、それ以降の読み取りはエラーを返します。`Log` エンジンは、一時データ、書き込み一度きりのテーブル、およびテストやデモ目的に適しています。
+
+## テーブルを作成する {#table_engines-log-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -31,22 +34,22 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ## データの書き込み {#table_engines-log-writing-the-data}
 
-`Log` エンジンは、各カラムをそれぞれのファイルに書き込むことで効率的にデータを保存します。各テーブルについて、Log エンジンは指定されたストレージパスに以下のファイルを書き込みます：
+`Log` エンジンは、各列を個別のファイルに書き込むことで効率的にデータを保存します。各テーブルに対して、Log エンジンは指定されたストレージパスに次のファイルを書き出します。
 
-- `<column>.bin`: 各カラムのデータファイルで、シリアライズおよび圧縮されたデータが含まれています。
-`__marks.mrk`: マークファイルで、挿入された各データブロックのオフセットと行数を保存しています。マークは、エンジンが読み取り時に無関係なデータブロックをスキップできるようにすることで、効率的なクエリ実行を促進します。
+- `<column>.bin`: 各列用のデータファイルで、シリアル化および圧縮されたデータを格納します。
+- `__marks.mrk`: 各挿入データブロックのオフセットと行数を保持するマークファイルです。マークは、読み取り時に不要なデータブロックをスキップできるようにすることで、クエリ実行を効率化するために使用されます。
 
 ### 書き込みプロセス {#writing-process}
 
-`Log` テーブルにデータが書き込まれるとき：
+データが `Log` テーブルに書き込まれるとき:
 
-1.    データはブロックにシリアライズされ、圧縮されます。
-2.    各カラムについて、圧縮されたデータがそれぞれの `<column>.bin` ファイルに追加されます。
-3.    新しく挿入されたデータのオフセットと行数を記録するために、`__marks.mrk` ファイルに対応するエントリが追加されます。
+1. データはブロック単位でシリアル化および圧縮されます。
+2. 各列について、圧縮されたデータが対応する `<column>.bin` ファイルに追記されます。
+3. 新しく挿入されたデータのオフセットと行数を記録するために、対応するエントリが `__marks.mrk` ファイルに追加されます。
 
 ## データの読み取り {#table_engines-log-reading-the-data}
 
-マークファイルにより、ClickHouseはデータの読み取りを並行処理できます。これは、`SELECT` クエリが行を予測不可能な順序で返すことを意味します。行をソートするには、`ORDER BY` 句を使用してください。
+マークファイルにより、ClickHouse はデータの読み取りを並列化できます。つまり、`SELECT` クエリが行を返す順序は保証されません。行を並べ替えるには、`ORDER BY` 句を使用します。
 
 ## 使用例 {#table_engines-log-example-of-use}
 
@@ -69,9 +72,9 @@ INSERT INTO log_table VALUES (now(),'REGULAR','The first regular message')
 INSERT INTO log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
-私たちは、`<column>.bin` ファイル内に2つのデータブロックを作成するために、2つの `INSERT` クエリを使用しました。
+`<column>.bin` ファイル内に 2 つのデータブロックを作成するために、2 つの `INSERT` クエリを使用しました。
 
-ClickHouseは、データを選択する際に複数のスレッドを使用します。各スレッドが別々のデータブロックを読み取り、完了次第に結果行を独立して返します。その結果、出力の行ブロックの順序は、入力の同じブロックの順序と一致しない可能性があります。例えば：
+ClickHouse はデータを読み出す際に複数スレッドを使用します。各スレッドは別々のデータブロックを読み取り、処理が完了したものからそれぞれ独立して行を返します。その結果、出力における行ブロックの順序が、入力の同じブロックの順序と一致しない場合があります。たとえば、次のようになります。
 
 ```sql
 SELECT * FROM log_table
@@ -87,7 +90,7 @@ SELECT * FROM log_table
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
-結果をソートする（デフォルトで昇順）：
+結果の並べ替え（デフォルトは昇順）:
 
 ```sql
 SELECT * FROM log_table ORDER BY timestamp

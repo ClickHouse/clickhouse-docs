@@ -1,22 +1,23 @@
 ---
-'slug': '/use-cases/observability/clickstack'
-'title': 'ClickStack - ClickHouse 閲覧スタック'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickHouse 閲覧スタックのランディングページ'
-'doc_type': 'landing-page'
+slug: /use-cases/observability/clickstack
+title: 'ClickStack - ClickHouse オブザーバビリティスタック'
+pagination_prev: null
+pagination_next: null
+description: 'ClickHouse オブザーバビリティスタックのランディングページ'
+keywords: ['ClickStack', 'オブザーバビリティスタック', 'HyperDX', 'OpenTelemetry', 'logs', 'traces', 'metrics']
+doc_type: 'landing-page'
 ---
 
-**ClickStack**は、ClickHouseとOpenTelemetry (OTel)に基づいたプロダクショングレードの観測プラットフォームであり、ログ、トレース、メトリクス、およびセッションを単一の高性能ソリューションに統合しています。複雑なシステムの監視とデバッグ用に設計されたClickStackは、開発者とSREがツールを切り替えたり、タイムスタンプや相関IDを使ってデータを手動で繋ぎ合わせたりせずに、エンドツーエンドで問題を追跡できるようにします。
+**ClickStack** は、ClickHouse と OpenTelemetry (OTel) 上に構築された本番環境対応のオブザーバビリティプラットフォームであり、ログ、トレース、メトリクス、セッション情報を単一の高性能なソリューションとして統合します。複雑なシステムの監視とデバッグを目的として設計されており、ClickStack を使用することで、開発者と SRE はツール間を行き来したり、タイムスタンプや相関IDを使って手作業でデータをつなぎ合わせたりすることなく、エンドツーエンドで問題をトレースできます。
 
 | セクション | 説明 |
 |---------|-------------|
-| [概要](/use-cases/observability/clickstack/overview) | ClickStackの紹介とその主な機能 |
-| [はじめに](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順 |
-| [サンプルデータセット](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース |
-| [アーキテクチャ](/use-cases/observability/clickstack/architecture) | システムアーキテクチャとコンポーネントの概要 |
-| [デプロイメント](/use-cases/observability/clickstack/deployment) | デプロイメントガイドとオプション |
-| [設定](/use-cases/observability/clickstack/config) | 詳細な設定オプションと設定項目 |
-| [データのインジェスト](/use-cases/observability/clickstack/ingesting-data) | ClickStackへのデータインジェストのガイドライン |
-| [検索](/use-cases/observability/clickstack/search) | 観測データを検索してクエリする方法 |
-| [プロダクション](/use-cases/observability/clickstack/production) | プロダクションデプロイメントのベストプラクティス |
+| [Overview](/use-cases/observability/clickstack/overview) | ClickStack とその主な機能の概要 |
+| [Getting Started](/use-cases/observability/clickstack/getting-started) | クイックスタートガイドと基本的なセットアップ手順 |
+| [Sample Datasets](/use-cases/observability/clickstack/sample-datasets) | サンプルデータセットとユースケース |
+| [Architecture](/use-cases/observability/clickstack/architecture) | システムアーキテクチャとコンポーネントの概要 |
+| [Deployment](/use-cases/observability/clickstack/deployment) | デプロイメントガイドとオプション |
+| [Configuration](/use-cases/observability/clickstack/config) | 詳細な設定オプションとパラメータ |
+| [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | ClickStack にデータを取り込むためのガイドライン |
+| [Search](/use-cases/observability/clickstack/search) | オブザーバビリティデータの検索およびクエリ方法 |
+| [Production](/use-cases/observability/clickstack/production) | 本番環境へのデプロイメントに関するベストプラクティス |

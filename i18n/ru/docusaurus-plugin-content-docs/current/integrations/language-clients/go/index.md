@@ -1,22 +1,28 @@
 ---
-slug: '/integrations/go'
-sidebar_label: Go
+sidebar_label: 'Go'
 sidebar_position: 1
-description: 'Клиенты Go для ClickHouse позволяют пользователям подключаться к ClickHouse,'
-title: 'ClickHouse Go'
 keywords: ['clickhouse', 'go', 'client', 'golang']
-doc_type: reference
+slug: /integrations/go
+description: 'Go-клиенты для ClickHouse позволяют пользователям подключаться к ClickHouse посредством стандартного интерфейса Go database/sql или оптимизированного нативного интерфейса.'
+title: 'ClickHouse Go'
+doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
+
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
+# ClickHouse Go {#clickhouse-go}
 
-# ClickHouse Go
 ## Простой пример {#a-simple-example}
 
-Давайте рассмотрим простой пример. Это соединится с ClickHouse и выполнит выборку из системной базы данных. Для начала вам понадобятся данные для подключения.
-### Данные для подключения {#connection-details}
+Рассмотрим простой пример на Go. Он подключится к ClickHouse и выполнит запрос `SELECT` к системной базе данных. Для начала вам понадобятся данные подключения.
+
+### Параметры подключения {#connection-details}
 
 <ConnectionDetails />
+
 ### Инициализация модуля {#initialize-a-module}
 
 ```bash
@@ -24,9 +30,10 @@ mkdir clickhouse-golang-example
 cd clickhouse-golang-example
 go mod init clickhouse-golang-example
 ```
-### Вставьте пример кода {#copy-in-some-sample-code}
 
-Скопируйте этот код в каталог `clickhouse-golang-example` как `main.go`.
+### Скопируйте пример кода {#copy-in-some-sample-code}
+
+Скопируйте этот код в каталог `clickhouse-golang-example` под именем `main.go`.
 
 ```go title=main.go
 package main
@@ -103,13 +110,14 @@ func connect() (driver.Conn, error) {
         return conn, nil
 }
 ```
-### Запустите go mod tidy {#run-go-mod-tidy}
+
+### Run go mod tidy {#run-go-mod-tidy}
 
 ```bash
 go mod tidy
 ```
-### Установите данные для подключения {#set-your-connection-details}
-Ранее вы посмотрели свои данные для подключения. Установите их в `main.go` в функции `connect()`:
+### Set your connection details {#set-your-connection-details}
+Earlier you looked up your connection details.  Set them in `main.go` in the `connect()` function:
 
 ```go
 func connect() (driver.Conn, error) {
@@ -126,7 +134,8 @@ func connect() (driver.Conn, error) {
     #highlight-end
       },
 ```
-### Запустите пример {#run-the-example}
+
+### Run the example {#run-the-example}
 ```bash
 go run .
 ```
@@ -137,60 +146,65 @@ go run .
 2023/03/06 14:18:33 name: VIEWS, uuid: 00000000-0000-0000-0000-000000000000
 2023/03/06 14:18:33 name: hourly_data, uuid: a4e36bd4-1e82-45b3-be77-74a0fe65c52b
 ```
-### Узнать больше {#learn-more}
-Остальная часть документации в этой категории покрывает детали клиента ClickHouse Go.
-## Клиент ClickHouse Go {#clickhouse-go-client}
 
-ClickHouse поддерживает два официальных клиента для Go. Эти клиенты дополняют друг друга и намеренно поддерживают разные сценарии использования.
+### Learn more {#learn-more}
+The rest of the documentation in this category covers the details of the ClickHouse Go client.
 
-* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - Высокоуровневый клиент, который поддерживает либо стандартный интерфейс Go database/sql, либо нативный интерфейс.
-* [ch-go](https://github.com/ClickHouse/ch-go) - Низкоуровневый клиент. Только нативный интерфейс.
+## ClickHouse Go client {#clickhouse-go-client}
 
-clickhouse-go предоставляет высокоуровневый интерфейс, позволяющий пользователям запрашивать и вставлять данные, используя ориентированные на строки семантику и пакетирование, которые допускают различия в типах данных - значения будут конвертированы, если не возникает потери точности. ch-go, тем временем, предоставляет оптимизированный столбцово-ориентированный интерфейс, который обеспечивает быструю потоковую передачу блоков данных с низкими затратами на CPU и память за счет жесткости по типам и более сложного использования.
+ClickHouse supports two official Go clients. These clients are complementary and intentionally support different use cases.
 
-С версии 2.3, Clickhouse-go использует ch-go для низкоуровневых функций, таких как кодирование, декодирование и сжатие. Обратите внимание, что clickhouse-go также поддерживает стандартный интерфейс Go `database/sql`. Оба клиента используют нативный формат для своего кодирования, чтобы обеспечить оптимальную производительность и могут общаться по нативному протоколу ClickHouse. clickhouse-go также поддерживает HTTP в качестве механизма транспортировки для случаев, когда пользователи требуют маршрутизации или балансировки нагрузки.
+* [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) - High level language client which supports either the Go standard database/sql interface or the native interface.
+* [ch-go](https://github.com/ClickHouse/ch-go) - Low level client. Native interface only.
 
-При выборе библиотеки клиента пользователи должны иметь в виду их соответствующие плюсы и минусы - см. Выбор библиотеки клиента.
+clickhouse-go provides a high-level interface, allowing users to query and insert data using row-orientated semantics and batching that are lenient with respect to data types - values will be converted provided no precision loss is potentially incurred. ch-go, meanwhile, provides an optimized column-orientated interface that provides fast data block streaming with low CPU and memory overhead at the expense of type strictness and more complex usage.
 
-|               | Нативный формат | Нативный протокол | HTTP протокол | Ориентированный на строки API | Ориентированный на столбцы API | Гибкость типов | Сжатие | Плейсхолдеры запросов |
-|:-------------:|:---------------:|:------------------:|:-------------:|:-----------------------------:|:-------------------------------:|:--------------:|:------:|:---------------------:|
-| clickhouse-go |       ✅        |        ✅          |       ✅      |              ✅               |               ✅                |        ✅      |   ✅   |          ✅           |
-|     ch-go     |       ✅        |        ✅          |               |                             |               ✅                |                |   ✅   |                     |
-## Выбор клиента {#choosing-a-client}
+From version 2.3, Clickhouse-go utilizes ch-go for low-level functions such as encoding, decoding, and compression. Note that clickhouse-go also supports the Go `database/sql` interface standard. Both clients use the native format for their encoding to provide optimal performance and can communicate over the native ClickHouse protocol. clickhouse-go also supports HTTP as its transport mechanism for cases where users have a requirement to proxy or load balance traffic.
 
-Выбор библиотеки клиента зависит от ваших сценариев использования и потребности в оптимальной производительности. Для случаев с большим количеством вставок, где требуются миллионы вставок в секунду, мы рекомендуем использовать низкоуровневый клиент [ch-go](https://github.com/ClickHouse/ch-go). Этот клиент избегает связанных накладных расходов на преобразование данных из формата, ориентированного на строки, в столбцы, как этого требует нативный формат ClickHouse. Кроме того, он избегает любого отражения или использования типа `interface{}` (`any`), чтобы упростить использование.
+When choosing a client library, users should be aware of their respective pros and cons - see Choosing a Client Library.
 
-Для рабочих нагрузок запросов, ориентированных на агрегации или меньшие нагрузки вставок, библиотека [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) предоставляет знакомый интерфейс `database/sql` и более простую семантику строк. Пользователи также могут по желанию использовать HTTP в качестве транспортного протокола и воспользоваться вспомогательными функциями для преобразования строк в структуры и наоборот.
-## Клиент clickhouse-go {#the-clickhouse-go-client}
+|               | Native format | Native protocol | HTTP protocol | Row Orientated API | Column Orientated API | Type flexibility | Compression | Query Placeholders |
+|:-------------:|:-------------:|:---------------:|:-------------:|:------------------:|:---------------------:|:----------------:|:-----------:|:------------------:|
+| clickhouse-go |       ✅       |        ✅        |       ✅       |          ✅         |           ✅           |         ✅        |      ✅      |          ✅         |
+|     ch-go     |       ✅       |        ✅        |               |                    |           ✅           |                  |      ✅      |                    |
 
-Клиент clickhouse-go предоставляет два интерфейса API для общения с ClickHouse:
+## Choosing a client {#choosing-a-client}
 
-* Специфический API клиента ClickHouse
-* Стандарт `database/sql` - универсальный интерфейс для SQL баз данных, предоставляемый Golang.
+Selecting a client library depends on your usage patterns and need for optimal performance. For insert heavy use cases, where millions of inserts are required per second, we recommend using the low level client [ch-go](https://github.com/ClickHouse/ch-go). This client avoids the associated overhead of pivoting the data from a row-orientated format to columns, as the ClickHouse native format requires. Furthermore, it avoids any reflection or use of the `interface{}` (`any`) type to simplify usage.
 
-В то время как `database/sql` предлагает универсальный интерфейс, позволяя разработчикам абстрагировать свое хранилище данных, он накладывает некоторые ограничения по типам и семантике запросов, которые влияют на производительность. По этой причине следует использовать специфический для клиента API, когда [производительность имеет значение](https://github.com/clickHouse/clickHouse-go#benchmark). Тем не менее пользователи, которые хотят интегрировать ClickHouse в инструменты, поддерживающие несколько баз данных, могут предпочесть использовать стандартный интерфейс.
+For query workloads focused on aggregations or lower throughput insert workloads, the [clickhouse-go](https://github.com/ClickHouse/clickhouse-go) provides a familiar `database/sql` interface and more straightforward row semantics. Users can also optionally use HTTP for the transport protocol and take advantage of helper functions to marshal rows to and from structs.
 
-Оба интерфейса кодируют данные с использованием [нативного формата](/native-protocol/basics.md) и нативного протокола для связи. Кроме того, стандартный интерфейс поддерживает связь по HTTP.
+## The clickhouse-go client {#the-clickhouse-go-client}
 
-|                    | Нативный формат | Нативный протокол | HTTP протокол | Поддержка массовых записей | Сериализация структур | Сжатие | Плейсхолдеры запросов |
-|:------------------:|:---------------:|:------------------:|:-------------:|:--------------------------:|:---------------------:|:------:|:---------------------:|
-|   ClickHouse API   |       ✅        |        ✅          |               |             ✅             |          ✅           |   ✅   |          ✅           |
-| `database/sql` API |       ✅        |        ✅          |       ✅      |             ✅             |                       |   ✅   |          ✅           |
-## Установка {#installation}
+The clickhouse-go client provides two API interfaces for communicating with ClickHouse:
 
-v1 драйвера устарела и не будет получать обновления функций или поддержку новых типов ClickHouse. Пользователи должны перейти на v2, который предлагает лучшую производительность.
+* ClickHouse client-specific API
+* `database/sql` standard - generic interface around SQL databases provided by Golang.
 
-Чтобы установить версию клиента 2.x, добавьте пакет в ваш файл go.mod:
+While the `database/sql` provides a database-agnostic interface, allowing developers to abstract their data store, it enforces some typing and query semantics that impact performance. For this reason, the client-specific API should be used where [performance is important](https://github.com/clickHouse/clickHouse-go#benchmark). However, users who wish to integrate ClickHouse into tooling, which supports multiple databases, may prefer to use the standard interface.
+
+Both interfaces encode data using the [native format](/native-protocol/basics.md) and native protocol for communication. Additionally, the standard interface supports communication over HTTP.
+
+|                    | Native format | Native protocol | HTTP protocol | Bulk write support | Struct marshaling | Compression | Query Placeholders |
+|:------------------:|:-------------:|:---------------:|:-------------:|:------------------:|:-----------------:|:-----------:|:------------------:|
+|   ClickHouse API   |       ✅       |        ✅        |               |          ✅         |         ✅         |      ✅      |          ✅         |
+| `database/sql` API |       ✅       |        ✅        |       ✅       |          ✅         |                   |      ✅      |          ✅         |
+
+## Installation {#installation}
+
+v1 of the driver is deprecated and will not reach feature updates or support for new ClickHouse types. Users should migrate to v2, which offers superior performance.
+
+To install the 2.x version of the client, add the package to your go.mod file:
 
 `require github.com/ClickHouse/clickhouse-go/v2 main`
 
-Или клонируйте репозиторий:
+Or, clone the repository:
 
 ```bash
 git clone --branch v2 https://github.com/clickhouse/clickhouse-go.git $GOPATH/src/github
 ```
 
-Чтобы установить другую версию, измените путь или имя ветки соответственно.
+To install another version, modify the path or the branch name accordingly.
 
 ```bash
 mkdir my-clickhouse-app && cd my-clickhouse-app
@@ -222,29 +236,34 @@ go mod tidy
 go run main.go
 
 ```
-### Версионирование и совместимость {#versioning--compatibility}
 
-Клиент выпускается независимо от ClickHouse. 2.x представляет собой текущую основную версию, находящуюся в разработке. Все версии 2.x должны быть совместимы друг с другом.
-#### Совместимость с ClickHouse {#clickhouse-compatibility}
+### Versioning & compatibility {#versioning--compatibility}
 
-Клиент поддерживает:
+The client is released independently of ClickHouse. 2.x represents the current major under development. All versions of 2.x should be compatible with each other.
 
-- Все поддерживаемые версии ClickHouse, которые зафиксированы [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). Поскольку версии ClickHouse больше не поддерживаются, они также больше не проходят активное тестирование на релизах клиента.
-- Все версии ClickHouse в течение 2 лет с даты выпуска клиента. Обратите внимание, только версии LTS проходят активное тестирование.
-#### Совместимость с Golang {#golang-compatibility}
+#### ClickHouse compatibility {#clickhouse-compatibility}
 
-| Версия клиента | Версии Golang |
-|:--------------:|:-------------:|
+The client supports:
+
+- All currently supported versions of ClickHouse as recorded [here](https://github.com/ClickHouse/ClickHouse/blob/master/SECURITY.md). As ClickHouse versions are no longer supported they are also no longer actively tested against client releases.
+- All versions of ClickHouse 2 years from the release date of the client. Note only LTS versions are actively tested.
+
+#### Golang compatibility {#golang-compatibility}
+
+| Client Version | Golang Versions |
+|:--------------:|:---------------:|
 |  => 2.0 &lt;= 2.2 |    1.17, 1.18   |
 |     >= 2.3     |       1.18      |
-## API клиента ClickHouse {#clickhouse-client-api}
 
-Все примеры кода для API клиента ClickHouse можно найти [здесь](https://github.com/ClickHouse/clickhouse-go/tree/main/examples).
-### Подключение {#connecting}
+## ClickHouse client API {#clickhouse-client-api}
 
-Следующий пример, который возвращает версию сервера, демонстрирует подключение к ClickHouse - предполагая, что ClickHouse не защищен и доступен с помощью пользователя по умолчанию.
+All code examples for the ClickHouse Client API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples).
 
-Обратите внимание, что мы используем стандартный нативный порт для подключения.
+### Connecting {#connecting}
+
+The following example, which returns the server version, demonstrates connecting to ClickHouse - assuming ClickHouse is not secured and accessible with the default user.
+
+Note we use the default native port to connect.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -262,28 +281,29 @@ v, err := conn.ServerVersion()
 fmt.Println(v)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect.go)
 
-**Во всех последующих примерах, если не указано иное, мы предполагаем, что переменная ClickHouse `conn` была создана и доступна.**
-#### Настройки подключения {#connection-settings}
+**For all subsequent examples, unless explicitly shown, we assume the use of the ClickHouse `conn` variable has been created and is available.**
 
-При открытии соединения можно использовать структуру Options для управления поведением клиента. Доступны следующие настройки:
+#### Connection settings {#connection-settings}
 
-* `Protocol` - либо Нативный, либо HTTP. HTTP в настоящее время поддерживается только для [database/sql API](#databasesql-api).
-* `TLS` - параметры TLS. Ненулевое значение включает TLS. См. [Использование TLS](#using-tls).
-* `Addr` - срез адресов, включая порт.
-* `Auth` - Данные для аутентификации. См. [Аутентификация](#authentication).
-* `DialContext` - пользовательская функция набора, чтобы определить, как устанавливаются соединения.
-* `Debug` - true/false для включения отладки.
-* `Debugf` - предоставляет функцию для обработки отладочного вывода. Требует, чтобы `debug` было установлено в true.
-* `Settings` - карта настроек ClickHouse. Они будут применены ко всем запросам ClickHouse. [Использование контекста](#using-context) позволяет устанавливать настройки для каждого запроса.
-* `Compression` - включить сжатие для блоков. См. [Сжатие](#compression).
-* `DialTimeout` - максимальное время для установления соединения. По умолчанию `1s`.
-* `MaxOpenConns` - максимальное количество подключений для использования в любой момент. Более или менее подключений может находиться в пустом пуле, но только это количество может использоваться в любой момент. По умолчанию `MaxIdleConns+5`.
-* `MaxIdleConns` - количество подключений, которые необходимо поддерживать в пуле. Подключения будут повторно использоваться, если это возможно. По умолчанию `5`.
-* `ConnMaxLifetime` - максимальное время жизни, в течение которого подключение будет доступно. По умолчанию 1 час. Подключения уничтожаются после этого времени, новые подключения добавляются в пул по мере необходимости.
-* `ConnOpenStrategy` - определяет, как список адресов узлов должен быть использован для открытия соединений. См. [Подключение к нескольким узлам](#connecting-to-multiple-nodes).
-* `BlockBufferSize` - максимальное количество блоков, которые могут быть декодированы в буфер за раз. Большие значения увеличивают параллелизацию за счет памяти. Размеры блоков зависят от запроса, поэтому, хотя вы можете установить это для соединения, мы рекомендуем переопределять для каждого запроса в зависимости от данных, которые он возвращает. По умолчанию `2`.
+When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
+
+* `Protocol` - either Native or HTTP. HTTP is only supported currently for the [database/sql API](#databasesql-api).
+* `TLS` - TLS options. A non-nil value enables TLS. See [Using TLS](#using-tls).
+* `Addr` - a slice of addresses including port.
+* `Auth` - Authentication detail. See [Authentication](#authentication).
+* `DialContext` - custom dial function to determine how connections are established.
+* `Debug` - true/false to enable debugging.
+* `Debugf` - provides a function to consume debug output. Requires `debug` to be set to true.
+* `Settings` - map of ClickHouse settings. These will be applied to all ClickHouse queries. [Using Context](#using-context) allows settings to be set per query.
+* `Compression` - enable compression for blocks. See [Compression](#compression).
+* `DialTimeout` - the maximum time to establish a connection. Defaults to `1s`.
+* `MaxOpenConns` - max connections for use at any time. More or fewer connections may be in the idle pool, but only this number can be used at any time. Defaults to `MaxIdleConns+5`.
+* `MaxIdleConns` - number of connections to maintain in the pool. Connections will be reused if possible. Defaults to `5`.
+* `ConnMaxLifetime` - maximum lifetime to keep a connection available. Defaults to 1hr. Connections are destroyed after this time, with new connections added to the pool as required.
+* `ConnOpenStrategy` - determines how the list of node addresses should be consumed and used to open connections. See [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
+* `BlockBufferSize` - maximum number of blocks to decode into the buffer at once. Larger values will increase parallelization at the expense of memory. Block sizes are query dependent so while you can set this on the connection, we recommend you override per query based on the data it returns. Defaults to `2`.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -319,17 +339,19 @@ if err != nil {
     return err
 }
 ```
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
-#### Пул подключений {#connection-pooling}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/connect_settings.go)
 
-Клиент поддерживает пул подключений, повторно используя их между запросами по мере необходимости. В любое время будет использоваться максимум `MaxOpenConns`, максимальный размер пула контролируется `MaxIdleConns`. Клиент будет получать соединение из пула для каждого выполнения запроса, возвращая его в пул для повторного использования. Подключение используется в течение времени выполнения пакета и освобождается при вызове `Send()`.
+#### Connection pooling {#connection-pooling}
 
-Нет гарантии, что одно и то же подключение из пула будет использоваться для последующих запросов, если пользователь не установит `MaxOpenConns=1`. Это редко требуется, но может быть необходимо в случаях, когда пользователи используют временные таблицы.
+The client maintains a pool of connections, reusing these across queries as required. At most, `MaxOpenConns` will be used at any time, with the maximum pool size controlled by the `MaxIdleConns`. The client will acquire a connection from the pool for each query execution, returning it to the pool for reuse. A connection is used for the lifetime of a batch and released on `Send()`.
 
-Кроме того, обратите внимание, что `ConnMaxLifetime` по умолчанию составляет 1 час. Это может привести к неравномерной нагрузке на ClickHouse, если узлы покидают кластер. Это может произойти, когда узел становится недоступным; подключения будут сбалансированы на другие узлы. Эти подключения будут существовать и не будут обновляться в течение 1 часа по умолчанию, даже если проблемный узел возвращается в кластер. Рассмотрите возможность снижения этого значения в случаях с высокой нагрузкой.
-### Использование TLS {#using-tls}
+There is no guarantee the same connection in a pool will be used for subsequent queries unless the user sets `MaxOpenConns=1`. This is rarely needed but may be required for cases where users are using temporary tables.
 
-На низком уровне все методы подключения клиента (`DSN/OpenDB/Open`) будут использовать [пакет Go tls](https://pkg.go.dev/crypto/tls) для установления безопасного соединения. Клиент знает, что нужно использовать TLS, если структура Options содержит ненулевой указатель `tls.Config`.
+Also, note that the `ConnMaxLifetime` is by default 1hr. This can lead to cases where the load to ClickHouse becomes unbalanced if nodes leave the cluster. This can occur when a node becomes unavailable, connections will balance to the other nodes. These connections will persist and not be refreshed for 1hr by default, even if the problematic node returns to the cluster. Consider lowering this value in heavy workload cases.
+
+### Using TLS {#using-tls}
+
+At a low level, all client connect methods (`DSN/OpenDB/Open`) will use the[ Go tls package](https://pkg.go.dev/crypto/tls) to establish a secure connection. The client knows to use TLS if the Options struct contains a non-nil `tls.Config` pointer.
 
 ```go
 env, err := GetNativeTestEnvironment()
@@ -370,9 +392,9 @@ if err != nil {
 fmt.Println(v.String())
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl.go)
 
-Этот минимальный `TLS.Config` обычно достаточно для подключения к безопасному нативному порту (обычно 9440) на сервере ClickHouse. Если у сервера ClickHouse нет действительного удостоверения (истек, неправильное имя хоста, не подписано общепризнанным корневым центром сертификации), `InsecureSkipVerify` может быть истинным, но это строго не рекомендуется.
+This minimal `TLS.Config` is normally sufficient to connect to the secure native port (normally 9440) on a ClickHouse server. If the ClickHouse server does not have a valid certificate (expired, wrong hostname, not signed by a publicly recognized root Certificate Authority), `InsecureSkipVerify` can be true, but this is strongly discouraged.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -391,13 +413,13 @@ if err != nil {
 }
 v, err := conn.ServerVersion()
 ```
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl_no_verify.go)
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/ssl_no_verify.go)
+If additional TLS parameters are necessary, the application code should set the desired fields in the `tls.Config` struct. That can include specific cipher suites, forcing a particular TLS version (like 1.2 or 1.3), adding an internal CA certificate chain, adding a client certificate (and private key) if required by the ClickHouse server, and most of the other options that come with a more specialized security setup.
 
-Если нужны дополнительные параметры TLS, код приложения должен установить желаемые поля в структуре `tls.Config`. Это может включать конкретные наборы шифров, принуждение к определенной версии TLS (например, 1.2 или 1.3), добавление цепочки сертификатов внутреннего ЦС, добавление клиентского сертификата (и закрытого ключа), если это требуется сервером ClickHouse, и большинство других вариантов, которые приходят с более специализированной конфигурацией безопасности.
-### Аутентификация {#authentication}
+### Authentication {#authentication}
 
-Укажите структуру Auth в данных подключения, чтобы указать имя пользователя и пароль.
+Specify an Auth struct in the connection details to specify a username and password.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -414,11 +436,11 @@ if err != nil {
 
 v, err := conn.ServerVersion()
 ```
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/auth.go)
-### Подключение к нескольким узлам {#connecting-to-multiple-nodes}
+### Connecting to multiple nodes {#connecting-to-multiple-nodes}
 
-Несколько адресов могут быть указаны через структуру `Addr`.
+Multiple addresses can be specified via the `Addr` struct.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -439,14 +461,14 @@ if err != nil {
 fmt.Println(v.String())
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L26-L45)
 
-Доступны две стратегии подключения:
+Two connection strategies are available:
 
-* `ConnOpenInOrder` (по умолчанию) - адреса используются в порядке. Более поздние адреса используются только в случае неудачи подключения к адресам, ранее находящимся в списке. Это фактически является стратегией переключения на резервный вариант.
-* `ConnOpenRoundRobin` - Нагрузка распределяется между адресами с использованием стратегии кругового распределения.
+* `ConnOpenInOrder` (default)  - addresses are consumed in order. Later addresses are only utilized in case of failure to connect using addresses earlier in the list. This is effectively a failure-over strategy.
+* `ConnOpenRoundRobin` - Load is balanced across the addresses using a round-robin strategy.
 
-Это можно контролировать с помощью опции `ConnOpenStrategy`
+This can be controlled through the option `ConnOpenStrategy`
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -467,10 +489,11 @@ if err != nil {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
-### Выполнение {#execution}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/1c0d81d0b1388dbb9e09209e535667df212f4ae4/examples/clickhouse_api/multi_host.go#L50-L67)
 
-Произвольные операторы могут быть выполнены через метод `Exec`. Это полезно для DDL и простых операторов. Этот метод не следует использовать для больших вставок или итераций запросов.
+### Execution {#execution}
+
+Arbitrary statements can be executed via the `Exec` method. This is useful for DDL and simple statements. It should not be used for larger inserts or query iterations.
 
 ```go
 conn.Exec(context.Background(), `DROP TABLE IF EXISTS example`)
@@ -486,14 +509,15 @@ if err != nil {
 conn.Exec(context.Background(), "INSERT INTO example VALUES (1, 'test-1')")
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/exec.go)
 
-Обратите внимание на возможность передать контекст в запрос. Это можно использовать для передачи конкретных настроек на уровне запроса - см. [Использование контекста](#using-context).
-### Пакетная вставка {#batch-insert}
+Note the ability to pass a Context to the query. This can be used to pass specific query level settings - see [Using Context](#using-context).
 
-Чтобы вставить большое количество строк, клиент предоставляет семантику пакетов. Это требует подготовки пакета, в который строки могут быть добавлены. Он в конечном итоге отправляется через метод `Send()`. Пакеты хранятся в памяти до выполнения `Send`.
+### Batch Insert {#batch-insert}
 
-Рекомендуется вызывать `Close` на пакете, чтобы предотвратить утечку подключений. Это можно сделать через ключевое слово `defer` после подготовки пакета. Это очистит соединение, если `Send` никогда не будет вызван. Обратите внимание, что это приведет к тому, что в журналы запросов не будет записано вставляемых строк, если строки не были добавлены.
+To insert a large number of rows, the client provides batch semantics. This requires the preparation of a batch to which rows can be appended. This is finally sent via the `Send()` method. Batches are held in memory until `Send` is executed.
+
+It is recommended to call `Close` on the batch to prevent leaking connections. This can be done via the `defer` keyword after preparing the batch. This will clean up the connection if `Send` never gets called. Note that this will result in 0 row inserts showing up in the query log if no rows were appended.
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -552,11 +576,11 @@ for i := 0; i < 1000; i++ {
 return batch.Send()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/batch.go)
 
-Рекомендации для ClickHouse применимы [здесь](/guides/inserting-data#best-practices-for-inserts). Пакеты не следует использовать между goroutines - создайте отдельный пакет для каждой рутины.
+Recommendations for ClickHouse apply [here](/guides/inserting-data#best-practices-for-inserts). Batches should not be shared across go-routines - construct a separate batch per routine.
 
-Из приведенного выше примера обратите внимание на необходимость соответствия типов переменных типу столбца при добавлении строк. Хотя соответствие обычно очевидно, этот интерфейс пытается быть гибким, и типы будут конвертированы, если не возникает потери точности. Например, следующее демонстрирует вставку строки в поле datetime64.
+From the above example, note the need for variable types to align with the column type when appending rows. While the mapping is usually obvious, this interface tries to be flexible, and types will be converted provided no precision loss is incurred. For example, the following demonstrates inserting a string into a datetime64.
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -577,12 +601,13 @@ for i := 0; i < 1000; i++ {
 return batch.Send()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/type_convert.go)
 
-Для полного обзора поддерживаемых типов go для каждого типа столбца см. [Преобразования типов](#type-conversions).
-### Запрос строк {#querying-rows}
+For a full summary of supported go types for each column type, see [Type Conversions](#type-conversions).
 
-Пользователи могут либо запрашивать одну строку с помощью метода `QueryRow`, либо получать курсор для итерации по набору результатов через `Query`. Хотя первый метод принимает место назначения для данных, в которое они должны быть сериализованы, второй метод требует вызова `Scan` для каждой строки.
+### Querying rows {#querying-rows}
+
+Users can either query for a single row using the `QueryRow` method or obtain a cursor for iteration over a result set via `Query`. While the former accepts a destination for the data to be serialized into, the latter requires the call to `Scan` on each row.
 
 ```go
 row := conn.QueryRow(context.Background(), "SELECT * FROM example")
@@ -600,7 +625,7 @@ if err := row.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err 
 fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_row.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_row.go)
 
 ```go
 rows, err := conn.Query(ctx, "SELECT Col1, Col2, Col3 FROM example WHERE Col1 >= 2")
@@ -622,16 +647,17 @@ rows.Close()
 return rows.Err()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_rows.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/query_rows.go)
 
-Обратите внимание, что в обоих случаях необходимо передать указатель на переменные, в которые мы хотим сериализовать соответствующие значения столбцов. Эти переменные должны передаваться в том порядке, который указан в операторе `SELECT` - по умолчанию будет использоваться порядок объявления столбцов в случае `SELECT *`, как показано выше.
+Note in both cases, we are required to pass a pointer to the variables we wish to serialize the respective column values into. These must be passed in the order specified in the `SELECT` statement - by default, the order of column declaration will be used in the event of a `SELECT *` as shown above.
 
-Аналогично вставке, метод Scan требует, чтобы целевые переменные имели соответствующий тип. Это снова нацелено на гибкость, при этом типы конвертируются, где это возможно, предоставляя, что не допускается потеря точности, например, в примере выше столбец UUID читается в переменную типа string. Для полного списка поддерживаемых типов go для каждого типа столбца см. [Преобразования типов](#type-conversions).
+Similar to insertion, the Scan method requires the target variables to be of an appropriate type. This again aims to be flexible, with types converted where possible, provided no precision loss is possible, e.g., the above example shows a UUID column being read into a string variable. For a full list of supported go types for each Column type, see [Type Conversions](#type-conversions).
 
-Наконец, обратите внимание на возможность передать `Context` в методы `Query` и `QueryRow`. Это можно использовать для настроек на уровне запроса - см. [Использование контекста](#using-context) для получения дополнительной информации.
-### Асинхронная вставка {#async-insert}
+Finally, note the ability to pass a `Context` to the `Query` and `QueryRow` methods. This can be used for query level settings - see [Using Context](#using-context) for further details.
 
-Поддерживаются асинхронные вставки через метод Async. Это позволяет пользователю указать, должен ли клиент ожидать завершения сервера для вставки или отвечать, как только данные были получены. Это эффективно контролирует параметр [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
+### Async Insert {#async-insert}
+
+Asynchronous inserts are supported through the Async method. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -660,16 +686,17 @@ if err := conn.Exec(ctx, ddl); err != nil {
 for i := 0; i < 100; i++ {
     if err := conn.AsyncInsert(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
         %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-    )`, i, "Golang SQL database driver"), false); err != nil {
+    )`, i, "Драйвер базы данных SQL для Golang"), false); err != nil {
         return err
     }
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
-### Столбцовая вставка {#columnar-insert}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/async.go)
 
-Вставки могут выполняться в формате столбцов. Это может обеспечить преимущества производительности, если данные уже ориентированы в этой структуре, избегая необходимости преобразования в строки.
+### Columnar Insert {#columnar-insert}
+
+Inserts can be inserted in column format. This can provide performance benefits if the data is already orientated in this structure by avoiding the need to pivot to rows.
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -686,7 +713,7 @@ var (
 )
 for i := 0; i < 1_000; i++ {
     col1 = append(col1, uint64(i))
-    col2 = append(col2, "Golang SQL database driver")
+    col2 = append(col2, "Драйвер базы данных SQL для Golang")
     col3 = append(col3, []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9})
     col4 = append(col4, time.Now())
 }
@@ -706,13 +733,15 @@ if err := batch.Column(3).Append(col4); err != nil {
 return batch.Send()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
-### Использование структур {#using-structs}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/columnar_insert.go)
 
-Для пользователей структуры Golang предоставляют логическое представление строки данных в ClickHouse. Для этого нативный интерфейс предоставляет несколько удобных функций.
-#### Выбор с сериализацией {#select-with-serialize}
+### Using structs {#using-structs}
 
-Метод Select позволяет сериализовать набор строк ответа в срез структур с одним вызовом.
+For users, Golang structs provide a logical representation of a row of data in ClickHouse. To assist with this, the native interface provides several convenient functions.
+
+#### Select with serialize {#select-with-serialize}
+
+The Select method allows a set of response rows to be marshaled into a slice of structs with a single invocation.
 
 ```go
 var result []struct {
@@ -726,14 +755,15 @@ if err = conn.Select(ctx, &result, "SELECT Col1, Col2, Col3 FROM example"); err 
 }
 
 for _, v := range result {
-    fmt.Printf("row: col1=%d, col2=%s, col3=%s\n", v.Col1, v.Col2, v.ColumnWithName)
+    fmt.Printf("строка: col1=%d, col2=%s, col3=%s\n", v.Col1, v.Col2, v.ColumnWithName)
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
-#### Сканирование структуры {#scan-struct}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/select_struct.go)
 
-`ScanStruct` позволяет сериализовать одну строку из запроса в структуру.
+#### Scan struct {#scan-struct}
+
+`ScanStruct` allows the marshaling of a single Row from a query into a struct.
 
 ```go
 var result struct {
@@ -745,10 +775,11 @@ if err := conn.QueryRow(context.Background(), "SELECT Col1, COUNT() AS count FRO
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
-#### Добавление структуры {#append-struct}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/scan_struct.go)
 
-`AppendStruct` позволяет добавить структуру в существующий [пакет](#batch-insert) и интерпретировать ее как полную строку. Это требует, чтобы названия и типы столбцов структуры соответствовали таблице. Хотя все столбцы должны иметь эквивалентное поле структуры, некоторые поля структуры могут не иметь эквивалентного представления столбца. Эти поля будут просто игнорироваться.
+#### Append struct {#append-struct}
+
+`AppendStruct` allows a struct to be appended to an existing [batch](#batch-insert) and interpreted as a complete row. This requires the columns of the struct to align in both name and type with the table. While all columns must have an equivalent struct field, some struct fields may not have an equivalent column representation. These will simply be ignored.
 
 ```go
 batch, err := conn.PrepareBatch(context.Background(), "INSERT INTO example")
@@ -760,10 +791,10 @@ defer batch.Close()
 for i := 0; i < 1_000; i++ {
     err := batch.AppendStruct(&row{
         Col1:       uint64(i),
-        Col2:       "Golang SQL database driver",
+        Col2:       "Драйвер SQL-базы данных Golang",
         Col3:       []uint8{1, 2, 3, 4, 5, 6, 7, 8, 9},
         Col4:       time.Now(),
-        ColIgnored: "this will be ignored",
+        ColIgnored: "это будет проигнорировано",
     })
     if err != nil {
         return err
@@ -771,32 +802,36 @@ for i := 0; i < 1_000; i++ {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
-### Преобразования типов {#type-conversions}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/append_struct.go)
 
-Клиент ориентирован на максимальную гибкость в отношении принятия переменных типов как для вставки, так и для сериализации ответов. В большинстве случаев для типа столбца ClickHouse существует эквивалентный тип Golang, например, [UInt64](/sql-reference/data-types/int-uint/) соответствует [uint64](https://pkg.go.dev/builtin#uint64). Эти логические соответствия всегда должны поддерживаться. Пользователи могут захотеть использовать переменные типы, которые могут быть вставлены в столбцы или использованы для получения ответа, если преобразование переменной или полученных данных происходит в первую очередь. Клиент стремится поддерживать эти преобразования прозрачно, чтобы пользователи не нужно было точно конвертировать свои данные перед вставкой и предоставить гибкую сериализацию во время запроса. Эта прозрачная конвертация не допускает потери точности. Например, uint32 не может быть использован для получения данных из столбца UInt64. Напротив, строка может быть вставлена в поле datetime64 при условии, что она соответствует требованиям формата.
+### Type conversions {#type-conversions}
 
-В настоящее время поддерживаемые преобразования типов для примитивных типов зафиксированы [здесь](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md).
+The client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. In most cases, an equivalent Golang type exists for a ClickHouse column type, e.g., [UInt64](/sql-reference/data-types/int-uint/) to [uint64](https://pkg.go.dev/builtin#uint64). These logical mappings should always be supported. Users may wish to utilize variable types that can be inserted into columns or used to receive a response if the conversion of either the variable or received data takes place first. The client aims to support these conversions transparently, so users do not need to convert their data to align precisely before insertion and to provide flexible marshaling at query time. This transparent conversion does not allow for precision loss. For example, a uint32 cannot be used to receive data from a UInt64 column. Conversely, a string can be inserted into a datetime64 field provided it meets the format requirements.
 
-Этот процесс продолжается, и его можно разделить на вставку (`Append`/`AppendRow`) и время чтения (через `Scan`). Если вам нужна поддержка конкретного преобразования, пожалуйста, создайте запрос.
-### Комплексные типы {#complex-types}
-#### Типы Date/DateTime {#datedatetime-types}
+The type conversions currently supported for primitive types are captured [here](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md).
 
-Клиент ClickHouse Go поддерживает типы дат `Date`, `Date32`, `DateTime` и `DateTime64`. Даты могут вставляться как строки в формате `2006-01-02` или с использованием нативного типа Go `time.Time{}` или `sql.NullTime`. Дата-время также поддерживает последние типы, но требует передачи строк в формате `2006-01-02 15:04:05` с опциональным смещением по времени, например, `2006-01-02 15:04:05 +08:00`. Оба `time.Time{}` и `sql.NullTime` поддерживаются на этапе чтения, как и любое реализация интерфейса `sql.Scanner`.
+This effort is ongoing and can be separated into insertion (`Append`/`AppendRow`) and read time (via a `Scan`). Should you need support for a specific conversion, please raise an issue.
 
-Обработка информации о временной зоне зависит от типа ClickHouse и передаваемого или считываемого значения:
+### Complex types {#complex-types}
+
+#### Date/DateTime types {#datedatetime-types}
+
+The ClickHouse go client supports the `Date`, `Date32`, `DateTime`, and `DateTime64` date/datetime types. Dates can be inserted as a string in the format `2006-01-02` or using the native go `time.Time{}` or `sql.NullTime`. DateTimes also support the latter types but require strings to be passed in the format `2006-01-02 15:04:05` with an optional timezone offset e.g. `2006-01-02 15:04:05 +08:00`. `time.Time{}` and `sql.NullTime` are both supported at read time as well as any implementation of of the `sql.Scanner` interface.
+
+Handling of timezone information depends on the ClickHouse type and whether the value is being inserted or read:
 
 * **DateTime/DateTime64**
-  * В **время вставки** значение отправляется в ClickHouse в формате метки времени UNIX. Если временная зона не указана, клиент будет считать локальную временную зону клиента. `time.Time{}` или `sql.NullTime` будут преобразованы в эпоху соответственно.
-  * В **время выборки** временная зона столбца будет использоваться, если она установлена при возврате `time.Time` значения. Если нет, будет использоваться временная зона сервера.
+  * At **insert** time the value is sent to ClickHouse in UNIX timestamp format. If no time zone is provided, the client will assume the client's local time zone. `time.Time{}` or `sql.NullTime` will be converted to epoch accordingly.
+  * At **select** time the timezone of the column will be used if set when returning a `time.Time` value. If not, the timezone of the server will be used.
 * **Date/Date32**
-  * В **время вставки** временная зона любой даты учитывается при преобразовании даты в метку времени UNIX, т.е. она будет смещена на величину временной зоны перед хранением как дата, так как типы Дата не имеют локализации в ClickHouse. Если это не указано в строковом значении, будет использоваться локальная временная зона.
-  * В **время выборки**, даты сканируются в `time.Time{}` или экземпляры `sql.NullTime{}` будут возвращены без информации о временной зоне.
-#### Массив {#array}
+  * At **insert** time, the timezone of any date is considered when converting the date to a unix timestamp, i.e., it will be offset by the timezone prior to storage as a date, as Date types have no locale in ClickHouse. If this is not specified in a string value, the local timezone will be used.
+  * At **select** time, dates are scanned into `time.Time{}` or `sql.NullTime{}` instances will be returned without timezone information.
 
-Массивы должны вставляться как срезы. Правила типизации для элементов согласуются с правилами для [примитивного типа](#type-conversions), т.е. при возможности элементы будут конвертироваться.
+#### Array {#array}
 
-Указатель на срез должен быть предоставлен на этапе сканирования.
+Arrays should be inserted as slices. Typing rules for the elements are consistent with those for the [primitive type](#type-conversions), i.e., where possible elements will be converted.
+
+A pointer to a slice should be provided at Scan time.
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -835,10 +870,11 @@ for rows.Next() {
 rows.Close()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
+
 #### Map {#map}
 
-Maps должны вставляться как карты Golang с ключами и значениями, соответствующими правилам типов, определенным [ранее](#type-conversions).
+Maps should be inserted as Golang maps with keys and values conforming to the type rules defined [earlier](#type-conversions).
 
 ```go
 batch, err := conn.PrepareBatch(ctx, "INSERT INTO example")
@@ -879,20 +915,21 @@ for rows.Next() {
 rows.Close()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
-#### Кортежи {#tuples}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
 
-Кортежи представляют собой группу столбцов произвольной длины. Столбцы могут быть либо явно названы, либо только указывать тип, например:
+#### Tuples {#tuples}
+
+Tuples represent a group of Columns of arbitrary length. The columns can either be explicitly named or only specify a type e.g.
 
 ```sql
-//unnamed
+//без имён
 Col1 Tuple(String, Int64)
 
-//named
+//именованный
 Col2 Tuple(name String, id Int64, age uint8)
 ```
 
-Из этих подходов именованные кортежи предлагают большую гибкость. В то время как неназванные кортежи должны вставляться и считываться с использованием срезов, именованные кортежи также совместимы с картами.
+Of these approaches, named tuples offer greater flexibility. While unnamed tuples must be inserted and read using slices, named tuples are also compatible with maps.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -915,7 +952,7 @@ if err != nil {
 }
 defer batch.Close()
 
-// both named and unnamed can be added with slices. Note we can use strongly typed lists and maps if all elements are the same type
+// именованные и неименованные кортежи можно добавлять с помощью срезов. Обратите внимание: можно использовать строго типизированные списки и словари, если все элементы имеют одинаковый тип
 if err = batch.Append([]interface{}{"Clicky McClickHouse", uint8(42)}, []interface{}{"Clicky McClickHouse Snr", uint8(78)}, []string{"Dale", "521211"}); err != nil {
     return err
 }
@@ -930,23 +967,24 @@ var (
     col2 []interface{}
     col3 map[string]string
 )
-// named tuples can be retrieved into a map or slices, unnamed just slices
+// именованные кортежи можно извлечь в словарь или срезы, неименованные — только в срезы
 if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3); err != nil {
     return err
 }
 fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/tuple.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/tuple.go)
 
-Примечание: поддерживаются типизированные срезы и карты, при этом подстолбцы в именованном кортеже должны быть одного и того же типа.
-#### Вложенные {#nested}
+Note: typed slices and maps are supported, provide the sub-columns in the named tuple are all of the same types.
 
-Вложенное поле эквивалентно массиву именованных кортежей. Использование зависит от того, установил ли пользователь [flatten_nested](/operations/settings/settings#flatten_nested) в 1 или 0.
+#### Nested {#nested}
 
-Установив flatten_nested в 0, вложенные столбцы остаются как отдельный массив кортежей. Это позволяет пользователям использовать срезы карт для вставки и извлечения и произвольные уровни вложенности. Ключ карты должен равняться имени столбца, как показано в следующем примере.
+A Nested field is equivalent to an Array of named Tuples. Usage depends on whether the user has set [flatten_nested](/operations/settings/settings#flatten_nested) to 1 or 0.
 
-Примечание: поскольку карты представляют собой кортеж, они должны быть типа `map[string]interface{}`. Значения в настоящий момент не имеют строгой типизации.
+By setting flatten_nested to 0, Nested columns stay as a single array of tuples. This allows users to use slices of maps for insertion and retrieval and arbitrary levels of nesting. The map's key must equal the column's name, as shown in the example below.
+
+Note: since the maps represent a tuple, they must be of the type `map[string]interface{}`. The values are currently not strongly typed.
 
 ```go
 conn, err := GetNativeConnection(clickhouse.Settings{
@@ -1044,9 +1082,9 @@ for rows.Next() {
 rows.Close()
 ```
 
-[Полный пример - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
+[Full Example - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
-Если используется значение по умолчанию 1 для `flatten_nested`, вложенные столбцы упрощаются до отдельных массивов. Это требует использования вложенных срезов для вставки и извлечения. Хотя произвольные уровни вложенности могут работать, это официально не поддерживается.
+If the default value of 1 is used for `flatten_nested`, nested columns are flattened to separate arrays. This requires using nested slices for insertion and retrieval. While arbitrary levels of nesting may work, this is not officially supported.
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1111,14 +1149,15 @@ if err := batch.Send(); err != nil {
 }
 ```
 
-[Полный пример - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
+[Full Example - `flatten_nested=1`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L123-L180)
 
-Примечание: Вложенные столбцы должны иметь одинаковые размеры. Например, в вышеупомянутом примере `Col_2_2` и `Col_2_1` должны иметь одинаковое количество элементов.
+Note: Nested columns must have the same dimensions. For example, in the above example, `Col_2_2` and `Col_2_1` must have the same number of elements.
 
-Из-за более простого интерфейса и официальной поддержки вложенности мы рекомендуем `flatten_nested=0`.
-#### Гео типы {#geo-types}
+Due to a more straightforward interface and official support for nesting, we recommend `flatten_nested=0`.
 
-Клиент поддерживает гео типы Point, Ring, Polygon и Multi Polygon. Эти поля реализуются в Golang с использованием пакета [github.com/paulmach/orb](https://github.com/paulmach/orb).
+#### Geo types {#geo-types}
+
+The client supports the geo types Point, Ring, Polygon, and Multi Polygon. These fields are in Golang using the package [github.com/paulmach/orb](https://github.com/paulmach/orb).
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1197,10 +1236,11 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/geo.go)
+
 #### UUID {#uuid}
 
-Тип UUID поддерживается пакетом [github.com/google/uuid](https://github.com/google/uuid). Пользователи могут также отправлять и сериализовать UUID как строку или любой тип, который реализует `sql.Scanner` или `Stringify`.
+The UUID type is supported by the [github.com/google/uuid](https://github.com/google/uuid) package. Users can also send and marshal a UUID as a string or any type which implements `sql.Scanner` or `Stringify`.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1241,10 +1281,11 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
-#### Десятичный {#decimal}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
 
-Тип Decimal поддерживается пакетом [github.com/shopspring/decimal](https://github.com/shopspring/decimal).
+#### Decimal {#decimal}
+
+The Decimal type is supported by [github.com/shopspring/decimal](https://github.com/shopspring/decimal) package.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1293,12 +1334,13 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, col4, col5)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
+
 #### Nullable {#nullable}
 
-Значение Nil в Go представляет собой NULL ClickHouse. Это может использоваться, если поле объявлено как Nullable. Время вставки, Nil может быть передан как для обычной, так и для Nullable версии столбца. Для первой вариант по умолчанию будет сохранено значение типа, например, пустая строка для строк. Для nullable версии будет храниться значение NULL в ClickHouse.
+The go value of Nil represents a ClickHouse NULL. This can be used if a field is declared Nullable. At insert time, Nil can be passed for both the normal and Nullable version of a column. For the former, the default value for the type will be persisted, e.g., an empty string for string. For the nullable version, a NULL value will be stored in ClickHouse.
 
-Время сканирования пользователю необходимо передать указатель на тип, который поддерживает nil, например, *string, чтобы представить значение nil для поля Nullable. В нижеследующем примере col1, который является Nullable(String), таким образом получает **string. Это позволяет представлять nil.
+At Scan time, the user must pass a pointer to a type that supports nil, e.g., *string, in order to represent the nil value for a Nullable field. In the example below, col1, which is a Nullable(String), thus receives a **string. This allows nil to be represented.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1344,12 +1386,13 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nullable.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nullable.go)
 
-Клиент дополнительно поддерживает типы `sql.Null*`, например, `sql.NullInt64`. Эти типы совместимы с их эквивалентными типами ClickHouse.
-#### Большие целые числа - Int128, Int256, UInt128, UInt256 {#big-ints---int128-int256-uint128-uint256}
+The client additionally supports the `sql.Null*` types e.g. `sql.NullInt64`. These are compatible with their equivalent ClickHouse types.
 
-Числовые типы, превышающие 64 бита, представлены с использованием нативного пакета Go [big](https://pkg.go.dev/math/big).
+#### Big Ints - Int128, Int256, UInt128, UInt256 {#big-ints---int128-int256-uint128-uint256}
+
+Number types larger than 64 bits are represented using the native go [big](https://pkg.go.dev/math/big) package.
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1415,10 +1458,11 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2, &col3, &
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v, col6=%v, col7=%v\n", col1, col2, col3, col4, col5, col6, col7)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/big_int.go)
-### Сжатие {#compression}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/big_int.go)
 
-Поддержка методов сжатия зависит от используемого протокола. Для нативного протокола клиент поддерживает сжатие `LZ4` и `ZSTD`. Это выполняется только на уровне блоков. Сжатие можно включить, добавив конфигурацию `Compression` в соединение.
+### Compression {#compression}
+
+Support for compression methods depends on the underlying protocol in use. For the native protocol, the client supports `LZ4` and `ZSTD` compression. This is performed at a block level only. Compression can be enabled by including a `Compression` configuration with the connection.
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{
@@ -1461,87 +1505,90 @@ if err := batch.Send(); err != nil {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/compression.go)
 
-Дополнительные методы сжатия доступны, если используется стандартный интерфейс по HTTP. См. [database/sql API - Сжатие](#compression) для получения дополнительной информации.
-### Привязка параметров {#parameter-binding}
+Additional compression techniques are available if using the standard interface over HTTP. See [database/sql API - Compression](#compression) for further details.
 
-Клиент поддерживает привязку параметров для методов `Exec`, `Query` и `QueryRow`. Как показано в следующем примере, это поддерживается с использованием именованных, нумерованных и позиционных параметров. Мы приводим примеры этих ниже.
+### Parameter binding {#parameter-binding}
+
+The client supports parameter binding for the `Exec`, `Query`, and `QueryRow` methods. As shown in the example below, this is supported using named, numbered, and positional parameters. We provide examples of these below.
 
 ```go
 var count uint64
-// positional bind
+// позиционное связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("Positional bind count: %d\n", count)
-// numeric bind
+fmt.Printf("Количество при позиционном связывании: %d\n", count)
+// числовое связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("Numeric bind count: %d\n", count)
-// named bind
+fmt.Printf("Количество при числовом связывании: %d\n", count)
+// именованное связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
 }
 // 50
-fmt.Printf("Named bind count: %d\n", count)
+fmt.Printf("Количество при именованном связывании: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
-#### Специальные случаи {#special-cases}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind.go)
 
-По умолчанию срезы будут развернуты в список значений, разделенных запятыми, если они передаются как параметр запроса. Если пользователи требуют, чтобы набор значений был инъектирован с использованием обрамления `[ ]`, следует использовать `ArraySet`.
+#### Special cases {#special-cases}
 
-Если требуются группы/кортежи с обрамлением `( )`, например, для использования с операторами IN, пользователи могут использовать `GroupSet`. Это особенно полезно для случаев, когда требуется несколько групп, как показано в примере ниже.
+By default, slices will be unfolded into a comma-separated list of values if passed as a parameter to a query. If users require a set of values to be injected with wrapping `[ ]`, `ArraySet` should be used.
 
-Наконец, поля DateTime64 требуют указания точности, чтобы гарантировать, что параметры отображаются должным образом. Уровень точности для поля неизвестен клиенту, поэтому пользователю необходимо предоставить его. Чтобы облегчить это, мы предоставляем параметр `DateNamed`.
+If groups/tuples are required, with wrapping `( )` e.g., for use with IN operators, users can use a `GroupSet`. This is particularly useful for cases where multiple groups are required, as shown in the example below.
+
+Finally, DateTime64 fields require precision in order to ensure parameters are rendered appropriately. The precision level for the field is unknown by the client, however, so the user must provide it. To facilitate this, we provide the `DateNamed` parameter.
 
 ```go
 var count uint64
-// arrays will be unfolded
+// массивы будут развёрнуты
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN (?)", []int{100, 200, 300, 400, 500}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Array unfolded count: %d\n", count)
-// arrays will be preserved with []
+fmt.Printf("Количество с развёрнутым массивом: %d\n", count)
+// массивы будут сохранены с []
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col4 = ?", clickhouse.ArraySet{300, 301}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Array count: %d\n", count)
-// Group sets allow us to form ( ) lists
+fmt.Printf("Количество с массивом: %d\n", count)
+// Групповые наборы позволяют формировать списки ( )
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN ?", clickhouse.GroupSet{[]interface{}{100, 200, 300, 400, 500}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Group count: %d\n", count)
-// More useful when we need nesting
+fmt.Printf("Количество с группой: %d\n", count)
+// Более полезно при необходимости вложенности
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE (Col1, Col5) IN (?)", []clickhouse.GroupSet{{[]interface{}{100, 101}}, {[]interface{}{200, 201}}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("Group count: %d\n", count)
-// Use DateNamed when you need a precision in your time#
+fmt.Printf("Количество с группой: %d\n", count)
+// Используйте DateNamed, когда требуется точность времени
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col3 >= @col3", clickhouse.DateNamed("col3", now.Add(time.Duration(500)*time.Millisecond), clickhouse.NanoSeconds)).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("NamedDate count: %d\n", count)
+fmt.Printf("Количество с NamedDate: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
-### Использование контекста {#using-context}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
 
-Контексты Go предоставляют способ передачи сроков, сигналов отмены и других значений, охватывающих запросы, через границы API. Все методы на соединении принимают контекст в качестве своей первой переменной. Хотя в предыдущих примерах использовался context.Background(), пользователи могут использовать эту возможность для передачи настроек и сроков, а также для отмены запросов.
+### Using context {#using-context}
 
-Передача контекста, созданного с помощью `withDeadline`, позволяет установить ограничения времени выполнения для запросов. Обратите внимание, что это абсолютное время, и истечение срока действия только освободит соединение и отправит сигнал отмены в ClickHouse. В качестве альтернативы можно использовать `WithCancel`, чтобы явным образом отменить запрос.
+Go contexts provide a means of passing deadlines, cancellation signals, and other request-scoped values across API boundaries. All methods on a connection accept a context as their first variable. While previous examples used context.Background(), users can use this capability to pass settings and deadlines and to cancel queries.
 
-Вспомогательные функции `clickhouse.WithQueryID` и `clickhouse.WithQuotaKey` позволяют указать идентификатор запроса и ключ квоты. Идентификаторы запросов могут быть полезны для отслеживания запросов в журналах и для целей отмены. Ключ квоты можно использовать для наложения ограничений на использование ClickHouse на основе уникального значения ключа - см. [Управление квотами](/operations/access-rights#quotas-management) для получения дополнительной информации.
+Passing a context created `withDeadline` allows execution time limits to be placed on queries. Note this is an absolute time and expiry will only release the connection and send a cancel signal to ClickHouse. `WithCancel` can alternatively be used to cancel a query explicitly.
 
-Пользователи также могут использовать контекст, чтобы гарантировать, что настройка применяется только для конкретного запроса, а не для всего соединения, как показано в [Настройки подключения](#connection-settings).
+The helpers  `clickhouse.WithQueryID` and `clickhouse.WithQuotaKey` allow a query id and quota key to be specified. Query ids can be useful for tracking queries in logs and for cancellation purposes. A quota key can be used to impose limits on ClickHouse usage based on a unique key value - see [Quotas Management ](/operations/access-rights#quotas-management)for further details.
 
-Наконец, пользователи могут контролировать размер буфера блоков через `clickhouse.WithBlockSize`. Это переопределяет настройку уровня соединения `BlockBufferSize` и контролирует максимальное количество блоков, которые декодируются и хранятся в памяти в любой момент времени. Более крупные значения потенциально означают больше параллелизации за счет использования памяти.
+Users can also use the context to ensure a setting is only applied for a specific query - rather than for the entire connection, as shown in [Connection Settings](#connection-settings).
 
-Примеры выше показаны ниже.
+Finally, users can control the size of the block buffer via the `clickhouse.WithBlockSize`. This overrides the connection level setting `BlockBufferSize` and controls the maximum number of blocks that are decoded and held in memory at any time. Larger values potentially mean more parallelization at the expense of memory.
+
+Examples of the above are shown below.
 
 ```go
 dialCount := 0
@@ -1564,14 +1611,14 @@ if err != nil {
 if err := clickhouse_tests.CheckMinServerServerVersion(conn, 22, 6, 1); err != nil {
     return nil
 }
-// we can use context to pass settings to a specific API call
+// контекст можно использовать для передачи настроек в конкретный вызов API
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 
 conn.Exec(ctx, "DROP TABLE IF EXISTS example")
 
-// to create a JSON column we need allow_experimental_object_type=1
+// для создания столбца JSON требуется allow_experimental_object_type=1
 if err = conn.Exec(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -1581,24 +1628,24 @@ if err = conn.Exec(ctx, `
     return err
 }
 
-// queries can be cancelled using the context
+// запросы можно отменить через контекст
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
 }()
 if err = conn.QueryRow(ctx, "SELECT sleep(3)").Scan(); err == nil {
-    return fmt.Errorf("expected cancel")
+    return fmt.Errorf("ожидалась отмена")
 }
 
-// set a deadline for a query - this will cancel the query after the absolute time is reached.
-// queries will continue to completion in ClickHouse
+// установка крайнего срока для запроса — запрос будет отменён по достижении указанного времени.
+// запросы продолжат выполняться до завершения в ClickHouse
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.Ping(ctx); err == nil {
-    return fmt.Errorf("expected deadline exceeeded")
+    return fmt.Errorf("ожидалось превышение крайнего срока")
 }
 
-// set a query id to assist tracing queries in logs e.g. see system.query_log
+// установка идентификатора запроса для трассировки запросов в логах, например, см. system.query_log
 var one uint8
 queryId, _ := uuid.NewUUID()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(queryId.String()))
@@ -1611,7 +1658,7 @@ defer func() {
     conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// set a quota key - first create the quota
+// установка ключа квоты — сначала создайте квоту
 if err = conn.Exec(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
@@ -1627,23 +1674,24 @@ for i := 1; i <= 6; i++ {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
-### Информация о прогрессе/профиле/логах {#progressprofilelog-information}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
-Информацию о прогрессе, профиле и логах можно запрашивать для запросов. Информация о прогрессе будет сообщать статистику о количестве строк и байт, которые были прочитаны и обработаны в ClickHouse. В свою очередь, информация о профиле предоставляет сводку данных, возвращенных клиенту, включая итоги по байтам (разжато), строкам и блокам. Наконец, информация о логах предоставляет статистику по потокам, например, использование памяти и скорость обработки данных.
+### Progress/profile/log information {#progressprofilelog-information}
 
-Получение этой информации требует от пользователя использования [Context](#using-context), в который пользователь может передавать функции обратного вызова.
+Progress, Profile, and Log information can be requested on queries. Progress information will report statistics on the number of rows and bytes that have been read and processed in ClickHouse. Conversely, Profile information provides a summary of data returned to the client, including totals of bytes (uncompressed), rows, and blocks. Finally, log information provides statistics on threads, e.g., memory usage and data speed.
+
+Obtaining this information requires the user to use [Context](#using-context), to which the user can pass call-back functions.
 
 ```go
 totalRows := uint64(0)
-// use context to pass a call back for progress and profile info
+// используйте контекст для передачи callback-функций для информации о прогрессе и профилировании
 ctx := clickhouse.Context(context.Background(), clickhouse.WithProgress(func(p *clickhouse.Progress) {
-    fmt.Println("progress: ", p)
+    fmt.Println("прогресс: ", p)
     totalRows += p.Rows
 }), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
-    fmt.Println("profile info: ", p)
+    fmt.Println("информация профилирования: ", p)
 }), clickhouse.WithLogs(func(log *clickhouse.Log) {
-    fmt.Println("log info: ", log)
+    fmt.Println("информация лога: ", log)
 }))
 
 rows, err := conn.Query(ctx, "SELECT number from numbers(1000000) LIMIT 1000000")
@@ -1653,14 +1701,15 @@ if err != nil {
 for rows.Next() {
 }
 
-fmt.Printf("Total Rows: %d\n", totalRows)
+fmt.Printf("Всего строк: %d\n", totalRows)
 rows.Close()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
-### Динамическое сканирование {#dynamic-scanning}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
 
-Пользователям может потребоваться читать таблицы, для которых они не знают схему или тип возвращаемых полей. Это часто встречается в случаях, когда выполняется ad-hoc анализ данных или пишутся универсальные инструменты. Для достижения этого информация о типах колонок доступна в ответах на запросы. Это можно использовать с рефлексией Go для создания экземпляров переменных правильного типа, которые могут быть переданы в Scan.
+### Dynamic scanning {#dynamic-scanning}
+
+Users may need to read tables for which they do not know the schema or type of the fields being returned. This is common in cases where ad-hoc data analysis is performed or generic tooling is written. To achieve this, column-type information is available on query responses. This can be used with Go reflection to create runtime instances of correctly typed variables which can be passed to Scan.
 
 ```go
 const query = `
@@ -1694,12 +1743,13 @@ for rows.Next() {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
-### Внешние таблицы {#external-tables}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
 
-[Внешние таблицы](/engines/table-engines/special/external-data/) позволяют клиенту отправлять данные в ClickHouse с помощью запроса SELECT. Эти данные помещаются во временную таблицу и могут быть использованы в самом запросе для оценки.
+### External tables {#external-tables}
 
-Чтобы отправить внешние данные клиенту с запросом, пользователю необходимо создать внешнюю таблицу через `ext.NewTable` перед передачей этого через контекст.
+[External tables](/engines/table-engines/special/external-data/) allow the client to send data to ClickHouse, with a SELECT query. This data is put in a temporary table and can be used in the query itself for evaluation.
+
+To send external data to the client with a query, the user must build an external table via `ext.NewTable` before passing this via the context.
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -1759,10 +1809,11 @@ if err := conn.QueryRow(ctx, "SELECT COUNT(*) FROM (SELECT * FROM external_table
 fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
-### Открытая телеметрия {#open-telemetry}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
 
-ClickHouse позволяет передавать [контекст трассировки](/operations/opentelemetry/) как часть родного протокола. Клиент позволяет создать Span с помощью функции `clickhouse.withSpan` и передать его через Context для достижения этой цели.
+### Open telemetry {#open-telemetry}
+
+ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this.
 
 ```go
 var count uint64
@@ -1778,21 +1829,23 @@ if err := rows.Scan(&count); err != nil {
 fmt.Printf("count: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
 
-Полные детали о возможности использования трассировки можно найти в разделе [Поддержка OpenTelemetry](/operations/opentelemetry/).
-## API базы данных/SQL {#databasesql-api}
+Full details on exploiting tracing can be found under [OpenTelemetry support](/operations/opentelemetry/).
 
-`database/sql` или "стандартный" API позволяет пользователям использовать клиент в сценариях, где код приложения должен быть независимым от подлежащих баз данных, соблюдая стандартный интерфейс. Это имеет некоторые издержки - дополнительные уровни абстракции и индирекции и примитивы, которые не обязательно совпадают с ClickHouse. Однако эти затраты обычно приемлемы в сценариях, когда инструменты должны подключаться к нескольким базам данных.
+## Database/SQL API {#databasesql-api}
 
-Кроме того, этот клиент поддерживает использование HTTP в качестве транспортного слоя - данные все равно будут закодированы в родном формате для оптимальной производительности.
+The `database/sql` or "standard" API allows users to use the client in scenarios where application code should be agnostic of the underlying databases by conforming to a standard interface. This comes at some expense - additional layers of abstraction and indirection and primitives which are not necessarily aligned with ClickHouse. These costs are, however, typically acceptable in scenarios where tooling needs to connect to multiple databases.
 
-Следующее стремится отразить структуру документации для API ClickHouse.
+Additionally, this client supports using HTTP as the transport layer - data will still be encoded in the native format for optimal performance.
 
-Полные примеры кода для стандартного API можно найти [здесь](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std).
-### Подключение {#connecting-1}
+The following aims to mirror the structure of the documentation for the ClickHouse API.
 
-Подключение можно осуществить либо через строку DSN формата `clickhouse://<host>:<port>?<query_option>=<value>` с использованием метода `Open`, либо через метод `clickhouse.OpenDB`. Последний не является частью спецификации `database/sql`, но возвращает экземпляр `sql.DB`. Этот метод предоставляет функциональность, такую как профилирование, для которой нет очевидных средств для экспонирования через спецификацию `database/sql`.
+Full code examples for the standard API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std).
+
+### Connecting {#connecting-1}
+
+Connection can be achieved either via a DSN string with the format `clickhouse://<host>:<port>?<query_option>=<value>` and `Open` method or via the `clickhouse.OpenDB` method. The latter is not part of the `database/sql` specification but returns a `sql.DB` instance. This method provides functionality such as profiling, for which there are no obvious means of exposing through the `database/sql` specification.
 
 ```go
 func Connect() error {
@@ -1824,30 +1877,31 @@ func ConnectDSN() error {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect.go)
 
-**Для всех последующих примеров, если не указано иное, мы предполагаем, что используется переменная `conn` ClickHouse, которая была создана и доступна.**
-#### Настройки подключения {#connection-settings-1}
+**For all subsequent examples, unless explicitly shown, we assume the use of the ClickHouse `conn` variable has been created and is available.**
 
-Следующие параметры могут быть переданы в строке DSN:
+#### Connection settings {#connection-settings-1}
 
-* `hosts` - список единичных адресов хостов, разделенных запятыми, для балансировки нагрузки и отказоустойчивости - см. [Подключение к нескольким узлам](#connecting-to-multiple-nodes).
-* `username/password` - учетные данные аутентификации - см. [Аутентификация](#authentication)
-* `database` - выберите текущую базу данных по умолчанию
-* `dial_timeout` - строка продолжительности это возможно подписанная последовательность десятичных чисел, каждое с необязательной дробной частью и суффиксом единицы, таким как `300ms`, `1s`. Допустимые единицы времени: `ms`, `s`, `m`.
-* `connection_open_strategy` - `random/in_order` (по умолчанию `random`) - см. [Подключение к нескольким узлам](#connecting-to-multiple-nodes)
-  - `round_robin` - выберите сервер из набора по кругу
-  - `in_order` - первый живой сервер выбирается в указанном порядке
-* `debug` - включить вывод отладки (логическое значение)
-* `compress` - укажите алгоритм сжатия - `none` (по умолчанию), `zstd`, `lz4`, `gzip`, `deflate`, `br`. Если установлено значение `true`, будет использоваться `lz4`. Только `lz4` и `zstd` поддерживаются для родной связи.
-* `compress_level` - уровень сжатия (по умолчанию `0`). См. Сжатие. Это специфично для алгоритма:
-  - `gzip` - `-2` (Лучшая скорость) до `9` (Лучшее сжатие)
-  - `deflate` - `-2` (Лучшая скорость) до `9` (Лучшее сжатие)
-  - `br` - `0` (Лучшая скорость) до `11` (Лучшее сжатие)
-  - `zstd`, `lz4` - игнорируется
-* `secure` - установить защищенное SSL-соединение (по умолчанию `false`)
-* `skip_verify` - пропустить проверку сертификата (по умолчанию `false`)
-* `block_buffer_size` - позволяет пользователям контролировать размер буфера блоков. См. [`BlockBufferSize`](#connection-settings). (по умолчанию `2`)
+The following parameters can be passed in the DSN string:
+
+* `hosts` - comma-separated list of single address hosts for load-balancing and failover - see [Connecting to Multiple Nodes](#connecting-to-multiple-nodes).
+* `username/password` - auth credentials - see [Authentication](#authentication)
+* `database` - select the current default database
+* `dial_timeout` - a duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix such as `300ms`, `1s`. Valid time units are `ms`, `s`, `m`.
+* `connection_open_strategy` - `random/in_order` (default `random`) - see [Connecting to Multiple Nodes](#connecting-to-multiple-nodes)
+  - `round_robin` - choose a round-robin server from the set
+  - `in_order` - first live server is chosen in specified order
+* `debug` - enable debug output (boolean value)
+* `compress` - specify the compression algorithm - `none` (default), `zstd`, `lz4`, `gzip`, `deflate`, `br`. If set to `true`, `lz4` will be used. Only `lz4` and `zstd` are supported for native communication.
+* `compress_level` - Level of compression (default is `0`). See Compression. This is algorithm specific:
+  - `gzip` - `-2` (Best Speed) to `9` (Best Compression)
+  - `deflate` - `-2` (Best Speed) to `9` (Best Compression)
+  - `br` - `0` (Best Speed) to `11` (Best Compression)
+  - `zstd`, `lz4` - ignored
+* `secure` - establish secure SSL connection (default is `false`)
+* `skip_verify` - skip certificate verification (default is `false`)
+* `block_buffer_size` - allows users to control the block buffer size. See [`BlockBufferSize`](#connection-settings). (default is `2`)
 
 ```go
 func ConnectSettings() error {
@@ -1862,13 +1916,15 @@ func ConnectSettings() error {
         return conn.Ping()
 }
 ```
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
-#### Пул подключений {#connection-pooling-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
-Пользователи могут влиять на использование предоставленного списка адресов узлов, как описано в [Подключение к нескольким узлам](#connecting-to-multiple-nodes). Управление подключениями и пуллинг, однако, делегированы `sql.DB` по замыслу.
-#### Подключение через HTTP {#connecting-over-http}
+#### Connection pooling {#connection-pooling-1}
 
-По умолчанию подключения устанавливаются через родной протокол. Для пользователей, которым нужен HTTP, это можно активировать, либо изменив DSN, чтобы включить протокол HTTP, либо указав Протокол в параметрах подключения.
+Users can influence the use of the provided list of node addresses as described in [Connecting to Multiple Nodes](#connecting-to-multiple-nodes). Connection management and pooling is, however, delegated to `sql.DB` by design.
+
+#### Connecting over HTTP {#connecting-over-http}
+
+By default, connections are established over the native protocol. For users needing HTTP, this can be enabled by either modifying the DSN to include the HTTP protocol or by specifying the Protocol in the connection options.
 
 ```go
 func ConnectHTTP() error {
@@ -1901,12 +1957,13 @@ func ConnectDSNHTTP() error {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
-#### Подключение к нескольким узлам {#connecting-to-multiple-nodes-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_http.go)
 
-Если использовать `OpenDB`, подключитесь к нескольким хостам, используя тот же подход с параметрами, который использовался для API ClickHouse - опционально указывая `ConnOpenStrategy`.
+#### Connecting to multiple nodes {#connecting-to-multiple-nodes-1}
 
-Для подключений, основанных на DSN, строка принимает несколько хостов и параметр `connection_open_strategy`, для которого может быть установлен вариант `round_robin` или `in_order`.
+If using `OpenDB`, connect to multiple hosts using the same options approach as that used for the ClickHouse API - optionally specifying the `ConnOpenStrategy`.
+
+For DSN-based connections, the string accepts multiple hosts and a `connection_open_strategy` parameter for which the value `round_robin` or `in_order` can be set.
 
 ```go
 func MultiStdHost() error {
@@ -1947,10 +2004,11 @@ func MultiStdHostDSN() error {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
-### Использование TLS {#using-tls-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/multi_host.go)
 
-Если используется строка подключения DSN, SSL можно активировать с помощью параметра "secure=true". Метод `OpenDB` использует тот же подход, что и [родной API для TLS](#using-tls), полагаясь на спецификацию ненулевой структуры TLS. Хотя строка подключения DSN поддерживает параметр skip_verify для пропуска проверки SSL, метод `OpenDB` необходим для более сложных конфигураций TLS - поскольку он позволяет передавать конфигурацию.
+### Using TLS {#using-tls-1}
+
+If using a DSN connection string, SSL can be enabled via the parameter "secure=true". The `OpenDB` method utilizes the same approach as the [native API for TLS](#using-tls), relying on the specification of a non-nil TLS struct. While the DSN connection string supports the parameter skip_verify to skip SSL verification, the `OpenDB` method is required for more advanced TLS configurations - since it permits the passing of a configuration.
 
 ```go
 func ConnectSSL() error {
@@ -1999,10 +2057,11 @@ func ConnectDSNSSL() error {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/ssl.go)
-### Аутентификация {#authentication-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/ssl.go)
 
-Если используется `OpenDB`, информацию об аутентификации можно передать с помощью обычных параметров. Для подключений на основе DSN имя пользователя и пароль можно передать в строке соединения - либо в качестве параметров, либо как учетные данные, закодированные в адресе.
+### Authentication {#authentication-1}
+
+If using `OpenDB`, authentication information can be passed via the usual options. For DSN-based connections, a username and password can be passed in the connection string - either as parameters or as credentials encoded in the address.
 
 ```go
 func ConnectAuth() error {
@@ -2038,10 +2097,11 @@ func ConnectDSNAuth() error {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/auth.go)
-### Выполнение {#execution-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/auth.go)
 
-После получения соединения пользователи могут выдавать SQL-запросы для выполнения через метод Exec.
+### Execution {#execution-1}
+
+Once a connection has been obtained, users can issue `sql` statements for execution via the Exec method.
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)
@@ -2057,12 +2117,13 @@ if err != nil {
 _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
-Этот метод не поддерживает получение контекста - по умолчанию он выполняется с фоновым контекстом. Пользователи могут использовать `ExecContext`, если это необходимо - см. [Использование контекста](#using-context).
-### Пакетная вставка {#batch-insert-1}
+This method does not support receiving a context - by default, it executes with the background context. Users can use `ExecContext` if this is needed - see [Using Context](#using-context).
 
-Семантика пакета может быть достигнута путем создания `sql.Tx` через метод `Being`. Из этого пакета можно получить с помощью метода `Prepare` с оператором `INSERT`. Это возвращает `sql.Stmt`, к которому строки могут быть добавлены с помощью метода `Exec`. Пакет будет накапливаться в памяти до тех пор, пока не будет выполнен `Commit` на исходном `sql.Tx`.
+### Batch Insert {#batch-insert-1}
+
+Batch semantics can be achieved by creating a `sql.Tx` via the `Being` method. From this, a batch can be obtained using the `Prepare` method with the `INSERT` statement. This returns a `sql.Stmt` to which rows can be appended using the `Exec` method. The batch will be accumulated in memory until `Commit` is executed on the original `sql.Tx`.
 
 ```go
 batch, err := scope.Prepare("INSERT INTO example")
@@ -2092,10 +2153,11 @@ for i := 0; i < 1000; i++ {
 return scope.Commit()
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/batch.go)
-### Запрос строки/строк {#querying-rows-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/batch.go)
 
-Запрос одной строки можно осуществить с помощью метода `QueryRow`. Это возвращает `*sql.Row`, на котором можно вызвать Scan с указателями на переменные, в которые должны быть помещены колонки. Вариант `QueryRowContext` позволяет передать контекст, отличный от фонового - см. [Использование контекста](#using-context).
+### Querying row/s {#querying-rows-1}
+
+Querying a single row can be achieved using the `QueryRow` method. This returns a  *sql.Row, on which Scan can be invoked with pointers to variables into which the columns should be marshaled. A `QueryRowContext` variant allows a context to be passed other than background - see [Using Context](#using-context).
 
 ```go
 row := conn.QueryRow("SELECT * FROM example")
@@ -2112,9 +2174,9 @@ if err := row.Scan(&col1, &col2, &col3, &col4, &col5, &col6, &col7, &col8); err 
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_row.go)
 
-Итерация по нескольким строкам требует метода `Query`. Это возвращает структуру `*sql.Rows`, на которой можно вызвать Next для перебора строк. Эквивалент `QueryContext` позволяет передавать контекст.
+Iterating multiple rows requires the `Query` method. This returns a `*sql.Rows` struct on which Next can be invoked to iterate through the rows. `QueryContext` equivalent allows passing of a context.
 
 ```go
 rows, err := conn.Query("SELECT * FROM example")
@@ -2137,10 +2199,11 @@ for rows.Next() {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
-### Асинхронная вставка {#async-insert-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
 
-Асинхронные вставки могут быть достигнуты путем выполнения вставки через метод `ExecContext`. Это должно быть передано с контекстом, в котором включен асинхронный режим, как показано ниже. Это позволяет пользователю указать, должен ли клиент ждать завершения вставки на сервере или отвечать, как только данные были получены. Это эффективно управляет параметром [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
+### Async Insert {#async-insert-1}
+
+Asynchronous inserts can be achieved by executing an insert via the `ExecContext` method. This should be passed a context with asynchronous mode enabled, as shown below. This allows the user to specify whether the client should wait for the server to complete the insert or respond once the data has been received. This effectively controls the parameter [wait_for_async_insert](/operations/settings/settings#wait_for_async_insert).
 
 ```go
 const ddl = `
@@ -2159,7 +2222,7 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
     for i := 0; i < 100; i++ {
         _, err := conn.ExecContext(ctx, fmt.Sprintf(`INSERT INTO example VALUES (
             %d, '%s', [1, 2, 3, 4, 5, 6, 7, 8, 9], now()
-        )`, i, "Golang SQL database driver"))
+        )`, i, "Драйвер базы данных SQL для Golang"))
         if err != nil {
             return err
         }
@@ -2167,22 +2230,27 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
-### Вставка по колонкам {#columnar-insert-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/async.go)
 
-Не поддерживается с использованием стандартного интерфейса.
-### Использование структур {#using-structs-1}
+### Columnar Insert {#columnar-insert-1}
 
-Не поддерживается с использованием стандартного интерфейса.
-### Преобразования типов {#type-conversions-1}
+Not supported using the standard interface.
 
-Стандартный интерфейс `database/sql` должен поддерживать те же типы, что и [API ClickHouse](#type-conversions). Есть несколько исключений, в основном для сложных типов, которые мы документируем ниже. Подобно API ClickHouse, клиент стремится быть максимально гибким в отношении принятия переменных типов как для вставки, так и для марshalling ответов. См. [Преобразования типов](#type-conversions) для получения дополнительных деталей.
-### Сложные типы {#complex-types-1}
+### Using structs {#using-structs-1}
 
-Если не указано иное, обработка сложных типов должна быть такой же, как в [API ClickHouse](#complex-types). Отличия являются результатом внутренних механизмов `database/sql`.
-#### Карты {#maps}
+Not supported using the standard interface.
 
-В отличие от API ClickHouse, стандартный API требует, чтобы карты были строго типизированы по типу сканирования. Например, пользователи не могут передать `map[string]interface{}` для поля `Map(String,String)` и должны использовать `map[string]string` вместо этого. Переменная `interface{}` всегда будет совместима и может использоваться для более сложных структур. Структуры не поддерживаются во время чтения.
+### Type conversions {#type-conversions-1}
+
+The standard `database/sql` interface should support the same types as the [ClickHouse API](#type-conversions). There are a few exceptions, primarily for complex types, that we document below. Similar to the ClickHouse API, the client aims to be as flexible as possible concerning accepting variable types for both insertion and marshaling of responses. See [Type Conversions](#type-conversions) for further details.
+
+### Complex types {#complex-types-1}
+
+Unless stated, complex type handling should be the same as the [ClickHouse API](#complex-types). Differences are a result of `database/sql` internals.
+
+#### Maps {#maps}
+
+Unlike the ClickHouse API, the standard API requires maps to be strongly typed at scan type. For example, users cannot pass a `map[string]interface{}` for a `Map(String,String)` field and must use a `map[string]string` instead. An `interface{}` variable will always be compatible and can be used for more complex structures. Structs are not supported at read time.
 
 ```go
 var (
@@ -2223,14 +2291,15 @@ if err := conn.QueryRow("SELECT * FROM example").Scan(&col1, &col2, &col3, &col4
 fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4, col5)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
 
-Поведение вставки такое же, как в API ClickHouse.
-### Сжатие {#compression-1}
+Insert behavior is the same as the ClickHouse API.
 
-Стандартный API поддерживает те же алгоритмы сжатия, что и родной [API ClickHouse](#compression), т.е. сжатие `lz4` и `zstd` на уровне блока. В дополнение к этому, сжатие gzip, deflate и br поддерживаются для HTTP соединений. Если любое из этих сжатий включено, сжатие выполняется над блоками во время вставки и для ответов на запросы. Другие запросы, например, пинги или запросы, будут оставаться несжатыми. Это соответствует параметрам `lz4` и `zstd`.
+### Compression {#compression-1}
 
-Если используется метод `OpenDB` для установления соединения, можно передать конфигурацию сжатия. Это включает возможность указать уровень сжатия (смотрите ниже). Если подключаетесь через `sql.Open` с использованием DSN, используйте параметр `compress`. Это может быть либо конкретный алгоритм сжатия, т.е. `gzip`, `deflate`, `br`, `zstd` или `lz4`, либо логический флаг. Если установлено значение true, будет использоваться `lz4`. По умолчанию используется `none`, т.е. сжатие отключено.
+The standard API supports the same compression algorithms as native [ClickHouse API](#compression) i.e. `lz4` and `zstd` compression at a block level. In addition, gzip, deflate and br compression are supported for HTTP connections. If any of these are enabled, compression is performed on blocks during insertion and for query responses. Other requests e.g. pings or query requests, will remain uncompressed. This is consistent with `lz4` and `zstd` options.
+
+If using the `OpenDB` method to establish a connection, a Compression configuration can be passed. This includes the ability to specify the compression level (see below). If connecting via `sql.Open` with DSN, utilize the parameter `compress`. This can either be a specific compression algorithm i.e. `gzip`, `deflate`, `br`, `zstd` or `lz4` or a boolean flag. If set to true, `lz4` will be used. The default is `none` i.e. compression disabled.
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2247,61 +2316,63 @@ conn := clickhouse.OpenDB(&clickhouse.Options{
     Protocol: clickhouse.HTTP,
 })
 ```
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L27-L76)
 
 ```go
 conn, err := sql.Open("clickhouse", fmt.Sprintf("http://%s:%d?username=%s&password=%s&compress=gzip&compress_level=5", env.Host, env.HttpPort, env.Username, env.Password))
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L78-L115)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/compression.go#L78-L115)
 
-Уровень применимого сжатия можно контролировать с помощью параметра DSN compress_level или поля Level в параметре Compression. По умолчанию это 0, но оно специфично для алгоритма:
+The level of applied compression can be controlled by the DSN parameter compress_level or the Level field of the Compression option. This defaults to 0 but is algorithm specific:
 
-* `gzip` - `-2` (Лучшая скорость) до `9` (Лучшее сжатие)
-* `deflate` - `-2` (Лучшая скорость) до `9` (Лучшее сжатие)
-* `br` - `0` (Лучшая скорость) до `11` (Лучшее сжатие)
-* `zstd`, `lz4` - игнорируется
-### Привязка параметров {#parameter-binding-1}
+* `gzip` - `-2` (Best Speed) to `9` (Best Compression)
+* `deflate` - `-2` (Best Speed) to `9` (Best Compression)
+* `br` - `0` (Best Speed) to `11` (Best Compression)
+* `zstd`, `lz4` - ignored
 
-Стандартный API поддерживает те же возможности привязки параметров, что и [API ClickHouse](#parameter-binding), позволяя передавать параметры в методы `Exec`, `Query` и `QueryRow` (и их эквивалентные варианты [Context](#using-context)). Поддерживаются позиционные, именованные и нумерованные параметры.
+### Parameter binding {#parameter-binding-1}
+
+The standard API supports the same parameter binding capabilities as the [ClickHouse API](#parameter-binding), allowing parameters to be passed to the `Exec`, `Query` and `QueryRow` methods (and their equivalent [Context](#using-context) variants). Positional, named and numbered parameters are supported.
 
 ```go
 var count uint64
-// positional bind
+// позиционное связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 >= ? AND Col3 < ?", 500, now.Add(time.Duration(750)*time.Second)).Scan(&count); err != nil {
     return err
 }
 // 250
-fmt.Printf("Positional bind count: %d\n", count)
-// numeric bind
+fmt.Printf("Количество при позиционном связывании: %d\n", count)
+// числовое связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= $2 AND Col3 > $1", now.Add(time.Duration(150)*time.Second), 250).Scan(&count); err != nil {
     return err
 }
 // 100
-fmt.Printf("Numeric bind count: %d\n", count)
-// named bind
+fmt.Printf("Количество при числовом связывании: %d\n", count)
+// именованное связывание
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 <= @col1 AND Col3 > @col3", clickhouse.Named("col1", 100), clickhouse.Named("col3", now.Add(time.Duration(50)*time.Second))).Scan(&count); err != nil {
     return err
 }
 // 50
-fmt.Printf("Named bind count: %d\n", count)
+fmt.Printf("Количество при именованном связывании: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/bind.go)
 
-Обратите внимание, что [особые случаи](#special-cases) все еще применимы.
-### Использование контекста {#using-context-1}
+Note [special cases](#special-cases) still apply.
 
-Стандартный API поддерживает ту же возможность передавать сроки исполнения, сигналы отмены и другие значения, связанные с запросами, через контекст, как и [API ClickHouse](#using-context). В отличие от API ClickHouse, это достигается с использованием вариантов методов Context, т.е. методы, такие как `Exec`, которые по умолчанию используют фоновой контекст, имеют вариант `ExecContext`, в который можно передать контекст в качестве первого параметра. Это позволяет передавать контекст на любом этапе потока приложения. Например, пользователи могут передать контекст при установлении соединения через `ConnContext` или при запросе строки запроса через `QueryRowContext`. Примеры всех доступных методов показаны ниже.
+### Using context {#using-context-1}
 
-Для получения дополнительной информации о том, как использовать контекст для передачи сроков исполнения, сигналов отмены, идентификаторов запросов, ключей квот и настроек подключения, смотрите Использование контекста для [API ClickHouse](#using-context).
+The standard API supports the same ability to pass deadlines, cancellation signals, and other request-scoped values via the context as the [ClickHouse API](#using-context). Unlike the ClickHouse API, this is achieved by using `Context` variants of the methods i.e. methods such as `Exec`, which use the background context by default, have a variant `ExecContext` to which a context can be passed as the first parameter. This allows a context to be passed at any stage of an application flow. For example, users can pass a context when establishing a connection via `ConnContext` or when requesting a query row via `QueryRowContext`. Examples of all available methods are shown below.
+
+For more detail on using the context to pass deadlines, cancellation signals, query ids, quota keys and connection settings see Using Context for the [ClickHouse API](#using-context).
 
 ```go
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 conn.ExecContext(ctx, "DROP TABLE IF EXISTS example")
-// to create a JSON column we need allow_experimental_object_type=1
+// для создания столбца JSON необходимо allow_experimental_object_type=1
 if _, err = conn.ExecContext(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -2311,24 +2382,24 @@ if _, err = conn.ExecContext(ctx, `
     return err
 }
 
-// queries can be cancelled using the context
+// запросы можно отменить через контекст
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
 }()
 if err = conn.QueryRowContext(ctx, "SELECT sleep(3)").Scan(); err == nil {
-    return fmt.Errorf("expected cancel")
+    return fmt.Errorf("ожидалась отмена")
 }
 
-// set a deadline for a query - this will cancel the query after the absolute time is reached. Again terminates the connection only,
-// queries will continue to completion in ClickHouse
+// установка крайнего срока для запроса — запрос будет отменён после достижения указанного времени. Завершается только соединение,
+// запросы продолжат выполняться в ClickHouse
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.PingContext(ctx); err == nil {
-    return fmt.Errorf("expected deadline exceeeded")
+    return fmt.Errorf("ожидалось превышение крайнего срока")
 }
 
-// set a query id to assist tracing queries in logs e.g. see system.query_log
+// установка идентификатора запроса для трассировки запросов в логах, например, см. system.query_log
 var one uint8
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(uuid.NewString()))
 if err = conn.QueryRowContext(ctx, "SELECT 1").Scan(&one); err != nil {
@@ -2340,14 +2411,14 @@ defer func() {
     conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// set a quota key - first create the quota
+// установка ключа квоты — сначала создайте квоту
 if _, err = conn.ExecContext(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
 
-// queries can be cancelled using the context
+// запросы можно отменить через контекст
 ctx, cancel = context.WithCancel(context.Background())
-// we will get some results before cancel
+// получим несколько результатов до отмены
 ctx = clickhouse.Context(ctx, clickhouse.WithSettings(clickhouse.Settings{
     "max_block_size": "1",
 }))
@@ -2363,22 +2434,23 @@ var (
 for rows.Next() {
     if err := rows.Scan(&col1, &col2); err != nil {
         if col2 > 3 {
-            fmt.Println("expected cancel")
+            fmt.Println("ожидалась отмена")
             return nil
         }
         return err
     }
-    fmt.Printf("row: col2=%d\n", col2)
+    fmt.Printf("строка: col2=%d\n", col2)
     if col2 == 3 {
         cancel()
     }
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
-### Сессии {#sessions}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
 
-Хотя родные соединения по своей сути имеют сессию, соединения через HTTP требуют от пользователя создать идентификатор сессии для передачи в контексте в качестве параметра. Это позволяет использовать функции, например, Временные таблицы, которые связаны с сессией.
+### Sessions {#sessions}
+
+While native connections inherently have a session, connections over HTTP require the user to create a session id for passing in a context as a setting. This allows the use of features, e.g., Temporary tables, which are bound to a session.
 
 ```go
 conn := clickhouse.OpenDB(&clickhouse.Options{
@@ -2435,10 +2507,11 @@ for rows.Next() {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
-### Динамическое сканирование {#dynamic-scanning-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
 
-Аналогично [API ClickHouse](#dynamic-scanning), информация о типах колонок доступна, чтобы позволить пользователям создавать экземпляры переменных правильного типа, которые могут быть переданы в Scan. Это позволяет читать колонки, тип которых неизвестен.
+### Dynamic scanning {#dynamic-scanning-1}
+
+Similar to the [ClickHouse API](#dynamic-scanning), column type information is available to allow users to create runtime instances of correctly typed variables which can be passed to Scan. This allows columns to be read where the type is not known.
 
 ```go
 const query = `
@@ -2473,12 +2546,13 @@ for rows.Next() {
 }
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
-### Внешние таблицы {#external-tables-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
 
-[Внешние таблицы](/engines/table-engines/special/external-data/) позволяют клиенту отправлять данные в ClickHouse с помощью запроса `SELECT`. Эти данные помещаются во временную таблицу и могут быть использованы в самом запросе для оценки.
+### External tables {#external-tables-1}
 
-Чтобы отправить внешние данные клиенту с запросом, пользователю необходимо создать внешнюю таблицу через `ext.NewTable` перед передачей этого через контекст.
+[External tables](/engines/table-engines/special/external-data/) allow the client to send data to ClickHouse, with a `SELECT` query. This data is put in a temporary table and can be used in the query itself for evaluation.
+
+To send external data to the client with a query, the user must build an external table via `ext.NewTable` before passing this via the context.
 
 ```go
 table1, err := ext.NewTable("external_table_1",
@@ -2538,10 +2612,11 @@ if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM (SELECT * FROM externa
 fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 ```
 
-[Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
-### Открытая телеметрия {#open-telemetry-1}
+[Full Example](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
-ClickHouse позволяет передавать [контекст трассировки](/operations/opentelemetry/) как часть родного протокола. Клиент позволяет создать Span с помощью функции `clickhouse.withSpan` и передать его через Context для достижения этой цели. Это не поддерживается при использовании HTTP в качестве транспортного средства.
+### Open telemetry {#open-telemetry-1}
+
+ClickHouse allows a [trace context](/operations/opentelemetry/) to be passed as part of the native protocol. The client allows a Span to be created via the function `clickhouse.withSpan` and passed via the Context to achieve this. This is not supported when HTTP is used as transport.
 
 ```go
 var count uint64
@@ -2558,10 +2633,11 @@ fmt.Printf("count: %d\n", count)
 ```
 
 [Полный пример](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
-## Советы по производительности {#performance-tips}
 
-* Используйте API ClickHouse, когда это возможно, особенно для примитивных типов. Это избегает значительного отражения и индирекции.
-* Если вы читаете большие наборы данных, рассмотрите возможность изменения [`BlockBufferSize`](#connection-settings). Это увеличит объем занимаемой памяти, но позволит декодировать больше блоков параллельно во время итерации по строкам. Значение по умолчанию 2 является консервативным и минимизирует нагрузку на память. Более высокие значения будут означать больше блоков в памяти. Это требует тестирования, так как разные запросы могут создавать разные размеры блоков. Поэтому его можно установить на [уровне запроса](#using-context) через Context.
-* Будьте конкретными со своими типами при вставке данных. Хотя клиент стремится быть гибким, например, позволяя анализировать строки для UUID или IP, это требует валидации данных и влечет за собой дополнительные затраты во время вставки.
-* Используйте вставки по колонкам, когда это возможно. Эти вставки также должны быть строго типизированными, избегая необходимости клиенту конвертировать ваши значения.
+## Рекомендации по производительности {#performance-tips}
+
+* По возможности используйте ClickHouse API, особенно для примитивных типов. Это позволяет избежать значительных накладных расходов на рефлексию и дополнительные уровни косвенных обращений.
+* При чтении больших наборов данных рассмотрите возможность изменения [`BlockBufferSize`](#connection-settings). Это увеличит потребление памяти, но позволит декодировать больше блоков параллельно при итерации по строкам. Значение по умолчанию 2 является консервативным и минимизирует накладные расходы по памяти. Более высокие значения приведут к большему количеству блоков в памяти. Это требует тестирования, поскольку разные запросы могут создавать блоки разного размера. Поэтому параметр может быть установлен на [уровне запроса](#using-context) через Context.
+* Будьте точны с типами при вставке данных. Хотя клиент стремится быть гибким, например, позволяя разбирать строки как UUID или IP, это требует проверки данных и увеличивает затраты на вставку.
+* По возможности используйте вставки в столбцовом формате. При этом типы должны быть строго заданы, чтобы избежать необходимости конвертации значений на стороне клиента.
 * Следуйте [рекомендациям](/sql-reference/statements/insert-into/#performance-considerations) ClickHouse для оптимальной производительности вставки.

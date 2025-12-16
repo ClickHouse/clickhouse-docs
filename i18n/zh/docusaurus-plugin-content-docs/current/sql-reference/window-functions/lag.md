@@ -1,17 +1,16 @@
 ---
-'description': '关于 lag 窗口函数的文档'
-'sidebar_label': 'lag'
-'sidebar_position': 9
-'slug': '/sql-reference/window-functions/lag'
-'title': '延迟'
-'doc_type': 'reference'
+description: 'lag 窗口函数的文档'
+sidebar_label: 'lag'
+sidebar_position: 9
+slug: /sql-reference/window-functions/lag
+title: 'lag'
+doc_type: 'reference'
 ---
 
+# lag {#lag}
 
-# lag
-
-返回在有序框架内，当前行之前的指定物理偏移所评估的值。
-此函数类似于 [`lagInFrame`](./lagInFrame.md)，但始终使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 框架。
+返回在有序窗口中，相对于当前行向前指定物理偏移量的那一行上计算得到的值。
+此函数类似于 [`lagInFrame`](./lagInFrame.md)，但始终使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 窗口。
 
 **语法**
 
@@ -22,21 +21,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详情，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **参数**
 
-- `x` — 列名。
-- `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 （可选 - 默认值为 `1`）。
-- `default` — 如果计算的行超过窗口框架的边界，则返回的值。 （可选 - 省略时默认为列类型的默认值）。
+* `x` — 列名。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认为 `1`）。
+* `default` — 当计算行超出窗口帧边界时返回的值。（可选 — 省略时为该列类型的默认值）。
 
 **返回值**
 
-- 在有序框架内，当前行之前的指定物理偏移所评估的值。
+* 在有序窗口中，位于当前行之前指定物理偏移量处那一行所计算出的值。
 
 **示例**
 
-此示例查看特定股票的历史数据，并使用 `lag` 函数计算每天的增量和股价收盘价的百分比变化。
+此示例分析某只股票的历史数据，并使用 `lag` 函数计算该股票收盘价的逐日差值和百分比变化。
 
 ```sql title="Query"
 CREATE TABLE stock_prices

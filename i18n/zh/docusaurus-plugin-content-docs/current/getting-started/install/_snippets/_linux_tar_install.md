@@ -1,25 +1,25 @@
+# 使用 tgz 归档文件安装 ClickHouse {#install-clickhouse-using-tgz-archives}
 
-# 使用 tgz 压缩包安装 ClickHouse
-
-> 推荐使用官方预编译的 `tgz` 压缩包，适用于所有 Linux 发行版，在无法安装 `deb` 或 `rpm` 软件包的情况下。
+> 对于无法安装 `deb` 或 `rpm` 软件包的 Linux 发行版,建议使用官方预编译的 `tgz` 归档文件。
 
 <VerticalStepper>
 
 ## 下载并安装最新稳定版本 {#install-latest-stable}
 
-所需版本可以通过 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载。
-下载后的压缩包应使用安装脚本进行解压和安装。
+所需版本可以使用 `curl` 或 `wget` 从仓库 https://packages.clickhouse.com/tgz/ 下载。
+随后需要将下载的压缩包解压缩，并使用安装脚本完成安装。
 
-以下是如何安装最新稳定版本的示例。
+下面是安装最新稳定版本的示例。
 
 :::note
-对于生产环境，建议使用最新的 `stable` 版本。
-您可以在这 [GitHub 页面](https://github.com/ClickHouse/ClickHouse/tags) 上找到版本号，后缀为 `-stable`。
+对于生产环境，推荐使用最新的 `stable` 版本。
+你可以在这个 [GitHub 页面](https://github.com/ClickHouse/ClickHouse/tags)
+中查找到带有 `-stable` 后缀的发布版本号。
 :::
 
 ## 获取最新的 ClickHouse 版本 {#get-latest-version}
 
-从 GitHub 获取最新的 ClickHouse 版本并存储在 `LATEST_VERSION` 变量中。
+从 GitHub 获取最新的 ClickHouse 版本，并将其保存到 `LATEST_VERSION` 变量中。
 
 ```bash
 LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/utils/list-versions/version_date.tsv | \
@@ -27,9 +27,9 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-## 检测您的系统架构 {#detect-system-architecture}
+## 检测系统架构 {#detect-system-architecture}
 
-检测系统架构并相应地设置 ARCH 变量：
+检测系统架构，并相应设置 ARCH 变量：
 
 ```bash
 case $(uname -m) in
@@ -39,9 +39,10 @@ case $(uname -m) in
 esac
 ```
 
-## 下载每个 ClickHouse 组件的 tarball {#download-tarballs}
+## 为每个 ClickHouse 组件下载 tar 包 {#download-tarballs}
 
-下载每个 ClickHouse 组件的 tarball。循环首先尝试特定架构的软件包，然后回退到通用软件包。
+为每个 ClickHouse 组件下载 tar 包。该循环会优先尝试特定架构的
+软件包，如果不存在则退回到通用软件包。
 
 ```bash
 for PKG in clickhouse-common-static clickhouse-common-static-dbg clickhouse-server clickhouse-client clickhouse-keeper
@@ -53,31 +54,28 @@ done
 
 ## 解压并安装软件包 {#extract-and-install}
 
-运行以下命令以解压和安装以下软件包：
+运行下面的命令以解压并安装下列软件包：
 - `clickhouse-common-static`
 
 ```bash
-
 # Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 ```
 
-- `clickhouse-common-static-dbg`
+* `clickhouse-common-static-dbg`
 
 ```bash
-
 # Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 ```
 
-- `clickhouse-server`
+* `clickhouse-server`
 
 ```bash
-
 # Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
@@ -85,10 +83,9 @@ sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
 sudo /etc/init.d/clickhouse-server start  # Start the server
 ```
 
-- `clickhouse-client`
+* `clickhouse-client`
 
 ```bash
-
 # Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"

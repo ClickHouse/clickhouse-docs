@@ -1,11 +1,11 @@
 ---
-'slug': '/merges'
-'title': 'Слияния частей'
-'description': 'Что такое слияния частей в ClickHouse'
-'keywords':
-- 'merges'
-'doc_type': 'guide'
+slug: /merges
+title: 'Слияния частей'
+description: 'Что такое слияния частей в ClickHouse'
+keywords: ['слияния']
+doc_type: 'guide'
 ---
+
 import merges_01 from '@site/static/images/managing-data/core-concepts/merges_01.png';
 import merges_02 from '@site/static/images/managing-data/core-concepts/merges_02.png';
 import merges_03 from '@site/static/images/managing-data/core-concepts/merges_03.png';
@@ -16,31 +16,32 @@ import merges_07 from '@site/static/images/managing-data/core-concepts/merges_07
 import merges_dashboard from '@site/static/images/managing-data/core-concepts/merges-dashboard.gif';
 import Image from '@theme/IdealImage';
 
-## Что такое слияния частей в ClickHouse? {#what-are-part-merges-in-clickhouse}
+## Что такое слияния частей в ClickHouse? \{#what-are-part-merges-in-clickhouse\}
 
-<br/>
+<br />
 
-ClickHouse [быстрый](/concepts/why-clickhouse-is-so-fast) не только для запросов, но и для вставок, благодаря своему [слою хранения](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf), который работает аналогично [деревьям LSM](https://en.wikipedia.org/wiki/Log-structured_merge-tree):
+ClickHouse [быстр](/concepts/why-clickhouse-is-so-fast) не только при выполнении запросов, но и при вставках, благодаря своей [подсистеме хранения](https://www.vldb.org/pvldb/vol17/p3731-schulze.pdf), которая работает аналогично [деревьям LSM](https://en.wikipedia.org/wiki/Log-structured_merge-tree):
 
-① Вставки (в таблицы из семейства [MergeTree engine](/engines/table-engines/mergetree-family)) создают отсортированные, неизменяемые [части данных](/parts).
+① Вставки (в таблицы из семейства [движков MergeTree](/engines/table-engines/mergetree-family)) создают отсортированные, неизменяемые [части данных](/parts).
 
-② Вся обработка данных перегружена на **фоновое слияние частей**.
+② Вся обработка данных выполняется в виде **фоновых слияний частей**.
 
-Это делает записи данных легковесными и [высокоэффективными](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
+Это делает операции записи лёгкими и [высокоэффективными](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-are-isolated-from-each-other).
 
-Чтобы контролировать количество ^^частей^^ на таблицу и реализовать ② выше, ClickHouse непрерывно сливает ([по партициям](/partitions#per-partition-merges)) меньшие ^^части^^ в большие в фоновом режиме, пока они не достигнут сжатого размера примерно [~150 ГБ](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool).
+Чтобы контролировать количество ^^частей^^ на таблицу и реализовать пункт ② выше, ClickHouse непрерывно сливает ([по партициям](/partitions#per-partition-merges)) более мелкие ^^части^^ в более крупные в фоновом режиме, пока они не достигнут сжатого объёма примерно [~150 GB](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool).
 
-Следующая диаграмма иллюстрирует процесс фонового слияния:
+На следующей диаграмме схематично показан этот фоновый процесс слияния:
 
-<Image img={merges_01} size="lg" alt='PART MERGES'/>
+<Image img={merges_01} size="lg" alt="СЛИЯНИЯ ЧАСТЕЙ" />
 
-<br/>
+<br />
 
-`merge level` части увеличивается на один с каждым дополнительным слиянием. Уровень `0` означает, что часть новая и еще не была слита. ^^Части^^, которые были слиты в большие ^^части^^, помечаются как [неактивные](/operations/system-tables/parts) и в конечном счете удаляются после [настраиваемого](/operations/settings/merge-tree-settings#old_parts_lifetime) времени (по умолчанию 8 минут). Со временем это создает **дерево** слитых ^^частей^^. Отсюда и название [merge tree](/engines/table-engines/mergetree-family) таблицы.
+`Уровень слияния` части увеличивается на единицу при каждом последующем слиянии. Уровень `0` означает, что часть новая и ещё ни разу не сливалась. ^^Части^^, которые были слиты в более крупные ^^части^^, помечаются как [неактивные](/operations/system-tables/parts) и в конечном итоге удаляются по истечении [настраиваемого](/operations/settings/merge-tree-settings#old_parts_lifetime) времени (по умолчанию 8 минут). Со временем это создаёт **дерево** слитых ^^частей^^. Отсюда и название таблиц семейства [MergeTree](/engines/table-engines/mergetree-family).
 
-## Мониторинг слияний {#monitoring-merges}
+## Мониторинг слияний \{#monitoring-merges\}
 
-В примере [что такое части таблицы](/parts) мы [показали](/parts#monitoring-table-parts), что ClickHouse отслеживает все части таблицы в системной таблице [parts](/operations/system-tables/parts). Мы использовали следующий запрос для получения уровня слияния и количества сохраненных строк на каждую активную часть таблицы примера:
+В примере [что такое части таблицы](/parts) мы [показали](/parts#monitoring-table-parts), что ClickHouse отслеживает все части таблицы ^^parts^^ в системной таблице [parts](/operations/system-tables/parts). Мы использовали следующий запрос, чтобы получить уровень слияния и количество сохранённых строк для каждой активной части таблицы из примера:
+
 ```sql
 SELECT
     name,
@@ -51,7 +52,8 @@ WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
 ```
 
-Результат [ранее задокументированного](/parts#monitoring-table-parts) запроса показывает, что у таблицы примера было четыре активные ^^части^^, каждая из которых была создана в результате одного слияния первоначально вставленных ^^частей^^:
+Результат [ранее рассмотренного](/parts#monitoring-table-parts) запроса показывает, что в примерной таблице было четыре активных ^^parts^^, каждый из которых был получен в результате одного слияния первоначально вставленных ^^parts^^:
+
 ```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
@@ -61,7 +63,7 @@ ORDER BY name ASC;
    └─────────────┴───────┴─────────┘
 ```
 
-[Запуск] (https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7&run_query=true&tab=results) теперь показывает, что четыре ^^части^^ слились в одну финальную часть (если только в таблицу не было новых вставок):
+[Выполнив](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results) запрос, вы увидите, что четыре ^^части^^ были объединены в одну итоговую часть (при условии, что в таблицу не выполнялись новые вставки):
 
 ```response
    ┌─name───────┬─level─┬─────rows─┐
@@ -69,116 +71,116 @@ ORDER BY name ASC;
    └────────────┴───────┴──────────┘
 ```
 
-В ClickHouse 24.10 была добавлена новая [панель мониторинга слияний](https://presentations.clickhouse.com/2024-release-24.10/index.html#17) в встроенные [панели мониторинга](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards). Доступная как в OSS, так и в облаке через HTTP-обработчик `/merges`, мы можем использовать ее для визуализации всех слияний частей для нашей таблицы примера:
+В ClickHouse 24.10 к встроенным [панелям мониторинга](https://clickhouse.com/blog/common-issues-you-can-solve-using-advanced-monitoring-dashboards) была добавлена новая [панель слияний](https://presentations.clickhouse.com/2024-release-24.10/index.html#17). Доступная как в OSS, так и в Cloud через HTTP‑обработчик `/merges`, она позволяет визуализировать все слияния частей для нашей примерной таблицы:
 
-<Image img={merges_dashboard} size="lg" alt='PART MERGES'/>
+<Image img={merges_dashboard} size="lg" alt="СЛИЯНИЯ ЧАСТЕЙ" />
 
-<br/>
+<br />
 
-Записанная выше панель мониторинга захватывает весь процесс, начиная с начальных вставок данных и заканчивая финальным слиянием в одну часть:
+Показанная выше панель отражает весь процесс — от первоначальных вставок данных до итогового слияния в одну часть:
 
 ① Количество активных ^^частей^^.
 
-② Слияния частей, визуально представленные с помощью прямоугольников (размер отражает размер части).
+② Слияния частей, визуально представленные в виде прямоугольников (размер соответствует размеру части).
 
-③ [Увеличение записи](https://en.wikipedia.org/wiki/Write_amplification).
+③ [Усиление записи](https://en.wikipedia.org/wiki/Write_amplification).
 
-## Параллельные слияния {#concurrent-merges}
+## Параллельные слияния \{#concurrent-merges\}
 
 Один сервер ClickHouse использует несколько фоновых [потоков слияния](/operations/server-configuration-parameters/settings#background_pool_size) для выполнения параллельных слияний частей:
 
-<Image img={merges_02} size="lg" alt='PART MERGES'/>
+<Image img={merges_02} size="lg" alt="СЛИЯНИЯ ЧАСТЕЙ" />
 
-<br/>
+<br />
 
 Каждый поток слияния выполняет цикл:
 
-① Решает, какие ^^части^^ слить следующими, и загружает эти ^^части^^ в память.
+① Определить, какие ^^части^^ сливать следующими, и загрузить эти ^^части^^ в память.
 
-② Сливает ^^части^^ в памяти в большую часть.
+② Слить ^^части^^ в памяти в одну более крупную часть.
 
-③ Записывает слитую часть на диск.
+③ Записать слитую часть на диск.
 
-Вернуться к ①
+Перейти к ①.
 
-Обратите внимание, что увеличение количества ядер CPU и объема ОЗУ позволяет увеличить пропускную способность фонового слияния.
+Обратите внимание, что увеличение количества ядер CPU и объёма оперативной памяти позволяет повысить производительность фоновых слияний.
 
-## Оптимизированные по памяти слияния {#memory-optimized-merges}
+## Слияния с оптимизированным использованием памяти \{#memory-optimized-merges\}
 
-ClickHouse не обязательно загружает все ^^части^^, которые подлежат слиянию, в память одновременно, как это показано в [предыдущем примере](/merges#concurrent-merges). На основе нескольких [факторов](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210), и для сокращения потребления памяти (пожертвовав скоростью слияния), так называемое [вертикальное слияние](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) загружает и сливает ^^части^^ по частям блоков, а не за один раз.
+ClickHouse не обязательно загружает все ^^parts^^, подлежащие слиянию, в память одновременно, как показано в [предыдущем примере](/merges#concurrent-merges). В зависимости от нескольких [факторов](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L210) и для снижения потребления памяти (ценой скорости слияния) так называемое [вертикальное слияние](https://github.com/ClickHouse/ClickHouse/blob/bf37120c925ed846ae5cd72cd51e6340bebd2918/src/Storages/MergeTree/MergeTreeSettings.cpp#L209) загружает и сливает ^^parts^^ по блокам, а не за один проход.
 
-## Механика слияния {#merge-mechanics}
+## Механика слияний \{#merge-mechanics\}
 
-Диаграмма ниже иллюстрирует, как один фоновый [поток слияния](/merges#concurrent-merges) в ClickHouse сливает ^^части^^ (по умолчанию, без [вертикального слияния](/merges#memory-optimized-merges)):
+Диаграмма ниже иллюстрирует, как один фоновый [поток слияния](/merges#concurrent-merges) в ClickHouse сливает ^^части^^ (по умолчанию без [вертикального слияния](/merges#memory-optimized-merges)):
 
-<Image img={merges_03} size="lg" alt='PART MERGES'/>
+<Image img={merges_03} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
-Слияние частей выполняется в несколько этапов:
+Слияние частей выполняется в несколько шагов:
 
-**① Декодирование и загрузка**: [Сжатые бинарные файлы колонок](/parts#what-are-table-parts-in-clickhouse) из ^^частей^^, подлежащих слиянию, декодируются и загружаются в память.
+**① Декомпрессия и загрузка**: [Сжатые двоичные файлы столбцов](/parts#what-are-table-parts-in-clickhouse) из сливаемых ^^частей^^ распаковываются и загружаются в память.
 
-**② Слияние**: Данные сливаются в более крупные файлы колонок.
+**② Слияние**: Данные объединяются в более крупные файлы столбцов.
 
-**③ Индексирование**: Создается новый [разреженный первичный индекс](/guides/best-practices/sparse-primary-indexes) для слитых файлов колонок.
+**③ Индексация**: Для объединённых файлов столбцов создаётся новый [разрежённый первичный индекс](/guides/best-practices/sparse-primary-indexes).
 
-**④ Сжатие и хранение**: Новые файлы колонок и индекс [сжимаются](/sql-reference/statements/create/table#column_compression_codec) и сохраняются в новой [директории](/parts#what-are-table-parts-in-clickhouse), представляющей слитую часть данных.
+**④ Сжатие и сохранение**: Новые файлы столбцов и индекс [сжимаются](/sql-reference/statements/create/table#column_compression_codec) и сохраняются в новом [каталоге](/parts#what-are-table-parts-in-clickhouse), представляющем объединённую часть данных.
 
-Дополнительные [метаданные в частях данных](/parts), такие как вторичные индексы пропуска данных, статистика по колонкам, контрольные суммы и мин-макс индексы, также восстанавливаются на основе слитых файлов колонок. Мы пропустили эти детали для простоты.
+Дополнительные [метаданные в частях данных](/parts), такие как вторичные индексы пропуска данных, статистика по столбцам, контрольные суммы и min-max индексы, также заново создаются на основе объединённых файлов столбцов. Для простоты мы опустили эти детали.
 
-Механика этапа ② зависит от конкретного [движка MergeTree](/engines/table-engines/mergetree-family), так как разные движки обрабатывают слияние по-разному. Например, строки могут быть агрегированы или заменены, если устарели. Как упоминалось ранее, этот подход **перегружает всю обработку данных на фоновые слияния**, позволяя **супербыстрые вставки**, поддерживая операции записи легковесными и эффективными.
+Механика шага ② зависит от конкретного [движка MergeTree](/engines/table-engines/mergetree-family), так как разные движки по-разному обрабатывают слияние. Например, строки могут агрегироваться или заменяться, если они устарели. Как уже упоминалось, такой подход **выносит всю обработку данных во фоновые слияния**, что позволяет обеспечить **сверхбыстрые вставки**, делая операции записи лёгкими и эффективными.
 
-В следующем разделе мы кратко опишем механику слияния конкретных движков в ^^MergeTree^^ семейства.
+Далее мы кратко рассмотрим механику слияний конкретных движков из семейства ^^MergeTree^^.
 
-### Стандартные слияния {#standard-merges}
+### Стандартные слияния \{#standard-merges\}
 
-Диаграмма ниже иллюстрирует, как ^^части^^ в стандартной [MergeTree](/engines/table-engines/mergetree-family/mergetree) таблице сливаются:
+Диаграмма ниже показывает, как сливаются ^^части^^ в стандартной таблице [MergeTree](/engines/table-engines/mergetree-family/mergetree):
 
-<Image img={merges_04} size="lg" alt='PART MERGES'/>
+<Image img={merges_04} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
-DDL-оператор на диаграмме выше создает таблицу `MergeTree` с ^^ключом сортировки^^ `(town, street)`, [что означает](/parts#what-are-table-parts-in-clickhouse), что данные на диске отсортированы по этим колонкам, и создается соответствующий разреженный первичный индекс.
+Оператор DDL на диаграмме выше создаёт таблицу `MergeTree` с ^^ключом сортировки^^ `(town, street)`, [что означает](/parts#what-are-table-parts-in-clickhouse), что данные на диске отсортированы по этим столбцам и для них соответствующим образом генерируется разреженный первичный индекс.
 
-Сначала ① декомпрессированные, предварительно отсортированные колонки таблицы ② сливаются, сохраняя глобальный порядок сортировки таблицы, определяемый ^^ключом сортировки^^ таблицы, ③ создается новый разреженный первичный индекс, и ④ слитые файлы колонок и индекс сжимаются и сохраняются как новая часть данных на диске.
+① Распакованные, предварительно отсортированные столбцы таблицы ② сливаются с сохранением глобального порядка сортировки таблицы, определённого её ^^ключом сортировки^^, ③ создаётся новый разреженный первичный индекс, и ④ объединённые файлы столбцов и индекс сжимаются и сохраняются на диск как новая часть данных.
 
-### Заменяющие слияния {#replacing-merges}
+### Замещающие слияния \{#replacing-merges\}
 
-Слияния частей в таблице [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) работают аналогично [стандартным слияниям](/merges#standard-merges), но только самая последняя версия каждой строки сохраняется, а более старые версии отбрасываются:
+Слияния частей в таблице [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) работают аналогично [стандартным слияниям](/merges#standard-merges), но при этом сохраняется только самая новая версия каждой строки, а устаревшие версии отбрасываются:
 
-<Image img={merges_05} size="lg" alt='PART MERGES'/>
+<Image img={merges_05} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
-DDL-оператор на диаграмме выше создает таблицу `ReplacingMergeTree` с ^^ключом сортировки^^ `(town, street, id)`, что означает, что данные на диске отсортированы по этим колонкам, с соответствующим разреженным первичным индексом.
+Оператор DDL на диаграмме выше создаёт таблицу `ReplacingMergeTree` с ^^ключом сортировки^^ `(town, street, id)`. Это означает, что данные на диске отсортированы по этим столбцам, а для них генерируется разреженный первичный индекс.
 
-Процесс ② слияния аналогичен слиянию в стандартной таблице `MergeTree`, объединяя декомпрессированные, предварительно отсортированные колонки при сохранении глобального порядка сортировки.
+Слияния ② выполняются аналогично тому, как это происходит в стандартной таблице `MergeTree`: объединяются декомпрессированные, предварительно отсортированные столбцы с сохранением глобального порядка сортировки.
 
-Тем не менее, `ReplacingMergeTree` удаляет дубликаты строк с одинаковым ^^ключом сортировки^^, сохраняя только самую последнюю строку на основе временной метки создания ее содержащей части.
+Однако `ReplacingMergeTree` удаляет дубликаты строк с одинаковым ^^ключом сортировки^^, сохраняя только самую новую строку на основе временной метки создания содержащей её части.
 
-<br/>
+<br />
 
-### Суммирующие слияния {#summing-merges}
+### Суммирующие слияния \{#summing-merges\}
 
-Числовые данные автоматически суммируются во время слияний ^^частей^^ из таблицы [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree):
+Числовые данные автоматически суммируются во время слияния ^^частей^^ таблицы [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree):
 
-<Image img={merges_06} size="lg" alt='PART MERGES'/>
+<Image img={merges_06} size="lg" alt="PART MERGES" />
 
-<br/>
+<br />
 
-DDL-оператор на диаграмме выше определяет таблицу `SummingMergeTree` с `town` в качестве ^^ключа сортировки^^, что означает, что данные на диске отсортированы по этому столбцу, и создается соответствующий разреженный первичный индекс.
+DDL-инструкция на диаграмме выше определяет таблицу `SummingMergeTree` с `town` в качестве ^^ключа сортировки^^, что означает, что данные на диске отсортированы по этому столбцу и соответственно создаётся разреженный первичный индекс.
 
-На этапе ② слияния ClickHouse заменяет все строки с одинаковым ^^ключом сортировки^^ на одну строку, суммируя значения числовых колонок.
+На этапе слияния ② ClickHouse заменяет все строки с одним и тем же ^^ключом сортировки^^ одной строкой, суммируя значения числовых столбцов.
 
-### Агрегационные слияния {#aggregating-merges}
+### Агрегирующие слияния \{#aggregating-merges\}
 
-Пример таблицы `SummingMergeTree`, упомянутый выше, является специализированным вариантом таблицы [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree), позволяющим [автоматическую инкрементальную трансформацию данных](https://www.youtube.com/watch?v=QDAJTKZT8y4) путем применения любой из [90+](/sql-reference/aggregate-functions/reference) агрегатных функций во время слияний частей:
+Приведённый выше пример таблицы `SummingMergeTree` является специализированным вариантом таблицы [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree), которая позволяет выполнять [автоматическое инкрементальное преобразование данных](https://www.youtube.com/watch?v=QDAJTKZT8y4), применяя любую из [90+](/sql-reference/aggregate-functions/reference) агрегатных функций во время слияния частей:
 
-<Image img={merges_07} size="lg" alt='PART MERGES'/>
+<Image img={merges_07} size="lg" alt="СЛИЯНИЯ ЧАСТЕЙ" />
 
-<br/>
+<br />
 
-DDL-оператор на диаграмме выше создает таблицу `AggregatingMergeTree` с `town` в качестве ^^ключа сортировки^^, что гарантирует, что данные упорядочены по этому столбцу на диске, и создается соответствующий разреженный первичный индекс.
+Оператор DDL на приведённой выше диаграмме создаёт таблицу `AggregatingMergeTree` с полем `town` в качестве ^^ключа сортировки^^, гарантируя упорядочивание данных по этому столбцу на диске и создание соответствующего разреженного первичного индекса.
 
-Во время ② слияния ClickHouse заменяет все строки с одинаковым ^^ключом сортировки^^ на одну строку, хранящую [частичные состояния агрегации](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (например, `sum` и `count` для `avg()`). Эти состояния обеспечивают точные результаты через инкрементальные фоновые слияния.
+Во время слияния ② ClickHouse заменяет все строки с одинаковым ^^ключом сортировки^^ одной строкой, в которой хранятся [частичные состояния агрегации](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) (например, `sum` и `count` для `avg()`). Эти состояния обеспечивают точные результаты за счёт инкрементальных фоновых слияний.

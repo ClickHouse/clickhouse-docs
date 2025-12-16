@@ -1,30 +1,31 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/nestjs'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 4
-'description': 'NestJS SDK 用于 ClickStack - ClickHouse 可观察性栈'
-'title': 'NestJS'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/nestjs
+pagination_prev: null
+pagination_next: null
+sidebar_position: 4
+description: 'ClickStack 的 NestJS SDK - ClickHouse 可观测性栈'
+title: 'NestJS'
+doc_type: 'guide'
+keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
-The ClickStack NestJS integration allows you to create a logger or use the default logger to send logs to ClickStack (powered by [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme)).
+ClickStack 的 NestJS 集成允许你创建一个 logger，或使用默认的 logger，将日志发送到 ClickStack（由 [nest-winston](https://www.npmjs.com/package/nest-winston?activeTab=readme) 驱动）。
 
-**本指南集成了：**
+**本指南集成：**
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✖️ 指标</td>
-      <td className="pe-2">✖️ 跟踪</td>
+      <td className="pe-2">✖️ 链路追踪（Traces）</td>
     </tr>
   </tbody>
 </table>
 
-_要发送指标或 APM/跟踪，您还需要将相应的语言集成添加到您的应用程序中。_
+*若要发送指标或 APM/链路追踪（traces），你还需要为应用程序添加对应语言的集成。*
 
-## 开始 {#getting-started}
+## 入门 {#getting-started}
 
 将 `HyperDXNestLoggerModule` 导入根 `AppModule`，并使用 `forRoot()` 方法进行配置。
 
@@ -44,7 +45,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 export class AppModule {}
 ```
 
-之后，winston 实例将可用于通过 `HDX_LOGGER_MODULE_PROVIDER` 注入令牌在整个项目中进行注入：
+之后，winston 实例即可在整个项目中通过注入令牌 `HDX_LOGGER_MODULE_PROVIDER` 进行注入使用：
 
 ```javascript
 import { Controller, Inject } from '@nestjs/common';
@@ -63,15 +64,15 @@ export class CatsController {
 }
 ```
 
-### 替换 Nest 日志记录器（引导时也适用） {#replacing-the-nest-logger}
+### 替换 Nest 日志记录器（也适用于启动阶段） {#replacing-the-nest-logger}
 
 :::note 重要
-这样做后，您放弃了依赖注入，这意味着不需要使用 `forRoot` 和 `forRootAsync`，并且不应该使用它们。将它们从您的主要模块中删除。
+这样做会放弃使用依赖注入机制，这意味着 `forRoot` 和 `forRootAsync` 不再需要，也不应被使用。请将它们从主模块中移除。
 :::
 
-使用依赖注入有一个小缺点。Nest 必须首先引导应用程序（实例化模块和提供者，注入依赖关系等），在此过程中 `HyperDXNestLogger` 的实例尚不可用，这意味着 Nest 会回退到内部日志记录器。
+使用依赖注入有一个小小的缺点。Nest 必须先启动应用程序（实例化模块和提供者、注入依赖等），在此过程中 `HyperDXNestLogger` 实例尚不可用，这意味着 Nest 会回退到其内部日志记录器。
 
-一种解决方案是在应用程序生命周期之外创建日志记录器，使用 `createLogger` 函数，并将其传递给 `NestFactory.create`。Nest 将包裹我们自定义日志记录器（`createLogger` 方法返回的相同实例）到 Logger 类中，转发所有调用给它：
+一种解决方案是在应用程序生命周期之外，使用 `createLogger` 函数创建日志记录器，并将其传递给 `NestFactory.create`。Nest 随后会将我们的自定义日志记录器（由 `createLogger` 方法返回的同一实例）包装进 Logger 类中，并将所有调用转发给它：
 
 在 `main.ts` 文件中创建日志记录器
 
@@ -91,7 +92,7 @@ async function bootstrap() {
 bootstrap();
 ```
 
-将您的主模块更改为提供 Logger 服务：
+将主模块修改为提供 Logger 服务：
 
 ```javascript
 import { Logger, Module } from '@nestjs/common';
@@ -102,7 +103,7 @@ import { Logger, Module } from '@nestjs/common';
 export class AppModule {}
 ```
 
-然后只需通过类型提示将日志记录器注入，使用 `@nestjs/common` 中的 Logger：
+然后，只需通过将其类型注解为 `@nestjs/common` 提供的 Logger 来注入该 logger：
 
 ```javascript
 import { Controller, Logger } from '@nestjs/common';

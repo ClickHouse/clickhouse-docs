@@ -1,15 +1,15 @@
 ---
-'description': '最小 `val` 値のために `arg` 値を計算します。複数の行が同じ `val` を持つ場合、どの関連する `arg` が返されるかは決定論的ではありません。'
-'sidebar_position': 110
-'slug': '/sql-reference/aggregate-functions/reference/argmin'
-'title': 'argMin'
-'doc_type': 'reference'
+description: '`val` の最小値に対応する `arg` の値を計算します。`val` が同じ最小値を持つ行が複数存在する場合、どの行に対応する `arg` が返されるかは規定されていません。'
+sidebar_position: 110
+slug: /sql-reference/aggregate-functions/reference/argmin
+title: 'argMin'
+doc_type: 'reference'
 ---
 
+# argMin {#argmin}
 
-# argMin
-
-最小の `val` 値に対する `arg` 値を計算します。`val` が最大で同値の行が複数存在する場合、どの関連する `arg` が返されるかは非決定的です。 `arg` と `min` の両方は、[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中に [`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、利用可能な `Null` でない値がある場合は `Null` でない値を返します。
+最小の `val` 値に対応する `arg` の値を計算します。`val` が最小となる行が複数ある場合、どの行に対応する `arg` が返されるかは非決定的です。
+`arg` 部分および `min` 部分の両方は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はどちらも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` ではない値が存在する場合には `Null` ではない値を返します。
 
 **構文**
 
@@ -19,14 +19,14 @@ argMin(arg, val)
 
 **引数**
 
-- `arg` — 引数。
-- `val` — 値。
+* `arg` — 引数。
+* `val` — 値。
 
 **返される値**
 
-- 最小の `val` 値に対応する `arg` 値。
+* `val` が最小となる行の `arg` の値。
 
-タイプ: `arg` タイプに一致します。
+型: `arg` と同じ型。
 
 **例**
 
@@ -40,13 +40,13 @@ argMin(arg, val)
 └──────────┴────────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT argMin(user, salary) FROM salary
 ```
 
-結果:
+結果：
 
 ```text
 ┌─argMin(user, salary)─┐
@@ -54,7 +54,7 @@ SELECT argMin(user, salary) FROM salary
 └──────────────────────┘
 ```
 
-**拡張例**
+**詳細な例**
 
 ```sql
 CREATE TABLE test
@@ -114,4 +114,4 @@ SELECT argMin(a, tuple(b)) FROM test;
 
 **関連項目**
 
-- [タプル](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

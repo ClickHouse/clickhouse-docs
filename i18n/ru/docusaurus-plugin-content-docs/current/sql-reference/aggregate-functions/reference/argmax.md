@@ -1,13 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/argmax'
+description: 'Вычисляет значение `arg` для максимального значения `val`.'
 sidebar_position: 109
-description: 'Выдает значение `arg` для максимального `val` значения.'
-title: argMax
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/argmax
+title: 'argMax'
+doc_type: 'reference'
 ---
-# argMax
 
-Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым значением `val`, которое является максимальным, какое из связанных `arg` будет возвращено, не является детерминированным. Обе части `arg` и `max` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают значения, отличные от `Null`, если таковые доступны.
+# argMax {#argmax}
+
+Вычисляет значение `arg` для максимального значения `val`. Если существует несколько строк с одинаковым максимальным `val`, то то, какое из соответствующих значений `arg` будет возвращено, не детерминировано.
+Обе части — и `arg`, и `max` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), при обработке обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) и возвращают значения, отличные от `Null`, если такие значения есть.
 
 **Синтаксис**
 
@@ -17,14 +19,14 @@ argMax(arg, val)
 
 **Аргументы**
 
-- `arg` — Аргумент.
-- `val` — Значение.
+* `arg` — аргумент.
+* `val` — значение.
 
 **Возвращаемое значение**
 
-- Значение `arg`, соответствующее максимальному значению `val`.
+* Значение `arg`, которое соответствует максимальному значению `val`.
 
-Тип: соответствует типу `arg`.
+Тип: тот же, что и у `arg`.
 
 **Пример**
 
@@ -107,4 +109,4 @@ SELECT argMax(a, tuple(b)) FROM test;
 
 **Смотрите также**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

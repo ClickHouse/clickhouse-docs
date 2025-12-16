@@ -1,11 +1,12 @@
 ---
-slug: '/sql-reference/statements/'
+description: 'Документация по операторам SQL в ClickHouse'
 sidebar_label: 'Список операторов'
 sidebar_position: 1
-description: 'Документация по ClickHouse SQL Statements'
-title: 'SQL-операторы ClickHouse'
-doc_type: reference
+slug: /sql-reference/statements/
+title: 'Операторы SQL в ClickHouse'
+doc_type: 'reference'
 ---
-# ClickHouse SQL выражения
 
-Пользователи взаимодействуют с ClickHouse, используя SQL выражения. ClickHouse поддерживает общие SQL выражения, такие как [SELECT](select/index.md) и [CREATE](create/index.md), но также предоставляет специальные выражения, такие как [KILL](kill.md) и [OPTIMIZE](optimize.md).
+# Операторы SQL в ClickHouse {#clickhouse-sql-statements}
+
+Пользователи взаимодействуют с ClickHouse с помощью операторов SQL. ClickHouse поддерживает распространённые операторы SQL, такие как [SELECT](select/index.md) и [CREATE](create/index.md), а также специализированные операторы, такие как [KILL](kill.md) и [OPTIMIZE](optimize.md).

@@ -1,10 +1,11 @@
 ---
-'sidebar_label': 'SQL コンソール'
-'sidebar_position': 1
-'title': 'SQL コンソール'
-'slug': '/integrations/sql-clients/sql-console'
-'description': 'SQL コンソールについて学ぶ'
-'doc_type': 'guide'
+sidebar_label: 'SQLコンソール'
+sidebar_position: 1
+title: 'SQLコンソール'
+slug: /integrations/sql-clients/sql-console
+description: 'SQLコンソールについて学ぶ'
+doc_type: 'guide'
+keywords: ['sql console', 'クエリインターフェース', 'Web UI', 'SQLエディター', 'クラウドコンソール']
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
@@ -46,291 +47,289 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
+# SQL コンソール {#sql-console}
 
+SQL コンソールは、ClickHouse Cloud 上のデータベースを調査し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
 
-# SQLコンソール
-
-SQLコンソールは、ClickHouse Cloudにおけるデータベースを探索し、クエリを実行するための最も迅速で簡単な方法です。SQLコンソールを使用して、以下のことができます。
-
-- ClickHouse Cloudサービスに接続する
-- テーブルデータを表示、フィルタリング、およびソートする
-- クエリを実行し、結果データを数回のクリックで視覚化する
-- チームメンバーとクエリを共有し、より効果的にコラボレーションすること。
+- ClickHouse Cloud のサービスに接続する
+- テーブルデータを表示、フィルター、並べ替えする
+- クエリを実行し、数回のクリックで結果データを可視化する
+- クエリをチームメンバーと共有し、より効率的に共同作業を行う
 
 ## テーブルの探索 {#exploring-tables}
 
-### テーブルリストとスキーマ情報の表示 {#viewing-table-list-and-schema-info}
+### テーブル一覧とスキーマ情報の表示 {#viewing-table-list-and-schema-info}
 
-ClickHouseインスタンスに含まれるテーブルの概要は、左側のサイドバーエリアに表示されます。左側のバーの上部にあるデータベースセレクターを使用して、特定のデータベース内のテーブルを表示します。
+ClickHouse インスタンスに含まれるテーブルの概要は、左サイドバーで確認できます。左サイドバー上部のデータベースセレクタを使用して、特定のデータベース内のテーブルを表示します。
 
-<Image img={table_list_and_schema} size="lg" border alt="左サイドバーに表示されたデータベーステーブルのテーブルリストとスキーマビュー"/>
+<Image img={table_list_and_schema} size="lg" border alt="左サイドバーにデータベース内のテーブルが表示された、テーブル一覧とスキーマビュー"/>
 
-リスト内のテーブルは展開して、カラムやデータ型を表示することもできます。
+一覧のテーブルは展開して、カラムと型を表示することもできます。
 
-<Image img={view_columns} size="lg" border alt="カラム名とデータ型を表示している展開されたテーブルのビュー"/>
+<Image img={view_columns} size="lg" border alt="展開されたテーブルと、そのカラム名およびデータ型が表示されているビュー"/>
 
 ### テーブルデータの探索 {#exploring-table-data}
 
-リスト内のテーブルをクリックして、新しいタブで開きます。テーブルビューでは、データを簡単に表示、選択、コピーできます。Microsoft ExcelやGoogle Sheetsなどのスプレッドシートアプリケーションにコピー＆ペーストする際には、構造とフォーマットが保持されることに注意してください。フッターのナビゲーションを使用して、テーブルデータのページを切り替えることができます（30行単位でページネーションされます）。
+一覧のテーブルをクリックすると、新しいタブで開きます。Table View では、データを簡単に表示・選択・コピーできます。Microsoft Excel や Google Sheets などのスプレッドシートアプリケーションにコピー＆ペーストする際も、構造と書式は保持されます。フッターのナビゲーションを使用して、テーブルデータのページ（30 行単位でページ分割）を切り替えられます。
 
-<Image img={abc} size="lg" border alt="選択およびコピーできるデータを表示しているテーブルビュー"/>
+<Image img={abc} size="lg" border alt="選択およびコピー可能なデータが表示されている Table View"/>
 
 ### セルデータの検査 {#inspecting-cell-data}
 
-セルインスペクターツールを使用して、単一のセル内に含まれる大量のデータを表示できます。開くには、セルを右クリックして「セルを検査」を選択します。セルインスペクタの内容は、インスペクタの内容の右上隅にあるコピーアイコンをクリックすることでコピーできます。
+Cell Inspector ツールを使用すると、単一セル内に含まれる大量のデータを表示できます。開くには、セルを右クリックし、「Inspect Cell」を選択します。Cell Inspector の内容は、インスペクタ右上にあるコピーアイコンをクリックすることでコピーできます。
 
-<Image img={inspecting_cell_content} size="lg" border alt="選択したセルの内容を表示しているセルインスペクターダイアログ"/>
+<Image img={inspecting_cell_content} size="lg" border alt="選択したセルの内容を表示している Cell Inspector ダイアログ"/>
 
 ## テーブルのフィルタリングとソート {#filtering-and-sorting-tables}
 
-### テーブルのソート {#sorting-a-table}
+### テーブルをソートする {#sorting-a-table}
 
-SQLコンソールでテーブルをソートするには、テーブルを開き、ツールバーの「ソート」ボタンを選択します。このボタンをクリックすると、ソートを設定するためのメニューが開きます。ソートの基準となるカラムを選択し、ソートの順序（昇順または降順）を設定できます。「適用」を選択するか、Enterを押してテーブルをソートします。
+SQL Console でテーブルをソートするには、テーブルを開き、ツールバーの「Sort」ボタンを選択します。このボタンをクリックすると、ソートを設定できるメニューが開きます。ソート対象のカラムと、ソート順序（昇順または降順）を選択できます。「Apply」を選択するか Enter キーを押してテーブルをソートします。
 
-<Image img={sort_descending_on_column} size="lg" border alt="カラムに対する降順ソートの設定を示しているソートダイアログ"/>
+<Image img={sort_descending_on_column} size="lg" border alt="あるカラムに対して降順ソートを設定しているソートダイアログ"/>
 
-SQLコンソールでは、テーブルに複数のソートを追加することも可能です。「ソート」ボタンを再度クリックして、別のソートを追加します。注：ソートは、ソートペインに表示される順序（上から下）で適用されます。ソートを削除するには、単にソートの横にある「x」ボタンをクリックします。
+SQL Console では、テーブルに複数のソート条件を追加することもできます。再度「Sort」ボタンをクリックして、別のソート条件を追加します。注意: ソートはソートペイン内に表示されている順番（上から下）で適用されます。ソートを削除するには、該当するソートの横にある「x」ボタンをクリックします。
 
-### テーブルのフィルタリング {#filtering-a-table}
+### テーブルをフィルタリングする {#filtering-a-table}
 
-SQLコンソールでテーブルをフィルタリングするには、テーブルを開き、「フィルター」ボタンを選択します。ソートと同様に、このボタンをクリックすると、フィルターを設定するためのメニューが開きます。フィルタリングの基準となるカラムを選択し、必要な条件を選択します。SQLコンソールは、カラムに含まれるデータの種類に応じたフィルターオプションをインテリジェントに表示します。
+SQL Console でテーブルをフィルタリングするには、テーブルを開き、「Filter」ボタンを選択します。ソートと同様に、このボタンをクリックするとフィルタを設定できるメニューが開きます。フィルタ対象のカラムを選択し、必要な条件を指定できます。SQL Console は、カラムに含まれるデータ型に対応したフィルタオプションを自動的に表示します。
 
-<Image img={filter_on_radio_column_equal_gsm} size="lg" border alt="GSMに等しいラジオカラムをフィルタリングするための設定を示しているフィルターダイアログ"/>
+<Image img={filter_on_radio_column_equal_gsm} size="lg" border alt="radio カラムが GSM と等しい条件でフィルタを設定しているフィルタダイアログ"/>
 
-フィルターに満足したら、「適用」を選択してデータをフィルタリングできます。また、以下のように追加のフィルターを追加することもできます。
+フィルタの内容に満足したら、「Apply」を選択してデータをフィルタリングできます。以下に示すように、フィルタを追加することも可能です。
 
-<Image img={add_more_filters} size="lg" border alt="2000より大きい範囲の追加フィルターを追加する方法を示しているダイアログ"/>
+<Image img={add_more_filters} size="lg" border alt="2000 より大きい範囲の追加フィルタを設定する方法を示すダイアログ"/>
 
-ソート機能と同様に、フィルターの横にある「x」ボタンをクリックして削除できます。
+ソート機能と同様に、フィルタを削除するにはフィルタの横にある「x」ボタンをクリックします。
 
-### フィルタリングとソートの同時実行 {#filtering-and-sorting-together}
+### フィルタリングとソートを同時に行う {#filtering-and-sorting-together}
 
-SQLコンソールでは、テーブルを同時にフィルタリングおよびソートすることができます。これを行うには、上記の手順を使用して希望のすべてのフィルターとソートを追加し、「適用」ボタンをクリックします。
+SQL Console では、テーブルに対してフィルタリングとソートを同時に適用できます。これを行うには、上記の手順に従って必要なフィルタとソートをすべて追加し、「Apply」ボタンをクリックします。
 
 <Image img={filtering_and_sorting_together} size="lg" border alt="フィルタリングとソートが同時に適用されているインターフェース"/>
 
-### フィルターとソートからクエリを作成 {#creating-a-query-from-filters-and-sorts}
+### フィルタとソートからクエリを作成する {#creating-a-query-from-filters-and-sorts}
 
-SQLコンソールは、フィルターやソートをワンクリックで直接クエリに変換することができます。ソートとフィルターパラメータを選択した状態で、ツールバーから「クエリを作成」ボタンを選択するだけです。「クエリを作成」をクリックすると、テーブルビューに含まれるデータに対応するSQLコマンドであらかじめ入力された新しいクエリタブが開きます。
+SQL Console は、ソートとフィルタの設定をワンクリックでクエリに変換できます。ツールバーから、任意のソートおよびフィルタパラメータを指定した状態で「Create Query」ボタンを選択します。「Create query」をクリックすると、新しいクエリタブが開き、現在のテーブルビューの内容に対応した SQL コマンドがあらかじめ入力されています。
 
-<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="フィルターとソートからSQLを生成するCreate Queryボタンを示しているインターフェース"/>
+<Image img={create_a_query_from_sorts_and_filters} size="lg" border alt="フィルタとソートから SQL を生成する Create Query ボタンを示すインターフェース"/>
 
 :::note
-「クエリを作成」機能を使用する際に、フィルターとソートは必須ではありません。
+「Create Query」機能を使用する際に、フィルタやソートは必須ではありません。
 :::
 
-SQLコンソールでのクエリ作成の詳細については、(link)クエリドキュメントをお読みください。
+SQL Console でのクエリの実行については、(link) のクエリに関するドキュメントを参照してください。
 
 ## クエリの作成と実行 {#creating-and-running-a-query}
 
 ### クエリの作成 {#creating-a-query}
 
-SQLコンソールで新しいクエリを作成する方法は2つあります。
+SQL コンソールで新しいクエリを作成する方法は 2 つあります。
 
 - タブバーの「+」ボタンをクリックする
-- 左側のサイドバーのクエリリストから「新規クエリ」ボタンを選択する
+- 左サイドバーのクエリ一覧から「New Query」ボタンをクリックする
 
-<Image img={creating_a_query} size="lg" border alt="新しいクエリを作成する方法を示しているインターフェース（+ボタンまたはNew Queryボタンを使用）"/>
+<Image img={creating_a_query} size="lg" border alt="「+」ボタンまたは New Query ボタンを使って新しいクエリを作成する方法を示すインターフェース"/>
 
 ### クエリの実行 {#running-a-query}
 
-クエリを実行するには、SQLエディタにSQLコマンドを入力し、「実行」ボタンをクリックするか、ショートカットの `cmd / ctrl + enter` を使用します。複数のコマンドを順に書いて実行する場合は、各コマンドの後にセミコロンを追加する必要があります。
+クエリを実行するには、SQL Editor に SQL コマンドを入力し、「Run」ボタンをクリックするか、ショートカット `cmd / ctrl + enter` を使用します。複数のコマンドを順番に記述して実行する場合は、各コマンドの末尾にセミコロンを付けてください。
 
-クエリ実行オプション
-デフォルトでは、実行ボタンをクリックすると、SQLエディタに含まれるすべてのコマンドが実行されます。SQLコンソールは、他の2つのクエリ実行オプションをサポートしています。
+クエリ実行オプション  
+デフォルトでは、「Run」ボタンをクリックすると SQL Editor 内に含まれるすべてのコマンドが実行されます。SQL コンソールでは、次の 2 つのクエリ実行オプションもサポートしています。
 
 - 選択したコマンドを実行
 - カーソル位置のコマンドを実行
 
-選択したコマンドを実行するには、希望するコマンドまたはコマンドのシーケンスを強調表示し、「実行」ボタンをクリックするか（または `cmd / ctrl + enter` ショートカットを使用します）。選択が存在する場合、SQLエディタのコンテキストメニュー（エディタ内の任意の場所を右クリックして開く）から「選択を実行」を選択することもできます。
+選択したコマンドを実行するには、対象のコマンドまたはコマンドの並びを選択し、「Run」ボタンをクリックします（またはショートカット `cmd / ctrl + enter` を使用します）。選択範囲がある場合は、SQL Editor のコンテキストメニュー（エディタ内の任意の場所を右クリックして表示）から「Run selected」を選択することもできます。
 
-<Image img={run_selected_query} size="lg" border alt="選択したSQLクエリの部分を実行する方法を示しているインターフェース"/>
+<Image img={run_selected_query} size="lg" border alt="SQL クエリの一部を選択して実行する方法を示すインターフェース"/>
 
-現在のカーソル位置でコマンドを実行するには、次の2つの方法があります。
+現在のカーソル位置のコマンドを実行する方法は 2 つあります。
 
-- 拡張実行オプションメニューから「カーソル位置で実行」を選択する（または対応する `cmd / ctrl + shift + enter` キーボードショートカットを使用します）
+- 「Run」の拡張オプションメニューから「At Cursor」を選択する（または対応するキーボードショートカット `cmd / ctrl + shift + enter` を使用する）
 
-<Image img={run_at_cursor_2} size="lg" border alt="拡張実行オプションメニューのカーソル位置で実行オプション"/>
+<Image img={run_at_cursor_2} size="lg" border alt="拡張 Run オプションメニュー内の Run at cursor オプション"/>
 
-- SQLエディタのコンテキストメニューから「カーソル位置で実行」を選択します
+- SQL Editor のコンテキストメニューから「Run at cursor」を選択する
 
-<Image img={run_at_cursor} size="lg" border alt="SQLエディタコンテキストメニューのカーソル位置で実行オプション"/>
+<Image img={run_at_cursor} size="lg" border alt="SQL Editor のコンテキストメニュー内の Run at cursor オプション"/>
 
 :::note
-カーソル位置にあるコマンドは、実行時に黄色に点滅します。
+カーソル位置にあるコマンドは、実行時に黄色く点滅します。
 :::
 
 ### クエリのキャンセル {#canceling-a-query}
 
-クエリが実行中の場合、クエリエディタのツールバーにある「実行」ボタンは「キャンセル」ボタンに置き換えられます。このボタンをクリックするか、 `Esc` を押してクエリをキャンセルします。注意：既に返された結果はキャンセル後も保持されます。
+クエリが実行中の場合、Query Editor ツールバーの「Run」ボタンは「Cancel」ボタンに置き換えられます。このボタンをクリックするか、`Esc` を押すだけでクエリをキャンセルできます。注意：すでに返されている結果は、キャンセル後も保持されます。
 
-<Image img={cancel_a_query} size="lg" border alt="クエリ実行中に表示されるキャンセルボタン"/>
+<Image img={cancel_a_query} size="lg" border alt="クエリ実行中に表示される Cancel ボタン"/>
 
 ### クエリの保存 {#saving-a-query}
 
-以前に名前が付けられていない場合、クエリは「未設定のクエリ」と呼ばれます。クエリ名をクリックして変更します。クエリ名を変更すると、そのクエリは保存されます。
+まだ名前が付けられていない場合、クエリ名は「Untitled Query」になっています。クエリ名をクリックして変更してください。クエリ名を変更すると、そのクエリは保存されます。
 
-<Image img={give_a_query_a_name} size="lg" border alt="未設定のクエリからクエリ名を変更する方法を示しているインターフェース"/>
+<Image img={give_a_query_a_name} size="lg" border alt="Untitled Query からクエリ名を変更する方法を示すインターフェース"/>
 
-「保存」ボタンや `cmd / ctrl + s` キーボードショートカットを使用してクエリを保存することもできます。
+保存ボタンや、キーボードショートカット `cmd / ctrl + s` を使用してクエリを保存することもできます。
 
-<Image img={save_the_query} size="lg" border alt="クエリエディタツールバーの保存ボタン"/>
+<Image img={save_the_query} size="lg" border alt="Query Editor ツールバー内の Save ボタン"/>
 
-## GenAIを使用してクエリを管理する {#using-genai-to-manage-queries}
+## GenAI を使用したクエリ管理 {#using-genai-to-manage-queries}
 
-この機能により、ユーザーは自然言語の質問としてクエリを記述し、クエリコンソールが利用可能なテーブルのコンテキストに基づいてSQLクエリを生成できるようになります。GenAIは、ユーザーがクエリをデバッグするのにも役立ちます。
+この機能を使用すると、ユーザーはクエリを自然言語の質問として記述でき、それに基づいてクエリコンソールが、利用可能なテーブルのコンテキストに沿った SQL クエリを生成します。GenAI はクエリのデバッグにも役立ちます。
 
-GenAIについての詳細は、[ClickHouse Cloudブログの「GenAIによるクエリ提案を発表」](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud)を確認してください。
+GenAI の詳細については、[Announcing GenAI powered query suggestions in ClickHouse Cloud blog post](https://clickhouse.com/blog/announcing-genai-powered-query-suggestions-clickhouse-cloud) を参照してください。
 
-### テーブルの設定 {#table-setup}
+### テーブルのセットアップ {#table-setup}
 
-英国の価格データセットをインポートし、それを使用していくつかのGenAIクエリを作成します。
+UK Price Paid のサンプルデータセットをインポートし、それを使っていくつかの GenAI クエリを作成します。
 
-1. ClickHouse Cloudサービスを開きます。
-1. _+_アイコンをクリックして新しいクエリを作成します。
-1. 次のコードを貼り付けて実行します：
+1. ClickHouse Cloud サービスを開きます。
+1. _+_ アイコンをクリックして新しいクエリを作成します。
+1. 次のコードを貼り付けて実行します:
 
-```sql
-CREATE TABLE uk_price_paid
-(
-    price UInt32,
-    date Date,
-    postcode1 LowCardinality(String),
-    postcode2 LowCardinality(String),
-    type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
-    is_new UInt8,
-    duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
-    addr1 String,
-    addr2 String,
-    street LowCardinality(String),
-    locality LowCardinality(String),
-    town LowCardinality(String),
-    district LowCardinality(String),
-    county LowCardinality(String)
-)
-ENGINE = MergeTree
-ORDER BY (postcode1, postcode2, addr1, addr2);
-```
+   ```sql
+   CREATE TABLE uk_price_paid
+   (
+       price UInt32,
+       date Date,
+       postcode1 LowCardinality(String),
+       postcode2 LowCardinality(String),
+       type Enum8('terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4, 'other' = 0),
+       is_new UInt8,
+       duration Enum8('freehold' = 1, 'leasehold' = 2, 'unknown' = 0),
+       addr1 String,
+       addr2 String,
+       street LowCardinality(String),
+       locality LowCardinality(String),
+       town LowCardinality(String),
+       district LowCardinality(String),
+       county LowCardinality(String)
+   )
+   ENGINE = MergeTree
+   ORDER BY (postcode1, postcode2, addr1, addr2);
+   ```
 
-   このクエリは約1秒で完了するはずです。完了すると、「uk_price_paid」という空のテーブルが作成されます。
+   このクエリは完了までに約 1 秒かかるはずです。完了すると、`uk_price_paid` という空のテーブルが作成されているはずです。
 
-1. 新しいクエリを作成し、次のクエリを貼り付けます：
+1. 新しいクエリを作成し、次のクエリを貼り付けます:
 
-```sql
-INSERT INTO uk_price_paid
-WITH
-   splitByChar(' ', postcode) AS p
-SELECT
-    toUInt32(price_string) AS price,
-    parseDateTimeBestEffortUS(time) AS date,
-    p[1] AS postcode1,
-    p[2] AS postcode2,
-    transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
-    b = 'Y' AS is_new,
-    transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
-    addr1,
-    addr2,
-    street,
-    locality,
-    town,
-    district,
-    county
-FROM url(
-    'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
-    'CSV',
-    'uuid_string String,
-    price_string String,
-    time String,
-    postcode String,
-    a String,
-    b String,
-    c String,
-    addr1 String,
-    addr2 String,
-    street String,
-    locality String,
-    town String,
-    district String,
-    county String,
-    d String,
-    e String'
-) SETTINGS max_http_get_redirects=10;
-```
+   ```sql
+   INSERT INTO uk_price_paid
+   WITH
+      splitByChar(' ', postcode) AS p
+   SELECT
+       toUInt32(price_string) AS price,
+       parseDateTimeBestEffortUS(time) AS date,
+       p[1] AS postcode1,
+       p[2] AS postcode2,
+       transform(a, ['T', 'S', 'D', 'F', 'O'], ['terraced', 'semi-detached', 'detached', 'flat', 'other']) AS type,
+       b = 'Y' AS is_new,
+       transform(c, ['F', 'L', 'U'], ['freehold', 'leasehold', 'unknown']) AS duration,
+       addr1,
+       addr2,
+       street,
+       locality,
+       town,
+       district,
+       county
+   FROM url(
+       'http://prod.publicdata.landregistry.gov.uk.s3-website-eu-west-1.amazonaws.com/pp-complete.csv',
+       'CSV',
+       'uuid_string String,
+       price_string String,
+       time String,
+       postcode String,
+       a String,
+       b String,
+       c String,
+       addr1 String,
+       addr2 String,
+       street String,
+       locality String,
+       town String,
+       district String,
+       county String,
+       d String,
+       e String'
+   ) SETTINGS max_http_get_redirects=10;
+   ```
 
-このクエリは「gov.uk」ウェブサイトからデータセットを取得します。このファイルは約4GBのサイズであるため、このクエリは完了するまでに数分かかるでしょう。ClickHouseがクエリを処理すると、「uk_price_paid」テーブルに全データセットが含まれるはずです。
+このクエリは `gov.uk` ウェブサイトからデータセットを取得します。このファイルは約 4GB あるため、クエリの完了までに数分かかります。ClickHouse がクエリを処理し終えると、`uk_price_paid` テーブル内にデータセット全体が取り込まれているはずです。
 
 #### クエリの作成 {#query-creation}
 
-自然言語を使用してクエリを作成します。
+自然言語でクエリを作成してみましょう。
 
-1. **uk_price_paid**テーブルを選択し、「クエリを作成」をクリックします。
-1. **SQL生成**をクリックします。クエリがChat-GPTに送信されることを承諾するよう求められる場合があります。「同意する」を選択して続行します。
-1. 今、自然な言語のクエリを入力してChatGPTにSQLクエリに変換させるためのプロンプトを使用できます。この例では、次のように入力します：
+1. **uk_price_paid** テーブルを選択し、**Create Query** をクリックします。
+1. **Generate SQL** をクリックします。クエリが ChatGPT に送信されることへの同意を求められる場合があります。続行するには **I agree** を選択する必要があります。
+1. ここで、プロンプトに自然言語のクエリを入力し、ChatGPT に SQL クエリへ変換させることができます。この例では次のように入力します:
 
-   > 年ごとの全てのuk_price_paid取引の合計金額と合計件数を表示してください。
+   > uk_price_paid のすべてのトランザクションについて、年ごとの合計価格と件数を表示してください。
 
-1. コンソールは、求めているクエリを生成し、新しいタブに表示します。この例では、GenAIは次のクエリを作成しました：
+1. コンソールは目的のクエリを生成し、新しいタブに表示します。この例では、GenAI により次のクエリが作成されました:
 
-```sql
--- Show me the total price and total number of all uk_price_paid transactions by year.
-SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
-FROM uk_price_paid
-GROUP BY year(date)
-```
+   ```sql
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   SELECT year(date), sum(price) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
+   ```
 
-1. クエリが正しいことを確認したら、**実行**をクリックして実行します。
+1. クエリ内容を確認して問題なければ、**Run** をクリックして実行します。
 
 ### デバッグ {#debugging}
 
-さて、GenAIのクエリデバッグ機能をテストしましょう。
+次に、GenAI のクエリデバッグ機能を試してみましょう。
 
-1. _+_アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます：
+1. _+_ アイコンをクリックして新しいクエリを作成し、次のコードを貼り付けます:
 
 ```sql
--- Show me the total price and total number of all uk_price_paid transactions by year.
-SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
-FROM uk_price_paid
-GROUP BY year(date)
-```
+   -- Show me the total price and total number of all uk_price_paid transactions by year.
+   SELECT year(date), sum(pricee) as total_price, Count(*) as total_transactions
+   FROM uk_price_paid
+   GROUP BY year(date)
+   ```
 
-1. **実行**をクリックします。`pricee`から値を取得しようとしているため、クエリは失敗します。正しいのは`price`です。
-1. **クエリを修正**をクリックします。
-1. GenAIはクエリの修正を試みます。この場合、`pricee`を`price`に変更しました。また、このシナリオでは`toYear`がより適切な関数であることを認識しました。
-1. 提案された変更をクエリに追加するために**適用**を選択し、**実行**をクリックします。
+1. **Run** をクリックします。`price` ではなく `pricee` から値を取得しようとしているため、クエリは失敗します。
+2. **Fix Query** をクリックします。
+3. GenAI がクエリの修正を試みます。この例では、`pricee` を `price` に変更しました。また、このケースでは `toYear` 関数を使用する方が適切であることも認識しました。
+4. 提案された変更をクエリに適用するために **Apply** をクリックし、**Run** をクリックします。
 
-GenAIは実験的な機能であることを忘れないでください。GenAIが生成したクエリを任意のデータセットに対して実行する際は注意が必要です。
+GenAI は実験的な機能であることに注意してください。GenAI によって生成されたクエリをいかなるデータセットに対して実行する場合も、十分注意して実行してください。
 
 ## 高度なクエリ機能 {#advanced-querying-features}
 
 ### クエリ結果の検索 {#searching-query-results}
 
-クエリが実行された後、結果ペインの検索入力を使用して返された結果セットを迅速に検索できます。この機能は、追加の`WHERE`句の結果をプレビューする場合や、特定のデータが結果セットに含まれていることを確認する場合に役立ちます。検索入力に値を入力すると、結果ペインが更新され、入力された値に一致するエントリを含むレコードが返されます。この例では、`hackernews`テーブルで、`ClickHouse`を含むコメントのすべての`breakfast`のインスタンスを探します（大文字と小文字を区別しない）：
+クエリを実行した後、結果ペイン内の検索ボックスを使って、返された結果セットを素早く検索できます。この機能は、追加の `WHERE` 句を適用した場合の結果をプレビューしたり、特定のデータが結果セットに含まれているかを確認したりする際に役立ちます。検索ボックスに値を入力すると、結果ペインが更新され、入力した値に一致するエントリを含むレコードが返されます。この例では、`ClickHouse` を含むコメントについて、`hackernews` テーブル内の `breakfast` が登場するすべての箇所を検索します（大文字小文字は区別しません）:
 
-<Image img={search_hn} size="lg" border alt="Hacker Newsデータの検索"/>
+<Image img={search_hn} size="lg" border alt="Hacker News データの検索"/>
 
-注意：入力された値に一致する任意のフィールドが返されます。たとえば、上記のスクリーンショットの3番目のレコードは`by`フィールドで「breakfast」と一致しませんが、`text`フィールドは一致しています：
+注記: 入力した値に一致するフィールドを含むレコードはすべて返されます。たとえば、上のスクリーンショットの 3 つ目のレコードは `by` フィールドでは「breakfast」に一致していませんが、`text` フィールドは一致しています。
 
-<Image img={match_in_body} size="lg" border alt="本文での一致"/>
+<Image img={match_in_body} size="lg" border alt="本文内の一致"/>
 
 ### ページネーション設定の調整 {#adjusting-pagination-settings}
 
-デフォルトでは、クエリ結果ペインは単一のページにすべての結果レコードを表示します。より大きな結果セットでは、結果をページネーションして表示を簡単にする方が望ましい場合があります。これは、結果ペインの右下隅にあるページネーションセレクターを使用して実行できます：
+デフォルトでは、クエリ結果ペインはすべての結果レコードを 1 ページに表示します。結果セットが大きい場合は、閲覧しやすくするために結果をページ分割した方がよいことがあります。これは、結果ペインの右下にあるページネーションセレクタを使用して行います:
 
 <Image img={pagination} size="lg" border alt="ページネーションオプション"/>
 
-ページサイズを選択すると、すぐに結果セットにページネーションが適用され、結果ペインのフッターの中央にナビゲーションオプションが表示されます。
+ページサイズを選択すると、すぐに結果セットにページネーションが適用され、結果ペインのフッター中央にナビゲーションオプションが表示されます。
 
 <Image img={pagination_nav} size="lg" border alt="ページネーションナビゲーション"/>
 
 ### クエリ結果データのエクスポート {#exporting-query-result-data}
 
-クエリ結果セットは、SQLコンソールから直接CSV形式で簡単にエクスポートできます。これを行うには、結果ペインツールバーの右側にある`•••`メニューを開き、「CSVとしてダウンロード」を選択します。
+クエリ結果セットは、SQL コンソールから直接 CSV 形式に簡単にエクスポートできます。エクスポートするには、結果ペインのツールバー右側にある `•••` メニューを開き、「Download as CSV」を選択します。
 
-<Image img={download_as_csv} size="lg" border alt="CSVとしてダウンロード"/>
+<Image img={download_as_csv} size="lg" border alt="CSV としてダウンロード"/>
 
-## クエリデータの視覚化 {#visualizing-query-data}
+## クエリデータの可視化 {#visualizing-query-data}
 
-データはチャート形式でより簡単に解釈できる場合があります。クエリ結果データから数回のクリックで視覚化を簡単に作成できます。例として、NYCタクシーのトリップの週間統計を計算するクエリを使用します：
+一部のデータは、チャート形式にするとより理解しやすくなります。SQL コンソールからクエリ結果データを直接利用し、数回クリックするだけで素早く可視化を作成できます。例として、NYC タクシー乗車の週次統計を計算するクエリを使用します。
 
 ```sql
 SELECT
@@ -346,64 +345,64 @@ ORDER BY
    1 ASC
 ```
 
-<Image img={tabular_query_results} size="lg" border alt="表形式のクエリ結果"/>
+<Image img={tabular_query_results} size="lg" border alt="表形式のクエリ結果" />
 
-視覚化なしでは、これらの結果は解釈が難しいです。それらをチャートに変換しましょう。
+可視化しないと、これらの結果を解釈するのは困難です。チャートにしてみましょう。
 
 ### チャートの作成 {#creating-charts}
 
-視覚化の構築を開始するには、クエリ結果ペインツールバーから「チャート」オプションを選択します。チャート設定ペインが表示されます：
+可視化の作成を開始するには、クエリ結果ペインのツールバーから「Chart」オプションを選択します。チャート設定ペインが表示されます。
 
-<Image img={switch_from_query_to_chart} size="lg" border alt="クエリからチャートへ切り替え"/>
+<Image img={switch_from_query_to_chart} size="lg" border alt="クエリからチャートへの切り替え" />
 
-`trip_total`を`week`で追跡する簡単な棒グラフを作成することから始めます。このために、`week`フィールドをx軸に、`trip_total`フィールドをy軸にドラッグします：
+まずは、`week` ごとの `trip_total` を追跡するシンプルな棒グラフを作成します。これを行うには、`week` フィールドを x 軸に、`trip_total` フィールドを y 軸にドラッグします。
 
-<Image img={trip_total_by_week} size="lg" border alt="週ごとの合計トリップ"/>
+<Image img={trip_total_by_week} size="lg" border alt="週ごとの Trip total" />
 
-ほとんどのチャートタイプは数値軸に複数のフィールドをサポートしています。これを示すために、fare_totalフィールドをy軸にドラッグします：
+ほとんどのチャートタイプでは、数値軸に複数のフィールドを設定できます。例として、`fare_total` フィールドを y 軸にドラッグしてみます。
 
-<Image img={bar_chart} size="lg" border alt="棒グラフ"/>
+<Image img={bar_chart} size="lg" border alt="棒グラフ" />
 
 ### チャートのカスタマイズ {#customizing-charts}
 
-SQLコンソールは、チャート設定ペインのチャートタイプセレクターから選択できる10種類のチャートタイプをサポートしています。たとえば、前のチャートタイプを棒グラフからエリアグラフに簡単に変更できます：
+SQL コンソールでは 10 種類のチャートタイプをサポートしており、チャート設定ペイン内のチャートタイプセレクタから選択できます。たとえば、先ほどのチャートタイプを「Bar」から「Area」に簡単に変更できます。
 
-<Image img={change_from_bar_to_area} size="lg" border alt="棒グラフからエリアグラフへの変更"/>
+<Image img={change_from_bar_to_area} size="lg" border alt="Bar チャートから Area への変更" />
 
-チャートタイトルは、データを提供するクエリの名前に一致します。クエリ名を更新すると、チャートタイトルも更新されます：
+チャートタイトルは、データを提供しているクエリ名と一致します。クエリ名を更新すると、チャートタイトルも同様に更新されます。
 
-<Image img={update_query_name} size="lg" border alt="クエリ名を更新"/>
+<Image img={update_query_name} size="lg" border alt="クエリ名の更新" />
 
-チャート設定ペインの「高度な」セクションで、より高度なチャートの特性も調整できます。まず、以下の設定を調整します：
+より高度なチャートの特性も、チャート設定ペインの「Advanced」セクションで調整できます。ここでは、次の設定を調整します。
 
-- サブタイトル
-- 軸タイトル
-- x軸のラベルの向き
+* サブタイトル
+* 軸タイトル
+* x 軸のラベルの向き
 
-チャートはそれに応じて更新されます：
+チャートはそれに応じて更新されます。
 
-<Image img={update_subtitle_etc} size="lg" border alt="サブタイトルなどを更新"/>
+<Image img={update_subtitle_etc} size="lg" border alt="サブタイトルなどの更新" />
 
-いくつかのシナリオでは、各フィールドの軸スケールを独立して調整する必要があります。これは、軸範囲のminおよびmax値を指定することで「高度な」セクションで行うこともできます。たとえば、上記のチャートは良好に見えますが、`trip_total`と`fare_total`フィールドの相関関係を示すために、軸範囲を調整する必要があります：
+シナリオによっては、各フィールドごとに軸のスケールを個別に調整する必要がある場合があります。これは、チャート設定ペインの「Advanced」セクションで軸範囲の最小値および最大値を指定することで行えます。例として、上記のチャートは見た目には問題ありませんが、`trip_total` フィールドと `fare_total` フィールドの相関関係を示すには、軸範囲を少し調整する必要があります。
 
-<Image img={adjust_axis_scale} size="lg" border alt="軸スケールを調整"/>
+<Image img={adjust_axis_scale} size="lg" border alt="軸スケールの調整" />
 
 ## クエリの共有 {#sharing-queries}
 
-SQLコンソールでは、クエリをチームと共有できます。クエリが共有されると、チームのすべてのメンバーがそのクエリを表示し、編集できます。共有クエリは、チームと協力するための素晴らしい方法です。
+SQL コンソールでは、クエリをチームと共有できます。クエリを共有すると、チームの全メンバーがそのクエリを閲覧および編集できるようになります。共有クエリは、チームで共同作業を行うための有効な手段です。
 
-クエリを共有するには、クエリツールバーの「共有」ボタンをクリックします。
+クエリを共有するには、クエリツールバーの「Share」ボタンをクリックします。
 
-<Image img={sql_console_share} size="lg" border alt="クエリツールバーの共有ボタン"/>
+<Image img={sql_console_share} size="lg" border alt="クエリツールバー内の「Share」ボタン"/>
 
-ダイアログが表示され、チームのすべてのメンバーとクエリを共有できるようになります。複数のチームがある場合は、クエリを共有するチームを選択できます。
+ダイアログが開き、チームの全メンバーとクエリを共有できるようになります。複数のチームがある場合は、どのチームとクエリを共有するかを選択できます。
 
-<Image img={sql_console_edit_access} size="lg" border alt="共有クエリへの編集アクセスのダイアログ"/>
+<Image img={sql_console_edit_access} size="lg" border alt="共有クエリへのアクセス権を編集するダイアログ"/>
 
-<Image img={sql_console_add_team} size="lg" border alt="共有クエリにチームを追加するためのインターフェース"/>
+<Image img={sql_console_add_team} size="lg" border alt="共有クエリにチームを追加するインターフェース"/>
 
-<Image img={sql_console_edit_member} size="lg" border alt="共有クエリへのメンバーアクセスを編集するためのインターフェース"/>
+<Image img={sql_console_edit_member} size="lg" border alt="共有クエリへのメンバーアクセスを編集するインターフェース"/>
 
-いくつかのシナリオでは、各フィールドの軸スケールを独立して調整する必要があります。これは、軸範囲のminおよびmax値を指定することで「高度な」セクションで行うこともできます。たとえば、上記のチャートは良好に見えますが、`trip_total`と`fare_total`フィールドの相関関係を示すために、軸範囲を調整する必要があります：
+状況によっては、各フィールドごとに軸のスケールを個別に調整する必要がある場合があります。これは、チャート設定ペインの「Advanced」セクションで軸範囲の最小値と最大値を指定することで実行できます。たとえば、上記のチャートは見た目には問題ありませんが、`trip_total` フィールドと `fare_total` フィールド間の相関関係を示すためには、軸の範囲を少し調整する必要があります。
 
-<Image img={sql_console_access_queries} size="lg" border alt="クエリリストの共有されたセクション"/>
+<Image img={sql_console_access_queries} size="lg" border alt="クエリ一覧内の「Shared with me」セクション"/>

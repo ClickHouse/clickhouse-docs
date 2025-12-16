@@ -1,19 +1,20 @@
 ---
-'description': 'TPC-DS ベンチマークデータセットとクエリ。'
-'sidebar_label': 'TPC-DS'
-'slug': '/getting-started/example-datasets/tpcds'
-'title': 'TPC-DS (2012)'
-'doc_type': 'reference'
+description: 'TPC-DS ベンチマークのデータセットとクエリ。'
+sidebar_label: 'TPC-DS'
+slug: /getting-started/example-datasets/tpcds
+title: 'TPC-DS (2012)'
+doc_type: 'guide'
+keywords: ['example dataset', 'tpcds', 'benchmark', 'sample data', 'performance testing']
 ---
 
-似たように、[Star Schema Benchmark (SSB)](star-schema.md)に基づくTPC-DSは[TPC-H](tpch.md)に基づいていますが、反対の道を選びました。つまり、データを複雑なスノーフレークスキーマに格納することで必要な結合の数を拡大しました（8テーブルではなく24テーブル）。
-データ分布は偏っています（例：正規分布とポアソン分布）。
-また、ランダムな置換を含む99のレポートおよびアドホッククエリが含まれています。
+[Star Schema Benchmark (SSB)](star-schema.md) と同様に、TPC-DS は [TPC-H](tpch.md) をベースとしていますが、逆のアプローチを取り、データを複雑なスノーフレークスキーマ（8 テーブルではなく 24 テーブル）に格納することで必要な JOIN の数を増やしています。
+データ分布は偏っており（例：正規分布やポアソン分布）、ランダムな値の代入を伴う 99 個のレポートおよびアドホッククエリが含まれます。
 
-参照
-- [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
+参考文献
 
-まず、TPC-DSリポジトリをチェックアウトし、データジェネレーターをコンパイルします：
+* [The Making of TPC-DS](https://dl.acm.org/doi/10.5555/1182635.1164217) (Nambiar), 2006
+
+まず、TPC-DS リポジトリをチェックアウトしてデータジェネレータをコンパイルします。
 
 ```bash
 git clone https://github.com/gregrahn/tpcds-kit.git
@@ -21,20 +22,21 @@ cd tpcds-kit/tools
 make
 ```
 
-次に、データを生成します。パラメータ `-scale` はスケールファクターを指定します。
+次に、データを生成します。パラメータ `-scale` でスケール係数を指定します。
 
 ```bash
 ./dsdgen -scale 1
 ```
 
-次に、クエリを生成します（同じスケールファクターを使用してください）：
+次に、同じスケールファクターを使用してクエリを生成します：
 
 ```bash
 ./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
-次に、ClickHouseにテーブルを作成します。
-元のテーブル定義（tools/tpcds.sql）を使用するか、適切に定義された主キーインデックスとLowCardinality型カラムタイプを持つ「調整された」テーブル定義を使用できます。
+では、ClickHouse にテーブルを作成します。
+`tools/tpcds.sql` にある元のテーブル定義をそのまま使うことも、プライマリキーインデックスが適切に定義され、必要に応じて LowCardinality 型カラムを用いた「チューニング済み」のテーブル定義を使うこともできます。
+
 
 ```sql
 CREATE TABLE call_center(
@@ -559,7 +561,7 @@ CREATE TABLE web_site (
 );
 ```
 
-データは次のようにインポートできます：
+データは次のようにインポートします。
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO call_center FORMAT CSV" < call_center.tbl
@@ -588,9 +590,9 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_sales FORM
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO web_site FORMAT CSV" < web_site.tbl
 ```
 
-次に、生成されたクエリを実行します。
+その後、生成されたクエリを実行します。
 
 ::::warning
-TPC-DSは相関サブクエリを多用しており、執筆時点（2024年9月）ではClickHouseではサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697)）。
-その結果、上記のベンチマーククエリの多くはエラーで失敗します。
+TPC-DS は相関サブクエリを多用しますが、これは執筆時点（2024 年 9 月）では ClickHouse でサポートされていません（[issue #6697](https://github.com/ClickHouse/ClickHouse/issues/6697) を参照）。
+その結果、上記のベンチマーククエリの多くはエラーとなります。
 ::::

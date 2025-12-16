@@ -1,21 +1,25 @@
 ---
-slug: '/integrations/minio'
-sidebar_label: MinIO
+sidebar_label: 'MinIO'
 sidebar_position: 6
-description: 'Страница, описывающая как использовать MinIO с ClickHouse'
+slug: /integrations/minio
+description: 'Страница, описывающая использование MinIO с ClickHouse'
 title: 'Использование MinIO'
-doc_type: guide
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['s3', 'minio', 'объектное хранилище', 'загрузка данных', 'совместимое хранилище']
 ---
+
+# Использование MinIO {#using-minio}
+
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
-
-
-# Использование MinIO
 
 <SelfManaged />
 
-Все функции и таблицы S3 совместимы с [MinIO](https://min.io/). Пользователи могут получить более высокую пропускную способность на самохостингованных хранилищах MinIO, особенно при оптимальной локальности сети.
+Все функции и таблицы `S3` совместимы с [MinIO](https://min.io/). Пользователи могут получить более высокую пропускную способность при использовании самостоятельно развернутых хранилищ MinIO, особенно при оптимальной сетевой локальности.
 
-Конфигурация с поддержкой MergeTree также совместима, с некоторыми незначительными изменениями в настройках:
+Конфигурация `S3-backed MergeTree` также совместима, с некоторыми незначительными изменениями в настройках:
 
 ```xml
 <clickhouse>
@@ -43,5 +47,5 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 ```
 
 :::tip
-Обратите внимание на двойной слэш в теге endpoint, это необходимо для обозначения корня корзины.
+Обратите внимание на двойной слэш в теге endpoint — он необходим для обозначения корня бакета.
 :::

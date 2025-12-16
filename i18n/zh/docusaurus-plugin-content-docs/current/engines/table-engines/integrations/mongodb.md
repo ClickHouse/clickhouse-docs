@@ -1,19 +1,18 @@
 ---
-'description': 'MongoDB 引擎是只读表引擎，允许从远程集合读取数据。'
-'sidebar_label': 'MongoDB'
-'sidebar_position': 135
-'slug': '/engines/table-engines/integrations/mongodb'
-'title': 'MongoDB'
-'doc_type': 'guide'
+description: 'MongoDB 引擎是一个只读表引擎，支持从远程集合读取数据。'
+sidebar_label: 'MongoDB'
+sidebar_position: 135
+slug: /engines/table-engines/integrations/mongodb
+title: 'MongoDB 表引擎'
+doc_type: 'reference'
 ---
 
+# MongoDB 表引擎 {#mongodb-table-engine}
 
-# MongoDB
+MongoDB 引擎是一种只读表引擎，用于从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
 
-MongoDB 引擎是只读表引擎，允许从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
-
-仅支持 MongoDB v3.6 以上版本。
-[种子列表(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) 目前不支持。
+仅支持 MongoDB v3.6 及更高版本的服务器。
+尚不支持 [种子列表（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list)。
 
 ## 创建表 {#creating-a-table}
 
@@ -28,22 +27,22 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 **引擎参数**
 
-| 参数           | 描述                                                                                                                                                                                               |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `host:port`   | MongoDB 服务器地址。                                                                                                                                                                             |
-| `database`    | 远程数据库名称。                                                                                                                                                                                 |
-| `collection`  | 远程集合名称。                                                                                                                                                                                   |
-| `user`        | MongoDB 用户。                                                                                                                                                                                   |
-| `password`    | 用户密码。                                                                                                                                                                                        |
-| `options`     | 可选。MongoDB 连接字符串 [选项](https://www.mongodb.com/docs/manual/reference/connection-string-options/#connection-options)，格式为 URL 字符串。例如，`'authSource=admin&ssl=true'` |
-| `oid_columns` | 需要在 WHERE 子句中被视为 `oid` 的列的以逗号分隔的列表。默认是 `_id`。                                                                                                                             |
+| 参数            | 描述                                                                                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `host:port`   | MongoDB 服务器地址。                                                                                                                                                       |
+| `database`    | 远程数据库名称。                                                                                                                                                             |
+| `collection`  | 远程集合名称。                                                                                                                                                              |
+| `user`        | MongoDB 用户。                                                                                                                                                          |
+| `password`    | 用户密码。                                                                                                                                                                |
+| `options`     | 可选。以 URL 格式字符串形式提供的 MongoDB 连接字符串[选项](https://www.mongodb.com/docs/manual/reference/connection-string-options/#connection-options)，例如：`'authSource=admin&ssl=true'`。 |
+| `oid_columns` | 以逗号分隔的列名列表，这些列在 WHERE 子句中将被视为 `oid`。默认值为 `_id`。                                                                                                                      |
 
 :::tip
-如果您正在使用 MongoDB Atlas 云服务，连接 URL 可以从“Atlas SQL”选项中获取。
-种子列表(`mongodb**+srv**`) 目前不支持，但将在未来的版本中添加。
+如果你使用的是 MongoDB Atlas 云服务，可以从 “Atlas SQL” 选项中获取连接 URL。
+种子列表（`mongodb**+srv**`）目前尚不支持，但会在后续版本中加入。
 :::
 
-或者，您可以传递 URI：
+或者，你也可以传入一个 URI：
 
 ```sql
 ENGINE = MongoDB(uri, collection[, oid_columns]);
@@ -51,34 +50,34 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 **引擎参数**
 
-| 参数           | 描述                                                                                                        |
-|---------------|-------------------------------------------------------------------------------------------------------------|
-| `uri`         | MongoDB 服务器的连接 URI。                                                                                    |
-| `collection`  | 远程集合名称。                                                                                               |
-| `oid_columns` | 需要在 WHERE 子句中被视为 `oid` 的列的以逗号分隔的列表。默认是 `_id`。                                       |
+| 参数            | 说明                                                 |
+| ------------- | -------------------------------------------------- |
+| `uri`         | MongoDB 服务器的连接 URI。                                |
+| `collection`  | 远程集合的名称。                                           |
+| `oid_columns` | 以逗号分隔的列名列表，这些列在 WHERE 子句中将被视为 `oid` 类型。默认值为 `_id`。 |
 
 ## 类型映射 {#types-mappings}
 
-| MongoDB                 | ClickHouse                                                           |
-|-------------------------|----------------------------------------------------------------------|
-| bool, int32, int64      | *任何数值类型（除非是 Decimal）*，Boolean，String                   |
-| double                  | Float64，String                                                      |
-| date                    | Date，Date32，DateTime，DateTime64，String                           |
-| string                  | String，*格式正确的任意数值类型（除非是 Decimal）*                  |
-| document                | String（作为 JSON）                                                |
-| array                   | Array，String（作为 JSON）                                         |
-| oid                     | String                                                               |
-| binary                  | 如果在列中，则为 String；如果在数组或文档中，则为 base64 编码字符串  |
-| uuid (binary subtype 4) | UUID                                                                 |
-| *任何其他*             | String                                                               |
+| MongoDB                 | ClickHouse                               |
+| ----------------------- | ---------------------------------------- |
+| bool, int32, int64      | *除 Decimal 外的任意数值类型*，Boolean，String      |
+| double                  | Float64，String                           |
+| date                    | Date，Date32，DateTime，DateTime64，String   |
+| string                  | String，*如果格式正确，则为除 Decimal 外的任意数值类型*     |
+| document                | String（作为 JSON）                          |
+| array                   | Array，String（作为 JSON）                    |
+| oid                     | String                                   |
+| binary                  | 如果在列中则为 String，如果在数组或文档中则为 base64 编码的字符串 |
+| uuid (binary subtype 4) | UUID                                     |
+| *any other*             | String                                   |
 
-如果在 MongoDB 文档中找不到键（例如，列名不匹配），则将插入默认值或 `NULL`（如果该列是 Nullable）。
+如果在 MongoDB 文档中未找到键（例如列名不匹配），将插入默认值，或者在列可为 `NULL` 的情况下插入 `NULL`。
 
 ### OID {#oid}
 
-如果希望将 `String` 在 WHERE 子句中视为 `oid`，只需将列名放在表引擎的最后一个参数中。
-当通过 `_id` 列查询记录时，这可能是必要的，因为该列在 MongoDB 中默认具有 `oid` 类型。
-如果表中的 `_id` 字段具有其他类型，例如 `uuid`，则需要指定空的 `oid_columns`，否则将使用此参数的默认值 `_id`。
+如果希望在 WHERE 子句中将某个 `String` 视为 `oid`，只需将该列名作为表引擎的最后一个参数传入。
+在按 `_id` 列查询记录时可能需要这样做，因为在 MongoDB 中 `_id` 列默认具有 `oid` 类型。
+如果表中的 `_id` 字段具有其他类型，例如 `uuid`，则需要将 `oid_columns` 设为空，否则会使用该参数的默认值 `_id`。
 
 ```javascript
 db.sample_oid.insertMany([
@@ -94,7 +93,7 @@ db.sample_oid.find();
 ]
 ```
 
-默认情况下，仅 `_id` 被视为 `oid` 列。
+默认情况下，只有 `_id` 会被视为 `oid` 列。
 
 ```sql
 CREATE TABLE sample_oid
@@ -107,7 +106,7 @@ SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will ou
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
-在这种情况下，输出将是 `0`，因为 ClickHouse 不知道 `another_oid_column` 具有 `oid` 类型，因此让我们修复它：
+在这种情况下，输出将是 `0`，因为 ClickHouse 并不知道列 `another_oid_column` 的类型是 `oid`，所以我们来修正一下：
 
 ```sql
 CREATE TABLE sample_oid
@@ -129,34 +128,32 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 
 ## 支持的子句 {#supported-clauses}
 
-仅支持具有简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
-此类表达式将转换为 MongoDB 查询语言并在服务器端执行。
-您可以通过使用 [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) 来禁用所有这些限制。
-在这种情况下，ClickHouse 尝试在尽可能的情况下转换查询，但这可能导致全表扫描和 ClickHouse 端的处理。
+仅支持包含简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
+此类表达式会被转换为 MongoDB 查询语言并在服务器端执行。
+你可以通过 [mongodb&#95;throw&#95;on&#95;unsupported&#95;query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) 来禁用这些限制。
+在这种情况下，ClickHouse 会尽力转换查询，但可能会导致在 ClickHouse 端进行全表扫描和处理。
 
 :::note
-最好明确设置文字的类型，因为 Mongo 需要严格的类型过滤。\
-例如，您希望按 `Date` 进行过滤：
+最好始终显式指定字面量的类型，因为 Mongo 要求严格类型化的过滤条件。\
+例如，你希望按 `Date` 字段进行过滤：
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'
 ```
 
-这将不起作用，因为 Mongo 不会将字符串转换为 `Date`，因此您需要手动进行转换：
+这样不起作用，因为 Mongo 不会自动将字符串转换为 `Date`，所以你需要手动进行转换：
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024-01-01')
 ```
 
-这适用于 `Date`、`Date32`、`DateTime`、`Bool`、`UUID`。
-
-:::
+这适用于 `Date`、`Date32`、`DateTime`、`Bool` 和 `UUID` 类型。
 
 ## 使用示例 {#usage-example}
 
-假设 MongoDB 已加载 [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集
+假设 MongoDB 中已经加载了 [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) 数据集
 
-在 ClickHouse 中创建一个表，允许从 MongoDB 集合读取数据：
+在 ClickHouse 中创建一张表，用于从 MongoDB 集合中读取数据：
 
 ```sql
 CREATE TABLE sample_mflix_table
@@ -232,7 +229,7 @@ LIMIT 3;
    └────────────────────────┴────────┘
 ```
 
-## 故障排除 {#troubleshooting}
-您可以在 DEBUG 级别日志中查看生成的 MongoDB 查询。
+## 故障排查 {#troubleshooting}
+您可以在 DEBUG 级别日志中看到生成的 MongoDB 查询。
 
-实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 文档中找到。
+实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 的文档中找到。

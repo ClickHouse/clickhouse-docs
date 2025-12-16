@@ -1,12 +1,12 @@
 [
-	{
-		"title": "Statements",
-		"description": "A list of available SQL statements in ClickHouse",
-		"url": "/docs/sql-reference/statements/"
-	},
-	{
-	"title": "Database and Table Engines",
-	"description": "Engines determine where and how your data is stored",
-	"url": "/docs/engines/table-engines"
-	}
+  {
+    "title": "语句",
+    "description": "ClickHouse 中可用的 SQL 语句列表",
+    "url": "/docs/sql-reference/statements/"
+  },
+  {
+    "title": "数据库与表引擎",
+    "description": "引擎决定你的数据存储在哪里以及如何存储",
+    "url": "/docs/engines/table-engines"
+  }
 ]

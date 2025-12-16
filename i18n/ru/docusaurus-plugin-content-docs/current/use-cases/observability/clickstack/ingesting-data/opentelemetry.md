@@ -1,69 +1,69 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data/opentelemetry'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Прием данных с OpenTelemetry для ClickStack - платформа мониторинга
-  ClickHouse'
-'title': 'Сбор данных с OpenTelemetry'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/ingesting-data/opentelemetry
+pagination_prev: null
+pagination_next: null
+description: 'Ингестия данных с помощью OpenTelemetry в ClickStack — стек наблюдаемости ClickHouse'
+title: 'Приём данных с помощью OpenTelemetry'
+doc_type: 'guide'
+keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry']
 ---
+
 import Image from '@theme/IdealImage';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 
-Все данные попадают в ClickStack через экземпляр **коллектора OpenTelemetry (OTel)**, который выступает в качестве основной точки входа для логов, метрик, трассировок и данных сессий. Мы рекомендуем использовать официальное [распределение ClickStack](#installing-otel-collector) коллектора для этого экземпляра.
+Все данные поступают в ClickStack через экземпляр **коллектора OpenTelemetry (OTel)**, который является основной точкой входа для логов, метрик, трейсов и данных сессий. Мы рекомендуем использовать для этого экземпляра официальный [дистрибутив коллектора ClickStack](#installing-otel-collector).
 
-Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие метрики и логи инфраструктуры (такие OTel коллекторы в роли [агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, например, [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
+Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
 ## Установка коллектора OpenTelemetry ClickStack {#installing-otel-collector}
 
-Коллектор OpenTelemetry ClickStack включен в большинство распределений ClickStack, включая:
+Коллектор OpenTelemetry ClickStack включён в большинство вариантов развёртывания ClickStack, включая:
 
 - [All-in-One](/use-cases/observability/clickstack/deployment/all-in-one)
 - [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)
 - [Helm](/use-cases/observability/clickstack/deployment/helm)
 
-### Автономно {#standalone}
+### Автономный режим {#standalone}
 
-Коллектор OTel ClickStack также может быть развернут автономно, независимо от других компонентов стека.
+OTel collector из ClickStack также может быть развернут автономно, независимо от других компонентов стека.
 
-Если вы используете распределение [только HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only), вы сами отвечаете за доставку данных в ClickHouse. Это можно сделать следующим образом:
+Если вы используете дистрибутив [HyperDX-only](/use-cases/observability/clickstack/deployment/hyperdx-only), вы самостоятельно отвечаете за доставку данных в ClickHouse. Это можно сделать следующими способами:
 
-- Запустив собственный коллектор OpenTelemetry и указав его на ClickHouse - смотрите ниже.
-- Отправляя данные напрямую в ClickHouse, используя альтернативные инструменты, такие как [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) и т.д., или даже стандартное [распределение OTel contrib collector](https://github.com/open-telemetry/opentelemetry-collector-contrib).
+- Запустить собственный коллектор OpenTelemetry и направить его в ClickHouse — см. ниже.
+- Отправлять данные напрямую в ClickHouse с помощью альтернативных инструментов, таких как [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) и т. д., либо даже использовать стандартный дистрибутив [OTel contrib collector](https://github.com/open-telemetry/opentelemetry-collector-contrib).
 
-:::note Мы рекомендуем использовать коллектор OpenTelemetry ClickStack
-Это позволяет пользователям получить выгоду от стандартизированного ввода, принудительных схем и готовой совместимости с интерфейсом HyperDX. Использование стандартной схемы позволяет автоматически обнаруживать источники и предварительно настраивать соответствия колонок.
+:::note Мы рекомендуем использовать OTel collector из ClickStack
+Это позволяет использовать стандартизированную ингестию, жёстко заданные схемы и готовую совместимость с интерфейсом HyperDX. Применение стандартной схемы обеспечивает автоматическое определение источников и преднастроенные сопоставления столбцов.
 :::
 
-Для получения дополнительной информации смотрите ["Развертывание коллектора"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
+Для получения более подробной информации см. раздел «[Развертывание коллектора](/use-cases/observability/clickstack/ingesting-data/otel-collector)».
 
 ## Отправка данных OpenTelemetry {#sending-otel-data}
 
-Чтобы отправить данные в ClickStack, укажите вашу инструментализацию OpenTelemetry на следующие конечные точки, доступные через коллектор OpenTelemetry:
+Чтобы отправлять данные в ClickStack, направьте ваши инструментированные с помощью OpenTelemetry приложения на следующие конечные точки, предоставляемые коллектором OpenTelemetry:
 
-- **HTTP (OTLP):** `http://localhost:4318`
-- **gRPC (OTLP):** `localhost:4317`
+* **HTTP (OTLP):** `http://localhost:4318`
+* **gRPC (OTLP):** `localhost:4317`
 
-Для большинства [языковых SDK](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, пользователи могут просто установить переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении:
+Для большинства [языковых SDK](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, которые поддерживают OpenTelemetry, достаточно задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в своем приложении:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
-Кроме того, требуется заголовок авторизации, содержащий ключ API для ввода данных. Вы можете найти ключ в приложении HyperDX под `Team Settings → API Keys`.
+Кроме того, требуется заголовок авторизации, содержащий ключ API для ингестии данных. Вы можете найти этот ключ в приложении HyperDX в разделе `Team Settings → API Keys`.
 
-<Image img={ingestion_key} alt="Ключи ввода" size="lg"/>
+<Image img={ingestion_key} alt="Ключи ингестии" size="lg" />
 
-Для языковых SDK это можно установить либо с помощью функции `init`, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`, например:
+Для языковых SDK это можно задать либо функцией `init`, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`, например:
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Агенты также должны включать этот заголовок авторизации в любое OTLP-соединение. Например, если вы развертываете [распределение OTel collector contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) в роли агента, они могут использовать OTLP-экспортер. Пример конфигурации агента, обрабатывающей этот [структурированный журнальный файл](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), показан ниже. Обратите внимание на необходимость указания ключа авторизации - смотрите `<YOUR_API_INGESTION_KEY>`.
+Агенты также должны включать этот заголовок авторизации во все взаимодействия по OTLP. Например, при развёртывании [contrib-дистрибутива OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) в роли агента можно использовать экспортёр OTLP. Пример конфигурации агента, который читает этот [структурированный файл логов](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), приведён ниже. Обратите внимание на необходимость указать ключ авторизации — см. `<YOUR_API_INGESTION_KEY>`.
 
 ```yaml
-
 # clickhouse-agent-config.yaml
 receivers:
   filelog:
@@ -82,7 +82,7 @@ exporters:
     headers:
       authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
-
+ 
   # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'

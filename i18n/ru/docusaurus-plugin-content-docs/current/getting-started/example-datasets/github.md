@@ -1,35 +1,36 @@
 ---
-slug: '/getting-started/example-datasets/github'
-sidebar_label: 'Github Репозиторий'
-sidebar_position: 1
-description: 'Набор данных содержит все коммиты и изменения в репозитории ClickHouse'
-title: 'Запись Запросов в ClickHouse с использованием Данных GitHub'
-doc_type: reference
+description: 'Набор данных, содержащий все коммиты и изменения репозитория ClickHouse'
+sidebar_label: 'Репозиторий GitHub'
+slug: /getting-started/example-datasets/github
+title: 'Составление запросов в ClickHouse с использованием данных GitHub'
+keywords: ['Github']
 show_related_blogs: true
+doc_type: 'guide'
 ---
+
 import Image from '@theme/IdealImage';
 import superset_github_lines_added_deleted from '@site/static/images/getting-started/example-datasets/superset-github-lines-added-deleted.png'
 import superset_commits_authors from '@site/static/images/getting-started/example-datasets/superset-commits-authors.png'
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-Этот набор данных содержит все коммиты и изменения для репозитория ClickHouse. Его можно сгенерировать с помощью встроенного инструмента `git-import`, который распространяется вместе с ClickHouse.
+Этот набор данных содержит все коммиты и изменения в репозитории ClickHouse. Он может быть сгенерирован с помощью штатного инструмента `git-import`, распространяемого вместе с ClickHouse.
 
-Сгенерированные данные предоставляют файл `tsv` для каждой из следующих таблиц:
+Сгенерированные данные представляют собой TSV-файл для каждой из следующих таблиц:
 
-- `commits` - коммиты с статистикой.
-- `file_changes` - файлы, измененные в каждом коммите, с информацией об изменении и статистикой.
-- `line_changes` - каждая измененная строка в каждом измененном файле в каждом коммите с полной информацией о строке и информацией о предыдущем изменении этой строки.
+* `commits` — коммиты со статистикой.
+* `file_changes` — файлы, изменённые в каждом коммите, с информацией об изменении и статистикой.
+* `line_changes` — каждая изменённая строка в каждом изменённом файле в каждом коммите с полной информацией о строке и сведениями о предыдущем изменении этой строки.
 
-По состоянию на 8 ноября 2022 года, каждый TSV имеет приблизительно следующие размеры и количество строк:
+По состоянию на 8 ноября 2022 года каждый TSV имеет приблизительно следующий объём и количество строк:
 
-- `commits` - 7.8M - 266,051 строк
-- `file_changes` - 53M - 266,051 строк
-- `line_changes` - 2.7G - 7,535,157 строк
+* `commits` — 7.8M — 266,051 строк
+* `file_changes` — 53M — 266,051 строк
+* `line_changes` — 2.7G — 7,535,157 строк
 
 ## Генерация данных {#generating-the-data}
 
-Это необязательно. Мы свободно распространяем данные - см. [Скачать и вставить данные](#downloading-and-inserting-the-data).
+Этот шаг необязателен. Мы свободно распространяем эти данные — см. раздел [Downloading and inserting the data](#downloading-and-inserting-the-data).
 
 ```bash
 git clone git@github.com:ClickHouse/ClickHouse.git
@@ -37,7 +38,7 @@ cd ClickHouse
 clickhouse git-import --skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' --skip-commits-with-messages '^Merge branch '
 ```
 
-Это займет около 3 минут (по состоянию на 8 ноября 2022 года на MacBook Pro 2021) для завершения процесса для репозитория ClickHouse.
+Выполнение этой операции для репозитория ClickHouse займет около 3 минут (оценка по состоянию на 8 ноября 2022 года для MacBook Pro 2021).
 
 Полный список доступных параметров можно получить из встроенной справки инструмента.
 
@@ -45,7 +46,7 @@ clickhouse git-import --skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/
 clickhouse git-import -h
 ```
 
-Эта справка также предоставляет DDL для каждой из вышеупомянутых таблиц, например:
+В этом разделе справки также приведён DDL для каждой из вышеперечисленных таблиц, например:
 
 ```sql
 CREATE TABLE git.commits
@@ -66,26 +67,26 @@ CREATE TABLE git.commits
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-**Эти запросы должны работать с любым репозиторием. Не стесняйтесь исследовать и сообщать о своих находках** Некоторые ориентиры относительно времени выполнения (по состоянию на ноябрь 2022 года):
+**Эти запросы можно выполнять с любым репозиторием. Свободно экспериментируйте и делитесь своими результатами.** Некоторые рекомендации по времени выполнения (по состоянию на ноябрь 2022 года):
 
-- Linux - `~/clickhouse git-import` - 160 минут
+* Linux — `~/clickhouse git-import` — 160 минут
 
-## Скачивание и вставка данных {#downloading-and-inserting-the-data}
+## Загрузка и вставка данных {#downloading-and-inserting-the-data}
 
-Следующие данные могут использоваться для воспроизведения рабочей среды. В качестве альтернативы, этот набор данных доступен на play.clickhouse.com - см. [Запросы](#queries) для получения дополнительных деталей.
+Следующие данные можно использовать для воспроизведения рабочего окружения. Также этот набор данных доступен на play.clickhouse.com — подробности см. в разделе [Queries](#queries).
 
-Сгенерированные файлы для следующих репозиториев можно найти ниже:
+Сгенерированные файлы для следующих репозиториев приведены ниже:
 
-- ClickHouse (8 ноября 2022)
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz - 2.5 МБ
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz - 4.5 МБ
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz - 127.4 МБ
-- Linux (8 ноября 2022)
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz - 44 МБ
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz - 467 МБ
-  - https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz - 1.1 ГБ
+* ClickHouse (8 ноября 2022 г.)
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz) - 2.5 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz) - 4.5 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz) - 127.4 MB
+* Linux (8 ноября 2022 г.)
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/commits.tsv.xz) - 44 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/file_changes.tsv.xz) - 467 MB
+  * [https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line&#95;changes.tsv.xz](https://datasets-documentation.s3.amazonaws.com/github/commits/linux/line_changes.tsv.xz) - 1.1 G
 
-Для вставки этих данных подготовьте базу данных, выполнив следующие запросы:
+Чтобы вставить эти данные, подготовьте базу данных, выполнив следующие запросы:
 
 ```sql
 DROP DATABASE IF EXISTS git;
@@ -180,7 +181,7 @@ CREATE TABLE git.line_changes
 ) ENGINE = MergeTree ORDER BY time;
 ```
 
-Вставьте данные с помощью `INSERT INTO SELECT` и [функции s3](/sql-reference/table-functions/s3). Например, ниже мы вставляем файлы ClickHouse в каждую из их соответствующих таблиц:
+Вставьте данные с помощью оператора `INSERT INTO SELECT` и [функции s3](/sql-reference/table-functions/s3). Например, ниже приведён пример вставки файлов ClickHouse в каждую из соответствующих таблиц:
 
 *commits*
 
@@ -191,7 +192,7 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 0 rows in set. Elapsed: 1.826 sec. Processed 62.78 thousand rows, 8.50 MB (34.39 thousand rows/s., 4.66 MB/s.)
 ```
 
-*file_changes*
+*file&#95;changes*
 
 ```sql
 INSERT INTO git.file_changes SELECT *
@@ -200,7 +201,7 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 0 rows in set. Elapsed: 2.688 sec. Processed 266.05 thousand rows, 48.30 MB (98.97 thousand rows/s., 17.97 MB/s.)
 ```
 
-*line_changes*
+*line&#95;changes*
 
 ```sql
 INSERT INTO git.line_changes SELECT *
@@ -211,13 +212,13 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 
 ## Запросы {#queries}
 
-Инструмент предлагает несколько запросов через свой вывод справки. Мы ответили на них, а также добавили некоторые дополнительные вопросы, представляющие интерес. Эти запросы имеют примерно возрастающую сложность по сравнению с произвольным порядком инструмента.
+Инструмент предлагает несколько запросов в выводе справочной информации. Мы приводим ответы на них, а также на некоторые дополнительные вопросы, представляющие интерес. В этом документе запросы расположены примерно в порядке возрастания сложности, а не в произвольном порядке, предлагаемом инструментом.
 
-Этот набор данных доступен на [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) в базах данных `git_clickhouse`. Мы предоставляем ссылку на эту среду для всех запросов, адаптируя имя базы данных по мере необходимости. Обратите внимание, что результаты игры могут отличаться от тех, которые представлены здесь, из-за различий во времени сбора данных.
+Этот набор данных доступен на [play.clickhouse.com](https://sql.clickhouse.com?query_id=DCQPNPAIMAQXRLHYURLKVJ) в базе данных `git_clickhouse`. Для всех запросов мы предоставляем ссылку на эту среду, при необходимости подставляя соответствующее имя базы данных. Обратите внимание, что результаты в play могут отличаться от представленных здесь из‑за различий во времени сбора данных.
 
 ### История одного файла {#history-of-a-single-file}
 
-Самый простой из запросов. Здесь мы рассматриваем все сообщения коммитов для `StorageReplicatedMergeTree.cpp`. Поскольку они, вероятно, более интересны, мы сортируем по самым последним сообщениям сначала.
+Самый простой из запросов. Здесь мы просматриваем все сообщения коммитов для `StorageReplicatedMergeTree.cpp`. Поскольку они, вероятно, более интересны, мы сортируем их по дате, начиная с самых свежих сообщений.
 
 [play](https://sql.clickhouse.com?query_id=COAZRFX2YFULDBXRQTCQ1S)
 
@@ -253,7 +254,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
 ```
 
-Мы также можем просмотреть изменения строк, исключая переименования т.е. мы не будем показывать изменения до события переименования, когда файл существовал под другим именем:
+Мы также можем просматривать построчные изменения, исключая переименования, то есть мы не будем показывать изменения, сделанные до события переименования, когда файл имел другое имя:
 
 [play](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
 
@@ -287,13 +288,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.258 sec. Processed 7.54 million rows, 654.92 MB (29.24 million rows/s., 2.54 GB/s.)
 ```
 
-Обратите внимание, что существует более сложный вариант этого запроса, в котором мы находим [историю коммитов построчно для файла](#line-by-line-commit-history-of-a-file), учитывая переименования.
+Обратите внимание, что существует более сложный вариант этого запроса, позволяющий получить [построчную историю коммитов файла](#line-by-line-commit-history-of-a-file) с учётом переименований.
 
 ### Найти текущие активные файлы {#find-the-current-active-files}
 
-Это важно для дальнейшего анализа, когда мы хотим рассмотреть только текущие файлы в репозитории. Мы估计 этот набор как файлы, которые не были переименованы или удалены (а затем повторно добавлены/переименованы).
+Это важно для последующего анализа, когда нам нужно учитывать только текущие файлы в репозитории. Мы определяем этот набор как файлы, которые не были переименованы или удалены (а затем заново добавлены/переименованы).
 
-**Обратите внимание, что, похоже, существует сломанная история коммитов, касающаяся файлов в директориях `dbms`, `libs`, `tests/testflows/` во время их переименований. Мы также исключаем их.**
+**Обратите внимание: по-видимому, при переименовании директорий `dbms`, `libs`, `tests/testflows/` история коммитов оказалась нарушена в отношении файлов внутри них. Поэтому мы также исключаем эти файлы.**
 
 [play](https://sql.clickhouse.com?query_id=2HNFWPCFWEEY92WTAPMA7W)
 
@@ -335,7 +336,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
 ```
 
-Обратите внимание, что это позволяет файлам быть переименованными, а затем переименованными обратно в их исходные значения. Сначала мы агрегируем `old_path` для списка удаленных файлов в результате переименования. Мы объединяем это с последней операцией для каждого `path`. Наконец, мы фильтруем этот список по тем, где последнее событие не является `Delete`.
+Обратите внимание, что это позволяет переименовывать файлы и затем снова переименовывать их в исходные имена. Сначала мы агрегируем `old_path` для списка файлов, помеченных как удалённые в результате переименования. Затем объединяем это с последней операцией для каждого `path`. Наконец, фильтруем этот список по тем записям, для которых конечное событие не является `Delete`.
 
 [play](https://sql.clickhouse.com?query_id=1OXCKMOH2JVMSHD3NS2WW6)
 
@@ -370,59 +371,60 @@ FROM
 1 row in set. Elapsed: 0.089 sec. Processed 532.10 thousand rows, 8.68 MB (6.01 million rows/s., 97.99 MB/s.)
 ```
 
-Обратите внимание, что мы пропустили импорт нескольких директорий во время импорта, т.е.
+Обратите внимание, что при выполнении импорта мы пропустили несколько каталогов, а именно:
 
 `--skip-paths 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/'`
 
-Применив этот шаблон к `git list-files`, получается 18155.
+Применение этого шаблона к выводу `git list-files` даёт 18155 файлов.
 
 ```bash
 git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityhash|liblz4|libdivide|libvectorclass|libdouble-conversion|libcpuid|libzstd|libfarmhash|libmetrohash|libpoco|libwidechar_width))/' | wc -l
    18155
 ```
 
-**Наша текущая задача - это оценка текущих файлов**
+**Таким образом, наше текущее решение — это приблизительная оценка текущих файлов**
 
-Разница здесь вызвана несколькими факторами:
+Разница здесь обусловлена несколькими факторами:
 
-- Переименование может происходить наряду с другими изменениями файла. Эти изменения перечислены как отдельные события в file_changes, но с одинаковым временем. Функция `argMax` не может отличить их - она выбирает первое значение. Естественный порядок вставок (единственное средство для определения правильного порядка) не сохраняется в union, поэтому могут быть выбраны измененные события. Например, ниже файл `src/Functions/geometryFromColumn.h` имеет несколько изменений перед переименованием в `src/Functions/geometryConverters.h`. Наша текущая задача может выбрать событие Modify как последнее изменение, что приведет к удержанию `src/Functions/geometryFromColumn.h`.
+* Переименование может происходить вместе с другими модификациями файла. Эти изменения фиксируются как отдельные события в `file_changes`, но с одинаковым временем. Функция `argMax` не может их различить — она выбирает первое значение. Естественный порядок вставок (единственный способ узнать корректный порядок) не сохраняется при объединении (`UNION`), поэтому могут быть выбраны события Modify. Например, ниже файл `src/Functions/geometryFromColumn.h` несколько раз изменяется, прежде чем будет переименован в `src/Functions/geometryConverters.h`. Наше текущее решение может выбрать событие Modify как последнее изменение, из-за чего `src/Functions/geometryFromColumn.h` останется.
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
 
 ```sql
-SELECT
-    change_type,
-    path,
-    old_path,
-    time,
-    commit_hash
-FROM git.file_changes
-WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
+  SELECT
+      change_type,
+      path,
+      old_path,
+      time,
+      commit_hash
+  FROM git.file_changes
+  WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
 
-┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
-│ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
-│ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
-│ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
-└─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
-11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
+  ┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
+  │ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
+  │ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
+  └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
+  11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
 ```
-- Сломанная история коммитов - недостающие события удаления. Источник и причина еще предстоит установить.
 
-Эти различия не должны значительно повлиять на наш анализ. **Мы приветствуем улучшенные версии этого запроса**.
+* Нарушенная история коммитов — отсутствуют события удаления. Источник и причина пока не установлены.
 
-### Список файлов с наибольшим количеством изменений {#list-files-with-most-modifications}
+Эти различия не должны существенно повлиять на наш анализ. **Будем признательны за улучшенные версии этого запроса**.
 
-Ограничиваясь текущими файлами, мы считаем количество изменений суммой удалений и добавлений.
+### Список файлов с наибольшим числом изменений {#list-files-with-most-modifications}
 
-[play](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
+Если ограничиться текущими файлами, считаем числом изменений сумму удалений и добавлений.
+
+[выполнить](https://sql.clickhouse.com?query_id=MHXPSBNPTDMJYR3OYSXVR7)
 
 ```sql
 WITH current_files AS
@@ -473,7 +475,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
 ```
 
-### В какой день недели обычно происходят коммиты? {#what-day-of-the-week-do-commits-usually-occur}
+### В какой день недели обычно совершаются коммиты? {#what-day-of-the-week-do-commits-usually-occur}
 
 [play](https://sql.clickhouse.com?query_id=GED2STFSYJDRAA59H8RLIV)
 
@@ -496,11 +498,11 @@ GROUP BY dayOfWeek(time) AS day_of_week
 7 rows in set. Elapsed: 0.262 sec. Processed 62.78 thousand rows, 251.14 KB (239.73 thousand rows/s., 958.93 KB/s.)
 ```
 
-Это имеет смысл с некоторым снижением производительности по пятницам. Здорово видеть людей, вносящих код на выходных! Огромное спасибо нашим участникам!
+Это вполне логично: по пятницам наблюдается небольшое снижение продуктивности. Здорово видеть, что люди коммитят код по выходным! Огромное спасибо нашим контрибьюторам!
 
-### История подпапки/файла - количество строк, коммитов и авторов с течением времени {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
+### История подкаталога/файла — количество строк, коммитов и контрибьюторов в динамике {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
 
-Это даст большой результат запроса, который нереалистично показать или визуализировать, если не отфильтровать. Поэтому мы позволяем фильтровать файл или подпапку в следующем примере. Здесь мы группируем по неделям, используя функцию `toStartOfWeek` - адаптируйте по мере необходимости.
+Это приведёт к очень большому результату запроса, который невозможно разумно отобразить или визуализировать без фильтрации. Поэтому в следующем примере мы позволяем отфильтровать данные по файлу или подкаталогу. Здесь мы группируем по неделям с помощью функции `toStartOfWeek` — при необходимости адаптируйте под свои задачи.
 
 [play](https://sql.clickhouse.com?query_id=REZRXDVU7CAWT5WKNJSTNY)
 
@@ -532,19 +534,19 @@ LIMIT 10
 10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
 ```
 
-Эти данные хорошо визуализируются. Ниже мы используем Superset.
+Эти данные хорошо поддаются визуализации. Ниже мы используем Superset.
 
-**Для добавленных и удаленных строк:**
+**Для добавленных и удалённых строк:**
 
-<Image img={superset_github_lines_added_deleted} alt="Для добавленных и удаленных строк" size="md"/>
+<Image img={superset_github_lines_added_deleted} alt="For lines added and deleted" size="md" />
 
 **Для коммитов и авторов:**
 
-<Image img={superset_commits_authors} alt="Для коммитов и авторов" size="md"/>
+<Image img={superset_commits_authors} alt="For commits and authors" size="md" />
 
-### Список файлов с максимальным числом авторов {#list-files-with-maximum-number-of-authors}
+### Вывести список файлов с максимальным числом авторов {#list-files-with-maximum-number-of-authors}
 
-Ограничьте только текущими файлами.
+Ограничить выборку только текущими файлами.
 
 [play](https://sql.clickhouse.com?query_id=CYQFNQNK9TAMPU2OZ8KG5Y)
 
@@ -599,9 +601,9 @@ LIMIT 10
 
 ### Самые старые строки кода в репозитории {#oldest-lines-of-code-in-the-repository}
 
-Ограничьте только текущими файлами.
+Только по текущим файлам.
 
-[play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
+[запустить](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
 ```sql
 WITH current_files AS
@@ -656,7 +658,7 @@ LIMIT 10
 
 ### Файлы с самой длинной историей {#files-with-longest-history}
 
-Ограничьте только текущими файлами.
+Только текущие файлы.
 
 [play](https://sql.clickhouse.com?query_id=VWPBPGRZVGTHOCQYWNQZNT)
 
@@ -710,13 +712,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
 ```
 
-Наша основная структура данных, Merge Tree, находится под постоянной эволюцией с долгой историей правок!
+Наша основная структура данных MergeTree, разумеется, постоянно развивается и имеет долгую историю доработок!
 
-### Распределение участников в отношении документации и кода за месяц {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
+### Распределение вклада контрибьюторов между документацией и кодом в течение месяца {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
 
-**Во время сбора данных изменения в папке `docs/` были отфильтрованы из-за очень грязной истории коммитов. Результаты этого запроса, следовательно, не являются точными.**
+**Во время сбора данных изменения в папке `docs/` были исключены из анализа из‑за очень запутанной истории коммитов. Поэтому результаты этого запроса не являются точными.**
 
-Мы пишем больше документации в определенные моменты месяца, например, вокруг дат выпуска? Мы можем использовать функцию `countIf`, чтобы вычислить простое соотношение, визуализируя результат с помощью функции `bar`.
+Пишем ли мы больше документации в определённое время месяца, например, вблизи дат релизов? Мы можем использовать функцию `countIf`, чтобы вычислить простое соотношение и визуализировать результат с помощью функции `bar`.
 
 [play](https://sql.clickhouse.com?query_id=BA4RZUXUHNQBH9YK7F2T9J)
 
@@ -773,11 +775,11 @@ FROM
 31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
 ```
 
-Может быть, немного больше в конце месяца, но в целом мы поддерживаем хорошее равномерное распределение. Снова это ненадежно из-за фильтрации папки документации во время вставки данных.
+Возможно, чуть больше ближе к концу месяца, но в целом распределение остаётся достаточно равномерным. Однако на эти данные нельзя полностью полагаться из‑за фильтрации фильтром docs при вставке.
 
-### Авторы с самым разнообразным вкладом {#authors-with-the-most-diverse-impact}
+### Авторы с наиболее разнообразным вкладом {#authors-with-the-most-diverse-impact}
 
-Мы считаем разнообразие здесь как количество уникальных файлов, к которым автор сделал вклад.
+Под разнообразием вклада здесь мы понимаем количество уникальных файлов, в которые автор вносил изменения.
 
 [play](https://sql.clickhouse.com?query_id=MT8WBABUKYBYSBA78W5TML)
 
@@ -807,7 +809,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.041 sec. Processed 266.05 thousand rows, 4.92 MB (6.56 million rows/s., 121.21 MB/s.)
 ```
 
-Давайте посмотрим, кто имеет самые разнообразные коммиты в своем недавнем труде. Вместо того чтобы ограничиваться датой, мы ограничим последние N коммитов автора (в данном случае мы использовали 3, но не стесняйтесь изменять):
+Посмотрим, у кого самые разнообразные коммиты в недавней работе. Вместо ограничения по дате мы ограничимся последними N коммитами автора (в данном примере мы использовали 3, но вы можете изменить это):
 
 [play](https://sql.clickhouse.com?query_id=4Q3D67FWRIVWTY8EIDDE5U)
 
@@ -852,9 +854,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
 ```
 
-### Любимые файлы автора {#favorite-files-for-an-author}
+### Избранные файлы автора {#favorite-files-for-an-author}
 
-Здесь мы выбираем нашего основателя [Алексея Миловидова](https://github.com/alexey-milovidov) и ограничиваем наш анализ текущими файлами.
+Здесь мы выбираем нашего основателя, [Алексея Миловидова](https://github.com/alexey-milovidov), и ограничиваем анализ только текущими файлами.
 
 [play](https://sql.clickhouse.com?query_id=OKGZBACRHVGCRAGCZAJKMF)
 
@@ -907,7 +909,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
 ```
 
-Это имеет смысл, потому что Алексей несет ответственность за ведение журнала изменений. Но что, если мы используем базовое имя файла, чтобы определить его популярные файлы - это позволяет переименования и должно сосредоточиться на взносах в код.
+Это логично, потому что Алексей отвечает за ведение журнала изменений. Но что, если мы будем использовать базовое имя файла, чтобы выявить его самые популярные файлы — это позволит учитывать переименования и при этом сосредоточиться на его вкладе в код.
 
 [play](https://sql.clickhouse.com?query_id=P9PBDZGOSVTKXEXU73ZNAJ)
 
@@ -936,13 +938,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.032 sec. Processed 266.05 thousand rows, 5.68 MB (8.22 million rows/s., 175.50 MB/s.)
 ```
 
-Это, возможно, более отражает его области интересов.
+Это, возможно, лучше отражает его сферы интересов.
 
-### Самые большие файлы с наименьшим количеством авторов {#largest-files-with-lowest-number-of-authors}
+### Самые большие файлы с наименьшим числом авторов {#largest-files-with-lowest-number-of-authors}
 
-Для этого нам сначала нужно определить самые большие файлы. Оценка этого через полную реконструкцию файла, для каждого файла, из истории коммитов будет очень дорогостоящей!
+Для этого сначала нужно определить самые большие файлы. Оценивать их с помощью полного восстановления каждого файла по всей истории коммитов — слишком затратно!
 
-Чтобы оценить, предполагая, что мы ограничиваемся текущими файлами, мы суммируем добавления строк и вычитаем удаления. Затем мы можем вычислить отношение длины к количеству авторов.
+Чтобы прикинуть размер, предполагая, что мы рассматриваем только текущие файлы, мы суммируем добавленные строки и вычитаем удалённые. Затем можно вычислить отношение длины файла к количеству авторов.
 
 [play](https://sql.clickhouse.com?query_id=PVSDOHZYUMRDDUZFEYJC7J)
 
@@ -997,9 +999,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.138 sec. Processed 798.15 thousand rows, 16.57 MB (5.79 million rows/s., 120.11 MB/s.)
 ```
 
-Текстовые словари, возможно, не являются реалистичными, поэтому давайте ограничим только код через фильтр по расширению файла!
+Текстовые словари, возможно, не слишком практичны, поэтому давайте ограничимся только кодом, используя фильтр по расширению файла!
 
-[play](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
+[запустить](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
 
 ```sql
 WITH current_files AS
@@ -1051,7 +1053,7 @@ LIMIT 10
 10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
 ```
 
-Здесь есть некоторый уклон к новизне - новые файлы имеют меньше возможностей для коммитов. Что если мы ограничим файлы, которые старше 1 года?
+Здесь есть некоторое смещение в сторону недавних изменений — у более новых файлов было меньше времени для накопления коммитов. Что если ограничиться файлами, которым как минимум 1 год?
 
 [play](https://sql.clickhouse.com?query_id=RMHHZEDHFUCBGRQVQA2732)
 
@@ -1108,9 +1110,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
 ```
 
-### Распределение коммитов и строк кода по времени; по дням недели, по авторам; для конкретных подпапок {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
+### Распределение коммитов и строк кода по времени: по дням недели, по авторам, для отдельных поддиректорий {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
 
-Мы интерпретируем это как количество строк, добавленных и удаленных по дням недели. В этом случае мы сосредотачиваемся на [директории Functions](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
+Мы рассматриваем это как количество добавленных и удалённых строк по дням недели. В данном случае мы сосредотачиваемся на [директории Functions](https://github.com/ClickHouse/ClickHouse/tree/master/src/Functions)
 
 [play](https://sql.clickhouse.com?query_id=PF3KEMYG5CVLJGCFYQEGB1)
 
@@ -1139,7 +1141,7 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 
 И по времени суток,
 
-[play](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
+[Запустить](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
 
 ```sql
 SELECT
@@ -1181,7 +1183,7 @@ GROUP BY toHour(time) AS hourOfDay
 24 rows in set. Elapsed: 0.039 sec. Processed 266.05 thousand rows, 14.66 MB (6.77 million rows/s., 372.89 MB/s.)
 ```
 
-Это распределение имеет смысл, учитывая, что большая часть нашей команды разработчиков находится в Амстердаме. Функции `bar` помогают нам визуализировать эти распределения:
+Это распределение выглядит логичным, учитывая, что большая часть нашей команды разработки находится в Амстердаме. Функция `bar` помогает нам визуализировать эти распределения:
 
 [play](https://sql.clickhouse.com?query_id=9AZ8CENV8N91YGW7T6IB68)
 
@@ -1233,9 +1235,9 @@ FROM
 24 rows in set. Elapsed: 0.038 sec. Processed 266.05 thousand rows, 14.66 MB (7.09 million rows/s., 390.69 MB/s.)
 ```
 
-### Матрица авторов, показывающая, какие авторы, как правило, переписывают код других авторов {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
+### Матрица авторов, показывающая, какие из них склонны переписывать код других авторов {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
 
-`sign = -1` указывает на удаление кода. Мы исключаем знаки препинания и вставку пустых строк.
+`sign = -1` указывает на удаление кода. Мы не учитываем знаки препинания и вставку пустых строк.
 
 [play](https://sql.clickhouse.com?query_id=448O8GWAHY3EM6ZZ7AGLAM)
 
@@ -1279,17 +1281,17 @@ LIMIT 100
 20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
 ```
 
-Диаграмма Санки (SuperSet) позволяет это красиво визуализировать. Обратите внимание, что мы увеличиваем наш `LIMIT BY` до 3, чтобы получить топ-3 кодовых удалителя для каждого автора, чтобы улучшить разнообразие в визуале.
+Диаграмма Санкея (SuperSet) позволяет наглядно это визуализировать. Обратите внимание, что мы увеличиваем наш `LIMIT BY` до 3, чтобы получить топ‑3 авторов, чаще всего удаляющих код у каждого автора, и тем самым повысить разнообразие визуализации.
 
-<Image img={superset_authors_matrix} alt="Матрица авторов Superset" size="md"/>
+<Image img={superset_authors_matrix} alt="Superset матрица авторов" size="md" />
 
-Алексей явно любит удалять код других людей. Давайте исключим его для более сбалансированного взгляда на удаление кода.
+Похоже, Alexey особенно любит удалять чужой код. Исключим его, чтобы получить более сбалансированное представление об удалении кода.
 
-<Image img={superset_authors_matrix_v2} alt="Матрица авторов Superset v2" size="md"/>
+<Image img={superset_authors_matrix_v2} alt="Superset матрица авторов v2" size="md" />
 
-### Кто автор с наибольшим процентом вклада по дням недели? {#who-is-the-highest-percentage-contributor-per-day-of-week}
+### Кто делает наибольшую долю коммитов в каждый день недели? {#who-is-the-highest-percentage-contributor-per-day-of-week}
 
-Если рассматривать по количеству коммитов:
+Если смотреть только на количество коммитов:
 
 [play](https://sql.clickhouse.com?query_id=WXPKFJCAHOKYKEVTWNFVCY)
 
@@ -1320,7 +1322,7 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
 ```
 
-Хорошо, здесь могут быть некоторые преимущества для самого долгого автора - нашего основателя Алексея. Давайте ограничим наш анализ последним годом.
+Итак, некоторые возможные преимущества здесь на стороне самого давнего контрибьютора — нашего основателя Алексея. Давайте ограничим наш анализ последним годом.
 
 [play](https://sql.clickhouse.com?query_id=8YRJGHFTNJAWJ96XCJKKEH)
 
@@ -1352,9 +1354,9 @@ LIMIT 1 BY day_of_week
 7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
 ```
 
-Это все еще несколько просто и не отражает труд людей.
+Это всё ещё немного упрощённое представление и не отражает реальную работу людей.
 
-Лучшим показателем может быть то, кто является основным участником каждый день как доля от общего объема работ, выполненных за последний год. Обратите внимание, что мы рассматриваем удаление и добавление кода одинаково.
+Более подходящей метрикой может быть определение того, кто является основным вкладчиком каждый день, выраженное как доля от общего объёма работы, выполненной за последний год. Обратите внимание, что мы одинаково учитываем удаление и добавление кода.
 
 [play](https://sql.clickhouse.com?query_id=VQF4KMRDSUEXGS1JFVDJHV)
 
@@ -1402,11 +1404,11 @@ INNER JOIN
 7 rows in set. Elapsed: 0.014 sec. Processed 106.12 thousand rows, 1.38 MB (7.61 million rows/s., 98.65 MB/s.)
 ```
 
-### Распределение возраста кода по репозиторию {#distribution-of-code-age-across-repository}
+### Распределение возраста кода в репозитории {#distribution-of-code-age-across-repository}
 
-Мы ограничиваем анализ текущими файлами. Для краткости мы ограничиваем результаты глубиной 2 с 5 файлами на корневую папку. Настройте по мере необходимости.
+Ограничим анализ только текущими файлами. Для краткости установим глубину в 2 уровня и не более 5 файлов в каждом корневом каталоге. При необходимости измените эти параметры.
 
-[play](https://sql.clickhouse.com?query_id=6YWAUQYPZINZDJGBEZBNWG)
+[выполнить в ClickHouse Play](https://sql.clickhouse.com?query_id=6YWAUQYPZINZDJGBEZBNWG)
 
 ```sql
 WITH current_files AS
@@ -1485,9 +1487,9 @@ LIMIT 5 BY root
 24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
 ```
 
-### Какой процент кода для автора был удален другими авторами? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
+### Какой процент кода автора был удалён другими авторами? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
 
-Для этого вопроса нам нужно количество строк, написанных автором, разделенное на общее количество строк, которые были удалены другим участником.
+Для ответа на этот вопрос нам нужно количество строк, написанных автором, разделить на общее количество его строк, которые были удалены другим участником.
 
 [play](https://sql.clickhouse.com?query_id=T4DTWTB36WFSEYAZLMGRNF)
 
@@ -1535,9 +1537,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
 ```
 
-### Список файлов, которые переписывались наибольшее количество раз? {#list-files-that-were-rewritten-most-number-of-times}
+### Список файлов, которые переписывались чаще всего? {#list-files-that-were-rewritten-most-number-of-times}
 
-Самым простым подходом к этому вопросу может быть просто подсчет наибольшего количества изменений строк по пути (ограниченные текущими файлами), например:
+Самый простой способ ответить на этот вопрос — просто посчитать максимальное количество изменений строк для каждого пути (ограничившись текущими файлами), например:
 
 ```sql
 WITH current_files AS
@@ -1588,9 +1590,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
 ```
 
-Однако это не учитывает понятие "переписывания", когда большая часть файла изменяется в любом коммите. Это требует более сложного запроса. Если мы рассматриваем переписывание как ситуацию, когда более 50% файла удалено и 50% добавлено. Вы можете настроить запрос в соответствии с вашей интерпретацией того, что составляет это.
+Однако это не отражает понятие «перезаписи», когда в любом коммите большая часть файла изменяется. Для этого требуется более сложный запрос. Будем считать перезаписью ситуацию, когда более 50% строк файла удалены и 50% добавлены. Вы можете скорректировать запрос в соответствии со своим пониманием того, что считать перезаписью.
 
-Запрос ограничен только текущими файлами. Мы перечисляем все изменения файлов, группируя по `path` и `commit_hash`, возвращая количество добавленных и удаленных строк. Используя оконную функцию, мы оцениваем общий размер файла в любой момент времени, выполняя кумулятивную сумму и оценивая влияние любого изменения на размер файла как `lines added - lines removed`. Используя эту статистику, мы можем вычислить процент файла, который был добавлен или удален для каждого изменения. Наконец, мы подсчитываем количество изменений файлов, которые составляют переписывание для каждого файла, т.е. `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`. Обратите внимание, что мы требуем, чтобы файлы были более 50 строк, чтобы избежать подсчета ранних вкладов в файл как переписывание. Это также помогает избежать предвзятости к очень маленьким файлам, которые могут быть более склонны к переписыванию.
+Запрос ограничен только текущими файлами. Мы перечисляем все изменения файлов, группируя по `path` и `commit_hash`, и возвращаем количество добавленных и удалённых строк. Используя оконную функцию, мы оцениваем общий размер файла в любой момент времени, выполняя накопительную сумму и оценивая влияние любого изменения на размер файла как `lines added - lines removed`. Используя эту статистику, мы можем вычислить долю файла, которая была добавлена или удалена для каждого изменения. Наконец, мы считаем количество изменений файла, которые считаются перезаписью для каждого файла, т.е. `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`. Обратите внимание, что мы учитываем только файлы длиной более 50 строк, чтобы ранние вклады в файл не считались перезаписью. Это также позволяет избежать смещения в сторону очень маленьких файлов, которые с большей вероятностью могут быть переписаны.
 
 [play](https://sql.clickhouse.com?query_id=5PL1QLNSH6QQTR8H9HINNP)
 
@@ -1676,15 +1678,15 @@ LIMIT 10
 10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
 ```
 
-### В какой день недели код имеет наибольшую вероятность остаться в репозитории? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
+### В какой день недели у кода наибольший шанс остаться в репозитории? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
 
-Для этого нам нужно уникально идентифицировать строку кода. Мы оцениваем это (поскольку одна и та же строка может встречаться несколько раз в файле) с помощью пути и содержимого строки.
+Для этого нам нужно однозначно идентифицировать строку кода. Мы делаем это (так как одна и та же строка может встречаться в файле несколько раз) с помощью пути и содержимого строки.
 
-Мы запрашиваем строки, добавленные, соединяя это со строками, удаленными - фильтруя случаи, когда последнее происходит позже первого. Это дает нам удаленные строки, из которых мы можем вычислить время между этими двумя событиями.
+Мы выбираем добавленные строки и соединяем их со строками, которые были удалены, отфильтровывая случаи, когда удаление произошло позже добавления. Это даёт нам удалённые строки, по которым мы можем вычислить время между этими двумя событиями.
 
-Наконец, мы агрегируем по этому набору данных, чтобы вычислить среднее количество дней, в течение которых строки остаются в репозитории по дням недели.
+Затем мы агрегируем этот набор данных, чтобы вычислить среднее количество дней, в течение которых строки остаются в репозитории, по дням недели.
 
-[play](https://sql.clickhouse.com?query_id=GVF23LEZTNZI22BT8LZBBE)
+[запустить](https://sql.clickhouse.com?query_id=GVF23LEZTNZI22BT8LZBBE)
 
 ```sql
 SELECT
@@ -1740,8 +1742,8 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 
 ### Файлы, отсортированные по среднему возрасту кода {#files-sorted-by-average-code-age}
 
-Этот запрос использует тот же принцип, что и [В какой день недели код имеет наибольшую вероятность остаться в репозитории](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository) - стремясь уникально идентифицировать строку кода с помощью пути и содержимого строки.
-Это позволяет нам определить время между добавлением и удалением строки. Однако мы фильтруем только на текущие файлы и код, и усредняем время для каждого файла по строкам.
+Этот запрос использует тот же принцип, что и [В какой день недели у кода наибольший шанс остаться в репозитории](#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository): мы стремимся однозначно идентифицировать строку кода по пути и её содержимому.
+Это позволяет определить интервал между моментом, когда строка была добавлена, и моментом, когда она была удалена. При этом мы ограничиваемся текущими файлами и актуальным кодом и усредняем время для каждого файла по всем строкам.
 
 [play](https://sql.clickhouse.com?query_id=3CYYT7HEHWRFHVCM9JCKSU)
 
@@ -1828,11 +1830,11 @@ LIMIT 10
 10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
 ```
 
-### Кто более склонен писать больше тестов / CPP кода / комментариев? {#who-tends-to-write-more-tests--cpp-code--comments}
+### Кто, как правило, пишет больше тестов / C++‑кода / комментариев? {#who-tends-to-write-more-tests--cpp-code--comments}
 
-Есть несколько способов, как мы можем ответить на этот вопрос. Сосредоточившись на соотношении кода к тестам, этот запрос относительно прост - подсчитайте количество вкладов в папки, содержащие `tests`, и вычислите соотношение к общему количеству вкладов.
+Есть несколько способов подойти к этому вопросу. Если сосредоточиться на соотношении кода и тестов, то этот запрос относительно прост — нужно посчитать количество изменений в каталогах, содержащих `tests`, и вычислить их долю от общего числа изменений.
 
-Обратите внимание, что мы ограничиваемся пользователями с более чем 20 изменениями, чтобы сосредоточиться на регулярных участниках и избежать предвзятости к единичным вкладам.
+Обратите внимание, что мы ограничиваемся пользователями с более чем 20 изменениями, чтобы сосредоточиться на регулярных контрибьюторах и избежать смещения в пользу разовых изменений.
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 
@@ -1874,7 +1876,7 @@ LIMIT 20
 20 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 4.65 MB (7.93 million rows/s., 138.76 MB/s.)
 ```
 
-Мы можем построить это распределение в виде гистограммы.
+Построим гистограмму этого распределения.
 
 [play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
 
@@ -1915,9 +1917,9 @@ SELECT
 10 rows in set. Elapsed: 0.051 sec. Processed 266.05 thousand rows, 4.65 MB (5.24 million rows/s., 91.64 MB/s.)
 ```
 
-Большинство участников пишут больше кода, чем тестов, как и следовало ожидать.
+Как и следовало ожидать, большинство участников пишут больше кода, чем тестов.
 
-А что насчет тех, кто добавляет больше всего комментариев при внесении кода?
+А кто добавляет больше всего комментариев к коду?
 
 [play](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
 
@@ -1957,11 +1959,11 @@ LIMIT 10
 10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
 ```
 
-Обратите внимание, что мы сортируем по вкладкам кода. Удивительно высок % для всех наших крупнейших участников и часть того, что делает наш код таким читаемым.
+Обратите внимание, что сортировка ведётся по количеству вкладов в код. У всех наших крупнейших контрибьюторов удивительно высокий процент — это одна из причин, почему наш код такой читаемый.
 
-### Как изменяются коммиты автора со временем в отношении процента кода/комментариев? {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
+### Как со временем меняется доля кода и комментариев в коммитах автора? {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
 
-Для вычисления этого по автору просто,
+Вычислить это по каждому автору тривиально,
 
 ```sql
 SELECT
@@ -1995,13 +1997,13 @@ LIMIT 10
 10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
 ```
 
-Однако идеальным будет увидеть, как это меняется в совокупности по всем авторам с первого дня их коммитов. Уменьшают ли они постепенно количество комментариев, которые пишут?
+В идеале, однако, мы хотим увидеть, как это меняется в агрегированном виде по всем авторам, начиная с первого дня, когда они начинают делать коммиты. Постепенно ли они сокращают число комментариев, которые пишут?
 
-Чтобы вычислить это, мы сначала вычисляем отношение комментариев каждого автора с течением времени - аналогично [Кто более склонен писать больше тестов / CPP кода / комментариев?](#who-tends-to-write-more-tests--cpp-code--comments). Это объединяется с датой начала каждого автора, позволяя нам вычислить отношение комментариев по неделям.
+Чтобы это посчитать, мы сначала определяем долю комментариев для каждого автора в динамике — аналогично разделу [Who tends to write more tests / CPP code / comments?](#who-tends-to-write-more-tests--cpp-code--comments). Затем объединяем эти данные с датой начала активности каждого автора, что позволяет вычислить долю комментариев по недельному смещению.
 
-После вычисления среднего значения по неделям по всем авторам, мы снимаем выборку этих результатов, выбирая каждую 10-ю неделю.
+После вычисления среднего значения по недельному смещению для всех авторов мы прореживаем эти результаты, выбирая каждую 10‑ю неделю.
 
-[play](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
+[выполнить](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
 
 ```sql
 WITH author_ratios_by_offset AS
@@ -2073,11 +2075,11 @@ LIMIT 20
 20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
 ```
 
-Поощряюще, наш % комментариев довольно постоянен и не ухудшается с увеличением продолжительности вклада авторов.
+Обнадеживает, что наша доля комментариев остается примерно постоянной и не снижается по мере роста стажа авторов.
 
-### Какое среднее время до переписывания кода и медиана (период полураспада кода)? {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
+### Каково среднее время до переписывания кода и медиана (период «полураспада» кода)? {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
 
-Мы можем использовать тот же принцип, что и [Список файлов, которые переписывались наибольшее количество раз](#list-files-that-were-rewritten-most-number-of-times), чтобы идентифицировать переписывания, но учитываем все файлы. Используется оконная функция для вычисления времени между переписываниями для каждого файла. Из этого мы можем вычислить среднее и медиану по всем файлам.
+Мы можем использовать тот же принцип, что и в разделе [List files that were rewritten most number of time or by most of authors](#list-files-that-were-rewritten-most-number-of-times) для определения переписываний, но применить его ко всем файлам. Оконная функция позволяет вычислить время между переписываниями для каждого файла. На этой основе мы можем посчитать среднее и медиану по всем файлам.
 
 [play](https://sql.clickhouse.com?query_id=WSHUEPJP9TNJUH7QITWWOR)
 
@@ -2135,11 +2137,11 @@ FROM rewrites
 1 row in set. Elapsed: 0.388 sec. Processed 266.05 thousand rows, 22.85 MB (685.82 thousand rows/s., 58.89 MB/s.)
 ```
 
-### Какое худшее время для написания кода с точки зрения того, что код имеет наибольшую вероятность быть переписанным? {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
+### В какое время писать код хуже всего с точки зрения наибольшей вероятности его последующего переписывания? {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
 
-Аналогично [Какое среднее время до переписывания кода и медиана (период полураспада кода)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) и [Список файлов, которые переписывались наибольшее количество раз](#list-files-that-were-rewritten-most-number-of-times), за исключением того, что мы агрегируем по дням недели. Настройте по мере необходимости, например, по месяцам в году.
+Аналогично разделам [Каково среднее время до переписывания кода и медиана (период полураспада кода)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) и [Список файлов, которые переписывались больше всего раз или наибольшим числом авторов](#list-files-that-were-rewritten-most-number-of-times), за исключением того, что здесь мы агрегируем по дням недели. При необходимости скорректируйте, например, по месяцам года.
 
-[play](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
+[выполнить](https://sql.clickhouse.com?query_id=8PQNWEWHAJTGN6FTX59KH2)
 
 ```sql
 WITH
@@ -2199,9 +2201,9 @@ GROUP BY dayOfWeek
 7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
 ```
 
-### Чей код самый «липкий»? {#which-authors-code-is-the-most-sticky}
+### Чей код «держится» дольше всего? {#which-authors-code-is-the-most-sticky}
 
-Мы определяем "липкий" как то, как долго код автора остается до его переписывания. Аналогично предыдущему вопросу [Какое среднее время до переписывания кода и медиана (период полураспада кода)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) - используя тот же метрик для переписываний, т.е. 50% добавления и 50% удаления к файлу. Мы вычисляем среднее время переписывания для автора и учитываем только участников с более чем двумя файлами.
+Мы определяем «липкость» как то, как долго код автора остается в репозитории, прежде чем его перепишут. Аналогично предыдущему вопросу [Какое среднее время до переписывания кода и медианное значение (период полураспада деградации кода)?](#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay) — используем тот же критерий переписывания, то есть 50% добавлений и 50% удалений в файле. Мы вычисляем среднее время до переписывания для каждого автора и учитываем только контрибьюторов с более чем двумя файлами.
 
 [play](https://sql.clickhouse.com?query_id=BKHLVVWN5SET1VTIFQ8JVK)
 
@@ -2276,11 +2278,11 @@ LIMIT 10
 10 rows in set. Elapsed: 0.555 sec. Processed 7.54 million rows, 720.60 MB (13.58 million rows/s., 1.30 GB/s.)
 ```
 
-### Наибольшее количество последовательных дней коммитов автора {#most-consecutive-days-of-commits-by-an-author}
+### Наибольшее количество последовательных дней с коммитами у автора {#most-consecutive-days-of-commits-by-an-author}
 
-Этот запрос сначала требует от нас вычислить дни, когда автор делал коммиты. Используя оконную функцию, разделяя по авторам, мы можем вычислить дни между их коммитами. Для каждого коммита, если время с последнего коммита составило 1 день, мы помечаем его как последовательный (1) и 0 в противном случае - сохраняя этот результат в `consecutive_day`.
+Сначала в этом запросе необходимо определить дни, в которые автор делал коммиты. Используя оконную функцию с разбиением по автору, мы можем вычислить количество дней между его коммитами. Для каждого коммита, если с момента предыдущего прошёл 1 день, мы помечаем его как последовательный (1), в противном случае — 0, сохраняя результат в поле `consecutive_day`.
 
-Наши последующие массивные функции вычисляют самую длинную последовательность последовательных единиц для каждого автора. Сначала функция `groupArray` используется для сбора всех значений `consecutive_day` для автора. Этот массив из 1s и 0s затем разбивается по значениям 0 на подмассивы. В итоге мы вычисляем самый длинный подмассив.
+Далее с помощью функций работы с массивами мы вычисляем самую длинную последовательность единиц для каждого автора. Сначала функция `groupArray` используется для сбора всех значений `consecutive_day` для автора. Этот массив из 1 и 0 затем разбивается по значениям 0 на подмассивы. Наконец, мы находим самый длинный подмассив.
 
 [play](https://sql.clickhouse.com?query_id=S3E64UYCAMDAYJRSXINVFR)
 
@@ -2331,9 +2333,9 @@ LIMIT 10
 10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
 ```
 
-### История коммитов построчно для файла {#line-by-line-commit-history-of-a-file}
+### Построчная история коммитов файла {#line-by-line-commit-history-of-a-file}
 
-Файлы могут быть переименованы. Когда это происходит, мы получаем событие переименования, где колонка `path` установлена на новый путь файла, а `old_path` представляет собой предыдущую локацию, например:
+Файлы могут быть переименованы. Когда это происходит, мы получаем событие переименования, в котором столбец `path` содержит новый путь к файлу, а `old_path` — его прежнее расположение, например:
 
 [play](https://sql.clickhouse.com?query_id=AKTW3Z8JZAPQ4H9BH2ZFRX)
 
@@ -2354,11 +2356,11 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
 ```
 
-Это усложняет просмотр полной истории файла, поскольку у нас нет одного значения, связывающего все изменения строк или файлов.
+Это затрудняет просмотр полной истории файла, поскольку у нас нет одного значения, связывающего все изменения строк или файла целиком.
 
-Чтобы решить эту проблему, мы можем использовать Пользовательские Функции (UDF). В настоящее время они не могут быть рекурсивными, поэтому, чтобы идентифицировать историю файла, мы обязаны определить ряд UDF, которые вызывают друг друга явно.
+Чтобы решить эту проблему, мы можем использовать пользовательские функции (User Defined Functions, UDF). В настоящее время они не могут быть рекурсивными, поэтому, чтобы определить историю файла, мы должны задать набор UDF, которые явно вызывают друг друга.
 
-Это означает, что мы можем отслеживать переименования только на максимальную глубину - приведенный ниже пример имеет глубину 5. Маловероятно, что файл будет переименован более чем это, поэтому пока этого достаточно.
+Это означает, что мы можем отслеживать переименования только до некоторой максимальной глубины — в приведённом ниже примере глубина — 5. Маловероятно, что файл будет переименован большее количество раз, поэтому на данный момент этого достаточно.
 
 ```sql
 CREATE FUNCTION file_path_history AS (n) -> if(empty(n),  [], arrayConcat([n], file_path_history_01((SELECT if(empty(old_path), Null, old_path) FROM git.file_changes WHERE path = n AND (change_type = 'Rename' OR change_type = 'Add') LIMIT 1))));
@@ -2369,7 +2371,7 @@ CREATE FUNCTION file_path_history_04 AS (n) -> if(isNull(n), [], arrayConcat([n]
 CREATE FUNCTION file_path_history_05 AS (n) -> if(isNull(n), [], [n]);
 ```
 
-Вызывая `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')`, мы рекурсируем через историю переименований, при этом каждая функция вызывает следующий уровень с `old_path`. Результаты комбинируются с помощью `arrayConcat`.
+Вызывая `file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')`, мы рекурсивно обходим историю переименований, при этом каждый вызов функции переходит на следующий уровень с параметром `old_path`. Результаты объединяются с помощью `arrayConcat`.
 
 Например,
 
@@ -2383,7 +2385,7 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
 ```
 
-Мы можем использовать эту возможность, чтобы собрать коммиты для всей истории файла. В этом примере мы показываем один коммит для каждого из значений `path`.
+Теперь мы можем использовать эту функциональность, чтобы собрать все коммиты за всю историю файла. В этом примере мы показываем по одному коммиту для каждого значения `path`.
 
 ```sql
 SELECT
@@ -2408,13 +2410,13 @@ FORMAT PrettyCompactMonoBlock
 3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
 ```
 
-## Неразрешенные вопросы {#unsolved-questions}
+## Открытые вопросы {#unsolved-questions}
 
 ### Git blame {#git-blame}
 
-Это особенно трудно получить точный результат из-за невозможности в настоящее время сохранять состояние в массивных функциях. Это станет возможным с помощью `arrayFold` или `arrayReduce`, которые позволяют сохранять состояние на каждой итерации.
+Получить точный результат особенно сложно из‑за того, что в настоящий момент в функциях для работы с массивами нельзя хранить состояние. Это станет возможным с помощью `arrayFold` или `arrayReduce`, которые позволяют сохранять состояние на каждой итерации.
 
-Приблизительное решение, достаточное для высокоуровневого анализа, может выглядеть следующим образом:
+Приблизительное решение, достаточное для высокоуровневого анализа, может выглядеть примерно так:
 
 ```sql
 SELECT
@@ -2452,4 +2454,4 @@ LIMIT 20
 20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
 ```
 
-Мы приветствуем точные и улучшенные решения здесь.
+Здесь приветствуются как точные, так и улучшенные решения.

@@ -1,13 +1,15 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/singlevalueornull'
+description: 'Агрегатная функция `singleValueOrNull` используется для реализации операторов подзапросов, таких как `x = ALL (SELECT ...)`. Она проверяет, есть ли в данных ровно одно уникальное значение, отличное от NULL.'
 sidebar_position: 184
-description: 'Агрегатная функция `singleValueOrNull` используется для реализации'
-title: singleValueOrNull
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/singlevalueornull
+title: 'singleValueOrNull'
+doc_type: 'reference'
 ---
-# singleValueOrNull
 
-Агрегатная функция `singleValueOrNull` используется для реализации операторов подзапроса, таких как `x = ALL (SELECT ...)`. Она проверяет, есть ли только одно уникальное ненулевое значение в данных. Если есть только одно уникальное значение, она возвращает его. Если нулевое или хотя бы два различных значения, она возвращает NULL.
+# singleValueOrNull {#singlevalueornull}
+
+Агрегатная функция `singleValueOrNull` используется для реализации операторов с подзапросами, таких как `x = ALL (SELECT ...)`. Она проверяет, есть ли в наборе данных только одно уникальное значение, отличное от NULL.
+Если есть ровно одно уникальное значение, функция возвращает его. Если уникальных значений ноль или как минимум два, функция возвращает NULL.
 
 **Синтаксис**
 
@@ -17,12 +19,12 @@ singleValueOrNull(x)
 
 **Параметры**
 
-- `x` — Колонка любого [типа данных](../../data-types/index.md) (кроме [Map](../../data-types/map.md), [Array](../../data-types/array.md) или [Tuple](../../data-types/tuple), которые не могут быть типа [Nullable](../../data-types/nullable.md)).
+* `x` — столбец любого [типа данных](../../data-types/index.md) (кроме [Map](../../data-types/map.md), [Array](../../data-types/array.md) или [Tuple](../../data-types/tuple), которые не могут иметь тип [Nullable](../../data-types/nullable.md)).
 
 **Возвращаемые значения**
 
-- Уникальное значение, если в `x` есть только одно уникальное ненулевое значение.
-- `NULL`, если нулевое или хотя бы два различных значения.
+* Уникальное значение, если в `x` есть ровно одно уникальное значение, отличное от `NULL`.
+* `NULL`, если нет ни одного значения или имеется как минимум два различных значения.
 
 **Примеры**
 

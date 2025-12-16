@@ -1,20 +1,14 @@
 ---
-'slug': '/use-cases/AI_ML/AIChat'
-'sidebar_label': 'AIチャット'
-'title': 'ClickHouse CloudでのAIチャットの使用'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickHouse Cloud ConsoleでのAIチャット機能の有効化と使用に関するガイド'
-'keywords':
-- 'AI'
-- 'ClickHouse Cloud'
-- 'Chat'
-- 'SQL Console'
-- 'Agent'
-- 'Docs AI'
-'show_related_blogs': true
-'sidebar_position': 2
-'doc_type': 'guide'
+slug: /use-cases/AI_ML/AIChat
+sidebar_label: 'AI チャット'
+title: 'ClickHouse Cloud で AI Chat を利用する'
+pagination_prev: null
+pagination_next: null
+description: 'ClickHouse Cloud コンソールで AI Chat 機能を有効化して利用するためのガイド'
+keywords: ['AI', 'ClickHouse Cloud', 'チャット', 'SQL コンソール', 'エージェント', 'Docs AI']
+show_related_blogs: true
+sidebar_position: 2
+doc_type: 'guide'
 ---
 
 import Link from '@docusaurus/Link';
@@ -27,92 +21,91 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
+# ClickHouse Cloud で AI チャットを使用する {#using-ai-chat-in-clickhouse-cloud}
 
-# ClickHouse CloudでのAIチャットの利用
-
-> このガイドでは、ClickHouse CloudコンソールでAIチャット機能を有効にし、使用する方法を説明します。
+> このガイドでは、ClickHouse Cloud コンソールで AI チャット機能を有効にして利用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
 
-## 必要条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-1. AI機能が有効なClickHouse Cloud組織へのアクセスが必要です（利用できない場合は、組織の管理者またはサポートにお問い合わせください）。
+1. AI 機能が有効になっている ClickHouse Cloud の組織へのアクセス権が必要です（利用できない場合は、組織管理者またはサポートに連絡してください）。
 
-## AIチャットパネルを開く {#open-panel}
+## AI Chat パネルを開く {#open-panel}
 
-1. ClickHouse Cloudサービスに移動します。
-2. 左のサイドバーで、「Ask AI」と記されたスパークルアイコンをクリックします。
-3. （ショートカット） <kbd>⌘</kbd> + <kbd>'</kbd>（macOS）または <kbd>Ctrl</kbd> + <kbd>'</kbd>（Linux/Windows）を押して開閉します。
+1. ClickHouse Cloud サービスにアクセスします。
+2. 左のサイドバーで、「Ask AI」とラベル付けされた星形のアイコンをクリックします。
+3. （ショートカット）<kbd>⌘</kbd> + <kbd>'</kbd>（macOS）または <kbd>Ctrl</kbd> + <kbd>'</kbd>（Linux/Windows）を押して、パネルの表示を切り替えます。
 
-<Image img={img_open} alt="AIチャットフライアウトを開く" size="md"/>
+<Image img={img_open} alt="AI Chat フライアウトを開く" size="md"/>
 
-## データ使用の同意を受け入れる（初回実行時） {#consent}
+## 初回利用時のデータ利用に関する同意 {#consent}
 
-1. 初回使用時に、データ処理とサードパーティのLLMサブプロセッサについて説明する同意ダイアログが表示されます。
-2. 内容を確認し、進むには受け入れます。拒否した場合、パネルは開きません。
+1. 初回利用時に、データの利用方法とサードパーティ LLM サブプロセッサーについて説明する同意ダイアログが表示されます。
+2. 内容を確認して同意すると先に進めます。拒否した場合、パネルは表示されません。
 
 <Image img={img_consent} alt="同意ダイアログ" size="md"/>
 
 ## チャットモードを選択する {#modes}
 
-AIチャットは現在次のモードをサポートしています：
+AI Chat では現在、次のモードをサポートしています:
 
-- **エージェント**: スキーマとメタデータに基づく複数ステップの推論（サービスは起動している必要があります）。
-- **Docs AI（Ask）**: 公式のClickHouseドキュメントやベストプラクティスリファレンスに基づいた質疑応答。
+- **Agent**: スキーマおよびメタデータに対するマルチステップ推論（サービスが起動している必要があります）。
+- **Docs AI (Ask)**: 公式 ClickHouse ドキュメントおよびベストプラクティスリファレンスに基づいた、特化型の Q&amp;A。
 
-フライアウトの左下にあるモードセレクターを使用して切り替えます。
+フライアウトの左下にあるモードセレクターで切り替えます。
 
 <Image img={img_modes} alt="モード選択" size="sm"/>
 
 ## メッセージを作成して送信する {#compose}
 
-1. 質問を入力します（例: “ユーザー別に日次イベントを集約するマテリアライズドビューを作成します”）。  
-2. <kbd>Enter</kbd>を押して送信します（改行するには <kbd>Shift</kbd> + <kbd>Enter</kbd>を使用します）。  
-3. モデルが処理している間に「停止」をクリックして中断できます。
+1. 質問を入力してください（例：「ユーザーごとの日次イベントを集計するマテリアライズドビューを作成して」）。  
+2. <kbd>Enter</kbd> を押して送信します（改行する場合は <kbd>Shift</kbd> + <kbd>Enter</kbd> を押します）。  
+3. モデルが処理を実行している間は、「Stop」ボタンをクリックして中断できます。
 
-## 「エージェント」の思考ステップを理解する {#thinking-steps}
+## 「Agent」の思考ステップを理解する {#thinking-steps}
 
-エージェントモードでは、展開可能な中間の「思考」またはプランニングステップが表示されることがあります。これにより、アシスタントがどのように回答を形成するかが透明になります。必要に応じて折りたたむことができます。
+Agent モードでは、展開可能な中間的な「思考」や計画のステップが表示されることがあります。これらは、アシスタントがどのように回答を生成しているかを可視化するためのものです。必要に応じて折りたたんだり展開したりしてください。
 
 <Image img={img_thinking} alt="思考ステップ" size="md"/>
 
 ## 新しいチャットを開始する {#new-chats}
 
-「新しいチャット」ボタンをクリックしてコンテキストをクリアし、新しいセッションを開始します。
+現在のコンテキストをクリアして新しいセッションを開始するには、「New Chat」ボタンをクリックします。
 
-## チャット履歴を表示する {#history}
+## チャット履歴の表示 {#history}
 
-1. 下部セクションには最近のチャットがリストされています。
-2. 前のチャットを選択してメッセージを読み込むことができます。
-3. ゴミ箱アイコンを使用して会話を削除します。
+1. 画面下部のセクションに、最近のチャットが一覧表示されます。
+2. 過去のチャットを選択すると、そのメッセージが読み込まれます。
+3. ゴミ箱アイコンをクリックして会話を削除します。
 
 <Image img={img_history} alt="チャット履歴リスト" size="md"/>
 
-## 生成されたSQLで作業する {#sql-actions}
+## 生成された SQL の扱い方 {#sql-actions}
 
-アシスタントがSQLを返した場合：
+アシスタントが SQL を返したら、次の手順を実行します。
 
-- 正確性を確認します。
-- 「エディタで開く」をクリックして新しいSQLタブにクエリを読み込みます。
-- コンソール内で修正し、実行します。
+- 内容が正しいか確認します。
+- 「Open in editor」をクリックして、クエリを新しい SQL タブで開きます。
+- Console 内で必要に応じて修正し、実行します。
 
-<Image img={img_result_actions} alt="結果アクション" size="md"/>
+<Image img={img_result_actions} alt="結果に対する操作" size="md"/>
 
-<Image img={img_new_tab} alt="エディタで生成されたクエリを開く" size="md"/>
+<Image img={img_new_tab} alt="生成されたクエリをエディタで開く" size="md"/>
 
 ## 応答を停止または中断する {#interrupt}
 
-応答が遅すぎるか、逸脱している場合：
+応答に時間がかかりすぎる場合や、意図から外れてしまった場合は、次の手順を実行します。
 
-1. 「停止」ボタンをクリックします（処理中に表示されます）。
-2. メッセージは中断されたとマークされ、プロンプトを洗練して再送信できます。
+1. 「停止」ボタンをクリックします（処理中のみ表示されます）。
+2. メッセージは中断されたものとしてマークされます。その後、プロンプトを調整して再送信できます。
 
 ## キーボードショートカット {#shortcuts}
 
-| アクション | ショートカット |
-| ---------- | -------------- |
-| AIチャットを開く | `⌘ + '` / `Ctrl + '` |
-| メッセージを送信 | `Enter` |
-| 新しい行 | `Shift + Enter` |
+| 操作         | ショートカット        |
+| ------------ | -------------------- |
+| AI チャットを開く | `⌘ + '` / `Ctrl + '` |
+| メッセージを送信 | `Enter`              |
+| 改行         | `Shift + Enter`      |
 
 </VerticalStepper>

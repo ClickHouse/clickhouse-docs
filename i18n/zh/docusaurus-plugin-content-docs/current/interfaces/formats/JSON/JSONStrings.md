@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'JSONStrings 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONStrings'
-'output_format': true
-'slug': '/interfaces/formats/JSONStrings'
-'title': 'JSONStrings'
-'doc_type': 'reference'
+alias: []
+description: 'JSONStrings 格式文档'
+input_format: true
+keywords: ['JSONStrings']
+output_format: true
+slug: /interfaces/formats/JSONStrings
+title: 'JSONStrings'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,13 +15,13 @@
 
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 格式的不同之处在于，数据字段以字符串形式输出，而不是作为类型化的 JSON 值。
+与 [JSON](./JSON.md) 格式的唯一不同之处在于，数据字段以字符串形式输出，而不是输出为带类型的 JSON 值。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下数据的 JSON 文件，命名为 `football.json`：
+使用包含以下数据的 JSON 文件，并将其命名为 `football.json`：
 
 ```json
 {
@@ -203,7 +202,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONStrings;
 
 ### 读取数据 {#reading-data}
 
-使用 `JSONStrings` 格式读取数据：
+使用 `JSONStrings` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -211,7 +210,7 @@ FROM football
 FORMAT JSONStrings
 ```
 
-输出将采用 JSON 格式：
+输出为 JSON 格式：
 
 ```json
 {

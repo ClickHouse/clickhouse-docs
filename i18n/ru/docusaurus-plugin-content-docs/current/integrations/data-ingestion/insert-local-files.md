@@ -1,17 +1,19 @@
 ---
-slug: '/integrations/data-ingestion/insert-local-files'
-sidebar_label: 'Вставка локальных файлов'
+sidebar_label: 'Загрузка локальных файлов'
 sidebar_position: 2
-description: 'Узнайте о Вставить локальные файлы'
-title: 'Вставка локальных файлов'
-doc_type: guide
+title: 'Загрузка локальных файлов'
+slug: /integrations/data-ingestion/insert-local-files
+description: 'Узнайте, как загружать локальные файлы'
 show_related_blogs: true
+doc_type: 'guide'
+keywords: ['загрузка локальных файлов в ClickHouse', 'импорт локальных файлов в ClickHouse', 'загрузка файлов через clickhouse-client']
 ---
-# Вставка локальных файлов
 
-Вы можете использовать `clickhouse-client` для потоковой передачи локальных файлов в ваш сервис ClickHouse. Это позволяет вам предварительно обрабатывать данные с помощью множества мощных и удобных функций ClickHouse. Давайте рассмотрим пример...
+# Вставка локальных файлов {#insert-local-files}
 
-1. Предположим, у нас есть файл TSV с именем `comments.tsv`, который содержит некоторые комментарии с Hacker News, а строка заголовка содержит имена колонок. Вам нужно указать [формат ввода](/interfaces/formats) при вставке данных, который в нашем случае будет `TabSeparatedWithNames`:
+Вы можете использовать `clickhouse-client` для потоковой загрузки локальных файлов в сервис ClickHouse. Это позволяет предварительно обрабатывать данные с помощью множества мощных и удобных функций ClickHouse. Рассмотрим пример...
+
+1. Предположим, у нас есть TSV‑файл с именем `comments.tsv`, который содержит комментарии с сайта Hacker News, а в строке заголовка указаны имена столбцов. При вставке данных необходимо указать [формат входных данных](/interfaces/formats), в нашем случае это `TabSeparatedWithNames`:
 
 ```text
 id      type    author  timestamp       comment children
@@ -24,7 +26,7 @@ id      type    author  timestamp       comment children
 19467048        comment karambahh       2019-03-22 21:15:41     "I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."      [19467512]
 ```
 
-2. Давайте создадим таблицу для наших данных Hacker News:
+2. Давайте создадим таблицу для данных из Hacker News:
 
 ```sql
 CREATE TABLE hackernews (
@@ -40,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. Мы хотим привести колонку `author` к нижнему регистру, что легко сделать с помощью функций [`lower` function](/sql-reference/functions/string-functions#lower). Мы также хотим разбить строку `comment` на токены и сохранить результат в колонке `tokens`, что можно сделать с помощью функции [`extractAll` function](/sql-reference/functions/string-search-functions#extractall). Все это делается в одной команде `clickhouse-client` - обратите внимание, как файл `comments.tsv` передается в `clickhouse-client` с помощью оператора `<`:
+3. Мы хотим привести к нижнему регистру столбец `author`, что легко сделать с помощью функции [`lower`](/sql-reference/functions/string-functions#lower). Мы также хотим разбить строку `comment` на токены и сохранить результат в столбце `tokens`, что можно сделать с помощью функции [`extractAll`](/sql-reference/functions/string-search-functions#extractAll). Всё это выполняется одной командой `clickhouse-client` — обратите внимание, как файл `comments.tsv` передаётся на вход `clickhouse-client` с использованием оператора `<`:
 
 ```bash
 clickhouse-client \
@@ -64,10 +66,10 @@ clickhouse-client \
 ```
 
 :::note
-Функция `input` полезна здесь, так как она позволяет нам преобразовать данные во время их вставки в таблицу `hackernews`. Аргументом для `input` является формат входящих необработанных данных, и вы увидите это во многих других табличных функциях (где вы указываете схему для входящих данных).
+Функция `input` здесь полезна, поскольку позволяет преобразовывать данные в момент их вставки в таблицу `hackernews`. Аргументом `input` является формат входящих сырых данных, и вы встретите его во многих других табличных функциях (где задаёте схему для входящих данных).
 :::
 
-4. Вот и все! Данные загружены в ClickHouse:
+4. Вот и всё! Данные уже в ClickHouse:
 
 ```sql
 SELECT *
@@ -89,7 +91,7 @@ LIMIT 7
 
 ```
 
-5. Еще один вариант - использовать инструмент, такой как `cat`, для потоковой передачи файла в `clickhouse-client`. Например, следующая команда дает тот же результат, что и использование оператора `<`:
+5. Другой вариант — использовать утилиту вроде `cat`, чтобы передать содержимое файла в `clickhouse-client` потоком. Например, следующая команда даст тот же результат, что и использование оператора `<`:
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -112,4 +114,4 @@ cat comments.tsv | clickhouse-client \
 "
 ```
 
-Посетите [страницу документации по `clickhouse-client`](/interfaces/cli) для получения деталей о том, как установить `clickhouse-client` на вашу локальную операционную систему.
+Перейдите на [страницу документации по `clickhouse-client`](/interfaces/cli), чтобы получить подробную информацию об установке `clickhouse-client` в вашей операционной системе.

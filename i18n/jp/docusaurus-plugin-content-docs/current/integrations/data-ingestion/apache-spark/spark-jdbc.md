@@ -1,30 +1,28 @@
 ---
-'sidebar_label': 'Spark JDBC'
-'sidebar_position': 3
-'slug': '/integrations/apache-spark/spark-jdbc'
-'description': 'Apache Spark と ClickHouse の紹介'
-'keywords':
-- 'clickhouse'
-- 'Apache Spark'
-- 'jdbc'
-- 'migrating'
-- 'data'
-'title': 'Spark JDBC'
-'doc_type': 'guide'
+sidebar_label: 'Spark JDBC'
+sidebar_position: 3
+slug: /integrations/apache-spark/spark-jdbc
+description: 'ClickHouseとApache Sparkの紹介'
+keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
+title: 'Spark JDBC'
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
-
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark JDBC
-JDBCは、Sparkで最も一般的に使用されるデータソースの1つです。
-このセクションでは、Sparkと共に使用するための [ClickHouse公式JDBCコネクタ](/integrations/language-clients/java/jdbc) の詳細を提供します。
+
+<ClickHouseSupportedBadge/>
+
+JDBCは、Sparkで最もよく使用されるデータソースの1つです。
+このセクションでは、Sparkで[ClickHouse公式JDBCコネクタ](/integrations/language-clients/java/jdbc)を使用する方法について詳しく説明します。
 
 <TOCInline toc={toc}></TOCInline>
 
-## データの読み込み {#read-data}
+## データの読み取り {#read-data}
 
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
@@ -117,7 +115,6 @@ jar_files = [
     "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
 ]
 
-
 # Initialize Spark session with JARs
 spark = SparkSession.builder \
     .appName("example") \
@@ -126,8 +123,8 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
+user = "your_user"
+password = "your_password"
 query = "select * from example_table where id > 2"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
@@ -147,17 +144,17 @@ df.show()
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-CREATE TEMPORARY VIEW jdbcTable
-        USING org.apache.spark.sql.jdbc
-        OPTIONS (
-                url "jdbc:ch://localhost:8123/default", 
-                dbtable "schema.tablename",
-                user "username",
-                password "password",
-                driver "com.clickhouse.jdbc.ClickHouseDriver" 
-        );
+   CREATE TEMPORARY VIEW jdbcTable
+           USING org.apache.spark.sql.jdbc
+           OPTIONS (
+                   url "jdbc:ch://localhost:8123/default",
+                   dbtable "schema.tablename",
+                   user "username",
+                   password "password",
+                   driver "com.clickhouse.jdbc.ClickHouseDriver"
+           );
 
-SELECT * FROM jdbcTable;
+   SELECT * FROM jdbcTable;
 ```
 
 </TabItem>
@@ -169,52 +166,52 @@ SELECT * FROM jdbcTable;
 <TabItem value="Java" label="Java" default>
 
 ```java
-public static void main(String[] args) {
-       // Initialize Spark session
-       SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+ public static void main(String[] args) {
+        // Initialize Spark session
+        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
 
-       // JDBC connection details
-       String jdbcUrl = "jdbc:ch://localhost:8123/default";
-       Properties jdbcProperties = new Properties();
-       jdbcProperties.put("user", "default");
-       jdbcProperties.put("password", "123456");
+        // JDBC connection details
+        String jdbcUrl = "jdbc:ch://localhost:8123/default";
+        Properties jdbcProperties = new Properties();
+        jdbcProperties.put("user", "default");
+        jdbcProperties.put("password", "123456");
 
-       // Create a sample DataFrame
-       StructType schema = new StructType(new StructField[]{
-               DataTypes.createStructField("id", DataTypes.IntegerType, false),
-               DataTypes.createStructField("name", DataTypes.StringType, false)
-       });
+        // Create a sample DataFrame
+        StructType schema = new StructType(new StructField[]{
+                DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                DataTypes.createStructField("name", DataTypes.StringType, false)
+        });
 
-       List<Row> rows = new ArrayList<Row>();
-       rows.add(RowFactory.create(1, "John"));
-       rows.add(RowFactory.create(2, "Doe"));
+        List<Row> rows = new ArrayList<Row>();
+        rows.add(RowFactory.create(1, "John"));
+        rows.add(RowFactory.create(2, "Doe"));
 
-       Dataset<Row> df = spark.createDataFrame(rows, schema);
+        Dataset<Row> df = spark.createDataFrame(rows, schema);
 
-       //---------------------------------------------------------------------------------------------------
-       // Write the df to ClickHouse using the jdbc method
-       //---------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------
+        // Write the df to ClickHouse using the jdbc method
+        //---------------------------------------------------------------------------------------------------
 
-       df.write()
-               .mode(SaveMode.Append)
-               .jdbc(jdbcUrl, "example_table", jdbcProperties);
+        df.write()
+                .mode(SaveMode.Append)
+                .jdbc(jdbcUrl, "example_table", jdbcProperties);
 
-       //---------------------------------------------------------------------------------------------------
-       // Write the df to ClickHouse using the save method
-       //---------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------
+        // Write the df to ClickHouse using the save method
+        //---------------------------------------------------------------------------------------------------
 
-       df.write()
-               .format("jdbc")
-               .mode("append")
-               .option("url", jdbcUrl)
-               .option("dbtable", "example_table")
-               .option("user", "default")
-               .option("password", "123456")
-               .save();
+        df.write()
+                .format("jdbc")
+                .mode("append")
+                .option("url", jdbcUrl)
+                .option("dbtable", "example_table")
+                .option("user", "default")
+                .option("password", "123456")
+                .save();
 
-       // Stop the Spark session
-       spark.stop();
-   }
+        // Stop the Spark session
+        spark.stop();
+    }
 ```
 
 </TabItem>
@@ -283,7 +280,6 @@ jar_files = [
     "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
 ]
 
-
 # Initialize Spark session with JARs
 spark = SparkSession.builder \
     .appName("example") \
@@ -291,16 +287,14 @@ spark = SparkSession.builder \
     .config("spark.jars", ",".join(jar_files)) \
     .getOrCreate()
 
-
 # Create DataFrame
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
+user = "your_user"
+password = "your_password"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
-
 
 # Write DataFrame to ClickHouse
 df.write \
@@ -319,18 +313,18 @@ df.write \
 <TabItem value="SparkSQL" label="Spark SQL">
 
 ```sql
-CREATE TEMPORARY VIEW jdbcTable
-        USING org.apache.spark.sql.jdbc
-        OPTIONS (
-                url "jdbc:ch://localhost:8123/default", 
-                dbtable "schema.tablename",
-                user "username",
-                password "password",
-                driver "com.clickhouse.jdbc.ClickHouseDriver" 
-        );
--- resultTable could be created with df.createTempView or with Spark SQL
-INSERT INTO TABLE jdbcTable
-             SELECT * FROM resultTable;
+   CREATE TEMPORARY VIEW jdbcTable
+           USING org.apache.spark.sql.jdbc
+           OPTIONS (
+                   url "jdbc:ch://localhost:8123/default",
+                   dbtable "schema.tablename",
+                   user "username",
+                   password "password",
+                   driver "com.clickhouse.jdbc.ClickHouseDriver"
+           );
+   -- resultTable could be created with df.createTempView or with Spark SQL
+   INSERT INTO TABLE jdbcTable
+                SELECT * FROM resultTable;
 
 ```
 
@@ -339,10 +333,10 @@ INSERT INTO TABLE jdbcTable
 
 ## 並列処理 {#parallelism}
 
-Spark JDBCを使用する際、Sparkはデータを単一のパーティションを使用して読み取ります。より高い同時実行性を達成するには、 
-`partitionColumn`、`lowerBound`、`upperBound`、および`numPartitions`を指定する必要があります。これにより、複数のワーカーから並行して読み込む際にテーブルをどのようにパーティション分割するかを説明します。
-詳細については、Apache Sparkの公式ドキュメントの [JDBC設定](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)をご覧ください。
+Spark JDBCを使用する場合、Sparkは単一のパーティションを使用してデータを読み取ります。より高い並行性を実現するには、
+`partitionColumn`、`lowerBound`、`upperBound`、`numPartitions`を指定する必要があります。これらは、複数のワーカーから並列に読み取る際にテーブルをパーティション化する方法を説明します。
+[JDBC設定](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)の詳細については、Apache Sparkの公式ドキュメントを参照してください。
 
 ## JDBCの制限 {#jdbc-limitations}
 
-* 現在、JDBCを使用してデータを挿入できるのは、既存のテーブルのみです（現時点ではDF挿入時にテーブルを自動的に作成する方法はありません。これはSparkが他のコネクタで行う方法です）。
+* 現在、JDBCを使用してデータを挿入できるのは既存のテーブルのみです（現在、他のコネクタでSparkが行うように、DF挿入時にテーブルを自動作成する方法はありません）。

@@ -1,27 +1,26 @@
 ---
-'description': 'ClickHouseのStringデータ型に関するDocumentation'
-'sidebar_label': '文字列'
-'sidebar_position': 8
-'slug': '/sql-reference/data-types/string'
-'title': '文字列'
-'doc_type': 'reference'
+description: 'ClickHouse の String データ型に関するドキュメント'
+sidebar_label: 'String'
+sidebar_position: 8
+slug: /sql-reference/data-types/string
+title: 'String'
+doc_type: 'reference'
 ---
 
+# String {#string}
 
-# String
+任意の長さの文字列型です。長さに制限はありません。値には、ヌルバイトを含む任意のバイト列を格納できます。
+String 型は、他の DBMS の VARCHAR、BLOB、CLOB などの型を置き換えるものです。
 
-任意の長さの文字列。長さに制限はありません。値は、NULLバイトを含む任意のバイトのセットを含むことができます。
-String型は、他のDBMSからのVARCHAR、BLOB、CLOBなどの型に置き換わります。
-
-テーブルを作成する際、文字列フィールドの数値パラメータを設定することができます（例: `VARCHAR(255)`）、しかしClickHouseはそれを無視します。
+テーブルを作成する際、文字列フィールドに対して数値パラメータ（例: `VARCHAR(255)`）を指定できますが、ClickHouse はこれらを無視します。
 
 エイリアス:
 
 - `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
 
-## Encodings {#encodings}
+## エンコーディング {#encodings}
 
-ClickHouseはエンコーディングの概念を持っていません。文字列は、任意のバイトのセットを含むことができ、ありのままに保存および出力されます。
-テキストを保存する必要がある場合は、UTF-8エンコーディングを使用することをお勧めします。少なくとも、ターミナルがUTF-8を使用している場合（推奨）、変換を行うことなく値を読み書きできます。
-同様に、文字列に対して作業するための特定の関数には、文字列がUTF-8エンコードされたテキストを表すバイトのセットを含むという前提で動作する別のバリエーションがあります。
-例えば、[length](../functions/string-functions.md#length)関数は文字列のバイト数を計算し、[lengthUTF8](../functions/string-functions.md#lengthutf8)関数は値がUTF-8エンコードされていると仮定して、Unicodeコードポイントにおける文字列の長さを計算します。
+ClickHouse にはエンコーディングという概念がありません。文字列は任意のバイト列を含むことができ、それらはそのままの形で保存および出力されます。
+テキストを保存する必要がある場合は、UTF-8 エンコーディングの使用を推奨します。少なくとも、端末が（推奨どおり）UTF-8 を使用している場合は、値を変換することなく読み書きできます。
+同様に、文字列を扱う一部の関数には、その文字列が UTF-8 でエンコードされたテキストを表すバイト列であることを前提として動作する別バージョンがあります。
+たとえば、[length](/sql-reference/functions/array-functions#length) 関数は文字列の長さをバイト数で計算し、[lengthUTF8](../functions/string-functions.md#lengthUTF8) 関数は値が UTF-8 でエンコードされていると仮定して、文字列の長さを Unicode コードポイント数で計算します。

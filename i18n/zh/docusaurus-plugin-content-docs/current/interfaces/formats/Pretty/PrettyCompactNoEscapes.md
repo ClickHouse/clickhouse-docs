@@ -1,27 +1,32 @@
 ---
-'alias': []
-'description': 'PrettyCompactNoEscapes 格式的文档'
-'input_format': false
-'keywords':
-- 'PrettyCompactNoEscapes'
-'output_format': true
-'slug': '/interfaces/formats/PrettyCompactNoEscapes'
-'title': 'PrettyCompactNoEscapes'
-'doc_type': 'reference'
+alias: []
+description: 'PrettyCompactNoEscapes 格式文档'
+input_format: false
+keywords: ['PrettyCompactNoEscapes']
+output_format: true
+slug: /interfaces/formats/PrettyCompactNoEscapes
+title: 'PrettyCompactNoEscapes'
+doc_type: 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| 输入 | 输出 | 别名 |
+| -- | -- | -- |
+| ✗  | ✔  |    |
 
-## Description {#description}
 
-不同于 [`PrettyCompact`](./PrettyCompact.md) 格式，因为不使用 [ANSI-escape sequences](http://en.wikipedia.org/wiki/ANSI_escape_code)。这是在浏览器中显示格式以及使用 'watch' 命令行工具所必需的。
+## 描述 {#description}
 
-## Example usage {#example-usage}
+与 [`PrettyCompact`](./PrettyCompact.md) 格式的区别在于，它不使用 [ANSI 转义序列](http://en.wikipedia.org/wiki/ANSI_escape_code)。  
+这样才能在浏览器中正确显示该格式，并配合 `watch` 命令行工具使用。
 
-## Format settings {#format-settings}
+
+
+## 示例用法 {#example-usage}
+
+
+
+## 格式设置 {#format-settings}
 
 <PrettyFormatSettings/>

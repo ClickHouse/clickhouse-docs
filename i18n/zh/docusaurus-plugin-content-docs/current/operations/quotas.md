@@ -1,26 +1,27 @@
 ---
-'description': '在 ClickHouse 中配置和管理资源使用配额的指南'
-'sidebar_label': '配额'
-'sidebar_position': 51
-'slug': '/operations/quotas'
-'title': '配额'
-'doc_type': 'guide'
+description: '在 ClickHouse 中配置和管理资源使用配额的指南'
+sidebar_label: 'Quotas'
+sidebar_position: 51
+slug: /operations/quotas
+title: 'Quotas'
+doc_type: 'guide'
 ---
 
 :::note ClickHouse Cloud 中的配额
-ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/statements/create/quota) 创建。下面记录的 XML 配置方法 **不受支持**。
+ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/statements/create/quota) 来创建。下面文档中所述的 XML 配置方式**不受支持**。
 :::
 
-配额允许您限制在一段时间内的资源使用情况或跟踪资源的使用情况。配额在用户配置中设置，通常为 'users.xml'。
+配额允许你在一段时间内限制资源使用，或跟踪资源的使用情况。
+配额是在用户配置中设置的，通常位于 &#39;users.xml&#39; 文件中。
 
-系统还具有限制单个查询复杂性功能。请参见 [查询复杂性限制](../operations/settings/query-complexity.md) 部分。
+系统还提供了限制单个查询复杂度的功能。参见[查询复杂度限制](../operations/settings/query-complexity.md)一节。
 
-与查询复杂性限制相比，配额：
+与查询复杂度限制不同，配额具有以下特性：
 
-- 限制在一段时间内可以运行的查询集，而不是限制单个查询。
-- 考虑在所有远程服务器上进行分布式查询处理时消耗的资源。
+* 对在一段时间内可运行的一组查询施加限制，而不是限制单个查询。
+* 统计分布式查询处理过程中在所有远程服务器上消耗的资源。
 
-让我们看看定义配额的 'users.xml' 文件段落。
+下面来看一下 &#39;users.xml&#39; 文件中定义配额的片段。
 
 ```xml
 <!-- Quotas -->
@@ -44,7 +45,8 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
     </default>
 ```
 
-默认情况下，配额跟踪每小时的资源消耗，没有限制使用。每个时间段计算的资源消耗会在每次请求后输出到服务器日志。
+默认情况下，配额会按小时跟踪资源使用情况，但不会对使用量进行限制。
+为每个时间间隔计算出的资源消耗会在每次请求后输出到服务器日志中。
 
 ```xml
 <statbox>
@@ -80,37 +82,38 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 </statbox>
 ```
 
-对于 'statbox' 配额，每小时和每 24 小时（86,400 秒）设置限制。时间间隔的计算从一个实现定义的固定时间点开始。换句话说，24 小时的间隔不一定从午夜开始。
+对于 &#39;statbox&#39; 配额，会分别设置每小时和每 24 小时（86,400 秒）的限制。时间区间从一个由实现定义的固定时刻开始计算。换句话说，这个 24 小时间隔不一定从午夜开始。
 
-当时间间隔结束时，所有收集的值会被清空。下一个小时的配额计算将重新开始。
+当时间区间结束时，所有已收集的数值都会被清空。在接下来的一个小时内，配额计算会重新开始。
 
-以下是可以限制的数量：
+以下是可以被限制的指标：
 
-`queries` – 请求的总数。
+`queries` – 请求总数。
 
-`query_selects` – select 请求的总数。
+`query_selects` – SELECT 请求总数。
 
-`query_inserts` – insert 请求的总数。
+`query_inserts` – INSERT 请求总数。
 
 `errors` – 抛出异常的查询数量。
 
-`result_rows` – 作为结果返回的总行数。
+`result_rows` – 作为结果返回的行总数。
 
-`result_bytes` - 作为结果返回的总字节数。
+`result_bytes` - 作为结果返回的行的总大小。
 
-`read_rows` – 从表中读取的用于在所有远程服务器上运行查询的源行总数。
+`read_rows` – 为在所有远程服务器上运行查询而从表中读取的源行总数。
 
-`read_bytes` - 从表中读取的用于在所有远程服务器上运行查询的总字节数。
+`read_bytes` - 为在所有远程服务器上运行查询而从表中读取的数据总大小。
 
-`written_bytes` - 写入操作的总字节数。 
+`written_bytes` - 写入操作的数据总大小。
 
-`execution_time` – 查询执行的总时间，以秒为单位（实际时间）。
+`execution_time` – 查询执行总时间（以秒为单位的墙钟时间）。
 
-`failed_sequential_authentications` - 发生的顺序认证错误的总数。 
+`failed_sequential_authentications` - 连续身份验证错误的总次数。
 
-如果至少在一个时间间隔内超过限制，将抛出异常，文本中将说明超出限制的内容、对应的时间间隔，以及新的时间间隔何时开始（何时可以再次发送查询）。
 
-配额可以使用“配额键”功能独立报告多个键的资源。以下是一个示例：
+如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始（即何时可以再次发送查询）。
+
+配额可以使用“quota key”功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
 
 ```xml
 <!-- For the global reports designer. -->
@@ -127,12 +130,13 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
     <keyed />
 ```
 
-配额分配给配置的 'users' 部分的用户。请参见“访问权限”部分。
+在配置的 &#39;users&#39; 部分为用户分配配额。参见“Access rights（访问权限）”章节。
 
-对于分布式查询处理，累积的数量存储在请求服务器上。因此，如果用户转到另一服务器，则该服务器上的配额将“重新开始”。
+在分布式查询处理中，累积用量存储在发起请求的服务器上。因此，如果用户切换到另一台服务器，该服务器上的配额将会从头开始重新计算。
 
-当服务器重启时，配额将被重置。
+当服务器重启时，配额会被重置。
+
 
 ## 相关内容 {#related-content}
 
-- 博客: [使用 ClickHouse 构建单页面应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)
+- 博文：[使用 ClickHouse 构建单页应用](https://clickhouse.com/blog/building-single-page-applications-with-clickhouse-and-http)

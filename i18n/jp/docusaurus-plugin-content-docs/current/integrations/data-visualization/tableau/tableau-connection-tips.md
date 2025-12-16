@@ -1,56 +1,60 @@
 ---
-'sidebar_label': 'Connection Tips'
-'sidebar_position': 3
-'slug': '/integrations/tableau/connection-tips'
-'keywords':
-- 'clickhouse'
-- 'tableau'
-- 'online'
-- 'mysql'
-- 'connect'
-- 'integrate'
-- 'ui'
-'description': 'Tableauの接続のヒント ClickHouse公式コネクタを使用する際の。'
-'title': '接続のヒント'
-'doc_type': 'guide'
+sidebar_label: '接続のヒント'
+sidebar_position: 3
+slug: /integrations/tableau/connection-tips
+keywords: ['clickhouse', 'tableau', 'online', 'mysql', 'connect', 'integrate', 'ui']
+description: 'ClickHouse 公式コネクタ使用時の Tableau 接続に関するヒント。'
+title: '接続のヒント'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# 接続に関するヒント {#connection-tips}
 
-# 接続のヒント
-## 初期SQLタブ {#initial-sql-tab}
-*Set Session ID* チェックボックスがAdvancedタブで有効になっている場合（デフォルトで）、セッションレベルの [settings](/operations/settings/settings/) を設定するために自由に使用してください。
+<ClickHouseSupportedBadge/>
+
+## 初期 SQL タブ {#initial-sql-tab}
+
+[詳細設定] タブで *Set Session ID* チェックボックスが有効になっている場合（デフォルト）、次を使用してセッションレベルの [設定](/operations/settings/settings/) を行うことができます。
+
 ```text
 SET my_setting=value;
 ```
-## Advancedタブ {#advanced-tab}
 
-99%のケースではAdvancedタブは必要ありませんが、残りの1%では次の設定を使用できます：
-- **カスタム接続パラメータ**。デフォルトでは `socket_timeout` が既に指定されており、このパラメータは一部の抽出が非常に長い間更新される場合に変更する必要があるかもしれません。このパラメータの値はミリ秒単位で指定されます。その他のパラメータは [こちら](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java) で確認し、カンマで区切ってこのフィールドに追加してください。
-- **JDBCドライバ custom_http_params**。このフィールドでは、[`custom_http_params` パラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration) に値を渡すことで、ClickHouse接続文字列にいくつかのパラメータを追加できます。例えば、*Set Session ID* チェックボックスが有効になっているときに `session_id` を指定する方法はこの通りです。
-- **JDBCドライバ `typeMappings`**。このフィールドでは、[ClickHouseデータ型をJDBCドライバで使用されるJavaデータ型にマッピングするリストを渡すことができます](https://github.com/ClickHouse/clickhouse-jdbc#configuration)。このパラメータのおかげで、コネクタは大きな整数を文字列として自動的に表示しますが、 *(理由は分かりません)*、マッピングセットを渡すことによってこれを変更することができます。
-```text
-UInt256=java.lang.Double,Int256=java.lang.Double
-```
-  マッピングについては、該当のセクションでさらに読むことができます。
+## 詳細タブ {#advanced-tab}
 
-- **JDBCドライバのURLパラメータ**。このフィールドでは、残りの [ドライバパラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration) を渡すことができます。例えば `jdbcCompliance` などです。注意してください。パラメータの値はURLエンコード形式で渡す必要があり、このフィールドおよびAdvancedタブの前のフィールドで `custom_http_params` または `typeMappings` を渡す場合、Advancedタブの前の2つのフィールドの値の方が優先されます。
-- **Set Session ID** チェックボックス。これは初期SQLタブでセッションレベルの設定を設定するために必要で、タイムスタンプと擬似乱数を含む形式で `session_id` を生成します： `"tableau-jdbc-connector-*{timestamp}*-*{number}*"`。
-## UInt64, Int128, (U)Int256データ型に対する制限付きサポート {#limited-support-for-uint64-int128-uint256-data-types}
-デフォルトでは、ドライバは *UInt64, Int128, (U)Int256* 型のフィールドを文字列として表示しますが、**表示するだけで変換はしません**。これは、次の計算フィールドを書き込もうとするとエラーが発生することを意味します。
+99% のケースでは詳細タブを使用する必要はありませんが、残りの 1% では次の設定を使用できます:
+- **Custom Connection Parameters**。デフォルトでは `socket_timeout` がすでに指定されていますが、一部の抽出処理の更新に非常に長い時間がかかる場合、このパラメータを変更する必要があるかもしれません。このパラメータの値はミリ秒単位で指定します。その他のパラメータは[こちら](https://github.com/ClickHouse/clickhouse-jdbc/blob/master/clickhouse-client/src/main/java/com/clickhouse/client/config/ClickHouseClientOption.java)で確認でき、それらをカンマ区切りでこのフィールドに追加します。
+- **JDBC Driver custom_http_params**。このフィールドでは、[ドライバーの `custom_http_params` パラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration) に値を渡すことで、いくつかのパラメータを ClickHouse の接続文字列に埋め込むことができます。たとえば、*Set Session ID* チェックボックスが有効な場合、`session_id` はこのように指定されます。
+- **JDBC Driver `typeMappings`**。このフィールドでは、[JDBC ドライバーが使用する Java データ型に対する ClickHouse データ型のマッピング一覧を渡すことができます](https://github.com/ClickHouse/clickhouse-jdbc#configuration)。このパラメータのおかげで、コネクタは大きな整数値を自動的に文字列として扱いますが、独自のマッピングセットを渡すことで（なぜそうしたいのかはわかりませんが）、これを変更できます。たとえば次のように指定します:
+    ```text
+    UInt256=java.lang.Double,Int256=java.lang.Double
+    ```
+  マッピングについての詳細は、該当するセクションを参照してください。
+
+* **JDBC Driver URL Parameters**。このフィールドには、`jdbcCompliance` などの残りの[ドライバーパラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration)を指定できます。パラメータ値は URL エンコード形式で渡す必要がある点に注意してください。また、このフィールドと Advanced タブ内の前のフィールドの両方で `custom_http_params` や `typeMappings` を指定した場合は、Advanced タブ側の前の 2 つのフィールドで指定した値が優先されます。
+* **Set Session ID** チェックボックス。Initial SQL タブでセッションレベルの設定を行うために必要であり、`"tableau-jdbc-connector-*{timestamp}*-*{number}*"` という形式で、タイムスタンプと疑似乱数を含む `session_id` を生成します。
+
+## UInt64, Int128, (U)Int256 データ型のサポート制限 {#limited-support-for-uint64-int128-uint256-data-types}
+
+デフォルトでは、ドライバーは *UInt64, Int128, (U)Int256* 型のフィールドを文字列として表示するだけで、**変換は行いません**。そのため、次のような計算フィールドを作成しようとすると、エラーが発生します。
+
 ```text
 LEFT([myUInt256], 2) // Error!
 ```
-大きな整数フィールドを文字列として扱うには、そのフィールドを明示的に STR() 関数でラップする必要があります。
+
+大きな整数型フィールドを文字列として扱うには、そのフィールドを明示的にSTR() 関数で囲む必要があります
 
 ```text
 LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
-ただし、そのようなフィールドは、ユニークな値の数を見つけるために最もよく使用されます *(Yandex.MetricaのWatch ID、Visit IDなどのID)* または視覚化の詳細を指定するための *Dimension* として使用され、良好に機能します。
+しかし、この種のフィールドは、多くの場合、ユニークな値の数を求めるため *(Yandex.Metrica における Watch ID や Visit ID などの ID)* や、可視化の詳細度を指定する *Dimension* として使用されるため、そのような用途では問題なく機能します。
 
 ```text
 COUNTD([myUInt256]) // Works well too!
 ```
-UInt64フィールドを持つテーブルのデータプレビュー（データ表示）を使用する際には、エラーは現在表示されません。
+
+UInt64 フィールドを含むテーブルのデータプレビュー（View data）を使用しても、エラーは発生しなくなりました。

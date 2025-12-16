@@ -1,20 +1,21 @@
 ---
-slug: '/chdb/install/c'
+title: 'chDB для C и C++'
 sidebar_label: 'C и C++'
-description: 'Как установить и использовать chDB с C и C++'
-title: 'Установка chDB для C и C++'
-keywords: ['chdb', 'встраиваемый', 'clickhouse-lite', 'установка']
-doc_type: guide
+slug: /chdb/install/c
+description: 'Как установить и использовать chDB на C и C++'
+keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
+doc_type: 'guide'
 ---
+
 # chDB для C и C++
 
-chDB предоставляет нативный C/C++ API для интеграции функциональности ClickHouse прямо в ваши приложения. API поддерживает как простые запросы, так и более сложные функции, такие как постоянные подключения и потоковую выдачу результатов запросов.
+chDB предоставляет нативный C/C++ API для встраивания функциональности ClickHouse непосредственно в ваши приложения. API поддерживает как простые запросы, так и расширенные функции, такие как постоянные соединения и потоковые результаты запросов.
 
 ## Установка {#installation}
 
 ### Шаг 1: Установка libchdb {#install-libchdb}
 
-Установите библиотеку chDB на вашу систему:
+Установите библиотеку chDB в вашу систему:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
@@ -22,47 +23,45 @@ curl -sL https://lib.chdb.io | bash
 
 ### Шаг 2: Подключение заголовков {#include-headers}
 
-Включите заголовок chDB в ваш проект:
+Подключите заголовок chDB в ваш проект:
 
 ```c
 #include <chdb.h>
 ```
 
-### Шаг 3: Связывание библиотеки {#link-library}
+### Шаг 3: Линковка библиотеки {#link-library}
 
-Скомпилируйте и свяжите ваше приложение с chDB:
+Скомпилируйте и слинкуйте ваше приложение с chDB:
 
 ```bash
-
-# C compilation
+# Компиляция C
 gcc -o myapp myapp.c -lchdb
 
-
-# C++ compilation  
+# Компиляция C++
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## Примеры на C {#c-examples} 
+## Примеры на C {#c-examples}
 
-### Основное подключение и запросы {#basic-connection-queries}
+### Базовое подключение и запросы {#basic-connection-queries}
 
 ```c
 #include <stdio.h>
 #include <chdb.h>
 
 int main() {
-    // Create connection arguments
+    // Создание аргументов подключения
     char* args[] = {"chdb", "--path", "/tmp/chdb-data"};
     int argc = 3;
 
-    // Connect to chDB
+    // Подключение к chDB
     chdb_connection* conn = chdb_connect(argc, args);
     if (!conn) {
         printf("Failed to connect to chDB\n");
         return 1;
     }
 
-    // Execute a query
+    // Выполнение запроса
     chdb_result* result = chdb_query(*conn, "SELECT version()", "CSV");
     if (!result) {
         printf("Query execution failed\n");
@@ -70,12 +69,12 @@ int main() {
         return 1;
     }
 
-    // Check for errors
+    // Проверка на ошибки
     const char* error = chdb_result_error(result);
     if (error) {
         printf("Query error: %s\n", error);
     } else {
-        // Get result data
+        // Получение данных результата
         char* data = chdb_result_buffer(result);
         size_t length = chdb_result_length(result);
         double elapsed = chdb_result_elapsed(result);
@@ -86,7 +85,7 @@ int main() {
         printf("Rows: %llu\n", rows);
     }
 
-    // Cleanup
+    // Очистка
     chdb_destroy_query_result(result);
     chdb_close_conn(conn);
     return 0;
@@ -108,8 +107,8 @@ int main() {
         return 1;
     }
 
-    // Start streaming query
-    chdb_result* stream_result = chdb_stream_query(*conn, 
+    // Запуск потокового запроса
+    chdb_result* stream_result = chdb_stream_query(*conn,
         "SELECT number FROM system.numbers LIMIT 1000000", "CSV");
 
     if (!stream_result) {
@@ -120,16 +119,16 @@ int main() {
 
     uint64_t total_rows = 0;
 
-    // Process chunks
+    // Обработка фрагментов
     while (true) {
         chdb_result* chunk = chdb_stream_fetch_result(*conn, stream_result);
         if (!chunk) break;
 
-        // Check if we have data in this chunk
+        // Проверка наличия данных в этом фрагменте
         size_t chunk_length = chdb_result_length(chunk);
         if (chunk_length == 0) {
             chdb_destroy_query_result(chunk);
-            break; // End of stream
+            break; // Конец потока
         }
 
         uint64_t chunk_rows = chdb_result_rows_read(chunk);
@@ -137,12 +136,12 @@ int main() {
 
         printf("Processed chunk: %llu rows, %zu bytes\n", chunk_rows, chunk_length);
 
-        // Process the chunk data here
+        // Обработка данных фрагмента здесь
         // char* data = chdb_result_buffer(chunk);
 
         chdb_destroy_query_result(chunk);
 
-        // Progress reporting
+        // Отчет о прогрессе
         if (total_rows % 100000 == 0) {
             printf("Progress: %llu rows processed\n", total_rows);
         }
@@ -150,7 +149,7 @@ int main() {
 
     printf("Streaming complete. Total rows: %llu\n", total_rows);
 
-    // Cleanup streaming query
+    // Очистка потокового запроса
     chdb_destroy_query_result(stream_result);
     chdb_close_conn(conn);
     return 0;
@@ -169,24 +168,24 @@ int main() {
 
     const char* query = "SELECT number, toString(number) as str FROM system.numbers LIMIT 3";
 
-    // CSV format
+    // Формат CSV
     chdb_result* csv_result = chdb_query(*conn, query, "CSV");
-    printf("CSV Result:\n%.*s\n\n", 
-           (int)chdb_result_length(csv_result), 
+    printf("CSV Result:\n%.*s\n\n",
+           (int)chdb_result_length(csv_result),
            chdb_result_buffer(csv_result));
     chdb_destroy_query_result(csv_result);
 
-    // JSON format
+    // Формат JSON
     chdb_result* json_result = chdb_query(*conn, query, "JSON");
-    printf("JSON Result:\n%.*s\n\n", 
-           (int)chdb_result_length(json_result), 
+    printf("JSON Result:\n%.*s\n\n",
+           (int)chdb_result_length(json_result),
            chdb_result_buffer(json_result));
     chdb_destroy_query_result(json_result);
 
-    // Pretty format
+    // Формат Pretty
     chdb_result* pretty_result = chdb_query(*conn, query, "Pretty");
-    printf("Pretty Result:\n%.*s\n\n", 
-           (int)chdb_result_length(pretty_result), 
+    printf("Pretty Result:\n%.*s\n\n",
+           (int)chdb_result_length(pretty_result),
            chdb_result_buffer(pretty_result));
     chdb_destroy_query_result(pretty_result);
 
@@ -209,7 +208,7 @@ private:
 
 public:
     ChDBConnection(const std::vector<std::string>& args) {
-        // Convert string vector to char* array
+        // Преобразование вектора строк в массив char*
         std::vector<char*> argv;
         for (const auto& arg : args) {
             argv.push_back(const_cast<char*>(arg.c_str()));
@@ -242,7 +241,7 @@ public:
 
         std::string data(chdb_result_buffer(result), chdb_result_length(result));
 
-        // Get query statistics
+        // Получение статистики запроса
         std::cout << "Query statistics:\n";
         std::cout << "  Elapsed: " << chdb_result_elapsed(result) << " seconds\n";
         std::cout << "  Rows read: " << chdb_result_rows_read(result) << "\n";
@@ -255,18 +254,18 @@ public:
 
 int main() {
     try {
-        // Create connection
+        // Создание подключения
         ChDBConnection db({{"chdb", "--path", "/tmp/chdb-cpp"}});
 
-        // Create and populate table
+        // Создание и заполнение таблицы
         db.query("CREATE TABLE test (id UInt32, value String) ENGINE = MergeTree() ORDER BY id");
         db.query("INSERT INTO test VALUES (1, 'hello'), (2, 'world'), (3, 'chdb')");
 
-        // Query with different formats
+        // Запросы с различными форматами
         std::cout << "CSV Results:\n" << db.query("SELECT * FROM test", "CSV") << "\n";
         std::cout << "JSON Results:\n" << db.query("SELECT * FROM test", "JSON") << "\n";
 
-        // Aggregation query
+        // Агрегационный запрос
         std::cout << "Count: " << db.query("SELECT COUNT(*) FROM test") << "\n";
 
     } catch (const std::exception& e) {
@@ -278,7 +277,7 @@ int main() {
 }
 ```
 
-## Рекомендации по обработке ошибок {#error-handling}
+## Лучшие практики обработки ошибок {#error-handling}
 
 ```c
 #include <stdio.h>
@@ -289,7 +288,7 @@ int safe_query_example() {
     chdb_result* result = NULL;
     int return_code = 0;
 
-    // Create connection
+    // Создание подключения
     char* args[] = {"chdb"};
     conn = chdb_connect(1, args);
     if (!conn) {
@@ -297,7 +296,7 @@ int safe_query_example() {
         return 1;
     }
 
-    // Execute query
+    // Выполнение запроса
     result = chdb_query(*conn, "SELECT invalid_syntax", "CSV");
     if (!result) {
         printf("Query execution failed\n");
@@ -305,7 +304,7 @@ int safe_query_example() {
         goto cleanup;
     }
 
-    // Check for query errors
+    // Проверка ошибок запроса
     const char* error = chdb_result_error(result);
     if (error) {
         printf("Query error: %s\n", error);
@@ -313,9 +312,9 @@ int safe_query_example() {
         goto cleanup;
     }
 
-    // Process successful result
-    printf("Result: %.*s\n", 
-           (int)chdb_result_length(result), 
+    // Обработка успешного результата
+    printf("Result: %.*s\n",
+           (int)chdb_result_length(result),
            chdb_result_buffer(result));
 
 cleanup:
@@ -328,5 +327,5 @@ cleanup:
 ## Репозиторий GitHub {#github-repository}
 
 - **Основной репозиторий**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **Проблемы и поддержка**: Сообщите о проблемах в [репозиторий GitHub](https://github.com/chdb-io/chdb/issues)
+- **Проблемы и поддержка**: Сообщайте о проблемах в [репозитории GitHub](https://github.com/chdb-io/chdb/issues)
 - **Документация C API**: [Документация привязок](https://github.com/chdb-io/chdb/blob/main/bindings.md)

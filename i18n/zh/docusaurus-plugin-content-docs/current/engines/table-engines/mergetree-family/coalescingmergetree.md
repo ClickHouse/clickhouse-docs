@@ -1,27 +1,25 @@
 ---
-'description': 'CoalescingMergeTree 继承自 MergeTree 引擎。其主要特征是在分区合并期间自动存储每个列的最后非空值。'
-'sidebar_label': 'CoalescingMergeTree'
-'sidebar_position': 50
-'slug': '/engines/table-engines/mergetree-family/coalescingmergetree'
-'title': 'CoalescingMergeTree'
-'keywords':
-- 'CoalescingMergeTree'
-'show_related_blogs': true
-'doc_type': 'reference'
+description: 'CoalescingMergeTree 继承自 MergeTree 引擎。其关键特性是在数据部分（part）合并期间，能够自动保留每列最后一个非空（non-null）值。'
+sidebar_label: 'CoalescingMergeTree'
+sidebar_position: 50
+slug: /engines/table-engines/mergetree-family/coalescingmergetree
+title: 'CoalescingMergeTree 表引擎'
+keywords: ['CoalescingMergeTree']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
+# CoalescingMergeTree 表引擎 {#coalescingmergetree-table-engine}
 
-# CoalescingMergeTree
-
-:::note 从版本 25.6 开始提供
-该表引擎从版本 25.6 及更高版本在 OSS 和 Cloud 中提供。
+:::note Available from version 25.6
+此表引擎从 25.6 及更高版本开始在 OSS 和 Cloud 中可用。
 :::
 
-该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/mergetree)。主要区别在于数据分片的合并方式：对于 `CoalescingMergeTree` 表，ClickHouse 会将所有具有相同主键（或者更准确地说，具有相同的 [排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行替换为一行，该行包含每列的最新非 NULL 值。
+该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/mergetree)。关键区别在于数据部分的合并方式：对于 `CoalescingMergeTree` 表，ClickHouse 会将所有具有相同主键（更准确地说，相同的[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行合并为一行，该行在每一列上都包含最新的非 NULL 值。
 
-这使得列级的 upserts 成为可能，这意味着您可以仅更新特定的列，而不是整个行。
+这实现了列级别的 upsert（插入或更新），也就是说，您可以只更新特定列，而不是整行。
 
-`CoalescingMergeTree` 旨在与非键列中的 Nullable 类型一起使用。如果列不是 Nullable，则行为与 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 相同。
+`CoalescingMergeTree` 旨在与非键列中的 Nullable 类型配合使用。如果这些列不是 Nullable，其行为与 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 相同。
 
 ## 创建表 {#creating-a-table}
 
@@ -38,30 +36,29 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 [SETTINGS name=value, ...]
 ```
 
-有关请求参数的描述，请参阅 [请求描述](../../../sql-reference/statements/create/table.md)。
+有关请求参数的说明，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
 
 ### CoalescingMergeTree 的参数 {#parameters-of-coalescingmergetree}
 
 #### 列 {#columns}
 
-`columns` - 一个包含将要合并的列名的元组。可选参数。
-    这些列必须是数字类型，并且不得在分区或排序键中。
+`columns` - 一个包含需要合并其值的列名的元组（tuple）。可选参数。
+这些列必须是数值类型，并且不能出现在分区键或排序键中。
 
- 如果未指定 `columns`，ClickHouse 将合并所有不在排序键中的列的值。
+如果未指定 `columns`，ClickHouse 会合并所有不在排序键中的列的值。
 
 ### 查询子句 {#query-clauses}
 
-创建 `CoalescingMergeTree` 表时，所需的 [子句](../../../engines/table-engines/mergetree-family/mergetree.md) 与创建 `MergeTree` 表时相同。
+在创建 `CoalescingMergeTree` 表时，所需的[子句](../../../engines/table-engines/mergetree-family/mergetree.md)与创建 `MergeTree` 表时相同。
 
 <details markdown="1">
+  <summary>已弃用的建表方法</summary>
 
-<summary>创建表的弃用方法</summary>
+  :::note
+  不要在新项目中使用此方法，并尽可能将旧项目切换到上面描述的方法。
+  :::
 
-:::note
-在新项目中不要使用此方法，如果可能，请将旧项目切换到上述方法。
-:::
-
-```sql
+  ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -70,15 +67,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] CoalescingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
-除了 `columns` 之外，所有参数的含义与 `MergeTree` 相同。
+  除 `columns` 之外的所有参数与 `MergeTree` 中的含义相同。
 
-- `columns` — 一个包含将被合并的列名的元组。可选参数。有关描述，请参见上面的文字。
-
+  * `columns` — 一个包含列名的元组（tuple），这些列的值将被求和。可选参数。相关说明见上文。
 </details>
 
-## 示例 {#usage-example}
+## 使用示例 {#usage-example}
 
-考虑以下表：
+请看下表：
 
 ```sql
 CREATE TABLE test_table
@@ -100,7 +96,7 @@ INSERT INTO test_table VALUES(1, 42, 'win', '2025-02-01');
 INSERT INTO test_table(key, value_date) VALUES(2, '2025-02-01');
 ```
 
-结果将如下所示：
+结果将如下：
 
 ```sql
 SELECT * FROM test_table ORDER BY key;
@@ -115,7 +111,7 @@ SELECT * FROM test_table ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-推荐的查询以获得正确和最终的结果：
+获取最终正确结果的推荐查询：
 
 ```sql
 SELECT * FROM test_table FINAL ORDER BY key;
@@ -128,11 +124,11 @@ SELECT * FROM test_table FINAL ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-使用 `FINAL` 修饰符强制 ClickHouse 在查询时应用合并逻辑，确保您获得每列的正确合并的“最新”值。这是在从 CoalescingMergeTree 表中查询时最安全和最准确的方法。
+在查询中使用 `FINAL` 修饰符会强制 ClickHouse 在查询阶段应用合并逻辑，确保能够为每一列得到正确、已合并的“最新”值。在从 CoalescingMergeTree 表查询时，这是最安全且最精确的方法。
 
 :::note
 
-如果基础分片尚未完全合并，则使用 `GROUP BY` 的方法可能会返回不正确的结果。
+如果底层数据分片（parts）尚未完全合并，使用 `GROUP BY` 的方式可能会返回不正确的结果。
 
 ```sql
 SELECT key, last_value(value_int), last_value(value_string), last_value(value_date)  FROM test_table GROUP BY key; -- Not recommended.

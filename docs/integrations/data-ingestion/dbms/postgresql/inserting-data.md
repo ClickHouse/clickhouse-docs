@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 We recommend reading [this guide](/guides/inserting-data) to learn best practices on inserting data to ClickHouse to optimize for insert performance.
 
-For bulk loading data from PostgreSQL, users can use:
+For bulk loading data from PostgreSQL, you can use:
 
 - using [ClickPipes](/integrations/clickpipes/postgres), the managed integration service for ClickHouse Cloud.
 - `PeerDB by ClickHouse`, an ETL tool specifically designed for PostgreSQL database replication to both self-hosted ClickHouse and ClickHouse Cloud.

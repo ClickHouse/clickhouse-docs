@@ -1,16 +1,15 @@
 ---
-'description': 'row_number ウィンドウ関数のドキュメント'
-'sidebar_label': 'row_number'
-'sidebar_position': 2
-'slug': '/sql-reference/window-functions/row_number'
-'title': 'row_number'
-'doc_type': 'reference'
+description: 'row_number ウィンドウ関数に関するドキュメント'
+sidebar_label: 'row_number'
+sidebar_position: 2
+slug: /sql-reference/window-functions/row_number
+title: 'row_number'
+doc_type: 'reference'
 ---
 
+# row&#95;number {#row&#95;number}
 
-# row_number
-
-パーティション内の現在の行に1から始まる番号を付けます。
+現在のパーティション内の行に対して、1 から始まる連番を振ります。
 
 **構文**
 
@@ -22,15 +21,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
 **返される値**
 
-- パーティション内の現在の行のための番号。[UInt64](../data-types/int-uint.md)。
+* パーティション内の現在の行の番号。[UInt64](../data-types/int-uint.md)。
 
 **例**
 
-次の例は、ビデオ教材[Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)で提供された例に基づいています。
+次の例は、動画教材 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で示されている例に基づいています。
 
 クエリ:
 
@@ -58,7 +57,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-結果:
+結果：
 
 ```response
    ┌─player──────────┬─salary─┬─row_number─┐

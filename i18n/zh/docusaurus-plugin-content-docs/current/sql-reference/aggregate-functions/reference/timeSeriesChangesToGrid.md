@@ -1,28 +1,30 @@
 ---
-'description': '聚合函数，计算在指定网格上对时间序列数据的类似于 PromQL 的变化。'
-'sidebar_position': 229
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesChangesToGrid'
-'title': 'timeSeriesChangesToGrid'
-'doc_type': 'reference'
+description: '聚合函数，用于在指定网格上对时间序列数据计算类似 PromQL 的 changes。'
+sidebar_position: 229
+slug: /sql-reference/aggregate-functions/reference/timeSeriesChangesToGrid
+title: 'timeSeriesChangesToGrid'
+doc_type: 'reference'
 ---
 
-聚合函数，将时间序列数据作为时间戳和值的对，并在由开始时间戳、结束时间戳和步长描述的规则时间网格上计算 [PromQL 类似的变化](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)。对于网格上的每个点，计算 `changes` 的样本在指定的时间窗口内考虑。
+聚合函数，接收由时间戳和值组成的时间序列数据对，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据中计算[类似 PromQL 的 changes](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)。对于网格上的每个点，用于计算 `changes` 的样本会在指定的时间窗口内进行选取和计算。
 
-参数：
-- `start timestamp` - 指定网格的开始
-- `end timestamp` - 指定网格的结束
-- `grid step` - 指定网格的步长（单位：秒）
-- `staleness` - 指定考虑样本的最大“陈旧性”（单位：秒）
+Parameters:
 
-参数：
-- `timestamp` - 样本的时间戳
-- `value` - 与 `timestamp` 对应的时间序列值
+* `start timestamp` - 指定网格的起始时间
+* `end timestamp` - 指定网格的结束时间
+* `grid step` - 指定网格的步长（秒）
+* `staleness` - 指定参与计算样本允许的最大“陈旧时间”（秒）
 
-返回值：
-在指定网格上的 `changes` 值，返回为 `Array(Nullable(Float64))`。返回的数组包含每个时间网格点的一个值。如果在窗口内没有样本用于计算特定网格点的变化值，则该值为 NULL。
+Arguments:
 
-示例：
-以下查询计算网格 [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上的 `changes` 值：
+* `timestamp` - 样本的时间戳
+* `value` - 对应该 `timestamp` 的时间序列值
+
+Return value:
+在指定网格上的 `changes` 值，类型为 `Array(Nullable(Float64))`。返回数组中每个元素对应一个时间网格点。如果在对应时间窗口内没有样本可用于计算某个网格点的 changes 值，则该元素为 NULL。
+
+Example:
+以下查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210, 225] 上计算 `changes` 值：
 
 ```sql
 WITH
@@ -52,7 +54,7 @@ FROM
    └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-也可以将多个时间戳和值样本作为相同大小的数组传递。使用数组参数的相同查询：
+也可以将多组时间戳和数值样本作为长度相同的数组传入。使用数组参数的同一查询如下：
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesChangesToGrid(start_ts, end_ts, step_seconds, window_seconds)(t
 ```
 
 :::note
-此函数为实验性功能，通过设置 `allow_experimental_ts_to_grid_aggregate_function=true` 来启用。
+此函数为实验性功能，可通过将 `allow_experimental_ts_to_grid_aggregate_function` 设置为 `true` 来启用。
 :::

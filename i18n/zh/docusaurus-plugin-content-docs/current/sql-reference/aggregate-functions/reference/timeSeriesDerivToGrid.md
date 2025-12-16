@@ -1,25 +1,27 @@
 ---
-'description': '聚合函数，计算指定网格上的类PromQL导数，基于时间序列数据。'
-'sidebar_position': 227
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesDerivToGrid'
-'title': 'timeSeriesDerivToGrid'
-'doc_type': 'reference'
+description: '在指定网格上，对时间序列数据计算类似 PromQL 的导数的聚合函数。'
+sidebar_position: 227
+slug: /sql-reference/aggregate-functions/reference/timeSeriesDerivToGrid
+title: 'timeSeriesDerivToGrid'
+doc_type: 'reference'
 ---
 
-聚合函数接受时间序列数据作为时间戳和数值的对，并计算该数据在由开始时间戳、结束时间戳和步长描述的规则时间网格上的 [PromQL 风格的导数](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv)。对于网格上的每个点，计算 `deriv` 的样本在指定的时间窗口内进行考虑。
+聚合函数，接收由时间戳和值组成的时间序列数据对作为输入，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据计算出[类似 PromQL 的导数](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv)。对于网格上的每个点，用于计算 `deriv` 的样本都限制在指定的时间窗口内。
 
 参数：
-- `start timestamp` - 指定网格的开始时间。
-- `end timestamp` - 指定网格的结束时间。
-- `grid step` - 指定网格的步长（以秒为单位）。
-- `staleness` - 指定考虑的样本的最大“过时”时间（以秒为单位）。过时窗口是左开右闭区间。
 
-参数：
-- `timestamp` - 样本的时间戳
-- `value` - 与 `timestamp` 相关的时间序列值
+* `start timestamp` - 指定网格的起始时间。
+* `end timestamp` - 指定网格的结束时间。
+* `grid step` - 指定网格的步长（秒）。
+* `staleness` - 指定被考虑样本的最大“陈旧度”（秒）。陈旧度窗口是一个左开右闭区间。
+
+参数（Arguments）：
+
+* `timestamp` - 样本的时间戳
+* `value` - 与该 `timestamp` 对应的时间序列值
 
 返回值：
-`deriv` 值以 `Array(Nullable(Float64))` 的形式出现在指定的网格上。返回的数组包含每个时间网格点的一个值。如果在窗口内没有足够的样本来计算特定网格点的导数值，则该值为 NULL。
+在指定网格上的 `deriv` 值，类型为 `Array(Nullable(Float64))`。返回数组对每个时间网格点包含一个值。如果在窗口中没有足够的样本来计算某个特定网格点的导数值，则该位置的值为 NULL。
 
 示例：
 以下查询在网格 [90, 105, 120, 135, 150, 165, 180, 195, 210] 上计算 `deriv` 值：
@@ -52,7 +54,7 @@ FROM
    └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-同样，可以将时间戳和数值的多个样本作为相同大小的数组传递。使用数组参数的相同查询：
+也可以将多个时间戳和对应的值样本作为大小相同的数组传递。使用数组参数时，同一查询如下所示：
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesDerivToGrid(start_ts, end_ts, step_seconds, window_seconds)(tim
 ```
 
 :::note
-此函数是实验性的，通过设置 `allow_experimental_ts_to_grid_aggregate_function=true` 启用它。
+该函数为实验性功能，可通过设置 `allow_experimental_ts_to_grid_aggregate_function=true` 来启用。
 :::

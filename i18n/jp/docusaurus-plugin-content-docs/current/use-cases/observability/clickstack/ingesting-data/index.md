@@ -1,19 +1,20 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackのためのデータ取り込み - ClickHouseの可観測性スタック'
-'title': 'データの取り込み'
-'doc_type': 'landing-page'
+slug: /use-cases/observability/clickstack/ingesting-data
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack のデータインジェスト - ClickHouse Observability Stack'
+title: 'データのインジェスト'
+doc_type: 'landing-page'
+keywords: ['ClickStack data ingestion', 'observability data ingestion
+', 'ClickStack OpenTelemetry', 'ClickHouse observability ingestion', 'telemetry data collection']
 ---
 
-ClickStackは、あなたのClickHouseインスタンスに可観測性データを取り込むための複数の方法を提供します。ログ、メトリクス、トレース、セッションデータを収集しているかにかかわらず、OpenTelemetry (OTel) コレクタを統一された取り込みポイントとして使用するか、特定のユースケースに特化したプラットフォーム固有の統合を活用できます。
+ClickStack は、オブザーバビリティデータを ClickHouse インスタンスにインジェストするための複数の方法を提供します。ログ、メトリクス、トレース、セッションデータのいずれを収集する場合でも、統一されたインジェストポイントとして OpenTelemetry (OTel) Collector を使用するか、特定のユースケース向けにプラットフォーム固有の連携機能を活用できます。
 
-| セクション | 説明 |
+| Section | Description |
 |------|-------------|
-| [概要](/use-cases/observability/clickstack/ingesting-data/overview) | データ取り込み方法とアーキテクチャの紹介 |
-| [OpenTelemetryを使用したデータ取り込み](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | OpenTelemetryを使用し、ClickStackとの迅速な統合を目指すユーザーのために |
-| [OpenTelemetryコレクタ](/use-cases/observability/clickstack/ingesting-data/otel-collector) | ClickStack OpenTelemetryコレクタの詳細情報 |
-| [Kubernetes](/use-cases/observability/clickstack/ingesting-data/kubernetes) | Kubernetesクラスターから可観測性データを収集するためのガイド |
-| [テーブルとスキーマ](/use-cases/observability/clickstack/ingesting-data/schemas) | ClickStackで使用されるClickHouseテーブルとそのスキーマの概要 |
-| [プログラミング言語SDK](/use-cases/observability/clickstack/sdks) | プログラミング言語をインストゥルメントし、テレメトリデータを収集するためのClickStack SDK |
+| [Overview](/use-cases/observability/clickstack/ingesting-data/overview) | データインジェスト方法とアーキテクチャの概要 |
+| [Ingesting data with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | OpenTelemetry を利用して ClickStack と迅速に連携したいユーザー向け |
+| [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) | ClickStack 用 OpenTelemetry Collector の詳細 |
+| [Tables and Schemas](/use-cases/observability/clickstack/ingesting-data/schemas) | ClickStack が使用する ClickHouse テーブルとそのスキーマの概要 |
+| [Language SDKs](/use-cases/observability/clickstack/sdks) | プログラミング言語をインスツルメントしてテレメトリデータを収集するための ClickStack SDKs |

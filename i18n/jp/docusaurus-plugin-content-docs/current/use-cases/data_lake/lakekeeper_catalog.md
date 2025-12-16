@@ -1,55 +1,51 @@
 ---
-'slug': '/use-cases/data-lake/lakekeeper-catalog'
-'sidebar_label': 'Lakekeeper カタログ'
-'title': 'Lakekeeper カタログ'
-'pagination_prev': null
-'pagination_next': null
-'description': 'このガイドでは、ClickHouse と Lakekeeper カタログを使用してデータをクエリする手順をご紹介します。'
-'keywords':
-- 'Lakekeeper'
-- 'REST'
-- 'Tabular'
-- 'Data Lake'
-- 'Iceberg'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/data-lake/lakekeeper-catalog
+sidebar_label: 'Lakekeeper カタログ'
+title: 'Lakekeeper カタログ'
+pagination_prev: null
+pagination_next: null
+description: 'このガイドでは、ClickHouse と Lakekeeper Catalog を使用してデータを照会する手順を説明します。'
+keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 :::note
-Lakekeeper カタログとの統合は Iceberg テーブルのみに対応しています。
-この統合は AWS S3 とその他のクラウドストレージプロバイダーの両方をサポートします。
+Lakekeeper Catalog との統合は、Iceberg テーブルでのみ利用できます。
+この統合は AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
-ClickHouse は複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。このガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータをクエリする手順を説明します。
+ClickHouse は、複数のカタログ (Unity、Glue、REST、Polaris など) との統合をサポートしています。本ガイドでは、ClickHouse と [Lakekeeper](https://docs.lakekeeper.io/) カタログを使用してデータにクエリを実行する手順を説明します。
 
-Lakekeeper は Apache Iceberg 用のオープンソース REST カタログ実装であり、次の機能を提供します：
-- **Rust ネイティブ** 実装により高いパフォーマンスと信頼性
-- **REST API** が Iceberg REST カタログ仕様に準拠
-- **クラウドストレージ** が S3 互換のストレージと統合
+Lakekeeper は Apache Iceberg 向けのオープンソース REST カタログ実装で、次の機能を提供します。
+
+* 高いパフォーマンスと信頼性を備えた **Rust ネイティブ** 実装
+* Iceberg REST カタログ仕様に準拠した **REST API**
+* S3 互換ストレージと連携する **クラウドストレージ** 統合
 
 :::note
-この機能は実験的であるため、以下を使用して有効にする必要があります：
+この機能は実験的機能のため、次の設定で有効化する必要があります。
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-## ローカル開発セットアップ {#local-development-setup}
+## ローカル開発環境のセットアップ {#local-development-setup}
 
-ローカル開発およびテストのために、コンテナ化された Lakekeeper セットアップを使用できます。このアプローチは、学習、プロトタイピング、および開発環境に最適です。
+ローカルでの開発やテストには、Lakekeeper のコンテナ化環境を使用できます。この方法は、学習、プロトタイピング、および開発環境に最適です。
 
 ### 前提条件 {#local-prerequisites}
 
-1. **Docker と Docker Compose**：Docker がインストールされ、実行中であることを確認します。
-2. **サンプルセットアップ**：Lakekeeper の docker-compose セットアップを使用できます。
+1. **Docker と Docker Compose**: Docker がインストールされ、起動していることを確認する
+2. **サンプルセットアップ**: Lakekeeper の docker-compose セットアップを利用できる
 
-### ローカル Lakekeeper カタログの設定 {#setting-up-local-lakekeeper-catalog}
+### ローカル Lakekeeper カタログのセットアップ {#setting-up-local-lakekeeper-catalog}
 
-公式の [Lakekeeper docker-compose セットアップ](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal) を使用できます。これにより、Lakekeeper、PostgreSQL メタデータバックエンド、およびオブジェクトストレージのための MinIO を含む完全な環境が提供されます。
+公式の [Lakekeeper の docker-compose セットアップ](https://github.com/lakekeeper/lakekeeper/tree/main/examples/minimal) を使用できます。これは、Lakekeeper、PostgreSQL メタデータバックエンド、オブジェクトストレージ用の MinIO を含む完全な環境を提供します。
 
-**ステップ 1:** サンプルを実行するための新しいフォルダーを作成し、次の構成を持つファイル `docker-compose.yml` を作成します：
+**ステップ 1:** サンプルを実行するための新しいフォルダーを作成し、次に以下の設定で `docker-compose.yml` ファイルを作成します。
 
 ```yaml
 version: '3.8'
@@ -217,31 +213,31 @@ networks:
     driver: bridge
 ```
 
-**ステップ 2:** 次のコマンドを実行してサービスを開始します：
+**ステップ 2：** 次のコマンドを実行してサービスを起動します。
 
 ```bash
 docker compose up -d
 ```
 
-**ステップ 3:** すべてのサービスが準備完了になるまで待ちます。ログを確認できます：
+**ステップ 3：** すべてのサービスが準備完了になるまで待ちます。ログを確認できます：
 
 ```bash
 docker-compose logs -f
 ```
 
 :::note
-Lakekeeper セットアップでは、まず Iceberg テーブルにサンプルデータがロードされる必要があります。ClickHouse を通じてクエリを実行する前に、環境がテーブルを作成し、データを投入していることを確認してください。テーブルの利用可能性は、特定の docker-compose セットアップおよびサンプルデータの読み込みスクリプトに依存します。
+Lakekeeper のセットアップでは、まずサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse を通じてクエリを実行する前に、環境でテーブルが作成され、データが投入されていることを必ず確認してください。テーブルが利用可能かどうかは、使用している特定の docker-compose セットアップやサンプルデータ読み込み用スクリプトに依存します。
 :::
 
-### ローカル Lakekeeper カタログへの接続 {#connecting-to-local-lakekeeper-catalog}
+### ローカルの Lakekeeper カタログへの接続 {#connecting-to-local-lakekeeper-catalog}
 
-ClickHouse コンテナに接続します：
+ClickHouse コンテナに接続します。
 
 ```bash
 docker exec -it lakekeeper-clickhouse clickhouse-client
 ```
 
-次に、Lakekeeper カタログへのデータベース接続を作成します：
+次に、Lakekeeper カタログ用のデータベース接続を作成します。
 
 ```sql
 SET allow_experimental_database_iceberg = 1;
@@ -251,9 +247,9 @@ ENGINE = DataLakeCatalog('http://lakekeeper:8181/catalog', 'minio', 'ClickHouse_
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/warehouse-rest', warehouse = 'demo'
 ```
 
-## ClickHouse を使用した Lakekeeper カタログテーブルのクエリ {#querying-lakekeeper-catalog-tables-using-clickhouse}
+## ClickHouse を使用して Lakekeeper カタログテーブルをクエリする {#querying-lakekeeper-catalog-tables-using-clickhouse}
 
-接続が設定されたので、Lakekeeper カタログを介してクエリを開始できます。例えば：
+接続が確立したので、Lakekeeper カタログ経由でクエリを実行できます。例えば次のとおりです。
 
 ```sql
 USE demo;
@@ -261,7 +257,7 @@ USE demo;
 SHOW TABLES;
 ```
 
-サンプルデータ (タクシーデータセットなど) が含まれている場合は、次のようなテーブルが表示されるはずです：
+セットアップにサンプルデータ（タクシーのデータセットなど）が含まれている場合は、次のようなテーブルが表示されます。
 
 ```sql title="Response"
 ┌─name──────────┐
@@ -270,18 +266,21 @@ SHOW TABLES;
 ```
 
 :::note
-テーブルが表示されない場合、通常は以下を意味します：
-1. 環境がまだサンプルテーブルを作成していない
-2. Lakekeeper カタログサービスが完全に初期化されていない
-3. サンプルデータの読み込みプロセスが完了していない
+テーブルが表示されない場合、通常は次のいずれかが原因です:
 
-テーブル作成の進捗を確認するために、Spark のログを確認できます：
+1. 環境でサンプルテーブルがまだ作成されていない
+2. Lakekeeper カタログサービスが完全に初期化されていない
+3. サンプルデータの読み込み処理が完了していない
+
+テーブル作成の進捗状況は Spark のログで確認できます:
+
 ```bash
 docker-compose logs spark
 ```
+
 :::
 
-テーブルをクエリするには (利用可能な場合)：
+テーブル（存在する場合）をクエリするには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
@@ -293,11 +292,11 @@ SELECT count(*) FROM `default.taxis`;
 └─────────┘
 ```
 
-:::note バックティックが必要
-ClickHouse は複数の名前空間をサポートしていないため、バックティックが必要です。
+:::note バッククォートが必要
+ClickHouse は複数のネームスペースをサポートしていないため、バッククォートが必要です。
 :::
 
-テーブルの DDL を検査するには：
+テーブルの DDL を確認するには:
 
 ```sql
 SHOW CREATE TABLE `default.taxis`;
@@ -331,9 +330,9 @@ SHOW CREATE TABLE `default.taxis`;
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## データレイクから ClickHouse へのデータの読み込み {#loading-data-from-your-data-lake-into-clickhouse}
+## データレイクから ClickHouse へのデータ取り込み {#loading-data-from-your-data-lake-into-clickhouse}
 
-Lakekeeper カタログから ClickHouse へデータを読み込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します：
+Lakekeeper カタログのデータを ClickHouse に取り込む必要がある場合は、まずローカルの ClickHouse テーブルを作成します。
 
 ```sql
 CREATE TABLE taxis
@@ -363,7 +362,7 @@ PARTITION BY toYYYYMM(tpep_pickup_datetime)
 ORDER BY (VendorID, tpep_pickup_datetime, PULocationID, DOLocationID);
 ```
 
-次に、`INSERT INTO SELECT` を介して Lakekeeper カタログテーブルからデータを読み込みます：
+次に、`INSERT INTO SELECT` を使用して Lakekeeper のカタログテーブルからデータをロードします。
 
 ```sql
 INSERT INTO taxis 

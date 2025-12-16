@@ -1,33 +1,34 @@
 ---
-slug: '/sql-reference/statements/select/prewhere'
-sidebar_label: PREWHERE
-description: 'Документация для PREWHERE Оператора'
-title: 'Условие PREWHERE'
-doc_type: reference
+description: 'Документация по предложению PREWHERE'
+sidebar_label: 'PREWHERE'
+slug: /sql-reference/statements/select/prewhere
+title: 'Предложение PREWHERE'
+doc_type: 'reference'
 ---
-# PREWHERE Оператор
 
-Prewhere — это оптимизация для более эффективного применения фильтрации. Она включена по умолчанию, даже если оператор `PREWHERE` не указан явно. Она работает, автоматически перемещая часть условий [WHERE](../../../sql-reference/statements/select/where.md) на этап prewhere. Роль оператора `PREWHERE` заключается лишь в том, чтобы контролировать эту оптимизацию, если вы считаете, что знаете, как это сделать лучше, чем происходит по умолчанию.
+# Оператор PREWHERE {#prewhere-clause}
 
-С оптимизацией prewhere сначала читаются только столбцы, необходимые для выполнения выражения prewhere. Затем читаются другие столбцы, которые нужны для выполнения остальной части запроса, но только те блоки, где выражение prewhere равно `true` хотя бы для некоторых строк. Если существует много блоков, в которых выражение prewhere равно `false` для всех строк, и prewhere требует меньше столбцов, чем другие части запроса, это часто позволяет считывать гораздо меньше данных с диска для выполнения запроса.
+Prewhere — это оптимизация, позволяющая применять фильтрацию более эффективно. Она включена по умолчанию, даже если оператор `PREWHERE` явно не указан. Оптимизация работает за счёт автоматического переноса части условия [WHERE](../../../sql-reference/statements/select/where.md) на этап PREWHERE. Роль оператора `PREWHERE` состоит только в управлении этой оптимизацией, если вы считаете, что можете настроить её лучше, чем это делается по умолчанию.
 
-## Управление Prewhere Вручную {#controlling-prewhere-manually}
+С оптимизацией PREWHERE сначала считываются только те столбцы, которые необходимы для вычисления выражения PREWHERE. Затем считываются остальные столбцы, которые нужны для выполнения оставшейся части запроса, но только для тех блоков, где выражение PREWHERE равно `true` хотя бы для некоторых строк. Если есть много блоков, где выражение PREWHERE равно `false` для всех строк, и PREWHERE требует меньше столбцов, чем другие части запроса, это часто позволяет считать с диска значительно меньше данных при выполнении запроса.
 
-Оператор имеет то же значение, что и оператор `WHERE`. Разница заключается в том, какие данные читаются из таблицы. При ручном управлении `PREWHERE` для условий фильтрации, которые используются меньшинством столбцов в запросе, но обеспечивают сильную фильтрацию данных, уменьшается объем читаемых данных.
+## Ручное управление PREWHERE {#controlling-prewhere-manually}
 
-Запрос может одновременно указывать `PREWHERE` и `WHERE`. В этом случае `PREWHERE` предшествует `WHERE`.
+Эта конструкция имеет то же значение, что и предложение `WHERE`. Разница заключается в том, какие данные читаются из таблицы. Ручное управление `PREWHERE` целесообразно, когда условия фильтрации используются лишь для небольшой части столбцов в запросе, но обеспечивают сильную фильтрацию данных. Это уменьшает объем читаемых данных.
 
-Если настройка [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) установлена в 0, эвристика автоматического перемещения частей выражений из `WHERE` в `PREWHERE` отключается.
+Запрос может одновременно указывать `PREWHERE` и `WHERE`. В этом случае `PREWHERE` выполняется раньше `WHERE`.
 
-Если запрос имеет [FINAL](/sql-reference/statements/select/from#final-modifier) модификатор, оптимизация `PREWHERE` не всегда корректна. Она включается только в том случае, если обе настройки [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) и [optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final) включены.
+Если настройка [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) установлена в 0, эвристики, автоматически переносящие части выражений из `WHERE` в `PREWHERE`, отключены.
+
+Если в запросе используется модификатор [FINAL](/sql-reference/statements/select/from#final-modifier), оптимизация `PREWHERE` не всегда корректна. Она включена только в том случае, если обе настройки [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) и [optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final) включены.
 
 :::note    
-Секция `PREWHERE` выполняется перед `FINAL`, поэтому результаты запросов `FROM ... FINAL` могут быть искажены при использовании `PREWHERE` с полями, не входящими в секцию `ORDER BY` таблицы.
+Часть запроса `PREWHERE` выполняется до `FINAL`, поэтому результаты запросов `FROM ... FINAL` могут быть искажены при использовании `PREWHERE` с полями, которых нет в секции `ORDER BY` таблицы.
 :::
 
 ## Ограничения {#limitations}
 
-`PREWHERE` поддерживается только таблицами из семейства [*MergeTree](../../../engines/table-engines/mergetree-family/index.md).
+`PREWHERE` можно использовать только с таблицами из семейства [*MergeTree](../../../engines/table-engines/mergetree-family/index.md).
 
 ## Пример {#example}
 

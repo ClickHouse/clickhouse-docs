@@ -1,21 +1,20 @@
 ---
-'description': 'MongoDB エンジンはリードオンリーのテーブルエンジンで、リモートコレクションからデータを読み取ることができます。'
-'sidebar_label': 'MongoDB'
-'sidebar_position': 135
-'slug': '/engines/table-engines/integrations/mongodb'
-'title': 'MongoDB'
-'doc_type': 'guide'
+description: 'MongoDB エンジンは、リモートのコレクションからデータを読み出すことを可能にする読み取り専用のテーブルエンジンです。'
+sidebar_label: 'MongoDB'
+sidebar_position: 135
+slug: /engines/table-engines/integrations/mongodb
+title: 'MongoDB テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# MongoDB テーブルエンジン {#mongodb-table-engine}
 
-# MongoDB
+MongoDB エンジンは、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。
 
-MongoDBエンジンはリードオンリーのテーブルエンジンであり、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取ることができます。
+MongoDB v3.6 以降のサーバーのみがサポートされています。
+[シードリスト（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) は現在サポートされていません。
 
-MongoDB v3.6+ サーバーのみがサポートされています。
-[Seed list(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) はまだサポートされていません。
-
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
@@ -28,22 +27,22 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 **エンジンパラメータ**
 
-| パラメータ       | 説明                                                                                                                                                                                              |
-|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `host:port`      | MongoDBサーバーのアドレス。                                                                                                                                                                      |
-| `database`       | リモートデータベース名。                                                                                                                                                                        |
-| `collection`     | リモートコレクション名。                                                                                                                                                                        |
-| `user`           | MongoDBユーザー。                                                                                                                                                                              |
-| `password`       | ユーザーパスワード。                                                                                                                                                                             |
-| `options`        | オプション。MongoDB接続文字列の [オプション](https://www.mongodb.com/docs/manual/reference/connection-string-options/#connection-options) をURL形式の文字列で指定。例: `'authSource=admin&ssl=true'` |
-| `oid_columns`    | WHERE句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトは `_id`。                                                                                                                 |
+| Parameter     | Description                                                                                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `host:port`   | MongoDB サーバーのアドレス。                                                                                                                                                             |
+| `database`    | リモートデータベース名。                                                                                                                                                                   |
+| `collection`  | リモートコレクション名。                                                                                                                                                                   |
+| `user`        | MongoDB ユーザー。                                                                                                                                                                  |
+| `password`    | ユーザーのパスワード。                                                                                                                                                                    |
+| `options`     | オプション。URL 形式の文字列として指定する MongoDB 接続文字列の [options](https://www.mongodb.com/docs/manual/reference/connection-string-options/#connection-options)。例: `'authSource=admin&ssl=true'` |
+| `oid_columns` | WHERE 句で `oid` として扱う列のカンマ区切りリスト。デフォルトは `_id`。                                                                                                                                  |
 
 :::tip
-MongoDB Atlasクラウドオファリングを使用している場合、接続URLは「Atlas SQL」オプションから取得できます。
-Seed list(`mongodb**+srv**`) はまだサポートされていませんが、今後のリリースで追加される予定です。
+MongoDB Atlas のクラウドサービスを使用している場合、接続 URL は「Atlas SQL」オプションから取得できます。
+シードリスト（`mongodb+srv`）はまだサポートされていませんが、今後のリリースで追加される予定です。
 :::
 
-または、URIを渡すこともできます：
+別の方法として、URI を渡すこともできます。
 
 ```sql
 ENGINE = MongoDB(uri, collection[, oid_columns]);
@@ -51,34 +50,34 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 **エンジンパラメータ**
 
-| パラメータ       | 説明                                                                                                            |
-|------------------|----------------------------------------------------------------------------------------------------------------|
-| `uri`            | MongoDBサーバーの接続URI。                                                                                      |
-| `collection`     | リモートコレクション名。                                                                                        |
-| `oid_columns`    | WHERE句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトは `_id`。                                  |
+| パラメータ         | 説明                                                |
+| ------------- | ------------------------------------------------- |
+| `uri`         | MongoDB サーバーの接続 URI。                              |
+| `collection`  | リモートコレクション名。                                      |
+| `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定します。既定では `_id` です。 |
 
-## タイプマッピング {#types-mappings}
+## 型マッピング {#types-mappings}
 
-| MongoDB                 | ClickHouse                                                             |
-|-------------------------|------------------------------------------------------------------------|
-| bool, int32, int64      | *任意の数値型（Decimalを除く）*, Boolean, String                   |
-| double                  | Float64, String                                                       |
-| date                    | Date, Date32, DateTime, DateTime64, String                            |
-| string                  | String, *正しくフォーマットされた場合の任意の数値型（Decimalを除く）*    |
-| document                | String（JSONとして）                                                 |
-| array                   | Array, String（JSONとして）                                          |
-| oid                     | String                                                                |
-| binary                  | カラム内にある場合はString、配列またはドキュメント内にある場合はbase64エンコードされた文字列 |
-| uuid (binary subtype 4) | UUID                                                                  |
-| *その他のもの*          | String                                                                |
+| MongoDB                 | ClickHouse                                          |
+| ----------------------- | --------------------------------------------------- |
+| bool, int32, int64      | *Decimals を除く任意の数値型*、Boolean、String                 |
+| double                  | Float64、String                                      |
+| date                    | Date、Date32、DateTime、DateTime64、String              |
+| string                  | String、*正しくフォーマットされていれば任意の数値型 (Decimals を除く)*       |
+| document                | String(JSON として)                                    |
+| array                   | Array、String(JSON として)                              |
+| oid                     | String                                              |
+| binary                  | カラム内では String、配列または document 内では base64 エンコードされた文字列 |
+| uuid (binary subtype 4) | UUID                                                |
+| *その他すべて*                | String                                              |
 
-MongoDBドキュメントにキーが見つからない場合（例えば、カラム名が一致しない場合）、デフォルト値または `NULL`（カラムがnullableである場合）が挿入されます。
+キーが MongoDB ドキュメント内に存在しない場合 (たとえばカラム名が一致しない場合)、デフォルト値または (カラムが Nullable の場合は) `NULL` が挿入されます。
 
 ### OID {#oid}
 
-WHERE句で `String` を `oid` として扱いたい場合、テーブルエンジンの最後の引数にカラム名を指定してください。
-これは、デフォルトでMongoDBの `_id` カラムが `oid` 型であるため、レコードを `_id` カラムでクエリする際に必要です。
-テーブル内の `_id` フィールドが他の型、例えば `uuid` の場合、空の `oid_columns` を指定する必要があります。さもなくば、このパラメータのデフォルト値 `_id` が使用されます。
+WHERE 句で `String` を `oid` として扱いたい場合は、テーブルエンジンの最後の引数にそのカラム名を指定します。
+これは、MongoDB でデフォルトで `oid` 型を持つ `_id` カラムでレコードをクエリする際に必要になる場合があります。
+テーブル内の `_id` フィールドが、たとえば `uuid` のような別の型である場合は、空の `oid_columns` を指定しなければなりません。指定しない場合、このパラメータのデフォルト値である `_id` が使用されます。
 
 ```javascript
 db.sample_oid.insertMany([
@@ -94,7 +93,7 @@ db.sample_oid.find();
 ]
 ```
 
-デフォルトでは、`_id` のみが `oid` カラムとして扱われます。
+既定では、`_id` のみが `oid` 列として扱われます。
 
 ```sql
 CREATE TABLE sample_oid
@@ -107,7 +106,7 @@ SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will ou
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
-この場合、出力は `0` になります。ClickHouseは `another_oid_column` が `oid` 型であることを認識しないため、これを修正しましょう：
+この場合、出力は `0` になります。ClickHouse は `another_oid_column` が `oid` 型であることを認識していないためです。では、次のように修正しましょう：
 
 ```sql
 CREATE TABLE sample_oid
@@ -127,36 +126,36 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
-## サポートされる句 {#supported-clauses}
+## サポートされている句 {#supported-clauses}
 
-単純な式を持つクエリのみがサポートされています（例えば、 `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
-このような式はMongoDBのクエリ言語に変換され、サーバー側で実行されます。
-すべての制限を無効にするには、 [mongodb_throw_on_unsupported_query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) を使用します。
-その場合、ClickHouseは可能な限りクエリを変換しようとしますが、これにより全表スキャンやClickHouse側での処理が発生する可能性があります。
+単純な式を含むクエリのみがサポートされます（例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
+このような式は MongoDB のクエリ言語に変換され、サーバー側で実行されます。
+[mongodb&#95;throw&#95;on&#95;unsupported&#95;query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) を使用して、これらの制限をすべて無効化できます。
+その場合、ClickHouse は可能な限り最善を尽くしてクエリを変換しようとしますが、テーブル全体のスキャンや ClickHouse 側での処理が発生する可能性があります。
 
 :::note
-リテラルの型を明示的に設定する方が常に良いです。Mongoは厳格な型のフィルタを要求するので。\
-例えば、`Date` でフィルタリングしたい場合：
+MongoDB では厳密な型付きフィルタが必要となるため、リテラルの型を明示的に設定することを常に推奨します。\
+例えば、`Date` 型でフィルタリングしたい場合:
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'
 ```
 
-これは機能しません。なぜならMongoは文字列を `Date` にキャストしないからです。したがって、手動でキャストする必要があります：
+これは、Mongo が文字列を `Date` にキャストしないため動作しません。そのため、手動でキャストする必要があります。
 
 ```sql
 SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024-01-01')
 ```
 
-これは `Date`, `Date32`, `DateTime`, `Bool`, `UUID` に適用されます。
+これは `Date`、`Date32`、`DateTime`、`Bool`、`UUID` の各型に適用されます。
 
 :::
 
 ## 使用例 {#usage-example}
 
-MongoDBに [sample_mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) データセットがロードされていると仮定します。
+MongoDB に [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix) データセットが読み込まれていることを前提とします
 
-MongoDBコレクションからデータを読み取ることを許可するClickHouseのテーブルを作成します：
+MongoDB コレクション内のデータを読み取るための ClickHouse テーブルを作成します：
 
 ```sql
 CREATE TABLE sample_mflix_table
@@ -233,6 +232,6 @@ LIMIT 3;
 ```
 
 ## トラブルシューティング {#troubleshooting}
-DEBUGレベルのログで生成されたMongoDBクエリを確認できます。
+DEBUG レベルのログで生成された MongoDB クエリを確認できます。
 
-実装の詳細は [mongocxx](https://github.com/mongodb/mongo-cxx-driver) および [mongoc](https://github.com/mongodb/mongo-c-driver) のドキュメントで確認できます。
+実装の詳細については、[mongocxx](https://github.com/mongodb/mongo-cxx-driver) および [mongoc](https://github.com/mongodb/mongo-c-driver) のドキュメントを参照してください。

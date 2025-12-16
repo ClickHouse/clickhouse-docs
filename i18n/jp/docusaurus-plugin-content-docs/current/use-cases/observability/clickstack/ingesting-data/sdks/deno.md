@@ -1,26 +1,27 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/deno'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'Deno SDK for ClickStack - ClickHouse 可观察性堆栈'
-'title': 'Deno'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/deno
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'ClickStack 用 Deno SDK - ClickHouse オブザーバビリティ スタック'
+title: 'Deno'
+doc_type: 'guide'
+keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 統合', 'Deno オブザーバビリティ', 'Deno ロギング SDK']
 ---
 
-このガイドは以下を統合します：
+このガイドでは、次の内容を統合します:
 
-- **ログ**
+* **ログ**
 
 :::note
-現在、OpenTelemetry ロギングのみをサポートしています。トレーシングのサポートについては、[以下のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
+現在は OpenTelemetry Logging のみをサポートしています。トレースを利用する場合は、[次のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
 
 ## ロギング {#logging}
 
-ロギングは、`std/log` モジュールのカスタムロガーをエクスポートすることでサポートされています。
+`std/log` モジュール用のカスタムロガーをエクスポートすることで、ロギングに対応しています。
 
-**使用例：**
+**使用例:**
 
 ```typescript
 import * as log from 'https://deno.land/std@0.203.0/log/mod.ts';

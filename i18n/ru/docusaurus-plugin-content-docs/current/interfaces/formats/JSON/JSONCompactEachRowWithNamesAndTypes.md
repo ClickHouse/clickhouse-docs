@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONCompactEachRowWithNamesAndTypes'
+alias: []
 description: 'Документация по формату JSONCompactEachRowWithNamesAndTypes'
-title: JSONCompactEachRowWithNamesAndTypes
-keywords: ['JSONCompactEachRowWithNamesAndTypes']
-doc_type: reference
 input_format: true
+keywords: ['JSONCompactEachRowWithNamesAndTypes']
 output_format: true
+slug: /interfaces/formats/JSONCompactEachRowWithNamesAndTypes
+title: 'JSONCompactEachRowWithNamesAndTypes'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## Описание {#description}
 
-Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит две строки заголовка с именами и типами колонок, аналогично формату [TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md).
+Отличается от формата [`JSONCompactEachRow`](./JSONCompactEachRow.md) тем, что также выводит две заголовочные строки с именами и типами столбцов, аналогично формату [TabSeparatedWithNamesAndTypes](../TabSeparated/TabSeparatedWithNamesAndTypes.md).
 
 ## Пример использования {#example-usage}
 
 ### Вставка данных {#inserting-data}
 
-Используя файл JSON с следующими данными, названный `football.json`:
+Используйте JSON-файл со следующими данными под именем `football.json`:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -51,7 +53,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactEachRowWithNa
 
 ### Чтение данных {#reading-data}
 
-Читать данные, используя формат `JSONCompactEachRowWithNamesAndTypes`:
+Считайте данные в формате `JSONCompactEachRowWithNamesAndTypes`:
 
 ```sql
 SELECT *
@@ -59,7 +61,7 @@ FROM football
 FORMAT JSONCompactEachRowWithNamesAndTypes
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 ["date", "season", "home_team", "away_team", "home_team_goals", "away_team_goals"]
@@ -86,9 +88,9 @@ FORMAT JSONCompactEachRowWithNamesAndTypes
 ## Настройки формата {#format-settings}
 
 :::note
-Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) установлена в `1`,
-колонки из входных данных будут сопоставлены с колонками из таблицы по их именам, колонки с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) установлена в 1.
+Если настройка [`input_format_with_names_use_header`](/operations/settings/settings-formats.md/#input_format_with_names_use_header) равна `1`,
+столбцы из входных данных будут сопоставлены со столбцами таблицы по их именам, а столбцы с неизвестными именами будут пропущены, если настройка [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) равна `1`.
 В противном случае первая строка будет пропущена.
-Если настройка [`input_format_with_types_use_header`](/operations/settings/settings-formats.md/#input_format_with_types_use_header) установлена в `1`,
-типы из входных данных будут сравниваться с типами соответствующих колонок из таблицы. В противном случае вторая строка будет пропущена.
+Если настройка [`input_format_with_types_use_header`](/operations/settings/settings-formats.md/#input_format_with_types_use_header) равна `1`,
+типы из входных данных будут сравниваться с типами соответствующих столбцов таблицы. В противном случае вторая строка будет пропущена.
 :::

@@ -2,14 +2,14 @@
 sidebar_label: 'Service uptime and SLA'
 slug: /cloud/manage/service-uptime
 title: 'Service uptime'
-description: 'Users can now see regional uptimes on the status page and subscribe to alerts on service disruptions.'
+description: 'You can now see regional uptimes on the status page and subscribe to alerts on service disruptions.'
 keywords: ['ClickHouse Cloud', 'service uptime', 'SLA', 'cloud reliability', 'status monitoring']
 doc_type: 'reference'
 ---
 
 ## Uptime alerts {#uptime-alerts}
 
-Users can now see regional uptimes on the [status page](https://status.clickhouse.com/) and subscribe to alerts on service disruptions.
+You can now see regional uptimes on the [status page](https://status.clickhouse.com/) and subscribe to alerts on service disruptions.
 
 ## SLA {#sla}
 

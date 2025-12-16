@@ -1,15 +1,15 @@
 ---
-'description': 'ClickHouse 中 IPv6 数据类型的文档，存储 IPv6 地址为 16 字节值'
-'sidebar_label': 'IPv6'
-'sidebar_position': 30
-'slug': '/sql-reference/data-types/ipv6'
-'title': 'IPv6'
-'doc_type': 'reference'
+description: '本文档介绍 ClickHouse 中的 IPv6 数据类型，该类型将 IPv6 地址存储为 16 字节的值'
+sidebar_label: 'IPv6'
+sidebar_position: 30
+slug: /sql-reference/data-types/ipv6
+title: 'IPv6'
+doc_type: 'reference'
 ---
 
 ## IPv6 {#ipv6}
 
-IPv6 地址。以 UInt128 大端格式存储在 16 字节中。
+IPv6 地址。以大端序的 16 字节 UInt128 形式存储。
 
 ### 基本用法 {#basic-usage}
 
@@ -26,13 +26,13 @@ DESCRIBE TABLE hits;
 └──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┘
 ```
 
-或者您可以使用 `IPv6` 域作为键：
+或者可以使用 `IPv6` 域名作为键：
 
 ```sql
 CREATE TABLE hits (url String, from IPv6) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv6` 域支持自定义输入为 IPv6 字符串：
+`IPv6` 域支持使用 IPv6 字符串作为自定义输入：
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '2a02:aa08:e000:3100::2')('https://clickhouse.com', '2001:44c8:129:2632:33:0:252:2')('https://clickhouse.com/docs/en/', '2a02:e980:1e::1');
@@ -48,7 +48,7 @@ SELECT * FROM hits;
 └────────────────────────────────────┴───────────────────────────────┘
 ```
 
-值以紧凑的二进制形式存储：
+数值以紧凑的二进制格式存储：
 
 ```sql
 SELECT toTypeName(from), hex(from) FROM hits LIMIT 1;
@@ -72,6 +72,6 @@ SELECT toIPv4('127.0.0.1') = toIPv6('::ffff:127.0.0.1');
 └─────────────────────────────────────────────────────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [处理 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)
+* [用于处理 IPv4 和 IPv6 地址的函数](../functions/ip-address-functions.md)

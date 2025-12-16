@@ -1,16 +1,16 @@
 ---
-'description': 'lead ウィンドウ関数に関する Documentation'
-'sidebar_label': 'lead'
-'sidebar_position': 10
-'slug': '/sql-reference/window-functions/lead'
-'title': 'lead'
-'doc_type': 'reference'
+description: 'lead ウィンドウ関数に関するドキュメント'
+sidebar_label: 'lead'
+sidebar_position: 10
+slug: /sql-reference/window-functions/lead
+title: 'lead'
+doc_type: 'reference'
 ---
 
+# lead {#lead}
 
-# lead
-
-現在の行のオフセット行で評価された値を ordered frame 内で返します。この関数は [`leadInFrame`](./leadInFrame.md) に似ていますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` フレームを使用します。
+並べ替えられたフレーム内で、現在の行から `offset` 行後の行で評価された値を返します。
+この関数は [`leadInFrame`](./leadInFrame.md) と類似していますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` というフレームを使用します。
 
 **構文**
 
@@ -21,21 +21,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**パラメータ**
+**パラメーター**
 
-- `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 （オプショナル - デフォルトは `1`）。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返される値。 （オプショナル - 省略した場合はカラム型のデフォルト値）。
+* `x` — 列名。
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（省略可。省略時は `1`）
+* `default` — 計算対象の行がウィンドウフレームの範囲外となった場合に返す値。（省略可。省略時は列の型のデフォルト値）
 
-**返される値**
+**戻り値**
 
-- ordered frame 内で現在の行のオフセット行で評価された値。
+* 順序付けされたフレーム内で、現在の行から `offset` 行後の行で評価された値。
 
 **例**
 
-この例では、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を参照し、`lead` 関数を使用して物理学カテゴリーの連続受賞者のリストを返します。
+この例では、ノーベル賞受賞者の[過去データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を使用し、物理学部門における連続した受賞者の一覧を返すために `lead` 関数を利用します。
 
 ```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates

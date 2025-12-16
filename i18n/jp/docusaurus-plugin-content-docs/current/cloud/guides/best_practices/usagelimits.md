@@ -1,37 +1,43 @@
 ---
-'slug': '/cloud/bestpractices/usage-limits'
-'sidebar_label': 'サービス制限'
-'title': '使用制限'
-'description': 'ClickHouse Cloudにおける推奨使用制限について説明します。'
-'doc_type': 'reference'
+slug: /cloud/bestpractices/usage-limits
+sidebar_label: 'サービス制限'
+title: '利用制限'
+description: 'ClickHouse Cloud における推奨利用制限について説明します'
+doc_type: 'reference'
+keywords: ['使用制限', 'クオータ', 'ベストプラクティス', 'リソース管理', 'Cloud 機能']
 ---
 
-While ClickHouse is known for its speed and reliability, optimal performance is 
-achieved within certain operating parameters. For example, having too many tables,
-databases, or parts can negatively impact performance. To prevent this, ClickHouse
-Cloud enforces limits across several operational dimensions. 
-The details of these guardrails are listed below.
+ClickHouse は高速かつ信頼性が高いことで知られていますが、最適なパフォーマンスは
+特定の運用パラメータの範囲内で発揮されます。たとえば、テーブル・データベース・パーツ
+が多すぎると、パフォーマンスに悪影響を及ぼす可能性があります。これを防ぐために、
+ClickHouse Cloud はいくつかの運用面において制限を設けています。
+これらのガードレールの詳細は以下のとおりです。
 
 :::tip
-もしこれらのガードレールの1つに直面している場合、あなたのユースケースが最適化されていない方法で実装されている可能性があります。サポートチームにご連絡いただければ、ガードレールを超えないようにユースケースを改善するお手伝いを喜んでさせていただきます。または、制御された方法でガードレールを拡張する方法を一緒に検討できます。 
+これらのガードレールのいずれかに達した場合、ユースケースの実装が最適化されて
+いない可能性があります。サポートチームまでお問い合わせください。制限を超えないように
+ユースケースの改善をお手伝いするほか、制御された方法で制限を引き上げられないかを
+一緒に検討します。
 :::
 
-| Dimension                     | Limit                                                      |
-|-------------------------------|------------------------------------------------------------|
-| **Databases**                 | 1000                                                       |
-| **Tables**                    | 5000                                                       |
-| **Columns**                   | ∼1000 (ワイドフォーマットがコンパクトよりも推奨されます)                |
-| **Partitions**                | 50k                                                        |
-| **Parts**                     | 100k across the entire instance                            |
-| **Part size**                 | 150gb                                                      |
-| **Services per organization** | 20 (ソフト)                                                  |
-| **Services per warehouse**    | 5 (ソフト)                                                   |
-| **Replicas per service**      | 20 (ソフト)                                                  |  
-| **Low cardinality**           | 10k or less                                                |
-| **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
-| **Query concurrency**         | 1000 (per replica)                                         |
-| **Batch ingest**              | 1M を超えるものはシステムによって 1M 行のブロックに分割されます |
+| 項目                            | 制限                                                                                              |
+|-------------------------------|---------------------------------------------------------------------------------------------------|
+| **データベース**               | 1000                                                                                              |
+| **テーブル**                   | 5000                                                                                              |
+| **カラム**                     | 約 1000（コンパクト形式よりワイド形式を推奨）                                                     |
+| **パーティション**             | 50k                                                                                               |
+| **パーツ**                     | 10k（[`max_parts_in_total`](/whats-new/cloud-compatibility#max_parts_in_total-10000) 設定を参照） |
+| **パーツサイズ**               | 150 GB                                                                                            |
+| **組織あたりのサービス数**     | 20（ソフト制限）                                                                                  |
+| **ウェアハウスあたりのサービス数** | 5（ソフト制限）                                                                                   |
+| **サービスあたりのレプリカ数** | 20（ソフト制限）                                                                                  |  
+| **Low cardinality**           | 10k 以下                                                                                          |
+| **テーブル内のプライマリキー数** | データを十分に絞り込める 4～5 個                                                                  |
+| **クエリ同時実行数**          | 1000（レプリカあたり）                                                                           |
+| **バッチ取り込み**             | 1M 行を超えるものは、システムによって 1M 行ごとのブロックに分割される                            |
 
 :::note
-シングルレプリカサービスの場合、データベースの最大数は100に制限され、テーブルの最大数は500に制限されます。また、ベーシックティアサービスのストレージは1TBに制限されています。
+Single Replica Services の場合、データベース数の最大値は 100 に制限され、
+テーブル数の最大値は 500 に制限されます。加えて、Basic Tier Services のストレージは
+1 TB に制限されます。
 :::

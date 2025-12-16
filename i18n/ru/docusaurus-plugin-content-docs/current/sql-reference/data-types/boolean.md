@@ -1,12 +1,13 @@
 ---
-slug: '/sql-reference/data-types/boolean'
-sidebar_label: Boolean
+description: 'Документация по булевому типу данных в ClickHouse'
+sidebar_label: 'Булевый'
 sidebar_position: 33
-description: 'Документация для типа данных BOOLEAN в ClickHouse'
-title: Bool
-doc_type: reference
+slug: /sql-reference/data-types/boolean
+title: 'Bool'
+doc_type: 'reference'
 ---
-# Bool
+
+# Bool {#bool}
 
 Тип `bool` внутренне хранится как UInt8. Возможные значения: `true` (1), `false` (0).
 

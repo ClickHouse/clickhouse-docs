@@ -1,22 +1,24 @@
 ---
-slug: '/interfaces/formats/JSONColumnsWithMetadata'
-description: 'Документация для формата JSONColumnsWithMetadata'
-title: JSONColumnsWithMetadata
-keywords: ['JSONColumnsWithMetadata']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONColumnsWithMetadata'
 input_format: true
+keywords: ['JSONColumnsWithMetadata']
 output_format: true
+slug: /interfaces/formats/JSONColumnsWithMetadata
+title: 'JSONColumnsWithMetadata'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
-Отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что также содержит некоторую метадату и статистику (аналогично формату [`JSON`](./JSON.md)).
+Отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что также содержит некоторые метаданные и статистику (аналогично формату [`JSON`](./JSON.md)).
 
 :::note
-Формат `JSONColumnsWithMetadata` буферизует все данные в памяти и затем выводит их как один блок, поэтому это может привести к высокому потреблению памяти.
+Формат `JSONColumnsWithMetadata` буферизует все данные в памяти и затем выводит их одним блоком, поэтому может приводить к высокому потреблению памяти.
 :::
 
 ## Пример использования {#example-usage}
@@ -62,7 +64,7 @@ output_format: true
 }
 ```
 
-Для формата ввода `JSONColumnsWithMetadata`, если параметр [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлен в `1`,
-типы из метаданных во входных данных будут сравниваться с типами соответствующих колонок из таблицы.
+Для формата ввода `JSONColumnsWithMetadata`, если параметр [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) имеет значение `1`,
+типы, указанные в метаданных во входных данных, будут сравниваться с типами соответствующих столбцов таблицы.
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

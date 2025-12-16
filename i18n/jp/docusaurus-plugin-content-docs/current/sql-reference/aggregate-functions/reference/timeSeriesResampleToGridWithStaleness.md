@@ -1,30 +1,32 @@
 ---
-'description': '指定されたグリッドに対して時系列データを再サンプリングする集約関数。'
-'sidebar_position': 226
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesResampleToGridWithStaleness'
-'title': 'timeSeriesResampleToGridWithStaleness'
-'doc_type': 'reference'
+description: '指定されたグリッドにタイムシリーズデータを再サンプリングする集約関数。'
+sidebar_position: 226
+slug: /sql-reference/aggregate-functions/reference/timeSeriesResampleToGridWithStaleness
+title: 'timeSeriesResampleToGridWithStaleness'
+doc_type: 'reference'
 ---
 
-Aggregate function that takes time series data as pairs of timestamps and values and re-samples this data to a regular time grid described by start timestamp, end timestamp and step. For each point on the grid the most recent (within the specified time window) sample is chosen.
+タイムスタンプと値のペアとして与えられたタイムシリーズデータを、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッドに再サンプリングする集約関数です。グリッド上の各ポイントについて、（指定された時間ウィンドウ内で）最も新しいサンプルが選択されます。
 
-Alias: `timeSeriesLastToGrid`.
+エイリアス: `timeSeriesLastToGrid`。
 
-Parameters:
-- `start timestamp` - グリッドの開始時刻を指定します
-- `end timestamp` - グリッドの終了時刻を指定します
-- `grid step` - グリッドのステップ（秒単位）を指定します
-- `staleness window` - 最近のサンプルの最大「古さ」（秒単位）を指定します
+パラメータ:
 
-Arguments:
-- `timestamp` - サンプルのタイムスタンプ
-- `value` - `timestamp` に対応する時系列の値
+* `start timestamp` - グリッドの開始時刻を指定します
+* `end timestamp` - グリッドの終了時刻を指定します
+* `grid step` - グリッドのステップ（秒）を指定します
+* `staleness window` - 最新サンプルに許容される最大の「staleness」（古さ）を秒で指定します
 
-Return value:
-指定されたグリッドに再サンプリングされた時系列の値を `Array(Nullable(Float64))` として返します。返される配列は各時間グリッドポイントに対して1つの値を含みます。特定のグリッドポイントにサンプルがない場合、その値は NULL になります。
+引数:
 
-Example:
-次のクエリは、各グリッドポイントで30秒より古くない値を選択することによって、時系列データをグリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] に再サンプリングします：
+* `timestamp` - サンプルのタイムスタンプ
+* `value` - `timestamp` に対応するタイムシリーズの値
+
+戻り値:
+指定されたグリッドに再サンプリングされたタイムシリーズの値を `Array(Nullable(Float64))` として返します。返される配列には、各時間グリッドポイントに1つの値が含まれます。特定のグリッドポイントに対応するサンプルが存在しない場合、その値は NULL になります。
+
+例:
+次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] に対して、それぞれのグリッドポイントについて 30 秒より古くない値を選択することでタイムシリーズデータを再サンプリングします:
 
 ```sql
 WITH
@@ -46,7 +48,7 @@ FROM
 );
 ```
 
-Response:
+レスポンス:
 
 ```response
    ┌─timeSeriesResa⋯stamp, value)─┐
@@ -54,7 +56,7 @@ Response:
    └──────────────────────────────┘
 ```
 
-また、同じサイズの配列としてタイムスタンプと値の複数のサンプルを渡すことも可能です。配列引数を使用した同じクエリ：
+また、タイムスタンプと値のサンプルを、同じ長さの配列として複数渡すことも可能です。配列引数を用いた同じクエリは次のとおりです。
 
 ```sql
 WITH
@@ -68,5 +70,5 @@ SELECT timeSeriesResampleToGridWithStaleness(start_ts, end_ts, step_seconds, win
 ```
 
 :::note
-この関数は実験的です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
+この関数は実験的な機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
 :::

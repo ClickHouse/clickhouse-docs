@@ -1,23 +1,22 @@
 ---
-'alias': []
-'description': 'TSKV 格式的文档'
-'input_format': true
-'keywords':
-- 'TSKV'
-'output_format': true
-'slug': '/interfaces/formats/TSKV'
-'title': 'TSKV'
-'doc_type': 'reference'
+alias: []
+description: 'TSKV 格式文档'
+input_format: true
+keywords: ['TSKV']
+output_format: true
+slug: /interfaces/formats/TSKV
+title: 'TSKV'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
 ## 描述 {#description}
 
-与 [`TabSeparated`](./TabSeparated.md) 格式类似，但以 `name=value` 格式输出值。 
-名称的转义方式与 [`TabSeparated`](./TabSeparated.md) 格式相同，`=` 符号也会被转义。
+类似于 [`TabSeparated`](./TabSeparated.md) 格式，但以 `name=value` 格式输出值。
+名称的转义方式与 [`TabSeparated`](./TabSeparated.md) 格式相同，且 `=` 符号也会被转义。
 
 ```text
 SearchPhrase=   count()=8267016
@@ -41,26 +40,26 @@ x=1    y=\N
 ```
 
 :::note
-当有大量小列时，这种格式效率低下，通常没有使用它的理由。 
-然而，在效率方面，它并不比 [`JSONEachRow`](../JSON/JSONEachRow.md) 格式差。
+当存在大量列且每列数据量较小时，此格式效率低下，一般没有使用它的理由。
+不过，就效率而言，它并不比 [`JSONEachRow`](../JSON/JSONEachRow.md) 格式更差。
 :::
 
-解析时，支持不同列值的任何顺序。 
-可以省略某些值，因为它们被视为等于其默认值。
-在这种情况下，零和空行用作默认值。 
-不支持作为默认值指定的复杂值。
+在解析时，不同列取值的顺序可以是任意的。
+允许省略某些值，此时这些值将被视为其默认值。
+在这种情况下，默认值为零和空字符串。
+不能将本可以在表中指定的复杂值用作默认值。
 
-解析允许添加一个额外字段 `tskv`，无需等号或值。该字段将被忽略。
+在解析过程中，允许添加一个额外字段 `tskv`，该字段不带等号或值。该字段会被忽略。
 
-在导入时，如果将 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设置为 `1`，则会跳过未知名称的列。
+在导入时，如果将设置 [`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 设为 `1`，则具有未知名称的列将被跳过。
 
-[NULL](/sql-reference/syntax.md) 格式为 `\N`。
+[NULL](/sql-reference/syntax.md) 会被格式化为 `\N`。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下 tskv 文件，命名为 `football.tskv`：
+使用以下名为 `football.tskv` 的 tskv 文件：
 
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
@@ -90,7 +89,7 @@ INSERT INTO football FROM INFILE 'football.tskv' FORMAT TSKV;
 
 ### 读取数据 {#reading-data}
 
-使用 `TSKV` 格式读取数据：
+以 `TSKV` 格式读取数据：
 
 ```sql
 SELECT *
@@ -98,7 +97,7 @@ FROM football
 FORMAT TSKV
 ```
 
-输出将以制表符分隔的格式呈现，两行为列名和列类型的标题：
+输出将采用制表符分隔格式，并包含两行表头：第一行为列名，第二行为列类型：
 
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
