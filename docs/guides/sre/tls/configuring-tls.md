@@ -1,8 +1,8 @@
 ---
-slug: /guides/sre/configuring-ssl
-sidebar_label: 'Configuring SSL-TLS'
+slug: /guides/sre/tls/configuring-tls
+sidebar_label: 'Configuring TLS'
 sidebar_position: 20
-title: 'Configuring SSL-TLS'
+title: 'Configuring TLS'
 description: 'This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections.'
 keywords: ['SSL configuration', 'TLS setup', 'OpenSSL certificates', 'secure connections', 'SRE guide']
 doc_type: 'guide'
@@ -12,14 +12,14 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-# Configuring SSL-TLS
+# Configuring TLS
 
 <SelfManaged />
 
 This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key are created with node certificates to make the connections with appropriate settings.
 
 :::note
-TLS implementation is complex and there are many options to consider to ensure a fully secure and robust deployment. This is a basic tutorial with basic SSL/TLS configuration examples. Consult with your PKI/security team to generate the correct certificates for your organization.
+TLS implementation is complex and there are many options to consider to ensure a fully secure and robust deployment. This is a basic tutorial with basic TLS configuration examples. Consult with your PKI/security team to generate the correct certificates for your organization.
 
 Review this [basic tutorial on certificate usage](https://ubuntu.com/server/docs/security-certificates) for an introductory overview.
 :::
@@ -38,7 +38,7 @@ This guide was written using Ubuntu 20.04 and ClickHouse installed on the follow
 View the [Quick Start](/getting-started/install/install.mdx) for more details on how to install ClickHouse.
 :::
 
-## 2. Create SSL certificates {#2-create-ssl-certificates}
+## 2. Create TLS certificates {#2-create-tls-certificates}
 :::note
 Using self-signed certificates are for demonstration purposes only and should not used in production. Certificate requests should be created to be signed by the organization and validated using the CA chain that will be configured in the settings. However, these steps can be used to configure and test settings, then can be replaced by the actual certificates that will be used.
 :::
@@ -235,7 +235,7 @@ For a full explanation of all options, visit https://clickhouse.com/docs/operati
     </macros>
     ```
 
-## 5. Configure SSL-TLS interfaces on ClickHouse nodes {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
+## 5. Configure TLS interfaces on ClickHouse nodes {#5-configure-tls-interfaces-on-clickhouse-nodes}
 The settings below are configured in the ClickHouse server `config.xml`
 
 1.  Set the display name for the deployment (optional):
@@ -300,7 +300,7 @@ The settings below are configured in the ClickHouse server `config.xml`
 
     For more information, visit https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
 
-7. Configure gRPC for SSL on every node:
+7. Configure TLS for gRPC on every node:
     ```xml
     <grpc>
         <enable_ssl>1</enable_ssl>
@@ -318,7 +318,7 @@ The settings below are configured in the ClickHouse server `config.xml`
 
     For more information, visit https://clickhouse.com/docs/interfaces/grpc/
 
-8. Configure ClickHouse client on at least one of the nodes to use SSL for connections in its own `config.xml` file (by default in `/etc/clickhouse-client/`):
+8. Configure ClickHouse client on at least one of the nodes to use TLS for connections in its own `config.xml` file (by default in `/etc/clickhouse-client/`):
     ```xml
     <openSSL>
         <client>
@@ -403,7 +403,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
   ...
   ```
 
-- Send the 4LW commands in the openssl session
+- Send the 4LW commands in the OpenSSL session
 
   ```bash
   mntr
@@ -440,7 +440,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
   closed
   ```
 
-4. Start the ClickHouse client using `--secure` flag and SSL port:
+4. Start the ClickHouse client using `--secure` flag and TLS port:
     ```bash
     root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
     ClickHouse client version 22.3.3.44 (official build).
@@ -452,7 +452,7 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
 
 5. Log into the Play UI using the `https` interface at `https://chnode1.marsnet.local:8443/play`.
 
-    <Image img={configuringSsl01} alt="Configuring SSL" size="md" border />
+    <Image img={configuringSsl01} alt="Configuring TLS" size="md" border />
 
     :::note
     the browser will show an untrusted certificate since it is being reached from a workstation and the certificates are not in the root CA stores on the client machine.
@@ -501,4 +501,4 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
 
 ## Summary {#summary}
 
-This article focused on getting a ClickHouse environment configured with SSL/TLS. The settings will differ for different requirements in production environments; for example, certificate verification levels, protocols, ciphers, etc. But you should now have a good understanding of the steps involved in configuring and implementing secure connections.
+This article focused on getting a ClickHouse environment configured with TLS. The settings will differ for different requirements in production environments; for example, certificate verification levels, protocols, ciphers, etc. But you should now have a good understanding of the steps involved in configuring and implementing secure connections.
