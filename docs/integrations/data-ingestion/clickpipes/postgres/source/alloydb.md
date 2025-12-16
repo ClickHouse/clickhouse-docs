@@ -29,7 +29,7 @@ To check if logical replication is enabled in your AlloyDB instance, run the fol
 SHOW  wal_level;
 ```
 
-If the result is `logical`, logical replication is already enabled and you can skip to the [next step](#creating-clickpipes-user-and-granting-permissions). If the result is `replica`, you must set the [`alloydb.enable_pglogical`](https://cloud.google.com/alloydb/docs/reference/alloydb-flags#alloydb.enable_pglogical) and [`alloydb.logical_decoding`](https://cloud.google.com/alloydb/docs/reference/alloydb-flags#alloydb.logical_decoding) flags to `on` in the primary instance.
+If the result is `logical`, logical replication is already enabled and you can skip to the [next step](#create-a-clickpipes-user-and-manage-replication-permissions). If the result is `replica`, you must set the [`alloydb.enable_pglogical`](https://cloud.google.com/alloydb/docs/reference/alloydb-flags#alloydb.enable_pglogical) and [`alloydb.logical_decoding`](https://cloud.google.com/alloydb/docs/reference/alloydb-flags#alloydb.logical_decoding) flags to `on` in the primary instance.
 
 :::warning
 As noted in the [AlloyDB flags documentation](https://cloud.google.com/alloydb/docs/reference/alloydb-flags), modifying the flags that enable logical replication requires a restart of the primary instance.
@@ -88,7 +88,7 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
    :::warning
-   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication-how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
    :::
 
    - To create a publication for specific tables:
@@ -120,7 +120,7 @@ Next, you must allow connections to your AlloyDB instance from ClickPipes.
 
 2. Scroll down to **Instances in your cluster** and click **Edit primary**.
 
-3. Check the **Enable Public IP** checkbox to allow connections to the instance over the public internet. Under **Authorized external networks**, enter the [list of ClickPipes static IP addresses](../../../clickpipes/index.md#list-of-static-ips-list-of-static-ips) for the region your service is deployed in.
+3. Check the **Enable Public IP** checkbox to allow connections to the instance over the public internet. Under **Authorized external networks**, enter the [list of ClickPipes static IP addresses](../../index.md#list-of-static-ips) for the region your service is deployed in.
 
    <Image img={configure_network_security} alt="Configure networking for public access with an IP allowlist" size="lg" border/>
 
@@ -141,7 +141,7 @@ If you do not allow public access to your AlloyDB instance, you must first set u
    - Ensure the GCE instance is in the same Virtual Private Network (VPC) as your AlloyDB instance.
    - Ensure the GCE instance has a [static public IP address](https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address). You’ll use this IP address when connecting ClickPipes to your SSH bastion host.
 
-2. Update the firewall rules of the SSH bastion host to allow traffic from the [list of ClickPipes static IP addresses](../../../clickpipes/index.md#list-of-static-ips-list-of-static-ips) for the region your service is deployed in.
+2. Update the firewall rules of the SSH bastion host to allow traffic from the [list of ClickPipes static IP addresses](../../index.md#list-of-static-ips) for the region your service is deployed in.
 
 3. Update the firewall rules of AlloyDB to allow traffic from the SSH bastion host.
 
