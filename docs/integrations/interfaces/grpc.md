@@ -26,7 +26,7 @@ The specification of the interface is described in [clickhouse_grpc.proto](https
 
 ## gRPC configuration {#grpc-interface-configuration}
 
-To use the gRPC interface set `grpc_port` in the main [server configuration](../operations/configuration-files.md). Other configuration options see in the following example:
+To use the gRPC interface set `grpc_port` in the main [server configuration](../../operations/configuration-files.md). Other configuration options see in the following example:
 
 ```xml
 <grpc_port>9100</grpc_port>
@@ -74,7 +74,7 @@ The client supports the following arguments:
 - `--password PASSWORD` – A password. Default value: empty string.
 - `--query QUERY, -q QUERY` – A query to process when using non-interactive mode.
 - `--database DATABASE, -d DATABASE` – A default database. If not specified, the current database set in the server settings is used (`default` by default).
-- `--format OUTPUT_FORMAT, -f OUTPUT_FORMAT` – A result output [format](formats.md). Default value for interactive mode: `PrettyCompact`.
+- `--format OUTPUT_FORMAT, -f OUTPUT_FORMAT` – A result output [format](../../interfaces/formats.md). Default value for interactive mode: `PrettyCompact`.
 - `--debug` – Enables showing debug information.
 
 To run the client in an interactive mode call it without `--query` argument.

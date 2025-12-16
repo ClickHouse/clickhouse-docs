@@ -34,7 +34,7 @@ $ curl 'http://localhost:8123/'
 Ok.
 ```
 
-"Ok." is the default value defined in [`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response) and can be changed if desired.
+"Ok." is the default value defined in [`http_server_default_response`](../../operations/server-configuration-parameters/settings.md#http_server_default_response) and can be changed if desired.
 
 Also see: [HTTP response codes caveats](#http_response_codes_caveats).
 
@@ -285,7 +285,7 @@ Compression can be used to reduce network traffic when transmitting a large amou
 
 You can use the internal ClickHouse compression format when transmitting data. The compressed data has a non-standard format, and you need the `clickhouse-compressor` program to work with it. It is installed by default with the `clickhouse-client` package. 
 
-To increase the efficiency of data insertion, disable server-side checksum verification by using the [`http_native_compression_disable_checksumming_on_decompress`](../operations/settings/settings.md#http_native_compression_disable_checksumming_on_decompress) setting.
+To increase the efficiency of data insertion, disable server-side checksum verification by using the [`http_native_compression_disable_checksumming_on_decompress`](../../operations/settings/settings.md#http_native_compression_disable_checksumming_on_decompress) setting.
 
 If you specify `compress=1` in the URL, the server will compress the data it sends to you. If you specify `decompress=1` in the URL, the server will decompress the data which you pass in the `POST` method.
 
@@ -304,7 +304,7 @@ To send a compressed `POST` request, append the request header `Content-Encoding
 
 In order for ClickHouse to compress the response, append the `Accept-Encoding: compression_method` header to the request. 
 
-You can configure the data compression level using the [`http_zlib_compression_level`](../operations/settings/settings.md#http_zlib_compression_level) setting for all compression methods.
+You can configure the data compression level using the [`http_zlib_compression_level`](../../operations/settings/settings.md#http_zlib_compression_level) setting for all compression methods.
 
 :::info
 Some HTTP clients might decompress data from the server by default (with `gzip` and `deflate`) and you might get decompressed data even if you use the compression settings correctly.
@@ -428,7 +428,7 @@ By default, the session is terminated after 60 seconds of inactivity. To change 
 
 To check the session status, use the `session_check=1` parameter. Only one query at a time can be executed within a single session.
 
-You can receive information about the progress of a query in the `X-ClickHouse-Progress` response headers. To do this, enable [`send_progress_in_http_headers`](../operations/settings/settings.md#send_progress_in_http_headers). 
+You can receive information about the progress of a query in the `X-ClickHouse-Progress` response headers. To do this, enable [`send_progress_in_http_headers`](../../operations/settings/settings.md#send_progress_in_http_headers). 
 
 Below is an example of the header sequence:
 
@@ -537,7 +537,7 @@ The reason for this behavior is the nature of the HTTP protocol. The HTTP header
 
 This behavior is independent of the format used, whether it's `Native`, `TSV`, or `JSON`; the error message will always be in the middle of the response stream.
 
-You can mitigate this problem by enabling `wait_end_of_query=1` ([Response Buffering](#response-buffering)). In this case, sending of the HTTP header is delayed until the entire query is resolved. This however, does not completely solve the problem because the result must still fit within the [`http_response_buffer_size`](/operations/settings/settings#http_response_buffer_size), and other settings like [`send_progress_in_http_headers`](/operations/settings/settings#send_progress_in_http_headers) can interfere with the delay of the header.
+You can mitigate this problem by enabling `wait_end_of_query=1` ([Response Buffering](#response-buffering)). In this case, sending of the HTTP header is delayed until the entire query is resolved. This however, does not completely solve the problem because the result must still fit within the [`http_response_buffer_size`](../../operations/settings/settings.md#http_response_buffer_size), and other settings like [`send_progress_in_http_headers`](../../operations/settings/settings.md#send_progress_in_http_headers) can interfere with the delay of the header.
 
 :::tip
 The only way to catch all errors is to analyze the HTTP body before parsing it using the required format.
@@ -611,7 +611,7 @@ __exception__
 
 ## Queries with parameters {#cli-queries-with-parameters}
 
-You can create a query with parameters and pass values for them from the corresponding HTTP request parameters. For more information, see [Queries with Parameters for CLI](../interfaces/cli.md#cli-queries-with-parameters).
+You can create a query with parameters and pass values for them from the corresponding HTTP request parameters. For more information, see [Queries with Parameters for CLI](../../interfaces/cli.md#cli-queries-with-parameters).
 
 ### Example {#example-3}
 
@@ -780,7 +780,7 @@ The configuration methods for different `type`s are discussed next.
 
 `query` value is a predefined query of `predefined_query_handler`, which is executed by ClickHouse when an HTTP request is matched and the result of the query is returned. It is a must configuration.
 
-The following example defines the values of [`max_threads`](../operations/settings/settings.md#max_threads) and [`max_final_threads`](/operations/settings/settings#max_final_threads) settings, then queries the system table to check whether these settings were set successfully.
+The following example defines the values of [`max_threads`](../../operations/settings/settings.md#max_threads) and [`max_final_threads`](../../operations/settings/settings.md#max_final_threads) settings, then queries the system table to check whether these settings were set successfully.
 
 :::note
 To keep the default `handlers` such as` query`, `play`,` ping`, add the `<defaults/>` rule.
@@ -825,7 +825,7 @@ In `dynamic_query_handler`, the query is written in the form of parameter of the
 
 ClickHouse extracts and executes the value corresponding to the `query_param_name` value in the URL of the HTTP request. The default value of `query_param_name` is `/query` . It is an optional configuration. If there is no definition in the configuration file, the parameter is not passed in.
 
-To experiment with this functionality, the following example defines the values of [`max_threads`](../operations/settings/settings.md#max_threads) and `max_final_threads` and `queries` whether the settings were set successfully.
+To experiment with this functionality, the following example defines the values of [`max_threads`](../../operations/settings/settings.md#max_threads) and `max_final_threads` and `queries` whether the settings were set successfully.
 
 Example:
 

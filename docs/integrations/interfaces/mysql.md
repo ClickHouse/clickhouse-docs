@@ -18,7 +18,7 @@ import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
 ClickHouse supports the MySQL wire protocol. This allows certain clients that do not have native ClickHouse connectors leverage the MySQL protocol instead, and it has been validated with the following BI tools:
 
-- [Looker Studio](../integrations/data-visualization/looker-studio-and-clickhouse.md)
+- [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
 - [Tableau Online](../integrations/tableau-online)
 - [QuickSight](../integrations/quicksight)
 
@@ -112,7 +112,7 @@ In this case, ensure that the username follows the `mysql4<subdomain>_<username>
 
 ## Enabling the MySQL interface on self-managed ClickHouse {#enabling-the-mysql-interface-on-self-managed-clickhouse}
 
-Add the [mysql_port](../operations/server-configuration-parameters/settings.md#mysql_port) setting to your server's configuration file. For example, you could define the port in a new XML file in your `config.d/` [folder](../operations/configuration-files):
+Add the [mysql_port](../../operations/server-configuration-parameters/settings.md#mysql_port) setting to your server's configuration file. For example, you could define the port in a new XML file in your `config.d/` [folder](../../operations/configuration-files):
 
 ```xml
 <clickhouse>
