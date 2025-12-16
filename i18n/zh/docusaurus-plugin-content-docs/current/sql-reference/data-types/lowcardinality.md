@@ -21,6 +21,7 @@ LowCardinality(data_type)
 
 * `data_type` — [String](../../sql-reference/data-types/string.md)、[FixedString](../../sql-reference/data-types/fixedstring.md)、[Date](../../sql-reference/data-types/date.md)、[DateTime](../../sql-reference/data-types/datetime.md)，以及除 [Decimal](../../sql-reference/data-types/decimal.md) 之外的其他数值类型。`LowCardinality` 对某些数据类型的效率较低，参见 [allow&#95;suspicious&#95;low&#95;cardinality&#95;types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types) 设置说明。
 
+
 ## 描述 {#description}
 
 `LowCardinality` 是一种上层结构，用于改变数据的存储方式和处理规则。ClickHouse 会对 `LowCardinality` 列应用[字典编码](https://en.wikipedia.org/wiki/Dictionary_coder)。在许多应用场景下，基于字典编码数据进行 [SELECT](../../sql-reference/statements/select/index.md) 查询可以显著提升性能。
@@ -43,6 +44,7 @@ ENGINE = MergeTree()
 ORDER BY id
 ```
 
+
 ## 相关设置和函数 {#related-settings-and-functions}
 
 设置：
@@ -55,7 +57,7 @@ ORDER BY id
 
 函数：
 
-- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
+- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
 ## 相关内容 {#related-content}
 

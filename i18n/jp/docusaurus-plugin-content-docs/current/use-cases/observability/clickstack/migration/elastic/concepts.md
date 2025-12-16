@@ -73,7 +73,7 @@ Elasticsearch では、インデックス作成前にドキュメントを変換
 
 ### クエリ言語 {#query-languages}
 
-Elasticsearch は、[DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql)、[KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 形式）クエリを含む[複数のクエリ言語](https://www.elastic.co/docs/explore-analyze/query-filter/languages)をサポートしていますが、結合のサポートは限定的で、**左外部結合**のみが[`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join)経由で利用可能です。ClickHouse は **完全な SQL 構文** をサポートしており、[すべての結合タイプ](/sql-reference/statements/select/join#supported-types-of-join)、[ウィンドウ関数](/sql-reference/window-functions)、サブクエリ（相関サブクエリを含む）、および CTE を利用できます。これは、オブザーバビリティ シグナルとビジネスデータやインフラストラクチャデータとの間を相関付ける必要があるユーザーにとって、大きな利点となります。
+Elasticsearch は、[DSL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/querydsl)、[ES|QL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/esql)、[EQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/eql)、[KQL](https://www.elastic.co/docs/explore-analyze/query-filter/languages/kql)（Lucene 形式）クエリを含む[複数のクエリ言語](https://www.elastic.co/docs/explore-analyze/query-filter/languages)をサポートしていますが、結合のサポートは限定的で、**左外部結合**のみが[`ES|QL`](https://www.elastic.co/guide/en/elasticsearch/reference/8.x/esql-commands.html#esql-lookup-join)経由で利用可能です。ClickHouse は **完全な SQL 構文** をサポートしており、[すべての結合タイプ](/sql-reference/statements/select/join#supported-types-of-join)、[ウィンドウ関数](/sql-reference/window-functions)、サブクエリ（相関サブクエリを含む）、および CTE を利用できます。これは、オブザーバビリティ シグナルとビジネスデータやインフラストラクチャデータとの間を相関付ける必要がある場合に、大きな利点となります。
 
 ClickStack では、[HyperDX が Lucene 互換の検索インターフェース](/use-cases/observability/clickstack/search)を提供し、スムーズな移行を支援するとともに、ClickHouse バックエンド経由で完全な SQL サポートも提供します。この構文は、[Elastic query string](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) 構文と同等のものです。この構文の詳細な比較については、["Searching in ClickStack and Elastic"](/use-cases/observability/clickstack/migration/elastic/search) を参照してください。
 
@@ -138,7 +138,7 @@ Elasticsearch はレプリケーションに **プライマリ-セカンダリ**
 
 Elasticsearch は `_id` に基づいてドキュメントを重複排除し、それに応じてシャードへルーティングします。ClickHouse はデフォルトの行識別子を持ちませんが、**挿入時の重複排除 (insert-time deduplication)** をサポートしており、ユーザーは失敗した挿入を安全に再試行できます。より細かく制御するには、`ReplacingMergeTree` などのテーブルエンジンを使用して、特定のカラムに基づく重複排除を行うことができます。
 
-Elasticsearch におけるインデックスルーティングは、特定のドキュメントが常に特定のシャードにルーティングされることを保証します。ClickHouse では、ユーザーが **シャードキー** を定義するか、`Distributed` テーブルを使用することで、同様のデータ局所性を実現できます。
+Elasticsearch におけるインデックスルーティングは、特定のドキュメントが常に特定のシャードにルーティングされることを保証します。ClickHouse では、**シャードキー** を定義するか、`Distributed` テーブルを使用することで、同様のデータ局所性を実現できます。
 
 ### 集約と実行モデル {#aggregations-execution-model}
 
@@ -237,7 +237,7 @@ ClickHouse のアプローチの利点には、次のようなものがありま
 - **合成可能**: マテリアライズドビューは、他のビューやテーブルと重ねたり結合したりして、より複雑なクエリ高速化戦略を構成できます。
 - **異なる TTL 設定**: マテリアライズドビューのソーステーブルとターゲットテーブルには、異なる TTL 設定を適用できます。
 
-このモデルは、ユーザーがクエリごとに数十億件の生データをスキャンすることなく、1 分あたりのエラー率やレイテンシ、上位 N の内訳といったメトリクスを計算する必要があるオブザーバビリティのユースケースにおいて、特に強力です。
+このモデルは、クエリごとに数十億件の生データをスキャンすることなく、1 分あたりのエラー率やレイテンシ、上位 N の内訳といったメトリクスを計算する必要があるオブザーバビリティのユースケースにおいて、特に強力です。
 
 ### レイクハウス対応 {#lakehouse-support}
 

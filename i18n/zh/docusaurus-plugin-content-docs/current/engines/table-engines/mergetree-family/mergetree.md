@@ -58,7 +58,6 @@ ORDER BY expr
 
 有关这些参数的详细说明，请参阅 [CREATE TABLE](/sql-reference/statements/create/table.md) 语句。
 
-
 ### 查询子句 {#mergetree-query-clauses}
 
 #### ENGINE {#engine}
@@ -156,7 +155,6 @@ MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)
   `MergeTree` 引擎的配置方式与上面主要引擎配置方法中的示例相同。
 </details>
 
-
 ## 数据存储 {#mergetree-data-storage}
 
 一张表由按主键排序的数据部分（data parts）组成。
@@ -201,7 +199,6 @@ Marks numbers:   0      1      2      3      4      5      6      7      8      
 ClickHouse 不要求主键唯一。你可以插入多行具有相同主键的记录。
 
 你可以在 `PRIMARY KEY` 和 `ORDER BY` 子句中使用 `Nullable` 类型的表达式，但强烈不建议这样做。要启用此功能，请开启 [allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key) 设置。对于 `ORDER BY` 子句中的 `NULL` 值，适用 [NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) 原则。
-
 
 ### 选择主键 {#selecting-a-primary-key}
 
@@ -286,7 +283,6 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 按月分区的分区键可以使查询仅读取包含目标日期范围的数据块。在这种情况下，一个数据块可能包含多个日期的数据（最多可覆盖整个月）。在一个数据块内，数据按主键排序，而主键的首列不一定是日期。正因为如此，如果查询中只包含日期条件而未指定主键前缀，就会为获取某个单一日期而读取比实际需要更多的数据。
 
-
 ### 对部分单调主键使用索引 {#use-of-index-for-partially-monotonic-primary-keys}
 
 以月份中的日期为例。在一个月内，它们构成一个[单调序列](https://en.wikipedia.org/wiki/Monotonic_function)，但在更长的时间范围内则不是单调的。这就是一个部分单调序列。如果用户使用部分单调的主键创建表，ClickHouse 会像往常一样创建稀疏索引。当用户从这种类型的表中查询数据时，ClickHouse 会分析查询条件。如果用户希望获取索引中两个标记点之间的数据，并且这两个标记点都落在同一个月内，ClickHouse 就可以在这种特定情况下使用索引，因为它可以计算查询参数与索引标记之间的距离。
@@ -349,7 +345,6 @@ INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
-
 ### 跳过索引类型 {#skip-index-types}
 
 `MergeTree` 表引擎支持以下几种跳过索引类型。\
@@ -371,7 +366,6 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
-
 #### Set {#set}
 
 对于每个索引粒度，最多会存储 `max_rows` 个指定表达式的唯一值。
@@ -380,7 +374,6 @@ minmax
 ```text title="Syntax"
 set(max_rows)
 ```
-
 
 #### 布隆过滤器 {#bloom-filter}
 
@@ -410,7 +403,6 @@ bloom_filter([false_positive_rate])
 :::note Map 数据类型：使用键或值创建索引
 对于 `Map` 数据类型，客户端可以通过 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 函数指定索引是针对键还是针对值创建。
 :::
-
 
 #### N-gram 布隆过滤器 {#n-gram-bloom-filter}
 
@@ -480,7 +472,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 当然，您也可以使用这些函数在其他条件下估算参数。
 上述函数参考了[此处](https://hur.st/bloomfilter) 提供的布隆过滤器计算器。
 
-
 #### Token bloom filter {#token-bloom-filter}
 
 Token bloom filter 与 `ngrambf_v1` 相同，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
@@ -489,7 +480,6 @@ Token bloom filter 与 `ngrambf_v1` 相同，但存储的是 token（由非字�
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
-
 #### 稀疏 grams 布隆过滤器 {#sparse-grams-bloom-filter}
 
 稀疏 grams 布隆过滤器与 `ngrambf_v1` 类似，但使用的是[稀疏 grams 标记](/sql-reference/functions/string-functions.md/#sparseGrams)而不是 ngrams。
@@ -497,7 +487,6 @@ tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```text title="Syntax"
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
-
 
 ### 文本索引 {#text}
 
@@ -586,7 +575,6 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 可以使用 [ALTER](/sql-reference/statements/alter/projection.md) 语句修改或删除投影。
 
-
 ### 投影存储 {#projection-storage}
 
 投影存储在数据分片（part）目录中。它类似于索引，但包含一个子目录，用于存放一个匿名 `MergeTree` 表的分片。该表由投影的定义查询所派生。如果存在 `GROUP BY` 子句，则其底层存储引擎变为 [AggregatingMergeTree](aggregatingmergetree.md)，并且所有聚合函数都会被转换为 `AggregateFunction`。如果存在 `ORDER BY` 子句，则该 `MergeTree` 表会将其作为主键表达式使用。在合并过程中，投影分片通过其存储引擎的合并流程进行合并。父表分片的校验和会与投影分片的校验和组合在一起。其他维护任务与跳过索引（skip index）类似。
@@ -627,7 +615,6 @@ TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
 
-
 ### 列 TTL {#mergetree-column-ttl}
 
 当列中的值过期时，ClickHouse 会将其替换为该列数据类型的默认值。如果某个数据部分中该列的所有值都已过期，ClickHouse 会从文件系统中的该数据部分删除此列。
@@ -651,7 +638,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
-
 #### 向现有表的列添加 TTL {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
@@ -660,7 +646,6 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 DAY;
 ```
 
-
 #### 更改列的 TTL {#altering-ttl-of-the-column}
 
 ```sql
@@ -668,7 +653,6 @@ ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 MONTH;
 ```
-
 
 ### 表 TTL {#mergetree-table-ttl}
 
@@ -701,7 +685,6 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 
 **示例**
 
-
 #### 创建带有 `TTL` 的表： {#creating-a-table-with-ttl-1}
 
 ```sql
@@ -717,7 +700,6 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
-
 
 #### 修改表的 `TTL`： {#altering-ttl-of-the-table}
 
@@ -739,7 +721,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
-
 
 #### 创建一个对过期行进行重新压缩的表： {#creating-a-table-where-expired-rows-are-recompressed}
 
@@ -771,7 +752,6 @@ ENGINE = MergeTree
 ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
-
 
 ### 删除过期数据 {#mergetree-removing-expired-data}
 
@@ -887,7 +867,6 @@ TTL 已过期的数据会在 ClickHouse 合并分区片段时被删除。
 ```
 
 标签：
-
 
 * `policy_name_N` — 策略名称。策略名称必须唯一。
 * `volume_name_N` — 卷名。卷名必须唯一。
@@ -1055,7 +1034,6 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在使用这些版本之一，请参阅[使用本地缓存](/operations/storing-data.md/#using-local-cache)。
 :::
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_part` — 数据部分（part）的名称。
@@ -1099,7 +1077,6 @@ ALTER TABLE tab DROP STATISTICS a;
 
 这些轻量级统计信息汇总了列中值的分布情况。统计信息存储在每个数据片段中，并在每次插入时都会更新。
 只有在启用 `set allow_statistics_optimize = 1` 时，它们才会用于 `PREWHERE` 优化。
-
 
 ### 可用的列统计类型 {#available-types-of-column-statistics}
 

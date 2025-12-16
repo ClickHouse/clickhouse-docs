@@ -2,13 +2,14 @@
 sidebar_label: 'Шаблоны'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: 'Пользователи могут осуществлять приём данных в ClickHouse с помощью шаблонов Google Dataflow'
+description: 'Вы можете осуществлять приём данных в ClickHouse с помощью шаблонов Google Dataflow'
 title: 'Шаблоны Google Dataflow'
 doc_type: 'guide'
 keywords: ['google dataflow', 'gcp', 'конвейер данных', 'шаблоны', 'пакетная обработка']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Шаблоны Google Dataflow {#google-dataflow-templates}
 
@@ -28,6 +29,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Подробные пошаговые инструкции см. в руководстве [Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates).
 
 ## Список шаблонов ClickHouse {#list-of-clickhouse-templates}
+
 * [BigQuery в ClickHouse](./templates/bigquery-to-clickhouse)
 * [GCS в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (скоро)
 * [Pub/Sub в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (скоро)

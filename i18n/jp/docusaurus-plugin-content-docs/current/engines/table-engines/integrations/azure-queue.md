@@ -41,7 +41,6 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-
 ## Settings {#settings}
 
 サポートされている設定項目は、ほとんどが `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスは付きません。[設定の全リスト](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
@@ -85,7 +84,6 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-
 ## AzureQueue テーブルエンジンからの SELECT {#select}
 
 AzureQueue テーブルに対する SELECT クエリは、既定では禁止されています。これは、データを一度読み取ったらキューから削除するという一般的なキューの利用パターンに従うためです。誤ってデータを失わないようにする目的で、SELECT は禁止されています。
@@ -118,7 +116,6 @@ CREATE MATERIALIZED VIEW consumer TO stats
 
 SELECT * FROM stats ORDER BY key;
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 

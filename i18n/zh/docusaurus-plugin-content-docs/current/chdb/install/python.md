@@ -668,6 +668,7 @@ complex_json = chdb.query("""
     FROM Python(df_with_json)
 """, "JSONEachRow")
 print(complex_json)
+
 ```
 
 ## Performance and optimization {#performance-optimization}

@@ -69,7 +69,6 @@ database_replica_name:
 is_active:               NULL
 ```
 
-
 Row 2:
 ──────
 cluster:                 test&#95;cluster&#95;two&#95;shards

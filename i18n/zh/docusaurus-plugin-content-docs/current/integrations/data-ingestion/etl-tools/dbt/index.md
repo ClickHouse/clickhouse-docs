@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # ClickHouse database for dbt models
+      schema: [ default ] # dbt 模型使用的 ClickHouse 数据库
 
-      # Optional
+      # 可选项
       host: [ localhost ]
-      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
-      user: [ default ] # User for all database operations
-      password: [ <empty string> ] # Password for the user
-      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
+      port: [ 8123 ]  # 默认端口为 8123、8443、9000 或 9440,取决于 secure 和 driver 配置 
+      user: [ default ] # 执行所有数据库操作的用户
+      password: [ <empty string> ] # 该用户的密码
+      secure: True  # 使用 TLS(原生协议)或 HTTPS(HTTP 协议)
 ```
 
 
@@ -176,12 +176,12 @@ profile: 'clickhouse-service'
 
 ## 限制 {#limitations}
 
-当前用于 dbt 的 ClickHouse 适配器存在若干限制，用户需要注意：
+当前用于 dbt 的 ClickHouse 适配器存在若干限制，你需要注意：
 
 - 该插件使用的语法要求 ClickHouse 版本为 25.3 或更高。我们不对更早版本的 ClickHouse 进行测试，目前也不对 Replicated 表进行测试。
 - 如果在同一时间运行多个 `dbt-adapter` 任务，它们可能会发生冲突，因为在内部它们可能会对相同操作使用相同的表名。更多信息请参见 issue [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420)。
 - 该适配器目前通过 [INSERT INTO SELECT](https://clickhouse.com/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) 将模型物化为表。这在实际效果上意味着，如果再次执行同一任务，会导致数据重复。对于极其庞大的数据集（PB 级），可能会导致运行时间非常长，使某些模型不再可行。为了提升性能，请通过将视图实现为 `materialized: materialization_view` 来使用 ClickHouse 物化视图。此外，应尽可能通过使用 `GROUP BY` 来减少任意查询返回的行数。优先选择汇总数据的模型，而不是仅做转换但保持与源数据相同行数的模型。
-- 若要使用 Distributed 表来表示模型，用户必须在每个节点上手动创建其底层的 replicated 表。然后可以在这些表之上创建 Distributed 表。适配器不负责管理集群创建。
+- 若要使用 Distributed 表来表示模型，你必须在每个节点上手动创建其底层的 replicated 表。然后可以在这些表之上创建 Distributed 表。适配器不负责管理集群创建。
 - 当 dbt 在数据库中创建一个关系（表/视图）时，通常会以 `{{ database }}.{{ schema }}.{{ table/view id }}` 的形式创建。ClickHouse 没有 schema 的概念，因此适配器会使用 `{{schema}}.{{ table/view id }}`，其中 `schema` 对应 ClickHouse 中的数据库。
 - 如果在 ClickHouse 的 insert 语句中，将 ephemeral 模型/CTE 放在 `INSERT INTO` 之前，则它们无法工作，参见：https://github.com/ClickHouse/ClickHouse/issues/30323。对于大多数模型，这不应产生影响，但在定义模型以及编写其他 SQL 语句时，应谨慎放置 ephemeral 模型。 <!-- TODO 审查此限制，看起来对应的 issue 已经关闭，并且修复已在 24.10 中引入 -->
 

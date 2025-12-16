@@ -385,7 +385,7 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='件数'>
 ```
 
 <Image img={jupysql_plot_1} size="md" alt="short-trips データセットの乗車距離の分布を 10 個のビンで示したヒストグラム" border />
@@ -393,8 +393,8 @@ WHERE trip_distance < 6.3
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Trip distance from trips < 6.3")
-_ = ax.set_xlabel("Trip distance")
+ax.set_title("6.3未満の移動における移動距離")
+_ = ax.set_xlabel("移動距離")
 ```
 
 <Image img={jupysql_plot_2} size="md" alt="50 個のビンとグリッド線付きで乗車距離の分布を示したヒストグラム。タイトルは『Trip distance from trips < 6.3』" border />

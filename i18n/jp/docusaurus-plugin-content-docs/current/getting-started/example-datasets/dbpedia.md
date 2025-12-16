@@ -63,7 +63,6 @@ FROM dbpedia
    └─────────┘
 ```
 
-
 ## セマンティック検索 {#semantic-search}
 
 参考資料: ["ベクトル埋め込み（Vector embeddings）" OpenAI ガイド](https://platform.openai.com/docs/guides/embeddings)

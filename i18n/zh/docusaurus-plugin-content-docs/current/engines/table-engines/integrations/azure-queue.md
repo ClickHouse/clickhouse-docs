@@ -41,7 +41,6 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-
 ## Settings {#settings}
 
 支持的设置大多与 `S3Queue` 表引擎相同，只是没有 `s3queue_` 前缀。参见[完整的设置列表](../../../engines/table-engines/integrations/s3queue.md#settings)。
@@ -85,7 +84,6 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-
 ## 从 AzureQueue 表引擎中执行 SELECT {#select}
 
 在 AzureQueue 表上默认禁止执行 SELECT 查询。这遵循常见的队列模式，即数据只被读取一次，然后从队列中移除。禁止 SELECT 是为了防止意外数据丢失。
@@ -118,7 +116,6 @@ CREATE MATERIALIZED VIEW consumer TO stats
 
 SELECT * FROM stats ORDER BY key;
 ```
-
 
 ## 虚拟列 {#virtual-columns}
 

@@ -13,12 +13,13 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Интеграция Azure Synapse с ClickHouse {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) — это интегрированный аналитический сервис, который объединяет большие данные, data science и хранилища данных, обеспечивая быструю аналитику в крупном масштабе.
-В Synapse пулы Spark предоставляют масштабируемые по запросу кластеры [Apache Spark](https://spark.apache.org), которые позволяют пользователям выполнять сложные преобразования данных, задачи машинного обучения и интеграции с внешними системами.
+В Synapse пулы Spark предоставляют масштабируемые по запросу кластеры [Apache Spark](https://spark.apache.org), которые позволяют выполнять сложные преобразования данных, задачи машинного обучения и интеграции с внешними системами.
 
 В этой статье вы узнаете, как интегрировать [коннектор ClickHouse Spark](/integrations/apache-spark/spark-native-connector) при работе с Apache Spark в Azure Synapse.
 
@@ -73,13 +74,14 @@ Azure Synapse поддерживает три уровня [управления
 Перейдите на страницу [ClickHouse Spark configurations](/integrations/apache-spark/spark-native-connector#configurations) для получения дополнительных настроек.
 
 :::info
-При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).\
+При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).
 :::
+
 
 ## Проверка настройки {#setup-verification}
 
 Чтобы убедиться, что зависимости и конфигурации были успешно настроены, перейдите в Spark UI вашего сеанса и откройте вкладку `Environment`.
-Там найдите параметры, связанные с ClickHouse:
+Там найдите параметры, относящиеся к ClickHouse:
 
 <Image img={sparkUICHSettings} size="xl" alt="Проверка настроек ClickHouse с помощью Spark UI" border/>
 

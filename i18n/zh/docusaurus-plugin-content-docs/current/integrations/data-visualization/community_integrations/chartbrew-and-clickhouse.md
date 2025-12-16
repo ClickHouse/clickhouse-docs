@@ -22,6 +22,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+
 # 将 Chartbrew 连接到 ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -75,10 +76,10 @@ import Image from '@theme/IdealImage';
 编写一条 SQL 查询语句来检索你想要可视化的数据。例如，下面的查询会基于 `uk_price_paid` 数据集计算每年支付的平均价格：
 
 ```sql
-SELECT toYear(date) AS year, avg(price) AS avg_price
-FROM uk_price_paid
-GROUP BY year
-ORDER BY year;
+  SELECT toYear(date) AS year, avg(price) AS avg_price
+  FROM uk_price_paid
+  GROUP BY year
+  ORDER BY year;
 ```
 
 <Image img={chartbrew_07} size="lg" alt="在 Chartbrew 中执行 ClickHouse SQL 查询" />
@@ -91,28 +92,29 @@ ORDER BY year;
 
 成功获取数据后，点击 **Configure dataset** 来设置可视化参数。
 
+
 ## 4. 创建可视化 {#4-create-a-visualization}
-   
-  1. 为可视化定义一个度量（数值）和一个维度（类别值）。
+
+1. 为可视化定义一个度量（数值）和一个维度（类别值）。
   2. 预览数据集，确保查询结果的结构正确。
   3. 选择图表类型（例如折线图、柱状图、饼图），并将其添加到仪表盘中。
   4. 点击 **Complete dataset** 完成配置。
 
-  <Image img={chartbrew_08} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
+<Image img={chartbrew_08} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
 
-  你可以创建任意多的数据集，用于从不同角度可视化你的数据。基于这些数据集，你可以创建多个仪表盘，以跟踪不同的指标。
+你可以创建任意多的数据集，用于从不同角度可视化你的数据。基于这些数据集，你可以创建多个仪表盘，以跟踪不同的指标。
 
-  <Image img={chartbrew_01} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
+<Image img={chartbrew_01} size="lg" alt="包含 ClickHouse 数据的 Chartbrew 仪表盘" />
 
 ## 5. 自动化数据更新 {#5-automate-data-updates}
-   
-  为了让仪表板始终保持最新状态，你可以设置自动数据更新：
 
-  1. 点击数据集刷新按钮旁边的日历图标。
+为了让仪表板始终保持最新状态，你可以设置自动数据更新：
+
+1. 点击数据集刷新按钮旁边的日历图标。
   2. 配置更新间隔（例如，每小时、每天）。
   3. 保存设置以启用自动刷新。
 
-  <Image img={chartbrew_09} size="lg" alt="Chartbrew 数据集刷新设置" />
+<Image img={chartbrew_09} size="lg" alt="Chartbrew 数据集刷新设置" />
 
 ## 了解更多 {#learn-more}
 

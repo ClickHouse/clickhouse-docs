@@ -24,7 +24,7 @@ ClickHouse 完全支持标准 SQL 联接（join），从而实现高效的数据
 ## 测试数据和资源 {#test-data-and-resources}
 
 用于创建和加载这些表的说明可以在[此处](/integrations/dbt/guides)找到。
-对于不想在本地创建和加载表的用户，该数据集也可以在 [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) 中使用。
+如果您不想在本地创建和加载表，也可以在 [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) 中使用该数据集。
 
 您将使用示例数据集中的以下四张表：
 
@@ -77,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ Harry Potter and the Half-Blood Prince │ Action    │
-│ Harry Potter and the Half-Blood Prince │ Adventure │
-│ Harry Potter and the Half-Blood Prince │ Family    │
-│ Harry Potter and the Half-Blood Prince │ Fantasy   │
-│ Harry Potter and the Half-Blood Prince │ Thriller  │
-│ DragonBall Z                           │ Action    │
-│ DragonBall Z                           │ Adventure │
-│ DragonBall Z                           │ Comedy    │
-│ DragonBall Z                           │ Fantasy   │
-│ DragonBall Z                           │ Sci-Fi    │
+│ 哈利·波特与混血王子 │ 动作    │
+│ 哈利·波特与混血王子 │ 冒险 │
+│ 哈利·波特与混血王子 │ 家庭    │
+│ 哈利·波特与混血王子 │ 奇幻   │
+│ 哈利·波特与混血王子 │ 惊悚  │
+│ 龙珠Z                           │ 动作    │
+│ 龙珠Z                           │ 冒险 │
+│ 龙珠Z                           │ 喜剧    │
+│ 龙珠Z                           │ 奇幻   │
+│ 龙珠Z                           │ 科幻    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -125,16 +125,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Pacific War, The"""                    │
-│ """Turin 2006: XX Olympic Winter Games""" │
-│ Arthur, the Movie                         │
-│ Bridge to Terabithia                      │
-│ Mars in Aries                             │
-│ Master of Space and Time                  │
-│ Ninth Life of Louis Drax, The             │
-│ Paradox                                   │
-│ Ratatouille                               │
-│ """American Dad"""                        │
+│ """太平洋战争"""                          │
+│ """都灵2006：第二十届冬季奥运会"""        │
+│ 亚瑟，电影版                              │
+│ 通往特雷比西亚的桥                        │
+│ 火星在白羊座                              │
+│ 时空主宰                                  │
+│ 路易斯·德拉克斯的第九条命                │
+│ 悖论                                      │
+│ 料理鼠王                                  │
+│ """美国老爹"""                            │
 └───────────────────────────────────────────┘
 ```
 
@@ -298,16 +298,16 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Pacific War, The"""                    │
-│ """Turin 2006: XX Olympic Winter Games""" │
-│ Arthur, the Movie                         │
-│ Bridge to Terabithia                      │
-│ Mars in Aries                             │
-│ Master of Space and Time                  │
-│ Ninth Life of Louis Drax, The             │
-│ Paradox                                   │
-│ Ratatouille                               │
-│ """American Dad"""                        │
+│ """太平洋战争"""                          │
+│ """都灵2006：第二十届冬季奥运会"""        │
+│ 亚瑟，电影版                              │
+│ 通往特雷比西亚的桥                        │
+│ 火星在白羊座                              │
+│ 时空主宰                                  │
+│ 路易斯·德拉克斯的第九条命                │
+│ 悖论                                      │
+│ 料理鼠王                                  │
+│ """美国老爹"""                            │
 └───────────────────────────────────────────┘
 ```
 
@@ -420,23 +420,23 @@ FORMAT Vertical;
 ```
 
 ```response
-Row 1:
+第1行:
 ──────
-symbol:             ABC
-volume:             200
-trade_time:         2023-02-22 14:09:05
-closest_quote_time: 2023-02-22 14:09:00
-quote_price:        32.11
-final_price:        6422
+代码:               ABC
+成交量:             200
+交易时间:           2023-02-22 14:09:05
+最近报价时间:       2023-02-22 14:09:00
+报价:               32.11
+最终价格:           6422
 
-Row 2:
+第2行:
 ──────
-symbol:             ABC
-volume:             300
-trade_time:         2023-02-22 14:09:28
-closest_quote_time: 2023-02-22 14:09:20
-quote_price:        32.15
-final_price:        9645
+代码:               ABC
+成交量:             300
+交易时间:           2023-02-22 14:09:28
+最近报价时间:       2023-02-22 14:09:20
+报价:               32.15
+最终价格:           9645
 ```
 
 :::note

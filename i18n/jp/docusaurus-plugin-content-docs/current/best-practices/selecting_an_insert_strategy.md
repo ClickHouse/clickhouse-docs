@@ -21,6 +21,7 @@ import BulkInserts from '@site/i18n/jp/docusaurus-plugin-content-docs/current/be
 以下の内容は、クライアント経由で ClickHouse にデータをプッシュしていることを前提としています。組み込みのテーブル関数 [s3](/sql-reference/table-functions/s3) や [gcs](/sql-reference/table-functions/gcs) などを使用して ClickHouse にデータをプルしている場合は、「[S3 への挿入および読み取りパフォーマンスの最適化](/integrations/s3/performance)」ガイドを参照することを推奨します。
 :::
 
+
 ## デフォルトでは同期インサート {#synchronous-inserts-by-default}
 
 デフォルトでは、ClickHouse へのインサートは同期的に行われます。各インサートクエリは、メタデータおよびインデックスを含むストレージパーツを即座にディスク上に作成します。
@@ -43,7 +44,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 次の**主要な検討事項**は、ClickHouse サーバーへの送信前にデータを④圧縮するかどうかです。圧縮により転送サイズが減り、ネットワーク効率が向上するため、とくに大規模なデータセットではデータ転送が高速化され、帯域幅使用量も削減されます。
 
-データは⑤ ClickHouse のネットワークインターフェイス、すなわち [native](/interfaces/tcp) または [HTTP](/interfaces/http) インターフェイスのいずれかに送信されます（これらはこの記事の後半で[比較](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)します）。
+データは⑤ ClickHouse のネットワークインターフェイス、すなわち [native](/interfaces/tcp) または[ HTTP](/interfaces/http) インターフェイスのいずれかに送信されます（これらはこの記事の後半で[比較](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)します）。
 
 #### サーバー側のステップ {#server-side-steps}
 
@@ -51,7 +52,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 そのフォーマット済みデータの値と対象テーブルの [DDL](/sql-reference/statements/create/table) ステートメントを用いて、ClickHouse は MergeTree 形式のインメモリ[ブロック](/development/architecture#block)を ⑨ 構築し、事前にソートされていない場合は主キー列で行を ⑩ [ソート](/parts#what-are-table-parts-in-clickhouse)し、⑪ [疎な主キーインデックス](/guides/best-practices/sparse-primary-indexes)を作成し、⑫ [列単位の圧縮](/parts#what-are-table-parts-in-clickhouse)を適用し、最後にデータをディスクに ⑬ 書き込み、新しい ⑭ [データパーツ](/parts)を作成します。
 
-### 同期インサートの場合はバッチ化する {#batch-inserts-if-synchronous}
+### 同期インサート時はデータをバッチ化する {#batch-inserts-if-synchronous}
 
 <BulkInserts/>
 
@@ -71,7 +72,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 * **MergeTree** または **ReplicatedMergeTree** テーブルに直接インサートする。これは、クライアントがシャード間でロードバランシングを行える場合に最も効率的なオプションです。`internal_replication = true` の場合、ClickHouse はレプリケーションを透過的に処理します。
 * [Distributed テーブル](/engines/table-engines/special/distributed)にインサートする。これにより、クライアントは任意のノードにデータを送信し、ClickHouse に正しいシャードへの転送を任せることができます。これはよりシンプルですが、追加の転送ステップがあるため、パフォーマンスはわずかに低下します。`internal_replication = true` はこの場合でも推奨されます。
 
-**ClickHouse Cloud では、すべてのノードが同一の単一シャードに対して読み書きを行います。INSERT はノード間で自動的に分散されます。ユーザーは公開されたエンドポイントに対して INSERT を送信するだけで構いません。**
+**ClickHouse Cloud では、すべてのノードが同じ単一の分片に対して読み書きを行います。インサートはノード間で自動的にバランスされるため、公開されているエンドポイントに対してインサートを送信するだけでかまいません。**
 
 ### 適切なフォーマットを選択する {#choose-the-right-format}
 
@@ -124,7 +125,7 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 
 **とはいえ、事前ソートは必須ではなくオプションの最適化に過ぎません。** ClickHouse は並列処理を用いてデータを非常に効率的にソートでき、多くのケースではサーバー側でソートした方が、クライアント側で事前ソートするよりも高速、あるいは扱いやすい場合があります。 
 
-**事前ソートは、データがすでにほぼ順序どおりである場合、またはクライアント側リソース（CPU・メモリ）に十分な余裕があり未活用である場合にのみ行うことを推奨します。** オブザーバビリティのようにレイテンシに敏感、あるいは高スループットが求められるユースケースでは、データが順不同で到着したり多数のエージェントから送信されたりするため、多くの場合は事前ソートは行わず、ClickHouse の組み込みパフォーマンスに任せる方が適しています。
+**事前ソートは、データがすでにほぼソート済みである場合や、クライアント側リソース（CPU、メモリ）に十分な余裕があり有効活用できていない場合にのみ推奨します。** オブザーバビリティのように、レイテンシに厳しい、あるいは高スループットなユースケースで、データが順不同で到着したり多数のエージェントから到着したりする場合には、事前ソートは行わず、ClickHouse による組み込みの高パフォーマンスに任せる方がよいことが多くあります。
 
 ## 非同期 INSERT {#asynchronous-inserts}
 
@@ -134,7 +135,7 @@ ClickHouse はデータ送信時に複数の圧縮コーデックをサポート
 
 ### ネイティブ {#choose-an-interface-native}
 
-ClickHouse はデータのインジェスト用に 2 つの主要なインターフェース、**ネイティブインターフェース** と **HTTP インターフェース** を提供しており、それぞれにパフォーマンスと柔軟性のトレードオフがあります。[clickhouse-client](/interfaces/cli) や Go、C++ などの一部の言語クライアントで使用されるネイティブインターフェースは、パフォーマンスを重視して設計されています。常に ClickHouse の高効率な Native 形式でデータを送信し、LZ4 または ZSTD によるブロック単位の圧縮をサポートし、パースやフォーマット変換などの処理をクライアント側にオフロードすることでサーバー側の処理を最小限に抑えます。
+ClickHouse はデータのインジェスト用に 2 つの主要なインターフェース、**ネイティブインターフェース** と **HTTP インターフェース** を提供しており、それぞれにパフォーマンスと柔軟性のトレードオフがあります。[clickhouse-client](/interfaces/cli) や Go、C++ などの一部の言語クライアントで使用されるネイティブインターフェースは、パフォーマンスを重視して設計されています。常に ClickHouse の高効率な Native 形式でデータを送信し、LZ4 または ZSTD によるブロック単位の圧縮をサポートし、パースやフォーマット変換などの処理をクライアント側にオフロードすることでサーバー側の処理を最小限に抑えます。 
 
 さらに、MATERIALIZED および DEFAULT 列値をクライアント側で計算できるため、サーバーはこれらのステップを完全に省略できます。これにより、効率性が重要となる高スループットなインジェストシナリオにおいて、ネイティブインターフェースは理想的な選択となります。
 

@@ -2,7 +2,7 @@
 sidebar_label: '概要'
 slug: /integrations/dbt
 sidebar_position: 1
-description: 'ユーザーは dbt を使用して ClickHouse のデータを変換およびモデリングできます'
+description: 'dbt を使用して ClickHouse のデータを変換およびモデリングできます'
 title: 'dbt と ClickHouse の連携'
 keywords: ['dbt', 'データ変換', 'アナリティクスエンジニアリング', 'SQL モデリング', 'ELT パイプライン']
 doc_type: 'guide'
@@ -101,14 +101,14 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # ClickHouse database for dbt models
+      schema: [ default ] # dbtモデル用ClickHouseデータベース
 
-      # Optional
+      # オプション
       host: [ localhost ]
-      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
-      user: [ default ] # User for all database operations
-      password: [ <empty string> ] # Password for the user
-      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
+      port: [ 8123 ]  # secureおよびdriverの設定に応じてデフォルト値は8123、8443、9000、9440 
+      user: [ default ] # 全データベース操作用ユーザー
+      password: [ <empty string> ] # ユーザーパスワード
+      secure: True  # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用
 ```
 
 
@@ -176,7 +176,7 @@ dbt から ClickHouse へ接続する際に問題が発生する場合は、次�
 
 ## 制限事項 {#limitations}
 
-現在の dbt 向け ClickHouse アダプターには、ユーザーが認識しておくべきいくつかの制限事項があります。
+現在の dbt 向け ClickHouse アダプターには、認識しておくべき制限事項がいくつかあります。
 
 - このプラグインは、ClickHouse バージョン 25.3 以降を必要とする構文を使用します。古いバージョンの ClickHouse についてはテストしていません。また、現在は Replicated テーブルについてもテストしていません。
 - `dbt-adapter` を同時に実行した場合、内部的に同じ操作に対して同じテーブル名を使用する可能性があるため、複数の実行が衝突する場合があります。詳細については、issue [#420](https://github.com/ClickHouse/dbt-clickhouse/issues/420) を参照してください。

@@ -16,6 +16,7 @@ import scaling_configure from '@site/static/images/cloud/manage/scaling-configur
 import scaling_memory_allocation from '@site/static/images/cloud/manage/scaling-memory-allocation.png';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
+
 # 自动伸缩 {#automatic-scaling}
 
 伸缩是指根据客户端需求调整可用资源的能力。Scale 和 Enterprise 层级（标准 1:4 配置）的服务可以通过以编程方式调用 API，或在 UI 中更改设置来进行水平伸缩，从而调整系统资源。这些服务也可以进行**自动垂直伸缩**，以满足应用程序的需求。
@@ -23,7 +24,7 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 :::note
-Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。用户可以升级到 Scale 或 Enterprise 层级来对其服务进行伸缩。
+Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的规格是固定的，不支持垂直或水平伸缩。你可以升级到 Scale 或 Enterprise 层级来对你的服务进行伸缩。
 :::
 
 ## ClickHouse Cloud 中的扩缩容工作原理 {#how-scaling-works-in-clickhouse-cloud}
@@ -56,7 +57,7 @@ ClickHouse Cloud 中的扩缩容采用我们称之为 ["先建后拆" (Make Befo
 
 Scale 和 Enterprise 服务支持基于 CPU 和内存使用情况的自动扩缩容。我们会在回溯窗口（跨度为过去 30 小时）内持续监控服务的历史使用情况，以此做出扩缩容决策。如果使用率高于或低于某些阈值，我们会对服务进行相应扩缩容，以匹配负载需求。
 
-对于非 MBB 服务，当 CPU 使用率超过 50-75% 范围内的上限阈值时（具体阈值取决于集群规模），基于 CPU 的自动扩缩容将被触发。此时，集群的 CPU 配额会被翻倍。如果 CPU 使用率降到上限阈值一半以下（例如上限阈值为 50% 时降到 25%），则 CPU 配额会减半。
+对于非 MBB 服务，当 CPU 使用率超过 50-75% 范围内的上限阈值时（具体阈值取决于集群规模），基于 CPU 的自动扩缩容将被触发。此时，集群的 CPU 配额会被翻倍。如果 CPU 使用率降到上限阈值一半以下（例如上限阈值为 50% 时降到 25%），则 CPU 配额会减半。 
 
 对于已采用 MBB 扩缩容策略的服务，扩容会在 CPU 使用率达到 75% 阈值时触发，缩容则在该阈值的一半（即 37.5%）时触发。
 

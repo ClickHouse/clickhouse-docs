@@ -45,7 +45,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 <VerticalStepper headerLevel="h4">
 
-要为某个搜索创建告警，该搜索必须先被保存。用户可以为现有的已保存搜索创建告警，或者在创建告警的过程中保存搜索。在下面的示例中，我们假设该搜索尚未保存。
+要为某个搜索创建告警，该搜索必须先被保存。你可以为现有的已保存搜索创建告警，或者在创建告警的过程中保存搜索。在下面的示例中，我们假设该搜索尚未保存。
 
 #### 打开告警创建对话框 {#open-dialog}
 
@@ -68,7 +68,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 </VerticalStepper>
 
-请注意，可以为同一个搜索添加多个告警。如果重复上述过程，用户会在编辑告警对话框顶部看到当前告警以标签页形式展示，每个告警都会被分配一个编号。
+请注意，可以为同一个搜索添加多个告警。如果重复上述过程，你会在编辑告警对话框顶部看到当前告警以标签页形式展示，每个告警都会被分配一个编号。
 
 <Image img={multiple_search_alerts} alt="多个告警" size="md"/>
 
@@ -114,7 +114,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 ## 添加 webhook {#add-webhook}
 
-在创建告警时，用户可以使用已有的 webhook，或创建一个新的。一旦创建，该 webhook 就可以在其他告警中复用。
+在创建告警时，你可以使用已有的 webhook，或创建一个新的。一旦创建，该 webhook 就可以在其他告警中复用。
 
 可以为不同的服务类型创建 webhook，包括 Slack、PagerDuty，以及通用目标（generic targets）。
 
@@ -122,7 +122,7 @@ ClickStack 支持两种互补的告警创建方式：**搜索告警** 和 **仪�
 
 <Image img={add_new_webhook} alt="Add new webhook" size="lg"/>
 
-这会打开 webhook 创建对话框，用户可以在其中创建一个新的 webhook：
+这会打开 webhook 创建对话框，你可以在其中创建一个新的 webhook：
 
 <Image img={add_webhook_dialog} alt="Webhook creation" size="md"/>
 
@@ -168,7 +168,7 @@ Slack API 和 PagerDuty 集成仅在 ClickHouse Cloud 中提供。
 
 <Image img={manage_alerts} alt="管理告警" size="lg"/>
 
-在此视图中，用户可以看到已在 ClickStack 中创建且当前正在运行的所有告警。
+在此视图中，您可以看到已在 ClickStack 中创建且当前正在运行的所有告警。
 
 <Image img={alerts_view} alt="告警视图" size="lg"/>
 

@@ -3,14 +3,19 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-# HomebrewによるClickHouseのインストール {#install-clickhouse-using-homebrew}
+# Homebrew を使用して ClickHouse をインストールする {#install-clickhouse-using-homebrew}
+
+:::warning
+Homebrew の Formulae を使用したインストールは非推奨となり、2026-09-01 に無効化される予定です。
+代わりに、任意のプラットフォームで動作する [クイックインストール](/install/quick-install-curl) 方法の使用を推奨します。
+:::
 
 <VerticalStepper>
 
-## コミュニティ版 Homebrew フォーミュラを使用してインストールする {#install-using-community-homebrew-formula}
+## コミュニティ版 Homebrew formula を使用してインストールする {#install-using-community-homebrew-formula}
 
-macOS で [Homebrew](https://brew.sh/) を使用して ClickHouse をインストールするには、
-ClickHouse コミュニティの [Homebrew フォーミュラ](https://formulae.brew.sh/cask/clickhouse) を使用できます。
+macOS 上で [Homebrew](https://brew.sh/) を使用して ClickHouse をインストールするには、
+ClickHouse コミュニティ提供の [homebrew formula](https://formulae.brew.sh/cask/clickhouse) を使用できます。
 
 ```bash
 brew install --cask clickhouse
@@ -32,18 +37,16 @@ brew install --cask clickhouse
 `clickhouse` 実行ファイルを隔離領域から削除する最も簡単な方法は次のとおりです。
 
 1. **システム設定** を開きます。
+1. **プライバシーとセキュリティ** に移動します。
 
-2. **プライバシーとセキュリティ** に移動します。
+    <Image img={privacy_default} size="md" alt="MacOS Privacy & Security settings default view" border />
 
-   <Image img={privacy_default} size="md" alt="MacOS Privacy & Security settings default view" border />
+1. ウィンドウの一番下までスクロールし、「&#95;&quot;clickhouse-macos-aarch64&quot; は、認証済みの開発元によるものではないため、使用がブロックされました。」というメッセージを探します。
+1. **それでも開く** をクリックします。
 
-3. ウィンドウの一番下までスクロールし、「&#95;&quot;clickhouse-macos-aarch64&quot; は、認証済みの開発元によるものではないため、使用がブロックされました。」というメッセージを探します。
+    <Image img={privacy_allow} size="md" alt="MacOS Privacy & Security settings showing Allow Anyway button" border />
 
-4. **それでも開く** をクリックします。
-
-   <Image img={privacy_allow} size="md" alt="MacOS Privacy & Security settings showing Allow Anyway button" border />
-
-5. macOS のユーザーアカウントのパスワードを入力します。
+1. macOS のユーザーアカウントのパスワードを入力します。
 
 これでターミナルで `clickhouse` コマンドを実行できるようになるはずです。
 
@@ -85,20 +88,19 @@ clickhouse client [args]
 clickhouse benchmark [args]
 ```
 
-## ClickHouseを再インストールして問題を修正する {#fix-issue}
+## ClickHouse を再インストールして問題を解消する {#fix-issue}
 
-Brewには、インストールされたバイナリを隔離対象から除外するコマンドラインオプションがあります。
+Brew には、インストールされたバイナリを最初から隔離しないためのコマンドラインオプションがあります。
 
-まず、ClickHouseをアンインストールします:
+まず、ClickHouse をアンインストールします。
 
 ```shell
 brew uninstall clickhouse
 ```
 
-次に、`--no-quarantine`を指定してClickHouseを再インストールします:
+次に、`--no-quarantine` を付けて ClickHouse を再インストールします。
 
 ```shell
 brew install --no-quarantine clickhouse
 ```
-
 </VerticalStepper>
