@@ -66,7 +66,7 @@ ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（此前为 `docker.h
 
 ## 持久化数据和设置 {#persisting-data-and-settings}
 
-为了在容器重启后仍然保留数据和设置，用户可以修改上面的 docker 命令，将路径 `/data/db`、`/var/lib/clickhouse` 和 `/var/log/clickhouse-server` 挂载为卷。例如：
+为了在容器重启后仍然保留数据和设置，你可以修改上面的 docker 命令，将路径 `/data/db`、`/var/lib/clickhouse` 和 `/var/log/clickhouse-server` 挂载为卷。例如：
 
 ```shell
 # ensure directories exist

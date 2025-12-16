@@ -58,7 +58,6 @@ ORDER BY expr
 
 Подробное описание параметров см. в описании команды [CREATE TABLE](/sql-reference/statements/create/table.md)
 
-
 ### Части запроса {#mergetree-query-clauses}
 
 #### ENGINE {#engine}
@@ -156,7 +155,6 @@ MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)
   Движок `MergeTree` настраивается так же, как в примере выше для основного метода конфигурации движка.
 </details>
 
-
 ## Хранение данных {#mergetree-data-storage}
 
 Таблица состоит из частей данных, отсортированных по первичному ключу.
@@ -201,7 +199,6 @@ Marks numbers:   0      1      2      3      4      5      6      7      8      
 ClickHouse не требует уникального первичного ключа. Вы можете вставлять несколько строк с одинаковым первичным ключом.
 
 Вы можете использовать выражения типа `Nullable` в выражениях `PRIMARY KEY` и `ORDER BY`, но это настоятельно не рекомендуется. Чтобы включить эту возможность, активируйте настройку [allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key). Принцип [NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) применяется к значениям `NULL` в выражении `ORDER BY`.
-
 
 ### Выбор первичного ключа {#selecting-a-primary-key}
 
@@ -286,7 +283,6 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 Ключ партиционирования по месяцам позволяет читать только те блоки данных, которые содержат даты из нужного диапазона. В этом случае блок данных может содержать данные за множество дат (вплоть до целого месяца). Внутри блока данные отсортированы по первичному ключу, который может не содержать дату в качестве первого столбца. Из-за этого использование запроса только с условием по дате, без указания префикса первичного ключа, приведёт к чтению большего объёма данных, чем при выборке за одну дату.
 
-
 ### Использование индекса для частично-монотонных первичных ключей {#use-of-index-for-partially-monotonic-primary-keys}
 
 Рассмотрим, например, дни месяца. Они образуют [монотонную последовательность](https://en.wikipedia.org/wiki/Monotonic_function) в пределах одного месяца, но не являются монотонными на более длительных промежутках времени. Это частично-монотонная последовательность. Если пользователь создаёт таблицу с частично-монотонным первичным ключом, ClickHouse создаёт разреженный индекс как обычно. Когда пользователь выбирает данные из такой таблицы, ClickHouse анализирует условия запроса. Если пользователь хочет получить данные между двумя метками индекса и обе эти метки попадают в один месяц, ClickHouse может использовать индекс в этом конкретном случае, потому что он может вычислить расстояние между параметрами запроса и метками индекса.
@@ -349,7 +345,6 @@ INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
-
 ### Типы пропускающих индексов {#skip-index-types}
 
 Движок таблицы `MergeTree` поддерживает следующие типы пропускающих индексов.
@@ -371,7 +366,6 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
-
 #### Set {#set}
 
 Для каждой гранулы индекса сохраняется не более `max_rows` уникальных значений указанного выражения.
@@ -380,7 +374,6 @@ minmax
 ```text title="Syntax"
 set(max_rows)
 ```
-
 
 #### Фильтр Блума {#bloom-filter}
 
@@ -410,7 +403,6 @@ bloom_filter([false_positive_rate])
 :::note Тип данных Map: указание создания индекса по ключам или значениям
 Для типа данных `Map` клиент может указать, должен ли индекс создаваться по ключам или по значениям, с помощью функций [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) или [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues).
 :::
-
 
 #### N-граммовый Bloom-фильтр {#n-gram-bloom-filter}
 
@@ -480,7 +472,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 Разумеется, вы также можете использовать эти функции для оценки параметров и в других условиях.
 Приведённые выше функции соответствуют калькулятору фильтра Блума, доступному по адресу [здесь](https://hur.st/bloomfilter).
 
-
 #### Фильтр Блума по токенам {#token-bloom-filter}
 
 Фильтр Блума по токенам аналогичен `ngrambf_v1`, но вместо n-грамм хранит токены (последовательности, разделённые небуквенно-цифровыми символами).
@@ -489,7 +480,6 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
-
 #### Разрежённый n-граммный фильтр Блума {#sparse-grams-bloom-filter}
 
 Разрежённый n-граммный фильтр Блума аналогичен `ngrambf_v1`, но использует [токены разрежённых n-грамм](/sql-reference/functions/string-functions.md/#sparseGrams) вместо n-грамм.
@@ -497,7 +487,6 @@ tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```text title="Syntax"
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
-
 
 ### Текстовый индекс {#text}
 
@@ -586,7 +575,6 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 Проекции можно изменять или удалять с помощью команды [ALTER](/sql-reference/statements/alter/projection.md).
 
-
 ### Хранение проекций {#projection-storage}
 
 Проекции хранятся внутри каталога части. По сути это похоже на индекс, но включает подкаталог, в котором хранится часть анонимной таблицы `MergeTree`. Таблица задаётся запросом, определяющим проекцию. Если в определении есть предложение `GROUP BY`, базовый движок хранения становится [AggregatingMergeTree](aggregatingmergetree.md), и все агрегатные функции приводятся к типу `AggregateFunction`. Если есть предложение `ORDER BY`, таблица `MergeTree` использует его как выражение первичного ключа. Во время процесса слияния часть проекции объединяется с использованием процедуры слияния её движка хранения. Контрольная сумма части родительской таблицы объединяется с частью проекции. Остальные операции обслуживания аналогичны операциям для skip-индексов.
@@ -627,7 +615,6 @@ TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
 
-
 ### TTL столбца {#mergetree-column-ttl}
 
 Когда срок жизни значений в столбце истекает, ClickHouse заменяет их значениями по умолчанию для типа данных столбца. Если срок жизни всех значений столбца в части данных истекает, ClickHouse удаляет этот столбец из соответствующей части данных в файловой системе.
@@ -651,7 +638,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
-
 #### Добавление TTL для столбца существующей таблицы {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
@@ -660,7 +646,6 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 DAY;
 ```
 
-
 #### Изменение TTL для столбца {#altering-ttl-of-the-column}
 
 ```sql
@@ -668,7 +653,6 @@ ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 MONTH;
 ```
-
 
 ### TTL таблицы {#mergetree-table-ttl}
 
@@ -701,7 +685,6 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 
 **Примеры**
 
-
 #### Создание таблицы с `TTL`: {#creating-a-table-with-ttl-1}
 
 ```sql
@@ -717,7 +700,6 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
-
 
 #### Изменение `TTL` для таблицы: {#altering-ttl-of-the-table}
 
@@ -739,7 +721,6 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
-
 
 #### Создание таблицы, в которой строки с истёкшим сроком хранения повторно сжимаются: {#creating-a-table-where-expired-rows-are-recompressed}
 
@@ -771,7 +752,6 @@ ENGINE = MergeTree
 ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
-
 
 ### Удаление просроченных данных {#mergetree-removing-expired-data}
 
@@ -888,7 +868,6 @@ TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
 
 Теги:
-
 
 * `policy_name_N` — Имя политики. Имена политик должны быть уникальными.
 * `volume_name_N` — Имя тома. Имена томов должны быть уникальными.
@@ -1056,7 +1035,6 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 Версии ClickHouse с 22.3 по 22.7 используют другую конфигурацию кэша, см. [использование локального кэша](/operations/storing-data.md/#using-local-cache), если вы используете одну из этих версий.
 :::
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_part` — Имя парта.
@@ -1100,7 +1078,6 @@ ALTER TABLE tab DROP STATISTICS a;
 
 Эта лёгкая статистика агрегирует информацию о распределении значений по столбцам. Статистика хранится в каждой части и обновляется при каждой вставке.
 Её можно использовать для оптимизации `PREWHERE` только при включённой настройке `set allow_statistics_optimize = 1`.
-
 
 ### Доступные типы статистики по столбцам {#available-types-of-column-statistics}
 

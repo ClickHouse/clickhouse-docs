@@ -49,9 +49,10 @@ $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avr
 为了在表列与 Avro 模式中的字段之间建立对应关系，ClickHouse 会比较它们的名称。
 此比较区分大小写，且未使用的字段会被跳过。
 
-ClickHouse 表列的数据类型可以与插入的 Avro 数据中对应字段的数据类型不同。在插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据按照对应的列类型进行[类型转换（cast）](/sql-reference/functions/type-conversion-functions#cast)。
+ClickHouse 表列的数据类型可以与插入的 Avro 数据中对应字段的数据类型不同。在插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据按照对应的列类型进行[类型转换（cast）](/sql-reference/functions/type-conversion-functions#CAST)。
 
 在导入数据时，如果在模式中找不到某个字段，并且已启用设置 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields)，则会使用默认值，而不是抛出错误。
+
 
 ### 写入 Avro 数据 {#writing-avro-data}
 

@@ -119,7 +119,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 ## ClickHouse Cloud を使用する {#using-clickhouse-cloud}
 
-このディストリビューションは ClickHouse Cloud と併用できます。ユーザーは次の手順を実行してください:
+このディストリビューションは ClickHouse Cloud と併用できます。次の手順を実行してください:
 
 * `docker-compose.yml` ファイルから ClickHouse のサービスを削除します。テスト用途であれば任意で、削除しない場合はデプロイされた ClickHouse インスタンスは単に無視されますが、ローカルリソースを無駄に消費します。サービスを削除する場合は、`depends_on` など当該サービスへの参照も削除してください。
 

@@ -69,7 +69,7 @@ WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
 
-Row 1:
+Строка 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -77,8 +77,8 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
-Peak memory usage: 3.18 GiB.
+Обработана 1 строка. Затрачено: 1,283 сек. Обработано 418,44 млн строк, 7,23 ГБ (326,07 млн строк/с., 5,63 ГБ/с.)
+Пиковое использование памяти: 3,18 ГиБ.
 ```
 
 > **Используйте меньшие наборы данных в правой части `JOIN`**: Этот запрос может показаться более многословным, чем требуется, поскольку фильтрация по `PostId` выполняется как во внешнем, так и во вложенном запросе. Это оптимизация производительности, которая обеспечивает быстрое время ответа. Для оптимальной производительности всегда следите за тем, чтобы правая сторона `JOIN` была меньшим набором данных и оставалась как можно меньше. Советы по оптимизации производительности JOIN и обзору доступных алгоритмов приведены в [этой серии статей в блоге](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
@@ -87,7 +87,7 @@ Peak memory usage: 3.18 GiB.
 
 #### Применение словаря {#applying-a-dictionary}
 
-Чтобы продемонстрировать эти концепции, мы используем словарь для наших данных о голосовании. Поскольку словари обычно хранятся в памяти ([ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) — исключение), пользователям следует учитывать объём данных. Проверим размер нашей таблицы `votes`:
+Чтобы продемонстрировать эти концепции, мы используем словарь для наших данных о голосовании. Поскольку словари обычно хранятся в памяти ([ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) — исключение), вам следует учитывать объём данных. Проверим размер нашей таблицы `votes`:
 
 ```sql
 SELECT table,
@@ -148,7 +148,8 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-Получить количество голосов «за» и «против» для конкретного `PostId` теперь можно с помощью простой функции `dictGet`. Ниже мы получаем значения для поста `11227902`:
+Получить количество голосов «за» и «против» для конкретного `PostId` теперь можно с помощью простого вызова функции `dictGet`. Ниже мы получаем значения для поста `11227902`:
+
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -157,7 +158,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-Exploiting this in our earlier query, we can remove the JOIN:
+Используя это в нашем предыдущем запросе, можно убрать JOIN:
 
 WITH PostIds AS
 (
@@ -174,8 +175,8 @@ WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
-3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
-Peak memory usage: 552.26 MiB.
+Получено 3 строки. Затрачено: 0.551 сек. Обработано 119.64 млн строк, 3.29 ГБ (216.96 млн строк/сек., 5.97 ГБ/сек.)
+Пиковое использование памяти: 552.26 МиБ.
 ```
 
 Этот запрос не только гораздо проще, но и более чем в два раза быстрее! Его можно дополнительно оптимизировать, загружая в словарь только посты с более чем 10 голосами «за» и «против» и сохраняя только предварительно вычисленное значение степени спорности.
@@ -216,8 +217,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
-Peak memory usage: 249.32 MiB.
+Получено 5 строк. Затрачено: 0,033 сек. Обработано 4,25 млн строк, 82,84 МБ (130,62 млн строк/с., 2,55 ГБ/с.)
+Пиковое использование памяти: 249,32 МиБ.
 ```
 
 Аналогично нашему примеру выше с JOIN, мы можем использовать тот же словарь, чтобы эффективно определить, откуда происходит большинство постов:
@@ -240,8 +241,8 @@ LIMIT 5
 │ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
-5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
-Peak memory usage: 248.84 MiB.
+5 строк в наборе. Затрачено: 0.763 сек. Обработано 59.82 млн строк, 239.28 МБ (78.40 млн строк/с., 313.60 МБ/с.)
+Пиковое использование памяти: 248.84 МиБ.
 ```
 
 ## Обогащение на этапе вставки (index time) {#index-time-enrichment}
@@ -289,7 +290,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
+0 строк в наборе. Затрачено: 36.830 сек. Обработано 238.98 млн строк, 2.64 ГБ (6.49 млн строк/с., 71.79 МБ/с.)
 ```
 
 Теперь мы можем узнать название места, из которого поступает большинство записей:
@@ -309,8 +310,8 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
-Peak memory usage: 666.82 MiB.
+Получено 4 строки. Прошло: 0.142 сек. Обработано 59.82 млн строк, 1.08 ГБ (420.73 млн строк/сек., 7.60 ГБ/сек.)
+Пиковое использование памяти: 666.82 МиБ.
 ```
 
 ## Расширенные темы о словарях {#advanced-dictionary-topics}

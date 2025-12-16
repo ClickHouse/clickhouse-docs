@@ -54,17 +54,18 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 有关格式解析器的更多信息，请参阅 [Formats](../interfaces/formats.md) 章节。
 :::
 
+
 ## 空格 {#spaces}
 
-* 在语法结构之间（包括查询的开头和结尾）可以存在任意数量的空白字符。
-* 空白字符包括空格、制表符、换行符、回车符和换页符。
+- 在语法结构之间（包括查询的开头和结尾）可以存在任意数量的空白字符。
+- 空白字符包括空格、制表符、换行符、回车符和换页符。
 
 ## 注释 {#comments}
 
 ClickHouse 支持 SQL 风格和 C 风格的注释：
 
-* SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
-* C 风格的注释从 `/*` 开始到 `*/` 结束，可以跨多行。同样不需要空格。
+- SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
+- C 风格的注释从 `/*` 开始到 `*/` 结束，可以跨多行。同样不需要空格。
 
 ## 关键字 {#keywords}
 
@@ -90,6 +91,7 @@ ClickHouse 支持 SQL 风格和 C 风格的注释：
 ```sql
 SELECT "FROM" FROM table_name
 ```
+
 
 ## 标识符 {#identifiers}
 
@@ -122,11 +124,11 @@ SELECT "FROM" FROM table_name
 
 字面量可以是：
 
-* [字符串](#string)
-* [数值](#numeric)
-* [复合字面量](#compound)
-* [`NULL`](#null)
-* [Heredocs](#heredoc)（自定义字符串字面量）
+- [字符串](#string)
+- [数值](#numeric)
+- [复合字面量](#compound)
+- [`NULL`](#null)
+- [Heredocs](#heredoc)（自定义字符串字面量）
 
 我们将在下文的章节中对每一类进行更详细的介绍。
 
@@ -145,7 +147,7 @@ SELECT "FROM" FROM table_name
 
 | Supported Escape                    | Description                                                             |
 |-------------------------------------|-------------------------------------------------------------------------|
-| `\xHH`                              | 8 位字符表示形式，后接任意数量的十六进制数字 (H)。                     |
+| `\xHH`                              | 8 位字符表示形式，后接任意数量的十六进制数字 (H)。                     | 
 | `\N`                                | 保留，不执行任何操作（例如 `SELECT 'a\Nb'` 返回 `ab`）                  |
 | `\a`                                | 提示音（警报）                                                          |
 | `\b`                                | 退格                                                                   |
@@ -157,7 +159,7 @@ SELECT "FROM" FROM table_name
 | `\v`                                | 垂直制表符                                                             |
 | `\0`                                | 空字符                                                                 |
 | `\\`                                | 反斜杠                                                                 |
-| `\'` (or `''`)                    | 单引号                                                                 |
+| `\'` (or `''`)                      | 单引号                                                                 |
 | `\"`                                | 双引号                                                                 |
 | `` ` ``                             | 反引号                                                                 |
 | `\/`                                | 正斜杠                                                                 |
@@ -221,6 +223,7 @@ SELECT "FROM" FROM table_name
 不支持八进制字面量，以避免在解释时出现意外错误。
 :::
 
+
 ### 复合类型 {#compound}
 
 数组使用方括号构造 `[1, 2, 3]`。元组使用圆括号构造 `(1, 'Hello, world!', 2)`。
@@ -240,10 +243,10 @@ SELECT "FROM" FROM table_name
 :::note
 关于 `NULL`，需要注意以下几点：
 
-* 根据数据格式（输入或输出）的不同，`NULL` 可能有不同的表示形式。更多信息请参阅 [数据格式](/interfaces/formats)。
-* `NULL` 的处理较为复杂。例如，如果比较运算中的任一参数为 `NULL`，则该运算的结果也为 `NULL`。乘法、加法和其他运算同样如此。建议查阅各个运算的文档说明。
-* 在查询中，可以使用 [`IS NULL`](/sql-reference/functions/functions-for-nulls#isNull) 和 [`IS NOT NULL`](/sql-reference/functions/functions-for-nulls#isNotNull) 运算符，以及相关函数 `isNull` 和 `isNotNull` 来检查 `NULL`。
-  :::
+- 根据数据格式（输入或输出）的不同，`NULL` 可能有不同的表示形式。更多信息请参阅 [数据格式](/interfaces/formats)。
+- `NULL` 的处理较为复杂。例如，如果比较运算中的任一参数为 `NULL`，则该运算的结果也为 `NULL`。乘法、加法和其他运算同样如此。建议查阅各个运算的文档说明。
+- 在查询中，可以使用 [`IS NULL`](/sql-reference/functions/functions-for-nulls#isNull) 和 [`IS NOT NULL`](/sql-reference/functions/functions-for-nulls#isNotNull) 运算符，以及相关函数 `isNull` 和 `isNotNull` 来检查 `NULL`。
+:::
 
 ### Heredoc {#heredoc}
 
@@ -269,6 +272,7 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 
 * 你可以使用 heredoc 来嵌入 SQL、HTML、XML 等代码片段。
   :::
+
 
 ## 定义和使用查询参数 {#defining-and-using-query-parameters}
 
@@ -361,6 +365,7 @@ quantile (0.9)(x)
 不带参数的聚合函数的语法与常规函数相同。
 :::
 
+
 ## 运算符 {#operators}
 
 在查询解析阶段，运算符会根据其优先级和结合性被转换为对应的函数。
@@ -376,6 +381,7 @@ quantile (0.9)(x)
 ```text
 plus(plus(1, multiply(2, 3)), 4)`
 ```
+
 
 ## 数据类型和数据库表引擎 {#data-types-and-database-table-engines}
 
@@ -420,13 +426,14 @@ expr AS alias
 
 | 语法部分    | 描述                                                       | 示例                                                                      | 备注                                                                                              |
 | ------- | -------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `AS`    | 用于定义别名的关键字。在 `SELECT` 子句中，可以在不使用 `AS` 关键字的情况下为表名或列名定义别名。 | `SELECT table_name_alias.column_name FROM table_name table_name_alias`. | 在 [CAST](/sql-reference/functions/type-conversion-functions#cast) 函数中，`AS` 关键字有另一层含义。请参见该函数的说明。 |
+| `AS`    | 用于定义别名的关键字。在 `SELECT` 子句中，可以在不使用 `AS` 关键字的情况下为表名或列名定义别名。 | `SELECT table_name_alias.column_name FROM table_name table_name_alias`. | 在 [CAST](/sql-reference/functions/type-conversion-functions#CAST) 函数中，`AS` 关键字有另一层含义。请参见该函数的说明。 |
 | `expr`  | 任意 ClickHouse 支持的表达式。                                    | `SELECT column_name * 2 AS double FROM some_table`                      |                                                                                                 |
 | `alias` | `expr` 的名称。别名必须符合 [标识符](#identifiers) 语法规则。              | `SELECT "table t".column_name FROM table_name AS "table t"`.            |                                                                                                 |
 
+
 ### 使用说明 {#notes-on-usage}
 
-* 在一个查询或子查询中，别名是全局有效的，你可以在查询的任意部分为任意表达式定义别名。例如：
+* 在查询或子查询中，别名在整个查询范围内有效，你可以在查询的任意部分为任意表达式定义别名。例如：
 
 ```sql
 SELECT (1 AS n) + 2, n`.
@@ -459,8 +466,8 @@ SELECT
     sum(b) AS b
 FROM t;
 
-从服务器收到异常(版本 18.14.17):
-Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: 在查询中发现聚合函数 sum(b) 位于另一个聚合函数内部。
+Received exception from server (version 18.14.17):
+Code: 184. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: Aggregate function sum(b) is found inside another aggregate function in query.
 ```
 
 在前面的示例中，我们声明了一个包含列 `b` 的表 `t`。
@@ -472,6 +479,7 @@ ClickHouse 将表达式 `argMax(a, b)` 中的标识符 `b` 替换为了表达式
 :::note
 你可以通过将 [prefer&#95;column&#95;name&#95;to&#95;alias](/operations/settings/settings#prefer_column_name_to_alias) 设置为 `1` 来更改这一默认行为。
 :::
+
 
 ## Asterisk {#asterisk}
 

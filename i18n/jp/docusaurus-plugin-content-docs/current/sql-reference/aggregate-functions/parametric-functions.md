@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # パラメトリック集約関数 {#parametric-aggregate-functions}
 
-一部の集約関数は、（圧縮に使用される）引数列だけでなく、初期化に用いる定数パラメータの集合も受け取ることができます。構文としては、1 組ではなく 2 組の括弧を使用します。最初の括弧はパラメータ用で、2 番目の括弧は引数用です。
+一部の集約関数は、（圧縮に使用される）引数カラムだけでなく、初期化に用いる定数パラメータの集合も受け取ることができます。構文としては、1 組ではなく 2 組の括弧を使用します。最初の括弧はパラメータ用で、2 番目の括弧は引数用です。
 
 ## histogram {#histogram}
 
@@ -34,8 +34,8 @@ histogram(number_of_bins)(values)
 * 次の形式の [Tuple](../../sql-reference/data-types/tuple.md) の [Array](../../sql-reference/data-types/array.md):
 
   ```
-        [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
-        ```
+  [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
+  ```
 
   * `lower` — ビンの下限。
   * `upper` — ビンの上限。
@@ -83,7 +83,8 @@ FROM
 └────────┴───────┘
 ```
 
-この場合、ヒストグラムのビン境界は分かっていないことを念頭に置いてください。
+この場合、ヒストグラムのビンの境界は把握できないことに注意してください。
+
 
 ## sequenceMatch {#sequencematch}
 
@@ -115,6 +116,7 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 * パターンに一致しない場合は 0。
 
 型: `UInt8`。
+
 
 #### パターン構文 {#pattern-syntax}
 
@@ -160,7 +162,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM 
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-この場合、この関数はパターンに一致するイベントチェーンを見つけられませんでした。番号 3 のイベントが 1 と 2 の間に発生していたためです。同じ状況で番号 4 について条件を確認した場合は、そのシーケンスはパターンに一致します。
+この場合、この関数はパターンに一致するイベントチェーンを見つけられませんでした。数値 3 のイベントが 1 と 2 の間に発生していたためです。同じ状況で数値 4 について条件を確認していれば、そのシーケンスはパターンに一致していたでしょう。
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM t
@@ -175,6 +177,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 **関連項目**
 
 * [sequenceCount](#sequencecount)
+
 
 ## sequenceCount {#sequencecount}
 
@@ -221,7 +224,7 @@ sequenceCount(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-「1」の後に、その間にいくつでも他の数値が入ってよいものとして、「2」が現れる回数を数えます。
+「1」の後に、その間にはいくつでも他の数値が挟まってよいものとして、「2」が現れる回数を数えます。
 
 ```sql
 SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
@@ -232,6 +235,7 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 │                                                                       2 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## sequenceMatchEvents {#sequencematchevents}
 
@@ -278,7 +282,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-最長チェーンのイベントのタイムスタンプを返す
+最長のイベントチェーンのイベントタイムスタンプを返す
 
 ```sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
@@ -293,6 +297,7 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 **関連項目**
 
 * [sequenceMatch](#sequencematch)
+
 
 ## windowFunnel {#windowfunnel}
 
@@ -325,6 +330,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
   * `'strict_order'` — 他のイベントの介在を許可しません。例えば `A->B->D->C` の場合、`A->B->C` の検出は `D` の時点で停止し、最大イベントレベルは 2 になります。
   * `'strict_increase'` — タイムスタンプが厳密に増加しているイベントにのみ条件を適用します。
   * `'strict_once'` — 条件を複数回満たす場合でも、チェーン内で各イベントは 1 回だけカウントします。
+  * `'allow_reentry'` — 厳密な順序に違反するイベントを無視します。例えば A-&gt;A-&gt;B-&gt;C の場合、冗長な A を無視して A-&gt;B-&gt;C を検出し、最大イベントレベルは 3 になります。
 
 **戻り値**
 
@@ -346,6 +352,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 入力テーブル:
 
+
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
 │ 2019-01-28 │       1 │ 2019-01-29 10:00:00 │    1003 │ phone   │
@@ -361,7 +368,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 └────────────┴─────────┴─────────────────────┴─────────┴─────────┘
 ```
 
-2019年1月から2月の期間に、ユーザー `user_id` がチェーンをどこまで進んだかを確認します。
+2019年1月から2月にかけての期間に、ユーザー `user_id` がチェーンをどこまで進んだかを確認します。
 
 クエリ:
 
@@ -389,6 +396,38 @@ ORDER BY level ASC;
 │     4 │ 1 │
 └───────┴───┘
 ```
+
+**allow&#95;reentry モードを使用した例**
+
+この例では、`allow_reentry` モードがユーザーの再エントリーパターンに対してどのように機能するかを示します。
+
+```sql
+-- Sample data: user visits checkout -> product detail -> checkout again -> payment
+-- Without allow_reentry: stops at level 2 (product detail page)
+-- With allow_reentry: reaches level 4 (payment completion)
+
+SELECT
+    level,
+    count() AS users
+FROM
+(
+    SELECT
+        user_id,
+        windowFunnel(3600, 'strict_order', 'allow_reentry')(
+            timestamp,
+            action = 'begin_checkout',      -- Step 1: Begin checkout
+            action = 'view_product_detail', -- Step 2: View product detail  
+            action = 'begin_checkout',      -- Step 3: Begin checkout again (reentry)
+            action = 'complete_payment'     -- Step 4: Complete payment
+        ) AS level
+    FROM user_events
+    WHERE event_date = today()
+    GROUP BY user_id
+)
+GROUP BY level
+ORDER BY level ASC;
+```
+
 
 ## retention {#retention}
 
@@ -495,6 +534,7 @@ ORDER BY uid ASC
 
 結果：
 
+
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -549,6 +589,7 @@ FROM
 * `r2` - 2020-01-01 から 2020-01-02 の間の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond2` 条件）。
 * `r3` - 2020-01-01 および 2020-01-03 の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond3` 条件）。
 
+
 ## uniqUpTo(N)(x) {#uniquptonx}
 
 引数の異なる値の個数を、指定された上限 `N` まで数えます。異なる値の個数が `N` より大きい場合、この関数は `N` + 1 を返し、それ以外の場合は正確な値を返します。
@@ -568,6 +609,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
 `uniqUpTo(4)(UserID)` は、各 `SearchPhrase` ごとの一意な `UserID` の数を計算しますが、数えるのは一意な値を最大 4 個までに制限します。ある `SearchPhrase` に対して一意な `UserID` が 4 個を超えて存在する場合、この関数は 5（4 + 1）を返します。その後、`HAVING` 句で、一意な `UserID` の数が 5 未満である `SearchPhrase` を除外します。これにより、少なくとも 5 人の異なるユーザーによって使用された検索キーワードの一覧を取得できます。
+
 
 ## sumMapFiltered {#summapfiltered}
 
@@ -618,6 +660,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
 
@@ -680,6 +723,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
 ```
+
 
 ## sequenceNextNode {#sequencenextnode}
 
@@ -747,7 +791,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A',
 └────┴───────────┘
 ```
 
-**`forward` と `head` の挙動**
+**`forward` と `head` の動作**
 
 ```sql
 ALTER TABLE test_flow DELETE WHERE 1 = 1 settings mutations_sync = 1;
@@ -756,6 +800,7 @@ INSERT INTO test_flow VALUES (1, 1, 'Home') (2, 1, 'Gift') (3, 1, 'Exit');
 INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2, 'Basket');
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
+
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
@@ -776,10 +821,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
  1970-01-01 09:00:04    3   Basket
 ```
 
-1970-01-01 09:00:01    3   Gift // 基準値、Home とは一致しない
-1970-01-01 09:00:02    3   Home
-1970-01-01 09:00:03    3   Gift
-1970-01-01 09:00:04    3   Basket
+**`backward` および `tail` の動作**
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
@@ -798,23 +840,10 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
 1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
-```sql
-SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift
-1970-01-01 09:00:03    1   Exit // 基準点、Basketに不一致
+**`forward` と `first_match` の挙動**
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // 結果
-1970-01-01 09:00:03    2   Gift // Giftに一致
-1970-01-01 09:00:04    2   Basket // 基準点、Basketに一致
-
-1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // 結果
-1970-01-01 09:00:03    3   Gift // 基準点、Giftに一致
-1970-01-01 09:00:04    3   Basket // 基準点、Basketに一致
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -832,23 +861,9 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // 基準点
-1970-01-01 09:00:03    1   Exit // 結果
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // 基準点
-1970-01-01 09:00:04    2   Basket // 結果
-
-1970-01-01 09:00:01    3   Gift // 基準点
-1970-01-01 09:00:02    3   Home // 結果
-1970-01-01 09:00:03    3   Gift
-1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -866,23 +881,10 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // Matched with Home
 1970-01-01 09:00:03    3   Gift // The result
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
+```
 
-                 dt   id   page
-1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // 基準点
-1970-01-01 09:00:03    1   Exit // Home と一致しない
+**`backward` と `last_match` の挙動**
 
-1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // 基準点
-1970-01-01 09:00:04    2   Basket // Home と一致しない
-
-1970-01-01 09:00:01    3   Gift // 基準点
-1970-01-01 09:00:02    3   Home // Home と一致
-1970-01-01 09:00:03    3   Gift // 結果
-1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -900,8 +902,8 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-```sql
-SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
+```
+
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -921,6 +923,8 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:04    3   Basket
 ```
 
+**`base_condition` の挙動**
+
 ```sql
 CREATE TABLE test_flow_basecond
 (
@@ -936,7 +940,6 @@ ORDER BY id;
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
 
-**`base_condition` の挙動**
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
@@ -946,7 +949,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
- ```
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -976,22 +979,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // The result
  1970-01-01 09:00:03    1   B      ref2 // Base point
  1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
-```
-
-dt   id   page   ref
-1970-01-01 09:00:01    1   A      ref4 // ref 列が &#39;ref3&#39; と一致しないため、この行は基準行にはできません。
-1970-01-01 09:00:02    1   A      ref3 // 基準行
-1970-01-01 09:00:03    1   B      ref2 // 結果行
-1970-01-01 09:00:04    1   B      ref1
-
-```
-
-```sql
-SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
-
-                  dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4
- 1970-01-01 09:00:02    1   A      ref3 // 結果
- 1970-01-01 09:00:03    1   B      ref2 // 基準点
- 1970-01-01 09:00:04    1   B      ref1 // この行は ref カラムが 'ref2' と一致しないため、基準点になりません。
 ```

@@ -20,6 +20,7 @@ keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 
 sudo apt-get install gnupg
 ```
 
+
 ### apt-get で ClickHouse リポジトリから deb パッケージを取得できない {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. ファイアウォール設定を確認します。
@@ -27,7 +28,7 @@ sudo apt-get install gnupg
 
 ### apt-get で ClickHouse リポジトリから deb パッケージを更新できない {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
-この問題は、GPG キーが変更された際に発生する可能性があります。
+この問題は、GPG キーが変更された場合に発生する可能性があります。
 
 リポジトリ設定を更新するには、[セットアップ](/install/debian_ubuntu) ページの手順に従ってください。
 
@@ -63,6 +64,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
+
 ### 署名エラーにより Yum でパッケージを取得できない {#cant-get-packages-with-yum-because-of-wrong-signature}
 
 考えられる原因: キャッシュが不正です。2022-09 に GPG キーを更新した後に破損した可能性があります。
@@ -74,14 +76,15 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-その後は、[インストールガイド](/install/redhat)に従ってください
+その後は、[インストールガイド](/install/redhat)に従ってください。
+
 
 ## サーバーへの接続 {#connecting-to-the-server}
 
 考えられる問題:
 
-* サーバーが起動していない。
-* 想定外または誤った設定パラメータ。
+- サーバーが起動していない。
+- 想定外または誤った設定パラメータ。
 
 ### サーバーが起動していない {#server-is-not-running}
 
@@ -91,11 +94,12 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 sudo service clickhouse-server status
 ```
 
-サーバーが起動していない場合は、次のコマンドで起動してください。
+サーバーが起動していない場合は、次のコマンドを実行して起動してください。
 
 ```shell
 sudo service clickhouse-server start
 ```
+
 
 #### ログを確認する {#check-the-logs}
 
@@ -112,7 +116,7 @@ sudo service clickhouse-server start
 2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-ファイルの末尾にエラーが表示されていない場合は、次の文字列以降についてファイル全体を確認してください。
+ファイルの末尾にエラーが表示されていない場合は、次の文字列が出力されている箇所からファイル全体を確認してください。
 
 ```plaintext
 <Information> Application: starting up.
@@ -134,21 +138,24 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-#### system.d ログの確認 {#see-systemd-logs}
 
-`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `system.d` のログを確認できます。
+#### systemd ログの確認 {#see-systemd-logs}
+
+`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `systemd` のログを確認できます。
 
 ```shell
 sudo journalctl -u clickhouse-server
 ```
 
-#### インタラクティブ モードで clickhouse-server を起動する {#start-clickhouse-server-in-interactive-mode}
+
+#### 対話モードで clickhouse-server を起動する {#start-clickhouse-server-in-interactive-mode}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-このコマンドは、自動起動スクリプトの標準パラメータでサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+このコマンドは、自動起動スクリプトと同じ標準パラメータでサーバーをインタラクティブ アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+
 
 ### 設定パラメータ {#configuration-parameters}
 
@@ -189,6 +196,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 `clickhouse-client` を `stack-trace` パラメータ付きで起動すると、ClickHouse はエラーの説明とともにサーバー側のスタックトレースを返します。
 
 接続が切断されたことを示すメッセージが表示されることがあります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーがないか確認してください。
+
 
 ## クエリ処理の効率 {#efficiency-of-query-processing}
 

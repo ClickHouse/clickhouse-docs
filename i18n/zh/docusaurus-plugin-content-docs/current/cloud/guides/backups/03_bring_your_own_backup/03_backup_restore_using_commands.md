@@ -14,7 +14,7 @@ import TabItem from '@theme/TabItem';
 
 # 使用命令备份或恢复备份 {#commands-experience}
 
-用户可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
+您可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
 此外也可以通过[用户界面进行备份或恢复](/cloud/manage/backups/backup-restore-via-ui)。
 本指南提供了针对三大云服务提供商（CSP）的相关命令。
 

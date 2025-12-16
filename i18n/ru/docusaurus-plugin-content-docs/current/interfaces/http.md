@@ -10,7 +10,7 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-# HTTP-интерфейс
+# HTTP-интерфейс {#http-interface}
 
 ## Предварительные требования {#prerequisites}
 

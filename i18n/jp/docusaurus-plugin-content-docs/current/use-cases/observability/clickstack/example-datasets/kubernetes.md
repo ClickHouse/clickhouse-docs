@@ -50,7 +50,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   セットアップにTLS証明書が必要な場合は、Helmを使用して[cert-manager](https://cert-manager.io/)をインストールします：
 
   ```shell
-  # cert-manager リポジトリを追加 
+  # Add Cert manager repo 
 
   helm repo add jetstack https://charts.jetstack.io 
 
@@ -59,20 +59,20 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### OpenTelemetryデモのデプロイ（オプション）
 
-  この**手順は任意であり、監視対象となる既存のポッドがないユーザーを対象としています**。Kubernetes環境に既存のサービスがデプロイされているユーザーはスキップできますが、このデモにはインストルメント化されたマイクロサービスが含まれており、トレースとセッションリプレイのデータを生成するため、ClickStackの全機能を確認できます。
+  この**手順は任意であり、監視対象となる既存のポッドがない場合を想定しています**。Kubernetes環境に既存のサービスがデプロイされているユーザーはスキップできますが、このデモにはインストルメント化されたマイクロサービスが含まれており、トレースとセッションリプレイのデータを生成するため、ClickStackの全機能を確認できます。
 
   以下では、オブザーバビリティのテストと計装のデモンストレーションに最適化された、ClickStackフォーク版のOpenTelemetry Demo ApplicationスタックをKubernetesクラスタにデプロイします。バックエンドマイクロサービス、負荷生成ツール、テレメトリパイプライン、サポートインフラストラクチャ(Kafka、Redisなど)、およびClickStackとのSDK統合が含まれます。
 
   すべてのサービスは`otel-demo`ネームスペースにデプロイされます。各デプロイメントには次の内容が含まれます:
 
-  * OTel と ClickStack SDKs を用いたトレース、メトリクス、ログの自動インストルメンテーション。
-  * すべてのサービスは、`my-hyperdx-hdx-oss-v2-otel-collector` という名前の OpenTelemetry コレクター（まだデプロイされていない）に計測データを送信します
-  * 環境変数 `OTEL_RESOURCE_ATTRIBUTES` を介してログ、メトリクス、トレースを相関付けるための[リソースタグのポッドへの転送](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)。
+  * OTel および ClickStack SDKS によるトレース、メトリクス、ログの自動インストルメンテーション。
+  * すべてのサービスは、`my-hyperdx-hdx-oss-v2-otel-collector` という名前の OpenTelemetry コレクター（まだデプロイされていない）にインストルメンテーションデータを送信します
+  * [リソースタグのポッドへの転送](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) を通じて、環境変数 `OTEL_RESOURCE_ATTRIBUTES` を介してログ、メトリクス、トレースを相関付けます。
 
   ```shell
-  ## デモ用Kubernetesマニフェストファイルをダウンロード
+  ## download demo Kubernetes manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
-  # wgetを使用する場合
+  # wget alternative
   # wget https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
   kubectl apply --namespace otel-demo -f opentelemetry-demo.yaml
   ```
@@ -111,7 +111,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ClickStackをデプロイするには、[公式Helmチャート](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm)を使用します。
 
-  HyperDX Helmリポジトリを追加します:
+  HyperDX Helmリポジトリを追加する必要があります:
 
   ```shell
   helm repo add hyperdx https://hyperdxio.github.io/helm-charts
@@ -131,14 +131,14 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     * ClickHouse インスタンス
     * HyperDX
-    * ClickStack ディストリビューションの OTel collector
+    * ClickStack ディストリビューション版 OTel collector
     * HyperDX アプリケーション状態を保存するための MongoDB
 
     :::note
-    Kubernetes クラスターの構成に応じて、`storageClassName` の値を調整する必要がある場合があります。
+    Kubernetes クラスタの構成に応じて、`storageClassName` の値を調整する必要がある場合があります。
     :::
 
-    OTel デモをデプロイしないユーザーは、この設定を変更し、適切なネームスペースを選択できます。
+    OTel デモをデプロイしないユーザーは、このネームスペースを変更し、適切なネームスペースを選択できます。
 
     ```shell
     helm install my-hyperdx hyperdx/hdx-oss-v2   --set clickhouse.persistence.dataSize=100Gi --set global.storageClassName="standard-rwo" -n otel-demo
@@ -146,12 +146,14 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     :::warning 本番環境での ClickStack
 
-    このチャートは、ClickHouse と OTel collector もあわせてインストールします。本番環境では、ClickHouse および OTel collector の Operator を使用するか、ClickHouse Cloud を利用することを推奨します。
+    このチャートは、ClickHouse と OTel collector も併せてインストールします。本番環境では、ClickHouse および OTel collector の Operator を使用するか、ClickHouse Cloud を利用することを推奨します。
 
     ClickHouse と OTel collector を無効化するには、次の値を設定してください:
 
+    :::
+
     ```shell
-    helm install myrelease <チャート名またはパス> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
+    helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
     ```
 
     :::
@@ -163,12 +165,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ClickHouse Cloud を利用したい場合は、ClickStack をデプロイして、[同梱の ClickHouse を無効化](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)できます。
 
     :::note
-    現時点では、このチャートは常に HyperDX と MongoDB の両方をデプロイします。これらのコンポーネントは別経路でのアクセス手段を提供しますが、ClickHouse Cloud の認証とは統合されていません。このデプロイメントモデルでは、デプロイ済みの OTel collector 経由でインジェストするために必要な[セキュアなインジェスト API キーへのアクセスを提供](#retrieve-ingestion-api-key)する管理者向けコンポーネントとして想定されており、エンドユーザーに公開すべきではありません。
+    現時点では、このチャートは常に HyperDX と MongoDB の両方をデプロイします。これらのコンポーネントは別経路でのアクセス手段を提供しているものの、ClickHouse Cloud の認証とは統合されていません。このデプロイメントモデルでは、デプロイ済みの OTel collector 経由でインジェストするために必要な[セキュアなインジェスト API キーへのアクセスを提供](#retrieve-ingestion-api-key)する管理者向けコンポーネントとして想定されており、エンドユーザーに公開すべきではありません。
     :::
 
     ```shell
-    # ClickHouse Cloudの認証情報を指定
-    export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # 完全なhttps URL
+    # specify ClickHouse Cloud credentials
+    export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
     export CLICKHOUSE_USER=<CLICKHOUSE_USER>
     export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
@@ -176,7 +178,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
   </details>
 
-  デプロイメントのステータスを確認するには、以下のコマンドを実行し、すべてのコンポーネントが `Running` 状態であることを確認してください。なお、ClickHouse Cloud を使用している場合、ClickHouse はこの出力には表示されません。
+  デプロイメントのステータスを確認するには、以下のコマンドを実行し、すべてのコンポーネントが `Running` 状態であることを確認してください。なお、ClickHouse Cloud を使用している場合、ClickHouse はこの出力には表示されません:
 
   ```shell
   kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -221,15 +223,15 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### API キー Kubernetes Secret の作成
 
-  インジェスト API key を含む新しい Kubernetes secret と、ClickStack Helm チャートでデプロイされた OTel collector の場所を含む config map を作成します。後続のコンポーネントは、これを使用して ClickStack Helm チャートでデプロイされた collector へのデータ取り込みを可能にします:
+  インジェスト API key を含む新しい Kubernetes secret と、ClickStack Helm チャートでデプロイされた OTel collector の場所を含む config map を作成します。後続のコンポーネントは、これを使用して ClickStack Helm チャートでデプロイされた collector へのインジェストを可能にします:
 
   ```shell
-  # インジェスト API key でシークレットを作成
+  # create secret with the ingestion API key
   kubectl create secret generic hyperdx-secret \
   --from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
   -n otel-demo
 
-  # 上記でデプロイした ClickStack OTel collector を指す ConfigMap を作成
+  # create a ConfigMap pointing to the ClickStack OTel collector deployed above
   kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
   ```
 
@@ -245,13 +247,13 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### OpenTelemetry Helmリポジトリを追加する
 
-  Kubernetesメトリクスを収集するために、標準的なOTel collectorをデプロイし、上記のインジェストAPI keyを使用してClickStack collectorへデータを安全に送信するように設定します。
+  Kubernetesメトリクスを収集するために、標準的なOTel collectorをデプロイし、上記のインジェスト API key を使用して ClickStack collector へデータを安全に送信するように設定します。
 
   OpenTelemetry Helmリポジトリをインストールする必要があります:
 
   ```shell
-  # OTel Helmリポジトリを追加
-  helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+  # Add Otel Helm repo
+  helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts 
   ```
 
   ### Kubernetesコレクターコンポーネントのデプロイ
@@ -262,14 +264,14 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   * `k8s_daemonset.yaml` は、クラスター内のすべてのノードで実行される **デーモンセットベースのコレクター** をデプロイします。これは、`kubeletstats`、`hostmetrics`、Kubernetes Attribute Processor などのコンポーネントを使用して、**ノードレベルおよびポッドレベルのメトリクス** に加えてコンテナログを収集します。このコレクターはログにメタデータを付与し、OTLP エクスポーター経由で HyperDX に送信します。
 
-  これらのマニフェストにより、インフラストラクチャからアプリケーションレベルのテレメトリまで、クラスタ全体のフルスタック可観測性が実現され、エンリッチされたデータがClickStackに送信されて一元的な分析が行われます。
+  これらのマニフェストにより、インフラストラクチャからアプリケーションレベルのテレメトリまで、クラスタ全体のフルスタックオブザーバビリティが実現され、エンリッチされたデータがClickStackに送信されて一元的な分析が行われます。
 
   まず、コレクターをデプロイメントとしてインストールします：
 
   ```shell
-  # マニフェストファイルをダウンロード
+  # download manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_deployment.yaml
-  # Helm チャートをインストール
+  # install the helm chart
   helm install --namespace otel-demo k8s-otel-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
   ```
 
@@ -284,26 +286,26 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
       repository: otel/opentelemetry-collector-contrib
       tag: 0.123.0
      
-    # このコレクターは1つのみ必要です - 複数存在するとデータが重複します
+    # We only want one of these collectors - any more and we'd produce duplicate data
     replicaCount: 1
      
     presets:
       kubernetesAttributes:
         enabled: true
-        # 有効にすると、プロセッサは関連するポッドのすべてのラベルを抽出し、リソース属性として追加します。
-        # ラベルの正確な名前がキーとして使用されます。
+        # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
+        # The label's exact name will be the key.
         extractAllPodLabels: true
-        # 有効にすると、プロセッサは関連するポッドのすべてのアノテーションを抽出し、リソース属性として追加します。
-        # アノテーションの正確な名前がキーとして使用されます。
+        # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
+        # The annotation's exact name will be the key.
         extractAllPodAnnotations: true
-      # Kubernetesイベントを収集するようコレクターを設定します。
-      # k8sobject receiverをログパイプラインに追加し、デフォルトでKubernetesイベントを収集します。
-      # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+      # Configures the collector to collect Kubernetes events.
+      # Adds the k8sobject receiver to the logs pipeline and collects Kubernetes events by default.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
       kubernetesEvents:
         enabled: true
-      # クラスターレベルのメトリクスを収集するようKubernetes Cluster Receiverを設定します。
-      # k8s_cluster receiverをメトリクスパイプラインに追加し、必要なルールをClusterRoleに追加します。
-      # 詳細: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
+      # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics.
+      # Adds the k8s_cluster receiver to the metrics pipeline and adds the necessary rules to ClusteRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
       clusterMetrics:
         enabled: true
 
@@ -341,9 +343,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   次に、ノードおよびポッドレベルのメトリクスとログを収集するため、コレクターをデーモンセットとしてデプロイします：
 
   ```shell
-  # マニフェストファイルをダウンロード
+  # download manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
-  # Helm チャートをインストール
+  # install the helm chart
   helm install --namespace otel-demo k8s-otel-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
   ```
 
@@ -360,7 +362,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
       repository: otel/opentelemetry-collector-contrib
       tag: 0.123.0
        
-    # kubeletstats の CPU/メモリ使用率メトリクスを使用するために必要
+    # Required to use the kubeletstats cpu/memory utilization metrics
     clusterRole:
       create: true
       rules:
@@ -376,20 +378,20 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
         enabled: true
       hostMetrics:
         enabled: true
-      # Kubernetes メタデータを追加するために Kubernetes プロセッサを設定します。
-      # すべてのパイプラインに k8sattributes プロセッサを追加し、クラスター ロールに必要なルールを追加します。
-      # 詳細情報: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
+      # Configures the Kubernetes Processor to add Kubernetes metadata.
+      # Adds the k8sattributes processor to all the pipelines and adds the necessary rules to ClusterRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
       kubernetesAttributes:
         enabled: true
-        # 有効にすると、プロセッサは関連するポッドのすべてのラベルを抽出し、リソース属性として追加します。
-        # ラベルの正確な名前がキーになります。
+        # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
+        # The label's exact name will be the key.
         extractAllPodLabels: true
-        # 有効にすると、プロセッサは関連するポッドのすべてのアノテーションを抽出し、リソース属性として追加します。
-        # アノテーションの正確な名前がキーになります。
+        # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
+        # The annotation's exact name will be the key.
         extractAllPodAnnotations: true
-      # キューブレット上の API サーバーからノード、ポッド、コンテナのメトリクスを収集するようにコレクターを設定します。
-      # メトリクスパイプラインに kubeletstats レシーバーを追加し、クラスター ロールに必要なルールを追加します。
-      # 詳細情報: https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
+      # Configures the collector to collect node, pod, and container metrics from the API server on a kubelet..
+      # Adds the kubeletstats receiver to the metrics pipeline and adds the necessary rules to ClusterRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
       kubeletMetrics:
         enabled: true
 
@@ -408,7 +410,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     config:
       receivers:
-        # 追加のキューブレットメトリクスを設定
+        # Configures additional kubelet metrics
         kubeletstats:
           collection_interval: 20s
           auth_type: 'serviceAccount'
@@ -487,9 +489,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   </details>
 
   <details>
-    <summary>自己管理型デプロイメントを使用する</summary>
+    <summary>セルフマネージドデプロイメントを使用する</summary>
 
-    ローカルにデプロイされた HyperDX にアクセスするには、ローカルコマンドを使用してポートフォワーディングを行い、[http://localhost:8080](http://localhost:8080) から HyperDX にアクセスします。
+    ローカルにデプロイされた HyperDX にアクセスするには、`kubectl port-forward` を実行してポートフォワーディングを行い、[http://localhost:8080](http://localhost:8080) から HyperDX にアクセスします。
 
     ```shell
     kubectl port-forward \
@@ -499,7 +501,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     ```
 
     :::note 本番環境での ClickStack
-    本番環境では、ClickHouse Cloud 上で HyperDX を使用していない場合、TLS 対応のイングレスを使用することを推奨します。例えば、次のとおりです。
+    本番環境では、ClickHouse Cloud 上で HyperDX を使用していない場合、TLS を有効にしたイングレスを使用することを推奨します。例えば、次のようにします。
 
     ```shell
     helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \

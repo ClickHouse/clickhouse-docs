@@ -245,6 +245,7 @@ SELECT * FROM products
 WHERE (category = 'Электроника' OR category = 'Мебель')
   AND in_stock = true
   AND price < 400;
+
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
 1. │  2 │ Mouse   │  25.5 │ Electronics │ true     │

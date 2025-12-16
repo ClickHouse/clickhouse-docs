@@ -450,10 +450,10 @@ FROM system.numbers LIMIT 5
 
 ## buildId {#buildId}
 
-Появилась в версии v20.5
+Введена в версии v20.5
 
-Возвращает идентификатор сборки (buildId), сгенерированный компилятором для исполняемого бинарного файла сервера ClickHouse.
-Если функция выполняется в контексте distributed таблицы, она формирует обычный столбец со значениями для каждого сегмента.
+Возвращает идентификатор сборки, сгенерированный компилятором для запущенного бинарного файла сервера ClickHouse.
+Если выполняется в контексте distributed таблицы, эта функция генерирует обычный столбец со значениями, относящимися к каждому сегменту.
 В противном случае она возвращает константное значение.
 
 **Синтаксис**
@@ -483,6 +483,7 @@ SELECT buildId()
 │ AB668BEF095FAA6BD26537F197AC2AF48A927FB4 │
 └──────────────────────────────────────────┘
 ```
+
 
 ## byteSize {#byteSize}
 
@@ -4453,7 +4454,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 Появился в версии: v22.6
 
 Отображает информацию о текущем SSL-сертификате (Secure Sockets Layer) сервера, если он настроен.
-См. раздел [Configuring SSL-TLS](/guides/sre/configuring-ssl) для получения дополнительной информации о том, как настроить ClickHouse на использование сертификатов OpenSSL для проверки подключений.
+См. раздел [Configuring TLS](/guides/sre/tls/configuring-tls) для получения дополнительной информации о том, как настроить ClickHouse на использование сертификатов OpenSSL для проверки подключений.
 
 **Синтаксис**
 
@@ -4480,6 +4481,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```response title=Response
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
+
 
 ## sleep {#sleep}
 

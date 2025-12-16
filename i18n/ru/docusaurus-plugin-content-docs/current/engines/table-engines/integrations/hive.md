@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Движок таблиц Hive
+# Движок таблиц Hive {#hive-table-engine}
 
 <CloudNotSupportedBadge/>
 

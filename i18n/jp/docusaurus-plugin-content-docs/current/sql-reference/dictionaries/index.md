@@ -12,7 +12,6 @@ import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/s
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Dictionaries {#dictionaries}
 
 Dictionary は、さまざまな種類の参照リストに便利なマッピング（`key -> attributes`）です。
@@ -1115,7 +1114,6 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [PostgreSQL](#postgresql)
   * [YTsaurus](#ytsaurus)
 
-
 ### ローカル ファイル {#local-file}
 
 設定例:
@@ -1938,7 +1936,6 @@ SOURCE(YTSAURUS(
 * `http_proxy_urls` – YTsaurus HTTP プロキシへの URL。
 * `cypress_path` – テーブルのソースとなる Cypress パス。
 * `oauth_token` – OAuth トークン。
-
 
 ### Null {#null}
 

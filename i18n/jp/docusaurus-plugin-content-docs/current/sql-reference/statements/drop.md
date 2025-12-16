@@ -7,9 +7,9 @@ title: 'DROP ステートメント'
 doc_type: 'reference'
 ---
 
-# DROP ステートメント {#drop-statements}
+# DROP 文 {#drop-statements}
 
-既存のエンティティを削除します。`IF EXISTS` 句が指定されている場合、エンティティが存在しない場合でもクエリはエラーを返しません。`SYNC` 修飾子が指定されている場合、エンティティは即座に削除されます。
+既存のエンティティを削除します。`IF EXISTS` 句が指定されている場合、エンティティが存在しない場合でもクエリはエラーを返しません。`SYNC` 修飾子が指定されている場合、エンティティは遅延なく削除されます。
 
 ## DROP DATABASE {#drop-database}
 
@@ -78,6 +78,16 @@ DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ```sql
 DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
+```
+
+## DROP MASKING POLICY {#drop-masking-policy}
+
+マスキングポリシーを削除します。
+
+構文：
+
+```sql
+DROP MASKING POLICY [IF EXISTS] name ON [database.]table [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
 ## DROP QUOTA {#drop-quota}

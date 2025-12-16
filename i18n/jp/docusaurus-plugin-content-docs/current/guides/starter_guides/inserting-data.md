@@ -11,6 +11,7 @@ doc_type: 'guide'
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
+
 ## ClickHouse への挿入と OLTP データベースへの挿入の違い {#inserting-into-clickhouse-vs-oltp-databases}
 
 OLAP（Online Analytical Processing）データベースである ClickHouse は、高いパフォーマンスとスケーラビリティに最適化されており、最大で 1 秒間に数百万行のデータを挿入できます。
@@ -80,7 +81,7 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 :::note
 データはデータベースストレージにフラッシュされるまではクエリで検索できないことと、バッファフラッシュは設定可能であることに注意してください。
 
-非同期インサートの設定に関する詳細な情報は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)にあり、さらに深掘りした内容は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
+非同期 Insert の設定に関する詳細は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)、さらに詳しい解説は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 :::
 
 ### 公式の ClickHouse クライアントを使用する {#use-official-clickhouse-clients}
@@ -142,6 +143,7 @@ user_id message                                             timestamp           
 102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
 102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
+
 
 ## Postgres からのデータロード {#loading-data-from-postgres}
 

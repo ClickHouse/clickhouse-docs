@@ -146,3 +146,46 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::note
 データ転送料金を抑えるため、ソースの S3 バケットは ClickHouse Cloud サービスと同じリージョンに配置することを推奨します。詳細については [S3 pricing](https://aws.amazon.com/s3/pricing/) を参照してください。
 :::
+
+
+## 高度なアクション制御 {#advanced-action-control}
+
+リクエストが ClickHouse の VPC から発行された場合にのみオブジェクトを返すように制限したいお客様は、上で作成した [IAM assume role](#setting-up-iam-assume-role) に対して次のポリシーを追加できます。ClickHouse Cloud の VPC エンドポイントを取得する手順については、[Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) を参照してください。
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+
+```
