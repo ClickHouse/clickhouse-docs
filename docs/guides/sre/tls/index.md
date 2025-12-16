@@ -6,7 +6,7 @@ doc_type: 'landing-page'
 keywords: ['security', 'TLS', 'SRE guide']
 ---
 
-| Page                                                                   | Description                                                                                             |
-|------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [TLS configuration](/guides/sre/configuring-tls)                     | Learnhow to configure ClickHouse to use static TLS certificates.              |
+| Page                                                                 | Description                                                                                             |
+|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [TLS configuration](/guides/sre/tls/configuring-tls)                 | Learnhow to configure ClickHouse to use static TLS certificates.              |
 | [ACME client configuration](/guides/sre/configuring-tls-acme-client) | Learn how to configure ClickHouse to use [ACME](https://datatracker.ietf.org/doc/html/rfc8555) (Automatic Certificate Management Environment) protocol for automatic TLS certificates renewal. |
