@@ -20,6 +20,7 @@ ClickStack предоставляет несколько способов при
 | [EC2 Host Logs](/use-cases/observability/clickstack/integrations/host-logs/ec2) | Мониторинг логов инстансов EC2 |
 | [AWS Lambda Logs using Rotel](/use-cases/observability/clickstack/integrations/aws-lambda) | Проброс логов Lambda с помощью Rotel |
 | [AWS CloudWatch](/use-cases/observability/clickstack/integrations/aws-cloudwatch-logs) | Проброс групп логов CloudWatch |
+| [JVM Metrics](/use-cases/observability/clickstack/integrations/jvm-metrics) | Мониторинг производительности JVM |
 | [Kafka Metrics](/use-cases/observability/clickstack/integrations/kafka-metrics) | Мониторинг производительности Kafka |
 | [Kubernetes](/use-cases/observability/clickstack/integrations/kubernetes) | Мониторинг кластеров K8s |
 | [Nginx Logs](/use-cases/observability/clickstack/integrations/nginx) | Сбор логов доступа и ошибок Nginx |

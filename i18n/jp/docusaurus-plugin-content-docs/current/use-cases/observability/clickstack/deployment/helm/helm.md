@@ -344,7 +344,7 @@ kubectl get pods -l app.kubernetes.io/name=clickstack
 
 <JSONSupport />
 
-ユーザーは、パラメータまたは `values.yaml` を用いてこれらの環境変数を設定できます。例:
+これらの環境変数は、パラメータまたは `values.yaml` を使用して設定できます。例:
 
 *values.yaml*
 
@@ -362,7 +362,7 @@ otel:
       value: "--feature-gates=clickhouse.json"
 ```
 
-または `--set` で:
+または `--set` を使用して:
 
 ```shell
 helm install my-clickstack clickstack/clickstack \
@@ -371,6 +371,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
+
 
 ## 関連ドキュメント {#related-documentation}
 

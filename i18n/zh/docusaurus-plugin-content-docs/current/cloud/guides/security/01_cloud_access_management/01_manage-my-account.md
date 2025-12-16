@@ -2,7 +2,7 @@
 sidebar_label: '管理我的账户'
 slug: /cloud/security/manage-my-account
 title: '管理我的账户'
-description: '本页介绍用户如何接受邀请、管理 MFA 设置以及重置密码'
+description: '本页介绍您如何接受邀请、管理 MFA 设置以及重置密码'
 doc_type: 'guide'
 keywords: ['账户管理', '用户资料', '安全', '云控制台', '设置']
 ---
@@ -30,15 +30,13 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 
 使用 `Continue with Google` 或 `Continue with Microsoft Account` 来注册服务或接受邀请。
 
-如果您的公司使用 Google Workspace 或 Microsoft 365，您可以在 ClickHouse Cloud 中复用现有的单点登录配置。为此，只需使用公司邮箱地址注册，并使用用户的公司邮箱邀请其他用户。这样，您的用户必须先通过公司现有的登录流程（无论是通过身份提供商，还是直接使用 Google 或 Microsoft 身份验证），然后才能登录 ClickHouse Cloud。 
+如果您的公司使用 Google Workspace 或 Microsoft 365，您可以在 ClickHouse Cloud 中复用现有的单点登录配置。为此，只需使用公司邮箱地址注册，并使用他们的公司邮箱地址邀请其他用户。这样，您的用户必须先通过公司现有的登录流程（无论是通过身份提供商，还是直接使用 Google 或 Microsoft 身份验证），然后才能登录 ClickHouse Cloud。 
 
 ### SAML 单点登录 (SSO) {#saml-sso}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 使用 SAML SSO 的用户在登录时会由其身份提供商自动添加。具有 Organization Admin 角色的 ClickHouse Cloud 用户可以[管理分配给 SAML 用户的角色](/cloud/security/manage-cloud-users)，并强制将 SAML 设为唯一的身份验证方式。
-
-
 
 ## 管理多重身份验证（MFA） {#mfa}
 
@@ -71,13 +69,12 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 11. 勾选 `I have safely recorded this code` 复选框
 12. 点击 Continue
 
-
-
 ## 账户恢复 {#account-recovery}
 
 ### 忘记密码 {#forgot-password}
 
 如果您忘记了密码，请按照以下步骤自行恢复：
+
 1. 访问 https://console.clickhouse.cloud
 2. 输入您的邮箱地址并点击 Continue
 3. 点击 Forgot your password?
@@ -90,6 +87,7 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 ### MFA 自助恢复 {#mfa-self-serivce-recovery}
 
 如果您丢失了 MFA 设备或删除了令牌，请按照以下步骤恢复并创建新令牌：
+
 1. 访问 https://console.clickhouse.cloud
 2. 输入您的登录凭证并点击 Continue
 3. 在 Multi-factor authentication 界面点击 Cancel
@@ -107,7 +105,7 @@ ClickHouse Cloud 允许您使用电子邮件地址和密码进行身份验证。
 15. 再次复制新的恢复代码并妥善保存——这是在您在移除过程中离开该页面时的应急措施
 16. 勾选 `I have safely recorded this code`，然后点击 Continue
 17. 按照上面的流程设置新的 MFA 因子
-       
+
 ### 丢失 MFA 和恢复代码 {#lost-mfa-and-recovery-code}
 
 如果您同时丢失了 MFA 设备和恢复代码，或者丢失 MFA 设备且从未获取过恢复代码，请按照以下步骤请求重置：

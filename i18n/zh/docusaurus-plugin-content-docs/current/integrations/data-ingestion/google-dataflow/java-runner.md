@@ -2,13 +2,14 @@
 sidebar_label: 'Java Runner'
 slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: '用户可以使用 Google Dataflow Java Runner 将数据摄取到 ClickHouse'
+description: '可以使用 Google Dataflow Java Runner 将数据摄取到 ClickHouse'
 title: 'Dataflow Java Runner'
 doc_type: 'guide'
 keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO 连接器']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Dataflow Java 运行器 {#dataflow-java-runner}
 

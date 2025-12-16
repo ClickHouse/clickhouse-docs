@@ -22,6 +22,7 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+
 # Chartbrew を ClickHouse に接続する {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -75,10 +76,10 @@ import Image from '@theme/IdealImage';
 可視化したいデータを取得するための SQL クエリを作成します。例えば、次のクエリは `uk_price_paid` データセットから、年ごとの支払価格の平均値を算出します。
 
 ```sql
-SELECT toYear(date) AS year, avg(price) AS avg_price
-FROM uk_price_paid
-GROUP BY year
-ORDER BY year;
+  SELECT toYear(date) AS year, avg(price) AS avg_price
+  FROM uk_price_paid
+  GROUP BY year
+  ORDER BY year;
 ```
 
 <Image img={chartbrew_07} size="lg" alt="Chartbrew での ClickHouse SQL クエリ" />
@@ -91,28 +92,29 @@ ORDER BY year;
 
 データが取得できたら、**Configure dataset** をクリックして、可視化のパラメータを設定します。
 
+
 ## 4. 可視化を作成する {#4-create-a-visualization}
-   
-  1. 可視化用のメトリクス（数値）とディメンション（カテゴリ型の値）を定義します。
+
+1. 可視化用のメトリクス（数値）とディメンション（カテゴリ型の値）を定義します。
   2. データセットをプレビューし、クエリ結果の構造が正しいことを確認します。
   3. グラフの種類（例：折れ線グラフ、棒グラフ、円グラフ）を選択し、ダッシュボードに追加します。
   4. **Complete dataset** をクリックしてセットアップを完了します。
 
-  <Image img={chartbrew_08} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
+<Image img={chartbrew_08} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
 
-  データのさまざまな側面を可視化するために、必要なだけデータセットを作成できます。これらのデータセットを使って、さまざまなメトリクスを追跡する複数のダッシュボードを作成できます。
+データのさまざまな側面を可視化するために、必要なだけデータセットを作成できます。これらのデータセットを使って、さまざまなメトリクスを追跡する複数のダッシュボードを作成できます。
 
-  <Image img={chartbrew_01} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
+<Image img={chartbrew_01} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
 
 ## 5. データ更新の自動化 {#5-automate-data-updates}
-   
-  ダッシュボードを最新の状態に保つために、データの自動更新をスケジュールできます。
 
-  1. データセット更新ボタンの横にあるカレンダーアイコンをクリックします。
+ダッシュボードを最新の状態に保つために、データの自動更新をスケジュールできます。
+
+1. データセット更新ボタンの横にあるカレンダーアイコンをクリックします。
   2. 更新間隔を設定します（例: 1時間ごと、毎日）。
   3. 設定を保存し、自動更新を有効にします。
 
-  <Image img={chartbrew_09} size="lg" alt="Chartbrew のデータセット更新設定" />
+<Image img={chartbrew_09} size="lg" alt="Chartbrew のデータセット更新設定" />
 
 ## さらに詳しく {#learn-more}
 

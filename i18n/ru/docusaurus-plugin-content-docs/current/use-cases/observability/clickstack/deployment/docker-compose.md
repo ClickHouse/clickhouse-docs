@@ -85,7 +85,7 @@ docker compose up
 
 ## Изменение настроек Compose {#modifying-settings}
 
-Пользователи могут изменять настройки стека, например используемую версию, через файл с переменными окружения:
+Вы можете изменять настройки стека, например используемую версию, через файл с переменными окружения:
 
 ```shell
 user@example-host clickstack % cat .env
@@ -119,32 +119,32 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 ## Использование ClickHouse Cloud {#using-clickhouse-cloud}
 
-Этот дистрибутив можно использовать с ClickHouse Cloud. Пользователям следует:
+Этот дистрибутив можно использовать с ClickHouse Cloud. Вам следует:
 
 * Удалить сервис ClickHouse из файла `docker-compose.yml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет расходовать локальные ресурсы. При удалении сервиса убедитесь, что удалены все ссылки на него, такие как `depends_on`.
 
 * Изменить OTel collector для использования экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в файле `docker-compose.yml`. В частности, добавьте переменные окружения в сервис OTel collector:
 
   ```shell
-    otel-collector:
-        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-        environment:
-          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
-          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
-          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-        ports:
-          - '13133:13133' # health_check extension
-          - '24225:24225' # fluentd receiver
-          - '4317:4317' # OTLP gRPC receiver
-          - '4318:4318' # OTLP http receiver
-          - '8888:8888' # metrics extension
-        restart: always
-        networks:
-          - internal
-    ```
+  otel-collector:
+      image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+      environment:
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
+        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+        HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
+        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+        OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+      ports:
+        - '13133:13133' # health_check extension
+        - '24225:24225' # fluentd receiver
+        - '4317:4317' # OTLP gRPC receiver
+        - '4318:4318' # OTLP http receiver
+        - '8888:8888' # metrics extension
+      restart: always
+      networks:
+        - internal
+  ```
 
   Переменная `CLICKHOUSE_ENDPOINT` должна указывать на HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 

@@ -16,7 +16,7 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
-# ClickHouseがクエリを並列実行する方法
+# ClickHouseがクエリを並列実行する方法 {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouseは[速度のために構築](/concepts/why-clickhouse-is-so-fast)されています。利用可能なすべてのCPUコアを使用し、処理レーン全体にデータを分散し、しばしばハードウェアを限界近くまで押し上げることで、高度に並列な方法でクエリを実行します。
 

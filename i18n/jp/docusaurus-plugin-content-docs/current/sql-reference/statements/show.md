@@ -33,6 +33,7 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 *擬似的な* クエリが返されます。
 :::
 
+
 ## SHOW DATABASES {#show-databases}
 
 このステートメントは、すべてのデータベースを一覧表示します。
@@ -49,6 +50,7 @@ SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filena
 SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
+
 ### 例 {#examples}
 
 この例では、`SHOW` を使用して、名前に文字列 &#39;de&#39; を含むデータベース名を取得します。
@@ -63,7 +65,7 @@ SHOW DATABASES LIKE '%de%'
 └─────────┘
 ```
 
-大文字小文字を区別しない形で行うこともできます。
+大文字小文字を区別せずに検索することもできます。
 
 ```sql title="Query"
 SHOW DATABASES ILIKE '%DE%'
@@ -103,6 +105,7 @@ SHOW DATABASES LIMIT 2
 └────────────────────────────────┘
 ```
 
+
 ### 関連項目 {#see-also}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
@@ -125,6 +128,7 @@ SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>
 SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
+
 ### 例 {#examples-1}
 
 この例では、`SHOW TABLES` ステートメントを使用して、名前に&#39;user&#39; が含まれるすべてのテーブルを検索します。
@@ -140,7 +144,7 @@ SHOW TABLES FROM system LIKE '%user%'
 └──────────────────┘
 ```
 
-同じことを、大文字・小文字を区別せずに行うこともできます：
+同じことを大文字・小文字を区別せずに行うこともできます：
 
 ```sql title="Query"
 SHOW TABLES FROM system ILIKE '%USER%'
@@ -153,7 +157,7 @@ SHOW TABLES FROM system ILIKE '%USER%'
 └──────────────────┘
 ```
 
-または、名前に文字「s」を含まないテーブルを検索するには次のようにします。
+または、名前に「s」を含まないテーブルを検索するには次のようにします。
 
 ```sql title="Query"
 SHOW TABLES FROM system NOT LIKE '%s%'
@@ -179,6 +183,7 @@ SHOW TABLES FROM system LIMIT 2
 │ asynchronous_metric_log        │
 └────────────────────────────────┘
 ```
+
 
 ### 関連項目 {#see-also-1}
 
@@ -217,6 +222,7 @@ MySQL との互換性のために存在しています。`FULL` キーワード�
 | `comment`   | （`FULL` キーワードが指定された場合のみ）カラムに対するコメント                                        | `String`           |
 | `privilege` | （`FULL` キーワードが指定された場合のみ）このカラムに対して持っている権限。現在は利用できません                        | `String`           |
 
+
 ### Examples {#examples-2}
 
 この例では、テーブル &#39;orders&#39; のすべてのカラムについて、
@@ -233,9 +239,10 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 └─────────────────┴──────────┴──────┴─────────┴─────────┴───────┘
 ```
 
+
 ### 関連項目 {#see-also-2}
 
-* [`system.columns`](../../operations/system-tables/columns.md)
+- [`system.columns`](../../operations/system-tables/columns.md)
 
 ## SHOW DICTIONARIES {#show-dictionaries}
 
@@ -255,6 +262,7 @@ SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <file
 SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <pattern>] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
+
 ### 例 {#examples-3}
 
 次のクエリは、`system` データベース内のテーブル一覧から、名前に `reg` を含む先頭の 2 行を選択します。
@@ -269,6 +277,7 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 │ region_names │
 └──────────────┘
 ```
+
 
 ## SHOW INDEX {#show-index}
 
@@ -306,9 +315,10 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 | `visible`       | インデックスがオプティマイザーから可視である場合、常に `YES`。                                         | `String`           |
 | `expression`    | データスキップインデックスの場合、そのインデックス式。プライマリキーインデックスの場合は `''`（空文字列）。                   | `String`           |
 
-### Examples {#examples-4}
 
-この例では、`SHOW INDEX` ステートメントを使用して、テーブル &#39;tbl&#39; に存在するすべてのインデックスに関する情報を取得します。
+### 例 {#examples-4}
+
+この例では、`SHOW INDEX` 文を使用して、テーブル &#39;tbl&#39; に存在するすべての索引に関する情報を取得します。
 
 ```sql title="Query"
 SHOW INDEX FROM 'tbl'
@@ -324,6 +334,7 @@ SHOW INDEX FROM 'tbl'
 │ tbl   │          1 │ set_idx  │ 1            │ 1           │ ᴺᵁᴸᴸ      │ 0           │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ │ SET          │         │               │ YES     │ e          │
 └───────┴────────────┴──────────┴──────────────┴─────────────┴───────────┴─────────────┴──────────┴────────┴──────┴──────────────┴─────────┴───────────────┴─────────┴────────────┘
 ```
+
 
 ### 関連項目 {#see-also-3}
 
@@ -351,6 +362,7 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 
 :::
 
+
 ## SHOW GRANTS {#show-grants}
 
 `SHOW GRANTS` ステートメントは、ユーザーの権限を表示します。
@@ -367,6 +379,7 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 
 `FINAL` 修飾子は、ユーザー自身の権限と、そのユーザーに付与されたロール（継承分を含む）からのすべての権限を統合します。
 
+
 ## SHOW CREATE USER {#show-create-user}
 
 `SHOW CREATE USER` 文は、[ユーザー作成](../../sql-reference/statements/create/user.md) 時に指定されたパラメータを表示します。
@@ -376,6 +389,7 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
+
 
 ## SHOW CREATE ROLE {#show-create-role}
 
@@ -387,6 +401,7 @@ SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
+
 ## SHOW CREATE ROW POLICY {#show-create-row-policy}
 
 `SHOW CREATE ROW POLICY` ステートメントは、[行ポリシーの作成](../../sql-reference/statements/create/row-policy.md) の際に使用されたパラメーターを表示します。
@@ -396,6 +411,7 @@ SHOW CREATE ROLE name1 [, name2 ...]
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
+
 
 ## SHOW CREATE QUOTA {#show-create-quota}
 
@@ -407,6 +423,7 @@ SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
+
 ## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
 
 `SHOW CREATE SETTINGS PROFILE` ステートメントは、[設定プロファイルの作成](../../sql-reference/statements/create/settings-profile.md) で使用されたパラメーターを表示します。
@@ -416,6 +433,7 @@ SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
+
 
 ## SHOW USERS {#show-users}
 
@@ -427,6 +445,7 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```sql title="Syntax"
 SHOW USERS
 ```
+
 
 ## SHOW ROLES {#show-roles}
 
@@ -440,6 +459,7 @@ SHOW USERS
 SHOW [CURRENT|ENABLED] ROLES
 ```
 
+
 ## SHOW PROFILES {#show-profiles}
 
 `SHOW PROFILES` ステートメントは、[設定プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)のリストを返します。
@@ -451,16 +471,18 @@ SHOW [CURRENT|ENABLED] ROLES
 SHOW [SETTINGS] PROFILES
 ```
 
+
 ## SHOW POLICIES {#show-policies}
 
 `SHOW POLICIES` ステートメントは、指定したテーブルに対する [行ポリシー](../../guides/sre/user-management/index.md#row-policy-management) の一覧を返します。
-ユーザーアカウントに関するパラメーターを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
+ユーザーアカウントのパラメータを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
 
 ### 構文 {#syntax-16}
 
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
+
 
 ## SHOW QUOTAS {#show-quotas}
 
@@ -473,6 +495,7 @@ SHOW [ROW] POLICIES [ON [db.]table]
 SHOW QUOTAS
 ```
 
+
 ## SHOW QUOTA {#show-quota}
 
 `SHOW QUOTA` ステートメントは、すべてのユーザーまたは現在のユーザーの[クオータ](../../operations/quotas.md)の消費状況を返します。
@@ -484,6 +507,7 @@ SHOW QUOTAS
 SHOW [CURRENT] QUOTA
 ```
 
+
 ## SHOW ACCESS {#show-access}
 
 `SHOW ACCESS` ステートメントは、すべての[ユーザー](../../guides/sre/user-management/index.md#user-account-management)、[ロール](../../guides/sre/user-management/index.md#role-management)、[プロファイル](../../guides/sre/user-management/index.md#settings-profiles-management)などと、それらに付与されているすべての[権限](../../sql-reference/statements/grant.md#privileges)を表示します。
@@ -493,6 +517,7 @@ SHOW [CURRENT] QUOTA
 ```sql title="Syntax"
 SHOW ACCESS
 ```
+
 
 ## SHOW CLUSTER(S) {#show-clusters}
 
@@ -509,6 +534,7 @@ SHOW ACCESS
 SHOW CLUSTER '<name>'
 SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
+
 
 ### 例 {#examples-5}
 
@@ -552,6 +578,7 @@ host_address:            127.0.0.1
 port:                    9000
 ```
 
+
 ## SHOW SETTINGS {#show-settings}
 
 `SHOW SETTINGS` ステートメントは、システム設定とその値の一覧を返します。
@@ -562,6 +589,7 @@ port:                    9000
 ```sql title="Syntax"
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
+
 
 ### 句 {#clauses}
 
@@ -583,7 +611,7 @@ SHOW SETTINGS LIKE 'send_timeout';
 └──────────────┴─────────┴───────┘
 ```
 
-`ILIKE` 句を使ったクエリ:
+`ILIKE` 句を使用したクエリ：
 
 ```sql title="Query"
 SHOW SETTINGS ILIKE '%CONNECT_timeout%'
@@ -609,6 +637,7 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 └──────────────────┴────────┴─────────────┘
 ```
 
+
 ## SHOW SETTING {#show-setting}
 
 `SHOW SETTING` ステートメントは、指定した設定名の設定値を表示します。
@@ -618,6 +647,7 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ```sql title="Syntax"
 SHOW SETTING <name>
 ```
+
 
 ### 関連項目 {#see-also-4}
 
@@ -637,6 +667,7 @@ SHOW FILESYSTEM CACHES
 └───────────┘
 ```
 
+
 ### 関連項目 {#see-also-5}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
@@ -651,9 +682,10 @@ SHOW FILESYSTEM CACHES
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
+
 ### 関連項目 {#see-also-6}
 
-* [system.table&#95;engines](../../operations/system-tables/table_engines.md) テーブル
+- [system.table_engines](../../operations/system-tables/table_engines.md) テーブル
 
 ## SHOW FUNCTIONS {#show-functions}
 
@@ -666,6 +698,7 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 ```
 
 `LIKE` 句または `ILIKE` 句が指定されている場合、クエリは名前が指定された `<pattern>` に一致するシステム関数の一覧を返します。
+
 
 ### 関連項目 {#see-also-7}
 
@@ -693,6 +726,7 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
+
 ### 例 {#examples-8}
 
 ```sql title="Query"
@@ -713,4 +747,15 @@ SHOW MERGES LIKE 'your_t%' LIMIT 1;
 ┌─table──────┬─database─┬─estimate_complete─┬─elapsed─┬─progress─┬─is_mutation─┬─size_compressed─┬─memory_usage─┐
 │ your_table │ default  │              0.14 │    0.36 │    73.01 │           0 │        5.40 MiB │    10.25 MiB │
 └────────────┴──────────┴───────────────────┴─────────┴──────────┴─────────────┴─────────────────┴──────────────┘
+```
+
+
+## SHOW CREATE MASKING POLICY {#show-create-masking-policy}
+
+`SHOW CREATE MASKING POLICY` ステートメントは、[マスキングポリシーの作成](../../sql-reference/statements/create/masking-policy.md) の際に使用されたパラメーターを表示します。
+
+### 構文 {#syntax-26}
+
+```sql title="Syntax"
+SHOW CREATE MASKING POLICY name ON [database.]table
 ```

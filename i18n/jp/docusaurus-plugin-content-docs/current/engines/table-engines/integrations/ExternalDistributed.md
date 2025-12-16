@@ -1,5 +1,5 @@
 ---
-description: '`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL データベースに保存されているデータに対して `SELECT` クエリを実行できます。MySQL または PostgreSQL エンジンを引数として受け取れるため、シャーディングが可能です。'
+description: '`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL サーバーに保存されているデータに対して `SELECT` クエリを実行できます。MySQL または PostgreSQL エンジンを引数として受け取れるため、データの分片（シャーディング）が可能です。'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
 slug: /engines/table-engines/integrations/ExternalDistributed
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # ExternalDistributed テーブルエンジン {#externaldistributed-table-engine}
 
-`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL データベースに保存されているデータに対して `SELECT` クエリを実行できます。引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを指定できるため、シャーディングが可能です。
+`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL に保存されているデータに対して `SELECT` クエリを実行できます。引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを指定できるため、シャーディングが可能です。
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -27,7 +27,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 テーブル構造は元のテーブル構造と異なっていてもかまいません。
 
 * 列名は元のテーブルと同じである必要がありますが、その一部のみを任意の順序で使用できます。
-* 列型は元のテーブルと異なっていてもかまいません。ClickHouse は、値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
+* 列型は元のテーブルと異なっていてもかまいません。ClickHouse は、値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#CAST)しようとします。
 
 **エンジンパラメータ**
 
@@ -40,7 +40,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ## 実装の詳細 {#implementation-details}
 
-複数レプリカ構成をサポートしており、レプリカは `|` で、シャードは `,` で区切って列挙する必要があります。例えば次のようになります。
+複数レプリカ構成をサポートしており、レプリカは `|` で、分片は `,` で区切って列挙する必要があります。例えば次のようになります。
 
 ```sql
 CREATE TABLE test_shards (id UInt32, name String, age UInt32, money UInt32) ENGINE = ExternalDistributed('MySQL', `mysql{1|2}:3306,mysql{3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');

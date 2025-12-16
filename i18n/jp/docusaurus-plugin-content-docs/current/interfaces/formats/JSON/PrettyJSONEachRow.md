@@ -158,7 +158,7 @@ doc_type: 'guide'
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-} 
+}
 ```
 
 データを挿入する:
@@ -315,7 +315,7 @@ FORMAT PrettyJSONEachRow
     "away_team": "Swindon Town",
     "home_team_goals": 0,
     "away_team_goals": 3
-}  
+}
 ```
 
 

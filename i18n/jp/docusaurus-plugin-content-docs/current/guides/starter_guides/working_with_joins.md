@@ -1,8 +1,8 @@
 ---
-title: 'ClickHouse における JOIN の使い方'
+title: 'ClickHouse での JOIN の使い方'
 description: 'ClickHouse で JOIN を使用するための入門ガイド'
 keywords: ['JOINs', 'SQL', 'INNER JOIN', 'OUTER JOIN', 'CROSS JOIN', 'SEMI JOIN', 'ANTI JOIN', 'ANY JOIN', 'ASOF JOIN']
-sidebar_label: 'ClickHouse における JOIN の使い方'
+sidebar_label: 'ClickHouse での JOIN の使い方'
 slug: /guides/working-with-joins
 doc_type: 'guide'
 ---
@@ -18,30 +18,31 @@ import any_join from '@site/static/images/starter_guides/joins/any_join.png';
 import asof_join from '@site/static/images/starter_guides/joins/asof_join.png';
 import asof_example from '@site/static/images/starter_guides/joins/asof_example.png';
 
-ClickHouse は標準 SQL の JOIN を完全にサポートしており、効率的なデータ分析が可能です。
-このガイドでは、正規化された [IMDB](https://en.wikipedia.org/wiki/IMDb) データセット（[relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) 由来）を用いた Venn 図とサンプルクエリを通じて、よく利用される代表的な JOIN の種類とその使い方を解説します。
+ClickHouse は標準的な SQL の結合を完全にサポートしており、効率的なデータ分析が可能です。
+このガイドでは、正規化された [IMDB](https://en.wikipedia.org/wiki/IMDb) データセット（[relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) に由来する）を用いたベン図とクエリ例を通して、よく使用される代表的な結合タイプとその使い方を解説します。
+
 
 ## テストデータとリソース {#test-data-and-resources}
 
-テーブルの作成とロード手順は[こちら](/integrations/dbt/guides)にあります。
-テーブルをローカルで作成・ロードしたくないユーザー向けに、このデータセットは [playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) からも利用できます。
+テーブルの作成と読み込み手順は[こちら](/integrations/dbt/guides)にあります。
+ローカルでテーブルを作成・読み込みたくない場合は、[playground](https://sql.clickhouse.com?query_id=AACTS8ZBT3G7SSGN8ZJBJY) で同じデータセットを使用できます。
 
-以下のサンプルデータセット内の 4 つのテーブルを使用します。
+以下のサンプルデータセット内の4つのテーブルを使用します。
 
 <Image img={imdb_schema} alt="IMDB スキーマ" />
 
-これら 4 つのテーブルのデータは、1 つ以上のジャンルを持つことができる映画を表しています。
+これら4つのテーブルのデータは、1つまたは複数のジャンルを持つ映画を表しています。
 映画の役は俳優によって演じられます。
 
-上の図の矢印は[外部キーと主キーの関係](https://en.wikipedia.org/wiki/Foreign_key)を表しています。例えば、`genres` テーブルのある行の `movie_id` カラムには、`movies` テーブルの行の `id` の値が格納されています。
+上のダイアグラム中の矢印は[外部キーと主キーの関係](https://en.wikipedia.org/wiki/Foreign_key)を表します。例えば、`genres` テーブル内のある行の `movie_id` カラムには、`movies` テーブル内のある行の `id` の値が入ります。
 
 映画と俳優の間には[多対多の関係](https://en.wikipedia.org/wiki/Many-to-many_(data_model))があります。
-この多対多の関係は、`roles` テーブルを使用して 2 つの[一対多の関係](https://en.wikipedia.org/wiki/One-to-many_(data_model))に正規化されています。
-`roles` テーブルの各行には、`movies` テーブルと `actors` テーブルの `id` カラムの値が格納されています。
+この多対多の関係は、`roles` テーブルを使うことで、2つの[一対多の関係](https://en.wikipedia.org/wiki/One-to-many_(data_model))に正規化されています。
+`roles` テーブルの各行には、`movies` テーブルおよび `actors` テーブルの `id` カラムの値が格納されています。
 
-## ClickHouse でサポートされている結合の種類 {#join-types-supported-in-clickhouse}
+## ClickHouse でサポートされている結合タイプ {#join-types-supported-in-clickhouse}
 
-ClickHouse は次の結合の種類をサポートしています：
+ClickHouse は次の結合タイプをサポートします：
 
 - [INNER JOIN](#inner-join)
 - [OUTER JOIN](#left--right--full-outer-join)
@@ -51,16 +52,16 @@ ClickHouse は次の結合の種類をサポートしています：
 - [ANY JOIN](#left--right--inner-any-join)
 - [ASOF JOIN](#asof-join)
 
-次のセクションでは、上記それぞれの JOIN の種類に対するサンプルクエリを示します。
+次のセクションでは、上記の各 JOIN タイプについてサンプルクエリを示します。
 
 ## INNER JOIN {#inner-join}
 
-`INNER JOIN` は、結合キーでマッチする各行の組み合わせごとに、左側のテーブルの行のカラム値と右側のテーブルの行のカラム値を結合して返します。
-ある行が複数回マッチする場合は、そのすべてのマッチが返されます（つまり、結合キーが一致する行に対して [デカルト積](https://en.wikipedia.org/wiki/Cartesian_product) が生成されます）。
+`INNER JOIN` は、結合キーが一致する行のペアごとに、左側のテーブルの行のカラム値と右側のテーブルの行のカラム値を組み合わせた結果を返します。
+ある行が複数の行と一致する場合は、それらすべての一致が返されます（つまり、結合キーが一致する行に対して [直積 (cartesian product)](https://en.wikipedia.org/wiki/Cartesian_product) が生成されます）。
 
-<Image img={inner_join} alt="INNER JOIN のイメージ" />
+<Image img={inner_join} alt="Inner Join" />
 
-このクエリは、`movies` テーブルと `genres` テーブルを結合することで、各映画のジャンル（1つまたは複数）を取得します。
+次のクエリは、`movies` テーブルと `genres` テーブルを結合して、各映画のジャンルを取得します:
 
 ```sql
 SELECT
@@ -94,15 +95,16 @@ LIMIT 10;
 `INNER` キーワードは省略できます。
 :::
 
-`INNER JOIN` の挙動は、次のいずれかの他の結合タイプを使用することで拡張または変更できます。
+次のいずれかの JOIN タイプを使用することで、`INNER JOIN` の動作を拡張または変更できます。
+
 
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
-`LEFT OUTER JOIN` は `INNER JOIN` と同様に動作しますが、左テーブル側で結合条件に一致しない行については、右テーブルのカラムに対して ClickHouse が[デフォルト値](/sql-reference/statements/create/table#default_values)を返します。
+`LEFT OUTER JOIN` は `INNER JOIN` と同様に動作しますが、それに加えて、左テーブル側でマッチしない行については、ClickHouse は右テーブルのカラムに対して[デフォルト値](/sql-reference/statements/create/table#default_values)を返します。
 
-`RIGHT OUTER JOIN` クエリも同様で、右テーブル側で結合条件に一致しない行の値とともに、左テーブルのカラムに対するデフォルト値を返します。
+`RIGHT OUTER JOIN` クエリも同様で、右テーブル側でマッチしない行の値と、左テーブルのカラムに対するデフォルト値を合わせて返します。
 
-`FULL OUTER JOIN` クエリは `LEFT OUTER JOIN` と `RIGHT OUTER JOIN` を組み合わせたもので、左テーブルおよび右テーブルの結合条件に一致しない行の値と、それぞれ右および左テーブルのカラムに対するデフォルト値を返します。
+`FULL OUTER JOIN` クエリは `LEFT` および `RIGHT OUTER JOIN` を組み合わせたもので、左テーブルおよび右テーブルの両方について、マッチしない行の値と、それぞれ右テーブルおよび左テーブルのカラムに対するデフォルト値を返します。
 
 <Image img={outer_join} alt="Outer Join" />
 
@@ -110,7 +112,7 @@ LIMIT 10;
 ClickHouse は、デフォルト値の代わりに [NULL](/sql-reference/syntax/#null) を返すように[設定](/operations/settings/settings#join_use_nulls)できます（ただし、[パフォーマンス上の理由](/sql-reference/data-types/nullable/#storage-features)から、あまり推奨されません）。
 :::
 
-次のクエリは、ジャンルを持たないすべての映画を検索します。`genres` テーブルに一致する行を持たない `movies` テーブルのすべての行を取得し、その結果として、クエリ実行時に `movie_id` カラムにはデフォルト値 0 が設定されます。
+次のクエリは、`genres` テーブルにマッチする行が存在しない `movies` テーブル上のすべての行を取得することで、ジャンルを持たないすべての映画を検索します。その結果、それらの行では（クエリ実行時に）`movie_id` カラムのデフォルト値 0 が使用されます。
 
 ```sql
 SELECT m.name
@@ -142,14 +144,15 @@ LIMIT 10;
 `OUTER` キーワードは省略可能です。
 :::
 
+
 ## CROSS JOIN {#cross-join}
 
-`CROSS JOIN` は、結合キーを考慮せずに 2 つのテーブルの完全な直積を生成します。
-左側のテーブルの各行は、右側のテーブルの各行と組み合わされます。
+`CROSS JOIN` は、結合キーを考慮せずに 2 つのテーブル間の全ての組み合わせ（デカルト積）を生成します。
+左側のテーブルの各行は、右側のテーブルの各行と結合されます。
 
-<Image img={cross_join} alt="クロス結合" />
+<Image img={cross_join} alt="Cross Join" />
 
-したがって、次のクエリでは、`movies` テーブルの各行が `genres` テーブルの各行と組み合わされます。
+したがって、次のクエリでは `movies` テーブルの各行と `genres` テーブルの各行を組み合わせます：
 
 ```sql
 SELECT
@@ -177,7 +180,7 @@ LIMIT 10;
 └──────┴────┴──────────┴─────────────┘
 ```
 
-前の例のクエリ単体ではあまり意味がありませんでしたが、`WHERE` 句を追加して一致する行を関連付けることで、各映画のジャンルを特定するための `INNER JOIN` の動作を再現できます。
+前の例のクエリ自体にはあまり意味がありませんでしたが、`WHERE` 句を追加すると、一致する行を対応付けることで、各映画のジャンルを求めるための `INNER JOIN` の挙動を再現できます。
 
 ```sql
 SELECT
@@ -195,9 +198,9 @@ LIMIT 10;
 
 `CROSS JOIN` の代替構文として、`FROM` 句で複数のテーブルをカンマ区切りで指定する方法があります。
 
-ClickHouse は、クエリの `WHERE` 句に結合条件となる式がある場合、`CROSS JOIN` を `INNER JOIN` に[書き換え](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/Core/Settings.h#L896)ます。
+ClickHouse は、クエリの `WHERE` 句に結合式がある場合、`CROSS JOIN` を `INNER JOIN` に[書き換え](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/Core/Settings.h#L896)ます。
 
-この動作は、例のクエリに対して [EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) を使うことで確認できます（`EXPLAIN SYNTAX` は、クエリが[実行](https://youtu.be/hP6G2Nlz_cA)される前に書き換えられる、構文レベルで最適化されたクエリのバージョンを返します）：
+[EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) を使うと、例のクエリについて、クエリが[実行](https://youtu.be/hP6G2Nlz_cA)される前にどのような構文上最適化されたバージョンに書き換えられるかを確認できます。
 
 ```sql
 EXPLAIN SYNTAX
@@ -230,25 +233,26 @@ LIMIT 10;
 └─────────────────────────────────────────────┘
 ```
 
-構文上最適化された `CROSS JOIN` クエリ版では、`INNER JOIN` 句に `ALL` キーワードが明示的に追加されています。これは、`INNER JOIN` に書き換えた場合でも `CROSS JOIN` のデカルト積のセマンティクスを維持するためであり、`INNER JOIN` ではデカルト積が[無効化](/operations/settings/settings#join_default_strictness)される場合があるためです。
+構文上最適化された `CROSS JOIN` クエリ版の `INNER JOIN` 句には `ALL` キーワードが含まれています。これは、`INNER JOIN` に書き換えられた場合でも `CROSS JOIN` のデカルト積のセマンティクスを維持するために明示的に追加されたものであり、`INNER JOIN` ではデカルト積を[無効化](/operations/settings/settings#join_default_strictness)できるためです。
 
 ```sql
 ALL
 ```
 
-そして、上で述べたように、`RIGHT OUTER JOIN` では `OUTER` キーワードを省略でき、さらにオプションの `ALL` キーワードを追加できるので、`ALL RIGHT JOIN` と書いても問題なく動作します。
+さらに、前述のとおり `RIGHT OUTER JOIN` ではキーワード `OUTER` を省略でき、オプションのキーワード `ALL` を追加できるため、`ALL RIGHT JOIN` と記述することもでき、問題なく動作します。
+
 
 ## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
 
-`LEFT SEMI JOIN` クエリは、右テーブルに少なくとも 1 つの結合キーのマッチがある左テーブルの各行について、そのカラム値を返します。
-最初に見つかったマッチだけが返されます（デカルト積は発生しません）。
+`LEFT SEMI JOIN` クエリは、右側のテーブルで少なくとも 1 つの結合キーが一致する左側テーブルの各行について、そのカラム値を返します。
+最初に見つかった一致だけが返されます（デカルト積は無効化されています）。
 
-`RIGHT SEMI JOIN` クエリも同様で、左テーブルに少なくとも 1 つのマッチがある右テーブルのすべての行について値を返しますが、やはり最初に見つかったマッチだけが返されます。
+`RIGHT SEMI JOIN` クエリも同様で、左側テーブルで少なくとも 1 つの一致がある右側テーブルのすべての行について値を返しますが、こちらも最初に見つかった一致のみが返されます。
 
 <Image img={semi_join} alt="Semi Join" />
 
-このクエリは、2023 年に映画に出演したすべての俳優・女優を抽出します。
-通常の（`INNER`）結合では、2023 年に複数の役を持っている場合、同じ俳優・女優が複数回表示される点に注意してください。
+このクエリは、2023 年に映画に出演したすべての俳優・女優を検索します。
+通常の（`INNER`）JOIN では、2023 年に複数の役を持っていた場合、同じ俳優・女優が複数回表示される点に注意してください。
 
 ```sql
 SELECT
@@ -276,15 +280,16 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
+
 ## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
 
-`LEFT ANTI JOIN` は、左側のテーブルで一致しない行のすべてのカラム値を返します。
+`LEFT ANTI JOIN` は、左側のテーブルのうち一致しない行すべてのカラム値を返します。
 
-同様に、`RIGHT ANTI JOIN` は、右側のテーブルで一致しない行のすべてのカラム値を返します。
+同様に、`RIGHT ANTI JOIN` は、右側のテーブルのうち一致しない行すべてのカラム値を返します。
 
 <Image img={anti_join} alt="Anti Join" />
 
-前の外部結合の例クエリは、データセット内でジャンルを持たない映画を見つけるために ANTI JOIN を使用する形で書き換えることもできます。
+先ほどの外部結合の例のクエリは、データセット内でジャンルを持たない映画を見つけるために ANTI JOIN を用いる別の書き方として表現できます。
 
 ```sql
 SELECT m.name
@@ -311,18 +316,19 @@ LIMIT 10;
 └───────────────────────────────────────────┘
 ```
 
+
 ## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
 
-`LEFT ANY JOIN` は `LEFT OUTER JOIN` と `LEFT SEMI JOIN` を組み合わせたものであり、ClickHouse は左テーブルの各行に対して、右テーブルで一致する行が存在する場合はその行のカラム値と結合し、一致する行が存在しない場合は右テーブルのデフォルトのカラム値と結合したカラム値を返します。
-左テーブルの 1 行に対して右テーブル側に複数の一致がある場合、ClickHouse は最初に見つかった一致からの結合後のカラム値のみを返し（カルテジアン積は無効化されます）、それ以外は返しません。
+`LEFT ANY JOIN` は、`LEFT OUTER JOIN` と `LEFT SEMI JOIN` を組み合わせたものであり、ClickHouse は左側のテーブルの各行に対して、右側のテーブルに一致する行が存在する場合はその行のカラム値を結合し、一致する行が存在しない場合は右側テーブルのデフォルトのカラム値を結合した結果を返します。
+左側テーブルの 1 行に対して右側テーブルで複数の一致がある場合、ClickHouse は最初に見つかった 1 件分だけの結合結果カラム値を返します（デカルト積は無効化されます）。
 
 同様に、`RIGHT ANY JOIN` は `RIGHT OUTER JOIN` と `RIGHT SEMI JOIN` を組み合わせたものです。
 
-また、`INNER ANY JOIN` はカルテジアン積を無効化した `INNER JOIN` です。
+また、`INNER ANY JOIN` はデカルト積が無効化された `INNER JOIN` です。
 
 <Image img={any_join} alt="Any Join" />
 
-次の例では、2 つの一時テーブル（`left_table` と `right_table`）を使用した抽象的な例を用いて、`LEFT ANY JOIN` を示します。これらのテーブルは [values](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/TableFunctions/TableFunctionValues.h) [テーブル関数](/sql-reference/table-functions/) を使って構築されています。
+次の例では、2 つの一時テーブル（`left_table` と `right_table`）を [values](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/TableFunctions/TableFunctionValues.h) [テーブル関数](/sql-reference/table-functions/)で構築し、抽象的な例で `LEFT ANY JOIN` を示します。
 
 ```sql
 WITH
@@ -343,7 +349,7 @@ LEFT ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-こちらは、`RIGHT ANY JOIN` を使用した同じクエリです:
+これは、`RIGHT ANY JOIN` を使用した場合の同じクエリです：
 
 ```sql
 WITH
@@ -366,7 +372,7 @@ RIGHT ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-次は `INNER ANY JOIN` を使用したクエリです。
+次は `INNER ANY JOIN` を使ったクエリです：
 
 ```sql
 WITH
@@ -386,25 +392,26 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
+
 ## ASOF JOIN {#asof-join}
 
-`ASOF JOIN` は、非完全一致のマッチングを行える機能を提供します。
-左側のテーブルの行に右側のテーブルで完全一致する行が存在しない場合、右側のテーブルから「最も近い」行が代わりにマッチとして使用されます。
+`ASOF JOIN` は、厳密一致ではないマッチングを可能にします。
+左側のテーブルの行に右側テーブルでの完全な一致がない場合、右側テーブルから最も近い値を持つ行が代わりにマッチとして使用されます。
 
-これは特に時系列分析で有用で、クエリの複雑さを大幅に削減できます。
+これは時系列分析に特に有用であり、クエリの複雑さを大幅に削減できます。
 
 <Image img={asof_join} alt="Asof Join" />
 
-次の例では、株式市場データの時系列分析を行います。
-`quotes` テーブルには、1 日の特定の時刻における銘柄の気配値が格納されています。
+次の例では、株式市場データに対する時系列分析を行います。
+`quotes` テーブルには、特定の時刻に基づく銘柄の株価が格納されています。
 この例のデータでは、価格は 10 秒ごとに更新されます。
-`trades` テーブルには銘柄の取引が一覧として格納されており、特定の時刻に特定の出来高でその銘柄が買われたことを表します:
+`trades` テーブルには、銘柄の取引の一覧が含まれます。つまり、特定の銘柄について、特定の時刻に特定の出来高が購入されたことを表します:
 
 <Image img={asof_example} alt="Asof Example" />
 
-各取引の正確なコストを計算するには、その取引に最も近い時刻の気配値と対応付ける必要があります。
+各取引の正確なコストを算出するには、取引をその取引時刻に最も近い気配値の時刻とマッチさせる必要があります。
 
-これは `ASOF JOIN` を使うと簡潔に表現できます。`ON` 句で完全一致の条件を指定し、`AND` 句で最も近いマッチ条件を指定します。つまり、特定のシンボル（完全一致）に対して、そのシンボルの取引が発生した時刻と同じかそれ以前の `quotes` テーブルの行のうち、「最も近い」時刻を持つ行（非完全一致）を探します。
+これは `ASOF JOIN` を使うと簡潔に記述できます。`ON` 句で厳密一致の条件を指定し、`AND` 句で最も近いマッチ条件を指定します。つまり、特定の銘柄（厳密一致）について、その銘柄の取引時刻（厳密ではない一致）と同時刻またはそれ以前の時刻における `quotes` テーブルの行のうち、「最も近い」時刻を持つ行を探します。
 
 ```sql
 SELECT
@@ -440,10 +447,11 @@ final_price:        9645
 ```
 
 :::note
-`ASOF JOIN` では `ON` 句が必須であり、`AND` 句の非厳密な一致条件に加えて、厳密な一致条件を指定します。
+`ASOF JOIN` の `ON` 句は必須であり、`AND` 句の非厳密一致条件に対して、隣接して記述される厳密一致条件を指定します。
 :::
+
 
 ## まとめ {#summary}
 
-このガイドでは、ClickHouseがすべての標準的な SQL の JOIN 型に加え、分析クエリを強化するための専用の JOIN もサポートしていることを説明します。
+本ガイドでは、ClickHouse が標準的なすべての SQL の JOIN 型に加え、分析クエリを強力にするための専用の JOIN 機能をどのようにサポートしているかを説明します。
 JOIN の詳細については、[JOIN](/sql-reference/statements/select/join) 文のドキュメントを参照してください。

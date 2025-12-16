@@ -11,7 +11,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java クライアントの概要 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
@@ -154,7 +153,6 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
     </dependency>
 </dependencies>
 ```
-
 
 #### ロギングの設定 {#configuring-logging}
 

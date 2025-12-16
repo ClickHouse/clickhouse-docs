@@ -9,48 +9,48 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-ClickHouse には、半構造化データおよび動的なデータ向けに設計されたネイティブの JSON カラム型が用意されています。**これはデータ形式ではなくカラム型である**ことを明確にしておくことが重要です。JSON は文字列として、あるいは [JSONEachRow](/interfaces/formats/JSONEachRow) のようなサポートされているフォーマット経由で ClickHouse に挿入できますが、それは JSON カラム型を使用していることを意味しません。ユーザーは、単に JSON を保存しているというだけではなく、データ構造が動的な場合にのみ JSON 型を使用すべきです。
+ClickHouse には、半構造化データや動的なデータ向けに設計されたネイティブな JSON カラム型が用意されています。**これはカラム型であり、データ形式そのものではない**ことを明確にしておくことが重要です。JSON は文字列として、あるいは [JSONEachRow](/interfaces/formats/JSONEachRow) のようなサポートされているフォーマット経由で ClickHouse に挿入できますが、それは JSON カラム型を使用していることを意味しません。JSON 型は、単に JSON を保存しているからという理由ではなく、データ構造が動的な場合にのみ使用すべきです。
 
-## JSON 型を使用するタイミング {#when-to-use-the-json-type}
+## JSON 型をいつ使用するか {#when-to-use-the-json-type}
 
-次のようなデータには JSON 型を使用します:
+次のようなデータの場合は JSON 型を使用します:
 
-* 時間の経過とともに変化しうる**予測不能なキー**を持つ。
-* **さまざまな型の値**を含む（例: あるパスには文字列が入ることもあれば、数値が入ることもある）。
-* 厳密な型付けが適さず、スキーマの柔軟性が求められる。
+* 時間の経過とともに変化しうる **予測できないキー** を持っている。
+* **型がさまざまな値** を含んでいる（例: あるパスには文字列が入ることもあれば、数値が入ることもある）。
+* 厳密な型付けが現実的でないような、スキーマの柔軟性を必要とする。
 
-データ構造が既知で一貫している場合、データ自体が JSON 形式であっても、JSON 型が必要となることはほとんどありません。特に、データが次のような場合は JSON 型を使う必要はありません:
+データ構造が既知で一貫している場合、たとえデータが JSON 形式であっても、JSON 型が必要になることはほとんどありません。具体的には、データが次のような場合です:
 
 * **既知のキーを持つフラットな構造**: String などの標準的なカラム型を使用します。
-* **予測可能なネスト構造**: その構造には Tuple、Array、Nested 型を使用します。
-* **構造は予測可能だが値の型が変わりうる**: 代わりに Dynamic または Variant 型の利用を検討します。
+* **予測可能なネスト**: こうした構造には Tuple、Array、Nested 型を使用します。
+* **予測可能な構造だが値の型が変化する**: 代わりに Dynamic 型や Variant 型の利用を検討します。
 
-アプローチを組み合わせることもできます。たとえば、予測可能なトップレベルのフィールドには静的なカラムを使用し、ペイロード内の動的な部分については 1 つの JSON カラムを使用するといった構成です。
+アプローチを組み合わせることもできます。たとえば、予測可能なトップレベルのフィールドには静的なカラムを使用し、ペイロード内の動的な部分には単一の JSON カラムを使用するといった構成も可能です。
 
 ## JSON を使用する際の考慮事項とヒント {#considerations-and-tips-for-using-json}
 
-`JSON` 型は、パスをサブカラムにフラット化することで効率的な列指向ストレージを実現します。しかし、柔軟性には責任が伴います。効果的に使用するには、次の点に留意してください。
+JSON 型は、パスをサブカラムにフラット化することで効率的な列指向ストレージを実現します。ただし、柔軟性には責任が伴います。効果的に利用するには、次の点に留意してください。
 
-* 既知のサブカラムに対して型を指定し不要な型推論を避けるために、[カラム定義内のヒント](/sql-reference/data-types/newjson)を使用して**パスの型を指定**します。
-* 値が不要な場合は、[SKIP および SKIP REGEXP](/sql-reference/data-types/newjson) を用いて**パスをスキップ**し、ストレージを削減しつつパフォーマンスを向上させます。
-* **[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) を高く設定しすぎないように**します。大きすぎる値はリソース消費を増やし、効率を低下させます。目安としては、10,000 未満に保つことを推奨します。
+* 既知のサブカラムに対して型を指定し、不要な型推論を避けるために、[カラム定義でのヒント](/sql-reference/data-types/newjson) を使用して **パスの型を明示的に指定** します。 
+* 値が不要なパスについては、[SKIP および SKIP REGEXP](/sql-reference/data-types/newjson) を使って **パスをスキップ** し、ストレージ使用量を削減しつつパフォーマンスを向上させます。
+* **[`max_dynamic_paths`](/sql-reference/data-types/newjson#reaching-the-limit-of-dynamic-paths-inside-json) を高く設定しすぎないようにします** — 大きな値はリソース消費を増大させ、効率を低下させます。目安としては、10,000 未満に抑えてください。
 
-:::note 型ヒント
-型ヒントは、不要な型推論を避けるための仕組みにとどまりません。ストレージおよび処理における間接参照を完全に排除します。型ヒント付きの JSON パスは常に従来のカラムと同様に格納されるため、[**discriminator カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data)やクエリ実行時の動的な解決が不要になります。これは、適切に定義された型ヒントを用いれば、ネストされた JSON フィールドであっても、最初からトップレベルのフィールドとしてモデリングされていた場合と同等のパフォーマンスと効率を得られることを意味します。その結果、大部分が一貫しているものの JSON の柔軟性の恩恵も受けたいデータセットに対して、スキーマや取り込みパイプラインを再構成することなくパフォーマンスを維持する便利な方法として、型ヒントを利用できます。
+:::note Type hints 
+Type hint は、不要な型推論を避けるだけでなく、ストレージおよび処理における間接参照を完全に排除する効果があります。Type hint が付与された JSON パスは、常に従来のカラムと同様の形式で保存されるため、[**discriminator カラム**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) やクエリ時の動的な解決は不要になります。つまり、適切に定義された type hint を用いれば、ネストされた JSON フィールドでも、最初からトップレベルのフィールドとしてモデリングされていた場合と同等のパフォーマンスと効率を実現できます。その結果、ほぼ一貫性がある一方で JSON の柔軟性も活かしたいデータセットに対して、type hint はスキーマや取り込みパイプラインを再設計することなくパフォーマンスを維持するための便利な手段となります。
 :::
 
 ## 高度な機能 {#advanced-features}
 
-* JSON カラムは、他のカラムと同様に **主キーとして使用できます**。サブカラムにはコーデックを指定できません。
-* [`JSONAllPathsWithTypes()` や `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) などの関数によるイントロスペクションをサポートします。
-* `.^` 構文を使用して、ネストされたサブオブジェクトを読み取ることができます。
-* クエリ構文は標準 SQL と異なる場合があり、ネストされたフィールドに対して特別な型変換や演算子が必要になることがあります。
+* JSON カラムは他のカラムと同様に**プライマリキーとして使用できます**。サブカラムにはコーデックを指定できません。
+* [`JSONAllPathsWithTypes()` および `JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) のような関数によるインスペクションをサポートします。
+* `.^` 構文を使用してネストしたサブオブジェクトを読み取ることができます。
+* クエリ構文は標準 SQL と異なる場合があり、ネストしたフィールドに対して特別なキャストや演算子を必要とすることがあります。
 
-追加の詳細については [ClickHouse JSON ドキュメント](/sql-reference/data-types/newjson) を参照するか、ブログ記事 [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse) をご覧ください。
+追加のガイドラインについては、[ClickHouse JSON ドキュメント](/sql-reference/data-types/newjson) を参照するか、ブログ記事 [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse) をご覧ください。
 
 ## 例 {#examples}
 
-次の JSON サンプルは、[Python PyPI データセット](https://clickpy.clickhouse.com/) に含まれる 1 行を表しています。
+次の JSON サンプルは、[Python PyPI データセット](https://clickpy.clickhouse.com/) の 1 行を表しています。
 
 ```json
 {
@@ -65,7 +65,7 @@ ClickHouse には、半構造化データおよび動的なデータ向けに設
 }
 ```
 
-このスキーマが静的であり、型を適切に定義できると仮定します。データが NDJSON 形式（1 行ごとに 1 つの JSON オブジェクト）であっても、そのようなスキーマに対して `JSON` 型を使用する必要はありません。従来の基本的な型でスキーマを定義するだけでかまいません。
+このスキーマは静的であり、型を明確に定義できると仮定します。たとえデータが NDJSON 形式（1 行に 1 行分の JSON を含む形式）であっても、そのようなスキーマに対して JSON 型を使用する必要はありません。従来の型でスキーマを定義するだけで十分です。
 
 ```sql
 CREATE TABLE pypi (
@@ -82,14 +82,14 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-次に、JSON 行を挿入します:
+JSON の行を挿入します：
 
 ```sql
 INSERT INTO pypi FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"ES","project":"clickhouse-connect","type":"bdist_wheel","installer":"pip","python_minor":"3.9","system":"Linux","version":"0.3.0"}
 ```
 
-250万件の学術論文を含む [arXiv データセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) を考えます。NDJSON 形式で配布されているこのデータセットでは、各行が 1 本の公開済み学術論文を表します。以下に例となる 1 行を示します。
+[arXiv データセット](https://www.kaggle.com/datasets/Cornell-University/arxiv?resource=download) を考えます。このデータセットには 250 万件の学術論文が含まれています。NDJSON 形式で配布されているこのデータセットの各行は、それぞれ 1 件の発表済み学術論文を表します。以下に 1 行分の例を示します。
 
 ```json
 {
@@ -125,7 +125,7 @@ INSERT INTO pypi FORMAT JSONEachRow
 }
 ```
 
-ここで示している JSON はネスト構造を含んでいるため複雑ですが、構造は一定で、フィールドの数や型が変化することはありません。この例では `JSON` 型を使うこともできますが、[Tuples](/sql-reference/data-types/tuple) 型や [Nested](/sql-reference/data-types/nested-data-structures/nested) 型を使って構造を明示的に定義することも可能です。
+ここで扱う JSON は入れ子の構造を持っていて複雑ですが、予測可能です。フィールドの数や型は変化しません。この例では JSON 型を使用することもできますが、[Tuples](/sql-reference/data-types/tuple) 型と [Nested](/sql-reference/data-types/nested-data-structures/nested) 型を使って構造を明示的に定義することも可能です。
 
 ```sql
 CREATE TABLE arxiv
@@ -149,14 +149,15 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
-ここでも、データを JSON 形式で挿入できます：
+同様に、データを JSON 形式で挿入できます：
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
 ```
 
-`tags` という別のカラムが追加されたとします。これが単なる文字列のリストであれば `Array(String)` としてモデリングできますが、ユーザーが任意のタグ構造を追加でき、その中で型が混在していると仮定します（`score` が文字列または整数になり得る点に注意してください）。変更後の JSON ドキュメントは次のようになります。
+`tags` という別のカラムが追加されたとします。これが単なる文字列のリストであれば `Array(String)` としてモデリングできますが、ここでは混在した型を持つ任意のタグ構造を追加できると仮定します（`score` が文字列または整数になり得る点に注目してください）。変更後の JSON ドキュメントは次のようになります。
 
 ```sql
 {
@@ -210,7 +211,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 }
 ```
 
-この場合、arXiv ドキュメントは、すべてを JSON としてモデリングすることも、単に JSON 型の `tags` 列を追加することもできます。以下に両方の例を示します。
+この場合、arXiv のドキュメントは、すべてを JSON 形式でモデリングするか、JSON 型の `tags` カラムを追加するかのいずれかにできます。以下に両方の例を示します。
 
 ```sql
 CREATE TABLE arxiv
@@ -222,10 +223,11 @@ ORDER BY doc.update_date
 ```
 
 :::note
-`update_date` 列をソートや主キーで使用するため、JSON 定義内で `update_date` 列に対する型ヒントを指定しています。これにより、ClickHouse はこの列が null にならないことを認識し、どの `update_date` サブカラムを使うべきか（各型ごとに複数存在し得るため、そうでないと曖昧になります）を判断できます。
+`update_date` カラムを並び替え/主キーで使用するため、JSON 定義内でこのカラムに型ヒントを指定しています。これにより ClickHouse はこのカラムが NULL になり得ないことを認識し、どの `update_date` サブカラムを使用すべきかを判断できます（型ごとに複数存在し得るため、そうしないと曖昧になります）。
 :::
 
-このテーブルにデータを挿入し、そこから自動推論されたスキーマを [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 関数と [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 出力フォーマットを使って確認できます。
+このテーブルにデータを挿入し、その後に推論されたスキーマを、[`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) 関数と [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow) 出力フォーマットを使って確認できます。
+
 
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
@@ -265,7 +267,7 @@ FORMAT PrettyJSONEachRow
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-別の方法として、前述のスキーマを用い、JSON の `tags` カラムでこれをモデル化することもできます。一般的にはこちらの方が好まれ、ClickHouse 側で必要となる推論を最小限に抑えられます。
+別の方法として、先ほどのスキーマと JSON の `tags` カラムを使ってこれをモデリングすることもできます。この方法の方が一般的に推奨されており、ClickHouse 側で必要となる推論を最小限に抑えられます。
 
 ```sql
 CREATE TABLE arxiv
@@ -295,7 +297,8 @@ INSERT INTO arxiv FORMAT JSONEachRow
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
 
-これでサブカラム `tags` の型を推論できるようになりました。
+
+これでサブカラム `tags` の型を推論できます。
 
 ```sql
 SELECT JSONAllPathsWithTypes(tags)

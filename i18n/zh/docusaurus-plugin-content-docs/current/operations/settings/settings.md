@@ -1046,6 +1046,33 @@ Cloud 默认值：`1`。
 
 在 Join 模式下用于应用补丁分区片段的临时缓存的 bucket 数量。
 
+## apply_prewhere_after_final {#apply_prewhere_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。启用后，PREWHERE 条件会在 FINAL 处理之后应用。"}]}]}/>
+
+启用后，对于 ReplacingMergeTree 和类似的引擎，PREWHERE 条件会在 FINAL 处理之后应用。
+当 PREWHERE 引用的列在重复行之间可能具有不同的值，且您希望先由 FINAL 选出“获胜”行再进行过滤时，这会很有用。禁用时，PREWHERE 在读取阶段应用。
+注意：如果启用了 apply_row_level_security_after_final 且 ROW POLICY 使用了非排序键列，则 PREWHERE 也会被延后，以保持正确的执行顺序（必须先应用 ROW POLICY，之后再应用 PREWHERE）。
+
+## apply_row_policy_after_final {#apply_row_policy_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在 *MergeTree 表的 FINAL 处理之后再应用 row policy 和 PREWHERE 的新设置项"}]}]}/>
+
+启用时，row policy 和 PREWHERE 会在 *MergeTree 表的 FINAL 处理之后应用（尤其适用于 ReplacingMergeTree）。
+禁用时，row policy 会在 FINAL 之前应用，当策略过滤掉本应用于 ReplacingMergeTree 或类似引擎中去重的行时，可能会导致结果不同。
+
+如果 row policy 表达式只依赖于 ORDER BY 中的列，出于优化目的，它仍会在 FINAL 之前应用，
+因为这类过滤不会影响去重结果。
+
+可能的取值：
+
+- 0 — 在 FINAL 之前应用 row policy 和 PREWHERE（默认）。
+- 1 — 在 FINAL 之后应用 row policy 和 PREWHERE。
+
 ## apply_settings_from_server {#apply_settings_from_server} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1191,6 +1218,24 @@ Cloud 默认值：`1`。
 在执行远程查询时启用通过 socket 的异步读取。
 
 默认启用。
+
+## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+每个副本需读取的最小字节数阈值，达到该值时会自动启用并行副本（仅在 `automatic_parallel_replicas_mode` = 1 时生效）。0 表示不设置阈值。
+
+## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+🚨 高度实验性功能 🚨
+基于收集到的统计信息，启用自动切换为使用并行副本执行查询。需要启用 `parallel_replicas_local_plan` 并提供 `cluster_for_parallel_replicas`。
+0 - 禁用，1 - 启用，2 - 仅启用统计信息收集（禁用切换为使用并行副本执行查询）。
 
 ## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
 
@@ -1600,7 +1645,7 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-启用或禁用在 [CAST](/sql-reference/functions/type-conversion-functions#cast) 操作中保留 `Nullable` 数据类型。
+启用或禁用在 [CAST](/sql-reference/functions/type-conversion-functions#CAST) 操作中保留 `Nullable` 数据类型。
 
 当启用该设置且 `CAST` 函数的参数为 `Nullable` 时，结果也会被转换为 `Nullable` 类型。禁用该设置时，结果始终精确为目标类型。
 
@@ -1626,7 +1671,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 └───┴───────────────────────────────────────────────────┘
 ```
 
-以下查询会使目标数据类型带上 `Nullable` 修饰：
+以下查询的结果是带有 `Nullable` 修饰的目标数据类型：
 
 ```sql
 SET cast_keep_nullable = 1;
@@ -1643,7 +1688,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 **另请参阅**
 
-* [CAST](/sql-reference/functions/type-conversion-functions#cast) 函数
+* [CAST](/sql-reference/functions/type-conversion-functions#CAST) 函数
 
 
 ## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
@@ -1660,7 +1705,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
     ClickHouse 可以解析基础的 `YYYY-MM-DD HH:MM:SS` 格式以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如：`'2018-06-08T01:02:03.000Z'`。
 
-- `'best_effort_us'` — 与 `best_effort` 类似（差异参见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus)）。
+- `'best_effort_us'` — 与 `best_effort` 类似（差异参见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)）。
 
 - `'basic'` — 使用基础解析器。
 
@@ -3318,7 +3363,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
+SELECT * FROM TAB ORDER BY ALL; -- 返回错误，提示 ALL 存在歧义
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3385,6 +3430,23 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 └─────┴─────┴───────┘
 ```
 
+
+## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}]}/>
+
+启用或禁用在 PROJECTION 定义中使用位置参数。另请参阅 [enable_positional_arguments](#enable_positional_arguments) 设置。
+
+:::note
+这是一个面向专家级用户的设置，如果您刚开始使用 ClickHouse，建议不要更改它。
+:::
+
+可能的取值：
+
+- 0 — 不支持位置参数。
+- 1 — 支持位置参数：可以使用列序号代替列名。
 
 ## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
 
@@ -3625,17 +3687,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a 在插入时不会更新
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- 两个索引在插入时都不会更新
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- 仅更新 idx_b
 
--- since it is a session setting it can be set on a per-query level
+-- 由于这是会话级设置,可以在单个查询级别进行设置
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- 此查询可用于显式物化该索引
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- 将设置重置为默认值
 ```
 
 
@@ -3908,7 +3970,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3932,7 +3994,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3968,12 +4030,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- 查询将产生 CANNOT_PARSE_TEXT 错误。
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- 查询将产生 INDEX_NOT_USED 错误。
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- 正常。
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- 正常(完整功能解析器示例)。
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 查询将产生 INDEX_NOT_USED 错误,因为 d1_null_idx 未被使用。
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 正常。
 ```
 
 
@@ -4130,7 +4192,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回了 1 行。耗时: 0.001 秒。
 ```
 
 可能的取值：
@@ -4152,7 +4214,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 │ ᴺᵁᴸᴸ                                   │
 └────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+返回了 1 行，耗时 0.001 秒。
 ```
 
 可能的取值为：
@@ -4682,11 +4744,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- 查询会产生 CANNOT_PARSE_TEXT 错误。
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- 正常。
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- 正常。
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- 查询会产生 INDEX_NOT_USED 错误,因为 xy_idx 被显式忽略。
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4891,11 +4953,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- the next insert won't be deduplicated because insert_deduplication_token is different
+-- 下一次插入不会去重,因为 insert_deduplication_token 不同
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- the next insert will be deduplicated because insert_deduplication_token
--- is the same as one of the previous
+-- 下一次插入会去重,因为 insert_deduplication_token
+-- 与之前的某次相同
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -5050,6 +5112,20 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
+## insert_select_deduplicate {#insert_select_deduplicate} 
+
+<SettingsInfoBlock type="BoolAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+启用或禁用针对 `INSERT SELECT` 的数据块去重（适用于 Replicated\* 表）。
+该设置会在 `INSERT SELECT` 查询中覆盖 `insert_deduplicate` 的行为。
+此设置有三种可能的取值：
+
+- 0 — 对 `INSERT SELECT` 查询禁用去重。
+- 1 — 对 `INSERT SELECT` 查询启用去重。如果 SELECT 结果不稳定，将抛出异常。
+- auto — 当 `insert_deduplicate` 启用且 SELECT 结果稳定时启用去重，否则禁用去重。
+
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5171,9 +5247,12 @@ Grace join 的第一阶段会读取右表，并根据键列的哈希值将其拆
 
 - direct
 
-当右表的存储支持键值查询时，可以使用此算法。
+`direct`（也称为嵌套循环）算法使用左表的行作为键，在右表中进行查找。
+它由 [Dictionary](/engines/table-engines/special/dictionary)、[EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) 和 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表等特殊存储提供支持。
 
-`direct` 算法使用左表的行作为键，在右表中进行查找。它仅受 [Dictionary](/engines/table-engines/special/dictionary) 或 [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) 等特殊存储支持，并且只支持 `LEFT` 和 `INNER` JOIN。
+对于 MergeTree 表，该算法会将 join 键过滤条件下推到存储层。如果该键可以使用表的主键索引进行查找，这通常会更高效；否则，会对右表为每个左表数据块执行全表扫描。
+
+支持 `INNER` 和 `LEFT` join，并且只支持单列等值 join 键且无其他条件。
 
 - auto
 
@@ -6291,7 +6370,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 结果：
 
 ```text
-Exception: Regexp length too large.
+异常：正则表达式长度过大。
 ```
 
 **另请参阅**
@@ -6335,7 +6414,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 结果：
 
 ```text
-Exception: Total regexp lengths too large.
+异常：正则表达式总长度过大。
 ```
 
 **另请参阅**
@@ -6874,15 +6953,15 @@ Cloud 默认值：`0`。
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
+    <!-- 用户 Alice 同一时间最多只能连接 ClickHouse 服务器一次。 -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- User Bob can use 2 simultaneous sessions. -->
+    <!-- 用户 Bob 可以同时使用 2 个会话。 -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
+    <!-- 用户 Charles 可以同时使用任意数量的会话。 -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -6910,6 +6989,14 @@ Cloud 默认值：`0`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "100000000"},{"label": "新设置。"}]}, {"id": "row-2","items": [{"label": "24.12"},{"label": "1000000000000"},{"label": "为更大的表启用优化。"}]}]}/>
 
 在执行 join 之前，允许在所有哈希表中为元素预先分配空间的总元素数量上限
+
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "添加一个新的设置，用于限制 *Cluster 表函数* 在处理文件时的流数量"}]}]}/>
+
+如果该值不为零，则限制 *Cluster 表函数* 中从文件读取数据的线程数量。
 
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
@@ -8511,6 +8598,14 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 如果为 true，IN 子查询会在每个从属副本上执行。
 
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "允许在使用并行副本时使用 materialized views"}]}]}/>
+
+允许在使用并行副本时使用 materialized views
+
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
 <BetaBadge/>
@@ -9610,8 +9705,6 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 - 0 表示关闭计时器。
 
-**在 ClickHouse Cloud 中暂时被禁用。**
-
 另请参阅：
 
 - 系统表 [trace_log](/operations/system-tables/trace_log)
@@ -9632,8 +9725,6 @@ EXPLAIN PLAN 中步骤描述的最大长度。
             - 1000000000（每秒 1 次），用于集群范围的分析。
 
 - 0 表示关闭计时器。
-
-**在 ClickHouse Cloud 中暂时不可用。**
 
 另请参阅：
 
@@ -9953,7 +10044,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 rows in set. ...
+6666 行数据。...
 ```
 
 
@@ -10428,7 +10519,7 @@ SELECT toDateTime64(toDateTime64('1999-12-12 23:23:23.123', 3), 3, 'Europe/Zuric
 CREATE TABLE test_tz (`d` DateTime('UTC')) ENGINE = Memory AS SELECT toDateTime('2000-01-01 00:00:00', 'UTC');
 
 SELECT *, timeZone() FROM test_tz WHERE d = toDateTime('2000-01-01 00:00:00') SETTINGS session_timezone = 'Asia/Novosibirsk'
-0 rows in set.
+返回 0 行。
 
 SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS session_timezone = 'Asia/Novosibirsk'
 ┌───────────────────d─┬─timeZone()───────┐
@@ -10752,7 +10843,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
+│ QueryMemoryLimitExceeded │     0 │ 查询超出内存限制的次数。 │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 

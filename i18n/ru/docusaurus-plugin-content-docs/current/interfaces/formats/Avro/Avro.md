@@ -49,9 +49,10 @@ $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avr
 Чтобы сопоставить столбцы таблицы с полями схемы Avro, ClickHouse сравнивает их имена.
 Сравнение чувствительно к регистру, а неиспользуемые поля пропускаются.
 
-Типы данных столбцов таблицы ClickHouse могут отличаться от соответствующих полей вставляемых данных Avro. При вставке данных ClickHouse интерпретирует типы данных в соответствии с таблицей выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к соответствующему типу столбца.
+Типы данных столбцов таблицы ClickHouse могут отличаться от соответствующих полей вставляемых данных Avro. При вставке данных ClickHouse интерпретирует типы данных в соответствии с таблицей выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#CAST) данные к соответствующему типу столбца.
 
 При импорте данных, если поле не найдено в схеме и включена настройка [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields), вместо генерации ошибки будет использовано значение по умолчанию.
+
 
 ### Запись данных в формате Avro {#writing-avro-data}
 
