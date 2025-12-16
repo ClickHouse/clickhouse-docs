@@ -1,0 +1,19 @@
+---
+slug: /managing-data/update_mutations
+sidebar_label: 'Update mutations'
+title: '更新ミューテーション'
+hide_title: false
+description: '更新ミューテーションについて説明するページ - 更新によってテーブルデータを操作する ALTER クエリ'
+doc_type: 'reference'
+keywords: ['update', 'mutations', 'alter table', 'data manipulation', 'modify data']
+---
+
+更新ミューテーションとは、更新操作によってテーブルデータを操作する `ALTER` クエリを指します。代表的なものとしては `ALTER TABLE ... UPDATE` などのクエリがあります。このようなクエリを実行すると、データパーツの新しいミューテーション済みバージョンが生成されます。これは、そのミューテーションより前に挿入されたすべてのデータについて、パーツ全体の書き換えが発生することを意味し、大量の書き込み要求につながります。
+
+:::info
+更新を行う場合、デフォルトの MergeTree テーブルエンジンの代わりに、[ReplacingMergeTree](/guides/replacing-merge-tree) や [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) などの専用テーブルエンジンを使用することで、このような大量の書き込み要求を回避できます。
+:::
+
+import UpdateMutations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/statements/alter/update.md';
+
+<UpdateMutations />

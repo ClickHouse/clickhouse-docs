@@ -1,24 +1,23 @@
 ---
 description: 'Документация по функциям uniqTheta'
 sidebar_label: 'uniqTheta'
-sidebar_position: 210
 slug: /sql-reference/functions/uniqtheta-functions
 title: 'Функции uniqTheta'
+doc_type: 'reference'
 ---
 
+# Функции uniqTheta {#uniqtheta-functions}
 
-# Функции uniqTheta
+Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения вычислений операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/отрицание), и возвращают новый объект uniqThetaSketch, содержащий результат.
 
-Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения расчетов операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/разность). Они возвращают новый объект uniqThetaSketch, содержащий результат.
+Объект uniqThetaSketch создаётся агрегирующей функцией uniqTheta с суффиксом -State.
 
-Объект uniqThetaSketch создается с помощью агрегатной функции uniqTheta с -State.
-
-UniqThetaSketch — это структура данных для хранения приблизительных значений множеств. 
-Для получения дополнительной информации о RoaringBitmap, смотрите: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
+UniqThetaSketch — это структура данных для хранения приближённого множества значений.
+Для дополнительной информации о RoaringBitmap см.: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketchFramework.html).
 
 ## uniqThetaUnion {#uniqthetaunion}
 
-Два объекта uniqThetaSketch для выполнения операции объединения (∪). Результат — новый объект uniqThetaSketch.
+Принимает два объекта uniqThetaSketch и выполняет операцию объединения множеств (∪); результатом является новый uniqThetaSketch.
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
@@ -26,14 +25,14 @@ uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
 
 **Аргументы**
 
-- `uniqThetaSketch` – объект uniqThetaSketch.
+* `uniqThetaSketch` – объект типа uniqThetaSketch.
 
 **Пример**
 
 ```sql
-select finalizeAggregation(uniqThetaUnion(a, b)) as a_union_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
+SELECT finalizeAggregation(uniqThetaUnion(a, b)) AS a_union_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[1,2]) AS a, arrayReduce('uniqThetaState',[2,3,4]) AS b );
 ```
 
 ```text
@@ -44,7 +43,7 @@ from
 
 ## uniqThetaIntersect {#uniqthetaintersect}
 
-Два объекта uniqThetaSketch для выполнения операции пересечения (∩). Результат — новый объект uniqThetaSketch.
+Выполняет вычисление пересечения (операция над множествами ∩) двух объектов uniqThetaSketch; результатом является новый uniqThetaSketch.
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
@@ -52,14 +51,14 @@ uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
 
 **Аргументы**
 
-- `uniqThetaSketch` – объект uniqThetaSketch.
+* `uniqThetaSketch` – объект типа uniqThetaSketch.
 
 **Пример**
 
 ```sql
-select finalizeAggregation(uniqThetaIntersect(a, b)) as a_intersect_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[1,2]) as a, arrayReduce('uniqThetaState',[2,3,4]) as b );
+SELECT finalizeAggregation(uniqThetaIntersect(a, b)) AS a_intersect_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[1,2]) AS a, arrayReduce('uniqThetaState',[2,3,4]) AS b );
 ```
 
 ```text
@@ -70,7 +69,7 @@ from
 
 ## uniqThetaNot {#uniqthetanot}
 
-Два объекта uniqThetaSketch для выполнения операции разности (×). Результат — новый объект uniqThetaSketch.
+Два объекта uniqThetaSketch используются для выполнения операции a&#95;not&#95;b (операция над множествами ×), результатом является новый uniqThetaSketch.
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
@@ -78,14 +77,14 @@ uniqThetaNot(uniqThetaSketch,uniqThetaSketch)
 
 **Аргументы**
 
-- `uniqThetaSketch` – объект uniqThetaSketch.
+* `uniqThetaSketch` – объект типа `uniqThetaSketch`.
 
 **Пример**
 
 ```sql
-select finalizeAggregation(uniqThetaNot(a, b)) as a_not_b, finalizeAggregation(a) as a_cardinality, finalizeAggregation(b) as b_cardinality
-from
-(select arrayReduce('uniqThetaState',[2,3,4]) as a, arrayReduce('uniqThetaState',[1,2]) as b );
+SELECT finalizeAggregation(uniqThetaNot(a, b)) AS a_not_b, finalizeAggregation(a) AS a_cardinality, finalizeAggregation(b) AS b_cardinality
+FROM
+(SELECT arrayReduce('uniqThetaState',[2,3,4]) AS a, arrayReduce('uniqThetaState',[1,2]) AS b );
 ```
 
 ```text
@@ -96,4 +95,14 @@ from
 
 **См. также**
 
-- [uniqThetaSketch](/sql-reference/aggregate-functions/reference/uniqthetasketch)
+* [uniqThetaSketch](/sql-reference/aggregate-functions/reference/uniqthetasketch)
+
+{/* 
+  Содержимое следующих тегов заменяется во время сборки фреймворка документации
+  документацией, сгенерированной на основе system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+  См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  */ }
+
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }

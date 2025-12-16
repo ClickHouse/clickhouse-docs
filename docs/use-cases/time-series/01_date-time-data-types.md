@@ -3,7 +3,7 @@ title: 'Date and time data types - Time-series'
 sidebar_label: 'Date and time data types'
 description: 'Time-series data types in ClickHouse.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['Time Series', 'DateTime']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'data types', 'temporal data', 'timestamp']
 show_related_blogs: true
 doc_type: 'reference'
 ---
@@ -130,13 +130,13 @@ In the first row, we inserted all values using the `America/New_York` timezone.
 * `dt_2` and `dt64_2` didn't have a time zone specified, so they use the server's local time zone, which in this case is `Europe/London`.
 
 In the second row, we inserted all the values without a timezone, so the server's local time zone was used.
-As in the first row, `dt_1` and `dt_3` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
+As in the first row, `dt_1` and `dt64_1` are converted to `Europe/Berlin`, while `dt_2` and `dt64_2` use the server's local time zone.
 
 ## Date and time functions {#time-series-date-time-functions}
 
 ClickHouse also comes with a set of functions that let us convert between the different data types.
 
-For example, we can use [`toDate`](/sql-reference/functions/type-conversion-functions#todate) to convert a `DateTime` value to the `Date` type:
+For example, we can use [`toDate`](/sql-reference/functions/type-conversion-functions#toDate) to convert a `DateTime` value to the `Date` type:
 
 ```sql
 SELECT
@@ -156,7 +156,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-We can use [`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) to convert `DateTime` to `DateTime64`:
+We can use [`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) to convert `DateTime` to `DateTime64`:
 
 ```sql
 SELECT
@@ -176,7 +176,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-And we can use [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) to go from `Date` or `DateTime64` back to `DateTime`:
+And we can use [`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) to go from `Date` or `DateTime64` back to `DateTime`:
 
 ```sql
 SELECT

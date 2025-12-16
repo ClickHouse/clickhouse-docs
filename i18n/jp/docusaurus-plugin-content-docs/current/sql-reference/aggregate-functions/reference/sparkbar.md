@@ -1,20 +1,20 @@
 ---
-description: 'The function plots a frequency histogram for values `x` and the repetition
-  rate `y` of these values over the interval `[min_x, max_x]`.'
+description: 'この関数は、値 `x` とそれらの繰り返し回数 `y` に基づき、区間 `[min_x, max_x]` 上の度数ヒストグラムをプロットします。'
 sidebar_label: 'sparkbar'
 sidebar_position: 187
-slug: '/sql-reference/aggregate-functions/reference/sparkbar'
+slug: /sql-reference/aggregate-functions/reference/sparkbar
 title: 'sparkbar'
+doc_type: 'reference'
 ---
 
+# sparkbar {#sparkbar}
 
+この関数は、値 `x` と、その値の出現回数（頻度）を表す `y` に対して、区間 `[min_x, max_x]` 上で度数ヒストグラムをプロットします。
+同じバケットに入るすべての `x` の出現回数（頻度）`y` は平均化されるため、データは事前に集約されている必要があります。
+`y` の負の値は無視されます。
 
-
-# sparkbar
-
-この関数は、値 `x` に対する頻度ヒストグラムと、これらの値の繰り返し率 `y` を、区間 `[min_x, max_x]` でプロットします。同じバケットに該当するすべての `x` の繰り返しは平均化されるため、データは事前に集約されている必要があります。負の繰り返しは無視されます。
-
-区間が指定されていない場合、最小の `x` が区間の開始として使用され、最大の `x` が区間の終了として使用されます。それ以外の場合、区間外の値は無視されます。
+区間が指定されていない場合、最小の `x` が区間の開始として、最大の `x` が区間の終了として使用されます。
+区間が指定されている場合は、その区間外の値は無視されます。
 
 **構文**
 
@@ -24,18 +24,18 @@ sparkbar(buckets[, min_x, max_x])(x, y)
 
 **パラメータ**
 
-- `buckets` — セグメントの数。タイプ: [Integer](../../../sql-reference/data-types/int-uint.md)。
-- `min_x` — 区間の開始。オプションのパラメータ。
-- `max_x` — 区間の終了。オプションのパラメータ。
+* `buckets` — セグメント数。型: [Integer](../../../sql-reference/data-types/int-uint.md)。
+* `min_x` — 区間の開始値。省略可能なパラメータ。
+* `max_x` — 区間の終了値。省略可能なパラメータ。
 
 **引数**
 
-- `x` — 値を持つフィールド。
-- `y` — 値の頻度を持つフィールド。
+* `x` — 値を持つフィールド。
+* `y` — 値の頻度を示すフィールド。
 
 **返される値**
 
-- 頻度ヒストグラム。
+* 度数ヒストグラム。
 
 **例**
 
@@ -51,7 +51,7 @@ SELECT sparkbar(9)(event_date,cnt) FROM (SELECT sum(value) as cnt, event_date FR
 SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date,cnt) FROM (SELECT sum(value) as cnt, event_date FROM spark_bar_data GROUP BY event_date);
 ```
 
-結果:
+結果：
 
 ```text
 ┌─sparkbar(9)(event_date, cnt)─┐
@@ -63,4 +63,4 @@ SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date,cnt) F
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-この関数のエイリアスは sparkBar です。
+この関数の別名（エイリアス）は sparkBar です。

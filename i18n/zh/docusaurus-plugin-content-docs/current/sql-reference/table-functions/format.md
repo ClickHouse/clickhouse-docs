@@ -1,15 +1,15 @@
 ---
-'description': '根据指定的输入格式解析来自参数的数据。如果未指定结构参数，则从数据中提取其结构。'
-'slug': '/sql-reference/table-functions/format'
-'sidebar_position': 65
-'sidebar_label': '格式'
-'title': '格式'
+description: '根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取该结构。'
+slug: /sql-reference/table-functions/format
+sidebar_position: 65
+sidebar_label: 'format'
+title: 'format'
+doc_type: 'reference'
 ---
 
+# format 表函数 {#format-table-function}
 
-# format 表函数
-
-根据指定的输入格式解析来自参数的数据。如果未指定结构参数，则从数据中提取。
+根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取结构。
 
 ## 语法 {#syntax}
 
@@ -19,19 +19,20 @@ format(format_name, [structure], data)
 
 ## 参数 {#arguments}
 
-- `format_name` — 数据的 [格式](/sql-reference/formats)。
-- `structure` - 表的结构。可选。格式为 'column1_name column1_type, column2_name column2_type, ...'。
-- `data` — 字符串文字或返回包含指定格式数据的字符串的常量表达式。
+- `format_name` — 数据的[格式](/sql-reference/formats)。
+- `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
+- `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
 
 ## 返回值 {#returned_value}
 
-一张根据指定格式和指定或提取的结构从 `data` 参数解析的数据表。
+一个数据表，包含根据指定格式和指定或提取的结构从 `data` 参数中解析得到的数据。
 
 ## 示例 {#examples}
 
-没有 `structure` 参数：
+不带 `structure` 参数：
 
-**查询:**
+**查询：**
+
 ```sql
 SELECT * FROM format(JSONEachRow,
 $$
@@ -42,7 +43,7 @@ $$
 $$)
 ```
 
-**结果:**
+**结果：**
 
 ```response
 ┌───b─┬─a─────┐
@@ -53,7 +54,8 @@ $$)
 └─────┴───────┘
 ```
 
-**查询:**
+**查询：**
+
 ```sql
 DESC format(JSONEachRow,
 $$
@@ -64,7 +66,7 @@ $$
 $$)
 ```
 
-**结果:**
+**结果：**
 
 ```response
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -73,9 +75,10 @@ $$)
 └──────┴───────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-有 `structure` 参数：
+使用 `structure` 参数：
 
-**查询:**
+**查询：**
+
 ```sql
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
@@ -86,7 +89,8 @@ $$
 $$)
 ```
 
-**结果:**
+**结果：**
+
 ```response
 ┌─a─────┬───b─┐
 │ Hello │ 111 │

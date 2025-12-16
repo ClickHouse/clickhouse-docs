@@ -4,6 +4,7 @@ description: 'Establish a secure connection between ClickPipes and a data source
 slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink for ClickPipes'
 doc_type: 'guide'
+keywords: ['aws privatelink', 'ClickPipes security', 'vpc endpoint', 'private connectivity', 'vpc resource']
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -32,21 +33,25 @@ data source types:
 - Kafka
 - Postgres
 - MySQL
+- MongoDB
 
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:
 
-- [VPC resource](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html)
-- [MSK multi-VPC connectivity for MSK ClickPipe](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html)
-- [VPC endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html)
+- [VPC resource](#vpc-resource)
+- [MSK multi-VPC connectivity for MSK ClickPipe](#msk-multi-vpc)
+- [VPC endpoint service](#vpc-endpoint-service)
 
 ### VPC resource {#vpc-resource}
+
+:::info
+Cross-region is not supported.
+:::
 
 Your VPC resources can be accessed in ClickPipes using [PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html). This approach doesn't require setting up a load balancer in front of your data source.
 
 Resource configuration can be targeted with a specific host or RDS cluster ARN.
-Cross-region is not supported.
 
 It's the preferred choice for Postgres CDC ingesting data from an RDS cluster.
 
@@ -117,8 +122,8 @@ aws vpc-lattice create-resource-configuration \
 :::note
 You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
-to make it private before creating the resource configuration 
-or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead. 
+to make it private before creating the resource configuration
+or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead.
 For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
@@ -170,8 +175,7 @@ Follow our [MSK setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup
 It requires setting up a NLB (Network Load Balancer) in front of your data source
 and configuring the VPC endpoint service to use the NLB.
 
-VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html),
-that will be accessible in a ClickPipes VPC.
+VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), that will be accessible in a ClickPipes VPC.
 
 It's a preferred choice for:
 
@@ -214,7 +218,7 @@ can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-r
 5. Select any of existing reverse private endpoints or create a new one.
 
 :::info
-If cross-region access is required for RDS, you need to create a VPC endpoint service and 
+If cross-region access is required for RDS, you need to create a VPC endpoint service and
 [this guide should provide](/knowledgebase/aws-privatelink-setup-for-clickpipes) a good starting point to set it up.
 
 For same-region access, creating a VPC Resource is the recommended approach.
@@ -265,9 +269,9 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 
     <Image img={cp_rpe_settings1} alt="ClickHouse Cloud settings" size="md" border/>
 
-    Reverse private endpoint extended information is shown in the flyout.
+   Reverse private endpoint extended information is shown in the flyout.
 
-    Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
+   Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
 
 </VerticalStepper>
 

@@ -1,18 +1,18 @@
 ---
 slug: /guides/developer/debugging-memory-issues
-sidebar_label: 'Отладка проблем с памятью'
+sidebar_label: 'Диагностика проблем с памятью'
 sidebar_position: 1
-description: 'Запросы, которые помогут вам отладить проблемы с памятью.'
+description: 'Запросы для диагностики проблем с памятью.'
 keywords: ['проблемы с памятью']
-title: 'Отладка проблем с памятью'
+title: 'Диагностика проблем с памятью'
+doc_type: 'guide'
 ---
-
 
 # Отладка проблем с памятью {#debugging-memory-issues}
 
-При возникновении проблем с памятью или утечке памяти полезно знать, какие запросы и ресурсы потребляют значительное количество памяти. Ниже вы можете найти запросы, которые могут помочь вам отладить проблемы с памятью, определив, какие запросы, базы данных и таблицы могут быть оптимизированы:
+При возникновении проблем с памятью или утечки памяти важно понимать, какие запросы и ресурсы потребляют значительный объём памяти. Ниже приведены запросы, которые помогут вам диагностировать проблемы с памятью, выявив, какие запросы, базы данных и таблицы можно оптимизировать:
 
-## Список текущих выполняемых процессов по максимальному использованию памяти {#list-currently-running-processes-by-peak-memory}
+## Вывод списка текущих процессов по пиковому потреблению памяти {#list-currently-running-processes-by-peak-memory}
 
 ```sql
 SELECT
@@ -34,13 +34,13 @@ SELECT
 FROM
     system.asynchronous_metrics
 WHERE
-    metric like '%Cach%'
-    or metric like '%Mem%'
-order by
-    value desc;
+    metric LIKE '%Cach%'
+    OR metric LIKE '%Mem%'
+ORDER BY
+    value DESC;
 ```
 
-## Список таблиц по текущему использованию памяти {#list-tables-by-current-memory-usage}
+## Список таблиц по текущему потреблению памяти {#list-tables-by-current-memory-usage}
 
 ```sql
 SELECT
@@ -51,30 +51,32 @@ FROM system.tables
 WHERE engine IN ('Memory','Set','Join');
 ```
 
-## Вывод общего объема памяти, используемой мержами {#output-total-memory-used-by-merges}
+## Вывести общий объём памяти, используемой слияниями {#output-total-memory-used-by-merges}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.merges;
 ```
 
-## Вывод общего объема памяти, используемой текущими выполняемыми процессами {#output-total-memory-used-by-currently-running-processes}
+## Вывести общий объём памяти, используемой текущими процессами {#output-total-memory-used-by-currently-running-processes}
 
 ```sql
 SELECT formatReadableSize(sum(memory_usage)) FROM system.processes;
 ```
 
-## Вывод общего объема памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
+## Вывод общего объёма памяти, используемой словарями {#output-total-memory-used-by-dictionaries}
 
 ```sql
 SELECT formatReadableSize(sum(bytes_allocated)) FROM system.dictionaries;
 ```
 
-## Вывод общего объема памяти, используемой первичными ключами {#output-total-memory-used-by-primary-keys}
+## Вывести общий объём памяти, используемый первичными ключами и гранулами индекса {#output-total-memory-used-by-primary-keys}
 
 ```sql
 SELECT
-    sumIf(data_uncompressed_bytes, part_type = 'InMemory') as memory_parts,
+    sumIf(data_uncompressed_bytes, part_type = 'InMemory') AS memory_parts,
     formatReadableSize(sum(primary_key_bytes_in_memory)) AS primary_key_bytes_in_memory,
-    formatReadableSize(sum(primary_key_bytes_in_memory_allocated)) AS primary_key_bytes_in_memory_allocated
+    formatReadableSize(sum(primary_key_bytes_in_memory_allocated)) AS primary_key_bytes_in_memory_allocated,
+    formatReadableSize(sum(index_granularity_bytes_in_memory)) AS index_granularity_bytes_in_memory,
+    formatReadableSize(sum(index_granularity_bytes_in_memory_allocated)) AS index_granularity_bytes_in_memory_allocated
 FROM system.parts;
 ```

@@ -1,17 +1,18 @@
 ---
-'description': 'rank 内幕函数的文档'
-'sidebar_label': 'rank'
-'sidebar_position': 6
-'slug': '/sql-reference/window-functions/rank'
-'title': 'rank'
+description: 'rank 窗口函数的文档'
+sidebar_label: 'rank'
+sidebar_position: 6
+slug: /sql-reference/window-functions/rank
+title: 'rank'
+doc_type: 'reference'
 ---
 
+# rank {#rank}
 
-# rank
+在其所属分区内为当前行计算带空缺的排名。换句话说，如果某一行的值与之前某一行的值相同，那么它将获得与该行相同的排名。
+下一行的排名则等于前一行的排名再加上一个空缺，该空缺等于前一个排名被赋予的次数。
 
-在其分区内对当前行进行排名，允许存在间隙。换句话说，如果它遇到的任何行的值与之前某一行的值相等，则将获得与该之前行相同的排名。然后，下一行的排名等于前一行的排名加上与之前排名被授予次数相等的间隙。
-
-[dense_rank](./dense_rank.md) 函数提供相同的行为，但没有排名的间隙。
+[dense&#95;rank](./dense_rank.md) 函数提供了类似的行为，但排名序列中没有空缺。
 
 **语法**
 
@@ -23,15 +24,15 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详细内容，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-- 当前行在其分区内的一个数字，包括间隙。 [UInt64](../data-types/int-uint.md)。
+* 当前分区内当前行的序号，允许存在缺口。[UInt64](../data-types/int-uint.md)。
 
 **示例**
 
-以下示例基于视频教程中提供的示例 [在 ClickHouse 中的排名窗口函数](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)。
+以下示例基于教学视频 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) 中提供的示例。
 
 查询：
 

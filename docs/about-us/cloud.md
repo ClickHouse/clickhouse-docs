@@ -1,9 +1,10 @@
 ---
 slug: /about-us/cloud
-sidebar_label: 'Cloud Service'
+sidebar_label: 'Cloud service'
 sidebar_position: 10
 description: 'ClickHouse Cloud'
 title: 'ClickHouse Cloud'
+keywords: ['ClickHouse Cloud', 'cloud database', 'managed ClickHouse', 'serverless database', 'cloud OLAP']
 doc_type: 'reference'
 ---
 
@@ -40,7 +41,7 @@ Some of the benefits of using ClickHouse Cloud are described below:
 | **Support services**           | Our best-in-class support services and open-source community resources provide coverage for whichever deployment model you choose.                                                                                                                                                                         | ❌               | ✅                 |
 | **Database upgrades**          | Regular database upgrades are essential to establish a strong security posture and access the latest features and performance improvements.                                                                                                                                                                | ❌               | ✅                 |
 | **Backups**                    | Backups and restore functionality ensures data durability and supports graceful recovery in the event of outages or other disruptions.                                                                                                                                                                     | ❌               | ✅                 |
-| **Compute-compute separation** | Users can scale compute resources independently of storage, so teams and workloads can share the same storage and maintain dedicated compute resources. This ensures that the performance of one workload doesn't interfere with another, enhancing flexibility, performance, and cost-efficiency.         | ❌               | ✅                 |
+| **Compute-compute separation** | You can scale compute resources independently of storage, so teams and workloads can share the same storage and maintain dedicated compute resources. This ensures that the performance of one workload doesn't interfere with another, enhancing flexibility, performance, and cost-efficiency.         | ❌               | ✅                 |
 | **Managed services**           | With a cloud-managed service, teams can focus on business outcomes and accelerate time-to-market without having to worry about the operational overhead of sizing, setup, and maintenance of ClickHouse.                                                                                                   | ❌               | ✅                 |
 -->
 

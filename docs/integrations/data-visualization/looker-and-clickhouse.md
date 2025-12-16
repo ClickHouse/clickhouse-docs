@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'looker', 'connect', 'integrate', 'ui']
 description: 'Looker is an enterprise platform for BI, data applications, and embedded analytics that helps you explore and share insights in real time.'
 title: 'Looker'
 doc_type: 'guide'
+integration:
+  - support_level: 'partner'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,11 +16,11 @@ import looker_01 from '@site/static/images/integrations/data-visualization/looke
 import looker_02 from '@site/static/images/integrations/data-visualization/looker_02.png';
 import looker_03 from '@site/static/images/integrations/data-visualization/looker_03.png';
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # Looker
 
-<CommunityMaintainedBadge/>
+<PartnerBadge/>
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
 

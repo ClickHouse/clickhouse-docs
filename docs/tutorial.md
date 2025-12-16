@@ -1,7 +1,7 @@
 ---
 slug: /tutorial
-sidebar_label: 'Advanced Tutorial'
-title: 'Advanced Tutorial'
+sidebar_label: 'Advanced tutorial'
+title: 'Advanced tutorial'
 description: 'Learn how to ingest and query data in ClickHouse using a New York City taxi example dataset.'
 sidebar_position: 0.5
 keywords: ['clickhouse', 'install', 'tutorial', 'dictionary', 'dictionaries', 'example', 'advanced', 'taxi', 'new york', 'nyc']

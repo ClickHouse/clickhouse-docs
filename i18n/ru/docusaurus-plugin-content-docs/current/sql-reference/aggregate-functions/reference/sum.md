@@ -1,14 +1,14 @@
 ---
-description: 'Вычисляет сумму. Работает только с числами.'
+description: 'Вычисляет сумму. Применима только к числам.'
 sidebar_position: 195
 slug: /sql-reference/aggregate-functions/reference/sum
 title: 'sum'
+doc_type: 'reference'
 ---
 
+# sum {#sum}
 
-# sum
-
-Вычисляет сумму. Работает только с числами.
+Вычисляет сумму. Может применяться только к числам.
 
 **Синтаксис**
 
@@ -17,15 +17,16 @@ sum(num)
 ```
 
 **Параметры**
-- `num`: Колонка числовых значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+
+* `num`: Столбец числовых значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Сумма значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+* Сумма значений. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Пример**
 
-Сначала мы создаем таблицу `employees` и вставляем в нее некоторые вымышленные данные сотрудников.
+Сначала создадим таблицу `employees` и вставим в неё некоторые тестовые данные о сотрудниках.
 
 Запрос:
 
@@ -47,7 +48,7 @@ INSERT INTO employees VALUES
     (71245, 'Anastasia Ivanovna', 89210);
 ```
 
-Мы выполняем запрос для получения общей суммы зарплат сотрудников, используя функцию `sum`. 
+Запрашиваем общую сумму зарплат сотрудников с помощью функции `sum`.
 
 Запрос:
 

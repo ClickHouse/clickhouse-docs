@@ -10,11 +10,33 @@ import networkx as nx
 from urllib.parse import urlparse, urlunparse
 
 IGNORE_FILES = ["index.md"]
-IGNORE_DIRS = ["ru", "zh"]
 
 SUB_DIRECTORIES = {
     "docs": "https://clickhouse.com/docs",
     "knowledgebase": "https://clickhouse.com/docs/knowledgebase",
+}
+
+LOCALE_CONFIG = {
+    'en': {
+        'base_path': '',  # docs/ and knowledgebase/ at root
+        'url_prefix': '',
+        'index_suffix': ''
+    },
+    'jp': {
+        'base_path': 'i18n/jp/docusaurus-plugin-content-docs/current',
+        'url_prefix': '/jp',
+        'index_suffix': '-jp'
+    },
+    'zh': {
+        'base_path': 'i18n/zh/docusaurus-plugin-content-docs/current',
+        'url_prefix': '/zh',
+        'index_suffix': '-zh'
+    },
+    'ru': {
+        'base_path': 'i18n/ru/docusaurus-plugin-content-docs/current',
+        'url_prefix': '/ru',
+        'index_suffix': '-ru'
+    }
 }
 
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'settings.json'), 'r') as f:
@@ -23,6 +45,17 @@ HEADER_PATTERN = re.compile(r"^(.*?)(?:\s*\{#(.*?)\})$")
 object_ids = set()
 files_processed = set()
 link_data = []
+
+
+def get_doc_type_rank(doc_type):
+    """Return numeric rank for doc_type to use in Algolia customRanking."""
+    ranks = {
+        'guide': 3,
+        'reference': 3,
+        'changelog': 1,
+        'landing_page': 1
+    }
+    return ranks.get(doc_type, 2)  # Default to 2 for unspecified types
 
 
 def split_url_and_anchor(url):
@@ -39,7 +72,11 @@ def read_metadata(text):
         parts = part.split(":")
         if len(parts) == 2:
             if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type']:
-                metadata[parts[0]] = int(parts[1].strip()) if parts[0] == 'score' else parts[1].strip()
+                value = parts[1].strip()
+                # Strip quotes only from doc_type
+                if parts[0] == 'doc_type':
+                    value = value.strip("'\"")
+                metadata[parts[0]] = int(value) if parts[0] == 'score' else value
     return metadata
 
 
@@ -249,7 +286,8 @@ def parse_markdown_content(metadata, content, base_url):
             'lvl1': current_h1
         },
         'score': metadata.get('score', 0),
-        'doc_type': metadata.get('doc_type', '')
+        'doc_type': metadata.get('doc_type', ''),
+        'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
     }
     for line in lines:
         if line.startswith('# '):
@@ -294,7 +332,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl1': current_h1,
                     'lvl2': current_h2,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif line.startswith('### '):
             # note we send users to the h2 or h1 even on ###
@@ -324,7 +363,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl2': current_h2,
                     'lvl3': current_h3,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif line.startswith('#### '):
             if current_subdoc:
@@ -351,7 +391,8 @@ def parse_markdown_content(metadata, content, base_url):
                     'lvl3': current_h3,
                     'lvl4': current_h4,
                 },
-                'doc_type': metadata.get('doc_type', '')
+                'doc_type': metadata.get('doc_type', ''),
+                'doc_type_rank': get_doc_type_rank(metadata.get('doc_type', ''))
             }
         elif current_subdoc:
             current_subdoc['content'] += line + '\n'
@@ -364,7 +405,7 @@ def process_markdown_directory(directory, base_directory, base_url):
     """Recursively process Markdown files in a directory."""
     for root, dirs, files in os.walk(directory):
         # Skip `_snippets` and _placeholders subfolders
-        dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders' and d not in IGNORE_DIRS]
+        dirs[:] = [d for d in dirs if d != '_snippets' and d != '_placeholders']
         for file in files:
             relative_file_path = os.path.relpath(os.path.join(root, file), directory)
             if (file.endswith('.md') or file.endswith('.mdx')) and relative_file_path not in IGNORE_FILES:
@@ -422,15 +463,34 @@ def create_new_index(client, index_name):
 
 
 def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
-         batch_size=1000, dry_run=False):
+         batch_size=1000, dry_run=False, locale='en'):
+    # Get locale configuration
+    locale_config = LOCALE_CONFIG.get(locale)
+    if not locale_config:
+        print(f"Error: Unsupported locale '{locale}'")
+        sys.exit(1)
+    
+    # Update index name with locale suffix
+    algolia_index_name = f"{algolia_index_name}{locale_config['index_suffix']}"
     temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
     if not dry_run:
         create_new_index(client, temp_index_name)
     docs = []
-    for sub_directory, base_url in SUB_DIRECTORIES.items():
-        directory = os.path.join(base_directory, sub_directory)
-        for doc in process_markdown_directory(directory, base_directory, base_url):
+    
+    # For non-English locales, use the locale-specific path
+    if locale == 'en':
+        # Process standard docs and knowledgebase directories
+        for sub_directory, base_url in SUB_DIRECTORIES.items():
+            directory = os.path.join(base_directory, sub_directory)
+            for doc in process_markdown_directory(directory, base_directory, base_url):
+                docs.append(doc)
+    else:
+        # Process locale-specific documentation
+        locale_path = os.path.join(base_directory, locale_config['base_path'])
+        # Update base URL with locale suffix
+        base_url = f"https://clickhouse.com/docs{locale_config['url_prefix']}"
+        for doc in process_markdown_directory(locale_path, base_directory, base_url):
             docs.append(doc)
     page_rank_scores = compute_page_rank(link_data)
     # Add PageRank scores to the documents
@@ -453,6 +513,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
                 print(f"URL: {sample_record.get('url', 'N/A')}")
                 print(f"Type: {sample_record.get('type', 'N/A')}")
                 print(f"Doc Type: {sample_record.get('doc_type', 'N/A')}")
+                print(f"Doc Type Rank: {sample_record.get('doc_type_rank', 'N/A')}")
                 print(f"Keywords: {sample_record.get('keywords', 'N/A')}")
                 print("--- End sample ---\n")
         print(f"{'processed' if dry_run else 'indexed'} {len(batch)} records")
@@ -480,8 +541,15 @@ if __name__ == '__main__':
     parser.add_argument('--algolia_app_id', required=True, help='Algolia Application ID')
     parser.add_argument('--algolia_api_key', required=True, help='Algolia Admin API Key')
     parser.add_argument('--algolia_index_name', default='clickhouse', help='Algolia Index Name')
+    parser.add_argument(
+        '--locale',
+        default='en',
+        choices=['en', 'jp', 'zh', 'ru'],
+        help='Locale to index (default: en)'
+    )
     args = parser.parse_args()
     if args.dry_run:
         print('Dry running, not sending results to Algolia.')
+    print(f'Indexing locale: {args.locale}')
     main(args.base_directory, args.algolia_app_id, args.algolia_api_key, args.algolia_index_name,
-         dry_run=args.dry_run)
+         dry_run=args.dry_run, locale=args.locale)

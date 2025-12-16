@@ -1,0 +1,318 @@
+---
+slug: /partitions
+title: '表分区'
+description: '什么是 ClickHouse 中的表分区'
+keywords: ['分区', 'partition by']
+doc_type: 'guide'
+---
+
+import partitions from '@site/static/images/managing-data/core-concepts/partitions.png';
+import merges_with_partitions from '@site/static/images/managing-data/core-concepts/merges_with_partitions.png';
+import partition_pruning from '@site/static/images/managing-data/core-concepts/partition-pruning.png';
+import Image from '@theme/IdealImage';
+
+## ClickHouse 中的表分区是什么？ \{#what-are-table-partitions-in-clickhouse\}
+
+<br />
+
+分区会将表在 [MergeTree 引擎系列](/engines/table-engines/mergetree-family)中的[数据部分（data parts）](/parts)划分并归组为有组织的逻辑单元。这是一种按照在概念上更有意义、并与特定条件（例如时间范围、类别或其他关键属性）对齐的方式来组织数据的方法。这些逻辑单元让数据更易于管理、查询和优化。
+
+### PARTITION BY \{#partition-by\}
+
+在最初定义表时，可以通过 [PARTITION BY 子句](/engines/table-engines/mergetree-family/custom-partitioning-key) 启用分区。该子句可以包含针对任意列的 SQL 表达式，其结果将决定每一行属于哪个分区。
+
+为说明这一点，我们在 [What are table parts](/parts) 示例表的基础上进行[扩展](https://sql.clickhouse.com/?query=U0hPVyBDUkVBVEUgVEFCTEUgdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQ\&run_query=true\&tab=results)，新增一个 `PARTITION BY toStartOfMonth(date)` 子句，使表的数据 part 按房产销售月份进行组织：
+
+```sql
+CREATE TABLE uk.uk_price_paid_simple_partitioned
+(
+    date Date,
+    town LowCardinality(String),
+    street LowCardinality(String),
+    price UInt32
+)
+ENGINE = MergeTree
+ORDER BY (town, street)
+PARTITION BY toStartOfMonth(date);
+```
+
+您可以通过我们的 ClickHouse SQL Playground[查询此表](https://sql.clickhouse.com/?query=U0VMRUNUICogRlJPTSB1ay51a19wcmljZV9wYWlkX3NpbXBsZV9wYXJ0aXRpb25lZA\&run_query=true\&tab=results)。
+
+### 磁盘上的结构 \{#structure-on-disk\}
+
+每当向表中插入一组行时，ClickHouse 并不会像[这里](/operations/settings/settings#max_insert_block_size)所述那样创建至少一个包含所有已插入行的单一数据部分（data part），而是会针对已插入行中每个唯一的分区键值创建一个新的数据部分：
+
+<Image img={partitions} size="lg" alt="INSERT PROCESSING" />
+
+<br />
+
+ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)`，将上图中示意的包含 4 行的示例插入语句中的行拆分开来。
+然后，对每个识别出的分区，这些行会按照[常规方式](/parts)依次经过多个步骤进行处理（① 排序，② 按列拆分，③ 压缩，④ 写入磁盘）。
+
+请注意，关于数据部分的更多细节可见[此处](/parts)以及[文档中的相关说明](/operations/settings/settings#max_insert_block_size)。
+另外，ClickHouse 的实现细节也可参考官方源码链接：[MinMax 索引实现](https://github.com/ClickHouse/ClickHouse/blob/dacc8ebb0dac5bbfce5a7541e7fc70f26f7d5065/src/Storages/MergeTree/IMergeTreeDataPart.h#L341)。
+
+注意，当启用分区后，ClickHouse 会为每个数据部分自动创建 [MinMax 索引](https://github.com/ClickHouse/ClickHouse/blob/dacc8ebb0dac5bbfce5a7541e7fc70f26f7d5065/src/Storages/MergeTree/IMergeTreeDataPart.h#L341)。这些索引本质上是针对分区键表达式中所使用的每一列建立的文件，文件中记录了该数据部分内该列的最小值和最大值。
+
+### 每个分区内的合并 \{#per-partition-merges\}
+
+在启用分区后，ClickHouse 只会在同一分区内[合并](/merges)数据 part，而不会跨分区合并。下面以上面的示例表进行示意说明：
+
+<Image img={merges_with_partitions} size="lg" alt="分区内合并（PART MERGES）" />
+
+<br />
+
+如上图所示，属于不同分区的 part 永远不会被合并。如果选择了基数很高的分区键，那么分布在成千上万个分区中的 part 将永远不会成为合并候选对象——这会超出预先配置的限制，并导致令人头疼的 `Too many ^^parts^^` 错误。解决这个问题很简单：选择一个合理的分区键，将其[基数控制在 1000～10000 以内](https://github.com/ClickHouse/ClickHouse/blob/ffc5b2c56160b53cf9e5b16cfb73ba1d956f7ce4/src/Storages/MergeTree/MergeTreeDataWriter.cpp#L121)。
+
+## 监控分区 \{#monitoring-partitions\}
+
+您可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_partition_value`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIERJU1RJTkNUIF9wYXJ0aXRpb25fdmFsdWUgQVMgcGFydGl0aW9uCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKT1JERVIgQlkgcGFydGl0aW9uIEFTQw\&run_query=true\&tab=results)示例表中所有已存在的唯一分区列表：
+
+```sql runnable
+SELECT DISTINCT _partition_value AS partition
+FROM uk.uk_price_paid_simple_partitioned
+ORDER BY partition ASC;
+```
+
+或者，ClickHouse 会在 [system.parts](/operations/system-tables/parts) 系统表中记录所有表的所有 part 和分区，下面这个查询会针对我们上面的示例表[返回](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBwYXJ0aXRpb24sCiAgICBjb3VudCgpIEFTIHBhcnRzLAogICAgc3VtKHJvd3MpIEFTIHJvd3MKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgID0gJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJykgQU5EIGFjdGl2ZQpHUk9VUCBCWSBwYXJ0aXRpb24KT1JERVIgQlkgcGFydGl0aW9uIEFTQzs\&run_query=true\&tab=results) 所有分区的列表，以及每个分区当前处于活动状态的 part 数量和这些 part 中行数的总和：
+
+```sql runnable
+SELECT
+    partition,
+    count() AS parts,
+    sum(rows) AS rows
+FROM system.parts
+WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple_partitioned') AND active
+GROUP BY partition
+ORDER BY partition ASC;
+```
+
+## 表分区有什么用途？ \{#what-are-table-partitions-used-for\}
+
+### 数据管理 \{#data-management\}
+
+在 ClickHouse 中，分区主要是用于数据管理的功能。通过基于分区表达式对数据进行逻辑划分，可以对每个分区进行独立管理。举例来说，上述示例表中的分区方案可以实现这样的场景：通过使用 [TTL 规则](/guides/developer/ttl) 自动删除较旧数据（见 DDL 语句中新增的最后一行），从而只在主表中保留最近 12 个月的数据：
+
+```sql
+CREATE TABLE uk.uk_price_paid_simple_partitioned
+(
+    date Date,
+    town LowCardinality(String),
+    street LowCardinality(String),
+    price UInt32
+)
+ENGINE = MergeTree
+PARTITION BY toStartOfMonth(date)
+ORDER BY (town, street)
+TTL date + INTERVAL 12 MONTH DELETE;
+```
+
+由于该表按 `toStartOfMonth(date)` 进行分区，满足 TTL 条件的整个分区（[表部件](/parts) 的集合）将被删除，从而使清理操作更加高效，[且无需重写部件](/sql-reference/statements/alter#mutations)。
+
+同样地，旧数据无需删除，可以自动且高效地移动到成本更低的 [存储层级](/integrations/s3#storage-tiers)：
+
+```sql
+CREATE TABLE uk.uk_price_paid_simple_partitioned
+(
+    date Date,
+    town LowCardinality(String),
+    street LowCardinality(String),
+    price UInt32
+)
+ENGINE = MergeTree
+PARTITION BY toStartOfMonth(date)
+ORDER BY (town, street)
+TTL date + INTERVAL 12 MONTH TO VOLUME 'slow_but_cheap';
+```
+
+### 查询优化 \{#query-optimization\}
+
+分区可以提升查询性能，但这在很大程度上取决于访问模式。如果查询只访问少量分区（理想情况下仅一个），则有可能提升性能。通常只有在分区键不在主键中，且你在查询中过滤该键时，这才有实际意义，如下方示例查询所示。
+
+```sql runnable
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple_partitioned
+WHERE date >= '2020-12-01'
+  AND date <= '2020-12-31'
+  AND town = 'LONDON';
+```
+
+该查询在上文的示例表上执行，通过[计算](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkCldIRVJFIGRhdGUgPj0gJzIwMjAtMTItMDEnCiAgQU5EIGRhdGUgPD0gJzIwMjAtMTItMzEnCiAgQU5EIHRvd24gPSAnTE9ORE9OJzs\&run_query=true\&tab=results) 2020 年 12 月在伦敦售出的所有房产中的最高价格，方法是在表的分区键中使用的列（`date`）以及表的主键中使用的列（`town`）上同时进行过滤（且 `date` 不属于主键的一部分）。
+
+ClickHouse 通过应用一系列剪枝技术来处理该查询，从而避免对无关数据进行计算：
+
+<Image img={partition_pruning} size="lg" alt="PART MERGES 2" />
+
+<br />
+
+① **分区剪枝（Partition pruning）**：使用 [MinMax 索引](/partitions#what-are-table-partitions-in-clickhouse) 来忽略整个在逻辑上不可能满足针对表分区键列的查询过滤条件的分区（由若干 part 组成的集合）。
+
+② **粒度剪枝（Granule pruning）**：对于步骤 ① 后剩余的数据 part，使用其[主索引](/guides/best-practices/sparse-primary-indexes) 来忽略所有在逻辑上不可能满足针对表主键列的查询过滤条件的[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（成块的行）。
+
+我们可以通过在上文示例查询中添加 [EXPLAIN](/sql-reference/statements/explain) 子句，并[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgZGF0ZSA-PSAnMjAyMC0xMi0wMScKICBBTkQgZGF0ZSA8PSAnMjAyMC0xMi0zMScKICBBTkQgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)其物理查询执行计划，来观察这些数据剪枝步骤：
+
+```sql style="fontSize:13px"
+EXPLAIN indexes = 1
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple_partitioned
+WHERE date >= '2020-12-01'
+  AND date <= '2020-12-31'
+  AND town = 'LONDON';
+
+    ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────┐
+ 1. │ Expression ((投影名称 + 投影))                                                                                │
+ 2. │   Aggregating                                                                                                │
+ 3. │     Expression (GROUP BY 之前)                                                                               │
+ 4. │       Expression                                                                                             │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple_partitioned)                                              │
+ 6. │         Indexes:                                                                                             │
+ 7. │           MinMax                                                                                             │
+ 8. │             Keys:                                                                                            │
+ 9. │               date                                                                                           │
+10. │             Condition: and((date in (-Inf, 18627]), (date in [18597, +Inf)))                                 │
+11. │             Parts: 1/436                                                                                     │
+12. │             Granules: 11/3257                                                                                │
+13. │           Partition                                                                                          │
+14. │             Keys:                                                                                            │
+15. │               toStartOfMonth(date)                                                                           │
+16. │             Condition: and((toStartOfMonth(date) in (-Inf, 18597]), (toStartOfMonth(date) in [18597, +Inf))) │
+17. │             Parts: 1/1                                                                                       │
+18. │             Granules: 11/11                                                                                  │
+19. │           PrimaryKey                                                                                         │
+20. │             Keys:                                                                                            │
+21. │               town                                                                                           │
+22. │             Condition: (town in ['LONDON', 'LONDON'])                                                        │
+23. │             Parts: 1/1                                                                                       │
+24. │             Granules: 1/11                                                                                   │
+    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+上述输出显示：
+
+① 分区裁剪（Partition pruning）：上面 EXPLAIN 输出的第 7 到 18 行显示，ClickHouse 首先使用 `date` 字段的 [MinMax 索引](/partitions#what-are-table-partitions-in-clickhouse)，在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行块）中识别出 11 个粒度，这些粒度存储在 436 个现有活动数据分片中的 1 个分片内，并且其中包含与查询的 `date` 过滤条件匹配的行。
+
+② 粒度裁剪（Granule pruning）：上面 EXPLAIN 输出的第 19 到 24 行表明，ClickHouse 随后使用在步骤 ① 中识别出的该数据分片上的[主索引](/guides/best-practices/sparse-primary-indexes)（在 `town` 字段上创建），将粒度数量（其中包含可能也匹配查询 `town` 过滤条件的行）从 11 个进一步减少到 1 个。这一点也反映在我们稍早为该查询运行所打印的 ClickHouse-client 输出中：
+
+```response
+... 耗时:0.006 秒。已处理 8.19 千行,57.34 KB(1.36 百万行/秒,9.49 MB/秒)
+峰值内存使用:2.73 MiB。
+```
+
+这意味着 ClickHouse 为计算查询结果，在 6 毫秒内扫描并处理了 1 个 granule（包含 [8192](/operations/settings/merge-tree-settings#index_granularity) 行的块）。
+
+### 分区主要是一种数据管理功能 \{#partitioning-is-primarily-a-data-management-feature\}
+
+请注意，跨所有分区执行查询通常要比在非分区表上运行相同查询更慢。
+
+启用分区后，数据通常会被拆分为更多的数据 part，这往往会导致 ClickHouse 扫描和处理更大数量的数据。
+
+我们可以通过在两个表上运行相同的查询来演示这一点：一个是 [What are table parts](/parts) 示例表（未启用分区），另一个是上文使用的示例表（已启用分区）。这两个表[包含](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7\&run_query=true\&tab=results) 相同的数据和行数：
+
+```sql runnable
+SELECT
+    table,
+    sum(rows) AS rows
+FROM system.parts
+WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
+GROUP BY table;
+```
+
+然而，启用了分区的表，[会有](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIGNvdW50KCkgQVMgcGFydHMKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgIElOIFsndWtfcHJpY2VfcGFpZF9zaW1wbGUnLCAndWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQnXSkgQU5EIGFjdGl2ZQpHUk9VUCBCWSB0YWJsZTs\&run_query=true\&tab=results) 更多处于活动状态的[数据 part](/parts)，因为正如前文所述，ClickHouse 只会在同一分区内[合并](/parts)数据 part，而不会跨分区合并：
+
+```sql runnable
+SELECT
+    table,
+    count() AS parts
+FROM system.parts
+WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_simple_partitioned']) AND active
+GROUP BY table;
+
+```
+
+如上文所示，分区表 `uk_price_paid_simple_partitioned` 拥有 600 多个分区，因此有 600 306 个活动数据片（active data parts）。而对于我们的非分区表 `uk_price_paid_simple`，所有 [初始](/parts) 数据片都可以通过后台合并（background merges）合并为单个活动数据片。
+
+当我们对上面的示例查询（针对分区表运行，且不带分区过滤条件）使用 [EXPLAIN](/sql-reference/statements/explain) 子句来[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)其物理查询执行计划时，可以在下方输出结果的第 19 行和第 20 行看到，ClickHouse 在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)（行块）中识别出 671 个粒度，这些粒度分布于 436 个现有活动数据片中的 431 个上，这些数据片中可能包含与查询过滤条件匹配的行，因此将会被查询引擎扫描并处理：
+
+```sql
+EXPLAIN indexes = 1
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple_partitioned
+WHERE town = 'LONDON';
+
+    ┌─explain─────────────────────────────────────────────────────────┐
+ 1. │ Expression ((Project names + Projection))                       │
+ 2. │   Aggregating                                                   │
+ 3. │     Expression (Before GROUP BY)                                │
+ 4. │       Expression                                                │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple_partitioned) │
+ 6. │         Indexes:                                                │
+ 7. │           MinMax                                                │
+ 8. │             Condition: true                                     │
+ 9. │             Parts: 436/436                                      │
+10. │             Granules: 3257/3257                                 │
+11. │           Partition                                             │
+12. │             Condition: true                                     │
+13. │             Parts: 436/436                                      │
+14. │             Granules: 3257/3257                                 │
+15. │           PrimaryKey                                            │
+16. │             Keys:                                               │
+17. │               town                                              │
+18. │             Condition: (town in ['LONDON', 'LONDON'])           │
+19. │             Parts: 431/436                                      │
+20. │             Granules: 671/3257                                  │
+    └─────────────────────────────────────────────────────────────────┘
+```
+
+对于相同示例查询在无分区表上运行时，其物理查询执行计划在下方输出结果的第 11 行和第 12 行[显示](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)，ClickHouse 在该表单个活动数据 part 中现有的 3083 个行块中，识别出了其中 241 个可能包含与查询过滤条件匹配的行的行块：
+
+```sql
+EXPLAIN indexes = 1
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple
+WHERE town = 'LONDON';
+
+    ┌─explain───────────────────────────────────────────────┐
+ 1. │ Expression ((Project names + Projection))             │
+ 2. │   Aggregating                                         │
+ 3. │     Expression (Before GROUP BY)                      │
+ 4. │       Expression                                      │
+ 5. │         ReadFromMergeTree (uk.uk_price_paid_simple)   │
+ 6. │         Indexes:                                      │
+ 7. │           PrimaryKey                                  │
+ 8. │             Keys:                                     │
+ 9. │               town                                    │
+10. │             Condition: (town in ['LONDON', 'LONDON']) │
+11. │             Parts: 1/1                                │
+12. │             Granules: 241/3083                        │
+    └───────────────────────────────────────────────────────┘
+```
+
+在该表的分区版本上[运行](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkCldIRVJFIHRvd24gPSAnTE9ORE9OJzs\&run_query=true\&tab=results)该查询时，ClickHouse 会在 90 毫秒内扫描并处理 671 个数据块（约 550 万行）：
+
+```sql
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple_partitioned
+WHERE town = 'LONDON';
+
+┌─highest_price─┐
+│     594300000 │ -- 5.943 亿
+└───────────────┘
+
+返回 1 行。用时:0.090 秒。已处理 548 万行,27.95 MB(6066 万行/秒,309.51 MB/秒)。
+内存峰值:163.44 MiB。
+```
+
+而在未分区表上[运行](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlCldIRVJFIHRvd24gPSAnTE9ORE9OJzs\&run_query=true\&tab=results)该查询时，ClickHouse 会在 12 毫秒内扫描并处理 241 个数据块（约 200 万行）：
+
+```sql
+SELECT MAX(price) AS highest_price
+FROM uk.uk_price_paid_simple
+WHERE town = 'LONDON';
+
+┌─highest_price─┐
+│     594300000 │ -- 5.943 亿
+└───────────────┘
+
+返回 1 行。用时:0.012 秒。已处理 197 万行,9.87 MB(162.23 百万行/秒,811.17 MB/秒)。
+峰值内存使用量:62.02 MiB。
+```

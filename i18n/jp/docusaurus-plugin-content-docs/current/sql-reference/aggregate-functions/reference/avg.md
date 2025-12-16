@@ -1,16 +1,14 @@
 ---
-description: 'Calculates the arithmetic mean.'
+description: '算術平均を計算します。'
 sidebar_position: 112
-slug: '/sql-reference/aggregate-functions/reference/avg'
+slug: /sql-reference/aggregate-functions/reference/avg
 title: 'avg'
+doc_type: 'reference'
 ---
 
+# avg {#avg}
 
-
-
-# avg
-
-算術平均を計算します。
+算術平均値を計算します。
 
 **構文**
 
@@ -20,19 +18,19 @@ avg(x)
 
 **引数**
 
-- `x` — 入力値は、[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または[Decimal](../../../sql-reference/data-types/decimal.md)である必要があります。
+* `x` — 入力値。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、または [Decimal](../../../sql-reference/data-types/decimal.md) である必要があります。
 
-**返される値**
+**戻り値**
 
-- 算術平均、常に[Float64](../../../sql-reference/data-types/float.md)として返されます。
-- 入力パラメータ `x` が空の場合、`NaN`を返します。
+* 算術平均値。常に [Float64](../../../sql-reference/data-types/float.md) として返されます。
+* 入力パラメーター `x` が空の場合は `NaN` を返します。
 
 **例**
 
 クエリ:
 
 ```sql
-SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
+SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 ```
 
 結果:
@@ -45,17 +43,17 @@ SELECT avg(x) FROM values('x Int8', 0, 1, 2, 3, 4, 5);
 
 **例**
 
-一時テーブルを作成します:
+一時テーブルを作成します。
 
 クエリ:
 
 ```sql
-CREATE table test (t UInt8) ENGINE = Memory;
+CREATE TABLE test (t UInt8) ENGINE = Memory;
 ```
 
-算術平均を取得します:
+算術平均を求めます：
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT avg(t) FROM test;

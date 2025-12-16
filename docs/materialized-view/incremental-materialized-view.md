@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 
 ## Background {#background}
 
-Incremental Materialized Views (Materialized Views) allow users to shift the cost of computation from query time to insert time, resulting in faster `SELECT` queries.
+Incremental Materialized Views (Materialized Views) allow you to shift the cost of computation from query time to insert time, resulting in faster `SELECT` queries.
 
 Unlike in transactional databases like Postgres, a ClickHouse materialized view is just a trigger that runs a query on blocks of data as they are inserted into a table. The result of this query is inserted into a second "target" table. Should more rows be inserted, results will again be sent to the target table where the intermediate results will be updated and merged. This merged result is the equivalent of running the query over all of the original data.
 
@@ -292,7 +292,7 @@ CREATE MATERIALIZED VIEW posts_mv TO posts AS
 
 ### Lookup table {#lookup-table}
 
-Users should consider their access patterns when choosing a ClickHouse ordering key. Columns which are frequently used in filter and aggregation clauses should be used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
+You should consider their access patterns when choosing a ClickHouse ordering key. Columns which are frequently used in filter and aggregation clauses should be used. This can be restrictive for scenarios where users have more diverse access patterns which cannot be encapsulated in a single set of columns. For example, consider the following `comments` table:
 
 ```sql
 CREATE TABLE comments

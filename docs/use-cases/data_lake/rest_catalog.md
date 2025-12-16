@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/rest-catalog
-sidebar_label: 'REST Catalog'
-title: 'REST Catalog'
+sidebar_label: 'REST catalog'
+title: 'REST catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
@@ -11,9 +11,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
 :::note
 Integration with the REST Catalog works with Iceberg tables only.

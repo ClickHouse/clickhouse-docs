@@ -1,37 +1,39 @@
 ---
-slug: '/best-practices/select-data-types'
+slug: /best-practices/select-data-types
 sidebar_position: 10
-sidebar_label: 'データ型を選択'
-title: 'データ型を選択'
-description: 'ClickHouse でデータ型を選択する方法を説明したページ'
+sidebar_label: 'データ型の選択'
+title: 'データ型の選択'
+description: 'ClickHouse で適切なデータ型を選択する方法を説明するページ'
+keywords: ['データ型']
+doc_type: 'reference'
 ---
 
 import NullableColumns from '@site/i18n/jp/docusaurus-plugin-content-docs/current/best-practices/_snippets/_avoid_nullable_columns.md';
 
-One of the core reasons for ClickHouse's query performance is its efficient data compression. Less data on disk results in faster queries and inserts by minimizing I/O overhead. ClickHouse's column-oriented architecture naturally arranges similar data adjacently, enabling compression algorithms and codecs to reduce data size dramatically. To maximize these compression benefits, it's essential to carefully choose appropriate data types.
+ClickHouse のクエリ性能を支える主要な要因の 1 つは、高効率なデータ圧縮です。ディスク上のデータ量が少ないほど I/O オーバーヘッドが抑えられ、クエリや挿入が高速になります。ClickHouse のカラム指向アーキテクチャは、類似したデータを自然に隣接して配置するため、圧縮アルゴリズムやコーデックによってデータサイズを大幅に削減できます。こうした圧縮の利点を最大化するには、適切なデータ型を慎重に選択することが不可欠です。
 
-Compression efficiency in ClickHouse depends mainly on three factors: the ordering key, data types, and codecs, all defined through the table schema. Choosing optimal data types yields immediate improvements in both storage and query performance.
+ClickHouse における圧縮効率は主に 3 つの要因――オーダリングキー、データ型、コーデック――に依存し、これらはすべてテーブルスキーマで定義されます。最適なデータ型を選択することで、ストレージとクエリ性能の両方を即座に改善できます。
 
-Some straightforward guidelines can significantly enhance the schema:
+いくつかの単純なガイドラインに従うだけで、スキーマを大きく改善できます。
 
-* **厳密な型を使用する:** 常にカラムに正しいデータ型を選択してください。数値および日付フィールドには、一般的な文字列型ではなく、適切な数値および日付型を使用する必要があります。これにより、フィルタリングや集計に対する正しい意味が確保されます。
+* **厳密な型を使用する:** 常にカラムに対して正しいデータ型を選択してください。数値や日付のフィールドには、汎用的な String 型ではなく、適切な数値型および日付型を使用します。これにより、フィルタリングや集約において正しい意味づけが保証されます。
 
-* **Nullableカラムを避ける:** Nullableカラムは、null値を追跡するための別のカラムを維持することによる追加のオーバーヘッドを引き起こします。空とnullの状態を区別するために明示的に必要ない限り、Nullableを使用しないでください。それ以外の場合、デフォルト値やゼロ相当の値で通常は十分です。この型を必要に応じて避けるべき理由については、[Nullableカラムを避ける](/best-practices/select-data-types#avoid-nullable-columns)を参照してください。
+* **nullable カラムを避ける:** Nullable カラムは、null 値を追跡するための別カラムを保持する必要があるため、追加のオーバーヘッドを生みます。空と null の状態を明確に区別する必要がある場合にのみ Nullable を使用してください。そうでなければ、デフォルト値またはゼロ同等の値で十分なことが一般的です。この型を必要な場合以外に避けるべき理由の詳細は、[Avoid nullable Columns](/best-practices/select-data-types#avoid-nullable-columns) を参照してください。
 
-* **数値精度を最小限に抑える:** 予想されるデータ範囲をまだ満たす最小のビット幅を持つ数値型を選択してください。たとえば、負の値が必要ない場合、[Int32の代わりにUInt16を選択する](/sql-reference/data-types/int-uint)ことをお勧めしますし、範囲が0〜65535に収まる場合に推奨されます。
+* **数値精度を最小化する:** 期待されるデータ範囲を収容できる範囲で、ビット幅が最小の数値型を選択してください。たとえば、負の値が不要で、かつ範囲が 0–65535 に収まるのであれば、[Int32 より UInt16](/sql-reference/data-types/int-uint) を優先します。
 
-* **日付および時間精度を最適化する:** クエリの要件を満たす最も粗い日付または日時型を選択してください。日付のみのフィールドにはDateまたはDate32を使用し、ミリ秒やそれ以上の精度が重要でない限り、DateTimeの代わりにDateTime64を使用してください。
+* **日付と時刻の精度を最適化する:** クエリ要件を満たす範囲で、できるだけ粒度の粗い date または datetime 型を選択してください。日付のみのフィールドには Date または Date32 を使用し、ミリ秒単位またはそれより細かい精度が本質的に必要な場合を除き、DateTime64 より DateTime を優先します。
 
-* **LowCardinalityおよび特殊型を活用する:** 約10,000未満のユニーク値のカラムには、辞書エンコーディングを用いてストレージを大幅に削減するためにLowCardinality型を使用してください。同様に、カラム値が厳密に固定長の文字列である場合のみFixedStringを使用し、有限の値のセットを持つカラムにはEnum型を好んで使用して、効率的なストレージと組み込みのデータ検証を可能にします。
+* **LowCardinality と特殊型を活用する:** 一意な値が概ね 10,000 未満のカラムには、辞書エンコーディングによってストレージを大幅に削減できる LowCardinality 型を使用してください。同様に、カラム値が厳密に固定長文字列（例: 国コードや通貨コード）である場合にのみ FixedString を使用し、取り得る値が有限集合であるカラムには Enum 型を優先して、効率的なストレージと組み込みのデータ検証を実現します。
 
-* **データ検証用のEnums:** Enum型は、列挙型を効率的にエンコードするために使用できます。Enumsは、保存する必要のあるユニーク値の数に応じて8ビットまたは16ビットとなります。挿入時の関連する検証が必要な場合（未宣言の値は拒否されます）や、Enum値の自然な順序を利用したクエリを実行したい場合には、これを使用することを検討してください。例として、ユーザーの反応を含むフィードバックカラムEnum(':(' = 1, ':|' = 2, ':)' = 3)を想像してください。
+* **データ検証のための Enum:** Enum 型は列挙型を効率的にエンコードするために使用できます。Enum は、保持する必要がある一意な値の数に応じて、8 ビットまたは 16 ビットのいずれかになります。挿入時のバリデーション（宣言されていない値は拒否される）が必要な場合や、Enum 値に自然な順序付けがあり、それを利用するクエリを実行したい場合には、Enum の使用を検討してください。たとえば、ユーザーのフィードバックを格納するカラムがあり、Enum(&#39;:(&#39; = 1, &#39;:|&#39; = 2, &#39;:)&#39; = 3) のような応答を持つケースを想像してください。
 
 ## 例 {#example}
 
-ClickHouseは、型の最適化を簡素化するための組み込みツールを提供しています。たとえば、スキーマ推論は最初の型を自動的に特定できます。Parquet形式で公開されているStack Overflowデータセットを考慮してください。[`DESCRIBE`](/sql-reference/statements/describe-table)コマンドを使用して簡単なスキーマ推論を実行すると、初期の最適化されていないスキーマが提供されます。
+ClickHouse には、型の最適化を効率化するためのツールが組み込まれています。たとえば、スキーマ推論を使うと初期のデータ型を自動的に特定できます。Parquet 形式で公開されている Stack Overflow データセットを考えてみましょう。[`DESCRIBE`](/sql-reference/statements/describe-table) コマンドで簡単なスキーマ推論を実行すると、初期の、まだ最適化されていないスキーマが得られます。
 
 :::note
-デフォルトでは、ClickHouseはこれを同等のNullable型にマッピングします。これは、スキーマが行のサンプルに基づいているため、推奨されます。
+デフォルトでは、ClickHouse はこれらを同等の Nullable 型にマッピングします。これは、スキーマが行の一部サンプルのみに基づいているため、望ましい挙動です。
 :::
 
 ```sql
@@ -67,40 +69,40 @@ SETTINGS describe_compact_output = 1
 ```
 
 :::note
-以下に、stackoverflow/parquet/postsフォルダー内のすべてのファイルを読み込むためにグロブパターン*.parquetを使用しています。
+以下の例では、`stackoverflow/parquet/posts` フォルダ内のすべてのファイルを読み込むために、グロブパターン `*.parquet` を使用しています。
 :::
 
-初期のシンプルなルールをpostsテーブルに適用することで、各カラムに最適な型を特定できます：
+先ほど示した簡単なルールを `posts` テーブルに適用することで、各カラムに対して最適な型を特定できます。
 
-| Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
-|------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
-| `PostTypeId`             | Yes        | 1, 8                                                                   | 8              | No     |                                                                                              | `Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8)` |
-| `AcceptedAnswerId`      | Yes        | 0, 78285170                                                            | 12282094       | Yes    | Nullを0の値と区別する                                                                    | UInt32                                   |
-| `CreationDate`           | No         | 2008-07-31 21:42:52.667000000, 2024-03-31 23:59:17.697000000           | -              | No     | ミリ秒単位の精度は不要、DateTimeを使用                                                    | DateTime                                 |
-| `Score`                  | Yes        | -217, 34970                                                            | 3236           | No     |                                                                                              | Int32                                    |
-| `ViewCount`              | Yes        | 2, 13962748                                                            | 170867         | No     |                                                                                              | UInt32                                   |
-| `Body`                   | No         | -                                                                      | -              | No     |                                                                                              | String                                   |
-| `OwnerUserId`            | Yes        | -1, 4056915                                                            | 6256237        | Yes    |                                                                                              | Int32                                    |
-| `OwnerDisplayName`       | No         | -                                                                      | 181251         | Yes    | Nullは空文字列と見なす                                                                       | String                                   |
-| `LastEditorUserId`       | Yes        | -1, 9999993                                                            | 1104694        | Yes    | 0は使われていない値でNullに使用可能                                                      | Int32                                    |
-| `LastEditorDisplayName`  | No         | -                                                                      | 70952          | Yes    | Nullは空文字列として見なす。LowCardinalityを試したが利益なし                                          | String                                   |
-| `LastEditDate`           | No         | 2008-08-01 13:24:35.051000000, 2024-04-06 21:01:22.697000000           | -              | No     | ミリ秒単位の精度は不要、DateTimeを使用                                                    | DateTime                                 |
-| `LastActivityDate`       | No         | 2008-08-01 12:19:17.417000000, 2024-04-06 21:01:22.697000000           | -              | No     | ミリ秒単位の精度は不要、DateTimeを使用                                                    | DateTime                                 |
-| `Title`                  | No         | -                                                                      | -              | No     | Nullは空文字列として見なす                                                                   | String                                   |
-| `Tags`                   | No         | -                                                                      | -              | No     | Nullは空文字列として見なす                                                                   | String                                   |
-| `AnswerCount`            | Yes        | 0, 518                                                                 | 216            | No     | Nullと0は同一扱い                                                                             | UInt16                                   |
-| `CommentCount`           | Yes        | 0, 135                                                                 | 100            | No     | Nullと0は同一扱い                                                                             | UInt8                                    |
-| `FavoriteCount`          | Yes        | 0, 225                                                                 | 6              | Yes    | Nullと0は同一扱い                                                                             | UInt8                                    |
-| `ContentLicense`         | No         | -                                                                      | 3              | No     | LowCardinalityがFixedStringよりも優れています                                                       | LowCardinality(String)                   |
-| `ParentId`               | No         | -                                                                      | 20696028       | Yes    | Nullは空文字列として見なす                                                                   | String                                   |
-| `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Nullの場合はデフォルト1970-01-01を考慮。ミリ秒単位の精度は不要、DateTimeを使用                       | DateTime                                 |
-| `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Nullの場合はデフォルト1970-01-01を考慮。ミリ秒単位の精度は不要、DateTimeを使用                       | DateTime                                 |
+| 列                       | 数値かどうか | 最小、最大                                                        | ユニーク値    | NULL 値 | コメント                                                                      | 最適化型                                                                                                                                                         |
+| ----------------------- | ------ | ------------------------------------------------------------ | -------- | ------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `PostTypeId`            | はい     | 1, 8                                                         | 8        | いいえ    |                                                                           | `Enum('Question' = 1, 'Answer' = 2, 'Wiki' = 3, 'TagWikiExcerpt' = 4, 'TagWiki' = 5, 'ModeratorNomination' = 6, 'WikiPlaceholder' = 7, 'PrivilegeWiki' = 8)` |
+| `AcceptedAnswerId`      | はい     | 0, 78285170                                                  | 12282094 | はい     | Null と 0 を区別する                                                            | UInt32                                                                                                                                                       |
+| `CreationDate`          | いいえ    | 2008-07-31 21:42:52.667000000, 2024-03-31 23:59:17.697000000 | *        | いいえ    | ミリ秒単位の精度が不要であれば、DateTime を使用する                                            | DateTime                                                                                                                                                     |
+| `Score`                 | はい     | -217, 34970                                                  | 3236     | いいえ    |                                                                           | Int32                                                                                                                                                        |
+| `ViewCount`             | はい     | 2, 13962748                                                  | 170867   | いいえ    |                                                                           | UInt32                                                                                                                                                       |
+| `Body`                  | いいえ    | -                                                            | *        | いいえ    |                                                                           | String                                                                                                                                                       |
+| `OwnerUserId`           | はい     | -1, 4056915                                                  | 6256237  | はい     |                                                                           | Int32                                                                                                                                                        |
+| `OwnerDisplayName`      | いいえ    | -                                                            | 181251   | はい     | Null を空文字列として扱う                                                           | 文字列                                                                                                                                                          |
+| `LastEditorUserId`      | はい     | -1, 9999993                                                  | 1104694  | はい     | 0 は未使用の値であり、Null を表すために使用できる                                              | Int32                                                                                                                                                        |
+| `LastEditorDisplayName` | いいえ    | *                                                            | 70952    | はい     | Null は空文字列として扱う。LowCardinality も試したが、効果はなかった。                             | 文字列                                                                                                                                                          |
+| `LastEditDate`          | いいえ    | 2008-08-01 13:24:35.051000000, 2024-04-06 21:01:22.697000000 | -        | いいえ    | ミリ秒精度が不要な場合は、DateTime を使用します                                              | DateTime                                                                                                                                                     |
+| `LastActivityDate`      | いいえ    | 2008-08-01 12:19:17.417000000, 2024-04-06 21:01:22.697000000 | *        | いいえ    | ミリ秒単位の粒度が不要な場合は DateTime を使用                                              | DateTime                                                                                                                                                     |
+| `タイトル`                  | いいえ    | -                                                            | *        | いいえ    | Null を空文字列として扱う                                                           | 文字列                                                                                                                                                          |
+| `タグ`                    | いいえ    | -                                                            | *        | いいえ    | NULL を空文字列として扱う                                                           | 文字列                                                                                                                                                          |
+| `AnswerCount`           | はい     | 0, 518                                                       | 216      | いいえ    | Null と 0 を同一視する                                                           | UInt16                                                                                                                                                       |
+| `CommentCount`          | はい     | 0, 135                                                       | 100      | いいえ    | Null と 0 を同一視する                                                           | UInt8                                                                                                                                                        |
+| `FavoriteCount`         | はい     | 0, 225                                                       | 6        | はい     | Null と 0 を同じものとして扱う                                                       | UInt8                                                                                                                                                        |
+| `ContentLicense`        | いいえ    | -                                                            | 3        | いいえ    | LowCardinality は FixedString より高い性能を発揮します                                 | LowCardinality(String)                                                                                                                                       |
+| `ParentId`              | いいえ    | *                                                            | 20696028 | はい     | Null を空文字列として扱う                                                           | String                                                                                                                                                       |
+| `CommunityOwnedDate`    | いいえ    | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000 | -        | はい     | Null のデフォルト値には 1970-01-01 を使用することを検討してください。ミリ秒精度は不要なため、DateTime を使用してください | DateTime                                                                                                                                                     |
+| `ClosedDate`            | いいえ    | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000           | *        | はい     | Null のデフォルト値には 1970-01-01 を使用します。ミリ秒単位の精度は不要なので、DateTime 型を使用してください       | DateTime                                                                                                                                                     |
 
-:::note tip
-カラムの型を特定するには、その数値範囲とユニーク値の数を理解することが必要です。すべてのカラムの範囲および異なる値の数を見つけるには、ユーザーはシンプルなクエリ`SELECT * APPLY min, * APPLY max, * APPLY uniq FROM table FORMAT Vertical`を使用できます。これをデータの少ないサブセットに対して実行することをお勧めします。これは高コストです。
+:::note ヒント
+列の型を特定するには、その数値範囲と一意な値の数を把握する必要があります。すべての列について範囲と異なる値の個数を調べるには、`SELECT * APPLY min, * APPLY max, * APPLY uniq FROM table FORMAT Vertical` というシンプルなクエリを使用できます。処理コストが高くなる可能性があるため、これはデータのより小さなサブセットに対して実行することを推奨します。
 :::
 
-これにより、次のような最適化されたスキーマが得られます（型に関して）：
+これにより、（型の観点から）次のように最適化されたスキーマが得られます。
 
 ```sql
 CREATE TABLE posts
@@ -133,6 +135,6 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-## Nullableカラムを避ける {#avoid-nullable-columns}
+## NULL 許容カラムは避ける {#avoid-nullable-columns}
 
 <NullableColumns />

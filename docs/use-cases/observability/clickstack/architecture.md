@@ -5,6 +5,7 @@ pagination_next: null
 description: 'Architecture of ClickStack - The ClickHouse Observability Stack'
 title: 'Architecture'
 doc_type: 'reference'
+keywords: ['ClickStack architecture', 'observability architecture', 'HyperDX', 'OpenTelemetry collector', 'MongoDB', 'system design']
 ---
 
 import Image from '@theme/IdealImage';
@@ -30,7 +31,7 @@ ClickHouse handles observability data as wide events, allowing for deep correlat
 
 ## OpenTelemetry collector: data ingestion {#open-telemetry-collector}
 
-ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest telemetry in an open, standardized way. Users can send data using the OTLP protocol via:
+ClickStack includes a pre-configured OpenTelemetry (OTel) collector to ingest telemetry in an open, standardized way. You can send data using the OTLP protocol via:
 
 - gRPC (port `4317`)
 - HTTP (port `4318`)
@@ -48,7 +49,7 @@ HyperDX is the user interface for ClickStack. It offers:
 - Dashboard creation and alert configuration
 - SQL query interface for advanced analysis
 
-Designed specifically for ClickHouse, HyperDX combines powerful search with intuitive workflows, enabling users to spot anomalies, investigate issues, and gain insights fast. 
+Designed specifically for ClickHouse, HyperDX combines powerful search with intuitive workflows, enabling you to spot anomalies, investigate issues, and gain insights fast. 
 
 ## MongoDB: application state {#mongo}
 

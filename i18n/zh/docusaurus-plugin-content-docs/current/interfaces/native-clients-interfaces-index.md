@@ -1,24 +1,19 @@
 ---
-'description': '针对 ClickHouse 的本地客户端和接口'
-'keywords':
-- 'clients'
-- 'interfaces'
-- 'CLI'
-- 'SQL console'
-- 'drivers'
-'slug': '/interfaces/natives-clients-and-interfaces'
-'title': '本地客户端和接口'
+description: 'ClickHouse 的原生客户端和接口'
+keywords: ['客户端', '接口', 'CLI', 'SQL 控制台', '驱动']
+slug: /interfaces/natives-clients-and-interfaces
+title: '原生客户端和接口'
+doc_type: 'landing-page'
 ---
 
+# 原生客户端和接口 {#native-clients-interfaces}
 
-# 原生客户端和接口
+ClickHouse 提供多种原生客户端和接口，可用于连接 ClickHouse。
 
-ClickHouse 提供多种原生客户端和接口，允许您连接到 ClickHouse。
+更多信息请参阅以下页面：
 
-有关更多信息，请参见以下页面：
-
-| 部分                                                        | 摘要                                                                               |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------|
-| [命令行客户端](/interfaces/cli)                        | 支持命令行选项和配置文件的原生命令行客户端。                                           |
-| [驱动程序和接口](/interfaces/overview)               | 多种网络接口、库和可视化接口。                                                      |
-| [SQL 控制台](/integrations/sql-clients/sql-console) | 在 ClickHouse Cloud 中与您的数据进行交互的一种快速便捷方式。                          |
+| Section                                                      | Summary                                                                             |
+|--------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| [Command-Line Client](/interfaces/cli)               | 原生命令行客户端，支持命令行选项和配置文件。 |
+| [Drivers &amp; Interfaces](/interfaces/overview)         | 多种网络接口、库以及图形化界面。                    |
+| [SQL Console](/integrations/sql-clients/sql-console) | 在 ClickHouse Cloud 中与数据交互的快捷简便方式。                 |

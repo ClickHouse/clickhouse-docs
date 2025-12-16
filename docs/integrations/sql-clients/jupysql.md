@@ -3,7 +3,11 @@ slug: /integrations/jupysql
 sidebar_label: 'Jupyter notebooks'
 description: 'JupySQL is a multi-platform database tool for Jupyter.'
 title: 'Using JupySQL with ClickHouse'
+keywords: ['JupySQL', 'Jupyter notebook', 'Python', 'data analysis', 'interactive SQL']
 doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,7 +24,7 @@ In this guide we'll show an integration with ClickHouse.
 We will use JupySQL to run queries on top of ClickHouse.
 Once the data is loaded, we'll visualize it via SQL plotting.
 
-The integration between JupySQL and ClickHouse is made possible by the use of the clickhouse_sqlalchemy library. This library allows for easy communication between the two systems, and enables users to connect to ClickHouse and pass the SQL dialect. Once connected, users can run SQL queries directly from the Clickhouse native UI, or from the Jupyter notebook directly.
+The integration between JupySQL and ClickHouse is made possible by the use of the clickhouse_sqlalchemy library. This library allows for easy communication between the two systems, and enables you to connect to ClickHouse and pass the SQL dialect. Once connected, you can run SQL queries directly from the Clickhouse native UI, or from the Jupyter notebook directly.
 
 ```python
 # Install required packages

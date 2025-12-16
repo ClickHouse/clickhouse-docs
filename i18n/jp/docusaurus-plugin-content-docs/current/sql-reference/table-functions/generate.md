@@ -1,20 +1,17 @@
 ---
-description: 'Generates random data with a given schema. Allows populating test
-  tables with that data. Not all types are supported.'
+description: '指定したスキーマに基づいてランダムなデータを生成します。そのデータを使ってテスト用テーブルにデータを投入できます。すべてのデータ型がサポートされているわけではありません。'
 sidebar_label: 'generateRandom'
 sidebar_position: 75
-slug: '/sql-reference/table-functions/generate'
+slug: /sql-reference/table-functions/generate
 title: 'generateRandom'
+doc_type: 'reference'
 ---
 
+# generateRandom テーブル関数 {#generaterandom-table-function}
 
-
-
-# generateRandom テーブル関数
-
-指定されたスキーマでランダムデータを生成します。
-そのデータを用いてテストテーブルを人口することが可能です。
-すべてのタイプがサポートされているわけではありません。
+指定したスキーマでランダムなデータを生成します。
+そのデータを使用してテスト用テーブルを埋めることができます。
+すべての型がサポートされているわけではありません。
 
 ## 構文 {#syntax}
 
@@ -24,17 +21,17 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 ## 引数 {#arguments}
 
-| 引数                 | 説明                                                                                                  |
-|----------------------|-------------------------------------------------------------------------------------------------------|
-| `name`               | 対応するカラムの名前。                                                                                         |
-| `TypeName`           | 対応するカラムのタイプ。                                                                                       |
-| `random_seed`        | 安定した結果を生成するためのランダムシードを手動で指定します。 `NULL` の場合、シードはランダムに生成されます。               |
-| `max_string_length`  | 生成されるすべての文字列の最大文字列長。デフォルトは `10` です。                                            |
-| `max_array_length`   | 生成されるすべての配列やマップの最大要素数。デフォルトは `10` です。                                          |
+| 引数                | 説明                                                                                              |
+|---------------------|---------------------------------------------------------------------------------------------------|
+| `name`              | 対応するカラム名。                                                                                |
+| `TypeName`          | 対応するカラムの型。                                                                              |
+| `random_seed`       | 安定した結果を得るために使用する乱数シードを手動で指定します。`NULL` の場合、シードはランダムに生成されます。 |
+| `max_string_length` | 生成されるすべての文字列の最大文字数。デフォルトは `10`。                                        |
+| `max_array_length`  | 生成されるすべての配列またはマップの要素数の最大値。デフォルトは `10`。                          |
 
 ## 戻り値 {#returned_value}
 
-要求されたスキーマでのテーブルオブジェクト。
+指定されたスキーマを持つテーブルオブジェクト。
 
 ## 使用例 {#usage-example}
 
@@ -51,7 +48,7 @@ SELECT * FROM generateRandom('a Array(Int8), d Decimal32(4), c Tuple(DateTime64(
 ```
 
 ```sql
-CREATE TABLE random (a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)) engine=Memory;
+CREATE TABLE random (a Array(Int8), d Decimal32(4), c Tuple(DateTime64(3), UUID)) ENGINE=Memory;
 INSERT INTO random SELECT * FROM generateRandom() LIMIT 2;
 SELECT * FROM random;
 ```
@@ -63,7 +60,7 @@ SELECT * FROM random;
 └──────────────────────────────┴──────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-[generateRandomStructure](../../sql-reference/functions/other-functions.md#generaterandomstructure)と組み合わせて:
+[generateRandomStructure](../../sql-reference/functions/other-functions.md#generateRandomStructure) と組み合わせて使用します。
 
 ```sql
 SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
@@ -77,7 +74,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-`structure` 引数が欠如している場合（この場合、構造はランダムです）:
+`structure` 引数がない場合（この場合、構造はランダムになります）:
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -91,7 +88,7 @@ SELECT * FROM generateRandom() LIMIT 3;
 └──────┴────────────┴────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-ランダムシードの両方をランダム構造とランダムデータに使用:
+ランダムな構造とランダムなデータの両方に対して乱数シードを指定する場合:
 
 ```sql
 SELECT * FROM generateRandom(11) LIMIT 3;
@@ -106,8 +103,8 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 ```
 
 :::note
-`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` において、十分な `max_array_length` を設定すると、複雑なタイプ (`Array`, `Tuple`, `Map`, `Nested`) の深いネスト（最大16）により、非常に大きな出力が生成される可能性があります。
+`max_array_length` を十分に大きくして `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` を実行すると、複合型（`Array`、`Tuple`、`Map`、`Nested`）のネストの深さが最大 16 階層まで深くなることがあるため、非常に大きな出力が生成される可能性があります。
 :::
 
 ## 関連コンテンツ {#related-content}
-- ブログ: [ClickHouse でのランダムデータ生成](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+- ブログ記事: [ClickHouse でランダムなデータを生成する](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

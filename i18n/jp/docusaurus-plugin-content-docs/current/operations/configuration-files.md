@@ -1,46 +1,43 @@
 ---
-description: 'このページでは、ClickHouseサーバーがXMLまたはYAML構文の構成ファイルでどのように構成できるかについて説明します。'
+description: 'このページでは、ClickHouse サーバーを XML または YAML 構文の設定ファイルで構成する方法を説明します。'
 sidebar_label: '設定ファイル'
 sidebar_position: 50
-slug: '/operations/configuration-files'
-title: 'Configuration Files'
+slug: /operations/configuration-files
+title: '設定ファイル'
+doc_type: 'guide'
 ---
 
-
-
 :::note
-現在、XMLベースの設定プロファイルおよび構成ファイルはClickHouse Cloudではサポートされていません。そのため、ClickHouse Cloudではconfig.xmlファイルは見つかりません。代わりに、SQLコマンドを使用して設定を管理する必要があります。
+XML ベースの設定プロファイルおよび設定ファイルは ClickHouse Cloud ではサポートされていません。そのため、ClickHouse Cloud には config.xml ファイルが存在しません。代わりに、設定プロファイルを通じて設定を管理するために SQL コマンドを使用する必要があります。
 
-詳細については、["設定の構成"](/manage/settings)を参照してください。
+詳細については、["Configuring Settings"](/manage/settings) を参照してください。
 :::
 
-ClickHouseサーバーは、XMLまたはYAML構文の構成ファイルを使用して構成できます。
-ほとんどのインストールタイプでは、ClickHouseサーバーはデフォルトの構成ファイルとして`/etc/clickhouse-server/config.xml`を使用しますが、起動時にコマンドラインオプション`--config-file`または`-C`を使用して手動で構成ファイルの場所を指定することも可能です。
-追加の構成ファイルは、メインの構成ファイルに対して相対的に`config.d/`ディレクトリ内に配置できます。たとえば、`/etc/clickhouse-server/config.d/`ディレクトリです。
-このディレクトリ内のファイルとメイン構成は、ClickHouseサーバーで構成が適用される前の前処理ステップでマージされます。
-構成ファイルはアルファベット順にマージされます。
-更新を簡素化し、モジュール化を改善するために、デフォルトの`config.xml`ファイルを変更せずに、追加のカスタマイズを`config.d/`に配置することが最良のプラクティスです。
-ClickHouse keeperの構成は`/etc/clickhouse-keeper/keeper_config.xml`にあります。
-したがって、追加のファイルは`/etc/clickhouse-keeper/keeper_config.d/`に配置する必要があります。
+ClickHouse サーバーは、XML または YAML 構文の設定ファイルで構成できます。
+ほとんどのインストール形態では、ClickHouse サーバーはデフォルトの設定ファイルとして `/etc/clickhouse-server/config.xml` を使用して動作します。ただし、サーバー起動時にコマンドラインオプション `--config-file` または `-C` を使用して、設定ファイルの場所を手動で指定することもできます。
+追加の設定ファイルは、メインの設定ファイルからの相対パスである `config.d/` ディレクトリ、例えば `/etc/clickhouse-server/config.d/` ディレクトリに配置できます。
+このディレクトリ内のファイルとメインの設定ファイルは、ClickHouse サーバーに設定が適用される前の前処理段階でマージされます。
+設定ファイルはアルファベット順にマージされます。
+更新を簡素化しモジュール化を改善するために、デフォルトの `config.xml` ファイルは変更せずに保持し、追加のカスタマイズは `config.d/` に配置することがベストプラクティスです。
+ClickHouse Keeper の設定は `/etc/clickhouse-keeper/keeper_config.xml` に格納されています。
+同様に、Keeper 用の追加の設定ファイルは `/etc/clickhouse-keeper/keeper_config.d/` に配置する必要があります。
 
-XMLとYAMLの構成ファイルを混在させることが可能で、たとえば、メインの構成ファイル`config.xml`と追加の構成ファイル`config.d/network.xml`、`config.d/timezone.yaml`、および`config.d/keeper.yaml`を持つことができます。
-単一の構成ファイル内でXMLとYAMLを混在させることはサポートされていません。
-XML構成ファイルは、最上位タグとして`<clickhouse>...</clickhouse>`を使用する必要があります。
-YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如している場合、パーサーが自動的に挿入します。
+XML と YAML の設定ファイルを混在させることができ、例えばメインの設定ファイルを `config.xml` とし、追加の設定ファイルとして `config.d/network.xml`、`config.d/timezone.yaml`、`config.d/keeper.yaml` を用意することができます。
+1 つの設定ファイル内で XML と YAML を混在させることはサポートされていません。
+XML 設定ファイルでは、トップレベルのタグとして `<clickhouse>...</clickhouse>` を使用する必要があります。
+YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略された場合はパーサーが自動的に挿入します。
 
-## 構成のマージ {#merging}
+## 設定のマージ {#merging}
 
-2つの構成ファイル（通常、メインの構成ファイルと`config.d/`からの別の構成ファイル）は、以下のようにマージされます。
+2 つの設定ファイル（通常はメインの設定ファイルと `config.d/` 内の別の設定ファイル）は、次のようにマージされます。
 
-- もしノード（すなわち、要素へのパス）が両方のファイルに存在し、属性`replace`または`remove`がない場合、それはマージされた構成ファイルに含まれ、両方のノードからの子要素が含まれ、再帰的にマージされます。
-- 両方のノードのいずれかに属性`replace`が含まれている場合、マージされた構成ファイルに含まれますが、`replace`属性を持つノードの子要素のみが含まれます。
-- 両方のノードのいずれかに属性`remove`が含まれている場合、そのノードはマージされた構成ファイルには含まれません（すでに存在する場合は削除されます）。
+* あるノード（要素へのパス）が両方のファイルに存在し、かつ `replace` または `remove` 属性を持たない場合、そのノードはマージ後の設定ファイルに含まれ、両方のノード配下の子要素が含まれて再帰的にマージされます。
+* 2 つのノードの一方が `replace` 属性を持つ場合、そのノードはマージ後の設定ファイルに含まれますが、子要素は `replace` 属性を持つ側のノードのもののみが含まれます。
+* 2 つのノードの一方が `remove` 属性を持つ場合、そのノードはマージ後の設定ファイルには含まれません（すでに存在している場合は削除されます）。
 
-例:
+例えば、2 つの設定ファイルが次のような場合を考えます。
 
-
-```xml
-<!-- config.xml -->
+```xml title="config.xml"
 <clickhouse>
     <config_a>
         <setting_1>1</setting_1>
@@ -54,10 +51,9 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-と
+および
 
-```xml
-<!-- config.d/other_config.xml -->
+```xml title="config.d/other_config.xml"
 <clickhouse>
     <config_a>
         <setting_4>4</setting_4>
@@ -71,7 +67,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-マージされた構成ファイルは次のようになります：
+マージによって生成される設定ファイルは次のとおりです。
 
 ```xml
 <clickhouse>
@@ -85,11 +81,11 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-### 環境変数およびZooKeeperノードによる代入 {#from_env_zk}
+### 環境変数および ZooKeeper ノードによる置換 {#from_env_zk}
 
-要素の値を環境変数の値で置き換える必要があることを指定するには、属性`from_env`を使用できます。
+要素の値を環境変数の値で置き換えることを指定するには、属性 `from_env` を使用できます。
 
-例として、`$MAX_QUERY_SIZE = 150000`の場合：
+たとえば、環境変数 `$MAX_QUERY_SIZE` に `150000` が設定されている場合：
 
 ```xml
 <clickhouse>
@@ -101,7 +97,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-これは次のように等しいです：
+最終的な設定は次のとおりです：
 
 ```xml
 <clickhouse>
@@ -113,7 +109,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-同様に`from_zk`（ZooKeeperノード）を使用しても可能です：
+同様のことは `from_zk`（ZooKeeper ノード）を使用しても行えます。
 
 ```xml
 <clickhouse>
@@ -122,7 +118,6 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 ```
 
 ```shell
-
 # clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
@@ -130,7 +125,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 9005
 ```
 
-これは次のように等しいです：
+その結果、設定は次のようになります。
 
 ```xml
 <clickhouse>
@@ -140,11 +135,11 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 
 #### デフォルト値 {#default-values}
 
-`from_env`または`from_zk`属性を持つ要素は、追加で属性`replace="1"`を持つことができます（後者は`from_env`/`from_zk`より前に現れる必要があります）。
-この場合、要素はデフォルト値を定義することができます。
-要素は、環境変数またはZooKeeperノードの値を取得しますが、セットされていない場合はデフォルト値を使用します。
+`from_env` または `from_zk` 属性を持つ要素には、追加で `replace="1"` 属性を指定できます（この属性は `from_env` / `from_zk` より前に記述する必要があります）。
+この場合、その要素でデフォルト値を定義できます。
+環境変数または ZooKeeper ノードが設定されていればその値を使用し、設定されていなければデフォルト値を使用します。
 
-前の例では、`MAX_QUERY_SIZE`が設定されていないと仮定します：
+前の例を繰り返しますが、ここでは `MAX_QUERY_SIZE` が設定されていないと仮定します：
 
 ```xml
 <clickhouse>
@@ -156,7 +151,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-結果：
+すると、設定は次のようになります。
 
 ```xml
 <clickhouse>
@@ -170,38 +165,37 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 
 ## ファイル内容による置換 {#substitution-with-file-content}
 
-構成の一部をファイルの内容で置き換えることも可能です。これには2つの方法があります：
+設定の一部をファイルの内容で置き換えることも可能です。これは次の 2 つの方法で行えます。
 
-- *値の代入*: 要素が属性`incl`を持つ場合、その値は参照されたファイルの内容で置き換えられます。デフォルトでは、置換を行うファイルへのパスは`/etc/metrika.xml`です。これはサーバーの設定で[include_from](../operations/server-configuration-parameters/settings.md#include_from)要素で変更することができます。置換の値はこのファイル内の`/clickhouse/substitution_name`要素で指定されます。`incl`で指定された置換が存在しない場合、ログに記録されます。ClickHouseが不足している置換をログに記録しないようにするには、属性`optional="true"`を指定します（たとえば、[マクロ](../operations/server-configuration-parameters/settings.md#macros)の設定など）。
+* *値の置換*: 要素が `incl` 属性を持つ場合、その値は参照先ファイルの内容で置き換えられます。デフォルトでは、置換を定義したファイルへのパスは `/etc/metrika.xml` です。これはサーバー設定内の [`include_from`](../operations/server-configuration-parameters/settings.md#include_from) 要素で変更できます。置換値はこのファイル内の `/clickhouse/substitution_name` 要素に指定します。`incl` で指定した置換が存在しない場合、その情報はログに記録されます。欠落した置換について ClickHouse がログ出力しないようにするには、属性 `optional="true"` を指定します（例えば、[macros](../operations/server-configuration-parameters/settings.md#macros) 用の設定など）。
+* *要素の置換*: 要素全体を置換で差し替えたい場合は、要素名として `include` を使用します。要素名 `include` は属性 `from_zk = "/path/to/node"` と組み合わせることができます。この場合、要素の値は `/path/to/node` にある ZooKeeper ノードの内容で置き換えられます。これは、XML のサブツリー全体を 1 つの ZooKeeper ノードとして保存している場合にも機能し、そのサブツリーは元の要素に完全に挿入されます。
 
-- *要素の代入*: 要素全体を置換で置き換えたい場合は、`include`という要素名を使用します。要素名`include`は、属性`from_zk = "/path/to/node"`と組み合わせることができます。この場合、要素の値は`/path/to/node`にあるZooKeeperノードの内容で置き換えられます。これにより、ZooKeeperノードとしてXMLサブツリー全体を保存している場合、それは元の要素に完全に挿入されます。
-
-例：
+その例を以下に示します。
 
 ```xml
 <clickhouse>
-    <!-- `/profiles-in-zookeeper` ZKパスに見つかったXMLサブツリーを`<profiles>`要素に追加します。 -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- `<include>`要素を`/users-in-zookeeper` ZKパスに見つかったサブツリーで置き換えます。 -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>
 </clickhouse>
 ```
 
-置換対象の内容を既存の構成とマージする代わりに追加したい場合は、属性`merge="true"`を使用できます。たとえば：`<include from_zk="/some_path" merge="true">`のように。これにより、既存の構成が置換の内容とマージされ、既存の構成設定は置換からの値に置き換えられます。
+既存の設定に追記するのではなく、include で差し込む内容を既存の設定とマージしたい場合は、属性 `merge="true"` を使用できます。たとえば、`<include from_zk="/some_path" merge="true">` のように指定します。この場合、既存の設定は include で読み込まれる内容とマージされ、既存の設定値は読み込まれた側の値で置き換えられます。
 
-## 構成の暗号化と隠蔽 {#encryption}
+## 設定の暗号化と秘匿 {#encryption}
 
-対称暗号化を使用して構成要素を暗号化できます。たとえば、平文のパスワードや秘密鍵などです。
-これを行うには、まず[暗号化コーデック](../sql-reference/statements/create/table.md#encryption-codecs)を構成し、その後、暗号化する要素に対して、暗号化コーデックの名前を値として持つ属性`encrypted_by`を追加します。
+共通鍵暗号を使用して、平文のパスワードや秘密鍵などの設定要素を暗号化できます。
+そのためには、まず [encryption codec](../sql-reference/statements/create/table.md#encryption-codecs) を設定し、その後、暗号化する要素に対して属性 `encrypted_by` を追加し、その値として暗号化コーデックの名前を指定します。
 
-属性`from_zk`、`from_env`および`incl`、または要素`include`とは異なり、前処理されたファイル内では代入（すなわち、暗号化された値の復号）は行われません。
-復号は、サーバープロセスの実行時にのみ行われます。
+属性 `from_zk`、`from_env`、`incl` や要素 `include` とは異なり、前処理後のファイルでは値の置換（つまり暗号化された値の復号）は行われません。
+復号はサーバープロセスの実行時にのみ行われます。
 
-例：
+例:
 
 ```xml
 <clickhouse>
@@ -220,7 +214,8 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-属性[from_env](#from_env_zk)および[from_zk](#from_env_zk)は```encryption_codecs```にも適用できます：
+属性 [`from_env`](#from_env_zk) および [`from_zk`](#from_env_zk) は、`encryption_codecs` に対しても適用できます。
+
 ```xml
 <clickhouse>
 
@@ -255,9 +250,9 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-暗号化キーと暗号化された値は、どちらの構成ファイルにも定義できます。
+暗号鍵と暗号化された値は、どちらの設定ファイルでも定義できます。
 
-例`config.xml`：
+`config.xml` の例を次に示します：
 
 ```xml
 <clickhouse>
@@ -271,7 +266,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-例`users.xml`：
+`users.xml` の例を次に示します。
 
 ```xml
 <clickhouse>
@@ -286,9 +281,7 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 </clickhouse>
 ```
 
-値を暗号化するには、（例）プログラム`encrypt_decrypt`を使用できます：
-
-例：
+値を暗号化するには、例として `encrypt_decrypt` プログラムを使用できます。
 
 ```bash
 ./encrypt_decrypt /etc/clickhouse-server/config.xml -e AES_128_GCM_SIV abcd
@@ -298,10 +291,10 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 961F000000040000000000EEDDEF4F453CFE6457C4234BD7C09258BD651D85
 ```
 
-暗号化された構成要素でも、暗号化された要素は前処理された構成ファイル内に表示されます。
-これがあなたのClickHouseデプロイメントにとって問題である場合、2つの代替案があります。前処理されたファイルのファイル権限を600に設定するか、属性`hide_in_preprocessed`を使用します。
+暗号化された設定要素を使用していても、前処理後の設定ファイルには暗号化された要素がそのまま表示されます。
+これが ClickHouse のデプロイメントにとって問題となる場合は、次の 2 つの代替手段があります。前処理後のファイルのファイルパーミッションを 600 に設定するか、属性 `hide_in_preprocessed` を使用します。
 
-例：
+例:
 
 ```xml
 <clickhouse>
@@ -316,17 +309,17 @@ YAML構成ファイルでは、`clickhouse:`はオプションであり、欠如
 
 ## ユーザー設定 {#user-settings}
 
-`config.xml`ファイルは、ユーザー設定、プロファイル、およびクォータのための別の構成を指定できます。この構成への相対パスは`users_config`要素で設定されます。デフォルトでは、`users.xml`です。`users_config`が省略されると、ユーザー設定、プロファイル、およびクォータは直接`config.xml`に指定されます。
+`config.xml` ファイルでは、ユーザー設定、プロファイル、およびクォータを含む別の設定ファイルを指定できます。この設定ファイルへの相対パスは `users_config` 要素で設定します。デフォルトでは `users.xml` が使用されます。`users_config` が省略された場合、ユーザー設定、プロファイル、およびクォータは `config.xml` 内で直接指定されます。
 
-ユーザー構成は、`config.xml`および`config.d/`と同様に、別々のファイルに分割できます。
-ディレクトリ名は、`.xml`の接尾辞を持たず、`.d`が連結された`users_config`設定として定義されます。
-ディレクトリ`users.d`がデフォルトで使用され、`users_config`のデフォルトは`users.xml`です。
+ユーザー設定は、`config.xml` および `config.d/` と同様に、個別のファイルに分割できます。
+ディレクトリ名は、`.xml` 接尾辞を除いた `users_config` 設定値に `.d` を連結したものとして定義されます。
+`users_config` のデフォルトが `users.xml` であるため、デフォルトでは `users.d` ディレクトリが使用されます。
 
-構成ファイルは、最初に[マージ](#merging)されて設定が考慮され、包含がその後で処理されることに注意してください。
+設定ファイルは、まず設定値を考慮して[マージ](#merging)され、その後に include が処理される点に注意してください。
 
-## XML例 {#example}
+## XML の例 {#example}
 
-たとえば、次のように各ユーザーのための別々の構成ファイルを持つことができます：
+例えば、各ユーザーごとにこのように個別の設定ファイルを用意できます：
 
 ```bash
 $ cat /etc/clickhouse-server/users.d/alice.xml
@@ -347,23 +340,27 @@ $ cat /etc/clickhouse-server/users.d/alice.xml
 </clickhouse>
 ```
 
-## YAMLの例 {#example-1}
+## YAML の例 {#example-1}
 
-ここでは、YAMLで書かれたデフォルト構成が確認できます：[config.yaml.example](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.yaml.example)。
+ここでは、YAML で記述されたデフォルト設定を確認できます: [`config.yaml.example`](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.yaml.example)。
 
-YAMLとXML形式のClickHouse構成にはいくつかの違いがあります。YAML形式で構成を書くためのいくつかのヒントを以下に示します。
+ClickHouse の設定においては、YAML 形式と XML 形式ではいくつかの違いがあります。
+YAML 形式で設定を書く際のヒントを以下に示します。
 
-テキスト値を持つXMLタグは、YAMLのキーと値のペアで表現されます
+テキスト値を持つ XML タグは、YAML のキーと値のペアで表現されます。
+
 ```yaml
 key: value
 ```
 
-対応するXML：
+対応する XML:
+
 ```xml
 <key>value</key>
 ```
 
-ネストされたXMLノードはYAMLのマップで表現されます：
+ネストされた XML ノードは YAML マップとして表現されます。
+
 ```yaml
 map_key:
   key1: val1
@@ -371,7 +368,8 @@ map_key:
   key3: val3
 ```
 
-対応するXML：
+対応するXML:
+
 ```xml
 <map_key>
     <key1>val1</key1>
@@ -380,7 +378,8 @@ map_key:
 </map_key>
 ```
 
-同じXMLタグを複数回作成するには、YAMLシーケンスを使用します：
+同じ XML タグを複数回作成するには、YAML シーケンスを使用します。
+
 ```yaml
 seq_key:
   - val1
@@ -392,6 +391,7 @@ seq_key:
 ```
 
 対応するXML：
+
 ```xml
 <seq_key>val1</seq_key>
 <seq_key>val2</seq_key>
@@ -406,7 +406,8 @@ seq_key:
 </seq_key>
 ```
 
-XML属性を提供するには、`@`プレフィックスを持つ属性キーを使用できます。`@`はYAML標準で予約されているため、二重引用符で囲む必要があります：
+XML の属性を指定するには、`@` プレフィックス付きの属性キー名を使用できます。`@` は YAML 標準で予約済みなので、必ずダブルクォーテーションで囲む必要があります。
+
 ```yaml
 map:
   "@attr1": value1
@@ -414,14 +415,16 @@ map:
   key: 123
 ```
 
-対応するXML：
+対応するXML:
+
 ```xml
 <map attr1="value1" attr2="value2">
     <key>123</key>
 </map>
 ```
 
-YAMLシーケンス内でも属性を使用することが可能です：
+YAML のシーケンス内でも属性を使用できます：
+
 ```yaml
 seq:
   - "@attr1": value1
@@ -430,13 +433,16 @@ seq:
   - abc
 ```
 
-対応するXML：
+対応する XML：
+
 ```xml
 <seq attr1="value1" attr2="value2">123</seq>
 <seq attr1="value1" attr2="value2">abc</seq>
 ```
 
-前述の構文では、XML属性を持つXMLテキストノードをYAMLで表現することはできません。この特別なケースは、`#text`属性キーを使用することで達成できます：
+前述の構文では、XML 属性を持つ XML テキストノードを YAML として表現することはできません。この特殊なケースには、
+`#text` 属性キーを使用します。
+
 ```yaml
 map_key:
   "@attr1": value1
@@ -444,12 +450,13 @@ map_key:
 ```
 
 対応するXML：
+
 ```xml
-<map_key attr1="value1">value2</map_key>
+<map_key attr1="value1">value2</map>
 ```
 
-## 実装詳細 {#implementation-details}
+## 実装の詳細 {#implementation-details}
 
-各構成ファイルに対して、サーバーは起動時に`file-preprocessed.xml`ファイルも生成します。これらのファイルには、すべての完了した置換とオーバーライドが含まれており、情報提供用に意図されています。構成ファイルでZooKeeper置換が使用されているが、サーバー起動時にZooKeeperが利用できない場合、サーバーはプレ処理されたファイルから構成を読み込みます。
+各設定ファイルごとに、サーバーは起動時に `file-preprocessed.xml` ファイルも生成します。これらのファイルには、すべての置換と上書きが反映された結果が含まれており、参照用として利用されることを想定しています。設定ファイル内で ZooKeeper による置換が使われているにもかかわらず、サーバー起動時に ZooKeeper が利用できない場合、サーバーはこの前処理済みファイルから設定を読み込みます。
 
-サーバーは、構成ファイルの変更、ならびに置換とオーバーライドを実行する際に使用されたファイルやZooKeeperノードを追跡し、ユーザーやクラスターの設定をオンザフライで再読み込みします。これは、サーバーを再起動せずにクラスター、ユーザー、およびその設定を変更できることを意味します。
+サーバーは、設定ファイルに加え、置換および上書きを行う際に使用されたファイルや ZooKeeper ノードの変更も追跡し、ユーザーおよびクラスタ用の設定を即時に再読み込みします。これにより、サーバーを再起動することなく、クラスタとユーザーおよびその設定を変更できます。

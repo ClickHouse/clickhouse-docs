@@ -1,18 +1,13 @@
 ---
-slug: '/integrations/azure-data-factory'
+slug: /integrations/azure-data-factory
 description: 'Azure データを ClickHouse に取り込む'
-keywords:
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-title: 'ClickHouse への Azure データの取り込み'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data']
+title: 'Azure データを ClickHouse に取り込む'
+doc_type: 'guide'
 ---
-
-
 
 | Page                                                                              | Description                                                                                                                                                                 |
 |-----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [概要](./overview.md)                                                         | Azure Data を ClickHouse に取り込むための 2 つのアプローチの概要                                                                                         |
-| [ClickHouse の azureBlobStorage テーブル関数の使用](./using_azureblobstorage.md) | オプション 1 - `azureBlobStorage` テーブル関数を使用して、Azure Blob Storage または Azure Data Lake Storage から ClickHouse にデータをコピーする効率的で簡単な方法                   |
-| [ClickHouse の HTTP インターフェースの使用](./using_http_interface.md)                    | オプション 2 - ClickHouse が Azure からデータをプルする代わりに、Azure Data Factory がその HTTP インターフェースを使用してデータを ClickHouse にプッシュします                             |
+| [Overview](./overview.md)                                                         | Azure データを ClickHouse に取り込むために使用する 2 つの方法の概要                                                                                                       |
+| [Using ClickHouse's azureBlobStorage table function](./using_azureblobstorage.md) | オプション 1 - `azureBlobStorage` テーブル関数を使用して、Azure Blob Storage や Azure Data Lake Storage から ClickHouse にデータをコピーするための、効率的でシンプルな方法 |
+| [Using ClickHouse's HTTP interface](./using_http_interface.md)                    | オプション 2 - ClickHouse が Azure からデータを取得するのではなく、Azure Data Factory が ClickHouse の HTTP インターフェイスを使用してデータを送信する方法               |

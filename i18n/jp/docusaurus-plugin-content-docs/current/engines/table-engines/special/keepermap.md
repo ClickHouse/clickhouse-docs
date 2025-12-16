@@ -1,22 +1,19 @@
 ---
-description: 'This engine allows you to use Keeper/ZooKeeper cluster as consistent
-  key-value store with linearizable writes and sequentially consistent reads.'
+description: 'このエンジンを使用すると、Keeper/ZooKeeper クラスターを、書き込みは線形化可能、読み取りは逐次一貫性を持つ、一貫性のあるキーバリューストアとして利用できます。'
 sidebar_label: 'KeeperMap'
 sidebar_position: 150
-slug: '/engines/table-engines/special/keeper-map'
-title: 'KeeperMap'
+slug: /engines/table-engines/special/keeper-map
+title: 'KeeperMap テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# KeeperMap テーブルエンジン {#keepermap-table-engine}
 
+このエンジンを使用すると、Keeper/ZooKeeper クラスターを、線形化可能な書き込みと逐次一貫な読み取りを備えた一貫性のあるキー・バリュー ストアとして利用できます。
 
+KeeperMap ストレージエンジンを有効化するには、テーブルを保存する ZooKeeper パスを `<keeper_map_path_prefix>` 設定で定義する必要があります。
 
-# KeeperMap {#keepermap}
-
-このエンジンを使用すると、Keeper/ZooKeeper クラスターを一貫したキー・バリュー・ストアとして利用でき、線形整合性のある書き込みと逐次整合性のある読み取りを提供します。
-
-KeeperMap ストレージエンジンを有効にするには、テーブルが格納される ZooKeeper パスを `<keeper_map_path_prefix>` 設定を使用して定義する必要があります。
-
-例えば：
+例:
 
 ```xml
 <clickhouse>
@@ -24,9 +21,9 @@ KeeperMap ストレージエンジンを有効にするには、テーブルが�
 </clickhouse>
 ```
 
-ここで、パスは有効な別の ZooKeeper パスであれば何でも可能です。
+ここで path には任意の有効な ZooKeeper パスを指定できます。
 
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -37,20 +34,20 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = KeeperMap(root_path, [keys_limit]) PRIMARY KEY(primary_key_name)
 ```
 
-エンジンのパラメータ：
+エンジンのパラメータ:
 
-- `root_path` - `table_name` が格納される ZooKeeper パス。  
-このパスには `<keeper_map_path_prefix>` 設定で定義されたプレフィックスを含めてはいけません。このプレフィックスは自動的に `root_path` に追加されます。  
-さらに、`auxiliary_zookeeper_cluster_name:/some/path` の形式もサポートされており、`auxiliary_zookeeper_cluster` は `<auxiliary_zookeepers>` 設定の中で定義された ZooKeeper クラスターです。  
-デフォルトでは、`<zookeeper>` 設定の中で定義された ZooKeeper クラスターが使用されます。
-- `keys_limit` - テーブル内で許可されるキーの数。  
-この制限はソフトリミットであり、一部のエッジケースではテーブルにさらに多くのキーが存在することがあるかもしれません。
-- `primary_key_name` – カラムリスト内の任意のカラム名。
-- `primary key` は指定する必要があり、主キーには1つのカラムのみをサポートします。主キーは ZooKeeper 内で `node name` としてバイナリにシリアル化されます。 
-- 主キー以外のカラムは、対応する順序でバイナリにシリアル化され、シリアル化されたキーで定義された結果ノードの値として格納されます。
-- キーに対する `equals` または `in` フィルタリングを伴うクエリは、`Keeper` からのマルチキー検索に最適化されます。それ以外の場合は、すべての値がフェッチされます。
+* `root_path` - `table_name` が保存される ZooKeeper パス。\
+  このパスには、設定の `<keeper_map_path_prefix>` で定義されたプレフィックスを含めないでください。プレフィックスは自動的に `root_path` に付加されます。\
+  さらに、`auxiliary_zookeeper_cluster_name:/some/path` の形式もサポートされます。ここで `auxiliary_zookeeper_cluster` は `<auxiliary_zookeepers>` 設定内で定義された ZooKeeper クラスタです。\
+  既定では、`<zookeeper>` 設定内で定義された ZooKeeper クラスタが使用されます。
+* `keys_limit` - テーブル内で許可されるキー数。\
+  この制限はソフトリミットであり、特定のエッジケースではより多くのキーがテーブルに格納される可能性があります。
+* `primary_key_name` – カラムリスト内の任意のカラム名。
+* `primary key` は必ず指定する必要があり、主キーとしては 1 つのカラムのみをサポートします。主キーは ZooKeeper 内で `node name` としてバイナリ形式でシリアライズされます。
+* 主キー以外のカラムは、対応する順序でバイナリにシリアライズされ、シリアライズされたキーによって定義される生成ノードの値として保存されます。
+* キーに対して `equals` または `in` によるフィルタを行うクエリは、`Keeper` からの複数キーのルックアップとして最適化され、それ以外の場合はすべての値を取得します。
 
-例：
+例:
 
 ```sql
 CREATE TABLE keeper_map_table
@@ -64,7 +61,7 @@ ENGINE = KeeperMap('/keeper_map_table', 4)
 PRIMARY KEY key
 ```
 
-と、
+と共に
 
 ```xml
 <clickhouse>
@@ -72,22 +69,21 @@ PRIMARY KEY key
 </clickhouse>
 ```
 
+各値は `(v1, v2, v3)` をバイナリ形式にシリアライズしたものであり、`Keeper` 内の `/keeper_map_tables/keeper_map_table/data/serialized_key` に格納されます。
+また、キー数には 4 というソフトリミットがあります。
 
-各値は `(v1, v2, v3)` のバイナリシリアル化であり、`Keeper` の `/keeper_map_tables/keeper_map_table/data/serialized_key` に格納されます。
-さらに、キーの数には4というソフトリミットがあります。
-
-同じ ZooKeeper パスに複数のテーブルが作成されると、値はそのテーブルのうち少なくとも1つが存在する限り永続化されます。  
-その結果、テーブル作成時に `ON CLUSTER` 句を使用して、複数の ClickHouse インスタンスからデータを共有することが可能です。  
-もちろん、関連のない ClickHouse インスタンスで同じパスを使って手動で `CREATE TABLE` を実行し、同様のデータ共有効果を得ることも可能です。
+同じ ZooKeeper パス上に複数のテーブルが作成された場合、そのパスを使用しているテーブルが少なくとも 1 つ存在する限り、値は永続化されます。\
+そのため、テーブル作成時に `ON CLUSTER` 句を使用して、複数の ClickHouse インスタンス間でデータを共有することが可能です。\
+もちろん、関連しない ClickHouse インスタンス間であっても、同じパスを指定して手動で `CREATE TABLE` を実行することで、同様のデータ共有効果を得ることができます。
 
 ## サポートされている操作 {#supported-operations}
 
 ### 挿入 {#inserts}
 
-新しい行が `KeeperMap` に挿入されると、キーが存在しない場合はキーの新しいエントリが作成されます。  
-キーが存在する場合、`keeper_map_strict_mode` の設定が `true` に設定されていると、例外がスローされます。そうでない場合、キーの値は上書きされます。
+新しい行が `KeeperMap` に挿入されるとき、キーが存在しない場合は、そのキー用の新しいエントリが作成されます。
+キーが存在し、かつ `keeper_map_strict_mode` が `true` に設定されている場合は、例外がスローされます。そうでない場合、そのキーに対する値は上書きされます。
 
-例：
+例:
 
 ```sql
 INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
@@ -95,8 +91,8 @@ INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
 
 ### 削除 {#deletes}
 
-行は `DELETE` クエリまたは `TRUNCATE` を使用して削除できます。 
-キーが存在し、`keeper_map_strict_mode` の設定が `true` に設定されていると、データの取得と削除は原子的に実行される場合のみ成功します。
+行は `DELETE` クエリまたは `TRUNCATE` を使用して削除できます。
+キーが存在しており、設定 `keeper_map_strict_mode` が `true` の場合、データの取得および削除は、それらをアトミックに実行できる場合にのみ成功します。
 
 ```sql
 DELETE FROM keeper_map_table WHERE key LIKE 'some%' AND v1 > 1;
@@ -112,8 +108,8 @@ TRUNCATE TABLE keeper_map_table;
 
 ### 更新 {#updates}
 
-値は `ALTER TABLE` クエリを使用して更新できます。主キーは更新できません。  
-`keeper_map_strict_mode` の設定が `true` に設定されていると、データの取得と更新は原子的に実行される場合のみ成功します。
+値は `ALTER TABLE` クエリを使用して更新できます。プライマリキーは更新できません。
+`keeper_map_strict_mode` を `true` に設定すると、データの取得および更新は、アトミックに実行された場合にのみ成功します。
 
 ```sql
 ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
@@ -121,4 +117,4 @@ ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND 
 
 ## 関連コンテンツ {#related-content}
 
-- ブログ: [ClickHouse と Hex を使用したリアルタイム分析アプリの構築](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
+- ブログ記事: [ClickHouse と Hex を利用したリアルタイム分析アプリの構築](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)

@@ -1,36 +1,38 @@
 ---
-description: 'A data set that is always in RAM. It is intended for use on the right
-  side of the `IN` operator.'
+description: '常に RAM 上に保持されるデータセットです。`IN` 演算子の右側での利用を想定しています。'
 sidebar_label: 'Set'
 sidebar_position: 60
-slug: '/engines/table-engines/special/set'
-title: 'Set Table Engine'
+slug: /engines/table-engines/special/set
+title: 'Set テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# Set テーブルエンジン {#set-table-engine}
 
+:::note
+ClickHouse Cloud では、サービスが 25.4 より前のバージョンで作成されている場合、`SET compatibility=25.4` を使って互換性を少なくとも 25.4 に設定する必要があります。
+:::
 
+常に RAM 上に保持されるデータセットです。`IN` 演算子の右辺での利用を想定しています（「IN 演算子」のセクションを参照してください）。
 
-# Set Table Engine
+`INSERT` を使用してテーブルにデータを挿入できます。新しい要素はデータセットに追加され、重複は無視されます。
+ただし、このテーブルに対して `SELECT` を実行することはできません。データを取得する唯一の方法は、`IN` 演算子の右側で使用することです。
 
-常にRAMにあるデータセットです。`IN`演算子の右側での使用を目的としています（「IN演算子」セクションを参照）。
+データは常に RAM に配置されます。`INSERT` の際、挿入されたデータのブロックはディスク上のテーブルのディレクトリにも書き込まれます。サーバー起動時に、このデータが RAM に読み込まれます。つまり、再起動後もデータは保持されます。
 
-`INSERT`を使用してテーブルにデータを挿入できます。新しい要素はデータセットに追加され、重複は無視されます。しかし、テーブルから`SELECT`を実行することはできません。データを取得する唯一の方法は、`IN`演算子の右半分で使用することです。
+サーバーが異常再起動した場合、ディスク上のデータブロックが失われたり破損したりする可能性があります。後者の場合、破損したデータを含むファイルを手動で削除する必要があるかもしれません。
 
-データは常にRAMにあります。`INSERT`の場合、挿入されたデータのブロックもディスク上のテーブルのディレクトリに書き込まれます。サーバーを起動すると、このデータがRAMに読み込まれます。言い換えれば、再起動後もデータはそのまま残ります。
+### 制限事項と設定 {#join-limitations-and-settings}
 
-サーバーが強制的に再起動されると、ディスク上のデータブロックが失われるか、損傷する可能性があります。後者の場合、損傷したデータのファイルを手動で削除する必要があるかもしれません。
+テーブルを作成する際、以下の設定が適用されます。
 
-### Limitations and Settings {#join-limitations-and-settings}
+#### Persistent {#persistent}
 
-テーブルを作成するとき、以下の設定が適用されます。
+Set および [Join](/engines/table-engines/special/join) テーブルエンジンに対して永続化を無効化します。
 
-#### persistent {#persistent}
+I/O のオーバーヘッドを削減します。パフォーマンスを重視し、永続化を必要としないシナリオに適しています。
 
-Setおよび[Join](/engines/table-engines/special/join)テーブルエンジンの永続性を無効にします。
-
-I/Oオーバーヘッドを削減します。パフォーマンスを追求し、永続性を必要としないシナリオに適しています。
-
-考えられる値：
+設定可能な値:
 
 - 1 — 有効。
 - 0 — 無効。

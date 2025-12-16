@@ -1,22 +1,20 @@
 ---
-description: 'This engine allows integrating ClickHouse with RabbitMQ.'
+description: 'このエンジンにより、ClickHouse と RabbitMQ を統合できます。'
 sidebar_label: 'RabbitMQ'
 sidebar_position: 170
-slug: '/engines/table-engines/integrations/rabbitmq'
-title: 'RabbitMQ Engine'
+slug: /engines/table-engines/integrations/rabbitmq
+title: 'RabbitMQ テーブルエンジン'
+doc_type: 'guide'
 ---
 
+# RabbitMQ テーブルエンジン {#rabbitmq-table-engine}
 
+このエンジンを使用すると、ClickHouse を [RabbitMQ](https://www.rabbitmq.com) と統合できます。
 
+`RabbitMQ` を利用すると、次のことが可能です。
 
-# RabbitMQ エンジン
-
-このエンジンは、ClickHouse と [RabbitMQ](https://www.rabbitmq.com) を統合することを可能にします。
-
-`RabbitMQ` を利用すると：
-
-- データフローを発行または購読できます。
-- 流れが利用可能になると、それを処理できます。
+- データフローをパブリッシュまたはサブスクライブできる。
+- ストリームを、利用可能になったタイミングで処理できる。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -53,46 +51,46 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     [rabbitmq_handle_error_mode = 'default']
 ```
 
-必要なパラメータ：
+必須パラメータ:
 
-- `rabbitmq_host_port` – host:port (例： `localhost:5672`)。
-- `rabbitmq_exchange_name` – RabbitMQ のエクスチェンジ名。
-- `rabbitmq_format` – メッセージフォーマット。SQL の `FORMAT` 関数と同じ記法を使用します。例えば、`JSONEachRow`。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
+* `rabbitmq_host_port` – host:port（例: `localhost:5672`）。
+* `rabbitmq_exchange_name` – RabbitMQ のエクスチェンジ名。
+* `rabbitmq_format` – メッセージフォーマット。SQL の `FORMAT` 関数と同じ表記を使用します（例: `JSONEachRow`）。詳細は [Formats](../../../interfaces/formats.md) セクションを参照してください。
 
-オプションのパラメータ：
+オプションのパラメータ:
 
-- `rabbitmq_exchange_type` – RabbitMQ のエクスチェンジのタイプ：`direct`, `fanout`, `topic`, `headers`, `consistent_hash`。デフォルト：`fanout`。
-- `rabbitmq_routing_key_list` – カンマ区切りのルーティングキーのリスト。
-- `rabbitmq_schema` – フォーマットがスキーマ定義を必要とする場合に使用するパラメータ。例えば、[Cap'n Proto](https://capnproto.org/) はスキーマファイルのパスとルートの `schema.capnp:Message` オブジェクトの名前を必要とします。
-- `rabbitmq_num_consumers` – テーブルごとの消費者の数。一つの消費者のスループットが不足している場合はより多くの消費者を指定してください。デフォルト：`1`。
-- `rabbitmq_num_queues` – キューの総数。この数を増やすことでパフォーマンスが大幅に向上する可能性があります。デフォルト：`1`。
-- `rabbitmq_queue_base` - キュー名のヒントを指定します。この設定の使用事例は以下に記載されています。
-- `rabbitmq_deadletter_exchange` - [デッドレターエクスチェンジ](https://www.rabbitmq.com/dlx.html) の名前を指定します。このエクスチェンジ名で別のテーブルを作成し、メッセージを収集できます。デフォルトではデッドレターエクスチェンジは指定されていません。
-- `rabbitmq_persistent` - 1 (true) に設定すると、挿入クエリの配信モードが 2 に設定されます（メッセージを 'persistent' とマークします）。デフォルト：`0`。
-- `rabbitmq_skip_broken_messages` – スキーマ不適合のメッセージのブロックごとの RabbitMQ メッセージパーサーの許容度。`rabbitmq_skip_broken_messages = N` の場合、エンジンは解析できない *N* の RabbitMQ メッセージをスキップします（メッセージはデータの行に相当します）。デフォルト：`0`。
-- `rabbitmq_max_block_size` - RabbitMQ からデータをフラッシュする前に収集される行の数。デフォルト：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `rabbitmq_flush_interval_ms` - RabbitMQ からデータをフラッシュするためのタイムアウト。デフォルト：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `rabbitmq_queue_settings_list` - キュー作成時に RabbitMQ 設定を設定するために使用されます。利用可能な設定：`x-max-length`, `x-max-length-bytes`, `x-message-ttl`, `x-expires`, `x-priority`, `x-max-priority`, `x-overflow`, `x-dead-letter-exchange`, `x-queue-type`。キューの `durable` 設定は自動的に有効になります。
-- `rabbitmq_address` - 接続のためのアドレス。この設定または `rabbitmq_host_port` を使用します。
-- `rabbitmq_vhost` - RabbitMQ の vhost。デフォルト： `'\''`。
-- `rabbitmq_queue_consume` - ユーザー定義のキューを使用し、RabbitMQ の設定を行わない（エクスチェンジ、キュー、バインディングを宣言しない）。デフォルト：`false`。
+- `rabbitmq_exchange_type` – RabbitMQ exchange の種類。`direct`、`fanout`、`topic`、`headers`、`consistent_hash` のいずれか。デフォルト: `fanout`。
+- `rabbitmq_routing_key_list` – ルーティングキーのカンマ区切りリスト。
+- `rabbitmq_schema` – フォーマットがスキーマ定義を必要とする場合に使用するパラメータ。たとえば [Cap'n Proto](https://capnproto.org/) では、スキーマファイルへのパスとルート `schema.capnp:Message` オブジェクトの名前が必要です。
+- `rabbitmq_num_consumers` – テーブルごとの consumer 数。1 つの consumer のスループットが不十分な場合は、より多くの consumer を指定します。デフォルト: `1`
+- `rabbitmq_num_queues` – キューの総数。この値を増やすとパフォーマンスを大幅に向上できる場合があります。デフォルト: `1`。
+- `rabbitmq_queue_base` - キュー名のヒントを指定します。この設定のユースケースは以下で説明します。
+- `rabbitmq_deadletter_exchange` - [dead letter exchange](https://www.rabbitmq.com/dlx.html) の名前を指定します。別のテーブルをこの exchange 名で作成し、メッセージが dead letter exchange に再パブリッシュされた場合にそれらのメッセージを収集できます。デフォルトでは dead letter exchange は指定されていません。
+- `rabbitmq_persistent` - 1 (true) に設定すると、INSERT クエリで delivery mode が 2 に設定され (メッセージが「persistent」としてマークされます)。デフォルト: `0`。
+- `rabbitmq_skip_broken_messages` – ブロックごとのスキーマ非互換メッセージに対する RabbitMQ メッセージパーサーの許容数。`rabbitmq_skip_broken_messages = N` の場合、パースできない RabbitMQ メッセージ *N* 件 (メッセージ 1 件はデータの 1 行に相当) をエンジンがスキップします。デフォルト: `0`。
+- `rabbitmq_max_block_size` - RabbitMQ からフラッシュする前に収集する行数。デフォルト: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
+- `rabbitmq_flush_interval_ms` - RabbitMQ からデータをフラッシュするためのタイムアウト。デフォルト: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
+- `rabbitmq_queue_settings_list` - キュー作成時に RabbitMQ の設定を行えるようにします。利用可能な設定: `x-max-length`、`x-max-length-bytes`、`x-message-ttl`、`x-expires`、`x-priority`、`x-max-priority`、`x-overflow`、`x-dead-letter-exchange`、`x-queue-type`。`durable` 設定はキューに対して自動的に有効になります。
+- `rabbitmq_address` - 接続先アドレス。この設定か `rabbitmq_host_port` のいずれかを使用します。
+- `rabbitmq_vhost` - RabbitMQ vhost。デフォルト: `'\'`。
+- `rabbitmq_queue_consume` - ユーザー定義キューを使用し、RabbitMQ のセットアップ (exchange、queue、binding の宣言) を行いません。デフォルト: `false`。
 - `rabbitmq_username` - RabbitMQ のユーザー名。
 - `rabbitmq_password` - RabbitMQ のパスワード。
-- `reject_unhandled_messages` - エラーが発生した場合にメッセージを拒否します（RabbitMQ に否定確認を送信します）。この設定は、`rabbitmq_queue_settings_list` に `x-dead-letter-exchange` が定義されている場合、自動的に有効になります。
-- `rabbitmq_commit_on_select` - セレクトクエリが実行されたときにメッセージをコミットします。デフォルト：`false`。
-- `rabbitmq_max_rows_per_message` — 行ベースフォーマットにおける一つの RabbitMQ メッセージあたりの最大行数。デフォルト : `1`。
-- `rabbitmq_empty_queue_backoff_start` — RabbitMQ キューが空のときにリードを再スケジュールするための開始バックオフポイント。
-- `rabbitmq_empty_queue_backoff_end` — RabbitMQ キューが空のときにリードを再スケジュールするための終了バックオフポイント。
-- `rabbitmq_handle_error_mode` — RabbitMQ エンジンのエラー処理方法。可能な値：default（メッセージの解析に失敗した場合に例外がスローされる）、stream（例外メッセージと生のメッセージが仮想カラム `_error` と `_raw_message` に保存される）。
+- `reject_unhandled_messages` - エラー発生時にメッセージを reject し (RabbitMQ に negative acknowledgement を送信)、処理しません。`rabbitmq_queue_settings_list` に `x-dead-letter-exchange` が定義されている場合、この設定は自動的に有効になります。
+- `rabbitmq_commit_on_select` - SELECT クエリが実行されたときにメッセージをコミットします。デフォルト: `false`。
+- `rabbitmq_max_rows_per_message` — 行ベースフォーマットで 1 件の RabbitMQ メッセージに書き込まれる最大行数。デフォルト: `1`。
+- `rabbitmq_empty_queue_backoff_start` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ開始ポイント。
+- `rabbitmq_empty_queue_backoff_end` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ終了ポイント。
+- `rabbitmq_handle_error_mode` — RabbitMQ エンジンにおけるエラーの処理方法。指定可能な値: `default` (メッセージのパースに失敗した場合に例外をスロー)、`stream` (例外メッセージと生メッセージを仮想カラム `_error` および `_raw_message` に保存)、`dead_letter_queue` (エラー関連データを system.dead_letter_queue に保存)。
 
-* [ ] SSL 接続：
+  * [ ] SSL connection:
 
-`rabbitmq_secure = 1` または接続アドレスに `amqps` を使用します： `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
-使用されるライブラリのデフォルトの動作は、生成された TLS 接続が十分に安全であることを確認しないことです。証明書が期限切れ、自己署名、存在しない、または無効である場合でも、接続は単に許可されます。証明書の厳格なチェックは、将来的に実装される可能性があります。
+`rabbitmq_secure = 1` を使用するか、接続アドレスで `amqps` を使用します: `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
+使用しているライブラリのデフォルトの動作では、作成された TLS 接続が十分に安全かどうかをチェックしません。証明書の有効期限切れ、自署名、欠落、無効といった状態であっても、接続はそのまま許可されます。証明書に対するより厳格な検証は、将来的に実装される可能性があります。
 
-また、rabbitmq 関連の設定と一緒にフォーマット設定を追加することもできます。
+また、RabbitMQ 関連の設定とあわせてフォーマット設定を追加することもできます。
 
-例：
+例:
 
 ```sql
   CREATE TABLE queue (
@@ -106,9 +104,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
                             date_time_input_format = 'best_effort';
 ```
 
-RabbitMQ サーバーの設定は、ClickHouse の設定ファイルを使用して追加する必要があります。
+RabbitMQ サーバーの設定は、ClickHouse の設定ファイルに追加する必要があります。
 
-必要な設定：
+必須の設定:
 
 ```xml
  <rabbitmq>
@@ -117,7 +115,7 @@ RabbitMQ サーバーの設定は、ClickHouse の設定ファイルを使用し
  </rabbitmq>
 ```
 
-追加の設定：
+追加設定:
 
 ```xml
  <rabbitmq>
@@ -127,44 +125,44 @@ RabbitMQ サーバーの設定は、ClickHouse の設定ファイルを使用し
 
 ## 説明 {#description}
 
-`SELECT` はメッセージを読むためには特に有用ではありません（デバッグを除く）、なぜなら各メッセージは一度しか読み取れないからです。リアルタイムスレッドを作成することがより実用的です。それには、[materialized views](../../../sql-reference/statements/create/view.md) を使用します。そのためには：
+各メッセージは一度しか読み取れないため、メッセージの読み取りに `SELECT` を使うのは（デバッグ用途を除き）あまり有用ではありません。代わりに、[マテリアライズドビュー](../../../sql-reference/statements/create/view.md) を使ってリアルタイム処理用のパイプラインを作成する方が実用的です。そのためには次の手順を実行します。
 
-1. エンジンを利用して RabbitMQ のコンシューマーを作成し、それをデータストリームとみなします。
-2. 希望する構造を持つテーブルを作成します。
-3. エンジンからデータを変換し、以前に作成したテーブルに挿入する Materialized View を作成します。
+1. エンジンを使用して RabbitMQ コンシューマを作成し、それをデータストリームとして扱います。
+2. 目的の構造を持つテーブルを作成します。
+3. エンジンからのデータを変換して、前の手順で作成したテーブルに投入するマテリアライズドビューを作成します。
 
-`MATERIALIZED VIEW` がエンジンと結合すると、バックグラウンドでデータの収集を開始します。これにより、RabbitMQ からメッセージを継続的に受信し、`SELECT` を使用して必要なフォーマットに変換できます。
-一つの RabbitMQ テーブルは、好きなだけの Materialized View を持つことができます。
+`MATERIALIZED VIEW` がエンジンに紐付けられると、バックグラウンドでデータ収集を開始します。これにより、RabbitMQ から継続的にメッセージを受信し、`SELECT` を使って必要な形式に変換できます。
+1 つの RabbitMQ テーブルには、任意の数のマテリアライズドビューを作成できます。
 
-データは `rabbitmq_exchange_type` と指定された `rabbitmq_routing_key_list` に基づいてチャネルされることがあります。
-テーブルごとにエクスチェンジは 1 つまでしか存在できません。1 つのエクスチェンジは複数のテーブル間で共有でき、複数のテーブルへのルーティングを同時に可能にします。
+データは `rabbitmq_exchange_type` と指定された `rabbitmq_routing_key_list` に基づいて振り分けることができます。
+1 つのテーブルにつき、エクスチェンジは 1 つまでです。1 つのエクスチェンジを複数のテーブルで共有することができ、これにより同時に複数テーブルへのルーティングが可能になります。
 
-エクスチェンジタイプのオプション：
+エクスチェンジタイプの種類は次のとおりです。
 
-- `direct` - ルーティングはキーの正確な一致に基づいています。例：テーブルキーリスト：`key1,key2,key3,key4,key5`、メッセージキーはそれらのいずれかに等しいことができます。
-- `fanout` - キーに関わらず、すべてのテーブルにルーティング（エクスチェンジ名が同じ場合）。
-- `topic` - ルーティングはドットで区切られたキーのパターンに基づいています。例：`*.logs`, `records.*.*.2020`, `*.2018,*.2019,*.2020`。
-- `headers` - ルーティングは `key=value` の一致に基づき、設定 `x-match=all` または `x-match=any` があります。例：テーブルキーリスト：`x-match=all,format=logs,type=report,year=2020`。
-- `consistent_hash` - データはすべてのバウンドテーブル間で均等に分配されます（エクスチェンジ名が同じ場合）。このエクスチェンジタイプは RabbitMQ プラグイン `rabbitmq-plugins enable rabbitmq_consistent_hash_exchange` を使って有効化する必要があります。
+* `direct` - ルーティングはキーの完全一致に基づきます。テーブル側のキーリスト例: `key1,key2,key3,key4,key5`。メッセージキーはそのいずれかと等しくなります。
+* `fanout` - キーに関係なく（エクスチェンジ名が同じである）すべてのテーブルにルーティングします。
+* `topic` - ドット区切りのキーを使ったパターンに基づいてルーティングします。例: `*.logs`, `records.*.*.2020`, `*.2018,*.2019,*.2020`。
+* `headers` - `x-match=all` または `x-match=any` の設定とともに、`key=value` の一致に基づいてルーティングします。テーブル側のキーリスト例: `x-match=all,format=logs,type=report,year=2020`。
+* `consistent_hash` - データはバインドされているすべてのテーブル（エクスチェンジ名が同じ）間で均等に分散されます。このエクスチェンジタイプは RabbitMQ プラグイン `rabbitmq-plugins enable rabbitmq_consistent_hash_exchange` によって有効化する必要がある点に注意してください。
 
-`rabbitmq_queue_base` を設定することで次のようなケースで使用できます：
+`rabbitmq_queue_base` 設定は次のような場合に使用できます:
 
-- 異なるテーブルがキューを共有できるようにし、複数の消費者が同じキューに登録できるようにします。これによりパフォーマンスが向上します。 `rabbitmq_num_consumers` および/または `rabbitmq_num_queues` 設定を使用する場合、これらのパラメータが同じであればキューが正確に一致します。
-- 全てのメッセージが正常に消費されなかった場合に、特定の耐久性キューからの読み取りを復元できるようにします。特定のキューからの消費を再開するには、その名前を `rabbitmq_queue_base` 設定に設定し、`rabbitmq_num_consumers` および `rabbitmq_num_queues` を指定しないでください（デフォルトは 1）。特定のテーブルに宣言された全てのキューからの消費を再開したい場合は、同じ設定：`rabbitmq_queue_base`, `rabbitmq_num_consumers`, `rabbitmq_num_queues` を指定してください。デフォルトでは、キュー名はテーブルに固有のものになります。
-- キューが耐久性であり、自動的に削除されないため、再利用できます。（RabbitMQ CLI ツールを使用して削除できます。）
+* 複数のテーブルでキューを共有し、同じキューに対して複数のコンシューマを登録してパフォーマンスを向上させる場合。`rabbitmq_num_consumers` および/または `rabbitmq_num_queues` 設定を使用する場合、これらのパラメータが同じであれば、キューの完全な一致が実現されます。
+* すべてのメッセージが正常に消費されなかった場合に、特定の永続キューからの読み取りを復元できるようにする場合。特定の 1 つのキューからの読み取りを再開するには、そのキュー名を `rabbitmq_queue_base` 設定に指定し、`rabbitmq_num_consumers` と `rabbitmq_num_queues` は指定しないでください（デフォルトは 1）。特定のテーブルに対して宣言されたすべてのキューからの読み取りを再開するには、同じ設定 `rabbitmq_queue_base`, `rabbitmq_num_consumers`, `rabbitmq_num_queues` を指定します。デフォルトでは、キュー名はテーブルごとに一意になります。
+* キューが durable で自動削除されないため、キューを再利用する場合。（任意の RabbitMQ CLI ツールから削除できます。）
 
-パフォーマンスを向上させるため、受信したメッセージは [max_insert_block_size](/operations/settings/settings#max_insert_block_size) のサイズのブロックにグループ化されます。ブロックが [stream_flush_interval_ms](../../../operations/server-configuration-parameters/settings.md) ミリ秒以内で形成されなかった場合、データはブロックの完全性に関係なく、テーブルにフラッシュされます。
+パフォーマンス向上のため、受信したメッセージは [max&#95;insert&#95;block&#95;size](/operations/settings/settings#max_insert_block_size) のサイズのブロックにまとめられます。もしブロックが [stream&#95;flush&#95;interval&#95;ms](../../../operations/server-configuration-parameters/settings.md) ミリ秒以内に形成されなかった場合は、ブロックが完全でなくてもデータはテーブルにフラッシュされます。
 
-`rabbitmq_num_consumers` および/または `rabbitmq_num_queues` 設定が `rabbitmq_exchange_type` とともに指定された場合：
+`rabbitmq_exchange_type` と一緒に `rabbitmq_num_consumers` および/または `rabbitmq_num_queues` 設定が指定されている場合:
 
-- `rabbitmq-consistent-hash-exchange` プラグインを有効にする必要があります。
-- 発行されたメッセージの `message_id` プロパティを指定する必要があります（各メッセージ/バッチに対して一意）。
+* `rabbitmq-consistent-hash-exchange` プラグインを有効化する必要があります。
+* 公開されるメッセージの `message_id` プロパティを指定する必要があります（メッセージ/バッチごとに一意）。
 
-挿入クエリには、各発行されたメッセージに対して追加されるメッセージメタデータがあります： `messageID` と `republished` フラグ（再発行された場合は true） - メッセージヘッダーを介してアクセスできます。
+INSERT クエリでは、公開された各メッセージに対して追加されるメッセージメタデータ `messageID` と `republished` フラグ（複数回公開された場合は true）が用意されており、メッセージヘッダー経由でアクセスできます。
 
-挿入と Materialized View に同じテーブルを使用しないでください。
+同じテーブルを INSERT とマテリアライズドビューの両方に使用しないでください。
 
-例：
+例:
 
 ```sql
   CREATE TABLE queue (
@@ -188,28 +186,28 @@ RabbitMQ サーバーの設定は、ClickHouse の設定ファイルを使用し
 
 ## 仮想カラム {#virtual-columns}
 
-- `_exchange_name` - RabbitMQ エクスチェンジ名。データ型： `String`。
-- `_channel_id` - メッセージを受信したコンシューマーが宣言された ChannelID。データ型： `String`。
-- `_delivery_tag` - 受信したメッセージの DeliveryTag。チャネルごとにスコープが設定されています。データ型： `UInt64`。
-- `_redelivered` - メッセージの `redelivered` フラグ。データ型： `UInt8`。
-- `_message_id` - 受信したメッセージの messageID；発行時に設定されていれば非空です。データ型： `String`。
-- `_timestamp` - 受信したメッセージのタイムスタンプ；発行時に設定されていれば非空です。データ型： `UInt64`。
+- `_exchange_name` - RabbitMQ のエクスチェンジ名。データ型: `String`。
+- `_channel_id` - メッセージを受信したコンシューマが宣言された ChannelID。データ型: `String`。
+- `_delivery_tag` - 受信メッセージの DeliveryTag。チャネルごとのスコープ。データ型: `UInt64`。
+- `_redelivered` - メッセージの `redelivered` フラグ。データ型: `UInt8`。
+- `_message_id` - 受信メッセージの messageID。メッセージがパブリッシュされたときに設定されていれば非空。データ型: `String`。
+- `_timestamp` - 受信メッセージの timestamp。メッセージがパブリッシュされたときに設定されていれば非空。データ型: `UInt64`。
 
-`kafka_handle_error_mode='stream'` の場合の追加の仮想カラム：
+`rabbitmq_handle_error_mode='stream'` の場合の追加の仮想カラム:
 
-- `_raw_message` - 正しく解析できなかった生のメッセージ。データ型： `Nullable(String)`。
-- `_error` - 解析に失敗したときに発生した例外メッセージ。データ型： `Nullable(String)`。
+- `_raw_message` - 正常にパースできなかった生のメッセージ。データ型: `Nullable(String)`。
+- `_error` - パースに失敗した際に発生した例外メッセージ。データ型: `Nullable(String)`。
 
-注意： `_raw_message` と `_error` の仮想カラムは、解析中に例外が発生した場合のみ埋められ、メッセージが正常に解析された場合は常に `NULL` です。
+注意: `_raw_message` および `_error` 仮想カラムは、パース中に例外が発生した場合にのみ値が設定され、メッセージが正常にパースされた場合は常に `NULL` です。
 
-## 注意点 {#caveats}
+## 注意事項 {#caveats}
 
-[デフォルトカラム式](/sql-reference/statements/create/table.md/#default_values)（`DEFAULT`、`MATERIALIZED`、`ALIAS` など）をテーブル定義に指定することができますが、これらは無視されます。その代わり、カラムはそれぞれの型のデフォルト値で埋められます。
+テーブル定義で [`DEFAULT`、`MATERIALIZED`、`ALIAS`] などの[デフォルトの列式](/sql-reference/statements/create/table.md/#default_values)を指定することはできますが、これらは無視されます。その代わり、各列には対応する型のデフォルト値が設定されます。
 
-## データフォーマットのサポート {#data-formats-support}
+## データ形式のサポート {#data-formats-support}
 
-RabbitMQ エンジンは、ClickHouse でサポートされているすべての [フォーマット](../../../interfaces/formats.md) をサポートしています。
-一つの RabbitMQ メッセージ内の行数は、フォーマットが行ベースかブロックベースかに依存します：
+RabbitMQ エンジンは、ClickHouse がサポートしているすべての[フォーマット](../../../interfaces/formats.md)をサポートします。
+1 つの RabbitMQ メッセージ内の行数は、フォーマットが行ベースかブロックベースかによって異なります。
 
-- 行ベースフォーマットの場合、一つの RabbitMQ メッセージ内の行数は `rabbitmq_max_rows_per_message` を設定することで制御できます。
-- ブロックベースフォーマットの場合、ブロックを小さな部分に分割することはできませんが、ブロック内の行数は一般設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。
+- 行ベースのフォーマットでは、1 つの RabbitMQ メッセージ内の行数は `rabbitmq_max_rows_per_message` の設定で制御できます。
+- ブロックベースのフォーマットではブロックをより小さな部分に分割することはできませんが、1 つのブロック内の行数は一般設定 [max_block_size](/operations/settings/settings#max_block_size) によって制御できます。

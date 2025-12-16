@@ -1,13 +1,10 @@
 ---
 sidebar_label: 'Splunk'
-slug: '/integrations/audit-splunk'
-keywords:
-- 'clickhouse'
-- 'Splunk'
-- 'audit'
-- 'cloud'
-description: 'ClickHouse Cloudの監査ログをSplunkに保存します。'
-title: 'ClickHouse Cloudの監査ログをSplunkに保存する'
+slug: /integrations/audit-splunk
+keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
+description: 'ClickHouse Cloud の監査ログを Splunk に保存する'
+title: 'ClickHouse Cloud の監査ログを Splunk に保存する'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,89 +20,85 @@ import splunk_009 from '@site/static/images/integrations/tools/data-integration/
 import splunk_010 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_010.png';
 import splunk_011 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_011.png';
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
+# ClickHouse Cloud の監査ログを Splunk に保存する {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
-# ClickHouse Cloud の監査ログを Splunk に保存する
-
-<ClickHouseSupportedBadge/>
+<PartnerBadge/>
 
 [Splunk](https://www.splunk.com/) は、データ分析およびモニタリングプラットフォームです。
 
-このアドオンを使用すると、ユーザーは [ClickHouse Cloud 監査ログ](/cloud/security/audit-logging) を Splunk に保存できます。これは、[ClickHouse Cloud API](/cloud/manage/api/api-overview) を使用して監査ログをダウンロードします。
+このアドオンを使用すると、[ClickHouse Cloud の監査ログ](/cloud/security/audit-logging) を Splunk に保存できます。監査ログのダウンロードには [ClickHouse Cloud API](/cloud/manage/api/api-overview) を利用します。
 
-このアドオンには、モジュラー入力のみが含まれ、追加の UI は提供されていません。
+このアドオンにはモジュラー入力のみが含まれており、追加の UI は提供されません。
 
-
-# インストール
+# インストール {#installation}
 
 ## Splunk Enterprise 向け {#for-splunk-enterprise}
 
-[Splunkbase](https://splunkbase.splunk.com/app/7709) から ClickHouse Cloud 監査アドオンをダウンロードします。
+[Splunkbase](https://splunkbase.splunk.com/app/7709) から ClickHouse Cloud Audit Add-on for Splunk をダウンロードします。
 
-<Image img={splunk_001} size="lg" alt="Splunkbase の ClickHouse Cloud 監査アドオンのダウンロードページを表示するウェブサイト" border />
+<Image img={splunk_001} size="lg" alt="ClickHouse Cloud Audit Add-on for Splunk のダウンロードページを表示している Splunkbase サイト" border />
 
-Splunk Enterprise の場合、Apps -> Manage に移動します。次に、「ファイルからアプリをインストール」をクリックします。
+Splunk Enterprise で Apps -> Manage に移動し、Install app from file をクリックします。
 
-<Image img={splunk_002} size="lg" alt="アプリ管理ページに「ファイルからアプリをインストール」オプションを表示する Splunk Enterprise インターフェース" border />
+<Image img={splunk_002} size="lg" alt="Install app from file オプションが表示された Apps 管理ページを示す Splunk Enterprise インターフェース" border />
 
-Splunkbase からダウンロードしたアーカイブファイルを選択し、「アップロード」をクリックします。
+Splunkbase からダウンロードしたアーカイブファイルを選択し、Upload をクリックします。
 
 <Image img={splunk_003} size="lg" alt="ClickHouse アドオンをアップロードするための Splunk アプリインストールダイアログ" border />
 
-すべてが問題なく進めば、ClickHouse 監査ログアプリケーションがインストールされているはずです。そうでない場合は、Splunkd ログを確認してエラーを探してください。
+インストールが正常に完了すると、ClickHouse Audit logs アプリケーションが表示されます。表示されない場合は、エラーがないか splunkd のログを確認してください。
 
+# モジュラー入力の設定 {#modular-input-configuration}
 
-# モジュラー入力の構成
-
-モジュラー入力を構成するには、まず ClickHouse Cloud デプロイメントから情報を取得する必要があります。
+モジュラー入力を設定するには、まず ClickHouse Cloud デプロイメントから次の情報を取得する必要があります。
 
 - 組織 ID
-- 管理者 [API Key](/cloud/manage/openapi)
+- 管理者権限を持つ [API Key](/cloud/manage/openapi)
 
-## ClickHouse Cloud からの情報取得 {#getting-information-from-clickhouse-cloud}
+## ClickHouse Cloud から情報を取得する {#getting-information-from-clickhouse-cloud}
 
-[ClickHouse Cloud コンソール](https://console.clickhouse.cloud/) にログインします。
+[ClickHouse Cloud console](https://console.clickhouse.cloud/) にログインします。
 
-組織 -> 組織の詳細に移動します。そこで、組織 ID をコピーできます。
+Organization -> Organization details に移動します。そこで Organization ID をコピーできます。
 
-<Image img={splunk_004} size="lg" alt="組織 ID を表示する ClickHouse Cloud コンソールの組織詳細ページ" border />
+<Image img={splunk_004} size="lg" alt="Organization ID を含む Organization details ページを表示している ClickHouse Cloud console" border />
 
-次に、左側のメニューから API キーに移動します。
+次に、左側メニューから API Keys に移動します。
 
-<Image img={splunk_005} size="lg" alt="左側のナビゲーションメニューに API キーセクションを表示する ClickHouse Cloud コンソール" border />
+<Image img={splunk_005} size="lg" alt="左側ナビゲーションメニュー内の API Keys セクションを表示している ClickHouse Cloud console" border />
 
-API キーを作成し、意味のある名前を付けて `Admin` 権限を選択します。「API キーを生成」をクリックします。
+API Key を作成し、識別しやすい名前を付けて `Admin` 権限を選択します。`Generate API Key` をクリックします。
 
-<Image img={splunk_006} size="lg" alt="Admin 権限を選択した API キー作成インターフェースを表示する ClickHouse Cloud コンソール" border />
+<Image img={splunk_006} size="lg" alt="Admin 権限が選択された API Key 作成画面を表示している ClickHouse Cloud console" border />
 
-API キーとシークレットを安全な場所に保存します。
+API Key と secret を安全な場所に保存します。
 
-<Image img={splunk_007} size="lg" alt="生成された API キーとシークレットを保存することを表示する ClickHouse Cloud コンソール" border />
+<Image img={splunk_007} size="lg" alt="保存するために生成された API Key と secret を表示している ClickHouse Cloud console" border />
 
-## Splunk でのデータ入力の構成 {#configure-data-input-in-splunk}
+## Splunk でデータ入力を構成する {#configure-data-input-in-splunk}
 
-再度 Splunk に戻り、設定 -> データ入力に移動します。
+Splunk に戻り、Settings -> Data inputs に移動します。
 
-<Image img={splunk_008} size="lg" alt="データ入力オプションを持つ設定メニューを表示する Splunk インターフェース" border />
+<Image img={splunk_008} size="lg" alt="Settings メニューで Data inputs オプションが表示されている Splunk インターフェイス" border />
 
-ClickHouse Cloud 監査ログデータ入力を選択します。
+ClickHouse Cloud Audit Logs のデータ入力を選択します。
 
-<Image img={splunk_009} size="lg" alt="ClickHouse Cloud 監査ログオプションを表示する Splunk データ入力ページ" border />
+<Image img={splunk_009} size="lg" alt="ClickHouse Cloud Audit Logs オプションが表示されている Splunk の Data inputs ページ" border />
 
-「新規」をクリックしてデータ入力の新しいインスタンスを構成します。
+「New」をクリックして、新しいデータ入力インスタンスを構成します。
 
-<Image img={splunk_010} size="lg" alt="新しい ClickHouse Cloud 監査ログデータ入力を構成するための Splunk インターフェース" border />
+<Image img={splunk_010} size="lg" alt="新しい ClickHouse Cloud Audit Logs データ入力を構成するための Splunk インターフェイス" border />
 
-すべての情報を入力したら、「次へ」をクリックします。
+すべての情報を入力したら、「Next」をクリックします。
 
-<Image img={splunk_011} size="lg" alt="完成した ClickHouse データ入力設定を持つ Splunk 構成ページ" border />
+<Image img={splunk_011} size="lg" alt="ClickHouse データ入力設定が入力済みの Splunk 構成ページ" border />
 
-入力が構成されましたので、監査ログの閲覧を開始できます。
+データ入力の構成が完了したので、監査ログの参照を開始できます。
 
+# 使用方法 {#usage}
 
-# 使用法
+モジュラー入力はデータを Splunk に保存します。データを確認するには、Splunk の通常の検索ビューを使用できます。
 
-モジュラー入力はデータを Splunk に保存します。データを表示するには、Splunk の一般的な検索ビューを使用できます。
-
-<Image img={splunk_012} size="lg" alt="ClickHouse 監査ログデータを表示する Splunk 検索インターフェース" border />
+<Image img={splunk_012} size="lg" alt="ClickHouse の監査ログデータを表示している Splunk の検索インターフェース" border />

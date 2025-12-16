@@ -1,30 +1,34 @@
 ---
-description: 'Документация для функции arrayJoin'
+description: 'Документация по функции arrayJoin'
 sidebar_label: 'arrayJoin'
-sidebar_position: 15
 slug: /sql-reference/functions/array-join
 title: 'Функция arrayJoin'
+doc_type: 'reference'
 ---
 
-
-# Функция arrayJoin
+# Функция arrayJoin {#arrayjoin-function}
 
 Это очень необычная функция.
 
-Обычные функции не изменяют набор строк, а только изменяют значения в каждой строке (отображение).
-Агрегатные функции сжимают набор строк (сводят или редуцируют).
-Функция `arrayJoin` берет каждую строку и генерирует набор строк (разворачивает).
+Обычные функции не изменяют набор строк, а лишь изменяют значения в каждой строке (map).
+Агрегатные функции сжимают набор строк (fold или reduce).
+Функция `arrayJoin` берёт каждую строку и порождает из неё набор строк (unfold).
 
-Эта функция принимает массив в качестве аргумента и продублирует исходную строку на несколько строк в зависимости от количества элементов в массиве.
-Все значения в колонках просто копируются, за исключением значений в колонке, к которой применяется эта функция; она заменяется соответствующим значением массива.
+Эта функция принимает массив в качестве аргумента и разворачивает исходную строку в несколько строк в количестве, равном числу элементов в массиве.
+Все значения в столбцах просто копируются, за исключением значения в столбце, к которому применяется эта функция; оно заменяется соответствующим значением из массива.
 
-Пример:
+:::note
+Если массив пустой, `arrayJoin` не возвращает ни одной строки.
+Чтобы вернуть одну строку, содержащую значение по умолчанию для типа массива, можно обернуть его в [emptyArrayToSingle](./array-functions.md#emptyArrayToSingle), например: `arrayJoin(emptyArrayToSingle(...))`.
+:::
 
-```sql
+Например:
+
+```sql title="Query"
 SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 ```
 
-```text
+```text title="Response"
 ┌─dst─┬─\'Hello\'─┬─src─────┐
 │   1 │ Hello     │ [1,2,3] │
 │   2 │ Hello     │ [1,2,3] │
@@ -32,30 +36,27 @@ SELECT arrayJoin([1, 2, 3] AS src) AS dst, 'Hello', src
 └─────┴───────────┴─────────┘
 ```
 
-Функция `arrayJoin` влияет на все части запроса, включая секцию `WHERE`. Обратите внимание на результат 2, даже несмотря на то, что подзапрос вернул 1 строку.
+Функция `arrayJoin` влияет на все части запроса, включая раздел `WHERE`. Обратите внимание, что результат запроса ниже равен `2`, несмотря на то что подзапрос вернул одну строку.
 
-Пример:
-
-```sql
+```sql title="Query"
 SELECT sum(1) AS impressions
 FROM
 (
-    SELECT ['Istanbul', 'Berlin', 'Bobruisk'] AS cities
+    SELECT ['Istanbul', 'Berlin', 'Babruysk'] AS cities
 )
 WHERE arrayJoin(cities) IN ['Istanbul', 'Berlin'];
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┐
 │           2 │
 └─────────────┘
 ```
 
-Запрос может использовать несколько функций `arrayJoin`. В этом случае трансформация выполняется несколько раз, и строки умножаются.
+Запрос может использовать несколько функций `arrayJoin`. В этом случае преобразование выполняется несколько раз, в результате чего умножается число строк.
+Например:
 
-Пример:
-
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     arrayJoin(cities) AS city,
@@ -63,7 +64,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 GROUP BY
@@ -71,33 +72,36 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           2 │ Istanbul │ Chrome  │
 │           1 │ Istanbul │ Firefox │
 │           2 │ Berlin   │ Chrome  │
 │           1 │ Berlin   │ Firefox │
-│           2 │ Bobruisk │ Chrome  │
-│           1 │ Bobruisk │ Firefox │
+│           2 │ Babruysk │ Chrome  │
+│           1 │ Babruysk │ Firefox │
 └─────────────┴──────────┴─────────┘
 ```
-### Важно! {#important-note}
-Использование нескольких `arrayJoin` с одним и тем же выражением может не дать ожидаемых результатов из-за оптимизаций.
-В таких случаях рассмотрите возможность изменения повторяющегося выражения массива с помощью дополнительных операций, которые не повлияют на результат соединения - например, `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`
+
+### Рекомендации по использованию {#important-note}
+
+Использование нескольких `arrayJoin` с одним и тем же выражением может привести к неожиданным результатам из-за устранения общих подвыражений.
+В таких случаях имеет смысл модифицировать повторяющиеся выражения с массивами с помощью дополнительных операций, которые не влияют на результат операции `join`. Например, `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`
 
 Пример:
+
 ```sql
 SELECT
-    arrayJoin(dice) as first_throw,
-    /* arrayJoin(dice) as second_throw */ -- технически корректно, но приведет к уничтожению результирующего набора
-    arrayJoin(arrayConcat(dice, [])) as second_throw -- намеренно изменено выражение, чтобы заставить пересчитывать
+    arrayJoin(dice) AS first_throw,
+    /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
+    arrayJoin(arrayConcat(dice, [])) AS second_throw -- intentionally changed expression to force re-evaluation
 FROM (
-    SELECT [1, 2, 3, 4, 5, 6] as dice
+    SELECT [1, 2, 3, 4, 5, 6] AS dice
 );
 ```
 
-Обратите внимание на синтаксис [ARRAY JOIN](../statements/select/array-join.md) в запросе SELECT, который предлагает более широкие возможности.
-`ARRAY JOIN` позволяет вам одновременно преобразовать несколько массивов с одинаковым количеством элементов.
+Обратите внимание на синтаксис [`ARRAY JOIN`](../statements/select/array-join.md) в запросе SELECT, который даёт более широкие возможности.
+`ARRAY JOIN` позволяет преобразовывать несколько массивов с одинаковым количеством элементов за один раз.
 
 Пример:
 
@@ -109,7 +113,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 ARRAY JOIN
@@ -124,15 +128,15 @@ GROUP BY
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │
-│           1 │ Bobruisk │ Chrome  │
+│           1 │ Babruysk │ Chrome  │
 └─────────────┴──────────┴─────────┘
 ```
 
-Или вы можете использовать [Tuple](../data-types/tuple.md)
+Также можно использовать [`Tuple`](../data-types/tuple.md)
 
 Пример:
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     (arrayJoin(arrayZip(cities, browsers)) AS t).1 AS city,
@@ -140,7 +144,7 @@ SELECT
 FROM
 (
     SELECT
-        ['Istanbul', 'Berlin', 'Bobruisk'] AS cities,
+        ['Istanbul', 'Berlin', 'Babruysk'] AS cities,
         ['Firefox', 'Chrome', 'Chrome'] AS browsers
 )
 GROUP BY
@@ -148,10 +152,12 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Row"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │
-│           1 │ Bobruisk │ Chrome  │
+│           1 │ Babruysk │ Chrome  │
 └─────────────┴──────────┴─────────┘
 ```
+
+Название функции `arrayJoin` в ClickHouse связано с её концептуальным сходством с операцией JOIN, но применяемой к массивам в пределах одной строки. В то время как традиционные JOIN объединяют строки из разных таблиц, `arrayJoin` как бы «соединяет» каждый элемент массива в строке, порождая несколько строк — по одной для каждого элемента массива — при этом дублируя значения остальных столбцов. В ClickHouse также доступен синтаксис предложения [`ARRAY JOIN`](/sql-reference/statements/select/array-join), который делает эту связь с традиционными операциями JOIN ещё более очевидной за счёт использования привычной терминологии SQL JOIN. Этот процесс также называют «разворачиванием» массива, но термин «join» используется и в названии функции, и в предложении, потому что операция напоминает присоединение таблицы к элементам массива, фактически расширяя набор данных способом, аналогичным операции JOIN.

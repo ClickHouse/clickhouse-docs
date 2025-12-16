@@ -4,6 +4,7 @@ slug: /cloud/manage/billing/overview
 title: 'Pricing'
 description: 'Overview page for ClickHouse Cloud pricing'
 doc_type: 'reference'
+keywords: ['ClickHouse Cloud', 'pricing', 'billing', 'cloud costs', 'compute pricing']
 ---
 
 For pricing information, see the [ClickHouse Cloud Pricing](https://clickhouse.com/pricing#pricing-calculator) page.
@@ -180,13 +181,13 @@ Best for: large scale, mission critical deployments that have stringent security
 
 A ClickHouse Credit is a unit of credit toward Customer's usage of ClickHouse Cloud equal to one (1) US dollar, to be applied based on ClickHouse's then-current published price list.
 
-### Where can I find legacy pricing? {#find-legacy-pricing}
-
-Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
-
 :::note 
 If you are being billed through Stripe then you will see that 1 CHC is equal to \$0.01 USD on your Stripe invoice. This is to allow accurate billing on Stripe due to their limitation on not being able to bill fractional quantities of our standard SKU of 1 CHC = \$1 USD.
 :::
+
+### Where can I find legacy pricing? {#find-legacy-pricing}
+
+Legacy pricing information can be found [here](https://clickhouse.com/pricing?legacy=true).
 
 ### How is compute metered? {#how-is-compute-metered}
 
@@ -238,6 +239,9 @@ ClickHouse Cloud supports the following billing options:
 ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to charge customers for partial ClickHouse credits based on their usage. This differs from committed spend ClickHouse credits, which are purchased in advance in whole \$1 units.
 :::
 
+### Can I delete my credit card? {#can-i-delete-my-credit-card}
+You can’t remove a credit card in the Billing UI, but you can update it anytime. This helps ensure your organization always has a valid payment method. If you need to remove your credit card, please contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) for help.
+
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.
@@ -251,8 +255,8 @@ Yes. Usage is consumed with the following payment methods in this order:
 
 ### What controls does ClickHouse Cloud offer to manage costs for Scale and Enterprise services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows users to proactively manage their usage.
-- ClickHouse Cloud allows users to set a maximum auto-scaling limit on their compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
+- Trial and Annual Commit customers are notified automatically by email when their consumption hits certain thresholds: `50%`, `75%`, and `90%`. This allows you to proactively manage your usage.
+- ClickHouse Cloud allows you to set a maximum auto-scaling limit on your compute via [Advanced scaling control](/manage/scaling), a significant cost factor for analytical workloads.
 - The [Advanced scaling control](/manage/scaling) lets you set memory limits with an option to control the behavior of pausing/idling during inactivity.
 
 ### What controls does ClickHouse Cloud offer to manage costs for Basic services? {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
@@ -292,7 +296,7 @@ an invoice is generated between 3-Jan and 5-Jan-2025
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered 
 and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
 
 ### Are there any restrictions around the usage of prepaid credits? {#are-there-any-restrictions-around-the-usage-of-prepaid-credits}
 

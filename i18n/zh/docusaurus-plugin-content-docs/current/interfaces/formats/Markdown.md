@@ -1,16 +1,21 @@
 ---
-'description': 'Markdown 格式的文档'
-'keywords':
-- 'Markdown'
-'slug': '/interfaces/formats/Markdown'
-'title': 'Markdown'
+alias: ['MD']
+description: 'Markdown 格式文档的说明'
+keywords: ['Markdown']
+slug: /interfaces/formats/Markdown
+title: 'Markdown'
+doc_type: 'reference'
 ---
+
+| 输入 | 输出 | 别名 |
+|-------|--------|-------|
+| ✗     | ✔      | `MD`  |
 
 ## 描述 {#description}
 
-您可以使用 [Markdown](https://en.wikipedia.org/wiki/Markdown) 格式导出结果，以生成可直接粘贴到您的 `.md` 文件中的输出：
+你可以使用 [Markdown](https://en.wikipedia.org/wiki/Markdown) 格式导出结果，生成可以直接粘贴到 `.md` 文件中的输出：
 
-该 markdown 表将自动生成，并可用于支持 markdown 的平台，如 Github。该格式仅用于输出。
+Markdown 表格会自动生成，并且可以在支持 Markdown 的平台（例如 GitHub）上使用。此格式仅用于输出。
 
 ## 示例用法 {#example-usage}
 
@@ -21,6 +26,7 @@ SELECT
 FROM numbers(5)
 FORMAT Markdown
 ```
+
 ```results
 | number | multiply(number, 2) |
 |-:|-:|

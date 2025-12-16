@@ -1,11 +1,12 @@
 ---
-sidebar_label: 'Primary Indexes'
+sidebar_label: 'Primary indexes'
 sidebar_position: 1
 description: 'In this guide we are going to do a deep dive into ClickHouse indexing.'
 title: 'A Practical Introduction to Primary Indexes in ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
 doc_type: 'guide'
+keywords: ['primary index', 'indexing', 'performance', 'query optimization', 'best practices']
 ---
 
 import sparsePrimaryIndexes01 from '@site/static/images/guides/best-practices/sparse-primary-indexes-01.png';
@@ -178,7 +179,7 @@ ENGINE = MergeTree
 -- highlight-next-line
 PRIMARY KEY (UserID, URL)
 ORDER BY (UserID, URL, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
+SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 [//]: # (<details open>)
@@ -879,7 +880,7 @@ ENGINE = MergeTree
 -- highlight-next-line
 PRIMARY KEY (URL, UserID)
 ORDER BY (URL, UserID, EventTime)
-SETTINGS index_granularity = 8192, index_granularity_bytes = 0, compress_primary_key = 0;
+SETTINGS index_granularity_bytes = 0, compress_primary_key = 0;
 ```
 
 Insert all 8.87 million rows from our [original table](#a-table-with-a-primary-key) into the additional table:

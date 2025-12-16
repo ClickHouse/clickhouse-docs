@@ -1,19 +1,17 @@
 ---
-description: 'Amazon S3内のApache Hudiテーブルからファイルを指定されたクラスターの多数のノードで並列処理するための拡張機能。'
+description: 'hudi テーブル関数の拡張です。指定したクラスタ内の多数のノードで、Amazon S3 上の Apache Hudi テーブルのファイルを並列処理できます。'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
-slug: '/sql-reference/table-functions/hudiCluster'
-title: 'hudiCluster Table Function'
+slug: /sql-reference/table-functions/hudiCluster
+title: 'hudiCluster テーブル関数'
+doc_type: 'reference'
 ---
 
+# hudiCluster テーブル関数 {#hudicluster-table-function}
 
+これは [hudi](sql-reference/table-functions/hudi.md) テーブル関数の拡張機能です。
 
-
-# hudiCluster テーブル関数
-
-これはこちらの [hudi](sql-reference/table-functions/hudi.md) テーブル関数への拡張です。
-
-指定されたクラスタ内の多くのノードと並行して、Amazon S3 の Apache [Hudi](https://hudi.apache.org/) テーブルからファイルを処理できるようにします。イニシエーターは、クラスタ内のすべてのノードへの接続を作成し、各ファイルを動的にディスパッチします。ワーカーノードでは、イニシエーターに次の処理タスクについて尋ね、そのタスクを処理します。これをすべてのタスクが終了するまで繰り返します。
+指定したクラスタ内の多数のノードを使って、Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブル内のファイルを並列処理できます。イニシエータでは、クラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り当てます。ワーカーノードでは、次に処理すべきタスクをイニシエータに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
 
 ## 構文 {#syntax}
 
@@ -23,20 +21,28 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 
 ## 引数 {#arguments}
 
-| 引数                                         | 説明                                                                                                                                                                                                                                                                                                                                                                               |
-|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name`                             | リモートおよびローカルサーバへのアドレスと接続パラメータのセットを構築するために使用されるクラスタの名前。                                                                                                                                                                                                                                                                     |
-| `url`                                      | S3 に存在する Hudi テーブルへのパスを含むバケット URL。                                                                                                                                                                                                                                                                                                                            |
-| `aws_access_key_id`, `aws_secret_access_key` | [AWS](https://aws.amazon.com/) アカウントユーザーのための長期認証情報。これを使ってリクエストを認証できます。これらのパラメータはオプションです。認証情報が指定されていない場合、ClickHouse 設定から使用されます。詳細については、[データストレージに S3 を使用する](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)を参照してください。 |
-| `format`                                   | ファイルの [format](/interfaces/formats)。                                                                                                                                                                                                                                                                                                                                         |
-| `structure`                                | テーブルの構造。形式 `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                               |
-| `compression`                              | パラメータはオプションです。サポートされている値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、圧縮はファイル拡張子によって自動的に検出されます。                                                                                                                                                                                            |
+| 引数                                         | 説明                                                                                                                                                                                                                                                                                                                                                                                   |
+|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cluster_name`                               | リモートおよびローカルサーバーへのアドレスと接続パラメータのセットを構成するために使用されるクラスター名。                                                                                                                                                                                                                                                                           |
+| `url`                                        | S3 内の既存の Hudi テーブルへのパスを含むバケットの URL。                                                                                                                                                                                                                                                                                                                             |
+| `aws_access_key_id`, `aws_secret_access_key` | [AWS](https://aws.amazon.com/) アカウントユーザー向けの長期的な認証情報。リクエストの認証に使用できます。これらのパラメータは省略可能です。認証情報が指定されていない場合は、ClickHouse の設定から取得されます。詳細は [Using S3 for Data Storage](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3) を参照してください。 |
+| `format`                                     | ファイルの [フォーマット](/interfaces/formats)。                                                                                                                                                                                                                                                                                                                                     |
+| `structure`                                  | テーブルの構造。`'column1_name column1_type, column2_name column2_type, ...'` という形式で指定します。                                                                                                                                                                                                                                                                                |
+| `compression`                                | 省略可能なパラメータ。サポートされる値は `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst` です。既定では、圧縮形式はファイル拡張子から自動検出されます。                                                                                                                                                                                                                          |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-指定された Hudi テーブルからクラスタのデータを読み取るための、指定された構造のテーブル。
+S3 上の指定した Hudi テーブルに対し、クラスタからデータを読み取るための、指定した構造を持つテーブル。
 
-## 関連 {#related}
+## 仮想カラム {#virtual-columns}
+
+- `_path` — ファイルへのパス。型: `LowCardinality(String)`。
+- `_file` — ファイル名。型: `LowCardinality(String)`。
+- `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
+- `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
+- `_etag` — ファイルの etag。型: `LowCardinality(String)`。etag が不明な場合、値は `NULL` です。
+
+## 関連項目 {#related}
 
 - [Hudi エンジン](engines/table-engines/integrations/hudi.md)
 - [Hudi テーブル関数](sql-reference/table-functions/hudi.md)

@@ -1,28 +1,34 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgMerge'
-'title': 'avgMerge'
-'description': '使用 avgMerge 组合器的示例'
-'keywords':
-- 'avg'
-- 'merge'
-- 'combinator'
-- 'examples'
-- 'avgMerge'
-'sidebar_label': 'avgMerge'
+slug: '/examples/aggregate-function-combinators/avgMerge'
+title: 'avgMerge'
+description: 'avgMerge 聚合函数组合器的使用示例'
+keywords: ['avg', 'merge', 'combinator', 'examples', 'avgMerge']
+sidebar_label: 'avgMerge'
+doc_type: 'reference'
 ---
+
 
 
 # avgMerge {#avgMerge}
 
-## Description {#description}
 
-[`Merge`](/sql-reference/aggregate-functions/combinators#-state) 合成器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg) 函数，通过组合部分聚合状态来产生最终结果。
 
-## Example Usage {#example-usage}
+## 描述 {#description}
 
-`Merge` 合成器与 `State` 合成器密切相关。请参阅 ["avgState example usage"](/examples/aggregate-function-combinators/avgState/#example-usage) 以获取 `avgMerge` 和 `avgState` 的示例。
+[`Merge`](/sql-reference/aggregate-functions/combinators#-state) 组合器
+可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
+函数，通过合并部分聚合状态来生成最终结果。
 
-## See also {#see-also}
+
+
+## 示例用法 {#example-usage}
+
+`Merge` 组合子与 `State` 组合子密切相关。有关 `avgMerge` 和 `avgState` 的示例，请参阅 
+["avgState 示例用法"](/examples/aggregate-function-combinators/avgState/#example-usage)。
+
+
+
+## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
 - [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

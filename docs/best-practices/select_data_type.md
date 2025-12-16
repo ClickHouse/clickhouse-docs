@@ -1,8 +1,8 @@
 ---
 slug: /best-practices/select-data-types
 sidebar_position: 10
-sidebar_label: 'Selecting data Types'
-title: 'Selecting data Types'
+sidebar_label: 'Selecting data types'
+title: 'Selecting data types'
 description: 'Page describing how to choose data types in ClickHouse'
 keywords: ['data types']
 doc_type: 'reference'
@@ -98,8 +98,8 @@ By applying our early simple rules to our posts table, we can identify an optima
 | `CommunityOwnedDate`     | No         | 2008-08-12 04:59:35.017000000, 2024-04-01 05:36:41.380000000           | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 | `ClosedDate`             | No         | 2008-09-04 20:56:44, 2024-04-06 18:49:25.393000000                     | -              | Yes    | Consider default 1970-01-01 for Nulls. Millisecond granularity is not required, use DateTime | DateTime                                 |
 
-:::note tip
-Identifying the type for a column relies on understanding its numeric range and number of unique values. To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive.
+:::note Tip
+Identifying the type for a column relies on understanding its numeric range and number of unique values. To find the range of all columns, and the number of distinct values, you can use the simple query `SELECT * APPLY min, * APPLY max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive.
 :::
 
 This results in the following optimized schema (with respect to types):

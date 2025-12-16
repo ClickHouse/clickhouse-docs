@@ -1,57 +1,54 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgState'
 title: 'avgState'
-description: 'avgState combinatorの使用例'
-keywords:
-- 'avg'
-- 'state'
-- 'combinator'
-- 'examples'
-- 'avgState'
+description: 'avgState コンビネータの使用例'
+keywords: ['avg', 'state', 'combinator', 'examples', 'avgState']
 sidebar_label: 'avgState'
+doc_type: 'reference'
 ---
-
-
-
 
 # avgState {#avgState}
 
 ## 説明 {#description}
 
-[`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用でき、`AggregateFunction(avg, T)` 型の中間状態を生成します。ここで `T` は、平均のために指定された型です。
+[`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、
+[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、
+`AggregateFunction(avg, T)` 型の中間状態を生成できます。ここで `T` は、
+平均の計算対象の型として指定された型です。
 
 ## 使用例 {#example-usage}
 
-この例では、`AggregateFunction` 型をどのように使用し、`avgState` 関数と組み合わせてウェブサイトのトラフィックデータを集計するかを見ていきます。
+この例では、`AggregateFunction` 型と `avgState` 関数を組み合わせて、
+ウェブサイトのトラフィックデータを集計する方法を見ていきます。
 
-まず、ウェブサイトのトラフィックデータのためのソーステーブルを作成します。
+まず、ウェブサイトのトラフィックデータ用のソーステーブルを作成します。
 
 ```sql
 CREATE TABLE raw_page_views
 (
     page_id UInt32,
     page_name String,
-    response_time_ms UInt32,  -- ページ応答時間（ミリ秒）
+    response_time_ms UInt32,  -- Page response time in milliseconds
     viewed_at DateTime DEFAULT now()
 )
 ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-次に、平均応答時間を保存する集約テーブルを作成します。`avg` は複雑な状態（合計とカウント）を必要とするため、`SimpleAggregateFunction` 型を使用できません。そのため、`AggregateFunction` 型を使用します。
+平均応答時間を格納する集約テーブルを作成します。なお、`avg` は複合的な状態（合計値とカウント）を必要とするため、`SimpleAggregateFunction` 型は使用できません。そのため、`AggregateFunction` 型を使用します。
 
 ```sql
 CREATE TABLE page_performance
 (
     page_id UInt32,
     page_name String,
-    avg_response_time AggregateFunction(avg, UInt32)  -- avg 計算に必要な状態を保存
+    avg_response_time AggregateFunction(avg, UInt32)  -- Stores the state needed for avg calculation
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-新しいデータの挿入トリガーとして機能し、上記で定義されたターゲットテーブルに中間状態データを保存するインクリメンタルマテリアライズドビューを作成します。
+増分更新マテリアライズドビューを作成します。このビューは新しいデータに対する挿入トリガーとして機能し、上で定義した対象テーブルに中間状態のデータを保存します。
 
 ```sql
 CREATE MATERIALIZED VIEW page_performance_mv
@@ -59,12 +56,12 @@ TO page_performance
 AS SELECT
     page_id,
     page_name,
-    avgState(response_time_ms) AS avg_response_time  -- -State コンビネータを使用
+    avgState(response_time_ms) AS avg_response_time  -- Using -State combinator
 FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
 
-ソーステーブルに初期データを挿入し、ディスク上にパーツを作成します。
+ソーステーブルに初期データを挿入して、ディスク上にパーツを作成します:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -76,7 +73,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
     (3, 'About', 90);
 ```
 
-ディスク上に2番目のパーツを作成するためにさらにデータを挿入します。
+ディスク上に2つ目のパートを作成するため、データをもう少し挿入します。
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -87,7 +84,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 (4, 'Contact', 65);
 ```
 
-ターゲットテーブル `page_performance` を確認します。
+ターゲットテーブル `page_performance` を確認します:
 
 ```sql
 SELECT 
@@ -110,9 +107,16 @@ FROM page_performance
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
-`avg_response_time` カラムは `AggregateFunction(avg, UInt32)` タイプであり、中間状態情報を保存していることに注意してください。また、`avg_response_time` の行データは私たちにとって有用ではなく、`�, n, F, }` などの奇妙な文字が表示されています。これは端末がバイナリデータをテキストとして表示しようとしたためです。この理由は、`AggregateFunction` 型が状態を効率的な保存と計算のために最適化されたバイナリ形式で保存し、人間が読めない形式であるためです。このバイナリ状態は平均を計算するために必要なすべての情報を含んでいます。
+`avg_response_time` 列は型 `AggregateFunction(avg, UInt32)` であり、
+中間状態の情報を保持している点に注意してください。また、`avg_response_time`
+に対応する行データは私たちにとって有用ではなく、`�, n, F, }` のような
+奇妙な文字が表示されることにも気付くはずです。これは、ターミナルが
+バイナリデータをテキストとして表示しようとした結果です。その理由は、
+`AggregateFunction` 型が、その状態を人間の可読性ではなく、効率的な保存と
+計算のために最適化されたバイナリ形式で保持しているためです。このバイナリ状態には、
+平均値を計算するために必要なすべての情報が含まれています。
 
-これを利用するには、`Merge` コンビネータを使用します。
+これを利用するには、`Merge` コンビネータを使用してください。
 
 ```sql
 SELECT
@@ -124,7 +128,7 @@ GROUP BY page_id, page_name
 ORDER BY page_id;
 ```
 
-これで正しい平均が表示されます。
+これで正しい平均値が得られます。
 
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
@@ -135,6 +139,6 @@ ORDER BY page_id;
 └─────────┴───────────┴──────────────────────────┘
 ```
 
-## 関連項目 {#see-also}
+## 関連情報 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

@@ -1,32 +1,31 @@
 ---
-description: '2009年以降にニューヨーク市を発着する数十億のタクシーおよびフォーヒャイヤー車（Uber、Lyftなど）のトリップデータ'
-sidebar_label: 'ニューヨークタクシーデータ'
-sidebar_position: 2
-slug: '/getting-started/example-datasets/nyc-taxi'
-title: 'New York Taxi Data'
+description: '2009年以降にニューヨーク市発で行われたタクシーおよび配車サービス（Uber、Lyft など）の数十億件の乗車データ'
+sidebar_label: 'ニューヨークのタクシーデータ'
+slug: /getting-started/example-datasets/nyc-taxi
+title: 'ニューヨークのタクシーデータ'
+doc_type: 'guide'
+keywords: ['サンプルデータセット', 'nyc taxi', 'チュートリアル', 'サンプルデータ', 'はじめに']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The New York taxi data sample consists of 3+ billion taxi and for-hire vehicle (Uber, Lyft, etc.) trips originating in New York City since 2009. This getting started guide uses a 3m row sample.
+ニューヨークのタクシーデータサンプルは、2009 年以降にニューヨーク市内から出発した 30 億件以上のタクシーおよび配車サービス（Uber、Lyft など）の乗車記録で構成されています。この入門ガイドでは、そのうち 300 万行のサンプルを使用します。
 
-The full dataset can be obtained in a couple of ways:
+完全なデータセットは、次のいずれかの方法で取得できます。
 
-- insert the data directly into ClickHouse Cloud from S3 or GCS
-- download prepared partitions
-- Alternatively users can query the full dataset in our demo environment at [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19).
-
+* S3 または GCS から ClickHouse Cloud に直接データを挿入する
+* 準備済みのパーティションをダウンロードする
+* あるいは、デモ環境の [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) で完全なデータセットに対してクエリを実行することもできます。
 
 :::note
-The example queries below were executed on a **Production** instance of ClickHouse Cloud. For more information see
-["Playground specifications"](/getting-started/playground#specifications).
+以下のサンプルクエリは、ClickHouse Cloud の **Production**（本番）インスタンスで実行したものです。詳細については
+[「Playground の仕様」](/getting-started/playground#specifications) を参照してください。
 :::
 
+## trips テーブルを作成する {#create-the-table-trips}
 
-## Create the table trips {#create-the-table-trips}
-
-Start by creating a table for the taxi rides:
+まずはタクシー乗車データ用のテーブルを作成します。
 
 ```sql
 
@@ -55,17 +54,16 @@ ENGINE = MergeTree
 PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
-## Load the Data directly from Object Storage {#load-the-data-directly-from-object-storage}
+## オブジェクトストレージからデータを直接ロードする {#load-the-data-directly-from-object-storage}
 
-Users' can grab a small subset of the data (3 million rows) for getting familiar with it. The data is in TSV files in object storage, which is easily streamed into
-ClickHouse Cloud using the `s3` table function. 
+ユーザーは、データの一部（300 万行）を取得して内容に慣れることができます。データはオブジェクトストレージ上の TSV 形式のファイルとして格納されており、`s3` テーブル関数を使用することで ClickHouse Cloud に容易にストリーミングできます。
 
-The same data is stored in both S3 and GCS; choose either tab.
+同じデータが S3 と GCS の両方に保存されているため、どちらかのタブを選択してください。
 
 <Tabs groupId="storageVendor">
 <TabItem value="s3" label="S3">
 
-The following command streams three files from an S3 bucket into the `trips_small` table (the `{0..2}` syntax is a wildcard for the values 0, 1, and 2):
+次のコマンドは、S3 バケット内の 3 つのファイルを `trips_small` テーブルにストリーミングします（`{0..2}` という構文は、値 0、1、2 にマッチするワイルドカードです）:
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -95,7 +93,7 @@ FROM s3(
 </TabItem>
 <TabItem value="gcs" label="GCS" default>
 
-The following command streams three files from a GCS bucket into the `trips` table (the `{0..2}` syntax is a wildcard for the values 0, 1, and 2):
+次のコマンドは、GCS バケット内の 3 つのファイルを `trips` テーブルにストリーミングします（`{0..2}` という構文は、値 0、1、2 にマッチするワイルドカードです）:
 
 ```sql
 INSERT INTO nyc_taxi.trips_small
@@ -125,11 +123,11 @@ FROM gcs(
 </TabItem>
 </Tabs>
 
-## Sample Queries {#sample-queries}
+## サンプルクエリ {#sample-queries}
 
-The following queries are executed on the sample described above. Users can run the sample queries on the full dataset in [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19), modifying the queries below to use the table `nyc_taxi.trips`.
+以下のクエリは、前述のサンプルに対して実行されます。ユーザーは、以下のクエリを修正してテーブル `nyc_taxi.trips` を使用することで、完全なデータセットに対してサンプルクエリを [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上で実行できます。
 
-Let's see how many rows were inserted:
+挿入された行数を確認してみましょう。
 
 ```sql runnable
 SELECT count()
@@ -145,7 +143,6 @@ LIMIT 10;
 ```
 
 Notice there are columns for the pickup and dropoff dates, geo coordinates, fare details, New York neighborhoods, and more.
-
 
 Let's run a few queries. This query shows us the top 10 neighborhoods that have the most frequent pickups:
 
@@ -182,7 +179,7 @@ GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
 
-## Download of Prepared Partitions {#download-of-prepared-partitions}
+## Download of prepared partitions {#download-of-prepared-partitions}
 
 :::note
 The following steps provide information about the original dataset, and a method for loading prepared partitions into a self-managed ClickHouse server environment.
@@ -195,13 +192,11 @@ Some of the files might not download fully. Check the file sizes and re-download
 
 ```bash
 $ curl -O https://datasets.clickhouse.com/trips_mergetree/partitions/trips_mergetree.tar
-
-# Validate the checksum
+# チェックサムを検証する {#validate-the-checksum}
 $ md5sum trips_mergetree.tar
-
-# Checksum should be equal to: f3b8d469b41d9a82da064ded7245d12c
-$ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # path to ClickHouse data directory
-$ # check permissions of unpacked data, fix if required
+# チェックサムは次の値と一致する必要があります: f3b8d469b41d9a82da064ded7245d12c {#checksum-should-be-equal-to-f3b8d469b41d9a82da064ded7245d12c}
+$ tar xvf trips_mergetree.tar -C /var/lib/clickhouse # ClickHouse データディレクトリへのパス
+$ # 展開されたデータの権限を確認し、必要に応じて修正する
 $ sudo service clickhouse-server restart
 $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 ```
@@ -210,7 +205,7 @@ $ clickhouse-client --query "select count(*) from datasets.trips_mergetree"
 If you will run the queries described below, you have to use the full table name, `datasets.trips_mergetree`.
 :::
 
-## Results on Single Server {#results-on-single-server}
+## Results on single server {#results-on-single-server}
 
 Q1:
 
@@ -273,31 +268,31 @@ The following query redistributes data:
 INSERT INTO trips_mergetree_x3 SELECT * FROM trips_mergetree;
 ```
 
-This takes 2454 seconds.
+これは 2,454 秒かかりました。
 
-On three servers:
+3 台のサーバーでは:
 
-Q1: 0.212 seconds.
-Q2: 0.438 seconds.
-Q3: 0.733 seconds.
-Q4: 1.241 seconds.
+Q1: 0.212 秒。
+Q2: 0.438 秒。
+Q3: 0.733 秒。
+Q4: 1.241 秒。
 
-No surprises here, since the queries are scaled linearly.
+クエリの処理時間はほぼ線形にスケールしているため、ここには特に驚きはありません。
 
-We also have the results from a cluster of 140 servers:
+140 台のサーバーからなるクラスターでの結果もあります:
 
-Q1: 0.028 sec.
-Q2: 0.043 sec.
-Q3: 0.051 sec.
-Q4: 0.072 sec.
+Q1: 0.028 秒。
+Q2: 0.043 秒。
+Q3: 0.051 秒。
+Q4: 0.072 秒。
 
-In this case, the query processing time is determined above all by network latency.
-We ran queries using a client located in a different datacenter than where the cluster was located, which added about 20 ms of latency.
+この場合、クエリ処理時間は主にネットワーク遅延によって決まります。
+クラスターとは別のデータセンターにあるクライアントからクエリを実行したため、約 20 ms のレイテンシが余分に発生しました。
 
-## Summary {#summary}
+## 概要 {#summary}
 
-| servers | Q1    | Q2    | Q3    | Q4    |
-|---------|-------|-------|-------|-------|
+| サーバー構成 | Q1    | Q2    | Q3    | Q4    |
+|-------------|-------|-------|-------|-------|
 | 1, E5-2650v2          | 0.490 | 1.224 | 2.104 | 3.593 |
 | 3, E5-2650v2          | 0.212 | 0.438 | 0.733 | 1.241 |
 | 1, AWS c5n.4xlarge    | 0.249 | 1.279 | 1.738 | 3.527 |

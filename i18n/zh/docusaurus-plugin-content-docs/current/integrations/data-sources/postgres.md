@@ -1,13 +1,18 @@
 ---
-'slug': '/integrations/postgresql'
-'sidebar_label': 'PostgreSQL'
-'title': 'PostgreSQL'
-'hide_title': false
-'description': '页面描述如何将 Postgres 与 ClickHouse 集成'
+slug: /integrations/postgresql
+sidebar_label: 'PostgreSQL'
+title: 'PostgreSQL'
+show_title: false
+description: '介绍如何将 Postgres 与 ClickHouse 集成的页面'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['postgresql', '数据库集成', '外部表', '数据源', 'SQL 数据库']
 ---
 
 import PostgreSQL from '@site/i18n/zh/docusaurus-plugin-content-docs/current/integrations/data-ingestion/dbms/postgresql/connecting-to-postgresql.md';
 
-完整的 PostgreSQL 到 ClickHouse 的迁移指南，包括数据建模和等效概念的建议，可以在 [这里](/migrations/postgresql/overview) 找到。以下是描述如何连接 ClickHouse 和 PostgreSQL 的内容。
+> 关于从 PostgreSQL 迁移到 ClickHouse 的完整指南（包括数据建模建议和等价概念说明）可以在[此处](/migrations/postgresql/overview)查阅。下面将介绍如何连接 ClickHouse 和 PostgreSQL。
 
-<PostgreSQL/>
+<PostgreSQL />

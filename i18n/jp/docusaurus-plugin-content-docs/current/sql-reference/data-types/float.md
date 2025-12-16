@@ -1,18 +1,16 @@
 ---
-description: 'Documentation for floating-point data types in ClickHouse: Float32,
-  Float64, and BFloat16'
+description: 'ClickHouse における浮動小数点データ型: Float32、Float64、BFloat16 のドキュメント'
 sidebar_label: 'Float32 | Float64 | BFloat16'
 sidebar_position: 4
-slug: '/sql-reference/data-types/float'
+slug: /sql-reference/data-types/float
 title: 'Float32 | Float64 | BFloat16 Types'
+doc_type: 'reference'
 ---
 
-
-
 :::note
-正確な計算が必要な場合、特に高精度を要求する財務データやビジネスデータを扱う場合は、代わりに [Decimal](../data-types/decimal.md) の使用を検討してください。
+正確な計算が必要な場合、特に高精度を必要とする財務またはビジネスデータを扱う場合は、代わりに [Decimal](../data-types/decimal.md) の使用を検討してください。
 
-[Floating Point Numbers](https://en.wikipedia.org/wiki/IEEE_754) は、以下の例のように不正確な結果を引き起こす可能性があります：
+[浮動小数点数](https://en.wikipedia.org/wiki/IEEE_754)は、以下に示すように不正確な結果につながる可能性があります:
 
 ```sql
 CREATE TABLE IF NOT EXISTS float_vs_decimal
@@ -20,11 +18,10 @@ CREATE TABLE IF NOT EXISTS float_vs_decimal
    my_float Float64,
    my_decimal Decimal64(3)
 )
-Engine=MergeTree
+ENGINE=MergeTree
 ORDER BY tuple();
 
-
-# 小数点以下2桁のランダムな数値を1,000,000生成し、floatとdecimalとして保存します
+# 小数点以下2桁の100万個のランダムな数値を生成し、float と decimal として保存
 INSERT INTO float_vs_decimal SELECT round(randCanonical(), 3) AS res, res FROM system.numbers LIMIT 1000000;
 ```
 ```sql
@@ -42,21 +39,21 @@ SELECT sumKahan(my_float), sumKahan(my_decimal) FROM float_vs_decimal;
 ```
 :::
 
-ClickHouseとCにおける対応する型は以下の通りです：
+ClickHouse と C の同等の型は以下のとおりです:
 
-- `Float32` — `float`.
-- `Float64` — `double`.
+- `Float32` — `float`。
+- `Float64` — `double`。
 
-ClickHouseにおけるFloat型の別名は次の通りです：
+ClickHouse の Float 型には、次のエイリアスがあります:
 
-- `Float32` — `FLOAT`, `REAL`, `SINGLE`.
-- `Float64` — `DOUBLE`, `DOUBLE PRECISION`.
+- `Float32` — `FLOAT`、`REAL`、`SINGLE`。
+- `Float64` — `DOUBLE`、`DOUBLE PRECISION`。
 
-テーブルを作成する際には、浮動小数点数の数値パラメータを設定できます（例：`FLOAT(12)`, `FLOAT(15, 22)`, `DOUBLE(12)`, `DOUBLE(4, 18)`）、ですがClickHouseはこれらを無視します。
+テーブルを作成するときに、浮動小数点数の数値パラメータを設定できます(例: `FLOAT(12)`、`FLOAT(15, 22)`、`DOUBLE(12)`、`DOUBLE(4, 18)`)が、ClickHouse はそれらを無視します。
 
 ## 浮動小数点数の使用 {#using-floating-point-numbers}
 
-- 浮動小数点数を使用した計算は、丸め誤差を生じる可能性があります。
+- 浮動小数点数を使用した計算では、丸め誤差が発生する可能性があります。
 
 <!-- -->
 
@@ -68,13 +65,13 @@ SELECT 1 - 0.9
 └─────────────────────┘
 ```
 
-- 計算の結果は、計算方法（プロセッサのタイプとコンピュータシステムのアーキテクチャ）によって異なります。
-- 浮動小数点計算の結果として、無限大（`Inf`）や "数ではない"（`NaN`）のような数値が生じる可能性があります。計算結果を処理する際にはこれを考慮する必要があります。
-- テキストから浮動小数点数を解析する場合、結果が最も近いマシン表現可能な数でない可能性があります。
+- 計算の結果は、計算方法(プロセッサの種類とコンピュータシステムのアーキテクチャ)に依存します。
+- 浮動小数点計算では、無限大(`Inf`)や「非数」(`NaN`)などの数値が生成される可能性があります。計算結果を処理する際には、これを考慮する必要があります。
+- テキストから浮動小数点数を解析する場合、結果は最も近い機械表現可能な数値ではない可能性があります。
 
-## NaNとInf {#nan-and-inf}
+## NaN と Inf {#nan-and-inf}
 
-標準SQLとは異なり、ClickHouseは以下のカテゴリーの浮動小数点数をサポートしています：
+標準 SQL とは対照的に、ClickHouse は次のカテゴリの浮動小数点数をサポートしています:
 
 - `Inf` – 無限大。
 
@@ -100,7 +97,7 @@ SELECT -0.5 / 0
 └─────────────────┘
 ```
 
-- `NaN` — 数ではない。
+- `NaN` — 非数。
 
 <!-- -->
 
@@ -112,15 +109,15 @@ SELECT 0 / 0
 └──────────────┘
 ```
 
-`NaN`のソート規則については、[ORDER BY句](../../sql-reference/statements/select/order-by.md)のセクションを参照してください。
+`NaN` のソートルールについては、[ORDER BY 句](../../sql-reference/statements/select/order-by.md)セクションを参照してください。
 
 ## BFloat16 {#bfloat16}
 
-`BFloat16` は、8ビットの指数、符号、7ビットの仮数を持つ16ビット浮動小数点データ型です。 
-機械学習やAIアプリケーションに役立ちます。
+`BFloat16` は、8 ビットの指数、符号、および 7 ビットの仮数を持つ 16 ビット浮動小数点データ型です。
+機械学習および AI アプリケーションに役立ちます。
 
-ClickHouseは、[`toFloat32()`](../functions/type-conversion-functions.md/#tofloat32) または [`toBFloat16`](../functions/type-conversion-functions.md/#tobfloat16) 関数を使用して `Float32` と `BFloat16` の間の変換をサポートしています。
+ClickHouse は `Float32` と `BFloat16` 間の変換をサポートしており、[`toFloat32()`](../functions/type-conversion-functions.md/#tofloat32) または [`toBFloat16`](../functions/type-conversion-functions.md/#tobfloat16) 関数を使用して実行できます。
 
 :::note
-その他の操作はサポートされていないものがほとんどです。
+その他のほとんどの操作はサポートされていません。
 :::

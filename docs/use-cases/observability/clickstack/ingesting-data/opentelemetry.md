@@ -5,6 +5,7 @@ pagination_next: null
 description: 'Data ingestion with OpenTelemetry for ClickStack - The ClickHouse Observability Stack'
 title: 'Ingesting with OpenTelemetry'
 doc_type: 'guide'
+keywords: ['clickstack', 'opentelemetry', 'traces', 'observability', 'telemetry']
 ---
 
 import Image from '@theme/IdealImage';
@@ -32,7 +33,7 @@ If you're using the [HyperDX-only](/use-cases/observability/clickstack/deploymen
 - Sending directly to ClickHouse using alternative tooling, such as [Vector](https://vector.dev/), [Fluentd](https://www.fluentd.org/) etc, or even the default [OTel contrib collector distribution](https://github.com/open-telemetry/opentelemetry-collector-contrib).
 
 :::note We recommend using the ClickStack OpenTelemetry collector
-This allows users to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
+This allows you to benefit from standardized ingestion, enforced schemas, and out-of-the-box compatibility with the HyperDX UI. Using the default schema enables automatic source detection and preconfigured column mappings.
 :::
 
 For further details see ["Deploying the collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector).
@@ -44,7 +45,7 @@ To send data to ClickStack, point your OpenTelemetry instrumentation to the foll
 - **HTTP (OTLP):** `http://localhost:4318`
 - **gRPC (OTLP):** `localhost:4317`
 
-For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, users can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
+For most [language SDKs](/use-cases/observability/clickstack/sdks) and telemetry libraries that support OpenTelemetry, you can simply set `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable in your application:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318

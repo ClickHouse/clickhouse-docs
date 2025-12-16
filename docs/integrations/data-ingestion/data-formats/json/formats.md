@@ -27,7 +27,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.449 sec.
 ```
 
-While this is generally the most commonly used format for JSON, users will encounter other formats or need to read the JSON as a single object.
+While this is generally the most commonly used format for JSON, you will encounter other formats or need to read the JSON as a single object.
 
 We provide examples of reading and loading JSON in other common formats below.
 
@@ -145,7 +145,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a [`JSONEachRow`](/interfaces/formats.md/#jsoneachrow) format (inserting data from [list.json](../assets/list.json) file):
+To import a list of JSON objects, we can use a [`JSONEachRow`](/interfaces/formats/JSONEachRow) format (inserting data from [list.json](../assets/list.json) file):
 
 ```sql
 INSERT INTO sometable
@@ -191,7 +191,7 @@ cat objects.json
 }
 ```
 
-ClickHouse can load data from this kind of data using the [`JSONObjectEachRow`](/interfaces/formats.md/#jsonobjecteachrow) format:
+ClickHouse can load data from this kind of data using the [`JSONObjectEachRow`](/interfaces/formats/JSONObjectEachRow) format:
 
 ```sql
 INSERT INTO sometable FROM INFILE 'objects.json' FORMAT JSONObjectEachRow;
@@ -241,7 +241,7 @@ cat arrays.json
 ["1971-72_Utah_Stars_season", "2016-10-01", 1]
 ```
 
-In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [`JSONCompactEachRow`](/interfaces/formats.md/#jsoncompacteachrow) format for this:
+In this case, ClickHouse will load this data and attribute each value to the corresponding column based on its order in the array. We use [`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) format for this:
 
 ```sql
 SELECT * FROM sometable
@@ -269,7 +269,7 @@ cat columns.json
 }
 ```
 
-ClickHouse uses the [`JSONColumns`](/interfaces/formats.md/#jsoncolumns) format to parse data formatted like that:
+ClickHouse uses the [`JSONColumns`](/interfaces/formats/JSONColumns) format to parse data formatted like that:
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -282,7 +282,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-A more compact format is also supported when dealing with an [array of columns](../assets/columns-array.json) instead of an object using [`JSONCompactColumns`](/interfaces/formats.md/#jsoncompactcolumns) format:
+A more compact format is also supported when dealing with an [array of columns](../assets/columns-array.json) instead of an object using [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns) format:
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -321,7 +321,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-Now we can load data from the file into this table using [`JSONAsString`](/interfaces/formats.md/#jsonasstring) format to keep JSON objects instead of parsing them:
+Now we can load data from the file into this table using [`JSONAsString`](/interfaces/formats/JSONAsString) format to keep JSON objects instead of parsing them:
 
 ```sql
 INSERT INTO events (data)
@@ -431,7 +431,7 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 
-To import BSON data, we use the [BSONEachRow](/interfaces/formats.md/#bsoneachrow) format. Let's import data from [this BSON file](../assets/data.bson):
+To import BSON data, we use the [BSONEachRow](/interfaces/formats/BSONEachRow) format. Let's import data from [this BSON file](../assets/data.bson):
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)

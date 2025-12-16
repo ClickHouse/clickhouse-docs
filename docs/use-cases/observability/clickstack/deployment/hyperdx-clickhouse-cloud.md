@@ -6,6 +6,7 @@ pagination_next: null
 sidebar_position: 1
 description: 'Deploying ClickStack with ClickHouse Cloud'
 doc_type: 'guide'
+keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,10 +18,21 @@ import hyperdx_cloud_landing from '@site/static/images/use-cases/observability/h
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
+import read_only from '@site/static/images/clickstack/read-only-access.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import JSONSupport from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
 <PrivatePreviewBadge/>
 
-This option is designed for users who are using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
+::::note[Private Preview]
+This feature is in ClickHouse Cloud private preview. If your org is interested in getting priority access,
+<TrackedLink href="https://clickhouse.com/cloud/clickstack-private-preview" eventName="docs.clickstack_deployment.waitlist_cta">join the waitlist</TrackedLink>.
+
+If you're new to ClickHouse Cloud, click
+<TrackedLink href="/docs/cloud/overview" eventName="docs.clickstack_deployment.cloud_learn_more_cta">here</TrackedLink>  to learn more or <TrackedLink href="https://clickhouse.cloud/signUp" eventName="docs.clickstack_deployment.cloud_signup_cta" target="_blank" rel="noopener noreferrer">sign up for a free trial</TrackedLink> to get started.
+::::
+
+This option is designed if you're using ClickHouse Cloud. In this deployment pattern, both ClickHouse and HyperDX are hosted in ClickHouse Cloud, minimizing the number of components the user needs to self-host.
 
 As well as reducing infrastructure management, this deployment pattern ensures authentication is integrated with ClickHouse Cloud SSO/SAML. Unlike self-hosted deployments, there is also no need to provision a MongoDB instance to store application state — such as dashboards, saved searches, user settings, and alerts.
 
@@ -276,9 +288,28 @@ For users looking to explore the HyperDX interface only, we recommend our [sampl
 
 <Image img={hyperdx_cloud_landing} alt="ClickHouse Cloud HyperDX Landing" size="lg"/>
 
+### User permissions {#user-permissions}
+
+Users accessing HyperDX are automatically authenticated using their ClickHouse Cloud console credentials. Access is controlled through SQL console permissions configured in the service settings.
+
+#### To configure user access {#configure-access}
+
+1. Navigate to your service in the ClickHouse Cloud console
+2. Go to **Settings** → **SQL Console Access**
+3. Set the appropriate permission level for each user:
+   - **Service Admin → Full Access** - Required for enabling alerts
+   - **Service Read Only → Read Only** - Can view observability data and create dashboards
+   - **No access** - Cannot access HyperDX
+
+<Image img={read_only} alt="ClickHouse Cloud Read Only"/>
+
+:::important Alerts require admin access
+To enable alerts, at least one user with **Service Admin** permissions (mapped to **Full Access** in the SQL Console Access dropdown) must log into HyperDX at least once. This provisions a dedicated user in the database that runs alert queries.
+:::
+
 ### Create a data source {#create-a-datasource}
 
-HyperDX is Open Telemetry native but not Open Telemetry exclusive - users can use their own table schemas if desired.
+HyperDX is Open Telemetry native but not Open Telemetry exclusive - you can use your own table schemas if desired.
 
 #### Using Open Telemetry schemas  {#using-otel-schemas}
 
@@ -286,7 +317,7 @@ If you're using the above OTel collector to create the database and tables withi
 
 <Image img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX Datasource" size="lg"/>
 
-To create sources for traces and OTel metrics, users can select `Create New Source` from the top menu.
+To create sources for traces and OTel metrics, you can select `Create New Source` from the top menu.
 
 <Image img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 
@@ -306,16 +337,6 @@ If using your own schema, we recommend creating a Logs source ensuring the requi
 
 </VerticalStepper>
 
-## JSON type support {#json-type-support}
+<JSONSupport/>
 
-<BetaBadge/>
-
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
-
-For the benefits of this type, see [Benefits of the JSON type](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
-
-In order to enable support for the JSON type, users must set the following environment variables:
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - enables support in the OTel collector, ensuring schemas are created using the JSON type.
-
-Additionally, users should contact support@clickhouse.com to ensure JSON is enabled on both their ClickHouse Cloud service.
+Additionally, you should contact support@clickhouse.com to ensure JSON is enabled on your ClickHouse Cloud service.

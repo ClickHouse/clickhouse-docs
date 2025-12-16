@@ -1,20 +1,16 @@
 ---
-description: 'Computes the sum of the numbers, using the same data type for the
-  result as for the input parameters. If the sum exceeds the maximum value for this
-  data type, it is calculated with overflow.'
+description: '入力パラメータと同じデータ型で数値の合計を計算します。合計がこのデータ型の最大値を超えた場合は、オーバーフローした値として計算されます。'
 sidebar_position: 200
-slug: '/sql-reference/aggregate-functions/reference/sumwithoverflow'
+slug: /sql-reference/aggregate-functions/reference/sumwithoverflow
 title: 'sumWithOverflow'
+doc_type: 'reference'
 ---
 
+# sumWithOverflow {#sumwithoverflow}
 
+入力パラメータと同じデータ型を結果にも使用して数値の合計を計算します。このデータ型で表現できる最大値を超えた場合は、オーバーフローさせて計算します。
 
-
-# sumWithOverflow
-
-数値の合計を計算し、結果のデータ型は入力パラメータと同じです。このデータ型の最大値を超える合計が計算されると、オーバーフローが発生します。
-
-数値のみに対応しています。
+数値型に対してのみ使用できます。
 
 **構文**
 
@@ -22,16 +18,17 @@ title: 'sumWithOverflow'
 sumWithOverflow(num)
 ```
 
-**パラメータ**
-- `num`: 数値値のカラム。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+**パラメーター**
 
-**返される値**
+* `num`: 数値カラム。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
-- 値の合計。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+**戻り値**
+
+* 値の合計。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
 
 **例**
 
-まず、`employees` というテーブルを作成し、いくつかの架空の従業員データを挿入します。この例では、`salary` を `UInt16` として選択し、これらの値の合計がオーバーフローを発生させる可能性があります。
+まず `employees` というテーブルを作成し、架空の従業員データを挿入します。この例では、これらの値の合計でオーバーフローが発生し得るように、`salary` を `UInt16` として選択します。
 
 クエリ:
 
@@ -54,8 +51,8 @@ SELECT
 FROM employees
 ```
 
-`sum` および `sumWithOverflow` 関数を使用して従業員の給与の総額を問い合わせ、`toTypeName` 関数を使用してその型を表示します。
-`sum` 関数の結果の型は `UInt64` で、合計を保持するのに十分な大きさですが、`sumWithOverflow` の結果の型は `UInt16` のままです。  
+`sum` 関数と `sumWithOverflow` 関数を使って従業員の給与の合計を計算し、`toTypeName` 関数でそれぞれの型を表示します。
+`sum` 関数では結果の型は `UInt64` となり、合計値を格納するのに十分な大きさですが、`sumWithOverflow` では結果の型は `UInt16` のままです。
 
 クエリ:
 
@@ -68,7 +65,7 @@ SELECT
 FROM employees;
 ```
 
-結果:
+結果：
 
 ```response
    ┌─no_overflow─┬─overflow─┬─toTypeName(no_overflow)─┬─toTypeName(overflow)─┐

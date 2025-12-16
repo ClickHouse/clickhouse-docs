@@ -1,19 +1,19 @@
 ---
 description: 'Движок `Dictionary` отображает данные словаря в виде таблицы ClickHouse.'
-sidebar_label: 'Dictionary'
+sidebar_label: 'Словарь'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
 title: 'Движок таблицы Dictionary'
+doc_type: 'reference'
 ---
 
+# Движок таблицы словаря {#dictionary-table-engine}
 
-# Движок таблицы Dictionary
-
-Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) в виде таблицы ClickHouse.
+Движок `Dictionary` отображает данные [словаря](../../../sql-reference/dictionaries/index.md) как таблицу ClickHouse.
 
 ## Пример {#example}
 
-В качестве примера рассмотрим словарь `products` с следующей конфигурацией:
+Рассмотрим в качестве примера словарь `products` со следующей конфигурацией:
 
 ```xml
 <dictionaries>
@@ -46,7 +46,7 @@ title: 'Движок таблицы Dictionary'
 </dictionaries>
 ```
 
-Запросите данные словаря:
+Выполните запрос к данным из словаря:
 
 ```sql
 SELECT
@@ -68,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-Вы можете использовать функцию [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull), чтобы получить данные словаря в этом формате.
+Вы можете использовать функции [dictGet*](/sql-reference/functions/ext-dict-functions), чтобы получить данные словаря в данном формате.
 
-Этот вид не очень полезен, когда вам необходимо получить сырье данные или при выполнении операции `JOIN`. Для этих случаев вы можете использовать движок `Dictionary`, который отображает данные словаря в таблице.
+Это представление не очень удобно, когда нужно получить необработанные данные или выполнить операцию `JOIN`. В таких случаях вы можете использовать движок `Dictionary`, который отображает данные словаря в виде таблицы.
 
 Синтаксис:
 
@@ -81,15 +81,15 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 Пример использования:
 
 ```sql
-create table products (product_id UInt64, title String) Engine = Dictionary(products);
+CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+Хорошо
 
-Посмотрите, что находится в таблице.
+Посмотрите, что содержится в таблице.
 
 ```sql
-select * from products limit 1;
+SELECT * FROM products LIMIT 1;
 ```
 
 ```text
@@ -98,6 +98,6 @@ select * from products limit 1;
 └───────────────┴─────────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Функция Dictionary](/sql-reference/table-functions/dictionary)
+* [Табличная функция `dictionary`](/sql-reference/table-functions/dictionary)

@@ -36,7 +36,7 @@ Child single services can scale vertically unlike single parent services.
 
 _Fig. 1 - current service in ClickHouse Cloud_
 
-Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
+Compute-compute separation allows you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
 
 Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
@@ -74,7 +74,7 @@ You can sort services by the warehouse that they belong to.
 
 ### Database credentials {#database-credentials}
 
-Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. Users will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
+Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. You will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
 
 <Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
@@ -138,8 +138,6 @@ Once compute-compute is enabled for a service (at least one secondary service wa
 CREATE DATABASE db_test_ddl_single_query_setting
 SETTINGS distributed_ddl_task_timeout=0
 ```
-
-6. **In very rare cases, secondary services that are idled or stopped for a long time (days) without waking/starting up can cause performance degradation to other services in the same warehouse.** This issue will be resolved soon and is connected to mutations running in the background. If you think you are experiencing this issue, please contact ClickHouse [Support](https://clickhouse.com/support/program).
 
 7. **Currently there is a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
 

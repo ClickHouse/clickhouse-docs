@@ -1,19 +1,19 @@
 ---
-description: 'Результат равен квадратному корню из varPop.'
+description: 'Результат равен квадратному корню из значения varPop.'
 sidebar_position: 188
 slug: /sql-reference/aggregate-functions/reference/stddevpop
 title: 'stddevPop'
+doc_type: 'reference'
 ---
 
-
-# stddevPop
+# stddevPop {#stddevpop}
 
 Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varpop.md).
 
 Псевдонимы: `STD`, `STDDEV_POP`.
 
 :::note
-Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная стабильность](https://en.wikipedia.org/wiki/Numerical_stability) в расчетах, используйте функцию [`stddevPopStable`](../reference/stddevpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную ошибку.
+Эта функция использует численно нестабильный алгоритм. Если вам нужна [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) при вычислениях, используйте функцию [`stddevPopStable`](../reference/stddevpopstable.md). Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 :::
 
 **Синтаксис**
@@ -24,12 +24,11 @@ stddevPop(x)
 
 **Параметры**
 
-- `x`: Популяция значений, для которых нужно найти стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
+* `x`: Набор значений, для которого вычисляется стандартное отклонение. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal*](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Квадратный корень из стандартного отклонения `x`. [Float64](../../data-types/float.md).
-
+* Квадратный корень из стандартного отклонения `x`. [Float64](../../data-types/float.md).
 
 **Пример**
 

@@ -5,6 +5,10 @@ slug: /integrations/minio
 description: 'Page describing how to use MinIO with ClickHouse'
 title: 'Using MinIO'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
 ---
 
 # Using MinIO
@@ -13,7 +17,7 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-All S3 functions and tables and compatible with [MinIO](https://min.io/). Users may experience superior throughput on self-hosted MinIO stores, especially in the event of optimal network locality.
+All S3 functions and tables and compatible with [MinIO](https://min.io/). You may experience superior throughput on self-hosted MinIO stores, especially in the event of optimal network locality.
 
 Also backed merge tree configuration is compatible too, with some minor changes in configuration:
 

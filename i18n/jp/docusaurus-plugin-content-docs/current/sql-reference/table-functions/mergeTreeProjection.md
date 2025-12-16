@@ -1,17 +1,16 @@
 ---
-description: 'MergeTree テーブル内のプロジェクションの内容を表します。内省に使用できます。'
-sidebar_label: 'MergeTree プロジェクション'
+description: 'MergeTree テーブル内の特定のプロジェクションの内容を表します。
+  内部の状態を確認するために使用できます。'
+sidebar_label: 'mergeTreeProjection'
 sidebar_position: 77
-slug: '/sql-reference/table-functions/mergeTreeProjection'
+slug: /sql-reference/table-functions/mergeTreeProjection
 title: 'mergeTreeProjection'
+doc_type: 'reference'
 ---
 
+# mergeTreeProjection テーブル関数 {#mergetreeprojection-table-function}
 
-
-
-# mergeTreeProjection テーブル関数
-
-MergeTree テーブルにおけるプロジェクションの内容を表します。内部的な解析に使用できます。
+MergeTree テーブル内の特定のプロジェクションの内容を表します。内部の状態を調査・確認するために使用できます。
 
 ## 構文 {#syntax}
 
@@ -21,15 +20,15 @@ mergeTreeProjection(database, table, projection)
 
 ## 引数 {#arguments}
 
-| 引数         | 説明                                      |
-|--------------|-------------------------------------------|
+| 引数         | 説明                                         |
+|--------------|----------------------------------------------|
 | `database`   | プロジェクションを読み取るデータベース名。   |
-| `table`      | プロジェクションを読み取るテーブル名。      |
-| `projection` | 読み取るプロジェクション。                 |
+| `table`      | プロジェクションを読み取るテーブル名。       |
+| `projection` | 読み取るプロジェクション。                   |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-指定されたプロジェクションによって提供されるカラムを持つテーブルオブジェクト。
+指定されたプロジェクションで定義された列を持つテーブルオブジェクト。
 
 ## 使用例 {#usage-example}
 
@@ -73,4 +72,4 @@ DESCRIBE mergeTreeProjection(currentDatabase(), test, order_by_item_id) SETTINGS
 1. │ item_id             │ UInt64 │
 2. │ _parent_part_offset │ UInt64 │
    └─────────────────────┴────────┘
-
+```

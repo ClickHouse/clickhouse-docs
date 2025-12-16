@@ -1,44 +1,96 @@
 ---
-description: 'Documentation for LIMIT Clause'
+description: 'LIMIT 句のドキュメント'
 sidebar_label: 'LIMIT'
-slug: '/sql-reference/statements/select/limit'
-title: 'LIMIT Clause'
+slug: /sql-reference/statements/select/limit
+title: 'LIMIT 句'
+doc_type: 'reference'
 ---
 
+# LIMIT 句 {#limit-clause}
 
+`LIMIT` 句は、クエリの結果として返される行数を制御します。
 
+## 基本構文 {#basic-syntax}
 
-# LIMIT 句
+**先頭の行を選択:**
 
-`LIMIT m` は、結果から最初の `m` 行を選択することができます。
+```sql
+LIMIT m
+```
 
-`LIMIT n, m` は、最初の `n` 行をスキップした後、結果から `m` 行を選択することができます。 `LIMIT m OFFSET n` という構文は等価です。
+結果セットから先頭の `m` 行を返します。結果セットのレコード数が `m` 未満の場合は、すべてのレコードを返します。
 
-`n` と `m` は、非負の整数でなければなりません。
+**代替 TOP 構文（MS SQL Server 互換）：**
 
-結果を明示的にソートする [ORDER BY](../../../sql-reference/statements/select/order-by.md) 句がない場合、結果の行の選択は任意で非決定的である可能性があります。
+```sql
+-- SELECT TOP number|percent column_name(s) FROM table_name
+SELECT TOP 10 * FROM numbers(100);
+SELECT TOP 0.1 * FROM numbers(100);
+```
 
-:::note    
-結果セットの行数は、[limit](../../../operations/settings/settings.md#limit) 設定にも依存します。
+これは `LIMIT m` と同等であり、Microsoft SQL Server 用のクエリとの互換性を保つために使用できます。
+
+**オフセット指定付き SELECT:**
+
+```sql
+LIMIT m OFFSET n
+-- or equivalently:
+LIMIT n, m
+```
+
+最初の `n` 行をスキップし、その後の `m` 行を返します。
+
+どちらの形式でも、`n` と `m` は 0 以上の整数でなければなりません。
+
+## 負の LIMIT {#negative-limits}
+
+負の値を使用して、結果セットの*末尾*から行を選択します。
+
+| 構文 | 結果 |
+|--------|--------|
+| `LIMIT -m` | 末尾の `m` 行 |
+| `LIMIT -m OFFSET -n` | 末尾の `n` 行をスキップした後の末尾の `m` 行 |
+| `LIMIT m OFFSET -n` | 末尾の `n` 行をスキップした後の先頭の `m` 行 |
+| `LIMIT -m OFFSET n` | 先頭の `n` 行をスキップした後の末尾の `m` 行 |
+
+`LIMIT -n, -m` 構文は `LIMIT -m OFFSET -n` と同等です。
+
+## 小数による LIMIT {#fractional-limits}
+
+0 から 1 の間の小数値を使って、行の一定割合を選択できます:
+
+| 構文 | 結果 |
+|--------|--------|
+| `LIMIT 0.1` | 先頭 10% の行 |
+| `LIMIT 1 OFFSET 0.5` | 中央の行 |
+| `LIMIT 0.25 OFFSET 0.5` | 第3四分位（先頭 50% をスキップした後の 25% の行） |
+
+:::note
+
+- 小数は 0 より大きく 1 より小さい [Float64](../../data-types/float.md) 型の値でなければなりません。
+- 小数で指定された行数は、最も近い整数に丸められます。
 :::
 
-## LIMIT ... WITH TIES 修飾子 {#limit--with-ties-modifier}
+## 制限タイプの組み合わせ {#combining-limit-types}
 
-`LIMIT n[,m]` に対して `WITH TIES` 修飾子を設定し、`ORDER BY expr_list` を指定すると、結果には最初の `n` または `n,m` 行と、`LIMIT n` の場合は位置 `n` の行と同じ `ORDER BY` フィールド値を持つすべての行が含まれます。 `LIMIT n,m` の場合は位置 `m` です。
+標準の整数と小数や負のオフセットを組み合わせて使用できます。
 
-この修飾子は、[ORDER BY ... WITH FILL 修飾子](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) とも組み合わせることができます。
+```sql
+LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
+LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
+```
 
-例えば、次のクエリは
+## LIMIT ... WITH TIES {#limit--with-ties-modifier}
+
+`WITH TIES` 修飾子は、LIMIT 句で取得される最後の行と同じ `ORDER BY` の値を持つ行を、追加で結果に含めます。
 
 ```sql
 SELECT * FROM (
-    SELECT number%50 AS n FROM numbers(100)
-) ORDER BY n LIMIT 0,5
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 0, 5
 ```
 
-を実行すると、次の結果が得られます。
-
-```text
+```response
 ┌─n─┐
 │ 0 │
 │ 0 │
@@ -48,17 +100,15 @@ SELECT * FROM (
 └───┘
 ```
 
-しかし、`WITH TIES` 修飾子を適用すると
+`WITH TIES` を指定すると、最後の値と同じ値を持つすべての行が含まれます。
 
 ```sql
 SELECT * FROM (
-    SELECT number%50 AS n FROM numbers(100)
-) ORDER BY n LIMIT 0,5 WITH TIES
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 0, 5 WITH TIES
 ```
 
-次のような異なる行セットが返されます。
-
-```text
+```response
 ┌─n─┐
 │ 0 │
 │ 0 │
@@ -69,4 +119,20 @@ SELECT * FROM (
 └───┘
 ```
 
-これは、行番号 6 が行番号 5 と同じ値 "2" をフィールド `n` に持つためです。
+行 6 は、行 5 と同じ値（`2`）を持つため含まれます。
+
+:::note
+`WITH TIES` は負の LIMIT 値ではサポートされていません。
+:::
+
+この修飾子は、[`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修飾子と組み合わせて使用できます。
+
+## 考慮事項 {#considerations}
+
+**非決定的な結果:** [`ORDER BY`](../../../sql-reference/statements/select/order-by.md) 句がない場合、返される行は任意のものとなり、クエリの実行ごとに結果が変わる可能性があります。
+
+**サーバー側の制限:** 返される行数は、[limit 設定](../../../operations/settings/settings.md#limit) によっても影響を受けます。
+
+## 関連項目 {#see-also}
+
+- [LIMIT BY](/sql-reference/statements/select/limit-by) — 値のグループごとに行数を制限でき、各カテゴリ内で上位 N 件の結果を取得するのに便利です。

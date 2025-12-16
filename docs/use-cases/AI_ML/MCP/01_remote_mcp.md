@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'ClickHouse Cloud Remote MCP'
+sidebar_label: 'ClickHouse Cloud remote MCP'
 title: 'Enabling the ClickHouse Cloud Remote MCP Server'
 pagination_prev: null
 pagination_next: null
@@ -25,11 +25,6 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 # Enabling the ClickHouse Cloud Remote MCP Server
 
 > This guide explains how to enable and use the ClickHouse Cloud Remote MCP Server. We will use Claude Code as an MCP Client for this example, but any LLM client that supports MCP can be used.
-
-:::note 
-The remote server capability is currently available in private preview only.
-Join the waitlist by filling out the form at [clickhouse.ai](https://www.clickhouse.ai)
-:::
 
 <VerticalStepper headerLevel="h2">
 

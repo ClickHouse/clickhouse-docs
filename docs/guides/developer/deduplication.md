@@ -1,9 +1,10 @@
 ---
 slug: /guides/developer/deduplication
-sidebar_label: 'Deduplication Strategies'
+sidebar_label: 'Deduplication strategies'
 sidebar_position: 3
 description: 'Use deduplication when you need to perform frequent upserts, updates and deletes.'
 title: 'Deduplication Strategies'
+keywords: ['deduplication strategies', 'data deduplication', 'upserts', 'updates and deletes', 'developer guide']
 doc_type: 'guide'
 ---
 

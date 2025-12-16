@@ -1,22 +1,16 @@
 ---
-'title': '为 Python 安装 chDB'
-'sidebar_label': 'Python'
-'slug': '/chdb/install/python'
-'description': '如何为 Python 安装 chDB'
-'keywords':
-- 'chdb'
-- 'embedded'
-- 'clickhouse-lite'
-- 'python'
-- 'install'
+title: '安装适用于 Python 的 chDB'
+sidebar_label: 'Python'
+slug: /chdb/install/python
+description: '如何安装适用于 Python 的 chDB'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
+doc_type: 'guide'
 ---
 
+## 系统要求 {#requirements}
 
-# 安装 chDB for Python
-
-## 要求 {#requirements}
-
-在 macOS 和 Linux (x86_64 和 ARM64) 上，Python 3.8+
+- Python 3.8+ 
+- 支持的平台：macOS 和 Linux（x86_64 和 ARM64）
 
 ## 安装 {#install}
 
@@ -24,244 +18,743 @@
 pip install chdb
 ```
 
-## 使用 {#usage}
+## 使用方法 {#usage} 
 
-CLI 示例：
+### 命令行界面 {#command-line-interface}
 
-```python
-python3 -m chdb [SQL] [OutputFormat]
-```
+通过命令行直接运行 SQL 查询：
 
-```python
+```bash
+# Basic query
 python3 -m chdb "SELECT 1, 'abc'" Pretty
+
+# Query with formatting
+python3 -m chdb "SELECT version()" JSON
 ```
 
-Python 文件示例：
+### Python 基本用法 {#basic-python-usage}
 
 ```python
 import chdb
 
-res = chdb.query("SELECT 1, 'abc'", "CSV")
-print(res, end="")
+# Simple query
+result = chdb.query("SELECT 1 as id, 'Hello World' as message", "CSV")
+print(result)
+
+# Get query statistics
+print(f"Rows read: {result.rows_read()}")
+print(f"Bytes read: {result.bytes_read()}")
+print(f"Execution time: {result.elapsed()} seconds")
 ```
 
-查询可以使用任何 [支持的格式](/interfaces/formats) 返回数据，以及 `Dataframe` 和 `Debug`。
+### 基于连接的 API（推荐使用） {#connection-based-api}
 
-## GitHub 仓库 {#github-repository}
-
-您可以在 [chdb-io/chdb](https://github.com/chdb-io/chdb) 查找该项目的 GitHub 仓库。
-
-## 数据输入 {#data-input}
-
-以下方法可用于访问磁盘和内存中的数据格式：
-
-### 对文件的查询 (Parquet, CSV, JSON, Arrow, ORC 及 60+ 格式) {#query-on-file-parquet-csv-json-arrow-orc-and-60}
-
-您可以执行 SQL 并返回所需格式的数据。
+为更好地进行资源管理并提升性能：
 
 ```python
 import chdb
-res = chdb.query('select version()', 'Pretty'); print(res)
+
+# Create connection (in-memory by default)
+conn = chdb.connect(":memory:")
+# Or use file-based: conn = chdb.connect("mydata.db")
+
+# Create cursor for query execution
+cur = conn.cursor()
+
+# Execute queries
+cur.execute("SELECT number, toString(number) as str FROM system.numbers LIMIT 3")
+
+# Fetch results in different ways
+print(cur.fetchone())    # Single row: (0, '0')
+print(cur.fetchmany(2))  # Multiple rows: ((1, '1'), (2, '2'))
+
+# Get metadata
+print(cur.column_names())  # ['number', 'str']
+print(cur.column_types())  # ['UInt64', 'String']
+
+# Use cursor as iterator
+for row in cur:
+    print(row)
+
+# Always close resources
+cur.close()
+conn.close()
 ```
 
-**处理 Parquet 或 CSV**
+## 数据接入方式 {#data-input}
+
+### 基于文件的数据源 {#file-based-data-sources}
+
+chDB 支持 70 多种数据格式，可直接查询文件：
 
 ```python
+import chdb
+# Prepare your data
+# ...
 
-# See more data type format in tests/format_output.py
-res = chdb.query('select * from file("data.parquet", Parquet)', 'JSON'); print(res)
-res = chdb.query('select * from file("data.csv", CSV)', 'CSV');  print(res)
-print(f"SQL read {res.rows_read()} rows, {res.bytes_read()} bytes, elapsed {res.elapsed()} seconds")
+# Query Parquet files
+result = chdb.query("""
+    SELECT customer_id, sum(amount) as total
+    FROM file('sales.parquet', Parquet) 
+    GROUP BY customer_id 
+    ORDER BY total DESC 
+    LIMIT 10
+""", 'JSONEachRow')
+
+# Query CSV with headers
+result = chdb.query("""
+    SELECT * FROM file('data.csv', CSVWithNames) 
+    WHERE column1 > 100
+""", 'DataFrame')
+
+# Multiple file formats
+result = chdb.query("""
+    SELECT * FROM file('logs*.jsonl', JSONEachRow)
+    WHERE timestamp > '2024-01-01'
+""", 'Pretty')
 ```
 
-**Pandas DataFrame 输出**
+### 输出格式示例 {#output-format-examples}
+
 ```python
+# DataFrame for analysis
+df = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'DataFrame')
+print(type(df))  # <class 'pandas.core.frame.DataFrame'>
 
-# See more in https://clickhouse.com/docs/interfaces/formats
-chdb.query('select * from file("data.parquet", Parquet)', 'Dataframe')
+# Arrow Table for interoperability  
+arrow_table = chdb.query('SELECT * FROM system.numbers LIMIT 5', 'ArrowTable')
+print(type(arrow_table))  # <class 'pyarrow.lib.Table'>
+
+# JSON for APIs
+json_result = chdb.query('SELECT version()', 'JSON')
+print(json_result)
+
+# Pretty format for debugging
+pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
+print(pretty_result)
 ```
 
-### 对表的查询 (Pandas DataFrame, Parquet 文件/字节, Arrow 字节) {#query-on-table-pandas-dataframe-parquet-filebytes-arrow-bytes}
+### DataFrame 操作 {#dataframe-operations}
 
-**对 Pandas DataFrame 的查询**
+#### 旧版 DataFrame API {#legacy-dataframe-api}
 
 ```python
 import chdb.dataframe as cdf
 import pandas as pd
 
-# Join 2 DataFrames
+# Join multiple DataFrames
 df1 = pd.DataFrame({'a': [1, 2, 3], 'b': ["one", "two", "three"]})
 df2 = pd.DataFrame({'c': [1, 2, 3], 'd': ["①", "②", "③"]})
-ret_tbl = cdf.query(sql="select * from __tbl1__ t1 join __tbl2__ t2 on t1.a = t2.c",
-                  tbl1=df1, tbl2=df2)
-print(ret_tbl)
 
-# Query on the DataFrame Table
-print(ret_tbl.query('select b, sum(a) from __table__ group by b'))
+result_df = cdf.query(
+    sql="SELECT * FROM __tbl1__ t1 JOIN __tbl2__ t2 ON t1.a = t2.c",
+    tbl1=df1, 
+    tbl2=df2
+)
+print(result_df)
+
+# Query the result DataFrame
+summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
+print(summary)
 ```
 
-### 使用有状态会话的查询 {#query-with-stateful-session}
-
-会话将保持查询的状态。所有 DDL 和 DML 状态将保存在一个目录中。目录路径可以作为参数传入。如果没有传入，将创建一个临时目录。
-
-如果未指定路径，临时目录将在会话对象被删除时删除。否则，路径将被保留。
-
-请注意，默认数据库是 `_local`，默认引擎是 `Memory`，这意味着所有数据都将存储在内存中。如果您想将数据存储在磁盘上，则应创建另一个数据库。
+#### Python 表引擎（推荐） {#python-table-engine-recommended}
 
 ```python
-from chdb import session as chs
+import chdb
+import pandas as pd
+import pyarrow as pa
 
-## Create DB, Table, View in temp session, auto cleanup when session is deleted.
-sess = chs.Session()
-sess.query("CREATE DATABASE IF NOT EXISTS db_xxx ENGINE = Atomic")
-sess.query("CREATE TABLE IF NOT EXISTS db_xxx.log_table_xxx (x String, y Int) ENGINE = Log;")
-sess.query("INSERT INTO db_xxx.log_table_xxx VALUES ('a', 1), ('b', 3), ('c', 2), ('d', 5);")
-sess.query(
-    "CREATE VIEW db_xxx.view_xxx AS SELECT * FROM db_xxx.log_table_xxx LIMIT 4;"
-)
-print("Select from view:\n")
-print(sess.query("SELECT * FROM db_xxx.view_xxx", "Pretty"))
+# Query Pandas DataFrame directly
+df = pd.DataFrame({
+    "customer_id": [1, 2, 3, 1, 2],
+    "product": ["A", "B", "A", "C", "A"],
+    "amount": [100, 200, 150, 300, 250],
+    "metadata": [
+        {'category': 'electronics', 'priority': 'high'},
+        {'category': 'books', 'priority': 'low'},
+        {'category': 'electronics', 'priority': 'medium'},
+        {'category': 'clothing', 'priority': 'high'},
+        {'category': 'books', 'priority': 'low'}
+    ]
+})
+
+# Direct DataFrame querying with JSON support
+result = chdb.query("""
+    SELECT 
+        customer_id,
+        sum(amount) as total_spent,
+        toString(metadata.category) as category
+    FROM Python(df)
+    WHERE toString(metadata.priority) = 'high'
+    GROUP BY customer_id, toString(metadata.category)
+    ORDER BY total_spent DESC
+""").show()
+
+# Query Arrow Table
+arrow_table = pa.table({
+    "id": [1, 2, 3, 4],
+    "name": ["Alice", "Bob", "Charlie", "David"],
+    "score": [98, 89, 86, 95]
+})
+
+chdb.query("""
+    SELECT name, score
+    FROM Python(arrow_table)
+    ORDER BY score DESC
+""").show()
 ```
 
-另请参见: [test_stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
+### 有状态会话 {#stateful-sessions}
 
-### 使用 Python DB-API 2.0 的查询 {#query-with-python-db-api-20}
+会话在多次操作之间保持查询状态，从而支持复杂的工作流：
+
+```python
+from chdb import session
+
+# Temporary session (auto-cleanup)
+sess = session.Session()
+
+# Or persistent session with specific path
+# sess = session.Session("/path/to/data")
+
+# Create database and tables
+sess.query("CREATE DATABASE IF NOT EXISTS analytics ENGINE = Atomic")
+sess.query("USE analytics")
+
+sess.query("""
+    CREATE TABLE sales (
+        id UInt64,
+        product String,
+        amount Decimal(10,2),
+        sale_date Date
+    ) ENGINE = MergeTree() 
+    ORDER BY (sale_date, id)
+""")
+
+# Insert data
+sess.query("""
+    INSERT INTO sales VALUES 
+        (1, 'Laptop', 999.99, '2024-01-15'),
+        (2, 'Mouse', 29.99, '2024-01-16'),
+        (3, 'Keyboard', 79.99, '2024-01-17')
+""")
+
+# Create materialized views
+sess.query("""
+    CREATE MATERIALIZED VIEW daily_sales AS
+    SELECT 
+        sale_date,
+        count() as orders,
+        sum(amount) as revenue
+    FROM sales 
+    GROUP BY sale_date
+""")
+
+# Query the view
+result = sess.query("SELECT * FROM daily_sales ORDER BY sale_date", "Pretty")
+print(result)
+
+# Session automatically manages resources
+sess.close()  # Optional - auto-closed when object is deleted
+```
+
+### 高级会话功能 {#advanced-session-features}
+
+```python
+# Session with custom settings
+sess = session.Session(
+    path="/tmp/analytics_db",
+)
+
+# Query performance optimization
+result = sess.query("""
+    SELECT product, sum(amount) as total
+    FROM sales 
+    GROUP BY product
+    ORDER BY total DESC
+    SETTINGS max_threads = 4
+""", "JSON")
+```
+
+另请参见：[test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
+
+### Python DB-API 2.0 接口 {#python-db-api-20}
+
+面向现有 Python 应用程序的标准数据库接口，以确保兼容性：
 
 ```python
 import chdb.dbapi as dbapi
-print("chdb driver version: {0}".format(dbapi.get_client_info()))
 
-conn1 = dbapi.connect()
-cur1 = conn1.cursor()
-cur1.execute('select version()')
-print("description: ", cur1.description)
-print("data: ", cur1.fetchone())
-cur1.close()
-conn1.close()
+# Check driver information
+print(f"chDB driver version: {dbapi.get_client_info()}")
+
+# Create connection
+conn = dbapi.connect()
+cursor = conn.cursor()
+
+# Execute queries with parameters
+cursor.execute("""
+    SELECT number, number * ? as doubled 
+    FROM system.numbers 
+    LIMIT ?
+""", (2, 5))
+
+# Get metadata
+print("Column descriptions:", cursor.description)
+print("Row count:", cursor.rowcount)
+
+# Fetch results
+print("First row:", cursor.fetchone())
+print("Next 2 rows:", cursor.fetchmany(2))
+
+# Fetch remaining rows
+for row in cursor.fetchall():
+    print("Row:", row)
+
+# Batch operations
+data = [(1, 'Alice'), (2, 'Bob'), (3, 'Charlie')]
+cursor.execute("""
+    CREATE TABLE temp_users (
+        id UInt64,
+        name String
+    ) ENGINE = MergeTree()
+    ORDER BY (id)
+""")
+cursor.executemany(
+    "INSERT INTO temp_users (id, name) VALUES (?, ?)", 
+    data
+)
 ```
 
-### 使用 UDF (用户定义函数) 的查询 {#query-with-udf-user-defined-functions}
+### 用户自定义函数（UDF） {#user-defined-functions}
+
+使用自定义 Python 函数扩展 SQL：
+
+#### UDF 的基本用法 {#basic-udf-usage}
 
 ```python
 from chdb.udf import chdb_udf
 from chdb import query
 
+# Simple mathematical function
 @chdb_udf()
-def sum_udf(lhs, rhs):
-    return int(lhs) + int(rhs)
+def add_numbers(a, b):
+    return int(a) + int(b)
 
-print(query("select sum_udf(12,22)"))
-```
+# String processing function
+@chdb_udf()
+def reverse_string(text):
+    return text[::-1]
 
-关于 chDB Python UDF (用户定义函数) 装饰器的一些说明。
-1. 该函数应为无状态的。仅支持 UDF，不支持 UDAF（用户定义聚合函数）。
-2. 默认返回类型为字符串。如果您想更改返回类型，可以将返回类型作为参数传入。返回类型应为 [以下类型之一](/sql-reference/data-types)。
-3. 该函数应接受类型为字符串的参数。由于输入为制表符分隔的所有参数都是字符串。
-4. 该函数将在每一行输入时被调用。例如：
-```python
-def sum_udf(lhs, rhs):
-    return int(lhs) + int(rhs)
-
-for line in sys.stdin:
-    args = line.strip().split('\t')
-    lhs = args[0]
-    rhs = args[1]
-    print(sum_udf(lhs, rhs))
-    sys.stdout.flush()
-```
-5. 该函数应是一个纯 Python 函数。您应该导入所有在 **函数内部** 使用的 Python 模块。
-```python
-def func_use_json(arg):
+# JSON processing function  
+@chdb_udf()
+def extract_json_field(json_str, field):
     import json
-    ...
-```
-6. 使用的 Python 解释器与运行脚本所使用的相同。您可以通过 `sys.executable` 获取它。
+    try:
+        data = json.loads(json_str)
+        return str(data.get(field, ''))
+    except:
+        return ''
 
-另请参见: [test_udf.py](https://github.com/chdb-io/chdb/blob/main/tests/test_udf.py)。
+# Use UDFs in queries
+result = query("""
+    SELECT 
+        add_numbers('10', '20') as sum_result,
+        reverse_string('hello') as reversed,
+        extract_json_field('{"name": "John", "age": 30}', 'name') as name
+""")
+print(result)
+```
+
+#### 具有自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
+
+```python
+# UDF with specific return type
+@chdb_udf(return_type="Float64")
+def calculate_bmi(height_str, weight_str):
+    height = float(height_str) / 100  # Convert cm to meters
+    weight = float(weight_str)
+    return weight / (height * height)
+
+# UDF for data validation
+@chdb_udf(return_type="UInt8") 
+def is_valid_email(email):
+    import re
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return 1 if re.match(pattern, email) else 0
+
+# Use in complex queries
+result = query("""
+    SELECT 
+        name,
+        calculate_bmi(height, weight) as bmi,
+        is_valid_email(email) as has_valid_email
+    FROM (
+        SELECT 
+            'John' as name, '180' as height, '75' as weight, 'john@example.com' as email
+        UNION ALL
+        SELECT 
+            'Jane' as name, '165' as height, '60' as weight, 'invalid-email' as email
+    )
+""", "Pretty")
+print(result)
+```
+
+#### UDF 最佳实践 {#udf-best-practices}
+
+1. **无状态函数**：UDF 应为无副作用的纯函数
+2. **在函数内部导入模块**：所有所需模块必须在 UDF 内部导入
+3. **字符串输入/输出**：所有 UDF 参数都是字符串（制表符分隔 TabSeparated 格式）
+4. **错误处理**：使用 try-catch 代码块以提高 UDF 的健壮性
+5. **性能**：UDF 会对每一行进行调用，因此需要针对性能进行优化
+
+```python
+# Well-structured UDF with error handling
+@chdb_udf(return_type="String")
+def safe_json_extract(json_str, path):
+    import json
+    try:
+        data = json.loads(json_str)
+        keys = path.split('.')
+        result = data
+        for key in keys:
+            if isinstance(result, dict) and key in result:
+                result = result[key]
+            else:
+                return 'null'
+        return str(result)
+    except Exception as e:
+        return f'error: {str(e)}'
+
+# Use with complex nested JSON
+query("""
+    SELECT safe_json_extract(
+        '{"user": {"profile": {"name": "Alice", "age": 25}}}',
+        'user.profile.name'
+    ) as extracted_name
+""")
+```
+
+### 流式查询处理 {#streaming-queries}
+
+以固定内存占用处理大规模数据集：
+
+```python
+from chdb import session
+
+sess = session.Session()
+
+# Setup large dataset
+sess.query("""
+    CREATE TABLE large_data ENGINE = Memory() AS 
+    SELECT number as id, toString(number) as data 
+    FROM numbers(1000000)
+""")
+
+# Example 1: Basic streaming with context manager
+total_rows = 0
+with sess.send_query("SELECT * FROM large_data", "CSV") as stream:
+    for chunk in stream:
+        chunk_rows = len(chunk.data().split('\n')) - 1
+        total_rows += chunk_rows
+        print(f"Processed chunk: {chunk_rows} rows")
+        
+        # Early termination if needed
+        if total_rows > 100000:
+            break
+
+print(f"Total rows processed: {total_rows}")
+
+# Example 2: Manual iteration with explicit cleanup
+stream = sess.send_query("SELECT * FROM large_data WHERE id % 100 = 0", "JSONEachRow")
+processed_count = 0
+
+while True:
+    chunk = stream.fetch()
+    if chunk is None:
+        break
+    
+    # Process chunk data
+    lines = chunk.data().strip().split('\n')
+    for line in lines:
+        if line:  # Skip empty lines
+            processed_count += 1
+    
+    print(f"Processed {processed_count} records so far...")
+    
+stream.close()  # Important: explicit cleanup
+
+# Example 3: Arrow integration for external libraries
+import pyarrow as pa
+from deltalake import write_deltalake
+
+# Stream results in Arrow format
+stream = sess.send_query("SELECT * FROM large_data LIMIT 100000", "Arrow")
+
+# Create RecordBatchReader with custom batch size
+batch_reader = stream.record_batch(rows_per_batch=10000)
+
+# Export to Delta Lake
+write_deltalake(
+    table_or_uri="./my_delta_table",
+    data=batch_reader,
+    mode="overwrite"
+)
+
+stream.close()
+sess.close()
+```
 
 ### Python 表引擎 {#python-table-engine}
 
-### 对 Pandas DataFrame 的查询 {#query-on-pandas-dataframe}
+#### 查询 Pandas DataFrame 数据 {#query-pandas-dataframes}
 
 ```python
 import chdb
 import pandas as pd
-df = pd.DataFrame(
-    {
-        "a": [1, 2, 3, 4, 5, 6],
-        "b": ["tom", "jerry", "auxten", "tom", "jerry", "auxten"],
-    }
-)
 
-chdb.query("SELECT b, sum(a) FROM Python(df) GROUP BY b ORDER BY b").show()
+# Complex DataFrame with nested data
+df = pd.DataFrame({
+    "customer_id": [1, 2, 3, 4, 5, 6],
+    "customer_name": ["Alice", "Bob", "Charlie", "Alice", "Bob", "David"],
+    "orders": [
+        {"order_id": 101, "amount": 250.50, "items": ["laptop", "mouse"]},
+        {"order_id": 102, "amount": 89.99, "items": ["book"]},
+        {"order_id": 103, "amount": 1299.99, "items": ["phone", "case", "charger"]},
+        {"order_id": 104, "amount": 45.50, "items": ["pen", "paper"]},
+        {"order_id": 105, "amount": 199.99, "items": ["headphones"]},
+        {"order_id": 106, "amount": 15.99, "items": ["cable"]}
+    ]
+})
+
+# Advanced querying with JSON operations
+result = chdb.query("""
+    SELECT 
+        customer_name,
+        count() as order_count,
+        sum(toFloat64(orders.amount)) as total_spent,
+        arrayStringConcat(
+            arrayDistinct(
+                arrayFlatten(
+                    groupArray(orders.items)
+                )
+            ), 
+            ', '
+        ) as all_items
+    FROM Python(df)
+    GROUP BY customer_name
+    HAVING total_spent > 100
+    ORDER BY total_spent DESC
+""").show()
+
+# Window functions on DataFrames
+window_result = chdb.query("""
+    SELECT 
+        customer_name,
+        toFloat64(orders.amount) as amount,
+        sum(toFloat64(orders.amount)) OVER (
+            PARTITION BY customer_name 
+            ORDER BY toInt32(orders.order_id)
+        ) as running_total
+    FROM Python(df)
+    ORDER BY customer_name, toInt32(orders.order_id)
+""", "Pretty")
+print(window_result)
 ```
 
-### 对 Arrow 表的查询 {#query-on-arrow-table}
+#### 使用 PyReader 的自定义数据源 {#custom-data-sources-pyreader}
+
+为特定数据源实现自定义数据读取器：
 
 ```python
 import chdb
-import pyarrow as pa
-arrow_table = pa.table(
-    {
-        "a": [1, 2, 3, 4, 5, 6],
-        "b": ["tom", "jerry", "auxten", "tom", "jerry", "auxten"],
-    }
-)
+from typing import List, Tuple, Any
+import json
 
-chdb.query(
-    "SELECT b, sum(a) FROM Python(arrow_table) GROUP BY b ORDER BY b", "debug"
-).show()
-```
-
-### 对 chdb.PyReader 类实例的查询 {#query-on-chdbpyreader-class-instance}
-
-1. 您必须继承 chdb.PyReader 类并实现 `read` 方法。
-2. `read` 方法应：
-    1. 返回一个列表的列表，第一维是列，第二维是行，列的顺序应与 `read` 的第一个参数 `col_names` 相同。
-    1. 在没有更多数据可读时返回空列表。
-    1. 是有状态的，游标应在 `read` 方法中更新。
-3. 可选的 `get_schema` 方法可以实现以返回表的模式。原型为 `def get_schema(self) -> List[Tuple[str, str]]:`，返回值是一个元组列表，每个元组包含列名和列类型。列类型应为 [以下类型之一](/sql-reference/data-types)。
-
-<br />
-
-```python
-import chdb
-
-class myReader(chdb.PyReader):
-    def __init__(self, data):
-        self.data = data
+class DatabaseReader(chdb.PyReader):
+    """Custom reader for database-like data sources"""
+    
+    def __init__(self, connection_string: str):
+        # Simulate database connection
+        self.data = self._load_data(connection_string)
         self.cursor = 0
-        super().__init__(data)
+        self.batch_size = 1000
+        super().__init__(self.data)
+    
+    def _load_data(self, conn_str):
+        # Simulate loading from database
+        return {
+            "id": list(range(1, 10001)),
+            "name": [f"user_{i}" for i in range(1, 10001)],
+            "score": [i * 10 + (i % 7) for i in range(1, 10001)],
+            "metadata": [
+                json.dumps({"level": i % 5, "active": i % 3 == 0})
+                for i in range(1, 10001)
+            ]
+        }
+    
+    def get_schema(self) -> List[Tuple[str, str]]:
+        """Define table schema with explicit types"""
+        return [
+            ("id", "UInt64"),
+            ("name", "String"),
+            ("score", "Int64"),
+            ("metadata", "String")  # JSON stored as string
+        ]
+    
+    def read(self, col_names: List[str], count: int) -> List[List[Any]]:
+        """Read data in batches"""
+        if self.cursor >= len(self.data["id"]):
+            return []  # No more data
+        
+        end_pos = min(self.cursor + min(count, self.batch_size), len(self.data["id"]))
+        
+        # Return data for requested columns
+        result = []
+        for col in col_names:
+            if col in self.data:
+                result.append(self.data[col][self.cursor:end_pos])
+            else:
+                # Handle missing columns
+                result.append([None] * (end_pos - self.cursor))
+        
+        self.cursor = end_pos
+        return result
 
-    def read(self, col_names, count):
-        print("Python func read", col_names, count, self.cursor)
-        if self.cursor >= len(self.data["a"]):
-            return []
-        block = [self.data[col] for col in col_names]
-        self.cursor += len(block[0])
-        return block
+### JSON Type Inference and Handling {#json-type-inference-handling}
 
-reader = myReader(
-    {
-        "a": [1, 2, 3, 4, 5, 6],
-        "b": ["tom", "jerry", "auxten", "tom", "jerry", "auxten"],
-    }
-)
+chDB automatically handles complex nested data structures:
 
-chdb.query(
-    "SELECT b, sum(a) FROM Python(reader) GROUP BY b ORDER BY b"
-).show()
+```python
+import pandas as pd
+import chdb
+
+# 包含混合 JSON 对象的 DataFrame {#dataframe-with-mixed-json-objects}
+df_with_json = pd.DataFrame({
+    "user_id": [1, 2, 3, 4],
+    "profile": [
+        {"name": "Alice", "age": 25, "preferences": ["music", "travel"]},
+        {"name": "Bob", "age": 30, "location": {"city": "NYC", "country": "US"}},
+        {"name": "Charlie", "skills": ["python", "sql", "ml"], "experience": 5},
+        {"score": 95, "rank": "gold", "achievements": [{"title": "Expert", "date": "2024-01-01"}]}
+    ]
+})
+
+# 通过设置控制 JSON 推断 {#control-json-inference-with-settings}
+result = chdb.query("""
+    SELECT 
+        user_id,
+        profile.name as name,
+        profile.age as age,
+        length(profile.preferences) as pref_count,
+        profile.location.city as city
+    FROM Python(df_with_json)
+    SETTINGS pandas_analyze_sample = 1000  -- 分析所有行以检测 JSON
+""", "Pretty")
+print(result)
+
+# 高级 JSON 操作 {#advanced-json-operations}
+complex_json = chdb.query("""
+    SELECT 
+        user_id,
+        JSONLength(toString(profile)) as json_fields,
+        JSONType(toString(profile), 'preferences') as pref_type,
+        if(
+            JSONHas(toString(profile), 'achievements'),
+            JSONExtractString(toString(profile), 'achievements[0].title'),
+            'None'
+        ) as first_achievement
+    FROM Python(df_with_json)
+""", "JSONEachRow")
+print(complex_json)
 ```
 
-另请参见: [test_query_py.py](https://github.com/chdb-io/chdb/blob/main/tests/test_query_py.py)。
+## Performance and optimization {#performance-optimization}
 
-## 限制 {#limitations}
+### Benchmarks {#benchmarks}
 
-1. 支持的列类型：`pandas.Series`, `pyarrow.array`,`chdb.PyReader`
-1. 支持的数据类型：Int, UInt, Float, String, Date, DateTime, Decimal
-1. Python 对象类型将转化为字符串
-1. Pandas DataFrame 的性能最佳，Arrow 表优于 PyReader
+chDB consistently outperforms other embedded engines:
+- **DataFrame operations**: 2-5x faster than traditional DataFrame libraries for analytical queries
+- **Parquet processing**: Competitive with leading columnar engines
+- **Memory efficiency**: Lower memory footprint than alternatives
 
-<br />
+[More benchmark result details](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
 
-更多示例，请参见 [examples](https://github.com/chdb-io/chdb/tree/main/examples) 和 [tests](https://github.com/chdb-io/chdb/tree/main/tests)。
+### Performance tips {#performance-tips}
+
+```python
+import chdb
+
+# 1. 使用合适的输出格式 {#1-use-appropriate-output-formats}
+df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 用于数据分析
+arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 用于系统互操作
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 间传输
+
+# 2. 通过配置参数优化查询 {#2-optimize-queries-with-settings}
+fast_result = chdb.query("""
+    SELECT customer_id, sum(amount) 
+    FROM sales 
+    GROUP BY customer_id
+    SETTINGS 
+        max_threads = 8,
+        max_memory_usage = '4G',
+        use_uncompressed_cache = 1
+""", "DataFrame")
+
+# 3. 对大数据集使用流式处理 {#3-leverage-streaming-for-large-datasets}
+from chdb import session
+
+sess = session.Session()
+
+# 创建大数据集 {#setup-large-dataset}
+sess.query("""
+    CREATE TABLE large_sales ENGINE = Memory() AS 
+    SELECT 
+        number as sale_id,
+        number % 1000 as customer_id,
+        rand() % 1000 as amount
+    FROM numbers(10000000)
+""")
+
+# 流式处理保持恒定内存占用 {#stream-processing-with-constant-memory-usage}
+total_amount = 0
+processed_rows = 0
+
+with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales GROUP BY customer_id", "JSONEachRow") as stream:
+    for chunk in stream:
+        lines = chunk.data().strip().split('\n')
+        for line in lines:
+            if line:  # 跳过空行
+                import json
+                row = json.loads(line)
+                total_amount += row['total']
+                processed_rows += 1
+        
+        print(f"Processed {processed_rows} customer records, running total: {total_amount}")
+        
+        # 演示用提前终止
+        if processed_rows > 1000:
+            break
+
+print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
+
+# 流式传输到外部系统(例如 Delta Lake) {#stream-to-external-systems-eg-delta-lake}
+stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
+batch_reader = stream.record_batch(rows_per_batch=50000)
+
+# 分批处理 {#process-in-batches}
+for batch in batch_reader:
+    print(f"Processing batch with {batch.num_rows} rows...")
+    # 转换或导出每批数据
+    # df_batch = batch.to_pandas()
+    # process_batch(df_batch)
+
+stream.close()
+sess.close()
+```
+
+## GitHub 仓库 {#github-repository}
+
+- **主仓库**：[chdb-io/chdb](https://github.com/chdb-io/chdb)
+- **问题与支持**：请在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues) 中提交 Issue

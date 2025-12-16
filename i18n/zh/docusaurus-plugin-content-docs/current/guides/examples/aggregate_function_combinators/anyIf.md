@@ -1,26 +1,23 @@
 ---
-'slug': '/examples/aggregate-function-combinators/anyIf'
-'title': 'anyIf'
-'description': '使用 anyIf 组合器的示例'
-'keywords':
-- 'any'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'anyIf'
-'sidebar_label': 'anyIf'
+slug: '/examples/aggregate-function-combinators/anyIf'
+title: 'anyIf'
+description: '使用 anyIf 组合器的示例'
+keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
-
 
 # anyIf {#avgif}
 
 ## 描述 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`any`](/sql-reference/aggregate-functions/reference/any) 聚合函数，以选择匹配给定条件的某个列中首次遇到的元素。
+可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`any`](/sql-reference/aggregate-functions/reference/any)
+聚合函数，从给定列中选出首个满足指定条件的元素。
 
 ## 示例用法 {#example-usage}
 
-在这个示例中，我们将创建一个存储销售数据及成功标志的表，并使用 `anyIf` 选取大于和小于 200 的 `transaction_id`。
+在本示例中，我们将创建一个用于存储带有成功标志的销售数据的表，
+并使用 `anyIf` 分别选出金额大于 200 和小于 200 的首个 `transaction_id`。
 
 我们首先创建一个表并向其中插入数据：
 
@@ -44,8 +41,8 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) as tid_lt_200,
-    anyIf(transaction_id, amount > 200) as tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 
@@ -57,4 +54,4 @@ FROM sales;
 
 ## 另请参阅 {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

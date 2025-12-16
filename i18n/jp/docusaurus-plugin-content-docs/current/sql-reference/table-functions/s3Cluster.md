@@ -1,19 +1,17 @@
 ---
-description: '指定されたクラスタ内の多くのノードで、Amazon S3およびGoogle Cloud Storageからファイルを並列処理するs3テーブル関数の拡張機能。'
-sidebar_label: 's3クラスタ'
+description: 's3 テーブル関数を拡張したものであり、指定したクラスター内の複数ノードで Amazon S3 および Google Cloud Storage 上のファイルを並列処理できます。'
+sidebar_label: 's3Cluster'
 sidebar_position: 181
-slug: '/sql-reference/table-functions/s3Cluster'
+slug: /sql-reference/table-functions/s3Cluster
 title: 's3Cluster'
+doc_type: 'reference'
 ---
 
-
-
-
-# s3Cluster テーブル関数
+# s3Cluster テーブル関数 {#s3cluster-table-function}
 
 これは [s3](sql-reference/table-functions/s3.md) テーブル関数の拡張です。
 
-指定されたクラスター内の多数のノードで、[Amazon S3](https://aws.amazon.com/s3/) および Google Cloud Storage [Google Cloud Storage](https://cloud.google.com/storage/) のファイルを並行処理することができます。イニシエーターはクラスター内のすべてのノードに接続を作成し、S3ファイルパスのアスタリスクを開示し、それぞれのファイルを動的に配信します。ワーカーノードはイニシエーターに次の処理タスクを尋ねてそれを処理します。これはすべてのタスクが完了するまで繰り返されます。
+指定したクラスタ内の多数のノードで、[Amazon S3](https://aws.amazon.com/s3/) および [Google Cloud Storage](https://cloud.google.com/storage/) 上のファイルを並列処理できます。イニシエーター側では、クラスタ内のすべてのノードへの接続を確立し、S3 ファイルパス中のアスタリスクを展開し、各ファイルを動的に割り当てます。ワーカーノード側では、処理すべき次のタスクをイニシエーターに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
 
 ## 構文 {#syntax}
 
@@ -24,35 +22,35 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 ## 引数 {#arguments}
 
-| 引数                                  | 説明                                                                                                                                                                                             |
-|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name`                        | リモートおよびローカルサーバーへのアドレスと接続パラメーターのセットを構築するために使用されるクラスターの名前。                                                                                         |
-| `url`                                 | ファイルまたは複数のファイルのパス。読み取り専用モードで次のワイルドカードをサポート：`*`, `**`, `?`, `{'abc','def'}` および `{N..M}` ここで `N`, `M` は数字、`abc`, `def` は文字列です。詳細については [パス内のワイルドカード](../../engines/table-engines/integrations/s3.md#wildcards-in-path)を参照してください。 |
-| `NOSIGN`                              | このキーワードが資格情報の代わりに提供されると、すべてのリクエストは署名されません。                                                                                                             |
-| `access_key_id` と `secret_access_key` | 指定されたエンドポイントで使用する資格情報を指定するキー。オプション。                                                                                                                                     |
-| `session_token`                       | 指定されたキーで使用するセッショントークン。キーを渡す場合はオプション。                                                                                                                                 |
-| `format`                              | ファイルの [形式](/sql-reference/formats)。                                                                                                                                                         |
-| `structure`                           | テーブルの構造。形式は `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                          |
-| `compression_method`                  | パラメーターはオプションです。サポートされる値：`none`, `gzip` または `gz`, `brotli` または `br`, `xz` または `LZMA`, `zstd` または `zst`。デフォルトでは、ファイル拡張子によって圧縮方式を自動検出します。                 |
-| `headers`                             | パラメーターはオプションです。S3リクエストにヘッダを渡すことを許可します。形式 `headers(key=value)` で渡してください。例 `headers('x-amz-request-payer' = 'requester')`。使用例は [こちら](/sql-reference/table-functions/s3#accessing-requester-pays-buckets)。 |
-| `extra_credentials`                   | オプション。`roleARN` はこのパラメーターを介して渡すことができます。使用例は [こちら](/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)。                                          |
+| Argument                              | Description                                                                                                                                                                                             |
+|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cluster_name`                        | リモートおよびローカルサーバーへのアドレスと接続パラメータのセットを構築するために使用されるクラスタ名。                                                                                         |
+| `url`                                 | ファイルまたは複数ファイルへのパス。読み取り専用モードで次のワイルドカードをサポートします: `*`, `**`, `?`, `{'abc','def'}` および `{N..M}`。ここで `N`, `M` は数値、`abc`, `def` は文字列です。詳細は [Wildcards In Path](../../engines/table-engines/integrations/s3.md#wildcards-in-path) を参照してください。 |
+| `NOSIGN`                              | 資格情報の代わりにこのキーワードが指定された場合、すべてのリクエストは署名されません。                                                                                                             |
+| `access_key_id` と `secret_access_key` | 指定されたエンドポイントで使用する資格情報を表すキー。省略可能。                                                                                                                                     |
+| `session_token`                       | 指定されたキーとともに使用するセッショントークン。キーを指定する場合は省略可能。                                                                                                                                 |
+| `format`                              | ファイルの [format](/sql-reference/formats)。                                                                                                                                                         |
+| `structure`                           | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                          |
+| `compression_method`                  | 省略可能なパラメータ。サポートされる値: `none`, `gzip` または `gz`, `brotli` または `br`, `xz` または `LZMA`, `zstd` または `zst`。デフォルトでは、ファイル拡張子により圧縮方式を自動検出します。                 |
+| `headers`                             | 省略可能なパラメータ。S3 リクエストにヘッダーを渡すことができます。`headers(key=value)` 形式で指定します (例: `headers('x-amz-request-payer' = 'requester')`)。使用例は [こちら](/sql-reference/table-functions/s3#accessing-requester-pays-buckets) を参照してください。 |
+| `extra_credentials`                   | 省略可能。`roleARN` をこのパラメータ経由で渡すことができます。例は [こちら](/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role) を参照してください。                                          |
 
-引数は [名前付きコレクション](operations/named-collections.md) を使用しても渡すことができます。この場合、`url`、`access_key_id`、`secret_access_key`、`format`、`structure`、`compression_method` は同様に機能し、一部の追加パラメーターがサポートされます。
+引数は [named collections](operations/named-collections.md) を使用して渡すこともできます。この場合、`url`, `access_key_id`, `secret_access_key`, `format`, `structure`, `compression_method` は同様に動作し、追加のパラメータがサポートされます:
 
-| 引数                       | 説明                                                                                                                                                                                                                       |
-|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filename`                 | 指定された場合、URLに追加されます。                                                                                                                                                                                     |
-| `use_environment_credentials`  | デフォルトで有効で、環境変数 `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`、`AWS_CONTAINER_CREDENTIALS_FULL_URI`、`AWS_CONTAINER_AUTHORIZATION_TOKEN`、`AWS_EC2_METADATA_DISABLED`を使用して追加パラメーターを渡すことを許可します。 |
-| `no_sign_request`          | デフォルトで無効です。                                                                                                                                                                                                  |
-| `expiration_window_seconds` | デフォルト値は120です。                                                                                                                                                                                                 |
+| Argument                       | Description                                                                                                                                                                                                                       |
+|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `filename`                     | 指定された場合、`url` に付加されます。                                                                                                                                                                                                 |
+| `use_environment_credentials`  | デフォルトで有効です。環境変数 `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`, `AWS_CONTAINER_CREDENTIALS_FULL_URI`, `AWS_CONTAINER_AUTHORIZATION_TOKEN`, `AWS_EC2_METADATA_DISABLED` を使用して追加パラメータを渡すことを許可します。 |
+| `no_sign_request`              | デフォルトで無効です。                                                                                                                                                                                                              |
+| `expiration_window_seconds`    | デフォルト値は 120 です。                                                                                                                                                                                                             |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-指定されたファイルでデータを読み書きするための指定された構造のテーブル。
+指定した構造を持ち、指定したファイル内のデータを読み書きするためのテーブル。
 
 ## 例 {#examples}
 
-`cluster_simple` クラスター内のすべてのノードを使用して、`/root/data/clickhouse` と `/root/data/database/` フォルダー内のすべてのファイルからデータを選択します。
+次の例では、`cluster_simple` クラスター内のすべてのノードを使用して、`/root/data/clickhouse` および `/root/data/database/` ディレクトリ内のすべてのファイルからデータを選択します。
 
 ```sql
 SELECT * FROM s3Cluster(
@@ -65,13 +63,14 @@ SELECT * FROM s3Cluster(
 ) ORDER BY (name, value, polygon);
 ```
 
-`cluster_simple` クラスター内のすべてのファイルの合計行数をカウントします：
+クラスタ `cluster_simple` 内のすべてのファイルに含まれる行数の合計をカウントします。
 
 :::tip
-ファイルリストに先頭ゼロを含む数値範囲がある場合は、各桁を個別に波括弧で囲むか、`?` を使用してください。
+ファイル一覧に先頭ゼロ付きの数値範囲が含まれている場合は、各桁ごとに波かっこを使った記法を用いるか、`?` を使用してください。
 :::
 
-本番環境での使用例として、[名前付きコレクション](operations/named-collections.md)を使用することをお勧めします。以下はその例です：
+本番環境で利用する場合は、[named collections](operations/named-collections.md) の使用を推奨します。以下はその例です。
+
 ```sql
 
 CREATE NAMED COLLECTION creds AS
@@ -83,15 +82,15 @@ SELECT count(*) FROM s3Cluster(
 )
 ```
 
-## プライベートおよびパブリックバケットへのアクセス {#accessing-private-and-public-buckets}
+## プライベートバケットとパブリックバケットへのアクセス {#accessing-private-and-public-buckets}
 
-ユーザーは、s3関数に関する文書で説明されたのと同じアプローチを使用できます [こちら](/sql-reference/table-functions/s3#accessing-public-buckets)。
+ユーザーは、`s3` 関数について[こちら](/sql-reference/table-functions/s3#accessing-public-buckets)で説明されているのと同様の方法を利用できます。
 
-## パフォーマンスの最適化 {#optimizing-performance}
+## パフォーマンス最適化 {#optimizing-performance}
 
-s3関数のパフォーマンス最適化に関する詳細は、[我々の詳細なガイド](/integrations/s3/performance)を参照してください。
+`s3` 関数のパフォーマンスを最適化する方法の詳細は、[詳細ガイド](/integrations/s3/performance) を参照してください。
 
-## 関連 {#related}
+## 関連項目 {#related}
 
-- [S3エンジン](../../engines/table-engines/integrations/s3.md)
-- [s3テーブル関数](../../sql-reference/table-functions/s3.md)
+- [S3 エンジン](../../engines/table-engines/integrations/s3.md)
+- [S3 テーブル関数](../../sql-reference/table-functions/s3.md)

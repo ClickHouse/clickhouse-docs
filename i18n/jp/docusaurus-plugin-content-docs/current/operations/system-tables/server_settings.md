@@ -1,40 +1,38 @@
 ---
-description: 'System table containing formation about global settings for the server,
-  which are specified in `config.xml`.'
-keywords:
-- 'system table'
-- 'server_settings'
-slug: '/operations/system-tables/server_settings'
+description: 'サーバーのグローバル設定に関する情報を格納するシステムテーブルで、これらの設定は `config.xml` に記述されています。'
+keywords: ['system table', 'server_settings']
+slug: /operations/system-tables/server_settings
 title: 'system.server_settings'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.server&#95;settings {#systemserver&#95;settings}
 
-# system.server_settings
+<SystemTableCloud />
 
-<SystemTableCloud/>
+`config.xml` に指定されているサーバーのグローバル設定に関する情報を保持します。
+現在、このテーブルに表示されるのは `config.xml` の最上位階層にある設定のみで、入れ子になった設定（例: [logger](../../operations/server-configuration-parameters/settings.md#logger)）には対応していません。
 
-サーバーのグローバル設定に関する情報を含んでおり、これは `config.xml` で指定されています。現在、テーブルは `config.xml` の最初のレイヤーからの設定のみを表示し、ネストされた設定（例えば、[logger](../../operations/server-configuration-parameters/settings.md#logger)）はサポートしていません。
+Columns:
 
-カラム:
+* `name` ([String](../../sql-reference/data-types/string.md)) — サーバー設定名。
+* `value` ([String](../../sql-reference/data-types/string.md)) — サーバー設定値。
+* `default` ([String](../../sql-reference/data-types/string.md)) — サーバー設定のデフォルト値。
+* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 設定が `config.xml` で明示的に指定されているかどうかを示します。
+* `description` ([String](../../sql-reference/data-types/string.md)) — サーバー設定の簡潔な説明。
+* `type` ([String](../../sql-reference/data-types/string.md)) — サーバー設定値の型。
+* `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — 設定をサーバーの再起動なしで変更できるかどうか。値:
+  * `'No' `
+  * `'IncreaseOnly'`
+  * `'DecreaseOnly'`
+  * `'Yes'`
+* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 設定が廃止済みかどうかを示します。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) — サーバー設定の名前。
-- `value` ([String](../../sql-reference/data-types/string.md)) — サーバー設定の値。
-- `default` ([String](../../sql-reference/data-types/string.md)) — サーバー設定のデフォルト値。
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 設定が `config.xml` で指定されたかどうかを示します。
-- `description` ([String](../../sql-reference/data-types/string.md)) — 短いサーバー設定の説明。
-- `type` ([String](../../sql-reference/data-types/string.md)) — サーバー設定の値の型。
-- `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — 設定がサーバーの実行中に変更可能かどうか。値:
-    - `'No' `
-    - `'IncreaseOnly'`
-    - `'DecreaseOnly'`
-    - `'Yes'`
-- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 設定が廃止されているかどうかを示します。
+**Example**
 
-**例**
-
-以下の例は、名前に `thread_pool` を含むサーバー設定に関する情報を取得する方法を示しています。
+次の例は、名前に `thread_pool` を含むサーバー設定に関する情報の取得方法を示します。
 
 ```sql
 SELECT *
@@ -44,26 +42,26 @@ WHERE name LIKE '%thread_pool%'
 
 ```text
 ┌─name──────────────────────────────────────────┬─value─┬─default─┬─changed─┬─description─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─type───┬─changeable_without_restart─┬─is_obsolete─┐
-│ max_thread_pool_size                          │ 10000 │ 10000   │       0 │ OS から割り当てられ、クエリ実行やバックグラウンドオペレーションに使用できる最大スレッド数。                           │ UInt64 │                         No │           0 │
-│ max_thread_pool_free_size                     │ 1000  │ 1000    │       0 │ 割り当てられた後に常にグローバルスレッドプールに留まり、タスク数が不十分な場合にはアイドルのままの最大スレッド数。 │ UInt64 │                         No │           0 │
-│ thread_pool_queue_size                        │ 10000 │ 10000   │       0 │ 実行を待機するタスクをキューに配置できる最大数。                                                                  │ UInt64 │                         No │           0 │
-│ max_io_thread_pool_size                       │ 100   │ 100     │       0 │ IO オペレーションに使用される最大スレッド数。                                                                                 │ UInt64 │                         No │           0 │
-│ max_io_thread_pool_free_size                  │ 0     │ 0       │       0 │ IO スレッドプールの最大空きサイズ。                                                                                                                   │ UInt64 │                         No │           0 │
-│ io_thread_pool_queue_size                     │ 10000 │ 10000   │       0 │ IO スレッドプールのキューサイズ。                                                                                                                      │ UInt64 │                         No │           0 │
-│ max_active_parts_loading_thread_pool_size     │ 64    │ 64      │       0 │ スタートアップ時にアクティブなデータパーツのセット（アクティブなもの）をロードするためのスレッド数。                                                                    │ UInt64 │                         No │           0 │
-│ max_outdated_parts_loading_thread_pool_size   │ 32    │ 32      │       0 │ スタートアップ時に非アクティブなデータパーツのセット（アウトデートのもの）をロードするためのスレッド数。                                                                │ UInt64 │                         No │           0 │
-│ max_unexpected_parts_loading_thread_pool_size │ 32    │ 32      │       0 │ スタートアップ時に非アクティブなデータパーツのセット（予期しないもの）をロードするためのスレッド数。                                                              │ UInt64 │                         No │           0 │
-│ max_parts_cleaning_thread_pool_size           │ 128   │ 128     │       0 │ 非アクティブなデータパーツの同時削除に使用するスレッド数。                                                                                │ UInt64 │                         No │           0 │
-│ max_backups_io_thread_pool_size               │ 1000  │ 1000    │       0 │ バックアップクエリのための IO オペレーションに使用される最大スレッド数。                                                               │ UInt64 │                         No │           0 │
-│ max_backups_io_thread_pool_free_size          │ 0     │ 0       │       0 │ バックアップ IO スレッドプールの最大空きサイズ。                                                                                                           │ UInt64 │                         No │           0 │
-│ backups_io_thread_pool_queue_size             │ 0     │ 0       │       0 │ バックアップ IO スレッドプールのキューサイズ。                                                                                                              │ UInt64 │                         No │           0 │
+│ max_thread_pool_size                          │ 10000 │ 10000   │       0 │ The maximum number of threads that could be allocated from the OS and used for query execution and background operations.                           │ UInt64 │                         No │           0 │
+│ max_thread_pool_free_size                     │ 1000  │ 1000    │       0 │ The maximum number of threads that will always stay in a global thread pool once allocated and remain idle in case of insufficient number of tasks. │ UInt64 │                         No │           0 │
+│ thread_pool_queue_size                        │ 10000 │ 10000   │       0 │ The maximum number of tasks that will be placed in a queue and wait for execution.                                                                  │ UInt64 │                         No │           0 │
+│ max_io_thread_pool_size                       │ 100   │ 100     │       0 │ The maximum number of threads that would be used for IO operations                                                                                  │ UInt64 │                         No │           0 │
+│ max_io_thread_pool_free_size                  │ 0     │ 0       │       0 │ Max free size for IO thread pool.                                                                                                                   │ UInt64 │                         No │           0 │
+│ io_thread_pool_queue_size                     │ 10000 │ 10000   │       0 │ Queue size for IO thread pool.                                                                                                                      │ UInt64 │                         No │           0 │
+│ max_active_parts_loading_thread_pool_size     │ 64    │ 64      │       0 │ The number of threads to load active set of data parts (Active ones) at startup.                                                                    │ UInt64 │                         No │           0 │
+│ max_outdated_parts_loading_thread_pool_size   │ 32    │ 32      │       0 │ The number of threads to load inactive set of data parts (Outdated ones) at startup.                                                                │ UInt64 │                         No │           0 │
+│ max_unexpected_parts_loading_thread_pool_size │ 32    │ 32      │       0 │ The number of threads to load inactive set of data parts (Unexpected ones) at startup.                                                              │ UInt64 │                         No │           0 │
+│ max_parts_cleaning_thread_pool_size           │ 128   │ 128     │       0 │ The number of threads for concurrent removal of inactive data parts.                                                                                │ UInt64 │                         No │           0 │
+│ max_backups_io_thread_pool_size               │ 1000  │ 1000    │       0 │ The maximum number of threads that would be used for IO operations for BACKUP queries                                                               │ UInt64 │                         No │           0 │
+│ max_backups_io_thread_pool_free_size          │ 0     │ 0       │       0 │ Max free size for backups IO thread pool.                                                                                                           │ UInt64 │                         No │           0 │
+│ backups_io_thread_pool_queue_size             │ 0     │ 0       │       0 │ Queue size for backups IO thread pool.                                                                                                              │ UInt64 │                         No │           0 │
 └───────────────────────────────────────────────┴───────┴─────────┴─────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴────────────────────────────┴─────────────┘
 
 ```
 
-`WHERE changed` の使用は、設定ファイルの設定が正しく読み込まれ、使用されているかどうかを確認したいときに便利です。
+`WHERE changed` は、例えば設定ファイル内の設定が正しく読み込まれ、実際に利用されているかどうかを確認したい場合に有用です。
 
-<!-- -->
+{/* */ }
 
 ```sql
 SELECT * FROM system.server_settings WHERE changed AND name='max_thread_pool_size'
@@ -71,6 +69,6 @@ SELECT * FROM system.server_settings WHERE changed AND name='max_thread_pool_siz
 
 **関連項目**
 
-- [Settings](../../operations/system-tables/settings.md)
-- [Configuration Files](../../operations/configuration-files.md)
-- [Server Settings](../../operations/server-configuration-parameters/settings.md)
+* [設定](../../operations/system-tables/settings.md)
+* [設定ファイル](../../operations/configuration-files.md)
+* [サーバー設定](../../operations/server-configuration-parameters/settings.md)

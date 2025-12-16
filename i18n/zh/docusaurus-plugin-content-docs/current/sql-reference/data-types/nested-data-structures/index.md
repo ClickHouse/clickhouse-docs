@@ -1,17 +1,17 @@
 ---
-'description': '在 ClickHouse 中嵌套数据结构的概述'
-'sidebar_label': 'Nested(Name1 Type1, Name2 Type2, ...)'
-'sidebar_position': 57
-'slug': '/sql-reference/data-types/nested-data-structures/nested'
-'title': '嵌套'
+description: 'ClickHouse 中嵌套数据结构的概述'
+sidebar_label: 'Nested(Name1 Type1, Name2 Type2, ...)'
+sidebar_position: 57
+slug: /sql-reference/data-types/nested-data-structures/nested
+title: 'Nested'
+doc_type: 'guide'
 ---
 
-
-# 嵌套
+# 嵌套 {#nested}
 
 ## Nested(name1 Type1, Name2 Type2, ...) {#nestedname1-type1-name2-type2-}
 
-嵌套数据结构就像是单元格内的一个表。嵌套数据结构的参数——列名和类型——以与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同的方式指定。每个表行可以对应嵌套数据结构中的任意数量行。
+嵌套数据结构就像表格单元格中的一张表。嵌套数据结构的参数——列名和类型——的指定方式与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同。表中的每一行都可以对应嵌套数据结构中的任意数量的行。
 
 示例：
 
@@ -38,11 +38,11 @@ CREATE TABLE test.visits
 ) ENGINE = CollapsingMergeTree(StartDate, intHash32(UserID), (CounterID, StartDate, intHash32(UserID), VisitID), 8192, Sign)
 ```
 
-此示例声明了 `Goals` 嵌套数据结构，该结构包含有关转化（达成的目标）的数据。'visits' 表中的每一行可以对应零个或任意数量的转化。
+此示例声明了 `Goals` 嵌套数据结构，其中包含关于转化（已达成目标）的数据。`visits` 表中的每一行都可以对应零个或任意数量的转化。
 
-当 [flatten_nested](/operations/settings/settings#flatten_nested) 设置为 `0` （默认情况下不是这样），支持任意层级的嵌套。
+当将 [flatten&#95;nested](/operations/settings/settings#flatten_nested) 设置为 `0`（默认值并非如此）时，将支持任意层级的嵌套。
 
-在大多数情况下，处理嵌套数据结构时，其列以点号分隔的列名指定。这些列构成了相同类型的数组。单个嵌套数据结构的所有列数组具有相同的长度。
+在大多数情况下，处理嵌套数据结构时，其列通过用点分隔的列名来指定。这些列都是相同类型的数组。单个嵌套数据结构中的所有数组列长度都相同。
 
 示例：
 
@@ -70,9 +70,9 @@ LIMIT 10
 └────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-想象嵌套数据结构为多个同长度列数组的集合是最简单的。
+最容易的方式是将嵌套数据结构看作一组长度相同的多列数组。
 
-SELECT 查询中唯一可以指定整个嵌套数据结构名称而不是单独列的地方是 ARRAY JOIN 子句。有关更多信息，请参见“ARRAY JOIN 子句”。示例：
+在 `SELECT` 查询中，只有在 `ARRAY JOIN` 子句中才能指定整个嵌套数据结构的名称，而不是单独的列名。有关更多信息，请参阅“ARRAY JOIN 子句”。示例：
 
 ```sql
 SELECT
@@ -99,10 +99,10 @@ LIMIT 10
 └─────────┴─────────────────────┘
 ```
 
-您不能对整个嵌套数据结构执行 SELECT。您只能显式列出其组成的单独列。
+不能对整个嵌套数据结构执行 SELECT 查询，只能显式列出其中的各个单独列。
 
-对于 INSERT 查询，您应该将嵌套数据结构的所有组件列数组单独传递（就像它们是单独的列数组一样）。在插入过程中，系统会检查它们的长度是否相同。
+对于 INSERT 查询，需要分别传递嵌套数据结构中各个组成列的数组（就像它们是独立的列数组一样）。在插入时，系统会检查它们的长度是否一致。
 
-对于 DESCRIBE 查询，嵌套数据结构中的列以相同的方式单独列出。
+对于 DESCRIBE 查询，嵌套数据结构中的列也会以同样的方式分别列出。
 
-嵌套数据结构元素的 ALTER 查询具有一定的限制。
+对嵌套数据结构中元素执行的 ALTER 查询存在一定限制。

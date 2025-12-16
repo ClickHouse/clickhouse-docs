@@ -4,6 +4,7 @@ slug: /manage/updates
 title: 'Upgrades'
 description: 'With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis.'
 doc_type: 'guide'
+keywords: ['upgrades', 'version management', 'cloud features', 'maintenance', 'updates']
 ---
 
 import Image from '@theme/IdealImage';
@@ -108,7 +109,7 @@ You can change release channels at any time. However, in certain cases, the chan
 
 <EnterprisePlanFeatureBadge feature="Scheduled upgrades" linking_verb_are="true"/>
 
-Users can configure an upgrade window for services in the Enterprise tier.
+You can configure an upgrade window for services in the Enterprise tier.
 
 Select the service for which you wish to specify an upgrade scheduled, followed by `Settings` from the left menu. Scroll to `Scheduled upgrades`.
 
@@ -117,7 +118,7 @@ Select the service for which you wish to specify an upgrade scheduled, followed 
 </div>
 <br/>
 
-Selecting this option will allow users to select the day of the week/time window for database and cloud upgrades.
+Selecting this option will allow you to select the day of the week/time window for database and cloud upgrades.
 
 <div class="eighty-percent">
     <Image img={scheduled_upgrade_window} size="lg" alt="Scheduled upgrade window" border/>

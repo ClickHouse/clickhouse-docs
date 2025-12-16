@@ -1,28 +1,28 @@
 ---
-description: 'Системная таблица, содержащая историю значений памяти и метрик из таблицы
-  `system.events` для отдельных запросов, периодически сбрасываемая на диск.'
+description: 'Системная таблица, содержащая историю значений использования памяти и метрик из таблицы `system.events` для отдельных запросов, периодически записываемую на диск.'
 keywords: ['системная таблица', 'query_metric_log']
 slug: /operations/system-tables/query_metric_log
 title: 'system.query_metric_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.query&#95;metric&#95;log {#systemquery&#95;metric&#95;log}
 
-# system.query_metric_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+Содержит историю значений использования памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
 
-Содержит историю значений памяти и метрик из таблицы `system.events` для отдельных запросов, периодически сбрасываемую на диск.
-
-После того как запрос начинается, данные собираются через определённые интервалы времени в миллисекундах `query_metric_log_interval` (по умолчанию установлено значение 1000). Данные также собираются, когда запрос завершается, если он занимает больше времени, чем `query_metric_log_interval`.
+После запуска запроса данные собираются с периодичностью `query_metric_log_interval` миллисекунд (по умолчанию — 1000). Данные также собираются при завершении запроса, если он выполняется дольше, чем `query_metric_log_interval`.
 
 Столбцы:
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — ID запроса.
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением в микросекундах.
+
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, выполняющего запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время события с точностью до микросекунд.
 
 **Пример**
 
@@ -50,9 +50,9 @@ ProfileEvent_FailedSelectQuery:                                  0
 
 **См. также**
 
-- [query_metric_log setting](../../operations/server-configuration-parameters/settings.md#query_metric_log) — Включение и отключение настройки.
-- [query_metric_log_interval](../../operations/settings/settings.md#query_metric_log_interval)
-- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически рассчитываемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
-- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно рассчитываемые метрики.
-- [Monitoring](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+* [параметр query&#95;metric&#95;log](../../operations/server-configuration-parameters/settings.md#query_metric_log) — включение и выключение параметра.
+* [query&#95;metric&#95;log&#95;interval](../../operations/settings/settings.md#query_metric_log_interval)
+* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — содержит периодически вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — содержит ряд произошедших событий.
+* [system.metrics](../../operations/system-tables/metrics.md) — содержит мгновенно вычисляемые метрики.
+* [Мониторинг](../../operations/monitoring.md) — основные принципы мониторинга ClickHouse.

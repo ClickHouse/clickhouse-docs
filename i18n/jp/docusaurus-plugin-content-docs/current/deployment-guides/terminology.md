@@ -1,41 +1,34 @@
 ---
-slug: '/architecture/introduction'
-sidebar_label: '紹介'
-title: '紹介'
+slug: /architecture/introduction
+sidebar_label: 'はじめに'
+title: 'はじめに'
 sidebar_position: 1
-description: 'ClickHouseのサポートおよびサービス機関から提供されたアドバイスに基づいて、展開の例を示すページ'
+description: 'ClickHouse Support and Services チームが ClickHouse ユーザーに提供している推奨事項に基づいたデプロイメント例をまとめたページ'
+doc_type: 'guide'
+keywords: ['デプロイメント', 'アーキテクチャ', 'レプリケーション', 'シャーディング', 'クラスタ構成']
 ---
 
 import ReplicationShardingTerminology from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_replication-sharding-terminology.md';
 
-これらのデプロイメントの例は、ClickHouseサポートおよびサービス組織がClickHouseユーザーに提供したアドバイスに基づいています。これらは動作する例であり、試してみてからニーズに合わせて調整することをお勧めします。こちらに、あなたの要件にぴったり合う例を見つけられるかもしれません。Alternatively, もしデータを2回ではなく3回レプリケートする必要がある場合は、ここで示されたパターンに従うことで、別のレプリカを追加できるはずです。
+このセクションのデプロイメント例は、ClickHouse の Support and Services チームが
+ClickHouse ユーザーに提供しているアドバイスに基づいています。これらは実際に動作する例であり、
+まず試してから、ご自身のニーズに合わせて調整することを推奨します。ここで紹介している例の中に、
+要件にぴったり合致するものが見つかるかもしれません。
+
+[example repo](https://github.com/ClickHouse/examples/tree/main/docker-compose-recipes/recipes) には、さまざまなトポロジに対応した「レシピ」を多数用意しており、
+このセクションの例がニーズに完全には合わない場合は、それらも確認することをお勧めします。
 
 <ReplicationShardingTerminology />
 
-## 例 {#examples}
-
-### 基本 {#basic}
-
-- [**スケーリングアウト**](/deployment-guides/horizontal-scaling.md) の例は、データを2つのノードにシャードし、分散テーブルを使用する方法を示しています。これにより、2つのClickHouseノード上にデータが存在することになります。2つのClickHouseノードは、分散同期を提供するClickHouse Keeperも実行しています。また、3番目のノードは、ClickHouse Keeperのクオラムを完成させるためにスタンドアロンの状態でClickHouse Keeperを実行しています。
-
-- [**フォールトトレランスのためのレプリケーション**](/deployment-guides/replicated.md) の例は、データを2つのノードにレプリケートし、ReplicatedMergeTreeテーブルを使用する方法を示しています。これにより、2つのClickHouseノード上にデータが存在することになります。2つのClickHouseサーバーノードに加えて、レプリケーションを管理するための3つのスタンドアロンのClickHouse Keeperノードがあります。
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/vBjCJtw_Ei0"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/vBjCJtw_Ei0"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
-
-### 中級 {#intermediate}
-
-- 近日公開予定
-
-### 上級 {#advanced}
-
-- 近日公開予定

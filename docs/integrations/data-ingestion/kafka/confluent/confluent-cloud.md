@@ -6,6 +6,10 @@ description: 'Guide to using the fully managed ClickHouse Connector Sinkon Confl
 title: 'Integrating Confluent Cloud with ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+  - website: 'https://clickhouse.com/cloud/clickpipes'
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';

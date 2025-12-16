@@ -1,33 +1,33 @@
 ---
-'description': 'Documentation for UUID 数据类型 in ClickHouse'
-'sidebar_label': 'UUID'
-'sidebar_position': 24
-'slug': '/sql-reference/data-types/uuid'
-'title': 'UUID'
+description: 'ClickHouse 中 UUID 数据类型文档'
+sidebar_label: 'UUID'
+sidebar_position: 24
+slug: /sql-reference/data-types/uuid
+title: 'UUID'
+doc_type: 'reference'
 ---
 
+# UUID {#uuid}
 
-# UUID
+通用唯一标识符（UUID）是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
-一个通用唯一标识符（UUID）是一个用于标识记录的16字节值。有关UUID的详细信息，请参见 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
+尽管存在不同的 UUID 变体（参见[此处](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)），ClickHouse 并不会校验插入的 UUID 是否符合某个特定变体。
+在 SQL 层面，UUID 在内部被视为由 16 个随机字节组成的序列，并采用 [8-4-4-4-12 的表示形式](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)。
 
-虽然存在不同的UUID变体（请参见 [这里](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)），但ClickHouse并不验证插入的UUID是否符合特定的变体。
-UUID在内部被视为具有[8-4-4-4-12表示法](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)的16个随机字节序列，在SQL级别进行处理。
-
-示例UUID值：
+UUID 值示例：
 
 ```text
 61f0c404-5cb3-11e7-907b-a6006ad3dba0
 ```
 
-默认的UUID是全零。它在插入新记录但未指定UUID列值时使用，例如：
+默认的 UUID 全为零。例如，在插入一条新记录但未为 UUID 列提供值时，将使用该值：
 
 ```text
 00000000-0000-0000-0000-000000000000
 ```
 
-由于历史原因，UUID按其后半部分进行排序。
-因此，UUID不应直接用于表的主键、排序键或分区键中。
+因历史原因，UUID 在排序时是依据其后半部分进行排序的。
+因此，UUID 不应直接用作表的主键、排序键或分区键。
 
 示例：
 
@@ -55,9 +55,9 @@ SELECT * FROM tab ORDER BY uuid;
 └──────────────────────────────────────┘
 ```
 
-作为替代方案，可以将UUID转换为具有直观排序顺序的类型。
+作为一种变通方案，可以将 UUID 转换为具有更直观排序顺序的类型。
 
-使用转换为UInt128的示例：
+示例：转换为 UInt128：
 
 ```sql
 CREATE TABLE tab (uuid UUID) ENGINE = Memory;
@@ -83,15 +83,15 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-## 生成UUID {#generating-uuids}
+## 生成 UUID {#generating-uuids}
 
-ClickHouse提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数，用于生成随机的UUID版本4值。
+ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数，用于生成随机的第 4 版 UUID 值。
 
 ## 使用示例 {#usage-example}
 
 **示例 1**
 
-此示例演示了创建一个带有UUID列的表并向该表插入值。
+此示例演示如何创建一个带有 UUID 列的表，并向该表插入一个值。
 
 ```sql
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
@@ -111,7 +111,7 @@ SELECT * FROM t_uuid
 
 **示例 2**
 
-在这个示例中，当记录被插入时，没有指定UUID列的值，即插入默认的UUID值：
+在此示例中，插入记录时未指定 UUID 列的值，因此将插入默认的 UUID 值：
 
 ```sql
 INSERT INTO t_uuid (y) VALUES ('Example 2')
@@ -128,6 +128,6 @@ SELECT * FROM t_uuid
 
 ## 限制 {#restrictions}
 
-UUID数据类型仅支持[字符串](../../sql-reference/data-types/string.md)数据类型也支持的函数（例如，[min](/sql-reference/aggregate-functions/reference/min)、[max](/sql-reference/aggregate-functions/reference/max)和[count](/sql-reference/aggregate-functions/reference/count)）。
+`UUID` 数据类型只支持 [`String`](../../sql-reference/data-types/string.md) 数据类型也支持的函数（例如 [`min`](/sql-reference/aggregate-functions/reference/min)、[`max`](/sql-reference/aggregate-functions/reference/max) 和 [`count`](/sql-reference/aggregate-functions/reference/count)）。
 
-UUID数据类型不支持算术操作（例如，[abs](/sql-reference/functions/arithmetic-functions#abs)）或聚合函数，如[sum](/sql-reference/aggregate-functions/reference/sum)和[avg](/sql-reference/aggregate-functions/reference/avg)。
+`UUID` 数据类型不支持算术运算（例如 [`abs`](/sql-reference/functions/arithmetic-functions#abs)）或聚合函数，例如 [`sum`](/sql-reference/aggregate-functions/reference/sum) 和 [`avg`](/sql-reference/aggregate-functions/reference/avg)。

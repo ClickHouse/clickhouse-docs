@@ -1,10 +1,12 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/remote-demo-data'
-'title': '远程演示数据集'
-'sidebar_position': 2
-'pagination_prev': null
-'pagination_next': null
-'description': '开始使用 ClickStack 和远程演示数据集'
+slug: /use-cases/observability/clickstack/getting-started/remote-demo-data
+title: '远程演示数据集'
+sidebar_position: 2
+pagination_prev: null
+pagination_next: null
+description: '使用 ClickStack 与远程演示数据集入门'
+doc_type: 'guide'
+keywords: ['clickstack', '示例数据', '样本数据集', '日志', '可观测性']
 ---
 
 import Image from '@theme/IdealImage';
@@ -34,280 +36,278 @@ import step_21 from '@site/static/images/use-cases/observability/hyperdx-demo/st
 import step_22 from '@site/static/images/use-cases/observability/hyperdx-demo/step_22.png';
 import step_23 from '@site/static/images/use-cases/observability/hyperdx-demo/step_23.png';
 import step_24 from '@site/static/images/use-cases/observability/hyperdx-demo/step_24.png';
-import architecture from '@site/static/images/use-cases/observability/hyperdx-demo/architecture.png';
 import demo_sources from '@site/static/images/use-cases/observability/hyperdx-demo//demo_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
+import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**以下指南假设您已使用 [一体化镜像的说明](/use-cases/observability/clickstack/getting-started) 或 [仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only) 部署了 ClickStack，并完成了初始用户创建。**
+**本指南假设您已按照[一体化镜像部署说明](/use-cases/observability/clickstack/getting-started)或[仅本地模式](/use-cases/observability/clickstack/deployment/local-mode-only)部署了 ClickStack，并完成了初始用户创建。或者，您也可以跳过所有本地环境搭建，直接连接到我们托管的 ClickStack 演示实例 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，该实例使用的就是本数据集。**
 
-本入门指南使用一个可在演示服务器上访问的数据集，该数据集在用户首次部署 HyperDX 时可以使用。该数据集托管在公共 ClickHouse 实例上，网址为 [sql.clickhouse.com](https://sql.clickhouse.com)。
+本指南使用托管在公共 ClickHouse playground [sql.clickhouse.com](https://sql.clickhpouse.com) 上的示例数据集，您可以从本地部署的 ClickStack 连接到该数据集。
 
-它包含从 ClickHouse 版本的官方 OpenTelemetry（OTel）演示中捕获的大约 40 小时的数据。数据每晚重放，时间戳调整为当前时间窗口，允许用户利用 HyperDX 的集成日志、跟踪和指标来探索系统行为。
+:::warning Not supported with HyperDX in ClickHouse Cloud
+当 HyperDX 托管在 ClickHouse Cloud 中时，不支持远程数据库。因此，在该环境中无法使用此数据集。
+:::
 
-:::note 数据变体
-由于数据集从每天午夜重放，因此确切的可视化效果可能会因您探索演示的时间而异。
+其中包含了大约 40 小时的数据，这些数据捕获自官方 OpenTelemetry (OTel) 演示的 ClickHouse 版本。数据会在每晚重放，并将时间戳调整到当前时间窗口，使用户能够通过 HyperDX 中集成的日志、链路追踪和指标来探索系统行为。
+
+:::note 数据差异
+由于数据集会从每天的午夜开始重放，因此具体的可视化结果可能会因您查看演示的时间不同而有所变化。
 :::
 
 ## 演示场景 {#demo-scenario}
 
-在本次演示中，我们调查一个涉及销售望远镜及相关配件的电子商务网站的事件。
+在本次演示中，我们将调查一个与销售天文望远镜及相关配件的电商网站有关的故障事件。
 
-客户支持团队报告称，用户在结帐时遇到支付完成问题。该问题已上报给网站可靠性工程（SRE）团队进行调查。
+客服团队报告称，用户在结账时完成支付时遇到问题。该问题已升级至网站可靠性工程（SRE）团队进行排查。
 
-SRE 团队将使用 HyperDX 分析日志、跟踪和指标来诊断和解决问题，然后审查会话数据，以确认他们的结论是否与实际用户行为一致。
+SRE 团队将使用 HyperDX 分析日志、追踪和指标，以诊断并解决该问题，随后再审查会话数据，以确认他们的结论是否与真实的用户行为一致。
 
-## 演示架构 {#demo-architecture}
+## OpenTelemetry 演示 {#otel-demo}
 
-此演示重用官方 OpenTelemetry 演示。它由用不同编程语言编写的微服务组成，这些微服务通过 gRPC 和 HTTP 相互通信，还有一个使用 Locust 生成虚拟用户流量的负载生成器。
+本演示使用了官方 OpenTelemetry 演示的一个 [由 ClickStack 维护的分支](https://github.com/ClickHouse/opentelemetry-demo)。
 
-<Image img={architecture} alt="架构" size="lg"/>
-
-_版权: https://opentelemetry.io/docs/demo/architecture/_
-
-有关演示的更多细节，请参阅 [官方 OpenTelemetry 文档](https://opentelemetry.io/docs/demo/)。 
+<DemoArchitecture/>
 
 ## 演示步骤 {#demo-steps}
 
-**我们已经使用 [ClickStack SDKs](/use-cases/observability/clickstack/sdks) 对此次演示进行了注入，在 Kubernetes 中部署了服务，并收集了指标和日志。**
+**我们已使用 [ClickStack SDKS](/use-cases/observability/clickstack/sdks) 对本演示进行了观测性埋点，将各个服务部署在 Kubernetes 中，并从中采集指标和日志。**
 
 <VerticalStepper headerLevel="h3">
+  ### 连接到演示服务器
 
-### 连接到演示服务器 {#connect-to-the-demo-server}
+  :::note 仅本地模式
+  如果在本地模式部署时点击了 `Connect to Demo Server`，则可以跳过此步骤。如果使用此模式，数据源将以 `Demo_` 为前缀，例如 `Demo_Logs`
+  :::
 
-:::note 仅本地模式
-如果您在本地模式中部署时点击了 `连接到演示服务器`，可以跳过此步骤。如果使用此模式，数据源将以 `Demo_` 为前缀，例如 `Demo_Logs`
-:::
+  导航至 `Team Settings`（团队设置），然后点击 `Local Connection`（本地连接）的 `Edit`（编辑）按钮：
 
-导航到 `团队设置` 并点击 `编辑` 以修改 `本地连接`：
+  <Image img={edit_connection} alt="编辑连接" size="lg" />
 
-<Image img={edit_connection} alt="编辑连接" size="lg"/>
+  将连接重命名为 `Demo`,并在后续表单中填写演示服务器的以下连接详细信息:
 
-将连接名称更改为 `Demo`，并按照以下演示服务器的连接详细信息填写后续表单：
+  * `连接名称`：`Demo`
+  * `Host`: `https://sql-clickhouse.clickhouse.com`
+  * `Username`: `otel_demo`
+  * `Password`：留空
 
-- `连接名称`: `Demo`
-- `主机`: `https://sql-clickhouse.clickhouse.com`
-- `用户名`: `otel_demo`
-- `密码`: 保持为空
+  <Image img={edit_demo_connection} alt="编辑演示连接" size="lg" />
 
-<Image img={edit_demo_connection} alt="编辑演示连接" size="lg"/>
+  ### 修改数据源
 
-### 修改数据源 {#modify-sources}
+  :::note 仅本地模式
+  如果在本地模式部署时点击了 `Connect to Demo Server`，则可以跳过此步骤。如果使用此模式，数据源将以 `Demo_` 为前缀，例如 `Demo_Logs`
+  :::
 
-:::note 仅本地模式
-如果您在本地模式中部署时点击了 `连接到演示服务器`，可以跳过此步骤。如果使用此模式，数据源将以 `Demo_` 为前缀，例如 `Demo_Logs`
-:::
+  向上滚动到 `Sources` 并修改每个数据源 - `Logs`、`Traces`、`Metrics` 和 `Sessions` - 使其使用 `otel_v2` 数据库。
 
-向上滚动到 `数据源`，并修改每个数据源 `日志`、`跟踪`、`指标` 和 `会话`，使其使用 `otel_v2` 数据库。 
+  <Image img={edit_demo_source} alt="编辑演示数据源" size="lg" />
 
-<Image img={edit_demo_source} alt="编辑演示数据源" size="lg"/>
+  :::note
+  您可能需要刷新页面，以确保每个数据源中显示完整的数据库列表。
+  :::
 
-:::note
-您可能需要重新加载页面，以确保每个数据源中列出所有数据库。
-:::
+  ### 调整时间范围
 
-### 调整时间范围 {#adjust-the-timeframe}
+  使用右上角的时间选择器调整时间,以显示过去 `1 天` 的所有数据。
 
-使用右上角的时间选择器，将时间调整为显示过去 `1天` 的所有数据。
+  <Image img={step_2} alt="第 2 步" size="lg" />
 
-<Image img={step_2} alt="步骤 2" size="lg"/>
+  您可能会在概览条形图中观察到错误数量的细微差异,表现为连续几个柱状图的红色部分略有增加。
 
-您可能会在概述条形图中观察到错误数量的微小差异，多根连续条形中的红色部分有所增加。
+  :::note
+  柱状图的位置将根据查询数据集的时间而有所不同。
+  :::
 
-:::note
-条形图的位置可能因您查询数据集的时间而有所不同。
-:::
+  ### 筛选错误
 
-### 过滤错误 {#filter-to-errors}
+  要突出显示错误事件,请使用 `SeverityText` 过滤器并选择 `error`,以仅显示错误级别的日志条目。
 
-为了突出错误的发生，请使用 `SeverityText` 过滤器并选择 `错误`，以仅显示错误级别的条目。
+  错误应该更加明显:
 
-错误应该更加明显：
+  <Image img={step_3} alt="步骤 3" size="lg" />
 
-<Image img={step_3} alt="步骤 3" size="lg"/>
+  ### 识别错误模式
 
-### 识别错误模式 {#identify-error-patterns}
+  通过 HyperDX 的聚类功能,您可以自动识别错误并将其分组为有意义的模式。在处理大量日志和追踪数据时,这可以加快分析速度。要使用该功能,请从左侧面板的 `Analysis Mode` 菜单中选择 `Event Patterns`。
 
-借助 HyperDX 的聚类功能，您可以自动识别错误并将其分组为有意义的模式。这在处理大量日志和跟踪时加速了用户分析。要使用此功能，请从左侧面板的 `分析模式` 菜单中选择 `事件模式`。
+  错误集群显示了与支付失败相关的问题，包括一个名为 `Failed to place order` 的模式。其他集群还显示了信用卡扣款问题和缓存已满的问题。
 
-错误集群揭示了与支付失败相关的问题，包括一个名为 `未能下订单` 的模式。附加集群还表明存在信用卡收费和缓存已满的问题。
+  <Image img={step_4} alt="步骤 4" size="lg" />
 
-<Image img={step_4} alt="步骤 4" size="lg"/>
+  请注意，这些错误集群可能来源于不同的服务。
 
-请注意，这些错误集群可能源自不同的服务。
+  ### 探索错误模式
 
-### 探索错误模式 {#explore-error-pattern}
+  点击与我们报告的用户无法完成支付问题关联度最高的错误集群:`Failed to place order`。
 
-点击最明显的错误集群，它与我们报告的用户能够完成支付的问题相关：`未能下订单`。
+  这将显示与 `frontend` 服务关联的所有此错误出现记录的列表:
 
-这将显示与 `前端` 服务关联的此错误的所有发生实例的列表：
+  <Image img={step_5} alt="步骤 5" size="lg" />
 
-<Image img={step_5} alt="步骤 5" size="lg"/>
+  选择任意一个错误结果。日志元数据将详细显示。通过浏览 `Overview` 和 `Column Values` 两个部分,可以发现充电卡存在缓存相关的问题:
 
-选择任何一个结果错误。日志元数据将详细显示。向下滚动 `概览` 和 `列值`，表明由于缓存问题导致的信用卡收费失败：
+  `扣款失败：无法对卡进行扣款：rpc error: code = Unknown desc = Visa 缓存已满：无法添加新项目。`
 
-`未能收费：无法收费信用卡：rpc 错误：代码 = Unknown 描述 = Visa 缓存已满：无法添加新项目。`
+  <Image img={step_6} alt="步骤 6" size="lg" />
 
-<Image img={step_6} alt="步骤 6" size="lg"/>
+  ### 探索基础架构
 
-### 探索基础设施 {#explore-the-infrastructure}
+  我们已识别出一个缓存相关错误,该错误可能导致支付失败。我们仍需定位此问题在微服务架构中的来源。
 
-我们已识别出与缓存相关的错误，这可能导致支付失败。我们仍需要确定此问题在我们的微服务架构中来源于哪里。
+  鉴于缓存问题，有必要检查底层基础设施——相关 Pod（容器组）可能存在内存问题。在 ClickStack 中，日志和指标统一展示并关联上下文，便于快速定位根本原因。
 
-鉴于缓存问题，调查基础设施是合乎逻辑的 - 可能我们在相关 Pods 中存在内存问题？在 ClickStack 中，日志和指标是统一的，并在上下文中显示，使快速查找根本原因变得更加容易。
+  选择 `Infrastructure` 选项卡，查看 `frontend` 服务底层 Pod（容器组）的相关指标，并将时间范围扩展至 `1d`：
 
-选择 `基础设施` 标签以查看与 `前端` 服务的底层 Pods 相关的指标，并扩大时间范围至 `1天`：
+  <Image img={step_7} alt="第 7 步" size="lg" />
 
-<Image img={step_7} alt="步骤 7" size="lg"/>
+  该问题似乎与基础设施无关——在错误发生前后的时间段内,各项指标均未发生明显变化。关闭基础设施选项卡。
 
-问题似乎与基础设施无关 - 在该时间段内没有指标显著变化：无论是在错误发生之前还是之后。关闭基础设施标签。
+  ### 探索追踪
 
-### 探索跟踪 {#explore-a-trace}
+  在 ClickStack 中,追踪数据也会自动与日志和指标进行关联。让我们查看与所选日志关联的追踪数据,以确定负责的服务。
 
-在 ClickStack 中，跟踪也会自动与日志和指标相关联。让我们探索与我们选择的日志相关的跟踪，以识别责任服务。
+  选择 `Trace` 以可视化关联的追踪。向下滚动查看后续视图,可以看到 HyperDX 如何将跨微服务的分布式追踪可视化,并连接每个服务中的 span。一次支付操作显然涉及多个微服务,包括执行结账和货币转换的服务。
 
-选择 `跟踪` 以可视化相关跟踪。向下滚动，通过后续视图，我们可以看到 HyperDX 如何能够在微服务之间可视化分布式跟踪，连接每个服务中的跨度。一次支付明显涉及多个微服务，包括执行结账和货币转换的服务。
+  <Image img={step_8} alt="第 8 步" size="lg" />
 
-<Image img={step_8} alt="步骤 8" size="lg"/>
+  通过滚动到视图底部,可以看到 `payment` 服务引发了该错误,错误随后沿调用链向上传播。
 
-向下滚动到视图底部，我们可以看到 `支付` 服务导致了错误，这反过来又向上传播至调用链。
+  <Image img={step_9} alt="步骤 9" size="lg" />
 
-<Image img={step_9} alt="步骤 9" size="lg"/>
+  ### 搜索链路追踪
 
-### 搜索跟踪 {#searching-traces} 
+  我们已确认用户因支付服务的缓存问题而无法完成购买。接下来,让我们更详细地查看该服务的追踪数据,以进一步分析根本原因。
 
-我们已经确定用户由于支付服务中的缓存问题未能完成购买。让我们更详细地探索此服务的跟踪，以查看是否可以了解更多关于根本原因的信息。
+  通过选择 `Search` 切换到主搜索视图。将数据源切换为 `Traces` 并选择 `Results table` 视图。**确保时间范围仍为最近一天。**
 
-通过选择 `搜索` 切换到主搜索视图。为 `跟踪` 切换数据源，选择 `结果表` 视图。**确保时间跨度仍然在过去一天内。**
+  <Image img={step_10} alt="第 10 步" size="lg" />
 
-<Image img={step_10} alt="步骤 10" size="lg"/>
+  此视图显示最近一天内的所有追踪数据。我们知道问题源自支付服务,因此在 `ServiceName` 字段应用 `payment` 过滤器。
 
-该视图显示了过去一天内的所有跟踪。我们知道问题起源于支付服务，因此将 `ServiceName` 过滤器应用于 `支付`。
+  <Image img={step_11} alt="步骤 11" size="lg" />
 
-<Image img={step_11} alt="步骤 11" size="lg"/>
+  通过选择 `Event Patterns` 对追踪数据应用事件聚类，即可立即发现 `payment` 服务的缓存问题。
 
-如果我们选择 `事件模式` 对跟踪应用事件聚类，我们可以立刻看到支付服务中的缓存问题。
+  <Image img={step_12} alt="步骤 12" size="lg" />
 
-<Image img={step_12} alt="步骤 12" size="lg"/>
+  ### 探索追踪的基础设施
 
-### 为跟踪探索基础设施 {#explore-infrastructure-for-a-trace}
+  点击 `Results table` 切换至结果视图。使用 `StatusCode` 筛选器和 `Error` 值筛选错误记录。
 
-通过单击 `结果表` 切换到结果视图。使用 `StatusCode` 过滤器和 `错误` 值进行错误过滤。
+  <Image img={step_13} alt="步骤 13" size="lg" />
 
-<Image img={step_13} alt="步骤 13" size="lg"/>
+  选择一个 `Error: Visa cache full: cannot add new item.` 错误，切换到 `Infrastructure` 选项卡，并将时间跨度扩大到 `1d`。
 
-选择 `错误：Visa 缓存已满：无法添加新项目。` 错误，切换到 `基础设施` 标签并将时间跨度扩大至 `1天`。
+  <Image img={step_14} alt="步骤 14" size="lg" />
 
-<Image img={step_14} alt="步骤 14" size="lg"/>
+  通过关联追踪数据与指标数据，我们可以看到 `payment` 服务的内存和 CPU 使用率上升，随后骤降至 `0`（可归因于 pod（容器组）重启）——这表明缓存问题引发了资源问题。可以预期这已影响支付完成时间。
 
-通过将跟踪与指标关联，我们可以看到内存和 CPU 随着 `支付` 服务的增加而上升，然后下降到 `0`（我们可以将其归因于 Pod 重启） - 这表明缓存问题引发了资源问题。我们可以预期这影响了支付完成时间。
+  ### 事件增量加速问题解决
 
-### 事件增量以加快解决时间 {#event-deltas-for-faster-resolution} 
+  事件增量（Event Deltas）通过将性能或错误率的变化归因于特定数据子集来帮助识别异常，从而更便于快速定位根本原因。
 
-事件增量通过将性能或错误率的变化归因于特定数据子集，帮助揭示异常 - 使快速定位根本原因变得更容易。
+  虽然我们知道 `payment` 服务存在缓存问题，导致资源消耗增加，但尚未完全确定根本原因。
 
-虽然我们知道 `支付` 服务存在缓存问题，导致资源消耗增加，但我们尚未完全确定根本原因。
+  返回结果表视图,选择包含错误的时间段以限制数据范围。请确保选择错误发生时间前后各几个小时的数据(如果可能),因为问题可能仍在持续:
 
-返回结果表视图，选择包含错误的时间段以限制数据。确保您选择错误之前和之后的若干小时（问题可能仍在发生）：
+  <Image img={step_15} alt="步骤 15" size="lg" />
 
-<Image img={step_15} alt="步骤 15" size="lg"/>
+  移除错误过滤器,然后从左侧的 `分析模式` 菜单中选择 `事件增量`。
 
-移除错误过滤器，并从左侧 `分析模式` 菜单中选择 `事件增量`。
+  <Image img={step_16} alt="步骤 16" size="lg" />
 
-<Image img={step_16} alt="步骤 16" size="lg"/>
+  顶部面板显示时序分布,颜色表示事件密度(span 数量)。主要集中区域之外的事件子集通常值得重点排查。
 
-顶部面板显示了时间分布，颜色指示事件密度（跨度的数量）。主要集中之外的事件子集通常是值得调查的。
+  选择持续时间大于 `200ms` 的事件，并应用 `Filter by selection` 过滤器，即可将分析范围限定为较慢的事件：
 
-如果我们选择持续时间大于 `200ms` 的事件，并应用 `按选择过滤` 的过滤器，我们可以将分析限制在较慢的事件：
+  <Image img={step_17} alt="第 17 步" size="lg" />
 
-<Image img={step_17} alt="步骤 17" size="lg"/>
+  通过对数据子集的分析,可以看到大多数性能峰值与 `visa` 交易相关。
 
-对数据子集进行分析后，我们可以看到大多数性能峰值都与 `visa` 交易相关。
+  ### 使用图表获取更多上下文
 
-### 使用图表获取更多上下文 {#using-charts-for-more-context}
+  在 ClickStack 中,我们可以将日志、追踪或指标中的任何数值绘制成图表,以获取更丰富的上下文信息。
 
-在 ClickStack 中，我们可以从日志、跟踪或指标中图示任何数值，以获取更多的上下文。 
+  我们已经完成了以下配置：
 
-我们已确立：
+  * 我们的问题出在支付服务上
+  * 缓存已满
+  * 这导致资源消耗上升
+  * 该问题导致 Visa 支付无法完成，或者至少会严重拖慢支付完成时间。
 
-- 我们的问题出在支付服务
-- 缓存已满
-- 这导致资源消耗增加
-- 该问题阻止了 Visa 支付的完成 - 或至少导致其完成时间很长。
+  <br />
 
-<br/>
+  从左侧菜单中选择 `Chart Explorer`。填写以下值，按图表类型绘制支付完成所需时间：
 
-从左侧菜单中选择 `图表浏览器`。填写以下值以按照图表类型显示支付完成所需的时间：
+  * `数据源`：`跟踪`
+  * `指标`: `最大值`
+  * `SQL 列`：`Duration`
+  * `其中：` `ServiceName: payment`
+  * `时间范围`: `最近 1 天`
 
-- `数据源`: `跟踪`
-- `指标`: `最大`
-- `SQL 列`: `持续时间`
-- `条件`: `ServiceName: payment`
-- `时间段`: `过去 1 天`
+  <br />
 
-<br/>
+  点击 `▶️` 将显示支付性能随时间的变化趋势。
 
-点击 `▶️` 会显示支付性能随时间的减退情况。 
+  <Image img={step_18} alt="步骤 18" size="lg" />
 
-<Image img={step_18} alt="步骤 18" size="lg"/>
+  将 `Group By` 设置为 `SpanAttributes['app.payment.card_type']`(输入 `card` 即可自动补全),可以看到 Visa 交易相对于 Mastercard 交易的服务性能下降情况:
 
-如果我们将 `分组依据` 设置为 `SpanAttributes['app.payment.card_type']`（只需输入 `card` 进行自动完成功能），我们可以看到与万事达卡相比，Visa 交易的服务性能如何衰退：
+  <Image img={step_19} alt="步骤 19" size="lg" />
 
-<Image img={step_19} alt="步骤 19" size="lg"/>
+  请注意,一旦发生错误,响应会立即返回(耗时 `0s`)。
 
-注意，一旦出现错误，响应会以 `0s` 返回。
+  ### 探索指标的更多上下文信息
 
-### 更深入探索指标的上下文 {#exploring-metrics-for-more-context}
+  最后,我们将缓存大小作为指标进行绘制,以观察其随时间的变化行为,从而获得更多上下文信息。
 
-最后，让我们将缓存大小作为指标绘图，以查看它随时间的变化，从而提供更好的上下文。
+  填写以下配置值:
 
-填写以下值：
+  * `数据源`：`指标`
+  * `Metric`: `最大值`
+  * `SQL Column`: `visa_validation_cache.size (gauge)`（只需输入 `cache` 即可自动补全）
+  * `Where`: `ServiceName: payment`
+  * `Group By`：`<empty>`
 
-- `数据源`: `指标`
-- `指标`: `最大`
-- `SQL 列`: `visa_validation_cache.size (gauge)`（只需输入 `cache` 进行自动完成功能）
-- `条件`: `ServiceName: payment`
-- `分组依据`: `<empty>`
+  我们可以看到缓存大小在 4-5 小时内逐渐增加(可能是在软件部署之后),最终达到 `100,000` 的最大值。从 `Sample Matched Events` 中可以看到,我们的错误与缓存达到此限制关联,之后缓存大小被记录为 `0`,响应时间也变为 `0s`。
 
-我们可以看到缓存大小在 4-5 小时内增加（可能是在软件部署后），然后达到最大值 `100,000`。通过 `匹配事件示例`，我们可以看到我们的错误与缓存达到此限制相关，之后记录的大小为 `0`，响应也返回为 `0s`。
+  <Image img={step_20} alt="步骤 20" size="lg" />
 
-<Image img={step_20} alt="步骤 20" size="lg"/>
+  综上所述,通过探索日志、追踪和指标,我们得出以下结论:
 
-总之，通过探索日志、跟踪和最后的指标，我们得出以下结论：
+  * 我们的问题出在支付服务上
+  * 服务行为发生变化（很可能是由一次部署引起），导致签证缓存的大小在 4–5 小时内缓慢增长，最终达到 `100,000` 的峰值。
+  * 随着缓存规模不断增大，资源消耗也随之增加，这很可能是由于实现不当所致
+  * 随着缓存不断增大，Visa 支付的性能逐渐下降
+  * 在达到最大容量时，缓存会拒绝支付请求，并将自身报告为大小为 `0`。
 
-- 我们的问题出在支付服务
-- 由于可能的部署，服务行为发生变化，导致 Visa 缓存在 4-5 小时内缓慢增加 - 达到最大值 `100,000`。
-- 这导致缓存增长时资源消耗增加 - 很可能由于实现不佳
-- 随着缓存的增长，Visa 支付的性能下降
-- 当达到最大尺寸时，缓存拒绝支付并报告其大小为 `0`。
+  ### 使用会话
 
-### 使用会话 {#using-sessions} 
+  会话功能允许我们重放用户体验,从用户视角提供错误发生过程的可视化记录。虽然通常不用于诊断根本原因,但对于确认客户支持团队收到的问题报告非常有价值,并可作为深入调查的起点。
 
-会话让我可以重播用户体验，从用户的角度提供有关错误如何发生的可视化说明。尽管通常不用于诊断根本原因，但它们在确认客户支持报告的问题时很有价值，还可以作为更深入调查的起点。
+  在 HyperDX 中,会话与链路追踪和日志关联,提供问题根因的完整视图。
 
-在 HyperDX 中，会话与跟踪和日志相关联，提供有关根本原因的完整视图。
+  例如,如果支持团队提供了遇到支付问题的用户邮箱 `Braulio.Roberts23@hotmail.com`,通常从该用户的会话入手进行分析会比直接搜索日志或追踪更有效。
 
-例如，如果支持团队提供了遇到支付问题的用户电子邮件 `Braulio.Roberts23@hotmail.com`，通常更有效的做法是先查看他们的会话，而不是直接搜索日志或跟踪。
+  从左侧菜单导航至 `Client Sessions` 选项卡,并确保数据源设置为 `Sessions`,时间段设置为 `Last 1 day`:
 
-从左侧菜单导航到 `客户端会话` 标签，确保数据源设置为 `会话`，时间范围设置为 `过去 1天`：
+  <Image img={step_21} alt="步骤 21" size="lg" />
 
-<Image img={step_21} alt="步骤 21" size="lg"/>
+  搜索 `SpanAttributes.userEmail: Braulio` 以查找客户会话。选择该会话后,左侧将显示该客户会话的浏览器事件和关联 span,右侧将重现用户的浏览器操作过程:
 
-搜索 `SpanAttributes.userEmail: Braulio` 找到我们的客户会话。选择该会话将显示该客户会话的浏览器事件和关联跨度在左侧，用户的浏览器体验将重新渲染在右侧：
+  <Image img={step_22} alt="步骤 22" size="lg" />
 
-<Image img={step_22} alt="步骤 22" size="lg"/>
+  ### 回放会话
 
-### 重播会话 {#replaying-sessions} 
+  点击 ▶️ 按钮即可回放会话。在 `Highlighted` 和 `All Events` 之间切换可调整 span 的粒度级别，前者突出显示关键事件和错误。
 
-通过按 ▶️ 按钮来重播会话。在 `高亮` 和 `所有事件` 之间切换，允许不同程度的跨度粒度，其中前者突出显示关键事件和错误。 
+  滚动到 span 列表底部,可以看到与 `/api/checkout` 关联的 `500` 错误。点击该 span 的 ▶️ 按钮,回放将跳转到会话中的此时间点,从而确认客户的实际体验——支付功能无法正常工作,且未显示任何错误信息。
 
-如果我们向下滚动到跨度的底部，可以看到一个与 `/api/checkout` 相关的 `500` 错误。为这个特定跨度按 ▶️ 按钮将重播移动到会话的这一点，让我们确认客户体验 - 支付似乎就是无法完成，没有错误显示。
+  <Image img={step_23} alt="步骤 23" size="lg" />
 
-<Image img={step_23} alt="步骤 23" size="lg"/>
+  选择该 span 后,我们可以确认这是由内部错误导致的。通过点击 `Trace` 选项卡并滚动浏览关联的 span,我们能够确认该客户确实受到了缓存问题的影响。
 
-选择这个跨度我们可以确认这是由内部错误引起的。通过点击 `跟踪` 标签并滚动浏览连接的跨度，我们能够确认客户确实是我们缓存问题的受害者。
-
-<Image img={step_24} alt="步骤 24" size="lg"/>
-
+  <Image img={step_24} alt="步骤 24" size="lg" />
 </VerticalStepper>
 
-该演示通过处理电子商务应用中的支付失败事件，展示了 ClickStack 如何通过统一的日志、跟踪、指标和会话重播帮助揭示根本原因 - 探索我们的 [其他入门指南](/use-cases/observability/clickstack/sample-datasets)，深入了解特定功能。
+本示例演示一个电商应用中支付失败的真实事故，展示 ClickStack 如何通过统一的日志、链路追踪、指标和会话回放来帮助定位根因——可查看我们的[其他入门指南](/use-cases/observability/clickstack/sample-datasets)，以更深入地探索特定功能。

@@ -1,31 +1,33 @@
 ---
-description: 'Dataset containing 400 million images with English image captions'
-sidebar_label: 'Laion-400M dataset'
-slug: '/getting-started/example-datasets/laion-400m-dataset'
-title: 'Laion-400M dataset'
+description: '英語の画像キャプション付き 4 億枚の画像を含むデータセット'
+sidebar_label: 'Laion-400M データセット'
+slug: /getting-started/example-datasets/laion-400m-dataset
+title: 'Laion-400M データセット'
+doc_type: 'guide'
+keywords: ['サンプルデータセット', 'laion', '画像埋め込み', 'サンプルデータ', '機械学習']
 ---
 
+[Laion-400M データセット](https://laion.ai/blog/laion-400-open-dataset/)には、英語の画像キャプション付きの 4 億枚の画像が含まれています。現在 Laion は[さらに大規模なデータセット](https://laion.ai/blog/laion-5b/)も提供していますが、扱い方はほぼ同様です。
 
-
-[Laion-400Mデータセット](https://laion.ai/blog/laion-400-open-dataset/)は、英語の画像キャプションを持つ4億の画像を含んでいます。現在、Laionは[さらに大きなデータセット](https://laion.ai/blog/laion-5b/)を提供していますが、取り扱いは似ています。
-
-このデータセットには、画像のURL、画像および画像キャプションの埋め込み、画像と画像キャプションの間の類似度スコア、さらに画像の幅/高さ、ライセンス、NSFWフラグなどのメタデータが含まれています。このデータセットを使用して、ClickHouseでの[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)を示すことができます。
+このデータセットには、画像の URL、画像および画像キャプションそれぞれの埋め込みベクトル、画像と画像キャプション間の類似度スコアに加え、画像の幅/高さ、ライセンス、NSFW フラグといったメタデータが含まれます。このデータセットを使って、ClickHouse における[近似最近傍検索](../../engines/table-engines/mergetree-family/annindexes.md)を実演できます。
 
 ## データ準備 {#data-preparation}
 
-埋め込みとメタデータは、生のデータの別々のファイルに保存されています。データ準備ステップでは、データをダウンロードし、ファイルをマージし、CSVに変換してClickHouseにインポートします。以下の`download.sh`スクリプトを使用できます：
+生データでは、埋め込みとメタデータは別々のファイルに保存されています。データ準備のステップでは、データをダウンロードしてファイルを結合し、
+CSV に変換して ClickHouse にインポートします。そのために、次の `download.sh` スクリプトを使用できます。
 
 ```bash
 number=${1}
 if [[ $number == '' ]]; then
     number=1
 fi;
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # 画像埋め込みをダウンロード
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # テキスト埋め込みをダウンロード
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # メタデータをダウンロード
-python3 process.py $number # ファイルをマージしてCSVに変換
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # download image embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # download text embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # download metadata
+python3 process.py $number # merge files and convert to CSV
 ```
-スクリプト`process.py`は以下のように定義されています：
+
+`process.py` スクリプトは次のように定義されています。
 
 ```python
 import pandas as pd
@@ -38,51 +40,44 @@ npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
-
-# 全ファイルをロード
+# load all files
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-
-# ファイルを組み合わせる
+# combine files
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-
-# ClickHouseにインポートするカラム
+# columns to be imported into ClickHouse
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
+# transform np.arrays to lists
+data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
+data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# np.arrayをリストに変換
-data['image_embedding'] = data['image_embedding'].apply(lambda x: list(x))
-data['text_embedding'] = data['text_embedding'].apply(lambda x: list(x))
-
-
-# キャプションに含まれる様々な引用符に対してこの小さなハックが必要
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-
-# データをCSVファイルとしてエクスポート
+# export data as CSV file
 data.to_csv(str_i + '.csv', header=False)
 
-
-# 生データファイルを削除
+# removed raw data files
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
-データ準備パイプラインを開始するには、次のコマンドを実行します：
+データ準備パイプラインを開始するには、次のコマンドを実行します:
 
 ```bash
 seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 ```
 
-データセットは410のファイルに分割されており、各ファイルには約100万行が含まれています。データの小さなサブセットで作業したい場合は、リミットを調整するだけです。例：`seq 0 9 | ...`。
+このデータセットは 410 個のファイルに分割されており、各ファイルにはおよそ 100 万行が含まれています。より小さなサブセットで作業したい場合は、単に上限を調整してください（例: `seq 0 9 | ...`）。
 
-（上記のPythonスクリプトは非常に遅い（1ファイルあたり約2〜10分）、多くのメモリを消費し（ファイルごとに41 GB）、結果として生成されるCSVファイルは大きい（各10 GB）ため、注意が必要です。十分なRAMがある場合は、並列性を高めるために`-P1`の数値を増やします。これでもまだ遅い場合は、より良いインジェスト手順を考案することを検討してください。たとえば、.npyファイルをparquetに変換し、その後に他の処理をClickHouseで行うことが考えられます。）
+（上記の Python スクリプトは非常に遅く（1 ファイルあたり約 2〜10 分）、大量のメモリを消費し（1 ファイルあたり 41 GB）、生成される CSV ファイルも大きい（各 10 GB）ため、注意してください。十分な RAM がある場合は、より高い並列度を得るために `-P1` の値を増やしてください。これでもまだ遅い場合は、より良いインジェスト手順を検討してください。たとえば .npy ファイルを Parquet に変換してから、残りの処理をすべて ClickHouse で行うなどです。）
 
-## テーブルの作成 {#create-table}
+## テーブルを作成する {#create-table}
 
-インデックスなしでテーブルを作成するには、次のコマンドを実行します：
+最初にインデックスなしでテーブルを作成するには、次を実行します。
 
 ```sql
 CREATE TABLE laion
@@ -97,103 +92,111 @@ CREATE TABLE laion
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS index_granularity = 8192
 ```
 
-CSVファイルをClickHouseにインポートするには、次のコマンドを実行します：
+CSV ファイルを ClickHouse にインポートするには、次の手順を実行します。
 
 ```sql
 INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
-## ANNインデックスなしでのブルートフォースANN検索の実行 {#run-a-brute-force-ann-search-without-ann-index}
+`id` 列はあくまで例示用のものであり、スクリプトによって一意ではない値が入力されている点に注意してください。
 
-ブルートフォース近似最近傍検索を実行するには、次のコマンドを実行します：
+## 総当たり方式でベクトル類似度検索を実行する {#run-a-brute-force-vector-similarity-search}
+
+総当たり方式の近似ベクトル検索を実行するには、次を実行します。
 
 ```sql
-SELECT url, caption FROM laion ORDER BY L2Distance(image_embedding, {target:Array(Float32)}) LIMIT 30
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
-`target`は512要素の配列で、クライアントパラメータです。そのような配列を取得する便利な方法は、この記事の終わりに紹介します。今のところ、ランダムな猫の画像の埋め込みを`target`として実行できます。
+`target` は 512 要素からなる配列であり、クライアントパラメータです。
+そのような配列を取得するための便利な方法は、記事の最後で紹介します。
+今のところは、ランダムな LEGO セットの画像を `target` として埋め込みを実行してみます。
 
 **結果**
 
 ```markdown
-┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption────────────────────────────────────────────────────────────────┐
-│ https://s3.amazonaws.com/filestore.rescuegroups.org/6685/pictures/animals/13884/13884995/63318230_463x463.jpg │ Adoptable Female Domestic Short Hair                                   │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/6/239905226.jpg                                        │ Adopt A Pet :: Marzipan - New York, NY                                 │
-│ http://d1n3ar4lqtlydb.cloudfront.net/9/2/4/248407625.jpg                                                      │ Adopt A Pet :: Butterscotch - New Castle, DE                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/e/e/c/245615237.jpg                                        │ Adopt A Pet :: Tiggy - Chicago, IL                                     │
-│ http://pawsofcoronado.org/wp-content/uploads/2012/12/rsz_pumpkin.jpg                                          │ Pumpkin an orange tabby  kitten for adoption                           │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/7/8/3/188700997.jpg                                        │ Adopt A Pet :: Brian the Brad Pitt of cats - Frankfort, IL             │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/8/b/d/191533561.jpg                                        │ Domestic Shorthair Cat for adoption in Mesa, Arizona - Charlie         │
-│ https://s3.amazonaws.com/pet-uploads.adoptapet.com/0/1/2/221698235.jpg                                        │ Domestic Shorthair Cat for adoption in Marietta, Ohio - Daisy (Spayed) │
-└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 6.432 sec. Processed 19.65 million rows, 43.96 GB (3.06 million rows/s., 6.84 GB/s.)
+10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
 
-## ANNインデックスを使用したANNの実行 {#run-a-ann-with-an-ann-index}
+## ベクトル類似度インデックスを使って近似ベクトル類似検索を実行する {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
-ANNインデックスを持つ新しいテーブルを作成し、既存のテーブルからデータを挿入します：
+ここでは、テーブルに 2 つのベクトル類似度インデックスを定義します。
 
 ```sql
-CREATE TABLE laion_annoy
-(
-    `id` Int64,
-    `url` String,
-    `caption` String,
-    `NSFW` String,
-    `similarity` Float32,
-    `image_embedding` Array(Float32),
-    `text_embedding` Array(Float32),
-    INDEX annoy_image image_embedding TYPE annoy(),
-    INDEX annoy_text text_embedding TYPE annoy()
-)
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS index_granularity = 8192;
-
-INSERT INTO laion_annoy SELECT * FROM laion;
+ALTER TABLE laion ADD INDEX image_index image_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
+ALTER TABLE laion ADD INDEX text_index text_embedding TYPE vector_similarity('hnsw', 'cosineDistance', 512, 'bf16', 64, 256)
 ```
 
-デフォルトでは、AnnoyインデックスはL2距離をメトリックとして使用します。インデックスの作成や検索のためのさらなる調整方法については、Annoyインデックスの[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)に記載されています。さて、同じクエリで再度確認してみましょう：
+インデックス作成および検索時のパラメータとパフォーマンス面での考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
+上記のインデックス定義では、「cosine distance」を距離指標として使用する HNSW インデックスを指定しており、パラメータ「hnsw&#95;max&#95;connections&#95;per&#95;layer」を 64 に、「hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;construction」を 256 に設定しています。
+このインデックスは、メモリ使用量を最適化するために、量子化として半精度ブレインフロート (bfloat16) を使用します。
+
+インデックスを構築およびマテリアライズするには、次のステートメントを実行します。
 
 ```sql
-SELECT url, caption FROM laion_annoy ORDER BY l2Distance(image_embedding, {target:Array(Float32)}) LIMIT 8
+ALTER TABLE laion MATERIALIZE INDEX image_index;
+ALTER TABLE laion MATERIALIZE INDEX text_index;
+```
+
+インデックスの構築と保存には、行数や HNSW インデックスのパラメータによっては、数分から数時間程度かかる場合があります。
+
+ベクトル検索を実行するには、同じクエリをもう一度実行するだけです。
+
+```sql
+SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:Array(Float32)}) LIMIT 10
 ```
 
 **結果**
 
 ```response
-┌─url──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────┐
-│ http://tse1.mm.bing.net/th?id=OIP.R1CUoYp_4hbeFSHBaaB5-gHaFj                                                                                                                         │ bed bugs and pets can cats carry bed bugs pets adviser               │
-│ http://pet-uploads.adoptapet.com/1/9/c/1963194.jpg?336w                                                                                                                              │ Domestic Longhair Cat for adoption in Quincy, Massachusetts - Ashley │
-│ https://thumbs.dreamstime.com/t/cat-bed-12591021.jpg                                                                                                                                 │ Cat on bed Stock Image                                               │
-│ https://us.123rf.com/450wm/penta/penta1105/penta110500004/9658511-portrait-of-british-short-hair-kitten-lieing-at-sofa-on-sun.jpg                                                    │ Portrait of british short hair kitten lieing at sofa on sun.         │
-│ https://www.easypetmd.com/sites/default/files/Wirehaired%20Vizsla%20(2).jpg                                                                                                          │ Vizsla (Wirehaired) image 3                                          │
-│ https://images.ctfassets.net/yixw23k2v6vo/0000000200009b8800000000/7950f4e1c1db335ef91bb2bc34428de9/dog-cat-flickr-Impatience_1.jpg?w=600&h=400&fm=jpg&fit=thumb&q=65&fl=progressive │ dog and cat image                                                    │
-│ https://i1.wallbox.ru/wallpapers/small/201523/eaa582ee76a31fd.jpg                                                                                                                    │ cats, kittens, faces, tonkinese                                      │
-│ https://www.baxterboo.com/images/breeds/medium/cairn-terrier.jpg                                                                                                                     │ Cairn Terrier Photo                                                  │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+    ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
+ 1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
+ 2. │ https://www.avenuedelabrique.com/img/uploads/f20fd44bfa4bd49f2a3a5fad0f0dfed7d53c3d2f.jpg                                                                                                     │ Nouveau LEGO Friends 41334 Andrea s Park Performance 2018                        │
+ 3. │ http://images.esellerpro.com/2489/I/667/303/3938_box_in.jpg                                                                                                                                   │ 3938 LEGO Andreas Bunny House Girls Friends Heartlake Age 5-12 / 62 Pieces  New! │
+ 4. │ http://i.shopmania.org/180x180/7/7f/7f1e1a2ab33cde6af4573a9e0caea61293dfc58d.jpg?u=https%3A%2F%2Fs.s-bol.com%2Fimgbase0%2Fimagebase3%2Fextralarge%2FFC%2F4%2F0%2F9%2F9%2F9200000049789904.jpg │ LEGO Friends Avonturenkamp Boomhuis - 41122                                      │
+ 5. │ https://s.s-bol.com/imgbase0/imagebase/large/FC/5/5/9/4/1004004011684955.jpg                                                                                                                  │ LEGO Friends Andrea s Theatershow - 3932                                         │
+ 6. │ https://www.jucariicucubau.ro/30252-home_default/41445-lego-friends-ambulanta-clinicii-veterinare.jpg                                                                                         │ 41445 - LEGO Friends - Ambulanta clinicii veterinare                             │
+ 7. │ https://cdn.awsli.com.br/600x1000/91/91201/produto/24833262/234c032725.jpg                                                                                                                    │ LEGO FRIENDS 41336 EMMA S ART CAFÉ                                               │
+ 8. │ https://media.4rgos.it/s/Argos/6174930_R_SET?$Thumb150$&amp;$Web$                                                                                                                             │ more details on LEGO Friends Stephanie s Friendship Cake Set - 41308.            │
+ 9. │ https://thumbs4.ebaystatic.com/d/l225/m/mG4k6qAONd10voI8NUUMOjw.jpg                                                                                                                           │ Lego Friends Gymnast 30400 Polybag 26 pcs                                        │
+10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
+    └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-8 rows in set. Elapsed: 0.641 sec. Processed 22.06 thousand rows, 49.36 MB (91.53 thousand rows/s., 204.81 MB/s.)
+10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
-スピードは大幅に向上しましたが、精度が低下しました。これは、ANNインデックスが近似検索結果のみを提供するためです。例では類似画像埋め込みを検索しましたが、ポジティブな画像キャプション埋め込みをも検索することが可能です。
+ベクトルインデックスを使用して最近傍を取得したため、クエリレイテンシが大幅に短縮されました。
+ベクトル類似度インデックスを用いたベクトル類似検索では、総当たり検索の結果とわずかに異なる結果が返される場合があります。
+HNSW インデックスは、HNSW パラメータを慎重に選定し、インデックス品質を評価することで、リコールを 1 に近づける（総当たり検索と同等の精度を達成する）ことが可能です。
 
-## UDFを使用した埋め込みの作成 {#creating-embeddings-with-udfs}
+## UDF を使用した埋め込みの作成 {#creating-embeddings-with-udfs}
 
-通常、新しい画像や新しい画像キャプションのために埋め込みを作成し、データ内の類似画像/画像キャプションペアを検索したいと思います。[UDF](/sql-reference/functions/udf)を使用して、クライアントを離れることなく`target`ベクターを作成できます。データを作成し、検索のために新しい埋め込みを作成する際は、同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤となる`ViT-B/32`モデルを利用しています。
+通常は、新しい画像や新しい画像キャプションに対して埋め込みを作成し、そのデータ内で類似する画像／画像キャプションのペアを検索します。[UDF](/sql-reference/functions/udf) を使用すると、クライアント環境を離れることなく `target` ベクトルを作成できます。データ作成時と検索用の新しい埋め込みを生成する際には、同じモデルを使用することが重要です。以下のスクリプトは、データセットの基盤にもなっている `ViT-B/32` モデルを利用します。
 
 ### テキスト埋め込み {#text-embeddings}
 
-最初に、次のPythonスクリプトをClickHouseデータパスの`user_scripts/`ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
+まず、次の Python スクリプトを ClickHouse のデータパス配下にある `user_scripts/` ディレクトリに保存し、実行可能にします（`chmod +x encode_text.py`）。
 
 `encode_text.py`:
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -210,7 +213,7 @@ if __name__ == '__main__':
         sys.stdout.flush()
 ```
 
-次に、ClickHouseサーバ構成ファイルの`<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>`で参照される場所に`encode_text_function.xml`を作成します。
+次に、ClickHouse サーバーの設定ファイルで `<user_defined_executable_functions_config>/path/to/*_function.xml</user_defined_executable_functions_config>` として指定されているパスに `encode_text_function.xml` を作成します。
 
 ```xml
 <functions>
@@ -229,21 +232,32 @@ if __name__ == '__main__':
 </functions>
 ```
 
-これで、単純に次のように使用できます：
+これで次のように簡単に使えます:
 
 ```sql
 SELECT encode_text('cat');
 ```
-最初の実行は遅くなりますが、モデルをロードするためですが、繰り返しの実行は速くなります。その後、出力を`SET param_target=...`にコピーして、簡単にクエリを記述できます。
+
+最初の実行はモデルを読み込むために遅くなりますが、2回目以降は高速になります。その後、出力を `SET param_target=...` にコピーすれば、簡単にクエリを書けます。あるいは、`encode_text()` 関数を `cosineDistance` 関数への引数として直接渡すこともできます。
+
+```SQL
+SELECT url
+FROM laion
+ORDER BY cosineDistance(text_embedding, encode_text('a dog and a cat')) ASC
+LIMIT 10
+```
+
+`encode_text()` UDF 自体が計算を行い埋め込みベクトルを出力するまでに、数秒かかる場合があることに注意してください。
 
 ### 画像埋め込み {#image-embeddings}
 
-画像埋め込みも同様に作成できますが、画像キャプションテキストの代わりにローカル画像へのパスをPythonスクリプトに提供します。
+画像埋め込みも同様に作成できるように、ローカルにファイルとして保存されている画像の埋め込みを生成するための Python スクリプトを用意しています。
 
 `encode_image.py`
 
 ```python
 #!/usr/bin/python3
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -280,8 +294,26 @@ if __name__ == '__main__':
 </functions>
 ```
 
-次に、このクエリを実行します：
+検索用のサンプル画像を取得：
+
+```shell
+# get a random image of a LEGO set
+$ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
+```
+
+次に、先ほどの画像の埋め込みを生成するために、次のクエリを実行します：
 
 ```sql
 SELECT encode_image('/path/to/your/image');
+```
+
+完全な検索クエリは次のとおりです。
+
+```sql
+SELECT
+    url,
+    caption
+FROM laion
+ORDER BY cosineDistance(image_embedding, encode_image('/path/to/your/image')) ASC
+LIMIT 10
 ```

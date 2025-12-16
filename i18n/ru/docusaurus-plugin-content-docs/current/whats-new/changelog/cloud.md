@@ -1,13 +1,15 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Cloud'
-title: 'Cloud Changelog'
+sidebar_label: 'Облако'
+title: 'Журнал изменений ClickHouse Cloud'
 slug: /whats-new/changelog/cloud
-description: 'Learn about Cloud Changelog'
+description: 'Узнайте о журнале изменений ClickHouse Cloud'
+doc_type: 'changelog'
+keywords: ['ClickHouse Cloud', 'журнал изменений облака', 'обновления облака', 'функции облака', 'релизы облака']
 ---
 
-# Cloud Changelog
+# Журнал изменений облака {#cloud-changelog}
 
-import CloudChangelog from '@site/i18n/ru/docusaurus-plugin-content-docs/current/cloud/reference/changelog.md';
+import CloudChangelog from '@site/i18n/ru/docusaurus-plugin-content-docs/current/cloud/reference/01_changelog/01_changelog.md';
 
 <CloudChangelog />

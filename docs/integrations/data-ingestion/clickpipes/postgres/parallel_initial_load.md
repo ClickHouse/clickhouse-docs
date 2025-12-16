@@ -4,6 +4,7 @@ description: 'Doc for explaining parallel snapshot in the Postgres ClickPipe'
 slug: /integrations/clickpipes/postgres/parallel_initial_load
 sidebar_label: 'How parallel snapshot works'
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
@@ -17,7 +18,7 @@ Initial load is the first phase of a CDC ClickPipe, where the ClickPipe syncs th
 However, the Postgres ClickPipe can parallelize this process, which can significantly speed up the initial load.
 
 ### CTID column in Postgres {#ctid-pg-snapshot}
-In Postgres, every row in a table has a unique identifier called the CTID. This is a system column that is not visible to users by default, but it can be used to uniquely identify rows in a table. The CTID is a combination of the block number and the offset within the block, which allows for efficient access to rows.
+In Postgres, every row in a table has a unique identifier called the CTID. This is a system column that is not visible to you by default, but it can be used to uniquely identify rows in a table. The CTID is a combination of the block number and the offset within the block, which allows for efficient access to rows.
 
 ### Logical partitioning {#logical-partitioning-pg-snapshot}
 The Postgres ClickPipe uses the CTID column to logically partition source tables. It obtains the partitions by first performing a COUNT(*) on the source table, followed by a window function partitioning query to get the CTID ranges for each partition. This allows the ClickPipe to read the source table in parallel, with each partition being processed by a separate thread.

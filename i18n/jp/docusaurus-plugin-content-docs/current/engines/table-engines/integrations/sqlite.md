@@ -1,20 +1,19 @@
 ---
-description: 'The engine allows to import and export data to SQLite and supports
-  queries to SQLite tables directly from ClickHouse.'
+description: 'このエンジンは、SQLite との間でデータのインポートおよびエクスポートを行うことができ、ClickHouse から SQLite のテーブルに対する直接クエリをサポートします。'
 sidebar_label: 'SQLite'
 sidebar_position: 185
-slug: '/engines/table-engines/integrations/sqlite'
-title: 'SQLite'
+slug: /engines/table-engines/integrations/sqlite
+title: 'SQLite テーブルエンジン'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# SQLite テーブルエンジン {#sqlite-table-engine}
 
-# SQLite
+<CloudNotSupportedBadge />
 
-<CloudNotSupportedBadge/>
-
-このエンジンは、SQLiteへのデータのインポートおよびエクスポートを可能にし、ClickHouseからSQLiteテーブルへのクエリをサポートします。
+このエンジンを使用すると、SQLite へのデータのインポートおよびエクスポートが可能になり、ClickHouse から SQLite テーブルへ直接クエリを実行することもできます。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -26,14 +25,14 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
     ) ENGINE = SQLite('db_path', 'table')
 ```
 
-**エンジンパラメータ**
+**エンジンのパラメータ**
 
-- `db_path` — データベースを持つSQLiteファイルのパス。
-- `table` — SQLiteデータベース内のテーブルの名前。
+* `db_path` — データベースを含む SQLite ファイルへのパス。
+* `table` — SQLite データベース内のテーブル名。
 
 ## 使用例 {#usage-example}
 
-SQLiteテーブルを作成するクエリを示します:
+SQLite テーブルを作成するクエリを次に示します。
 
 ```sql
 SHOW CREATE TABLE sqlite_db.table2;
@@ -48,7 +47,7 @@ CREATE TABLE SQLite.table2
 ENGINE = SQLite('sqlite.db','table2');
 ```
 
-テーブルからデータを返します:
+テーブル内のデータを返します：
 
 ```sql
 SELECT * FROM sqlite_db.table2 ORDER BY col1;
@@ -62,7 +61,7 @@ SELECT * FROM sqlite_db.table2 ORDER BY col1;
 └──────┴───────┘
 ```
 
-**関連情報**
+**関連項目**
 
-- [SQLite](../../../engines/database-engines/sqlite.md) エンジン
-- [sqlite](../../../sql-reference/table-functions/sqlite.md) テーブル関数
+* [SQLite](../../../engines/database-engines/sqlite.md) エンジン
+* [sqlite](../../../sql-reference/table-functions/sqlite.md) テーブル関数

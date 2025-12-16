@@ -1,0 +1,9 @@
+{
+  "label": "変更履歴",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "ドキュメント",
+    "id": "cloud/reference/changelog/index"
+  }
+}

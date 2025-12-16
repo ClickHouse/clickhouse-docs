@@ -1,18 +1,16 @@
 ---
-description: 'Documentation for EXISTS Statement'
+description: 'EXISTS ステートメントのリファレンス'
 sidebar_label: 'EXISTS'
 sidebar_position: 45
-slug: '/sql-reference/statements/exists'
-title: 'EXISTS Statement'
+slug: /sql-reference/statements/exists
+title: 'EXISTS ステートメント'
+doc_type: 'reference'
 ---
 
-
-
-
-# EXISTS ステートメント
+# EXISTS 句 {#exists-statement}
 
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
 ```
 
-テーブルまたはデータベースが存在しない場合は単一の値 `0` を含む `UInt8` 型のカラムを返し、指定されたデータベースにテーブルが存在する場合は `1` を返します。
+単一の `UInt8` 型のカラムを返します。テーブルまたはデータベースが存在しない場合は値 `0` のみを、指定したデータベース内にテーブルが存在する場合は値 `1` のみを含みます。

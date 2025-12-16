@@ -1,27 +1,28 @@
 ---
-'description': '配置 ClickHouse 与 ZooKeeper 之间安全的 SSL/TLS 通信的指南'
-'sidebar_label': '与 Zookeeper 的安全通信'
-'sidebar_position': 45
-'slug': '/operations/ssl-zookeeper'
-'title': '与 Zookeeper 的可选安全通信'
+description: '在 ClickHouse 与 ZooKeeper 之间配置安全 SSL/TLS 通信的指南'
+sidebar_label: '与 ZooKeeper 的安全通信'
+sidebar_position: 45
+slug: /operations/ssl-zookeeper
+title: 'ClickHouse 与 ZooKeeper 之间可选的安全通信'
+doc_type: 'guide'
 ---
+
+# 可选的 ClickHouse 与 Zookeeper 之间的安全通信 {#optional-secured-communication-between-clickhouse-and-zookeeper}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
-
-# 可选的 ClickHouse 和 Zookeeper 之间的安全通信
 <SelfManaged />
 
-您应该为通过 SSL 与 ClickHouse 客户端的通信指定 `ssl.keyStore.location`、`ssl.keyStore.password` 以及 `ssl.trustStore.location`、`ssl.trustStore.password`。这些选项自 Zookeeper 版本 3.5.2 起可用。
+你需要在通过 SSL 与 ClickHouse 客户端通信时指定 `ssl.keyStore.location`、`ssl.keyStore.password` 以及 `ssl.trustStore.location`、`ssl.trustStore.password`。这些选项从 Zookeeper 3.5.2 版本开始可用。
 
-您可以将 `zookeeper.crt` 添加到受信任的证书中。
+你可以将 `zookeeper.crt` 添加到受信任证书列表中。
 
 ```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-`config.xml` 中的客户端部分将如下所示：
+`config.xml` 中的 client 配置段如下所示：`
 
 ```xml
 <client>
@@ -37,7 +38,7 @@ sudo update-ca-certificates
 </client>
 ```
 
-使用一些集群和宏将 Zookeeper 添加到 ClickHouse 配置中：
+在 ClickHouse 配置中添加 Zookeeper，并配置相应的集群和宏：
 
 ```xml
 <clickhouse>
@@ -51,30 +52,30 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-启动 `clickhouse-server`。在日志中您应该看到：
+启动 `clickhouse-server`。在日志中应看到：
 
 ```text
 <Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
 ```
 
-前缀 `secure://` 表示连接是通过 SSL 保护的。
+前缀 `secure://` 表示连接已通过 SSL 加密保护。
 
-要确保流量被加密，请在安全端口上运行 `tcpdump`：
+要验证流量已加密，可在该安全端口上运行 `tcpdump`：
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
 ```
 
-并在 `clickhouse-client` 中查询：
+然后在 `clickhouse-client` 中执行查询：
 
 ```sql
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-在未加密的连接中，您会在 `tcpdump` 输出中看到类似于以下内容：
+在未加密的连接中，可以在 `tcpdump` 的输出中看到类似如下的内容：
 
 ```text
 ..../zookeeper/quota.
 ```
 
-在加密连接中，您不应该看到这些。
+在加密连接下，你不应该看到此内容。

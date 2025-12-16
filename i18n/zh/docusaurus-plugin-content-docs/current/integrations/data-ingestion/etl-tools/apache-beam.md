@@ -1,28 +1,35 @@
 ---
-'sidebar_label': 'Apache Beam'
-'slug': '/integrations/apache-beam'
-'description': '用户可以使用 Apache Beam 将数据导入 ClickHouse'
-'title': '将 Apache Beam 与 ClickHouse 集成'
+sidebar_label: 'Apache Beam'
+slug: /integrations/apache-beam
+description: '用户可以使用 Apache Beam 将数据摄取到 ClickHouse'
+title: '集成 Apache Beam 和 ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
+keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connector', 'data pipeline']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 集成 Apache Beam 和 ClickHouse
+# 集成 Apache Beam 与 ClickHouse {#integrating-apache-beam-and-clickhouse}
 
 <ClickHouseSupportedBadge/>
 
-**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流（连续）数据处理管道。Apache Beam 的灵活性在于它支持广泛的数据处理场景，从 ETL（提取、转换、加载）操作到复杂事件处理和实时分析。本集成利用了 ClickHouse 的官方 [JDBC 连接器](https://github.com/ClickHouse/clickhouse-java) 作为底层插入层。
+**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流式（连续）数据处理管道。Apache Beam 的灵活性体现在它能够支持广泛的数据处理场景，从 ETL（抽取、转换、加载）操作到复杂事件处理和实时分析。
+本集成在数据写入层使用了 ClickHouse 官方的 [JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)。
 
 ## 集成包 {#integration-package}
 
-要集成 Apache Beam 和 ClickHouse 所需的集成包在 [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) 下维护和开发，该包集成了许多流行的数据存储系统和数据库。`org.apache.beam.sdk.io.clickhouse.ClickHouseIO` 实现位于 [Apache Beam 仓库](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse)。
+用于集成 Apache Beam 和 ClickHouse 的集成包由 [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) 维护和开发——这是一个汇集众多主流数据存储系统和数据库的集成组件集合。
+`org.apache.beam.sdk.io.clickhouse.ClickHouseIO` 的实现位于 [Apache Beam 仓库](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse) 中。
 
-## Apache Beam ClickHouse 包的设置 {#setup-of-the-apache-beam-clickhouse-package}
+## 设置 Apache Beam ClickHouse 包 {#setup-of-the-apache-beam-clickhouse-package}
 
-### 包安装 {#package-installation}
+### 安装包 {#package-installation}
 
-将以下依赖项添加到您的包管理框架中：
+将以下依赖添加到你的包管理工具中：
+
 ```xml
 <dependency>
     <groupId>org.apache.beam</groupId>
@@ -32,14 +39,15 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```
 
 :::important 推荐的 Beam 版本
-建议从 Apache Beam 版本 `2.59.0` 开始使用 `ClickHouseIO` 连接器。早期版本可能无法完全支持连接器的功能。
+`ClickHouseIO` 连接器推荐从 Apache Beam 版本 `2.59.0` 起使用。
+较早的版本可能无法完全支持该连接器的功能。
 :::
 
-可以在 [官方 Maven 仓库](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse) 中找到相关工件。
+相关构件可以在[官方 Maven 仓库](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse)中找到。
 
 ### 代码示例 {#code-example}
 
-以下示例将名为 `input.csv` 的 CSV 文件作为 `PCollection` 读取，转换为 Row 对象（使用定义的模式），并使用 `ClickHouseIO` 将其插入到本地的 ClickHouse 实例中：
+以下示例将名为 `input.csv` 的 CSV 文件读取为 `PCollection`，将其转换为 Row 对象（基于已定义的 schema），并使用 `ClickHouseIO` 将其插入到本地 ClickHouse 实例中：
 
 ```java
 
@@ -55,9 +63,7 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.Row;
 import org.joda.time.DateTime;
 
-
 public class Main {
-
 
     public static void main(String[] args) {
         // Create a Pipeline object.
@@ -70,10 +76,8 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-
         // Apply transforms to the pipeline.
         PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
-
 
         PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
@@ -99,7 +103,7 @@ public class Main {
 
 ## 支持的数据类型 {#supported-data-types}
 
-| ClickHouse                         | Apache Beam                | 是否支持 | 备注                                                                                                                                    |
+| ClickHouse                         | Apache Beam                | 是否支持 | 说明                                                                                                                                     |
 |------------------------------------|----------------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------|
 | `TableSchema.TypeName.FLOAT32`     | `Schema.TypeName#FLOAT`    | ✅        |                                                                                                                                          |
 | `TableSchema.TypeName.FLOAT64`     | `Schema.TypeName#DOUBLE`   | ✅        |                                                                                                                                          |
@@ -119,32 +123,32 @@ public class Main {
 | `TableSchema.TypeName.ENUM16`      | `Schema.TypeName#STRING`   | ✅        |                                                                                                                                          |
 | `TableSchema.TypeName.BOOL`        | `Schema.TypeName#BOOLEAN`  | ✅        |                                                                                                                                          |
 | `TableSchema.TypeName.TUPLE`       | `Schema.TypeName#ROW`      | ✅        |                                                                                                                                          |
-| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅        | `FixedBytes` 是表示定长的 <br/> 字节数组的 `LogicalType`，位于 <br/> `org.apache.beam.sdk.schemas.logicaltypes` |
+| `TableSchema.TypeName.FIXEDSTRING` | `FixedBytes`               | ✅        | `FixedBytes` 是一种 `LogicalType`，表示固定长度的<br/>字节数组，定义在<br/>`org.apache.beam.sdk.schemas.logicaltypes` 包中 |
 |                                    | `Schema.TypeName#DECIMAL`  | ❌        |                                                                                                                                          |
 |                                    | `Schema.TypeName#MAP`      | ❌        |                                                                                                                                          |
 
 ## ClickHouseIO.Write 参数 {#clickhouseiowrite-parameters}
 
-您可以通过以下设置函数调整 `ClickHouseIO.Write` 的配置：
+可以使用以下 setter 函数来调整 `ClickHouseIO.Write` 的配置：
 
-| 参数设置函数               | 参数类型                   | 默认值                         | 描述                                                           |
-|-----------------------------|----------------------------|-------------------------------|-----------------------------------------------------------------|
-| `withMaxInsertBlockSize`    | `(long maxInsertBlockSize)` | `1000000`                     | 要插入的行块的最大大小。                                      |
-| `withMaxRetries`            | `(int maxRetries)`          | `5`                           | 失败插入的最大重试次数。                                        |
-| `withMaxCumulativeBackoff`  | `(Duration maxBackoff)`     | `Duration.standardDays(1000)` | 最大重试的累积退避持续时间。                                    |
-| `withInitialBackoff`        | `(Duration initialBackoff)` | `Duration.standardSeconds(5)` | 第一次重试之前的初始退避持续时间。                             |
-| `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | 如果为 true，则为分布式表同步插入操作。                      |
-| `withInsertQuorum`          | `(Long quorum)`             | `null`                        | 确认插入操作所需的副本数量。                                   |
-| `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | 如果为 true，则启用插入操作的去重。                           |
-| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 目标 ClickHouse 表的模式。                                    |
+| 参数设置函数                 | 参数类型                     | 默认值                         | 描述                                                             |
+|-----------------------------|-----------------------------|-------------------------------|------------------------------------------------------------------|
+| `withMaxInsertBlockSize`    | `(long maxInsertBlockSize)` | `1000000`                     | 每次插入的数据块的最大行数。                                    |
+| `withMaxRetries`            | `(int maxRetries)`          | `5`                           | 插入失败时的最大重试次数。                                      |
+| `withMaxCumulativeBackoff`  | `(Duration maxBackoff)`     | `Duration.standardDays(1000)` | 重试时允许的最大累计退避时长。                                  |
+| `withInitialBackoff`        | `(Duration initialBackoff)` | `Duration.standardSeconds(5)` | 第一次重试前的初始退避时长。                                    |
+| `withInsertDistributedSync` | `(Boolean sync)`            | `true`                        | 若为 true，则对分布式表的插入操作以同步方式执行。               |
+| `withInsertQuorum`          | `(Long quorum)`             | `null`                        | 确认一次插入操作所需的副本数量。                                |
+| `withInsertDeduplicate`     | `(Boolean deduplicate)`     | `true`                        | 若为 true，则对插入操作启用去重。                               |
+| `withTableSchema`           | `(TableSchema schema)`      | `null`                        | 目标 ClickHouse 表的表结构（schema）。                          |
 
 ## 限制 {#limitations}
 
-使用该连接器时请考虑以下限制：
-* 目前仅支持 Sink 操作。该连接器不支持 Source 操作。
-* 在向 `ReplicatedMergeTree` 或基于 `ReplicatedMergeTree` 构建的 `Distributed` 表插入时，ClickHouse 会执行去重。如果没有复制，在常规的 MergeTree 中如果插入失败然后成功重试，可能会导致重复。然而，每个块都是原子插入的，块大小可以使用 `ClickHouseIO.Write.withMaxInsertBlockSize(long)` 进行配置。去重是通过使用插入块的校验和来实现的。有关去重的更多信息，请访问 [去重](/guides/developer/deduplication) 和 [去重插入配置](/operations/settings/settings#insert_deduplicate)。
-* 该连接器不执行任何 DDL 语句；因此，目标表在插入之前必须存在。
+使用该连接器时请注意以下限制：
+* 截至目前，仅支持 Sink 操作。该连接器不支持 Source 操作。
+* 在向 `ReplicatedMergeTree` 或基于 `ReplicatedMergeTree` 构建的 `Distributed` 表中插入数据时，ClickHouse 会执行去重操作。如果未启用复制，向普通 MergeTree 表插入数据时，当一次插入失败并随后重试成功时，可能会产生重复数据。不过，每个数据块的插入是原子性的，并且可以使用 `ClickHouseIO.Write.withMaxInsertBlockSize(long)` 配置块大小。去重是通过插入数据块的校验和来实现的。有关去重的更多信息，请访问 [去重](/guides/developer/deduplication) 和 [插入去重配置](/operations/settings/settings#insert_deduplicate)。
+* 该连接器不会执行任何 DDL 语句；因此，在执行插入之前，目标表必须已经存在。
 
-## 相关内容 {#related-content}
-* `ClickHouseIO` 类 [文档](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)。
-* `Github` 示例仓库 [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector)。
+## 相关文章 {#related-content}
+* `ClickHouseIO` 类的[文档](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)。
+* 示例的 `GitHub` 仓库：[clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector)。

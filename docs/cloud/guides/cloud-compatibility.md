@@ -3,6 +3,7 @@ slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud compatibility'
 title: 'Cloud Compatibility'
 description: 'This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud.'
+keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
 
@@ -87,6 +88,17 @@ Federated queries with some external database and table engines, such as SQLite,
 ### User defined functions {#user-defined-functions}
 
 User-defined functions are a recent feature in ClickHouse. ClickHouse Cloud currently supports SQL UDFs only.
+
+#### Settings behavior {#udf-settings-behavior}
+
+:::warning Important
+UDFs in ClickHouse Cloud **do not inherit user-level settings**. They execute with default system settings.
+:::
+
+This means:
+- Session-level settings (set via `SET` statement) are not propagated to UDF execution context
+- User profile settings are not inherited by UDFs
+- Query-level settings do not apply within UDF execution
 
 ### Experimental features {#experimental-features}
 

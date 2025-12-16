@@ -1,22 +1,20 @@
 ---
-description: 'leadInFrame ウィンドウ関数のドキュメント'
+description: 'leadInFrame ウィンドウ関数のリファレンス'
 sidebar_label: 'leadInFrame'
 sidebar_position: 10
-slug: '/sql-reference/window-functions/leadInFrame'
+slug: /sql-reference/window-functions/leadInFrame
 title: 'leadInFrame'
+doc_type: 'reference'
 ---
 
+# leadInFrame {#leadinframe}
 
-
-
-# leadInFrame
-
-現在の行の後にオフセットされた行で評価される値を返します。
+順序付けされたフレーム内で、現在の行から指定したオフセット行数だけ後方の行で評価された値を返します。
 
 :::warning
-`leadInFrame` の動作は、標準SQLの `lead` ウィンドウ関数とは異なります。
-ClickHouseのウィンドウ関数 `leadInFrame` はウィンドウフレームを尊重します。
-`lead` と同じ動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
+`leadInFrame` の動作は、標準 SQL のウィンドウ関数 `lead` とは異なります。
+ClickHouse のウィンドウ関数 `leadInFrame` は、ウィンドウフレームを考慮して動作します。
+`lead` と同一の動作を得るには、`ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` を使用してください。
 :::
 
 **構文**
@@ -29,22 +27,23 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-ウィンドウ関数の構文の詳細については、[ウィンドウ関数 - 構文](./index.md/#syntax)を参照してください。
+ウィンドウ関数の構文の詳細については、[Window Functions - Syntax](./index.md/#syntax) を参照してください。
 
-**パラメータ**
-- `x` — カラム名。
-- `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - デフォルトは `1`)。
-- `default` — 計算された行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時にはカラム型のデフォルト値)。
+**パラメーター**
 
-**返す値**
+* `x` — カラム名。
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（オプション - 省略時は `1`）
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。（オプション - 省略時はカラム型のデフォルト値）
 
-- 整列されたフレーム内の現在の行の後にオフセットされた行で評価された値。
+**返される値**
+
+* 順序付けられたフレーム内で、現在の行から `offset` 行後の行で評価された値。
 
 **例**
 
-この例では、ノーベル賞受賞者の[歴史的データ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を見て、`leadInFrame` 関数を使用して物理学部門の受賞者のリストを返します。
+この例では、ノーベル賞受賞者の[過去のデータ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を対象に、物理学部門における連続した受賞者の一覧を返すために `leadInFrame` 関数を使用しています。
 
-クエリ：
+クエリ:
 
 ```sql
 CREATE OR REPLACE VIEW nobel_prize_laureates
@@ -66,7 +65,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-結果：
+結果:
 
 ```response
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐

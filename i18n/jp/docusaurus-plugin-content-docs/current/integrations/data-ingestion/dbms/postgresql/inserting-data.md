@@ -1,22 +1,16 @@
 ---
-slug: '/integrations/postgresql/inserting-data'
-title: 'How to insert data from PostgreSQL'
-keywords:
-- 'postgres'
-- 'postgresql'
-- 'inserts'
-description: 'Page describing how to insert data from PostgresSQL using ClickPipes,
-  PeerDB or the Postgres table function'
+slug: /integrations/postgresql/inserting-data
+title: 'PostgreSQL からデータを挿入する方法'
+keywords: ['postgres', 'postgresql', 'inserts']
+description: 'ClickPipes、PeerDB、または Postgres テーブル関数を使用して PostgresSQL からデータを挿入する方法を説明するページ'
+doc_type: 'guide'
 ---
 
+ClickHouse へのデータ挿入パフォーマンスを最適化するためのベストプラクティスについては、[こちらのガイド](/guides/inserting-data) を参照することを推奨します。
 
+PostgreSQL からのバルクロードには、次の方法を使用できます。
 
-推奨されるのは、ClickHouseにデータを挿入する際の挿入パフォーマンスを最適化するためのベストプラクティスを学ぶために [このガイド](/guides/inserting-data) を読むことです。
-
-PostgreSQLからデータを一括読み込みするために、ユーザーは以下の方法を利用できます：
-
-- [ClickPipes](/integrations/clickpipes/postgres) を使用すること、これはClickHouse Cloudのためのマネージドインテグレーションサービスで、現在パブリックベータ中です。こちらから [サインアップしてください](https://clickpipes.peerdb.io/)。
-- `PeerDB by ClickHouse`、これはPostgreSQLデータベースのレプリケーションのために特別に設計されたETLツールで、セルフホスト型のClickHouseとClickHouse Cloudの両方に対応しています。
-    - PeerDBは現在ClickHouse Cloudでネイティブに利用可能です - 我々の[新しいClickPipeコネクタ](/integrations/clickpipes/postgres)を使用した超高速なPostgresからClickHouseへのCDC - 現在パブリックベータ中です。こちらから [サインアップしてください](https://clickhouse.com/cloud/clickpipes/postgres-cdc-connector)。
-- データを直接読み取るための[Postgresテーブル関数](/sql-reference/table-functions/postgresql)。これは通常、既知のウォーターマーク（例：タイムスタンプ）に基づくバッチレプリケーションが十分である場合や、単発の移行が目的である場合に適しています。このアプローチは数千万行にスケール可能です。より大きなデータセットを移行しようとするユーザーは、各リクエストがデータの一部を処理する複数のリクエストを検討すべきです。ステージングテーブルは、最終テーブルにパーティションが移動される前の各チャンクに使用できます。これにより、失敗したリクエストの再試行が可能になります。この一括読み込み戦略の詳細については、こちらを参照してください。
-- データはCSV形式でPostgresからエクスポートできます。これを使用して、ローカルファイルまたはオブジェクトストレージを介してClickHouseにテーブル関数を使用して挿入することができます。
+- ClickHouse Cloud 用のマネージド統合サービスである [ClickPipes](/integrations/clickpipes/postgres) を使用する。
+- `PeerDB by ClickHouse` を使用する。これは、PostgreSQL データベースをセルフホスト型の ClickHouse および ClickHouse Cloud の両方へレプリケーションするために特化した ETL ツールです。
+- [Postgres Table Function](/sql-reference/table-functions/postgresql) を使用してデータを直接読み取る。この方法は、既知のウォーターマーク（例: タイムスタンプ）に基づくバッチレプリケーションで十分な場合や、一度きりの移行である場合に一般的に適しています。このアプローチは数千万行規模までスケール可能です。より大きなデータセットを移行したい場合は、データをチャンクに分割し、それぞれを個別のリクエストで処理することを検討してください。各チャンクについてステージングテーブルを使用し、そのパーティションを最終テーブルに移動する前にロードすることができます。これにより、失敗したリクエストのみを再試行できます。このバルクロード戦略の詳細については、こちらを参照してください。
+- データを Postgres から CSV 形式でエクスポートする。この CSV をローカルファイル、またはテーブル関数を用いてオブジェクトストレージ経由で ClickHouse に挿入できます。

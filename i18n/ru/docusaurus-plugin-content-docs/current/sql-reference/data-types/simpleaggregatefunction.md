@@ -1,25 +1,37 @@
 ---
-description: 'Документация для типа данных SimpleAggregateFunction'
+description: 'Документация по типу данных SimpleAggregateFunction'
 sidebar_label: 'SimpleAggregateFunction'
 sidebar_position: 48
 slug: /sql-reference/data-types/simpleaggregatefunction
-title: 'Тип SimpleAggregateFunction'
+title: 'Тип данных SimpleAggregateFunction'
+doc_type: 'reference'
 ---
 
-
-# Тип SimpleAggregateFunction
+# Тип SimpleAggregateFunction {#simpleaggregatefunction-type}
 
 ## Описание {#description}
 
-Тип данных `SimpleAggregateFunction` хранит промежуточное состояние агрегатной функции, но не её полное состояние, как это делает тип [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md).
+Тип данных `SimpleAggregateFunction` хранит промежуточное состояние 
+агрегатной функции, но не её полное состояние, как это делает тип 
+[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md).
 
-Эта оптимизация может быть применена к функциям, для которых выполняется следующее свойство: 
+Эта оптимизация может быть применена к функциям, для которых выполняется 
+следующее свойство: 
 
-> результат применения функции `f` к множеству строк `S1 UNION ALL S2` можно получить, применив `f` к частям множества строк отдельно, а затем снова применив `f` к результатам: `f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`.
+> результат применения функции `f` к набору строк `S1 UNION ALL S2` может быть 
+получен путём раздельного применения `f` к частям набора строк, а затем 
+повторного применения `f` к результатам: `f(S1 UNION ALL S2) = f(f(S1) UNION ALL f(S2))`.
 
-Это свойство гарантирует, что частичных результатов агрегации достаточно для вычисления комбинированного результата, поэтому нам не нужно хранить и обрабатывать какие-либо дополнительные данные. Например, результат функций `min` или `max` не требует дополнительных шагов для вычисления окончательного результата из промежуточных шагов, тогда как функция `avg` требует отслеживания суммы и количества, которые будут разделены для получения среднего значения на окончательном этапе `Merge`, который объединяет промежуточные состояния.
+Это свойство гарантирует, что частичных результатов агрегации достаточно для
+вычисления объединённого результата, поэтому нам не нужно хранить и обрабатывать
+избыточные данные. Например, результат функций `min` или `max` не требует
+дополнительных шагов для вычисления окончательного результата из
+промежуточных шагов, тогда как функция `avg` требует хранения суммы и
+количества, которые затем делятся для получения среднего значения
+на заключительном шаге `Merge`, объединяющем промежуточные состояния.
 
-Значения агрегатной функции обычно создаются путем вызова агрегатной функции с комбинирующим оператором [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate), добавленным к имени функции.
+Значения агрегатных функций обычно получаются путём вызова агрегатной функции
+с комбинатором [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate), добавленным к имени функции.
 
 ## Синтаксис {#syntax}
 
@@ -29,8 +41,8 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 
 **Параметры**
 
-- `aggregate_function_name` - Название агрегатной функции.
-- `Type` - Типы аргументов агрегатной функции.
+* `aggregate_function_name` — имя агрегатной функции.
+* `Type` — типы аргументов агрегатной функции.
 
 ## Поддерживаемые функции {#supported-functions}
 
@@ -55,11 +67,11 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 - [`maxMap`](/sql-reference/aggregate-functions/reference/maxmap)
 
 :::note
-Значения `SimpleAggregateFunction(func, Type)` имеют тот же `Type`, 
+Значения типа `SimpleAggregateFunction(func, Type)` имеют тот же тип `Type`, 
 поэтому в отличие от типа `AggregateFunction` нет необходимости применять 
 комбинаторы `-Merge`/`-State`.
 
-Тип `SimpleAggregateFunction` имеет лучшую производительность, чем `AggregateFunction`
+Тип `SimpleAggregateFunction` обеспечивает более высокую производительность, чем `AggregateFunction`
 для одних и тех же агрегатных функций.
 :::
 
@@ -68,7 +80,8 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
-## Связанный контент {#related-content}
 
-- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
-- Тип [AggregateFunction](/sql-reference/data-types/aggregatefunction).
+## Связанные материалы {#related-content}
+
+* Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)    - Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* Тип данных [AggregateFunction](/sql-reference/data-types/aggregatefunction).

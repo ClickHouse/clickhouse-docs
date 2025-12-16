@@ -1,23 +1,21 @@
 ---
-description: 'Used for test purposes as the fastest method to generate many rows.
-  Similar to the `system.zeros` and `system.zeros_mt` system tables.'
+description: '多数の行を生成するための最速の方法として、テスト目的で使用されます。
+  `system.zeros` および `system.zeros_mt` システムテーブルに類似しています。'
 sidebar_label: 'zeros'
 sidebar_position: 145
-slug: '/sql-reference/table-functions/zeros'
+slug: /sql-reference/table-functions/zeros
 title: 'zeros'
+doc_type: 'reference'
 ---
 
+# zeros テーブル関数 {#zeros-table-function}
 
+* `zeros(N)` – 整数 0 を `N` 回含む、単一の「zero」列 (UInt8 型) を持つテーブルを返します
+* `zeros_mt(N)` – `zeros` と同じですが、マルチスレッドで実行されます。
 
+この関数は、多数の行を生成する最速の方法としてテスト用途で使用されます。`system.zeros` および `system.zeros_mt` システムテーブルと同様です。
 
-# zeros テーブル関数
-
-* `zeros(N)` – 整数 0 を `N` 回含む単一の 'zero' カラム（UInt8）を持つテーブルを返します
-* `zeros_mt(N)` – `zeros` と同様ですが、複数のスレッドを使用します。
-
-この関数は、行を多数生成するための最速の方法としてテスト目的で使用されます。`system.zeros` および `system.zeros_mt` システムテーブルに似ています。
-
-以下のクエリは同等です：
+次のクエリは同じ結果になります。
 
 ```sql
 SELECT * FROM zeros(10);
@@ -39,4 +37,4 @@ SELECT * FROM system.zeros_mt LIMIT 10;
 │    0 │
 │    0 │
 └──────┘
-
+```

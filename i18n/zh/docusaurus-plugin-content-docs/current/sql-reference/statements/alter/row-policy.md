@@ -1,15 +1,15 @@
 ---
-'description': 'ALTER ROW POLICY 的文档'
-'sidebar_label': 'ROW POLICY'
-'sidebar_position': 47
-'slug': '/sql-reference/statements/alter/row-policy'
-'title': 'ALTER ROW POLICY'
+description: 'ALTER ROW POLICY 文档'
+sidebar_label: 'ROW POLICY'
+sidebar_position: 47
+slug: /sql-reference/statements/alter/row-policy
+title: 'ALTER ROW POLICY'
+doc_type: 'reference'
 ---
 
+# ALTER ROW POLICY {#alter-row-policy}
 
-# ALTER ROW POLICY
-
-更改行策略。
+修改行策略。
 
 语法：
 

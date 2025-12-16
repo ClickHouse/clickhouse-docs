@@ -6,12 +6,12 @@ function countLines(text = '') {
   if (typeof text !== 'string') {
     return 1; // Default to 1 line for non-string inputs
   }
-  
+
   const trimmedText = text.trim();
   if (!trimmedText) {
     return 1; // Return 1 for empty or whitespace-only strings
   }
-  
+
   const lines = trimmedText.split('\n');
   return Math.max(1, lines.length); // Ensure at least 1 line is returned
 }
@@ -77,9 +77,9 @@ export default function CodeBlockWrapper(props) {
     return (
         <div ref={codeBlockRef} className={styles.wrapper} style={{ height: estimatedHeight + 'px' }}>
             {/* Invisible content for crawlers/SEO */}
-            <div style={{ 
-              position: 'absolute', 
-              left: '-9999px', 
+            <div style={{
+              position: 'absolute',
+              left: '-9999px',
               top: '-9999px',
               opacity: 0,
               pointerEvents: 'none',
@@ -93,13 +93,13 @@ export default function CodeBlockWrapper(props) {
                 </code>
               </pre>
             </div>
-            
+
             {/* Visible loading animation */}
             <div className={styles.activity}></div>
         </div>
     );
-  } 
-  
+  }
+
   return (
     <>
         <CodeViewer {...settings}>

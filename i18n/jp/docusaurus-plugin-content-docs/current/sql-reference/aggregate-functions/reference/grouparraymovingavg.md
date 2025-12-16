@@ -1,14 +1,12 @@
 ---
-description: 'Calculates the moving average of input values.'
+description: '入力値の移動平均を計算します。'
 sidebar_position: 144
-slug: '/sql-reference/aggregate-functions/reference/grouparraymovingavg'
+slug: /sql-reference/aggregate-functions/reference/grouparraymovingavg
 title: 'groupArrayMovingAvg'
+doc_type: 'reference'
 ---
 
-
-
-
-# groupArrayMovingAvg
+# groupArrayMovingAvg {#grouparraymovingavg}
 
 入力値の移動平均を計算します。
 
@@ -17,22 +15,22 @@ groupArrayMovingAvg(numbers_for_summing)
 groupArrayMovingAvg(window_size)(numbers_for_summing)
 ```
 
-この関数はウィンドウサイズをパラメータとして受け取ることができます。指定しない場合、関数はカラム内の行数と等しいウィンドウサイズを取ります。
+この関数はウィンドウサイズをパラメータとして受け取ることができます。省略した場合、関数はカラム内の行数と同じ値をウィンドウサイズとして使用します。
 
 **引数**
 
-- `numbers_for_summing` — 数値データ型の値を返す [式](/sql-reference/syntax#expressions)。
-- `window_size` — 計算ウィンドウのサイズ。
+* `numbers_for_summing` — 数値データ型の値を返す[式](/sql-reference/syntax#expressions)。
+* `window_size` — 計算ウィンドウのサイズ。
 
-**返される値**
+**戻り値**
 
-- 入力データと同じサイズおよび型の配列。
+* 入力データと同じサイズおよび型の配列。
 
-この関数は[ゼロに向けた丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型にとって重要でない小数点以下の桁を切り捨てます。
+この関数は[ゼロ方向への丸め](https://en.wikipedia.org/wiki/Rounding#Rounding_towards_zero)を使用します。結果のデータ型で表現できない桁の小数部を切り捨てます。
 
 **例**
 
-サンプルテーブル `b`：
+サンプルテーブル `b`:
 
 ```sql
 CREATE TABLE t
@@ -53,7 +51,7 @@ ENGINE = TinyLog
 └─────┴───────┴──────┘
 ```
 
-クエリ：
+クエリは次のとおりです。
 
 ```sql
 SELECT

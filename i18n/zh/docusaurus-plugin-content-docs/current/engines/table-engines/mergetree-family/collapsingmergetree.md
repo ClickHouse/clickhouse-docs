@@ -1,34 +1,36 @@
 ---
-'description': '继承自 MergeTree，但在合并过程中添加了崩溃行的逻辑。'
-'keywords':
-- 'updates'
-- 'collapsing'
-'sidebar_label': 'CollapsingMergeTree'
-'sidebar_position': 70
-'slug': '/engines/table-engines/mergetree-family/collapsingmergetree'
-'title': 'CollapsingMergeTree'
+description: '继承自 MergeTree，但添加了在合并过程中折叠行的逻辑。'
+keywords: ['更新', '折叠']
+sidebar_label: 'CollapsingMergeTree'
+sidebar_position: 70
+slug: /engines/table-engines/mergetree-family/collapsingmergetree
+title: 'CollapsingMergeTree 表引擎'
+doc_type: 'guide'
 ---
 
-
-# CollapsingMergeTree
+# CollapsingMergeTree 表引擎 {#collapsingmergetree-table-engine}
 
 ## 描述 {#description}
 
-`CollapsingMergeTree` 引擎继承自 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)，并在合并过程中添加了行合并的逻辑。
-`CollapsingMergeTree` 表引擎异步删除（合并）一对行，前提是排序键 (`ORDER BY`) 中的所有字段相等，除了特殊字段 `Sign`，其值可以是 `1` 或 `-1`。
-没有相反值 `Sign` 的行会被保留。
+`CollapsingMergeTree` 引擎继承自 [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)，
+并在合并过程中增加了对行进行折叠的逻辑。
+`CollapsingMergeTree` 表引擎会异步删除（折叠）
+成对的行，如果排序键（`ORDER BY`）中的所有字段都相同，且仅特殊字段 `Sign` 不同，
+并且 `Sign` 字段只能取值 `1` 或 `-1`。
+没有与之构成 `Sign` 取值相反配对的行会被保留。
 
-有关更多详细信息，请参见文档的 [Collapsing](#table_engine-collapsingmergetree-collapsing) 部分。
+更多详细信息，参见本文档的 [Collapsing](#table_engine-collapsingmergetree-collapsing) 部分。
 
 :::note
-该引擎可以显著减少存储量，从而提高 `SELECT` 查询的效率。
+此引擎可以显著减少存储空间占用，
+从而提高 `SELECT` 查询的效率。
 :::
 
 ## 参数 {#parameters}
 
-该表引擎的所有参数，除了 `Sign` 参数外，具有与 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 相同的含义。
+此表引擎的所有参数（`Sign` 参数除外）与 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) 中的含义相同。
 
-- `Sign` — 代表行类型的列的名称，其中 `1` 是 "状态" 行, `-1` 是 "取消" 行。类型：[Int8](/sql-reference/data-types/int-uint)。
+- `Sign` — 行类型标记列的名称，其中 `1` 表示“状态”行，`-1` 表示“撤销”行。类型：[Int8](/sql-reference/data-types/int-uint)。
 
 ## 创建表 {#creating-a-table}
 
@@ -47,15 +49,14 @@ ENGINE = CollapsingMergeTree(Sign)
 ```
 
 <details markdown="1">
+  <summary>已弃用的建表方法</summary>
 
-<summary>创建表的弃用方法</summary>
+  :::note
+  以下方法不建议在新项目中使用。
+  如果可能，建议将旧项目更新为使用新方法。
+  :::
 
-:::note
-下面的方法不建议在新项目中使用。
-我们建议，如果可能，更新旧项目以使用新方法。
-:::
-
-```sql
+  ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -65,27 +66,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
 ```
 
-`Sign` — 代表行类型的列的名称，其中 `1` 是 "状态" 行, `-1` 是 "取消" 行。[Int8](/sql-reference/data-types/int-uint)。
-
+  `Sign` — 分配给某列的名称，该列用于表示行的类型，其中 `1` 表示“state”行，`-1` 表示“cancel”行。[Int8](/sql-reference/data-types/int-uint)。
 </details>
 
-- 有关查询参数的描述，请参见 [查询描述](../../../sql-reference/statements/create/table.md)。
-- 创建 `CollapsingMergeTree` 表时，所需的 [查询子句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) 与创建 `MergeTree` 表时所需的相同。
+* 有关查询参数的说明，请参阅[查询说明](../../../sql-reference/statements/create/table.md)。
+* 创建 `CollapsingMergeTree` 表时，需要与创建 `MergeTree` 表时相同的[查询子句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table)。
 
-## 合并 {#table_engine-collapsingmergetree-collapsing}
+## 折叠 {#table_engine-collapsingmergetree-collapsing}
 
 ### 数据 {#data}
 
-考虑需要为某一给定对象保存不断变化的数据的情况。
-每个对象有一行并在每次变化时更新听起来很合理，然而，更新操作对 DBMS 来说开销大且缓慢，因为它们需要重写存储中的数据。
-如果我们需要快速写入数据，执行大量更新的方法是不可接受的，但我们可以始终顺序写入对象的更改。
+考虑这样一种情况：你需要为某个给定对象保存持续变化的数据。
+看起来为每个对象只保留一行并在有变化时更新它似乎是合乎逻辑的，
+然而，更新操作对数据库管理系统（DBMS）来说代价高且缓慢，因为它们需要在存储中重写数据。
+如果我们需要快速写入数据，执行大量更新操作并不是可接受的方法，
+但我们始终可以按顺序写入某个对象的变更。
 为此，我们使用特殊列 `Sign`。
 
-- 如果 `Sign` = `1`，则表示该行是 "状态" 行：_包含表示当前有效状态的字段的行_。
-- 如果 `Sign` = `-1`，则表示该行是 "取消" 行：_用于取消具有相同属性的对象状态的行_。
+* 如果 `Sign` = `1`，表示该行是一个“状态（state）”行：*一行包含表示当前有效状态的字段*。
+* 如果 `Sign` = `-1`，表示该行是一个“撤销（cancel）”行：*一行用于撤销具有相同属性的对象状态*。
 
-例如，我们想计算用户在某个网站上查看了多少页面以及他们访问页面的持续时间。
-在某一时刻，我们写入以下表示用户活动状态的行：
+例如，我们希望统计用户在某个网站上查看了多少页面以及访问这些页面的时长。
+在某个给定时间点，我们写入如下记录用户活动状态的一行数据：
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -93,7 +95,7 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-在稍后的时刻，我们记录用户活动的变化并写入以下两行：
+随后，当我们检测到用户活动发生变化时，会使用以下两行将其写入表中：
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -102,10 +104,12 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-第一行取消了对象的先前状态（在这种情况下表示用户）。它应复制 "取消" 行的所有排序键字段，除了 `Sign`。
-上面的第二行包含当前状态。
+第一行会取消该对象之前的状态（在本例中表示一个用户）。
+对于该“已取消”行，应复制所有排序键字段，`Sign` 字段除外。
+上面的第二行表示当前状态。
 
-由于我们只需要用户活动的最后状态，因此可以删除我们插入的原始 "状态" 行和 "取消" 行，如下所示，合并对象的无效（旧）状态：
+由于我们只需要用户活动的最终状态，原始的 “state” 行和我们插入的 “cancel”
+行可以像下方所示那样删除，从而折叠对象的无效（旧）状态：
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -115,59 +119,66 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-`CollapsingMergeTree` 在数据分片合并时执行确切的 _合并_ 行为。
+`CollapsingMergeTree` 在合并数据分片时，会执行这种*折叠*行为。
 
 :::note
-对此为何每次更改需要两行的原因将在 [算法](#table_engine-collapsingmergetree-collapsing-algorithm) 段落中进一步讨论。
+关于为什么每次更改需要两行的原因，
+将在[算法](#table_engine-collapsingmergetree-collapsing-algorithm)一节中进一步讨论。
 :::
 
-**这种方法的特殊性**
+**这种方法的特点**
 
-1. 编写数据的程序应该记住对象的状态，以便能取消它。"取消" 行应包含 "状态" 行的排序键字段的副本和相反的 `Sign`。这增加了初始存储大小，但使我们能够快速写入数据。
-2. 列中长的增长数组由于写入的负载增加而降低引擎的效率。数据越简单，效率越高。
-3. `SELECT` 结果在很大程度上取决于对象变化历史的一致性。准备插入数据时要准确。使用不一致的数据可能会导致不可预测的结果。例如，非负指标如会话深度的负值。
+1. 写入数据的程序必须记住对象的状态，才能在需要时将其取消。“cancel” 行应包含与 “state” 行相同的排序键字段副本，以及相反的 `Sign`。这会增加初始存储占用，但可以让我们快速写入数据。
+2. 列中不断增长的长数组会因为写入负载增加而降低引擎效率。数据越简单，效率越高。
+3. `SELECT` 的结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要谨慎。对于不一致的数据，可能会得到不可预测的结果。例如，本应非负的指标（如会话深度）出现负值。
 
 ### 算法 {#table_engine-collapsingmergetree-collapsing-algorithm}
 
-当 ClickHouse 合并数据 [片段](/concepts/glossary#parts) 时，具有相同排序键 (`ORDER BY`) 的连续行组最多合并为两行，即 "状态" 行 `Sign` = `1` 和 "取消" 行 `Sign` = `-1`。
-换句话说，在 ClickHouse 中条目会合并。
+当 ClickHouse 合并数据[分片](/concepts/glossary#parts)时，
+每组具有相同排序键（`ORDER BY`）的连续行会被折叠为最多两行，
+一行 `Sign` = `1` 的 “state” 行和一行 `Sign` = `-1` 的 “cancel” 行。
+换言之，ClickHouse 会对这些记录进行折叠处理。
 
-对于每个生成的数据片段，ClickHouse 保存：
+对于每个生成的数据部分，ClickHouse 会保存：
 
 |  |                                                                                                                                     |
 |--|-------------------------------------------------------------------------------------------------------------------------------------|
-|1.| 第一个 "取消" 行和最后一个 "状态" 行，如果 "状态" 行和 "取消" 行的数量相匹配，并且最后一行是 "状态" 行。 |
-|2.| 如果 "状态" 行的数量多于 "取消" 行，则最后一个 "状态" 行。                                                            |
-|3.| 如果 "取消" 行的数量多于 "状态" 行，则第一个 "取消" 行。                                                          |
-|4.| 在所有其他情况下，没有行。                                                                                               |
+|1.| 如果 `"state"` 行和 `"cancel"` 行的数量相同，且最后一行为 `"state"` 行，则保存第一条 `"cancel"` 行和最后一条 `"state"` 行。 |
+|2.| 如果 `"state"` 行多于 `"cancel"` 行，则保存最后一条 `"state"` 行。                                                            |
+|3.| 如果 `"cancel"` 行多于 `"state"` 行，则保存第一条 `"cancel"` 行。                                                          |
+|4.| 在所有其他情况下，不保存任何行。                                                                                               |
 
-此外，当 "状态" 行的数量至少比 "取消" 行多两个或 "取消" 行的数量至少比 "状态" 行多两个时，合并将继续。
-然而，ClickHouse 将这种情况视为逻辑错误，并记录在服务器日志中。
-若同一数据被插入多次，就会出现此错误。因此，合并不应改变统计计算的结果。
-更改会逐渐合并，最终几乎每个对象只留下最后状态。
+另外，当 `"state"` 行比 `"cancel"` 行至少多 2 行，或者 `"cancel"` 行比 `"state"` 行至少多 2 行时，合并会继续进行。
+不过，ClickHouse 会将这种情况视为逻辑错误，并将其记录到服务器日志中。
+如果相同的数据被多次插入，就有可能出现此错误。
+因此，折叠不应改变统计结果。
+变更会被逐步折叠，最终几乎只保留每个对象的最后状态。
 
-`Sign` 列是必需的，因为合并算法无法保证所有具有相同排序键的行都会位于同一生成的数据片段中，甚至在同一物理服务器上。
-ClickHouse 通过多个线程处理 `SELECT` 查询，无法预测结果中的行顺序。
+需要 `Sign` 列，是因为合并算法不能保证具有相同排序键的所有行都处于同一个结果数据部分中，甚至不在同一台物理服务器上。
+ClickHouse 使用多个线程处理 `SELECT` 查询，因此无法预测结果中行的顺序。
 
-如果需要从 `CollapsingMergeTree` 表获取完全"合并"的数据，则需要聚合。
-为了最终完成合并，编写带有 `GROUP BY` 子句和考虑到 Sign 的聚合函数的查询。
-例如，要计算数量，使用 `sum(Sign)` 而不是 `count()`。
-要计算某物的总和，使用 `sum(Sign * x)` 和 `HAVING sum(Sign) > 0`，而不是 `sum(x)`，如以下 [示例](#example-of-use) 所示。
+如果需要从 `CollapsingMergeTree` 表中获取完全“折叠”的数据，则需要进行聚合。
+要完成折叠，请编写带有 `GROUP BY` 子句的查询，并使用会考虑 `Sign` 值的聚合函数。
+例如，要计算数量，应使用 `sum(Sign)` 而不是 `count()`。
+要计算某个量的总和，应使用 `sum(Sign * x)` 并配合 `HAVING sum(Sign) > 0`，而不是像下面[示例](#example-of-use)中那样使用 `sum(x)`。
 
-聚合 `count`、`sum` 和 `avg` 可以这样计算。
-如果一个对象至少有一个未合并的状态，则可以计算聚合 `uniq`。
-聚合 `min` 和 `max` 不能计算，因为 `CollapsingMergeTree` 不保存合并状态的历史。
+聚合函数 `count`、`sum` 和 `avg` 可以用这种方式计算。
+如果对象至少有一个未折叠的状态，则可以计算聚合函数 `uniq`。
+聚合函数 `min` 和 `max` 无法计算，
+因为 `CollapsingMergeTree` 不保存已折叠状态的历史。
 
 :::note
-如果您需要无聚合地提取数据（例如，检查最新值是否符合特定条件的行是否存在），您可以使用 `FROM` 子句的 [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修饰符。它会在返回结果之前合并数据。
-对于 `CollapsingMergeTree`，仅返回每个键的最新状态行。
+如果需要在不进行聚合的情况下提取数据
+（例如，检查其最新值满足某些条件的行是否存在），
+可以在 `FROM` 子句中使用 [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修饰符。它会在返回结果之前合并数据。
+对于 CollapsingMergeTree，每个键只返回最新的状态行。
 :::
 
 ## 示例 {#examples}
 
 ### 使用示例 {#example-of-use}
 
-给定以下示例数据：
+给出以下示例数据：
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -177,7 +188,7 @@ ClickHouse 通过多个线程处理 `SELECT` 查询，无法预测结果中的�
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-让我们使用 `CollapsingMergeTree` 创建一个表 `UAct`：
+接下来使用 `CollapsingMergeTree` 创建一张名为 `UAct` 的表：
 
 ```sql
 CREATE TABLE UAct
@@ -201,13 +212,13 @@ INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
 INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1),(4324182021466249494, 6, 185, 1)
 ```
 
-我们使用两个 `INSERT` 查询创建两个不同的数据片段。
+我们使用两个 `INSERT` 查询来创建两个不同的数据片段。
 
 :::note
-如果我们通过单个查询插入数据，ClickHouse 只会创建一个数据片段，并且将不会执行任何合并。
+如果我们使用单个查询插入数据，ClickHouse 只会创建一个数据片段，并且之后不会执行任何合并操作。
 :::
 
-我们可以使用以下内容选择数据：
+我们可以使用以下方式来查询数据：
 
 ```sql
 SELECT * FROM UAct
@@ -223,13 +234,15 @@ SELECT * FROM UAct
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-让我们查看上面返回的数据，看看合并是否发生...
-通过两个 `INSERT` 查询，我们创建了两个数据片段。
-该 `SELECT` 查询在两个线程中执行，并且我们得到了随机的行顺序。
-然而，合并 **没有发生**，因为数据片段尚未合并，而 ClickHouse 在我们无法预测的时刻在后台合并数据片段。
+让我们来看一下上面返回的数据，检查是否发生了折叠（collapsing）……
+通过两条 `INSERT` 语句，我们创建了两个数据 part。
+`SELECT` 语句在两个线程中执行，因此得到的行顺序是随机的。
+然而，折叠**并没有发生**，因为这些数据 part 尚未被合并，
+而 ClickHouse 会在后台的某个未知时间点合并数据 part，这一点是无法预测的。
 
-因此，我们需要进行一次聚合
-我们通过 [`sum`](/sql-reference/aggregate-functions/reference/sum) 聚合函数和 [`HAVING`](/sql-reference/statements/select/having) 子句来执行：
+因此，我们需要进行一次聚合，
+可以使用 [`sum`](/sql-reference/aggregate-functions/reference/sum)
+聚合函数，并配合 [`HAVING`](/sql-reference/statements/select/having) 子句：
 
 ```sql
 SELECT
@@ -247,7 +260,7 @@ HAVING sum(Sign) > 0
 └─────────────────────┴───────────┴──────────┘
 ```
 
-如果我们不需要聚合并希望强制合并，也可以对 `FROM` 子句使用 `FINAL` 修饰符。
+如果我们不需要聚合并且想要强制折叠，还可以在 `FROM` 子句中使用 `FINAL` 修饰符。
 
 ```sql
 SELECT * FROM UAct FINAL
@@ -258,16 +271,18 @@ SELECT * FROM UAct FINAL
 │ 4324182021466249494 │         6 │      185 │    1 │
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
+
 :::note
-这种选择数据的方式效率较低，不建议在扫描大量数据（数百万行）时使用。
+这种数据选取方式效率较低，不建议在扫描数据量很大（数百万行）时使用。
 :::
 
-### 另一种方法的示例 {#example-of-another-approach}
+### 另一种方法示例 {#example-of-another-approach}
 
-该方法的想法是，合并仅考虑关键字段。
-因此，在 "取消" 行中，我们可以指定负值，在求和时等同于先前版本的行，而无需使用 `Sign` 列。
+这种方法的思路是，合并操作只考虑键字段。
+因此，在 &quot;cancel&quot; 行中，我们可以指定负值，
+使其在不使用 `Sign` 列进行求和时抵消该行的先前版本。
 
-对于此示例，我们将使用以下样本数据：
+在本示例中，我们将使用下面的示例数据：
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -277,8 +292,8 @@ SELECT * FROM UAct FINAL
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-为此方法，必须更改 `PageViews` 和 `Duration` 的数据类型以存储负值。
-因此，在使用 `collapsingMergeTree` 创建我们的表 `UAct` 时，我们将这些列的值从 `UInt8` 更改为 `Int16`：
+对于这种方法，需要将 `PageViews` 和 `Duration` 的数据类型更改为可以存储负值的类型。
+因此，在使用 `collapsingMergeTree` 创建表 `UAct` 时，我们将这些列的数据类型从 `UInt8` 更改为 `Int16`：
 
 ```sql
 CREATE TABLE UAct
@@ -292,9 +307,9 @@ ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 ```
 
-让我们通过向我们的表插入数据来测试该方法。
+让我们通过向表中插入数据来测试此方法。
 
-对于示例或小表，然而，是可接受的：
+不过，对于示例或小型表，这样做是可以接受的：
 
 ```sql
 INSERT INTO UAct VALUES(4324182021466249494,  5,  146,  1);

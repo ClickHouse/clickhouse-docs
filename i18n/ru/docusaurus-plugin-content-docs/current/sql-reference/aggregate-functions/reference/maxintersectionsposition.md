@@ -1,17 +1,16 @@
 ---
-description: 'Агрегатная функция, которая вычисляет позиции вхождений функции
-  maxIntersections.'
+description: 'Агрегатная функция, вычисляющая позиции вхождений функции maxIntersections.'
 sidebar_position: 164
 slug: /sql-reference/aggregate-functions/reference/maxintersectionsposition
 title: 'maxIntersectionsPosition'
+doc_type: 'reference'
 ---
 
+# maxIntersectionsPosition {#maxintersectionsposition}
 
-# maxIntersectionsPosition
+Агрегатная функция, вычисляющая позиции вхождений функции [`maxIntersections`](./maxintersections.md).
 
-Агрегатная функция, которая вычисляет позиции вхождений функции [`maxIntersections`](./maxintersections.md).
-
-Синтаксис:
+Синтаксис следующий:
 
 ```sql
 maxIntersectionsPosition(start_column, end_column)
@@ -19,13 +18,13 @@ maxIntersectionsPosition(start_column, end_column)
 
 **Аргументы**
 
-- `start_column` – числовая колонка, представляющая начало каждого интервала. Если `start_column` равно `NULL` или 0, то интервал будет пропущен.
+* `start_column` – числовой столбец, задающий начало каждого интервала. Если `start_column` равен `NULL` или 0, этот интервал будет пропущен.
 
-- `end_column` - числовая колонка, представляющая конец каждого интервала. Если `end_column` равно `NULL` или 0, то интервал будет пропущен.
+* `end_column` – числовой столбец, задающий конец каждого интервала. Если `end_column` равен `NULL` или 0, этот интервал будет пропущен.
 
 **Возвращаемое значение**
 
-Возвращает начальные позиции максимального количества пересекающихся интервалов.
+Возвращает позиции начала максимального количества пересекающихся интервалов.
 
 **Пример**
 
@@ -34,13 +33,9 @@ CREATE TABLE my_events (
     start UInt32,
     end UInt32
 )
-Engine = MergeTree
+ENGINE = MergeTree
 ORDER BY tuple();
-```
 
-Вставляем данные в таблицу:
-
-```sql
 INSERT INTO my_events VALUES
    (1, 3),
    (1, 6),
@@ -57,15 +52,16 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-Обратите внимание, что три из этих интервалов имеют значение 4 общее, и это начинается со второго интервала:
+Обратите внимание, что у трёх из этих интервалов общим является значение 4 — начиная со второго интервала:
 
 ```sql
 SELECT maxIntersectionsPosition(start, end) FROM my_events;
 ```
 
 Ответ:
+
 ```response
 2
 ```
 
-Другими словами, строка `(1,6)` является началом 3 интервалов, которые пересекаются, и 3 - это максимальное количество пересекающихся интервалов.
+Другими словами, строка `(1,6)` является началом трёх пересекающихся интервалов, и 3 — максимальное число пересекающихся интервалов.

@@ -1,12 +1,11 @@
 ---
 description: 'Analyzing Stack Overflow data with ClickHouse'
 sidebar_label: 'Stack Overflow'
-sidebar_position: 1
 slug: /getting-started/example-datasets/stackoverflow
 title: 'Analyzing Stack Overflow data with ClickHouse'
 keywords: ['StackOverflow']
 show_related_blogs: true
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -14,7 +13,7 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 This dataset contains every `Posts`, `Users`, `Votes`, `Comments`, `Badges`, `PostHistory`, and `PostLinks` that has occurred on Stack Overflow.
 
-Users can either download pre-prepared Parquet versions of the data, containing every post up to April 2024, or download the latest data in XML format and load this. Stack Overflow provide updates to this data periodically - historically every 3 months.
+You can either download pre-prepared Parquet versions of the data, containing every post up to April 2024, or download the latest data in XML format and load this. Stack Overflow provide updates to this data periodically - historically every 3 months.
 
 The following diagram shows the schema for the available tables assuming Parquet format.
 
@@ -255,7 +254,7 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-After running the above users will have a set of files, each with 10000 lines. This ensures the memory overhead of the next command is not excessive (xml to JSON conversion is done in memory).
+After running the above you will have a set of files, each with 10000 lines. This ensures the memory overhead of the next command is not excessive (xml to JSON conversion is done in memory).
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json

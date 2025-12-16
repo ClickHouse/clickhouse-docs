@@ -2,27 +2,34 @@
 sidebar_label: 'Интеграция Apache Spark с ClickHouse'
 sidebar_position: 1
 slug: /integrations/apache-spark
-description: 'Введение в Apache Spark с ClickHouse'
+description: 'Введение в работу Apache Spark с ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'миграция', 'данные']
 title: 'Интеграция Apache Spark с ClickHouse'
+doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+# Интеграция Apache Spark с ClickHouse {#integrating-apache-spark-with-clickhouse}
 
-# Интеграция Apache Spark с ClickHouse
+<ClickHouseSupportedBadge />
 
-<br/>
+[Apache Spark](https://spark.apache.org/) — это вычислительный движок с поддержкой нескольких языков для выполнения задач data engineering, data science и машинного обучения на отдельных узлах или в кластерах.
 
-[Apache Spark](https://spark.apache.org/) — это многоязычный движок для выполнения задач по обработке данных, аналитике данных и машинному обучению на одноузловых машинах или кластерах.
+Существует два основных способа подключить Apache Spark к ClickHouse:
 
-Существует два основных способа подключения Apache Spark и ClickHouse:
+1. [Spark Connector](./apache-spark/spark-native-connector) — коннектор Spark реализует `DataSourceV2` и имеет собственное управление каталогом (Catalog). На данный момент это рекомендованный способ интеграции ClickHouse и Spark.
+2. [Spark JDBC](./apache-spark/spark-jdbc) — интеграция Spark и ClickHouse
+   с использованием [источника данных JDBC](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html).
 
-1. [Spark Connector](./apache-spark/spark-native-connector) - Коннектор Spark реализует `DataSourceV2` и имеет собственное управление каталогом. На сегодняшний день это рекомендованный способ интеграции ClickHouse и Spark.
-2. [Spark JDBC](./apache-spark/spark-jdbc) - Интеграция Spark и ClickHouse с использованием [JDBC data source](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html).
+<br />
 
-<br/>
-<br/>
-Обе решения были успешно протестированы и полностью совместимы с различными API, включая Java, Scala, PySpark и Spark SQL.
+<br />
+
+Оба решения успешно протестированы и полностью совместимы с различными API, включая Java, Scala, PySpark и Spark SQL.

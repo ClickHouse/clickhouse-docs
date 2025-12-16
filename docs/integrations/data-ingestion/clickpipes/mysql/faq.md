@@ -5,6 +5,7 @@ slug: /integrations/clickpipes/mysql/faq
 sidebar_position: 2
 title: 'ClickPipes for MySQL FAQ'
 doc_type: 'reference'
+keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL troubleshooting', 'MySQL ClickHouse replication', 'ClickPipes MySQL support', 'MySQL CDC ClickHouse']
 ---
 
 # ClickPipes for MySQL FAQ

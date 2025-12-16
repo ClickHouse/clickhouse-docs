@@ -1,19 +1,18 @@
 ---
-slug: '/deployment-guides/index'
-title: 'デプロイメントガイドの概要'
-description: 'デプロイメントとスケーリングセクションのランディングページ'
+slug: /deployment-guides/index
+title: 'デプロイメントガイド概要'
+description: 'デプロイメントおよびスケーリングセクションのランディングページ'
+keywords: ['デプロイメントガイド', 'スケーリング', 'クラスターデプロイメント', 'レプリケーション', 'フォルトトレランス']
+doc_type: 'landing-page'
 ---
 
+# デプロイメントとスケーリング {#deployment-and-scaling}
 
+本セクションでは、次のトピックについて説明します。
 
-
-# デプロイメントとスケーリング
-
-このセクションでは、以下のトピックについて説明します。
-
-| トピック                                                        |
+| トピック                                                            |
 |------------------------------------------------------------------|
-| [イントロダクション](/architecture/introduction)                    |
-| [スケーリングアウト](/architecture/horizontal-scaling)               |
-| [障害耐性のためのレプリケーション](/architecture/replication)  |
-| [クラスターのデプロイメント](/architecture/cluster-deployment)        |
+| [導入](/architecture/introduction)                    |
+| [スケールアウト](/architecture/horizontal-scaling)               |
+| [フォールトトレランスのためのレプリケーション](/architecture/replication)  |
+| [クラスターデプロイメント](/architecture/cluster-deployment)        |

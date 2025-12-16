@@ -1,22 +1,18 @@
 ---
-description: '入力データに最大三角形三バケットアルゴリズムを適用します。'
+description: '入力データに対して Largest-Triangle-Three-Buckets アルゴリズムを適用します。'
 sidebar_label: 'largestTriangleThreeBuckets'
 sidebar_position: 159
-slug: '/sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets'
+slug: /sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets
 title: 'largestTriangleThreeBuckets'
+doc_type: 'reference'
 ---
 
+# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
 
-
-
-# largestTriangleThreeBuckets
-
-入力データに [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) アルゴリズムを適用します。  
-このアルゴリズムは、視覚化のために時系列データをダウンサンプリングするために使用されます。  
-x座標でソートされた系列で動作するように設計されています。  
-このアルゴリズムは、ソートされた系列をバケットに分割し、各バケット内で最大の三角形を見つけることによって機能します。  
-バケットの数は、結果の系列におけるポイントの数に等しくなります。  
-関数はデータを `x` でソートし、その後ソートされたデータにダウンサンプリングアルゴリズムを適用します。
+入力データに対して [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) アルゴリズムを適用します。
+このアルゴリズムは、可視化のために時系列データをダウンサンプリングする際に使用されます。x 座標でソートされた系列を前提として設計されています。
+ソート済み系列を複数のバケットに分割し、各バケット内で最大の三角形を見つけることで動作します。バケット数は、ダウンサンプリング後の系列に含まれる点の数と同じです。
+この関数は、まずデータを `x` でソートし、その後ソート済みデータに対してダウンサンプリングアルゴリズムを適用します。
 
 **構文**
 
@@ -24,26 +20,26 @@ x座標でソートされた系列で動作するように設計されていま�
 largestTriangleThreeBuckets(n)(x, y)
 ```
 
-エイリアス: `lttb`。
+エイリアス: `lttb`.
 
 **引数**
 
-- `x` — x座標。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)、[小数](../../../sql-reference/data-types/decimal.md)、[日付](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[日時](../../../sql-reference/data-types/datetime.md)、[日時64](../../../sql-reference/data-types/datetime64.md)。
-- `y` — y座標。[整数](../../../sql-reference/data-types/int-uint.md)、[浮動小数点](../../../sql-reference/data-types/float.md)、[小数](../../../sql-reference/data-types/decimal.md)、[日付](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[日時](../../../sql-reference/data-types/datetime.md)、[日時64](../../../sql-reference/data-types/datetime64.md)。
+* `x` — x 座標。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
+* `y` — y 座標。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
 
-NaNは提供された系列では無視され、NaN値は分析から除外されます。これにより、関数は有効な数値データのみで動作します。
+与えられた系列中の NaN は無視され、これらの NaN 値は分析から除外されます。これにより、この関数は有効な数値データのみに対して動作します。
 
 **パラメータ**
 
-- `n` — 結果の系列内のポイントの数。[UInt64](../../../sql-reference/data-types/int-uint.md)。
+* `n` — 結果の系列に含まれる点の数。[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
 **返される値**
 
-[Array](../../../sql-reference/data-types/array.md) の [Tuple](../../../sql-reference/data-types/tuple.md) で、2つの要素を持ちます：
+2 要素を持つ [Tuple](../../../sql-reference/data-types/tuple.md) の [Array](../../../sql-reference/data-types/array.md):
 
 **例**
 
-入力テーブル：
+入力テーブル:
 
 ```text
 ┌─────x───────┬───────y──────┐
@@ -66,7 +62,7 @@ NaNは提供された系列では無視され、NaN値は分析から除外さ�
 SELECT largestTriangleThreeBuckets(4)(x, y) FROM largestTriangleThreeBuckets_test;
 ```
 
-結果：
+結果:
 
 ```text
 ┌────────largestTriangleThreeBuckets(4)(x, y)───────────┐

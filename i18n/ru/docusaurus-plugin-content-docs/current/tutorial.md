@@ -1,33 +1,33 @@
 ---
 slug: /tutorial
-sidebar_label: 'Расширенный учебник'
-title: 'Расширенный учебник'
-description: 'Узнайте, как загружать и выполнять запросы к данным в ClickHouse на примере набора данных такси Нью-Йорка.'
+sidebar_label: 'Продвинутое руководство'
+title: 'Продвинутое руководство'
+description: 'Узнайте, как выполнять приём и запросы к данным в ClickHouse на примере набора данных о нью-йоркских такси.'
 sidebar_position: 0.5
-keywords: ['clickhouse', 'установка', 'учебник', 'словарь', 'словарей', 'пример', 'расширенный', 'такси', 'новый', 'йорк', 'нюйорк']
+keywords: ['clickhouse', 'установка', 'руководство', 'словарь', 'словари', 'пример', 'продвинутое', 'такси', 'нью-йорк', 'nyc']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# Расширенное руководство {#advanced-tutorial}
 
-# Расширенный учебник
+## Overview {#overview}
 
-## Обзор {#overview}
+Узнайте, как выполнять приём и запросы данных в ClickHouse на примере набора данных о такси Нью-Йорка.
 
-Узнайте, как загружать и выполнять запросы к данным в ClickHouse на примере набора данных такси Нью-Йорка. 
+### Prerequisites {#prerequisites}
 
-### Предварительные условия {#prerequisites}
-
-Вам нужен доступ к работающему сервису ClickHouse, чтобы завершить этот учебник. Для инструкций смотрите руководство [Быстрый старт](./quick-start.mdx).
+Для выполнения данного руководства необходим доступ к работающему сервису ClickHouse. Инструкции см. в руководстве [Быстрый старт](/get-started/quick-start).
 
 <VerticalStepper>
 
-## Создать новую таблицу {#create-a-new-table}
+## Создание новой таблицы {#create-a-new-table}
 
-Набор данных такси Нью-Йорка содержит информацию о миллионах поездок на такси, с колонками, включая сумму чаевых, сборы, тип оплаты и многое другое. Создайте таблицу для хранения этих данных.
+Набор данных о такси Нью‑Йорка содержит сведения о миллионах поездок, включая такие столбцы, как сумма чаевых, платные дороги, тип оплаты и многое другое. Создайте таблицу для хранения этих данных.
 
-1. Подключитесь к SQL-консоли:
-- Для ClickHouse Cloud выберите сервис из выпадающего меню, а затем выберите **SQL Консоль** в левом навигационном меню.
-- Для самоуправляемого ClickHouse подключитесь к SQL-консоли по адресу `https://_hostname_:8443/play`. Проверьте детали у вашего администратора ClickHouse.
-
+1. Подключитесь к SQL‑консоли:
+    - Для ClickHouse Cloud выберите сервис в раскрывающемся списке, затем выберите **SQL Console** в левой панели навигации.
+    - Для самостоятельно развернутого ClickHouse подключитесь к SQL‑консоли по адресу `https://_hostname_:8443/play`. Уточните детали у администратора ClickHouse.
 
 2. Создайте следующую таблицу `trips` в базе данных `default`:
     ```sql
@@ -82,13 +82,13 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     ENGINE = MergeTree
     PARTITION BY toYYYYMM(pickup_date)
     ORDER BY pickup_datetime;
-```
+    ```
 
-## Добавить набор данных {#add-the-dataset}
+## Добавьте набор данных {#add-the-dataset}
 
-Теперь, когда вы создали таблицу, добавьте данные такси Нью-Йорка из CSV файлов в S3.
+Теперь, когда вы создали таблицу, добавьте данные о поездках на такси в Нью‑Йорке из CSV‑файлов в S3.
 
-1. Следующая команда вставляет ~2,000,000 строк в вашу таблицу `trips` из двух различных файлов в S3: `trips_1.tsv.gz` и `trips_2.tsv.gz`:
+1. Следующая команда вставляет около 2 000 000 строк в вашу таблицу `trips` из двух разных файлов в S3: `trips_1.tsv.gz` и `trips_2.tsv.gz`:
 
     ```sql
     INSERT INTO trips
@@ -143,118 +143,121 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     ") SETTINGS input_format_try_infer_datetimes = 0
     ```
 
-2. Подождите, пока `INSERT` завершится. Это может занять некоторое время для загрузки 150 МБ данных.
-
+2. Дождитесь завершения выполнения команды `INSERT`. Загрузка 150 МБ данных может занять некоторое время.
 
 3. Когда вставка завершится, убедитесь, что всё прошло успешно:
     ```sql
     SELECT count() FROM trips
     ```
 
-    Этот запрос должен вернуть 1,999,657 строк.
+    Этот запрос должен вернуть 1 999 657 строк.
 
-## Проанализировать данные {#analyze-the-data}
+## Анализ данных {#analyze-the-data}
 
-Выполните несколько запросов для анализа данных. Исследуйте следующие примеры или попробуйте свой собственный SQL-запрос. 
+Выполните несколько запросов для анализа данных. Изучите приведённые примеры или попробуйте свой собственный SQL-запрос.
 
-- Рассчитайте среднюю сумму чаевых:
-    ```sql
-    SELECT round(avg(tip_amount), 2) FROM trips
-    ```
+- Вычислите средний размер чаевых:
+
+  ```sql
+  SELECT round(avg(tip_amount), 2) FROM trips
+  ```
+
     <details>
-    <summary>Ожидаемый результат</summary>
-    <p>
-    
-    ```response
-    ┌─round(avg(tip_amount), 2)─┐
-    │                      1.68 │
-    └───────────────────────────┘
-    ```
+  <summary>Ожидаемый результат</summary>
+  <p>
+  
+  ```response
+  ┌─round(avg(tip_amount), 2)─┐
+  │                      1.68 │
+  └───────────────────────────┘
+  ```
 
     </p>
-    </details>
+  </details>
 
-- Рассчитайте среднюю стоимость в зависимости от числа пассажиров:
-    ```sql
-    SELECT
-        passenger_count,
-        ceil(avg(total_amount),2) AS average_total_amount
-    FROM trips
-    GROUP BY passenger_count
-    ```
-    
+- Вычислите среднюю стоимость в зависимости от количества пассажиров:
+
+  ```sql
+  SELECT
+      passenger_count,
+      ceil(avg(total_amount),2) AS average_total_amount
+  FROM trips
+  GROUP BY passenger_count
+  ```
+
     <details>
-    <summary>Ожидаемый результат</summary>
-    <p>
+  <summary>Ожидаемый результат</summary>
+  <p>
 
-    Число `passenger_count` варьируется от 0 до 9:
+  Значение `passenger_count` варьируется от 0 до 9:
 
-    ```response
-    ┌─passenger_count─┬─average_total_amount─┐
-    │               0 │                22.69 │
-    │               1 │                15.97 │
-    │               2 │                17.15 │
-    │               3 │                16.76 │
-    │               4 │                17.33 │
-    │               5 │                16.35 │
-    │               6 │                16.04 │
-    │               7 │                 59.8 │
-    │               8 │                36.41 │
-    │               9 │                 9.81 │
-    └─────────────────┴──────────────────────┘
-    ```
+  ```response
+  ┌─passenger_count─┬─average_total_amount─┐
+  │               0 │                22.69 │
+  │               1 │                15.97 │
+  │               2 │                17.15 │
+  │               3 │                16.76 │
+  │               4 │                17.33 │
+  │               5 │                16.35 │
+  │               6 │                16.04 │
+  │               7 │                 59.8 │
+  │               8 │                36.41 │
+  │               9 │                 9.81 │
+  └─────────────────┴──────────────────────┘
+  ```
 
     </p>
-    </details>
+  </details>
 
-- Рассчитайте количество поездок за день по районам:
-    ```sql
-    SELECT
-        pickup_date,
-        pickup_ntaname,
-        SUM(1) AS number_of_trips
-    FROM trips
-    GROUP BY pickup_date, pickup_ntaname
-    ORDER BY pickup_date ASC
-    ```
+- Вычислите ежедневное количество поездок по районам:
+
+  ```sql
+  SELECT
+      pickup_date,
+      pickup_ntaname,
+      SUM(1) AS number_of_trips
+  FROM trips
+  GROUP BY pickup_date, pickup_ntaname
+  ORDER BY pickup_date ASC
+  ```
 
     <details>
-    <summary>Ожидаемый результат</summary>
-    <p>
+  <summary>Ожидаемый результат</summary>
+  <p>
 
-    ```response
-    ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
-    │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
-    │  2015-07-01 │ Old Astoria                                              │               5 │
-    │  2015-07-01 │ Flushing                                                 │               1 │
-    │  2015-07-01 │ Yorkville                                                │             378 │
-    │  2015-07-01 │ Gramercy                                                 │             344 │
-    │  2015-07-01 │ Fordham South                                            │               2 │
-    │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
-    │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
-    │  2015-07-01 │ Bushwick South                                           │               5 │
-    ```
+  ```response
+  ┌─pickup_date─┬─pickup_ntaname───────────────────────────────────────────┬─number_of_trips─┐
+  │  2015-07-01 │ Brooklyn Heights-Cobble Hill                             │              13 │
+  │  2015-07-01 │ Old Astoria                                              │               5 │
+  │  2015-07-01 │ Flushing                                                 │               1 │
+  │  2015-07-01 │ Yorkville                                                │             378 │
+  │  2015-07-01 │ Gramercy                                                 │             344 │
+  │  2015-07-01 │ Fordham South                                            │               2 │
+  │  2015-07-01 │ SoHo-TriBeCa-Civic Center-Little Italy                   │             621 │
+  │  2015-07-01 │ Park Slope-Gowanus                                       │              29 │
+  │  2015-07-01 │ Bushwick South                                           │               5 │
+  ```
 
     </p>
-    </details>
+  </details>
 
-- Рассчитайте продолжительность каждой поездки в минутах, затем сгруппируйте результаты по продолжительности поездки:
-    ```sql
-    SELECT
-        avg(tip_amount) AS avg_tip,
-        avg(fare_amount) AS avg_fare,
-        avg(passenger_count) AS avg_passenger,
-        count() AS count,
-        truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
-    FROM trips
-    WHERE trip_minutes > 0
-    GROUP BY trip_minutes
-    ORDER BY trip_minutes DESC
-    ```
+- Вычислите продолжительность каждой поездки в минутах, затем сгруппируйте результаты по продолжительности поездки:
+  ```sql
+  SELECT
+      avg(tip_amount) AS avg_tip,
+      avg(fare_amount) AS avg_fare,
+      avg(passenger_count) AS avg_passenger,
+      count() AS count,
+      truncate(date_diff('second', pickup_datetime, dropoff_datetime)/60) as trip_minutes
+  FROM trips
+  WHERE trip_minutes > 0
+  GROUP BY trip_minutes
+  ORDER BY trip_minutes DESC
+  ```
     <details>
-    <summary>Ожидаемый результат</summary>
-    <p>
-    
+  <summary>Ожидаемый результат</summary>
+  <p>
+
     ```response
     ┌──────────────avg_tip─┬───────────avg_fare─┬──────avg_passenger─┬──count─┬─trip_minutes─┐
     │   1.9600000381469727 │                  8 │                  1 │      1 │        27511 │
@@ -268,65 +271,65 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     </p>
     </details>
 
+- Показать количество посадок в каждом районе с разбивкой по часам дня:
 
-- Отобразите количество поднимаемых в каждом районе по часам суток:
-    ```sql
-    SELECT
-        pickup_ntaname,
-        toHour(pickup_datetime) as pickup_hour,
-        SUM(1) AS pickups
-    FROM trips
-    WHERE pickup_ntaname != ''
-    GROUP BY pickup_ntaname, pickup_hour
-    ORDER BY pickup_ntaname, pickup_hour
-    ```
+  ```sql
+  SELECT
+      pickup_ntaname,
+      toHour(pickup_datetime) as pickup_hour,
+      SUM(1) AS pickups
+  FROM trips
+  WHERE pickup_ntaname != ''
+  GROUP BY pickup_ntaname, pickup_hour
+  ORDER BY pickup_ntaname, pickup_hour
+  ```
+
     <details>
-    <summary>Ожидаемый результат</summary>
-    <p>
+  <summary>Ожидаемый результат</summary>
+  <p>
 
-    ```response
-    ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
-    │ Airport                                                  │           0 │    3509 │
-    │ Airport                                                  │           1 │    1184 │
-    │ Airport                                                  │           2 │     401 │
-    │ Airport                                                  │           3 │     152 │
-    │ Airport                                                  │           4 │     213 │
-    │ Airport                                                  │           5 │     955 │
-    │ Airport                                                  │           6 │    2161 │
-    │ Airport                                                  │           7 │    3013 │
-    │ Airport                                                  │           8 │    3601 │
-    │ Airport                                                  │           9 │    3792 │
-    │ Airport                                                  │          10 │    4546 │
-    │ Airport                                                  │          11 │    4659 │
-    │ Airport                                                  │          12 │    4621 │
-    │ Airport                                                  │          13 │    5348 │
-    │ Airport                                                  │          14 │    5889 │
-    │ Airport                                                  │          15 │    6505 │
-    │ Airport                                                  │          16 │    6119 │
-    │ Airport                                                  │          17 │    6341 │
-    │ Airport                                                  │          18 │    6173 │
-    │ Airport                                                  │          19 │    6329 │
-    │ Airport                                                  │          20 │    6271 │
-    │ Airport                                                  │          21 │    6649 │
-    │ Airport                                                  │          22 │    6356 │
-    │ Airport                                                  │          23 │    6016 │
-    │ Allerton-Pelham Gardens                                  │           4 │       1 │
-    │ Allerton-Pelham Gardens                                  │           6 │       1 │
-    │ Allerton-Pelham Gardens                                  │           7 │       1 │
-    │ Allerton-Pelham Gardens                                  │           9 │       5 │
-    │ Allerton-Pelham Gardens                                  │          10 │       3 │
-    │ Allerton-Pelham Gardens                                  │          15 │       1 │
-    │ Allerton-Pelham Gardens                                  │          20 │       2 │
-    │ Allerton-Pelham Gardens                                  │          23 │       1 │
-    │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
-    │ Arden Heights                                            │          11 │       1 │
-    ```
+  ```response
+  ┌─pickup_ntaname───────────────────────────────────────────┬─pickup_hour─┬─pickups─┐
+  │ Airport                                                  │           0 │    3509 │
+  │ Airport                                                  │           1 │    1184 │
+  │ Airport                                                  │           2 │     401 │
+  │ Airport                                                  │           3 │     152 │
+  │ Airport                                                  │           4 │     213 │
+  │ Airport                                                  │           5 │     955 │
+  │ Airport                                                  │           6 │    2161 │
+  │ Airport                                                  │           7 │    3013 │
+  │ Airport                                                  │           8 │    3601 │
+  │ Airport                                                  │           9 │    3792 │
+  │ Airport                                                  │          10 │    4546 │
+  │ Airport                                                  │          11 │    4659 │
+  │ Airport                                                  │          12 │    4621 │
+  │ Airport                                                  │          13 │    5348 │
+  │ Airport                                                  │          14 │    5889 │
+  │ Airport                                                  │          15 │    6505 │
+  │ Airport                                                  │          16 │    6119 │
+  │ Airport                                                  │          17 │    6341 │
+  │ Airport                                                  │          18 │    6173 │
+  │ Airport                                                  │          19 │    6329 │
+  │ Airport                                                  │          20 │    6271 │
+  │ Airport                                                  │          21 │    6649 │
+  │ Airport                                                  │          22 │    6356 │
+  │ Airport                                                  │          23 │    6016 │
+  │ Allerton-Pelham Gardens                                  │           4 │       1 │
+  │ Allerton-Pelham Gardens                                  │           6 │       1 │
+  │ Allerton-Pelham Gardens                                  │           7 │       1 │
+  │ Allerton-Pelham Gardens                                  │           9 │       5 │
+  │ Allerton-Pelham Gardens                                  │          10 │       3 │
+  │ Allerton-Pelham Gardens                                  │          15 │       1 │
+  │ Allerton-Pelham Gardens                                  │          20 │       2 │
+  │ Allerton-Pelham Gardens                                  │          23 │       1 │
+  │ Annadale-Huguenot-Prince's Bay-Eltingville               │          23 │       1 │
+  │ Arden Heights                                            │          11 │       1 │
+  ```
 
     </p>
-    </details>
+  </details>
 
-    
-7. Извлеките поездки в аэропорты ЛаГардиа или JFK:
+7. Выберите поездки до аэропортов Ла-Гуардия или JFK:
     ```sql
     SELECT
         pickup_datetime,
@@ -366,108 +369,111 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     </p>
     </details>
 
-## Создать словарь {#create-a-dictionary}
+## Создание словаря {#create-a-dictionary}
 
-Словарь — это отображение пар ключ-значение, хранящееся в памяти. Для деталей смотрите [Словари](/sql-reference/dictionaries/index.md) 
+Словарь — это отображение пар «ключ-значение», хранящихся в памяти. Подробности см. в разделе [Dictionaries](/sql-reference/dictionaries/index.md).
 
 Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse.
-Таблица и словарь основаны на CSV-файле, который содержит строку для каждого района в Нью-Йорке. 
+Таблица и словарь основаны на CSV‑файле, который содержит строку для каждого района (neighborhood) Нью‑Йорка.
 
-Районы сопоставлены с названиями пяти районов Нью-Йорка (Бронкс, Бруклин, Манхэттен, Квинс и Стейтен-Айленд), а также с аэропортом Ньюарк (EWR).
+Районы сопоставляются с названиями пяти боро Нью‑Йорка (Bronx, Brooklyn, Manhattan, Queens и Staten Island), а также аэропорта Newark (EWR).
 
-Вот выдержка из CSV-файла, который вы используете в табличном формате. Столбец `LocationID` в файле сопоставляется со столбцами `pickup_nyct2010_gid` и `dropoff_nyct2010_gid` в вашей таблице `trips`:
+Ниже приведён фрагмент используемого CSV‑файла в табличном формате. Столбец `LocationID` в файле сопоставляется со столбцами `pickup_nyct2010_gid` и `dropoff_nyct2010_gid` в таблице `trips`:
 
-  | LocationID      | Borough |  Zone      | service_zone |
-  | ----------- | ----------- |   ----------- | ----------- |
-  | 1      | EWR       |  Аэропорт Ньюарк   | EWR        |
-  | 2    |   Квинс     |   Зона Ямайка   |      Boro Zone   |
-  | 3   |   Бронкс     |  Allerton/Pelham Gardens    |    Boro Zone     |
-  | 4     |    Манхэттен    |    Алфавитный город  |     Yellow Zone    |
-  | 5     |  Стейтен-Айленд      |   Арден Хейтс   |    Boro Zone     |
+| LocationID | Borough       | Zone                    | service&#95;zone |
+| ---------- | ------------- | ----------------------- | ---------------- |
+| 1          | EWR           | Newark Airport          | EWR              |
+| 2          | Queens        | Jamaica Bay             | Boro Zone        |
+| 3          | Bronx         | Allerton/Pelham Gardens | Boro Zone        |
+| 4          | Manhattan     | Alphabet City           | Yellow Zone      |
+| 5          | Staten Island | Arden Heights           | Boro Zone        |
 
+1. Выполните следующую SQL‑команду, которая создаёт словарь с именем `taxi_zone_dictionary` и заполняет его из CSV‑файла в S3. URL‑адрес файла: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`.
 
-1. Выполните следующую SQL-команду, которая создаёт словарь с именем `taxi_zone_dictionary` и заполняет его данными из CSV-файла в S3. URL для файла: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv`. 
-  ```sql
-  CREATE DICTIONARY taxi_zone_dictionary
-  (
-    `LocationID` UInt16 DEFAULT 0,
-    `Borough` String,
-    `Zone` String,
-    `service_zone` String
-  )
-  PRIMARY KEY LocationID
-  SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
-  LIFETIME(MIN 0 MAX 0)
-  LAYOUT(HASHED_ARRAY())
-  ```
+```sql
+CREATE DICTIONARY taxi_zone_dictionary
+(
+  `LocationID` UInt16 DEFAULT 0,
+  `Borough` String,
+  `Zone` String,
+  `service_zone` String
+)
+PRIMARY KEY LocationID
+SOURCE(HTTP(URL 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/taxi_zone_lookup.csv' FORMAT 'CSVWithNames'))
+LIFETIME(MIN 0 MAX 0)
+LAYOUT(HASHED_ARRAY())
+```
 
-  :::note
-  Установка `LIFETIME` в 0 отключает автоматические обновления, чтобы избежать ненужного трафика к нашему S3 ведру. В других случаях вы можете настроить его иначе. Для подробностей смотрите [Обновление данных словаря с использованием LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
-  :::
+:::note
+Установка `LIFETIME` в значение 0 отключает автоматические обновления, чтобы избежать лишнего трафика в наш S3‑бакет. В других случаях вы можете настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary data using LIFETIME](/sql-reference/dictionaries#refreshing-dictionary-data-using-lifetime).
+:::
 
-3. Убедитесь, что всё прошло успешно. Следующий запрос должен вернуть 265 строк или по одной строке для каждого района:
-    ```sql
-    SELECT * FROM taxi_zone_dictionary
-    ```
+3. Проверьте, что всё сработало. Следующий запрос должен вернуть 265 строк, по одной строке для каждого района:
+   ```sql
+   SELECT * FROM taxi_zone_dictionary
+   ```
 
-4. Используйте функцию `dictGet` ([или её вариации](./sql-reference/functions/ext-dict-functions.md)), чтобы извлечь значение из словаря. Вы передаёте имя словаря, нужное значение и ключ (в нашем примере это столбец `LocationID` словаря `taxi_zone_dictionary`).
+4. Используйте функцию `dictGet` ([или её вариации](./sql-reference/functions/ext-dict-functions.md)) для получения значения из словаря. Вы передаёте имя словаря, имя атрибута (значения, которое хотите получить) и ключ (в нашем примере это столбец `LocationID` таблицы `taxi_zone_dictionary`).
 
-    Например, следующий запрос возвращает `Borough`, чье `LocationID` равно 132, что соответствует аэропорту JFK):
-    ```sql
-    SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
-    ```
+   Например, следующий запрос возвращает `Borough`, чей `LocationID` равен 132 и соответствует аэропорту JFK:
 
-    JFK находится в Квинсе. Обратите внимание, что время извлечения значения по сути 0:
-    ```response
-    ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
-    │ Queens                                          │
-    └─────────────────────────────────────────────────┘
+   ```sql
+   SELECT dictGet('taxi_zone_dictionary', 'Borough', 132)
+   ```
 
-    1 rows in set. Elapsed: 0.004 sec.
-    ```
+   JFK находится в Куинсе. Обратите внимание, что время получения значения практически равно 0:
 
-5. Используйте функцию `dictHas`, чтобы узнать, присутствует ли ключ в словаре. Например, следующий запрос возвращает `1` (это "true" в ClickHouse):
-    ```sql
-    SELECT dictHas('taxi_zone_dictionary', 132)
-    ```
+   ```response
+   ┌─dictGet('taxi_zone_dictionary', 'Borough', 132)─┐
+   │ Queens                                          │
+   └─────────────────────────────────────────────────┘
+
+   1 строка в наборе. Затрачено: 0.004 сек.
+   ```
+
+5. Используйте функцию `dictHas`, чтобы проверить, присутствует ли ключ в словаре. Например, следующий запрос возвращает `1` (что в ClickHouse означает «true»):
+   ```sql
+   SELECT dictHas('taxi_zone_dictionary', 132)
+   ```
 
 6. Следующий запрос возвращает 0, потому что 4567 не является значением `LocationID` в словаре:
-    ```sql
-    SELECT dictHas('taxi_zone_dictionary', 4567)
-    ```
+   ```sql
+   SELECT dictHas('taxi_zone_dictionary', 4567)
+   ```
 
-7. Используйте функцию `dictGet`, чтобы извлечь имя района в запросе. Например:
-    ```sql
-    SELECT
-        count(1) AS total,
-        dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
-    FROM trips
-    WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
-    GROUP BY borough_name
-    ORDER BY total DESC
-    ```
+7. Используйте функцию `dictGet` для получения названия боро в запросе. Например:
+   ```sql
+   SELECT
+       count(1) AS total,
+       dictGetOrDefault('taxi_zone_dictionary','Borough', toUInt64(pickup_nyct2010_gid), 'Unknown') AS borough_name
+   FROM trips
+   WHERE dropoff_nyct2010_gid = 132 OR dropoff_nyct2010_gid = 138
+   GROUP BY borough_name
+   ORDER BY total DESC
+   ```
 
-    Этот запрос суммирует количество поездок на такси по районам, которые заканчиваются либо в аэропорту ЛаГардиа, либо JFK. Результат выглядит следующим образом, и обратите внимание, что есть довольно много поездок, где район подачи неизвестен:
-    ```response
-    ┌─total─┬─borough_name──┐
-    │ 23683 │ Unknown       │
-    │  7053 │ Manhattan     │
-    │  6828 │ Brooklyn      │
-    │  4458 │ Queens        │
-    │  2670 │ Bronx         │
-    │   554 │ Staten Island │
-    │    53 │ EWR           │
-    └───────┴───────────────┘
+Этот запрос подсчитывает количество поездок на такси по районам, которые заканчиваются либо в аэропорту LaGuardia, либо в аэропорту JFK. Результат выглядит следующим образом: обратите внимание, что есть довольно много поездок, для которых район посадки неизвестен:
 
-    7 rows in set. Elapsed: 0.019 sec. Processed 2.00 million rows, 4.00 MB (105.70 million rows/s., 211.40 MB/s.)
-    ```
+```response
+┌─total─┬─borough_name──┐
+│ 23683 │ Unknown       │
+│  7053 │ Manhattan     │
+│  6828 │ Brooklyn      │
+│  4458 │ Queens        │
+│  2670 │ Bronx         │
+│   554 │ Staten Island │
+│    53 │ EWR           │
+└───────┴───────────────┘
 
+7 строк в наборе. Затрачено: 0.019 сек. Обработано 2.00 млн строк, 4.00 МБ (105.70 млн строк/сек., 211.40 МБ/сек.)
+```
 
-## Выполнить соединение {#perform-a-join}
+## Выполнение соединения {#perform-a-join}
 
-Напишите несколько запросов, которые соединяют `taxi_zone_dictionary` с вашей таблицей `trips`.
+Напишите несколько запросов, которые соединяют `taxi_zone_dictionary` с таблицей `trips`.
 
-1. Начните с простого `JOIN`, который действует аналогично предыдущему запросу о аэропорте выше:
+1.  Начните с простого `JOIN`, который работает аналогично предыдущему запросу по аэропортам:
+
     ```sql
     SELECT
         count(1) AS total,
@@ -479,7 +485,8 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     ORDER BY total DESC
     ```
 
-    Ответ будет идентичен запросу `dictGet`:
+    Результат идентичен запросу с `dictGet`:
+
     ```response
     ┌─total─┬─Borough───────┐
     │  7053 │ Manhattan     │
@@ -494,10 +501,10 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     ```
 
     :::note
-    Обратите внимание, что вывод вышеуказанного запроса `JOIN` совпадает с запросом, который использовал `dictGetOrDefault` (за исключением того, что значения `Unknown` не включены). За кулисами ClickHouse на самом деле вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но синтаксис `JOIN` более привычен для разработчиков SQL.
+    Обратите внимание, что результат приведённого выше запроса с `JOIN` совпадает с предыдущим запросом, использовавшим `dictGetOrDefault` (за исключением того, что значения `Unknown` не включены). Внутри ClickHouse фактически вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но синтаксис `JOIN` более привычен для SQL-разработчиков.
     :::
 
-2. Этот запрос возвращает строки для 1000 поездок с самой высокой суммой чаевых, затем выполняет внутреннее соединение каждой строки со словарем:
+2.  Этот запрос возвращает строки для 1000 поездок с наибольшей суммой чаевых, затем выполняет внутреннее соединение каждой строки со словарём:
     ```sql
     SELECT *
     FROM trips
@@ -508,16 +515,16 @@ keywords: ['clickhouse', 'установка', 'учебник', 'словарь
     LIMIT 1000
     ```
         :::note
-        Обычно мы стараемся избегать использования `SELECT *` в ClickHouse. Вы должны извлекать только те столбцы, которые вам действительно нужны. Однако для целей примера этот запрос работает медленнее.
+        Как правило, следует избегать частого использования `SELECT *` в ClickHouse. Извлекайте только те столбцы, которые действительно необходимы.
         :::
 
 </VerticalStepper>
 
-## Следующие шаги {#next-steps}
+## Дальнейшие шаги {#next-steps}
 
-Узнайте больше о ClickHouse с помощью следующей документации:
+Узнайте больше о ClickHouse из следующих разделов документации:
 
-- [Введение в первичные индексы в ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Узнайте, как ClickHouse использует разреженные первичные индексы для эффективного поиска релевантных данных во время выполнения запросов.
-- [Интеграция внешнего источника данных](/integrations/index.mdx): Ознакомьтесь с вариантами интеграции источников данных, включая файлы, Kafka, PostgreSQL, конвейеры данных и многие другие.
-- [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите ваш любимый UI/BI инструмент к ClickHouse.
-- [Справочник SQL](./sql-reference/index.md): Ознакомьтесь с доступными в ClickHouse SQL-функциями для преобразования, обработки и анализа данных.
+- [Введение в первичные индексы в ClickHouse](./guides/best-practices/sparse-primary-indexes.md): Узнайте, как ClickHouse использует разрежённые первичные индексы для эффективного поиска релевантных данных при выполнении запросов. 
+- [Интеграция внешнего источника данных](/integrations/index.mdx): Ознакомьтесь с вариантами интеграции источников данных, включая файлы, Kafka, PostgreSQL, конвейеры обработки данных и многие другие.
+- [Визуализация данных в ClickHouse](./integrations/data-visualization/index.md): Подключите любимый UI/BI‑инструмент к ClickHouse.
+- [Справочник по SQL](./sql-reference/index.md): Просмотрите доступные в ClickHouse функции SQL для преобразования, обработки и анализа данных.

@@ -1,13 +1,12 @@
 ---
 description: 'Dataset containing all of the commits and changes for the ClickHouse
   repository'
-sidebar_label: 'Github Repo'
-sidebar_position: 1
+sidebar_label: 'Github repo'
 slug: /getting-started/example-datasets/github
 title: 'Writing Queries in ClickHouse using GitHub Data'
 keywords: ['Github']
 show_related_blogs: true
-doc_type: 'reference'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -1835,7 +1834,7 @@ LIMIT 10
 
 There are a few ways we can address this question. Focusing on the code to test ratio, this query is relatively simple - count the number of contributions to folders containing `tests` and compute the ratio to total contributions.
 
-Note we limit to users with more than 20 changes to focus on regular committers and avoid a bias to one-off contributions.
+Here we limit the query to users with more than 20 changes to focus on regular committers and avoid a bias to one-off contributions.
 
 [play](https://sql.clickhouse.com?query_id=JGKZSEQDPDTDKZXD3ZCGLE)
 

@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Getting started with ClickStack and monitoring Kubernetes'
 doc_type: 'guide'
+keywords: ['clickstack', 'kubernetes', 'logs', 'observability', 'container monitoring']
 ---
 
 import Image from '@theme/IdealImage';
@@ -59,7 +60,7 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --creat
 
 ### Deploy the OpenTelemetry Demo (Optional) {#deploy-otel-demo}
 
-This **step is optional and intended for users with no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
+This **step is optional and intended if you have no existing pods to monitor**. Although users with existing services deployed in their Kubernetes environment can skip, this demo does include instrumented microservices which generate trace and session replay data - allowing users to explore all features of ClickStack.
 
 The following deploys the ClickStack fork of the OpenTelemetry Demo application stack within a Kubernetes cluster, tailored for observability testing and showcasing instrumentation. It includes backend microservices, load generators, telemetry pipelines, supporting infrastructure (e.g., Kafka, Redis), and SDK integrations with ClickStack.
 
@@ -67,7 +68,7 @@ All services are deployed to the `otel-demo` namespace. Each deployment includes
 
 - Automatic instrumentation with OTel and ClickStack SDKS for traces, metrics, and logs.
 - All services send their instrumentation to a `my-hyperdx-hdx-oss-v2-otel-collector` OpenTelemetry collector (not deployed)
-- [Forwarding of resource tags](/use-cases/observability/clickstack/ingesting-data/kubernetes#forwarding-resouce-tags-to-pods) to correlate logs, metrics and traces via the environment variable `OTEL_RESOURCE_ATTRIBUTES`.
+- [Forwarding of resource tags](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) to correlate logs, metrics and traces via the environment variable `OTEL_RESOURCE_ATTRIBUTES`.
 
 ```shell
 ## download demo Kubernetes manifest file
@@ -172,12 +173,12 @@ export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUser=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD} --set global.storageClassName="standard-rwo" -n otel-demo
+helm install my-hyperdx hyperdx/hdx-oss-v2  --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.clickhouseEndpoint=${CLICKHOUSE_URL} --set clickhouse.config.users.otelUserName=${CLICKHOUSE_USER} --set clickhouse.config.users.otelUserPassword=${CLICKHOUSE_PASSWORD} --set global.storageClassName="standard-rwo" -n otel-demo
 ```
 
 </details>
 
-To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for users using ClickHouse Cloud:
+To verify the deployment status, run the following command and confirm all components are in the `Running` state. Note that ClickHouse will be absent from this for you using ClickHouse Cloud:
 
 ```shell
 kubectl get pods -l "app.kubernetes.io/name=hdx-oss-v2" -n otel-demo
@@ -476,7 +477,7 @@ When prompted to create a datasource, retain all default values within the creat
 
 You will also need to create a datasource for traces and metrics.
 
-For example, to create sources for traces and OTel metrics, users can select `Create New Source` from the top menu.
+For example, to create sources for traces and OTel metrics, you can select `Create New Source` from the top menu.
 
 <Image force img={hyperdx_create_new_source} alt="HyperDX create new source" size="lg"/>
 

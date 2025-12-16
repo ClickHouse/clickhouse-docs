@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/glue-catalog
-sidebar_label: 'AWS Glue Catalog'
-title: 'AWS Glue Catalog'
+sidebar_label: 'AWS Glue catalog'
+title: 'AWS Glue catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
@@ -11,9 +11,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
 ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, 
 etc.). In this guide, we will walk you through the steps to query your data in 

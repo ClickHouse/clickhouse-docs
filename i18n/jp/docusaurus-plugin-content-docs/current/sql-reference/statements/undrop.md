@@ -1,20 +1,18 @@
 ---
-description: 'Documentation for UNDROP TABLE'
+description: 'UNDROP TABLE 文のドキュメント'
 sidebar_label: 'UNDROP'
-slug: '/sql-reference/statements/undrop'
+slug: /sql-reference/statements/undrop
 title: 'UNDROP TABLE'
+doc_type: 'reference'
 ---
 
+# UNDROP TABLE {#undrop-table}
 
+テーブルの削除を取り消します。
 
+ClickHouse バージョン 23.3 以降では、Atomic データベース内で `DROP TABLE` ステートメントを実行してから `database_atomic_delay_before_drop_table_sec`（デフォルトでは 8 分）以内であれば、そのテーブルを UNDROP できます。削除されたテーブルは `system.dropped_tables` というシステムテーブルに一覧表示されます。
 
-# UNDROP TABLE
-
-テーブルの削除をキャンセルします。
-
-ClickHouse バージョン 23.3 から、`database_atomic_delay_before_drop_table_sec` (デフォルトで 8 分) 内に DROP TABLE ステートメントを発行することで、Atomic データベース内でテーブルを UNDROP することが可能です。削除されたテーブルは、`system.dropped_tables` というシステムテーブルに一覧表示されます。
-
-削除されたテーブルに関連付けられた `TO` 句のない Materialized View がある場合、そのビューの内部テーブルも UNDROP する必要があります。
+削除されたテーブルに関連付けられており、`TO` 句を持たないマテリアライズドビューがある場合は、そのビューのインナーテーブルも UNDROP する必要があります。
 
 :::tip
 [DROP TABLE](/sql-reference/statements/drop.md) も参照してください
@@ -76,7 +74,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Row 1:
+行 1:
 ──────
 name:               id
 type:               UInt8

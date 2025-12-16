@@ -1,39 +1,28 @@
 ---
-slug: '/integrations/data-ingestion-overview'
-keywords:
-- 'Airbyte'
-- 'Apache Spark'
-- 'Spark'
-- 'Azure Synapse'
-- 'Amazon Glue'
-- 'Apache Beam'
-- 'dbt'
-- 'Fivetran'
-- 'NiFi'
-- 'dlt'
-- 'Vector'
-title: 'データインジェスション'
-description: 'データインジェスションセクションのトップページ'
+slug: /integrations/data-ingestion-overview
+keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
+title: 'Data Ingestion'
+description: 'データインジェストセクション用ランディングページ'
+doc_type: 'landing-page'
 ---
 
+# データインジェスト {#data-ingestion}
 
+ClickHouse は、データ統合および変換のために数多くのソリューションと連携しています。
+詳しくは、以下のページを参照してください。
 
-
-# データ取り込み
-
-ClickHouseは、データ統合と変換のためのさまざまなソリューションと統合されています。
-詳細については、以下のページを確認してください：
-
-| データ取り込みツール                                            | 説明                                                                                                                                                                                                                           |
+| Data Ingestion Tool                                              | 説明                                                                                                                                                                                                                           |
 |------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Airbyte](/integrations/airbyte)                                 | オープンソースのデータ統合プラットフォーム。ELTデータパイプラインを作成でき、140以上のアウトオブボックスコネクタが用意されています。                                                                                   |
-| [Apache Spark](/integrations/apache-spark)                       | 単一ノードのマシンまたはクラスター上でデータエンジニアリング、データサイエンス、および機械学習を実行するための多言語エンジンです。                                                                                                        |
-| [Amazon Glue](/integrations/glue)                                | Amazon Web Services (AWS) によって提供される完全に管理されたサーバーレスデータ統合サービスで、分析、機械学習、およびアプリケーション開発のためにデータを発見、準備、変換するプロセスを簡素化します。     |
-| [Azure Synapse](/integrations/azure-synapse)                     | Microsoft Azureによって提供される完全に管理されたクラウドベースの分析サービスで、大規模なデータ統合、変換、および分析を簡素化するためにビッグデータとデータウェアハウジングを組み合わせています。SQL、Apache Spark、およびデータパイプラインを使用します。 |
-| [Azure Data Factory](/integrations/azure-data-factory)           | 大規模なデータワークフローを作成、スケジュール、およびオーケストレーションできるクラウドベースのデータ統合サービスです。 |
-| [Apache Beam](/integrations/apache-beam)                         | 開発者がバッチおよびストリーム（連続）データ処理パイプラインを定義および実行できるオープンソースの統一プログラミングモデルです。                                                                                 |
-| [dbt](/integrations/dbt)                                         | 分析エンジニアが選択ステートメントを書くことで、データウェアハウス内のデータを変換できるようにします。                                                                                                                                |
-| [dlt](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse) | さまざまな、しばしば乱雑なデータソースから整然としたライブデータセットにデータをロードするためにPythonスクリプトに追加できるオープンソースライブラリです。                                                                            |
-| [Fivetran](/integrations/fivetran)                               | クラウドデータプラットフォーム間でデータの移動を自動化するプラットフォームです。                                                                                                                                    |
-| [NiFi](/integrations/nifi)                                       | ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフローマネジメントソフトウェアです。                                                                                                                                  |
-| [Vector](/integrations/vector)                                   | 組織がその可観測性データを管理できるようにする高性能の可観測性データパイプラインです。                                                                                                                        |
+| [Airbyte](/integrations/airbyte)                                 | オープンソースのデータ統合プラットフォームです。ELT データパイプラインを構築でき、140 を超える標準搭載コネクタが提供されています。                                                                                   |
+| [Apache Spark](/integrations/apache-spark)                       | シングルノードマシンまたはクラスター上で、データエンジニアリング、データサイエンス、および機械学習を実行するための多言語対応エンジンです。                                                                                                        |
+| [Apache Flink](https://github.com/ClickHouse/flink-connector-clickhouse)                       | Flink の DataStream API を通じて、ClickHouse へのリアルタイムなデータインジェストおよび処理を行うためのソリューションで、バッチ書き込みにも対応しています。                                                                                                        |
+| [Amazon Glue](/integrations/glue)                                | Amazon Web Services (AWS) が提供するフルマネージドのサーバーレス型データ統合サービスであり、分析、機械学習、アプリケーション開発向けに、データの検出、準備、変換プロセスを簡素化します。     |
+| [Azure Synapse](/integrations/azure-synapse)                     | Microsoft Azure が提供するフルマネージドのクラウド型分析サービスであり、ビッグデータとデータウェアハウジングを統合し、SQL、Apache Spark、データパイプラインを用いて、大規模なデータ統合・変換・分析を簡素化します。 |
+| [Azure Data Factory](/integrations/azure-data-factory)           | クラウドベースのデータ統合サービスであり、大規模なデータワークフローを作成、スケジュール、およびオーケストレーションすることができます。 |
+| [Apache Beam](/integrations/apache-beam)                         | バッチおよびストリーム（継続的）データ処理パイプラインの定義と実行を可能にする、オープンソースの統一プログラミングモデルです。                                                                                 |
+| [BladePipe](/integrations/bladepipe)                         | サブセカンドレイテンシでリアルタイムなエンドツーエンドのデータ統合を実現し、プラットフォーム間のシームレスなデータフローを可能にするツールです。                                                                                |
+| [dbt](/integrations/dbt)                                         | アナリティクスエンジニアが、単に SELECT 文を書くことで、データウェアハウス内のデータを変換できるようにします。                                                                                                                                |
+| [dlt](/integrations/data-ingestion/etl-tools/dlt-and-clickhouse) | Python スクリプトに追加して使用できるオープンソースライブラリであり、多様でしばしば扱いにくいデータソースから、適切に構造化された最新のデータセットへデータをロードできます。                                                                            |
+| [Fivetran](/integrations/fivetran)                               | クラウドデータプラットフォームから外部へ、内部へ、またプラットフォーム間でのデータ移動を自動化するデータムーブメントプラットフォームです。                                                                                                                                    |
+| [NiFi](/integrations/nifi)                                       | ソフトウェアシステム間のデータフローを自動化するために設計された、オープンソースのワークフロー管理ソフトウェアです。                                                                                                                                  |
+| [Vector](/integrations/vector)                                   | 組織が自らのオブザーバビリティデータを制御できるようにする、高性能なオブザーバビリティデータパイプラインです。                                                                                                                        |

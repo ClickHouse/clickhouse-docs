@@ -1,16 +1,13 @@
 ---
-description: 'Allows `SELECT` queries to be performed on data that is stored on
-  a remote MongoDB server.'
+description: 'リモート MongoDB サーバー上に保存されたデータに対して `SELECT` クエリを実行できるようにします。'
 sidebar_label: 'mongodb'
 sidebar_position: 135
-slug: '/sql-reference/table-functions/mongodb'
+slug: /sql-reference/table-functions/mongodb
 title: 'mongodb'
+doc_type: 'reference'
 ---
 
-
-
-
-# mongodb テーブル関数
+# mongodb テーブル関数 {#mongodb-table-function}
 
 リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
 
@@ -22,45 +19,46 @@ mongodb(host:port, database, collection, user, password, structure[, options[, o
 
 ## 引数 {#arguments}
 
-| 引数          | 説明                                                                                                   |
-|---------------|--------------------------------------------------------------------------------------------------------|
-| `host:port`   | MongoDB サーバーのアドレス。                                                                           |
-| `database`    | リモートデータベースの名前。                                                                           |
-| `collection`  | リモートコレクションの名前。                                                                           |
-| `user`        | MongoDB ユーザー。                                                                                     |
-| `password`    | ユーザーパスワード。                                                                                   |
-| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
-| `options`     | MongoDB 接続文字列オプション（任意のパラメータ）。                                                    |
-| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
+| 引数            | 説明                                              |
+| ------------- | ----------------------------------------------- |
+| `host:port`   | MongoDB サーバーのアドレス。                              |
+| `database`    | リモートデータベース名。                                    |
+| `collection`  | リモートコレクション名。                                    |
+| `user`        | MongoDB ユーザー。                                   |
+| `password`    | ユーザーパスワード。                                      |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                |
+| `options`     | MongoDB 接続文字列のオプション（任意パラメーター）。                  |
+| `oid_columns` | WHERE 句で `oid` として扱うカラムのカンマ区切りリスト。デフォルトは `_id`。 |
 
 :::tip
-MongoDB Atlas クラウドオファリングを使用している場合は、次のオプションを追加してください：
+MongoDB Atlas のクラウドサービスを使用している場合は、次のオプションを追加してください。
 
 ```ini
 'connectTimeoutMS=10000&ssl=true&authSource=admin'
 ```
+
 :::
 
-URI による接続も可能です：
+URI を使用して接続することもできます。
 
 ```sql
 mongodb(uri, collection, structure[, oid_columns])
 ```
 
-| 引数          | 説明                                                                                                   |
-|---------------|--------------------------------------------------------------------------------------------------------|
-| `uri`         | 接続文字列。                                                                                          |
-| `collection`  | リモートコレクションの名前。                                                                           |
-| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                                                  |
-| `oid_columns` | WHERE 句で `oid` として扱うべきカラムのカンマ区切りリスト。デフォルトでは `_id`。                     |
+| 引数            | 説明                                                 |
+| ------------- | -------------------------------------------------- |
+| `uri`         | 接続文字列。                                             |
+| `collection`  | リモートコレクション名。                                       |
+| `structure`   | この関数から返される ClickHouse テーブルのスキーマ。                   |
+| `oid_columns` | WHERE 句で `oid` として扱う列をカンマ区切りで指定したリスト。デフォルトは `_id`。 |
 
-## 戻り値 {#returned_value}
+## 返される値 {#returned_value}
 
-元の MongoDB テーブルと同じカラムを持つテーブルオブジェクト。
+元の MongoDB テーブルと同じ列を持つテーブルオブジェクトです。
 
 ## 例 {#examples}
 
-`test` という MongoDB データベースに `my_collection` というコレクションが定義されているとしましょう。いくつかのドキュメントを挿入します：
+MongoDB データベース `test` に `my_collection` という名前のコレクションが定義されており、そこにいくつかのドキュメントを挿入するとします。
 
 ```sql
 db.createUser({user:"test_user",pwd:"password",roles:[{role:"readWrite",db:"test"}]})
@@ -76,7 +74,7 @@ db.my_collection.insertOne(
 )
 ```
 
-`mongodb` テーブル関数を使用してコレクションをクエリします：
+`mongodb` テーブル関数を使ってコレクションにクエリしてみましょう。
 
 ```sql
 SELECT * FROM mongodb(
@@ -90,7 +88,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-または：
+または:
 
 ```sql
 SELECT * FROM mongodb(
@@ -100,7 +98,7 @@ SELECT * FROM mongodb(
 )
 ```
 
-## 関連 {#related}
+## 関連項目 {#related}
 
-- [MongoDB テーブルエンジン](engines/table-engines/integrations/mongodb.md)
-- [MongoDB を辞書ソースとして使用する](sql-reference/dictionaries/index.md#mongodb)
+- [`MongoDB` テーブルエンジン](engines/table-engines/integrations/mongodb.md)
+- [MongoDB を辞書のソースとして使用する](sql-reference/dictionaries/index.md#mongodb)

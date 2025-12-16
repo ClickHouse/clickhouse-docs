@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Going to production with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'production', 'deployment', 'best practices', 'operations']
 ---
 
 import Image from '@theme/IdealImage';
@@ -86,7 +87,7 @@ Additionally, we recommend enabling TLS for OTLP endpoints and creating a [dedic
 
 ## ClickHouse {#clickhouse}
 
-For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security/shared-responsibility-model) by default - including [enhanced encryption](/cloud/security/cmek), [authentication and connectivity](/cloud/security/connectivity), and [managed access controls](/cloud/security/cloud-access-management). See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
+For production deployments, we recommend using [ClickHouse Cloud](https://clickhouse.com/cloud), which applies industry-standard [security practices](/cloud/security) by default - including enhanced encryption, authentication and connectivity, and managed access controls. See ["ClickHouse Cloud"](#clickhouse-cloud-production) for a step-by-step guide of using ClickHouse Cloud with best practices.
 
 ### User permissions {#user-permissions}
 
@@ -174,7 +175,7 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 Deploy ClickStack - the [Helm](/use-cases/observability/clickstack/deployment/helm) or [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (modified to exclude ClickHouse) deployment models are preferred. 
 
 :::note Deploying components separately
-Advanced users can deploy the [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) and [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) separately with their respective standalone deployment modes.
+If you're an advanced user, you can deploy the [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) and [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) separately with their respective standalone deployment modes.
 :::
 
 Instructions for using ClickHouse Cloud with the Helm chart can be found [here](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). Equivalent instructions for Docker Compose can be found [here](/use-cases/observability/clickstack/deployment/docker-compose).

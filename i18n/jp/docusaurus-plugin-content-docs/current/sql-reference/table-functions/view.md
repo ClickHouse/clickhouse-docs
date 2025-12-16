@@ -1,17 +1,15 @@
 ---
-description: 'サブクエリをテーブルに変換します。この機能はビューを実装します。'
-sidebar_label: 'ビュー'
+description: 'サブクエリをテーブルとして扱います。ビューを実装する関数です。'
+sidebar_label: 'view'
 sidebar_position: 210
-slug: '/sql-reference/table-functions/view'
-title: 'ビュー'
+slug: /sql-reference/table-functions/view
+title: 'view'
+doc_type: 'reference'
 ---
 
+# view テーブル関数 {#view-table-function}
 
-
-
-# view テーブル関数
-
-サブクエリをテーブルに変換します。この関数はビューを実装しています（[CREATE VIEW](/sql-reference/statements/create/view)を参照）。生成されたテーブルはデータを保存せず、指定された `SELECT` クエリのみを保存します。テーブルから読み取る際、ClickHouseはクエリを実行し、結果から不要なカラムを削除します。
+副問い合わせをテーブルに変換します。この関数はビューを実装します（[CREATE VIEW](/sql-reference/statements/create/view) を参照）。生成されるテーブルはデータを保存せず、指定された `SELECT` クエリのみを保持します。テーブルから読み出すとき、ClickHouse はこのクエリを実行し、結果から不要なカラムをすべて削除します。
 
 ## 構文 {#syntax}
 
@@ -25,11 +23,11 @@ view(subquery)
 
 ## 戻り値 {#returned_value}
 
-- テーブル。
+- テーブル
 
 ## 例 {#examples}
 
-入力テーブル:
+入力テーブル：
 
 ```text
 ┌─id─┬─name─────┬─days─┐
@@ -40,7 +38,7 @@ view(subquery)
 └────┴──────────┴──────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT * FROM view(SELECT name FROM months);
@@ -57,7 +55,7 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-`view` 関数を [remote](/sql-reference/table-functions/remote) および [cluster](/sql-reference/table-functions/cluster) テーブル関数のパラメータとして使用できます:
+`view` 関数は、[remote](/sql-reference/table-functions/remote) および [cluster](/sql-reference/table-functions/cluster) テーブル関数の引数として使用できます。
 
 ```sql
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
@@ -67,6 +65,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 
-## 関連 {#related}
+## 関連項目 {#related}
 
 - [View テーブルエンジン](/engines/table-engines/special/view/)

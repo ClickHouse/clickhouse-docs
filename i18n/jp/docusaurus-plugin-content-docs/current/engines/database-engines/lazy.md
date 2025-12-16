@@ -1,22 +1,19 @@
 ---
-description: 'Keeps tables in RAM only `expiration_time_in_seconds` seconds after
-  last access. Can be used only with Log type tables.'
+description: '最後のアクセスから `expiration_time_in_seconds` 秒間だけテーブルをメモリ内に保持します。Log テーブルエンジンでのみ使用できます。'
 sidebar_label: 'Lazy'
 sidebar_position: 20
-slug: '/engines/database-engines/lazy'
+slug: /engines/database-engines/lazy
 title: 'Lazy'
+doc_type: 'reference'
 ---
 
+# Lazy {#lazy}
 
+テーブルを最後のアクセスから `expiration_time_in_seconds` 秒間だけ RAM 内に保持します。 *Log テーブルでのみ使用できます。
 
+アクセス間隔が長い多数の小さな *Log テーブルを格納する用途に最適化されています。
 
-# Lazy
-
-テーブルは最終アクセス後 `expiration_time_in_seconds` 秒間のみ RAM に保持されます。これは \*Log テーブルでのみ使用できます。
-
-多くの小さな \*Log テーブルを保存するために最適化されており、アクセス間の時間間隔が長いです。
-
-## データベースの作成 {#creating-a-database}
+## データベースを作成する {#creating-a-database}
 
 ```sql
 CREATE DATABASE testlazy 

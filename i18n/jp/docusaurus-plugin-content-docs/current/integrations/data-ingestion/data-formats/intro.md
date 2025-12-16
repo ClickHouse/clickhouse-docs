@@ -1,47 +1,36 @@
 ---
-slug: '/integrations/data-formats'
+slug: /integrations/data-formats
 sidebar_label: '概要'
 sidebar_position: 1
-keywords:
-- 'clickhouse'
-- 'CSV'
-- 'TSV'
-- 'Parquet'
-- 'clickhouse-client'
-- 'clickhouse-local'
-title: 'ClickHouseへのさまざまなデータ形式からのインポート'
-description: 'さまざまなデータ形式をClickHouseにインポートする方法について説明するページ'
+keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
+title: 'さまざまなデータ形式から ClickHouse へデータをインポート'
+description: 'さまざまなデータ形式を ClickHouse にインポートする方法を説明するページ'
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# 様々なデータ形式から ClickHouse へインポートする {#importing-from-various-data-formats-to-clickhouse}
 
+本セクションでは、様々なファイル形式からデータを読み込む例を確認できます。
 
+### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-# ClickHouseへのさまざまなデータ形式からのインポート
+ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Proto などのバイナリ形式をエクスポートおよび読み込みます。
 
-このドキュメントのセクションでは、さまざまなファイルタイプからのロードの例を見つけることができます。
+### [**CSV and TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-### [**バイナリ**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
-
-ClickHouse Native、MessagePack、Protocol Buffers、Cap'n Protoなどのバイナリ形式をエクスポートおよびロードします。
-
-### [**CSVおよびTSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
-
-カスタムヘッダーと区切り文字を使用して、TSVを含むCSVファミリーをインポートおよびエクスポートします。
+TSV を含む CSV ファミリーを、カスタムヘッダーや区切り文字を指定してインポートおよびエクスポートします。
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-オブジェクトとしておよび行区切りのNDJSONとしてさまざまな形式のJSONをロードおよびエクスポートします。
+オブジェクト形式や行区切りの NDJSON など、様々な形式の JSON を読み込みおよびエクスポートします。
 
-### [**Parquetデータ**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
+### [**Parquet data**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-ParquetやArrowなどの一般的なApache形式を扱います。
+Parquet や Arrow などの一般的な Apache 形式を扱います。
 
-### [**SQLデータ**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
+### [**SQL data**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-MySQLやPostgresqlにインポートするためのSQLダンプが必要ですか？他を探す必要はありません。
+MySQL や PostgreSQL にインポートするための SQL ダンプが必要ですか？ こちらを参照してください。
 
-Grafana、TableauなどのBIツールを接続したい場合は、ドキュメントの[可視化カテゴリ](../../data-visualization/index.md)をチェックしてください。
-
-## 関連コンテンツ {#related-content}
-
-- ブログ: [ClickHouseにおけるデータ形式の紹介](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
+Grafana や Tableau などの BI ツールと接続したい場合は、ドキュメントの [Visualize カテゴリ](../../data-visualization/index.md) を参照してください。

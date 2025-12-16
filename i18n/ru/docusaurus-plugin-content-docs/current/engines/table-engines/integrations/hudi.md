@@ -1,19 +1,19 @@
 ---
-description: 'Этот движок предоставляет интеграцию только для чтения с существующими таблицами Apache Hudi в Amazon S3.'
+description: 'Этот движок обеспечивает доступ только для чтения к существующим таблицам Apache Hudi в Amazon S3.'
 sidebar_label: 'Hudi'
 sidebar_position: 86
 slug: /engines/table-engines/integrations/hudi
 title: 'Движок таблиц Hudi'
+doc_type: 'reference'
 ---
 
+# Табличный движок Hudi {#hudi-table-engine}
 
-# Движок таблиц Hudi
-
-Этот движок предоставляет интеграцию только для чтения с существующими таблицами Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
+Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
 ## Создание таблицы {#create-table}
 
-Обратите внимание, что таблица Hudi должна уже существовать в S3, эта команда не принимает параметры DDL для создания новой таблицы.
+Имейте в виду, что таблица Hudi должна уже существовать в S3: эта команда не принимает DDL‑параметры для создания новой таблицы.
 
 ```sql
 CREATE TABLE hudi_table
@@ -22,10 +22,10 @@ CREATE TABLE hudi_table
 
 **Параметры движка**
 
-- `url` — URL ведра с путем к существующей таблице Hudi.
-- `aws_access_key_id`, `aws_secret_access_key` - Долгосрочные учетные данные для пользователя учетной записи [AWS](https://aws.amazon.com/). Вы можете использовать их для аутентификации своих запросов. Параметр является необязательным. Если учетные данные не указаны, они используются из файла конфигурации.
+* `url` — URL бакета с путём к существующей таблице Hudi.
+* `aws_access_key_id`, `aws_secret_access_key` — долгосрочные учетные данные пользователя учётной записи [AWS](https://aws.amazon.com/). Их можно использовать для аутентификации запросов. Параметр является необязательным. Если учетные данные не указаны, используются значения из файла конфигурации.
 
-Параметры движка можно указать с помощью [Именованных коллекций](/operations/named-collections.md).
+Параметры движка можно задать с помощью [Named Collections](/operations/named-collections.md).
 
 **Пример**
 
@@ -33,7 +33,7 @@ CREATE TABLE hudi_table
 CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/clickhouse-bucket-3/test_table/', 'ABC123', 'Abc+123')
 ```
 
-Используя именованные коллекции:
+Использование именованных коллекций:
 
 ```xml
 <clickhouse>
@@ -51,6 +51,6 @@ CREATE TABLE hudi_table ENGINE=Hudi('http://mars-doc-test.s3.amazonaws.com/click
 CREATE TABLE hudi_table ENGINE=Hudi(hudi_conf, filename = 'test_table')
 ```
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 
-- [табличная функция hudi](/sql-reference/table-functions/hudi.md)
+- [табличная функция Hudi](/sql-reference/table-functions/hudi.md)

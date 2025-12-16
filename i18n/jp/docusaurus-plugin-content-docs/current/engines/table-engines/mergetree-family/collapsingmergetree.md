@@ -1,36 +1,38 @@
 ---
-description: 'MergeTree から継承され、マージプロセス中に行を折り畳むロジックが追加されています。'
-keywords:
-- 'updates'
-- 'collapsing'
+description: 'MergeTree をベースとしており、マージ処理中に行を折りたたむためのロジックを追加したものです。'
+keywords: ['更新', '折りたたみ']
 sidebar_label: 'CollapsingMergeTree'
 sidebar_position: 70
-slug: '/engines/table-engines/mergetree-family/collapsingmergetree'
-title: 'CollapsingMergeTree'
+slug: /engines/table-engines/mergetree-family/collapsingmergetree
+title: 'CollapsingMergeTree テーブルエンジン'
+doc_type: 'guide'
 ---
 
+# CollapsingMergeTree テーブルエンジン {#collapsingmergetree-table-engine}
 
+## 説明 {#description}
 
+`CollapsingMergeTree` エンジンは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)
+を継承し、マージ処理中に行を折りたたむ（コラプスする）ためのロジックを追加します。
+`CollapsingMergeTree` テーブルエンジンは、特別なフィールド `Sign` を除くソートキー（`ORDER BY`）内のすべてのフィールドが等しく、
+かつ `Sign` フィールドの値が `1` または `-1` である行のペアを非同期に削除（折りたたみ）します。
+`Sign` が反対の値を持つ対応する行のペアが存在しない行は保持されます。
 
-# CollapsingMergeTree
-
-## Description {#description}
-
-`CollapsingMergeTree` エンジンは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) から継承され、マージプロセス中に行を統合するためのロジックを追加します。 `CollapsingMergeTree` テーブルエンジンは、すべてのフィールドがソートキー (`ORDER BY`) で等価で、特別なフィールド `Sign` の値が `1` または `-1` の場合に、対になる行を非同期的に削除 (統合) します。 対になる値の `Sign` を持たない行は保持されます。
-
-詳細については、ドキュメントの [Collapsing](#table_engine-collapsingmergetree-collapsing) セクションを参照してください。
+詳細については、このドキュメントの [Collapsing](#table_engine-collapsingmergetree-collapsing) セクションを参照してください。
 
 :::note
-このエンジンはストレージのボリュームを大幅に削減し、その結果、`SELECT` クエリの効率を高める可能性があります。
+このエンジンはストレージ容量を大幅に削減でき、
+その結果として `SELECT` クエリの効率を高めることができます。
 :::
 
-## Parameters {#parameters}
+## パラメータ {#parameters}
 
-`Sign` パラメータを除く、このテーブルエンジンのすべてのパラメータは、[`MergeTree`](/engines/table-engines/mergetree-family/mergetree) と同じ意味を持ちます。
+このテーブルエンジンのすべてのパラメータは、`Sign` パラメータを除き、
+[`MergeTree`](/engines/table-engines/mergetree-family/mergetree) における同名パラメータと同じ意味を持ちます。
 
-- `Sign` — `1` が「状態」行、`-1` が「キャンセル」行を持つ行のタイプのカラムに与えられた名前。タイプ: [Int8](/sql-reference/data-types/int-uint)。
+- `Sign` — 行の種別を示す列に付ける名前で、`1` は「状態」行、`-1` は「取消」行を表します。型: [Int8](/sql-reference/data-types/int-uint)。
 
-## Creating a Table {#creating-a-table}
+## テーブルの作成 {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -47,14 +49,14 @@ ENGINE = CollapsingMergeTree(Sign)
 ```
 
 <details markdown="1">
+  <summary>テーブル作成の非推奨メソッド</summary>
 
-<summary>Deprecated Method for Creating a Table</summary>
+  :::note
+  以下のメソッドは新しいプロジェクトでの使用は推奨されません。
+  可能であれば、既存のプロジェクトを更新し、新しいメソッドを使用することを推奨します。
+  :::
 
-:::note
-以下の手法は新しいプロジェクトでの使用が推奨されません。 可能であれば、古いプロジェクトを新しい手法に更新することをお勧めします。
-:::
-
-```sql
+  ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -64,23 +66,28 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
 ```
 
-`Sign` — `1` が「状態」行、`-1` が「キャンセル」行を持つ行のタイプのカラムに与えられた名前。 [Int8](/sql-reference/data-types/int-uint)。
-
+  `Sign` — `1` が「state」行、`-1` が「cancel」行を表す行種別を持つカラムに付ける名前です。[Int8](/sql-reference/data-types/int-uint)。
 </details>
 
-- クエリパラメータの説明については [query description](../../../sql-reference/statements/create/table.md) を参照してください。
-- `CollapsingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する際と同様の [クエリ句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) が必要です。
+* クエリパラメータの説明については、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
+* `CollapsingMergeTree` テーブルを作成する場合は、`MergeTree` テーブルを作成する場合と同じ [クエリ句](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-creating-a-table) が必要です。
 
 ## Collapsing {#table_engine-collapsingmergetree-collapsing}
 
 ### Data {#data}
 
-ある特定のオブジェクトのために継続的に変化するデータを保存する必要があるとしましょう。 1つの行をオブジェクトごとに持ち、何かが変わるたびに更新するのが論理的に思えるかもしれませんが、更新操作はコストが高く、遅いため、ストレージ上のデータを再書き込みする必要があります。 データを書き込むために迅速な処理が必要な場合、大量の更新を行うことは受け入れられませんが、常にオブジェクトの変更を順次記録することができます。 これを行うために、特別なカラム `Sign` を利用します。
+あるオブジェクトに対して、継続的に変化するデータを保存する必要がある状況を考えます。
+各オブジェクトにつき 1 行だけを持ち、何か変更があるたびにその行を更新する、というのは論理的に思えますが、
+更新処理はストレージ上のデータを書き直す必要があるため、DBMS にとって高コストかつ低速です。
+データを高速に書き込む必要がある場合、大量の更新を行う方法は現実的ではありませんが、
+あるオブジェクトに対する変更を逐次的に書き込むことはいつでもできます。
+そのために、専用のカラム `Sign` を利用します。
 
-- `Sign` = `1` の場合、それは行が「状態」行であることを意味します: _現在の有効な状態を表すフィールドを含む行_。
-- `Sign` = `-1` の場合、それは行が「キャンセル」行であることを意味します: _同じ属性を持つオブジェクトの状態をキャンセルするために使用される行_。
+* `Sign` = `1` の場合、その行は「状態」行を意味します：*現在の有効な状態を表すフィールドを含む行*。
+* `Sign` = `-1` の場合、その行は「キャンセル」行を意味します：*同じ属性を持つオブジェクトの状態をキャンセルするために使用される行*。
 
-例えば、私たちはユーザーがあるウェブサイトでチェックしたページ数とその訪問期間を計算したいとします。 ある時点で、ユーザー活動の状態を持つ次の行を書き込みます：
+例えば、あるウェブサイトでユーザーが閲覧したページ数および滞在時間を計算したいとします。
+ある時点で、ユーザーアクティビティの状態を表す次の行を書き込みます。
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -88,7 +95,7 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-後のタイミングで、ユーザー活動の変化を記録し、次の2行で書き込みます：
+後のタイミングでユーザーアクティビティの変化を検出し、次の 2 行として書き込みます。
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -97,61 +104,81 @@ ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, ke
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-最初の行はオブジェクトの以前の状態をキャンセルします (この場合、ユーザーを表現)。 それは「キャンセル」された行のすべてのソートキーのフィールドを `Sign` を除いてコピーする必要があります。 上の2行目は現在の状態を含みます。
+最初の行は、（この場合はユーザーを表す）オブジェクトの以前の状態を打ち消します。
+この「canceled」行では、`Sign` を除くすべてのソートキーのフィールドをコピーする必要があります。
+その上の 2 行目が現在の状態を表しています。
 
-我々はユーザー活動の最後の状態のみを必要とするため、元の「状態」行と挿入した「キャンセル」行は以下のように削除される可能性があります。無効（古い）状態のオブジェクトを統合します：
+ユーザーアクティビティの最後の状態だけが必要なため、元の「state」行と、挿入した「cancel」行は、次のように削除して、オブジェクトの無効（古い）状態を畳み込むことができます。
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
-│ 4324182021466249494 │         5 │      146 │    1 │ -- 古い "状態" 行は削除可能
-│ 4324182021466249494 │         5 │      146 │   -1 │ -- "キャンセル" 行は削除可能
-│ 4324182021466249494 │         6 │      185 │    1 │ -- 新しい "状態" 行は残る
+│ 4324182021466249494 │         5 │      146 │    1 │ -- old "state" row can be deleted
+│ 4324182021466249494 │         5 │      146 │   -1 │ -- "cancel" row can be deleted
+│ 4324182021466249494 │         6 │      185 │    1 │ -- new "state" row remains
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-`CollapsingMergeTree` はデータパーツのマージ時にこの_統合_の動作を正確に実行します。
+`CollapsingMergeTree` は、データパーツのマージが行われる際に、まさにこの *collapsing（折りたたみ）* 動作を実行します。
 
 :::note
-各変更に2行が必要な理由は、[Algorithm](#table_engine-collapsingmergetree-collapsing-algorithm) の段落でさらに説明されています。
+各変更に対して行が 2 行必要となる理由については、
+[Algorithm](#table_engine-collapsingmergetree-collapsing-algorithm) の節でさらに詳しく説明します。
 :::
 
-**そのようなアプローチの特異性**
+**このアプローチ特有の注意点**
 
-1. データを書き込むプログラムは、キャンセルできるようにオブジェクトの状態を記憶しておく必要があります。「キャンセル」行には「状態」行のソートキーのフィールドのコピーと反対の `Sign` を含む必要があります。これにより、初期のストレージサイズは増加しますが、迅速にデータを書き込むことが可能になります。
-2. カラム内の長い成長配列は、書き込みの負荷が増加するため、エンジンの効率を低下させます。データがシンプルであればあるほど、効率は高くなります。
-3. `SELECT` 結果はオブジェクト変更履歴の整合性に大きく依存します。挿入用にデータを準備する際は正確であることが大切です。整合性のないデータでは予測不可能な結果を得ることがあります。例えば、セッション深度などの非負メトリクスに対する負の値です。
+1. データを書き込むプログラムは、取り消しを行えるように、オブジェクトの状態を保持しておく必要があります。「cancel」行には、「state」行のソートキー項目のコピーと、反対の `Sign` を含める必要があります。これにより初期のストレージサイズは増加しますが、データを高速に書き込めるようになります。
+2. カラム内で長く伸び続ける配列は、書き込み負荷の増大によりエンジンの効率を低下させます。データが単純であればあるほど効率は高くなります。
+3. `SELECT` の結果は、オブジェクト変更履歴の一貫性に大きく依存します。挿入用データを準備する際には注意してください。一貫性のないデータでは予測不能な結果が生じる可能性があります。たとえば、セッション深度のような非負のメトリクスに対して負の値が出力されることがあります。
 
 ### Algorithm {#table_engine-collapsingmergetree-collapsing-algorithm}
 
-ClickHouseがデータ [parts](/concepts/glossary#parts) をマージする際、同じソートキー (`ORDER BY`) を持つ連続した行の各グループは、最大で2行（`Sign` = `1` の「状態」行と `Sign` = `-1` の「キャンセル」行）に削減されます。 言い換えれば、ClickHouseエントリは統合されます。
+ClickHouse がデータ[パーツ](/concepts/glossary#parts)をマージする際、
+同じソートキー（`ORDER BY`）を持つ連続した行の各グループは、高々 2 行にまでまとめられます。
+すなわち、`Sign` = `1` の「state」行と、`Sign` = `-1` の「cancel」行です。
+言い換えると、ClickHouse ではエントリが collapsing（折りたたみ）されます。
 
-各結果データパートについて ClickHouse は次を保存します：
+各結果データパーツごとに、ClickHouse は次のように保存します。
 
 |  |                                                                                                                                     |
 |--|-------------------------------------------------------------------------------------------------------------------------------------|
-|1.| 「状態」行と「キャンセル」行の数が一致し、最後の行が「状態」行である場合に、最初の「キャンセル」行と最後の「状態」行。 |
-|2.| 「キャンセル」行の数が「状態」行の数より少ない場合、最後の「状態」行。                                                            |
-|3.| 「状態」行の数が「キャンセル」行の数より少ない場合、最初の「キャンセル」行。                                                          |
-|4.| その他のすべてのケースでは、行は何も保存されません。                                                                                               |
+|1.| 「state」行と「cancel」行の数が一致し、かつ最後の行が「state」行である場合、最初の「cancel」行と最後の「state」行。              |
+|2.| 「state」行の方が「cancel」行より多い場合、最後の「state」行。                                                                      |
+|3.| 「cancel」行の方が「state」行より多い場合、最初の「cancel」行。                                                                      |
+|4.| 上記以外のすべての場合、いずれの行も保存しない。                                                                                    |
 
-さらに、「状態」行が「キャンセル」行よりも少なくとも2本多い場合や、「キャンセル」行が「状態」行よりも少なくとも2本多い場合は、マージが続行されます。ただし、ClickHouseはこの状況を論理エラーと見なし、サーバーログに記録します。このエラーは、同じデータを複数回挿入した場合に発生する可能性があります。したがって、統合は統計計算の結果を変更してはなりません。変更は徐々に統合され、最終的にはほぼすべてのオブジェクトの最新の状態のみが残ります。
+さらに、「state」行が「cancel」行より少なくとも 2 行多い場合、または「cancel」行が「state」行より少なくとも 2 行多い場合は、マージ処理は継続されます。
+ただし、ClickHouse はこの状況を論理エラーと見なし、サーバーログに記録します。
+同じデータが複数回挿入された場合に、このエラーが発生することがあります。
+したがって、collapsing によって統計値の計算結果が変わることはありません。
+変更は徐々に collapse されていき、最終的にはほぼすべてのオブジェクトについて最後の状態だけが残されます。
 
-`Sign` カラムが必要なのは、マージアルゴリズムが同じソートキーを持つすべての行が同じ結果データパートにあり、同じ物理サーバーにもいると保証しないからです。 ClickHouseは複数のスレッドで `SELECT` クエリを処理し、結果の行の順序を予測することができません。
+`Sign` 列が必要なのは、マージアルゴリズムが、同じソートキーを持つすべての行が同じ結果データパーツ、さらには同じ物理サーバー上に入ることを保証しないためです。
+ClickHouse は複数スレッドで `SELECT` クエリを処理するため、結果における行の順序を予測できません。
 
-完全に「統合」されたデータを `CollapsingMergeTree` テーブルから取得する必要がある場合は、集約が必要です。 統合を最終化するために、`GROUP BY` 句と `Sign` を考慮した集約関数を持つクエリを書きます。 例えば、数量を計算するには `count()` の代わりに `sum(Sign)` を使用します。 何かの合計を計算するには `sum(Sign * x)` を使用し、 `HAVING sum(Sign) > 0` と組み合わせて `sum(x)` の代わりに使用します。以下の [example](#example-of-use) 参照。
+`CollapsingMergeTree` テーブルから完全に「collapse された」データを取得する必要がある場合は、集約処理が必要です。
+collapsing を最終確定させるには、`GROUP BY` 句と、`Sign` を考慮した集約関数を使ってクエリを書きます。
+例えば、件数を計算するには `count()` の代わりに `sum(Sign)` を使用します。
+ある値の合計を計算するには、`sum(x)` の代わりに `sum(Sign * x)` と `HAVING sum(Sign) > 0` を併用します。
+下記の[例](#example-of-use)のようにします。
 
-集計 `count`, `sum` および `avg` はこのように計算できます。オブジェクトに少なくとも1つの非統合状態がある場合、集約 `uniq` を計算できます。集計 `min` および `max` は計算できません、なぜなら `CollapsingMergeTree` は統合されている状態の履歴を保存しないからです。
+集約関数 `count`、`sum`、`avg` はこの方法で計算できます。
+オブジェクトに少なくとも 1 つの collapse されていない状態が存在する場合、集約関数 `uniq` も計算できます。
+一方で、`min` と `max` は計算できません。  
+これは、`CollapsingMergeTree` が collapse された状態の履歴を保存しないためです。
 
 :::note
-集約なしでデータを抽出する必要がある場合（例えば、最新の値が特定の条件に一致する行が存在するかどうかを確認するため）、`FROM` 句の [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修飾子を使用できます。これにより、結果を返す前にデータがマージされます。
-CollapsingMergeTree では、各キーの最新の状態行のみが返されます。
+集約を行わずにデータを取り出す必要がある場合
+（例えば、最新の値が特定の条件に一致する行が存在するかどうかを確認する場合など）は、
+`FROM` 句に対して [`FINAL`](../../../sql-reference/statements/select/from.md#final-modifier) 修飾子を使用できます。これは、結果を返す前にデータをマージします。
+`CollapsingMergeTree` では、各キーごとに最新の「state」行のみが返されます。
 :::
 
-## Examples {#examples}
+## 例 {#examples}
 
-### Example of Use {#example-of-use}
+### 使用例 {#example-of-use}
 
-次の例データを考えてみましょう：
+次のサンプルデータを前提とします。
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -161,7 +188,7 @@ CollapsingMergeTree では、各キーの最新の状態行のみが返されま
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-`CollapsingMergeTree` を使用してテーブル `UAct` を作成しましょう：
+次に、`CollapsingMergeTree` を使用してテーブル `UAct` を作成します。
 
 ```sql
 CREATE TABLE UAct
@@ -175,7 +202,7 @@ ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 ```
 
-次に、データを挿入します：
+次に、データを挿入します。
 
 ```sql
 INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
@@ -185,13 +212,13 @@ INSERT INTO UAct VALUES (4324182021466249494, 5, 146, 1)
 INSERT INTO UAct VALUES (4324182021466249494, 5, 146, -1),(4324182021466249494, 6, 185, 1)
 ```
 
-2つの `INSERT` クエリを使用して、2つの異なるデータパーツを作成します。
+2つの異なるデータパーツを作成するために、2つの `INSERT` クエリを使用します。
 
 :::note
-単一のクエリでデータを挿入した場合、ClickHouseは1つのデータパートのみを作成し、マージは行われません。
+1つのクエリでデータを挿入すると、ClickHouse は1つのデータパーツしか作成せず、その後マージを一切実行しません。
 :::
 
-データを選択するには：
+次のようにしてデータを取得できます：
 
 ```sql
 SELECT * FROM UAct
@@ -207,9 +234,16 @@ SELECT * FROM UAct
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-返されたデータを見て、統合が行われたかどうか確認しましょう... 2つの `INSERT` クエリで、2つのデータパーツを作成しました。 `SELECT` クエリは2つのスレッドで実行され、行の順序はランダムになりました。 しかし、統合は **行われませんでした** なぜなら、データパーツのマージはまだ行われておらず、ClickHouseは未知の瞬間にバックグラウンドでデータパーツをマージするからです。
+上で返されたデータを見て、collapsing が発生したかどうか確認してみましょう。
+2 つの `INSERT` クエリで、2 つのデータパーツを作成しました。
+`SELECT` クエリは 2 つのスレッドで実行され、行の順序はランダムになりました。
+しかし、データパーツのマージはまだ行われておらず、
+ClickHouse はデータパーツを予測できないタイミングでバックグラウンドでマージするため、
+**collapsing は発生しませんでした**。
 
-したがって、集約が必要です。 これは、[`sum`](/sql-reference/aggregate-functions/reference/sum) 集約関数と [`HAVING`](/sql-reference/statements/select/having) 句を使用して実行します：
+そのため、集約処理を行う必要があります。
+ここでは、[`sum`](/sql-reference/aggregate-functions/reference/sum)
+集約関数と [`HAVING`](/sql-reference/statements/select/having) 句を使って集約を実行します。
 
 ```sql
 SELECT
@@ -227,7 +261,7 @@ HAVING sum(Sign) > 0
 └─────────────────────┴───────────┴──────────┘
 ```
 
-集約が不要で統合を強制したい場合は、`FROM` 句に対して `FINAL` 修飾子も使用できます。
+集約が不要で、行の折りたたみを強制したい場合は、`FROM` 句に `FINAL` 修飾子を指定することもできます。
 
 ```sql
 SELECT * FROM UAct FINAL
@@ -240,14 +274,16 @@ SELECT * FROM UAct FINAL
 ```
 
 :::note
-この方法でデータを選択することは非効率的であり、大量のスキャンデータ（数百万行）には使用をお勧めしません。
+このようなデータの選択方法は効率が悪く、スキャン対象データが多い場合（数百万行規模）には使用しないことを推奨します。
 :::
 
-### Example of Another Approach {#example-of-another-approach}
+### 別のアプローチの例 {#example-of-another-approach}
 
-このアプローチの考えは、マージがキーのフィールドのみを考慮するということです。「キャンセル」行では、したがって、`Sign` カラムを使用せずに合計する際、行の前のバージョンを等しくするマイナス値を指定できます。
+このアプローチの考え方は、マージ処理がキー列のみを考慮するという点にあります。
+そのため「cancel」行では、`Sign` 列を使用せずに集計したときにその行の以前のバージョンと相殺されるような
+負の値を指定できます。
 
-この例では、以下のサンプルデータを使用します：
+この例では、以下のサンプルデータを使用します。
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -257,7 +293,8 @@ SELECT * FROM UAct FINAL
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 
-このアプローチでは、負の値を保存するために `PageViews` および `Duration` のデータ型を変更する必要があります。したがって、`collapsingMergeTree` を使用してテーブル `UAct`を作成する際にこれらの列の値を `UInt8` から `Int16` に変更します：
+この方法では、負の値を保存できるようにするために、`PageViews` と `Duration` のデータ型を変更する必要があります。
+そのため、テーブル `UAct` を `collapsingMergeTree` を使って作成する際に、これらの列の型を `UInt8` から `Int16` に変更します。
 
 ```sql
 CREATE TABLE UAct
@@ -271,9 +308,9 @@ ENGINE = CollapsingMergeTree(Sign)
 ORDER BY UserID
 ```
 
-テーブルにデータを挿入してアプローチをテストします。 
+テーブルにデータを挿入して、このアプローチをテストしてみましょう。
 
-例や小規模なテーブルでは、これは受け入れられます：
+しかし、例や小さなテーブルの場合であれば問題ありません。
 
 ```sql
 INSERT INTO UAct VALUES(4324182021466249494,  5,  146,  1);

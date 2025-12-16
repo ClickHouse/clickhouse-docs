@@ -1,20 +1,17 @@
 ---
-description: 'System table similar to `system.numbers` but reads are parallelized
-  and numbers can be returned in any order.'
-keywords:
-- 'system table'
-- 'numbers_mt'
-slug: '/operations/system-tables/numbers_mt'
+description: '`system.numbers` と同様のシステムテーブルですが、読み取りが並列化され、
+  数値が任意の順序で返されます。'
+keywords: ['system table', 'numbers_mt']
+slug: /operations/system-tables/numbers_mt
 title: 'system.numbers_mt'
+doc_type: 'reference'
 ---
 
+[`system.numbers`](../../operations/system-tables/numbers.md) と同様ですが、読み取りが並列化されます。数値は任意の順序で返される可能性があります。
 
+テスト用に使用されます。
 
-The same as [`system.numbers`](../../operations/system-tables/numbers.md) but reads are parallelized. The numbers can be returned in any order.
-
-Used for tests.
-
-**Example**
+**例**
 
 ```sql
 SELECT * FROM system.numbers_mt LIMIT 10;
@@ -34,5 +31,5 @@ SELECT * FROM system.numbers_mt LIMIT 10;
 │      9 │
 └────────┘
 
-10 行がセットにあります。経過時間: 0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```

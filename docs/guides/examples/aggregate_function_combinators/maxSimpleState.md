@@ -1,13 +1,13 @@
 ---
 slug: '/examples/aggregate-function-combinators/maxSimpleState'
 title: 'maxSimpleState'
-description: 'Example of using the minSimpleState combinator'
-keywords: ['min', 'state', 'simple', 'combinator', 'examples', 'minSimpleState']
-sidebar_label: 'minSimpleState'
+description: 'Example of using the maxSimpleState combinator'
+keywords: ['max', 'state', 'simple', 'combinator', 'examples', 'maxSimpleState']
+sidebar_label: 'maxSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState {#minsimplestate}
+# maxSimpleState {#maxsimplestate}
 
 ## Description {#description}
 

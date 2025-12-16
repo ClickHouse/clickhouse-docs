@@ -1,28 +1,28 @@
 ---
-description: 'ClickHouseのVariantデータ型のドキュメント'
+description: 'ClickHouse の Variant データ型に関するドキュメント'
 sidebar_label: 'Variant(T1, T2, ...)'
 sidebar_position: 40
-slug: '/sql-reference/data-types/variant'
+slug: /sql-reference/data-types/variant
 title: 'Variant(T1, T2, ...)'
+doc_type: 'reference'
 ---
 
+# Variant(T1, T2, ...) {#variantt1-t2}
 
+この型は、他のデータ型のユニオン（共用体）を表します。型 `Variant(T1, T2, ..., TN)` は、この型の各行が
+`T1`、`T2`、…、`TN` のいずれか、またはいずれでもない（`NULL` 値）であることを意味します。
 
-
-# Variant(T1, T2, ...)
-
-このタイプは他のデータタイプのユニオンを表します。タイプ `Variant(T1, T2, ..., TN)` は、このタイプの各行がタイプ `T1` または `T2` または ... または `TN` のいずれかの値を持つこと、またはそれらのいずれでもない（`NULL` 値）ことを意味します。
-
-ネストされたタイプの順序は重要ではありません: Variant(T1, T2) = Variant(T2, T1)。
-ネストされたタイプは Nullable(...)、LowCardinality(Nullable(...))、および Variant(...) タイプを除く任意のタイプを使用できます。
+ネストされた型の順序は問いません: Variant(T1, T2) = Variant(T2, T1) です。
+ネストされた型には、Nullable(...)、LowCardinality(Nullable(...))、Variant(...) 型以外の任意の型を指定できます。
 
 :::note
-異なる数値タイプ（例: `Variant(UInt32, Int64)`）や異なる日付タイプ（例: `Variant(Date, DateTime)`）のような類似のタイプをバリアントとして使用することは推奨されません。これらのタイプの値を扱うことは曖昧さを招く可能性があります。デフォルトでは、このような `Variant` タイプを作成すると例外が発生しますが、設定 `allow_suspicious_variant_types` を使用することで有効にできます。
+似たような型をバリアントとして使用すること（たとえば、`Variant(UInt32, Int64)` のような異なる数値型や、`Variant(Date, DateTime)` のような異なる日付型）は推奨されません。
+そのような型の値を扱うと曖昧さを招く可能性があるためです。デフォルトでは、このような `Variant` 型を作成しようとすると例外がスローされますが、設定 `allow_suspicious_variant_types` を使用して有効化できます。
 :::
 
-## Variantを作成する {#creating-variant}
+## Variant の作成 {#creating-variant}
 
-テーブルカラム定義で `Variant` タイプを使用する:
+テーブル列を定義する際に `Variant` 型を使用する:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
@@ -39,10 +39,10 @@ SELECT v FROM test;
 └───────────────┘
 ```
 
-通常のカラムからのCASTを使用する:
+通常のカラムからの CAST の使用:
 
 ```sql
-SELECT toTypeName(variant) as type_name, 'Hello, World!'::Variant(UInt64, String, Array(UInt64)) as variant;
+SELECT toTypeName(variant) AS type_name, 'Hello, World!'::Variant(UInt64, String, Array(UInt64)) as variant;
 ```
 
 ```text
@@ -51,7 +51,7 @@ SELECT toTypeName(variant) as type_name, 'Hello, World!'::Variant(UInt64, String
 └────────────────────────────────────────┴───────────────┘
 ```
 
-引数が共通のタイプを持たない場合に `if/multiIf` 関数を使用する（設定 `use_variant_as_common_type` を有効にする必要があります）:
+引数に共通の型がない場合に関数 `if` / `multiIf` を使用するには（設定 `use_variant_as_common_type` を有効にしておく必要があります）:
 
 ```sql
 SET use_variant_as_common_type = 1;
@@ -82,7 +82,7 @@ SELECT multiIf((number % 4) = 0, 42, (number % 4) = 1, [1, 2, 3], (number % 4) =
 └───────────────┘
 ```
 
-配列要素/マップ値が共通のタイプを持たない場合に 'array/map' 関数を使用する（設定 `use_variant_as_common_type` を有効にする必要があります）:
+配列要素やマップ値に共通の型がない場合は、関数 &#39;array/map&#39; を使用します（このとき設定 `use_variant_as_common_type` を有効にしておく必要があります）:
 
 ```sql
 SET use_variant_as_common_type = 1;
@@ -110,11 +110,14 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 └───────────────────────────────┘
 ```
 
-## Variant ネストされたタイプをサブカラムとして読み取る {#reading-variant-nested-types-as-subcolumns}
+## Variant のネストされた型をサブカラムとして読み取る {#reading-variant-nested-types-as-subcolumns}
 
-Variant タイプは、タイプ名をサブカラムとして使用して Variant カラムから単一のネストされたタイプを読み取ることをサポートしています。したがって、カラム `variant Variant(T1, T2, T3)` がある場合、構文 `variant.T2` を使用してタイプ `T2` のサブカラムを読み取ることができます。このサブカラムは、`Nullable` の中に `T2` が含まれる場合は `Nullable(T2)` のタイプを持ち、それ以外の場合は `T2` のタイプを持ちます。このサブカラムは元の `Variant` カラムと同じサイズで、元の `Variant` カラムに `T2` タイプが含まれないすべての行に `NULL` 値（または `Nullable` に `T2` が含まれない場合は空の値）が含まれます。
+`Variant` 型は、`Variant` 列から型名をサブカラムとして指定することで、単一のネストされた型を読み取ることをサポートします。
+そのため、列 `variant Variant(T1, T2, T3)` がある場合、`variant.T2` という構文を使って型 `T2` のサブカラムを読み取ることができます。
+このサブカラムの型は、`T2` が `Nullable` でラップ可能な場合は `Nullable(T2)` になり、そうでない場合は `T2` になります。
+このサブカラムは元の `Variant` 列と同じサイズとなり、元の `Variant` 列に型 `T2` が存在しないすべての行では、`NULL` 値（または `T2` を `Nullable` でラップできない場合は空値）を含みます。
 
-Variant サブカラムは、関数 `variantElement(variant_column, type_name)` を使用して読み取ることもできます。 
+Variant のサブカラムは、関数 `variantElement(variant_column, type_name)` を使って読み取ることもできます。
 
 例:
 
@@ -156,14 +159,14 @@ SELECT v, variantElement(v, 'String'), variantElement(v, 'UInt64'), variantEleme
 └───────────────┴─────────────────────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
 
-どの行にどのバリアントが格納されているかを知るには、関数 `variantType(variant_column)` を使用できます。この関数は、各行のバリアントタイプ名を含む `Enum` を返します（または行が `NULL` の場合は `'None'` を返します）。
+各行にどのバリアントの種類が格納されているかを確認するには、関数 `variantType(variant_column)` を使用できます。これは各行について、そのバリアント型名を表す `Enum` を返します（行が `NULL` の場合は `'None'` を返します）。
 
 例:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), ('Hello, World!'), ([1, 2, 3]);
-SELECT variantType(v) from test;
+SELECT variantType(v) FROM test;
 ```
 
 ```text
@@ -185,16 +188,16 @@ SELECT toTypeName(variantType(v)) FROM test LIMIT 1;
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-## Variant カラムと他のカラム間の変換 {#conversion-between-a-variant-column-and-other-columns}
+## Variant 列と他の列との変換 {#conversion-between-a-variant-column-and-other-columns}
 
-`Variant` タイプのカラムに対して実行できる変換は4つあります。
+`Variant` 型の列では、4 種類の変換を行うことができます。
 
-### 文字列カラムを Variant カラムに変換する {#converting-a-string-column-to-a-variant-column}
+### String 列を Variant 列に変換する {#converting-a-string-column-to-a-variant-column}
 
-`String` から `Variant` への変換は、文字列値から `Variant` タイプの値を解析することによって行われます:
+`String` から `Variant` への変換は、文字列値を解析して `Variant` 型の値を生成することで行われます。
 
 ```sql
-SELECT '42'::Variant(String, UInt64) as variant, variantType(variant) as variant_type
+SELECT '42'::Variant(String, UInt64) AS variant, variantType(variant) AS variant_type
 ```
 
 ```text
@@ -214,7 +217,7 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 ```
 
 ```sql
-SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String, Variant(UInt64, Bool, Date))') as map_of_variants, mapApply((k, v) -> (k, variantType(v)), map_of_variants) as map_of_variant_types```
+SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String, Variant(UInt64, Bool, Date))') AS map_of_variants, mapApply((k, v) -> (k, variantType(v)), map_of_variants) AS map_of_variant_types```
 ```
 
 ```text
@@ -223,7 +226,7 @@ SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String
 └─────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-文字列から `Variant` への変換中に解析を無効にするには、設定 `cast_string_to_dynamic_use_inference` を無効にできます:
+`String` から `Variant` への変換時のパースを無効にするには、設定項目 `cast_string_to_dynamic_use_inference` を無効にします。
 
 ```sql
 SET cast_string_to_variant_use_inference = 0;
@@ -238,11 +241,11 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 
 ### 通常のカラムを Variant カラムに変換する {#converting-an-ordinary-column-to-a-variant-column}
 
-タイプ `T` の通常のカラムを、これらのタイプを含む `Variant` カラムに変換できます:
+型 `T` を持つ通常のカラムを、その型を含む `Variant` カラムに変換できます。
 
 ```sql
-SELECT toTypeName(variant) as type_name, [1,2,3]::Array(UInt64)::Variant(UInt64, String, Array(UInt64)) as variant, variantType(variant) as variant_name
- ```
+SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64, String, Array(UInt64)) as variant, variantType(variant) as variant_name
+```
 
 ```text
 ┌─type_name──────────────────────────────┬─variant─┬─variant_name──┐
@@ -250,7 +253,8 @@ SELECT toTypeName(variant) as type_name, [1,2,3]::Array(UInt64)::Variant(UInt64,
 └────────────────────────────────────────┴─────────┴───────────────┘
 ```
 
-注意: `String` タイプからの変換は常に解析を通じて行われます。もし、文字列カラムを解析なしで `Variant` の文字列バリアントに変換する必要がある場合は、次のようにできます:
+注意: `String` 型からの変換は常にパースを通じて行われます。パースを行わずに `String` 列を `Variant` の `String` バリアントに変換する必要がある場合は、次のようにします:
+
 ```sql
 SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as variant, variantType(variant) as variant_type
 ```
@@ -261,9 +265,9 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### Variant カラムを通常のカラムに変換する {#converting-a-variant-column-to-an-ordinary-column}
+### Variant列を通常の列に変換する {#converting-a-variant-column-to-an-ordinary-column}
 
-`Variant` カラムを通常のカラムに変換できます。この場合、すべてのネストされたバリアントが目的のタイプに変換されます:
+`Variant` 列を通常の列に変換できます。この場合、すべてのネストされた Variant は指定した変換先の型に変換されます。
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -279,9 +283,9 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Variantを別の Variant に変換する {#converting-a-variant-to-another-variant}
+### ある Variant を別の Variant に変換する {#converting-a-variant-to-another-variant}
 
-`Variant` カラムを別の `Variant` カラムに変換できますが、目的の `Variant` カラムが元の `Variant` のすべてのネストされたタイプを含む場合のみです:
+`Variant` 列を別の `Variant` 列に変換することも可能ですが、変換先の `Variant` 列が元の `Variant` 列に含まれるすべてのネストされた型を含んでいる場合に限られます。
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -297,9 +301,9 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-## データからバリアントタイプを読み取る {#reading-variant-type-from-the-data}
+## データからの Variant 型の読み取り {#reading-variant-type-from-the-data}
 
-すべてのテキストフォーマット（TSV、CSV、CustomSeparated、Values、JSONEachRowなど）は`Variant` タイプの読み取りをサポートしています。データ解析中に ClickHouse は値を最も適切なバリアントタイプに挿入しようとします。
+すべてのテキスト形式 (TSV、CSV、CustomSeparated、Values、JSONEachRow など) は `Variant` 型での読み取りをサポートしています。データの解析時に、ClickHouse は値を最も適切な Variant 型の要素に挿入しようとします。
 
 例:
 
@@ -330,22 +334,24 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-## Variant タイプの値の比較 {#comparing-values-of-variant-data}
+## Variant 型の値の比較 {#comparing-values-of-variant-data}
 
-`Variant` タイプの値は、同じ `Variant` タイプの値間でのみ比較できます。
+`Variant` 型の値は、同じ `Variant` 型の値とのみ比較できます。
 
-`<` 演算子の結果は、基になるタイプ `T1` の値 `v1` と基になるタイプ `T2` の値 `v2` に対して次のように定義されます:
-- `T1 = T2 = T` の場合、結果は `v1.T < v2.T`（基になる値が比較されます）。
-- `T1 != T2` の場合、結果は `T1 < T2`（タイプ名が比較されます）。
+型 `Variant(..., T1, ... T2, ...)` に属し、それぞれの基底型が `T1` と `T2` である値 `v1` と `v2` に対する演算子 `<` の結果は、次のように定義されます。
 
-例:
+* `T1 = T2 = T` の場合、結果は `v1.T < v2.T` になります（基底値どうしが比較されます）。
+* `T1 != T2` の場合、結果は `T1 < T2` になります（型名どうしが比較されます）。
+
+例：
+
 ```sql
 CREATE TABLE test (v1 Variant(String, UInt64, Array(UInt32)), v2 Variant(String, UInt64, Array(UInt32))) ENGINE=Memory;
 INSERT INTO test VALUES (42, 42), (42, 43), (42, 'abc'), (42, [1, 2, 3]), (42, []), (42, NULL);
 ```
 
 ```sql
-SELECT v2, variantType(v2) as v2_type from test order by v2;
+SELECT v2, variantType(v2) AS v2_type FROM test ORDER BY v2;
 ```
 
 ```text
@@ -360,7 +366,7 @@ SELECT v2, variantType(v2) as v2_type from test order by v2;
 ```
 
 ```sql
-SELECT v1, variantType(v1) as v1_type, v2, variantType(v2) as v2_type, v1 = v2, v1 < v2, v1 > v2 from test;
+SELECT v1, variantType(v1) AS v1_type, v2, variantType(v2) AS v2_type, v1 = v2, v1 < v2, v1 > v2 FROM test;
 ```
 
 ```text
@@ -372,11 +378,12 @@ SELECT v1, variantType(v1) as v1_type, v2, variantType(v2) as v2_type, v1 = v2, 
 │ 42 │ UInt64  │ []      │ Array(UInt32) │              0 │            0 │               1 │
 │ 42 │ UInt64  │ ᴺᵁᴸᴸ    │ None          │              0 │            1 │               0 │
 └────┴─────────┴─────────┴───────────────┴────────────────┴──────────────┴─────────────────┘
+
 ```
 
-特定の `Variant` 値を持つ行を見つけるには、次のいずれかを行うことができます:
+特定の `Variant` 値を持つ行を見つける必要がある場合、次のいずれかの方法を使用できます。
 
-- 値を対応する `Variant` タイプにキャストします:
+* 値を対応する `Variant` 型にキャストする：
 
 ```sql
 SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, Array(UInt32));
@@ -388,10 +395,10 @@ SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, A
 └────┴─────────┘
 ```
 
-- 特定のタイプで Variant サブカラムを比較します:
+* `Variant` サブカラムを必要な型と比較します。
 
 ```sql
-SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- または variantElement(v2, 'Array(UInt32)')
+SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- もしくは variantElement(v2, 'Array(UInt32)') を使用
 ```
 
 ```text
@@ -400,7 +407,7 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- または variantEleme
 └────┴─────────┘
 ```
 
-時には、異なるタイプを持つ行に対して複雑なタイプ（例: `Array/Map/Tuple`）のサブカラムを使って追加のチェックを行うことが役立つことがあります。これらのタイプは `Nullable` の中には存在できず、異なるタイプの行には `NULL` の代わりにデフォルト値が使用されます:
+`Array/Map/Tuple` のような複合型を持つサブカラムは `Nullable` の中に含めることができず、異なる型を持つ行では `NULL` ではなくデフォルト値になるため、Variant 型に対して追加のチェックを行っておくと便利な場合があります。
 
 ```sql
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
@@ -426,7 +433,7 @@ SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE variantType(v2) =
 └────┴──────────────────┴─────────────────┘
 ```
 
-**注意:** 異なる数値タイプを持つバリアントの値は互いに異なるバリアントと見なされ、相互に比較されません。これらのタイプ名が比較されます。
+**注:** 数値型が異なる `Variant` の値は、別の `Variant` とみなされ、値同士は比較されません。代わりに、その型名同士が比較されます。
 
 例:
 
@@ -446,11 +453,11 @@ SELECT v, variantType(v) FROM test ORDER by v;
 └─────┴────────────────┘
 ```
 
-**注意:** デフォルトでは、`GROUP BY`/`ORDER BY` キーに `Variant` タイプは許可されていません。使用する場合は、特別な比較ルールを考慮し、`allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 設定を有効にしてください。
+**注記** デフォルトでは `Variant` 型は `GROUP BY`/`ORDER BY` のキーとしては許可されていません。使用したい場合は、その特殊な比較ルールを考慮した上で、`allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` 設定を有効にしてください。
 
-## JSONExtract 関数と Variant {#jsonextract-functions-with-variant}
+## Variant における JSONExtract 関数 {#jsonextract-functions-with-variant}
 
-すべての `JSONExtract*` 関数は `Variant` タイプをサポートしています:
+すべての `JSONExtract*` 関数は `Variant` 型をサポートします。
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Variant(UInt32, String, Array(UInt32))') AS variant, variantType(variant) AS variant_type;

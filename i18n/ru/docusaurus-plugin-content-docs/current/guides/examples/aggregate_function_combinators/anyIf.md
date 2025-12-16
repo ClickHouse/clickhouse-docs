@@ -2,24 +2,28 @@
 slug: '/examples/aggregate-function-combinators/anyIf'
 title: 'anyIf'
 description: 'Пример использования комбинатора anyIf'
-keywords: ['any', 'if', 'combinator', 'examples', 'anyIf']
+keywords: ['any', 'if', 'комбинатор', 'примеры', 'anyIf']
 sidebar_label: 'anyIf'
+doc_type: 'reference'
 ---
-
 
 # anyIf {#avgif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any), чтобы выбрать первый найденный элемент из заданной колонки, который соответствует заданному условию.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
+для выбора первого встретившегося элемента из заданного столбца,
+который удовлетворяет указанному условию.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успеха, и мы будем использовать `anyIf`, чтобы выбрать первые `transaction_id`, которые выше и ниже суммы 200.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+и используем `anyIf`, чтобы выбрать первые значения `transaction_id`, которые больше и
+меньше суммы 200.
 
 Сначала создадим таблицу и вставим в неё данные:
 
-```sql title="Запрос"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -39,12 +43,12 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount < 200) as tid_lt_200,
-    anyIf(transaction_id, amount > 200) as tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 
-```response title="Ответ"
+```response title="Response"
 ┌─tid_lt_200─┬─tid_gt_200─┐
 │          1 │          4 │
 └────────────┴────────────┘
@@ -52,4 +56,4 @@ FROM sales;
 
 ## См. также {#see-also}
 - [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

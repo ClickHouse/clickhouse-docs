@@ -1,18 +1,17 @@
 ---
-description: 'The `ExternalDistributed` engine allows to perform `SELECT` queries
-  on data that is stored on a remote servers MySQL or PostgreSQL. Accepts MySQL or
-  PostgreSQL engines as an argument so sharding is possible.'
+description: '`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL データベースに保存されているデータに対して `SELECT` クエリを実行できます。MySQL または PostgreSQL エンジンを引数として受け取れるため、シャーディングが可能です。'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
-slug: '/engines/table-engines/integrations/ExternalDistributed'
-title: 'ExternalDistributed'
+slug: /engines/table-engines/integrations/ExternalDistributed
+title: 'ExternalDistributed テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# ExternalDistributed テーブルエンジン {#externaldistributed-table-engine}
 
+`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL データベースに保存されているデータに対して `SELECT` クエリを実行できます。引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを指定できるため、シャーディングが可能です。
 
-`ExternalDistributed` エンジンは、リモートサーバーの MySQL または PostgreSQL に保存されたデータに対して `SELECT` クエリを実行することを可能にします。シャーディングが可能なように、引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを受け入れます。
-
-## テーブルの作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -23,36 +22,36 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = ExternalDistributed('engine', 'host:port', 'database', 'table', 'user', 'password');
 ```
 
-[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細な説明を参照してください。
+[CREATE TABLE](/sql-reference/statements/create/table) クエリの詳細について参照してください。
 
-テーブルの構造は元のテーブルの構造と異なる場合があります：
+テーブル構造は元のテーブル構造と異なっていてもかまいません。
 
-- カラム名は元のテーブルと同じである必要がありますが、これらのカラムの一部のみを使用し、任意の順序で指定することができます。
-- カラムタイプは元のテーブルのものと異なる場合があります。ClickHouse は [cast](/sql-reference/functions/type-conversion-functions#cast) 関数を使用して値を ClickHouse データ型に変換しようとします。
+* 列名は元のテーブルと同じである必要がありますが、その一部のみを任意の順序で使用できます。
+* 列型は元のテーブルと異なっていてもかまいません。ClickHouse は、値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
 
-**エンジンのパラメータ**
+**エンジンパラメータ**
 
-- `engine` — テーブルエンジン `MySQL` または `PostgreSQL`。
-- `host:port` — MySQL または PostgreSQL サーバーのアドレス。
-- `database` — リモートデータベース名。
-- `table` — リモートテーブル名。
-- `user` — ユーザー名。
-- `password` — ユーザーパスワード。
+* `engine` — テーブルエンジン。`MySQL` または `PostgreSQL` を指定します。
+* `host:port` — MySQL または PostgreSQL サーバーのアドレス。
+* `database` — リモートデータベース名。
+* `table` — リモートテーブル名。
+* `user` — ユーザー名。
+* `password` — ユーザーのパスワード。
 
 ## 実装の詳細 {#implementation-details}
 
-複数のレプリカをサポートしており、`|` でリストされる必要があります。また、シャードは `,` でリストされる必要があります。例えば：
+複数レプリカ構成をサポートしており、レプリカは `|` で、シャードは `,` で区切って列挙する必要があります。例えば次のようになります。
 
 ```sql
 CREATE TABLE test_shards (id UInt32, name String, age UInt32, money UInt32) ENGINE = ExternalDistributed('MySQL', `mysql{1|2}:3306,mysql{3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-レプリカを指定すると、読み取り時に各シャードの利用可能なレプリカのうちの1つが選択されます。接続が失敗した場合は、次のレプリカが選択され、全てのレプリカに対してそのように続けられます。もし全てのレプリカの接続試行が失敗した場合、同様の方法で数回試行されます。
+レプリカ数を指定すると、読み取り時には各シャードに対して利用可能なレプリカのうち 1 つが選択されます。接続に失敗した場合は次のレプリカが選択され、すべてのレプリカについて同様に処理されます。すべてのレプリカへの接続試行が失敗した場合は、同じ手順で複数回再試行されます。
 
-各シャードに対して任意の数のシャードおよびレプリカを指定できます。
+任意の数のシャードと、各シャードに対する任意の数のレプリカを指定できます。
 
-**関連情報**
+**関連項目**
 
-- [MySQL テーブルエンジン](../../../engines/table-engines/integrations/mysql.md)
-- [PostgreSQL テーブルエンジン](../../../engines/table-engines/integrations/postgresql.md)
-- [分散テーブルエンジン](../../../engines/table-engines/special/distributed.md)
+* [MySQL table engine](../../../engines/table-engines/integrations/mysql.md)
+* [PostgreSQL table engine](../../../engines/table-engines/integrations/postgresql.md)
+* [Distributed table engine](../../../engines/table-engines/special/distributed.md)

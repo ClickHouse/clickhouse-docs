@@ -1,28 +1,29 @@
 ---
-sidebar_label: 'LDAPの構成'
+sidebar_label: 'LDAP の設定'
 sidebar_position: 2
-slug: '/guides/sre/configuring-ldap'
-title: 'LDAPを使用したClickHouseの認証とロールマッピングの構成'
-description: 'ClickHouseをLDAPを使用して認証とロールマッピングに設定する方法について説明します'
+slug: /guides/sre/configuring-ldap
+title: '認証とロールマッピングに LDAP を使用するように ClickHouse を構成する'
+description: 'ClickHouse で認証とロールマッピングに LDAP を使用するように構成する方法について説明します'
+keywords: ['LDAP 設定', 'LDAP 認証', 'ロールマッピング', 'ユーザー管理', 'SRE ガイド']
+doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# ClickHouseをLDAPで認証およびロールマッピングに使用するための設定
+# LDAP を使用した認証とロールマッピングのための ClickHouse の構成 {#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping}
 
 <SelfManaged />
 
-ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを認証するように構成できます。このガイドでは、公開されているディレクトリに対して認証を行うLDAPシステムとClickHouseを統合する簡単な例を提供します。
+ClickHouse は、LDAP を使用して ClickHouse データベースユーザーを認証するように構成できます。このガイドでは、一般公開されているディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する、簡単な例を紹介します。
 
-## 1. ClickHouseでのLDAP接続設定の構成 {#1-configure-ldap-connection-settings-in-clickhouse}
+## 1. ClickHouse での LDAP 接続設定の構成 {#1-configure-ldap-connection-settings-in-clickhouse}
 
-1. この公開LDAPサーバーへの接続をテストします：
+1. 次の公開 LDAP サーバーへの接続をテストします:
     ```bash
     $ ldapsearch -x -b dc=example,dc=com -H ldap://ldap.forumsys.com
     ```
 
-    応答は次のようになります：
+    応答は次のようになります:
     ```response
     # extended LDIF
     #
@@ -42,7 +43,7 @@ ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを�
     ...
     ```
 
-2. `config.xml`ファイルを編集し、以下を追加してLDAPを構成します：
+2. `config.xml` ファイルを編集し、以下を追加して LDAP を構成します:
     ```xml
     <ldap_servers>
         <test_ldap_server>
@@ -56,28 +57,28 @@ ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを�
     ```
 
     :::note
-    `<test_ldap_server>`タグは特定のLDAPサーバーを識別するための任意のラベルです。
+    `<test_ldap_server>` タグは、特定の LDAP サーバーを識別するための任意のラベルです。
     :::
 
-    上記で使用される基本設定は次の通りです：
+    上記で使用している基本的な設定は次のとおりです:
 
-    |パラメータ |説明                   |例                   |
-    |----------|----------------------|---------------------|
-    |host      |LDAPサーバーのホスト名またはIP |ldap.forumsys.com    |
-    |port      |LDAPサーバー用のディレクトリポート|389                  |
-    |bind_dn   |ユーザーへのテンプレートパス|`uid={user_name},dc=example,dc=com`|
-    |enable_tls|安全なLDAPを使用するかどうか|no                   |
-    |tls_require_cert |接続のために証明書が必要かどうか|never|
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |host      |LDAP サーバーのホスト名または IP |ldap.forumsys.com    |
+    |port      |LDAP サーバーのディレクトリポート|389                  |
+    |bind_dn   |ユーザー DN のテンプレート      |`uid={user_name},dc=example,dc=com`|
+    |enable_tls|安全な LDAP を使用するかどうか   |no     |
+    |tls_require_cert |接続時に証明書を必須とするかどうか|never|
 
     :::note
-    この例では、公開サーバーが389を使用し安全なポートを使用していないため、デモ目的でTLSを無効にしています。
+    この例では、公開サーバーがポート 389 を使用し、安全なポートを使用していないため、デモ目的として TLS を無効にしています。
     :::
 
     :::note
-    LDAP設定の詳細については、[LDAPドキュメントページ](../../../operations/external-authenticators/ldap.md)を参照してください。
+    LDAP 設定の詳細については [LDAP のドキュメントページ](../../../operations/external-authenticators/ldap.md) を参照してください。
     :::
 
-3. `<user_directories>`セクションに`<ldap>`セクションを追加してユーザーロールのマッピングを構成します。このセクションは、ユーザーが認証されたときにどのロールを取得するかを定義します。この基本的な例では、LDAPに対して認証を行ったユーザーは`scientists_role`を取得し、これは後のステップでClickHouseで定義されます。このセクションは次のようになります：
+3. `<user_directories>` セクションに `<ldap>` セクションを追加して、ユーザーのロールマッピングを構成します。このセクションでは、ユーザーがどのように認証されるか、およびそのユーザーがどのロールを付与されるかを定義します。この基本的な例では、LDAP で認証された任意のユーザーは、ClickHouse の後続の手順で定義される `scientists_role` を付与されます。セクションは次のようになります:
     ```xml
     <user_directories>
         <users_xml>
@@ -100,37 +101,37 @@ ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを�
     </user_directories>
      ```
 
-    上記で使用される基本設定は次の通りです：
+    上記で使用している基本的な設定は次のとおりです:
 
-    |パラメータ |説明                   |例                   |
-    |----------|----------------------|---------------------|
-    |server    |前のldap_serversセクションで定義されたラベル|test_ldap_server|
-    |roles      |ClickHouseで定義されたユーザーがマッピングされるロールの名前|scientists_role|
-    |base_dn   |ユーザーとグループの検索を開始する基本パス|dc=example,dc=com|
-    |search_filter|マッピングのために選択するグループを識別するLDAP検索フィルター|`(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))`|
-    |attribute |返される属性名|cn|
+    |Parameter |Description                   |Example              |
+    |----------|------------------------------|---------------------|
+    |server    |前の ldap_servers セクションで定義したラベル|test_ldap_server|
+    |roles      |ClickHouse で定義され、ユーザーがマッピングされるロール名|scientists_role|
+    |base_dn   |ユーザーを含むグループ検索を開始するベース DN        |dc=example,dc=com|
+    |search_filter|ユーザーのマッピング対象とするグループを特定するための LDAP 検索フィルター    |`(&(objectClass=groupOfUniqueNames)(uniqueMember={bind_dn}))`|
+    |attribute |どの属性名から値を取得するか|cn|
 
-4. 設定を適用するためにClickHouseサーバーを再起動します。
+4. 設定を反映するために ClickHouse サーバーを再起動します。
 
-## 2. ClickHouseデータベースのロールと権限を構成する {#2-configure-clickhouse-database-roles-and-permissions}
+## 2. ClickHouse データベースのロールと権限を構成する {#2-configure-clickhouse-database-roles-and-permissions}
 
 :::note
-このセクションの手順は、ClickHouseでSQLアクセス制御とアカウント管理が有効になっていることを前提としています。有効にするには、[SQLユーザーとロールガイド](index.md)を参照してください。
+このセクションの手順は、ClickHouse で SQL Access Control および Account Management が有効になっていることを前提としています。有効化するには、[SQL Users and Roles ガイド](index.md) を参照してください。
 :::
 
-1. `config.xml`ファイルのロールマッピングセクションで使用されたのと同じ名前のロールをClickHouseで作成します。
+1. `config.xml` ファイルのロールマッピングセクションで使用したものと同じ名前で、ClickHouse にロールを作成します
     ```sql
     CREATE ROLE scientists_role;
     ```
 
-2. ロールに必要な権限を付与します。次のステートメントは、LDAPを通じて認証できるユーザーに管理者権限を付与します：
+2. 必要な権限をロールに付与します。次のステートメントは、LDAP を通じて認証できる任意のユーザーに管理者権限を付与します。
     ```sql
     GRANT ALL ON *.* TO scientists_role;
     ```
 
-## 3. LDAP設定をテストする {#3-test-the-ldap-configuration}
+## 3. LDAP 設定をテストする {#3-test-the-ldap-configuration}
 
-1. ClickHouseクライアントを使用してログインします。
+1. ClickHouse クライアントを使用してログインする
     ```bash
     $ clickhouse-client --user einstein --password password
     ClickHouse client version 22.2.2.1.
@@ -141,10 +142,10 @@ ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを�
     ```
 
     :::note
-    ステップ1で`ldapsearch`コマンドを使用してディレクトリに利用可能なすべてのユーザーを表示し、すべてのユーザーのパスワードが`password`であることを確認してください。
+    手順 1 で `ldapsearch` コマンドを使用して、ディレクトリ内で利用可能なすべてのユーザーを表示できます。また、すべてのユーザーのパスワードは `password` です。
     :::
 
-2. ユーザーが`scientists_role`ロールに正しくマッピングされており、管理者権限を持っているかテストします。
+2.  ユーザーが `scientists_role` ロールに正しくマッピングされ、管理者権限を持っていることを確認する
     ```sql
     SHOW DATABASES
     ```
@@ -167,5 +168,5 @@ ClickHouseは、LDAPを使用してClickHouseデータベースユーザーを�
     9 rows in set. Elapsed: 0.004 sec.
     ```
 
-## 要約 {#summary}
-この記事では、ClickHouseをLDAPサーバーに対して認証し、ロールにマッピングする基本を示しました。また、ClickHouse内の個々のユーザーを構成するオプションもありますが、これらのユーザーが自動的なロールマッピングを構成せずにLDAPで認証されるようにすることも可能です。LDAPモジュールはActive Directoryへの接続にも使用できます。
+## まとめ {#summary}
+この記事では、ClickHouse が LDAP サーバーで認証を行い、ロールにマッピングするための基本的な設定方法を説明しました。ClickHouse 上で個々のユーザーを定義したうえで、それらのユーザーの認証のみを LDAP に任せ、自動的なロールマッピングは設定しない構成も可能です。LDAP モジュールは、Active Directory への接続にも使用できます。

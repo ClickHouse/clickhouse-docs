@@ -1,19 +1,20 @@
 ---
-'description': 'EXCEPT 子句 的文档'
-'sidebar_label': 'EXCEPT'
-'slug': '/sql-reference/statements/select/except'
-'title': 'EXCEPT 子句'
+description: 'EXCEPT 子句的文档,该子句仅返回第一个查询的结果中不在第二个查询中的行。'
+sidebar_label: 'EXCEPT'
+slug: /sql-reference/statements/select/except
+title: 'EXCEPT 子句'
+keywords: ['EXCEPT', 'clause']
+doc_type: 'reference'
 ---
-
 
 # EXCEPT 子句
 
-`EXCEPT` 子句仅返回第一个查询的结果中不包含第二个查询的行。
+> `EXCEPT` 子句仅返回第一个查询的结果中不在第二个查询中的行。
 
-- 两个查询必须具有相同数量的列，并且列的顺序和数据类型必须相同。
-- `EXCEPT` 的结果可以包含重复的行。如果不希望出现重复行，请使用 `EXCEPT DISTINCT`。
-- 如果没有指定括号，多个 `EXCEPT` 语句将从左到右依次执行。
-- `EXCEPT` 操作符与 `UNION` 子句的优先级相同，低于 `INTERSECT` 子句的优先级。
+- 两个查询必须具有相同数量、相同顺序和相同数据类型的列。
+- `EXCEPT` 的结果可能包含重复行。如果不希望出现这种情况,请使用 `EXCEPT DISTINCT`。
+- 如果未指定括号,多个 `EXCEPT` 语句将从左到右执行。
+- `EXCEPT` 运算符具有与 `UNION` 子句相同的优先级,并且优先级低于 `INTERSECT` 子句。
 
 ## 语法 {#syntax}
 
@@ -28,37 +29,33 @@ SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
 ```
-条件可以是根据您的要求的任何表达式。
+条件可以是基于您的要求的任何表达式。
 
-此外，可以使用 `EXCEPT()` 来排除结果中的某些列，语法与 BigQuery (Google Cloud) 中的用法相同，如下所示：
+此外,`EXCEPT()` 可用于从同一表的结果中排除列,就像 BigQuery (Google Cloud) 中可以做到的那样,使用以下语法:
 
 ```sql
-SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
-FROM table1 
+SELECT column1 [, column2 ] EXCEPT (column3 [, column4])
+FROM table1
 [WHERE condition]
 ```
 
 ## 示例 {#examples}
 
-本节的示例演示了 `EXCEPT` 子句的用法。
+本节中的示例演示了 `EXCEPT` 子句的用法。
 
 ### 使用 `EXCEPT` 子句过滤数字 {#filtering-numbers-using-the-except-clause}
 
-这是一个简单的示例，它返回数字 1 到 10 中不包括数字 3 到 8 的结果：
+这是一个简单的示例,返回 1 到 10 之间_不属于_ 3 到 8 之间的数字:
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT number
 FROM numbers(1, 10)
 EXCEPT
 SELECT number
-FROM numbers(3, 8)
+FROM numbers(3, 6)
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─number─┐
 │      1 │
 │      2 │
@@ -69,11 +66,9 @@ FROM numbers(3, 8)
 
 ### 使用 `EXCEPT()` 排除特定列 {#excluding-specific-columns-using-except}
 
-`EXCEPT()` 可以快速排除结果中的列。例如，如果我们想选择表中的所有列，但排除一些特定的列，如下例所示：
+`EXCEPT()` 可用于快速从结果中排除列。例如,如果我们想从表中选择所有列,但排除少数选定的列,如下例所示:
 
-查询：
-
-```sql
+```sql title="Query"
 SHOW COLUMNS IN system.settings
 
 SELECT * EXCEPT (default, alias_for, readonly, description)
@@ -81,9 +76,7 @@ FROM system.settings
 LIMIT 5
 ```
 
-结果：
-
-```response
+```response title="Response"
     ┌─field───────┬─type─────────────────────────────────────────────────────────────────────┬─null─┬─key─┬─default─┬─extra─┐
  1. │ alias_for   │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
  2. │ changed     │ UInt8                                                                    │ NO   │     │ ᴺᵁᴸᴸ    │       │
@@ -108,14 +101,12 @@ LIMIT 5
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-### 使用 `EXCEPT` 和 `INTERSECT` 处理加密货币数据 {#using-except-and-intersect-with-cryptocurrency-data}
+### 在加密货币数据中使用 `EXCEPT` 和 `INTERSECT` {#using-except-and-intersect-with-cryptocurrency-data}
 
-`EXCEPT` 和 `INTERSECT` 在不同的布尔逻辑中通常可以互换使用，它们都在两个共享一个或多个公共列的表中非常有用。
-例如，假设我们有几百万行的历史加密货币数据，其中包含交易价格和交易量：
+`EXCEPT` 和 `INTERSECT` 通常可以通过不同的布尔逻辑互换使用,如果您有两个共享公共列(或多列)的表,它们都很有用。
+例如,假设我们有几百万行包含交易价格和交易量的历史加密货币数据:
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -141,9 +132,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -158,7 +147,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-现在假设我们有一个名为 `holdings` 的表，包含我们拥有的加密货币列表，以及每种货币的数量：
+现在假设我们有一个名为 `holdings` 的表,其中包含我们拥有的加密货币列表以及硬币数量:
 
 ```sql
 CREATE TABLE holdings
@@ -178,46 +167,42 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-我们可以使用 `EXCEPT` 来回答这样的问题 **“我们拥有的哪些币的交易价格从未低于 $10？”**：
+我们可以使用 `EXCEPT` 来回答这样的问题:**"我们拥有的哪些币从未跌破 $10?"**:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
 └─────────────┘
 ```
 
-这意味着在我们拥有的四种加密货币中，只有比特币从未跌破 $10（基于我们在此示例中的有限数据）。
+这意味着在我们拥有的四种加密货币中,只有 Bitcoin 从未跌破 $10(基于我们在此示例中拥有的有限数据)。
 
 ### 使用 `EXCEPT DISTINCT` {#using-except-distinct}
 
-注意在之前的查询中，我们在结果中有多个比特币的持有记录。您可以在 `EXCEPT` 后添加 `DISTINCT` 以消除结果中的重复行：
+请注意,在前面的查询中,我们在结果中有多个 Bitcoin 持仓。您可以将 `DISTINCT` 添加到 `EXCEPT` 以从结果中消除重复行:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 └─────────────┘
 ```
 
-**另请参见**
+**另请参阅**
 
 - [UNION](/sql-reference/statements/select/union)
 - [INTERSECT](/sql-reference/statements/select/intersect)

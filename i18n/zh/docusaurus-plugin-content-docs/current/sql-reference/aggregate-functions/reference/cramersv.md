@@ -1,17 +1,17 @@
 ---
-'description': '`cramersV` 函数的结果范围从 0（对应于变量之间没有关联）到 1，并且仅当每个值完全由另一个值决定时才能达到 1。它可以被视为两个变量之间的关联作为其最大可能变化的百分比。'
-'sidebar_position': 127
-'slug': '/sql-reference/aggregate-functions/reference/cramersv'
-'title': 'cramersV'
+description: '`cramersV` 函数的结果范围为 0（表示变量之间没有关联）到 1，且只有在每个取值都能被另一个变量完全确定时才能达到 1。它可以被视为两个变量之间的关联程度，相对于它们在理论上可能达到的最大变异的百分比。'
+sidebar_position: 127
+slug: /sql-reference/aggregate-functions/reference/cramersv
+title: 'cramersV'
+doc_type: 'reference'
 ---
 
+# cramersV {#cramersv}
 
-# cramersV
-
-[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时称为 Cramer's phi）是一个衡量表中两列之间关联性的指标。`cramersV` 函数的结果范围从 0（表示变量之间没有关联）到 1，只有当每个值完全由另一个值决定时，结果才能达到 1。它可以被视为两个变量之间的关联程度，占其最大可能变化的百分比。
+[Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时称为 Cramer&#39;s phi）是一种用于衡量表中两列之间关联程度的统计量。`cramersV` 函数的结果范围从 0（表示变量之间没有关联）到 1，且只有当每个值都可以被另一个值完全确定时才会达到 1。它可以被视为两个变量之间的关联程度，占其最大可能变化范围的百分比。
 
 :::note
-有关 Cramer's V 的偏差修正版本，请参见：[cramersVBiasCorrected](./cramersvbiascorrected.md)
+关于偏差校正版本的 Cramer&#39;s V，请参见：[cramersVBiasCorrected](./cramersvbiascorrected.md)
 :::
 
 **语法**
@@ -22,18 +22,18 @@ cramersV(column1, column2)
 
 **参数**
 
-- `column1`: 第一个要比较的列。
-- `column2`: 第二个要比较的列。
+* `column1`: 要比较的第一列。
+* `column2`: 要比较的第二列。
 
 **返回值**
 
-- 一个值在 0（对应于列值之间没有关联）到 1（完全关联）之间。
+* 一个介于 0（表示列值之间没有关联）到 1（完全相关）之间的值。
 
-类型：始终是 [Float64](../../../sql-reference/data-types/float.md)。
+类型：固定为 [Float64](../../../sql-reference/data-types/float.md)。
 
 **示例**
 
-下面比较的两个列之间没有关联，因此 `cramersV` 的结果为 0：
+下面比较的这两列彼此之间没有关联，因此 `cramersV` 的结果为 0：
 
 查询：
 
@@ -58,7 +58,7 @@ FROM
 └────────────────┘
 ```
 
-以下两个列之间的关联相当密切，因此 `cramersV` 的结果为较高的值：
+下方这两列之间的相关性较强，因此 `cramersV` 的结果值较高：
 
 ```sql
 SELECT
@@ -67,7 +67,7 @@ FROM
     (
         SELECT
             number % 10 AS a,
-            number % 5 AS b
+            if(number % 12 = 0, (number + 1) % 5, number % 5) AS b
         FROM
             numbers(150)
     );
@@ -77,6 +77,6 @@ FROM
 
 ```response
 ┌─────cramersV(a, b)─┐
-│ 0.8944271909999159 │
+│ 0.9066801892162646 │
 └────────────────────┘
 ```

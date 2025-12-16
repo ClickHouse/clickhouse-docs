@@ -1,19 +1,19 @@
 ---
-'slug': '/about'
-'title': '关于 ClickHouse'
-'description': '关于 ClickHouse 的登錄頁面'
+slug: /about
+title: '关于 ClickHouse'
+description: '关于 ClickHouse 的着陆页'
+doc_type: 'landing-page'
+keywords: ['关于', '概述', '介绍']
 ---
 
+# 关于 ClickHouse {#about-clickhouse}
 
-# 关于 ClickHouse
+在本节文档中可以找到关于 ClickHouse 的相关信息。请参阅下方目录表，查看本节文档所包含页面的列表。
 
-在本节文档中，您将找到有关 ClickHouse 的信息。请参阅下面的目录以获取本节文档页面的列表。
-
-| 页面                                           | 描述                                                                                                                                                                                                       |
-|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [什么是 ClickHouse](/about-clickhouse)        | 介绍 ClickHouse 的核心特性、架构和用途，为新用户提供简明的概述。                                                                                                        |
-| [采用者](/about-us/adopters)                          | 使用 ClickHouse 的公司的列表及其成功故事，来自公开来源的汇总。                                                                                                                     |
-| [支持](/about-us/support)                   | ClickHouse Cloud 支持服务及其使命的介绍。                                                                                                                                           |
-| [测试版特性和实验性功能](/beta-and-experimental-features) | 了解 ClickHouse 如何使用“测试版”和“实验性”标签来区分正式支持的功能和由于社区贡献的不同开发速度而处于早期阶段、不受支持的功能。 |
-| [云服务](/about-us/cloud)               | 发现 ClickHouse Cloud - 一个完全管理的服务，让用户可以快速启动开源 ClickHouse 数据库，并提供快速价值实现、无缝扩展和无服务器操作等好处。       |
-| [ClickHouse 历史](/about-us/history)        | 了解更多关于 ClickHouse 的历史。                                                                                                                                                                       |
+| 页面                                                                       | 描述                                                                                                                                                                                                              |
+|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Adopters](/about-us/adopters)                                             | 使用 ClickHouse 的公司列表及其成功案例，汇总自公开来源。                                                                                                                                                         |
+| [Support](/about-us/support)                                               | 介绍 ClickHouse Cloud 支持服务及其使命。                                                                                                                                                                         |
+| [Beta features and experimental features](/beta-and-experimental-features) | 了解 ClickHouse 如何使用“Beta”和“Experimental”标签来区分官方支持的功能与处于早期阶段、尚未受支持的功能，这些功能通常由于社区贡献的开发速度不同而进度各异。                                                        |
+| [Cloud service](/about-us/cloud)                                           | 了解 ClickHouse Cloud —— 一项完全托管的服务，用户可以通过它快速启动开源 ClickHouse 数据库，并获得诸如快速实现价值、无缝扩缩容以及无服务器化运维等优势。                                                          |
+| [ClickHouse history](/about-us/history)                                    | 进一步了解 ClickHouse 的发展历程。                                                                                                                                                                               |

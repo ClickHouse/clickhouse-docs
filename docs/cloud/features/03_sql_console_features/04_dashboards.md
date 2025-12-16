@@ -4,6 +4,7 @@ slug: /cloud/manage/dashboards
 title: 'Dashboards'
 description: 'The SQL Console''s dashboards feature allows you to collect and share visualizations from saved queries.'
 doc_type: 'guide'
+keywords: ['ClickHouse Cloud', 'dashboards', 'data visualization', 'SQL console dashboards', 'cloud analytics']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -27,7 +28,7 @@ The SQL Console's dashboards feature allows you to collect and share visualizati
 
 ### Query sharing {#query-sharing}
 
-In order to share your dashboard with colleagues, please be sure to share the underlying saved query. To view a visualization, users must have, at a minimum, read-only access to the underlying saved query. 
+To share your dashboard with colleagues, be sure to share the underlying saved query. To view a visualization, you must have, at a minimum, read-only access to the underlying saved query.
 
 ### Interactivity {#interactivity}
 

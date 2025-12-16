@@ -1,33 +1,32 @@
 ---
 alias: []
-description: 'One formatのドキュメント'
+description: 'One フォーマットに関するドキュメント'
 input_format: true
-keywords:
-- 'One'
+keywords: ['One']
 output_format: false
-slug: '/interfaces/formats/One'
+slug: /interfaces/formats/One
 title: 'One'
+doc_type: 'reference'
 ---
 
-
-
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
 ## 説明 {#description}
 
-`One` フォーマットは特別な入力フォーマットで、ファイルからデータを読み込まず、カラムの型が [`UInt8`](../../sql-reference/data-types/int-uint.md) で名前が `dummy`、値が `0` という1行のみを返します（`system.one` テーブルのように）。実際のデータを読み込まずに、すべてのファイルをリストするために仮想カラム `_file/_path` と共に使用できます。
+`One` フォーマットは、ファイルから一切データを読み込まず、[`UInt8`](../../sql-reference/data-types/int-uint.md) 型の `dummy` という名前のカラムを 1 列だけ持つ 1 行（値は `0`）だけを返す、特別な入力フォーマットです（`system.one` テーブルと同様）。
+仮想カラム `_file/_path` と組み合わせることで、実際のデータを読み込まずにすべてのファイルを一覧表示するために使用できます。
 
 ## 使用例 {#example-usage}
 
 例：
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT _file FROM file('path/to/files/data*', One);
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─_file────┐
 │ data.csv │
 └──────────┘

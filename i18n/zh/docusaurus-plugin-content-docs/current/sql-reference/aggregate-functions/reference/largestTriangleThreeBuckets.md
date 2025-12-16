@@ -1,15 +1,18 @@
 ---
-'description': '将 Largest-Triangle-Three-Buckets 算法应用于输入数据。'
-'sidebar_label': 'largestTriangleThreeBuckets'
-'sidebar_position': 159
-'slug': '/sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets'
-'title': 'largestTriangleThreeBuckets'
+description: '将 Largest-Triangle-Three-Buckets 算法应用于输入数据。'
+sidebar_label: 'largestTriangleThreeBuckets'
+sidebar_position: 159
+slug: /sql-reference/aggregate-functions/reference/largestTriangleThreeBuckets
+title: 'largestTriangleThreeBuckets'
+doc_type: 'reference'
 ---
 
+# largestTriangleThreeBuckets {#largesttrianglethreebuckets}
 
-# largestTriangleThreeBuckets
-
-应用 [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) 算法于输入数据。该算法用于对时间序列数据进行下采样以便于可视化。它被设计用于处理按 x 坐标排序的序列。它通过将排序后的系列划分为多个桶，然后在每个桶中寻找最大的三角形来工作。桶的数量等于结果序列中的点数。该函数将按 `x` 排序数据，然后将下采样算法应用于排序后的数据。
+将 [Largest-Triangle-Three-Buckets](https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) 算法应用于输入数据。
+该算法用于对时间序列数据进行降采样，以便进行可视化。它被设计为在按 x 坐标排序的序列上运行。
+其工作方式是将已排序的序列划分为多个桶，然后在每个桶中找到面积最大的三角形。桶的数量等于结果序列中的点数。
+该函数会先按 `x` 对数据进行排序，然后对排序后的数据应用降采样算法。
 
 **语法**
 
@@ -17,22 +20,22 @@
 largestTriangleThreeBuckets(n)(x, y)
 ```
 
-别名: `lttb`。
+别名：`lttb`。
 
 **参数**
 
-- `x` — x 坐标。 [整数](../../../sql-reference/data-types/int-uint.md) , [浮点数](../../../sql-reference/data-types/float.md) , [十进制](../../../sql-reference/data-types/decimal.md)  , [日期](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [日期时间](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md)。
-- `y` — y 坐标。 [整数](../../../sql-reference/data-types/int-uint.md) , [浮点数](../../../sql-reference/data-types/float.md) , [十进制](../../../sql-reference/data-types/decimal.md)  , [日期](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md), [日期时间](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md)。
+* `x` — x 坐标。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
+* `y` — y 坐标。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md)、[Decimal](../../../sql-reference/data-types/decimal.md)、[Date](../../../sql-reference/data-types/date.md)、[Date32](../../../sql-reference/data-types/date32.md)、[DateTime](../../../sql-reference/data-types/datetime.md)、[DateTime64](../../../sql-reference/data-types/datetime64.md)。
 
-提供的序列中会忽略 NaN，这意味着任何 NaN 值将被排除在分析之外。这样可以确保该函数仅对有效的数值数据进行操作。
+在给定序列中，NaN 值会被忽略，即所有 NaN 值都会从分析中排除，从而确保函数仅在有效的数值数据上运行。
 
 **参数**
 
-- `n` — 结果序列中的点数。 [UInt64](../../../sql-reference/data-types/int-uint.md)。
+* `n` — 结果序列中的点数。[UInt64](../../../sql-reference/data-types/int-uint.md)。
 
 **返回值**
 
-[数组](../../../sql-reference/data-types/array.md) 的 [元组](../../../sql-reference/data-types/tuple.md) ，包含两个元素：
+由包含两个元素的 [Tuple](../../../sql-reference/data-types/tuple.md) 组成的 [Array](../../../sql-reference/data-types/array.md)：
 
 **示例**
 
@@ -53,7 +56,7 @@ largestTriangleThreeBuckets(n)(x, y)
 └─────────────┴──────────────┘
 ```
 
-查询：
+查询语句：
 
 ```sql
 SELECT largestTriangleThreeBuckets(4)(x, y) FROM largestTriangleThreeBuckets_test;

@@ -1,13 +1,16 @@
 ---
-'description': '计算数据集的样本方差。与 `varSamp` 不同，此函数使用数值稳定的算法。虽然它运行较慢，但提供了更低的计算误差。'
-'sidebar_position': 213
-'slug': '/sql-reference/aggregate-functions/reference/varsampstable'
-'title': 'varSampStable'
+description: '计算数据集的样本方差。与 `varSamp` 不同，此函数使用数值更稳定的算法。它的运行速度较慢，但计算误差更小。'
+sidebar_position: 213
+slug: /sql-reference/aggregate-functions/reference/varsampstable
+title: 'varSampStable'
+doc_type: 'reference'
 ---
+
+
 
 ## varSampStable {#varsampstable}
 
-计算数据集的样本方差。与 [`varSamp`](../reference/varsamp.md) 不同，此函数使用数值稳定的算法。虽然运行速度较慢，但提供了更低的计算误差。
+计算数据集的样本方差。与 [`varSamp`](../reference/varsamp.md) 不同，该函数使用数值稳定算法。虽然运行速度较慢，但计算误差更小。
 
 **语法**
 
@@ -15,11 +18,11 @@
 varSampStable(x)
 ```
 
-别名: `VAR_SAMP_STABLE`
+别名：`VAR_SAMP_STABLE`
 
 **参数**
 
-- `x`: 要计算样本方差的总体。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`：需要计算样本方差的数据集。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal\*](../../data-types/decimal.md)。
 
 **返回值**
 
@@ -34,9 +37,10 @@ $$
 $$
 
 其中：
-- `x` 是数据集中每个单独的数据点。
-- `mean(x)` 是数据集的算术平均值。
-- `n` 是数据集中数据点的数量。
+
+- `x` 为数据集中的每个数据点。
+- `mean(x)` 为数据集的算术平均值。
+- `n` 为数据集中的数据点数量。
 
 **示例**
 
@@ -55,7 +59,7 @@ INSERT INTO test_data VALUES (10.5), (12.3), (9.8), (11.2), (10.7);
 SELECT round(varSampStable(x),3) AS var_samp_stable FROM test_data;
 ```
 
-响应：
+结果：
 
 ```response
 ┌─var_samp_stable─┐

@@ -1,12 +1,12 @@
 ---
-description: 'Вычисляет точное количество различных значений аргументов.'
+description: 'Вычисляет точное количество различных значений аргумента.'
 sidebar_position: 207
 slug: /sql-reference/aggregate-functions/reference/uniqexact
 title: 'uniqExact'
+doc_type: 'reference'
 ---
 
-
-# uniqExact
+# uniqExact {#uniqexact}
 
 Вычисляет точное количество различных значений аргументов.
 
@@ -14,29 +14,29 @@ title: 'uniqExact'
 uniqExact(x[, ...])
 ```
 
-Используйте функцию `uniqExact`, если вам абсолютно необходим точный результат. В противном случае используйте функцию [uniq](/sql-reference/aggregate-functions/reference/uniq).
+Используйте функцию `uniqExact` только в том случае, если вам абсолютно необходим точный результат. В остальных случаях используйте функцию [uniq](/sql-reference/aggregate-functions/reference/uniq).
 
-Функция `uniqExact` использует больше памяти, чем `uniq`, поскольку размер состояния неограниченно возрастает с увеличением количества различных значений.
+Функция `uniqExact` использует больше памяти, чем `uniq`, потому что состояние неограниченно растёт по мере увеличения числа различных значений.
 
 **Аргументы**
 
-Функция принимает переменное количество параметров. Параметры могут быть `Tuple`, `Array`, `Date`, `DateTime`, `String` или числовые типы.
+Функция принимает переменное число параметров. Параметры могут иметь типы `Tuple`, `Array`, `Date`, `DateTime`, `String` или числовые типы.
 
 **Пример**
 
-В этом примере мы используем функцию `uniqExact`, чтобы подсчитать количество уникальных кодов типов (короткий идентификатор для типа самолета) в [наборе данных opensky](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&).
+В этом примере мы используем функцию `uniqExact`, чтобы посчитать количество уникальных кодов типов (краткий идентификатор типа самолёта) в [наборе данных OpenSky](https://sql.clickhouse.com?query=U0VMRUNUIHVuaXFFeGFjdCh0eXBlY29kZSkgRlJPTSBvcGVuc2t5Lm9wZW5za3k&).
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT uniqExact(typecode) FROM opensky.opensky
 ```
 
-```response title="Ответ"
+```response title="Response"
 1106
 ```
 
 **См. также**
 
-- [uniq](/sql-reference/aggregate-functions/reference/uniq)
-- [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined)
-- [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
-- [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)
+* [uniq](/sql-reference/aggregate-functions/reference/uniq)
+* [uniqCombined](/sql-reference/aggregate-functions/reference/uniqcombined)
+* [uniqHLL12](/sql-reference/aggregate-functions/reference/uniqhll12)
+* [uniqTheta](/sql-reference/aggregate-functions/reference/uniqthetasketch)

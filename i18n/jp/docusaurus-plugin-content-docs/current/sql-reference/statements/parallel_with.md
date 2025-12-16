@@ -1,17 +1,15 @@
 ---
-description: 'Documentation for PARALLEL WITH Clause'
+description: 'PARALLEL WITH 句に関するドキュメント'
 sidebar_label: 'PARALLEL WITH'
 sidebar_position: 53
-slug: '/sql-reference/statements/parallel_with'
-title: 'PARALLEL WITH Clause'
+slug: /sql-reference/statements/parallel_with
+title: 'PARALLEL WITH 句'
+doc_type: 'reference'
 ---
 
+# PARALLEL WITH 句 {#parallel-with-clause}
 
-
-
-# PARALLEL WITH 句
-
-複数のステートメントを並行して実行できるようにします。
+複数のステートメントを並列実行できます。
 
 ## 構文 {#syntax}
 
@@ -19,13 +17,13 @@ title: 'PARALLEL WITH Clause'
 statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
-ステートメント `statement1`、`statement2`、`statement3` などを互いに並行して実行します。これらのステートメントの出力は破棄されます。
+`statement1`、`statement2`、`statement3`、… の各ステートメントを互いに並列で実行します。これらのステートメントの出力結果は破棄されます。
 
-多くの場合、ステートメントを並行して実行すると、同じステートメントのシーケンスよりも速くなる可能性があります。たとえば、`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` は `statement1; statement2; statement3` よりも速い可能性があります。
+多くの場合、同じステートメントを単純に順番に実行するよりも、並列に実行した方が高速になる場合があります。例えば、`statement1 PARALLEL WITH statement2 PARALLEL WITH statement3` は、`statement1; statement2; statement3` より高速になる可能性が高いです。
 
 ## 例 {#examples}
 
-2 つのテーブルを並行して作成します：
+2 つのテーブルを並列に作成します：
 
 ```sql
 CREATE TABLE table1(x Int32) ENGINE = MergeTree ORDER BY tuple()
@@ -33,7 +31,7 @@ PARALLEL WITH
 CREATE TABLE table2(y String) ENGINE = MergeTree ORDER BY tuple();
 ```
 
-2 つのテーブルを並行して削除します：
+2つのテーブルを並列に削除します：
 
 ```sql
 DROP TABLE table1
@@ -43,11 +41,11 @@ DROP TABLE table2;
 
 ## 設定 {#settings}
 
-設定 [max_threads](../../operations/settings/settings.md#max_threads) は、スレッドがいくつ生成されるかを制御します。
+[max_threads](../../operations/settings/settings.md#max_threads) 設定は、起動されるスレッド数を制御します。
 
 ## UNION との比較 {#comparison-with-union}
 
-`PARALLEL WITH` 句は、オペランドを並行して実行する [UNION](select/union.md) と少し似ています。ただし、いくつかの違いがあります：
-- `PARALLEL WITH` は、オペランドの実行から結果を返さず、例外があればそれを再スローすることしかできません；
-- `PARALLEL WITH` は、オペランドに同じ結果カラムのセットを必要としません；
-- `PARALLEL WITH` は、任意のステートメントを実行できます（`SELECT` のみではありません）。
+`PARALLEL WITH` 句は、そのオペランドを並列実行するという点で [UNION](select/union.md) と少し似ています。ただし、いくつかの違いがあります。
+- `PARALLEL WITH` はオペランドの実行結果を一切返さず、発生した例外を再スローすることしかできません。
+- `PARALLEL WITH` は、オペランドが同じ結果列の集合を持つ必要はありません。
+- `PARALLEL WITH` は、任意のステートメント（`SELECT` だけでなく）を実行できます。

@@ -1,20 +1,20 @@
 ---
-'description': 'leadInFrame 窗口函数的文档'
-'sidebar_label': 'leadInFrame'
-'sidebar_position': 10
-'slug': '/sql-reference/window-functions/leadInFrame'
-'title': 'leadInFrame'
+description: 'leadInFrame 窗口函数的文档'
+sidebar_label: 'leadInFrame'
+sidebar_position: 10
+slug: /sql-reference/window-functions/leadInFrame
+title: 'leadInFrame'
+doc_type: 'reference'
 ---
 
+# leadInFrame {#leadinframe}
 
-# leadInFrame
-
-返回在有序框架内当前行之后的偏移行所评估的值。
+返回在有序窗口框架中，相对于当前行向后偏移指定行数的那一行上计算得到的值。
 
 :::warning
 `leadInFrame` 的行为与标准 SQL 的 `lead` 窗口函数不同。
-Clickhouse 窗口函数 `leadInFrame` 遵循窗口框架。
-要获得与 `lead` 相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+ClickHouse 窗口函数 `leadInFrame` 会严格遵循窗口框架设置。
+若要获得与 `lead` 完全相同的行为，请使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 :::
 
 **语法**
@@ -27,20 +27,21 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更多详细信息，请参见：[窗口函数 - 语法](./index.md/#syntax)。
+有关窗口函数语法的更多详细信息，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
 
 **参数**
-- `x` — 列名。
-- `offset` — 应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 （可选 - 默认为 `1`）。
-- `default` — 如果计算的行超过窗口框架的边界，则返回的值。 （可选 - 省略时为列类型的默认值）。
+
+* `x` — 列名。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认值为 `1`）。
+* `default` — 当计算得到的行超出窗口帧边界时返回的值。（可选 — 省略时为该列类型的默认值）。
 
 **返回值**
 
-- 在有序框架内当前行之后偏移行所评估的值。
+* 在有序窗口帧中，位于当前行之后 `offset` 行的那一行上所计算得到的值。
 
 **示例**
 
-该示例查看诺贝尔奖获奖者的 [历史数据](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)，并使用 `leadInFrame` 函数返回物理学类别中的连续获奖者列表。
+本示例使用诺贝尔奖得主的[历史数据](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)，并通过 `leadInFrame` 函数返回物理学类别中连续获奖者的列表。
 
 查询：
 

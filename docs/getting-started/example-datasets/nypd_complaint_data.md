@@ -1,9 +1,10 @@
 ---
 description: 'Ingest and query Tab Separated Value data in 5 steps'
-sidebar_label: 'NYPD Complaint Data'
+sidebar_label: 'NYPD complaint data'
 slug: /getting-started/example-datasets/nypd_complaint_data
 title: 'NYPD Complaint Data'
-doc_type: 'reference'
+doc_type: 'guide'
+keywords: ['example dataset', 'nypd', 'crime data', 'sample data', 'public data']
 ---
 
 Tab separated value, or TSV, files are common and may include field headings as the first line of the file. ClickHouse can ingest TSVs, and also can query TSVs without ingesting the files.  This guide covers both of these cases. If you need to query or ingest CSV files, the same techniques work, simply substitute `TSV` with `CSV` in your format arguments.
@@ -307,7 +308,7 @@ Result:
 
 ## Convert the date and time String to a DateTime64 type {#convert-the-date-and-time-string-to-a-datetime64-type}
 
-Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort).
+Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort).
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \

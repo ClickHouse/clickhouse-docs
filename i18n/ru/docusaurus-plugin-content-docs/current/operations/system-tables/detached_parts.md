@@ -1,14 +1,16 @@
 ---
-description: 'Системная таблица, содержащая информацию о отделённых частях таблиц MergeTree'
-keywords: ['системная таблица', 'отделённые_части']
+description: 'Системная таблица, содержащая информацию об отсоединённых частях таблиц
+  MergeTree'
+keywords: ['system table', 'detached_parts']
 slug: /operations/system-tables/detached_parts
 title: 'system.detached_parts'
+doc_type: 'reference'
 ---
 
-Содержит информацию об отделённых частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Колонка `reason` указывает, почему часть была отделена.
+Содержит информацию об отсоединённых частях таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md). Столбец `reason` указывает, по какой причине часть была отсоединена.
 
-Для отделённых пользователем частей причина пуста. Такие части могут быть присоединены с помощью команды [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
+Для частей, отсоединённых пользователем, причина не указана. Такие части можно снова присоединить командой [ALTER TABLE ATTACH PARTITION\|PART](/sql-reference/statements/alter/partition#attach-partitionpart).
 
-Для описания других колонок см. [system.parts](../../operations/system-tables/parts.md).
+Описание остальных столбцов см. в [system.parts](../../operations/system-tables/parts.md).
 
-Если имя части недействительно, значения некоторых колонок могут быть `NULL`. Такие части могут быть удалены с помощью [ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/view).
+Если имя части некорректно, значения некоторых столбцов могут быть `NULL`. Такие части можно удалить командой [ALTER TABLE DROP DETACHED PART](/sql-reference/statements/alter/partition#drop-detached-partitionpart).

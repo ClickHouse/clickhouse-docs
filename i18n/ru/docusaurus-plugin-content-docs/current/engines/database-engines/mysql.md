@@ -5,20 +5,20 @@ sidebar_label: 'MySQL'
 sidebar_position: 50
 slug: /engines/database-engines/mysql
 title: 'MySQL'
+doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# Движок баз данных MySQL
+# Движок базы данных MySQL {#mysql-database-engine}
 
 <CloudNotSupportedBadge />
 
 Позволяет подключаться к базам данных на удалённом сервере MySQL и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и MySQL.
 
-Движок базы данных `MySQL` переводит запросы на сервер MySQL, позволяя выполнять операции, такие как `SHOW TABLES` или `SHOW CREATE TABLE`.
+Движок базы данных `MySQL` транслирует запросы на сервер MySQL, поэтому вы можете выполнять такие операции, как `SHOW TABLES` или `SHOW CREATE TABLE`.
 
-Вы не можете выполнить следующие запросы:
+Вы не можете выполнять следующие запросы:
 
 - `RENAME`
 - `CREATE TABLE`
@@ -31,12 +31,12 @@ CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```
 
-**Параметры движка**
+**Параметры двигателя**
 
-- `host:port` — адрес сервера MySQL.
-- `database` — имя удалённой базы данных.
-- `user` — пользователь MySQL.
-- `password` — пароль пользователя.
+* `host:port` — адрес MySQL-сервера.
+* `database` — имя удалённой базы данных.
+* `user` — пользователь MySQL.
+* `password` — пароль пользователя.
 
 ## Поддержка типов данных {#data_types-support}
 
@@ -56,20 +56,21 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 | DATETIME, TIMESTAMP              | [DateTime](../../sql-reference/data-types/datetime.md)       |
 | BINARY                           | [FixedString](../../sql-reference/data-types/fixedstring.md) |
 
-Все остальные типы данных MySQL преобразуются в [String](../../sql-reference/data-types/string.md).
+Все остальные типы данных MySQL преобразуются в тип [String](../../sql-reference/data-types/string.md).
 
-[Nullable](../../sql-reference/data-types/nullable.md) поддерживается.
+Поддерживается тип [Nullable](../../sql-reference/data-types/nullable.md).
 
 ## Поддержка глобальных переменных {#global-variables-support}
 
-Для лучшей совместимости вы можете адресовать глобальные переменные в стиле MySQL, используя `@@identifier`.
+Для лучшей совместимости вы можете обращаться к глобальным переменным в стиле MySQL — через `@@identifier`.
 
-Эти переменные поддерживаются:
-- `version`
-- `max_allowed_packet`
+Поддерживаются следующие переменные:
+
+* `version`
+* `max_allowed_packet`
 
 :::note
-На данный момент эти переменные являются заглушками и не соответствуют ничему.
+На данный момент эти переменные являются заглушками и ни к чему не привязаны.
 :::
 
 Пример:
@@ -104,7 +105,7 @@ mysql> select * from mysql_table;
 1 row in set (0,00 sec)
 ```
 
-База данных в ClickHouse, обменивающаяся данными с сервером MySQL:
+База данных ClickHouse, обменивающаяся данными с сервером MySQL:
 
 ```sql
 CREATE DATABASE mysql_db ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password') SETTINGS read_write_timeout=10000, connect_timeout=100;

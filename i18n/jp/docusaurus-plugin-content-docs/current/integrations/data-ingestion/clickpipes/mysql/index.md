@@ -1,8 +1,10 @@
 ---
-sidebar_label: 'ClickPipes for MySQL'
-description: 'Describes how to seamlessly connect your MySQL to ClickHouse Cloud.'
-slug: '/integrations/clickpipes/mysql'
-title: 'Ingesting Data from MySQL to ClickHouse (using CDC)'
+sidebar_label: 'MySQL から ClickHouse へのデータ取り込み'
+description: 'MySQL を ClickHouse Cloud とシームレスに接続する方法について説明します。'
+slug: /integrations/clickpipes/mysql
+title: 'MySQL から ClickHouse へのデータ取り込み（CDC（変更データキャプチャ）の利用）'
+doc_type: 'guide'
+keywords: ['MySQL', 'ClickPipes', 'CDC', 'CDC（変更データキャプチャ）', 'データベースレプリケーション']
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -15,20 +17,19 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# MySQLからClickHouseへのCDCを使用したデータの取り込み
+# MySQL から ClickHouse へのデータ取り込み（CDC の使用） {#ingesting-data-from-mysql-to-clickhouse-using-cdc}
 
 <BetaBadge/>
 
 :::info
-現在、ClickPipesを介してClickHouse CloudにMySQLからデータを取り込むことはプライベートプレビュー中です。
+ClickPipes を使用した MySQL から ClickHouse Cloud へのデータ取り込みは、現在パブリックベータ版です。
 :::
 
-ClickPipesを使用して、ソースのMySQLデータベースからClickHouse Cloudにデータを取り込むことができます。ソースのMySQLデータベースは、オンプレミスまたはクラウドにホストされている可能性があります。
+ClickPipes を使用して、ソースの MySQL データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの MySQL データベースは、オンプレミス環境だけでなく、Amazon RDS や Google Cloud SQL などのクラウドサービス上にホストされていても構いません。
 
 ## 前提条件 {#prerequisites}
 
-まず、MySQLデータベースが正しく設定されていることを確認してください。ソースのMySQLインスタンスに応じて、次のガイドのいずれかに従ってください。
+開始するには、まず MySQL データベースが binlog レプリケーション用に正しく設定されていることを確認する必要があります。設定手順は MySQL のデプロイ方法によって異なるため、以下の該当するガイドの手順に従ってください。
 
 1. [Amazon RDS MySQL](./mysql/source/rds)
 
@@ -36,82 +37,88 @@ ClickPipesを使用して、ソースのMySQLデータベースからClickHouse 
 
 3. [Cloud SQL for MySQL](./mysql/source/gcp)
 
-4. [Amazon RDS MariaDB](./mysql/source/rds_maria)
+4. [汎用 MySQL](./mysql/source/generic)
 
-ソースのMySQLデータベースが設定されたら、ClickPipeの作成を続けることができます。
+5. [Amazon RDS MariaDB](./mysql/source/rds_maria)
 
-## ClickPipeを作成する {#creating-your-clickpipe}
+6. [汎用 MariaDB](./mysql/source/generic_maria)
 
-ClickHouse Cloudアカウントにログインしていることを確認してください。まだアカウントをお持ちでない場合は、[こちらからサインアップ](https://cloud.clickhouse.com/)できます。
+ソース MySQL データベースのセットアップが完了したら、ClickPipe の作成に進むことができます。
+
+## ClickPipe を作成する {#create-your-clickpipe}
+
+ClickHouse Cloud アカウントにログインしていることを確認します。まだアカウントをお持ちでない場合は、[こちら](https://cloud.clickhouse.com/)からサインアップできます。
 
 [//]: # (   TODO update image here)
-1. ClickHouse Cloudコンソールで、ClickHouse Cloudサービスに移動します。
+1. ClickHouse Cloud コンソールで、対象の ClickHouse Cloud サービスに移動します。
 
-<Image img={cp_service} alt="ClickPipesサービス" size="lg" border/>
+<Image img={cp_service} alt="ClickPipes サービス" size="lg" border/>
 
-2. 左側のメニューから`データソース`ボタンを選択し、「ClickPipeを設定」をクリックします。
+2. 左側メニューの `Data Sources` ボタンを選択し、「ClickPipe のセットアップ」をクリックします。
 
 <Image img={cp_step0} alt="インポートを選択" size="lg" border/>
 
-3. `MySQL CDC`タイルを選択します。
+3. `MySQL CDC` タイルを選択します。
 
-<Image img={mysql_tile} alt="MySQLを選択" size="lg" border/>
+<Image img={mysql_tile} alt="MySQL を選択" size="lg" border/>
 
-### ソースのMySQLデータベース接続を追加する {#adding-your-source-mysql-database-connection}
+### ソース MySQL データベース接続を追加する {#add-your-source-mysql-database-connection}
 
-4. 前提条件のステップで構成したソースのMySQLデータベースの接続詳細を入力します。
+4. 事前準備のステップで設定したソース MySQL データベースの接続情報を入力します。
 
    :::info
-
-   接続詳細を追加する前に、ファイアウォールルールでClickPipesのIPアドレスをホワイトリストに登録していることを確認してください。次のページには、[ClickPipesのIPアドレスのリスト](../index.md#list-of-static-ips)があります。
-   詳細については、[このページの上部](#prerequisites)にリンクされているソースのMySQL設定ガイドを参照してください。
-
+   接続情報を入力し始める前に、ファイアウォールルールで ClickPipes の IP アドレスをホワイトリストに登録していることを確認してください。次のページで、[ClickPipes の IP アドレス一覧](../index.md#list-of-static-ips)を確認できます。
+   さらに詳しい情報については、[このページの冒頭](#prerequisites)にリンクされているソース MySQL セットアップガイドを参照してください。
    :::
 
-   <Image img={mysql_connection_details} alt="接続詳細を入力" size="lg" border/>
+   <Image img={mysql_connection_details} alt="接続情報を入力" size="lg" border/>
 
-#### (オプション) SSHトンネリングの設定 {#optional-setting-up-ssh-tunneling}
+#### （オプション）SSH トンネリングを設定する {#optional-set-up-ssh-tunneling}
 
-ソースのMySQLデータベースが公開アクセスできない場合は、SSHトンネリングの詳細を指定できます。
+ソース MySQL データベースがパブリックにアクセス可能でない場合は、SSH トンネリングの詳細を指定できます。
 
-1. 「SSHトンネリングを使用する」トグルを有効にします。
-2. SSH接続詳細を入力します。
+1. 「Use SSH Tunnelling」トグルを有効にします。
+2. SSH 接続情報を入力します。
 
-   <Image img={ssh_tunnel} alt="SSHトンネリング" size="lg" border/>
+   <Image img={ssh_tunnel} alt="SSH トンネリング" size="lg" border/>
 
-3. キーベースの認証を使用する場合は、「キーペアを取り消して生成」をクリックして新しいキーを生成し、生成された公開キーをSSHサーバーの`~/.ssh/authorized_keys`にコピーします。
-4. 「接続を確認」をクリックして接続を確認します。
+3. キーベース認証を使用するには、「Revoke and generate key pair」をクリックして新しいキーペアを生成し、生成された公開鍵を SSH サーバーの `~/.ssh/authorized_keys` にコピーします。
+4. 「Verify Connection」をクリックして接続を検証します。
 
 :::note
-
-ClickPipesがSSHトンネルを確立できるように、SSHバスチオンホストのファイアウォールルールで[ClickPipesのIPアドレス](../clickpipes#list-of-static-ips)をホワイトリストに登録してください。
-
+ClickPipes が SSH トンネルを確立できるように、SSH バスティオンホストのファイアウォールルールで [ClickPipes の IP アドレス](../clickpipes#list-of-static-ips)を必ずホワイトリストに登録してください。
 :::
 
-接続詳細が入力されたら、「次へ」をクリックします。
+接続情報をすべて入力したら、`Next` をクリックします。
 
-#### 詳細設定の構成 {#advanced-settings}
+#### 詳細設定を構成する {#advanced-settings}
 
-必要に応じて詳細設定を構成できます。各設定の簡単な説明は以下の通りです。
+必要に応じて詳細設定を構成できます。各設定の簡単な説明は次のとおりです。
 
-- **同期間隔**: これはClickPipesがソースデータベースをポーリングして変更を確認する間隔です。コストに敏感なユーザーには、これを高い値（`3600`を超える）に設定することを推奨します。
-- **初回ロードのための並列スレッド**: これは初回スナップショットを取得するために使用される並列作業者の数です。テーブルの数が多い場合に、初回スナップショットを取得するために使用される並列作業者の数を制御するのに役立ちます。この設定はテーブルごとです。
-- **プルバッチサイズ**: 単一バッチで取得する行の数です。これは最善の努力としての設定であり、すべてのケースで適用されるとは限りません。
-- **スナップショットごとのパーティションの行数**: 初回スナップショット中に各パーティションで取得される行の数です。テーブルに多くの行がある場合に、各パーティションで取得される行の数を制御するのに役立ちます。
-- **スナップショットのテーブル数**: 初回スナップショット中に並列で取得されるテーブルの数です。テーブルの数が多い場合に、並列で取得されるテーブルの数を制御するのに役立ちます。
+- **Sync interval**: ClickPipes がソースデータベースの変更をポーリングする間隔です。これは宛先の ClickHouse サービスに影響します。コストを意識するユーザーには、この値を高め（`3600` 秒以上）に保つことを推奨します。
+- **Parallel threads for initial load**: 初回スナップショットの取得に使用される並列ワーカーの数です。大量のテーブルがある場合に、初回スナップショット取得時に使用される並列ワーカー数を制御するのに有用です。この設定はテーブル単位です。
+- **Pull batch size**: 1 回のバッチで取得する行数です。ベストエフォートの設定であり、すべての場合で厳密に守られるとは限りません。
+- **Snapshot number of rows per partition**: 初回スナップショット中に各パーティションで取得される行数です。テーブル内の行数が多い場合に、各パーティションで取得される行数を制御するのに有用です。
+- **Snapshot number of tables in parallel**: 初回スナップショット中に並列で取得されるテーブル数です。テーブル数が多い場合に、並列で取得するテーブル数を制御するのに有用です。
 
-### テーブルの構成 {#configuring-the-tables}
+### テーブルを構成する {#configure-the-tables}
 
-5. ここで、ClickPipeの宛先データベースを選択できます。既存のデータベースを選択するか、新しいデータベースを作成することができます。
+5. ここで ClickPipe の宛先データベースを選択できます。既存のデータベースを選択するか、新しく作成することもできます。
 
    <Image img={select_destination_db} alt="宛先データベースを選択" size="lg" border/>
 
-6. ソースのMySQLデータベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際に、宛先のClickHouseデータベースでテーブルの名称を変更したり、特定のカラムを除外することも可能です。
+6. ソース MySQL データベースからレプリケートしたいテーブルを選択できます。テーブルを選択する際、宛先の ClickHouse データベースでテーブル名を変更したり、特定のカラムを除外したりすることも可能です。
 
-### 権限を確認してClickPipeを開始する {#review-permissions-and-start-the-clickpipe}
+### 権限を確認して ClickPipe を開始する {#review-permissions-and-start-the-clickpipe}
 
-7. 権限のドロップダウンから「フルアクセス」ロールを選択し、「セットアップを完了」をクリックします。
+7. 権限のドロップダウンから「Full access」ロールを選択し、「Complete Setup」をクリックします。
 
    <Image img={ch_permissions} alt="権限を確認" size="lg" border/>
 
-最後に、一般的な問題とその解決方法についての詳細は、["ClickPipes for MySQLFAQ"](/integrations/clickpipes/mysql/faq)ページを参照してください。
+最後に、一般的な問題とその解決方法については、「[ClickPipes for MySQL FAQ](/integrations/clickpipes/mysql/faq)」ページを参照してください。
+
+## 次のステップ {#whats-next}
+
+[//]: # "TODO Write a MySQL-specific migration guide and best practices similar to the existing one for PostgreSQL. The current migration guide points to the MySQL table engine, which is not ideal."
+
+MySQL から ClickHouse Cloud へのデータレプリケーション用に ClickPipe のセットアップが完了したら、最適なパフォーマンスを得るために、データのクエリやモデリングに注力できます。MySQL CDC（変更データキャプチャ）およびトラブルシューティングに関するよくある質問については、[MySQL FAQs ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。

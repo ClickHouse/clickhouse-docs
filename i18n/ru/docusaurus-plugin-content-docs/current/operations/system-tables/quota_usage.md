@@ -1,41 +1,51 @@
 ---
-description: 'Системная таблица, содержащая информацию о использовании квот текущим пользователем, например, сколько квоты использовано и сколько осталось.'
-keywords: ['системная таблица', 'использование квот']
+description: 'Системная таблица, содержащая информацию об использовании квоты текущим пользователем: какая часть квоты уже израсходована и сколько ещё осталось.'
+keywords: ['system table', 'quota_usage']
 slug: /operations/system-tables/quota_usage
 title: 'system.quota_usage'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
 Использование квоты текущим пользователем: сколько использовано и сколько осталось.
 
-Колонки:
-- `quota_name` ([String](../../sql-reference/data-types/string.md)) — Имя квоты.
-- `quota_key` ([String](../../sql-reference/data-types/string.md)) — Значение ключа. Например, если keys = \[`ip address`\], то `quota_key` может иметь значение '192.168.1.1'.
-- `start_time` ([Nullable](../../sql-reference/data-types/nullable.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Время начала для расчета потребления ресурсов.
-- `end_time` ([Nullable](../../sql-reference/data-types/nullable.md)([DateTime](../../sql-reference/data-types/datetime.md))) — Время окончания для расчета потребления ресурсов.
-- `duration` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Длительность временного интервала для расчета потребления ресурсов в секундах.
-- `queries` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов за этот интервал.
-- `query_selects` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов select за этот интервал.
-- `query_inserts` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество запросов insert за этот интервал.
-- `max_queries` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество запросов.
-- `errors` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Количество запросов, которые вызвали исключение.
-- `max_errors` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество ошибок.
-- `result_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество строк, возвращенных в результате.
-- `max_result_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество строк результата.
-- `result_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Объем ОЗУ в байтах, использованный для хранения результата запросов.
-- `max_result_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальный объем ОЗУ, использованный для хранения результата запросов в байтах.
-- `read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество исходных строк, прочитанных из таблиц для выполнения запроса на всех удаленных серверах.
-- `max_read_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество строк, прочитанных из всех таблиц и табличных функций, участвовавших в запросах.
-- `read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Общее количество байтов, прочитанных из всех таблиц и табличных функций, участвовавших в запросах.
-- `max_read_bytes` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — Максимальное количество байтов, прочитанных из всех таблиц и табличных функций.
-- `failed_sequential_authentications` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/float.md))) — Общее количество последовательных ошибок аутентификации. Если пользователь ввел правильный пароль до превышения порога `failed_sequential_authentications`, то счетчик будет сброшен.
-- `max_failed_sequential_authentications` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/float.md))) — Максимальное количество последовательных ошибок аутентификации.
-- `execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — Общее время выполнения запроса в секундах (Wall time).
-- `max_execution_time` ([Nullable](../../sql-reference/data-types/nullable.md)([Float64](../../sql-reference/data-types/float.md))) — Максимальное время выполнения запроса.
+Столбцы:
 
-## See Also {#see-also}
+{/*AUTOGENERATED_START*/ }
+
+* `quota_name` ([String](../../sql-reference/data-types/)) — Имя квоты.
+* `quota_key` ([String](../../sql-reference/data-types/)) — Значение ключа.
+* `start_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время начала расчёта потребления ресурсов.
+* `end_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время окончания расчёта потребления ресурсов.
+* `duration` ([Nullable(UInt32)](../../sql-reference/data-types/)) — Длительность интервала для расчёта потребления ресурсов, в секундах.
+* `queries` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов.
+* `max_queries` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов всех типов, которые можно выполнить.
+* `query_selects` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов SELECT.
+* `max_query_selects` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов SELECT, которые можно выполнить.
+* `query_inserts` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество выполненных запросов INSERT.
+* `max_query_inserts` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимально допустимое количество запросов INSERT, которые можно выполнить.
+* `errors` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество запросов, завершившихся с ошибкой.
+* `max_errors` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество запросов, завершившихся с ошибкой, допускаемое в указанный период времени.
+* `result_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество строк в результирующем наборе всех запросов за текущий период времени.
+* `max_result_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное общее количество строк в результирующем наборе всех запросов, допускаемое в указанный период времени.
+* `result_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт в результирующем наборе всех запросов за текущий период времени.
+* `max_result_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное общее количество байт в результирующем наборе всех запросов, допускаемое в указанный период времени.
+* `read_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество строк, прочитанных при выполнении всех запросов за текущий период времени.
+* `max_read_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество строк, которые можно прочитать при выполнении всех запросов в указанный период времени.
+* `read_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт, прочитанных при выполнении всех запросов за текущий период времени.
+* `max_read_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество байт, которые можно прочитать при выполнении всех запросов в указанный период времени.
+* `execution_time` ([Nullable(Float64)](../../sql-reference/data-types/)) — Текущее суммарное время (в наносекундах), затраченное на выполнение запросов за текущий период времени.
+* `max_execution_time` ([Nullable(Float64)](../../sql-reference/data-types/)) — Максимальное время (в наносекундах), разрешённое на выполнение всех запросов в указанный период времени.
+* `written_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее общее количество байт, записанных при выполнении всех запросов за текущий период времени.
+* `max_written_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество байт, которые можно записать при выполнении всех запросов в указанный период времени.
+* `failed_sequential_authentications` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Текущее количество последовательных неудачных попыток аутентификации за текущий период времени.
+* `max_failed_sequential_authentications` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Максимальное количество последовательных неудачных попыток аутентификации, допускаемое в указанный период времени.
+
+{/*AUTOGENERATED_END*/ }
+
+## См. также {#see-also}
 
 - [SHOW QUOTA](/sql-reference/statements/show#show-quota))

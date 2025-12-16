@@ -1,40 +1,40 @@
 ---
-description: 'Документация для оконной функции nth_value'
+description: 'Документация об оконной функции nth_value'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
 title: 'nth_value'
+doc_type: 'reference'
 ---
 
+# nth&#95;value {#nth&#95;value}
 
-# nth_value
-
-Возвращает первое ненулевое значение, оцененное относительно n-й строки (смещение) в своем упорядоченном окне.
+Возвращает первое отличное от NULL значение, вычисленное для n-й строки (смещения) в упорядоченном фрейме окна.
 
 **Синтаксис**
 
 ```sql
 nth_value (x, offset)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS или RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
 FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-Для получения более подробной информации о синтаксисе оконных функций смотрите: [Оконные функции - Синтаксис](./index.md/#syntax).
+Для получения более подробной информации о синтаксисе оконных функций см. раздел [Window Functions - Syntax](./index.md/#syntax).
 
 **Параметры**
 
-- `x` — Имя колонки.
-- `offset` — n-я строка для оценки текущей строки.
+* `x` — имя столбца.
+* `offset` — n-я строка, с которой сравнивается текущая строка.
 
 **Возвращаемое значение**
 
-- Первое ненулевое значение, оцененное относительно n-й строки (смещения) в его упорядоченном окне.
+* Первое значение, не равное NULL, вычисленное относительно n-й строки (`offset`) в её упорядоченном оконном фрейме.
 
 **Пример**
 
-В этом примере функция `nth-value` используется для нахождения третьей по величине зарплаты из вымышленного набора данных о зарплатах футболистов Премьер-лиги.
+В этом примере функция `nth-value` используется для поиска третьей по величине зарплаты в вымышленном наборе данных о зарплатах футболистов Премьер-лиги.
 
 Запрос:
 

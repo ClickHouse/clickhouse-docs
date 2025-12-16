@@ -1,26 +1,24 @@
 ---
-description: 'System table containing historical values for `system.asynchronous_metrics`,
-  which are saved once per time interval (one second by default)'
-keywords:
-- 'system table'
-- 'asynchronous_metric_log'
-slug: '/operations/system-tables/asynchronous_metric_log'
+description: '`system.asynchronous_metrics` の履歴値を保持するシステムテーブル。これらの値は一定の時間間隔ごと（デフォルトでは 1 秒ごと）に保存されます'
+keywords: ['system table', 'asynchronous_metric_log']
+slug: /operations/system-tables/asynchronous_metric_log
 title: 'system.asynchronous_metric_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
-`system.asynchronous_metrics` の履歴値を含み、時間間隔（デフォルトで1秒）ごとに保存されます。デフォルトで有効です。
+`system.asynchronous_metrics` の過去の値を保持します。これらは一定の時間間隔ごと（デフォルトでは 1 秒ごと）に保存されます。デフォルトで有効です。
 
-カラム:
+列:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントの日付。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時間。
-- `metric` ([String](../../sql-reference/data-types/string.md)) — メトリック名。
-- `value` ([Float64](../../sql-reference/data-types/float.md)) — メトリック値。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントの日付。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時刻。
+* `metric` ([String](../../sql-reference/data-types/string.md)) — メトリクス名。
+* `value` ([Float64](../../sql-reference/data-types/float.md)) — メトリクス値。
 
 **例**
 
@@ -54,8 +52,8 @@ metric:     AsynchronousHeavyMetricsCalculationTimeSpent
 value:      0
 ```
 
-**関連情報**
+**関連項目**
 
-- [asynchronous_metric_log setting](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — 設定の有効化と無効化。
-- [system.asynchronous_metrics](../system-tables/asynchronous_metrics.md) — バックグラウンドで定期的に計算されたメトリックを含みます。
-- [system.metric_log](../system-tables/metric_log.md) — `system.metrics` および `system.events` テーブルからのメトリック値の履歴を含み、定期的にディスクにフラッシュされます。
+* [asynchronous&#95;metric&#95;log 設定](../../operations/server-configuration-parameters/settings.md#asynchronous_metric_log) — この設定の有効化と無効化の方法。
+* [system.asynchronous&#95;metrics](../system-tables/asynchronous_metrics.md) — バックグラウンドで定期的に計算されるメトリクスを含みます。
+* [system.metric&#95;log](../system-tables/metric_log.md) — テーブル `system.metrics` および `system.events` のメトリクス値の履歴を保持し、定期的にディスクへフラッシュされます。

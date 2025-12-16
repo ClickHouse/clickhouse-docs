@@ -1,20 +1,17 @@
 ---
-description: 'Learn how to use projections to improve the performance of queries
-  that you run frequently using the UK property dataset, which contains data about
-  prices paid for real-estate property in England and Wales'
-sidebar_label: 'UK Property Prices'
-sidebar_position: 1
-slug: '/getting-started/example-datasets/uk-price-paid'
-title: 'The UK property prices dataset'
+description: '頻繁に実行するクエリのパフォーマンスを向上させるために、イングランドとウェールズの不動産取引価格データを含む UK property データセットを用いて、projection の使い方を学びます'
+sidebar_label: 'UK 不動産価格'
+slug: /getting-started/example-datasets/uk-price-paid
+title: 'UK 不動産価格データセット'
+doc_type: 'guide'
+keywords: ['example dataset', 'uk property', 'sample data', 'real estate', 'getting started']
 ---
 
+このデータには、イングランドおよびウェールズにおける不動産物件の支払い価格が含まれています。データは 1995 年以降のものが利用可能で、非圧縮形式のデータセットのサイズは約 4 GiB です（ClickHouse では約 278 MiB で済みます）。
 
-
-このデータには、イングランドおよびウェールズにおける不動産物件の購入価格が含まれています。このデータは1995年から利用可能で、圧縮されていない形のデータセットサイズは約4 GiB（ClickHouseでは約278 MiBしかかかりません）。
-
-- ソース: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
-- フィールドの説明: https://www.gov.uk/guidance/about-the-price-paid-data
-- HM土地台帳データ © Crown copyright and database right 2021. このデータはOpen Government Licence v3.0のもとでライセンスされています。
+- 出典: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
+- 項目の説明: https://www.gov.uk/guidance/about-the-price-paid-data
+- HM Land Registry のデータを含みます © Crown copyright and database right 2021。このデータは Open Government Licence v3.0 に基づきライセンスされています。
 
 ## テーブルの作成 {#create-table}
 
@@ -44,15 +41,16 @@ ORDER BY (postcode1, postcode2, addr1, addr2);
 
 ## データの前処理と挿入 {#preprocess-import-data}
 
-`url` 関数を使用して、データをClickHouseにストリーミングします。まず、一部の受信データを前処理する必要があります。これには以下が含まれます。
-- `postcode` を2つの異なるカラム - `postcode1` と `postcode2` に分割し、ストレージとクエリのために最適化します。
-- `time` フィールドを日付に変換します。これは0:00の時間だけを含むためです。
-- 分析に必要ないため、[UUid](../../sql-reference/data-types/uuid.md) フィールドを無視します。
-- `type` と `duration` をより読みやすい `Enum` フィールドに変換します。これは [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用します。
-- `is_new` フィールドを単一文字列（`Y`/`N`）から [UInt8](../../sql-reference/data-types/int-uint) フィールドに変換し、0または1にします。
-- 最後の2つのカラムは全て同じ値（0）を持つため、削除します。
+`url` 関数を使用してデータを ClickHouse にストリーミングします。その前に、受信データの一部を前処理する必要があります。内容は次のとおりです：
 
-`url` 関数は、ウェブサーバーからのデータをClickHouseのテーブルにストリーミングします。次のコマンドは、`uk_price_paid` テーブルに500万行を挿入します。
+* `postcode` を 2 つの別々のカラム `postcode1` と `postcode2` に分割する（ストレージ効率およびクエリ性能の観点からその方が適しているため）
+* `time` フィールドには常に 00:00 の時刻しか含まれていないため、日付型に変換する
+* 分析には不要なため、[UUid](../../sql-reference/data-types/uuid.md) フィールドを無視する
+* [transform](../../sql-reference/functions/other-functions.md#transform) 関数を使用して、`type` と `duration` を、より読みやすい `Enum` フィールドに変換する
+* `is_new` フィールドを、1 文字の文字列 (`Y`/`N`) から、0 または 1 を持つ [UInt8](/sql-reference/data-types/int-uint) フィールドに変換する
+* 最後の 2 つのカラムはすべて同じ値（0）であるため、削除する
+
+`url` 関数は、Web サーバーから ClickHouse のテーブルへデータをストリーミングします。次のコマンドは、`uk_price_paid` テーブルに 500 万行を挿入します：
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -93,18 +91,18 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-データが挿入されるのを待ちます - ネットワーク速度によっては1分か2分かかるでしょう。
+データの挿入が完了するまで待ちます。ネットワーク速度にもよりますが、1～2分ほどかかります。
 
-## データの検証 {#validate-data}
+## データを検証する {#validate-data}
 
-挿入された行数を確認して、動作が正しかったか確かめます。
+何行挿入されたかを確認して、正しく動作したことを検証します。
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリが実行された時点で、データセットには27,450,499行がありました。ClickHouseでのテーブルのストレージサイズを確認してみましょう。
+At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -112,13 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-テーブルのサイズはわずか221.43 MiBです！
+Notice the size of the table is just 221.43 MiB!
 
-## クエリの実行 {#run-queries}
+## Run some queries {#run-queries}
 
-データを分析するためにいくつかのクエリを実行します。
+Let's run some queries to analyze the data:
 
-### クエリ1. 年ごとの平均価格 {#average-price}
+### Query 1. Average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -131,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### クエリ2. ロンドンの年ごとの平均価格 {#average-price-london}
+### Query 2. average price per year in London {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -145,11 +143,11 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に何かが起こりました！しかし、それはおそらく驚くべきことではないでしょう...
+Something happened to home prices in 2020! But that is probably not a surprise...
 
-### クエリ3. 最も高価な地域 {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
 
-```sql
+```sql runnable
 SELECT
     town,
     district,
@@ -166,10 +164,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## プロジェクションを使用したクエリの高速化 {#speeding-up-queries-with-projections}
+## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
 
-プロジェクションを使用することで、これらのクエリの速度を向上させることができます。このデータセットの例については、["Projections"](/data-modeling/projections) を参照してください。
+これらのクエリはプロジェクションを使用することで高速化できます。このデータセットを使った例については、「[Projections](/data-modeling/projections)」を参照してください。
 
-### Playgroundでテスト {#playground}
+### プレイグラウンドで試してみる {#playground}
 
-データセットは、[オンラインプレイグラウンド](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX)でも利用可能です。
+このデータセットは、[Online Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) でも利用できます。

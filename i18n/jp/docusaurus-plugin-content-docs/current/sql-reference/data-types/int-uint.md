@@ -1,23 +1,25 @@
 ---
-description: 'Documentation for signed and unsigned integer data types in ClickHouse,
-  ranging from 8-bit to 256-bit'
+description: 'ClickHouse における符号付きおよび符号なし整数データ型のドキュメントで、
+  8 ビットから 256 ビットまでを扱います。'
 sidebar_label: 'Int | UInt'
 sidebar_position: 2
-slug: '/sql-reference/data-types/int-uint'
-title: 'Int | UInt'
+slug: /sql-reference/data-types/int-uint
+title: 'Int | UInt 型'
+doc_type: 'reference'
 ---
 
+ClickHouse では、1 バイトから 32 バイトまでの固定長整数型を、
+符号付き（`Int`）および符号なし（`UInt`、unsigned）として提供しています。
+
+テーブルを作成する際、整数型に対して数値パラメータを指定することはできます（例: `TINYINT(8)`、`SMALLINT(16)`、`INT(32)`、`BIGINT(64)`）が、ClickHouse はこれらのパラメータを無視します。
 
 
-ClickHouseは、符号付き（`Int`）または符号なし（unsigned `UInt`）の固定長整数を1バイトから32バイトまで提供します。
 
-テーブルを作成する際には、整数の数値パラメータを設定できます（例：`TINYINT(8)`、`SMALLINT(16)`、`INT(32)`、`BIGINT(64)`）、ただしClickHouseはこれらを無視します。
+## 整数の範囲 {#integer-ranges}
 
-## 整数範囲 {#integer-ranges}
+整数型の取り得る値の範囲は次のとおりです。
 
-整数型には以下の範囲があります：
-
-| タイプ   | 範囲                                                                                                                                                              |
+| Type     | Range                                                                                                                                                              |
 |----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Int8`   | \[-128 : 127\]                                                                                                                                                     |
 | `Int16`  | \[-32768 : 32767\]                                                                                                                                                 |
@@ -26,33 +28,35 @@ ClickHouseは、符号付き（`Int`）または符号なし（unsigned `UInt`�
 | `Int128` | \[-170141183460469231731687303715884105728 : 170141183460469231731687303715884105727\]                                                                             |
 | `Int256` | \[-57896044618658097711785492504343953926634992332820282019728792003956564819968 : 57896044618658097711785492504343953926634992332820282019728792003956564819967\] |
 
-符号なし整数型には以下の範囲があります：
+符号なし整数型の取り得る値の範囲は次のとおりです。
 
-| タイプ      | 範囲                                                                                  |
-|-------------|----------------------------------------------------------------------------------------|
-| `UInt8`     | \[0 : 255\]                                                                            |
-| `UInt16`    | \[0 : 65535\]                                                                          |
-| `UInt32`    | \[0 : 4294967295\]                                                                     |
-| `UInt64`    | \[0 : 18446744073709551615\]                                                           |
-| `UInt128`   | \[0 : 340282366920938463463374607431768211455\]                                        |
-| `UInt256`   | \[0 : 115792089237316195423570985008687907853269984665640564039457584007913129639935\] |
+| Type      | Range                                                                                  |
+|-----------|----------------------------------------------------------------------------------------|
+| `UInt8`   | \[0 : 255\]                                                                            |
+| `UInt16`  | \[0 : 65535\]                                                                          |
+| `UInt32`  | \[0 : 4294967295\]                                                                     |
+| `UInt64`  | \[0 : 18446744073709551615\]                                                           |
+| `UInt128` | \[0 : 340282366920938463463374607431768211455\]                                        |
+| `UInt256` | \[0 : 115792089237316195423570985008687907853269984665640564039457584007913129639935\] |
 
-## 整数エイリアス {#integer-aliases}
 
-整数型には以下のエイリアスがあります：
 
-| タイプ    | エイリアス                                                                             |
-|-----------|------------------------------------------------------------------------------------------|
-| `Int8`    | `TINYINT`, `INT1`, `BYTE`, `TINYINT SIGNED`, `INT1 SIGNED`                            |
-| `Int16`   | `SMALLINT`, `SMALLINT SIGNED`                                                         |
-| `Int32`   | `INT`, `INTEGER`, `MEDIUMINT`, `MEDIUMINT SIGNED`, `INT SIGNED`, `INTEGER SIGNED`   |
-| `Int64`   | `BIGINT`, `SIGNED`, `BIGINT SIGNED`, `TIME`                                          |
+## 整数型のエイリアス {#integer-aliases}
 
-符号なし整数型には以下のエイリアスがあります：
+整数型には次のエイリアスがあります。
 
-| タイプ     | エイリアス                                                    |
-|------------|--------------------------------------------------------------|
-| `UInt8`    | `TINYINT UNSIGNED`, `INT1 UNSIGNED`                          |
-| `UInt16`   | `SMALLINT UNSIGNED`                                          |
-| `UInt32`   | `MEDIUMINT UNSIGNED`, `INT UNSIGNED`, `INTEGER UNSIGNED`    |
-| `UInt64`   | `UNSIGNED`, `BIGINT UNSIGNED`, `BIT`, `SET`                  |
+| Type    | Alias                                                                             |
+|---------|-----------------------------------------------------------------------------------|
+| `Int8`  | `TINYINT`, `INT1`, `BYTE`, `TINYINT SIGNED`, `INT1 SIGNED`                        |
+| `Int16` | `SMALLINT`, `SMALLINT SIGNED`                                                     |
+| `Int32` | `INT`, `INTEGER`, `MEDIUMINT`, `MEDIUMINT SIGNED`, `INT SIGNED`, `INTEGER SIGNED` |
+| `Int64` | `BIGINT`, `SIGNED`, `BIGINT SIGNED`, `TIME`                                       |
+
+符号なし整数型には次のエイリアスがあります。
+
+| Type     | Alias                                                    |
+|----------|----------------------------------------------------------|
+| `UInt8`  | `TINYINT UNSIGNED`, `INT1 UNSIGNED`                      |
+| `UInt16` | `SMALLINT UNSIGNED`                                      |
+| `UInt32` | `MEDIUMINT UNSIGNED`, `INT UNSIGNED`, `INTEGER UNSIGNED` |
+| `UInt64` | `UNSIGNED`, `BIGINT UNSIGNED`, `BIT`, `SET`              |

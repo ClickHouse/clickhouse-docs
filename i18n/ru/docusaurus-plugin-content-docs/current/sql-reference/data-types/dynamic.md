@@ -1,27 +1,27 @@
 ---
-description: 'Документация для типа данных Dynamic в ClickHouse, который может хранить
-  значения различных типов в одной колонке'
+description: 'Документация о типе данных Dynamic в ClickHouse, который позволяет хранить значения различных типов в одном столбце'
 sidebar_label: 'Dynamic'
 sidebar_position: 62
 slug: /sql-reference/data-types/dynamic
 title: 'Dynamic'
+doc_type: 'guide'
 ---
 
-# Dynamic
+# Dynamic {#dynamic}
 
-Этот тип позволяет хранить значения любого типа внутри него без предварительного знания всех типов.
+Этот тип позволяет хранить значения произвольных типов, не зная заранее всех возможных вариантов.
 
-Чтобы объявить колонку типа `Dynamic`, используйте следующий синтаксис:
+Чтобы объявить столбец типа `Dynamic`, используйте следующий синтаксис:
 
 ```sql
 <column_name> Dynamic(max_types=N)
 ```
 
-Где `N` — это необязательный параметр от `0` до `254`, указывающий, сколько различных типов данных может храниться в виде отдельных подколонок внутри колонки типа `Dynamic` в пределах одного блока данных, который хранится отдельно (например, в пределах одной части данных для таблицы MergeTree). Если этот лимит превышен, все значения с новыми типами будут храниться вместе в специальной общей структуре данных в двоичном формате. Значение по умолчанию для `max_types` равно `32`.
+Где `N` — необязательный параметр в диапазоне от `0` до `254`, задающий, сколько различных типов данных может быть сохранено в виде отдельных подстолбцов внутри столбца типа `Dynamic` в пределах одного отдельного блока данных (например, одной части данных таблицы MergeTree). Если этот предел превышен, все значения с новыми типами будут сохранены вместе в специальной общей структуре данных в двоичной форме. Значение `max_types` по умолчанию — `32`.
 
-## Создание Dynamic {#creating-dynamic}
+## Создание типа Dynamic {#creating-dynamic}
 
-Используя тип `Dynamic` в определении колонки таблицы:
+Использование типа `Dynamic` в определении столбца таблицы:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -38,10 +38,10 @@ SELECT d, dynamicType(d) FROM test;
 └───────────────┴────────────────┘
 ```
 
-Используя CAST из обычной колонки:
+Применение CAST к обычному столбцу:
 
 ```sql
-SELECT 'Hello, World!'::Dynamic as d, dynamicType(d);
+SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
 ```
 
 ```text
@@ -50,10 +50,10 @@ SELECT 'Hello, World!'::Dynamic as d, dynamicType(d);
 └───────────────┴────────────────┘
 ```
 
-Используя CAST из колонки `Variant`:
+Приведение типов с помощью CAST для столбца `Variant`:
 
 ```sql
-SET enable_variant_type = 1, use_variant_as_common_type = 1;
+SET use_variant_as_common_type = 1;
 SELECT multiIf((number % 3) = 0, number, (number % 3) = 1, range(number + 1), NULL)::Dynamic AS d, dynamicType(d) FROM numbers(3)
 ```
 
@@ -65,11 +65,15 @@ SELECT multiIf((number % 3) = 0, number, (number % 3) = 1, range(number + 1), NU
 └───────┴────────────────┘
 ```
 
-## Чтение вложенных типов Dynamic как подколонок {#reading-dynamic-nested-types-as-subcolumns}
+## Чтение вложенных типов Dynamic как подстолбцов {#reading-dynamic-nested-types-as-subcolumns}
 
-Тип `Dynamic` поддерживает чтение одного вложенного типа из колонки `Dynamic`, используя имя типа в качестве подколонки. Итак, если у вас есть колонка `d Dynamic`, вы можете читать подколонку любого допустимого типа `T`, используя синтаксис `d.T`, эта подколонка будет иметь тип `Nullable(T)`, если `T` может находиться внутри `Nullable`, и `T` в противном случае. Эта подколонка будет иметь такой же размер, как и оригинальная колонка `Dynamic`, и будет содержать значения `NULL` (или пустые значения, если `T` не может находиться внутри `Nullable`) во всех строках, где оригинальная колонка `Dynamic` не имеет типа `T`.
+Тип `Dynamic` поддерживает чтение отдельного вложенного типа из столбца `Dynamic`, используя имя типа как подстолбец.
+Таким образом, если у вас есть столбец `d Dynamic`, вы можете считать подстолбец любого допустимого типа `T` с помощью синтаксиса `d.T`;
+этот подстолбец будет иметь тип `Nullable(T)`, если `T` может находиться внутри `Nullable`, и тип `T` в противном случае. Этот подстолбец будет
+той же длины, что и исходный столбец `Dynamic`, и будет содержать значения `NULL` (или пустые значения, если `T` не может находиться внутри `Nullable`)
+во всех строках, в которых исходный столбец `Dynamic` не содержит значения типа `T`.
 
-Подколонки `Dynamic` также могут быть прочитаны с помощью функции `dynamicElement(dynamic_column, type_name)`.
+Подстолбцы `Dynamic` также можно считывать с помощью функции `dynamicElement(dynamic_column, type_name)`.
 
 Примеры:
 
@@ -107,18 +111,18 @@ SELECT d, dynamicType(d), dynamicElement(d, 'String'), dynamicElement(d, 'Int64'
 │ ᴺᵁᴸᴸ          │ None           │ ᴺᵁᴸᴸ                        │                       ᴺᵁᴸᴸ │ []                                │                      ᴺᵁᴸᴸ │ []                                 │
 │ 42            │ Int64          │ ᴺᵁᴸᴸ                        │                         42 │ []                                │                      ᴺᵁᴸᴸ │ []                                 │
 │ Hello, World! │ String         │ Hello, World!               │                       ᴺᵁᴸᴸ │ []                                │                      ᴺᵁᴸᴸ │ []                                 │
-│ [1,2,3]       │ Array(Int64)   │ ᴺᵁᴸᴸ                        │                       ᴺᵁᴸᴸ │ [1,2,3]                           │                      ᴺᵁᴸᴼ  │ []                                 │
+│ [1,2,3]       │ Array(Int64)   │ ᴺᵁᴸᴸ                        │                       ᴺᵁᴸᴸ │ [1,2,3]                           │                      ᴺᵁᴸᴸ │ []                                 │
 └───────────────┴────────────────┴─────────────────────────────┴────────────────────────────┴───────────────────────────────────┴───────────────────────────┴────────────────────────────────────┘
 ```
 
-Чтобы узнать, какой вариант хранится в каждой строке, можно использовать функцию `dynamicType(dynamic_column)`. Она возвращает `String` со значением имени типа для каждой строки (или `'None'`, если строка равна `NULL`).
+To know what variant is stored in each row function `dynamicType(dynamic_column)` can be used. It returns `String` with value type name for each row (or `'None'` if row is `NULL`).
 
-Пример:
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), ('Hello, World!'), ([1, 2, 3]);
-SELECT dynamicType(d) from test;
+SELECT dynamicType(d) FROM test;
 ```
 
 ```text
@@ -130,14 +134,14 @@ SELECT dynamicType(d) from test;
 └────────────────┘
 ```
 
-## Конверсия между колонкой Dynamic и другими колонками {#conversion-between-dynamic-column-and-other-columns}
+## Conversion between Dynamic column and other columns {#conversion-between-dynamic-column-and-other-columns}
 
-Существует 4 возможные конверсии, которые можно выполнить с колонкой `Dynamic`.
+There are 4 possible conversions that can be performed with `Dynamic` column.
 
-### Преобразование обычной колонки в колонку Dynamic {#converting-an-ordinary-column-to-a-dynamic-column}
+### Converting an ordinary column to a Dynamic column {#converting-an-ordinary-column-to-a-dynamic-column}
 
 ```sql
-SELECT 'Hello, World!'::Dynamic as d, dynamicType(d);
+SELECT 'Hello, World!'::Dynamic AS d, dynamicType(d);
 ```
 
 ```text
@@ -146,9 +150,9 @@ SELECT 'Hello, World!'::Dynamic as d, dynamicType(d);
 └───────────────┴────────────────┘
 ```
 
-### Преобразование колонки String в колонку Dynamic через парсинг {#converting-a-string-column-to-a-dynamic-column-through-parsing}
+### Converting a String column to a Dynamic column through parsing {#converting-a-string-column-to-a-dynamic-column-through-parsing}
 
-Для парсинга значений типа `Dynamic` из колонки `String` вы можете включить настройку `cast_string_to_dynamic_use_inference`:
+To parse `Dynamic` type values from a `String` column you can enable setting `cast_string_to_dynamic_use_inference`:
 
 ```sql
 SET cast_string_to_dynamic_use_inference = 1;
@@ -161,9 +165,9 @@ SELECT CAST(materialize(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'))
 └─────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-### Преобразование колонки Dynamic в обычную колонку {#converting-a-dynamic-column-to-an-ordinary-column}
+### Converting a Dynamic column to an ordinary column {#converting-a-dynamic-column-to-an-ordinary-column}
 
-Возможно преобразование колонки `Dynamic` в обычную колонку. В этом случае все вложенные типы будут преобразованы в целевой тип:
+It is possible to convert a `Dynamic` column to an ordinary column. In this case all nested types will be converted to a destination type:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE = Memory;
@@ -181,12 +185,12 @@ SELECT d::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Преобразование колонки Variant в колонку Dynamic {#converting-a-variant-column-to-dynamic-column}
+### Converting a Variant column to Dynamic column {#converting-a-variant-column-to-dynamic-column}
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String, Array(UInt64))) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), ('String'), ([1, 2, 3]);
-SELECT v::Dynamic as d, dynamicType(d) from test; 
+SELECT v::Dynamic AS d, dynamicType(d) FROM test; 
 ```
 
 ```text
@@ -198,9 +202,9 @@ SELECT v::Dynamic as d, dynamicType(d) from test;
 └─────────┴────────────────┘
 ```
 
-### Преобразование колонки Dynamic(max_types=N) в другую колонку Dynamic(max_types=K) {#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk}
+### Converting a Dynamic(max_types=N) column to another Dynamic(max_types=K) {#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk}
 
-Если `K >= N`, то при преобразовании данные не меняются:
+If `K >= N` than during conversion the data doesn't change:
 
 ```sql
 CREATE TABLE test (d Dynamic(max_types=3)) ENGINE = Memory;
@@ -218,7 +222,7 @@ SELECT d::Dynamic(max_types=5) as d2, dynamicType(d2) FROM test;
 └───────┴────────────────┘
 ```
 
-Если `K < N`, значения с самыми редкими типами будут вставлены в одну специальную подколонку, но все равно будут доступны:
+If `K < N`, then the values with the rarest types will be inserted into a single special subcolumn, but still will be accessible:
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
 INSERT INTO test VALUES (NULL), (42), (43), ('42.42'), (true), ([1, 2, 3]);
@@ -236,9 +240,9 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=2) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-Функция `isDynamicElementInSharedData` возвращает `true` для строк, которые хранятся в специальной общей структуре данных внутри `Dynamic`, и как мы видим, результирующая колонка содержит только 2 типа, которые не хранятся в общей структуре данных.
+Functions `isDynamicElementInSharedData` returns `true` for rows that are stored in a special shared data structure inside `Dynamic` and as we can see, resulting column contains only 2 types that are not stored in shared data structure.
 
-Если `K=0`, все типы будут вставлены в одну специальную подколонку:
+If `K=0`, all types will be inserted into single special subcolumn:
 
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
@@ -257,11 +261,11 @@ SELECT d, dynamicType(d), d::Dynamic(max_types=0) as d2, dynamicType(d2), isDyna
 └─────────┴────────────────┴─────────┴─────────────────┴──────────────────────────────────┘
 ```
 
-## Чтение типа Dynamic из данных {#reading-dynamic-type-from-the-data}
+## Reading Dynamic type from the data {#reading-dynamic-type-from-the-data}
 
-Все текстовые форматы (TSV, CSV, CustomSeparated, Values, JSONEachRow и др.) поддерживают чтение типа `Dynamic`. При парсинге данных ClickHouse пытается вывести тип каждого значения и использовать его при вставке в колонку `Dynamic`. 
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Dynamic` type. During data parsing ClickHouse tries to infer the type of each value and use it during insertion to `Dynamic` column. 
 
-Пример:
+Example:
 
 ```sql
 SELECT
@@ -291,11 +295,12 @@ $$)
 └───────────────┴────────────────┴───────────────┴──────┴───────┴────────────┴─────────┘
 ```
 
-## Использование типа Dynamic в функциях {#using-dynamic-type-in-functions}
+## Using Dynamic type in functions {#using-dynamic-type-in-functions}
 
-Большинство функций поддерживают аргументы с типом `Dynamic`. В этом случае функция выполняется отдельно для каждого внутреннего типа данных, хранящегося в колонке `Dynamic`. Когда тип результата функции зависит от типов аргументов, результат такой функции, выполненной с аргументами `Dynamic`, будет `Dynamic`. Когда тип результата функции не зависит от типов аргументов — результат будет `Nullable(T)`, где `T` — обычный тип результата этой функции.
+Most of the functions support arguments with type `Dynamic`. In this case the function is executed separately on each internal data type stored inside `Dynamic` column.
+When the result type of the function depends on the arguments types, the result of such function executed with `Dynamic` arguments will be `Dynamic`. When the result type of the function doesn't depend on the arguments types - the result will be `Nullable(T)` where `T` the usual result type of this function.
 
-Примеры:
+Examples:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -436,13 +441,12 @@ SELECT d, d[1] AS res, toTypeName(res), dynamicType(res) FROM test;
 └───────┴──────┴─────────────────┴──────────────────┘
 ```
 
-Если функцию нельзя выполнить для некоторых типов внутри колонки `Dynamic`, будет выброшено исключение:
+If function cannot be executed on some type inside `Dynamic` column, the exception will be thrown:
 
 ```sql
 INSERT INTO test VALUES (42), (43), ('str_1');
 SELECT d, dynamicType(d) FROM test;
 ```
-
 
 ```text
 ┌─d─────┬─dynamicType(d)─┐
@@ -463,10 +467,10 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(d) FROM test;
 
 ```text
 Получено исключение:
-Код: 43. DB::Exception: Неправильные типы Array(Int64) и UInt8 в аргументах функции плюс: при выполнении 'FUNCTION plus(__table1.d : 3, 1_UInt8 :: 1) -> plus(__table1.d, 1_UInt8) Dynamic : 0'. (ILLEGAL_TYPE_OF_ARGUMENT)
+Code: 43. DB::Exception: Недопустимые типы Array(Int64) и UInt8 аргументов функции plus: во время выполнения 'FUNCTION plus(__table1.d : 3, 1_UInt8 :: 1) -> plus(__table1.d, 1_UInt8) Dynamic : 0'. (ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
-Мы можем отфильтровать ненужные типы:
+We can filter out unneeded types:
 
 ```sql
 SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynamicType(d) NOT IN ('String', 'Array(Int64)', 'None')
@@ -479,7 +483,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynami
 └────┴─────┴─────────────────┴──────────────────┘
 ```
 
-Или извлечь требуемый тип как подколонку:
+Or extract required type as subcolumn:
 
 ```sql
 SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
@@ -490,24 +494,24 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 │ 42    │   43 │ Nullable(Int64) │
 │ 43    │   44 │ Nullable(Int64) │
 │ str_1 │ ᴺᵁᴸᴸ │ Nullable(Int64) │
-└───────┴───────┴─────────────────┘
+└───────┴──────┴─────────────────┘
 ┌─d─────┬──res─┬─toTypeName(res)─┐
 │ ᴺᵁᴸᴸ  │ ᴺᵁᴸᴸ │ Nullable(Int64) │
 │ [1,2] │ ᴺᵁᴸᴸ │ Nullable(Int64) │
 │ [3,4] │ ᴺᵁᴸᴸ │ Nullable(Int64) │
-└───────┴───────┴─────────────────┘
+└───────┴──────┴─────────────────┘
 ```
 
-## Использование типа Dynamic в ORDER BY и GROUP BY {#using-dynamic-type-in-order-by-and-group-by}
+## Using Dynamic type in ORDER BY and GROUP BY {#using-dynamic-type-in-order-by-and-group-by}
 
-При использовании `ORDER BY` и `GROUP BY` значения типов `Dynamic` сравниваются так же, как значения типа `Variant`:
-Результат оператора `<` для значений `d1` с подлежащим типом `T1` и `d2` с подлежащим типом `T2` типа `Dynamic` определяется следующим образом:
-- Если `T1 = T2 = T`, результат будет `d1.T < d2.T` (сравниваются подлежащие значения).
-- Если `T1 != T2`, результат будет `T1 < T2` (сравниваются имена типов).
+During `ORDER BY` and `GROUP BY` values of `Dynamic` types are compared similar to values of `Variant` type:
+The result of operator `<` for values `d1` with underlying type `T1` and `d2` with underlying type `T2`  of a type `Dynamic` is defined as follows:
+- If `T1 = T2 = T`, the result will be `d1.T < d2.T` (underlying values will be compared).
+- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
-Тип `Dynamic` по умолчанию не разрешен в ключах `GROUP BY`/`ORDER BY`, если вы хотите его использовать, учтите его специальное правило сравнения и включите настройки `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by`.
+By default `Dynamic` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-Примеры:
+Examples:
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
 INSERT INTO test VALUES (42), (43), ('abc'), ('abd'), ([1, 2, 3]), ([]), (NULL);
@@ -545,9 +549,9 @@ SELECT d, dynamicType(d) FROM test ORDER BY d SETTINGS allow_suspicious_types_in
 └─────────┴────────────────┘
 ```
 
-**Примечание:** значения динамических типов с различными числовыми типами рассматриваются как разные значения и не сравниваются между собой, вместо этого сравниваются их имена типов.
+**Note:** values of dynamic types with different numeric types are considered as different values and not compared between each other, their type names are compared instead.
 
-Пример:
+Example:
 
 ```sql
 CREATE TABLE test (d Dynamic) ENGINE=Memory;
@@ -565,7 +569,7 @@ SELECT d, dynamicType(d) FROM test ORDER BY d SETTINGS allow_suspicious_types_in
 ```
 
 ```sql
-SELECT d, dynamicType(d) FROM test GROUP by d SETTINGS allow_suspicious_types_in_group_by=1;
+SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in_group_by=1;
 ```
 
 ```text
@@ -577,17 +581,18 @@ SELECT d, dynamicType(d) FROM test GROUP by d SETTINGS allow_suspicious_types_in
 └─────┴────────────────┘
 ```
 
-**Примечание:** описанное правило сравнения не применяется во время выполнения функций сравнения, таких как `<`/`>`/`=` и других из-за [особой работы](#using-dynamic-type-in-functions) функций с типом `Dynamic`
+**Note:** the described comparison rule is not applied during execution of comparison functions like `<`/`>`/`=` and others because of [special work](#using-dynamic-type-in-functions) of functions with `Dynamic` type
 
-## Достижение предела количества различных типов данных, хранящихся внутри Dynamic {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
+## Reaching the limit in number of different data types stored inside Dynamic {#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic}
 
-Тип данных `Dynamic` может хранить лишь ограниченное количество различных типов данных как отдельные подколонки. По умолчанию этот лимит составляет 32, но вы можете изменить его в объявлении типа с помощью синтаксиса `Dynamic(max_types=N)`, где N находится в пределах от 0 до 254 (из-за особенностей реализации невозможно иметь более 254 различных типов данных, которые могут храниться как отдельные подколонки внутри Dynamic). Когда лимит достигается, все новые типы данных, вставленные в колонку `Dynamic`, будут вставлены в единую общую структуру данных, которая хранит значения с различными типами данных в двоичном формате.
+`Dynamic` data type can store only limited number of different data types as separate subcolumns. By default, this limit is 32, but you can change it in type declaration using syntax `Dynamic(max_types=N)` where N is between 0 and 254 (due to implementation details, it's impossible to have more than 254 different data types that can be stored as separate subcolumns inside Dynamic).
+When the limit is reached, all new data types inserted to `Dynamic` column will be inserted into a single shared data structure that stores values with different data types in binary form.
 
-Давайте посмотрим, что происходит, когда лимит достигается в различных сценариях.
+Let's see what happens when the limit is reached in different scenarios.
 
-### Достижение лимита во время парсинга данных {#reaching-the-limit-during-data-parsing}
+### Reaching the limit during data parsing {#reaching-the-limit-during-data-parsing}
 
-Во время парсинга значений `Dynamic` из данных, когда лимит достигается для текущего блока данных, все новые значения будут вставлены в общую структуру данных:
+During parsing of `Dynamic` values from the data, when the limit is reached for current block of data, all new values will be inserted into shared data structure:
 
 ```sql
 SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRow, 'd Dynamic(max_types=3)', '
@@ -611,16 +616,17 @@ SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRo
 └────────────────────────┴────────────────────────────────┴─────────────────────────────────┘
 ```
 
-Как мы видим, после вставки 3 различных типов `Int64`, `Array(Int64)` и `String` все новые типы были вставлены в специальную общую структуру данных.
+As we can see, after inserting 3 different data types `Int64`, `Array(Int64)` and `String` all new types were inserted into special shared data structure.
 
-### Во время слияния частей данных в движках таблиц MergeTree {#during-merges-of-data-parts-in-mergetree-table-engines}
+### During merges of data parts in MergeTree table engines {#during-merges-of-data-parts-in-mergetree-table-engines}
 
-Во время слияния нескольких частей данных в таблице MergeTree колонка `Dynamic` в результирующей части данных может достичь лимита различных типов данных, которые могут храниться в отдельных подколонках, и не сможет хранить все типы как подколонки из исходных частей. В этом случае ClickHouse выбирает, какие типы останутся как отдельные подколонки после слияния, и какие типы будут вставлены в общую структуру данных. В большинстве случаев ClickHouse пытается сохранить наиболее частые типы и хранить самые редкие типы в общей структуре данных, но это зависит от реализации.
+During merge of several data parts in MergeTree table the `Dynamic` column in the resulting data part can reach the limit of different data types that can be stored in separate subcolumns inside and won't be able to store all types as subcolumns from source parts.
+In this case ClickHouse chooses what types will remain as separate subcolumns after merge and what types will be inserted into shared data structure. In most cases ClickHouse tries to keep the most frequent types and store the rarest types in shared data structure, but it depends on the implementation.
 
-Давайте посмотрим на пример такого слияния. Сначала создадим таблицу с колонкой `Dynamic`, установим лимит различных типов данных на `3` и вставим значения с `5` различными типами:
+Let's see an example of such merge. First, let's create a table with `Dynamic` column, set the limit of different data types to `3` and insert values with `5` different types:
 
 ```sql
-CREATE TABLE test (id UInt64, d Dynamic(max_types=3)) engine=MergeTree ORDER BY id;
+CREATE TABLE test (id UInt64, d Dynamic(max_types=3)) ENGINE=MergeTree ORDER BY id;
 SYSTEM STOP MERGES test;
 INSERT INTO test SELECT number, number FROM numbers(5);
 INSERT INTO test SELECT number, range(number) FROM numbers(4);
@@ -629,7 +635,7 @@ INSERT INTO test SELECT number, map(number, number) FROM numbers(2);
 INSERT INTO test SELECT number, 'str_' || toString(number) FROM numbers(1);
 ```
 
-Каждая вставка создаст отдельную часть данных с колонкой `Dynamic`, содержащей единственный тип:
+Each insert will create a separate data pert with `Dynamic` column containing single type:
 ```sql
 SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test GROUP BY _part, dynamicType(d), isDynamicElementInSharedData(d) ORDER BY _part, count();
 ```
@@ -644,7 +650,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-Теперь давайте объединим все части в одну и посмотрим, что произойдет:
+Now, let's merge all parts into one and see what will happen:
 
 ```sql
 SYSTEM START MERGES test;
@@ -662,11 +668,11 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-Как мы видим, ClickHouse сохранил наиболее частые типы `UInt64` и `Array(UInt64)` в качестве подколонок и вставил все остальные типы в общую структуру данных.
+As we can see, ClickHouse kept the most frequent types `UInt64` and `Array(UInt64)` as subcolumns and inserted all other types into shared data.
 
-## Функции JSONExtract с Dynamic {#jsonextract-functions-with-dynamic}
+## JSONExtract functions with Dynamic {#jsonextract-functions-with-dynamic}
 
-Все функции `JSONExtract*` поддерживают тип `Dynamic`:
+All `JSONExtract*` functions support `Dynamic` type:
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Dynamic') AS dynamic, dynamicType(dynamic) AS dynamic_type;
@@ -698,7 +704,7 @@ SELECT JSONExtractKeysAndValues('{"a" : 42, "b" : "Hello", "c" : [1,2,3]}', 'Dyn
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
 ```
 
-### Бинарный формат вывода {#binary-output-format}
+### Двоичный формат вывода {#binary-output-format}
 
 В формате RowBinary значения типа `Dynamic` сериализуются в следующем формате:
 

@@ -1,20 +1,18 @@
 ---
-description: 'Documentation for UNION Clause'
+description: 'UNION 句に関するドキュメント'
 sidebar_label: 'UNION'
-slug: '/sql-reference/statements/select/union'
-title: 'UNION Clause'
+slug: /sql-reference/statements/select/union
+title: 'UNION 句'
+doc_type: 'reference'
 ---
 
+# UNION 句 {#union-clause}
 
+`UNION` は、`UNION ALL` または `UNION DISTINCT` を明示的に指定して使用できます。
 
+`ALL` または `DISTINCT` を指定しない場合は、`union_default_mode` 設定の値が使用されます。`UNION ALL` と `UNION DISTINCT` の違いは、`UNION DISTINCT` が UNION の結果に対して重複排除（distinct 変換）を行う点であり、`UNION ALL` を含むサブクエリに対して `SELECT DISTINCT` を実行することと等価です。
 
-# UNION 句
-
-`UNION` を使用する際、明示的に `UNION ALL` または `UNION DISTINCT` を指定できます。
-
-`ALL` または `DISTINCT` を指定しない場合、`union_default_mode` 設定に依存します。 `UNION ALL` と `UNION DISTINCT` の違いは、`UNION DISTINCT` が結合結果に対して一意な変換を行うことであり、これは `UNION ALL` を含むサブクエリからの `SELECT DISTINCT` と同等です。
-
-任意の数の `SELECT` クエリを結合するために `UNION` を使用できます。例:
+`UNION` を使用して、結果を結合することで任意の数の `SELECT` クエリをまとめることができます。例:
 
 ```sql
 SELECT CounterID, 1 AS table, toInt64(count()) AS c
@@ -29,13 +27,13 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
     HAVING c > 0
 ```
 
-結果のカラムは、そのインデックス（`SELECT` 内の順序）によって一致します。カラム名が一致しない場合、最終結果の名前は最初のクエリから取得されます。
+結果列はインデックス（`SELECT` 内での順序）によって対応付けられます。列名が一致しない場合、最終結果の列名は最初のクエリから取得されます。
 
-クラスタリングに対して型変換が行われます。たとえば、結合する二つのクエリが互換性のある型の非 `Nullable` 及び `Nullable` タイプを持つ同じフィールドを持つ場合、結果の `UNION` は `Nullable` タイプのフィールドになります。
+`UNION` では型キャストが行われます。たとえば、結合される 2 つのクエリで、互換性のある型に対して一方が非 `Nullable` 型、もう一方が `Nullable` 型の同じフィールドを持つ場合、結果の `UNION` ではそのフィールドは `Nullable` 型になります。
 
-`UNION` の一部であるクエリは丸括弧で囲むことができます。[ORDER BY](../../../sql-reference/statements/select/order-by.md) と [LIMIT](../../../sql-reference/statements/select/limit.md) は個別のクエリに適用され、最終結果には適用されません。最終結果に変換を適用する必要がある場合は、すべてのクエリを `UNION` でサブクエリに入れ、[FROM](../../../sql-reference/statements/select/from.md) 句内に配置できます。
+`UNION` の一部であるクエリは丸括弧で囲むことができます。[ORDER BY](../../../sql-reference/statements/select/order-by.md) と [LIMIT](../../../sql-reference/statements/select/limit.md) は最終結果に対してではなく、それぞれの個別クエリに対して適用されます。最終結果に対して変換処理を適用する必要がある場合は、`UNION` を用いたすべてのクエリを [FROM](../../../sql-reference/statements/select/from.md) 句内のサブクエリに含めることができます。
 
-`UNION` を使用して明示的に `UNION ALL` または `UNION DISTINCT` を指定しなかった場合、[union_default_mode](/operations/settings/settings#union_default_mode) 設定を使用して結合モードを指定できます。設定値は `ALL`、`DISTINCT`、または空文字列を指定できます。ただし、`union_default_mode` 設定が空文字列で `UNION` を使用すると例外がスローされます。次の例は、異なる値の設定に対するクエリの結果を示します。
+`UNION ALL` または `UNION DISTINCT` を明示的に指定せずに `UNION` を使用する場合は、[union&#95;default&#95;mode](/operations/settings/settings#union_default_mode) 設定を使用して `UNION` のモードを指定できます。設定値としては `ALL`、`DISTINCT`、または空文字列を指定できます。ただし、`union_default_mode` 設定を空文字列にした状態で `UNION` を使用すると、例外がスローされます。次の例は、設定値が異なる場合のクエリ結果を示します。
 
 クエリ:
 
@@ -44,7 +42,7 @@ SET union_default_mode = 'DISTINCT';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─1─┐
@@ -82,9 +80,9 @@ SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 └───┘
 ```
 
-`UNION/UNION ALL/UNION DISTINCT` の一部であるクエリは同時に実行でき、それらの結果を混ぜ合わせることができます。
+`UNION` / `UNION ALL` / `UNION DISTINCT` を構成する各クエリは同時に実行され、その結果はまとめてマージされます。
 
-**関連情報**
+**関連項目**
 
-- [insert_null_as_default](../../../operations/settings/settings.md#insert_null_as_default) 設定。
-- [union_default_mode](/operations/settings/settings#union_default_mode) 設定。
+* [insert&#95;null&#95;as&#95;default](../../../operations/settings/settings.md#insert_null_as_default) 設定。
+* [union&#95;default&#95;mode](/operations/settings/settings#union_default_mode) 設定。

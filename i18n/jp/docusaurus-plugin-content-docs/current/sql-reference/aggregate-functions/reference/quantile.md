@@ -1,22 +1,20 @@
 ---
-description: '数値データシーケンスの近似パーセンタイルを計算します。'
+description: '数値データ列の近似的な分位数を計算します。'
 sidebar_position: 170
-slug: '/sql-reference/aggregate-functions/reference/quantile'
+slug: /sql-reference/aggregate-functions/reference/quantile
 title: 'quantile'
+doc_type: 'reference'
 ---
 
+# quantile {#quantile}
 
+数値データシーケンスの近似的な[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
+この関数は、最大サイズ 8192 の[リザーバサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)と乱数生成器を用いてサンプリングを行います。結果は非決定的です。厳密な分位点を取得するには、[quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 関数を使用してください。
 
-# quantile
+1 つのクエリ内で、異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来の性能より非効率になります）。このような場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
 
-数値データシーケンスの近似[quantile](https://en.wikipedia.org/wiki/Quantile)を計算します。
-
-この関数は、8192までのサイズのリザーバーとサンプリング用の乱数生成器を使用した[リザーバーサンプリング](https://en.wikipedia.org/wiki/Reservoir_sampling)を適用します。結果は非決定的です。正確なquantileを取得するには、[quantileExact](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact)関数を使用してください。
-
-クエリ内で異なるレベルの複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、クエリは本来よりも効率が悪くなります）。この場合、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md#quantiles) 関数を使用してください。
-
-空の数値シーケンスの場合、`quantile` は NaN を返しますが、その `quantile*` バリアントは、バリアントに応じて、NaN またはシーケンスタイプのデフォルト値を返します。
+数値シーケンスが空の場合、`quantile` は NaN を返しますが、`quantile*` の各バリアントは、そのバリアントに応じて NaN またはシーケンス型のデフォルト値のいずれかを返すことに注意してください。
 
 **構文**
 
@@ -24,22 +22,22 @@ title: 'quantile'
 quantile(level)(expr)
 ```
 
-エイリアス: `median`.
+別名: `median`。
 
 **引数**
 
-- `level` — quantileのレベル。オプションのパラメータ。0から1の間の定数浮動小数点数。`level` 値は `[0.01, 0.99]` の範囲内を使用することをお勧めします。デフォルト値: 0.5。`level=0.5` の場合、関数は[median](https://en.wikipedia.org/wiki/Median)を計算します。
-- `expr` — 数値[データ型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date) または [DateTime](/sql-reference/data-types/datetime)のカラム値に対しての式。
+* `level` — 分位点のレベル。省略可能なパラメーター。0 から 1 の間の定数浮動小数点数。`level` の値は `[0.01, 0.99]` の範囲で使用することを推奨します。デフォルト値: 0.5。`level=0.5` の場合、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+* `expr` — 数値[データ型](/sql-reference/data-types)、[Date](/sql-reference/data-types/date) または [DateTime](/sql-reference/data-types/datetime) を結果とする、列値に対する式。
 
-**返される値**
+**戻り値**
 
-- 指定されたレベルの近似quantile。
+* 指定されたレベルの近似的な分位点。
 
 型:
 
-- 数値データ型入力の場合は[Float64](/sql-reference/data-types/float)。
-- 入力値が `Date` 型の場合は[Date](/sql-reference/data-types/date)。
-- 入力値が `DateTime` 型の場合は[DateTime](/sql-reference/data-types/datetime)。
+* 数値データ型入力に対しては [Float64](/sql-reference/data-types/float)。
+* 入力値が `Date` 型の場合は [Date](/sql-reference/data-types/date)。
+* 入力値が `DateTime` 型の場合は [DateTime](/sql-reference/data-types/datetime)。
 
 **例**
 
@@ -54,7 +52,7 @@ quantile(level)(expr)
 └─────┘
 ```
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT quantile(val) FROM t
@@ -70,5 +68,5 @@ SELECT quantile(val) FROM t
 
 **関連項目**
 
-- [median](/sql-reference/aggregate-functions/reference/median)
-- [quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles)
+* [median](/sql-reference/aggregate-functions/reference/median)
+* [quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles)

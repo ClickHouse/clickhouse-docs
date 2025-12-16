@@ -1,24 +1,22 @@
 ---
-description: 'カラムの最初に出会った値を選択します。'
+description: '列で最初に出現した値を選択します。'
 sidebar_position: 102
-slug: '/sql-reference/aggregate-functions/reference/any'
+slug: /sql-reference/aggregate-functions/reference/any
 title: 'any'
+doc_type: 'reference'
 ---
 
+# any {#any}
 
-
-
-# any
-
-カラムの最初に出会った値を選択します。
+列内で最初に見つかった値を選択します。
 
 :::warning
-クエリは任意の順序で実行できるため、この関数の結果は非決定的です。
-任意だが決定的な結果が必要な場合は、[`min`](../reference/min.md) または [`max`](../reference/max.md) 関数を使用してください。
+クエリは任意の順序で実行される可能性があるため、この関数が返す結果は非決定的です。
+どれでもよいが決定的な結果が必要な場合は、[`min`](../reference/min.md) または [`max`](../reference/max.md) 関数を使用してください。
 :::
 
-デフォルトでは、この関数はNULLを返さず、入力カラムのNULL値を無視します。
-ただし、`RESPECT NULLS` モディファイアと共に使用されると、NULLであっても最初に読み取られた値を返します。
+デフォルトでは、この関数が NULL を返すことはなく、入力列内の NULL 値は無視されます。
+ただし、`RESPECT NULLS` 修飾子とともにこの関数を使用した場合は、NULL かどうかに関係なく、読み取った最初の値を返します。
 
 **構文**
 
@@ -27,39 +25,42 @@ any(column) [RESPECT NULLS]
 ```
 
 エイリアス `any(column)`（`RESPECT NULLS` なし）
-- `any_value`
-- [`first_value`](../reference/first_value.md)
+
+* `any_value`
+* [`first_value`](../reference/first_value.md)
 
 `any(column) RESPECT NULLS` のエイリアス
-- `anyRespectNulls`, `any_respect_nulls`
-- `firstValueRespectNulls`, `first_value_respect_nulls`
-- `anyValueRespectNulls`, `any_value_respect_nulls`
+
+* `anyRespectNulls`, `any_respect_nulls`
+* `firstValueRespectNulls`, `first_value_respect_nulls`
+* `anyValueRespectNulls`, `any_value_respect_nulls`
 
 **パラメータ**
-- `column`: カラム名。
+
+* `column`: カラム名。
 
 **戻り値**
 
-最初に出会った値。
+最初に出現した値。
 
 :::note
-関数の戻り値の型は入力と同じですが、LowCardinality は破棄されます。
-つまり、入力として行がない場合、その型のデフォルト値（整数の場合は0、Nullable() カラムの場合はNull）が返されます。
-この動作を変更するには、`-OrNull` [コンビネータ](../../../sql-reference/aggregate-functions/combinators.md) を使用できます。
+この関数の戻り値の型は、LowCardinality が取り除かれる点を除き、入力と同じです。
+つまり、入力として 1 行もない場合、その型のデフォルト値（整数なら 0、Nullable() カラムなら Null）が返されます。
+この挙動を変更するには、`-OrNull` [combinator](../../../sql-reference/aggregate-functions/combinators.md) を使用できます。
 :::
 
 **実装の詳細**
 
-場合によっては、実行順序に依存できます。
-これは、`SELECT` が `ORDER BY` を使用したサブクエリから来る場合に当てはまります。
+場合によっては、実行順序に依存することができます。
+これは、`ORDER BY` を使用するサブクエリから `SELECT` されるケースに当てはまります。
 
-`SELECT` クエリに `GROUP BY` 句または少なくとも1つの集計関数が含まれている場合、ClickHouse は（MySQL と対照的に）`SELECT`、`HAVING`、および `ORDER BY` 句のすべての式がキーまたは集計関数から計算されることを要求します。
-言い換えれば、テーブルから選択された各カラムは、キーまたは集計関数の内側で使用されなければなりません。
-MySQL のような動作を得るには、他のカラムを `any` 集計関数の中に置くことができます。
+`SELECT` クエリに `GROUP BY` 句、または少なくとも 1 つの集計関数が含まれている場合、ClickHouse（MySQL とは対照的に）は、`SELECT`、`HAVING`、`ORDER BY` 各句内のすべての式がキーまたは集計関数から計算されることを要求します。
+言い換えると、テーブルから選択される各カラムは、キーとして、または集計関数の内部のいずれかで使用されている必要があります。
+MySQL と同様の動作を得るには、その他のカラムを `any` 集計関数に渡すことができます。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 CREATE TABLE tab (city Nullable(String)) ENGINE=Memory;

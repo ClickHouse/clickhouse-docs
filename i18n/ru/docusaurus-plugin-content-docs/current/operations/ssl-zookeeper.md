@@ -1,27 +1,28 @@
 ---
-description: 'Руководство по настройке безопасной SSL/TLS связи между ClickHouse и ZooKeeper'
-sidebar_label: 'Безопасная связь с Zookeeper'
+description: 'Руководство по настройке защищённого взаимодействия по SSL/TLS между ClickHouse и ZooKeeper'
+sidebar_label: 'Защищённое взаимодействие с Zookeeper'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'Необязательная безопасная связь между ClickHouse и Zookeeper'
+title: 'Опциональное защищённое взаимодействие между ClickHouse и Zookeeper'
+doc_type: 'guide'
 ---
 
+# Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper {#optional-secured-communication-between-clickhouse-and-zookeeper}
 
-# Необязательная безопасная связь между ClickHouse и Zookeeper
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
-Вы должны указать `ssl.keyStore.location`, `ssl.keyStore.password` и `ssl.trustStore.location`, `ssl.trustStore.password` для связи с клиентом ClickHouse через SSL. Эти параметры доступны с версии Zookeeper 3.5.2.
+Необходимо указать `ssl.keyStore.location`, `ssl.keyStore.password` и `ssl.trustStore.location`, `ssl.trustStore.password` для взаимодействия с клиентом ClickHouse через SSL. Эти параметры доступны, начиная с версии Zookeeper 3.5.2.
 
-Вы можете добавить `zookeeper.crt` в надежные сертификаты.
+Вы можете добавить `zookeeper.crt` в список доверенных сертификатов.
 
 ```bash
 sudo cp zookeeper.crt /usr/local/share/ca-certificates/zookeeper.crt
 sudo update-ca-certificates
 ```
 
-Раздел клиента в `config.xml` будет выглядеть так:
+Раздел `client` в файле `config.xml` будет выглядеть следующим образом:
 
 ```xml
 <client>
@@ -37,7 +38,7 @@ sudo update-ca-certificates
 </client>
 ```
 
-Добавьте Zookeeper в конфигурацию ClickHouse с некоторым кластером и макросами:
+Добавьте Zookeeper в конфигурацию ClickHouse, указав кластер и макросы:
 
 ```xml
 <clickhouse>
@@ -51,7 +52,7 @@ sudo update-ca-certificates
 </clickhouse>
 ```
 
-Запустите `clickhouse-server`. В логах вы должны увидеть:
+Запустите `clickhouse-server`. В логах вы увидите:
 
 ```text
 <Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
@@ -59,7 +60,7 @@ sudo update-ca-certificates
 
 Префикс `secure://` указывает на то, что соединение защищено с помощью SSL.
 
-Для обеспечения шифрования трафика выполните `tcpdump` на защищенном порту:
+Чтобы убедиться, что трафик шифруется, запустите `tcpdump` на защищённом порту:
 
 ```bash
 tcpdump -i any dst port 2281 -nnXS
@@ -71,10 +72,10 @@ tcpdump -i any dst port 2281 -nnXS
 SELECT * FROM system.zookeeper WHERE path = '/';
 ```
 
-При незащищенном соединении вы увидите в выводе `tcpdump` что-то вроде этого:
+При незашифрованном соединении в выводе команды `tcpdump` вы увидите что-то вроде этого:
 
 ```text
 ..../zookeeper/quota.
 ```
 
-При зашифрованном соединении вы не должны видеть это.
+При защищённом соединении этого быть не должно.

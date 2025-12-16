@@ -1,19 +1,48 @@
 ---
-description: 'HAVING句のドキュメント'
+description: 'HAVING 句に関するドキュメント'
 sidebar_label: 'HAVING'
-slug: '/sql-reference/statements/select/having'
-title: 'HAVING Clause'
+slug: /sql-reference/statements/select/having
+title: 'HAVING 句'
+doc_type: 'reference'
 ---
 
+# HAVING 句 {#having-clause}
 
+[GROUP BY](/sql-reference/statements/select/group-by) によって生成された集約結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` が集約の前に適用されるのに対し、`HAVING` は集約の後に適用される点が異なります。
 
+`HAVING` 句では、`SELECT` 句で定義したエイリアスを使用して集約結果を参照できます。あるいは、クエリ結果としては返されない追加の集約結果を対象にフィルタリングを行うこともできます。
 
-# HAVING 句
+## 例 {#example}
 
-集約結果をフィルタリングすることを可能にします。[GROUP BY](/sql-reference/statements/select/group-by) により生成された結果を操作します。これは [WHERE](../../../sql-reference/statements/select/where.md) 句に似ていますが、違いは `WHERE` が集約前に実行されるのに対し、`HAVING` は集約後に実行される点です。
+次のような `sales` テーブルがあるとします。
 
-`HAVING` 句では、`SELECT` 句の集約結果をエイリアスで参照することができます。あるいは、`HAVING` 句を使って、クエリ結果に返されない追加の集約結果をフィルタリングすることもできます。
+```sql
+CREATE TABLE sales
+(
+    region String,
+    salesperson String,
+    amount Float64
+)
+ORDER BY (region, salesperson);
+```
+
+次のようにクエリを実行できます：
+
+```sql
+SELECT
+    region,
+    salesperson,
+    sum(amount) AS total_sales
+FROM sales
+GROUP BY
+    region,
+    salesperson
+HAVING total_sales > 10000
+ORDER BY total_sales DESC;
+```
+
+これは、各地域における合計売上額が 10,000 を超える営業担当者を一覧表示します。
 
 ## 制限事項 {#limitations}
 
-集約が行われていない場合は `HAVING` を使用できません。代わりに `WHERE` を使用してください。
+集計が行われていない場合、`HAVING` は使用できません。代わりに `WHERE` を使用してください。

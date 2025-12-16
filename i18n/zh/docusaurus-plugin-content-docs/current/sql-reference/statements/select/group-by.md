@@ -1,32 +1,32 @@
 ---
-'description': 'GROUP BY 子句的文档'
-'sidebar_label': 'GROUP BY'
-'slug': '/sql-reference/statements/select/group-by'
-'title': 'GROUP BY 子句'
+description: 'GROUP BY 子句文档'
+sidebar_label: 'GROUP BY'
+slug: /sql-reference/statements/select/group-by
+title: 'GROUP BY 子句'
+doc_type: 'reference'
 ---
 
+# GROUP BY 子句 {#group-by-clause}
 
-# GROUP BY 子句
+`GROUP BY` 子句会将 `SELECT` 查询切换到聚合模式，其工作方式如下：
 
-`GROUP BY` 子句将 `SELECT` 查询切换到聚合模式，工作原理如下：
+- `GROUP BY` 子句包含一个表达式列表（或单个表达式，此时被视为长度为 1 的列表）。这个列表充当“分组键（grouping key）”，而列表中的每个表达式称为“键表达式（key expression）”。
+- [SELECT](/sql-reference/statements/select/index.md)、[HAVING](/sql-reference/statements/select/having.md) 和 [ORDER BY](/sql-reference/statements/select/order-by.md) 子句中的所有表达式 **必须** 基于键表达式 **或** 基于针对非键表达式（包括普通列）的[聚合函数](../../../sql-reference/aggregate-functions/index.md)计算得出。换句话说，从表中选出的每一列要么必须用于某个键表达式，要么必须出现在某个聚合函数内部，但不能同时两者兼有。
+- 聚合后的 `SELECT` 查询结果中包含的行数等于源表中“分组键”不同取值的个数。通常，这会显著减少行数，经常能减少几个数量级，但并非必然：如果所有“分组键”取值都互不相同，则行数保持不变。
 
-- `GROUP BY` 子句包含一个表达式列表（或者一个表达式，视为长度为一的列表）。该列表作为“分组键”，而每个单独的表达式将被称为“键表达式”。
-- 所有在 [SELECT](/sql-reference/statements/select/index.md)、[HAVING](/sql-reference/statements/select/having.md) 和 [ORDER BY](/sql-reference/statements/select/order-by.md) 子句中的表达式 **必须** 基于键表达式 **或** 在非键表达式（包括普通列）上的 [聚合函数](../../../sql-reference/aggregate-functions/index.md) 来计算。换句话说，从表中选择的每一列必须要么用于键表达式，要么在聚合函数内使用，但不能同时用于两者。
-- 聚合 `SELECT` 查询的结果行数将与源表中“分组键”的唯一值数量相等。通常，这会显著降低行数，往往是几个数量级，但不一定：如果所有“分组键”值都是唯一的，行数保持不变。
-
-当您想根据列号而不是列名对表中的数据进行分组时，可以启用设置 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)。
+如果需要按列序号而不是列名对表中的数据进行分组，请启用 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设置。
 
 :::note
-还有另一种在表上运行聚合的方法。如果查询仅在聚合函数内包含表列，则 `GROUP BY` 子句可以省略，并假定使用空的键集进行聚合。这种查询始终返回正好一行。
+还有另一种方式可以对表进行聚合。如果查询中只在聚合函数内部使用了表列，则可以省略 `GROUP BY` 子句，此时会假定按空键集进行聚合。此类查询总是恰好返回一行。
 :::
 
 ## NULL 处理 {#null-processing}
 
-在分组时，ClickHouse 将 [NULL](/sql-reference/syntax#null) 视为一个值，并且 `NULL==NULL`。这与其他上下文中的 `NULL` 处理有所不同。
+在分组操作中，ClickHouse 将 [NULL](/sql-reference/syntax#null) 视为一个具体值，并且认为 `NULL==NULL`。这与在大多数其他上下文中的 `NULL` 处理方式不同。
 
-以下是一个示例，说明这意味着什么。
+下面通过一个示例来说明其含义。
 
-假设您有以下表：
+假设你有如下表：
 
 ```text
 ┌─x─┬────y─┐
@@ -38,7 +38,7 @@
 └───┴──────┘
 ```
 
-查询 `SELECT sum(x), y FROM t_null_big GROUP BY y` 的结果为：
+执行查询 `SELECT sum(x), y FROM t_null_big GROUP BY y` 会返回：
 
 ```text
 ┌─sum(x)─┬────y─┐
@@ -48,20 +48,20 @@
 └────────┴──────┘
 ```
 
-您可以看到 `GROUP BY` 对 `y = NULL` 的处理对 `x` 进行了求和，就好像 `NULL` 是这个值一样。
+你可以看到，对于 `y = NULL` 的情况，`GROUP BY` 对 `x` 进行了求和，看起来就像把 `NULL` 当作一个实际的取值来处理。
 
-如果您向 `GROUP BY` 传递多个键，结果将给出所选内容的所有组合，就好像 `NULL` 是一个特定的值。
+如果你向 `GROUP BY` 传入多个键列，结果会给出所选数据的所有组合，就好像把 `NULL` 当作一个特定的取值一样。
 
 ## ROLLUP 修饰符 {#rollup-modifier}
 
-`ROLLUP` 修饰符用于根据 `GROUP BY` 列表中的顺序计算键表达式的子总计。子总计行在结果表之后添加。
+`ROLLUP` 修饰符用于根据 `GROUP BY` 列表中键表达式的顺序计算各级小计。小计行会追加在结果表的末尾。
 
-子总计是按相反顺序计算的：首先为列表中的最后一个键表达式计算子总计，然后是前一个，以此类推，直到第一个键表达式。
+小计是按相反顺序计算的：首先为列表中的最后一个键表达式计算小计，然后为前一个键表达式计算，如此类推直到第一个键表达式。
 
-在子总计行中，已“分组”的键表达式的值被设置为 `0` 或空行。
+在小计行中，已经“分组”的键表达式的值会被设置为 `0` 或空字符串。
 
 :::note
-请注意， [HAVING](/sql-reference/statements/select/having.md) 子句可能会影响子总计结果。
+请注意，[HAVING](/sql-reference/statements/select/having.md) 子句可能会影响小计结果。
 :::
 
 **示例**
@@ -84,12 +84,13 @@
 ```sql
 SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 ```
-由于 `GROUP BY` 部分有三个键表达式，因此结果包含四个带有子总计的表，这些总计是从右到左“滚动”得出的：
 
-- `GROUP BY year, month, day`；
-- `GROUP BY year, month`（`day` 列填充为零）；
-- `GROUP BY year`（现在 `month, day` 列都填充为零）；
-- 和总计（所有三个键表达式列都是零）。
+由于 `GROUP BY` 子句中包含三个关键表达式，结果中会包含四个结果表，其中的小计是从右向左逐级汇总得到的：
+
+* `GROUP BY year, month, day`；
+* `GROUP BY year, month`（并且 `day` 列用零填充）；
+* `GROUP BY year`（此时 `month, day` 两列都用零填充）；
+* 以及总计（此时三个关键表达式对应的列都为零）。
 
 ```text
 ┌─year─┬─month─┬─day─┬─count()─┐
@@ -113,23 +114,25 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 │    0 │     0 │   0 │       6 │
 └──────┴───────┴─────┴─────────┘
 ```
-同样的查询也可以使用 `WITH` 关键字重写。
+
+同一个查询也可以使用 `WITH` 关键字来改写。
+
 ```sql
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 ```
 
 **另请参阅**
 
-- [group_by_use_nulls](/operations/settings/settings.md#group_by_use_nulls) 设置以兼容 SQL 标准。
+* 用于实现 SQL 标准兼容性的 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
 ## CUBE 修饰符 {#cube-modifier}
 
-`CUBE` 修饰符用于计算 `GROUP BY` 列表中每个键表达式组合的子总计。子总计行在结果表之后添加。
+`CUBE` 修饰符用于对 `GROUP BY` 列表中键表达式的每一种组合计算小计。这些小计行会追加在结果表的末尾。
 
-在子总计行中，所有“分组”键表达式的值被设置为 `0` 或空行。
+在小计行中，所有“分组”键表达式的值会被设置为 `0` 或空字符串。
 
 :::note
-请注意， [HAVING](/sql-reference/statements/select/having.md) 子句可能会影响子总计结果。
+请注意，[HAVING](/sql-reference/statements/select/having.md) 子句可能会影响小计结果。
 :::
 
 **示例**
@@ -153,18 +156,18 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
-由于 `GROUP BY` 部分有三个键表达式，因此结果包含八个带有所有键表达式组合的子总计的表：
+由于 `GROUP BY` 子句中有三个关键表达式，结果中包含八个对应所有关键表达式组合的小计表：
 
-- `GROUP BY year, month, day`
-- `GROUP BY year, month`
-- `GROUP BY year, day`
-- `GROUP BY year`
-- `GROUP BY month, day`
-- `GROUP BY month`
-- `GROUP BY day`
-- 和总计。
+* `GROUP BY year, month, day`
+* `GROUP BY year, month`
+* `GROUP BY year, day`
+* `GROUP BY year`
+* `GROUP BY month, day`
+* `GROUP BY month`
+* `GROUP BY day`
+* 以及总计。
 
-未包含在 `GROUP BY` 中的列填充为零。
+未包含在 `GROUP BY` 中的列会被填充为 0。
 
 ```text
 ┌─year─┬─month─┬─day─┬─count()─┐
@@ -208,54 +211,56 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 │    0 │     0 │   0 │       6 │
 └──────┴───────┴─────┴─────────┘
 ```
-同样的查询也可以使用 `WITH` 关键字重写。
+
+同一查询也可以写成使用 `WITH` 关键字的形式。
+
 ```sql
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 
 **另请参阅**
 
-- [group_by_use_nulls](/operations/settings/settings.md#group_by_use_nulls) 设置以兼容 SQL 标准。
+* 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
 ## WITH TOTALS 修饰符 {#with-totals-modifier}
 
-如果指定了 `WITH TOTALS` 修饰符，将计算另一行。该行将具有包含默认值（零或空行）的键列，以及在所有行上计算的聚合函数的列（“总计”值）。
+如果指定了 `WITH TOTALS` 修饰符，将会额外计算一行数据。该行的键列包含默认值（零或空字符串），聚合函数列则包含在所有行上的聚合结果（即「总计」值）。
 
-此额外行仅在 `JSON*`、`TabSeparated*` 和 `Pretty*` 格式中生成，与其他行分开：
+这行额外数据仅在 `JSON*`、`TabSeparated*` 和 `Pretty*` 格式中生成，并且与其他行分开输出：
 
-- 在 `XML` 和 `JSON*` 格式中，此行作为单独的 'totals' 字段输出。
-- 在 `TabSeparated*`、`CSV*` 和 `Vertical` 格式中，行在主要结果之后，前面有一行空行（在其他数据之后）。
-- 在 `Pretty*` 格式中，该行在主要结果后作为单独的表输出。
-- 在 `Template` 格式中，行根据指定的模板输出。
-- 在其他格式中不可用。
+- 在 `XML` 和 `JSON*` 格式中，这一行作为单独的 `totals` 字段输出。
+- 在 `TabSeparated*`、`CSV*` 和 `Vertical` 格式中，该行位于主结果之后，在其他数据之后由一个空行分隔。
+- 在 `Pretty*` 格式中，该行作为主结果之后的一个单独表格输出。
+- 在 `Template` 格式中，该行根据指定的模板输出。
+- 在其他格式中，不支持该行。
 
 :::note
-在 `SELECT` 查询的结果中输出 totals，但在 `INSERT INTO ... SELECT` 中不会输出。
+`totals` 会出现在 `SELECT` 查询的结果中，但不会出现在 `INSERT INTO ... SELECT` 的结果中。
 :::
 
-当存在 [HAVING](/sql-reference/statements/select/having.md) 时，`WITH TOTALS` 可以以不同方式运行。该行为取决于 `totals_mode` 设置。
+在存在 [HAVING](/sql-reference/statements/select/having.md) 时，`WITH TOTALS` 的行为可以有不同方式，取决于 `totals_mode` 设置。
 
-### 配置总计处理 {#configuring-totals-processing}
+### 配置 Totals 处理方式 {#configuring-totals-processing}
 
-默认情况下，`totals_mode = 'before_having'`。在这种情况下，'totals' 是基于所有行计算的，包括那些未通过 HAVING 和 `max_rows_to_group_by` 的行。
+默认情况下，`totals_mode = 'before_having'`。在这种情况下，`totals` 会基于所有行计算，包括那些未通过 HAVING 和 `max_rows_to_group_by` 限制的行。
 
-其他选项包括仅将通过 HAVING 的行包含在 'totals' 中，并在 `max_rows_to_group_by` 和 `group_by_overflow_mode = 'any'` 设置上表现不同。
+其他可选模式仅在 `totals` 中包含通过 HAVING 的行，并且在与 `max_rows_to_group_by` 和 `group_by_overflow_mode = 'any'` 配合使用时表现不同。
 
-`after_having_exclusive` – 不包括未通过 `max_rows_to_group_by` 的行。换句话说，'totals' 的行数将少于或等于未通过 `max_rows_to_group_by` 时的行数。
+`after_having_exclusive` – 不包含未通过 `max_rows_to_group_by` 的行。换句话说，与未设置 `max_rows_to_group_by` 的情况相比，`totals` 中的行数将小于或等于未设置时的行数。
 
-`after_having_inclusive` – 包含所有未通过 'max_rows_to_group_by' 的行。换句话说，'totals' 的行数将多于或等于未通过 `max_rows_to_group_by` 时的行数。
+`after_having_inclusive` – 在 `totals` 中包含所有未通过 `max_rows_to_group_by` 的行。换句话说，与未设置 `max_rows_to_group_by` 的情况相比，`totals` 中的行数将大于或等于未设置时的行数。
 
-`after_having_auto` – 计算通过 HAVING 的行数。如果超过某个数量（默认值 50%），则将所有未通过 'max_rows_to_group_by' 的行包含在 'totals' 中。否则，不包括它们。
+`after_having_auto` – 统计通过 HAVING 的行数。如果其数量超过某个阈值（默认 50%），则在 `totals` 中包含所有未通过 `max_rows_to_group_by` 的行；否则，不包含这些行。
 
-`totals_auto_threshold` – 默认值为 0.5。用于 `after_having_auto` 的系数。
+`totals_auto_threshold` – 默认值为 0.5，是用于 `after_having_auto` 的系数。
 
-如果未使用 `max_rows_to_group_by` 和 `group_by_overflow_mode = 'any'`，则所有 `after_having` 的变体是相同的，您可以使用它们中的任何一个（例如， `after_having_auto`）。
+如果未使用 `max_rows_to_group_by` 和 `group_by_overflow_mode = 'any'`，则所有 `after_having` 变体的行为相同，你可以任选其一（例如 `after_having_auto`）。
 
-您可以在子查询中使用 `WITH TOTALS`，包括在 [JOIN](/sql-reference/statements/select/join.md) 子句中的子查询（在这种情况下，相应的总值会组合在一起）。
+你可以在子查询中使用 `WITH TOTALS`，包括位于 [JOIN](/sql-reference/statements/select/join.md) 子句中的子查询（在这种情况下，相应的总计值会被合并）。
 
 ## GROUP BY ALL {#group-by-all}
 
-`GROUP BY ALL` 等同于列出所有未使用聚合函数的 SELECT 表达式。
+`GROUP BY ALL` 等同于在 GROUP BY 中列出所有在 SELECT 子句中出现且不是聚合函数的表达式。
 
 例如：
 
@@ -268,7 +273,7 @@ FROM t
 GROUP BY ALL
 ```
 
-与
+等同于
 
 ```sql
 SELECT
@@ -279,9 +284,7 @@ FROM t
 GROUP BY a * 2, b
 ```
 
-相同。
-
-对于特殊情况，如果存在一个函数接受聚合函数和其他字段作为其参数，`GROUP BY` 键将包含我们能够提取的最大非聚合字段。
+对于一种特殊情况：如果某个函数的参数同时包含聚合函数和其他字段，则 `GROUP BY` 键会包含我们能够从中提取的尽可能多的非聚合字段。
 
 例如：
 
@@ -293,7 +296,7 @@ FROM t
 GROUP BY ALL
 ```
 
-与
+等同于
 
 ```sql
 SELECT
@@ -302,8 +305,6 @@ SELECT
 FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
-
-相同。
 
 ## 示例 {#examples}
 
@@ -317,7 +318,7 @@ SELECT
 FROM hits
 ```
 
-与 MySQL 相比（并符合标准 SQL），您不能获取一些不在键或聚合函数中的列的值（常量表达式除外）。为了解决这个问题，您可以使用 'any' 聚合函数（获取首次遇到的值）或 'min/max'。
+与 MySQL 不同（并且符合标准 SQL 规范），你无法获取某个列的值，如果该列既不在键中，也不在聚合函数中（常量表达式除外）。要规避这一点，你可以使用 `any` 聚合函数（获取首次遇到的值），或者使用 `min/max`。
 
 示例：
 
@@ -330,25 +331,25 @@ FROM hits
 GROUP BY domain
 ```
 
-对于每个遇到的不同键值，`GROUP BY` 计算一组聚合函数值。
+对于遇到的每个不同的键值，`GROUP BY` 会计算一组聚合函数的结果。
 
 ## GROUPING SETS 修饰符 {#grouping-sets-modifier}
 
 这是最通用的修饰符。
-此修饰符允许手动指定多个聚合键集（分组集）。
-聚合分别在每个分组集上执行，之后将所有结果合并。
-如果某列未出现在分组集中，则用默认值填充。
+该修饰符允许手动指定多个聚合键集合（grouping set）。
+会针对每个 grouping set 单独执行聚合，之后再将所有结果合并。
+如果某列未出现在某个 grouping set 中，则会用默认值填充。
 
-换句话说，上述描述的修饰符可以通过 `GROUPING SETS` 表示。
-尽管带有 `ROLLUP`、`CUBE` 和 `GROUPING SETS` 修饰符的查询在语法上是相等的，但它们的执行方式可能不同。
-当 `GROUPING SETS` 尝试并行执行所有操作时，`ROLLUP` 和 `CUBE` 在单个线程中执行聚合的最终合并。
+换句话说，上面描述的修饰符都可以通过 `GROUPING SETS` 来表示。
+尽管带有 `ROLLUP`、`CUBE` 和 `GROUPING SETS` 修饰符的查询在语法上等价，但它们的执行性能可能不同。
+`GROUPING SETS` 会尝试并行执行所有分组，而 `ROLLUP` 和 `CUBE` 则会在单线程中完成聚合结果的最终合并。
 
-在源列包含默认值的情况下，可能很难区分一行是否是使用这些列作为键的聚合的一部分。
-为了解决此问题，必须使用 `GROUPING` 函数。
+在源列包含默认值的情况下，可能很难判断某行是否属于使用这些列作为键的聚合结果。
+为解决这一问题，必须使用 `GROUPING` 函数。
 
 **示例**
 
-以下两个查询是等效的。
+下面这两个查询是等价的。
 
 ```sql
 -- Query 1
@@ -367,30 +368,30 @@ GROUPING SETS
 
 **另请参阅**
 
-- [group_by_use_nulls](/operations/settings/settings.md#group_by_use_nulls) 设置以兼容 SQL 标准。
+* 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
 
 ## 实现细节 {#implementation-details}
 
-聚合是列式 DBMS 中最重要的功能之一，因此它的实现是 ClickHouse 中优化得最彻底的部分之一。默认情况下，聚合在内存中使用哈希表完成。它具有 40 多种专用实现，可以根据“分组键”数据类型自动选择。
+聚合是列式 DBMS 最重要的特性之一，因此它的实现也是 ClickHouse 中优化最充分的部分之一。默认情况下，聚合在内存中使用哈希表完成。它有 40 多种特化实现，会根据“分组键”的数据类型自动选择。
 
-### 根据表排序键优化 GROUP BY {#group-by-optimization-depending-on-table-sorting-key}
+### 基于表排序键的 GROUP BY 优化 {#group-by-optimization-depending-on-table-sorting-key}
 
-如果表按某个键排序，并且 `GROUP BY` 表达式至少包含排序键的前缀或单射函数，则可以更有效地执行聚合。在这种情况下，当从表中读取新的键时，可以最终确定聚合的中间结果并将其发送给客户端。这种行为由 [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 设置开启。此优化在聚合期间减少内存使用，但在某些情况下可能会减慢查询执行速度。
+如果表按某个键排序，并且 `GROUP BY` 表达式至少包含排序键的前缀或单射函数，那么聚合可以更高效地执行。在这种情况下，当从表中读取到一个新的键时，聚合的中间结果可以被最终化并发送给客户端。此行为由 [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 设置控制。该优化在聚合过程中可以降低内存使用，但在某些情况下可能会减慢查询执行。
 
-### 在外部内存中执行 GROUP BY {#group-by-in-external-memory}
+### 外部内存中的 GROUP BY {#group-by-in-external-memory}
 
-您可以启用将临时数据转储到磁盘，以限制 `GROUP BY` 期间的内存使用情况。
-[ max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 设置确定将 `GROUP BY` 临时数据转储到文件系统的 RAM 使用阈值。如果设置为 0（默认值），则禁用。
-另外，您可以设置 [max_bytes_ratio_before_external_group_by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)，这允许在查询达到某个使用内存的阈值时才在外部内存中使用 `GROUP BY`。
+可以启用将临时数据写入磁盘，以限制执行 `GROUP BY` 时的内存使用。
+[max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 设置决定了将 `GROUP BY` 临时数据写入文件系统时的 RAM 消耗阈值。如果设置为 0（默认值），则表示禁用。
+或者，可以设置 [max_bytes_ratio_before_external_group_by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)，只在查询已使用内存达到某个阈值后，才允许使用外部内存执行 `GROUP BY`。
 
-在使用 `max_bytes_before_external_group_by` 时，我们建议您将 `max_memory_usage` 设置为大约两倍（或 `max_bytes_ratio_before_external_group_by=0.5`）。这是因为聚合有两个阶段：读取数据并形成中间数据（1）和合并中间数据（2）。数据转储到文件系统只能在阶段 1 中发生。如果临时数据未被转储，则阶段 2 可能需要的内存与阶段 1 相同。
+在使用 `max_bytes_before_external_group_by` 时，建议将 `max_memory_usage` 设置为其大约两倍（或将 `max_bytes_ratio_before_external_group_by=0.5`）。这是必要的，因为聚合分为两个阶段：读取数据并形成中间数据（阶段 1），以及合并中间数据（阶段 2）。只有在阶段 1 中才可能将数据写入文件系统。如果临时数据没有被写入磁盘，那么阶段 2 可能需要与阶段 1 相同数量的内存。
 
-例如，如果 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置为 10000000000 并且您想使用外部聚合，那么将 `max_bytes_before_external_group_by` 设置为 10000000000，并将 `max_memory_usage` 设置为 20000000000 是合乎逻辑的。当触发外部聚合时（如果至少有一次临时数据转储），最大 RAM 消耗仅略高于 `max_bytes_before_external_group_by`。
+例如，如果 [max_memory_usage](/operations/settings/settings#max_memory_usage) 设置为 10000000000，并且希望使用外部聚合，那么将 `max_bytes_before_external_group_by` 也设置为 10000000000，将 `max_memory_usage` 设置为 20000000000 是合理的。当触发外部聚合时（即至少发生过一次临时数据写入磁盘），RAM 的最大消耗只会略高于 `max_bytes_before_external_group_by`。
 
-在分布式查询处理时，外部聚合在远程服务器上执行。为了使请求服务器仅使用少量 RAM，请将 `distributed_aggregation_memory_efficient` 设置为 1。
+在分布式查询处理时，外部聚合在远程服务器上执行。为了使请求端服务器只使用少量 RAM，请将 `distributed_aggregation_memory_efficient` 设置为 1。
 
-当合并已刷新到磁盘的数据时，以及在 `distributed_aggregation_memory_efficient` 设置启用时合并来自远程服务器的结果时，会消耗最多 `1/256 * 线程数` 的总 RAM。
+在合并已写入磁盘的数据时，以及在启用 `distributed_aggregation_memory_efficient` 设置时合并来自远程服务器的结果时，最多会额外消耗总 RAM 的 `1/256 * the_number_of_threads`。
 
-当启用外部聚合时，如果数据少于 `max_bytes_before_external_group_by`（即数据未被刷新），查询的运行速度与没有外部聚合时相同。如果有任何临时数据被刷新，则运行时间将长几倍（大约三倍）。
+启用外部聚合时，如果数据量小于 `max_bytes_before_external_group_by`（即数据未写入磁盘），查询运行速度与未使用外部聚合时一样快。如果有任何临时数据被写入磁盘，运行时间将会变为原来的数倍（大约三倍）。
 
-如果您的 [ORDER BY](/sql-reference/statements/select/order-by.md) 后有一个 [LIMIT](/sql-reference/statements/select/limit.md)，则使用的 RAM 量取决于 `LIMIT` 中的数据量，而不是整个表中的数据量。但如果 `ORDER BY` 没有 `LIMIT`，请记得启用外部排序（`max_bytes_before_external_sort`）。
+如果在 `GROUP BY` 之后有带 [LIMIT](/sql-reference/statements/select/limit.md) 的 [ORDER BY](/sql-reference/statements/select/order-by.md)，则 RAM 的使用量取决于 `LIMIT` 中的数据量，而不是整个表的数据量。但如果 `ORDER BY` 没有 `LIMIT`，不要忘记启用外部排序（`max_bytes_before_external_sort`）。

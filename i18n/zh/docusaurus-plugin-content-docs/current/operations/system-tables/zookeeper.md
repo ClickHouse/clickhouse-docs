@@ -1,42 +1,44 @@
 ---
-'description': '系统表仅在配置了 ClickHouse Keeper 或 ZooKeeper 时存在。它暴露来自配置中定义的 Keeper 集群的数据。'
-'keywords':
-- 'system table'
-- 'zookeeper'
-'slug': '/operations/system-tables/zookeeper'
-'title': 'system.zookeeper'
+description: '仅在配置了 ClickHouse Keeper 或 ZooKeeper 时才存在的系统表。它提供对配置中定义的 Keeper 集群数据的访问。'
+keywords: ['系统表', 'zookeeper']
+slug: /operations/system-tables/zookeeper
+title: 'system.zookeeper'
+doc_type: 'reference'
 ---
 
+# system.zookeeper {#systemzookeeper}
 
-# system.zookeeper
+除非配置了 ClickHouse Keeper 或 ZooKeeper，否则该表不会存在。`system.zookeeper` 表会暴露配置中定义的 Keeper 集群中的数据。
+查询必须在 `WHERE` 子句中按如下所示包含 `path =` 条件或 `path IN` 条件。这对应于你希望获取其子节点数据的路径。
 
-表格在未配置 ClickHouse Keeper 或 ZooKeeper 的情况下是不存在的。`system.zookeeper` 表展示了配置中定义的 Keeper 集群的数据。
-查询必须在 `WHERE` 子句中设置一个 'path =' 条件或 `path IN` 条件，如下所示。这对应于您想要获取数据的子节点路径。
+查询 `SELECT * FROM system.zookeeper WHERE path = '/clickhouse'` 会输出 `/clickhouse` 节点下所有子节点的数据。
+要输出所有根节点（根路径 `/` 下）的数据，请将 path 设置为 &#39;/&#39;。
+如果在 &#39;path&#39; 中指定的路径不存在，将抛出异常。
 
-查询 `SELECT * FROM system.zookeeper WHERE path = '/clickhouse'` 输出 `/clickhouse` 节点下所有子节点的数据。
-要输出所有根节点的数据，请写 `path = '/'`。
-如果在 'path' 中指定的路径不存在，将抛出异常。
+查询 `SELECT * FROM system.zookeeper WHERE path IN ('/', '/clickhouse')` 会输出 `/` 和 `/clickhouse` 节点下所有子节点的数据。
+如果在指定的 &#39;path&#39; 集合中某个路径不存在，将抛出异常。
+这可以用于批量执行 Keeper 路径查询。
 
-查询 `SELECT * FROM system.zookeeper WHERE path IN ('/', '/clickhouse')` 输出 `/` 和 `/clickhouse` 节点下所有子节点的数据。
-如果在指定的 'path' 集合中存在不存在的路径，将抛出异常。
-它可用于批量进行 Keeper 路径查询。
+查询 `SELECT * FROM system.zookeeper WHERE path = '/clickhouse' AND zookeeperName = 'auxiliary_cluster'` 会输出 `auxiliary_cluster` ZooKeeper 集群中的数据。
+如果指定的 &#39;auxiliary&#95;cluster&#39; 不存在，将抛出异常。
 
 列：
 
-- `name` (String) — 节点的名称。
-- `path` (String) — 节点的路径。
-- `value` (String) — 节点值。
-- `dataLength` (Int32) — 值的大小。
-- `numChildren` (Int32) — 子孙数量。
-- `czxid` (Int64) — 创建节点的事务 ID。
-- `mzxid` (Int64) — 最后修改节点的事务 ID。
-- `pzxid` (Int64) — 最后删除或添加子孙的事务 ID。
-- `ctime` (DateTime) — 节点创建时间。
-- `mtime` (DateTime) — 节点最后修改时间。
-- `version` (Int32) — 节点版本：节点被更改的次数。
-- `cversion` (Int32) — 添加或删除的子孙数量。
-- `aversion` (Int32) — ACL 变更的次数。
-- `ephemeralOwner` (Int64) — 对于临时节点，拥有该节点的会话 ID。
+* `name` (String) — 节点名称。
+* `path` (String) — 节点路径。
+* `value` (String) — 节点的值。
+* `zookeeperName` (String) — 默认 ZooKeeper 集群或某个辅助 ZooKeeper 集群的名称。
+* `dataLength` (Int32) — 值的大小。
+* `numChildren` (Int32) — 子孙节点数量。
+* `czxid` (Int64) — 创建该节点的事务 ID。
+* `mzxid` (Int64) — 最后一次修改该节点的事务 ID。
+* `pzxid` (Int64) — 最后一次删除或添加子孙节点的事务 ID。
+* `ctime` (DateTime) — 节点创建时间。
+* `mtime` (DateTime) — 节点最后修改时间。
+* `version` (Int32) — 节点版本：节点被修改的次数。
+* `cversion` (Int32) — 添加或删除子孙节点的次数。
+* `aversion` (Int32) — ACL 更改次数。
+* `ephemeralOwner` (Int64) — 对于临时节点，该节点所属会话的 ID。
 
 示例：
 

@@ -1,18 +1,21 @@
 ---
-description: 'Markdown formatの文書'
-keywords:
-- 'Markdown'
-slug: '/interfaces/formats/Markdown'
+alias: ['MD']
+description: 'Markdown 形式のドキュメント'
+keywords: ['Markdown']
+slug: /interfaces/formats/Markdown
 title: 'Markdown'
+doc_type: 'reference'
 ---
 
-
+| 入力 | 出力 | エイリアス |
+|-------|--------|-------|
+| ✗     | ✔      | `MD`  |
 
 ## 説明 {#description}
 
-[Markdown](https://en.wikipedia.org/wiki/Markdown) 形式を使用して結果をエクスポートすることで、`.md` ファイルに貼り付ける準備が整った出力を生成できます。
+結果を [Markdown](https://en.wikipedia.org/wiki/Markdown) 形式でエクスポートし、`.md` ファイルにそのまま貼り付けられる出力を生成できます。
 
-マークダウンテーブルは自動的に生成され、Github のようなマークダウン対応プラットフォームで使用できます。この形式は出力専用です。
+Markdown 形式のテーブルは自動的に生成され、GitHub などの Markdown 対応プラットフォームで利用できます。この形式は出力専用です。
 
 ## 使用例 {#example-usage}
 
@@ -23,6 +26,7 @@ SELECT
 FROM numbers(5)
 FORMAT Markdown
 ```
+
 ```results
 | number | multiply(number, 2) |
 |-:|-:|
@@ -33,4 +37,4 @@ FORMAT Markdown
 | 4 | 8 |
 ```
 
-## フォーマット設定 {#format-settings}
+## 書式設定 {#format-settings}

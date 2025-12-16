@@ -1,14 +1,12 @@
 ---
-description: 'Documentation for the HiveText format'
-keywords:
-- 'HiveText'
-slug: '/interfaces/formats/HiveText'
+description: 'HiveText 形式に関するドキュメント'
+keywords: ['HiveText']
+slug: /interfaces/formats/HiveText
 title: 'HiveText'
+doc_type: 'reference'
 ---
 
-
-
-## 説明 {#description}
+## 概要 {#description}
 
 ## 使用例 {#example-usage}
 

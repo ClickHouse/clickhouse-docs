@@ -1,46 +1,50 @@
 ---
 alias: []
-description: '値の形式のドキュメント'
+description: 'Values 形式に関するドキュメント'
 input_format: true
-keywords:
-- 'Values'
+keywords: ['Values']
 output_format: true
-slug: '/interfaces/formats/Values'
+slug: /interfaces/formats/Values
 title: 'Values'
+doc_type: 'guide'
 ---
 
-
-
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
+
+
 ## 説明 {#description}
 
-`Values` フォーマットは、各行をカッコ内に表示します。
+`Values` 形式は、各行を丸括弧で囲んで出力します。
 
-- 行はカンマで区切られ、最後の行の後にはカンマが付きません。
-- カッコ内の値もカンマで区切られます。
-- 数値は引用符なしで小数形式で出力されます。
-- 配列は角括弧内に出力されます。
-- 文字列、日付、及び時間付きの日付は引用符内に出力されます。
-- エスケープルールと解析は [TabSeparated](TabSeparated/TabSeparated.md) フォーマットに似ています。
+- 行同士はカンマで区切られ、最後の行の後にはカンマは付きません。
+- 丸括弧内の値もカンマ区切りです。
+- 数値は、引用符なしの 10 進数形式で出力されます。
+- 配列は角括弧で出力されます。
+- 文字列、日付、および日時は引用符で囲んで出力されます。
+- エスケープ規則とパースは [TabSeparated](TabSeparated/TabSeparated.md) 形式と同様です。
 
-フォーマット中は余分なスペースは挿入されませんが、解析中は許可され、スキップされます（配列の値内のスペースは許可されていません）。 
-[`NULL`](/sql-reference/syntax.md) は `NULL` として表されます。
+フォーマット時には余分なスペースは挿入されませんが、パース時には（配列要素内のスペースを除き）スペースがあっても許可され、スキップされます。  
+[`NULL`](/sql-reference/syntax.md) は `NULL` として表現されます。
 
-`Values` フォーマットでデータを渡す際にエスケープする必要がある最低限の文字セットは次の通りです：
+`Values` 形式でデータを渡す際に、最低限エスケープが必要な文字は次のとおりです。
 - シングルクォート
 - バックスラッシュ
 
-これは `INSERT INTO t VALUES ...` で使用されるフォーマットですが、クエリ結果のフォーマットにも使用できます。
+この形式は `INSERT INTO t VALUES ...` で使用されますが、クエリ結果のフォーマットにも使用できます。
+
+
 
 ## 使用例 {#example-usage}
 
+
+
 ## フォーマット設定 {#format-settings}
 
-| 設定                                                                                                                                                      | 説明                                                                                                                                                                                           | デフォルト |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| [`input_format_values_interpret_expressions`](../../operations/settings/settings-formats.md/#input_format_values_interpret_expressions)                | フィールドがストリーミングパーサーによって解析できなかった場合、SQLパーサーを実行し、SQL式として解釈を試みます。                                                                      | `true`    |
-| [`input_format_values_deduce_templates_of_expressions`](../../operations/settings/settings-formats.md/#input_format_values_deduce_templates_of_expressions) | フィールドがストリーミングパーサーによって解析できなかった場合、SQLパーサーを実行し、SQL式のテンプレートを推測し、そのテンプレートを使用してすべての行を解析し、その後すべての行の式を解釈しようとします。 | `true`    |
-| [`input_format_values_accurate_types_of_literals`](../../operations/settings/settings-formats.md/#input_format_values_accurate_types_of_literals)      | テンプレートを使用して式を解析および解釈する際に、リテラルの実際の型を確認して、オーバーフローや精度の問題を避けます。                                                            | `true`    |
+| 設定                                                                                                                                                       | 説明                                                                                                                                                                                             | 既定値 |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|
+| [`input_format_values_interpret_expressions`](../../operations/settings/settings-formats.md/#input_format_values_interpret_expressions)                     | フィールドをストリーミングパーサーで解析できなかった場合、SQL パーサーを実行し、SQL 式として解釈しようとします。                                                                                 | `true` |
+| [`input_format_values_deduce_templates_of_expressions`](../../operations/settings/settings-formats.md/#input_format_values_deduce_templates_of_expressions) | フィールドをストリーミングパーサーで解析できなかった場合、SQL パーサーを実行して SQL 式のテンプレートを推定し、そのテンプレートを使ってすべての行の解析を試みたうえで、全行について式を解釈します。 | `true` |
+| [`input_format_values_accurate_types_of_literals`](../../operations/settings/settings-formats.md/#input_format_values_accurate_types_of_literals)           | テンプレートを使用して式を解析および解釈する際に、リテラルの実際の型を確認し、オーバーフローや精度の問題を回避します。                                                                           | `true` |

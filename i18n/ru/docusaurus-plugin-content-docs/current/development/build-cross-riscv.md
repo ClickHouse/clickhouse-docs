@@ -1,19 +1,19 @@
 ---
-description: 'Руководство по сборке ClickHouse из исходных кодов для архитектуры RISC-V 64'
+description: 'Руководство по сборке ClickHouse из исходного кода для архитектуры RISC-V 64'
 sidebar_label: 'Сборка на Linux для RISC-V 64'
 sidebar_position: 30
 slug: /development/build-cross-riscv
 title: 'Как собрать ClickHouse на Linux для RISC-V 64'
+doc_type: 'guide'
 ---
 
+# Как собрать ClickHouse на Linux для RISC-V 64 {#how-to-build-clickhouse-on-linux-for-risc-v-64}
 
-# Как собрать ClickHouse на Linux для RISC-V 64
-
-ClickHouse имеет экспериментальную поддержку для RISC-V. Не все функции могут быть включены.
+В ClickHouse есть экспериментальная поддержка архитектуры RISC-V. Доступны не все возможности.
 
 ## Сборка ClickHouse {#build-clickhouse}
 
-Чтобы кросс-компилировать для RISC-V на машине, не являющейся RISC-V:
+Для кросс-компиляции под RISC-V на машине, не основанной на RISC-V:
 
 ```bash
 cd ClickHouse
@@ -22,4 +22,4 @@ CC=clang-19 CXX=clang++-19 cmake . -Bbuild-riscv64 -G Ninja -DCMAKE_TOOLCHAIN_FI
 ninja -C build-riscv64
 ```
 
-Полученный бинарный файл будет работать только на Linux с архитектурой CPU RISC-V 64.
+Полученный бинарный файл будет работать только в операционной системе Linux на архитектуре RISC-V 64.

@@ -1,20 +1,21 @@
 ---
-'description': '数据类型二进制编码规范的文档'
-'sidebar_label': '数据类型二进制编码规范。'
-'sidebar_position': 56
-'slug': '/sql-reference/data-types/data-types-binary-encoding'
-'title': '数据类型二进制编码规范'
+description: '数据类型二进制编码规范文档'
+sidebar_label: '数据类型二进制编码规范'
+sidebar_position: 56
+slug: /sql-reference/data-types/data-types-binary-encoding
+title: '数据类型二进制编码规范'
+doc_type: 'reference'
 ---
 
+# 数据类型二进制编码规范 {#data-types-binary-encoding-specification}
 
-# 数据类型二进制编码规范
+本规范描述了一种用于对 ClickHouse 数据类型进行二进制编码和解码的二进制格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
 
-该规范描述了可用于 ClickHouse 数据类型的二进制编码和解码的二进制格式。此格式用于 `Dynamic` 列 [二进制序列化](dynamic.md#binary-output-format)，并且可以在相应设置下用于输入/输出格式 [RowBinaryWithNamesAndTypes](../../interfaces/formats.md#rowbinarywithnamesandtypes) 和 [Native](../../interfaces/formats.md#native)。
+下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识和一些可选的附加信息组成。
+二进制编码中的 `var_uint` 表示大小使用可变长度整数（Variable-Length Quantity）压缩方式进行编码。
 
-下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型编码由 1 个字节组成，指示类型和一些可选的附加信息。二进制编码中的 `var_uint` 表示大小使用可变长度数量压缩编码。
-
-| ClickHouse 数据类型                                                                                      | 二进制编码                                                                                                                                                                                                                                                                                                                                                            |
-|-----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ClickHouse 数据类型                                                                                           | 二进制编码                                                                                                                                                                                                                                                                                                                                                                      |
+| --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Nothing`                                                                                                 | `0x00`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt8`                                                                                                   | `0x01`                                                                                                                                                                                                                                                                                                                                                                     |
 | `UInt16`                                                                                                  | `0x02`                                                                                                                                                                                                                                                                                                                                                                     |
@@ -49,68 +50,74 @@
 | `Tuple(T1, ..., TN)`                                                                                      | `0x1F<var_uint_number_of_elements><nested_type_encoding_1>...<nested_type_encoding_N>`                                                                                                                                                                                                                                                                                     |
 | `Tuple(name1 T1, ..., nameN TN)`                                                                          | `0x20<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
 | `Set`                                                                                                     | `0x21`                                                                                                                                                                                                                                                                                                                                                                     |
-| `Interval`                                                                                                | `0x22<interval_kind>` (见 [interval kind binary encoding](#interval-kind-binary-encoding))                                                                                                                                                                                                                                                                                |
+| `间隔`                                                                                                      | `0x22<interval_kind>`（参见 [interval&#95;kind 的二进制编码](#interval-kind-binary-encoding)）                                                                                                                                                                                                                                                                                       |
 | `Nullable(T)`                                                                                             | `0x23<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Function`                                                                                                | `0x24<var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N><return_type_encoding>`                                                                                                                                                                                                                                                          |
-| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>` (见 [aggregate function parameter binary encoding](#aggregate-function-parameter-binary-encoding))                                                     |
+| `AggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                            | `0x25<var_uint_version><var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（参见 [聚合函数参数的二进制编码](#aggregate-function-parameter-binary-encoding)）                                                                                       |
 | `LowCardinality(T)`                                                                                       | `0x26<nested_type_encoding>`                                                                                                                                                                                                                                                                                                                                               |
 | `Map(K, V)`                                                                                               | `0x27<key_type_encoding><value_type_encoding>`                                                                                                                                                                                                                                                                                                                             |
 | `IPv4`                                                                                                    | `0x28`                                                                                                                                                                                                                                                                                                                                                                     |
 | `IPv6`                                                                                                    | `0x29`                                                                                                                                                                                                                                                                                                                                                                     |
 | `Variant(T1, ..., TN)`                                                                                    | `0x2A<var_uint_number_of_variants><variant_type_encoding_1>...<variant_type_encoding_N>`                                                                                                                                                                                                                                                                                   |
 | `Dynamic(max_types=N)`                                                                                    | `0x2B<uint8_max_types>`                                                                                                                                                                                                                                                                                                                                                    |
-| `Custom type` (`Ring`, `Polygon`, 等)                                                                    | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
+| `Custom type`（`Ring`、`Polygon` 等）                                                                         | `0x2C<var_uint_type_name_size><type_name_data>`                                                                                                                                                                                                                                                                                                                            |
 | `Bool`                                                                                                    | `0x2D`                                                                                                                                                                                                                                                                                                                                                                     |
-| `SimpleAggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                      | `0x2E<var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>` (见 [aggregate function parameter binary encoding](#aggregate-function-parameter-binary-encoding))                                                                       |
+| `SimpleAggregateFunction(function_name(param_1, ..., param_N), arg_T1, ..., arg_TN)`                      | `0x2E<var_uint_function_name_size><function_name_data><var_uint_number_of_parameters><param_1>...<param_N><var_uint_number_of_arguments><argument_type_encoding_1>...<argument_type_encoding_N>`（参见[聚合函数参数二进制编码](#aggregate-function-parameter-binary-encoding)）                                                                                                           |
 | `Nested(name1 T1, ..., nameN TN)`                                                                         | `0x2F<var_uint_number_of_elements><var_uint_name_size_1><name_data_1><nested_type_encoding_1>...<var_uint_name_size_N><name_data_N><nested_type_encoding_N>`                                                                                                                                                                                                               |
 | `JSON(max_dynamic_paths=N, max_dynamic_types=M, path Type, SKIP skip_path, SKIP REGEXP skip_path_regexp)` | `0x30<uint8_serialization_version><var_int_max_dynamic_paths><uint8_max_dynamic_types><var_uint_number_of_typed_paths><var_uint_path_name_size_1><path_name_data_1><encoded_type_1>...<var_uint_number_of_skip_paths><var_uint_skip_path_size_1><skip_path_data_1>...<var_uint_number_of_skip_path_regexps><var_uint_skip_path_regexp_size_1><skip_path_data_regexp_1>...` |
+| `BFloat16`                                                                                                | `0x31`                                                                                                                                                                                                                                                                                                                                                                     |
+| `时间`                                                                                                      | `0x32`                                                                                                                                                                                                                                                                                                                                                                     |
+| `Time64(P)`                                                                                               | `0x34<uint8_precision>`                                                                                                                                                                                                                                                                                                                                                    |
+| `QBit(T, N)`                                                                                              | `0x36<element_type_encoding><var_uint_dimension>`                                                                                                                                                                                                                                                                                                                          |
 
-对于类型 `JSON`，字节 `uint8_serialization_version` 指示序列化的版本。目前该版本始终为 0，但如果将来为 `JSON` 类型引入新的参数，则可能会有所更改。
-### 间隔种类的二进制编码 {#interval-kind-binary-encoding}
+对于类型 `JSON`，字节 `uint8_serialization_version` 表示序列化版本。当前版本固定为 0，但如果将来为 `JSON` 类型引入新的参数，该值可能会发生变化。
 
-下表描述了 `Interval` 数据类型的不同间隔种类是如何编码的。
+### Interval 间隔种类的二进制编码 {#interval-kind-binary-encoding}
 
-| 间隔种类       | 二进制编码 |
-|----------------|------------|
-| `Nanosecond`   | `0x00`     |
-| `Microsecond`  | `0x01`     |
-| `Millisecond`  | `0x02`     |
-| `Second`       | `0x03`     |
-| `Minute`       | `0x04`     |
-| `Hour`         | `0x05`     |
-| `Day`          | `0x06`     |
-| `Week`         | `0x07`     |
-| `Month`        | `0x08`     |
-| `Quarter`      | `0x09`     |
-| `Year`         | `0x1A`     |
-### Aggregate function parameter binary encoding {#aggregate-function-parameter-binary-encoding}
+下表说明了 `Interval` 数据类型中不同间隔种类的二进制编码方式。
 
-下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何编码的。
-参数的编码由 1 个字节表示参数类型和参数值本身组成。
+| 间隔种类 (Interval kind) | 二进制编码 (Binary encoding) |
+|--------------------------|------------------------------|
+| `Nanosecond`             | `0x00`                       |
+| `Microsecond`            | `0x01`                       |
+| `Millisecond`            | `0x02`                       |
+| `Second`                 | `0x03`                       |
+| `Minute`                 | `0x04`                       |
+| `Hour`                   | `0x05`                       |
+| `Day`                    | `0x06`                       |
+| `Week`                   | `0x07`                       |
+| `Month`                  | `0x08`                       |
+| `Quarter`                | `0x09`                       |
+| `Year`                   | `0x1A`                       |
 
-| 参数类型                 | 二进制编码                                                                                                                   |
-|--------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `Null`                   | `0x00`                                                                                                                    |
-| `UInt64`                 | `0x01<var_uint_value>`                                                                                                    |
-| `Int64`                  | `0x02<var_int_value>`                                                                                                     |
-| `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                       |
-| `Int128`                 | `0x04<int128_little_endian_value>`                                                                                        |
-| `UInt128`                | `0x05<uint128_little_endian_value>`                                                                                       |
-| `Int128`                 | `0x06<int128_little_endian_value>`                                                                                        |
-| `Float64`                | `0x07<float64_little_endian_value>`                                                                                       |
-| `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                         |
-| `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                         |
-| `Decimal128`             | `0x0A<var_uint_scale><int128_little_endian_value>`                                                                        |
-| `Decimal256`             | `0x0B<var_uint_scale><int256_little_endian_value>`                                                                        |
-| `String`                 | `0x0C<var_uint_size><data>`                                                                                               |
-| `Array`                  | `0x0D<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                              |
-| `Tuple`                  | `0x0E<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                              |
-| `Map`                    | `0x0F<var_uint_size><key_encoding_1><value_encoding_1>...<key_encoding_N><value_encoding_N>`                             |
-| `IPv4`                   | `0x10<uint32_little_endian_value>`                                                                                        |
-| `IPv6`                   | `0x11<uint128_little_endian_value>`                                                                                       |
-| `UUID`                   | `0x12<uuid_value>`                                                                                                        |
-| `Bool`                   | `0x13<bool_value>`                                                                                                        |
+### 聚合函数参数的二进制编码 {#aggregate-function-parameter-binary-encoding}
+
+下表描述了 `AggregateFunction` 和 `SimpleAggregateFunction` 的参数是如何进行编码的。
+每个参数的编码由 1 个用于指示参数类型的字节和参数值本身组成。
+
+| 参数类型                 | 二进制编码                                                                                                                      |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `Null`                   | `0x00`                                                                                                                         |
+| `UInt64`                 | `0x01<var_uint_value>`                                                                                                         |
+| `Int64`                  | `0x02<var_int_value>`                                                                                                          |
+| `UInt128`                | `0x03<uint128_little_endian_value>`                                                                                            |
+| `Int128`                 | `0x04<int128_little_endian_value>`                                                                                             |
+| `UInt256`                | `0x05<uint256_little_endian_value>`                                                                                            |
+| `Int256`                 | `0x06<int256_little_endian_value>`                                                                                             |
+| `Float64`                | `0x07<float64_little_endian_value>`                                                                                            |
+| `Decimal32`              | `0x08<var_uint_scale><int32_little_endian_value>`                                                                              |
+| `Decimal64`              | `0x09<var_uint_scale><int64_little_endian_value>`                                                                              |
+| `Decimal128`             | `0x0A<var_uint_scale><int128_little_endian_value>`                                                                             |
+| `Decimal256`             | `0x0B<var_uint_scale><int256_little_endian_value>`                                                                             |
+| `String`                 | `0x0C<var_uint_size><data>`                                                                                                    |
+| `Array`                  | `0x0D<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                   |
+| `Tuple`                  | `0x0E<var_uint_size><value_encoding_1>...<value_encoding_N>`                                                                   |
+| `Map`                    | `0x0F<var_uint_size><key_encoding_1><value_encoding_1>...<key_encoding_N><value_encoding_N>`                                   |
+| `IPv4`                   | `0x10<uint32_little_endian_value>`                                                                                             |
+| `IPv6`                   | `0x11<uint128_little_endian_value>`                                                                                            |
+| `UUID`                   | `0x12<uuid_value>`                                                                                                             |
+| `Bool`                   | `0x13<bool_value>`                                                                                                             |
 | `Object`                 | `0x14<var_uint_size><var_uint_key_size_1><key_data_1><value_encoding_1>...<var_uint_key_size_N><key_data_N><value_encoding_N>` |
-| `AggregateFunctionState` | `0x15<var_uint_name_size><name_data><var_uint_data_size><data>`                                                           |
-| `Negative infinity`      | `0xFE`                                                                                                                    |
-| `Positive infinity`      | `0xFF`                                                                                                                    |
+| `AggregateFunctionState` | `0x15<var_uint_name_size><name_data><var_uint_data_size><data>`                                                                |
+| `Negative infinity`      | `0xFE`                                                                                                                         |
+| `Positive infinity`      | `0xFF`                                                                                                                         |

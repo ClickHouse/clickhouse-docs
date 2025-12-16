@@ -1,32 +1,26 @@
 ---
 slug: '/examples/aggregate-function-combinators/uniqArray'
 title: 'uniqArray'
-description: 'uniqArray combinator の使用例'
-keywords:
-- 'uniq'
-- 'array'
-- 'combinator'
-- 'examples'
-- 'uniqArray'
+description: 'uniqArray コンビネータの使用例'
+keywords: ['uniq', 'array', 'combinator', 'examples', 'uniqArray']
 sidebar_label: 'uniqArray'
+doc_type: 'reference'
 ---
-
-
-
 
 # uniqArray {#uniqarray}
 
-## Description {#description}
+## 説明 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) コンビネーターを 
-[`uniq`](/sql-reference/aggregate-functions/reference/uniq) 関数に適用することで、 
-`uniqArray` 集約コンビネーター関数を使用して、すべての配列にわたるユニークな要素の近似数を計算できます。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) コンビネータは、
+[`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+関数に適用でき、`uniqArray` 集約コンビネータ関数を使用して、
+すべての配列を通して一意な要素のおおよその数を計算します。
 
-`uniqArray` 関数は、データセット内の複数の配列にまたがるユニークな要素をカウントする必要があるときに役立ちます。これは `uniq(arrayJoin())` を使用することと同等であり、`arrayJoin` は最初に配列をフラット化し、その後 `uniq` がユニークな要素をカウントします。
+`uniqArray` 関数は、データセット内の複数の配列にまたがる一意な要素を数える必要がある場合に有用です。これは `uniq(arrayJoin())` を使用するのと等価であり、`arrayJoin` が先に配列をフラット化し、その後に `uniq` が一意な要素を数えます。
 
-## Example Usage {#example-usage}
+## 使用例 {#example-usage}
 
-この例では、異なるカテゴリーにおけるユーザーの興味に関するサンプルデータセットを使用して、`uniqArray` の動作を示します。ユニークな要素のカウントの違いを示すために、`uniq(arrayJoin())` と比較します。
+この例では、さまざまなカテゴリにわたるユーザーの興味関心を表すサンプルデータセットを使用して、`uniqArray` がどのように動作するかを示します。`uniq(arrayJoin())` と比較しながら、一意な要素の数え方の違いを示します。
 
 ```sql title="Query"
 CREATE TABLE user_interests
@@ -41,14 +35,16 @@ INSERT INTO user_interests VALUES
     (3, ['reading', 'cooking']);
 
 SELECT 
-    uniqArray(interests) as unique_interests_total,
-    uniq(arrayJoin(interests)) as unique_interests_arrayJoin
+    uniqArray(interests) AS unique_interests_total,
+    uniq(arrayJoin(interests)) AS unique_interests_arrayJoin
 FROM user_interests;
 ```
 
-`uniqArray` 関数は、すべての配列を合わせたユニークな要素をカウントします。これは `uniq(arrayJoin())` と似ています。この例では：
-- `uniqArray` は 5 を返します。これはすべてのユーザーにわたるユニークな興味が 5 つあるためです： 'reading', 'gaming', 'music', 'sports', 'cooking'
-- `uniq(arrayJoin())` も 5 を返し、両方の関数がすべての配列にわたるユニークな要素をカウントしていることを示しています。
+`uniqArray` 関数は、`uniq(arrayJoin())` と同様に、すべての配列をまとめて一意な要素の数を数えます。
+この例では:
+
+* `uniqArray` は 5 を返します。これは、すべてのユーザーにわたって一意な興味（&#39;reading&#39;, &#39;gaming&#39;, &#39;music&#39;, &#39;sports&#39;, &#39;cooking&#39;）が 5 つあるためです
+* `uniq(arrayJoin())` も 5 を返し、どちらの関数もすべての配列にわたる一意な要素数を数えることを示しています
 
 ```response title="Response"
    ┌─unique_interests_total─┬─unique_interests_arrayJoin─┐
@@ -56,7 +52,7 @@ FROM user_interests;
    └────────────────────────┴────────────────────────────┘
 ```
 
-## See also {#see-also}
+## 関連項目 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`arrayJoin`](/sql-reference/functions/array-join)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)

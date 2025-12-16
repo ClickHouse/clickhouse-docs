@@ -3,6 +3,7 @@ title: 'Postgres Generated Columns: Gotchas and Best Practices'
 slug: /integrations/clickpipes/postgres/generated_columns
 description: 'Page describing important considerations to keep in mind when using PostgreSQL generated columns in tables that are being replicated'
 doc_type: 'guide'
+keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
 When using PostgreSQL's generated columns in tables that are being replicated, there are some important considerations to keep in mind. These gotchas can affect the replication process and data consistency in your destination systems.
@@ -25,8 +26,8 @@ To work around these limitations, consider the following best practices:
 
 ## Upcoming improvements to UI {#upcoming-improvements-to-ui}
 
-In upcoming versions, we are planning to add a UI to help users with the following:
+In upcoming versions, we are planning to add a UI to help you with the following:
 
-1. **Identify Tables with Generated Columns:** The UI will have a feature to identify tables that contain generated columns. This will help users understand which tables are affected by this issue.
+1. **Identify Tables with Generated Columns:** The UI will have a feature to identify tables that contain generated columns. This will help you understand which tables are affected by this issue.
 
 2. **Documentation and Best Practices:** The UI will include best practices for using generated columns in replicated tables, including guidance on how to avoid common pitfalls.

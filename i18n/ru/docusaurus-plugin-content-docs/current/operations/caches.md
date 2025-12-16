@@ -3,33 +3,37 @@ description: 'При выполнении запросов ClickHouse испол
 sidebar_label: 'Кэши'
 sidebar_position: 65
 slug: /operations/caches
-title: 'Типы кэшей'
+title: 'Типы кэша'
+keywords: ['cache']
+doc_type: 'reference'
 ---
 
+# Типы кэша {#cache-types}
 
-# Типы кэшей
+При выполнении запросов ClickHouse использует различные кэши, чтобы ускорить выполнение запросов
+и сократить необходимость чтения с диска или записи на диск.
 
-При выполнении запросов ClickHouse использует различные кэши.
+Основные типы кэша:
 
-Основные типы кэшей:
+* `mark_cache` — кэш [меток](/development/architecture#merge-tree), используемый движками таблиц семейства [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md).
+* `uncompressed_cache` — кэш несжатых данных, используемый движками таблиц семейства [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md).
+* Кэш страниц операционной системы (используется косвенно, для файлов с данными).
 
-- `mark_cache` — Кэш меток, используемый движками таблиц семейства [MergeTree](../engines/table-engines/mergetree-family/mergetree.md).
-- `uncompressed_cache` — Кэш несжатых данных, используемый движками таблиц семейства [MergeTree](../engines/table-engines/mergetree-family/mergetree.md).
-- Кэш страниц операционной системы (используется косвенно для файлов с фактическими данными).
+Также существует множество дополнительных типов кэша:
 
-Дополнительные типы кэшей:
+* DNS-кэш.
+* Кэш [Regexp](/interfaces/formats/Regexp).
+* Кэш скомпилированных выражений.
+* Кэш [индекса векторного сходства](../engines/table-engines/mergetree-family/annindexes.md).
+* Кэш [текстового индекса](../engines/table-engines/mergetree-family/invertedindexes.md#caching).
+* Кэш схем [формата Avro](/interfaces/formats/Avro).
+* Кэш данных [словарей](../sql-reference/dictionaries/index.md).
+* Кэш инференса схем.
+* [Кэш файловой системы](storing-data.md) поверх S3, Azure, локальных и других дисков.
+* [Пользовательский (userspace) кэш страниц](/operations/userspace-page-cache).
+* [Кэш запросов](query-cache.md).
+* [Кэш условий запросов](query-condition-cache.md).
+* Кэш схем форматов.
 
-- Кэш DNS.
-- Кэш [Regexp](../interfaces/formats.md#data-format-regexp).
-- Кэш скомпилированных выражений.
-- Кэш [индекса векторного сходства](../engines/table-engines/mergetree-family/annindexes.md).
-- Кэш схем формата [Avro](../interfaces/formats.md#data-format-avro).
-- Кэш данных [словари](../sql-reference/dictionaries/index.md).
-- Кэш вывода схемы.
-- Кэш [файловой системы](storing-data.md) для S3, Azure, Local и других дисков.
-- Кэш [пользовательского пространства](/operations/userspace-page-cache).
-- [Кэш запросов](query-cache.md).
-- [Кэш условий запросов](query-condition-cache.md).
-- Кэш схем формата.
-
-Чтобы удалить один из кэшей, используйте операторы [SYSTEM DROP ... CACHE](../sql-reference/statements/system.md).
+Если требуется сбросить один из кэшей для настройки производительности, устранения неполадок или по причинам,
+связанным с согласованностью данных, вы можете использовать оператор [`SYSTEM DROP ... CACHE`](../sql-reference/statements/system.md).

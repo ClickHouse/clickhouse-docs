@@ -1,44 +1,39 @@
 ---
-description: 'Documentation for ALTER DATABASE ... MODIFY COMMENT statements which
-  allow adding, modifying, or removing database comments.'
-slug: '/sql-reference/statements/alter/database-comment'
+description: 'ALTER DATABASE ... MODIFY COMMENT 文に関するドキュメントで、データベースコメントの追加、変更、削除を行うことができます。'
+slug: /sql-reference/statements/alter/database-comment
 sidebar_position: 51
 sidebar_label: 'ALTER DATABASE ... MODIFY COMMENT'
-title: 'ALTER DATABASE ... MODIFY COMMENT Statements'
-keywords:
-- 'ALTER DATABASE'
-- 'MODIFY COMMENT'
+title: 'ALTER DATABASE ... MODIFY COMMENT 文'
+keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
+doc_type: 'reference'
 ---
 
+# ALTER DATABASE ... MODIFY COMMENT {#alter-database-modify-comment}
 
+データベースのコメントを、あらかじめ設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
 
+## 構文 {#syntax}
 
-# ALTER DATABASE ... MODIFY COMMENT
-
-データベースのコメントを追加、変更、または削除します。これまで設定されていたかどうかに関わらず、コメントの変更は [`system.databases`](/operations/system-tables/databases.md) および `SHOW CREATE DATABASE` クエリに反映されます。
-
-## Syntax {#syntax}
-
-``` sql
+```sql
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-## Examples {#examples}
+## 例 {#examples}
 
-コメント付きの `DATABASE` を作成するには:
+コメント付きの `DATABASE` を作成するには：
 
-``` sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時的なデータベース';
+```sql
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時データベース';
 ```
 
-コメントを変更するには:
+コメントを編集するには:
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'データベースに対する新しいコメント';
+MODIFY COMMENT 'データベースに関する新しいコメント';
 ```
 
-変更されたコメントを表示するには:
+変更後のコメントを表示するには：
 
 ```sql
 SELECT comment 
@@ -48,32 +43,32 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ データベースに対する新しいコメント │
+│ データベースに関する新しいコメント │
 └─────────────────────────┘
 ```
 
-データベースのコメントを削除するには:
+データベースのコメントを削除するには：
 
-``` sql
+```sql
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
 
-コメントが削除されたことを確認するには:
+コメントが削除されたことを確認するには：
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE  name = 'database_with_comment';
 ```
 
-```text title="レスポンス"
+```text title="Response"
 ┌─comment─┐
 │         │
 └─────────┘
 ```
 
-## Related content {#related-content}
+## 関連コンテンツ {#related-content}
 
 - [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
 - [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

@@ -1,47 +1,45 @@
 ---
-description: '非同期挿入に関する情報を含むシステムテーブル。各エントリは非同期挿入クエリが非同期挿入クエリにバッファリングされたことを表します。'
-keywords:
-- 'system table'
-- 'asynchronous_insert_log'
-slug: '/operations/system-tables/asynchronous_insert_log'
+description: '非同期インサートに関する情報を含むシステムテーブル。各エントリは、非同期インサート用にバッファリングされた INSERT クエリを表します。'
+keywords: ['system table', 'asynchronous_insert_log']
+slug: /operations/system-tables/asynchronous_insert_log
 title: 'system.asynchronous_insert_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.asynchronous&#95;insert&#95;log {#systemasynchronous&#95;insert&#95;log}
 
-# system.asynchronous_insert_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+非同期インサートに関する情報を保持します。各エントリは、非同期インサート用にバッファリングされたインサートクエリを表します。
 
-非同期挿入に関する情報を含みます。各エントリは、非同期挿入クエリにバッファリングされた挿入クエリを表します。
+ロギングを開始するには、[asynchronous&#95;insert&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) セクションでパラメータを設定します。
 
-ログ記録を開始するには、[asynchronous_insert_log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) セクションでパラメータを設定してください。
+データのフラッシュ周期は、[asynchronous&#95;insert&#95;log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) サーバー設定セクションの `flush_interval_milliseconds` パラメータで設定します。フラッシュを強制するには、[SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) クエリを使用します。
 
-データのフラッシュ期間は、[asynchronous_insert_log](../../operations/server-configuration-parameters/settings.md#asynchronous_insert_log) サーバー設定セクションの `flush_interval_milliseconds` パラメータで設定されます。フラッシュを強制するには、[SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs) クエリを使用してください。
-
-ClickHouseはテーブルからデータを自動的に削除しません。詳細については、[Introduction](/operations/system-tables/overview#system-tables-introduction)をご覧ください。
+ClickHouse はテーブルからデータを自動的に削除しません。詳細は [Introduction](/operations/system-tables/overview#system-tables-introduction) を参照してください。
 
 カラム:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — 非同期挿入が発生した日付。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 非同期挿入が実行を終了した日付と時間。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度で非同期挿入が実行を終了した日付と時間。
-- `query` ([String](../../sql-reference/data-types/string.md)) — クエリ文字列。
-- `database` ([String](../../sql-reference/data-types/string.md)) — テーブルが存在するデータベースの名前。
-- `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
-- `format` ([String](/sql-reference/data-types/string.md)) — フォーマット名。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 初期クエリのID。
-- `bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 挿入されたバイト数。
-- `exception` ([String](../../sql-reference/data-types/string.md)) — 例外メッセージ。
-- `status` ([Enum8](../../sql-reference/data-types/enum.md)) — ビューのステータス。値は次の通りです:
-    - `'Ok' = 1` — 挿入が成功しました。
-    - `'ParsingError' = 2` — データを解析中に例外が発生しました。
-    - `'FlushError' = 3` — データをフラッシュ中に例外が発生しました。
-- `flush_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — フラッシュが発生した日付と時間。
-- `flush_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でフラッシュが発生した日付と時間。
-- `flush_query_id` ([String](../../sql-reference/data-types/string.md)) — フラッシュクエリのID。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — 非同期インサートが発生した日付。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 非同期インサートの実行が完了した日時。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 非同期インサートの実行が完了した日時（マイクロ秒精度）。
+* `query` ([String](../../sql-reference/data-types/string.md)) — クエリ文字列。
+* `database` ([String](../../sql-reference/data-types/string.md)) — テーブルが属するデータベース名。
+* `table` ([String](../../sql-reference/data-types/string.md)) — テーブル名。
+* `format` ([String](/sql-reference/data-types/string.md)) — フォーマット名。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 元のクエリの ID。
+* `bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 挿入されたバイト数。
+* `exception` ([String](../../sql-reference/data-types/string.md)) — 例外メッセージ。
+* `status` ([Enum8](../../sql-reference/data-types/enum.md)) — ステータス。値:
+  * `'Ok' = 1` — インサート成功。
+  * `'ParsingError' = 2` — データのパース時に発生した例外。
+  * `'FlushError' = 3` — データのフラッシュ時に発生した例外。
+* `flush_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — フラッシュが発生した日時。
+* `flush_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — フラッシュが発生した日時（マイクロ秒精度）。
+* `flush_query_id` ([String](../../sql-reference/data-types/string.md)) — フラッシュクエリの ID。
 
 **例**
 
@@ -51,7 +49,7 @@ ClickHouseはテーブルからデータを自動的に削除しません。詳�
 SELECT * FROM system.asynchronous_insert_log LIMIT 1 \G;
 ```
 
-結果:
+結果：
 
 ```text
 hostname:                clickhouse.eu-central1.internal
@@ -71,7 +69,7 @@ flush_time_microseconds: 2023-06-08 10:08:55.139676
 flush_query_id:          cd2c1e43-83f5-49dc-92e4-2fbc7f8d3716
 ```
 
-**関連情報**
+**関連項目**
 
-- [system.query_log](../../operations/system-tables/query_log) — クエリ実行に関する一般的な情報を含む `query_log` システムテーブルの説明。
-- [system.asynchronous_inserts](/operations/system-tables/asynchronous_inserts) — このテーブルには、キューに保留中の非同期挿入に関する情報が含まれています。
+* [system.query&#95;log](../../operations/system-tables/query_log) — クエリ実行に関する一般的な情報を含む `query_log` システムテーブルの説明。
+* [system.asynchronous&#95;inserts](/operations/system-tables/asynchronous_inserts) — キュー内の保留中の非同期挿入に関する情報を保持するテーブル。

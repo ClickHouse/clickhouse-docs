@@ -4,6 +4,7 @@ sidebar_label: 'Service limits'
 title: 'Usage limits'
 description: 'Describes the recommended usage limits in ClickHouse Cloud'
 doc_type: 'reference'
+keywords: ['usage limits', 'quotas', 'best practices', 'resource management', 'cloud features']
 ---
 
 While ClickHouse is known for its speed and reliability, optimal performance is 
@@ -19,20 +20,21 @@ we will gladly help you refine your use case to avoid exceeding the guardrails
 or look together at how we can increase them in a controlled manner. 
 :::
 
-| Dimension                     | Limit                                                      |
-|-------------------------------|------------------------------------------------------------|
-| **Databases**                 | 1000                                                       |
-| **Tables**                    | 5000                                                       |
-| **Columns**                   | ∼1000 (wide format is preferred to compact)                |
-| **Partitions**                | 50k                                                        |
-| **Parts**                     | 100k across the entire instance                            |
-| **Part size**                 | 150gb                                                      |
-| **Services per organization** | 20 (soft)                                                  |
-| **Services per warehouse**    | 5 (soft)                                                   |
-| **Low cardinality**           | 10k or less                                                |
-| **Primary keys in a table**   | 4-5 that sufficiently filter down the data                 |
-| **Query concurrency**         | 1000 (per replica)                                         |
-| **Batch ingest**              | anything > 1M will be split by the system in 1M row blocks |
+| Dimension                     | Limit                                                                                             |
+|-------------------------------|---------------------------------------------------------------------------------------------------|
+| **Databases**                 | 1000                                                                                              |
+| **Tables**                    | 5000                                                                                              |
+| **Columns**                   | ∼1000 (wide format is preferred to compact)                                                       |
+| **Partitions**                | 50k                                                                                               |
+| **Parts**                     | 10k (see [`max_parts_in_total`](/whats-new/cloud-compatibility#max_parts_in_total-10000) setting) |
+| **Part size**                 | 150gb                                                                                             |
+| **Services per organization** | 20 (soft)                                                                                         |
+| **Services per warehouse**    | 5 (soft)                                                                                          |
+| **Replicas per service**      | 20 (soft)                                                                                         |  
+| **Low cardinality**           | 10k or less                                                                                       |
+| **Primary keys in a table**   | 4-5 that sufficiently filter down the data                                                        |
+| **Query concurrency**         | 1000 (per replica)                                                                                |
+| **Batch ingest**              | anything > 1M will be split by the system in 1M row blocks                                        |
 
 :::note
 For Single Replica Services, the maximum number of databases is restricted to 

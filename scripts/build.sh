@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set locale to prevent perl warnings in child processes
+export LC_ALL=C
+export LANG=C
+
 function parse_args() {
   locale=""  # Default: No locale specified
   out_dir="" # Default: No custom output directory

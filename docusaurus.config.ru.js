@@ -28,6 +28,9 @@ const config = {
       defer: true, // execute after document parsing, but before firing DOMContentLoaded event
     }
   ],
+  clientModules: [
+    require.resolve('./src/clientModules/utmPersistence.js')
+  ],
   // Settings for Docusaurus Faster - build optimizations
   future: {
     experimental_faster: {
@@ -163,9 +166,11 @@ const config = {
         theme: {
           customCss: [require.resolve("./src/css/custom.scss")],
         },
-        gtag: {
-          trackingID: "G-KF1LLRTQ5Q",
-        },
+        ...(process.env.VERCEL_ENV !== 'preview' && {
+          googleTagManager: {
+            containerId: 'GTM-WTNTDT7W',
+          },
+        }),
       }),
     ],
   ],
@@ -206,7 +211,7 @@ const config = {
       algolia: {
         appId: "5H9UG7CX5W",
         apiKey: "4a7bf25cf3edbef29d78d5e1eecfdca5",
-        indexName: "clickhouse",
+        indexName: "clickhouse-ru",
         contextualSearch: false,
         searchPagePath: "search",
       },

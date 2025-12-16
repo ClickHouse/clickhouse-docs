@@ -1,14 +1,14 @@
 ---
-description: 'Возвращает матрицу выборочной ковариации по N переменным.'
+description: 'Возвращает выборочную ковариационную матрицу для N переменных.'
 sidebar_position: 125
 slug: /sql-reference/aggregate-functions/reference/covarsampmatrix
 title: 'covarSampMatrix'
+doc_type: 'reference'
 ---
 
+# covarSampMatrix {#covarsampmatrix}
 
-# covarSampMatrix
-
-Возвращает матрицу выборочной ковариации по N переменным.
+Возвращает выборочную ковариационную матрицу для N переменных.
 
 **Синтаксис**
 
@@ -18,11 +18,11 @@ covarSampMatrix(x[, ...])
 
 **Аргументы**
 
-- `x` — переменное количество параметров. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+* `x` — произвольное количество аргументов. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Матрица выборочной ковариации. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
+* Матрица выборочной ковариации. [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md))).
 
 **Пример**
 

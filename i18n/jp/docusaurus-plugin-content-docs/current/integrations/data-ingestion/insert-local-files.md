@@ -1,19 +1,19 @@
 ---
-sidebar_label: 'ローカルファイルの挿入'
+sidebar_label: 'ローカルファイルのインポート'
 sidebar_position: 2
-title: 'ローカルファイルの挿入'
-slug: '/integrations/data-ingestion/insert-local-files'
-description: 'ローカルファイルの挿入について学ぶ'
+title: 'ローカルファイルのインポート'
+slug: /integrations/data-ingestion/insert-local-files
+description: 'ローカルファイルのインポート方法を学ぶ'
+show_related_blogs: true
+doc_type: 'guide'
+keywords: ['ローカルファイル インポート ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
 ---
 
+# ローカルファイルの挿入 {#insert-local-files}
 
+`clickhouse-client` を使用して、ローカルファイルを ClickHouse サービスにストリーミングできます。これにより、ClickHouse が備える数多くの強力かつ便利な関数を使ってデータを前処理できます。例を見てみましょう...
 
-
-# ローカルファイルの挿入
-
-`clickhouse-client`を使用して、ローカルファイルをClickHouseサービスにストリームすることができます。これにより、強力で便利なClickHouse関数を使用してデータを前処理することが可能になります。例を見てみましょう...
-
-1. `comments.tsv`というTSVファイルがあり、Hacker Newsのコメントが含まれていて、ヘッダー行にはカラム名が含まれていると仮定します。データを挿入する際には[入力フォーマット](/interfaces/formats)を指定する必要があります；この場合は`TabSeparatedWithNames`となります：
+1. Hacker News のコメントが含まれている `comments.tsv` という名前の TSV ファイルがあり、ヘッダー行には列名が含まれているとします。データを挿入する際には、[input format](/interfaces/formats) を指定する必要があり、この場合は `TabSeparatedWithNames` を使用します。
 
 ```text
 id      type    author  timestamp       comment children
@@ -26,7 +26,7 @@ id      type    author  timestamp       comment children
 19467048        comment karambahh       2019-03-22 21:15:41     "I think you&#x27;re comparing apples to oranges here.<p>If you reclaim a parking space for another use (such as building accommodation for families or an animal shelter), you&#x27;re not depriving the car of anything, it&#x27;s an expensive, large piece of metal and is not sentient.<p>Next, you&#x27;ll say that you&#x27;re depriving car owners from the practicality of parking their vehicles anywhere they like. I&#x27;m perfectly fine with depriving car owners from this convenience to allow a human being to have a roof over their head. (speaking from direct experience as I&#x27;ve just minutes ago had to park my car 1km away from home because the city is currently building housing and has restricted parking space nearby)<p>Then, some might argue that one should be ashamed of helping animals while humans are suffering. That&#x27;s the exact same train of thought with «we can&#x27;t allow more migrants in, we have to take care of our &quot;own&quot; homeless people».<p>This is a false dichotomy. Western societies inequalities are growing larger and larger. Me trying to do my part is insignificant. Me donating to human or animal causes is a small dent into the mountains of inequalities we live on top of. Us collectively, we do make a difference, by donating, voting and generally keeping our eyes open about the world we live in...<p>Finally, an entirely anecdotal pov: I&#x27;ve witnessed several times extremely poor people going out of their ways to show solidarity to animals or humans. I&#x27;ve also witnessed an awful lot of extremely wealthy individuals complaining about the poor inconveniencing them by just being there, whose wealth was a direct consequences of their ancestors exploiting whose very same poor people."      [19467512]
 ```
 
-2. Hacker Newsデータ用のテーブルを作成します：
+2. Hacker News のデータ用のテーブルを作成します。
 
 ```sql
 CREATE TABLE hackernews (
@@ -42,7 +42,7 @@ ENGINE = MergeTree
 ORDER BY toYYYYMMDD(timestamp)
 ```
 
-3. `author`カラムを小文字に変換したいので、[`lower`関数](/sql-reference/functions/string-functions#lower)を使用します。また、`comment`文字列をトークンに分割し、その結果を`tokens`カラムに格納したいので、[`extractAll`関数](/sql-reference/functions/string-search-functions#extractall)を使用します。これらすべてを1つの`clickhouse-client`コマンドで実行します。`comments.tsv`ファイルが`<`演算子を使用して`clickhouse-client`にパイプされることに注意してください：
+3. `author` カラムを小文字に変換したいので、これは [`lower` 関数](/sql-reference/functions/string-functions#lower) で簡単に行えます。また、`comment` 文字列をトークンに分割し、その結果を `tokens` カラムに保存したいので、これは [`extractAll` 関数](/sql-reference/functions/string-search-functions#extractAll) を使って行えます。これらすべてを 1 回の `clickhouse-client` コマンドでまとめて実行できます。`comments.tsv` ファイルが `<` 演算子を使って `clickhouse-client` にリダイレクトされている点に注目してください：
 
 ```bash
 clickhouse-client \
@@ -54,22 +54,22 @@ clickhouse-client \
     INSERT INTO hackernews
     SELECT
         id,
-        type,
-        lower(author),
-        timestamp,
-        comment,
-        children,
-        extractAll(comment, '\\w+') as tokens
+                type,
+                lower(author),
+                timestamp,
+                comment,
+                children,
+                extractAll(comment, '\\w+') as tokens
     FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
     FORMAT TabSeparatedWithNames
 " < comments.tsv
 ```
 
 :::note
-`input`関数はここで便利であり、`hackernews`テーブルに挿入されるデータを変換することができます。`input`への引数は、受信する生データのフォーマットであり、他の多くのテーブル関数でもこれを見ることになります（受信データのスキーマを指定する場所）。
+`input` 関数は、データが `hackernews` テーブルに挿入されるタイミングで変換できるため、ここでは便利です。`input` への引数は、受信する生データのフォーマットであり、他の多くのテーブル関数でも同様に登場します（受信データのスキーマを指定する箇所です）。
 :::
 
-4. これで完了です！データがClickHouseにアップロードされました：
+4. 以上です！データは ClickHouse に取り込まれました。
 
 ```sql
 SELECT *
@@ -77,7 +77,7 @@ FROM hackernews
 LIMIT 7
 ```
 
-結果は次の通りです：
+結果は以下のとおりです。
 
 ```response
 
@@ -91,7 +91,7 @@ LIMIT 7
 
 ```
 
-5. 別のオプションとして、`cat`のようなツールを使用してファイルを`clickhouse-client`にストリームすることもできます。たとえば、次のコマンドは`<`演算子を使用した場合と同じ結果になります：
+5. 別の方法として、`cat` のようなツールを使ってファイルを `clickhouse-client` にストリームすることもできます。例えば、次のコマンドは `<` 演算子を使う場合と同じ結果になります。
 
 ```bash
 cat comments.tsv | clickhouse-client \
@@ -103,20 +103,15 @@ cat comments.tsv | clickhouse-client \
     INSERT INTO hackernews
     SELECT
         id,
-        type,
-        lower(author),
-        timestamp,
-        comment,
-        children,
-        extractAll(comment, '\\w+') as tokens
+                type,
+                lower(author),
+                timestamp,
+                comment,
+                children,
+                extractAll(comment, '\\w+') as tokens
     FROM input('id UInt32, type String, author String, timestamp DateTime, comment String, children Array(UInt32)')
     FORMAT TabSeparatedWithNames
 "
 ```
 
-[clickhouse-clientに関するドキュメントページ](/interfaces/cli)を訪れて、ローカルオペレーティングシステムに`clickhouse-client`をインストールする方法の詳細を確認してください。
-
-## 関連コンテンツ {#related-content}
-
-- ブログ: [ClickHouseへのデータの取り込み - 第1部](https://clickhouse.com/blog/getting-data-into-clickhouse-part-1)
-- ブログ: [巨大な実データセットの探求: ClickHouseにおける100年以上の気象記録](https://clickhouse.com/blog/real-world-data-noaa-climate-data)
+ローカル環境のオペレーティングシステムに `clickhouse-client` をインストールする方法の詳細については、[`clickhouse-client` に関するドキュメントページ](/interfaces/cli) を参照してください。

@@ -5,6 +5,7 @@ sidebar_position: 100
 title: 'Replication + Scaling'
 description: 'By going through this tutorial, you will learn how to set up a simple ClickHouse cluster.'
 doc_type: 'guide'
+keywords: ['cluster deployment', 'replication', 'sharding', 'high availability', 'scalability']
 ---
 
 import Image from '@theme/IdealImage';
@@ -434,9 +435,9 @@ Next you will configure ClickHouse Keeper, which is used for coordination.
 
 | Directory                                                        | File                                                                                                                                                                                         |
 |------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `fs/volumes/clickhouse-keeper-01/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
-| `fs/volumes/clickhouse-keeper-02/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
-| `fs/volumes/clickhouse-keeper-03/etc/clickhouse-server/config.d` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
+| `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
+| `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
+| `fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-03/etc/clickhouse-keeper/keeper_config.xml) |
 
 <KeeperConfigExplanation/>
 
@@ -586,12 +587,9 @@ SHOW DATABASES;
    └────────────────────┘
 ```
 
-## Create a distributed table on the cluster {#creating-a-table}
+## Create a table on the cluster {#creating-a-table}
 
-Now that the database has been created, next you will create a distributed table.
-Distributed tables are tables which have access to shards located on different
-hosts and are defined using the `Distributed` table engine. The distributed table
-acts as the interface across all the shards in the cluster.
+Now that the database has been created, next you will create a table with replication.
 
 Run the following query from any of the host clients:
 
@@ -663,14 +661,16 @@ SHOW TABLES IN uk;
 
 ## Insert data into a distributed table {#inserting-data-using-distributed}
 
-To insert data into the distributed table, `ON CLUSTER` cannot be used as it does
+To insert data into the table, `ON CLUSTER` cannot be used as it does
 not apply to DML (Data Manipulation Language) queries such as `INSERT`, `UPDATE`,
 and `DELETE`. To insert data, it is necessary to make use of the 
 [`Distributed`](/engines/table-engines/special/distributed) table engine.
+As you learned in the [guide](/architecture/horizontal-scaling) for setting up a cluster with 2 shards and 1 replica, distributed tables are tables which have access to shards located on different
+hosts and are defined using the `Distributed` table engine.
+The distributed table acts as the interface across all the shards in the cluster.
 
 From any of the host clients, run the following query to create a distributed table
-using the existing table we created previously with `ON CLUSTER` and use of the
-`ReplicatedMergeTree`:
+using the existing replicated table we created in the previous step:
 
 ```sql
 CREATE TABLE IF NOT EXISTS uk.uk_price_paid_distributed
@@ -750,3 +750,15 @@ SELECT count(*) FROM uk.uk_price_paid_local;
 ```
 
 </VerticalStepper>
+
+## Conclusion {#conclusion}
+
+The advantage of this cluster topology with 2 shards and 2 replicas is that it provides both scalability and fault tolerance.
+Data is distributed across separate hosts, reducing storage and I/O requirements per node, while queries are processed in parallel across both shards for improved performance and memory efficiency.
+Critically, the cluster can tolerate the loss of one node and continue serving queries without interruption, as each shard has a backup replica available on another node.
+
+The main disadvantage of this cluster topology is the increased storage overhead—it requires twice the storage capacity compared to a setup without replicas, as each shard is duplicated.
+Additionally, while the cluster can survive a single node failure, losing two nodes simultaneously may render the cluster inoperable, depending on which nodes fail and how shards are distributed.
+This topology strikes a balance between availability and cost, making it suitable for production environments where some level of fault tolerance is required without the expense of higher replication factors.
+
+To learn how ClickHouse Cloud processes queries, offering both scalability and fault-tolerance, see the section ["Parallel Replicas"](/deployment-guides/parallel-replicas).

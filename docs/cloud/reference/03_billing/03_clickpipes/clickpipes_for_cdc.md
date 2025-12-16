@@ -4,6 +4,7 @@ slug: /cloud/reference/billing/clickpipes/postgres-cdc
 title: 'ClickPipes for PostgreSQL CDC'
 description: 'Overview of billing for PostgreSQL CDC ClickPipes'
 doc_type: 'reference'
+keywords: ['billing', 'clickpipes', 'cdc pricing', 'costs', 'pricing']
 ---
 
 # ClickPipes for PostgreSQL CDC {#clickpipes-for-postgresql-cdc}

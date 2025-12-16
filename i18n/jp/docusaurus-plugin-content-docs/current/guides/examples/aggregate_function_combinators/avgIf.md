@@ -1,30 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/avgIf'
 title: 'avgIf'
-description: 'avgIfコンビネータの使用例'
-keywords:
-- 'avg'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'avgIf'
+description: 'avgIf コンビネータの使用例'
+keywords: ['avg', 'if', 'combinator', 'examples', 'avgIf']
 sidebar_label: 'avgIf'
+doc_type: 'reference'
 ---
-
-
-
 
 # avgIf {#avgif}
 
 ## 説明 {#description}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、条件が真である行の値の算術平均を計算するために `avgIf` 集約コンビネータ関数を使用できます。
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、`avgIf` 集約コンビネータ関数を使い、条件が真である行の値の算術平均を計算できます。
 
-## 例の使用法 {#example-usage}
+## 使用例 {#example-usage}
 
-この例では、成功フラグを持つ販売データを格納するテーブルを作成し、`avgIf` を使用して成功したトランザクションの平均販売額を計算します。
+この例では、成功フラグを含む売上データを格納するテーブルを作成し、
+`avgIf` を使用して、成功したトランザクションの平均売上額を計算します。
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
@@ -40,19 +34,19 @@ INSERT INTO sales VALUES
     (6, 175.25, 1);
 
 SELECT
-    avgIf(amount, is_successful = 1) as avg_successful_sale
+    avgIf(amount, is_successful = 1) AS avg_successful_sale
 FROM sales;
 ```
 
-`avgIf` 関数は、`is_successful = 1` の行についてのみ平均額を計算します。
-この場合、金額は 100.50, 200.75, 300.00, 175.25 の平均を取ります。
+`avgIf` 関数は、`is_successful = 1` の行に対してのみ平均値を計算します。
+この場合、100.50、200.75、300.00、175.25 の金額の平均を算出します。
 
-```response title="応答"
+```response title="Response"
    ┌─avg_successful_sale─┐
 1. │              193.88 │
    └─────────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連項目 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

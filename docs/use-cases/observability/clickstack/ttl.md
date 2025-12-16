@@ -6,6 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Managing TTL with ClickStack'
 doc_type: 'guide'
+keywords: ['clickstack', 'ttl', 'data retention', 'lifecycle', 'storage management']
 ---
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
@@ -52,7 +53,7 @@ PARTITION BY toDate(TimestampTime)
 PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 TTL TimestampTime + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy. 
@@ -75,7 +76,7 @@ TTLs are not applied immediately but rather on a schedule, as noted above. The M
 
 ## Modifying TTL {#modifying-ttl}
 
-To modify TTL users can either:
+To modify TTL you can either:
 
 1. **Modify the table schemas (recommended)**. This requires connecting to the ClickHouse instance e.g. using the [clickhouse-client](/interfaces/cli) or [Cloud SQL Console](/cloud/get-started/sql-console). For example, we can modify the TTL for the `otel_logs` table using the following DDL:
 
@@ -95,7 +96,7 @@ exporters:
 
 ### Column level TTL {#column-level-ttl}
 
-The above examples expire data at a table level. Users can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
+The above examples expire data at a table level. You can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
 
 Below, we show how the `Body` column can be dropped after 30 days.
 

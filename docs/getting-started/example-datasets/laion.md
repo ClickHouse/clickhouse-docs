@@ -3,7 +3,8 @@ description: 'Dataset containing 400 million images with English image captions'
 sidebar_label: 'Laion-400M dataset'
 slug: /getting-started/example-datasets/laion-400m-dataset
 title: 'Laion-400M dataset'
-doc_type: 'reference'
+doc_type: 'guide'
+keywords: ['example dataset', 'laion', 'image embeddings', 'sample data', 'machine learning']
 ---
 
 The [Laion-400M dataset](https://laion.ai/blog/laion-400-open-dataset/) contains 400 million images with English image captions. Laion nowadays provides [an even larger dataset](https://laion.ai/blog/laion-5b/) but working with it will be similar.
@@ -90,7 +91,6 @@ CREATE TABLE laion
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS index_granularity = 8192
 ```
 
 To import the CSV files into ClickHouse:

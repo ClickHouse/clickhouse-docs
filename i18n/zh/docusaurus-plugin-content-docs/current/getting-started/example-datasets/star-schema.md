@@ -1,19 +1,22 @@
 ---
-'description': '星型模式基准 (SSB) 数据集和查询'
-'sidebar_label': '星型模式基准'
-'slug': '/getting-started/example-datasets/star-schema'
-'title': '星型模式基准 (SSB, 2009)'
+description: '星型模式基准 (SSB) 数据集和查询'
+sidebar_label: '星型模式基准'
+slug: /getting-started/example-datasets/star-schema
+title: '星型模式基准 (SSB, 2009)'
+doc_type: 'guide'
+keywords: ['example dataset', 'star schema', 'sample data', 'data modeling', 'benchmark']
 ---
 
-星型模式基准大致基于[TPC-H](tpch.md)的表和查询，但与TPC-H不同，它使用星型模式布局。
-大部分数据位于一个巨大的事实表中，该表被多个小维度表环绕。
-查询将事实表与一个或多个维度表连接，以应用筛选条件，例如`MONTH = 'JANUARY'`。
+星型模式基准大致基于 [TPC-H](tpch.md) 的表和查询，但与 TPC-H 不同，它采用星型模式布局。
+大部分数据存储在一个庞大的事实表中，周围是多个较小的维度表。
+查询会将事实表与一个或多个维度表进行关联，从而应用过滤条件，例如 `MONTH = 'JANUARY'`。
 
 参考文献：
-- [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf) (O'Neil等人)，2009
-- [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927) (Rabl等人)，2013
 
-首先，检查星型模式基准库并编译数据生成器：
+* [Star Schema Benchmark](https://cs.umb.edu/~poneil/StarSchemaB.pdf)（O&#39;Neil 等人）, 2009
+* [Variations of the Star Schema Benchmark to Test the Effects of Data Skew on Query Performance](https://doi.org/10.1145/2479871.2479927)（Rabl 等人）, 2013
+
+首先，检出 Star Schema Benchmark 仓库并编译数据生成器：
 
 ```bash
 git clone https://github.com/vadimtk/ssb-dbgen.git
@@ -21,7 +24,7 @@ cd ssb-dbgen
 make
 ```
 
-然后，生成数据。参数`-s`指定比例因子。例如，使用`-s 100`时，生成6亿行数据。
+然后生成数据。参数 `-s` 指定规模因子。例如，使用 `-s 100` 时，会生成 6 亿行数据。
 
 ```bash
 ./dbgen -s 1000 -T c
@@ -31,7 +34,8 @@ make
 ./dbgen -s 1000 -T d
 ```
 
-现在在ClickHouse中创建表：
+接下来在 ClickHouse 中创建表：
+
 
 ```sql
 CREATE TABLE customer
@@ -118,7 +122,7 @@ CREATE TABLE date
 ENGINE = MergeTree ORDER BY D_DATEKEY;
 ```
 
-数据可以如下导入：
+可以通过以下方式导入数据：
 
 ```bash
 clickhouse-client --query "INSERT INTO customer FORMAT CSV" < customer.tbl
@@ -128,8 +132,9 @@ clickhouse-client --query "INSERT INTO lineorder FORMAT CSV" < lineorder.tbl
 clickhouse-client --query "INSERT INTO date FORMAT CSV" < date.tbl
 ```
 
-在ClickHouse的许多用例中，多个表被转换为一个单一的非规范化平面表。
-这一步是可选的，下面的查询列出了其原始形式和为非规范化表重写的格式。
+在许多 ClickHouse 的使用场景中，会将多张表转换为一张反规范化的扁平表。
+该步骤是可选的，下面的查询同时给出了其原始形式以及为反规范化表改写后的形式。
+
 
 ```sql
 SET max_memory_usage = 20000000000;
@@ -181,7 +186,7 @@ INNER JOIN supplier AS s ON s.S_SUPPKEY = l.LO_SUPPKEY
 INNER JOIN part AS p ON p.P_PARTKEY = l.LO_PARTKEY;
 ```
 
-查询通过`./qgen -s <scaling_factor>`生成。对于`s = 100`的示例查询：
+这些查询是由 `./qgen -s <scaling_factor>` 生成的。以下是 `s = 100` 时的示例查询：
 
 Q1.1
 
@@ -198,7 +203,7 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -211,7 +216,7 @@ WHERE
     AND LO_QUANTITY < 25;
 ```
 
-Q1.2
+问题 1.2
 
 ```sql
 SELECT
@@ -226,7 +231,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -239,7 +244,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q1.3
+问题 1.3
 
 ```sql
 SELECT
@@ -255,7 +260,7 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -269,7 +274,8 @@ WHERE
     AND LO_QUANTITY BETWEEN 26 AND 35;
 ```
 
-Q2.1
+问题 2.1
+
 
 ```sql
 SELECT
@@ -295,7 +301,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -341,7 +347,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -384,7 +390,7 @@ ORDER BY
     P_BRAND;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -429,7 +435,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -453,6 +459,7 @@ ORDER BY
 ```
 
 Q3.2
+
 
 ```sql
 SELECT
@@ -481,7 +488,7 @@ ORDER BY
     REVENUE DESC;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -586,7 +593,7 @@ ORDER BY
     revenue DESC;
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -609,6 +616,7 @@ ORDER BY
 ```
 
 Q4.1
+
 
 ```sql
 SELECT
@@ -637,7 +645,7 @@ ORDER BY
     C_NATION
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -654,7 +662,7 @@ ORDER BY
     C_NATION ASC;
 ```
 
-Q4.2
+问题 4.2
 
 ```sql
 SELECT
@@ -687,7 +695,7 @@ ORDER BY
     P_CATEGORY
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT
@@ -744,7 +752,7 @@ ORDER BY
     P_BRAND
 ```
 
-非规范化表：
+反规范化表：
 
 ```sql
 SELECT

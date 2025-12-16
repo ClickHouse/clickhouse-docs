@@ -1,27 +1,21 @@
----
-{}
----
-
-
-
 <details>
     <summary>DockerでApache Supersetを起動する</summary>
 
-Supersetは[Docker Composeを使用したSupersetのローカルインストール](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/)の手順を提供しています。 GitHubからApache Supersetリポジトリをチェックアウトした後、最新の開発コードまたは特定のタグを実行できます。 `pre-release`とマークされていない最新リリースであるバージョン2.0.0を推奨します。
+Supersetは[Docker Composeを使用したローカルへのSupersetインストール](https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/)の手順を提供しています。GitHubからApache Supersetリポジトリをクローンした後、最新の開発コードまたは特定のタグを実行できます。リリース2.0.0は`pre-release`とマークされていない最新リリースであるため推奨します。
 
-`docker compose`を実行する前に、いくつかの作業を行う必要があります：
+`docker compose`を実行する前に、以下のタスクを完了する必要があります:
 
 1. 公式のClickHouse Connectドライバーを追加する
-2. Mapbox APIキーを取得し、環境変数として追加する (オプション)
+2. Mapbox APIキーを取得し、環境変数として追加する(オプション)
 3. 実行するSupersetのバージョンを指定する
 
 :::tip
-以下のコマンドは、GitHubリポジトリのトップレベルである `superset` から実行する必要があります。
+以下のコマンドは、GitHubリポジトリ`superset`のトップレベルディレクトリから実行してください。
 :::
 
-## 公式のClickHouse Connectドライバー {#official-clickhouse-connect-driver}
+## ClickHouse Connect の公式ドライバー {#official-clickhouse-connect-driver}
 
-SupersetのデプロイメントでClickHouse Connectドライバーを利用できるようにするために、ローカルのrequirementsファイルに追加します：
+Superset のデプロイメントで ClickHouse Connect ドライバーを利用できるようにするには、ローカルの requirements ファイルに追加します。
 
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
@@ -29,19 +23,19 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 
 ## Mapbox {#mapbox}
 
-これはオプションです。Mapbox APIキーなしでSupersetに地理データをプロットできますが、キーを追加するように指示するメッセージが表示され、マップの背景画像が欠落します（データポイントのみが表示され、マップの背景は表示されません）。使用したい場合は、Mapboxは無料のティアを提供しています。
+これは任意です。Mapbox の API キーがなくても Superset で位置情報データをプロットできますが、キーを追加するよう促すメッセージが表示され、地図の背景画像は表示されません（データポイントのみが表示されます）。Mapbox には、必要に応じて利用できる無料プランがあります。
 
-ガイドで作成するサンプルビジュアリゼーションのいくつかは、経度や緯度などの位置データを使用します。SupersetはMapboxマップをサポートしています。Mapboxビジュアリゼーションを使用するには、Mapbox APIキーが必要です。 [Mapboxの無料ティア](https://account.mapbox.com/auth/signup/)にサインアップし、APIキーを生成してください。
+ガイドで作成するサンプルの可視化の中には、経度や緯度などの位置情報データを使うものがあります。Superset には Mapbox マップのサポートが含まれています。Mapbox の可視化を使用するには、Mapbox API キーが必要です。[Mapbox free tier](https://account.mapbox.com/auth/signup/) にサインアップし、API キーを生成してください。
 
-APIキーをSupersetに利用可能にします：
+API キーを Superset で利用できるようにします:
 
 ```bash
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
 
-## Supersetバージョン2.0.0をデプロイ {#deploy-superset-version-200}
+## Superset バージョン 2.0.0 のデプロイ {#deploy-superset-version-200}
 
-リリース2.0.0をデプロイするには、次のコマンドを実行します：
+リリース 2.0.0 をデプロイするには、次のコマンドを実行します:
 
 ```bash
 git checkout 2.0.0

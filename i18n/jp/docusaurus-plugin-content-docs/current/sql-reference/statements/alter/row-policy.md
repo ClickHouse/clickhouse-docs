@@ -1,15 +1,13 @@
 ---
-description: 'Documentation for ALTER ROW POLICY'
-sidebar_label: 'ROW POLICY'
+description: 'ALTER ROW POLICY のドキュメント'
+sidebar_label: '行ポリシー'
 sidebar_position: 47
-slug: '/sql-reference/statements/alter/row-policy'
+slug: /sql-reference/statements/alter/row-policy
 title: 'ALTER ROW POLICY'
+doc_type: 'reference'
 ---
 
-
-
-
-# ALTER ROW POLICY
+# ALTER ROW POLICY {#alter-row-policy}
 
 行ポリシーを変更します。
 

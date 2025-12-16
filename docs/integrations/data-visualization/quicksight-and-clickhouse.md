@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'aws', 'amazon', 'QuickSight', 'mysql', 'connect', 'int
 description: 'Amazon QuickSight powers data-driven organizations with unified business intelligence (BI).'
 title: 'QuickSight'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import MySQLOnPremiseSetup from '@site/docs/_snippets/_clickhouse_mysql_on_premise_setup.mdx';
@@ -16,11 +19,11 @@ import quicksight_04 from '@site/static/images/integrations/data-visualization/q
 import quicksight_05 from '@site/static/images/integrations/data-visualization/quicksight_05.png';
 import quicksight_06 from '@site/static/images/integrations/data-visualization/quicksight_06.png';
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
-import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # QuickSight
 
-<CommunityMaintainedBadge/>
+<ClickHouseSupportedBadge/>
 
 QuickSight can connect to on-premise ClickHouse setup (23.11+) via MySQL interface using the official MySQL data source and Direct Query mode.
 

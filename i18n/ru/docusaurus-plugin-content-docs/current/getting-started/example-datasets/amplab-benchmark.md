@@ -1,15 +1,18 @@
 ---
-description: 'Набор данных для бенчмаркинга, использующийся для сравнения производительности решений по хранению данных.'
-sidebar_label: 'Бенчмарк AMPLab Big Data'
+description: 'Эталонный набор данных, используемый для сравнения производительности решений
+  для хранилищ данных.'
+sidebar_label: 'Эталон AMPLab для больших данных'
 slug: /getting-started/example-datasets/amplab-benchmark
-title: 'Бенчмарк AMPLab Big Data'
+title: 'AMPLab: эталонный тест для больших данных'
+keywords: ['эталон AMPLab', 'эталон больших данных', 'производительность хранилищ данных', 'эталонный набор данных', 'начало работы']
+doc_type: 'guide'
 ---
 
-Смотрите https://amplab.cs.berkeley.edu/benchmark/
+См. [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/).
 
-Зарегистрируйтесь для получения бесплатной учетной записи на https://aws.amazon.com. Это требует кредитной карты, электронной почты и номера телефона. Получите новый ключ доступа на https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
+Зарегистрируйте бесплатную учетную запись на [https://aws.amazon.com](https://aws.amazon.com). Для этого необходимы кредитная карта, адрес электронной почты и номер телефона. Создайте новый ключ доступа на [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential).
 
-Запустите следующее в консоли:
+Выполните в консоли следующее:
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -24,7 +27,7 @@ $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
 ```
 
-Запустите следующие запросы ClickHouse:
+Выполните следующие запросы в ClickHouse:
 
 ```sql
 CREATE TABLE rankings_tiny
@@ -88,7 +91,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Вернитесь в консоль:
+Вернитесь к консоли:
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -100,6 +103,7 @@ $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i 
 ```
 
 Запросы для получения выборок данных:
+
 
 ```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000

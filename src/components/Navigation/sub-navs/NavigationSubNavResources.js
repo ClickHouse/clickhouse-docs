@@ -39,69 +39,26 @@ export default function NavigationSubNavResources() {
           })}
         </NavigationLink>
       </li>
-      {currentLocale === 'en' && (
-        <li
-          onMouseEnter={() => {
-            setActiveSubNav('learning')
-          }}
-          onMouseLeave={() => {
-            setActiveSubNav(null)
-          }}>
+      <li>
           <NavigationLink
-            onClick={() => {
-              setActiveSubNav(isSubNavActive('learning') ? null : 'learning')
-            }}
-            className={`${isSubNavActive('learning') ? 'active' : ''
-              }`}>
-            <span>{translate({
-              id: 'topNav.navItems.resources.Learning and Certification',
-              message: 'Learning and Certification',
-            })}</span>
-            <NavigationChevron
-              className={
-                isSubNavActive('learning')
-                  ? 'rotate-90 text-primary-300 md-mid:rotate-0'
-                  : 'text-neutral-500'
-              }
-            />
+            href='https://clickhouse.com/company/events'
+            onClick={galaxyOnClick('topNav.resourcesMenu.eventsSelect')}>
+            {translate({
+                id: 'topNav.navItems.resources.Events',
+                message: 'Events',
+            })}
           </NavigationLink>
-          <NavigationSubNav isOpen={isSubNavActive('learning')}>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/learn'
-                onClick={galaxyOnClick('topNav.learnMenu.academySelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.ClickHouse Academy',
-                  message: 'ClickHouse Academy',
-                })}
-              </NavigationLink>
-            </li>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/company/news-events?category=Free+Training#upcoming-events'
-                onClick={galaxyOnClick('topNav.learnMenu.freeTrainingSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.Free live training',
-                  message: 'Free live training',
-                })}
-              </NavigationLink>
-            </li>
-            <li>
-              <NavigationLink
-                href='https://clickhouse.com/learn/certification'
-                onClick={galaxyOnClick('topNav.learnMenu.certificationSelect')}
-                className='block w-full'>
-                {translate({
-                  id: 'topNav.navItems.resources.ClickHouse Certification',
-                  message: 'ClickHouse Certification',
-                })}
-              </NavigationLink>
-            </li>
-          </NavigationSubNav>
-        </li>
-      )}
+      </li>
+      <li>
+          <NavigationLink
+              href='https://clickhouse.com/learn'
+              onClick={galaxyOnClick('topNav.resourcesMenu.learnSelect')}>
+              {translate({
+                  id: 'topNav.navItems.resources.Learn',
+                  message: 'Learning and certification',
+              })}
+          </NavigationLink>
+      </li>
       <li
         onMouseEnter={() => {
           setActiveSubNav('comparisons')

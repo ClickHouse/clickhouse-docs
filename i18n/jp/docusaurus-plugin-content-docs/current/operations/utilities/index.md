@@ -1,23 +1,20 @@
 ---
-description: 'Page listing various useful ClickHouse tools and utilities.'
-keywords:
-- 'tools'
-- 'utilities'
-sidebar_label: 'List of tools and utilities'
+description: 'さまざまな有用な ClickHouse ツールおよびユーティリティの一覧ページ。'
+keywords: ['tools', 'utilities']
+sidebar_label: 'ツールおよびユーティリティ一覧'
 sidebar_position: 56
-slug: '/operations/utilities/'
-title: 'List of tools and utilities'
+slug: /operations/utilities/
+title: 'ツールおよびユーティリティ一覧'
+doc_type: 'landing-page'
 ---
 
-
-
-| ツール/ユーティリティ | 説明 |
+| Tool/Utility | Description |
 |------|-------------|
-|[clickhouse-local](../../operations/utilities/clickhouse-local.md) | ClickHouseサーバーを起動せずにデータに対してSQLクエリを実行できる、`awk`のような機能を提供します。|
-|[clickhouse-benchmark](../../operations/utilities/clickhouse-benchmark.md) | カスタムクエリと設定でサーバーを負荷テストします。|
-| [clickhouse-format](../../operations/utilities/clickhouse-format.md) | 入力クエリのフォーマットを可能にします。|
+|[clickhouse-local](../../operations/utilities/clickhouse-local.md) | ClickHouse サーバーを起動せずにデータに対して SQL クエリを実行できるツールで、`awk` のように動作します。|
+|[clickhouse-benchmark](../../operations/utilities/clickhouse-benchmark.md) | カスタムクエリと設定を使用してサーバーに負荷をかけます。|
+| [clickhouse-format](../../operations/utilities/clickhouse-format.md) | 入力クエリを整形します。|
 |[ClickHouse obfuscator](../../operations/utilities/clickhouse-obfuscator.md) | データを難読化します。|
 |[ClickHouse compressor](../../operations/utilities/clickhouse-compressor.md) | データを圧縮および解凍します。|
-| [clickhouse-disks](../../operations/utilities/clickhouse-disks.md) | 異なるClickHouseディスク間でファイルについてファイルシステムのような操作を提供します。|
-| [clickhouse-odbc-bridge](../../operations/utilities/odbc-bridge.md) | ODBCドライバのためのプロキシサーバーです。|
-| [clickhouse_backupview](../../operations/utilities/backupview.md) | ClickHouseのバックアップを分析するためのPythonモジュールです。|
+| [clickhouse-disks](../../operations/utilities/clickhouse-disks.md) | 複数の ClickHouse ディスク間で、ファイルに対するファイルシステムのような操作を提供します。|
+| [clickhouse-odbc-bridge](../../operations/utilities/odbc-bridge.md) | ODBC ドライバー用のプロキシサーバーです。|
+| [clickhouse_backupview](../../operations/utilities/backupview.md) | ClickHouse のバックアップを解析するための Python モジュールです。|

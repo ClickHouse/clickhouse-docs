@@ -1,16 +1,14 @@
 ---
-description: 'N個の変数にわたる相関行列を計算します。'
+description: 'N個の変数の相関行列を計算します。'
 sidebar_position: 118
-slug: '/sql-reference/aggregate-functions/reference/corrmatrix'
+slug: /sql-reference/aggregate-functions/reference/corrmatrix
 title: 'corrMatrix'
+doc_type: 'reference'
 ---
 
+# corrMatrix {#corrmatrix}
 
-
-
-# corrMatrix
-
-N個の変数に対する相関行列を計算します。
+N 個の変数にわたる相関行列を計算します。
 
 **構文**
 
@@ -20,11 +18,11 @@ corrMatrix(x[, ...])
 
 **引数**
 
-- `x` — 可変数のパラメータ。[(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md)。
+* `x` — 可変個のパラメーター。[`(U)Int8/16/32/64`](../../data-types/int-uint.md), [`Float*`](../../data-types/float.md)。
 
-**返される値**
+**返り値**
 
-- 相関行列。 [Array](../../data-types/array.md)([Array](../../data-types/array.md)([Float64](../../data-types/float.md)))。
+* 相関行列。[`Array`](../../data-types/array.md)([`Array`](../../data-types/array.md)([`Float64`](../../data-types/float.md)))。
 
 **例**
 
@@ -48,7 +46,7 @@ SELECT arrayMap(x -> round(x, 3), arrayJoin(corrMatrix(a, b, c, d))) AS corrMatr
 FROM test;
 ```
 
-結果:
+結果：
 
 ```response
    ┌─corrMatrix─────────────┐

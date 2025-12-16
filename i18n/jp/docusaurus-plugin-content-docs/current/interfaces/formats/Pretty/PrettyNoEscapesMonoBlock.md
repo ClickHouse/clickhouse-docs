@@ -1,27 +1,31 @@
 ---
 alias: []
-description: 'PrettyNoEscapesMonoBlock フォーマットのドキュメント'
+description: 'PrettyNoEscapesMonoBlock フォーマットに関するドキュメント'
 input_format: false
-keywords:
-- 'PrettyNoEscapesMonoBlock'
+keywords: ['PrettyNoEscapesMonoBlock']
 output_format: true
-slug: '/interfaces/formats/PrettyNoEscapesMonoBlock'
+slug: /interfaces/formats/PrettyNoEscapesMonoBlock
 title: 'PrettyNoEscapesMonoBlock'
+doc_type: 'reference'
 ---
 
 import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 
-| Input | Output  | Alias |
-|-------|---------|-------|
-| ✗     | ✔       |       |
+| 入力 | 出力 | エイリアス |
+| -- | -- | ----- |
+| ✗  | ✔  |       |
+
 
 ## 説明 {#description}
 
-[`PrettyNoEscapes`](./PrettyNoEscapes.md) 形式と異なり、最大 `10,000` 行がバッファリングされ、 
-単一のテーブルとして出力され、ブロックで出力されることはありません。
+[`PrettyNoEscapes`](./PrettyNoEscapes.md) 形式とは異なり、最大で `10,000` 行をバッファリングしてから 1 つのテーブルとしてまとめて出力し、ブロックごとには出力しません。
+
+
 
 ## 使用例 {#example-usage}
 
-## 形式設定 {#format-settings}
+
+
+## フォーマット設定 {#format-settings}
 
 <PrettyFormatSettings/>

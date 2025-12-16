@@ -1,22 +1,19 @@
 ---
-description: 'The `Dictionary` engine displays the dictionary data as a ClickHouse
-  table.'
+description: '`Dictionary` エンジンは、Dictionary のデータを ClickHouse のテーブルとして表示します。'
 sidebar_label: 'Dictionary'
 sidebar_position: 20
-slug: '/engines/table-engines/special/dictionary'
-title: 'Dictionary Table Engine'
+slug: /engines/table-engines/special/dictionary
+title: 'Dictionary テーブルエンジン'
+doc_type: 'reference'
 ---
 
+# Dictionary テーブルエンジン {#dictionary-table-engine}
 
-
-
-# Dictionary Table Engine
-
-`Dictionary` エンジンは、[dictionary](../../../sql-reference/dictionaries/index.md) データを ClickHouse テーブルとして表示します。
+`Dictionary` エンジンは、[Dictionary](../../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして利用できるようにします。
 
 ## 例 {#example}
 
-例として、次の構成を持つ `products` の辞書を考えてみます。
+例として、次のように構成された `products` の Dictionary を考えます。
 
 ```xml
 <dictionaries>
@@ -49,7 +46,7 @@ title: 'Dictionary Table Engine'
 </dictionaries>
 ```
 
-辞書データをクエリします：
+Dictionary データをクエリします:
 
 ```sql
 SELECT
@@ -71,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-[dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 関数を使用して、この形式で辞書データを取得できます。
+[dictGet*](/sql-reference/functions/ext-dict-functions) 関数を使用して、この形式で Dictionary データを取得できます。
 
-このビューは、生データを取得したり、`JOIN` 操作を行ったりする必要があるときには役立ちません。そのような場合には、辞書データをテーブル形式で表示する `Dictionary` エンジンを使用できます。
+このビューは、生データを取得したい場合や `JOIN` 演算を行う場合にはあまり役に立ちません。こうしたケースでは、Dictionary データをテーブルとして表示する `Dictionary` エンジンを使用できます。
 
 構文：
 
@@ -84,15 +81,15 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 使用例：
 
 ```sql
-create table products (product_id UInt64, title String) Engine = Dictionary(products);
+CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+では
 
-テーブルの内容を確認します。
+テーブルの中身を確認してみましょう。
 
 ```sql
-select * from products limit 1;
+SELECT * FROM products LIMIT 1;
 ```
 
 ```text
@@ -101,6 +98,6 @@ select * from products limit 1;
 └───────────────┴─────────────────┘
 ```
 
-**関連情報**
+**関連項目**
 
-- [Dictionary function](/sql-reference/table-functions/dictionary)
+* [Dictionary 関数](/sql-reference/table-functions/dictionary)

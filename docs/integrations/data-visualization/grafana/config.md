@@ -5,6 +5,7 @@ slug: /integrations/grafana/config
 description: 'Configuration options for the ClickHouse data source plugin in Grafana'
 title: 'Configuring ClickHouse data source in Grafana'
 doc_type: 'guide'
+keywords: ['Grafana plugin configuration', 'data source settings', 'connection parameters', 'authentication setup', 'plugin options']
 ---
 
 import Image from '@theme/IdealImage';

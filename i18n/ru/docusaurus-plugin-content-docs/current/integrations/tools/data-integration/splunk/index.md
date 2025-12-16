@@ -2,8 +2,9 @@
 sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
 keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
-description: 'Сохранение журналов аудита ClickHouse Cloud в Splunk.'
-title: 'Сохранение журналов аудита ClickHouse Cloud в Splunk'
+description: 'Хранение журналов аудита ClickHouse Cloud в Splunk.'
+title: 'Хранение журналов аудита ClickHouse Cloud в Splunk'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,89 +20,85 @@ import splunk_009 from '@site/static/images/integrations/tools/data-integration/
 import splunk_010 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_010.png';
 import splunk_011 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_011.png';
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
-import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+import PartnerBadge from '@theme/badges/PartnerBadge';
 
+# Сохранение журналов аудита ClickHouse Cloud в Splunk {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
-# Сохранение журналов аудита ClickHouse Cloud в Splunk
+<PartnerBadge/>
 
-<ClickHouseSupportedBadge/>
+[Splunk](https://www.splunk.com/) — это платформа для аналитики данных и мониторинга.
 
-[Splunk](https://www.splunk.com/) — это платформа для аналитики и мониторинга данных.
+Это дополнение позволяет пользователям сохранять [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Оно использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для выгрузки журналов аудита.
 
-Этот аддон позволяет пользователям сохранять [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Он использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для загрузки журналов аудита.
+Это дополнение содержит только модульный ввод (modular input); никаких дополнительных пользовательских интерфейсов оно не предоставляет.
 
-Этот аддон содержит только модульный ввод, дополнительный интерфейс не предоставляется.
-
-
-# Установка
+# Установка {#installation}
 
 ## Для Splunk Enterprise {#for-splunk-enterprise}
 
-Скачайте аддон ClickHouse Cloud Audit для Splunk с [Splunkbase](https://splunkbase.splunk.com/app/7709).
+Загрузите ClickHouse Cloud Audit Add-on for Splunk с [Splunkbase](https://splunkbase.splunk.com/app/7709).
 
-<Image img={splunk_001} size="lg" alt="Сайт Splunkbase, показывающий страницу загрузки аддона ClickHouse Cloud Audit для Splunk" border />
+<Image img={splunk_001} size="lg" alt="Сайт Splunkbase со страницей загрузки ClickHouse Cloud Audit Add-on for Splunk" border />
 
-В Splunk Enterprise перейдите в Apps -> Manage. Затем нажмите на Install app from file.
+В Splunk Enterprise перейдите в раздел Apps -> Manage. Затем нажмите Install app from file.
 
-<Image img={splunk_002} size="lg" alt="Интерфейс Splunk Enterprise, показывающий страницу управления приложениями с опцией Install app from file" border />
+<Image img={splunk_002} size="lg" alt="Интерфейс Splunk Enterprise со страницей управления приложениями и опцией Install app from file" border />
 
-Выберите загруженный архивированный файл из Splunkbase и нажмите Upload.
+Выберите архив, загруженный с Splunkbase, и нажмите Upload.
 
-<Image img={splunk_003} size="lg" alt="Диалог установки Splunk для загрузки аддона ClickHouse" border />
+<Image img={splunk_003} size="lg" alt="Диалог установки приложения Splunk для загрузки дополнения ClickHouse" border />
 
-Если все прошло хорошо, вы должны увидеть установленное приложение ClickHouse Audit logs. Если нет, проверьте журналы Splunkd на наличие ошибок.
+Если всё прошло успешно, вы должны увидеть установленное приложение ClickHouse Audit logs. В противном случае проверьте логи Splunkd на наличие ошибок.
 
+# Модульная конфигурация входных данных {#modular-input-configuration}
 
-# Конфигурация модульного ввода
-
-Чтобы настроить модульный ввод, вам сначала потребуется информация из вашего развертывания ClickHouse Cloud:
+Чтобы настроить модульный ввод, вам сначала понадобится информация из вашего развертывания ClickHouse Cloud:
 
 - Идентификатор организации
-- Админский [API Key](/cloud/manage/openapi)
+- Административный [API Key](/cloud/manage/openapi)
 
 ## Получение информации из ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
 
 Войдите в [консоль ClickHouse Cloud](https://console.clickhouse.cloud/).
 
-Перейдите в вашу Организацию -> Подробности организации. Там вы можете скопировать Идентификатор организации.
+Перейдите в Organization → Organization details. Здесь вы можете скопировать идентификатор организации (Organization ID).
 
-<Image img={splunk_004} size="lg" alt="Консоль ClickHouse Cloud, показывающая страницу Подробности организации с Идентификатором организации" border />
+<Image img={splunk_004} size="lg" alt="Консоль ClickHouse Cloud с открытой страницей Organization details и отображаемым Organization ID" border />
 
-Затем перейдите в API Keys в левом меню.
+Затем в меню слева перейдите в раздел API Keys.
 
-<Image img={splunk_005} size="lg" alt="Консоль ClickHouse Cloud, показывающая раздел API Keys в левом навигационном меню" border />
+<Image img={splunk_005} size="lg" alt="Консоль ClickHouse Cloud с отображаемым разделом API Keys в левом навигационном меню" border />
 
-Создайте API Key, дайте ему понятное имя и выберите привилегии `Admin`. Нажмите на Generate API Key.
+Создайте новый API Key, задайте ему понятное имя и выберите привилегии `Admin`. Нажмите Generate API Key.
 
-<Image img={splunk_006} size="lg" alt="Консоль ClickHouse Cloud, показывающая интерфейс создания API Key с выбранными привилегиями Admin" border />
+<Image img={splunk_006} size="lg" alt="Консоль ClickHouse Cloud с интерфейсом создания API Key и выбранными привилегиями Admin" border />
 
-Сохраните API Key и секретное значение в безопасном месте.
+Сохраните API Key и секрет в надежном месте.
 
-<Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud, показывающая сгенерированный API Key и секрет для сохранения" border />
+<Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud с отображаемыми сгенерированными API Key и секретом, которые необходимо сохранить" border />
 
-## Настройка ввода данных в Splunk {#configure-data-input-in-splunk}
+## Настройка источника данных в Splunk {#configure-data-input-in-splunk}
 
 Вернувшись в Splunk, перейдите в Settings -> Data inputs.
 
-<Image img={splunk_008} size="lg" alt="Интерфейс Splunk, показывающий меню Настройки с опцией Ввод данных" border />
+<Image img={splunk_008} size="lg" alt="Интерфейс Splunk с меню Settings и опцией Data inputs" border />
 
-Выберите ввод данных ClickHouse Cloud Audit Logs.
+Выберите источник данных ClickHouse Cloud Audit Logs.
 
-<Image img={splunk_009} size="lg" alt="Страница ввода данных Splunk, показывающая опцию ClickHouse Cloud Audit Logs" border />
+<Image img={splunk_009} size="lg" alt="Страница Splunk Data inputs с опцией ClickHouse Cloud Audit Logs" border />
 
-Нажмите "New", чтобы настроить новый экземпляр ввода данных.
+Нажмите «New», чтобы настроить новый источник данных.
 
-<Image img={splunk_010} size="lg" alt="Интерфейс Splunk для настройки нового ввода данных ClickHouse Cloud Audit Logs" border />
+<Image img={splunk_010} size="lg" alt="Интерфейс Splunk для настройки нового источника данных ClickHouse Cloud Audit Logs" border />
 
-После того как вы ввели всю информацию, нажмите Next.
+После того как вы введёте все данные, нажмите «Next».
 
-<Image img={splunk_011} size="lg" alt="Страница конфигурации Splunk с завершенными настройками ввода данных ClickHouse" border />
+<Image img={splunk_011} size="lg" alt="Страница конфигурации Splunk с заполненными настройками источника данных ClickHouse" border />
 
-Ввод настроен, вы можете начать просматривать журналы аудита.
+Источник данных настроен, можно приступать к просмотру журналов аудита.
 
+# Использование {#usage}
 
-# Использование
+Модульный ввод данных сохраняет данные в Splunk. Для их просмотра используйте стандартный интерфейс поиска Splunk.
 
-Модульный ввод хранит данные в Splunk. Чтобы просмотреть данные, вы можете использовать общий режим поиска в Splunk.
-
-<Image img={splunk_012} size="lg" alt="Интерфейс поиска Splunk, показывающий данные журналов аудита ClickHouse" border />
+<Image img={splunk_012} size="lg" alt="Интерфейс поиска Splunk, отображающий данные журналов аудита ClickHouse" border />

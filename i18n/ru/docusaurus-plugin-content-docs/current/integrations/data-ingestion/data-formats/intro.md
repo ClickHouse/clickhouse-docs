@@ -3,38 +3,34 @@ slug: /integrations/data-formats
 sidebar_label: 'Обзор'
 sidebar_position: 1
 keywords: ['clickhouse', 'CSV', 'TSV', 'Parquet', 'clickhouse-client', 'clickhouse-local']
-title: 'Импорт из различных форматов данных в ClickHouse'
-description: 'Страница, описывающая, как импортировать различные форматы данных в ClickHouse'
+title: 'Импорт данных из различных форматов в ClickHouse'
+description: 'Страница, описывающая, как импортировать данные из различных форматов в ClickHouse'
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# Импорт данных из различных форматов в ClickHouse {#importing-from-various-data-formats-to-clickhouse}
 
-# Импорт из различных форматов данных в ClickHouse
+В этом разделе документации вы найдёте примеры загрузки данных из различных типов файлов.
 
-В этом разделе документации вы найдете примеры загрузки из различных типов файлов.
+### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
 
-### [**Бинарный**](/integrations/data-ingestion/data-formats/binary.md) {#binary}
+Экспорт и импорт двоичных форматов, таких как ClickHouse Native, MessagePack, Protocol Buffers и Cap'n Proto.
 
-Экспортируйте и загружайте бинарные форматы, такие как ClickHouse Native, MessagePack, Protocol Buffers и Cap'n Proto.
+### [**CSV and TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
 
-### [**CSV и TSV**](/integrations/data-ingestion/data-formats/csv-tsv.md) {#csv-and-tsv}
-
-Импортируйте и экспортируйте семью форматов CSV, включая TSV, с настраиваемыми заголовками и разделителями.
+Импорт и экспорт семейства CSV-форматов, включая TSV, с настраиваемыми заголовками и разделителями.
 
 ### [**JSON**](/integrations/data-ingestion/data-formats/json/intro.md) {#json}
 
-Загружайте и экспортируйте JSON в различных форматах, включая объекты и строки с разделением на NDJSON.
+Загрузка и экспорт JSON в различных вариантах, включая объекты и построчный NDJSON.
 
-### [**Данные Parquet**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
+### [**Parquet data**](/integrations/data-ingestion/data-formats/parquet.md) {#parquet-data}
 
-Обрабатывайте распространенные форматы Apache, такие как Parquet и Arrow.
+Обработка распространённых форматов Apache, таких как Parquet и Arrow.
 
-### [**SQL данные**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
+### [**SQL data**](/integrations/data-ingestion/data-formats/sql.md) {#sql-data}
 
-Нужен дамп SQL для импорта в MySQL или PostgreSQL? Вы попали по адресу.
+Нужен SQL-дамп для импорта в MySQL или PostgreSQL? Вы по адресу.
 
-Если вы хотите подключить BI инструмент, такой как Grafana, Tableau и другие, ознакомьтесь с разделом [Визуализация](../../data-visualization/index.md) документации.
-
-
-## Связанный контент {#related-content}
-
-- Блог: [Введение в форматы данных в ClickHouse](https://clickhouse.com/blog/data-formats-clickhouse-csv-tsv-parquet-native)
+Если вы хотите подключить BI-инструмент, например Grafana, Tableau или другие, обратитесь к разделу документации [Visualize category](../../data-visualization/index.md).

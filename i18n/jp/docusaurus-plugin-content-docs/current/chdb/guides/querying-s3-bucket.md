@@ -1,59 +1,55 @@
 ---
-title: 'S3 バケット内のデータのクエリ方法'
-sidebar_label: 'S3 でのデータクエリ'
-slug: '/chdb/guides/querying-s3'
-description: 'chDB で S3 バケット内のデータをクエリする方法を学びます。'
-keywords:
-- 'chdb'
-- 's3'
+title: 'S3 バケット内のデータをクエリする方法'
+sidebar_label: 'S3 データのクエリ'
+slug: /chdb/guides/querying-s3
+description: 'chDB を使って S3 バケット内のデータをクエリする方法を学びます。'
+keywords: ['chdb', 's3']
+doc_type: 'guide'
 ---
 
+世界中のデータの多くは Amazon S3 バケットに保存されています。
+このガイドでは、chDB を使ってそのデータに対してクエリを実行する方法を学びます。
 
+## セットアップ {#setup}
 
-A lot of the world's data lives in Amazon S3 buckets.  
-このガイドでは、chDBを使用してそのデータをクエリする方法を学びます。
-
-## Setup {#setup}
-
-まずは仮想環境を作成しましょう：
+まず仮想環境を作成します。
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-次にchDBをインストールします。  
-バージョン2.0.2以上であることを確認してください：
+それでは chDB をインストールします。
+chDB のバージョンが 2.0.2 以上であることを確認してください。
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-続いてIPythonをインストールします：
+それでは、IPython をインストールします：
 
 ```bash
 pip install ipython
 ```
 
-`ipython`を使って、ガイドの残りのコマンドを実行します。  
-以下のコマンドで`ipython`を起動できます：
+このガイドの残りの手順で実行するコマンドは `ipython` を使います。次のコマンドを実行して `ipython` を起動してください。
 
 ```bash
 ipython
 ```
 
-または、Pythonスクリプトやお好みのノートブックでもこのコードを使用できます。
+このコードは Python スクリプトやお使いのノートブックでも使用できます。
 
-## Listing files in an S3 bucket {#listing-files-in-an-s3-bucket}
+## S3 バケット内のファイル一覧を取得する {#listing-files-in-an-s3-bucket}
 
-最初に、[Amazonレビューを含むS3バケットの全ファイルをリストアップ](/getting-started/example-datasets/amazon-reviews)しましょう。  
-これを行うには、[`s3`テーブル関数](/sql-reference/table-functions/s3)を使用し、ファイルへのパスまたはワイルドカードを渡します。
+まずは [Amazon レビューを含む S3 バケット](/getting-started/example-datasets/amazon-reviews) 内のすべてのファイルを一覧表示してみます。
+これを行うには、[`s3` テーブル関数](/sql-reference/table-functions/s3) を使用し、ファイルへのパス、または複数ファイルにマッチするワイルドカードを引数として指定します。
 
 :::tip
-バケット名のみを渡すと、例外が発生します。
+バケット名だけを渡すと、例外がスローされます。
 :::
 
-また、[`One`](/interfaces/formats#data-format-one)入力フォーマットを使用して、ファイルが解析されず、ファイルごとに1行が返され、`_file`仮想カラムと`_path`仮想カラム経由でファイルやパスにアクセスできるようにします。
+また、ファイルがパースされないように [`One`](/interfaces/formats/One) 入力フォーマットも使用します。これにより、ファイルごとに 1 行だけが返され、`_file` 仮想カラムからファイルを、`_path` 仮想カラムからパスを参照できます。
 
 ```python
 import chdb
@@ -80,12 +76,12 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-このバケットには、Parquetファイルのみが含まれています。
+このバケットには Parquet ファイルのみが格納されています。
 
-## Querying files in an S3 bucket {#querying-files-in-an-s3-bucket}
+## S3 バケット内のファイルをクエリする {#querying-files-in-an-s3-bucket}
 
-次に、これらのファイルをクエリする方法を学びましょう。  
-これらのファイルの各行数を数えたい場合、以下のクエリを実行できます：
+次に、これらのファイルに対してどのようにクエリを実行するかを見ていきます。
+各ファイルの行数を数えたい場合は、次のクエリを実行できます。
 
 ```python
 chdb.query("""
@@ -112,7 +108,7 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-S3バケットのHTTP URIを渡すことでも同じ結果が得られます：
+S3 バケットの HTTP URI を指定することもでき、その場合も同じ結果が得られます。
 
 ```python
 chdb.query("""
@@ -126,7 +122,7 @@ SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-`DESCRIBE`句を使用してこれらのParquetファイルのスキーマを確認しましょう：
+これらの Parquet ファイルのスキーマを `DESCRIBE` 句を使って確認してみましょう。
 
 ```python
 chdb.query("""
@@ -155,7 +151,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-今、レビュー数に基づいてトップの製品カテゴリを計算し、平均星評価を計算しましょう：
+それでは、レビュー数に基づいて上位の商品カテゴリを集計し、あわせて平均星評価も計算してみましょう。
 
 ```python
 chdb.query("""
@@ -181,10 +177,10 @@ LIMIT 10
     └──────────────────┴──────────┴──────┘
 ```
 
-## Querying files in a private S3 bucket {#querying-files-in-a-private-s3-bucket}
+## プライベートな S3 バケット内のファイルをクエリする {#querying-files-in-a-private-s3-bucket}
 
-プライベートS3バケットのファイルをクエリする場合、アクセスキーとシークレットを渡す必要があります。  
-これらの認証情報を`s3`テーブル関数に渡すことができます：
+プライベートな S3 バケット内のファイルをクエリする場合、アクセスキーとシークレットアクセスキーを指定する必要があります。
+これらの認証情報は `s3` テーブル関数に渡すことができます。
 
 ```python
 chdb.query("""
@@ -196,7 +192,7 @@ LIMIT 10
 ```
 
 :::note
-このクエリは公開バケットのため、動作しません！
+このクエリはパブリックバケットであるため動作しません。
 :::
 
-別の方法は、[名前付きコレクション](/operations/named-collections)を使用することですが、このアプローチはまだchDBによってサポートされていません。
+別の方法として [named collections](/operations/named-collections) を使用することもできますが、この方法は chDB ではまだサポートされていません。

@@ -1,15 +1,17 @@
 ---
-'slug': '/use-cases/observability/clickstack/ingesting-data/schemas'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStack使用的表和架构 - ClickHouse可观察性堆栈'
-'sidebar_label': '表和架构'
-'title': 'ClickStack使用的表和架构'
+slug: /use-cases/observability/clickstack/ingesting-data/schemas
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack 使用的表和模式 - ClickHouse 可观测性栈'
+sidebar_label: '表和模式'
+title: 'ClickStack 使用的表和模式'
+doc_type: 'reference'
+keywords: ['clickstack', 'schema', 'data model', 'table design', 'logs']
 ---
 
-The ClickStack OpenTelemetry (OTel) 收集器使用 [ClickHouse 导出器](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并插入数据。
+ClickStack 的 OpenTelemetry (OTel) collector 使用 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) 在 ClickHouse 中创建表并插入数据。
 
-在 `default` 数据库中为每种数据类型创建以下表。用户可以通过修改环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改目标数据库，以便托管 OTel 收集器的镜像。
+在 `default` 数据库中，会为每种数据类型创建以下表。用户可以通过修改运行 OTel collector 的镜像中的环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来更改此目标数据库。
 
 ## 日志 {#logs}
 
@@ -47,7 +49,7 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-## 跟踪 {#traces}
+## 追踪 {#traces}
 
 ```sql
 CREATE TABLE otel_traces
@@ -88,7 +90,7 @@ ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 
 ## 指标 {#metrics}
 
-### 计量指标 {#gauge}
+### Gauge 指标 {#gauge}
 
 ```sql
 CREATE TABLE otel_metrics_gauge
@@ -126,7 +128,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 总和指标 {#sum}
+### 求和（Sum）指标 {#sum}
 
 ```sql
 CREATE TABLE otel_metrics_sum
@@ -208,14 +210,16 @@ CREATE TABLE otel_metrics_histogram
 ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
-SETTINGS index_granularity = 8192"
 ```
 
 ### 指数直方图 {#exponential-histograms}
 
+:::note
+HyperDX 目前尚不支持获取或展示指数直方图类型的指标。用户可以在指标数据源中对其进行配置，未来将提供相关支持。
+:::
+
 ```sql
-CREATE TABLE otel_metrics_histogram
-(
+CREATE TABLE otel_metrics_exponentialhistogram (
     `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
     `ResourceSchemaUrl` String CODEC(ZSTD(1)),
     `ScopeName` String CODEC(ZSTD(1)),
@@ -228,18 +232,24 @@ CREATE TABLE otel_metrics_histogram
     `MetricDescription` String CODEC(ZSTD(1)),
     `MetricUnit` String CODEC(ZSTD(1)),
     `Attributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `StartTimeUnix` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TimeUnix` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `Count` UInt64 CODEC(Delta(8), ZSTD(1)),
+    `StartTimeUnix` DateTime64(9) CODEC(Delta, ZSTD(1)),
+    `TimeUnix` DateTime64(9) CODEC(Delta, ZSTD(1)),
+    `Count` UInt64 CODEC(Delta, ZSTD(1)),
     `Sum` Float64 CODEC(ZSTD(1)),
-    `BucketCounts` Array(UInt64) CODEC(ZSTD(1)),
-    `ExplicitBounds` Array(Float64) CODEC(ZSTD(1)),
-    `Exemplars.FilteredAttributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `Exemplars.TimeUnix` Array(DateTime64(9)) CODEC(ZSTD(1)),
-    `Exemplars.Value` Array(Float64) CODEC(ZSTD(1)),
-    `Exemplars.SpanId` Array(String) CODEC(ZSTD(1)),
-    `Exemplars.TraceId` Array(String) CODEC(ZSTD(1)),
-    `Flags` UInt32 CODEC(ZSTD(1)),
+    `Scale` Int32 CODEC(ZSTD(1)),
+    `ZeroCount` UInt64 CODEC(ZSTD(1)),
+    `PositiveOffset` Int32 CODEC(ZSTD(1)),
+    `PositiveBucketCounts` Array(UInt64) CODEC(ZSTD(1)),
+    `NegativeOffset` Int32 CODEC(ZSTD(1)),
+    `NegativeBucketCounts` Array(UInt64) CODEC(ZSTD(1)),
+    `Exemplars` Nested (
+        FilteredAttributes Map(LowCardinality(String), String),
+        TimeUnix DateTime64(9),
+        Value Float64,
+        SpanId String,
+        TraceId String
+    ) CODEC(ZSTD(1)),
+    `Flags` UInt32  CODEC(ZSTD(1)),
     `Min` Float64 CODEC(ZSTD(1)),
     `Max` Float64 CODEC(ZSTD(1)),
     `AggregationTemporality` Int32 CODEC(ZSTD(1)),
@@ -255,7 +265,7 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-### 概要表 {#summary-table}
+### 汇总表 {#summary-table}
 
 ```sql
 CREATE TABLE otel_metrics_summary

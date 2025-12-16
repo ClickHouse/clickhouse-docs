@@ -1,23 +1,24 @@
 ---
 alias: []
-description: 'Документация для формата JSONColumnsWithMetadata'
+description: 'Документация по формату JSONColumnsWithMetadata'
 input_format: true
 keywords: ['JSONColumnsWithMetadata']
 output_format: true
 slug: /interfaces/formats/JSONColumnsWithMetadata
 title: 'JSONColumnsWithMetadata'
+doc_type: 'reference'
 ---
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✔              | ✔               |           |
 
 ## Описание {#description}
 
-Этот формат отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что он также содержит некоторые метаданные и статистику (аналогично формату [`JSON`](./JSON.md)).
+Отличается от формата [`JSONColumns`](./JSONColumns.md) тем, что также содержит некоторые метаданные и статистику (аналогично формату [`JSON`](./JSON.md)).
 
 :::note
-Формат `JSONColumnsWithMetadata` буферизует все данные в памяти, а затем выводит их как один блок, что может привести к высокому потреблению памяти.
+Формат `JSONColumnsWithMetadata` буферизует все данные в памяти и затем выводит их одним блоком, поэтому может приводить к высокому потреблению памяти.
 :::
 
 ## Пример использования {#example-usage}
@@ -63,7 +64,7 @@ title: 'JSONColumnsWithMetadata'
 }
 ```
 
-Для формата ввода `JSONColumnsWithMetadata`, если настройка [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) установлена в `1`,
-типы из метаданных входных данных будут сопоставлены с типами соответствующих колонок из таблицы.
+Для формата ввода `JSONColumnsWithMetadata`, если параметр [`input_format_json_validate_types_from_metadata`](/operations/settings/settings-formats.md/#input_format_json_validate_types_from_metadata) имеет значение `1`,
+типы, указанные в метаданных во входных данных, будут сравниваться с типами соответствующих столбцов таблицы.
 
-## Настройки формата {#format-settings}
+## Параметры формата {#format-settings}

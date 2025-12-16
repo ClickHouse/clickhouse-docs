@@ -1,11 +1,13 @@
 ---
-description: 'Набор данных, содержащий информацию о своевременности рейсов авиакомпаний'
-sidebar_label: 'Данные о своевременности рейсов авиакомпаний'
+description: 'Набор данных, содержащий информацию о своевременности выполнения авиарейсов'
+sidebar_label: 'Набор данных авиарейсов OnTime'
 slug: /getting-started/example-datasets/ontime
-title: 'Своевременность'
+title: 'OnTime'
+doc_type: 'guide'
+keywords: ['пример набора данных', 'данные о рейсах', 'пример данных', 'эффективность авиакомпаний', 'бенчмарк']
 ---
 
-Этот набор данных содержит информацию из Бюро статистики транспортировки.
+Этот набор сформирован на основе данных Бюро транспортной статистики США (Bureau of Transportation Statistics).
 
 ## Создание таблицы {#creating-a-table}
 
@@ -125,31 +127,31 @@ CREATE TABLE `ontime`
   ORDER BY (Year, Quarter, Month, DayofMonth, FlightDate, IATA_CODE_Reporting_Airline);
 ```
 
-## Импорт из сырых данных {#import-from-raw-data}
+## Импорт сырых данных {#import-from-raw-data}
 
-Скачивание данных:
+Загрузка данных:
 
 ```bash
 wget --no-check-certificate --continue https://transtats.bts.gov/PREZIP/On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{1987..2022}_{1..12}.zip
 ```
 
-Загрузка данных с использованием нескольких потоков:
+Многопоточная загрузка данных:
 
 ```bash
 ls -1 *.zip | xargs -I{} -P $(nproc) bash -c "echo {}; unzip -cq {} '*.csv' | sed 's/\.00//g' | clickhouse-client --input_format_csv_empty_as_default 1 --query='INSERT INTO ontime FORMAT CSVWithNames'"
 ```
 
-(если у вас возникнут нехватка памяти или другие проблемы на сервере, удалите часть `-P $(nproc)`)
+(если на вашем сервере будет нехватка памяти или возникнут другие проблемы, удалите флаг `-P $(nproc)`)
 
-## Импорт из сохраненной копии {#import-from-a-saved-copy}
+## Импорт из сохранённой копии {#import-from-a-saved-copy}
 
-Кроме того, вы можете импортировать данные из сохраненной копии с помощью следующего запроса:
+Также вы можете импортировать данные из сохранённой копии с помощью следующего запроса:
 
 ```sql
 INSERT INTO ontime SELECT * FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/ontime/csv_by_year/*.csv.gz', CSVWithNames) SETTINGS max_insert_threads = 40;
 ```
 
-Снимок был создан 29-05-2022.
+Снимок был создан 29.05.2022.
 
 ## Запросы {#queries}
 
@@ -175,7 +177,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q2. Количество рейсов, задержанных более чем на 10 минут, сгруппированных по дню недели, за 2000-2008 годы
+Q2. Количество рейсов, задержанных более чем на 10 минут, по дням недели в 2000–2008 годах
 
 ```sql
 SELECT DayOfWeek, count(*) AS c
@@ -185,7 +187,7 @@ GROUP BY DayOfWeek
 ORDER BY c DESC;
 ```
 
-Q3. Количество задержек по аэропортам за 2000-2008 годы
+Q3. Количество задержек по аэропортам в 2000–2008 годах
 
 ```sql
 SELECT Origin, count(*) AS c
@@ -206,10 +208,10 @@ GROUP BY Carrier
 ORDER BY count(*) DESC;
 ```
 
-Q5. Процент задержек по авиакомпаниям за 2007 год
+Q5. Процент задержек по авиаперевозчикам в 2007 году
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -232,7 +234,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-Лучшая версия того же запроса:
+Более удачный вариант того же запроса:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -242,10 +244,10 @@ GROUP BY Carrier
 ORDER BY c3 DESC
 ```
 
-Q6. Предыдущий запрос для более широкого диапазона лет, 2000-2008
+Q6. Предыдущий запрос с более широким диапазоном лет — 2000–2008
 
 ```sql
-SELECT Carrier, c, c2, c*100/c2 as c3
+SELECT Carrier, c, c2, c*100/c2 AS c3
 FROM
 (
     SELECT
@@ -268,7 +270,7 @@ JOIN
 ORDER BY c3 DESC;
 ```
 
-Лучшая версия того же запроса:
+Более удачная версия этого же запроса:
 
 ```sql
 SELECT IATA_CODE_Reporting_Airline AS Carrier, avg(DepDelay>10)*100 AS c3
@@ -278,31 +280,31 @@ GROUP BY Carrier
 ORDER BY c3 DESC;
 ```
 
-Q7. Процент рейсов, задержанных более чем на 10 минут, по годам
+Q7. Доля рейсов, задержанных более чем на 10 минут, по годам
 
 ```sql
 SELECT Year, c1/c2
 FROM
 (
-    select
+    SELECT
         Year,
-        count(*)*100 as c1
-    from ontime
+        count(*)*100 AS c1
+    FROM ontime
     WHERE DepDelay>10
     GROUP BY Year
 ) q
 JOIN
 (
-    select
+    SELECT
         Year,
-        count(*) as c2
-    from ontime
+        count(*) AS c2
+    FROM ontime
     GROUP BY Year
 ) qq USING (Year)
 ORDER BY Year;
 ```
 
-Лучшая версия того же запроса:
+Более оптимальный вариант того же запроса:
 
 ```sql
 SELECT Year, avg(DepDelay>10)*100
@@ -311,17 +313,17 @@ GROUP BY Year
 ORDER BY Year;
 ```
 
-Q8. Самые популярные направления по количеству напрямую связанных городов для различных диапазонов лет
+Q8. Наиболее популярные пункты назначения по количеству городов с прямым сообщением для различных периодов
 
 ```sql
 SELECT DestCityName, uniqExact(OriginCityName) AS u
 FROM ontime
-WHERE Year >= 2000 and Year <= 2010
+WHERE Year >= 2000 AND Year <= 2010
 GROUP BY DestCityName
 ORDER BY u DESC LIMIT 10;
 ```
 
-Q9.
+Вопрос 9.
 
 ```sql
 SELECT Year, count(*) AS c1
@@ -341,13 +343,13 @@ WHERE
    DayOfWeek NOT IN (6,7) AND OriginState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND DestState NOT IN ('AK', 'HI', 'PR', 'VI')
    AND FlightDate < '2010-01-01'
-GROUP by Carrier
-HAVING cnt>100000 and max(Year)>1990
-ORDER by rate DESC
+GROUP BY Carrier
+HAVING cnt>100000 AND max(Year)>1990
+ORDER BY rate DESC
 LIMIT 1000;
 ```
 
-Бонус:
+Дополнительно:
 
 ```sql
 SELECT avg(cnt)
@@ -385,13 +387,13 @@ ORDER BY c DESC
 LIMIT 10;
 ```
 
-Вы также можете поиграть с данными в Playground, [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
+Вы также можете поэкспериментировать с данными в Playground, см. [пример](https://sql.clickhouse.com?query_id=M4FSVBVMSHY98NKCQP8N4K).
 
 Этот тест производительности был создан Вадимом Ткаченко. См.:
 
-- https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/
-- https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/
-- https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/
-- https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/
-- https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/
-- http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html
+* [https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/](https://www.percona.com/blog/2009/10/02/analyzing-air-traffic-performance-with-infobright-and-monetdb/)
+* [https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/](https://www.percona.com/blog/2009/10/26/air-traffic-queries-in-luciddb/)
+* [https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/](https://www.percona.com/blog/2009/11/02/air-traffic-queries-in-infinidb-early-alpha/)
+* [https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/](https://www.percona.com/blog/2014/04/21/using-apache-hadoop-and-impala-together-with-mysql-for-data-analysis/)
+* [https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/](https://www.percona.com/blog/2016/01/07/apache-spark-with-air-ontime-performance-data/)
+* [http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html](http://nickmakos.blogspot.ru/2012/08/analyzing-air-traffic-performance-with.html)

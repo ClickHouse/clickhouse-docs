@@ -1,16 +1,16 @@
 ---
-'description': 'INTERSECT 子句的文档'
-'sidebar_label': 'INTERSECT'
-'slug': '/sql-reference/statements/select/intersect'
-'title': 'INTERSECT 子句'
+description: 'INTERSECT 子句文档'
+sidebar_label: 'INTERSECT'
+slug: /sql-reference/statements/select/intersect
+title: 'INTERSECT 子句'
+doc_type: 'reference'
 ---
 
+# INTERSECT 子句 {#intersect-clause}
 
-# INTERSECT 子句
+`INTERSECT` 子句仅返回同时出现在第一个查询和第二个查询结果中的行。两个查询的列数量、顺序和类型必须一致。`INTERSECT` 的结果中可以包含重复行。
 
-`INTERSECT` 子句仅返回来自第一个和第二个查询的结果行。这两个查询必须匹配列数、顺序和类型。`INTERSECT` 的结果可以包含重复行。
-
-多个 `INTERSECT` 语句在没有指定括号的情况下从左到右执行。`INTERSECT` 运算符的优先级高于 `UNION` 和 `EXCEPT` 子句。
+如果未使用圆括号，多个 `INTERSECT` 子句按照从左到右的顺序执行。`INTERSECT` 运算符的优先级高于 `UNION` 和 `EXCEPT` 子句。
 
 ```sql
 SELECT column1 [, column2 ]
@@ -24,11 +24,12 @@ FROM table2
 [WHERE condition]
 
 ```
-该条件可以根据您的需求是任何表达式。
+
+该条件可以根据您的需求设置为任意表达式。
 
 ## 示例 {#examples}
 
-这是一个简单的示例，将数字 1 到 10 与数字 3 到 8 进行交集：
+下面是一个简单的示例，用来求 1 到 10 与 3 到 8 这两个数字区间的交集：
 
 ```sql
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
@@ -47,7 +48,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 └────────┘
 ```
 
-当您有两个共享公共列（或列）的表时，`INTERSECT` 非常有用。您可以对两个查询的结果进行交集，只要这些结果包含相同的列。例如，假设我们有几百万行的历史加密货币数据，其中包含交易价格和交易量：
+当你有两个表，并且它们共享一个或多个相同的列时，`INTERSECT` 非常有用。只要两个查询的结果集包含相同的列，你就可以对它们的结果求交集。比如，假设我们有几百万行历史加密货币数据，其中包含交易价格和交易量：
 
 ```sql
 CREATE TABLE crypto_prices
@@ -90,7 +91,7 @@ LIMIT 10;
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```
 
-现在假设我们有一个名为 `holdings` 的表，包含我们拥有的加密货币的列表，以及对应的币种数量：
+现在假设我们有一张名为 `holdings` 的表，列出了我们持有的各类加密货币及其对应的持币数量：
 
 ```sql
 CREATE TABLE holdings
@@ -110,7 +111,7 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-我们可以使用 `INTERSECT` 来回答类似 **“我们拥有的哪些币在交易价格超过 $100 的情况下？”** 的问题：
+我们可以使用 `INTERSECT` 来回答诸如 **&quot;我们持有哪些币种的成交价格曾高于 100 美元？&quot;** 这样的问题：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -130,11 +131,11 @@ WHERE price > 100
 └─────────────┘
 ```
 
-这意味着在某个时间点，比特币和以太坊的交易价格超过了 $100，而 DOGEFI 和 Bitcoin Diamond 从未交易过 $100（至少根据我们在这个例子中拥有的数据）。
+这意味着在某个时点，Bitcoin 和 Ethereum 的价格曾经高于 $100，而 DOGEFI 和 Bitcoin Diamond 从未高于 $100（至少在本示例所用的数据中是如此）。
 
 ## INTERSECT DISTINCT {#intersect-distinct}
 
-请注意，在之前的查询中，我们有多个比特币和以太坊的持有量，它们的交易价格超过了 $100。去除重复行（因为它们只重复了我们已经知道的信息）可能会很好。您可以在 `INTERSECT` 中添加 `DISTINCT` 以消除结果中的重复行：
+请注意，在上一个查询中，我们有多笔比特币和以太坊持仓的成交价格都高于 100 美元。去掉这些重复行（因为它们只是重复我们已经知道的内容）可能会更好一些。你可以在 `INTERSECT` 后添加 `DISTINCT` 关键字，以消除结果中的重复行：
 
 ```sql
 SELECT crypto_name FROM holdings
@@ -152,8 +153,7 @@ WHERE price > 100;
 └─────────────┘
 ```
 
+**另请参阅**
 
-**另见**
-
-- [UNION](/sql-reference/statements/select/union)
-- [EXCEPT](/sql-reference/statements/select/except)
+* [UNION](/sql-reference/statements/select/union)
+* [EXCEPT](/sql-reference/statements/select/except)

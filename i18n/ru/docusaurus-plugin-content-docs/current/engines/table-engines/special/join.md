@@ -1,18 +1,18 @@
 ---
 description: 'Необязательная подготовленная структура данных для использования в операциях JOIN.'
-sidebar_label: 'JOIN'
+sidebar_label: 'Join'
 sidebar_position: 70
 slug: /engines/table-engines/special/join
-title: 'Движок таблиц JOIN'
+title: 'Движок таблицы Join'
+doc_type: 'reference'
 ---
 
+# Табличный движок Join {#join-table-engine}
 
-# Движок таблиц JOIN
-
-Необязательная подготовленная структура данных для использования в [JOIN](/sql-reference/statements/select/join) операциях.
+Дополнительная подготовленная структура данных для использования в операциях [JOIN](/sql-reference/statements/select/join).
 
 :::note
-Это не статья о самом [JOIN-условии](/sql-reference/statements/select/join).
+В ClickHouse Cloud, если ваш сервис был создан на версии раньше 25.4, необходимо установить параметр `compatibility` не ниже 25.4, выполнив команду `SET compatibility=25.4`.
 :::
 
 ## Создание таблицы {#creating-a-table}
@@ -25,40 +25,40 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE = Join(join_strictness, join_type, k1[, k2, ...])
 ```
 
-Смотрите подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
+См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
 ## Параметры движка {#engine-parameters}
 
-### join_strictness {#join_strictness}
+### `join_strictness` {#join_strictness}
 
 `join_strictness` – [строгость JOIN](/sql-reference/statements/select/join#supported-types-of-join).
 
-### join_type {#join_type}
+### `join_type` {#join_type}
 
 `join_type` – [тип JOIN](/sql-reference/statements/select/join#supported-types-of-join).
 
-### Ключевые колонки {#key-columns}
+### Ключевые столбцы {#key-columns}
 
-`k1[, k2, ...]` – Ключевые колонки из `USING` выражения, с которыми выполняется операция `JOIN`.
+`k1[, k2, ...]` – ключевые столбцы из предложения `USING`, по которым выполняется операция `JOIN`.
 
-Вводите параметры `join_strictness` и `join_type` без кавычек, например, `Join(ANY, LEFT, col1)`. Они должны соответствовать операции `JOIN`, для которой будет использоваться таблица. Если параметры не совпадают, ClickHouse не выбросит исключение и может вернуть некорректные данные.
+Задавайте параметры `join_strictness` и `join_type` без кавычек, например `Join(ANY, LEFT, col1)`. Они должны соответствовать операции `JOIN`, для которой будет использоваться таблица. Если параметры не соответствуют, ClickHouse не выбрасывает исключение и может вернуть некорректные данные.
 
-## Специфика и рекомендации {#specifics-and-recommendations}
+## Особенности и рекомендации {#specifics-and-recommendations}
 
 ### Хранение данных {#data-storage}
 
-Данные таблицы `Join` всегда находятся в памяти. При вставке строк в таблицу ClickHouse записывает блоки данных в директорию на диске, чтобы они могли быть восстановлены после перезапуска сервера.
+Данные таблицы `Join` всегда находятся в оперативной памяти. При вставке строк в таблицу ClickHouse записывает блоки данных в каталог на диске, чтобы их можно было восстановить при перезапуске сервера.
 
-Если сервер неправильно перезапустится, блок данных на диске может быть потерян или поврежден. В этом случае может потребоваться вручную удалить файл с поврежденными данными.
+Если сервер перезапускается некорректно, блок данных на диске может быть потерян или повреждён. В этом случае может потребоваться вручную удалить файл с повреждёнными данными.
 
-### Выбор и вставка данных {#selecting-and-inserting-data}
+### Выборка и вставка данных {#selecting-and-inserting-data}
 
-Вы можете использовать запросы `INSERT` для добавления данных в таблицы с движком `Join`. Если таблица была создана с `ANY` строгостью, данные для дубликатов ключей игнорируются. При `ALL` строгости все строки добавляются.
+Вы можете использовать запросы `INSERT` для добавления данных в таблицы с движком `Join`. Если таблица была создана с режимом строгости `ANY`, данные для дублирующихся ключей игнорируются. При режиме строгости `ALL` добавляются все строки.
 
-Основные сценарии использования таблиц с движком `Join`:
+Основные варианты использования таблиц с движком `Join`:
 
-- Поместить таблицу на правую сторону в условии `JOIN`.
-- Вызвать функцию [joinGet](/sql-reference/functions/other-functions.md/#joinget), которая позволяет извлекать данные из таблицы так же, как из словаря.
+- Использовать таблицу справа в выражении `JOIN`.
+- Вызывать функцию [joinGet](/sql-reference/functions/other-functions.md/#joinGet), которая позволяет извлекать данные из таблицы так же, как из словаря.
 
 ### Удаление данных {#deleting-data}
 
@@ -68,48 +68,47 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 При создании таблицы применяются следующие настройки:
 
-#### join_use_nulls {#join_use_nulls}
+#### `join_use_nulls` {#join_use_nulls}
 
 [join_use_nulls](/operations/settings/settings.md/#join_use_nulls)
 
-#### max_rows_in_join {#max_rows_in_join}
+#### `max_rows_in_join` {#max_rows_in_join}
 
 [max_rows_in_join](/operations/settings/settings#max_rows_in_join)
 
-#### max_bytes_in_join {#max_bytes_in_join}
+#### `max_bytes_in_join` {#max_bytes_in_join}
 
 [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
 
-#### join_overflow_mode {#join_overflow_mode}
+#### `join_overflow_mode` {#join_overflow_mode}
 
 [join_overflow_mode](/operations/settings/settings#join_overflow_mode)
 
-#### join_any_take_last_row {#join_any_take_last_row}
+#### `join_any_take_last_row` {#join_any_take_last_row}
 
 [join_any_take_last_row](/operations/settings/settings.md/#join_any_take_last_row)
+#### `join_use_nulls` {#join_use_nulls-1}
 
-#### join_use_nulls {#join_use_nulls-1}
+#### Persistent {#persistent}
 
-#### persistent {#persistent}
+Отключает персистентность для движков таблиц Join и [Set](/engines/table-engines/special/set.md).
 
-Отключает постоянство для движков таблиц Join и [Set](/engines/table-engines/special/set.md).
-
-Снижает накладные расходы на ввод-вывод. Подходит для сценариев, ориентированных на производительность и не требующих постоянства.
+Снижает нагрузку на подсистему ввода-вывода. Подходит для сценариев, ориентированных на производительность и не требующих персистентности.
 
 Возможные значения:
 
-- 1 — Включено.
-- 0 — Выключено.
+- 1 — включено.
+- 0 — выключено.
 
 Значение по умолчанию: `1`.
 
 Таблицы с движком `Join` не могут использоваться в операциях `GLOBAL JOIN`.
 
-Движок `Join` позволяет задавать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в запросе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
+Движок `Join` позволяет указать настройку [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) в операторе `CREATE TABLE`. Запрос [SELECT](/sql-reference/statements/select/index.md) должен иметь то же значение `join_use_nulls`.
 
 ## Примеры использования {#example}
 
-Создание таблицы с левой стороны:
+Создание левой таблицы:
 
 ```sql
 CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
@@ -119,7 +118,7 @@ CREATE TABLE id_val(`id` UInt32, `val` UInt32) ENGINE = TinyLog;
 INSERT INTO id_val VALUES (1,11)(2,12)(3,13);
 ```
 
-Создание таблицы `Join` с правой стороны:
+Создание правой таблицы для операции `JOIN`:
 
 ```sql
 CREATE TABLE id_val_join(`id` UInt32, `val` UInt8) ENGINE = Join(ANY, LEFT, id);
@@ -143,7 +142,7 @@ SELECT * FROM id_val ANY LEFT JOIN id_val_join USING (id);
 └────┴─────┴─────────────────┘
 ```
 
-В качестве альтернативы, вы можете извлечь данные из таблицы `Join`, указав значение ключа объединения:
+В качестве альтернативы вы можете получить данные из таблицы `Join`, указав значение ключа соединения:
 
 ```sql
 SELECT joinGet('id_val_join', 'val', toUInt32(1));

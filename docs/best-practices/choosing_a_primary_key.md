@@ -1,7 +1,7 @@
 ---
 slug: /best-practices/choosing-a-primary-key
 sidebar_position: 10
-sidebar_label: 'Choosing a Primary Key'
+sidebar_label: 'Choosing a primary key'
 title: 'Choosing a Primary Key'
 description: 'Page describing how to choose a primary key in ClickHouse'
 keywords: ['primary key']
@@ -22,7 +22,7 @@ Choosing an effective primary key in ClickHouse is crucial for query performance
 1. When selecting an ordering key, prioritize columns frequently used in query filters (i.e. the `WHERE` clause), especially those that exclude large numbers of rows.
 2. Columns highly correlated with other data in the table are also beneficial, as contiguous storage improves compression ratios and memory efficiency during `GROUP BY` and `ORDER BY` operations.
 <br/>
-Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **Users can identify a number of keys from this process, with 4-5 typically sufficient**:
+Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. **You can identify a number of keys from this process, with 4-5 typically sufficient**:
 
 :::note Important
 Ordering keys must be defined on table creation and cannot be added. Additional ordering can be added to a table after (or before) data insertion through a feature known as projections. Be aware these result in data duplication. Further details [here](/sql-reference/statements/alter/projection).

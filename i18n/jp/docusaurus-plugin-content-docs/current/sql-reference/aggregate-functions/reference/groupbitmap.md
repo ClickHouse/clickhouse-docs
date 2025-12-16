@@ -1,16 +1,14 @@
 ---
-description: 'Bitmapまたは符号なし整数カラムからの集計計算は、UInt64型の濃度を返します。-State接尾辞を追加すると、ビットマップオブジェクトが返されます。'
+description: '符号なし整数列に対するビットマップまたは集約計算を行い、UInt64 型の基数（要素数）を返します。サフィックスに -State を付けた場合は、ビットマップオブジェクトを返します。'
 sidebar_position: 148
-slug: '/sql-reference/aggregate-functions/reference/groupbitmap'
+slug: /sql-reference/aggregate-functions/reference/groupbitmap
 title: 'groupBitmap'
+doc_type: 'reference'
 ---
 
+# groupBitmap {#groupbitmap}
 
-
-
-# groupBitmap
-
-ビットマップまたは未符号整数カラムからの集約計算で、UInt64型の基数を返します。-Stateサフィックスを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)を返します。
+符号なし整数列に対してビットマップまたは集計計算を実行し、`UInt64` 型のカーディナリティ値を返します。サフィックスとして `-State` を付けた場合は、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 
 ```sql
 groupBitmap(expr)
@@ -18,15 +16,15 @@ groupBitmap(expr)
 
 **引数**
 
-`expr` – `UInt*`型の結果となる式。
+`expr` – 評価結果が `UInt*` 型となる式。
 
 **戻り値**
 
-`UInt64`型の値。
+`UInt64` 型の値。
 
 **例**
 
-テストデータ:
+テストデータ：
 
 ```text
 UserID
@@ -36,10 +34,10 @@ UserID
 3
 ```
 
-クエリ:
+クエリ：
 
 ```sql
-SELECT groupBitmap(UserID) as num FROM t
+SELECT groupBitmap(UserID) AS num FROM t
 ```
 
 結果:

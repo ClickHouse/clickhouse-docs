@@ -1,21 +1,23 @@
 ---
-description: 'Документация для UNDROP TABLE'
+description: 'Документация по оператору UNDROP TABLE'
 sidebar_label: 'UNDROP'
 slug: /sql-reference/statements/undrop
 title: 'UNDROP TABLE'
+doc_type: 'reference'
 ---
 
-
-# UNDROP TABLE
+# UNDROP TABLE {#undrop-table}
 
 Отменяет удаление таблицы.
 
-Начиная с версии ClickHouse 23.3, можно восстановить таблицу в атомарной базе данных в течение `database_atomic_delay_before_drop_table_sec` (по умолчанию 8 минут) после выполнения команды DROP TABLE. Удаленные таблицы перечислены в системной таблице `system.dropped_tables`.
+Начиная с версии ClickHouse 23.3, можно выполнить команду UNDROP TABLE для таблицы в базе данных Atomic
+в течение `database_atomic_delay_before_drop_table_sec` (по умолчанию 8 минут) после выполнения оператора DROP TABLE. Удалённые таблицы перечислены
+в системной таблице `system.dropped_tables`.
 
-Если у вас есть материализованное представление без `TO`-клаузулы, связанной с удаленной таблицей, то вам также потребуется восстановить внутреннюю таблицу этого представления.
+Если у вас есть материализованное представление без предложения `TO`, связанное с удалённой таблицей, вам также потребуется выполнить UNDROP для внутренней таблицы этого представления.
 
 :::tip
-Смотрите также [DROP TABLE](/sql-reference/statements/drop.md)
+См. также [DROP TABLE](/sql-reference/statements/drop.md)
 :::
 
 Синтаксис:
@@ -74,7 +76,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Row 1:
+Строка 1:
 ──────
 name:               id
 type:               UInt8

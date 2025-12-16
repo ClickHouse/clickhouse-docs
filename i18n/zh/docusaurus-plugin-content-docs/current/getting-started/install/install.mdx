@@ -1,13 +1,10 @@
 ---
-'description': '安装 ClickHouse'
-'keywords':
-- 'clickhouse'
-- 'install'
-- 'getting started'
-- 'quick start'
-'sidebar_label': '安装'
-'slug': '/install'
-'title': '安装 ClickHouse'
+description: '安装 ClickHouse'
+keywords: ['clickhouse', 'install', 'getting started', 'quick start']
+sidebar_label: '安装'
+slug: /install
+title: '安装 ClickHouse'
+doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
@@ -19,32 +16,26 @@ import RPMProd from './_snippets/_rpm_install.md'
 import MacOSProd from './_snippets/_macos.md'
 import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-
-# 安装说明
+# 安装指南 \{#installation-instructions\}
 
 <CardPrimary
-    alignContent="center"
-    description="立即开始构建，无需对集群进行容量和扩展管理。我们会处理尺寸、扩展、安全性、可靠性和升级。"
-    icon="cloud"
-    infoText="免费开始"
-    infoUrl="https://auth.clickhouse.cloud/"
-    isSelected
-    onButtonClick={function Da(){}}
-    size="md"
-    title="ClickHouse Cloud"
-    topBadgeText="推荐"
+  alignContent="center"
+  description="无需为集群的规格和伸缩操心，立即开始构建。我们负责规格配置、伸缩、
+安全性、可靠性以及升级。"
+  icon="cloud"
+  infoText="免费开始使用"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="推荐"
 />
-<br/>
 
-或者，选择一个平台、分发版本和安装方式，以下是 Opensource ClickHouse 的安装说明：
+<br />
 
-<InstallSelector
-    windows={<Windows/>}
-    quickinstall={<QuickInstall/>}
-    debian_prod={<DebianProd/>}
-    rpm_prod={<RPMProd/>}
-    tar_prod={<TarProd/>}
-    macos_prod={<MacOSProd/>}
-    docker={<Docker/>}
-/>
+或者，在下方选择平台、发行版和安装方式，以查看适用于开源 ClickHouse 的安装指南：
+
+<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} docker={<Docker/>} />

@@ -1,18 +1,19 @@
 ---
-'description': '了解如何使用投影来改善您经常运行的查询的性能，使用英国房地产数据集，该数据集包含有关英格兰和威尔士房地产价格的数据'
-'sidebar_label': 'UK Property Prices'
-'sidebar_position': 1
-'slug': '/getting-started/example-datasets/uk-price-paid'
-'title': '英国房地产价格数据集'
+description: '了解如何使用投影来提升经常运行的查询性能，示例基于英国房产数据集，该数据集包含英格兰和威尔士房地产成交价格数据'
+sidebar_label: '英国房产价格'
+slug: /getting-started/example-datasets/uk-price-paid
+title: '英国房产价格数据集'
+doc_type: 'guide'
+keywords: ['示例数据集', '英国房产', '示例数据', '房地产', '入门']
 ---
 
-此数据包含英格兰和威尔士房地产支付的价格。自1995年以来，数据可用，未压缩形式的数据集大小约为4 GiB（在 ClickHouse 中只占约278 MiB）。
+该数据集包含英格兰和威尔士房地产的成交价格信息。该数据自 1995 年起提供，未压缩形式的数据集大小约为 4 GiB（在 ClickHouse 中仅约为 278 MiB）。
 
-- 来源: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
+- 数据来源: https://www.gov.uk/government/statistical-data-sets/price-paid-data-downloads
 - 字段说明: https://www.gov.uk/guidance/about-the-price-paid-data
-- 包含 HM Land Registry 数据 © Crown copyright 和数据库版权 2021。该数据根据开放政府许可证 v3.0 进行许可。
+- 包含 HM Land Registry 数据 © Crown copyright and database right 2021。本数据依据 Open Government Licence v3.0 授权许可使用。
 
-## 创建表 {#create-table}
+## 创建数据表 {#create-table}
 
 ```sql
 CREATE DATABASE uk;
@@ -38,17 +39,18 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-## 预处理和插入数据 {#preprocess-import-data}
+## 预处理并插入数据 {#preprocess-import-data}
 
-我们将使用 `url` 函数将数据流式传输到 ClickHouse。我们需要先对一些传入数据进行预处理，包括：
-- 将 `postcode` 拆分为两个不同的列 - `postcode1` 和 `postcode2`，这对存储和查询更为优化
-- 将 `time` 字段转换为日期，因为它只包含00:00时间
-- 忽略 [UUid](../../sql-reference/data-types/uuid.md) 字段，因为我们在分析中不需要它
-- 使用 [transform](../../sql-reference/functions/other-functions.md#transform) 函数将 `type` 和 `duration` 转换为更可读的 `Enum` 字段
-- 将 `is_new` 字段从单字符字符串（`Y`/`N`）转换为 [UInt8](/sql-reference/data-types/int-uint) 字段，值为0或1
-- 删除最后两列，因为它们的值都是相同的（值为0）
+我们将使用 `url` 函数将数据流式写入 ClickHouse。首先需要对部分传入数据进行预处理，包括：
 
-`url` 函数将数据从网络服务器流式传输到您的 ClickHouse 表中。以下命令将500万行插入到 `uk_price_paid` 表中：
+* 将 `postcode` 拆分为两个不同的列——`postcode1` 和 `postcode2`，这样在存储和查询方面更高效
+* 将 `time` 字段转换为日期类型，因为它只包含 00:00 的时间
+* 忽略 [UUID](../../sql-reference/data-types/uuid.md) 字段，因为我们不需要它进行分析
+* 使用 [transform](../../sql-reference/functions/other-functions.md#transform) 函数将 `type` 和 `duration` 转换为更易读的 `Enum` 字段
+* 将 `is_new` 字段从单字符字符串（`Y`/`N`）转换为取值为 0 或 1 的 [UInt8](/sql-reference/data-types/int-uint) 字段
+* 删除最后两列，因为它们的值都相同（均为 0）
+
+`url` 函数会将数据从 Web 服务器流式传输到 ClickHouse 表中。以下命令会向 `uk_price_paid` 表中插入 500 万行数据：
 
 ```sql
 INSERT INTO uk.uk_price_paid
@@ -89,18 +91,18 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
-等待数据插入 - 这将根据网络速度花费一两分钟时间。
+等待数据插入完成；根据网络速度，这可能需要一到两分钟。
 
 ## 验证数据 {#validate-data}
 
-让我们通过查看插入了多少行来验证它是否成功：
+通过查看插入了多少行来验证是否生效：
 
 ```sql runnable
 SELECT count()
 FROM uk.uk_price_paid
 ```
 
-在运行此查询时，数据集中有27,450,499行。让我们看看 ClickHouse 中该表的存储大小是多少：
+At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -108,13 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-注意，该表的大小仅为221.43 MiB！
+Notice the size of the table is just 221.43 MiB!
 
-## 运行一些查询 {#run-queries}
+## Run some queries {#run-queries}
 
-让我们运行一些查询以分析数据：
+Let's run some queries to analyze the data:
 
-### 查询 1. 每年的平均价格 {#average-price}
+### Query 1. Average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -127,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### 查询 2. 伦敦每年的平均价格 {#average-price-london}
+### Query 2. average price per year in London {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -141,9 +143,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年房价发生了一些变化！但这可能并不令人惊讶...
+Something happened to home prices in 2020! But that is probably not a surprise...
 
-### 查询 3. 最昂贵的邻里 {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT
@@ -162,10 +164,10 @@ ORDER BY price DESC
 LIMIT 100
 ```
 
-## 用投影加速查询 {#speeding-up-queries-with-projections}
+## 使用投影（Projections）加速查询 {#speeding-up-queries-with-projections}
 
-我们可以使用投影来加速这些查询。有关此数据集的示例，请参见 ["Projections"](/data-modeling/projections)。
+我们可以通过使用投影（Projections）来加速这些查询。参见[《投影（Projections）》](/data-modeling/projections)以查看针对该数据集的示例。
 
-### 在游乐场中测试 {#playground}
+### 在 Playground 中测试 {#playground}
 
-数据集也可以在 [在线游乐场](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) 中使用。
+该数据集也可在 [在线 Playground](https://sql.clickhouse.com?query_id=TRCWH5ZETY4SEEK8ISCCAX) 中使用。

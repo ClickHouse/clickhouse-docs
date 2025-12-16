@@ -1,9 +1,10 @@
 ---
 description: 'Dataset containing 28 million rows of hacker news data.'
-sidebar_label: 'Hacker News'
+sidebar_label: 'Hacker news'
 slug: /getting-started/example-datasets/hacker-news
 title: 'Hacker News dataset'
-doc_type: 'reference'
+doc_type: 'guide'
+keywords: ['example dataset', 'hacker news', 'sample data', 'text analysis', 'vector search']
 ---
 
 # Hacker News dataset
@@ -27,7 +28,7 @@ At 4.6GB, and 28m rows, this compressed file should take 5-10 minutes to downloa
 
 ### Sample the data {#sampling}
 
-[`clickhouse-local`](/operations/utilities/clickhouse-local/) allows users to perform fast processing on local files without
+[`clickhouse-local`](/operations/utilities/clickhouse-local/) allows you to perform fast processing on local files without
 having to deploy and configure the ClickHouse server.
 
 Before storing any data in ClickHouse, let's sample the file using clickhouse-local. 

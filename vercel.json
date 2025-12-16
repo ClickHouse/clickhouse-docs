@@ -12,6 +12,16 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/docs",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app$"
+        }
+      ]
+    },
+    {
       "source": "/docs/en/docs/en/cloud/manage/service-types",
       "destination": "/docs/cloud/manage/cloud-tiers",
       "permanent": true
@@ -2837,6 +2847,26 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/clickpipes/object-storage",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/reference",
+      "destination": "/docs/integrations/clickpipes/object-storage/amazon-s3/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/amazon-s3/overview",
+      "destination": "/docs/integrations/clickpipes/object-storage/s3/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/object-storage/amazon-s3/get-started",
+      "destination": "/docs/integrations/clickpipes/object-storage/s3/get-started",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/marketplace",
       "destination": "/docs/cloud/manage/marketplace/",
       "permanent": true
@@ -3499,6 +3529,126 @@
     {
       "source": "/docs/migrations/migrations",
       "destination": "/docs/integrations/migration/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/10_account-close.md",
+      "destination": "/docs/cloud/reference/11_account-close.md",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/personal-data-access",
+      "destination": "/docs/cloud/manage/personal-data-access",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-access-management/overview",
+      "destination": "/docs/cloud/security/manage-database-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-access-management",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/config-sql-console-role-assignments",
+      "destination": "/docs/cloud/guides/sql-console/manage-sql-console-role-assignments",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/secure-s3",
+      "destination": "/docs/cloud/data-sources/secure-s3",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/security/cloud-endpoints-api",
+      "destination": "/docs/manage/data-sources/cloud-endpoints-api",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/shared-responsibility-model",
+      "destination": "/docs/cloud/security/console-roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cloud-authentication",
+      "destination": "/docs/cloud/security#cloud-console-auth",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/private-link-overview",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/connectivity",
+      "destination": "/docs/cloud/security/connectivity/private-networking",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/guides/sql-console/configure-org-service-role-assignments",
+      "destination": "/docs/cloud/security/cloud_access_management",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/crash-log",
+      "destination": "/docs/operations/system-tables/crash_log",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/current-roles",
+      "destination": "/docs/operations/system-tables/current_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/enabled-roles",
+      "destination": "/docs/operations/system-tables/enabled_roles",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/system-tables/role-grants",
+      "destination": "/docs/operations/system-tables/role_grants",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/byoc",
+      "destination": "/docs/cloud/reference/byoc/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-clickhouse",
+      "destination": "/docs/intro",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/inviting-new-users",
+      "destination": "/docs/cloud/security/manage-cloud-users#invite-users",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/functions/time-series-analysis-functions",
+      "destination": "/docs/sql-reference/functions/time-series-functions",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/ingesting-data/kubernetes",
+      "destination": "/docs/use-cases/observability/clickstack/integrations/kubernetes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/operations/backup",
+      "destination": "/docs/operations/backup/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/data-types/object-data-type",
+      "destination": "/docs/sql-reference/data-types/newjson",
+      "permanent": true
+    },
+    {
+      "source": "/docs/about-us/faq",
+      "destination": "/docs/concepts/faq",
       "permanent": true
     }
   ]

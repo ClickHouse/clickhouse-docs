@@ -1,20 +1,18 @@
 ---
-description: 'DISTINCT 句のドキュメント'
+description: 'DISTINCT 句に関するドキュメント'
 sidebar_label: 'DISTINCT'
-slug: '/sql-reference/statements/select/distinct'
-title: 'DISTINCT Clause'
+slug: /sql-reference/statements/select/distinct
+title: 'DISTINCT 句'
+doc_type: 'reference'
 ---
 
+# DISTINCT 句 {#distinct-clause}
 
+`SELECT DISTINCT` が指定されている場合、クエリ結果には一意の行だけが残ります。つまり、結果内で完全に一致する行の集合ごとに、1 行だけが残ります。
 
+一意でなければならない値を持つ列のリストを指定できます: `SELECT DISTINCT ON (column1, column2,...)`。列が指定されていない場合、すべての列が考慮されます。
 
-# DISTINCT 句
-
-`SELECT DISTINCT` が指定されている場合、クエリの結果にはユニークな行のみが残ります。したがって、結果内の完全に一致する行のセットからは1つの行のみが残ります。
-
-ユニークな値を持つ必要があるカラムのリストを指定することができます: `SELECT DISTINCT ON (column1, column2,...)`。カラムが指定されていない場合、すべてのカラムが考慮されます。
-
-テーブルを考えてみましょう:
+次のテーブルを考えます:
 
 ```text
 ┌─a─┬─b─┬─c─┐
@@ -27,7 +25,7 @@ title: 'DISTINCT Clause'
 └───┴───┴───┘
 ```
 
-カラムを指定せずに `DISTINCT` を使用する場合:
+列を指定せずに `DISTINCT` を使用する：
 
 ```sql
 SELECT DISTINCT * FROM t1;
@@ -42,7 +40,7 @@ SELECT DISTINCT * FROM t1;
 └───┴───┴───┘
 ```
 
-指定したカラムで `DISTINCT` を使用する場合:
+特定の列に対して `DISTINCT` を使用する:
 
 ```sql
 SELECT DISTINCT ON (a,b) * FROM t1;
@@ -58,9 +56,9 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 
 ## DISTINCT と ORDER BY {#distinct-and-order-by}
 
-ClickHouse は、`DISTINCT` と `ORDER BY` 句を異なるカラムに対して1つのクエリで使用することをサポートしています。`DISTINCT` 句は、`ORDER BY` 句の前に実行されます。
+ClickHouse では、1 つのクエリ内で `DISTINCT` 句と `ORDER BY` 句に異なる列を指定できます。`DISTINCT` 句は `ORDER BY` 句より先に実行されます。
 
-テーブルを考えてみましょう:
+次のテーブルを例にします。
 
 ```text
 ┌─a─┬─b─┐
@@ -71,7 +69,7 @@ ClickHouse は、`DISTINCT` と `ORDER BY` 句を異なるカラムに対して1
 └───┴───┘
 ```
 
-データを選択する場合:
+データの選択：
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b ASC;
@@ -84,7 +82,8 @@ SELECT DISTINCT a FROM t1 ORDER BY b ASC;
 │ 3 │
 └───┘
 ```
-異なるソート方向でデータを選択する場合:
+
+ソート順を変えてデータを取得する:
 
 ```sql
 SELECT DISTINCT a FROM t1 ORDER BY b DESC;
@@ -98,18 +97,18 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 └───┘
 ```
 
-行 `2, 4` はソートの前にカットされました。
+行 `2, 4` はソートの前に除外されました。
 
-クエリをプログラミングする際にはこの実装の仕様を考慮してください。
+クエリを記述する際には、このような実装上の特性を考慮してください。
 
-## NULL 処理 {#null-processing}
+## NULL の処理 {#null-processing}
 
-`DISTINCT` は、[NULL](/sql-reference/syntax#null) が特定の値として扱われ、`NULL==NULL` のように動作します。言い換えれば、`DISTINCT` の結果では、`NULL` を含む異なる組み合わせが1回だけ発生します。これは他のほとんどの文脈における `NULL` 処理とは異なります。
+`DISTINCT` は、[`NULL`](/sql-reference/syntax#null) を特定の値であり、かつ `NULL==NULL` が成り立つかのように扱います。言い換えると、`DISTINCT` の結果においては、`NULL` を含む異なる組み合わせは 1 回しか出現しません。これは、他のほとんどのコンテキストにおける `NULL` の処理とは異なります。
 
-## 代替手段 {#alternatives}
+## 代替方法 {#alternatives}
 
-同じ結果を得るために、集約関数を使用せずに `SELECT` 句で指定された同じ値のセットに対して [GROUP BY](/sql-reference/statements/select/group-by) を適用することもできます。しかし、`GROUP BY` アプローチにはいくつかの違いがあります:
+集約関数を一切使用せずに、`SELECT` 句で指定されたものと同じ値の集合に対して [GROUP BY](/sql-reference/statements/select/group-by) を適用することで、同じ結果を得ることも可能です。ただし、この場合は `GROUP BY` を用いる方法とはいくつかの違いがあります。
 
 - `DISTINCT` は `GROUP BY` と一緒に適用できます。
-- [ORDER BY](../../../sql-reference/statements/select/order-by.md) が省略され、[LIMIT](../../../sql-reference/statements/select/limit.md) が定義されている場合、クエリは必要な異なる行の数が読み取られた後、すぐに実行が停止します。
-- データブロックは、クエリ全体が完了するのを待つことなく、処理されるとすぐに出力されます。
+- [ORDER BY](../../../sql-reference/statements/select/order-by.md) が省略され、かつ [LIMIT](../../../sql-reference/statements/select/limit.md) が指定されている場合、クエリは必要な数の異なる行を読み取った時点で直ちに実行を停止します。
+- データブロックはクエリ全体の実行完了を待たずに、処理され次第順次出力されます。

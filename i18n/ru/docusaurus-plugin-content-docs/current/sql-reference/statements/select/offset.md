@@ -1,23 +1,39 @@
 ---
-description: 'Документация для OFFSET'
+description: 'Документация по OFFSET'
 sidebar_label: 'OFFSET'
 slug: /sql-reference/statements/select/offset
-title: 'Клауза OFFSET FETCH'
+title: 'Предложение OFFSET FETCH'
+doc_type: 'reference'
 ---
 
 `OFFSET` и `FETCH` позволяют извлекать данные порциями. Они задают блок строк, который вы хотите получить одним запросом.
 
 ```sql
-OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+-- SQL Standard style:
+[OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+
+-- MySQL/PostgreSQL style:
+[LIMIT [n, ]m] [OFFSET offset_row_count]
 ```
 
-Значение `offset_row_count` или `fetch_row_count` может быть числом или литеральной константой. Вы можете опустить `fetch_row_count`; по умолчанию оно равно 1.
+Значение `offset_row_count` или `fetch_row_count` может быть числом или литералом. Можно опустить `fetch_row_count`; по умолчанию оно равно 1.
 
-`OFFSET` указывает количество строк, которые нужно пропустить перед началом возврата строк из набора результатов запроса.
+`OFFSET` задаёт количество строк, которые нужно пропустить перед началом возврата строк из результата запроса. `OFFSET n` пропускает первые `n` строк результата.
 
-`FETCH` указывает максимальное количество строк, которое может быть в результате запроса.
+Поддерживается отрицательный OFFSET: `OFFSET -n` пропускает последние `n` строк результата.
 
-Опция `ONLY` используется для возврата строк, которые непосредственно следуют за строками, пропущенными с помощью `OFFSET`. В этом случае `FETCH` является альтернативой клаузе [LIMIT](../../../sql-reference/statements/select/limit.md). Например, следующий запрос
+Также поддерживается дробный OFFSET: `OFFSET n` — если 0 &lt; n &lt; 1, то пропускается первая n * 100% результата.
+
+Пример:
+• `OFFSET 0.1` — пропускает первые 10% результата.
+
+> **Примечание**
+> • Дробь должна быть числом [Float64](../../data-types/float.md), меньшим 1 и большим нуля.
+> • Если в результате вычисления получается дробное количество строк, оно округляется вверх до ближайшего целого числа.
+
+`FETCH` задаёт максимальное количество строк, которое может быть в результате запроса.
+
+Опция `ONLY` используется для возврата строк, которые непосредственно следуют за строками, пропущенными с помощью `OFFSET`. В этом случае `FETCH` является альтернативой оператору [LIMIT](../../../sql-reference/statements/select/limit.md). Например, следующий запрос
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
@@ -29,14 +45,14 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 ```
 
-Опция `WITH TIES` используется для возврата любых дополнительных строк, которые совпадают с последним местом в наборе результатов согласно клаузе `ORDER BY`. Например, если `fetch_row_count` установлено на 5, но две дополнительные строки соответствуют значениям колонок `ORDER BY` в пятой строке, набор результатов будет содержать семь строк.
+Опция `WITH TIES` используется для возврата дополнительных строк, которые по значениям сортировки соответствуют последней строке результирующего набора в соответствии с предложением `ORDER BY`. Например, если `fetch_row_count` равен 5, но ещё две строки имеют те же значения столбцов `ORDER BY`, что и пятая строка, результирующий набор будет содержать семь строк.
 
-:::note    
-Согласно стандарту, клаузa `OFFSET` должна предшествовать клаузе `FETCH`, если обе присутствуют.
+:::note
+Согласно стандарту, предложение `OFFSET` должно идти перед предложением `FETCH`, если оба присутствуют.
 :::
 
-:::note    
-Фактическое значение смещения также может зависеть от настройки [offset](../../../operations/settings/settings.md#offset).
+:::note
+Фактическое смещение также может зависеть от настройки [offset](../../../operations/settings/settings.md#offset).
 :::
 
 ## Примеры {#examples}
@@ -55,7 +71,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-Использование опции `ONLY`:
+Использование параметра `ONLY`:
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
@@ -71,7 +87,7 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 └───┴───┘
 ```
 
-Использование опции `WITH TIES`:
+Использование параметра `WITH TIES`:
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;

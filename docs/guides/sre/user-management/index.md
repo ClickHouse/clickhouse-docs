@@ -1,7 +1,7 @@
 ---
 slug: /operations/access-rights
 sidebar_position: 1
-sidebar_label: 'Users and Roles'
+sidebar_label: 'Users and roles'
 title: 'Access Control and Account Management'
 keywords: ['ClickHouse Cloud', 'Access Control', 'User Management', 'RBAC', 'Security']
 description: 'Describes access control and account management in ClickHouse Cloud'
@@ -34,7 +34,7 @@ You can't manage the same access entity by both configuration methods simultaneo
 :::
 
 :::note
-If you are looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/cloud-access-management)
+If you are looking to manage ClickHouse Cloud console users, please refer to this [page](/cloud/security/manage-cloud-users)
 :::
 
 To see all users, roles, profiles, etc. and all their grants use [`SHOW ACCESS`](/sql-reference/statements/show#show-access) statement.
@@ -112,7 +112,7 @@ Privileges can be granted to a role by the [GRANT](/sql-reference/statements/gra
 Row policy is a filter that defines which of the rows are available to a user or a role. Row policy contains filters for one particular table, as well as a list of roles and/or users which should use this row policy.
 
 :::note
-Row policies makes sense only for users with readonly access. If users can modify table or copy partitions between tables, it defeats the restrictions of row policies.
+Row policies makes sense only if you have readonly access. If you can modify table or copy partitions between tables, it defeats the restrictions of row policies.
 :::
 
 Management queries:
@@ -163,7 +163,7 @@ Management queries:
 ## Defining SQL users and roles {#defining-sql-users-and-roles}
 
 :::tip
-If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/cloud-access-management).
+If you are working in ClickHouse Cloud, please see [Cloud access management](/cloud/security/console-roles).
 :::
 
 This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns.
