@@ -1,5 +1,5 @@
 ---
-slug: /guides/sre/configuring-tls
+slug: /guides/sre/tls/configuring-tls
 sidebar_label: 'Configuring TLS'
 sidebar_position: 20
 title: 'Configuring TLS'
