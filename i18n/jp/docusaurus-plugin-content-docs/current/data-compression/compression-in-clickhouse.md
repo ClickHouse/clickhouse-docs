@@ -1,32 +1,33 @@
 ---
 slug: /data-compression/compression-in-clickhouse
-title: 'ClickHouseにおける圧縮'
-description: 'ClickHouseの圧縮アルゴリズムの選択'
+title: 'ClickHouse における圧縮'
+description: 'ClickHouse の圧縮アルゴリズムの選択'
 keywords: ['compression', 'codec', 'encoding']
 doc_type: 'reference'
 ---
 
-ClickHouseのクエリパフォーマンスの秘密の1つは圧縮です。
+ClickHouse のクエリ性能を支えている要素の 1 つが圧縮です。
 
-ディスク上のデータが少なければ、I/Oが減り、クエリと挿入が高速になります。CPUに対する圧縮アルゴリズムのオーバーヘッドは、ほとんどの場合、I/Oの削減によって相殺されます。したがって、ClickHouseクエリを高速にするための最初の焦点は、データの圧縮を改善することにあるべきです。
+ディスク上のデータ量が少ないほど I/O が減り、クエリや挿入は高速になります。ほとんどの場合、CPU に対する圧縮アルゴリズムのオーバーヘッドは、I/O 削減の効果によって十分に相殺されます。そのため、ClickHouse のクエリを高速化するうえでは、まずデータの圧縮効率を高めることに注力すべきです。
 
-> ClickHouseがデータをこれほどうまく圧縮する理由については、[この記事](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を読むことをお勧めします。簡単に言うと、我々のカラム指向データベースは、カラム順に値を書き込みます。これらの値がソートされると、同一の値が隣接して配置され、圧縮アルゴリズムはデータの連続したパターンを活用します。さらに、ClickHouseにはコーデックと詳細なデータ型があり、圧縮をさらに簡単に調整できます。
+> ClickHouse がなぜこれほど高い圧縮率を実現できるのかについては、[この記事](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を参照することをお勧めします。簡単に言うと、ClickHouse のカラム指向データベースは値をカラム順に書き込みます。これらの値がソートされていると、同一の値が互いに隣り合う位置に配置され、圧縮アルゴリズムはデータ内の連続したパターンを利用できます。さらにそのうえで、ClickHouse には圧縮をさらに簡単にチューニングできるコーデックと、きめ細かなデータ型が用意されています。
 
-ClickHouseにおける圧縮は、主に3つの要因によって影響を受けます：
-- オーダリングキー
+ClickHouse における圧縮は、主に次の 3 つの要因の影響を受けます。
+
+- オーダリングキー（ORDER BY キー）
 - データ型
-- 使用されるコーデック
+- 使用するコーデック
 
-これらはすべてスキーマを通じて設定されます。
+これらはすべてスキーマによって設定されます。
 
-## 圧縮を最適化するための適切なデータ型の選択 {#choose-the-right-data-type-to-optimize-compression}
+## 圧縮を最適化するために適切なデータ型を選択する {#choose-the-right-data-type-to-optimize-compression}
 
-Stack Overflowデータセットを例として使用しましょう。`posts`テーブルの以下のスキーマの圧縮統計を比較してみましょう：
+例として Stack Overflow データセットを使用します。`posts` テーブルに対して、次のスキーマの圧縮統計を比較します。
 
-- `posts` - オーダリングキーのない型最適化されていないスキーマ。
-- `posts_v3` - 各カラムに適切な型とビットサイズを持ち、オーダリングキー`(PostTypeId, toDate(CreationDate), CommentCount)`を持つ型最適化されたスキーマ。
+* `posts` - データ型の最適化が行われておらず、ソートキー（ordering key）もないスキーマ。
+* `posts_v3` - 各カラムに対して適切な型とビットサイズを指定し、ソートキー（ordering key） `(PostTypeId, toDate(CreationDate), CommentCount)` を持つ、データ型が最適化されたスキーマ。
 
-以下のクエリを使用して、各カラムの現在の圧縮サイズと非圧縮サイズを測定できます。オーダリングキーのない初期最適化スキーマ`posts`のサイズを調べてみましょう。
+次のクエリを使用して、各カラムの現在の圧縮後および非圧縮時のサイズを測定できます。まず、ソートキーを持たない、最初に最適化対象とするスキーマ `posts` のサイズを確認します。
 
 ```sql
 SELECT name,
@@ -63,28 +64,28 @@ GROUP BY name
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
 
+
 <details>
    
-<summary>コンパクトパーツとワイドパーツに関する注記</summary>
+<summary>コンパクトパーツとワイドパーツに関する注意</summary>
 
-`compressed_size`または`uncompressed_size`の値が`0`と表示される場合、パーツのタイプが`wide`ではなく`compact`である可能性があります（[`system.parts`](/operations/system-tables/parts)の`part_type`の説明を参照）。
-パーツ形式は設定[`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part)および[`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part)によって制御されます。つまり、挿入されたデータが上記の設定値を超えないパーツになる場合、パーツはワイドではなくコンパクトになり、`compressed_size`や`uncompressed_size`の値は表示されません。
+`compressed_size` または `uncompressed_size` の値が `0` になっている場合、パーツのタイプが `wide` ではなく `compact` であることが原因の可能性があります（[`system.parts`](/operations/system-tables/parts) の `part_type` の説明を参照）。パーツの形式は、[`min_bytes_for_wide_part`](/operations/settings/merge-tree-settings#min_bytes_for_wide_part) および [`min_rows_for_wide_part`](/operations/settings/merge-tree-settings#min_rows_for_wide_part) の設定によって制御されます。つまり、挿入されたデータによって生成されたパーツが、これらの設定値を超えない場合、そのパーツは wide ではなく compact になり、`compressed_size` や `uncompressed_size` の値は 0 のままになります。
 
-デモンストレーション：
+以下に例を示します。
 
-```sql title="クエリ"
+```sql title="Query"
 -- コンパクトパーツを持つテーブルを作成
 CREATE TABLE compact (
   number UInt32
 )
 ENGINE = MergeTree()
 ORDER BY number 
-AS SELECT * FROM numbers(100000); -- min_bytes_for_wide_part = 10485760のデフォルトを超えない程度の小ささ
+AS SELECT * FROM numbers(100000); -- min_bytes_for_wide_part = 10485760 のデフォルト値を超えるほど大きくない
 
 -- パーツのタイプを確認
 SELECT table, name, part_type from system.parts where table = 'compact';
 
--- コンパクトテーブルの圧縮および非圧縮カラムサイズを取得
+-- compact テーブルの圧縮および非圧縮カラムサイズを取得
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -93,7 +94,7 @@ FROM system.columns
 WHERE table = 'compact'
 GROUP BY name;
 
--- ワイドパーツを持つテーブルを作成 
+-- wide パーツを持つテーブルを作成
 CREATE TABLE wide (
   number UInt32
 )
@@ -105,7 +106,7 @@ AS SELECT * FROM numbers(100000);
 -- パーツのタイプを確認
 SELECT table, name, part_type from system.parts where table = 'wide';
 
--- ワイドテーブルの圧縮および非圧縮サイズを取得
+-- wide テーブルの圧縮および非圧縮サイズを取得
 SELECT name,
    formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
    formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
@@ -115,7 +116,7 @@ WHERE table = 'wide'
 GROUP BY name;
 ```
 
-```response title="レスポンス"
+```response title="Response"
    ┌─table───┬─name──────┬─part_type─┐
 1. │ compact │ all_1_1_0 │ Compact   │
    └─────────┴───────────┴───────────┘
@@ -132,11 +133,11 @@ GROUP BY name;
 
 </details>
 
-ここでは圧縮サイズと非圧縮サイズの両方を示しています。両方とも重要です。圧縮サイズは、ディスクから読み取る必要があるものに相当し、クエリパフォーマンス（およびストレージコスト）のために最小化したいものです。このデータは読み取る前に解凍する必要があります。この非圧縮サイズのサイズは、この場合使用されるデータ型に依存します。このサイズを最小化することで、クエリのメモリオーバーヘッドとクエリで処理する必要があるデータ量が削減され、キャッシュの利用が改善され、最終的にクエリ時間が短縮されます。
+ここでは、圧縮サイズと非圧縮サイズの両方を示しています。いずれも重要です。圧縮サイズはディスクから読み取る必要がある量に相当し、これはクエリ性能（およびストレージコスト）の観点から最小化したいものです。このデータは読み取り前に伸長（解凍）される必要があります。非圧縮時のサイズは、このケースでは使用しているデータ型に依存します。このサイズを小さくすることで、クエリのメモリオーバーヘッドとクエリで処理しなければならないデータ量が削減され、キャッシュの有効活用につながり、最終的にはクエリ時間の短縮に寄与します。
 
-> 上記のクエリは、システムデータベースの`columns`テーブルに依存しています。このデータベースはClickHouseによって管理されており、クエリパフォーマンスメトリクスからバックグラウンドクラスターログまで、有用な情報の宝庫です。興味のある読者には、["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables)および関連記事[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)をお勧めします。
+> 上記のクエリは、system データベース内の `columns` テーブルに依存しています。このデータベースは ClickHouse によって管理されており、クエリ性能メトリクスからバックグラウンドのクラスタログまで、有用な情報の宝庫です。興味のある読者には ["System Tables and a Window into the Internals of ClickHouse"](https://clickhouse.com/blog/clickhouse-debugging-issues-with-system-tables) と、それに関連する記事[[1]](https://clickhouse.com/blog/monitoring-troubleshooting-insert-queries-clickhouse)[[2]](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse) を推奨します。 
 
-テーブルの合計サイズを要約するために、上記のクエリを簡素化できます：
+テーブルの合計サイズを集計するには、上記のクエリを次のように簡略化できます。
 
 ```sql
 SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
@@ -150,7 +151,7 @@ WHERE table = 'posts'
 └─────────────────┴───────────────────┴───────┘
 ```
 
-最適化された型とオーダリングキーを持つテーブル`posts_v3`に対してこのクエリを繰り返すと、非圧縮サイズと圧縮サイズの両方で大幅な削減が見られます。
+最適化された型とソートキーを持つテーブル `posts_v3` に対して同じクエリを実行すると、非圧縮時と圧縮後のサイズがいずれも大幅に小さくなっていることが確認できます。
 
 ```sql
 SELECT
@@ -165,7 +166,8 @@ WHERE `table` = 'posts_v3'
 └─────────────────┴───────────────────┴───────┘
 ```
 
-完全なカラムの内訳では、圧縮前にデータを順序付けし、適切な型を使用することで、`Body`、`Title`、`Tags`、`CreationDate`カラムで大幅な節約が達成されていることがわかります。
+カラムごとの詳細な内訳を見ると、データを圧縮する前に並べ替え、適切な型を使用することで、`Body`、`Title`、`Tags`、`CreationDate` カラムでかなりの容量削減が達成されていることがわかります。
+
 
 ```sql
 SELECT
@@ -203,29 +205,30 @@ GROUP BY name
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
 
+
 ## 適切なカラム圧縮コーデックの選択 {#choosing-the-right-column-compression-codec}
 
-カラム圧縮コーデックを使用すると、各カラムのエンコードと圧縮に使用されるアルゴリズム（およびその設定）を変更できます。
+カラム圧縮コーデックを使用すると、各カラムのエンコードおよび圧縮に用いられるアルゴリズム（およびその設定）を変更できます。
 
-エンコーディングと圧縮は、同じ目的（データサイズの削減）を持ちながら、わずかに異なる動作をします。エンコーディングは、データ型のプロパティを活用して関数に基づいて値を変換することで、データにマッピングを適用します。逆に、圧縮はバイトレベルでデータを圧縮する汎用アルゴリズムを使用します。
+エンコーディングと圧縮は、どちらもデータサイズを削減するという同じ目的を持ちながら、動作は少し異なります。エンコーディングはデータ型の特性を利用して、関数に基づき値を変換するマッピングをデータに適用します。対照的に、圧縮は汎用的なアルゴリズムを使用して、バイトレベルでデータを圧縮します。
 
-通常、圧縮が使用される前にエンコーディングが最初に適用されます。異なるエンコーディングと圧縮アルゴリズムは異なる値の分布に効果的であるため、データを理解する必要があります。
+通常、圧縮を行う前に、まずエンコーディングが適用されます。異なるエンコーディングと圧縮アルゴリズムは、それぞれ異なる値の分布に対して効果的であるため、自身が扱うデータを理解しておく必要があります。
 
-ClickHouseは多数のコーデックと圧縮アルゴリズムをサポートしています。以下は重要度順のいくつかの推奨事項です：
+ClickHouse は多数のコーデックと圧縮アルゴリズムをサポートしています。以下は重要度順のいくつかの推奨事項です。
 
-推奨事項                                           | 理由
----                                                |    ---
-**`ZSTD`を全面的に使用**                           | `ZSTD`圧縮は最高の圧縮率を提供します。`ZSTD(1)`は最も一般的な型のデフォルトとすべきです。数値を変更することで、より高い圧縮率を試すことができます。圧縮コストの増加（挿入が遅くなる）に対して、3より高い値で十分な利点が得られることはまれです。
-**日付と整数シーケンスには`Delta`**                | `Delta`ベースのコーデックは、単調シーケンスや連続値間の小さな差分がある場合にうまく機能します。より具体的には、導関数が小さな数を生成する場合にDeltaコーデックはうまく機能します。そうでない場合は、`DoubleDelta`を試す価値があります（`Delta`からの一次導関数がすでに非常に小さい場合、これはほとんど追加されません）。単調増加が均一なシーケンスは、さらによく圧縮されます。例えばDateTimeフィールドなど。
-**`Delta`は`ZSTD`を改善**                          | `ZSTD`はデルタデータに効果的なコーデックです - 逆に、デルタエンコーディングは`ZSTD`圧縮を改善できます。`ZSTD`がある場合、他のコーデックがさらなる改善を提供することはまれです。
-**可能なら`ZSTD`より`LZ4`**                        | `LZ4`と`ZSTD`で同等の圧縮が得られる場合、前者を優先してください。より高速な解凍とより少ないCPUが必要です。ただし、ほとんどの場合、`ZSTD`は`LZ4`を大幅に上回ります。これらのコーデックの一部は、`LZ4`と組み合わせると、コーデックなしの`ZSTD`と同等の圧縮を提供しながら、より高速に動作する場合があります。これはデータ固有であり、テストが必要です。
-**疎またはレンジが小さい場合は`T64`**              | `T64`は疎データやブロック内の範囲が小さい場合に効果的です。ランダムな数には`T64`を避けてください。
-**パターンが不明な場合は`Gorilla`と`T64`?**        | データに未知のパターンがある場合、`Gorilla`と`T64`を試す価値があるかもしれません。
-**ゲージデータには`Gorilla`**                      | `Gorilla`は浮動小数点データ、特にゲージ読み取り（ランダムなスパイク）を表すデータに効果的です。
+| Recommendation                                | Reasoning                                                                                                                                                                                                                                         |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`ZSTD` all the way**                        | `ZSTD` 圧縮は最も高い圧縮率を提供します。`ZSTD(1)` は、ほとんどの一般的な型に対するデフォルトとすべきです。数値を変更することで、より高い圧縮率を試すことができますが、3 を超える値では圧縮コストの増加（挿入の遅延）に見合う十分なメリットはほとんど見られません。                                                                                                       |
+| **`Delta` for date and integer sequences**    | `Delta` ベースのコーデックは、単調増加するシーケンスや、連続する値の差分（デルタ）が小さい場合に有効に機能します。より具体的には、差分の結果が小さな値になる場合に Delta コーデックは良好に動作します。そうでない場合は、`DoubleDelta` を試す価値があります（`Delta` による差分がすでに非常に小さい場合は、これを追加しても効果はほとんど増えません）。単調増加の増分が一定であるシーケンス、例えば DateTime フィールドは、さらに良く圧縮されます。 |
+| **`Delta` improves `ZSTD`**                   | `ZSTD` はデルタデータに対して有効なコーデックであり、逆にデルタエンコーディングは `ZSTD` 圧縮を改善できます。`ZSTD` を使用している場合、他のコーデックがさらなる改善を提供することは稀です。                                                                                                                                         |
+| **`LZ4` over `ZSTD` if possible**             | `LZ4` と `ZSTD` の圧縮率が同等であれば、より高速な伸長と少ない CPU 使用量を提供するため、`LZ4` を優先してください。ただし、ほとんどのケースでは `ZSTD` が `LZ4` を大きく上回ります。いくつかのコーデックは、コーデックなしの `ZSTD` と同等の圧縮を提供しつつ、`LZ4` と組み合わせることでより高速に動作する場合があります。ただし、これはデータに依存し、検証が必要です。                                   |
+| **`T64` for sparse or small ranges**          | `T64` はスパースなデータ、あるいはブロック内の値の範囲が小さい場合に有効です。乱数に対しては `T64` の使用を避けてください。                                                                                                                                                                              |
+| **`Gorilla` and `T64` for unknown patterns?** | データのパターンが不明な場合、`Gorilla` と `T64` を試す価値があります。                                                                                                                                                                                                      |
+| **`Gorilla` for gauge data**                  | `Gorilla` は浮動小数点データ、特にゲージの読み取り、すなわちランダムなスパイクを表すデータに対して有効な場合があります。                                                                                                                                                                                 |
 
 その他のオプションについては[こちら](/sql-reference/statements/create/table#column_compression_codec)を参照してください。
 
-以下では、`Id`、`ViewCount`、`AnswerCount`に`Delta`コーデックを指定しています。これらがオーダリングキーと線形相関があり、したがってDeltaエンコーディングの恩恵を受けると仮定しています。
+以下では、`Id`、`ViewCount`、`AnswerCount` に対して `Delta` コーデックを指定しています。これらがソートキーと線形に相関しており、そのため Delta エンコーディングの効果が見込めると仮定しています。
 
 ```sql
 CREATE TABLE posts_v4
@@ -257,7 +260,8 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-これらのカラムの圧縮改善を以下に示します：
+これらのカラムにおける圧縮の改善結果を以下に示します。
+
 
 ```sql
 SELECT
@@ -287,6 +291,7 @@ ORDER BY
 6 rows in set. Elapsed: 0.008 sec
 ```
 
-### ClickHouse Cloudにおける圧縮 {#compression-in-clickhouse-cloud}
 
-ClickHouse Cloudでは、デフォルトで`ZSTD`圧縮アルゴリズム（デフォルト値1）を使用しています。このアルゴリズムの圧縮速度は圧縮レベルによって異なりますが（高い = 遅い）、解凍では一貫して高速（約20%の変動）であり、並列化できるという利点があります。過去のテストでも、このアルゴリズムは十分に効果的であり、コーデックと組み合わせた`LZ4`を上回ることさえあることが示されています。ほとんどのデータ型と情報分布に効果的であり、したがって賢明な汎用デフォルトであり、最適化なしでも初期の圧縮がすでに優れている理由です。
+### ClickHouse Cloud における圧縮 {#compression-in-clickhouse-cloud}
+
+ClickHouse Cloud では、デフォルトで `ZSTD` 圧縮アルゴリズム（圧縮レベルのデフォルト値は 1）を使用しています。このアルゴリズムは圧縮レベル（高いほど低速）によって圧縮速度が変動しますが、解凍（伸長）時には常に高速である（おおよそ 20% 程度のばらつき）という利点があり、並列化にも適しています。過去のテスト結果からも、このアルゴリズムは多くの場合に十分な効果を発揮し、場合によってはコーデックと組み合わせた `LZ4` を上回ることが示唆されています。ほとんどのデータ型および情報分布に対して有効であり、汎用的なデフォルトとして妥当であるため、最適化を行わなくても、最初から採用している圧縮設定の品質がすでに非常に高い理由となっています。

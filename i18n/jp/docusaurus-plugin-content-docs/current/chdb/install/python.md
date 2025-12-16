@@ -630,7 +630,7 @@ chDBは複雑なネストされたデータ構造を自動的に処理します�
 import pandas as pd
 import chdb
 
-# 混合JSONオブジェクトを含むDataFrame
+# 混合JSONオブジェクトを含むDataFrame {#dataframe-with-mixed-json-objects}
 df_with_json = pd.DataFrame({
     "user_id": [1, 2, 3, 4],
     "profile": [
@@ -641,7 +641,7 @@ df_with_json = pd.DataFrame({
     ]
 })
 
-# 設定でJSON推論を制御
+# 設定でJSON推論を制御 {#control-json-inference-with-settings}
 result = chdb.query("""
     SELECT 
         user_id,
@@ -654,7 +654,7 @@ result = chdb.query("""
 """, "Pretty")
 print(result)
 
-# 高度なJSON操作
+# 高度なJSON操作 {#advanced-json-operations}
 complex_json = chdb.query("""
     SELECT 
         user_id,
@@ -686,12 +686,12 @@ chDBは他の組み込みエンジンを一貫して上回ります：
 ```python
 import chdb
 
-# 1. 適切な出力フォーマットを使用
+# 1. 適切な出力フォーマットを使用 {#1-use-appropriate-output-formats}
 df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 分析用
 arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 相互運用性用
 native_result = chdb.query("SELECT * FROM large_table", "Native")   # chDB間用
 
-# 2. 設定でクエリを最適化
+# 2. 設定でクエリを最適化 {#2-optimize-queries-with-settings}
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -702,12 +702,12 @@ fast_result = chdb.query("""
         use_uncompressed_cache = 1
 """, "DataFrame")
 
-# 3. 大規模データセットにはストリーミングを活用
+# 3. 大規模データセットにはストリーミングを活用 {#3-leverage-streaming-for-large-datasets}
 from chdb import session
 
 sess = session.Session()
 
-# 大規模データセットのセットアップ
+# 大規模データセットのセットアップ {#setup-large-dataset}
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -717,7 +717,7 @@ sess.query("""
     FROM numbers(10000000)
 """)
 
-# 一定のメモリ使用量でストリーム処理
+# 一定のメモリ使用量でストリーム処理 {#stream-processing-with-constant-memory-usage}
 total_amount = 0
 processed_rows = 0
 
@@ -739,11 +739,11 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
 
 print(f"最終結果: {processed_rows}件の顧客を処理、合計金額: {total_amount}")
 
-# 外部システム（例：Delta Lake）へのストリーム
+# 外部システム（例：Delta Lake）へのストリーム {#stream-to-external-systems-eg-delta-lake}
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
-# バッチ単位で処理
+# バッチ単位で処理 {#process-in-batches}
 for batch in batch_reader:
     print(f"{batch.num_rows}行のバッチを処理中...")
     # 各バッチを変換またはエクスポート

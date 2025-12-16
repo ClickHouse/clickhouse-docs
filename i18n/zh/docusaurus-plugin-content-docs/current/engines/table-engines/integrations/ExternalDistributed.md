@@ -27,7 +27,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 表结构可以与原始表结构不同：
 
 * 列名应与原始表中的列名相同，但你可以只使用其中一部分列，并按任意顺序排列。
-* 列类型可以与原始表中的类型不同。ClickHouse 会尝试将值[转换](/sql-reference/functions/type-conversion-functions#cast)为 ClickHouse 数据类型。
+* 列类型可以与原始表中的类型不同。ClickHouse 会尝试将值[转换](/sql-reference/functions/type-conversion-functions#CAST)为 ClickHouse 数据类型。
 
 **引擎参数**
 
@@ -38,9 +38,10 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `user` — 用户名。
 * `password` — 用户密码。
 
+
 ## 实现细节 {#implementation-details}
 
-支持多个副本，多个副本之间必须使用 `|` 分隔，多个分片之间必须使用 `,` 分隔。例如：
+支持多个副本：多个副本之间必须使用 `|` 分隔，多个分片之间必须使用 `,` 分隔。例如：
 
 ```sql
 CREATE TABLE test_shards (id UInt32, name String, age UInt32, money UInt32) ENGINE = ExternalDistributed('MySQL', `mysql{1|2}:3306,mysql{3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');

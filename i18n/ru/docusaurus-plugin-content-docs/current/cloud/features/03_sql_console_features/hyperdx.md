@@ -2,7 +2,7 @@
 sidebar_label: 'HyperDX'
 slug: /cloud/manage/hyperdx
 title: 'HyperDX'
-description: 'HyperDX — пользовательский интерфейс ClickStack, промышленной платформы наблюдаемости уровня production, построенной на ClickHouse и OpenTelemetry (OTel) и объединяющей логи, трейсы, метрики и сессии в одном высокопроизводительном масштабируемом решении.'
+description: 'HyperDX — пользовательский интерфейс ClickStack, промышленной платформы обсервабилити уровня продакшн, построенной на ClickHouse и OpenTelemetry (OTel) и объединяющей логи, трейсы, метрики и сессии в одном высокопроизводительном масштабируемом решении.'
 doc_type: 'guide'
 keywords: ['hyperdx', 'observability', 'integration', 'cloud features', 'monitoring']
 ---
@@ -22,7 +22,7 @@ HyperDX в ClickHouse Cloud позволяет пользователям пол
 
 ## Развертывание {#main-concepts}
 
-HyperDX в ClickHouse Cloud в настоящее время находится на этапе закрытого предварительного просмотра и должен быть включен на уровне организации. После включения пользователи увидят HyperDX в основной левой панели навигации при выборе любого сервиса.
+HyperDX в ClickHouse Cloud в настоящее время находится на этапе закрытого предварительного просмотра и должен быть включен на уровне организации. После включения вы найдете HyperDX в основной левой панели навигации при выборе любого сервиса.
 
 <Image img={hyperdx_cloud} alt="HyperDX в ClickHouse Cloud" size="lg"/>
 

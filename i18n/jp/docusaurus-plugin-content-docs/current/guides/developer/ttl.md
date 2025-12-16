@@ -11,7 +11,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# TTL（time-to-live）でデータを管理する
+# TTL（time-to-live）でデータを管理する {#manage-data-with-ttl-time-to-live}
 
 ## TTLの概要 {#overview-of-ttl}
 

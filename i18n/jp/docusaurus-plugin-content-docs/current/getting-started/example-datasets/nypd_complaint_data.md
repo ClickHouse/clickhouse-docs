@@ -1,57 +1,57 @@
 ---
-description: 'タブ区切り値データを 5 ステップで取り込みおよびクエリ実行'
-sidebar_label: 'NYPD 通報データ'
+description: 'タブ区切り値データを 5 ステップで取り込み、クエリする'
+sidebar_label: 'NYPD 苦情データ'
 slug: /getting-started/example-datasets/nypd_complaint_data
-title: 'NYPD 通報データ'
+title: 'NYPD 苦情データ'
 doc_type: 'guide'
 keywords: ['サンプルデータセット', 'nypd', '犯罪データ', 'サンプルデータ', '公開データ']
 ---
 
-タブ区切り値（Tab Separated Value、TSV）ファイルは一般的な形式であり、ファイルの先頭行にフィールド名が含まれている場合があります。ClickHouse は TSV を取り込めるほか、ファイルを取り込まずに TSV に対して直接クエリを実行することもできます。本ガイドでは、これら両方のケースを扱います。CSV ファイルに対してクエリや取り込みを行う必要がある場合も、同じ手法をそのまま利用でき、フォーマット指定の引数で `TSV` を `CSV` に置き換えるだけです。
+タブ区切り値（Tab Separated Value、TSV）ファイルは一般的な形式であり、ファイルの先頭行にフィールド見出しが含まれている場合があります。ClickHouse は TSV を取り込むことができ、ファイルを取り込まずに TSV に対してクエリを実行することもできます。本ガイドでは、これら両方のケースを扱います。CSV ファイルに対してクエリや取り込みを行う必要がある場合も、同じ手法が利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけで対応できます。
 
-このガイドを進める中で、次のことを行います:
+このガイドを進める中で、次のことを行います。
 
-- **調査**: TSV ファイルの構造と内容に対してクエリを実行します。
+- **調査**: TSV ファイルの構造と内容をクエリします。
 - **対象となる ClickHouse スキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングします。
-- **ClickHouse テーブルの作成**。
-- データを前処理したうえで ClickHouse に **ストリーミング** します。
-- ClickHouse に対して **いくつかのクエリを実行** します。
+- **ClickHouse テーブルを作成** します。
+- データを前処理し、ClickHouse に **ストリーム送信** します。
+- ClickHouse に対して **クエリを実行** します。
 
-本ガイドで使用するデータセットは NYC Open Data チームにより提供されており、「New York City Police Department (NYPD) に報告されたすべての有効な重罪、軽罪、および違反の犯罪」に関するデータを含みます。本稿執筆時点で、データファイルのサイズは 166MB ですが、定期的に更新されています。
+このガイドで使用するデータセットは NYC Open Data チームが提供しているもので、「New York City Police Department (NYPD) に報告されたすべての有効な重罪、軽犯罪、違反行為」に関するデータを含んでいます。執筆時点ではデータファイルのサイズは 166MB ですが、定期的に更新されています。
 
-**出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
+**出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)  
 **利用規約**: https://www1.nyc.gov/home/terms-of-use.page
 
 ## 前提条件 {#prerequisites}
 
-- [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) ページにアクセスし、「Export」ボタンをクリックして **TSV for Excel** を選択し、データセットをダウンロードします。
-- [ClickHouse server and client](../../getting-started/install/install.mdx)（ClickHouse サーバーおよびクライアント）をインストールします
+- [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) ページにアクセスし、Export ボタンをクリックして **TSV for Excel** を選択し、データセットをダウンロードします。
+- [ClickHouse サーバーおよびクライアント](../../getting-started/install/install.mdx) をインストールします。
 
-### このガイドで説明するコマンドについての注意事項 {#a-note-about-the-commands-described-in-this-guide}
+### このガイドで説明しているコマンドについての注意事項 {#a-note-about-the-commands-described-in-this-guide}
 
-このガイドで使用するコマンドには、次の 2 種類があります。
+このガイドに登場するコマンドには、次の 2 種類があります。
 
-- 一部のコマンドは TSV ファイルに対してクエリを実行するもので、コマンドラインから実行します。
-- 残りのコマンドは ClickHouse に対してクエリを実行するもので、`clickhouse-client` または Play UI から実行します。
+- 一部のコマンドは TSV ファイルに対してクエリを実行するもので、コマンドプロンプト上で実行します。
+- 残りのコマンドは ClickHouse に対してクエリを実行するもので、`clickhouse-client` または Play UI 上で実行します。
 
 :::note
-このガイドの例では、TSV ファイルを `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv` に保存していることを想定しています。必要に応じてコマンドを調整してください。
+このガイドの例では、TSV ファイルを `${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv` に保存していることを前提としています。必要に応じてコマンドを調整してください。
 :::
 
-## TSV ファイルを確認する {#familiarize-yourself-with-the-tsv-file}
+## TSV ファイルに慣れておく {#familiarize-yourself-with-the-tsv-file}
 
-ClickHouse データベースを扱い始める前に、まずデータの内容を確認しておいてください。
+ClickHouse データベースを使い始める前に、まずデータの内容を確認してください。
 
-### 元の TSV ファイルのフィールドを確認する {#look-at-the-fields-in-the-source-tsv-file}
+### 元のTSVファイル内のフィールドを確認する {#look-at-the-fields-in-the-source-tsv-file}
 
-これは TSV ファイルをクエリするコマンド例ですが、まだ実行しないでください。
+これは TSV ファイルに対してクエリを実行するためのコマンド例ですが、まだ実行しないでください。
 
 ```sh
 clickhouse-local --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-レスポンス例
+応答例
 
 ```response
 CMPLNT_NUM                  Nullable(Float64)
@@ -62,12 +62,12 @@ CMPLNT_FR_TM                Nullable(String)
 ```
 
 :::tip
-ほとんどの場合、上記のコマンドを実行すると、入力データ内のどのフィールドが数値で、どれが文字列で、どれがタプルかを確認できます。ただし、常にそうとは限りません。ClickHouse は数十億レコード規模のデータセットで日常的に利用されるため、スキーマを推論する際に数十億行をパースすることを避ける目的で、既定では [スキーマを推論](/integrations/data-formats/json/inference) するために参照される行数は 100 行となっています。以下のレスポンスは、データセットが年に数回更新されるため、実際に得られる結果と一致しない可能性があります。Data Dictionary を見ると、CMPLNT&#95;NUM は数値ではなくテキストとして定義されていることが分かります。`SETTINGS input_format_max_rows_to_read_for_schema_inference=2000` という設定で推論に用いる既定の 100 行を上書きすることで、内容をより正確に把握できます。
+ほとんどの場合、上記のコマンドにより、入力データ内のどのフィールドが数値で、どれが文字列で、どれがタプルであるかを把握できますが、常にそうとは限りません。ClickHouse は数十億レコードを含むデータセットで日常的に利用されているため、スキーマを推測する際に数十億行をパースすることを避ける目的で、既定では 100 行だけを対象に[スキーマ推論](/integrations/data-formats/json/inference)を行います。以下の出力結果は、データセットが年に数回更新されるため、実際に確認する結果とは一致しない可能性があります。Data Dictionary を見ると、CMPLNT&#95;NUM は数値ではなく文字列として指定されていることが分かります。推論のために参照する行数のデフォルト値 100 を `SETTINGS input_format_max_rows_to_read_for_schema_inference=2000` によって上書きすることで、内容をより適切に把握できます。
 
-注: バージョン 22.5 以降では、スキーマ推論のための既定の行数は 25,000 行になっています。したがって、古いバージョンを使用している場合、または 25,000 行以上をサンプリングする必要がある場合にのみ、この設定を変更してください。
+注意: バージョン 22.5 以降では、スキーマ推論に使用される既定の行数は 25,000 行になっているため、古いバージョンを使用している場合、または 25,000 行以上のサンプリングが必要な場合のみ、この設定を変更してください。
 :::
 
-コマンドプロンプトで次のコマンドを実行してください。ダウンロードした TSV ファイル内のデータをクエリするために `clickhouse-local` を使用します。
+次のコマンドをコマンドプロンプトで実行してください。ダウンロードした TSV ファイル内のデータに対してクエリを実行するために、`clickhouse-local` を使用します。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -75,7 +75,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-結果：
+結果:
 
 ```response
 CMPLNT_NUM        Nullable(String)
@@ -116,11 +116,12 @@ Lat_Lon           Tuple(Nullable(Float64), Nullable(Float64))
 New Georeferenced Column Nullable(String)
 ```
 
-ここで、TSV ファイル内のカラムが、[dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションに記載されている名前と型と一致しているか確認してください。データ型はあまり厳密ではなく、数値フィールドはすべて `Nullable(Float64)`、それ以外のフィールドはすべて `Nullable(String)` になっています。データを保存するための ClickHouse テーブルを作成する際には、より適切でパフォーマンスに優れた型を指定できます。
+この時点で、TSV ファイル内のカラムが、[dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションに記載されている名前と型に一致しているかを確認する必要があります。データ型はあまり細かく指定されておらず、数値フィールドはすべて `Nullable(Float64)`、それ以外のフィールドはすべて `Nullable(String)` に設定されています。データを保存するための ClickHouse テーブルを CREATE ステートメントで作成する際には、より適切でパフォーマンスに優れた型を指定できます。
+
 
 ### 適切なスキーマを決定する {#determine-the-proper-schema}
 
-各フィールドにどの型を使用すべきか判断するには、データがどのような内容かを把握しておく必要があります。たとえば、フィールド `JURISDICTION_CODE` は数値ですが、これは `UInt8` にすべきでしょうか、それとも `Enum` にすべきでしょうか、あるいは `Float64` が適切でしょうか？
+各フィールドにどの型を使用すべきかを判断するには、データがどのようなものかを把握しておく必要があります。たとえば、フィールド `JURISDICTION_CODE` は数値ですが、`UInt8` にすべきなのか、`Enum` にすべきなのか、それとも `Float64` が適切なのかを検討する必要があります。
 
 ```sql
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -156,11 +157,11 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └───────────────────┴─────────┘
 ```
 
-クエリ結果から、`JURISDICTION_CODE` が `UInt8` に収まることがわかります。
+クエリのレスポンスから、`JURISDICTION_CODE` は `UInt8` に十分収まることが分かります。
 
-同様に、いくつかの `String` 型フィールドを見て、それらが `DateTime` 型や [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) 型のフィールドとして適しているか検討してみてください。
+同様に、いくつかの `String` フィールドを見て、それらが `DateTime` や [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) フィールドに適しているかどうかを検討してみてください。
 
-たとえば、フィールド `PARKS_NM` は「該当する場合、発生場所となったニューヨーク市の公園、遊び場、または緑地の名称（州立公園は含まない）」と説明されています。ニューヨーク市内の公園名は、`LowCardinality(String)` の良い候補となる可能性があります。
+たとえば、フィールド `PARKS_NM` は「該当する場合、発生場所となる NYC の公園、遊び場、または緑地の名称（州立公園は含まれない）」と説明されています。ニューヨーク市内の公園名は、`LowCardinality(String)` の良い候補となる可能性があります。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -178,7 +179,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └─────────────────────┘
 ```
 
-いくつかの公園の名前を見てみましょう。
+いくつかの公園名を見てみましょう。
 
 ```sql
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -206,11 +207,12 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └────────────────────────────┘
 ```
 
-この執筆時点で使用しているデータセットでは、`PARK_NM` 列に含まれる公園および遊び場の値は数百種類しかありません。これは、`LowCardinality(String)` フィールド内の異なる文字列数を 10,000 未満に抑えることを推奨している [LowCardinality](/sql-reference/data-types/lowcardinality#description) のガイドラインと比較しても小さい数です。
+本書執筆時点で使用しているデータセットでは、`PARK_NM` カラムに含まれる公園および遊び場の種類は数百件しかありません。これは、`LowCardinality(String)` フィールド内の異なる文字列数を 10,000 未満に抑えるという [LowCardinality](/sql-reference/data-types/lowcardinality#description) の推奨事項に照らすと、小さい値です。
+
 
 ### DateTime フィールド {#datetime-fields}
 
-[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションによると、報告されたイベントの開始時刻と終了時刻を表す日時フィールドが用意されています。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認すると、これらのフィールドが常に値で埋められているかどうかを把握できます。
+[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションによると、報告されたイベントの開始と終了を表す日付と時刻のフィールドがあります。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認することで、これらのフィールドに常に値が設定されているかどうかの目安が得られます。
 
 ```sh title="CMPLNT_FR_DT"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -268,7 +270,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-結果:
+結果：
 
 ```response
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
@@ -276,27 +278,28 @@ FORMAT PrettyCompact"
 └───────────────────┴───────────────────┘
 ```
 
+
 ## 計画を立てる {#make-a-plan}
 
-上記の調査結果に基づいて、次のようにします。
+上記の調査に基づくと、次のことが分かります。
 
-- `JURISDICTION_CODE` は `UInt8` にキャストする。
-- `PARKS_NM` は `LowCardinality(String)` にキャストする。
-- `CMPLNT_FR_DT` と `CMPLNT_FR_TM` には常に値が入っている（デフォルト時刻として `00:00:00` が入っている可能性がある）。
-- `CMPLNT_TO_DT` と `CMPLNT_TO_TM` は空の場合がある。
-- 元データでは日付と時刻は別々のフィールドに格納されている。
-- 日付は `mm/dd/yyyy` 形式である。
-- 時刻は `hh:mm:ss` 形式である。
-- 日付と時刻は連結して DateTime 型にできる。
-- 1970 年 1 月 1 日より前の日付が含まれているため、64 ビットの DateTime が必要である。
+- `JURISDICTION_CODE` は `UInt8` にキャストする必要があります。
+- `PARKS_NM` は `LowCardinality(String)` にキャストする必要があります。
+- `CMPLNT_FR_DT` と `CMPLNT_FR_TM` には常に値が設定されています（デフォルト時刻として `00:00:00` が入っている可能性あり）
+- `CMPLNT_TO_DT` と `CMPLNT_TO_TM` は空の場合があります
+- 元データでは日付と時刻が別々のフィールドに保存されています
+- 日付は `mm/dd/yyyy` 形式です
+- 時刻は `hh:mm:ss` 形式です
+- 日付と時刻は連結して DateTime 型にできます
+- 1970 年 1 月 1 日より前の日付が存在するため、64 ビットの DateTime が必要です
 
 :::note
-型に対して行うべき変更はまだ多くありますが、いずれも同じ調査手順に従うことで判断できます。フィールド内の文字列の異なる値の数や、数値の最小値と最大値を確認し、それに基づいて決定してください。このガイドの後半で示すテーブルスキーマでは、低カーディナリティの文字列と符号なし整数フィールドが多数あり、浮動小数点数値はごくわずかです。
+型に対して行うべき変更はほかにも多くありますが、いずれも同じ調査手順に従って決定できます。フィールド内の文字列の異なる値の数や、数値の最小値と最大値を確認し、その結果に基づいて判断してください。このガイドの後半で示すテーブルスキーマには、多数の LowCardinality 文字列と符号なし整数フィールドが含まれており、浮動小数点数型はごくわずかです。
 :::
 
 ## 日付フィールドと時刻フィールドを連結する {#concatenate-the-date-and-time-fields}
 
-日付フィールド `CMPLNT_FR_DT` と時刻フィールド `CMPLNT_FR_TM` を、`DateTime` 型にキャスト可能な 1 つの `String` 型の値に連結するには、連結演算子で結合した 2 つのフィールドを選択します: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`。`CMPLNT_TO_DT` と `CMPLNT_TO_TM` フィールドも同様に処理されます。
+日付フィールド `CMPLNT_FR_DT` と時刻フィールド `CMPLNT_FR_TM` を、`DateTime` 型にキャスト可能な 1 つの `String` に連結するには、連結演算子を用いて 2 つのフィールドを結合した式を選択します: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`。`CMPLNT_TO_DT` と `CMPLNT_TO_TM` フィールドも同様に扱います。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -307,7 +310,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-結果：
+結果:
 
 ```response
 ┌─complaint_begin─────┐
@@ -324,9 +327,10 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
+
 ## 日付と時刻の文字列を DateTime64 型に変換する {#convert-the-date-and-time-string-to-a-datetime64-type}
 
-このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。さらに、日付は `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式へ変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort) を使用して実行できます。
+このガイドの前半で、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。また、日付は `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式に変換する必要があります。これらはどちらも [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort) を使って行えます。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -341,9 +345,10 @@ LIMIT 25
 FORMAT PrettyCompact"
 ```
 
-上記の 2 行目と 3 行目には前のステップで連結した結果があり、4 行目と 5 行目でそれらの文字列を `DateTime64` にパースしています。苦情の終了時刻は必ずしも存在するとは限らないため、`parseDateTime64BestEffortOrNull` を使用します。
+上記の 2 行目と 3 行目には前のステップで連結した文字列が含まれており、4 行目と 5 行目でそれらの文字列を `DateTime64` 型にパースしています。苦情の終了時刻は存在が保証されていないため、`parseDateTime64BestEffortOrNull` を使用しています。
 
 結果:
+
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -376,33 +381,34 @@ FORMAT PrettyCompact"
 ```
 
 :::note
-上で `1925` として表示されている日付は、データの誤りが原因です。元のデータには、本来は `2019`〜`2022` であるべきところが `1019`〜`1022` となっているレコードがいくつか含まれています。これらは、64 ビットの `DateTime` で表現可能な最も古い日付が 1925 年 1 月 1 日であるため、その日付として保存されています。
+上記で `1925` として表示されている日付は、データ中の誤りによるものです。元データには、本来は `2019` ～ `2022` であるべき日付が `1019` ～ `1022` の年として記録されているレコードがいくつか存在します。これらは、64 ビット DateTime 型で表現可能な最も古い日付である 1925 年 1 月 1 日として保存されています。
 :::
+
 
 ## テーブルを作成する {#create-a-table}
 
-これまでに決定した、カラムに使用するデータ型は、以下のテーブルスキーマに反映されています。テーブルで使用する `ORDER BY` と `PRIMARY KEY` も決める必要があります。`ORDER BY` と `PRIMARY KEY` の少なくとも一方は必ず指定しなければなりません。`ORDER BY` に含めるカラムを決定するためのガイドラインを以下に示します。さらに詳しい情報は、このドキュメント末尾の *Next Steps* セクションで説明します。
+これまでに決定したカラムのデータ型は、以下のテーブルスキーマに反映されています。テーブルで使用する `ORDER BY` と `PRIMARY KEY` も決める必要があります。`ORDER BY` と `PRIMARY KEY` のうち少なくとも一方は指定しなければなりません。`ORDER BY` に含めるカラムを選定する際のガイドラインを以下に示します。詳細については、本ドキュメントの末尾にある *Next Steps* セクションを参照してください。
 
 ### `ORDER BY` と `PRIMARY KEY` 句 {#order-by-and-primary-key-clauses}
 
-* `ORDER BY` タプルには、クエリのフィルタで使用されるフィールドを含めるべきです
-* ディスク上での圧縮率を最大化するには、`ORDER BY` タプルはカーディナリティが低いものから高いものへ昇順になるように並べるべきです
-* 存在する場合、`PRIMARY KEY` タプルは `ORDER BY` タプルの部分集合でなければなりません
-* `ORDER BY` のみが指定された場合、そのタプルが `PRIMARY KEY` としても使用されます
-* プライマリキーインデックスは、指定されていれば `PRIMARY KEY` タプル、指定されていなければ `ORDER BY` タプルを用いて作成されます
-* `PRIMARY KEY` インデックスは主メモリ上に保持されます
+* `ORDER BY` のタプルには、クエリのフィルタ条件で使用されるフィールドを含める必要があります
+* ディスク上での圧縮率を最大化するには、`ORDER BY` のタプルのフィールドをカーディナリティの昇順になるように並べる必要があります
+* 存在する場合、`PRIMARY KEY` のタプルは `ORDER BY` のタプルの部分集合でなければなりません
+* `ORDER BY` だけが指定されている場合、同じタプルが `PRIMARY KEY` として使用されます
+* プライマリキー索引は、指定されていれば `PRIMARY KEY` のタプルを、指定されていなければ `ORDER BY` のタプルを用いて作成されます
+* `PRIMARY KEY` の索引はメインメモリ上に保持されます
 
-データセットと、それに対してクエリを実行することで答えられそうな問いを考えると、
-ニューヨーク市の 5 行政区において、時間の経過とともに報告された犯罪の種類を確認したい
-と判断できるかもしれません。その場合、次のフィールドを `ORDER BY` に含めることが考えられます:
+データセットと、そのデータに対してどのようなクエリを実行してどのような問いに答えたいかを考えると、
+ニューヨーク市の 5 つの行政区ごとに、時間の経過に伴う犯罪種別を確認したいと判断できるかもしれません。
+その場合、次のフィールドを `ORDER BY` に含めることが考えられます:
 
-| Column        | 説明（データディクショナリより）       |
-| ------------- | ---------------------- |
-| OFNS&#95;DESC | キーコードに対応する犯罪の説明        |
-| RPT&#95;DT    | 事件が警察に報告された日付          |
-| BORO&#95;NM   | 事件が発生した行政区（borough）の名称 |
+| Column        | 説明（データ Dictionary から） |
+| ------------- | --------------------- |
+| OFNS&#95;DESC | キーコードに対応する犯罪の説明       |
+| RPT&#95;DT    | 事件が警察に通報された日付         |
+| BORO&#95;NM   | 事件が発生した行政区の名称         |
 
-3 つの候補カラムについて、TSV ファイルに対してカーディナリティを確認します:
+これら 3 つの候補カラムのカーディナリティを確認するために、TSV ファイルに対してクエリを実行します:
 
 ```bash
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -423,14 +429,14 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 └───────────────────────┴────────────────────┴─────────────────────┘
 ```
 
-カーディナリティ順に並べ替えると、`ORDER BY` は次のようになります。
+カーディナリティ順に並べると、`ORDER BY` は次のようになります。
 
 ```sql
 ORDER BY ( BORO_NM, OFNS_DESC, RPT_DT )
 ```
 
 :::note
-以下のテーブルでは、より読みやすい列名を使用します。上記の名前は、以下の列名に対応づけられます。
+以下のテーブルでは、より読みやすいカラム名を使用しており、上記の名前は次のように対応付けられます。
 
 ```sql
 ORDER BY ( borough, offense_description, date_reported )
@@ -438,7 +444,7 @@ ORDER BY ( borough, offense_description, date_reported )
 
 :::
 
-データ型の変更と `ORDER BY` で指定したタプルを組み合わせると、このようなテーブル構造になります。
+データ型の変更と `ORDER BY` 句のタプルを反映すると、テーブル構造は次のようになります：
 
 ```sql
 CREATE TABLE NYPD_Complaint (
@@ -478,9 +484,10 @@ CREATE TABLE NYPD_Complaint (
   ORDER BY ( borough, offense_description, date_reported )
 ```
 
+
 ### テーブルの主キーを確認する {#finding-the-primary-key-of-a-table}
 
-ClickHouse の `system` データベースのうち、特に `system.table` には、作成したばかりのテーブルに関するすべての情報が含まれています。次のクエリで、`ORDER BY`（ソートキー）と `PRIMARY KEY` を確認できます。
+ClickHouse の `system` データベース、具体的には `system.table` には、先ほど作成したテーブルに関するすべての情報が含まれています。次のクエリは `ORDER BY`（ソートキー）と `PRIMARY KEY` を表示します。
 
 ```sql
 SELECT
@@ -508,14 +515,15 @@ table:         NYPD_Complaint
 1 row in set. Elapsed: 0.001 sec.
 ```
 
+
 ## データの前処理とインポート {#preprocess-import-data}
 
-データの前処理には `clickhouse-local` ツールを使用し、取り込みには `clickhouse-client` を使用します。
+`clickhouse-local` ツールをデータの前処理に、`clickhouse-client` ツールをデータのアップロードに使用します。
 
-### `clickhouse-local` で使用される引数 {#clickhouse-local-arguments-used}
+### `clickhouse-local` で使用する引数 {#clickhouse-local-arguments-used}
 
 :::tip
-`table='input'` は、以下の `clickhouse-local` の引数に含まれています。`clickhouse-local` は指定された入力（`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`）を受け取り、その入力をテーブルに挿入します。デフォルトではテーブル名は `table` です。このガイドではデータフローを分かりやすくするために、テーブル名を `input` に設定しています。`clickhouse-local` の最後の引数は、そのテーブル（`FROM input`）から SELECT するクエリであり、その結果がパイプで `clickhouse-client` に渡されて、`NYPD_Complaint` テーブルにデータが投入されます。
+`table='input'` は、以下の clickhouse-local の引数の中に登場します。clickhouse-local は、指定された入力（`cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv`）を受け取り、その内容をテーブルに挿入します。デフォルトではテーブル名は `table` です。このガイドでは、データフローを分かりやすくするためにテーブル名を `input` に設定しています。clickhouse-local の最後の引数は、そのテーブル（`FROM input`）からデータを選択するクエリであり、その結果はパイプで `clickhouse-client` に渡されて、`NYPD_Complaint` テーブルにデータが投入されます。
 :::
 
 ```sql
@@ -562,10 +570,11 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-client --query='INSERT INTO NYPD_Complaint FORMAT TSV'
 ```
 
+
 ## データを検証する {#validate-data}
 
 :::note
-このデータセットは年に1回以上更新される可能性があるため、このドキュメントに記載されている数値と一致しない場合があります。
+このデータセットは年に一度以上更新されるため、本書に記載されている値と実際のカウントが一致しない場合があります。
 :::
 
 クエリ:
@@ -585,9 +594,9 @@ FROM NYPD_Complaint
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-ClickHouse 内のデータセットのサイズは、元の TSV ファイルのわずか 12% に過ぎません。次のクエリで、元の TSV ファイルのサイズとテーブルのサイズを比較してみましょう。
+ClickHouse 上のデータセットのサイズは、元の TSV ファイルのわずか 12% です。元の TSV ファイルのサイズとテーブルのサイズを比較してみましょう。
 
-クエリ:
+Query:
 
 ```sql
 SELECT formatReadableSize(total_bytes)
@@ -603,9 +612,10 @@ WHERE name = 'NYPD_Complaint'
 └─────────────────────────────────┘
 ```
 
-## いくつかクエリを実行する {#run-queries}
 
-### クエリ 1. 月別の苦情件数を比較する {#query-1-compare-the-number-of-complaints-by-month}
+## クエリを実行してみる {#run-queries}
+
+### クエリ 1. 苦情件数を月別に比較する {#query-1-compare-the-number-of-complaints-by-month}
 
 クエリ:
 
@@ -642,9 +652,10 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-### クエリ 2. 区ごとの苦情件数の合計を比較する {#query-2-compare-total-number-of-complaints-by-borough}
 
-クエリ：
+### クエリ 2. 行政区ごとの苦情件数合計を比較する {#query-2-compare-total-number-of-complaints-by-borough}
+
+クエリ:
 
 ```sql
 SELECT
@@ -673,6 +684,7 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
 
+
 ## 次のステップ {#next-steps}
 
-[ClickHouse におけるスパースプライマリインデックスの実践的入門](/guides/best-practices/sparse-primary-indexes.md) では、従来のリレーショナルデータベースと比較した ClickHouse のインデックス方式の違い、ClickHouse がスパースプライマリインデックスをどのように構築・利用するか、さらにインデックスに関するベストプラクティスについて解説しています。
+[A Practical Introduction to Sparse Primary Indexes in ClickHouse](/guides/best-practices/sparse-primary-indexes.md) では、従来のリレーショナルデータベースと比べた ClickHouse におけるインデックス付けの違い、ClickHouse がスパースなプライマリ索引をどのように構築・利用するか、そしてインデックスのベストプラクティスについて解説しています。

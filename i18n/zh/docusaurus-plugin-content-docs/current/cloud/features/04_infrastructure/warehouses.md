@@ -15,6 +15,7 @@ import compute_7 from '@site/static/images/cloud/reference/compute-compute-7.png
 import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png';
 import Image from '@theme/IdealImage';
 
+
 # 仓库 {#warehouses}
 
 ## 什么是计算-计算分离？ {#what-is-compute-compute-separation}
@@ -118,6 +119,7 @@ _图 6 - 仓库中的读写服务和只读服务_
 - 服务在空闲时是否应被停用（不适用于组中的第一个服务——请参阅 **限制** 部分）
 
 ## 行为变化 {#changes-in-behavior}
+
 一旦为某个服务启用了 compute-compute（已创建至少一个次级服务），使用 `default` 集群名称调用 `clusterAllReplicas()` 函数时，将只会使用调用该函数的服务中的副本。也就是说，如果有两个服务连接到同一数据集，并且从服务 1 调用了 `clusterAllReplicas(default, system, processes)`，则只会显示运行在服务 1 上的进程。如有需要，仍然可以调用 `clusterAllReplicas('all_groups.default', system, processes)` 来访问所有副本。
 
 ## 限制 {#limitations}
@@ -140,6 +142,7 @@ SETTINGS distributed_ddl_task_timeout=0
 ```
 
 7. **当前每个 warehouse 最多支持 5 个服务（软限制）。** 如需在单个 warehouse 中配置超过 5 个服务，请联系支持团队。
+
 
 ## 定价 {#pricing}
 
@@ -170,8 +173,8 @@ _图 7 - 单击加号以在仓库中创建新服务_
 
 重命名仓库有两种方法：
 
-- 在服务页面右上角选择“Sort by warehouse”，然后单击仓库名称旁边的铅笔图标；
-- 单击任一服务上的仓库名称，并在弹出的界面中对仓库重命名。
+- 在服务页面右上角选择“Sort by warehouse”，然后点击仓库名称旁边的铅笔图标；
+- 点击任一服务上的仓库名称，并在弹出的界面中重命名仓库。
 
 ### 删除仓库 {#deleting-a-warehouse}
 

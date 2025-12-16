@@ -38,7 +38,6 @@ make
 现在在 ClickHouse 中创建表。
 你可以使用 tools/tpcds.sql 中的原始表定义，或者使用经过「调优」的表定义，在合适的地方正确定义主键索引并使用 LowCardinality 列类型。
 
-
 ```sql
 CREATE TABLE call_center(
       cc_call_center_sk         Int64,

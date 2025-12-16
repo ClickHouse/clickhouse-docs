@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Начало работы с ClickStack и удаленным демонстрационным набором данных'
 doc_type: 'guide'
-keywords: ['clickstack', 'примерные данные', 'демонстрационный набор данных', 'логи', 'наблюдаемость']
+keywords: ['clickstack', 'примерные данные', 'демонстрационный набор данных', 'логи', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';
@@ -47,6 +47,7 @@ import DemoArchitecture from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 :::warning Недоступно с HyperDX в ClickHouse Cloud
 Удалённые базы данных не поддерживаются, когда HyperDX развёрнут в ClickHouse Cloud. Поэтому этот набор данных недоступен.
 :::
+
 
 Он включает примерно 40 часов данных, полученных из ClickHouse-версии официального демо OpenTelemetry (OTel). Данные каждую ночь повторно воспроизводятся со временными метками, смещёнными к текущему временному интервалу, что позволяет пользователям исследовать поведение системы, используя встроенные в HyperDX логи, трассировки и метрики.
 
