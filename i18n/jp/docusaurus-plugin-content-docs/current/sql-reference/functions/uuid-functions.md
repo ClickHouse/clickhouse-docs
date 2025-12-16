@@ -1860,7 +1860,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 導入バージョン: v20.12
 
 入力値を `UUID` 型の値に変換しますが、エラーが発生した場合は `NULL` を返します。
-[`toUUID`](#touuid) と同様ですが、変換エラー時に例外をスローする代わりに `NULL` を返します。
+[`toUUID`](/sql-reference/functions/uuid-functions#touuid) と同様ですが、変換エラー時に例外をスローする代わりに `NULL` を返します。
 
 サポートされる引数:
 

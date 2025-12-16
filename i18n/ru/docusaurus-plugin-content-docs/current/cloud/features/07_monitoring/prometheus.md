@@ -17,7 +17,7 @@ import Image from '@theme/IdealImage';
 
 # Интеграция с Prometheus {#prometheus-integration}
 
-Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через endpoint [ClickHouse Cloud API](/cloud/manage/api/api-overview), который позволяет пользователям безопасно подключаться и экспортировать метрики в свой сборщик метрик Prometheus. Эти метрики можно интегрировать с дашбордами, например, Grafana и Datadog, для визуализации.
+Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через endpoint [ClickHouse Cloud API](/cloud/manage/api/api-overview), который позволяет вам безопасно подключаться и экспортировать метрики в свой сборщик метрик Prometheus. Эти метрики можно интегрировать с дашбордами, например, Grafana и Datadog, для визуализации.
 
 Для начала работы [создайте API-ключ](/cloud/manage/openapi).
 
@@ -43,17 +43,17 @@ import Image from '@theme/IdealImage';
 Используйте API-ключ ClickHouse Cloud для базовой аутентификации:
 
 ```bash
-Username: <KEY_ID>
-Password: <KEY_SECRET>
-Example request
+Имя пользователя: <KEY_ID>
+Пароль: <KEY_SECRET>
+Пример запроса
 export KEY_SECRET=<key_secret>
 export KEY_ID=<key_id>
 export ORG_ID=<org_id>
 
-# For all services in $ORG_ID
+# Для всех сервисов в $ORG_ID {#for-all-services-in-org_id}
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/prometheus?filtered_metrics=true
 
-# For a single service only
+# Только для одного сервиса {#for-a-single-service-only}
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
@@ -61,63 +61,63 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 ### Пример ответа {#sample-response}
 
 ```response
-# HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
-# TYPE ClickHouse_ServiceInfo untyped
+# HELP ClickHouse_ServiceInfo Информация о сервисе, включая статус кластера и версию ClickHouse {#help-clickhouse_serviceinfo-information-about-service-including-cluster-status-and-clickhouse-version}
+# TYPE ClickHouse_ServiceInfo untyped {#type-clickhouse_serviceinfo-untyped}
 ClickHouse_ServiceInfo{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",clickhouse_cluster_status="running",clickhouse_version="24.5",scrape="full"} 1
 
-# HELP ClickHouseProfileEvents_Query Number of queries to be interpreted and potentially executed. Does not include queries that failed to parse or were rejected due to AST size limits, quota limits or limits on the number of simultaneously running queries. May include internal queries initiated by ClickHouse itself. Does not count subqueries.
-# TYPE ClickHouseProfileEvents_Query counter
+# HELP ClickHouseProfileEvents_Query Количество запросов для интерпретации и потенциального выполнения. Не включает запросы, которые не удалось разобрать или которые были отклонены из-за ограничений размера AST, квот или ограничений на количество одновременно выполняемых запросов. Может включать внутренние запросы, инициированные самим ClickHouse. Не учитывает подзапросы. {#help-clickhouseprofileevents_query-number-of-queries-to-be-interpreted-and-potentially-executed-does-not-include-queries-that-failed-to-parse-or-were-rejected-due-to-ast-size-limits-quota-limits-or-limits-on-the-number-of-simultaneously-running-queries-may-include-internal-queries-initiated-by-clickhouse-itself-does-not-count-subqueries}
+# TYPE ClickHouseProfileEvents_Query counter {#type-clickhouseprofileevents_query-counter}
 ClickHouseProfileEvents_Query{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 6
 
-# HELP ClickHouseProfileEvents_QueriesWithSubqueries Count queries with all subqueries
-# TYPE ClickHouseProfileEvents_QueriesWithSubqueries counter
+# HELP ClickHouseProfileEvents_QueriesWithSubqueries Подсчёт запросов со всеми подзапросами {#help-clickhouseprofileevents_querieswithsubqueries-count-queries-with-all-subqueries}
+# TYPE ClickHouseProfileEvents_QueriesWithSubqueries counter {#type-clickhouseprofileevents_querieswithsubqueries-counter}
 ClickHouseProfileEvents_QueriesWithSubqueries{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 230
 
-# HELP ClickHouseProfileEvents_SelectQueriesWithSubqueries Count SELECT queries with all subqueries
-# TYPE ClickHouseProfileEvents_SelectQueriesWithSubqueries counter
+# HELP ClickHouseProfileEvents_SelectQueriesWithSubqueries Подсчёт SELECT-запросов со всеми подзапросами {#help-clickhouseprofileevents_selectquerieswithsubqueries-count-select-queries-with-all-subqueries}
+# TYPE ClickHouseProfileEvents_SelectQueriesWithSubqueries counter {#type-clickhouseprofileevents_selectquerieswithsubqueries-counter}
 ClickHouseProfileEvents_SelectQueriesWithSubqueries{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 224
 
-# HELP ClickHouseProfileEvents_FileOpen Number of files opened.
-# TYPE ClickHouseProfileEvents_FileOpen counter
+# HELP ClickHouseProfileEvents_FileOpen Количество открытых файлов. {#help-clickhouseprofileevents_fileopen-number-of-files-opened}
+# TYPE ClickHouseProfileEvents_FileOpen counter {#type-clickhouseprofileevents_fileopen-counter}
 ClickHouseProfileEvents_FileOpen{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 4157
 
-# HELP ClickHouseProfileEvents_Seek Number of times the 'lseek' function was called.
-# TYPE ClickHouseProfileEvents_Seek counter
+# HELP ClickHouseProfileEvents_Seek Количество вызовов функции 'lseek'. {#help-clickhouseprofileevents_seek-number-of-times-the-lseek-function-was-called}
+# TYPE ClickHouseProfileEvents_Seek counter {#type-clickhouseprofileevents_seek-counter}
 ClickHouseProfileEvents_Seek{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 1840
 
-# HELP ClickPipes_Info Always equal to 1. Label "clickpipe_state" contains the current state of the pipe: Stopped/Provisioning/Running/Paused/Failed
-# TYPE ClickPipes_Info gauge
+# HELP ClickPipes_Info Всегда равно 1. Метка "clickpipe_state" содержит текущее состояние конвейера: Stopped/Provisioning/Running/Paused/Failed {#help-clickpipes_info-always-equal-to-1-label-clickpipe_state-contains-the-current-state-of-the-pipe-stoppedprovisioningrunningpausedfailed}
+# TYPE ClickPipes_Info gauge {#type-clickpipes_info-gauge}
 ClickPipes_Info{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent",clickpipe_status="Running"} 1
 
-# HELP ClickPipes_SentEvents_Total Total number of records sent to ClickHouse
-# TYPE ClickPipes_SentEvents_Total counter
+# HELP ClickPipes_SentEvents_Total Общее количество записей, отправленных в ClickHouse {#help-clickpipes_sentevents_total-total-number-of-records-sent-to-clickhouse}
+# TYPE ClickPipes_SentEvents_Total counter {#type-clickpipes_sentevents_total-counter}
 ClickPipes_SentEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5534250
 
-# HELP ClickPipes_SentBytesCompressed_Total Total compressed bytes sent to ClickHouse.
-# TYPE ClickPipes_SentBytesCompressed_Total counter
+# HELP ClickPipes_SentBytesCompressed_Total Общее количество сжатых байтов, отправленных в ClickHouse. {#help-clickpipes_sentbytescompressed_total-total-compressed-bytes-sent-to-clickhouse}
+# TYPE ClickPipes_SentBytesCompressed_Total counter {#type-clickpipes_sentbytescompressed_total-counter}
 ClickPipes_SentBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name
 ="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 380837520
 ClickPipes_SentBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name
 
-# HELP ClickPipes_FetchedBytes_Total Total uncompressed bytes fetched from the source.
-# TYPE ClickPipes_FetchedBytes_Total counter
+# HELP ClickPipes_FetchedBytes_Total Общее количество несжатых байтов, полученных из источника. {#help-clickpipes_fetchedbytes_total-total-uncompressed-bytes-fetched-from-the-source}
+# TYPE ClickPipes_FetchedBytes_Total counter {#type-clickpipes_fetchedbytes_total-counter}
 ClickPipes_FetchedBytes_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 873286202
 
-# HELP ClickPipes_Errors_Total Total errors ingesting data.
-# TYPE ClickPipes_Errors_Total counter
+# HELP ClickPipes_Errors_Total Общее количество ошибок при приёме данных. {#help-clickpipes_errors_total-total-errors-ingesting-data}
+# TYPE ClickPipes_Errors_Total counter {#type-clickpipes_errors_total-counter}
 ClickPipes_Errors_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 0
 
-# HELP ClickPipes_SentBytes_Total Total uncompressed bytes sent to ClickHouse.
-# TYPE ClickPipes_SentBytes_Total counter
+# HELP ClickPipes_SentBytes_Total Общее количество несжатых байтов, отправленных в ClickHouse. {#help-clickpipes_sentbytes_total-total-uncompressed-bytes-sent-to-clickhouse}
+# TYPE ClickPipes_SentBytes_Total counter {#type-clickpipes_sentbytes_total-counter}
 ClickPipes_SentBytes_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 477187967
 
-# HELP ClickPipes_FetchedBytesCompressed_Total Total compressed bytes fetched from the source. If data is uncompressed at the source, this will equal ClickPipes_FetchedBytes_Total
-# TYPE ClickPipes_FetchedBytesCompressed_Total counter
+# HELP ClickPipes_FetchedBytesCompressed_Total Общее количество сжатых байтов, полученных из источника. Если данные не сжаты в источнике, это значение будет равно ClickPipes_FetchedBytes_Total {#help-clickpipes_fetchedbytescompressed_total-total-compressed-bytes-fetched-from-the-source-if-data-is-uncompressed-at-the-source-this-will-equal-clickpipes_fetchedbytes_total}
+# TYPE ClickPipes_FetchedBytesCompressed_Total counter {#type-clickpipes_fetchedbytescompressed_total-counter}
 ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 873286202
 
-# HELP ClickPipes_FetchedEvents_Total Total number of records fetched from the source.
-# TYPE ClickPipes_FetchedEvents_Total counter
-ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
+# HELP ClickPipes_FetchedEvents_Total Общее количество записей, полученных из источника. {#help-clickpipes_fetchedevents_total-total-number-of-records-fetched-from-the-source}
+# TYPE ClickPipes_FetchedEvents_Total counter {#type-clickpipes_fetchedevents_total-counter}
+ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="Демонстрационный экземпляр ClickPipes",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Демонстрационный пайплайн Confluent",clickpipe_source="confluent"} 5535376
 ```
 
 ### Метки метрик {#metric-labels}
@@ -227,10 +227,10 @@ scrape_configs:
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+  // Сбор метрик с адреса прослушивания по умолчанию.
   targets = [{
         __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+// например: https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -241,7 +241,7 @@ prometheus.scrape "clickhouse_cloud" {
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service below
+  // перенаправить в metrics_service ниже
 }
 
 prometheus.remote_write "metrics_service" {
@@ -263,10 +263,10 @@ prometheus.remote_write "metrics_service" {
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // Collect metrics from the default listen address.
+  // Сбор метрик с адреса прослушивания по умолчанию.
   targets = [{
         __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+// например: https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -277,7 +277,7 @@ prometheus.scrape "clickhouse_cloud" {
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // forward to metrics_service. Modify to your preferred receiver
+  // Перенаправление в metrics_service. Измените на нужный получатель
 }
 ```
 

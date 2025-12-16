@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 Array 类型可以嵌套，并且可以将 `Nullable` 类型的值作为参数。`Tuple` 和 `Map` 类型同样可以嵌套。
 
-在 `INSERT` 查询中支持使用 `DICTIONARY` 类型；对于 `SELECT` 查询，可以通过 [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 设置，将 [LowCardinality](/sql-reference/data-types/lowcardinality.md) 类型作为 `DICTIONARY` 类型输出。
+在 `INSERT` 查询中支持使用 `DICTIONARY` 类型；对于 `SELECT` 查询，可以通过 [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 设置，将 [LowCardinality](/sql-reference/data-types/lowcardinality.md) 类型作为 `DICTIONARY` 类型输出。请注意，`LowCardinality` 字典中可能包含未使用的值，这会导致在输出 Arrow `DICTIONARY` 时同样包含未使用的值。
 
 不支持的 Arrow 数据类型：
 

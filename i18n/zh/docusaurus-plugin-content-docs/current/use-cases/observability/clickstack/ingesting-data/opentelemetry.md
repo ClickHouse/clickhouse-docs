@@ -58,13 +58,13 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 对于语言 SDK，这可以通过 `init` 函数设置，或者通过 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量来设置，例如：
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<您的摄取_API_密钥>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 代理同样应在所有 OTLP 通信中包含此授权请求头。例如，如果以代理角色部署 [OTel collector 的 contrib 发行版](https://github.com/open-telemetry/opentelemetry-collector-contrib)，则可以使用 OTLP 导出器。下面展示了一个代理配置示例，用于读取该[结构化日志文件](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)。请注意需要指定授权密钥——参见 `<YOUR_API_INGESTION_KEY>`。
 
 ```yaml
-# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
+# clickhouse-agent-config.yaml
 receivers:
   filelog:
     include:
@@ -76,14 +76,14 @@ receivers:
           parse_from: attributes.time_local
           layout: '%Y-%m-%d %H:%M:%S'
 exporters:
-  # HTTP 设置
+  # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
  
-  # gRPC 设置（备选）
+  # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -96,7 +96,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # 已修改，因为同一主机上运行 2 个采集器
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

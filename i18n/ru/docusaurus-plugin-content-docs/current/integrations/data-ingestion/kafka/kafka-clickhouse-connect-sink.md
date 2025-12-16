@@ -10,7 +10,7 @@ keywords: ['Приёмник ClickHouse Kafka Connect', 'коннектор Kafk
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# ClickHouse Kafka Connect Sink
+# ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
 Если вам нужна помощь, пожалуйста, [создайте issue в репозитории](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) или задайте вопрос в [публичном Slack ClickHouse](https://clickhouse.com/slack).
@@ -165,11 +165,11 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 
 Запись преобразуется в JSON и отправляется в ClickHouse как значение в формате [JSONEachRow](/interfaces/formats/JSONEachRow).
 
-### Примеры конфигурации
+### Примеры конфигурации {#configuration-recipes}
 
 Вот некоторые распространенные примеры конфигурации для быстрого начала работы.
 
-#### Базовая конфигурация
+#### Базовая конфигурация {#basic-configuration}
 
 Самая базовая конфигурация для начала работы - предполагается, что вы запускаете Kafka Connect в распределенном режиме и у вас есть сервер ClickHouse, работающий на `localhost:8443` с включенным SSL, данные в формате JSON без схемы.
 ```json
@@ -228,9 +228,9 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 }
 ```
 
-#### Использование с различными форматами данных
+#### Использование с различными форматами данных {#using-with-different-data-formats}
 
-##### Поддержка схемы Avro
+##### Поддержка схемы Avro {#avro-schema-support}
 ```json
 {
   "name": "clickhouse-connect",
@@ -304,7 +304,7 @@ confluent local services connect log
 
 Для получения дополнительной информации ознакомьтесь с официальным [руководством](https://docs.confluent.io/platform/current/connect/logging.html).
 
-### Мониторинг
+### Мониторинг {#monitoring}
 
 ClickHouse Kafka Connect экспортирует метрики времени выполнения через [Java Management Extensions (JMX)](https://www.oracle.com/technical-resources/articles/javase/jmx.html). JMX по умолчанию включён в коннекторе Kafka.
 
@@ -562,6 +562,7 @@ consumer.fetch.max.wait.ms=300
 ##### Асинхронные вставки с семантикой exactly-once {#async-inserts-with-exactly-once}
 
 При использовании `exactlyOnce=true` с асинхронными вставками:
+
 ```json
 {
   "config": {

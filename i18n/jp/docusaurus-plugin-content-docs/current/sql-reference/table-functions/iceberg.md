@@ -27,7 +27,6 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
-
 ## 引数 {#arguments}
 
 引数の説明は、対応するテーブル関数 `s3`、`azureBlobStorage`、`HDFS`、`file` における引数の説明と同様です。  
@@ -46,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 ClickHouse は現在、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLocal` テーブル関数および `IcebergS3`、`icebergAzure`、`IcebergHDFS`、`IcebergLocal` テーブルエンジンを介して、Iceberg フォーマット v1 および v2 の読み取りをサポートしています。
 :::
-
 
 ## 名前付きコレクションの定義 {#defining-a-named-collection}
 
@@ -70,7 +68,6 @@ URL と認証情報を保存するための名前付きコレクションを構�
 SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
-
 
 ## データカタログの使用 {#iceberg-writes-catalogs}
 
@@ -116,7 +113,6 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-
 ## スキーマの進化 {#schema-evolution}
 
 現時点では、CH を利用することで、時間の経過とともにスキーマが変更された iceberg テーブルを読み込むことができます。現在、カラムの追加・削除やカラム順の変更が行われたテーブルの読み取りをサポートしています。また、値が必須だったカラムを、NULL を許可するカラムに変更することもできます。さらに、単純な型に対する許可された型キャストもサポートしており、具体的には次のとおりです。  
@@ -157,7 +153,6 @@ ClickHouse は Iceberg テーブルに対するタイムトラベルをサポー
 ```
 
 注記: 同じクエリ内で `iceberg_timestamp_ms` パラメータと `iceberg_snapshot_id` パラメータを同時に指定することはできません。
-
 
 ### 重要な考慮事項 {#important-considerations}
 
@@ -231,7 +226,6 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 * ts1 および ts2 では: 元の 2 つのカラムのみが表示される
 * ts3 では: 3 つすべてのカラムが表示され、1 行目の価格は NULL になる
 
-
 #### シナリオ 2:  過去と現在のスキーマの差異 {#scenario-2}
 
 現在時点でタイムトラベルクエリを実行すると、テーブルの現在のスキーマとは異なるスキーマが表示される場合があります。
@@ -274,7 +268,6 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 
 これは、`ALTER TABLE` は新しいスナップショットを作成しない一方で、Spark が現在のテーブルについてスナップショットではなく最新のメタデータファイルから `schema_id` の値を取得するために発生します。
 
-
 #### シナリオ 3:  過去のスキーマと現在のスキーマの違い {#scenario-3}
 
 2つ目の制約は、タイムトラベルを行う際、テーブルに一切データが書き込まれる前の状態は取得できないという点です。
@@ -295,7 +288,6 @@ CH はまだ Iceberg テーブルへの書き込みをサポートしていな�
 ```
 
 ClickHouse における挙動は Spark と同様です。頭の中で Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。
-
 
 ## メタデータファイルの解決 {#metadata-file-resolution}
 
@@ -339,7 +331,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **補足**: 通常は Iceberg カタログ側でメタデータの解決が行われますが、ClickHouse の `iceberg` テーブル関数は S3 に保存されたファイルを直接 Iceberg テーブルとして解釈します。そのため、これらの解決ルールを理解しておくことが重要です。
 
-
 ## メタデータキャッシュ {#metadata-cache}
 
 `Iceberg` テーブルエンジンおよびテーブル関数は、マニフェストファイル、マニフェストリスト、メタデータ JSON の情報を保持するメタデータキャッシュに対応しています。キャッシュはメモリ上に保存されます。この機能は `use_iceberg_metadata_files_cache` によって制御されており、デフォルトで有効です。
@@ -366,7 +357,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 SET allow_experimental_insert_into_iceberg = 1;
 ```
 
-
 ### テーブルの作成 {#create-iceberg-table}
 
 空の独自の Iceberg テーブルを作成するには、読み取り時に使用したものと同じコマンドを利用しつつ、スキーマを明示的に指定します。
@@ -385,7 +375,6 @@ ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/')
 
 注意: version hint ファイルを作成するには、`iceberg_use_version_hint` 設定を有効にします。
 metadata.json ファイルを圧縮する場合は、`iceberg_metadata_compression_method` 設定で使用するコーデック名を指定します。
-
 
 ### INSERT {#writes-inserts}
 
@@ -411,7 +400,6 @@ x: Ivanov
 y: 993
 ```
 
-
 ### DELETE {#iceberg-writes-delete}
 
 merge-on-read フォーマットで不要な行を削除することも、ClickHouse でサポートされています。
@@ -435,7 +423,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ### スキーマの進化 {#iceberg-writes-schema-evolution}
 
@@ -500,7 +487,6 @@ x: Ivanov
 y: 993
 ```
 
-
 ### 圧縮処理（コンパクション） {#iceberg-writes-compaction}
 
 ClickHouse は Iceberg テーブルのコンパクションをサポートしています。現在は、メタデータを更新しつつ、position delete ファイルをデータファイルにマージできます。以前のスナップショット ID とタイムスタンプは変更されないため、タイムトラベル機能は同じ値で引き続き使用できます。
@@ -521,7 +507,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ## 関連項目 {#see-also}
 

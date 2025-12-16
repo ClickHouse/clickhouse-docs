@@ -1,33 +1,33 @@
 ---
 slug: /migrations/postgresql/rewriting-queries
-title: 'PostgreSQLクエリの書き換え'
+title: 'PostgreSQL クエリの書き換え'
 keywords: ['postgres', 'postgresql', 'rewriting queries']
-description: 'PostgreSQLからClickHouseへの移行ガイドのパート2'
-sidebar_label: 'パート2'
+description: 'PostgreSQL から ClickHouse への移行ガイドのパート 2'
+sidebar_label: 'パート 2'
 doc_type: 'guide'
 ---
 
-> これはPostgreSQLからClickHouseへの移行ガイドの**パート2**です。実践的な例を使用して、リアルタイムレプリケーション（CDC）アプローチで効率的に移行を行う方法を示します。ここで説明する概念の多くは、PostgreSQLからClickHouseへの手動による一括データ転送にも適用できます。
+> これは PostgreSQL から ClickHouse への移行ガイドの **パート 2** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）アプローチにより、どのように効率的に移行を行うかを示します。ここで解説する多くの概念は、PostgreSQL から ClickHouse への手動による一括データ転送にも適用できます。
 
-PostgreSQLセットアップからのほとんどのSQLクエリは、変更なしでClickHouseで実行でき、おそらくより高速に実行されます。
+PostgreSQL 環境で使用しているほとんどの SQL クエリは、変更なしで ClickHouse 上でも実行でき、多くの場合より高速に動作します。
 
-## CDCを使用した重複排除 {#deduplication-cdc}
+## CDC を使用した重複排除 {#deduplication-cdc}
 
-CDCによるリアルタイムレプリケーションを使用する場合、更新と削除により重複行が発生する可能性があることに注意してください。これを管理するには、ビューとリフレッシュ可能なマテリアライズドビューを使用するテクニックを使用できます。
+リアルタイムレプリケーションに CDC を用いる場合、更新や削除によって行が重複する可能性があることに注意してください。これに対処するために、ビューおよび Refreshable マテリアライズドビューを利用する手法が使えます。
 
-CDCによるリアルタイムレプリケーションを使用して移行する際に、PostgreSQLからClickHouseへのアプリケーション移行を最小限の摩擦で行う方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
+CDC を利用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へアプリケーションをできるだけスムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
 
-## ClickHouseでのクエリ最適化 {#optimize-queries-in-clickhouse}
+## ClickHouse でクエリを最適化する {#optimize-queries-in-clickhouse}
 
-最小限のクエリ書き換えで移行することは可能ですが、ClickHouseの機能を活用してクエリを大幅に簡素化し、クエリパフォーマンスをさらに向上させることを推奨します。
+最小限のクエリ書き換えで移行することも可能ですが、クエリを大幅に単純化し、さらにクエリパフォーマンスを向上させるために、ClickHouse の機能を活用することを推奨します。
 
-ここでの例では、一般的なクエリパターンを取り上げ、ClickHouseでそれらを最適化する方法を示します。PostgreSQLとClickHouseの同等のリソース（8コア、32GiB RAM）で、完全な[Stack Overflowデータセット](/getting-started/example-datasets/stackoverflow)（2024年4月まで）を使用しています。
+ここでの例では一般的なクエリパターンを取り上げ、ClickHouse を用いてどのように最適化できるかを示します。これらは、PostgreSQL と ClickHouse で同等のリソース（8 コア、32GiB RAM）上に用意した [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow)（2024 年 4 月まで）全体を使用しています。
 
-> 簡素化のため、以下のクエリではデータの重複排除テクニックの使用を省略しています。
+> 説明を簡潔にするため、以下のクエリではデータの重複排除のための手法は省略しています。
 
-> ここでのカウントはわずかに異なります。Postgresデータには外部キーの参照整合性を満たす行のみが含まれているためです。ClickHouseはそのような制約を課さないため、完全なデータセット（匿名ユーザーを含む）を持っています。
+> ここでの件数はわずかに異なります。これは、Postgres 側のデータには外部キーの参照整合性を満たす行のみが含まれている一方で、ClickHouse にはそのような制約がなく、たとえば匿名ユーザーを含む完全なデータセットが格納されているためです。
 
-最も多くのビューを獲得したユーザー（質問が10件を超えるもの）：
+最も多く閲覧されているユーザー（質問数が 10 件を超えるユーザー）:
 
 ```sql
 -- ClickHouse
@@ -72,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-最も多くの`views`を獲得した`tags`：
+最も多く閲覧されている`tags`:
 
 ```sql
 --ClickHouse
@@ -128,9 +128,10 @@ LIMIT 5;
 Time: 112508.083 ms (01:52.508)
 ```
 
-**集計関数**
+**集約関数**
 
-可能な限り、ClickHouseの集計関数を活用してください。以下では、各年で最も閲覧された質問を計算するための[argMax](/sql-reference/aggregate-functions/reference/argmax)関数の使用を示します。
+可能であれば、ClickHouse の集約関数を活用してください。以下では、各年でもっとも多く閲覧された質問を求めるために [argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用する例を示します。
+
 
 ```sql
 --ClickHouse
@@ -172,7 +173,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-これは同等のPostgresクエリよりも大幅にシンプル（かつ高速）です：
+これは、同等の Postgres クエリよりも大幅にシンプル（かつ高速）です：
 
 ```sql
 --Postgres
@@ -208,7 +209,8 @@ Time: 125822.015 ms (02:05.822)
 
 **条件式と配列**
 
-条件関数と配列関数により、クエリが大幅にシンプルになります。以下のクエリは、2022年から2023年にかけて最大の増加率を示したタグ（出現回数が10000回を超えるもの）を計算します。以下のClickHouseクエリが、条件式、配列関数、およびHAVINGとSELECT句でエイリアスを再利用できる機能により、いかに簡潔であるかに注目してください。
+条件関数と配列関数を使うと、クエリを大幅に単純化できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、割合の増加が最も大きいものを計算します。条件関数や配列関数、そして HAVING 句や SELECT 句内でエイリアスを再利用できるおかげで、次の ClickHouse クエリがいかに簡潔になっているかに注目してください。
+
 
 ```sql
 --ClickHouse
@@ -271,4 +273,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[パート3はこちらをクリック](/migrations/postgresql/data-modeling-techniques)
+[パート3はこちら](/migrations/postgresql/data-modeling-techniques)

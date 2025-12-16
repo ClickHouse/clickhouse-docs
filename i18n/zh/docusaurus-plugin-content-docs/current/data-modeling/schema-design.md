@@ -12,6 +12,7 @@ import Image from '@theme/IdealImage';
 
 理解高效的 schema 设计是优化 ClickHouse 性能的关键，其中的诸多选择往往需要在不同方案之间进行权衡，最优方案取决于实际查询模式，以及数据更新频率、延迟要求和数据量等因素。本指南概述了用于优化 ClickHouse 性能的 schema 设计最佳实践和数据建模技术。
 
+
 ## Stack Overflow 数据集 {#stack-overflow-dataset}
 
 在本指南的示例中，我们使用 Stack Overflow 数据集的一个子集。该数据集包含自 2008 年至 2024 年 4 月在 Stack Overflow 上产生的每一条帖子、投票、用户、评论和徽章。该数据以 Parquet 格式提供，使用下方所示的 schema，存储在 S3 bucket `s3://datasets-documentation/stackoverflow/parquet/` 中：
@@ -84,33 +85,34 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stac
 
 要确认表已创建：
 
+
 ```sql
 SHOW CREATE TABLE posts
 
 CREATE TABLE posts
 (
-`Id` Nullable(Int64),
-`PostTypeId` Nullable(Int64),
-`AcceptedAnswerId` Nullable(Int64),
-`CreationDate` Nullable(DateTime64(3, 'UTC')),
-`Score` Nullable(Int64),
-`ViewCount` Nullable(Int64),
-`Body` Nullable(String),
-`OwnerUserId` Nullable(Int64),
-`OwnerDisplayName` Nullable(String),
-`LastEditorUserId` Nullable(Int64),
-`LastEditorDisplayName` Nullable(String),
-`LastEditDate` Nullable(DateTime64(3, 'UTC')),
-`LastActivityDate` Nullable(DateTime64(3, 'UTC')),
-`Title` Nullable(String),
-`Tags` Nullable(String),
-`AnswerCount` Nullable(Int64),
-`CommentCount` Nullable(Int64),
-`FavoriteCount` Nullable(Int64),
-`ContentLicense` Nullable(String),
-`ParentId` Nullable(String),
-`CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
-`ClosedDate` Nullable(DateTime64(3, 'UTC'))
+        `Id` Nullable(Int64),
+        `PostTypeId` Nullable(Int64),
+        `AcceptedAnswerId` Nullable(Int64),
+        `CreationDate` Nullable(DateTime64(3, 'UTC')),
+        `Score` Nullable(Int64),
+        `ViewCount` Nullable(Int64),
+        `Body` Nullable(String),
+        `OwnerUserId` Nullable(Int64),
+        `OwnerDisplayName` Nullable(String),
+        `LastEditorUserId` Nullable(Int64),
+        `LastEditorDisplayName` Nullable(String),
+        `LastEditDate` Nullable(DateTime64(3, 'UTC')),
+        `LastActivityDate` Nullable(DateTime64(3, 'UTC')),
+        `Title` Nullable(String),
+        `Tags` Nullable(String),
+        `AnswerCount` Nullable(Int64),
+        `CommentCount` Nullable(Int64),
+        `FavoriteCount` Nullable(Int64),
+        `ContentLicense` Nullable(String),
+        `ParentId` Nullable(String),
+        `CommunityOwnedDate` Nullable(DateTime64(3, 'UTC')),
+        `ClosedDate` Nullable(DateTime64(3, 'UTC'))
 )
 ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
@@ -125,6 +127,7 @@ INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 ```
 
 > 上述查询会加载 6000 万行。对于 ClickHouse 来说这算小规模，但网络连接较慢的用户可能希望只加载一部分数据。可以通过使用 glob 通配模式指定要加载的年份来实现，例如 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` 或 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`。关于如何使用 glob 模式来筛选文件子集，请参阅[此处](/sql-reference/table-functions/file#globs-in-path)。
+
 
 ## 优化类型 {#optimizing-types}
 
@@ -206,10 +209,10 @@ CREATE TABLE posts_v2
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '已优化类型'
+COMMENT 'Optimized types'
 ```
 
-我们可以使用一条简单的 `INSERT INTO SELECT` 语句来向该表填充数据，从之前的表中读取数据并插入到这里：
+我们可以使用一条简单的 `INSERT INTO SELECT` 语句来向该表填充数据，从之前的表中读取数据并插入到该表中：
 
 ```sql
 INSERT INTO posts_v2 SELECT * FROM posts
@@ -220,6 +223,7 @@ INSERT INTO posts_v2 SELECT * FROM posts
 在我们的新模式中不会保留任何 null。上面的 insert 会将这些值隐式转换为各自类型的默认值——整数为 0，字符串为空字符串。ClickHouse 也会自动将所有数值转换为目标精度。
 ClickHouse 中的主（排序）键
 来自 OLTP 数据库的用户通常会在 ClickHouse 中寻找与之对应的等价概念。
+
 
 ## 选择排序键 {#choosing-an-ordering-key}
 
@@ -242,11 +246,11 @@ ClickHouse 中的主（排序）键
 
 ### 示例 {#example}
 
-将上述指南应用于我们的 `posts` 表，假设用户希望执行按日期和帖子类型过滤的分析，例如：
+将上述指南应用到我们的 `posts` 表时，假设用户希望执行按日期和帖子类型过滤的分析，例如：
 
-“在过去 3 个月中，哪些问题的评论最多”。
+“过去 3 个月中哪些问题的评论数最多”。
 
-使用之前那个已优化类型但尚未设置排序键的 `posts_v2` 表来回答这个问题的查询如下：
+针对这个问题，如果使用之前的 `posts_v2` 表（已优化类型但尚未设置排序键），查询如下：
 
 ```sql
 SELECT
@@ -264,13 +268,13 @@ LIMIT 3
 │ 77900279 │ Speed Test for Buffer Alignment: IBM's PowerPC results vs. my CPU │        49 │
 └──────────┴───────────────────────────────────────────────────────────────────┴──────────────
 
-返回 10 行。用时:0.070 秒。已处理 5982 万行,569.21 MB(852.55 百万行/秒,8.11 GB/秒)。
-峰值内存用量:429.38 MiB。
+10 rows in set. Elapsed: 0.070 sec. Processed 59.82 million rows, 569.21 MB (852.55 million rows/s., 8.11 GB/s.)
+Peak memory usage: 429.38 MiB.
 ```
 
-> 即使对全部 6000 万行做了线性扫描，这里的查询依然非常快——ClickHouse 就是这么快 :) 在 TB 和 PB 级别的数据规模下，请相信我们：合理选择排序键是非常值得的！
+> 即使对全部 6000 万行做了线性扫描，这里的查询依然非常快 —— ClickHouse 就是这么快 :) 在 TB 和 PB 级别的数据规模下，你得相信我们：合理设计排序键绝对值得！
 
-让我们选择列 `PostTypeId` 和 `CreationDate` 作为排序键。
+让我们选择 `PostTypeId` 和 `CreationDate` 这两列作为排序键。
 
 在我们的场景中，我们假定用户始终会按 `PostTypeId` 进行过滤。它的基数为 8，是作为排序键首个元素的合理选择。鉴于按日期粒度进行过滤通常已经足够（同时按日期时间过滤也会受益），因此我们将 `toDate(CreationDate)` 作为键的第二个组成部分。这样也会生成更小的索引，因为日期可以用 16 位来表示，从而加快过滤速度。我们键中的最后一个条目是 `CommentCount`，用于辅助找到评论数最多的帖子（最终排序）。
 
@@ -302,16 +306,16 @@ CREATE TABLE posts_v3
 )
 ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
-COMMENT '排序键'
+COMMENT 'Ordering Key'
 
---从现有表填充表
+--populate table from existing table
 
 INSERT INTO posts_v3 SELECT * FROM posts_v2
 
-返回 0 行。用时:158.074 秒。已处理 5982 万行,76.21 GB(每秒 37.842 万行,482.14 MB/s)。
-峰值内存使用量:6.41 GiB。
+0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
+Peak memory usage: 6.41 GiB.
 
-之前的查询将查询响应时间提升了 3 倍以上:
+Our previous query improves the query response time by over 3x:
 
 SELECT
     Id,
@@ -322,10 +326,11 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ORDER BY CommentCount DESC
 LIMIT 3
 
-返回 10 行。用时:0.020 秒。已处理 29.009 万行,21.03 MB(每秒 1465 万行,1.06 GB/s)。
+10 rows in set. Elapsed: 0.020 sec. Processed 290.09 thousand rows, 21.03 MB (14.65 million rows/s., 1.06 GB/s.)
 ```
 
-对于希望通过使用特定数据类型和合理排序键来提升压缩效果的用户，请参阅 [Compression in ClickHouse](/data-compression/compression-in-clickhouse)。如果需要进一步提高压缩率，我们还推荐参考其中的 [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) 部分。
+对于希望通过使用特定数据类型和合理排序键来提升压缩效果的用户，请参阅 [Compression in ClickHouse](/data-compression/compression-in-clickhouse)。如果你需要进一步提高压缩率，我们还推荐参考其中的 [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) 部分。
+
 
 ## 下一步：数据建模技术 {#next-data-modeling-techniques}
 

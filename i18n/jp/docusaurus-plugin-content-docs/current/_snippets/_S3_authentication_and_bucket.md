@@ -133,7 +133,6 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
    :::
 3. `パブリックアクセスをすべてブロック`を有効のままにします。パブリックアクセスは不要です。
 
-
 <Image
   size='md'
   img={s3_a}

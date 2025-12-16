@@ -192,17 +192,17 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 结果：
 
 ```response
-┌─PARKS_NM───────────────────┐
+┌─公园名称───────────────────┐
 │ (null)                     │
-│ ASSER LEVY PARK            │
-│ JAMES J WALKER PARK        │
-│ BELT PARKWAY/SHORE PARKWAY │
-│ PROSPECT PARK              │
-│ MONTEFIORE SQUARE          │
-│ SUTTON PLACE PARK          │
-│ JOYCE KILMER PARK          │
-│ ALLEY ATHLETIC PLAYGROUND  │
-│ ASTORIA PARK               │
+│ 阿瑟·利维公园              │
+│ 詹姆斯·J·沃克公园          │
+│ 贝尔特公园大道/海岸公园大道│
+│ 展望公园                   │
+│ 蒙蒂菲奥里广场             │
+│ 萨顿广场公园               │
+│ 乔伊斯·基尔默公园          │
+│ 巷道运动场                 │
+│ 阿斯托里亚公园             │
 └────────────────────────────┘
 ```
 
@@ -326,7 +326,7 @@ FORMAT PrettyCompact"
 
 ## 将日期和时间字符串转换为 DateTime64 类型 {#convert-the-date-and-time-string-to-a-datetime64-type}
 
-在本指南的前面部分中，我们发现 TSV 文件中存在早于 1970 年 1 月 1 日的日期，这意味着这些日期需要使用 64 位的 DateTime 类型。同时，还需要将日期格式从 `MM/DD/YYYY` 转换为 `YYYY/MM/DD`。这两项操作都可以通过 [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort) 来完成。
+在本指南的前面部分中，我们发现 TSV 文件中存在早于 1970 年 1 月 1 日的日期，这意味着这些日期需要使用 64 位的 DateTime 类型。同时，还需要将日期格式从 `MM/DD/YYYY` 转换为 `YYYY/MM/DD`。这两项操作都可以通过 [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort) 来完成。
 
 ```sh
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
@@ -344,6 +344,7 @@ FORMAT PrettyCompact"
 上面的第 2 行和第 3 行是上一步拼接得到的结果，而第 4 行和第 5 行将这些字符串解析为 `DateTime64`。由于投诉结束时间不一定存在，因此使用了 `parseDateTime64BestEffortOrNull`。
 
 结果：
+
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -496,14 +497,14 @@ FORMAT Vertical
 ```response
 Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 
-Row 1:
+第 1 行:
 ──────
-partition_key:
-sorting_key:   borough, offense_description, date_reported
-primary_key:   borough, offense_description, date_reported
-table:         NYPD_Complaint
+分区键:
+排序键:   borough, offense_description, date_reported
+主键:   borough, offense_description, date_reported
+表:         NYPD_Complaint
 
-1 row in set. Elapsed: 0.001 sec.
+1 行结果集。耗时: 0.001 秒。
 ```
 
 ## 预处理并导入数据 {#preprocess-import-data}
@@ -580,7 +581,7 @@ FROM NYPD_Complaint
 │  208993 │
 └─────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+1 行在集合中。耗时：0.001 秒。
 ```
 
 ClickHouse 中的数据集大小只相当于原始 TSV 文件的 12%，将原始 TSV 文件的大小与表的大小进行比较：
@@ -623,21 +624,21 @@ ORDER BY complaints DESC
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
-│ March     │      34536 │ ███████████████████████████████████████████████████████▎ │
-│ May       │      34250 │ ██████████████████████████████████████████████████████▋  │
-│ April     │      32541 │ ████████████████████████████████████████████████████     │
-│ January   │      30806 │ █████████████████████████████████████████████████▎       │
-│ February  │      28118 │ ████████████████████████████████████████████▊            │
-│ November  │       7474 │ ███████████▊                                             │
-│ December  │       7223 │ ███████████▌                                             │
-│ October   │       7070 │ ███████████▎                                             │
-│ September │       6910 │ ███████████                                              │
-│ August    │       6801 │ ██████████▊                                              │
-│ June      │       6779 │ ██████████▋                                              │
-│ July      │       6485 │ ██████████▍                                              │
+│ 三月     │      34536 │ ███████████████████████████████████████████████████████▎ │
+│ 五月       │      34250 │ ██████████████████████████████████████████████████████▋  │
+│ 四月     │      32541 │ ████████████████████████████████████████████████████     │
+│ 一月   │      30806 │ █████████████████████████████████████████████████▎       │
+│ 二月  │      28118 │ ████████████████████████████████████████████▊            │
+│ 十一月  │       7474 │ ███████████▊                                             │
+│ 十二月  │       7223 │ ███████████▌                                             │
+│ 十月   │       7070 │ ███████████▎                                             │
+│ 九月 │       6910 │ ███████████                                              │
+│ 八月    │       6801 │ ██████████▊                                              │
+│ 六月      │       6779 │ ██████████▋                                              │
+│ 七月      │       6485 │ ██████████▍                                              │
 └───────────┴────────────┴──────────────────────────────────────────────────────────┘
 
-12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
+返回 12 行。耗时：0.006 秒。已处理 20.899 万行，417.99 KB（3748 万行/秒，74.96 MB/秒）
 ```
 
 ### 查询 2：按行政区对比投诉总数 {#query-2-compare-total-number-of-complaints-by-borough}
@@ -668,7 +669,7 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 │ (null)        │        383 │ ▏                            │
 └───────────────┴────────────┴──────────────────────────────┘
 
-6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
+6 行数据。耗时: 0.008 秒。处理了 208.99 千行，209.43 KB (27.14 百万行/秒，27.20 MB/秒)
 ```
 
 ## 后续步骤 {#next-steps}

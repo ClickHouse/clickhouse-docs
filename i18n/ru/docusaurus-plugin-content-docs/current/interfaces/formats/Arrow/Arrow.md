@@ -24,34 +24,34 @@ doc_type: 'reference'
 
 | Тип данных Arrow (`INSERT`)             | Тип данных ClickHouse                                                                                     | Тип данных Arrow (`SELECT`) |
 |-----------------------------------------|------------------------------------------------------------------------------------------------------------|-----------------------------|
-| `BOOL`                                  | [Bool](/sql-reference/data-types/boolean.md)                                                       | `BOOL`                      |
-| `UINT8`, `BOOL`                         | [UInt8](/sql-reference/data-types/int-uint.md)                                                     | `UINT8`                     |
-| `INT8`                                  | [Int8](/sql-reference/data-types/int-uint.md)/[Enum8](/sql-reference/data-types/enum.md)   | `INT8`                      |
-| `UINT16`                                | [UInt16](/sql-reference/data-types/int-uint.md)                                                    | `UINT16`                    |
-| `INT16`                                 | [Int16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md) | `INT16`                     |
-| `UINT32`                                | [UInt32](/sql-reference/data-types/int-uint.md)                                                    | `UINT32`                    |
-| `INT32`                                 | [Int32](/sql-reference/data-types/int-uint.md)                                                     | `INT32`                     |
-| `UINT64`                                | [UInt64](/sql-reference/data-types/int-uint.md)                                                    | `UINT64`                    |
-| `INT64`                                 | [Int64](/sql-reference/data-types/int-uint.md)                                                     | `INT64`                     |
-| `FLOAT`, `HALF_FLOAT`                   | [Float32](/sql-reference/data-types/float.md)                                                      | `FLOAT32`                   |
-| `DOUBLE`                                | [Float64](/sql-reference/data-types/float.md)                                                      | `FLOAT64`                   |
-| `DATE32`                                | [Date32](/sql-reference/data-types/date32.md)                                                      | `UINT16`                    |
-| `DATE64`                                | [DateTime](/sql-reference/data-types/datetime.md)                                                  | `UINT32`                    |
-| `TIMESTAMP`, `TIME32`, `TIME64`         | [DateTime64](/sql-reference/data-types/datetime64.md)                                              | `TIMESTAMP`                 |
-| `STRING`, `BINARY`                      | [String](/sql-reference/data-types/string.md)                                                      | `BINARY`                    |
-| `STRING`, `BINARY`, `FIXED_SIZE_BINARY` | [FixedString](/sql-reference/data-types/fixedstring.md)                                            | `FIXED_SIZE_BINARY`         |
-| `DECIMAL`                               | [Decimal](/sql-reference/data-types/decimal.md)                                                    | `DECIMAL`                   |
-| `DECIMAL256`                            | [Decimal256](/sql-reference/data-types/decimal.md)                                                 | `DECIMAL256`                |
-| `LIST`                                  | [Array](/sql-reference/data-types/array.md)                                                        | `LIST`                      |
-| `STRUCT`                                | [Tuple](/sql-reference/data-types/tuple.md)                                                        | `STRUCT`                    |
-| `MAP`                                   | [Map](/sql-reference/data-types/map.md)                                                            | `MAP`                       |
-| `UINT32`                                | [IPv4](/sql-reference/data-types/ipv4.md)                                                          | `UINT32`                    |
-| `FIXED_SIZE_BINARY`, `BINARY`           | [IPv6](/sql-reference/data-types/ipv6.md)                                                          | `FIXED_SIZE_BINARY`         |
-| `FIXED_SIZE_BINARY`, `BINARY`           | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                             | `FIXED_SIZE_BINARY`         |
+| `BOOL`                                  | [Bool](/sql-reference/data-types/boolean.md)                                                               | `BOOL`                      |
+| `UINT8`, `BOOL`                         | [UInt8](/sql-reference/data-types/int-uint.md)                                                             | `UINT8`                     |
+| `INT8`                                  | [Int8](/sql-reference/data-types/int-uint.md)/[Enum8](/sql-reference/data-types/enum.md)                  | `INT8`                      |
+| `UINT16`                                | [UInt16](/sql-reference/data-types/int-uint.md)                                                            | `UINT16`                    |
+| `INT16`                                 | [Int16](/sql-reference/data-types/int-uint.md)/[Enum16](/sql-reference/data-types/enum.md)                | `INT16`                     |
+| `UINT32`                                | [UInt32](/sql-reference/data-types/int-uint.md)                                                            | `UINT32`                    |
+| `INT32`                                 | [Int32](/sql-reference/data-types/int-uint.md)                                                             | `INT32`                     |
+| `UINT64`                                | [UInt64](/sql-reference/data-types/int-uint.md)                                                            | `UINT64`                    |
+| `INT64`                                 | [Int64](/sql-reference/data-types/int-uint.md)                                                             | `INT64`                     |
+| `FLOAT`, `HALF_FLOAT`                   | [Float32](/sql-reference/data-types/float.md)                                                              | `FLOAT32`                   |
+| `DOUBLE`                                | [Float64](/sql-reference/data-types/float.md)                                                              | `FLOAT64`                   |
+| `DATE32`                                | [Date32](/sql-reference/data-types/date32.md)                                                              | `UINT16`                    |
+| `DATE64`                                | [DateTime](/sql-reference/data-types/datetime.md)                                                          | `UINT32`                    |
+| `TIMESTAMP`, `TIME32`, `TIME64`         | [DateTime64](/sql-reference/data-types/datetime64.md)                                                      | `TIMESTAMP`                 |
+| `STRING`, `BINARY`                      | [String](/sql-reference/data-types/string.md)                                                              | `BINARY`                    |
+| `STRING`, `BINARY`, `FIXED_SIZE_BINARY` | [FixedString](/sql-reference/data-types/fixedstring.md)                                                    | `FIXED_SIZE_BINARY`         |
+| `DECIMAL`                               | [Decimal](/sql-reference/data-types/decimal.md)                                                            | `DECIMAL`                   |
+| `DECIMAL256`                            | [Decimal256](/sql-reference/data-types/decimal.md)                                                         | `DECIMAL256`                |
+| `LIST`                                  | [Array](/sql-reference/data-types/array.md)                                                                | `LIST`                      |
+| `STRUCT`                                | [Tuple](/sql-reference/data-types/tuple.md)                                                                | `STRUCT`                    |
+| `MAP`                                   | [Map](/sql-reference/data-types/map.md)                                                                    | `MAP`                       |
+| `UINT32`                                | [IPv4](/sql-reference/data-types/ipv4.md)                                                                  | `UINT32`                    |
+| `FIXED_SIZE_BINARY`, `BINARY`           | [IPv6](/sql-reference/data-types/ipv6.md)                                                                  | `FIXED_SIZE_BINARY`         |
+| `FIXED_SIZE_BINARY`, `BINARY`           | [Int128/UInt128/Int256/UInt256](/sql-reference/data-types/int-uint.md)                                     | `FIXED_SIZE_BINARY`         |
 
 Массивы могут быть вложенными и в качестве типа элементов могут использовать значение типа `Nullable`. Типы `Tuple` и `Map` также могут быть вложенными.
 
-Тип `DICTIONARY` поддерживается для запросов `INSERT`, а для запросов `SELECT` доступна настройка [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary), которая позволяет выводить тип [LowCardinality](/sql-reference/data-types/lowcardinality.md) как тип `DICTIONARY`.
+Тип `DICTIONARY` поддерживается для запросов `INSERT`, а для запросов `SELECT` доступна настройка [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary), которая позволяет выводить тип [LowCardinality](/sql-reference/data-types/lowcardinality.md) как тип `DICTIONARY`. Обратите внимание, что в словаре `LowCardinality` могут присутствовать значения, которые фактически не используются; это, в свою очередь, может приводить к наличию неиспользуемых значений в словаре Arrow `DICTIONARY` при выводе.
 
 Неподдерживаемые типы данных Arrow: 
 

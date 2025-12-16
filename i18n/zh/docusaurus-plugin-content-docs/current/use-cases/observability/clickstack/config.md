@@ -39,7 +39,7 @@ services:
     environment:
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      # ... other settings
+      # ... 其他配置
 ```
 
 ### Helm {#helm}
@@ -200,7 +200,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 
 ### 关联来源 {#correlated-sources}
 
-要在 ClickStack 中启用跨来源的完整关联功能，用户必须为 logs、traces、metrics 和 sessions 配置关联来源。这使 HyperDX 能够将相关数据关联起来，并在展示事件时提供丰富的上下文。
+要在 ClickStack 中启用跨来源的完整关联功能，你必须为 logs、traces、metrics 和 sessions 配置关联来源。这使 HyperDX 能够将相关数据关联起来，并在展示事件时提供丰富的上下文。
 
 - `Logs`：可以与 traces 和 metrics 关联。
 - `Traces`：可以与 logs、sessions 和 metrics 关联。

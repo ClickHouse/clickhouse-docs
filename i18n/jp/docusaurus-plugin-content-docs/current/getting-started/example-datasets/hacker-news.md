@@ -36,7 +36,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   clickhouse-local
   ```
 
-  次に、以下のコマンドを実行してデータを探索します。
+  次に、以下のコマンドを実行してデータを探索します:
 
   ```sql title="Query"
   SELECT *
@@ -93,7 +93,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ### スキーマ推論によるデータの読み込み
 
   データ読み込みに最もシンプルかつ強力なツールは`clickhouse-client`です。これは機能豊富なネイティブコマンドラインクライアントです。
-  データを読み込む際は、スキーマ推論を活用し、ClickHouseにカラムの型を判定させることができます。
+  To load data, you can again exploit schema inference, relying on ClickHouse to determine the types of the columns.
 
   以下のコマンドを実行して、テーブルを作成し、リモートCSVファイルから直接データを挿入します。ファイルの内容には[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を使用してアクセスします。
   スキーマは自動的に推論されます：
@@ -104,8 +104,8 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
   ```
 
-  これにより、データから推測されたスキーマを使用して空のテーブルが作成されます。
-  [`DESCRIBE TABLE`](/sql-reference/statements/describe-table) コマンドを使用することで、割り当てられた型を確認できます。
+  This creates an empty table using the schema inferred from the data.
+  [`DESCRIBE TABLE`](/sql-reference/statements/describe-table)コマンドを使用することで、割り当てられた型を確認できます。
 
   ```sql title="Query"
   DESCRIBE TABLE hackernews
@@ -143,7 +143,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
 
   ### データを探索する
 
-  以下のクエリを実行して、Hacker Newsのストーリーと特定の列をサンプリングします：
+  以下のクエリを実行して、Hacker Newsのストーリーと特定のカラムをサンプリングします:
 
   ```sql title="Query"
   SELECT
@@ -200,7 +200,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   時刻フィールドを`DateTime`型として宣言することに加えて、既存のデータセットを削除した後、以下の各フィールドに適切な型を定義します。
   ClickHouseでは、データのプライマリキーは`ORDER BY`句によって定義されます。
 
-  適切なデータ型を選択し、`ORDER BY`句に含める列を選定することで、クエリ速度と圧縮率を向上させることができます。
+  適切なデータ型を選択し、`ORDER BY`句に含めるカラムを選定することで、クエリ速度と圧縮率を向上させることができます。
 
   以下のクエリを実行して、既存のスキーマを削除し、改善されたスキーマを作成します:
 
@@ -229,8 +229,8 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ORDER BY id
   ```
 
-  最適化されたスキーマを使用することで、ローカルファイルシステムからデータを挿入できます。
-  再び`clickhouse-client`を使用して、明示的な`INSERT INTO`文と`INFILE`句でファイルを挿入します。
+  最適化されたスキーマを使用することで、ローカルファイルシステムからデータを挿入できるようになります。
+  再び`clickhouse-client`を使用して、明示的な`INSERT INTO`と`INFILE`句でファイルを挿入します。
 
   ```sql title="Query"
   INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
@@ -258,7 +258,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   LIMIT 5 FORMAT Vertical
   ```
 
-    ```response title="Response"
+  ```response title="Response"
   Row 1:
   ──────
   time:        1632154428
@@ -305,12 +305,12 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   hn_url:      https://news.ycombinator.com/item?id=27310247
   ```
 
-  ClickHouseは時間の経過とともにより多くのノイズを生成しているでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を利用できます：
+  ClickHouseは時間の経過とともにより多くの話題を生成しているでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を利用できます：
 
   ```sql title="Query"
   SELECT
-    toYYYYMM(time) AS monthYear,
-    bar(count(), 0, 120, 20)
+     toYYYYMM(time) AS monthYear,
+     bar(count(), 0, 120, 20)
   FROM hackernews
   WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
   GROUP BY monthYear
@@ -388,50 +388,50 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
 
   #### ClickHouse関連記事のトップコメント投稿者は誰か？
 
-```sql title="Query"
-SELECT
-by,
-count() AS comments
-FROM hackernews
-WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
-GROUP BY by
-ORDER BY comments DESC
-LIMIT 5
-```
+  ```sql title="Query"
+  SELECT
+     by,
+     count() AS comments
+  FROM hackernews
+  WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
+  GROUP BY by
+  ORDER BY comments DESC
+  LIMIT 5
+  ```
 
-```response title="Response"
-┌─by──────────┬─comments─┐
-│ hodgesrm    │       78 │
-│ zX41ZdbW    │       45 │
-│ manigandham │       39 │
-│ pachico     │       35 │
-│ valyala     │       27 │
-└─────────────┴──────────┘
-```
+  ```response title="Response"
+  ┌─by──────────┬─comments─┐
+  │ hodgesrm    │       78 │
+  │ zX41ZdbW    │       45 │
+  │ manigandham │       39 │
+  │ pachico     │       35 │
+  │ valyala     │       27 │
+  └─────────────┴──────────┘
+  ```
 
   #### どのコメントが最も関心を集めているか？
 
-```sql title="Query"
-SELECT
-by,
-sum(score) AS total_score,
-sum(length(kids)) AS total_sub_comments
-FROM hackernews
-WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
-GROUP BY by
-ORDER BY total_score DESC
-LIMIT 5
-```
+  ```sql title="Query"
+  SELECT
+    by,
+    sum(score) AS total_score,
+    sum(length(kids)) AS total_sub_comments
+  FROM hackernews
+  WHERE (type IN ('story', 'comment')) AND ((title ILIKE '%ClickHouse%') OR (text ILIKE '%ClickHouse%'))
+  GROUP BY by
+  ORDER BY total_score DESC
+  LIMIT 5
+  ```
 
-```response title="Response"
-┌─by───────┬─total_score─┬─total_sub_comments─┐
-│ zX41ZdbW │        571  │              50    │
-│ jetter   │        386  │              30    │
-│ hodgesrm │        312  │              50    │
-│ mechmind │        243  │              16    │
-│ tosh     │        198  │              12    │
-└──────────┴─────────────┴────────────────────┘
-```
+  ```response title="Response"
+  ┌─by───────┬─total_score─┬─total_sub_comments─┐
+  │ zX41ZdbW │        571  │              50    │
+  │ jetter   │        386  │              30    │
+  │ hodgesrm │        312  │              50    │
+  │ mechmind │        243  │              16    │
+  │ tosh     │        198  │              12    │
+  └──────────┴─────────────┴────────────────────┘
+  ```
 </VerticalStepper>
 
 ## Parquet {#parquet}
@@ -449,194 +449,192 @@ Parquet ファイルに対する型推論では、CSV ファイルのスキー�
 
   以下のクエリを実行して、同じデータをParquet形式で読み取ります。ここでも`url`関数を使用してリモートデータを読み取ります:
 
-```sql
-DROP TABLE IF EXISTS hackernews;
+  ```sql
+  DROP TABLE IF EXISTS hackernews;
 
-CREATE TABLE hackernews
-ENGINE = MergeTree
-ORDER BY id
-SETTINGS allow_nullable_key = 1 EMPTY AS
-SELECT *
-FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
+  CREATE TABLE hackernews
+  ENGINE = MergeTree
+  ORDER BY id
+  SETTINGS allow_nullable_key = 1 EMPTY AS
+  SELECT *
+  FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
 
-INSERT INTO hackernews SELECT *
-FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
-```
+  INSERT INTO hackernews SELECT *
+  FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet', 'Parquet')
+  ```
 
-:::note ParquetにおけるNullキー
-Parquet形式の仕様上、実際のデータには存在しない場合でも、キーが`NULL`になる可能性を考慮する必要があります。
-:::
+  :::note ParquetにおけるNullキー
+  Parquet形式の仕様上、実際のデータには存在しない場合でも、キーが`NULL`になる可能性を考慮する必要があります。
+  :::
 
-推論されたスキーマを表示するには、次のコマンドを実行します:
+  推論されたスキーマを表示するには、次のコマンドを実行します:
 
-```sql title="Query"
-┌─name────────┬─type───────────────────┬
-│ id          │ Nullable(Int64)        │
-│ deleted     │ Nullable(UInt8)        │
-│ type        │ Nullable(String)       │
-│ time        │ Nullable(Int64)        │
-│ text        │ Nullable(String)       │
-│ dead        │ Nullable(UInt8)        │
-│ parent      │ Nullable(Int64)        │
-│ poll        │ Nullable(Int64)        │
-│ kids        │ Array(Nullable(Int64)) │
-│ url         │ Nullable(String)       │
-│ score       │ Nullable(Int32)        │
-│ title       │ Nullable(String)       │
-│ parts       │ Array(Nullable(Int64)) │
-│ descendants │ Nullable(Int32)        │
-└─────────────┴────────────────────────┴
-```
+  ```sql title="Query"
+  ┌─name────────┬─type───────────────────┬
+  │ id          │ Nullable(Int64)        │
+  │ deleted     │ Nullable(UInt8)        │
+  │ type        │ Nullable(String)       │
+  │ time        │ Nullable(Int64)        │
+  │ text        │ Nullable(String)       │
+  │ dead        │ Nullable(UInt8)        │
+  │ parent      │ Nullable(Int64)        │
+  │ poll        │ Nullable(Int64)        │
+  │ kids        │ Array(Nullable(Int64)) │
+  │ url         │ Nullable(String)       │
+  │ score       │ Nullable(Int32)        │
+  │ title       │ Nullable(String)       │
+  │ parts       │ Array(Nullable(Int64)) │
+  │ descendants │ Nullable(Int32)        │
+  └─────────────┴────────────────────────┴
+  ```
 
-CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます。
+  CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます。
 
-```sql
-CREATE TABLE hackernews
-(
-  `id` UInt64,
-  `deleted` UInt8,
-  `type` String,
-  `author` String,
-  `timestamp` DateTime,
-  `comment` String,
-  `dead` UInt8,
-  `parent` UInt64,
-  `poll` UInt64,
-  `children` Array(UInt32),
-  `url` String,
-  `score` UInt32,
-  `title` String,
-  `parts` Array(UInt32),
-  `descendants` UInt32
-)
-ENGINE = MergeTree
-ORDER BY (type, author);
+  ```sql
+  CREATE TABLE hackernews
+  (
+      `id` UInt64,
+      `deleted` UInt8,
+      `type` String,
+      `author` String,
+      `timestamp` DateTime,
+      `comment` String,
+      `dead` UInt8,
+      `parent` UInt64,
+      `poll` UInt64,
+      `children` Array(UInt32),
+      `url` String,
+      `score` UInt32,
+      `title` String,
+      `parts` Array(UInt32),
+      `descendants` UInt32
+  )
+  ENGINE = MergeTree
+  ORDER BY (type, author);
 
-INSERT INTO hackernews
-SELECT * FROM s3(
-      'https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet',
-      'Parquet',
-      'id UInt64,
-        deleted UInt8,
-        type String,
-        by String,
-        time DateTime,
-        text String,
-        dead UInt8,
-        parent UInt64,
-        poll UInt64,
-        kids Array(UInt32),
-        url String,
-        score UInt32,
-        title String,
-        parts Array(UInt32),
-        descendants UInt32');
-```
+  INSERT INTO hackernews
+  SELECT * FROM s3(
+          'https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.parquet',
+          'Parquet',
+          'id UInt64,
+           deleted UInt8,
+           type String,
+           by String,
+           time DateTime,
+           text String,
+           dead UInt8,
+           parent UInt64,
+           poll UInt64,
+           kids Array(UInt32),
+           url String,
+           score UInt32,
+           title String,
+           parts Array(UInt32),
+           descendants UInt32');
+  ```
 
-### クエリを高速化するスキッピングインデックスの追加
+  ### クエリを高速化するスキッピングインデックスの追加
 
-「ClickHouse」に言及しているコメント数を確認するには、以下のクエリを実行します：
+  「ClickHouse」に言及しているコメント数を確認するには、以下のクエリを実行します：
 
-```sql title="Query"
-SELECT count(*)
-FROM hackernews
-WHERE hasToken(lower(comment), 'ClickHouse');
-```
+  ```sql title="Query"
+  SELECT count(*)
+  FROM hackernews
+  WHERE hasToken(lower(comment), 'ClickHouse');
+  ```
 
-```response title="Response"
-#highlight-next-line
-1 row in set. Elapsed: 0.843 sec. Processed 28.74 million rows, 9.75 GB (34.08 million rows/s., 11.57 GB/s.)
-┌─count()─┐
-│     516 │
-└─────────┘
-```
+  ```response title="Response"
+  #highlight-next-line
+  1行が返されました。経過時間: 0.843秒。処理済み: 2874万行、9.75 GB (3408万行/秒、11.57 GB/秒)
+  ┌─count()─┐
+  │     516 │
+  └─────────┘
+  ```
 
-次に、このクエリを高速化するために、「comment」列に転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
-なお、コメントは小文字に変換されてインデックス化されるため、大文字小文字を区別せずに用語を検索できます。
+  次に、このクエリを高速化するために、「comment」列に転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
+  なお、コメントは小文字に変換されてインデックス化されるため、大文字小文字を区別せずに用語を検索できます。
 
-以下のコマンドを実行してインデックスを作成します。
+  以下のコマンドを実行してインデックスを作成します。
 
-```sql
-ALTER TABLE hackernews ADD INDEX comment_idx(lower(comment)) TYPE inverted;
-ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
-```
+  ```sql
+  ALTER TABLE hackernews ADD INDEX comment_idx(lower(comment)) TYPE inverted;
+  ALTER TABLE hackernews MATERIALIZE INDEX comment_idx;
+  ```
 
-インデックスのマテリアライゼーションには時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用します）。
+  インデックスのマテリアライゼーションには時間がかかります（インデックスが作成されたかどうかを確認するには、システムテーブル `system.data_skipping_indices` を使用します）。
 
-インデックスの作成後、クエリを再実行してください：
+  インデックスの作成後、クエリを再実行してください：
 
-```sql title="Query"
-SELECT count(*)
-FROM hackernews
-WHERE hasToken(lower(comment), 'clickhouse');
-```
+  ```sql title="Query"
+  SELECT count(*)
+  FROM hackernews
+  WHERE hasToken(lower(comment), 'clickhouse');
+  ```
 
-インデックスを使用することで、クエリの実行時間が0.843秒から0.248秒に短縮されました:
+  インデックスを使用することで、クエリの実行時間が0.843秒から0.248秒に短縮されました:
 
-```response title="Response"
-#highlight-next-line
-1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
-┌─count()─┐
-│    1145 │
-└─────────┘
-```
+  ```response title="Response"
+  #highlight-next-line
+  1行が返されました。経過時間: 0.248秒。処理行数: 454万行、1.79 GB (1,834万行/秒、7.24 GB/秒)
+  ┌─count()─┐
+  │    1145 │
+  └─────────┘
+  ```
 
-[`EXPLAIN`](/sql-reference/statements/explain)句を使用して、このインデックスの追加によりクエリのパフォーマンスが約3.4倍向上した理由を確認できます。
+  [`EXPLAIN`](/sql-reference/statements/explain)句を使用して、このインデックスの追加によりクエリのパフォーマンスが約3.4倍向上した理由を確認できます。
 
-```response text="Query"
-EXPLAIN indexes = 1
-SELECT count(*)
-FROM hackernews
-WHERE hasToken(lower(comment), 'clickhouse')
-```
+  ```response text="Query"
+  EXPLAIN indexes = 1
+  SELECT count(*)
+  FROM hackernews
+  WHERE hasToken(lower(comment), 'clickhouse')
+  ```
 
-```response title="Response"
-┌─explain─────────────────────────────────────────┐
-│ Expression ((Projection + Before ORDER BY))     │
-│   Aggregating                                   │
-│     Expression (Before GROUP BY)                │
-│       Filter (WHERE)                            │
-│         ReadFromMergeTree (default.hackernews)  │
-│         Indexes:                                │
-│           PrimaryKey                            │
-│             Condition: true                     │
-│             Parts: 4/4                          │
-│             Granules: 3528/3528                 │
-│           Skip                                  │
-│             Name: comment_idx                   │
-│             Description: inverted GRANULARITY 1 │
-│             Parts: 4/4                          │
-│             Granules: 554/3528                  │
-└─────────────────────────────────────────────────┘
-```
+  ```response title="Response"
+  ┌─explain─────────────────────────────────────────┐
+  │ Expression ((Projection + Before ORDER BY))     │
+  │   Aggregating                                   │
+  │     Expression (Before GROUP BY)                │
+  │       Filter (WHERE)                            │
+  │         ReadFromMergeTree (default.hackernews)  │
+  │         Indexes:                                │
+  │           PrimaryKey                            │
+  │             Condition: true                     │
+  │             Parts: 4/4                          │
+  │             Granules: 3528/3528                 │
+  │           Skip                                  │
+  │             Name: comment_idx                   │
+  │             Description: inverted GRANULARITY 1 │
+  │             Parts: 4/4                          │
+  │             Granules: 554/3528                  │
+  └─────────────────────────────────────────────────┘
+  ```
 
-Notice how the index allowed skipping of a substantial number of granules
-to speed up the query.
+  インデックスによって大量のグラニュールがスキップされ、クエリが高速化されていることに注目してください。
 
-It's also possible to now efficiently search for one, or all of multiple terms:
+  1つまたは複数の用語すべてを効率的に検索することも可能になりました:
 
-```sql title="Query"
-SELECT count(*)
-FROM hackernews
-WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
-```
+  ```sql title="Query"
+  SELECT count(*)
+  FROM hackernews
+  WHERE multiSearchAny(lower(comment), ['oltp', 'olap']);
+  ```
 
-```response title="Response"
-┌─count()─┐
-│    2177 │
-└─────────┘
-```
+  ```response title="Response"
+  ┌─count()─┐
+  │    2177 │
+  └─────────┘
+  ```
 
-```sql title="Query"
-SELECT count(*)
-FROM hackernews
-WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
-```
+  ```sql title="Query"
+  SELECT count(*)
+  FROM hackernews
+  WHERE hasToken(lower(comment), 'avx') AND hasToken(lower(comment), 'sve');
+  ```
 
-```response
-┌─count()─┐
-│      22 │
-└─────────┘
-```
-
+  ```response
+  ┌─count()─┐
+  │      22 │
+  └─────────┘
+  ```
 </VerticalStepper>

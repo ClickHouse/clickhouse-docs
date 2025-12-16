@@ -11,7 +11,8 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud と BigQuery の比較  {#comparing-clickhouse-cloud-and-bigquery}
+
+# ClickHouse Cloud と BigQuery の比較  {#comparing-clickhouse-cloud-and-bigquery} 
 
 ## リソースの構成 {#resource-organization}
 
@@ -33,11 +34,11 @@ organization の中では、BigQuery の project と大まかに同等の servic
 
 ### BigQuery Datasets と ClickHouse Cloud Databases の比較 {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
-ClickHouse はテーブルを論理的に database にグループ化します。BigQuery の dataset と同様に、ClickHouse の database はテーブルデータを整理し、アクセス制御を行うための論理コンテナです。
+ClickHouse はテーブルを論理的にデータベースにグループ化します。BigQuery のデータセットと同様に、ClickHouse のデータベースはテーブルデータを整理し、アクセスを制御するための論理コンテナです。
 
 ### BigQuery Folders {#bigquery-folders}
 
-現在、ClickHouse Cloud には BigQuery の folder に相当する概念は存在しません。
+現在、ClickHouse Cloud には BigQuery のフォルダに相当する概念は存在しません。
 
 ### BigQuery Slot reservations と Quotas {#bigquery-slot-reservations-and-quotas}
 
@@ -55,7 +56,7 @@ ClickHouse Cloud では、[cloud コンソール](/cloud/guides/sql-console/mana
 
 ## データ型 {#data-types}
 
-ClickHouse は数値型に関して、より細かい精度指定を提供します。たとえば、BigQuery は数値型として [`INT64`, `NUMERIC`, `BIGNUMERIC`, `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) を提供しています。これに対して ClickHouse は、小数、浮動小数点数、整数に対して複数の精度レベルの型を提供しています。これらのデータ型を用いることで、ClickHouse のユーザーはストレージおよびメモリのオーバーヘッドを最適化でき、その結果、クエリの高速化とリソース消費の削減につながります。以下では、各 BigQuery 型に対応する ClickHouse 型を対応付けています。
+ClickHouse は数値型に関して、より細かい精度指定を提供します。たとえば、BigQuery は数値型として [`INT64`, `NUMERIC`, `BIGNUMERIC`, `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types) を提供しています。これに対して ClickHouse は、小数、浮動小数点数、整数に対して複数の精度レベルの型を提供しています。これらのデータ型を用いることで、ストレージおよびメモリのオーバーヘッドを最適化でき、その結果、クエリの高速化とリソース消費の削減につながります。以下では、各 BigQuery 型に対応する ClickHouse 型を対応付けています。
 
 | BigQuery | ClickHouse                                                                                                                                                                        |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -76,7 +77,7 @@ ClickHouse は数値型に関して、より細かい精度指定を提供しま
 | [TIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type)     | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
 | [TIMESTAMP](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
 
-ClickHouse の型に複数の選択肢がある場合は、実際のデータの取り得る範囲を考慮し、必要最小限のものを選択してください。さらに圧縮を行うには、[適切なコーデック](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) の利用も検討してください。
+ClickHouse の型に複数の選択肢がある場合は、実際のデータの取り得る範囲を考慮し、必要最小限の型を選択してください。さらに圧縮率を高めるには、[適切なコーデック](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) の利用も検討してください。
 
 ## クエリ高速化手法 {#query-acceleration-techniques}
 
@@ -119,7 +120,7 @@ ClickHouse では、テーブルのプライマリキーのカラムに基づい
 
 ## マテリアライズドビュー {#materialized-views}
 
-BigQuery と ClickHouse はどちらもマテリアライズドビューをサポートしています。これは、ベーステーブルに対して実行される変換クエリの結果を基に事前計算された結果を保持するもので、パフォーマンスと効率を向上させます。
+BigQuery と ClickHouse はどちらもマテリアライズドビューをサポートしています。これは、ベーステーブルに対して実行される変換クエリの結果に基づいて結果を事前計算して保持する機能で、パフォーマンスと効率を向上させます。
 
 ## マテリアライズドビューのクエリ実行 {#querying-materialized-views}
 
@@ -242,6 +243,7 @@ ORDER BY offset;
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join) 句
 
+
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
 SELECT element, num-1 AS offset
@@ -309,7 +311,7 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
 
 *ClickHouse*
 
-[range](/sql-reference/functions/array-functions#range) と [arrayMap](/sql-reference/functions/array-functions#arrayMap) 関数
+[range](/sql-reference/functions/array-functions#range) 関数 + [arrayMap](/sql-reference/functions/array-functions#arrayMap) 関数
 
 ```sql
 SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
@@ -350,6 +352,7 @@ FROM Sequences;
 *ClickHouse*
 
 [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) 関数
+
 
 ```sql
 WITH Sequences AS
@@ -454,6 +457,7 @@ FROM Sequences AS s;
 *ClickHouse*
 
 [arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) などの関数、または 90 を超える既存の集約関数名のいずれかを [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 関数の引数として使用できます
+
 
 ```sql
 WITH Sequences AS

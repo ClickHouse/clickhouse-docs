@@ -15,6 +15,7 @@ import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_re
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
+
 # アップグレード {#upgrades}
 
 ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを定期的に実施します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/cloud) を参照してください。
@@ -68,11 +69,13 @@ Cloud コンソールから、以下のようにサービスのリリースス�
 <div class="eighty-percent">
     <Image img={fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 <div class="eighty-percent">
     <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 この **高速リリース**チャネルは、クリティカルではない環境で新機能をテストする用途に適しています。**厳格な稼働時間および信頼性要件を持つ本番ワークロードには推奨されません。**
@@ -101,6 +104,7 @@ Basic ティアのサービスは、高速リリースチャネルの直後に�
 
 :::note
 リリースチャネルはいつでも変更できます。ただし、場合によっては、その変更は今後のリリースにのみ適用されます。 
+
 - より高速なチャネルへ移行すると、サービスは直ちにアップグレードされます（例: スローから通常、通常から高速）。
 - より低速なチャネルへ移行してもサービスがダウングレードされることはなく、そのチャネルで新しいバージョンが利用可能になるまで現在のバージョンのまま維持されます（例: 通常からスロー、高速から通常またはスロー）。
 :::
@@ -116,6 +120,7 @@ Enterprise ティアのサービスに対して、アップグレードの実行
 <div class="eighty-percent">
     <Image img={scheduled_upgrades} size="lg" alt="Scheduled upgrades" border/>
 </div>
+
 <br/>
 
 このオプションを選択すると、データベースおよびクラウドのアップグレードを行う曜日と時間帯を指定できます。
@@ -123,7 +128,9 @@ Enterprise ティアのサービスに対して、アップグレードの実行
 <div class="eighty-percent">
     <Image img={scheduled_upgrade_window} size="lg" alt="Scheduled upgrade window" border/>
 </div>
+
 <br/>
+
 :::note
 予定されたアップグレードは定義されたスケジュールに従って実行されますが、重要なセキュリティパッチや脆弱性修正については例外が適用されます。緊急性の高いセキュリティ問題が特定された場合は、予定された時間帯以外でアップグレードが実施されることがあります。そのような例外が発生する場合は、必要に応じてお客様に通知されます。
 :::

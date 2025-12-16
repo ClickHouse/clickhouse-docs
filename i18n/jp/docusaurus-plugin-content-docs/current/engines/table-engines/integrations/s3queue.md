@@ -83,7 +83,6 @@ SETTINGS
     mode = 'ordered';
 ```
 
-
 ## 設定 {#settings}
 
 テーブルに対して構成されている設定の一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
@@ -141,7 +140,6 @@ SETTINGS
 Azure コンテナから別の Azure コンテナに移動するには、Blob Storage の接続文字列を `after_processing_move_connection_string` に、コンテナ名を `after_processing_move_container` に指定します。詳しくは [AzureQueue の設定](../../../engines/table-engines/integrations/azure-queue.md#settings) を参照してください。
 
 タグ付けを行うには、タグキーと値をそれぞれ `after_processing_tag_key` および `after_processing_tag_value` として指定します。
-
 
 ### `after_processing_retries` {#after_processing_retries}
 
@@ -359,7 +357,6 @@ SETTINGS
     ...
 ```
 
-
 ## S3Queue の ordered モード {#ordered-mode}
 
 `S3Queue` の処理モードでは、ZooKeeper に保存するメタデータ量を減らせますが、時間的に後から追加されるファイルの名前は、英数字としてそれ以前のファイル名より大きくなる必要があるという制約があります。
@@ -401,7 +398,6 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
   SELECT * FROM stats ORDER BY name;
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 

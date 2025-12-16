@@ -7,7 +7,7 @@ keywords: ['EXCEPT', 'clause']
 doc_type: 'reference'
 ---
 
-# EXCEPT 子句
+# EXCEPT 子句 {#except-clause}
 
 > `EXCEPT` 子句仅返回第一个查询的结果中不在第二个查询中的行。
 

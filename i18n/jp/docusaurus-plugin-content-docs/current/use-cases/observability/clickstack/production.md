@@ -31,8 +31,8 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Only if needed for the API
-# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
+  - "8080:8080"  # API に必要な場合のみ
+# ClickHouse 8123 や MongoDB 27017 などの内部ポートは公開しないでください。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
 ```
 
 コンテナの分離やアクセス制御の強化の詳細については、[Docker ネットワークに関するドキュメント](https://docs.docker.com/network/)を参照してください。

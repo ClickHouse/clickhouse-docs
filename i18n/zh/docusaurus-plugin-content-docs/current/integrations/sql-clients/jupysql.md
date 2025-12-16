@@ -24,14 +24,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 我们将使用 JupySQL 针对 ClickHouse 运行查询。
 数据加载完成后，我们将通过基于 SQL 的绘图对其进行可视化。
 
-JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库为这两个系统之间的通信提供了便捷支持，使用户能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，用户可以直接在 ClickHouse 原生 UI 中，或直接在 Jupyter Notebook 中运行 SQL 查询。
+JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库为这两个系统之间的通信提供了便捷支持，使你能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，你可以直接在 ClickHouse 原生 UI 中，或直接在 Jupyter Notebook 中运行 SQL 查询。
 
 ```python
 # Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-注意：可能需要重启内核才能使用更新后的软件包。
+注意：可能需要重启内核以便使用更新后的软件包。
 
 ```python
 import pandas as pd
@@ -385,7 +385,7 @@ WHERE trip_distance < 6.3
 ```
 
 ```response
-<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
+<AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='计数'>
 ```
 
 <Image img={jupysql_plot_1} size="md" alt="直方图显示 short-trips 数据集中行程距离的分布，共 10 个区间" border />
@@ -393,8 +393,8 @@ WHERE trip_distance < 6.3
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
 ax.grid()
-ax.set_title("Trip distance from trips < 6.3")
-_ = ax.set_xlabel("Trip distance")
+ax.set_title("行程距离（行程 < 6.3）")
+_ = ax.set_xlabel("行程距离")
 ```
 
 <Image img={jupysql_plot_2} size="md" alt="显示行程距离分布的直方图，包含 50 个区间和网格，标题为“Trip distance from trips < 6.3”" border />

@@ -32,15 +32,15 @@ keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi
 Сначала создадим общую таблицу с полем `tenant_id`, включённым в первичный ключ.
 
 ```sql
---- Create table events. Using tenant_id as part of the primary key
+--- Создание таблицы events. Используется tenant_id как часть первичного ключа
 CREATE TABLE events
 (
-    tenant_id UInt32,                 -- Tenant identifier
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    tenant_id UInt32,                 -- Идентификатор тенанта
+    id UUID,                    -- Уникальный идентификатор события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
 ORDER BY (tenant_id, timestamp)
 ```
@@ -48,7 +48,7 @@ ORDER BY (tenant_id, timestamp)
 Добавим тестовые данные.
 
 ```sql
--- Insert some dummy rows
+-- Вставка примеров данных
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -66,7 +66,7 @@ VALUES
 Теперь создадим двух пользователей `user_1` и `user_2`.
 
 ```sql
--- Create users 
+-- Создать пользователей
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -74,7 +74,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 Мы [создаём политики строк](/sql-reference/statements/create/row-policy), которые ограничивают доступ пользователей `user_1` и `user_2` только к данным их арендаторов.
 
 ```sql
--- Create row policies
+-- Создать политики строк
 CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
@@ -82,10 +82,10 @@ CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 Затем предоставьте для общей таблицы права [`GRANT SELECT`](/sql-reference/statements/grant#usage), используя общую роль.
 
 ```sql
--- Create role
+-- Создать роль
 CREATE ROLE user_role
 
--- Grant read only to events table.
+-- Предоставить права только на чтение для таблицы events.
 GRANT SELECT ON default.events TO user_role
 GRANT user_role TO user_1
 GRANT user_role TO user_2
@@ -94,7 +94,7 @@ GRANT user_role TO user_2
 Теперь вы можете подключиться под пользователем `user_1` и выполнить простой запрос SELECT. Будут возвращены только строки из первого тенанта.
 
 ```sql
--- Logged as user_1
+-- Вход выполнен под пользователем user_1
 SELECT *
 FROM events
 
@@ -124,27 +124,27 @@ FROM events
 Сначала создадим две таблицы: одну для событий из `tenant_1` и одну для событий из `tenant_2`.
 
 ```sql
--- Create table for tenant 1 
+-- Создать таблицу для тенанта 1 
 CREATE TABLE events_tenant_1
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- Уникальный ID события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- Первичный ключ может быть сфокусирован на других атрибутах
 
--- Create table for tenant 2 
+-- Создать таблицу для тенанта 2 
 CREATE TABLE events_tenant_2
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- Уникальный ID события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
-ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
+ORDER BY (timestamp, user_id) -- Первичный ключ может быть сфокусирован на других атрибутах
 ```
 
 Вставим тестовые данные.
@@ -170,7 +170,7 @@ VALUES
 Затем создадим двух пользователей `user_1` и `user_2`.
 
 ```sql
--- Create users 
+-- Создание пользователей 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -178,7 +178,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 Затем выполните `GRANT SELECT` на соответствующую таблицу.
 
 ```sql
--- Grant read only to events table.
+-- Предоставление прав только на чтение таблицы events.
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
@@ -186,16 +186,16 @@ GRANT SELECT ON default.events_tenant_2 TO user_2
 Теперь вы можете подключиться как `user_1` и выполнить простой запрос SELECT из таблицы, соответствующей этому пользователю. Будут возвращены только строки первого тенанта. 
 
 ```sql
--- Logged as user_1
+-- Вход выполнен под пользователем user_1
 SELECT *
 FROM default.events_tenant_1
 
    ┌─id───────────────────────────────────┬─type────────┬───────────timestamp─┬─user_id─┬─data────────────────────────────────────┐
-1. │ 7b7e0439-99d0-4590-a4f7-1cfea1e192d1 │ user_login  │ 2025-03-19 08:00:00 │    1001 │ {"device": "desktop", "location": "LA"} │
-2. │ 846aa71f-f631-47b4-8429-ee8af87b4182 │ purchase    │ 2025-03-19 08:05:00 │    1002 │ {"item": "phone", "amount": 799}        │
-3. │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ user_logout │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
-4. │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ purchase    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
-5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
+1. │ 7b7e0439-99d0-4590-a4f7-1cfea1e192d1 │ вход_пользователя  │ 2025-03-19 08:00:00 │    1001 │ {"device": "desktop", "location": "LA"} │
+2. │ 846aa71f-f631-47b4-8429-ee8af87b4182 │ покупка    │ 2025-03-19 08:05:00 │    1002 │ {"item": "phone", "amount": 799}        │
+3. │ 6b4d12e4-447d-4398-b3fa-1c1e94d71a2f │ выход_пользователя │ 2025-03-19 08:10:00 │    1001 │ {"device": "desktop", "location": "LA"} │
+4. │ 83b5eb72-aba3-4038-bc52-6c08b6423615 │ покупка    │ 2025-03-19 08:45:00 │    1003 │ {"item": "monitor", "amount": 450}      │
+5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ вход_пользователя  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
@@ -216,33 +216,33 @@ FROM default.events_tenant_1
 Сначала создадим две базы данных: одну для `tenant_1` и одну для `tenant_2`.
 
 ```sql
--- Create database for tenant_1
+-- Создать базу данных для tenant_1
 CREATE DATABASE tenant_1;
 
--- Create database for tenant_2
+-- Создать базу данных для tenant_2
 CREATE DATABASE tenant_2;
 ```
 
 ```sql
--- Create table for tenant_1
+-- Создать таблицу для tenant_1
 CREATE TABLE tenant_1.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- Уникальный идентификатор события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
 ORDER BY (timestamp, user_id);
 
--- Create table for tenant_2
+-- Создать таблицу для tenant_2
 CREATE TABLE tenant_2.events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- Уникальный идентификатор события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -270,7 +270,7 @@ VALUES
 Теперь давайте создадим двух пользователей `user_1` и `user_2`.
 
 ```sql
--- Create users 
+-- Создание пользователей 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -278,7 +278,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 Затем предоставьте привилегии `GRANT SELECT` для соответствующей таблицы.
 
 ```sql
--- Grant read only to events table.
+-- Предоставление прав только на чтение таблицы events.
 GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
@@ -286,7 +286,7 @@ GRANT SELECT ON tenant_2.events TO user_2
 Теперь вы можете подключиться под пользователем `user_1` и выполнить простой SELECT-запрос к таблице `events` соответствующей базы данных. Будут возвращены только строки первого арендатора.
 
 ```sql
--- Logged as user_1
+-- Вход выполнен под пользователем user_1
 SELECT *
 FROM tenant_1.events
 
@@ -324,14 +324,14 @@ FROM tenant_1.events
 Сначала создадим таблицу `events`
 
 ```sql
--- Create table for tenant_1
+-- Создать таблицу для tenant_1
 CREATE TABLE events
 (
-    id UUID,                    -- Unique event ID
-    type LowCardinality(String), -- Type of event
-    timestamp DateTime,          -- Timestamp of the event
-    user_id UInt32,               -- ID of the user who triggered the event
-    data String,                 -- Event data
+    id UUID,                    -- Уникальный идентификатор события
+    type LowCardinality(String), -- Тип события
+    timestamp DateTime,          -- Временная метка события
+    user_id UInt32,               -- ID пользователя, инициировавшего событие
+    data String,                 -- Данные события
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -351,21 +351,21 @@ VALUES
 Теперь давайте создадим двух пользователей `user_1`
 
 ```sql
--- Create users 
+-- Создать пользователей 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
 Затем выполните команду `GRANT SELECT` для соответствующей таблицы.
 
 ```sql
--- Grant read only to events table.
+-- Предоставить права только на чтение для таблицы events.
 GRANT SELECT ON events TO user_1
 ```
 
 Теперь вы можете подключиться под пользователем `user_1` к сервису арендатора 1 и выполнить простой запрос SELECT. Будут возвращены только строки, относящиеся к первому арендатору.
 
 ```sql
--- Logged as user_1
+-- Вход выполнен от имени user_1
 SELECT *
 FROM events
 
