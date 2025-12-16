@@ -66,7 +66,7 @@ Configuration options available in `acme` section:
 | `terms_of_service_agreed`            | `false`       | Indicates whether the ACME provider’s Terms of Service are accepted. Must be set to `true` to enable ACME. |
 | `domains`                            |              | List of domain names for which TLS certificates should be issued. Each domain is specified as a `<domain>` entry. |
 | `refresh_certificates_before`        | `2592000` (one month, in seconds)         | Time before certificate expiration when ClickHouse will attempt to renew the certificate. |
-| `refresh_certificates_task_interval` | `3600000` (one hour, in milliseconds)          | Interval at which ClickHouse checks whether certificates need renewal. |
+| `refresh_certificates_task_interval` | `3600` (one hour, in seconds)          | Interval at which ClickHouse checks whether certificates need renewal. |
 
 Note that configuration uses Let's Encrypt production directory by default. To avoid hitting request quota due to probable misconfiguration, it is recommended to test certificate issuing process with [staging directory](https://letsencrypt.org/docs/staging-environment/) first.
 
