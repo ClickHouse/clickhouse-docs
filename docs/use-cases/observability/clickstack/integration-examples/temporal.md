@@ -39,8 +39,6 @@ Time required: 5-10 minutes
 
 This section covers configuring ClickStack by configuring the ClickStack OTel collector with the Prometheus receiver.
 
-If you would like to test the Temporal Cloud integration before configuring your own existing setup, you can test with our preconfigured demo dataset in the [following section](#demo-dataset).
-
 ## Prerequisites {#prerequisites}
 
 - ClickStack instance running
