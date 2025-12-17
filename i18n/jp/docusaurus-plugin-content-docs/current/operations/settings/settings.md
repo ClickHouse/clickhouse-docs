@@ -7096,16 +7096,18 @@ Cloud のデフォルト値: 1 TB。
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
-クエリ処理スレッドの最大数です。リモートサーバーからデータを取得するためのスレッドは含まれません（`max_distributed_connections` パラメータを参照）。
+クエリ処理スレッドの最大数です。リモートサーバーからデータを取得するためのスレッドは含まれません（[`max_distributed_connections`](/operations/settings/settings#max_distributed_connections) パラメータを参照）。
 
 このパラメータは、クエリ処理パイプラインの同じステージを並列に実行するスレッドに適用されます。
-たとえばテーブルから読み込む際に、関数を用いた式評価、WHERE によるフィルタリング、GROUP BY の事前集計を、少なくとも `max_threads` 個のスレッドで並列実行できる場合は、その数の `max_threads` が使用されます。
+たとえばテーブルから読み込む際に、関数を用いた式評価、`WHERE` によるフィルタリング、`GROUP BY` の事前集計を、少なくとも `max_threads` 個のスレッドで並列実行できる場合は、その数の `max_threads` が使用されます。
 
 LIMIT により短時間で完了するクエリでは、`max_threads` をより小さく設定できます。たとえば、必要な件数の行が各ブロックに含まれていて `max_threads = 8` の場合、本来は 1 ブロックだけ読めば十分でも、8 ブロックが読み込まれます。
 
 `max_threads` の値が小さいほど、消費されるメモリ量は少なくなります。
 
-Cloud のデフォルト値: `auto(3)`
+`max_threads` 設定のデフォルト値は、ClickHouse が利用できる 1 つの CPU のコア数（スレッド数）に一致します。
+Cloud ユーザーの場合、デフォルト値は `auto(N)` と表示され、N はサービスの vCPU 数（例: 8GiB:2vCPU、16GiB:4vCPU など）に対応します。
+利用可能なすべてのサービスサイズの一覧は、Cloud コンソールの Settings タブで確認できます。
 
 ## max_threads_for_indexes {#max_threads_for_indexes} 
 
