@@ -286,7 +286,7 @@ FROM test.Orders;
 `INTERVAL` の値を設定する際には、文字列リテラルも使用できます。たとえば、`INTERVAL 1 HOUR` は `INTERVAL '1 hour'` や `INTERVAL '1' hour` と同じ意味になります。
 
 :::tip
-異なる型の interval は組み合わせられません。`INTERVAL 4 DAY 1 HOUR` のような式は使用できません。`INTERVAL 25 HOUR` のように、その interval の最小単位と同じか、それより小さい単位で指定してください。以下の例のように、演算を続けて適用することができます。
+異なる型の interval は組み合わせられません。`INTERVAL 4 DAY 1 HOUR` のような式は使用できません。`INTERVAL 25 HOUR` のように、その interval の最小単位と同じか、それより小さい単位で指定してください。以下の例のように、連続した演算として記述できます。
 :::
 
 例:
@@ -341,6 +341,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
+
 
 ## 論理AND演算子 {#logical-and-operator}
 

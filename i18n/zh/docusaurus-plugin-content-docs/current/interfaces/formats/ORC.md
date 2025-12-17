@@ -44,7 +44,7 @@ doc_type: 'reference'
 
 - 其他类型不受支持。
 - 数组可以嵌套，并且其参数可以是 `Nullable` 类型。`Tuple` 和 `Map` 类型也可以嵌套。
-- ClickHouse 表列的数据类型不必与对应的 ORC 数据字段完全一致。在插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#cast)为为 ClickHouse 表列设置的数据类型。
+- ClickHouse 表列的数据类型不必与对应的 ORC 数据字段完全一致。在插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#CAST)为 ClickHouse 表列设置的数据类型。
 
 ## 示例用法 {#example-usage}
 
@@ -80,6 +80,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
+
 ### 读取数据 {#reading-data}
 
 使用 `ORC` 格式来读取数据：
@@ -94,6 +95,7 @@ FORMAT ORC
 :::tip
 ORC 是一种二进制格式，无法在终端中以人类可读的形式查看。请使用 `INTO OUTFILE` 来输出 ORC 文件。
 :::
+
 
 ## 格式设置 {#format-settings}
 

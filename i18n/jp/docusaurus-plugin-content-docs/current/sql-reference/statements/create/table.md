@@ -16,6 +16,7 @@ import TabItem from '@theme/TabItem';
 
 デフォルトでは、テーブルは現在のサーバー上にのみ作成されます。分散 DDL クエリは `ON CLUSTER` 句として実装されており、[別途説明されています](../../../sql-reference/distributed-ddl.md)。
 
+
 ## 構文形式 {#syntax-forms}
 
 ### 明示的なスキーマ指定 {#with-explicit-schema}
@@ -23,15 +24,15 @@ import TabItem from '@theme/TabItem';
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
-    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT '列のコメント'] [compression_codec] [TTL expr1],
-    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT '列のコメント'] [compression_codec] [TTL expr2],
+    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT 'comment for column'] [compression_codec] [TTL expr1],
+    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT 'comment for column'] [compression_codec] [TTL expr2],
     ...
 ) ENGINE = engine
-  [COMMENT 'テーブルのコメント']
+  [COMMENT 'comment for table']
 ```
 
 `db` データベース、もしくは `db` が設定されていない場合は現在のデータベースに、括弧内で指定された構造と `engine` エンジンを持つ `table_name` という名前のテーブルを作成します。
-テーブルの構造は、列定義、セカンダリインデックス、および制約の一覧です。エンジンが [primary key](#primary-key) をサポートしている場合、テーブルエンジンのパラメータとして指定します。
+テーブルの構造は、列定義、セカンダリインデックス、プロジェクション、および制約の一覧です。エンジンが [primary key](#primary-key) をサポートしている場合、テーブルエンジンのパラメータとして指定します。
 
 最も単純な場合、列定義は `name type` です。例: `RegionID UInt32`。
 
@@ -41,6 +42,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 列およびテーブルにコメントを追加できます。
 
+
 ### 他のテーブルと同様のスキーマを使用する場合 {#with-a-schema-similar-to-other-table}
 
 ```sql
@@ -49,18 +51,20 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 
 別のテーブルと同じ構造のテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。
 
-### 別のテーブルからスキーマとデータをクローンする場合 {#with-a-schema-and-data-cloned-from-another-table}
+
+### 他のテーブルからスキーマとデータをクローンする場合 {#with-a-schema-and-data-cloned-from-another-table}
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name を CLONE AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
 ```
 
-別のテーブルと同じ構造を持つテーブルを作成します。テーブルには異なるエンジンを指定できます。エンジンが指定されていない場合、`db2.name2` テーブルと同じエンジンが使用されます。新しいテーブルが作成された後、`db2.name2` のすべてのパーティションがそのテーブルにアタッチされます。言い換えると、`db2.name2` のデータは作成時に `db.table_name` にクローンされます。このクエリは次のものと等価です：
+別のテーブルと同じ構造を持つテーブルを作成します。テーブルに別のエンジンを指定できます。エンジンを指定しない場合は、`db2.name2` テーブルと同じエンジンが使用されます。新しいテーブルが作成された後、`db2.name2` のすべてのパーティションがそのテーブルにアタッチされます。言い換えると、`db2.name2` のデータは作成時に `db.table_name` にクローンされます。このクエリは次のものと等価です：
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
+
 
 ### テーブル関数から {#from-a-table-function}
 
@@ -68,7 +72,8 @@ ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
-指定した[テーブル関数](/sql-reference/table-functions)と同じ結果になるテーブルを作成します。作成されたテーブルは、指定した対応するテーブル関数と同様に動作します。
+指定した[テーブル関数](/sql-reference/table-functions)と同じ結果を返すテーブルを作成します。作成されたテーブルも、指定した対応するテーブル関数と同様に動作します。
+
 
 ### SELECT クエリから {#from-select-query}
 
@@ -99,6 +104,7 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
+
 ## NULL または NOT NULL 修飾子 {#null-or-not-null-modifiers}
 
 列定義におけるデータ型の後ろに付ける `NULL` および `NOT NULL` 修飾子は、その列を [Nullable](/sql-reference/data-types/nullable) 型にできるかどうかを指定します。
@@ -123,7 +129,7 @@ SELECT x, toTypeName(x) FROM t1;
 
 `DEFAULT expr`
 
-通常のデフォルト値です。INSERT クエリでこのカラムの値が指定されなかった場合、`expr` から計算されます。
+通常のデフォルト値を指定します。INSERT クエリでこのカラムの値が指定されなかった場合、`expr` から計算されます。
 
 例:
 
@@ -144,6 +150,7 @@ SELECT * FROM test;
 │  1 │ 2023-02-24 17:06:46 │      2023-02-24 │
 └────┴─────────────────────┴─────────────────┘
 ```
+
 
 ### MATERIALIZED {#materialized}
 
@@ -183,6 +190,7 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 └────┴─────────────────────┴─────────────────┘
 ```
 
+
 ### EPHEMERAL {#ephemeral}
 
 `EPHEMERAL [expr]`
@@ -217,8 +225,8 @@ Row 1:
 id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
-
 ```
+
 
 ### ALIAS {#alias}
 
@@ -257,6 +265,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 └────┴────────────┴──────────┘
 ```
 
+
 ## プライマリキー {#primary-key}
 
 テーブル作成時に[プライマリキー](../../../engines/table-engines/mergetree-family/mergetree.md#primary-keys-and-indexes-in-queries)を定義できます。プライマリキーは次の 2 通りの方法で指定できます。
@@ -287,6 +296,7 @@ PRIMARY KEY(expr1[, expr2,...]);
 1 つのクエリで両方の方法を併用することはできません。
 :::
 
+
 ## 制約 {#constraints}
 
 カラムの説明に加えて、制約を定義することもできます。
@@ -306,6 +316,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `boolean_expr_1` には任意のブール式を指定できます。テーブルに制約が定義されている場合、`INSERT` クエリで挿入される各行に対して、それぞれの制約が検証されます。いずれかの制約が満たされない場合、サーバーは制約名と検証に使用された式を含む例外をスローします。
 
 大量の制約を追加すると、大規模な `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
+
 
 ### ASSUME {#assume}
 
@@ -331,6 +342,7 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` は **制約を強制しません**。単にオプティマイザに対して、その制約が成り立つことを知らせるだけです。もし制約が実際には成り立たない場合、クエリ結果が不正確になる可能性があります。したがって、制約が正しいと確信できる場合にのみ `ASSUME CONSTRAINT` を使用すべきです。
 
+
 ## TTL Expression {#ttl-expression}
 
 値の保持期間を定義します。MergeTree ファミリーのテーブルに対してのみ指定できます。詳細については、[列およびテーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) を参照してください。
@@ -341,7 +353,7 @@ ORDER BY (name_len, name);
 
 `MergeTree` エンジンファミリーでは、サーバー設定の [compression](/operations/server-configuration-parameters/settings#compression) セクションでデフォルトの圧縮方式を変更できます。
 
-また、`CREATE TABLE` クエリ内で各列ごとに圧縮方式を定義することもできます。
+また、`CREATE TABLE` クエリ内でカラムごとに圧縮方式を定義することもできます。
 
 ```sql
 CREATE TABLE codec_example
@@ -380,7 +392,8 @@ Codec はパイプラインで組み合わせることができます。たと�
 
 ClickHouse は、汎用 codec と用途特化 codec の両方をサポートします。
 
-### 汎用 Codec {#general-purpose-codecs}
+
+### 汎用コーデック {#general-purpose-codecs}
 
 #### NONE {#none}
 
@@ -392,29 +405,29 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 
 #### LZ4HC {#lz4hc}
 
-`LZ4HC[(level)]` — 圧縮レベルを指定できる LZ4 HC (High Compression) アルゴリズムです。デフォルトレベル: 9。`level <= 0` を指定するとデフォルトレベルが適用されます。指定可能なレベル: [1, 12]。推奨レベル範囲: [4, 9]。
+`LZ4HC[(level)]` — 圧縮レベルを指定可能な LZ4 HC（高圧縮）アルゴリズムです。デフォルトレベル: 9。`level <= 0` を指定するとデフォルトレベルが適用されます。指定可能なレベル: [1, 12]。推奨レベル範囲: [4, 9]。
 
 #### ZSTD {#zstd}
 
-`ZSTD[(level)]` — 可変 `level` を持つ [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: [1, 22]。デフォルトレベル: 1。
+`ZSTD[(level)]` — `level` を指定できる [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: [1, 22]。デフォルトレベル: 1。
 
 高い圧縮レベルは、一度圧縮しておき、そのデータを繰り返し伸長するといった非対称なシナリオで有用です。レベルを上げると圧縮率は向上しますが、CPU 使用率も増加します。
 
-#### ZSTD&#95;QAT {#zstd_qat}
+#### ZSTD_QAT {#zstd_qat}
 
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
-`ZSTD_QAT[(level)]` — [Intel® QATlib](https://github.com/intel/qatlib) および [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin) で実装された、レベルを指定できる [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: [1, 12]。デフォルトレベル: 1。推奨レベル範囲: [6, 12]。いくつかの制限があります。
+`ZSTD_QAT[(level)]` — [Intel® QATlib](https://github.com/intel/qatlib) および [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin) で実装された、レベルを指定できる [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: \[1, 12\]。デフォルトレベル: 1。推奨レベル範囲: \[6, 12\]。いくつかの制限があります。
 
-* ZSTD&#95;QAT はデフォルトでは無効で、設定項目 [enable&#95;zstd&#95;qat&#95;codec](../../../operations/settings/settings.md#enable_zstd_qat_codec) を有効化して初めて使用できます。
-* 圧縮時、ZSTD&#95;QAT は Intel® QAT オフロードデバイス（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）の利用を試みます。そのようなデバイスが見つからない場合は、ソフトウェアによる ZSTD 圧縮にフォールバックします。
-* 伸長は常にソフトウェアで実行されます。
+- ZSTD_QAT はデフォルトでは無効で、設定項目 [enable_zstd_qat_codec](../../../operations/settings/settings.md#enable_zstd_qat_codec) を有効化して初めて使用できます。
+- 圧縮時、ZSTD_QAT は Intel® QAT オフロードデバイス（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）の利用を試みます。そのようなデバイスが見つからない場合は、ソフトウェアによる ZSTD 圧縮にフォールバックします。
+- 伸長は常にソフトウェアで実行されます。
 
-#### DEFLATE&#95;QPL {#deflate_qpl}
+#### DEFLATE_QPL {#deflate_qpl}
 
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
-`DEFLATE_QPL` — Intel® Query Processing Library によって実装された [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) です。いくつかの制限があります。
+`DEFLATE_QPL` — Intel® Query Processing Library によって実装された [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) です。いくつかの制限事項があります。
 
 - DEFLATE_QPL はデフォルトでは無効になっており、設定 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) を有効化した後にのみ使用できます。
 - DEFLATE_QPL には、SSE 4.2 命令でコンパイルされた ClickHouse ビルドが必要です（デフォルトでそのようにビルドされています）。詳細は [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
@@ -435,7 +448,7 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 
 #### GCD {#gcd}
 
-`GCD()` - - 列内の値の最大公約数 (GCD) を計算し、各値をその GCD で割ります。整数、Decimal、日付/時刻の列で使用できます。このコーデックは、値が GCD の倍数単位で変化（増加または減少）する列、例: 24, 28, 16, 24, 8, 24 (GCD = 4) に適しています。GCD はデータ準備用コーデックであり、単独では使用できません。
+`GCD()` - - 列の値の最大公約数 (GCD) を計算し、各値をその GCD で割ります。整数型、Decimal 型、日付/時刻型の列で使用できます。このコーデックは、値が GCD の倍数で増減する列、例: 24, 28, 16, 24, 8, 24 (GCD = 4) に適しています。GCD はデータ準備用コーデックであり、単独では使用できません。
 
 #### Gorilla {#gorilla}
 
@@ -460,13 +473,14 @@ CREATE TABLE codec_example
 ENGINE = MergeTree()
 ```
 
+
 ### 暗号化コーデック {#encryption-codecs}
 
 これらのコーデックは実際にはデータを圧縮せず、代わりにディスク上のデータを暗号化します。これらは [encryption](/operations/server-configuration-parameters/settings#encryption) 設定で暗号化キーが指定されている場合にのみ利用可能です。暗号化されたデータは通常、有意義な形で圧縮することができないため、暗号化はコーデックパイプラインの末尾でのみ意味を持つことに注意してください。
 
 暗号化コーデック：
 
-#### AES&#95;128&#95;GCM&#95;SIV {#aes_128_gcm_siv}
+#### AES_128_GCM_SIV {#aes_128_gcm_siv}
 
 `CODEC('AES-128-GCM-SIV')` — [RFC 8452](https://tools.ietf.org/html/rfc8452) で定義されている GCM-SIV モードの AES-128 でデータを暗号化します。
 
@@ -495,7 +509,7 @@ ENGINE = MergeTree ORDER BY x;
 ```
 
 :::note
-圧縮が必要な場合は、明示的に指定してください。指定しない場合は、データには暗号化のみが適用されます。
+圧縮も行いたい場合は、明示的に指定する必要があります。指定しない場合は、データには暗号化のみが適用されます。
 :::
 
 **例**
@@ -507,6 +521,7 @@ CREATE TABLE mytable
 )
 ENGINE = MergeTree ORDER BY x;
 ```
+
 
 ## 一時テーブル {#temporary-tables}
 
@@ -537,6 +552,7 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 ほとんどの場合、一時テーブルは手動で作成するのではなく、クエリで外部データを使用する場合や、分散 `(GLOBAL) IN` のために使用する場合に自動的に作成されます。詳しくは、該当するセクションを参照してください。
 
 一時テーブルの代わりに、[ENGINE = Memory](../../../engines/table-engines/special/memory.md) を使用したテーブルを利用することもできます。
+
 
 ## REPLACE TABLE {#replace-table}
 
@@ -575,6 +591,7 @@ SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
 
+
 ### 構文 {#syntax}
 
 ```sql
@@ -582,8 +599,9 @@ WHERE CounterID <12345;
 ```
 
 :::note
-`CREATE` 文のすべての構文形式は、このステートメントでも使用できます。存在しないテーブルに対して `REPLACE` を実行するとエラーになります。
+`CREATE` 文のすべての構文形式は、このステートメントにも使用できます。存在しないテーブルに対して `REPLACE` を実行するとエラーが発生します。
 :::
+
 
 ### 例: {#examples}
 
@@ -724,7 +742,7 @@ COMMENT 'Comment'
 クエリ：
 
 ```sql
-CREATE TABLE t1 (x String) ENGINE = Memory COMMENT '一時テーブル';
+CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
@@ -732,9 +750,10 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 
 ```text
 ┌─name─┬─comment─────────────┐
-│ t1   │ 一時テーブル │
+│ t1   │ The temporary table │
 └──────┴─────────────────────┘
 ```
+
 
 ## 関連コンテンツ {#related-content}
 

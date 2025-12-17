@@ -15,7 +15,6 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-
 # 从 DynamoDB 到 ClickHouse 的 CDC {#cdc-from-dynamodb-to-clickhouse}
 
 本页说明如何使用 ClickPipes 将 DynamoDB 的 CDC 设置到 ClickHouse。该集成包含两个组件：
@@ -107,7 +106,6 @@ ORDER BY id;
 * 表应使用分区键作为排序键（通过 `ORDER BY` 指定）
   * 具有相同排序键的行将基于 `version` 列进行去重。
 
-
 ### 创建快照 ClickPipe {#create-the-snapshot-clickpipe}
 
 现在你可以创建一个 ClickPipe，将快照数据从 S3 加载到 ClickHouse。请按照 S3 ClickPipe 指南[此处](/integrations/clickpipes/object-storage/s3/overview)中的说明进行操作，但使用以下设置：
@@ -122,7 +120,6 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 * **表**：你的快照表（例如上面的示例中为 `default.snapshot`）
 
 创建完成后，数据将开始写入快照表和目标表。你无需等待快照加载完成即可继续下一步操作。
-
 
 ## 4. 创建 Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
 

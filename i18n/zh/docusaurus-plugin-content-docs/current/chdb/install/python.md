@@ -1,8 +1,8 @@
 ---
-title: '安装适用于 Python 的 chDB'
+title: '在 Python 中安装 chDB'
 sidebar_label: 'Python'
 slug: /chdb/install/python
-description: '如何安装适用于 Python 的 chDB'
+description: '如何在 Python 中安装 chDB'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'install']
 doc_type: 'guide'
 ---
@@ -18,6 +18,7 @@ doc_type: 'guide'
 pip install chdb
 ```
 
+
 ## 使用方法 {#usage} 
 
 ### 命令行界面 {#command-line-interface}
@@ -32,7 +33,8 @@ python3 -m chdb "SELECT 1, 'abc'" Pretty
 python3 -m chdb "SELECT version()" JSON
 ```
 
-### Python 基本用法 {#basic-python-usage}
+
+### Python 的基础用法 {#basic-python-usage}
 
 ```python
 import chdb
@@ -47,9 +49,10 @@ print(f"Bytes read: {result.bytes_read()}")
 print(f"Execution time: {result.elapsed()} seconds")
 ```
 
-### 基于连接的 API（推荐使用） {#connection-based-api}
 
-为更好地进行资源管理并提升性能：
+### 基于连接的 API（推荐） {#connection-based-api}
+
+为了更好地进行资源管理和提升性能：
 
 ```python
 import chdb
@@ -81,11 +84,12 @@ cur.close()
 conn.close()
 ```
 
-## 数据接入方式 {#data-input}
+
+## 数据输入方式 {#data-input}
 
 ### 基于文件的数据源 {#file-based-data-sources}
 
-chDB 支持 70 多种数据格式，可直接查询文件：
+chDB 支持 70 多种数据格式，可直接对文件执行查询：
 
 ```python
 import chdb
@@ -114,6 +118,7 @@ result = chdb.query("""
 """, 'Pretty')
 ```
 
+
 ### 输出格式示例 {#output-format-examples}
 
 ```python
@@ -133,6 +138,7 @@ print(json_result)
 pretty_result = chdb.query('SELECT * FROM system.numbers LIMIT 3', 'Pretty')
 print(pretty_result)
 ```
+
 
 ### DataFrame 操作 {#dataframe-operations}
 
@@ -158,7 +164,8 @@ summary = result_df.query('SELECT b, sum(a) FROM __table__ GROUP BY b')
 print(summary)
 ```
 
-#### Python 表引擎（推荐） {#python-table-engine-recommended}
+
+#### Python 表引擎（推荐使用） {#python-table-engine-recommended}
 
 ```python
 import chdb
@@ -205,9 +212,10 @@ chdb.query("""
 """).show()
 ```
 
+
 ### 有状态会话 {#stateful-sessions}
 
-会话在多次操作之间保持查询状态，从而支持复杂的工作流：
+会话在多次操作之间保留查询状态，从而支持复杂流程：
 
 ```python
 from chdb import session
@@ -259,6 +267,7 @@ print(result)
 sess.close()  # Optional - auto-closed when object is deleted
 ```
 
+
 ### 高级会话功能 {#advanced-session-features}
 
 ```python
@@ -277,11 +286,12 @@ result = sess.query("""
 """, "JSON")
 ```
 
-另请参见：[test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
+另请参阅：[test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)。
+
 
 ### Python DB-API 2.0 接口 {#python-db-api-20}
 
-面向现有 Python 应用程序的标准数据库接口，以确保兼容性：
+用于兼容现有 Python 应用程序的标准数据库接口：
 
 ```python
 import chdb.dbapi as dbapi
@@ -327,11 +337,12 @@ cursor.executemany(
 )
 ```
 
-### 用户自定义函数（UDF） {#user-defined-functions}
+
+### 用户自定义函数 (UDF) {#user-defined-functions}
 
 使用自定义 Python 函数扩展 SQL：
 
-#### UDF 的基本用法 {#basic-udf-usage}
+#### UDF 的基础用法 {#basic-udf-usage}
 
 ```python
 from chdb.udf import chdb_udf
@@ -367,6 +378,7 @@ result = query("""
 print(result)
 ```
 
+
 #### 具有自定义返回类型的高级 UDF {#advanced-udf-custom-return-types}
 
 ```python
@@ -401,13 +413,14 @@ result = query("""
 print(result)
 ```
 
+
 #### UDF 最佳实践 {#udf-best-practices}
 
-1. **无状态函数**：UDF 应为无副作用的纯函数
-2. **在函数内部导入模块**：所有所需模块必须在 UDF 内部导入
-3. **字符串输入/输出**：所有 UDF 参数都是字符串（制表符分隔 TabSeparated 格式）
+1. **无状态函数（Stateless Functions）**：UDF 应为纯函数，不应产生副作用
+2. **在函数内导入依赖**：所有所需模块必须在 UDF 内部导入
+3. **字符串输入/输出**：所有 UDF 参数都是字符串（制表符分隔（TabSeparated）格式）
 4. **错误处理**：使用 try-catch 代码块以提高 UDF 的健壮性
-5. **性能**：UDF 会对每一行进行调用，因此需要针对性能进行优化
+5. **性能**：UDF 会针对每一行进行调用，因此应尽可能进行性能优化
 
 ```python
 # Well-structured UDF with error handling
@@ -436,9 +449,10 @@ query("""
 """)
 ```
 
+
 ### 流式查询处理 {#streaming-queries}
 
-以固定内存占用处理大规模数据集：
+在内存占用保持恒定的情况下处理大型数据集：
 
 ```python
 from chdb import session
@@ -506,6 +520,7 @@ stream.close()
 sess.close()
 ```
 
+
 ### Python 表引擎 {#python-table-engine}
 
 #### 查询 Pandas DataFrame 数据 {#query-pandas-dataframes}
@@ -563,11 +578,12 @@ window_result = chdb.query("""
 print(window_result)
 ```
 
+
 #### 使用 PyReader 的自定义数据源 {#custom-data-sources-pyreader}
 
-为特定数据源实现自定义数据读取器：
+针对特定数据源实现自定义数据读取器：
 
-```python
+````python
 import chdb
 from typing import List, Tuple, Any
 import json
@@ -622,7 +638,7 @@ class DatabaseReader(chdb.PyReader):
         self.cursor = end_pos
         return result
 
-### JSON Type Inference and Handling {#json-type-inference-handling}
+### JSON Type Inference and Handling                                
 
 chDB automatically handles complex nested data structures:
 
@@ -630,7 +646,7 @@ chDB automatically handles complex nested data structures:
 import pandas as pd
 import chdb
 
-# 包含混合 JSON 对象的 DataFrame {#dataframe-with-mixed-json-objects}
+# DataFrame with mixed JSON objects
 df_with_json = pd.DataFrame({
     "user_id": [1, 2, 3, 4],
     "profile": [
@@ -641,7 +657,7 @@ df_with_json = pd.DataFrame({
     ]
 })
 
-# 通过设置控制 JSON 推断 {#control-json-inference-with-settings}
+# Control JSON inference with settings
 result = chdb.query("""
     SELECT 
         user_id,
@@ -650,11 +666,11 @@ result = chdb.query("""
         length(profile.preferences) as pref_count,
         profile.location.city as city
     FROM Python(df_with_json)
-    SETTINGS pandas_analyze_sample = 1000  -- 分析所有行以检测 JSON
+    SETTINGS pandas_analyze_sample = 1000  -- Analyze all rows for JSON detection
 """, "Pretty")
 print(result)
 
-# 高级 JSON 操作 {#advanced-json-operations}
+# Advanced JSON operations
 complex_json = chdb.query("""
     SELECT 
         user_id,
@@ -668,30 +684,32 @@ complex_json = chdb.query("""
     FROM Python(df_with_json)
 """, "JSONEachRow")
 print(complex_json)
-```
+````
 
-## Performance and optimization {#performance-optimization}
 
-### Benchmarks {#benchmarks}
+## 性能和优化 {#performance-optimization}
 
-chDB consistently outperforms other embedded engines:
-- **DataFrame operations**: 2-5x faster than traditional DataFrame libraries for analytical queries
-- **Parquet processing**: Competitive with leading columnar engines
-- **Memory efficiency**: Lower memory footprint than alternatives
+### 基准测试 {#benchmarks}
 
-[More benchmark result details](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
+chDB 在性能上始终优于其他嵌入式引擎：
 
-### Performance tips {#performance-tips}
+- **DataFrame 操作**：在分析型查询场景下，比传统 DataFrame 库快 2–5 倍
+- **Parquet 处理**：性能可与领先的列式引擎相媲美
+- **内存效率**：相比其他方案具有更低的内存占用
+
+[查看更多基准测试结果](https://github.com/chdb-io/chdb?tab=readme-ov-file#benchmark)
+
+### 性能提示
 
 ```python
 import chdb
 
-# 1. 使用合适的输出格式 {#1-use-appropriate-output-formats}
-df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # 用于数据分析
-arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # 用于系统互操作
-native_result = chdb.query("SELECT * FROM large_table", "Native")   # 用于 chDB 间传输
+# 1. Use appropriate output formats
+df_result = chdb.query("SELECT * FROM large_table", "DataFrame")  # For analysis
+arrow_result = chdb.query("SELECT * FROM large_table", "Arrow")    # For interop
+native_result = chdb.query("SELECT * FROM large_table", "Native")   # For chDB-to-chDB
 
-# 2. 通过配置参数优化查询 {#2-optimize-queries-with-settings}
+# 2. Optimize queries with settings
 fast_result = chdb.query("""
     SELECT customer_id, sum(amount) 
     FROM sales 
@@ -702,12 +720,12 @@ fast_result = chdb.query("""
         use_uncompressed_cache = 1
 """, "DataFrame")
 
-# 3. 对大数据集使用流式处理 {#3-leverage-streaming-for-large-datasets}
+# 3. Leverage streaming for large datasets
 from chdb import session
 
 sess = session.Session()
 
-# 创建大数据集 {#setup-large-dataset}
+# Setup large dataset
 sess.query("""
     CREATE TABLE large_sales ENGINE = Memory() AS 
     SELECT 
@@ -717,7 +735,7 @@ sess.query("""
     FROM numbers(10000000)
 """)
 
-# 流式处理保持恒定内存占用 {#stream-processing-with-constant-memory-usage}
+# Stream processing with constant memory usage
 total_amount = 0
 processed_rows = 0
 
@@ -725,7 +743,7 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
     for chunk in stream:
         lines = chunk.data().strip().split('\n')
         for line in lines:
-            if line:  # 跳过空行
+            if line:  # Skip empty lines
                 import json
                 row = json.loads(line)
                 total_amount += row['total']
@@ -733,26 +751,27 @@ with sess.send_query("SELECT customer_id, sum(amount) as total FROM large_sales 
         
         print(f"Processed {processed_rows} customer records, running total: {total_amount}")
         
-        # 演示用提前终止
+        # Early termination for demo
         if processed_rows > 1000:
             break
 
 print(f"Final result: {processed_rows} customers processed, total amount: {total_amount}")
 
-# 流式传输到外部系统(例如 Delta Lake) {#stream-to-external-systems-eg-delta-lake}
+# Stream to external systems (e.g., Delta Lake)
 stream = sess.send_query("SELECT * FROM large_sales LIMIT 1000000", "Arrow")
 batch_reader = stream.record_batch(rows_per_batch=50000)
 
-# 分批处理 {#process-in-batches}
+# Process in batches
 for batch in batch_reader:
     print(f"Processing batch with {batch.num_rows} rows...")
-    # 转换或导出每批数据
+    # Transform or export each batch
     # df_batch = batch.to_pandas()
     # process_batch(df_batch)
 
 stream.close()
 sess.close()
 ```
+
 
 ## GitHub 仓库 {#github-repository}
 

@@ -31,7 +31,6 @@ SETTINGS format_csv_delimiter = ';';
 
 数据存储在 CSV 文件中，但使用分号作为分隔符。行的格式如下：
 
-
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │
@@ -48,7 +47,6 @@ SETTINGS format_csv_delimiter = ';';
 ```
 
 2. 我们将使用以下 `MergeTree` 表在 ClickHouse 中存储数据：
-
 
 ```sql
 CREATE TABLE sensors
@@ -175,6 +173,5 @@ ORDER BY day ASC;
 ```
 
 以下是结果的可视化：
-
 
 <Image img={sensors_02} size="md" alt="炎热潮湿的天气"/>

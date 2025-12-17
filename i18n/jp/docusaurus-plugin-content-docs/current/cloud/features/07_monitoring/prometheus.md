@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus'
 title: 'Prometheus'
-description: 'ClickHouse のメトリクスを Prometheus へエクスポートする'
+description: 'ClickHouse のメトリクスを Prometheus にエクスポートする'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
 ---
@@ -15,32 +15,33 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
+
 # Prometheus 連携 {#prometheus-integration}
 
-この機能では、[Prometheus](https://prometheus.io/) と連携させて ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは [ClickHouse Cloud API](/cloud/manage/api/api-overview) エンドポイントを通じて提供されており、ユーザーはこのエンドポイントに安全に接続し、メトリクスを Prometheus のメトリクスコレクターへエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードツールと連携させて可視化できます。
+この機能により、[Prometheus](https://prometheus.io/) を利用して ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは、[ClickHouse Cloud API](/cloud/manage/api/api-overview) エンドポイント経由で提供されており、Prometheus メトリクスコレクターに安全に接続してメトリクスをエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードと連携して可視化できます。
 
 開始するには、[API キーを生成](/cloud/manage/openapi)してください。
 
-## Prometheus エンドポイント API による ClickHouse Cloud メトリクスの取得 {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## ClickHouse Cloud メトリクスを取得するための Prometheus エンドポイント API {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
 ### API リファレンス {#api-reference}
 
 | Method | Path                                                                                                               | Description                                                        |
 | ------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=[true \| false]` | 特定のサービスのメトリクスを返します |
-| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=[true \| false]` | 組織内のすべてのサービスのメトリクスを返します |
+| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/services/:serviceId/prometheus?filtered_metrics=[true \| false]` | 特定のサービスのメトリクスを取得します |
+| GET    | `https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=[true \| false]` | 組織内のすべてのサービスのメトリクスを取得します |
 
-**リクエストパラメータ**
+**Request Parameters**
 
-| Name             | Location        | Type               |
-| ---------------- | --------------- |------------------ |
-| Organization ID  | エンドポイント   | uuid               |
-| Service ID       | エンドポイント   | uuid（オプション） |
-| filtered_metrics | クエリパラメータ | boolean（オプション） |
+| Name             | Location               | Type               |
+| ---------------- | ------------------ |------------------ |
+| Organization ID  | エンドポイントアドレス | uuid               |
+| Service ID       | エンドポイントアドレス | uuid (任意)               |
+| filtered_metrics | クエリパラメータ | boolean (任意) |
 
 ### 認証 {#authentication}
 
-基本認証として ClickHouse Cloud の API キーを使用します。
+Basic 認証には、ClickHouse Cloud の API キーを使用してください。
 
 ```bash
 Username: <KEY_ID>
@@ -58,7 +59,8 @@ export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
 
-### サンプルレスポンス {#sample-response}
+
+### 応答例 {#sample-response}
 
 ```response
 # HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
@@ -120,39 +122,39 @@ ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-
 ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
 ```
 
-### メトリックラベル {#metric-labels}
+### メトリクスラベル {#metric-labels}
 
-すべてのメトリックには次のラベルが付きます:
+すべてのメトリクスには次のラベルが付きます:
 
-|Label|説明|
+|Label|Description|
 |---|---|
 |clickhouse_org|組織 ID|
 |clickhouse_service|サービス ID|
 |clickhouse_service_name|サービス名|
 
-ClickPipes の場合、メトリックには次のラベルも含まれます:
+ClickPipes については、メトリクスに次のラベルも付きます:
 
-| Label | 説明 |
+| Label | Description |
 | --- | --- |
 | clickpipe_id | ClickPipe ID |
-| clickpipe_name | ClickPipe 名称 |
-| clickpipe_source | ClickPipe ソース種別 |
+| clickpipe_name | ClickPipe 名|
+| clickpipe_source | ClickPipe ソース種別|
 
 ### 情報メトリクス {#information-metrics}
 
-ClickHouse Cloud では、常に値が `1` の `gauge` 型メトリクス `ClickHouse_ServiceInfo` が提供されています。このメトリクスには、すべての **Metric Labels** に加えて、次のラベルが含まれます。
+ClickHouse Cloud は、常に値が `1` となる `gauge` 型の特別なメトリクス `ClickHouse_ServiceInfo` を提供します。このメトリクスには、すべての **Metric Labels** に加えて、次のラベルが含まれます。
 
 |Label|Description|
 |---|---|
-|clickhouse_cluster_status|サービスのステータス。次のいずれかです: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
+|clickhouse_cluster_status|サービスのステータス。次のいずれかの値になります: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
 |clickhouse_version|サービスが実行している ClickHouse サーバーのバージョン|
-|scrape|最後のスクレイプのステータスを示します。`full` または `partial` のいずれかです|
-|full|最後のメトリクスのスクレイプ中にエラーがなかったことを示します|
-|partial|最後のメトリクスのスクレイプ中にいくつかのエラーが発生し、`ClickHouse_ServiceInfo` メトリクスのみが返されたことを示します。|
+|scrape|直近のスクレイプのステータスを示します。`full` または `partial` のいずれかになります|
+|full|直近のメトリクススクレイプでエラーが発生しなかったことを示します|
+|partial|直近のメトリクススクレイプでいくつかのエラーが発生し、`ClickHouse_ServiceInfo` メトリクスのみが返されたことを示します。|
 
-メトリクス取得のリクエストによって、`idle` 状態のサービスが再稼働することはありません。サービスが `idle` 状態の場合、`ClickHouse_ServiceInfo` メトリクスのみが返されます。
+メトリクスを取得するリクエストでは、アイドル状態のサービスは起動されません。サービスが `idle` 状態の場合は、`ClickHouse_ServiceInfo` メトリクスのみが返されます。
 
-ClickPipes についても、同様に `ClickPipes_Info` という `gauge` 型メトリクスがあり、**Metric Labels** に加えて次のラベルが含まれます。
+ClickPipes については、同様に `ClickPipes_Info` という `gauge` メトリクスがあり、**Metric Labels** に加えて次のラベルが含まれます。
 
 | Label | Description |
 | --- | --- |
@@ -160,7 +162,7 @@ ClickPipes についても、同様に `ClickPipes_Info` という `gauge` 型�
 
 ### Prometheus の設定 {#configuring-prometheus}
 
-Prometheus サーバーは、設定された対象から一定間隔でメトリクスを収集します。以下は、ClickHouse Cloud の Prometheus エンドポイントを利用するための Prometheus サーバーの設定例です。
+Prometheus サーバーは、設定された対象から指定された間隔でメトリクスを収集します。以下は、ClickHouse Cloud の Prometheus エンドポイントを利用するための Prometheus サーバーの設定例です。
 
 ```yaml
 global:
@@ -183,29 +185,30 @@ scrape_configs:
     honor_labels: true
 ```
 
-`honor_labels` 構成パラメータは、`instance` ラベルが正しく設定されるように `true` に設定する必要があります。さらに、上記の例では `filtered_metrics` が `true` に設定されていますが、これはユーザーの好みに応じて設定してください。
+`instance` ラベルを正しく設定するには、`honor_labels` 設定パラメータを `true` にする必要があります。さらに、上記の例では `filtered_metrics` が `true` に設定されていますが、これはユーザーの好みに応じて設定してください。
 
-## Grafana との統合 {#integrating-with-grafana}
 
-ユーザーが Grafana と統合する主な方法は 2 つあります。
+## Grafana との連携 {#integrating-with-grafana}
 
-- **Metrics Endpoint** – この方法の利点は、追加のコンポーネントやインフラストラクチャが不要なことです。この方式は Grafana Cloud に限定され、必要となるのは ClickHouse Cloud Prometheus Endpoint の URL と認証情報のみです。
-- **Grafana Alloy** - Grafana Alloy は OpenTelemetry (OTel) Collector のベンダー中立なディストリビューションであり、Grafana Agent の代替となるものです。スクレイパーとして利用でき、自前のインフラストラクチャにデプロイ可能で、あらゆる Prometheus エンドポイントと互換性があります。
+Grafana と連携するには、主に次の 2 通りの方法があります。
 
-以下では、これらのオプションの利用方法について、ClickHouse Cloud Prometheus Endpoint に固有の詳細に焦点を当てて説明します。
+- **Metrics Endpoint** – 追加のコンポーネントやインフラストラクチャが不要である点が利点です。この方法は Grafana Cloud 専用で、必要なのは ClickHouse Cloud Prometheus Endpoint の URL と認証情報だけです。
+- **Grafana Alloy** - Grafana Alloy は、Grafana Agent の代替となる OpenTelemetry (OTel) Collector のベンダーニュートラルなディストリビューションです。スクレイパーとして利用でき、自前のインフラストラクチャにデプロイ可能で、あらゆる Prometheus Endpoint と互換性があります。
+
+以下では、これらのオプションの使用方法について、ClickHouse Cloud Prometheus Endpoint に特有の詳細に焦点を当てて説明します。
 
 ### Grafana Cloud とメトリクスエンドポイント {#grafana-cloud-with-metrics-endpoint}
 
 - Grafana Cloud アカウントにログインします
 - **Metrics Endpoint** を選択して新しい接続を追加します
-- Scrape URL を Prometheus エンドポイントを指すように設定し、Basic 認証で API キー/シークレットを用いて接続を構成します
+- Scrape URL を Prometheus エンドポイントに向けるように設定し、Basic 認証を使用して API キー／シークレットで接続を設定します
 - 接続テストを実行し、正常に接続できることを確認します
 
-<Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Grafana Metrics Endpoint を構成する" border/>
+<Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Grafana Metrics Endpoint の構成" border/>
 
 <br />
 
-構成が完了すると、ダッシュボードの設定時に選択できるメトリクスがドロップダウンに表示されます:
+構成が完了すると、ダッシュボードを設定する際に選択できるメトリクスがドロップダウンに表示されます:
 
 <Image img={prometheus_grafana_dropdown} size="md" alt="Grafana Metrics Explorer のドロップダウン" border/>
 
@@ -215,15 +218,15 @@ scrape_configs:
 
 ### Grafana Cloud と Alloy {#grafana-cloud-with-alloy}
 
-Grafana Cloud を使用している場合は、Grafana 内の Alloy メニューに移動し、画面上の手順に従うことで Alloy をインストールできます。
+Grafana Cloud を使用している場合、Grafana 内の Alloy メニューに移動し、画面の指示に従うだけで Alloy をインストールできます。
 
 <Image img={prometheus_grafana_alloy} size="md" alt="Grafana Alloy" border />
 
 <br />
 
-これにより、認証トークンを用いてデータを Grafana Cloud のエンドポイントに送信するための `prometheus.remote_write` コンポーネントが設定されます。ユーザーはその後、ClickHouse Cloud の Prometheus エンドポイント向けスクレイパーを含めるように、Alloy の設定（Linux では `/etc/alloy/config.alloy` に配置）を変更するだけで済みます。
+これにより、認証トークンを使用して Grafana Cloud エンドポイントにデータを送信するための `prometheus.remote_write` コンポーネントを含むように Alloy が構成されます。ユーザーは、その後、ClickHouse Cloud Prometheus Endpoint 用のスクレイパーを含めるように Alloy の設定（Linux の場合は `/etc/alloy/config.alloy`）を変更するだけでかまいません。
 
-以下は、ClickHouse Cloud エンドポイントからメトリクスをスクレイプするための `prometheus.scrape` コンポーネントと、自動的に設定される `prometheus.remote_write` コンポーネントを含む Alloy の設定例です。`basic_auth` の設定項目には、それぞれユーザー名とパスワードとして Cloud API キー ID とシークレットが含まれていることに注意してください。
+以下は、ClickHouse Cloud Endpoint からメトリクスをスクレイプするための `prometheus.scrape` コンポーネントと、自動的に構成される `prometheus.remote_write` コンポーネントを含む Alloy のサンプル構成です。`basic_auth` 設定コンポーネントには、それぞれユーザー名とパスワードとして Cloud API key の ID とシークレットが含まれている点に注意してください。
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
@@ -255,11 +258,12 @@ prometheus.remote_write "metrics_service" {
 }
 ```
 
-`honor_labels` 設定パラメータは、インスタンスラベルが正しく設定されるように `true` に設定する必要があります。
+`honor_labels` 設定パラメータは、`instance` ラベルが正しく設定されるように `true` に設定する必要がある点に注意してください。
 
-### Alloy を使用した自己管理型 Grafana {#grafana-self-managed-with-alloy}
 
-自己管理で Grafana を運用しているユーザーは、Alloy エージェントのインストール手順を [こちら](https://grafana.com/docs/alloy/latest/get-started/install/) で確認できます。ここでは、ユーザーが Alloy を構成して Prometheus メトリクスを任意の送信先に送信するようにしていることを前提とします。以下の `prometheus.scrape` コンポーネントにより、Alloy は ClickHouse Cloud エンドポイントをスクレイプします。スクレイプされたメトリクスは `prometheus.remote_write` が受信すると想定しています。これが存在しない場合、または別の送信先を利用する場合は、`forward_to` キーを対象の送信先に合わせて調整してください。
+### Alloy を用いたセルフマネージドの Grafana {#grafana-self-managed-with-alloy}
+
+セルフマネージド版 Grafana のユーザーは、Alloy エージェントのインストール手順を[こちら](https://grafana.com/docs/alloy/latest/get-started/install/)で確認できます。ここでは、ユーザーが Alloy を構成し、Prometheus のメトリクスを目的の送信先に送信するよう既に設定済みであることを前提とします。以下の `prometheus.scrape` コンポーネントにより、Alloy は ClickHouse Cloud のエンドポイントをスクレイプします。スクレイプされたメトリクスは `prometheus.remote_write` が受信することを想定しています。これが存在しない場合は、`forward_to` キーをターゲットの送信先に合わせて調整してください。
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
@@ -281,17 +285,18 @@ prometheus.scrape "clickhouse_cloud" {
 }
 ```
 
-設定が完了すると、メトリクス エクスプローラに ClickHouse 関連のメトリクスが表示されるはずです:
+構成が完了したら、Metrics Explorer に ClickHouse 関連のメトリクスが表示されるはずです。
 
 <Image img={prometheus_grafana_metrics_explorer} size="md" alt="Grafana Metrics Explorer" border />
 
 <br />
 
-`instance` ラベルが正しく設定されるようにするには、`honor_labels` 設定パラメータを `true` に設定する必要がある点に注意してください。
+`honor_labels` 構成パラメータは、`instance` ラベルが正しく設定されるように `true` に設定しておく必要があることに注意してください。
 
-## Datadog との統合 {#integrating-with-datadog}
 
-Datadog の [Agent](https://docs.datadoghq.com/agent/?tab=Linux) と [OpenMetrics インテグレーション](https://docs.datadoghq.com/integrations/openmetrics/) を使用して、ClickHouse Cloud のエンドポイントからメトリクスを収集できます。以下は、このエージェントおよびインテグレーション向けのシンプルなサンプル設定です。ただし、実際には特に重要なメトリクスのみに絞って収集することを推奨します。下記の網羅的なサンプルでは、何千ものメトリクスとインスタンスの組み合わせがエクスポートされ、Datadog によってカスタムメトリクスとして扱われます。
+## Datadog との連携 {#integrating-with-datadog}
+
+Datadog の [Agent](https://docs.datadoghq.com/agent/?tab=Linux) と [OpenMetrics インテグレーション](https://docs.datadoghq.com/integrations/openmetrics/) を使用して、ClickHouse Cloud エンドポイントからメトリクスを収集できます。以下は、この Agent とインテグレーションのためのシンプルなサンプル設定です。ただし、実運用では特に重要なメトリクスのみに絞り込むことを検討してください。下記の包括的な例では、数千ものメトリクスとインスタンスの組み合わせがエクスポートされ、Datadog によってカスタムメトリクスとして扱われます。
 
 ```yaml
 init_config:
@@ -307,4 +312,4 @@ instances:
 
 <br />
 
-<Image img={prometheus_datadog} size="md" alt="Prometheus と Datadog の統合" />
+<Image img={prometheus_datadog} size="md" alt="Prometheus と Datadog の連携" />

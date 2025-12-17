@@ -72,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-哪些 `tags` 的 `views` 最高：
+哪些 `tags` 获得最多 `views`：
 
 ```sql
 --ClickHouse
@@ -130,7 +130,8 @@ Time: 112508.083 ms (01:52.508)
 
 **聚合函数**
 
-在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
+在条件允许的情况下，你应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
+
 
 ```sql
 --ClickHouse
@@ -172,7 +173,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-这相比等价的 Postgres 查询，要简单得多且更快：
+这比等价的 Postgres 查询要简单得多，而且更快：
 
 ```sql
 --Postgres
@@ -208,7 +209,8 @@ Time: 125822.015 ms (02:05.822)
 
 **条件和数组**
 
-条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及在 HAVING 和 SELECT 子句中重复使用别名的能力。
+条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及能够在 HAVING 和 SELECT 子句中重复使用别名。
+
 
 ```sql
 --ClickHouse
@@ -234,9 +236,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)
 Peak memory usage: 403.04 MiB.
 ```
-
-5 行结果。耗时：0.247 秒。已处理 508 万行、155.73 MB（2058 万行/秒，630.61 MB/秒）。
-峰值内存使用：403.04 MiB。
 
 ```sql
 --Postgres
@@ -272,40 +271,6 @@ LIMIT 5;
 (5 rows)
 
 Time: 116750.131 ms (01:56.750)
-```sql
---Postgres
-SELECT
-        tag,
-        SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) AS count_2023,
-        SUM(CASE WHEN year = 2022 THEN count ELSE 0 END) AS count_2022,
-        ((SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) - SUM(CASE WHEN year = 2022 THEN count ELSE 0 END))
-        / SUM(CASE WHEN year = 2022 THEN count ELSE 0 END)::float) * 100 AS percent_change
-FROM (
-        SELECT
-        unnest(string_to_array(Tags, '|')) AS tag,
-        EXTRACT(YEAR FROM CreationDate) AS year,
-        COUNT(*) AS count
-        FROM public.posts
-        WHERE EXTRACT(YEAR FROM CreationDate) IN (2022, 2023)
-        AND Tags <> ''
-        GROUP BY tag, year
-) AS yearly_counts
-GROUP BY tag
-HAVING SUM(CASE WHEN year = 2022 THEN count ELSE 0 END) > 10000
-   AND SUM(CASE WHEN year = 2023 THEN count ELSE 0 END) > 10000
-ORDER BY percent_change DESC
-LIMIT 5;
-
-        tag     | count_2023 | count_2022 |   percent_change
--------------+------------+------------+---------------------
- next.js        |       13712 |         10370 |   32.22757955641273
- spring-boot |          16482 |         17474 |  -5.677005837243905
- .net           |       11376 |         12750 | -10.776470588235295
- azure          |       11938 |         13966 | -14.520979521695546
- docker         |       13832 |         16701 | -17.178612059158134
-(5 行)
-
-执行时间:116750.131 ms (01:56.750)
 ```
 
 [点击此处查看第3部分](/migrations/postgresql/data-modeling-techniques)

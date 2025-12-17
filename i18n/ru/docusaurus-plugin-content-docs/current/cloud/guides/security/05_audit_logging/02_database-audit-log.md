@@ -24,7 +24,7 @@ ClickHouse записывает события базы данных, связа
 Пример запроса, показывающего неудачные попытки входа
 
 ```sql
-SELECT event_time
+select event_time
     ,type
     ,user
     ,auth_type
@@ -36,7 +36,7 @@ LIMIT 100
 
 [system.query&#95;log](/operations/system-tables/query_log) фиксирует информацию о запросах, выполняемых в экземпляре ClickHouse. Эти данные могут быть полезны для выявления того, какие запросы выполнял злоумышленник.
 
-Пример запроса для поиска активности пользователя &quot;compromised&#95;account&quot;
+Пример запроса для поиска активности пользователя «compromised&#95;account»
 
 ```sql
 SELECT event_time
@@ -49,6 +49,7 @@ FROM clusterAllReplicas('default', system.query_log)
 WHERE user=’compromised_account’
 ```
 
+
 ## Сохранение данных журналов в сервисах {#reatining-log-data-within-services}
 
 Клиенты, которым требуется более долгосрочное хранение или повышенная надежность журналов, могут использовать материализованные представления для достижения этих целей. Дополнительные сведения о том, что такое материализованные представления, каковы их преимущества и как их реализовать, см. в наших видеоматериалах и документации по [материализованным представлениям](/materialized-views).
@@ -56,6 +57,7 @@ WHERE user=’compromised_account’
 ## Экспорт журналов {#exporting-logs}
 
 Системные журналы можно записывать или экспортировать в хранилище в разных форматах, совместимых с SIEM-системами. Для получения дополнительной информации ознакомьтесь с нашей документацией по [табличным функциям](/sql-reference/table-functions). Наиболее распространённые способы:
+
 - [Запись в S3](/sql-reference/table-functions/s3)
 - [Запись в GCS](/sql-reference/table-functions/gcs)
 - [Запись в Azure Blob Storage](/sql-reference/table-functions/azureBlobStorage)

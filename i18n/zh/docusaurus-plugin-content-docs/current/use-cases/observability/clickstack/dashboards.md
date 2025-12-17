@@ -33,13 +33,13 @@ ClickStack 支持对事件进行可视化，并在 HyperDX 中内置了图表功
 
 ## 创建可视化图表 {#creating-visualizations}
 
-HyperDX 中的 **Chart Explorer** 界面允许用户在时间维度上可视化指标、追踪和日志，从而轻松创建用于数据分析的快速可视化图表。该界面在创建仪表板时也会复用。下文将演示如何使用 Chart Explorer 创建一个可视化图表的完整流程。
+HyperDX 中的 **Chart Explorer** 界面允许你在时间维度上可视化指标、追踪和日志，从而轻松创建用于数据分析的快速可视化图表。该界面在创建仪表板时也会复用。下文将演示如何使用 Chart Explorer 创建一个可视化图表的完整流程。
 
 每个可视化图表都从选择一个 **data source** 开始，然后选择一个 **metric**，再根据需要添加 **filter expressions** 和 **group by** 字段。从概念上看，HyperDX 中的可视化对应于底层的一条 SQL `GROUP BY` 查询——用户定义要在所选维度上聚合的指标。
 
 例如，可以绘制按服务名称分组的错误数量（`count()`）图表。
 
-在下面的示例中，我们使用托管在 [sql.clickhouse.com](https://sql.clickhouse.com) 上的远程数据集，该数据集在指南「[Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data)」中有详细说明。**用户也可以访问 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 来复现这些示例。**
+在下面的示例中，我们使用托管在 [sql.clickhouse.com](https://sql.clickhouse.com) 上的远程数据集，该数据集在指南「[Remote Demo Dataset](/use-cases/observability/clickstack/getting-started/remote-demo-data)」中有详细说明。**你也可以访问 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 来复现这些示例。**
 
 <VerticalStepper headerLevel="h3">
 
@@ -51,7 +51,7 @@ HyperDX 中的 **Chart Explorer** 界面允许用户在时间维度上可视化�
 
 ### 创建可视化图表 {#create-visualization}
 
-在下面的示例中，我们按服务名称绘制一段时间内的平均请求耗时。这需要用户指定一个 metric、一列（可以是 SQL 表达式）以及一个聚合字段。
+在下面的示例中，我们按服务名称绘制一段时间内的平均请求耗时。这需要你指定一个 metric、一列（可以是 SQL 表达式）以及一个聚合字段。
 
 从顶部菜单中选择 `Line/Bar` 可视化类型，然后选择 `Traces`（或在使用 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 时选择 `Demo Traces`）数据集。填写以下值：
 
@@ -63,7 +63,7 @@ HyperDX 中的 **Chart Explorer** 界面允许用户在时间维度上可视化�
 
 <Image img={visualization_2} alt="简单可视化" size="lg"/>
 
-请注意，用户可以使用 SQL `WHERE` 子句或 Lucene 语法来过滤事件，并设置事件可视化的时间范围。也支持多个序列。
+请注意，你可以使用 SQL `WHERE` 子句或 Lucene 语法来过滤事件，并设置事件可视化的时间范围。也支持多个序列。
 
 例如，通过添加过滤条件 `ServiceName:"frontend"` 来只保留服务 `frontend` 的事件。通过点击 `Add Series`，添加第二条时间序列，用别名 `Count` 展示一段时间内事件的数量。
 
@@ -72,7 +72,7 @@ HyperDX 中的 **Chart Explorer** 界面允许用户在时间维度上可视化�
 :::note
 可视化图表可以基于任意数据源创建——无论是 metrics、traces 还是 logs。ClickStack 将这些全部视为宽事件（wide events）。任何 **numeric column** 都可以随时间绘制图表，而 **string**、**date** 或 **numeric** 列都可以用于分组。
 
-这种统一的方法允许用户在不同遥测类型之间，基于一致且灵活的模型构建仪表板。
+这种统一的方法允许你在不同遥测类型之间，基于一致且灵活的模型构建仪表板。
 :::
 
 </VerticalStepper>
@@ -204,7 +204,7 @@ Services 仪表板会基于链路追踪数据展示当前处于活动状态的�
 
 ### Kubernetes 仪表盘 {#kubernetes-dashboard}
 
-此仪表盘允许用户探索通过 OpenTelemetry 收集的 Kubernetes 事件。它提供高级筛选选项，使用户能够按 Kubernetes pod（容器组）、Deployment（部署）、节点名称、命名空间和集群进行筛选，并执行自由文本搜索。
+此仪表盘允许你探索通过 OpenTelemetry 收集的 Kubernetes 事件。它提供高级筛选选项，使你能够按 Kubernetes pod（容器组）、Deployment（部署）、节点名称、命名空间和集群进行筛选，并执行自由文本搜索。
 
 为便于导航，Kubernetes 数据被划分到三个选项卡中：Pods（容器组）、Nodes（节点）和 Namespaces（命名空间）。
 

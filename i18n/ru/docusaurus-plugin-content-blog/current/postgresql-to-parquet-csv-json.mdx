@@ -98,7 +98,7 @@ INTO OUTFILE 'my_output_file.ndjson'"
 
 Если ClickHouse не может определить формат вывода по расширению файла или вы хотите явно выбрать формат, добавьте предложение `FOMRAT`:
 
-```sql
+````sql
 ```bash
 ./clickhouse local -q "SELECT * FROM
    postgresql(
@@ -110,7 +110,7 @@ INTO OUTFILE 'my_output_file.ndjson'"
 )
 INTO OUTFILE 'my_output_file.ndjson'
 FORMAT JSONEachRow"
-```
+````
 
 :::
 

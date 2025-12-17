@@ -27,7 +27,6 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
-
 ## 参数 {#arguments}
 
 各参数的说明分别与表函数 `s3`、`azureBlobStorage`、`HDFS` 和 `file` 中对应参数的说明一致。
@@ -46,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 ClickHouse 目前支持通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal` 表函数以及 `IcebergS3`、`icebergAzure`、`IcebergHDFS` 和 `IcebergLocal` 表引擎读取 Iceberg 格式的 v1 和 v2 版本。
 :::
-
 
 ## 定义命名集合 {#defining-a-named-collection}
 
@@ -70,7 +68,6 @@ ClickHouse 目前支持通过 `icebergS3`、`icebergAzure`、`icebergHDFS` 和 `
 SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
-
 
 ## 使用数据目录 {#iceberg-writes-catalogs}
 
@@ -116,7 +113,6 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-
 ## 模式演进 {#schema-evolution}
 
 目前，借助 ClickHouse，您可以读取模式随时间发生变化的 Iceberg 表。我们当前支持读取以下情况的表：列被添加或删除，且列的顺序发生变化。您也可以将一个原本要求必须有值的列更改为允许为 NULL 的列。此外，我们支持对简单类型进行允许的类型转换，具体包括：  
@@ -157,7 +153,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
  ```
 
 注意：在同一个查询中无法同时指定 `iceberg_timestamp_ms` 和 `iceberg_snapshot_id` 参数。
-
 
 ### 重要注意事项 {#important-considerations}
 
@@ -231,7 +226,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 * 在 ts1 和 ts2：只显示原始的两列
 * 在 ts3：显示全部三列，第一行的 price 为 NULL
 
-
 #### 场景 2：历史与当前模式的差异 {#scenario-2}
 
 在当前时刻执行的时间回溯查询，其显示的模式可能与当前表不同：
@@ -274,7 +268,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 
 这是因为 `ALTER TABLE` 不会创建新的快照，而 Spark 在处理当前表时，会从最新的元数据文件中读取 `schema_id` 的值，而不是从某个快照中读取。
 
-
 #### 场景 3：历史与当前模式的差异 {#scenario-3}
 
 第二个问题是，在进行时间回溯（time travel）时，你无法获取在尚未向表写入任何数据之前的表状态：
@@ -295,7 +288,6 @@ ClickHouse 支持 Iceberg 表的时间旅行功能，允许你基于特定的时
 ```
 
 在 ClickHouse 中，其行为与 Spark 一致。你可以直接将 Spark 的 Select 查询类比为 ClickHouse 的 Select 查询，它们的工作方式是相同的。
-
 
 ## 元数据文件解析 {#metadata-file-resolution}
 
@@ -335,7 +327,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **注意**：尽管 Iceberg Catalog 通常负责元数据解析工作，但 ClickHouse 中的 `iceberg` 表函数会直接将存储在 S3 中的文件解释为 Iceberg 表，因此理解这些解析规则尤为重要。
 
-
 ## 元数据缓存 {#metadata-cache}
 
 `Iceberg` 表引擎和表函数支持元数据缓存，用于存储 manifest 文件、manifest 列表以及元数据 JSON 的相关信息。该缓存保存在内存中。此功能由 `use_iceberg_metadata_files_cache` 设置项控制，默认启用。
@@ -362,7 +353,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 SET allow_experimental_insert_into_iceberg = 1;
 ```
 
-
 ### 创建表 {#create-iceberg-table}
 
 要创建自己的空 Iceberg 表，请使用与读取相同的命令，但需要显式指定表结构（schema）。
@@ -381,7 +371,6 @@ ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/')
 
 注意：要创建版本提示文件，请启用 `iceberg_use_version_hint` 设置。
 如果要压缩 metadata.json 文件，请在 `iceberg_metadata_compression_method` 设置中指定编解码器名称。
-
 
 ### INSERT {#writes-inserts}
 
@@ -407,7 +396,6 @@ x: Ivanov
 y: 993
 ```
 
-
 ### DELETE {#iceberg-writes-delete}
 
 ClickHouse 也支持在 merge-on-read 格式下删除多余行。
@@ -431,7 +419,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ### 模式演进 {#iceberg-writes-schema-evolution}
 
@@ -496,7 +483,6 @@ x: Ivanov
 y: 993
 ```
 
-
 ### 压缩 {#iceberg-writes-compaction}
 
 ClickHouse 支持对 Iceberg 表进行压缩。目前，它可以在更新元数据的同时，将 position delete 文件合并到数据文件中。先前的快照 ID 和时间戳保持不变，因此仍然可以使用相同的值进行时间旅行（time travel）。
@@ -517,7 +503,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ## 另请参阅 {#see-also}
 

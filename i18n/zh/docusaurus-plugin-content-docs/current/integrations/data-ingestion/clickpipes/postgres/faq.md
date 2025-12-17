@@ -11,6 +11,7 @@ doc_type: 'reference'
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
 
+
 # ClickPipes for Postgres 常见问题解答（FAQ） {#clickpipes-for-postgres-faq}
 
 ### 空闲状态如何影响我的 Postgres CDC ClickPipe？ {#how-does-idling-affect-my-postgres-cdc-clickpipe}
@@ -29,7 +30,7 @@ import Image from '@theme/IdealImage';
 
 ### 表是否必须具有主键才能参与 Postgres CDC？ {#do-tables-need-to-have-primary-keys-to-be-part-of-postgres-cdc}
 
-要使用 ClickPipes for Postgres 对表进行复制，必须为该表定义主键或 [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) 之一。
+要使用 ClickPipes for Postgres 对表进行复制，必须在该表上定义主键或 [REPLICA IDENTITY](https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY) 之一。
 
 * **Primary Key（主键）**：最直接的方法是在表上定义主键。这样可以为每一行提供唯一标识符，这对于跟踪更新和删除至关重要。在这种情况下，你可以将 REPLICA IDENTITY 设置为 `DEFAULT`（默认行为）。
 * **Replica Identity（副本标识）**：如果表没有主键，你可以设置副本标识。副本标识可以设置为 `FULL`，这意味着整行将用于标识变更。或者，如果表上存在唯一索引，你可以将其设置为使用该唯一索引，然后将 REPLICA IDENTITY 设置为 `USING INDEX index_name`。
@@ -45,26 +46,27 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 
 需要特别说明的是，如果既没有定义主键也没有定义 REPLICA IDENTITY，ClickPipes 将无法复制该表的变更，并且在复制过程中可能会遇到错误。因此，建议在创建 ClickPipe 之前，先检查表结构，确保其满足上述要求。
 
+
 ### 你们是否支持作为 Postgres CDC 一部分的分区表？ {#do-you-support-partitioned-tables-as-part-of-postgres-cdc}
 
 支持，只要分区表定义了 PRIMARY KEY 或 REPLICA IDENTITY，即可开箱即用。PRIMARY KEY 和 REPLICA IDENTITY 必须同时存在于父表及其各个分区上。你可以在[这里](https://blog.peerdb.io/real-time-change-data-capture-for-postgres-partitioned-tables)了解更多信息。
 
 ### 我可以连接没有公网 IP 或位于私有网络中的 Postgres 数据库吗？ {#can-i-connect-postgres-databases-that-dont-have-a-public-ip-or-are-in-private-networks}
 
-可以！用于 Postgres 的 ClickPipes 提供两种方式连接位于私有网络中的数据库：
+可以！Postgres 专用的 ClickPipes 提供两种方式来连接位于私有网络中的数据库：
 
 1. **SSH Tunneling（SSH 隧道）**
-   * 适用于大多数使用场景
-   * 配置步骤请参见[这里](/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)
-   * 适用于所有区域
+   - 适用于大多数使用场景
+   - 配置步骤请参见[这里](/integrations/clickpipes/postgres#adding-your-source-postgres-database-connection)
+   - 适用于所有区域
 
 2. **AWS PrivateLink**
-   * 在以下三个 AWS 区域可用：
-     * us-east-1
-     * us-east-2
-     * eu-central-1
-   * 详细配置说明请参见我们的 [PrivateLink 文档](/knowledgebase/aws-privatelink-setup-for-clickpipes)
-   * 在不支持 PrivateLink 的区域，请使用 SSH 隧道
+   - 在以下三个 AWS 区域可用：
+     - us-east-1
+     - us-east-2
+     - eu-central-1
+   - 详细配置说明请参见我们的 [PrivateLink 文档](/knowledgebase/aws-privatelink-setup-for-clickpipes)
+   - 在不支持 PrivateLink 的区域，请使用 SSH 隧道
 
 ### 如何处理 UPDATE 和 DELETE？ {#how-do-you-handle-updates-and-deletes}
 
@@ -95,11 +97,11 @@ ClickPipes for Postgres 会将来自 Postgres 的 INSERT 和 UPDATE 以不同版
 
 ### 是否支持 schema 变更？ {#do-you-support-schema-changes}
 
-请参考 [ClickPipes for Postgres：schema 变更传播支持](./schema-changes) 页面获取更多信息。
+请参考 [ClickPipes for Postgres：schema 变更传播支持](./schema-changes) 页面，了解更多信息。
 
 ### ClickPipes for Postgres CDC 的费用是多少？ {#what-are-the-costs-for-clickpipes-for-postgres-cdc}
 
-有关详细的定价信息，请参考我们计费总览页面中的 [ClickPipes for Postgres CDC 定价部分](/cloud/reference/billing/clickpipes)。
+有关详细的定价信息，请参见我们计费概览页面中的 [ClickPipes for Postgres CDC 定价部分](/cloud/reference/billing/clickpipes)。
 
 ### 我的 replication slot 大小在持续增长或没有下降；可能是什么问题？ {#my-replication-slot-size-is-growing-or-not-decreasing-what-might-be-the-issue}
 
@@ -127,19 +129,19 @@ ClickPipes for Postgres 会将来自 Postgres 的 INSERT 和 UPDATE 以不同版
      ```
      使用此查询来识别异常长时间运行的事务。
 
-3. **维护或工具类操作（例如 `pg_repack`）**
-   - 像 `pg_repack` 这样的工具可能会重写整个表，在短时间内生成大量 WAL 数据。
-   - 将这些操作安排在流量较低的时段进行，或在运行期间密切监控 WAL 使用情况。
+3. **维护或工具操作（例如 `pg_repack`）**
+   - 像 `pg_repack` 这样的工具可能会重写整张表，在短时间内生成大量 WAL 数据。
+   - 将此类操作安排在业务低峰期执行，或在运行期间密切监控 WAL 使用情况。
 
 4. **VACUUM 和 VACUUM ANALYZE**
-   - 虽然这些操作对数据库健康至关重要，但它们可能会产生额外的 WAL 流量——尤其是在扫描大型表时。
-   - 考虑通过调优 autovacuum 参数，或在非高峰时段安排手动 VACUUM 操作。
+   - 尽管这些操作对数据库健康至关重要，但它们可能会产生额外的 WAL 写入量——尤其是在扫描大型表时。
+   - 可以考虑调整 autovacuum 的相关参数，或将手动 VACUUM 操作安排在非高峰时段执行。
 
-5. **复制消费者未主动读取 replication slot**
-   - 如果你的 CDC 管道（例如 ClickPipes）或其他复制消费者停止、暂停或崩溃，WAL 数据会在该 slot 中不断累积。
-   - 确保你的管道持续运行，并检查日志以排查连接或认证错误。
+5. **复制消费端未持续从 slot 读取数据**
+   - 如果你的 CDC 管道（例如 ClickPipes）或其他复制消费者停止、暂停或崩溃，WAL 数据会在 slot 中不断堆积。
+   - 确保你的管道持续运行，并检查日志中是否存在连接或认证错误。
 
-如需对该主题进行更深入的了解，请参阅我们的博客文章：[Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it)。
+如果你想深入了解这一主题，可以参考我们的博客文章：[Overcoming Pitfalls of Postgres Logical Decoding](https://blog.peerdb.io/overcoming-pitfalls-of-postgres-logical-decoding#heading-beware-of-replication-slot-growth-how-to-monitor-it)。
 
 ### Postgres 数据类型如何映射到 ClickHouse？ {#how-are-postgres-data-types-mapped-to-clickhouse}
 
@@ -168,7 +170,7 @@ JSON 和 JSONB 列会在 ClickHouse 中复制为 String 类型。由于 ClickHou
 
 Postgres ClickPipe 也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) 端点进行创建和管理。该功能目前处于 beta 阶段，API 参考文档可以在[这里](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta)找到。我们也在积极开发 Terraform 支持，以便创建 Postgres ClickPipes。
 
-### 我该如何加速初始加载？ {#how-do-i-speed-up-my-initial-load}
+### 如何加速初始加载？ {#how-do-i-speed-up-my-initial-load}
 
 无法加速已经在运行中的初始加载。不过，可以通过调整某些设置来优化后续的初始加载。默认情况下，这些设置为 4 个并行线程，每个分区的快照行数为 100,000。这些属于高级设置，一般对大多数用例已足够。
 
@@ -225,6 +227,7 @@ WHERE
 如果是从 Postgres 的只读副本/热备库进行复制，则需要在主库上创建自己的 publication，该 publication 会自动传播到备库。在这种情况下，由于无法在备库上创建 publication，ClickPipe 将无法管理该 publication。
 :::
 
+
 ### 推荐的 `max_slot_wal_keep_size` 设置 {#recommended-max_slot_wal_keep_size-settings}
 
 * **最低要求：** 将 [`max_slot_wal_keep_size`](https://www.postgresql.org/docs/devel/runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE) 设置为至少保留 **两天的** WAL 数据。
@@ -235,11 +238,12 @@ WHERE
 
 要确定合适的配置，先测量 WAL 的生成速率：
 
-##### 适用于 PostgreSQL 10+ {#for-postgresql-10}
+##### 适用于 PostgreSQL 10 及更高版本： {#for-postgresql-10}
 
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
+
 
 ##### 适用于 PostgreSQL 9.6 及更早版本： {#for-postgresql-96-and-below}
 
@@ -252,6 +256,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 * 将该数值乘以 2 或 3，以提供足够的保留量。
 * 将 `max_slot_wal_keep_size` 设置为计算得到的值（以 MB 或 GB 为单位）。
 
+
 ##### 示例 {#example}
 
 如果你的数据库每天生成 100 GB 的 WAL，则将其设置为：
@@ -259,6 +264,7 @@ SELECT pg_xlog_location_diff(pg_current_xlog_insert_location(), '0/0') / 1024 / 
 ```sql
 max_slot_wal_keep_size = 200GB
 ```
+
 
 ### 我在日志中看到 ReceiveMessage EOF 错误。这意味着什么？ {#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean}
 
@@ -296,7 +302,7 @@ ClickHouse 出现 OOM 的一个常见原因是服务规格过小。这意味着�
 
 建议在 Initial Load 正在进行时，不要对 Postgres 数据库执行任何具有破坏性的操作，例如升级或重启，并确保到数据库的网络连接稳定。
 
-要解决该问题，您可以在 ClickPipes 的 UI 中触发一次重新同步（resync）。这会从头重新启动初始加载流程。
+要解决此问题，您可以在 ClickPipes 界面中触发重新同步（resync）。这将从头开始重新启动初始加载流程。
 
 ### 如果我在 Postgres 中删除了 publication，会发生什么？ {#what-happens-if-i-drop-a-publication-in-postgres}
 
@@ -319,14 +325,15 @@ FOR TABLE <...>, <...>
 WITH (publish_via_partition_root = true);
 ```
 
+
 ### 如果我看到 `Unexpected Datatype` 错误或 `Cannot parse type XX ...` 怎么办 {#what-if-i-am-seeing-unexpected-datatype-errors}
 
 当源 Postgres 数据库中存在在摄取过程中无法映射的数据类型时，通常会出现此错误。
-如需排查更具体的情况，请参考以下几种可能性。
+如需排查更具体的问题，请参考以下几种可能性。
 
 ### 我在复制/创建复制槽（slot）时看到类似 `invalid memory alloc request size <XXX>` 的错误 {#postgres-invalid-memalloc-bug}
 
-在 Postgres 补丁版本 17.5/16.9/15.13/14.18/13.21 中引入了一个 bug，某些工作负载会导致内存使用呈指数级增长，从而产生大于 1GB 的内存分配请求，而 Postgres 会认为这类请求无效。该 bug [已经修复](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a)，并会包含在下一轮 Postgres 补丁版本（17.6...）中。请联系您的 Postgres 服务提供商，了解该补丁版本何时可用于升级。如果暂时无法升级，当出现该错误时，需要对 ClickPipe 进行重新同步（resync）。
+在 Postgres 补丁版本 17.5/16.9/15.13/14.18/13.21 中引入了一个 bug，某些工作负载会导致内存使用呈指数级增长，从而产生超过 1GB 的内存分配请求，而 Postgres 会认为这类请求无效。该 bug [已经修复](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a)，并会包含在下一轮 Postgres 补丁版本（17.6...）中。请联系您的 Postgres 服务提供商，了解该补丁版本何时可用于升级。如果暂时无法升级，当出现该错误时，需要对 ClickPipe 进行重新同步（resync）。
 
 ### 我需要在 ClickHouse 中保留完整的历史记录，即使源 Postgres 数据库中的数据被删除。是否可以在 ClickPipes 中完全忽略来自 Postgres 的 DELETE 和 TRUNCATE 操作？ {#ignore-delete-truncate}
 
@@ -340,26 +347,27 @@ CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish =
 
 请注意，ClickPipes 会忽略 TRUNCATE 操作，这些操作不会被复制到 ClickHouse。
 
+
 ### 为什么我无法复制名称中带点的表？ {#replicate-table-dot}
 
-PeerDB 目前存在一个限制：源表标识符中包含点（即 schema 名称或表名称中有点）时，不支持进行复制，因为在这种情况下，PeerDB 通过点进行拆分时，无法正确区分哪一部分是 schema、哪一部分是表名。
-目前正致力于通过分别输入 schema 和表名的方式来绕过这一限制。
+PeerDB 目前存在一个限制：当源表标识符中包含点（即 schema 名或表名中带有点）时，不支持进行复制，因为在这种情况下，PeerDB 在通过点进行拆分时，无法正确区分哪一部分是 schema、哪一部分是表名。
+目前正在努力通过支持分别输入 schema 和表名的方式来绕过这一限制。
 
 ### 初始加载完成后，ClickHouse 上没有数据或数据缺失。可能是什么问题？ {#initial-load-issue}
 
 如果初始加载在没有报错的情况下完成，但目标 ClickHouse 表中仍有数据缺失，可能是因为在源 Postgres 表上启用了 RLS（行级安全，Row Level Security）策略。
 还应检查以下内容：
 
-* 用户是否具有读取源表的足够权限。
-* ClickHouse 端是否存在可能过滤掉数据行的行策略。
+- 用户是否具有读取源表的足够权限。
+- ClickHouse 端是否存在可能过滤掉数据行的行级策略。
 
 ### 我能否让 ClickPipe 创建启用故障切换的 replication slot？ {#failover-slot}
 
 可以。对于复制模式为 CDC 或 Snapshot + CDC 的 Postgres ClickPipe，你可以在创建 ClickPipe 时，在 `Advanced Settings` 部分打开下方的开关，让 ClickPipes 创建启用故障切换的 replication slot（复制槽）。请注意，使用该功能时，你的 Postgres 版本必须为 17 或更高。
 
-<Image img={failover_slot} border size="md" />
+<Image img={failover_slot} border size="md"/>
 
-如果源端按要求完成了配置，那么在故障转移到 Postgres 只读副本后，该复制槽会被保留，从而确保数据持续复制。了解更多信息请参见[此处](https://www.postgresql.org/docs/current/logical-replication-failover.html)。
+如果源端按要求进行了配置，那么在故障切换到 Postgres 只读副本后，该复制槽会被保留，从而确保数据复制能够持续进行。详细信息请参见[此处](https://www.postgresql.org/docs/current/logical-replication-failover.html)。
 
 ### 我看到类似 `Internal error encountered during logical decoding of aborted sub-transaction` 的错误 {#transient-logical-decoding-errors}
 
@@ -368,3 +376,7 @@ PeerDB 目前存在一个限制：源表标识符中包含点（即 schema 名�
 ### 我在 CDC 复制期间看到类似 `error converting new tuple to map` 或 `error parsing logical message` 的错误 {#logical-message-processing-errors}
 
 Postgres 以消息的形式发送变更信息，这些消息遵循固定协议。当 ClickPipe 收到无法解析的消息时（可能是由于传输过程中的损坏，或发送了无效消息）就会出现上述错误。虽然具体问题通常各不相同，但我们在多个 Neon Postgres 源中观察到过这些情况。如果您在使用 Neon 时也遇到此问题，请向他们提交支持工单。在其他情况下，请联系我们的支持团队以获取指导。
+
+### 我可以将最初从复制中排除的列重新纳入复制吗？ {#include-excluded-columns}
+
+目前尚不支持此操作，但已在我们的规划中。替代方案是[重新同步表](./table_resync.md)，以包含你想要加入的列。

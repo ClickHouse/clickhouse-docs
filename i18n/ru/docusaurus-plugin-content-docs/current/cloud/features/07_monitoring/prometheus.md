@@ -3,7 +3,7 @@ slug: /integrations/prometheus
 sidebar_label: 'Prometheus'
 title: 'Prometheus'
 description: 'Экспорт метрик ClickHouse в Prometheus'
-keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
+keywords: ['prometheus', 'grafana', 'мониторинг', 'метрики', 'экспортер']
 doc_type: 'reference'
 ---
 
@@ -15,13 +15,14 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
+
 # Интеграция с Prometheus {#prometheus-integration}
 
-Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через endpoint [ClickHouse Cloud API](/cloud/manage/api/api-overview), который позволяет пользователям безопасно подключаться и экспортировать метрики в свой сборщик метрик Prometheus. Эти метрики можно интегрировать с дашбордами, например, Grafana и Datadog, для визуализации.
+Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через конечную точку [ClickHouse Cloud API](/cloud/manage/api/api-overview), которая позволяет безопасно подключаться и экспортировать метрики в ваш сборщик метрик Prometheus. Эти метрики могут быть интегрированы с дашбордами, например Grafana или Datadog, для визуализации.
 
-Для начала работы [создайте API-ключ](/cloud/manage/openapi).
+Чтобы начать, [создайте API-ключ](/cloud/manage/openapi).
 
-## API эндпоинта Prometheus для получения метрик ClickHouse Cloud {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
+## API конечной точки Prometheus для доступа к метрикам ClickHouse Cloud {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
 ### Справочник API {#api-reference}
 
@@ -32,15 +33,15 @@ import Image from '@theme/IdealImage';
 
 **Параметры запроса**
 
-| Имя             | Расположение          | Тип               |
+| Имя             | Расположение               | Тип               |
 | ---------------- | ------------------ |------------------ |
-| Organization ID  | Адрес endpoint’а | UUID               |
-| Service ID       | Адрес endpoint’а | UUID (необязательный)               |
-| filtered_metrics | Параметр строки запроса | boolean (необязательный) |
+| Organization ID  | URL конечной точки | uuid               |
+| Service ID       | URL конечной точки | uuid (необязательный)               |
+| filtered_metrics | Параметр запроса | boolean (необязательный) |
 
 ### Аутентификация {#authentication}
 
-Используйте API-ключ ClickHouse Cloud для базовой аутентификации:
+Используйте ваш API-ключ ClickHouse Cloud для базовой аутентификации:
 
 ```bash
 Username: <KEY_ID>
@@ -57,6 +58,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organiz
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
+
 
 ### Пример ответа {#sample-response}
 
@@ -126,41 +128,41 @@ ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf
 
 |Метка|Описание|
 |---|---|
-|clickhouse_org|Идентификатор организации|
-|clickhouse_service|Идентификатор сервиса|
+|clickhouse_org|ID организации|
+|clickhouse_service|ID сервиса|
 |clickhouse_service_name|Имя сервиса|
 
-Для ClickPipes метрики дополнительно содержат следующие метки:
+Для ClickPipes метрики также будут иметь следующие метки:
 
 | Метка | Описание |
 | --- | --- |
-| clickpipe_id | Идентификатор ClickPipe |
+| clickpipe_id | ID ClickPipe |
 | clickpipe_name | Имя ClickPipe |
 | clickpipe_source | Тип источника ClickPipe |
 
 ### Информационные метрики {#information-metrics}
 
-ClickHouse Cloud предоставляет специальную метрику `ClickHouse_ServiceInfo`, которая является метрикой типа `gauge` и всегда имеет значение `1`. Эта метрика содержит все **Metric Labels**, а также следующие метки:
+ClickHouse Cloud предоставляет специальную метрику `ClickHouse_ServiceInfo` типа `gauge`, которая всегда имеет значение `1`. Эта метрика содержит все **Metric Labels**, а также следующие метки:
 
-|Метка|Описание|
+|Label|Description|
 |---|---|
-|clickhouse_cluster_status|Статус сервиса. Может принимать одно из следующих значений: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
-|clickhouse_version|Версия сервера ClickHouse, на котором работает сервис|
-|scrape|Указывает статус последнего сбора метрик. Может быть `full` или `partial`|
-|full|Указывает, что во время последнего сбора метрик не было ошибок|
-|partial|Указывает, что во время последнего сбора метрик были ошибки и была возвращена только метрика `ClickHouse_ServiceInfo`.|
+|clickhouse_cluster_status|Состояние сервиса. Может принимать одно из следующих значений: [`awaking` \| `running` \| `degraded` \| `idle` \| `stopped`]|
+|clickhouse_version|Версия сервера ClickHouse, на котором запущен сервис|
+|scrape|Показывает статус последнего сбора метрик. Может быть `full` или `partial`|
+|full|Показывает, что во время последнего сбора метрик не было ошибок|
+|partial|Показывает, что во время последнего сбора метрик возникли ошибки и была возвращена только метрика `ClickHouse_ServiceInfo`.|
 
-Запросы на получение метрик не выводят сервис из состояния `idle`. Если сервис находится в состоянии `idle`, будет возвращена только метрика `ClickHouse_ServiceInfo`.
+Запросы на получение метрик не выведут простаивающий сервис из режима простоя. Если сервис находится в состоянии `idle`, будет возвращена только метрика `ClickHouse_ServiceInfo`.
 
-Для ClickPipes существует аналогичная метрика `ClickPipes_Info` типа `gauge`, которая помимо **Metric Labels** содержит следующие метки:
+Для ClickPipes существует похожая метрика `ClickPipes_Info` типа `gauge`, которая, помимо **Metric Labels**, содержит следующие метки:
 
-| Метка | Описание |
+| Label | Description |
 | --- | --- |
 | clickpipe_state | Текущее состояние конвейера |
 
 ### Настройка Prometheus {#configuring-prometheus}
 
-Сервер Prometheus собирает метрики с настроенных таргетов с заданным интервалом. Ниже приведён пример конфигурации сервера Prometheus для использования endpoint&#39;а Prometheus в ClickHouse Cloud:
+Сервер Prometheus собирает метрики с настроенных таргетов с заданным интервалом. Ниже приведён пример конфигурации сервера Prometheus для использования эндпоинта Prometheus в ClickHouse Cloud:
 
 ```yaml
 global:
@@ -183,47 +185,48 @@ scrape_configs:
     honor_labels: true
 ```
 
-Обратите внимание, что для корректного заполнения метки `instance` параметр конфигурации `honor_labels` должен быть установлен в значение `true`. Кроме того, в приведённом выше примере `filtered_metrics` установлено в `true`, однако это значение следует настраивать в соответствии с предпочтениями пользователя.
+Обратите внимание, что конфигурационный параметр `honor_labels` должен быть установлен в `true`, чтобы метка `instance` корректно заполнялась. Кроме того, в приведённом выше примере параметр `filtered_metrics` установлен в `true`, но его следует настраивать в соответствии с предпочтениями пользователя.
+
 
 ## Интеграция с Grafana {#integrating-with-grafana}
 
-Существует два основных способа интеграции с Grafana:
+У пользователей есть два основных способа интеграции с Grafana:
 
-- **Metrics Endpoint** – этот подход не требует дополнительных компонентов или инфраструктуры. Он доступен только в Grafana Cloud и требует лишь URL-адреса ClickHouse Cloud Prometheus Endpoint и учетных данных.
-- **Grafana Alloy** – Grafana Alloy — это вендорно-нейтральная дистрибуция OpenTelemetry (OTel) Collector, заменяющая Grafana Agent. Ее можно использовать как скрейпер, развертывать в собственной инфраструктуре, и она совместима с любым Prometheus endpoint.
+- **Metrics Endpoint** – преимущество этого подхода в том, что он не требует дополнительных компонентов или инфраструктуры. Это решение доступно только в Grafana Cloud и требует лишь URL‑адреса и учетных данных ClickHouse Cloud Prometheus Endpoint.
+- **Grafana Alloy** – Grafana Alloy — это вендорно-нейтральный дистрибутив OpenTelemetry (OTel) Collector, который заменяет Grafana Agent. Его можно использовать как скрейпер, развертывать в собственной инфраструктуре и использовать с любой конечной точкой Prometheus.
 
-Ниже приведены инструкции по использованию этих вариантов, с акцентом на детали, специфичные для ClickHouse Cloud Prometheus Endpoint.
+Ниже приведены инструкции по использованию этих вариантов с акцентом на деталях, специфичных для ClickHouse Cloud Prometheus Endpoint.
 
-### Grafana Cloud с endpointом метрик {#grafana-cloud-with-metrics-endpoint}
+### Grafana Cloud с endpoint'ом метрик {#grafana-cloud-with-metrics-endpoint}
 
-- Войдите в учетную запись Grafana Cloud
+- Войдите в свою учетную запись Grafana Cloud
 - Добавьте новое подключение, выбрав **Metrics Endpoint**
-- Настройте Scrape URL так, чтобы он указывал на endpoint Prometheus, и используйте базовую аутентификацию (basic auth) с ключом API и секретом для настройки подключения
+- Настройте Scrape URL, указывающий на Prometheus endpoint, и используйте basic auth для настройки подключения с API-ключом и секретом
 - Протестируйте подключение, чтобы убедиться, что оно успешно устанавливается
 
 <Image img={prometheus_grafana_metrics_endpoint} size="md" alt="Настройка Grafana Metrics Endpoint" border/>
 
 <br />
 
-После настройки вы должны увидеть метрики в выпадающем списке и сможете выбрать их для конфигурации дашбордов:
+После настройки в раскрывающемся списке должны появиться метрики, которые можно выбрать для настройки дашбордов:
 
-<Image img={prometheus_grafana_dropdown} size="md" alt="Выпадающий список Grafana Metrics Explorer" border/>
+<Image img={prometheus_grafana_dropdown} size="md" alt="Раскрывающееся меню Grafana Metrics Explorer" border/>
 
 <br />
 
-<Image img={prometheus_grafana_chart} size="md" alt="График в Grafana Metrics Explorer" border/>
+<Image img={prometheus_grafana_chart} size="md" alt="График Grafana Metrics Explorer" border/>
 
 ### Grafana Cloud с Alloy {#grafana-cloud-with-alloy}
 
-Если вы используете Grafana Cloud, Alloy можно установить, перейдя в меню Alloy в Grafana и следуя инструкциям на экране:
+Если вы используете Grafana Cloud, Alloy можно установить, открыв меню Alloy в Grafana и следуя инструкциям на экране:
 
 <Image img={prometheus_grafana_alloy} size="md" alt="Grafana Alloy" border />
 
 <br />
 
-В результате Alloy будет настроен с компонентом `prometheus.remote_write` для отправки данных в конечную точку Grafana Cloud с использованием токена аутентификации. После этого пользователям нужно только изменить конфигурацию Alloy (она находится в `/etc/alloy/config.alloy` в Linux), чтобы добавить скрейпер для ClickHouse Cloud Prometheus Endpoint.
+Это автоматически настроит Alloy с компонентом `prometheus.remote_write` для отправки данных на конечную точку Grafana Cloud с использованием токена аутентификации. Пользователям затем нужно только изменить конфигурацию Alloy (расположена в `/etc/alloy/config.alloy` для Linux), чтобы добавить скрейпер для Prometheus-эндпойнта ClickHouse Cloud.
 
-Ниже приведён пример конфигурации Alloy с компонентом `prometheus.scrape` для сбора метрик с ClickHouse Cloud Endpoint, а также автоматически настроенным компонентом `prometheus.remote_write`. Обратите внимание, что конфигурационный компонент `basic_auth` содержит идентификатор и секрет нашего Cloud API-ключа в качестве имени пользователя и пароля соответственно.
+Ниже приведён пример конфигурации Alloy с компонентом `prometheus.scrape` для сбора метрик с эндпойнта ClickHouse Cloud, а также автоматически настроенным компонентом `prometheus.remote_write`. Обратите внимание, что конфигурационный компонент `basic_auth` содержит идентификатор и секрет нашего Cloud API-ключа в качестве имени пользователя и пароля соответственно.
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
@@ -255,11 +258,12 @@ prometheus.remote_write "metrics_service" {
 }
 ```
 
-Обратите внимание: чтобы метка `instance` заполнялась корректно, параметр конфигурации `honor_labels` должен иметь значение `true`.
+Обратите внимание, что параметр конфигурации `honor_labels` должен быть установлен в `true`, чтобы лейбл `instance` корректно заполнялся.
 
-### Самостоятельно управляемая Grafana с Alloy {#grafana-self-managed-with-alloy}
 
-Пользователи, развернувшие Grafana самостоятельно, могут найти инструкции по установке агента Alloy [здесь](https://grafana.com/docs/alloy/latest/get-started/install/). Мы предполагаем, что Alloy настроен на отправку метрик Prometheus в нужное целевое назначение. Компонент `prometheus.scrape` ниже настраивает Alloy на опрос конечной точки ClickHouse Cloud Endpoint. Мы предполагаем, что `prometheus.remote_write` получает собранные метрики. При необходимости измените значение ключа `forward_to` на нужное целевое назначение.
+### Самоуправляемая Grafana с Alloy {#grafana-self-managed-with-alloy}
+
+Пользователи самоуправляемой установки Grafana могут найти инструкции по установке агента Alloy [здесь](https://grafana.com/docs/alloy/latest/get-started/install/). Мы предполагаем, что пользователи настроили Alloy для отправки метрик Prometheus в нужную целевую систему. Компонент `prometheus.scrape` ниже заставляет Alloy опрашивать конечную точку ClickHouse Cloud. Мы предполагаем, что `prometheus.remote_write` получает собранные метрики. Если такого компонента нет, измените значение ключа `forward_to`, указав нужную целевую систему.
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
@@ -281,17 +285,18 @@ prometheus.scrape "clickhouse_cloud" {
 }
 ```
 
-После завершения настройки вы должны увидеть метрики, связанные с ClickHouse, в обозревателе метрик:
+После настройки вы должны увидеть метрики, связанные с ClickHouse, в обозревателе метрик (Metrics Explorer):
 
 <Image img={prometheus_grafana_metrics_explorer} size="md" alt="Grafana Metrics Explorer" border />
 
 <br />
 
-Обратите внимание, что параметр конфигурации `honor_labels` должен быть установлен в значение `true`, чтобы метка `instance` заполнялась корректно.
+Обратите внимание, что параметр конфигурации `honor_labels` должен быть установлен в `true`, чтобы метка `instance` была корректно заполнена.
+
 
 ## Интеграция с Datadog {#integrating-with-datadog}
 
-Вы можете использовать агент [Datadog Agent](https://docs.datadoghq.com/agent/?tab=Linux) и [интеграцию OpenMetrics](https://docs.datadoghq.com/integrations/openmetrics/) для сбора метрик с endpoint ClickHouse Cloud. Ниже приведён простой пример конфигурации для этого агента и интеграции. Обратите внимание, что, возможно, имеет смысл отбирать только те метрики, которые представляют для вас наибольший интерес. Приведённый ниже универсальный пример будет экспортировать тысячи комбинаций «метрика–экземпляр», которые Datadog будет рассматривать как пользовательские метрики.
+Вы можете использовать агент [Datadog Agent](https://docs.datadoghq.com/agent/?tab=Linux) и [интеграцию OpenMetrics](https://docs.datadoghq.com/integrations/openmetrics/) для сбора метрик с конечной точки ClickHouse Cloud. Ниже приведён простой пример конфигурации для этого агента и интеграции. Обратите внимание, что, возможно, имеет смысл выбрать только те метрики, которые для вас наиболее важны. Приведённый ниже универсальный пример будет экспортировать многие тысячи комбинаций метрик и их экземпляров, которые Datadog будет считать пользовательскими метриками.
 
 ```yaml
 init_config:
@@ -307,4 +312,4 @@ instances:
 
 <br />
 
-<Image img={prometheus_datadog} size="md" alt="Интеграция Prometheus и Datadog" />
+<Image img={prometheus_datadog} size="md" alt="Интеграция Prometheus с Datadog" />

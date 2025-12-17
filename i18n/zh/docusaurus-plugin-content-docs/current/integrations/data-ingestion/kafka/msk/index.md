@@ -13,7 +13,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # 将 Amazon MSK 与 ClickHouse 集成 {#integrating-amazon-msk-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -70,7 +69,6 @@ exactlyOnce=true
 username=default
 schemas.enable=false
 ```
-
 
 ## 推荐的 IAM 权限（最小权限原则） {#iam-least-privilege}
 
@@ -142,7 +140,6 @@ schemas.enable=false
 
 另请参阅：[Kafka 最佳实践 – IAM](../../clickpipes/kafka/04_best_practices.md#iam)。
 
-
 ## 性能调优 {#performance-tuning}
 
 提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
@@ -161,7 +158,6 @@ consumer.max.partition.fetch.bytes=1048576
 
 你可以在官方的 [Kafka](https://kafka.apache.org/documentation/#consumerconfigs) 文档和
 [Amazon MSK](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-workers.html#msk-connect-create-custom-worker-config) 文档中查阅更多信息（包括实现细节和其他方面的考量）。
-
 
 ## 关于 MSK Connect 的网络注意事项 {#notes-on-networking-for-msk-connect}
 

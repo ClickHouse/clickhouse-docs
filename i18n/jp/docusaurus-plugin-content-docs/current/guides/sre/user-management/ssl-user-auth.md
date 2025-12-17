@@ -14,7 +14,7 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示します。このチュートリアルは [Configuring SSL-TLS user guide](../configuring-ssl.md) を前提としています。
+このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示します。このチュートリアルは [Configuring TLS user guide](../tls/configuring-tls.md) を前提としています。
 
 :::note
 SSL ユーザー認証は、`https`、`native`、`mysql`、`postgresql` インターフェイスを使用する場合にサポートされています。
@@ -25,6 +25,7 @@ MySQL インターフェイスで AWS NLB を使用する場合、以下の非�
 
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 > :::
+
 
 ## 1. SSL ユーザー証明書を作成する {#1-create-ssl-user-certificates}
 
@@ -56,7 +57,7 @@ MySQL インターフェイスで AWS NLB を使用する場合、以下の非�
 ## 2. SQL ユーザーを作成して権限を付与する {#2-create-a-sql-user-and-grant-permissions}
 
 :::note
-SQL ユーザーを有効化する方法やロールの設定方法の詳細については、ユーザーガイドの [Defining SQL Users and Roles](index.md) を参照してください。
+SQL ユーザーを有効にする方法やロールの設定方法の詳細については、ユーザーガイドの [Defining SQL Users and Roles](index.md) を参照してください。
 :::
 
 1. 証明書ベースの認証を使用するように定義された SQL ユーザーを作成します:
@@ -69,7 +70,7 @@ SQL ユーザーを有効化する方法やロールの設定方法の詳細に�
     GRANT ALL ON *.* TO cert_user WITH GRANT OPTION;
     ```
     :::note
-    この演習ではデモ目的のため、このユーザーには管理者権限（フルアクセス）が付与されています。権限設定については ClickHouse の [RBAC ドキュメント](/guides/sre/user-management/index.md) を参照してください。
+    この演習ではデモ目的で、このユーザーには管理者権限（フルアクセス）が付与されています。権限設定については ClickHouse の [RBAC ドキュメント](/guides/sre/user-management/index.md) を参照してください。
     :::
 
     :::note

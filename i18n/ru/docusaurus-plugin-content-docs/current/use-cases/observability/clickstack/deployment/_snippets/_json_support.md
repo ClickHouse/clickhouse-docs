@@ -12,7 +12,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 О преимуществах этого типа см. раздел [Преимущества типа JSON](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
 
-Чтобы включить поддержку типа JSON, пользователи должны задать следующие переменные окружения:
+Чтобы включить поддержку типа JSON, вам необходимо задать следующие переменные окружения:
 
 - `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` — включает поддержку в OTel collector, гарантируя, что схемы создаются с использованием типа JSON.
 - `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` — включает поддержку в приложении HyperDX, позволяя выполнять запросы к данным JSON.

@@ -19,13 +19,13 @@ import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql
 
 ClickHouse — это нативный SQL-движок, изначально спроектированный для высокопроизводительных аналитических нагрузок. В отличие от него, Elasticsearch предоставляет SQL-подобный интерфейс, который транслирует SQL в базовый Elasticsearch query DSL — то есть SQL не является для него языком первого класса, и [функциональный паритет](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) ограничен. 
 
-ClickHouse не только полностью поддерживает SQL, но и расширяет его набором функций, ориентированных на наблюдаемость, таких как [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) и [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), которые упрощают выполнение запросов к структурированным логам, метрикам и трейсам.
+ClickHouse не только полностью поддерживает SQL, но и расширяет его набором функций, ориентированных на обсервабилити, таких как [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) и [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), которые упрощают выполнение запросов к структурированным логам, метрикам и трейсам.
 
 Для простой работы с логами и трейсами HyperDX предоставляет [синтаксис в стиле Lucene](/use-cases/observability/clickstack/search) для интуитивно понятной текстовой фильтрации по запросам вида поле-значение, диапазонам, шаблонам с подстановками (wildcards) и другим условиям. Это сопоставимо с [синтаксисом Lucene](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) в Elasticsearch и элементами [Kibana Query Language](https://www.elastic.co/docs/reference/query-languages/kql).
 
 <Image img={hyperdx_search} alt="Поиск" size="lg"/>
 
-Интерфейс поиска HyperDX поддерживает этот привычный синтаксис, но «за кулисами» транслирует его в эффективные выражения SQL `WHERE`, делая работу привычной для пользователей Kibana и при этом позволяя использовать мощь SQL при необходимости. Это даёт возможность задействовать весь спектр [функций строкового поиска](/sql-reference/functions/string-search-functions), [функций сходства](/sql-reference/functions/string-functions#stringJaccardIndex) и [функций работы с датой и временем](/sql-reference/functions/date-time-functions) в ClickHouse.
+Интерфейс поиска HyperDX поддерживает этот привычный синтаксис, но «за кулисами» транслирует его в эффективные выражения SQL `WHERE`, делая работу привычной для пользователей Kibana и при этом позволяя использовать мощь SQL при необходимости. Это даёт вам возможность задействовать весь спектр [функций строкового поиска](/sql-reference/functions/string-search-functions), [функций сходства](/sql-reference/functions/string-functions#stringJaccardIndex) и [функций работы с датой и временем](/sql-reference/functions/date-time-functions) в ClickHouse.
 
 <Image img={hyperdx_sql} alt="SQL" size="lg"/>
 
@@ -50,7 +50,7 @@ ClickHouse не только полностью поддерживает SQL, н
 | Unbounded ranges (numeric/date)   | `duration:>10` or `duration:>=10` | `duration:>10` or `duration:>=10` | HyperDX использует стандартные SQL-операторы. |
 | Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | Фигурные скобки обозначают исключающие границы. `*` в диапазонах не поддерживается, например `duration:[100 TO *]`. |
 | Exists check            | N/A                       | `_exists_:user` or `field:*` | `_exists_` не поддерживается. Используйте `LogAttributes.log.file.path: *` для столбцов типа `Map`, например `LogAttributes`. Для корневых столбцов требуется их существование, и они будут иметь значение по умолчанию, если не были включены в событие. Для поиска значений по умолчанию или отсутствующих столбцов используйте тот же синтаксис, что и в Elasticsearch: `ServiceName:*` или `ServiceName != ''`. |
-| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | В настоящее время не поддерживается в синтаксисе Lucene. Пользователи могут использовать SQL и функцию [`match`](/sql-reference/functions/string-search-functions#match) или другие [функции поиска по строкам](/sql-reference/functions/string-search-functions).|
+| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | В настоящее время не поддерживается в синтаксисе Lucene. Вы можете использовать SQL и функцию [`match`](/sql-reference/functions/string-search-functions#match) или другие [функции поиска по строкам](/sql-reference/functions/string-search-functions).|
 | Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | В настоящее время не поддерживается в синтаксисе Lucene. В SQL можно использовать функции расстояния, например `editDistance('rror', SeverityText) = 1`, или [другие функции сходства](/sql-reference/functions/string-functions#jaroSimilarity). |
 | Proximity search        | Not supported                       | `"fox quick"~5` | В настоящее время не поддерживается в синтаксисе Lucene. |
 | Boosting                | `quick^2 fox` | `quick^2 fox` | В настоящее время не поддерживается в HyperDX. |
@@ -68,6 +68,6 @@ ClickHouse не только полностью поддерживает SQL, н
 
 Такое поведение означает, что проверка, «существует» ли поле в смысле Elasticsearch, напрямую не поддерживается. 
 
-Вместо этого пользователи могут использовать `field:*` или `field != ''` для проверки наличия непустого значения. Таким образом, невозможно различить действительно отсутствующие и явно пустые поля.
+Вместо этого вы можете использовать `field:*` или `field != ''` для проверки наличия непустого значения. Таким образом, невозможно различить действительно отсутствующие и явно пустые поля.
 
-На практике это различие редко приводит к проблемам для сценариев наблюдаемости, но его важно учитывать при переносе запросов между системами.
+На практике это различие редко приводит к проблемам для сценариев обсервабилити, но его важно учитывать при переносе запросов между системами.
