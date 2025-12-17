@@ -305,9 +305,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 自 v24.6 版本引入
 
-将 [`DateTime64`](../data-types/datetime64.md) 转换为给定时间点的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
-
-有关实现细节，请参阅“[Snowflake ID generation](#snowflake-id-generation)”一节。
+将 [DateTime64](../data-types/datetime64.md) 转换为给定时间点的第一个 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)。
 
 **语法**
 
@@ -317,26 +315,25 @@ dateTime64ToSnowflakeID(value[, epoch])
 
 **参数**
 
-* `value` — 带时间的日期。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 带时间的日期。[`DateTime64`](/sql-reference/data-types/datetime64)
 * `epoch` — Snowflake ID 的纪元时间，从 1970-01-01 起按毫秒计。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元时间（2015-01-01），请提供 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回该时间点对应的第一个 Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
+将输入值转换为 [`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**使用示例**
+**简单示例**
 
 ```sql title=Query
-SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime64ToSnowflakeID(dt) AS res;
+SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────────dt─┬─────────────────res─┐
-│ 2025-08-15 18:57:56.493 │ 7362075066076495872 │
-└─────────────────────────┴─────────────────────┘
+6832626394434895872
 ```
+
 
 ## dateTimeToSnowflake {#dateTimeToSnowflake}
 
@@ -395,26 +392,25 @@ dateTimeToSnowflakeID(value[, epoch])
 
 **参数**
 
-* `value` — 带时间的日期。[`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
-* `epoch` — 可选。Snowflake ID 的纪元时间（毫秒），自 1970-01-01 起算。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元时间（2015-01-01），请使用 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
+* `value` — 带时间的日期。[`DateTime`](/sql-reference/data-types/datetime)
+* `epoch` — Snowflake ID 的纪元时间（毫秒），自 1970-01-01 起算。默认值为 0（1970-01-01）。对于 Twitter/X 的纪元时间（2015-01-01），请使用 1288834974657。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-将输入时间转换为该时间点的第一个 Snowflake ID。[`UInt64`](/sql-reference/data-types/int-uint)
+将输入值转换为 [`UInt64`](/sql-reference/data-types/int-uint)
 
 **示例**
 
-**使用示例**
+**简单示例**
 
 ```sql title=Query
-SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowflakeID(dt) AS res;
+SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────dt─┬─────────────────res─┐
-│ 2021-08-15 18:57:56 │ 6832626392367104000 │
-└─────────────────────┴─────────────────────┘
+6832626392367104000
 ```
+
 
 ## dateTimeToUUIDv7 {#dateTimeToUUIDv7}
 

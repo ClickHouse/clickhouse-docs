@@ -305,9 +305,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 導入バージョン: v24.6
 
-[`DateTime64`](../data-types/datetime64.md) の値を、指定時刻における最初の [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) に変換します。
-
-実装の詳細については、セクション [&quot;Snowflake ID generation&quot;](#snowflake-id-generation) を参照してください。
+[DateTime64](../data-types/datetime64.md) の値を、指定時刻における最初の [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) に変換します。
 
 **構文**
 
@@ -317,26 +315,25 @@ dateTime64ToSnowflakeID(value[, epoch])
 
 **引数**
 
-* `value` — 日時。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — 日時。[`DateTime64`](/sql-reference/data-types/datetime64)
 * `epoch` — Snowflake ID のエポックを、1970-01-01 からの経過ミリ秒で指定します。デフォルトは 0（1970-01-01）です。Twitter/X のエポック（2015-01-01）の場合は 1288834974657 を指定します。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-指定した時刻に対応する最初の Snowflake ID を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+入力値を [`UInt64`](/sql-reference/data-types/int-uint) に変換した値。
 
 **例**
 
-**使用例**
+**簡単な例**
 
 ```sql title=Query
-SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime64ToSnowflakeID(dt) AS res;
+SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────────dt─┬─────────────────res─┐
-│ 2025-08-15 18:57:56.493 │ 7362075066076495872 │
-└─────────────────────────┴─────────────────────┘
+6832626394434895872
 ```
+
 
 ## dateTimeToSnowflake {#dateTimeToSnowflake}
 
@@ -395,26 +392,25 @@ dateTimeToSnowflakeID(value[, epoch])
 
 **引数**
 
-* `value` — 時刻付きの日付。[`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `epoch` — 省略可。Snowflake ID のエポックを、1970-01-01 からの経過ミリ秒で指定します。デフォルトは 0（1970-01-01）。Twitter/X のエポック（2015-01-01）の場合は 1288834974657 を指定します。[`UInt*`](/sql-reference/data-types/int-uint)
+* `value` — 時刻付きの日付。[`DateTime`](/sql-reference/data-types/datetime)
+* `epoch` — Snowflake ID のエポックを、1970-01-01 からの経過ミリ秒で指定します。デフォルトは 0（1970-01-01）。Twitter/X のエポック（2015-01-01）の場合は 1288834974657 を指定します。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-入力値の時刻に対応する最初の Snowflake ID を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+入力値を [`UInt64`](/sql-reference/data-types/int-uint) 型に変換した値。
 
 **例**
 
-**使用例**
+**簡単な例**
 
 ```sql title=Query
-SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowflakeID(dt) AS res;
+SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────dt─┬─────────────────res─┐
-│ 2021-08-15 18:57:56 │ 6832626392367104000 │
-└─────────────────────┴─────────────────────┘
+6832626392367104000
 ```
+
 
 ## dateTimeToUUIDv7 {#dateTimeToUUIDv7}
 
