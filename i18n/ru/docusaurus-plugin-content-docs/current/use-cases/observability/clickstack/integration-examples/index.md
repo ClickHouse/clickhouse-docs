@@ -29,3 +29,4 @@ ClickStack предоставляет несколько способов при
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | Мониторинг производительности Postgres |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | Сбор логов сервера Redis |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | Мониторинг производительности Redis |
+| [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| Мониторинг метрик Temporal Cloud |
