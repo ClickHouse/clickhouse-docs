@@ -6,8 +6,6 @@ title: 'ORDER BY 句'
 doc_type: 'reference'
 ---
 
-
-
 # ORDER BY 句 {#order-by-clause}
 
 `ORDER BY` 句には次のいずれかを指定できます。
@@ -26,8 +24,6 @@ doc_type: 'reference'
 
 ソート対象の式の値が同一の行は、任意（非決定的）な順序で返されます。
 `SELECT` 文で `ORDER BY` 句を省略した場合も、行の並び順は任意（非決定的）です。
-
-
 
 ## 特殊値のソート順 {#sorting-of-special-values}
 
@@ -74,7 +70,6 @@ doc_type: 'reference'
 
 浮動小数点数をソートする場合、NaN は他の値とは別扱いになります。ソート順に関係なく、NaN は常に末尾に並びます。言い換えると、昇順ソートでは NaN は他のすべての数値よりも大きいかのように扱われ、降順ソートでは残りの値よりも小さいかのように扱われます。
 
-
 ## 照合順序サポート {#collation-support}
 
 [String](../../../sql-reference/data-types/string.md) 値でソートする場合、照合順序（比較方法）を指定できます。例: `ORDER BY SearchPhrase COLLATE 'tr'` — 文字列が UTF-8 でエンコードされていることを前提として、トルコ語アルファベットを用い、大文字小文字を区別せずにキーワードを昇順でソートします。`COLLATE` は、ORDER BY 句内の各式ごとに個別に指定してもしなくてもかまいません。`ASC` または `DESC` を指定する場合は、その後ろに `COLLATE` を指定します。`COLLATE` を使用する場合、ソートは常に大文字小文字を区別しません。
@@ -82,8 +77,6 @@ doc_type: 'reference'
 `COLLATE` は [LowCardinality](../../../sql-reference/data-types/lowcardinality.md)、[Nullable](../../../sql-reference/data-types/nullable.md)、[Array](../../../sql-reference/data-types/array.md)、[Tuple](../../../sql-reference/data-types/tuple.md) でもサポートされています。
 
 `COLLATE` によるソートは通常のバイト列によるソートより効率が低いため、少数行の最終的なソートにのみ `COLLATE` を使用することを推奨します。
-
-
 
 ## 照合順序の例 {#collation-examples}
 
@@ -229,7 +222,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 [Tuple](../../../sql-reference/data-types/tuple.md) を使った例:
 
-
 ```response
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
@@ -262,7 +254,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-
 ## 実装の詳細 {#implementation-details}
 
 `ORDER BY` に加えて十分に小さい [LIMIT](../../../sql-reference/statements/select/limit.md) を指定すると、使用される RAM を抑えられます。そうでない場合、消費されるメモリ量はソート対象データ量に比例します。分散クエリ処理では、[GROUP BY](/sql-reference/statements/select/group-by) を省略すると、ソートはリモートサーバー側で部分的に実行され、その結果がリクエスト元サーバーでマージされます。これは、分散ソートの場合、ソート対象データ量が単一サーバーのメモリ量を上回る可能性があることを意味します。
@@ -272,8 +263,6 @@ RAM が不足している場合は、外部メモリ（ディスク）を使用�
 クエリの実行では、`max_bytes_before_external_sort` より多くのメモリが使用される場合があります。このため、この設定値は `max_memory_usage` より十分小さくする必要があります。例えば、サーバーに 128 GB の RAM があり、単一のクエリを実行する必要がある場合は、`max_memory_usage` を 100 GB に、`max_bytes_before_external_sort` を 80 GB に設定します。
 
 外部ソートは、RAM 内でのソートと比較して効率が大きく低下します。
-
-
 
 ## データ読み取りの最適化 {#optimization-of-data-reading}
 
@@ -294,8 +283,6 @@ RAM が不足している場合は、外部メモリ（ディスク）を使用�
 - [Buffer](../../../engines/table-engines/special/buffer.md)
 
 `MaterializedView` エンジンのテーブルでは、`SELECT ... FROM merge_tree_table ORDER BY pk` のようなビューに対して最適化が機能します。ただし、ビュー定義のクエリに `ORDER BY` 句がない場合の `SELECT ... FROM view ORDER BY pk` のようなクエリではサポートされません。
-
-
 
 ## ORDER BY Expr WITH FILL 修飾子 {#order-by-expr-with-fill-modifier}
 
@@ -332,9 +319,9 @@ SELECT n, source FROM (
 
 ```text
 ┌─n─┬─source───┐
-│ 1 │ 元データ │
-│ 4 │ 元データ │
-│ 7 │ 元データ │
+│ 1 │ original │
+│ 4 │ original │
+│ 7 │ original │
 └───┴──────────┘
 ```
 
@@ -353,17 +340,17 @@ SELECT n, source FROM (
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
-│   1 │ オリジナル │
+│   1 │ original │
 │ 1.5 │          │
 │   2 │          │
 │ 2.5 │          │
 │   3 │          │
 │ 3.5 │          │
-│   4 │ オリジナル │
+│   4 │ original │
 │ 4.5 │          │
 │   5 │          │
 │ 5.5 │          │
-│   7 │ オリジナル │
+│   7 │ original │
 └─────┴──────────┘
 ```
 
@@ -384,7 +371,6 @@ ORDER BY
 ```
 
 結果:
-
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
@@ -418,19 +404,19 @@ ORDER BY
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ 元データ │
+│ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
 │ 1970-01-21 │ 1970-01-01 │          │
 │ 1970-01-26 │ 1970-01-01 │          │
 │ 1970-01-31 │ 1970-01-01 │          │
 │ 1970-02-05 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ 元データ │
+│ 1970-02-10 │ 1970-01-05 │ original │
 │ 1970-02-15 │ 1970-01-01 │          │
 │ 1970-02-20 │ 1970-01-01 │          │
 │ 1970-02-25 │ 1970-01-01 │          │
 │ 1970-03-02 │ 1970-01-01 │          │
 │ 1970-03-07 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ 元データ │
+│ 1970-03-12 │ 1970-01-08 │ original │
 └────────────┴────────────┴──────────┘
 ```
 
@@ -448,12 +434,11 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-
 結果:
 
 ```response
 ┌─────────d1─┬─────────d2─┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ 元データ │
+│ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
 │ 1970-01-13 │ 1970-01-01 │          │
 │ 1970-01-14 │ 1970-01-01 │          │
@@ -483,7 +468,7 @@ ORDER BY
 │ 1970-02-07 │ 1970-01-01 │          │
 │ 1970-02-08 │ 1970-01-01 │          │
 │ 1970-02-09 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ 元データ │
+│ 1970-02-10 │ 1970-01-05 │ original │
 │ 1970-02-11 │ 1970-01-01 │          │
 │ 1970-02-12 │ 1970-01-01 │          │
 │ 1970-02-13 │ 1970-01-01 │          │
@@ -513,7 +498,7 @@ ORDER BY
 │ 1970-03-09 │ 1970-01-01 │          │
 │ 1970-03-10 │ 1970-01-01 │          │
 │ 1970-03-11 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ 元データ │
+│ 1970-03-12 │ 1970-01-08 │ original │
 └────────────┴────────────┴──────────┘
 ```
 
@@ -560,16 +545,16 @@ ORDER BY key WITH FILL STALENESS 3;
 
 ```text
     ┌─key─┬─value─┬─source───┐
- 1. │   0 │     0 │ 元データ │
+ 1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
  3. │   2 │     0 │          │
- 4. │   5 │    25 │ 元データ │
+ 4. │   5 │    25 │ original │
  5. │   6 │     0 │          │
  6. │   7 │     0 │          │
- 7. │  10 │    50 │ 元データ │
+ 7. │  10 │    50 │ original │
  8. │  11 │     0 │          │
  9. │  12 │     0 │          │
-10. │  15 │    75 │ 元データ │
+10. │  15 │    75 │ original │
 11. │  16 │     0 │          │
 12. │  17 │     0 │          │
     └─────┴───────┴──────────┘
@@ -579,7 +564,7 @@ ORDER BY key WITH FILL STALENESS 3;
 
 ```sql
 SELECT n, source, inter FROM (
-   SELECT toFloat32(number % 10) AS n, '元データ' AS source, number AS inter
+   SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
@@ -615,7 +600,6 @@ SELECT n, source, inter FROM (
 
 結果：
 
-
 ```text
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
@@ -633,7 +617,6 @@ SELECT n, source, inter FROM (
 │   7 │ original │     7 │
 └─────┴──────────┴───────┘
 ```
-
 
 ## ソートプレフィックス単位での補間 {#filling-grouped-by-sorting-prefix}
 
@@ -686,7 +669,6 @@ INTERPOLATE ( value AS 9999 )
 
 ここでは、`value` 列に `9999` を補間して、埋められた行がより目立つようにしています。
 この挙動は、`use_with_fill_by_sorting_prefix` の設定によって制御されます（デフォルトで有効です）。
-
 
 ## 関連コンテンツ {#related-content}
 

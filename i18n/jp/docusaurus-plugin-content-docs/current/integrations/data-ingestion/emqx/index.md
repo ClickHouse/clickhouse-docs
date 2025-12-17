@@ -39,10 +39,7 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
-
 # EMQX と ClickHouse の統合 {#integrating-emqx-with-clickhouse}
-
-
 
 ## EMQX への接続 {#connecting-emqx}
 
@@ -60,8 +57,6 @@ import Image from '@theme/IdealImage';
 * 大規模な IoT デバイス向けイベントストリーミングを実現するリアルタイムメッセージ処理エンジンとして、EMQX または EMQX Cloud を利用している。
 * デバイスデータを永続化するための ClickHouse Cloud インスタンスを用意している。
 * EMQX Cloud のデプロイに接続して MQTT データをパブリッシュするための MQTT クライアントテストツールとして、[MQTT X](https://mqttx.app/) を使用している。または、MQTT ブローカーへの接続が可能な他の方法を使用してもよい。
-
-
 
 ## ClickHouse Cloud サービスを取得する {#get-your-clickhouse-cloudservice}
 
@@ -101,7 +96,6 @@ PRIMARY KEY (client_id, timestamp)
 ```
 
 <Image img={clickhouse_cloud_6} size="lg" border alt="ClickHouse Cloud におけるデータベースおよびテーブル作成用 SQL クエリの実行画面" />
-
 
 ## EMQX Cloud 上に MQTT サービスを作成する {#create-an-mqtt-service-on-emqx-cloud}
 
@@ -150,8 +144,6 @@ Overview ページに戻り、ページの一番下までスクロールする�
 <Image img={emqx_cloud_nat_gateway} size="lg" border alt="EMQX Cloud NAT ゲートウェイ設定パネル" />
 
 作成が完了すると、ウィジェット内にパブリック IP アドレスが表示されます。ClickHouse Cloud のセットアップ時に「Connect from a specific location」を選択した場合は、この IP アドレスをホワイトリストに追加する必要がある点に注意してください。
-
-
 
 ## EMQX Cloud と ClickHouse Cloud の統合 {#integration-emqx-cloud-with-clickhouse-cloud}
 
@@ -232,7 +224,6 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 <Image img={data_integration_details} size="md" border alt="設定サマリーを表示している EMQX Cloud データ統合ルール詳細" />
 
 `temp_hum/emqx` トピックに送信されたすべての MQTT メッセージは、ClickHouse Cloud データベースに永続化されます。
-
 
 ## ClickHouse へのデータ保存 {#saving-data-into-clickhouse}
 

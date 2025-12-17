@@ -153,7 +153,7 @@ Learn more about how to create and organize dashboards here:
 ### Ask AI: self-serve analytics powered by dbt {#ask-ai}
 
 **AI Agents** in Lightdash make data exploration truly self-serve.  
-Instead of writing queries, users can simply ask questions in plain language — like *“What was our monthly revenue growth?”* — and the AI Agent automatically generates the right visualization, referencing your dbt-defined metrics and models to ensure accuracy and consistency.
+Instead of writing queries, you can simply ask questions in plain language — like *“What was our monthly revenue growth?”* — and the AI Agent automatically generates the right visualization, referencing your dbt-defined metrics and models to ensure accuracy and consistency.
 
 It’s powered by the same semantic layer you use in dbt, meaning every answer stays governed, explainable, and fast — all backed by ClickHouse.
 

@@ -38,7 +38,6 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 在此模式下，数据摄取完全由用户负责。您可以使用自托管的 OpenTelemetry collector、通过客户端库直接摄取、ClickHouse 原生表引擎（例如 Kafka 或 S3）、ETL 流水线，或 ClickPipes（ClickHouse Cloud 的托管摄取服务）将数据摄取到 ClickHouse Cloud 中。这种方式是运行 ClickStack 最简单且性能最佳的方案。
 
-
 ### 适用场景 {#suitable-for}
 
 此部署模式在以下场景中尤为适用：
@@ -75,8 +74,8 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   下载 OTel collector 的配置文件：
 
   ```bash
-  curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
-  ```
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
+```
 
   <details>
     <summary>otel-cloud-config.yaml</summary>
@@ -229,11 +228,12 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
           processors: [memory_limiter, batch]
           exporters: [clickhouse/rrweb]
     ```
-  </details>
 
-  使用以下 Docker 命令部署采集器,将相应的环境变量设置为先前记录的连接配置,并根据操作系统选择对应的命令执行。
+</details>
 
-  ```bash
+Deploy the collector using the following Docker command, setting the respective environment variables to the connection settings recorded earlier and using the appropriate command below based on your operating system.
+
+```bash
   # 修改为您的云端点地址
   export CLICKHOUSE_ENDPOINT=
   export CLICKHOUSE_PASSWORD=

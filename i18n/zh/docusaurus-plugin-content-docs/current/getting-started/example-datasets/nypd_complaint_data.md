@@ -118,7 +118,6 @@ New Georeferenced Column Nullable(String)
 
 此时，应检查 TSV 文件中的列是否与[数据集网页](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)中 **Columns in this Dataset** 部分指定的列名和类型一致。该数据集中的数据类型定义并不十分具体，所有数值型字段都被设置为 `Nullable(Float64)`，而其他所有字段则为 `Nullable(String)`。在创建用于存储这些数据的 ClickHouse 表时，可以指定更合适、性能更佳的数据类型。
 
-
 ### 确定合适的表结构 {#determine-the-proper-schema}
 
 要确定字段应使用哪些数据类型，必须先了解数据的实际形态。例如，字段 `JURISDICTION_CODE` 是一个数值类型：它应该是 `UInt8`，还是 `Enum`，或者使用 `Float64` 更为合适？
@@ -193,22 +192,21 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 结果：
 
 ```response
-┌─公园名称───────────────────┐
+┌─PARKS_NM───────────────────┐
 │ (null)                     │
-│ 阿瑟·利维公园              │
-│ 詹姆斯·J·沃克公园          │
-│ 贝尔特公园大道/海岸公园大道│
-│ 展望公园                   │
-│ 蒙蒂菲奥里广场             │
-│ 萨顿广场公园               │
-│ 乔伊斯·基尔默公园          │
-│ 巷道运动场                 │
-│ 阿斯托里亚公园             │
+│ ASSER LEVY PARK            │
+│ JAMES J WALKER PARK        │
+│ BELT PARKWAY/SHORE PARKWAY │
+│ PROSPECT PARK              │
+│ MONTEFIORE SQUARE          │
+│ SUTTON PLACE PARK          │
+│ JOYCE KILMER PARK          │
+│ ALLEY ATHLETIC PLAYGROUND  │
+│ ASTORIA PARK               │
 └────────────────────────────┘
 ```
 
 在撰写本文时使用的数据集中，`PARK_NM` 列中只有几百个不同的公园和游乐场名称。根据 [LowCardinality](/sql-reference/data-types/lowcardinality#description) 的建议，`LowCardinality(String)` 字段中的不同字符串数量应控制在 10,000 个以下，因此这个数量相对较小。
-
 
 ### DateTime 字段 {#datetime-fields}
 
@@ -278,7 +276,6 @@ FORMAT PrettyCompact"
 └───────────────────┴───────────────────┘
 ```
 
-
 ## 制定计划 {#make-a-plan}
 
 基于以上分析结果：
@@ -327,7 +324,6 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
-
 ## 将日期和时间字符串转换为 DateTime64 类型 {#convert-the-date-and-time-string-to-a-datetime64-type}
 
 在本指南的前面部分中，我们发现 TSV 文件中存在早于 1970 年 1 月 1 日的日期，这意味着这些日期需要使用 64 位的 DateTime 类型。同时，还需要将日期格式从 `MM/DD/YYYY` 转换为 `YYYY/MM/DD`。这两项操作都可以通过 [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parsedatetime64besteffort) 来完成。
@@ -348,7 +344,6 @@ FORMAT PrettyCompact"
 上面的第 2 行和第 3 行是上一步拼接得到的结果，而第 4 行和第 5 行将这些字符串解析为 `DateTime64`。由于投诉结束时间不一定存在，因此使用了 `parseDateTime64BestEffortOrNull`。
 
 结果：
-
 
 ```response
 ┌─────────complaint_begin─┬───────────complaint_end─┐
@@ -383,7 +378,6 @@ FORMAT PrettyCompact"
 :::note
 上方显示为 `1925` 的日期是源数据错误导致的。在原始数据中，有若干记录的年份为 `1019` - `1022`，本应为 `2019` - `2022`。由于 1925 年 1 月 1 日是 64 位 `DateTime` 类型所能表示的最早日期，这些错误日期被统一存储为 1925 年 1 月 1 日。
 :::
-
 
 ## 创建表 {#create-a-table}
 
@@ -482,7 +476,6 @@ CREATE TABLE NYPD_Complaint (
   ORDER BY ( borough, offense_description, date_reported )
 ```
 
-
 ### 查找表的主键 {#finding-the-primary-key-of-a-table}
 
 ClickHouse 的 `system` 数据库，特别是 `system.table`，存储了你刚刚创建的表的所有信息。下面的查询会显示 `ORDER BY`（排序键）和 `PRIMARY KEY`：
@@ -503,16 +496,15 @@ FORMAT Vertical
 ```response
 Query id: 6a5b10bf-9333-4090-b36e-c7f08b1d9e01
 
-第 1 行:
+Row 1:
 ──────
-分区键:
-排序键:   borough, offense_description, date_reported
-主键:   borough, offense_description, date_reported
-表:         NYPD_Complaint
+partition_key:
+sorting_key:   borough, offense_description, date_reported
+primary_key:   borough, offense_description, date_reported
+table:         NYPD_Complaint
 
-1 行结果集。耗时: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
-
 
 ## 预处理并导入数据 {#preprocess-import-data}
 
@@ -568,7 +560,6 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
   | clickhouse-client --query='INSERT INTO NYPD_Complaint FORMAT TSV'
 ```
 
-
 ## 验证数据 {#validate-data}
 
 :::note
@@ -589,7 +580,7 @@ FROM NYPD_Complaint
 │  208993 │
 └─────────┘
 
-1 行在集合中。耗时：0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 ClickHouse 中的数据集大小只相当于原始 TSV 文件的 12%，将原始 TSV 文件的大小与表的大小进行比较：
@@ -609,7 +600,6 @@ WHERE name = 'NYPD_Complaint'
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
-
 
 ## 执行一些查询 {#run-queries}
 
@@ -633,23 +623,22 @@ ORDER BY complaints DESC
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
-│ 三月     │      34536 │ ███████████████████████████████████████████████████████▎ │
-│ 五月       │      34250 │ ██████████████████████████████████████████████████████▋  │
-│ 四月     │      32541 │ ████████████████████████████████████████████████████     │
-│ 一月   │      30806 │ █████████████████████████████████████████████████▎       │
-│ 二月  │      28118 │ ████████████████████████████████████████████▊            │
-│ 十一月  │       7474 │ ███████████▊                                             │
-│ 十二月  │       7223 │ ███████████▌                                             │
-│ 十月   │       7070 │ ███████████▎                                             │
-│ 九月 │       6910 │ ███████████                                              │
-│ 八月    │       6801 │ ██████████▊                                              │
-│ 六月      │       6779 │ ██████████▋                                              │
-│ 七月      │       6485 │ ██████████▍                                              │
+│ March     │      34536 │ ███████████████████████████████████████████████████████▎ │
+│ May       │      34250 │ ██████████████████████████████████████████████████████▋  │
+│ April     │      32541 │ ████████████████████████████████████████████████████     │
+│ January   │      30806 │ █████████████████████████████████████████████████▎       │
+│ February  │      28118 │ ████████████████████████████████████████████▊            │
+│ November  │       7474 │ ███████████▊                                             │
+│ December  │       7223 │ ███████████▌                                             │
+│ October   │       7070 │ ███████████▎                                             │
+│ September │       6910 │ ███████████                                              │
+│ August    │       6801 │ ██████████▊                                              │
+│ June      │       6779 │ ██████████▋                                              │
+│ July      │       6485 │ ██████████▍                                              │
 └───────────┴────────────┴──────────────────────────────────────────────────────────┘
 
-返回 12 行。耗时：0.006 秒。已处理 20.899 万行，417.99 KB（3748 万行/秒，74.96 MB/秒）
+12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
-
 
 ### 查询 2：按行政区对比投诉总数 {#query-2-compare-total-number-of-complaints-by-borough}
 
@@ -679,9 +668,8 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 │ (null)        │        383 │ ▏                            │
 └───────────────┴────────────┴──────────────────────────────┘
 
-6 行数据。耗时: 0.008 秒。处理了 208.99 千行，209.43 KB (27.14 百万行/秒，27.20 MB/秒)
+6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
-
 
 ## 后续步骤 {#next-steps}
 

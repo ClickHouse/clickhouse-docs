@@ -9,7 +9,6 @@ doc_type: 'guide'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
 # データのバックフィル {#backfilling-data}
 
 ClickHouse を新規に利用している場合でも、既存のデプロイメントを担当している場合でも、履歴データでテーブルをバックフィルする必要が生じることがあります。状況によっては比較的単純ですが、マテリアライズドビューをバックフィルする必要がある場合は、より複雑になることがあります。本ガイドでは、そのようなタスクに対してユーザーが自身のユースケースに適用できるいくつかの手順を説明します。
@@ -17,8 +16,6 @@ ClickHouse を新規に利用している場合でも、既存のデプロイメ
 :::note
 本ガイドでは、ユーザーがすでに [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) の概念と、[S3 や GCS などのテーブル関数を用いたデータ読み込み](/integrations/s3) に精通していることを前提としています。また、[オブジェクトストレージからの挿入パフォーマンス最適化](/integrations/s3/performance) に関するガイドも併せて読むことを推奨します。そこでの推奨事項は、このガイド全体で行う挿入処理に適用できます。
 :::
-
-
 
 ## サンプルデータセット {#example-dataset}
 
@@ -31,10 +28,10 @@ SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 
 ┌────count()─┐
-│ 2039988137 │ -- 20億4000万
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 row in set. Elapsed: 32.726 sec. Processed 20億4000万 rows, 170.05 KB (6234万 rows/s., 5.20 KB/s.)
+1 row in set. Elapsed: 32.726 sec. Processed 2.04 billion rows, 170.05 KB (62.34 million rows/s., 5.20 KB/s.)
 Peak memory usage: 239.50 MiB.
 ```
 
@@ -71,7 +68,6 @@ SETTINGS describe_compact_output = 1
 1兆行を超える完全な PyPI データセットは、公開デモ環境である [clickpy.clickhouse.com](https://clickpy.clickhouse.com) で利用できます。このデータセットの詳細（デモがパフォーマンス向上のためにマテリアライズドビューをどのように活用しているかや、データが毎日どのように取り込まれているかなど）については、[こちら](https://github.com/ClickHouse/clickpy) を参照してください。
 :::
 
-
 ## バックフィルのシナリオ {#backfilling-scenarios}
 
 バックフィルは通常、ある時点以降のデータストリームを取り込んでいる場合に必要になります。このデータは [インクリメンタルなマテリアライズドビュー](/materialized-view/incremental-materialized-view) を介して ClickHouse のテーブルに挿入され、ブロックが挿入されるたびにトリガーされます。これらのビューは、挿入前にデータを変換したり、集計を計算して、その結果をダウンストリームのアプリケーションで後から使用するためのターゲットテーブルに送信している場合があります。
@@ -84,8 +80,6 @@ SETTINGS describe_compact_output = 1
 データはオブジェクトストレージからバックフィルされるものとします。いずれの場合も、データ挿入の中断は避けることを目指します。
 
 履歴データのバックフィルには、オブジェクトストレージ上のデータを用いて実施することを推奨します。データは、可能であれば Parquet にエクスポートしておくと、読み取り性能と圧縮率（ネットワーク転送量の削減）の観点で最適です。ファイルサイズは 150MB 前後が一般的に好まれますが、ClickHouse は [70 を超えるファイルフォーマット](/interfaces/formats) をサポートしており、あらゆるサイズのファイルを処理できます。
-
-
 
 ## 複製テーブルとビューの使用 {#using-duplicate-tables-and-views}
 
@@ -128,16 +122,16 @@ GROUP BY project
 INSERT INTO pypi SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{000..100}.parquet')
 
-0 行。経過時間: 15.702 秒。41.23 百万行、3.94 GB を処理しました (2.63 百万行/秒、251.01 MB/秒)。
-ピーク時メモリ使用量: 977.49 MiB。
+0 rows in set. Elapsed: 15.702 sec. Processed 41.23 million rows, 3.94 GB (2.63 million rows/s., 251.01 MB/s.)
+Peak memory usage: 977.49 MiB.
 
 SELECT count() FROM pypi
 
 ┌──count()─┐
-│ 20612750 │ -- 約 2,061 万行
+│ 20612750 │ -- 20.61 million
 └──────────┘
 
-1 行。経過時間: 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
@@ -146,8 +140,8 @@ FROM pypi_downloads
 │   20612750 │ -- 20.61 million
 └────────────┘
 
-1 行。経過時間: 0.006 秒。96.15 千行、769.23 KB を処理しました (16.53 百万行/秒、132.26 MB/秒)。
-ピーク時メモリ使用量: 682.38 KiB。
+1 row in set. Elapsed: 0.006 sec. Processed 96.15 thousand rows, 769.23 KB (16.53 million rows/s., 132.26 MB/s.)
+Peak memory usage: 682.38 KiB.
 ```
 
 別のサブセット `{101..200}` を読み込みたいとします。`pypi` に直接 `INSERT` することもできますが、テーブルを複製して作成することで、このバックフィル処理を本番とは切り離して実行できます。
@@ -175,29 +169,28 @@ GROUP BY project
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
 
-0 行が返されました。経過時間: 17.545 秒。40.80 百万行、3.90 GB を処理しました (2.33 百万行/秒、222.29 MB/秒)。
-ピークメモリ使用量: 991.50 MiB。
+0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
+Peak memory usage: 991.50 MiB.
 
 SELECT count()
 FROM pypi_v2
 
 ┌──count()─┐
-│ 20400020 │ -- 2,040万件
+│ 20400020 │ -- 20.40 million
 └──────────┘
 
-1 行が返されました。経過時間: 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads_v2
 
 ┌─sum(count)─┐
-│   20400020 │ -- 2,040万件
+│   20400020 │ -- 20.40 million
 └────────────┘
 
-1 行が返されました。経過時間: 0.006 秒。95.49 千行、763.90 KB を処理しました (14.81 百万行/秒、118.45 MB/秒)。
-ピークメモリ使用量: 688.77 KiB。
+1 row in set. Elapsed: 0.006 sec. Processed 95.49 thousand rows, 763.90 KB (14.81 million rows/s., 118.45 MB/s.)
+Peak memory usage: 688.77 KiB.
 ```
-
 
 この 2 回目のロードのいずれかの時点で障害が発生した場合でも、単に `pypi_v2` および `pypi_downloads_v2` テーブルを [TRUNCATE](/managing-data/truncate) して、データロードをやり直すことができます。
 
@@ -206,11 +199,11 @@ FROM pypi_downloads_v2
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-0行のセット。経過時間: 1.401秒
+0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
-0行のセット。経過時間: 0.389秒
+0 rows in set. Elapsed: 0.389 sec.
 ```
 
 :::note パーティション名
@@ -224,19 +217,19 @@ SELECT count()
 FROM pypi
 
 ┌──count()─┐
-│ 41012770 │ -- 約4101万
+│ 41012770 │ -- 41.01 million
 └──────────┘
 
-1 行。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   41012770 │ -- 約4101万
+│   41012770 │ -- 41.01 million
 └────────────┘
 
-1 行。経過時間: 0.007 秒。191.64 千行、1.53 MB を処理しました (27.34 百万行/秒、218.74 MB/秒)。
+1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
 
 SELECT count()
 FROM pypi_v2
@@ -257,13 +250,12 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
---全ファイルの読み込み完了まで継続、またはMOVE PARTITION呼び出しを実行
+--continued to all files loaded OR MOVE PARTITION call is performed
 ```
 
 :::note
 ClickPipes はオブジェクトストレージからデータをロードする際にこのアプローチを使用し、ターゲットテーブルとそのマテリアライズドビューの複製を自動的に作成することで、ユーザーが上記の手順を実行する必要がなくなります。さらに、複数のワーカースレッドを使用し、それぞれが glob パターンを使って異なるサブセットを自身の複製テーブルで処理することで、「厳密 1 回だけの処理 (exactly-once)」セマンティクスを保ちながら高速にデータをロードできます。興味がある方は、[このブログ](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)でさらに詳しい内容を確認できます。
 :::
-
 
 ## シナリオ 1: 既存のデータインジェストを利用したデータのバックフィル {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
@@ -287,8 +279,8 @@ FROM pypi
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
 
-1行が返されました。経過時間: 0.163秒。処理された行数: 13億4000万行、5.37 GB (82億4000万行/秒、32.96 GB/秒)
-ピークメモリ使用量: 227.84 MiB。
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
 上記から、`2024-12-17 09:00:00` より前のデータをロードする必要があることが分かります。先ほどの手順を用いて、複製用のテーブルとビューを作成し、タイムスタンプでフィルタしてそのサブセットをロードします。
@@ -327,7 +319,6 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::note ClickHouse Cloud では ClickPipes を使うだけでよい
 ClickHouse Cloud のユーザーは、データを専用のバケットに分離でき（かつフィルターが不要な）場合、履歴バックアップの復元には ClickPipes を使用することを推奨します。複数ワーカーによるロードの並列化でロード時間を短縮できるだけでなく、ClickPipes は上記のプロセスを自動化し、メインテーブルおよびマテリアライズドビューの両方に対して複製テーブルを作成します。
 :::
-
 
 ## シナリオ 2: 既存テーブルへのマテリアライズドビューの追加 {#scenario-2-adding-materialized-views-to-existing-tables}
 
@@ -397,16 +388,15 @@ GROUP BY
     hour,
  project
 
-OK.
+Ok.
 
-セット内の行数: 0 行。経過時間: 2.830 秒。処理行数: 7.9889 億行、17.40 GB (2.8228 億行/秒、6.15 GB/秒)。
-ピークメモリ使用量: 543.71 MiB。
+0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
+Peak memory usage: 543.71 MiB.
 ```
 
 :::note
 上記の例では、対象テーブルは [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) です。この場合は、元の集約クエリをそのまま使用できます。より複雑なユースケースで [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) を利用する場合は、集約のために `-State` 関数を使用します。この例は[こちら](/integrations/s3/performance#be-aware-of-merges)で確認できます。
 :::
-
 
 このケースでは、比較的軽量な集約で、3 秒未満で完了し、メモリ使用量も 600MiB 未満です。より複雑または長時間実行される集約の場合は、前述の複製テーブルのアプローチ、すなわちシャドウ用のターゲットテーブル（例: `pypi_downloads_per_day_v2`）を作成し、そこに `INSERT` してから、その結果のパーティションを `pypi_downloads_per_day` にアタッチすることで、このプロセスをより堅牢にできます。
 
@@ -463,12 +453,11 @@ GROUP BY
 ```sql
 INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
 
-0行のセット。経過時間: 27.325秒。処理: 15億行、33.48 GB (5473万行/秒、1.23 GB/秒)
-ピークメモリ使用量: 639.47 MiB。
+0 rows in set. Elapsed: 27.325 sec. Processed 1.50 billion rows, 33.48 GB (54.73 million rows/s., 1.23 GB/s.)
+Peak memory usage: 639.47 MiB.
 ```
 
 ここではメモリ使用量が `639.47 MiB` になっていることに注目してください。
-
 
 ##### パフォーマンスとリソースのチューニング {#tuning-performance--resources}
 
@@ -513,7 +502,6 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-
 最後に、`min_insert_block_size_rows` を 0（ブロックサイズを決定する要因として無効化）に、`min_insert_block_size_bytes` を 10485760（10MiB）に設定することで、メモリ使用量をさらに削減できます。
 
 ```sql
@@ -526,7 +514,7 @@ WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1, max_threads = 1, min_insert_block_size_rows = 0, min_insert_block_size_bytes = 10485760
 
 0 rows in set. Elapsed: 43.293 sec. Processed 1.50 billion rows, 33.48 GB (34.54 million rows/s., 773.36 MB/s.)
-ピークメモリ使用量: 218.64 MiB。
+Peak memory usage: 218.64 MiB.
 ```
 
 最後に、ブロックサイズを小さくするとパーツ数が増え、マージ処理の負荷が高くなることに注意してください。[こちら](/integrations/s3/performance#be-aware-of-merges)で説明しているように、これらの設定は慎重に変更する必要があります。
@@ -548,30 +536,30 @@ PyPI と、前に作成した新しいマテリアライズドビュー `pypi_do
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-結果セット 1 行。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- (1) 挿入を一時停止する
--- (2) 対象テーブルの複製を作成する
+-- (1) Pause inserts
+-- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-結果セット 1 行。経過時間: 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
--- (3) 元の対象テーブルのパーティションを複製テーブルにアタッチする。
+-- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
  (ATTACH PARTITION tuple() FROM pypi)
 
--- (4) 新しいマテリアライズドビューを作成する
+-- (4) Create our new materialized views
 
 CREATE TABLE pypi_downloads_per_day
 (
@@ -592,7 +580,7 @@ GROUP BY
     hour,
  project
 
--- (4) 挿入を再開する。ここでは 1 行を挿入して状況を再現する。
+-- (4) Restart inserts. We replicate here by inserting a single row.
 
 INSERT INTO pypi SELECT *
 FROM pypi
@@ -601,19 +589,19 @@ LIMIT 1
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988138 │ -- 20.4億
+│ 2039988138 │ -- 2.04 billion
 └────────────┘
 
-結果セット 1 行。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- pypi_v2 には以前と同じ行数が含まれていることに注目してください
+-- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
 ┌────count()─┐
-│ 2039988137 │ -- 20.4億
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
--- (5) バックアップである pypi_v2 を使ってビューをバックフィルする
+-- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
  toStartOfHour(timestamp) as hour,
@@ -624,9 +612,10 @@ GROUP BY
     hour,
  project
 
-結果セット 0 行。経過時間: 3.719 秒。20.4 億行、47.15 GB を処理しました (548.57 百万行/秒、12.68 GB/秒)。
-```
+0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
 
+DROP TABLE pypi_v2;
+```
 
 DROP TABLE pypi&#95;v2;
 

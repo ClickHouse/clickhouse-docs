@@ -3,12 +3,9 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-
-
 # HomebrewによるClickHouseのインストール {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
-
 
 ## コミュニティ版 Homebrew フォーミュラを使用してインストールする {#install-using-community-homebrew-formula}
 
@@ -18,7 +15,6 @@ ClickHouse コミュニティの [Homebrew フォーミュラ](https://formulae.
 ```bash
 brew install --cask clickhouse
 ```
-
 
 ## macOS での開発元検証エラーの解消 {#fix-developer-verification-error-macos}
 
@@ -77,18 +73,17 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 これで `clickhouse` 実行ファイルを実行できるようになったはずです。
 
 ```shell
-ClickHouse
+clickhouse
 ```
 
 次のような出力が得られるはずです:
 
 ```bash
-以下のいずれかのコマンドを使用します：
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ```
-
 
 ## ClickHouseを再インストールして問題を修正する {#fix-issue}
 

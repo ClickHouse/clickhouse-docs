@@ -7,13 +7,9 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # MySQL テーブルエンジン {#mysql-table-engine}
 
 MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -66,7 +62,6 @@ SETTINGS
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
 
-
 ## 使用例 {#usage-example}
 
 MySQL でテーブルを作成します:
@@ -78,10 +73,10 @@ mysql> CREATE TABLE `test`.`test` (
     ->   `float` FLOAT NOT NULL,
     ->   `float_nullable` FLOAT NULL DEFAULT NULL,
     ->   PRIMARY KEY (`int_id`));
-クエリ OK, 0 行が影響しました (0.09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into test (`int_id`, `float`) VALUES (1,2);
-クエリ OK, 1 行が影響しました (0.00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from test;
 +------+----------+-----+----------+
@@ -89,7 +84,7 @@ mysql> select * from test;
 +------+----------+-----+----------+
 |      1 |         NULL |     2 |           NULL |
 +------+----------+-----+----------+
-1 行取得 (0.00 秒)
+1 row in set (0,00 sec)
 ```
 
 通常の引数を使って ClickHouse にテーブルを作成する：
@@ -131,7 +126,6 @@ SELECT * FROM mysql_table
 │           ᴺᵁᴸᴸ │      1 │
 └────────────────┴────────┘
 ```
-
 
 ## 設定 {#mysql-settings}
 
@@ -198,8 +192,6 @@ SELECT * FROM mysql_table
 - 正の整数。
 
 デフォルト値: `300`。
-
-
 
 ## 関連項目 {#see-also}
 

@@ -20,7 +20,6 @@ ClickHouse 提供了一个原生命令行客户端，用于直接对 ClickHouse 
 该客户端通过进度条以及已读取行数、已处理字节数和查询执行时间，为查询执行提供实时反馈。
 它既支持[命令行选项](#command-line-options)，也支持[配置文件](#configuration_files)。
 
-
 ## 安装 {#install}
 
 若要下载 ClickHouse，请运行：
@@ -39,7 +38,6 @@ sudo ./clickhouse install
 
 不同版本的客户端和服务器之间是兼容的，但某些功能在较旧的客户端中可能不可用。我们建议客户端和服务器使用相同的版本。
 
-
 ## 运行 {#run}
 
 :::note
@@ -51,9 +49,9 @@ sudo ./clickhouse install
 ```bash
 $ clickhouse-client --host server
 
-ClickHouse 客户端版本 24.12.2.29（官方构建）。
-正在以用户 default 身份连接到 server:9000。
-已连接到 ClickHouse 服务器版本 24.12.2。
+ClickHouse client version 24.12.2.29 (official build).
+Connecting to server:9000 as user default.
+Connected to ClickHouse server version 24.12.2.
 
 :)
 ```
@@ -70,7 +68,6 @@ ClickHouse 客户端版本 24.12.2.29（官方构建）。
 | `--connection <name>`            | 来自[配置文件](#connection-credentials)的预配置连接详细信息名称。                                               |
 
 有关命令行选项的完整列表，请参阅[命令行选项](#command-line-options)。
-
 
 ### 连接到 ClickHouse Cloud {#connecting-cloud}
 
@@ -123,7 +120,6 @@ ClickHouse Cloud 服务的详细信息可在 ClickHouse Cloud 控制台中查看
 为了专注于查询语法，其余示例省略了连接详细信息（`--host`、`--port` 等）。在实际使用这些命令时，请记得补充这些参数。
 :::
 
-
 ## 交互模式 {#interactive-mode}
 
 ### 使用交互式模式 {#using-interactive-mode}
@@ -138,9 +134,9 @@ clickhouse-client
 连接成功后，你会看到一个提示符，在那里即可输入查询：
 
 ```bash
-ClickHouse 客户端版本 25.x.x.x
-正在以 default 用户身份连接到 localhost:9000。
-已连接到 ClickHouse 服务器版本 25.x.x.x
+ClickHouse client version 25.x.x.x
+Connecting to localhost:9000 as user default.
+Connected to ClickHouse server version 25.x.x.x
 
 hostname :)
 ```
@@ -167,7 +163,6 @@ ClickHouse Client 基于 `replxx`（类似于 `readline`），因此支持常见
 * `quit` 或 `quit;`
 * `q`、`Q` 或 `:q`
 * `logout` 或 `logout;`
-
 
 ### 查询处理信息 {#processing-info}
 
@@ -247,7 +242,6 @@ $ echo "Hello\nGoodbye" | clickhouse-client --query "INSERT INTO messages FORMAT
 
 当指定 `--query` 时，所有输入内容都会在一个换行符之后被追加到请求中。
 
-
 ### 向远程 ClickHouse 服务插入 CSV 文件 {#cloud-example}
 
 本示例将示例数据集 CSV 文件 `cell_towers.csv` 插入到 `default` 数据库中已存在的 `cell_towers` 表中：
@@ -260,7 +254,6 @@ clickhouse-client --host HOSTNAME.clickhouse.cloud \
   --query "INSERT INTO cell_towers FORMAT CSVWithNames" \
   < cell_towers.csv
 ```
-
 
 ### 从命令行插入数据的示例 {#more-examples}
 
@@ -290,7 +283,6 @@ cat file.csv | clickhouse-client --database=test --query="INSERT INTO test FORMA
 在批量模式下，默认的数据[格式](formats.md)为 `TabSeparated`。
 您可以在查询的 `FORMAT` 子句中设置格式，如上例所示。
 
-
 ## 带参数的查询 {#cli-queries-with-parameters}
 
 你可以在查询中指定参数，并通过命令行选项向其传递参数值。
@@ -306,7 +298,7 @@ $ clickhouse-client --param_parName="[1, 2]" --query "SELECT {parName: Array(UIn
 
 ```text
 $ clickhouse-client
-ClickHouse 客户端版本 25.X.X.XXX（官方构建）。
+ClickHouse client version 25.X.X.XXX (official build).
 
 #highlight-next-line
 :) SET param_parName='[1, 2]';
@@ -315,9 +307,9 @@ SET param_parName = '[1, 2]'
 
 Query id: 7ac1f84e-e89a-4eeb-a4bb-d24b8f9fd977
 
-完成。
+Ok.
 
-结果集包含 0 行。耗时：0.000 秒。
+0 rows in set. Elapsed: 0.000 sec.
 
 #highlight-next-line
 :) SELECT {parName:Array(UInt16)}
@@ -330,9 +322,8 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 1. │ [1,2]                    │
    └──────────────────────────┘
 
-结果集包含 1 行。耗时：0.006 秒。
+1 row in set. Elapsed: 0.006 sec.
 ```
-
 
 ### 查询语法 {#cli-queries-with-parameters-syntax}
 
@@ -347,7 +338,6 @@ Query id: 0358a729-7bbe-4191-bb48-29b063c548a7
 | `name`      | 占位符标识符。对应的命令行选项为 `--param_<name> = value`。                                                                                                                                                                                                                                        |
 | `data type` | 参数的[数据类型](../sql-reference/data-types/index.md)。<br /><br />例如，类似 `(integer, ('string', integer))` 的数据结构可以使用 `Tuple(UInt8, Tuple(String, UInt8))` 数据类型（也可以采用其他[整数](../sql-reference/data-types/int-uint.md)类型）。<br /><br />也可以将表名、数据库名和列名作为参数传递，在这种情况下，则需要将其数据类型指定为 `Identifier`。 |
 
-
 ### 示例 {#cli-queries-with-parameters-examples}
 
 ```bash
@@ -357,7 +347,6 @@ $ clickhouse-client --param_tuple_in_tuple="(10, ('dt', 10))" \
 $ clickhouse-client --param_tbl="numbers" --param_db="system" --param_col="number" --param_alias="top_ten" \
     --query "SELECT {col:Identifier} as {alias:Identifier} FROM {db:Identifier}.{tbl:Identifier} LIMIT 10"
 ```
-
 
 ## 基于 AI 的 SQL 生成 {#ai-sql-generation}
 
@@ -370,7 +359,7 @@ ClickHouse 客户端内置了 AI 助手，可以根据自然语言描述生成 S
 要使用 AI SQL 生成功能，请在自然语言查询前添加前缀 `??`：
 
 ```bash
-:) ?? 显示过去 30 天内有购买记录的所有用户
+:) ?? show all users who made purchases in the last 30 days
 ```
 
 AI 将会：
@@ -379,13 +368,12 @@ AI 将会：
 2. 基于发现的表和列生成合适的 SQL 查询
 3. 立即执行生成的查询
 
-
 ### 示例 {#ai-sql-generation-example}
 
 ```bash
 :) ?? count orders by product category
 
-正在启动 AI SQL 生成并进行架构发现...
+Starting AI SQL generation with schema discovery...
 ──────────────────────────────────────────────────
 
 🔍 list_databases
@@ -400,7 +388,7 @@ AI 将会：
    table: orders
    ➜ CREATE TABLE orders (order_id UInt64, product_id UInt64, quantity UInt32, ...)
 
-✨ SQL 查询生成成功！
+✨ SQL query generated successfully!
 ──────────────────────────────────────────────────
 
 SELECT 
@@ -412,7 +400,6 @@ JOIN sales_db.categories c ON p.category_id = c.category_id
 GROUP BY c.name
 ORDER BY order_count DESC
 ```
-
 
 ### 配置 {#ai-sql-generation-configuration}
 
@@ -429,15 +416,14 @@ ORDER BY order_count DESC
 这样无需配置文件即可快速完成设置：
 
 ```bash
-# 使用 OpenAI {#using-openai}
+# Using OpenAI
 export OPENAI_API_KEY=your-openai-key
 clickhouse-client
 
-# 使用 Anthropic {#using-anthropic}
+# Using Anthropic
 export ANTHROPIC_API_KEY=your-anthropic-key
 clickhouse-client
 ```
-
 
 #### 配置文件 {#ai-sql-generation-configuration-file}
 
@@ -454,28 +440,28 @@ clickhouse-client
     ```xml
     <config>
         <ai>
-            <!-- 必填：您的 API 密钥（或通过环境变量设置） -->
+            <!-- Required: Your API key (or set via environment variable) -->
             <api_key>your-api-key-here</api_key>
 
-            <!-- 必填：提供方类型（openai, anthropic） -->
+            <!-- Required: Provider type (openai, anthropic) -->
             <provider>openai</provider>
 
-            <!-- 要使用的模型（默认值因提供方而异） -->
+            <!-- Model to use (defaults vary by provider) -->
             <model>gpt-4o</model>
 
-            <!-- 可选：用于兼容 OpenAI 的服务的自定义 API 端点 -->
+            <!-- Optional: Custom API endpoint for OpenAI-compatible services -->
             <!-- <base_url>https://openrouter.ai/api</base_url> -->
 
-            <!-- Schema 探索设置 -->
+            <!-- Schema exploration settings -->
             <enable_schema_access>true</enable_schema_access>
 
-            <!-- 生成参数 -->
+            <!-- Generation parameters -->
             <temperature>0.0</temperature>
             <max_tokens>1000</max_tokens>
             <timeout_seconds>30</timeout_seconds>
             <max_steps>10</max_steps>
 
-            <!-- 可选：自定义 system prompt -->
+            <!-- Optional: Custom system prompt -->
             <!-- <system_prompt>You are an expert ClickHouse SQL assistant...</system_prompt> -->
         </ai>
     </config>
@@ -485,28 +471,28 @@ clickhouse-client
   <TabItem value="yaml" label="YAML">
     ```yaml
     ai:
-      # 必填：您的 API 密钥（或通过环境变量设置）
+      # Required: Your API key (or set via environment variable)
       api_key: your-api-key-here
 
-      # 必填：提供方类型（openai, anthropic）
+      # Required: Provider type (openai, anthropic)
       provider: openai
 
-      # 要使用的模型
+      # Model to use
       model: gpt-4o
 
-      # 可选：用于兼容 OpenAI 的服务的自定义 API 端点
+      # Optional: Custom API endpoint for OpenAI-compatible services
       # base_url: https://openrouter.ai/api
 
-      # 启用 schema 访问 —— 允许 AI 查询数据库/数据表信息
+      # Enable schema access - allows AI to query database/table information
       enable_schema_access: true
 
-      # 生成参数
-      temperature: 0.0      # 控制随机性（0.0 = 确定性）
-      max_tokens: 1000      # 最大响应长度
-      timeout_seconds: 30   # 请求超时时间
-      max_steps: 10         # 最大 schema 探索步数
+      # Generation parameters
+      temperature: 0.0      # Controls randomness (0.0 = deterministic)
+      max_tokens: 1000      # Maximum response length
+      timeout_seconds: 30   # Request timeout
+      max_steps: 10         # Maximum schema exploration steps
 
-      # 可选：自定义 system prompt
+      # Optional: Custom system prompt
       # system_prompt: |
       #   You are an expert ClickHouse SQL assistant. Convert natural language to SQL.
       #   Focus on performance and use ClickHouse-specific optimizations.
@@ -521,28 +507,27 @@ clickhouse-client
 
 ```yaml
 ai:
-  provider: openai  # 使用 'openai' 以确保兼容性
+  provider: openai  # Use 'openai' for compatibility
   api_key: your-openrouter-api-key
   base_url: https://openrouter.ai/api/v1
-  model: anthropic/claude-3.5-sonnet  # 使用 OpenRouter 模型命名规范
+  model: anthropic/claude-3.5-sonnet  # Use OpenRouter model naming
 ```
 
 **最小化配置示例：**
 
 ```yaml
-# 最小配置 - 使用环境变量提供 API 密钥 {#minimal-config-uses-environment-variable-for-api-key}
+# Minimal config - uses environment variable for API key
 ai:
-  provider: openai  # 将使用 OPENAI_API_KEY 环境变量
+  provider: openai  # Will use OPENAI_API_KEY env var
 
-# 无配置 - 自动回退 {#no-config-at-all-automatic-fallback}
-# (空配置或无 ai 部分 - 将依次尝试 OPENAI_API_KEY 然后 ANTHROPIC_API_KEY) {#empty-or-no-ai-section-will-try-openai_api_key-then-anthropic_api_key}
+# No config at all - automatic fallback
+# (Empty or no ai section - will try OPENAI_API_KEY then ANTHROPIC_API_KEY)
 
-# 仅覆盖模型 - 使用环境变量提供 API 密钥 {#only-override-model-uses-env-var-for-api-key}
+# Only override model - uses env var for API key
 ai:
   provider: openai
   model: gpt-3.5-turbo
 ```
-
 
 ### 参数 {#ai-sql-generation-parameters}
 
@@ -650,7 +635,6 @@ clickhouse:[//[user[:password]@][hosts_and_ports]][/database][?query_parameters]
 | `database`         | 数据库名称。                                                                 | `default`        |
 | `query_parameters` | 键值对列表：`param1=value1[,&param2=value2], ...`。对于某些参数，可以不指定值。参数名称和值区分大小写。 | -                |
 
-
 ### 注意事项 {#connection-string-notes}
 
 如果在连接字符串中已经指定了用户名、密码或数据库，则不能再通过 `--user`、`--password` 或 `--database` 指定（反之亦然）。
@@ -685,7 +669,6 @@ ClickHouse 客户端会按顺序（从左到右）尝试连接这些主机。
 * `database`
 * `query parameters`
 
-
 ### 示例 {#connection_string_examples}
 
 连接到 `localhost` 的 9000 端口并执行查询 `SELECT 1`。
@@ -717,7 +700,7 @@ clickhouse-client clickhouse://localhost:9000 '-m'
 ```bash
 clickhouse-client clickhouse://default@localhost:9000
 
-# 等同于： {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost:9000 --user default
 ```
 
@@ -726,7 +709,7 @@ clickhouse-client clickhouse://localhost:9000 --user default
 ```bash
 clickhouse-client clickhouse://localhost:9000/my_database
 
-# 等效于： {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost:9000 --database my_database
 ```
 
@@ -735,7 +718,7 @@ clickhouse-client clickhouse://localhost:9000 --database my_database
 ```bash
 clickhouse-client clickhouse://localhost/my_database?s
 
-# 等同于： {#equivalent-to}
+# equivalent to:
 clickhouse-client clickhouse://localhost/my_database -s
 ```
 
@@ -750,7 +733,7 @@ clickhouse-client clickhouse:
 ```bash
 clickhouse-client clickhouse://my_user@
 
-# 在 : 和 @ 之间使用空密码表示在建立连接前提示用户输入密码。 {#using-a-blank-password-between-and-means-to-asking-the-user-to-enter-the-password-before-starting-the-connection}
+# Using a blank password between : and @ means to asking the user to enter the password before starting the connection.
 clickhouse-client clickhouse://my_user:@
 ```
 
@@ -766,13 +749,12 @@ clickhouse-client clickhouse://some_user%40some_mail.com@localhost:9000
 clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```
 
-
 ## 查询 ID 格式 {#query-id-format}
 
 在交互模式下，ClickHouse 客户端会为每个查询显示其查询 ID。默认情况下，ID 的格式如下：
 
 ```sql
-查询 ID：927f137d-00f1-4175-8914-0dd066365e96
+Query id: 927f137d-00f1-4175-8914-0dd066365e96
 ```
 
 可以在配置文件的 `query_id_formats` 标签中指定自定义格式。格式字符串中的 `{query_id}` 占位符会被替换为查询 ID。该标签中可以包含多个格式字符串。
@@ -793,7 +775,6 @@ clickhouse-client clickhouse://192.168.1.15,192.168.1.25
 ```response
 speedscope:http://speedscope-host/#profileURL=qp%3Fid%3Dc8ecc783-e753-4b38-97f1-42cddfb98b7d
 ```
-
 
 ## 配置文件 {#configuration_files}
 
@@ -894,7 +875,6 @@ $ clickhouse-client --max_threads 1
 ```
 
 有关所有设置的列表，请参阅[设置](../operations/settings/settings.md)。
-
 
 ### 格式选项 {#command-line-options-formatting}
 

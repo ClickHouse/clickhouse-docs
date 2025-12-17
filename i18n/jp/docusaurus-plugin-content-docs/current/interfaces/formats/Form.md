@@ -31,7 +31,7 @@ SELECT * FROM file(data.tmp, Form) FORMAT vertical;
 ```
 
 ```response title="Response"
-行 1:
+Row 1:
 ──────
 t_page:   116
 c.e:      ls7xfkpm
@@ -39,6 +39,5 @@ c.tti.m:  raf
 rt.start: navigation
 rt.bmr:   390,11,10
 ```
-
 
 ## 書式設定 {#format-settings}

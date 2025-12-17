@@ -10,6 +10,7 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 # 字典 {#dictionaries}
@@ -88,7 +89,6 @@ ClickHouse：
 你可以通过在 `SELECT` 查询中以字典形式描述一个小型字典来转换其值（参见 [transform](../../sql-reference/functions/other-functions.md) 函数）。该功能与字典机制本身无关。
 :::
 
-
 ## 配置字典 {#configuring-a-dictionary}
 
 <CloudDetails />
@@ -129,7 +129,6 @@ SOURCE(...) -- 数据源配置
 LAYOUT(...) -- 内存布局配置
 LIFETIME(...) -- 字典在内存中的存活时间
 ```
-
 
 ## 在内存中存储字典 {#storing-dictionaries-in-memory}
 
@@ -209,7 +208,6 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
 ...
 ```
 
-
 ## 在内存中存储字典的方式 {#ways-to-store-dictionaries-in-memory}
 
 在内存中存储字典数据的不同方法，在 CPU 和 RAM 使用上各有权衡。字典相关[博客文章](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)中 [Choosing a Layout](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout) 段落给出的决策树，是选择使用哪种布局的良好起点。
@@ -257,7 +255,6 @@ LAYOUT(LAYOUT_TYPE(param value)) -- 布局设置
 ```sql
 LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
-
 
 ### hashed {#hashed}
 
@@ -315,7 +312,6 @@ LAYOUT(HASHED())
 LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-
 ### sparse&#95;hashed {#sparse_hashed}
 
 与 `hashed` 类似，但更节省内存，以更高的 CPU 使用率为代价。
@@ -342,7 +338,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 对于此类字典也可以使用 `shards`，同理，这对 `sparse_hashed` 比对 `hashed` 更为重要，因为 `sparse_hashed` 更慢。
 
-
 ### complex&#95;key&#95;hashed {#complex_key_hashed}
 
 这种存储类型用于具有复合[键](#dictionary-key-and-fields)的场景，其工作方式类似于 `hashed`。
@@ -365,7 +360,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-
 ### complex&#95;key&#95;sparse&#95;hashed {#complex_key_sparse_hashed}
 
 这种存储类型用于复合[键](#dictionary-key-and-fields)。与 [sparse&#95;hashed](#sparse_hashed) 类似。
@@ -387,7 +381,6 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 ```sql
 LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
-
 
 ### hashed&#95;array {#hashed_array}
 
@@ -412,7 +405,6 @@ LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MA
 LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### complex&#95;key&#95;hashed&#95;array {#complex_key_hashed_array}
 
 此类存储用于复合[键](#dictionary-key-and-fields)，类似于[hashed&#95;array](#hashed_array)。
@@ -431,15 +423,13 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### range&#95;hashed {#range_hashed}
 
-字典以哈希表形式存储在内存中，并带有一个有序的区间数组及其对应的值。
+字典以哈希表的形式存储在内存中，包含一个有序的区间数组及其对应的值。
 
-字典键的类型为 [UInt64](../../sql-reference/data-types/int-uint.md)。
-这种存储方式与 hashed 相同，并且在键之外还允许使用日期/时间（任意数值类型）的区间。
+这种存储方式与 `hashed` 相同，除了键以外，还允许使用日期/时间（任意数值类型）区间。
 
-示例：表中以如下格式存储了每个广告主的折扣信息：
+示例：表中包含针对每个广告主的折扣，格式如下：
 
 ```text
 ┌─advertiser_id─┬─discount_start_date─┬─discount_end_date─┬─amount─┐
@@ -449,10 +439,10 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-要在日期范围上使用采样，请在[结构](#dictionary-key-and-fields)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type` 字段（如果未指定 `type`，则将使用默认类型 Date）。`type` 可以是任何数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
+要基于日期范围进行采样，请在[结构](#dictionary-key-and-fields)中定义 `range_min` 和 `range_max` 元素。这些元素必须包含 `name` 和 `type`（如果未指定 `type`，将使用默认类型 Date）。`type` 可以是任意数值类型（Date / DateTime / UInt64 / Int32 / 其他）。
 
 :::note
-`range_min` 和 `range_max` 的值应能容纳在 `Int64` 类型范围内。
+`range_min` 和 `range_max` 的值应在 `Int64` 类型的取值范围内。
 :::
 
 示例：
@@ -495,7 +485,7 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-要使用这些字典，需要向 `dictGet` 函数传递一个用于指定范围的额外参数：
+要使用这些字典，需要向 `dictGet` 函数额外传入一个参数，用于指定区间：
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
@@ -507,17 +497,16 @@ dictGet('dict_name', 'attr_name', id, date)
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-此函数会返回在包含传入日期的日期范围内，指定 `id` 对应的值。
+此函数返回指定 `id` 在包含传入日期的日期范围内的值。
 
 算法细节：
 
-* 如果未找到 `id`，或者为该 `id` 未找到范围，则返回该属性类型的默认值。
-* 如果存在重叠范围且 `range_lookup_strategy=min`，则在匹配范围中返回 `range_min` 最小的范围；如果找到多个范围，则返回其中 `range_max` 最小的范围；如果仍然有多个范围（若多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
-* 如果存在重叠范围且 `range_lookup_strategy=max`，则在匹配范围中返回 `range_min` 最大的范围；如果找到多个范围，则返回其中 `range_max` 最大的范围；如果仍然有多个范围（若多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
-* 如果 `range_max` 为 `NULL`，则该范围向上为开区间。`NULL` 被视为可能的最大值。对于 `range_min`，可以使用 `1970-01-01` 或 `0` (-MAX&#95;INT) 作为表示向下开区间的值。
+* 如果未找到 `id` 或者为该 `id` 未找到范围，则返回该属性类型的默认值。
+* 如果存在重叠范围且 `range_lookup_strategy=min`，则返回一个匹配范围，其 `range_min` 最小；如果找到多个范围，则返回其中 `range_max` 最小的范围；如果仍然找到多个范围（多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
+* 如果存在重叠范围且 `range_lookup_strategy=max`，则返回一个匹配范围，其 `range_min` 最大；如果找到多个范围，则返回其中 `range_max` 最大的范围；如果仍然找到多个范围（多个范围具有相同的 `range_min` 和 `range_max`），则从中随机返回一个范围。
+* 如果 `range_max` 为 `NULL`，则该范围在上界为开区间。`NULL` 被视为可能的最大值。对于 `range_min`，可以使用 `1970-01-01` 或 `0` (-MAX&#95;INT) 作为无下界的开区间值。
 
 配置示例：
-
 
 ```xml
 <clickhouse>
@@ -565,7 +554,6 @@ RANGE(MIN StartTimeStamp MAX EndTimeStamp)
 ```
 
 包含重叠区间和开区间的配置示例：
-
 
 ```sql
 CREATE TABLE discounts
@@ -689,7 +677,6 @@ LAYOUT(COMPLEX_KEY_RANGE_HASHED())
 RANGE(MIN StartDate MAX EndDate);
 ```
 
-
 ### cache {#cache}
 
 字典存储在一个具有固定数量单元格的缓存中。这些单元格中保存着经常使用的元素。
@@ -748,7 +735,6 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 不要使用 ClickHouse 作为数据源，因为它在处理包含随机读取的查询时比较慢。
 :::
 
-
 ### complex_key_cache {#complex_key_cache}
 
 此种存储类型用于复合[键](#dictionary-key-and-fields)，类似于 `cache`。
@@ -783,7 +769,6 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
     PATH '/var/lib/clickhouse/user_files/test_dict'))
 ```
 
-
 ### complex_key_ssd_cache {#complex_key_ssd_cache}
 
 这种存储类型用于复合[键](#dictionary-key-and-fields)，与 `ssd_cache` 类似。
@@ -809,7 +794,6 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 ```sql
 LAYOUT(DIRECT())
 ```
-
 
 ### complex_key_direct {#complex_key_direct}
 
@@ -924,7 +908,6 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 目前尚不支持其他类型。该函数会返回与此 IP 地址对应前缀相关联的属性。如果存在重叠前缀，则返回最具体的那个。
 
 数据必须完全载入 RAM。
-
 
 ## 使用 LIFETIME 刷新字典数据 {#refreshing-dictionary-data-using-lifetime}
 
@@ -1057,7 +1040,6 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ...
 ```
 
-
 ## 字典数据源 {#dictionary-sources}
 
 <CloudDetails />
@@ -1072,7 +1054,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
     ...
     <source>
       <source_type>
-        <!-- 数据源配置 -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1086,7 +1068,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- 数据源配置
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1127,6 +1109,7 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
 
 
 ### 本地文件 {#local-file}
@@ -1159,7 +1142,6 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 * [Dictionary 函数](/sql-reference/table-functions/dictionary)
 
-
 ### 可执行文件 {#executable-file}
 
 对可执行文件的处理方式取决于[字典在内存中的存储方式](#storing-dictionaries-in-memory)。如果字典使用 `cache` 和 `complex_key_cache` 进行存储，ClickHouse 会通过向可执行文件的 STDIN 发送请求来获取所需的键。否则，ClickHouse 会启动可执行文件，并将其输出视为字典数据。
@@ -1188,7 +1170,6 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 * `send_chunk_header` - 控制在发送一块数据进行处理之前，是否先发送行数。可选参数。默认值为 `false`。
 
 这种字典数据源只能通过 XML 配置进行配置。通过 DDL 创建带可执行数据源的字典已被禁用；否则，DB 用户将能够在 ClickHouse 节点上执行任意二进制文件。
-
 
 ### 可执行池 {#executable-pool}
 
@@ -1224,7 +1205,6 @@ Setting 字段：
 * `send_chunk_header` - 控制在发送要处理的数据块之前，是否先发送行数。可选参数。默认值为 `false`。
 
 该字典源只能通过 XML 配置进行配置。禁止通过 DDL 创建使用 executable 源的字典，否则数据库用户将能够在 ClickHouse 节点上执行任意二进制程序。
-
 
 ### HTTP(S) {#https}
 
@@ -1278,7 +1258,6 @@ SOURCE(HTTP(
 
 当使用 DDL 命令（`CREATE DICTIONARY ...`）创建字典时，会将 HTTP 字典的远程主机与配置中的 `remote_url_allow_hosts` 部分内容进行比对，以防止数据库用户访问任意 HTTP 服务器。
 
-
 ### 数据库管理系统（DBMS） {#dbms}
 
 #### ODBC {#odbc}
@@ -1328,7 +1307,6 @@ ClickHouse 从 ODBC 驱动程序接收引号符号，并在发往驱动程序的
 
 如果在使用 Oracle 时遇到编码问题，请参阅相应的 [FAQ](/knowledgebase/oracle-odbc) 条目。
 
-
 ##### ODBC 字典功能的已知漏洞 {#known-vulnerability-of-the-odbc-dictionary-functionality}
 
 :::note
@@ -1357,7 +1335,6 @@ SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 ```
 
 ODBC 驱动程序会将 `odbc.ini` 中的 `USERNAME` 和 `PASSWORD` 值发送到 `some-server.com`。
-
 
 ##### 连接 PostgreSQL 的示例 {#example-of-connecting-postgresql}
 
@@ -1439,7 +1416,6 @@ LIFETIME(MIN 300 MAX 360)
 ```
 
 您可能需要编辑 `odbc.ini`，将驱动程序库的完整路径指定为：`DRIVER=/usr/local/lib/psqlodbcw.so`。
-
 
 ##### 连接 MS SQL Server 的示例 {#example-of-connecting-ms-sql-server}
 
@@ -1545,7 +1521,6 @@ SOURCE(ODBC(table 'dict' connection_string 'DSN=MSSQL;UID=test;PWD=test'))
 LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
-
 
 #### MySQL {#mysql}
 
@@ -1664,7 +1639,6 @@ SOURCE(MYSQL(
 ))
 ```
 
-
 #### ClickHouse {#clickhouse}
 
 设置示例：
@@ -1717,7 +1691,6 @@ SOURCE(CLICKHOUSE(
 :::note
 `table` 或 `where` 字段不能与 `query` 字段一起使用，并且必须声明 `table` 或 `query` 字段中的一个。
 :::
-
 
 #### MongoDB {#mongodb}
 
@@ -1788,7 +1761,6 @@ SOURCE(MONGODB(
 
 [关于该引擎的更多信息](../../engines/table-engines/integrations/mongodb.md)
 
-
 #### Redis {#redis}
 
 配置示例：
@@ -1821,7 +1793,6 @@ SOURCE(REDIS(
 * `port` – Redis 服务器上的端口。
 * `storage_type` – 用于处理键的 Redis 内部存储结构。`simple` 用于简单数据源以及对单个键进行哈希的数据源，`hash_map` 用于具有两个键的哈希数据源。不支持范围型数据源以及具有复杂键的缓存数据源。可以省略，默认值为 `simple`。
 * `db_index` – Redis 逻辑数据库的具体数值索引。可以省略，默认值为 0。
-
 
 #### Cassandra {#cassandra}
 
@@ -1864,7 +1835,6 @@ SOURCE(REDIS(
 :::note
 `column_family` 或 `where` 字段不能与 `query` 字段同时使用。同时必须至少声明 `column_family` 和 `query` 字段中的一个。
 :::
-
 
 #### PostgreSQL {#postgresql}
 
@@ -1925,6 +1895,47 @@ SOURCE(POSTGRESQL(
 `table` 或 `where` 字段不能与 `query` 字段同时使用。同时，`table` 和 `query` 字段中必须至少声明一个。
 :::
 
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+这是一个实验性特性，将来版本中可能会发生不向后兼容的变更。
+通过设置 [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)
+来启用 YTsaurus 字典源。
+:::
+
+设置示例：
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+或
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+设置字段：
+
+* `http_proxy_urls` – 指向 YTsaurus HTTP 代理的 URL。
+* `cypress_path` – 指向表数据源的 Cypress 路径。
+* `oauth_token` – OAuth 令牌。
+
 
 ### Null {#null}
 
@@ -1942,7 +1953,6 @@ SOURCE(NULL())
 LAYOUT(FLAT())
 LIFETIME(0);
 ```
-
 
 ## 字典键和字段 {#dictionary-key-and-fields}
 
@@ -1990,7 +2000,6 @@ PRIMARY KEY Id
 * `PRIMARY KEY` — 键列
 * `AttrName AttrType` — 数据列。可以有多个属性。
 
-
 ## 键 {#key}
 
 ClickHouse 支持以下类型的键：
@@ -2033,7 +2042,6 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` – 作为主键的列名。
 
-
 ### 复合键 {#composite-key}
 
 键可以是由任意类型字段组成的 `tuple`。在这种情况下，[layout](#storing-dictionaries-in-memory) 必须为 `complex_key_hashed` 或 `complex_key_cache`。
@@ -2074,7 +2082,6 @@ PRIMARY KEY field1, field2
 
 对于对 `dictGet*` 函数的查询，会传入一个 `tuple` 作为键。示例：`dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
 
-
 ## 属性 {#attributes}
 
 配置示例：
@@ -2103,7 +2110,6 @@ CREATE DICTIONARY somename (
 ```
 
 配置项字段：
-
 
 | Tag                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Required |
 |------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -2176,7 +2182,6 @@ ClickHouse 为外部字典属性提供层级（hierarchical）特性。借助这
     </structure>
 </dictionary>
 ```
-
 
 ## 多边形字典 {#polygon-dictionaries}
 
@@ -2281,7 +2286,6 @@ SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, '
 
 查询：
 
-
 ```sql
 CREATE TABLE polygons_test_table
 (
@@ -2311,7 +2315,6 @@ SELECT * FROM polygons_test_dictionary;
 │ [[[(3,1),(0,1),(0,-1),(3,-1)]]] │ Value │
 └─────────────────────────────────┴───────┘
 ```
-
 
 ## 正则表达式树字典 {#regexp-tree-dictionary}
 
@@ -2383,7 +2386,6 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 借助功能强大的 YAML 配置文件，我们可以将正则树字典用作 User-Agent 字符串解析器。我们支持 [uap-core](https://github.com/ua-parser/uap-core)，并在功能测试用例 [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) 中演示了其用法。
 
-
 #### 收集属性值 {#collecting-attribute-values}
 
 有时，与其只返回叶子节点的值，不如返回所有匹配成功的多个正则表达式的值更有用。在这种情况下，可以使用专门的 [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictGetAll) 函数。如果某个节点具有类型为 `T` 的属性值，`dictGetAll` 将返回一个包含零个或多个值的 `Array(T)`。
@@ -2444,7 +2446,6 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 #### 匹配模式 {#matching-modes}
 
@@ -2519,7 +2520,6 @@ SOURCE(CLICKHOUSE(TABLE 'regexp_dictionary_source_table'))
 LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
-
 
 ## 嵌入式字典 {#embedded-dictionaries}
 

@@ -7,19 +7,13 @@ title: 'Ограничения для настроек'
 doc_type: 'reference'
 ---
 
-
-
 # Ограничения настроек {#constraints-on-settings}
-
-
 
 ## Обзор {#overview}
 
 В ClickHouse под «ограничениями настроек» понимаются ограничения и правила,
 которые можно назначать этим настройкам. Эти ограничения можно применять для
 поддержания стабильности, безопасности и предсказуемого поведения вашей базы данных.
-
-
 
 ## Определение ограничений {#defining-constraints}
 
@@ -34,29 +28,29 @@ doc_type: 'reference'
   <user_name>
     <constraints>
       <setting_name_1>
-        <min>нижняя_граница</min>
+        <min>lower_boundary</min>
       </setting_name_1>
       <setting_name_2>
-        <max>верхняя_граница</max>
+        <max>upper_boundary</max>
       </setting_name_2>
       <setting_name_3>
-        <min>нижняя_граница</min>
-        <max>верхняя_граница</max>
+        <min>lower_boundary</min>
+        <max>upper_boundary</max>
       </setting_name_3>
       <setting_name_4>
         <readonly/>
       </setting_name_4>
       <setting_name_5>
-        <min>нижняя_граница</min>
-        <max>верхняя_граница</max>
+        <min>lower_boundary</min>
+        <max>upper_boundary</max>
         <changeable_in_readonly/>
       </setting_name_5>
       <setting_name_6>
-        <min>нижняя_граница</min>
-        <max>верхняя_граница</max>
-        <disallowed>значение1</disallowed>
-        <disallowed>значение2</disallowed>
-        <disallowed>значение3</disallowed>
+        <min>lower_boundary</min>
+        <max>upper_boundary</max>
+        <disallowed>value1</disallowed>
+        <disallowed>value2</disallowed>
+        <disallowed>value3</disallowed>
         <changeable_in_readonly/>
       </setting_name_6>
     </constraints>
@@ -66,7 +60,6 @@ doc_type: 'reference'
 
 Если пользователь пытается нарушить ограничения, выбрасывается исключение, а
 настройка остаётся без изменений.
-
 
 ## Типы ограничений {#types-of-constraints}
 
@@ -104,7 +97,6 @@ doc_type: 'reference'
 
 :::
 
-
 ## Несколько профилей ограничений {#multiple-constraint-profiles}
 
 Если для пользователя активно несколько профилей, ограничения объединяются. 
@@ -117,8 +109,6 @@ doc_type: 'reference'
   объединяются так, что каждый тип ограничения, который не задан, берётся из
   предыдущего профиля, а каждый заданный тип ограничения заменяется значением
   из нового профиля.
-
-
 
 ## Режим только для чтения {#read-only}
 
@@ -163,9 +153,9 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: Значение настройки max_memory_usage не должно превышать 20000000000.
-Code: 452, e.displayText() = DB::Exception: Значение настройки max_memory_usage не должно быть меньше 5000000000.
-Code: 452, e.displayText() = DB::Exception: Настройка force_index_by_date не должна изменяться.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
+Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
 ```
 
 :::note
@@ -173,7 +163,6 @@ Code: 452, e.displayText() = DB::Exception: Настройка force_index_by_da
 профиля `default`, становятся ограничениями по умолчанию и, соответственно, применяются ко всем пользователям,
 пока для конкретных пользователей они явно не будут переопределены.
 :::
-
 
 ## Ограничения для настроек MergeTree {#constraints-on-merge-tree-settings}
 

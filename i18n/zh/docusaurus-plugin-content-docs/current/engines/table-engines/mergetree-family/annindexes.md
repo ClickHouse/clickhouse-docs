@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # 精确与近似向量搜索 {#exact-and-approximate-vector-search}
 
 在给定多维（向量）空间中的一个点时，寻找与其距离最近的 N 个点的问题，被称为[最近邻搜索](https://en.wikipedia.org/wiki/Nearest_neighbor_search)，简称向量搜索。
@@ -24,7 +23,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 子句为可选项
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -34,7 +33,6 @@ LIMIT <N>
 `&lt;DistanceFunction&gt;` 计算参考点与所有已存储点之间的距离。
 可以使用任意可用的[距离函数](/sql-reference/functions/distance-functions)来实现。
 `&lt;N&gt;` 指定应返回多少个近邻。
-
 
 ## 精确向量搜索 {#exact-nearest-neighbor-search}
 
@@ -65,7 +63,6 @@ LIMIT 3;
 3. │  8 │ [0,2.2] │
    └────┴─────────┘
 ```
-
 
 ## 近似向量搜索 {#approximate-nearest-neighbor-search}
 
@@ -146,7 +143,6 @@ ORDER BY [...]
 所有 HNSW 专用参数的默认值在大多数用例中都有良好表现。
 因此，我们不建议自定义这些 HNSW 专用参数。
 
-
 适用以下进一步限制：
 
 * 向量相似度索引只能建立在类型为 [Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md) 或 [Array(BFloat16)](../../../sql-reference/data-types/array.md) 的列上。诸如 `Array(Nullable(Float32))` 和 `Array(LowCardinality(Float32))` 这类可为空或低基数浮点数组不被允许。
@@ -164,13 +160,13 @@ ORDER BY [...]
 表中向量列的存储占用（未压缩）：
 
 ```text
-存储消耗 = 向量数量 × 维度 × 列数据类型大小
+Storage consumption = Number of vectors * Dimension * Size of column data type
 ```
 
 以 [DBpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) 为例：
 
 ```text
-存储消耗 = 100 万 × 1536 × 4（Float32 类型）= 6.1 GB
+Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
 在执行搜索时，必须将向量相似度索引从磁盘完整加载到内存中。
@@ -179,19 +175,19 @@ ORDER BY [...]
 加载一个向量索引所需的内存占用：
 
 ```text
-索引中向量的内存占用 (mv) = 向量数量 × 维度 × 量化数据类型大小
-内存图的内存占用 (mg) = 向量数量 × hnsw_max_connections_per_layer × 每节点 ID 字节数 (= 4) × 层节点重复因子 (= 2)
+Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
+Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_layer * Bytes_per_node_id (= 4) * Layer_node_repetition_factor (= 2)
 
-内存消耗总量:mv + mg
+Memory consumption: mv + mg
 ```
 
 [dbpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M)的示例：
 
 ```text
-索引中向量的内存占用 (mv) = 100 万 × 1536 × 2 (BFloat16 格式) = 3072 MB
-内存图的内存占用 (mg) = 100 万 × 64 × 2 × 4 = 512 MB
+Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
+Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 
-总内存消耗 = 3072 + 512 = 3584 MB
+Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 上述公式未将向量相似度索引在分配运行时数据结构（例如预分配缓冲区和缓存）时所需的额外内存考虑在内。
@@ -208,7 +204,7 @@ ORDER BY [...]
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 子句为可选项
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -219,7 +215,6 @@ ClickHouse 的查询优化器会尝试匹配上述查询模板，并利用可用
 高级用户可以为设置 [hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search) 提供自定义值（也称为 HNSW 超参数 &quot;ef&#95;search&quot;），以在搜索过程中调节候选列表的大小（例如 `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
 该设置的默认值为 256，在大多数用例中表现良好。
 更高的取值意味着更高的准确性，但会以性能变慢为代价。
-
 
 如果查询可以使用向量相似性索引，ClickHouse 会检查在 SELECT 查询中提供的 LIMIT `<N>` 是否处于合理范围内。
 更具体地说，如果 `<N>` 大于设置项 [max&#95;limit&#95;for&#95;vector&#95;search&#95;queries](../../../operations/settings/settings.md#max_limit_for_vector_search_queries) 的值（默认值为 100），则会返回错误。
@@ -242,10 +237,10 @@ LIMIT 10;
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (投影名称)                                                                      │
- 2. │   Limit (初步 LIMIT(不含 OFFSET))                                                    │
- 3. │     Sorting (ORDER BY 排序)                                                              │
- 4. │       Expression ((ORDER BY 之前 + (投影 + 将列名更改为列标识符))) │
+ 1. │ Expression (Project names)                                                                      │
+ 2. │   Limit (preliminary LIMIT (without OFFSET))                                                    │
+ 3. │     Sorting (Sorting for ORDER BY)                                                              │
+ 4. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers))) │
  5. │         ReadFromMergeTree (default.tab)                                                         │
  6. │         Indexes:                                                                                │
  7. │           PrimaryKey                                                                            │
@@ -308,7 +303,6 @@ ClickHouse 将裁剪除 2025 分区外的所有分区。
 
 如果额外过滤条件无法通过索引（主键索引、跳跃索引）进行计算，ClickHouse 将在扫描结果上执行后置过滤。
 
-
 *可以使用主键索引评估的附加过滤条件*
 
 如果附加过滤条件可以使用[主键](mergetree.md#primary-key)进行评估（即它们构成主键的前缀），并且
@@ -333,7 +327,7 @@ ClickHouse 将裁剪除 2025 分区外的所有分区。
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代亚洲帝国相关书籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 ```
 
@@ -348,7 +342,7 @@ LIMIT 10
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代亚洲帝国相关书籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 SETTING vector_search_index_fetch_multiplier = 3.0;
 ```
@@ -370,7 +364,6 @@ ClickHouse 随后会从磁盘加载这些 granule，并对这些 granule 中的�
 在高层级上的工作方式是：ClickHouse 将最相似的向量及其距离作为一个虚拟列 `_distances` 暴露出来。
 要查看这一点，可运行带有 `EXPLAIN header = 1` 的向量搜索查询：
 
-
 ```sql
 EXPLAIN header = 1
 WITH [0., 2.] AS reference_vec
@@ -385,15 +378,15 @@ SETTINGS vector_search_with_rescoring = 0
 Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (投影列名)                                                                              │
+ 1. │ Expression (Project names)                                                                              │
  2. │ Header: id Int32                                                                                        │
- 3. │   Limit (初步 LIMIT(无 OFFSET))                                                            │
+ 3. │   Limit (preliminary LIMIT (without OFFSET))                                                            │
  4. │   Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64     │
  5. │           __table1.id Int32                                                                             │
- 6. │     Sorting (ORDER BY 排序)                                                                      │
+ 6. │     Sorting (Sorting for ORDER BY)                                                                      │
  7. │     Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64   │
  8. │             __table1.id Int32                                                                           │
- 9. │       Expression ((ORDER BY 之前 + (投影 + 列名转换为列标识符)))         │
+ 9. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers)))         │
 10. │       Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64 │
 11. │               __table1.id Int32                                                                         │
 12. │         ReadFromMergeTree (default.tab)                                                                 │
@@ -442,7 +435,6 @@ CREATE TABLE tab(id Int32, vec Array(Float32) CODEC(NONE), INDEX idx vec TYPE ve
 例如，可以将索引创建延后到所有数据都已摄取完成之后，或延后到系统负载较低的时间段（例如周末）。
 
 **调优索引用法**
-
 
 为了执行 `SELECT` 查询并使用向量相似度索引，需要先将这些索引加载到主内存中。
 为避免同一个向量相似度索引被反复加载到主内存，ClickHouse 提供了专用的内存缓存来存储此类索引。
@@ -505,7 +497,7 @@ ClickHouse 向量索引支持以下量化选项：
 在 ClickHouse 中运行向量搜索的典型 Python 代码如下所示：
 
 ```python
-search_v = openai_client.embeddings.create(input = "[好书]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
+search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
 
 params = {'search_v': search_v}
 result = chclient.query(
@@ -514,7 +506,6 @@ result = chclient.query(
     LIMIT 10",
     parameters = params)
 ```
-
 
 嵌入向量（上面代码片段中的 `search_v`）的维度可能非常大。
 例如，OpenAI 提供的模型会生成维度为 1536 甚至 3072 的嵌入向量。
@@ -527,7 +518,7 @@ result = chclient.query(
 因此，我们建议 Python 应用以二进制形式绑定参考向量参数，使用如下方式：
 
 ```python
-search_v = openai_client.embeddings.create(input = "[好书]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
+search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
 
 params = {'$search_v_binary$': np.array(search_v, dtype=np.float32).tobytes()}
 result = chclient.query(
@@ -572,7 +563,6 @@ WHERE type = 'vector_similarity';
 理论上，子索引能够直接返回其索引块内距离给定点最近的 N 个点所对应的行。
 然而，由于 ClickHouse 从磁盘加载数据到内存时的粒度是 granule，子索引会将匹配行扩展到 granule 粒度。
 这与常规跳过索引不同，后者是以索引块粒度来跳过数据的。
-
 
 `GRANULARITY` 参数决定会创建多少个向量相似度子索引。
 更大的 `GRANULARITY` 值意味着子索引更少但更大，极端情况下，一个列（或列的数据分片）只会有单个子索引。
@@ -630,7 +620,6 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 1. 存储原始的全精度数据。
 2. 允许在查询时指定量化精度。
 
-
 这是通过以按位分组（bit-grouped）格式存储数据实现的（即将所有向量的第 i 位比特存放在一起），从而只在请求的精度级别进行读取。这样，你可以在保留全部原始数据、按需访问的前提下，从量化带来的 I/O 和计算量减少中获得速度优势。当选择最大精度时，搜索结果即为精确匹配。
 
 :::note
@@ -641,7 +630,7 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 要声明一个 `QBit` 类型的列，请使用以下语法：
 
 ```sql
-列名 QBit(元素类型, 维度)
+column_name QBit(element_type, dimension)
 ```
 
 其中：
@@ -714,7 +703,6 @@ ORDER BY distance;
 6. │ dog    │   3.17766975527459 │
    └────────┴────────────────────┘
 ```
-
 
 请注意，使用 12 位量化时，我们在加快查询执行的同时，依然能够很好地逼近实际距离。相对排序基本保持一致，`apple` 仍然是距离最近的匹配项。
 

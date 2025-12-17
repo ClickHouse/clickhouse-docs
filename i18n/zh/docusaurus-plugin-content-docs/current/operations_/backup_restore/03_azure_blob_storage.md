@@ -8,16 +8,11 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # 使用 Azure Blob Storage 进行备份/恢复 {#backup-to-azure-blob-storage}
-
-
 
 ## 语法 {#syntax}
 
 <Syntax/>
-
-
 
 ## 配置 BACKUP / RESTORE 以使用 AzureBlobStorage 端点 {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 

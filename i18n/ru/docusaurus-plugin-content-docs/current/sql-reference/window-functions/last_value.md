@@ -72,7 +72,7 @@ FROM salaries;
 Результат:
 
 ```response
-   ┌─игрок───────────┬─зарплата─┬─самый_низкооплачиваемый_игрок─┐
+   ┌─player──────────┬─salary─┬─lowest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Michael Stanley    │
 2. │ Robert George   │ 195000 │ Michael Stanley    │
 3. │ Charles Juarez  │ 190000 │ Michael Stanley    │
@@ -80,5 +80,5 @@ FROM salaries;
 5. │ Douglas Benson  │ 150000 │ Michael Stanley    │
 6. │ James Henderson │ 140000 │ Michael Stanley    │
 7. │ Michael Stanley │ 100000 │ Michael Stanley    │
-   └─────────────────┴──────────┴────────────────────────────────┘
+   └─────────────────┴────────┴────────────────────┘
 ```

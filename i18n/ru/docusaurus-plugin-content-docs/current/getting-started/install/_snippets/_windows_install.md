@@ -1,7 +1,5 @@
 # Установка ClickHouse на Windows с помощью WSL {#install-clickhouse-on-windows-with-wsl}
 
-
-
 ## Требования {#requirements}
 
 :::note
@@ -9,7 +7,6 @@
 :::
 
 <VerticalStepper>
-
 
 ## Установка WSL {#install-wsl}
 
@@ -22,9 +19,8 @@ wsl --install
 Вас попросят ввести новое имя пользователя UNIX и пароль. После ввода выбранных имени пользователя и пароля должно появиться сообщение, подобное следующему:
 
 ```bash
-Добро пожаловать в Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
-
 
 ## Установите ClickHouse с помощью скрипта curl {#install-clickhouse-via-script-using-curl}
 
@@ -37,10 +33,9 @@ curl https://clickhouse.com/ | sh
 Если скрипт успешно выполнен, вы увидите сообщение:
 
 ```bash
-Бинарный файл ClickHouse успешно загружен. Запустите его следующим образом:
+Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
-
 
 ## Запуск clickhouse-local {#start-clickhouse-local}
 
@@ -55,7 +50,6 @@ curl https://clickhouse.com/ | sh
 ./clickhouse
 ```
 
-
 ## Запуск clickhouse-server {#start-clickhouse-server}
 
 Если вы хотите обеспечить сохранность данных, вам нужно запустить `clickhouse-server`. Вы можете
@@ -64,7 +58,6 @@ curl https://clickhouse.com/ | sh
 ```bash
 ./clickhouse server
 ```
-
 
 ## Start clickhouse-client {#start-clickhouse-client}
 

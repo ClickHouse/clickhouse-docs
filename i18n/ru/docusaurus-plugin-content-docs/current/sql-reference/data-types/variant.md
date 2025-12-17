@@ -42,7 +42,7 @@ SELECT v FROM test;
 Использование CAST для обычных столбцов:
 
 ```sql
-SELECT toTypeName(variant) AS type_name, 'Привет, мир!'::Variant(UInt64, String, Array(UInt64)) as variant;
+SELECT toTypeName(variant) AS type_name, 'Hello, World!'::Variant(UInt64, String, Array(UInt64)) as variant;
 ```
 
 ```text
@@ -217,9 +217,9 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └─────────┴───────────────┘
 ```
 
-````sql
+```sql
 SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String, Variant(UInt64, Bool, Date))') AS map_of_variants, mapApply((k, v) -> (k, variantType(v)), map_of_variants) AS map_of_variant_types```
-````
+```
 
 ```text
 ┌─map_of_variants─────────────────────────────┬─map_of_variant_types──────────────────────────┐
@@ -227,7 +227,7 @@ SELECT CAST(map('key1', '42', 'key2', 'true', 'key3', '2020-01-01'), 'Map(String
 └─────────────────────────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-Чтобы отключить парсинг при преобразовании из `String` в `Variant`, вы можете отключить параметр `cast_string_to_dynamic_use_inference`:
+To disable parsing during conversion from `String` to `Variant` you can disable setting `cast_string_to_dynamic_use_inference`:
 
 ```sql
 SET cast_string_to_variant_use_inference = 0;
@@ -240,9 +240,9 @@ SELECT '[1, 2, 3]'::Variant(String, Array(UInt64)) as variant, variantType(varia
 └───────────┴──────────────┘
 ```
 
-### Преобразование обычного столбца в столбец Variant {#converting-an-ordinary-column-to-a-variant-column}
+### Converting an ordinary column to a Variant column {#converting-an-ordinary-column-to-a-variant-column}
 
-Можно преобразовать обычный столбец типа `T` в столбец `Variant`, содержащий этот тип:
+It is possible to convert an ordinary column with type `T` to a `Variant` column containing this type:
 
 ```sql
 SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64, String, Array(UInt64)) as variant, variantType(variant) as variant_name
@@ -254,8 +254,7 @@ SELECT toTypeName(variant) AS type_name, [1,2,3]::Array(UInt64)::Variant(UInt64,
 └────────────────────────────────────────┴─────────┴───────────────┘
 ```
 
-Примечание: преобразование из типа `String` всегда выполняется через парсинг. Если вам нужно преобразовать столбец `String` в строковый (`String`) вариант типа `Variant` без парсинга, вы можете сделать следующее:
-
+Note: converting from `String` type is always performed through parsing, if you need to convert `String` column to `String` variant of a `Variant` without parsing, you can do the following:
 ```sql
 SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as variant, variantType(variant) as variant_type
 ```
@@ -266,9 +265,9 @@ SELECT '[1, 2, 3]'::Variant(String)::Variant(String, Array(UInt64), UInt64) as v
 └───────────┴──────────────┘
 ```
 
-### Преобразование столбца Variant в обычный столбец {#converting-a-variant-column-to-an-ordinary-column}
+### Converting a Variant column to an ordinary column {#converting-a-variant-column-to-an-ordinary-column}
 
-Можно преобразовать столбец `Variant` в обычный столбец. В этом случае все вложенные значения будут преобразованы в целевой тип:
+It is possible to convert a `Variant` column to an ordinary column. In this case all nested variants will be converted to a destination type:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -284,9 +283,9 @@ SELECT v::Nullable(Float64) FROM test;
 └──────────────────────────────┘
 ```
 
-### Преобразование одного значения Variant в другое {#converting-a-variant-to-another-variant}
+### Converting a Variant to another Variant {#converting-a-variant-to-another-variant}
 
-Можно преобразовать столбец `Variant` в другой столбец `Variant`, но только если целевой столбец `Variant` содержит все вложенные типы исходного `Variant`:
+It is possible to convert a `Variant` column to another `Variant` column, but only if the destination `Variant` column contains all nested types from the original `Variant`:
 
 ```sql
 CREATE TABLE test (v Variant(UInt64, String)) ENGINE = Memory;
@@ -302,11 +301,11 @@ SELECT v::Variant(UInt64, String, Array(UInt64)) FROM test;
 └───────────────────────────────────────────────────┘
 ```
 
-## Чтение типа Variant из данных {#reading-variant-type-from-the-data}
+## Reading Variant type from the data {#reading-variant-type-from-the-data}
 
-Все текстовые форматы (TSV, CSV, CustomSeparated, Values, JSONEachRow и т. д.) поддерживают чтение значений типа `Variant`. Во время разбора данных ClickHouse пытается поместить значение в наиболее подходящий вариант.
+All text formats (TSV, CSV, CustomSeparated, Values, JSONEachRow, etc) supports reading `Variant` type. During data parsing ClickHouse tries to insert value into most appropriate variant type.
 
-Пример:
+Example:
 
 ```sql
 SELECT
@@ -335,17 +334,15 @@ $$)
 └─────────────────────┴───────────────┴──────┴───────┴─────────────────────┴─────────┘
 ```
 
-## Сравнение значений типа Variant {#comparing-values-of-variant-data}
+## Comparing values of Variant type {#comparing-values-of-variant-data}
 
-Значения типа `Variant` можно сравнивать только со значениями того же типа `Variant`.
+Values of a `Variant` type can be compared only with values with the same `Variant` type.
 
-Результат оператора `<` для значений `v1` с базовым типом `T1` и `v2` с базовым типом `T2` типа `Variant(..., T1, ... T2, ...)` определяется следующим образом:
+The result of operator `<` for values `v1` with underlying type `T1` and `v2` with underlying type `T2`  of a type `Variant(..., T1, ... T2, ...)` is defined as follows:
+- If `T1 = T2 = T`, the result will be `v1.T < v2.T` (underlying values will be compared).
+- If `T1 != T2`, the result will be `T1 < T2` (type names will be compared).
 
-* Если `T1 = T2 = T`, результатом будет `v1.T < v2.T` (сравниваются базовые значения).
-* Если `T1 != T2`, результатом будет `T1 < T2` (сравниваются имена типов).
-
-Примеры:
-
+Examples:
 ```sql
 CREATE TABLE test (v1 Variant(String, UInt64, Array(UInt32)), v2 Variant(String, UInt64, Array(UInt32))) ENGINE=Memory;
 INSERT INTO test VALUES (42, 42), (42, 43), (42, 'abc'), (42, [1, 2, 3]), (42, []), (42, NULL);
@@ -382,9 +379,9 @@ SELECT v1, variantType(v1) AS v1_type, v2, variantType(v2) AS v2_type, v1 = v2, 
 
 ```
 
-Если вам нужно найти строку с определённым значением `Variant`, вы можете поступить одним из следующих способов:
+If you need to find the row with specific `Variant` value, you can do one of the following:
 
-* Привести значение к соответствующему типу `Variant`:
+- Cast value to the corresponding `Variant` type:
 
 ```sql
 SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, Array(UInt32));
@@ -396,7 +393,7 @@ SELECT * FROM test WHERE v2 == [1,2,3]::Array(UInt32)::Variant(String, UInt64, A
 └────┴─────────┘
 ```
 
-* Сравните подстолбец `Variant` с требуемым типом:
+- Compare `Variant` subcolumn with required type:
 
 ```sql
 SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- или с использованием variantElement(v2, 'Array(UInt32)')
@@ -408,7 +405,7 @@ SELECT * FROM test WHERE v2.`Array(UInt32)` == [1,2,3] -- или с исполь
 └────┴─────────┘
 ```
 
-Иногда полезно дополнительно проверить тип Variant, так как подколонки со сложными типами, такими как `Array/Map/Tuple`, не могут быть внутри `Nullable` и в строках с другими типами вместо `NULL` будут иметь значения по умолчанию:
+Sometimes it can be useful to make additional check on variant type as subcolumns with complex types like `Array/Map/Tuple` cannot be inside `Nullable` and will have default values instead of `NULL` on rows with different types:
 
 ```sql
 SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE v2.`Array(UInt32)` == [];
@@ -434,9 +431,9 @@ SELECT v2, v2.`Array(UInt32)`, variantType(v2) FROM test WHERE variantType(v2) =
 └────┴──────────────────┴─────────────────┘
 ```
 
-**Примечание:** значения вариантов с различными числовыми типами считаются различными и не сравниваются между собой; вместо этого сравниваются их имена типов.
+**Note:** values of variants with different numeric types are considered as different variants and not compared between each other, their type names are compared instead.
 
-Пример:
+Example:
 
 ```sql
 SET allow_suspicious_variant_types = 1;
@@ -454,11 +451,11 @@ SELECT v, variantType(v) FROM test ORDER by v;
 └─────┴────────────────┘
 ```
 
-**Примечание.** По умолчанию тип `Variant` нельзя использовать в ключах `GROUP BY`/`ORDER BY`. Если вы хотите его применять, учтите его особое правило сравнения и включите настройки `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by`.
+**Note** by default `Variant` type is not allowed in `GROUP BY`/`ORDER BY` keys, if you want to use it consider its special comparison rule and enable `allow_suspicious_types_in_group_by`/`allow_suspicious_types_in_order_by` settings.
 
-## Функции JSONExtract с Variant {#jsonextract-functions-with-variant}
+## JSONExtract functions with Variant {#jsonextract-functions-with-variant}
 
-Все функции `JSONExtract*` поддерживают тип данных `Variant`:
+All `JSONExtract*` functions support `Variant` type:
 
 ```sql
 SELECT JSONExtract('{"a" : [1, 2, 3]}', 'a', 'Variant(UInt32, String, Array(UInt32))') AS variant, variantType(variant) AS variant_type;

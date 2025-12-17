@@ -30,16 +30,19 @@ CREATE TABLE dbpedia
 
 ```
 
-
 ## Загрузка таблицы {#load-table}
 
 Чтобы загрузить набор данных из всех файлов Parquet, выполните следующую команду в оболочке:
 
 ```shell
-$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+for i in $(seq 0 25); do
+  echo "Processing file ${i}..."
+  clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+  echo "File ${i} complete."
+done
 ```
 
-Также можно выполнить отдельные SQL‑запросы, как показано ниже, чтобы загрузить каждый из 25 файлов Parquet:
+Также можно выполнить отдельные SQL‑команды, как показано ниже, чтобы загрузить каждый из 25 файлов Parquet:
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -112,12 +115,11 @@ LIMIT 20
 20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
     └───────────────────────────────────────────┴─────────────────────────────────┘
 #highlight-next-line
-Получено 20 строк. Прошло: 0.261 сек. Обработано 1.00 млн строк, 6.22 ГБ (3.84 млн строк/с., 23.81 ГБ/с.)
+20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
 Запишите задержку выполнения запроса, чтобы мы могли сравнить её с задержкой запроса для ANN (с использованием векторного индекса).
 Также зафиксируйте задержку выполнения запроса при холодном файловом кэше ОС и с `max_threads=1`, чтобы оценить реальное использование вычислительных ресурсов и пропускную способность подсистемы хранения (экстраполируйте это на производственный набор данных с миллионами векторов!).
-
 
 ## Создание индекса векторного сходства {#build-vector-similarity-index}
 
@@ -132,7 +134,6 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 Параметры и характеристики производительности при создании и поиске по индексу описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
 
 Построение и сохранение индекса может занять несколько минут в зависимости от количества доступных ядер CPU и пропускной способности подсистемы хранения.
-
 
 ## Выполнение ANN-поиска {#perform-ann-search}
 
@@ -177,9 +178,8 @@ LIMIT 20
 20. │ <dbpedia:Schynige_Platte_railway>               │ Schynige Platte railway               │
     └─────────────────────────────────────────────────┴───────────────────────────────────────┘
 #highlight-next-line
-Получено 20 строк. Прошло: 0.025 сек. Обработано 32.03 тыс. строк, 2.10 МБ (1.29 млн строк/с., 84.80 МБ/с.)
+20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
 ```
-
 
 ## Генерация эмбеддингов для поискового запроса {#generating-embeddings-for-search-query}
 
@@ -210,17 +210,17 @@ def get_embedding(text, model):
 
 
 while True:
-    # Получить поисковый запрос от пользователя
-    print("Введите поисковый запрос:")
+    # Accept the search query from user
+    print("Enter a search query :")
     input_query = sys.stdin.readline();
 
-    # Вызвать API OpenAI для получения эмбеддинга
-    print("Генерация эмбеддинга для ", input_query);
+    # Call OpenAI API endpoint to get the embedding
+    print("Generating the embedding for ", input_query);
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
-    # Выполнить векторный поисковый запрос в ClickHouse
-    print("Выполнение запроса к ClickHouse...")
+    # Execute vector search query in ClickHouse
+    print("Querying clickhouse...")
     params = {'v1':embedding, 'v2':10}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
@@ -228,7 +228,6 @@ while True:
         print(row[0], row[1], row[2])
         print("---------------")
 ```
-
 
 ## Демонстрационное приложение «Вопрос-ответ» {#q-and-a-demo-application}
 
@@ -250,18 +249,18 @@ while True:
 ```shell
 $ python3 QandA.py
 
-Введите тему: FIFA world cup 1990
-Генерация эмбеддинга для 'FIFA world cup 1990' и сбор 100 статей по этой теме из ClickHouse...
+Enter a topic : FIFA world cup 1990
+Generating the embedding for 'FIFA world cup 1990' and collecting 100 articles related to it from ClickHouse...
 
-Введите ваш вопрос: Who won the golden boot
-Сальваторе Скиллачи из Италии выиграл «Золотую бутсу» на чемпионате мира по футболу 1990 года.
+Enter your question : Who won the golden boot
+Salvatore Schillaci of Italy won the Golden Boot at the 1990 FIFA World Cup.
 
 
-Введите тему: Cricket world cup
-Генерация эмбеддинга для 'Cricket world cup' и сбор 100 статей по этой теме из ClickHouse...
+Enter a topic : Cricket world cup
+Generating the embedding for 'Cricket world cup' and collecting 100 articles related to it from ClickHouse...
 
-Введите ваш вопрос: Which country has hosted the world cup most times
-Англия и Уэльс принимали чемпионат мира по крикету наибольшее количество раз — турнир проводился в этих странах пять раз: в 1975, 1979, 1983, 1999 и 2019 годах.
+Enter your question : Which country has hosted the world cup most times
+England and Wales have hosted the Cricket World Cup the most times, with the tournament being held in these countries five times - in 1975, 1979, 1983, 1999, and 2019.
 
 $
 ```
@@ -274,56 +273,56 @@ import time
 from openai import OpenAI
 import clickhouse_connect
 
-ch_client = clickhouse_connect.get_client(compress=False) # Передайте учетные данные ClickHouse здесь
-openai_client = OpenAI() # Установите переменную окружения OPENAI_API_KEY
+ch_client = clickhouse_connect.get_client(compress=False) # Pass ClickHouse credentials here
+openai_client = OpenAI() # Set the OPENAI_API_KEY environment variable
 
 def get_embedding(text, model):
   text = text.replace("\n", " ")
   return openai_client.embeddings.create(input = [text], model=model, dimensions=1536).data[0].embedding
 
 while True:
-    # Получить тему от пользователя
-    print("Введите тему: ", end="", flush=True)
+    # Take the topic of interest from user
+    print("Enter a topic : ", end="", flush=True)
     input_query = sys.stdin.readline()
     input_query = input_query.rstrip()
 
-    # Сгенерировать вектор эмбеддинга для темы поиска и выполнить запрос к ClickHouse
-    print("Генерация эмбеддинга для '" + input_query + "' и сбор 100 связанных статей из ClickHouse...");
+    # Generate an embedding vector for the search topic and query ClickHouse
+    print("Generating the embedding for '" + input_query + "' and collecting 100 articles related to it from ClickHouse...");
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
     params = {'v1':embedding, 'v2':100}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # Собрать все найденные статьи/документы
+    # Collect all the matching articles/documents
     results = ""
     for row in result.result_rows:
         results = results + row[2]
 
-    print("\nВведите ваш вопрос: ", end="", flush=True)
+    print("\nEnter your question : ", end="", flush=True)
     question = sys.stdin.readline();
 
-    # Промпт для OpenAI Chat API
-    query = f"""Используйте приведенное ниже содержимое для ответа на следующий вопрос. Если ответ не найден, напишите «Я не знаю».
+    # Prompt for the OpenAI Chat API
+    query = f"""Use the below content to answer the subsequent question. If the answer cannot be found, write "I don't know."
 
-Содержимое:
+Content:
 \"\"\"
 {results}
 \"\"\"
 
-Вопрос: {question}"""
+Question: {question}"""
 
     GPT_MODEL = "gpt-3.5-turbo"
     response = openai_client.chat.completions.create(
         messages=[
-        {'role': 'system', 'content': "Вы отвечаете на вопросы о {input_query}."},
+        {'role': 'system', 'content': "You answer questions about {input_query}."},
         {'role': 'user', 'content': query},
        ],
        model=GPT_MODEL,
        temperature=0,
     )
 
-    # Вывести ответ на вопрос!
+    # Print the answer to the question!
     print(response.choices[0].message.content)
     print("\n")
 ```

@@ -7,8 +7,6 @@ title: 'Time64'
 doc_type: 'reference'
 ---
 
-
-
 # Time64 {#time64}
 
 数据类型 `Time64` 表示带有小数秒的一天中的时刻（time-of-day）。
@@ -20,7 +18,7 @@ doc_type: 'reference'
 **语法：**
 
 ```sql
-Time64(精度)
+Time64(precision)
 ```
 
 在内部，`Time64` 以有符号 64 位十进制数（Decimal64）的形式存储秒的小数部分。
@@ -31,7 +29,6 @@ Time64(精度)
 另见 [`Time`](../../sql-reference/data-types/time.md)。
 
 文本表示范围：当 `precision = 3` 时为 [-999:59:59.000, 999:59:59.999]。一般情况下，最小值为 `-999:59:59`，最大值为 `999:59:59`，并且最多带有 `precision` 位小数（例如，当 `precision = 9` 时，最小值为 `-999:59:59.999999999`）。
-
 
 ## 实现细节 {#implementation-details}
 
@@ -56,67 +53,52 @@ Time64(精度)
 在创建 `Time64` 类型或值时指定时区会抛出错误。  
 同样，尝试对 `Time64` 列应用或更改时区也不被支持，并会导致错误。
 
-
-
 ## 示例 {#examples}
 
 1. 创建一个包含 `Time64` 类型列的表，并向其中插入数据：
 
-```sql
-CREATE TABLE tab64
-(
-    `event_id` UInt8,
-    `time` Time64(3)
-)
-ENGINE = TinyLog;
 ```
 
-```sql
--- 解析 Time64
--- - 从字符串解析，
--- - 从自 00:00:00 起的秒数解析（小数部分根据精度确定）。
-INSERT INTO tab64 VALUES (1, '14:30:25'), (2, 52225.123), (3, '14:30:25');
-
-SELECT * FROM tab64 ORDER BY event_id;
 ```
 
-```text
-   ┌─event_id─┬────────time─┐
-1. │        1 │ 14:30:25.000 │
-2. │        2 │ 14:30:25.123 │
-3. │        3 │ 14:30:25.000 │
-   └──────────┴──────────────┘
+```
+
+```
+
+```
+
+2. Filtering on `Time64` values
+
 ```
 
 2. 按 `Time64` 值进行过滤
 
-```sql
-SELECT * FROM tab64 WHERE time = toTime64('14:30:25', 3);
 ```
 
-```text
-   ┌─event_id─┬────────time─┐
-1. │        1 │ 14:30:25.000 │
-2. │        3 │ 14:30:25.000 │
-   └──────────┴──────────────┘
 ```
 
-```sql
-SELECT * FROM tab64 WHERE time = toTime64(52225.123, 3);
 ```
 
-```text
-   ┌─event_id─┬────────time─┐
-1. │        2 │ 14:30:25.123 │
-   └──────────┴──────────────┘
+```
+
+```
+
+```
+
+```
+
+Note: `toTime64` parses numeric literals as seconds with a fractional part according to the specified precision, so provide the intended fractional digits explicitly.
+
+3. Inspecting the resulting type:
+
 ```
 
 注意：`toTime64` 会根据指定的精度，将数字字面量解析为带有小数部分的秒数，因此请显式提供预期的小数位数。
 
 3. 检查结果类型：
 
-```sql
-SELECT CAST('14:30:25.250' AS Time64(3)) AS column, toTypeName(column) AS type;
+```
+
 ```
 
 ```text

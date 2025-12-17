@@ -7,13 +7,9 @@ keywords: ['формат CSV', 'формат TSV', 'значения, разде
 doc_type: 'guide'
 ---
 
-
-
 # Работа с данными CSV и TSV в ClickHouse {#working-with-csv-and-tsv-data-in-clickhouse}
 
 ClickHouse поддерживает импорт данных из CSV и экспорт в CSV. Поскольку CSV‑файлы могут иметь различные особенности формата, включая строки заголовков, пользовательские разделители и escape‑символы, ClickHouse предоставляет форматы и настройки для эффективной обработки всех таких вариантов.
-
-
 
 ## Импорт данных из CSV‑файла {#importing-data-from-a-csv-file}
 
@@ -126,7 +122,6 @@ Joe,Nothing
 Nothing,70
 ```
 
-
 Если мы загрузим данные из этого файла, ClickHouse будет интерпретировать `Nothing` как `String` (что корректно):
 
 ```sql
@@ -136,8 +131,8 @@ SELECT * FROM file('nulls.csv')
 ```response
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
-│ Joe     │ Ничего │
-│ Ничего │ 70      │
+│ Joe     │ Nothing │
+│ Nothing │ 70      │
 └─────────┴─────────┘
 ```
 
@@ -161,7 +156,6 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
-
 ## TSV‑файлы (со значениями, разделёнными табуляцией) {#tsv-tab-separated-files}
 
 Формат данных с разделителями табуляции широко используется в качестве формата обмена данными. Для загрузки данных из [TSV‑файла](assets/data_small.tsv) в ClickHouse используется формат [TabSeparated](/interfaces/formats/TabSeparated):
@@ -175,7 +169,6 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ### Необработанный TSV {#raw-tsv}
 
 Иногда TSV‑файлы сохраняются без экранирования табуляций и символов перевода строки. Для обработки таких файлов следует использовать [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw).
-
 
 ## Экспорт в CSV {#exporting-to-csv}
 
@@ -226,7 +219,7 @@ FORMAT CSVWithNames
 ```
 
 ```response
-Получено 36838935 строк. Время выполнения: 1.304 сек. Обработано 36.84 млн строк, 1.42 ГБ (28.24 млн строк/сек., 1.09 ГБ/сек.)
+36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
 Обратите внимание, что ClickHouse потребовалась всего **~1** секунда, чтобы сохранить 36 млн строк в файл CSV.
@@ -263,7 +256,6 @@ FORMAT CSV
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
 ```
-
 
 ## Автоматическое определение схемы для файлов CSV {#schema-inference-for-csv-files}
 
@@ -326,7 +318,6 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 Теперь ClickHouse определяет типы столбцов по (второй) строке заголовка, а не пытается их угадывать.
 
-
 ## Пользовательские разделители, сепараторы и правила экранирования {#custom-delimiters-separators-and-escaping-rules}
 
 В сложных случаях текстовые данные могут быть отформатированы в сильно кастомизированном виде, но при этом сохранять структуру. В ClickHouse есть специальный формат [CustomSeparated](/interfaces/formats/CustomSeparated) для таких случаев, который позволяет задавать собственные правила экранирования, разделители, разделители строк и начальные/конечные символы.
@@ -365,7 +356,6 @@ LIMIT 3
 
 Мы также можем использовать [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames), чтобы корректно экспортировать и импортировать заголовки. Изучите форматы [regex and template](templates-regex.md) для работы с ещё более сложными случаями.
 
-
 ## Работа с большими CSV‑файлами {#working-with-large-csv-files}
 
 CSV‑файлы могут быть большими, и ClickHouse эффективно работает с файлами любого размера. Крупные файлы обычно бывают сжаты, и ClickHouse умеет работать с ними без предварительной распаковки. Мы можем использовать предложение `COMPRESSION` при вставке:
@@ -386,7 +376,6 @@ COMPRESSION 'gzip' FORMAT CSV
 ```
 
 В результате будет создан сжатый файл `data_csv.csv.gz`.
-
 
 ## Другие форматы {#other-formats}
 

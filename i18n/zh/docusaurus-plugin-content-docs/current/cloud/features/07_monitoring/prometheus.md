@@ -15,7 +15,6 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
 # Prometheus 集成 {#prometheus-integration}
 
 该功能支持集成 [Prometheus](https://prometheus.io/) 来监控 ClickHouse Cloud 服务。Prometheus 指标通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 端点对外提供访问，用户可以安全连接并将指标导出到 Prometheus 指标采集器中。这些指标可以与仪表盘（例如 Grafana、Datadog）集成，用于可视化。
@@ -44,82 +43,81 @@ import Image from '@theme/IdealImage';
 使用 ClickHouse Cloud API 密钥进行基本身份验证：
 
 ```bash
-用户名：<KEY_ID>
-密码：<KEY_SECRET>
-请求示例
+Username: <KEY_ID>
+Password: <KEY_SECRET>
+Example request
 export KEY_SECRET=<key_secret>
 export KEY_ID=<key_id>
 export ORG_ID=<org_id>
 
-# 针对 $ORG_ID 中的所有服务 {#for-all-services-in-org_id}
+# For all services in $ORG_ID
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/prometheus?filtered_metrics=true
 
-# 仅针对单个服务 {#for-a-single-service-only}
+# For a single service only
 export SERVICE_ID=<service_id>
 curl --silent --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/prometheus?filtered_metrics=true
 ```
 
-
 ### 示例响应 {#sample-response}
 
 ```response
-# HELP ClickHouse_ServiceInfo 服务信息,包括集群状态和 ClickHouse 版本 {#help-clickhouse_serviceinfo-information-about-service-including-cluster-status-and-clickhouse-version}
-# TYPE ClickHouse_ServiceInfo untyped {#type-clickhouse_serviceinfo-untyped}
+# HELP ClickHouse_ServiceInfo Information about service, including cluster status and ClickHouse version
+# TYPE ClickHouse_ServiceInfo untyped
 ClickHouse_ServiceInfo{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",clickhouse_cluster_status="running",clickhouse_version="24.5",scrape="full"} 1
 
-# HELP ClickHouseProfileEvents_Query 待解释并可能执行的查询数量。不包括解析失败的查询,或因 AST 大小限制、配额限制或并发查询数量限制而被拒绝的查询。可能包括 ClickHouse 自身发起的内部查询。不计入子查询。 {#help-clickhouseprofileevents_query-number-of-queries-to-be-interpreted-and-potentially-executed-does-not-include-queries-that-failed-to-parse-or-were-rejected-due-to-ast-size-limits-quota-limits-or-limits-on-the-number-of-simultaneously-running-queries-may-include-internal-queries-initiated-by-clickhouse-itself-does-not-count-subqueries}
-# TYPE ClickHouseProfileEvents_Query counter {#type-clickhouseprofileevents_query-counter}
+# HELP ClickHouseProfileEvents_Query Number of queries to be interpreted and potentially executed. Does not include queries that failed to parse or were rejected due to AST size limits, quota limits or limits on the number of simultaneously running queries. May include internal queries initiated by ClickHouse itself. Does not count subqueries.
+# TYPE ClickHouseProfileEvents_Query counter
 ClickHouseProfileEvents_Query{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 6
 
-# HELP ClickHouseProfileEvents_QueriesWithSubqueries 包含所有子查询的查询计数 {#help-clickhouseprofileevents_querieswithsubqueries-count-queries-with-all-subqueries}
-# TYPE ClickHouseProfileEvents_QueriesWithSubqueries counter {#type-clickhouseprofileevents_querieswithsubqueries-counter}
+# HELP ClickHouseProfileEvents_QueriesWithSubqueries Count queries with all subqueries
+# TYPE ClickHouseProfileEvents_QueriesWithSubqueries counter
 ClickHouseProfileEvents_QueriesWithSubqueries{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 230
 
-# HELP ClickHouseProfileEvents_SelectQueriesWithSubqueries 包含所有子查询的 SELECT 查询计数 {#help-clickhouseprofileevents_selectquerieswithsubqueries-count-select-queries-with-all-subqueries}
-# TYPE ClickHouseProfileEvents_SelectQueriesWithSubqueries counter {#type-clickhouseprofileevents_selectquerieswithsubqueries-counter}
+# HELP ClickHouseProfileEvents_SelectQueriesWithSubqueries Count SELECT queries with all subqueries
+# TYPE ClickHouseProfileEvents_SelectQueriesWithSubqueries counter
 ClickHouseProfileEvents_SelectQueriesWithSubqueries{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 224
 
-# HELP ClickHouseProfileEvents_FileOpen 已打开的文件数量。 {#help-clickhouseprofileevents_fileopen-number-of-files-opened}
-# TYPE ClickHouseProfileEvents_FileOpen counter {#type-clickhouseprofileevents_fileopen-counter}
+# HELP ClickHouseProfileEvents_FileOpen Number of files opened.
+# TYPE ClickHouseProfileEvents_FileOpen counter
 ClickHouseProfileEvents_FileOpen{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 4157
 
-# HELP ClickHouseProfileEvents_Seek 'lseek' 函数的调用次数。 {#help-clickhouseprofileevents_seek-number-of-times-the-lseek-function-was-called}
-# TYPE ClickHouseProfileEvents_Seek counter {#type-clickhouseprofileevents_seek-counter}
+# HELP ClickHouseProfileEvents_Seek Number of times the 'lseek' function was called.
+# TYPE ClickHouseProfileEvents_Seek counter
 ClickHouseProfileEvents_Seek{clickhouse_org="c2ba4799-a76e-456f-a71a-b021b1fafe60",clickhouse_service="12f4a114-9746-4a75-9ce5-161ec3a73c4c",clickhouse_service_name="test service",hostname="c-cream-ma-20-server-3vd2ehh-0",instance="c-cream-ma-20-server-3vd2ehh-0",table="system.events"} 1840
 
-# HELP ClickPipes_Info 始终等于 1。标签 "clickpipe_state" 包含管道的当前状态:Stopped/Provisioning/Running/Paused/Failed {#help-clickpipes_info-always-equal-to-1-label-clickpipe_state-contains-the-current-state-of-the-pipe-stoppedprovisioningrunningpausedfailed}
-# TYPE ClickPipes_Info gauge {#type-clickpipes_info-gauge}
+# HELP ClickPipes_Info Always equal to 1. Label "clickpipe_state" contains the current state of the pipe: Stopped/Provisioning/Running/Paused/Failed
+# TYPE ClickPipes_Info gauge
 ClickPipes_Info{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent",clickpipe_status="Running"} 1
 
-# HELP ClickPipes_SentEvents_Total 发送至 ClickHouse 的记录总数 {#help-clickpipes_sentevents_total-total-number-of-records-sent-to-clickhouse}
-# TYPE ClickPipes_SentEvents_Total counter {#type-clickpipes_sentevents_total-counter}
+# HELP ClickPipes_SentEvents_Total Total number of records sent to ClickHouse
+# TYPE ClickPipes_SentEvents_Total counter
 ClickPipes_SentEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5534250
 
-# HELP ClickPipes_SentBytesCompressed_Total 发送至 ClickHouse 的压缩字节总数。 {#help-clickpipes_sentbytescompressed_total-total-compressed-bytes-sent-to-clickhouse}
-# TYPE ClickPipes_SentBytesCompressed_Total counter {#type-clickpipes_sentbytescompressed_total-counter}
+# HELP ClickPipes_SentBytesCompressed_Total Total compressed bytes sent to ClickHouse.
+# TYPE ClickPipes_SentBytesCompressed_Total counter
 ClickPipes_SentBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name
 ="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 380837520
 ClickPipes_SentBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name
 
-# HELP ClickPipes_FetchedBytes_Total 从源获取的未压缩字节总数。 {#help-clickpipes_fetchedbytes_total-total-uncompressed-bytes-fetched-from-the-source}
-# TYPE ClickPipes_FetchedBytes_Total counter {#type-clickpipes_fetchedbytes_total-counter}
+# HELP ClickPipes_FetchedBytes_Total Total uncompressed bytes fetched from the source.
+# TYPE ClickPipes_FetchedBytes_Total counter
 ClickPipes_FetchedBytes_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 873286202
 
-# HELP ClickPipes_Errors_Total 数据摄取错误总数。 {#help-clickpipes_errors_total-total-errors-ingesting-data}
-# TYPE ClickPipes_Errors_Total counter {#type-clickpipes_errors_total-counter}
+# HELP ClickPipes_Errors_Total Total errors ingesting data.
+# TYPE ClickPipes_Errors_Total counter
 ClickPipes_Errors_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 0
 
-# HELP ClickPipes_SentBytes_Total 发送至 ClickHouse 的未压缩字节总数。 {#help-clickpipes_sentbytes_total-total-uncompressed-bytes-sent-to-clickhouse}
-# TYPE ClickPipes_SentBytes_Total counter {#type-clickpipes_sentbytes_total-counter}
+# HELP ClickPipes_SentBytes_Total Total uncompressed bytes sent to ClickHouse.
+# TYPE ClickPipes_SentBytes_Total counter
 ClickPipes_SentBytes_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 477187967
 
-# HELP ClickPipes_FetchedBytesCompressed_Total 从源获取的压缩字节总数。如果源数据未压缩,则此值等于 ClickPipes_FetchedBytes_Total {#help-clickpipes_fetchedbytescompressed_total-total-compressed-bytes-fetched-from-the-source-if-data-is-uncompressed-at-the-source-this-will-equal-clickpipes_fetchedbytes_total}
-# TYPE ClickPipes_FetchedBytesCompressed_Total counter {#type-clickpipes_fetchedbytescompressed_total-counter}
+# HELP ClickPipes_FetchedBytesCompressed_Total Total compressed bytes fetched from the source. If data is uncompressed at the source, this will equal ClickPipes_FetchedBytes_Total
+# TYPE ClickPipes_FetchedBytesCompressed_Total counter
 ClickPipes_FetchedBytesCompressed_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 873286202
 
-# HELP ClickPipes_FetchedEvents_Total 从数据源获取的记录总数。 {#help-clickpipes_fetchedevents_total-total-number-of-records-fetched-from-the-source}
-# TYPE ClickPipes_FetchedEvents_Total counter {#type-clickpipes_fetchedevents_total-counter}
-ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes 演示实例",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent 演示管道",clickpipe_source="confluent"} 5535376
+# HELP ClickPipes_FetchedEvents_Total Total number of records fetched from the source.
+# TYPE ClickPipes_FetchedEvents_Total counter
+ClickPipes_FetchedEvents_Total{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickhouse_service="82b83b6a-5568-4a82-aa78-fed9239db83f",clickhouse_service_name="ClickPipes demo instace",clickpipe_id="642bb967-940b-459e-9f63-a2833f62ec44",clickpipe_name="Confluent demo pipe",clickpipe_source="confluent"} 5535376
 ```
 
 ### 指标标签 {#metric-labels}
@@ -187,7 +185,6 @@ scrape_configs:
 
 请注意，必须将 `honor_labels` 配置参数设置为 `true`，才能正确填充实例标签。此外，上述示例中将 `filtered_metrics` 设置为 `true`，但实际应根据用户偏好进行配置。
 
-
 ## 与 Grafana 集成 {#integrating-with-grafana}
 
 用户可以通过两种主要方式与 Grafana 集成：
@@ -230,10 +227,10 @@ scrape_configs:
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // 从默认监听地址采集指标。
+  // Collect metrics from the default listen address.
   targets = [{
         __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// 例如：https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -244,7 +241,7 @@ prometheus.scrape "clickhouse_cloud" {
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // 转发至下方的 metrics_service
+  // forward to metrics_service below
 }
 
 prometheus.remote_write "metrics_service" {
@@ -260,17 +257,16 @@ prometheus.remote_write "metrics_service" {
 
 请注意，必须将 `honor_labels` 配置参数设置为 `true`，才能使 instance 标签被正确填充。
 
-
 ### 使用 Alloy 的自托管 Grafana {#grafana-self-managed-with-alloy}
 
 Grafana 自托管用户可以在[此处](https://grafana.com/docs/alloy/latest/get-started/install/)找到安装 Alloy agent 的说明。我们假定用户已经将 Alloy 配置为将 Prometheus 指标发送到所需的目标端点。下面的 `prometheus.scrape` 组件会让 Alloy 抓取 ClickHouse Cloud 端点。我们假定 `prometheus.remote_write` 会接收已抓取的指标。如果该目标不存在，请将 `forward_to key` 调整为实际的目标端点。
 
 ```yaml
 prometheus.scrape "clickhouse_cloud" {
-  // 从默认监听地址收集指标。
+  // Collect metrics from the default listen address.
   targets = [{
         __address__ = "https://api.clickhouse.cloud/v1/organizations/:organizationId/prometheus?filtered_metrics=true",
-// 例如:https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
+// e.g. https://api.clickhouse.cloud/v1/organizations/97a33bdb-4db3-4067-b14f-ce40f621aae1/prometheus?filtered_metrics=true
   }]
 
   honor_labels = true
@@ -281,7 +277,7 @@ prometheus.scrape "clickhouse_cloud" {
   }
 
   forward_to = [prometheus.remote_write.metrics_service.receiver]
-  // 转发至 metrics_service。可根据需要修改为您偏好的接收器
+  // forward to metrics_service. Modify to your preferred receiver
 }
 ```
 
@@ -292,7 +288,6 @@ prometheus.scrape "clickhouse_cloud" {
 <br />
 
 请注意，需要将 `honor_labels` 配置参数设置为 `true`，才能正确填充实例（`instance`）标签。
-
 
 ## 集成 Datadog {#integrating-with-datadog}
 

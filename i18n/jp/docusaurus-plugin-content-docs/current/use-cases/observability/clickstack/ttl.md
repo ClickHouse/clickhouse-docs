@@ -53,7 +53,7 @@ PARTITION BY toDate(TimestampTime)
 PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 TTL TimestampTime + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 ClickHouse におけるパーティション分割は、ディスク上のデータを列または SQL 式に従って論理的に分離する機能です。データを論理的に分離することで、各パーティションを独立して操作でき、たとえば TTL ポリシーに従って有効期限に達したときに削除するといったことが可能になります。

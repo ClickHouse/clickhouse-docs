@@ -17,7 +17,6 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 При развертывании ClickStack в рабочей (production) среде необходимо учитывать ряд дополнительных факторов, чтобы обеспечить безопасность, стабильность и правильную конфигурацию.
 
-
 ## Безопасность сети и портов {#network-security}
 
 По умолчанию Docker Compose пробрасывает порты на хост, делая их доступными извне контейнеров — даже если включены такие инструменты, как `ufw` (Uncomplicated Firewall). Такое поведение связано с сетевой подсистемой Docker, которая может обходить правила файрвола на уровне хоста, если явно не настроена иначе.
@@ -32,12 +31,11 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Только при необходимости для API
-# Не открывайте внутренние порты, такие как ClickHouse 8123 или MongoDB 27017. {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
+  - "8080:8080"  # Only if needed for the API
+# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
 ```
 
 Обратитесь к [документации по сетевому взаимодействию Docker](https://docs.docker.com/network/), чтобы узнать подробности об изоляции контейнеров и повышении безопасности доступа.
-
 
 ## Настройка секрета сессии {#session-secret}
 
@@ -78,7 +76,6 @@ openssl rand -hex 32
 ```
 
 Не добавляйте секреты в систему контроля версий. В рабочей (production) среде рассмотрите использование инструментов управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигураций CI/CD, специфичных для конкретных окружений).
-
 
 ## Безопасная ингестия {#secure-ingestion}
 

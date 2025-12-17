@@ -14,15 +14,14 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack の各コンポーネントには、以下の設定オプションがあります。
 
-
 ## 設定の変更 {#modifying-settings}
 
 ### Docker {#docker}
 
-[All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) を使用している場合は、希望する設定値を環境変数として渡すだけです。例:
+[All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)、または [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only) を使用している場合は、環境変数で必要な設定値を指定するだけで構いません。例：
 
 ```shell
-docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
 
@@ -40,9 +39,8 @@ services:
     environment:
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      # ... その他の設定
+      # ... other settings
 ```
-
 
 ### Helm {#helm}
 
@@ -96,7 +94,6 @@ ingress:
     - name: CLICKHOUSE_USER
       value: abc
 ```
-
 
 ## HyperDX {#hyperdx}
 

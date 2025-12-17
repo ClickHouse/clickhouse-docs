@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать AI-агента LlamaIndex с использованием ClickHouse MCP Server {#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать AI-агента [LlamaIndex](https://docs.llamaindex.ai), который
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/llamaindex/llamaindex.ipynb).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установите библиотеки {#install-libraries}
 
 Установите необходимые библиотеки, выполнив следующие команды:
@@ -43,25 +38,23 @@ pip install -q --upgrade pip
 pip install -q llama-index clickhouse-connect llama-index-llms-anthropic llama-index-tools-mcp
 ```
 
-
 ## Настройка учётных данных {#setup-credentials}
 
 Далее вам нужно указать свой ключ API Anthropic:
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ Anthropic:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Введите ключ API Anthropic: ········
+Enter Anthropic API Key: ········
 ```
 
 :::note Использование другого провайдера LLM
 Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
 вы можете найти инструкции по настройке учетных данных в [документации LlamaIndex «LLMs»](https://docs.llamaindex.ai/en/stable/examples/)
 :::
-
 
 ## Инициализируйте MCP Server {#initialize-mcp-and-agent}
 
@@ -91,16 +84,14 @@ mcp_client = BasicMCPClient(
 mcp_tool_spec = McpToolSpec(
     client=mcp_client,
 )
+
+tools = await mcp_tool_spec.to_tool_list_async()
 ```
 
+## Создайте агента {#create-agent}
 
-tools = await mcp&#95;tool&#95;spec.to&#95;tool&#95;list&#95;async()
-
-````
-## Создание агента {#create-agent}
-
-Теперь можно создать агента с доступом к этим инструментам. Установите максимальное
-количество вызовов инструментов за один запуск равным 10. При необходимости этот параметр можно изменить:
+Теперь вы готовы создать агента, который имеет доступ к этим инструментам. Установите максимальное
+количество вызовов инструментов за один запуск равным 10. Вы можете изменить этот параметр при необходимости:
 
 ```python
 from llama_index.core.agent import AgentRunner, FunctionCallingAgentWorker
@@ -110,10 +101,9 @@ agent_worker = FunctionCallingAgentWorker.from_tools(
     llm=llm, verbose=True, max_function_calls=10
 )
 agent = AgentRunner(agent_worker)
-````
+```
 
-
-## Инициализация LLM {#initialize-llm}
+## Инициализируйте LLM {#initialize-llm}
 
 Инициализируйте модель Claude Sonnet 4.0 следующим кодом:
 
@@ -122,16 +112,15 @@ from llama_index.llms.anthropic import Anthropic
 llm = Anthropic(model="claude-sonnet-4-0")
 ```
 
+## Запустите агента {#run-agent}
 
-## Запуск агента {#run-agent}
-
-Теперь можно задать агенту вопрос:
+Наконец, вы можете задать агенту вопрос:
 
 ```python
 response = agent.query("What's the most popular repository?")
 ```
 
-Ответ довольно длинный, поэтому в примере ниже он сокращён:
+Ответ длинный, поэтому в примере ниже он сокращен:
 
 ```response title="Response"
 Added user message to memory: What's the most popular repository?
@@ -155,7 +144,7 @@ Based on the GitHub data, **the most popular repository is `sindresorhus/awesome
 Here are the top 10 most popular repositories by star count:
 
 1. **sindresorhus/awesome** - 402,292 stars
-2. **996icu/996.ICU** - 388,413 stars
+2. **996icu/996.ICU** - 388,413 stars  
 3. **kamranahmedse/developer-roadmap** - 349,097 stars
 4. **donnemartin/system-design-primer** - 316,524 stars
 5. **jwasham/coding-interview-university** - 313,767 stars

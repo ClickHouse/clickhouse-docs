@@ -21,14 +21,13 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 ```bash
 wget https://s3.amazonaws.com/menusdata.nypl.org/gzips/2021_08_01_07_01_17_data.tgz
-# 可选:验证校验和 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum 2021_08_01_07_01_17_data.tgz
-# 校验和应为:db6126724de939a5481e3160a2d67d15 {#checksum-should-be-equal-to-db6126724de939a5481e3160a2d67d15}
+# Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
 如有需要，请将链接替换为来自 [http://menus.nypl.org/data](http://menus.nypl.org/data) 的最新更新链接。
 下载大小约为 35 MB。
-
 
 ## 解压数据集 {#unpack-dataset}
 
@@ -44,7 +43,6 @@ tar xvf 2021_08_01_07_01_17_data.tgz
 * `Dish` — 关于菜品的信息：菜名以及一些特征信息。
 * `MenuPage` — 关于菜单中各页面的信息，因为每个页面都属于某个菜单。
 * `MenuItem` — 菜单中的一项。某个菜单页面上的一道菜及其价格，并包含指向菜品和菜单页面的链接。
-
 
 ## 创建表 {#create-tables}
 
@@ -113,7 +111,6 @@ CREATE TABLE menu_item
 ) ENGINE = MergeTree ORDER BY id;
 ```
 
-
 ## 导入数据 {#import-data}
 
 将数据上传到 ClickHouse，请运行：
@@ -132,7 +129,6 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 我们禁用 [input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据中不包含 [NULL](/operations/settings/formats#input_format_null_as_default)。否则，ClickHouse 会尝试解析 `\N` 序列，并且可能与数据中的 `\` 混淆。
 
 设置 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，不带秒的 ISO-8601 时间（如 `2000-01-01 01:02`）也会被识别。如果不启用此设置，则只允许固定格式的 DateTime。
-
 
 ## 数据反规范化 {#denormalize-data}
 
@@ -186,7 +182,6 @@ FROM menu_item
     JOIN menu ON menu_page.menu_id = menu.id;
 ```
 
-
 ## 验证数据 {#validate-data}
 
 查询：
@@ -202,7 +197,6 @@ SELECT count() FROM menu_item_denorm;
 │ 1329175 │
 └─────────┘
 ```
-
 
 ## 执行一些查询 {#run-queries}
 
@@ -248,7 +242,6 @@ ORDER BY d ASC;
 
 请谨慎看待，仅供参考。
 
-
 ### 汉堡价格 {#query-burger-prices}
 
 查询：
@@ -286,7 +279,6 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-
 ### 伏特加 {#query-vodka}
 
 查询：
@@ -320,7 +312,6 @@ ORDER BY d ASC;
 ```
 
 为了查到 vodka，我们就得写 `ILIKE '%vodka%'`，本身就很能说明问题。
-
 
 ### 鱼子酱 {#query-caviar}
 
@@ -364,7 +355,6 @@ ORDER BY d ASC;
 ```
 
 好在他们还有鱼子酱配伏特加。挺不错的。
-
 
 ## 在线 Playground {#playground}
 

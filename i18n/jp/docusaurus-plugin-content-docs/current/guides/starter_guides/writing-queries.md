@@ -25,10 +25,10 @@ ORDER BY timestamp
 
 ```response
 ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
-│     102 │ バッチごとに大量の行を挿入する                     │ 2022-03-21 00:00:00 │ 1.41421 │
-│     102 │ よく使用するクエリに基づいてデータをソートする │ 2022-03-22 00:00:00 │   2.718 │
+│     102 │ Insert a lot of rows per batch                     │ 2022-03-21 00:00:00 │ 1.41421 │
+│     102 │ Sort your data based on your commonly-used queries │ 2022-03-22 00:00:00 │   2.718 │
 │     101 │ Hello, ClickHouse!                                 │ 2022-03-22 14:04:09 │      -1 │
-│     101 │ グラニュールは読み取られるデータの最小チャンク      │ 2022-03-22 14:04:14 │ 3.14159 │
+│     101 │ Granules are the smallest chunks of data read      │ 2022-03-22 14:04:14 │ 3.14159 │
 └─────────┴────────────────────────────────────────────────────┴─────────────────────┴─────────┘
 
 4 rows in set. Elapsed: 0.008 sec.
@@ -48,10 +48,10 @@ FORMAT TabSeparated
 ```response
 Query id: 3604df1c-acfd-4117-9c56-f86c69721121
 
-102 バッチごとに大量の行を挿入する      2022-03-21 00:00:00     1.41421
-102 よく使用するクエリに基づいてデータをソートする  2022-03-22 00:00:00     2.718
-101 こんにちは、ClickHouse!  2022-03-22 14:04:09     -1
-101 グラニュールは読み取られるデータの最小チャンク       2022-03-22 14:04:14     3.14159
+102 Insert a lot of rows per batch      2022-03-21 00:00:00     1.41421
+102 Sort your data based on your commonly-used queries  2022-03-22 00:00:00     2.718
+101 Hello, ClickHouse!  2022-03-22 14:04:09     -1
+101 Granules are the smallest chunks of data read       2022-03-22 14:04:14     3.14159
 
 4 rows in set. Elapsed: 0.005 sec.
 ```

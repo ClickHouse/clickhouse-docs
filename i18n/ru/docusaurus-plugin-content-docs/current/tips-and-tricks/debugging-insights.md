@@ -19,13 +19,9 @@ title: 'Уроки — рекомендации по отладке'
 description: 'Найдите решения наиболее распространённых проблем ClickHouse, включая медленные запросы, ошибки, связанные с памятью, а также проблемы с подключением и конфигурацией.'
 ---
 
-
-
 # Операции ClickHouse: практические советы по отладке от сообщества {#clickhouse-operations-community-debugging-insights}
 *Это руководство является частью подборки материалов, подготовленной на основе встреч сообщества. Для дополнительных практических решений и рекомендаций вы можете [подобрать материалы под конкретную проблему](./community-wisdom.md).*
 *Столкнулись с высокими операционными затратами? Ознакомьтесь с руководством сообщества по [оптимизации затрат](./cost-optimization.md).*
-
-
 
 ## Основные системные таблицы {#essential-system-tables}
 
@@ -86,7 +82,6 @@ GROUP BY database, table
 ORDER BY count() DESC;
 ```
 
-
 ## Распространённые проблемы в продакшене {#common-production-issues}
 
 ### Проблемы с дисковым пространством {#disk-space-problems}
@@ -126,7 +121,6 @@ WHERE is_done = 0;
 
 Сначала тестируйте изменения схемы на небольших наборах данных.
 
-
 ## Память и производительность {#memory-and-performance}
 
 ### Внешняя агрегация {#external-aggregation}
@@ -141,7 +135,7 @@ SELECT
     SUM(value) as total
 FROM large_table
 GROUP BY column1, column2
-SETTINGS max_bytes_before_external_group_by = 1000000000; -- порог 1 ГБ
+SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
 ```
 
 ### Подробности об асинхронной вставке {#async-insert-details}
@@ -169,7 +163,6 @@ SETTINGS max_bytes_before_external_group_by = 1000000000; -- порог 1 ГБ
 **Связанные документы**
 
 * [Пользовательский ключ партиционирования](/engines/table-engines/mergetree-family/custom-partitioning-key)
-
 
 ## Краткая справка {#quick-reference}
 

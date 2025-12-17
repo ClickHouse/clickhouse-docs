@@ -9,7 +9,11 @@ doc_type: 'reference'
 `OFFSET` 和 `FETCH` 可用于按批次检索数据。它们用于指定希望通过单条查询获取的一段行数据。
 
 ```sql
-OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+-- SQL Standard style:
+[OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+
+-- MySQL/PostgreSQL style:
+[LIMIT [n, ]m] [OFFSET offset_row_count]
 ```
 
 `offset_row_count` 或 `fetch_row_count` 的值可以是数字或字面常量。可以省略 `fetch_row_count`；默认情况下，它为 1。
@@ -35,7 +39,7 @@ OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW
 SELECT * FROM test_fetch ORDER BY a OFFSET 1 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-与该查询完全一致
+与下列查询完全等价
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
@@ -67,7 +71,7 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 └───┴───┘
 ```
 
-`ONLY` 选项的使用方法：
+`ONLY` 选项的用法：
 
 ```sql
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;

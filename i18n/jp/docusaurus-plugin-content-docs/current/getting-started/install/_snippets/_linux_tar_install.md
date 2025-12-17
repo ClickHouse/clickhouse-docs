@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## 最新の安定版をダウンロードしてインストールする {#install-latest-stable}
 
 必要なバージョンは、リポジトリ https://packages.clickhouse.com/tgz/ から `curl` または `wget` を使ってダウンロードできます。
@@ -17,8 +16,6 @@
 `-stable` の接尾辞が付いたリリース番号は、この [GitHub ページ](https://github.com/ClickHouse/ClickHouse/tags) で確認できます。
 :::
 
-
-
 ## 最新の ClickHouse バージョンを取得する {#get-latest-version}
 
 GitHub から最新の ClickHouse バージョンを取得し、`LATEST_VERSION` 変数に設定します。
@@ -29,19 +26,17 @@ LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/ClickHouse/ClickHouse
 export LATEST_VERSION
 ```
 
-
 ## システムアーキテクチャを特定する {#detect-system-architecture}
 
 システムアーキテクチャを特定し、それに応じて `ARCH` 変数を設定します。
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Intel/AMD 64ビットプロセッサ用
-  aarch64) ARCH=arm64 ;;        # ARM 64ビットプロセッサ用
-  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # サポートされていないアーキテクチャの場合は終了
+  x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
+  aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
 esac
 ```
-
 
 ## 各 ClickHouse コンポーネント用の tarball をダウンロードする {#download-tarballs}
 
@@ -55,16 +50,13 @@ do
 done
 ```
 
-
 ## パッケージの展開とインストール {#extract-and-install}
 
 以下のパッケージを展開してインストールするには、次のコマンドを実行します：
 - `clickhouse-common-static`
 
-
-
 ```bash
-# clickhouse-common-static パッケージの展開とインストール {#extract-and-install-clickhouse-common-static-package}
+# Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -72,9 +64,8 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 
 * `clickhouse-common-static-dbg`
 
-
 ```bash
-# デバッグシンボルパッケージの展開とインストール {#extract-and-install-debug-symbols-package}
+# Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -82,20 +73,18 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 
 * `clickhouse-server`
 
-
 ```bash
-# サーバーパッケージを展開し、設定を行ってインストール {#extract-and-install-server-package-with-configuration}
+# Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # サーバーを起動
+sudo /etc/init.d/clickhouse-server start  # Start the server
 ```
 
 * `clickhouse-client`
 
-
 ```bash
-# クライアントパッケージを展開してインストール {#extract-and-install-client-package}
+# Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

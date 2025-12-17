@@ -7,8 +7,6 @@ title: 'VersionedCollapsingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # VersionedCollapsingMergeTree テーブルエンジン {#versionedcollapsingmergetree-table-engine}
 
 このエンジンは次のことができます：
@@ -19,8 +17,6 @@ doc_type: 'reference'
 詳細は [Collapsing](#table_engines_versionedcollapsingmergetree) のセクションを参照してください。
 
 このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承し、データパーツのマージアルゴリズムに行の折りたたみロジックを追加します。`VersionedCollapsingMergeTree` は [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md) と同じ目的で使用されますが、異なる折りたたみアルゴリズムを採用しており、複数スレッドで任意の順序でデータを挿入できます。特に、`Version` 列は、行が誤った順序で挿入された場合でも、適切に行を折りたたむのに役立ちます。これに対して、`CollapsingMergeTree` は厳密に連続した順序での挿入のみをサポートします。
-
-
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -42,7 +38,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ### エンジンのパラメータ {#engine-parameters}
 
 ```sql
-VersionedCollapsingMergeTree(サイン, バージョン)
+VersionedCollapsingMergeTree(sign, version)
 ```
 
 | パラメータ     | 説明                                              | 型                                                                                                                                                                                                                                                                                              |
@@ -61,14 +57,14 @@ VersionedCollapsingMergeTree(サイン, バージョン)
   新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存プロジェクトも上で説明した方法に切り替えてください。
   :::
 
-  ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-  ```
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+  name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+  name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+  ...
+) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+```
 
   `sign` と `version` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
@@ -81,7 +77,6 @@ VersionedCollapsingMergeTree(サイン, バージョン)
     列のデータ型は `UInt*` である必要があります。
 </details>
 
-
 ## 折りたたみ（Collapsing） {#table_engines_versionedcollapsingmergetree}
 
 ### データ {#data}
@@ -93,7 +88,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 たとえば、あるサイトでユーザーが閲覧したページ数と、そのページに滞在した時間を集計したいとします。ある時点で、ユーザーのアクティビティ状態を表す次の行を書き込みます。
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー数─┬─滞在時間─┬─署名─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
@@ -101,7 +96,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 後でユーザーアクティビティの変更を記録し、それを次の 2 行で書き込みます。
 
 ```text
-┌──────────────UserID─┬─ページビュー数─┬─継続時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 │ 4324182021466249494 │         6 │      185 │    1 │       2 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -114,7 +109,7 @@ VersionedCollapsingMergeTree(サイン, バージョン)
 ユーザーアクティビティの最後の状態だけが必要なため、これらの行は
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─継続時間─┬─サイン─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -136,7 +131,6 @@ ClickHouse がデータパートをマージする際、同じ主キーとバー
 
 ClickHouse がデータを挿入する際には、行は主キーでソートされます。`Version` 列が主キーに含まれていない場合、ClickHouse はそれを暗黙的に主キーの最後のフィールドとして追加し、その並び替えに使用します。
 
-
 ## データの選択 {#selecting-data}
 
 ClickHouse は、同じプライマリキーを持つすべての行が、同じ結果のデータパート内、あるいは同じ物理サーバー上に存在することを保証しません。これは、データを書き込むときと、その後にデータパートをマージするときの両方について当てはまります。さらに、ClickHouse は `SELECT` クエリを複数スレッドで処理するため、結果の行の順序を予測できません。つまり、`VersionedCollapsingMergeTree` テーブルから完全に「折りたたまれた」データを取得する必要がある場合は、集約処理が必要になります。
@@ -147,14 +141,12 @@ ClickHouse は、同じプライマリキーを持つすべての行が、同じ
 
 集約なしで「折りたたみ」を行ったデータを抽出する必要がある場合（たとえば、最新の値が特定の条件に一致する行が存在するかを確認する場合）は、`FROM` 句に対して `FINAL` 修飾子を使用できます。このアプローチは非効率的であり、大きなテーブルには使用すべきではありません。
 
-
-
 ## 使用例 {#example-of-use}
 
 サンプルデータ：
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 |
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 |
 │ 4324182021466249494 │         6 │      185 │    1 │       2 |
@@ -195,10 +187,10 @@ SELECT * FROM UAct
 ```
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │    1 │       1 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─符号─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │       1 │
 │ 4324182021466249494 │         6 │      185 │    1 │       2 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
@@ -234,7 +226,7 @@ SELECT * FROM UAct FINAL
 ```
 
 ```text
-┌──────────────ユーザーID─┬─ページビュー─┬─滞在時間─┬─サイン─┬─バージョン─┐
+┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┬─Version─┐
 │ 4324182021466249494 │         6 │      185 │    1 │       2 │
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```

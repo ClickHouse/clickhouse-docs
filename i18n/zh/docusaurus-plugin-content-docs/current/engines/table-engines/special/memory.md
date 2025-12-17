@@ -7,8 +7,6 @@ title: 'Memory 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # Memory 表引擎 {#memory-table-engine}
 
 :::note
@@ -29,8 +27,6 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
 
 可以指定上限和下限来限制 Memory 引擎表的大小，从而有效地使其充当一个环形缓冲区（参见 [Engine Parameters](#engine-parameters)）。
 
-
-
 ## 引擎参数 {#engine-parameters}
 
 - `min_bytes_to_keep` — 当内存表设置了大小上限时需要保留的最小字节数。
@@ -45,8 +41,6 @@ Memory 引擎被系统用于带有外部查询数据的临时表（参见“Exte
   - 默认值：`0`
 - `compress` - 是否在内存中对数据进行压缩。
   - 默认值：`false`
-
-
 
 ## 使用说明 {#usage}
 
@@ -64,22 +58,21 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 
 **注意：** `bytes` 和 `rows` 的封顶参数可以同时设置，但会始终遵守由 `max` 和 `min` 所定义的最低限制。
 
-
 ## 示例 {#examples}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;
 
-/* 1. 测试最旧的数据块因最小阈值限制而不被删除 - 3000 行 */
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
 INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 8'192 bytes
 
-/* 2. 添加不会被删除的数据块 */
+/* 2. adding block that doesn't get deleted */
 INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 1'024 bytes
 
-/* 3. 测试最旧的数据块被删除 - 9216 字节 - 1100 */
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
 INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 8'192 bytes
 
-/* 4. 验证超大数据块覆盖所有现有数据 */
+/* 4. checking a very large block overrides all */
 INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 65'536 bytes
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
@@ -96,17 +89,17 @@ SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND data
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_rows_to_keep = 4000, max_rows_to_keep = 10000;
 
-/* 1. 测试最旧的数据块因最小阈值限制而不会被删除 - 3000 行 */
-INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 行
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
+INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 rows
 
-/* 2. 添加不会被删除的数据块 */
-INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 行
+/* 2. adding block that doesn't get deleted */
+INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 rows
 
-/* 3. 测试最旧的数据块被删除 - 9216 字节 - 1100 */
-INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 行
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
+INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 rows
 
-/* 4. 验证超大数据块会覆盖所有现有数据 */
-INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 行
+/* 4. checking a very large block overrides all */
+INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 rows
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
 ```

@@ -6,11 +6,7 @@ title: '設定の概要'
 doc_type: 'reference'
 ---
 
-
-
 # 設定の概要 {#settings-overview}
-
-
 
 ## 概要 {#overview}
 
@@ -24,8 +20,6 @@ ClickHouse の設定には、大きく分けて 2 つのグループがありま
 - セッション設定
 
 両者の主な違いは、グローバルサーバー設定は ClickHouse サーバー全体に適用されるのに対し、セッション設定はユーザーセッションや個々のクエリに適用される点です。
-
-
 
 ## 既定値以外の設定の確認 {#see-non-default-settings}
 
@@ -50,9 +44,8 @@ SELECT name, value FROM system.settings WHERE name = 'max_threads'
 │ max_threads │ 'auto(8)' │
 └─────────────┴───────────┘
 
-1 行の結果。経過時間: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
-
 
 ## 関連情報 {#further-reading}
 

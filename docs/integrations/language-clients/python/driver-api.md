@@ -393,7 +393,6 @@ print(result)
 # )
 # ENGINE = MergeTree
 # ORDER BY tuple()
-# SETTINGS index_granularity = 8192
 
 # Drop table
 client.command("DROP TABLE test_command")

@@ -78,9 +78,8 @@ LIMIT 3
 │ ./src/AggregateFunctions/AggregateFunctionUniqCombined.cpp │ 22649 │
 └────────────────────────────────────────────────────────────┴───────┘
 
-3行のセット。経過時間: 1.487秒。処理済み: 1億3976万行、1.12 GB (9397万行/秒、752.77 MB/秒)
-ピークメモリ使用量: 271.92 MiB。
+3 rows in set. Elapsed: 1.487 sec. Processed 139.76 million rows, 1.12 GB (93.97 million rows/s., 752.77 MB/s.)
+Peak memory usage: 271.92 MiB.
 ```
-
 
 ## 書式設定 {#format-settings}

@@ -8,18 +8,13 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # 使用 S3 端点进行备份 / 恢复 {#backup-to-a-local-disk}
 
 本文介绍如何通过 S3 端点将数据备份到 S3 存储桶，或从 S3 存储桶恢复备份。
 
-
-
 ## 语法 {#syntax}
 
 <Syntax/>
-
-
 
 ## 使用示例 {#usage-examples}
 
@@ -133,7 +128,6 @@ SETTINGS base_backup = S3(
 请注意，恢复增量备份时，基础备份也会被包含。
 恢复时仅需指定 **增量备份**：
 
-
 ```sql
 RESTORE TABLE data AS test_db.test_table_restored FROM S3(
 'https://backup-ch-docs.s3.us-east-1.amazonaws.com/backups/incremental_backup',
@@ -175,7 +169,7 @@ SELECT throwIf((
    ) != (
    SELECT groupArray(tuple(*))
    FROM test_db.test_table_restored
-), 'BACKUP/RESTORE 之后数据不一致')
+), 'Data does not match after BACKUP/RESTORE')
 ```
 
 </VerticalStepper>

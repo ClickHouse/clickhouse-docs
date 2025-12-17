@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /integrations/kafka/cloud/amazon-msk/
 description: 'ClickHouse 公式 Kafka コネクタを使用した Amazon MSK との統合'
 keywords: ['統合', 'kafka', 'amazon msk', 'シンク', 'コネクタ']
-title: 'Amazon MSK と ClickHouse の統合'
+title: 'Amazon MSK と ClickHouse の統合 {#integrating-amazon-msk-with-clickhouse}'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -28,16 +28,14 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
   </iframe>
 </div>
 
-> 注記: 動画内で示されているポリシーは権限が広く、クイックスタート用途のみを想定しています。以下の最小権限の IAM ガイダンスを参照してください。
-
-
+> 注意: この動画で示しているポリシーは権限設定が緩く、クイックスタート用にのみ意図されています。IAM の最小権限ガイドラインについては、以下を参照してください。
 
 ## 前提条件 {#prerequisites}
+
 次のことを前提とします:
-* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK、および MSK Connectors について理解していること。Amazon MSK の [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connect ガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) の参照を推奨します。
-* MSK ブローカーがパブリックにアクセス可能であること。Developer Guide の [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) セクションを参照してください。
 
-
+* [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md) について理解していること。
+* Amazon MSK および MSK Connectors について理解していること。Amazon MSK の [はじめにガイド](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) と [MSK Connect ガイド](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html) の参照を推奨します。
 
 ## ClickHouse 公式 Kafka コネクタと Amazon MSK の連携 {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
@@ -150,8 +148,8 @@ schemas.enable=false
 パフォーマンスを向上させる 1 つの方法は、**worker** の設定に次の項目を追加し、Kafka から取得するバッチサイズとレコード数を調整することです。
 
 ```yml
-consumer.max.poll.records=[レコード数]
-consumer.max.partition.fetch.bytes=[レコード数 × バイト単位のレコードサイズ]
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
 ```
 
 使用する具体的な値は、必要とするレコード数やレコードサイズによって異なります。たとえば、デフォルト値は次のとおりです。

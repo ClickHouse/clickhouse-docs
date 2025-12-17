@@ -776,7 +776,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 
-````
+```
 
 **`backward` 和 `tail` 的行为**
 
@@ -797,7 +797,7 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // 结果
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
 1970-01-01 09:00:04    3   Basket // 基准点,与 Basket 匹配
-````
+```
 
 **`forward` 和 `first_match` 的行为**
 
@@ -860,7 +860,7 @@ dt   id   page
 1970-01-01 09:00:03    3   Gift // 基准点
 1970-01-01 09:00:04    3   Basket
 
-````
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
@@ -879,7 +879,7 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // 与 Home 匹配
 1970-01-01 09:00:03    3   Gift // 基点
 1970-01-01 09:00:04    3   Basket
-````
+```
 
 **`base_condition` 的行为**
 
@@ -928,7 +928,7 @@ dt   id   page   ref
 1970-01-01 09:00:03    1   B      ref2 // 结果
 1970-01-01 09:00:04    1   B      ref1
 
-````
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -938,4 +938,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // 结果
  1970-01-01 09:00:03    1   B      ref2 // 基准点
  1970-01-01 09:00:04    1   B      ref1 // 此行不能作为基准点,因为 ref 列与 'ref2' 不匹配。
-````
+```

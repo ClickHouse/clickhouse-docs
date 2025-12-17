@@ -16,7 +16,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # Introduction {#introduction}
 
 ClickHouse Connect は、幅広い Python アプリケーションとの相互運用性を提供する中核となるデータベースドライバーです。
@@ -88,7 +87,6 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-
 #### ClickHouse Connect クライアントインスタンスを使用して ClickHouse Cloud サービスに接続します: {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
@@ -100,7 +98,6 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
-
 
 ### データベースを操作する {#interact-with-your-database}
 
@@ -124,5 +121,5 @@ ClickHouse SQL を使用してデータを取得するには、クライアン�
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 出力: [(2000, -50.9035)] {#output-2000-509035}
+# Output: [(2000, -50.9035)]
 ```

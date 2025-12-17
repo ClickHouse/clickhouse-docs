@@ -34,7 +34,7 @@ import Image from '@theme/IdealImage';
 
 ## 设置 {#setup}
 
-<VerticalStepper headerLevel="h3"/>
+<VerticalStepper headerLevel="h3">
 
 ### 获取 ClickHouse 服务 IAM 角色 Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -121,3 +121,5 @@ import Image from '@theme/IdealImage';
    ```
 
 - 4. 创建完成后，复制新的 **IAM Role Arn**。这是访问您的 Kinesis 流所需的角色 ARN。
+
+</VerticalStepper>

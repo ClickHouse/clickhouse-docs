@@ -14,7 +14,6 @@ import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
 # ClickHouse Cloud 监控 {#cloud-monitoring}
 
 本指南为正在评估 ClickHouse Cloud 的企业团队提供有关生产环境部署中监控与可观测性能力的全面信息。企业客户经常询问开箱即用的监控功能、与现有可观测性技术栈（包括 Datadog 和 AWS CloudWatch 等工具）的集成方式，以及 ClickHouse 的监控能力与自托管部署之间的对比。

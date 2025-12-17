@@ -27,7 +27,6 @@ ClickStack ブラウザ SDK を使用すると、フロントエンドアプリ�
 * **XHR/Fetch/Websocket リクエスト**
 * **例外**
 
-
 ## はじめに {#getting-started}
 
 <br/>
@@ -52,9 +51,9 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストにトレースを関連付けるために設定します
-    consoleCapture: true, // console.log などのコンソールログを収集します（デフォルトは false）
-    advancedNetworkCapture: true, // HTTP リクエスト/レスポンスのヘッダーとボディをすべて収集します（デフォルトは false）
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+    consoleCapture: true, // Capture console logs (default false)
+    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
 });
 ```
 
@@ -75,7 +74,7 @@ npm でインストールする代わりに、スクリプトタグ経由でス�
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストにトレースを関連付けるために設定します
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });
 </script>
 ```
@@ -110,24 +109,22 @@ HyperDX.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // その他のカスタムプロパティ...
+  // Other custom properties...
 });
 ```
-
 
 ### React のエラーバウンダリで発生したエラーを自動捕捉する {#auto-capture-react-error-boundary-errors}
 
 React を使用している場合は、エラーバウンダリコンポーネントを `attachToReactErrorBoundary` 関数に渡すことで、そのエラーバウンダリ内で発生したエラーを自動的に捕捉できます。
 
 ```javascript
-// ErrorBoundaryをインポートします（例としてreact-error-boundaryを使用）
+// Import your ErrorBoundary (we're using react-error-boundary as an example)
 import { ErrorBoundary } from 'react-error-boundary';
 
-// ErrorBoundaryコンポーネントにフックし、そのすべてのインスタンス内で
-// 発生するエラーをキャプチャします。
+// This will hook into the ErrorBoundary component and capture any errors that occur
+// within any instance of it.
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
-
 
 ### カスタムアクションの送信 {#send-custom-actions}
 
@@ -143,7 +140,6 @@ HyperDX.addAction('Form-Completed', {
 });
 ```
 
-
 ### ネットワークキャプチャを動的に有効にする {#enable-network-capture-dynamically}
 
 ネットワークキャプチャを動的に有効または無効にするには、必要に応じて `enableAdvancedNetworkCapture` または `disableAdvancedNetworkCapture` 関数を呼び出してください。
@@ -151,7 +147,6 @@ HyperDX.addAction('Form-Completed', {
 ```javascript
 HyperDX.enableAdvancedNetworkCapture();
 ```
-
 
 ### CORS リクエスト向けのリソースタイミングを有効化する {#enable-resource-timing-for-cors-requests}
 
@@ -164,7 +159,7 @@ HyperDX.enableAdvancedNetworkCapture();
 var cors = require('cors');
 var onHeaders = require('on-headers');
 
-// ... その他すべての処理
+// ... all your stuff
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {

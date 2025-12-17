@@ -9,7 +9,6 @@ doc_type: '指南'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
 # 回填数据 {#backfilling-data}
 
 无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充物化视图时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
@@ -17,8 +16,6 @@ import Image from '@theme/IdealImage';
 :::note
 本指南假定用户已经熟悉 [增量物化视图](/materialized-view/incremental-materialized-view) 的概念，以及 [使用诸如 S3 和 GCS 等表函数进行数据加载](/integrations/s3)。我们还建议用户阅读我们的[从对象存储优化插入性能](/integrations/s3/performance)指南，其中的建议适用于本指南中涉及的所有插入操作。
 :::
-
-
 
 ## 示例数据集 {#example-dataset}
 
@@ -31,11 +28,11 @@ SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-返回 1 行。用时:32.726 秒。已处理 20.4 亿行,170.05 KB(6234 万行/秒,5.20 KB/秒)。
-峰值内存使用量:239.50 MiB。
+1 row in set. Elapsed: 32.726 sec. Processed 2.04 billion rows, 170.05 KB (62.34 million rows/s., 5.20 KB/s.)
+Peak memory usage: 239.50 MiB.
 ```
 
 该 bucket 的完整数据集包含超过 320 GB 的 Parquet 文件。在下面的示例中，我们有意使用 glob 模式来选取数据子集。
@@ -71,7 +68,6 @@ SETTINGS describe_compact_output = 1
 完整的 PyPI 数据集（包含超过 1 万亿行数据）可在我们的公共演示环境 [clickpy.clickhouse.com](https://clickpy.clickhouse.com) 中访问。关于该数据集的更多详情（包括演示如何利用物化视图提升性能，以及数据如何按日写入和更新），请参见[此处](https://github.com/ClickHouse/clickpy)。
 :::
 
-
 ## 回填场景 {#backfilling-scenarios}
 
 通常在从某个时间点开始消费数据流时，需要进行回填。这些数据会被插入到带有[增量物化视图](/materialized-view/incremental-materialized-view)的 ClickHouse 表中，并在数据块被插入时触发。这些视图可能在插入前对数据进行转换，或者计算聚合并将结果发送到目标表，以便下游应用后续使用。
@@ -84,8 +80,6 @@ SETTINGS describe_compact_output = 1
 我们假设数据将从对象存储中进行回填。在所有情况下，我们的目标都是避免中断数据插入。
 
 我们建议从对象存储中回填历史数据。应尽可能将数据导出为 Parquet 格式，以获得最佳的读取性能和压缩效果（减少网络传输）。文件大小通常以约 150MB 为佳，但 ClickHouse 支持超过 [70 种文件格式](/interfaces/formats)，并能够处理各种大小的文件。
-
-
 
 ## 使用副本表和视图 {#using-duplicate-tables-and-views}
 
@@ -134,7 +128,7 @@ Peak memory usage: 977.49 MiB.
 SELECT count() FROM pypi
 
 ┌──count()─┐
-│ 20612750 │ -- 2061 万
+│ 20612750 │ -- 20.61 million
 └──────────┘
 
 1 row in set. Elapsed: 0.004 sec.
@@ -143,7 +137,7 @@ SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   20612750 │ -- 2061 万
+│   20612750 │ -- 20.61 million
 └────────────┘
 
 1 row in set. Elapsed: 0.006 sec. Processed 96.15 thousand rows, 769.23 KB (16.53 million rows/s., 132.26 MB/s.)
@@ -175,17 +169,17 @@ GROUP BY project
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
 
-结果集包含 0 行。用时:17.545 秒。处理了 4080 万行,3.90 GB(233 万行/秒,222.29 MB/秒)。
-内存峰值:991.50 MiB。
+0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
+Peak memory usage: 991.50 MiB.
 
 SELECT count()
 FROM pypi_v2
 
 ┌──count()─┐
-│ 20400020 │ -- 2040 万
+│ 20400020 │ -- 20.40 million
 └──────────┘
 
-结果集包含 1 行。用时:0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
 SELECT sum(count)
 FROM pypi_downloads_v2
@@ -194,10 +188,9 @@ FROM pypi_downloads_v2
 │   20400020 │ -- 20.40 million
 └────────────┘
 
-结果集包含 1 行。用时:0.006 秒。处理了 9.549 万行,763.90 KB(1481 万行/秒,118.45 MB/秒)。
-内存峰值:688.77 KiB。
+1 row in set. Elapsed: 0.006 sec. Processed 95.49 thousand rows, 763.90 KB (14.81 million rows/s., 118.45 MB/s.)
+Peak memory usage: 688.77 KiB.
 ```
-
 
 如果我们在第二次加载的任意阶段遇到失败，可以直接[截断](/managing-data/truncate)我们的 `pypi_v2` 和 `pypi_downloads_v2`，然后重新执行数据加载。
 
@@ -206,11 +199,11 @@ FROM pypi_downloads_v2
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
 
-0 行受影响。用时:1.401 秒。
+0 rows in set. Elapsed: 1.401 sec.
 
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 
-0 行受影响。用时:0.389 秒。
+0 rows in set. Elapsed: 0.389 sec.
 ```
 
 :::note 分区名称
@@ -224,19 +217,19 @@ SELECT count()
 FROM pypi
 
 ┌──count()─┐
-│ 41012770 │ -- 4101万
+│ 41012770 │ -- 41.01 million
 └──────────┘
 
-返回 1 行。用时:0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
 SELECT sum(count)
 FROM pypi_downloads
 
 ┌─sum(count)─┐
-│   41012770 │ -- 4101万
+│   41012770 │ -- 41.01 million
 └────────────┘
 
-返回 1 行。用时:0.007 秒。已处理 19.164 万行,1.53 MB(2734 万行/秒,218.74 MB/秒)。
+1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
 
 SELECT count()
 FROM pypi_v2
@@ -257,13 +250,12 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{201..300}.parquet')
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{301..400}.parquet')
---继续直到所有文件加载完成或执行 MOVE PARTITION 调用
+--continued to all files loaded OR MOVE PARTITION call is performed
 ```
 
 :::note
 ClickPipes 在从对象存储加载数据时会使用这种方法，自动创建目标表及其物化视图的副本，从而避免用户手动执行上述步骤。通过同时使用多个 worker 线程（每个线程处理不同的子集（通过 glob 模式匹配）并拥有自己的一组副本表），可以在确保 exactly-once 语义的同时快速加载数据。感兴趣的读者可以在[这篇博客](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3)中了解更多详情。
 :::
-
 
 ## 场景 1：在现有数据摄取基础上回填数据 {#scenario-1-backfilling-data-with-existing-data-ingestion}
 
@@ -287,8 +279,8 @@ FROM pypi
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
 
-返回 1 行。用时:0.163 秒。已处理 13.4 亿行,5.37 GB(82.4 亿行/秒,32.96 GB/秒)。
-内存峰值:227.84 MiB。
+1 row in set. Elapsed: 0.163 sec. Processed 1.34 billion rows, 5.37 GB (8.24 billion rows/s., 32.96 GB/s.)
+Peak memory usage: 227.84 MiB.
 ```
 
 从上述内容可以知道，我们需要加载早于 `2024-12-17 09:00:00` 的数据。使用前面介绍的流程，我们新建一套相同的表和视图，并通过在时间戳上添加过滤条件来加载这部分数据子集。
@@ -307,7 +299,7 @@ INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-*.parquet')
 WHERE timestamp < '2024-12-17 09:00:00'
 
-返回 0 行。用时:500.152 秒。处理了 27.4 亿行,364.40 GB(每秒 547 万行,728.59 MB/秒)。
+0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 
 :::note
@@ -327,7 +319,6 @@ ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
 :::note 在 ClickHouse Cloud 中直接使用 ClickPipes
 如果数据可以隔离在其自身的 bucket 中（且不需要过滤器），ClickHouse Cloud 用户应使用 ClickPipes 来恢复历史备份。除了可以通过多个 worker 并行加载以减少加载时间外，ClickPipes 还会将上述流程自动化——为主表和物化视图创建对应的副本表。
 :::
-
 
 ## 场景 2：向现有表添加物化视图 {#scenario-2-adding-materialized-views-to-existing-tables}
 
@@ -400,13 +391,12 @@ GROUP BY
 Ok.
 
 0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
-峰值内存使用量:543.71 MiB。
+Peak memory usage: 543.71 MiB.
 ```
 
 :::note
 在上述示例中，我们的目标表是 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)。在这种情况下，我们可以直接使用原始聚合查询。对于更复杂、基于 [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) 的用例，则需要为聚合使用带有 `-State` 后缀的函数。相关示例见[此处](/integrations/s3/performance#be-aware-of-merges)。
 :::
-
 
 在我们的例子中，这是一个相对轻量级的聚合，运行时间少于 3 秒，且使用的内存不到 600MiB。对于更复杂或运行时间更长的聚合，用户可以通过使用前面介绍的重复表方案使该过程更健壮，即创建一个影子目标表，例如 `pypi_downloads_per_day_v2`，将数据插入其中，然后将其生成的分区附加到 `pypi_downloads_per_day`。
 
@@ -469,7 +459,6 @@ Peak memory usage: 639.47 MiB.
 
 请注意，此处的内存使用量为 `639.47 MiB`。
 
-
 ##### 调优性能和资源 {#tuning-performance--resources}
 
 在上述场景中，有多个因素会影响性能和资源使用情况。在尝试调优之前，建议先理解《[Optimizing for S3 Insert and Read Performance](/integrations/s3/performance)》指南中 [Using Threads for Reads](/integrations/s3/performance#using-threads-for-reads) 一节所详细说明的写入机制。总结如下：
@@ -513,7 +502,6 @@ Ok.
 Peak memory usage: 272.53 MiB.
 ```
 
-
 最后，我们可以通过将 `min_insert_block_size_rows` 设置为 0（使其不再作为块大小的判定因素）以及将 `min_insert_block_size_bytes` 设置为 10485760（10MiB），来进一步减少内存占用。
 
 ```sql
@@ -548,30 +536,30 @@ Peak memory usage: 218.64 MiB.
 SELECT count() FROM pypi
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- (1) 暂停插入
--- (2) 创建目标表的副本
+-- (1) Pause inserts
+-- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
 
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 
--- (3) 将原始目标表的分区附加到副本。
+-- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
  (ATTACH PARTITION tuple() FROM pypi)
 
--- (4) 创建新的物化视图
+-- (4) Create our new materialized views
 
 CREATE TABLE pypi_downloads_per_day
 (
@@ -592,7 +580,7 @@ GROUP BY
     hour,
  project
 
--- (4) 重新开始插入。这里通过插入一行来进行演示。
+-- (4) Restart inserts. We replicate here by inserting a single row.
 
 INSERT INTO pypi SELECT *
 FROM pypi
@@ -604,16 +592,16 @@ SELECT count() FROM pypi
 │ 2039988138 │ -- 2.04 billion
 └────────────┘
 
-1 行结果。耗时 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 
--- 注意 pypi_v2 中的行数仍与之前相同
+-- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
 ┌────count()─┐
-│ 2039988137 │ -- 20.4 亿
+│ 2039988137 │ -- 2.04 billion
 └────────────┘
 
--- (5) 使用备份表 pypi_v2 对视图进行回填
+-- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
  toStartOfHour(timestamp) as hour,
@@ -624,9 +612,10 @@ GROUP BY
     hour,
  project
 
-0 行结果。耗时 3.719 秒。已处理 20.4 亿行，47.15 GB（548.57 百万行/秒，12.68 GB/秒）。
-```
+0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
 
+DROP TABLE pypi_v2;
+```
 
 DROP TABLE pypi&#95;v2;
 

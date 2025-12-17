@@ -7,11 +7,7 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-
-
 # countResample {#countResample}
-
-
 
 ## Описание {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 может быть применён к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count)
 для подсчёта значений указанного ключевого столбца в фиксированном количестве
 интервалов (`N`).
-
-
 
 ## Пример использования {#example-usage}
 
@@ -40,12 +34,12 @@ ENGINE = MergeTree()
 ORDER BY tuple()
 
 INSERT INTO employee_data (name, age, wage) VALUES
-    ('Иван', 16, 10.0),
-    ('Алиса', 30, 15.0),
-    ('Мария', 35, 8.0),
-    ('Евелина', 48, 11.5),
-    ('Давид', 62, 9.9),
-    ('Брайан', 60, 16.0);
+    ('John', 16, 10.0),
+    ('Alice', 30, 15.0),
+    ('Mary', 35, 8.0),
+    ('Evelyn', 48, 11.5),
+    ('David', 62, 9.9),
+    ('Brian', 60, 16.0);
 ```
 
 Получим среднюю заработную плату людей, чей возраст лежит в интервалах `[30,60)`
@@ -70,7 +64,6 @@ FROM avg_wage;
 │ [11.5,12.95]     │
 └──────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)

@@ -8,8 +8,6 @@ title: 'executable'
 doc_type: 'reference'
 ---
 
-
-
 # табличная функция `executable` для UDF {#executable-table-function-for-udfs}
 
 Табличная функция `executable` создаёт таблицу на основе вывода пользовательской функции (UDF), которую вы определяете в скрипте, выводящем строки в **stdout**. Исполняемый скрипт хранится в директории `users_scripts` и может читать данные из любого источника. Убедитесь, что на вашем сервере ClickHouse установлены все необходимые пакеты для запуска исполняемого скрипта. Например, если это скрипт на Python, убедитесь, что на сервере установлены необходимые пакеты Python.
@@ -20,14 +18,12 @@ doc_type: 'reference'
 Ключевое преимущество по сравнению с обычными UDF-функциями у табличной функции `executable` и движка таблицы `Executable` заключается в том, что обычные UDF-функции не могут изменять количество строк. Например, если на вход подаётся 100 строк, то результат также должен содержать 100 строк. При использовании табличной функции `executable` или движка таблицы `Executable` ваш скрипт может выполнять любые необходимые преобразования данных, включая сложные агрегации.
 :::
 
-
-
 ## Синтаксис {#syntax}
 
 Табличная функция `executable` принимает три обязательных параметра и необязательный список входных запросов:
 
 ```sql
-executable(имя_скрипта, формат, структура, [входной_запрос...] [,SETTINGS ...])
+executable(script_name, format, structure, [input_query...] [,SETTINGS ...])
 ```
 
 * `script_name`: имя файла скрипта, который сохраняется в папке `user_scripts` (папка по умолчанию для настройки `user_scripts_path`)
@@ -50,17 +46,17 @@ import random
 
 def main():
 
-    # Чтение входного значения
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # Генерация случайных строк
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # Сброс результатов в stdout
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":
@@ -90,7 +86,6 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 └────┴────────────┘
 ```
 
-
 ## Настройки {#settings}
 
 - `send_chunk_header` — управляет тем, нужно ли отправлять количество строк перед отправкой блока данных на обработку. Значение по умолчанию — `false`.
@@ -99,8 +94,6 @@ SELECT * FROM executable('generate_random.py', TabSeparated, 'id UInt32, random 
 - `command_termination_timeout` — исполняемый скрипт должен содержать основной цикл чтения/записи. После того как табличная функция уничтожается, канал (pipe) закрывается, и у исполняемого файла есть `command_termination_timeout` секунд на завершение работы, прежде чем ClickHouse отправит сигнал SIGTERM дочернему процессу. Задаётся в секундах. Значение по умолчанию — 10.
 - `command_read_timeout` — таймаут чтения данных из stdout команды в миллисекундах. Значение по умолчанию — 10000.
 - `command_write_timeout` — таймаут записи данных в stdin команды в миллисекундах. Значение по умолчанию — 10000.
-
-
 
 ## Передача результатов запроса в скрипт {#passing-query-results-to-a-script}
 

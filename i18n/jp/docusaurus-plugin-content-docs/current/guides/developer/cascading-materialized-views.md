@@ -148,9 +148,9 @@ SELECT * FROM analytics.hourly_data
 ```
 
 ```response
-OK。
+Ok.
 
-結果セット 0 行。経過時間: 0.002 秒。
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ここでは、期待どおりの結果と突き合わせて検証しやすいように、小さなデータセットを使用しています。小さなデータセットでフローが正しく動作することを確認できたら、その設定のまま大規模なデータに切り替えることができます。
@@ -173,7 +173,7 @@ SELECT sumCountViews FROM analytics.monthly_aggregated_data
 │               │
 └───────────────┘
 
-3 行の結果。実行時間: 0.003 秒。
+3 rows in set. Elapsed: 0.003 sec.
 ```
 
 代わりに、`Merge` サフィックスを使用して `sumCountViews` の値を取得してみましょう。
@@ -189,7 +189,7 @@ FROM analytics.monthly_aggregated_data;
 │            12 │
 └───────────────┘
 
-1 行が返されました。経過時間: 0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 `AggregatingMergeTree` では、`AggregateFunction` を `sum` として定義しているため、`sumMerge` を使用できます。`AggregateFunction` に対して関数 `avg` を使用する場合は、`avgMerge` を使用します。他の関数についても同様です。
@@ -227,7 +227,7 @@ GROUP BY
 │ 2019-02-01 │ clickhouse.com │             5 │
 └────────────┴────────────────┴───────────────┘
 
-結果セットに 3 行が含まれます。経過時間: 0.004 秒。
+3 rows in set. Elapsed: 0.004 sec.
 ```
 
 各ドメイン名ごとの年次集計データ:
@@ -249,7 +249,7 @@ GROUP BY
 │ 2020 │ clickhouse.com │                  6 │
 └──────┴────────────────┴────────────────────┘
 
-2 行が取得されました。経過時間: 0.004 秒。
+2 rows in set. Elapsed: 0.004 sec.
 ```
 
 ## 複数のソーステーブルを単一のターゲットテーブルに結合する {#combining-multiple-source-tables-to-single-target-table}
@@ -296,7 +296,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS impressions,
-    0 clicks         ---<<<--- これを書かなくても 0 のままです
+    0 clicks         ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.impressions
 GROUP BY
@@ -311,7 +311,7 @@ SELECT
     toDate(event_time) AS on_date,
     domain_name,
     count() AS clicks,
-    0 impressions    ---<<<--- これを書かなくても 0 のままです
+    0 impressions    ---<<<--- if you omit this, it will be the same 0
 FROM
     analytics.clicks
 GROUP BY
@@ -362,5 +362,5 @@ GROUP BY
 │ 2019-02-01 │ clickhouse.com │           1 │      0 │
 └────────────┴────────────────┴─────────────┴────────┘
 
-3 行が選択されました。経過時間: 0.018 秒。
+3 rows in set. Elapsed: 0.018 sec.
 ```

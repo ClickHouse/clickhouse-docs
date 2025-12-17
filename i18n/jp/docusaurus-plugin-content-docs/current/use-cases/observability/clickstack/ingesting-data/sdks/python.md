@@ -20,7 +20,6 @@ ClickStack は、テレメトリーデータ（ログとトレース）を収集
 * **メトリクス**
 * **トレース**
 
-
 ## はじめに {#getting-started}
 
 ### ClickStack OpenTelemetry インストルメンテーションパッケージのインストール {#install-clickstack-otel-instrumentation-package}
@@ -37,19 +36,17 @@ Python アプリケーションで使用しているパッケージ向けの Ope
 opentelemetry-bootstrap -a install
 ```
 
-
 ### 環境変数を設定する {#configure-environment-variables}
 
 その後、ClickStack にテレメトリを送信するために、シェル環境で以下の環境変数を設定する必要があります。
 
 ```shell
-export HYPERDX_API_KEY='<あなたの取り込みAPIキー>' \
-OTEL_SERVICE_NAME='<アプリまたはサービスの名前>' \
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*
-
 
 ### OpenTelemetry Python エージェントでアプリケーションを実行する {#run-the-application-with-otel-python-agent}
 
@@ -58,7 +55,6 @@ OpenTelemetry Python エージェント（`opentelemetry-instrument`）を使用
 ```shell
 opentelemetry-instrument python app.py
 ```
-
 
 #### `Gunicorn`、`uWSGI` または `uvicorn` を使用している場合 {#using-uvicorn-gunicorn-uwsgi}
 
@@ -107,7 +103,6 @@ OpenTelemetry は、`--reload` フラグを付けて実行された `uvicorn` �
 export HYPERDX_ENABLE_ADVANCED_NETWORK_CAPTURE=1
 ```
 
-
 ## トラブルシューティング {#troubleshooting}
 
 ### ログレベルが原因でログが表示されない場合 {#logs-not-appearing-due-to-log-level}
@@ -122,7 +117,6 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 ```
-
 
 ### コンソールへのエクスポート {#exporting-to-the-console}
 

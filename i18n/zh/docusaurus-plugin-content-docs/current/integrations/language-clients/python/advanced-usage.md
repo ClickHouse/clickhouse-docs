@@ -77,7 +77,6 @@ if __name__ == '__main__':
 
 同样，你也可以将数据保存为 [TabSeparated](/interfaces/formats/TabSeparated) 以及其他格式。有关所有可用格式选项的概览，请参阅 [输入和输出数据的格式](/interfaces/formats)。
 
-
 ## 多线程、多进程和异步/事件驱动用例 {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
 ClickHouse Connect 在多线程、多进程以及事件循环驱动/异步应用中表现良好。所有查询和插入处理都在单个线程中执行，因此操作通常是线程安全的。（在底层对部分操作进行并行处理是未来可能的增强方向，以克服单线程带来的性能损失，但即便在那种情况下也会保持线程安全。）
@@ -102,7 +101,7 @@ async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-    # 输出：
+    # Output:
     # [('INFORMATION_SCHEMA',)]
 
 asyncio.run(main())
@@ -115,7 +114,6 @@ asyncio.run(main())
 注意：与常规的 `Client` 不同，`AsyncClient` 会强制将 `autogenerate_session_id` 的默认值设为 `False`。
 
 另请参阅：[run&#95;async 示例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
-
 
 ## 管理 ClickHouse 会话 ID {#managing-clickhouse-session-ids}
 
@@ -141,7 +139,6 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 或者，将 `autogenerate_session_id=False` 直接传递给 `get_client(...)`。
 
 在这种情况下，ClickHouse Connect 不会发送 `session_id`；服务器不会将各个请求视为同一会话的一部分。临时表和会话级别的设置不会在请求之间保留。
-
 
 ## 自定义 HTTP 连接池 {#customizing-the-http-connection-pool}
 

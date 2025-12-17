@@ -7,8 +7,6 @@ title: 'INSERT INTO 语句'
 doc_type: '参考'
 ---
 
-
-
 # INSERT INTO 语句 {#insert-into-statement}
 
 将数据插入表中。
@@ -90,7 +88,7 @@ ClickHouse 会在数据之前移除所有空格以及一个换行符（如果存
 
 ```sql
 INSERT INTO t FORMAT TabSeparated
-11  你好，世界！
+11  Hello, world!
 22  Qwerty
 ```
 
@@ -105,12 +103,9 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 约束 {#constraints}
 
 如果表定义了[约束](../../sql-reference/statements/create/table.md#constraints)，则会针对插入数据的每一行检查相应的约束表达式。如果任一约束未被满足，服务器将抛出一个包含约束名称和表达式的异常，并停止执行该查询。
-
-
 
 ## 插入 SELECT 查询结果 {#inserting-the-results-of-select}
 
@@ -137,7 +132,6 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] SELECT ...
 INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
-
 
 ## 从文件中插入数据 {#inserting-data-from-a-file}
 
@@ -197,7 +191,6 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 
 :::
 
-
 ## 使用表函数插入数据 {#inserting-using-a-table-function}
 
 可以向由[表函数](../../sql-reference/table-functions/index.md)引用的表中插入数据。
@@ -215,7 +208,7 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 ```sql
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
-    VALUES (100, '通过 remote() 插入');
+    VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
@@ -223,10 +216,9 @@ SELECT * FROM simple_table;
 
 ```text
 ┌──id─┬─text──────────────────┐
-│ 100 │ 通过 remote() 插入    │
+│ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## 在 ClickHouse Cloud 中插入数据 {#inserting-into-clickhouse-cloud}
 
@@ -242,14 +234,11 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 请注意，使用 `select_sequential_consistency` 会增加 ClickHouse Keeper（ClickHouse Cloud 内部使用的组件）的负载，并且可能会视该服务的负载情况导致性能下降。除非确有必要，否则我们不建议启用此设置。推荐的做法是在同一会话中执行读写操作，或者使用基于原生协议（从而支持粘性连接）的客户端驱动程序。
 
-
 ## 在复制部署中执行插入 {#inserting-into-a-replicated-setup}
 
 在复制部署中，数据在完成复制后才会在其他副本上可见。`INSERT` 执行后，会立即开始复制过程（在其他副本上下载数据）。这与 ClickHouse Cloud 不同，后者会将数据直接写入共享存储，由副本订阅元数据变更。
 
 请注意，对于复制部署，`INSERT` 操作有时可能会花费相当长的时间（大约一秒量级），因为它需要向 ClickHouse Keeper 提交以完成分布式共识。将 S3 用作存储也会引入额外的延迟。
-
-
 
 ## 性能注意事项 {#performance-considerations}
 

@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## ソースからコンパイルする {#compile-from-source}
 
 ClickHouse を手動でコンパイルするには、[Linux](/development/build.md) または [macOS](/development/build-osx.md) 向けの手順に従ってください。
@@ -17,8 +15,8 @@ ClickHouse を手動でコンパイルするには、[Linux](/development/build.
 パッケージをコンパイルしてインストールすることも、パッケージをインストールせずにプログラムを利用することもできます。
 
 ```xml
-クライアント: <build_directory>/programs/clickhouse-client
-サーバー: <build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 `data` ディレクトリと `metadata` ディレクトリを手動で作成し、対象ユーザーに対して `chown` する必要があります。これらのパスはサーバーの設定ファイル（src/programs/server/config.xml）で変更できます。デフォルトでは次のとおりです。
@@ -29,7 +27,6 @@ ClickHouse を手動でコンパイルするには、[Linux](/development/build.
 ```
 
 Gentoo では、`emerge clickhouse` を実行するだけで、ソースから ClickHouse をインストールできます。
-
 
 ## CI で生成されたバイナリをインストールする {#install-a-ci-generated-binary}
 

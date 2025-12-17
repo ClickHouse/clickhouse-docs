@@ -47,7 +47,7 @@ DROP [TEMPORARY] TABLE [IF EXISTS] [IF EMPTY]  [db1.]name_1[, [db2.]name_2, ...]
 Синтаксис:
 
 ```sql
-DROP DICTIONARY [IF EXISTS] [db.]имя [SYNC]
+DROP DICTIONARY [IF EXISTS] [db.]name [SYNC]
 ```
 
 ## DROP USER {#drop-user}
@@ -67,7 +67,7 @@ DROP USER [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 Синтаксис:
 
 ```sql
-DROP ROLE [IF EXISTS] имя [,...] [ON CLUSTER имя_кластера] [FROM тип_хранилища_доступа]
+DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
 ## DROP ROW POLICY {#drop-row-policy}
@@ -118,7 +118,7 @@ DROP VIEW [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 **Синтаксис**
 
 ```sql
-DROP FUNCTION [IF EXISTS] имя_функции [ON CLUSTER кластер]
+DROP FUNCTION [IF EXISTS] function_name [on CLUSTER cluster]
 ```
 
 **Пример**
@@ -135,7 +135,7 @@ DROP FUNCTION linear_equation;
 **Синтаксис**
 
 ```sql
-DROP ИМЕНУЕМАЯ КОЛЛЕКЦИЯ [ЕСЛИ СУЩЕСТВУЕТ] name [на КЛАСТЕРЕ cluster]
+DROP NAMED COLLECTION [IF EXISTS] name [on CLUSTER cluster]
 ```
 
 **Пример**

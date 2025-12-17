@@ -671,7 +671,7 @@ SELECT randUniform(5.5, 10) FROM numbers(5)
 **语法**
 
 ```sql
-随机固定字符串(长度)
+randomFixedString(length)
 ```
 
 **参数**

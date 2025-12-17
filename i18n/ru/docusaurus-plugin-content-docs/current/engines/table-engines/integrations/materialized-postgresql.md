@@ -10,7 +10,6 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы MaterializedPostgreSQL {#materializedpostgresql-table-engine}
 
 <ExperimentalBadge />
@@ -34,7 +33,6 @@ SET allow_experimental_materialized_postgresql_table=1
 
 Если требуется более одной таблицы, настоятельно рекомендуется использовать движок базы данных [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md) вместо движка таблицы и настройку `materialized_postgresql_tables_list`, которая задаёт список реплицируемых таблиц (также можно будет указать `schema` базы данных). Такой подход значительно лучше с точки зрения нагрузки на CPU, количества подключений и числа слотов репликации в удалённой базе данных PostgreSQL.
 
-
 ## Создание таблицы {#creating-a-table}
 
 ```sql
@@ -51,7 +49,6 @@ PRIMARY KEY key;
 * `user` — пользователь PostgreSQL.
 * `password` — пароль пользователя.
 
-
 ## Требования {#requirements}
 
 1. Параметр [wal_level](https://www.postgresql.org/docs/current/runtime-config-wal.html) должен иметь значение `logical`, а параметр `max_replication_slots` — значение не менее `2` в конфигурационном файле PostgreSQL.
@@ -61,8 +58,6 @@ PRIMARY KEY key;
 3. Допускается только тип базы данных [Atomic](https://en.wikipedia.org/wiki/Atomicity_(database_systems)).
 
 4. Движок таблицы `MaterializedPostgreSQL` работает только с PostgreSQL версии >= 11, поскольку реализация использует функцию PostgreSQL [pg_replication_slot_advance](https://pgpedia.info/p/pg_replication_slot_advance.html).
-
-
 
 ## Виртуальные столбцы {#virtual-columns}
 

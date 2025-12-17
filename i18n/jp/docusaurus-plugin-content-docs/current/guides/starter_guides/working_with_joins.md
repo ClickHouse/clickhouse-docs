@@ -21,7 +21,6 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse は標準 SQL の JOIN を完全にサポートしており、効率的なデータ分析が可能です。
 このガイドでは、正規化された [IMDB](https://en.wikipedia.org/wiki/IMDb) データセット（[relational dataset repository](https://relational.fit.cvut.cz/dataset/IMDb) 由来）を用いた Venn 図とサンプルクエリを通じて、よく利用される代表的な JOIN の種類とその使い方を解説します。
 
-
 ## テストデータとリソース {#test-data-and-resources}
 
 テーブルの作成とロード手順は[こちら](/integrations/dbt/guides)にあります。
@@ -78,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ ハリー・ポッターと謎のプリンス │ アクション    │
-│ ハリー・ポッターと謎のプリンス │ アドベンチャー │
-│ ハリー・ポッターと謎のプリンス │ ファミリー    │
-│ ハリー・ポッターと謎のプリンス │ ファンタジー   │
-│ ハリー・ポッターと謎のプリンス │ スリラー  │
-│ ドラゴンボールZ                           │ アクション    │
-│ ドラゴンボールZ                           │ アドベンチャー │
-│ ドラゴンボールZ                           │ コメディ    │
-│ ドラゴンボールZ                           │ ファンタジー   │
-│ ドラゴンボールZ                           │ SF    │
+│ Harry Potter and the Half-Blood Prince │ Action    │
+│ Harry Potter and the Half-Blood Prince │ Adventure │
+│ Harry Potter and the Half-Blood Prince │ Family    │
+│ Harry Potter and the Half-Blood Prince │ Fantasy   │
+│ Harry Potter and the Half-Blood Prince │ Thriller  │
+│ DragonBall Z                           │ Action    │
+│ DragonBall Z                           │ Adventure │
+│ DragonBall Z                           │ Comedy    │
+│ DragonBall Z                           │ Fantasy   │
+│ DragonBall Z                           │ Sci-Fi    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -96,7 +95,6 @@ LIMIT 10;
 :::
 
 `INNER JOIN` の挙動は、次のいずれかの他の結合タイプを使用することで拡張または変更できます。
-
 
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
@@ -127,23 +125,22 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋戦争"""                          │
-│ """トリノ2006:第20回オリンピック冬季競技大会""" │
-│ アーサー・ザ・ムービー                    │
-│ テラビシアにかける橋                      │
-│ 牡羊座の火星                              │
-│ 時空の支配者                              │
-│ ルイス・ドラックスの9番目の人生          │
-│ パラドックス                              │
-│ レミーのおいしいレストラン                │
-│ """アメリカン・ダッド"""                  │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
 :::note
 `OUTER` キーワードは省略可能です。
 :::
-
 
 ## CROSS JOIN {#cross-join}
 
@@ -241,7 +238,6 @@ ALL
 
 そして、上で述べたように、`RIGHT OUTER JOIN` では `OUTER` キーワードを省略でき、さらにオプションの `ALL` キーワードを追加できるので、`ALL RIGHT JOIN` と書いても問題なく動作します。
 
-
 ## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
 
 `LEFT SEMI JOIN` クエリは、右テーブルに少なくとも 1 つの結合キーのマッチがある左テーブルの各行について、そのカラム値を返します。
@@ -280,7 +276,6 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-
 ## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
 
 `LEFT ANTI JOIN` は、左側のテーブルで一致しない行のすべてのカラム値を返します。
@@ -303,19 +298,18 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """太平洋戦争"""                          │
-│ """トリノ2006:第20回オリンピック冬季競技大会""" │
-│ アーサー・ザ・ムービー                    │
-│ テラビシアにかける橋                      │
-│ 牡羊座の火星                              │
-│ 時空の支配者                              │
-│ ルイス・ドラックスの9番目の人生          │
-│ パラドックス                              │
-│ レミーのおいしいレストラン                │
-│ """アメリカン・ダッド"""                  │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
-
 
 ## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
 
@@ -392,7 +386,6 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-
 ## ASOF JOIN {#asof-join}
 
 `ASOF JOIN` は、非完全一致のマッチングを行える機能を提供します。
@@ -427,7 +420,7 @@ FORMAT Vertical;
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 symbol:             ABC
 volume:             200
@@ -436,7 +429,7 @@ closest_quote_time: 2023-02-22 14:09:00
 quote_price:        32.11
 final_price:        6422
 
-行 2:
+Row 2:
 ──────
 symbol:             ABC
 volume:             300
@@ -449,7 +442,6 @@ final_price:        9645
 :::note
 `ASOF JOIN` では `ON` 句が必須であり、`AND` 句の非厳密な一致条件に加えて、厳密な一致条件を指定します。
 :::
-
 
 ## まとめ {#summary}
 

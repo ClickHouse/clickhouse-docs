@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-
-
 # Универсальное руководство по настройке источника Postgres {#generic-postgres-source-setup-guide}
 
 :::info
@@ -18,8 +16,6 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 :::
 
 ClickPipes поддерживает Postgres версий 12 и выше.
-
-
 
 ## Включение логической репликации {#enable-logical-replication}
 
@@ -56,8 +52,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     ```
 3. Если вы внесли какие-либо изменения в конфигурацию, как описано выше, вам НЕОБХОДИМО ПЕРЕЗАПУСТИТЬ экземпляр Postgres, чтобы изменения вступили в силу.
 
-
-
 ## Создание пользователя с правами и публикацией {#creating-a-user-with-permissions-and-publication}
 
 Создайте нового пользователя для ClickPipes с необходимыми правами, подходящими для CDC,
@@ -71,10 +65,10 @@ ClickPipes поддерживает Postgres версий 12 и выше.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Предоставить пользователю права на репликацию
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- Создать публикацию. Она будет использоваться при создании ClickPipe
+-- Create a publication. We will use this when creating the pipe
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -83,7 +77,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
 Обязательно замените `clickpipes_user` и `clickpipes_password` на выбранные вами имя пользователя и пароль.
 
 :::
-
 
 ## Разрешение подключений в pg_hba.conf для пользователя ClickPipes {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
@@ -98,8 +91,6 @@ ClickPipes поддерживает Postgres версий 12 и выше.
     ```sql
     SELECT pg_reload_conf();
     ```
-
-
 
 ## Увеличение `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
@@ -122,7 +113,6 @@ SELECT pg_reload_conf();
 Для более точного подбора этого значения вы можете связаться с командой ClickPipes.
 
 :::
-
 
 ## Что дальше? {#whats-next}
 

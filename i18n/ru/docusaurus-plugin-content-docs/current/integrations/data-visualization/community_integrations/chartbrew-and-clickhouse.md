@@ -22,14 +22,11 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
-
 # Подключение Chartbrew к ClickHouse {#connecting-chartbrew-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 [Chartbrew](https://chartbrew.com) — это платформа визуализации данных, которая позволяет пользователям создавать дашборды и мониторить данные в режиме реального времени. Она поддерживает различные источники данных, включая ClickHouse, и предоставляет интерфейс без необходимости писать код для создания графиков и отчётов.
-
-
 
 ## Цель {#goal}
 
@@ -41,13 +38,9 @@ import Image from '@theme/IdealImage';
 Если у вас нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md).
 :::
 
-
-
 ## 1. Соберите параметры подключения {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. Подключение Chartbrew к ClickHouse {#2-connect-chartbrew-to-clickhouse}
 
@@ -72,8 +65,6 @@ import Image from '@theme/IdealImage';
 
    <Image img={chartbrew_04} size="lg" alt="JSON-схема ClickHouse в Chartbrew" />
 
-
-
 ## 3. Создайте набор данных и выполните SQL-запрос {#3-create-a-dataset-and-run-a-sql-query}
 
 1. Нажмите кнопку **Create dataset** или перейдите на вкладку **Datasets**, чтобы создать набор данных.
@@ -84,11 +75,11 @@ import Image from '@theme/IdealImage';
 Напишите SQL-запрос для получения данных, которые вы хотите визуализировать. Например, этот запрос вычисляет среднюю уплаченную цену по годам из набора данных `uk_price_paid`:
 
 ```sql
-SELECT toYear(date) AS year, avg(price) AS avg_price
-FROM uk_price_paid
-GROUP BY year
-ORDER BY year;
-```
+  SELECT toYear(date) AS year, avg(price) AS avg_price
+  FROM uk_price_paid
+  GROUP BY year
+  ORDER BY year;
+  ```
 
 <Image img={chartbrew_07} size="lg" alt="SQL-запрос ClickHouse в Chartbrew" />
 
@@ -99,7 +90,6 @@ ORDER BY year;
 <Image img={chartbrew_06} size="lg" alt="AI-помощник по SQL для ClickHouse в Chartbrew" />
 
 После того как данные будут получены, нажмите **Configure dataset**, чтобы настроить параметры визуализации.
-
 
 ## 4. Создание визуализации {#4-create-a-visualization}
    
@@ -114,8 +104,6 @@ ORDER BY year;
 
   <Image img={chartbrew_01} size="lg" alt="Дашборд Chartbrew с данными ClickHouse" />
 
-
-
 ## 5. Автоматизация обновления данных {#5-automate-data-updates}
    
   Чтобы панель мониторинга всегда отображала актуальные данные, вы можете запланировать автоматическое обновление:
@@ -125,8 +113,6 @@ ORDER BY year;
   3. Сохраните настройки, чтобы включить автоматическое обновление.
 
   <Image img={chartbrew_09} size="lg" alt="Настройки обновления набора данных в Chartbrew" />
-
-
 
 ## Дополнительные материалы {#learn-more}
 

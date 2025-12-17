@@ -15,7 +15,6 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 | -- | -- | -- |
 | ✔  | ✗  |    |
 
-
 ## 描述 {#description}
 
 [Apache Avro](https://avro.apache.org/) 是一种面向行的序列化格式，使用二进制编码以实现高效的数据处理。`AvroConfluent` 格式支持解码使用 [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html)（或 API 兼容服务）序列化的、单对象且使用 Avro 编码的 Kafka 消息。
@@ -61,7 +60,6 @@ format_avro_schema_registry_url = 'http://schema-registry-url';
 SELECT * FROM topic1_stream;
 ```
 
-
 #### 使用基本身份验证 {#using-basic-authentication}
 
 如果 schema registry 需要基本身份验证（例如使用 Confluent Cloud 时），可以在 `format_avro_schema_registry_url` 设置中提供经过 URL 编码的凭证。
@@ -80,7 +78,6 @@ kafka_group_name = 'group1',
 kafka_format = 'AvroConfluent',
 format_avro_schema_registry_url = 'https://<username>:<password>@schema-registry-url';
 ```
-
 
 ## 故障排查 {#troubleshooting}
 

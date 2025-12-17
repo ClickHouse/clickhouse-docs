@@ -73,9 +73,9 @@ host:              clickhouse-01
 port:              9000
 status:            Finished
 exception_code:    630
-exception_text:    Code: 630. DB::Exception: 无法删除或重命名 test_db,因为有些表依赖于它:
+exception_text:    Code: 630. DB::Exception: Cannot drop or rename test_db, because some tables depend on it:
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
-返回 2 行。耗时: 0.025 秒。
+2 rows in set. Elapsed: 0.025 sec.
 ```

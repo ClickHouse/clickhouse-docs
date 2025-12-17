@@ -12,7 +12,6 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
 # SSL-TLS の構成 {#configuring-ssl-tls}
 
 <SelfManaged />
@@ -24,8 +23,6 @@ TLS の実装は複雑であり、完全に安全かつ堅牢なデプロイメ�
 
 概要をつかむために、この [証明書利用に関する基本的なチュートリアル](https://ubuntu.com/server/docs/security-certificates) を参照してください。
 :::
-
-
 
 ## 1. ClickHouse デプロイメントを作成する {#1-create-a-clickhouse-deployment}
 
@@ -40,8 +37,6 @@ TLS の実装は複雑であり、完全に安全かつ堅牢なデプロイメ�
 :::note
 ClickHouse のインストール方法の詳細については、[クイックスタート](/getting-started/install/install.mdx) を参照してください。
 :::
-
-
 
 ## 2. SSL 証明書の作成 {#2-create-ssl-certificates}
 :::note
@@ -92,8 +87,6 @@ ClickHouse のインストール方法の詳細については、[クイック�
     chnode1.crt: OK
     ```
 
-
-
 ## 3. 証明書と鍵を保存するディレクトリを作成および構成する {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
@@ -123,8 +116,6 @@ ClickHouse のインストール方法の詳細については、[クイック�
     -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
-
-
 
 ## 4. ClickHouse Keeper を使用して基本クラスタで環境を構成する {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
@@ -228,8 +219,6 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
     </remote_servers>
     ```
 
-
-
 4. テスト用に ReplicatedMergeTree テーブルを作成できるよう、マクロ値を定義します。`chnode1` 上では次のように設定します:
     ```xml
     <macros>
@@ -245,8 +234,6 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
         <replica>replica_2</replica>
     </macros>
     ```
-
-
 
 ## 5. ClickHouse ノード上で SSL/TLS インターフェースを設定する {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 以下の設定は ClickHouse サーバーの `config.xml` で行います。
@@ -347,15 +334,11 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
     </openSSL>
     ```
 
-
-
 6. MySQL および PostgreSQL のデフォルトのエミュレーションポートを無効化します:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
-
-
 
 ## 6. テスト {#6-testing}
 1. すべてのノードを、1つずつ起動します:
@@ -398,30 +381,28 @@ ClickHouse Keeper 用の推奨ポートは `9281` です。ただし、このポ
 通常の [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) コマンドは、TLS を使用せずに `echo` を使った場合は動作しません。ここでは `openssl` を使ってそれらのコマンドを実行する方法を示します。
    - `openssl` でインタラクティブセッションを開始します
 
-
-
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-```
+  ```
 
 ```response
-CONNECTED(00000003)
-depth=0 CN = chnode1
-verify error:num=20:ローカルの発行元証明書を取得できません
-verify return:1
-depth=0 CN = chnode1
-verify error:num=21:最初の証明書を検証できません
-verify return:1
----
-証明書チェーン
- 0 s:CN = chnode1
-   i:CN = marsnet.local CA
----
-サーバー証明書
------BEGIN CERTIFICATE-----
-MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-...
-```
+  CONNECTED(00000003)
+  depth=0 CN = chnode1
+  verify error:num=20:unable to get local issuer certificate
+  verify return:1
+  depth=0 CN = chnode1
+  verify error:num=21:unable to verify the first certificate
+  verify return:1
+  ---
+  Certificate chain
+   0 s:CN = chnode1
+     i:CN = marsnet.local CA
+  ---
+  Server certificate
+  -----BEGIN CERTIFICATE-----
+  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+  ...
+  ```
 
 * openssl セッション内で 4LW コマンドを実行します
 
@@ -463,13 +444,13 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 4. `--secure` フラグと SSL ポートを使用して ClickHouse クライアントを起動します:
    ```bash
-   root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
-   ClickHouse client version 22.3.3.44 (official build).
-   Connecting to chnode1.marsnet.local:9440 as user default.
-   Connected to ClickHouse server version 22.3.3 revision 54455.
+    root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
+    ClickHouse client version 22.3.3.44 (official build).
+    Connecting to chnode1.marsnet.local:9440 as user default.
+    Connected to ClickHouse server version 22.3.3 revision 54455.
 
-   clickhouse :)
-   ```
+    clickhouse :)
+    ```
 
 5. `https://chnode1.marsnet.local:8443/play` の `https` インターフェースを使用して Play UI にログインします。
 
@@ -482,33 +463,33 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 6. レプリケートテーブルを作成します:
 
-   ```sql
-   clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
-               (
-                   id UInt64,
-                   column1 Date,
-                   column2 String
-               )
-               ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
-               ORDER BY (id);
-   ```
+    ```sql
+    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
+                (
+                    id UInt64,
+                    column1 Date,
+                    column2 String
+                )
+                ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
+                ORDER BY (id);
+    ```
 
-   ```response
-   ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-   │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-   │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-   └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-   ```
+    ```response
+    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 
 7. `chnode1` 上で 2 行のデータを追加します:
-   ```sql
-   INSERT INTO repl_table
-   (id, column1, column2)
-   VALUES
-   (1,'2022-04-01','abc'),
-   (2,'2022-04-02','def');
-   ```
 
+    ```sql
+    INSERT INTO repl_table
+    (id, column1, column2)
+    VALUES
+    (1,'2022-04-01','abc'),
+    (2,'2022-04-02','def');
+    ```
 
 8. `chnode2` 上で行を表示し、レプリケーションを検証します:
     ```sql
@@ -521,8 +502,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
-
-
 
 ## まとめ {#summary}
 

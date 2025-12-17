@@ -433,9 +433,9 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-允许显式对 Iceberg 表使用 `OPTIMIZE`。
+允许在 iceberg 表上显式使用 `OPTIMIZE` 命令。
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -1689,7 +1689,9 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "已修改该设置，使 CHECK TABLE 更实用"}]}]}/>
 
 定义 `MergeTree` 系列表引擎中 [CHECK TABLE](/sql-reference/statements/check-table) 查询结果的详细程度。
 
@@ -1821,6 +1823,16 @@ Cloud 模式
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在 CREATE TABLE 中忽略排序规则的兼容性选项
+
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+兼容性：启用时，会将预签名 URL 的查询参数（例如 X-Amz-*）折叠并入 S3 键中（与旧版行为一致），
+因此 `?` 会在路径中充当通配符。禁用时（默认），预签名 URL 的查询参数会保留在 URL 查询部分，
+以避免将 `?` 解释为通配符。
 
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
@@ -2722,6 +2734,26 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。会重新抛出在与分布式缓存通信期间发生的异常，或从分布式缓存接收到的异常。否则，在发生错误时会退回为跳过分布式缓存。
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对读请求使用客户端缓存。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对写请求使用客户端缓存。
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>
@@ -3286,7 +3318,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- 返回错误，提示 ALL 存在歧义
+SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3593,17 +3625,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a 在插入时不会更新
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- 两个索引在插入时都不会更新
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- 仅更新 idx_b
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
 
--- 由于这是会话级设置,可以在单个查询级别进行设置
+-- since it is a session setting it can be set on a per-query level
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- 此查询可用于显式物化该索引
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- 将设置重置为默认值
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
 ```
 
 
@@ -3876,7 +3908,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-SETTINGS index_granularity = 8192 │
+│
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3900,7 +3932,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-SETTINGS index_granularity = 8192 │
+│
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3936,12 +3968,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- 查询将产生 CANNOT_PARSE_TEXT 错误。
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- 查询将产生 INDEX_NOT_USED 错误。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- 正常。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- 正常(完整功能解析器示例)。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 查询将产生 INDEX_NOT_USED 错误,因为 d1_null_idx 未被使用。
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 正常。
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
 ```
 
 
@@ -4098,7 +4130,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-返回了 1 行。耗时: 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 可能的取值：
@@ -4120,7 +4152,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 │ ᴺᵁᴸᴸ                                   │
 └────────────────────────────────────────┘
 
-返回了 1 行，耗时 0.001 秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 可能的取值为：
@@ -4650,11 +4682,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- 查询会产生 CANNOT_PARSE_TEXT 错误。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- 正常。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- 正常。
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- 查询会产生 INDEX_NOT_USED 错误,因为 xy_idx 被显式忽略。
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4859,11 +4891,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- 下一次插入不会去重,因为 insert_deduplication_token 不同
+-- the next insert won't be deduplicated because insert_deduplication_token is different
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- 下一次插入会去重,因为 insert_deduplication_token
--- 与之前的某次相同
+-- the next insert will be deduplicated because insert_deduplication_token
+-- is the same as one of the previous
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -6259,7 +6291,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 结果：
 
 ```text
-异常：正则表达式长度过大。
+Exception: Regexp length too large.
 ```
 
 **另请参阅**
@@ -6303,7 +6335,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 结果：
 
 ```text
-异常：正则表达式总长度过大。
+Exception: Total regexp lengths too large.
 ```
 
 **另请参阅**
@@ -6842,15 +6874,15 @@ Cloud 默认值：`0`。
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- 用户 Alice 同一时间最多只能连接 ClickHouse 服务器一次。 -->
+    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- 用户 Bob 可以同时使用 2 个会话。 -->
+    <!-- User Bob can use 2 simultaneous sessions. -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- 用户 Charles 可以同时使用任意数量的会话。 -->
+    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -9296,6 +9328,14 @@ Possible values:
 
 控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制。
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting."}]}]}/>
+
+控制在使用 minmax 跳过索引和动态阈值过滤来评估 TopK 优化查询计划时所允许的最大 `LIMIT` 值。如果为 0，则表示不限。
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -9348,6 +9388,21 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。要在使用新的 analyzer 时正确支持过滤下推（filter-push-down），需要启用该选项。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+指定在查询计划优化期间要尝试的 JOIN 顺序算法。可用的算法如下：
+
+- 'greedy' - 基本的贪心算法，执行速度快，但可能无法产生最优的 JOIN 顺序
+- 'dpsize' - 实现 DPsize 算法，目前仅适用于 INNER JOIN，会考虑所有可能的 JOIN 顺序并找到最优的那个，但对于包含许多表和 JOIN 谓词的查询可能会较慢。
+
+可以指定多个算法，例如 'dpsize,greedy'。
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
@@ -9405,6 +9460,14 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 - 0 - 禁用
 - 1 - 启用
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+在 JOIN 操作中从左表按顺序持续读取，以便供后续步骤使用。
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
@@ -9890,7 +9953,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 行数据。...
+6666 rows in set. ...
 ```
 
 
@@ -10066,6 +10129,15 @@ S3 分块上传的最大分块编号。
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 在向 S3 执行分段上传时，每个上传分段的最小大小。
+
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting"}]}]}/>
+
+从查询过滤条件中提取 `_path` 值用于文件遍历（替代 glob 列举）的最大数量。
+0 表示禁用。
 
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
@@ -10302,6 +10374,14 @@ S3Queue 的 Keeper 故障注入概率。
 
 序列化用于分布式处理的查询计划
 
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "新增设置"}]}]}/>
+
+在聚合期间对 String 类型的值进行序列化时，在末尾添加一个零字节。启用该设置以在对版本不兼容的集群执行查询时保持兼容性。
+
 ## session&#95;timezone {#session_timezone}
 
 <BetaBadge />
@@ -10348,7 +10428,7 @@ SELECT toDateTime64(toDateTime64('1999-12-12 23:23:23.123', 3), 3, 'Europe/Zuric
 CREATE TABLE test_tz (`d` DateTime('UTC')) ENGINE = Memory AS SELECT toDateTime('2000-01-01 00:00:00', 'UTC');
 
 SELECT *, timeZone() FROM test_tz WHERE d = toDateTime('2000-01-01 00:00:00') SETTINGS session_timezone = 'Asia/Novosibirsk'
-返回 0 行。
+0 rows in set.
 
 SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS session_timezone = 'Asia/Novosibirsk'
 ┌───────────────────d─┬─timeZone()───────┐
@@ -10621,7 +10701,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "默认情况下不允许对 Kafka/RabbitMQ/FileLog 执行直接 SELECT"}]}]}/>
 
-允许对 Kafka、RabbitMQ、FileLog、Redis Streams 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+允许对 Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+如果没有附加的 materialized view，启用此设置后可以读取数据。请注意，已读取的数据通常会从队列中删除。为避免删除已读取的数据，应正确配置相关引擎的设置。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 
@@ -10671,7 +10752,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ 查询超出内存限制的次数。 │
+│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 
@@ -11170,6 +11251,21 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+启用在 TopK 过滤中使用数据跳过索引。
+
+启用后，如果在 `ORDER BY &lt;column&gt; LIMIT n` 查询中使用的列上存在 minmax 跳过索引，优化器会尝试使用该 minmax 索引来跳过与最终结果无关的 granule。这可以降低查询延迟。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11259,6 +11355,21 @@ Cloud 默认值：`1`
 
 是否启用已反序列化文本索引倒排列表的缓存。
 在处理大量文本索引查询时，启用文本索引倒排列表缓存可以显著降低延迟并提高吞吐量。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+在执行 `ORDER BY <column> LIMIT n` 查询时启用动态过滤优化。
+
+启用后，查询执行器会尝试跳过那些不会出现在最终结果集中 `top N` 行中的数据粒度块和行。此优化具有动态特性，其延迟改善效果取决于数据分布以及查询中是否存在其他谓词。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

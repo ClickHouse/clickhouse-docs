@@ -7,13 +7,9 @@ title: 'ClickHouse Cloud 与 Amazon Redshift 对比'
 doc_type: 'guide'
 ---
 
-
-
 # 从 Amazon Redshift 迁移到 ClickHouse {#amazon-redshift-to-clickhouse-migration}
 
 > 本文档对如何将数据从 Amazon Redshift 迁移到 ClickHouse 进行简介。
-
-
 
 ## 简介 {#introduction}
 
@@ -27,8 +23,6 @@ Amazon Redshift 是一款云数据仓库，为结构化和半结构化数据提�
 需要一个优化程度更高的解决方案。因此，越来越多的用户转向 ClickHouse，以
 利用更出色的查询性能和数据压缩能力，将其作为替代方案，或作为与现有
 Redshift 工作负载并行部署的“加速层”。
-
-
 
 ## ClickHouse 与 Redshift 对比 {#clickhouse-vs-redshift}
 

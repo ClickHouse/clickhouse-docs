@@ -9,13 +9,10 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 25.9 之前版本的分配分析 {#allocation-profiling-for-versions-before-259}
 
 ClickHouse 使用 [jemalloc](https://github.com/jemalloc/jemalloc) 作为其全局分配器。jemalloc 自带了一些用于分配采样和分析的工具。  
 为了让分配分析更加方便，除了提供 `SYSTEM` 命令外，还在 Keeper 中提供了四字命令（4LW）。
-
-
 
 ## 分配采样与堆分析数据刷新 {#sampling-allocations-and-flushing-heap-profiles}
 
@@ -54,7 +51,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profil
 ```
 
 生成的文件名会在前缀后追加 PID 和序列号。
-
 
 ## 分析堆内存剖析文件 {#analyzing-heap-profiles}
 
@@ -126,7 +122,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 另一个值得一提的工具是 [speedscope](https://www.speedscope.app/)，它可以让你以更交互的方式分析采集到的堆栈数据。
 
-
 ## 在运行时控制分配分析器 {#controlling-allocation-profiler-during-runtime}
 
 如果在启用分配分析器的情况下启动 ClickHouse/Keeper，则可以在运行时使用额外命令来启用或禁用内存分配分析。
@@ -173,7 +168,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 稍后可以启用分析器。
 
-
 ## 分析器的其他选项 {#additional-options-for-profiler}
 
 `jemalloc` 提供了许多与分析器相关的选项，可以通过修改 `MALLOC_CONF` 环境变量进行控制。
@@ -181,8 +175,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 如果希望每分配 N 个字节就转储一次堆分析数据，可以通过 `lg_prof_interval` 启用该功能。  
 
 建议查阅 `jemalloc` 的[参考页面](https://jemalloc.net/jemalloc.3.html)以获取完整的选项列表。
-
-
 
 ## 其他资源 {#other-resources}
 

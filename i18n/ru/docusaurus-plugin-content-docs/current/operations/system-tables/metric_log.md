@@ -29,7 +29,7 @@ SELECT * FROM system.metric_log LIMIT 1 FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 hostname:                                                        clickhouse.eu-central1.internal
 event_date:                                                      2020-09-05

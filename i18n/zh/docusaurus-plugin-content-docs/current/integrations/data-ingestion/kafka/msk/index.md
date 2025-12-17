@@ -30,14 +30,12 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 > 注意：视频中展示的策略较为宽松，仅用于快速上手。请参阅下文基于最小权限原则的 IAM 指南。
 
-
-
 ## 前提条件 {#prerequisites}
+
 我们假定：
-* 你已经熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)、Amazon MSK 和 MSK Connectors。我们推荐阅读 Amazon MSK 的[入门指南](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)和 [MSK Connect 指南](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html)。
-* MSK broker 已配置为可通过公网访问。请参阅《开发者指南》中 [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) 章节。
 
-
+* 你已经熟悉 [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)。
+* 你已经熟悉 Amazon MSK 和 MSK Connectors。我们推荐阅读 Amazon MSK 的[入门指南](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html)和 [MSK Connect 指南](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html)。
 
 ## ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK） {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 
@@ -83,7 +81,7 @@ schemas.enable=false
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "MSK集群访问",
+      "Sid": "MSKClusterAccess",
       "Effect": "Allow",
       "Action": [
         "kafka:DescribeCluster",
@@ -95,7 +93,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "Kafka授权",
+      "Sid": "KafkaAuthorization",
       "Effect": "Allow",
       "Action": [
         "kafka-cluster:Connect",
@@ -107,7 +105,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "可选Glue模式注册表",
+      "Sid": "OptionalGlueSchemaRegistry",
       "Effect": "Allow",
       "Action": [
         "glue:GetSchema*",
@@ -117,7 +115,7 @@ schemas.enable=false
       "Resource": "*"
     },
     {
-      "Sid": "可选Secrets Manager",
+      "Sid": "OptionalSecretsManager",
       "Effect": "Allow",
       "Action": [
         "secretsmanager:GetSecretValue"
@@ -127,7 +125,7 @@ schemas.enable=false
       ]
     },
     {
-      "Sid": "可选S3读取",
+      "Sid": "OptionalS3Read",
       "Effect": "Allow",
       "Action": [
         "s3:GetObject"
@@ -150,8 +148,8 @@ schemas.enable=false
 提高性能的一种方法是在 **worker** 配置中添加以下内容，以调整从 Kafka 拉取的批量大小和记录数量：
 
 ```yml
-consumer.max.poll.records=[记录数]
-consumer.max.partition.fetch.bytes=[记录数 * 单条记录字节数]
+consumer.max.poll.records=[NUMBER OF RECORDS]
+consumer.max.partition.fetch.bytes=[NUMBER OF RECORDS * RECORD SIZE IN BYTES]
 ```
 
 您使用的具体数值会因期望的记录数量和记录大小而有所不同。例如，默认值为：

@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
-
-
 # ClickHouse での Parquet の利用 {#working-with-parquet-in-clickhouse}
 
 Parquet は、データをカラム指向で効率的に保存できるファイル形式です。
@@ -21,8 +19,6 @@ ClickHouse は、Parquet ファイルの読み取りと書き込みの両方を�
 [`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用している場合は、ClickHouse Local を起動した場所からの相対パスとして読み込みます。
 `clickhouse client` 経由で ClickHouse Server または ClickHouse Cloud を使用している場合は、サーバー上の `/var/lib/clickhouse/user_files/` ディレクトリからの相対パスとして読み込みます。
 :::
-
-
 
 ## Parquet からのインポート {#importing-from-parquet}
 
@@ -63,7 +59,6 @@ LIMIT 3;
 その場合、ClickHouse がファイル拡張子に基づいてフォーマットを自動的に判別します。
 :::
 
-
 ## 既存テーブルへのインポート {#importing-to-an-existing-table}
 
 Parquet データをインポートするためのテーブルを作成します。
@@ -102,7 +97,6 @@ LIMIT 5;
 
 ClickHouse が `date` 列の Parquet の文字列データを自動的に `Date` 型へ変換していることに注目してください。これは、ClickHouse がターゲットテーブルの列の型に基づいて自動的に型変換を行うためです。
 
-
 ## ローカルファイルをリモートサーバーに挿入する {#inserting-a-local-file-to-remote-server}
 
 ローカルの Parquet ファイルをリモートの ClickHouse サーバーに挿入したい場合は、次のようにファイルの内容を `clickhouse-client` にパイプすることで行えます。
@@ -110,7 +104,6 @@ ClickHouse が `date` 列の Parquet の文字列データを自動的に `Date`
 ```sql
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
-
 
 ## Parquet ファイルから新しいテーブルを作成する {#creating-new-tables-from-parquet-files}
 
@@ -140,7 +133,6 @@ DESCRIBE TABLE imported_from_parquet;
 
 デフォルトでは、ClickHouse はカラム名やデータ型、値に対して厳格に動作します。ただし、状況によっては、インポート時に存在しないカラムやサポートされていない値をスキップすることができます。これは [Parquet 設定](/interfaces/formats/Parquet#format-settings) で制御できます。
 
-
 ## Parquet 形式へのエクスポート {#exporting-to-parquet-format}
 
 :::tip
@@ -157,7 +149,6 @@ FORMAT Parquet
 ```
 
 これにより、作業ディレクトリに `export.parquet` ファイルが作成されます。
-
 
 ## ClickHouse と Parquet のデータ型 {#clickhouse-and-parquet-data-types}
 
@@ -182,7 +173,7 @@ SELECT * FROM file('time.parquet', Parquet);
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- int を日時型に変換
+    toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
 ```
 
@@ -195,7 +186,6 @@ FROM file('time.parquet', Parquet);
 │ 4 │ 2023-01-13 15:10:07 │
 └───┴─────────────────────┘
 ```
-
 
 ## さらに読む {#further-reading}
 

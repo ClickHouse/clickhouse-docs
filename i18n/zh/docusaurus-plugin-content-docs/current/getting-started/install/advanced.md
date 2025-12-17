@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## 从源码编译 {#compile-from-source}
 
 要手动编译 ClickHouse，请按照 [Linux](/development/build.md) 或 [macOS](/development/build-osx.md) 的说明进行操作。
@@ -17,8 +15,8 @@ doc_type: 'guide'
 你可以编译生成软件包并安装它们，或者在不安装软件包的情况下直接使用程序。
 
 ```xml
-客户端:<build_directory>/programs/clickhouse-client
-服务器:<build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 你需要手动创建数据和元数据目录，并使用 `chown` 将其所有权设置为指定用户。它们的路径可以在服务器配置文件（src/programs/server/config.xml）中修改，默认路径为：
@@ -29,7 +27,6 @@ doc_type: 'guide'
 ```
 
 在 Gentoo 上，你只需运行 `emerge clickhouse` 即可从源代码安装 ClickHouse。
-
 
 ## 安装 CI 生成的二进制文件 {#install-a-ci-generated-binary}
 

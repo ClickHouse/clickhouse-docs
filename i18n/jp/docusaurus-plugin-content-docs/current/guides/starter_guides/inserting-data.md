@@ -11,7 +11,6 @@ doc_type: 'guide'
 import postgres_inserts from '@site/static/images/guides/postgres-inserts.png';
 import Image from '@theme/IdealImage';
 
-
 ## ClickHouse への挿入と OLTP データベースへの挿入の違い {#inserting-into-clickhouse-vs-oltp-databases}
 
 OLAP（Online Analytical Processing）データベースである ClickHouse は、高いパフォーマンスとスケーラビリティに最適化されており、最大で 1 秒間に数百万行のデータを挿入できます。
@@ -24,8 +23,6 @@ PostgreSQL は、複数バージョン同時実行制御（MVCC: Multi-Version C
 
 高い挿入性能を実現しつつ強い一貫性保証も維持するためには、ClickHouse にデータを挿入する際に、以下で説明するシンプルなルールに従う必要があります。
 これらのルールに従うことで、ユーザーが初めて ClickHouse を利用する際に、OLTP データベースで有効だった挿入戦略をそのまま再現しようとして直面しがちな問題を回避できます。
-
-
 
 ## Insert のベストプラクティス {#best-practices-for-inserts}
 
@@ -83,8 +80,6 @@ MergeTree エンジンファミリーのテーブルでは、ClickHouse はデ�
 :::note
 データはデータベースストレージにフラッシュされるまではクエリで検索できないことと、バッファフラッシュは設定可能であることに注意してください。
 
-
-
 非同期インサートの設定に関する詳細な情報は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)にあり、さらに深掘りした内容は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 :::
 
@@ -120,8 +115,6 @@ ClickHouse は、インサート時（およびクエリ時）に多くの[入�
 
 詳細については [HTTP Interface](/interfaces/http) を参照してください。
 
-
-
 ## 基本例 {#basic-example}
 
 ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用できます。入門ガイド「[Creating Tables in ClickHouse](./creating-tables)」で作成したテーブルにデータを挿入してみましょう。
@@ -129,9 +122,9 @@ ClickHouse では、おなじみの `INSERT INTO TABLE` コマンドを使用で
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
     (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
-    (102, 'バッチごとに大量の行を挿入する',                     yesterday(), 1.41421 ),
-    (102, 'よく使用するクエリに基づいてデータをソートする', today(),     2.718   ),
-    (101, 'グラニュールはデータ読み取りの最小単位である',      now() + 5,   3.14159 )
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
 ```
 
 正常に動作したことを確認するため、次の `SELECT` クエリを実行します。
@@ -145,11 +138,10 @@ SELECT * FROM helloworld.my_first_table
 ```response
 user_id message                                             timestamp           metric
 101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
-101         グラニュールは読み取られるデータの最小チャンクです           2024-11-13 20:01:27 3.14159
-102         バッチごとに多数の行を挿入してください                          2024-11-12 00:00:00 1.41421
-102         よく使用するクエリに基づいてデータをソートしてください  2024-11-13 00:00:00     2.718
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
-
 
 ## Postgres からのデータロード {#loading-data-from-postgres}
 
@@ -164,8 +156,6 @@ Postgres からデータをロードするには、次の方法を利用でき�
 :::note 大きなデータセットの挿入にお困りですか？
 大きなデータセットの挿入について支援が必要な場合や、ClickHouse Cloud にデータをインポートする際にエラーが発生した場合は、support@clickhouse.com までご連絡ください。サポートいたします。
 :::
-
-
 
 ## コマンドラインからデータを挿入する {#inserting-data-from-command-line}
 

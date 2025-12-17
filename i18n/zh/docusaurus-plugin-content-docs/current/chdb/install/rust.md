@@ -7,13 +7,9 @@ keywords: ['chdb', '嵌入式', 'clickhouse-lite', 'rust', '安装', 'ffi', '绑
 doc_type: 'guide'
 ---
 
-
-
 # 适用于 Rust 的 chDB {#chdb-for-rust}
 
 chDB-rust 为 chDB 提供了实验性的 FFI（外部函数接口）绑定，使你可以在 Rust 应用程序中直接运行 ClickHouse 查询，而无需任何外部依赖。
-
-
 
 ## 安装 {#installation}
 
@@ -24,7 +20,6 @@ chDB-rust 为 chDB 提供了实验性的 FFI（外部函数接口）绑定，使
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -38,19 +33,19 @@ chDB Rust 提供无状态和有状态两种查询执行模式。
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 执行简单查询
+    // Execute a simple query
     let result = execute(
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouse 版本：{}", result.data_utf8()?);
+    println!("ClickHouse version: {}", result.data_utf8()?);
     
-    // 查询 CSV 文件
+    // Query with CSV file
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSV 数据：{}", result.data_utf8()?);
+    println!("CSV data: {}", result.data_utf8()?);
     
     Ok(())
 }
@@ -70,17 +65,17 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 为数据库存储创建临时目录
+    // Create a temporary directory for database storage
     let tmp = TempDir::new("chdb-rust")?;
     
-    // 构建配置会话
+    // Build session with configuration
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // 销毁时自动清理
+        .with_auto_cleanup(true)  // Cleanup on drop
         .build()?;
 
-    // 创建数据库和表
+    // Create database and table
     session.execute(
         "CREATE DATABASE demo; USE demo", 
         Some(&[Arg::MultiQuery])
@@ -91,29 +86,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // 插入数据
+    // Insert data
     session.execute(
         "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
         None,
     )?;
 
-    // 查询数据
+    // Query data
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("查询结果：\n{}", result.data_utf8()?);
+    println!("Query results:\n{}", result.data_utf8()?);
     
-    // 获取查询统计信息
-    println!("读取行数：{}", result.rows_read());
-    println!("读取字节数：{}", result.bytes_read());
-    println!("查询耗时：{:?}", result.elapsed());
+    // Get query statistics
+    println!("Rows read: {}", result.rows_read());
+    println!("Bytes read: {}", result.bytes_read());
+    println!("Query time: {:?}", result.elapsed());
 
     Ok(())
 }
 ```
-
 
 ## 构建与测试 {#building-testing}
 
@@ -137,7 +131,6 @@ cargo test
 * `tempdir` (v0.3.7) - 用于测试中的临时目录管理
 * `thiserror` (v1) - 错误处理工具库
 
-
 ## 错误处理 {#error-handling}
 
 chDB Rust 通过 `Error` 枚举提供了完善的错误处理机制：
@@ -147,23 +140,22 @@ use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("成功：{}", result.data_utf8()?);
+        println!("Success: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("查询失败：{}", msg);
+        eprintln!("Query failed: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("未返回结果");
+        eprintln!("No result returned");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("无效的 UTF-8：{}", e);
+        eprintln!("Invalid UTF-8: {}", e);
     },
     Err(e) => {
-        eprintln!("其他错误：{}", e);
+        eprintln!("Other error: {}", e);
     }
 }
 ```
-
 
 ## GitHub 仓库 {#github-repository}
 

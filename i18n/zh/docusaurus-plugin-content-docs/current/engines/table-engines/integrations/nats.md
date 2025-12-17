@@ -7,8 +7,6 @@ title: 'NATS 表引擎'
 doc_type: 'guide'
 ---
 
-
-
 # NATS 表引擎 {#redisstreams-engine}
 
 此引擎用于将 ClickHouse 与 [NATS](https://nats.io/) 集成。
@@ -17,8 +15,6 @@ doc_type: 'guide'
 
 - 发布或订阅消息主题。
 - 在有新消息时进行处理。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -80,7 +76,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 SSL 连接：
 
-
 要使用安全连接，请设置 `nats_secure = 1`。
 所用库的默认行为是不检查所创建的 TLS 连接是否足够安全。无论证书是否过期、自签名、缺失或无效，连接都会照样被允许。将来可能会实现对证书更严格的检查。
 
@@ -132,7 +127,6 @@ SSL 连接：
 </nats>
 ```
 
-
 ## 描述 {#description}
 
 `SELECT` 对于读取消息（除调试用途外）并不是特别有用，因为每条消息只能被读取一次。更实用的方式是使用[物化视图](../../../sql-reference/statements/create/view.md)来创建实时处理流水线。为此，您需要：
@@ -174,7 +168,6 @@ SSL 连接：
 
 如果你想通过 `ALTER` 更改目标表，建议先禁用该物化视图，以避免目标表与视图数据之间出现不一致。
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_subject` - NATS 消息的主题。数据类型：`String`。
@@ -186,8 +179,6 @@ SSL 连接：
 
 注意：仅在解析过程中发生异常时，`_raw_message` 和 `_error` 虚拟列才会被写入；当消息成功解析时，它们始终为 `NULL`。
 
-
-
 ## 数据格式支持 {#data-formats-support}
 
 NATS 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/formats.md)。
@@ -195,8 +186,6 @@ NATS 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/form
 
 - 对于基于行的格式，可以通过设置 `nats_max_rows_per_message` 来控制一条 NATS 消息中的行数。
 - 对于基于块的格式，我们无法将一个块拆分为更小的部分，但可以通过全局设置 [max_block_size](/operations/settings/settings#max_block_size) 来控制一个块中的行数。
-
-
 
 ## 使用 JetStream {#using-jetstream}
 
@@ -206,99 +195,99 @@ NATS 引擎支持 ClickHouse 所支持的所有[格式](../../../interfaces/form
   <summary>创建流（stream）</summary>
 
   ```bash
-  $ nats stream add
-  ? Stream Name stream_name
-  ? Subjects stream_subject
-  ? Storage file
-  ? Replication 1
-  ? Retention Policy Limits
-  ? Discard Policy Old
-  ? Stream Messages Limit -1
-  ? Per Subject Messages Limit -1
-  ? Total Stream Size -1
-  ? Message TTL -1
-  ? Max Message Size -1
-  ? Duplicate tracking time window 2m0s
-  ? Allow message Roll-ups No
-  ? Allow message deletion Yes
-  ? Allow purging subjects or the entire stream Yes
-  Stream stream_name was created
+$ nats stream add
+? Stream Name stream_name
+? Subjects stream_subject
+? Storage file
+? Replication 1
+? Retention Policy Limits
+? Discard Policy Old
+? Stream Messages Limit -1
+? Per Subject Messages Limit -1
+? Total Stream Size -1
+? Message TTL -1
+? Max Message Size -1
+? Duplicate tracking time window 2m0s
+? Allow message Roll-ups No
+? Allow message deletion Yes
+? Allow purging subjects or the entire stream Yes
+Stream stream_name was created
 
-  Information for Stream stream_name created 2025-10-03 14:12:51
+Information for Stream stream_name created 2025-10-03 14:12:51
 
-                  Subjects: stream_subject
-                  Replicas: 1
-                   Storage: File
+                Subjects: stream_subject
+                Replicas: 1
+                 Storage: File
 
-  Options:
+Options:
 
-                 Retention: Limits
-           Acknowledgments: true
-            Discard Policy: Old
-          Duplicate Window: 2m0s
-                Direct Get: true
-         Allows Msg Delete: true
-              Allows Purge: true
-    Allows Per-Message TTL: false
-            Allows Rollups: false
+               Retention: Limits
+         Acknowledgments: true
+          Discard Policy: Old
+        Duplicate Window: 2m0s
+              Direct Get: true
+       Allows Msg Delete: true
+            Allows Purge: true
+  Allows Per-Message TTL: false
+          Allows Rollups: false
 
-  Limits:
+Limits:
 
-          Maximum Messages: unlimited
-       Maximum Per Subject: unlimited
-             Maximum Bytes: unlimited
-               Maximum Age: unlimited
-      Maximum Message Size: unlimited
-         Maximum Consumers: unlimited
+        Maximum Messages: unlimited
+     Maximum Per Subject: unlimited
+           Maximum Bytes: unlimited
+             Maximum Age: unlimited
+    Maximum Message Size: unlimited
+       Maximum Consumers: unlimited
 
-  State:
+State:
 
-                  Messages: 0
-                     Bytes: 0 B
-            First Sequence: 0
-             Last Sequence: 0
-          Active Consumers: 0
-  ```
+                Messages: 0
+                   Bytes: 0 B
+          First Sequence: 0
+           Last Sequence: 0
+        Active Consumers: 0
+```
 </details>
 
 <details>
   <summary>创建持久拉取型消费者（durable pull consumer）</summary>
 
   ```bash
-  $ nats consumer add
-  ? Select a Stream stream_name
-  ? Consumer name consumer_name
-  ? Delivery target (empty for Pull Consumers) 
-  ? Start policy (all, new, last, subject, 1h, msg sequence) all
-  ? Acknowledgment policy explicit
-  ? Replay policy instant
-  ? Filter Stream by subjects (blank for all) 
-  ? Maximum Allowed Deliveries -1
-  ? Maximum Acknowledgments Pending 0
-  ? Deliver headers only without bodies No
-  ? Add a Retry Backoff Policy No
-  Information for Consumer stream_name > consumer_name created 2025-10-03T14:13:51+03:00
+$ nats consumer add
+? Select a Stream stream_name
+? Consumer name consumer_name
+? Delivery target (empty for Pull Consumers) 
+? Start policy (all, new, last, subject, 1h, msg sequence) all
+? Acknowledgment policy explicit
+? Replay policy instant
+? Filter Stream by subjects (blank for all) 
+? Maximum Allowed Deliveries -1
+? Maximum Acknowledgments Pending 0
+? Deliver headers only without bodies No
+? Add a Retry Backoff Policy No
+Information for Consumer stream_name > consumer_name created 2025-10-03T14:13:51+03:00
 
-  Configuration:
+Configuration:
 
-                      Name: consumer_name
-                 Pull Mode: true
-            Deliver Policy: All
-                Ack Policy: Explicit
-                  Ack Wait: 30.00s
-             Replay Policy: Instant
-           Max Ack Pending: 1,000
-         Max Waiting Pulls: 512
+                    Name: consumer_name
+               Pull Mode: true
+          Deliver Policy: All
+              Ack Policy: Explicit
+                Ack Wait: 30.00s
+           Replay Policy: Instant
+         Max Ack Pending: 1,000
+       Max Waiting Pulls: 512
 
-  State:
+State:
 
-    Last Delivered Message: Consumer sequence: 0 Stream sequence: 0
-      Acknowledgment Floor: Consumer sequence: 0 Stream sequence: 0
-          Outstanding Acks: 0 out of maximum 1,000
-      Redelivered Messages: 0
-      Unprocessed Messages: 0
-             Waiting Pulls: 0 of maximum 512
-  ```
+  Last Delivered Message: Consumer sequence: 0 Stream sequence: 0
+    Acknowledgment Floor: Consumer sequence: 0 Stream sequence: 0
+        Outstanding Acks: 0 out of maximum 1,000
+    Redelivered Messages: 0
+    Unprocessed Messages: 0
+           Waiting Pulls: 0 of maximum 512
+```
 </details>
 
 创建完流和持久拉取型消费者之后，就可以创建一个使用 NATS 引擎的表。为此，需要初始化：`nats_stream`、`nats_consumer_name` 和 `nats_subjects`：

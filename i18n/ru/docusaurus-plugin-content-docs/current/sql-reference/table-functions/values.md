@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция Values {#values-table-function}
 
 Табличная функция `Values` позволяет создать временное хранилище и заполнить 
@@ -18,8 +16,6 @@ doc_type: 'reference'
 :::note
 Values — регистронезависимая функция. То есть `VALUES` и `values` одинаково допустимы.
 :::
-
-
 
 ## Синтаксис {#syntax}
 
@@ -40,7 +36,6 @@ VALUES(
 )
 ```
 
-
 ## Аргументы {#arguments}
 
 - `column1_name Type1, ...` (необязательный аргумент). [String](/sql-reference/data-types/string),
@@ -55,13 +50,9 @@ VALUES(
 для подробностей.
 :::
 
-
-
 ## Возвращаемое значение {#returned-value}
 
 - Возвращает временную таблицу, содержащую указанные значения.
-
-
 
 ## Примеры {#examples}
 
@@ -83,17 +74,17 @@ FROM VALUES(
 ```
 
 ```response title="Response"
-    ┌─человек──┬─место─────┐
- 1. │ Noah     │ Париж     │
- 2. │ Emma     │ Токио     │
- 3. │ Liam     │ Сидней    │
- 4. │ Olivia   │ Берлин    │
- 5. │ Ilya     │ Лондон    │
- 6. │ Sophia   │ Лондон    │
- 7. │ Jackson  │ Мадрид    │
- 8. │ Alexey   │ Амстердам │
- 9. │ Mason    │ Венеция   │
-10. │ Isabella │ Прага     │
+    ┌─person───┬─place─────┐
+ 1. │ Noah     │ Paris     │
+ 2. │ Emma     │ Tokyo     │
+ 3. │ Liam     │ Sydney    │
+ 4. │ Olivia   │ Berlin    │
+ 5. │ Ilya     │ London    │
+ 6. │ Sophia   │ London    │
+ 7. │ Jackson  │ Madrid    │
+ 8. │ Alexey   │ Amsterdam │
+ 9. │ Mason    │ Venice    │
+10. │ Isabella │ Prague    │
     └──────────┴───────────┘
 ```
 
@@ -137,7 +128,7 @@ FROM VALUES(
 Например:
 
 ```sql title="Query"
--- кортежи как значения
+-- tuples as values
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -169,7 +160,7 @@ FROM VALUES(
 ```
 
 ```sql
--- отдельные значения
+-- single values
 SELECT *
 FROM VALUES(
     'Noah',
@@ -199,7 +190,6 @@ FROM VALUES(
 10. │ Isabella │
     └──────────┘
 ```
-
 
 ## См. также {#see-also}
 

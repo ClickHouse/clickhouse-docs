@@ -1,7 +1,5 @@
 # WSL を使って Windows に ClickHouse をインストールする {#install-clickhouse-on-windows-with-wsl}
 
-
-
 ## 要件 {#requirements}
 
 :::note
@@ -9,7 +7,6 @@ WindowsにClickHouseをインストールする場合は、WSL（Windows Subsyst
 :::
 
 <VerticalStepper>
-
 
 ## WSL をインストールする {#install-wsl}
 
@@ -22,9 +19,8 @@ wsl --install
 新しい UNIX ユーザー名とパスワードを入力するよう求められます。希望するユーザー名とパスワードを入力すると、次のようなメッセージが表示されます。
 
 ```bash
-Ubuntu 24.04.1 LTS へようこそ (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
-
 
 ## curl を使ったスクリプトで ClickHouse をインストールする {#install-clickhouse-via-script-using-curl}
 
@@ -37,10 +33,9 @@ curl https://clickhouse.com/ | sh
 スクリプトの実行が正常に完了すると、次のメッセージが表示されます。
 
 ```bash
-ClickHouseバイナリのダウンロードが完了しました。以下のコマンドで実行できます:
+Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
-
 
 ## clickhouse-local を起動する {#start-clickhouse-local}
 
@@ -55,7 +50,6 @@ ClickHouseバイナリのダウンロードが完了しました。以下のコ�
 ./clickhouse
 ```
 
-
 ## clickhouse-server を起動する {#start-clickhouse-server}
 
 データを永続化したい場合は、`clickhouse-server` を実行します。ClickHouse サーバーは次のコマンドで起動できます。
@@ -63,7 +57,6 @@ ClickHouseバイナリのダウンロードが完了しました。以下のコ�
 ```bash
 ./clickhouse server
 ```
-
 
 ## clickhouse-clientの起動 {#start-clickhouse-client}
 

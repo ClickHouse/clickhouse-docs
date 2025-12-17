@@ -21,14 +21,11 @@ import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
 import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
 
-
 ## 为什么选择 ClickHouse Cloud 而不是 BigQuery？ {#why-use-clickhouse-cloud-over-bigquery}
 
 简而言之：在现代数据分析场景中，ClickHouse 比 BigQuery 更快、更便宜，也更强大：
 
 <Image img={bigquery_2} size="md" alt="ClickHouse vs BigQuery"/>
-
-
 
 ## 从 BigQuery 向 ClickHouse Cloud 加载数据 {#loading-data-from-bigquery-to-clickhouse-cloud}
 
@@ -67,13 +64,9 @@ BigQuery 支持将数据导出到 Google 的对象存储服务（GCS）。针对
 
 在尝试以下示例之前，我们建议用户先查看[导出所需权限](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions)和[数据位置方面的建议](https://cloud.google.com/bigquery/docs/exporting-data#data-locations)，以最大化导出与导入性能。
 
-
-
 ### 通过计划查询实现实时复制或 CDC {#real-time-replication-or-cdc-via-scheduled-queries}
 
 CDC（变更数据捕获）是指在两个数据库之间保持表数据同步的过程。如果需要在近实时场景下处理更新和删除操作，这会变得更加复杂。一种方法是简单地利用 BigQuery 的[计划查询功能](https://cloud.google.com/bigquery/docs/scheduling-queries)定期导出数据。只要能够接受数据在插入 ClickHouse 时存在一定延迟，这种方法就非常容易实现和维护。示例见[这篇博客文章](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries#using-scheduled-queries)。
-
-
 
 ## 模式设计 {#designing-schemas}
 
@@ -140,7 +133,7 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '已优化类型'
+COMMENT 'Optimized types'
 ```
 
 我们可以使用一个简单的 [`INSERT INTO SELECT`](/sql-reference/statements/insert-into)，通过 [`gcs` 表函数](/sql-reference/table-functions/gcs) 从 GCS 读取导出的数据来填充此表。请注意，在 ClickHouse Cloud 上还可以使用与 GCS 兼容的 [`s3Cluster` 表函数](/sql-reference/table-functions/s3Cluster)，在多个节点上并行加载数据：
@@ -150,7 +143,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 ```
 
 在我们的新 schema 中不会保留任何 null 值。上面的 insert 语句会将这些值隐式转换为其各自类型的默认值——整数为 0，字符串为空值。ClickHouse 还会自动将所有数值转换为其目标精度。
-
 
 ## ClickHouse 主键有何不同？ {#how-are-clickhouse-primary-keys-different}
 
@@ -171,8 +163,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM gcs( 'gs://clickhouse-public-datas
 ### 选择排序键 {#choosing-an-ordering-key}
 
 有关选择排序键时的考量因素和具体步骤，并以 posts 表为例进行说明，请参见[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
-
-
 
 ## 数据建模技术 {#data-modeling-techniques}
 
@@ -246,7 +236,6 @@ Ok.
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-
 - **查询优化** - 虽然分区可以帮助提高查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），则性能可能会得到提升。这通常只在分区键不在主键中且你按该键进行过滤时才有用。然而，需要扫描许多分区的查询，其性能可能会比不使用分区时更差（因为分区可能会导致存在更多的 part）。如果分区键已经是主键中靠前的字段，那么针对单个分区的好处会明显减弱，甚至几乎不存在。如果每个分区中的值是唯一的，分区也可以用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但是，总体来说，用户应首先确保主键已得到优化，仅在少数特殊场景下才将分区视作查询优化手段，例如访问模式稳定且只访问一天内某个可预测的时间子区间时（例如按天分区，而大多数查询只访问最近一天的数据）。
 
 #### 建议 {#recommendations}
@@ -256,8 +245,6 @@ Ok.
 重要：确保你的分区键表达式不会产生高基数集合，即应避免创建超过 100 个分区。例如，不要按客户端标识符或名称等高基数列对数据进行分区。相反，应将客户端标识符或名称设为 `ORDER BY` 表达式中的第一列。
 
 > 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着更多数据被插入，part 的数量会增加。为了避免 part 数量过多（这会降低查询性能，因为需要读取的文件更多），这些 part 会在后台异步合并。如果 part 的数量超过了[预先配置的上限](/operations/settings/merge-tree-settings#parts_to_throw_insert)，ClickHouse 会在插入时抛出一个["too many parts" 错误](/knowledgebase/exception-too-many-parts)。在正常运行下这不应发生，只会在 ClickHouse 配置错误或使用不当（例如大量小批量插入）时出现。由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量增加，即 part 数量是分区数量的倍数。因此，高基数分区键可能会导致该错误，应当避免。
-
-
 
 ## 物化视图与投影 {#materialized-views-vs-projections}
 
@@ -333,7 +320,7 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
-返回 1 行。耗时：0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 如果我们重复执行上述查询，可以看到性能有了显著提升，但代价是增加了额外的存储开销。
@@ -347,8 +334,8 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 --highlight-next-line
-返回 1 行。用时:0.008 秒。已处理 1.636 万行,98.17 KB(215 万行/秒,12.92 MB/秒)。
-内存峰值:4.06 MiB。
+1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
+Peak memory usage: 4.06 MiB.
 ```
 
 借助 [`EXPLAIN` 命令](/sql-reference/statements/explain)，我们还能确认该查询确实使用了这个 projection：
@@ -358,8 +345,23 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
+
+11 rows in set. Elapsed: 0.004 sec.
+```
 
 ┌─explain─────────────────────────────────────────────┐
 
@@ -377,37 +379,6 @@ WHERE UserId = 8592047
     └─────────────────────────────────────────────────────┘
 
 11 行结果。耗时: 0.004 秒。
-
-```
-
-### 何时使用投影 {#when-to-use-projections}
-
-投影对新用户来说是一个极具吸引力的特性,因为它们会在数据插入时自动维护。此外,查询只需发送到单个表,投影会在可能的情况下被自动利用以加快响应时间。
-
-<Image img={bigquery_7} size="md" alt="投影"/>
-
-这与物化视图形成对比。在物化视图中,用户必须根据过滤条件选择相应的优化目标表或重写查询。这对用户应用程序提出了更高的要求,并增加了客户端的复杂性。
-
-尽管有这些优势,投影也存在一些固有的局限性,用户应当了解这些局限性,因此应谨慎部署。有关更多详细信息,请参阅["物化视图与投影对比"](/managing-data/materialized-views-versus-projections)
-
-我们建议在以下情况下使用投影:
-
-- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用空间。
-- 用户能够接受相关的存储占用空间增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
-```
-
-
-## 在 ClickHouse 中重写 BigQuery 查询 {#rewriting-bigquery-queries-in-clickhouse}
-
-下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
-
-**收到最多浏览量的用户（提问数超过 10 个）：**
-
-*BigQuery*
-
-<Image img={bigquery_8} size="sm" alt="在 ClickHouse 中重写 BigQuery 查询" border />
-
-*ClickHouse*
 
 ```sql
 SELECT
@@ -428,17 +399,19 @@ LIMIT 5
 5. │ John             │    17638812 │
    └──────────────────┴─────────────┘
 
-返回 5 行。用时:0.076 秒。已处理 2435 万行,140.21 MB(3.2082 亿行/秒,1.85 GB/秒)。
-内存峰值:323.37 MiB。
+5 rows in set. Elapsed: 0.076 sec. Processed 24.35 million rows, 140.21 MB (320.82 million rows/s., 1.85 GB/s.)
+Peak memory usage: 323.37 MiB.
 ```
 
-**哪些标签的浏览量最高：**
+## 在 ClickHouse 中重写 BigQuery 查询 {#rewriting-bigquery-queries-in-clickhouse}
+
+下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
+
+**收到最多浏览量的用户（提问数超过 10 个）：**
 
 *BigQuery*
 
-<br />
-
-<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
+<Image img={bigquery_8} size="sm" alt="在 ClickHouse 中重写 BigQuery 查询" border />
 
 *ClickHouse*
 
@@ -460,20 +433,17 @@ LIMIT 5
 5. │ android    │ 4258320338 │
    └────────────┴────────────┘
 
-返回 5 行。用时:0.318 秒。处理了 5982 万行,1.45 GB(每秒 1.8801 亿行,4.54 GB/秒)。
-内存使用峰值:567.41 MiB。
+5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
+Peak memory usage: 567.41 MiB.
 ```
 
-
-## 聚合函数 {#aggregate-functions}
-
-在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每一年浏览次数最多的问题。
+**哪些标签的浏览量最高：**
 
 *BigQuery*
 
-<Image img={bigquery_10} border size="sm" alt="聚合函数 1" />
+<br />
 
-<Image img={bigquery_11} border size="sm" alt="聚合函数 2" />
+<Image img={bigquery_9} size="sm" alt="BigQuery 1" border />
 
 *ClickHouse*
 
@@ -492,13 +462,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                    2008
-MostViewedQuestionTitle: 如何查找列表中给定项的索引?
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:            6316987
 
 Row 2:
 ──────
 Year:                    2009
-MostViewedQuestionTitle: 如何撤销 Git 中最近的本地提交?
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
 ...
@@ -506,19 +476,55 @@ MaxViewCount:            13962748
 Row 16:
 ───────
 Year:                    2023
-MostViewedQuestionTitle: 每次使用 pip 3 时如何解决 "error: externally-managed-environment" 错误?
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:            506822
 
 Row 17:
 ───────
 Year:                    2024
-MostViewedQuestionTitle: 警告 "第三方 Cookie 将被阻止。在 Issues 选项卡中了解更多信息"
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:            66975
 
-返回 17 行。耗时:0.225 秒。处理了 2435 万行,1.86 GB(每秒 1.0799 亿行,8.26 GB/秒)。
-峰值内存使用量:377.26 MiB。
+17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
+Peak memory usage: 377.26 MiB.
 ```
 
+## 聚合函数 {#aggregate-functions}
+
+在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们展示如何使用 [`argMax` 函数](/sql-reference/aggregate-functions/reference/argmax) 来计算每一年浏览次数最多的问题。
+
+*BigQuery*
+
+<Image img={bigquery_10} border size="sm" alt="聚合函数 1" />
+
+<Image img={bigquery_11} border size="sm" alt="聚合函数 2" />
+
+*ClickHouse*
+
+```sql
+SELECT
+    arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
+    countIf(toYear(CreationDate) = 2023) AS count_2023,
+    countIf(toYear(CreationDate) = 2022) AS count_2022,
+    ((count_2023 - count_2022) / count_2022) * 100 AS percent_change
+FROM stackoverflow.posts
+WHERE toYear(CreationDate) IN (2022, 2023)
+GROUP BY tag
+HAVING (count_2022 > 10000) AND (count_2023 > 10000)
+ORDER BY percent_change DESC
+LIMIT 5
+
+┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
+└─────────────┴────────────┴────────────┴─────────────────────┘
+
+5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
+Peak memory usage: 410.37 MiB.
+```
 
 ## 条件和数组 {#conditionals-and-arrays}
 

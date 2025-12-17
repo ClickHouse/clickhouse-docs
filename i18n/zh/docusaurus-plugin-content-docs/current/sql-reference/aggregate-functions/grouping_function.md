@@ -5,11 +5,7 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-
-
 # 分组 {#grouping}
-
-
 
 ## GROUPING {#grouping}
 
@@ -18,8 +14,6 @@ doc_type: 'reference'
 GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask）值。 
 - `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
 - `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
-
-
 
 ## GROUPING SETS {#grouping-sets}
 
@@ -73,7 +67,7 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10 行数据。耗时: 0.409 秒。
+10 rows in set. Elapsed: 0.409 sec.
 ```
 
 ### 简单查询 {#simple-queries}
@@ -100,7 +94,7 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-返回 4 行。耗时：0.212 秒。
+4 rows in set. Elapsed: 0.212 sec.
 ```
 
 ```sql
@@ -119,7 +113,7 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-返回 2 行。用时:0.277 秒。 
+2 rows in set. Elapsed: 0.277 sec. 
 ```
 
 ```sql
@@ -139,9 +133,8 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-查询返回 2 行。用时：0.352 秒。 
+2 rows in set. Elapsed: 0.352 sec. 
 ```
-
 
 ```sql
 SELECT
@@ -155,7 +148,7 @@ FROM
 │ 445 │
 └─────┘
 
-返回 1 行。耗时:0.244 秒。 
+1 row in set. Elapsed: 0.244 sec. 
 ```
 
 ### 对比多个 GROUP BY 语句与 GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
@@ -218,7 +211,7 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 行在集合中。耗时：0.527 秒。 
+9 rows in set. Elapsed: 0.527 sec. 
 ```
 
 通过 GROUPING SETS 获取相同的信息：
@@ -258,13 +251,12 @@ GROUP BY
 │            │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 行在集合中。耗时：0.427 秒。
+9 rows in set. Elapsed: 0.427 sec.
 ```
 
 ### 将 CUBE 与 GROUPING SETS 进行比较 {#comparing-cube-with-grouping-sets}
 
 下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
-
 
 ```sql
 SELECT
@@ -324,13 +316,12 @@ ORDER BY
 │ Westport    │ RHEL   │            │           150 │
 └─────────────┴────────┴────────────┴───────────────┘
 
-39 行结果集。执行时间:0.355 秒。 
+39 rows in set. Elapsed: 0.355 sec. 
 ```
 
 :::note
 当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
 :::
-
 
 ```sql
 SELECT

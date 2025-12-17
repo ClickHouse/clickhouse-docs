@@ -1,5 +1,6 @@
 ---
 title: 'Java'
+sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Варианты подключения к ClickHouse из Java-приложений'
 slug: /integrations/java
@@ -21,7 +22,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Java client — это библиотека, реализующая собственный API, который абстрагирует детали сетевого взаимодействия с сервером ClickHouse. В настоящее время поддерживается только HTTP‑интерфейс. Библиотека предоставляет утилиты для работы с различными форматами ClickHouse и другими связанными функциями.
 
-Java Client был разработан ещё в 2015 году. Его кодовая база со временем стала очень сложной для сопровождения, API — запутанным, а дальнейшая оптимизация — затруднительной. Поэтому в 2024 году мы переработали его в новый компонент `client-v2`. У него понятный API, более лёгкая кодовая база, дополнительные улучшения производительности и лучшая поддержка форматов ClickHouse (в основном RowBinary и Native). В ближайшем будущем JDBC будет использовать этот клиент.  
+Java Client был разработан ещё в 2015 году. Его кодовая база со временем стала очень сложной для сопровождения, API — запутанным, а дальнейшая оптимизация — затруднительной. Поэтому в 2024 году мы переработали его в новый компонент `client-v2`. У него понятный API, более лёгкая кодовая база, дополнительные улучшения производительности и лучшая поддержка форматов ClickHouse (в основном RowBinary и Native). В ближайшем будущем JDBC будет использовать этот клиент.
 
 ### Поддерживаемые типы данных {#supported-data-types}
 
@@ -85,7 +86,7 @@ Java Client был разработан ещё в 2015 году. Его кодо
 - AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
 - Decimal — используйте `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для единообразия вывода
 - Enum — может трактоваться и как строка, и как целое число
-- UInt64 — соответствует типу `long` в client-v1 
+- UInt64 — соответствует типу `long` в client-v1
 :::
 
 ### Возможности {#features}
@@ -96,7 +97,8 @@ Java Client был разработан ещё в 2015 году. Его кодо
 |----------------------------------------------|:---------:|:---------:|:---------:|
 | Http Connection                              |✔       |✔      | |
 | Http Compression (LZ4)                       |✔       |✔      | |
-| Server Response Compression - LZ4            |✔       |✔      | | 
+| Application Controlled Compression           |✔       |✗      | |
+| Server Response Compression - LZ4            |✔       |✔      | |
 | Client Request Compression - LZ4             |✔       |✔      | |
 | HTTPS                                        |✔       |✔      | |
 | Client SSL Cert (mTLS)                       |✔       |✔      | |
@@ -111,6 +113,7 @@ Java Client был разработан ещё в 2015 году. Его кодо
 | Log Comment                                  |✔       |✔      | |
 | Session Roles                                |✔       |✔      | |
 | SSL Client Authentication                    |✔       |✔      | |
+| SNI Configuration                            |✔       |✗      | |
 | Session timezone                             |✔       |✔      | |
 
 JDBC-драйвер наследует те же возможности, что и базовая реализация клиента. Другие возможности JDBC перечислены на этой [странице](/integrations/language-clients/java/jdbc).
@@ -133,21 +136,21 @@ JDBC-драйвер наследует те же возможности, что 
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.16</version> <!-- Используйте последнюю версию -->
+        <version>2.0.16</version> <!-- Use the latest version -->
     </dependency>
 
     <!-- Logback Core -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.5.16</version> <!-- Используйте последнюю версию -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 
-    <!-- Logback Classic (связывает SLF4J с Logback) -->
+    <!-- Logback Classic (bridges SLF4J to Logback) -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.5.16</version> <!-- Используйте последнюю версию -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 </dependencies>
 ```
@@ -159,14 +162,14 @@ JDBC-драйвер наследует те же возможности, что 
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- Аппендер для консоли -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Аппендер для файла -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -175,13 +178,13 @@ JDBC-драйвер наследует те же возможности, что 
         </encoder>
     </appender>
 
-    <!-- Корневой логгер -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- Настраиваемые уровни логирования для отдельных пакетов -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

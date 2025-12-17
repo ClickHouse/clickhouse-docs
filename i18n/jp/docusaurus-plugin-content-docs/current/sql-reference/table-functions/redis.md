@@ -7,20 +7,15 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-
-
 # redis テーブル関数 {#redis-table-function}
 
 このテーブル関数により、ClickHouse を [Redis](https://redis.io/) と統合できます。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -39,13 +34,9 @@ redis(host:port, key, structure[, db_index[, password[, pool_size]]])
 
 現在のところ、`redis` テーブル関数では [Named collections](/operations/named-collections.md) はサポートされていません。
 
-
-
 ## 返される値 {#returned_value}
 
 Redis のキーをキー列とし、その他のカラムをまとめて 1 つの Redis の値として格納するテーブルオブジェクトです。
-
-
 
 ## 使用例 {#usage-example}
 
@@ -67,7 +58,6 @@ INSERT INTO TABLE FUNCTION redis(
     'key',
     'key String, v1 String, v2 UInt32') values ('1', '1', 1);
 ```
-
 
 ## 関連項目 {#related}
 

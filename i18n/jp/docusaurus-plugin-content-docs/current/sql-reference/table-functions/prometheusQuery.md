@@ -7,13 +7,9 @@ title: 'prometheusQuery'
 doc_type: 'reference'
 ---
 
-
-
 # prometheusQuery テーブル関数 {#prometheusquery-table-function}
 
 TimeSeries テーブルのデータを使用して Prometheus のクエリを評価します。
-
-
 
 ## 構文 {#syntax}
 
@@ -23,15 +19,12 @@ prometheusQuery(db_name.time_series_table, 'promql_query', evaluation_time)
 prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 ```
 
-
 ## Arguments {#arguments}
 
 - `db_name` - TimeSeries テーブルが存在するデータベースの名前。
 - `time_series_table` - TimeSeries テーブルの名前。
 - `promql_query` - [PromQL 構文](https://prometheus.io/docs/prometheus/latest/querying/basics/) で記述されたクエリ。
 - `evaluation_time` - 評価時刻のタイムスタンプ。クエリを現在時刻で評価するには、`evaluation_time` に `now()` を使用します。
-
-
 
 ## 返される値 {#returned_value}
 
@@ -43,8 +36,6 @@ prometheusQuery('time_series_table', 'promql_query', evaluation_time)
 | matrix      | tags Array(Tuple(String, String)), time_series Array(Tuple(TimestampType, ValueType)) | prometheusQuery(mytable, 'up[1m]') |
 | scalar      | scalar ValueType | prometheusQuery(mytable, '1h30m') |
 | string      | string String | prometheusQuery(mytable, '"abc"') |
-
-
 
 ## 例 {#example}
 

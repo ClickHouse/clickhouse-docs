@@ -38,7 +38,6 @@ ClickStack はテレメトリデータ（ログおよびトレース）を収集
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
-
 ### 環境変数を設定する {#configure-environment-variables}
 
 次に、ClickStack にテレメトリデータを送信するため、シェル環境で次の環境変数を設定する必要があります。
@@ -46,16 +45,15 @@ curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<インジェストAPIキー>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
-OTEL_SERVICE_NAME='<アプリまたはサービスの名前>'
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
 *`OTEL_SERVICE_NAME` 環境変数は、HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。*
 
 `OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` から取得できる API キーを設定します。
-
 
 ### OpenTelemetry Java エージェントを使ってアプリケーションを実行する {#run-the-application-with-otel-java-agent}
 

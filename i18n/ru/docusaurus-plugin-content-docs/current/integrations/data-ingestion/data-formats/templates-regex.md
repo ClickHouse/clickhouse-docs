@@ -8,13 +8,9 @@ doc_type: 'guide'
 keywords: ['форматы данных', 'шаблоны', 'regex', 'пользовательские форматы', 'парсинг']
 ---
 
-
-
 # Импорт и экспорт произвольных текстовых данных с помощью форматов Template и Regex в ClickHouse {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 Нам часто приходится работать с данными в произвольных текстовых форматах. Это может быть нестандартный формат, некорректный JSON или «сломанный» CSV. Использование стандартных парсеров, таких как CSV или JSON, в таких случаях не всегда работает. Но в ClickHouse для этого предусмотрены мощные форматы Template и Regex.
-
-
 
 ## Импорт на основе шаблона {#importing-based-on-a-template}
 
@@ -97,7 +93,6 @@ Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
-
 ## Экспорт данных с использованием шаблонов {#exporting-data-using-templates}
 
 Мы также можем экспортировать данные в любой текстовый формат с помощью шаблонов. В этом случае нужно создать два файла:
@@ -105,15 +100,15 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 [Result set template](assets/output.results), который определяет структуру всего набора результатов:
 
 ```response
-== Топ-10 IP-адресов ==
+== Top 10 IPs ==
 ${data}
---- Прочитано строк: ${rows_read:XML} за ${time:XML} ---
+--- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
 Здесь `rows_read` и `time` — это системные метрики, доступные для каждого запроса. При этом `data` обозначает сгенерированные строки (`${data}` всегда должно быть первым плейсхолдером в этом файле), которые формируются по шаблону, определённому в [**файле шаблона строк**](assets/output.rows):
 
 ```response
-${ip:Escaped} создал ${total:Escaped} запросов
+${ip:Escaped} generated ${total:Escaped} requests
 ```
 
 Теперь используем эти шаблоны, чтобы экспортировать следующий запрос:
@@ -126,20 +121,20 @@ FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 FORMAT Template SETTINGS format_template_resultset = 'output.results',
                          format_template_row = 'output.rows';
 
-== Топ-10 IP-адресов ==
+== Top 10 IPs ==
 
-9.8.4.6 сгенерировал 3 запросов
-9.5.1.1 сгенерировал 3 запросов
-2.4.8.9 сгенерировал 3 запросов
-4.8.8.2 сгенерировал 3 запросов
-4.5.4.4 сгенерировал 3 запросов
-3.3.6.4 сгенерировал 2 запросов
-8.9.5.9 сгенерировал 2 запросов
-2.5.1.8 сгенерировал 2 запросов
-6.8.3.6 сгенерировал 2 запросов
-6.6.3.5 сгенерировал 2 запросов
+9.8.4.6 generated 3 requests
+9.5.1.1 generated 3 requests
+2.4.8.9 generated 3 requests
+4.8.8.2 generated 3 requests
+4.5.4.4 generated 3 requests
+3.3.6.4 generated 2 requests
+8.9.5.9 generated 2 requests
+2.5.1.8 generated 2 requests
+6.8.3.6 generated 2 requests
+6.6.3.5 generated 2 requests
 
---- Прочитано 1000 строк за 0.001380604 ---
+--- 1000 rows read in 0.001380604 ---
 ```
 
 ### Экспорт в HTML-файлы {#exporting-to-html-files}
@@ -202,7 +197,6 @@ FORMAT XML
 
 ```
 
-
 ## Импорт данных на основе регулярных выражений {#importing-data-based-on-regular-expressions}
 
 Формат [Regexp](/interfaces/formats/Regexp) предназначен для более сложных случаев, когда входные данные необходимо разбирать более сложным способом. Давайте разберём наш пример с файлом [error.log](assets/error.log), но на этот раз извлечём имя файла и протокол, чтобы сохранить их в отдельные столбцы. Для начала подготовим для этого новую таблицу:
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## Другие форматы {#other-formats}
 

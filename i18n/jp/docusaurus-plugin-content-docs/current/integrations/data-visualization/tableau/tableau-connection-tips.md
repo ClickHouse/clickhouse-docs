@@ -11,12 +11,9 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 接続に関するヒント {#connection-tips}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## 初期 SQL タブ {#initial-sql-tab}
 
@@ -25,7 +22,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```text
 SET my_setting=value;
 ```
-
 
 ## 詳細タブ {#advanced-tab}
 
@@ -37,8 +33,6 @@ SET my_setting=value;
     UInt256=java.lang.Double,Int256=java.lang.Double
     ```
   マッピングについての詳細は、該当するセクションを参照してください。
-
-
 
 * **JDBC Driver URL Parameters**。このフィールドには、`jdbcCompliance` などの残りの[ドライバーパラメータ](https://github.com/ClickHouse/clickhouse-jdbc#configuration)を指定できます。パラメータ値は URL エンコード形式で渡す必要がある点に注意してください。また、このフィールドと Advanced タブ内の前のフィールドの両方で `custom_http_params` や `typeMappings` を指定した場合は、Advanced タブ側の前の 2 つのフィールドで指定した値が優先されます。
 * **Set Session ID** チェックボックス。Initial SQL タブでセッションレベルの設定を行うために必要であり、`"tableau-jdbc-connector-*{timestamp}*-*{number}*"` という形式で、タイムスタンプと疑似乱数を含む `session_id` を生成します。
@@ -54,13 +48,13 @@ LEFT([myUInt256], 2) // Error!
 大きな整数型フィールドを文字列として扱うには、そのフィールドを明示的にSTR() 関数で囲む必要があります
 
 ```text
-LEFT(STR([myUInt256]), 2) // 正常に動作します
+LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
 しかし、この種のフィールドは、多くの場合、ユニークな値の数を求めるため *(Yandex.Metrica における Watch ID や Visit ID などの ID)* や、可視化の詳細度を指定する *Dimension* として使用されるため、そのような用途では問題なく機能します。
 
 ```text
-COUNTD([myUInt256]) // これも問題なく動作します!
+COUNTD([myUInt256]) // Works well too!
 ```
 
 UInt64 フィールドを含むテーブルのデータプレビュー（View data）を使用しても、エラーは発生しなくなりました。

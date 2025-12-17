@@ -72,7 +72,7 @@ FROM salaries;
 結果:
 
 ```response
-   ┌─選手────────────┬─給与───┬─最低給与選手───────┐
+   ┌─player──────────┬─salary─┬─lowest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Michael Stanley    │
 2. │ Robert George   │ 195000 │ Michael Stanley    │
 3. │ Charles Juarez  │ 190000 │ Michael Stanley    │

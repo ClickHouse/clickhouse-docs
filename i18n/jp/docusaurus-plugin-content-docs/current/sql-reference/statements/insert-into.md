@@ -7,8 +7,6 @@ title: 'INSERT INTO ステートメント'
 doc_type: 'reference'
 ---
 
-
-
 # INSERT INTO ステートメント {#insert-into-statement}
 
 テーブルにデータを挿入します。
@@ -90,7 +88,7 @@ ClickHouse は、データの前にあるすべてのスペースと、（存在
 
 ```sql
 INSERT INTO t FORMAT TabSeparated
-11  こんにちは、世界！
+11  Hello, world!
 22  Qwerty
 ```
 
@@ -105,12 +103,9 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 制約 {#constraints}
 
 テーブルに[制約](../../sql-reference/statements/create/table.md#constraints)がある場合、それらの式は挿入されたデータの各行に対して評価されます。これらの制約のいずれかが満たされない場合、サーバーは制約名と式を含む例外をスローし、クエリの実行は中断されます。
-
-
 
 ## SELECT の結果の挿入 {#inserting-the-results-of-select}
 
@@ -137,7 +132,6 @@ NULL 非許容のデータ型の列に `NULL` の代わりにデフォルト値�
 INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
-
 
 ## ファイルからのデータ挿入 {#inserting-data-from-a-file}
 
@@ -197,7 +191,6 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 
 :::
 
-
 ## テーブル関数を使った挿入 {#inserting-using-a-table-function}
 
 [テーブル関数](../../sql-reference/table-functions/index.md)で参照されるテーブルにデータを挿入できます。
@@ -215,7 +208,7 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 ```sql
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
-    VALUES (100, 'remote()経由で挿入');
+    VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
@@ -226,7 +219,6 @@ SELECT * FROM simple_table;
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## ClickHouse Cloud への挿入 {#inserting-into-clickhouse-cloud}
 
@@ -242,14 +234,11 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 `select_sequential_consistency` を使用すると、ClickHouse Keeper（ClickHouse Cloud で内部的に使用されます）への負荷が増加し、サービスの負荷状況によってはパフォーマンスが低下する可能性がある点に注意してください。必要な場合を除き、この設定を有効にすることは推奨しません。推奨されるアプローチは、同一セッション内で読み取り／書き込みを実行するか、ネイティブプロトコルを利用する（そのためスティッキー接続をサポートする）クライアントドライバを使用することです。
 
-
 ## レプリケーション構成での挿入 {#inserting-into-a-replicated-setup}
 
 レプリケーション構成では、データは複製が完了した後に他のレプリカ上で参照できるようになります。`INSERT` の直後から、データのレプリケーション（他のレプリカへのダウンロード）が開始されます。これは、データが即座に共有ストレージに書き込まれ、レプリカがメタデータの変更をサブスクライブする ClickHouse Cloud とは挙動が異なります。
 
 レプリケーション構成では、分散コンセンサスのために ClickHouse Keeper へのコミットが必要となるため、`INSERT` が完了するまでに比較的長い時間（1 秒程度）がかかる場合がある点に注意してください。ストレージに S3 を使用すると、さらに追加のレイテンシーが発生します。
-
-
 
 ## パフォーマンス上の考慮事項 {#performance-considerations}
 

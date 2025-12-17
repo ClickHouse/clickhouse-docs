@@ -10,6 +10,7 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 # Dictionaries {#dictionaries}
@@ -68,15 +69,15 @@ Dictionary の設定ファイルは次の形式です。
 
 ```xml
 <clickhouse>
-    <comment>任意の要素で、任意の内容を含むことができます。ClickHouseサーバーによって無視されます。</comment>
+    <comment>An optional element with any content. Ignored by the ClickHouse server.</comment>
 
-    <!--任意の要素。置換を含むファイル名-->
+    <!--Optional element. File name with substitutions-->
     <include_from>/etc/metrika.xml</include_from>
 
 
     <dictionary>
-        <!-- Dictionaryの設定 -->
-        <!-- 設定ファイルには任意の数のdictionaryセクションを含めることができます。 -->
+        <!-- Dictionary configuration. -->
+        <!-- There can be any number of dictionary sections in a configuration file. -->
     </dictionary>
 
 </clickhouse>
@@ -87,7 +88,6 @@ Dictionary の設定ファイルは次の形式です。
 :::note
 `SELECT` クエリで記述することで、小規模な Dictionary の値を変換できます（[transform](../../sql-reference/functions/other-functions.md) 関数を参照）。この機能は Dictionary 機能とは無関係です。
 :::
-
 
 ## Dictionary の設定 {#configuring-a-dictionary}
 
@@ -100,19 +100,19 @@ Dictionary を XML ファイルで設定する場合、その設定は次のよ�
     <name>dict_name</name>
 
     <structure>
-      <!-- 複合キー設定 -->
+      <!-- Complex key configuration -->
     </structure>
 
     <source>
-      <!-- ソース設定 -->
+      <!-- Source configuration -->
     </source>
 
     <layout>
-      <!-- メモリレイアウト設定 -->
+      <!-- Memory layout configuration -->
     </layout>
 
     <lifetime>
-      <!-- メモリ内のDictionaryの存続期間 -->
+      <!-- Lifetime of dictionary in memory -->
     </lifetime>
 </dictionary>
 ```
@@ -122,14 +122,13 @@ Dictionary を XML ファイルで設定する場合、その設定は次のよ�
 ```sql
 CREATE DICTIONARY dict_name
 (
-    ... -- 属性
+    ... -- attributes
 )
-PRIMARY KEY ... -- 複合キーまたは単一キーの構成
-SOURCE(...) -- ソースの構成
-LAYOUT(...) -- メモリレイアウトの構成
-LIFETIME(...) -- メモリ内のDictionaryの有効期間
+PRIMARY KEY ... -- complex or single key configuration
+SOURCE(...) -- Source configuration
+LAYOUT(...) -- Memory layout configuration
+LIFETIME(...) -- Lifetime of dictionary in memory
 ```
-
 
 ## メモリ内における Dictionary の保存 {#storing-dictionaries-in-memory}
 
@@ -161,7 +160,7 @@ ClickHouse は Dictionary に関するエラーに対して例外をスローし
         ...
         <layout>
             <layout_type>
-                <!-- レイアウト設定 -->
+                <!-- layout settings -->
             </layout_type>
         </layout>
         ...
@@ -174,7 +173,7 @@ ClickHouse は Dictionary に関するエラーに対して例外をスローし
 ```sql
 CREATE DICTIONARY (...)
 ...
-LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
+LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 ...
 ```
 
@@ -208,7 +207,6 @@ XML 辞書における [UInt64](../../sql-reference/data-types/int-uint.md) キ�
     </key>
 ...
 ```
-
 
 ## メモリ内に Dictionary を格納する方法 {#ways-to-store-dictionaries-in-memory}
 
@@ -258,7 +256,6 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
 
-
 ### hashed {#hashed}
 
 Dictionary はハッシュテーブルの形式で、完全にメモリ上に格納されます。Dictionary には、任意の識別子を持つ要素をいくつでも含めることができます。実際には、キーの数が数千万件に達することもあります。
@@ -286,25 +283,27 @@ LAYOUT(HASHED())
 ```xml
 <layout>
   <hashed>
-    <!-- 分片が1より大きい場合（デフォルトは `1`）、Dictionaryはデータを並列で読み込みます。
-         1つのDictionary内に大量の要素がある場合に有用です。 -->
+    <!-- If shards greater then 1 (default is `1`) the dictionary will load
+         data in parallel, useful if you have huge amount of elements in one
+         dictionary. -->
     <shards>10</shards>
 
-    <!-- 並列キュー内のブロックのバックログサイズ。
+    <!-- Size of the backlog for blocks in parallel queue.
 
-         並列読み込みのボトルネックは再ハッシュ化であり、スレッドが再ハッシュ化を
-         実行している間の停滞を回避するために、バックログが必要です。
+         Since the bottleneck in parallel loading is rehash, and so to avoid
+         stalling because of thread is doing rehash, you need to have some
+         backlog.
 
-         10000はメモリと速度の適切なバランスです。
-         10e10個の要素でも、飢餓状態なしにすべての負荷を処理できます。 -->
+         10000 is good balance between memory and speed.
+         Even for 10e10 elements and can handle all the load without starvation. -->
     <shard_load_queue_backlog>10000</shard_load_queue_backlog>
 
-    <!-- ハッシュテーブルの最大負荷率。値が大きいほど、メモリはより効率的に
-         利用されます（無駄なメモリが少なくなります）が、読み取り/パフォーマンスが
-         低下する可能性があります。
+    <!-- Maximum load factor of the hash table, with greater values, the memory
+         is utilized more efficiently (less memory is wasted) but read/performance
+         may deteriorate.
 
-         有効な値: [0.5, 0.99]
-         デフォルト: 0.5 -->
+         Valid values: [0.5, 0.99]
+         Default: 0.5 -->
     <max_load_factor>0.5</max_load_factor>
   </hashed>
 </layout>
@@ -315,7 +314,6 @@ LAYOUT(HASHED())
 ```sql
 LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
-
 
 ### sparse&#95;hashed {#sparse_hashed}
 
@@ -343,7 +341,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 この種類の Dictionary でも `shards` を使用できます。また、`sparse_hashed` は `hashed` よりも遅いため、`hashed` よりも `sparse_hashed` で `shards` を使うことのほうが重要になります。
 
-
 ### complex&#95;key&#95;hashed {#complex_key_hashed}
 
 この種のストレージは、複合[キー](#dictionary-key-and-fields)と併せて使用します。`hashed` と同様です。
@@ -366,7 +363,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-
 ### complex&#95;key&#95;sparse&#95;hashed {#complex_key_sparse_hashed}
 
 このストレージタイプは、複合[キー](#dictionary-key-and-fields)用です。[sparse&#95;hashed](#sparse_hashed)と同様です。
@@ -388,7 +384,6 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 ```sql
 LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
-
 
 ### hashed&#95;array {#hashed_array}
 
@@ -413,7 +408,6 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### complex&#95;key&#95;hashed&#95;array {#complex_key_hashed_array}
 
 このストレージタイプは、複合[キー](#dictionary-key-and-fields)で使用するためのものです。[hashed&#95;array](#hashed_array)と同様です。
@@ -432,15 +426,13 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### range&#95;hashed {#range_hashed}
 
-Dictionary は、範囲とそれに対応する値の順序付き配列を備えたハッシュテーブルの形式でメモリ内に格納されます。
+Dictionary は、範囲とそれに対応する値の順序付き配列を持つハッシュテーブル形式でメモリ上に保持されます。
 
-Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型です。
-このストレージ方式は hashed と同様に動作し、キーに加えて日付/時刻（任意の数値型）の範囲を使用できます。
+このストレージ方式は `hashed` と同様に動作し、キーに加えて日付/時刻（任意の数値型）の範囲も使用できます。
 
-例: テーブルには、各広告主の割引が次の形式で格納されています:
+例: このテーブルには、各広告主ごとの割引が次の形式で格納されています。
 
 ```text
 ┌─advertiser_id─┬─discount_start_date─┬─discount_end_date─┬─amount─┐
@@ -450,18 +442,18 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-日付範囲サンプルを利用するには、[structure](#dictionary-key-and-fields) 内で `range_min` と `range_max` 要素を定義します。これらの要素には、`name` と `type` の要素を含める必要があります（`type` が指定されていない場合は、デフォルトの型である Date が使用されます）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
+日付範囲のサンプルを使用するには、[structure](#dictionary-key-and-fields) 内で `range_min` と `range_max` 要素を定義します。これらの要素には `name` と `type` の要素を含める必要があります（`type` が指定されていない場合、デフォルトの型である Date 型が使用されます）。`type` には任意の数値型（Date / DateTime / UInt64 / Int32 / その他）を指定できます。
 
 :::note
 `range_min` と `range_max` の値は `Int64` 型に収まる必要があります。
 :::
 
-例：
+例:
 
 ```xml
 <layout>
     <range_hashed>
-        <!-- 重複範囲の処理戦略 (min/max)。デフォルト: min (range_min -> range_max の最小値を持つ一致範囲を返す) -->
+        <!-- Strategy for overlapping ranges (min/max). Default: min (return a matching range with the min(range_min -> range_max) value) -->
         <range_lookup_strategy>min</range_lookup_strategy>
     </range_hashed>
 </layout>
@@ -496,29 +488,28 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-これらの辞書を扱うには、範囲を指定する追加の引数を `dictGet` 関数に渡す必要があります。
+これらのディクショナリを使用するには、`dictGet` 関数に、範囲を指定するための追加引数を渡す必要があります。
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
 ```
 
-クエリの例：
+クエリ例:
 
 ```sql
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-この関数は、指定された `id` について、渡された日付を含む日付範囲に対応する値を返します。
+この関数は、指定された `id` と、渡された日付を含む日付範囲に対応する値を返します。
 
-アルゴリズムの詳細:
+アルゴリズムの詳細は次のとおりです。
 
-* `id` が見つからないか、その `id` に対する範囲が見つからない場合は、その属性の型のデフォルト値を返します。
-* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返し、さらに複数の範囲が見つかった場合は `range_max` が最小の範囲を返し、それでも複数の範囲が見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムに 1 つの範囲を返します。
-* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返し、さらに複数の範囲が見つかった場合は `range_max` が最大の範囲を返し、それでも複数の範囲が見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムに 1 つの範囲を返します。
-* `range_max` が `NULL` の場合、その範囲は上限が開いた範囲になります。`NULL` は取り得る値の最大値として扱われます。`range_min` には下限が開いた値として `1970-01-01` または `0` (-MAX&#95;INT) を使用できます。
+* `id` が見つからない場合、またはその `id` に対応する範囲が見つからない場合、属性の型のデフォルト値を返します。
+* 範囲が重複していて `range_lookup_strategy=min` の場合、一致する範囲のうち `range_min` が最小のものを返し、さらに複数見つかった場合は `range_max` が最小のものを返し、それでも複数見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムな範囲を返します。
+* 範囲が重複していて `range_lookup_strategy=max` の場合、一致する範囲のうち `range_min` が最大のものを返し、さらに複数見つかった場合は `range_max` が最大のものを返し、それでも複数見つかった場合（複数の範囲が同じ `range_min` と `range_max` を持つ場合）は、それらの中からランダムな範囲を返します。
+* `range_max` が `NULL` の場合、その範囲は開区間です。`NULL` は取りうる最大値として扱われます。`range_min` については、開区間として `1970-01-01` か `0` (-MAX&#95;INT) を使用できます。
 
 設定例:
-
 
 ```xml
 <clickhouse>
@@ -567,7 +558,6 @@ RANGE(MIN StartTimeStamp MAX EndTimeStamp)
 
 重複する範囲および端が開いている範囲を含む設定例：
 
-
 ```sql
 CREATE TABLE discounts
 (
@@ -612,22 +602,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は1つのみ: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.2 │ -- 2つの範囲が一致、range_min 2015-01-15 (0.2) が 2015-01-01 (0.1) より大きい
+│ 0.2 │ -- two ranges are matching, range_min 2015-01-15 (0.2) is bigger than 2015-01-01 (0.1)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.4 │ -- 2つの範囲が一致、range_min 2015-01-04 (0.4) が 2015-01-01 (0.3) より大きい
+│ 0.4 │ -- two ranges are matching, range_min 2015-01-04 (0.4) is bigger than 2015-01-01 (0.3)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.5 │ -- 2つの範囲が一致、range_minは等しく、range_max 2015-01-15 (0.5) が 2015-01-10 (0.6) より大きい
+│ 0.5 │ -- two ranges are matching, range_min are equal, 2015-01-15 (0.5) is bigger than 2015-01-10 (0.6)
 └─────┘
 
 DROP DICTIONARY discounts_dict;
@@ -649,22 +639,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は1つのみ: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.1 │ -- 2つの範囲が一致、range_min 2015-01-01 (0.1) が 2015-01-15 (0.2) より小さい
+│ 0.1 │ -- two ranges are matching, range_min 2015-01-01 (0.1) is less than 2015-01-15 (0.2)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.3 │ -- 2つの範囲が一致、range_min 2015-01-01 (0.3) が 2015-01-04 (0.4) より小さい
+│ 0.3 │ -- two ranges are matching, range_min 2015-01-01 (0.3) is less than 2015-01-04 (0.4)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.6 │ -- 2つの範囲が一致、range_minは等しく、range_max 2015-01-10 (0.6) が 2015-01-15 (0.5) より小さい
+│ 0.6 │ -- two ranges are matching, range_min are equal, 2015-01-10 (0.6) is less than 2015-01-15 (0.5)
 └─────┘
 ```
 
@@ -689,7 +679,6 @@ LIFETIME(MIN 1 MAX 1000)
 LAYOUT(COMPLEX_KEY_RANGE_HASHED())
 RANGE(MIN StartDate MAX EndDate);
 ```
-
 
 ### cache {#cache}
 
@@ -716,17 +705,17 @@ Dictionary の検索時には、まずキャッシュが検索されます。各
 ```xml
 <layout>
     <cache>
-        <!-- キャッシュのサイズ（セル数単位）。2の累乗に切り上げられます。 -->
+        <!-- The size of the cache, in number of cells. Rounded up to a power of two. -->
         <size_in_cells>1000000000</size_in_cells>
-        <!-- 有効期限切れのキーの読み取りを許可します。 -->
+        <!-- Allows to read expired keys. -->
         <allow_read_expired_keys>0</allow_read_expired_keys>
-        <!-- 更新キューの最大サイズ。 -->
+        <!-- Max size of update queue. -->
         <max_update_queue_size>100000</max_update_queue_size>
-        <!-- 更新タスクをキューにプッシュする際の最大タイムアウト（ミリ秒単位）。 -->
+        <!-- Max timeout in milliseconds for push update task into queue. -->
         <update_queue_push_timeout_milliseconds>10</update_queue_push_timeout_milliseconds>
-        <!-- 更新タスクの完了を待機する最大タイムアウト（ミリ秒単位）。 -->
+        <!-- Max wait timeout in milliseconds for update task to complete. -->
         <query_wait_timeout_milliseconds>60000</query_wait_timeout_milliseconds>
-        <!-- キャッシュDictionary更新用の最大スレッド数。 -->
+        <!-- Max threads for cache dictionary update. -->
         <max_threads_for_updates>4</max_threads_for_updates>
     </cache>
 </layout>
@@ -749,7 +738,6 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 ClickHouse をデータソースとして使用しないでください。ランダムリードを伴うクエリの処理が遅くなるためです。
 :::
 
-
 ### complex_key_cache {#complex_key_cache}
 
 このタイプのストレージは、複合[キー](#dictionary-key-and-fields)で使用します。`cache` と同様です。
@@ -763,15 +751,15 @@ Dictionary キーは [UInt64](../../sql-reference/data-types/int-uint.md) 型で
 ```xml
 <layout>
     <ssd_cache>
-        <!-- 基本読み取りブロックのサイズ(バイト単位)。SSDのページサイズと同じ値にすることを推奨します。 -->
+        <!-- Size of elementary read block in bytes. Recommended to be equal to SSD's page size. -->
         <block_size>4096</block_size>
-        <!-- キャッシュファイルの最大サイズ(バイト単位)。 -->
+        <!-- Max cache file size in bytes. -->
         <file_size>16777216</file_size>
-        <!-- SSDから要素を読み取る際のRAMバッファのサイズ(バイト単位)。 -->
+        <!-- Size of RAM buffer in bytes for reading elements from SSD. -->
         <read_buffer_size>131072</read_buffer_size>
-        <!-- SSDへフラッシュする前に要素を集約するためのRAMバッファのサイズ(バイト単位)。 -->
+        <!-- Size of RAM buffer in bytes for aggregating elements before flushing to SSD. -->
         <write_buffer_size>1048576</write_buffer_size>
-        <!-- キャッシュファイルの保存先パス。 -->
+        <!-- Path where cache file will be stored. -->
         <path>/var/lib/clickhouse/user_files/test_dict</path>
     </ssd_cache>
 </layout>
@@ -783,7 +771,6 @@ Dictionary キーは [UInt64](../../sql-reference/data-types/int-uint.md) 型で
 LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
     PATH '/var/lib/clickhouse/user_files/test_dict'))
 ```
-
 
 ### complex_key_ssd_cache {#complex_key_ssd_cache}
 
@@ -810,7 +797,6 @@ Dictionary のキーは [UInt64](../../sql-reference/data-types/int-uint.md) 型
 ```sql
 LAYOUT(DIRECT())
 ```
-
 
 ### complex_key_direct {#complex_key_direct}
 
@@ -869,8 +855,8 @@ INSERT INTO my_ip_addresses VALUES
 </structure>
 <layout>
     <ip_trie>
-        <!-- キー属性 `prefix` は dictGetString 経由で取得可能です。 -->
-        <!-- このオプションを有効にするとメモリ使用量が増加します。 -->
+        <!-- Key attribute `prefix` can be retrieved via dictGetString. -->
+        <!-- This option increases memory usage. -->
         <access_to_key_from_attributes>true</access_to_key_from_attributes>
     </ip_trie>
 </layout>
@@ -925,7 +911,6 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 他の型はまだサポートされていません。この関数は、この IP アドレスに対応するプレフィックスに対して設定された属性を返します。プレフィックスが重複している場合は、最も具体的なものが返されます。
 
 データはすべて RAM に収まっている必要があります。
-
 
 ## LIFETIMEを使用したDictionaryデータの更新 {#refreshing-dictionary-data-using-lifetime}
 
@@ -1058,7 +1043,6 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ...
 ```
 
-
 ## Dictionary のソース {#dictionary-sources}
 
 <CloudDetails />
@@ -1073,7 +1057,7 @@ Dictionary を XML ファイルで構成する場合、設定は次のように�
     ...
     <source>
       <source_type>
-        <!-- ソースの設定 -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1087,7 +1071,7 @@ Dictionary を XML ファイルで構成する場合、設定は次のように�
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- ソースの設定
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1129,6 +1113,7 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
 
 
 ### ローカル ファイル {#local-file}
@@ -1161,7 +1146,6 @@ DDL コマンド（`CREATE DICTIONARY ...`）でソースに `FILE` を指定し
 
 * [Dictionary function](/sql-reference/table-functions/dictionary)
 
-
 ### 実行可能ファイル {#executable-file}
 
 実行可能ファイルの扱いは、[Dictionary がメモリ上にどのように格納されているか](#storing-dictionaries-in-memory) に依存します。Dictionary が `cache` および `complex_key_cache` を使って格納されている場合、ClickHouse は必要なキーを取得するためのリクエストを実行可能ファイルの STDIN に送信します。そうでない場合、ClickHouse は実行可能ファイルを起動し、その出力を Dictionary データとして扱います。
@@ -1190,7 +1174,6 @@ DDL コマンド（`CREATE DICTIONARY ...`）でソースに `FILE` を指定し
 * `send_chunk_header` - 処理プロセスにデータの chunk を送信する前に、その行数を先に送信するかどうかを制御します。オプション。デフォルト値は `false`。
 
 この Dictionary ソースは XML 設定によってのみ構成できます。DDL を使用して executable ソースを持つ Dictionary を作成することは無効化されています。そうしないと、DB ユーザーが ClickHouse ノード上で任意のバイナリを実行できてしまうためです。
-
 
 ### Executable プール {#executable-pool}
 
@@ -1226,7 +1209,6 @@ Setting fields:
 * `send_chunk_header` - 処理対象の chunk を送信する前に行数を送信するかどうかを制御します。オプション。デフォルト値は `false` です。
 
 この Dictionary のソースは XML 設定でのみ構成できます。実行可能ソースを持つ Dictionary を DDL で作成することはできません。そうしないと、DB ユーザーが ClickHouse ノード上で任意のバイナリを実行できてしまうためです。
-
 
 ### HTTP(S) {#https}
 
@@ -1280,7 +1262,6 @@ ClickHouse が HTTPS リソースにアクセスできるようにするには�
 
 DDL コマンド（`CREATE DICTIONARY ...`）を使用して Dictionary を作成する際、HTTP Dictionary 用のリモートホストは、データベースユーザーが任意の HTTP サーバーへアクセスできないようにするため、設定ファイルの `remote_url_allow_hosts` セクションの内容と照合してチェックされます。
 
-
 ### DBMS（データベース管理システム） {#dbms}
 
 #### ODBC {#odbc}
@@ -1330,7 +1311,6 @@ ClickHouse は ODBC ドライバーからクォート記号（引用符）を受
 
 Oracle を使用している際にエンコーディングに問題が発生する場合は、対応する [FAQ](/knowledgebase/oracle-odbc) の項目を参照してください。
 
-
 ##### ODBC Dictionary 機能における既知の脆弱性 {#known-vulnerability-of-the-odbc-dictionary-functionality}
 
 :::note
@@ -1359,7 +1339,6 @@ SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 ```
 
 ODBC ドライバーは、`odbc.ini` 内の `USERNAME` と `PASSWORD` の値を `some-server.com` に送信します。
-
 
 ##### PostgreSQL への接続例 {#example-of-connecting-postgresql}
 
@@ -1400,7 +1379,7 @@ ClickHouse における Dictionary の構成:
         <name>table_name</name>
         <source>
             <odbc>
-                <!-- connection_string には以下のパラメータを指定できます: -->
+                <!-- You can specify the following parameters in connection_string: -->
                 <!-- DSN=myconnection;UID=username;PWD=password;HOST=127.0.0.1;PORT=5432;DATABASE=my_db -->
                 <connection_string>DSN=myconnection</connection_string>
                 <table>postgresql_table</table>
@@ -1442,7 +1421,6 @@ LIFETIME(MIN 300 MAX 360)
 
 ドライバーのライブラリへのフルパスを指定するために、`odbc.ini` を編集する必要がある場合があります（例: `DRIVER=/usr/local/lib/psqlodbcw.so`）。
 
-
 ##### MS SQL Server への接続例 {#example-of-connecting-ms-sql-server}
 
 Ubuntu OS。
@@ -1465,7 +1443,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     tds version = 7.0
     client charset = UTF-8
 
-    # TDS接続のテスト
+    # test TDS connection
     $ sqsh -S MSSQL -D database -U user -P password
 
 
@@ -1479,7 +1457,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     UsageCount      = 5
 
     $ cat /etc/odbc.ini
-    # $ cat ~/.odbc.ini # ClickHouseを実行するユーザーでログインしている場合
+    # $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
 
     [MSSQL]
     Description     = FreeTDS
@@ -1491,7 +1469,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     Port            = 1433
 
 
-    # (オプション) ODBC接続のテスト (isqlツールを使用する場合は[unixodbc](https://packages.debian.org/sid/unixodbc)パッケージをインストール)
+    # (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
     $ isql -v MSSQL "user" "password"
 ```
 
@@ -1547,7 +1525,6 @@ SOURCE(ODBC(table 'dict' connection_string 'DSN=MSSQL;UID=test;PWD=test'))
 LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
-
 
 #### MySQL {#mysql}
 
@@ -1666,7 +1643,6 @@ SOURCE(MYSQL(
 ))
 ```
 
-
 #### ClickHouse {#clickhouse}
 
 設定例:
@@ -1719,7 +1695,6 @@ Setting fields:
 :::note
 `table` または `where` フィールドは、`query` フィールドと同時には使用できません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず指定する必要があります。
 :::
-
 
 #### MongoDB {#mongodb}
 
@@ -1790,7 +1765,6 @@ SOURCE(MONGODB(
 
 [エンジンの詳細情報](../../engines/table-engines/integrations/mongodb.md)
 
-
 #### Redis {#redis}
 
 設定例:
@@ -1823,7 +1797,6 @@ SOURCE(REDIS(
 * `port` – Redis サーバーのポート番号。
 * `storage_type` – キー操作に用いられる Redis の内部ストレージ構造。`simple` は単純なソースおよびハッシュ化された単一キーソース用、`hash_map` は 2 つのキーを持つハッシュ化されたソース用です。レンジ型ソースおよび複雑なキーを持つキャッシュソースはサポートされません。省略可能で、省略時のデフォルト値は `simple` です。
 * `db_index` – Redis 論理データベースの数値インデックス。省略可能で、省略時のデフォルト値は 0 です。
-
 
 #### Cassandra {#cassandra}
 
@@ -1866,7 +1839,6 @@ SOURCE(REDIS(
 :::note
 `column_family` フィールドまたは `where` フィールドは、`query` フィールドと同時には使用できません。また、`column_family` フィールドか `query` フィールドのいずれか一方は必ず宣言する必要があります。
 :::
-
 
 #### PostgreSQL {#postgresql}
 
@@ -1927,6 +1899,46 @@ SOURCE(POSTGRESQL(
 `table` フィールドまたは `where` フィールドは、`query` フィールドと同時に使用することはできません。また、`table` フィールドまたは `query` フィールドのいずれか一方は必ず宣言する必要があります。
 :::
 
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+これは実験的な機能であり、今後のリリースで後方互換性のない変更が行われる可能性があります。
+YTsaurus を Dictionary ソースとして利用するには、設定 [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) を有効にします。
+:::
+
+設定例:
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+または
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+設定フィールド:
+
+* `http_proxy_urls` – YTsaurus HTTP プロキシへの URL。
+* `cypress_path` – テーブルのソースとなる Cypress パス。
+* `oauth_token` – OAuth トークン。
+
 
 ### Null {#null}
 
@@ -1945,7 +1957,6 @@ LAYOUT(FLAT())
 LIFETIME(0);
 ```
 
-
 ## Dictionary のキーとフィールド {#dictionary-key-and-fields}
 
 <CloudDetails />
@@ -1962,7 +1973,7 @@ XML の記述:
         </id>
 
         <attribute>
-            <!-- 属性パラメータ -->
+            <!-- Attribute parameters -->
         </attribute>
 
         ...
@@ -1981,7 +1992,7 @@ DDL クエリ：
 ```sql
 CREATE DICTIONARY dict_name (
     Id UInt64,
-    -- 属性
+    -- attributes
 )
 PRIMARY KEY Id
 ...
@@ -1991,7 +2002,6 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` — キーカラム
 * `AttrName AttrType` — データカラム。属性は複数定義できます。
-
 
 ## キー {#key}
 
@@ -2014,7 +2024,7 @@ XML 構造では `<id>` か `<key>` のいずれか一方のみを含めるこ�
 
 ```xml
 <id>
-    <name>ID</name>
+    <name>Id</name>
 </id>
 ```
 
@@ -2034,7 +2044,6 @@ PRIMARY KEY Id
 ```
 
 * `PRIMARY KEY` – 主キーとなるカラム名。
-
 
 ### 複合キー {#composite-key}
 
@@ -2076,7 +2085,6 @@ PRIMARY KEY field1, field2
 
 `dictGet*` 関数を使用したクエリでは、キーとしてタプルが渡されます。例: `dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`。
 
-
 ## 属性 {#attributes}
 
 設定例：
@@ -2106,7 +2114,6 @@ CREATE DICTIONARY somename (
 
 設定項目:
 
-
 | Tag                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Required |
 |------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | `name`                                               | カラム名。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Yes      |
@@ -2124,17 +2131,17 @@ ClickHouse は、[数値キー](#numeric-key) を持つ階層型辞書をサポ�
 次の階層構造を見てみましょう。
 
 ```text
-0 (共通の親)
+0 (Common parent)
 │
-├── 1 (ロシア)
+├── 1 (Russia)
 │   │
-│   └── 2 (モスクワ)
+│   └── 2 (Moscow)
 │       │
-│       └── 3 (中心部)
+│       └── 3 (Center)
 │
-└── 4 (イギリス)
+└── 4 (Great Britain)
     │
-    └── 5 (ロンドン)
+    └── 5 (London)
 ```
 
 この階層は、次の Dictionary テーブルとして表現できます。
@@ -2178,7 +2185,6 @@ ClickHouse は、外部 Dictionary 属性に対して階層的なプロパティ
     </structure>
 </dictionary>
 ```
-
 
 ## ポリゴン Dictionary {#polygon-dictionaries}
 
@@ -2283,7 +2289,6 @@ SELECT クエリでポリゴン Dictionary のカラムを読み取るには、D
 
 クエリ:
 
-
 ```sql
 CREATE TABLE polygons_test_table
 (
@@ -2313,7 +2318,6 @@ SELECT * FROM polygons_test_dictionary;
 │ [[[(3,1),(0,1),(0,-1),(3,-1)]]] │ Value │
 └─────────────────────────────────┴───────┘
 ```
-
 
 ## 正規表現ツリー Dictionary {#regexp-tree-dictionary}
 
@@ -2385,7 +2389,6 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 強力な YAML 設定ファイルを用いることで、regexp tree dictionaries をユーザーエージェント文字列パーサーとして使用できます。[uap-core](https://github.com/ua-parser/uap-core) をサポートしており、機能テスト [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) でその使用方法を示しています。
 
-
 #### 属性値の収集 {#collecting-attribute-values}
 
 場合によっては、葉ノードの値だけでなく、マッチした複数の正規表現から値を返せると便利なことがあります。このようなケースでは、専用の [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictGetAll) 関数を使用できます。あるノードが型 `T` の属性値を持つ場合、`dictGetAll` は 0 個以上の値を含む `Array(T)` を返します。
@@ -2410,7 +2413,7 @@ LIFETIME(0)
 ```
 
 ```yaml
-# /var/lib/clickhouse/user_files/regexp_tree.yaml {#varlibclickhouseuser_filesregexp_treeyaml}
+# /var/lib/clickhouse/user_files/regexp_tree.yaml
 - regexp: 'clickhouse\.com'
   tag: 'ClickHouse'
   topological_index: 1
@@ -2446,7 +2449,6 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 #### マッチングモード {#matching-modes}
 
@@ -2521,7 +2523,6 @@ SOURCE(CLICKHOUSE(TABLE 'regexp_dictionary_source_table'))
 LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
-
 
 ## Embedded Dictionaries {#embedded-dictionaries}
 

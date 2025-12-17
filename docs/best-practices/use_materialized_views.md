@@ -15,7 +15,7 @@ import refreshable_materialized_view from '@site/static/images/bestpractices/ref
 
 ClickHouse supports two types of materialized views: [**incremental**](/materialized-view/incremental-materialized-view) and [**refreshable**](/materialized-view/refreshable-materialized-view). While both are designed to accelerate queries by pre-computing and storing results, they differ significantly in how and when the underlying queries are executed, what workloads they are suited for, and how data freshness is handled.
 
-**Users should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
+**You should consider materialized views for specific query patterns which need to be accelerated, assuming previous best practices [regarding type](/best-practices/select-data-types) and [primary key optimization](/best-practices/choosing-a-primary-key) have been performed.**
 
 **Incremental materialized views** are updated in real-time. As new data is inserted into the source table, ClickHouse automatically applies the materialized view's query to the new data block and writes the results to a separate target table. Over time, ClickHouse merges these partial results to produce a complete, up-to-date view. This approach is highly efficient because it shifts the computational cost to insert time and only processes new data. As a result, `SELECT` queries against the target table are fast and lightweight. Incremental views support all aggregation functions and scale well—even to petabytes of data—because each query operates on a small, recent subset of the dataset being inserted.
 
@@ -79,4 +79,4 @@ Choose `REPLACE` mode when:
 - Stale data should be discarded entirely.
 - The view represents a current state or lookup.
 
-Users can find an application of the `APPEND` functionality if building a [Medallion architecture](https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse).
+You can find an application of the `APPEND` functionality if building a [Medallion architecture](https://clickhouse.com/blog/building-a-medallion-architecture-for-bluesky-json-data-with-clickhouse).

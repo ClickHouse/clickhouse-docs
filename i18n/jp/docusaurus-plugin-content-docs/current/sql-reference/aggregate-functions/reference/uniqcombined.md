@@ -58,7 +58,7 @@ SELECT uniqCombined(number) FROM numbers(1e6);
 
 ```response
 ┌─uniqCombined(number)─┐
-│              1001148 │ -- 100万
+│              1001148 │ -- 1.00 million
 └──────────────────────┘
 ```
 

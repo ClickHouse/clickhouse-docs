@@ -69,10 +69,10 @@ SSH サーバー機能を有効にするには、`config.xml` 内で次のセク
 ホストキーは SSH プロトコルにおいて不可欠な要素です。このキーの公開鍵部分はクライアント側の `~/.ssh/known_hosts` ファイルに保存されており、通常は中間者攻撃を防ぐために利用されます。サーバーに初めて接続すると、次のようなメッセージが表示されます。
 
 ```shell
-ホスト '[localhost]:9022 ([127.0.0.1]:9022)' の真正性を確立できません。
-RSA 鍵フィンガープリントは SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do です。
-この鍵は他の名前では認識されていません
-接続を続行しますか (yes/no/[fingerprint])?
+The authenticity of host '[localhost]:9022 ([127.0.0.1]:9022)' can't be established.
+RSA key fingerprint is SHA256:3qxVlJKMr/PEKw/hfeg06HAK451Tt0eenhwqQvh58Do.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
 これは実際には「このホストの公開鍵を記憶して、接続を続行しますか？」という意味です。

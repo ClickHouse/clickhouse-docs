@@ -14,15 +14,14 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack 的每个组件都提供如下配置选项：
 
-
 ## 修改设置 {#modifying-settings}
 
 ### Docker {#docker}
 
-如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需配置，例如：
+如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需设置，例如：
 
 ```shell
-docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
 
@@ -40,9 +39,8 @@ services:
     environment:
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      # ... 其他配置
+      # ... other settings
 ```
-
 
 ### Helm {#helm}
 
@@ -96,7 +94,6 @@ ingress:
     - name: CLICKHOUSE_USER
       value: abc
 ```
-
 
 ## HyperDX {#hyperdx}
 

@@ -18,7 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
 # AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -69,13 +68,9 @@ ClickHouse Cloud поддерживает [межрегиональный Privat
 
 Примеры Terraform см. [здесь](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
 
-
-
 ## Важные замечания {#considerations}
 ClickHouse пытается группировать ваши сервисы, чтобы повторно использовать одну и ту же опубликованную [конечную точку сервиса](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) в пределах региона AWS. Однако такая группировка не гарантируется, особенно если вы распределяете свои сервисы между несколькими организациями ClickHouse.
 Если у вас уже настроен PrivateLink для других сервисов в вашей организации ClickHouse, во многих случаях вы можете пропустить большинство шагов благодаря такой группировке и перейти сразу к финальному шагу: добавьте «Endpoint ID» ClickHouse в список разрешённых для сервиса ClickHouse.
-
-
 
 ## Предварительные требования для этого процесса {#prerequisites}
 
@@ -83,8 +78,6 @@ ClickHouse пытается группировать ваши сервисы, ч
 
 1. Ваша учётная запись AWS.
 1. [API-ключ ClickHouse](/cloud/manage/openapi) с необходимыми правами для создания и управления частными конечными точками на стороне ClickHouse.
-
-
 
 ## Шаги {#steps}
 
@@ -105,12 +98,12 @@ ClickHouse пытается группировать ваши сервисы, ч
 Сначала задайте следующие переменные окружения перед выполнением любых команд:
 
 ```shell
-REGION=<Код вашего региона в формате AWS, например: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<Идентификатор ключа ClickHouse>
-KEY_SECRET=<Секретный ключ ClickHouse>
-ORG_ID=<Идентификатор организации ClickHouse>
-SERVICE_NAME=<Имя сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Получите значение `INSTANCE_ID` для вашего ClickHouse, отфильтровав ресурсы по региону, провайдеру и имени сервиса:
@@ -178,7 +171,6 @@ jq .result
 
 #### Вариант 2: AWS CloudFormation {#option-2-aws-cloudformation}
 
-
 Далее необходимо создать VPC Endpoint, используя `Service name`<sup>console</sup> или `endpointServiceId`<sup>API</sup>, полученные на шаге [Obtain Endpoint &quot;Service name&quot; ](#obtain-endpoint-service-info).
 Убедитесь, что вы используете соответствующие идентификаторы подсетей (subnet IDs), группы безопасности (security groups) и идентификатор VPC (VPC ID).
 
@@ -189,7 +181,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: <Имя сервиса (endpointServiceId), см. выше>
+      ServiceName: <Service name(endpointServiceId), pls see above>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -217,7 +209,7 @@ resource "aws_vpc_endpoint" "this" {
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
-  service_region      = "(Необязательно) Если указан, конечная точка VPC будет подключаться к сервису в указанном регионе. Укажите это значение для мультирегиональных соединений PrivateLink."
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
@@ -254,12 +246,12 @@ resource "aws_vpc_endpoint" "this" {
 Перед выполнением любых команд установите следующие переменные окружения:
 
 ```bash
-REGION=<Код региона в формате AWS, например: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ID ключа ClickHouse>
-KEY_SECRET=<Секретный ключ ClickHouse>
-ORG_ID=<ID организации ClickHouse>
-SERVICE_NAME=<Имя сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Чтобы добавить идентификатор конечной точки в список разрешённых:
@@ -280,7 +272,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" \
 -d @pl_config.json | jq
 ```
-
 
 Чтобы удалить идентификатор конечной точки из списка разрешённых конечных точек:
 
@@ -318,10 +309,10 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<Ваш ID ключа ClickHouse>
-KEY_SECRET=<Ваш секретный ключ ClickHouse>
-ORG_ID=<ID вашей организации ClickHouse>
-INSTANCE_ID=<Имя вашего сервиса ClickHouse>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 Вы можете получить `INSTANCE_ID` на [этом шаге](#option-2-api).
@@ -342,7 +333,6 @@ jq .result
 ```
 
 В этом примере соединение по имени хоста со значением `privateDnsHostname` будет маршрутизировано через PrivateLink, а соединение по имени хоста со значением `endpointServiceId` — через интернет.
-
 
 ## Устранение неполадок {#troubleshooting}
 
@@ -370,10 +360,10 @@ jq .result
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<ID ключа>
-KEY_SECRET=<Секретный ключ>
-ORG_ID=<укажите ID организации ClickHouse>
-INSTANCE_ID=<ID экземпляра>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 `INSTANCE_ID` можно получить на [шаге](#option-2-api).

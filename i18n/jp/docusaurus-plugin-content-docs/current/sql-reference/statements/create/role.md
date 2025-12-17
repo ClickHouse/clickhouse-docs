@@ -12,11 +12,10 @@ doc_type: 'reference'
 構文:
 
 ```sql
-ROLE を作成する [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER cluster_name]
+CREATE ROLE [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER cluster_name]
     [IN access_storage_type]
     [SETTINGS variable [= value] [MIN [=] min_value] [MAX [=] max_value] [CONST|READONLY|WRITABLE|CHANGEABLE_IN_READONLY] | PROFILE 'profile_name'] [,...]
 ```
-
 
 ## ロールの管理 {#managing-roles}
 
@@ -27,8 +26,6 @@ ROLE を作成する [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLU
 ロールを取り消すには、[REVOKE](../../../sql-reference/statements/revoke.md) ステートメントを使用します。
 
 ロールを削除するには、[DROP ROLE](/sql-reference/statements/drop#drop-role) ステートメントを使用します。削除されたロールは、それが割り当てられていたすべてのユーザーおよびロールから自動的に取り消されます。
-
-
 
 ## 例 {#examples}
 
@@ -42,7 +39,7 @@ GRANT SELECT ON db.* TO accountant;
 ユーザー `mira` へのロール割り当て:
 
 ```sql
-mira に accountant 権限を付与;
+GRANT accountant TO mira;
 ```
 
 ロールが割り当てられると、ユーザーはそのロールを有効にして、許可されたクエリを実行できます。例えば、次のとおりです。

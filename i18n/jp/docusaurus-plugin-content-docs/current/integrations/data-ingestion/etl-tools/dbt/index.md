@@ -20,9 +20,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
 
-
-
 ## dbt-clickhouse アダプター {#dbt-clickhouse-adapter}
+
 **dbt** (data build tool) は、アナリティクスエンジニアが単に SELECT ステートメントを書くことで、データウェアハウス内のデータを変換できるようにするツールです。dbt は、これらの SELECT ステートメントをテーブルやビューといったデータベース内のオブジェクトとしてマテリアライズし、[Extract Load and Transform (ELT)](https://en.wikipedia.org/wiki/Extract,_load,_transform) における T の部分を担います。ユーザーは、SELECT ステートメントによって定義されたモデルを作成できます。
 
 dbt 内では、これらのモデルを相互参照してレイヤー化することで、より高レベルな概念を構築できます。モデル同士を接続するために必要な定型的な SQL は自動的に生成されます。さらに dbt は、モデル間の依存関係を特定し、有向非巡回グラフ (DAG) を用いて、適切な順序でモデルが作成されるようにします。
@@ -30,8 +29,6 @@ dbt 内では、これらのモデルを相互参照してレイヤー化する�
 dbt は、[ClickHouse 公認アダプター](https://github.com/ClickHouse/dbt-clickhouse) を通じて ClickHouse と連携して動作します。
 
 <TOCInline toc={toc}  maxHeadingLevel={2} />
-
-
 
 ## サポートされている機能 {#supported-features}
 
@@ -54,46 +51,34 @@ dbt は、[ClickHouse 公認アダプター](https://github.com/ClickHouse/dbt-c
 - [x] ClickHouse 固有のカラム設定（Codec、TTL など）
 - [x] ClickHouse 固有のテーブル設定（インデックス、プロジェクションなど）
 
-dbt-core 1.9 までのすべての機能がサポートされています。近日中に、dbt-core 1.10 で追加された機能にも対応する予定です。
+dbt-core 1.10 までのすべての機能がサポートされています。これには `--sample` フラグや、将来のリリースに向けて修正されたすべての非推奨に関する警告が含まれます。dbt 1.10 で導入された **カタログ連携**（例: Iceberg）は、このアダプターではまだネイティブにサポートされていませんが、回避策は利用可能です。詳細については [Catalog Support セクション](/integrations/dbt/features-and-configurations#catalog-support) を参照してください。
 
 このアダプターは現時点ではまだ [dbt Cloud](https://docs.getdbt.com/docs/dbt-cloud/cloud-overview) 内では利用できませんが、近いうちに利用可能にする予定です。詳細についてはサポートまでお問い合わせください。
 
+## dbt のコンセプトとサポートされているマテリアライゼーション {#concepts-and-supported-materializations}
 
+dbt では、モデルというコンセプトが導入されています。これは、多数のテーブルを結合することもある SQL 文として定義されます。モデルは複数の方法で「マテリアライズ」できます。マテリアライゼーションは、モデルの SELECT クエリに対するビルド戦略を表します。マテリアライゼーションの背後にあるコードは、SELECT クエリを別の文でラップして新しいリレーションを作成したり、既存のリレーションを更新したりするボイラープレートの SQL です。
 
-## 概念 {#concepts}
+dbt は 5 種類のマテリアライゼーションを提供しており、すべてが `dbt-clickhouse` でサポートされています:
 
-dbt は「モデル (model)」という概念を導入します。これは、複数のテーブルを結合することもある SQL 文として定義されます。モデルは複数の方法で「マテリアライズ」できます。マテリアライゼーションは、そのモデルの SELECT クエリに対するビルド戦略を表します。マテリアライゼーションを実装するコードは、SELECT クエリをラップして新しいリレーションを作成したり、既存のリレーションを更新したりするための定型的な SQL です。
+* **view**（デフォルト）: モデルはデータベース内の view として構築されます。ClickHouse では、これは [view](/sql-reference/statements/create/view) として構築されます。
+* **table**: モデルはデータベース内の table として構築されます。ClickHouse では、これは [table](/sql-reference/statements/create/table) として構築されます。
+* **ephemeral**: モデルはデータベース内に直接構築されるのではなく、CTE（Common Table Expressions）として依存モデルに取り込まれます。
+* **incremental**: モデルは最初に table としてマテリアライズされ、その後の実行では dbt が新しい行を挿入し、変更された行を table 内で更新します。
+* **materialized view**: モデルはデータベース内の materialized view として構築されます。ClickHouse では、これは [materialized view](/sql-reference/statements/create/view#materialized-view) として構築されます。
 
-dbt は 4 種類のマテリアライゼーションを提供します:
+追加の構文や句によって、基盤となるデータが変更された場合に、これらのモデルをどのように更新するかが定義されます。一般的に dbt では、パフォーマンスが問題になるまでは view マテリアライゼーションから始めることが推奨されています。table マテリアライゼーションは、モデルのクエリ結果を table として保持することで、ストレージの増加と引き換えにクエリ時のパフォーマンスを向上させます。incremental アプローチはこれをさらに発展させ、基盤となるデータへの後続の更新をターゲット table に取り込めるようにします。
 
-* **view** (デフォルト): モデルはデータベース内の view として構築されます。
-* **table**: モデルはデータベース内の table として構築されます。
-* **ephemeral**: モデル自体はデータベース内に直接構築されず、代わりに依存するモデル内で共通テーブル式 (CTE) として取り込まれます。
-* **incremental**: 初回はモデルを table としてマテリアライズし、その後の実行では、dbt が新規行の挿入と変更行の更新のみを table に対して行います。
+ClickHouse 用の[現在のアダプタ](https://github.com/silentsokolov/dbt-clickhouse)は、**dictionary**、**distributed table**、**distributed incremental** のマテリアライゼーションもサポートします。このアダプタは、dbt の [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) や [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) もサポートしています。
 
-追加の構文や句によって、基盤となるデータが変更された場合に、これらのモデルをどのように更新すべきかが定義されます。dbt では一般的に、パフォーマンスが問題になるまでは view マテリアライゼーションから始めることを推奨しています。table マテリアライゼーションは、モデルのクエリ結果を table として保持することで、ストレージ使用量の増加と引き換えにクエリ時のパフォーマンスを向上させます。incremental アプローチはこれをさらに発展させ、基盤となるデータへのその後の更新をターゲット table に取り込めるようにします。
+以下は `dbt-clickhouse` における[実験的機能](https://clickhouse.com/docs/en/beta-and-experimental-features)です:
 
-ClickHouse 向けの[現在のアダプタ](https://github.com/silentsokolov/dbt-clickhouse)は、**materialized view**、**dictionary**、**distributed table**、および **distributed incremental** マテリアライゼーションもサポートします。また、このアダプタは dbt の[スナップショット](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy)および [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds) もサポートします。
-
-### サポートされているマテリアライゼーションの詳細 {#details-about-supported-materializations}
-
-| Type                        | Supported? | Details                                                                                                                          |
-|-----------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------|
-| view materialization        | はい      | [view](https://clickhouse.com/docs/en/sql-reference/table-functions/view/) を作成します。                                         |
-| table materialization       | はい      | [table](https://clickhouse.com/docs/en/operations/system-tables/tables/) を作成します。サポートされているエンジンの一覧については、以下を参照してください。 |
-| incremental materialization | はい      | table が存在しない場合は作成し、その後は更新分のみを書き込みます。                                                                 |
-| ephemeral materialized      | はい      | ephemeral/CTE マテリアライゼーションを作成します。このモデルは dbt の内部専用であり、データベースオブジェクトは作成しません。      |
-
-以下は ClickHouse における[実験的機能](https://clickhouse.com/docs/en/beta-and-experimental-features)です:
-
-| Type                                    | Supported?        | Details                                                                                                                                                                                                                                         |
-|-----------------------------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Materialized View materialization       | はい（実験的）    | [マテリアライズドビュー](https://clickhouse.com/docs/en/materialized-view) を作成します。                                                                                                                                                       |
-| Distributed table materialization       | はい（実験的）    | [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) を作成します。                                                                                                                                    |
-| Distributed incremental materialization | はい（実験的）    | distributed table と同じ考え方に基づく incremental モデルです。すべての戦略がサポートされているわけではない点に注意してください。詳細については[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
-| Dictionary materialization              | はい（実験的）    | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
-
-
+| Type                                    | Supported?     | Details                                                                                                                                                                                                                                         |
+|-----------------------------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Materialized View materialization       | はい（実験的） | [マテリアライズドビュー](https://clickhouse.com/docs/en/materialized-view) を作成します。                                                                                                                                                       |
+| Distributed table materialization       | はい（実験的） | [distributed table](https://clickhouse.com/docs/en/engines/table-engines/special/distributed) を作成します。                                                                                                                                    |
+| Distributed incremental materialization | はい（実験的） | distributed table と同じ考え方に基づく incremental モデルです。すべての戦略がサポートされているわけではない点に注意してください。詳細については[こちら](https://github.com/ClickHouse/dbt-clickhouse?tab=readme-ov-file#distributed-incremental-materialization)を参照してください。 |
+| Dictionary materialization              | はい（実験的） | [dictionary](https://clickhouse.com/docs/en/engines/table-engines/special/dictionary) を作成します。                                                                                                                                            |
 
 ## dbt と ClickHouse アダプターのセットアップ {#setup-of-dbt-and-the-clickhouse-adapter}
 
@@ -105,6 +90,7 @@ dbt のコマンドラインインターフェイス (CLI) のインストール
 pip install dbt-core dbt-clickhouse
 ```
 
+
 ### ClickHouse インスタンスへの接続情報を dbt に提供する {#provide-dbt-with-the-connection-details-for-our-clickhouse-instance}
 
 `~/.dbt/profiles.yml` ファイル内で `clickhouse-service` プロファイルを構成し、`schema`、`host`、`port`、`user`、`password` プロパティを指定します。接続構成オプションの全一覧は、[機能と設定](/integrations/dbt/features-and-configurations) ページに記載されています。
@@ -115,19 +101,20 @@ clickhouse-service:
   outputs:
     dev:
       type: clickhouse
-      schema: [ default ] # dbtモデル用ClickHouseデータベース
+      schema: [ default ] # ClickHouse database for dbt models
 
-      # オプション
+      # Optional
       host: [ localhost ]
-      port: [ 8123 ]  # secureおよびdriverの設定に応じてデフォルト値は8123、8443、9000、9440 
-      user: [ default ] # 全データベース操作用ユーザー
-      password: [ <empty string> ] # ユーザーパスワード
-      secure: True  # TLS(ネイティブプロトコル)またはHTTPS(httpプロトコル)を使用
+      port: [ 8123 ]  # Defaults to 8123, 8443, 9000, 9440 depending on the secure and driver settings 
+      user: [ default ] # User for all database operations
+      password: [ <empty string> ] # Password for the user
+      secure: True  # Use TLS (native protocol) or HTTPS (http protocol)
 ```
+
 
 ### dbt プロジェクトを作成する {#create-a-dbt-project}
 
-これで、このプロファイルを既存のいずれかのプロジェクトで使用することも、次の手順で新しいプロジェクトを作成することもできます。
+これで、このプロファイルを既存のいずれかのプロジェクトで使用することも、次のコマンドで新しいプロジェクトを作成することもできます。
 
 ```sh
 dbt init project_name
@@ -139,6 +126,7 @@ dbt init project_name
 profile: 'clickhouse-service'
 ```
 
+
 ### 接続テスト {#test-connection}
 
 CLI で `dbt debug` を実行し、dbt が ClickHouse に接続できるかどうかを確認します。レスポンスに `Connection test: [OK connection ok]` が含まれていることを確認し、接続が成功していることを確かめてください。
@@ -147,7 +135,7 @@ ClickHouse と dbt の連携方法の詳細については、[ガイドページ
 
 ### モデルのテストとデプロイ (CI/CD) {#testing-and-deploying-your-models-ci-cd}
 
-dbt プロジェクトをテストおよびデプロイする方法は多数あります。dbt では、[ベストプラクティスとされるワークフロー](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) や [CI ジョブ](https://docs.getdbt.com/docs/deploy/ci-jobs) に関する提案を提供しています。ここではいくつかの戦略について説明しますが、これらの戦略はユースケースに合わせて大きく調整する必要がある場合がある点に注意してください。
+dbt プロジェクトをテストおよびデプロイする方法は多数あります。dbt では、[ベストプラクティスとされるワークフロー](https://docs.getdbt.com/best-practices/best-practice-workflows#pro-tips-for-workflows) や [CI ジョブ](https://docs.getdbt.com/docs/deploy/ci-jobs) に関するいくつかの提案を提示しています。ここではいくつかの戦略について説明しますが、これらの戦略はユースケースに合わせて大幅な調整が必要になる場合がある点に注意してください。
 
 #### シンプルなデータテストおよびユニットテストによる CI/CD {#ci-with-simple-data-tests-and-unit-tests}
 
@@ -157,23 +145,20 @@ CI パイプラインを手軽に立ち上げる方法の 1 つは、ジョブ�
 
 CD ステップは、本番の ClickHouse クラスターに対して `dbt build` を実行するだけのシンプルなものにできます。
 
-#### より包括的な CI/CD ステージ: 最新のデータを使用し、影響を受けたモデルのみをテスト {#more-complete-ci-stage}
+#### より完全な CI/CD ステージ: 最新データを使用し、影響を受けたモデルのみをテストする {#more-complete-ci-stage}
 
-一般的な戦略として、変更されたモデル (およびその上流・下流の依存関係) のみを再デプロイする [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) ジョブを利用する方法があります。このアプローチでは、本番実行の成果物 (例: [dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json)) を利用して、プロジェクトの実行時間を短縮し、環境間でスキーマのずれが生じないようにします。
+一般的な戦略として、変更されたモデル（およびその上流・下流の依存関係）のみを再デプロイする [Slim CI](https://docs.getdbt.com/best-practices/best-practice-workflows#run-only-modified-models-to-test-changes-slim-ci) ジョブを使用する方法があります。このアプローチでは、本番環境での実行から得られるアーティファクト（[dbt manifest](https://docs.getdbt.com/reference/artifacts/manifest-json) など）を利用して、プロジェクトの実行時間を短縮しつつ、環境間でスキーマドリフトが発生しないようにします。
 
-開発環境を同期した状態に保ち、古いデプロイメントに対してモデルを実行してしまうことを避けるために、[clone](https://docs.getdbt.com/reference/commands/clone) や [defer](https://docs.getdbt.com/reference/node-selection/defer) を利用できます。
-
+開発環境を同期させ、古いデプロイに対してモデルを実行してしまうことを避けるために、[clone](https://docs.getdbt.com/reference/commands/clone) や [defer](https://docs.getdbt.com/reference/node-selection/defer) を利用することができます。
 
 本番環境の運用に影響を与えないよう、テスト環境（いわゆるステージング環境）には専用の ClickHouse クラスターまたはサービスを使用することを推奨します。テスト環境が本番環境を適切に反映したものとなるよう、本番データのサブセットを使用し、かつ環境間でスキーマドリフトが発生しないような形で dbt を実行することが重要です。
 
 - テストで最新データが不要な場合は、本番データのバックアップをステージング環境に復元することができます。
-- テストで最新データが必要な場合は、[`remoteSecure()` テーブル関数](/sql-reference/table-functions/remote) とリフレッシュ可能なマテリアライズドビューを組み合わせて、任意の頻度でデータを挿入できます。別の選択肢として、オブジェクトストレージを中間ストレージとして利用し、本番サービスから定期的にデータを書き出してから、オブジェクトストレージテーブル関数や ClickPipes（継続的なインジェスト用）を使用してステージング環境にインポートすることも可能です。
+- テストで最新データが必要な場合は、[`remoteSecure()` テーブル関数](/sql-reference/table-functions/remote) とリフレッシャブルmaterialized view を組み合わせて、任意の頻度でデータを挿入できます。別の選択肢として、オブジェクトストレージを中間ストレージとして利用し、本番サービスから定期的にデータを書き出してから、オブジェクトストレージテーブル関数や ClickPipes（継続的なインジェスト用）を使用してステージング環境にインポートすることも可能です。
 
 CI テスト用に専用の環境を用意すると、本番環境に影響を与えずに手動テストを実施することもできます。例えば、この環境を BI ツールの接続先としてテストに利用することができます。
 
 デプロイ（つまり CD ステップ）の際には、本番デプロイ時のアーティファクトを使用して、変更のあったモデルのみを更新することを推奨します。そのためには、dbt のアーティファクト用にオブジェクトストレージ（例：S3）を中間ストレージとして設定しておく必要があります。このセットアップが完了したら、`dbt build --select state:modified+ --state path/to/last/deploy/state.json` のようなコマンドを実行することで、本番での前回の実行からの変更に基づいて、必要最小限のモデルのみを選択的に再構築できます。
-
-
 
 ## よくある問題のトラブルシューティング {#troubleshooting-common-issues}
 
@@ -189,8 +174,6 @@ dbt から ClickHouse へ接続する際に問題が発生する場合は、次�
 
 一部の処理は、特定の ClickHouse クエリが原因で、想定より長時間かかる場合があります。どのクエリの処理時間が長くなっているかをより詳しく把握するには、[ログレベル](https://docs.getdbt.com/reference/global-configs/logs#log-level)を `debug` に引き上げてください。これにより、各クエリに要した時間が出力されます。たとえば、dbt コマンドに `--log-level debug` を付与して実行することで実現できます。
 
-
-
 ## 制限事項 {#limitations}
 
 現在の dbt 向け ClickHouse アダプターには、ユーザーが認識しておくべきいくつかの制限事項があります。
@@ -202,8 +185,6 @@ dbt から ClickHouse へ接続する際に問題が発生する場合は、次�
 - dbt がデータベースにリレーション（テーブル/ビュー）を作成する場合、通常は `{{ database }}.{{ schema }}.{{ table/view id }}` の形式で作成します。ClickHouse にはスキーマの概念がありません。そのためアダプターは `{{schema}}.{{ table/view id }}` を使用し、ここで `schema` は ClickHouse のデータベースを意味します。
 - dbt でエフェメラルモデル/CTE を ClickHouse の INSERT 文中の `INSERT INTO` より前に配置すると動作しません。https://github.com/ClickHouse/ClickHouse/issues/30323 を参照してください。これはほとんどのモデルには影響しないはずですが、エフェメラルモデルをモデル定義やその他の SQL 文のどこに配置するかについては注意が必要です。 <!-- TODO review this limitation, looks like the issue was already closed and the fix was introduced in 24.10 -->
 
-
-
 ## Fivetran {#fivetran}
 
-`dbt-clickhouse` コネクタは [Fivetran transformations](https://fivetran.com/docs/transformations/dbt) でも利用でき、Fivetran プラットフォーム上で `dbt` を使用してシームレスに統合および変換を行うことができます。
+`dbt-clickhouse` コネクタは [Fivetran transformations](https://fivetran.com/docs/transformations/dbt) でも利用でき、Fivetran プラットフォーム内で `dbt` を使用してシームレスに統合および変換を実行できます。

@@ -7,21 +7,16 @@ title: 'azureBlobStorageCluster'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция azureBlobStorageCluster {#azureblobstoragecluster-table-function}
 
 Позволяет обрабатывать файлы из [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) параллельно на множестве узлов в указанном кластере. На узле-инициаторе создаётся подключение ко всем узлам кластера, раскрываются звёздочки в пути к файлу S3, и каждый файл динамически распределяется между узлами. Рабочий узел запрашивает у инициатора следующую задачу и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут завершены.
 Эта табличная функция аналогична [функции s3Cluster](../../sql-reference/table-functions/s3Cluster.md).
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -37,13 +32,9 @@ azureBlobStorageCluster(cluster_name, connection_string|storage_account_url, con
 | `compression`       | Поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия определяется автоматически по расширению файла (то же, что установка значения `auto`).                                                                                                                                                                                                                                                                                                                  |
 | `structure`         | Структура таблицы. Формат: `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица с указанной структурой для чтения данных из указанного файла или записи данных в него.
-
-
 
 ## Примеры {#examples}
 
@@ -58,12 +49,9 @@ SELECT count(*) FROM azureBlobStorageCluster(
         'auto', 'key UInt64')
 ```
 
-
 ## Использование подписей общего доступа (Shared Access Signatures, SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
 См. примеры в разделе [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens).
-
-
 
 ## См. также {#related}
 

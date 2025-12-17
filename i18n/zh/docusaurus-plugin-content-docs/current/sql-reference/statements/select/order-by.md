@@ -6,8 +6,6 @@ title: 'ORDER BY 子句'
 doc_type: 'reference'
 ---
 
-
-
 # ORDER BY 子句 {#order-by-clause}
 
 `ORDER BY` 子句包含：
@@ -26,8 +24,6 @@ doc_type: 'reference'
 
 对于在排序表达式上具有相同值的行，返回顺序是任意且非确定性的。
 如果在 `SELECT` 语句中省略 `ORDER BY` 子句，行的顺序同样是任意且非确定性的。
-
-
 
 ## 特殊值的排序 {#sorting-of-special-values}
 
@@ -74,7 +70,6 @@ doc_type: 'reference'
 
 在对浮点数进行排序时，NaN 会与其他数值分开处理。无论是升序还是降序排序，NaN 都会排在末尾。换句话说，在升序排序时，它们被视为比所有其他数值都大而排在最后；在降序排序时，它们被视为比其余所有数值都小，但同样排在最后。
 
-
 ## 排序规则支持 {#collation-support}
 
 对于按 [String](../../../sql-reference/data-types/string.md) 值排序，可以指定排序规则（比较方式）。示例：`ORDER BY SearchPhrase COLLATE 'tr'` —— 按关键字升序排序，使用土耳其字母表、不区分大小写，并假定字符串采用 UTF-8 编码。在 ORDER BY 中的每个表达式都可以独立指定或不指定 `COLLATE`。如果指定了 `ASC` 或 `DESC`，则应在其后写上 `COLLATE`。使用 `COLLATE` 时，排序始终为不区分大小写。
@@ -82,8 +77,6 @@ doc_type: 'reference'
 在 [LowCardinality](../../../sql-reference/data-types/lowcardinality.md)、[Nullable](../../../sql-reference/data-types/nullable.md)、[Array](../../../sql-reference/data-types/array.md) 和 [Tuple](../../../sql-reference/data-types/tuple.md) 中均支持 `COLLATE`。
 
 我们只建议在对少量行进行最终排序时使用 `COLLATE`，因为使用 `COLLATE` 的排序效率低于按字节进行的普通排序。
-
-
 
 ## 排序规则示例 {#collation-examples}
 
@@ -229,7 +222,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 使用 [Tuple](../../../sql-reference/data-types/tuple.md) 的示例：
 
-
 ```response
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
@@ -262,7 +254,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-
 ## 实现细节 {#implementation-details}
 
 如果在 `ORDER BY` 的基础上再指定足够小的 [LIMIT](../../../sql-reference/statements/select/limit.md)，会占用更少的 RAM。否则，内存消耗量与用于排序的数据量成正比。对于分布式查询处理，如果省略了 [GROUP BY](/sql-reference/statements/select/group-by)，排序会在远程服务器上部分完成，然后在发起请求的服务器上进行结果合并。这意味着对于分布式排序，需要排序的数据量可能会大于单个服务器上的可用内存。
@@ -272,8 +263,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 执行查询时使用的内存可能会超过 `max_bytes_before_external_sort`。因此，该设置的取值必须显著小于 `max_memory_usage`。例如，如果你的服务器有 128 GB RAM，并且需要运行单个查询，可以将 `max_memory_usage` 设为 100 GB，将 `max_bytes_before_external_sort` 设为 80 GB。
 
 外部排序的效率远低于在 RAM 中进行的排序。
-
-
 
 ## 数据读取优化 {#optimization-of-data-reading}
 
@@ -294,8 +283,6 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 - [Buffer](../../../engines/table-engines/special/buffer.md)
 
 在 `MaterializedView` 引擎的表中，该优化适用于类似 `SELECT ... FROM merge_tree_table ORDER BY pk` 的视图。但对于类似 `SELECT ... FROM view ORDER BY pk` 的查询，如果视图定义中的查询本身没有 `ORDER BY` 子句，则不支持该优化。
-
-
 
 ## 带 WITH FILL 修饰符的 ORDER BY 表达式 {#order-by-expr-with-fill-modifier}
 
@@ -332,9 +319,9 @@ SELECT n, source FROM (
 
 ```text
 ┌─n─┬─source───┐
-│ 1 │ 原始值 │
-│ 4 │ 原始值 │
-│ 7 │ 原始值 │
+│ 1 │ original │
+│ 4 │ original │
+│ 7 │ original │
 └───┴──────────┘
 ```
 
@@ -353,17 +340,17 @@ SELECT n, source FROM (
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
-│   1 │ 原始 │
+│   1 │ original │
 │ 1.5 │          │
 │   2 │          │
 │ 2.5 │          │
 │   3 │          │
 │ 3.5 │          │
-│   4 │ 原始 │
+│   4 │ original │
 │ 4.5 │          │
 │   5 │          │
 │ 5.5 │          │
-│   7 │ 原始 │
+│   7 │ original │
 └─────┴──────────┘
 ```
 
@@ -375,7 +362,7 @@ SELECT n, source FROM (
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
-    '原始' AS source
+    'original' AS source
 FROM numbers(10)
 WHERE (number % 3) = 1
 ORDER BY
@@ -384,7 +371,6 @@ ORDER BY
 ```
 
 结果：
-
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
@@ -418,19 +404,19 @@ ORDER BY
 
 ```text
 ┌───d1───────┬───d2───────┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ 原始 │
+│ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
 │ 1970-01-21 │ 1970-01-01 │          │
 │ 1970-01-26 │ 1970-01-01 │          │
 │ 1970-01-31 │ 1970-01-01 │          │
 │ 1970-02-05 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ 原始 │
+│ 1970-02-10 │ 1970-01-05 │ original │
 │ 1970-02-15 │ 1970-01-01 │          │
 │ 1970-02-20 │ 1970-01-01 │          │
 │ 1970-02-25 │ 1970-01-01 │          │
 │ 1970-03-02 │ 1970-01-01 │          │
 │ 1970-03-07 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ 原始 │
+│ 1970-03-12 │ 1970-01-08 │ original │
 └────────────┴────────────┴──────────┘
 ```
 
@@ -440,7 +426,7 @@ ORDER BY
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
-    '原始' AS source
+    'original' AS source
 FROM numbers(10)
 WHERE (number % 3) = 1
 ORDER BY
@@ -448,12 +434,11 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-
 结果：
 
 ```response
 ┌─────────d1─┬─────────d2─┬─source───┐
-│ 1970-01-11 │ 1970-01-02 │ 原始数据 │
+│ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
 │ 1970-01-13 │ 1970-01-01 │          │
 │ 1970-01-14 │ 1970-01-01 │          │
@@ -483,7 +468,7 @@ ORDER BY
 │ 1970-02-07 │ 1970-01-01 │          │
 │ 1970-02-08 │ 1970-01-01 │          │
 │ 1970-02-09 │ 1970-01-01 │          │
-│ 1970-02-10 │ 1970-01-05 │ 原始数据 │
+│ 1970-02-10 │ 1970-01-05 │ original │
 │ 1970-02-11 │ 1970-01-01 │          │
 │ 1970-02-12 │ 1970-01-01 │          │
 │ 1970-02-13 │ 1970-01-01 │          │
@@ -513,14 +498,14 @@ ORDER BY
 │ 1970-03-09 │ 1970-01-01 │          │
 │ 1970-03-10 │ 1970-01-01 │          │
 │ 1970-03-11 │ 1970-01-01 │          │
-│ 1970-03-12 │ 1970-01-08 │ 原始数据 │
+│ 1970-03-12 │ 1970-01-08 │ original │
 └────────────┴────────────┴──────────┘
 ```
 
 未使用 `STALENESS` 的查询示例：
 
 ```sql
-SELECT number AS key, 5 * number value, '原始数据' AS source
+SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL;
 ```
@@ -560,16 +545,16 @@ ORDER BY key WITH FILL STALENESS 3;
 
 ```text
     ┌─key─┬─value─┬─source───┐
- 1. │   0 │     0 │ 原始 │
+ 1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
  3. │   2 │     0 │          │
- 4. │   5 │    25 │ 原始 │
+ 4. │   5 │    25 │ original │
  5. │   6 │     0 │          │
  6. │   7 │     0 │          │
- 7. │  10 │    50 │ 原始 │
+ 7. │  10 │    50 │ original │
  8. │  11 │     0 │          │
  9. │  12 │     0 │          │
-10. │  15 │    75 │ 原始 │
+10. │  15 │    75 │ original │
 11. │  16 │     0 │          │
 12. │  17 │     0 │          │
     └─────┴───────┴──────────┘
@@ -579,7 +564,7 @@ ORDER BY key WITH FILL STALENESS 3;
 
 ```sql
 SELECT n, source, inter FROM (
-   SELECT toFloat32(number % 10) AS n, '原始' AS source, number AS inter
+   SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
@@ -615,25 +600,23 @@ SELECT n, source, inter FROM (
 
 结果：
 
-
 ```text
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
-│   1 │ 原始 │     1 │
+│   1 │ original │     1 │
 │ 1.5 │          │     2 │
 │   2 │          │     3 │
 │ 2.5 │          │     4 │
 │   3 │          │     5 │
 │ 3.5 │          │     6 │
-│   4 │ 原始 │     4 │
+│   4 │ original │     4 │
 │ 4.5 │          │     5 │
 │   5 │          │     6 │
 │ 5.5 │          │     7 │
-│   7 │ 原始 │     7 │
+│   7 │ original │     7 │
 └─────┴──────────┴───────┘
 ```
-
 
 ## 按排序前缀分组填充 {#filling-grouped-by-sorting-prefix}
 
@@ -686,7 +669,6 @@ INTERPOLATE ( value AS 9999 )
 
 在这里，`value` 列被填充值为 `9999`，只是为了让填充的行更加显眼。
 此行为通过设置 `use_with_fill_by_sorting_prefix` 参数来控制（该参数默认启用）。
-
 
 ## 相关内容 {#related-content}
 

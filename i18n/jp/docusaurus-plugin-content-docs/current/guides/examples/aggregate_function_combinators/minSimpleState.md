@@ -7,19 +7,13 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # minSimpleState {#minsimplestate}
-
-
 
 ## 説明 {#description}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを [`min`](/sql-reference/aggregate-functions/reference/min)
 関数に適用することで、すべての入力値の中での最小値を返すことができます。戻り値の型は
 [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -47,8 +41,8 @@ CREATE TABLE temperature_extremes
 (
     location_id UInt32,
     location_name String,
-    min_temp SimpleAggregateFunction(min, Int32),  -- 最低気温を保持
-    max_temp SimpleAggregateFunction(max, Int32)   -- 最高気温を保持
+    min_temp SimpleAggregateFunction(min, Int32),  -- Stores minimum temperature
+    max_temp SimpleAggregateFunction(max, Int32)   -- Stores maximum temperature
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY location_id;
@@ -62,8 +56,8 @@ TO temperature_extremes
 AS SELECT
     location_id,
     location_name,
-    minSimpleState(temperature) AS min_temp,     -- SimpleState コンビネータを使用しています
-    maxSimpleState(temperature) AS max_temp      -- SimpleState コンビネータを使用しています
+    minSimpleState(temperature) AS min_temp,     -- Using SimpleState combinator
+    maxSimpleState(temperature) AS max_temp      -- Using SimpleState combinator
 FROM raw_temperature_readings
 GROUP BY location_id, location_name;
 ```
@@ -72,10 +66,10 @@ GROUP BY location_id, location_name;
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-(1, '北', 5),
-(2, '南', 15),
-(3, '西', 10),
-(4, '東', 8);
+(1, 'North', 5),
+(2, 'South', 15),
+(3, 'West', 10),
+(4, 'East', 8);
 ```
 
 これらの値はマテリアライズドビューによって自動的に処理されます。現在の状態を確認してみましょう。
@@ -84,18 +78,18 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
 SELECT
     location_id,
     location_name,
-    min_temp,     -- SimpleAggregateFunction値に直接アクセス
-    max_temp      -- SimpleAggregateFunctionでは終了関数は不要
+    min_temp,     -- Directly accessing the SimpleAggregateFunction values
+    max_temp      -- No need for finalization function with SimpleAggregateFunction
 FROM temperature_extremes
 ORDER BY location_id;
 ```
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ 北部          │        5 │        5 │
-│           2 │ 南部          │       15 │       15 │
-│           3 │ 西部          │       10 │       10 │
-│           4 │ 東部          │        8 │        8 │
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
@@ -103,11 +97,11 @@ ORDER BY location_id;
 
 ```sql
 INSERT INTO raw_temperature_readings (location_id, location_name, temperature) VALUES
-    (1, '北', 3),
-    (2, '南', 18),
-    (3, '西', 10),
-    (1, '北', 8),
-    (4, '東', 2);
+    (1, 'North', 3),
+    (2, 'South', 18),
+    (3, 'West', 10),
+    (1, 'North', 8),
+    (4, 'East', 2);
 ```
 
 新しいデータを追加した後の最新の極値を表示：
@@ -124,14 +118,14 @@ ORDER BY location_id;
 
 ```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ 北部         │        3 │        8 │
-│           1 │ 北部         │        5 │        5 │
-│           2 │ 南部         │       18 │       18 │
-│           2 │ 南部         │       15 │       15 │
-│           3 │ 西部          │       10 │       10 │
-│           3 │ 西部          │       10 │       10 │
-│           4 │ 東部          │        2 │        2 │
-│           4 │ 東部          │        8 │        8 │
+│           1 │ North         │        3 │        8 │
+│           1 │ North         │        5 │        5 │
+│           2 │ South         │       18 │       18 │
+│           2 │ South         │       15 │       15 │
+│           3 │ West          │       10 │       10 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        2 │
+│           4 │ East          │        8 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
@@ -142,8 +136,8 @@ parts がまだマージされておらず（`AggregatingMergeTree` による集
 SELECT
     location_id,
     location_name,
-    min(min_temp) AS min_temp,  -- 全パートを集約 
-    max(max_temp) AS max_temp   -- 全パートを集約
+    min(min_temp) AS min_temp,  -- Aggregate across all parts 
+    max(max_temp) AS max_temp   -- Aggregate across all parts
 FROM temperature_extremes
 GROUP BY location_id, location_name
 ORDER BY location_id;
@@ -151,20 +145,18 @@ ORDER BY location_id;
 
 これで期待どおりの結果が得られました。
 
-
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
-│           1 │ 北部          │        3 │        8 │
-│           2 │ 南部          │       15 │       18 │
-│           3 │ 西部          │       10 │       10 │
-│           4 │ 東部          │        2 │        8 │
+│           1 │ North         │        3 │        8 │
+│           2 │ South         │       15 │       18 │
+│           3 │ West          │       10 │       10 │
+│           4 │ East          │        2 │        8 │
 └─────────────┴───────────────┴──────────┴──────────┘
 ```
 
 :::note
 `SimpleState` を使用すると、部分集計状態を結合するために `Merge` コンビネータを使う必要がなくなります。
 :::
-
 
 ## 関連項目 {#see-also}
 - [`min`](/sql-reference/aggregate-functions/reference/min)

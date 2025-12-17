@@ -17,7 +17,6 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-
 # RDS MariaDB 源配置指南 {#rds-mariadb-source-setup-guide}
 
 本文将逐步介绍如何配置 RDS MariaDB 实例，使其能够通过 MySQL ClickPipe 复制数据。
@@ -25,8 +24,6 @@ import Image from '@theme/IdealImage';
 :::info
 我们也建议你阅读位于[此处](/integrations/data-ingestion/clickpipes/mysql/faq.md)的 MySQL 常见问题解答。该常见问题页面会持续更新。
 :::
-
-
 
 ## 启用二进制日志保留 {#enable-binlog-retention-rds}
 
@@ -49,7 +46,6 @@ Amazon RDS for MariaDB 采用不同的方法来设置 binlog 的保留时长，�
 ```text
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 ```
-
 
 ## 在参数组中配置 binlog 设置 {#binlog-parameter-group-rds}
 
@@ -82,12 +78,8 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
 如果您使用的是 MariaDB 集群，上述参数会在 [DB Cluster](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithParamGroups.CreatingCluster.html) 参数组中，而不是 DB 实例参数组中。
 :::
 
-
-
 ## 启用 GTID 模式 {#gtid-mode-rds}
 全局事务标识（GTID，Global Transaction Identifiers）是在 MySQL/MariaDB 中为每个已提交事务分配的唯一 ID。它可以简化二进制日志（binlog）复制，并让故障排查更加简单。MariaDB 默认启用 GTID 模式，因此用户无需执行任何操作即可使用它。
-
-
 
 ## 配置数据库用户 {#configure-database-user-rds}
 
@@ -110,8 +102,6 @@ mysql=> call mysql.rds_set_configuration('binlog retention hours', 24);
     ```sql
     GRANT REPLICATION CLIENT ON *.* TO 'clickpipes_user'@'%';
     GRANT REPLICATION SLAVE ON *.* TO 'clickpipes_user'@'%';
-
-
 
 ## 配置网络访问 {#configure-network-access}
 

@@ -20,8 +20,6 @@ import Image from '@theme/IdealImage';
 Узнайте больше о [кодеках сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec) и задавайте их при создании таблиц или позже.
 :::
 
-
-
 ## Режимы {#modes}
 
 | value  | name               | description                                       |
@@ -38,8 +36,6 @@ import Image from '@theme/IdealImage';
 | **zstd** 1.4.5 -1 | 2.8   | 500 MB/s | 1660 MB/s |
 | **lz4** 1.9.2     | 2.1   | 740 MB/s | 4530 MB/s |
 
-
-
 ## Блок {#block}
 
 | поле            | тип     | описание                                         |
@@ -55,8 +51,6 @@ import Image from '@theme/IdealImage';
 Заголовок — это (raw_size + data_size + mode), сырой размер равен длине (header + compressed_data).
 
 Контрольная сумма рассчитывается как `hash(header + compressed_data)` с использованием [ClickHouse CityHash](../native-protocol/hash.md).
-
-
 
 ## Режим None {#none-mode}
 

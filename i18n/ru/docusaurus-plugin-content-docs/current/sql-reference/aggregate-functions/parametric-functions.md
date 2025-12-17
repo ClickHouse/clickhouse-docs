@@ -16,7 +16,7 @@ doc_type: 'reference'
 Вычисляет адаптивную гистограмму. Не гарантирует точных результатов.
 
 ```sql
-histogram(число_интервалов)(значения)
+histogram(number_of_bins)(values)
 ```
 
 Функция использует алгоритм [A Streaming Parallel Decision Tree Algorithm](http://jmlr.org/papers/volume11/ben-haim10a/ben-haim10a.pdf). Границы корзин гистограммы корректируются по мере поступления новых данных в функцию. В общем случае ширины корзин могут различаться.
@@ -34,8 +34,8 @@ histogram(число_интервалов)(значения)
 * [Массив](../../sql-reference/data-types/array.md) [кортежей](../../sql-reference/data-types/tuple.md) следующего формата:
 
   ```
-  [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
-  ```
+        [(lower_1, upper_1, height_1), ... (lower_N, upper_N, height_N)]
+        ```
 
   * `lower` — нижняя граница корзины.
   * `upper` — верхняя граница корзины.
@@ -761,14 +761,19 @@ INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
                   dt   id   page
- 1970-01-01 09:00:01    1   Home // Исходная точка, совпадает с Home
- 1970-01-01 09:00:02    1   Gift // Совпадает с Gift
- 1970-01-01 09:00:03    1   Exit // Результат
+ 1970-01-01 09:00:01    1   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    1   Gift // Matched with Gift
+ 1970-01-01 09:00:03    1   Exit // The result
 
- 1970-01-01 09:00:01    2   Home // Исходная точка, совпадает с Home
- 1970-01-01 09:00:02    2   Home // Не совпадает с Gift
+ 1970-01-01 09:00:01    2   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    2   Home // Unmatched with Gift
  1970-01-01 09:00:03    2   Gift
  1970-01-01 09:00:04    2   Basket
+
+ 1970-01-01 09:00:01    3   Gift // Base point, Unmatched with Home
+ 1970-01-01 09:00:02    3   Home
+ 1970-01-01 09:00:03    3   Gift
+ 1970-01-01 09:00:04    3   Basket
 ```
 
 1970-01-01 09:00:01    3   Gift // Опорная точка, не сопоставлена с Home
@@ -776,10 +781,23 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = '
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 
-````
+```sql
+SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
-**Поведение для `backward` и `tail`**
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift
+1970-01-01 09:00:03    1   Exit // Base point, Unmatched with Basket
 
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Matched with Gift
+1970-01-01 09:00:04    2   Basket // Base point, Matched with Basket
+
+1970-01-01 09:00:01    3   Gift
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
+1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page = 'Basket', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -797,10 +815,23 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
 1970-01-01 09:00:02    3   Home // Результат
 1970-01-01 09:00:03    3   Gift // Базовая точка, соответствует Gift
 1970-01-01 09:00:04    3   Basket // Базовая точка, соответствует Basket
-````
+```sql
+SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
-**Поведение режимов `forward` и `first_match`**
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // The result
 
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket  The result
+
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift
+1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -818,8 +849,23 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // Результат
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
-```
+```sql
+SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
+                 dt   id   page
+1970-01-01 09:00:01    1   Home
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // Unmatched with Home
+
+1970-01-01 09:00:01    2   Home
+1970-01-01 09:00:02    2   Home
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket // Unmatched with Home
+
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // The result
+1970-01-01 09:00:04    3   Basket
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
@@ -837,51 +883,43 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:02    3   Home // Совпадает с Home
 1970-01-01 09:00:03    3   Gift // Результат
 1970-01-01 09:00:04    3   Basket
-```
-
-**Поведение `backward` и `last_match`**
-
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
-```
 
-dt   id   page
-1970-01-01 09:00:01    1   Home // Результат
-1970-01-01 09:00:02    1   Gift // Базовая страница
+                 dt   id   page
+1970-01-01 09:00:01    1   Home // The result
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // Результат
-1970-01-01 09:00:03    2   Gift // Базовая страница
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // Результат
-1970-01-01 09:00:03    3   Gift // Базовая страница
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-
-````
-
+```sql
+SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
-1970-01-01 09:00:01    1   Home // Совпадает с Home, результат — null
-1970-01-01 09:00:02    1   Gift // Базовая точка
+1970-01-01 09:00:01    1   Home // Matched with Home, the result is null
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
-1970-01-01 09:00:01    2   Home // Результат
-1970-01-01 09:00:02    2   Home // Совпадает с Home
-1970-01-01 09:00:03    2   Gift // Базовая точка
+1970-01-01 09:00:01    2   Home // The result
+1970-01-01 09:00:02    2   Home // Matched with Home
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
-1970-01-01 09:00:01    3   Gift // Результат
-1970-01-01 09:00:02    3   Home // Совпадает с Home
-1970-01-01 09:00:03    3   Gift // Базовая точка
+1970-01-01 09:00:01    3   Gift // The result
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-````
-
-**Поведение параметра `base_condition`**
+```
 
 ```sql
 CREATE TABLE test_flow_basecond
@@ -898,15 +936,17 @@ ORDER BY id;
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
 
+**Поведение параметра `base_condition`**
+
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // Начальная строка не может быть базовой точкой, поскольку значение столбца ref начальной строки не соответствует 'ref1'.
+ 1970-01-01 09:00:01    1   A      ref4 // The head can not be base point because the ref column of the head unmatched with 'ref1'.
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
-```
+ ```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -915,11 +955,27 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = '
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
- 1970-01-01 09:00:04    1   B      ref1 // Хвост не может быть базовой точкой, поскольку значение столбца ref в хвосте не соответствует 'ref4'.
+ 1970-01-01 09:00:04    1   B      ref1 // The tail can not be base point because the ref column of the tail unmatched with 'ref4'.
 ```
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
+
+                  dt   id   page   ref
+ 1970-01-01 09:00:01    1   A      ref4 // This row can not be base point because the ref column unmatched with 'ref3'.
+ 1970-01-01 09:00:02    1   A      ref3 // Base point
+ 1970-01-01 09:00:03    1   B      ref2 // The result
+ 1970-01-01 09:00:04    1   B      ref1
+```
+
+```sql
+SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
+
+                  dt   id   page   ref
+ 1970-01-01 09:00:01    1   A      ref4
+ 1970-01-01 09:00:02    1   A      ref3 // The result
+ 1970-01-01 09:00:03    1   B      ref2 // Base point
+ 1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
 ```
 
 dt   id   page   ref
@@ -928,7 +984,7 @@ dt   id   page   ref
 1970-01-01 09:00:03    1   B      ref2 // Результат
 1970-01-01 09:00:04    1   B      ref1
 
-````
+```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', page = 'B') FROM test_flow_basecond GROUP BY id;
@@ -938,4 +994,4 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
  1970-01-01 09:00:02    1   A      ref3 // Результат
  1970-01-01 09:00:03    1   B      ref2 // Базовая точка
  1970-01-01 09:00:04    1   B      ref1 // Эта строка не может быть базовой точкой, поскольку значение столбца ref не совпадает с 'ref2'.
-````
+```

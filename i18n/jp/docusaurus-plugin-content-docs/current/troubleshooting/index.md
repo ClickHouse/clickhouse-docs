@@ -20,13 +20,9 @@ title: 'よくある問題のトラブルシューティング'
 description: '遅いクエリ、メモリエラー、接続の問題、設定に関する問題など、最も一般的な ClickHouse の問題に対する解決策を紹介します。'
 ---
 
-
-
 # よくある問題のトラブルシューティング {#troubleshooting-common-issues}
 
 ClickHouse で問題が発生していますか？ここでは、よくある問題とその対処方法を紹介します。
-
-
 
 ## パフォーマンスとエラー {#performance-and-errors}
 
@@ -60,8 +56,6 @@ ClickHouse で問題が発生していますか？ここでは、よくある問
 - **その他の問題** → [クラスター全体のエラーを追跡する](/docs/operations/system-tables/errors)
 </details>
 
-
-
 ## メモリとリソース {#memory-and-resources}
 
 メモリ使用量が高い、メモリ不足によるクラッシュが発生する、または ClickHouse デプロイメントの適切なサイジングについてサポートが必要な場合。
@@ -89,8 +83,6 @@ ClickHouse で問題が発生していますか？ここでは、よくある問
 
 </details>
 
-
-
 ## 接続と認証 {#connections-and-authentication}
 
 ClickHouse に接続できない、認証に失敗する、SSL 証明書エラーが発生する、クライアント設定に問題がある場合。
@@ -115,8 +107,6 @@ ClickHouse に接続できない、認証に失敗する、SSL 証明書エラ�
 - [データフォーマット解析に関する問題](/docs/interfaces/formats)
 
 </details>
-
-
 
 ## セットアップと構成 {#setup-and-configuration}
 
@@ -145,12 +135,10 @@ ClickHouse に接続できない、認証に失敗する、SSL 証明書エラ�
 - [データレプリケーションを設定する](/docs/engines/table-engines/mergetree-family/replication)
 - [分散テーブルを設定する](/docs/engines/table-engines/special/distributed)
 <!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
-- [バックアップとリカバリを設定する](/docs/operations/backup)
+- [バックアップとリカバリを設定する](/docs/operations/backup/overview)
 - [モニタリングを設定する](/docs/operations/system-tables/overview)
 
 </details>
-
-
 
 ## まだお困りですか？ {#still-need-help}
 

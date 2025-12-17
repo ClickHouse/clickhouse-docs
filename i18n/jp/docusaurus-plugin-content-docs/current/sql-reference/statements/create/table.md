@@ -16,7 +16,6 @@ import TabItem from '@theme/TabItem';
 
 デフォルトでは、テーブルは現在のサーバー上にのみ作成されます。分散 DDL クエリは `ON CLUSTER` 句として実装されており、[別途説明されています](../../../sql-reference/distributed-ddl.md)。
 
-
 ## 構文形式 {#syntax-forms}
 
 ### 明示的なスキーマ指定 {#with-explicit-schema}
@@ -100,7 +99,6 @@ SELECT x, toTypeName(x) FROM t1;
 └───┴───────────────┘
 ```
 
-
 ## NULL または NOT NULL 修飾子 {#null-or-not-null-modifiers}
 
 列定義におけるデータ型の後ろに付ける `NULL` および `NOT NULL` 修飾子は、その列を [Nullable](/sql-reference/data-types/nullable) 型にできるかどうかを指定します。
@@ -108,8 +106,6 @@ SELECT x, toTypeName(x) FROM t1;
 型が `Nullable` でない場合に `NULL` が指定されると、その型は `Nullable` として扱われます。`NOT NULL` が指定されると、`Nullable` にはなりません。例えば、`INT NULL` は `Nullable(INT)` と同じ意味になります。型がすでに `Nullable` であり、そこに `NULL` または `NOT NULL` 修飾子が指定された場合は、例外がスローされます。
 
 [data_type_default_nullable](../../../operations/settings/settings.md#data_type_default_nullable) 設定も参照してください。
-
-
 
 ## デフォルト値 {#default_values}
 
@@ -215,8 +211,6 @@ SELECT
     hex(hexed)
 FROM test
 FORMAT Vertical;
-```
-
 
 Row 1:
 ──────
@@ -224,7 +218,7 @@ id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
 
-````
+```
 
 ### ALIAS {#alias}
 
@@ -261,8 +255,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ┌─id─┬─size_bytes─┬─size─────┐
 │  1 │    4678899 │ 4.46 MiB │
 └────┴────────────┴──────────┘
-````
-
+```
 
 ## プライマリキー {#primary-key}
 
@@ -293,7 +286,6 @@ PRIMARY KEY(expr1[, expr2,...]);
 :::tip
 1 つのクエリで両方の方法を併用することはできません。
 :::
-
 
 ## 制約 {#constraints}
 
@@ -339,12 +331,9 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` は **制約を強制しません**。単にオプティマイザに対して、その制約が成り立つことを知らせるだけです。もし制約が実際には成り立たない場合、クエリ結果が不正確になる可能性があります。したがって、制約が正しいと確信できる場合にのみ `ASSUME CONSTRAINT` を使用すべきです。
 
-
 ## TTL Expression {#ttl-expression}
 
 値の保持期間を定義します。MergeTree ファミリーのテーブルに対してのみ指定できます。詳細については、[列およびテーブルの TTL](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) を参照してください。
-
-
 
 ## 列圧縮コーデック {#column_compression_codec}
 
@@ -427,7 +416,6 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 
 `DEFLATE_QPL` — Intel® Query Processing Library によって実装された [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) です。いくつかの制限があります。
 
-
 - DEFLATE_QPL はデフォルトでは無効になっており、設定 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) を有効化した後にのみ使用できます。
 - DEFLATE_QPL には、SSE 4.2 命令でコンパイルされた ClickHouse ビルドが必要です（デフォルトでそのようにビルドされています）。詳細は [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
 - DEFLATE_QPL は、システムに Intel® IAA (In-Memory Analytics Accelerator) オフロードデバイスがある場合に最も効果的に動作します。詳細は [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) および [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
@@ -454,8 +442,6 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 `Gorilla(bytes_size)` — 現在の浮動小数点値と直前の浮動小数点値の XOR を計算し、それをコンパクトなバイナリ形式で書き込みます。連続する値同士の差、すなわち系列の値の変化が小さい（遅い）ほど、圧縮率は高くなります。Gorilla TSDB で使用されているアルゴリズムを実装し、64 ビット型をサポートするように拡張しています。`bytes_size` に指定可能な値は 1, 2, 4, 8 で、デフォルト値は 1, 2, 4, 8 のいずれかと等しい場合は `sizeof(type)` です。それ以外の場合は 1 になります。詳細は [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078) の 4.1 節を参照してください。
 
 #### FPC {#fpc}
-
-
 
 `FPC(level, float_size)` - 2種類の予測器のうち優れている方を用いて系列中の次の浮動小数点値を繰り返し予測し、その予測値と実際の値を XOR し、その結果を先頭ゼロ圧縮するコーデックです。Gorilla と同様に、ゆっくり変化する浮動小数点値の系列を保存する場合に効率的です。64ビット値（double）の場合、FPC は Gorilla より高速であり、32ビット値の場合は状況によって異なります。`level` に指定可能な値は 1-28 で、デフォルト値は 12 です。`float_size` に指定可能な値は 4, 8 で、型が Float の場合のデフォルト値は `sizeof(type)` です。それ以外のすべてのケースでは 4 になります。アルゴリズムの詳細な説明については [High Throughput Compression of Double-Precision Floating-Point Data](https://userweb.cs.txstate.edu/~burtscher/papers/dcc07a.pdf) を参照してください。
 
@@ -522,7 +508,6 @@ CREATE TABLE mytable
 ENGINE = MergeTree ORDER BY x;
 ```
 
-
 ## 一時テーブル {#temporary-tables}
 
 :::note
@@ -552,7 +537,6 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 ほとんどの場合、一時テーブルは手動で作成するのではなく、クエリで外部データを使用する場合や、分散 `(GLOBAL) IN` のために使用する場合に自動的に作成されます。詳しくは、該当するセクションを参照してください。
 
 一時テーブルの代わりに、[ENGINE = Memory](../../../engines/table-engines/special/memory.md) を使用したテーブルを利用することもできます。
-
 
 ## REPLACE TABLE {#replace-table}
 
@@ -720,7 +704,6 @@ WHERE CounterID <12345;
   </TabItem>
 </Tabs>
 
-
 ## COMMENT 句 {#comment-clause}
 
 テーブル作成時にコメントを追加できます。
@@ -752,7 +735,6 @@ SELECT name, comment FROM system.tables WHERE name = 't1';
 │ t1   │ 一時テーブル │
 └──────┴─────────────────────┘
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

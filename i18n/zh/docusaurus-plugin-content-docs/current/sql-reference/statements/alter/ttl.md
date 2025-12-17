@@ -45,9 +45,9 @@ ORDER BY tuple()
 TTL event_time + INTERVAL 3 MONTH
 SETTINGS min_bytes_for_wide_part = 0;
 
-INSERT INTO table_with_ttl VALUES (now(), 1, '用户名1');
+INSERT INTO table_with_ttl VALUES (now(), 1, 'username1');
 
-INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, '用户名2');
+INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
 ```
 
 运行 `OPTIMIZE` 以强制触发 `TTL` 清理：

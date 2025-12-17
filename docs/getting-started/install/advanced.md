@@ -33,7 +33,7 @@ On Gentoo, you can just use `emerge clickhouse` to install ClickHouse from sourc
 ClickHouse's continuous integration (CI) infrastructure produces specialized builds for each commit in the [ClickHouse
 repository](https://github.com/clickhouse/clickhouse/), e.g. [sanitized](https://github.com/google/sanitizers) builds, unoptimized (Debug)
 builds, cross-compiled builds etc. While such builds are normally only useful during development, they can in certain situations also be
-interesting for users.
+interesting for you.
 
 :::note
 Since ClickHouse's CI is evolving over time, the exact steps to download CI-generated builds may vary.

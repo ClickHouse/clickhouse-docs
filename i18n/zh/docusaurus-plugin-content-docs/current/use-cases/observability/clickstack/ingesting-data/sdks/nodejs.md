@@ -21,7 +21,6 @@ ClickStack 使用 OpenTelemetry 标准来采集遥测数据（日志 logs、指�
 * **Traces**
 * **Exceptions**
 
-
 ## 开始使用 {#getting-started}
 
 ### 安装 HyperDX OpenTelemetry Instrumentation 包 {#install-hyperdx-opentelemetry-instrumentation-package}
@@ -96,7 +95,7 @@ HyperDX.init({
       format: winston.format.json(),
       transports: [
         new winston.transports.Console(),
-        HyperDX.getWinstonTransport('info', { // 发送 info 级别及以上的日志
+        HyperDX.getWinstonTransport('info', { // Send logs info and above
           detectResources: true,
         }),
       ],
@@ -118,7 +117,7 @@ const logger = pino(
     pino.transport({
     mixin: HyperDX.getPinoMixinFunction,
     targets: [
-        HyperDX.getPinoTransport('info', { // 发送 info 级别及以上的日志
+        HyperDX.getPinoTransport('info', { // Send logs info and above
         detectResources: true,
         }),
     ],
@@ -155,10 +154,10 @@ HyperDX.init({
 });
 const app = express();
 
-// 在这里添加您的路由等
+// Add your routes, etc.
 
-// 在所有路由之后添加此行，
-// 但要在定义任何其他错误处理中间件之前
+// Add this after all routes,
+// but before any and other error-handling middlewares are defined
 HyperDX.setupExpressErrorHandler(app);
 
 app.listen(3000);
@@ -181,7 +180,7 @@ const app = new Koa();
 
 HyperDX.setupKoaErrorHandler(app);
 
-// 在这里添加您的路由等
+// Add your routes, etc.
 
 app.listen(3030);
 ```
@@ -193,7 +192,7 @@ app.listen(3030);
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 function myErrorHandler(error, req, res, next) {
-    // 这可以在应用程序的任何位置使用
+    // This can be used anywhere in your application
     HyperDX.recordException(error);
 }
 ```
@@ -209,7 +208,6 @@ function myErrorHandler(error, req, res, next) {
 export OTEL_LOG_LEVEL=debug
 ```
 
-
 ## 高级埋点配置 {#advanced-instrumentation-configuration}
 
 ### 捕获控制台日志 {#capture-console-logs}
@@ -220,14 +218,21 @@ export OTEL_LOG_LEVEL=debug
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
+### Attach user information or metadata {#attach-user-information-or-metadata}
 
-### 附加用户信息或元数据 {#attach-user-information-or-metadata}
+To easily tag all events related to a given attribute or identifier (ex. user id
+or email), you can call the `setTraceAttributes` function which will tag every
+log/span associated with the current trace after the call with the declared
+attributes. It's recommended to call this function as early as possible within a
+given request/trace (ex. as early in an Express middleware stack as possible).
 
-若要轻松为与给定属性或标识符（例如 user id 或 email）相关的所有事件添加标签，可以调用 `setTraceAttributes` 函数。该函数会在调用后，将声明的属性附加到与当前 trace 关联的每一条 log/span 上。建议在给定 request/trace 的生命周期中尽可能早地调用该函数（例如在 Express middleware 栈中尽量靠前的位置）。
+This is a convenient way to ensure all logs/spans are automatically tagged with
+the right identifiers to be searched on later, instead of needing to manually
+tag and propagate identifiers yourself.
 
-通过这种方式，可以方便地确保所有 logs/spans 都会自动带上正确的标识符，便于后续检索，而无需手动为每条日志打标签并自行传播这些标识符。
-
-`userId`、`userEmail`、`userName` 和 `teamName` 会在 sessions UI 中填充相应的值，但它们是可选的。还可以指定任意其他附加字段，并使用这些字段来搜索事件。
+`userId`, `userEmail`, `userName`, and `teamName` will populate the sessions UI
+with the corresponding values, but can be omitted. Any other additional values
+can be specified and used to search for events.
 
 ```typescript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
@@ -245,28 +250,34 @@ app.use((req, res, next) => {
 });
 ```
 
-要启用跟踪属性，请确保通过将环境变量 `HDX_NODE_BETA_MODE` 设置为 1，或在调用 `init` 函数时传入 `betaMode: true` 来开启 beta 模式。
+Make sure to enable beta mode by setting `HDX_NODE_BETA_MODE` environment
+variable to 1 or by passing `betaMode: true` to the `init` function to
+enable trace attributes.
 
 ```shell
 export HDX_NODE_BETA_MODE=1
 ```
 
-
 ### Google Cloud Run {#google-cloud-run}
 
-如果你在 Google Cloud Run 上运行应用程序，Cloud Trace 会自动向传入请求注入采样请求头，目前会将每个实例的跟踪采样率限制为每秒 0.1 个请求。
+If you're running your application on Google Cloud Run, Cloud Trace
+automatically injects sampling headers into incoming requests, currently
+restricting traces to be sampled at 0.1 requests per second for each instance.
 
-`@hyperdx/node-opentelemetry` 包默认会将采样率重写为 1.0。
+The `@hyperdx/node-opentelemetry` package overwrites the sample rate to 1.0 by
+default.
 
-要更改此行为，或配置其他 OpenTelemetry 部署，你可以手动设置环境变量
-`OTEL_TRACES_SAMPLER=parentbased_always_on` 和 `OTEL_TRACES_SAMPLER_ARG=1` 来达到相同效果。
+To change this behavior, or to configure other OpenTelemetry installations, you
+can manually configure the environment variables
+`OTEL_TRACES_SAMPLER=parentbased_always_on` and `OTEL_TRACES_SAMPLER_ARG=1` to
+achieve the same result.
 
-若要了解更多信息，以及如何强制对特定请求进行跟踪，请参阅
-[Google Cloud Run 文档](https://cloud.google.com/run/docs/trace)。
+To learn more, and to force tracing of specific requests, please refer to the
+[Google Cloud Run documentation](https://cloud.google.com/run/docs/trace).
 
-### 自动插桩的库 {#auto-instrumented-libraries}
+### Auto-instrumented libraries {#auto-instrumented-libraries}
 
-以下库将由 SDK 自动插桩（追踪）：
+The following libraries will be automatically instrumented (traced) by the SDK:
 
 - [`dns`](https://nodejs.org/dist/latest/docs/api/dns.html)
 - [`express`](https://www.npmjs.com/package/express)
@@ -286,21 +297,22 @@ export HDX_NODE_BETA_MODE=1
 - [`redis`](https://www.npmjs.com/package/redis)
 - [`winston`](https://www.npmjs.com/package/winston)
 
-## 其他安装方式 {#alternative-installation}
+## Alternative installation {#alternative-installation}
 
-### 使用 ClickStack OpenTelemetry CLI 运行应用程序 {#run-the-application-with-cli}
+### Run the Application with ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
 
-或者，你可以使用 `opentelemetry-instrument` CLI，或使用 Node.js 的 `--require` 标志，在无需修改任何代码的情况下对应用程序进行自动插桩。安装该 CLI 后，可以使用更多已支持自动插桩的库和框架。
+Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
+Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.
 
 <Tabs groupId="cli">
-<TabItem value="npx" label="使用 NPX" default>
+<TabItem value="npx" label="Using NPX" default>
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
-<TabItem value="custom" label="自定义入口点（例如：Nodemon、ts-node 等）">
+<TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
@@ -308,7 +320,7 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-no
 
 </TabItem>
 
-<TabItem value="code_import" label="通过代码引入">
+<TabItem value="code_import" label="Code Import">
 
 ```javascript 
 // 在应用程序中第一个被加载的文件最顶部引入此代码
@@ -325,18 +337,17 @@ initSDK({
 
 </Tabs>
 
-_`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，可以是任意你指定的名称。_
+_The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 
-### 启用异常捕获 {#enabling-exception-capturing}
+### Enabling exception capturing {#enabling-exception-capturing}
 
-要启用未捕获异常的捕获功能，需要将环境变量 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` 设置为 1。
+To enable uncaught exception capturing, you'll need to set the `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` environment variable to 1.
 
 ```shell
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1
 ```
 
 随后，如需自动捕获来自 Express、Koa 的异常或手动捕获异常，请按照上文 [设置错误收集](#setup-error-collection) 一节中的说明进行配置。
-
 
 ### 自动插桩的库 {#auto-instrumented-libraries-2}
 

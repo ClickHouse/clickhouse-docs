@@ -1,9 +1,9 @@
 ---
 slug: /guides/developer/ttl
-sidebar_label: 'TTL（Time To Live）'
+sidebar_label: 'TTL (Time To Live)'
 sidebar_position: 2
 keywords: ['ttl', 'time to live', 'clickhouse', 'old', 'data']
-description: 'TTL（time-to-live）とは、指定した時間が経過した後に行や列を移動、削除、またはロールアップできる機能を指します。'
+description: 'TTL（time-to-live）は、一定の時間が経過した後に行または列を移動、削除、またはロールアップする機能を指します。'
 title: 'TTL（Time-to-live）でデータを管理する'
 show_related_blogs: true
 doc_type: 'guide'
@@ -11,29 +11,23 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+# TTL（time-to-live）でデータを管理する
 
-# TTL（Time To Live）を使ったデータ管理 {#manage-data-with-ttl-time-to-live}
+## TTLの概要 {#overview-of-ttl}
 
+TTL（time-to-live）は、一定の時間が経過した後に行または列を移動、削除、またはロールアップする機能を指します。「time-to-live」という表現は古いデータの削除にのみ適用されるように聞こえますが、TTLにはいくつかの使用例があります：
 
-
-## TTL の概要 {#overview-of-ttl}
-
-TTL (time-to-live) は、一定時間が経過した後に、行や列を移動・削除・ロールアップできる機能を指します。"time-to-live" という表現からは古いデータの削除だけを連想しがちですが、TTL にはいくつかのユースケースがあります。
-
-- 古いデータの削除: 想像どおり、指定した時間の経過後に行や列を削除できます
-- ディスク間でのデータ移動: 一定時間経過後にストレージボリューム間でデータを移動できます。ホット / ウォーム / コールド構成のアーキテクチャを実現する際に有用です
-- データロールアップ: 古いデータを削除する前に、さまざまな有用な集約や計算結果にロールアップできます
+- 古いデータの削除：驚くことではありませんが、指定された時間間隔の後に行または列を削除できます
+- ディスク間でのデータ移動：一定の時間が経過した後、ストレージボリューム間でデータを移動できます - ホット/ウォーム/コールドアーキテクチャのデプロイに便利です
+- データのロールアップ：削除する前に、古いデータをさまざまな有用な集計と計算にロールアップします
 
 :::note
-TTL はテーブル全体にも特定の列にも適用できます。
+TTLはテーブル全体または特定の列に適用できます。
 :::
 
+## TTL構文 {#ttl-syntax}
 
-
-## TTL の構文 {#ttl-syntax}
-
-`TTL` 句は、列定義の後および/またはテーブル定義の末尾に記述できます。`INTERVAL` 句を使用して期間（`Date` または `DateTime` データ型である必要があります）を定義します。たとえば、次のテーブルには 2 つの列があり、
-それぞれに `TTL` 句があります。
+`TTL`句は列定義の後またはテーブル定義の最後に表示できます。`INTERVAL`句を使用して時間の長さを定義します（`Date`または`DateTime`データ型である必要があります）。たとえば、次のテーブルには`TTL`句を持つ2つの列があります：
 
 ```sql
 CREATE TABLE example1 (
@@ -46,38 +40,36 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-* x 列は、`timestamp` 列を基準として 1 か月の TTL（有効期限）を持ちます
-* y 列は、`timestamp` 列を基準として 1 日の TTL（有効期限）を持ちます
-* 期間が経過すると、その列は失効します。ClickHouse は、その列の値をデータ型のデフォルト値に置き換えます。あるデータパート内のその列の値がすべて失効すると、ClickHouse はファイルシステム上のそのデータパートからこの列を削除します。
+- x列にはtimestamp列から1か月のtime to liveがあります
+- y列にはtimestamp列から1日のtime to liveがあります
+- 間隔が経過すると、列は期限切れになります。ClickHouseは列の値をそのデータ型のデフォルト値で置き換えます。データパート内のすべての列値が期限切れになると、ClickHouseはファイルシステム内のデータパートからこの列を削除します。
 
 :::note
-TTL のルールは変更または削除できます。詳細は [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) ページを参照してください。
+TTLルールは変更または削除できます。詳細については、[テーブルTTLの操作](/sql-reference/statements/alter/ttl.md)ページを参照してください。
 :::
 
+## TTLイベントのトリガー {#triggering-ttl-events}
 
-## TTL イベントのトリガー {#triggering-ttl-events}
+期限切れの行の削除または集計は即座には行われません - テーブルのマージ中にのみ発生します。何らかの理由で積極的にマージされていないテーブルがある場合、TTLイベントをトリガーする2つの設定があります：
 
-期限切れ行の削除や集約は即時には行われず、テーブルのマージ時にのみ実行されます。何らかの理由でマージが積極的に行われていないテーブルがある場合、TTL イベントをトリガーするための設定が 2 つあります:
+- `merge_with_ttl_timeout`：削除TTLを使用したマージを繰り返す前の最小遅延（秒単位）。デフォルトは14400秒（4時間）です。
+- `merge_with_recompression_ttl_timeout`：再圧縮TTL（削除前にデータをロールアップするルール）を使用したマージを繰り返す前の最小遅延（秒単位）。デフォルト値：14400秒（4時間）。
 
-* `merge_with_ttl_timeout`: 削除 TTL を伴うマージを再度実行するまでの最小遅延時間（秒）。デフォルトは 14400 秒（4 時間）です。
-* `merge_with_recompression_ttl_timeout`: 再圧縮 TTL（削除前にデータをロールアップするルール）を伴うマージを再度実行するまでの最小遅延時間（秒）。デフォルト値は 14400 秒（4 時間）です。
-
-そのためデフォルトでは、TTL ルールは 4 時間に少なくとも 1 回、テーブルに対して適用されます。TTL ルールをより高頻度で適用したい場合は、上記の設定を変更してください。
+したがって、デフォルトでは、TTLルールは少なくとも4時間ごとにテーブルに適用されます。TTLルールをより頻繁に適用する必要がある場合は、上記の設定を変更するだけです。
 
 :::note
-あまり良い解決策ではなく（また頻繁に使用することは推奨しません）が、`OPTIMIZE` を使用してマージを強制することもできます。
+素晴らしいソリューションではありません（頻繁に使用することをお勧めしません）が、`OPTIMIZE`を使用してマージを強制することもできます：
 
 ```sql
 OPTIMIZE TABLE example1 FINAL
 ```
 
-`OPTIMIZE` はテーブルを構成するパーツのスケジュールされていないマージ処理を開始し、テーブルがすでに単一パーツである場合は `FINAL` によって再度の最適化が強制されます。
+`OPTIMIZE`はテーブルのパートの予定外のマージを初期化し、`FINAL`はテーブルがすでに単一のパートである場合に再最適化を強制します。
 :::
-
 
 ## 行の削除 {#removing-rows}
 
-一定時間が経過した後にテーブルから行全体を削除するには、テーブルレベルで TTL ルールを定義します。
+一定時間後にテーブルから行全体を削除するには、テーブルレベルでTTLルールを定義します：
 
 ```sql
 CREATE TABLE customers (
@@ -91,9 +83,9 @@ ORDER BY timestamp
 TTL timestamp + INTERVAL 12 HOUR
 ```
 
-さらに、レコードの値に基づいて TTL ルールを定義することも可能です。
-これは、WHERE 句を指定することで容易に実現できます。
-複数の条件を指定することができます。
+さらに、レコードの値に基づいてTTLルールを定義することも可能です。
+これは、where条件を指定することで簡単に実装できます。
+複数の条件が許可されています：
 
 ```sql
 CREATE TABLE events
@@ -108,10 +100,9 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
     time + INTERVAL 6 MONTH DELETE WHERE event = 'error'
 ```
 
-
 ## 列の削除 {#removing-columns}
 
-行全体を削除するのではなく、`balance` 列と `address` 列だけに有効期限を設定したいとします。`customers` テーブルを変更して、両方の列に 2 時間の TTL を設定してみましょう。
+行全体を削除する代わりに、balanceとaddress列だけを期限切れにしたいとします。`customers`テーブルを変更して、両方の列に2時間のTTLを追加しましょう：
 
 ```sql
 ALTER TABLE customers
@@ -119,12 +110,10 @@ MODIFY COLUMN balance Int32 TTL timestamp + INTERVAL 2 HOUR,
 MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
 
-
 ## ロールアップの実装 {#implementing-a-rollup}
+一定時間後に行を削除したいが、レポート目的でデータの一部を保持したいとします。すべての詳細は必要ありません - 履歴データのいくつかの集計結果だけです。これは、`TTL`式に`GROUP BY`句を追加し、集計結果を格納するためにテーブルにいくつかの列を追加することで実装できます。
 
-一定時間が経過した行を削除しつつ、レポーティング用途のために一部のデータは保持しておきたいとします。すべての詳細が必要なわけではなく、履歴データに対するいくつかの集計結果だけで十分です。これは、集計結果を保存するためのいくつかの列をテーブルに追加し、`TTL` 式に `GROUP BY` 句を追加することで実装できます。
-
-次の `hits` テーブルで、古い行は削除しつつ、行を削除する前に `hits` 列の合計値と最大値は保持しておきたいとします。その値を保存するための列が必要であり、さらに合計値と最大値をロールアップする `GROUP BY` 句を `TTL` 句に追加する必要があります。
+次の`hits`テーブルでは、古い行を削除したいが、行を削除する前に`hits`列の合計と最大値を保持したいとします。これらの値を格納するフィールドが必要で、合計と最大値をロールアップする`GROUP BY`句を`TTL`句に追加する必要があります：
 
 ```sql
 CREATE TABLE hits (
@@ -143,24 +132,23 @@ TTL timestamp + INTERVAL 1 DAY
         sum_hits = sum(sum_hits);
 ```
 
-`hits` テーブルに関する補足:
+`hits`テーブルに関するいくつかの注意点：
 
-* `TTL` 句内の `GROUP BY` 列は `PRIMARY KEY` の先頭部分である必要があり、さらに結果を日単位（1 日の開始時刻）でグループ化したいので、`PRIMARY KEY` に `toStartOfDay(timestamp)` を追加しました
-* 集計結果を保存するために、`max_hits` と `sum_hits` の 2 つのフィールドを追加しました
-* `SET` 句の定義に基づくロジックが正しく動作するようにするには、`max_hits` と `sum_hits` のデフォルト値を `hits` に設定しておく必要があります
+- `TTL`句の`GROUP BY`列は`PRIMARY KEY`のプレフィックスである必要があり、結果を日の開始時刻でグループ化したいので、`toStartOfDay(timestamp)`がプライマリキーに追加されました
+- 集計結果を格納するために2つのフィールドを追加しました：`max_hits`と`sum_hits`
+- `max_hits`と`sum_hits`のデフォルト値を`hits`に設定することは、`SET`句の定義方法に基づいて、ロジックが機能するために必要です
 
+## ホット/ウォーム/コールドアーキテクチャの実装 {#implementing-a-hotwarmcold-architecture}
 
-## ホット／ウォーム／コールド アーキテクチャの実装 {#implementing-a-hotwarmcold-architecture}
-
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
 :::note
-ClickHouse Cloud を使用している場合、このレッスンの手順は適用されません。ClickHouse Cloud では古いデータを移動する必要はありません。
+ClickHouse Cloudを使用している場合、このレッスンの手順は適用されません。ClickHouse Cloudで古いデータを移動することを心配する必要はありません。
 :::
 
-大量のデータを扱う場合、データが古くなるにつれて格納場所を移動するのは一般的な運用手法です。ここでは、ClickHouse で `TTL` コマンドの `TO DISK` および `TO VOLUME` 句を使用して、ホット／ウォーム／コールド アーキテクチャを実装する手順を示します。（ちなみに、必ずしもホット／コールド構成に限られるわけではなく、TTL を使って任意のユースケースに合わせてデータを移動できます。）
+大量のデータを扱う際の一般的な慣行は、データが古くなるにつれてそのデータを移動することです。`TTL`コマンドの`TO DISK`および`TO VOLUME`句を使用してClickHouseでホット/ウォーム/コールドアーキテクチャを実装する手順は次のとおりです。（ちなみに、ホットとコールドのことである必要はありません - どのような使用例でもTTLを使用してデータを移動できます。）
 
-1. `TO DISK` および `TO VOLUME` オプションは、ClickHouse の設定ファイルで定義されているディスクまたはボリュームの名前を参照します。ディスクを定義する `my_system.xml`（任意のファイル名で可）という新しいファイルを作成し、そのディスクを利用するボリュームを定義します。設定をシステムに適用するには、その XML ファイルを `/etc/clickhouse-server/config.d/` に配置します。
+1. `TO DISK`および`TO VOLUME`オプションは、ClickHouse構成ファイルで定義されたディスクまたはボリュームの名前を参照します。ディスクを定義する`my_system.xml`という名前の新しいファイル（または任意のファイル名）を作成し、次にディスクを使用するボリュームを定義します。XMLファイルを`/etc/clickhouse-server/config.d/`に配置して、構成がシステムに適用されるようにします：
 
 ```xml
 <clickhouse>
@@ -200,7 +188,7 @@ ClickHouse Cloud を使用している場合、このレッスンの手順は適
 </clickhouse>
 ```
 
-2. 上記の設定では、ClickHouse が読み書きできるフォルダを指す 3 つのディスクを参照しています。ボリュームには 1 つ以上のディスクを含めることができますが、ここでは 3 つのディスクそれぞれに対してボリュームを定義しました。ディスクを確認してみましょう。
+2. 上記の構成は、ClickHouseが読み書きできるフォルダを指す3つのディスクを参照します。ボリュームには1つ以上のディスクを含めることができます - 3つのディスクそれぞれにボリュームを定義しました。ディスクを表示してみましょう：
 
 ```sql
 SELECT name, path, free_space, total_space
@@ -216,7 +204,7 @@ FROM system.disks
 └─────────────┴────────────────┴──────────────┴──────────────┘
 ```
 
-3. それでは、ボリュームを確認しましょう:
+3. そして...ボリュームを確認しましょう：
 
 ```sql
 SELECT
@@ -234,7 +222,7 @@ FROM system.storage_policies
 └─────────────┴───────────────┘
 ```
 
-4. ここで、ホット、ウォーム、コールドの各ボリューム間でデータを移動させる `TTL` ルールを追加します。
+4. 次に、ホット、ウォーム、コールドのボリューム間でデータを移動する`TTL`ルールを追加します：
 
 ```sql
 ALTER TABLE my_table
@@ -244,17 +232,17 @@ ALTER TABLE my_table
       trade_date + INTERVAL 4 YEAR TO VOLUME 'cold_volume';
 ```
 
-5. 新しい `TTL` ルールは通常自動的に反映されますが、念のため次のコマンドで即時に適用を強制できます:
+5. 新しい`TTL`ルールは実体化されるはずですが、確実にするために強制できます：
 
 ```sql
 ALTER TABLE my_table
     MATERIALIZE TTL
 ```
 
-6. `system.parts` テーブルで、データが期待どおりのディスクに移動されたことを確認します。
+6. `system.parts`テーブルを使用して、データが期待されるディスクに移動したことを確認します：
 
 ```sql
-system.parts テーブルを使用して、crypto_prices テーブルの各パーツがどのディスク上に配置されているかを確認します。
+system.partsテーブルを使用して、crypto_pricesテーブルのパーツがどのディスク上にあるかを表示します：
 
 SELECT
     name,
@@ -263,8 +251,7 @@ FROM system.parts
 WHERE (table = 'my_table') AND (active = 1)
 ```
 
-レスポンスは次のようになります。
-
+レスポンスは次のようになります：
 
 ```response
 ┌─name────────┬─disk_name─┐

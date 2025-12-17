@@ -10,15 +10,12 @@ doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import dynamodb_kinesis_stream from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-kinesis-stream.png';
 import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-s3-export.png';
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
 # CDC from DynamoDB to ClickHouse
-
-<ExperimentalBadge/>
 
 This page covers how set up CDC from DynamoDB to ClickHouse using ClickPipes. There are 2 components to this integration:
 1. The initial snapshot via S3 ClickPipes
@@ -106,7 +103,7 @@ There are a few requirements for the destination table:
   - Rows with the same sorting key will be deduplicated based on the `version` column.
 
 ### Create the snapshot ClickPipe {#create-the-snapshot-clickpipe}
-Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse. Follow the S3 ClickPipe guide [here](/integrations/clickpipes/object-storage), but use the following settings:
+Now you can create a ClickPipe to load the snapshot data from S3 into ClickHouse. Follow the S3 ClickPipe guide [here](/integrations/clickpipes/object-storage/s3/overview), but use the following settings:
 
 - **Ingest path**: You will need to locate the path of the exported json files in S3. The path will look something like this:
 

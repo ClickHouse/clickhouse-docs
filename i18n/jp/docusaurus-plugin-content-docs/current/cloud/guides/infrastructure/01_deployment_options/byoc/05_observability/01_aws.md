@@ -67,16 +67,16 @@ curl --user <username>:<password> https://i6ro4qarho.mhp0y4dmph.us-west-2.aws.by
 **サンプルレスポンス**
 
 ```bash
-# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes systemデータベースのディスク`s3disk`に格納されているバイト数
+# HELP ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes The amount of bytes stored on disk `s3disk` in system database
 # TYPE ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes gauge
 ClickHouse_CustomMetric_StorageSystemTablesS3DiskBytes{hostname="c-jet-ax-16-server-43d5baj-0"} 62660929
-# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts 破損したデタッチ済みパーツの数
+# HELP ClickHouse_CustomMetric_NumberOfBrokenDetachedParts The number of broken detached parts
 # TYPE ClickHouse_CustomMetric_NumberOfBrokenDetachedParts gauge
 ClickHouse_CustomMetric_NumberOfBrokenDetachedParts{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_LostPartCount 最も古いミューテーションの経過時間(秒)
+# HELP ClickHouse_CustomMetric_LostPartCount The age of the oldest mutation (in seconds)
 # TYPE ClickHouse_CustomMetric_LostPartCount gauge
 ClickHouse_CustomMetric_LostPartCount{hostname="c-jet-ax-16-server-43d5baj-0"} 0
-# HELP ClickHouse_CustomMetric_NumberOfWarnings サーバーが発行した警告の数。通常、設定ミスの可能性を示す
+# HELP ClickHouse_CustomMetric_NumberOfWarnings The number of warnings issued by the server. It usually indicates about possible misconfiguration
 # TYPE ClickHouse_CustomMetric_NumberOfWarnings gauge
 ClickHouse_CustomMetric_NumberOfWarnings{hostname="c-jet-ax-16-server-43d5baj-0"} 2
 # HELP ClickHouseErrorMetric_FILE_DOESNT_EXIST FILE_DOESNT_EXIST
@@ -85,7 +85,7 @@ ClickHouseErrorMetric_FILE_DOESNT_EXIST{hostname="c-jet-ax-16-server-43d5baj-0",
 # HELP ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE UNKNOWN_ACCESS_TYPE
 # TYPE ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE counter
 ClickHouseErrorMetric_UNKNOWN_ACCESS_TYPE{hostname="c-jet-ax-16-server-43d5baj-0",table="system.errors"} 8
-# HELP ClickHouse_CustomMetric_TotalNumberOfErrors 最後の再起動以降のサーバーエラーの総数
+# HELP ClickHouse_CustomMetric_TotalNumberOfErrors The total number of errors on server since the last restart
 # TYPE ClickHouse_CustomMetric_TotalNumberOfErrors gauge
 ClickHouse_CustomMetric_TotalNumberOfErrors{hostname="c-jet-ax-16-server-43d5baj-0"} 9
 ```

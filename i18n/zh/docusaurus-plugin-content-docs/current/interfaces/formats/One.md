@@ -13,14 +13,10 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
-
-
 ## 描述 {#description}
 
 `One` 格式是一种特殊的输入格式，它不会从文件中读取任何数据，而是只返回一行数据，该行包含一列，类型为 [`UInt8`](../../sql-reference/data-types/int-uint.md)、名称为 `dummy`、值为 `0`（类似于 `system.one` 表）。
 可以配合虚拟列 `_file/_path` 使用，在不读取实际数据的情况下列出所有文件。
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -44,6 +40,5 @@ SELECT _file FROM file('path/to/files/data*', One);
 │ data.parquet │
 └──────────────┘
 ```
-
 
 ## 格式设置 {#format-settings}

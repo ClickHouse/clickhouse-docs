@@ -11,7 +11,6 @@ doc_type: 'reference'
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
 
-
 # ClickPipes for Postgres に関する FAQ {#clickpipes-for-postgres-faq}
 
 ### アイドル状態は Postgres CDC ClickPipe にどのような影響がありますか？ {#how-does-idling-affect-my-postgres-cdc-clickpipe}
@@ -66,7 +65,6 @@ REPLICA IDENTITY FULL は、変更されていない TOAST カラムのレプリ
      * eu-central-1
    * 詳細なセットアップ手順については、[PrivateLink ドキュメント](/knowledgebase/aws-privatelink-setup-for-clickpipes)を参照してください
    * PrivateLink が利用できないリージョンでは、SSH トンネリングを使用してください
-
 
 ### UPDATE と DELETE はどのように処理されますか？ {#how-do-you-handle-updates-and-deletes}
 
@@ -129,8 +127,6 @@ Postgres のレプリケーションスロットサイズが増え続けてい�
      ```
      このクエリを使用して、異常に長時間実行されているトランザクションを特定します。
 
-
-
 3. **メンテナンス／ユーティリティ作業（例：`pg_repack`）**
    - `pg_repack` のようなツールはテーブル全体を書き換えることがあり、短時間で大量の WAL データを生成します。
    - これらの作業はトラフィックが少ない時間帯にスケジュールするか、実行中は WAL の使用状況を注意深く監視してください。
@@ -173,8 +169,6 @@ JSON および JSONB カラムは、ClickHouse では String 型としてレプ�
 Postgres 向け ClickPipe は、[OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi) エンドポイント経由でも作成および管理できます。この機能は現在ベータ版であり、API リファレンスは[こちら](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/beta)にあります。Postgres 向け ClickPipes を作成するための Terraform サポートにも積極的に取り組んでいます。
 
 ### 初期ロードを高速化するにはどうすればよいですか？ {#how-do-i-speed-up-my-initial-load}
-
-
 
 既に実行中の初回ロードを高速化することはできません。ただし、特定の設定を調整することで、今後の初回ロードを最適化できます。デフォルトでは、並列スレッド数は 4、パーティションごとのスナップショット行数は 100,000 に設定されています。これらは高度な設定ですが、ほとんどのユースケースでは十分です。
 
@@ -243,7 +237,6 @@ Postgres の読み取りレプリカ / ホットスタンバイからレプリ�
 
 ##### PostgreSQL 10 以降の場合 {#for-postgresql-10}
 
-
 ```sql
 SELECT pg_wal_lsn_diff(pg_current_wal_insert_lsn(), '0/0') / 1024 / 1024 AS wal_generated_mb;
 ```
@@ -303,7 +296,6 @@ ClickHouse で OOM が発生する一般的な理由の 1 つは、サービス�
 
 Initial Load の実行中は、アップグレードや再起動などの破壊的な操作を Postgres データベース上で行わず、データベースへのネットワーク接続が安定していることを確認することを推奨します。
 
-
 この問題を解決するには、ClickPipes の UI から再同期を実行します。これにより、初期ロード処理が最初から再実行されます。
 
 ### Postgres で publication を削除した場合はどうなりますか？ {#what-happens-if-i-drop-a-publication-in-postgres}
@@ -341,7 +333,7 @@ Postgres のパッチバージョン 17.5/16.9/15.13/14.18/13.21 で導入され
 はい、可能です。Postgres の ClickPipe を作成する前に、DELETE 操作を含まない publication を作成してください。例：
 
 ```sql
-CREATE PUBLICATION <パブリケーション名> FOR TABLES IN SCHEMA <スキーマ名> WITH (publish = 'insert,update');
+CREATE PUBLICATION <pub_name> FOR TABLES IN SCHEMA <schema_name> WITH (publish = 'insert,update');
 ```
 
 その後、Postgres 用 ClickPipe を[セットアップ](https://clickhouse.com/docs/integrations/clickpipes/postgres#configuring-the-replication-settings)する際に、このパブリケーション名が選択されていることを必ず確認してください。
@@ -366,7 +358,6 @@ PeerDB には現在、ソーステーブル識別子（スキーマ名または�
 はい。レプリケーションモードが CDC または Snapshot + CDC の Postgres 用 ClickPipe では、ClickPipe を作成する際に `Advanced Settings` セクション内の以下のスイッチを切り替えることで、フェイルオーバーが有効な replication slot を ClickPipes に作成させることができます。この機能を使用するには、Postgres のバージョンが 17 以上である必要があることに注意してください。
 
 <Image img={failover_slot} border size="md" />
-
 
 ソースが適切に構成されている場合、フェイルオーバー後もスロットは Postgres のリードレプリカに引き継がれ、データレプリケーションが継続されます。詳しくは[こちら](https://www.postgresql.org/docs/current/logical-replication-failover.html)を参照してください。
 

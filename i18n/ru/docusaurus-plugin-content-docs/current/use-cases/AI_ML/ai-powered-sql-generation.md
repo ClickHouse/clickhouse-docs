@@ -25,8 +25,8 @@ doc_type: 'guide'
 Нам потребуется добавить ключ Anthropic или OpenAI в виде переменной окружения:
 
 ```bash
-export ANTHROPIC_API_KEY=ваш_api_ключ
-export OPENAI_API_KEY=ваш_api_ключ
+export ANTHROPIC_API_KEY=your_api_key
+export OPENAI_API_KEY=your_api_key
 ```
 
 Кроме того, вы можете [указать файл конфигурации](https://clickhouse.com/docs/interfaces/cli#ai-sql-generation-configuration).
@@ -63,42 +63,42 @@ clickhouse client -mn \
 Начнём с вопроса о ценах на жильё. В SQL Playground есть датасет с ценами на жильё в Великобритании, который ИИ определит автоматически:
 
 ```sql
-?? Можете ли вы назвать самое дорогое место для покупки жилья в 2021 году?;
+?? Can you tell me the most expensive place to buy a house in 2021?;
 ```
 
 Как только мы нажмём Enter, мы увидим ход мыслей ИИ, пока он пытается ответить на наш вопрос.
 
 ```text
-• Запуск генерации SQL с помощью ИИ и обнаружение схемы...
+• Starting AI SQL generation with schema discovery...
 ─────────────────────────────────────────────────
-🧠 обработка...[INFO] Генерация текста успешно выполнена - модель: claude-3-5-sonnet-latest, response_id: msg_01QpQd35ZD8HM9QSYFZuQ8Wh
-🔧 Вызов: list_databases [toolu_01...]
+🧠 thinking...[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01QpQd35ZD8HM9QSYFZuQ8Wh
+🔧 Calling: list_databases [toolu_01...]
 🧠 thinking✓ list_databases completed
   └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
-🔧 Вызов: list_databases [toolu_01...]
-✓ list_databases завершён
-  └─ Найдено баз данных: 37 - amazon - bluesky - country - covid - default - dns - en...
+🔧 Calling: list_databases [toolu_01...]
+✓ list_databases completed
+  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
 🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_016DxK8SMVKGrUPfFwi43AzE
-🔧 Вызов: list_tables_in_database [toolu_01...]
+🔧 Calling: list_tables_in_database [toolu_01...]
   └─ Args: {"database":"uk"}
-🧠 thinking.✓ list_tables_in_database завершён
-  └─ Найдено таблиц в базе данных 'uk': 9 - uk_codes - uk_postcode_to_iso - uk_price_p...
-🔧 Вызов: list_tables_in_database [toolu_01...]
+🧠 thinking.✓ list_tables_in_database completed
+  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
+🔧 Calling: list_tables_in_database [toolu_01...]
   └─ Args: {"database":"uk"}
-✓ list_tables_in_database завершён
-  └─ Найдено таблиц в базе данных 'uk': 9 - uk_codes - uk_postcode_to_iso - uk_price_p...
-🧠 thinking.[INFO] Генерация текста успешно выполнена - модель: claude-3-5-sonnet-latest, response_id: msg_015giF12wm619beNGC5aTrmw
-🔧 Вызов: get_schema_for_table [toolu_01...]
+✓ list_tables_in_database completed
+  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
+🧠 thinking.[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_015giF12wm619beNGC5aTrmw
+🔧 Calling: get_schema_for_table [toolu_01...]
   └─ Args: {"database":"uk","table":"uk_price_paid"}
-✓ get_schema_for_table завершён
-  └─ Схема для uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🔧 Вызов: get_schema_for_table [toolu_01...]
+✓ get_schema_for_table completed
+  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🔧 Calling: get_schema_for_table [toolu_01...]
   └─ Args: {"database":"uk","table":"uk_price_paid"}
-🧠 thinking..✓ get_schema_for_table завершён
-  └─ Схема для uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🧠 thinking..✓ get_schema_for_table completed
+  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
 🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01HxT1HKbaTT3165Wx5bDtY9
 ─────────────────────────────────────────────────
-• ✨ SQL-запрос успешно сгенерирован!
+• ✨ SQL query generated successfully!
 :) SELECT     town,     district,     county,     round(avg(price), 2) as avg_price,     count() as total_sales FROM uk.uk_price_paid WHERE date >= '2021-01-01' AND date <= '2021-12-31' GROUP BY     town,     district,     county HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10
 ```
 
@@ -112,18 +112,18 @@ clickhouse client -mn \
 Если мы запустим этот запрос, то увидим следующий результат:
 
 ```text
-┌─город──────────┬─район──────────────────┬─графство────────┬──средняя_цена─┬─всего_продаж─┐
-│ ИЛКЛИ          │ ХАРРОГЕЙТ              │ СЕВЕРНЫЙ ЙОРКШИР│    4310200 │          10 │
-│ ЛОНДОН         │ СИТИ ОФ ЛОНДОН         │ БОЛЬШОЙ ЛОНДОН  │ 4008117.32 │         311 │
-│ ЛОНДОН         │ СИТИ ОФ ВЕСТМИНСТЕР    │ БОЛЬШОЙ ЛОНДОН  │ 2847409.81 │        3984 │
-│ ЛОНДОН         │ КЕНСИНГТОН И ЧЕЛСИ     │ БОЛЬШОЙ ЛОНДОН  │  2331433.1 │        2594 │
-│ ИСТ МОЛСИ      │ РИЧМОНД-НА-ТЕМЗЕ       │ БОЛЬШОЙ ЛОНДОН  │ 2244845.83 │          12 │
-│ ЛЕТЕРХЕД       │ ЭЛМБРИДЖ               │ СУРРЕЙ          │ 2051836.42 │         102 │
-│ ВИРДЖИНИЯ УОТЕР│ РАННИМИД               │ СУРРЕЙ          │ 1914137.53 │         169 │
-│ РЕЙГЕЙТ        │ МОУЛ ВЭЛЛИ             │ СУРРЕЙ          │ 1715780.89 │          18 │
-│ БРОДВЕЙ        │ ТЬЮКСБЕРИ              │ ГЛОСТЕРШИР      │ 1633421.05 │          19 │
-│ ОКСФОРД        │ ЮЖНЫЙ ОКСФОРДШИР       │ ОКСФОРДШИР      │ 1628319.07 │         405 │
-└────────────────┴────────────────────────┴─────────────────┴───────────────┴──────────────┘
+┌─town───────────┬─district───────────────┬─county──────────┬──avg_price─┬─total_sales─┐
+│ ILKLEY         │ HARROGATE              │ NORTH YORKSHIRE │    4310200 │          10 │
+│ LONDON         │ CITY OF LONDON         │ GREATER LONDON  │ 4008117.32 │         311 │
+│ LONDON         │ CITY OF WESTMINSTER    │ GREATER LONDON  │ 2847409.81 │        3984 │
+│ LONDON         │ KENSINGTON AND CHELSEA │ GREATER LONDON  │  2331433.1 │        2594 │
+│ EAST MOLESEY   │ RICHMOND UPON THAMES   │ GREATER LONDON  │ 2244845.83 │          12 │
+│ LEATHERHEAD    │ ELMBRIDGE              │ SURREY          │ 2051836.42 │         102 │
+│ VIRGINIA WATER │ RUNNYMEDE              │ SURREY          │ 1914137.53 │         169 │
+│ REIGATE        │ MOLE VALLEY            │ SURREY          │ 1715780.89 │          18 │
+│ BROADWAY       │ TEWKESBURY             │ GLOUCESTERSHIRE │ 1633421.05 │          19 │
+│ OXFORD         │ SOUTH OXFORDSHIRE      │ OXFORDSHIRE     │ 1628319.07 │         405 │
+└────────────────┴────────────────────────┴─────────────────┴────────────┴─────────────┘
 ```
 
 Если мы хотим задать уточняющий вопрос, нам нужно заново сформулировать его целиком.
@@ -134,42 +134,42 @@ clickhouse client -mn \
 Например, после просмотра предыдущих результатов мы можем захотеть сосредоточиться только на объектах недвижимости в Большом Лондоне. Вместо того чтобы спрашивать: &quot;А как насчёт Большого Лондона?&quot;, нам нужно включить полный контекст:
 
 ```sql
-?? Можете ли вы указать самый дорогой район для покупки жилья в Большом Лондоне по годам?;
+?? Can you tell me the most expensive place to buy a house in Greater London across the years?;
 ```
 
 Обратите внимание, что ИИ проходит тот же процесс исследования, хотя он только что проанализировал эти данные:
 
 ```text
-• Запуск генерации SQL с помощью ИИ с обнаружением схемы...
+• Starting AI SQL generation with schema discovery...
 ─────────────────────────────────────────────────
-🧠 обработка[INFO] Генерация текста выполнена успешно - модель: claude-3-5-sonnet-latest, response_id: msg_012m4ayaSHTYtX98gxrDy1rz
-🔧 Вызов: list_databases [toolu_01...]
-✓ list_databases выполнен
-  └─ Найдено баз данных: 37 - amazon - bluesky - country - covid - default - dns - en...
-🔧 Вызов: list_databases [toolu_01...]
-🧠 обработка.✓ list_databases выполнен
-  └─ Найдено баз данных: 37 - amazon - bluesky - country - covid - default - dns - en...
-🧠 обработка.[INFO] Генерация текста выполнена успешно - модель: claude-3-5-sonnet-latest, response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
-🔧 Вызов: list_tables_in_database [toolu_01...]
+🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_012m4ayaSHTYtX98gxrDy1rz
+🔧 Calling: list_databases [toolu_01...]
+✓ list_databases completed
+  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
+🔧 Calling: list_databases [toolu_01...]
+🧠 thinking.✓ list_databases completed
+  └─ Found 37 databases: - amazon - bluesky - country - covid - default - dns - en...
+🧠 thinking.[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01KU4SZRrJckutXUzfJ4NQtA
+🔧 Calling: list_tables_in_database [toolu_01...]
   └─ Args: {"database":"uk"}
-🧠 обработка..✓ list_tables_in_database выполнен
-  └─ Найдено таблиц в базе данных 'uk': 9 - uk_codes - uk_postcode_to_iso - uk_price_p...
-🔧 Вызов: list_tables_in_database [toolu_01...]
+🧠 thinking..✓ list_tables_in_database completed
+  └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
+🔧 Calling: list_tables_in_database [toolu_01...]
   └─ Args: {"database":"uk"}
 ✓ list_tables_in_database completed
   └─ Found 9 tables in database 'uk': - uk_codes - uk_postcode_to_iso - uk_price_p...
-🧠 обработка[INFO] Генерация текста выполнена успешно - модель: claude-3-5-sonnet-latest, response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
-🔧 Вызов: get_schema_for_table [toolu_01...]
+🧠 thinking[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01X9CnxoBpbD2xj2UzuRy2is
+🔧 Calling: get_schema_for_table [toolu_01...]
   └─ Args: {"database":"uk","table":"uk_price_paid"}
-🧠 обработка.✓ get_schema_for_table выполнен
-  └─ Схема для uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🔧 Вызов: get_schema_for_table [toolu_01...]
+🧠 thinking.✓ get_schema_for_table completed
+  └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
+🔧 Calling: get_schema_for_table [toolu_01...]
   └─ Args: {"database":"uk","table":"uk_price_paid"}
 ✓ get_schema_for_table completed
   └─ Schema for uk.uk_price_paid: CREATE TABLE uk.uk_price_paid (     `price` UInt...
-🧠 обработка...[INFO] Генерация текста выполнена успешно - модель: claude-3-5-sonnet-latest, response_id: msg_01QTMypS1XuhjgVpDir7N9wD
+🧠 thinking...[INFO] Text generation successful - model: claude-3-5-sonnet-latest, response_id: msg_01QTMypS1XuhjgVpDir7N9wD
 ─────────────────────────────────────────────────
-• ✨ SQL-запрос успешно сгенерирован!
+• ✨ SQL query generated successfully!
 :) SELECT     district,     toYear(date) AS year,     round(avg(price), 2) AS avg_price,     count() AS total_sales FROM uk.uk_price_paid WHERE county = 'GREATER LONDON' GROUP BY district, year HAVING total_sales >= 10 ORDER BY avg_price DESC LIMIT 10;
 ```
 
@@ -177,18 +177,18 @@ clickhouse client -mn \
 Результат выполнения запроса показан ниже:
 
 ```text
-┌─район───────────────┬─год──┬───средняя_цена─┬─всего_продаж─┐
-│ CITY OF LONDON      │ 2019 │ 14504772.73    │          299 │
-│ CITY OF LONDON      │ 2017 │  6351366.11    │          367 │
-│ CITY OF LONDON      │ 2016 │  5596348.25    │          243 │
-│ CITY OF LONDON      │ 2023 │  5576333.72    │          252 │
-│ CITY OF LONDON      │ 2018 │  4905094.54    │          523 │
-│ CITY OF LONDON      │ 2021 │  4008117.32    │          311 │
-│ CITY OF LONDON      │ 2025 │  3954212.39    │           56 │
-│ CITY OF LONDON      │ 2014 │  3914057.39    │          416 │
-│ CITY OF LONDON      │ 2022 │  3700867.19    │          290 │
-│ CITY OF WESTMINSTER │ 2018 │  3562457.76    │         3346 │
-└─────────────────────┴──────┴────────────────┴──────────────┘
+┌─district────────────┬─year─┬───avg_price─┬─total_sales─┐
+│ CITY OF LONDON      │ 2019 │ 14504772.73 │         299 │
+│ CITY OF LONDON      │ 2017 │  6351366.11 │         367 │
+│ CITY OF LONDON      │ 2016 │  5596348.25 │         243 │
+│ CITY OF LONDON      │ 2023 │  5576333.72 │         252 │
+│ CITY OF LONDON      │ 2018 │  4905094.54 │         523 │
+│ CITY OF LONDON      │ 2021 │  4008117.32 │         311 │
+│ CITY OF LONDON      │ 2025 │  3954212.39 │          56 │
+│ CITY OF LONDON      │ 2014 │  3914057.39 │         416 │
+│ CITY OF LONDON      │ 2022 │  3700867.19 │         290 │
+│ CITY OF WESTMINSTER │ 2018 │  3562457.76 │        3346 │
+└─────────────────────┴──────┴─────────────┴─────────────┘
 ```
 
 Лондонский Сити неизменно оказывается самым дорогим районом! Вы заметите, что ИИ сформировал разумный запрос, хотя результаты упорядочены по средней цене, а не хронологически. Для анализа динамики год к году мы могли бы уточнить ваш вопрос и попросить конкретно «самый дорогой район в каждом году», чтобы получить результаты, сгруппированные по-другому.

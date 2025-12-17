@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-benchmark {#clickhouse-benchmark}
 
 连接到 ClickHouse 服务器并反复执行指定查询。
@@ -22,13 +20,13 @@ $ clickhouse-benchmark --query ["single query"] [keys]
 或
 
 ```bash
-$ echo "单条查询" | clickhouse-benchmark [keys]
+$ echo "single query" | clickhouse-benchmark [keys]
 ```
 
 或
 
 ```bash
-$ clickhouse-benchmark [keys] <<< "单条查询语句"
+$ clickhouse-benchmark [keys] <<< "single query"
 ```
 
 如果你想发送一组查询，请创建一个文本文件，并在该文件中将每条查询语句放在单独的一行。例如：
@@ -43,7 +41,6 @@ SELECT 1;
 ```bash
 clickhouse-benchmark [keys] < queries_file;
 ```
-
 
 ## 命令行选项 {#clickhouse-benchmark-command-line-options}
 
@@ -78,14 +75,10 @@ clickhouse-benchmark [keys] < queries_file;
 
 如果希望为查询应用一些[设置](/operations/settings/overview)，可以以 `--<session setting name>= SETTING_VALUE` 的形式传递它们。例如：`--max_memory_usage=1048576`。
 
-
-
 ## 环境变量选项 {#clickhouse-benchmark-environment-variable-options}
 
 可以通过环境变量 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD` 和 `CLICKHOUSE_HOST` 设置用户名、密码和主机。  
 命令行参数 `--user`、`--password` 或 `--host` 优先于环境变量。
-
-
 
 ## 输出 {#clickhouse-benchmark-output}
 
@@ -94,24 +87,24 @@ clickhouse-benchmark [keys] < queries_file;
 报告示例：
 
 ```text
-已执行查询数：10。
+Queries executed: 10.
 
-localhost:9000, 查询数 10，QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, result RPS: 67721584.984, result MiB/s: 516.675.
+localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, result RPS: 67721584.984, result MiB/s: 516.675.
 
-0.000%      0.145 秒
-10.000%     0.146 秒
-20.000%     0.146 秒
-30.000%     0.146 秒
-40.000%     0.147 秒
-50.000%     0.148 秒
-60.000%     0.148 秒
-70.000%     0.148 秒
-80.000%     0.149 秒
-90.000%     0.150 秒
-95.000%     0.150 秒
-99.000%     0.150 秒
-99.900%     0.150 秒
-99.990%     0.150 秒
+0.000%      0.145 sec.
+10.000%     0.146 sec.
+20.000%     0.146 sec.
+30.000%     0.146 sec.
+40.000%     0.147 sec.
+50.000%     0.148 sec.
+60.000%     0.148 sec.
+70.000%     0.148 sec.
+80.000%     0.149 sec.
+90.000%     0.150 sec.
+95.000%     0.150 sec.
+99.000%     0.150 sec.
+99.900%     0.150 sec.
+99.990%     0.150 sec.
 ```
 
 在报告中可以看到：
@@ -130,14 +123,11 @@ localhost:9000, 查询数 10，QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, re
 
 * 查询执行时间的分位数（百分位）。
 
-
 ## 比较模式 {#clickhouse-benchmark-comparison-mode}
 
 `clickhouse-benchmark` 可以比较两个正在运行的 ClickHouse 服务器的性能。
 
 要使用比较模式，请通过两组 `--host` 和 `--port` 参数来指定两个服务器的端点。参数按照它们在参数列表中的顺序进行一一匹配，第一个 `--host` 与第一个 `--port` 匹配，依此类推。`clickhouse-benchmark` 会同时与这两个服务器建立连接，然后发送查询。每条查询都会被发送到随机选取的其中一个服务器。结果会以表格形式显示。
-
-
 
 ## 示例 {#clickhouse-benchmark-example}
 
@@ -146,27 +136,27 @@ $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhous
 ```
 
 ```text
-已加载 1 个查询。
+Loaded 1 queries.
 
-已执行的查询数：5 个。
+Queries executed: 5.
 
-localhost:9001，2 个查询，QPS：3.764，RPS：75446929.370，MiB/s：575.614，结果 RPS：37639659.982，结果 MiB/s：287.168。
-localhost:9000，3 个查询，QPS：3.815，RPS：76466659.385，MiB/s：583.394，结果 RPS：38148392.297，结果 MiB/s：291.049。
+localhost:9001, queries 2, QPS: 3.764, RPS: 75446929.370, MiB/s: 575.614, result RPS: 37639659.982, result MiB/s: 287.168.
+localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result RPS: 38148392.297, result MiB/s: 291.049.
 
-0.000%          0.258 秒       0.250 秒
-10.000%         0.258 秒       0.250 秒
-20.000%         0.258 秒       0.250 秒
-30.000%         0.258 秒       0.267 秒
-40.000%         0.258 秒       0.267 秒
-50.000%         0.273 秒       0.267 秒
-60.000%         0.273 秒       0.267 秒
-70.000%         0.273 秒       0.267 秒
-80.000%         0.273 秒       0.269 秒
-90.000%         0.273 秒       0.269 秒
-95.000%         0.273 秒       0.269 秒
-99.000%         0.273 秒       0.269 秒
-99.900%         0.273 秒       0.269 秒
-99.990%         0.273 秒       0.269 秒
+0.000%          0.258 sec.      0.250 sec.
+10.000%         0.258 sec.      0.250 sec.
+20.000%         0.258 sec.      0.250 sec.
+30.000%         0.258 sec.      0.267 sec.
+40.000%         0.258 sec.      0.267 sec.
+50.000%         0.273 sec.      0.267 sec.
+60.000%         0.273 sec.      0.267 sec.
+70.000%         0.273 sec.      0.267 sec.
+80.000%         0.273 sec.      0.269 sec.
+90.000%         0.273 sec.      0.269 sec.
+95.000%         0.273 sec.      0.269 sec.
+99.000%         0.273 sec.      0.269 sec.
+99.900%         0.273 sec.      0.269 sec.
+99.990%         0.273 sec.      0.269 sec.
 
-在 99.5% 的置信度下，未能证明存在差异
+No difference proven at 99.5% confidence
 ```

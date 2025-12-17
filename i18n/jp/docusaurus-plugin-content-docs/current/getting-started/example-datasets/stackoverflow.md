@@ -21,7 +21,6 @@ import stackoverflow from '@site/static/images/getting-started/example-datasets/
 
 このデータのスキーマの説明は[こちら](https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede)で確認できます。
 
-
 ## あらかじめ用意されたデータ {#pre-prepared-data}
 
 このデータのコピーを Parquet 形式で提供しており、内容は 2024 年 4 月時点のものです。行数（6,000 万件の投稿）の点では ClickHouse にとっては小規模ですが、このデータセットには大量のテキストと大きな String 型カラムが含まれています。
@@ -31,7 +30,6 @@ CREATE DATABASE stackoverflow
 ```
 
 以下の計測結果は、`eu-west-2` に配置された 96 GiB・24 vCPU 構成の ClickHouse Cloud クラスターに対するものです。データセットは `eu-west-3` にあります。
-
 
 ### 投稿 {#posts}
 
@@ -72,7 +70,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation
 
 投稿データは年別のファイルとしても利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
 
-
 ### 投票 {#votes}
 
 ```sql
@@ -94,7 +91,6 @@ INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation
 ```
 
 投票データも年ごとに利用できます。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
-
 
 ### コメント {#comments}
 
@@ -118,7 +114,6 @@ INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentat
 ```
 
 コメントについても年ごとのデータが利用可能です。例: [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
-
 
 ### ユーザー {#users}
 
@@ -146,7 +141,6 @@ INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation
 0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
-
 ### バッジ {#badges}
 
 ```sql
@@ -167,7 +161,6 @@ INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentatio
 0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
-
 ### PostLinks {#postlinks}
 
 ```sql
@@ -186,7 +179,6 @@ INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documenta
 
 0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
-
 
 ### PostHistory {#posthistory}
 
@@ -212,7 +204,6 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documen
 0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
-
 ## 元のデータセット {#original-dataset}
 
 元のデータセットは、7zip 形式で圧縮された XML ファイルとして [https://archive.org/download/stackexchange](https://archive.org/download/stackexchange) から入手できます。`stackoverflow.com*` というプレフィックスを持つファイルが対象です。
@@ -230,7 +221,6 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 ```
 
 これらのファイルは最大 35GB あり、インターネット接続状況によってはダウンロードに約 30 分かかる場合があります。ダウンロードサーバー側で帯域が制限されており、おおよそ 20MB/秒が上限となります。
-
 
 ### JSON への変換 {#convert-to-json}
 
@@ -260,7 +250,7 @@ p7zip -d stackoverflow.com-Posts.7z
 ```bash
 mkdir posts
 cd posts
-# 以下は入力XMLファイルを10000行ごとのサブファイルに分割します {#the-following-splits-the-input-xml-file-into-sub-files-of-10000-rows}
+# the following splits the input xml file into sub files of 10000 rows
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
@@ -277,7 +267,6 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"
 ```
-
 
 ## クエリ例 {#example-queries}
 
@@ -312,7 +301,6 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-
 ### 最も多く回答しているユーザー（アクティブなアカウント） {#user-with-the-most-answers-active-accounts}
 
 アカウントには `UserId` が必要です。
@@ -335,10 +323,9 @@ LIMIT 5
 │  10661 │ S.Lott           │ 1087 │
 └────────┴──────────────────┴──────┘
 
-5行を取得しました。経過時間: 0.154秒。処理済み: 3,583万行、193.39 MB (毎秒2億3,233万行、1.25 GB/秒)
-ピークメモリ使用量: 206.45 MiB。
+5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
+Peak memory usage: 206.45 MiB.
 ```
-
 
 ### 閲覧数が多い ClickHouse 関連記事 {#clickhouse-related-posts-with-the-most-views}
 
@@ -354,22 +341,21 @@ ORDER BY ViewCount DESC
 LIMIT 10
 
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
-│ 52355143 │ ClickHouseテーブルから古いレコードを削除することは可能ですか?                      │     41462 │           3 │
-│ 37954203 │ ClickHouseデータインポート                                                           │     38735 │           3 │
-│ 37901642 │ ClickHouseでのデータ更新                                                      │     36236 │           6 │
-│ 58422110 │ Pandas: データフレームをClickHouseに挿入する方法                                  │     29731 │           4 │
-│ 63621318 │ DBeaver - ClickHouse - SQLエラー [159] .. 読み取りタイムアウト                         │     27350 │           1 │
-│ 47591813 │ 配列カラムの内容でClickHouseテーブルをフィルタリングする方法は?                         │     27078 │           2 │
-│ 58728436 │ ClickHouseデータベースで大文字小文字を区別せずにクエリ内の文字列を検索する方法は?  │     26567 │           3 │
-│ 65316905 │ ClickHouse: DB::Exception: メモリ制限(クエリ用)を超過しました                     │     24899 │           2 │
-│ 49944865 │ ClickHouseでカラムを追加する方法                                                │     24424 │           1 │
-│ 59712399 │ ClickHouseで拡張解析を使用して日付文字列をDateTime形式にキャストする方法は? │     22620 │           1 │
+│ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
+│ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
+│ 37901642 │ Updating data in Clickhouse                                                      │     36236 │           6 │
+│ 58422110 │ Pandas: How to insert dataframe into Clickhouse                                  │     29731 │           4 │
+│ 63621318 │ DBeaver - Clickhouse - SQL Error [159] .. Read timed out                         │     27350 │           1 │
+│ 47591813 │ How to filter clickhouse table by array column contents?                         │     27078 │           2 │
+│ 58728436 │ How to search the string in query with case insensitive on Clickhouse database?  │     26567 │           3 │
+│ 65316905 │ Clickhouse: DB::Exception: Memory limit (for query) exceeded                     │     24899 │           2 │
+│ 49944865 │ How to add a column in clickhouse                                                │     24424 │           1 │
+│ 59712399 │ How to cast date Strings to DateTime format with extended parsing in ClickHouse? │     22620 │           1 │
 └──────────┴──────────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┘
 
-10行を取得しました。経過時間: 0.472秒。処理済み: 5982万行、1.91 GB (1億2663万行/秒、4.03 GB/秒)
-ピークメモリ使用量: 240.01 MiB。
+10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
+Peak memory usage: 240.01 MiB.
 ```
-
 
 ### 最も物議を醸した投稿 {#most-controversial-posts}
 
@@ -396,15 +382,14 @@ ORDER BY Controversial_ratio ASC
 LIMIT 3
 
 ┌───────Id─┬─Title─────────────────────────────────────────────┬─UpVotes─┬─DownVotes─┬─Controversial_ratio─┐
-│   583177 │ VB.NET 無限Forループ                               │      12 │        12 │                   0 │
-│  9756797 │ コンソール入力を列挙可能として読み取る - 1つのステートメント? │      16 │        16 │                   0 │
-│ 13329132 │ RubyにおけるARGVの意義とは?                        │      22 │        22 │                   0 │
+│   583177 │ VB.NET Infinite For Loop                          │      12 │        12 │                   0 │
+│  9756797 │ Read console input as enumerable - one statement? │      16 │        16 │                   0 │
+│ 13329132 │ What's the point of ARGV in Ruby?                 │      22 │        22 │                   0 │
 └──────────┴───────────────────────────────────────────────────┴─────────┴───────────┴─────────────────────┘
 
-3行を取得。経過時間: 4.779秒。処理: 2億9880万行、3.16 GB (6252万行/秒、661.05 MB/秒)
-ピークメモリ使用量: 6.05 GiB。
+3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
+Peak memory usage: 6.05 GiB.
 ```
-
 
 ## 謝辞 {#attribution}
 

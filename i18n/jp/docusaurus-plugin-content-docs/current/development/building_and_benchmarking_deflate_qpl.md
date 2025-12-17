@@ -7,8 +7,6 @@ title: 'DEFLATE_QPL を使用して ClickHouse をビルドする'
 doc_type: 'guide'
 ---
 
-
-
 # DEFLATE_QPL を使用して ClickHouse をビルドする {#build-clickhouse-with-deflate_qpl}
 
 - ホストマシンが QPL の要求する[前提条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)を満たしていることを確認してください
@@ -16,11 +14,7 @@ doc_type: 'guide'
 
 - 一般的な要件については、ClickHouse の一般的な[ビルド手順](/development/build.md)を参照してください
 
-
-
 # DEFLATE_QPL を使ってベンチマークを実行する {#run-benchmark-with-deflate_qpl}
-
-
 
 ## ファイル一覧 {#files-list}
 
@@ -33,8 +27,6 @@ doc_type: 'guide'
 
 `database_files` には、lz4/deflate/zstd コーデックごとにデータベースファイルが保存されます。
 
-
-
 ## スター・スキーマ向けベンチマークを自動実行する: {#run-benchmark-automatically-for-star-schema}
 
 ```bash
@@ -46,12 +38,9 @@ $ sh run_ssb.sh
 
 失敗した場合は、以下のセクションに従ってベンチマークを手動で実行してください。
 
-
 ## 定義 {#definition}
 
 [CLICKHOUSE_EXE] は ClickHouse の実行可能ファイルへのパスを表します。
-
-
 
 ## 環境 {#environment}
 
@@ -74,12 +63,11 @@ $ accel-config list | grep -P 'iax|state'
 
 ```bash
     "dev":"iax1",
-    "state":"有効",
-            "state":"有効",
+    "state":"enabled",
+            "state":"enabled",
 ```
 
 何も出力されない場合は、IAA の準備がまだ整っていないことを意味します。IAA のセットアップを再度確認してください。
-
 
 ## 未加工データを生成する {#generate-raw-data}
 
@@ -92,7 +80,6 @@ $ mkdir rawdata_dir && cd rawdata_dir
 -s 20
 
 `*.tbl` のようなファイルは、`./benchmark_sample/rawdata_dir/ssb-dbgen` 配下に出力されます:
-
 
 ## データベースのセットアップ {#database-setup}
 
@@ -152,17 +139,16 @@ SELECT count() FROM lineorder_flat
 クライアントから初めて挿入やクエリを実行した際に、ClickHouse サーバーのコンソールには次のログが出力されるはずです:
 
 ```text
-ハードウェアアクセラレーション対応DeflateQplコーデックが利用可能になりました！
+Hardware-assisted DeflateQpl codec is ready!
 ```
 
 もしこれが一度も出力されず、代わりに次のような別のログが表示される場合:
 
 ```text
-ハードウェアアクセラレーション対応DeflateQplコーデックの初期化に失敗しました
+Initialization of hardware-assisted DeflateQpl codec failed
 ```
 
 これは IAA デバイスが使用可能な状態になっていないことを意味します。IAA のセットアップをもう一度確認する必要があります。
-
 
 ## 単一インスタンスでのベンチマーク {#benchmark-with-single-instance}
 
@@ -216,7 +202,6 @@ zstd.log
 パフォーマンスメトリクスの確認方法：
 
 QPS を中心に確認します。キーワード `QPS_Final` を検索し、統計情報を収集してください
-
 
 ## マルチインスタンスでのベンチマーク {#benchmark-with-multi-instances}
 
@@ -311,7 +296,6 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2  > lz4_2i
 
 ZSTD:
 
-
 ```bash
 $ cd ./database_dir/zstd
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
@@ -348,7 +332,6 @@ zstd_2insts.log
 
 4 インスタンス構成でのベンチマーク環境は、上記の 2 インスタンス構成の場合と同様です。
 レビュー用の最終レポートには、2 インスタンス構成のベンチマークデータを採用することを推奨します。
-
 
 ## ヒント {#tips}
 

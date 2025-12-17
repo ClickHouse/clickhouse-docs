@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MaterializedPostgreSQL {#materializedpostgresql}
 
 <ExperimentalBadge />
@@ -34,7 +33,6 @@ SET allow_experimental_database_materialized_postgresql=1
 
 :::
 
-
 ## データベースの作成 {#creating-a-database}
 
 ```sql
@@ -48,7 +46,6 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `database` — PostgreSQL データベース名。
 * `user` — PostgreSQL ユーザー名。
 * `password` — ユーザーのパスワード。
-
 
 ## 使用例 {#example-of-use}
 
@@ -65,7 +62,6 @@ SHOW TABLES FROM postgres_db;
 SELECT * FROM postgresql_db.postgres_table;
 ```
 
-
 ## レプリケーションへの新しいテーブルの動的追加 {#dynamically-adding-table-to-replication}
 
 `MaterializedPostgreSQL` データベースが作成された後は、対応する PostgreSQL データベース内の新しいテーブルは自動的には検出されません。こうしたテーブルは手動で追加できます。
@@ -78,7 +74,6 @@ ATTACH TABLE postgres_database.new_table;
 バージョン 22.1 より前では、レプリケーションにテーブルを追加すると、削除されない一時レプリケーションスロット（名前は `{db_name}_ch_replication_slot_tmp`）が残っていました。ClickHouse のバージョン 22.1 より前でテーブルをアタッチする場合は、それを手動で削除してください（`SELECT pg_drop_replication_slot('{db_name}_ch_replication_slot_tmp')`）。そうしないとディスク使用量が増加します。この問題は 22.1 で修正されています。
 :::
 
-
 ## レプリケーションからテーブルを動的に除外する {#dynamically-removing-table-from-replication}
 
 特定のテーブルをレプリケーション対象から除外することができます。
@@ -86,7 +81,6 @@ ATTACH TABLE postgres_database.new_table;
 ```sql
 DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
-
 
 ## PostgreSQL スキーマ {#schema}
 
@@ -135,7 +129,6 @@ SELECT * FROM database1.`schema2.table2`;
 
 警告: このケースでは、テーブル名にピリオド（.）を含めることはできません。
 
-
 ## 要件 {#requirements}
 
 1. PostgreSQL の設定ファイルにおいて、[wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 設定は `logical` にし、`max_replication_slots` パラメータは少なくとも `2` に設定する必要があります。
@@ -170,7 +163,6 @@ WHERE oid = 'postgres_table'::regclass;
 :::note
 [**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) 値のレプリケーションはサポートされていません。データ型に対して定義されたデフォルト値が使用されます。
 :::
-
 
 ## 設定 {#settings}
 
@@ -223,14 +215,13 @@ SELECT * FROM database1.table1;
 必要に応じて、設定は DDL クエリを使用して変更できます。ただし、`materialized_postgresql_tables_list` 設定そのものを変更することはできません。この設定のテーブルリストを更新するには、`ATTACH TABLE` クエリを使用してください。
 
 ```sql
-ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <新しいサイズ>;
+ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
 ```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 
 レプリケーション用に一意のレプリケーションコンシューマ識別子を使用します。デフォルト: `0`。
 `1` に設定すると、同じ `PostgreSQL` テーブルを参照する複数の `MaterializedPostgreSQL` テーブルを設定できるようになります。
-
 
 ## 注意事項 {#notes}
 

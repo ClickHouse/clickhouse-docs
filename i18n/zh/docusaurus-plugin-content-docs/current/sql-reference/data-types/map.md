@@ -7,8 +7,6 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-
-
 # Map(K, V) {#mapk-v}
 
 数据类型 `Map(K, V)` 用于存储键值对。
@@ -67,7 +65,6 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
-
 ## 将 Tuple 转换为 Map {#converting-tuple-to-map}
 
 类型为 `Tuple()` 的值可以通过函数 [CAST](/sql-reference/functions/type-conversion-functions#cast) 转换为 `Map()` 类型的值：
@@ -88,7 +85,6 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 └───────────────────────────────┘
 ```
 
-
 ## 读取 Map 的子列 {#reading-subcolumns-of-map}
 
 在某些情况下，为了避免读取整个 Map，你可以使用 `keys` 和 `values` 这两个子列。
@@ -101,8 +97,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   等同于 mapKeys(m)
-SELECT m.values FROM tab; -- 等同于 mapValues(m)
+SELECT m.keys FROM tab; --   same as mapKeys(m)
+SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
 结果：
@@ -122,7 +118,6 @@ SELECT m.values FROM tab; -- 等同于 mapValues(m)
 * [map()](/sql-reference/functions/tuple-map-functions#map) 函数
 * [CAST()](/sql-reference/functions/type-conversion-functions#cast) 函数
 * [用于 Map 数据类型的 -Map 组合器](../aggregate-functions/combinators.md#-map)
-
 
 ## 相关内容 {#related-content}
 

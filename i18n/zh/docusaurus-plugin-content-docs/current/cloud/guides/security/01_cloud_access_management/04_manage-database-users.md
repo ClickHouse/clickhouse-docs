@@ -16,7 +16,6 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 SQL 控制台用户会为每个会话单独创建，并使用会自动轮换的 X.509 证书进行身份验证。会话终止时，该用户会被删除。在为审计生成访问列表时，请在控制台中进入相应服务的 Settings 选项卡，在记录数据库中现有数据库用户的同时，也一并记录 SQL 控制台访问情况。如果配置了自定义角色，用户的访问权限会列在以该用户用户名结尾的角色中。
 
-
 ## SQL 控制台用户和角色 {#sql-console-users-and-roles}
 
 具有 Service Read Only 和 Service Admin 权限的用户可以被分配基本的 SQL 控制台角色。有关更多信息，请参阅 [管理 SQL 控制台角色分配](/cloud/guides/sql-console/manage-sql-console-role-assignments)。本指南演示如何为 SQL 控制台用户创建自定义角色。
@@ -52,8 +51,6 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 </VerticalStepper>
 
-
-
 ## 数据库身份验证 {#database-authentication}
 
 ### 数据库用户 ID 和密码 {#database-user-id--password}
@@ -78,7 +75,6 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 4. 使用私钥对服务进行身份验证。
 
 如需包含示例的详细操作说明，请参阅我们知识库中的[如何使用 SSH 密钥连接到 ClickHouse Cloud](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)。
-
 
 ## 数据库权限 {#database-permissions}
 
@@ -108,9 +104,9 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 我们建议创建一个与具体个人关联的新用户账户，并为该用户授予 `default_role`。这样可以确保用户执行的操作能够映射到其各自的用户 ID，同时将 `default` 账户保留用于紧急兜底（break-glass）类操作场景。
 
 ```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
-```
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
+  ```
 
 用户可以使用 SHA256 哈希生成器，或使用 Python 中的 `hashlib` 等代码函数，将一个长度不少于 12 个字符且复杂度足够的密码转换为 SHA256 字符串，并将该字符串作为密码提供给系统管理员。这样可以确保管理员不会看到或接触明文密码。
 
@@ -124,26 +120,26 @@ GRANT default_role to userID;
   运行以下查询以获取数据库中所有授权的列表。
 
   ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  UNION ALL
+UNION ALL
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
   #### 将授权列表关联到拥有 SQL 控制台访问权限的 Console 用户
 
@@ -159,7 +155,6 @@ GRANT default_role to userID;
 
   e. 点击显示具有该服务数据库访问权限用户数量的链接 `There are # users with access to this service.`，以查看用户列表。
 </VerticalStepper>
-
 
 ## Warehouse users {#warehouse-users}
 

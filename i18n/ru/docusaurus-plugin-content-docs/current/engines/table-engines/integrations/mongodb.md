@@ -7,16 +7,12 @@ title: 'Движок таблицы MongoDB'
 doc_type: 'reference'
 ---
 
-
-
 # Табличный движок MongoDB {#mongodb-table-engine}
 
 Табличный движок MongoDB — это движок только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
 
 Поддерживаются только серверы MongoDB версии 3.6 и выше.
 [Seed list (`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) пока не поддерживается.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -59,7 +55,6 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `uri`         | URI подключения к серверу MongoDB.                                                                                                 |
 | `collection`  | Имя коллекции на удалённом сервере.                                                                                                |
 | `oid_columns` | Список имён столбцов, разделённых запятыми, которые в предложении WHERE должны интерпретироваться как `oid`. По умолчанию — `_id`. |
-
 
 ## Сопоставление типов {#types-mappings}
 
@@ -107,8 +102,8 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid');
 
-SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --вернёт 1.
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --вернёт 0
+SELECT count() FROM sample_oid WHERE _id = '67bf6cc44ebc466d33d42fb2'; --will output 1.
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; --will output 0
 ```
 
 В этом случае результат будет `0`, потому что ClickHouse не знает, что `another_oid_column` имеет тип данных `oid`, поэтому давайте это исправим:
@@ -120,7 +115,7 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('mongodb://user:pass@host/db', 'sample_oid', '_id,another_oid_column');
 
--- или
+-- or
 
 CREATE TABLE sample_oid
 (
@@ -128,9 +123,8 @@ CREATE TABLE sample_oid
     another_oid_column String
 ) ENGINE = MongoDB('host', 'db', 'sample_oid', 'user', 'pass', '', '_id,another_oid_column');
 
-SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- теперь вернёт 1
+SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
-
 
 ## Поддерживаемые предложения {#supported-clauses}
 
@@ -156,7 +150,6 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 Это относится к `Date`, `Date32`, `DateTime`, `Bool`, `UUID`.
 
 :::
-
 
 ## Пример использования {#usage-example}
 
@@ -192,10 +185,10 @@ SELECT count() FROM sample_mflix_table
 ```
 
 ```sql
--- JSONExtractString не может быть передан в MongoDB
+-- JSONExtractString cannot be pushed down to MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
--- Найти все сиквелы «Назад в будущее» с рейтингом > 7.5
+-- Find all 'Back to the Future' sequels with rating > 7.5
 SELECT title, plot, genres, directors, released FROM sample_mflix_table
 WHERE title IN ('Back to the Future', 'Back to the Future Part II', 'Back to the Future Part III')
     AND toFloat32(JSONExtractString(imdb, 'rating')) > 7.5
@@ -207,7 +200,7 @@ FORMAT Vertical;
 Row 1:
 ──────
 title:     Back to the Future
-plot:      Молодой человек случайно переносится на 30 лет в прошлое на машине времени DeLorean, изобретённой его другом, доктором Эмметом Брауном, и должен сделать так, чтобы его родители-старшеклассники встретились и полюбили друг друга, иначе он сам перестанет существовать.
+plot:      A young man is accidentally sent 30 years into the past in a time-traveling DeLorean invented by his friend, Dr. Emmett Brown, and must make sure his high-school-age parents unite in order to save his own existence.
 genres:    ['Adventure','Comedy','Sci-Fi']
 directors: ['Robert Zemeckis']
 released:  1985-07-03
@@ -215,14 +208,14 @@ released:  1985-07-03
 Row 2:
 ──────
 title:     Back to the Future Part II
-plot:      После визита в 2015 год Марти МакФлай должен снова отправиться в 1955 год, чтобы предотвратить катастрофические изменения в 1985 году... не вмешиваясь при этом в события своего первого путешествия.
+plot:      After visiting 2015, Marty McFly must repeat his visit to 1955 to prevent disastrous changes to 1985... without interfering with his first trip.
 genres:    ['Action','Adventure','Comedy']
 directors: ['Robert Zemeckis']
 released:  1989-11-22
 ```
 
 ```sql
--- Найти топ-3 фильмов по книгам Кормака Маккарти
+-- Find top 3 movies based on Cormac McCarthy's books
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) AS rating
 FROM sample_mflix_table
 WHERE arrayExists(x -> x LIKE 'Cormac McCarthy%', writers)
@@ -231,13 +224,12 @@ LIMIT 3;
 ```
 
 ```text
-   ┌─название───────────────┬─рейтинг┐
-1. │ Старикам тут не место  │    8.1 │
-2. │ Закатный экспресс      │    7.4 │
-3. │ Дорога                 │    7.3 │
+   ┌─title──────────────────┬─rating─┐
+1. │ No Country for Old Men │    8.1 │
+2. │ The Sunset Limited     │    7.4 │
+3. │ The Road               │    7.3 │
    └────────────────────────┴────────┘
 ```
-
 
 ## Диагностика и устранение неполадок {#troubleshooting}
 Сгенерированный запрос MongoDB можно увидеть в журналах с уровнем DEBUG.

@@ -13,7 +13,6 @@ import TabItem from '@theme/TabItem';
 import SystemLogParameters from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations/server-configuration-parameters/_snippets/_system-log-parameters.md';
 import SettingsInfoBlock from '@theme/SettingsInfoBlock/SettingsInfoBlock';
 
-
 # サーバー設定 {#server-settings}
 
 このセクションでは、サーバー設定について説明します。これらは、セッションレベルやクエリレベルでは変更できない設定です。
@@ -55,7 +54,6 @@ Example:
     <role_cache_expiration_time_seconds>600</role_cache_expiration_time_seconds>
 </access_control_improvements>
 ```
-
 
 ## access_control_path {#access_control_path} 
 
@@ -101,7 +99,6 @@ ClickHouse サーバーが、SQL コマンドで作成されたユーザーお�
 <allow_implicit_no_password>1</allow_implicit_no_password>
 ```
 
-
 ## allow&#95;no&#95;password {#allow_no_password}
 
 安全ではないパスワード方式である `no_password` を許可するかどうかを設定します。
@@ -110,7 +107,6 @@ ClickHouse サーバーが、SQL コマンドで作成されたユーザーお�
 <allow_no_password>1</allow_no_password>
 ```
 
-
 ## allow&#95;plaintext&#95;password {#allow_plaintext_password}
 
 平文パスワード型（安全ではない）の使用を許可するかどうかを設定します。
@@ -118,7 +114,6 @@ ClickHouse サーバーが、SQL コマンドで作成されたユーザーお�
 ```xml
 <allow_plaintext_password>1</allow_plaintext_password>
 ```
-
 
 ## allow_use_jemalloc_memory {#allow_use_jemalloc_memory} 
 
@@ -151,7 +146,6 @@ Iceberg での使用が許可されているディスクの一覧
 <async_load_databases>true</async_load_databases>
 ```
 
-
 ## async&#95;load&#95;system&#95;database {#async_load_system_database}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -166,7 +160,6 @@ system テーブルを非同期で読み込みます。`system` データベー�
 ```xml
 <async_load_system_database>true</async_load_system_database>
 ```
-
 
 ## asynchronous_heavy_metrics_update_period_s {#asynchronous_heavy_metrics_update_period_s} 
 
@@ -195,7 +188,6 @@ system テーブルを非同期で読み込みます。`system` データベー�
     </asynchronous_insert_log>
 </clickhouse>
 ```
-
 
 ## asynchronous&#95;metric&#95;log {#asynchronous_metric_log}
 
@@ -231,7 +223,6 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 ```
 
 <SystemLogParameters />
-
 
 ## asynchronous_metrics_enable_heavy_metrics {#asynchronous_metrics_enable_heavy_metrics} 
 
@@ -335,7 +326,6 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
 <background_pool_size>16</background_pool_size>
 ```
 
-
 ## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
 
 <SettingsInfoBlock type="Float" default_value="0.8" />同じ種類のタスクを同時に実行できるスレッド数が、プール内の全スレッド数に対して占める最大比率。
@@ -368,14 +358,13 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
 </clickhouse>
 ```
 
-
 ## backup_threads {#backup_threads} 
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="16" />`BACKUP` リクエストの実行に使用されるスレッドの最大数。
 
 ## backups {#backups}
 
-[`BACKUP` および `RESTORE`](../backup.md) 文を実行する際に使用される、バックアップに関する設定です。
+[`BACKUP` および `RESTORE`](/operations/backup/overview) 文を実行する際に使用される、バックアップに関する設定です。
 
 以下の設定はサブタグで構成できます。
 
@@ -384,18 +373,18 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
   SELECT arrayJoin([
     ('allow_concurrent_backups', 'Bool','同一ホスト上で複数のバックアップ処理を同時に実行できるかどうかを制御します。', 'true'),
     ('allow_concurrent_restores', 'Bool', '同一ホスト上で複数のリストア処理を同時に実行できるかどうかを制御します。', 'true'),
-    ('allowed_disk', 'String', '`File()` を使用する場合のバックアップ先ディスク。この設定を有効にしないと `File` は使用できません。', ''),
-    ('allowed_path', 'String', '`File()` を使用する場合のバックアップ先パス。この設定を有効にしないと `File` は使用できません。', ''),
+    ('allowed_disk', 'String', '`File()` を使用する場合のバックアップ先ディスク。この設定を指定しないと `File` は使用できません。', ''),
+    ('allowed_path', 'String', '`File()` を使用する場合のバックアップ先パス。この設定を指定しないと `File` は使用できません。', ''),
     ('attempts_to_collect_metadata_before_sleep', 'UInt', '収集したメタデータを比較した結果に不整合があった場合、スリープに入る前にメタデータ収集を行う試行回数。', '2'),
     ('collect_metadata_timeout', 'UInt64', 'バックアップ中のメタデータ収集に対するタイムアウト（ミリ秒）。', '600000'),
     ('compare_collected_metadata', 'Bool', 'true の場合、収集したメタデータを既存のメタデータと比較し、バックアップ中に変更されていないことを確認します。', 'true'),
     ('create_table_timeout', 'UInt64', 'リストア中にテーブルを作成する際のタイムアウト（ミリ秒）。', '300000'),
-    ('max_attempts_after_bad_version', 'UInt64', '協調バックアップ／リストア中に不正なバージョンエラーが発生した後で、再試行を行う最大回数。', '3'),
+    ('max_attempts_after_bad_version', 'UInt64', '協調バックアップ／リストア中に不正なバージョンのエラーが発生した後で、再試行を行う最大回数。', '3'),
     ('max_sleep_before_next_attempt_to_collect_metadata', 'UInt64', 'メタデータ収集を次に試行するまでの最大スリープ時間（ミリ秒）。', '100'),
     ('min_sleep_before_next_attempt_to_collect_metadata', 'UInt64', 'メタデータ収集を次に試行するまでの最小スリープ時間（ミリ秒）。', '5000'),
-    ('remove_backup_files_after_failure', 'Bool', '`BACKUP` コマンドが失敗した場合、ClickHouse は失敗前にバックアップへコピー済みのファイルを削除しようとします。false の場合は、コピー済みファイルはそのまま残されます。', 'true'),
-    ('sync_period_ms', 'UInt64', '協調バックアップ／リストアにおける同期間隔（ミリ秒）。', '5000'),
-    ('test_inject_sleep', 'Bool', 'テスト用のスリープ挿入。', 'false'),
+    ('remove_backup_files_after_failure', 'Bool', '`BACKUP` コマンドが失敗した場合、ClickHouse は失敗前にバックアップにコピー済みのファイルを削除しようとします。そうでない場合は、コピー済みファイルはそのまま残されます。', 'true'),
+    ('sync_period_ms', 'UInt64', '協調バックアップ／リストアにおける同期周期（ミリ秒）。', '5000'),
+    ('test_inject_sleep', 'Bool', 'テスト関連のスリープ。', 'false'),
     ('test_randomize_order', 'Bool', 'true の場合、テスト目的で一部の処理の実行順序をランダム化します。', 'false'),
     ('zookeeper_path', 'String', '`ON CLUSTER` 句を使用する場合に、バックアップおよびリストア用メタデータが保存される ZooKeeper 上のパス。', '/clickhouse/backups')
   ]) AS t )
@@ -430,7 +419,6 @@ MergeTree エンジンを使用するテーブルで、バックグラウンド�
 </backups>
 ```
 
-
 ## backups_io_thread_pool_queue_size {#backups_io_thread_pool_queue_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -456,7 +444,6 @@ Backups IO スレッドプールにスケジュールできるジョブの最大
 別の認証方式の利用を検討してください。
 :::
 
-
 ## blob&#95;storage&#95;log {#blob_storage_log}
 
 [`blob_storage_log`](../system-tables/blob_storage_log.md) システムテーブルの設定。
@@ -475,7 +462,6 @@ Backups IO スレッドプールにスケジュールできるジョブの最大
 </blob_storage_log>
 ```
 
-
 ## builtin&#95;dictionaries&#95;reload&#95;interval {#builtin_dictionaries_reload_interval}
 
 組み込み辞書を再読み込みするまでの間隔（秒）。
@@ -487,7 +473,6 @@ ClickHouse は組み込み辞書を x 秒ごとに再読み込みします。こ
 ```xml
 <builtin_dictionaries_reload_interval>3600</builtin_dictionaries_reload_interval>
 ```
-
 
 ## cache_size_to_ram_max_ratio {#cache_size_to_ram_max_ratio} 
 
@@ -568,7 +553,6 @@ ClickHouse の利用を開始したばかりの場合は、この設定は変更
 </compression>
 ```
 
-
 ## concurrent_threads_scheduler {#concurrent_threads_scheduler} 
 
 <SettingsInfoBlock type="String" default_value="fair_round_robin" />
@@ -616,7 +600,6 @@ ClickHouse が設定を再読み込みし、変更の有無を確認する間隔
 </core_dump>
 ```
 
-
 ## cpu&#95;slot&#95;preemption {#cpu_slot_preemption}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -636,7 +619,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 
 * [ワークロードのスケジューリング](/operations/workload-scheduling.md)
 
-
 ## cpu&#95;slot&#95;preemption&#95;timeout&#95;ms {#cpu_slot_preemption_timeout_ms}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -653,7 +635,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 
 * [Workload Scheduling](/operations/workload-scheduling.md)
 
-
 ## cpu&#95;slot&#95;quantum&#95;ns {#cpu_slot_quantum_ns}
 
 <SettingsInfoBlock type="UInt64" default_value="10000000" />
@@ -669,7 +650,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 **関連項目**
 
 * [ワークロードスケジューリング](/operations/workload-scheduling.md)
-
 
 ## crash&#95;log {#crash_log}
 
@@ -708,7 +688,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 </crash_log>
 ```
 
-
 ## custom&#95;cached&#95;disks&#95;base&#95;directory {#custom_cached_disks_base_directory}
 
 この設定は、カスタム（SQL から作成された）キャッシュディスク用のキャッシュパスを指定します。
@@ -728,7 +707,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 <custom_cached_disks_base_directory>/var/lib/clickhouse/caches/</custom_cached_disks_base_directory>
 ```
 
-
 ## custom&#95;settings&#95;prefixes {#custom_settings_prefixes}
 
 [カスタム設定](/operations/settings/query-level#custom_settings) 用の接頭辞の一覧です。複数指定する場合は、カンマ区切りで指定します。
@@ -742,7 +720,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 **関連項目**
 
 * [カスタム設定](/operations/settings/query-level#custom_settings)
-
 
 ## database_atomic_delay_before_drop_table_sec {#database_atomic_delay_before_drop_table_sec} 
 
@@ -824,7 +801,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 </dead_letter_queue>
 ```
 
-
 ## default_database {#default_database} 
 
 <SettingsInfoBlock type="String" default_value="default" />既定のデータベース名です。
@@ -844,7 +820,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 <default_password_type>sha256_password</default_password_type>
 ```
 
-
 ## default&#95;profile {#default_profile}
 
 デフォルトのSETTINGS PROFILE。SETTINGS PROFILEは、`user_config` SETTINGで指定されたファイルに定義されています。
@@ -854,7 +829,6 @@ CPU リソース（MASTER THREAD と WORKER THREAD）に対するワークロー
 ```xml
 <default_profile>default</default_profile>
 ```
-
 
 ## default&#95;replica&#95;name {#default_replica_name}
 
@@ -868,7 +842,6 @@ ZooKeeper 上のレプリカ名。
 <default_replica_name>{replica}</default_replica_name>
 ```
 
-
 ## default&#95;replica&#95;path {#default_replica_path}
 
 <SettingsInfoBlock type="String" default_value="/clickhouse/tables/{uuid}/{shard}" />
@@ -881,7 +854,6 @@ ZooKeeper内のテーブルへのパス。
 <default_replica_path>/clickhouse/tables/{uuid}/{shard}</default_replica_path>
 ```
 
-
 ## default&#95;session&#95;timeout {#default_session_timeout}
 
 セッションのデフォルトタイムアウト時間（秒）。
@@ -889,7 +861,6 @@ ZooKeeper内のテーブルへのパス。
 ```xml
 <default_session_timeout>60</default_session_timeout>
 ```
-
 
 ## dictionaries&#95;config {#dictionaries_config}
 
@@ -910,7 +881,6 @@ dictionaries の設定ファイルへのパスです。
 <dictionaries_config>*_dictionary.xml</dictionaries_config>
 ```
 
-
 ## dictionaries&#95;lazy&#95;load {#dictionaries_lazy_load}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -930,7 +900,6 @@ Dictionary の遅延読み込みを行います。
 ```xml
 <dictionaries_lazy_load>true</dictionaries_lazy_load>
 ```
-
 
 ## dictionary_background_reconnect_interval {#dictionary_background_reconnect_interval} 
 
@@ -974,10 +943,9 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 </proxy>
 ```
 
-
 ## disk_connections_hard_limit {#disk_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="20000" />この制限に達すると、作成時に例外がスローされます。0 に設定するとハード制限を無効にできます。この制限はディスク接続数に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達すると、作成時に例外がスローされます。0 に設定するとハード制限を無効にできます。この制限はディスク接続数に適用されます。
 
 ## disk_connections_soft_limit {#disk_connections_soft_limit} 
 
@@ -1035,30 +1003,29 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 
 ```xml
 <distributed_ddl>
-    <!-- ZooKeeper内のDDLクエリキューへのパス -->
+    <!-- Path in ZooKeeper to queue with DDL queries -->
     <path>/clickhouse/task_queue/ddl</path>
 
-    <!-- このプロファイルの設定を使用してDDLクエリを実行します -->
+    <!-- Settings from this profile will be used to execute DDL queries -->
     <profile>default</profile>
 
-    <!-- ON CLUSTERクエリの同時実行数を制御します -->
+    <!-- Controls how much ON CLUSTER queries can be run simultaneously. -->
     <pool_size>1</pool_size>
 
     <!--
-         クリーンアップ設定（アクティブなタスクは削除されません）
+         Cleanup settings (active tasks will not be removed)
     -->
 
-    <!-- タスクの有効期限 (TTL) を制御します（デフォルト: 1週間） -->
+    <!-- Controls task TTL (default 1 week) -->
     <task_max_lifetime>604800</task_max_lifetime>
 
-    <!-- クリーンアップの実行間隔を制御します（秒単位） -->
+    <!-- Controls how often cleanup should be performed (in seconds) -->
     <cleanup_delay_period>60</cleanup_delay_period>
 
-    <!-- キューに保持できるタスク数を制御します -->
+    <!-- Controls how many tasks could be in the queue -->
     <max_tasks_in_queue>1000</max_tasks_in_queue>
 </distributed_ddl>
 ```
-
 
 ## distributed_ddl_use_initial_user_and_roles {#distributed_ddl_use_initial_user_and_roles} 
 
@@ -1178,7 +1145,6 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 上記の内容はすべて `aes_256_gcm_siv` にも適用できます（ただし、キーは32バイト長である必要があります）。
 :::
 
-
 ## error&#95;log {#error_log}
 
 デフォルトでは無効になっています。
@@ -1214,7 +1180,6 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 
 <SystemLogParameters />
 
-
 ## format_parsing_thread_pool_queue_size {#format_parsing_thread_pool_queue_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -1232,10 +1197,9 @@ GitLab についても同様で、先頭にドットを付けて指定した場�
 **例**
 
 ```xml
-<!-- 各種入力フォーマットのスキーマファイルを格納するディレクトリ。 -->
+<!-- Directory containing schema files for various input formats. -->
 <format_schema_path>format_schemas/</format_schema_path>
 ```
-
 
 ## global_profiler_cpu_time_period_ns {#global_profiler_cpu_time_period_ns} 
 
@@ -1254,7 +1218,6 @@ Protobuf 型の proto ファイルが格納されているディレクトリを�
 ```xml
 <google_protos_path>/usr/share/clickhouse/protos/</google_protos_path>
 ```
-
 
 ## graphite {#graphite}
 
@@ -1290,7 +1253,6 @@ Protobuf 型の proto ファイルが格納されているディレクトリを�
 </graphite>
 ```
 
-
 ## graphite&#95;rollup {#graphite_rollup}
 
 Graphite 向けのデータ間引き設定です。
@@ -1319,7 +1281,6 @@ Graphite 向けのデータ間引き設定です。
 </graphite_rollup_example>
 ```
 
-
 ## hsts&#95;max&#95;age {#hsts_max_age}
 
 HSTS の有効期限（秒単位）。
@@ -1334,10 +1295,9 @@ HSTS の有効期限（秒単位）。
 <hsts_max_age>600000</hsts_max_age>
 ```
 
-
 ## http_connections_hard_limit {#http_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />この制限に達している状態で新規作成を試みると、例外がスローされます。ハード制限を無効にするには 0 に設定します。この制限は、いずれのディスクやストレージにも属さない HTTP 接続に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達している状態で新規作成を試みると、例外がスローされます。ハード制限を無効にするには 0 に設定します。この制限は、いずれのディスクやストレージにも属さない HTTP 接続に適用されます。
 
 ## http_connections_soft_limit {#http_connections_soft_limit} 
 
@@ -1416,7 +1376,6 @@ Example:
 </http_handlers>
 ```
 
-
 ## http&#95;options&#95;response {#http_options_response}
 
 `OPTIONS` HTTP リクエストのレスポンスヘッダーを追加するために使用します。
@@ -1447,7 +1406,6 @@ Example:
 </http_options_response>
 ```
 
-
 ## http&#95;server&#95;default&#95;response {#http_server_default_response}
 
 ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォルトで表示されるページです。
@@ -1462,7 +1420,6 @@ ClickHouse の HTTP(S) サーバーにアクセスしたときに、デフォル
   <![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]>
 </http_server_default_response>
 ```
-
 
 ## iceberg_catalog_threadpool_pool_size {#iceberg_catalog_threadpool_pool_size} 
 
@@ -1509,7 +1466,6 @@ true の場合、ClickHouse は `CREATE VIEW` クエリで空の SQL security �
 ```xml
 <include_from>/etc/metrica.xml</include_from>
 ```
-
 
 ## index_mark_cache_policy {#index_mark_cache_policy} 
 
@@ -1606,7 +1562,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 
 新しい認証情報がすべてのレプリカに適用されたら、古い認証情報は削除できます。
 
-
 ## interserver&#95;http&#95;host {#interserver_http_host}
 
 他のサーバーがこのサーバーにアクセスするために使用できるホスト名です。
@@ -1621,7 +1576,6 @@ ClickHouse は、すべてのレプリカを同時に停止して設定を更新
 <interserver_http_host>example.clickhouse.com</interserver_http_host>
 ```
 
-
 ## interserver&#95;http&#95;port {#interserver_http_port}
 
 ClickHouse サーバー間でデータをやり取りするためのポート。
@@ -1631,7 +1585,6 @@ ClickHouse サーバー間でデータをやり取りするためのポート。
 ```xml
 <interserver_http_port>9009</interserver_http_port>
 ```
-
 
 ## interserver&#95;https&#95;host {#interserver_https_host}
 
@@ -1643,7 +1596,6 @@ ClickHouse サーバー間でデータをやり取りするためのポート。
 <interserver_https_host>example.clickhouse.com</interserver_https_host>
 ```
 
-
 ## interserver&#95;https&#95;port {#interserver_https_port}
 
 `HTTPS` 経由で ClickHouse サーバー間のデータ交換に使用するポート。
@@ -1653,7 +1605,6 @@ ClickHouse サーバー間でデータをやり取りするためのポート。
 ```xml
 <interserver_https_port>9010</interserver_https_port>
 ```
-
 
 ## interserver&#95;listen&#95;host {#interserver_listen_host}
 
@@ -1674,7 +1625,6 @@ Keeper を使用している場合は、異なる Keeper インスタンス間�
 型:
 
 デフォルト:
-
 
 ## io_thread_pool_queue_size {#io_thread_pool_queue_size} 
 
@@ -1724,7 +1674,6 @@ HTTP プロトコルで新しいリクエストを待機する最大秒数。こ
 ```xml
 <keep_alive_timeout>10</keep_alive_timeout>
 ```
-
 
 ## keeper_hosts {#keeper_hosts} 
 
@@ -1803,7 +1752,6 @@ Example:
 </my_ad_server>
 ```
 
-
 ## license_key {#license_key} 
 
 ClickHouse Enterprise Edition のライセンスキー
@@ -1828,7 +1776,6 @@ listen ソケットの backlog（保留中接続のキューサイズ）。デ�
 <listen_backlog>4096</listen_backlog>
 ```
 
-
 ## listen&#95;host {#listen_host}
 
 リクエストを受け付ける送信元ホストを制限します。サーバーがすべてのホストからのリクエストに応答するようにするには、`::` を指定します。
@@ -1839,7 +1786,6 @@ listen ソケットの backlog（保留中接続のキューサイズ）。デ�
 <listen_host>::1</listen_host>
 <listen_host>127.0.0.1</listen_host>
 ```
-
 
 ## listen&#95;reuse&#95;port {#listen_reuse_port}
 
@@ -1855,7 +1801,6 @@ listen ソケットの backlog（保留中接続のキューサイズ）。デ�
 
 デフォルト:
 
-
 ## listen&#95;try {#listen_try}
 
 サーバーは、リッスンを開始しようとした際に IPv6 または IPv4 ネットワークが利用できない場合でも、終了しません。
@@ -1865,7 +1810,6 @@ listen ソケットの backlog（保留中接続のキューサイズ）。デ�
 ```xml
 <listen_try>0</listen_try>
 ```
-
 
 ## load_marks_threadpool_pool_size {#load_marks_threadpool_pool_size} 
 
@@ -2040,7 +1984,7 @@ JSON ログのサポートを有効にするには、次のスニペットを使
 <logger>
     <formatting>
         <type>json</type>
-        <!-- チャネルごと(log、errorlog、console、syslog)に設定することも、全チャネルに対してグローバルに設定すること(その場合は省略)も可能です。 -->
+        <!-- Can be configured on a per-channel basis (log, errorlog, console, syslog), or globally for all channels (then just omit it). -->
         <!-- <channel></channel> -->
         <names>
             <date_time>date_time</date_time>
@@ -2065,7 +2009,6 @@ JSON ログのサポートを有効にするには、次のスニペットを使
 
 ログプロパティは、そのプロパティをコメントアウトすることで省略できます。たとえば、ログに `query_id` を出力しないようにしたい場合は、`<query_id>` タグをコメントアウトします。
 
-
 ## macros {#macros}
 
 レプリケートテーブル向けのパラメータ代入です。
@@ -2079,7 +2022,6 @@ JSON ログのサポートを有効にするには、次のスニペットを使
 ```xml
 <macros incl="macros" optional="true" />
 ```
-
 
 ## mark_cache_policy {#mark_cache_policy} 
 
@@ -2206,7 +2148,6 @@ JSON ログのサポートを有効にするには、次のスニペットを使
 <max_database_num_to_warn>50</max_database_num_to_warn>
 ```
 
-
 ## max_database_replicated_create_table_thread_pool_size {#max_database_replicated_create_table_thread_pool_size} 
 
 <SettingsInfoBlock type="UInt32" default_value="1" />DatabaseReplicated データベースでレプリカのリカバリ中にテーブルを作成するためのスレッド数。0 の場合、スレッド数はコア数と同じになります。
@@ -2234,7 +2175,6 @@ Dictionary の数がこの値を超えると、サーバーは例外を送出し
 <max_dictionary_num_to_throw>400</max_dictionary_num_to_throw>
 ```
 
-
 ## max&#95;dictionary&#95;num&#95;to&#95;warn {#max_dictionary_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -2246,7 +2186,6 @@ Dictionary の数がこの値を超えると、サーバーは例外を送出し
 ```xml
 <max_dictionary_num_to_warn>400</max_dictionary_num_to_warn>
 ```
-
 
 ## max_distributed_cache_read_bandwidth_for_server {#max_distributed_cache_read_bandwidth_for_server} 
 
@@ -2299,7 +2238,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 ```xml
 <max_keep_alive_requests>10</max_keep_alive_requests>
 ```
-
 
 ## max_local_read_bandwidth_for_server {#max_local_read_bandwidth_for_server} 
 
@@ -2355,7 +2293,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 <max_named_collection_num_to_throw>400</max_named_collection_num_to_throw>
 ```
 
-
 ## max&#95;named&#95;collection&#95;num&#95;to&#95;warn {#max_named_collection_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" />
@@ -2367,7 +2304,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 ```xml
 <max_named_collection_num_to_warn>400</max_named_collection_num_to_warn>
 ```
-
 
 ## max&#95;open&#95;files {#max_open_files}
 
@@ -2382,7 +2318,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 ```xml
 <max_open_files>262144</max_open_files>
 ```
-
 
 ## max_os_cpu_wait_time_ratio_to_drop_connection {#max_os_cpu_wait_time_ratio_to_drop_connection} 
 
@@ -2407,7 +2342,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 <max_part_num_to_warn>400</max_part_num_to_warn>
 ```
 
-
 ## max&#95;partition&#95;size&#95;to&#95;drop {#max_partition_size_to_drop}
 
 <SettingsInfoBlock type="UInt64" default_value="50000000000" />
@@ -2429,7 +2363,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 <max_partition_size_to_drop>0</max_partition_size_to_drop>
 ```
 
-
 ## max_parts_cleaning_thread_pool_size {#max_parts_cleaning_thread_pool_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="128" />非アクティブなデータパーツを同時に削除するためのスレッド数。
@@ -2446,7 +2379,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 <max_pending_mutations_execution_time_to_warn>10000</max_pending_mutations_execution_time_to_warn>
 ```
 
-
 ## max&#95;pending&#95;mutations&#95;to&#95;warn {#max_pending_mutations_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
@@ -2458,7 +2390,6 @@ ClickHouse は IO スレッドプール内のスレッドを使用して、S3 �
 ```xml
 <max_pending_mutations_to_warn>400</max_pending_mutations_to_warn>
 ```
-
 
 ## max_prefixes_deserialization_thread_pool_free_size {#max_prefixes_deserialization_thread_pool_free_size} 
 
@@ -2523,7 +2454,6 @@ ClickHouse は、MergeTree の Wide パーツにおけるファイルプレフ�
 <max_replicated_table_num_to_throw>400</max_replicated_table_num_to_throw>
 ```
 
-
 ## max_server_memory_usage {#max_server_memory_usage} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2561,7 +2491,6 @@ RAM やスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 <max_session_timeout>3600</max_session_timeout>
 ```
 
-
 ## max&#95;table&#95;num&#95;to&#95;throw {#max_table_num_to_throw}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -2592,7 +2521,6 @@ RAM やスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 <max_table_num_to_throw>400</max_table_num_to_throw>
 ```
 
-
 ## max&#95;table&#95;num&#95;to&#95;warn {#max_table_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" />
@@ -2604,7 +2532,6 @@ RAM やスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 ```xml
 <max_table_num_to_warn>400</max_table_num_to_warn>
 ```
-
 
 ## max&#95;table&#95;size&#95;to&#95;drop {#max_table_size_to_drop}
 
@@ -2625,7 +2552,6 @@ RAM やスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 ```xml
 <max_table_size_to_drop>0</max_table_size_to_drop>
 ```
-
 
 ## max_temporary_data_on_disk_size {#max_temporary_data_on_disk_size} 
 
@@ -2655,7 +2581,6 @@ RAM やスワップが少ないホストでは、[`max_server_memory_usage_to_ra
 <max_thread_pool_free_size>1200</max_thread_pool_free_size>
 ```
 
-
 ## max&#95;thread&#95;pool&#95;size {#max_thread_pool_size}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -2667,7 +2592,6 @@ ClickHouse はクエリを処理する際に Global Thread pool に属するス�
 ```xml
 <max_thread_pool_size>12000</max_thread_pool_size>
 ```
-
 
 ## max_unexpected_parts_loading_thread_pool_size {#max_unexpected_parts_loading_thread_pool_size} 
 
@@ -2696,7 +2620,6 @@ ClickHouse はクエリを処理する際に Global Thread pool に属するス�
 <max_view_num_to_throw>400</max_view_num_to_throw>
 ```
 
-
 ## max&#95;view&#95;num&#95;to&#95;warn {#max_view_num_to_warn}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -2708,7 +2631,6 @@ ClickHouse はクエリを処理する際に Global Thread pool に属するス�
 ```xml
 <max_view_num_to_warn>400</max_view_num_to_warn>
 ```
-
 
 ## max_waiting_queries {#max_waiting_queries} 
 
@@ -2766,7 +2688,6 @@ jemalloc や cgroups などの外部ソースからの情報に基づいて、�
 </merge_tree>
 ```
 
-
 ## merge_workload {#merge_workload} 
 
 <SettingsInfoBlock type="String" default_value="default" />
@@ -2793,7 +2714,6 @@ ClickHouse がこの上限に達すると、新しいバックグラウンドの
 ```xml
 <merges_mutations_memory_usage_soft_limit>0</merges_mutations_memory_usage_soft_limit>
 ```
-
 
 ## merges_mutations_memory_usage_to_ram_ratio {#merges_mutations_memory_usage_to_ram_ratio} 
 
@@ -2841,7 +2761,6 @@ ClickHouse がこの上限に達すると、新しいバックグラウンドの
 
 <SystemLogParameters />
 
-
 ## min_os_cpu_wait_time_ratio_to_drop_connection {#min_os_cpu_wait_time_ratio_to_drop_connection} 
 
 <SettingsInfoBlock type="Float" default_value="0" />
@@ -2863,7 +2782,6 @@ ClickHouse がこの上限に達すると、新しいバックグラウンドの
 ```xml
 <mlock_executable>false</mlock_executable>
 ```
-
 
 ## mmap_cache_size {#mmap_cache_size} 
 
@@ -2907,7 +2825,6 @@ MySQL プロトコルでクライアントと通信するためのポート。
 ```xml
 <mysql_port>9004</mysql_port>
 ```
-
 
 ## mysql_require_secure_transport {#mysql_require_secure_transport} 
 
@@ -2965,15 +2882,14 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
         <cacheSessions>true</cacheSessions>
         <disableProtocols>sslv2,sslv3</disableProtocols>
         <preferServerCiphers>true</preferServerCiphers>
-        <!-- 自己署名証明書を使用する場合: <verificationMode>none</verificationMode> -->
+        <!-- Use for self-signed: <verificationMode>none</verificationMode> -->
         <invalidCertificateHandler>
-            <!-- 自己署名証明書を使用する場合: <name>AcceptCertificateHandler</name> -->
+            <!-- Use for self-signed: <name>AcceptCertificateHandler</name> -->
             <name>RejectCertificateHandler</name>
         </invalidCertificateHandler>
     </client>
 </openSSL>
 ```
-
 
 ## opentelemetry&#95;span&#95;log {#opentelemetry_span_log}
 
@@ -2999,7 +2915,6 @@ SSL のサポートは `libpoco` ライブラリによって提供されます�
     <flush_on_crash>false</flush_on_crash>
 </opentelemetry_span_log>
 ```
-
 
 ## os_cpu_busy_time_threshold {#os_cpu_busy_time_threshold} 
 
@@ -3086,7 +3001,6 @@ CAP_SYS_NICE ケーパビリティが必要です。ない場合は何も行わ�
 </part_log>
 ```
 
-
 ## parts_kill_delay_period {#parts_kill_delay_period} 
 
 <SettingsInfoBlock type="UInt64" default_value="30" />
@@ -3119,7 +3033,6 @@ SharedMergeTree のパーツを完全に削除するまでの期間。ClickHouse
 <path>/var/lib/clickhouse/</path>
 ```
 
-
 ## postgresql&#95;port {#postgresql_port}
 
 PostgreSQL プロトコル経由でクライアントと通信するためのポート。
@@ -3135,7 +3048,6 @@ PostgreSQL プロトコル経由でクライアントと通信するためのポ
 ```xml
 <postgresql_port>9005</postgresql_port>
 ```
-
 
 ## postgresql_require_secure_transport {#postgresql_require_secure_transport} 
 
@@ -3194,7 +3106,6 @@ true に設定されている場合、ClickHouse は起動前に設定されて�
 <process_query_plan_packet>true</process_query_plan_packet>
 ```
 
-
 ## processors&#95;profile&#95;log {#processors_profile_log}
 
 [`processors_profile_log`](../system-tables/processors_profile_log.md) システムテーブルの設定です。
@@ -3215,7 +3126,6 @@ true に設定されている場合、ClickHouse は起動前に設定されて�
     <flush_on_crash>false</flush_on_crash>
 </processors_profile_log>
 ```
-
 
 ## prometheus {#prometheus}
 
@@ -3255,7 +3165,6 @@ Settings:
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
-
 
 ## proxy {#proxy}
 
@@ -3387,7 +3296,6 @@ ClickHouse はそれを使用して、次のテンプレートに従ってプロ
 | 2.    | プロキシリスト           |
 | 3.    | 環境変数              |
 
-
 ClickHouse は、リクエストプロトコルに対して、最も優先度の高い resolver の種類を確認します。定義されていなければ、
 環境 resolver に到達するまで、次に優先度の高い resolver の種類を順に確認します。
 これにより、複数種類の resolver を併用することも可能になります。
@@ -3421,7 +3329,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
     <max_entry_size_in_rows>30000000</max_entry_size_in_rows>
 </query_cache>
 ```
-
 
 ## query_condition_cache_policy {#query_condition_cache_policy} 
 
@@ -3465,7 +3372,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 </query_log>
 ```
 
-
 ## query&#95;masking&#95;rules {#query_masking_rules}
 
 正規表現に基づくルールで、サーバーログに保存される前にクエリおよびすべてのログメッセージに適用されます。
@@ -3476,7 +3382,7 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 ```xml
 <query_masking_rules>
     <rule>
-        <name>SSNを隠す</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>
@@ -3496,7 +3402,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 [`system.events`](/operations/system-tables/events) テーブルには `QueryMaskingRulesMatch` カウンタがあり、クエリマスキングルールにマッチした総件数が記録されます。
 
 分散クエリの場合は、各サーバーを個別に設定する必要があります。そうしないと、他ノードに渡されたサブクエリはマスキングされずに保存されます。
-
 
 ## query&#95;metric&#95;log {#query_metric_log}
 
@@ -3533,7 +3438,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 
 <SystemLogParameters />
 
-
 ## query&#95;thread&#95;log {#query_thread_log}
 
 [log&#95;query&#95;threads=1](/operations/settings/settings#log_query_threads) 設定を有効にした場合に、受信したクエリのスレッドをログに記録するための設定です。
@@ -3558,7 +3462,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
     <flush_on_crash>false</flush_on_crash>
 </query_thread_log>
 ```
-
 
 ## query&#95;views&#95;log {#query_views_log}
 
@@ -3585,7 +3488,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 </query_views_log>
 ```
 
-
 ## remap&#95;executable {#remap_executable}
 
 マシンコード（「text」）用メモリをヒュージページを用いて再割り当てするための設定です。
@@ -3599,7 +3501,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 ```xml
 <remap_executable>false</remap_executable>
 ```
-
 
 ## remote&#95;servers {#remote_servers}
 
@@ -3618,7 +3519,6 @@ ClickHouse は、リクエストプロトコルに対して、最も優先度の
 * [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
 * [Cluster Discovery](../../operations/cluster-discovery.md)
 * [Replicated database engine](../../engines/database-engines/replicated.md)
-
 
 ## remote&#95;url&#95;allow&#95;hosts {#remote_url_allow_hosts}
 
@@ -3640,7 +3540,6 @@ URL 関連のストレージエンジンおよびテーブル関数で使用を�
 </remote_url_allow_hosts>
 ```
 
-
 ## replica&#95;group&#95;name {#replica_group_name}
 
 Replicated データベース用のレプリカグループ名。
@@ -3653,9 +3552,8 @@ DDL クエリは同じグループ内のレプリカのみを待機します。
 **例**
 
 ```xml
-<replica_group_name>バックアップ</replica_group_name>
+<replica_group_name>backups</replica_group_name>
 ```
-
 
 ## replicated_fetches_http_connection_timeout {#replicated_fetches_http_connection_timeout} 
 
@@ -3682,7 +3580,6 @@ DDL クエリは同じグループ内のレプリカのみを待機します。
     <max_suspicious_broken_parts>5</max_suspicious_broken_parts>
 </replicated_merge_tree>
 ```
-
 
 ## restore_threads {#restore_threads} 
 
@@ -3721,7 +3618,6 @@ DDL クエリは同じグループ内のレプリカのみを待機します。
 </s3queue_log>
 ```
 
-
 ## send&#95;crash&#95;reports {#send_crash_reports}
 
 ClickHouse コア開発チームにクラッシュレポートを送信するための設定です。
@@ -3743,7 +3639,6 @@ Keys:
     <enabled>true</enabled>
 </send_crash_reports>
 ```
-
 
 ## series_keeper_path {#series_keeper_path} 
 
@@ -3788,7 +3683,6 @@ Host Key Configurations はデフォルトでは無効になっています。
 </ssh_server>
 ```
 
-
 ## startup_mv_delay_ms {#startup_mv_delay_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />マテリアライズドビュー作成の遅延をシミュレートするためのデバッグ用パラメータ。
@@ -3802,14 +3696,13 @@ Host Key Configurations はデフォルトでは無効になっています。
 ```xml
 <storage_configuration>
     <disks>
-        <!-- 設定 -->
+        <!-- configuration -->
     </disks>
     <policies>
-        <!-- 設定 -->
+        <!-- configuration -->
     </policies>
 </storage_configuration>
 ```
-
 
 ### ディスクの設定 {#configuration-of-disks}
 
@@ -3846,7 +3739,6 @@ Host Key Configurations はデフォルトでは無効になっています。
 ディスクの順序は問いません。
 :::
 
-
 ### ポリシーの設定 {#configuration-of-policies}
 
 上記のサブタグは、`policies` に対して次の設定を定義します。
@@ -3873,7 +3765,7 @@ Host Key Configurations はデフォルトでは無効になっています。
 
 ## storage_connections_hard_limit {#storage_connections_hard_limit} 
 
-<SettingsInfoBlock type="UInt64" default_value="5000" />この制限に達した状態で新規作成を行おうとすると、例外がスローされます。ハードリミットを無効にするには 0 に設定します。この制限はストレージの接続に適用されます。
+<SettingsInfoBlock type="UInt64" default_value="200000" />この制限に達した状態で新規作成を行おうとすると、例外がスローされます。ハードリミットを無効にするには 0 に設定します。この制限はストレージの接続に適用されます。
 
 ## storage_connections_soft_limit {#storage_connections_soft_limit} 
 
@@ -3941,7 +3833,6 @@ TCPプロトコル経由でクライアントとの通信に使用するポー�
 <tcp_port>9000</tcp_port>
 ```
 
-
 ## tcp&#95;port&#95;secure {#tcp_port_secure}
 
 クライアントとのセキュアな通信に使用される TCP ポートです。[OpenSSL](#openssl) の設定と併せて使用します。
@@ -3952,7 +3843,6 @@ TCPプロトコル経由でクライアントとの通信に使用するポー�
 <tcp_port_secure>9440</tcp_port_secure>
 ```
 
-
 ## tcp&#95;ssh&#95;port {#tcp_ssh_port}
 
 SSH サーバー用のポートです。ユーザーは、このポートを利用して接続し、PTY 上の組み込みクライアントを使って対話的にクエリを実行できます。
@@ -3962,7 +3852,6 @@ SSH サーバー用のポートです。ユーザーは、このポートを利�
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 ```
-
 
 ## temporary&#95;data&#95;in&#95;cache {#temporary_data_in_cache}
 
@@ -4005,7 +3894,6 @@ SSH サーバー用のポートです。ユーザーは、このポートを利�
 <!-- highlight-end -->
 </clickhouse>
 ```
-
 
 ## temporary_data_in_distributed_cache {#temporary_data_in_distributed_cache} 
 
@@ -4102,7 +3990,6 @@ SSH サーバー用のポートです。ユーザーは、このポートを利�
 </clickhouse>
 ```
 
-
 ## thread&#95;pool&#95;queue&#95;size {#thread_pool_queue_size}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -4118,7 +4005,6 @@ SSH サーバー用のポートです。ユーザーは、このポートを利�
 ```xml
 <thread_pool_queue_size>12000</thread_pool_queue_size>
 ```
-
 
 ## threadpool_local_fs_reader_pool_size {#threadpool_local_fs_reader_pool_size} 
 
@@ -4163,7 +4049,6 @@ SSH サーバー用のポートです。ユーザーは、このポートを利�
 
 * [ワークロードのスケジューリング](/operations/workload-scheduling.md)
 
-
 ## timezone {#timezone}
 
 サーバーのタイムゾーン。
@@ -4182,7 +4067,6 @@ UTC または地理的な場所を表す IANA タイムゾーン識別子とし�
 
 * [session&#95;timezone](../settings/settings.md#session_timezone)
 
-
 ## tmp&#95;path {#tmp_path}
 
 大規模なクエリを処理するための一時データを保存する、ローカルファイルシステム上のパス。
@@ -4198,7 +4082,6 @@ UTC または地理的な場所を表す IANA タイムゾーン識別子とし�
 ```xml
 <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
 ```
-
 
 ## tmp&#95;policy {#tmp_policy}
 
@@ -4257,7 +4140,6 @@ UTC または地理的な場所を表す IANA タイムゾーン識別子とし�
 </clickhouse>
 ```
 
-
 ## top&#95;level&#95;domains&#95;list {#top_level_domains_list}
 
 追加するカスタムトップレベルドメインのリストを定義します。各エントリは `<name>/path/to/file</name>` という形式です。
@@ -4274,7 +4156,6 @@ UTC または地理的な場所を表す IANA タイムゾーン識別子とし�
 
 * 関数 [`cutToFirstSignificantSubdomainCustom`](../../sql-reference/functions/url-functions.md/#cutToFirstSignificantSubdomainCustom) およびそのバリエーション。
   これらはカスタム TLD リスト名を引数に取り、トップレベルドメインから最初の有意なサブドメインまでを含むドメイン部分を返します。
-
 
 ## total_memory_profiler_sample_max_allocation_size {#total_memory_profiler_sample_max_allocation_size} 
 
@@ -4321,7 +4202,6 @@ UTC または地理的な場所を表す IANA タイムゾーン識別子とし�
 </trace_log>
 ```
 
-
 ## uncompressed_cache_policy {#uncompressed_cache_policy} 
 
 <SettingsInfoBlock type="String" default_value="SLRU" />非圧縮キャッシュポリシーの名前。
@@ -4365,7 +4245,6 @@ MergeTree ファミリーのテーブルエンジンで使用される非圧縮�
     </oss>
 </url_scheme_mappers>
 ```
-
 
 ## use_minimalistic_part_header_in_zookeeper {#use_minimalistic_part_header_in_zookeeper} 
 
@@ -4411,7 +4290,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 <user_defined_executable_functions_config>*_function.xml</user_defined_executable_functions_config>
 ```
 
-
 ## user&#95;defined&#95;path {#user_defined_path}
 
 ユーザー定義のファイルを格納するディレクトリです。SQL のユーザー定義関数で使用されます。詳しくは [SQL User Defined Functions](/sql-reference/functions/udf) を参照してください。
@@ -4421,7 +4299,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 ```xml
 <user_defined_path>/var/lib/clickhouse/user_defined/</user_defined_path>
 ```
-
 
 ## user&#95;directories {#user_directories}
 
@@ -4482,7 +4359,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 </ldap>
 ```
 
-
 ## user&#95;files&#95;path {#user_files_path}
 
 ユーザーファイルを格納するディレクトリです。テーブル関数 [file()](../../sql-reference/table-functions/file.md)、[fileCluster()](../../sql-reference/table-functions/fileCluster.md) で使用されます。
@@ -4492,7 +4368,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 ```xml
 <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
 ```
-
 
 ## user&#95;scripts&#95;path {#user_scripts_path}
 
@@ -4507,7 +4382,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 型:
 
 デフォルト値:
-
 
 ## users&#95;config {#users_config}
 
@@ -4524,7 +4398,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 <users_config>users.xml</users_config>
 ```
 
-
 ## validate&#95;tcp&#95;client&#95;information {#validate_tcp_client_information}
 
 <SettingsInfoBlock type="Bool" default_value="0" />クエリパケットを受信した際にクライアント情報の検証を有効にするかどうかを制御します。
@@ -4534,7 +4407,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 ```xml
 <validate_tcp_client_information>false</validate_tcp_client_information>
 ```
-
 
 ## vector_similarity_index_cache_max_entries {#vector_similarity_index_cache_max_entries} 
 
@@ -4576,7 +4448,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 <wait_dictionaries_load_at_startup>true</wait_dictionaries_load_at_startup>
 ```
 
-
 ## workload&#95;path {#workload_path}
 
 すべての `CREATE WORKLOAD` および `CREATE RESOURCE` クエリの保存先として使用されるディレクトリです。デフォルトでは、サーバーのワーキングディレクトリ配下の `/workload/` フォルダが使用されます。
@@ -4592,7 +4463,6 @@ ClickHouse はサーバー上のすべてのテーブルに対してこの設定
 * [ワークロード階層](/operations/workload-scheduling.md#workloads)
 * [workload&#95;zookeeper&#95;path](#workload_zookeeper_path)
 
-
 ## workload&#95;zookeeper&#95;path {#workload_zookeeper_path}
 
 ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および `CREATE RESOURCE` クエリのストレージとして使用されます。整合性を保つため、すべての SQL 定義は 1 つの znode の値として保存されます。デフォルトでは ZooKeeper は使用されず、定義は [ディスク](#workload_path) 上に保存されます。
@@ -4607,7 +4477,6 @@ ZooKeeper ノードへのパスです。すべての `CREATE WORKLOAD` および
 
 * [Workload Hierarchy](/operations/workload-scheduling.md#workloads)
 * [workload&#95;path](#workload_path)
-
 
 ## zookeeper {#zookeeper}
 
@@ -4651,9 +4520,9 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
     </node>
     <session_timeout_ms>30000</session_timeout_ms>
     <operation_timeout_ms>10000</operation_timeout_ms>
-    <!-- オプション。Chroot サフィックス。存在している必要があります。 -->
+    <!-- Optional. Chroot suffix. Should exist. -->
     <root>/path/to/zookeeper/node</root>
-    <!-- オプション。Zookeeper ダイジェスト ACL 文字列。 -->
+    <!-- Optional. Zookeeper digest ACL string. -->
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
@@ -4665,7 +4534,6 @@ ClickHouse が [ZooKeeper](http://zookeeper.apache.org/) クラスターと連�
 * [レプリケーション](../../engines/table-engines/mergetree-family/replication.md)
 * [ZooKeeper Programmer&#39;s Guide](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
 * [ClickHouse と ZooKeeper 間のオプションのセキュア通信](/operations/ssl-zookeeper)
-
 
 ## zookeeper&#95;log {#zookeeper_log}
 

@@ -12,7 +12,7 @@ import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 Хотя может быть заманчиво выполнить это слияние вручную, используя:
 
 ```sql
-OPTIMIZE TABLE <таблица> FINAL;
+OPTIMIZE TABLE <table> FINAL;
 ```
 
 **в большинстве случаев следует избегать выполнения операции `OPTIMIZE FINAL`**, так как она запускает

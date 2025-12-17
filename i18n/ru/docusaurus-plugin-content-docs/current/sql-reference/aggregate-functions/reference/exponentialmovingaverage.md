@@ -38,7 +38,7 @@ exponentialMovingAverage(x)(value, timeunit)
 Входная таблица:
 
 ```text
-┌──температура─┬─временная_метка──┐
+┌──temperature─┬─timestamp──┐
 │          95  │         1  │
 │          95  │         2  │
 │          95  │         3  │
@@ -158,7 +158,7 @@ SELECT
     10 AS value,
     toDateTime('2020-01-01') + (3600 * number) AS time
 FROM numbers_mt(10);
--- Вычисление временной единицы с помощью intDiv
+-- Calculate timeunit using intDiv
 SELECT
     value,
     time,
@@ -179,7 +179,7 @@ ORDER BY time ASC;
 │    10 │ 2020-01-01 08:00:00 │  9.98046875 │   438296 │
 │    10 │ 2020-01-01 09:00:00 │ 9.990234375 │   438297 │
 └───────┴─────────────────────┴─────────────┴──────────┘
--- Вычисление временной единицы с помощью toRelativeHourNum
+-- Calculate timeunit using toRelativeHourNum
 SELECT
     value,
     time,

@@ -34,43 +34,41 @@ helm install my-clickstack clickstack/clickstack \
   --set otel.opampServerUrl="http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 ```
 
-
 ### 其他 GKE 注意事项 {#other-gke-considerations}
 
 ```yaml
-# values-gke.yaml {#values-gkeyaml}
+# values-gke.yaml
 hyperdx:
-  frontendUrl: "http://34.123.61.99"  # 使用您的 LoadBalancer 外部 IP
+  frontendUrl: "http://34.123.61.99"  # Use your LoadBalancer external IP
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 
-# 如需要，可根据 GKE pod（容器组）网络进行调整 {#adjust-for-gke-pod-networking-if-needed}
+# Adjust for GKE pod networking if needed
 clickhouse:
   config:
     clusterCidrs:
-      - "10.8.0.0/16"  # GKE 通常使用此范围
-      - "10.0.0.0/8"   # 其他配置的后备选项
+      - "10.8.0.0/16"  # GKE commonly uses this range
+      - "10.0.0.0/8"   # Fallback for other configurations
 ```
-
 
 ## Amazon EKS {#amazon-eks}
 
 在 EKS 上进行部署时，可以考虑以下常见配置：
 
 ```yaml
-# values-eks.yaml {#values-eksyaml}
+# values-eks.yaml
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
 
-# EKS 通常使用以下 pod CIDR {#eks-typically-uses-these-pod-cidrs}
+# EKS typically uses these pod CIDRs
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-# 为生产环境启用 Ingress {#enable-ingress-for-production}
+# Enable ingress for production
 hyperdx:
   ingress:
     enabled: true
@@ -79,24 +77,22 @@ hyperdx:
       enabled: true
 ```
 
-
 ## Azure AKS {#azure-aks}
 
 适用于 AKS 部署：
 
 ```yaml
-# values-aks.yaml {#values-aksyaml}
+# values-aks.yaml
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
 
-# AKS pod（容器组）网络配置 {#aks-pod-networking}
+# AKS pod networking
 clickhouse:
   config:
     clusterCidrs:
-      - "10.244.0.0/16"  # 常见 AKS pod（容器组）CIDR
+      - "10.244.0.0/16"  # Common AKS pod CIDR
       - "10.0.0.0/8"
 ```
-
 
 ## 生产环境云部署检查清单 {#production-cloud-deployment-checklist}
 
@@ -127,7 +123,6 @@ hyperdx:
       memory: 4Gi
 ```
 
-
 ### 高可用性 {#high-availability}
 
 ```yaml
@@ -148,7 +143,6 @@ hyperdx:
             topologyKey: kubernetes.io/hostname
 ```
 
-
 ### 持久化存储 {#persistent-storage}
 
 确保持久卷已配置好用于数据保留：
@@ -158,7 +152,7 @@ clickhouse:
   persistence:
     enabled: true
     size: 100Gi
-    storageClass: "fast-ssd"  # 使用云平台特定的存储类
+    storageClass: "fast-ssd"  # Use cloud-specific storage class
 ```
 
 **各云平台特定的存储类：**
@@ -166,7 +160,6 @@ clickhouse:
 * **GKE**: `pd-ssd` 或 `pd-balanced`
 * **EKS**: `gp3` 或 `io2`
 * **AKS**: `managed-premium` 或 `managed-csi`
-
 
 ### 浏览器兼容性注意事项 {#browser-compatibility-notes}
 

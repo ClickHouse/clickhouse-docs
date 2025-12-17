@@ -7,8 +7,6 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-
-
 # UUID {#uuid}
 
 Универсальный уникальный идентификатор (UUID) — это 16-байтовое значение, используемое для идентификации записей. Подробную информацию о UUID см. в статье на [Википедии](https://en.wikipedia.org/wiki/Universally_unique_identifier).
@@ -85,12 +83,9 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-
 ## Генерация UUID {#generating-uuids}
 
 ClickHouse предоставляет функцию [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) для генерации случайных UUID версии 4.
-
-
 
 ## Пример использования {#usage-example}
 
@@ -101,7 +96,7 @@ ClickHouse предоставляет функцию [generateUUIDv4](../../sql-
 ```sql
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
-INSERT INTO t_uuid SELECT generateUUIDv4(), 'Пример 1'
+INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 
 SELECT * FROM t_uuid
 ```
@@ -110,7 +105,7 @@ SELECT * FROM t_uuid
 
 ```text
 ┌────────────────────────────────────x─┬─y─────────┐
-│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Пример 1  │
+│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
 ```
 
@@ -119,18 +114,17 @@ SELECT * FROM t_uuid
 В этом примере при вставке записи значение для столбца UUID не указывается, то есть вставляется значение UUID по умолчанию:
 
 ```sql
-INSERT INTO t_uuid (y) VALUES ('Пример 2')
+INSERT INTO t_uuid (y) VALUES ('Example 2')
 
 SELECT * FROM t_uuid
 ```
 
 ```text
 ┌────────────────────────────────────x─┬─y─────────┐
-│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Пример 1 │
-│ 00000000-0000-0000-0000-000000000000 │ Пример 2 │
+│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
+│ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## Ограничения {#restrictions}
 

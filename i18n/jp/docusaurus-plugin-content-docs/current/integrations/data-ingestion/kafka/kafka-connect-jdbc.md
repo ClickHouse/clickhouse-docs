@@ -10,7 +10,6 @@ keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # JDBC コネクタ {#jdbc-connector}
 
 :::note
@@ -54,8 +53,6 @@ ClickHouse JDBC ドライバ `clickhouse-jdbc-<version>-shaded.jar` を[こち�
 
 以下のパラメータは、ClickHouse で JDBC コネクタを使用する際に関連するものです。パラメータの完全な一覧は[こちら](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/index.html)で確認できます。
 
-
-
 * `_connection.url_` - これは `jdbc:clickhouse://&lt;clickhouse host>:&lt;clickhouse http port>/&lt;target database>` の形式にする必要があります
 * `connection.user` - 対象データベースへの書き込み権限を持つユーザー
 * `table.name.format`- データを挿入する ClickHouse テーブル。事前に作成されている必要があります。
@@ -83,8 +80,6 @@ GitHub サンプルデータ用の設定ファイル例は、Connect をスタ�
 #### 4. ClickHouse テーブルを作成する {#4-create-the-clickhouse-table}
 
 テーブルが作成されていることを確認し、以前の例で既に存在する場合は削除してください。縮小版 GitHub データセットと互換性のある例を以下に示します。現在サポートされていない Array 型や Map 型が存在しないことに注意してください。
-
-
 
 ```sql
 CREATE TABLE github
@@ -149,7 +144,6 @@ SELECT count() FROM default.github;
 ```
 
 ### おすすめの参考資料 {#recommended-further-reading}
-
 
 * [Kafka Sink 構成パラメータ](https://docs.confluent.io/kafka-connect-jdbc/current/sink-connector/sink_config_options.html#sink-config-options)
 * [Kafka Connect Deep Dive – JDBC Source Connector](https://www.confluent.io/blog/kafka-connect-deep-dive-jdbc-source-connector)

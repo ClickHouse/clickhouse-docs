@@ -7,11 +7,7 @@ title: '用户态页面缓存'
 doc_type: 'reference'
 ---
 
-
-
 # 用户态页缓存 {#userspace-page-cache}
-
-
 
 ## 概览 {#overview}
 
@@ -29,8 +25,6 @@ ClickHouse 已经提供了 [Filesystem cache](/docs/operations/storing-data)，
 | 在服务器重启后仍然存在                                 | 在服务器重启后不会保留                |
 | 不会体现在服务器的内存使用中                           | 会体现在服务器的内存使用中            |
 | 适用于基于磁盘和基于内存（操作系统页缓存）的场景        | **适用于无磁盘服务器**                |
-
-
 
 ## 配置与使用 {#configuration-settings-and-usage}
 
@@ -72,7 +66,6 @@ SET use_page_cache_for_disks_without_file_cache=1;
 | `page_cache_free_memory_ratio`                          | 在用户态页缓存中需要保持空闲的内存限额比例。类似于 Linux 的 `min_free_kbytes` 设置。                                                                                                                              | `0.15`      |
 | `page_cache_lookahead_blocks`                           | 当用户态页缓存未命中时，如果后续连续块也不在缓存中，则一次性从底层存储中预读最多这么多连续块。每个块的大小为 `page_cache_block_size` 字节。                                                                                                   | `16`        |
 | `page_cache_shards`                                     | 将用户态页缓存划分为相应数量的分片（shard），以减少互斥锁竞争。为实验性功能，不太可能提升性能。                                                                                                                                   | `4`         |
-
 
 ## 相关内容 {#related-content}
 - [文件系统缓存](/docs/operations/storing-data)

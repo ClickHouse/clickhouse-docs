@@ -44,7 +44,6 @@ JSON-файл со следующими данными, сохранённый �
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
-
 ### Чтение данных {#reading-data}
 
 Прочитайте данные, используя формат `JSONCompactColumns`:
@@ -69,6 +68,5 @@ FORMAT JSONCompactColumns
 ```
 
 Столбцы, которые отсутствуют в блоке, будут заполнены значениями по умолчанию (здесь можно использовать настройку [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields))
-
 
 ## Настройки формата {#format-settings}

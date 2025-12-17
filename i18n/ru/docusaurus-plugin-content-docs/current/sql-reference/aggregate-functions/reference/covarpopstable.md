@@ -6,8 +6,6 @@ title: 'covarPopStable'
 doc_type: 'reference'
 ---
 
-
-
 # covarPopStable {#covarpopstable}
 
 Вычисляет значение ковариации для генеральной совокупности:

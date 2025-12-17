@@ -44,8 +44,7 @@ assumeNotNull(x)
 
 **使用例**
 
-````sql title=Query
-```sql title=クエリ
+```sql title=Query
 CREATE TABLE t_null (x Int8, y Nullable(Int8))
 ENGINE=MergeTree()
 ORDER BY x;
@@ -55,7 +54,6 @@ INSERT INTO t_null VALUES (1, NULL), (2, 3);
 SELECT assumeNotNull(y) FROM table;
 SELECT toTypeName(assumeNotNull(y)) FROM t_null;
 ```
-````
 
 ```response title=Response
 ┌─assumeNotNull(y)─┐

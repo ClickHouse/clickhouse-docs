@@ -32,15 +32,15 @@ SaaS 型のデータ分析プラットフォームでは、組織、顧客、事
 まず、プライマリキーに `tenant_id` フィールドを含めた共有テーブルを作成します。
 
 ```sql
---- テーブルeventsを作成。tenant_idをプライマリキーの一部として使用
+--- Create table events. Using tenant_id as part of the primary key
 CREATE TABLE events
 (
-    tenant_id UInt32,                 -- テナント識別子
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントタイプ
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントを発生させたユーザーのID
-    data String,                 -- イベントデータ
+    tenant_id UInt32,                 -- Tenant identifier
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (tenant_id, timestamp)
 ```
@@ -48,7 +48,7 @@ ORDER BY (tenant_id, timestamp)
 ダミーデータを挿入します。
 
 ```sql
--- ダミーデータを挿入
+-- Insert some dummy rows
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -66,7 +66,7 @@ VALUES
 では、`user_1` と `user_2` という 2 つのユーザーを作成しましょう。
 
 ```sql
--- ユーザーを作成する
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -74,7 +74,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 `user_1` と `user_2` が自分のテナントのデータのみにアクセスできるように制限するための [行ポリシーを作成](/sql-reference/statements/create/row-policy) します。
 
 ```sql
--- 行ポリシーの作成
+-- Create row policies
 CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
@@ -82,20 +82,19 @@ CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 次に、共通のロールを使用して、共有テーブルに [`GRANT SELECT`](/sql-reference/statements/grant#usage) 権限を付与します。
 
 ```sql
--- ロールを作成
+-- Create role
 CREATE ROLE user_role
 
--- eventsテーブルに読み取り専用権限を付与
+-- Grant read only to events table.
 GRANT SELECT ON default.events TO user_role
 GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-
 これで `user_1` ユーザーとして接続し、簡単な `SELECT` を実行できます。最初のテナントの行だけが返されます。
 
 ```sql
--- user_1 でログイン中
+-- Logged as user_1
 SELECT *
 FROM events
 
@@ -107,7 +106,6 @@ FROM events
 5. │         1 │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## 個別テーブル {#separate-tables}
 
@@ -126,27 +124,27 @@ FROM events
 まず、`tenant_1`からのイベント用と`tenant_2`からのイベント用の2つのテーブルを作成しましょう。
 
 ```sql
--- テナント1用のテーブルを作成 
+-- Create table for tenant 1 
 CREATE TABLE events_tenant_1
 (
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントタイプ
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントをトリガーしたユーザーのID
-    data String,                 -- イベントデータ
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
-ORDER BY (timestamp, user_id) -- プライマリキーは他の属性に重点を置くことが可能
+ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
 
--- テナント2用のテーブルを作成 
+-- Create table for tenant 2 
 CREATE TABLE events_tenant_2
 (
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントタイプ
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントをトリガーしたユーザーのID
-    data String,                 -- イベントデータ
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
-ORDER BY (timestamp, user_id) -- プライマリキーは他の属性に重点を置くことが可能
+ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
 ```
 
 ダミーデータを挿入しましょう。
@@ -172,7 +170,7 @@ VALUES
 次に、2つのユーザー `user_1` と `user_2` を作成しましょう。
 
 ```sql
--- ユーザーを作成 
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -180,7 +178,7 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 次に、対応するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- eventsテーブルに読み取り専用権限を付与します。
+-- Grant read only to events table.
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
@@ -188,7 +186,7 @@ GRANT SELECT ON default.events_tenant_2 TO user_2
 これで `user_1` として接続し、このユーザーに対応するテーブルから単純なSELECTクエリを実行できます。最初のテナントの行のみが返されます。 
 
 ```sql
--- user_1 でログイン中
+-- Logged as user_1
 SELECT *
 FROM default.events_tenant_1
 
@@ -200,7 +198,6 @@ FROM default.events_tenant_1
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## 個別データベース {#separate-databases}
 
@@ -219,33 +216,33 @@ FROM default.events_tenant_1
 まず、`tenant_1` 用と `tenant_2` 用に 2 つのデータベースを作成します。
 
 ```sql
--- tenant_1用のデータベースを作成
+-- Create database for tenant_1
 CREATE DATABASE tenant_1;
 
--- tenant_2用のデータベースを作成
+-- Create database for tenant_2
 CREATE DATABASE tenant_2;
 ```
 
 ```sql
--- tenant_1 用のテーブルを作成
+-- Create table for tenant_1
 CREATE TABLE tenant_1.events
 (
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントの種類
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントを発生させたユーザーのID
-    data String,                 -- イベントデータ
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 
--- tenant_2 用のテーブルを作成
+-- Create table for tenant_2
 CREATE TABLE tenant_2.events
 (
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントの種類
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントを発生させたユーザーのID
-    data String,                 -- イベントデータ
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -273,7 +270,7 @@ VALUES
 それでは、`user_1` と `user_2` という 2 つのユーザーを作成しましょう。
 
 ```sql
--- ユーザーを作成 
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -281,16 +278,15 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 次に、対応するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- eventsテーブルに読み取り専用権限を付与します。
+-- Grant read only to events table.
 GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-
 これで、`user_1` として接続し、対象データベースの events テーブルに対して簡単な SELECT クエリを実行できます。最初のテナントの行だけが返されます。
 
 ```sql
--- user_1 でログイン中
+-- Logged as user_1
 SELECT *
 FROM tenant_1.events
 
@@ -302,7 +298,6 @@ FROM tenant_1.events
 5. │ 975fb0c8-55bd-4df4-843b-34f5cfeed0a9 │ user_login  │ 2025-03-19 08:50:00 │    1004 │ {"device": "desktop", "location": "LA"} │
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
-
 
 ## コンピュート間分離 {#compute-compute-separation}
 
@@ -329,14 +324,14 @@ FROM tenant_1.events
 まず、テーブル `events` を作成します。
 
 ```sql
--- tenant_1用のテーブルを作成
+-- Create table for tenant_1
 CREATE TABLE events
 (
-    id UUID,                    -- 一意のイベントID
-    type LowCardinality(String), -- イベントの種類
-    timestamp DateTime,          -- イベントのタイムスタンプ
-    user_id UInt32,               -- イベントを発生させたユーザーのID
-    data String,                 -- イベントデータ
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 ```
@@ -356,21 +351,21 @@ VALUES
 では、2 人のユーザー `user_1` を作成します。
 
 ```sql
--- ユーザーを作成する
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
 次に、該当するテーブルに対して `GRANT SELECT` 権限を付与します。
 
 ```sql
--- eventsテーブルに読み取り専用権限を付与
+-- Grant read only to events table.
 GRANT SELECT ON events TO user_1
 ```
 
 これでテナント1向けのサービスに `user_1` として接続し、簡単な `SELECT` を実行できます。テナント1の行だけが返されます。
 
 ```sql
--- user_1 としてログイン中
+-- Logged as user_1
 SELECT *
 FROM events
 

@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы ODBC {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -20,8 +19,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-
-
 ## Создание таблицы {#creating-a-table}
 
 ```sql
@@ -31,7 +28,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(источник_данных, внешняя_база_данных, внешняя_таблица)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
@@ -49,7 +46,6 @@ ENGINE = ODBC(источник_данных, внешняя_база_данны�
 * `external_table` — Имя таблицы в `external_database`.
 
 Эти параметры также можно передавать с помощью [именованных коллекций](operations/named-collections.md).
-
 
 ## Пример использования {#usage-example}
 
@@ -88,7 +84,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Подключено!                           |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -139,7 +135,6 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
-
 
 ## Смотрите также {#see-also}
 

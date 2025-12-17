@@ -53,17 +53,17 @@ import TabItem from '@theme/TabItem';
   Сначала убедитесь, что ваша система записывает файлы syslog:
 
   ```bash
-  # Проверка наличия файлов syslog (Linux)
-  ls -la /var/log/syslog /var/log/messages
+# Check if syslog files exist (Linux)
+ls -la /var/log/syslog /var/log/messages
 
-  # Или на macOS
-  ls -la /var/log/system.log
+# Or on macOS
+ls -la /var/log/system.log
 
-  # Просмотр последних записей
-  tail -20 /var/log/syslog
-  ```
+# View recent entries
+tail -20 /var/log/syslog
+```
 
-  Типичные расположения syslog:
+  Стандартные расположения syslog:
 
   * **Ubuntu/Debian**: `/var/log/syslog`
   * **RHEL/CentOS/Fedora**: `/var/log/messages`
@@ -71,128 +71,128 @@ import TabItem from '@theme/TabItem';
 
   #### Создайте пользовательскую конфигурацию OTel collector
 
-  ClickStack позволяет расширить базовую конфигурацию OpenTelemetry Collector путём монтирования пользовательского конфигурационного файла и установки переменной окружения.
+  ClickStack позволяет расширить базовую конфигурацию OpenTelemetry Collector путём монтирования пользовательского конфигурационного файла и задания переменной окружения.
 
   Создайте файл `host-logs-monitoring.yaml` с конфигурацией для вашей системы:
 
   <Tabs groupId="os-type">
     <TabItem value="modern-linux" label="Современный Linux (Ubuntu 24.04+)" default>
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout_type: gotime
-              layout: '2006-01-02T15:04:05.999999-07:00'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout_type: gotime
+        layout: '2006-01-02T15:04:05.999999-07:00'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
 
-    <TabItem value="legacy-linux" label="Старые версии Linux (Ubuntu 20.04, RHEL, CentOS)">
+    <TabItem value="legacy-linux" label="Устаревшие версии Linux (Ubuntu 20.04, RHEL, CentOS)">
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/messages
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/messages
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
 
     <TabItem value="macos" label="macOS">
       ```yaml
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/system.log
-            - /host/private/var/log/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "host-logs"
-            
-            - type: add
-              field: resource["service.name"]
-              value: "host-production"
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/system.log
+      - /host/private/var/log/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "host-logs"
+      
+      - type: add
+        field: resource["service.name"]
+        value: "host-production"
 
-      service:
-        pipelines:
-          logs/host:
-            receivers: [filelog/syslog]
-            processors:
-              - memory_limiter
-              - transform
-              - batch
-            exporters:
-              - clickhouse
-      ```
+service:
+  pipelines:
+    logs/host:
+      receivers: [filelog/syslog]
+      processors:
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+```
     </TabItem>
   </Tabs>
 
@@ -200,70 +200,70 @@ import TabItem from '@theme/TabItem';
 
   Все конфигурации:
 
-  * Чтение файлов syslog из стандартных расположений
-  * Разберите сообщения в формате syslog, чтобы извлечь структурированные поля (timestamp, hostname, unit/service, PID, message)
-  * Сохранение исходных временных меток логов
+  * Чтение файлов syslog из стандартных путей
+  * Разобрать сообщения в формате syslog, чтобы извлечь структурированные поля (timestamp, hostname, unit/service, PID, message)
+  * Сохраняйте исходные временные метки логов
   * Добавьте атрибут `source: host-logs` для фильтрации данных в HyperDX
-  * Маршрутизируйте логи в экспортёр ClickHouse через отдельный конвейер обработки
+  * Направьте логи в экспортёр ClickHouse через отдельный pipeline
 
   :::note
 
   * В пользовательской конфигурации вы задаёте только новые receivers и pipelines
-  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — достаточно просто сослаться на них по имени
-  * Парсер на основе регулярных выражений извлекает имена юнитов systemd, PID и другие метаданные из сообщений в формате syslog
-  * Эта конфигурация использует `start_at: end`, чтобы избежать повторного приёма логов при перезапусках коллектора. Для тестирования измените на `start_at: beginning`, чтобы сразу увидеть логи за прошедшее время.
+  * Процессоры (`memory_limiter`, `transform`, `batch`) и экспортёры (`clickhouse`) уже определены в базовой конфигурации ClickStack — вы просто ссылаетесь на них по имени
+  * Regex-парсер извлекает имена юнитов systemd, PID&#39;ы и другие метаданные из сообщений в формате syslog
+  * Эта конфигурация использует `start_at: end`, чтобы избежать повторного приёма логов при перезапусках коллектора. Для тестирования измените на `start_at: beginning`, чтобы сразу увидеть предыдущие логи.
     :::
 
   #### Настройте ClickStack для загрузки пользовательской конфигурации
 
   Чтобы включить пользовательскую конфигурацию коллектора в существующем развертывании ClickStack, необходимо:
 
-  1. Смонтируйте пользовательский файл конфигурации по пути `/etc/otelcol-contrib/custom.config.yaml`
+  1. Подмонтируйте пользовательский конфигурационный файл в `/etc/otelcol-contrib/custom.config.yaml`
   2. Установите переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
-  3. Смонтируйте каталог с файлами syslog, чтобы коллектор мог их читать
+  3. Примонтируйте каталог с журналами syslog, чтобы коллектор мог их считывать
 
   ##### Вариант 1: Docker Compose
 
-  Обновите конфигурацию развёртывания ClickStack:
+  Обновите конфигурацию развертывания ClickStack:
 
   ```yaml
-  services:
-    clickstack:
-      # ... existing configuration ...
-      environment:
-        - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
-        # ... other environment variables ...
-      volumes:
-        - ./host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
-        - /var/log:/var/log:ro
-        # ... other volumes ...
-  ```
+services:
+  clickstack:
+    # ... existing configuration ...
+    environment:
+      - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+      # ... other environment variables ...
+    volumes:
+      - ./host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+      - /var/log:/var/log:ro
+      # ... other volumes ...
+```
 
   ##### Вариант 2: Docker Run (образ «всё в одном»)
 
-  Если вы используете универсальный образ с docker run:
+  Если вы используете универсальный образ с `docker run`:
 
   ```bash
-  docker run --name clickstack \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v /var/log:/var/log:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-  ```
+docker run --name clickstack \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/host-logs-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v /var/log:/var/log:ro \
+  clickhouse/clickstack-all-in-one:latest
+```
 
   :::note
-  Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов syslog. В production-среде используйте монтирование только для чтения (`:ro`) и следуйте принципу наименьших привилегий.
+  Убедитесь, что коллектор ClickStack имеет необходимые права для чтения файлов syslog. В production-среде используйте монтирование только для чтения (`:ro`) и следуйте принципу минимальных привилегий.
   :::
 
   #### Проверка логов в HyperDX
 
   После настройки войдите в HyperDX и убедитесь, что журналы поступают:
 
-  1. Перейдите в режим поиска
-  2. В поле Source выберите значение Logs
-  3. Отфильтруйте по `source:host-logs`, чтобы просмотреть логи конкретных хостов
-  4. Вы должны увидеть структурированные записи логов с полями, такими как `unit`, `hostname`, `pid`, `message` и т.д.
+  1. Перейдите на страницу поиска
+  2. В качестве источника выберите Logs
+  3. Отфильтруйте логи по `source:host-logs`, чтобы увидеть логи конкретного хоста
+  4. Вы должны увидеть структурированные записи логов с такими полями, как `unit`, `hostname`, `pid`, `message` и т.д.
 
   <Image img={search_view} alt="Экран поиска" />
 
@@ -272,13 +272,13 @@ import TabItem from '@theme/TabItem';
 
 ## Демонстрационный набор данных {#demo-dataset}
 
-Для пользователей, которые хотят протестировать интеграцию журналов хоста перед настройкой боевых систем, мы предоставляем пример набора данных с предварительно сгенерированными системными журналами с реалистичными сценариями.
+Для пользователей, которые хотят протестировать интеграцию с журналами хоста до настройки своих продуктовых систем, мы предоставляем пример набора данных из заранее сгенерированных системных логов с реалистичными шаблонами.
 
 <VerticalStepper headerLevel="h4">
 
-#### Загрузка примера набора данных {#download-sample}
+#### Загрузите пример набора данных {#download-sample}
 
-Загрузите пример файла журнала:
+Загрузите пример файла логов:
 
 ```bash
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
@@ -287,13 +287,13 @@ curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-int
 Набор данных включает:
 - Последовательность загрузки системы
 - Активность входа по SSH (успешные и неуспешные попытки)
-- Инцидент безопасности (атака перебором паролей с реакцией fail2ban)
-- Плановое обслуживание (задания cron, anacron)
+- Инцидент безопасности (атака методом перебора с реакцией fail2ban)
+- Плановое обслуживание (cron-задания, anacron)
 - Перезапуски сервисов (rsyslog)
-- Сообщения ядра и активность межсетевого экрана (firewall)
-- Сочетание нормальной работы и примечательных событий
+- Сообщения ядра и активность межсетевого экрана
+- Сочетание нормальной работы и заметных событий
 
-#### Создание тестовой конфигурации коллектора {#test-config}
+#### Создайте тестовую конфигурацию коллектора {#test-config}
 
 Создайте файл с именем `host-logs-demo.yaml` со следующей конфигурацией:
 
@@ -335,9 +335,9 @@ service:
 EOF
 ```
 
-#### Запуск ClickStack с демонстрационной конфигурацией {#run-demo}
+#### Запустите ClickStack с демонстрационной конфигурацией {#run-demo}
 
-Запустите ClickStack с демо-журналами и конфигурацией:
+Запустите ClickStack с демонстрационными логами и конфигурацией:
 
 ```bash
 docker run --name clickstack-demo \
@@ -345,26 +345,26 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
-**Это монтирует файл журнала непосредственно в контейнер. Это делается для тестирования со статическими демо-данными.**
+**При этом файл логов монтируется непосредственно в контейнер. Это сделано для целей тестирования со статическими демонстрационными данными.**
 :::
 
-#### Проверка журналов в HyperDX {#verify-demo-logs}
+#### Проверьте логи в HyperDX {#verify-demo-logs}
 
 После запуска ClickStack:
 
-1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учетную запись (при необходимости сначала создайте учетную запись)
+1. Откройте [HyperDX](http://localhost:8080/) и войдите в свою учетную запись (возможно, вам сначала потребуется создать учетную запись)
 2. Перейдите в раздел Search и установите источник `Logs`
-3. Установите диапазон времени **2025-11-10 00:00:00 - 2025-11-13 00:00:00**
+3. Установите диапазон времени на **2025-11-10 00:00:00 - 2025-11-13 00:00:00**
 
-<Image img={search_view} alt="Представление поиска"/>
-<Image img={log_view} alt="Представление журналов"/>
+<Image img={search_view} alt="Представление Search"/>
+<Image img={log_view} alt="Представление Log"/>
 
 :::note[Отображение часового пояса]
-HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демо-данные охватывают период **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**. Широкий диапазон времени гарантирует, что вы увидите демо-журналы независимо от вашего местоположения. После того как вы увидите журналы, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
+HyperDX отображает временные метки в локальном часовом поясе вашего браузера. Демонстрационные данные охватывают период **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)**. Широкий временной диапазон гарантирует, что вы увидите демонстрационные логи независимо от вашего местоположения. После того как вы увидите логи, вы можете сузить диапазон до 24 часов для более наглядной визуализации.
 :::
 
 </VerticalStepper>
@@ -415,13 +415,13 @@ HyperDX отображает временные метки в локальном
 Убедитесь, что задана переменная среды:
 
 ```bash
-docker exec <имя-контейнера> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 Проверьте, что пользовательский конфигурационный файл смонтирован и доступен для чтения:
 
 ```bash
-docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config.yaml | head -10
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
 
@@ -430,10 +430,10 @@ docker exec <имя-контейнера> cat /etc/otelcol-contrib/custom.config
 **Проверьте, что файлы syslog существуют и в них ведётся запись:**
 
 ```bash
-# Проверить наличие syslog
+# Check if syslog exists
 ls -la /var/log/syslog /var/log/messages
 
-# Убедиться, что логи записываются
+# Verify logs are being written
 tail -f /var/log/syslog
 ```
 
@@ -469,16 +469,16 @@ docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 Для современных версий Linux (Ubuntu 24.04+):
 
 ```bash
-# Должен отображать формат ISO8601: 2025-11-17T20:55:44.826796+00:00
+# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
 tail -5 /var/log/syslog
 ```
 
 Для старых версий Linux или macOS:
 
 ```bash
-# Должен отображаться традиционный формат: Nov 17 14:16:16
+# Should show traditional format: Nov 17 14:16:16
 tail -5 /var/log/syslog
-# или
+# or
 tail -5 /var/log/system.log
 ```
 

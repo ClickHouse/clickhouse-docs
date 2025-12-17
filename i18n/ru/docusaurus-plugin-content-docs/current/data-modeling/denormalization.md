@@ -10,12 +10,9 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
 # Денормализация данных {#denormalizing-data}
 
 Денормализация данных — это подход в ClickHouse, при котором используются «плоские» таблицы для минимизации задержки выполнения запросов за счёт избегания соединений (`JOIN`).
-
-
 
 ## Сравнение нормализованных и денормализованных схем {#comparing-normalized-vs-denormalized-schemas}
 
@@ -29,8 +26,6 @@ import Image from '@theme/IdealImage';
 
 Распространённый приём, получивший популярность благодаря NoSQL-решениям, заключается в денормализации данных при отсутствии поддержки `JOIN`, фактически сохраняя всю статистику или связанные строки в родительской строке в виде столбцов и вложенных объектов. Например, в примерной схеме данных для блога мы можем хранить все `Comments` как `Array` объектов в соответствующих постах.
 
-
-
 ## Когда использовать денормализацию {#when-to-use-denormalization}
 
 В целом мы рекомендуем использовать денормализацию в следующих случаях:
@@ -43,8 +38,6 @@ import Image from '@theme/IdealImage';
 Нет необходимости денормализовывать всю информацию — только ключевые данные, к которым нужен частый доступ.
 
 Работу по денормализации можно выполнять либо в ClickHouse, либо в upstream‑системах, например с использованием Apache Flink.
-
-
 
 ## Избегайте денормализации для часто обновляемых данных {#avoid-denormalization-on-frequently-updated-data}
 
@@ -60,8 +53,6 @@ import Image from '@theme/IdealImage';
 <br />
 
 Поэтому чаще используется пакетный процесс обновления, при котором все денормализованные объекты периодически перезагружаются.
-
-
 
 ## Практические примеры денормализации {#practical-cases-for-denormalization}
 
@@ -150,7 +141,6 @@ LIMIT 5
 
 <p />
 
-
 ```sql
 CREATE TABLE users
 (
@@ -186,11 +176,11 @@ ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
 
-0 строк в наборе. Прошло: 26.229 сек. Обработано 22.48 млн строк, 1.36 ГБ (857.21 тыс. строк/с., 51.99 МБ/с.)
+0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
 
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-0 строк в наборе. Прошло: 18.126 сек. Обработано 51.29 млн строк, 797.05 МБ (2.83 млн строк/с., 43.97 МБ/с.)
+0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
 Хотя пользователи могут часто получать бейджи, маловероятно, что этот набор данных нам нужно будет обновлять чаще одного раза в день. Связь между бейджами и пользователями — «один ко многим». Может быть, мы просто денормализуем бейджи на пользователей как список кортежей? Хотя это возможно, быстрая проверка максимального количества бейджей на одного пользователя показывает, что это не лучший вариант:
@@ -251,7 +241,6 @@ ORDER BY c DESC LIMIT 5
 
 Аналогично, такие связи не относятся к часто происходящим событиям:
 
-
 ```sql
 SELECT
   round(avg(c)) AS avg_votes_per_hr,
@@ -281,7 +270,7 @@ FROM
 CREATE TABLE posts_with_duplicate_count
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -- другие столбцы
+   ... -other columns
    `DuplicatePosts` UInt16
 ) ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
@@ -320,7 +309,7 @@ SET flatten_nested=0
 CREATE TABLE posts_with_links
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -остальные столбцы
+   ... -other columns
    `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
    `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
 ) ENGINE = MergeTree
@@ -352,7 +341,6 @@ Peak memory usage: 6.98 GiB.
 
 > Обратите внимание на время выполнения. Нам удалось денормализовать 66 млн строк примерно за 2 минуты. Как мы увидим позже, эту операцию можно запускать по расписанию.
 
-
 Обратите внимание на использование функций `groupArray` для агрегирования `PostLinks` в массив для каждого `PostId` перед выполнением соединения. Этот массив затем фильтруется в два списка: `LinkedPosts` и `DuplicatePosts`, при этом из внешнего соединения также исключаются любые пустые результаты.
 
 Мы можем выбрать несколько строк, чтобы увидеть нашу новую денормализованную структуру:
@@ -369,7 +357,6 @@ Row 1:
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## Оркестрация и планирование денормализации {#orchestrating-and-scheduling-denormalization}
 

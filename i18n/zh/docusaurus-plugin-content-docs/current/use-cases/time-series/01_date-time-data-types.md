@@ -137,7 +137,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 ClickHouse 还提供了一组函数，用于在不同数据类型之间相互转换。
 
-例如，我们可以使用 [`toDate`](/sql-reference/functions/type-conversion-functions#todate) 将 `DateTime` 值转换为 `Date` 类型：
+例如，我们可以使用 [`toDate`](/sql-reference/functions/type-conversion-functions#toDate) 将 `DateTime` 值转换为 `Date` 类型：
 
 ```sql
 SELECT
@@ -157,7 +157,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-我们可以使用 [`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) 将 `DateTime` 转换为 `DateTime64`：
+我们可以使用 [`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) 将 `DateTime` 转换为 `DateTime64`：
 
 ```sql
 SELECT
@@ -169,7 +169,7 @@ FORMAT Vertical;
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 current_time:             2025-03-12 12:35:01
 toTypeName(current_time): DateTime
@@ -177,7 +177,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-此外，我们可以使用 [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) 将 `Date` 或 `DateTime64` 转换回 `DateTime`：
+此外，我们可以使用 [`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) 将 `Date` 或 `DateTime64` 转换回 `DateTime`：
 
 ```sql
 SELECT

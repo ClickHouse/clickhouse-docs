@@ -13,8 +13,6 @@ doc_type: 'guide'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 在需要比其他标准格式更高的自定义能力时，
@@ -32,8 +30,6 @@ doc_type: 'guide'
 | `format_template_resultset_format`                                                                       | 指定[内联](#inline_specification)的结果集格式字符串。                                                                      |
 | 某些其他格式的设置（例如使用 `JSON` 转义时的 `output_format_json_quote_64bit_integers`）                |                                                                                                                            |
 
-
-
 ## 设置和转义规则 {#settings-and-escaping-rules}
 
 ### format&#95;template&#95;row {#format_template_row}
@@ -41,7 +37,7 @@ doc_type: 'guide'
 `format_template_row` 设置指定包含行格式字符串的文件路径，该文件中行格式字符串的语法如下：
 
 ```text
-分隔符_1${列_1:序列化为_1}分隔符_2${列_2:序列化为_2} ... 分隔符_N
+delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... delimiter_N
 ```
 
 其中：
@@ -69,7 +65,7 @@ doc_type: 'guide'
 下面通过一个示例来说明。给定如下格式字符串：
 
 ```text
-搜索词组:${s:Quoted},数量:${c:Escaped},广告价格:$$${p:JSON};
+Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 ```
 
 以下值将在列标记 `Search phrase:`、`, count:`、`, ad price: $` 和分隔符 `;` 之间依次被输出（如果使用 `SELECT`）或被期望作为输入提供（如果使用 `INPUT`）：
@@ -84,7 +80,7 @@ doc_type: 'guide'
 * 如果执行 `SELECT`，在值 `bathroom interior design`、`2166`、`$3` 已经存储在表的 `Search phrase`、`count`、`ad price` 列中的前提下，下方这一行就是输出结果。
 
 ```yaml
-搜索词组：'bathroom interior design'，数量：2166，广告价格：$3;
+Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
 ### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
@@ -114,7 +110,6 @@ doc_type: 'guide'
 如果 `format_template_resultset` 设置为空字符串，则默认使用 `${data}`。
 :::
 
-
 对于 INSERT 查询，如果存在前缀或后缀（见示例），该格式允许省略某些列或字段。
 
 ### 内联指定 {#inline_specification}
@@ -132,8 +127,6 @@ doc_type: 'guide'
 - 使用 `format_template_resultset_format` 时，对应 [`format_template_resultset`](#format_template_resultset)。
 :::
 
-
-
 ## 示例用法 {#example-usage}
 
 让我们来看两个关于如何使用 `Template` 格式的示例，首先是用于查询数据，其次是用于插入数据。
@@ -147,16 +140,16 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```text title="/some/path/resultset.format"
 <!DOCTYPE HTML>
-<html> <head> <title>搜索词组</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>搜索词组</caption>
-    <tr> <th>搜索词组</th> <th>次数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     ${data}
   </table>
-  <table border="1"> <caption>最大值</caption>
+  <table border="1"> <caption>Max</caption>
     ${max}
   </table>
-  <b>已处理 ${rows_read:XML} 行，耗时 ${time:XML} 秒</b>
+  <b>Processed ${rows_read:XML} rows in ${time:XML} sec</b>
  </body>
 </html>
 ```
@@ -169,20 +162,20 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```html
 <!DOCTYPE HTML>
-<html> <head> <title>搜索词组</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>搜索词组</caption>
-    <tr> <th>搜索词组</th> <th>次数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     <tr> <td></td> <td>8267016</td> </tr>
     <tr> <td>bathroom interior design</td> <td>2166</td> </tr>
     <tr> <td>clickhouse</td> <td>1655</td> </tr>
     <tr> <td>spring 2014 fashion</td> <td>1549</td> </tr>
     <tr> <td>freeform photos</td> <td>1480</td> </tr>
   </table>
-  <table border="1"> <caption>最大值</caption>
+  <table border="1"> <caption>Max</caption>
     <tr> <td></td> <td>8873898</td> </tr>
   </table>
-  <b>已处理 3095973 行，耗时 0.1569913 秒</b>
+  <b>Processed 3095973 rows in 0.1569913 sec</b>
  </body>
 </html>
 ```
@@ -190,10 +183,10 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 ### 写入数据 {#inserting-data}
 
 ```text
-某个标题
-页面浏览量:5,用户 ID:4324182021466249494,无用字段:hello,持续时间:146,符号:-1
-页面浏览量:6,用户 ID:4324182021466249494,无用字段:world,持续时间:185,符号:1
-总行数:2
+Some header
+Page views: 5, User id: 4324182021466249494, Useless field: hello, Duration: 146, Sign: -1
+Page views: 6, User id: 4324182021466249494, Useless field: world, Duration: 185, Sign: 1
+Total rows: 2
 ```
 
 ```sql
@@ -203,11 +196,11 @@ FORMAT Template
 ```
 
 ```text title="/some/path/resultset.format"
-标题\n${data}\n总行数：${:CSV}\n
+Some header\n${data}\nTotal rows: ${:CSV}\n
 ```
 
 ```text title="/some/path/row.format"
-页面浏览量: ${PageViews:CSV}, 用户 ID: ${UserID:CSV}, 无用字段: ${:CSV}, 持续时间: ${Duration:CSV}, 签名: ${Sign:CSV}
+Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Duration: ${Duration:CSV}, Sign: ${Sign:CSV}
 ```
 
 占位符中的 `PageViews`、`UserID`、`Duration` 和 `Sign` 是表中的列名。行中 `Useless field` 之后的值，以及后缀中 `\nTotal rows:` 之后的值将被忽略。
@@ -216,7 +209,6 @@ FORMAT Template
 ### 内联规格 {#in-line-specification}
 
 厌倦了手动编写和排版 Markdown 表格？在本示例中，我们将介绍如何使用 `Template` 格式和内联规格设置来完成一个简单任务——从 `system.formats` 表中 `SELECT` 出若干 ClickHouse 格式的名称，并将它们格式化为 Markdown 表格。通过使用 `Template` 格式以及 `format_template_row_format` 和 `format_template_resultset_format` 设置，即可轻松实现这一点。
-
 
 在之前的示例中，我们将结果集和行格式字符串放在单独的文件中，并分别通过设置 `format_template_resultset` 和 `format_template_row` 来指定这些文件的路径。这里我们会直接内联定义这些内容，因为我们的模板非常简单，只包含少量的 `|` 和 `-` 用于构造 Markdown 表格。我们将使用设置 `format_template_resultset_format` 来指定结果集模板字符串。为了生成表头，我们在 `${data}` 之前添加了 `|ClickHouse Formats|\n|---|\n`。我们使用设置 `format_template_row_format` 为每一行指定模板字符串 ``|`{0:XML}`|``。`Template` 格式会将按给定格式生成的行插入到占位符 `${data}` 中。在这个示例中我们只有一列，但如果你想添加更多列，可以在行模板字符串中添加 `{1:XML}`、`{2:XML}` 等，并根据需要选择合适的转义规则。在本示例中我们使用的是转义规则 `XML`。
 
@@ -231,13 +223,13 @@ SELECT * FROM formats
 FORMAT Template
 SETTINGS
  format_template_row_format='|`${0:XML}`|',
- format_template_resultset_format='|ClickHouse 格式|\n|---|\n${data}\n'
+ format_template_resultset_format='|ClickHouse Formats|\n|---|\n${data}\n'
 ```
 
 看看这个！我们不必再为构建那个 Markdown 表格而手动添加那些 `|` 和 `-` 了：
 
 ```response title="Response"
-|ClickHouse 格式|
+|ClickHouse Formats|
 |---|
 |`BSONEachRow`|
 |`CustomSeparatedWithNames`|

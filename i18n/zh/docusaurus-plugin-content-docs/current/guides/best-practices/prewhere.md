@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 
 import Image from '@theme/IdealImage';
 
-
 # PREWHERE 优化是如何工作的？ {#how-does-the-prewhere-optimization-work}
 
 [PREWHERE 子句](/sql-reference/statements/select/prewhere) 是 ClickHouse 中的一种查询执行优化机制。它通过避免不必要的数据读取、在从磁盘读取非过滤列之前先过滤掉无关数据，从而减少 I/O 并提升查询速度。
 
 本指南将介绍 PREWHERE 的工作原理、如何衡量它带来的效果，以及如何对其进行调优以获得最佳性能。
-
-
 
 ## 未使用 PREWHERE 优化时的查询处理 {#query-processing-without-prewhere-optimization}
 
@@ -43,8 +40,6 @@ import Image from '@theme/IdealImage';
 ⑤ 然后在查询执行期间应用其余的过滤条件。
 
 可以看到，在没有 PREWHERE 的情况下，所有潜在相关的列都会在过滤之前加载，即便最终只有少量行实际匹配条件。
-
-
 
 ## PREWHERE 如何提升查询效率 {#how-prewhere-improves-query-efficiency}
 
@@ -95,8 +90,6 @@ ClickHouse 首先通过 ① 从 `town` 列读取选定的 granule，并检查哪
 请注意，在带 PREWHERE 和不带 PREWHERE 的两种查询版本中，ClickHouse 处理的行数是相同的。然而，在应用 PREWHERE 优化后，并不需要为每一行都加载所有列的值。
 :::
 
-
-
 ## PREWHERE 优化会自动应用 {#prewhere-optimization-is-automatically-applied}
 
 如上例所示，可以手动添加 PREWHERE 子句。不过，你无需手动编写 PREWHERE。当将设置 [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) 启用时（默认值为 true），ClickHouse 会自动将过滤条件从 WHERE 移动到 PREWHERE，并优先选择那些最能减少读取量的条件。
@@ -106,8 +99,6 @@ ClickHouse 首先通过 ① 从 `town` 列读取选定的 granule，并检查哪
 从版本 [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov) 开始，ClickHouse 默认遵循这一策略，会按未压缩大小的升序对 PREWHERE 过滤列进行排序，以进行多阶段处理。
 
 从版本 [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere) 开始，可选的列统计信息可以进一步优化这一过程，即基于实际数据的选择性来决定过滤处理顺序，而不仅仅依赖列大小。
-
-
 
 ## 如何衡量 PREWHERE 的影响 {#how-to-measure-prewhere-impact}
 
@@ -132,8 +123,8 @@ SETTINGS optimize_move_to_prewhere = false;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-返回 3 行。用时:0.056 秒。已处理 231 万行,23.36 MB(每秒 4109 万行,415.43 MB/秒)。
-内存峰值:132.10 MiB。
+3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+Peak memory usage: 132.10 MiB.
 ```
 
 在执行该查询时，ClickHouse 共读取了 **23.36 MB** 的列数据，处理了 231 万行记录。
@@ -157,8 +148,8 @@ SETTINGS optimize_move_to_prewhere = true;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-返回 3 行。用时:0.017 秒。已处理 231 万行,6.74 MB(每秒 1.3529 亿行,394.44 MB/秒)。
-峰值内存使用量:132.11 MiB。
+3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+Peak memory usage: 132.11 MiB.
 ```
 
 处理的行数相同（231 万），但得益于 PREWHERE，ClickHouse 读取的列数据量减少到不到原来的三分之一——仅 6.74 MB，而非 23.36 MB——从而将总运行时间缩短了约 3 倍。
@@ -167,7 +158,7 @@ SETTINGS optimize_move_to_prewhere = true;
 
 我们使用 [EXPLAIN](/sql-reference/statements/explain#explain-plan) 子句检查查询的逻辑计划：
 
-```sql
+```sql 
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -179,8 +170,8 @@ WHERE
 
 ```txt
 ...
-Prewhere 信息                                                                                                                                                                                                                                          
-  Prewhere 筛选列: 
+Prewhere info                                                                                                                                                                                                                                          
+  Prewhere filter column: 
     and(greater(__table1.date, '2024-12-31'_String), 
     less(__table1.price, 10000_UInt16), 
     equals(__table1.town, 'LONDON'_String)) 
@@ -205,15 +196,14 @@ SETTINGS send_logs_level = 'test';
 
 ```txt
 ...
-<Trace> ... 条件 greater(date, '2024-12-31'_String) 已移至 PREWHERE
-<Trace> ... 条件 less(price, 10000_UInt16) 已移至 PREWHERE
-<Trace> ... 条件 equals(town, 'LONDON'_String) 已移至 PREWHERE
+<Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
+<Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
+<Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
 ...
-<Test> ... 在数据块上执行 prewhere 操作:greater(__table1.date, '2024-12-31'_String)
-<Test> ... 在数据块上执行 prewhere 操作:less(__table1.price, 10000_UInt16)
+<Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
+<Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
 ...
 ```
-
 
 ## 关键要点 {#key-takeaways}
 

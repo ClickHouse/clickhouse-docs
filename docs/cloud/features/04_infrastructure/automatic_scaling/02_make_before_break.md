@@ -26,7 +26,7 @@ The image below shows how this might happen for a cluster with 3 replicas where 
 
 Overall, MBB leads to a seamless, less disruptive scaling and upgrade experience compared to the break-first approach previously utilized.
 
-With MBB, there are some key behaviors that users need to be aware of:
+With MBB, there are some key behaviors that you need to be aware of:
 
 1. MBB operations wait for existing workloads to finish on the current replicas before being terminated.
    This period is currently set to 1 hour, which means that scaling or upgrades can wait up to one hour for a long-running query on a replica before the replica is removed.

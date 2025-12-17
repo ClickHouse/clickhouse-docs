@@ -40,7 +40,7 @@ If you are managing your own OpenTelemetry collector in a standalone deployment 
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
@@ -53,7 +53,7 @@ The `OPAMP_SERVER_URL` should point to your HyperDX deployment - for example, `h
 For the collector to connect to the OpAMP port it must be exposed by the HyperDX container e.g. `-p 4320:4320`. For local testing, OSX users can then set `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Linux users can start the collector container with `--network=host`.
 :::
 
-Users should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
+You should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
 
 ### Modifying configuration {#modifying-otel-collector-configuration}
 
@@ -71,8 +71,12 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note Image Name Update
+ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
+:::
 
 #### Docker Compose {#docker-compose-otel}
 
@@ -169,7 +173,7 @@ docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 **Deploy with the standalone collector:**
@@ -182,7 +186,7 @@ docker run -d \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 :::note
@@ -197,7 +201,7 @@ For details on configuring OTel collectors, including [`receivers`](https://open
 
 ## Securing the collector {#securing-the-collector}
 
-The ClickStack distribution of the OpenTelemetry collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, users must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
+The ClickStack distribution of the OpenTelemetry collector includes built-in support for OpAMP (Open Agent Management Protocol), which it uses to securely configure and manage the OTLP endpoint. On startup, you must provide an `OPAMP_SERVER_URL` environment variable — this should point to the HyperDX app, which hosts the OpAMP API at `/v1/opamp`.
 
 This integration ensures that the OTLP endpoint is secured using an auto-generated ingestion API key, created when the HyperDX app is deployed. All telemetry data sent to the collector must include this API key for authentication. You can find the key in the HyperDX app under `Team Settings → API Keys`.
 
@@ -230,7 +234,7 @@ Users will invariably want to filter, transform, and enrich event messages durin
 
 If processing is done using the OTel collector, we recommend doing transformations at gateway instances and minimizing any work done at agent instances. This will ensure the resources required by agents at the edge, running on servers, are as minimal as possible. Typically, we see users only performing filtering (to minimize unnecessary network usage), timestamp setting (via operators), and enrichment, which requires context in agents. For example, if gateway instances reside in a different Kubernetes cluster, k8s enrichment will need to occur in the agent.
 
-OpenTelemetry supports the following processing and filtering features users can exploit:
+OpenTelemetry supports the following processing and filtering features you can leverage:
 
 - **Processors** - Processors take the data collected by [receivers and modify or transform](https://opentelemetry.io/docs/collector/transforming-telemetry/) it before sending it to the exporters. Processors are applied in the order as configured in the `processors` section of the collector configuration. These are optional, but the minimal set is [typically recommended](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors). When using an OTel collector with ClickHouse, we recommend limiting processors to:
 
@@ -303,7 +307,7 @@ For more advanced configuration, we suggest the [OpenTelemetry collector documen
 
 ## Optimizing inserts {#optimizing-inserts}
 
-In order to achieve high insert performance while obtaining strong consistency guarantees, users should adhere to simple rules when inserting Observability data into ClickHouse via the ClickStack collector. With the correct configuration of the OTel collector, the following rules should be straightforward to follow. This also avoids [common issues](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse) users encounter when using ClickHouse for the first time.
+In order to achieve high insert performance while obtaining strong consistency guarantees, you should adhere to simple rules when inserting Observability data into ClickHouse via the ClickStack collector. With the correct configuration of the OTel collector, the following rules should be straightforward to follow. This also avoids [common issues](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse) users encounter when using ClickHouse for the first time.
 
 ### Batching {#batching}
 
@@ -320,9 +324,9 @@ For this reason, the ClickStack distribution of the OTel collector uses the [bat
 
 ### Use asynchronous inserts {#use-asynchronous-inserts}
 
-Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if users are sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
+Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This issue is rare if you're sending data to the ClickStack collector acting as a Gateway - by acting as aggregators, they alleviate this problem - see [Collector roles](#collector-roles).
 
-If large batches cannot be guaranteed, users can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
+If large batches cannot be guaranteed, you can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
 <Image img={observability_6} alt="Async inserts" size="md"/>
 
@@ -330,7 +334,7 @@ With [asynchronous inserts enabled](/optimize/asynchronous-inserts#enabling-asyn
 
 To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
-Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. Users can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
+Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. You can tune these settings to control the end-to-end latency of their pipeline. Further settings that can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
 :::note Consider Adaptive Asynchronous Inserts
 In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
@@ -372,7 +376,7 @@ Resource requirements for the OTel collector will depend on the event throughput
 
 [In our experience](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview), a ClickStack gateway instance with 3 cores and 12GB of RAM can handle around 60k events per second. This assumes a minimal processing pipeline responsible for renaming fields and no regular expressions.
 
-For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers users can use as a starting point:
+For agent instances responsible for shipping events to a gateway, and only setting the timestamp on the event, we recommend users size based on the anticipated logs per second. The following represent approximate numbers you can use as a starting point:
 
 | Logging rate | Resources to collector agent |
 |--------------|------------------------------|
@@ -412,7 +416,7 @@ In order to query the JSON type, support must also be enabled in the HyperDX app
 For example:
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 ### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}

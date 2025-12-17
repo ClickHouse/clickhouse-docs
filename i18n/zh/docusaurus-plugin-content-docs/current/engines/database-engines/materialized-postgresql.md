@@ -10,7 +10,6 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MaterializedPostgreSQL {#materializedpostgresql}
 
 <ExperimentalBadge />
@@ -34,7 +33,6 @@ SET allow_experimental_database_materialized_postgresql=1
 
 :::
 
-
 ## 创建数据库 {#creating-a-database}
 
 ```sql
@@ -48,7 +46,6 @@ ENGINE = MaterializedPostgreSQL('host:port', 'database', 'user', 'password') [SE
 * `database` — PostgreSQL 数据库名。
 * `user` — PostgreSQL 用户名。
 * `password` — 用户密码。
-
 
 ## 使用示例 {#example-of-use}
 
@@ -65,7 +62,6 @@ SHOW TABLES FROM postgres_db;
 SELECT * FROM postgresql_db.postgres_table;
 ```
 
-
 ## 动态向复制中添加新表 {#dynamically-adding-table-to-replication}
 
 创建 `MaterializedPostgreSQL` 数据库后，它不会自动检测对应 PostgreSQL 数据库中的新表。可以手动添加这类表：
@@ -78,7 +74,6 @@ ATTACH TABLE postgres_database.new_table;
 在 22.1 之前的版本中，将表加入复制后会留下一个不会自动删除的临时复制槽（名称为 `{db_name}_ch_replication_slot_tmp`）。如果在 22.1 之前的 ClickHouse 版本中执行表的 ATTACH 操作，请务必手动删除该复制槽（`SELECT pg_drop_replication_slot('{db_name}_ch_replication_slot_tmp')`），否则磁盘使用量会不断增长。该问题已在 22.1 中修复。
 :::
 
-
 ## 动态移除复制中的表 {#dynamically-removing-table-from-replication}
 
 可以将特定的表从复制中移除：
@@ -86,7 +81,6 @@ ATTACH TABLE postgres_database.new_table;
 ```sql
 DETACH TABLE postgres_database.table_to_remove PERMANENTLY;
 ```
-
 
 ## PostgreSQL 模式 {#schema}
 
@@ -135,7 +129,6 @@ SELECT * FROM database1.`schema2.table2`;
 
 警告：在这种情况下，表名中不允许包含点号。
 
-
 ## 要求 {#requirements}
 
 1. 在 PostgreSQL 配置文件中，必须将 [wal&#95;level](https://www.postgresql.org/docs/current/runtime-config-wal.html) 参数设置为 `logical`，并且将 `max_replication_slots` 参数设置为至少 `2`。
@@ -171,7 +164,6 @@ WHERE oid = 'postgres_table'::regclass;
 不支持复制 [**TOAST**](https://www.postgresql.org/docs/9.5/storage-toast.html) 值。将会使用该数据类型的默认值。
 :::
 
-
 ## 设置 {#settings}
 
 ### `materialized_postgresql_tables_list` {#materialized-postgresql-tables-list}
@@ -181,8 +173,8 @@ WHERE oid = 'postgres_table'::regclass;
 每个表可以在方括号中指定要复制的列子集。如果省略列子集，则会复制该表的所有列。
 
 ```sql
-materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
-```
+    materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5, col7)
+    ```
 
 默认值：空列表 —— 表示将复制整个 PostgreSQL 数据库。
 
@@ -213,24 +205,23 @@ materialized_postgresql_tables_list = 'table1(co1, col2),table2,table3(co3, col5
 用于标识快照的文本字符串，将基于该快照执行 [PostgreSQL 表的初始导出](../../engines/database-engines/materialized-postgresql.md)。必须与 `materialized_postgresql_replication_slot` 一起使用。
 
 ```sql
-CREATE DATABASE database1
-ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
-SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
+    CREATE DATABASE database1
+    ENGINE = MaterializedPostgreSQL('postgres1:5432', 'postgres_database', 'postgres_user', 'postgres_password')
+    SETTINGS materialized_postgresql_tables_list = 'table1,table2,table3';
 
-SELECT * FROM database1.table1;
-```
+    SELECT * FROM database1.table1;
+    ```
 
 如有需要，可以通过 DDL 查询修改这些设置。但无法更改 `materialized_postgresql_tables_list` 这一设置。要更新该设置中的表列表，请使用 `ATTACH TABLE` 查询。
 
 ```sql
-ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <新大小>;
-```
+    ALTER DATABASE postgres_database MODIFY SETTING materialized_postgresql_max_block_size = <new_size>;
+    ```
 
 ### `materialized_postgresql_use_unique_replication_consumer_identifier` {#materialized_postgresql_use_unique_replication_consumer_identifier}
 
 使用唯一的复制消费者标识符进行复制。默认值：`0`。
 如果设置为 `1`，则允许创建多个指向同一 `PostgreSQL` 表的 `MaterializedPostgreSQL` 表。
-
 
 ## 注意事项 {#notes}
 

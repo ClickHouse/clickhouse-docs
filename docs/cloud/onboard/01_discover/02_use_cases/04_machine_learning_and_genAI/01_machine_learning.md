@@ -64,7 +64,7 @@ This means that no matter where your data lives, ClickHouse can serve as a unify
 ClickHouse also has an extensive suite of pre-built statistical and aggregation functions that scale over petabytes of data, making it easy to write and maintain simple SQL that executes complex computations.
 With support for the most granular precision data types and codecs, you don't need to worry about reducing the granularity of your data.
 
-While users can transform data directly in ClickHouse or prior to insertion using SQL queries, ClickHouse can also be used in programming environments such as Python via [chDB](/chdb).
+While you can transform data directly in ClickHouse or prior to insertion using SQL queries, ClickHouse can also be used in programming environments such as Python via [chDB](/chdb).
 This allows embedded ClickHouse to be exposed as a Python module and used to transform and manipulate large data frames within notebooks.
 Data engineers can therefore perform transformation work to be performed client-side, with results potentially materialized as feature tables in a centralized ClickHouse instance.
 
@@ -78,7 +78,7 @@ However, because they’re separate tools from the database they’re operating 
 In contrast, data transformations are easily accomplished directly in ClickHouse through [materialized views](/materialized-views).
 These are automatically triggered when new data is inserted into ClickHouse source tables and are used to easily extract, transform, and modify data as it arrives - eliminating the need to build and monitor bespoke pipelines yourself.
 When these transformations require aggregations over a complete dataset that may not fit into memory, leveraging ClickHouse ensures you don’t have to try and retrofit this step to work with data frames on your local machine.
-For those datasets that are more convenient to evaluate locally, [ClickHouse local](/operations/utilities/clickhouse-local) is a great alternative, along with [chDB](/chdb), that allow users to leverage ClickHouse with standard Python data libraries like Pandas.
+For those datasets that are more convenient to evaluate locally, [ClickHouse local](/operations/utilities/clickhouse-local) is a great alternative, along with [chDB](/chdb), that allow you to leverage ClickHouse with standard Python data libraries like Pandas.
 
 ### Training and evaluation {#training-and-evaluation}
 
@@ -94,7 +94,7 @@ For feature stores, ClickHouse can act as a:
 **Data source** - With the ability to query or ingest data in over 70 different file formats, including data lake formats such as Iceberg and Delta Lake, ClickHouse makes an ideal long-term store holding or querying data.
 By separating storage and compute using object storage, ClickHouse Cloud additionally allows data to be held indefinitely - with compute scaled down or made completely idle to minimize costs.
 Flexible codecs, coupled with column-oriented storage and ordering of data on disk, maximize compression rates, thus minimizing the required storage.
-Users can easily combine ClickHouse with data lakes, with built-in functions to query data in place on object storage.
+You can easily combine ClickHouse with data lakes, with built-in functions to query data in place on object storage.
 
 **Transformation engine** - SQL provides a natural means of declaring data transformations.
 When extended with ClickHouse’s analytical and statistical functions, these transformations become succinct and optimized.
@@ -102,7 +102,7 @@ As well as applying to either ClickHouse tables, in cases where ClickHouse is us
 A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users are not memory-bound.
 Furthermore, materialized views allow data to be transformed at insert time, thus overloading compute to data load time from query time.
 These views can exploit the same range of analytical and statistical functions ideal for data analysis and summarization.
-Should any of ClickHouse’s existing analytical functions be insufficient or custom libraries need to be integrated, users can also utilize User Defined Functions (UDFs).
+Should any of ClickHouse’s existing analytical functions be insufficient or custom libraries need to be integrated, you can also utilize User Defined Functions (UDFs).
 
 #### Offline feature store {#offline-feature-store}
 

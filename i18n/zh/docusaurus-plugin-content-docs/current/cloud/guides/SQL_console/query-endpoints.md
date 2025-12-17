@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 设置查询 API 端点 {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 功能允许您在 ClickHouse Cloud 控制台中直接基于任意已保存的 SQL 查询创建一个 API 端点。之后，您可以通过 HTTP 调用这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
@@ -63,7 +62,7 @@ SELECT
 FROM
   youtube
 WHERE
--- 高亮下一行
+-- highlight-next-line
   toYear(upload_date) = {year: UInt16}
 GROUP BY uploader
 ORDER BY per_upload desc
@@ -135,7 +134,6 @@ curl -H "Content-Type: application/json" -s --user '<key_id>:<key_secret>' '<API
 GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
-
 
 ### HTTP 方法 {#http-methods}
 
@@ -252,7 +250,6 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-
 #### 版本 1 {#version-1}
 
 <Tabs>
@@ -286,7 +283,7 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-```json title="响应"
+```json title="Response"
 {
   "data": {
     "columns": [
@@ -316,8 +313,8 @@ fetch(
 <TabItem value="GET" label="GET（cURL）" default>
 
 ```bash
-curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run?format=JSONEachRow' \
---user '&lt;openApiKeyId:openApiKeySecret&gt;' \
+curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONEachRow' \
+--user '<openApiKeyId:openApiKeySecret>' \
 -H 'x-clickhouse-endpoint-version: 2'
 ```
 
@@ -328,7 +325,7 @@ curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&
 ```
 
 </TabItem>
-<TabItem value="cURL" label="POST（cURL）">
+<TabItem value="cURL" label="POST (cURL)">
 
 ```bash
 curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run?format=JSONEachRow' \
@@ -364,41 +361,44 @@ fetch(
 </TabItem>
 </Tabs>
 
-### 使用查询变量且采用 JSONCompactEachRow 格式（版本 2）的请求 {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**查询 API 端点 SQL:**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
 ```
 
 <Tabs>
-  <TabItem value="GET" label="GET（cURL）" default>
-    ```bash
+<TabItem value="GET" label="GET (cURL)" default>
+
+```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow&param_tableNameRegex=query.*&param_database=system' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
 
-    ```application/x-ndjson title="响应"
+```application/x-ndjson title="响应"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
 
-  <TabItem value="cURL" label="POST（cURL）">
-    ```bash
+</TabItem>
+<TabItem value="cURL" label="POST (cURL)">
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
     -H 'x-clickhouse-endpoint-version: 2' \
     -d '{ "queryVariables": { "tableNameRegex": "query.*", "database": "system" } }'
     ```
-  </TabItem>
+</TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript" default>
-    ```javascript
+<TabItem value="JavaScript" label="JavaScript" default>
+
+```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow",
       {
@@ -421,18 +421,17 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
       .catch((error) => console.error("Error:", error));
     ```
 
-    ```application/x-ndjson title="响应"
+```application/x-ndjson title="响应"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
+</TabItem>
 </Tabs>
 
+### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
-### 在查询变量中使用数组向表中插入数据的请求 {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
-
-**表的 SQL：**
+**Table SQL:**
 
 ```SQL
 CREATE TABLE default.t_arr
@@ -443,15 +442,16 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-**Query API 端点 SQL：**
+**Query API Endpoint SQL:**
 
 ```sql
 INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 ```
 
 <Tabs>
-  <TabItem value="cURL" label="cURL" default>
-    ```bash
+<TabItem value="cURL" label="cURL" default>
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
@@ -462,10 +462,11 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       }
     }'
     ```
-  </TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript" default>
-    ```javascript
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript" default>
+
+```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run",
       {
@@ -487,41 +488,44 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       .catch((error) => console.error("Error:", error));
     ```
 
-    ```text title="响应"
+```text title="响应"
     OK
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
-### 将 ClickHouse 设置 `max_threads` 为 8 的请求 {#request-with-clickhouse-settings-max_threads-set-to-8}
-
-**查询 API 端点的 SQL：**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT * FROM system.tables;
 ```
 
 <Tabs>
-  <TabItem value="GET" label="GET（cURL）" default>
-    ```bash
+<TabItem value="GET" label="GET (cURL)" default>
+
+```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
-  </TabItem>
 
-  <TabItem value="cURL" label="POST（cURL）">
-    ```bash
+</TabItem>
+<TabItem value="cURL" label="POST (cURL)">
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8,' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
     -H 'x-clickhouse-endpoint-version: 2' \
     ```
-  </TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript">
-    ```javascript
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+
+```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8",
       {
@@ -537,21 +541,22 @@ SELECT * FROM system.tables;
       .then((data) => console.log(data))
       .catch((error) => console.error("Error:", error));
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
 
-### 以流的形式发送请求并解析响应` {#request-and-parse-the-response-as-a-stream}
-
-**查询 API 端点的 SQL：**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
 ```
 
 <Tabs>
-  <TabItem value="TypeScript" label="TypeScript" default>
-    ```typescript
+<TabItem value="TypeScript" label="TypeScript" default>
+
+```typescript
     async function fetchAndLogChunks(
       url: string,
       openApiKeyId: string,
@@ -601,20 +606,20 @@ SELECT name, database FROM system.tables;
     );
     ```
 
-    ```shell title="输出"
+```shell title="输出"
     > npx tsx index.ts
     > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
     > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
     ...
     > Stream ended.
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
 
-### 从文件向表中插入数据流 {#insert-a-stream-from-a-file-into-a-table}
-
-创建文件 `./samples/my_first_table_2024-07-11.csv`，内容如下：
+Create a file `./samples/my_first_table_2024-07-11.csv` with the following content:
 
 ```csv
 "user_id","json","name"
@@ -622,7 +627,7 @@ SELECT name, database FROM system.tables;
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**创建表的 SQL 语句：**
+**Create Table SQL:**
 
 ```sql
 create table default.my_first_table
@@ -634,7 +639,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**查询 API 端点的 SQL：**
+**Query API Endpoint SQL:**
 
 ```sql
 INSERT INTO default.my_first_table

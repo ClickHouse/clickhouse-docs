@@ -162,7 +162,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 ```
 
 ```response
-共返回 36838935 行。耗时：2.220 秒。已处理 36.84 百万行，1.27 GB（16.60 百万行/秒，572.47 MB/秒）。
+36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
 ClickHouse 仅用 2 秒就将将近 3700 万条记录导出为一个 JSON 文件。我们也可以在导出时使用 `COMPRESSION` 子句来启用实时压缩：
@@ -172,7 +172,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 ```
 
 ```response
-36838935 行记录。耗时：22.680 秒。已处理 36.84 百万行，1.27 GB（1.62 百万行/秒，56.02 MB/秒）。
+36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
 这虽然耗时更长，但会生成一个小得多的压缩文件：

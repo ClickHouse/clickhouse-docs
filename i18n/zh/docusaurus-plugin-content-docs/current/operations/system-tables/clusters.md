@@ -70,7 +70,7 @@ is_active:               NULL
 ```
 
 
-第 2 行:
+Row 2:
 ──────
 cluster:                 test&#95;cluster&#95;two&#95;shards
 shard&#95;num:               2

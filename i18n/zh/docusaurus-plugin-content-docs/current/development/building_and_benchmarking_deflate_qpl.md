@@ -7,8 +7,6 @@ title: '使用 DEFLATE_QPL 构建 ClickHouse'
 doc_type: 'guide'
 ---
 
-
-
 # 使用 DEFLATE_QPL 构建 ClickHouse {#build-clickhouse-with-deflate_qpl}
 
 - 请确保你的主机符合 QPL 所需的[先决条件](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#prerequisites)
@@ -16,11 +14,7 @@ doc_type: 'guide'
 
 - 有关通用构建要求，请参阅 ClickHouse 的[通用构建说明](/development/build.md)
 
-
-
 # 使用 DEFLATE_QPL 运行基准测试 {#run-benchmark-with-deflate_qpl}
-
-
 
 ## 文件列表 {#files-list}
 
@@ -33,8 +27,6 @@ doc_type: 'guide'
 
 `database_files` 目录用于根据 lz4/deflate/zstd 编解码器存储数据库文件。
 
-
-
 ## 自动运行星型模式基准测试： {#run-benchmark-automatically-for-star-schema}
 
 ```bash
@@ -46,12 +38,9 @@ $ sh run_ssb.sh
 
 如果出现失败，请按照下文各节中的说明手动运行基准测试。
 
-
 ## 定义 {#definition}
 
 [CLICKHOUSE_EXE] 指 ClickHouse 可执行程序的路径。
-
-
 
 ## 环境 {#environment}
 
@@ -74,12 +63,11 @@ $ accel-config list | grep -P 'iax|state'
 
 ```bash
     "dev":"iax1",
-    "state":"已启用",
-            "state":"已启用",
+    "state":"enabled",
+            "state":"enabled",
 ```
 
 如果没有任何输出，说明 IAA 尚未就绪。请重新检查 IAA 的配置。
-
 
 ## 生成原始数据 {#generate-raw-data}
 
@@ -92,7 +80,6 @@ $ mkdir rawdata_dir && cd rawdata_dir
 -s 20
 
 预计会在 `./benchmark_sample/rawdata_dir/ssb-dbgen` 目录下生成类似 `*.tbl` 的文件：
-
 
 ## 数据库配置 {#database-setup}
 
@@ -152,17 +139,16 @@ SELECT count() FROM lineorder_flat
 当你首次从客户端执行插入或查询操作时，ClickHouse 服务器控制台应输出如下日志：
 
 ```text
-硬件加速 DeflateQpl 编解码器已就绪！
+Hardware-assisted DeflateQpl codec is ready!
 ```
 
 如果你始终没有看到这条日志，而是看到了如下所示的另一条日志：
 
 ```text
-硬件辅助 DeflateQpl 编解码器初始化失败
+Initialization of hardware-assisted DeflateQpl codec failed
 ```
 
 这表示 IAA 设备尚未准备就绪，你需要重新检查 IAA 的配置。
-
 
 ## 使用单实例进行基准测试 {#benchmark-with-single-instance}
 
@@ -216,7 +202,6 @@ zstd.log
 如何检查性能指标：
 
 我们主要关注 QPS，请搜索关键字 `QPS_Final` 并收集统计数据。
-
 
 ## 使用多实例进行基准测试 {#benchmark-with-multi-instances}
 
@@ -311,7 +296,6 @@ $ numactl -m 1 -N 1 python3 client_stressing_test.py queries_ssb.sql 2  > lz4_2i
 
 ZSTD：
 
-
 ```bash
 $ cd ./database_dir/zstd
 $ numactl -C 0-29,120-149 [CLICKHOUSE_EXE] server -C config_zstd.xml >&/dev/null&
@@ -348,7 +332,6 @@ zstd_2insts.log
 
 4 个实例的基准测试设置与上述 2 个实例的类似。
 我们建议使用 2 个实例的基准测试数据作为最终报告的评审依据。
-
 
 ## 提示 {#tips}
 

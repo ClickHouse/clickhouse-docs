@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 尽管名称相似，[Merge](/engines/table-engines/special/merge) 引擎与 `*MergeTree` 引擎是不同的。
 :::
 
-## 创建表 {#table&#95;engine-mergetree-creating-a-table}
+## 创建表 {#table_engine-mergetree-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -58,13 +58,14 @@ ORDER BY expr
 
 有关这些参数的详细说明，请参阅 [CREATE TABLE](/sql-reference/statements/create/table.md) 语句。
 
+
 ### 查询子句 {#mergetree-query-clauses}
 
 #### ENGINE {#engine}
 
 `ENGINE` — 引擎名称和参数。`ENGINE = MergeTree()`。`MergeTree` 引擎没有参数。
 
-#### ORDER BY {#order&#95;by}
+#### ORDER BY {#order_by}
 
 `ORDER BY` — 排序键。
 
@@ -131,13 +132,13 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   **MergeTree() 参数**
 
@@ -149,11 +150,12 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   **示例**
 
   ```sql
-  MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
-  ```
+MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
+```
 
   `MergeTree` 引擎的配置方式与上面主要引擎配置方法中的示例相同。
 </details>
+
 
 ## 数据存储 {#mergetree-data-storage}
 
@@ -173,15 +175,15 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
 
 ## 查询中的主键和索引 {#primary-keys-and-indexes-in-queries}
 
-以 `(CounterID, Date)` 主键为例。在这种情况下，排序和索引可以表示如下：
+以 `(CounterID, Date)` 主键为例。在这种情况下，排序和索引可以示意如下：
 
 ```text
-全部数据:       [---------------------------------------------]
+Whole data:     [---------------------------------------------]
 CounterID:      [aaaaaaaaaaaaaaaaaabbbbcdeeeeeeeeeeeeefgggggggghhhhhhhhhiiiiiiiiikllllllll]
 Date:           [1111111222222233331233211111222222333211111112122222223111112223311122333]
-标记点:          |      |      |      |      |      |      |      |      |      |      |
+Marks:           |      |      |      |      |      |      |      |      |      |      |
                 a,1    a,2    a,3    b,3    e,2    e,3    g,1    h,2    i,1    i,3    l,3
-标记点编号:      0      1      2      3      4      5      6      7      8      9      10
+Marks numbers:   0      1      2      3      4      5      6      7      8      9      10
 ```
 
 如果数据查询包含以下条件：
@@ -200,6 +202,7 @@ ClickHouse 不要求主键唯一。你可以插入多行具有相同主键的记
 
 你可以在 `PRIMARY KEY` 和 `ORDER BY` 子句中使用 `Nullable` 类型的表达式，但强烈不建议这样做。要启用此功能，请开启 [allow&#95;nullable&#95;key](/operations/settings/merge-tree-settings/#allow_nullable_key) 设置。对于 `ORDER BY` 子句中的 `NULL` 值，适用 [NULLS&#95;LAST](/sql-reference/statements/select/order-by.md/#sorting-of-special-values) 原则。
 
+
 ### 选择主键 {#selecting-a-primary-key}
 
 主键中的列数没有显式限制。可以根据数据结构，在主键中包含更多或更少的列。这可能会：
@@ -215,13 +218,13 @@ ClickHouse 不要求主键唯一。你可以插入多行具有相同主键的记
 
   ClickHouse 会按主键对数据进行排序，因此数据按主键越集中、有序，压缩效果越好。
 
-* 在 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 和 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) 引擎中，为合并数据部分提供额外的逻辑。
+* 在 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 和 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) 引擎中，为合并数据分区片段提供额外的逻辑。
 
   在这种情况下，指定与主键不同的*排序键（sorting key）*是有意义的。
 
 较长的主键会对插入性能和内存消耗产生负面影响，但在执行 `SELECT` 查询时，主键中的额外列不会影响 ClickHouse 的性能。
 
-可以使用 `ORDER BY tuple()` 语法创建没有主键的表。在这种情况下，ClickHouse 按插入顺序存储数据。如果希望在使用 `INSERT ... SELECT` 查询插入数据时保持数据顺序，请将 [max&#95;insert&#95;threads = 1](/operations/settings/settings#max_insert_threads) 设置为 1。
+可以使用 `ORDER BY tuple()` 语法创建没有主键的表。在这种情况下，ClickHouse 按插入顺序存储数据。如果希望在使用 `INSERT ... SELECT` 查询插入数据时保持数据顺序，请将 [max_insert_threads = 1](/operations/settings/settings#max_insert_threads) 设置为 1。
 
 要按初始顺序选择数据，请使用[单线程](/operations/settings/settings.md/#max_threads)的 `SELECT` 查询。
 
@@ -251,7 +254,7 @@ ORDER BY (CounterID, EventDate)
 SETTINGS index_granularity=8192
 ```
 
-在这种情况下，在查询时：
+在这种情况下，对于以下查询：
 
 ```sql
 SELECT count() FROM table
@@ -283,6 +286,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 按月分区的分区键可以使查询仅读取包含目标日期范围的数据块。在这种情况下，一个数据块可能包含多个日期的数据（最多可覆盖整个月）。在一个数据块内，数据按主键排序，而主键的首列不一定是日期。正因为如此，如果查询中只包含日期条件而未指定主键前缀，就会为获取某个单一日期而读取比实际需要更多的数据。
 
+
 ### 对部分单调主键使用索引 {#use-of-index-for-partially-monotonic-primary-keys}
 
 以月份中的日期为例。在一个月内，它们构成一个[单调序列](https://en.wikipedia.org/wiki/Monotonic_function)，但在更长的时间范围内则不是单调的。这就是一个部分单调序列。如果用户使用部分单调的主键创建表，ClickHouse 会像往常一样创建稀疏索引。当用户从这种类型的表中查询数据时，ClickHouse 会分析查询条件。如果用户希望获取索引中两个标记点之间的数据，并且这两个标记点都落在同一个月内，ClickHouse 就可以在这种特定情况下使用索引，因为它可以计算查询参数与索引标记之间的距离。
@@ -291,7 +295,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 ClickHouse 不仅对月份日期序列使用这一逻辑，也会对任何表示部分单调序列的主键使用这一逻辑。
 
-### 数据跳过索引 {#table&#95;engine-mergetree-data&#95;skipping-indexes}
+### 数据跳过索引 {#table_engine-mergetree-data_skipping-indexes}
 
 索引声明在 `CREATE` 查询的 `columns` 部分中。
 
@@ -321,7 +325,7 @@ CREATE TABLE table_name
 ...
 ```
 
-示例中的索引可供 ClickHouse 在以下查询中使用，以减少从磁盘读取的数据量：
+这些示例中的索引可以帮助 ClickHouse 在以下查询中减少从磁盘读取的数据量：
 
 ```sql
 SELECT count() FROM table WHERE u64 == 10;
@@ -332,18 +336,19 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 数据跳过索引也可以建立在复合列上：
 
 ```sql
--- 在 Map 类型的列上：
+-- on columns of type Map:
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
--- 在 Tuple 类型的列上：
+-- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 
--- 在 Nested 类型的列上：
+-- on columns of type Nested:
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### 跳过索引类型 {#skip-index-types}
 
@@ -366,6 +371,7 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 minmax
 ```
 
+
 #### Set {#set}
 
 对于每个索引粒度，最多会存储 `max_rows` 个指定表达式的唯一值。
@@ -374,6 +380,7 @@ minmax
 ```text title="Syntax"
 set(max_rows)
 ```
+
 
 #### 布隆过滤器 {#bloom-filter}
 
@@ -404,9 +411,10 @@ bloom_filter([false_positive_rate])
 对于 `Map` 数据类型，客户端可以通过 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 函数指定索引是针对键还是针对值创建。
 :::
 
+
 #### N-gram 布隆过滤器 {#n-gram-bloom-filter}
 
-对于每个索引粒度，会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
+每个索引粒度都会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
 ```text title="Syntax"
 ngrambf_v1(n, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -454,14 +462,14 @@ AS
 然后可以通过执行以下查询来估算其余参数：
 
 ```sql
---- 估算过滤器中的位数
+--- estimate number of bits in the filter
 SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_of_bloom_filter_in_bytes;
 
 ┌─size_of_bloom_filter_in_bytes─┐
 │                         10304 │
 └───────────────────────────────┘
 
---- 估算哈希函数的数量
+--- estimate number of hash functions
 SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_hash_functions
 
 ┌─number_of_hash_functions─┐
@@ -469,16 +477,18 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 └──────────────────────────┘
 ```
 
-当然，你也可以使用这些函数来估算其他条件下的参数。
-上述函数参考了[此处](https://hur.st/bloomfilter)的布隆过滤器计算器。
+当然，您也可以使用这些函数在其他条件下估算参数。
+上述函数参考了[此处](https://hur.st/bloomfilter) 提供的布隆过滤器计算器。
+
 
 #### Token bloom filter {#token-bloom-filter}
 
 Token bloom filter 与 `ngrambf_v1` 相同，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
 
 ```text title="Syntax"
-tokenbf_v1(布隆过滤器字节大小, 哈希函数数量, 随机种子)
+tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
+
 
 #### 稀疏 grams 布隆过滤器 {#sparse-grams-bloom-filter}
 
@@ -488,17 +498,18 @@ tokenbf_v1(布隆过滤器字节大小, 哈希函数数量, 随机种子)
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
+
 ### 文本索引 {#text}
 
 支持全文搜索，详情见[这里](invertedindexes.md)。
 
 #### 向量相似度 {#vector-similarity}
 
-支持近似最近邻检索，详见[此处](annindexes.md)。
+支持近似最近邻搜索，详见[此处](annindexes.md)。
 
 ### 函数支持 {#functions-support}
 
-`WHERE` 子句中的条件可能包含对作用于列的函数的调用。如果该列是索引的一部分，ClickHouse 会在执行这些函数时尝试使用该索引。ClickHouse 对可用于索引的函数提供了不同的支持子集。
+`WHERE` 子句中的条件包含对作用于列的函数的调用。如果该列是索引的一部分，ClickHouse 会在执行这些函数时尝试使用该索引。ClickHouse 对可用于索引的函数支持不同的子集。
 
 类型为 `set` 的索引可被所有函数使用。其他类型的索引支持情况如下：
 
@@ -575,6 +586,7 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 可以使用 [ALTER](/sql-reference/statements/alter/projection.md) 语句修改或删除投影。
 
+
 ### 投影存储 {#projection-storage}
 
 投影存储在数据分片（part）目录中。它类似于索引，但包含一个子目录，用于存放一个匿名 `MergeTree` 表的分片。该表由投影的定义查询所派生。如果存在 `GROUP BY` 子句，则其底层存储引擎变为 [AggregatingMergeTree](aggregatingmergetree.md)，并且所有聚合函数都会被转换为 `AggregateFunction`。如果存在 `ORDER BY` 子句，则该 `MergeTree` 表会将其作为主键表达式使用。在合并过程中，投影分片通过其存储引擎的合并流程进行合并。父表分片的校验和会与投影分片的校验和组合在一起。其他维护任务与跳过索引（skip index）类似。
@@ -587,11 +599,11 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 ## 并发数据访问 {#concurrent-data-access}
 
-对于对表的并发访问，我们使用多版本机制。换句话说，当一个表被同时读取和更新时，查询会从在查询时刻“当前”的那一组数据分片中读取数据。不会出现长时间持有的锁。插入操作不会阻塞读取操作。
+对于对表的并发访问，我们使用多版本机制。换句话说，当一个表被同时读取和更新时，查询会从在查询时刻“当前”的那一组分区片段中读取数据。不会出现长时间持有的锁。插入操作不会阻塞读取操作。
 
 从表中读取会自动并行执行。
 
-## 列和表的 TTL {#table&#95;engine-mergetree-ttl}
+## 列和表的 TTL {#table_engine-mergetree-ttl}
 
 用于指定数据值的生命周期。
 
@@ -614,6 +626,7 @@ TTL time_column + interval
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
+
 
 ### 列 TTL {#mergetree-column-ttl}
 
@@ -638,6 +651,7 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
+
 #### 向现有表的列添加 TTL {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
@@ -645,6 +659,7 @@ ALTER TABLE tab
     MODIFY COLUMN
     c String TTL d + INTERVAL 1 DAY;
 ```
+
 
 #### 更改列的 TTL {#altering-ttl-of-the-column}
 
@@ -654,15 +669,16 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 MONTH;
 ```
 
+
 ### 表 TTL {#mergetree-table-ttl}
 
 表可以定义一个用于删除过期行的表达式，以及多个用于在[磁盘或卷](#table_engine-mergetree-multiple-volumes)之间自动迁移分片的表达式。当表中的行过期时，ClickHouse 会删除所有对应的行。对于分片移动或重新压缩操作，某个分片中的所有行都必须满足 `TTL` 表达式所定义的条件。
 
 ```sql
-TTL 表达式
-    [DELETE|RECOMPRESS 编解码器名称1|TO DISK 'xxx'|TO VOLUME 'xxx'][, DELETE|RECOMPRESS 编解码器名称2|TO DISK 'aaa'|TO VOLUME 'bbb'] ...
-    [WHERE 条件]
-    [GROUP BY 键表达式 [SET v1 = 聚合函数(v1) [, v2 = 聚合函数(v2) ...]] ]
+TTL expr
+    [DELETE|RECOMPRESS codec_name1|TO DISK 'xxx'|TO VOLUME 'xxx'][, DELETE|RECOMPRESS codec_name2|TO DISK 'aaa'|TO VOLUME 'bbb'] ...
+    [WHERE conditions]
+    [GROUP BY key_expr [SET v1 = aggr_func(v1) [, v2 = aggr_func(v2) ...]] ]
 ```
 
 TTL 规则的类型可以紧跟在每个 TTL 表达式之后。它会影响在表达式满足条件（到达当前时间）时要执行的操作：
@@ -685,6 +701,7 @@ TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 
 **示例**
 
+
 #### 创建带有 `TTL` 的表： {#creating-a-table-with-ttl-1}
 
 ```sql
@@ -700,6 +717,7 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 1 WEEK TO VOLUME 'aaa',
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
+
 
 #### 修改表的 `TTL`： {#altering-ttl-of-the-table}
 
@@ -722,7 +740,8 @@ ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
 
-#### 创建对过期行重新压缩的表： {#creating-a-table-where-expired-rows-are-recompressed}
+
+#### 创建一个对过期行进行重新压缩的表： {#creating-a-table-where-expired-rows-are-recompressed}
 
 ```sql
 CREATE TABLE table_for_recompression
@@ -737,7 +756,7 @@ TTL d + INTERVAL 1 MONTH RECOMPRESS CODEC(ZSTD(17)), d + INTERVAL 1 YEAR RECOMPR
 SETTINGS min_rows_for_wide_part = 0, min_bytes_for_wide_part = 0;
 ```
 
-创建一个用于聚合已过期行的表。最终结果行中，`x` 包含该分组内的最大值，`y` 为最小值，`d` 为该分组中的任意一个值。
+创建一个用于聚合已过期行的表。在结果行中，`x` 包含该分组内的最大值，`y` 为最小值，`d` 为该分组中的任意一个值。
 
 ```sql
 CREATE TABLE table_for_aggregation
@@ -753,9 +772,10 @@ ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
 
+
 ### 删除过期数据 {#mergetree-removing-expired-data}
 
-TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
+TTL 已过期的数据会在 ClickHouse 合并分区片段时被删除。
 
 当 ClickHouse 检测到数据已过期时，会执行一次非计划合并。要控制此类合并的频率，可以设置 `merge_with_ttl_timeout`。如果该值过低，可能会触发大量非计划合并，消耗大量资源。
 
@@ -763,22 +783,22 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 
 **另请参阅**
 
-* [ttl&#95;only&#95;drop&#95;parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 设置
+- [ttl_only_drop_parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 设置
 
 ## 磁盘类型 {#disk-types}
 
 除了本地块设备之外，ClickHouse 还支持以下存储类型：
 
-* [`s3` 用于 S3 和 MinIO](#table_engine-mergetree-s3)
-* [`gcs` 用于 GCS](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
-* [`blob_storage_disk` 用于 Azure Blob Storage](/operations/storing-data#azure-blob-storage)
-* [`hdfs` 用于 HDFS](/engines/table-engines/integrations/hdfs)
-* [`web` 用于从 Web 进行只读访问](/operations/storing-data#web-storage)
-* [`cache` 用于本地缓存](/operations/storing-data#using-local-cache)
-* [`s3_plain` 用于备份到 S3](/operations/backup#backuprestore-using-an-s3-disk)
-* [`s3_plain_rewritable` 用于 S3 中的不可变且非复制的表](/operations/storing-data.md#s3-plain-rewritable-storage)
+- [`s3` 用于 S3 和 MinIO](#table_engine-mergetree-s3)
+- [`gcs` 用于 GCS](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
+- [`blob_storage_disk` 用于 Azure Blob Storage](/operations/storing-data#azure-blob-storage)
+- [`hdfs` 用于 HDFS](/engines/table-engines/integrations/hdfs)
+- [`web` 用于从 Web 进行只读访问](/operations/storing-data#web-storage)
+- [`cache` 用于本地缓存](/operations/storing-data#using-local-cache)
+- [`s3_plain` 用于备份到 S3](/operations/backup/disk)
+- [`s3_plain_rewritable` 用于 S3 中的不可变且非复制的表](/operations/storing-data.md#s3-plain-rewritable-storage)
 
-## 使用多个块设备用于数据存储 {#table&#95;engine-mergetree-multiple-volumes}
+## 使用多个块设备用于数据存储 {#table_engine-mergetree-multiple-volumes}
 
 ### 简介 {#introduction}
 
@@ -788,14 +808,14 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 
 ### 术语 {#terms}
 
-* Disk — 挂载到文件系统的块设备。
-* Default disk — 存储 [path](/operations/server-configuration-parameters/settings.md/#path) 服务器设置中所指定路径数据的磁盘。
-* Volume — 由一组相同磁盘按顺序组织而成的集合（类似于 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)）。
-* Storage policy — 卷的集合以及在这些卷之间迁移数据的规则。
+- Disk — 挂载到文件系统的块设备。
+- Default disk — 存储 [path](/operations/server-configuration-parameters/settings.md/#path) 服务器设置中所指定路径数据的磁盘。
+- Volume — 由一组相同磁盘按顺序组织而成的集合（类似于 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)）。
+- Storage policy — 卷的集合以及在这些卷之间迁移数据的规则。
 
-这些实体的名称可以在系统表 [system.storage&#95;policies](/operations/system-tables/storage_policies) 和 [system.disks](/operations/system-tables/disks) 中找到。要为某个表应用已配置的存储策略之一，请在 `MergeTree` 引擎族表中使用 `storage_policy` 设置。
+这些实体的名称可以在系统表 [system.storage_policies](/operations/system-tables/storage_policies) 和 [system.disks](/operations/system-tables/disks) 中找到。要为某个表应用已配置的存储策略之一，请在 `MergeTree` 引擎族表中使用 `storage_policy` 设置。
 
-### 配置 {#table&#95;engine-mergetree-multiple-volumes&#95;configure}
+### 配置 {#table_engine-mergetree-multiple-volumes_configure}
 
 应在 `config.d` 目录下的配置文件中，通过 `<storage_configuration>` 标签声明磁盘、卷和存储策略。
 
@@ -809,7 +829,7 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 ```xml
 <storage_configuration>
     <disks>
-        <disk_name_1> <!-- 磁盘名称 -->
+        <disk_name_1> <!-- disk name -->
             <path>/mnt/fast_ssd/clickhouse/</path>
         </disk_name_1>
         <disk_name_2>
@@ -850,23 +870,24 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
                     <load_balancing>round_robin</load_balancing>
                 </volume_name_1>
                 <volume_name_2>
-                    <!-- 配置信息 -->
+                    <!-- configuration -->
                 </volume_name_2>
-                <!-- 更多卷配置 -->
+                <!-- more volumes -->
             </volumes>
             <move_factor>0.2</move_factor>
         </policy_name_1>
         <policy_name_2>
-            <!-- 配置信息 -->
+            <!-- configuration -->
         </policy_name_2>
 
-        <!-- 更多策略配置 -->
+        <!-- more policies -->
     </policies>
     ...
 </storage_configuration>
 ```
 
 标签：
+
 
 * `policy_name_N` — 策略名称。策略名称必须唯一。
 * `volume_name_N` — 卷名。卷名必须唯一。
@@ -889,9 +910,9 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 <storage_configuration>
     ...
     <policies>
-        <hdd_in_order> <!-- 策略名称 -->
+        <hdd_in_order> <!-- policy name -->
             <volumes>
-                <single> <!-- 卷名称 -->
+                <single> <!-- volume name -->
                     <disk>disk1</disk>
                     <disk>disk2</disk>
                 </single>
@@ -981,7 +1002,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 用户可以使用 [min&#95;bytes&#95;to&#95;rebalance&#95;partition&#95;over&#95;jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod) 设置，将新的大型部件在 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) 卷的不同磁盘上以均衡的方式进行分配。
 
-## 使用外部存储进行数据存储 {#table&#95;engine-mergetree-s3}
+## 使用外部存储进行数据存储 {#table_engine-mergetree-s3}
 
 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 系列表引擎可以通过类型分别为 `s3`、`azure_blob_storage`、`hdfs` 的磁盘，将数据存储到 `S3`、`AzureBlobStorage`、`HDFS` 中。有关更多详细信息，请参见[配置外部存储选项](/operations/storing-data.md/#configuring-external-storage)。
 
@@ -1034,21 +1055,22 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在使用这些版本之一，请参阅[使用本地缓存](/operations/storing-data.md/#using-local-cache)。
 :::
 
+
 ## 虚拟列 {#virtual-columns}
 
-* `_part` — 数据部分（part）的名称。
-* `_part_index` — 该数据部分在查询结果中的顺序索引。
-* `_part_starting_offset` — 该数据部分在查询结果中的累计起始行号。
-* `_part_offset` — 该数据部分中的行号。
-* `_part_granule_offset` — 该数据部分中的 granule 编号。
-* `_partition_id` — 分区的名称。
-* `_part_uuid` — 数据部分的唯一标识符（如果启用了 MergeTree 设置 `assign_part_uuids`）。
-* `_part_data_version` — 数据部分的数据版本（最小块号或变更版本）。
-* `_partition_value` — `partition by` 表达式的值（一个元组）。
-* `_sample_factor` — 采样因子（来自查询）。
-* `_block_number` — 插入时为该行分配的原始块号；在启用设置 `enable_block_number_column` 时，在合并过程中会被保留。
-* `_block_offset` — 插入时为该行在块中的原始行号；在启用设置 `enable_block_offset_column` 时，在合并过程中会被保留。
-* `_disk_name` — 用于存储的磁盘名称。
+- `_part` — 数据部分（part）的名称。
+- `_part_index` — 该数据部分在查询结果中的顺序索引。
+- `_part_starting_offset` — 该数据部分在查询结果中的累计起始行号。
+- `_part_offset` — 该数据部分中的行号。
+- `_part_granule_offset` — 该数据部分中的 granule 编号。
+- `_partition_id` — 分区的名称。
+- `_part_uuid` — 数据部分的唯一标识符（如果启用了 MergeTree 设置 `assign_part_uuids`）。
+- `_part_data_version` — 数据部分的数据版本（最小块号或变更版本）。
+- `_partition_value` — `partition by` 表达式的值（一个元组）。
+- `_sample_factor` — 采样因子（来自查询）。
+- `_block_number` — 插入时为该行分配的原始块号；在启用设置 `enable_block_number_column` 时，在合并过程中会被保留。
+- `_block_offset` — 插入时为该行在块中的原始行号；在启用设置 `enable_block_offset_column` 时，在合并过程中会被保留。
+- `_disk_name` — 用于存储的磁盘名称。
 
 ## 列统计信息 {#column-statistics}
 
@@ -1078,31 +1100,32 @@ ALTER TABLE tab DROP STATISTICS a;
 这些轻量级统计信息汇总了列中值的分布情况。统计信息存储在每个数据片段中，并在每次插入时都会更新。
 只有在启用 `set allow_statistics_optimize = 1` 时，它们才会用于 `PREWHERE` 优化。
 
+
 ### 可用的列统计类型 {#available-types-of-column-statistics}
 
-* `MinMax`
+- `MinMax`
 
-  列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
+    列的最小值和最大值,允许估算数值列上范围过滤器的选择性。
 
-  语法：`minmax`
+    语法:`minmax`
 
-* `TDigest`
+- `TDigest`
 
-  [TDigest](https://github.com/tdunning/t-digest) Sketch 数据结构，用于计算数值列的近似分位数（例如第 90 个百分位数）。
+    [TDigest](https://github.com/tdunning/t-digest) sketch,允许计算数值列的近似百分位数(例如第 90 百分位数)。
 
-  语法：`tdigest`
+    语法:`tdigest`
 
-* `Uniq`
+- `Uniq`
 
-  [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) Sketch 数据结构，用于估算某列中包含的不同值的数量。
+    [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) sketch,提供列包含多少不同值的估算。
 
-  语法：`uniq`
+    语法:`uniq`
 
-* `CountMin`
+- `CountMin`
 
-  [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) Sketch 数据结构，用于对某列中每个值的出现频率进行近似计数。
+    [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) sketch,提供列中每个值出现频率的近似计数。
 
-  语法：`countmin`
+    语法:`countmin`
 
 ### 支持的数据类型 {#supported-data-types}
 
@@ -1126,8 +1149,8 @@ ALTER TABLE tab DROP STATISTICS a;
 
 某些 MergeTree 设置可以在列级别进行覆盖：
 
-* `max_compress_block_size` — 在写入表之前，对未压缩数据块进行压缩时所允许的最大未压缩数据块大小。
-* `min_compress_block_size` — 在写入下一个标记时，为执行压缩所需的最小未压缩数据块大小。
+* `max_compress_block_size` — 在写入表之前，用于压缩的未压缩数据块的最大大小。
+* `min_compress_block_size` — 在写入下一个标记时进行压缩所需的未压缩数据块的最小大小。
 
 示例：
 
@@ -1155,7 +1178,7 @@ ALTER TABLE tab MODIFY COLUMN document REMOVE SETTINGS;
 ALTER TABLE tab MODIFY COLUMN document MODIFY SETTING min_compress_block_size = 8192;
 ```
 
-* 重置一个或多个设置，同时会从该表的 `CREATE` 查询语句中的列表达式里删除相应的设置声明。
+* 重置一个或多个设置，并同时从该表的 `CREATE` 查询中的列表达式删除相应的设置声明。
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document RESET SETTING min_compress_block_size;

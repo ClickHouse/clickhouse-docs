@@ -21,7 +21,6 @@ import asof_example from '@site/static/images/starter_guides/joins/asof_example.
 ClickHouse полностью поддерживает стандартные операции JOIN в SQL, что позволяет эффективно анализировать данные.
 В этом руководстве вы ознакомитесь с некоторыми из наиболее распространённых типов JOIN и узнаете, как использовать их с помощью диаграмм Венна и примеров запросов к нормализованному набору данных [IMDb](https://en.wikipedia.org/wiki/IMDb) из [репозитория реляционных наборов данных](https://relational.fit.cvut.cz/dataset/IMDb).
 
-
 ## Тестовые данные и ресурсы {#test-data-and-resources}
 
 Инструкции по созданию и загрузке таблиц можно найти [здесь](/integrations/dbt/guides).
@@ -78,16 +77,16 @@ LIMIT 10;
 
 ```response
 ┌─name───────────────────────────────────┬─genre─────┐
-│ Harry Potter and the Half-Blood Prince │ Боевик    │
-│ Harry Potter and the Half-Blood Prince │ Приключения │
-│ Harry Potter and the Half-Blood Prince │ Семейный    │
-│ Harry Potter and the Half-Blood Prince │ Фэнтези   │
-│ Harry Potter and the Half-Blood Prince │ Триллер  │
-│ DragonBall Z                           │ Боевик    │
-│ DragonBall Z                           │ Приключения │
-│ DragonBall Z                           │ Комедия    │
-│ DragonBall Z                           │ Фэнтези   │
-│ DragonBall Z                           │ Фантастика    │
+│ Harry Potter and the Half-Blood Prince │ Action    │
+│ Harry Potter and the Half-Blood Prince │ Adventure │
+│ Harry Potter and the Half-Blood Prince │ Family    │
+│ Harry Potter and the Half-Blood Prince │ Fantasy   │
+│ Harry Potter and the Half-Blood Prince │ Thriller  │
+│ DragonBall Z                           │ Action    │
+│ DragonBall Z                           │ Adventure │
+│ DragonBall Z                           │ Comedy    │
+│ DragonBall Z                           │ Fantasy   │
+│ DragonBall Z                           │ Sci-Fi    │
 └────────────────────────────────────────┴───────────┘
 ```
 
@@ -96,7 +95,6 @@ LIMIT 10;
 :::
 
 Поведение `INNER JOIN` может быть расширено или изменено с помощью одного из следующих типов соединения.
-
 
 ## (LEFT / RIGHT / FULL) OUTER JOIN {#left--right--full-outer-join}
 
@@ -127,23 +125,22 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Тихоокеанская война"""                 │
-│ """Турин 2006: XX Зимние Олимпийские игры""" │
-│ Артур, фильм                              │
-│ Мост в Терабитию                          │
-│ Марс в Овне                               │
-│ Повелитель пространства и времени         │
-│ Девятая жизнь Луи Дракса                  │
-│ Парадокс                                  │
-│ Рататуй                                   │
-│ """Американский папаша"""                 │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
 
 :::note
 Ключевое слово `OUTER` можно не указывать.
 :::
-
 
 ## CROSS JOIN {#cross-join}
 
@@ -241,7 +238,6 @@ ALL
 
 И поскольку, как упоминалось выше, ключевое слово `OUTER` можно опустить для `RIGHT OUTER JOIN`, а ключевое слово `ALL` при необходимости добавить, вы можете написать `ALL RIGHT JOIN`, и это будет работать корректно.
 
-
 ## (LEFT / RIGHT) SEMI JOIN {#left--right-semi-join}
 
 Запрос `LEFT SEMI JOIN` возвращает значения столбцов для каждой строки из левой таблицы, у которой есть хотя бы одно совпадение по ключу соединения в правой таблице.
@@ -280,7 +276,6 @@ LIMIT 10;
 └────────────┴────────────────────────┘
 ```
 
-
 ## (LEFT / RIGHT) ANTI JOIN {#left--right-anti-join}
 
 `LEFT ANTI JOIN` возвращает значения столбцов для всех несовпадающих строк из левой таблицы.
@@ -303,19 +298,18 @@ LIMIT 10;
 
 ```response
 ┌─name──────────────────────────────────────┐
-│ """Тихоокеанская война"""                 │
-│ """Турин 2006: XX Зимние Олимпийские игры""" │
-│ Артур, фильм                              │
-│ Мост в Терабитию                          │
-│ Марс в Овне                               │
-│ Повелитель пространства и времени         │
-│ Девятая жизнь Луи Дракса                  │
-│ Парадокс                                  │
-│ Рататуй                                   │
-│ """Американский папаша"""                 │
+│ """Pacific War, The"""                    │
+│ """Turin 2006: XX Olympic Winter Games""" │
+│ Arthur, the Movie                         │
+│ Bridge to Terabithia                      │
+│ Mars in Aries                             │
+│ Master of Space and Time                  │
+│ Ninth Life of Louis Drax, The             │
+│ Paradox                                   │
+│ Ratatouille                               │
+│ """American Dad"""                        │
 └───────────────────────────────────────────┘
 ```
-
 
 ## (LEFT / RIGHT / INNER) ANY JOIN {#left--right--inner-any-join}
 
@@ -392,7 +386,6 @@ INNER ANY JOIN right_table AS r ON l.c = r.c;
 └─────┴─────┘
 ```
 
-
 ## ASOF JOIN {#asof-join}
 
 `ASOF JOIN` предоставляет возможности неточного сопоставления.
@@ -427,7 +420,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 symbol:             ABC
 volume:             200
@@ -436,7 +429,7 @@ closest_quote_time: 2023-02-22 14:09:00
 quote_price:        32.11
 final_price:        6422
 
-Строка 2:
+Row 2:
 ──────
 symbol:             ABC
 volume:             300
@@ -449,7 +442,6 @@ final_price:        9645
 :::note
 Клауза `ON` в `ASOF JOIN` является обязательной и задаёт условие точного соответствия в дополнение к неточному условию соответствия в клаузе `AND`.
 :::
-
 
 ## Краткое описание {#summary}
 

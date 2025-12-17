@@ -6,19 +6,13 @@ title: 'quantiles 関数'
 doc_type: 'reference'
 ---
 
-
-
 # 分位数関数 {#quantiles-functions}
-
-
 
 ## quantiles {#quantiles}
 
 構文: `quantiles(level1, level2, ...)(x)`
 
 すべての分位数関数には、対応する `quantiles` 系関数があります: `quantiles`, `quantilesDeterministic`, `quantilesTiming`, `quantilesTimingWeighted`, `quantilesExact`, `quantilesExactWeighted`, `quantileExactWeightedInterpolated`, `quantileInterpolatedWeighted`, `quantilesTDigest`, `quantilesBFloat16`, `quantilesDD`。これらの関数は、列挙されたレベルのすべての分位数を一度の処理で計算し、結果の値を配列で返します。
-
-
 
 ## quantilesExactExclusive {#quantilesexactexclusive}
 
@@ -72,7 +66,6 @@ SELECT quantilesExactExclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## quantilesExactInclusive {#quantilesexactinclusive}
 
 数値データ系列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
@@ -124,7 +117,6 @@ SELECT quantilesExactInclusive(0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999)(x) FROM 
 │ [249.75,499.5,749.25,899.1,949.05,989.01,998.001]                   │
 └─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## quantilesGK {#quantilesgk}
 

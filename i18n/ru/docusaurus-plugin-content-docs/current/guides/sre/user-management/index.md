@@ -8,8 +8,6 @@ description: 'Описывает контроль доступа и управл
 doc_type: 'guide'
 ---
 
-
-
 # Создание пользователей и ролей в ClickHouse {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse поддерживает управление доступом на основе подхода [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control).
@@ -40,8 +38,6 @@ ClickHouse поддерживает управление доступом на �
 :::
 
 Чтобы просмотреть всех пользователей, роли, профили и т. д., а также все их выдачи (grants), используйте оператор [`SHOW ACCESS`](/sql-reference/statements/show#show-access).
-
-
 
 ## Обзор {#access-control-usage}
 
@@ -113,8 +109,6 @@ ClickHouse поддерживает управление доступом на �
 
 #### Политика строк {#row-policy-management}
 
-
-
 Политика строк — это фильтр, который определяет, какие строки доступны пользователю или роли. Политика строк содержит фильтры для одной конкретной таблицы, а также список ролей и/или пользователей, к которым применяется эта политика строк.
 
 :::note
@@ -166,8 +160,6 @@ ClickHouse поддерживает управление доступом на �
 
     По умолчанию управление доступом и учетными записями на основе SQL отключено для всех пользователей. Необходимо настроить как минимум одного пользователя в конфигурационном файле `users.xml` и установить значения настроек [`access_management`](/operations/settings/settings-users.md#access_management-user-setting), `named_collection_control`, `show_named_collections` и `show_named_collections_secrets` равными 1.
 
-
-
 ## Определение SQL-пользователей и ролей {#defining-sql-users-and-roles}
 
 :::tip
@@ -208,8 +200,6 @@ ClickHouse поддерживает управление доступом на �
     ```sql
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
-
-
 
 ## Изменение прав доступа {#alter-permissions}
 
@@ -259,7 +249,7 @@ GRANT ALTER ON my_db.* WITH GRANT OPTION
 Иерархия `ALTER`:
 
 ```response
-├── ALTER (только для таблиц и представлений)/
+├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE
 │   │   ├── ALTER DELETE
@@ -339,17 +329,16 @@ GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 SHOW GRANTS FOR my_user;
 ```
 
-
 ```response
 SHOW GRANTS FOR my_user
 
-ID запроса: 47b3d03f-46ac-4385-91ec-41119010e4e2
+Query id: 47b3d03f-46ac-4385-91ec-41119010e4e2
 
 ┌─GRANTS FOR my_user────────────────────────────────┐
 │ GRANT ALTER COLUMN ON default.my_table TO my_user │
 └───────────────────────────────────────────────────┘
 
-Получена 1 строка. Время выполнения: 0.004 сек.
+1 row in set. Elapsed: 0.004 sec.
 ```
 
 Это также предоставляет следующие подпривилегии:
@@ -382,7 +371,7 @@ Query id: 61fe0fdc-1442-4cd6-b2f3-e8f2a853c739
 
 Ok.
 
-Получено 0 строк. Время выполнения: 0.002 сек.
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -418,7 +407,7 @@ Query id: b882ba1b-90fb-45b9-b10f-3cda251e2ccc
 
 Ok.
 
-0 строк в наборе. Затрачено: 0.002 сек.
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -493,22 +482,30 @@ DESCRIBE my_db.my_table;
 DESCRIBE TABLE my_db.my_table
 
 Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
+
+┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ id      │ UInt64 │              │                    │         │                  │                │
+│ column1 │ String │              │                    │         │                  │                │
+│ column2 │ String │              │                    │         │                  │                │
+└─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
-┌─имя─────┬─тип────┬─тип&#95;по&#95;умолчанию─┬─выражение&#95;по&#95;умолчанию─┬─комментарий─┬─выражение&#95;кодека─┬─выражение&#95;TTL─┐
-│ id      │ UInt64 │              │                    │             │                  │                  │
-│ column1 │ String │              │                    │             │                  │                  │
-│ column2 │ String │              │                    │             │                  │                  │
-└─────────┴────────┴─────────────────────┴────────────────────────────┴─────────────┴──────────────────┴──────────────────┘
-
-````
-
 4. Тестирование удаления столбца
+
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````
+```
 
+```response
+ALTER TABLE my_db.my_table
+    DROP COLUMN column2
+
+Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
+
+0 rows in set. Elapsed: 0.004 sec.
+
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```response
 ALTER TABLE my_db.my_table
     DROP COLUMN column2
@@ -519,8 +516,6 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 Получено исключение от сервера (версия 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Недостаточно прав. Для выполнения этого запроса необходима привилегия ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
-```
-
 5. Проверка привилегии `ALTER ADMIN` путём выдачи соответствующих прав
 
 ```sql

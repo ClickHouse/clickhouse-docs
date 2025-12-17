@@ -14,13 +14,11 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge/>
 
-ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.org/wiki/Inverted_index)）为字符串数据提供快速的全文检索能力。
+ClickHouse 中的文本索引（也称为 ["倒排索引"](https://en.wikipedia.org/wiki/Inverted_index)）为字符串数据提供快速的全文检索能力。
 索引会将列中的每个标记（token）映射到包含该标记的行。
 这些标记由称为分词（tokenization）的过程生成。
 例如，ClickHouse 默认会将英文句子 "All cat like mice." 分词为 ["All", "cat", "like", "mice"]（注意末尾的句点会被忽略）。
 还可以使用更高级的分词器，例如针对日志数据的分词器。
-
-
 
 ## 创建文本索引 {#creating-a-text-index}
 
@@ -38,15 +36,15 @@ CREATE TABLE tab
     `key` UInt64,
     `str` String,
     INDEX text_idx(str) TYPE text(
-                                -- 必需参数：
+                                -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
-                                -- 可选参数：
+                                -- Optional parameters:
                                 [, preprocessor = expression(str)]
-                                -- 可选高级参数：
+                                -- Optional advanced parameters:
                                 [, dictionary_block_size = D]
                                 [, dictionary_block_frontcoding_compression = B]
                                 [, max_cardinality_for_embedded_postings = M]
@@ -65,7 +63,7 @@ ORDER BY key
   注意，每个分隔字符串可以由多个字符组成（如示例中的 `', '`）。
   如果未显式指定（例如 `tokenizer = splitByString`），默认的分隔符列表是单个空格 `[' ']`。
 * `ngrams(N)` 将字符串拆分为等长的 `N`-gram（另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)）。
-  N-gram 的长度可以通过 2 到 8 之间的可选整数参数指定，例如：`tokenizer = ngrams(3)`。
+  N-gram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokenizer = ngrams(3)`。
   如果未显式指定（例如 `tokenizer = ngrams`），默认的 N-gram 大小为 3。
 * `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length`（含）之间的可变长度 N-gram（另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)）。
   如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。
@@ -108,17 +106,17 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 预处理器参数的典型用例包括
 
-1. 转换为小写或大写以启用不区分大小写的匹配,例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8),请参见下面的第一个示例。
-2. UTF-8 规范化,例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
+1. 转换为小写或大写以实现不区分大小写的匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)，参见下方的第一个示例。
+2. UTF-8 规范化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
 3. 删除或转换不需要的字符或子字符串,例如 [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)。
 
 预处理器表达式必须将 [String](/sql-reference/data-types/string.md) 或 [FixedString](/sql-reference/data-types/fixedstring.md) 类型的输入值转换为相同类型的值。
 
 示例:
 
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
-- `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(col))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = substringIndex(col, '\n', 1))`
+* `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col))`
 
 此外,预处理器表达式只能引用定义文本索引的列。
 不允许使用非确定性函数。
@@ -161,24 +159,21 @@ SELECT count() FROM tab WHERE hasToken(str, lower('Foo'));
 高级用户可以指定不同的索引粒度(我们不建议这样做)。
 
 <details markdown="1">
+  <summary>可选高级参数</summary>
 
-<summary>可选高级参数</summary>
+  以下高级参数的默认值几乎在所有情况下都能很好地工作。
+  我们不建议更改它们。
 
-以下高级参数的默认值几乎在所有情况下都能很好地工作。
-我们不建议更改它们。
+  可选参数 `dictionary_block_size`(默认值:128)指定字典块的行数大小。
 
-可选参数 `dictionary_block_size`(默认值:128)指定字典块的行数大小。
+  可选参数 `dictionary_block_frontcoding_compression`(默认值:1)指定字典块是否使用前缀编码作为压缩方式。
 
-可选参数 `dictionary_block_frontcoding_compression`(默认值:1)指定字典块是否使用前缀编码作为压缩方式。
+  可选参数 `max_cardinality_for_embedded_postings`(默认值:16)指定基数阈值,低于该阈值时倒排列表应嵌入到字典块中。
 
-可选参数 `max_cardinality_for_embedded_postings`(默认值:16)指定基数阈值,低于该阈值时倒排列表应嵌入到字典块中。
-
-
-可选参数 `bloom_filter_false_positive_rate`(默认值:0.1)用于指定字典布隆过滤器的误报率。
-
+  可选参数 `bloom_filter_false_positive_rate`(默认值:0.1)指定字典 Bloom 过滤器的误报率。
 </details>
 
-表创建后,可以对列添加或删除文本索引:
+表创建后，可以在列上添加或删除文本索引：
 
 ```sql
 ALTER TABLE tab DROP INDEX text_idx;
@@ -189,7 +184,7 @@ ALTER TABLE tab ADD INDEX text_idx(s) TYPE text(tokenizer = splitByNonAlpha);
 ## 使用文本索引 {#using-a-text-index}
 
 在 SELECT 查询中使用文本索引非常简单，常见的字符串搜索函数会自动使用该索引。
-如果不存在索引，下面这些字符串搜索函数将会回退到较慢的暴力扫描。
+如果不存在索引，以下这些字符串搜索函数将会回退到较慢的暴力扫描。
 
 ### 支持的函数 {#functions-support}
 
@@ -201,9 +196,10 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
+
 #### `=` 和 `!=` {#functions-example-equals-notequals}
 
-`=`（[`equals`](/sql-reference/functions/comparison-functions.md/#equals)）和 `!=`（[`notEquals`](/sql-reference/functions/comparison-functions.md/#notEquals)）会匹配给定搜索词的整体。
+`=`（[`equals`](/sql-reference/functions/comparison-functions.md/#equals)）和 `!=`（[`notEquals`](/sql-reference/functions/comparison-functions.md/#notEquals)）会匹配整个给定的搜索词。
 
 示例：
 
@@ -211,11 +207,12 @@ WHERE string_search_function(column_with_text_index)
 SELECT * from tab WHERE str = 'Hello';
 ```
 
-文本索引支持 `=` 和 `!=` 运算，但只有在使用 `array` 分词器时，等值和不等值搜索才有意义（它会使索引存储整行的值）。
+文本索引支持 `=` 和 `!=`，但只有在使用 `array` 分词器时，等值和不等值查询才有意义（这会使索引存储整行的值）。
+
 
 #### `IN` 和 `NOT IN` {#functions-example-in-notin}
 
-`IN`（[in](/sql-reference/functions/in-functions)）和 `NOT IN`（[notIn](/sql-reference/functions/in-functions)）类似于函数 `equals` 和 `notEquals`，但它们分别要求匹配所有搜索词（`IN`）或完全与所有搜索词都不匹配（`NOT IN`）。
+`IN`（[in](/sql-reference/functions/in-functions)）和 `NOT IN`（[notIn](/sql-reference/functions/in-functions)）类似于函数 `equals` 和 `notEquals`，但它们分别匹配任一搜索词（`IN`）或不匹配任何搜索词（`NOT IN`）。
 
 示例：
 
@@ -223,7 +220,8 @@ SELECT * from tab WHERE str = 'Hello';
 SELECT * from tab WHERE str IN ('Hello', 'World');
 ```
 
-适用与 `=` 和 `!=` 相同的限制，也就是说，只有在配合 `array` tokenizer 使用时，`IN` 和 `NOT IN` 才有意义。
+适用的限制与 `=` 和 `!=` 相同，也就是说，只有在配合 `array` 分词器使用时，`IN` 和 `NOT IN` 才有意义。
+
 
 #### `LIKE`、`NOT LIKE` 和 `match` {#functions-example-like-notlike-match}
 
@@ -245,10 +243,11 @@ SELECT count() FROM tab WHERE comment LIKE 'support%';
 要在 LIKE 查询中使用文本索引，必须按如下方式改写 LIKE 模式：
 
 ```sql
-SELECT count() FROM tab WHERE comment LIKE ' support %'; -- 或者 `% support %`
+SELECT count() FROM tab WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
-`support` 左右的空格确保该术语可以被提取为一个 token。
+`support` 两侧的空格可以确保能够将该搜索词提取为一个 token。
+
 
 #### `startsWith` 和 `endsWith` {#functions-example-startswith-endswith}
 
@@ -257,11 +256,11 @@ SELECT count() FROM tab WHERE comment LIKE ' support %'; -- 或者 `% support %`
 示例：
 
 ```sql
-SELECT count() FROM tab WHERE startsWith(comment, 'ClickHouse 支持');
+SELECT count() FROM tab WHERE startsWith(comment, 'clickhouse support');
 ```
 
-在这个示例中，只有 `clickhouse` 被视为一个词元（token）。
-`support` 不是词元，因为它可以匹配 `support`、`supports`、`supporting` 等。
+在这个示例中，只有 `clickhouse` 被视为一个 token。
+`support` 不是一个 token，因为它可以匹配 `support`、`supports`、`supporting` 等。
 
 要查找所有以 `clickhouse supports` 开头的行，请在搜索模式的末尾保留一个空格：
 
@@ -269,17 +268,18 @@ SELECT count() FROM tab WHERE startsWith(comment, 'ClickHouse 支持');
 startsWith(comment, 'clickhouse supports ')`
 ```
 
-同样地，`endsWith` 也应当在前面加上一个空格再使用：
+同样地，使用 `endsWith` 时也应在前面加上一个空格：
 
 ```sql
-SELECT count() FROM tab WHERE endsWith(comment, ' olap 引擎');
+SELECT count() FROM tab WHERE endsWith(comment, ' olap engine');
 ```
+
 
 #### `hasToken` 和 `hasTokenOrNull` {#functions-example-hastoken-hastokenornull}
 
 函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken) 和 [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull) 用于匹配单个指定的 token。
 
-与前面提到的函数不同，它们不会对搜索项进行分词（假定输入本身就是单个 token）。
+与前面提到的函数不同，它们不会对搜索词进行分词（假定输入本身就是单个 token）。
 
 示例：
 
@@ -287,31 +287,32 @@ SELECT count() FROM tab WHERE endsWith(comment, ' olap 引擎');
 SELECT count() FROM tab WHERE hasToken(comment, 'clickhouse');
 ```
 
-函数 `hasToken` 和 `hasTokenOrNull` 是在与 `text` 索引配合使用时性能最优的函数。
+函数 `hasToken` 和 `hasTokenOrNull` 是与 `text` 索引配合使用时代价最低、性能最优的函数。
+
 
 #### `hasAnyTokens` 和 `hasAllTokens` {#functions-example-hasanytokens-hasalltokens}
 
-
 函数 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 和 [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 分别用于匹配给定 token 中的任意一个或全部。
 
-这两个函数接受的搜索 token 可以是一个字符串（将使用与索引列相同的 tokenizer 进行分词），也可以是一个已处理好的 token 数组（在搜索前不会再进行分词）。\
+这两个函数接受的搜索 token 可以是一个字符串（将使用与索引列相同的 tokenizer 进行分词），也可以是一个已处理好的 token 数组（在搜索前不会再进行分词）。
 有关更多信息，请参阅函数文档。
 
 示例：
 
 ```sql
--- 以字符串参数形式传递搜索词元
+-- Search tokens passed as string argument
 SELECT count() FROM tab WHERE hasAnyTokens(comment, 'clickhouse olap');
 SELECT count() FROM tab WHERE hasAllTokens(comment, 'clickhouse olap');
 
--- 以 Array(String) 形式传递搜索词元
+-- Search tokens passed as Array(String)
 SELECT count() FROM tab WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
+
 #### `has` {#functions-example-has}
 
-数组函数 [has](/sql-reference/functions/array-functions#has) 用于判断字符串数组中是否包含某个单独的元素。
+数组函数 [has](/sql-reference/functions/array-functions#has) 用于判断字符串数组中是否包含某个单个 token。
 
 示例：
 
@@ -319,9 +320,10 @@ SELECT count() FROM tab WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM tab WHERE has(array, 'clickhouse');
 ```
 
+
 #### `mapContains` {#functions-example-mapcontains}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` 的别名）用于在 map 的键中匹配单个 token。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（`mapContainsKey` 的别名）用于判断 map 的键中是否包含某个单独的 token。
 
 示例：
 
@@ -330,6 +332,7 @@ SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 -- OR
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
 ```
+
 
 #### `operator[]` {#functions-example-access-operator}
 
@@ -342,6 +345,7 @@ SELECT count() FROM tab WHERE map['engine'] = 'clickhouse';
 ```
 
 请参阅以下示例，了解如何配合文本索引使用 `Array(T)` 和 `Map(K, V)` 类型的列。
+
 
 ### 带有文本索引的 `Array` 和 `Map` 列示例 {#text-index-array-and-map-examples}
 
@@ -363,19 +367,20 @@ ENGINE = MergeTree
 ORDER BY (post_id);
 ```
 
-在没有文本索引的情况下，要查找包含特定关键字（例如 `clickhouse`）的帖子，就需要扫描所有条目：
+在没有文本索引的情况下，要查找包含特定关键词（例如 `clickhouse`）的博文，就需要扫描所有记录：
 
 ```sql
-SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- 全表扫描速度慢 - 检查每条记录中的所有关键词
+SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table scan - checks every keyword in every post
 ```
 
-随着平台规模的扩大，这种查询会变得越来越慢，因为必须检查每一行中的 `keywords` 数组。
-为解决这一性能问题，我们在 `keywords` 列上定义一个文本索引：
+随着平台规模扩大，这种查询会变得越来越慢，因为必须检查每一行中的 `keywords` 数组。
+为解决这一性能问题，我们为 `keywords` 列定义一个文本索引：
 
 ```sql
 ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitByNonAlpha);
-ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- 务必为现有数据重建索引
+ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
+
 
 #### 为 Map 列建立索引 {#text-index-example-map}
 
@@ -399,11 +404,11 @@ ORDER BY (timestamp);
 若没有文本索引，搜索 [Map](/sql-reference/data-types/map.md) 数据时需要进行全表扫描：
 
 ```sql
--- 查找所有包含速率限制数据的日志：
-SELECT count() FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- 全表扫描，性能较慢
+-- Finds all logs with rate limiting data:
+SELECT count() FROM logs WHERE has(mapKeys(attributes), 'rate_limit'); -- slow full-table scan
 
--- 查找来自特定 IP 的所有日志：
-SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 全表扫描，性能较慢
+-- Finds all logs from a specific IP:
+SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slow full-table scan
 ```
 
 随着日志量增长，这些查询会变慢。
@@ -411,13 +416,12 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 全
 解决方案是为 [Map](/sql-reference/data-types/map.md) 的键和值创建文本索引。
 当需要按字段名或属性类型检索日志时，可以使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 创建文本索引：
 
-
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-当你需要在属性值的内容中进行搜索时，使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 来创建文本索引：
+当需要在属性值的实际内容中进行搜索时，可以使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 创建文本索引：
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
@@ -427,11 +431,11 @@ ALTER TABLE posts MATERIALIZE INDEX attributes_vals_idx;
 查询示例：
 
 ```sql
--- 查找所有受速率限制的请求：
-SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- 快速
+-- Find all rate-limited requests:
+SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 
--- 查找来自特定 IP 的所有日志：
-SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 快速
+-- Finds all logs from a specific IP:
+SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 ```
 
 
@@ -445,7 +449,7 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- 快速
 示例：
 
 ```sql
-SELECT column_a, column_b, ... -- 注意：不要选择 column_with_text_index
+SELECT column_a, column_b, ... -- not: column_with_text_index
 FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
@@ -477,26 +481,26 @@ SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
-返回值
+返回结果
 
 ```text
 [...]
-Filter ((WHERE + 将列名替换为列标识符))
-过滤条件列: hasToken(__table1.col, 'some_token'_String) (已移除)
-操作: INPUT : 0 -> col String : 0
+Filter ((WHERE + Change column names to column identifiers))
+Filter column: hasToken(__table1.col, 'some_token'_String) (removed)
+Actions: INPUT : 0 -> col String : 0
          COLUMN Const(String) -> 'some_token'_String String : 1
          FUNCTION hasToken(col :: 0, 'some_token'_String :: 1) -> hasToken(__table1.col, 'some_token'_String) UInt8 : 2
 [...]
 ```
 
-而当在将 `query_plan_direct_read_from_text_index` 设置为 `1` 的情况下运行相同的查询时
+而在将 `query_plan_direct_read_from_text_index` 设置为 `1` 时运行相同的查询
 
 ```sql
 EXPLAIN PLAN actions = 1
 SELECT count()
 FROM tab
 WHERE hasToken(col, 'some_token')
-SETTINGS query_plan_direct_read_from_text_index = 1, -- 启用直接读取
+SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
          use_skip_indexes_on_data_read = 1;
 ```
 
@@ -512,20 +516,20 @@ Positions:
 [...]
 ```
 
-EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<index_name>_<function_name>_<id>`。
-如果存在该列，则会使用直接读取。
+第二个 EXPLAIN PLAN 输出中包含一个虚拟列 `__text_index_<index_name>_<function_name>_<id>`。
+如果存在该列，则说明使用了直接读取。
+
 
 ### 缓存 {#caching}
 
 可以使用不同的缓存将文本索引的部分内容缓存在内存中（参见[实现细节](#implementation)部分）：
 目前，对文本索引的反序列化字典块、头信息和倒排列表都提供了缓存，以减少 I/O。
-可以通过以下设置启用这些缓存：[use&#95;text&#95;index&#95;dictionary&#95;cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use&#95;text&#95;index&#95;header&#95;cache](/operations/settings/settings#use_text_index_header_cache) 和 [use&#95;text&#95;index&#95;postings&#95;cache](/operations/settings/settings#use_text_index_postings_cache)。
+可以通过以下设置启用这些缓存：[use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) 和 [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache)。
 默认情况下，所有缓存均为禁用状态。
 
 有关配置这些缓存，请参阅以下服务器设置。
 
 #### 字典块缓存设置 {#caching-dictionary}
-
 
 | Setting                                                                                                                                                  | Description                                                                                                    |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
@@ -551,8 +555,6 @@ EXPLAIN PLAN 的第二个输出结果中包含一个虚拟列 `__text_index_<ind
 | [text_index_postings_cache_size](/operations/server-configuration-parameters/settings#text_index_postings_cache_size)                 | 最大缓存大小（字节）。                                                                                  |
 | [text_index_postings_cache_max_entries](/operations/server-configuration-parameters/settings#text_index_postings_cache_max_entries)   | 缓存中反序列化倒排列表项的最大数量。                                                                    |
 | [text_index_postings_cache_size_ratio](/operations/server-configuration-parameters/settings#text_index_postings_cache_size_ratio)     | 文本索引倒排列表缓存中受保护队列大小占缓存总大小的比例。                                               |
-
-
 
 ## 实现细节 {#implementation}
 
@@ -580,8 +582,6 @@ Bloom 过滤器可以在待查询的 token 不包含在某个字典块中时提�
 所有 token 的倒排列表顺序存储在倒排列表文件中。
 为了节省空间，同时仍然支持快速的交集与并集操作，倒排列表被存储为 [roaring bitmaps](https://roaringbitmap.org/)。
 如果某个倒排列表的基数小于 16（可通过参数 `max_cardinality_for_embedded_postings` 配置），则会将其内嵌到字典中。
-
-
 
 ## 示例：Hacker News 数据集 {#hacker-news-dataset}
 
@@ -611,7 +611,7 @@ ENGINE = MergeTree
 ORDER BY (type, author);
 ```
 
-这 2870 万行数据存储在 S3 上的一个 Parquet 文件中——让我们将它们插入到 `hackernews` 表中：
+这 2870 万行数据存储在 S3 的一个 Parquet 文件中——让我们将它们插入到 `hackernews` 表中：
 
 ```sql
 INSERT INTO hackernews
@@ -640,15 +640,16 @@ INSERT INTO hackernews
 我们将使用 `ALTER TABLE` 在 comment 列上添加文本索引，然后对其进行物化：
 
 ```sql
--- 添加索引
+-- Add the index
 ALTER TABLE hackernews ADD INDEX comment_idx(comment) TYPE text(tokenizer = splitByNonAlpha);
 
--- 物化现有数据的索引
+-- Materialize the index for existing data
 ALTER TABLE hackernews MATERIALIZE INDEX comment_idx SETTINGS mutations_sync = 2;
 ```
 
 现在，让我们使用 `hasToken`、`hasAnyTokens` 和 `hasAllTokens` 函数来运行查询。
-下面的示例将展示标准索引扫描与直接读取优化之间显著的性能差异。
+下面的示例将展示标准索引扫描与直接读取优化之间巨大的性能差异。
+
 
 ### 1. 使用 `hasToken` {#using-hasToken}
 
@@ -669,7 +670,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │     516 │
 └─────────┘
 
-1 行结果。用时:0.362 秒。已处理 2490 万行,9.51 GB
+1 row in set. Elapsed: 0.362 sec. Processed 24.90 million rows, 9.51 GB
 ```
 
 **已启用直接读取（快速索引读取）**
@@ -685,10 +686,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 │     516 │
 └─────────┘
 
-1 行结果。耗时:0.008 秒。已处理 315 万行,3.15 MB
+1 row in set. Elapsed: 0.008 sec. Processed 3.15 million rows, 3.15 MB
 ```
 
-直接读取的查询速度快了超过 45 倍（0.362s 对比 0.008s），并且仅通过从索引中读取就处理了显著更少的数据量（9.51 GB 对比 3.15 MB）。
+直接读取的查询速度快了 45 倍以上（0.362s 对比 0.008s），并且仅通过从索引读取就能将处理的数据量大幅减少（9.51 GB 对比 3.15 MB）。
+
 
 ### 2. 使用 `hasAnyTokens` {#using-hasAnyTokens}
 
@@ -707,7 +709,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │  408426 │
 └─────────┘
 
-返回 1 行。用时：1.329 秒。已处理 2874 万行，9.72 GB
+1 row in set. Elapsed: 1.329 sec. Processed 28.74 million rows, 9.72 GB
 ```
 
 **已启用直接读取（快速索引读取）**
@@ -721,19 +723,18 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 ┌─count()─┐
 │  408426 │
 └─────────┘
+
+1 row in set. Elapsed: 0.015 sec. Processed 27.99 million rows, 27.99 MB
 ```
 
+对于这种常见的 OR 搜索，提速更加显著。
+该查询因为避免了对整列的全量扫描，速度快了将近 89 倍（1.329s 对比 0.015s）。
 
-1 行结果。耗时 0.015 秒。已处理 27.99 百万行数据，27.99 MB
 
-````
-对于这种常见的"OR"搜索,性能提升更为显著。
-通过避免全列扫描,查询速度提升了近89倍(从1.329秒降至0.015秒)。
-
-### 3. 使用 `hasAllTokens`                       {#using-hasAllTokens}
+### 3. 使用 `hasAllTokens` {#using-hasAllTokens}
 
 `hasAllTokens` 用于检查文本是否包含所有给定的词元。
-我们将搜索同时包含 'love' 和 'ClickHouse' 的评论。
+我们将搜索同时包含 &#39;love&#39; 和 &#39;ClickHouse&#39; 的评论。
 
 **禁用直接读取(标准扫描)**
 即使禁用直接读取,标准跳数索引仍然有效。
@@ -749,11 +750,11 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │      11 │
 └─────────┘
 
-返回1行。耗时:0.184秒。已处理14.746万行,57.03 MB
-````
+1 row in set. Elapsed: 0.184 sec. Processed 147.46 thousand rows, 57.03 MB
+```
 
 **已启用直接读取（快速索引读取）**
-直接读取仅在索引数据上执行以响应查询，仅读取 147.46 KB。
+直接读取通过仅在索引数据上操作即可返回查询结果，仅读取 147.46 KB 数据。
 
 ```sql
 SELECT count()
@@ -765,10 +766,11 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 │      11 │
 └─────────┘
 
-返回 1 行。用时：0.007 秒。已处理 147.46 千行，147.46 KB
+1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-对于这个“AND”搜索，直接读取优化相比标准的跳过索引（skip index）扫描快超过 26 倍（0.184 秒 vs 0.007 秒）。
+对于这个 &quot;AND&quot; 搜索，直接读取优化相比标准的跳数索引扫描快超过 26 倍（0.184 秒 对比 0.007 秒）。
+
 
 ### 4. 复合搜索：OR、AND、NOT，… {#compound-search}
 
@@ -787,10 +789,10 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 │     769 │
 └─────────┘
 
-返回 1 行。用时:0.450 秒。已处理 2587 万行,9.58 GB
+1 row in set. Elapsed: 0.450 sec. Processed 25.87 million rows, 9.58 GB
 ```
 
-**直接读取功能已启用（快速索引读取）**
+**已启用直接读取（快速索引读取）**
 
 ```sql
 SELECT count()

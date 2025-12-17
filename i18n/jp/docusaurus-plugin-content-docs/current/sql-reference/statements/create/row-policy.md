@@ -24,12 +24,9 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
     [TO {role1 [, role2 ...] | ALL | ALL EXCEPT role1 [, role2 ...]}]
 ```
 
-
 ## USING 句 {#using-clause}
 
 行をフィルタリングする条件を指定できます。条件がその行に対して 0 以外の値になると、その行はユーザーに表示されます。
-
-
 
 ## TO 句 {#to-clause}
 
@@ -48,8 +45,6 @@ CREATE [ROW] POLICY [IF NOT EXISTS | OR REPLACE] policy_name1 [ON CLUSTER cluste
 
 `CREATE ROW POLICY pol2 ON mydb.table1 USING 1 TO ALL EXCEPT mira, peter`
 :::
-
-
 
 ## AS 句 {#as-clause}
 
@@ -71,8 +66,8 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 TO peter, antonio
 一般的な式は次のとおりです。
 
 ```text
-row_is_visible = (1つ以上の許可ポリシーの条件が非ゼロである) AND
-                 (すべての制限ポリシーの条件が非ゼロである)
+row_is_visible = (one or more of the permissive policies' conditions are non-zero) AND
+                 (all of the restrictive policies's conditions are non-zero)
 ```
 
 例として、次のようなポリシーが挙げられます。
@@ -96,12 +91,9 @@ CREATE ROW POLICY pol2 ON mydb.table1 USING c=2 AS RESTRICTIVE TO peter, antonio
 ユーザー `peter` に対しては、`b=1` かつ `c=2` の両方を満たす場合にのみ table1 の行を参照できるように設定しつつ、
 mydb 内の他のテーブルには、そのユーザーに対して `b=1` のポリシーのみが適用されるようにします。
 
-
 ## ON CLUSTER 句 {#on-cluster-clause}
 
 クラスター上で行ポリシーを作成できるようにします。[Distributed DDL](../../../sql-reference/distributed-ddl.md) を参照してください。
-
-
 
 ## 例 {#examples}
 

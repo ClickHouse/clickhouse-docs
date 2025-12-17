@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 > 本指南将介绍如何在 ClickHouse 中使用数组，以及一些最常用的[数组函数](/sql-reference/functions/array-functions)。
 
-
-
 ## 数组简介 {#array-basics}
 
 数组是一种内存中的数据结构，用于将多个值组合在一起。
@@ -61,15 +59,15 @@ SELECT array(tuple(1, 2), tuple(3, 4))
 你可能会想像这样创建一个包含不同类型的数组：
 
 ```sql
-SELECT array('你好', '世界', 1, 2, 3)
+SELECT array('Hello', 'world', 1, 2, 3)
 ```
 
 但是，数组元素始终应具有一个公共超类型，即在不丢失信息的情况下，可以同时表示两种或多种不同类型的值的最小数据类型，从而允许它们一起使用。
 如果不存在公共超类型，在尝试构造该数组时将会抛出异常：
 
 ```sql
-收到异常：
-Code: 386. DB::Exception: 类型 String、String、UInt8、UInt8、UInt8 不存在公共超类型，因为其中部分为 String/FixedString/Enum 类型，而其余部分不是：位于 SELECT ['Hello', 'world', 1, 2, 3] 作用域中。(NO_COMMON_TYPE)
+Received exception:
+Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
 
 在动态创建数组时，ClickHouse 会选择能够容纳所有元素的最窄类型。
@@ -126,7 +124,6 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 在 ClickHouse 中，需要注意数组索引始终从 **1** 开始。
 这可能不同于你习惯使用的其他编程语言，在那些语言中数组通常是从 0 开始编号的。
 
-
 例如，给定一个数组，可以这样选取该数组的第一个元素：
 
 ```sql
@@ -162,7 +159,6 @@ SELECT string_array[0]
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## 数组函数 {#array-functions}
 
@@ -230,7 +226,6 @@ hasAll_true:  1
 hasAll_false: 0
 ```
 
-
 ## 使用数组函数探索航班数据 {#exploring-flight-data-with-array-functions}
 
 到目前为止，我们的示例都相当简单。
@@ -287,7 +282,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-上面的查询中使用了 [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero)，用于去除出现在部分机场三字代码后面的空字符。
+上面的查询中使用了 [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero)，用于去除出现在部分机场三字代码后面的空字符。
 
 在这种数据格式下，我们可以通过计算汇总后的 “Destinations” 数组长度，轻松确定各个最繁忙机场的先后顺序：
 
@@ -331,7 +326,6 @@ WITH arrayMap(
     ) AS statuses
 ```
 
-
 SELECT
 Origin,
 toStringCutToZero(Dest) AS Destination,
@@ -343,7 +337,7 @@ AND DepTime IS NOT NULL
 AND DepDelayMinutes IS NOT NULL
 GROUP BY ALL
 
-````
+```
 
 在上述查询中,`arrayMap` 函数接收单元素数组 `[DepDelayMinutes]`,并应用 lambda 函数 `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` 对其进行分类。
 然后通过 `[DepDelayMinutes][1]` 提取结果数组的第一个元素。
@@ -364,7 +358,7 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
 在上面的查询中，我们将一个 lambda 函数作为第一个参数传递给 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 函数。
 这个 lambda 函数接收以分钟为单位的延迟时间 `d`，如果条件满足则返回 `1`，否则返回 `0`。
@@ -413,7 +407,6 @@ LIMIT 10
 它通过使用交叉连接（cross join）实现这一点，该操作会生成这些机场的所有组合。
 然后，对每一对机场，使用 `arrayIntersect` 函数找出在两个机场目的地列表中都出现的目的地。
 `length` 函数则统计它们共有多少个相同的目的地。
-
 
 条件 `a1.Origin < a2.Origin` 确保每个机场对只出现一次。
 如果没有这个条件，你会同时得到 JFK-LAX 和 LAX-JFK 这两条单独的结果记录，而它们实际上表示的是同一组比较，因此是多余的。
@@ -502,7 +495,6 @@ WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
 GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
-
 
 ## 后续步骤 {#next-steps}
 

@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 > В этом руководстве вы узнаете, как использовать массивы в ClickHouse, а также познакомитесь с некоторыми наиболее часто используемыми [функциями работы с массивами](/sql-reference/functions/array-functions).
 
-
-
 ## Введение в массивы {#array-basics}
 
 Массив — это хранящаяся в памяти структура данных, которая группирует значения.
@@ -68,8 +66,8 @@ SELECT array('Hello', 'world', 1, 2, 3)
 Если общего супертипа нет, вы получите исключение при попытке сформировать массив:
 
 ```sql
-Получено исключение:
-Code: 386. DB::Exception: Не существует общего супертипа для типов String, String, UInt8, UInt8, UInt8, так как некоторые из них являются String/FixedString/Enum, а другие — нет: В области SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
+Received exception:
+Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
 
 При создании массивов на лету ClickHouse выбирает самый узкий тип, который подходит для всех элементов.
@@ -92,40 +90,39 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
   Например:
 
   ```sql
-  SELECT
-      [1, 'ClickHouse', ['Another', 'Array']] AS array,
-      toTypeName(array)
-  SETTINGS use_variant_as_common_type = 1;
-  ```
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    toTypeName(array)
+SETTINGS use_variant_as_common_type = 1;
+```
 
   ```response
-  ┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
-  │ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
-  └──────────────────────────────────────┴──────────────────────────────────────────────┘
-  ```
+┌─array────────────────────────────────┬─toTypeName(array)────────────────────────────┐
+│ [1,'ClickHouse',['Another','Array']] │ Array(Variant(Array(String), String, UInt8)) │
+└──────────────────────────────────────┴──────────────────────────────────────────────┘
+```
 
   Кроме того, вы можете получать значения из массива по имени типа:
 
   ```sql
-  SELECT
-      [1, 'ClickHouse', ['Another', 'Array']] AS array,
-      array.UInt8,
-      array.String,
-      array.`Array(String)`
-  SETTINGS use_variant_as_common_type = 1;
-  ```
+SELECT
+    [1, 'ClickHouse', ['Another', 'Array']] AS array,
+    array.UInt8,
+    array.String,
+    array.`Array(String)`
+SETTINGS use_variant_as_common_type = 1;
+```
 
   ```response
-  ┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
-  │ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
-  └──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
-  ```
+┌─array────────────────────────────────┬─array.UInt8───┬─array.String─────────────┬─array.Array(String)─────────┐
+│ [1,'ClickHouse',['Another','Array']] │ [1,NULL,NULL] │ [NULL,'ClickHouse',NULL] │ [[],[],['Another','Array']] │
+└──────────────────────────────────────┴───────────────┴──────────────────────────┴─────────────────────────────┘
+```
 </details>
 
 Использование индекса в квадратных скобках — удобный способ обращаться к элементам массива.
 В ClickHouse важно учитывать, что индексация массивов всегда начинается с **1**.
 Это может отличаться от других языков программирования, к которым вы привыкли, где массивы индексируются с нуля.
-
 
 Например, для заданного массива можно выбрать его первый элемент, написав:
 
@@ -155,14 +152,13 @@ SELECT string_array[-1];
 В примере ниже возвращается пустая строка, так как это значение по умолчанию для строкового типа данных:
 
 ```sql
-WITH ['привет', 'мир', 'массивы — это здорово, правда?'] AS string_array
+WITH ['hello', 'world', 'arrays are great aren\'t they?'] AS string_array
 SELECT string_array[0]
 
 ┌─arrayElement⋯g_array, 0)─┐
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## Функции для работы с массивами {#array-functions}
 
@@ -230,7 +226,6 @@ hasAll_true:  1
 hasAll_false: 0
 ```
 
-
 ## Исследование данных о перелётах с помощью массивов {#exploring-flight-data-with-array-functions}
 
 До сих пор примеры были довольно простыми.
@@ -269,13 +264,13 @@ SELECT
 FROM ontime.ontime LIMIT 5
 ```
 
-Давайте посмотрим на 10 самых загруженных аэропортов США в случайно выбранный день, например «2024-01-01».
-Нас интересует, сколько рейсов вылетает из каждого аэропорта.
-Наши данные содержат по одной строке на каждый рейс, но было бы удобнее сгруппировать данные по аэропорту вылета и собрать пункты назначения в массив.
+Let's take a look at the top 10 busiest airports in the US on a particular day chosen at random, say '2024-01-01'.
+We're interested in understanding how many flights depart from each airport.
+Our data contains one row per flight, but it would be convenient if we could group the data by the origin airport and roll the destinations into an array.
 
-Для этого мы можем использовать агрегатную функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray), которая берёт значения указанного столбца из каждой строки и группирует их в массив.
+To achieve this we can use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function, which takes values of the specified column from each row and groups them in an array.
 
-Выполните запрос ниже, чтобы увидеть, как это работает:
+Run the query below to see how it works:
 
 ```sql runnable
 SELECT
@@ -288,9 +283,9 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-Функция [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) в приведённом выше запросе используется для удаления нулевых символов, которые появляются после некоторых трёхбуквенных кодов аэропортов.
+Функция [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero) в приведённом выше запросе используется для удаления нулевых символов, которые появляются после некоторых трёхбуквенных кодов аэропортов.
 
-Имея данные в таком формате, мы можем легко определить рейтинг самых загруженных аэропортов, посчитав длину агрегированных массивов «Destinations»:
+With the data in this format, we can easily find the order of the busiest airports by finding the length of the rolled up "Destinations" arrays:
 
 ```sql runnable
 WITH
@@ -314,16 +309,16 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
-### arrayMap и arrayZip {#arraymap}
+### arrayMap and arrayZip {#arraymap}
 
-В предыдущем запросе мы увидели, что международный аэропорт Денвера (Denver International Airport) был аэропортом с наибольшим количеством вылетающих рейсов в выбранный нами день.
-Давайте посмотрим, сколько из этих рейсов были вовремя, задержаны на 15–30 минут или задержаны более чем на 30 минут.
+We saw in the previous query that Denver International Airport was the airport with the most outward flights for our particular chosen day.
+Let's take a look at how many of those flights were on-time, delayed by 15-30 minutes or delayed by more than 30 minutes.
 
-Многие функции работы с массивами в ClickHouse являются так называемыми [«функциями высшего порядка»](/sql-reference/functions/overview#higher-order-functions) и принимают лямбда-функцию в качестве первого параметра.
-Функция [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) является примером такой функции высшего порядка и возвращает новый массив на основе исходного массива, применяя лямбда-функцию к каждому элементу исходного массива.
+Many of the array functions in ClickHouse are so-called ["higher-order functions"](/sql-reference/functions/overview#higher-order-functions) and accept a lambda function as the first parameter.
+The [`arrayMap`](/sql-reference/functions/array-functions#arrayMap) function is an example of one such higher-order function and returns a new array from the provided array by applying a lambda function to each element of the original array.
 
-Выполните приведённый ниже запрос, который использует функцию `arrayMap`, чтобы увидеть, какие рейсы были задержаны или выполнены вовремя.
-Для пар пунктов отправления/прибытия он показывает бортовой номер и статус для каждого рейса:
+Run the query below which uses the `arrayMap` function to see which flights were delayed or on-time.
+For pairs of origin/destinations, it shows the tail number and status for every flight:
 
 ```sql runnable
 WITH arrayMap(
@@ -332,19 +327,15 @@ WITH arrayMap(
     ) AS statuses
 ```
 
+In the above query, the `arrayMap` function takes a single-element array `[DepDelayMinutes]` and applies the lambda function `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` to categorize it.
+Then the first element of the resulting array is extracted with `[DepDelayMinutes][1]`.
+The [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) function combines the `Tail_Number` array and the `statuses` array into a single array.
 
-SELECT
-Origin,
-toStringCutToZero(Dest) AS Destination,
-arrayZip(groupArray(Tail&#95;Number), statuses) as tailNumberStatuses
-FROM ontime.ontime
-WHERE Origin = &#39;DEN&#39;
-AND FlightDate = &#39;2024-01-01&#39;
-AND DepTime IS NOT NULL
-AND DepDelayMinutes IS NOT NULL
-GROUP BY ALL
+### arrayFilter {#arrayfilter}
 
-````
+Next we'll look only at the number of flights that were delayed by 30 minutes or more, for airports `DEN`, `ATL` and `DFW`:
+
+```
 
 В приведённом выше запросе функция `arrayMap` принимает одноэлементный массив `[DepDelayMinutes]` и применяет лямбда-функцию `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` для его категоризации.
 Затем первый элемент полученного массива извлекается с помощью `[DepDelayMinutes][1]`.
@@ -365,22 +356,22 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
-В приведённом выше запросе мы передаём лямбда-функцию в качестве первого аргумента функции [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter).
-Сама лямбда-функция принимает задержку в минутах (d) и возвращает `1`, если условие выполнено, иначе `0`.
+In the query above we pass a lambda function as the first argument to the [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) function.
+This lambda function itself takes the delay in minutes (d) and returns `1` if the condition is met, else `0`.
 
 ```sql
 d -> d >= 30
 ```
 
-### arraySort и arrayIntersect {#arraysort-and-arrayintersect}
+### arraySort and arrayIntersect {#arraysort-and-arrayintersect}
 
-Далее мы определим, какие пары крупных аэропортов США имеют наибольшее количество общих направлений, с помощью функций [`arraySort`](/sql-reference/functions/array-functions#arraySort) и [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect).
-`arraySort` принимает массив и по умолчанию сортирует его элементы по возрастанию, хотя вы также можете передать ей лямбда-функцию, чтобы задать порядок сортировки.
-`arrayIntersect` принимает несколько массивов и возвращает массив с элементами, которые присутствуют во всех этих массивах.
+Next, we'll figure out which pairs of major US airports serve the most common destinations with the help of the [`arraySort`](/sql-reference/functions/array-functions#arraySort) and [`arrayIntersect`](/sql-reference/functions/array-functions#arrayIntersect) functions.
+`arraySort` takes an array and sorts the elements in ascending order by default, although you can also pass a lambda function to it to define the sorting order.
+`arrayIntersect` takes multiple arrays and returns an array which contains elements present in all the arrays.
 
-Выполните приведённый ниже запрос, чтобы увидеть эти две функции для массивов в действии:
+Run the query below to see these two array functions in action:
 
 ```sql runnable
 WITH airport_routes AS (
@@ -406,25 +397,24 @@ ORDER BY common_destinations DESC
 LIMIT 10
 ```
 
-Запрос выполняется в два основных этапа.
-Сначала он создает временный набор данных под названием `airport_routes`, используя общее табличное выражение (CTE), которое анализирует все рейсы 1 января 2024 года и для каждого аэропорта вылета формирует отсортированный список всех уникальных пунктов назначения, которые обслуживает этот аэропорт.
-В результирующем наборе `airport_routes`, например, для DEN может быть массив, содержащий все города, в которые выполняются рейсы, например `['ATL', 'BOS', 'LAX', 'MIA', ...]` и так далее.
+The query works in two main stages.
+First, it creates a temporary dataset called `airport_routes` using a Common Table Expression (CTE) that looks at all flights on January 1, 2024, and for each origin airport, builds a sorted list of every unique destination which that airport serves.
+In the `airport_routes` result set, for example, DEN might have an array containing all the cities it flies to, like `['ATL', 'BOS', 'LAX', 'MIA', ...]` and so on.
 
-На втором этапе запрос берет пять крупных узловых аэропортов США (`DEN`, `ATL`, `DFW`, `ORD` и `LAS`) и сравнивает каждую возможную пару из них.
-Это делается с помощью `CROSS JOIN`, который создает все комбинации этих аэропортов.
-Затем для каждой пары используется функция `arrayIntersect`, чтобы найти направления, которые присутствуют в списках обоих аэропортов.
-Функция `length` подсчитывает, сколько общих направлений у них есть.
+In the second stage, the query takes five major US hub airports (`DEN`, `ATL`, `DFW`, `ORD`, and `LAS`) and compares every possible pair of them.
+It does this using a cross join, which creates all combinations of these airports.
+Then, for each pair, it uses the `arrayIntersect` function to find which destinations appear in both airports' lists.
+The length function counts how many destinations they have in common.
 
-
-Условие `a1.Origin < a2.Origin` гарантирует, что каждая пара появляется только один раз.
-Без него вы получили бы и JFK-LAX, и LAX-JFK как отдельные результаты, что было бы избыточно, поскольку они представляют одно и то же сравнение.
-Наконец, запрос сортирует результаты, чтобы показать, какие пары аэропортов имеют наибольшее количество общих направлений, и возвращает только топ-10.
-Это показывает, какие крупные хабы имеют наибольшее пересечение маршрутных сетей, что может указывать на конкурентные рынки, где несколько авиакомпаний обслуживают одни и те же пары городов, или на хабы, которые обслуживают схожие географические регионы и потенциально могут использоваться как альтернативные узлы пересадки для путешественников.
+The condition `a1.Origin < a2.Origin`, ensures that each pair only appears once.
+Without this, you'd get both JFK-LAX and LAX-JFK as separate results, which would be redundant since they represent the same comparison.
+Finally, the query sorts the results to show which airport pairs have the highest number of shared destinations and returns just the top 10.
+This reveals which major hubs have the most overlapping route networks, which could indicate competitive markets where multiple airlines are serving the same city pairs, or hubs that serve similar geographic regions and could potentially be used as alternative connection points for travelers.
 
 ### arrayReduce {#arrayReduce}
 
-Пока мы анализируем задержки, давайте используем ещё одну функцию высшего порядка для массивов — `arrayReduce`, чтобы найти среднюю и максимальную задержку
-для каждого маршрута из Международного аэропорта Денвера:
+While we're looking at delays, let's use yet another higher-order array function, `arrayReduce`, to find the average and maximum delay
+for each route from Denver International Airport:
 
 ```sql runnable
 SELECT
@@ -443,29 +433,29 @@ GROUP BY Origin, Destination
 ORDER BY avg_delay DESC
 ```
 
-В приведённом выше примере мы использовали `arrayReduce`, чтобы найти средние и максимальные задержки для различных вылетающих рейсов из `DEN`.
-`arrayReduce` применяет агрегатную функцию, указанную в первом параметре функции, к элементам переданного массива, указанного во втором параметре функции.
+In the example above, we used `arrayReduce` to find the average and maximum delays for various outward flights from `DEN`.
+`arrayReduce` applies an aggregate function, specified in the first parameter to the function, to the elements of the provided array, specified in the second parameter of the function.
 
 ### arrayJoin {#arrayJoin}
 
-Обычные функции в ClickHouse возвращают столько же строк, сколько получают на вход.
-Однако есть одна интересная и уникальная функция, которая нарушает это правило и о которой стоит узнать — функция `arrayJoin`.
+Regular functions in ClickHouse have the property that they return the same number of rows than they receive.
+There is however, one interesting and unique function that breaks this rule, which is worth learning about - the `arrayJoin` function.
 
-`arrayJoin` «разворачивает» массив, создавая отдельную строку для каждого его элемента.
-Это похоже на функции SQL `UNNEST` или `EXPLODE` в других базах данных.
+`arrayJoin` "explodes" an array by taking it and creating a separate row for each element.
+This is similar to the `UNNEST` or `EXPLODE` SQL functions in other databases.
 
-В отличие от большинства функций для работы с массивами, которые возвращают массивы или скалярные значения, `arrayJoin` радикально изменяет результирующий набор данных, умножая количество строк.
+Unlike most array functions that return arrays or scalar values, `arrayJoin` fundamentally changes the result set by multiplying the number of rows.
 
-Рассмотрим запрос ниже, который возвращает массив значений от 0 до 100 с шагом 10.
-Мы можем рассматривать этот массив как разные значения времени задержки: 0 минут, 10 минут, 20 минут и так далее.
+Consider the query below which returns an array of values from 0 to 100 in steps of 10.
+We could consider the array to be different delay times: 0 minutes, 10 minutes, 20 minutes, and so on.
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay
 SELECT delay
 ```
 
-Мы можем написать запрос с использованием `arrayJoin`, чтобы определить, сколько задержек продолжительностью до указанного количества минут было между двумя аэропортами.
-Приведённый ниже запрос строит гистограмму, показывающую распределение задержек рейсов из Денвера (DEN) в Майами (MIA) 1 января 2024 года с использованием накопительных интервалов задержки:
+We can write a query using `arrayJoin` to work out how many delays there were of up to that number of minutes between two airports.
+The query below creates a histogram showing the distribution of flight delays from Denver (DEN) to Miami (MIA) on January 1, 2024, using cumulative delay buckets:
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay,
@@ -480,17 +470,17 @@ GROUP BY delayTime
 ORDER BY flightsDelayed DESC
 ```
 
-В приведённом выше запросе мы возвращаем массив задержек, используя общее табличное выражение (CTE, предложение `WITH`).
-`Destination` преобразует код пункта назначения в строку.
+In the query above we return an array of delays using a CTE clause (`WITH` clause).
+`Destination` converts the destination code to a string.
 
-Мы используем `arrayJoin`, чтобы развернуть массив задержек в отдельные строки.
-Каждое значение из массива `delay` становится отдельной строкой с псевдонимом `del`,
-и мы получаем 10 строк: одну для `del=0`, одну для `del=10`, одну для `del=20` и т.д.
-Для каждого порога задержки (`del`) запрос подсчитывает, сколько рейсов имели задержку, большую или равную этому порогу,
-с помощью `countIf(DepDelayMinutes >= del)`.
+We use `arrayJoin` to explode the delay array into separate rows.
+Each value from the `delay` array becomes its own row with alias `del`,
+and we get 10 rows: one for `del=0`, one for `del=10`, one for `del=20`, etc.
+For each delay threshold (`del`), the query counts how many flights had delays greater than or equal to that threshold
+using `countIf(DepDelayMinutes >= del)`.
 
-У `arrayJoin` также есть эквивалентный SQL-оператор `ARRAY JOIN`.
-Приведённый выше запрос показан ниже с эквивалентным SQL-оператором для сравнения:
+`arrayJoin` also has a SQL command equivalent `ARRAY JOIN`.
+The query above is reproduced below with the SQL command equivalent for comparison:
 
 ```sql runnable
 WITH range(0, 100, 10) AS delay, 
@@ -505,7 +495,6 @@ WHERE Origin = 'DEN' AND Destination = 'MIA' AND FlightDate = '2024-01-01'
 GROUP BY ALL
 ORDER BY flightsDelayed DESC
 ```
-
 
 ## Дальнейшие шаги {#next-steps}
 

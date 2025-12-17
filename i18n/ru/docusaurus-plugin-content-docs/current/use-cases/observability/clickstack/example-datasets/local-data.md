@@ -23,7 +23,8 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud пользователям потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
 :::
 
-<VerticalStepper>
+<VerticalStepper headerLevel="h2">
+
 ## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
 
 Создайте файл `custom-local-config.yaml` со следующим содержимым:
@@ -32,10 +33,10 @@ import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.p
 receivers:
   filelog:
     include:
-      - /host/var/log/**/*.log        # Логи Linux с хоста
+      - /host/var/log/**/*.log        # Linux logs from host
       - /host/var/log/syslog
       - /host/var/log/messages
-      - /host/private/var/log/*.log   # Логи macOS с хоста
+      - /host/private/var/log/*.log   # macOS logs from host
     start_at: beginning
     resource:
       service.name: "system-logs"
@@ -95,9 +96,9 @@ service:
 Данная конфигурация собирает системные журналы и метрики для систем OSX и Linux и отправляет результаты в ClickStack. Конфигурация расширяет коллектор ClickStack, добавляя новые приёмники и конвейеры — при этом используются существующий экспортёр `clickhouse` и процессоры (`memory_limiter`, `batch`), уже настроенные в базовом коллекторе ClickStack.
 
 :::note Временные метки при ингестии
-Данная конфигурация корректирует временные метки в процессе приёма данных, присваивая каждому событию обновлённое значение времени. Пользователям рекомендуется [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) с помощью процессоров или операторов OTel в своих лог-файлах, чтобы сохранить точное время события.
+Данная конфигурация корректирует временные метки в процессе ингестии, присваивая каждому событию обновлённое значение времени. Пользователям следует [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) с помощью процессоров или операторов OTel в своих лог-файлах, чтобы обеспечить сохранение точного времени события.
 
-При такой настройке, если приёмник или процессор файлов настроен на чтение с начала файла, всем существующим записям журнала будет присвоена одна и та же скорректированная временная метка — время обработки, а не исходное время события. Любые новые события, добавляемые в файл, получат временные метки, приблизительно соответствующие фактическому времени их создания.
+При такой настройке, если приёмник или процессор файлов настроен на чтение с начала файла, всем существующим записям журнала будет присвоена одинаковая скорректированная временная метка — время обработки, а не исходное время события. Любые новые события, добавляемые в файл, получат временные метки, приближённые к фактическому времени их генерации.
 
 Чтобы избежать такого поведения, установите начальную позицию в значение `end` в конфигурации приёмника. Это обеспечит приём только новых записей с временными метками, соответствующими фактическому времени их поступления.
 :::
@@ -116,16 +117,16 @@ docker run -d --name clickstack \
   -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v /var/log:/host/var/log:ro \
   -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note Пользователь root
 Мы запускаем коллектор от имени пользователя root для доступа ко всем системным журналам — это необходимо для сбора журналов из защищённых путей в системах на базе Linux. Однако такой подход не рекомендуется для production-окружения. В production-средах OpenTelemetry Collector следует развёртывать как локальный агент только с минимальными правами, необходимыми для доступа к целевым источникам журналов.
 
-Обратите внимание, что мы монтируем `/var/log` хоста в `/host/var/log` внутри контейнера, чтобы избежать конфликтов с собственными лог-файлами контейнера.
+Обратите внимание, что мы монтируем `/var/log` хоста в `/host/var/log` внутри контейнера во избежание конфликтов с собственными лог-файлами контейнера.
 :::
 
-При использовании HyperDX в ClickHouse Cloud с автономным коллектором используйте эту команду:
+Если вы используете HyperDX в ClickHouse Cloud с отдельным коллектором, используйте эту команду:
 
 ```shell
 docker run -d \
@@ -139,18 +140,18 @@ docker run -d \
   -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v /var/log:/host/var/log:ro \
   -v /private/var/log:/host/private/var/log:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
-Коллектор сразу начнет собирать локальные системные журналы и метрики.
+Коллектор немедленно начнет сбор локальных системных журналов и метрик.
 
 ## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
 
 Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
 
-## Изучение системных журналов {#explore-system-logs}
+## Изучение системных логов {#explore-system-logs}
 
-В интерфейсе поиска должны отобразиться локальные системные журналы. Разверните фильтры и выберите `system.log`:
+В интерфейсе поиска должны отобразиться локальные системные логи. Разверните фильтры и выберите `system.log`:
 
 <Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
 
@@ -160,17 +161,18 @@ docker run -d \
 
 Перейдите в Chart Explorer через левое меню. Выберите источник `Metrics` и тип агрегации `Maximum`.
 
-В меню `Select a Metric` введите `memory`, а затем выберите `system.memory.utilization (Gauge)`.
+В меню `Select a Metric` введите `memory`, затем выберите `system.memory.utilization (Gauge)`.
 
 Нажмите кнопку запуска, чтобы визуализировать использование памяти за период времени.
 
-<Image img={hyperdx_21} alt="Динамика использования памяти" size="lg" />
+<Image img={hyperdx_21} alt="Использование памяти во времени" size="lg" />
 
-Обратите внимание, что число возвращается как число с плавающей точкой `%`. Для более четкого отображения выберите `Set number format`.
+Обратите внимание, что число возвращается как число с плавающей точкой `%`. Для более наглядного отображения выберите `Set number format`.
 
-<Image img={hyperdx_22} alt="Числовой формат" size="lg" />
+<Image img={hyperdx_22} alt="Формат числа" size="lg" />
 
-В открывшемся меню выберите `Percentage` из выпадающего списка `Output format` и нажмите `Apply`.
+В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
 
-<Image img={hyperdx_23} alt="Память, % времени" size="lg" />
+<Image img={hyperdx_23} alt="Память, % времени выполнения" size="lg" />
+
 </VerticalStepper>

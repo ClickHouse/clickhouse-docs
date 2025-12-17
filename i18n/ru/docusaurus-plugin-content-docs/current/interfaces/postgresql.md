@@ -26,7 +26,7 @@ ClickHouse поддерживает сетевой протокол PostgreSQL (
 Запустите сервер ClickHouse и найдите в журнале сообщение, аналогичное следующему, в котором упоминается **Listening for PostgreSQL compatibility protocol**:
 
 ```response
-{} <Information> Application: Прослушивание протокола совместимости PostgreSQL: 127.0.0.1:9005
+{} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
 ## Подключение psql к ClickHouse {#connect-psql-to-clickhouse}
@@ -50,11 +50,11 @@ psql -p 9005 -h 127.0.0.1 -U alice default
 Клиент `psql` запрашивает ввод пароля:
 
 ```response
-Пароль для пользователя alice:
+Password for user alice:
 psql (14.2, server 22.3.1.1)
-ПРЕДУПРЕЖДЕНИЕ: мажорная версия psql 14, мажорная версия сервера 22.
-         Некоторые функции psql могут работать некорректно.
-Введите "help" для вызова справки.
+WARNING: psql major version 14, server major version 22.
+         Some psql features might not work.
+Type "help" for help.
 
 default=>
 ```

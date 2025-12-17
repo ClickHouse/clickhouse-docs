@@ -7,20 +7,15 @@ title: 'fuzzQuery'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция fuzzQuery {#fuzzquery-table-function}
 
 Модифицирует указанную строку запроса, внося в неё случайные изменения.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 fuzzQuery(query[, max_query_length[, random_seed]])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -30,13 +25,9 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 | `max_query_length`| (UInt64) — максимальная длина запроса в процессе фаззинга.                   |
 | `random_seed`     | (UInt64) — начальное значение генератора случайных чисел для стабильных результатов. |
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Объект таблицы с одним столбцом, содержащим изменённые строки запросов.
-
-
 
 ## Пример использования {#usage-example}
 

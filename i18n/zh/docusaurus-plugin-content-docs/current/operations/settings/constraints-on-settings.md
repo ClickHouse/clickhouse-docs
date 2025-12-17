@@ -7,17 +7,11 @@ title: '设置约束条件'
 doc_type: 'reference'
 ---
 
-
-
 # 配置约束 {#constraints-on-settings}
-
-
 
 ## 概览 {#overview}
 
 在 ClickHouse 中，设置上的“约束”是指可以应用于这些设置的限制和规则。这些约束可以帮助维护数据库的稳定性、安全性以及行为的可预测性。
-
-
 
 ## 定义约束 {#defining-constraints}
 
@@ -63,7 +57,6 @@ doc_type: 'reference'
 
 如果用户尝试违反这些约束，则会抛出异常，且该设置保持不变。
 
-
 ## 约束类型 {#types-of-constraints}
 
 ClickHouse 中支持以下几种类型的约束：
@@ -93,7 +86,6 @@ ClickHouse 中支持以下几种类型的约束：
 
 :::
 
-
 ## 多个约束配置文件 {#multiple-constraint-profiles}
 
 如果某个用户同时有多个配置文件生效，这些约束会被合并。
@@ -102,8 +94,6 @@ ClickHouse 中支持以下几种类型的约束：
   这也包括那些在新约束中未设置的字段（不会从之前的约束中继承）。
 - **false**（默认）：在合并时，相同设置的约束会按以下方式处理：
   所有未设置的约束类型从之前的配置文件中继承，所有已设置的约束类型则被新配置文件中的值所替换。
-
-
 
 ## 只读模式 {#read-only}
 
@@ -147,15 +137,14 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: 设置 max_memory_usage 不得大于 20000000000。
-Code: 452, e.displayText() = DB::Exception: 设置 max_memory_usage 不得小于 5000000000。
-Code: 452, e.displayText() = DB::Exception: 设置 force_index_by_date 不得更改。
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
+Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
 ```
 
 :::note
 `default` 配置文件有特殊处理方式：为 `default` 配置文件定义的所有约束都会成为默认约束，因此它们会对所有用户生效，直到为这些用户显式设置了新的约束将其覆盖为止。
 :::
-
 
 ## 对 MergeTree 设置的约束 {#constraints-on-merge-tree-settings}
 

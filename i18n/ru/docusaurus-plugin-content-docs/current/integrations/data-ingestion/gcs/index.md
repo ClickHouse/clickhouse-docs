@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
 # Интеграция Google Cloud Storage с ClickHouse {#integrate-google-cloud-storage-with-clickhouse}
 
 :::note
@@ -21,8 +20,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 :::
 
 В ClickHouse GCS рассматривается как привлекательное решение для хранения данных для пользователей, стремящихся разделить хранение и вычисления. Для этого реализована поддержка использования GCS в качестве хранилища для движка MergeTree. Это позволит пользователям использовать масштабируемость и экономические преимущества GCS, а также производительность вставки и выполнения запросов движка MergeTree.
-
-
 
 ## MergeTree с хранилищем в GCS {#gcs-backed-mergetree}
 
@@ -140,7 +137,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 
 Полный список настроек, относящихся к этому описанию диска, можно найти [здесь](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3).
 
-
 ### Создание таблицы {#creating-a-table}
 
 Если вы настроили диск на использование бакета с правом записи, вы сможете создать таблицу, как в примере ниже. Ради краткости мы используем подмножество столбцов набора данных NYC taxi и отправляем данные напрямую в таблицу на базе GCS:
@@ -188,7 +184,6 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) совместим с некоторыми инструментами и библиотеками, которые работают с такими сервисами, как Amazon Simple Storage Service (Amazon S3).
 
 Дополнительные сведения о настройке потоков см. в разделе [Оптимизация производительности](../s3/index.md#s3-optimizing-performance).
-
 
 ## Использование Google Cloud Storage (GCS) {#gcs-multi-region}
 
@@ -256,8 +251,6 @@ ClickHouse Keeper для работы требует двух узлов, поэ
 - Отредактируйте файл, указав свои имена хостов, и убедитесь, что они разрешаются по именам как с серверных узлов ClickHouse, так и с узлов Keeper
 - Скопируйте файл на место (`/etc/clickhouse-keeper/keeper_config.xml` на каждый из серверов Keeper)
 - Отредактируйте `server_id` на каждой машине в соответствии с ее номером записи в `raft_configuration`
-
-
 
 ```xml title=/etc/clickhouse-keeper/keeper_config.xml
 <clickhouse>
@@ -351,7 +344,6 @@ ClickHouse Keeper для работы требует двух узлов, поэ
 Этот файл задаёт имя хоста и порт каждого сервера ClickHouse в кластере. Конфигурационный файл по умолчанию содержит примеры описаний кластеров; чтобы отображались только полностью настроенные кластеры, к записи `remote_servers` добавляется тег `replace="true"`, чтобы при слиянии этой конфигурации с конфигурацией по умолчанию она заменяла секцию `remote_servers`, а не дополняла её.
 
 * Отредактируйте файл, указав ваши имена хостов, и убедитесь, что они корректно разрешаются с узлов серверов ClickHouse
-
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -451,7 +443,6 @@ sudo systemctl status clickhouse-keeper
 #### Проверьте статус ClickHouse Keeper {#check-clickhouse-keeper-status}
 
 Отправляйте команды в ClickHouse Keeper с помощью `netcat`. Например, команда `mntr` возвращает состояние кластера ClickHouse Keeper. Если выполнить эту команду на каждом узле Keeper, вы увидите, что один из них является лидером, а два других — ведомыми:
-
 
 ```bash
 echo mntr | nc localhost 9181
@@ -561,10 +552,9 @@ is_broken:        0
 cache_path:
 ```
 
-
 3 строки в наборе. Прошло: 0,002 сек.
 
-````
+```
 #### Убедитесь, что таблицы, созданные на кластере, создаются на обоих узлах                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
@@ -587,7 +577,7 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 -- highlight-next-line
 SETTINGS storage_policy='gcs_main'
-````
+```
 
 ```response
 ┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐

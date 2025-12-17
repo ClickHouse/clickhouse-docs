@@ -17,8 +17,6 @@ doc_type: 'reference'
 さらに、ユーザーは [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 権限を持っている必要があります。
 :::
 
-
-
 ## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
 
 これらのステートメントは、指定したオブジェクトの作成に使用された `CREATE` クエリを含む、`String` 型の単一列を返します。
@@ -34,7 +32,6 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 テーブル構造だけを定義していてテーブルの作成には使用できない
 *擬似的な* クエリが返されます。
 :::
-
 
 ## SHOW DATABASES {#show-databases}
 
@@ -109,7 +106,6 @@ SHOW DATABASES LIMIT 2
 ### 関連項目 {#see-also}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
-
 
 ## SHOW TABLES {#show-tables}
 
@@ -189,7 +185,6 @@ SHOW TABLES FROM system LIMIT 2
 * [`Create Tables`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
-
 ## SHOW COLUMNS {#show_columns}
 
 `SHOW COLUMNS` ステートメントは、列の一覧を表示します。
@@ -242,7 +237,6 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 * [`system.columns`](../../operations/system-tables/columns.md)
 
-
 ## SHOW DICTIONARIES {#show-dictionaries}
 
 `SHOW DICTIONARIES` ステートメントは、[Dictionaries](../../sql-reference/dictionaries/index.md) の一覧を表示します。
@@ -275,7 +269,6 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 │ region_names │
 └──────────────┘
 ```
-
 
 ## SHOW INDEX {#show-index}
 
@@ -321,7 +314,6 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 SHOW INDEX FROM 'tbl'
 ```
 
-
 ```text title="Response"
 ┌─table─┬─non_unique─┬─key_name─┬─seq_in_index─┬─column_name─┬─collation─┬─cardinality─┬─sub_part─┬─packed─┬─null─┬─index_type───┬─comment─┬─index_comment─┬─visible─┬─expression─┐
 │ tbl   │          1 │ blf_idx  │ 1            │ 1           │ ᴺᵁᴸᴸ      │ 0           │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ │ BLOOM_FILTER │         │               │ YES     │ d, b       │
@@ -337,7 +329,6 @@ SHOW INDEX FROM 'tbl'
 
 * [`system.tables`](../../operations/system-tables/tables.md)
 * [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
-
 
 ## SHOW PROCESSLIST {#show-processlist}
 
@@ -360,7 +351,6 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 
 :::
 
-
 ## SHOW GRANTS {#show-grants}
 
 `SHOW GRANTS` ステートメントは、ユーザーの権限を表示します。
@@ -377,7 +367,6 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 
 `FINAL` 修飾子は、ユーザー自身の権限と、そのユーザーに付与されたロール（継承分を含む）からのすべての権限を統合します。
 
-
 ## SHOW CREATE USER {#show-create-user}
 
 `SHOW CREATE USER` 文は、[ユーザー作成](../../sql-reference/statements/create/user.md) 時に指定されたパラメータを表示します。
@@ -387,7 +376,6 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
-
 
 ## SHOW CREATE ROLE {#show-create-role}
 
@@ -399,7 +387,6 @@ SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
-
 ## SHOW CREATE ROW POLICY {#show-create-row-policy}
 
 `SHOW CREATE ROW POLICY` ステートメントは、[行ポリシーの作成](../../sql-reference/statements/create/row-policy.md) の際に使用されたパラメーターを表示します。
@@ -409,7 +396,6 @@ SHOW CREATE ROLE name1 [, name2 ...]
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
-
 
 ## SHOW CREATE QUOTA {#show-create-quota}
 
@@ -421,7 +407,6 @@ SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
-
 ## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
 
 `SHOW CREATE SETTINGS PROFILE` ステートメントは、[設定プロファイルの作成](../../sql-reference/statements/create/settings-profile.md) で使用されたパラメーターを表示します。
@@ -431,7 +416,6 @@ SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```sql title="Syntax"
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
-
 
 ## SHOW USERS {#show-users}
 
@@ -444,7 +428,6 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 SHOW USERS
 ```
 
-
 ## SHOW ROLES {#show-roles}
 
 `SHOW ROLES` ステートメントは、[ロール](../../guides/sre/user-management/index.md#role-management)の一覧を返します。
@@ -452,8 +435,6 @@ SHOW USERS
 システムテーブル [`system.roles`](/operations/system-tables/roles) および [`system.role_grants`](/operations/system-tables/role_grants) を参照してください。
 
 ### 構文 {#syntax-14}
-
-
 
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
@@ -470,7 +451,6 @@ SHOW [CURRENT|ENABLED] ROLES
 SHOW [SETTINGS] PROFILES
 ```
 
-
 ## SHOW POLICIES {#show-policies}
 
 `SHOW POLICIES` ステートメントは、指定したテーブルに対する [行ポリシー](../../guides/sre/user-management/index.md#row-policy-management) の一覧を返します。
@@ -481,7 +461,6 @@ SHOW [SETTINGS] PROFILES
 ```sql title="Syntax"
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
-
 
 ## SHOW QUOTAS {#show-quotas}
 
@@ -494,15 +473,12 @@ SHOW [ROW] POLICIES [ON [db.]table]
 SHOW QUOTAS
 ```
 
-
 ## SHOW QUOTA {#show-quota}
 
 `SHOW QUOTA` ステートメントは、すべてのユーザーまたは現在のユーザーの[クオータ](../../operations/quotas.md)の消費状況を返します。
 その他のパラメータを表示するには、システムテーブル [`system.quotas_usage`](/operations/system-tables/quotas_usage) および [`system.quota_usage`](/operations/system-tables/quota_usage) を参照してください。
 
 ### 構文 {#syntax-18}
-
-
 
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
@@ -517,7 +493,6 @@ SHOW [CURRENT] QUOTA
 ```sql title="Syntax"
 SHOW ACCESS
 ```
-
 
 ## SHOW CLUSTER(S) {#show-clusters}
 
@@ -577,7 +552,6 @@ host_address:            127.0.0.1
 port:                    9000
 ```
 
-
 ## SHOW SETTINGS {#show-settings}
 
 `SHOW SETTINGS` ステートメントは、システム設定とその値の一覧を返します。
@@ -635,7 +609,6 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 └──────────────────┴────────┴─────────────┘
 ```
 
-
 ## SHOW SETTING {#show-setting}
 
 `SHOW SETTING` ステートメントは、指定した設定名の設定値を表示します。
@@ -650,13 +623,12 @@ SHOW SETTING <name>
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
 
-
 ## SHOW FILESYSTEM CACHES {#show-filesystem-caches}
 
 ### 使用例 {#examples-7}
 
 ```sql title="Query"
-ファイルシステムキャッシュを表示
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
@@ -668,7 +640,6 @@ SHOW SETTING <name>
 ### 関連項目 {#see-also-5}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
-
 
 ## SHOW ENGINES {#show-engines}
 
@@ -683,7 +654,6 @@ SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ### 関連項目 {#see-also-6}
 
 * [system.table&#95;engines](../../operations/system-tables/table_engines.md) テーブル
-
 
 ## SHOW FUNCTIONS {#show-functions}
 
@@ -700,7 +670,6 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 ### 関連項目 {#see-also-7}
 
 * [`system.functions`](../../operations/system-tables/functions.md) テーブル
-
 
 ## SHOW MERGES {#show-merges}
 

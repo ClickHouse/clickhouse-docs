@@ -21,10 +21,10 @@ number=${1}
 if [[ $number == '' ]]; then
     number=1
 fi;
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # 下载图像嵌入向量
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # 下载文本嵌入向量
-wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # 下载元数据
-python3 process.py $number # 合并文件并转换为 CSV 格式
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/img_emb/img_emb_${number}.npy          # download image embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/text_emb/text_emb_${number}.npy        # download text embedding
+wget --tries=100 https://deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings/metadata/metadata_${number}.parquet    # download metadata
+python3 process.py $number # merge files and convert to CSV
 ```
 
 脚本 `process.py` 的定义如下：
@@ -40,28 +40,28 @@ npy_file = "img_emb_" + str_i + '.npy'
 metadata_file = "metadata_" + str_i + '.parquet'
 text_npy =  "text_emb_" + str_i + '.npy'
 
-# 加载所有文件 {#load-all-files}
+# load all files
 im_emb = np.load(npy_file)
 text_emb = np.load(text_npy) 
 data = pd.read_parquet(metadata_file)
 
-# 合并文件 {#combine-files}
+# combine files
 data = pd.concat([data, pd.DataFrame({"image_embedding" : [*im_emb]}), pd.DataFrame({"text_embedding" : [*text_emb]})], axis=1, copy=False)
 
-# 待导入 ClickHouse 的列 {#columns-to-be-imported-into-clickhouse}
+# columns to be imported into ClickHouse
 data = data[['url', 'caption', 'NSFW', 'similarity', "image_embedding", "text_embedding"]]
 
-# 将 np.arrays 转换为列表 {#transform-nparrays-to-lists}
+# transform np.arrays to lists
 data['image_embedding'] = data['image_embedding'].apply(lambda x: x.tolist())
 data['text_embedding'] = data['text_embedding'].apply(lambda x: x.tolist())
 
-# 此处需要使用这个小技巧,因为 caption 有时会包含各种引号 {#this-small-hack-is-needed-because-caption-sometimes-contains-all-kind-of-quotes}
+# this small hack is needed because caption sometimes contains all kind of quotes
 data['caption'] = data['caption'].apply(lambda x: x.replace("'", " ").replace('"', " "))
 
-# 导出数据为 CSV 文件 {#export-data-as-csv-file}
+# export data as CSV file
 data.to_csv(str_i + '.csv', header=False)
 
-# 删除原始数据文件 {#removed-raw-data-files}
+# removed raw data files
 os.system(f"rm {npy_file} {metadata_file} {text_npy}")
 ```
 
@@ -74,7 +74,6 @@ seq 0 409 | xargs -P1 -I{} bash -c './download.sh {}'
 该数据集被拆分为 410 个文件，每个文件包含约 100 万行。如果你只想处理较小的数据子集，只需调整范围，例如 `seq 0 9 | ...`。
 
 （上面的 Python 脚本非常慢（每个文件大约需要 2–10 分钟），占用大量内存（每个文件 41 GB），且生成的 CSV 文件也很大（每个 10 GB），使用时请谨慎。如果你的 RAM 足够多，可以增大 `-P1` 的数值以提高并行度。如果这仍然太慢，可以考虑设计更好的摄取流程——例如先将 .npy 文件转换为 Parquet，然后使用 ClickHouse 完成其余处理。）
-
 
 ## 创建表 {#create-table}
 
@@ -93,7 +92,6 @@ CREATE TABLE laion
 )
 ENGINE = MergeTree
 ORDER BY id
-SETTINGS index_granularity = 8192
 ```
 
 将 CSV 文件导入 ClickHouse：
@@ -103,7 +101,6 @@ INSERT INTO laion FROM INFILE '{path_to_csv_files}/*.csv'
 ```
 
 请注意，`id` 列仅用于示例说明，脚本会向其中写入非唯一值。
-
 
 ## 运行基于暴力算法的向量相似度搜索 {#run-a-brute-force-vector-similarity-search}
 
@@ -133,9 +130,8 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-返回 10 行。用时:4.605 秒。已处理 1.0038 亿行,309.98 GB(每秒 2180 万行,每秒 67.31 GB)
+10 rows in set. Elapsed: 4.605 sec. Processed 100.38 million rows, 309.98 GB (21.80 million rows/s., 67.31 GB/s.)
 ```
-
 
 ## 使用向量相似性索引执行近似向量相似性搜索 {#run-an-approximate-vector-similarity-search-with-a-vector-similarity-index}
 
@@ -167,7 +163,6 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 
 **结果**
 
-
 ```response
     ┌─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─caption──────────────────────────────────────────────────────────────────────────┐
  1. │ https://s4.thcdn.com/productimg/600/600/11340490-9914447026352671.jpg                                                                                                                         │ LEGO Friends: Puppy Treats & Tricks (41304)                                      │
@@ -182,13 +177,12 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 10. │ http://www.ibrickcity.com/wp-content/gallery/41057/thumbs/thumbs_lego-41057-heartlake-horse-show-friends-3.jpg                                                                                │ lego-41057-heartlake-horse-show-friends-3                                        │
     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-返回 10 行。用时:0.019 秒。已处理 13.73 万行,24.42 MB(738 万行/秒,1.31 GB/秒)。
+10 rows in set. Elapsed: 0.019 sec. Processed 137.27 thousand rows, 24.42 MB (7.38 million rows/s., 1.31 GB/s.)
 ```
 
 查询延迟显著降低，因为最近邻是通过向量索引检索的。
 使用向量相似度索引进行向量相似度搜索时，返回的结果可能会与暴力搜索的结果略有差异。
 通过谨慎选择 HNSW 参数并评估索引质量，HNSW 索引有望实现接近 1 的召回率（与暴力搜索具有相同的准确性）。
-
 
 ## 使用 UDF 创建嵌入向量 {#creating-embeddings-with-udfs}
 
@@ -202,7 +196,7 @@ SELECT url, caption FROM laion ORDER BY cosineDistance(image_embedding, {target:
 
 ```python
 #!/usr/bin/python3
-#!注意:如果使用虚拟环境,请修改上方 python3 可执行文件的路径。
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -255,7 +249,6 @@ LIMIT 10
 
 请注意，`encode_text()` UDF 本身的计算可能需要几秒钟才能生成嵌入向量。
 
-
 ### 图像嵌入 {#image-embeddings}
 
 图像嵌入的创建方式类似，我们提供了一个 Python 脚本，可为以本地图像文件形式存储的图像生成嵌入向量。
@@ -264,7 +257,7 @@ LIMIT 10
 
 ```python
 #!/usr/bin/python3
-#!注意:如果使用虚拟环境,请更改上面的 python3 可执行文件位置。
+#!Note: Change the above python3 executable location if a virtual env is being used.
 import clip
 import torch
 import numpy as np
@@ -304,7 +297,7 @@ if __name__ == '__main__':
 获取示例图片进行搜索：
 
 ```shell
-# 获取乐高套装的随机图片 {#get-a-random-image-of-a-lego-set}
+# get a random image of a LEGO set
 $ wget http://cdn.firstcry.com/brainbees/images/products/thumb/191325a.jpg
 ```
 

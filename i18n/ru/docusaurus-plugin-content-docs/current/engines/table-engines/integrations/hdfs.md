@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы HDFS {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -17,8 +16,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 Этот движок обеспечивает интеграцию с экосистемой [Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop), позволяя управлять данными в [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) через ClickHouse. Этот движок похож на движки [File](/engines/table-engines/special/file) и [URL](/engines/table-engines/special/url), но предоставляет специфические для Hadoop возможности.
 
 Эта функциональность не поддерживается инженерами ClickHouse и известна своим сомнительным качеством реализации. В случае любых проблем исправляйте их самостоятельно и отправляйте pull request.
-
-
 
 ## Использование {#usage}
 
@@ -67,7 +64,6 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 │ two  │     2 │
 └──────┴───────┘
 ```
-
 
 ## Подробности реализации {#implementation-details}
 
@@ -132,7 +128,6 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 
 Создайте таблицу с файлами с именами `file000`, `file001`, ... , `file999`:
 
-
 ```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
@@ -142,14 +137,14 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 Как и GraphiteMergeTree, движок HDFS поддерживает расширенную настройку с помощью конфигурационного файла ClickHouse. Доступны два ключа конфигурации: глобальный (`hdfs`) и пользовательский (`hdfs_*`). Сначала применяется глобальная конфигурация, а затем — пользовательская (если она есть).
 
 ```xml
-<!-- Глобальные параметры конфигурации для типа движка HDFS -->
+<!-- Global configuration options for HDFS engine type -->
 <hdfs>
   <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
   <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
   <hadoop_security_authentication>kerberos</hadoop_security_authentication>
 </hdfs>
 
-<!-- Конфигурация для пользователя "root" -->
+<!-- Configuration specific for user "root" -->
 <hdfs_root>
   <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
 </hdfs_root>
@@ -158,7 +153,6 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 ### Параметры конфигурации {#configuration-options}
 
 #### Поддерживаемые libhdfs3 {#supported-by-libhdfs3}
-
 
 | **параметр**                                         | **значение по умолчанию**       |
 | -                                                  | -                    |
@@ -217,8 +211,6 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 ### Ограничения {#limitations}
 * `hadoop_security_kerberos_ticket_cache_path` и `libhdfs3_conf` могут задаваться только глобально, а не на уровне пользователя
 
-
-
 ## Поддержка Kerberos {#kerberos-support}
 
 Если параметр `hadoop_security_authentication` имеет значение `kerberos`, ClickHouse аутентифицируется через Kerberos.
@@ -226,8 +218,6 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 Обратите внимание, что из-за ограничений libhdfs3 поддерживается только «старый» подход:
 взаимодействие с узлами DataNode не защищено с помощью SASL (`HADOOP_SECURE_DN_USER` является надежным индикатором такого
 варианта организации безопасности). В качестве примера используйте `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh`.
-
-
 
 Если указаны `hadoop_kerberos_keytab`, `hadoop_kerberos_principal` или `hadoop_security_kerberos_ticket_cache_path`, будет использоваться аутентификация Kerberos. В этом случае `hadoop_kerberos_keytab` и `hadoop_kerberos_principal` являются обязательными.
 
@@ -246,15 +236,12 @@ libhdfs3 поддерживает HDFS Namenode HA.
 
 * Затем используйте значение тега `dfs.nameservices` из `hdfs-site.xml` в качестве адреса узла NameNode в URI HDFS. Например, замените `hdfs://appadmin@192.168.101.11:8020/abc/` на `hdfs://appadmin@my_nameservice/abc/`.
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-
-
 
 ## Настройки хранения {#storage-settings}
 

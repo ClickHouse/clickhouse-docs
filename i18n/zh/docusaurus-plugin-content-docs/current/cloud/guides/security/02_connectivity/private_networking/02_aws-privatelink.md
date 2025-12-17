@@ -18,7 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
 # AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -69,14 +68,10 @@ ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazo
 
 您可以在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 
-
-
 ## 重要注意事项 {#considerations}
 ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内复用同一个已发布的[服务端点](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview)。但是，并不能保证一定会完成这种分组，尤其是在您将服务分散在多个 ClickHouse 组织中的情况下。
 
 如果您已经在 ClickHouse 组织中为其他服务配置了 PrivateLink，那么通常可以跳过大部分步骤，直接进行最后一步：将 ClickHouse “Endpoint ID” 添加到 ClickHouse 服务允许列表中。
-
-
 
 ## 本流程的前提条件 {#prerequisites}
 
@@ -84,8 +79,6 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内�
 
 1. AWS 账户。
 1. 具有在 ClickHouse 端创建和管理私有端点所需权限的 [ClickHouse API key](/cloud/manage/openapi)。
-
-
 
 ## 步骤 {#steps}
 
@@ -106,12 +99,12 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 AWS 区域内�
 在运行任何命令之前，先设置以下环境变量：
 
 ```shell
-REGION=<您的区域代码,使用 AWS 格式,例如:us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥密文>
-ORG_ID=<您的 ClickHouse 组织 ID>
-SERVICE_NAME=<您的 ClickHouse 服务名称>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 通过按区域、服务提供商和服务名称筛选来获取 ClickHouse `INSTANCE_ID`：
@@ -179,7 +172,6 @@ jq .result
 
 #### 选项 2：AWS CloudFormation {#option-2-aws-cloudformation}
 
-
 接下来，需要使用在[获取 Endpoint &quot;Service name&quot;](#obtain-endpoint-service-info) 步骤中获得的 `Service name`<sup>console</sup> 或 `endpointServiceId`<sup>API</sup> 来创建 VPC Endpoint。
 请确保使用正确的子网 ID、安全组和 VPC ID。
 
@@ -190,7 +182,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: <服务名称(endpointServiceId),请参阅上文>
+      ServiceName: <Service name(endpointServiceId), pls see above>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -211,14 +203,14 @@ Resources:
 ```json
 resource "aws_vpc_endpoint" "this" {
   vpc_id            = var.vpc_id
-  service_name      = "<请参阅上方注释>"
+  service_name      = "<pls see comment above>"
   vpc_endpoint_type = "Interface"
   security_group_ids = [
     Var.security_group_id1,var.security_group_id2, var.security_group_id3,
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
-  service_region      = "(可选)如果指定,VPC 端点将连接到指定区域中的服务。对于多区域 PrivateLink 连接,请定义此参数。"
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
@@ -255,12 +247,12 @@ resource "aws_vpc_endpoint" "this" {
 在运行任何命令之前，先设置以下环境变量：
 
 ```bash
-REGION=<您的区域代码,使用 AWS 格式,例如:us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥>
-ORG_ID=<您的 ClickHouse 组织 ID>
-SERVICE_NAME=<您的 ClickHouse 服务名称>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 若要将 endpoint ID 添加到允许列表：
@@ -281,7 +273,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" \
 -d @pl_config.json | jq
 ```
-
 
 要从允许列表中移除某个端点 ID：
 
@@ -319,10 +310,10 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 在运行任何命令之前，先设置以下环境变量：
 
 ```bash
-KEY_ID=<您的 ClickHouse 密钥 ID>
-KEY_SECRET=<您的 ClickHouse 密钥密文>
-ORG_ID=<您的 ClickHouse 组织 ID>
-INSTANCE_ID=<您的 ClickHouse 服务名称>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 可在[步骤](#option-2-api)中获取 `INSTANCE_ID`。
@@ -343,7 +334,6 @@ jq .result
 ```
 
 在此示例中，使用 `privateDnsHostname` 主机名发起的连接将通过 PrivateLink 路由，而使用 `endpointServiceId` 主机名发起的连接将通过 Internet 路由。
-
 
 ## 故障排查 {#troubleshooting}
 
@@ -371,10 +361,10 @@ jq .result
 在运行任何命令之前，请先设置以下环境变量：
 
 ```bash
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥密文>
-ORG_ID=<请设置 ClickHouse 组织 ID>
-INSTANCE_ID=<实例 ID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 你可以在[此步骤](#option-2-api)中获取 `INSTANCE_ID`。

@@ -16,7 +16,6 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 SQL コンソールユーザーは各セッションごとに作成され、自動的に更新される X.509 証明書を使って認証されます。セッションが終了すると、そのユーザーは削除されます。監査目的のアクセスリストを作成する場合は、コンソールで対象サービスの Settings タブに移動し、データベース内に存在するデータベースユーザーに加えて、SQL コンソールからのアクセスも確認してください。カスタムロールが設定されている場合、ユーザーのアクセス権は、そのユーザー名で終わるロールに一覧表示されます。
 
-
 ## SQL コンソールのユーザーとロール {#sql-console-users-and-roles}
 
 基本的な SQL コンソールのロールは、Service Read Only 権限および Service Admin 権限を持つユーザーに割り当てることができます。詳細は、[Manage SQL Console Role Assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) を参照してください。本ガイドでは、SQL コンソールユーザー向けにカスタムロールを作成する方法を説明します。
@@ -52,8 +51,6 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 </VerticalStepper>
 
-
-
 ## データベース認証 {#database-authentication}
 
 ### データベースユーザー ID とパスワード {#database-user-id--password}
@@ -78,7 +75,6 @@ ClickHouse Cloud のデータベースユーザーに対して SSH 認証を設�
 4. 秘密鍵を使用してサービスに対して認証を行います。
 
 詳細な手順と例については、ナレッジベース内の「[SSH キーを使用して ClickHouse Cloud に接続する方法](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)」を参照してください。
-
 
 ## データベース権限 {#database-permissions}
 
@@ -107,6 +103,7 @@ SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用�
 
 ユーザーによる操作がそのユーザー ID に紐づいて識別できるようにし、`default` アカウントをいわゆるブレークグラス用途（緊急時のみの利用）のために確保しておくために、個人に紐づく新しいユーザーアカウントを作成し、そのユーザーに default&#95;role を付与することを推奨します。
 
+
 ```sql
 CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
 GRANT default_role to userID;
@@ -124,26 +121,26 @@ GRANT default_role to userID;
   データベース内のすべての権限の一覧を取得するには、次のクエリを実行します。
 
   ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  UNION ALL
+UNION ALL
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
   #### SQL コンソールにアクセスできる Console ユーザーに権限一覧を関連付ける
 
@@ -159,7 +156,6 @@ GRANT default_role to userID;
 
   e. データベースにアクセスできるユーザー数を示すリンク `There are # users with access to this service.` をクリックして、ユーザー一覧を表示します。
 </VerticalStepper>
-
 
 ## ウェアハウスユーザー {#warehouse-users}
 

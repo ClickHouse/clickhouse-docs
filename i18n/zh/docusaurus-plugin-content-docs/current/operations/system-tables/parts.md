@@ -24,7 +24,7 @@ doc_type: 'reference'
 * `name` ([String](../../sql-reference/data-types/string.md)) – 数据分片名称。分片命名结构可用于判断数据、摄取以及合并模式等多个方面。分片命名格式如下：
 
 ```text
-<分区ID>_<最小块号>_<最大块号>_<层级>_<数据版本>
+<partition_id>_<minimum_block_number>_<maximum_block_number>_<level>_<data_version>
 ```
 
 * 定义：

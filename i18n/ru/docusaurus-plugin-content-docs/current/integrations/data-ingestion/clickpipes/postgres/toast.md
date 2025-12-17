@@ -8,8 +8,6 @@ keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', '
 
 При репликации данных из PostgreSQL в ClickHouse важно понимать ограничения и особенности работы со столбцами TOAST (The Oversized-Attribute Storage Technique). Это руководство поможет вам выявить и корректно обрабатывать столбцы TOAST в процессе репликации.
 
-
-
 ## Что такое столбцы TOAST в PostgreSQL? {#what-are-toast-columns-in-postgresql}
 
 TOAST (The Oversized-Attribute Storage Technique) — это механизм PostgreSQL, предназначенный для обработки значений больших полей. Когда строка превышает максимальный размер строки (обычно 2 КБ, но это может варьироваться в зависимости от версии PostgreSQL и конкретных настроек), PostgreSQL автоматически переносит большие значения полей в отдельную таблицу TOAST, сохраняя в основной таблице только указатель.
@@ -20,8 +18,6 @@ TOAST (The Oversized-Attribute Storage Technique) — это механизм Po
 
 Подробнее о TOAST и его реализации в PostgreSQL можно прочитать здесь: https://www.postgresql.org/docs/current/storage-toast.html
 
-
-
 ## Определение столбцов TOAST в таблице {#identifying-toast-columns-in-a-table}
 
 Чтобы определить, есть ли в таблице столбцы TOAST, вы можете использовать следующий SQL-запрос:
@@ -30,14 +26,13 @@ TOAST (The Oversized-Attribute Storage Technique) — это механизм Po
 SELECT a.attname, pg_catalog.format_type(a.atttypid, a.atttypmod) AS data_type
 FROM pg_attribute a
 JOIN pg_class c ON a.attrelid = c.oid
-WHERE c.relname = 'имя_вашей_таблицы'
+WHERE c.relname = 'your_table_name'
   AND a.attlen = -1
   AND a.attstorage != 'p'
   AND a.attnum > 0;
 ```
 
 Этот запрос вернёт имена и типы данных столбцов, которые потенциально могут быть помещены в TOAST-хранилище. Однако важно отметить, что этот запрос лишь определяет столбцы, которые являются кандидатами для хранения в TOAST на основе их типа данных и атрибутов хранения. Чтобы понять, содержат ли эти столбцы фактически данные, вынесенные в TOAST, нужно учитывать, превышают ли значения в этих столбцах соответствующий порог размера. Фактическое вынесение данных в TOAST зависит от конкретного содержимого, хранящегося в этих столбцах.
-
 
 ## Обеспечение корректной обработки столбцов TOAST {#ensuring-proper-handling-of-toast-columns}
 
@@ -46,11 +41,10 @@ WHERE c.relname = 'имя_вашей_таблицы'
 Вы можете установить `REPLICA IDENTITY` в `FULL`, используя следующую команду SQL:
 
 ```sql
-ALTER TABLE имя_вашей_таблицы REPLICA IDENTITY FULL;
+ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
 См. [эту запись в блоге](https://xata.io/blog/replica-identity-full-performance) о нюансах производительности при использовании `REPLICA IDENTITY FULL`.
-
 
 ## Поведение репликации, когда REPLICA IDENTITY FULL не задан {#replication-behavior-when-replica-identity-full-is-not-set}
 
@@ -65,8 +59,6 @@ ALTER TABLE имя_вашей_таблицы REPLICA IDENTITY FULL;
 3. Для операций DELETE значения TOAST-столбцов в ClickHouse будут отображаться как NULL или пустые.
 
 Такое поведение может приводить к несогласованности данных между исходной базой PostgreSQL и целевой ClickHouse. Поэтому крайне важно задать `REPLICA IDENTITY FULL` для таблиц с TOAST-столбцами, чтобы обеспечить точную и полную репликацию данных.
-
-
 
 ## Заключение {#conclusion}
 

@@ -86,7 +86,7 @@ While this query is fast, it relies on us to write the `JOIN` carefully to achie
 
 #### Applying a dictionary {#applying-a-dictionary}
 
-To demonstrate these concepts, we use a dictionary for our vote data. Since dictionaries are usually held in memory ([ssd_cache](/sql-reference/dictionaries#ssd_cache) is the exception), users should be cognizant of the size of the data. Confirming our `votes` table size:
+To demonstrate these concepts, we use a dictionary for our vote data. Since dictionaries are usually held in memory ([ssd_cache](/sql-reference/dictionaries#ssd_cache) is the exception), you should be cognizant of the size of the data. Confirming our `votes` table size:
 
 ```sql
 SELECT table,

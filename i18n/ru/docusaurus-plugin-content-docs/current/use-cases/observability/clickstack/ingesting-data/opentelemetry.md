@@ -15,7 +15,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)).
 
-
 ## Установка коллектора OpenTelemetry ClickStack {#installing-otel-collector}
 
 Коллектор OpenTelemetry ClickStack включён в большинство вариантов развёртывания ClickStack, включая:
@@ -59,13 +58,13 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 Для языковых SDK это можно задать либо функцией `init`, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`, например:
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<ВАШ_КЛЮЧ_API_ПРИЁМА>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 Агенты также должны включать этот заголовок авторизации во все взаимодействия по OTLP. Например, при развёртывании [contrib-дистрибутива OTel collector](https://github.com/open-telemetry/opentelemetry-collector-contrib) в роли агента можно использовать экспортёр OTLP. Пример конфигурации агента, который читает этот [структурированный файл логов](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz), приведён ниже. Обратите внимание на необходимость указать ключ авторизации — см. `<YOUR_API_INGESTION_KEY>`.
 
 ```yaml
-# clickhouse-agent-config.yaml {#clickhouse-agent-configyaml}
+# clickhouse-agent-config.yaml
 receivers:
   filelog:
     include:
@@ -77,14 +76,14 @@ receivers:
           parse_from: attributes.time_local
           layout: '%Y-%m-%d %H:%M:%S'
 exporters:
-  # Настройка HTTP
+  # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
       authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
  
-  # Настройка gRPC (альтернативный вариант)
+  # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
@@ -97,7 +96,7 @@ processors:
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Изменено, так как на одном хосте работают 2 коллектора
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]

@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## Сборка из исходных кодов {#compile-from-source}
 
 Чтобы вручную собрать ClickHouse, следуйте инструкциям по сборке для [Linux](/development/build.md) или [macOS](/development/build-osx.md).
@@ -17,8 +15,8 @@ doc_type: 'guide'
 Вы можете собрать пакеты и установить их или использовать программы без установки пакетов.
 
 ```xml
-Клиент: <build_directory>/programs/clickhouse-client
-Сервер: <build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 Вам нужно будет вручную создать каталоги данных и метаданных и выполнить для них `chown` на нужного пользователя. Пути к ним можно изменить в конфигурации сервера (src/programs/server/config.xml), по умолчанию они следующие:
@@ -29,7 +27,6 @@ doc_type: 'guide'
 ```
 
 В Gentoo можно просто выполнить `emerge clickhouse`, чтобы установить ClickHouse из исходного кода.
-
 
 ## Установка бинарника, сгенерированного CI {#install-a-ci-generated-binary}
 

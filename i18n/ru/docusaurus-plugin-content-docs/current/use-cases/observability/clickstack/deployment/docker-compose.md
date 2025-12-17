@@ -33,7 +33,6 @@ Docker Compose открывает дополнительные порты для
 
 Эти порты обеспечивают интеграцию с широким набором источников телеметрии и делают коллектор OpenTelemetry готовым к промышленной эксплуатации для различных сценариев ингестии.
 
-
 ### Подходит для {#suitable-for}
 
 * Локального тестирования
@@ -49,10 +48,10 @@ Docker Compose открывает дополнительные порты для
 
 ### Клонирование репозитория {#clone-the-repo}
 
-Чтобы развернуть с помощью Docker Compose, клонируйте репозиторий HyperDX, перейдите в каталог и выполните `docker-compose up`:
+Чтобы развернуть с помощью Docker Compose, клонируйте репозиторий ClickStack, перейдите в каталог и выполните `docker-compose up`:
 
 ```shell
-git clone git@github.com:hyperdxio/hyperdx.git
+git clone https://github.com/ClickHouse/ClickStack.git
 docker compose up
 ```
 
@@ -62,7 +61,7 @@ docker compose up
 
 Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям. 
 
-При нажатии `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Helm-чарта.
+При нажатии `Create` будут созданы источники данных для экземпляра ClickHouse, развернутого с помощью Docker Compose.
 
 :::note Переопределение подключения по умолчанию
 Вы можете переопределить подключение по умолчанию к интегрированному экземпляру ClickHouse. Подробности см. в разделе ["Использование ClickHouse Cloud"](#using-clickhouse-cloud).
@@ -89,31 +88,27 @@ docker compose up
 Пользователи могут изменять настройки стека, например используемую версию, через файл с переменными окружения:
 
 ```shell
-user@example-host hyperdx % cat .env
-# Используется в docker-compose.yml {#used-by-docker-composeyml}
-# Используется в docker-compose.yml {#used-by-docker-composeyml}
-HDX_IMAGE_REPO=docker.hyperdx.io
-IMAGE_NAME=ghcr.io/hyperdxio/hyperdx
-IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx
-LOCAL_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-local
-LOCAL_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-local
-ALL_IN_ONE_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-all-in-one
-ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-all-in-one
-OTEL_COLLECTOR_IMAGE_NAME=ghcr.io/hyperdxio/hyperdx-otel-collector
-OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=hyperdx/hyperdx-otel-collector
-CODE_VERSION=2.0.0-beta.16
-IMAGE_VERSION_SUB_TAG=.16
-IMAGE_VERSION=2-beta
-IMAGE_NIGHTLY_TAG=2-nightly
+user@example-host clickstack % cat .env
 
-# Настройка URL доменов {#set-up-domain-urls}
-HYPERDX_API_PORT=8000 #необязательно (не должен быть занят другими сервисами)
+# Used by docker-compose.yml
+IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+LOCAL_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-local
+ALL_IN_ONE_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-all-in-one
+OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB=clickhouse/clickstack-otel-collector
+CODE_VERSION=2.8.0
+IMAGE_VERSION_SUB_TAG=.8.0
+IMAGE_VERSION=2
+IMAGE_NIGHTLY_TAG=2-nightly
+IMAGE_LATEST_TAG=latest
+
+# Set up domain URLs
+HYPERDX_API_PORT=8000 #optional (should not be taken by other services)
 HYPERDX_APP_PORT=8080
 HYPERDX_APP_URL=http://localhost
 HYPERDX_LOG_LEVEL=debug
 HYPERDX_OPAMP_PORT=4320
 
-# Конфигурация OTel/ClickHouse {#otelclickhouse-config}
+# Otel/Clickhouse config
 HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 ```
 
@@ -126,30 +121,30 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 Этот дистрибутив можно использовать с ClickHouse Cloud. Пользователям следует:
 
-* Удалить сервис ClickHouse из файла `docker-compose.yaml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет расходовать локальные ресурсы. При удалении сервиса убедитесь, что удалены все ссылки на него, такие как `depends_on`.
+* Удалить сервис ClickHouse из файла `docker-compose.yml`. Это необязательно при тестировании, так как развернутый экземпляр ClickHouse просто будет игнорироваться, хотя и будет расходовать локальные ресурсы. При удалении сервиса убедитесь, что удалены все ссылки на него, такие как `depends_on`.
 
-* Изменить OTel collector для использования экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в файле `docker-compose.yaml`. В частности, добавьте переменные окружения в сервис OTel collector:
+* Изменить OTel collector для использования экземпляра ClickHouse Cloud, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USER` и `CLICKHOUSE_PASSWORD` в файле `docker-compose.yml`. В частности, добавьте переменные окружения в сервис OTel collector:
 
   ```shell
-  otel-collector:
-      image: ${OTEL_COLLECTOR_IMAGE_NAME}:${IMAGE_VERSION}
-      environment:
-        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # HTTPS endpoint here
-        CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
-        CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
-        HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
-        HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-        OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-      ports:
-        - '13133:13133' # health_check extension
-        - '24225:24225' # fluentd receiver
-        - '4317:4317' # OTLP gRPC receiver
-        - '4318:4318' # OTLP http receiver
-        - '8888:8888' # metrics extension
-      restart: always
-      networks:
-        - internal
-  ```
+    otel-collector:
+        image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+        environment:
+          CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # https endpoint here
+          CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
+          CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
+          HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
+          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+        ports:
+          - '13133:13133' # health_check extension
+          - '24225:24225' # fluentd receiver
+          - '4317:4317' # OTLP gRPC receiver
+          - '4318:4318' # OTLP http receiver
+          - '8888:8888' # metrics extension
+        restart: always
+        networks:
+          - internal
+    ```
 
   Переменная `CLICKHOUSE_ENDPOINT` должна указывать на HTTPS-эндпоинт ClickHouse Cloud, включая порт `8443`, например `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
@@ -157,25 +152,25 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 <JSONSupport />
 
-Чтобы их задать, измените соответствующие сервисы в файле `docker-compose.yaml`:
+Чтобы их задать, измените соответствующие сервисы в файле `docker-compose.yml`:
 
 ```yaml
   app:
-    image: ${HDX_IMAGE_REPO}/${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     ports:
       - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
       - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
     environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # включение JSON
+      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
       FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
       HYPERDX_API_KEY: ${HYPERDX_API_KEY}
       HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # сокращено для краткости
+    # truncated for brevity
 
   otel-collector:
-    image: ${HDX_IMAGE_REPO}/${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
+    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
     environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # включение JSON
+      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
       CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # сокращено для краткости
+      # truncated for brevity
 ```

@@ -7,11 +7,7 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-
-
 # avgState {#avgState}
-
-
 
 ## 描述 {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)
 函数，用于生成 `AggregateFunction(avg, T)` 类型的中间状态，其中
 `T` 是指定的平均值类型。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -33,7 +27,7 @@ CREATE TABLE raw_page_views
 (
     page_id UInt32,
     page_name String,
-    response_time_ms UInt32,  -- 页面响应时间（以毫秒计）
+    response_time_ms UInt32,  -- Page response time in milliseconds
     viewed_at DateTime DEFAULT now()
 )
 ENGINE = MergeTree()
@@ -47,7 +41,7 @@ CREATE TABLE page_performance
 (
     page_id UInt32,
     page_name String,
-    avg_response_time AggregateFunction(avg, UInt32)  -- 存储用于计算平均值的状态
+    avg_response_time AggregateFunction(avg, UInt32)  -- Stores the state needed for avg calculation
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
@@ -61,7 +55,7 @@ TO page_performance
 AS SELECT
     page_id,
     page_name,
-    avgState(response_time_ms) AS avg_response_time  -- 使用 -State 组合器
+    avgState(response_time_ms) AS avg_response_time  -- Using -State combinator
 FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
@@ -102,13 +96,13 @@ FROM page_performance
 
 ```response
 ┌─page_id─┬─page_name─┬─avg_response_time─┬─toTypeName(avg_response_time)──┐
-│       1 │ 首页      │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ 产品      │ �                 │ AggregateFunction(avg, UInt32) │
-│       3 │ 关于      │ �                 │ AggregateFunction(avg, UInt32) │
-│       1 │ 首页      │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ 产品      │ n                 │ AggregateFunction(avg, UInt32) │
-│       3 │ 关于      │ F                 │ AggregateFunction(avg, UInt32) │
-│       4 │ 联系      │ }                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ �                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ �                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ n                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ F                 │ AggregateFunction(avg, UInt32) │
+│       4 │ Contact   │ }                 │ AggregateFunction(avg, UInt32) │
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
@@ -133,16 +127,14 @@ ORDER BY page_id;
 
 现在我们得到了正确的平均值：
 
-
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
-│       1 │ 首页      │                      135 │
-│       2 │ 产品      │       103.33333333333333 │
-│       3 │ 关于      │                       80 │
-│       4 │ 联系      │                     62.5 │
+│       1 │ Homepage  │                      135 │
+│       2 │ Products  │       103.33333333333333 │
+│       3 │ About     │                       80 │
+│       4 │ Contact   │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

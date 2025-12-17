@@ -15,12 +15,10 @@ import Image from '@theme/IdealImage';
 
 ClickHouse プロトコルは、チェックサム付きの **データブロック** の圧縮をサポートしています。
 どのモードを選ぶべきか迷う場合は、`LZ4` を使用してください。
-
+``
 :::tip
 利用可能な [カラム圧縮コーデック](/sql-reference/statements/create/table#column_compression_codec) について詳しく確認し、テーブル作成時または作成後にそれらを指定してください。
 :::
-
-
 
 ## モード {#modes}
 
@@ -38,8 +36,6 @@ LZ4 と ZSTD は同じ開発者によって作られていますが、トレー�
 | **zstd** 1.4.5 -1 | 2.8   | 500 MB/s | 1660 MB/s |
 | **lz4** 1.9.2     | 2.1   | 740 MB/s | 4530 MB/s |
 
-
-
 ## ブロック {#block}
 
 | field           | type    | description                                      |
@@ -55,8 +51,6 @@ LZ4 と ZSTD は同じ開発者によって作られていますが、トレー�
 ヘッダーは (raw_size + data_size + mode) で構成され、raw_size は header + compressed_data の長さです。
 
 Checksum は [ClickHouse CityHash](../native-protocol/hash.md) を用いて `hash(header + compressed_data)` として計算されます。
-
-
 
 ## None モード {#none-mode}
 

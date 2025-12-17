@@ -8,16 +8,11 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # Azure Blob Storage への/からのバックアップ/リストア {#backup-to-azure-blob-storage}
-
-
 
 ## 構文 {#syntax}
 
 <Syntax/>
-
-
 
 ## Azure Blob Storage エンドポイントを使用するように BACKUP / RESTORE を構成する {#configuring-backuprestore-to-use-an-azureblobstorage-endpoint}
 
@@ -32,7 +27,7 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 バックアップの保存先は次のように指定します。
 
 ```sql
-AzureBlobStorage('<接続文字列>/<URL>', '<コンテナー>', '<パス>', '<アカウント名>', '<アカウントキー>')
+AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
 ```
 
 ```sql

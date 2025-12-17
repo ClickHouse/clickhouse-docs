@@ -10,19 +10,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # hdfs 表函数 {#hdfs-table-function}
 
 基于 HDFS 中的文件创建一张表。此表函数类似于 [url](../../sql-reference/table-functions/url.md) 和 [file](../../sql-reference/table-functions/file.md) 表函数。
 
-
-
 ## 语法 {#syntax}
 
 ```sql
-hdfs(URI, 格式, 结构)
+hdfs(URI, format, structure)
 ```
-
 
 ## 参数 {#arguments}
 
@@ -31,8 +27,6 @@ hdfs(URI, 格式, 结构)
 | `URI`     | HDFS 中文件的相对 URI。文件路径在只读模式下支持以下通配符：`*`、`?`、`{abc,def}` 和 `{N..M}`，其中 `N`、`M` 为数字，`'abc', 'def'` 为字符串。 |
 | `format`  | 文件的[格式](/sql-reference/formats)。                                                                                                                          |
 | `structure`| 表的结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                           |
-
-
 
 ## 返回值 {#returned_value}
 
@@ -54,7 +48,6 @@ LIMIT 2
 │       3 │       2 │       1 │
 └─────────┴─────────┴─────────┘
 ```
-
 
 ## 路径中的通配符 {#globs_in_path}
 
@@ -110,15 +103,12 @@ SELECT count(*)
 FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32')
 ```
 
-
 ## 虚拟列 {#virtual-columns}
 
 - `_path` — 文件的路径。类型：`LowCardinality(String)`。
 - `_file` — 文件名。类型：`LowCardinality(String)`。
 - `_size` — 文件的大小（字节数）。类型：`Nullable(UInt64)`。如果大小未知，则该值为 `NULL`。
 - `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，则该值为 `NULL`。
-
-
 
 ## use&#95;hive&#95;partitioning 设置 {#hive-style-partitioning}
 
@@ -132,14 +122,11 @@ FROM hdfs('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name Strin
 SELECT * FROM HDFS('hdfs://hdfs1:9000/data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## 存储设置 {#storage-settings}
 
 - [hdfs_truncate_on_insert](operations/settings/settings.md#hdfs_truncate_on_insert) - 允许在插入之前截断目标文件。默认关闭。
 - [hdfs_create_new_file_on_insert](operations/settings/settings.md#hdfs_create_new_file_on_insert) - 如果格式带有后缀，允许在每次插入时创建一个新文件。默认关闭。
 - [hdfs_skip_empty_files](operations/settings/settings.md#hdfs_skip_empty_files) - 允许在读取时跳过空文件。默认关闭。
-
-
 
 ## 相关内容 {#related}
 

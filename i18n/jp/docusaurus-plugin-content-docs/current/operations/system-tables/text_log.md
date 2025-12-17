@@ -57,7 +57,7 @@ SELECT * FROM system.text_log LIMIT 1 \G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2020-09-10

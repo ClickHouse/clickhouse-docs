@@ -18,7 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-
 # AWS PrivateLink {#aws-privatelink}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
@@ -69,13 +68,9 @@ ClickHouse Cloud は、以下のリージョンからの [クロスリージョ�
 
 Terraform のサンプルは[こちら](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)を参照してください。
 
-
-
 ## 重要な考慮事項 {#considerations}
 ClickHouse は、AWS リージョン内で同じ公開済みの [サービスエンドポイント](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-overview) を再利用できるよう、サービスをグループ化しようとします。ただし、このグループ化が常に保証されるわけではなく、特にサービスを複数の ClickHouse 組織に分散している場合には当てはまらないことがあります。
 すでに同じ ClickHouse 組織内の他のサービス向けに PrivateLink を構成済みの場合は、そのグループ化により多くの手順を省略できることが多く、最終ステップである「ClickHouse のエンドポイント ID を ClickHouse サービスの許可リストに追加する」に直接進むことができます。
-
-
 
 ## この手順の前提条件 {#prerequisites}
 
@@ -83,8 +78,6 @@ ClickHouse は、AWS リージョン内で同じ公開済みの [サービスエ
 
 1. 利用可能な AWS アカウント
 1. ClickHouse 側でプライベートエンドポイントを作成および管理するために必要な権限を持つ [ClickHouse API キー](/cloud/manage/openapi)
-
-
 
 ## 手順 {#steps}
 
@@ -105,12 +98,12 @@ ClickHouse Cloud コンソールで、PrivateLink 経由で接続したいサー
 まず、コマンドを実行する前に次の環境変数を設定します。
 
 ```shell
-REGION=<AWSフォーマットを使用したリージョンコード、例: us-west-2>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ClickHouseキーID>
-KEY_SECRET=<ClickHouseキーシークレット>
-ORG_ID=<ClickHouse組織ID>
-SERVICE_NAME=<ClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 リージョン、プロバイダー、サービス名で絞り込んで ClickHouse の `INSTANCE_ID` を取得します。
@@ -178,7 +171,6 @@ VPC エンドポイントを作成したら、`Endpoint ID` の値を控えて�
 
 #### オプション 2: AWS CloudFormation {#option-2-aws-cloudformation}
 
-
 次に、[エンドポイントの「Service name」を取得](#obtain-endpoint-service-info) の手順で取得した `Service name`<sup>console</sup> または `endpointServiceId`<sup>API</sup> を使用して、VPC エンドポイントを作成する必要があります。
 正しいサブネット ID、セキュリティグループ、および VPC ID を使用していることを確認してください。
 
@@ -189,7 +181,7 @@ Resources:
     Properties:
       VpcEndpointType: Interface
       PrivateDnsEnabled: false
-      ServiceName: <サービス名(endpointServiceId)、上記参照>
+      ServiceName: <Service name(endpointServiceId), pls see above>
       VpcId: vpc-vpc_id
       SubnetIds:
         - subnet-subnet_id1
@@ -217,7 +209,7 @@ resource "aws_vpc_endpoint" "this" {
   ]
   subnet_ids          = [var.subnet_id1,var.subnet_id2,var.subnet_id3]
   private_dns_enabled = false
-  service_region      = "(オプション) 指定した場合、VPCエンドポイントは指定されたリージョン内のサービスに接続します。複数リージョンにまたがるPrivateLink接続を構成する際に定義してください。"
+  service_region      = "(Optional) If specified, the VPC endpoint will connect to the service in the provided region. Define it for multi-regional PrivateLink connections."
 }
 ```
 
@@ -254,12 +246,12 @@ PrivateLink 経由で利用可能にする必要がある各インスタンス�
 コマンドを実行する前に、次の環境変数を設定します。
 
 ```bash
-REGION=<AWS 形式を使用したリージョンコード (例: us-west-2)>
+REGION=<Your region code using the AWS format, for example: us-west-2>
 PROVIDER=aws
-KEY_ID=<ClickHouse のキー ID>
-KEY_SECRET=<ClickHouse のキーシークレット>
-ORG_ID=<ClickHouse の組織 ID>
-SERVICE_NAME=<ClickHouse のサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 許可リストにエンドポイント ID を追加するには、次の手順を実行します。
@@ -280,7 +272,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" \
 "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" \
 -d @pl_config.json | jq
 ```
-
 
 許可リストからエンドポイント ID を削除するには、次の手順を実行します。
 
@@ -318,10 +309,10 @@ ClickHouse Cloud コンソールで **Settings** に移動します。**Set up p
 コマンドを実行する前に、次の環境変数を設定します:
 
 ```bash
-KEY_ID=<あなたのClickHouseキーID>
-KEY_SECRET=<あなたのClickHouseキーシークレット>
-ORG_ID=<あなたのClickHouse組織ID>
-INSTANCE_ID=<あなたのClickHouseサービス名>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
+ORG_ID=<Your ClickHouse organization ID>
+INSTANCE_ID=<Your ClickHouse service name>
 ```
 
 `INSTANCE_ID` は [こちらの手順](#option-2-api)から取得できます。
@@ -342,7 +333,6 @@ jq .result
 ```
 
 この例では、`privateDnsHostname` の値に対応するホスト名での接続は PrivateLink 経由でルーティングされますが、`endpointServiceId` に対応するホスト名での接続はインターネット経由でルーティングされます。
-
 
 ## トラブルシューティング {#troubleshooting}
 
@@ -370,10 +360,10 @@ jq .result
 コマンドを実行する前に、次の環境変数を設定してください。
 
 ```bash
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 `INSTANCE_ID` は [こちらの手順](#option-2-api)から取得できます。

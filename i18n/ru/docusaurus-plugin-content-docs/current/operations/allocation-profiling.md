@@ -9,7 +9,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Профилирование выделений памяти {#allocation-profiling}
 
 ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для сэмплирования и профилирования выделений памяти.  
@@ -22,8 +21,6 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 Для более старых версий см. раздел [профилирование выделений для версий до 25.9](/operations/allocation-profiling-old.md).
 
 :::
-
-
 
 ## Сэмплирование выделений памяти {#sampling-allocations}
 
@@ -42,7 +39,6 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 :::warning Предупреждение
 Поскольку ClickHouse — приложение с интенсивным использованием выделения памяти, выборочное отслеживание jemalloc может привести к дополнительным накладным расходам и снижению производительности.
 :::
-
 
 ## Хранение выборок jemalloc в `system.trace_log` {#storing-jemalloc-samples-in-system-trace-log}
 
@@ -148,7 +144,6 @@ FROM
 
 Мы можем использовать этот результат, чтобы увидеть, откуда шло больше всего активных выделений памяти в тот момент времени:
 
-
 ```sql
 SELECT
     concat(
@@ -179,7 +174,6 @@ FROM
 GROUP BY ALL
 ORDER BY per_trace_sum ASC
 ```
-
 
 ## Сброс профилей кучи {#flushing-heap-profiles}
 
@@ -212,7 +206,6 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
 К имени сгенерированного файла будет добавлен префикс с PID и порядковым номером.
-
 
 ## Анализ профилей кучи {#analyzing-heap-profiles}
 
@@ -286,7 +279,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
 
-
 ## Дополнительные параметры профилировщика {#additional-options-for-profiler}
 
 У `jemalloc` есть множество параметров, относящихся к профилировщику. Ими можно управлять, изменяя переменную окружения `MALLOC_CONF`.
@@ -294,8 +286,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 Если вы хотите создавать дамп профиля кучи каждые N байт, вы можете включить это с помощью `lg_prof_interval`.  
 
 Рекомендуется ознакомиться со [справочной страницей](https://jemalloc.net/jemalloc.3.html) `jemalloc` для получения полного перечня параметров.
-
-
 
 ## Другие ресурсы {#other-resources}
 

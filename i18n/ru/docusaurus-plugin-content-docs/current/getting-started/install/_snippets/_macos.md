@@ -3,12 +3,9 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-
-
 # Установите ClickHouse с помощью Homebrew {#install-clickhouse-using-homebrew}
 
 <VerticalStepper>
-
 
 ## Установка с помощью формулы Homebrew сообщества {#install-using-community-homebrew-formula}
 
@@ -17,7 +14,6 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 ```bash
 brew install --cask clickhouse
 ```
-
 
 ## Исправление ошибки проверки разработчика в macOS {#fix-developer-verification-error-macos}
 
@@ -76,18 +72,17 @@ xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
 Теперь вы можете запустить исполняемый файл `clickhouse`:
 
 ```shell
-ClickHouse
+clickhouse
 ```
 
 Должно получиться примерно следующее:
 
 ```bash
-Используйте одну из следующих команд:
+Use one of the following commands:
 clickhouse local [args]
 clickhouse client [args]
 clickhouse benchmark [args]
 ```
-
 
 ## Устранение проблемы путём переустановки ClickHouse {#fix-issue}
 

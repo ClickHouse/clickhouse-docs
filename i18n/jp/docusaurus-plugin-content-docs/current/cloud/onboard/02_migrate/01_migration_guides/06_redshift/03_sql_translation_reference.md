@@ -7,11 +7,7 @@ title: 'Amazon Redshift SQL 変換ガイド'
 doc_type: 'reference'
 ---
 
-
-
 # Amazon Redshift SQL 変換ガイド {#amazon-redshift-sql-translation-guide}
-
-
 
 ## データ型 {#data-types}
 
@@ -20,8 +16,6 @@ ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHou
 さらに、ユーザーは Redshift には第一級のデータ型としては存在しない（`SUPER` を使用して配列や構造体を模倣することは可能なものの、多くのユーザーの不満の原因となっている）`Array`、`Tuple`、`Enum` を活用できます。加えて ClickHouse では、集約状態をクエリ時、あるいはテーブル内に保持することも可能です。これにより、通常はマテリアライズドビューを使用してデータを事前集約でき、よく実行されるクエリのパフォーマンスを劇的に向上させることができます。
 
 以下では、各 Redshift 型に対して同等の ClickHouse 型を対応付けて示します。
-
-
 
 | Redshift                                                                                                                             | ClickHouse                                                                                                                                                                                                                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -45,12 +39,8 @@ ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHou
 | [`TIMETZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timetz)                             | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                           |
 | [`VARBYTE`](https://docs.aws.amazon.com/redshift/latest/dg/r_VARBYTE_type.html) **                                                   | [`String`](/sql-reference/data-types/string) を [`Bit`](/sql-reference/functions/bit-functions) 関数および [Encoding](/sql-reference/functions/encoding-functions/#hex) 関数と組み合わせて使用する                                                                  |
 
-
-
 <sub><span>*</span> ClickHouse は、より広い範囲を持つ符号なし整数、すなわち <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32`、`UInt64`</a> もサポートしています。</sub><br />
 <sub><span>**</span>ClickHouse の String 型はデフォルトでは長さが無制限ですが、<a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>Constraints</a> を使用して特定の長さに制約できます。</sub>
-
-
 
 ## DDL 構文 {#compression}
 

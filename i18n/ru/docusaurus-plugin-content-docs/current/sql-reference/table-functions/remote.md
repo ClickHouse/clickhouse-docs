@@ -7,15 +7,11 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-
-
 # Табличные функции remote, remoteSecure {#remote-remotesecure-table-function}
 
 Табличная функция `remote` позволяет получать доступ к удалённым серверам «на лету», то есть без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Табличная функция `remoteSecure` аналогична `remote`, но использует защищённое соединение.
 
 Обе функции могут использоваться в запросах `SELECT` и `INSERT`.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -27,7 +23,6 @@ remoteSecure(addresses_expr, [db, table, user [, password], sharding_key])
 remoteSecure(addresses_expr, [db.table, user [, password], sharding_key])
 remoteSecure(named_collection[, option=value [,..]])
 ```
-
 
 ## Параметры {#parameters}
 
@@ -42,13 +37,9 @@ remoteSecure(named_collection[, option=value [,..]])
 
 Аргументы также могут передаваться с помощью [именованных коллекций](operations/named-collections.md).
 
-
-
 ## Возвращаемое значение {#returned-value}
 
 Таблица, расположенная на удалённом сервере.
-
-
 
 ## Использование {#usage}
 
@@ -80,7 +71,6 @@ localhost
 ```text
 example01-01-1,example01-02-1
 ```
-
 
 ## Примеры {#examples}
 
@@ -129,18 +119,18 @@ SELECT * FROM remote_table;
   SELECT create_table_query
   FROM system.tables
   WHERE database = 'imdb' AND table = 'actors'
-```
+  ```
 
 Ответ
 
 ```sql
-CREATE TABLE imdb.actors (`id` UInt32,
-                          `first_name` String,
-                          `last_name` String,
-                          `gender` FixedString(1))
-                ENGINE = MergeTree
-                ORDER BY (id, first_name, last_name, gender);
-```
+  CREATE TABLE imdb.actors (`id` UInt32,
+                            `first_name` String,
+                            `last_name` String,
+                            `gender` FixedString(1))
+                  ENGINE = MergeTree
+                  ORDER BY (id, first_name, last_name, gender);
+  ```
 
 #### На целевой системе ClickHouse {#on-the-destination-clickhouse-system}
 
@@ -170,7 +160,6 @@ INSERT INTO FUNCTION
 remoteSecure('remote.clickhouse.cloud:9440', 'imdb.actors', 'USER', 'PASSWORD')
 SELECT * from imdb.actors
 ```
-
 
 ## Глоббинг {#globs-in-addresses}
 

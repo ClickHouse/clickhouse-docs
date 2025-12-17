@@ -12,10 +12,7 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-
 # 深入了解 ClickHouse 数据跳过索引 {#understanding-clickhouse-data-skipping-indexes}
-
-
 
 ## 简介 {#introduction}
 
@@ -26,8 +23,6 @@ import Image from '@theme/IdealImage';
 在传统关系型数据库中，解决这一问题的一种方法是为表添加一个或多个“二级”索引。这是一种 b-tree 结构，使数据库可以在 O(log(n)) 时间内在磁盘上找到所有匹配的行，而不是 O(n) 时间（表扫描），其中 n 是行数。然而，这种类型的二级索引不适用于 ClickHouse（或其他列式数据库），因为磁盘上并不存在可添加到索引中的单独行。
 
 为此，ClickHouse 提供了一种不同类型的索引，在特定情况下可以显著提升查询速度。这些结构被称为“跳过（Skip）索引”，因为它们使 ClickHouse 能够跳过读取那些可以确定不包含任何匹配值的大块数据。
-
-
 
 ## 基本操作 {#basic-operation}
 
@@ -68,7 +63,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.079 秒。已处理 1 亿行,800.10 MB(12.6 亿行/秒,10.10 GB/秒)。
+8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
 现在添加一个非常简单的跳过索引（skip index）：
@@ -96,7 +91,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.051 秒。已处理 32.77 千行,360.45 KB(643.75 千行/秒,7.08 MB/秒)
+8192 rows in set. Elapsed: 0.051 sec. Processed 32.77 thousand rows, 360.45 KB (643.75 thousand rows/s., 7.08 MB/s.)
 ```
 
 相比处理 1 亿行、800 兆字节的数据，ClickHouse 只读取并分析了 32768 行、360 千字节的数据——
@@ -116,9 +111,8 @@ SET send_logs_level='trace';
 
 在调优查询 SQL 和表索引时，这将提供有用的调试信息。根据上面的示例，调试日志显示跳过索引过滤掉了除两个 granule 以外的所有 granule：
 
-
 ```sql
-<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): 索引 `vix` 已丢弃 6102/6104 个颗粒。
+<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
 
 ## 跳过索引类型 {#skip-index-types}
@@ -163,7 +157,6 @@ SET send_logs_level='trace';
 
 该索引同样可用于文本搜索，特别是对于没有单词间空格分隔的语言，例如中文。
 
-
 ## 跳过索引函数 {#skip-index-functions}
 
 数据跳过索引的核心目的是减少常用查询需要扫描和分析的数据量。鉴于 ClickHouse 数据的分析型特征，这些查询在大多数情况下都会包含函数表达式。因此，要想高效，跳过索引必须能够与常见函数正确配合。这可以在以下任一情况下实现：
@@ -173,16 +166,12 @@ SET send_logs_level='trace';
 每种类型的跳过索引都只适用于部分 ClickHouse 函数，具体取决于索引的实现，如
 [此处](/engines/table-engines/mergetree-family/mergetree/#functions-support)所列。一般来说，集合索引和基于 Bloom filter 的索引（另一种集合索引）都是无序的，因此不支持范围查询。相比之下，minmax 索引在处理范围时表现尤为出色，因为判断范围是否相交的速度非常快。部分匹配函数 LIKE、startsWith、endsWith 和 hasToken 的效果取决于所用的索引类型、索引表达式以及数据本身的分布特征。
 
-
-
 ## 跳过索引设置 {#skip-index-settings}
 
 有两个适用于跳过索引的设置。
 
 * **use_skip_indexes**（0 或 1，默认 1）。并非所有查询都能高效使用跳过索引。如果某个特定过滤条件很可能命中大多数数据粒度（granule），那么应用数据跳过索引会带来不必要、有时甚至相当可观的开销。对于不太可能从任何跳过索引中获益的查询，将该值设置为 0。
 * **force_data_skipping_indices**（以逗号分隔的索引名称列表）。此设置可用于防止某些低效查询。在某些情况下，如果不使用跳过索引，对表进行查询的代价过高，那么使用此设置并指定一个或多个索引名称时，对于任何未使用所列索引的查询都会返回异常。这样可以防止设计不良的查询消耗服务器资源。
-
-
 
 ## Skip 索引最佳实践 {#skip-best-practices}
 
@@ -220,7 +209,6 @@ SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 数据跳过索引的行为并不容易预测。将它们添加到表中，会在数据摄取以及那些由于各种原因
 无法从索引中获益的查询中引入不小的开销。始终应在真实世界类型的数据上进行测试，并且测试应当
 涵盖索引类型、granule 大小以及其他参数的不同配置。测试往往会暴露出仅凭思维实验无法轻易看出的模式和陷阱。
-
 
 ## 相关文档 {#related-docs}
 - [最佳实践指南](/best-practices/use-data-skipping-indices-where-appropriate)

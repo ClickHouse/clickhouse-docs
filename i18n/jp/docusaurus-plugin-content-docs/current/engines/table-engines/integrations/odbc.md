@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # ODBC テーブルエンジン {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -19,8 +18,6 @@ ClickHouse が [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 
 ODBC 接続を安全に実装するために、ClickHouse は別のプログラム `clickhouse-odbc-bridge` を使用します。ODBC ドライバを `clickhouse-server` から直接ロードすると、ドライバ側の問題によって ClickHouse サーバーがクラッシュする可能性があります。ClickHouse は必要に応じて自動的に `clickhouse-odbc-bridge` を起動します。ODBC ブリッジプログラムは `clickhouse-server` と同じパッケージからインストールされます。
 
 このエンジンは [Nullable](../../../sql-reference/data-types/nullable.md) データ型をサポートします。
-
-
 
 ## テーブルを作成する {#creating-a-table}
 
@@ -49,7 +46,6 @@ ENGINE = ODBC(datasource, external_database, external_table)
 * `external_table` — `external_database` 内のテーブル名。
 
 これらのパラメータは、[named collections](operations/named-collections.md) を使用して指定することもできます。
-
 
 ## 使用例 {#usage-example}
 
@@ -88,7 +84,7 @@ unixODBC のインストールに含まれる `isql` ユーティリティを使
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 接続に成功しました!                  |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -97,7 +93,7 @@ MySQL のテーブル:
 
 ```text
 mysql> CREATE DATABASE test;
-クエリ OK, 1 行が影響を受けました (0,01 秒)
+Query OK, 1 row affected (0,01 sec)
 
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
@@ -105,10 +101,10 @@ mysql> CREATE TABLE `test`.`test` (
     ->   `float` FLOAT NOT NULL,
     ->   `float_nullable` FLOAT NULL DEFAULT NULL,
     ->   PRIMARY KEY (`int_id`));
-クエリ OK, 0 行が影響を受けました (0,09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into test.test (`int_id`, `float`) VALUES (1,2);
-クエリ OK, 1 行が影響を受けました (0,00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from test.test;
 +------+----------+-----+----------+
@@ -116,7 +112,7 @@ mysql> select * from test.test;
 +------+----------+-----+----------+
 |      1 |         NULL |     2 |           NULL |
 +------+----------+-----+----------+
-1 行が取得されました (0,00 秒)
+1 row in set (0,00 sec)
 ```
 
 MySQL テーブルからデータを取得する ClickHouse テーブル:
@@ -139,7 +135,6 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 

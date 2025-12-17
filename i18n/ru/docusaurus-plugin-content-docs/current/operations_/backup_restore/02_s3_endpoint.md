@@ -8,18 +8,13 @@ doc_type: 'guide'
 
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ на или с S3-эндпоинта {#backup-to-a-local-disk}
 
 В этой статье рассматривается создание и восстановление резервных копий в/из бакета S3 через S3-эндпоинт.
 
-
-
 ## Синтаксис {#syntax}
 
 <Syntax/>
-
-
 
 ## Пример использования {#usage-examples}
 
@@ -132,7 +127,6 @@ SETTINGS base_backup = S3(
 Эта команда восстанавливает инкрементную резервную копию в новую таблицу `test_table_restored`.  
 Обратите внимание, что при восстановлении инкрементной резервной копии базовая резервная копия также включается.
 При восстановлении указывайте только **инкрементную резервную копию**:
-
 
 ```sql
 RESTORE TABLE data AS test_db.test_table_restored FROM S3(

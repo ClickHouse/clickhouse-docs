@@ -38,7 +38,7 @@ SELECT * FROM system.crash_log ORDER BY event_time DESC LIMIT 1;
 結果（抜粋）:
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:     clickhouse.eu-central1.internal
 event_date:   2020-10-14

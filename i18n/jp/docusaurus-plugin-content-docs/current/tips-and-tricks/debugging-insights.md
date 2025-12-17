@@ -19,13 +19,9 @@ title: 'レッスン - デバッグインサイト'
 description: '遅いクエリ、メモリエラー、接続問題、設定の問題など、ClickHouse でよく発生する問題に対する代表的な解決策をまとめています。'
 ---
 
-
-
 # ClickHouse の運用: コミュニティによるデバッグインサイト {#clickhouse-operations-community-debugging-insights}
 *このガイドは、コミュニティミートアップから得られた知見を集約したコレクションの一部です。より多くの実運用に基づく解決策や知見については、[特定の問題別に閲覧](./community-wisdom.md)できます。*
 *高い運用コストにお悩みですか？[コスト最適化](./cost-optimization.md)に関するコミュニティのインサイトガイドを参照してください。*
-
-
 
 ## 重要なシステムテーブル {#essential-system-tables}
 
@@ -86,7 +82,6 @@ GROUP BY database, table
 ORDER BY count() DESC;
 ```
 
-
 ## 本番環境でよく起きる問題 {#common-production-issues}
 
 ### ディスク容量の問題 {#disk-space-problems}
@@ -126,7 +121,6 @@ WHERE is_done = 0;
 
 まずは小規模なデータセットでスキーマ変更を検証してください。
 
-
 ## メモリとパフォーマンス {#memory-and-performance}
 
 ### 外部集約 {#external-aggregation}
@@ -141,7 +135,7 @@ SELECT
     SUM(value) as total
 FROM large_table
 GROUP BY column1, column2
-SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GBしきい値
+SETTINGS max_bytes_before_external_group_by = 1000000000; -- 1GB threshold
 ```
 
 ### 非同期インサートの詳細 {#async-insert-details}
@@ -169,7 +163,6 @@ Distributed テーブルを使用する場合は、一時データの蓄積を�
 **関連ドキュメント**
 
 * [カスタムパーティションキー](/engines/table-engines/mergetree-family/custom-partitioning-key)
-
 
 ## クイックリファレンス {#quick-reference}
 

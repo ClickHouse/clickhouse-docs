@@ -6,11 +6,7 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # Интеграция ClickHouse с Kafka с использованием именованных коллекций {#integrating-clickhouse-with-kafka-using-named-collections}
-
-
 
 ## Введение {#introduction}
 
@@ -21,16 +17,12 @@ doc_type: 'guide'
 
 Это руководство было проверено на Apache Kafka 3.4.1 и ClickHouse 24.5.1.
 
-
-
 ## Предварительные условия {#assumptions}
 
 В этом документе предполагается, что у вас уже есть:
 1. Работоспособный кластер Kafka.
 2. Развернутый и запущенный кластер ClickHouse.
 3. Базовые знания SQL и опыт работы с конфигурациями ClickHouse и Kafka.
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -45,16 +37,15 @@ doc_type: 'guide'
 
 См. руководство [User Management Guide](./../../../guides/sre/user-management/index.md) для получения подробной информации о включении управления доступом.
 
-
 ## Конфигурация {#configuration}
 
 Добавьте следующий раздел в файл конфигурации ClickHouse `config.xml`:
 
 ```xml
-<!-- Именованные коллекции для интеграции Kafka -->
+<!-- Named collections for Kafka integration -->
 <named_collections>
     <cluster_1>
-        <!-- Параметры движка ClickHouse Kafka -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -63,7 +54,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Расширенная конфигурация Kafka -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -76,7 +67,7 @@ doc_type: 'guide'
     </cluster_1>
 
     <cluster_2>
-        <!-- Параметры движка ClickHouse Kafka -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -85,7 +76,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Расширенная конфигурация Kafka -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -105,7 +96,6 @@ doc_type: 'guide'
 2. Раздел перед `<kafka>` содержит параметры движка Kafka в ClickHouse. Полный список параметров смотрите в разделе [параметры движка Kafka](/engines/table-engines/integrations/kafka).
 3. Раздел внутри `<kafka>` содержит расширенные параметры конфигурации Kafka. Дополнительные параметры смотрите в [документации по конфигурации librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md).
 4. В этом примере используется протокол безопасности `SASL_SSL` и механизм `PLAIN`. При необходимости скорректируйте эти параметры в соответствии с конфигурацией вашего кластера Kafka.
-
 
 ## Создание таблиц и баз данных {#creating-tables-and-databases}
 
@@ -192,7 +182,6 @@ SELECT
     last_name
 FROM second_kafka_table;
 ```
-
 
 ## Проверка настройки {#verifying-the-setup}
 

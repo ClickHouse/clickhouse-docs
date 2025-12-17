@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # クエリ API エンドポイントのセットアップ {#setting-up-query-api-endpoints}
 
 **Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
@@ -63,7 +62,7 @@ SELECT
 FROM
   youtube
 WHERE
--- 次の行をハイライト
+-- highlight-next-line
   toYear(upload_date) = {year: UInt16}
 GROUP BY uploader
 ORDER BY per_upload desc
@@ -134,7 +133,6 @@ Query API エンドポイントを作成したら、`curl` やその他の HTTP 
 GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
-
 
 ### HTTP メソッド {#http-methods}
 
@@ -251,7 +249,6 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-
 #### バージョン 1 {#version-1}
 
 <Tabs>
@@ -285,7 +282,7 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-```json title="レスポンス"
+```json title="Response"
 {
   "data": {
     "columns": [
@@ -363,16 +360,17 @@ fetch(
 </TabItem>
 </Tabs>
 
-### JSONCompactEachRow フォーマットを使用し、クエリ変数とバージョン 2 を指定したリクエスト {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
-**クエリ API エンドポイントの SQL:**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: String}) AND database = {database: String};
 ```
 
 <Tabs>
-  <TabItem value="GET" label="GET（cURL）" default>
+<TabItem value="GET" label="GET (cURL)" default>
+
     ```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow&param_tableNameRegex=query.*&param_database=system' \
     --user '<openApiKeyId:openApiKeySecret>' \
@@ -384,9 +382,11 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
 
-  <TabItem value="cURL" label="POST（cURL）">
+</TabItem>
+
+<TabItem value="cURL" label="POST (cURL)">
+
     ```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow' \
     --user '<openApiKeyId:openApiKeySecret>' \
@@ -394,9 +394,10 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
     -H 'x-clickhouse-endpoint-version: 2' \
     -d '{ "queryVariables": { "tableNameRegex": "query.*", "database": "system" } }'
     ```
-  </TabItem>
+</TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript" default>
+<TabItem value="JavaScript" label="JavaScript" default>
+
     ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow",
@@ -425,13 +426,13 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
-</Tabs>
+</TabItem>
 
+</Tabs>
 
 ### クエリ変数に配列を含む、テーブルにデータを挿入するリクエスト {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
-**テーブル定義の SQL:**
+**Table SQL:**
 
 ```SQL
 CREATE TABLE default.t_arr
@@ -442,7 +443,7 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-**Query API エンドポイントの SQL:**
+**Query API Endpoint SQL:**
 
 ```sql
 INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
@@ -450,6 +451,7 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 
 <Tabs>
   <TabItem value="cURL" label="cURL" default>
+
     ```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run' \
     --user '&lt;openApiKeyId:openApiKeySecret&gt;' \
@@ -462,8 +464,8 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
     }'
     ```
   </TabItem>
-
   <TabItem value="JavaScript" label="JavaScript" default>
+
     ```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/&lt;endpoint id&gt;/run",
@@ -489,9 +491,9 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
     ```text title="レスポンス"
     OK
     ```
+
   </TabItem>
 </Tabs>
-
 
 ### ClickHouse の設定 `max_threads` を 8 にしたリクエスト {#request-with-clickhouse-settings-max_threads-set-to-8}
 
@@ -539,7 +541,6 @@ SELECT * FROM system.tables;
   </TabItem>
 </Tabs>
 
-
 ### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
 
 **クエリ API エンドポイントの SQL:**
@@ -550,6 +551,7 @@ SELECT name, database FROM system.tables;
 
 <Tabs>
   <TabItem value="TypeScript" label="TypeScript" default>
+
     ```typescript
     async function fetchAndLogChunks(
       url: string,
@@ -610,7 +612,6 @@ SELECT name, database FROM system.tables;
   </TabItem>
 </Tabs>
 
-
 ### ファイルからテーブルにストリーム挿入する {#insert-a-stream-from-a-file-into-a-table}
 
 次の内容でファイル `./samples/my_first_table_2024-07-11.csv` を作成します：
@@ -621,7 +622,7 @@ SELECT name, database FROM system.tables;
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**CREATE TABLE 文:**
+**Create Table SQL:**
 
 ```sql
 create table default.my_first_table

@@ -11,8 +11,6 @@ keywords: ['ClickHouse Cloud', '料金', '課金', 'クラウドコスト', 'コ
 ClickHouse Cloud の課金は、コンピュート、ストレージ、[データ転送](/cloud/manage/network-data-transfer)（インターネットおよびリージョン間への送信）、および [ClickPipes](/integrations/clickpipes) の使用量に基づいて行われます。
 請求額に影響する要素や、コストを管理する方法について理解するには、以下を読み進めてください。
 
-
-
 ## Amazon Web Services (AWS) の例 {#amazon-web-services-aws-example}
 
 :::note
@@ -131,8 +129,6 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 
 最適なユースケース: 厳格なセキュリティおよびコンプライアンス要件を持つ、大規模でミッションクリティカルなデプロイメント
 
-
-
 **エンタープライズティアサービス**
 - 稼働率ほぼ 100% のワークロード
 - パブリックインターネット向け送信データ転送 1 TB
@@ -179,8 +175,6 @@ ClickHouse Cloud の課金は、コンピュート、ストレージ、[デー�
 </tbody>
 </table>
 
-
-
 ## よくある質問 {#faqs}
 
 ### ClickHouse Credit (CHC) とは何ですか？ {#what-is-chc}
@@ -225,7 +219,7 @@ ClickHouse Cloud はクラウドオブジェクトストレージを使用して
 ```sql title="Estimating compression"
 SELECT formatReadableSize(total_bytes) 
 FROM system.tables 
-WHERE name = <任意のテーブル名>
+WHERE name = <your table name>
 ```
 
 ### セルフマネージドで運用している場合、クラウドでサービスを実行する際のコストを見積もるために ClickHouse はどのようなツールを提供していますか？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
@@ -252,7 +246,6 @@ Billing UI からクレジットカードを削除することはできません
 ### 課金サイクルはどのくらいの期間ですか？ {#how-long-is-the-billing-cycle}
 
 課金は月次サイクルに従い、開始日は ClickHouse Cloud の組織が作成された日となります。
-
 
 ### アクティブな PAYG マーケットプレイスサブスクリプションがある状態でコミットメント契約を締結した場合、先に消費されるのはコミット済みクレジットですか？ {#committed-credits-consumed-first-with-active-payg-subscription}
 
@@ -314,8 +307,6 @@ ClickHouse Cloud のプリペイドクレジット（ClickHouse からの直接�
 プリペイドクレジットでカバーされない超過分については、クレジットカードでの支払い、またはマーケットプレイスでの月次請求により支払う必要があります。
 
 ### ClickHouse Cloud の料金は、クラウドプロバイダのマーケットプレイス経由で支払う場合と ClickHouse に直接支払う場合で違いはありますか？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
-
-
 
 マーケットプレイス課金と ClickHouse に直接サインアップする場合の料金に違いはありません。
 いずれの場合も、ClickHouse Cloud の利用量は ClickHouse Cloud Credits (CHCs) 単位で計測され、
@@ -395,8 +386,6 @@ warehouse にはデータが保存されており、複数のコンピュート�
 
 warehouse を利用しない場合、データエンジニアがクエリに必要とするメモリ量に対して支払う必要があります。
 しかし、2 つのサービスを 1 つの warehouse にまとめ、そのうち片方をアイドル状態にできるようにすることで、コストを削減できます。
-
-
 
 ## ClickPipes の料金 {#clickpipes-pricing}
 

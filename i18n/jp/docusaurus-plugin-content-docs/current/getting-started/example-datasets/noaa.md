@@ -50,7 +50,6 @@ The sections below give a brief overview of the steps that were involved in brin
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
-
 ### 元データ {#original-data}
 
 以下では、ClickHouse にロードするための準備として、元データをダウンロードおよび変換する手順を説明します。
@@ -62,7 +61,6 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriche
 ```bash
 for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i}.csv.gz; done
 ```
-
 
 #### データのサンプリング {#sampling-the-data}
 
@@ -85,7 +83,6 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 [フォーマットのドキュメント](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)の要約:
 
 フォーマット仕様および各列の内容を順番にまとめると次のとおりです。
-
 
 - 11 文字の観測所識別コード。これ自体にいくつか有用な情報がエンコードされています。
 - YEAR/MONTH/DAY = YYYYMMDD 形式の 8 文字の日付（例: 19860529 = 1986 年 5 月 29 日）。
@@ -120,7 +117,6 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 ```
 
 26億行以上あるため、すべてのファイルをパースするこのクエリは高速ではありません。8コアのマシンでは、完了までに約160秒かかります。
-
 
 ### データのピボット {#pivot-data}
 
@@ -160,7 +156,6 @@ done
 
 このクエリにより、サイズが 50GB の単一ファイル `noaa.csv` が生成されます。
 
-
 ### データの拡充 {#enriching-the-data}
 
 現在のデータには、国コードのプレフィックスを含むステーション ID 以外に位置情報に関する情報がありません。本来であれば、各ステーションには緯度と経度が紐づいていることが望ましいです。これを実現するために、NOAA は各ステーションの詳細を別ファイルとして提供しており、それが [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) です。このファイルには[複数の列](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)があり、そのうち今後の分析で有用なのは 5 つの列、すなわち id、latitude、longitude、elevation、name です。
@@ -193,7 +188,6 @@ FROM file('noaa.csv', CSV,
 
 このクエリは実行に数分かかり、サイズ 6.4 GB の `noaa_enriched.parquet` ファイルを生成します。
 
-
 ## テーブルの作成 {#create-table}
 
 ClickHouse クライアントから、ClickHouse 上に MergeTree テーブルを作成します。
@@ -203,23 +197,22 @@ CREATE TABLE noaa
 (
    `station_id` LowCardinality(String),
    `date` Date32,
-   `tempAvg` Int32 COMMENT '平均気温（0.1℃単位）',
-   `tempMax` Int32 COMMENT '最高気温（0.1℃単位）',
-   `tempMin` Int32 COMMENT '最低気温（0.1℃単位）',
-   `precipitation` UInt32 COMMENT '降水量（0.1mm単位）',
-   `snowfall` UInt32 COMMENT '降雪量（mm）',
-   `snowDepth` UInt32 COMMENT '積雪深（mm）',
-   `percentDailySun` UInt8 COMMENT '日照率（可能日照時間に対する割合、%）',
-   `averageWindSpeed` UInt32 COMMENT '日平均風速（0.1m/s単位）',
-   `maxWindSpeed` UInt32 COMMENT '最大瞬間風速（0.1m/s単位）',
-   `weatherType` Enum8('通常' = 0, '霧' = 1, '濃霧' = 2, '雷' = 3, '小雹' = 4, '雹' = 5, '雨氷' = 6, '砂塵/火山灰' = 7, '煙霧/霞' = 8, '地吹雪/吹き溜まり' = 9, '竜巻' = 10, '強風' = 11, '飛沫' = 12, '靄' = 13, '霧雨' = 14, '凍結霧雨' = 15, '雨' = 16, '凍雨' = 17, '雪' = 18, '不明な降水' = 19, '地霧' = 21, '凍霧' = 22),
+   `tempAvg` Int32 COMMENT 'Average temperature (tenths of a degrees C)',
+   `tempMax` Int32 COMMENT 'Maximum temperature (tenths of degrees C)',
+   `tempMin` Int32 COMMENT 'Minimum temperature (tenths of degrees C)',
+   `precipitation` UInt32 COMMENT 'Precipitation (tenths of mm)',
+   `snowfall` UInt32 COMMENT 'Snowfall (mm)',
+   `snowDepth` UInt32 COMMENT 'Snow depth (mm)',
+   `percentDailySun` UInt8 COMMENT 'Daily percent of possible sunshine (percent)',
+   `averageWindSpeed` UInt32 COMMENT 'Average daily wind speed (tenths of meters per second)',
+   `maxWindSpeed` UInt32 COMMENT 'Peak gust wind speed (tenths of meters per second)',
+   `weatherType` Enum8('Normal' = 0, 'Fog' = 1, 'Heavy Fog' = 2, 'Thunder' = 3, 'Small Hail' = 4, 'Hail' = 5, 'Glaze' = 6, 'Dust/Ash' = 7, 'Smoke/Haze' = 8, 'Blowing/Drifting Snow' = 9, 'Tornado' = 10, 'High Winds' = 11, 'Blowing Spray' = 12, 'Mist' = 13, 'Drizzle' = 14, 'Freezing Drizzle' = 15, 'Rain' = 16, 'Freezing Rain' = 17, 'Snow' = 18, 'Unknown Precipitation' = 19, 'Ground Fog' = 21, 'Freezing Fog' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
 ) ENGINE = MergeTree() ORDER BY (station_id, date);
 
 ```
-
 
 ## ClickHouse へのデータ挿入 {#inserting-into-clickhouse}
 
@@ -235,7 +228,6 @@ INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 
 この読み込みを高速化する方法については[こちら](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)を参照してください。
 
-
 ### S3 からの挿入 {#inserting-from-s3}
 
 ```sql
@@ -245,7 +237,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 ```
 
 データロードを高速化する方法については、[大規模データロードのチューニング](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)に関するブログ記事を参照してください。
-
 
 ## サンプルクエリ {#sample-queries}
 
@@ -272,11 +263,10 @@ LIMIT 5
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1952-09-04 │
 └─────────┴───────────────────┴────────────────────────────────────────────────┴────────────┘
 
-5行。経過時間: 0.514秒。処理: 10.6億行、4.27 GB (20.6億行/秒、8.29 GB/秒)
+5 rows in set. Elapsed: 0.514 sec. Processed 1.06 billion rows, 4.27 GB (2.06 billion rows/s., 8.29 GB/s.)
 ```
 
 2023 年時点での [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) における[記録上の最高気温](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)と比べても、安心できるほどよく一致しています。
-
 
 ### 最高のスキーリゾート {#best-ski-resorts}
 
@@ -343,10 +333,9 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-5行のデータセット。経過時間: 0.750秒。処理行数: 6億8910万行、3.20 GB (9億1820万行/秒、4.26 GB/秒)
-ピークメモリ使用量: 67.66 MiB。
+5 rows in set. Elapsed: 0.750 sec. Processed 689.10 million rows, 3.20 GB (918.20 million rows/s., 4.26 GB/s.)
+Peak memory usage: 67.66 MiB.
 ```
-
 
 ## 謝辞 {#credits}
 

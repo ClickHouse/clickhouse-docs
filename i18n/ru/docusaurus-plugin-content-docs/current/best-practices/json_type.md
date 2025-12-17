@@ -11,8 +11,6 @@ doc_type: 'reference'
 
 ClickHouse теперь предлагает нативный тип столбца JSON, предназначенный для полуструктурированных и динамических данных. Важно уточнить, что **это тип столбца, а не формат данных** — вы можете вставлять JSON в ClickHouse как строку или с помощью поддерживаемых форматов, таких как [JSONEachRow](/interfaces/formats/JSONEachRow), но это само по себе не означает использование типа столбца JSON. Пользователям следует использовать тип JSON только в тех случаях, когда структура их данных является динамической, а не просто потому, что данные хранятся в формате JSON.
 
-
-
 ## Когда использовать тип JSON {#when-to-use-the-json-type}
 
 Используйте тип JSON, когда ваши данные:
@@ -29,8 +27,6 @@ ClickHouse теперь предлагает нативный тип столб�
 
 Вы также можете комбинировать подходы — например, использовать статические столбцы для предсказуемых полей верхнего уровня и один столбец типа JSON для динамической части полезной нагрузки.
 
-
-
 ## Рекомендации и советы по использованию JSON {#considerations-and-tips-for-using-json}
 
 Тип JSON обеспечивает эффективное колонночное хранение за счёт разворачивания путей в подстолбцы. Но вместе с гибкостью приходит и ответственность. Чтобы использовать его эффективно:
@@ -43,8 +39,6 @@ ClickHouse теперь предлагает нативный тип столб�
 Подсказки типов дают больше, чем просто способ избежать ненужного вывода типов — они полностью устраняют уровень косвенности при хранении и обработке. Пути JSON с подсказками типов всегда хранятся так же, как традиционные столбцы, обходясь без [**дискриминаторных столбцов**](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse#storage-extension-for-dynamically-changing-data) или динамического разрешения при выполнении запроса. Это означает, что при хорошо заданных подсказках типов вложенные поля JSON достигают той же производительности и эффективности, как если бы они с самого начала были смоделированы как поля верхнего уровня. В результате для наборов данных, которые в основном однородны, но всё ещё выигрывают от гибкости JSON, подсказки типов предоставляют удобный способ сохранить производительность без необходимости переработки схемы или конвейера приёма данных.
 :::
 
-
-
 ## Расширенные возможности {#advanced-features}
 
 * Столбцы JSON **могут использоваться в первичных ключах**, как и любые другие столбцы. Для подстолбцов нельзя указывать кодеки.
@@ -53,8 +47,6 @@ ClickHouse теперь предлагает нативный тип столб�
 * Синтаксис запросов может отличаться от стандартного SQL и может требовать специального приведения типов или операторов для вложенных полей.
 
 Для получения дополнительной информации см. [документацию по JSON в ClickHouse](/sql-reference/data-types/newjson) или ознакомьтесь с нашей статьёй в блоге [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse).
-
-
 
 ## Примеры {#examples}
 
@@ -104,21 +96,21 @@ INSERT INTO pypi FORMAT JSONEachRow
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "Парсинг чисел со скоростью гигабайт в секунду",
-  "comments": "Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "Поскольку диски и сети обеспечивают пропускную способность в гигабайты в секунду ....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
-      "created": "Пн, 11 янв. 2021 20:31:27 GMT",
+      "created": "Mon, 11 Jan 2021 20:31:27 GMT",
       "version": "v1"
     },
     {
-      "created": "Сб, 30 янв. 2021 23:57:29 GMT",
+      "created": "Sat, 30 Jan 2021 23:57:29 GMT",
       "version": "v2"
     }
   ],
@@ -159,7 +151,6 @@ ORDER BY update_date
 
 Снова вставим данные в формате JSON:
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
 {"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]]}
@@ -172,14 +163,14 @@ INSERT INTO arxiv FORMAT JSONEachRow
  "id": "2101.11408",
  "submitter": "Daniel Lemire",
  "authors": "Daniel Lemire",
- "title": "Парсинг чисел со скоростью гигабайт в секунду",
- "comments": "Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/",
+ "title": "Number Parsing at a Gigabyte per Second",
+ "comments": "Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/",
  "journal-ref": "Software: Practice and Experience 51 (8), 2021",
  "doi": "10.1002/spe.2984",
  "report-no": null,
  "categories": "cs.DS cs.MS",
  "license": "http://creativecommons.org/licenses/by/4.0/",
- "abstract": "Поскольку диски и сети обеспечивают гигабайты в секунду ....\n",
+ "abstract": "With disks and networks providing gigabytes per second ....\n",
  "versions": [
  {
    "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -200,18 +191,18 @@ INSERT INTO arxiv FORMAT JSONEachRow
  ],
  "tags": {
    "tag_1": {
-     "name": "Пользователь ClickHouse",
+     "name": "ClickHouse user",
      "score": "A+",
-     "comment": "Полезное чтение, применимо к ClickHouse"
+     "comment": "A good read, applicable to ClickHouse"
    },
    "28_03_2025": {
      "name": "professor X",
      "score": 10,
-     "comment": "Мало что нового узнал",
+     "comment": "Didn't learn much",
      "updates": [
        {
          "name": "professor X",
-         "comment": "Росомаха счёл более интересным",
+         "comment": "Wolverine found more interesting"
        }
      ]
    }
@@ -236,10 +227,9 @@ ORDER BY doc.update_date
 
 Мы можем выполнить вставку в эту таблицу и просмотреть впоследствии автоматически выведенную схему с помощью функции [`JSONAllPathsWithTypes`](/sql-reference/functions/json-functions#JSONAllPathsWithTypes) и формата вывода [`PrettyJSONEachRow`](/interfaces/formats/PrettyJSONEachRow):
 
-
 ```sql
 INSERT INTO arxiv FORMAT JSONAsObject 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Парсинг чисел со скоростью гигабайт в секунду","comments":"Программное обеспечение: https://github.com/fastfloat/fast_float и\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"Учитывая, что диски и сети обеспечивают гигабайты в секунду ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Полезное чтение, применимо к ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Мало что нового узнал","updates":[{"name":"professor X","comment":"Росомаха счёл более интересным"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
 
 ```sql
@@ -272,7 +262,7 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-Получена 1 строка. Время выполнения: 0.003 сек.
+1 row in set. Elapsed: 0.003 sec.
 ```
 
 В качестве альтернативы мы можем смоделировать это, используя нашу предыдущую схему и JSON-столбец `tags`. Такой подход обычно предпочтительнее, поскольку он минимизирует объём интерпретации данных, требуемой от ClickHouse:
@@ -302,9 +292,8 @@ ORDER BY update_date
 
 ```sql
 INSERT INTO arxiv FORMAT JSONEachRow 
-{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"Пользователь ClickHouse","score":"A+","comment":"Полезное чтение, применимо к ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Мало что нового узнал","updates":[{"name":"professor X","comment":"Росомаха счёл более интересным"}]}}}
+{"id":"2101.11408","submitter":"Daniel Lemire","authors":"Daniel Lemire","title":"Number Parsing at a Gigabyte per Second","comments":"Software at https://github.com/fastfloat/fast_float and\n  https://github.com/lemire/simple_fastfloat_benchmark/","journal-ref":"Software: Practice and Experience 51 (8), 2021","doi":"10.1002/spe.2984","report-no":null,"categories":"cs.DS cs.MS","license":"http://creativecommons.org/licenses/by/4.0/","abstract":"With disks and networks providing gigabytes per second ....\n","versions":[{"created":"Mon, 11 Jan 2021 20:31:27 GMT","version":"v1"},{"created":"Sat, 30 Jan 2021 23:57:29 GMT","version":"v2"}],"update_date":"2022-11-07","authors_parsed":[["Lemire","Daniel",""]],"tags":{"tag_1":{"name":"ClickHouse user","score":"A+","comment":"A good read, applicable to ClickHouse"},"28_03_2025":{"name":"professor X","score":10,"comment":"Didn't learn much","updates":[{"name":"professor X","comment":"Wolverine found more interesting"}]}}}
 ```
-
 
 Теперь мы можем определить типы подколонки `tags`.
 
@@ -325,5 +314,5 @@ FORMAT PrettyJSONEachRow
   }
 }
 
-Получена 1 строка. Прошло: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```

@@ -10,7 +10,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Kafka 表引擎 {#kafka-table-engine}
 
 :::tip
@@ -65,7 +64,6 @@ SETTINGS
 * `kafka_format` — 消息格式。使用与 SQL `FORMAT` 函数相同的格式表示法，例如 `JSONEachRow`。更多信息，参见 [Formats](../../../interfaces/formats.md) 部分。
 
 可选参数：
-
 
 - `kafka_security_protocol` - 用于与 broker 通信的协议。可选值：`plaintext`、`ssl`、`sasl_plaintext`、`sasl_ssl`。
 - `kafka_sasl_mechanism` - 用于认证的 SASL 机制。可选值：`GSSAPI`、`PLAIN`、`SCRAM-SHA-256`、`SCRAM-SHA-512`、`OAUTHBEARER`。
@@ -127,15 +125,14 @@ Examples:
   :::
 
   ```sql
-  Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
-  ```
+Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
+      [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+```
 </details>
 
 :::info
 Kafka 表引擎不支持带有[默认值](/sql-reference/statements/create/table#default_values)的列。如果需要带默认值的列，可以在 materialized view 层添加（见下文）。
 :::
-
 
 ## 描述 {#description}
 
@@ -187,14 +184,13 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 如果你想通过 `ALTER` 语句更改目标表，建议先禁用该物化视图，以避免目标表与视图产出的数据之间出现不一致。
 
-
 ## 配置 {#configuration}
 
 与 GraphiteMergeTree 类似，Kafka 引擎支持通过 ClickHouse 配置文件进行扩展配置。可以使用两个配置键：全局配置（位于 `<kafka>` 下）和主题级配置（位于 `<kafka><kafka_topic>` 下）。会先应用全局配置，然后再应用主题级配置（如果存在）。
 
 ```xml
   <kafka>
-    <!-- Kafka 引擎类型所有表的全局配置选项 -->
+    <!-- Global configuration options for all tables of Kafka engine type -->
     <debug>cgrp</debug>
     <statistics_interval_ms>3000</statistics_interval_ms>
 
@@ -203,7 +199,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
         <statistics_interval_ms>4000</statistics_interval_ms>
     </kafka_topic>
 
-    <!-- 消费者配置 -->
+    <!-- Settings for consumer -->
     <consumer>
         <auto_offset_reset>smallest</auto_offset_reset>
         <kafka_topic>
@@ -217,7 +213,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
         </kafka_topic>
     </consumer>
 
-    <!-- 生产者配置 -->
+    <!-- Settings for producer -->
     <producer>
         <kafka_topic>
             <name>logs</name>
@@ -234,7 +230,6 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 有关可用配置选项的列表，请参阅 [librdkafka 配置参考](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)。在 ClickHouse 配置中，应使用下划线（`_`）而不是点号。例如，`check.crcs=true` 将写作 `<check_crcs>true</check_crcs>`。
 
-
 ### Kerberos 支持 {#kafka-kerberos-support}
 
 要与支持 Kerberos 的 Kafka 配合使用，请添加值为 `sasl_plaintext` 的 `security_protocol` 子元素。如果操作系统已经获取并缓存了 Kerberos 票据授予票（TGT，ticket-granting ticket），这就足够了。
@@ -243,14 +238,13 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
 示例：
 
 ```xml
-<!-- 启用 Kerberos 的 Kafka -->
+<!-- Kerberos-aware Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>
   <sasl_kerberos_principal>kafkauser/kafkahost@EXAMPLE.COM</sasl_kerberos_principal>
 </kafka>
 ```
-
 
 ## 虚拟列 {#virtual-columns}
 
@@ -299,7 +293,6 @@ SETTINGS
   kafka_replica_name = '{replica}'
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
-
 
 ### 已知限制 {#known-limitations}
 

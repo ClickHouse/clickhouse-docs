@@ -47,13 +47,13 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 <VerticalStepper headerLevel="h4">
   #### Nginxログフォーマットの設定
 
-  まず、ログの解析を容易にするため、NginxがJSON形式でログを出力するように設定します。nginx.confに次のログフォーマット定義を追加してください：
+  まず、解析を容易にするために、NginxがJSON形式でログを出力するよう設定します。nginx.confに次のログフォーマット定義を追加してください:
 
   `nginx.conf` ファイルは通常、以下の場所に配置されています:
 
-  * **Linux（apt/yum）**: `/etc/nginx/nginx.conf`
+  * **Linux (apt/yum)**: `/etc/nginx/nginx.conf`
   * **macOS（Homebrew）**: `/usr/local/etc/nginx/nginx.conf` または `/opt/homebrew/etc/nginx/nginx.conf`
-  * **Docker**: 設定は通常、ボリュームとしてマウントされます
+  * **Docker**: 構成は通常ボリュームとしてマウントされます
 
   このログフォーマット定義を `http` ブロックに追加します：
 
@@ -82,7 +82,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### カスタムOTel collector設定を作成する
 
-  ClickStackでは、カスタム設定ファイルをマウントし環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
+  ClickStackでは、カスタム設定ファイルをマウントして環境変数を設定することで、ベースのOpenTelemetry Collector設定を拡張できます。カスタム設定は、HyperDXがOpAMP経由で管理するベース設定にマージされます。
 
   以下の設定で nginx-monitoring.yaml という名前のファイルを作成します：
 
@@ -116,20 +116,20 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
           - clickhouse
   ```
 
-  この設定では：
+  この設定では:
 
-  * 標準の保存場所から Nginx のログを読み取ります
-  * JSON 形式のログエントリを解析します
+  * Nginx ログを標準の保存場所から読み取ります
+  * JSON ログエントリを解析します
   * 元のログのタイムスタンプを抽出して保持します
-  * HyperDX でのフィルタリング用に source: Nginx 属性を追加します
-  * 専用パイプライン経由でログを ClickHouse エクスポーターに送信する
+  * HyperDX でのフィルタリングに使用する source: Nginx 属性を追加します
+  * 専用パイプラインを通じてログを ClickHouse エクスポーターに転送する
 
   :::note
 
-  * カスタム設定では、新しいレシーバーとパイプラインだけを定義します
-  * processors（memory&#95;limiter、transform、batch）および exporters（clickhouse）は、すでにベースの ClickStack 構成で定義済みなので、名前を指定して参照するだけで済みます
-  * time&#95;parser オペレーターは、元のログのタイムスタンプを保持するために、Nginx の time&#95;local フィールドからタイムスタンプを抽出します
-  * パイプラインは、既存のprocessorsを介して、receiversからClickHouse exporterへデータをルーティングします
+  * カスタム構成では、新しい receiver と pipeline だけを定義します
+  * `memory_limiter`、`transform`、`batch` の各 processor と `clickhouse` exporter は、ベースとなる ClickStack の設定ですでに定義されているため、名前を指定するだけで参照できます
+  * time&#95;parser オペレーターは、元のログの時刻情報を保持するために、Nginx の time&#95;local フィールドからタイムスタンプを抽出します
+  * パイプラインは、既存のprocessorを経由して、receiverからのデータをClickHouse exporterにルーティングします
 
   #### ClickStackにカスタム設定を読み込むよう構成する
 
@@ -137,7 +137,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   1. カスタム設定ファイルを /etc/otelcol-contrib/custom.config.yaml にマウントします
   2. 環境変数 CUSTOM&#95;OTELCOL&#95;CONFIG&#95;FILE に /etc/otelcol-contrib/custom.config.yaml を設定します
-  3. コレクターが読み込めるように Nginx のログディレクトリをマウントします
+  3. コレクターがログを読み取れるように、Nginx のログディレクトリをマウントする
 
   ##### オプション1: Docker Compose
 
@@ -166,7 +166,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
     -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
     -v "$(pwd)/nginx-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
     -v /var/log/nginx:/var/log/nginx:ro \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    clickhouse/clickstack-all-in-one:latest
   ```
 
   :::note
@@ -175,10 +175,10 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
   #### HyperDXでのログの確認
 
-  設定完了後、HyperDXにログインし、ログが正常に取り込まれていることを確認してください：
+  設定完了後、HyperDXにログインし、ログが正常に送信されていることを確認してください：
 
   1. 検索ビューに移動します
-  2. ソースを Logs に設定し、`request`、`request_time`、`upstream_response_time` などのフィールドを含むログエントリが表示されていることを確認します。
+  2. ソースを Logs に設定し、request、request&#95;time、upstream&#95;response&#95;time などのフィールドを含むログエントリが表示されていることを確認します。
 
   以下のような表示が確認できます：
 
@@ -189,26 +189,26 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 ## デモ用データセット {#demo-dataset}
 
-本番環境を設定する前に nginx 連携をテストしたいユーザー向けに、現実的なトラフィックパターンを持つ事前生成済みの nginx アクセスログのサンプルデータセットを提供しています。
+本番環境を構成する前に nginx 連携をテストしたいユーザー向けに、現実的なトラフィックパターンを持つ、あらかじめ生成された nginx アクセスログのサンプルデータセットを提供します。
 
 <VerticalStepper headerLevel="h4">
 
-#### サンプルデータセットをダウンロードする {#download-sample}
+#### サンプルデータセットのダウンロード {#download-sample}
 
 ```bash
 # ログをダウンロード
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/access.log
 ```
 
-このデータセットには以下が含まれます:
-- 現実的なトラフィックパターンを持つログエントリー
+このデータセットには次の内容が含まれます：
+- 現実的なトラフィックパターンを持つログエントリ
 - さまざまなエンドポイントと HTTP メソッド
 - 成功したリクエストとエラーの混在
-- 実運用に近いレスポンスタイムとバイト数
+- 現実的なレスポンスタイムとバイト数
 
-#### テスト用コレクター設定を作成する {#test-config}
+#### テスト用 Collector 設定の作成 {#test-config}
 
-次の設定内容で `nginx-demo.yaml` という名前のファイルを作成します:
+次の設定を含む `nginx-demo.yaml` という名前のファイルを作成します：
 
 ```yaml
 cat > nginx-demo.yaml << 'EOF'
@@ -216,7 +216,7 @@ receivers:
   filelog:
     include:
       - /tmp/nginx-demo/access.log
-    start_at: beginning  # デモデータのため先頭から読み込む
+    start_at: beginning  # デモデータでは先頭から読み取る
     operators:
       - type: json_parser
         parse_from: body
@@ -243,7 +243,7 @@ EOF
 
 #### デモ設定で ClickStack を実行する {#run-demo}
 
-デモログと設定を使って ClickStack を実行します:
+デモ用ログと設定で ClickStack を実行します：
 
 ```bash
 docker run --name clickstack-demo \
@@ -251,21 +251,21 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/nginx-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/access.log:/tmp/nginx-demo/access.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### HyperDX でログを確認する {#verify-demo-logs}
 
-ClickStack が起動したら、次の手順を実行します。
+ClickStack が起動したら、次を実行します：
 
-1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします（まだアカウントがない場合は作成してください）
-2. 検索ビューに移動し、ソースを `Logs` に設定します
-3. 時間範囲を **2025-10-19 11:00:00 - 2025-10-22 11:00:00** に設定します
+1. [HyperDX](http://localhost:8080/) を開き、自分のアカウントでログインします（まだアカウントがない場合は、まずアカウントを作成してください）
+2. Search ビューに移動し、`source` を `Logs` に設定します
+3. タイムレンジを **2025-10-19 11:00:00 - 2025-10-22 11:00:00** に設定します
 
-検索ビューには、次のように表示されるはずです。
+Search ビューでは次のような表示になるはずです：
 
 :::note[タイムゾーン表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは 2025-10-20 11:00:00 - 2025-10-21 11:00:00 UTC の期間をカバーしています。広めの時間範囲を指定することで、どのロケーションからでもデモログを確認できるようにしています。ログが確認できたら、可視化を見やすくするために時間範囲を 24 時間程度に絞り込むことができます。
+HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは 2025-10-20 11:00:00 - 2025-10-21 11:00:00 UTC の期間をカバーしています。広めのタイムレンジを指定することで、どの地域からでもデモ用ログが表示されるようにしています。ログが表示されたら、可視化を分かりやすくするために、タイムレンジを 24 時間に絞り込むことができます。
 :::
 
 <Image img={search_view} alt="ログビュー"/>

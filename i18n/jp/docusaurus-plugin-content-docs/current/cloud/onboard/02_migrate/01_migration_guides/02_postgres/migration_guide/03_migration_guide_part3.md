@@ -18,7 +18,6 @@ import Image from '@theme/IdealImage';
 
 Postgres から移行するユーザーには、[ClickHouse におけるデータモデリングのガイド](/data-modeling/schema-design)を読むことをお勧めします。このガイドでは、同じ Stack Overflow データセットを使用し、ClickHouse の機能を活用した複数のアプローチを紹介します。
 
-
 ## ClickHouse における主キー（オーダリングキー） {#primary-ordering-keys-in-clickhouse}
 
 OLTP データベースから移行してくるユーザーは、ClickHouse における同等の概念を探すことがよくあります。ClickHouse が `PRIMARY KEY` 構文をサポートしていることに気づくと、元の OLTP データベースと同じキーを使ってテーブルスキーマを定義したくなるかもしれませんが、これは推奨されません。
@@ -46,8 +45,6 @@ ClickHouse で選択されたキーは、インデックスだけでなく、デ
 オーダリングキーを選択する際の考慮事項と手順については、posts テーブルを例にとった解説を[こちら](/data-modeling/schema-design#choosing-an-ordering-key)で参照できます。
 
 CDC を用いたリアルタイムレプリケーションを利用する場合は、追加の制約を考慮する必要があります。CDC でオーダリングキーをカスタマイズする手法については、この[ドキュメント](/integrations/clickpipes/postgres/ordering_keys)を参照してください。
-
-
 
 ## パーティション {#partitions}
 
@@ -107,16 +104,15 @@ WHERE `table` = 'posts'
 │ 2024      │
 └───────────┘
 
-17行。経過時間: 0.002秒
+17 rows in set. Elapsed: 0.002 sec.
 
 ALTER TABLE posts
 (DROP PARTITION '2008')
 
-OK
+Ok.
 
-0行。経過時間: 0.103秒
+0 rows in set. Elapsed: 0.103 sec.
 ```
-
 
 - **クエリ最適化** - パーティションはクエリ性能の向上に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション（理想的には 1 つ）だけを対象とする場合、性能を向上させられる可能性があります。これは、パーティションキーがプライマリキーに含まれておらず、そのキーでフィルタしている場合にのみ、一般的に有用です。ただし、多数のパーティションにまたがって処理する必要があるクエリでは、パーティションを使用しない場合よりも性能が低下する可能性があります（パーティショニングの結果としてパーツ数が増える場合があるため）。対象が単一パーティションであることによる利点は、パーティションキーがすでにプライマリキーの先頭付近に含まれている場合は、ほとんど、あるいはまったく得られなくなります。パーティショニングは、各パーティション内の値が一意であれば、[GROUP BY クエリの最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)にも利用できます。しかし一般論としては、まずプライマリキーが最適化されていることを確認し、クエリ最適化の手法としてのパーティショニングは、アクセスパターンが特定の予測可能な日付範囲だけを対象とするような例外的なケース（例: 日単位でパーティショニングしており、ほとんどのクエリが直近 1 日を対象とする場合）にのみ検討すべきです。
 
@@ -129,8 +125,6 @@ OK
 > 内部的には、ClickHouse は挿入されたデータに対して[パーツを作成](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)します。より多くのデータが挿入されるにつれて、パーツの数は増加します。パーツ数が過度に増え、クエリ性能を低下させないようにするため（読み込むファイルが増えるため）、パーツはバックグラウンドの非同期処理でマージされます。パーツ数が事前設定された上限を超えた場合、ClickHouse は挿入時に例外をスローし、「too many parts」エラーが発生します。これは通常の運用では発生せず、ClickHouse の設定が不適切であるか、誤った使い方をしている場合（例: 非常に小さい挿入を多数行う場合）にのみ発生します。
 
 > パーツは各パーティションごとに独立して作成されるため、パーティション数を増やすとパーツ数も増加します。すなわち、パーツ数はパーティション数に比例して増えます。そのため、高カーディナリティなパーティションキーはこのエラーの原因となり得るため、避けるべきです。
-
-
 
 ## マテリアライズドビューとプロジェクションの比較 {#materialized-views-vs-projections}
 
@@ -151,8 +145,8 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 
-1行が返されました。経過時間: 0.040秒。処理された行数: 9038万行、361.59 MB (22.5億行/秒、9.01 GB/秒)
-ピークメモリ使用量: 201.93 MiB。
+1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
+Peak memory usage: 201.93 MiB.
 ```
 
 `UserId` がソートキーではないため、このクエリでは 9,000 万行すべてをスキャンする必要があります（とはいえ高速ではあります）。
@@ -229,8 +223,23 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
+    └─────────────────────────────────────────────────────┘
+
+11 rows in set. Elapsed: 0.004 sec.
+```
 
 ┌─explain─────────────────────────────────────────────┐
 
@@ -272,7 +281,6 @@ WHERE UserId = 8592047
 詳細については["Projections"](/data-modeling/projections)を参照してください。
 :::
 ```
-
 
 ## 非正規化 {#denormalization}
 

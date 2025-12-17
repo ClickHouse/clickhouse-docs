@@ -9,13 +9,10 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 25.9 以前のバージョン向けのアロケーションプロファイリング {#allocation-profiling-for-versions-before-259}
 
 ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用します。jemalloc には、アロケーションのサンプリングとプロファイリングのためのツールが付属しています。  
 アロケーションプロファイリングをより便利に行えるように、Keeper では `SYSTEM` コマンドに加えて four letter word (4LW) コマンドも提供されています。
-
-
 
 ## アロケーションのサンプリングとヒーププロファイルのフラッシュ {#sampling-allocations-and-flushing-heap-profiles}
 
@@ -54,7 +51,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_prefix:/data/my_current_profil
 ```
 
 生成されるファイル名は、接頭辞、PID、シーケンス番号を連結したものになります。
-
 
 ## ヒーププロファイルの解析 {#analyzing-heap-profiles}
 
@@ -126,7 +122,6 @@ cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Al
 
 もう 1 つ有用なツールとして [speedscope](https://www.speedscope.app/) があり、収集したスタック情報をよりインタラクティブに解析できます。
 
-
 ## 実行時のアロケーションプロファイラの制御 {#controlling-allocation-profiler-during-runtime}
 
 ClickHouse/Keeper をプロファイラを有効にした状態で起動した場合、実行時にアロケーションプロファイリングを無効化/有効化するための追加コマンドを使用できます。
@@ -173,7 +168,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 
 プロファイラは後から有効化することもできます。
 
-
 ## プロファイラの追加オプション {#additional-options-for-profiler}
 
 `jemalloc` にはプロファイラに関連する多数のオプションが用意されており、`MALLOC_CONF` 環境変数を変更して制御できます。
@@ -181,8 +175,6 @@ MALLOC_CONF=background_thread:true,prof:true,prof_active:false
 ヒーププロファイルを N バイトごとにダンプしたい場合は、`lg_prof_interval` を有効化してください。  
 
 利用可能なオプションの一覧については、`jemalloc` の[リファレンスページ](https://jemalloc.net/jemalloc.3.html)を参照してください。
-
-
 
 ## その他のリソース {#other-resources}
 

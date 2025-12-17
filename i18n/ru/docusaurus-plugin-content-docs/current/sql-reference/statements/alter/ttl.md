@@ -18,7 +18,7 @@ doc_type: 'reference'
 Вы можете изменить [TTL для таблицы](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) с помощью запроса следующего вида:
 
 ```sql
-ALTER TABLE [db.]имя_таблицы [ON CLUSTER кластер] MODIFY TTL ttl_выражение;
+ALTER TABLE [db.]table_name [ON CLUSTER cluster] MODIFY TTL ttl_expression;
 ```
 
 ## УДАЛЕНИЕ TTL {#remove-ttl}
@@ -26,7 +26,7 @@ ALTER TABLE [db.]имя_таблицы [ON CLUSTER кластер] MODIFY TTL tt
 Свойство TTL можно удалить из таблицы с помощью следующего запроса:
 
 ```sql
-ALTER TABLE [db.]имя_таблицы [ON CLUSTER кластер] REMOVE TTL
+ALTER TABLE [db.]table_name [ON CLUSTER cluster] REMOVE TTL
 ```
 
 **Пример**
@@ -45,9 +45,9 @@ ORDER BY tuple()
 TTL event_time + INTERVAL 3 MONTH
 SETTINGS min_bytes_for_wide_part = 0;
 
-INSERT INTO table_with_ttl VALUES (now(), 1, 'имя_пользователя1');
+INSERT INTO table_with_ttl VALUES (now(), 1, 'username1');
 
-INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'имя_пользователя2');
+INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
 ```
 
 Выполните `OPTIMIZE`, чтобы принудительно выполнить очистку по `TTL`:

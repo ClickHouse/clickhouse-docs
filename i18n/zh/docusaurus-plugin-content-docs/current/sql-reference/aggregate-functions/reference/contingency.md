@@ -13,7 +13,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-列联表(column1, column2)
+contingency(column1, column2)
 ```
 
 **参数**

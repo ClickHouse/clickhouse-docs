@@ -12,7 +12,7 @@ doc_type: 'reference'
 创建新数据库。
 
 ```sql
-CREATE DATABASE [IF NOT EXISTS] 数据库名 [ON CLUSTER 集群] [ENGINE = 引擎(...)] [COMMENT '备注']
+CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Comment']
 ```
 
 ## 子句 {#clauses}
@@ -41,7 +41,7 @@ ClickHouse 会在指定集群的所有服务器上创建 `db_name` 数据库。�
 **语法**
 
 ```sql
-CREATE DATABASE db_name ENGINE = engine(...) COMMENT '注释'
+CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 ```
 
 **示例**
@@ -49,7 +49,7 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT '注释'
 查询：
 
 ```sql
-CREATE DATABASE db_comment ENGINE = Memory COMMENT '临时数据库';
+CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
@@ -57,6 +57,6 @@ SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 
 ```text
 ┌─name───────┬─comment────────────────┐
-│ db_comment │ 临时数据库             │
+│ db_comment │ The temporary database │
 └────────────┴────────────────────────┘
 ```

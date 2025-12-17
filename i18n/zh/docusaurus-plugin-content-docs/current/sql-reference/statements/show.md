@@ -17,8 +17,6 @@ doc_type: 'reference'
 此外，用户需要具备 [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 权限。
 :::
 
-
-
 ## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
 
 这些语句会返回一个 `String` 类型的单列，
@@ -35,7 +33,6 @@ SHOW [CREATE] TABLE | TEMPORARY TABLE | DICTIONARY | VIEW | DATABASE [db.]table|
 你将会得到一个*虚假的*查询，它只声明了表结构，
 但不能真正用于创建表。
 :::
-
 
 ## SHOW DATABASES {#show-databases}
 
@@ -110,7 +107,6 @@ SHOW DATABASES LIMIT 2
 ### 另请参阅 {#see-also}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
-
 
 ## SHOW TABLES {#show-tables}
 
@@ -190,7 +186,6 @@ SHOW TABLES FROM system LIMIT 2
 * [`Create Tables`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
 
-
 ## SHOW COLUMNS {#show_columns}
 
 `SHOW COLUMNS` 语句用于显示列列表。
@@ -243,7 +238,6 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 
 * [`system.columns`](../../operations/system-tables/columns.md)
 
-
 ## SHOW DICTIONARIES {#show-dictionaries}
 
 `SHOW DICTIONARIES` 语句用于显示 [字典（Dictionaries）](../../sql-reference/dictionaries/index.md) 的列表。
@@ -276,7 +270,6 @@ SHOW DICTIONARIES FROM db LIKE '%reg%' LIMIT 2
 │ region_names │
 └──────────────┘
 ```
-
 
 ## SHOW INDEX {#show-index}
 
@@ -322,7 +315,6 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 SHOW INDEX FROM 'tbl'
 ```
 
-
 ```text title="Response"
 ┌─table─┬─non_unique─┬─key_name─┬─seq_in_index─┬─column_name─┬─collation─┬─cardinality─┬─sub_part─┬─packed─┬─null─┬─index_type───┬─comment─┬─index_comment─┬─visible─┬─expression─┐
 │ tbl   │          1 │ blf_idx  │ 1            │ 1           │ ᴺᵁᴸᴸ      │ 0           │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ │ BLOOM_FILTER │         │               │ YES     │ d, b       │
@@ -338,7 +330,6 @@ SHOW INDEX FROM 'tbl'
 
 * [`system.tables`](../../operations/system-tables/tables.md)
 * [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
-
 
 ## SHOW PROCESSLIST {#show-processlist}
 
@@ -361,7 +352,6 @@ $ watch -n1 "clickhouse-client --query='SHOW PROCESSLIST'"
 
 :::
 
-
 ## SHOW GRANTS {#show-grants}
 
 `SHOW GRANTS` 语句用于显示某个用户所拥有的权限。
@@ -378,7 +368,6 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 
 `FINAL` 修饰符会合并来自用户本身及其被授予角色（包括继承）的所有权限。
 
-
 ## SHOW CREATE USER {#show-create-user}
 
 `SHOW CREATE USER` 语句会显示[创建用户](../../sql-reference/statements/create/user.md)时使用的参数。
@@ -388,7 +377,6 @@ SHOW GRANTS [FOR user1 [, user2 ...]] [WITH IMPLICIT] [FINAL]
 ```sql title="Syntax"
 SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 ```
-
 
 ## SHOW CREATE ROLE {#show-create-role}
 
@@ -400,7 +388,6 @@ SHOW CREATE USER [name1 [, name2 ...] | CURRENT_USER]
 SHOW CREATE ROLE name1 [, name2 ...]
 ```
 
-
 ## SHOW CREATE ROW POLICY {#show-create-row-policy}
 
 `SHOW CREATE ROW POLICY` 语句用于显示在[创建行策略](../../sql-reference/statements/create/row-policy.md)时使用的参数。
@@ -410,7 +397,6 @@ SHOW CREATE ROLE name1 [, name2 ...]
 ```sql title="Syntax"
 SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 ```
-
 
 ## SHOW CREATE QUOTA {#show-create-quota}
 
@@ -422,7 +408,6 @@ SHOW CREATE [ROW] POLICY name ON [database1.]table1 [, [database2.]table2 ...]
 SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 ```
 
-
 ## SHOW CREATE SETTINGS PROFILE {#show-create-settings-profile}
 
 `SHOW CREATE SETTINGS PROFILE` 语句会显示在[创建设置配置文件](../../sql-reference/statements/create/settings-profile.md)时使用的参数。
@@ -433,7 +418,6 @@ SHOW CREATE QUOTA [name1 [, name2 ...] | CURRENT]
 SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ```
 
-
 ## SHOW USERS {#show-users}
 
 `SHOW USERS` 语句返回[用户账户](../../guides/sre/user-management/index.md#user-account-management)名称的列表。
@@ -442,9 +426,8 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 ### 语法 {#syntax-13}
 
 ```sql title="Syntax"
-显示用户
+SHOW USERS
 ```
-
 
 ## SHOW ROLES {#show-roles}
 
@@ -453,8 +436,6 @@ SHOW CREATE [SETTINGS] PROFILE name1 [, name2 ...]
 请参阅系统表 [`system.roles`](/operations/system-tables/roles) 和 [`system.role_grants`](/operations/system-tables/role_grants)。
 
 ### 语法 {#syntax-14}
-
-
 
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
@@ -471,7 +452,6 @@ SHOW [CURRENT|ENABLED] ROLES
 SHOW [SETTINGS] PROFILES
 ```
 
-
 ## SHOW POLICIES {#show-policies}
 
 `SHOW POLICIES` 语句返回指定表的[行策略](../../guides/sre/user-management/index.md#row-policy-management)列表。
@@ -483,7 +463,6 @@ SHOW [SETTINGS] PROFILES
 SHOW [ROW] POLICIES [ON [db.]table]
 ```
 
-
 ## SHOW QUOTAS {#show-quotas}
 
 `SHOW QUOTAS` 语句返回[配额](../../guides/sre/user-management/index.md#quotas-management)列表。
@@ -492,9 +471,8 @@ SHOW [ROW] POLICIES [ON [db.]table]
 ### 语法 {#syntax-17}
 
 ```sql title="Syntax"
-显示配额
+SHOW QUOTAS
 ```
-
 
 ## SHOW QUOTA {#show-quota}
 
@@ -502,8 +480,6 @@ SHOW [ROW] POLICIES [ON [db.]table]
 要查看其他参数，请参阅系统表 [`system.quotas_usage`](/operations/system-tables/quotas_usage) 和 [`system.quota_usage`](/operations/system-tables/quota_usage)。
 
 ### 语法 {#syntax-18}
-
-
 
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
@@ -519,7 +495,6 @@ SHOW [CURRENT] QUOTA
 SHOW ACCESS
 ```
 
-
 ## SHOW CLUSTER(S) {#show-clusters}
 
 `SHOW CLUSTER(S)` 语句返回一个集群列表。
@@ -532,8 +507,8 @@ SHOW ACCESS
 ### 语法 {#syntax-20}
 
 ```sql title="Syntax"
-SHOW CLUSTER '<集群名称>'
-SHOW CLUSTERS [[NOT] LIKE|ILIKE '<匹配模式>'] [LIMIT <N>]
+SHOW CLUSTER '<name>'
+SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
 
 ### 示例 {#examples-5}
@@ -568,7 +543,7 @@ SHOW CLUSTER 'test_shard_localhost' FORMAT Vertical;
 ```
 
 ```text title="Response"
-第 1 行:
+Row 1:
 ──────
 cluster:                 test_shard_localhost
 shard_num:               1
@@ -578,7 +553,6 @@ host_address:            127.0.0.1
 port:                    9000
 ```
 
-
 ## SHOW SETTINGS {#show-settings}
 
 `SHOW SETTINGS` 语句返回系统设置及其值的列表。
@@ -587,7 +561,7 @@ port:                    9000
 ### 语法 {#syntax-21}
 
 ```sql title="Syntax"
-SHOW [CHANGED] SETTINGS LIKE|ILIKE <名称>
+SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
 ### 子句 {#clauses}
@@ -618,9 +592,9 @@ SHOW SETTINGS ILIKE '%CONNECT_timeout%'
 
 ```text title="Response"
 ┌─name────────────────────────────────────┬─type─────────┬─value─┐
-│ connect_timeout                         │ 秒           │ 10    │
-│ connect_timeout_with_failover_ms        │ 毫秒         │ 50    │
-│ connect_timeout_with_failover_secure_ms │ 毫秒         │ 100   │
+│ connect_timeout                         │ Seconds      │ 10    │
+│ connect_timeout_with_failover_ms        │ Milliseconds │ 50    │
+│ connect_timeout_with_failover_secure_ms │ Milliseconds │ 100   │
 └─────────────────────────────────────────┴──────────────┴───────┘
 ```
 
@@ -636,7 +610,6 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 └──────────────────┴────────┴─────────────┘
 ```
 
-
 ## SHOW SETTING {#show-setting}
 
 `SHOW SETTING` 语句返回指定设置名称对应的值。
@@ -644,24 +617,23 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 ### 语法 {#syntax-22}
 
 ```sql title="Syntax"
-SHOW SETTING <名称>
+SHOW SETTING <name>
 ```
 
 ### 另请参阅 {#see-also-4}
 
 * [`system.settings`](../../operations/system-tables/settings.md) 表
 
-
 ## 显示文件系统缓存 {#show-filesystem-caches}
 
 ### 示例 {#examples-7}
 
 ```sql title="Query"
-显示文件系统缓存
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
-┌─缓存────┐
+┌─Caches────┐
 │ s3_cache  │
 └───────────┘
 ```
@@ -669,7 +641,6 @@ SHOW SETTING <名称>
 ### 另请参阅 {#see-also-5}
 
 * [`system.settings`](../../operations/system-tables/settings.md) 表
-
 
 ## SHOW ENGINES {#show-engines}
 
@@ -686,7 +657,6 @@ SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 
 * [system.table&#95;engines](../../operations/system-tables/table_engines.md) 表
 
-
 ## SHOW FUNCTIONS {#show-functions}
 
 `SHOW FUNCTIONS` 语句会返回 [`system.functions`](../../operations/system-tables/functions.md) 表的内容。
@@ -702,7 +672,6 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 ### 另请参阅 {#see-also-7}
 
 * [`system.functions`](../../operations/system-tables/functions.md) 表
-
 
 ## SHOW MERGES {#show-merges}
 

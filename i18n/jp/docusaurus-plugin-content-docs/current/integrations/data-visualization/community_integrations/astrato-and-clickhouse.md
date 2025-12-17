@@ -25,14 +25,11 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Astrato を ClickHouse に接続する {#connecting-astrato-to-clickhouse}
 
 <CommunityMaintainedBadge/>
 
 Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミスの ClickHouse 環境に直接クエリを実行します。つまり、業界をリードする ClickHouse のパフォーマンスによって支えられた、必要なすべてのデータにアクセスできます。
-
-
 
 ## 接続に必要な情報 {#connection-data-required}
 
@@ -42,8 +39,6 @@ Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプ�
 - データベースの認証情報: ユーザー名、パスワード
 
 <ConnectionDetails />
-
-
 
 ## ClickHouse へのデータ接続の作成 {#creating-the-data-connection-to-clickhouse}
 
@@ -74,8 +69,6 @@ Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプ�
 重複が作成された場合、データソース名にタイムスタンプが追加されます。
 :::
 
-
-
 ## セマンティックモデル / データビューの作成 {#creating-a-semantic-model--data-view}
 
 Data View エディターでは、ClickHouse 上のすべてのテーブルとスキーマが表示されます。開始するには、そこからいくつかを選択します。
@@ -91,8 +84,6 @@ Data View エディターでは、ClickHouse 上のすべてのテーブルと�
 **Astrato は結合をインテリジェントに提案します。** その際、ClickHouse のキーを活用するなど、メタデータを利用します。提案される結合により、適切にガバナンスされた ClickHouse データを一から作り直すことなく、そのまま簡単に使い始めることができます。さらに Astrato では、**結合の品質** も表示されるため、すべての提案内容を詳細に確認することが可能です。
 
 <Image size="lg" img={astrato_4c_clickhouse_completed_data_view} alt="Astrato を ClickHouse に接続するユーザーアクセス" border />
-
-
 
 ## ダッシュボードの作成 {#creating-a-dashboard}
 

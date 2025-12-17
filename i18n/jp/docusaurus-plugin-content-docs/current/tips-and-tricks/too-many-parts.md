@@ -21,13 +21,9 @@ title: 'レッスン - パーツ数が多すぎる問題'
 description: 'Too Many Parts の解決策と防止策'
 ---
 
-
-
 # パーツが多すぎる問題 {#the-too-many-parts-problem}
 *このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的なソリューションやインサイトについては、[問題別に閲覧](./community-wisdom.md)できます。*
 *さらにパフォーマンス最適化のヒントが必要な場合は、[パフォーマンス最適化](./performance-optimization.md) に関するコミュニティインサイトガイドを参照してください。*
-
-
 
 ## 問題の理解 {#understanding-the-problem}
 
@@ -37,8 +33,6 @@ ClickHouse は深刻なパフォーマンス低下を防ぐため、「Too many 
 - [MergeTree エンジン](/engines/table-engines/mergetree-family/mergetree)
 - [Parts](/parts)
 - [Parts システムテーブル](/operations/system-tables/parts)
-
-
 
 ## 問題を早期に把握する {#recognize-parts-problem}
 
@@ -75,7 +69,6 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
-
 
 ## 動画リソース {#video-sources}
 

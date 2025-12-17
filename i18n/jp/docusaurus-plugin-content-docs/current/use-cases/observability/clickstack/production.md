@@ -17,7 +17,6 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 
 本番環境に ClickStack をデプロイする際には、セキュリティ、安定性、適切な構成を確保するために、追加で考慮すべき点がいくつかあります。
 
-
 ## ネットワークとポートのセキュリティ {#network-security}
 
 デフォルトでは、Docker Compose はホスト側のポートを公開するため、`ufw` (Uncomplicated Firewall) のようなツールが有効になっていても、コンテナ外部からアクセスできてしまいます。これは Docker のネットワークスタックの仕様によるもので、明示的に設定しない限り、ホストレベルのファイアウォールルールをバイパスしてしまう可能性があります。
@@ -32,12 +31,11 @@ import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-l
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # API に必要な場合のみ
-# ClickHouse 8123 や MongoDB 27017 などの内部ポートは公開しないでください。 {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
+  - "8080:8080"  # Only if needed for the API
+# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
 ```
 
 コンテナの分離やアクセス制御の強化の詳細については、[Docker ネットワークに関するドキュメント](https://docs.docker.com/network/)を参照してください。
-
 
 ## セッションシークレットの設定 {#session-secret}
 
@@ -78,7 +76,6 @@ openssl rand -hex 32
 ```
 
 機密情報をバージョン管理システムにコミットしないようにしてください。本番環境では、Docker Secrets、HashiCorp Vault、環境ごとの CI/CD 設定などの環境変数管理ツールの利用を検討してください。
-
 
 ## セキュアなインジェスト {#secure-ingestion}
 

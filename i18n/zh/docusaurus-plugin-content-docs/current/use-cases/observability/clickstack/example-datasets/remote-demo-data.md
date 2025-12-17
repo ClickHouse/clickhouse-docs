@@ -48,7 +48,6 @@ import DemoArchitecture from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 当 HyperDX 托管在 ClickHouse Cloud 中时，不支持远程数据库。因此，在该环境中无法使用此数据集。
 :::
 
-
 其中包含了大约 40 小时的数据，这些数据捕获自官方 OpenTelemetry (OTel) 演示的 ClickHouse 版本。数据会在每晚重放，并将时间戳调整到当前时间窗口，使用户能够通过 HyperDX 中集成的日志、链路追踪和指标来探索系统行为。
 
 :::note 数据差异

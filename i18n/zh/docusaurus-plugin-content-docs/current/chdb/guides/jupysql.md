@@ -95,7 +95,7 @@ conn = dbapi.connect(path="atp.chdb")
 %config SqlMagic.displaylimit = None
 ```
 
-## 在 CSV 文件中查询数据
+## 在 CSV 文件中查询数据 {#querying-data-in-csv-files}
 
 我们已经下载了一批带有 `atp_rankings` 前缀的文件。
 让我们使用 `DESCRIBE` 子句来了解其表结构（schema）：
@@ -109,7 +109,7 @@ SETTINGS describe_compact_output=1,
 
 ```text
 +--------------+-------+
-|     名称     |  类型 |
+|     name     |  type |
 +--------------+-------+
 | ranking_date | Int64 |
 |     rank     | Int64 |
@@ -147,7 +147,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ```text
 +--------------+------+--------+--------+
-| 排名日期 | 排名 | 球员 | 积分 |
+| ranking_date | rank | player | points |
 +--------------+------+--------+--------+
 |  2000-01-10  |  1   | 101736 |  4135  |
 |  2000-01-10  |  2   | 102338 |  2915  |
@@ -193,7 +193,7 @@ SETTINGS schema_inference_make_columns_nullable=0
 
 ```text
 +--------------+------+--------+--------+
-| 排名日期 | 排名 | 球员 | 积分 |
+| ranking_date | rank | player | points |
 +--------------+------+--------+--------+
 |  2000-01-10  |  1   | 101736 |  4135  |
 |  2000-01-10  |  2   | 102338 |  2915  |
@@ -287,7 +287,7 @@ LIMIT 10
 
 ```text
 +------------+-----------+-----------+------+------------+
-| 名字 | 姓氏 | 最高积分 | 排名 |    日期    |
+| name_first | name_last | maxPoints | rank |    date    |
 +------------+-----------+-----------+------+------------+
 |   Novak    |  Djokovic |   16950   |  1   | 2016-06-06 |
 |   Rafael   |   Nadal   |   15390   |  1   | 2009-04-20 |
@@ -330,7 +330,7 @@ ORDER BY maxPoints DESC
 
 ```text
 +-------------+-----------+-----------+------+------------+
-|  名字 | 姓氏 | 最高积分 | 排名 |    日期    |
+|  name_first | name_last | maxPoints | rank |    date    |
 +-------------+-----------+-----------+------+------------+
 |    Novak    |  Djokovic |   16950   |  1   | 2016-06-06 |
 |    Rafael   |   Nadal   |   15390   |  1   | 2009-04-20 |
@@ -378,7 +378,7 @@ LIMIT 10
 
 ```text
 +------------+-----------+---------------+------------------+------+-------+
-| 名 | 姓 | 最早日期 | 最近日期 | 天数 | 周数 |
+| name_first | name_last | earliest_date | most_recent_date | days | weeks |
 +------------+-----------+---------------+------------------+------+-------+
 |    Alex    | Metreveli |   1974-06-03  |    1974-06-03    |  0   |   1   |
 |   Mikael   |  Pernfors |   1986-09-22  |    1986-09-22    |  0   |   1   |

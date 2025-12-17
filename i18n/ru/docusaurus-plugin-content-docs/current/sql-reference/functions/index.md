@@ -2,7 +2,7 @@
 description: 'Индекс документации'
 sidebar: 'sqlreference'
 slug: /sql-reference/functions
-title: 'Главная страница раздела «Функции»'
+title: 'Обзор функций'
 doc_type: 'landing-page'
 ---
 

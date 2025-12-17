@@ -7,8 +7,6 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-
-
 # JOIN 句 {#join-clause}
 
 `JOIN` 句は、各テーブルに共通する値を用いて 1 つ以上のテーブルの列を結合し、新しいテーブルを生成します。これは SQL をサポートするデータベースで一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)における join に相当します。単一のテーブル内での結合という特殊なケースは、しばしば「自己結合 (self-join)」と呼ばれます。
@@ -23,7 +21,6 @@ FROM <left_table>
 ```
 
 `ON` 句の式および `USING` 句の列は「結合キー」と呼ばれます。特に断りがない限り、`JOIN` は一致する「結合キー」を持つ行から [デカルト積](https://en.wikipedia.org/wiki/Cartesian_product) を生成し、その結果、元のテーブルよりもはるかに多くの行を含むことがあります。
-
 
 ## サポートされている JOIN の種類 {#supported-types-of-join}
 
@@ -55,8 +52,6 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) が `partial_merge` に設定されている場合、`RIGHT JOIN` および `FULL JOIN` は `ALL` ストリクト性の場合にのみサポートされます（`SEMI`、`ANTI`、`ANY`、`ASOF` はサポートされません）。
 :::
 
-
-
 ## 設定 {#settings}
 
 デフォルトの結合種別は、[`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 設定で上書きできます。
@@ -73,8 +68,6 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 - [`any_join_distinct_right_table_keys`](../../../operations/settings/settings.md#any_join_distinct_right_table_keys)
 
 ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった場合の動作を指定するには、`cross_to_inner_join_rewrite` 設定を使用します。デフォルト値は `1` であり、この場合は結合を継続しますが、処理は遅くなります。エラーをスローしたい場合は `cross_to_inner_join_rewrite` を `0` に設定し、カンマ結合/クロス結合を実行せず、すべてのカンマ/クロス結合の書き換えを強制したい場合は `2` に設定します。値が `2` のときに書き換えが失敗すると、"Please, try to simplify `WHERE` section" というエラーメッセージが返されます。
-
-
 
 ## ON 句の条件 {#on-section-conditions}
 
@@ -116,8 +109,8 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ テキスト A │
-│ B    │ テキスト B │
+│ A    │ Text A │
+│ B    │ Text B │
 │ C    │        │
 └──────┴────────┘
 ```
@@ -167,7 +160,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-
 デフォルトでは、同じテーブルの列を使用している限り、非等価条件もサポートされます。
 たとえば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c` のような条件は有効です。これは、`t1.b > 0` が `t1` の列のみを使用し、`t2.b > t2.c` が `t2` の列のみを使用しているためです。
 ただし、`t1.a = t2.key AND t1.b > t2.key` のような条件に対する実験的サポートを有効化して試すこともできます。詳細については、以下のセクションを参照してください。
@@ -187,7 +179,6 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## 異なるテーブルの列に対する不等号条件を用いた JOIN {#join-with-inequality-conditions-for-columns-from-different-tables}
 
@@ -238,7 +229,6 @@ key1    e    5    5    5            0    0    \N
 key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
-
 
 ## JOINキーにおけるNULL値 {#null-values-in-join-keys}
 
@@ -294,7 +284,6 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 └─────────┴───────┘
 ```
 
-
 ## ASOF JOIN の使用方法 {#asof-join-usage}
 
 `ASOF JOIN` は、完全一致するレコードが存在しないデータ同士を結合する必要がある場合に有用です。
@@ -308,10 +297,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 構文 `ASOF JOIN ... ON`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF LEFT JOIN table_2
-ON 等価条件 AND 最近接マッチ条件
+ON equi_cond AND closest_match_cond
 ```
 
 任意の数の等価条件と、最も近い一致条件を1つだけ使用できます。たとえば、`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t` のようになります。
@@ -321,7 +310,7 @@ ON 等価条件 AND 最近接マッチ条件
 構文 `ASOF JOIN ... USING`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF JOIN table_2
 USING (equi_column1, ... equi_columnN, asof_column)
@@ -348,7 +337,6 @@ USING (equi_column1, ... equi_columnN, asof_column)
 `ASOF JOIN` は `hash` および `full_sorting_merge` の結合アルゴリズムでのみサポートされています。
 [Join](../../../engines/table-engines/special/join.md) テーブルエンジンでは**サポートされていません**。
 :::
-
 
 ## PASTE JOIN の使用方法 {#paste-join-usage}
 
@@ -408,7 +396,6 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
-
 ## 分散 JOIN {#distributed-join}
 
 分散テーブルが関わる JOIN を実行する方法は 2 つあります。
@@ -417,8 +404,6 @@ SETTINGS max_block_size = 2;
 - `GLOBAL ... JOIN` を使用する場合、まずリクエスト元のサーバーがサブクエリを実行して右側のテーブルを計算します。この一時テーブルは各リモートサーバーに渡され、転送された一時データを使用してクエリが実行されます。
 
 `GLOBAL` を使用する際は注意してください。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries) セクションを参照してください。
-
-
 
 ## 暗黙の型変換 {#implicit-type-conversion}
 
@@ -461,7 +446,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
-
 
 ## 使用上の推奨事項 {#usage-recommendations}
 
@@ -510,8 +494,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 これらのいずれかの制限に達した場合、ClickHouse は [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 設定の指示どおりに動作します。
 
-
-
 ## 例 {#examples}
 
 例：
@@ -554,7 +536,6 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
-
 
 ## 関連コンテンツ {#related-content}
 

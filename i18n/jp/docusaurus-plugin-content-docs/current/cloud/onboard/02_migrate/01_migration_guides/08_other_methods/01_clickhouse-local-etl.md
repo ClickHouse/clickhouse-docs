@@ -17,7 +17,6 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-
 # clickhouse-local を使用した ClickHouse への移行 {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
@@ -99,7 +98,6 @@ Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使�
   CREATE DATABASE db
 ```
 
-
 #### MySQL テーブルと同じスキーマを持つ宛先テーブルを作成します： {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
 ```sql
@@ -110,7 +108,6 @@ Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使�
 ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テーブルのスキーマは揃っている必要があります（カラム名と順序が同じであり、かつカラムのデータ型が互換性を持っている必要があります）。
 :::
 
-
 ### clickhouse-local を実行しているホストマシン上で: {#on-the-clickhouse-local-host-machine}
 
 #### マイグレーション用のクエリを指定して clickhouse-local を実行する: {#run-clickhouse-local-with-the-migration-query}
@@ -120,12 +117,11 @@ ClickHouse Cloud の宛先テーブルのスキーマと、元の MySQL テー�
 INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table', 'default', 'PASS')
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
-```
+  ```
 
 :::note
 `clickhouse-local` ホストマシン上にデータがローカル保存されることはありません。代わりに、データはソースの MySQL テーブルから読み込まれ、そのまま ClickHouse Cloud サービス上の宛先テーブルに書き込まれます。
 :::
-
 
 ## 例 2: JDBC ブリッジを使用して MySQL から ClickHouse Cloud へ移行する {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 

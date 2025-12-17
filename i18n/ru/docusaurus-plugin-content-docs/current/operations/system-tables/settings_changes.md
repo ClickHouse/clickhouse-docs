@@ -34,7 +34,7 @@ Row 1:
 ──────
 type:    Core
 version: 23.5
-changes: [('input_format_parquet_preserve_order','1','0','Позволяет читателю Parquet изменять порядок строк для улучшения параллелизма.'),('parallelize_output_from_storages','0','1','Позволяет использовать параллелизм при выполнении запросов, читающих данные из file/url/s3/и т. д. Может изменить порядок строк.'),('use_with_fill_by_sorting_prefix','0','1','Столбцы, предшествующие столбцам WITH FILL в предложении ORDER BY, формируют префикс сортировки. Строки с разными значениями в префиксе сортировки заполняются независимо'),('output_format_parquet_compliant_nested_types','0','1','Изменяет имя внутреннего поля в схеме выходного файла Parquet.')]
+changes: [('input_format_parquet_preserve_order','1','0','Allow Parquet reader to reorder rows for better parallelism.'),('parallelize_output_from_storages','0','1','Allow parallelism when executing queries that read from file/url/s3/etc. This may reorder rows.'),('use_with_fill_by_sorting_prefix','0','1','Columns preceding WITH FILL columns in ORDER BY clause form sorting prefix. Rows with different values in sorting prefix are filled independently'),('output_format_parquet_compliant_nested_types','0','1','Change an internal field name in output Parquet file schema.')]
 ```
 
 **См. также**

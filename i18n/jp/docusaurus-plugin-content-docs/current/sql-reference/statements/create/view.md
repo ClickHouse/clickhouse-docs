@@ -11,12 +11,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # CREATE VIEW {#create-view}
 
 新しいビューを作成します。ビューには[通常ビュー](#normal-view)、[マテリアライズドビュー](#materialized-view)、[リフレッシュ可能なマテリアライズドビュー](#refreshable-materialized-view)、および[ウィンドウビュー](/sql-reference/statements/create/view#window-view)の種類があります。
-
-
 
 ## 標準表示 {#normal-view}
 
@@ -49,7 +46,6 @@ SELECT a, b, c FROM view
 SELECT a, b, c FROM (SELECT ...)
 ```
 
-
 ## パラメータ化ビュー {#parameterized-view}
 
 パラメータ化ビューは通常のビューと似ていますが、ただちには解決されないパラメータを指定して作成できます。これらのビューはテーブル関数で使用でき、その際はビュー名を関数名として指定し、パラメータ値をその引数として渡します。
@@ -64,14 +60,13 @@ CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Co
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
 
-
 ## マテリアライズドビュー {#materialized-view}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 :::tip
@@ -119,7 +114,6 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 
 ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view) を使用します。`DROP TABLE` も VIEW に対して動作します。
 
-
 ## SQL セキュリティ {#sql_security}
 
 `DEFINER` と `SQL SECURITY` を使用すると、ビューの背後で実行されるクエリを実行する際に、どの ClickHouse ユーザーを使用するかを指定できます。
@@ -166,7 +160,6 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
-
 ## ライブビュー {#live-view}
 
 <DeprecatedBadge/>
@@ -174,8 +167,6 @@ AS SELECT ...
 この機能は非推奨となっており、将来削除される予定です。
 
 参考までに、旧ドキュメントは[こちら](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)にあります。
-
-
 
 ## リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
 
@@ -190,13 +181,13 @@ REFRESH EVERY|AFTER interval [OFFSET interval]
 [EMPTY]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 ここで、`interval` は一連の単純なインターバルです。
 
 ```sql
-number 秒|分|時間|日|週|月|年
+number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
 対応するクエリを定期的に実行し、その結果をテーブルに保存します。
@@ -218,23 +209,23 @@ number 秒|分|時間|日|週|月|年
 リフレッシュスケジュールの例:
 
 ```sql
-REFRESH EVERY 1 DAY -- 毎日、UTC の午前0時に
-REFRESH EVERY 1 MONTH -- 毎月1日の午前0時に
-REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 毎月6日の午前2時に
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 隔週の土曜日の午後3時10分に
-REFRESH EVERY 30 MINUTE -- 00:00、00:30、01:00、01:30 などの時刻に
-REFRESH AFTER 30 MINUTE -- 前回のリフレッシュ完了から30分後。特定の時刻には揃えない。
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 構文エラー。AFTER と組み合わせて OFFSET は使用できない。
-REFRESH EVERY 1 WEEK 2 DAYS -- 9日ごとで、特定の曜日や月の日付には紐づかない;
-                            -- 具体的には、（1969-12-29 からの）日数が 9 で割り切れる場合
-REFRESH EVERY 5 MONTHS -- 5か月ごと。12 は 5 で割り切れないため、毎年異なる月になる;
-                       -- 具体的には、（1970-01 からの）月数が 5 で割り切れる場合
+REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
+REFRESH EVERY 1 MONTH -- on 1st day of every month, at midnight
+REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- on 6th day of every month, at 2:00 am
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- every other Saturday, at 3:10 pm
+REFRESH EVERY 30 MINUTE -- at 00:00, 00:30, 01:00, 01:30, etc
+REFRESH AFTER 30 MINUTE -- 30 minutes after the previous refresh completes, no alignment with time of day
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- syntax error, OFFSET is not allowed with AFTER
+REFRESH EVERY 1 WEEK 2 DAYS -- every 9 days, not on any particular day of the week or month;
+                            -- specifically, when day number (since 1969-12-29) is divisible by 9
+REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is not divisible by 5);
+                       -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
 `RANDOMIZE FOR` は各リフレッシュのタイミングをランダムに調整します。例:
 
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 02:30 の間のランダムな時刻にリフレッシュ
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
 特定のビューについて、同時に実行できるリフレッシュは最大でも 1 つだけです。たとえば、`REFRESH EVERY 1 MINUTE` を指定したビューのリフレッシュに 2 分かかる場合、実際には 2 分ごとにリフレッシュされることになります。その後、処理が高速化されて 10 秒でリフレッシュできるようになった場合は、再び 1 分ごとのリフレッシュに戻ります。（特に、スケジュールどおりに行えなかったリフレッシュを取り戻すために 10 秒ごとにリフレッシュされることはなく、そのようなバックログの概念もありません。）
@@ -246,7 +237,6 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 毎日、01:30 から 
 リフレッシュ可能なマテリアライズドビューが [Replicated database](../../../engines/database-engines/replicated.md) 内にある場合、各レプリカは互いに調整し、各スケジュールされた時刻には 1 つのレプリカだけがリフレッシュを実行するようにします。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) テーブルエンジンが必須であり、これによりすべてのレプリカがリフレッシュによって生成されたデータを参照できます。
 
 `APPEND` モードでは、`SETTINGS all_replicas = 1` を使用して調整を無効化できます。これにより、レプリカは互いに独立してリフレッシュを実行します。この場合、ReplicatedMergeTree は必須ではありません。
-
 
 非 `APPEND` モードでは、協調リフレッシュのみがサポートされます。非協調なリフレッシュを行いたい場合は、`Atomic` データベースと `CREATE ... ON CLUSTER` クエリを使用して、すべてのレプリカ上にリフレッシュ可能なマテリアライズドビューを作成します。
 
@@ -320,7 +310,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### その他の操作 {#other-operations}
 
-
 すべてのリフレッシュ可能なマテリアライズドビューのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
 
 リフレッシュを手動で停止、開始、トリガー、キャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views) を使用します。
@@ -330,8 +319,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 :::note
 豆知識: リフレッシュクエリは、リフレッシュ対象のビューから読み取ることができ、その場合はリフレッシュ前のバージョンのデータが見えます。これは、Conway's Game of Life（ライフゲーム）を実装できることを意味します: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
-
-
 
 ## ウィンドウビュー {#window-view}
 
@@ -347,7 +334,7 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 CREATE WINDOW VIEW [IF NOT EXISTS] [db.]table_name [TO [db.]table_name] [INNER ENGINE engine] [ENGINE engine] [WATERMARK strategy] [ALLOWED_LATENESS interval_function] [POPULATE]
 AS SELECT ...
 GROUP BY time_window_function
-[COMMENT 'コメント']
+[COMMENT 'comment']
 ```
 
 Window view は、時間ウィンドウごとにデータを集約し、ウィンドウがトリガーされる準備が整った時点で結果を出力できます。レイテンシーを下げるために、中間の集約結果を内部（または指定された）テーブルに保存し、処理結果を指定したテーブルにプッシュしたり、WATCH クエリを使用して通知をプッシュしたりできます。
@@ -367,7 +354,7 @@ Window view は **processing time** と **event time** の 2 種類の処理に�
 **Processing time** は、ローカルマシンの時刻に基づいて window view が結果を生成できるようにするもので、デフォルトで使用されます。最も単純な時間の概念ですが、決定的な結果を保証するものではありません。Processing time 属性は、time window function の `time_attr` をテーブル列に設定するか、関数 `now()` を使用することで定義できます。次のクエリは、processing time を用いた window view を作成します。
 
 ```sql
-ウィンドウ VIEW wv を作成 AS SELECT count(number), tumbleStart(w_id) を w_start として date から取得 GROUP BY tumble(now(), INTERVAL '5' SECOND) を w_id として
+CREATE WINDOW VIEW wv AS SELECT count(number), tumbleStart(w_id) as w_start from date GROUP BY tumble(now(), INTERVAL '5' SECOND) as w_id
 ```
 
 **イベント時刻 (event time)** は、各イベントが生成元デバイス上で実際に発生した時刻です。この時刻は通常、レコードが生成される際にそのレコード内に埋め込まれます。イベント時刻に基づいて処理を行うことで、順序が前後したイベントや遅延して到着するイベントが存在する場合でも、一貫した結果を得ることができます。Window View は `WATERMARK` 構文を使用することで、イベント時刻処理をサポートします。
@@ -393,7 +380,6 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 ```
 
 遅延して発火した際に出力される要素は、以前の計算結果が更新されたものとして扱う必要があります。ウィンドウの終了時に発火するのではなく、ウィンドウビューは遅延イベントが到着したタイミングで即座に発火します。そのため、同じウィンドウに対して複数の出力が生成されます。ユーザーはこれらの重複した結果を考慮に入れるか、重複排除する必要があります。
-
 
 `ALTER TABLE ... MODIFY QUERY` ステートメントを使用して、ウィンドウビューで指定されている `SELECT` クエリを変更できます。新しい `SELECT` クエリで得られるデータ構造は、`TO [db.]name` 句の有無にかかわらず、元の `SELECT` クエリと同一である必要があります。中間状態は再利用できないため、現在のウィンドウ内のデータは失われることに注意してください。
 
@@ -465,13 +451,10 @@ Window View は次のようなシナリオで有用です。
 * **Monitoring**: メトリクスログを時間単位で集計・計算し、その結果をターゲットテーブルに出力します。ダッシュボードはターゲットテーブルをソーステーブルとして利用できます。
 * **Analyzing**: 時間ウィンドウ内のデータを自動的に集計および前処理します。これは大量のログを分析する際に有用です。前処理によって複数のクエリにおける繰り返し計算が不要になり、クエリのレイテンシを低減できます。
 
-
 ## 関連コンテンツ {#related-content}
 
 - ブログ: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
 - ブログ: [ClickHouse を用いたオブザーバビリティソリューションの構築 第2部: トレース](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
-
-
 
 ## 一時ビュー {#temporary-views}
 
@@ -504,7 +487,7 @@ ClickHouse は、以下の特徴を持つ **一時ビュー (temporary view)** �
 ### 構文 {#temporary-views-syntax}
 
 ```sql
-一時ビューを作成 [IF NOT EXISTS] view_name AS <select_query>
+CREATE TEMPORARY VIEW [IF NOT EXISTS] view_name AS <select_query>
 ```
 
 `OR REPLACE` は一時テーブルとの整合性を保つため、一時ビューでは**サポートされていません**。一時ビューを「置き換える」必要がある場合は、削除してから再作成してください。
@@ -528,13 +511,13 @@ SELECT * FROM tview ORDER BY id;
 DDL を表示します:
 
 ```sql
-一時ビュー tview の作成文を表示;
+SHOW CREATE TEMPORARY VIEW tview;
 ```
 
 削除するには:
 
 ```sql
-DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構文を使って削除されます
+DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
 
 ### 禁止事項 / 制限事項 {#temporary-views-limitations}
@@ -552,18 +535,18 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- 一時ビューは TEMPORARY TABLE 構�
 #### 例 {#temporary-views-distributed-example}
 
 ```sql
--- セッション単位のインメモリテーブル
+-- A session-scoped, in-memory table
 CREATE TEMPORARY TABLE temp_ids (id UInt64) ENGINE = Memory;
 
 INSERT INTO temp_ids VALUES (1), (5), (42);
 
--- 一時テーブルに対するセッション単位のビュー（純粋に論理的なオブジェクト）
+-- A session-scoped view over the temp table (purely logical)
 CREATE TEMPORARY VIEW v_ids AS
 SELECT id FROM temp_ids;
 
--- 'test' をクラスタ名に置き換えてください。
--- GLOBAL JOIN により、ClickHouse は小さい結合側（v_ids を介した temp_ids）を
--- 左側を実行するすべてのリモートサーバーへ送信するよう強制されます。
+-- Replace 'test' with your cluster name.
+-- GLOBAL JOIN forces ClickHouse to *ship* the small join-side (temp_ids via v_ids)
+-- to every remote server that executes the left side.
 SELECT count()
 FROM cluster('test', system.numbers) AS n
 GLOBAL ANY INNER JOIN v_ids USING (id)

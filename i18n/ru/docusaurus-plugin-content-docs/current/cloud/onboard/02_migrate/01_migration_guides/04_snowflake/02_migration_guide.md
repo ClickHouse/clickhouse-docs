@@ -11,7 +11,6 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
 # Миграция из Snowflake в ClickHouse {#migrate-from-snowflake-to-clickhouse}
 
 > В этом руководстве описывается процесс миграции данных из Snowflake в ClickHouse.
@@ -22,7 +21,6 @@ import Image from '@theme/IdealImage';
 в ClickHouse.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Экспорт данных из Snowflake {#1-exporting-data-from-snowflake}
 
@@ -48,19 +46,18 @@ CREATE TABLE MYDATASET (
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- Создайте внешний stage, указывающий S3-бакет для копирования данных
+-- Create the external stage that specifies the S3 bucket to copy into
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- Примените префикс "mydataset" ко всем файлам и укажите максимальный размер файла 150 МБ
--- Параметр `header=true` требуется для получения имён столбцов
+-- Apply "mydataset" prefix to all files and specify a max file size of 150mb
+-- The `header=true` parameter is required to get column names
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
 Для набора данных объемом около 5 ТБ с максимальным размером файла 150 МБ и при использовании виртуального склада Snowflake типа 2X-Large, расположенного в том же регионе AWS `us-east-1`, копирование данных в бакет S3 займет примерно 30 минут.
-
 
 ## Импорт в ClickHouse {#2-importing-to-clickhouse}
 
@@ -98,8 +95,8 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- Столбцы вставляются со значениями по умолчанию, если значения равны null
-input_format_parquet_case_insensitive_column_matching = 1 -- Сопоставление столбцов между исходными данными и целевой таблицей выполняется без учёта регистра
+SETTINGS input_format_null_as_default = 1, -- Ensure columns are inserted as default if values are null
+input_format_parquet_case_insensitive_column_matching = 1 -- Column matching between source data and target table should be case insensitive
 ```
 
 :::note Примечание о вложенных структурах столбцов
@@ -107,7 +104,6 @@ input_format_parquet_case_insensitive_column_matching = 1 -- Сопоставл�
 
 Вложенные структуры, такие как `some_file`, при выполнении операции COPY в Snowflake преобразуются в строки JSON. Импорт этих данных требует преобразования таких структур в тип `Tuple` при вставке в ClickHouse с использованием [функции JSONExtract](/sql-reference/functions/json-functions#JSONExtract), как показано выше.
 :::
-
 
 ## Проверка успешного экспорта данных {#3-testing-successful-data-export}
 

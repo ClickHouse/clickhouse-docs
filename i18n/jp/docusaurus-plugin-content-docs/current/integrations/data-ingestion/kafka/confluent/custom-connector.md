@@ -12,7 +12,6 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
 # Confluent Platform と ClickHouse の連携 {#integrating-confluent-platform-with-clickhouse}
 
 <div class='vimeo-container'>
@@ -27,14 +26,10 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
   </iframe>
 </div>
 
-
-
 ## 前提条件 {#prerequisites}
 以下の内容に精通していることを前提とします:
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Platform および [Custom Connectors](https://docs.confluent.io/cloud/current/connectors/bring-your-connector/overview.html)。
-
-
 
 ## Confluent Platform 向け ClickHouse 公式 Kafka コネクタ {#the-official-kafka-connector-from-clickhouse-with-confluent-platform}
 
@@ -61,7 +56,7 @@ Confluent Platform 上でトピックを作成するのは比較的容易で、�
 ```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
-'Sensitive properties' - 'password'。これにより、設定中にClickHouseパスワードの入力がマスクされます。
+'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
 ```
 
 例:

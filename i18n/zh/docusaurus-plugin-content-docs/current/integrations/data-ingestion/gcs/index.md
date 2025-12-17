@@ -13,7 +13,6 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
 # 将 Google Cloud Storage 与 ClickHouse 集成 {#integrate-google-cloud-storage-with-clickhouse}
 
 :::note
@@ -21,8 +20,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 :::
 
 我们认识到，对于希望实现存储与计算分离的用户而言，GCS 是一个颇具吸引力的存储解决方案。为此，ClickHouse 支持在 MergeTree 引擎中使用 GCS 作为底层存储。这使用户能够同时利用 GCS 的可扩展性和成本优势，以及 MergeTree 引擎的写入和查询性能。
-
-
 
 ## 基于 GCS 的 MergeTree {#gcs-backed-mergetree}
 
@@ -140,7 +137,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 
 与此磁盘配置相关的设置完整列表可在[此处](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)中找到。
 
-
 ### 创建表 {#creating-a-table}
 
 假设你已经将磁盘配置为使用具有写权限的存储桶，现在应该可以创建如下示例中的表。为简洁起见，我们只使用 NYC taxi 数据集中的部分列，并将数据直接流式写入由 GCS 作为后端存储的表中：
@@ -188,7 +184,6 @@ SELECT passenger_count, avg(tip_amount) AS avg_tip, avg(total_amount) AS avg_amo
 [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) 可与某些适用于 Amazon Simple Storage Service（Amazon S3）等服务的工具和库互操作。
 
 有关线程调优的更多信息，请参阅[性能优化](../s3/index.md#s3-optimizing-performance)。
-
 
 ## 使用 Google Cloud Storage (GCS) {#gcs-multi-region}
 
@@ -256,8 +251,6 @@ ClickHouse Keeper 至少需要两个节点才能工作，因此为了实现高�
 - 使用你的主机名编辑该文件，并确保这些主机名能从 ClickHouse 服务器节点和 Keeper 节点正确解析
 - 将文件复制到相应位置（在每个 Keeper 服务器上为 `/etc/clickhouse-keeper/keeper_config.xml`）
 - 在每台机器上根据其在 `raft_configuration` 中的条目序号编辑对应的 `server_id`
-
-
 
 ```xml title=/etc/clickhouse-keeper/keeper_config.xml
 <clickhouse>
@@ -351,7 +344,6 @@ ClickHouse Keeper 至少需要两个节点才能工作，因此为了实现高�
 此文件用于配置集群中每个 ClickHouse 服务器的主机名和端口。默认配置文件包含示例集群定义。为了只显示已完全配置的集群，会在 `remote_servers` 条目中添加标签 `replace="true"`，这样当此配置与默认配置合并时，会替换 `remote_servers` 部分，而不是在其基础上追加内容。
 
 * 根据你的主机名编辑该文件，并确保这些主机名可以从 ClickHouse 服务器节点正确解析
-
 
 ```xml title=/etc/clickhouse-server/config.d/remote-servers.xml
 <clickhouse>
@@ -451,7 +443,6 @@ sudo systemctl status clickhouse-keeper
 #### 检查 ClickHouse Keeper 状态 {#check-clickhouse-keeper-status}
 
 通过 `netcat` 向 ClickHouse Keeper 发送命令。例如，`mntr` 会返回 ClickHouse Keeper 集群的状态。如果你在每个 Keeper 节点上执行该命令，你会看到其中一个是 leader，另外两个是 follower：
-
 
 ```bash
 echo mntr | nc localhost 9181
@@ -561,10 +552,9 @@ is_broken:        0
 cache_path:
 ```
 
-
 3 行数据，耗时 0.002 秒。
 
-````
+```
 #### 验证在集群上创建的表已在两个节点上创建                                                                        {#verify-that-tables-created-on-the-cluster-are-created-on-both-nodes}
 ```sql
 -- highlight-next-line
@@ -587,7 +577,7 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime
 -- highlight-next-line
 SETTINGS storage_policy='gcs_main'
-````
+```
 
 ```response
 ┌─host───────────────────────────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐

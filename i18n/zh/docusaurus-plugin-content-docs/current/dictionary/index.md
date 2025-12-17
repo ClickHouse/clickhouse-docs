@@ -10,7 +10,6 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
 # 字典 {#dictionary}
 
 ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
@@ -70,7 +69,7 @@ WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
 
-第 1 行:
+Row 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -78,14 +77,13 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-结果集包含 1 行。耗时: 1.283 秒。处理了 4.1844 亿行，7.23 GB (每秒 3.2607 亿行，5.63 GB/秒)。
-峰值内存使用: 3.18 GiB。
+1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
+Peak memory usage: 3.18 GiB.
 ```
 
 > **在 `JOIN` 的右侧使用较小的数据集**：这个查询看起来比实际需要的更啰嗦一些，因为对 `PostId` 的过滤同时出现在外层查询和子查询中。这是一种性能优化，用于确保查询响应时间足够快。为了获得最佳性能，应始终确保 `JOIN` 右侧的数据集更小，并且尽可能小。关于优化 JOIN 性能以及理解可用算法的建议，我们推荐阅读[这系列博客文章](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)。
 
 虽然这个查询很快，但它要求我们在编写 `JOIN` 时格外小心，才能获得良好的性能。理想情况下，我们只需先过滤出包含“SQL”的帖子，然后再查看这部分帖子对应的 `UpVote` 和 `DownVote` 计数来计算我们的指标。
-
 
 #### 应用字典 {#applying-a-dictionary}
 
@@ -152,7 +150,6 @@ WHERE name = 'votes_dict'
 
 现在，可以通过一个简单的 `dictGet` FUNCTION 来获取特定 `PostId` 的赞成票和反对票。下面我们检索 `PostId` 为 `11227902` 的帖子对应的这些值：
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 
@@ -160,7 +157,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-利用这一特性,我们可以在之前的查询中移除 JOIN:
+Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
 (
@@ -177,12 +174,11 @@ WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
-返回 3 行。耗时:0.551 秒。处理了 1.1964 亿行,3.29 GB(每秒 2.1696 亿行,5.97 GB/秒)。
-峰值内存使用量:552.26 MiB。
+3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
+Peak memory usage: 552.26 MiB.
 ```
 
 这个查询不仅简单得多，而且速度也提升了两倍多！还可以通过只将赞成票和反对票之和超过 10 的帖子加载到字典中，并仅存储预先计算好的争议度值来进一步优化。
-
 
 ## 查询时富化 {#query-time-enrichment}
 
@@ -220,8 +216,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-返回 5 行。用时:0.033 秒。处理了 425 万行,82.84 MB(每秒 1.3062 亿行,2.55 GB/秒)。
-内存峰值:249.32 MiB。
+5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
+Peak memory usage: 249.32 MiB.
 ```
 
 与上面的 join 示例类似，我们可以使用同一个字典，高效判断大部分帖子是从哪里发出的：
@@ -244,10 +240,9 @@ LIMIT 5
 │ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
-5 行结果。耗时：0.763 秒。处理了 59.82 百万行，239.28 MB（78.40 百万行/秒，313.60 MB/秒）。
-峰值内存使用：248.84 MiB。
+5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
+Peak memory usage: 248.84 MiB.
 ```
-
 
 ## 索引时富化 {#index-time-enrichment}
 
@@ -294,7 +289,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
-返回 0 行。耗时：36.830 秒。处理了 2.3898 亿行，2.64 GB（649 万行/秒，71.79 MB/秒）
+0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
 现在我们可以获取大多数帖子发布地的名称：
@@ -314,10 +309,9 @@ LIMIT 4
 │ London, United Kingdom │ 538738 │
 └────────────────────────┴────────┘
 
-返回 4 行。用时:0.142 秒。已处理 5982 万行,1.08 GB(420.73 百万行/秒,7.60 GB/秒)。
-内存峰值:666.82 MiB。
+4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
+Peak memory usage: 666.82 MiB.
 ```
-
 
 ## 字典高级主题 {#advanced-dictionary-topics}
 

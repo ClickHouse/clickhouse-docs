@@ -139,7 +139,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 Ниже показан пример импорта данных с использованием выражения `INSERT INTO ... SELECT`.
 
 ```sql
-# СОЗДАНИЕ ТАБЛИЦЫ с 3 столбцами {#table-creation-with-3-columns}
+# TABLE CREATION with 3 columns
 CREATE TABLE users_imported
 (
    `username` String,

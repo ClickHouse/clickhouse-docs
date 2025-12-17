@@ -31,7 +31,6 @@ assert result.result_set[1][0] == 'first_value2'
 
 `QueryContext` はスレッドセーフではありませんが、マルチスレッド環境で使用する場合は、`QueryContext.updated_copy` メソッドを呼び出してコピーを取得できます。
 
-
 ## ストリーミングクエリ {#streaming-queries}
 
 ClickHouse Connect Client は、ストリームとしてデータを取得するための複数のメソッド（Python のジェネレーターとして実装されています）を提供します。
@@ -69,13 +68,12 @@ HTTP プロトコルの制約により、ブロックの処理速度が ClickHou
 with client.query_row_block_stream('SELECT pickup, dropoff, pickup_longitude, pickup_latitude FROM taxi_trips') as stream:
     for block in stream:
         for row in block:
-            <各行のトリップデータに対して何らかの処理を実行>
+            <do something with each row of Python trip data>
 ```
 
 `with` 文を使わずに `StreamContext` を利用しようとすると、エラーが発生することに注意してください。Python のコンテキストマネージャーを使用することで、ストリーム（この場合はストリーミング HTTP レスポンス）が、すべてのデータが消費されなかった場合や処理中に例外が発生した場合でも、適切にクローズされることが保証されます。なお、`StreamContext` はストリームを消費するために 1 回しか使用できません。`StreamContext` の終了後に再度使用しようとすると、`StreamClosedError` が発生します。
 
 `StreamContext` の `source` プロパティを使用して、親の `QueryResult` オブジェクトにアクセスできます。`QueryResult` には、列名やデータ型が含まれています。
-
 
 ### ストリームの種類 {#stream-types}
 
@@ -94,13 +92,12 @@ df_stream = client.query_df_stream('SELECT * FROM hits')
 column_names = df_stream.source.column_names
 with df_stream:
     for df in df_stream:
-        <pandas DataFrameで何らかの処理を行う>
+        <do something with the pandas DataFrame>
 ```
 
 `query_df_arrow_stream` メソッドは、各 ClickHouse の Block を、dtype バックエンドに PyArrow を用いる DataFrame として返します。このメソッドは、`dataframe_library` パラメータ（デフォルトは `"pandas"`）を通じて、Pandas（2.x 以降）および Polars の DataFrame の両方をサポートします。各イテレーションでは、PyArrow の record batch から変換された DataFrame が返され、特定のデータ型に対してパフォーマンスとメモリ効率が向上します。
 
 最後に、`query_arrow_stream` メソッドは、ClickHouse の `ArrowStream` 形式の結果を、`StreamContext` でラップされた `pyarrow.ipc.RecordBatchStreamReader` として返します。ストリームの各イテレーションでは、PyArrow の RecordBlock が返されます。
-
 
 ### ストリーミングの例 {#streaming-examples}
 
@@ -111,17 +108,16 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 大規模な結果セットを行単位でストリーミング {#stream-large-result-sets-row-by-row}
+# Stream large result sets row by row
 with client.query_rows_stream("SELECT number, number * 2 as doubled FROM system.numbers LIMIT 100000") as stream:
     for row in stream:
-        print(row)  # 各行を処理
-        # 出力:
+        print(row)  # Process each row
+        # Output:
         # (0, 0)
         # (1, 2)
         # (2, 4)
         # ....
 ```
-
 
 #### 行ブロックのストリーミング {#stream-row-blocks}
 
@@ -130,15 +126,14 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# 行をブロック単位でストリーミング(行単位より効率的) {#stream-in-blocks-of-rows-more-efficient-than-row-by-row}
+# Stream in blocks of rows (more efficient than row-by-row)
 with client.query_row_block_stream("SELECT number, number * 2 FROM system.numbers LIMIT 100000") as stream:
     for block in stream:
         print(f"Received block with {len(block)} rows")
-        # 出力:
+        # Output:
         # Received block with 65409 rows
         # Received block with 34591 rows
 ```
-
 
 #### Pandas の DataFrame をストリーミングする {#stream-pandas-dataframes}
 
@@ -147,25 +142,24 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリ結果をPandas DataFrameとしてストリーム処理 {#stream-query-results-as-pandas-dataframes}
+# Stream query results as Pandas DataFrames
 with client.query_df_stream("SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000") as stream:
     for df in stream:
-        # 各DataFrameブロックを処理
+        # Process each DataFrame block
         print(f"Received DataFrame with {len(df)} rows")
         print(df.head(3))
-        # 出力:
-        # 65409行のDataFrameを受信
+        # Output:
+        # Received DataFrame with 65409 rows
         #    number str
         # 0       0   0
         # 1       1   1
         # 2       2   2
-        # 34591行のDataFrameを受信
+        # Received DataFrame with 34591 rows
         #    number    str
         # 0   65409  65409
         # 1   65410  65410
         # 2   65411  65411
 ```
-
 
 #### Arrow バッチのストリーミング {#stream-arrow-batches}
 
@@ -174,16 +168,15 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリ結果をArrowレコードバッチとしてストリーミング {#stream-query-results-as-arrow-record-batches}
+# Stream query results as Arrow record batches
 with client.query_arrow_stream("SELECT * FROM large_table") as stream:
     for arrow_batch in stream:
-        # 各Arrowバッチを処理
+        # Process each Arrow batch
         print(f"Received Arrow batch with {arrow_batch.num_rows} rows")
-        # 出力:
+        # Output:
         # Received Arrow batch with 65409 rows
         # Received Arrow batch with 34591 rows
 ```
-
 
 ## NumPy、Pandas、Arrow クエリ {#numpy-pandas-and-arrow-queries}
 
@@ -198,22 +191,21 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリはNumPy配列を返します {#query-returns-a-numpy-array}
+# Query returns a NumPy array
 np_array = client.query_np("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
 
 print(type(np_array))
-# 出力: {#output}
-# <class "numpy.ndarray"> {#class-numpyndarray}
+# Output:
+# <class "numpy.ndarray">
 
 print(np_array)
-# 出力: {#output}
-# [[0 0] {#0-0}
-#  [1 2] {#1-2}
-#  [2 4] {#2-4}
-#  [3 6] {#3-6}
-#  [4 8]] {#4-8}
+# Output:
+# [[0 0]
+#  [1 2]
+#  [2 4]
+#  [3 6]
+#  [4 8]]
 ```
-
 
 ### Pandas クエリ {#pandas-queries}
 
@@ -224,21 +216,20 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリはPandas DataFrameを返します {#query-returns-a-pandas-dataframe}
+# Query returns a Pandas DataFrame
 df = client.query_df("SELECT number, number * 2 AS doubled FROM system.numbers LIMIT 5")
 
 print(type(df))
-# 出力: <class "pandas.core.frame.DataFrame"> {#output-class-pandascoreframedataframe}
+# Output: <class "pandas.core.frame.DataFrame">
 print(df)
-# 出力: {#output}
-#    number  doubled {#number-doubled}
-# 0       0        0 {#0-0-0}
-# 1       1        2 {#1-1-2}
-# 2       2        4 {#2-2-4}
-# 3       3        6 {#3-3-6}
-# 4       4        8 {#4-4-8}
+# Output:
+#    number  doubled
+# 0       0        0
+# 1       1        2
+# 2       2        4
+# 3       3        6
+# 4       4        8
 ```
-
 
 ### PyArrow クエリ {#pyarrow-queries}
 
@@ -249,23 +240,22 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリはPyArrow Tableを返します {#query-returns-a-pyarrow-table}
+# Query returns a PyArrow Table
 arrow_table = client.query_arrow("SELECT number, toString(number) AS str FROM system.numbers LIMIT 3")
 
 print(type(arrow_table))
-# 出力: {#output}
-# <class "pyarrow.lib.Table"> {#class-pyarrowlibtable}
+# Output:
+# <class "pyarrow.lib.Table">
 
 print(arrow_table)
-# 出力: {#output}
-# pyarrow.Table {#pyarrowtable}
-# number: uint64 not null {#number-uint64-not-null}
-# str: string not null {#str-string-not-null}
+# Output:
+# pyarrow.Table
+# number: uint64 not null
+# str: string not null
 # ----
-# number: [[0,1,2]] {#number-012}
-# str: [["0","1","2"]] {#str-012}
+# number: [[0,1,2]]
+# str: [["0","1","2"]]
 ```
-
 
 ### Arrow バックエンド DataFrame {#arrow-backed-dataframes}
 
@@ -283,39 +273,38 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client()
 
-# クエリはArrowデータ型を持つPandas DataFrameを返します(pandas 2.x が必要) {#query-returns-a-pandas-dataframe-with-arrow-dtypes-requires-pandas-2x}
+# Query returns a Pandas DataFrame with Arrow dtypes (requires pandas 2.x)
 df = client.query_df_arrow(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
     dataframe_library="pandas"
 )
 
 print(df.dtypes)
-# 出力: {#output}
-# number    uint64[pyarrow] {#number-uint64pyarrow}
-# str       string[pyarrow] {#str-stringpyarrow}
-# dtype: object {#dtype-object}
+# Output:
+# number    uint64[pyarrow]
+# str       string[pyarrow]
+# dtype: object
 
-# またはPolarsを使用 {#or-use-polars}
+# Or use Polars
 polars_df = client.query_df_arrow(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 3",
     dataframe_library="polars"
 )
 print(df.dtypes)
-# 出力: {#output}
-# [UInt64, String] {#uint64-string}
+# Output:
+# [UInt64, String]
 
 
-# DataFrameをバッチでストリーミング(Polarsの例) {#streaming-into-batches-of-dataframes-polars-shown}
+# Streaming into batches of DataFrames (polars shown)
 with client.query_df_arrow_stream(
     "SELECT number, toString(number) AS str FROM system.numbers LIMIT 100000", dataframe_library="polars"
 ) as stream:
     for df_batch in stream:
-        print(f"{type(df_batch)} バッチを受信: {len(df_batch)} 行、データ型: {df_batch.dtypes}")
-        # 出力:
-        # <class 'polars.dataframe.frame.DataFrame'> バッチを受信: 65409 行、データ型: [UInt64, String]
-        # <class 'polars.dataframe.frame.DataFrame'> バッチを受信: 34591 行、データ型: [UInt64, String]
+        print(f"Received {type(df_batch)} batch with {len(df_batch)} rows and dtypes: {df_batch.dtypes}")
+        # Output:
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 65409 rows and dtypes: [UInt64, String]
+        # Received <class 'polars.dataframe.frame.DataFrame'> batch with 34591 rows and dtypes: [UInt64, String]
 ```
-
 
 #### 注意事項と補足 {#notes-and-caveats}
 
@@ -333,39 +322,38 @@ ClickHouse がカラムを生のバイナリデータ（例: `FIXED_SIZE_BINARY`
 `Date` カラムは `UINT16`（Unix エポック 1970‑01‑01 からの日数）として返されることがあります。DataFrame 内での変換は効率的かつ容易です。
 
 ```python
-# Polars {#polars}
+# Polars
 df = df.with_columns(pl.col("event_date").cast(pl.Date))
 
-# Pandas {#pandas}
+# Pandas
 df["event_date"] = pd.to_datetime(df["event_date"], unit="D")
 ```
 
 `Int128` のような列は、生のバイト列を持つ `FIXED_SIZE_BINARY` として読み込まれる場合があります。Polars は 128 ビット整数をネイティブにサポートしています。
 
 ```python
-# Polars - ネイティブサポート {#polars-native-support}
+# Polars - native support
 df = df.with_columns(pl.col("data").bin.reinterpret(dtype=pl.Int128, endianness="little"))
 ```
 
 NumPy 2.3 の時点では公開されている 128 ビット整数の dtype が存在しないため、純粋な Python にフォールバックする必要があり、次のようにできます。
 
 ```python
-# Int128カラム（dtype fixed_size_binary[16][pyarrow]）を持つpandasデータフレームがあると仮定 {#assuming-we-have-a-pandas-dataframe-with-an-int128-column-of-dtype-fixed_size_binary16pyarrow}
+# Assuming we have a pandas dataframe with an Int128 column of dtype fixed_size_binary[16][pyarrow]
 
 print(df)
-# 出力: {#output}
-#   str_col                                        int_128_col {#str_col-int_128_col}
-# 0    num1  b'\\x15}\\xda\\xeb\\x18ZU\\x0fn\\x05\\x01\\x00\\x00\\x00... {#0-num1-bx15xdaxebx18zux0fnx05x01x00x00x00}
-# 1    num2  b'\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00... {#1-num2-bx08x00x00x00x00x00x00x00x00x00x00}
-# 2    num3  b'\\x15\\xdfp\\x81r\\x9f\\x01\\x00\\x00\\x00\\x00\\x00\\x... {#2-num3-bx15xdfpx81rx9fx01x00x00x00x00x00x}
+# Output:
+#   str_col                                        int_128_col
+# 0    num1  b'\\x15}\\xda\\xeb\\x18ZU\\x0fn\\x05\\x01\\x00\\x00\\x00...
+# 1    num2  b'\\x08\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00...
+# 2    num3  b'\\x15\\xdfp\\x81r\\x9f\\x01\\x00\\x00\\x00\\x00\\x00\\x...
 
 print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list()])
-# 出力: {#output}
-# [1234567898765432123456789, 8, 456789123456789] {#1234567898765432123456789-8-456789123456789}
+# Output:
+# [1234567898765432123456789, 8, 456789123456789]
 ```
 
 重要なポイントは、アプリケーションコードは、選択した DataFrame ライブラリの機能と許容可能なパフォーマンス上のトレードオフに基づいて、これらの変換を処理しなければならないということです。DataFrame ネイティブな変換が利用できない場合は、純粋な Python ベースのアプローチが引き続き選択肢として残ります。
-
 
 ## 読み取りフォーマット {#read-formats}
 
@@ -380,27 +368,26 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 ```python
 from clickhouse_connect.datatypes.format import set_read_format
 
-# IPv6とIPv4の両方の値を文字列として返す {#return-both-ipv6-and-ipv4-values-as-strings}
+# Return both IPv6 and IPv4 values as strings
 set_read_format('IPv*', 'string')
 
-# すべてのDate型を基底のエポック秒またはエポック日として返す {#return-all-date-types-as-the-underlying-epoch-second-or-epoch-day}
+# Return all Date types as the underlying epoch second or epoch day
 set_read_format('Date*', 'int')
 ```
 
 * クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型の任意の列（またはサブカラム）には、設定されたフォーマットが適用されます。
 
 ```python
-# UUID列を文字列として返す {#return-any-uuid-column-as-a-string}
+# Return any UUID column as a string
 client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats={'UUID': 'string'})
 ```
 
 * 特定のカラム内の値に対しては、オプションの `column_formats` 辞書引数を使用します。キーには ClickHouse が返すカラム名を指定し、値にはデータカラム用のフォーマット、または ClickHouse の型名をキー、クエリフォーマットを値とする第2レベルの「format」辞書を指定します。この第2レベルの辞書は、Tuple や Map のようなネストされたカラム型に対して使用できます。
 
 ```python
-# `dev_address`列のIPv6値を文字列として返す {#return-ipv6-values-in-the-dev_address-column-as-strings}
+# Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
-
 
 ### 読み取りフォーマットオプション（Python 型） {#read-format-options-python-types}
 
@@ -461,7 +448,6 @@ result = client.query('SELECT name, avg(rating) FROM directors INNER JOIN movies
 ```
 
 追加の外部データファイルは、コンストラクタと同じパラメータを受け取る `add_file` メソッドを使用して、最初に作成した `ExternalData` オブジェクトに追加できます。HTTPの場合、すべての外部データは `multipart/form-data` によるファイルアップロードの一部として送信されます。
-
 
 ## タイムゾーン {#time-zones}
 

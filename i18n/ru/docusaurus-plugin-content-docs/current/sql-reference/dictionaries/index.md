@@ -10,6 +10,7 @@ doc_type: 'reference'
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 import CloudDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/sql-reference/dictionaries/_snippet_dictionary_in_cloud.md';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 
 # Словари {#dictionaries}
@@ -68,15 +69,15 @@ ClickHouse:
 
 ```xml
 <clickhouse>
-    <comment>Необязательный элемент с произвольным содержимым. Игнорируется сервером ClickHouse.</comment>
+    <comment>An optional element with any content. Ignored by the ClickHouse server.</comment>
 
-    <!--Необязательный элемент. Имя файла с подстановками-->
+    <!--Optional element. File name with substitutions-->
     <include_from>/etc/metrika.xml</include_from>
 
 
     <dictionary>
-        <!-- Конфигурация словаря. -->
-        <!-- Конфигурационный файл может содержать любое количество секций словарей. -->
+        <!-- Dictionary configuration. -->
+        <!-- There can be any number of dictionary sections in a configuration file. -->
     </dictionary>
 
 </clickhouse>
@@ -87,7 +88,6 @@ ClickHouse:
 :::note
 Вы можете преобразовывать значения для небольшого словаря, описав его в `SELECT`-запросе (см. функцию [transform](../../sql-reference/functions/other-functions.md)). Эта функциональность не связана со словарями.
 :::
-
 
 ## Настройка словаря {#configuring-a-dictionary}
 
@@ -100,19 +100,19 @@ ClickHouse:
     <name>dict_name</name>
 
     <structure>
-      <!-- Конфигурация составного ключа -->
+      <!-- Complex key configuration -->
     </structure>
 
     <source>
-      <!-- Конфигурация источника -->
+      <!-- Source configuration -->
     </source>
 
     <layout>
-      <!-- Конфигурация размещения в памяти -->
+      <!-- Memory layout configuration -->
     </layout>
 
     <lifetime>
-      <!-- Время жизни словаря в памяти -->
+      <!-- Lifetime of dictionary in memory -->
     </lifetime>
 </dictionary>
 ```
@@ -122,14 +122,13 @@ ClickHouse:
 ```sql
 CREATE DICTIONARY dict_name
 (
-    ... -- атрибуты
+    ... -- attributes
 )
-PRIMARY KEY ... -- конфигурация составного или простого ключа
-SOURCE(...) -- конфигурация источника
-LAYOUT(...) -- конфигурация размещения в памяти
-LIFETIME(...) -- время жизни словаря в памяти
+PRIMARY KEY ... -- complex or single key configuration
+SOURCE(...) -- Source configuration
+LAYOUT(...) -- Memory layout configuration
+LIFETIME(...) -- Lifetime of dictionary in memory
 ```
-
 
 ## Хранение словарей в памяти {#storing-dictionaries-in-memory}
 
@@ -161,7 +160,7 @@ ClickHouse генерирует исключение при возникнове
         ...
         <layout>
             <layout_type>
-                <!-- настройки макета -->
+                <!-- layout settings -->
             </layout_type>
         </layout>
         ...
@@ -174,7 +173,7 @@ ClickHouse генерирует исключение при возникнове
 ```sql
 CREATE DICTIONARY (...)
 ...
-LAYOUT(LAYOUT_TYPE(param value)) -- настройки структуры
+LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 ...
 ```
 
@@ -208,7 +207,6 @@ LAYOUT(LAYOUT_TYPE(param value)) -- настройки структуры
     </key>
 ...
 ```
-
 
 ## Способы хранения словарей в памяти {#ways-to-store-dictionaries-in-memory}
 
@@ -258,7 +256,6 @@ LAYOUT(LAYOUT_TYPE(param value)) -- настройки структуры
 LAYOUT(FLAT(INITIAL_ARRAY_SIZE 50000 MAX_ARRAY_SIZE 5000000))
 ```
 
-
 ### hashed {#hashed}
 
 Словарь полностью хранится в памяти в виде хеш-таблицы. Словарь может содержать любое количество элементов с любыми идентификаторами. На практике количество ключей может достигать десятков миллионов.
@@ -286,27 +283,27 @@ LAYOUT(HASHED())
 ```xml
 <layout>
   <hashed>
-    <!-- Если количество сегментов больше 1 (по умолчанию `1`), словарь будет загружать
-         данные параллельно, что полезно при большом количестве элементов в одном
-         словаре. -->
+    <!-- If shards greater then 1 (default is `1`) the dictionary will load
+         data in parallel, useful if you have huge amount of elements in one
+         dictionary. -->
     <shards>10</shards>
 
-    <!-- Размер очереди блоков при параллельной обработке.
+    <!-- Size of the backlog for blocks in parallel queue.
 
-         Поскольку узким местом при параллельной загрузке является перехеширование, для избежания
-         простоя из-за того, что поток выполняет перехеширование, необходимо иметь
-         запас в очереди.
+         Since the bottleneck in parallel loading is rehash, and so to avoid
+         stalling because of thread is doing rehash, you need to have some
+         backlog.
 
-         10000 — хороший баланс между памятью и скоростью.
-         Даже для 10e10 элементов способен обработать всю нагрузку без простоев. -->
+         10000 is good balance between memory and speed.
+         Even for 10e10 elements and can handle all the load without starvation. -->
     <shard_load_queue_backlog>10000</shard_load_queue_backlog>
 
-    <!-- Максимальный коэффициент заполнения хеш-таблицы. При больших значениях память
-         используется более эффективно (меньше памяти расходуется впустую), но производительность
-         чтения может снизиться.
+    <!-- Maximum load factor of the hash table, with greater values, the memory
+         is utilized more efficiently (less memory is wasted) but read/performance
+         may deteriorate.
 
-         Допустимые значения: [0.5, 0.99]
-         По умолчанию: 0.5 -->
+         Valid values: [0.5, 0.99]
+         Default: 0.5 -->
     <max_load_factor>0.5</max_load_factor>
   </hashed>
 </layout>
@@ -317,7 +314,6 @@ LAYOUT(HASHED())
 ```sql
 LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
-
 
 ### sparse&#95;hashed {#sparse_hashed}
 
@@ -330,9 +326,9 @@ LAYOUT(HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5])
 ```xml
 <layout>
   <sparse_hashed>
-    <!-- <shards>1</shards> --> <!-- сегменты -->
-    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> --> <!-- размер очереди загрузки сегмента -->
-    <!-- <max_load_factor>0.5</max_load_factor> --> <!-- максимальный коэффициент загрузки -->
+    <!-- <shards>1</shards> -->
+    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> -->
+    <!-- <max_load_factor>0.5</max_load_factor> -->
   </sparse_hashed>
 </layout>
 ```
@@ -345,7 +341,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 
 Для словарей этого типа также можно использовать `shards`; это особенно важно для `sparse_hashed` по сравнению с `hashed`, поскольку `sparse_hashed` работает медленнее.
 
-
 ### complex&#95;key&#95;hashed {#complex_key_hashed}
 
 Этот тип хранилища предназначен для использования с составными [ключами](#dictionary-key-and-fields). Аналогичен `hashed`.
@@ -355,9 +350,9 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 ```xml
 <layout>
   <complex_key_hashed>
-    <!-- <shards>1</shards> --> <!-- сегменты -->
-    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> --> <!-- размер очереди загрузки сегмента -->
-    <!-- <max_load_factor>0.5</max_load_factor> --> <!-- максимальный коэффициент загрузки -->
+    <!-- <shards>1</shards> -->
+    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> -->
+    <!-- <max_load_factor>0.5</max_load_factor> -->
   </complex_key_hashed>
 </layout>
 ```
@@ -368,7 +363,6 @@ LAYOUT(SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTO
 LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
 
-
 ### complex&#95;key&#95;sparse&#95;hashed {#complex_key_sparse_hashed}
 
 Этот тип хранилища предназначен для составных [ключей](#dictionary-key-and-fields). Аналогичен типу [sparse&#95;hashed](#sparse_hashed).
@@ -378,9 +372,9 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 ```xml
 <layout>
   <complex_key_sparse_hashed>
-    <!-- <shards>1</shards> --> <!-- сегменты -->
-    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> --> <!-- размер очереди загрузки сегмента -->
-    <!-- <max_load_factor>0.5</max_load_factor> --> <!-- максимальный коэффициент загрузки -->
+    <!-- <shards>1</shards> -->
+    <!-- <shard_load_queue_backlog>10000</shard_load_queue_backlog> -->
+    <!-- <max_load_factor>0.5</max_load_factor> -->
   </complex_key_sparse_hashed>
 </layout>
 ```
@@ -390,7 +384,6 @@ LAYOUT(COMPLEX_KEY_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_
 ```sql
 LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MAX_LOAD_FACTOR 0.5]))
 ```
-
 
 ### hashed&#95;array {#hashed_array}
 
@@ -415,7 +408,6 @@ LAYOUT(COMPLEX_KEY_SPARSE_HASHED([SHARDS 1] [SHARD_LOAD_QUEUE_BACKLOG 10000] [MA
 LAYOUT(HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### complex&#95;key&#95;hashed&#95;array {#complex_key_hashed_array}
 
 Этот тип хранилища предназначен для использования с составными [ключами](#dictionary-key-and-fields). Аналогичен [hashed&#95;array](#hashed_array).
@@ -434,13 +426,11 @@ LAYOUT(HASHED_ARRAY([SHARDS 1]))
 LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```
 
-
 ### range&#95;hashed {#range_hashed}
 
-Словарь хранится в памяти в виде хеш-таблицы с упорядоченным массивом диапазонов и соответствующих им значений.
+Словарь хранится в памяти в виде хэш-таблицы с упорядоченным массивом диапазонов и соответствующих им значений.
 
-Ключ словаря имеет тип [UInt64](../../sql-reference/data-types/int-uint.md).
-Этот метод хранения работает аналогично hashed и позволяет использовать диапазоны по дате/времени (произвольный числовой тип) в дополнение к ключу.
+Этот метод хранения работает аналогично hashed и позволяет, помимо ключа, использовать диапазоны дат/времени (произвольного числового типа).
 
 Пример: таблица содержит скидки для каждого рекламодателя в формате:
 
@@ -452,10 +442,10 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 └───────────────┴─────────────────────┴───────────────────┴────────┘
 ```
 
-Чтобы использовать выборку по диапазонам дат, определите элементы `range_min` и `range_max` в [структуре](#dictionary-key-and-fields). Эти элементы должны содержать элементы `name` и `type` (если `type` не указан, будет использован тип по умолчанию — Date). `type` может быть любым числовым типом (Date / DateTime / UInt64 / Int32 / другие).
+Чтобы использовать выборку для диапазонов дат, определите элементы `range_min` и `range_max` в [структуре](#dictionary-key-and-fields). Эти элементы должны содержать элементы `name` и `type` (если `type` не указан, будет использован тип по умолчанию — Date). `type` может быть любым числовым типом (Date / DateTime / UInt64 / Int32 / другие).
 
 :::note
-Значения `range_min` и `range_max` должны укладываться в диапазон типа `Int64`.
+Значения `range_min` и `range_max` должны умещаться в диапазон значений типа `Int64`.
 :::
 
 Пример:
@@ -463,7 +453,7 @@ LAYOUT(COMPLEX_KEY_HASHED_ARRAY([SHARDS 1]))
 ```xml
 <layout>
     <range_hashed>
-        <!-- Стратегия для перекрывающихся диапазонов (min/max). По умолчанию: min (возвращает соответствующий диапазон с минимальным значением (range_min -> range_max)) -->
+        <!-- Strategy for overlapping ranges (min/max). Default: min (return a matching range with the min(range_min -> range_max) value) -->
         <range_lookup_strategy>min</range_lookup_strategy>
     </range_hashed>
 </layout>
@@ -498,7 +488,7 @@ LAYOUT(RANGE_HASHED(range_lookup_strategy 'max'))
 RANGE(MIN discount_start_date MAX discount_end_date)
 ```
 
-Чтобы работать с этими словарями, необходимо передать в функцию `dictGet` дополнительный аргумент, для которого задаётся диапазон:
+Чтобы работать с этими словарями, необходимо передать дополнительный аргумент в функцию `dictGet`, для которого задаётся диапазон:
 
 ```sql
 dictGet('dict_name', 'attr_name', id, date)
@@ -510,17 +500,16 @@ dictGet('dict_name', 'attr_name', id, date)
 SELECT dictGet('discounts_dict', 'amount', 1, '2022-10-20'::Date);
 ```
 
-Эта функция возвращает значение для указанных `id` и диапазона дат, который включает переданную дату.
+Эта функция возвращает значение для указанных `id` и диапазона дат, включающего переданную дату.
 
 Подробности алгоритма:
 
 * Если `id` не найден или для `id` не найден диапазон, возвращается значение по умолчанию для типа атрибута.
-* Если есть пересекающиеся диапазоны и `range_lookup_strategy=min`, возвращается соответствующий диапазон с минимальным `range_min`, если найдено несколько диапазонов, возвращается диапазон с минимальным `range_max`, если снова найдено несколько диапазонов (несколько диапазонов имеют одинаковые `range_min` и `range_max`), возвращается случайный диапазон из них.
-* Если есть пересекающиеся диапазоны и `range_lookup_strategy=max`, возвращается соответствующий диапазон с максимальным `range_min`, если найдено несколько диапазонов, возвращается диапазон с максимальным `range_max`, если снова найдено несколько диапазонов (несколько диапазонов имеют одинаковые `range_min` и `range_max`), возвращается случайный диапазон из них.
-* Если `range_max` имеет значение `NULL`, диапазон считается открытым. `NULL` трактуется как максимально возможное значение. Для `range_min` в качестве открытого значения можно использовать `1970-01-01` или `0` (-MAX&#95;INT).
+* Если имеются пересекающиеся диапазоны и `range_lookup_strategy=min`, возвращается подходящий диапазон с минимальным `range_min`; если найдено несколько диапазонов, возвращается диапазон с минимальным `range_max`; если снова найдено несколько диапазонов (несколько диапазонов имеют одинаковые `range_min` и `range_max`), возвращается случайный диапазон из них.
+* Если имеются пересекающиеся диапазоны и `range_lookup_strategy=max`, возвращается подходящий диапазон с максимальным `range_min`; если найдено несколько диапазонов, возвращается диапазон с максимальным `range_max`; если снова найдено несколько диапазонов (несколько диапазонов имеют одинаковые `range_min` и `range_max`), возвращается случайный диапазон из них.
+* Если `range_max` равно `NULL`, диапазон является открытым. `NULL` рассматривается как максимально возможное значение. Для `range_min` в качестве открытого значения можно использовать `1970-01-01` или `0` (-MAX&#95;INT).
 
 Пример конфигурации:
-
 
 ```xml
 <clickhouse>
@@ -569,7 +558,6 @@ RANGE(MIN StartTimeStamp MAX EndTimeStamp)
 
 Пример конфигурации с перекрывающимися и открытыми диапазонами:
 
-
 ```sql
 CREATE TABLE discounts
 (
@@ -614,22 +602,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- подходит только один диапазон: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.2 │ -- подходят два диапазона, range_min 2015-01-15 (0.2) больше, чем 2015-01-01 (0.1)
+│ 0.2 │ -- two ranges are matching, range_min 2015-01-15 (0.2) is bigger than 2015-01-01 (0.1)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.4 │ -- подходят два диапазона, range_min 2015-01-04 (0.4) больше, чем 2015-01-01 (0.3)
+│ 0.4 │ -- two ranges are matching, range_min 2015-01-04 (0.4) is bigger than 2015-01-01 (0.3)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.5 │ -- подходят два диапазона, значения range_min равны, 2015-01-15 (0.5) больше, чем 2015-01-10 (0.6)
+│ 0.5 │ -- two ranges are matching, range_min are equal, 2015-01-15 (0.5) is bigger than 2015-01-10 (0.6)
 └─────┘
 
 DROP DICTIONARY discounts_dict;
@@ -651,22 +639,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- подходит только один диапазон: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.1 │ -- подходят два диапазона, range_min 2015-01-01 (0.1) меньше, чем 2015-01-15 (0.2)
+│ 0.1 │ -- two ranges are matching, range_min 2015-01-01 (0.1) is less than 2015-01-15 (0.2)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.3 │ -- подходят два диапазона, range_min 2015-01-01 (0.3) меньше, чем 2015-01-04 (0.4)
+│ 0.3 │ -- two ranges are matching, range_min 2015-01-01 (0.3) is less than 2015-01-04 (0.4)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.6 │ -- подходят два диапазона, значения range_min равны, 2015-01-10 (0.6) меньше, чем 2015-01-15 (0.5)
+│ 0.6 │ -- two ranges are matching, range_min are equal, 2015-01-10 (0.6) is less than 2015-01-15 (0.5)
 └─────┘
 ```
 
@@ -691,7 +679,6 @@ LIFETIME(MIN 1 MAX 1000)
 LAYOUT(COMPLEX_KEY_RANGE_HASHED())
 RANGE(MIN StartDate MAX EndDate);
 ```
-
 
 ### cache {#cache}
 
@@ -718,17 +705,17 @@ RANGE(MIN StartDate MAX EndDate);
 ```xml
 <layout>
     <cache>
-        <!-- Размер кэша в количестве ячеек. Округляется до степени двойки. -->
+        <!-- The size of the cache, in number of cells. Rounded up to a power of two. -->
         <size_in_cells>1000000000</size_in_cells>
-        <!-- Разрешает чтение истёкших ключей. -->
+        <!-- Allows to read expired keys. -->
         <allow_read_expired_keys>0</allow_read_expired_keys>
-        <!-- Максимальный размер очереди обновлений. -->
+        <!-- Max size of update queue. -->
         <max_update_queue_size>100000</max_update_queue_size>
-        <!-- Максимальный таймаут в миллисекундах для помещения задачи обновления в очередь. -->
+        <!-- Max timeout in milliseconds for push update task into queue. -->
         <update_queue_push_timeout_milliseconds>10</update_queue_push_timeout_milliseconds>
-        <!-- Максимальный таймаут ожидания в миллисекундах для завершения задачи обновления. -->
+        <!-- Max wait timeout in milliseconds for update task to complete. -->
         <query_wait_timeout_milliseconds>60000</query_wait_timeout_milliseconds>
-        <!-- Максимальное количество потоков для обновления кэш-словаря. -->
+        <!-- Max threads for cache dictionary update. -->
         <max_threads_for_updates>4</max_threads_for_updates>
     </cache>
 </layout>
@@ -751,7 +738,6 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 Не используйте ClickHouse как источник данных, так как он медленно обрабатывает запросы со случайными чтениями.
 :::
 
-
 ### complex_key_cache {#complex_key_cache}
 
 Этот тип хранилища используется для составных [ключей](#dictionary-key-and-fields). Аналогичен `cache`.
@@ -765,15 +751,15 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 ```xml
 <layout>
     <ssd_cache>
-        <!-- Размер элементарного блока чтения в байтах. Рекомендуется устанавливать равным размеру страницы SSD. -->
+        <!-- Size of elementary read block in bytes. Recommended to be equal to SSD's page size. -->
         <block_size>4096</block_size>
-        <!-- Максимальный размер файла кеша в байтах. -->
+        <!-- Max cache file size in bytes. -->
         <file_size>16777216</file_size>
-        <!-- Размер буфера оперативной памяти в байтах для чтения элементов с SSD. -->
+        <!-- Size of RAM buffer in bytes for reading elements from SSD. -->
         <read_buffer_size>131072</read_buffer_size>
-        <!-- Размер буфера оперативной памяти в байтах для агрегации элементов перед сбросом на SSD. -->
+        <!-- Size of RAM buffer in bytes for aggregating elements before flushing to SSD. -->
         <write_buffer_size>1048576</write_buffer_size>
-        <!-- Путь для хранения файла кеша. -->
+        <!-- Path where cache file will be stored. -->
         <path>/var/lib/clickhouse/user_files/test_dict</path>
     </ssd_cache>
 </layout>
@@ -785,7 +771,6 @@ LAYOUT(CACHE(SIZE_IN_CELLS 1000000000))
 LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
     PATH '/var/lib/clickhouse/user_files/test_dict'))
 ```
-
 
 ### complex_key_ssd_cache {#complex_key_ssd_cache}
 
@@ -812,7 +797,6 @@ LAYOUT(SSD_CACHE(BLOCK_SIZE 4096 FILE_SIZE 16777216 READ_BUFFER_SIZE 1048576
 ```sql
 LAYOUT(DIRECT())
 ```
-
 
 ### complex_key_direct {#complex_key_direct}
 
@@ -871,8 +855,8 @@ INSERT INTO my_ip_addresses VALUES
 </structure>
 <layout>
     <ip_trie>
-        <!-- Ключевой атрибут `prefix` можно получить с помощью dictGetString. -->
-        <!-- Эта опция увеличивает потребление памяти. -->
+        <!-- Key attribute `prefix` can be retrieved via dictGetString. -->
+        <!-- This option increases memory usage. -->
         <access_to_key_from_attributes>true</access_to_key_from_attributes>
     </ip_trie>
 </layout>
@@ -927,7 +911,6 @@ SELECT dictGet('my_ip_trie_dictionary', ('asn', 'cca2'), IPv6StringToNum('2001:d
 Другие типы данных пока не поддерживаются. Функция возвращает атрибут для префикса, который соответствует данному IP-адресу. Если имеются перекрывающиеся префиксы, возвращается наиболее специфичный.
 
 Данные должны полностью помещаться в оперативную память.
-
 
 ## Обновление данных словаря с помощью LIFETIME {#refreshing-dictionary-data-using-lifetime}
 
@@ -1060,7 +1043,6 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ...
 ```
 
-
 ## Источники данных словаря {#dictionary-sources}
 
 <CloudDetails />
@@ -1075,7 +1057,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
     ...
     <source>
       <source_type>
-        <!-- Конфигурация источника -->
+        <!-- Source configuration -->
       </source_type>
     </source>
     ...
@@ -1089,7 +1071,7 @@ SOURCE(CLICKHOUSE(... update_field 'added_time' update_lag 15))
 ```sql
 CREATE DICTIONARY dict_name (...)
 ...
-SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Конфигурация источника
+SOURCE(SOURCE_TYPE(param1 val1 ... paramN valN)) -- Source configuration
 ...
 ```
 
@@ -1131,6 +1113,7 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Redis](#redis)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
+  * [YTsaurus](#ytsaurus)
 
 
 ### Локальный файл {#local-file}
@@ -1163,7 +1146,6 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 
 * [Функция `dictionary`](/sql-reference/table-functions/dictionary)
 
-
 ### Исполняемый файл {#executable-file}
 
 Работа с исполняемыми файлами зависит от того, [как словарь хранится в памяти](#storing-dictionaries-in-memory). Если словарь хранится с использованием `cache` и `complex_key_cache`, ClickHouse запрашивает необходимые ключи, отправляя запрос через STDIN исполняемого файла. В противном случае ClickHouse запускает исполняемый файл и рассматривает его вывод как данные словаря.
@@ -1192,7 +1174,6 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 * `send_chunk_header` — управляет тем, нужно ли отправлять количество строк перед отправкой фрагмента данных на обработку. Необязательный параметр. Значение по умолчанию — `false`.
 
 Этот источник словаря может быть настроен только через XML-конфигурацию. Создание словарей с исполняемым источником через DDL отключено; в противном случае пользователь БД смог бы выполнять произвольные бинарные файлы на узле ClickHouse.
-
 
 ### Пул исполняемых процессов {#executable-pool}
 
@@ -1228,7 +1209,6 @@ SOURCE(FILE(path './user_files/os.tsv' format 'TabSeparated'))
 * `send_chunk_header` — управляет тем, отправлять ли количество строк перед передачей фрагмента данных на обработку. Необязательный параметр. Значение по умолчанию — `false`.
 
 Этот источник словаря может быть настроен только через XML-конфигурацию. Создание словарей с исполняемым источником через DDL отключено, иначе пользователь БД смог бы выполнять произвольные бинарные файлы на узле ClickHouse.
-
 
 ### HTTP(S) {#https}
 
@@ -1282,7 +1262,6 @@ SOURCE(HTTP(
 
 При создании словаря с использованием DDL-команды (`CREATE DICTIONARY ...`) удалённые хосты для HTTP-словарей проверяются на соответствие содержимому секции `remote_url_allow_hosts` в конфигурации, чтобы предотвратить доступ пользователей базы данных к произвольному HTTP-серверу.
 
-
 ### СУБД {#dbms}
 
 #### ODBC {#odbc}
@@ -1332,7 +1311,6 @@ ClickHouse получает информацию о символах кавыч�
 
 Если у вас возникают проблемы с кодировками при использовании Oracle, см. соответствующий пункт [FAQ](/knowledgebase/oracle-odbc).
 
-
 ##### Известная уязвимость функциональности словаря ODBC {#known-vulnerability-of-the-odbc-dictionary-functionality}
 
 :::note
@@ -1361,7 +1339,6 @@ SELECT * FROM odbc('DSN=gregtest;Servername=some-server.com', 'test_db');
 ```
 
 ODBC-драйвер отправит значения `USERNAME` и `PASSWORD` из `odbc.ini` на `some-server.com`.
-
 
 ##### Пример подключения к PostgreSQL {#example-of-connecting-postgresql}
 
@@ -1402,7 +1379,7 @@ $ sudo apt-get install -y unixodbc odbcinst odbc-postgresql
         <name>table_name</name>
         <source>
             <odbc>
-                <!-- В connection_string можно указать следующие параметры: -->
+                <!-- You can specify the following parameters in connection_string: -->
                 <!-- DSN=myconnection;UID=username;PWD=password;HOST=127.0.0.1;PORT=5432;DATABASE=my_db -->
                 <connection_string>DSN=myconnection</connection_string>
                 <table>postgresql_table</table>
@@ -1444,7 +1421,6 @@ LIFETIME(MIN 300 MAX 360)
 
 Возможно, вам потребуется отредактировать `odbc.ini`, чтобы указать полный путь к библиотеке драйвера `DRIVER=/usr/local/lib/psqlodbcw.so`.
 
-
 ##### Пример подключения MS SQL Server {#example-of-connecting-ms-sql-server}
 
 ОС Ubuntu.
@@ -1467,7 +1443,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     tds version = 7.0
     client charset = UTF-8
 
-    # тестирование TDS-соединения
+    # test TDS connection
     $ sqsh -S MSSQL -D database -U user -P password
 
 
@@ -1481,7 +1457,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     UsageCount      = 5
 
     $ cat /etc/odbc.ini
-    # $ cat ~/.odbc.ini # если вы вошли под учётной записью, от имени которой запускается ClickHouse
+    # $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
 
     [MSSQL]
     Description     = FreeTDS
@@ -1493,7 +1469,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     Port            = 1433
 
 
-    # (необязательно) тестирование ODBC-соединения (для использования isql-tool установите пакет [unixodbc](https://packages.debian.org/sid/unixodbc))
+    # (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
     $ isql -v MSSQL "user" "password"
 ```
 
@@ -1549,7 +1525,6 @@ SOURCE(ODBC(table 'dict' connection_string 'DSN=MSSQL;UID=test;PWD=test'))
 LAYOUT(FLAT())
 LIFETIME(MIN 300 MAX 360)
 ```
-
 
 #### MySQL {#mysql}
 
@@ -1668,7 +1643,6 @@ SOURCE(MYSQL(
 ))
 ```
 
-
 #### ClickHouse {#clickhouse}
 
 Пример настроек:
@@ -1721,7 +1695,6 @@ SOURCE(CLICKHOUSE(
 :::note
 Поля `table` и `where` не могут использоваться вместе с полем `query`. При этом должно быть объявлено одно из полей `table` или `query`.
 :::
-
 
 #### MongoDB {#mongodb}
 
@@ -1792,7 +1765,6 @@ SOURCE(MONGODB(
 
 [Дополнительная информация о движке](../../engines/table-engines/integrations/mongodb.md)
 
-
 #### Redis {#redis}
 
 Пример настроек:
@@ -1825,7 +1797,6 @@ SOURCE(REDIS(
 * `port` – порт сервера Redis.
 * `storage_type` – структура внутреннего хранилища Redis, используемая при работе с ключами. `simple` используется для простых источников и для хешированных источников с одним ключом, `hash_map` — для хешированных источников с двумя ключами. Источники с диапазонами и кэш-источники со сложным ключом не поддерживаются. Параметр можно не указывать, значение по умолчанию — `simple`.
 * `db_index` – числовой индекс логической базы данных Redis. Параметр можно не указывать, значение по умолчанию — 0.
-
 
 #### Cassandra {#cassandra}
 
@@ -1868,7 +1839,6 @@ SOURCE(REDIS(
 :::note
 Поля `column_family` или `where` не могут использоваться вместе с полем `query`. При этом одно из полей `column_family` или `query` должно быть указано.
 :::
-
 
 #### PostgreSQL {#postgresql}
 
@@ -1929,6 +1899,47 @@ SOURCE(POSTGRESQL(
 Поля `table` или `where` не могут использоваться вместе с полем `query`. При этом одно из полей `table` или `query` должно быть задано.
 :::
 
+### YTsaurus {#ytsaurus}
+
+<ExperimentalBadge />
+
+<CloudNotSupportedBadge />
+
+:::info
+Это экспериментальная функция, которая может измениться в будущих релизах с нарушением обратной совместимости.
+Чтобы включить использование источника словаря YTsaurus,
+используйте настройку [`allow_experimental_ytsaurus_dictionary_source`](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source).
+:::
+
+Пример настройки:
+
+```xml
+<source>
+    <ytsaurus>
+        <http_proxy_urls>http://localhost:8000</http_proxy_urls>
+        <cypress_path>//tmp/test</cypress_path>
+        <oauth_token>password</oauth_token>
+        <check_table_schema>1</check_table_schema>
+    </ytsaurus>
+</source>
+```
+
+или
+
+```sql
+SOURCE(YTSAURUS(
+    http_proxy_urls 'http://localhost:8000'
+    cypress_path '//tmp/test'
+    oauth_token 'password'
+))
+```
+
+Поля конфигурации:
+
+* `http_proxy_urls` – URL HTTP-прокси YTsaurus.
+* `cypress_path` – путь Cypress к таблице-источнику.
+* `oauth_token` – OAuth-токен.
+
 
 ### Null {#null}
 
@@ -1947,7 +1958,6 @@ LAYOUT(FLAT())
 LIFETIME(0);
 ```
 
-
 ## Ключ словаря и поля {#dictionary-key-and-fields}
 
 <CloudDetails />
@@ -1964,7 +1974,7 @@ LIFETIME(0);
         </id>
 
         <attribute>
-            <!-- Параметры атрибута -->
+            <!-- Attribute parameters -->
         </attribute>
 
         ...
@@ -1983,7 +1993,7 @@ DDL-запрос:
 ```sql
 CREATE DICTIONARY dict_name (
     Id UInt64,
-    -- атрибуты
+    -- attributes
 )
 PRIMARY KEY Id
 ...
@@ -1993,7 +2003,6 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` — ключевой столбец
 * `AttrName AttrType` — столбец данных. Таких атрибутов может быть несколько.
-
 
 ## Ключ {#key}
 
@@ -2037,7 +2046,6 @@ PRIMARY KEY Id
 
 * `PRIMARY KEY` – Имя столбца, содержащего ключи.
 
-
 ### Составной ключ {#composite-key}
 
 Ключ может представлять собой `tuple` из полей любых типов. В этом случае [layout](#storing-dictionaries-in-memory) должен быть `complex_key_hashed` или `complex_key_cache`.
@@ -2078,7 +2086,6 @@ PRIMARY KEY field1, field2
 
 В запросе к функции `dictGet*` в качестве ключа передаётся кортеж. Пример: `dictGetString('dict_name', 'attr_name', tuple('string for field1', num_for_field2))`.
 
-
 ## Атрибуты {#attributes}
 
 Пример конфигурации:
@@ -2108,7 +2115,6 @@ CREATE DICTIONARY somename (
 
 Поля конфигурации:
 
-
 | Tag                                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Required |
 |------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | `name`                                               | Имя столбца.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Yes      |
@@ -2126,17 +2132,17 @@ ClickHouse поддерживает иерархические словари с
 Рассмотрим следующую иерархическую структуру:
 
 ```text
-0 (Общий родитель)
+0 (Common parent)
 │
-├── 1 (Россия)
+├── 1 (Russia)
 │   │
-│   └── 2 (Москва)
+│   └── 2 (Moscow)
 │       │
-│       └── 3 (Центр)
+│       └── 3 (Center)
 │
-└── 4 (Великобритания)
+└── 4 (Great Britain)
     │
-    └── 5 (Лондон)
+    └── 5 (London)
 ```
 
 Эту иерархию можно представить в виде следующей таблицы словаря.
@@ -2180,7 +2186,6 @@ ClickHouse поддерживает иерархическое свойство 
     </structure>
 </dictionary>
 ```
-
 
 ## Полигональные словари {#polygon-dictionaries}
 
@@ -2285,7 +2290,6 @@ SELECT tuple(x, y) AS key, dictGet(dict_name, 'name', key), dictGet(dict_name, '
 
 Запрос:
 
-
 ```sql
 CREATE TABLE polygons_test_table
 (
@@ -2312,10 +2316,9 @@ SELECT * FROM polygons_test_dictionary;
 
 ```text
 ┌─key─────────────────────────────┬─name──┐
-│ [[[(3,1),(0,1),(0,-1),(3,-1)]]] │ Значение │
+│ [[[(3,1),(0,1),(0,-1),(3,-1)]]] │ Value │
 └─────────────────────────────────┴───────┘
 ```
-
 
 ## Словарь на основе дерева регулярных выражений {#regexp-tree-dictionary}
 
@@ -2387,7 +2390,6 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 Используя мощный файл конфигурации YAML, мы можем использовать словарь в виде дерева регулярных выражений в качестве парсера строк User-Agent. Поддерживается [uap-core](https://github.com/ua-parser/uap-core), и в функциональном тесте [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) показано, как его использовать.
 
-
 #### Сбор значений атрибутов {#collecting-attribute-values}
 
 Иногда полезно возвращать значения из нескольких регулярных выражений, которые сработали при сопоставлении, а не только значение конечного узла. В таких случаях можно использовать специализированную функцию [`dictGetAll`](../../sql-reference/functions/ext-dict-functions.md#dictGetAll). Если узел имеет значение атрибута типа `T`, `dictGetAll` вернет `Array(T)`, содержащий ноль или более значений.
@@ -2412,19 +2414,19 @@ LIFETIME(0)
 ```
 
 ```yaml
-# /var/lib/clickhouse/user_files/regexp_tree.yaml {#varlibclickhouseuser_filesregexp_treeyaml}
+# /var/lib/clickhouse/user_files/regexp_tree.yaml
 - regexp: 'clickhouse\.com'
   tag: 'ClickHouse'
   topological_index: 1
   paths:
     - regexp: 'clickhouse\.com/docs(.*)'
-      tag: 'Документация ClickHouse'
+      tag: 'ClickHouse Documentation'
       topological_index: 0
       captured: '\1'
       parent: 'ClickHouse'
 
 - regexp: '/docs(/|$)'
-  tag: 'Документация'
+  tag: 'Documentation'
   topological_index: 2
 
 - regexp: 'github.com'
@@ -2444,11 +2446,10 @@ SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', '
 ```text
 ┌─url────────────────────────────────────┬─dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2)─┐
 │ clickhouse.com                         │ (['ClickHouse'],[1],[],[])                                                            │
-│ clickhouse.com/docs/en                 │ (['Документация ClickHouse','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
-│ github.com/clickhouse/tree/master/docs │ (['Документация','GitHub'],[2,3],[NULL],[])                                          │
+│ clickhouse.com/docs/en                 │ (['ClickHouse Documentation','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
+│ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 #### Режимы сопоставления {#matching-modes}
 
@@ -2523,7 +2524,6 @@ SOURCE(CLICKHOUSE(TABLE 'regexp_dictionary_source_table'))
 LIFETIME(0)
 LAYOUT(regexp_tree);
 ```
-
 
 ## Встроенные словари {#embedded-dictionaries}
 

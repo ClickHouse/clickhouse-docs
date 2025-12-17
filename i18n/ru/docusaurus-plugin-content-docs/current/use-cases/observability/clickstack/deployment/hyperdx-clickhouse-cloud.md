@@ -38,7 +38,6 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 
 В этом режиме ингестия данных полностью остаётся на стороне пользователя. Вы можете выполнять приём данных в ClickHouse Cloud с помощью собственного развернутого коллектора OpenTelemetry, прямого приёма из клиентских библиотек, нативных табличных движков ClickHouse (таких как Kafka или S3), ETL-пайплайнов или ClickPipes — управляемого сервиса ингестии ClickHouse Cloud. Такой подход обеспечивает самый простой и высокопроизводительный способ эксплуатации ClickStack.
 
-
 ### Подходит для {#suitable-for}
 
 Этот паттерн развертывания оптимален в следующих сценариях:
@@ -75,8 +74,8 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
   Загрузите конфигурацию для OTel collector:
 
   ```bash
-  curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
-  ```
+curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/deployment/_snippets/otel-cloud-config.yaml
+```
 
   <details>
     <summary>otel-cloud-config.yaml</summary>
@@ -230,11 +229,12 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
           processors: [memory_limiter, batch]
           exporters: [clickhouse/rrweb]
     ```
-  </details>
 
-  Разверните коллектор с помощью следующей команды Docker, указав соответствующие переменные окружения со значениями параметров подключения, зафиксированными ранее, и выбрав подходящую команду ниже в зависимости от вашей операционной системы.
+</details>
 
-  ```bash
+Deploy the collector using the following Docker command, setting the respective environment variables to the connection settings recorded earlier and using the appropriate command below based on your operating system.
+
+```bash
   # укажите endpoint вашего облачного экземпляра
   export CLICKHOUSE_ENDPOINT=
   export CLICKHOUSE_PASSWORD=

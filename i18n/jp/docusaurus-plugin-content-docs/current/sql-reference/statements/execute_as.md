@@ -26,8 +26,8 @@ EXECUTE AS target_user subquery;
 を `1` に設定し、さらに `IMPERSONATE` 権限が付与されている必要があります。例えば、次のコマンドは
 
 ```sql
-user2 に対して user1 のなりすましを付与;
-user3 に対して全てのなりすましを付与;
+GRANT IMPERSONATE ON user1 TO user2;
+GRANT IMPERSONATE ON * TO user3;
 ```
 
 ユーザー `user2` には `EXECUTE AS user1 ...` コマンドの実行を許可し、ユーザー `user3` には任意のユーザーとしてコマンドを実行することを許可します。
@@ -38,7 +38,7 @@ user3 に対して全てのなりすましを付与;
 ## 例 {#examples}
 
 ```sql
-SELECT currentUser(), authenticatedUser(); -- 出力: "default    default"
+SELECT currentUser(), authenticatedUser(); -- outputs "default    default"
 CREATE USER james;
-EXECUTE AS james SELECT currentUser(), authenticatedUser(); -- 出力: "james    default"
+EXECUTE AS james SELECT currentUser(), authenticatedUser(); -- outputs "james    default"
 ```

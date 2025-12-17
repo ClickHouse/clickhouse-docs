@@ -12,7 +12,6 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
 # 配置 SSL-TLS {#configuring-ssl-tls}
 
 <SelfManaged />
@@ -24,8 +23,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
 
 请参阅这篇[关于证书使用的基础教程](https://ubuntu.com/server/docs/security-certificates)，以获取入门级概览。
 :::
-
-
 
 ## 1. 创建 ClickHouse 部署 {#1-create-a-clickhouse-deployment}
 
@@ -40,8 +37,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
 :::note
 请参阅 [快速开始](/getting-started/install/install.mdx) 了解有关安装 ClickHouse 的更多详细信息。
 :::
-
-
 
 ## 2. 创建 SSL 证书 {#2-create-ssl-certificates}
 :::note
@@ -92,8 +87,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
     chnode1.crt: OK
     ```
 
-
-
 ## 3. 创建并配置用于存储证书和密钥的目录 {#3-create-and-configure-a-directory-to-store-certificates-and-keys}
 
 :::note
@@ -123,8 +116,6 @@ TLS 的实现相当复杂，需要考虑许多选项以确保部署的安全性�
     -rw------- 1 clickhouse clickhouse 1708 Apr 12 20:22 chnode1.key
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
-
-
 
 ## 4. 使用 ClickHouse Keeper 配置基础集群环境 {#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper}
 
@@ -228,8 +219,6 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
     </remote_servers>
     ```
 
-
-
 4. 定义宏值，以便创建用于测试的 ReplicatedMergeTree 表。在 `chnode1` 上：
     ```xml
     <macros>
@@ -245,8 +234,6 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
         <replica>replica_2</replica>
     </macros>
     ```
-
-
 
 ## 5. 在 ClickHouse 节点上配置 SSL-TLS 接口 {#5-configure-ssl-tls-interfaces-on-clickhouse-nodes}
 下面的设置在 ClickHouse 服务器的 `config.xml` 中进行配置。
@@ -347,15 +334,11 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
     </openSSL>
     ```
 
-
-
 6. 禁用 MySQL 和 PostgreSQL 的默认兼容端口：
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
-
-
 
 ## 6. 测试 {#6-testing}
 1. 依次启动所有节点：
@@ -398,30 +381,28 @@ ClickHouse Keeper 推荐使用端口 `9281`。但是，该端口是可配置的�
 典型的 [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) 命令在未使用 TLS 且通过 `echo` 调用时将无法使用，下面是如何结合 `openssl` 使用这些命令。
    - 使用 `openssl` 启动交互会话
 
-
-
 ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-```
+  ```
 
 ```response
-CONNECTED(00000003)
-depth=0 CN = chnode1
-verify error:num=20:无法获取本地颁发机构证书
-verify return:1
-depth=0 CN = chnode1
-verify error:num=21:无法验证第一个证书
-verify return:1
----
-证书链
- 0 s:CN = chnode1
-   i:CN = marsnet.local CA
----
-服务器证书
------BEGIN CERTIFICATE-----
-MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
-...
-```
+  CONNECTED(00000003)
+  depth=0 CN = chnode1
+  verify error:num=20:unable to get local issuer certificate
+  verify return:1
+  depth=0 CN = chnode1
+  verify error:num=21:unable to verify the first certificate
+  verify return:1
+  ---
+  Certificate chain
+   0 s:CN = chnode1
+     i:CN = marsnet.local CA
+  ---
+  Server certificate
+  -----BEGIN CERTIFICATE-----
+  MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
+  ...
+  ```
 
 * 在 `openssl` 会话中发送 4LW 命令
 
@@ -463,13 +444,13 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 
 4. 使用 `--secure` 参数和 SSL 端口启动 ClickHouse 客户端：
    ```bash
-   root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
-   ClickHouse client version 22.3.3.44 (official build).
-   Connecting to chnode1.marsnet.local:9440 as user default.
-   Connected to ClickHouse server version 22.3.3 revision 54455.
+    root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
+    ClickHouse client version 22.3.3.44 (official build).
+    Connecting to chnode1.marsnet.local:9440 as user default.
+    Connected to ClickHouse server version 22.3.3 revision 54455.
 
-   clickhouse :)
-   ```
+    clickhouse :)
+    ```
 
 5. 使用 `https` 接口，通过 `https://chnode1.marsnet.local:8443/play` 登录 Play UI。
 
@@ -483,32 +464,31 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
 6. 创建一个复制表：
 
    ```sql
-   clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
-               (
-                   id UInt64,
-                   column1 Date,
-                   column2 String
-               )
-               ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
-               ORDER BY (id);
-   ```
+    clickhouse :) CREATE TABLE repl_table ON CLUSTER cluster_1S_2R
+                (
+                    id UInt64,
+                    column1 Date,
+                    column2 String
+                )
+                ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/default/repl_table', '{replica}' )
+                ORDER BY (id);
+    ```
 
    ```response
-   ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
-   │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
-   │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
-   └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
-   ```
+    ┌─host──────────────────┬─port─┬─status─┬─error─┬─num_hosts_remaining─┬─num_hosts_active─┐
+    │ chnode2.marsnet.local │ 9440 │      0 │       │                   1 │                0 │
+    │ chnode1.marsnet.local │ 9440 │      0 │       │                   0 │                0 │
+    └───────────────────────┴──────┴────────┴───────┴─────────────────────┴──────────────────┘
+    ```
 
 7. 在 `chnode1` 上插入几行数据：
    ```sql
-   INSERT INTO repl_table
-   (id, column1, column2)
-   VALUES
-   (1,'2022-04-01','abc'),
-   (2,'2022-04-02','def');
-   ```
-
+    INSERT INTO repl_table
+    (id, column1, column2)
+    VALUES
+    (1,'2022-04-01','abc'),
+    (2,'2022-04-02','def');
+    ```
 
 8. 通过在 `chnode2` 上查看行数据来验证复制情况：
     ```sql
@@ -521,8 +501,6 @@ MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
-
-
 
 ## 总结 {#summary}
 

@@ -50,7 +50,6 @@ ClickHouse 提供了一种强大的机制，称为 **数据跳过索引（data s
 
 关于数据跳过索引的更详细指南请参见[此处](/sql-reference/statements/alter/skipping-index)。
 
-
 ## 示例 {#example}
 
 考虑下面这个经过优化的表。该表包含 Stack Overflow 数据，每行对应一篇帖子。
@@ -97,7 +96,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 │     5   │
 └─────────┘
 
-1 行结果。耗时: 0.720 秒。处理了 59.55 百万行，230.23 MB (82.66 百万行/秒，319.56 MB/秒)
+1 row in set. Elapsed: 0.720 sec. Processed 59.55 million rows, 230.23 MB (82.66 million rows/s., 319.56 MB/s.)
 ```
 
 此查询可以利用主索引排除部分行（和粒度）。然而，如上方响应以及下面的 `EXPLAIN indexes = 1` 所示，仍然需要读取大部分行：
@@ -137,11 +136,10 @@ LIMIT 1
 │               Granules: 8513/8513                                │
 └──────────────────────────────────────────────────────────────────┘
 
-返回 25 行。用时:0.070 秒。
+25 rows in set. Elapsed: 0.070 sec.
 ```
 
 一个简单的分析表明，`ViewCount` 与 `CreationDate`（主键）存在相关性，正如人们所预期的那样——帖子存在的时间越长，被查看的次数就越多。
-
 
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
@@ -183,7 +181,7 @@ CREATE TABLE stackoverflow.posts
   `ParentId` String,
   `CommunityOwnedDate` DateTime64(3, 'UTC'),
   `ClosedDate` DateTime64(3, 'UTC'),
-  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --此处为索引
+  INDEX view_count_idx ViewCount TYPE minmax GRANULARITY 1 --index here
 )
 ENGINE = MergeTree
 PARTITION BY toYear(CreationDate)
@@ -205,7 +203,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 │     5   │
 └─────────┘
 
-1 行结果。耗时: 0.012 秒。处理了 39.11 千行，321.39 KB (3.40 百万行/秒，27.93 MB/秒)。
+1 row in set. Elapsed: 0.012 sec. Processed 39.11 thousand rows, 321.39 KB (3.40 million rows/s., 27.93 MB/s.)
 ```
 
 运行 `EXPLAIN indexes = 1` 可以确认索引已被使用。
@@ -215,8 +213,41 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
-```
 
+┌─explain────────────────────────────────────────────────────────────┐
+│ Expression ((Project names + Projection))                          │
+│   Aggregating                                                      │
+│     Expression (Before GROUP BY)                                   │
+│       Expression                                                   │
+│         ReadFromMergeTree (stackoverflow.posts)                    │
+│         Indexes:                                                   │
+│           MinMax                                                   │
+│             Keys:                                                  │
+│               CreationDate                                         │
+│             Condition: (CreationDate in ('1230768000', +Inf))      │
+│             Parts: 123/128                                         │
+│             Granules: 8513/8545                                    │
+│           Partition                                                │
+│             Keys:                                                  │
+│               toYear(CreationDate)                                 │
+│             Condition: (toYear(CreationDate) in [2009, +Inf))      │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           PrimaryKey                                               │
+│             Keys:                                                  │
+│               toDate(CreationDate)                                 │
+│             Condition: (toDate(CreationDate) in [14245, +Inf))     │
+│             Parts: 123/123                                         │
+│             Granules: 8513/8513                                    │
+│           Skip                                                     │
+│             Name: view_count_idx                                   │
+│             Description: minmax GRANULARITY 1                      │
+│             Parts: 5/123                                           │
+│             Granules: 23/8513                                      │
+└────────────────────────────────────────────────────────────────────┘
+
+29 rows in set. Elapsed: 0.211 sec.
+```
 
 ┌─explain────────────────────────────────────────────────────────────┐
 │ 表达式（（Project names + Projection））                           │
@@ -258,7 +289,6 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 <Image img={using_skipping_indices} size="lg" alt="使用跳数索引"/>
 ```
-
 
 ## 相关文档 {#related-docs}
 - [数据跳过索引指南](/optimize/skipping-indexes)

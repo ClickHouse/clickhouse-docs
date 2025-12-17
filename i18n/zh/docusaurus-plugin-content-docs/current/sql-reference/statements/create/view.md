@@ -11,12 +11,9 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # CREATE VIEW {#create-view}
 
 创建一个新视图。视图可以是[普通视图](#normal-view)、[物化视图](#materialized-view)、[可刷新的物化视图](#refreshable-materialized-view)以及[窗口视图](/sql-reference/statements/create/view#window-view)。
-
-
 
 ## 普通视图 {#normal-view}
 
@@ -49,7 +46,6 @@ SELECT a, b, c FROM view
 SELECT a, b, c FROM (SELECT ...)
 ```
 
-
 ## 参数化视图 {#parameterized-view}
 
 参数化视图与普通视图类似，但在创建时可以指定不会立即解析的参数。这类视图可以配合表函数使用：将视图名称作为函数名，将参数值作为函数参数传入。
@@ -63,7 +59,6 @@ CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Co
 ```sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
-
 
 ## 物化视图 {#materialized-view}
 
@@ -119,7 +114,6 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 
 要删除视图，请使用 [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)。尽管 `DROP TABLE` 对 VIEW 也同样可用。
 
-
 ## SQL 安全性 {#sql_security}
 
 `DEFINER` 和 `SQL SECURITY` 允许你指定在执行视图底层查询时要使用的 ClickHouse 用户。
@@ -166,7 +160,6 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
-
 ## 实时视图 {#live-view}
 
 <DeprecatedBadge/>
@@ -174,8 +167,6 @@ AS SELECT ...
 此功能已被弃用，并将在未来的版本中移除。
 
 为方便查阅，旧版文档位于[此处](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)
-
-
 
 ## 可刷新物化视图 {#refreshable-materialized-view}
 
@@ -196,7 +187,7 @@ AS SELECT ...
 其中 `interval` 是由简单区间组成的序列：
 
 ```sql
-数值 SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
+number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
 定期运行相应的查询，并将其结果存储在一个表中。
@@ -216,23 +207,23 @@ AS SELECT ...
 刷新计划示例：
 
 ```sql
-REFRESH EVERY 1 DAY -- 每天午夜(UTC)执行
-REFRESH EVERY 1 MONTH -- 每月1日午夜执行
-REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- 每月6日凌晨2:00执行
-REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- 每隔一周的星期六下午3:10执行
-REFRESH EVERY 30 MINUTE -- 在00:00、00:30、01:00、01:30等时刻执行
-REFRESH AFTER 30 MINUTE -- 上一次刷新完成后30分钟执行,不与每日时间对齐
--- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- 语法错误,OFFSET不能与AFTER一起使用
-REFRESH EVERY 1 WEEK 2 DAYS -- 每9天执行一次,不固定在每周或每月的特定日期;
-                            -- 具体而言,当天数(自1969-12-29起算)能被9整除时执行
-REFRESH EVERY 5 MONTHS -- 每5个月执行一次,每年月份不同(因为12不能被5整除);
-                       -- 具体而言,当月份数(自1970-01起算)能被5整除时执行
+REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
+REFRESH EVERY 1 MONTH -- on 1st day of every month, at midnight
+REFRESH EVERY 1 MONTH OFFSET 5 DAY 2 HOUR -- on 6th day of every month, at 2:00 am
+REFRESH EVERY 2 WEEK OFFSET 5 DAY 15 HOUR 10 MINUTE -- every other Saturday, at 3:10 pm
+REFRESH EVERY 30 MINUTE -- at 00:00, 00:30, 01:00, 01:30, etc
+REFRESH AFTER 30 MINUTE -- 30 minutes after the previous refresh completes, no alignment with time of day
+-- REFRESH AFTER 1 HOUR OFFSET 1 MINUTE -- syntax error, OFFSET is not allowed with AFTER
+REFRESH EVERY 1 WEEK 2 DAYS -- every 9 days, not on any particular day of the week or month;
+                            -- specifically, when day number (since 1969-12-29) is divisible by 9
+REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is not divisible by 5);
+                       -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
 `RANDOMIZE FOR` 会随机调整每次刷新的时间，例如：
 
 ```sql
-REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 每天在 01:30 至 02:30 之间的随机时间刷新
+REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
 对于给定的视图，同一时间最多只能运行一个刷新任务。比如，如果一个带有 `REFRESH EVERY 1 MINUTE` 的视图需要 2 分钟才能刷新完成，那么它实际上就会每 2 分钟刷新一次。如果之后刷新变快，开始在 10 秒内完成刷新，它就会恢复为每分钟刷新一次。（特别地，它不会为了“追赶”错过的刷新而每 10 秒刷新一次——系统中并不存在这样的积压队列。）
@@ -244,7 +235,6 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- 每天在 01:30 至 02
 如果可刷新的物化视图位于 [Replicated 数据库](../../../engines/database-engines/replicated.md) 中，副本之间会相互协调，使得在每个计划的刷新时间点仅有一个副本执行刷新。需要使用 [ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) 表引擎，以确保所有副本都能看到刷新产生的数据。
 
 在 `APPEND` 模式下，可以通过 `SETTINGS all_replicas = 1` 禁用这种协调。这样会使各个副本彼此独立地执行刷新。在这种情况下，不再需要使用 ReplicatedMergeTree。
-
 
 在非 `APPEND` 模式下，仅支持协调刷新。对于非协调刷新，请使用 `Atomic` 数据库以及 `CREATE ... ON CLUSTER` 查询，在所有副本上创建可刷新物化视图。
 
@@ -317,7 +307,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### 其他操作 {#other-operations}
 
-
 所有可刷新的物化视图的状态都可以在表 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。该表包含刷新进度（如果正在运行）、上次和下次刷新时间，以及在刷新失败时的异常消息。
 
 要手动停止、启动、触发或取消刷新，请使用 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)。
@@ -327,8 +316,6 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 :::note
 趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏（Conway's Game of Life）：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
-
-
 
 ## 窗口视图 {#window-view}
 
@@ -390,7 +377,6 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 ```
 
 请注意，由延迟触发产生的元素应被视为对先前计算结果的更新。与在窗口结束时触发不同，窗口视图会在延迟事件到达时立即触发。因此，同一个窗口将产生多次输出。用户需要将这些重复结果纳入考虑，或对其进行去重处理。
-
 
 你可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在 window view 中定义的 `SELECT` 查询。新的 `SELECT` 查询所产生的数据结构，在使用或不使用 `TO [db.]name` 子句时，都必须与原始的 `SELECT` 查询保持一致。请注意，当前窗口中的数据将会丢失，因为中间状态无法复用。
 
@@ -462,13 +448,10 @@ Window View 在以下场景中非常有用：
 * **监控**：按时间对指标日志进行聚合和计算，并将结果输出到目标表。Dashboard 可以将该目标表作为数据源表使用。
 * **分析**：在时间窗口内自动聚合和预处理数据，这在分析海量日志时尤其有用。预处理可以消除多个查询中的重复计算，降低查询延迟。
 
-
 ## 相关内容 {#related-content}
 
 - 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
 - 博客文章：[使用 ClickHouse 构建可观测性解决方案（第二部分：链路追踪）](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
-
-
 
 ## 临时视图 {#temporary-views}
 
@@ -531,7 +514,7 @@ SHOW CREATE TEMPORARY VIEW tview;
 将其删除：
 
 ```sql
-DROP TEMPORARY VIEW IF EXISTS tview;  -- 临时视图需使用 TEMPORARY TABLE 语法进行删除
+DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
 
 ### 不允许的用法 / 限制 {#temporary-views-limitations}
@@ -549,18 +532,18 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- 临时视图需使用 TEMPORARY TABLE �
 #### 示例 {#temporary-views-distributed-example}
 
 ```sql
--- 会话级内存表
+-- A session-scoped, in-memory table
 CREATE TEMPORARY TABLE temp_ids (id UInt64) ENGINE = Memory;
 
 INSERT INTO temp_ids VALUES (1), (5), (42);
 
--- 基于临时表的会话级视图(纯逻辑)
+-- A session-scoped view over the temp table (purely logical)
 CREATE TEMPORARY VIEW v_ids AS
 SELECT id FROM temp_ids;
 
--- 将 'test' 替换为您的集群名称。
--- GLOBAL JOIN 强制 ClickHouse 将较小的连接端(通过 v_ids 访问的 temp_ids)
--- 分发到执行左侧查询的每个远程服务器。
+-- Replace 'test' with your cluster name.
+-- GLOBAL JOIN forces ClickHouse to *ship* the small join-side (temp_ids via v_ids)
+-- to every remote server that executes the left side.
 SELECT count()
 FROM cluster('test', system.numbers) AS n
 GLOBAL ANY INNER JOIN v_ids USING (id)

@@ -7,13 +7,9 @@ title: 'Redis 表引擎'
 doc_type: 'guide'
 ---
 
-
-
 # Redis 表引擎 {#redis-table-engine}
 
 该引擎允许将 ClickHouse 与 [Redis](https://redis.io/) 集成。由于 Redis 采用键值（KV）模型，我们强烈建议仅执行点查询，例如使用 `where k = xx` 或 `where k in (xx, xx)`。
-
-
 
 ## 创建数据表 {#creating-a-table}
 
@@ -23,8 +19,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
     name1 [type1],
     name2 [type2],
     ...
-) 引擎 = Redis({host:port[, db_index[, password[, pool_size]]] | named_collection[, option=value [,..]] })
-主键(primary_key_name);
+) ENGINE = Redis({host:port[, db_index[, password[, pool_size]]] | named_collection[, option=value [,..]] })
+PRIMARY KEY(primary_key_name);
 ```
 
 **引擎参数**
@@ -45,7 +41,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 :::note Filtering
 带有 `key equals` 或 `in filtering` 的查询将被优化为从 Redis 进行多键查找。对于未按键过滤的查询，将会执行全表扫描，这是一种开销很大的操作。
 :::
-
 
 ## 使用示例 {#usage-example}
 
@@ -154,7 +149,6 @@ Join:
 ```sql
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
-
 
 ## 限制 {#limitations}
 

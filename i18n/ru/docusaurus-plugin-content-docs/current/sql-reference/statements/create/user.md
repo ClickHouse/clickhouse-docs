@@ -26,7 +26,6 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 
 Предложение `ON CLUSTER` позволяет создавать пользователей на кластере, см. [Распределённый DDL](../../../sql-reference/distributed-ddl.md).
 
-
 ## Идентификация {#identification}
 
 Существует несколько способов идентификации пользователя:
@@ -53,11 +52,11 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>должен содержать не менее 12 символов</message>
+            <message>be at least 12 characters long</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>должен содержать хотя бы 1 цифру</message>
+            <message>contain at least 1 numeric character</message>
         </rule>
     </password_complexity>
 </clickhouse>
@@ -72,7 +71,6 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 * Содержать как минимум 1 строчную букву
 * Содержать как минимум 1 специальный символ
   :::
-
 
 ## Примеры {#examples}
 
@@ -162,14 +160,10 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
    CREATE USER user1 IDENTIFIED WITH plaintext_password by '1', bcrypt_password by '2', plaintext_password by '3''
    ```
 
-
-
 Примечания:
 1. Более старые версии ClickHouse могут не поддерживать синтаксис с несколькими методами аутентификации. Поэтому, если на сервере ClickHouse есть пользователи с такими настройками и сервер понижен до версии, которая этого не поддерживает, эти пользователи станут недоступны, а некоторые операции, связанные с пользователями, перестанут работать. Чтобы выполнить понижение версии корректно, необходимо перед понижением настроить всех пользователей так, чтобы у каждого был только один метод аутентификации. Либо, если сервер был понижен без соблюдения предусмотренной процедуры, проблемных пользователей следует удалить.
 2. `no_password` не может сосуществовать с другими методами аутентификации по соображениям безопасности. Поэтому вы можете указать
 `no_password` только если это единственный метод аутентификации в запросе. 
-
-
 
 ## Хост пользователя {#user-host}
 
@@ -192,8 +186,6 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
 ClickHouse рассматривает `user_name@'address'` как имя пользователя целиком. Таким образом, технически вы можете создать несколько пользователей с одинаковым `user_name` и разными конструкциями после `@`. Однако мы не рекомендуем делать это.
 :::
 
-
-
 ## Оператор VALID UNTIL {#valid-until-clause}
 
 Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать формат `YYYY-MM-DD [hh:mm:ss] [timezone]` для даты и времени. По умолчанию этот параметр имеет значение `'infinity'`.
@@ -207,58 +199,54 @@ ClickHouse рассматривает `user_name@'address'` как имя пол
 - ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
 - `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
 
+## GRANTEES Clause {#grantees-clause}
 
+Specifies users or roles which are allowed to receive [privileges](../../../sql-reference/statements/grant.md#privileges) from this user on the condition this user has also all required access granted with [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Options of the `GRANTEES` clause:
 
-## Клауза GRANTEES {#grantees-clause}
+- `user` — Specifies a user this user can grant privileges to.
+- `role` — Specifies a role this user can grant privileges to.
+- `ANY` — This user can grant privileges to anyone. It's the default setting.
+- `NONE` — This user can grant privileges to none.
 
-Указывает пользователей или роли, которым разрешено получать [привилегии](../../../sql-reference/statements/grant.md#privileges) от этого пользователя при условии, что этому пользователю также выданы все требуемые привилегии с [GRANT OPTION](../../../sql-reference/statements/grant.md#granting-privilege-syntax). Варианты клаузы `GRANTEES`:
+You can exclude any user or role by using the `EXCEPT` expression. For example, `CREATE USER user1 GRANTEES ANY EXCEPT user2`. It means if `user1` has some privileges granted with `GRANT OPTION` it will be able to grant those privileges to anyone except `user2`.
 
-- `user` — Указывает пользователя, которому этот пользователь может выдавать привилегии.
-- `role` — Указывает роль, которой этот пользователь может выдавать привилегии.
-- `ANY` — Этот пользователь может выдавать привилегии кому угодно. Значение по умолчанию.
-- `NONE` — Этот пользователь не может выдавать привилегии никому.
+## Examples {#examples-1}
 
-Вы можете исключить любого пользователя или роль с помощью выражения `EXCEPT`. Например, `CREATE USER user1 GRANTEES ANY EXCEPT user2`. Это означает, что если у `user1` есть некоторые привилегии, выданные с `GRANT OPTION`, он сможет выдавать эти привилегии кому угодно, кроме `user2`.
-
-
-
-## Примеры {#examples-1}
-
-Создайте учетную запись пользователя `mira` с паролем `qwerty`:
+Create the user account `mira` protected by the password `qwerty`:
 
 ```sql
 CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty';
 ```
 
-Клиентское приложение `mira` следует запускать на хосте, где запущен сервер ClickHouse.
+`mira` should start client app at the host where the ClickHouse server runs.
 
-Создайте учетную запись пользователя `john`, назначьте ей роли и сделайте эти роли ролями по умолчанию:
+Create the user account `john`, assign roles to it and make this roles default:
 
 ```sql
 CREATE USER john DEFAULT ROLE role1, role2;
 ```
 
-Создайте учетную запись пользователя `john` и назначьте все его будущие роли ролями по умолчанию:
+Create the user account `john` and make all his future roles default:
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL;
 ```
 
-Когда в дальнейшем пользователю `john` будет назначена какая-либо роль, она автоматически станет ролью по умолчанию.
+When some role is assigned to `john` in the future, it will become default automatically.
 
-Создайте учетную запись пользователя `john` и сделайте все его будущие роли ролями по умолчанию, за исключением ролей `role1` и `role2`:
+Create the user account `john` and make all his future roles default excepting `role1` and `role2`:
 
 ```sql
 CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 ```
 
-Создайте учётную запись пользователя `john` и разрешите ему передавать свои привилегии пользователю `jack`:
+Create the user account `john` and allow him to grant his privileges to the user with `jack` account:
 
 ```sql
 CREATE USER john GRANTEES jack;
 ```
 
-Используйте параметр запроса для создания учетной записи пользователя `john`:
+Use a query parameter to create the user account `john`:
 
 ```sql
 SET param_user=john;

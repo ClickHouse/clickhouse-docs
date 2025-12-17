@@ -433,9 +433,9 @@ true に設定すると、実験的なテキストインデックスの使用を
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-Iceberg テーブルに対して `OPTIMIZE` を明示的に使用できるようにします。
+iceberg テーブルで 'OPTIMIZE' を明示的に使用できるようにします。
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -1689,7 +1689,9 @@ String から Variant への変換時に型推論を行います。
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "CHECK TABLE をより有用にするために設定を変更"}]}]}/>
 
 `MergeTree` ファミリーのエンジンに対する [CHECK TABLE](/sql-reference/statements/check-table) クエリ結果の詳細レベルを定義します。
 
@@ -1821,6 +1823,16 @@ true の場合、カラム定義内の AUTO_INCREMENT キーワードを無視�
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 互換性設定: CREATE TABLE で照合順序を無視する
+
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+互換性のための設定です。有効にすると、署名付き URL のクエリパラメータ（例: X-Amz-*）を S3 キーに折り込み（従来の動作）、
+パス中では「?」がワイルドカードとして動作します。無効（デフォルト）の場合、署名付き URL のクエリパラメータは URL のクエリ部に保持され、
+「?」がワイルドカードとして解釈されないようにします。
 
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
@@ -2723,6 +2735,26 @@ ClickHouse Cloud でのみ効果があります。TCP が keepalive プローブ
 
 ClickHouse Cloud でのみ有効です。distributed cache との通信中に発生した例外、または distributed cache から受信した例外を再スローします。それ以外の場合は、エラー時に distributed cache をスキップするフォールバック動作になります。
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。読み取りリクエストにクライアントキャッシュを使用します。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。書き込みリクエストに対して clients cache を使用します。
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>
@@ -3287,7 +3319,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- ALL が曖昧であるというエラーを返します
+SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3594,17 +3626,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a は挿入時に更新されません
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- どちらのインデックスも挿入時に更新されません
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- idx_b のみが更新されます
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
 
--- セッション設定のため、クエリレベルで設定可能です
+-- since it is a session setting it can be set on a per-query level
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- このクエリを使用してインデックスを明示的にマテリアライズできます
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- 設定をデフォルトにリセット
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
 ```
 
 
@@ -3877,7 +3909,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-SETTINGS index_granularity = 8192 │
+│
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3901,7 +3933,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-SETTINGS index_granularity = 8192 │
+│
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3937,12 +3969,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- クエリはCANNOT_PARSE_TEXTエラーを発生させます。
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- クエリはINDEX_NOT_USEDエラーを発生させます。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- 正常。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- 正常(フル機能パーサーの例)。
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- d1_null_idxが使用されていないため、クエリはINDEX_NOT_USEDエラーを発生させます。
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- 正常。
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
 ```
 
 
@@ -4099,7 +4131,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-1行のセット。経過時間: 0.001秒。
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 指定可能な値:
@@ -4652,11 +4684,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- クエリはCANNOT_PARSE_TEXTエラーを発生させます。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- 正常。
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- 正常。
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- xy_idxが明示的に無視されているため、クエリはINDEX_NOT_USEDエラーを発生させます。
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4862,11 +4894,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- 次のINSERTは重複排除されません。insert_deduplication_tokenが異なるためです
+-- the next insert won't be deduplicated because insert_deduplication_token is different
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- 次のINSERTは重複排除されます。insert_deduplication_tokenが
--- 以前のものと同じためです
+-- the next insert will be deduplicated because insert_deduplication_token
+-- is the same as one of the previous
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -6265,7 +6297,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 結果：
 
 ```text
-例外: 正規表現の長さが大きすぎます。
+Exception: Regexp length too large.
 ```
 
 **関連項目**
@@ -6309,7 +6341,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 結果：
 
 ```text
-例外: 正規表現の合計長が大きすぎます。
+Exception: Total regexp lengths too large.
 ```
 
 **関連項目**
@@ -6847,15 +6879,15 @@ ORDER BY 演算で処理する必要がある行数が指定した値を超え�
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- ユーザーAliceは一度に1回のみClickHouseサーバーに接続できます。 -->
+    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- ユーザーBobは同時に2つのセッションを使用できます。 -->
+    <!-- User Bob can use 2 simultaneous sessions. -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- ユーザーCharlesは任意の数の同時セッションを使用できます。 -->
+    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -8800,8 +8832,8 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 結果：
 
 ```text
-サーバーから例外を受信しました (バージョン 21.5.1):
-コード: 184. DB::Exception: localhost:9000 から受信しました。DB::Exception: 集約関数 avg(number) がクエリ内の別の集約関数内で見つかりました: avg(number) AS number の処理中。
+Received exception from server (version 21.5.1):
+Code: 184. DB::Exception: Received from localhost:9000. DB::Exception: Aggregate function avg(number) is found inside another aggregate function in query: While processing avg(number) AS number.
 ```
 
 クエリ：
@@ -9303,6 +9335,14 @@ Possible values:
 
 遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御します。0 の場合、上限はありません。
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+minmax skip 索引と動的しきい値フィルタリングを使用して TopK 最適化のためのクエリプランを評価できる最大の LIMIT 値を制御します。0 を指定すると制限はありません。
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -9355,6 +9395,20 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタのマージを許可します"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタのマージを許可します。これは、新しいアナライザでのフィルタプッシュダウンを正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタのマージを許可します。
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+クエリプランの最適化時に試行する JOIN 順序アルゴリズムを指定します。利用可能なアルゴリズムは次のとおりです:
+
+- 'greedy' - 基本的な貪欲法アルゴリズムです。高速に動作しますが、常に最適な JOIN 順序を生成できるとは限りません。
+ - 'dpsize' - 現在は Inner join に対してのみ有効な DPsize アルゴリズムです。考えられるすべての JOIN 順序を考慮して最適なものを選択しますが、多数のテーブルや JOIN 述語を含むクエリでは遅くなる可能性があります。
+複数のアルゴリズムを指定できます (例: 'dpsize,greedy')。
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
@@ -9412,6 +9466,14 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 
 - 0 - 無効
 - 1 - 有効
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+JOIN 操作において左側テーブルからの順序どおりの読み取りを維持し、その結果を後続のステップで利用できるようにします。
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
@@ -9895,7 +9957,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 行が設定されています。...
+6666 rows in set. ...
 ```
 
 
@@ -10071,6 +10133,15 @@ S3 へのマルチパートアップロードでアップロードする各パ�
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 S3 へのマルチパートアップロードでアップロードするパートの最小サイズ。
+
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+ファイルを走査する際に glob リストの代わりに利用するため、クエリフィルタから抽出できる `_path` 値の最大数です。
+0 を指定すると無効になります。
 
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
@@ -10306,6 +10377,14 @@ S3 テーブル関数使用時のスキーマ推論でキャッシュを使用�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 分散処理のためにクエリプランをシリアル化します
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+集約時に String 値を末尾にゼロバイト終端を付けてシリアライズします。互換性のないバージョンが混在するクラスタに対してクエリを実行する際の互換性を維持するために有効にします。
 
 ## session&#95;timezone {#session_timezone}
 
@@ -10626,7 +10705,8 @@ FINAL 最適化中にパーツ範囲を交差するものと交差しないも�
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "デフォルトでは Kafka/RabbitMQ/FileLog への直接 SELECT を許可しない"}]}]}/>
 
-Kafka、RabbitMQ、FileLog、Redis Streams、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+materialized view がアタッチされていない場合、この設定を有効にするとデータを読み取れるようになります。通常は、読み取ったデータはキューから削除される点に注意してください。読み取ったデータを削除しないようにするには、関連するエンジンの設定を適切に構成する必要があります。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 
@@ -10676,7 +10756,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ クエリのメモリ制限を超過した回数。 │
+│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 
@@ -11176,6 +11256,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 - 0 — 無効。
 - 1 — 有効。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+TopK フィルタリングのためにデータスキッピングインデックスを使用できるようにします。
+
+有効にすると、`ORDER BY <column> LIMIT n` クエリのカラムに minmax データスキッピングインデックスが存在する場合、オプティマイザは最終結果に関係しないグラニュールをスキップするためにそのインデックスを使用しようとします。これにより、クエリのレイテンシを低減できる可能性があります。
+
+設定値:
+
+- 0 — 無効。
+- 1 — 有効。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11265,6 +11360,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 
 テキスト索引ポスティングリストのデシリアライズ結果をキャッシュとして使用するかどうかを制御します。
 text index postings cache を有効にすると、大量のテキスト索引クエリを処理する際のレイテンシを大幅に削減し、スループットを向上させることができます。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+`ORDER BY <column> LIMIT n` クエリを実行する際に、動的フィルタリングの最適化を有効にします。
+
+有効にすると、クエリエグゼキュータは、結果セットの最終的な `top N` 行には含まれないグラニュールおよび行をスキップしようとします。この最適化は動的な性質を持ち、レイテンシ改善の度合いはデータ分布およびクエリ内に存在する他の述語に依存します。
+
+取り得る値:
+
+- 0 — 無効。
+- 1 — 有効。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

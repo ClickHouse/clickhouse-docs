@@ -25,7 +25,6 @@ ClickStack React Native SDK を使用すると、React Native アプリケーシ
 npm install @hyperdx/otel-react-native
 ```
 
-
 ### ClickStack の初期化 {#initialize-clickstack}
 
 アプリケーションのライフサイクルの、できるだけ早い段階でライブラリを初期化してください。
@@ -36,10 +35,9 @@ import { HyperDXRum } from '@hyperdx/otel-react-native';
 HyperDXRum.init({
   service: 'my-rn-app',
   apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドとバックエンド間のリクエストのトレースを連携するために設定
+  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
 });
 ```
-
 
 ### ユーザー情報またはメタデータを付与する（任意） {#attach-user-information-metadata}
 
@@ -53,10 +51,9 @@ HyperDXRum.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // その他のカスタムプロパティ...
+  // Other custom properties...
 });
 ```
-
 
 ### 旧バージョンを計装する {#instrument-lower-versions}
 
@@ -103,7 +100,6 @@ module.exports = {
   },
 };
 ```
-
 
 ## ビューのナビゲーション {#view-navigation}
 

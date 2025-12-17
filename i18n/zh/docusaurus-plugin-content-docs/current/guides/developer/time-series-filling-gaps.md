@@ -214,7 +214,7 @@ STEP toIntervalMillisecond(100);
 SELECT
     toStartOfInterval(timestamp, toIntervalMillisecond(100)) AS bucket,
     count() AS count,
-    sum(count) OVER (ORDER BY bucket) AS cumulative  -- 累积计数
+    sum(count) OVER (ORDER BY bucket) AS cumulative
 FROM MidJourney.images
 WHERE (timestamp >= {start:String}) AND (timestamp <= {end:String})
 GROUP BY ALL

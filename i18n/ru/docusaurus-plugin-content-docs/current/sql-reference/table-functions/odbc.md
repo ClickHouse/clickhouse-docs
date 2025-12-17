@@ -7,22 +7,17 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция ODBC {#odbc-table-function}
 
 Возвращает таблицу, подключённую через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
-
-
 ## Синтаксис {#syntax}
 
 ```sql
-odbc(источник_данных, внешняя_база_данных, внешняя_таблица)
-odbc(источник_данных, внешняя_таблица)
-odbc(именованная_коллекция)
+odbc(datasource, external_database, external_table)
+odbc(datasource, external_table)
+odbc(named_collection)
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -37,8 +32,6 @@ odbc(именованная_коллекция)
 Для безопасной организации ODBC-подключений ClickHouse использует отдельную программу `clickhouse-odbc-bridge`. Если ODBC-драйвер загружается напрямую из `clickhouse-server`, проблемы драйвера могут привести к сбою сервера ClickHouse. ClickHouse автоматически запускает `clickhouse-odbc-bridge`, когда это требуется. Программа ODBC bridge устанавливается из того же пакета, что и `clickhouse-server`.
 
 Поля со значениями `NULL` из внешней таблицы преобразуются в значения по умолчанию для базового типа данных. Например, если поле удалённой таблицы MySQL имеет тип `INT NULL`, оно преобразуется в 0 (значение по умолчанию для типа данных ClickHouse `Int32`).
-
-
 
 ## Пример использования {#usage-example}
 
@@ -77,7 +70,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| Подключено!                           |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -116,7 +109,6 @@ SELECT * FROM odbc('DSN=mysqlconn', 'test', 'test')
 │      1 │            0 │     2 │              0 │
 └────────┴──────────────┴───────┴────────────────┘
 ```
-
 
 ## См. также {#see-also}
 

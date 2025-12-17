@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
 # 基于 TimescaleDB 的 Postgres 数据源配置指南 {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
-
-
 
 ## 背景 {#background}
 
@@ -34,13 +31,9 @@ Timescale Inc 还为 TimescaleDB 提供两种托管服务：
 Timescale hypertable 在多个方面的行为与常规 Postgres 表不同。这会给复制它们的过程带来一定的复杂性，
 因此对 Timescale hypertable 的复制能力应被视为**尽力而为（best effort）**。
 
-
-
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
 
 ClickPipes 支持 Postgres 12 及以上版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -56,8 +49,6 @@ Timescale Cloud 不支持逻辑复制，而逻辑复制是以 CDC 模式使用 P
 因此，Timescale Cloud 的用户只能通过 Postgres ClickPipe 对其数据执行一次性加载（`Initial Load Only`）。
 :::
 
-
-
 ## 配置 {#configuration}
 
 Timescale 超表本身并不存储插入到其中的任何数据。相反，数据存储在 `_timescaledb_internal` 模式中多个对应的 “chunk” 表里。对于在超表上运行查询而言，这不是问题。但在逻辑复制过程中，变更不是在超表上被检测到，而是在 chunk 表上被检测到。Postgres ClickPipe 内置了将 chunk 表中的变更自动重新映射回父超表的逻辑，但这需要额外的步骤。
@@ -71,8 +62,8 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- 如需要,可以将这些 GRANT 权限细化到单个表,而不是整个模式
-  -- 但向 ClickPipe 添加新表时,也需要将这些表的权限授予该用户。
+  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
+  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 ```
@@ -84,7 +75,7 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 2. 以 Postgres 超级用户或管理员用户身份，在源实例上创建一个 publication，其中包含你想要复制的表和 hypertable，**并且还必须包含整个 `_timescaledb_internal` schema**。创建 ClickPipe 时，你需要选择这个 publication。
 
 ```sql
--- 向 ClickPipe 添加新表时,需要手动将这些表同时添加到发布中。 
+-- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
@@ -102,12 +93,11 @@ Timescale 超表本身并不存储插入到其中的任何数据。相反，数�
 3. 为之前创建的用户授予复制权限。
 
 ```sql
--- 为 USER 授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 ```
 
 完成以上步骤后，即可[创建 ClickPipe](../index.md)。
-
 
 ## 配置网络访问 {#configure-network-access}
 

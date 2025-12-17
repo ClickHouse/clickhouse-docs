@@ -12,7 +12,6 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
 # Проектирование схемы {#designing-your-schema}
 
 Хотя [вывод схемы](/integrations/data-formats/json/inference) можно использовать для формирования начальной схемы JSON‑данных и выполнения запросов к JSON‑файлам непосредственно в хранилище, например в S3, пользователям следует стремиться разработать оптимизированную версионируемую схему для своих данных. Ниже рассматривается рекомендуемый подход к моделированию JSON‑структур.
@@ -57,19 +56,19 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
   "website": "clickhouse.com",
   "company": {
     "name": "ClickHouse",
-    "catchPhrase": "Хранилище данных реального времени для аналитики",
+    "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
-      "type": "системы управления базами данных",
+      "type": "database systems",
       "founded": "2021"
     }
   },
   "dob": "2007-03-31",
   "tags": {
-    "hobby": "Базы данных",
+    "hobby": "Databases",
     "holidays": [
       {
         "year": 2024,
-        "location": "Азорские острова, Португалия"
+        "location": "Azores, Portugal"
       }
     ],
     "car": {
@@ -86,7 +85,6 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 * Новые ключи не будут добавляться в объект `address` (только новые объекты `address`), поэтому его можно считать **статическим**. Если рекурсивно раскрыть структуру, все вложенные столбцы можно считать примитивами (типа `String`), за исключением `geo`. Это также статическая структура с двумя столбцами типа `Float32`, `lat` и `lon`.
 * Столбец `tags` является **динамическим**. Мы предполагаем, что в этот объект могут добавляться новые произвольные теги любого типа и структуры.
 * Объект `company` является **статическим** и будет содержать не более трёх указанных ключей. Вложенные ключи `name` и `catchPhrase` имеют тип `String`. Ключ `labels` является **динамическим**. Мы предполагаем, что в этот объект могут добавляться новые произвольные теги. Значения всегда будут парами ключ–значение типа `String`.
-
 
 :::note
 Структуры с сотнями или тысячами статических ключей можно считать динамическими, так как редко бывает реалистично статически объявлять для них столбцы. Тем не менее, при возможности [пропускайте пути](#using-type-hints-and-skipping-paths), которые не нужны, чтобы сократить затраты как на хранение, так и на определение типов.
@@ -123,7 +121,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
   "website": "clickhouse.com",
   "company": {
     "name": "ClickHouse",
-    "catchPhrase": "Хранилище данных реального времени для аналитики"
+    "catchPhrase": "The real-time data warehouse for analytics"
   },
   "dob": "2007-03-31"
 }
@@ -154,7 +152,7 @@ JSON можно вставлять в эту таблицу в её текуще
 
 ```sql
 INSERT INTO people FORMAT JSONEachRow
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"Хранилище данных для аналитики в реальном времени"},"dob":"2007-03-31"}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 ```
 
 В приведённом выше примере у нас минимум данных, но, как показано ниже, мы можем выполнять запросы к столбцам-кортежам по их именам, разделённым точками.
@@ -201,7 +199,6 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-
 
 ### Обработка значений по умолчанию {#handling-default-values}
 
@@ -274,13 +271,12 @@ FORMAT PrettyJSONEachRow
   "dob": "2007-03-31"
 }
 
-1 строка в наборе. Затрачено: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
 :::note Различие между пустыми и null-значениями
 Если пользователям нужно различать ситуацию, когда значение пустое, и когда оно отсутствует, можно использовать тип [Nullable](/sql-reference/data-types/nullable). [Следует избегать](/best-practices/select-data-types#avoid-nullable-columns) его использования, если только это не абсолютно необходимо, поскольку это отрицательно сказывается на хранении данных и производительности запросов по этим столбцам.
 :::
-
 
 ### Обработка новых столбцов {#handling-new-columns}
 
@@ -314,7 +310,7 @@ FORMAT PrettyJSONEachRow
   "website": "clickhouse.com",
   "company": {
     "name": "ClickHouse",
-    "catchPhrase": "Хранилище данных для аналитики в реальном времени"
+    "catchPhrase": "The real-time data warehouse for analytics"
   },
   "dob": "2007-03-31"
 }
@@ -326,9 +322,9 @@ FORMAT PrettyJSONEachRow
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
-Ок.
+Ok.
 
-1 строка в наборе. Затрачено: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Столбцы можно добавлять в схему с помощью команды [`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column). Значение по умолчанию можно задать с помощью предложения `DEFAULT`; оно будет использоваться, если явное значение не указано при последующих вставках. Строки, для которых это значение отсутствует (так как они были вставлены до его появления), также будут возвращать это значение по умолчанию. Если значение `DEFAULT` не указано, используется значение по умолчанию для соответствующего типа.
@@ -336,19 +332,19 @@ INSERT INTO people FORMAT JSONEachRow
 Например:
 
 ```sql
--- вставка начальной строки (nickname будет проигнорировано)
+-- insert initial row (nickname will be ignored)
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
--- добавить столбец
+-- add column
 ALTER TABLE people
  (ADD COLUMN `nickname` String DEFAULT 'no_nickname')
 
--- вставка новой строки (те же данные, другой id)
+-- insert new row (same data different id)
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
 
--- выбрать 2 строки
+-- select 2 rows
 SELECT id, nickname FROM people
 
 ┌─id─┬─nickname────┐
@@ -356,9 +352,8 @@ SELECT id, nickname FROM people
 │  1 │ no_nickname │
 └────┴─────────────┘
 
-Получено 2 строки. Затрачено: 0,001 сек.
+2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## Обработка полуструктурированных/динамических структур {#handling-semi-structured-dynamic-structures}
 
@@ -384,7 +379,7 @@ SELECT id, nickname FROM people
   "address": [
     {
       "street": "Victor Plains",
-      "suite": "Офис 879",
+      "suite": "Suite 879",
       "city": "Wisokyburgh",
       "zipcode": "90566-7771",
       "geo": {
@@ -400,20 +395,20 @@ SELECT id, nickname FROM people
   "website": "clickhouse.com",
   "company": {
     "name": "ClickHouse",
-    "catchPhrase": "Хранилище данных в реальном времени для аналитики",
+    "catchPhrase": "The real-time data warehouse for analytics",
     "labels": {
-      "type": "системы управления базами данных",
+      "type": "database systems",
       "founded": "2021",
       "employees": 250
     }
   },
   "dob": "2007-03-31",
   "tags": {
-    "hobby": "Базы данных",
+    "hobby": "Databases",
     "holidays": [
       {
         "year": 2024,
-        "location": "Азорские острова, Португалия"
+        "location": "Azores, Portugal"
       }
     ],
     "car": {
@@ -448,10 +443,10 @@ SELECT id, nickname FROM people
   "website": "fastdata.io",
   "company": {
     "name": "FastData Inc.",
-    "catchPhrase": "Упрощенная аналитика в масштабе",
+    "catchPhrase": "Streamlined analytics at scale",
     "labels": {
       "type": [
-        "обработка в реальном времени"
+        "real-time processing"
       ],
       "founded": 2019,
       "dissolved": 2023,
@@ -460,11 +455,11 @@ SELECT id, nickname FROM people
   },
   "dob": "1992-07-15",
   "tags": {
-    "hobby": "Запуск симуляций",
+    "hobby": "Running simulations",
     "holidays": [
       {
         "year": 2023,
-        "location": "Киото, Япония"
+        "location": "Kyoto, Japan"
       }
     ],
     "car": {
@@ -485,7 +480,6 @@ SELECT id, nickname FROM people
 Для боевых развертываний ClickHouse в крупном масштабе мы рекомендуем четко задавать структуру и использовать тип JSON для целевых динамических подструктур, где это возможно.
 
 Строгая схема имеет ряд преимуществ:
-
 
 - **Проверка данных** – строгая схема позволяет избежать риска взрывного роста числа столбцов, за пределами специально предусмотренных структур. 
 - **Избежание риска взрывного роста числа столбцов** – хотя тип JSON масштабируется потенциально до тысяч столбцов, где подстолбцы хранятся как отдельные столбцы, это может привести к «взрыву» файлов столбцов, когда создаётся чрезмерное количество файлов столбцов, что ухудшает производительность. Чтобы минимизировать этот риск, базовый [тип Dynamic](/sql-reference/data-types/dynamic), используемый JSON, предоставляет параметр [`max_dynamic_paths`](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns), который ограничивает количество уникальных путей, хранимых как отдельные файлы столбцов. После достижения порога дополнительные пути сохраняются в общем файле столбца с использованием компактного кодированного формата, что позволяет сохранить производительность и эффективность хранения при обеспечении гибкости ингестии данных. Однако доступ к этому общему файлу столбца менее эффективен по производительности. Обратите внимание, что столбец JSON может использоваться с [подсказками типов](#using-type-hints-and-skipping-paths). Столбцы с «подсказками» будут обеспечивать ту же производительность, что и выделенные столбцы.
@@ -522,29 +516,28 @@ ORDER BY json.username;
 INSERT INTO people FORMAT JSONAsObject 
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-Вставлена 1 строка. Время выполнения: 0.028 сек.
+1 row in set. Elapsed: 0.028 sec.
 
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
-Вставлена 1 строка. Время выполнения: 0.004 сек.
+1 row in set. Elapsed: 0.004 sec.
 ```
-
 
 ```sql
 SELECT *
 FROM people
 FORMAT Vertical
 
-Строка 1:
+Row 1:
 ──────
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
 
-Строка 2:
+Row 2:
 ──────
 json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
 
-Получено 2 строки. Прошло: 0.005 сек.
+2 rows in set. Elapsed: 0.005 sec.
 ```
 
 Мы можем определить выведенные подстолбцы и их типы с помощью [функций интроспекции](/sql-reference/data-types/newjson#introspection-functions). Например:
@@ -595,7 +588,7 @@ FORMAT PrettyJsonEachRow
  }
 }
 
-Получено 2 строки. Время выполнения: 0.009 сек.
+2 rows in set. Elapsed: 0.009 sec.
 ```
 
 Полный список функций интроспекции см. в разделе [&quot;Introspection functions&quot;](/sql-reference/data-types/newjson#introspection-functions)
@@ -610,11 +603,10 @@ SELECT json.name, json.email FROM people
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
 └──────────────────────┴───────────────────────┘
 
-Получено 2 строки. Затрачено: 0,006 сек.
+2 rows in set. Elapsed: 0.006 sec.
 ```
 
 Обратите внимание, что отсутствующие в строках столбцы возвращаются как `NULL`.
-
 
 Также для путей одного и того же типа создаётся отдельный подстолбец. Например, подстолбец существует для `company.labels.type` как для типа `String`, так и для `Array(Nullable(String))`. Оба подстолбца будут возвращены, когда это возможно, но при необходимости можно обращаться к конкретным подстолбцам, используя синтаксис `.:`:
 
@@ -627,7 +619,7 @@ FROM people
 │ ['real-time processing'] │
 └──────────────────────────┘
 
-Получено 2 строки. Затрачено: 0.007 сек.
+2 rows in set. Elapsed: 0.007 sec.
 
 SELECT json.company.labels.type.:String
 FROM people
@@ -637,13 +629,13 @@ FROM people
 │ database systems         │
 └──────────────────────────┘
 
-Получено 2 строки. Затрачено: 0.009 сек.
+2 rows in set. Elapsed: 0.009 sec.
 ```
 
 Чтобы возвращать вложенные подобъекты, требуется символ `^`. Это сделано намеренно, чтобы избежать чтения большого количества столбцов, если только они не запрошены явно. Объекты, к которым обращаются без `^`, вернут `NULL`, как показано ниже:
 
 ```sql
--- вложенные объекты по умолчанию не возвращаются
+-- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
 
@@ -654,7 +646,7 @@ FROM people
 
 2 rows in set. Elapsed: 0.002 sec.
 
--- возврат вложенных объектов с помощью нотации ^
+-- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
 
@@ -665,7 +657,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### Целевой столбец JSON {#targeted-json-column}
 
@@ -697,12 +688,12 @@ ORDER BY username
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-Вставлена 1 строка. Время выполнения: 0.450 сек.
+1 row in set. Elapsed: 0.450 sec.
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
-Вставлена 1 строка. Время выполнения: 0.440 сек.
+1 row in set. Elapsed: 0.440 sec.
 ```
 
 ```sql
@@ -710,7 +701,7 @@ SELECT *
 FROM people
 FORMAT Vertical
 
-Строка 1:
+Row 1:
 ──────
 id:            2
 name:          Analytica Rowe
@@ -723,7 +714,7 @@ company:       ('Streamlined analytics at scale','FastData Inc.','{"dissolved":"
 dob:           1992-07-15
 tags:          {"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}
 
-Строка 2:
+Row 2:
 ──────
 id:            1
 name:          Clicky McCliickHouse
@@ -736,11 +727,10 @@ company:       ('The real-time data warehouse for analytics','ClickHouse','{"emp
 dob:           2007-03-31
 tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}
 
-2 строки в наборе. Затрачено: 0.005 сек.
+2 rows in set. Elapsed: 0.005 sec.
 ```
 
 [Функции интроспекции](/sql-reference/data-types/newjson#introspection-functions) можно использовать для определения выведенных путей и типов столбца `company.labels`.
-
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
@@ -763,9 +753,8 @@ FORMAT PrettyJsonEachRow
  }
 }
 
-Получено 2 строки. Прошло: 0.003 сек.
+2 rows in set. Elapsed: 0.003 sec.
 ```
-
 
 ### Использование подсказок типов и пропуска путей {#using-type-hints-and-skipping-paths}
 
@@ -803,12 +792,12 @@ ORDER BY username
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-1 строка добавлена. Затрачено: 0.450 сек.
+1 row in set. Elapsed: 0.450 sec.
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
-1 строка добавлена. Затрачено: 0.440 сек.
+1 row in set. Elapsed: 0.440 sec.
 ```
 
 Обратите внимание, что у этих столбцов теперь явно указаны типы:
@@ -835,11 +824,10 @@ FORMAT PrettyJsonEachRow
  }
 }
 
-Получено 2 строки. Затрачено: 0.003 сек.
+2 rows in set. Elapsed: 0.003 sec.
 ```
 
 Кроме того, мы можем пропускать пути внутри JSON, которые не хотим сохранять, с помощью параметров [`SKIP` и `SKIP REGEXP`](/sql-reference/data-types/newjson), чтобы минимизировать объём занимаемого места и избежать ненужного вывода структуры по неиспользуемым путям. Например, предположим, что мы используем один столбец JSON для приведённых выше данных. Мы можем пропустить пути `address` и `company`:
-
 
 ```sql
 CREATE TABLE people
@@ -852,12 +840,12 @@ ORDER BY json.username
 INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-Добавлена 1 строка. Время выполнения: 0.450 сек.
+1 row in set. Elapsed: 0.450 sec.
 
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
-Добавлена 1 строка. Время выполнения: 0.440 сек.
+1 row in set. Elapsed: 0.440 sec.
 ```
 
 Обратите внимание, что наши столбцы были исключены из нашего набора данных:
@@ -922,9 +910,8 @@ FORMAT PrettyJSONEachRow
     }
 }
 
-Выбрано 2 строки. Затрачено: 0.004 сек.
+2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 #### Оптимизация производительности с помощью подсказок типов {#optimizing-performance-with-type-hints}  
 

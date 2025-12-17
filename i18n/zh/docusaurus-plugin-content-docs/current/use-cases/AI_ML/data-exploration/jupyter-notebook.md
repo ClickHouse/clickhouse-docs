@@ -18,7 +18,6 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-
 # 使用 Jupyter Notebook 和 chDB 探索数据 {#exploring-data-with-jupyter-notebooks-and-chdb}
 
 在本指南中，您将学习如何借助 [chDB](/chdb)（一个由 ClickHouse 驱动的快速进程内 SQL OLAP 引擎），在 Jupyter Notebook 中探索 ClickHouse Cloud 上的数据集。
@@ -84,7 +83,7 @@ pip install notebook
 使用以下命令启动 Jupyter Notebook：
 
 ```python
-Jupyter Notebook
+jupyter notebook
 ```
 
 会打开一个新的浏览器窗口，其中显示位于 `localhost:8888` 的 Jupyter 界面。
@@ -108,10 +107,9 @@ pip install chdb
 ```python
 import chdb
 
-result = chdb.query("SELECT '你好，ClickHouse!' as message")
+result = chdb.query("SELECT 'Hello, ClickHouse!' as message")
 print(result)
 ```
-
 
 ## 探索数据 {#exploring-the-data}
 
@@ -131,7 +129,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# 从 .env 文件加载环境变量 {#load-environment-variables-from-env-file}
+# Load environment variables from .env file
 load_dotenv()
 
 username = os.environ.get('CLICKHOUSE_USER')
@@ -202,8 +200,8 @@ plt.xlabel('Year')
 plt.ylabel('Price (£)')
 plt.title('Price of London property over time')
 
-# 每隔一年显示以避免标签重叠 {#show-every-2nd-year-to-avoid-crowding}
-years_to_show = df['year'][::2]  # 每隔一年
+# Show every 2nd year to avoid crowding
+years_to_show = df['year'][::2]  # Every 2nd year
 plt.xticks(years_to_show, rotation=45)
 
 plt.grid(True, alpha=0.3)
@@ -237,36 +235,35 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
-
 <details>
   <summary>在一步中从多个数据源读取</summary>
   你也可以在一步中从多个数据源读取。可以使用下面带有 `JOIN` 的查询来实现：
 
   ```python
-  query = f"""
+query = f"""
+SELECT 
+    toYear(date) AS year,
+    avg(price) AS avg_price, housesSold
+FROM remoteSecure(
+'****.europe-west4.gcp.clickhouse.cloud',
+default.pp_complete,
+'{username}',
+'{password}'
+) AS remote
+JOIN (
   SELECT 
-      toYear(date) AS year,
-      avg(price) AS avg_price, housesSold
-  FROM remoteSecure(
-  '****.europe-west4.gcp.clickhouse.cloud',
-  default.pp_complete,
-  '{username}',
-  '{password}'
-  ) AS remote
-  JOIN (
-    SELECT 
-      toYear(date) AS year,
-      sum(houses_sold)*1000 AS housesSold
-      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-    WHERE area = 'city of london' AND houses_sold IS NOT NULL
-    GROUP BY toYear(date)
-    ORDER BY year
-  ) AS local ON local.year = remote.year
-  WHERE town = 'LONDON'
+    toYear(date) AS year,
+    sum(houses_sold)*1000 AS housesSold
+    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+  WHERE area = 'city of london' AND houses_sold IS NOT NULL
   GROUP BY toYear(date)
-  ORDER BY year;
-  """
-  ```
+  ORDER BY year
+) AS local ON local.year = remote.year
+WHERE town = 'LONDON'
+GROUP BY toYear(date)
+ORDER BY year;
+"""
+```
 </details>
 
 <Image size="md" img={image_8} alt="DataFrame 预览" />
@@ -275,39 +272,39 @@ df_2.head()
 在一个新的单元格中运行以下命令：
 
 ```python
-# 创建包含两个 y 轴的图形 {#create-a-figure-with-two-y-axes}
+# Create a figure with two y-axes
 fig, ax1 = plt.subplots(figsize=(14, 8))
 
-# 在左侧 y 轴绘制房屋销售量 {#plot-houses-sold-on-the-left-y-axis}
+# Plot houses sold on the left y-axis
 color = 'tab:blue'
 ax1.set_xlabel('Year')
-ax1.set_ylabel('房屋销售量', color=color)
-ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='房屋销售量', linewidth=2)
+ax1.set_ylabel('Houses Sold', color=color)
+ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='Houses Sold', linewidth=2)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.grid(True, alpha=0.3)
 
-# 为价格数据创建第二个 y 轴 {#create-a-second-y-axis-for-price-data}
+# Create a second y-axis for price data
 ax2 = ax1.twinx()
 color = 'tab:red'
-ax2.set_ylabel('平均价格 (£)', color=color)
+ax2.set_ylabel('Average Price (£)', color=color)
 
-# 绘制 2019 年及之前的价格数据 {#plot-price-data-up-until-2019}
-ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='平均价格', linewidth=2)
+# Plot price data up until 2019
+ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='Average Price', linewidth=2)
 ax2.tick_params(axis='y', labelcolor=color)
 
-# 使用货币格式格式化价格轴 {#format-price-axis-with-currency-formatting}
+# Format price axis with currency formatting
 ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'£{x:,.0f}'))
 
-# 设置标题并每隔一年显示 {#set-title-and-show-every-2nd-year}
-plt.title('伦敦房地产市场:销售量与价格随时间变化', fontsize=14, pad=20)
+# Set title and show every 2nd year
+plt.title('London Housing Market: Sales Volume vs Prices Over Time', fontsize=14, pad=20)
 
-# 两个数据集均仅使用 2019 年及之前的年份 {#use-years-only-up-to-2019-for-both-datasets}
+# Use years only up to 2019 for both datasets
 all_years = sorted(list(set(df_2[df_2['year'] <= 2019]['year']).union(set(df[df['year'] <= 2019]['year']))))
-years_to_show = all_years[::2]  # 每隔一年
+years_to_show = all_years[::2]  # Every 2nd year
 ax1.set_xticks(years_to_show)
 ax1.set_xticklabels(years_to_show, rotation=45)
 
-# 添加图例 {#add-legends}
+# Add legends
 ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 
@@ -322,7 +319,6 @@ plt.show()
 另一方面，价格则从 1995 年约 £150,000 起，持续、稳定增长，到 2005 年达到约 £300,000。
 2012 年之后增速显著加快，从约 £400,000 急剧上升，到 2019 年超过 £1,000,000。
 与销售量不同，价格几乎未受到 2008 年危机的影响，并一直保持上升趋势。真是惊人！
-
 
 ## 总结 {#summary}
 

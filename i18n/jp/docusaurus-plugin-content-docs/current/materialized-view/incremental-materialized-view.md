@@ -10,7 +10,6 @@ doc_type: 'guide'
 import materializedViewDiagram from '@site/static/images/materialized-view/materialized-view-diagram.png';
 import Image from '@theme/IdealImage';
 
-
 ## 背景 {#background}
 
 インクリメンタルマテリアライズドビュー（マテリアライズドビュー）を使用すると、計算コストをクエリ実行時からデータ挿入時に移すことができ、その結果、`SELECT` クエリを高速化できます。
@@ -22,8 +21,6 @@ Postgres のようなトランザクション型データベースとは異な�
 ClickHouse のマテリアライズドビューは、それらが基づくテーブルにデータが流入するのに合わせてリアルタイムに更新され、継続的に更新されるインデックスのように機能します。これは、他の多くのデータベースにおける、更新が必要な静的なクエリ結果のスナップショットとしてのマテリアライズドビュー（ClickHouse の [Refreshable Materialized Views](/sql-reference/statements/create/view#refreshable-materialized-view) に類似）とは対照的です。
 
 <Image img={materializedViewDiagram} size="md" alt="マテリアライズドビューの図"/>
-
-
 
 ## 例 {#example}
 
@@ -107,7 +104,6 @@ GROUP BY Day
 
 ここでの `TO` 句が重要で、結果の送信先、つまり `up_down_votes_per_day` を指定します。
 
-
 先ほどの `INSERT` 文を使って `votes` テーブルに再度データを投入できます。
 
 ```sql
@@ -147,8 +143,8 @@ FINAL
 ORDER BY Day ASC
 LIMIT 10
 
-10行を取得しました。経過時間: 0.004秒。処理済み: 8.97千行、89.68 KB (209万行/秒、20.89 MB/秒)
-ピークメモリ使用量: 289.75 KiB
+10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
+Peak memory usage: 289.75 KiB.
 
 SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
 FROM up_down_votes_per_day
@@ -168,8 +164,8 @@ LIMIT 10
 │ 2008-08-09 │     576 │        46 │
 └────────────┴─────────┴───────────┘
 
-10行を取得しました。経過時間: 0.010秒。処理済み: 8.97千行、89.68 KB (90.73万行/秒、9.07 MB/秒)
-ピークメモリ使用量: 567.61 KiB
+10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
+Peak memory usage: 567.61 KiB.
 ```
 
 これにより、クエリの実行時間は 0.133 秒から 0.004 秒へ短縮され、25 倍以上の高速化が実現しました！
@@ -179,7 +175,6 @@ LIMIT 10
 :::
 
 ### さらに複雑な例 {#a-more-complex-example}
-
 
 上記の例では、マテリアライズドビューを使用して、1 日あたり 2 つの合計値を計算および保持しています。合計値は部分的な状態を保持するための最も単純な集約形式であり、新しい値が到着したときに既存の値にただ加算していけば済みます。ただし、ClickHouse のマテリアライズドビューは、あらゆる種類の集約に対して使用できます。
 
@@ -208,8 +203,8 @@ LIMIT 10
 │ 2024-03-22 00:00:00 │ 9.310999999999694 │ 1.2388059701492538 │
 └─────────────────────┴───────────────────┴────────────────────┘
 
-10行を取得しました。経過時間: 0.113秒。処理: 5982万行、777.65 MB (5億2848万行/秒、6.87 GB/秒)
-ピークメモリ使用量: 658.84 MiB
+10 rows in set. Elapsed: 0.113 sec. Processed 59.82 million rows, 777.65 MB (528.48 million rows/s., 6.87 GB/s.)
+Peak memory usage: 658.84 MiB.
 ```
 
 前と同様に、`posts` テーブルに新しい投稿が挿入されるたびに、上記のクエリを実行するマテリアライズドビューを作成できます。
@@ -238,7 +233,6 @@ GROUP BY Day
 > 部分的な集約状態は、正しい結果を計算するために必要です。例えば平均値を計算する場合、単純に各部分範囲の平均値同士を平均しても、正しい結果にはなりません。
 
 次に、これらの部分的な集約状態を保存する、このビュー `post_stats_per_day` のターゲットテーブルを作成します。
-
 
 ```sql
 CREATE TABLE post_stats_per_day
@@ -278,7 +272,6 @@ LIMIT 10
 ```
 
 ここでは `FINAL` ではなく `GROUP BY` を使用していることに注意してください。
-
 
 ## その他の用途 {#other-applications}
 
@@ -372,7 +365,6 @@ WHERE PostId IN (
 └─────────────────────┘
 ```
 
-
 1 行がセットに含まれました。経過時間: 0.012 秒。処理: 88.61 千行、771.37 KB (7.09 百万行/秒、61.73 MB/秒)。
 
 ```
@@ -382,7 +374,6 @@ WHERE PostId IN (
 マテリアライズドビューはチェーン(またはカスケード)することができ、複雑なワークフローを構築できます。
 詳細については、ガイド["Cascading materialized views"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)を参照してください。
 ```
-
 
 ## マテリアライズドビューと JOIN {#materialized-views-and-joins}
 
@@ -483,7 +474,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 特定のユーザーが獲得したバッジを確認したい場合、次のようなクエリを実行できます。
 
-
 ```sql
 SELECT *
 FROM daily_badges_by_user
@@ -541,7 +531,6 @@ INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0
 INSERT INTO users VALUES (23923286, 1, now(),  'brand_new_user', now(), 'UK', 1, 1, 0);
 ```
 
-
 ```sql
 SELECT *
 FROM daily_badges_by_user
@@ -565,7 +554,7 @@ WHERE DisplayName = 'brand_new_user'
 │ 2025-04-13 │ 23923286 │ brand_new_user │    0 │      0 │      1 │
 └────────────┴──────────┴────────────────┴──────┴────────┴────────┘
 
-1行のセット。経過時間: 0.018秒。処理済み: 32.77千行、644.48 KB (187万行/秒、36.72 MB/秒)
+1 row in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 644.48 KB (1.87 million rows/s., 36.72 MB/s.)
 ```
 
 ただし、この結果は正しくありません。
@@ -629,7 +618,6 @@ SELECT * FROM mvw2;
 │  8 │
 └────┘
 ```
-
 
 #### 解説 {#explanation}
 
@@ -723,11 +711,10 @@ INSERT INTO badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 ```
 
-
 0 行。経過時間: 132.118 秒。処理済み 323.43 百万行、4.69 GB (2.45 百万行/秒、35.49 MB/秒)。
 最大メモリ使用量: 1.99 GiB。
 
-````
+```
 
 また、今後のバッジ挿入も効率的に実行できることを意味します：
 
@@ -735,10 +722,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 1 row in set. Elapsed: 0.583 sec.
-````
+```
 
 上記の操作では、ユーザー ID `2936484` に対して `users` テーブルから 1 行だけが取得されます。このルックアップは、`Id` をテーブルの並び替えキーとして指定することで最適化されています。
-
 
 ## マテリアライズドビューと UNION {#materialized-views-and-unions}
 
@@ -871,14 +857,13 @@ WHERE UserId = '2936484'
 GROUP BY UserId
 ```
 
-
 ┌─UserId──┬─description──────┬─activity&#95;type─┬───────────last&#95;activity─┐
 │ 2936484 │ 答えは 42 です   │ comment       │ 2025-04-15 09:56:19.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
 1 行が取得されました。経過時間: 0.005 秒。
 
-````
+```
 
 `badges`テーブルへの挿入はビューをトリガーしないため、`user_activity`は更新されません:
 
@@ -899,7 +884,7 @@ GROUP BY UserId;
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
 1 row in set. Elapsed: 0.005 sec.
-````
+```
 
 この問題を解決するには、各 `SELECT` 文ごとにマテリアライズドビューを作成するだけです。
 
@@ -967,7 +952,6 @@ GROUP BY UserId
 
 1 row in set. Elapsed: 0.006 sec.
 ```
-
 
 ## 並列処理と逐次処理 {#materialized-views-parallel-vs-sequential}
 
@@ -1094,7 +1078,6 @@ ORDER BY now ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-
 各ビューから到着する行の順序はここでは同じになっていますが、これは保証されていません。各行の挿入時刻が近いことからも分かるとおりです。また、挿入パフォーマンスが改善されている点にも注目してください。
 
 ### 並列処理を利用するタイミング {#materialized-views-when-to-use-parallel}
@@ -1118,8 +1101,6 @@ ORDER BY now ASC
 - Materialized Views 同士に依存関係がある場合
 - 予測可能で順序どおりの実行が必要な場合
 - 挿入動作をデバッグまたは監査しており、決定的なリプレイを行いたい場合
-
-
 
 ## マテリアライズドビューと共通テーブル式 (CTE) {#materialized-views-common-table-expressions-ctes}
 
@@ -1211,7 +1192,6 @@ ClickHouse では、CTE はインライン展開されるため、最適化の�
 * マテリアライズドビューは依然としてメインのソーステーブルへの挿入時にのみトリガーされますが、CTE は挿入のたびに再実行されます。そのため、特に参照されるテーブルが大きい場合には、不要なオーバーヘッドを引き起こす可能性があります。
 
 例えば、
-
 
 ```sql
 WITH recent_users AS (

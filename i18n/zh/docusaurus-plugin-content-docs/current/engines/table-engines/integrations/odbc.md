@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # ODBC 表引擎 {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -20,8 +19,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 该引擎支持 [Nullable](../../../sql-reference/data-types/nullable.md) 数据类型。
 
-
-
 ## 创建表 {#creating-a-table}
 
 ```sql
@@ -31,7 +28,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(数据源, external_database, external_table)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
@@ -49,7 +46,6 @@ ENGINE = ODBC(数据源, external_database, external_table)
 * `external_table` — `external_database` 中表的名称。
 
 这些参数也可以通过[命名集合](operations/named-collections.md)传递。
-
 
 ## 使用示例 {#usage-example}
 
@@ -88,7 +84,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 已连接！                            |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -139,7 +135,6 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 

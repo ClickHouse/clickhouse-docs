@@ -38,11 +38,11 @@ argAndMin(arg, val)
 Входная таблица:
 
 ```text
-┌─пользователь─┬─зарплата─┐
-│ директор     │     5000 │
-│ менеджер     │     3000 │
-│ работник     │     1000 │
-└──────────────┴──────────┘
+┌─user─────┬─salary─┐
+│ director │   5000 │
+│ manager  │   3000 │
+│ worker   │   1000 │
+└──────────┴────────┘
 ```
 
 Запрос:
@@ -83,37 +83,37 @@ SELECT * FROM test;
 
 SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
 ┌─argMin(a, b)─┬─argAndMin(a, b)─┬─min(b)─┐
-│ a            │ ('a',1)         │      0 │ -- argMin = a, так как это первое значение, отличное от `NULL`; min(b) взято из другой строки!
+│ a            │ ('a',1)         │      0 │ -- argMin = a because it's the first not `NULL` value, min(b) is from another row!
 └──────────────┴─────────────────┴────────┘
 
 SELECT argAndMin(tuple(a), b) FROM test;
 ┌─argAndMin((a), b)─┐
-│ ((NULL),0)        │ -- `Tuple` 'a', содержащий только значение `NULL`, сам не является `NULL`, поэтому агрегатные функции не пропустят эту строку из-за данного значения `NULL`
+│ ((NULL),0)        │ -- The 'a' `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └───────────────────┘
 
 SELECT (argAndMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA──┬─argMinB─┐
-│ (NULL,0) │       0 │ -- можно использовать `Tuple` и получить оба столбца (все столбцы — tuple(*)) для соответствующего min(b)
+│ (NULL,0) │       0 │ -- you can use `Tuple` and get both (all - tuple(*)) columns for the according min(b)
 └──────────┴─────────┘
 
 SELECT argAndMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
 ┌─argAndMin(a, b)─┬─min(b)─┐
-│ ('',0)          │   ᴺᵁᴸᴸ │ -- Все агрегируемые строки содержат хотя бы одно значение `NULL` из-за фильтра, поэтому все строки пропускаются, следовательно, результат будет `NULL`
+│ ('',0)          │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └─────────────────┴────────┘
 
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;
 ┌─argAndMin(a, (b, a))─┬─min((b, a))─┐
-│ ('a',(1,'a'))        │ (0,NULL)    │ -- 'a' — это первое значение, отличное от `NULL`, для min
+│ ('a',(1,'a'))        │ (0,NULL)    │ -- 'a' is the first not `NULL` value for the min
 └──────────────────────┴─────────────┘
 
 SELECT argAndMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 ┌─argAndMin((a, b), (b, a))─┬─min((b, a))─┐
-│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin возвращает ((NULL,0),(0,NULL)), так как `Tuple` позволяет не пропускать `NULL`, и min(tuple(b, a)) в данном случае является минимальным значением для этого набора данных
+│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin returns ((NULL,0),(0,NULL)) here because `Tuple` allows to don't skip `NULL` and min(tuple(b, a)) in this case is minimal value for this dataset
 └───────────────────────────┴─────────────┘
 
 SELECT argAndMin(a, tuple(b)) FROM test;
 ┌─argAndMin(a, (b))─┐
-│ ('a',(1))         │ -- `Tuple` можно использовать в `min`, чтобы не пропускать строки со значениями `NULL` в b.
+│ ('a',(1))         │ -- `Tuple` can be used in `min` to not skip rows with `NULL` values as b.
 └───────────────────┘
 ```
 

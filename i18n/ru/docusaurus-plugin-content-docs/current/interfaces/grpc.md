@@ -7,11 +7,7 @@ title: 'Интерфейс gRPC'
 doc_type: 'reference'
 ---
 
-
-
 # Интерфейс gRPC {#grpc-interface}
-
-
 
 ## Введение {#grpc-interface-introduction}
 
@@ -28,8 +24,6 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
 
 Спецификация интерфейса приведена в файле [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto).
 
-
-
 ## Настройка gRPC {#grpc-interface-configuration}
 
 Чтобы использовать интерфейс gRPC, задайте `grpc_port` в основном [конфигурационном файле сервера](../operations/configuration-files.md). Дополнительные параметры конфигурации приведены в следующем примере:
@@ -39,33 +33,32 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
     <grpc>
         <enable_ssl>false</enable_ssl>
 
-        <!-- Следующие два файла используются только при включённом SSL -->
+        <!-- The following two files are used only if SSL is enabled -->
         <ssl_cert_file>/path/to/ssl_cert_file</ssl_cert_file>
         <ssl_key_file>/path/to/ssl_key_file</ssl_key_file>
 
-        <!-- Запрашивает ли сервер у клиента сертификат -->
+        <!-- Whether server requests client for a certificate -->
         <ssl_require_client_auth>false</ssl_require_client_auth>
 
-        <!-- Следующий файл используется только при ssl_require_client_auth=true -->
+        <!-- The following file is used only if ssl_require_client_auth=true -->
         <ssl_ca_cert_file>/path/to/ssl_ca_cert_file</ssl_ca_cert_file>
 
-        <!-- Алгоритм сжатия по умолчанию (применяется, если клиент не указывает другой алгоритм; см. result_compression в QueryInfo).
-             Поддерживаемые алгоритмы: none, deflate, gzip, stream_gzip -->
+        <!-- Default compression algorithm (applied if client doesn't specify another algorithm, see result_compression in QueryInfo).
+             Supported algorithms: none, deflate, gzip, stream_gzip -->
         <compression>deflate</compression>
 
-        <!-- Уровень сжатия по умолчанию (применяется, если клиент не указывает другой уровень; см. result_compression в QueryInfo).
-             Поддерживаемые уровни: none, low, medium, high -->
+        <!-- Default compression level (applied if client doesn't specify another level, see result_compression in QueryInfo).
+             Supported levels: none, low, medium, high -->
         <compression_level>medium</compression_level>
 
-        <!-- Ограничения размера отправляемых и получаемых сообщений в байтах. -1 означает отсутствие ограничений -->
+        <!-- Send/receive message size limits in bytes. -1 means unlimited -->
         <max_send_message_size>-1</max_send_message_size>
         <max_receive_message_size>-1</max_receive_message_size>
 
-        <!-- Включите для получения подробных логов -->
+        <!-- Enable if you want to get detailed logs -->
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## Встроенный клиент {#grpc-client}
 
@@ -94,7 +87,7 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
 
 ```bash
 ./clickhouse-grpc-client.py -q "CREATE TABLE grpc_example_table (id UInt32, text String) ENGINE = MergeTree() ORDER BY id;"
-echo -e "0,Входные данные для\n1,примера протокола gRPC" > a.csv
+echo -e "0,Input data for\n1,gRPC protocol example" > a.csv
 cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMAT CSV"
 
 ./clickhouse-grpc-client.py --format PrettyCompact -q "SELECT * FROM grpc_example_table;"
@@ -104,7 +97,7 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 
 ```text
 ┌─id─┬─text──────────────────┐
-│  0 │ Входные данные для    │
-│  1 │ примера протокола gRPC│
+│  0 │ Input data for        │
+│  1 │ gRPC protocol example │
 └────┴───────────────────────┘
 ```

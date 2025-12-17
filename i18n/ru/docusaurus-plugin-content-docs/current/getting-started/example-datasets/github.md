@@ -28,7 +28,6 @@ import superset_authors_matrix_v2 from '@site/static/images/getting-started/exam
 * `file_changes` — 53M — 266,051 строк
 * `line_changes` — 2.7G — 7,535,157 строк
 
-
 ## Генерация данных {#generating-the-data}
 
 Этот шаг необязателен. Мы свободно распространяем эти данные — см. раздел [Downloading and inserting the data](#downloading-and-inserting-the-data).
@@ -71,7 +70,6 @@ CREATE TABLE git.commits
 **Эти запросы можно выполнять с любым репозиторием. Свободно экспериментируйте и делитесь своими результатами.** Некоторые рекомендации по времени выполнения (по состоянию на ноябрь 2022 года):
 
 * Linux — `~/clickhouse git-import` — 160 минут
-
 
 ## Загрузка и вставка данных {#downloading-and-inserting-the-data}
 
@@ -187,7 +185,6 @@ CREATE TABLE git.line_changes
 
 *commits*
 
-
 ```sql
 INSERT INTO git.commits SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz', 'TSV', 'hash String,author LowCardinality(String), time DateTime, message String, files_added UInt32, files_deleted UInt32, files_renamed UInt32, files_modified UInt32, lines_added UInt32, lines_deleted UInt32, hunks_added UInt32, hunks_removed UInt32, hunks_changed UInt32')
@@ -201,7 +198,7 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 INSERT INTO git.file_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz', 'TSV', 'change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6), path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), lines_added UInt32, lines_deleted UInt32, hunks_added UInt32, hunks_removed UInt32, hunks_changed UInt32, commit_hash String, author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-0 строк в наборе. Затрачено: 2.688 сек. Обработано 266.05 тыс. строк, 48.30 МБ (98.97 тыс. строк/сек., 17.97 МБ/сек.)
+0 rows in set. Elapsed: 2.688 sec. Processed 266.05 thousand rows, 48.30 MB (98.97 thousand rows/s., 17.97 MB/s.)
 ```
 
 *line&#95;changes*
@@ -210,9 +207,8 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 INSERT INTO git.line_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz', 'TSV', '    sign Int8, line_number_old UInt32, line_number_new UInt32, hunk_num UInt32, hunk_start_line_number_old UInt32, hunk_start_line_number_new UInt32, hunk_lines_added UInt32,\n    hunk_lines_deleted UInt32, hunk_context LowCardinality(String), line LowCardinality(String), indent UInt8, line_type Enum(\'Empty\' = 0, \'Comment\' = 1, \'Punct\' = 2, \'Code\' = 3), prev_commit_hash String, prev_author LowCardinality(String), prev_time DateTime, file_change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6),\n    path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), file_lines_added UInt32, file_lines_deleted UInt32, file_hunks_added UInt32, file_hunks_removed UInt32, file_hunks_changed UInt32, commit_hash String,\n    author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
 
-0 строк в наборе. Затрачено: 50.535 сек. Обработано 7.54 миллионов строк, 2.09 ГБ (149.11 тысяч строк/с., 41.40 МБ/с.)
+0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
 ```
-
 
 ## Запросы {#queries}
 
@@ -243,25 +239,24 @@ ORDER BY time DESC
 LIMIT 10
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path────────────────────────────────────────┬─old_path─┬─lines_added─┬─lines_deleted─┬─commit_message───────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Изменение      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ исправлен доступ к части в состоянии Deleting             │
-│ 2022-10-23 16:24:20 │ b40d9200d20 │ Изменение      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ улучшена семантика константности DataPartStorage │
-│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Изменение      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ удален DataPartStorageBuilder                    │
-│ 2022-10-21 13:35:37 │ 851f556d65a │ Изменение      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Удален неиспользуемый параметр                          │
-│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Изменение      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ Доработка реплицируемого дерева слияний                  │
-│ 2022-10-21 12:25:19 │ 4e76629aafc │ Изменение      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Исправления для -Wshorten-64-to-32                     │
-│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Изменение      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ Доработка                                        │
-│ 2022-10-19 13:34:20 │ e5408aac991 │ Изменение      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ Упрощена логика                                   │
-│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Изменение      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ Обновлен StorageReplicatedMergeTree.cpp            │
-│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Изменение      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ Обновлен StorageReplicatedMergeTree.cpp            │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ fix accessing part in Deleting state             │
+│ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ better semantic of constsness of DataPartStorage │
+│ 2022-10-23 01:23:15 │ 56e5daba0c9 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            44 │ remove DataPartStorageBuilder                    │
+│ 2022-10-21 13:35:37 │ 851f556d65a │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Remove unused parameter                          │
+│ 2022-10-21 13:02:52 │ 13d31eefbc3 │ Modify      │ Igor Nikonov       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             4 │ Replicated merge tree polishing                  │
+│ 2022-10-21 12:25:19 │ 4e76629aafc │ Modify      │ Azat Khuzhin       │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │             2 │ Fixes for -Wshorten-64-to-32                     │
+│ 2022-10-19 13:59:28 │ 05e6b94b541 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           4 │             0 │ Polishing                                        │
+│ 2022-10-19 13:34:20 │ e5408aac991 │ Modify      │ Antonio Andelic    │ src/Storages/StorageReplicatedMergeTree.cpp │          │           3 │            53 │ Simplify logic                                   │
+│ 2022-10-18 15:36:11 │ 7befe2825c9 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           2 │             2 │ Update StorageReplicatedMergeTree.cpp            │
+│ 2022-10-18 15:35:44 │ 0623ad4e374 │ Modify      │ Alexey Milovidov   │ src/Storages/StorageReplicatedMergeTree.cpp │          │           1 │             1 │ Update StorageReplicatedMergeTree.cpp            │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴─────────────────────────────────────────────┴──────────┴─────────────┴───────────────┴──────────────────────────────────────────────────┘
 
-Получено 10 строк. Затрачено: 0.006 сек. Обработано 12.10 тыс. строк, 1.60 МБ (1.93 млн строк/с., 255.40 МБ/с.)
+10 rows in set. Elapsed: 0.006 sec. Processed 12.10 thousand rows, 1.60 MB (1.93 million rows/s., 255.40 MB/s.)
 ```
 
 Мы также можем просматривать построчные изменения, исключая переименования, то есть мы не будем показывать изменения, сделанные до события переименования, когда файл имел другое имя:
 
 [play](https://sql.clickhouse.com?query_id=AKS9SYLARFMZCHGAAQNEBN)
-
 
 ```sql
 SELECT
@@ -290,11 +285,10 @@ LIMIT 10
 │ 2022-04-21 20:19:13 │ 9133e398b8c │    1 │              11 │              12 │ Nikolai Kochetov │ #include <Storages/MergeTree/DataPartStorageOnDisk.h> │
 └─────────────────────┴─────────────┴──────┴─────────────────┴─────────────────┴──────────────────┴───────────────────────────────────────────────────────┘
 
-Получено 10 строк. Прошло: 0.258 сек. Обработано 7.54 млн строк, 654.92 МБ (29.24 млн строк/с., 2.54 ГБ/с.)
+10 rows in set. Elapsed: 0.258 sec. Processed 7.54 million rows, 654.92 MB (29.24 million rows/s., 2.54 GB/s.)
 ```
 
 Обратите внимание, что существует более сложный вариант этого запроса, позволяющий получить [построчную историю коммитов файла](#line-by-line-commit-history-of-a-file) с учётом переименований.
-
 
 ### Найти текущие активные файлы {#find-the-current-active-files}
 
@@ -339,7 +333,7 @@ LIMIT 10
 │ src/Dictionaries/Embedded/GeodataProviders/Types.h              │
 └─────────────────────────────────────────────────────────────────┘
 
-Получено 10 строк. Затрачено: 0,085 сек. Обработано 532,10 тыс. строк, 8,68 МБ (6,30 млн строк/с., 102,64 МБ/с.)
+10 rows in set. Elapsed: 0.085 sec. Processed 532.10 thousand rows, 8.68 MB (6.30 million rows/s., 102.64 MB/s.)
 ```
 
 Обратите внимание, что это позволяет переименовывать файлы и затем снова переименовывать их в исходные имена. Сначала мы агрегируем `old_path` для списка файлов, помеченных как удалённые в результате переименования. Затем объединяем это с последней операцией для каждого `path`. Наконец, фильтруем этот список по тем записям, для которых конечное событие не является `Delete`.
@@ -374,7 +368,7 @@ FROM
 ┌─uniq(path)─┐
 │      18559 │
 └────────────┘
-1 строка в наборе. Прошло: 0.089 сек. Обработано 532.10 тыс. строк, 8.68 МБ (6.01 млн строк/с., 97.99 МБ/с.)
+1 row in set. Elapsed: 0.089 sec. Processed 532.10 thousand rows, 8.68 MB (6.01 million rows/s., 97.99 MB/s.)
 ```
 
 Обратите внимание, что при выполнении импорта мы пропустили несколько каталогов, а именно:
@@ -392,7 +386,6 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
 
 Разница здесь обусловлена несколькими факторами:
 
-
 * Переименование может происходить вместе с другими модификациями файла. Эти изменения фиксируются как отдельные события в `file_changes`, но с одинаковым временем. Функция `argMax` не может их различить — она выбирает первое значение. Естественный порядок вставок (единственный способ узнать корректный порядок) не сохраняется при объединении (`UNION`), поэтому могут быть выбраны события Modify. Например, ниже файл `src/Functions/geometryFromColumn.h` несколько раз изменяется, прежде чем будет переименован в `src/Functions/geometryConverters.h`. Наше текущее решение может выбрать событие Modify как последнее изменение, из-за чего `src/Functions/geometryFromColumn.h` останется.
 
 [play](https://sql.clickhouse.com?query_id=SCXWMR9GBMJ9UNZYQXQBFA)
@@ -408,25 +401,24 @@ git ls-files | grep -v -E 'generated\.cpp|^(contrib|docs?|website|libs/(libcityh
   WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
 
   ┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
-  │ Добавлен         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
-  │ Изменён      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
-  │ Переименован      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
+  │ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 33acc2aa5dc091a7cb948f78c558529789b2bad8 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 78e0db268ceadc42f82bc63a77ee1a4da6002463 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 14a891057d292a164c4179bfddaef45a74eaf83a │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ d0d6e6953c2a2af9fb2300921ff96b9362f22edb │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ fe8382521139a58c0ba277eb848e88894658db66 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 3be3d5cde8788165bc0558f1e2a22568311c3103 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ afad9bf4d0a55ed52a3f55483bc0973456e10a56 │
+  │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ e3290ecc78ca3ea82b49ebcda22b5d3a4df154e6 │
+  │ Rename      │ src/Functions/geometryConverters.h │ src/Functions/geometryFromColumn.h │ 2021-03-11 12:08:16 │ 125945769586baf6ffd15919b29565b1b2a63218 │
   └─────────────┴────────────────────────────────────┴────────────────────────────────────┴─────────────────────┴──────────────────────────────────────────┘
-  Получено 11 строк. Затрачено: 0.030 сек. Обработано 266.05 тыс. строк, 6.61 МБ (8.89 млн. строк/с., 220.82 МБ/с.)
+  11 rows in set. Elapsed: 0.030 sec. Processed 266.05 thousand rows, 6.61 MB (8.89 million rows/s., 220.82 MB/s.)
 ```
 
 * Нарушенная история коммитов — отсутствуют события удаления. Источник и причина пока не установлены.
 
 Эти различия не должны существенно повлиять на наш анализ. **Будем признательны за улучшенные версии этого запроса**.
-
 
 ### Список файлов с наибольшим числом изменений {#list-files-with-most-modifications}
 
@@ -480,9 +472,8 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │          8197 │
 └────────────────────────────────────────────────────────┴───────────────┘
 
-Выбрано 10 строк. Затрачено: 0.134 сек. Обработано 798.15 тыс. строк, 16.46 МБ (5.95 млн. строк/сек., 122.62 МБ/сек.)
+10 rows in set. Elapsed: 0.134 sec. Processed 798.15 thousand rows, 16.46 MB (5.95 million rows/s., 122.62 MB/s.)
 ```
-
 
 ### В какой день недели обычно совершаются коммиты? {#what-day-of-the-week-do-commits-usually-occur}
 
@@ -508,7 +499,6 @@ GROUP BY dayOfWeek(time) AS day_of_week
 ```
 
 Это вполне логично: по пятницам наблюдается небольшое снижение продуктивности. Здорово видеть, что люди коммитят код по выходным! Огромное спасибо нашим контрибьюторам!
-
 
 ### История подкаталога/файла — количество строк, коммитов и контрибьюторов в динамике {#history-of-subdirectoryfile---number-of-lines-commits-and-contributors-over-time}
 
@@ -541,7 +531,7 @@ LIMIT 10
 │ 2020-05-24 │        2851 │          1812 │          74 │      18 │
 │ 2020-05-31 │        2771 │          2077 │          77 │      16 │
 └────────────┴─────────────┴───────────────┴─────────────┴─────────┘
-Получено 10 строк. Время выполнения: 0.043 сек. Обработано 266.05 тыс. строк, 15.85 МБ (6.12 млн строк/с., 364.61 МБ/с.)
+10 rows in set. Elapsed: 0.043 sec. Processed 266.05 thousand rows, 15.85 MB (6.12 million rows/s., 364.61 MB/s.)
 ```
 
 Эти данные хорошо поддаются визуализации. Ниже мы используем Superset.
@@ -553,7 +543,6 @@ LIMIT 10
 **Для коммитов и авторов:**
 
 <Image img={superset_commits_authors} alt="For commits and authors" size="md" />
-
 
 ### Вывести список файлов с максимальным числом авторов {#list-files-with-maximum-number-of-authors}
 
@@ -607,9 +596,8 @@ LIMIT 10
 │ src/Interpreters/InterpreterSelectQuery.cpp │          59 │
 └─────────────────────────────────────────────┴─────────────┘
 
-10 строк в наборе. Прошло: 0.239 сек. Обработано 798.15 тыс. строк, 14.13 МБ (3.35 млн строк/с., 59.22 МБ/с.)
+10 rows in set. Elapsed: 0.239 sec. Processed 798.15 thousand rows, 14.13 MB (3.35 million rows/s., 59.22 MB/s.)
 ```
-
 
 ### Самые старые строки кода в репозитории {#oldest-lines-of-code-in-the-repository}
 
@@ -653,21 +641,20 @@ ORDER BY latest_change ASC
 LIMIT 10
 
 ┌─file_path───────────────────────────────────┬─line────────────────────────────────────────────────────────┬───────latest_change─┬─any(file_change_type)─┐
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Изменено                │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Изменено                │
-│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ Добавлено                   │
-│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ Добавлено                   │
-│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ Добавлено                   │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Modify                │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Modify                │
+│ utils/compressor/test.sh                    │ ./compressor -d < compressor.qlz > compressor2              │ 2014-02-24 03:14:30 │ Add                   │
+│ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.qlz                  │ 2014-02-24 03:14:30 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ if (argc != 2)                                              │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "std::exception: " << e.what() << std::endl;   │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Exception: " << e.displayText() << std::endl; │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ Poco::XML::DOMWriter().writeNode(std::cout, document);      │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "Some exception" << std::endl;                 │ 2014-02-26 19:10:00 │ Add                   │
+│ utils/config-processor/config-processor.cpp │ std::cerr << "usage: " << argv[0] << " path" << std::endl;  │ 2014-02-26 19:10:00 │ Add                   │
 └─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────┴─────────────────────┴───────────────────────┘
 
-Получено 10 строк. Затрачено: 1.101 сек. Обработано 8.07 млн строк, 905.86 МБ (7.33 млн строк/с., 823.13 МБ/с.)
+10 rows in set. Elapsed: 1.101 sec. Processed 8.07 million rows, 905.86 MB (7.33 million rows/s., 823.13 MB/s.)
 ```
-
 
 ### Файлы с самой длинной историей {#files-with-longest-history}
 
@@ -722,11 +709,10 @@ LIMIT 10
 │ 350 │ src/CMakeLists.txt                          │ 2022-10-24 09:22:37 │
 └─────┴─────────────────────────────────────────────┴─────────────────────┘
 
-10 строк в наборе. Прошло: 0.124 сек. Обработано 798.15 тыс. строк, 14.71 МБ (6.44 млн строк/с., 118.61 МБ/с.)
+10 rows in set. Elapsed: 0.124 sec. Processed 798.15 thousand rows, 14.71 MB (6.44 million rows/s., 118.61 MB/s.)
 ```
 
 Наша основная структура данных MergeTree, разумеется, постоянно развивается и имеет долгую историю доработок!
-
 
 ### Распределение вклада контрибьюторов между документацией и кодом в течение месяца {#distribution-of-contributors-with-respect-to-docs-and-code-over-the-month}
 
@@ -786,11 +772,10 @@ FROM
 │  31 │ █████████████████████████████████▏                              │
 └─────┴─────────────────────────────────────────────────────────────────┘
 
-Выбрано 31 строка. Затрачено: 0.043 сек. Обработано 7.54 млн строк, 40.53 МБ (176.71 млн строк/сек., 950.40 МБ/сек.)
+31 rows in set. Elapsed: 0.043 sec. Processed 7.54 million rows, 40.53 MB (176.71 million rows/s., 950.40 MB/s.)
 ```
 
 Возможно, чуть больше ближе к концу месяца, но в целом распределение остаётся достаточно равномерным. Однако на эти данные нельзя полностью полагаться из‑за фильтрации фильтром docs при вставке.
-
 
 ### Авторы с наиболее разнообразным вкладом {#authors-with-the-most-diverse-impact}
 
@@ -866,9 +851,8 @@ LIMIT 10
 │ liyang               │        36 │
 └──────────────────────┴───────────┘
 
-10 строк в наборе. Затрачено: 0.106 сек. Обработано 266.05 тыс. строк, 21.04 МБ (2.52 млн строк/сек., 198.93 МБ/сек.)
+10 rows in set. Elapsed: 0.106 sec. Processed 266.05 thousand rows, 21.04 MB (2.52 million rows/s., 198.93 MB/s.)
 ```
-
 
 ### Избранные файлы автора {#favorite-files-for-an-author}
 
@@ -922,7 +906,7 @@ LIMIT 10
 │ programs/install/Install.cpp                │  37 │
 └─────────────────────────────────────────────┴─────┘
 
-10 строк в наборе. Прошло: 0.106 сек. Обработано 798.15 тыс. строк, 13.97 МБ (7.51 млн строк/с., 131.41 МБ/с.)
+10 rows in set. Elapsed: 0.106 sec. Processed 798.15 thousand rows, 13.97 MB (7.51 million rows/s., 131.41 MB/s.)
 ```
 
 Это логично, потому что Алексей отвечает за ведение журнала изменений. Но что, если мы будем использовать базовое имя файла, чтобы выявить его самые популярные файлы — это позволит учитывать переименования и при этом сосредоточиться на его вкладе в код.
@@ -951,11 +935,10 @@ LIMIT 10
 │ Settings.h                     │ 225 │
 │ TCPHandler.cpp                 │ 205 │
 └────────────────────────────────┴─────┘
-Получено 10 строк. Прошло: 0.032 сек. Обработано 266.05 тыс. строк, 5.68 МБ (8.22 млн строк/с., 175.50 МБ/с.)
+10 rows in set. Elapsed: 0.032 sec. Processed 266.05 thousand rows, 5.68 MB (8.22 million rows/s., 175.50 MB/s.)
 ```
 
 Это, возможно, лучше отражает его сферы интересов.
-
 
 ### Самые большие файлы с наименьшим числом авторов {#largest-files-with-lowest-number-of-authors}
 
@@ -1013,13 +996,12 @@ LIMIT 10
 │ src/Analyzer/QueryAnalysisPass.cpp                                    │      5686 │           1 │               5686 │
 └───────────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-Получено 10 строк. Затрачено: 0,138 сек. Обработано 798,15 тыс. строк, 16,57 МБ (5,79 млн строк/сек., 120,11 МБ/сек.)
+10 rows in set. Elapsed: 0.138 sec. Processed 798.15 thousand rows, 16.57 MB (5.79 million rows/s., 120.11 MB/s.)
 ```
 
 Текстовые словари, возможно, не слишком практичны, поэтому давайте ограничимся только кодом, используя фильтр по расширению файла!
 
 [запустить](https://sql.clickhouse.com?query_id=BZHGWUIZMPZZUHS5XRBK2M)
-
 
 ```sql
 WITH current_files AS
@@ -1068,13 +1050,12 @@ LIMIT 10
 │ src/Planner/PlannerJoins.cpp          │       695 │           1 │                695 │
 │ src/Analyzer/QueryNode.h              │       607 │           1 │                607 │
 └───────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
-Получено 10 строк. Прошло: 0.140 сек. Обработано 798.15 тыс. строк, 16.84 МБ (5.70 млн строк/с., 120.32 МБ/с.)
+10 rows in set. Elapsed: 0.140 sec. Processed 798.15 thousand rows, 16.84 MB (5.70 million rows/s., 120.32 MB/s.)
 ```
 
 Здесь есть некоторое смещение в сторону недавних изменений — у более новых файлов было меньше времени для накопления коммитов. Что если ограничиться файлами, которым как минимум 1 год?
 
 [play](https://sql.clickhouse.com?query_id=RMHHZEDHFUCBGRQVQA2732)
-
 
 ```sql
 WITH current_files AS
@@ -1126,9 +1107,8 @@ LIMIT 10
 │ 2020-11-06 15:45:13 │ src/Storages/Rocksdb/StorageEmbeddedRocksdb.cpp                │       611 │           2 │              305.5 │
 └─────────────────────┴────────────────────────────────────────────────────────────────┴───────────┴─────────────┴────────────────────┘
 
-Получено 10 строк. Прошло: 0.143 сек. Обработано 798.15 тыс. строк, 18.00 МБ (5.58 млн строк/сек., 125.87 МБ/сек.)
+10 rows in set. Elapsed: 0.143 sec. Processed 798.15 thousand rows, 18.00 MB (5.58 million rows/s., 125.87 MB/s.)
 ```
-
 
 ### Распределение коммитов и строк кода по времени: по дням недели, по авторам, для отдельных поддиректорий {#commits-and-lines-of-code-distribution-by-time-by-weekday-by-author-for-specific-subdirectories}
 
@@ -1156,13 +1136,12 @@ GROUP BY toDayOfWeek(time) AS dayOfWeek
 │         7 │     294 │       11938 │          6451 │
 └───────────┴─────────┴─────────────┴───────────────┘
 
-Выбрано 7 строк. Затрачено: 0.034 сек. Обработано 266.05 тыс. строк, 14.66 МБ (7.73 млн строк/сек., 425.56 МБ/сек.)
+7 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 14.66 MB (7.73 million rows/s., 425.56 MB/s.)
 ```
 
 И по времени суток,
 
 [Запустить](https://sql.clickhouse.com?query_id=Q4VDVKEGHHRBCUJHNCVTF1)
-
 
 ```sql
 SELECT
@@ -1207,7 +1186,6 @@ GROUP BY toHour(time) AS hourOfDay
 Это распределение выглядит логичным, учитывая, что большая часть нашей команды разработки находится в Амстердаме. Функция `bar` помогает нам визуализировать эти распределения:
 
 [play](https://sql.clickhouse.com?query_id=9AZ8CENV8N91YGW7T6IB68)
-
 
 ```sql
 SELECT
@@ -1254,9 +1232,8 @@ FROM
 │        23 │ ████████████▌                 │ █████▌                                             │ █████▋                                             │
 └───────────┴───────────────────────────────┴────────────────────────────────────────────────────┴────────────────────────────────────────────────────┘
 
-Получено 24 строки. Прошло: 0.038 сек. Обработано 266.05 тыс. строк, 14.66 МБ (7.09 млн строк/сек., 390.69 МБ/сек.)
+24 rows in set. Elapsed: 0.038 sec. Processed 266.05 thousand rows, 14.66 MB (7.09 million rows/s., 390.69 MB/s.)
 ```
-
 
 ### Матрица авторов, показывающая, какие из них склонны переписывать код других авторов {#matrix-of-authors-that-shows-what-authors-tends-to-rewrite-another-authors-code}
 
@@ -1301,7 +1278,7 @@ LIMIT 100
 │ Anton Popov          │ Amos Bird        │  2127 │
 └──────────────────────┴──────────────────┴───────┘
 
-Получено 20 строк. Затрачено: 0.098 сек. Обработано 7.54 млн строк, 42.16 МБ (76.67 млн строк/сек., 428.99 МБ/сек.)
+20 rows in set. Elapsed: 0.098 sec. Processed 7.54 million rows, 42.16 MB (76.67 million rows/s., 428.99 MB/s.)
 ```
 
 Диаграмма Санкея (SuperSet) позволяет наглядно это визуализировать. Обратите внимание, что мы увеличиваем наш `LIMIT BY` до 3, чтобы получить топ‑3 авторов, чаще всего удаляющих код у каждого автора, и тем самым повысить разнообразие визуализации.
@@ -1311,7 +1288,6 @@ LIMIT 100
 Похоже, Alexey особенно любит удалять чужой код. Исключим его, чтобы получить более сбалансированное представление об удалении кода.
 
 <Image img={superset_authors_matrix_v2} alt="Superset матрица авторов v2" size="md" />
-
 
 ### Кто делает наибольшую долю коммитов в каждый день недели? {#who-is-the-highest-percentage-contributor-per-day-of-week}
 
@@ -1343,7 +1319,7 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 2400 │
 └─────────────┴──────────────────┴──────┘
 
-7 строк в наборе. Затрачено: 0.012 сек. Обработано 62.78 тыс. строк, 395.47 KB (5.44 млн строк/сек., 34.27 MB/сек.)
+7 rows in set. Elapsed: 0.012 sec. Processed 62.78 thousand rows, 395.47 KB (5.44 million rows/s., 34.27 MB/s.)
 ```
 
 Итак, некоторые возможные преимущества здесь на стороне самого давнего контрибьютора — нашего основателя Алексея. Давайте ограничим наш анализ последним годом.
@@ -1375,7 +1351,7 @@ LIMIT 1 BY day_of_week
 │           7 │ Alexey Milovidov │ 243 │
 └─────────────┴──────────────────┴─────┘
 
-7 строк в наборе. Прошло: 0.004 сек. Обработано 21.82 тыс. строк, 140.02 КБ (4.88 млн строк/с., 31.29 МБ/с.)
+7 rows in set. Elapsed: 0.004 sec. Processed 21.82 thousand rows, 140.02 KB (4.88 million rows/s., 31.29 MB/s.)
 ```
 
 Это всё ещё немного упрощённое представление и не отражает реальную работу людей.
@@ -1383,7 +1359,6 @@ LIMIT 1 BY day_of_week
 Более подходящей метрикой может быть определение того, кто является основным вкладчиком каждый день, выраженное как доля от общего объёма работы, выполненной за последний год. Обратите внимание, что мы одинаково учитываем удаление и добавление кода.
 
 [play](https://sql.clickhouse.com?query_id=VQF4KMRDSUEXGS1JFVDJHV)
-
 
 ```sql
 SELECT
@@ -1426,9 +1401,8 @@ INNER JOIN
 │           7 │ Robert Schulze      │  0.3617405888930302 │
 └─────────────┴─────────────────────┴─────────────────────┘
 
-Выбрано 7 строк. Затрачено: 0.014 сек. Обработано 106.12 тыс. строк, 1.38 МБ (7.61 млн. строк/сек., 98.65 МБ/сек.)
+7 rows in set. Elapsed: 0.014 sec. Processed 106.12 thousand rows, 1.38 MB (7.61 million rows/s., 98.65 MB/s.)
 ```
-
 
 ### Распределение возраста кода в репозитории {#distribution-of-code-age-across-repository}
 
@@ -1510,9 +1484,8 @@ LIMIT 5 BY root
 │ utils/self-extr-exec             │              224 │           224 │           224 │    2 │
 └──────────────────────────────────┴──────────────────┴───────────────┴───────────────┴──────┘
 
-24 строки в наборе. Затрачено: 0.129 сек. Обработано 798.15 тыс. строк, 15.11 МБ (6.19 млн. строк/сек., 117.08 МБ/сек.)
+24 rows in set. Elapsed: 0.129 sec. Processed 798.15 thousand rows, 15.11 MB (6.19 million rows/s., 117.08 MB/s.)
 ```
-
 
 ### Какой процент кода автора был удалён другими авторами? {#what-percentage-of-code-for-an-author-has-been-removed-by-other-authors}
 
@@ -1561,9 +1534,8 @@ LIMIT 10
 │ kreuzerkrieg       │  3406 │           2468 │  0.724603640634175 │
 └────────────────────┴───────┴────────────────┴────────────────────┘
 
-Получено 10 строк. Затрачено: 0.126 сек. Обработано 15.07 млн. строк, 73.51 МБ (119.97 млн. строк/сек., 585.16 МБ/сек.)
+10 rows in set. Elapsed: 0.126 sec. Processed 15.07 million rows, 73.51 MB (119.97 million rows/s., 585.16 MB/s.)
 ```
-
 
 ### Список файлов, которые переписывались чаще всего? {#list-files-that-were-rewritten-most-number-of-times}
 
@@ -1615,7 +1587,7 @@ LIMIT 10
 │ src/Parsers/ExpressionElementParsers.cpp               │  8197 │
 └────────────────────────────────────────────────────────┴───────┘
 
-Выбрано 10 строк. Затрачено: 0,160 сек. Обработано 8,07 млн строк, 98,99 МБ (50,49 млн строк/с., 619,49 МБ/с.)
+10 rows in set. Elapsed: 0.160 sec. Processed 8.07 million rows, 98.99 MB (50.49 million rows/s., 619.49 MB/s.)
 ```
 
 Однако это не отражает понятие «перезаписи», когда в любом коммите большая часть файла изменяется. Для этого требуется более сложный запрос. Будем считать перезаписью ситуацию, когда более 50% строк файла удалены и 50% добавлены. Вы можете скорректировать запрос в соответствии со своим пониманием того, что считать перезаписью.
@@ -1623,7 +1595,6 @@ LIMIT 10
 Запрос ограничен только текущими файлами. Мы перечисляем все изменения файлов, группируя по `path` и `commit_hash`, и возвращаем количество добавленных и удалённых строк. Используя оконную функцию, мы оцениваем общий размер файла в любой момент времени, выполняя накопительную сумму и оценивая влияние любого изменения на размер файла как `lines added - lines removed`. Используя эту статистику, мы можем вычислить долю файла, которая была добавлена или удалена для каждого изменения. Наконец, мы считаем количество изменений файла, которые считаются перезаписью для каждого файла, т.е. `(percent_add >= 0.5) AND (percent_delete >= 0.5) AND current_size > 50`. Обратите внимание, что мы учитываем только файлы длиной более 50 строк, чтобы ранние вклады в файл не считались перезаписью. Это также позволяет избежать смещения в сторону очень маленьких файлов, которые с большей вероятностью могут быть переписаны.
 
 [play](https://sql.clickhouse.com?query_id=5PL1QLNSH6QQTR8H9HINNP)
-
 
 ```sql
 WITH
@@ -1704,9 +1675,8 @@ LIMIT 10
 │ src/Functions/polygonsSymDifference.cpp               │            4 │
 └───────────────────────────────────────────────────────┴──────────────┘
 
-Выбрано 10 строк. Затрачено: 0.299 сек. Обработано 798.15 тыс. строк, 31.52 МБ (2.67 млн. строк/сек., 105.29 МБ/сек.)
+10 rows in set. Elapsed: 0.299 sec. Processed 798.15 thousand rows, 31.52 MB (2.67 million rows/s., 105.29 MB/s.)
 ```
-
 
 ### В какой день недели у кода наибольший шанс остаться в репозитории? {#what-weekday-does-the-code-have-the-highest-chance-to-stay-in-the-repository}
 
@@ -1769,7 +1739,6 @@ GROUP BY dayOfWeek(added_day) AS day_of_week_added
 
 7 rows in set. Elapsed: 3.965 sec. Processed 15.07 million rows, 1.92 GB (3.80 million rows/s., 483.50 MB/s.)
 ```
-
 
 ### Файлы, отсортированные по среднему возрасту кода {#files-sorted-by-average-code-age}
 
@@ -1858,9 +1827,8 @@ LIMIT 10
 │ src/Interpreters/createBlockSelector.cpp                        │               795 │
 └─────────────────────────────────────────────────────────────────┴───────────────────┘
 
-Получено 10 строк. Прошло: 3.134 сек. Обработано 16.13 млн строк, 1.83 ГБ (5.15 млн строк/с., 582.99 МБ/с.)
+10 rows in set. Elapsed: 3.134 sec. Processed 16.13 million rows, 1.83 GB (5.15 million rows/s., 582.99 MB/s.)
 ```
-
 
 ### Кто, как правило, пишет больше тестов / C++‑кода / комментариев? {#who-tends-to-write-more-tests--cpp-code--comments}
 
@@ -1905,13 +1873,12 @@ LIMIT 20
 │ Alexander Kuzmenkov  │  298 │  2092 │ 0.8753138075313808 │
 └──────────────────────┴──────┴───────┴────────────────────┘
 
-Выбрано 20 строк. Затрачено: 0.034 сек. Обработано 266.05 тыс. строк, 4.65 МБ (7.93 млн строк/сек., 138.76 МБ/сек.)
+20 rows in set. Elapsed: 0.034 sec. Processed 266.05 thousand rows, 4.65 MB (7.93 million rows/s., 138.76 MB/s.)
 ```
 
 Построим гистограмму этого распределения.
 
 [play](https://sql.clickhouse.com?query_id=S5AJIIRGSUAY1JXEVHQDAK)
-
 
 ```sql
 WITH (
@@ -1947,7 +1914,7 @@ SELECT
 │  0.871392376017531 │  0.904916108899021 │ ████████████████████████████▋ │
 │  0.904916108899021 │ 0.9358408629263851 │ █████████████████▌            │
 └────────────────────┴────────────────────┴───────────────────────────────┘
-Выбрано 10 строк. Затрачено: 0.051 сек. Обработано 266.05 тыс. строк, 4.65 МБ (5.24 млн. строк/сек., 91.64 МБ/сек.)
+10 rows in set. Elapsed: 0.051 sec. Processed 266.05 thousand rows, 4.65 MB (5.24 million rows/s., 91.64 MB/s.)
 ```
 
 Как и следовало ожидать, большинство участников пишут больше кода, чем тестов.
@@ -1955,7 +1922,6 @@ SELECT
 А кто добавляет больше всего комментариев к коду?
 
 [play](https://sql.clickhouse.com?query_id=EXPHDIURBTOXXOK1TGNNYD)
-
 
 ```sql
 SELECT
@@ -1990,11 +1956,10 @@ LIMIT 10
 │ kssenii            │ 0.07455322590796751 │  131143 │
 │ Artur              │ 0.12383737231074826 │  121484 │
 └────────────────────┴─────────────────────┴─────────┘
-10 строк в наборе. Прошло: 0.290 сек. Обработано 7.54 млн строк, 394.57 МБ (26.00 млн строк/с., 1.36 ГБ/с.)
+10 rows in set. Elapsed: 0.290 sec. Processed 7.54 million rows, 394.57 MB (26.00 million rows/s., 1.36 GB/s.)
 ```
 
 Обратите внимание, что сортировка ведётся по количеству вкладов в код. У всех наших крупнейших контрибьюторов удивительно высокий процент — это одна из причин, почему наш код такой читаемый.
-
 
 ### Как со временем меняется доля кода и комментариев в коммитах автора? {#how-does-an-authors-commits-change-over-time-with-respect-to-codecomments-percentage}
 
@@ -2029,7 +1994,7 @@ LIMIT 10
 │ ANDREI STAROVEROV           │         32 │       12 │ 0.7272727272727273 │ 2021-05-09 │
 └─────────────────────────────┴────────────┴──────────┴────────────────────┴────────────┘
 
-Получено 10 строк. Затрачено: 0.145 сек. Обработано 7.54 млн строк, 51.09 МБ (51.83 млн строк/с, 351.44 МБ/с)
+10 rows in set. Elapsed: 0.145 sec. Processed 7.54 million rows, 51.09 MB (51.83 million rows/s., 351.44 MB/s.)
 ```
 
 В идеале, однако, мы хотим увидеть, как это меняется в агрегированном виде по всем авторам, начиная с первого дня, когда они начинают делать коммиты. Постепенно ли они сокращают число комментариев, которые пишут?
@@ -2039,7 +2004,6 @@ LIMIT 10
 После вычисления среднего значения по недельному смещению для всех авторов мы прореживаем эти результаты, выбирая каждую 10‑ю неделю.
 
 [выполнить](https://sql.clickhouse.com?query_id=SBHEWR8XC4PRHY13HPPKCN)
-
 
 ```sql
 WITH author_ratios_by_offset AS
@@ -2108,11 +2072,10 @@ LIMIT 20
 │         190 │ 0.20677550885049117 │
 └─────────────┴─────────────────────┘
 
-20 строк в наборе. Затрачено: 0.167 сек. Обработано 15.07 млн строк, 101.74 МБ (90.51 млн строк/сек., 610.98 МБ/сек.)
+20 rows in set. Elapsed: 0.167 sec. Processed 15.07 million rows, 101.74 MB (90.51 million rows/s., 610.98 MB/s.)
 ```
 
 Обнадеживает, что наша доля комментариев остается примерно постоянной и не снижается по мере роста стажа авторов.
-
 
 ### Каково среднее время до переписывания кода и медиана (период «полураспада» кода)? {#what-is-the-average-time-before-code-will-be-rewritten-and-the-median-half-life-of-code-decay}
 
@@ -2173,7 +2136,6 @@ FROM rewrites
 
 1 row in set. Elapsed: 0.388 sec. Processed 266.05 thousand rows, 22.85 MB (685.82 thousand rows/s., 58.89 MB/s.)
 ```
-
 
 ### В какое время писать код хуже всего с точки зрения наибольшей вероятности его последующего переписывания? {#what-is-the-worst-time-to-write-code-in-sense-that-the-code-has-highest-chance-to-be-re-written}
 
@@ -2238,7 +2200,6 @@ GROUP BY dayOfWeek
 
 7 rows in set. Elapsed: 0.466 sec. Processed 7.54 million rows, 701.52 MB (16.15 million rows/s., 1.50 GB/s.)
 ```
-
 
 ### Чей код «держится» дольше всего? {#which-authors-code-is-the-most-sticky}
 
@@ -2314,9 +2275,8 @@ LIMIT 10
 │ Alexey Zatelepin    │               22.5 │         4 │
 └─────────────────────┴────────────────────┴───────────┘
 
-Получено 10 строк. Затрачено: 0.555 сек. Обработано 7.54 млн строк, 720.60 МБ (13.58 млн строк/сек., 1.30 ГБ/сек.)
+10 rows in set. Elapsed: 0.555 sec. Processed 7.54 million rows, 720.60 MB (13.58 million rows/s., 1.30 GB/s.)
 ```
-
 
 ### Наибольшее количество последовательных дней с коммитами у автора {#most-consecutive-days-of-commits-by-an-author}
 
@@ -2370,9 +2330,8 @@ LIMIT 10
 │ Nikita Vasilev   │                   11 │
 └──────────────────┴──────────────────────┘
 
-10 строк в наборе. Прошло: 0.025 сек. Обработано 62.78 тыс. строк, 395.47 КБ (2.54 млн строк/с., 16.02 МБ/с.)
+10 rows in set. Elapsed: 0.025 sec. Processed 62.78 thousand rows, 395.47 KB (2.54 million rows/s., 16.02 MB/s.)
 ```
-
 
 ### Построчная история коммитов файла {#line-by-line-commit-history-of-a-file}
 
@@ -2394,7 +2353,7 @@ WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 
 │ 2020-04-03 16:14:31 │ src/Storages/StorageReplicatedMergeTree.cpp │ dbms/Storages/StorageReplicatedMergeTree.cpp │ 06446b4f08a142d6f1bc30664c47ded88ab51782 │ dbms/ → src/   │
 └─────────────────────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────┴────────────────┘
 
-Получена 1 строка. Прошло: 0.135 сек. Обработано 266.05 тыс. строк, 20.73 МБ (1.98 млн строк/с., 154.04 МБ/с.)
+1 row in set. Elapsed: 0.135 sec. Processed 266.05 thousand rows, 20.73 MB (1.98 million rows/s., 154.04 MB/s.)
 ```
 
 Это затрудняет просмотр полной истории файла, поскольку у нас нет одного значения, связывающего все изменения строк или файла целиком.
@@ -2423,9 +2382,8 @@ SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-Получена 1 строка. Затрачено: 0,074 сек. Обработано 344,06 тыс. строк, 6,27 МБ (4,65 млн строк/с., 84,71 МБ/с.)
+1 row in set. Elapsed: 0.074 sec. Processed 344.06 thousand rows, 6.27 MB (4.65 million rows/s., 84.71 MB/s.)
 ```
-
 
 Теперь мы можем использовать эту функциональность, чтобы собрать все коммиты за всю историю файла. В этом примере мы показываем по одному коммиту для каждого значения `path`.
 
@@ -2444,14 +2402,13 @@ LIMIT 1 BY path
 FORMAT PrettyCompactMonoBlock
 
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path─────────────────────────────────────────────┬─commit_message──────────────────────────────────────────────────────────────────┐
-│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ исправлен доступ к части в состоянии Deleting                                   │
-│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ Удалена пустая строка                                                           │
-│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ Попытка добавить возможность переименования столбцов первичного ключа, но в итоге она была запрещена │
+│ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ fix accessing part in Deleting state                                            │
+│ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ Remove empty line                                                               │
+│ 2020-04-01 19:21:27 │ 1d5a77c1132 │ Modify      │ alesapin           │ dbms/src/Storages/StorageReplicatedMergeTree.cpp │ Tried to add ability to rename primary key columns but just banned this ability │
 └─────────────────────┴─────────────┴─────────────┴────────────────────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
 
-Получено 3 строки. Затрачено: 0.170 сек. Обработано 611.53 тыс. строк, 41.76 МБ (3.60 млн строк/с., 246.07 МБ/с.)
+3 rows in set. Elapsed: 0.170 sec. Processed 611.53 thousand rows, 41.76 MB (3.60 million rows/s., 246.07 MB/s.)
 ```
-
 
 ## Открытые вопросы {#unsolved-questions}
 
@@ -2494,7 +2451,7 @@ LIMIT 20
 │              19 │ s-kat                │ #include <Storages/MergeTree/PinnedPartUUIDs.h>               │
 │              20 │ Nikita Mikhaylov     │ #include <Storages/MergeTree/MergeMutateExecutor.h>           │
 └─────────────────┴──────────────────────┴───────────────────────────────────────────────────────────────┘
-20 строк в наборе. Прошло: 0.547 сек. Обработано 7.88 млн строк, 679.20 МБ (14.42 млн строк/с., 1.24 ГБ/с.)
+20 rows in set. Elapsed: 0.547 sec. Processed 7.88 million rows, 679.20 MB (14.42 million rows/s., 1.24 GB/s.)
 ```
 
 Здесь приветствуются как точные, так и улучшенные решения.

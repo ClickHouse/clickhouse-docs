@@ -7,69 +7,56 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-
-
 # chDB for Go {#chdb-for-go}
 
-chDB-go 为 chDB 提供 Go 语言绑定，使你能够在 Go 应用程序中直接运行 ClickHouse 查询，且完全不依赖任何外部组件。
-
-
+chDB-go 为 chDB 提供 Go 语言绑定,使你能够在 Go 应用程序中直接运行 ClickHouse 查询,且完全不依赖任何外部组件。
 
 ## 安装 {#installation}
 
-### 第 1 步：安装 libchdb {#install-libchdb}
+### 第 1 步:安装 libchdb {#install-libchdb}
 
-首先安装 chDB 库：
+首先安装 chDB 库:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-### 第 2 步：安装 chdb-go {#install-chdb-go}
+### 第 2 步:安装 chdb-go {#install-chdb-go}
 
-安装 Go 软件包：
+安装 Go 软件包:
 
 ```bash
 go install github.com/chdb-io/chdb-go@latest
 ```
 
-或者将它添加到你的 `go.mod` 中：
+或者将它添加到你的 `go.mod` 中:
 
 ```bash
 go get github.com/chdb-io/chdb-go
 ```
 
-
 ## 用法 {#usage}
 
-### 命令行界面（CLI） {#cli}
+### 命令行界面(CLI) {#cli}
 
-chDB-go 包含一个用于快速查询的命令行界面（CLI）：
-
-
+chDB-go 包含一个用于快速查询的命令行界面(CLI):
 
 ```bash
-# 简单查询 {#simple-query}
+# 简单查询
 ./chdb-go "SELECT 123"
-```
 
-
-# 交互式模式 {#interactive-mode}
+# 交互式模式
 ./chdb-go
 
-
-
-# 启用持久化存储的交互式模式 {#interactive-mode-with-persistent-storage}
-
+# 启用持久化存储的交互式模式
 ./chdb-go --path /tmp/chdb
+```
 
-````
+### Go 库 - 快速开始 {#quick-start}
 
-### Go 库 - 快速开始                {#quick-start}
+#### 无状态查询 {#stateless-queries}
 
-#### 无状态查询                      {#stateless-queries}
-
-对于简单的一次性查询：
+对于简单的一次性查询:
 
 ```go
 package main
@@ -87,11 +74,11 @@ func main() {
     }
     fmt.Println(result)
 }
-````
+```
 
 #### 基于会话的有状态查询 {#stateful-queries}
 
-适用于需要持久状态的复杂查询：
+适用于需要持久状态的复杂查询:
 
 ```go
 package main
@@ -144,7 +131,7 @@ func main() {
 
 #### SQL 驱动接口 {#sql-driver}
 
-chDB-go 实现了 Go 的 `database/sql` 接口：
+chDB-go 实现了 Go 的 `database/sql` 接口:
 
 ```go
 package main
@@ -183,7 +170,7 @@ func main() {
 
 #### 针对大型数据集的流式查询 {#query-streaming}
 
-对于无法全部放入内存的大型数据集，请使用流式查询：
+对于无法全部放入内存的大型数据集,请使用流式查询:
 
 ```go
 package main
@@ -242,23 +229,18 @@ func main() {
 }
 ```
 
-
-**流式查询的优势：**
+**流式查询的优势:**
 - **内存高效** - 处理大型数据集而无需将所有数据一次性加载到内存中
 - **实时处理** - 从第一批数据到达时就可以开始处理
 - **支持取消** - 可以使用 `Cancel()` 取消长时间运行的查询
 - **错误处理** - 使用 `Error()` 在流式处理中检查错误
 
-
-
 ## API 文档 {#api-documentation}
 
-chDB-go 提供高级和低级 API：
+chDB-go 提供高级和低级 API:
 
 - **[高级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/chdb.md)** - 推荐用于大多数使用场景
 - **[低级 API 文档](https://github.com/chdb-io/chdb-go/blob/main/lowApi.md)** - 适用于需要细粒度控制的高级使用场景
-
-
 
 ## 系统要求 {#requirements}
 

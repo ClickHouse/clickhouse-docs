@@ -10,7 +10,6 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
 # Dictionary {#dictionary}
 
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/dictionaries#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
@@ -70,7 +69,7 @@ WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
 
-行 1:
+Row 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -78,14 +77,13 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-1 行が返されました。経過時間: 1.283秒。処理された行数: 4億1844万行、7.23 GB (3億2607万行/秒、5.63 GB/秒)
-ピークメモリ使用量: 3.18 GiB。
+1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
+Peak memory usage: 3.18 GiB.
 ```
 
 > **`JOIN` の右側には小さいデータセットを使用する**: このクエリでは、外側とサブクエリの両方で `PostId` によるフィルタリングを行っているため、必要以上に冗長に見えるかもしれません。これはクエリの応答時間を短く保つためのパフォーマンス最適化です。最適なパフォーマンスを得るには、常に `JOIN` の右側がより小さな集合となるようにし、可能な限り小さく保ってください。JOIN のパフォーマンス最適化のコツや利用可能なアルゴリズムの理解については、[このブログ記事シリーズ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) を参照することをおすすめします。
 
 このクエリは高速ですが、良好なパフォーマンスを得るには `JOIN` を慎重に記述する必要があります。本来であれば、「SQL」を含む投稿だけに単純にフィルタリングし、その投稿のサブセットに対して `UpVote` と `DownVote` のカウントを確認してメトリクスを計算できるのが理想的です。
-
 
 #### Dictionary の適用 {#applying-a-dictionary}
 
@@ -152,7 +150,6 @@ WHERE name = 'votes_dict'
 
 特定の`PostId`に対する賛成票数と反対票数は、シンプルな`dictGet`関数で取得できるようになりました。以下の例では、投稿`11227902`の値を取得しています。
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 
@@ -160,7 +157,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-これを先ほどのクエリに適用することで、JOINを削除できます：
+Exploiting this in our earlier query, we can remove the JOIN:
 
 WITH PostIds AS
 (
@@ -177,12 +174,11 @@ WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
-3行のセット。経過時間：0.551秒。処理：1億1964万行、3.29 GB（2億1696万行/秒、5.97 GB/秒）
-ピークメモリ使用量：552.26 MiB。
+3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
+Peak memory usage: 552.26 MiB.
 ```
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。
-
 
 ## クエリ時のエンリッチメント {#query-time-enrichment}
 
@@ -220,8 +216,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-5行が返されました。経過時間: 0.033秒。処理された行数: 425万行、82.84 MB (1億3062万行/秒、2.55 GB/秒)
-ピークメモリ使用量: 249.32 MiB。
+5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
+Peak memory usage: 249.32 MiB.
 ```
 
 上記の結合例と同様に、同じ Dictionary を使用して、ほとんどの投稿がどこから投稿されているのかを効率的に判定できます。
@@ -247,7 +243,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
 Peak memory usage: 248.84 MiB.
 ```
-
 
 ## インデックス時のエンリッチメント {#index-time-enrichment}
 
@@ -317,7 +312,6 @@ LIMIT 4
 4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
 Peak memory usage: 666.82 MiB.
 ```
-
 
 ## Dictionary の高度なトピック {#advanced-dictionary-topics}
 

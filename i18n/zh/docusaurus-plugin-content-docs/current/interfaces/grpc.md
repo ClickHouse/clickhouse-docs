@@ -7,11 +7,7 @@ title: 'gRPC 接口'
 doc_type: 'reference'
 ---
 
-
-
 # gRPC 接口 {#grpc-interface}
-
-
 
 ## 简介 {#grpc-interface-introduction}
 
@@ -28,8 +24,6 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
 
 接口规范定义在 [clickhouse_grpc.proto](https://github.com/ClickHouse/ClickHouse/blob/master/src/Server/grpc_protos/clickhouse_grpc.proto) 中。
 
-
-
 ## gRPC 配置 {#grpc-interface-configuration}
 
 要使用 gRPC 接口，请在[主服务器配置文件](../operations/configuration-files.md)中设置 `grpc_port`。其他配置选项请参考下例：
@@ -39,33 +33,32 @@ ClickHouse 支持 [gRPC](https://grpc.io/) 接口。gRPC 是一个开源的远�
     <grpc>
         <enable_ssl>false</enable_ssl>
 
-        <!-- 仅在启用 SSL 时使用以下两个文件 -->
+        <!-- The following two files are used only if SSL is enabled -->
         <ssl_cert_file>/path/to/ssl_cert_file</ssl_cert_file>
         <ssl_key_file>/path/to/ssl_key_file</ssl_key_file>
 
-        <!-- 服务器是否要求客户端提供证书 -->
+        <!-- Whether server requests client for a certificate -->
         <ssl_require_client_auth>false</ssl_require_client_auth>
 
-        <!-- 仅在 ssl_require_client_auth=true 时使用以下文件 -->
+        <!-- The following file is used only if ssl_require_client_auth=true -->
         <ssl_ca_cert_file>/path/to/ssl_ca_cert_file</ssl_ca_cert_file>
 
-        <!-- 默认压缩算法(当客户端未指定其他算法时应用,参见 QueryInfo 中的 result_compression)。
-             支持的算法:none、deflate、gzip、stream_gzip -->
+        <!-- Default compression algorithm (applied if client doesn't specify another algorithm, see result_compression in QueryInfo).
+             Supported algorithms: none, deflate, gzip, stream_gzip -->
         <compression>deflate</compression>
 
-        <!-- 默认压缩级别(当客户端未指定其他级别时应用,参见 QueryInfo 中的 result_compression)。
-             支持的级别:none、low、medium、high -->
+        <!-- Default compression level (applied if client doesn't specify another level, see result_compression in QueryInfo).
+             Supported levels: none, low, medium, high -->
         <compression_level>medium</compression_level>
 
-        <!-- 发送/接收消息大小限制(以字节为单位)。-1 表示无限制 -->
+        <!-- Send/receive message size limits in bytes. -1 means unlimited -->
         <max_send_message_size>-1</max_send_message_size>
         <max_receive_message_size>-1</max_receive_message_size>
 
-        <!-- 启用此选项以获取详细日志 -->
+        <!-- Enable if you want to get detailed logs -->
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
-
 
 ## 内置客户端 {#grpc-client}
 
@@ -104,7 +97,7 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 
 ```text
 ┌─id─┬─text──────────────────┐
-│  0 │ gRPC 协议示例的       │
-│  1 │ 输入数据              │
+│  0 │ Input data for        │
+│  1 │ gRPC protocol example │
 └────┴───────────────────────┘
 ```

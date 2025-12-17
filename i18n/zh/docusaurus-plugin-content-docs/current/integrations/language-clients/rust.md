@@ -37,7 +37,6 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 
 另请参阅：[crates.io 页面](https://crates.io/crates/clickhouse)。
 
-
 ## Cargo 特性 {#cargo-features}
 
 * `lz4`（默认启用）— 启用 `Compression::Lz4` 和 `Compression::Lz4Hc(_)` 变体。启用后，除 `WATCH` 以外的所有查询默认使用 `Compression::Lz4`。
@@ -83,13 +82,12 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 use clickhouse::Client;
 
 let client = Client::default()
-    // 应包括协议和端口
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
     .with_database("test");
 ```
-
 
 ### HTTPS 或 ClickHouse Cloud 连接 {#https-or-clickhouse-cloud-connection}
 
@@ -103,7 +101,7 @@ URL 应同时包含协议和端口，例如 `https://instance.clickhouse.cloud:8
 
 ```rust
 fn read_env_var(key: &str) -> String {
-    env::var(key).unwrap_or_else(|_| panic!("必须设置 {key} 环境变量"))
+    env::var(key).unwrap_or_else(|_| panic!("{key} env variable should be set"))
 }
 
 let client = Client::default()
@@ -115,7 +113,6 @@ let client = Client::default()
 另请参阅：
 
 * 客户端仓库中的 [ClickHouse Cloud HTTPS 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。该示例同样适用于自托管（本地部署）环境中的 HTTPS 连接。
-
 
 ### 选择行 {#selecting-rows}
 
@@ -152,7 +149,6 @@ while let Some(row) = cursor.next().await? { .. }
 在查询行数据时谨慎使用 `wait_end_of_query`，因为它可能会导致服务端更高的内存消耗，并且很可能会降低整体性能。
 :::
 
-
 ### 插入数据行 {#inserting-rows}
 
 ```rust
@@ -175,7 +171,6 @@ insert.end().await?;
 * 行将以流式方式逐步发送，以分散网络负载。
 * 仅当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时，ClickHouse 才会以原子方式插入该批次。
 
-
 ### 异步插入（服务端批量） {#async-insert-server-side-batching}
 
 你可以使用 [ClickHouse 异步插入](/optimize/asynchronous-inserts) 来避免在客户端对传入数据进行批量处理。只需在 `insert` 方法中提供 `async_insert` 选项（或者直接在 `Client` 实例上统一配置，使其对所有 `insert` 调用生效）即可。
@@ -190,7 +185,6 @@ let client = Client::default()
 另请参阅：
 
 * 客户端仓库中的 [异步插入示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
-
 
 ### Inserter 特性（客户端批量写入） {#inserter-feature-client-side-batching}
 
@@ -213,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// 请勿忘记在应用程序关闭时完成插入器的终结操作
-// 并提交剩余行。`.end()` 方法同样会返回统计信息。
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -232,7 +226,6 @@ inserter.end().await?;
 ```
 
 :::
-
 
 ### 执行 DDL {#executing-ddls}
 
@@ -252,7 +245,6 @@ client
     .await?;
 ```
 
-
 ### ClickHouse 设置 {#clickhouse-settings}
 
 可以使用 `with_option` 方法来应用多种 [ClickHouse 设置](/operations/settings/settings)。例如：
@@ -260,15 +252,14 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // 此设置仅应用于当前查询；
-    // 将覆盖全局客户端设置。
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
 ```
 
 除了 `query` 之外，它也可以以类似方式用于 `insert` 和 `inserter` 方法；此外，还可以在 `Client` 实例上调用同一方法，为所有查询设置全局配置。
-
 
 ### Query ID {#query-id}
 
@@ -290,7 +281,6 @@ let numbers = client
 
 另请参阅：client 仓库中的 [query&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs)。
 
-
 ### Session ID {#session-id}
 
 与 `query_id` 类似，你可以通过设置 `session_id` 在同一个会话中执行语句。`session_id` 可以在客户端级别进行全局设置，也可以在每次 `query`、`insert` 或 `inserter` 调用时单独设置。
@@ -307,7 +297,6 @@ let client = Client::default()
 
 另请参阅 client 仓库中的 [session&#95;id 示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs)。
 
-
 ### 自定义 HTTP 头部 {#custom-http-headers}
 
 如果你使用代理认证或需要传递自定义请求头，可以按如下方式进行：
@@ -320,7 +309,6 @@ let client = Client::default()
 
 另请参见客户端仓库中的 [自定义 HTTP 头示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs)。
 
-
 ### 自定义 HTTP 客户端 {#custom-http-client}
 
 这对于微调底层 HTTP 连接池的设置很有用。
@@ -332,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // 客户端保持特定空闲套接字存活的时长(以毫秒为单位)。
-    // 该值应明显小于 ClickHouse 服务器的 KeepAlive 超时时间,
-    // 23.11 之前版本默认为 3 秒,之后版本为 10 秒。
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // 设置连接池中允许的最大空闲 Keep-Alive 连接数。
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -348,7 +336,6 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 :::
 
 另请参阅客户端仓库中的 [自定义 HTTP 客户端示例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs)。
-
 
 ## 数据类型 {#data-types}
 
@@ -456,7 +443,6 @@ struct MyRow {
 }
 ```
 
-
 * `DateTime` 可与 `u32` 或其对应的 newtype 封装类型互相映射，用于表示自 UNIX 纪元以来经过的秒数。另一个受支持的类型是 [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html)，通过 `serde::time::datetime` 提供支持，这需要启用 `time` 特性。
 
 ```rust
@@ -473,15 +459,15 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // 根据 `DateTime64(X)` 的精度表示经过的秒/微秒/毫秒/纳秒
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
-    dt64s: OffsetDateTime,  // `DateTime64(0)` 秒级精度
+    dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
-    dt64ms: OffsetDateTime, // `DateTime64(3)` 毫秒级精度
+    dt64ms: OffsetDateTime, // `DateTime64(3)`
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
-    dt64us: OffsetDateTime, // `DateTime64(6)` 微秒级精度
+    dt64us: OffsetDateTime, // `DateTime64(6)`
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
-    dt64ns: OffsetDateTime, // `DateTime64(9)` 纳秒级精度
+    dt64ns: OffsetDateTime, // `DateTime64(9)`
 }
 ```
 
@@ -502,7 +488,7 @@ struct MyRow {
 * 通过提供多个数组并重命名来实现对 `Nested` 的支持。
 
 ```rust
-// 创建表 test(items Nested(name String, count UInt32))
+// CREATE TABLE test(items Nested(name String, count UInt32))
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
     #[serde(rename = "items.name")]
@@ -535,7 +521,6 @@ struct MyRow {
 
 * `Variant`、`Dynamic` 和（新的）`JSON` 数据类型目前尚不支持。
 
-
 ## 模拟 {#mocking}
 
 该 crate 提供了用于模拟 ClickHouse 服务器并测试 DDL、`SELECT`、`INSERT` 和 `WATCH` 查询的工具。可以通过启用 `test-util` 功能特性来使用此功能。**仅**将其作为开发依赖（dev-dependency）使用。
@@ -561,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- 应改为 u32 类型！
+    id: String, // <- should be u32 instead!
 }
 ```
 
 在插入数据时，可能会遇到如下错误：
 
 ```response
-错误：BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 在本示例中，通过正确定义 `EventLog` 结构体即可解决该问题：
@@ -579,7 +564,6 @@ struct EventLog {
     id: u32
 }
 ```
-
 
 ## 已知限制 {#known-limitations}
 

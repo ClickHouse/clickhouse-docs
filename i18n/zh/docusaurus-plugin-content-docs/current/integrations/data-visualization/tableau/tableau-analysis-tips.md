@@ -22,22 +22,22 @@ ClickHouse 提供了大量数据分析函数——远超 Tableau 所支持的数
 * **[`-If` 聚合组合器](/sql-reference/aggregate-functions/combinators/#-if)** *(在 v0.2.3 中新增)* - 允许在聚合计算中直接使用行级过滤。已新增 `SUM_IF(), AVG_IF(), COUNT_IF(), MIN_IF() & MAX_IF()` 函数。
 * **`BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int])`** *(在 v0.2.1 中新增)* — 忘掉那些无聊的柱状图吧！改用 `BAR()` 函数（等同于 ClickHouse 中的 [`bar()`](/sql-reference/functions/other-functions#bar)）。例如，下列计算字段会返回以 String 形式表示的精美条形图：
   ```text
-  BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
-  ```
+    BAR([my_int], [min_val_int], [max_val_int], [bar_string_length_int]) + "  " + FORMAT_READABLE_QUANTITY([my_int])
+    ```
   ```text
-  == BAR() ==
-  ██████████████████▊  3.2706亿
-  █████  8802万
-  ███████████████  2.5937亿
-  ```
+    == BAR() ==
+    ██████████████████▊  327.06 million
+    █████  88.02 million
+    ███████████████  259.37 million
+    ```
 * **`COUNTD_UNIQ([my_field])`** *(在 v0.2.0 中添加)* — 用于近似计算参数的不同取值个数。等价于 [uniq()](/sql-reference/aggregate-functions/reference/uniq/)。比 `COUNTD()` 快得多。
 * **`DATE_BIN('day', 10, [my_datetime_or_date])`** *(在 v0.2.1 中新增)* — 等价于 ClickHouse 中的 [`toStartOfInterval()`](/sql-reference/functions/date-time-functions#toStartOfInterval)。将 Date 或 Date &amp; Time 类型的值向下取整到给定的时间间隔，例如：
   ```text
-   == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
-      28.07.2004 06:54:50    |              21.07.2004 00:00:00
-      17.07.2004 14:01:56    |              11.07.2004 00:00:00
-      14.07.2004 07:43:00    |              11.07.2004 00:00:00
-  ```
+     == my_datetime_or_date == | == DATE_BIN('day', 10, [my_datetime_or_date]) ==
+        28.07.2004 06:54:50    |              21.07.2004 00:00:00
+        17.07.2004 14:01:56    |              11.07.2004 00:00:00
+        14.07.2004 07:43:00    |              11.07.2004 00:00:00
+    ```
 * **`FORMAT_READABLE_QUANTITY([my_integer])`** *(新增于 v0.2.1)* — 返回一个经过四舍五入并带有后缀（thousand、million、billion 等）的数字字符串。便于人类阅读大型数值。等价于 [`formatReadableQuantity()`](/sql-reference/functions/other-functions#formatReadableQuantity)。
 * **`FORMAT_READABLE_TIMEDELTA([my_integer_timedelta_sec], [optional_max_unit])`** *(在 v0.2.1 中新增)* —— 接受一个以秒为单位的时间间隔。返回一个以（年、月、日、时、分、秒）表示的时间间隔字符串。`optional_max_unit` 为要显示的最大时间单位。可接受的值：`seconds`、`minutes`、`hours`、`days`、`months`、`years`。等同于 [`formatReadableTimeDelta()`](/sql-reference/functions/other-functions/#formatReadableTimeDelta)。
 * **`GET_SETTING([my_setting_name])`** *（在 v0.2.1 中新增）* — 返回自定义设置的当前值。等价于 [`getSetting()`](/sql-reference/functions/other-functions#getSetting)。
@@ -49,11 +49,11 @@ ClickHouse 提供了大量数据分析函数——远超 Tableau 所支持的数
 * **`PERCENTILE_EXACT([my_number], [level_float])`** *(在 v0.1.3 中新增)* — 精确计算数值序列的百分位数。推荐的 level 范围为 [0.01, 0.99]。等价于 [`quantileExact()()`](/sql-reference/aggregate-functions/reference/quantileexact/#quantileexact)。
 * **`PROPER([my_string])`** *(新增于 v0.2.5)* - 将文本字符串转换为每个单词首字母大写、其余字母小写。空格以及标点符号等非字母数字字符也会被视为分隔符。例如：
   ```text
-  PROPER("PRODUCT name") => "Product Name"
-  ```
+    PROPER("PRODUCT name") => "Product Name"
+    ```
   ```text
-  PROPER("darcy-mae") => "Darcy-Mae"
-  ```
+    PROPER("darcy-mae") => "Darcy-Mae"
+    ```
 * **`RAND()`** *(在 v0.2.1 中新增)* — 返回 UInt32 整数值，例如 `3446222955`。等同于 [`rand()`](/sql-reference/functions/random-functions/#rand)。
 * **`RANDOM()`** *(在 v0.2.1 中新增)* —— 非官方的 Tableau [`RANDOM()`](https://kb.tableau.com/articles/issue/random-function-produces-inconsistent-results) 函数，返回介于 0 和 1 之间的浮点数。
 * **`RAND_CONSTANT([optional_field])`** *(在 v0.2.1 中新增)* — 生成一个随机值的常量列。类似 `{RAND()}` 的 Fixed LOD，但速度更快。等价于 [`randConstant()`](/sql-reference/functions/random-functions/#randConstant)。

@@ -33,8 +33,8 @@ WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILI
 │       86 │
 └─────────┘
 
-1 строка в наборе. Прошло: 8.209 сек. Обработано 150.20 млн строк, 56.05 ГБ (18.30 млн строк/с., 6.83 ГБ/с.)
-Пиковое потребление памяти: 1.23 ГиБ.
+1 row in set. Elapsed: 8.209 sec. Processed 150.20 million rows, 56.05 GB (18.30 million rows/s., 6.83 GB/s.)
+Peak memory usage: 1.23 GiB.
 ```
 
 Обратите внимание, что мы используем `ANY INNER JOIN`, а не просто `INNER JOIN`, так как не хотим получать декартово произведение — нам нужно только одно совпадение для каждого поста.
@@ -53,8 +53,8 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 │       86 │
 └─────────┘
 
-1 строка в наборе. Затрачено: 2.284 сек. Обработано 150.20 млн строк, 16.61 ГБ (65.76 млн строк/с., 7.27 ГБ/с.)
-Пиковое использование памяти: 323.52 МиБ.
+1 row in set. Elapsed: 2.284 sec. Processed 150.20 million rows, 16.61 GB (65.76 million rows/s., 7.27 GB/s.)
+Peak memory usage: 323.52 MiB.
 ```
 
 Хотя ClickHouse пытается протолкнуть условия во все выражения `JOIN` и подзапросы, мы рекомендуем всегда вручную применять условия ко всем частям запроса, где это возможно — тем самым минимизируя объём данных для `JOIN`. Рассмотрим следующий пример, где мы хотим вычислить количество голосов «за» для постов, связанных с Java, начиная с 2020 года.
@@ -70,14 +70,12 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
+
+1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
 
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
-
-````
-
-Перестановка порядка этого соединения значительно повышает производительность — до 1,5 с:
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -89,11 +87,30 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 │  261915 │
 └─────────┘
 
+1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
+```sql
+SELECT countIf(VoteTypeId = 2) AS upvotes
+FROM stackoverflow.votes AS v
+INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
+WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+
+┌─upvotes─┐
+│  261915 │
+└─────────┘
+
 1 строка в наборе. Затраченное время: 1,519 с. Обработано 252,30 млн строк, 1,62 GB (166,06 млн строк/с, 1,07 GB/с.)
-````
+```sql
+SELECT countIf(VoteTypeId = 2) AS upvotes
+FROM stackoverflow.votes AS v
+INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
+WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
 
-Добавление фильтра в левую таблицу ещё больше повышает производительность — до 0,5 с.
+┌─upvotes─┐
+│  261915 │
+└─────────┘
 
+1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
+Peak memory usage: 249.42 MiB.
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
@@ -106,10 +123,21 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 строка в наборе. Затрачено: 0.597 сек. Обработано 81.14 млн строк, 1.31 ГБ (135.82 млн строк/с., 2.19 ГБ/с.)
 Пиковое использование памяти: 249.42 МиБ.
-```
+```sql
+SELECT count() AS upvotes
+FROM stackoverflow.votes
+WHERE (VoteTypeId = 2) AND (PostId IN (
+        SELECT Id
+        FROM stackoverflow.posts
+        WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
+))
 
-Этот запрос можно ещё больше улучшить, перенеся `INNER JOIN` во вложенный запрос, как уже отмечалось ранее, при этом сохранив фильтр во внешнем и во внутреннем запросах.
+┌─upvotes─┐
+│  261915 │
+└─────────┘
 
+1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
+Peak memory usage: 250.66 MiB.
 ```sql
 SELECT count() AS upvotes
 FROM stackoverflow.votes

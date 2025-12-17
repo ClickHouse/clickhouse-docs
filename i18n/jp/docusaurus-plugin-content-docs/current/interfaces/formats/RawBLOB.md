@@ -6,8 +6,6 @@ title: 'RawBLOB'
 doc_type: 'reference'
 ---
 
-
-
 ## 説明 {#description}
 
 `RawBLOB` 形式は、すべての入力データを単一の値として読み取ります。これは、[`String`](/sql-reference/data-types/string.md) 型またはそれに類似した単一フィールドのみを持つテーブルだけをパースできます。
@@ -42,9 +40,8 @@ doc_type: 'reference'
 `RawBLOB` 入力に空のデータが渡されると、ClickHouse は例外をスローします。
 
 ```text
-コード: 108. DB::Exception: 挿入するデータがありません
+Code: 108. DB::Exception: No data to insert
 ```
-
 
 ## 使用例 {#example-usage}
 
@@ -57,6 +54,5 @@ $ clickhouse-client --query "SELECT * FROM {some_table} FORMAT RawBLOB" | md5sum
 ```text title="Response"
 f9725a22f9191e064120d718e26862a9  -
 ```
-
 
 ## フォーマットの設定 {#format-settings}

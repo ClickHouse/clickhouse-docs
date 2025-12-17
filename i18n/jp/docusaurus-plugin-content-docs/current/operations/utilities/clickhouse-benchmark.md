@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-benchmark {#clickhouse-benchmark}
 
 ClickHouse サーバーに接続し、指定したクエリを繰り返し送信します。
@@ -44,7 +42,6 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
-
 ## コマンドラインオプション {#clickhouse-benchmark-command-line-options}
 
 - `--query=QUERY` — 実行するクエリ。このパラメータが渡されない場合、`clickhouse-benchmark` は標準入力からクエリを読み込みます。
@@ -78,14 +75,10 @@ clickhouse-benchmark [keys] < queries_file;
 
 クエリに対していくつかの[設定](/operations/settings/overview)を適用したい場合は、`--<session setting name>= SETTING_VALUE` というオプションとして渡します。たとえば、`--max_memory_usage=1048576` のようになります。
 
-
-
 ## 環境変数オプション {#clickhouse-benchmark-environment-variable-options}
 
 ユーザー名、パスワード、およびホストは、環境変数 `CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD`、`CLICKHOUSE_HOST` を使って設定できます。  
 コマンドライン引数 `--user`、`--password`、`--host` が、環境変数よりも優先されます。
-
-
 
 ## 出力 {#clickhouse-benchmark-output}
 
@@ -130,14 +123,11 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
 
 * クエリ実行時間のパーセンタイル値。
 
-
 ## 比較モード {#clickhouse-benchmark-comparison-mode}
 
 `clickhouse-benchmark` は、稼働中の 2 つの ClickHouse サーバーのパフォーマンスを比較できます。
 
 比較モードを使用するには、両方のサーバーのエンドポイントを、2 組の `--host` と `--port` キーを使って指定します。キーは引数リスト内での位置によって対応付けられ、最初の `--host` は最初の `--port` に対応し、以降も同様です。`clickhouse-benchmark` は両方のサーバーへの接続を確立した後、クエリを送信します。各クエリはランダムに選択されたどちらかのサーバーに送られます。結果はテーブル形式で表示されます。
-
-
 
 ## 例 {#clickhouse-benchmark-example}
 
@@ -146,9 +136,9 @@ $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhous
 ```
 
 ```text
-1件のクエリを読み込みました。
+Loaded 1 queries.
 
-実行されたクエリ: 5件
+Queries executed: 5.
 
 localhost:9001, queries 2, QPS: 3.764, RPS: 75446929.370, MiB/s: 575.614, result RPS: 37639659.982, result MiB/s: 287.168.
 localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result RPS: 38148392.297, result MiB/s: 291.049.
@@ -168,5 +158,5 @@ localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result
 99.900%         0.273 sec.      0.269 sec.
 99.990%         0.273 sec.      0.269 sec.
 
-99.5%信頼水準で有意差なし
+No difference proven at 99.5% confidence
 ```

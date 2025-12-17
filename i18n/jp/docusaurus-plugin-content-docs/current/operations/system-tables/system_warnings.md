@@ -47,11 +47,11 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 ```text
 Row 1:
 ──────
-message:               アクティブなパーツ数が10を超えています。
-message_format_string: アクティブなパーツ数が{}を超えています。
+message:               The number of active parts is more than 10.
+message_format_string: The number of active parts is more than {}.
 
 Row 2:
 ──────
-message:               アタッチされているデータベース数が2を超えています。
-message_format_string: アタッチされているデータベース数が{}を超えています。
+message:               The number of attached databases is more than 2.
+message_format_string: The number of attached databases is more than {}.
 ```

@@ -7,8 +7,6 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-
-
 # PostgreSQL {#postgresql}
 
 允许连接到远程 [PostgreSQL](https://www.postgresql.org) 服务器上的数据库。支持读写操作（`SELECT` 和 `INSERT` 查询），用于在 ClickHouse 和 PostgreSQL 之间交换数据。
@@ -16,8 +14,6 @@ doc_type: 'guide'
 通过 `SHOW TABLES` 和 `DESCRIBE TABLE` 查询，可以实时访问远程 PostgreSQL 的表列表和表结构。
 
 支持表结构修改（`ALTER TABLE ... ADD|DROP COLUMN`）。如果将 `use_table_cache` 参数（参见下文的引擎参数）设置为 `1`，则表结构会被缓存且不会检查是否发生了修改，但可以通过 `DETACH` 和 `ATTACH` 查询进行更新。
-
-
 
 ## 创建数据库 {#creating-a-database}
 
@@ -34,7 +30,6 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 * `password` — 用户密码。
 * `schema` — PostgreSQL 模式（schema）。
 * `use_table_cache` — 定义是否对数据库表结构启用缓存。可选。默认值：`0`。
-
 
 ## 支持的数据类型 {#data_types-support}
 
@@ -53,8 +48,6 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 | TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)           |
 | INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
 | ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
-
-
 
 ## 使用示例 {#examples-of-use}
 
@@ -147,7 +140,6 @@ DESCRIBE TABLE test_database.test_table;
 │ data   │ Nullable(String)  │
 └────────┴───────────────────┘
 ```
-
 
 ## 相关内容 {#related-content}
 

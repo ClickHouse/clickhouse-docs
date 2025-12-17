@@ -8,8 +8,6 @@ keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
 
-
-
 # Как собрать ClickHouse на macOS для macOS {#how-to-build-clickhouse-on-macos-for-macos}
 
 :::info Вам не нужно собирать ClickHouse самостоятельно!
@@ -19,8 +17,6 @@ doc_type: 'guide'
 ClickHouse можно скомпилировать на macOS x86_64 (Intel) и arm64 (Apple Silicon) под управлением macOS 10.15 (Catalina) или более поздней версии.
 
 В качестве компилятора поддерживается только Clang из Homebrew.
-
-
 
 ## Установка необходимых компонентов {#install-prerequisites}
 
@@ -40,12 +36,9 @@ Apple по умолчанию использует файловую систем
 Для серьёзной разработки на macOS убедитесь, что исходный код хранится на томе диска, чувствительном к регистру. См., например, [эти инструкции](https://brianboyko.medium.com/a-case-sensitive-src-folder-for-mac-programmers-176cc82a3830).
 :::
 
-
 ## Сборка ClickHouse {#build-clickhouse}
 
 Для сборки необходимо использовать компилятор Clang из Homebrew:
-
-
 
 ```bash
 cd ClickHouse
@@ -53,14 +46,13 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# Итоговый исполняемый файл будет создан по пути: build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
+# The resulting binary will be created at: build/programs/clickhouse
 ```
 
 :::note
 Если при линковке вы сталкиваетесь с ошибками вида `ld: archive member '/' not a mach-o file in ...`, вам может понадобиться
 использовать llvm-ar, указав флаг `-DCMAKE_AR=/opt/homebrew/opt/llvm/bin/llvm-ar`.
 :::
-
 
 ## Особенности {#caveats}
 

@@ -1,5 +1,6 @@
 ---
 title: 'Java'
+sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Java から ClickHouse へ接続するためのオプション'
 slug: /integrations/java
@@ -21,7 +22,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 Java クライアントは、独自の API を実装したライブラリであり、ClickHouse サーバーとのネットワーク通信の詳細を抽象化します。現在は HTTP インターフェイス経由のみをサポートしています。このライブラリは、さまざまな ClickHouse フォーマットを扱うためのユーティリティや、その他の関連機能を提供します。
 
-Java クライアントは 2015 年に開発されましたが、コードベースの保守が非常に困難になり、API も分かりづらく、さらなる最適化も難しくなっていました。そのため 2024 年にリファクタリングを行い、新しいコンポーネント `client-v2` として再構築しました。これにより、API が明確になり、コードベースは軽量化され、パフォーマンスも向上し、ClickHouse のフォーマット（主に RowBinary と Native）への対応も改善されています。JDBC は近い将来、このクライアントを利用する予定です。  
+Java クライアントは 2015 年に開発されましたが、コードベースの保守が非常に困難になり、API も分かりづらく、さらなる最適化も難しくなっていました。そのため 2024 年にリファクタリングを行い、新しいコンポーネント `client-v2` として再構築しました。これにより、API が明確になり、コードベースは軽量化され、パフォーマンスも向上し、ClickHouse のフォーマット（主に RowBinary と Native）への対応も改善されています。JDBC は近い将来、このクライアントを利用する予定です。
 
 ### サポートされているデータ型 {#supported-data-types}
 
@@ -96,6 +97,7 @@ Java クライアントは 2015 年に開発されましたが、コードベー
 |----------------------------------------------|:---------:|:---------:|:---------:|
 | Http Connection                              |✔       |✔      | |
 | Http Compression (LZ4)                       |✔       |✔      | |
+| Application Controlled Compression           |✔       |✗      | |
 | Server Response Compression - LZ4            |✔       |✔      | | 
 | Client Request Compression - LZ4             |✔       |✔      | |
 | HTTPS                                        |✔       |✔      | |
@@ -111,6 +113,7 @@ Java クライアントは 2015 年に開発されましたが、コードベー
 | Log Comment                                  |✔       |✔      | |
 | Session Roles                                |✔       |✔      | |
 | SSL Client Authentication                    |✔       |✔      | |
+| SNI Configuration                            |✔       |✗      | |
 | Session timezone                             |✔       |✔      | |
 
 JDBC ドライバーは、基盤となるクライアント実装と同じ機能を継承します。その他の JDBC 機能については、その[ページ](/integrations/language-clients/java/jdbc)を参照してください。
@@ -133,21 +136,21 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.16</version> <!-- 最新バージョンを使用 -->
+        <version>2.0.16</version> <!-- Use the latest version -->
     </dependency>
 
     <!-- Logback Core -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.5.16</version> <!-- 最新バージョンを使用 -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 
-    <!-- Logback Classic (SLF4JとLogbackをブリッジ) -->
+    <!-- Logback Classic (bridges SLF4J to Logback) -->
     <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.5.16</version> <!-- 最新バージョンを使用 -->
+        <version>1.5.16</version> <!-- Use the latest version -->
     </dependency>
 </dependencies>
 ```
@@ -159,14 +162,14 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- コンソールアペンダー -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- ファイルアペンダー -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -175,13 +178,13 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
         </encoder>
     </appender>
 
-    <!-- ルートロガー -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- 特定のパッケージに対するカスタムログレベル -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

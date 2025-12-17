@@ -90,7 +90,6 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 <Image img={postman11} size="md" alt="Organization ID と Service ID" border />
 
-
 ## ClickHouse Cloud API 機能のテスト {#test-the-clickhouse-cloud-api-functionalities}
 
 ### 「GET list of available organizations」のテスト {#test-get-list-of-available-organizations}
