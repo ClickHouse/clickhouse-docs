@@ -307,8 +307,6 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 Преобразует [`DateTime64`](../data-types/datetime64.md) в первый [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) для заданного момента времени.
 
-См. раздел [&quot;Генерация идентификаторов Snowflake&quot;](#snowflake-id-generation) для подробностей реализации.
-
 **Синтаксис**
 
 ```sql
@@ -317,26 +315,25 @@ dateTime64ToSnowflakeID(value[, epoch])
 
 **Аргументы**
 
-* `value` — Дата и время. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `value` — Дата и время. [`DateTime64`](/sql-reference/data-types/datetime64)
 * `epoch` — Эпоха Snowflake ID в миллисекундах, прошедших с 1970-01-01. По умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
-Возвращает входное значение в виде первого Snowflake ID для этого момента времени. [`UInt64`](/sql-reference/data-types/int-uint)
+Входное значение, преобразованное в [`UInt64`](/sql-reference/data-types/int-uint)
 
 **Примеры**
 
-**Пример использования**
+**Простой пример**
 
 ```sql title=Query
-SELECT toDateTime64('2025-08-15 18:57:56.493', 3, 'Asia/Shanghai') AS dt, dateTime64ToSnowflakeID(dt) AS res;
+SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────────dt─┬─────────────────res─┐
-│ 2025-08-15 18:57:56.493 │ 7362075066076495872 │
-└─────────────────────────┴─────────────────────┘
+6832626394434895872
 ```
+
 
 ## dateTimeToSnowflake {#dateTimeToSnowflake}
 
@@ -395,26 +392,25 @@ dateTimeToSnowflakeID(value[, epoch])
 
 **Аргументы**
 
-* `value` — дата и время. [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
-* `epoch` — необязательный параметр. Эпоха для Snowflake ID в миллисекундах, отсчитываемых с 1970-01-01. Значение по умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
+* `value` — дата и время. [`DateTime`](/sql-reference/data-types/datetime)
+* `epoch` — эпоха для Snowflake ID в миллисекундах, отсчитываемых с 1970-01-01. Значение по умолчанию — 0 (1970-01-01). Для эпохи Twitter/X (2015-01-01) укажите 1288834974657. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
-Возвращает первое возможное значение Snowflake ID для указанного момента времени. [`UInt64`](/sql-reference/data-types/int-uint)
+Входное значение, преобразованное в [`UInt64`](/sql-reference/data-types/int-uint)
 
 **Примеры**
 
-**Пример использования**
+**Простой пример**
 
 ```sql title=Query
-SELECT toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt, dateTimeToSnowflakeID(dt) AS res;
+SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 ```
 
 ```response title=Response
-┌──────────────────dt─┬─────────────────res─┐
-│ 2021-08-15 18:57:56 │ 6832626392367104000 │
-└─────────────────────┴─────────────────────┘
+6832626392367104000
 ```
+
 
 ## dateTimeToUUIDv7 {#dateTimeToUUIDv7}
 
