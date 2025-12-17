@@ -70,7 +70,7 @@ ClickHouse предоставил подмножество из 100 миллио
 
   Загрузка 100 миллионов строк в таблицу займёт несколько минут.
 
-  Также можно выполнить отдельные SQL-запросы для загрузки определённого количества файлов или строк.
+  Также можно выполнить отдельные SQL-команды для загрузки определённого количества файлов или строк.
 
   ```sql
   INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -88,11 +88,11 @@ ClickHouse предоставил подмножество из 100 миллио
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
 
-  Вектор в строке с id = 9999 является эмбеддингом изображения ресторана-деликатеса.
+  The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
   ```
 
   ```response title="Response"
-  ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
    1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
    2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
    3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
@@ -116,11 +116,11 @@ ClickHouse предоставил подмножество из 100 миллио
       └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
   #highlight-next-line
-  Получено 20 строк. Прошло: 3.968 сек. Обработано 100.38 млн строк, 320.81 ГБ (25.30 млн строк/с., 80.84 ГБ/с.)
+  20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
   ```
 
   Зафиксируйте время выполнения запроса, чтобы затем сравнить его с временем выполнения запроса ANN (с использованием векторного индекса).
-  При 100 миллионах строк выполнение данного запроса без векторного индекса может занять от нескольких секунд до нескольких минут.
+  With 100 million rows, the above query without a vector index could take a few seconds/minutes to complete.
 
   ### Создание индекса векторного сходства
 
@@ -133,20 +133,22 @@ ClickHouse предоставил подмножество из 100 миллио
   ```
 
   Параметры и аспекты производительности при создании индекса и выполнении поиска описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
-  В приведённой выше инструкции используются значения 64 и 512 для гиперпараметров HNSW `M` и `ef_construction` соответственно.
-  Необходимо тщательно подбирать оптимальные значения этих параметров, оценивая время построения индекса и качество результатов поиска для выбранных значений.
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
   Построение и сохранение индекса может занять несколько часов для полного набора данных из 100 миллионов записей в зависимости от количества доступных ядер ЦП и пропускной способности системы хранения.
 
   ### Выполните ANN-поиск
 
-  После построения индекса векторного подобия запросы векторного поиска будут автоматически использовать индекс:
+  После построения индекса векторного сходства запросы векторного поиска будут автоматически использовать индекс:
 
   ```sql title="Query"
   SELECT id, url 
   FROM laion_5b_100m
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
+
   ```
 
   Первая загрузка векторного индекса в память может занять от нескольких секунд до нескольких минут.
@@ -155,9 +157,9 @@ ClickHouse предоставил подмножество из 100 миллио
 
   Векторы эмбеддингов набора данных `LAION 5b` были созданы с помощью модели `OpenAI CLIP` `ViT-L/14`.
 
-  Ниже приведен пример скрипта Python, демонстрирующий программную генерацию
+  Ниже приведён пример скрипта Python, демонстрирующий программную генерацию
   векторов эмбеддингов с использованием API `CLIP`. Полученный вектор эмбеддинга для поиска
-  затем передается в качестве аргумента функции [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) в запросе `SELECT`.
+  затем передаётся в качестве аргумента функции [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) в запросе `SELECT`.
 
   Для установки пакета `clip` см. [репозиторий OpenAI на GitHub](https://github.com/openai/clip).
 
@@ -171,28 +173,28 @@ ClickHouse предоставил подмножество из 100 миллио
   device = "cuda" if torch.cuda.is_available() else "cpu"
   model, preprocess = clip.load("ViT-L/14", device=device)
 
-  # Поиск изображений, содержащих и собаку, и кошку
+  # Search for images that contain both a dog and a cat
   text = clip.tokenize(["a dog and a cat"]).to(device)
 
   with torch.no_grad():
       text_features = model.encode_text(text)
       np_arr = text_features.detach().cpu().numpy()
 
-      # Укажите здесь учётные данные ClickHouse
+      # Pass ClickHouse credentials here
       chclient = clickhouse_connect.get_client()
 
       params = {'v1': list(np_arr[0])}
       result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
                               parameters=params)
 
-      # Запись результатов в простую HTML-страницу для открытия в браузере. Некоторые URL могут быть устаревшими.
+      # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
       print("<html>")
       for r in result.result_rows:
           print("<img src = ", r[1], 'width="200" height="200">')
       print("</html>")
   ```
 
-  Результат поиска показан ниже:
+  Результат вышеуказанного поиска показан ниже:
 
   <Image img={search_results_image} alt="Результаты поиска по векторному сходству" size="md" />
 </VerticalStepper>

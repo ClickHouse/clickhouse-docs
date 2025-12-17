@@ -83,7 +83,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- 数据中心级别表和物化视图
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (
@@ -120,63 +120,63 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 <Tabs>
   <TabItem value="Service level" label="服务级别" default>
     ```sql
-    SELECT
-        server_id,
-        region,
-        avgMerge(avg_response_time) AS avg_response_ms
-    FROM server_performance
-    GROUP BY server_id, region
-    ORDER BY region, server_id;
-    ```
+SELECT
+    server_id,
+    region,
+    avgMerge(avg_response_time) AS avg_response_ms
+FROM server_performance
+GROUP BY server_id, region
+ORDER BY region, server_id;
+```
 
     ```response
-    ┌─server_id─┬─region─────┬─avg_response_ms─┐
-    │       301 │ eu-central │             145 │
-    │       302 │ eu-central │             155 │
-    │       101 │ us-east    │             125 │
-    │       102 │ us-east    │             115 │
-    │       201 │ us-west    │              95 │
-    │       202 │ us-west    │             105 │
-    └───────────┴────────────┴─────────────────┘
-    ```
+┌─server_id─┬─region─────┬─avg_response_ms─┐
+│       301 │ eu-central │             145 │
+│       302 │ eu-central │             155 │
+│       101 │ us-east    │             125 │
+│       102 │ us-east    │             115 │
+│       201 │ us-west    │              95 │
+│       202 │ us-west    │             105 │
+└───────────┴────────────┴─────────────────┘
+```
   </TabItem>
 
   <TabItem value="Regional level" label="区域级别">
     ```sql
-    SELECT
-        region,
-        datacenter,
-        avgMerge(avg_response_time) AS avg_response_ms
-    FROM region_performance
-    GROUP BY region, datacenter
-    ORDER BY datacenter, region;
-    ```
+SELECT
+    region,
+    datacenter,
+    avgMerge(avg_response_time) AS avg_response_ms
+FROM region_performance
+GROUP BY region, datacenter
+ORDER BY datacenter, region;
+```
 
     ```response
-    ┌─region─────┬─datacenter─┬────avg_response_ms─┐
-    │ us-east    │ dc1        │ 121.66666666666667 │
-    │ us-west    │ dc1        │                100 │
-    │ eu-central │ dc2        │                150 │
-    └────────────┴────────────┴────────────────────┘
-    ```
+┌─region─────┬─datacenter─┬────avg_response_ms─┐
+│ us-east    │ dc1        │ 121.66666666666667 │
+│ us-west    │ dc1        │                100 │
+│ eu-central │ dc2        │                150 │
+└────────────┴────────────┴────────────────────┘
+```
   </TabItem>
 
   <TabItem value="Datacenter level" label="数据中心级别">
     ```sql
-    SELECT
-        datacenter,
-        avgMerge(avg_response_time) AS avg_response_ms
-    FROM datacenter_performance
-    GROUP BY datacenter
-    ORDER BY datacenter;
-    ```
+SELECT
+    datacenter,
+    avgMerge(avg_response_time) AS avg_response_ms
+FROM datacenter_performance
+GROUP BY datacenter
+ORDER BY datacenter;
+```
 
     ```response
-    ┌─datacenter─┬─avg_response_ms─┐
-    │ dc1        │             113 │
-    │ dc2        │             150 │
-    └────────────┴─────────────────┘
-    ```
+┌─datacenter─┬─avg_response_ms─┐
+│ dc1        │             113 │
+│ dc2        │             150 │
+└────────────┴─────────────────┘
+```
   </TabItem>
 </Tabs>
 

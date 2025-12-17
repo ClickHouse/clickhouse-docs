@@ -141,7 +141,7 @@ SELECT * FROM system.query_log WHERE type = 'QueryFinish' ORDER BY query_start_t
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 hostname:                              clickhouse.eu-central1.internal
 type:                                  QueryFinish

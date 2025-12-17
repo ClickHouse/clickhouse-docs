@@ -406,7 +406,7 @@ ClickStack には、マルチテラバイト規模を想定したデフォルト
 
 ClickHouse を効果的にチューニングするには、[parts](/parts)、[partitions](/partitions)、[shards and replicas](/shards) といった主要なストレージの概念や、[merges](/merges) が挿入時にどのように行われるかを理解しておく必要があります。[primary indices](/primary-indexes)、[sparse secondary indices](/optimize/skipping-indexes)、およびデータスキッピングインデックスの基礎と、TTL によるライフサイクル管理などの[データライフサイクル管理](/observability/managing-data)手法を確認しておくことを推奨します。
 
-ClickStack は [schema customization](/use-cases/observability/schema-design) をサポートしており、ユーザーはカラム型の変更、（例: ログからの）新しいフィールドの抽出、codec と辞書の適用、そしてプロジェクションを用いたクエリの高速化を行えます。
+ClickStack は [schema customization](/use-cases/observability/schema-design) をサポートしており、カラム型の変更、（例: ログからの）新しいフィールドの抽出、codec と辞書の適用、そしてプロジェクションを用いたクエリの高速化を行えます。
 
 さらに、ビューのソーステーブルにデータを書き込み、アプリケーションがターゲットテーブルを読み取る構成であれば、マテリアライズドビューを使用して[インジェスト時にデータを変換またはフィルタリング](/use-cases/observability/schema-design#materialized-columns)することができます。
 

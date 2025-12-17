@@ -56,12 +56,12 @@ cp .env.example .env
 
 ```text title=".venv"
 #============#
-# Anthropic  # {#anthropic}
+# Anthropic  #
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
-# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
+# ANTHROPIC_REVERSE_PROXY=
 ```
 
 Замените `user_provided` на ваш API-ключ для используемого провайдера LLM.
@@ -222,8 +222,8 @@ docker compose up
 
 Теперь вы можете отправить запрос LLM для исследования примеров наборов данных ClickHouse. Попробуйте:
 
-```text title="Запрос"
-К каким наборам данных у вас есть доступ?
+```text title="Prompt"
+What datasets do you have access to?
 ```
 
 </VerticalStepper>

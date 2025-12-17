@@ -62,8 +62,8 @@ ENGINE = StripeLog
 插入数据：
 
 ```sql
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','第一条常规消息')
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','第二条常规消息'),(now(),'WARNING','第一条警告消息')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 我们使用两个 `INSERT` 查询在 `data.bin` 文件中创建了两个数据块。
@@ -76,11 +76,11 @@ SELECT * FROM stripe_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ 第二条常规消息 │
-│ 2019-01-18 14:34:53 │ WARNING      │ 第一条警告消息  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 第一条常规消息 │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -92,8 +92,8 @@ SELECT * FROM stripe_log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 第一条常规消息  │
-│ 2019-01-18 14:27:32 │ REGULAR      │ 第二条常规消息 │
-│ 2019-01-18 14:34:53 │ WARNING      │ 第一条警告消息  │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

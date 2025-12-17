@@ -87,7 +87,7 @@ SELECT id, intervalLengthSum(start, end), toTypeName(intervalLengthSum(start, en
 3. 输入表：
 
 ```text
-┌─id─┬──────开始─┬────────结束─┐
+┌─id─┬──────start─┬────────end─┐
 │ a  │ 2020-01-01 │ 2020-01-04 │
 │ a  │ 2020-01-12 │ 2020-01-18 │
 └────┴────────────┴────────────┘

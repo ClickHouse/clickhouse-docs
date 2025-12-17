@@ -22,7 +22,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 使用 ClickStack 监控 EC2 主机日志 {#ec2-host-logs-clickstack}
 
 :::note[TL;DR]
@@ -61,14 +60,14 @@ import TabItem from '@theme/TabItem';
   从您的 EC2 实例验证元数据服务是否可访问:
 
   ```bash
-  # 获取元数据令牌 (IMDSv2)
-  TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+# Get metadata token (IMDSv2)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-  # 验证实例元数据
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
-  ```
+# Verify instance metadata
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
+```
 
   您应该能看到实例 ID、区域和实例类型。如果这些命令失败,请检查:
 
@@ -85,152 +84,152 @@ import TabItem from '@theme/TabItem';
   验证您的 EC2 实例正在写入 syslog 文件：
 
   ```bash
-  # Ubuntu 实例
-  ls -la /var/log/syslog
+# Ubuntu instances
+ls -la /var/log/syslog
 
-  # Amazon Linux / RHEL 实例
-  ls -la /var/log/messages
+# Amazon Linux / RHEL instances
+ls -la /var/log/messages
 
-  # 查看最近的日志条目
-  tail -20 /var/log/syslog
-  # 或
-  tail -20 /var/log/messages
-  ```
+# View recent entries
+tail -20 /var/log/syslog
+# or
+tail -20 /var/log/messages
+```
 
   #### 安装 OpenTelemetry Collector
 
   在您的 EC2 实例上安装 OpenTelemetry Collector Contrib 发行版：
 
   ```bash
-  # 下载最新版本
-  wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
+# Download the latest release
+wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
 
-  # 解压并安装
-  tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
-  sudo mv otelcol-contrib /usr/local/bin/
+# Extract and install
+tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
+sudo mv otelcol-contrib /usr/local/bin/
 
-  # 验证安装
-  otelcol-contrib --version
-  ```
+# Verify installation
+otelcol-contrib --version
+```
 
   #### 创建采集器配置
 
   在 `/etc/otelcol-contrib/config.yaml` 创建 OpenTelemetry Collector 的配置文件:
 
   ```bash
-  sudo mkdir -p /etc/otelcol-contrib
-  ```
+sudo mkdir -p /etc/otelcol-contrib
+```
 
   根据您的 Linux 发行版选择配置：
 
   <Tabs groupId="os-type">
     <TabItem value="modern-linux" label="现代 Linux（Ubuntu 24.04+）" default>
       ```yaml
-      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout_type: gotime
-              layout: '2006-01-02T15:04:05.999999-07:00'
-            
-            - type: add
-              field: attributes.source
-              value: "ec2-host-logs"
+sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout_type: gotime
+        layout: '2006-01-02T15:04:05.999999-07:00'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-host-logs"
 
-      processors:
-        resourcedetection:
-          detectors: [ec2, system]
-          timeout: 5s
-          override: false
-          ec2:
-            tags:
-              - ^Name
-              - ^Environment
-              - ^Team
-        
-        batch:
-          timeout: 10s
-          send_batch_size: 1024
+processors:
+  resourcedetection:
+    detectors: [ec2, system]
+    timeout: 5s
+    override: false
+    ec2:
+      tags:
+        - ^Name
+        - ^Environment
+        - ^Team
+  
+  batch:
+    timeout: 10s
+    send_batch_size: 1024
 
-      exporters:
-        otlphttp:
-          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-          headers:
-            authorization: "${env:CLICKSTACK_API_KEY}"
+exporters:
+  otlphttp:
+    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+    headers:
+      authorization: "${env:CLICKSTACK_API_KEY}"
 
-      service:
-        pipelines:
-          logs:
-            receivers: [filelog/syslog]
-            processors: [resourcedetection, batch]
-            exporters: [otlphttp]
-      EOF
-      ```
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/syslog]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp]
+EOF
+```
     </TabItem>
 
     <TabItem value="legacy-linux" label="旧版 Linux（Amazon Linux 2、RHEL、旧版 Ubuntu）">
       ```yaml
-      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/messages
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "ec2-host-logs"
+sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/messages
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-host-logs"
 
-      processors:
-        resourcedetection:
-          detectors: [ec2, system]
-          timeout: 5s
-          override: false
-          ec2:
-            tags:
-              - ^Name
-              - ^Environment
-              - ^Team
-        
-        batch:
-          timeout: 10s
-          send_batch_size: 1024
+processors:
+  resourcedetection:
+    detectors: [ec2, system]
+    timeout: 5s
+    override: false
+    ec2:
+      tags:
+        - ^Name
+        - ^Environment
+        - ^Team
+  
+  batch:
+    timeout: 10s
+    send_batch_size: 1024
 
-      exporters:
-        otlphttp:
-          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-          headers:
-            authorization: "${env:CLICKSTACK_API_KEY}"
+exporters:
+  otlphttp:
+    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+    headers:
+      authorization: "${env:CLICKSTACK_API_KEY}"
 
-      service:
-        pipelines:
-          logs:
-            receivers: [filelog/syslog]
-            processors: [resourcedetection, batch]
-            exporters: [otlphttp]
-      EOF
-      ```
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/syslog]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp]
+EOF
+```
     </TabItem>
   </Tabs>
 
@@ -266,23 +265,23 @@ import TabItem from '@theme/TabItem';
   将您的 ClickStack API 密钥导出为环境变量：
 
   ```bash
-  export CLICKSTACK_API_KEY="your-api-key-here"
-  ```
+export CLICKSTACK_API_KEY="your-api-key-here"
+```
 
   要使其在重启后持久生效,请将其添加到您的 shell 配置文件中:
 
   ```bash
-  echo 'export CLICKSTACK_API_KEY="你的-api-密钥"' >> ~/.bashrc
-  source ~/.bashrc
-  ```
+echo 'export CLICKSTACK_API_KEY="your-api-key-here"' >> ~/.bashrc
+source ~/.bashrc
+```
 
   #### 运行采集器
 
   启动 OpenTelemetry Collector：
 
   ```bash
-  CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
-  ```
+CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
+```
 
   :::note[生产环境使用]
   将收集器配置为 systemd 服务运行,使其能够在系统启动时自动启动,并在发生故障时自动重启。详情请参阅 [OpenTelemetry Collector 文档](https://opentelemetry.io/docs/collector/deployment/)。
@@ -318,8 +317,8 @@ import TabItem from '@theme/TabItem';
   下载示例日志文件：
 
   ```bash
-  curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
-  ```
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
+```
 
   数据集包括：
 
@@ -336,68 +335,68 @@ import TabItem from '@theme/TabItem';
   创建名为 `ec2-host-logs-demo.yaml` 的文件,包含以下配置:
 
   ```yaml
-  cat > ec2-host-logs-demo.yaml << 'EOF'
-  receivers:
-    filelog/journal:
-      include:
-        - /tmp/host-demo/journal.log
-      start_at: beginning
-      operators:
-        - type: regex_parser
-          regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-          parse_from: body
-          parse_to: attributes
-        
-        - type: time_parser
-          parse_from: attributes.timestamp
-          layout: '%Y-%m-%dT%H:%M:%S%z'
-        
-        - type: add
-          field: attributes.source
-          value: "ec2-demo"
+cat > ec2-host-logs-demo.yaml << 'EOF'
+receivers:
+  filelog/journal:
+    include:
+      - /tmp/host-demo/journal.log
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%Y-%m-%dT%H:%M:%S%z'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-demo"
 
-  processors:
-    # 为演示模拟 EC2 元数据（无需真实 EC2 实例）
-    resource:
-      attributes:
-        - key: service.name
-          value: "ec2-demo"
-          action: insert
-        - key: cloud.provider
-          value: "aws"
-          action: insert
-        - key: cloud.platform
-          value: "aws_ec2"
-          action: insert
-        - key: cloud.region
-          value: "us-east-1"
-          action: insert
-        - key: cloud.availability_zone
-          value: "us-east-1a"
-          action: insert
-        - key: host.id
-          value: "i-0abc123def456789"
-          action: insert
-        - key: host.type
-          value: "t3.medium"
-          action: insert
-        - key: host.name
-          value: "prod-web-01"
-          action: insert
+processors:
+  # Simulate EC2 metadata for demo (no real EC2 instance required)
+  resource:
+    attributes:
+      - key: service.name
+        value: "ec2-demo"
+        action: insert
+      - key: cloud.provider
+        value: "aws"
+        action: insert
+      - key: cloud.platform
+        value: "aws_ec2"
+        action: insert
+      - key: cloud.region
+        value: "us-east-1"
+        action: insert
+      - key: cloud.availability_zone
+        value: "us-east-1a"
+        action: insert
+      - key: host.id
+        value: "i-0abc123def456789"
+        action: insert
+      - key: host.type
+        value: "t3.medium"
+        action: insert
+      - key: host.name
+        value: "prod-web-01"
+        action: insert
 
-  service:
-    pipelines:
-      logs/ec2-demo:
-        receivers: [filelog/journal]
-        processors:
-          - resource
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  EOF
-  ```
+service:
+  pipelines:
+    logs/ec2-demo:
+      receivers: [filelog/journal]
+      processors:
+        - resource
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+EOF
+```
 
   :::note
   出于演示目的,我们使用 `resource` 处理器手动添加 EC2 元数据。在生产环境中使用真实 EC2 实例时,应使用 `resourcedetection` 处理器,该处理器会自动查询 EC2 元数据 API。
@@ -408,13 +407,13 @@ import TabItem from '@theme/TabItem';
   使用演示日志和配置运行 ClickStack：
 
   ```bash
-  docker run --name clickstack-demo \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-  ```
+docker run --name clickstack-demo \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
 
   #### 在 HyperDX 中验证日志
 
@@ -485,10 +484,10 @@ import TabItem from '@theme/TabItem';
 **确认 EC2 元数据服务可访问：**
 
 ```bash
-# 获取元数据令牌
+# Get metadata token
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-# 测试元数据端点
+# Test metadata endpoint
 curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
 ```
 
@@ -501,12 +500,11 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 **在 collector 日志中检查元数据相关错误：**
 
 ```bash
-# 如果作为 systemd 服务运行
+# If running as systemd service
 sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetection"
 
-# 如果在前台运行，请检查 stdout
+# If running in foreground, check stdout
 ```
-
 
 ### HyperDX 中未显示日志
 
@@ -526,22 +524,21 @@ cat /var/log/syslog | head -20
 **验证到 ClickStack 的网络连接：**
 
 ```bash
-# 测试 OTLP 端点
+# Test OTLP endpoint
 curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 
-# 应收到响应(即使返回错误,也说明端点可访问)
+# Should get a response (even if error, means endpoint is reachable)
 ```
 
 **检查 Collector 日志中是否存在错误：**
 
 ```bash
-# 如果在前台运行
-# 在 stdout 中查找错误消息
+# If running in foreground
+# Look for error messages in stdout
 
-# 如果作为 systemd 服务运行
+# If running as systemd service
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
-
 
 ### 日志解析错误
 
@@ -550,19 +547,18 @@ sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 适用于 Ubuntu 24.04 及更高版本：
 
 ```bash
-# 应显示 ISO8601 格式：2025-11-17T20:55:44.826796+00:00
+# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
 tail -5 /var/log/syslog
 ```
 
 适用于 Amazon Linux 2 和 Ubuntu 20.04：
 
 ```bash
-# 应显示传统格式：Nov 17 14:16:16
+# Should show traditional format: Nov 17 14:16:16
 tail -5 /var/log/messages
 ```
 
 如果你的格式不匹配，请根据你使用的发行版，在[创建 collector 配置](#create-config)部分中选择相应的配置标签页。
-
 
 ### Collector 作为 systemd 服务未启动
 
@@ -583,7 +579,6 @@ sudo journalctl -u otelcol-contrib -n 50
 * 环境中未正确设置 API 密钥
 * 配置文件语法错误
 * 读取日志文件时的权限问题
-
 
 ## 后续步骤 {#next-steps}
 

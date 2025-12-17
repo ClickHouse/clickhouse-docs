@@ -322,7 +322,7 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 1. │ 329044175 │ -- 329,04 млн
    └───────────┘
 
-````
+```
 
 Таблица содержит 329,04 миллиона строк, поэтому каждый запрос выполняет полное сканирование таблицы.
 
@@ -356,7 +356,7 @@ Query id: f35c412a-edda-4089-914b-fa1622d69868
 4. │       Filter (WHERE)                                │
 5. │         ReadFromMergeTree (nyc_taxi.trips_small_inferred) │
    └─────────────────────────────────────────────────────┘
-````
+```
 
 Результат довольно прост. Запрос начинается с чтения данных из таблицы `nyc_taxi.trips_small_inferred`. Затем применяется предложение WHERE для фильтрации строк на основе вычисленных значений. Отфильтрованные данные подготавливаются для агрегации и вычисляются квантили. Наконец, результат сортируется и выводится. 
 
@@ -449,9 +449,9 @@ SELECT
 FROM trips_small_inferred
 FORMAT VERTICAL
 
-ID запроса: 4a70fc5b-2501-41c8-813c-45ce241d85ae
+Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
-Строка 1:
+Row 1:
 ──────
 vendor_id_nulls:           0
 pickup_datetime_nulls:     0
@@ -488,9 +488,10 @@ SELECT
 FROM trips_small_inferred
 FORMAT VERTICAL
 
-ID запроса: d502c6a1-c9bc-4415-9d86-5de74dd6d932
+Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
-Строка 1:
+
+Row 1:
 ──────
 uniq(ratecode_id):         6
 uniq(pickup_location_id):  260

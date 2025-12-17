@@ -49,9 +49,10 @@ $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avr
 テーブルのカラムと Avro スキーマのフィールドを対応付けるために、ClickHouse はそれらの名前を比較します。
 この比較は大文字と小文字を区別し、未使用のフィールドはスキップされます。
 
-ClickHouse テーブルのカラムのデータ型は、挿入される Avro データの対応するフィールドと異なる場合があります。データを挿入する際、ClickHouse は上記のテーブルに従ってデータ型を解釈し、その後データを対応するカラム型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
+ClickHouse テーブルのカラムのデータ型は、挿入される Avro データの対応するフィールドと異なる場合があります。データを挿入する際、ClickHouse は上記のテーブルに従ってデータ型を解釈し、その後データを対応するカラム型に[キャスト](/sql-reference/functions/type-conversion-functions#CAST)します。
 
 データをインポートする際、スキーマ内でフィールドが見つからず、設定 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields) が有効になっている場合は、エラーを発生させる代わりにデフォルト値が使用されます。
+
 
 ### Avro データの書き込み {#writing-avro-data}
 

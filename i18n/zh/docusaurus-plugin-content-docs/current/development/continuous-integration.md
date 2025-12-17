@@ -108,7 +108,7 @@ python -m ci.praktika run "Style check" --test cpp
 #### 在本地运行快速测试： {#running-fast-test-locally}
 
 ```sh
-python -m ci.praktika run "Fast test" [--test 测试名称]
+python -m ci.praktika run "Fast test" [--test some_test_name]
 ```
 
 这些命令会拉取 `clickhouse/fast-test` Docker 镜像，并在容器化环境中运行该作业。

@@ -128,7 +128,7 @@ clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStrea
 ```
 
 ```response
-                           路径  命中次数
+                           path  hits
 0       b'Akiba_Hebrew_Academy'   241
 1           b'Aegithina_tiphia'    34
 2  b'1971-72_Utah_Stars_season'     1

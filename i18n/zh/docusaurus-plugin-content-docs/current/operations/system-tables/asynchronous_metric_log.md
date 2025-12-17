@@ -27,7 +27,7 @@ SELECT * FROM system.asynchronous_metric_log LIMIT 3 \G
 ```
 
 ```text
-第 1 行：
+Row 1:
 ──────
 hostname:   clickhouse.eu-central1.internal
 event_date: 2023-11-14
@@ -35,7 +35,7 @@ event_time: 2023-11-14 14:39:07
 metric:     AsynchronousHeavyMetricsCalculationTimeSpent
 value:      0.001
 
-第 2 行：
+Row 2:
 ──────
 hostname:   clickhouse.eu-central1.internal
 event_date: 2023-11-14
@@ -43,7 +43,7 @@ event_time: 2023-11-14 14:39:08
 metric:     AsynchronousHeavyMetricsCalculationTimeSpent
 value:      0
 
-第 3 行：
+Row 3:
 ──────
 hostname:   clickhouse.eu-central1.internal
 event_date: 2023-11-14

@@ -20,9 +20,9 @@ ClickPipes поддерживает Postgres версии 12 и более по�
 Crunchy Bridge по умолчанию включает логическую репликацию ([подробнее](https://docs.crunchybridge.com/how-to/logical-replication)). Убедитесь, что приведённые ниже параметры настроены верно. При необходимости измените их.
 
 ```sql
-SHOW wal_level; -- должно быть logical
-SHOW max_wal_senders; -- должно быть 10
-SHOW max_replication_slots; -- должно быть 10
+SHOW wal_level; -- should be logical
+SHOW max_wal_senders; -- should be 10
+SHOW max_replication_slots; -- should be 10
 ```
 
 ## Создание пользователя ClickPipes и выдача прав доступа {#creating-clickpipes-user-and-granting-permissions}

@@ -76,20 +76,22 @@ doc_type: 'guide'
   ```
 
   Параметры и аспекты производительности при создании индекса и выполнении поиска описаны в [документации](../../engines/table-engines/mergetree-family/annindexes.md).
-  В приведённой выше инструкции используются значения 64 и 512 для гиперпараметров HNSW `M` и `ef_construction` соответственно.
-  Необходимо тщательно подбирать оптимальные значения этих параметров, оценивая время построения индекса и качество результатов поиска для выбранных значений.
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
   Построение и сохранение индекса для полного набора данных из 28,74 млн записей может занять от нескольких минут до часа в зависимости от количества доступных ядер ЦП и пропускной способности системы хранения.
 
   ### Выполните ANN-поиск
 
-  После построения индекса векторного подобия запросы векторного поиска будут автоматически использовать индекс:
+  После построения индекса векторного сходства запросы векторного поиска будут автоматически использовать индекс:
 
   ```sql title="Query"
   SELECT id, title, text
   FROM hackernews
   ORDER BY cosineDistance( vector, <search vector>)
   LIMIT 10
+
   ```
 
   Первая загрузка векторного индекса в память может занять от нескольких секунд до нескольких минут.
@@ -111,45 +113,46 @@ doc_type: 'guide'
 
   import clickhouse_connect
 
-  print("Инициализация...")
+  print("Initializing...")
 
   model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
   chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
   while True:
-      # Получение поискового запроса от пользователя
-      print("Введите поисковый запрос:")
+      # Take the search query from user
+      print("Enter a search query :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # Запуск модели и получение поискового вектора
-      print("Генерация эмбеддинга для ", input_query);
+      # Run the model and obtain search vector
+      print("Generating the embedding for ", input_query);
       embeddings = model.encode(texts)
 
-      print("Выполнение запроса к ClickHouse...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':20}
       result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-      print("Результаты:")
+      print("Results :")
       for row in result.result_rows:
           print(row[0], row[2][:100])
           print("---------")
+
   ```
 
   Ниже показан пример выполнения приведённого выше Python-скрипта и результаты поиска по сходству
   (выводятся только первые 100 символов из каждого из 20 наиболее релевантных постов):
 
   ```text
-  Инициализация...
+  Initializing...
 
-  Введите поисковый запрос:
-  Полезны ли OLAP-кубы
+  Enter a search query :
+  Are OLAP cubes useful
 
-  Генерация эмбеддинга для "Полезны ли OLAP-кубы"
+  Generating the embedding for  "Are OLAP cubes useful"
 
-  Запрос к ClickHouse...
+  Querying ClickHouse...
 
-  Результаты:
+  Results :
 
   27742647 smartmic:
   slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
@@ -211,12 +214,12 @@ doc_type: 'guide'
 
   Далее представлен очень простой, но многообещающий пример приложения с генеративным ИИ.
 
-  Приложение выполняет следующие действия:
+  Приложение выполняет следующие шаги:
 
-  1. Принимает от пользователя в качестве входных данных *тему*
-  2. Генерирует вектор эмбеддинга для *topic* с помощью `SentenceTransformers` и модели `all-MiniLM-L6-v2`
+  1. Принимает *тему* в качестве входных данных от пользователя
+  2. Генерирует вектор эмбеддинга для *темы* с помощью `SentenceTransformers` и модели `all-MiniLM-L6-v2`
   3. Извлекает наиболее релевантные публикации и комментарии с помощью векторного поиска по сходству векторов в таблице `hackernews`
-  4. Использует `LangChain` и Chat API OpenAI `gpt-3.5-turbo` для **суммаризации** содержимого, полученного на шаге № 3.
+  4. Uses `LangChain` и Chat API OpenAI `gpt-3.5-turbo` для **суммаризации** содержимого, полученного на шаге № 3.
      Посты и комментарии, полученные на шаге № 3, передаются как *контекст* в Chat API и являются ключевым звеном в генеративном ИИ.
 
   Ниже приведен пример работы приложения суммаризации, за которым следует его код. Для запуска приложения необходимо задать ключ API OpenAI в переменной окружения `OPENAI_API_KEY`. Ключ API OpenAI можно получить после регистрации на [https://platform.openai.com](https://platform.openai.com).
@@ -228,30 +231,32 @@ doc_type: 'guide'
   ```shell
   $ python3 summarize.py
 
-  Введите тему поиска:
+  Enter a search topic :
   ClickHouse performance experiences
 
-  Генерация векторного представления для ---->  ClickHouse performance experiences
+  Generating the embedding for ---->  ClickHouse performance experiences
 
-  Выполнение запроса к ClickHouse для получения релевантных статей...
+  Querying ClickHouse to retrieve relevant articles...
 
-  Инициализация модели chatgpt-3.5-turbo...
+  Initializing chatgpt-3.5-turbo model...
 
-  Формирование сводки по результатам поиска из ClickHouse...
+  Summarizing search results retrieved from ClickHouse...
 
-  Сводка от chatgpt-3.5:
-  Обсуждение посвящено сравнению ClickHouse с различными базами данных, такими как TimescaleDB, Apache Spark,
-  AWS Redshift и QuestDB, с акцентом на высокую производительность ClickHouse при низких затратах и его пригодность
-  для аналитических приложений. Пользователи отмечают простоту, скорость и эффективное использование ресурсов
-  ClickHouse при обработке крупномасштабных аналитических нагрузок, хотя упоминаются некоторые сложности, такие как операции DML и трудности с резервным копированием. ClickHouse признан за возможности вычисления агрегатов в реальном времени и надежную инженерную реализацию, при этом проводятся сравнения с другими базами данных, такими как Druid и MemSQL. В целом ClickHouse рассматривается
-  как мощный инструмент для обработки данных в реальном времени, аналитики и эффективной работы с большими объемами данных,
-  набирающий популярность благодаря впечатляющей производительности и экономической эффективности.
+  Summary from chatgpt-3.5:
+  The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
+  AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
+  for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
+  in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
+  are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
+  engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
+  as a powerful tool for real-time data processing, analytics, and handling large volumes of data
+  efficiently, gaining popularity for its impressive performance and cost-effectiveness.
   ```
 
   Код для приложения выше:
 
   ```python
-  print("Инициализация...")
+  print("Initializing...")
 
   import sys
   import json
@@ -278,25 +283,25 @@ doc_type: 'guide'
   chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
   while True:
-      # Получить поисковый запрос от пользователя
-      print("Введите тему для поиска:")
+      # Take the search query from user
+      print("Enter a search topic :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # Запустить модель и получить поисковый вектор
-      print("Генерация эмбеддинга для ----> ", input_query);
+      # Run the model and obtain search or reference vector
+      print("Generating the embedding for ----> ", input_query);
       embeddings = model.encode(texts)
 
-      print("Выполнение запроса к ClickHouse...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':100}
       result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-      # Объединить все результаты поиска
+      # Just join all the search results
       doc_results = ""
       for row in result.result_rows:
           doc_results = doc_results + "\n" + row[2]
 
-      print("Инициализация модели chatgpt-3.5-turbo")
+      print("Initializing chatgpt-3.5-turbo model")
       model_name = "gpt-3.5-turbo"
 
       text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
@@ -310,13 +315,13 @@ doc_type: 'guide'
       llm = ChatOpenAI(temperature=0, model_name=model_name)
 
       prompt_template = """
-  Напишите краткое резюме следующего текста не более чем в 10 предложениях:
+  Write a concise summary of the following in not more than 10 sentences:
 
 
   {text}
 
 
-  КРАТКОЕ РЕЗЮМЕ:
+  CONSCISE SUMMARY :
   """
 
       prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
@@ -326,7 +331,7 @@ doc_type: 'guide'
       gpt_35_turbo_max_tokens = 4096
       verbose = False
 
-      print("Формирование резюме результатов поиска из ClickHouse...")
+      print("Summarizing search results retrieved from ClickHouse...")
 
       if num_tokens <= gpt_35_turbo_max_tokens:
           chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
@@ -335,6 +340,6 @@ doc_type: 'guide'
 
       summary = chain.run(docs)
 
-      print(f"Резюме от chatgpt-3.5: {summary}")
+      print(f"Summary from chatgpt-3.5: {summary}")
   ```
 </VerticalStepper>

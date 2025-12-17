@@ -34,7 +34,7 @@ SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parq
 ```
 
 ```response title="Response"
-行 1:
+Row 1:
 ──────
 fsq_place_id:        4e1ef76cae60cd553dec233f
 name:                @VirginAmerica In-flight Via @Gogo
@@ -58,7 +58,7 @@ facebook_id:         ᴺᵁᴸᴸ
 instagram:           ᴺᵁᴸᴸ
 twitter:             ᴺᵁᴸᴸ
 fsq_category_ids:    ['4bf58dd8d48988d1f7931735']
-fsq_category_labels: ['旅行・交通 > 交通ハブ > 空港 > 航空機']
+fsq_category_labels: ['Travel and Transportation > Transport Hub > Airport > Plane']
 placemaker_url:      https://foursquare.com/placemakers/review-place/4e1ef76cae60cd553dec233f
 geom:                �^��a�^@Bσ���
 bbox:                (-122.39003793803701,37.62120111687914,-122.39003793803701,37.62120111687914)
@@ -97,7 +97,7 @@ facebook_id:         522698844570949 -- 522.70 trillion
 instagram:           landalmooizutendaal
 twitter:             landalzdl
 fsq_category_ids:    ['56aa371be4b08b9a8d5734e1']
-fsq_category_labels: ['旅行・交通 > 宿泊 > バケーションレンタル']
+fsq_category_labels: ['Travel and Transportation > Lodging > Vacation Rental']
 placemaker_url:      https://foursquare.com/placemakers/review-place/59b2c754b54618784f259654
 geom:                ᴺᵁᴸᴸ
 bbox:                (NULL,NULL,NULL,NULL)

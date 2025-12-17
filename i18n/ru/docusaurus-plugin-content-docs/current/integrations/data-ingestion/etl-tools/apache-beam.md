@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
-description: 'Пользователи могут выполнять приём данных в ClickHouse с помощью Apache Beam'
+description: 'Вы можете выполнять приём данных в ClickHouse с помощью Apache Beam'
 title: 'Интеграция Apache Beam и ClickHouse'
 doc_type: 'guide'
 integration:
@@ -11,6 +11,7 @@ keywords: ['apache beam', 'потоковая обработка', 'пакетн
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Интеграция Apache Beam и ClickHouse {#integrating-apache-beam-and-clickhouse}
 
@@ -24,7 +25,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Пакет, необходимый для интеграции Apache Beam и ClickHouse, поддерживается и развивается в разделе [Apache Beam I/O Connectors](https://beam.apache.org/documentation/io/connectors/) — пакете интеграций с популярными системами хранения данных и базами данных.
 Реализация `org.apache.beam.sdk.io.clickhouse.ClickHouseIO` находится в [репозитории Apache Beam](https://github.com/apache/beam/tree/0bf43078130d7a258a0f1638a921d6d5287ca01e/sdks/java/io/clickhouse/src/main/java/org/apache/beam/sdk/io/clickhouse).
 
-## Настройка пакета ClickHouse для Apache Beam {#setup-of-the-apache-beam-clickhouse-package}
+## Настройка пакета Apache Beam ClickHouse {#setup-of-the-apache-beam-clickhouse-package}
 
 ### Установка пакета {#package-installation}
 
@@ -44,6 +45,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 :::
 
 Артефакты можно найти в [официальном репозитории Maven](https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-clickhouse).
+
 
 ### Пример кода {#code-example}
 
@@ -66,7 +68,7 @@ import org.joda.time.DateTime;
 public class Main {
 
     public static void main(String[] args) {
-        // Создайте объект Pipeline.
+        // Create a Pipeline object.
         Pipeline p = Pipeline.create();
 
         Schema SCHEMA =
@@ -76,10 +78,10 @@ public class Main {
                         .addField(Schema.Field.of("insertion_time", Schema.FieldType.DATETIME).withNullable(false))
                         .build();
 
-        // Примените преобразования к конвейеру.
-        PCollection<String> lines = p.apply("Чтение строк", TextIO.read().from("src/main/resources/input.csv"));
+        // Apply transforms to the pipeline.
+        PCollection<String> lines = p.apply("ReadLines", TextIO.read().from("src/main/resources/input.csv"));
 
-        PCollection<Row> rows = lines.apply("Преобразование в Row", ParDo.of(new DoFn<String, Row>() {
+        PCollection<Row> rows = lines.apply("ConvertToRow", ParDo.of(new DoFn<String, Row>() {
             @ProcessElement
             public void processElement(@Element String line, OutputReceiver<Row> out) {
 
@@ -91,15 +93,16 @@ public class Main {
             }
         })).setRowSchema(SCHEMA);
 
-        rows.apply("Запись в ClickHouse",
+        rows.apply("Write to ClickHouse",
                         ClickHouseIO.write("jdbc:clickhouse://localhost:8123/default?user=default&password=******", "test_table"));
 
-        // Запустите конвейер.
+        // Run the pipeline.
         p.run().waitUntilFinish();
     }
 }
 
 ```
+
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
@@ -145,10 +148,12 @@ public class Main {
 ## Ограничения {#limitations}
 
 При использовании коннектора учитывайте следующие ограничения:
+
 * На данный момент поддерживается только операция Sink. Коннектор не поддерживает операцию Source.
 * ClickHouse выполняет дедупликацию при вставке в таблицу `ReplicatedMergeTree` или в таблицу `Distributed`, построенную поверх `ReplicatedMergeTree`. Без репликации вставка в обычную MergeTree может привести к дубликатам, если вставка завершилась с ошибкой, а затем была успешно повторена. Однако каждый блок вставляется атомарно, и размер блока можно настроить с помощью `ClickHouseIO.Write.withMaxInsertBlockSize(long)`. Дедупликация достигается за счёт использования контрольных сумм вставленных блоков. Дополнительные сведения о дедупликации см. в разделах [Deduplication](/guides/developer/deduplication) и [Deduplicate insertion config](/operations/settings/settings#insert_deduplicate).
 * Коннектор не выполняет никаких DDL-операций; следовательно, целевая таблица должна существовать до вставки.
 
 ## Связанные материалы {#related-content}
-* Документация по классу `ClickHouseIO` ([документация](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html)).
+
+* [Документация по классу `ClickHouseIO`](https://beam.apache.org/releases/javadoc/current/org/apache/beam/sdk/io/clickhouse/ClickHouseIO.html).
 * Репозиторий с примерами на GitHub: [clickhouse-beam-connector](https://github.com/ClickHouse/clickhouse-beam-connector).

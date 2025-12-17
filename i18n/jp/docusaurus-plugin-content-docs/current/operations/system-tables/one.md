@@ -25,5 +25,5 @@ SELECT * FROM system.one LIMIT 10;
 │     0 │
 └───────┘
 
-1行のデータセット。経過時間: 0.001秒
+1 rows in set. Elapsed: 0.001 sec.
 ```

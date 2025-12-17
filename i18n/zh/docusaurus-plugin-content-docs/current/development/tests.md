@@ -56,7 +56,7 @@ PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_
 要在本地搭建与 CI 中相同的环境，请安装测试配置（这些配置会使用 Zookeeper 的 mock 实现并调整部分设置）。
 
 ```sh
-cd <仓库目录>/tests/config
+cd <repository>/tests/config
 sudo ./install.sh
 ```
 
@@ -80,8 +80,8 @@ sudo ./install.sh
 
 ```sql
 -- Tags: no-fasttest, no-replicated-database
--- no-fasttest: <在此处提供该标签的原因>
--- no-replicated-database: <在此处提供原因>
+-- no-fasttest: <provide_a_reason_for_the_tag_here>
+-- no-replicated-database: <provide_a_reason_here>
 
 SELECT 1
 ```
@@ -90,9 +90,9 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest, no-replicated-database {#tags-no-fasttest-no-replicated-database}
-# - no-fasttest: <请在此处说明使用该标签的原因> {#no-fasttest-provide_a_reason_for_the_tag_here}
-# - no-replicated-database: <请在此处说明原因> {#no-replicated-database-provide_a_reason_here}
+# Tags: no-fasttest, no-replicated-database
+# - no-fasttest: <provide_a_reason_for_the_tag_here>
+# - no-replicated-database: <provide_a_reason_here>
 ```
 
 可用标签列表：
@@ -137,15 +137,15 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest {#tags-no-fasttest}
-# 随机设置限制：max_block_size=(1000, 10000); index_granularity=(100, None) {#random-settings-limits-max_block_size1000-10000-index_granularity100-none}
+# Tags: no-fasttest
+# Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 ```
 
 对于 `.sql` 测试，标签以 SQL 注释的形式写在相邻的一行，或写在第一行：
 
 ```sql
--- 标签：no-fasttest
--- 随机设置限制：max_block_size=(1000, 10000); index_granularity=(100, None)
+-- Tags: no-fasttest
+-- Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 SELECT 1
 ```
 

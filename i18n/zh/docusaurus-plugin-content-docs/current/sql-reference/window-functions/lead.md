@@ -58,15 +58,15 @@ LIMIT 9
 ```
 
 ```response title="Query"
-   ┌─全名─────────┬─年份─┬─类别─┬─授奖理由─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1. │ Anne L Huillier  │ 2023 │ 物理学  │ 因其发展了产生阿秒级光脉冲、用于研究物质中电子动力学的实验方法                     │
-2. │ Pierre Agostini  │ 2023 │ 物理学  │ 因其发展了产生阿秒级光脉冲、用于研究物质中电子动力学的实验方法                     │
-3. │ Ferenc Krausz    │ 2023 │ 物理学  │ 因其发展了产生阿秒级光脉冲、用于研究物质中电子动力学的实验方法                     │
-4. │ Alain Aspect     │ 2022 │ 物理学  │ 因其利用纠缠光子开展实验，证明了贝尔不等式的违背，并开创了量子信息科学的先河 │
-5. │ Anton Zeilinger  │ 2022 │ 物理学  │ 因其利用纠缠光子开展实验，证明了贝尔不等式的违背，并开创了量子信息科学的先河 │
-6. │ John Clauser     │ 2022 │ 物理学  │ 因其利用纠缠光子开展实验，证明了贝尔不等式的违背，并开创了量子信息科学的先河 │
-7. │ Giorgio Parisi   │ 2021 │ 物理学  │ 因其发现了从原子到行星尺度物理系统中无序与涨落之间的相互作用                │
-8. │ Klaus Hasselmann │ 2021 │ 物理学  │ 因其对地球气候进行物理建模，量化气候变率并可靠预测全球变暖                        │
-9. │ Syukuro Manabe   │ 2021 │ 物理学  │ 因其对地球气候进行物理建模，量化气候变率并可靠预测全球变暖                        │
+   ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+3. │ Ferenc Krausz    │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
+4. │ Alain Aspect     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+5. │ Anton Zeilinger  │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+6. │ John Clauser     │ 2022 │ physics  │ for experiments with entangled photons establishing the violation of Bell inequalities and  pioneering quantum information science │
+7. │ Giorgio Parisi   │ 2021 │ physics  │ for the discovery of the interplay of disorder and fluctuations in physical systems from atomic to planetary scales                │
+8. │ Klaus Hasselmann │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
+9. │ Syukuro Manabe   │ 2021 │ physics  │ for the physical modelling of Earths climate quantifying variability and reliably predicting global warming                        │
    └──────────────────┴──────┴──────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

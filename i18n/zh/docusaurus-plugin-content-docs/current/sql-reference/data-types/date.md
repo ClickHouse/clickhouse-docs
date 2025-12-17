@@ -29,10 +29,10 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- 解析日期
--- - 从字符串,
--- - 从"小"整数(解释为自 1970-01-01 以来的天数),以及
--- - 从"大"整数(解释为自 1970-01-01 以来的秒数)。
+-- Parse Date
+-- - from string,
+-- - from 'small' integer interpreted as number of days since 1970-01-01, and
+-- - from 'big' integer interpreted as number of seconds since 1970-01-01.
 INSERT INTO dt VALUES ('2019-01-01', 1), (17897, 2), (1546300800, 3);
 
 SELECT * FROM dt;

@@ -22,11 +22,12 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # ClickHouse Cloud の監査ログを Splunk に保存する {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>
 
-[Splunk](https://www.splunk.com/) は、データ分析およびモニタリングプラットフォームです。
+[Splunk](https://www.splunk.com/) は、データ分析およびモニタリングのためのプラットフォームです。
 
 このアドオンを使用すると、[ClickHouse Cloud の監査ログ](/cloud/security/audit-logging) を Splunk に保存できます。監査ログのダウンロードには [ClickHouse Cloud API](/cloud/manage/api/api-overview) を利用します。
 

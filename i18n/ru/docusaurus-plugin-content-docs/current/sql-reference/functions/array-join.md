@@ -74,12 +74,12 @@ GROUP BY
 
 ```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
-│           2 │ Стамбул  │ Chrome  │
-│           1 │ Стамбул  │ Firefox │
-│           2 │ Берлин   │ Chrome  │
-│           1 │ Берлин   │ Firefox │
-│           2 │ Бобруйск │ Chrome  │
-│           1 │ Бобруйск │ Firefox │
+│           2 │ Istanbul │ Chrome  │
+│           1 │ Istanbul │ Firefox │
+│           2 │ Berlin   │ Chrome  │
+│           1 │ Berlin   │ Firefox │
+│           2 │ Babruysk │ Chrome  │
+│           1 │ Babruysk │ Firefox │
 └─────────────┴──────────┴─────────┘
 ```
 
@@ -93,8 +93,8 @@ GROUP BY
 ```sql
 SELECT
     arrayJoin(dice) AS first_throw,
-    /* arrayJoin(dice) as second_throw */ -- технически корректно, но приведет к пустому результату
-    arrayJoin(arrayConcat(dice, [])) AS second_throw -- выражение намеренно изменено для принудительного пересчета
+    /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
+    arrayJoin(arrayConcat(dice, [])) AS second_throw -- intentionally changed expression to force re-evaluation
 FROM (
     SELECT [1, 2, 3, 4, 5, 6] AS dice
 );

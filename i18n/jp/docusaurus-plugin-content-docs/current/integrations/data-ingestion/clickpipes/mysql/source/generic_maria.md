@@ -22,12 +22,12 @@ keywords: ['汎用 mariadb', 'clickpipes', 'バイナリログ', 'SSL/TLS', 'セ
 MariaDB インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認してください。
 
 ```sql
-server_id = 1               -- 1以上を指定（0以外の値）
+server_id = 1               -- or greater; anything but 0
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  -- 10.5.0で導入
-expire_logs_days = 1        -- 1以上を指定（0の場合、ログは永久に保持される）
+binlog_row_metadata = FULL  -- introduced in 10.5.0
+expire_logs_days = 1        -- or higher; 0 would mean logs are preserved forever
 ```
 
 これらの設定を確認するには、以下の SQL コマンドを実行します。
@@ -49,7 +49,7 @@ server_id = 1
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  ; 10.5.0以降でのみ利用可能
+binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 

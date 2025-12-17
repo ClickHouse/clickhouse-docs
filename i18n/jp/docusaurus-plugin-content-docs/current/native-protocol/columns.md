@@ -64,8 +64,8 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 `Nullable(T)` は、行数が同じ `Nulls`（型は `ColUInt8`）列と `Values`（型は `T`）列で構成されます。
 
 ```go
-// Nulls は Values カラムに対する nullable の「マスク」です。
-// 例えば、[null, "", "hello", null, "world"] をエンコードする場合:
+// Nulls is nullable "mask" on Values column.
+// For example, to encode [null, "", "hello", null, "world"]
 //      Values: ["", "", "hello", "", "world"] (len: 5)
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
@@ -84,16 +84,16 @@ Tuple は単にカラムの配列です。たとえば、Tuple(String, UInt8) �
 ここで `K` は、`Index` のサイズに応じて (UInt8, UInt16, UInt32, UInt64) のいずれかの型です。
 
 ```go
-// Index（辞書）カラムには一意の値が格納され、Keysカラムには
-// 実際の値を表すIndexカラム内のインデックスのシーケンスが格納されます。
+// Index (i.e. dictionary) column contains unique values, Keys column contains
+// sequence of indexes in Index column that represent actual values.
 //
-// 例えば、["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] は
-// 以下のようにエンコードされます：
+// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
+// be encoded as:
 //      Index: ["Eko", "Amadela"] (String)
 //      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
-// CardinalityKeyはIndexのサイズに応じて選択されます。すなわち、選択された型の最大値は
-// Index要素の任意のインデックスを表現可能である必要があります。
+// The CardinalityKey is chosen depending on Index size, i.e. maximum value
+// of chosen type should be able to represent any index of Index element.
 ```
 
 ## Bool {#bool}

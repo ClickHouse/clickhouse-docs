@@ -33,29 +33,29 @@ gRPC インターフェイスを使用するには、メインの[サーバー�
     <grpc>
         <enable_ssl>false</enable_ssl>
 
-        <!-- 以下の2つのファイルはSSLが有効な場合にのみ使用されます -->
+        <!-- The following two files are used only if SSL is enabled -->
         <ssl_cert_file>/path/to/ssl_cert_file</ssl_cert_file>
         <ssl_key_file>/path/to/ssl_key_file</ssl_key_file>
 
-        <!-- サーバーがクライアントに証明書を要求するかどうか -->
+        <!-- Whether server requests client for a certificate -->
         <ssl_require_client_auth>false</ssl_require_client_auth>
 
-        <!-- 以下のファイルはssl_require_client_auth=trueの場合にのみ使用されます -->
+        <!-- The following file is used only if ssl_require_client_auth=true -->
         <ssl_ca_cert_file>/path/to/ssl_ca_cert_file</ssl_ca_cert_file>
 
-        <!-- デフォルトの圧縮アルゴリズム(クライアントが別のアルゴリズムを指定しない場合に適用されます。QueryInfoのresult_compressionを参照)。
-             サポートされるアルゴリズム: none, deflate, gzip, stream_gzip -->
+        <!-- Default compression algorithm (applied if client doesn't specify another algorithm, see result_compression in QueryInfo).
+             Supported algorithms: none, deflate, gzip, stream_gzip -->
         <compression>deflate</compression>
 
-        <!-- デフォルトの圧縮レベル(クライアントが別のレベルを指定しない場合に適用されます。QueryInfoのresult_compressionを参照)。
-             サポートされるレベル: none, low, medium, high -->
+        <!-- Default compression level (applied if client doesn't specify another level, see result_compression in QueryInfo).
+             Supported levels: none, low, medium, high -->
         <compression_level>medium</compression_level>
 
-        <!-- 送受信メッセージサイズの上限(バイト単位)。-1は無制限を意味します -->
+        <!-- Send/receive message size limits in bytes. -1 means unlimited -->
         <max_send_message_size>-1</max_send_message_size>
         <max_receive_message_size>-1</max_receive_message_size>
 
-        <!-- 詳細なログを取得する場合に有効化してください -->
+        <!-- Enable if you want to get detailed logs -->
         <verbose_logs>false</verbose_logs>
     </grpc>
 ```
@@ -98,6 +98,6 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 ```text
 ┌─id─┬─text──────────────────┐
 │  0 │ Input data for        │
-│  1 │ gRPCプロトコルの例     │
+│  1 │ gRPC protocol example │
 └────┴───────────────────────┘
 ```

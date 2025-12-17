@@ -21,7 +21,7 @@ Values 是不区分大小写的函数。也就是说，`VALUES` 或 `values` 都
 `VALUES` 表函数的基本语法如下：
 
 ```sql
-VALUES([结构,] 值...)
+VALUES([structure,] values...)
 ```
 
 通常用作：
@@ -71,16 +71,16 @@ FROM VALUES(
 
 ```response title="Response"
     ┌─person───┬─place─────┐
- 1. │ Noah     │ 巴黎      │
- 2. │ Emma     │ 东京      │
- 3. │ Liam     │ 悉尼      │
- 4. │ Olivia   │ 柏林      │
- 5. │ Ilya     │ 伦敦      │
- 6. │ Sophia   │ 伦敦      │
- 7. │ Jackson  │ 马德里    │
- 8. │ Alexey   │ 阿姆斯特丹│
- 9. │ Mason    │ 威尼斯    │
-10. │ Isabella │ 布拉格    │
+ 1. │ Noah     │ Paris     │
+ 2. │ Emma     │ Tokyo     │
+ 3. │ Liam     │ Sydney    │
+ 4. │ Olivia   │ Berlin    │
+ 5. │ Ilya     │ London    │
+ 6. │ Sophia   │ London    │
+ 7. │ Jackson  │ Madrid    │
+ 8. │ Alexey   │ Amsterdam │
+ 9. │ Mason    │ Venice    │
+10. │ Isabella │ Prague    │
     └──────────┴───────────┘
 ```
 
@@ -123,7 +123,7 @@ FROM VALUES(
 例如：
 
 ```sql title="Query"
--- 元组作为值
+-- tuples as values
 SELECT *
 FROM VALUES(
     ('Noah', 'Paris'),
@@ -155,7 +155,7 @@ FROM VALUES(
 ```
 
 ```sql
--- 单值
+-- single values
 SELECT *
 FROM VALUES(
     'Noah',

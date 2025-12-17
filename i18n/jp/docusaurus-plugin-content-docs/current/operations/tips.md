@@ -188,58 +188,59 @@ ClickHouse Keeper は、テスト環境やインジェストレートが低い�
 zoo.cfg:
 
 ```bash
-# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html {#httphadoopapacheorgzookeeperdocscurrentzookeeperadminhtml}
+# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
 
-# 各ティックのミリ秒数 {#the-number-of-milliseconds-of-each-tick}
+# The number of milliseconds of each tick
 tickTime=2000
-# 初期同期フェーズで {#the-number-of-ticks-that-the-initial}
-# 許容されるティック数 {#synchronization-phase-can-take}
-# この値は十分に検証されていない {#this-value-is-not-quite-motivated}
+# The number of ticks that the initial
+# synchronization phase can take
+# This value is not quite motivated
 initLimit=300
-# リクエスト送信から確認応答受信までに {#the-number-of-ticks-that-can-pass-between}
-# 経過可能なティック数 {#sending-a-request-and-getting-an-acknowledgement}
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
 syncLimit=10
 
 maxClientCnxns=2000
 
-# クライアントが要求でき、サーバーが受け入れる最大値。 {#it-is-the-maximum-value-that-client-may-request-and-the-server-will-accept}
-# クライアントが高いセッションタイムアウトで動作できるよう、サーバー側でmaxSessionTimeoutを高く設定しても問題ない。 {#it-is-ok-to-have-high-maxsessiontimeout-on-server-to-allow-clients-to-work-with-high-session-timeout-if-they-want}
-# ただし、デフォルトでは30秒のセッションタイムアウトを要求する（ClickHouse設定のsession_timeout_msで変更可能）。 {#but-we-request-session-timeout-of-30-seconds-by-default-you-can-change-it-with-session_timeout_ms-in-clickhouse-config}
+# It is the maximum value that client may request and the server will accept.
+# It is Ok to have high maxSessionTimeout on server to allow clients to work with high session timeout if they want.
+# But we request session timeout of 30 seconds by default (you can change it with session_timeout_ms in ClickHouse config).
 maxSessionTimeout=60000000
-# スナップショットが保存されるディレクトリ。 {#the-directory-where-the-snapshot-is-stored}
+# the directory where the snapshot is stored.
 dataDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/data
-# パフォーマンス向上のため、dataLogDirは別の物理ディスクに配置すること {#place-the-datalogdir-to-a-separate-physical-disc-for-better-performance}
+# Place the dataLogDir to a separate physical disc for better performance
 dataLogDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/logs
 
 autopurge.snapRetainCount=10
 autopurge.purgeInterval=1
 
 
-# シークを回避するため、ZooKeeperはトランザクションログファイル内の領域を {#to-avoid-seeks-zookeeper-allocates-space-in-the-transaction-log-file-in}
-# preAllocSizeキロバイト単位のブロックで割り当てる。デフォルトのブロックサイズは64M。 {#blocks-of-preallocsize-kilobytes-the-default-block-size-is-64m-one-reason}
-# ブロックサイズを変更する理由の一つは、スナップショットをより頻繁に取得する場合に {#for-changing-the-size-of-the-blocks-is-to-reduce-the-block-size-if-snapshots}
-# ブロックサイズを削減することである（snapCountも参照）。 {#are-taken-more-often-also-see-snapcount}
+# To avoid seeks ZooKeeper allocates space in the transaction log file in
+# blocks of preAllocSize kilobytes. The default block size is 64M. One reason
+# for changing the size of the blocks is to reduce the block size if snapshots
+# are taken more often. (Also, see snapCount).
 preAllocSize=131072
 
-# クライアントはZooKeeperが処理できる速度よりも速くリクエストを送信できる。 {#clients-can-submit-requests-faster-than-zookeeper-can-process-them}
-# 特に多数のクライアントが存在する場合に顕著である。キューに入ったリクエストによって {#especially-if-there-are-a-lot-of-clients-to-prevent-zookeeper-from-running}
-# ZooKeeperがメモリ不足に陥るのを防ぐため、ZooKeeperはクライアントをスロットルし、 {#out-of-memory-due-to-queued-requests-zookeeper-will-throttle-clients-so-that}
-# システム内の未処理リクエスト数がglobalOutstandingLimitを超えないようにする。 {#there-is-no-more-than-globaloutstandinglimit-outstanding-requests-in-the}
-# デフォルトの制限値は1000。 {#system-the-default-limit-is-1000}
-# globalOutstandingLimit=1000 {#globaloutstandinglimit1000}
+# Clients can submit requests faster than ZooKeeper can process them,
+# especially if there are a lot of clients. To prevent ZooKeeper from running
+# out of memory due to queued requests, ZooKeeper will throttle clients so that
+# there is no more than globalOutstandingLimit outstanding requests in the
+# system. The default limit is 1000.
+# globalOutstandingLimit=1000
 
-# ZooKeeperはトランザクションをトランザクションログに記録する。snapCount件のトランザクションが {#zookeeper-logs-transactions-to-a-transaction-log-after-snapcount-transactions}
-# ログファイルに書き込まれた後、スナップショットが開始され、新しいトランザクションログファイルが {#are-written-to-a-log-file-a-snapshot-is-started-and-a-new-transaction-log-file}
-# 開始される。デフォルトのsnapCountは100000。 {#is-started-the-default-snapcount-is-100000}
+# ZooKeeper logs transactions to a transaction log. After snapCount transactions
+# are written to a log file a snapshot is started and a new transaction log file
+# is started. The default snapCount is 100000.
 snapCount=3000000
 
-# このオプションが定義されている場合、リクエストは {#if-this-option-is-defined-requests-will-be-will-logged-to-a-trace-file-named}
-# traceFile.year.month.dayという名前のトレースファイルに記録される。 {#tracefileyearmonthday}
+# If this option is defined, requests will be will logged to a trace file named
+# traceFile.year.month.day.
 #traceFile=
 
-# リーダーはクライアント接続を受け入れる。デフォルト値は"yes"。リーダーマシンは {#leader-accepts-client-connections-default-value-is-yes-the-leader-machine}
-# 更新を調整する。読み取りスループットをわずかに犠牲にして更新スループットを向上させるため、 {#coordinates-updates-for-higher-update-throughput-at-thes-slight-expense-of}
-# リーダーをクライアント接続を受け入れず調整に専念するよう設定できる。 {#read-throughput-the-leader-can-be-configured-to-not-accept-clients-and-focus}
+# Leader accepts client connections. Default value is "yes". The leader machine
+# coordinates updates. For higher update throughput at thes slight expense of
+# read throughput the leader can be configured to not accept clients and focus
+# on coordination.
 leaderServes=yes
 
 standaloneEnabled=false
@@ -260,9 +261,9 @@ JVM パラメータ:
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
 ZOOCFGDIR=/etc/$NAME/conf
 
-# TODO this is really ugly {#on-coordination}
-# How to find out, which jars are needed? {#todo-this-is-really-ugly}
-# seems, that log4j requires the log4j.properties file to be in the classpath {#how-to-find-out-which-jars-are-needed}
+# TODO this is really ugly
+# How to find out, which jars are needed?
+# seems, that log4j requires the log4j.properties file to be in the classpath
 CLASSPATH="$ZOOCFGDIR:/usr/build/classes:/usr/build/lib/*.jar:/usr/share/zookeeper-3.6.2/lib/audience-annotations-0.5.0.jar:/usr/share/zookeeper-3.6.2/lib/commons-cli-1.2.jar:/usr/share/zookeeper-3.6.2/lib/commons-lang-2.6.jar:/usr/share/zookeeper-3.6.2/lib/jackson-annotations-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-core-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-databind-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/javax.servlet-api-3.1.0.jar:/usr/share/zookeeper-3.6.2/lib/jetty-http-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-io-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-security-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-server-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-servlet-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-util-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jline-2.14.6.jar:/usr/share/zookeeper-3.6.2/lib/json-simple-1.1.1.jar:/usr/share/zookeeper-3.6.2/lib/log4j-1.2.17.jar:/usr/share/zookeeper-3.6.2/lib/metrics-core-3.2.5.jar:/usr/share/zookeeper-3.6.2/lib/netty-buffer-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-codec-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-handler-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-resolver-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-epoll-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-unix-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_common-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_hotspot-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_servlet-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-api-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-log4j12-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/snappy-java-1.1.7.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-jute-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-prometheus-metrics-3.6.2.jar:/usr/share/zookeeper-3.6.2/etc"
 
 ZOOCFG="$ZOOCFGDIR/zoo.cfg"
@@ -288,7 +289,7 @@ JAVA_OPTS="-Xms{{ '{{' }} cluster.get('xms','128M') {{ '}}' }} \
 ソルトの初期化
 
 ```text
-description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} 集中コーディネーションサービス"
+description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} centralized coordination service"
 
 start on runlevel [2345]
 stop on runlevel [!2345]

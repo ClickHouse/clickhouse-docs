@@ -22,10 +22,10 @@ CDC をデフォルト設定で使用する場合、Postgres のプライマリ�
 ```sql
 CREATE MATERIALIZED VIEW posts_final
 REFRESH EVERY 10 second ENGINE = ReplacingMergeTree(_peerdb_version)
-ORDER BY (owneruserid,id) -- 異なるソートキーだが、PostgreSQLの主キーを接尾辞として含む
+ORDER BY (owneruserid,id) -- different ordering key but with suffixed postgres pkey
 AS
 SELECT * FROM posts FINAL 
-WHERE _peerdb_is_deleted = 0; -- これで重複排除を実行
+WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
 ## リフレッシュ可能なマテリアライズドビューを使わないカスタムオーダリングキー {#custom-ordering-keys-without-refreshable-materialized-views}
@@ -49,8 +49,8 @@ Postgres CDC を期待どおりに動作させるには、テーブルの `REPLI
 以下は、events テーブルでの設定例です。オーダリングキーを変更したすべてのテーブルに、この設定を適用するようにしてください。
 
 ```sql
--- (owneruserid, id) に一意インデックスを作成
+-- Create a UNIQUE INDEX on (owneruserid, id)
 CREATE UNIQUE INDEX posts_unique_owneruserid_idx ON posts(owneruserid, id);
--- このインデックスを使用するように REPLICA IDENTITY を設定
+-- Set REPLICA IDENTITY to use this index
 ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 ```

@@ -58,7 +58,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 
 ```sql
 SELECT * FROM azureBlobStorage(
-    '<ВАША_СТРОКА_ПОДКЛЮЧЕНИЯ>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
@@ -70,7 +70,7 @@ SELECT * FROM azureBlobStorage(
 ```sql
 INSERT INTO my_table
 SELECT * FROM azureBlobStorage(
-    '<ВАША_СТРОКА_ПОДКЛЮЧЕНИЯ>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
@@ -101,30 +101,30 @@ SELECT * FROM azureBlobStorage(
 Теперь, когда все настроено, вы можете выполнять запросы к данным напрямую из Azure Blob Storage:
 
 ```sql
-SELECT *
-FROM azureBlobStorage(
-    '<YOUR CONNECTION STRING>', 
-    'sensors',
-    '2019-06_bmp180.csv.zst', 
-    'CSVWithNames')
-LIMIT 10
-SETTINGS format_csv_delimiter = ';'
-```
+    SELECT *
+    FROM azureBlobStorage(
+        '<YOUR CONNECTION STRING>', 
+        'sensors',
+        '2019-06_bmp180.csv.zst', 
+        'CSVWithNames')
+    LIMIT 10
+    SETTINGS format_csv_delimiter = ';'
+    ```
 
 7. Чтобы загрузить данные в таблицу, создайте упрощённую версию
    схемы, используемой в исходном наборе данных:
    ```sql
-   CREATE TABLE sensors
-   (
-       sensor_id UInt16,
-       lat Float32,
-       lon Float32,
-       timestamp DateTime,
-       temperature Float32
-   )
-   ENGINE = MergeTree
-   ORDER BY (timestamp, sensor_id);
-   ```
+    CREATE TABLE sensors
+    (
+        sensor_id UInt16,
+        lat Float32,
+        lon Float32,
+        timestamp DateTime,
+        temperature Float32
+    )
+    ENGINE = MergeTree
+    ORDER BY (timestamp, sensor_id);
+    ```
 
 :::info
 Для получения дополнительной информации о параметрах конфигурации и
@@ -135,15 +135,15 @@ inference from input data](https://clickhouse.com/docs/interfaces/schema-inferen
 
 8. Теперь загрузите данные из Azure Blob Storage в таблицу sensors:
    ```sql
-   INSERT INTO sensors
-   SELECT sensor_id, lat, lon, timestamp, temperature
-   FROM azureBlobStorage(
-       '<YOUR CONNECTION STRING>', 
-       'sensors',
-       '2019-06_bmp180.csv.zst', 
-       'CSVWithNames')
-   SETTINGS format_csv_delimiter = ';'
-   ```
+    INSERT INTO sensors
+    SELECT sensor_id, lat, lon, timestamp, temperature
+    FROM azureBlobStorage(
+        '<YOUR CONNECTION STRING>', 
+        'sensors',
+        '2019-06_bmp180.csv.zst', 
+        'CSVWithNames')
+    SETTINGS format_csv_delimiter = ';'
+    ```
 
 Теперь таблица sensors заполнена данными из файла `2019-06_bmp180.csv.zst`,
 хранящегося в Azure Blob Storage.

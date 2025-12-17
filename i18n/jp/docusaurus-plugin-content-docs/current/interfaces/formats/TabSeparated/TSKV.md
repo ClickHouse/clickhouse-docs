@@ -20,15 +20,15 @@ doc_type: 'reference'
 
 ```text
 SearchPhrase=   count()=8267016
-SearchPhrase=バスルームインテリアデザイン    count()=2166
+SearchPhrase=bathroom interior design    count()=2166
 SearchPhrase=clickhouse     count()=1655
-SearchPhrase=2014年春ファッション    count()=1549
-SearchPhrase=フリーフォーム写真       count()=1480
-SearchPhrase=アンジェリーナ・ジョリー    count()=1245
-SearchPhrase=オムスク       count()=1112
-SearchPhrase=犬種の写真    count()=1091
-SearchPhrase=カーテンデザイン        count()=1064
-SearchPhrase=バクー       count()=1000
+SearchPhrase=2014 spring fashion    count()=1549
+SearchPhrase=freeform photos       count()=1480
+SearchPhrase=angelina jolie    count()=1245
+SearchPhrase=omsk       count()=1112
+SearchPhrase=photos of dog breeds    count()=1091
+SearchPhrase=curtain designs        count()=1064
+SearchPhrase=baku       count()=1000
 ```
 
 ```sql title="Query"

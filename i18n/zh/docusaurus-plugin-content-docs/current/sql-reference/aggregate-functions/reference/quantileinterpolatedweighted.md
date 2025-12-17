@@ -17,7 +17,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-quantileInterpolatedWeighted(级别)(表达式, 权重)
+quantileInterpolatedWeighted(level)(expr, weight)
 ```
 
 别名：`medianInterpolatedWeighted`。

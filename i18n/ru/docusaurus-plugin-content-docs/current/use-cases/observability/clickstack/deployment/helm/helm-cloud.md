@@ -37,19 +37,19 @@ helm install my-clickstack clickstack/clickstack \
 ### Дополнительные соображения по GKE {#other-gke-considerations}
 
 ```yaml
-# values-gke.yaml {#values-gkeyaml}
+# values-gke.yaml
 hyperdx:
-  frontendUrl: "http://34.123.61.99"  # Укажите внешний IP вашего LoadBalancer
+  frontendUrl: "http://34.123.61.99"  # Use your LoadBalancer external IP
 
 otel:
   opampServerUrl: "http://my-clickstack-clickstack-app.default.svc.cluster.local:4320"
 
-# При необходимости настройте для сетевой конфигурации подов GKE {#adjust-for-gke-pod-networking-if-needed}
+# Adjust for GKE pod networking if needed
 clickhouse:
   config:
     clusterCidrs:
-      - "10.8.0.0/16"  # GKE обычно использует этот диапазон
-      - "10.0.0.0/8"   # Резервный вариант для других конфигураций
+      - "10.8.0.0/16"  # GKE commonly uses this range
+      - "10.0.0.0/8"   # Fallback for other configurations
 ```
 
 ## Amazon EKS {#amazon-eks}
@@ -57,18 +57,18 @@ clickhouse:
 Для развертывания в EKS рассмотрите следующие распространённые конфигурации:
 
 ```yaml
-# values-eks.yaml {#values-eksyaml}
+# values-eks.yaml
 hyperdx:
   frontendUrl: "http://your-alb-domain.com"
 
-# EKS обычно использует следующие CIDR для подов {#eks-typically-uses-these-pod-cidrs}
+# EKS typically uses these pod CIDRs
 clickhouse:
   config:
     clusterCidrs:
       - "192.168.0.0/16"
       - "10.0.0.0/8"
 
-# Включить входной шлюз для production-среды {#enable-ingress-for-production}
+# Enable ingress for production
 hyperdx:
   ingress:
     enabled: true
@@ -82,15 +82,15 @@ hyperdx:
 Для развертывания в AKS:
 
 ```yaml
-# values-aks.yaml {#values-aksyaml}
+# values-aks.yaml
 hyperdx:
   frontendUrl: "http://your-azure-lb.com"
 
-# Сетевая конфигурация подов AKS {#aks-pod-networking}
+# AKS pod networking
 clickhouse:
   config:
     clusterCidrs:
-      - "10.244.0.0/16"  # Стандартный CIDR подов AKS
+      - "10.244.0.0/16"  # Common AKS pod CIDR
       - "10.0.0.0/8"
 ```
 
@@ -152,7 +152,7 @@ clickhouse:
   persistence:
     enabled: true
     size: 100Gi
-    storageClass: "fast-ssd"  # Используйте класс хранилища, соответствующий вашему облачному провайдеру
+    storageClass: "fast-ssd"  # Use cloud-specific storage class
 ```
 
 **Классы хранилища, зависящие от облачного провайдера:**

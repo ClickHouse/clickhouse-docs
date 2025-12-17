@@ -45,12 +45,12 @@ import TabItem from '@theme/TabItem';
 ```go
 s := "Hello, world!"
 
-// Записываем длину строки как uvarint.
+// Writing string length as uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// Записываем значение строки.
+// Writing string value.
 buf = append(buf, s...)
 ```
 
@@ -63,14 +63,14 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// Читаем длину.
+// Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// Проверяем n, чтобы предотвратить OOM или исключение времени выполнения в make().
-const maxSize = 1024 * 1024 * 10 // 10 МБ
+// Check n to prevent OOM or runtime exception in make().
+const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
 }
@@ -125,11 +125,11 @@ ClickHouse использует **Little Endian** для целых чисел �
 ```go
 v := int32(1000)
 
-// Кодирование.
+// Encode.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// Декодирование.
+// Decode.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
@@ -137,14 +137,14 @@ fmt.Println(d) // 1000
 <Tabs>
   <TabItem value="hexdump" label="Hex-дамп">
     ```hexdump
-    00000000  e8 03 00 00 00 00 00 00                           |........|
-    ```
+00000000  e8 03 00 00 00 00 00 00                           |........|
+```
   </TabItem>
 
   <TabItem value="base64" label="Base64">
     ```text
-    6AMAAAAAAAA
-    ```
+6AMAAAAAAAA
+```
   </TabItem>
 </Tabs>
 

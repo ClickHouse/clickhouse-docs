@@ -61,8 +61,8 @@ ENGINE = TinyLog
 ```
 
 ```text
-サーバーでの例外:
-コード: 69. DB::Exception: 要素 'hello' の値 -129 が Enum8 の範囲を超えています。
+Exception on server:
+Code: 69. DB::Exception: Value -129 for element 'hello' exceeds range of Enum8.
 ```
 
 カラム `x` には、型定義で列挙された値である `'hello'` または `'world'` しか保存できません。これ以外の値を保存しようとすると、ClickHouse は例外を発生させます。この `Enum` のサイズとして 8 ビットが自動的に選択されます。
@@ -80,8 +80,8 @@ INSERT INTO t_enum VALUES('a')
 ```
 
 ```text
-クライアントでの例外:
-Code: 49. DB::Exception: 型 Enum('hello' = 1, 'world' = 2) に対して不明な要素 'a' です
+Exception on client:
+Code: 49. DB::Exception: Unknown element 'a' for type Enum('hello' = 1, 'world' = 2)
 ```
 
 テーブルをクエリすると、ClickHouse は `Enum` の文字列値を返します。

@@ -6,7 +6,7 @@ keywords: ['json', 'schema', 'inference', 'schema inference']
 doc_type: 'guide'
 ---
 
-ClickHouse 可以自动确定 JSON 数据的结构。利用此功能，可以直接查询 JSON 数据，例如使用 `clickhouse-local` 查询磁盘上的数据或 S3 存储桶中的数据，以及／或在将数据加载到 ClickHouse 之前自动创建模式。
+ClickHouse 可以自动确定 JSON 数据的结构。利用此功能，可以直接查询 JSON 数据，例如使用 `clickhouse-local` 查询磁盘上的数据或 S3 存储桶中的数据，及/或在将数据加载到 ClickHouse 之前自动创建表结构（schema）。
 
 ## 何时使用类型推断 {#when-to-use-type-inference}
 
@@ -26,14 +26,14 @@ ClickHouse 可以自动确定 JSON 数据的结构。利用此功能，可以直
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "每秒千兆字节级数字解析",
-  "comments": "软件位于 https://github.com/fastfloat/fast_float 和\n https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "随着磁盘和网络提供每秒千兆字节级的吞吐量....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
       "created": "Mon, 11 Jan 2021 20:31:27 GMT",
@@ -97,6 +97,7 @@ SETTINGS describe_compact_output = 1
 
 可以看到，大多数量都被自动检测为 `String`，其中 `update_date` 列被正确检测为 `Date`。`versions` 列被创建为 `Array(Tuple(created String, version String))` 用于存储对象列表，而 `authors_parsed` 列被定义为 `Array(Array(String))` 用于表示嵌套数组。
 
+
 :::note 控制类型检测
 日期和日期时间的自动检测可以分别通过设置 [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) 和 [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) 来控制（两者默认均启用）。将对象推断为具名元组的行为由设置 [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects) 控制。其他用于控制 JSON 模式推断的设置（例如数字的自动检测）可以在[此处](/interfaces/schema-inference#text-formats)找到。
 :::
@@ -142,10 +143,11 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-返回 18 行。用时:20.172 秒。已处理 252 万行,1.39 GB(12.472 万行/秒,68.76 MB/秒)。
+18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
-模式推断使我们无需显式定义模式即可查询 JSON 文件，从而加速即席数据分析。
+模式推断使我们无需显式定义模式即可查询 JSON 文件，从而加速即席数据分析任务。
+
 
 ## 创建表 {#creating-tables}
 
@@ -188,9 +190,10 @@ ORDER BY update_date
 
 上面给出的是该数据的正确 schema。Schema 推断是基于对数据进行抽样，并逐行读取数据来完成的。列值会按照相应格式被提取，并通过递归解析器和启发式规则来确定每个值的类型。用于 schema 推断时从数据中读取的最大行数和字节数由设置 [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference)（默认 25000）和 [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference)（默认 32MB）控制。如果检测结果不正确，用户可以按照[此处](/operations/settings/formats#schema_inference_make_columns_nullable)所述提供提示信息。
 
+
 ### 从片段创建表 {#creating-tables-from-snippets}
 
-上述示例使用 S3 上的文件来创建表的 schema。用户也可能希望从单行数据片段创建 schema。可以使用如下所示的 [format](/sql-reference/table-functions/format) 函数来实现这一点：
+上述示例使用 S3 上的文件来创建表的 schema。你可能希望从单行数据片段创建 schema。可以使用如下所示的 [format](/sql-reference/table-functions/format) 函数来实现这一点：
 
 ```sql
 CREATE TABLE arxiv
@@ -221,6 +224,7 @@ ENGINE = MergeTree
 ORDER BY update_date
 ```
 
+
 ## 加载 JSON 数据 {#loading-json-data}
 
 以下内容假设 JSON 结构一致，并且每个路径都只有单一类型。
@@ -250,13 +254,13 @@ FORMAT PrettyJSONEachRow
   "submitter": "David Callan",
   "authors": "David Callan",
   "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-  "comments": "11 页",
+  "comments": "11 pages",
   "journal-ref": "",
   "doi": "",
   "report-no": "",
   "categories": "math.CO",
   "license": "",
-  "abstract": "  我们证明了 Stirling 循环数的行列式可以计数无标签无环单源自动机。",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
   "versions": [
     {
       "created": "Sat, 31 Mar 2007 03:16:14 GMT",
@@ -272,12 +276,13 @@ FORMAT PrettyJSONEachRow
   ]
 }
 
-返回 1 行。耗时:0.009 秒。
+1 row in set. Elapsed: 0.009 sec.
 ```
+
 
 ## 处理错误 {#handling-errors}
 
-有时，你可能会遇到有问题的数据。例如，某些列的类型不正确，或者存在格式不正确的 JSON 对象。对于这种情况，可以使用 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) 和 [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) 这两个设置，在数据触发写入错误时允许忽略一定数量的行。此外，还可以提供 [hints](/operations/settings/formats#schema_inference_hints) 来辅助模式推断。
+有时，你可能会遇到有问题的数据。例如，某些列的类型不正确，或者存在格式不正确的 JSON 对象。对于这种情况，可以使用 [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) 和 [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio) 这两个设置，在数据触发插入错误时允许忽略一定数量的行。此外，还可以提供 [hints](/operations/settings/formats#schema_inference_hints) 来辅助模式推断。
 
 ## 处理半结构化和动态数据 {#working-with-semi-structured-data}
 
@@ -311,14 +316,14 @@ ClickHouse 通过专门的 [`JSON`](/sql-reference/data-types/newjson) 类型来
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- 为简洁起见,此处省略结果
+-- result omitted for brevity
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
 这里的主要问题是使用了 `JSONEachRow` 格式来进行推断。该格式会尝试为 **JSON 中的每个键推断一个列类型** —— 实际上是在不使用 [`JSON`](/sql-reference/data-types/newjson) 类型的情况下，对数据强行应用一个静态模式（schema）。
 
-当存在成千上万的不同列时，这种推断方式会非常慢。作为替代方案，用户可以使用 `JSONAsObject` 格式。
+当存在成千上万的不同列时，这种推断方式会非常慢。作为替代方案，你可以使用 `JSONAsObject` 格式。
 
 `JSONAsObject` 会将整个输入视为单个 JSON 对象，并将其存储在一个类型为 [`JSON`](/sql-reference/data-types/newjson) 的单列中，因此更适合高度动态或嵌套的 JSON 数据。
 
@@ -333,14 +338,14 @@ SETTINGS describe_compact_output = 1
 1 row in set. Elapsed: 0.005 sec.
 ```
 
-在列包含多种无法兼容的类型时，这种格式也同样必不可少。比如，假设有一个名为 `sample.json` 的文件，其中包含以下按行分隔的 JSON：
+当同一列中出现多种无法兼容的类型时，这种格式也同样必不可少。比如，假设有一个名为 `sample.json` 的文件，其中包含以下换行分隔的 JSON：
 
 ```json
 {"a":1}
 {"a":"22"}
 ```
 
-在这种情况下，ClickHouse 能够自动处理类型冲突，并将列 `a` 的类型确定为 `Nullable(String)`。
+在这种情况下，ClickHouse 能够通过强制类型转换来解决类型冲突，并将列 `a` 解析为 `Nullable(String)`。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')
@@ -350,7 +355,7 @@ SETTINGS describe_compact_output = 1
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
 
-1 行结果集。用时:0.081 秒。
+1 row in set. Elapsed: 0.081 sec.
 ```
 
 :::note 类型强制转换
@@ -364,21 +369,20 @@ SETTINGS describe_compact_output = 1
 {"a":{"b":2}}
 ```
 
-在这种情况下，无法进行任何形式的类型转换，因此 `DESCRIBE` 命令会失败：
+在这种情况下，这里无法进行任何形式的类型转换，因此 `DESCRIBE` 命令会失败：
+
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
-耗时：0.755 秒。
+Elapsed: 0.755 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
+Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-从服务器接收到异常（版本 24.12.1）：
-代码：636。DB::Exception: 从 sql-clickhouse.clickhouse.com:9440 接收到。DB::Exception: 无法从 JSON 格式文件中提取表结构。错误：
-代码：53。DB::Exception: 为第 1 行列 &#39;a&#39; 自动推断的类型 Tuple(b Int64) 与之前行中定义的类型 Int64 不一致。你可以通过设置 schema&#95;inference&#95;hints 为该列指定类型。
-
-````
-
-在这种情况下,`JSONAsObject` 将每一行视为单个 [`JSON`](/sql-reference/data-types/newjson) 类型(该类型支持同一列包含多种类型)。这一点至关重要:
+在这种情况下，`JSONAsObject` 会将每一行视为一个 [`JSON`](/sql-reference/data-types/newjson) 类型（该类型支持同一列中包含多种类型）。这一点至关重要：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
@@ -388,8 +392,9 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 │ json │ JSON │
 └──────┴──────┘
 
-返回 1 行。耗时:0.010 秒。
-````
+1 row in set. Elapsed: 0.010 sec.
+```
+
 
 ## 延伸阅读 {#further-reading}
 

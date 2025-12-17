@@ -49,7 +49,7 @@ keywords: ['ClickStack SDKs', 'языковые SDK ClickStack', 'OpenTelemetry 
 Для отправки данных в ClickStack через OTel collector SDK должны указывать ключ API для приёма данных (ingestion API key). Его можно задать либо с помощью функции `init` в SDK, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`:
 
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<ВАШ_КЛЮЧ_API_ПРИЁМА>'
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
 Этот API-ключ генерируется приложением HyperDX и доступен в разделе `Team Settings → API Keys` самого приложения.

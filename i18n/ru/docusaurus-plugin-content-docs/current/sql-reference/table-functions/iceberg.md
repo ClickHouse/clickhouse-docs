@@ -27,7 +27,6 @@ icebergLocal(path_to_table, [,format] [,compression_method])
 icebergLocal(named_collection[, option=value [,..]])
 ```
 
-
 ## Аргументы {#arguments}
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
@@ -46,7 +45,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 :::important
 На данный момент ClickHouse поддерживает чтение версий v1 и v2 формата Iceberg с помощью табличных функций `icebergS3`, `icebergAzure`, `icebergHDFS` и `icebergLocal`, а также табличных движков `IcebergS3`, `icebergAzure`, `IcebergHDFS` и `IcebergLocal`.
 :::
-
 
 ## Определение именованной коллекции {#defining-a-named-collection}
 
@@ -70,7 +68,6 @@ SELECT * FROM icebergS3('http://test.s3.amazonaws.com/clickhouse-bucket/test_tab
 SELECT * FROM icebergS3(iceberg_conf, filename = 'test_table')
 DESCRIBE icebergS3(iceberg_conf, filename = 'test_table')
 ```
-
 
 ## Использование каталога данных {#iceberg-writes-catalogs}
 
@@ -116,7 +113,6 @@ SETTINGS
   storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
-
 ## Эволюция схемы {#schema-evolution}
 
 На данный момент в ClickHouse можно читать таблицы Iceberg, схема которых со временем изменялась. Поддерживается чтение таблиц, в которых были добавлены и удалены столбцы, а также изменён их порядок. Можно также изменить столбец с обязательным значением на столбец, где допускается значение NULL. Кроме того, поддерживается допустимое приведение простых типов, а именно:  
@@ -149,15 +145,14 @@ ClickHouse поддерживает механизм time travel для табл
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_timestamp_ms = 1714636800000
-```
+ ```
 
 ```sql
  SELECT * FROM example_table ORDER BY 1 
  SETTINGS iceberg_snapshot_id = 3547395809148285433
-```
+ ```
 
 Примечание: Нельзя указывать параметры `iceberg_timestamp_ms` и `iceberg_snapshot_id` одновременно в одном запросе.
-
 
 ### Важные замечания {#important-considerations}
 
@@ -176,7 +171,7 @@ ClickHouse поддерживает механизм time travel для табл
 Рассмотрим следующую последовательность операций:
 
 ```sql
- -- Создать таблицу с двумя столбцами
+ -- Create a table with two columns
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
   order_number bigint, 
   product_code string
@@ -184,23 +179,23 @@ ClickHouse поддерживает механизм time travel для табл
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Вставить данные в таблицу
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES 
     (1, 'Mars')
 
-  ts1 = now() // Фрагмент псевдокода
+  ts1 = now() // A piece of pseudo code
 
--- Изменить таблицу, добавив новый столбец
+- - Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
  
   ts2 = now()
 
--- Вставить данные в таблицу
+- - Insert data into the table
   INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
    ts3 = now()
 
--- Выполнить запрос к таблице для каждой временной метки
+- - Query the table at each timestamp
   SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
@@ -231,13 +226,12 @@ ClickHouse поддерживает механизм time travel для табл
 * На ts1 и ts2: отображаются только исходные два столбца
 * На ts3: отображаются все три столбца; для цены первой строки указано значение NULL
 
-
 #### Сценарий 2: различия между исторической и текущей схемой {#scenario-2}
 
 Запрос time travel, выполненный в текущий момент времени, может показать схему, отличающуюся от текущей схемы таблицы:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number bigint, 
   product_code string
@@ -245,15 +239,15 @@ ClickHouse поддерживает механизм time travel для табл
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- Вставка начальных данных в таблицу
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- Изменение таблицы для добавления нового столбца
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- Запрос таблицы на текущий момент с использованием синтаксиса временной метки
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -263,7 +257,7 @@ ClickHouse поддерживает механизм time travel для табл
     |           2|       Venus|
     +------------+------------+
 
--- Запрос таблицы на текущий момент
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -274,13 +268,12 @@ ClickHouse поддерживает механизм time travel для табл
 
 Это происходит потому, что `ALTER TABLE` не создаёт новый snapshot, а при работе с текущей таблицей Spark берёт значение `schema_id` из последнего файла метаданных, а не из snapshot.
 
-
 #### Сценарий 3: различия между исторической и текущей схемой {#scenario-3}
 
 Второе ограничение состоит в том, что при использовании механизма time travel нельзя получить состояние таблицы до того, как в неё были записаны какие‑либо данные:
 
 ```sql
--- Создание таблицы
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number bigint, 
   product_code string
@@ -290,12 +283,11 @@ ClickHouse поддерживает механизм time travel для табл
 
   ts = now();
 
--- Запрос таблицы на определённую временную метку
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Завершается с ошибкой: Cannot find a snapshot older than ts.
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 В ClickHouse поведение такое же, как в Spark. Вы можете мысленно заменить запросы SELECT в Spark на запросы SELECT в ClickHouse — и всё будет работать так же.
-
 
 ## Определение файла метаданных {#metadata-file-resolution}
 
@@ -339,7 +331,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 
 **Примечание**: Хотя каталоги Iceberg обычно отвечают за разрешение метаданных, табличная функция `iceberg` в ClickHouse напрямую интерпретирует файлы, хранящиеся в S3, как таблицы Iceberg, поэтому важно понимать эти правила разрешения метаданных.
 
-
 ## Metadata cache {#metadata-cache}
 
 Движок таблиц `Iceberg` и табличная функция `Iceberg` поддерживают кэш метаданных, в котором хранится информация о файлах manifest, списках manifest и JSON-файлах с метаданными. Кэш хранится в памяти. Этот функционал управляется настройкой `use_iceberg_metadata_files_cache`, которая по умолчанию включена.
@@ -366,7 +357,6 @@ SELECT * FROM iceberg('s3://bucket/path/to/iceberg_table',
 SET allow_experimental_insert_into_iceberg = 1;
 ```
 
-
 ### Создание таблицы {#create-iceberg-table}
 
 Чтобы создать собственную пустую таблицу Iceberg, используйте те же команды, что и для чтения, но явно укажите схему.
@@ -386,7 +376,6 @@ ENGINE = IcebergLocal('/home/scanhex12/iceberg_example/')
 Примечание: чтобы создать файл подсказки версии, включите настройку `iceberg_use_version_hint`.
 Если нужно сжать файл metadata.json, укажите имя кодека в настройке `iceberg_metadata_compression_method`.
 
-
 ### INSERT {#writes-inserts}
 
 После создания новой таблицы вы можете добавить данные, используя стандартный синтаксис ClickHouse.
@@ -400,17 +389,16 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-Строка 1:
+Row 1:
 ──────
 x: Pavel
 y: 777
 
-Строка 2:
+Row 2:
 ──────
 x: Ivanov
 y: 993
 ```
-
 
 ### DELETE {#iceberg-writes-delete}
 
@@ -430,12 +418,11 @@ SELECT *
 FROM iceberg_writes_example
 FORMAT VERTICAL;
 
-Строка 1:
+Row 1:
 ──────
 x: Ivanov
 y: 993
 ```
-
 
 ### Эволюция схемы {#iceberg-writes-schema-evolution}
 
@@ -500,7 +487,6 @@ x: Ivanov
 y: 993
 ```
 
-
 ### Компакция {#iceberg-writes-compaction}
 
 ClickHouse поддерживает компактацию таблиц Iceberg. В данный момент он может объединять файлы position delete с файлами данных с одновременным обновлением метаданных. Идентификаторы и метки времени предыдущих snapshot остаются без изменений, поэтому возможность time-travel по-прежнему доступна с теми же значениями.
@@ -521,7 +507,6 @@ Row 1:
 x: Ivanov
 y: 993
 ```
-
 
 ## См. также {#see-also}
 

@@ -76,12 +76,12 @@ VALUES
 
 ##### 验证表 {#verify}
 
-```sql title="查询"
+```sql title="Query"
 SELECT *
 FROM db1.table1
 ```
 
-```response title="响应"
+```response title="Response"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -167,7 +167,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 ##### 授予其他角色显式权限以保持对所有行的访问 {#grant-other-roles-access}
 
     ```sql
-    CREATE ROW POLICY allow_other_users_filter
+    CREATE ROW POLICY allow_other_users_filter 
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 
@@ -371,7 +371,7 @@ SHOW GRANTS FOR row_and_column_user
 ```
 
 ```response
-查询 ID: 6a73a3fe-2659-4aca-95c5-d012c138097b
+Query id: 6a73a3fe-2659-4aca-95c5-d012c138097b
 
 ┌─GRANTS FOR row_and_column_user───────────────────────────┐
 │ GRANT A_rows_users, column1_users TO row_and_column_user │

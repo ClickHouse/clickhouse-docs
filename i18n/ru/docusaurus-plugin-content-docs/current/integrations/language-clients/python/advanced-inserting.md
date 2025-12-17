@@ -121,7 +121,7 @@ import pandas as pd
 
 client = clickhouse_connect.get_client()
 
-# Преобразование в типы данных на основе Arrow для улучшения производительности {#convert-to-arrow-backed-dtypes-for-better-performance}
+# Convert to Arrow-backed dtypes for better performance
 df = pd.DataFrame({
     "id": [1, 2, 3],
     "name": ["Alice", "Bob", "Joe"],
@@ -147,7 +147,7 @@ import pytz
 client = clickhouse_connect.get_client()
 client.command("CREATE TABLE events (event_time DateTime) ENGINE Memory")
 
-# Вставка объектов datetime с информацией о часовом поясе {#insert-timezone-aware-datetime-objects}
+# Insert timezone-aware datetime objects
 denver_tz = pytz.timezone('America/Denver')
 tokyo_tz = pytz.timezone('Asia/Tokyo')
 
@@ -160,10 +160,10 @@ data = [
 client.insert('events', data, column_names=['event_time'])
 results = client.query("SELECT * from events")
 print(*results.result_rows, sep="\n")
-# Результат: {#output}
-# (datetime.datetime(2023, 6, 15, 10, 30),) {#datetimedatetime2023-6-15-10-30}
-# (datetime.datetime(2023, 6, 15, 16, 30),) {#datetimedatetime2023-6-15-16-30}
-# (datetime.datetime(2023, 6, 15, 1, 30),) {#datetimedatetime2023-6-15-1-30}
+# Output:
+# (datetime.datetime(2023, 6, 15, 10, 30),)
+# (datetime.datetime(2023, 6, 15, 16, 30),)
+# (datetime.datetime(2023, 6, 15, 1, 30),)
 ```
 
 В этом примере все три объекта datetime представляют разные моменты времени, поскольку используют разные часовые пояса. Каждый из них будет корректно преобразован в соответствующий Unix timestamp и сохранён в ClickHouse.
@@ -187,11 +187,11 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# Рекомендуется: всегда используйте datetime с указанием часового пояса {#recommended-always-use-timezone-aware-datetimes}
+# Recommended: Always use timezone-aware datetimes
 utc_time = datetime(2023, 6, 15, 10, 30, 0, tzinfo=pytz.UTC)
 client.insert('events', [[utc_time]], column_names=['event_time'])
 
-# Альтернатива: преобразуйте в Unix-время вручную {#alternative-convert-to-epoch-timestamp-manually}
+# Alternative: Convert to epoch timestamp manually
 naive_time = datetime(2023, 6, 15, 10, 30, 0)
 epoch_timestamp = int(naive_time.replace(tzinfo=pytz.UTC).timestamp())
 client.insert('events', [[epoch_timestamp]], column_names=['event_time'])
@@ -210,20 +210,20 @@ import pytz
 
 client = clickhouse_connect.get_client()
 
-# Создать таблицу с метаданными часового пояса Лос-Анджелеса {#create-table-with-los-angeles-timezone-metadata}
+# Create table with Los Angeles timezone metadata
 client.command("CREATE TABLE events (event_time DateTime('America/Los_Angeles')) ENGINE Memory")
 
-# Вставить время Нью-Йорка (10:30 AM EDT, что соответствует 14:30 UTC) {#insert-a-new-york-time-1030-am-edt-which-is-1430-utc}
+# Insert a New York time (10:30 AM EDT, which is 14:30 UTC)
 ny_tz = pytz.timezone("America/New_York")
 data = ny_tz.localize(datetime(2023, 6, 15, 10, 30, 0))
 client.insert("events", [[data]], column_names=["event_time"])
 
-# При запросе время автоматически преобразуется в часовой пояс Лос-Анджелеса {#when-queried-back-the-time-is-automatically-converted-to-los-angeles-timezone}
-# 10:30 AM Нью-Йорк (UTC-4) = 14:30 UTC = 7:30 AM Лос-Анджелес (UTC-7) {#1030-am-new-york-utc-4-1430-utc-730-am-los-angeles-utc-7}
+# When queried back, the time is automatically converted to Los Angeles timezone
+# 10:30 AM New York (UTC-4) = 14:30 UTC = 7:30 AM Los Angeles (UTC-7)
 results = client.query("select * from events")
 print(*results.result_rows, sep="\n")
-# Результат: {#output}
-# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),) {#datetimedatetime2023-6-15-7-30-tzinfodsttzinfo-americalos_angeles-pdt-1-day-170000-dst}
+# Output:
+# (datetime.datetime(2023, 6, 15, 7, 30, tzinfo=<DstTzInfo 'America/Los_Angeles' PDT-1 day, 17:00:00 DST>),)
 ```
 
 ## Вставка из файла {#file-inserts}

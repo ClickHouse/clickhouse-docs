@@ -47,16 +47,16 @@ C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-# オプション: チェックサムを検証する {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# チェックサムは次と一致する必要があります: 11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
+# Checksum should be equal to: 11b484f5bd9ddafec5cfb131eb2dd008
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-# オプション: チェックサムを検証する {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum daily_weather_preprocessed_1896_2023.csv
-# チェックサムは次と一致する必要があります: 1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
+# Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
 
 ### 元の生データ {#original-raw-data}
@@ -72,9 +72,9 @@ mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-# オプション: チェックサムの検証 {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# チェックサムは b66b9f137217454d655e3004d7d1b51a と一致する必要があります {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
+# Checksum should be equal to: b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -83,9 +83,9 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-# オプション: チェックサムの検証 {#option-validate-the-checksum}
+# Option: Validate the checksum
 cat *.csv | md5sum
-# チェックサムは b26db404bf84d4063fac42e576464ce1 と一致する必要があります {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
+# Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
 
 #### 台湾の気象観測所情報を取得する {#retrieve-the-taiwan-weather-stations}
@@ -93,7 +93,7 @@ cat *.csv | md5sum
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-# オプション: UTF-8-BOMからUTF-8エンコーディングへ変換 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
+# Option: Convert the UTF-8-BOM to UTF-8 encoding
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
 
@@ -181,7 +181,7 @@ FROM tw_weather_data;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 1億3199万                       │
+│ 131.99 million                  │
 └─────────────────────────────────┘
 ```
 
@@ -284,7 +284,7 @@ LIMIT 10
 │  1028.3 │    ᴺᵁᴸᴸ │ 13.6 │ ᴺᵁᴸᴸ │ 91 │ 1.2 │ 273 │    4.4 │    256 │ -99.8 │     -99.8 │
 └─────────┴─────────┴──────┴──────┴────┴─────┴─────┴────────┴────────┴───────┴───────────┘
 
-10行を取得しました。経過時間: 0.009秒。処理済み: 91.70千行、2.33 MB (9.67百万行/秒、245.31 MB/秒)
+10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
 
 ## クレジット {#credits}

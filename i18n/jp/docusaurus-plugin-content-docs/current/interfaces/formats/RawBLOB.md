@@ -40,7 +40,7 @@ doc_type: 'reference'
 `RawBLOB` 入力に空のデータが渡されると、ClickHouse は例外をスローします。
 
 ```text
-コード: 108. DB::Exception: 挿入するデータがありません
+Code: 108. DB::Exception: No data to insert
 ```
 
 ## 使用例 {#example-usage}

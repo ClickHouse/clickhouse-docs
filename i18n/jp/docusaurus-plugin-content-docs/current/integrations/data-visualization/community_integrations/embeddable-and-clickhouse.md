@@ -28,13 +28,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Embeddable API を使用してデータベース接続を追加します。この接続は ClickHouse サービスへの接続に利用されます。次の API コールを使用して接続を追加できます。
 
 ```javascript
-// セキュリティ上の理由により、クライアント側から*決して*呼び出さないでください
+// for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${apiKey}` /* APIキーを安全に保管してください */,
+    Authorization: `Bearer ${apiKey}` /* keep your API Key secure */,
   },
   body: JSON.stringify({
     name: 'my-clickhouse-db',
@@ -48,7 +48,7 @@ fetch('https://api.embeddable.com/api/v1/connections', {
   }),
 });
 
-レスポンス:
+Response:
 Status 201 { errorMessage: null }
 ```
 

@@ -11,7 +11,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java 客户端概览 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
@@ -155,21 +154,20 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
 </dependencies>
 ```
 
-
 #### 配置日志记录 {#configuring-logging}
 
 具体配置方式取决于你所使用的日志框架。例如，如果你使用的是 `Logback`，可以在名为 `logback.xml` 的文件中进行配置：
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- 控制台输出器 -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 文件输出器 -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -178,13 +176,13 @@ JDBC 驱动继承其底层客户端实现所具备的相同功能。其他 JDBC 
         </encoder>
     </appender>
 
-    <!-- 根日志记录器 -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- 特定包的自定义日志级别 -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

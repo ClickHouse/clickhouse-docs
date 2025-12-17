@@ -8,18 +8,17 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.asynchronous&#95;metrics {#systemasynchronous_metrics}
 
 <SystemTableCloud />
 
-包含在后台定期计算的指标。例如，当前正在使用的 RAM 大小。
+包含在后台定期计算得到的指标。例如，当前正在使用的 RAM 大小。
 
 列：
 
 * `metric` ([String](../../sql-reference/data-types/string.md)) — 指标名称。
 * `value` ([Float64](../../sql-reference/data-types/float.md)) — 指标值。
-* `description` ([String](../../sql-reference/data-types/string.md)) — 指标描述。
+* `description` ([String](../../sql-reference/data-types/string.md) - 指标描述)
 
 **示例**
 
@@ -29,22 +28,22 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 ```text
 ┌─metric──────────────────────────────────┬──────value─┬─description────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ AsynchronousMetricsCalculationTimeSpent │ 0.00179053 │ 计算异步指标所花费的时间(秒)(这是异步指标的开销)。                                                                                                                                              │
-│ NumberOfDetachedByUserParts             │          0 │ 用户通过 `ALTER TABLE DETACH` 查询从 MergeTree 表中分离的分区片段总数(相对于意外、损坏或被忽略的分区片段)。服务器不关心已分离的分区片段,可以将其删除。                          │
-│ NumberOfDetachedParts                   │          0 │ 从 MergeTree 表中分离的分区片段总数。分区片段可以由用户通过 `ALTER TABLE DETACH` 查询分离,也可以在分区片段损坏、意外或不需要时由服务器自动分离。服务器不关心已分离的分区片段,可以将其删除。 │
-│ TotalRowsOfMergeTreeTables              │    2781309 │ 所有 MergeTree 系列表中存储的行(记录)总数。                                                                                                                                                                                   │
-│ TotalBytesOfMergeTreeTables             │    7741926 │ 所有 MergeTree 系列表中存储的字节总数(压缩后,包括数据和索引)。                                                                                                                                                   │
-│ NumberOfTables                          │         93 │ 服务器上所有数据库中的表总数,不包括无法包含 MergeTree 表的数据库。被排除的数据库引擎是那些动态生成表集合的引擎,例如 `Lazy`、`MySQL`、`PostgreSQL`、`SQlite`。 │
-│ NumberOfDatabases                       │          6 │ 服务器上的数据库总数。                                                                                                                                                                                                                   │
-│ MaxPartCountForPartition                │          6 │ 所有 MergeTree 系列表的所有分区中每个分区的最大分区片段数。大于 300 的值表示配置错误、过载或大规模数据加载。                                                                       │
-│ ReplicasSumMergesInQueue                │          0 │ 所有 Replicated 表的队列中待应用的合并操作总数。                                                                                                                                                                       │
-│ ReplicasSumInsertsInQueue               │          0 │ 所有 Replicated 表的队列中待复制的 INSERT 操作总数。                                                                                                                                                                   │
+│ AsynchronousMetricsCalculationTimeSpent │ 0.00179053 │ Time in seconds spent for calculation of asynchronous metrics (this is the overhead of asynchronous metrics).                                                                                                                                              │
+│ NumberOfDetachedByUserParts             │          0 │ The total number of parts detached from MergeTree tables by users with the `ALTER TABLE DETACH` query (as opposed to unexpected, broken or ignored parts). The server does not care about detached parts and they can be removed.                          │
+│ NumberOfDetachedParts                   │          0 │ The total number of parts detached from MergeTree tables. A part can be detached by a user with the `ALTER TABLE DETACH` query or by the server itself it the part is broken, unexpected or unneeded. The server does not care about detached parts and they can be removed. │
+│ TotalRowsOfMergeTreeTables              │    2781309 │ Total amount of rows (records) stored in all tables of MergeTree family.                                                                                                                                                                                   │
+│ TotalBytesOfMergeTreeTables             │    7741926 │ Total amount of bytes (compressed, including data and indices) stored in all tables of MergeTree family.                                                                                                                                                   │
+│ NumberOfTables                          │         93 │ Total number of tables summed across the databases on the server, excluding the databases that cannot contain MergeTree tables. The excluded database engines are those who generate the set of tables on the fly, like `Lazy`, `MySQL`, `PostgreSQL`, `SQlite`. │
+│ NumberOfDatabases                       │          6 │ Total number of databases on the server.                                                                                                                                                                                                                   │
+│ MaxPartCountForPartition                │          6 │ Maximum number of parts per partition across all partitions of all tables of MergeTree family. Values larger than 300 indicates misconfiguration, overload, or massive data loading.                                                                       │
+│ ReplicasSumMergesInQueue                │          0 │ Sum of merge operations in the queue (still to be applied) across Replicated tables.                                                                                                                                                                       │
+│ ReplicasSumInsertsInQueue               │          0 │ Sum of INSERT operations in the queue (still to be replicated) across Replicated tables.                                                                                                                                                                   │
 └─────────────────────────────────────────┴────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-{/*- 与 system.events 和 system.metrics 不同，异步指标并不是在源代码文件中以简单列表的形式收集起来——
-      它们与逻辑混合在一起，位于 src/Interpreters/ServerAsynchronousMetrics.cpp 中。
-      在这里将其显式列出，方便读者查阅。 -*/ }
+{/*- 与 system.events 和 system.metrics 不同，异步指标并不是在某个源代码文件中以简单列表的形式集中维护——
+      它们与 src/Interpreters/ServerAsynchronousMetrics.cpp 中的逻辑交织在一起。
+      在此将其显式列出，便于读者查阅。 -*/ }
 
 
 ## 指标说明 {#metric-descriptions}
@@ -319,7 +318,7 @@ MySQL 兼容协议服务器中的线程数。
 
 ### OSGuestNiceTimeNormalized {#osguestnicetimenormalized}
 
-该值与 `OSGuestNiceTime` 类似，但会除以 CPU 核心数量，使其在不考虑核心数量的情况下归一化到 [0..1] 区间内。这样即使集群中各服务器的核心数量不一致，也可以在多台服务器之间对该指标进行平均，并且仍然能够得到平均资源利用率指标。
+该值与 `OSGuestNiceTime` 类似，但会除以 CPU 核心数量，使其在不考虑核心数量的情况下归一化到 [0..1] 区间内。这样即使集群中各服务器的核心数量不一致，也可以在多台服务器之间对该指标进行平均，并且仍然能够得到平均资源利用率指标。如果进行了相应配置，可以使用 Cgroup CPU QUOTA 除以其周期得到的值来代替实际的 CPU 核心数，在这种情况下，该指标的值在某些时刻可能会超过 1。
 
 ### OSGuestTime {#osguesttime}
 
@@ -331,7 +330,7 @@ MySQL 兼容协议服务器中的线程数。
 
 ### OSGuestTimeNormalized {#osguesttimenormalized}
 
-该值与 `OSGuestTime` 类似，但会除以 CPU 核心数，从而在与核心数量无关的情况下，将其规范化到 [0..1] 区间。这样，即使集群中各服务器的 CPU 核心数不一致，您也可以在多台服务器之间对该指标进行平均，并仍然获得平均资源利用率指标。
+该值与 `OSGuestTime` 类似，但会除以 CPU 核心数，从而在与核心数量无关的情况下，将其规范化到 [0..1] 区间。这样，即使集群中各服务器的 CPU 核心数不一致，您也可以在多台服务器之间对该指标进行平均，并仍然获得平均资源利用率指标。如果进行了相应配置，可以使用 Cgroup 中 CPU QUOTA 与其周期的比值来代替实际的 CPU 核心数，此时该指标在某些时刻的取值可能会超过 1。
 
 ### OSIOWaitTime {#osiowaittime}
 
@@ -343,7 +342,7 @@ CPU 核心未运行代码、但由于进程在等待 IO 而 OS 内核也未在�
 
 ### OSIOWaitTimeNormalized {#osiowaittimenormalized}
 
-该值类似于 `OSIOWaitTime`，但会除以 CPU 核心数，从而将该指标归一化到 [0..1] 区间内，与核心数量无关。这样，即使集群中各服务器的 CPU 核心数不一致，你仍然可以在多台服务器之间对该指标进行平均，并得到可比的平均资源利用率指标。
+该值类似于 `OSIOWaitTime`，但会除以 CPU 核心数，从而将该指标归一化到 [0..1] 区间内，与核心数量无关。这样，即使集群中各服务器的 CPU 核心数不一致，你仍然可以在多台服务器之间对该指标进行平均，并得到可比的平均资源利用率指标。如果指定了 Cgroup CPU 配额，则可以使用其与周期的比值来代替实际 CPU 核心数，在这种情况下，该指标的值在某些时刻可能会超过 1。
 
 ### OSIdleTime {#osidletime}
 
@@ -355,7 +354,7 @@ CPU 核心未运行代码、但由于进程在等待 IO 而 OS 内核也未在�
 
 ### OSIdleTimeNormalized {#osidletimenormalized}
 
-该值与 `OSIdleTime` 类似，但会再除以 CPU 核心数量，使其无论核心数量多少，始终归一化到 [0..1] 区间。这样即使集群中各服务器的核心数不一致，也可以对该指标在多台服务器之间进行平均，从而仍然获得整体的平均资源利用率指标。
+该值与 `OSIdleTime` 类似，但会再除以 CPU 核心数量，使其无论核心数量多少，始终归一化到 [0..1] 区间。这样即使集群中各服务器的核心数不一致，也可以对该指标在多台服务器之间进行平均，从而仍然获得整体的平均资源利用率指标。如果进行了相应设置，可以使用将 Cgroup CPU QUOTA 除以其周期得到的值来代替实际的 CPU 核心数，此时该指标的数值在某些时刻可能会超过 1。
 
 ### OSInterrupts {#osinterrupts}
 
@@ -371,7 +370,7 @@ CPU 核心未运行代码、但由于进程在等待 IO 而 OS 内核也未在�
 
 ### OSIrqTimeNormalized {#osirqtimenormalized}
 
-该数值与 `OSIrqTime` 类似，但会除以 CPU 核心数，使其在 [0..1] 区间内进行度量，而不受核心数量影响。这样，即使集群中各服务器的核心数量不一致，也可以对该指标在多台服务器之间进行平均，仍然能够得到平均资源利用率指标。
+该数值与 `OSIrqTime` 类似，但会除以 CPU 核心数，使其在 [0..1] 区间内进行度量，而不受核心数量影响。这样，即使集群中各服务器的核心数量不一致，也可以对该指标在多台服务器之间进行平均，仍然能够得到平均资源利用率指标。如果进行了相应配置，则可以使用 Cgroup CPU QUOTA 与其周期的比值来代替实际 CPU 核心数，此时该指标在某些时刻的取值可能会超过 1。
 
 ### OSMemoryAvailable {#osmemoryavailable}
 
@@ -407,7 +406,7 @@ CPU 核心以较高优先级运行用户空间代码的时间占比。这是一�
 
 ### OSNiceTimeNormalized {#osnicetimenormalized}
 
-该值类似于 `OSNiceTime`，但会除以 CPU 核心数，从而在与核心数量无关的情况下，将结果归一化到 [0..1] 区间。这样，即使集群中各服务器的核心数量不一致，也可以在多台服务器之间对该指标取平均值，仍然能够得到平均资源利用率指标。
+该值类似于 `OSNiceTime`，但会除以 CPU 核心数，从而在与核心数量无关的情况下，将结果归一化到 [0..1] 区间。这样，即使集群中各服务器的核心数量不一致，也可以在多台服务器之间对该指标取平均值，仍然能够得到平均资源利用率指标。如果进行了相应配置，则可以使用 Cgroup CPU QUOTA 与其周期的比值来代替实际的 CPU 核心数，在这种情况下，该指标的值在某些时刻可能会超过 1。
 
 ### OSOpenFiles {#osopenfiles}
 
@@ -435,7 +434,7 @@ CPU 核心以较高优先级运行用户空间代码的时间占比。这是一�
 
 ### OSSoftIrqTimeNormalized {#ossoftirqtimenormalized}
 
-该值与 `OSSoftIrqTime` 类似，但会除以 CPU 核心数量，将结果归一化到与核心数无关的 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器之间对该指标进行平均，并且仍然能够获得资源利用率的平均值。
+该值与 `OSSoftIrqTime` 类似，但会除以 CPU 核心数量，将结果归一化到与核心数无关的 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器之间对该指标进行平均，并且仍然能够获得资源利用率的平均值。如果进行了相应设置，则可以使用 Cgroup CPU QUOTA 与其周期的比值来替代实际的 CPU 核心数量，在这种情况下，该指标的值在某些时刻可能会超过 1。
 
 ### OSStealTime {#osstealtime}
 
@@ -447,7 +446,7 @@ CPU 核心以较高优先级运行用户空间代码的时间占比。这是一�
 
 ### OSStealTimeNormalized {#osstealtimenormalized}
 
-该值与 `OSStealTime` 类似，但会除以 CPU 核心数，从而在不考虑核心数量的情况下将指标归一化到 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器上对该指标求平均，从而得到平均资源利用率指标。
+该值与 `OSStealTime` 类似，但会除以 CPU 核心数，从而在不考虑核心数量的情况下将指标归一化到 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器上对该指标求平均，从而得到平均资源利用率指标。如果指定的话，可以使用 Cgroup CPU QUOTA 与其周期的比值来代替实际的 CPU 核心数，在这种情况下，该指标的值在某些时刻可能会超过 1。
 
 ### OSSystemTime {#ossystemtime}
 
@@ -459,7 +458,7 @@ CPU 在运行操作系统内核（system）代码上所花费时间的比例。�
 
 ### OSSystemTimeNormalized {#ossystemtimenormalized}
 
-该值与 `OSSystemTime` 类似，但会除以 CPU 核心数，从而在与核心数无关的前提下，将其标准化到 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器之间对该指标进行平均，仍然得到平均资源利用率指标。
+该值与 `OSSystemTime` 类似，但会除以 CPU 核心数，从而在与核心数无关的前提下，将其标准化到 [0..1] 区间。这样，即使集群中各服务器的核心数不一致，也可以在多台服务器之间对该指标进行平均，仍然得到平均资源利用率指标。如果进行了相应配置，还可以使用 Cgroup CPU QUOTA 与其 period 的比值来代替实际的 CPU 核心数，此时该指标在某些时刻的数值可能会超过 1。
 
 ### OSThreadsRunnable {#osthreadsrunnable}
 
@@ -483,7 +482,7 @@ CPU 核心运行用户态代码时间的占比。该指标是系统级的，包�
 
 ### OSUserTimeNormalized {#osusertimenormalized}
 
-该值与 `OSUserTime` 类似，但会除以 CPU 核心数，从而在不考虑核心数量的情况下，将结果归一化到 [0..1] 区间。这使你能够在集群中跨多台服务器对该指标进行平均，即使各服务器的核心数量不一致，仍然可以得到平均资源利用率指标。
+该值与 `OSUserTime` 类似，但会除以 CPU 核心数，从而在不考虑核心数量的情况下，将结果归一化到 [0..1] 区间。这使你能够在集群中跨多台服务器对该指标进行平均，即使各服务器的核心数量不一致，仍然可以得到平均资源利用率指标。如果进行了相应配置，则可以使用 Cgroup CPU QUOTA 与其周期的比值来替代实际的 CPU 核心数，在这种情况下，该指标在某些时刻可能会超过 1。
 
 ### PostgreSQLThreads {#postgresqlthreads}
 

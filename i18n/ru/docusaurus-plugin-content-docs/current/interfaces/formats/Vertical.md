@@ -28,7 +28,7 @@ SELECT * FROM t_null FORMAT Vertical
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 x: 1
 y: ᴺᵁᴸᴸ
@@ -37,14 +37,14 @@ y: ᴺᵁᴸᴸ
 Строки не экранируются в вертикальном формате (Vertical):
 
 ```sql
-SELECT 'строка с \'кавычками\', символом табуляции \t и некоторыми специальными \n символами' AS test FORMAT Vertical
+SELECT 'string with \'quotes\' and \t with some special \n characters' AS test FORMAT Vertical
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
-test: строка с «кавычками» и      с особыми
- символами
+test: string with 'quotes' and      with some special
+ characters
 ```
 
 Этот формат подходит только для вывода результата запроса, но не для разбора (извлечения данных для вставки в таблицу).

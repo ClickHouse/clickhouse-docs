@@ -40,7 +40,7 @@ doc_type: 'reference'
 当向 `RawBLOB` 输入传递空数据时，ClickHouse 会抛出异常：
 
 ```text
-代码：108. DB::Exception：无可插入的数据
+Code: 108. DB::Exception: No data to insert
 ```
 
 ## 使用示例 {#example-usage}

@@ -10,29 +10,30 @@ import stackOverflowSchema from '@site/static/images/data-modeling/stackoverflow
 import schemaDesignIndices from '@site/static/images/data-modeling/schema-design-indices.png';
 import Image from '@theme/IdealImage';
 
-Understanding effective schema design is key to optimizing ClickHouse performance and includes choices that often involve trade-offs, with the optimal approach depending on the queries being served as well as factors such as data update frequency, latency requirements, and data volume. This guide provides an overview of schema design best practices and data modeling techniques for optimizing ClickHouse performance.
+効果的なスキーマ設計を理解することは、ClickHouse のパフォーマンス最適化の要となります。スキーマ設計にはしばしばトレードオフを伴う選択が含まれ、最適なアプローチは、実行されるクエリに加えて、データの更新頻度、レイテンシ要件、データ量といった要因によって異なります。本ガイドでは、ClickHouse のパフォーマンスを最適化するためのスキーマ設計におけるベストプラクティスとデータモデリング手法の概要を説明します。
+
 
 ## Stack Overflow dataset {#stack-overflow-dataset}
 
-For the examples in this guide, we use a subset of the Stack Overflow dataset. This contains every post, vote, user, comment and badge that has occurred on Stack Overflow from 2008 to Apr 2024. This data is available in Parquet using the schemas below under the S3 bucket `s3://datasets-documentation/stackoverflow/parquet/`:
+このガイドのサンプルでは、Stack Overflow データセットのサブセットを使用します。これは、2008 年から 2024 年 4 月までに Stack Overflow 上で行われたすべての投稿、投票、ユーザー、コメント、およびバッジを含みます。このデータは、以下のスキーマに従った Parquet 形式として、S3 バケット `s3://datasets-documentation/stackoverflow/parquet/` から利用できます。
 
-> The primary keys and relationships indicated are not enforced through constraints (Parquet is file not table format) and purely indicate how the data is related and the unique keys it possesses.
+> 示されている主キーおよびリレーションシップは CONSTRAINT によって強制されているわけではありません（Parquet はテーブル形式ではなくファイル形式であるため）｡ それらはデータ間の関連性と、データが持つ一意キーを示すためだけのものです。
 
 <Image img={stackOverflowSchema} size="lg" alt="Stack Overflow Schema"/>
 
 <br />
 
-The Stack Overflow dataset contains a number of related tables. In any data modeling task, we recommend users focus on loading their primary table first. This may not necessarily be the largest table but rather the one on which you expect to receive most analytical queries. This will allow you to familiarize yourself with the main ClickHouse concepts and types, especially important if coming from a predominantly OLTP background. This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance.
+Stack Overflow データセットには複数の関連テーブルが含まれます。あらゆるデータモデリングのタスクにおいて、まずはプライマリテーブルのロードに集中することを推奨します。これは必ずしも最大のテーブルである必要はなく、むしろ分析クエリの大半が実行されると想定されるテーブルです。これにより、特に主に OLTP に慣れている方にとって、ClickHouse の主要な概念や型に慣れることができます。ClickHouse の機能を最大限に活用し、最適なパフォーマンスを得るために、追加のテーブルを取り込む際にはこのテーブルのリモデリングが必要になる場合があります。
 
-The above schema is intentionally not optimal for the purposes of this guide.
+上記のスキーマは、このガイドの目的上、あえて最適化されていません。
 
-## Establish initial schema {#establish-initial-schema}
+## 初期スキーマの定義 {#establish-initial-schema}
 
-Since the `posts` table will be the target for most analytics queries, we focus on establishing a schema for this table. This data is available in the public S3 bucket `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` with a file per year.
+`posts` テーブルは大半の分析クエリのターゲットとなるため、このテーブルのスキーマ定義に注力します。このデータは、パブリックな S3 バケット `s3://datasets-documentation/stackoverflow/parquet/posts/*.parquet` に、1 年ごとに 1 ファイルという構成で保存されています。
 
-> Loading data from S3 in Parquet format represents the most common and preferred way to load data into ClickHouse. ClickHouse is optimized for processing Parquet and can potentially read and insert 10s of millions of rows from S3 per second.
+> S3 上の Parquet 形式からデータを読み込む方法は、ClickHouse にデータをロードする際の最も一般的かつ推奨される手法です。ClickHouse は Parquet の処理に最適化されており、S3 から 1 秒あたり数千万行規模で読み込みおよび挿入できる可能性があります。
 
-ClickHouse provides a schema inference capability to automatically identify the types for a dataset. This is supported for all data formats, including Parquet. We can exploit this feature to identify the ClickHouse types for the data via s3 table function and[`DESCRIBE`](/sql-reference/statements/describe-table) command. Note below we use the glob pattern `*.parquet` to read all files in the `stackoverflow/parquet/posts` folder.
+ClickHouse には、データセットの型を自動的に判別するスキーマ推論機能があります。これは Parquet を含むすべてのデータ形式でサポートされています。この機能を利用し、s3 テーブル関数と [`DESCRIBE`](/sql-reference/statements/describe-table) コマンドを用いて、データに対する ClickHouse の型を特定できます。以下の例では、`stackoverflow/parquet/posts` フォルダ内のすべてのファイルを読み込むために、グロブパターン `*.parquet` を使用しています。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
@@ -78,11 +79,12 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stac
 A few important points:
 
 Our posts table is empty after running this command. No data has been loaded.
-We have specified the MergeTree as our table engine. MergeTree is the most common ClickHouse table engine you will likely use. It's the multi-tool in your ClickHouse box, capable of handling PB of data, and serves most analytical use cases. Other table engines exist for use cases such as CDC which need to support efficient updates.
+We have specified the MergeTree as our table engine. MergeTree is the most common ClickHouse table engine you will likely use. It&#39;s the multi-tool in your ClickHouse box, capable of handling PB of data, and serves most analytical use cases. Other table engines exist for use cases such as CDC which need to support efficient updates.
 
 The clause `ORDER BY ()` means we have no index, and more specifically no order in our data. More on this later. For now, just know all queries will require a linear scan.
 
 To confirm the table has been created:
+
 
 ```sql
 SHOW CREATE TABLE posts
@@ -116,40 +118,40 @@ ENGINE = MergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY tuple()
 ```
 
-With our initial schema defined, we can populate the data using an `INSERT INTO SELECT`, reading the data using the s3 table function. The following loads the `posts` data in around 2 mins on an 8-core ClickHouse Cloud instance.
+初期スキーマが定義できたので、s3 テーブル関数を使ってデータを読み込み、`INSERT INTO SELECT` でテーブルを埋めることができます。以下のクエリは、8 コアの ClickHouse Cloud インスタンス上で約 2 分で `posts` データをロードします。
 
 ```sql
 INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 
 0 rows in set. Elapsed: 148.140 sec. Processed 59.82 million rows, 38.07 GB (403.80 thousand rows/s., 257.00 MB/s.)
-
 ```
 
-> The above query loads 60m rows. While small for ClickHouse, users with slower internet connections may wish to load a subset of data. This can be achieved by simply specifying the years they wish to load via a glob pattern e.g. `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` or `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`. See [here](/sql-reference/table-functions/file#globs-in-path) for how glob patterns can be used to target subsets of files.
+> 上記のクエリは 6,000 万行をロードします。ClickHouse にとっては小規模な件数ですが、インターネット接続が遅いユーザーはデータの一部のみをロードしたい場合があるかもしれません。これは、ロードしたい年を glob パターンで指定するだけで実現できます。例: `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2008.parquet` または `https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/{2008, 2009}.parquet`。一部のファイルのみを対象とするための glob パターンの使い方は[こちら](/sql-reference/table-functions/file#globs-in-path)を参照してください。
+
 
 ## Optimizing Types {#optimizing-types}
 
-One of the secrets to ClickHouse query performance is compression.
+ClickHouse のクエリ性能を高めるための秘訣の 1 つは圧縮です。
 
-Less data on disk means less I/O and thus faster queries and inserts. The overhead of any compression algorithm with respect to CPU will in most cases be out weighted by the reduction in IO. Improving the compression of the data should therefore be the first focus when working on ensuring ClickHouse queries are fast.
+ディスク上のデータが少ないほど I/O が減り、その結果としてクエリや挿入が高速になります。ほとんどの場合、CPU に対する圧縮アルゴリズムのオーバーヘッドは、I/O 削減の効果によって十分に相殺されます。したがって、ClickHouse のクエリを高速に保つうえでは、まずデータの圧縮率を改善することに注力すべきです。
 
-> For why ClickHouse compresses data so well, we recommend [this article](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema). In summary, as a column-oriented database, values will be written in column order. If these values are sorted, the same values will be adjacent to each other. Compression algorithms exploit contiguous patterns of data. On top of this, ClickHouse has codecs and granular data types which allow users to tune the compression techniques further.
+> ClickHouse がこれほどよくデータを圧縮できる理由については、[この記事](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) を参照してください。要約すると、ClickHouse はカラム指向データベースであるため、値はカラム順に書き込まれます。これらの値がソートされていれば、同じ値が互いに隣り合って配置されます。圧縮アルゴリズムは、連続したデータパターンを利用します。さらに ClickHouse には、圧縮手法をより細かくチューニングできるようにするコーデックや、きめ細かなデータ型が用意されています。
 
-Compression in ClickHouse will be impacted by 3 main factors: the ordering key, the data types, and any codecs used. All of these are configured through the schema.
+ClickHouse における圧縮は、主に 3 つの要因、すなわちソートキー、データ型、利用されるコーデックによって影響を受けます。これらはすべてスキーマを通して設定されます。
 
-The largest initial improvement in compression and query performance can be obtained through a simple process of type optimization. A few simple rules can be applied to optimize the schema:
+圧縮率とクエリ性能に対して最初に得られる大きな改善は、データ型の最適化という簡単なプロセスで実現できます。スキーマを最適化するために適用できる、いくつかの単純なルールを以下に示します。
 
-- **Use strict types** - Our initial schema used Strings for many columns which are clearly numerics. Usage of the correct types will ensure the expected semantics when filtering and aggregating. The same applies to date types, which have been correctly provided in the Parquet files.
-- **Avoid nullable Columns** - By default the above columns have been assumed to be Null. The Nullable type allows queries to determine the difference between an empty and Null value. This creates a separate column of UInt8 type. This additional column has to be processed every time a user works with a nullable column. This leads to additional storage space used and almost always negatively affects query performance. Only use Nullable if there is a difference between the default empty value for a type and Null. For example, a value of 0 for empty values in the `ViewCount` column will likely be sufficient for most queries and not impact results. If empty values should be treated differently, they can often also be excluded from queries with a filter.
-Use the minimal precision for numeric types - ClickHouse has a number of numeric types designed for different numeric ranges and precision. Always aim to minimize the number of bits used to represent a column. As well as integers of different size e.g. Int16, ClickHouse offers unsigned variants whose minimum value is 0. These can allow fewer bits to be used for a column e.g. UInt16 has a maximum value of 65535, twice that of an Int16. Prefer these types over larger signed variants if possible.
-- **Minimal precision for date types** - ClickHouse supports a number of date and datetime types. Date and Date32 can be used for storing pure dates, with the latter supporting a larger date range at the expense of more bits. DateTime and DateTime64 provide support for date times. DateTime is limited to second granularity and uses 32 bits. DateTime64, as the name suggests, uses 64 bits but provides support up to nanosecond granularity. As ever, choose the more coarse version acceptable for queries, minimizing the number of bits needed.
-- **Use LowCardinality** - Numbers, strings, Date or DateTime columns with a low number of unique values can potentially be encoded using the LowCardinality type. This dictionary encodes values, reducing the size on disk. Consider this for columns with less than 10k unique values.
-FixedString for special cases - Strings which have a fixed length can be encoded with the FixedString type e.g. language and currency codes.  This is efficient when data has the length of precisely N bytes. In all other cases, it is likely to reduce efficiency and LowCardinality is preferred.
-- **Enums for data validation** - The Enum type can be used to efficiently encode enumerated types. Enums can either be 8 or 16 bits, depending on the number of unique values they are required to store. Consider using this if you need either the associated validation at insert time (undeclared values will be rejected) or wish to perform queries which exploit a natural ordering in the Enum values e.g. imagine a feedback column containing user responses `Enum(':(' = 1, ':|' = 2, ':)' = 3)`.
+- **厳密な型を使用する** - 初期スキーマでは、明らかに数値である多くのカラムに String を使用していました。正しい型を使用することで、フィルタリングや集約時に期待どおりのセマンティクスが保証されます。同様のことは、Parquet ファイル内で正しく定義されている日付型にも当てはまります。
+- **Nullable カラムを避ける** - デフォルトでは、上記のカラムは Null を取りうるものとして扱われます。Nullable 型を使用すると、クエリで空値と Null 値を区別できるようになりますが、そのために UInt8 型の別カラムが作成されます。この追加カラムは、nullable カラムを扱うたびに処理される必要があり、その結果、追加のストレージ領域が必要となり、ほぼ確実にクエリ性能に悪影響を与えます。ある型のデフォルトの空値と Null とで意味上の違いがある場合にのみ Nullable を使用してください。たとえば、`ViewCount` カラムの空値を 0 とするだけで、ほとんどのクエリには十分であり、結果にも影響しないでしょう。空値を別扱いにする必要がある場合でも、多くの場合はフィルタによってクエリから除外できます。
+- **数値型の精度を最小限にする** - ClickHouse には、さまざまな数値範囲と精度向けに設計された数値型が多数用意されています。常に、カラム表現に使用するビット数を最小限に抑えることを目標にしてください。たとえば Int16 のようなサイズの異なる整数に加えて、ClickHouse には最小値が 0 の符号なし型もあります。これにより、カラムに必要なビット数を削減できます。たとえば、UInt16 の最大値は 65535 であり、Int16 の 2 倍です。可能であれば、より大きな符号付き型よりも、こうした型を優先して使用してください。
+- **日付型の精度を最小限にする** - ClickHouse は、複数の日付および日時型をサポートしています。Date と Date32 は純粋な日付の保存に使用でき、Date32 はより多くのビットを使用する代わりに、より広い日付範囲をサポートします。DateTime と DateTime64 は日時の保存に使用されます。DateTime は秒精度までで 32 ビットを使用します。名前が示すとおり、DateTime64 は 64 ビットを使用し、ナノ秒精度までサポートします。常に、クエリで許容される中で最も粗い精度を選択し、必要なビット数を最小化してください。
+- **LowCardinality を使用する** - 一意な値の数が少ない数値、文字列、Date、または DateTime カラムは、LowCardinality 型でエンコードできる可能性があります。これは Dictionary によって値をエンコードし、ディスク上のサイズを削減します。一意な値が 1 万未満のカラムに対して検討してください。
+- **特殊なケースには FixedString を使用する** - 長さが固定された文字列は、FixedString 型でエンコードできます（例: 言語コードや通貨コード）。これは、データ長が N バイトちょうどである場合に効率的です。それ以外のケースでは効率を下げる可能性が高く、通常は LowCardinality を使用する方が望ましいです。
+- **データ検証には Enum を使用する** - Enum 型は、列挙型を効率的にエンコードするために使用できます。Enum は、格納する必要のある一意な値の数に応じて、8 ビットまたは 16 ビットのいずれかになります。挿入時に関連する検証（未定義の値を拒否する）が必要な場合や、Enum の値に自然な順序があり、それを利用したクエリを実行したい場合には、この型の使用を検討してください。たとえば、ユーザーのフィードバックを格納するカラムを `Enum(':(' = 1, ':|' = 2, ':)' = 3)` のように定義することを想像してください。
 
-> Tip: To find the range of all columns, and the number of distinct values, users can use the simple query `SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical`. We recommend performing this over a smaller subset of the data as this can be expensive. This query requires numerics to be at least defined as such for an accurate result i.e. not a String.
+> Tip: すべてのカラムの値の範囲と、一意な値の数を調べるには、`SELECT * APPLY min, * APPLY  max, * APPLY uniq FROM table FORMAT Vertical` という単純なクエリを使用できます。これは高コストになり得るため、データの小さなサブセットに対して実行することを推奨します。このクエリで正確な結果を得るには、数値が少なくとも数値型として定義されている必要があります（つまり String ではないこと）。
 
-By applying these simple rules to our posts table, we can identify an optimal type for each column:
+これらの単純なルールを posts テーブルに適用することで、各カラムに対して最適な型を特定できます。
 
 | Column                  | Is Numeric | Min, Max                                                              | Unique Values | Nulls | Comment                                                                                      | Optimized Type                           |
 |------------------------|------------|------------------------------------------------------------------------|----------------|--------|----------------------------------------------------------------------------------------------|------------------------------------------|
@@ -210,7 +212,7 @@ ORDER BY tuple()
 COMMENT 'Optimized types'
 ```
 
-We can populate this with a simple `INSERT INTO SELECT`, reading the data from our previous table and inserting into this one:
+前のテーブルからデータを読み取り、このテーブルに挿入する簡単な `INSERT INTO SELECT` 文でデータを投入できます。
 
 ```sql
 INSERT INTO posts_v2 SELECT * FROM posts
@@ -218,36 +220,37 @@ INSERT INTO posts_v2 SELECT * FROM posts
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
-We don't retain any nulls in our new schema. The above insert converts these implicitly to default values for their respective types - 0 for integers and an empty value for strings. ClickHouse also automatically converts any numerics to their target precision.
-Primary (Ordering) Keys in ClickHouse
-Users coming from OLTP databases often look for the equivalent concept in ClickHouse.
+新しいスキーマでは、null は一切保持しません。上記の INSERT は、これらを暗黙的に各型のデフォルト値に変換します。整数型であれば 0、文字列型であれば空文字列です。ClickHouse は、数値も自動的に指定された精度に変換します。
+ClickHouse におけるプライマリ（並び替え）キー
+OLTP データベースから来たユーザーは、ClickHouse における同等の概念を探すことがよくあります。
 
-## Choosing an ordering key {#choosing-an-ordering-key}
 
-At the scale at which ClickHouse is often used, memory and disk efficiency are paramount. Data is written to ClickHouse tables in chunks known as parts, with rules applied for merging the parts in the background. In ClickHouse, each part has its own primary index. When parts are merged, then the merged part's primary indexes are also merged. The primary index for a part has one index entry per group of rows - this technique is called sparse indexing.
+## 順序キーの選択 {#choosing-an-ordering-key}
 
-<Image img={schemaDesignIndices} size="md" alt="Sparse Indexing in ClickHouse"/>
+ClickHouse がよく利用されるようなスケールでは、メモリとディスクの効率性が最重要となります。データは ClickHouse のテーブルに、パーツと呼ばれるチャンク単位で書き込まれ、バックグラウンドでこれらパーツをマージするためのルールが適用されます。ClickHouse では、それぞれのパーツが独自のプライマリインデックスを持ちます。パーツがマージされると、マージ後のパーツのプライマリインデックスも同様にマージされます。パーツのプライマリインデックスは、行グループごとに 1 つのインデックスエントリを持ち、この手法はスパースインデックスと呼ばれます。
 
-The selected key in ClickHouse will determine not only the index, but also order in which data is written on disk. Because of this, it can dramatically impact compression levels which can in turn affect query performance. An ordering key which causes the values of most columns to be written in contiguous order will allow the selected compression algorithm (and codecs) to compress the data more effectively.
+<Image img={schemaDesignIndices} size="md" alt="ClickHouse におけるスパースインデックス"/>
 
-> All columns in a table will be sorted based on the value of the specified ordering key, regardless of whether they are included in the key itself. For instance, if `CreationDate` is used as the key, the order of values in all other columns will correspond to the order of values in the `CreationDate` column. Multiple ordering keys can be specified - this will order with the same semantics as an `ORDER BY` clause in a `SELECT` query.
+ClickHouse で選択したキーは、索引だけでなく、ディスク上にデータが書き込まれる順序も決定します。そのため、圧縮率に大きな影響を与え、それがクエリ性能にも影響します。多くのカラムの値が連続した順序で書き込まれるような順序キーを指定すると、選択した圧縮アルゴリズム（およびコーデック）がデータをより効果的に圧縮できるようになります。
 
-Some simple rules can be applied to help choose an ordering key. The following can sometimes be in conflict, so consider these in order. Users can identify a number of keys from this process, with 4-5 typically sufficient:
+> テーブル内のすべてのカラムは、キーに含まれているかどうかにかかわらず、指定された順序キーの値に基づいてソートされます。たとえば、`CreationDate` がキーとして使用されている場合、他のすべてのカラムの値の順序は、`CreationDate` カラムの値の順序に対応します。複数の順序キーを指定することも可能であり、これは `SELECT` クエリの `ORDER BY` 句と同じセマンティクスで並び替えを行います。
 
-- Select columns which align with your common filters. If a column is used frequently in `WHERE` clauses, prioritize including these in your key over those which are used less frequently.
-Prefer columns which help exclude a large percentage of the total rows when filtered, thus reducing the amount of data which needs to be read.
-- Prefer columns which are likely to be highly correlated with other columns in the table. This will help ensure these values are also stored contiguously, improving compression.
-`GROUP BY` and `ORDER BY` operations for columns in the ordering key can be made more memory efficient.
+順序キーを選択する際には、いくつかの簡単なルールを適用できます。以下は互いに競合する場合もあるため、この順番で検討してください。このプロセスから 4〜5 個程度のキーを特定できれば十分なことが多いでしょう。
 
-When identifying the subset of columns for the ordering key, declare the columns in a specific order. This order can significantly influence both the efficiency of the filtering on secondary key columns in queries, and the compression ratio for the table's data files. In general, it is best to order the keys in ascending order of cardinality. This should be balanced against the fact that filtering on columns that appear later in the ordering key will be less efficient than filtering on those that appear earlier in the tuple. Balance these behaviors and consider your access patterns (and most importantly test variants).
+- よく使うフィルタと整合するカラムを選択します。あるカラムが `WHERE` 句で頻繁に使われる場合、あまり使われないカラムよりも、そのカラムを優先的にキーへ含めてください。  
+  フィルタ時にテーブル全体の行の大部分を除外できるようなカラムを優先すると、読み込む必要のあるデータ量を減らせます。
+- テーブル内の他のカラムと高い相関があると考えられるカラムを優先します。これにより、それらの値も連続して格納される可能性が高まり、圧縮が改善されます。  
+  順序キーに含まれるカラムに対する `GROUP BY` や `ORDER BY` の処理は、よりメモリ効率良く実行できます。
 
-### Example {#example}
+順序キーに用いるカラムのサブセットを決定する際には、カラムを特定の順番で宣言します。この順番は、クエリにおけるセカンダリキーとなるカラムのフィルタリング効率や、テーブルのデータファイルに対する圧縮率に大きな影響を与えます。一般的には、カーディナリティ（値の種類の多さ）が小さいものから大きいものへと昇順に並べるのが最適です。ただし、順序キーの後ろの方に現れるカラムに対するフィルタリングは、先頭のカラムに対するフィルタリングほど効率的ではないという事実とのバランスを取る必要があります。これらの振る舞いをバランスさせ、自身のアクセスパターンを考慮しつつ（そして何よりもバリエーションを実際にテストしながら）決定してください。
 
-Applying the above guidelines to our `posts` table, let's assume that our users wish to perform analytics which filter by date and post type e.g.:
+### 例 {#example}
 
-"Which questions had the most comments in the last 3 months".
+上記のガイドラインを `posts` テーブルに適用すると、ユーザーは日付と投稿タイプでフィルタリングする分析を行いたいと仮定します。たとえば、
 
-The query for this question using our earlier `posts_v2` table with optimized types but no ordering key:
+「過去3か月で最も多くコメントが付いた質問はどれか」。
+
+型は最適化されているものの ordering key を持たない、以前の `posts_v2` テーブルを用いたこの問いに対するクエリは次のようになります:
 
 ```sql
 SELECT
@@ -269,7 +272,7 @@ LIMIT 3
 Peak memory usage: 429.38 MiB.
 ```
 
-> The query here is very fast even though all 60m rows have been linearly scanned - ClickHouse is just fast :) You'll have to trust us ordering keys is worth it at TB and PB scale!
+> ここでのクエリは、6,000万行すべてを線形スキャンしているにもかかわらず非常に高速です。ClickHouse がそれだけ高速だからです。TB や PB 規模ではオーダリングキーを工夫する価値があることを、ぜひ信じてください！
 
 Lets select the columns `PostTypeId` and `CreationDate` as our ordering keys.
 
@@ -326,25 +329,26 @@ LIMIT 3
 10 rows in set. Elapsed: 0.020 sec. Processed 290.09 thousand rows, 21.03 MB (14.65 million rows/s., 1.06 GB/s.)
 ```
 
-For users interested in the compression improvements achieved by using specific types and appropriate ordering keys, see [Compression in ClickHouse](/data-compression/compression-in-clickhouse). If users need to further improve compression we also recommend the section [Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec).
+特定の型や適切なオーダーキーの利用によって得られる圧縮効率の向上に関心があるユーザーは、[Compression in ClickHouse](/data-compression/compression-in-clickhouse) を参照してください。圧縮をさらに高める必要がある場合は、[Choosing the right column compression codec](/data-compression/compression-in-clickhouse#choosing-the-right-column-compression-codec) のセクションも参照することを推奨します。
 
-## Next: Data Modeling Techniques {#next-data-modeling-techniques}
 
-Until now, we've migrated only a single table. While this has allowed us to introduce some core ClickHouse concepts, most schemas are unfortunately not this simple.
+## 次へ: データモデリング手法 {#next-data-modeling-techniques}
 
-In the other guides listed below, we will explore a number of techniques to restructure our wider schema for optimal ClickHouse querying. Throughout this process we aim for `Posts` to remain our central table through which most analytical queries are performed. While other tables can still be queried in isolation, we assume most analytics want to be performed in the context of `posts`.
+ここまでは、1 つのテーブルだけを移行してきました。これにより、いくつかの中核となる ClickHouse の概念を紹介することはできましたが、残念ながら現実のスキーマの多くはここまで単純ではありません。
 
-> Through this section, we use optimized variants of our other tables. While we provide the schemas for these, for the sake of brevity we omit the decisions made. These are based on the rules described earlier and we leave inferring the decisions to the reader.
+以下に挙げる他のガイドでは、より広いスキーマを ClickHouse でのクエリ実行に最適化するために再構成する、さまざまな手法を見ていきます。このプロセス全体を通じて、`Posts` を大半の分析クエリが実行される中心的なテーブルとして維持することを目標とします。他のテーブルを単独でクエリすることも可能ですが、多くの分析は `posts` のコンテキストで実行されることを前提とします。
 
-The following approaches all aim to minimize the need to use JOINs to optimize reads and improve query performance. While JOINs are fully supported in ClickHouse, we recommend they are used sparingly (2 to 3 tables in a JOIN query is fine) to achieve optimal performance.
+> このセクション全体を通して、他のテーブルについては最適化されたバージョンを使用します。これらのスキーマは提示しますが、簡潔にするため、そこで行った判断については割愛します。これらの判断は前のセクションで説明したルールに基づいており、その推論は読者に委ねます。
 
-> ClickHouse has no notion of foreign keys. This does not prohibit joins but means referential integrity is left to the user to manage at an application level. In OLAP systems like ClickHouse, data integrity is often managed at the application level or during the data ingestion process rather than being enforced by the database itself where it incurs a significant overhead. This approach allows for more flexibility and faster data insertion. This aligns with ClickHouse's focus on speed and scalability of read and insert queries with very large datasets.
+以下のアプローチはすべて、読み取りの最適化とクエリ性能の向上のために、JOIN の必要性を最小限に抑えることを目的としています。ClickHouse は JOIN を完全にサポートしていますが、最適なパフォーマンスを得るために、必要最小限（1 回の JOIN クエリで 2〜3 テーブル程度）にとどめることを推奨します。
 
-In order to minimize the use of Joins at query time, users have several tools/approaches:
+> ClickHouse には外部キーという概念がありません。これは JOIN を禁止するものではありませんが、参照整合性の維持をアプリケーションレベルでユーザーに委ねていることを意味します。ClickHouse のような OLAP システムでは、データ整合性は多くの場合、データベース自身が強制するのではなく、アプリケーションレベルやデータのインジェスト処理中に管理されます。データベースで強制すると大きなオーバーヘッドが発生するためです。このアプローチにより、より柔軟で高速なデータ挿入が可能になります。これは、非常に大規模なデータセットに対する読み取りおよび挿入クエリのスピードとスケーラビリティに重点を置く ClickHouse の設計思想と一致しています。
 
-- [**Denormalizing data**](/data-modeling/denormalization) - Denormalize data by combining tables and using complex types for non 1:1 relationships. This often involves moving any joins from query time to insert time.
-- [**Dictionaries**](/dictionary) - A ClickHouse specific feature for handling direct joins and key value lookups.
-- [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view) - A ClickHouse feature for shifting the cost of a computation from query time to insert time, including the ability to incrementally compute aggregate values.
-- [**Refreshable Materialized Views**](/materialized-view/refreshable-materialized-view) - Similar to materialized views used in other database products, this allows the results of a query to be periodically computed and the result cached.
+クエリ時における JOIN の利用を最小限に抑えるために、ユーザーは次のようなツール／アプローチを利用できます。
 
-We explore each of these approaches in each guide, highlighting when each is appropriate with an example showing how it can be applied to solving questions for the Stack Overflow dataset.
+- [**データの非正規化**](/data-modeling/denormalization) - テーブルを結合し、非 1:1 関係には複合型を使用してデータを非正規化します。多くの場合、JOIN をクエリ時から挿入時へと移動することになります。
+- [**Dictionaries**](/dictionary) - 直接的な JOIN とキー・バリュー型ルックアップを処理するための、ClickHouse 固有の機能です。
+- [**Incremental Materialized Views**](/materialized-view/incremental-materialized-view) - 計算コストをクエリ時から挿入時へと移すための ClickHouse の機能であり、集計値をインクリメンタルに計算することも可能です。
+- [**Refreshable Materialized Views**](/materialized-view/refreshable-materialized-view) - 他のデータベース製品で使われる materialized view と同様に、クエリ結果を定期的に計算し、その結果をキャッシュすることができます。
+
+これらの各アプローチについて、それぞれのガイドで取り上げ、Stack Overflow データセットに対する課題をどのように解決できるかを示す例を通じて、どのような場面で適用するのが適切かを説明していきます。

@@ -41,20 +41,20 @@ EXPLAIN SELECT sum(number) FROM numbers(10) UNION ALL SELECT sum(number) FROM nu
 
 ```sql
 Union
-  Expression (PROJECTION)
+  Expression (Projection)
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (从存储读取后设置限制和 QUOTA)
+          SettingQuotaAndLimits (Set limits and quota after reading from storage)
             ReadFromStorage (SystemNumbers)
-  Expression (PROJECTION)
-    MergingSorted (为 ORDER BY 合并已排序的流)
-      MergeSorting (为 ORDER BY 合并已排序的块)
-        PartialSorting (为 ORDER BY 对每个块排序)
+  Expression (Projection)
+    MergingSorted (Merge sorted streams for ORDER BY)
+      MergeSorting (Merge sorted blocks for ORDER BY)
+        PartialSorting (Sort each block for ORDER BY)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (从存储读取后设置限制和 QUOTA)
+                SettingQuotaAndLimits (Set limits and quota after reading from storage)
                   ReadFromStorage (SystemNumbers)
 ```
 
@@ -199,11 +199,11 @@ EXPLAIN SELECT sum(number) FROM numbers(10) GROUP BY number % 4;
 
 ```sql
 Union
-  Expression (投影)
-  Expression (ORDER BY 和 SELECT 之前)
+  Expression (Projection)
+  Expression (Before ORDER BY and SELECT)
     Aggregating
-      Expression (GROUP BY 之前)
-        SettingQuotaAndLimits (从存储读取后设置限制和配额)
+      Expression (Before GROUP BY)
+        SettingQuotaAndLimits (Set limits and quota after reading from storage)
           ReadFromStorage (SystemNumbers)
 ```
 
@@ -269,7 +269,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
-
 ```json
 [
   {
@@ -316,43 +315,43 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 示例：
 
 ```json
-"节点类型": "ReadFromMergeTree",
-"索引": [
+"Node Type": "ReadFromMergeTree",
+"Indexes": [
   {
-    "类型": "MinMax",
-    "键": ["y"],
-    "条件": "(y in [1, +inf))",
-    "分区": 4/5,
-    "颗粒": 11/12
+    "Type": "MinMax",
+    "Keys": ["y"],
+    "Condition": "(y in [1, +inf))",
+    "Parts": 4/5,
+    "Granules": 11/12
   },
   {
-    "类型": "Partition",
-    "键": ["y", "bitAnd(z, 3)"],
-    "条件": "and((bitAnd(z, 3) not in [1, 1]), and((y in [1, +inf)), (bitAnd(z, 3) not in [1, 1])))",
-    "分区": 3/4,
-    "颗粒": 10/11
+    "Type": "Partition",
+    "Keys": ["y", "bitAnd(z, 3)"],
+    "Condition": "and((bitAnd(z, 3) not in [1, 1]), and((y in [1, +inf)), (bitAnd(z, 3) not in [1, 1])))",
+    "Parts": 3/4,
+    "Granules": 10/11
   },
   {
-    "类型": "PrimaryKey",
-    "键": ["x", "y"],
-    "条件": "and((x in [11, +inf)), (y in [1, +inf)))",
-    "分区": 2/3,
-    "颗粒": 6/10,
-    "搜索算法": "generic exclusion search"
+    "Type": "PrimaryKey",
+    "Keys": ["x", "y"],
+    "Condition": "and((x in [11, +inf)), (y in [1, +inf)))",
+    "Parts": 2/3,
+    "Granules": 6/10,
+    "Search Algorithm": "generic exclusion search"
   },
   {
-    "类型": "Skip",
-    "名称": "t_minmax",
-    "描述": "minmax GRANULARITY 2",
-    "分区": 1/2,
-    "颗粒": 2/6
+    "Type": "Skip",
+    "Name": "t_minmax",
+    "Description": "minmax GRANULARITY 2",
+    "Parts": 1/2,
+    "Granules": 2/6
   },
   {
-    "类型": "Skip",
-    "名称": "t_set",
-    "描述": "set GRANULARITY 2",
+    "Type": "Skip",
+    "Name": "t_set",
+    "Description": "set GRANULARITY 2",
     "": 1/1,
-    "颗粒": 1/2
+    "Granules": 1/2
   }
 ]
 ```
@@ -375,9 +374,9 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Projections": [
   {
     "Name": "region_proj",
-    "Description": "投影已分析并用于分区片段级别过滤",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(region in ['us_west', 'us_west'])",
-    "Search Algorithm": "二分查找",
+    "Search Algorithm": "binary search",
     "Selected Parts": 3,
     "Selected Marks": 3,
     "Selected Ranges": 3,
@@ -386,9 +385,9 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   },
   {
     "Name": "user_id_proj",
-    "Description": "投影已分析并用于分区片段级别过滤",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(user_id in [107, 107])",
-    "Search Algorithm": "二分查找",
+    "Search Algorithm": "binary search",
     "Selected Parts": 1,
     "Selected Marks": 1,
     "Selected Ranges": 1,
@@ -466,15 +465,15 @@ EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE nu
 ```
 
 ```sql
-联合
-  表达式 ((项目名称 + (投影 + (将列名更改为列标识符 + (项目名称 + 投影)))))
-    过滤器 ((WHERE + 将列名更改为列标识符))
-      从系统数字读取
-  表达式 ((项目名称 + (投影 + 将列名更改为列标识符)))
-    从远程读取 (从远程副本读取)
-      表达式 ((项目名称 + 投影))
-        过滤器 ((WHERE + 将列名更改为列标识符))
-          从系统数字读取
+Union
+  Expression ((Project names + (Projection + (Change column names to column identifiers + (Project names + Projection)))))
+    Filter ((WHERE + Change column names to column identifiers))
+      ReadFromSystemNumbers
+  Expression ((Project names + (Projection + Change column names to column identifiers)))
+    ReadFromRemote (Read from remote replica)
+      Expression ((Project names + Projection))
+        Filter ((WHERE + Change column names to column identifiers))
+          ReadFromSystemNumbers
 ```
 
 并行副本示例：
@@ -500,7 +499,6 @@ Expression ((Project names + Projection))
 ```
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
-
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 

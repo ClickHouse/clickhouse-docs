@@ -173,7 +173,7 @@ SELECT * FROM file('time.parquet', Parquet);
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- int を日時型に変換
+    toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
 ```
 

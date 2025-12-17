@@ -31,7 +31,6 @@ SETTINGS format_csv_delimiter = ';';
 
 データは CSV ファイルですが、区切り文字にはセミコロンが使われています。行は次のような形式です：
 
-
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │
@@ -48,7 +47,6 @@ SETTINGS format_csv_delimiter = ';';
 ```
 
 2. ClickHouse にデータを保存するために、次の `MergeTree` テーブルを使用します。
-
 
 ```sql
 CREATE TABLE sensors
@@ -120,7 +118,7 @@ SETTINGS
 こちらがレスポンスで、行数と処理速度が表示されています。1 秒あたり 600 万行以上のレートでデータが取り込まれています！
 
 ```response
-0行が返されました。経過時間: 3419.330秒。処理済み: 206.9億行、1.67 TB (605万行/秒、488.52 MB/秒)
+0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
 4. `sensors` テーブルに必要なストレージ容量を確認します。
@@ -175,6 +173,5 @@ ORDER BY day ASC;
 ```
 
 結果の可視化は次のとおりです。
-
 
 <Image img={sensors_02} size="md" alt="暑くて蒸し暑い日"/>

@@ -33,35 +33,35 @@ doc_type: 'guide'
   Установите библиотеку Microsoft Agent Framework, выполнив следующие команды:
 
   ```python
-  pip install -q --upgrade pip
-  pip install -q agent-framework --pre
-  pip install -q ipywidgets
-  ```
+pip install -q --upgrade pip
+pip install -q agent-framework --pre
+pip install -q ipywidgets
+```
 
   ## Настройка учетных данных
 
   Далее необходимо указать ваш API-ключ OpenAI:
 
   ```python
-  import os, getpass
-  os.environ["OPENAI_API_KEY"] = getpass.getpass("Введите API-ключ OpenAI:")
-  ```
+import os, getpass
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter OpenAI API Key:")
+```
 
   ```response title="Response"
-  Введите ключ API OpenAI: ········
-  ```
+Enter OpenAI API Key: ········
+```
 
   Далее укажите учетные данные для подключения к SQL-песочнице ClickHouse:
 
   ```python
-  env = {
-      "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-      "CLICKHOUSE_PORT": "8443",
-      "CLICKHOUSE_USER": "demo",
-      "CLICKHOUSE_PASSWORD": "",
-      "CLICKHOUSE_SECURE": "true"
-  }
-  ```
+env = {
+    "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+    "CLICKHOUSE_PORT": "8443",
+    "CLICKHOUSE_USER": "demo",
+    "CLICKHOUSE_PASSWORD": "",
+    "CLICKHOUSE_SECURE": "true"
+}
+```
 
   ## Инициализация MCP Server и агента Microsoft Agent Framework
 
@@ -69,79 +69,80 @@ doc_type: 'guide'
   инициализируйте агента и задайте ему вопрос:
 
   ```python
-  from agent_framework import ChatAgent, MCPStdioTool
-  from agent_framework.openai import OpenAIResponsesClient
-  ```
+from agent_framework import ChatAgent, MCPStdioTool
+from agent_framework.openai import OpenAIResponsesClient
+```
 
   ```python
-  clickhouse_mcp_server = MCPStdioTool(
-      name="clickhouse",
-      command="uv",
-      args=[
-          "run",
-          "--with",
-          "mcp-clickhouse",
-          "--python",
-          "3.10",
-          "mcp-clickhouse"
-      ],
-      env=env
-  )
+clickhouse_mcp_server = MCPStdioTool(
+    name="clickhouse",
+    command="uv",
+    args=[
+        "run",
+        "--with",
+        "mcp-clickhouse",
+        "--python",
+        "3.10",
+        "mcp-clickhouse"
+    ],
+    env=env
+)
 
 
-  async with ChatAgent(
-      chat_client=OpenAIResponsesClient(model_id="gpt-5-mini-2025-08-07"),
-      name="HousePricesAgent",
-      instructions="Вы — помощник, который помогает выполнять запросы к базе данных ClickHouse",
-      tools=clickhouse_mcp_server,
-  ) as agent:
-      query = "Расскажите о ценах на недвижимость в Великобритании за последние пять лет"
-      print(f"Пользователь: {query}")
-      async for chunk in agent.run_stream(query):
-          print(chunk.text, end="", flush=True)
-      print("\n\n")
-  ```
+async with ChatAgent(
+    chat_client=OpenAIResponsesClient(model_id="gpt-5-mini-2025-08-07"),
+    name="HousePricesAgent",
+    instructions="You are a helpful assistant that can help query a ClickHouse database",
+    tools=clickhouse_mcp_server,
+) as agent:
+    query = "Tell me about UK property prices over the last five years"
+    print(f"User: {query}")
+    async for chunk in agent.run_stream(query):
+        print(chunk.text, end="", flush=True)
+    print("\n\n")
+```
 
   Результат выполнения этого скрипта показан ниже:
 
   ```response title="Response"
-  Пользователь: Расскажите о ценах на недвижимость в Великобритании за последние пять лет
-  Я проанализировал ежемесячные записи о ценах продаж в Великобритании в таблице uk.uk_price_paid_simple_partitioned за последние пять лет (toStartOfMonth(date), с октября 2020 → август 2025). Краткая сводка и ключевые моменты:
+User: Tell me about UK property prices over the last five years
+I looked at monthly UK sold-price records in the uk.uk_price_paid_simple_partitioned table for the last five years (toStartOfMonth(date), from Oct 2020 → Aug 2025). Summary and key points:
 
-  Измеренные показатели
-  - Метрики: ежемесячная медианная цена, средняя цена и количество транзакций (записи об уплаченных ценах).
-  - Охваченный период: месяцы с 2020-10-01 по 2025-08-01 (последние пять лет от текущей даты).
+What I measured
+- Metrics: monthly median price, mean price, and transaction count (price paid records).
+- Period covered: months starting 2020-10-01 through 2025-08-01 (last five years from today).
 
-  Основные результаты
-  - Медианная цена выросла с £255 000 (2020-10) до £294 500 (2025-08) — увеличение примерно на +15,4% за пять лет.
-    - Эквивалентный среднегодовой темп роста (CAGR) для медианы ≈ +2,9% в год.
-  - Средняя цена незначительно снизилась с примерно £376 538 (2020-10) до £364 653 (2025-08) — снижение ≈ −3,2% за пять лет.
-    - CAGR средней цены ≈ −0,6% в год.
-  - Расхождение (медиана растет, среднее значение немного снижается) указывает на изменения в структуре транзакций (меньше продаж с очень высокой стоимостью или другие структурные эффекты), поскольку среднее значение чувствительно к выбросам, в то время как медиана — нет.
+High-level findings
+- Median price rose from £255,000 (2020-10) to £294,500 (2025-08) — an increase of about +15.4% over five years.
+  - Equivalent compound annual growth rate (CAGR) for the median ≈ +2.9% per year.
+- Mean price fell slightly from about £376,538 (2020-10) to £364,653 (2025-08) — a decline of ≈ −3.2% over five years.
+  - Mean-price CAGR ≈ −0.6% per year.
+- The divergence (median up, mean slightly down) suggests changes in the mix of transactions (fewer very-high-value sales or other compositional effects), since the mean is sensitive to outliers while the median is not.
 
-  Заметные закономерности и события в данных
-  - Значительный рост в 2020–2021 годах (виден как в медиане, так и в среднем значении), что соответствует постпандемическому всплеску рынка, связанному с гербовым сбором и повышенным спросом, наблюдавшемуся в этот период.
-  - Пики средних цен около середины 2022 года (средние значения ~£440 тыс.), затем общее снижение в течение 2022–2023 годов и стабилизация около 2023–2024 годов.
-  - Некоторые месяцы демонстрируют высокую волатильность или необычное количество транзакций (например, июнь 2021 года имел очень высокое количество транзакций; март 2025 года показывает высокую медиану, но апрель–май 2025 года показывают более низкие значения). Последние месяцы (середина 2025 года) имеют значительно меньшее количество транзакций в таблице — это часто указывает на неполную отчетность за последние месяцы и означает, что к последним ежемесячным показателям следует относиться с осторожностью.
+Notable patterns and events in the data
+- Strong rises in 2020–2021 (visible in both median and mean), consistent with the post‑pandemic / stamp‑duty / demand-driven market surge seen in that period.
+- Peaks in mean prices around mid‑2022 (mean values ~£440k), then a general softening through 2022–2023 and stabilisation around 2023–2024.
+- Some months show large volatility or unusual counts (e.g., June 2021 and June 2021 had very high transaction counts; March 2025 shows a high median but April–May 2025 show lower counts). Recent months (mid‑2025) have much lower transaction counts in the table — this often indicates incomplete reporting for the most recent months and means recent monthly figures should be treated cautiously.
 
-  Примеры точек данных (из запроса)
-  - 2020-10: медиана £255 000, среднее £376 538, транзакций 89 125
-  - 2022-08: пик среднего значения ~£441 209 (медиана ~£295 000)
-  - 2025-03: медиана ~£314 750 (одна из самых высоких медиан)
-  - 2025-08: медиана £294 500, среднее £364 653, транзакций 18 815 (низкое количество — вероятно, неполные данные)
+Example datapoints (from the query)
+- 2020-10: median £255,000, mean £376,538, transactions 89,125
+- 2022-08: mean peak ~£441,209 (median ~£295,000)
+- 2025-03: median ~£314,750 (one of the highest medians)
+- 2025-08: median £294,500, mean £364,653, transactions 18,815 (low count — likely incomplete)
 
-  Оговорки
-  - Это цены транзакций (набор данных Price Paid) — фактическая «стоимость» домов может отличаться.
-  - Среднее значение чувствительно к составу и выбросам. Изменения в типах продаваемой недвижимости (например, соотношение квартир и отдельно стоящих домов, региональное распределение) будут по-разному влиять на среднее значение и медиану.
-  - Последние месяцы могут быть неполными; к месяцам с необычно низким количеством транзакций следует относиться с осторожностью.
-  - Это национальные агрегированные данные — региональные различия могут быть существенными.
+Caveats
+- These are transaction prices (Price Paid dataset) — actual house “values” may differ.
+- Mean is sensitive to composition and outliers. Changes in the types of properties sold (e.g., mix of flats vs detached houses, regional mix) will affect mean and median differently.
+- Recent months can be incomplete; months with unusually low transaction counts should be treated with caution.
+- This is a national aggregate — regional differences can be substantial.
 
-  При необходимости я могу:
-  - Построить график медианы и среднего значения во времени.
-  - Сравнить данные год к году или вычислить CAGR для другого начального/конечного месяца.
-  - Разбить анализ по регионам/округам/городам, типу недвижимости (квартира, таунхаус, двухквартирный дом, отдельно стоящий дом) или по ценовым диапазонам.
-  - Показать таблицу лучших/худших регионов по росту цен за последние 5 лет.
+If you want I can:
+- Produce a chart of median and mean over time.
+- Compare year-on-year or compute CAGR for a different start/end month.
+- Break the analysis down by region/county/town, property type (flat, terraced, semi, detached), or by price bands.
+- Show a table of top/bottom regions for price growth over the last 5 years.
 
-  Какой вариант продолжения вы предпочитаете?
-  ```
+Which follow-up would you like?
+
+```
 </VerticalStepper>

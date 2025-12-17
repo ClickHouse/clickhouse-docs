@@ -342,7 +342,8 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 **См. также**
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
-* функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear)
+* функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear)
+
 
 ## Оператор логического AND {#logical-and-operator}
 

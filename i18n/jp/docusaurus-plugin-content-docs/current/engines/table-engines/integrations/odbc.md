@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # ODBC テーブルエンジン {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -36,7 +37,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 テーブル構造は、ソーステーブルの構造と異なっていてもかまいません。
 
 * 列名はソーステーブルと同じである必要がありますが、その一部の列だけを任意の順序で使用できます。
-* 列の型は、ソーステーブルとは異なっていてもかまいません。ClickHouse は値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
+* 列の型は、ソーステーブルとは異なっていてもかまいません。ClickHouse は値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#CAST)しようとします。
 * [external&#95;table&#95;functions&#95;use&#95;nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は、Nullable 列をどのように扱うかを定義します。デフォルト値は 1 です。0 の場合、テーブル関数は Nullable 列を作成せず、null の代わりにデフォルト値を挿入します。これは配列内の NULL 値にも適用されます。
 
 **エンジンパラメータ**
@@ -46,6 +47,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 * `external_table` — `external_database` 内のテーブル名。
 
 これらのパラメータは、[named collections](operations/named-collections.md) を使用して指定することもできます。
+
 
 ## 使用例 {#usage-example}
 
@@ -84,7 +86,7 @@ unixODBC のインストールに含まれる `isql` ユーティリティを使
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 接続に成功しました!                  |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -93,7 +95,7 @@ MySQL のテーブル:
 
 ```text
 mysql> CREATE DATABASE test;
-クエリ OK, 1 行が影響を受けました (0,01 秒)
+Query OK, 1 row affected (0,01 sec)
 
 mysql> CREATE TABLE `test`.`test` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
@@ -101,10 +103,10 @@ mysql> CREATE TABLE `test`.`test` (
     ->   `float` FLOAT NOT NULL,
     ->   `float_nullable` FLOAT NULL DEFAULT NULL,
     ->   PRIMARY KEY (`int_id`));
-クエリ OK, 0 行が影響を受けました (0,09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into test.test (`int_id`, `float`) VALUES (1,2);
-クエリ OK, 1 行が影響を受けました (0,00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from test.test;
 +------+----------+-----+----------+
@@ -112,7 +114,7 @@ mysql> select * from test.test;
 +------+----------+-----+----------+
 |      1 |         NULL |     2 |           NULL |
 +------+----------+-----+----------+
-1 行が取得されました (0,00 秒)
+1 row in set (0,00 sec)
 ```
 
 MySQL テーブルからデータを取得する ClickHouse テーブル:
@@ -135,6 +137,7 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
+
 
 ## 関連項目 {#see-also}
 

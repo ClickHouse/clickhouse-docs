@@ -59,7 +59,7 @@ FORMAT Hash
 ```response
 df2ec2f0669b000edff6adee264e7d68
 
-Получена 1 строка. Время выполнения: 0,154 сек.
+1 rows in set. Elapsed: 0.154 sec.
 ```
 
 ## Настройки формата {#format-settings}

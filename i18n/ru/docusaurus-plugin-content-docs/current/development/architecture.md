@@ -223,15 +223,15 @@ IO‑пул потоков реализован как обычный `ThreadPoo
 ```mermaid
 stateDiagram-v2
     direction LR
-    [*] --> свободный
-    свободный --> выделенный: выделить
-    state выделенный {
+    [*] --> free
+    free --> allocated: allocate
+    state allocated {
         direction LR
-        [*] --> предоставленный
-        предоставленный --> полученный: получить
-        полученный --> [*]
+        [*] --> granted
+        granted --> acquired: acquire
+        acquired --> [*]
     }
-    выделенный --> свободный: освободить
+    allocated --> free: release
 ```
 
 API `ConcurrencyControl` состоит из следующих функций:

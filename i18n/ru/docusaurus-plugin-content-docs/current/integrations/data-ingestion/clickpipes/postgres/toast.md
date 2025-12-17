@@ -26,7 +26,7 @@ TOAST (The Oversized-Attribute Storage Technique) — это механизм Po
 SELECT a.attname, pg_catalog.format_type(a.atttypid, a.atttypmod) AS data_type
 FROM pg_attribute a
 JOIN pg_class c ON a.attrelid = c.oid
-WHERE c.relname = 'имя_вашей_таблицы'
+WHERE c.relname = 'your_table_name'
   AND a.attlen = -1
   AND a.attstorage != 'p'
   AND a.attnum > 0;
@@ -41,7 +41,7 @@ WHERE c.relname = 'имя_вашей_таблицы'
 Вы можете установить `REPLICA IDENTITY` в `FULL`, используя следующую команду SQL:
 
 ```sql
-ALTER TABLE имя_вашей_таблицы REPLICA IDENTITY FULL;
+ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
 См. [эту запись в блоге](https://xata.io/blog/replica-identity-full-performance) о нюансах производительности при использовании `REPLICA IDENTITY FULL`.

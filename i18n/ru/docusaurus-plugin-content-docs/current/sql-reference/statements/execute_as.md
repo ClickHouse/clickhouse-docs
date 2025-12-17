@@ -38,7 +38,7 @@ GRANT IMPERSONATE ON * TO user3;
 ## Примеры {#examples}
 
 ```sql
-SELECT currentUser(), authenticatedUser(); -- возвращает "default    default"
+SELECT currentUser(), authenticatedUser(); -- outputs "default    default"
 CREATE USER james;
-EXECUTE AS james SELECT currentUser(), authenticatedUser(); -- возвращает "james    default"
+EXECUTE AS james SELECT currentUser(), authenticatedUser(); -- outputs "james    default"
 ```

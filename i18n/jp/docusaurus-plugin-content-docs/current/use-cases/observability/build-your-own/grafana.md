@@ -31,7 +31,7 @@ Grafana は、ClickHouse における観測性データの推奨可視化ツー�
 Grafana で ClickHouse のデータソースを設定する際、プラグインではログおよびトレース用のデフォルトのデータベースとテーブル、さらにこれらのテーブルが OTel スキーマに準拠しているかどうかも指定できます。これにより、Grafana でログとトレースを正しくレンダリングするために必要なカラムをプラグインが返せるようになります。デフォルトの OTel スキーマに変更を加えており、独自のカラム名を使用したい場合は、それらを指定できます。`Timestamp`（時刻）、`SeverityText`（ログレベル）、`Body`（メッセージ本文）などのデフォルトの OTel カラム名を使用している場合は、変更を行う必要はありません。
 
 :::note HTTP or Native
-ユーザーは Grafana を HTTP プロトコルまたは Native プロトコルのいずれかで ClickHouse に接続できます。後者はわずかなパフォーマンス上の利点を提供しますが、Grafana ユーザーによって発行される集約クエリでは体感できない可能性が高いです。対照的に、HTTP プロトコルは、プロキシ経由での利用やトラフィックの検査が一般的により簡単です。
+Grafana を HTTP プロトコルまたは Native プロトコルのいずれかで ClickHouse に接続できます。後者はわずかなパフォーマンス上の利点を提供しますが、Grafana ユーザーによって発行される集約クエリでは体感できない可能性が高いです。対照的に、HTTP プロトコルは、プロキシ経由での利用やトラフィックの検査が一般的により簡単です。
 :::
 
 Logs 設定では、ログを正しくレンダリングするために、時刻、ログレベル、およびメッセージのカラムが必要です。
@@ -40,7 +40,7 @@ Traces 設定はやや複雑です（完全なリストは[こちら](/engines/t
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-設定が完了したら、ユーザーは [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) に移動し、ログおよびトレースの検索を開始できます。
+設定が完了したら、[Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) に移動し、ログおよびトレースの検索を開始できます。
 
 ## ログ {#logs}
 
@@ -54,9 +54,10 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 クエリビルダーは、ユーザーがSQLを記述せずにクエリを簡単に変更できる手段を提供します。キーワードを含むログの検索を含めたフィルタリングは、クエリビルダーから実行できます。より複雑なクエリを記述したいユーザーは、SQLエディタに切り替えることができます。適切なカラムが返され、かつ Query Type として `logs` が選択されていれば、結果はログとしてレンダリングされます。ログのレンダリングに必要なカラムは[こちら](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)に記載されています。
 
+
 ### ログからトレースへ {#logs-to-traces}
 
-ログにトレース ID が含まれている場合、ユーザーは特定のログ行から対応するトレースへ遷移できると便利です。
+ログにトレース ID が含まれている場合、特定のログ行から対応するトレースへ遷移できると便利です。
 
 <Image img={observability_17} alt="Logs to traces" size="lg" border/>
 
@@ -129,7 +130,8 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<Image img={observability_20} alt="トレースからログへの切り替え" size="lg" border />
+<Image img={observability_20} alt="トレースからログへの遷移" size="lg" border />
+
 
 ## ダッシュボード {#dashboards}
 

@@ -127,7 +127,7 @@ ORDER BY tuple()
 Если HTTP Sink завершает работу с ошибкой со следующим сообщением при вставке JSON-объекта в столбец типа `String`:
 
 ```response
-Код: 26. DB::ParsingException: Невозможно разобрать JSON строку: ожидается открывающая кавычка: (при чтении значения ключа key_name): При выполнении JSONEachRowRowInputFormat: (в строке 1). (CANNOT_PARSE_QUOTED_STRING)
+Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
 Установите настройку `input_format_json_read_objects_as_strings=1` в URL как URL‑кодированную строку `SETTINGS%20input_format_json_read_objects_as_strings%3D1`

@@ -118,7 +118,7 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 ```
 
 ```shell
-# clickhouse-keeper-client {#clickhouse-keeper-client}
+# clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
 / :) get /zk_configs/postgresql_port
@@ -174,11 +174,11 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 
 ```xml
 <clickhouse>
-    <!-- `/profiles-in-zookeeper` ZKパスにあるXMLサブツリーを `<profiles>` 要素に追加します。 -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- `/users-in-zookeeper` ZKパスにあるサブツリーで `include` 要素を置き換えます。 -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>
@@ -356,7 +356,7 @@ key: value
 対応する XML:
 
 ```xml
-<key>値</key>
+<key>value</key>
 ```
 
 ネストされた XML ノードは YAML マップとして表現されます。

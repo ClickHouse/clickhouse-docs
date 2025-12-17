@@ -13,7 +13,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-timeSeriesGroupArray(时间戳, 值)
+timeSeriesGroupArray(timestamp, value)
 ```
 
 **参数**
@@ -31,11 +31,11 @@ timeSeriesGroupArray(时间戳, 值)
 ```sql
 WITH
     [110, 120, 130, 140, 140, 100]::Array(UInt32) AS timestamps,
-    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- 与上述时间戳一一对应的数值数组
+    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- array of values corresponding to timestamps above
 SELECT timeSeriesGroupArray(timestamp, value)
 FROM
 (
-    -- 此子查询将时间戳和数值这两个数组展开为多行 `timestamp`、`value`
+    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,
@@ -56,7 +56,7 @@ FROM
 ```sql
 WITH
     [110, 120, 130, 140, 140, 100]::Array(UInt32) AS timestamps,
-    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- 对应于上述时间戳的数值数组
+    [1, 6, 8, 17, 19, 5]::Array(Float32) AS values -- array of values corresponding to timestamps above
 SELECT timeSeriesGroupArray(timestamps, values);
 ```
 

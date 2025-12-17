@@ -28,7 +28,7 @@ doc_type: 'guide'
 
 ```sql title="Query"
 SELECT replaceOne(
-    'Клиент John Smith звонил по поводу своего счета',
+    'Customer John Smith called about his account',
     'John Smith',
     '[CUSTOMER_NAME]'
 ) AS anonymized_text;
@@ -36,7 +36,7 @@ SELECT replaceOne(
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────┐
-│ Клиент [CUSTOMER_NAME] звонил по поводу своей учетной записи │
+│ Customer [CUSTOMER_NAME] called about his account │
 └───────────────────────────────────────────────────┘
 ```
 
@@ -53,7 +53,7 @@ SELECT
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────────────────────────────────────────┐
-│ Звонил [CUSTOMER_NAME] Smith. Позже также звонили [CUSTOMER_NAME] и [CUSTOMER_NAME]. │
+│ [CUSTOMER_NAME] Smith called. Later, [CUSTOMER_NAME] and [CUSTOMER_NAME] also called. │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -330,7 +330,7 @@ ORDER BY user_id ASC
 ```yaml
 <query_masking_rules>
     <rule>
-        <name>скрыть номер SSN</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>

@@ -96,7 +96,7 @@ client = clickhouse_connect.get_client(host='localhost', username='default', pas
 ```python
 import clickhouse_connect
 
-client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='ваш_пароль')
+client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
 
 ### Взаимодействие с базой данных {#interact-with-your-database}
@@ -110,8 +110,8 @@ client.command('CREATE TABLE new_table (key UInt32, value String, metric Float64
 Для пакетной вставки данных используйте клиентский метод `insert` с двумерным массивом строк (записей) и значений:
 
 ```python
-row1 = [1000, 'Строковое значение 1000', 5.233]
-row2 = [2000, 'Строковое значение 2000', -107.04]
+row1 = [1000, 'String Value 1000', 5.233]
+row2 = [2000, 'String Value 2000', -107.04]
 data = [row1, row2]
 client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```
@@ -121,5 +121,5 @@ client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# Результат: [(2000, -50.9035)] {#output-2000-509035}
+# Output: [(2000, -50.9035)]
 ```

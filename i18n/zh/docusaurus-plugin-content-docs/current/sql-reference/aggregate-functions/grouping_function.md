@@ -67,7 +67,7 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10 行数据。耗时: 0.409 秒。
+10 rows in set. Elapsed: 0.409 sec.
 ```
 
 ### 简单查询 {#simple-queries}
@@ -94,7 +94,7 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-返回 4 行。耗时：0.212 秒。
+4 rows in set. Elapsed: 0.212 sec.
 ```
 
 ```sql
@@ -113,7 +113,7 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-返回 2 行。用时:0.277 秒。 
+2 rows in set. Elapsed: 0.277 sec. 
 ```
 
 ```sql
@@ -133,7 +133,7 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-查询返回 2 行。用时：0.352 秒。 
+2 rows in set. Elapsed: 0.352 sec. 
 ```
 
 ```sql
@@ -148,7 +148,7 @@ FROM
 │ 445 │
 └─────┘
 
-返回 1 行。耗时:0.244 秒。 
+1 row in set. Elapsed: 0.244 sec. 
 ```
 
 ### 对比多个 GROUP BY 语句与 GROUPING SETS {#comparing-multiple-group-by-statements-with-grouping-sets}
@@ -211,7 +211,7 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 行在集合中。耗时：0.527 秒。 
+9 rows in set. Elapsed: 0.527 sec. 
 ```
 
 通过 GROUPING SETS 获取相同的信息：
@@ -251,7 +251,7 @@ GROUP BY
 │            │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9 行在集合中。耗时：0.427 秒。
+9 rows in set. Elapsed: 0.427 sec.
 ```
 
 ### 将 CUBE 与 GROUPING SETS 进行比较 {#comparing-cube-with-grouping-sets}
@@ -316,7 +316,7 @@ ORDER BY
 │ Westport    │ RHEL   │            │           150 │
 └─────────────┴────────┴────────────┴───────────────┘
 
-39 行结果集。执行时间:0.355 秒。 
+39 rows in set. Elapsed: 0.355 sec. 
 ```
 
 :::note

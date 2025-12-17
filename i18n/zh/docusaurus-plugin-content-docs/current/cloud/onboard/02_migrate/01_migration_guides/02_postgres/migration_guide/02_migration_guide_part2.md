@@ -47,8 +47,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-返回 5 行。用时:0.360 秒。已处理 2437 万行,140.45 MB(6773 万行/秒,390.38 MB/秒)。
-峰值内存使用量:510.71 MiB。
+5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
+Peak memory usage: 510.71 MiB.
 ```
 
 ```sql
@@ -69,10 +69,10 @@ LIMIT 5;
  J. Pablo Fern&#225;ndez |      12446818
  Matt                   |       12298764
 
-耗时:107620.508 毫秒 (01:47.621)
+Time: 107620.508 ms (01:47.621)
 ```
 
-哪些 `tags` 的 `views` 最高：
+哪些 `tags` 获得最多 `views`：
 
 ```sql
 --ClickHouse
@@ -130,7 +130,8 @@ Time: 112508.083 ms (01:52.508)
 
 **聚合函数**
 
-在条件允许的情况下，用户应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
+在条件允许的情况下，你应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
+
 
 ```sql
 --ClickHouse
@@ -145,13 +146,13 @@ FORMAT Vertical
 Row 1:
 ──────
 Year:                   2008
-MostViewedQuestionTitle: 如何查找列表中给定项的索引?
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:           6316987
 
 Row 2:
 ──────
 Year:                   2009
-MostViewedQuestionTitle: 如何撤销 Git 中最近的本地提交?
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:           13962748
 
 ...
@@ -159,20 +160,20 @@ MaxViewCount:           13962748
 Row 16:
 ───────
 Year:                   2023
-MostViewedQuestionTitle: 每次使用 pip 3 时如何解决 "error: externally-managed-environment" 错误?
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:           506822
 
 Row 17:
 ───────
 Year:                   2024
-MostViewedQuestionTitle: 警告 "第三方 cookie 将被阻止。在 Issues 选项卡中了解更多信息"
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:           66975
 
-返回 17 行。耗时:0.677 秒。处理了 2437 万行,1.86 GB(每秒 3601 万行,2.75 GB/s.)
-峰值内存使用量:554.31 MiB。
+17 rows in set. Elapsed: 0.677 sec. Processed 24.37 million rows, 1.86 GB (36.01 million rows/s., 2.75 GB/s.)
+Peak memory usage: 554.31 MiB.
 ```
 
-这相比等价的 Postgres 查询，要简单得多且更快：
+这比等价的 Postgres 查询要简单得多，而且更快：
 
 ```sql
 --Postgres
@@ -194,13 +195,13 @@ WHERE rn = 1
 ORDER BY Year;
  year |                                                 mostviewedquestiontitle                                                 | maxviewcount
 ------+-----------------------------------------------------------------------------------------------------------------------+--------------
- 2008 | 如何在列表中查找给定项的索引？                                                                       |       6316987
- 2009 | 如何撤销 Git 中最近的本地提交？                                                                     |       13962748
+ 2008 | How to find the index for a given item in a list?                                                                       |       6316987
+ 2009 | How do I undo the most recent local commits in Git?                                                                     |       13962748
 
 ...
 
- 2023 | 每次使用 pip 3 时如何解决 "error: externally-managed-environment" 错误？                                          |       506822
- 2024 | 警告 "第三方 cookie 将被阻止。在问题选项卡中了解更多信息"                                              |       66975
+ 2023 | How do I solve "error: externally-managed-environment" every time I use pip 3?                                          |       506822
+ 2024 | Warning "Third-party cookie will be blocked. Learn more in the Issues tab"                                              |       66975
 (17 rows)
 
 Time: 125822.015 ms (02:05.822)
@@ -208,7 +209,8 @@ Time: 125822.015 ms (02:05.822)
 
 **条件和数组**
 
-条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及在 HAVING 和 SELECT 子句中重复使用别名的能力。
+条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及能够在 HAVING 和 SELECT 子句中重复使用别名。
+
 
 ```sql
 --ClickHouse
@@ -230,12 +232,10 @@ LIMIT 5
 │ azure         │       11996 │         14049 │ -14.613139725247349 │
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
+
+5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)
+Peak memory usage: 403.04 MiB.
 ```
-
-5 行结果。耗时：0.247 秒。已处理 508 万行、155.73 MB（2058 万行/秒，630.61 MB/秒）。
-峰值内存使用：403.04 MiB。
-
-````
 
 ```sql
 --Postgres
@@ -268,9 +268,9 @@ LIMIT 5;
  .net           |       11376 |         12750 | -10.776470588235295
  azure          |       11938 |         13966 | -14.520979521695546
  docker         |       13832 |         16701 | -17.178612059158134
-(5 行)
+(5 rows)
 
-执行时间:116750.131 ms (01:56.750)
-````
+Time: 116750.131 ms (01:56.750)
+```
 
 [点击此处查看第3部分](/migrations/postgresql/data-modeling-techniques)

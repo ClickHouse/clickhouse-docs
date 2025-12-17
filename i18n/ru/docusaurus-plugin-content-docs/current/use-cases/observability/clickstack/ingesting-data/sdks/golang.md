@@ -70,7 +70,7 @@ import (
   "go.opentelemetry.io/otel/sdk/resource"
 )
 
-// настройка общих атрибутов для всех логов
+// configure common attributes for all logs
 func newResource() *resource.Resource {
   hostName, _ := os.Hostname()
   return resource.NewWithAttributes(
@@ -80,12 +80,12 @@ func newResource() *resource.Resource {
   )
 }
 
-// привязка идентификатора трассировки к логу
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctx не содержит валидный span.
-    // Метаданные трассировки отсутствуют.
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -95,24 +95,24 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // Инициализация конфигурации OTel и её использование во всём приложении
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("ошибка настройки OTel SDK - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // настройка провайдера логгера OpenTelemetry
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
-  // корректное завершение работы логгера для сброса накопленных сигналов перед завершением программы
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // создание нового логгера с ядром OpenTelemetry zap и его глобальная установка
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
   logger.Warn("hello world", zap.String("foo", "bar"))
@@ -124,19 +124,19 @@ func main() {
     port = "7777"
   }
 
-  logger.Info("** Сервис запущен на порту " + port + " **")
+  logger.Info("** Service Started on Port " + port + " **")
   if err := http.ListenAndServe(":"+port, nil); err != nil {
     logger.Fatal(err.Error())
   }
 }
 
-// Используйте для обёртки всех обработчиков с целью добавления метаданных трассировки к логгеру
+// Use this to wrap all handlers to add trace metadata to the logger
 func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
     logger := WithTraceMetadata(r.Context(), logger)
-    logger.Info("запрос получен", zap.String("url", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request received", zap.String("url", r.URL.Path), zap.String("method", r.Method))
     handler(w, r)
-    logger.Info("запрос завершён", zap.String("path", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request completed", zap.String("path", r.URL.Path), zap.String("method", r.Method))
   }
 }
 
@@ -175,12 +175,12 @@ import (
   "go.uber.org/zap"
 )
 
-// привязать trace id к логу
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctx не содержит валидный span.
-    // Метаданные трассировки отсутствуют.
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -190,42 +190,42 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // Инициализировать конфигурацию OTel и использовать её во всём приложении
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("ошибка настройки OTel SDK - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
 
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // настроить провайдер логгера OpenTelemetry
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
 
-  // корректно завершить работу логгера для сброса накопленных сигналов перед завершением программы
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // создать новый логгер с ядром OpenTelemetry zap и установить его глобально
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
 
-  // Создать новый маршрутизатор Gin
+  // Create a new Gin router
   router := gin.Default()
 
   router.Use(otelgin.Middleware("service-name"))
 
-  // Определить маршрут, который отвечает на GET-запросы по корневому URL
+  // Define a route that responds to GET requests on the root URL
   router.GET("/", func(c *gin.Context) {
     _logger := WithTraceMetadata(c.Request.Context(), logger)
     _logger.Info("Hello World!")
     c.String(http.StatusOK, "Hello World!")
   })
 
-  // Запустить сервер на порту 7777
+  // Run the server on port 7777
   router.Run(":7777")
 }
 ```

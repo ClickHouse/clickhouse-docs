@@ -11,7 +11,7 @@ doc_type: 'reference'
 ```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
 
--- 或者：
+-- or:
 SHOW TABLES FROM information_schema;
 ```
 
@@ -96,7 +96,7 @@ FORMAT Vertical;
 结果：
 
 ```text
-第 1 行:
+Row 1:
 ──────
 table_catalog:            default
 table_schema:             default
@@ -211,7 +211,7 @@ FORMAT Vertical;
 结果：
 
 ```text
-第 1 行:
+Row 1:
 ──────
 table_catalog:   default
 table_schema:    default

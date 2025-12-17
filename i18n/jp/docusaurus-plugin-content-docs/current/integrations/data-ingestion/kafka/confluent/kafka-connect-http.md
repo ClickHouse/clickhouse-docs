@@ -126,7 +126,7 @@ HTTP Sink で設定したトピックにメッセージを 1 件作成します�
 `String` 列に JSON オブジェクトを挿入する際に、HTTP Sink が次のメッセージとともに失敗した場合:
 
 ```response
-コード: 26. DB::ParsingException: JSON文字列を解析できません: 開始引用符が必要です: (キー key_name の値の読み取り中): JSONEachRowRowInputFormat 実行中: (1行目)。(CANNOT_PARSE_QUOTED_STRING)
+Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
 URL の設定として `input_format_json_read_objects_as_strings=1` を、エンコード済み文字列 `SETTINGS%20input_format_json_read_objects_as_strings%3D1` として指定します。

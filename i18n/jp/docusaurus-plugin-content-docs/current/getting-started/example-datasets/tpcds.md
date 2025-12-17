@@ -31,12 +31,11 @@ make
 次に、同じスケールファクターを使用してクエリを生成します：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # out/query_0.sql に99個のクエリを生成
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
 では、ClickHouse にテーブルを作成します。
 `tools/tpcds.sql` にある元のテーブル定義をそのまま使うことも、プライマリキーインデックスが適切に定義され、必要に応じて LowCardinality 型カラムを用いた「チューニング済み」のテーブル定義を使うこともできます。
-
 
 ```sql
 CREATE TABLE call_center(

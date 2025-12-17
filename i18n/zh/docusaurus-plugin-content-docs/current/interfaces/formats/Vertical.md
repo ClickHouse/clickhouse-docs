@@ -28,7 +28,7 @@ SELECT * FROM t_null FORMAT Vertical
 ```
 
 ```response
-第 1 行:
+Row 1:
 ──────
 x: 1
 y: ᴺᵁᴸᴸ
@@ -41,7 +41,7 @@ SELECT 'string with \'quotes\' and \t with some special \n characters' AS test F
 ```
 
 ```response
-第 1 行：
+Row 1:
 ──────
 test: string with 'quotes' and      with some special
  characters

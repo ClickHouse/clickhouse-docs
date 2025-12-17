@@ -162,10 +162,10 @@ ORDER BY coalesce(VendorID, 0)
 AS SELECT *
 FROM onelake_catalog.`year_2017.green_tripdata_2017`
 
-查询 ID: d15983a6-ef6a-40fe-80d5-19274b9fe328
+Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
-完成。
+Ok.
 
-返回 0 行。耗时:32.570 秒。已处理 1174 万行,275.37 MB(36.036 万行/秒,8.45 MB/秒)。
-峰值内存使用量:1.31 GiB。
+0 rows in set. Elapsed: 32.570 sec. Processed 11.74 million rows, 275.37 MB (360.36 thousand rows/s., 8.45 MB/s.)
+Peak memory usage: 1.31 GiB.
 ```

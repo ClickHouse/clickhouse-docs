@@ -69,7 +69,7 @@ Here's how to add it to your `docker-compose.yml` file for the app service:
       - db1
 ```
 
-You can generate a strong secret using openssl:
+You can generate a strong secret using `openssl`:
 
 ```shell
 openssl rand -hex 32
@@ -108,11 +108,11 @@ We recommend creating a dedicated user for the OTel collector for ingestion into
 
 ### Self-managed security {#self-managed-security}
 
-If you are managing your own ClickHouse instance, it's essential to enable **SSL/TLS**, enforce authentication, and follow best practices for hardening access. See [this blog post](https://www.wiz.io/blog/clickhouse-and-wiz) for context on real-world misconfigurations and how to avoid them.
+If you are managing your own ClickHouse instance, it's essential to enable **TLS**, enforce authentication, and follow best practices for hardening access. See [this blog post](https://www.wiz.io/blog/clickhouse-and-wiz) for context on real-world misconfigurations and how to avoid them.
 
 ClickHouse OSS provides robust security features out of the box. However, these require configuration:
 
-- **Use SSL/TLS** via `tcp_port_secure` and `<openSSL>` in `config.xml`. See [guides/sre/configuring-ssl](/guides/sre/configuring-ssl).
+- **Use TLS** via `tcp_port_secure` and `<openSSL>` in `config.xml`. See [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls).
 - **Set a strong password** for the `default` user or disable it.
 - **Avoid exposing ClickHouse externally** unless explicitly intended. By default, ClickHouse binds only to `localhost` unless `listen_host` is modified.
 - **Use authentication methods** such as passwords, certificates, SSH keys, or [external authenticators](/operations/external-authenticators).

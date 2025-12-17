@@ -35,7 +35,7 @@ import { HyperDXRum } from '@hyperdx/otel-react-native';
 HyperDXRum.init({
   service: 'my-rn-app',
   apiKey: '<YOUR_INGESTION_API_KEY>',
-  tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドとバックエンド間のリクエストのトレースを連携するために設定
+  tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
 });
 ```
 
@@ -51,7 +51,7 @@ HyperDXRum.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // その他のカスタムプロパティ...
+  // Other custom properties...
 });
 ```
 

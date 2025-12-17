@@ -67,7 +67,7 @@ ClickHouse は自動的に `pp_complete` テーブルを `default` データベ�
 ```bash
 export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
 export CLICKHOUSE_CLOUD_USER=default
-export CLICKHOUSE_CLOUD_PASSWORD=実際のパスワード
+export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 ```
 
 :::note
@@ -115,7 +115,7 @@ import plotly.graph_objects as go
 新しいセルを追加し、すべてが正しく設定されていることを確認するために、簡単なクエリを実行してください。
 
 ```python
-result = chdb.query("SELECT 'MarimoからClickHouseへこんにちは！'", "DataFrame")
+result = chdb.query("SELECT 'Hello ClickHouse from Marimo!'", "DataFrame")
 result
 ```
 
@@ -186,8 +186,8 @@ fig = px.line(
     df, 
     x='year', 
     y='price',
-    title='ロンドンの不動産平均価格の推移',
-    labels={'price': '平均価格（£）', 'year': '年'}
+    title='Average Property Prices in London Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig.update_traces(mode='lines+markers')
@@ -209,7 +209,7 @@ Marimo の大きな強みの 1 つは、そのリアクティブな実行モデ�
 town_selector = mo.ui.dropdown(
     options=['LONDON', 'MANCHESTER', 'BIRMINGHAM', 'LEEDS', 'LIVERPOOL'],
     value='LONDON',
-    label='都市を選択:'
+    label='Select a town:'
 )
 town_selector
 ```
@@ -244,8 +244,8 @@ fig_reactive = px.line(
     df_reactive,
     x='year',
     y='price',
-    title=f'{town_selector.value}における不動産平均価格の推移',
-    labels={'price': '平均価格（£）', 'year': '年'}
+    title=f'Average Property Prices in {town_selector.value} Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig_reactive.update_traces(mode='lines+markers')
@@ -271,7 +271,7 @@ year_slider = mo.ui.slider(
     stop=2024,
     value=2020,
     step=1,
-    label='年を選択:',
+    label='Select Year:',
     show_value=True
 )
 year_slider
@@ -299,16 +299,16 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# インタラクティブな箱ひげ図を作成する {#create-an-interactive-box-plot}
+# create an interactive box plot.
 fig_box = go.Figure()
 
 fig_box.add_trace(
     go.Box(
         y=df_distribution['price'],
         name=f'London {year_slider.value}',
-        boxmean='sd',  # 平均値と標準偏差を表示
+        boxmean='sd',  # Show mean and standard deviation
         marker_color='lightblue',
-        boxpoints='outliers'  # 外れ値のポイントを表示
+        boxpoints='outliers'  # Show outlier points
     )
 )
 

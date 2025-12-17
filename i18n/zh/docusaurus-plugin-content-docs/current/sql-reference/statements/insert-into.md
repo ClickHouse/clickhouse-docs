@@ -88,7 +88,7 @@ ClickHouse 会在数据之前移除所有空格以及一个换行符（如果存
 
 ```sql
 INSERT INTO t FORMAT TabSeparated
-11  你好，世界！
+11  Hello, world!
 22  Qwerty
 ```
 
@@ -208,7 +208,7 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 ```sql
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
-    VALUES (100, '通过 remote() 插入');
+    VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
@@ -216,7 +216,7 @@ SELECT * FROM simple_table;
 
 ```text
 ┌──id─┬─text──────────────────┐
-│ 100 │ 通过 remote() 插入    │
+│ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
 

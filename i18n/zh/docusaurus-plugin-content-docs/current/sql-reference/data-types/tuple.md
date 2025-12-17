@@ -87,8 +87,8 @@ Tuple 元素可以通过名称或索引进行引用：
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
-SELECT a.s FROM named_tuples; -- 按名称访问
-SELECT a.2 FROM named_tuples; -- 按索引访问
+SELECT a.s FROM named_tuples; -- by name
+SELECT a.2 FROM named_tuples; -- by index
 ```
 
 结果：
@@ -167,7 +167,7 @@ SELECT * FROM test;
 │   2 │        2 │     0 │
 └─────┴──────────┴───────┘
 
--- 查找每个键中持续时间最大的值，如果持续时间相同，则选择数值最大的
+-- Let's find a value for each key with the biggest duration, if durations are equal, select the biggest value
 
 SELECT
     key,

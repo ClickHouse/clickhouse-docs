@@ -197,13 +197,13 @@ using var bulkCopy = new ClickHouseBulkCopy(connection)
     MaxDegreeOfParallelism = 2
 };
 
-await bulkCopy.InitAsync(); // Подготавливает экземпляр ClickHouseBulkCopy, загружая типы целевых столбцов
+await bulkCopy.InitAsync(); // Prepares ClickHouseBulkCopy instance by loading target column types
 
 var values = Enumerable.Range(0, 1000000)
-    .Select(i => new object[] { (long)i, "значение" + i });
+    .Select(i => new object[] { (long)i, "value" + i });
 
 await bulkCopy.WriteToServerAsync(values);
-Console.WriteLine($"Записано строк: {bulkCopy.RowsWritten}");
+Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
 :::note
@@ -236,7 +236,7 @@ using (var connection = new ClickHouseConnection(connectionString))
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Console.WriteLine($"выборка: Id: {reader.GetInt64(0)}, Имя: {reader.GetString(1)}");
+            Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
         }
     }
 }
@@ -554,13 +554,13 @@ var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // Необходим уровень Trace для просмотра сетевых событий
+        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
 });
 
 var settings = new ClickHouseClientSettings()
 {
     LoggerFactory = loggerFactory,
-    EnableDebugMode = true,  // Включить низкоуровневую трассировку сетевых событий
+    EnableDebugMode = true,  // Enable low-level network tracing
 };
 ```
 

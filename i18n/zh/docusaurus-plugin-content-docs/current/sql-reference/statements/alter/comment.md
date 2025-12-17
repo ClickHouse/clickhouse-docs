@@ -30,14 +30,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT '临时表';
+COMMENT 'The temporary table';
 ```
 
 若要修改表的注释：
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT '表的新注释';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 要查看已修改的注释：
@@ -50,7 +50,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ 表上的新注释           │
+│ new comment on a table │
 └────────────────────────┘
 ```
 
@@ -69,9 +69,9 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
 ```text title="Response"
-┌─注释─┐
-│      │
-└──────┘
+┌─comment─┐
+│         │
+└─────────┘
 ```
 
 ## 注意事项 {#caveats}

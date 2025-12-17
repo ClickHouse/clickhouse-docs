@@ -27,14 +27,14 @@ LIMIT 3
 Строки имеют следующий вид:
 
 ```response
-Строка 1:
+Row 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 25,44 миллиона
+customer_id:       25444946 -- 25.44 million
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 908,18 миллиона
+product_parent:    908181913 -- 908.18 million
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -42,17 +42,17 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   чехол прочный и защищает как надо
-review_body:       Не буду рассчитывать на водонепроницаемость (снял резиновые уплотнители снизу, потому что они действовали на нервы). Но чехол прочный и защищает как надо.
+review_headline:   case is sturdy and protects as I want
+review_body:       I won't count on the waterproof part (I took off the rubber seals at the bottom because the got on my nerves). But the case is sturdy and protects as I want.
 
-Строка 2:
+Row 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 1,97 миллиона
+customer_id:       1974568 -- 1.97 million
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 951,21 миллиона
+product_parent:    951208259 -- 951.21 million
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -60,17 +60,17 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   Одна звезда
-review_body:       Не могу использовать чехол, потому что он велик для телефона. Выброшенные деньги!
+review_headline:   One Star
+review_body:       Cant use the case because its big for the phone. Waist of money!
 
-Строка 3:
+Row 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 24,80 миллиона
+customer_id:       24803564 -- 24.80 million
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 524,59 миллиона
+product_parent:    524588109 -- 524.59 million
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -78,8 +78,8 @@ helpful_votes:     0
 total_votes:       0
 vine:              false
 verified_purchase: true
-review_headline:   но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона
-review_body:       Переднюю часть поначалу было немного сложно закрепить на телефоне, но в целом этот чехол достаточно прочный и обеспечивает хорошую защиту телефона, что мне и нужно. Купил бы этот чехол снова.
+review_headline:   but overall this case is pretty sturdy and provides good protection for the phone
+review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
 2. Давайте создадим новую таблицу типа `MergeTree` с именем `amazon_reviews` для хранения этих данных в ClickHouse:

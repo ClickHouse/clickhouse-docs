@@ -88,10 +88,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 确保你所使用的 ClickHouse 用户具有必要的权限：
 
 ```sql
--- 授予读取模式信息的权限
+-- Grant permissions to read schema information
 GRANT SELECT ON information_schema.* TO your_databrain_user;
 
--- 授予对数据库和表的读取访问权限
+-- Grant read access to your database and tables
 GRANT SELECT ON your_database.* TO your_databrain_user;
 ```
 

@@ -15,7 +15,7 @@ doc_type: 'reference'
 语法：
 
 ```sql
-时间
+Time
 ```
 
 文本表示的范围：[-999:59:59, 999:59:59]。
@@ -51,61 +51,48 @@ doc_type: 'reference'
 
 **1.** 创建一个包含 `Time` 类型列的表，并向其中插入数据：
 
-```sql
-CREATE TABLE tab
-(
-    `event_id` UInt8,
-    `time` Time
-)
-ENGINE = TinyLog;
 ```
 
-```sql
--- 解析时间
--- - 从字符串解析，
--- - 从整数解析（解释为自 00:00:00 起的秒数）。
-INSERT INTO tab VALUES (1, '14:30:25'), (2, 52225);
-
-SELECT * FROM tab ORDER BY event_id;
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+```
+
+**2.** Filtering on `Time` values
+
 ```
 
 **2.** 按 `Time` 值过滤
 
-```sql
-SELECT * FROM tab WHERE time = toTime('14:30:25')
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+`Time` column values can be filtered using a string value in `WHERE` predicate. It will be converted to `Time` automatically:
+
 ```
 
 可以在 `WHERE` 谓词中使用字符串值来过滤 `Time` 列的值，它会被自动转换为 `Time`：
 
-```sql
-SELECT * FROM tab WHERE time = '14:30:25'
 ```
 
-```text
-   ┌─event_id─┬──────time─┐
-1. │        1 │ 14:30:25 │
-2. │        2 │ 14:30:25 │
-   └──────────┴───────────┘
+```
+
+```
+
+**3.** Inspecting the resulting type:
+
 ```
 
 **3.** 查看结果类型：
 
-```sql
-SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
+```
+
 ```
 
 ```text

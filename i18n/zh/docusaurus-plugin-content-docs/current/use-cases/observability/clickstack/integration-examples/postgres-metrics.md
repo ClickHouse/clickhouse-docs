@@ -68,7 +68,7 @@ receivers:
     password: ${env:POSTGRES_PASSWORD}
     databases:
       - postgres
-      - your_application_db # 替换为你的实际数据库名称
+      - your_application_db # Replace with your actual database names
     collection_interval: 30s
     tls:
       insecure: true
@@ -231,13 +231,13 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 请确认已设置环境变量：
 
 ```bash
-docker exec <容器名称> printenv CUSTOM_OTELCOL_CONFIG_FILE
+docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 ```
 
 检查自定义配置文件是否已挂载：
 
 ```bash
-docker exec <容器名称> cat /etc/otelcol-contrib/custom.config.yaml
+docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml
 ```
 
 ### HyperDX 中未显示任何指标 {#no-metrics}
@@ -251,7 +251,7 @@ docker exec <clickstack-container> psql -h postgres-host -U otel_monitor -d post
 查看 OTel collector 日志：
 
 ```bash
-docker exec <容器> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
+docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i postgres
 ```
 
 ### 身份验证错误 {#auth-errors}

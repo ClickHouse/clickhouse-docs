@@ -267,42 +267,42 @@ SETTINGS compression_method='lzma', compression_level=3
   <summary>设置</summary>
 
   ```sql
-  CREATE IF NOT EXISTS test_db;
-         
-  -- 创建一个分区表
-  CREATE TABLE test_db.partitioned (
-      id UInt32,
-      data String,
-      partition_key UInt8
-  ) ENGINE = MergeTree()
-  PARTITION BY partition_key
-  ORDER BY id;
+CREATE IF NOT EXISTS test_db;
+       
+-- Create a partitioend table
+CREATE TABLE test_db.partitioned (
+    id UInt32,
+    data String,
+    partition_key UInt8
+) ENGINE = MergeTree()
+PARTITION BY partition_key
+ORDER BY id;
 
-  INSERT INTO test_db.partitioned VALUES
-  (1, 'data1', 1),
-  (2, 'data2', 2),
-  (3, 'data3', 3),
-  (4, 'data4', 4);
+INSERT INTO test_db.partitioned VALUES
+(1, 'data1', 1),
+(2, 'data2', 2),
+(3, 'data3', 3),
+(4, 'data4', 4);
 
-  SELECT count() FROM test_db.partitioned;
+SELECT count() FROM test_db.partitioned;
 
-  SELECT partition_key, count() 
-  FROM test_db.partitioned
-  GROUP BY partition_key
-  ORDER BY partition_key;
-  ```
+SELECT partition_key, count() 
+FROM test_db.partitioned
+GROUP BY partition_key
+ORDER BY partition_key;
+```
 
   ```response
-     ┌─count()─┐
-  1. │       4 │
-     └─────────┘
-     ┌─partition_key─┬─count()─┐
-  1. │             1 │       1 │
-  2. │             2 │       1 │
-  3. │             3 │       1 │
-  4. │             4 │       1 │
-     └───────────────┴─────────┘
-  ```
+   ┌─count()─┐
+1. │       4 │
+   └─────────┘
+   ┌─partition_key─┬─count()─┐
+1. │             1 │       1 │
+2. │             2 │       1 │
+3. │             3 │       1 │
+4. │             4 │       1 │
+   └───────────────┴─────────┘
+```
 </details>
 
 运行以下命令备份分区 1 和 4：

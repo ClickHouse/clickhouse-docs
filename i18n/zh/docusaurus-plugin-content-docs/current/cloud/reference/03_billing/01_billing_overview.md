@@ -23,6 +23,7 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
 最适合：数据量较小、无严格可靠性保证的部门级使用场景。
 
 **Basic 等级服务**
+
 - 1 个副本 x 8 GiB 内存，2 vCPU
 - 500 GB 压缩数据
 - 500 GB 数据备份
@@ -77,6 +78,7 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
 最适合：需要强化 SLA（2 个及以上副本服务）、具备可伸缩性和高级安全性的工作负载。
 
 **Scale 等级服务**
+
 - 工作负载约 100% 时间处于活跃状态
 - 可配置自动伸缩上限以防止费用失控
 - 100 GB 公网出口数据传输
@@ -125,11 +127,12 @@ ClickHouse Cloud 会根据计算、存储、[数据传输](/cloud/manage/network
 </tbody>
 </table>
 
-### 企业版：起始价格因配置而异 {#enterprise-starting-prices-vary}
+### 企业版：起始价格因情况而异 {#enterprise-starting-prices-vary}
 
-最适合：大规模、对业务至关重要且具有严格安全与合规需求的部署。
+最适用于：大规模、关键任务型部署，且对安全性和合规性有严格要求的场景
 
 **企业级服务**
+
 - 工作负载在约 100% 的时间内处于活跃状态
 - 1 TB 公网出口数据传输
 - 500 GB 跨区域数据传输
@@ -191,17 +194,17 @@ ClickHouse Credit 是针对客户使用 ClickHouse Cloud 的一单位额度，�
 
 ### 计算资源是如何计量的？ {#how-is-compute-metered}
 
-ClickHouse Cloud 以每分钟为单位计量计算资源，粒度为每 8GB 内存。
+ClickHouse Cloud 以每分钟为单位计量计算资源，粒度为每 8GB 内存。 
 计算费用会根据服务等级、区域和云服务提供商而变化。
 
 ### 磁盘存储是如何计算的？ {#how-is-storage-on-disk-calculated}
 
 ClickHouse Cloud 使用云对象存储，并根据存储在 ClickHouse 表中的数据压缩后大小来计量用量。
-存储费用在各服务等级之间相同，但会根据区域和云服务提供商而变化。
+存储费用在各服务等级之间相同，但会根据区域和云服务提供商而变化。 
 
 ### 备份是否计入总存储？ {#do-backups-count-toward-total-storage}
 
-存储和备份都会计入存储用量，并分别计费。
+存储和备份都会计入存储费用，并单独计费。
 所有服务默认保留一个备份，保留时间为一天。
 需要额外备份的用户可以在 Cloud 控制台的“设置”标签页中配置额外的[备份](/cloud/manage/backups/overview)。
 
@@ -219,24 +222,25 @@ ClickHouse Cloud 使用云对象存储，并根据存储在 ClickHouse 表中的
 ```sql title="Estimating compression"
 SELECT formatReadableSize(total_bytes) 
 FROM system.tables 
-WHERE name = <你的表名>
+WHERE name = <your table name>
 ```
 
-### 如果我有自管部署，ClickHouse 提供哪些工具来预估在云端运行服务的成本？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
 
-ClickHouse 查询日志会捕获[关键指标](/operations/system-tables/query_log)，可用于估算在 ClickHouse Cloud 中运行工作负载的成本。
-关于从自管环境迁移到 ClickHouse Cloud 的详细信息，请参阅[迁移文档](/cloud/migration/clickhouse-to-cloud)，如有进一步问题，请联系 [ClickHouse Cloud 支持](https://console.clickhouse.cloud/support)。
+### 如果我有自管理部署，ClickHouse 提供哪些工具来预估在云端运行服务的成本？ {#what-tools-does-clickhouse-offer-to-estimate-the-cost-of-running-a-service-in-the-cloud-if-i-have-a-self-managed-deployment}
+
+ClickHouse 查询日志会记录[关键指标](/operations/system-tables/query_log)，可用于估算在 ClickHouse Cloud 中运行工作负载的成本。
+关于从自管理环境迁移到 ClickHouse Cloud 的详细信息，请参阅[迁移文档](/cloud/migration/clickhouse-to-cloud)，如有进一步问题，请联系 [ClickHouse Cloud 支持](https://console.clickhouse.cloud/support)。
 
 ### ClickHouse Cloud 提供哪些计费选项？ {#what-billing-options-are-available-for-clickhouse-cloud}
 
 ClickHouse Cloud 支持以下计费选项：
 
-* 自助月度计费（以美元计价，通过信用卡支付）。
-* 直销年度 / 多年期（通过预付 &quot;ClickHouse Credits&quot;，以美元计价，并可使用其他付款方式）。
-* 通过 AWS、GCP 和 Azure 市场（按需付费（PAYG），或通过市场与 ClickHouse Cloud 签订合约）。
+- 自助月度计费（以美元计价，通过信用卡支付）。
+- 直销年度 / 多年期（通过预付 "ClickHouse Credits"，以美元计价，并可使用其他付款方式）。
+- 通过 AWS、GCP 和 Azure 市场（按需付费（PAYG），或通过市场与 ClickHouse Cloud 签订合约）。
 
 :::note
-用于 PAYG 的 ClickHouse Cloud credits 按 $0.01 为单位开具发票，使我们能够根据客户的实际使用量按部分 ClickHouse credits 收费。这不同于承诺支出型 ClickHouse credits，后者是以整 $1 为单位预付购买。
+用于 PAYG 的 ClickHouse Cloud credits 按每 \$0.01 为单位开具发票，使我们能够根据客户的实际使用量按部分 ClickHouse credits 计费。这不同于承诺支出型 ClickHouse credits，后者需以每 \$1 为单位预付购买。
 :::
 
 ### 我可以删除我的信用卡吗？ {#can-i-delete-my-credit-card}
@@ -256,13 +260,13 @@ ClickHouse Cloud 支持以下计费选项：
 
 ### ClickHouse Cloud 为 Scale 和 Enterprise 服务提供了哪些成本管理控制？ {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-scale-and-enterprise-services}
 
-- Trial 和 Annual Commit 客户在其消耗量达到特定阈值时会自动收到电子邮件通知：`50%`、`75%` 和 `90%`。这使用户能够主动管理其使用情况。
+- Trial 和 Annual Commit 客户在其消耗量达到特定阈值时会自动收到电子邮件通知：`50%`、`75%` 和 `90%`。这使你能够主动管理用量。
 - ClickHouse Cloud 允许用户通过 [Advanced scaling control](/manage/scaling) 为计算资源设置最大自动扩缩容上限，而计算资源是分析型工作负载中的主要成本因素。
 - [Advanced scaling control](/manage/scaling) 允许你设置内存上限，并可选择控制在空闲期间是否暂停/闲置。
 
 ### ClickHouse Cloud 为 Basic 服务提供了哪些成本管理控制？ {#what-controls-does-clickhouse-cloud-offer-to-manage-costs-for-basic-services}
 
-- [Advanced scaling control](/manage/scaling) 允许你控制在空闲期间是否暂停/闲置。Basic 服务不支持调整内存分配。
+- [Advanced scaling control](/manage/scaling) 允许你控制在空闲期间的暂停/闲置行为。Basic 服务不支持调整内存分配。
 - 请注意，默认设置会在一段时间无活动后暂停服务。
 
 ### 如果我有多个服务，我会按服务分别收到发票，还是会收到一张合并发票？ {#if-i-have-multiple-services-do-i-get-an-invoice-per-service-or-a-consolidated-invoice}
@@ -276,7 +280,7 @@ ClickHouse Cloud 支持以下计费选项：
 
 ### 我如何跟踪自己的支出？ {#how-can-i-keep-track-of-my-spending}
 
-ClickHouse Cloud 控制台提供 “Usage” 视图，按服务详细展示使用情况。此按用量维度组织的拆分信息有助于你了解与每个计量单元相关的成本。
+ClickHouse Cloud 控制台提供 “Usage” 用量视图，用于按服务详细展示使用情况。该按用量维度组织的明细有助于你了解每个计量单元对应的成本。
 
 ### 我如何获取自己订阅 ClickHouse Cloud 服务的发票？ {#how-do-i-access-my-invoice-for-my-subscription-to-the-clickhouse-cloud-service}
 
@@ -302,10 +306,13 @@ ClickHouse Cloud 用量对账单遵循不同的计费周期，其用量自注册
 
 ClickHouse Cloud 预付额度（无论是直接通过 ClickHouse 购买，还是通过云服务商的云市场获得）
 只能在合同约定的期限内使用。
-这意味着它们可以在接受日期或未来日期使用，但不能用于任何之前的计费周期。
+这意味着它们可以在合同生效日或未来日期使用，但不能用于任何之前的计费周期。
 任何预付额度未覆盖的超额部分必须通过信用卡支付或云市场的月度计费来结算。
 
 ### ClickHouse Cloud 的定价，在通过云服务商云市场付款与直接向 ClickHouse 支付之间是否有所不同？ {#is-there-a-difference-in-clickhouse-cloud-pricing-whether-paying-through-the-cloud-provider-marketplace-or-directly-to-clickhouse}
+
+通过云市场计费和直接在 ClickHouse 注册之间，在定价上没有任何差异。
+在这两种情况下，你对 ClickHouse Cloud 的使用量都会以 ClickHouse Cloud Credits（CHC）为单位进行计量，并据此计费。
 
 通过 marketplace 计费和直接向 ClickHouse 注册在价格上没有差异。  
 在这两种情况下，您对 ClickHouse Cloud 的使用量都会以 ClickHouse Cloud Credits (CHCs) 为单位进行计量和跟踪，  

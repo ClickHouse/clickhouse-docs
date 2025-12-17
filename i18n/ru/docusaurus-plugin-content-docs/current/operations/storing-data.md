@@ -619,7 +619,7 @@ Google Cloud Storage (GCS) также поддерживается с испол
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... конфигурация S3 ...
+                ... s3 configuration ...
             </s3>
             <cache>
                 <type>cache</type>
@@ -649,7 +649,7 @@ Google Cloud Storage (GCS) также поддерживается с испол
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... конфигурация S3 ...
+                ... s3 configuration ...
                 <data_cache_enabled>1</data_cache_enabled>
                 <data_cache_max_size>10737418240</data_cache_max_size>
             </s3>
@@ -726,7 +726,7 @@ SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
-┌─Кеши──────┐
+┌─Caches────┐
 │ s3_cache  │
 └───────────┘
 ```
@@ -828,9 +828,9 @@ ATTACH TABLE uk_price_paid UUID 'cf712b4f-2ca8-435c-ac23-c4393efe52f7'
     date Date,
     postcode1 LowCardinality(String),
     postcode2 LowCardinality(String),
-    type Enum8('прочее' = 0, 'рядная застройка' = 1, 'двухквартирный дом' = 2, 'отдельный дом' = 3, 'квартира' = 4),
+    type Enum8('other' = 0, 'terraced' = 1, 'semi-detached' = 2, 'detached' = 3, 'flat' = 4),
     is_new UInt8,
-    duration Enum8('неизвестно' = 0, 'собственность' = 1, 'аренда' = 2),
+    duration Enum8('unknown' = 0, 'freehold' = 1, 'leasehold' = 2),
     addr1 String,
     addr2 String,
     street LowCardinality(String),

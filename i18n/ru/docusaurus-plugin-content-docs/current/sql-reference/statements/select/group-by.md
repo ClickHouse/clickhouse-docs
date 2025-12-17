@@ -69,7 +69,7 @@ doc_type: 'reference'
 Рассмотрим таблицу t:
 
 ```text
-┌─год──┬─месяц─┬─день─┐
+┌─year─┬─month─┬─day─┐
 │ 2019 │     1 │   5 │
 │ 2019 │     1 │  15 │
 │ 2020 │     1 │   5 │
@@ -140,7 +140,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 Рассмотрим таблицу t:
 
 ```text
-┌─год──┬─месяц─┬─день─┐
+┌─year─┬─month─┬─day─┐
 │ 2019 │     1 │   5 │
 │ 2019 │     1 │  15 │
 │ 2020 │     1 │   5 │
@@ -326,7 +326,7 @@ FROM hits
 SELECT
     domainWithoutWWW(URL) AS domain,
     count(),
-    any(Title) AS title -- получение первого встреченного заголовка страницы для каждого домена.
+    any(Title) AS title -- getting the first occurred page header for each domain.
 FROM hits
 GROUP BY domain
 ```
@@ -352,10 +352,10 @@ GROUP BY domain
 Следующие два запроса эквивалентны.
 
 ```sql
--- Запрос 1
+-- Query 1
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
--- Запрос 2
+-- Query 2
 SELECT year, month, day, count(*) FROM t GROUP BY
 GROUPING SETS
 (

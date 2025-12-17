@@ -12,7 +12,6 @@ import CloudDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/s
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Dictionaries {#dictionaries}
 
 Dictionary は、さまざまな種類の参照リストに便利なマッピング（`key -> attributes`）です。
@@ -69,15 +68,15 @@ Dictionary の設定ファイルは次の形式です。
 
 ```xml
 <clickhouse>
-    <comment>任意の要素で、任意の内容を含むことができます。ClickHouseサーバーによって無視されます。</comment>
+    <comment>An optional element with any content. Ignored by the ClickHouse server.</comment>
 
-    <!--任意の要素。置換を含むファイル名-->
+    <!--Optional element. File name with substitutions-->
     <include_from>/etc/metrika.xml</include_from>
 
 
     <dictionary>
-        <!-- Dictionaryの設定 -->
-        <!-- 設定ファイルには任意の数のdictionaryセクションを含めることができます。 -->
+        <!-- Dictionary configuration. -->
+        <!-- There can be any number of dictionary sections in a configuration file. -->
     </dictionary>
 
 </clickhouse>
@@ -100,19 +99,19 @@ Dictionary を XML ファイルで設定する場合、その設定は次のよ�
     <name>dict_name</name>
 
     <structure>
-      <!-- 複合キー設定 -->
+      <!-- Complex key configuration -->
     </structure>
 
     <source>
-      <!-- ソース設定 -->
+      <!-- Source configuration -->
     </source>
 
     <layout>
-      <!-- メモリレイアウト設定 -->
+      <!-- Memory layout configuration -->
     </layout>
 
     <lifetime>
-      <!-- メモリ内のDictionaryの存続期間 -->
+      <!-- Lifetime of dictionary in memory -->
     </lifetime>
 </dictionary>
 ```
@@ -122,12 +121,12 @@ Dictionary を XML ファイルで設定する場合、その設定は次のよ�
 ```sql
 CREATE DICTIONARY dict_name
 (
-    ... -- 属性
+    ... -- attributes
 )
-PRIMARY KEY ... -- 複合キーまたは単一キーの構成
-SOURCE(...) -- ソースの構成
-LAYOUT(...) -- メモリレイアウトの構成
-LIFETIME(...) -- メモリ内のDictionaryの有効期間
+PRIMARY KEY ... -- complex or single key configuration
+SOURCE(...) -- Source configuration
+LAYOUT(...) -- Memory layout configuration
+LIFETIME(...) -- Lifetime of dictionary in memory
 ```
 
 ## メモリ内における Dictionary の保存 {#storing-dictionaries-in-memory}
@@ -160,7 +159,7 @@ ClickHouse は Dictionary に関するエラーに対して例外をスローし
         ...
         <layout>
             <layout_type>
-                <!-- レイアウト設定 -->
+                <!-- layout settings -->
             </layout_type>
         </layout>
         ...
@@ -173,7 +172,7 @@ ClickHouse は Dictionary に関するエラーに対して例外をスローし
 ```sql
 CREATE DICTIONARY (...)
 ...
-LAYOUT(LAYOUT_TYPE(param value)) -- レイアウト設定
+LAYOUT(LAYOUT_TYPE(param value)) -- layout settings
 ...
 ```
 
@@ -283,25 +282,27 @@ LAYOUT(HASHED())
 ```xml
 <layout>
   <hashed>
-    <!-- 分片が1より大きい場合（デフォルトは `1`）、Dictionaryはデータを並列で読み込みます。
-         1つのDictionary内に大量の要素がある場合に有用です。 -->
+    <!-- If shards greater then 1 (default is `1`) the dictionary will load
+         data in parallel, useful if you have huge amount of elements in one
+         dictionary. -->
     <shards>10</shards>
 
-    <!-- 並列キュー内のブロックのバックログサイズ。
+    <!-- Size of the backlog for blocks in parallel queue.
 
-         並列読み込みのボトルネックは再ハッシュ化であり、スレッドが再ハッシュ化を
-         実行している間の停滞を回避するために、バックログが必要です。
+         Since the bottleneck in parallel loading is rehash, and so to avoid
+         stalling because of thread is doing rehash, you need to have some
+         backlog.
 
-         10000はメモリと速度の適切なバランスです。
-         10e10個の要素でも、飢餓状態なしにすべての負荷を処理できます。 -->
+         10000 is good balance between memory and speed.
+         Even for 10e10 elements and can handle all the load without starvation. -->
     <shard_load_queue_backlog>10000</shard_load_queue_backlog>
 
-    <!-- ハッシュテーブルの最大負荷率。値が大きいほど、メモリはより効率的に
-         利用されます（無駄なメモリが少なくなります）が、読み取り/パフォーマンスが
-         低下する可能性があります。
+    <!-- Maximum load factor of the hash table, with greater values, the memory
+         is utilized more efficiently (less memory is wasted) but read/performance
+         may deteriorate.
 
-         有効な値: [0.5, 0.99]
-         デフォルト: 0.5 -->
+         Valid values: [0.5, 0.99]
+         Default: 0.5 -->
     <max_load_factor>0.5</max_load_factor>
   </hashed>
 </layout>
@@ -451,7 +452,7 @@ Dictionary は、範囲とそれに対応する値の順序付き配列を持つ
 ```xml
 <layout>
     <range_hashed>
-        <!-- 重複範囲の処理戦略 (min/max)。デフォルト: min (range_min -> range_max の最小値を持つ一致範囲を返す) -->
+        <!-- Strategy for overlapping ranges (min/max). Default: min (return a matching range with the min(range_min -> range_max) value) -->
         <range_lookup_strategy>min</range_lookup_strategy>
     </range_hashed>
 </layout>
@@ -600,22 +601,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は1つのみ: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.2 │ -- 2つの範囲が一致、range_min 2015-01-15 (0.2) が 2015-01-01 (0.1) より大きい
+│ 0.2 │ -- two ranges are matching, range_min 2015-01-15 (0.2) is bigger than 2015-01-01 (0.1)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.4 │ -- 2つの範囲が一致、range_min 2015-01-04 (0.4) が 2015-01-01 (0.3) より大きい
+│ 0.4 │ -- two ranges are matching, range_min 2015-01-04 (0.4) is bigger than 2015-01-01 (0.3)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.5 │ -- 2つの範囲が一致、range_minは等しく、range_max 2015-01-15 (0.5) が 2015-01-10 (0.6) より大きい
+│ 0.5 │ -- two ranges are matching, range_min are equal, 2015-01-15 (0.5) is bigger than 2015-01-10 (0.6)
 └─────┘
 
 DROP DICTIONARY discounts_dict;
@@ -637,22 +638,22 @@ RANGE(MIN discount_start_date MAX discount_end_date);
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-14')) res;
 ┌─res─┐
-│ 0.1 │ -- 一致する範囲は1つのみ: 2015-01-01 - Null
+│ 0.1 │ -- the only one range is matching: 2015-01-01 - Null
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 1, toDate('2015-01-16')) res;
 ┌─res─┐
-│ 0.1 │ -- 2つの範囲が一致、range_min 2015-01-01 (0.1) が 2015-01-15 (0.2) より小さい
+│ 0.1 │ -- two ranges are matching, range_min 2015-01-01 (0.1) is less than 2015-01-15 (0.2)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 2, toDate('2015-01-06')) res;
 ┌─res─┐
-│ 0.3 │ -- 2つの範囲が一致、range_min 2015-01-01 (0.3) が 2015-01-04 (0.4) より小さい
+│ 0.3 │ -- two ranges are matching, range_min 2015-01-01 (0.3) is less than 2015-01-04 (0.4)
 └─────┘
 
 select dictGet('discounts_dict', 'amount', 3, toDate('2015-01-01')) res;
 ┌─res─┐
-│ 0.6 │ -- 2つの範囲が一致、range_minは等しく、range_max 2015-01-10 (0.6) が 2015-01-15 (0.5) より小さい
+│ 0.6 │ -- two ranges are matching, range_min are equal, 2015-01-10 (0.6) is less than 2015-01-15 (0.5)
 └─────┘
 ```
 
@@ -703,17 +704,17 @@ Dictionary の検索時には、まずキャッシュが検索されます。各
 ```xml
 <layout>
     <cache>
-        <!-- キャッシュのサイズ（セル数単位）。2の累乗に切り上げられます。 -->
+        <!-- The size of the cache, in number of cells. Rounded up to a power of two. -->
         <size_in_cells>1000000000</size_in_cells>
-        <!-- 有効期限切れのキーの読み取りを許可します。 -->
+        <!-- Allows to read expired keys. -->
         <allow_read_expired_keys>0</allow_read_expired_keys>
-        <!-- 更新キューの最大サイズ。 -->
+        <!-- Max size of update queue. -->
         <max_update_queue_size>100000</max_update_queue_size>
-        <!-- 更新タスクをキューにプッシュする際の最大タイムアウト（ミリ秒単位）。 -->
+        <!-- Max timeout in milliseconds for push update task into queue. -->
         <update_queue_push_timeout_milliseconds>10</update_queue_push_timeout_milliseconds>
-        <!-- 更新タスクの完了を待機する最大タイムアウト（ミリ秒単位）。 -->
+        <!-- Max wait timeout in milliseconds for update task to complete. -->
         <query_wait_timeout_milliseconds>60000</query_wait_timeout_milliseconds>
-        <!-- キャッシュDictionary更新用の最大スレッド数。 -->
+        <!-- Max threads for cache dictionary update. -->
         <max_threads_for_updates>4</max_threads_for_updates>
     </cache>
 </layout>
@@ -749,15 +750,15 @@ Dictionary キーは [UInt64](../../sql-reference/data-types/int-uint.md) 型で
 ```xml
 <layout>
     <ssd_cache>
-        <!-- 基本読み取りブロックのサイズ(バイト単位)。SSDのページサイズと同じ値にすることを推奨します。 -->
+        <!-- Size of elementary read block in bytes. Recommended to be equal to SSD's page size. -->
         <block_size>4096</block_size>
-        <!-- キャッシュファイルの最大サイズ(バイト単位)。 -->
+        <!-- Max cache file size in bytes. -->
         <file_size>16777216</file_size>
-        <!-- SSDから要素を読み取る際のRAMバッファのサイズ(バイト単位)。 -->
+        <!-- Size of RAM buffer in bytes for reading elements from SSD. -->
         <read_buffer_size>131072</read_buffer_size>
-        <!-- SSDへフラッシュする前に要素を集約するためのRAMバッファのサイズ(バイト単位)。 -->
+        <!-- Size of RAM buffer in bytes for aggregating elements before flushing to SSD. -->
         <write_buffer_size>1048576</write_buffer_size>
-        <!-- キャッシュファイルの保存先パス。 -->
+        <!-- Path where cache file will be stored. -->
         <path>/var/lib/clickhouse/user_files/test_dict</path>
     </ssd_cache>
 </layout>
@@ -853,8 +854,8 @@ INSERT INTO my_ip_addresses VALUES
 </structure>
 <layout>
     <ip_trie>
-        <!-- キー属性 `prefix` は dictGetString 経由で取得可能です。 -->
-        <!-- このオプションを有効にするとメモリ使用量が増加します。 -->
+        <!-- Key attribute `prefix` can be retrieved via dictGetString. -->
+        <!-- This option increases memory usage. -->
         <access_to_key_from_attributes>true</access_to_key_from_attributes>
     </ip_trie>
 </layout>
@@ -1112,7 +1113,6 @@ SETTINGS(format_csv_allow_single_quotes = 0)
   * [Cassandra](#cassandra)
   * [PostgreSQL](#postgresql)
   * [YTsaurus](#ytsaurus)
-
 
 ### ローカル ファイル {#local-file}
 
@@ -1377,7 +1377,7 @@ ClickHouse における Dictionary の構成:
         <name>table_name</name>
         <source>
             <odbc>
-                <!-- connection_string には以下のパラメータを指定できます: -->
+                <!-- You can specify the following parameters in connection_string: -->
                 <!-- DSN=myconnection;UID=username;PWD=password;HOST=127.0.0.1;PORT=5432;DATABASE=my_db -->
                 <connection_string>DSN=myconnection</connection_string>
                 <table>postgresql_table</table>
@@ -1441,7 +1441,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     tds version = 7.0
     client charset = UTF-8
 
-    # TDS接続のテスト
+    # test TDS connection
     $ sqsh -S MSSQL -D database -U user -P password
 
 
@@ -1455,7 +1455,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     UsageCount      = 5
 
     $ cat /etc/odbc.ini
-    # $ cat ~/.odbc.ini # ClickHouseを実行するユーザーでログインしている場合
+    # $ cat ~/.odbc.ini # if you signed in under a user that runs ClickHouse
 
     [MSSQL]
     Description     = FreeTDS
@@ -1467,7 +1467,7 @@ $ sudo apt-get install tdsodbc freetds-bin sqsh
     Port            = 1433
 
 
-    # (オプション) ODBC接続のテスト (isqlツールを使用する場合は[unixodbc](https://packages.debian.org/sid/unixodbc)パッケージをインストール)
+    # (optional) test ODBC connection (to use isql-tool install the [unixodbc](https://packages.debian.org/sid/unixodbc)-package)
     $ isql -v MSSQL "user" "password"
 ```
 
@@ -1937,7 +1937,6 @@ SOURCE(YTSAURUS(
 * `cypress_path` – テーブルのソースとなる Cypress パス。
 * `oauth_token` – OAuth トークン。
 
-
 ### Null {#null}
 
 ダミー（空）のディクショナリを作成するために使用できる特別なソースです。このようなディクショナリは、テスト用途や、データノードとクエリノードを分離し、ノード上に Distributed テーブルを持つ構成で役立ちます。
@@ -1971,7 +1970,7 @@ XML の記述:
         </id>
 
         <attribute>
-            <!-- 属性パラメータ -->
+            <!-- Attribute parameters -->
         </attribute>
 
         ...
@@ -1990,7 +1989,7 @@ DDL クエリ：
 ```sql
 CREATE DICTIONARY dict_name (
     Id UInt64,
-    -- 属性
+    -- attributes
 )
 PRIMARY KEY Id
 ...
@@ -2022,7 +2021,7 @@ XML 構造では `<id>` か `<key>` のいずれか一方のみを含めるこ�
 
 ```xml
 <id>
-    <name>ID</name>
+    <name>Id</name>
 </id>
 ```
 
@@ -2129,17 +2128,17 @@ ClickHouse は、[数値キー](#numeric-key) を持つ階層型辞書をサポ�
 次の階層構造を見てみましょう。
 
 ```text
-0 (共通の親)
+0 (Common parent)
 │
-├── 1 (ロシア)
+├── 1 (Russia)
 │   │
-│   └── 2 (モスクワ)
+│   └── 2 (Moscow)
 │       │
-│       └── 3 (中心部)
+│       └── 3 (Center)
 │
-└── 4 (イギリス)
+└── 4 (Great Britain)
     │
-    └── 5 (ロンドン)
+    └── 5 (London)
 ```
 
 この階層は、次の Dictionary テーブルとして表現できます。
@@ -2411,7 +2410,7 @@ LIFETIME(0)
 ```
 
 ```yaml
-# /var/lib/clickhouse/user_files/regexp_tree.yaml {#varlibclickhouseuser_filesregexp_treeyaml}
+# /var/lib/clickhouse/user_files/regexp_tree.yaml
 - regexp: 'clickhouse\.com'
   tag: 'ClickHouse'
   topological_index: 1

@@ -42,6 +42,7 @@ SELECT toTypeName(INTERVAL 4 DAY)
 └──────────────────────────────┘
 ```
 
+
 ## 使用注意事项 {#usage-remarks}
 
 可以将 `Interval` 类型的值与 [Date](../../../sql-reference/data-types/date.md) 和 [DateTime](../../../sql-reference/data-types/datetime.md) 类型的值一起用于算术运算。例如，可以在当前时间的基础上加 4 天：
@@ -68,7 +69,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-以及比较不同时间区间的数值：
+以及比较基于不同时间区间的值：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -80,7 +81,8 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 └─────────────────────────────────────────────────────────────┘
 ```
 
+
 ## 另请参阅 {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) 运算符
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
+- [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数

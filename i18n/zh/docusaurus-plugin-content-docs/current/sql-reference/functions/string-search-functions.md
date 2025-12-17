@@ -117,7 +117,7 @@ SELECT countMatchesCaseInsensitive('Hello HELLO world', 'hello')
 **语法**
 
 ```sql
-countSubstrings(干草堆, 针[, 起始位置])
+countSubstrings(haystack, needle[, start_pos])
 ```
 
 **参数**
@@ -1269,7 +1269,7 @@ SELECT multiFuzzyMatchAllIndices('ClickHouse', 2, ['ClickHouse', 'ClckHouse', 'C
 **语法**
 
 ```sql
-multiFuzzyMatchAny(草堆, 距离, [模式1, 模式2, ..., 模式N])
+multiFuzzyMatchAny(haystack, distance, [pattern1, pattern2, ..., patternN])
 ```
 
 **参数**
@@ -1341,7 +1341,7 @@ SELECT multiFuzzyMatchAnyIndex('ClickHouse', 2, ['ClckHouse', 'ClickHose', 'Clic
 **语法**
 
 ```sql
-multiMatchAllIndices(干草堆, [模式1, 模式2, ..., 模式n])
+multiMatchAllIndices(haystack, [pattern1, pattern2, ..., pattern])
 ```
 
 **参数**
@@ -1378,7 +1378,7 @@ SELECT multiMatchAllIndices('ClickHouse', ['[0-9]', 'House', 'Click', 'ouse']);
 **语法**
 
 ```sql
-multiMatchAny(干草堆, 模式1[, 模式2, ...])
+multiMatchAny(haystack, pattern1[, pattern2, ...])
 ```
 
 **参数**
@@ -1462,7 +1462,7 @@ SELECT multiMatchAnyIndex('ClickHouse', ['[0-9]', 'House', 'Click']);
 **语法**
 
 ```sql
-multiSearchAllPositions(主串, 针1[, 针2, ...])
+multiSearchAllPositions(haystack, needle1[, needle2, ...])
 ```
 
 **参数**
@@ -1479,7 +1479,7 @@ multiSearchAllPositions(主串, 针1[, 针2, ...])
 **多子串搜索**
 
 ```sql title=Query
-SELECT multiSearchAllPositions('你好，世界！', ['你好', '！', '世界'])
+SELECT multiSearchAllPositions('Hello, World!', ['hello', '!', 'world'])
 ```
 
 ```response title=Response
@@ -1532,7 +1532,7 @@ SELECT multiSearchAllPositionsCaseInsensitive('ClickHouse',['c','h'])
 **语法**
 
 ```sql
-multiSearchAllPositionsCaseInsensitiveUTF8(主串, [子串1, 子串2, ..., 子串N])
+multiSearchAllPositionsCaseInsensitiveUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
 **参数**
@@ -1567,7 +1567,7 @@ SELECT multiSearchAllPositionsCaseInsensitiveUTF8('Здравствуй, мир!
 **语法**
 
 ```sql
-multiSearchAllPositionsUTF8(主串, 模式1[, 模式2, ...])
+multiSearchAllPositionsUTF8(haystack, needle1[, needle2, ...])
 ```
 
 **参数**
@@ -1604,7 +1604,7 @@ SELECT multiSearchAllPositionsUTF8('ClickHouse',['C','H'])
 **语法**
 
 ```sql
-multiSearchAny(干草堆, needle1[, needle2, ...])
+multiSearchAny(haystack, needle1[, needle2, ...])
 ```
 
 **参数**
@@ -1804,7 +1804,7 @@ SELECT multiSearchFirstIndex('Hello World', ['goodbye', 'test']);
 **语法**
 
 ```sql
-multiSearchFirstIndexCaseInsensitive(主串, [子串1, 子串2, ..., 子串N]
+multiSearchFirstIndexCaseInsensitive(haystack, [needle1, needle2, ..., needleN]
 ```
 
 **参数**
@@ -1899,7 +1899,7 @@ SELECT multiSearchFirstIndexCaseInsensitiveUTF8('Hello World', ['goodbye', 'test
 **语法**
 
 ```sql
-multiSearchFirstIndexUTF8(主串, [子串1, 子串2, ..., 子串N])
+multiSearchFirstIndexUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
 **参数**
@@ -2041,7 +2041,7 @@ SELECT multiSearchFirstPositionCaseInsensitiveUTF8('Здравствуй, мир
 **语法**
 
 ```sql
-multiSearchFirstPositionUTF8(大串, [模式1, 模式2, ..., 模式N])
+multiSearchFirstPositionUTF8(haystack, [needle1, needle2, ..., needleN])
 ```
 
 **参数**
@@ -2080,7 +2080,7 @@ SELECT multiSearchFirstPositionUTF8('Здравствуй, мир',['мир', '�
 **语法**
 
 ```sql
-ngramDistance(大海, 针)
+ngramDistance(haystack, needle)
 ```
 
 **参数**
@@ -2117,7 +2117,7 @@ SELECT ngramDistance('ClickHouse', 'ClickHouses')
 **语法**
 
 ```sql
-ngramDistanceCaseInsensitive(大海, 针)
+ngramDistanceCaseInsensitive(haystack, needle)
 ```
 
 **参数**
@@ -2230,7 +2230,7 @@ SELECT ngramDistanceUTF8('abcde','cde')
 **语法**
 
 ```sql
-ngramSearch(干草堆, 针)
+ngramSearch(haystack, needle)
 ```
 
 **参数**
@@ -2376,7 +2376,7 @@ SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд')
 **语法**
 
 ```sql
-notILike(大串, 模式)
+notILike(haystack, pattern)
 ```
 
 **参数**
@@ -2412,7 +2412,7 @@ SELECT notILike('ClickHouse', '%house%');
 
 ```sql
 notLike(haystack, pattern)
--- haystack 不匹配 LIKE 模式 pattern
+-- haystack NOT LIKE pattern
 ```
 
 **参数**
@@ -2578,7 +2578,7 @@ SELECT positionCaseInsensitive('Hello, world!', 'hello')
 **语法**
 
 ```sql
-positionCaseInsensitiveUTF8(主串, 子串[, 起始位置])
+positionCaseInsensitiveUTF8(haystack, needle[, start_pos])
 ```
 
 **参数**

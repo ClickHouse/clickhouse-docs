@@ -27,7 +27,7 @@ groupBitXor(expr)
 Тестовые данные:
 
 ```text
-двоичное   десятичное
+binary     decimal
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -45,6 +45,6 @@ SELECT groupBitXor(num) FROM t
 Результат:
 
 ```text
-двоичное   десятичное
+binary     decimal
 01101000 = 104
 ```

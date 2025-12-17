@@ -296,7 +296,7 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 
 **Пример конфигурации**
 
-````yaml
+```yaml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
 <top_level_domains_lists>
     <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
@@ -309,7 +309,7 @@ SELECT cutToFirstSignificantSubdomainCustomRFC('www.foo', 'public_suffix_list');
 
 ```sql
 cutToFirstSignificantSubdomainCustomWithWWW(url, tld_list_name)
-````
+```
 
 **Аргументы**
 
@@ -345,7 +345,7 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 **Пример конфигурации**
 
-````xml
+```xml
 <!-- <top_level_domains_path>/var/lib/clickhouse/top_level_domains/</top_level_domains_path> -->
 <top_level_domains_lists>
     <!-- https://publicsuffix.org/list/public_suffix_list.dat -->
@@ -358,7 +358,7 @@ SELECT cutToFirstSignificantSubdomainCustomWithWWW('www.foo', 'public_suffix_lis
 
 ```sql
 cutToFirstSignificantSubdomainCustomWithWWWRFC(url, tld_list_name)
-````
+```
 
 **Аргументы**
 

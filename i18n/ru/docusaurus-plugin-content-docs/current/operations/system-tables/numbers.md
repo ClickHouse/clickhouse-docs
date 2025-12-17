@@ -34,7 +34,7 @@ SELECT * FROM system.numbers LIMIT 10;
 │      9 │
 └────────┘
 
-10 строк в наборе. Затрачено: 0.001 сек.
+10 rows in set. Elapsed: 0.001 sec.
 ```
 
 Вы также можете ограничить вывод по предикатам.
@@ -57,5 +57,5 @@ SELECT * FROM system.numbers < 10;
 │      9 │
 └────────┘
 
-10 строк в наборе. Затрачено: 0.001 сек.
+10 rows in set. Elapsed: 0.001 sec.
 ```

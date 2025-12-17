@@ -137,9 +137,9 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: 设置 max_memory_usage 不得大于 20000000000。
-Code: 452, e.displayText() = DB::Exception: 设置 max_memory_usage 不得小于 5000000000。
-Code: 452, e.displayText() = DB::Exception: 设置 force_index_by_date 不得更改。
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
+Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
 ```
 
 :::note

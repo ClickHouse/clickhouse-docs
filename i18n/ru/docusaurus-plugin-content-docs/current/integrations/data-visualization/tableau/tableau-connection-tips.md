@@ -20,7 +20,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 Если на вкладке Advanced (по умолчанию) установлен флажок *Set Session ID*, вы можете задать [настройки](/operations/settings/settings/) на уровне сеанса с помощью
 
 ```text
-SET my_setting=значение;
+SET my_setting=value;
 ```
 
 ## Вкладка Advanced {#advanced-tab}
@@ -48,13 +48,13 @@ LEFT([myUInt256], 2) // Error!
 Чтобы работать с крупными целочисленными полями как со строками, необходимо явно обернуть это поле вызовом функции STR()
 
 ```text
-LEFT(STR([myUInt256]), 2) // Работает отлично!
+LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
 Однако такие поля чаще всего используются для подсчёта количества уникальных значений *(ID, таких как Watch ID, Visit ID в Yandex.Metrica)* или в качестве *измерения (Dimension)* для задания уровня детализации визуализации, и для этих целей они хорошо подходят.
 
 ```text
-COUNTD([myUInt256]) // Тоже отлично работает!
+COUNTD([myUInt256]) // Works well too!
 ```
 
 При использовании предварительного просмотра данных (View data) для таблицы с полями типа UInt64 ошибка больше не возникает.

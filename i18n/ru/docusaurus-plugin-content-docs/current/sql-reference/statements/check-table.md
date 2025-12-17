@@ -53,7 +53,6 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 Движки из семейства `*Log` не обеспечивают автоматическое восстановление данных при сбое. Используйте запрос `CHECK TABLE`, чтобы своевременно отслеживать потерю данных.
 
-
 ## Примеры {#examples}
 
 По умолчанию запрос `CHECK TABLE` показывает общий статус проверки таблицы:
@@ -113,7 +112,6 @@ CHECK TABLE t0 PART '201003_111_222_0'
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
-
 ### Получение результата «Corrupted» {#receiving-a-corrupted-result}
 
 :::warning
@@ -126,7 +124,7 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
@@ -139,7 +137,7 @@ Output:
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 Если файл checksums.txt отсутствует, его можно восстановить. Он будет заново вычислен и перезаписан во время выполнения команды CHECK TABLE для конкретного раздела, и статус по‑прежнему будет иметь значение `is_passed = 1`.
 
@@ -165,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## Если данные повреждены {#if-the-data-is-corrupted}
 

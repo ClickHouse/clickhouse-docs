@@ -185,7 +185,7 @@ Caters to large-scale, mission critical deployments that have stringent security
 
 - Everything in Scale, **plus**
 - Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
-- Provides the highest levels of performance and reliability guarantees.
+- Provides the highest levels of performance and resilience guarantees.
 - Supports enterprise-grade security:
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).

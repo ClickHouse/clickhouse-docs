@@ -120,7 +120,7 @@ SHOW ACCESS
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
@@ -172,7 +172,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-#### 查看设置配置文件及其分配 {#examine-the-settings-profile-and-assignment-1}
+#### Examine the settings profile and assignment {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 显示访问权限
@@ -191,7 +191,7 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### 为会话指定设置 {#assign-a-setting-to-a-session}
+### Assign a setting to a session {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -204,7 +204,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-### 在查询时指定设置 {#assign-a-setting-during-a-query}
+### Assign a setting during a query {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable

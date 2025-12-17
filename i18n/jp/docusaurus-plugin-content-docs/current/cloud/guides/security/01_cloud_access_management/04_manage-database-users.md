@@ -12,6 +12,7 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 このガイドでは、SQL コンソール内とデータベース内で直接データベースユーザーを管理する 2 通りの方法を説明します。
 
+
 ### SQL コンソールのパスワードレス認証 {#sql-console-passwordless-authentication}
 
 SQL コンソールユーザーは各セッションごとに作成され、自動的に更新される X.509 証明書を使って認証されます。セッションが終了すると、そのユーザーは削除されます。監査目的のアクセスリストを作成する場合は、コンソールで対象サービスの Settings タブに移動し、データベース内に存在するデータベースユーザーに加えて、SQL コンソールからのアクセスも確認してください。カスタムロールが設定されている場合、ユーザーのアクセス権は、そのユーザー名で終わるロールに一覧表示されます。
@@ -65,6 +66,7 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
+
 ### セキュアシェル (SSH) 認証を使用するデータベースユーザー {#database-ssh}
 
 ClickHouse Cloud のデータベースユーザーに対して SSH 認証を設定します。
@@ -104,56 +106,59 @@ SQL の [GRANT](/sql-reference/statements/grant) ステートメントを使用�
 ユーザーによる操作がそのユーザー ID に紐づいて識別できるようにし、`default` アカウントをいわゆるブレークグラス用途（緊急時のみの利用）のために確保しておくために、個人に紐づく新しいユーザーアカウントを作成し、そのユーザーに default&#95;role を付与することを推奨します。
 
 ```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
 ```
 
-ユーザーは、SHA256 ハッシュジェネレーターや Python の `hashlib` のような関数を使用して、適切な複雑さを備えた 12 文字以上のパスワードを SHA256 文字列に変換し、その文字列をパスワードとしてシステム管理者に渡すことができます。これにより、管理者が平文パスワードを閲覧・取り扱う必要がなくなります。
+ユーザーは、SHA256 ハッシュジェネレーターや Python の `hashlib` などのコード関数を使用して、十分な複雑さを持つ 12 文字以上のパスワードを SHA256 文字列に変換し、その文字列をパスワードとしてシステム管理者に渡すことができます。これにより、管理者が平文のパスワードを閲覧・取り扱う必要がなくなります。
+
 
 ### SQL コンソールユーザーを含むデータベースアクセス一覧 {#database-access-listings-with-sql-console-users}
 
 次の手順を使用して、組織内の SQL コンソールおよびデータベース全体の完全なアクセス一覧を生成できます。
 
 <VerticalStepper headerLevel="h4">
-  #### すべてのデータベース権限の一覧を取得する
 
-  データベース内のすべての権限の一覧を取得するには、次のクエリを実行します。
+#### すべてのデータベース権限の一覧を取得する {#get-a-list-of-all-database-grants}
 
-  ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+データベース内のすべての権限の一覧を取得するには、次のクエリを実行します。 
 
-  UNION ALL
+```sql
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+UNION ALL
 
-  #### SQL コンソールにアクセスできる Console ユーザーに権限一覧を関連付ける
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
-  この一覧を、SQL コンソールにアクセスできる Console ユーザーに関連付けます。
+#### SQL コンソールにアクセスできる Console ユーザーに権限一覧を関連付ける {#associate-grant-list-to-console-users-with-access-to-sql-console}
 
-  a. Console を開きます。
+この一覧を、SQL コンソールにアクセスできる Console ユーザーに関連付けます。
+   
+a. Console を開きます。
 
-  b. 対象のサービスを選択します。
+b. 対象のサービスを選択します。
 
-  c. 左側で「Settings」を選択します。
+c. 左側で「Settings」を選択します。
 
-  d. 「SQL console access」セクションまでスクロールします。
+d. 「SQL console access」セクションまでスクロールします。
 
-  e. データベースにアクセスできるユーザー数を示すリンク `There are # users with access to this service.` をクリックして、ユーザー一覧を表示します。
+e. このサービスにアクセスできるユーザー数を示すリンク `There are # users with access to this service.` をクリックして、ユーザー一覧を表示します。
+
 </VerticalStepper>
 
 ## ウェアハウスユーザー {#warehouse-users}

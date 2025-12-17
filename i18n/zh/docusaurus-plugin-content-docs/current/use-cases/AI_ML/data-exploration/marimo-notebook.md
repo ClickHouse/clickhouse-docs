@@ -66,9 +66,9 @@ ClickHouse 将自动在 `default` 数据库中创建名为 `pp_complete` 的表�
 ### 配置凭证 {#setting-up-credentials}
 
 ```bash
-export CLICKHOUSE_CLOUD_HOSTNAME=<主机名>
+export CLICKHOUSE_CLOUD_HOSTNAME=<HOSTNAME>
 export CLICKHOUSE_CLOUD_USER=default
-export CLICKHOUSE_CLOUD_PASSWORD=您的实际密码
+export CLICKHOUSE_CLOUD_PASSWORD=your_actual_password
 ```
 
 :::note
@@ -116,7 +116,7 @@ import plotly.graph_objects as go
 添加一个新单元格，并运行一个简单查询，以检查一切是否已正确配置：
 
 ```python
-result = chdb.query("SELECT '来自 Marimo 的 ClickHouse 问候！'", "DataFrame")
+result = chdb.query("SELECT 'Hello ClickHouse from Marimo!'", "DataFrame")
 result
 ```
 
@@ -187,8 +187,8 @@ fig = px.line(
     df, 
     x='year', 
     y='price',
-    title='伦敦房产平均价格时间序列',
-    labels={'price': '平均价格（£）', 'year': '年份'}
+    title='Average Property Prices in London Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig.update_traces(mode='lines+markers')
@@ -210,7 +210,7 @@ Marimo 的一大优势是其响应式执行模型。我们来创建一个交互�
 town_selector = mo.ui.dropdown(
     options=['LONDON', 'MANCHESTER', 'BIRMINGHAM', 'LEEDS', 'LIVERPOOL'],
     value='LONDON',
-    label='选择城市：'
+    label='Select a town:'
 )
 town_selector
 ```
@@ -245,8 +245,8 @@ fig_reactive = px.line(
     df_reactive,
     x='year',
     y='price',
-    title=f'{town_selector.value}房产平均价格趋势',
-    labels={'price': '平均价格（£）', 'year': '年份'}
+    title=f'Average Property Prices in {town_selector.value} Over Time',
+    labels={'price': 'Average Price (£)', 'year': 'Year'}
 )
 
 fig_reactive.update_traces(mode='lines+markers')
@@ -272,7 +272,7 @@ year_slider = mo.ui.slider(
     stop=2024,
     value=2020,
     step=1,
-    label='选择年份：',
+    label='Select Year:',
     show_value=True
 )
 year_slider
@@ -300,23 +300,23 @@ WHERE town = 'LONDON'
 
 df_distribution = chdb.query(query_distribution, "DataFrame")
 
-# 创建交互式箱线图 {#create-an-interactive-box-plot}
+# create an interactive box plot.
 fig_box = go.Figure()
 
 fig_box.add_trace(
     go.Box(
         y=df_distribution['price'],
         name=f'London {year_slider.value}',
-        boxmean='sd',  # 显示均值和标准差
+        boxmean='sd',  # Show mean and standard deviation
         marker_color='lightblue',
-        boxpoints='outliers'  # 显示离群值点
+        boxpoints='outliers'  # Show outlier points
     )
 )
 
 fig_box.update_layout(
-    title=f'伦敦房产价格分布 ({year_slider.value})',
+    title=f'Distribution of Property Prices in London ({year_slider.value})',
     yaxis=dict(
-        title='价格 (£)',
+        title='Price (£)',
         tickformat=',.0f'
     ),
     showlegend=False,

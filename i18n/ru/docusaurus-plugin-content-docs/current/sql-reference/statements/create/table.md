@@ -16,6 +16,7 @@ import TabItem from '@theme/TabItem';
 
 По умолчанию таблицы создаются только на текущем сервере. Распределенные DDL-запросы реализованы с помощью предложения `ON CLUSTER`, которое [описано отдельно](../../../sql-reference/distributed-ddl.md).
 
+
 ## Синтаксические формы {#syntax-forms}
 
 ### С явной схемой {#with-explicit-schema}
@@ -23,15 +24,15 @@ import TabItem from '@theme/TabItem';
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
-    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT 'комментарий к столбцу'] [compression_codec] [TTL expr1],
-    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT 'комментарий к столбцу'] [compression_codec] [TTL expr2],
+    name1 [type1] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr1] [COMMENT 'comment for column'] [compression_codec] [TTL expr1],
+    name2 [type2] [NULL|NOT NULL] [DEFAULT|MATERIALIZED|EPHEMERAL|ALIAS expr2] [COMMENT 'comment for column'] [compression_codec] [TTL expr2],
     ...
 ) ENGINE = engine
-  [COMMENT 'комментарий к таблице']
+  [COMMENT 'comment for table']
 ```
 
 Создаёт таблицу с именем `table_name` в базе данных `db` или в текущей базе данных, если `db` не задана, со структурой, указанной в скобках, и движком `engine`.
-Структура таблицы — это список описаний столбцов, вторичных индексов и ограничений. Если движок поддерживает [primary key](#primary-key), он указывается как параметр движка таблицы.
+Структура таблицы — это список описаний столбцов, вторичных индексов, проекций и ограничений. Если движок поддерживает [primary key](#primary-key), он указывается как параметр движка таблицы.
 
 В простейшем случае описание столбца — это `name type`. Пример: `RegionID UInt32`.
 
@@ -41,6 +42,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Комментарии могут быть добавлены как для столбцов, так и для таблицы.
 
+
 ### Со схемой, аналогичной другой таблице {#with-a-schema-similar-to-other-table}
 
 ```sql
@@ -48,6 +50,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
 ```
 
 Создает таблицу с такой же структурой, как у другой таблицы. Вы можете указать для таблицы другой движок. Если движок не указан, используется тот же движок, что и для таблицы `db2.name2`.
+
 
 ### Со схемой и данными, клонированными из другой таблицы {#with-a-schema-and-data-cloned-from-another-table}
 
@@ -62,13 +65,15 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
 ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
 ```
 
+
 ### Из табличной функции {#from-a-table-function}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
-Создаёт таблицу с тем же результатом, что и указанная [табличная функция](/sql-reference/table-functions). Созданная таблица также будет работать так же, как соответствующая табличная функция.
+Создаёт таблицу, дающую тот же результат, что и указанная [табличная функция](/sql-reference/table-functions). Созданная таблица также будет работать аналогично соответствующей табличной функции.
+
 
 ### Из запроса SELECT {#from-select-query}
 
@@ -98,6 +103,7 @@ SELECT x, toTypeName(x) FROM t1;
 │ 1 │ String        │
 └───┴───────────────┘
 ```
+
 
 ## Модификаторы NULL и NOT NULL {#null-or-not-null-modifiers}
 
@@ -145,6 +151,7 @@ SELECT * FROM test;
 └────┴─────────────────────┴─────────────────┘
 ```
 
+
 ### MATERIALIZED {#materialized}
 
 `MATERIALIZED expr`
@@ -183,6 +190,7 @@ SELECT * FROM test SETTINGS asterisk_include_materialized_columns=1;
 └────┴─────────────────────┴─────────────────┘
 ```
 
+
 ### EPHEMERAL {#ephemeral}
 
 `EPHEMERAL [expr]`
@@ -211,15 +219,14 @@ SELECT
     hex(hexed)
 FROM test
 FORMAT Vertical;
-```
 
-Строка 1:
+Row 1:
 ──────
 id:         1
 hexed:      Z��
 hex(hexed): 5A90B714
+```
 
-````
 
 ### ALIAS {#alias}
 
@@ -256,7 +263,8 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 ┌─id─┬─size_bytes─┬─size─────┐
 │  1 │    4678899 │ 4.46 MiB │
 └────┴────────────┴──────────┘
-````
+```
+
 
 ## Первичный ключ {#primary-key}
 
@@ -288,6 +296,7 @@ PRIMARY KEY(expr1[, expr2,...]);
 Нельзя совмещать оба подхода в одном запросе.
 :::
 
+
 ## Ограничения {#constraints}
 
 Наряду с описаниями столбцов можно задать ограничения:
@@ -308,9 +317,10 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Добавление большого количества ограничений может негативно повлиять на производительность больших запросов `INSERT`.
 
+
 ### ASSUME {#assume}
 
-Предложение `ASSUME` используется для определения `CONSTRAINT` в таблице, который считается истинным. Это ограничение затем может быть использовано оптимизатором для повышения производительности SQL-запросов.
+Предложение `ASSUME` используется для определения `CONSTRAINT` в таблице, которое предполагается истинным. Это ограничение затем может быть использовано оптимизатором для повышения производительности SQL-запросов.
 
 Рассмотрим пример, где `ASSUME CONSTRAINT` используется при создании таблицы `users_a`:
 
@@ -332,13 +342,14 @@ ORDER BY (name_len, name);
 
 `ASSUME CONSTRAINT` **не обеспечивает выполнение ограничения**, он лишь информирует оптимизатор, что ограничение соблюдается. Если ограничение на самом деле не выполняется, результаты запросов могут быть некорректными. Поэтому следует использовать `ASSUME CONSTRAINT` только в том случае, если вы уверены, что ограничение действительно выполняется.
 
+
 ## Выражение TTL {#ttl-expression}
 
 Определяет срок хранения значений. Может быть задано только для таблиц семейства MergeTree. Для подробного описания см. раздел [TTL для столбцов и таблиц](../../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
 
 ## Кодеки сжатия столбцов {#column_compression_codec}
 
-По умолчанию ClickHouse использует сжатие `lz4` в самостоятельной (self-managed) установке и `zstd` в ClickHouse Cloud.
+По умолчанию ClickHouse использует сжатие `lz4` в самоуправляемой (self-managed) установке и `zstd` в ClickHouse Cloud.
 
 Для семейства движков `MergeTree` вы можете изменить метод сжатия по умолчанию в разделе [compression](/operations/server-configuration-parameters/settings#compression) конфигурации сервера.
 
@@ -381,11 +392,12 @@ ALTER TABLE codec_example MODIFY COLUMN float_value CODEC(Default);
 
 ClickHouse поддерживает кодеки как общего, так и специализированного назначения.
 
+
 ### Кодеки общего назначения {#general-purpose-codecs}
 
 #### NONE {#none}
 
-`NONE` — без сжатия.
+`NONE` — отсутствие сжатия.
 
 #### LZ4 {#lz4}
 
@@ -393,7 +405,7 @@ ClickHouse поддерживает кодеки как общего, так и 
 
 #### LZ4HC {#lz4hc}
 
-`LZ4HC[(level)]` — алгоритм LZ4 HC (high compression, высокое сжатие) с настраиваемым уровнем. Уровень по умолчанию: 9. Значение `level <= 0` приводит к использованию уровня по умолчанию. Возможные уровни: [1, 12]. Рекомендуемый диапазон уровней: [4, 9].
+`LZ4HC[(level)]` — алгоритм LZ4 HC (high compression — высокое сжатие) с настраиваемым уровнем сжатия. Уровень по умолчанию: 9. Значение `level <= 0` приводит к использованию уровня по умолчанию. Возможные уровни: [1, 12]. Рекомендуемый диапазон уровней: [4, 9].
 
 #### ZSTD {#zstd}
 
@@ -411,11 +423,11 @@ ClickHouse поддерживает кодеки как общего, так и 
 * Для сжатия ZSTD&#95;QAT пытается использовать аппаратное устройство Intel® QAT для разгрузки ([QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)). Если такое устройство не найдено, выполняется переход к программному сжатию ZSTD.
 * Распаковка всегда выполняется программно.
 
-#### DEFLATE&#95;QPL {#deflate_qpl}
+#### DEFLATE_QPL {#deflate_qpl}
 
-<CloudNotSupportedBadge />
+<CloudNotSupportedBadge/>
 
-`DEFLATE_QPL` — [алгоритм сжатия Deflate](https://github.com/intel/qpl), реализованный с помощью Intel® Query Processing Library. Применяются некоторые ограничения:
+`DEFLATE_QPL` — [алгоритм сжатия Deflate](https://github.com/intel/qpl), реализованный в Intel® Query Processing Library. Имеет ряд ограничений:
 
 - DEFLATE_QPL отключен по умолчанию и может использоваться только после включения параметра конфигурации [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec).
 - DEFLATE_QPL требует сборку ClickHouse, скомпилированную с использованием инструкций SSE 4.2 (по умолчанию это так). Подробнее см. в разделе [Сборка ClickHouse с DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl).
@@ -461,6 +473,7 @@ CREATE TABLE codec_example
 ENGINE = MergeTree()
 ```
 
+
 ### Кодеки шифрования {#encryption-codecs}
 
 Эти кодеки на самом деле не сжимают данные, а вместо этого шифруют данные на диске. Они доступны только в том случае, если ключ шифрования задан в настройках [encryption](/operations/server-configuration-parameters/settings#encryption). Обратите внимание, что шифрование имеет смысл только в конце цепочек кодеков, потому что зашифрованные данные обычно нельзя сжать сколь‑нибудь эффективным образом.
@@ -469,7 +482,7 @@ ENGINE = MergeTree()
 
 #### AES&#95;128&#95;GCM&#95;SIV {#aes_128_gcm_siv}
 
-`CODEC('AES-128-GCM-SIV')` — Шифрует данные с помощью AES-128 в режиме GCM-SIV согласно [RFC 8452](https://tools.ietf.org/html/rfc8452).
+`CODEC('AES-128-GCM-SIV')` — шифрует данные с помощью AES-128 в режиме GCM-SIV согласно [RFC 8452](https://tools.ietf.org/html/rfc8452).
 
 #### AES-256-GCM-SIV {#aes-256-gcm-siv}
 
@@ -496,7 +509,7 @@ ENGINE = MergeTree ORDER BY x;
 ```
 
 :::note
-Если требуется сжатие, его необходимо явно указать. В противном случае к данным будет применено только шифрование.
+Если нужно применить сжатие, его необходимо явно указать. Иначе к данным будет применено только шифрование.
 :::
 
 **Пример**
@@ -508,6 +521,7 @@ CREATE TABLE mytable
 )
 ENGINE = MergeTree ORDER BY x;
 ```
+
 
 ## Временные таблицы {#temporary-tables}
 
@@ -539,6 +553,7 @@ CREATE [OR REPLACE] TEMPORARY TABLE [IF NOT EXISTS] table_name
 
 Вместо временных таблиц можно использовать таблицы с движком [ENGINE = Memory](../../../engines/table-engines/special/memory.md).
 
+
 ## REPLACE TABLE {#replace-table}
 
 Оператор `REPLACE` позволяет [атомарно](/concepts/glossary#atomicity) обновлять таблицу.
@@ -565,7 +580,7 @@ DROP TABLE myOldTable;
 RENAME TABLE myNewTable TO myOldTable;
 ```
 
-Вместо описанного выше подхода вы также можете использовать `REPLACE` (при использовании движков баз данных по умолчанию), чтобы получить тот же результат:
+Вместо описанного выше подхода вы также можете использовать `REPLACE` (при условии, что вы используете движки баз данных по умолчанию), чтобы получить тот же результат:
 
 ```sql
 REPLACE TABLE myOldTable
@@ -576,6 +591,7 @@ SELECT * FROM myOldTable
 WHERE CounterID <12345;
 ```
 
+
 ### Синтаксис {#syntax}
 
 ```sql
@@ -585,6 +601,7 @@ WHERE CounterID <12345;
 :::note
 Все варианты синтаксиса оператора `CREATE` также применимы к данному оператору. Вызов `REPLACE` для несуществующей таблицы приведёт к ошибке.
 :::
+
 
 ### Примеры: {#examples}
 
@@ -725,17 +742,18 @@ COMMENT 'Comment'
 Запрос:
 
 ```sql
-CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'Временная таблица';
+CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
 Результат:
 
 ```text
-┌─name─┬─comment──────────────┐
-│ t1   │ Временная таблица    │
-└──────┴──────────────────────┘
+┌─name─┬─comment─────────────┐
+│ t1   │ The temporary table │
+└──────┴─────────────────────┘
 ```
+
 
 ## Похожие материалы {#related-content}
 

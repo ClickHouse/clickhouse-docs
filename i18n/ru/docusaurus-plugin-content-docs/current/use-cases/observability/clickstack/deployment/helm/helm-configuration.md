@@ -37,7 +37,7 @@ helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ### Метод 2: Обновление через `helm upgrade` с флагом `--set` {#api-key-set-flag}
 
 ```shell
-helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="ваш-api-ключ-здесь"
+helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
 
 ### Перезапустите поды, чтобы применить изменения {#restart-pods}
@@ -108,7 +108,7 @@ hyperdx:
 
 ```yaml
 hyperdx:
-  frontendUrl: "https://hyperdx.yourdomain.com"  # Должен совпадать с хостом входного шлюза
+  frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
   ingress:
     enabled: true
     host: "hyperdx.yourdomain.com"
@@ -240,7 +240,7 @@ hyperdx:
 
 ```shell
 kubectl get ingress -A
-kubectl describe ingress <имя-входного-шлюза>
+kubectl describe ingress <ingress-name>
 ```
 
 **Проверьте логи контроллера входного шлюза:**
@@ -255,7 +255,7 @@ kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx
 
 ```shell
 curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
-# Должен вернуть Content-Type: application/javascript {#should-return-content-type-applicationjavascript}
+# Should return Content-Type: application/javascript
 ```
 
 **Инструменты разработчика браузера:**

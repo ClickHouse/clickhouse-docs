@@ -142,7 +142,7 @@ SELECT * FROM system.query_log WHERE type = 'QueryFinish' ORDER BY query_start_t
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 hostname:                              clickhouse.eu-central1.internal
 type:                                  QueryFinish

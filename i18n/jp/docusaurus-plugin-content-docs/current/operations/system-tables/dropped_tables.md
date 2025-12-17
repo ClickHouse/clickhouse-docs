@@ -32,7 +32,7 @@ FROM system.dropped_tables\G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 index:                 0
 database:              default

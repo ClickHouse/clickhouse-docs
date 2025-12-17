@@ -2,7 +2,7 @@
 sidebar_label: 'BigQuery в ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
-description: 'Пользователи могут осуществлять приём данных из BigQuery в ClickHouse с помощью шаблона Google Dataflow'
+description: 'Вы можете осуществлять приём данных из BigQuery в ClickHouse с помощью шаблона Google Dataflow'
 title: 'Шаблон Dataflow: BigQuery в ClickHouse'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
@@ -17,6 +17,7 @@ import dataflow_template_initial_form from '@site/static/images/integrations/dat
 import dataflow_extended_template_form from '@site/static/images/integrations/data-ingestion/google-dataflow/extended_template_form.png'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 
 # Шаблон Dataflow BigQuery to ClickHouse {#dataflow-bigquery-to-clickhouse-template}
 
@@ -56,7 +57,7 @@ import TabItem from '@theme/TabItem';
 | `KMSEncryptionKey`      | При чтении из BigQuery с использованием источника-запроса используйте этот ключ Cloud KMS для шифрования всех создаваемых временных таблиц. Например, `projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`.                                                                                                         |          |                                                                                                                                                                                                                                                                  |
 
 :::note
-Значения по умолчанию для всех параметров `ClickHouseIO` описаны в разделе [коннектора Apache Beam `ClickHouseIO`](/integrations/apache-beam#clickhouseiowrite-parameters)
+Значения по умолчанию для всех параметров `ClickHouseIO` можно найти в [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters)
 :::
 
 ## Схема исходных и целевых таблиц {#source-and-target-tables-schema}
@@ -175,7 +176,7 @@ job:
 Перейдите на вкладку [Dataflow Jobs](https://console.cloud.google.com/dataflow/jobs) в Google Cloud Console,
 чтобы отслеживать статус задания. Там вы найдете подробную информацию о задании, включая прогресс и возможные ошибки:
 
-<Image img={dataflow_inqueue_job} size="lg" border alt="Консоль DataFlow с запущенным заданием BigQuery → ClickHouse" />
+<Image img={dataflow_inqueue_job} size="lg" border alt="Консоль Dataflow с выполняющимся заданием BigQuery to ClickHouse" />
 
 ## Устранение неполадок {#troubleshooting}
 

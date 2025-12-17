@@ -52,11 +52,11 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     <password_complexity>
         <rule>
             <pattern>.{12}</pattern>
-            <message>长度至少为 12 个字符</message>
+            <message>be at least 12 characters long</message>
         </rule>
         <rule>
             <pattern>\p{N}</pattern>
-            <message>至少包含 1 个数字</message>
+            <message>contain at least 1 numeric character</message>
         </rule>
     </password_complexity>
 </clickhouse>

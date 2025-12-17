@@ -1,7 +1,7 @@
 ---
 title: '日付と時刻のデータ型 - 時系列'
 sidebar_label: '日付と時刻のデータ型'
-description: 'ClickHouse における時系列向けの日付と時刻のデータ型。'
+description: 'ClickHouse における時系列データ向けの日付・時刻データ型。'
 slug: /use-cases/time-series/date-time-data-types
 keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'データ型', '時間データ', 'タイムスタンプ']
 show_related_blogs: true
@@ -50,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-これにより、カラムの型に応じて時刻データが自動的に設定されます：
+これにより、各カラムの型に応じた時刻データが自動的に格納されます。
 
 ```sql
 SELECT * FROM dates
@@ -84,7 +84,7 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-DDL でタイムゾーンを定義したので、異なるタイムゾーンの時刻を挿入できるようになりました。
+DDL でタイムゾーンを定義したので、異なるタイムゾーンの日時を挿入できるようになりました。
 
 ```sql
 INSERT INTO dtz 
@@ -101,7 +101,7 @@ SELECT 2,
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-それでは、テーブルの中身を確認してみましょう。
+それでは、テーブルの内容を確認してみましょう。
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -137,7 +137,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 ClickHouse には、異なるデータ型同士を変換するための一連の関数も用意されています。
 
-たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#todate) を使って、`DateTime` の値を `Date` 型に変換できます。
+たとえば、[`toDate`](/sql-reference/functions/type-conversion-functions#toDate) を使って、`DateTime` の値を `Date` 型に変換できます。
 
 ```sql
 SELECT
@@ -157,7 +157,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-[`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) を使用して、`DateTime` を `DateTime64` に変換できます。
+[`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) を使用して、`DateTime` を `DateTime64` に変換できます。
 
 ```sql
 SELECT
@@ -177,7 +177,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-[`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) を使用すると、`Date` または `DateTime64` から `DateTime` に変換し直すことができます。
+[`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) を使用すると、`Date` または `DateTime64` を `DateTime` に戻すことができます。
 
 ```sql
 SELECT

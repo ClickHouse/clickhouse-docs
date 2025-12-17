@@ -20,6 +20,7 @@ keywords: ['トラブルシューティング', 'デバッグ', '問題解決', 
 sudo apt-get install gnupg
 ```
 
+
 ### apt-get で ClickHouse リポジトリから deb パッケージを取得できない {#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
 
 1. ファイアウォール設定を確認します。
@@ -27,7 +28,7 @@ sudo apt-get install gnupg
 
 ### apt-get で ClickHouse リポジトリから deb パッケージを更新できない {#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get}
 
-この問題は、GPG キーが変更された際に発生する可能性があります。
+この問題は、GPG キーが変更された場合に発生する可能性があります。
 
 リポジトリ設定を更新するには、[セットアップ](/install/debian_ubuntu) ページの手順に従ってください。
 
@@ -36,18 +37,18 @@ sudo apt-get install gnupg
 表示される警告メッセージは、次のいずれかになります。
 
 ```shell
-N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' はアーキテクチャ 'i386' に対応していないため、設定ファイル 'main/binary-i386/Packages' の取得をスキップします
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```shell
-E: https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz の取得に失敗しました  ファイルサイズが想定と異なります (30451 != 28154)。ミラー同期中ですか?
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```shell
-E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Origin' 値が 'Artifactory' から 'ClickHouse' に変更されました
-E: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Label' 値が 'Artifactory' から 'ClickHouse' に変更されました
-N: リポジトリ 'https://packages.clickhouse.com/deb stable InRelease' の 'Suite' 値が 'stable' から '' に変更されました
-N: このリポジトリの更新を適用するには、事前に明示的な承認が必要です。詳細は apt-secure(8) マニュアルページを参照してください。
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```shell
@@ -63,6 +64,7 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
+
 ### 署名エラーにより Yum でパッケージを取得できない {#cant-get-packages-with-yum-because-of-wrong-signature}
 
 考えられる原因: キャッシュが不正です。2022-09 に GPG キーを更新した後に破損した可能性があります。
@@ -74,14 +76,15 @@ sudo find /var/lib/yum/repos/ /var/cache/yum/ -name 'clickhouse-*' -type d -exec
 sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```
 
-その後は、[インストールガイド](/install/redhat)に従ってください
+その後は、[インストールガイド](/install/redhat)に従ってください。
+
 
 ## サーバーへの接続 {#connecting-to-the-server}
 
 考えられる問題:
 
-* サーバーが起動していない。
-* 想定外または誤った設定パラメータ。
+- サーバーが起動していない。
+- 想定外または誤った設定パラメータ。
 
 ### サーバーが起動していない {#server-is-not-running}
 
@@ -91,11 +94,12 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 sudo service clickhouse-server status
 ```
 
-サーバーが起動していない場合は、次のコマンドで起動してください。
+サーバーが起動していない場合は、次のコマンドを実行して起動してください。
 
 ```shell
 sudo service clickhouse-server start
 ```
+
 
 #### ログを確認する {#check-the-logs}
 
@@ -109,46 +113,49 @@ sudo service clickhouse-server start
 `clickhouse-server` の起動が設定エラーで失敗した場合は、エラー内容の説明とともに `<Error>` という文字列を含むログ行が出力されます。例:
 
 ```plaintext
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 外部ディクショナリ 'event2id' の再読み込みに失敗しました: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
-ファイルの末尾にエラーが表示されていない場合は、次の文字列以降についてファイル全体を確認してください。
+ファイルの末尾にエラーが表示されていない場合は、次の文字列が出力されている箇所からファイル全体を確認してください。
 
 ```plaintext
-<Information> Application: 起動中。
+<Information> Application: starting up.
 ```
 
 サーバー上で `clickhouse-server` の2つ目のインスタンスを起動しようとすると、次のログが出力されます：
 
 ```plaintext
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : ClickHouse 19.1.0 をリビジョン 54413 で起動しています
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: 起動中
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: ステータスファイル ./status は既に存在します - 不正な再起動です。内容:
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
 PID: 8510
-開始時刻: 2019-01-11 15:24:23
+Started at: 2019-01-11 15:24:23
 Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: ファイル ./status をロックできません。同じディレクトリ内で別のサーバーインスタンスが既に実行されています。
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: シャットダウン中
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: サブシステムの初期化を解除中: ロギングサブシステム
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: SignalListener スレッドを停止
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-#### system.d ログの確認 {#see-systemd-logs}
 
-`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `system.d` のログを確認できます。
+#### systemd ログの確認 {#see-systemd-logs}
+
+`clickhouse-server` のログに有用な情報が含まれていない場合、またはログ自体が出力されていない場合は、次のコマンドを使用して `systemd` のログを確認できます。
 
 ```shell
 sudo journalctl -u clickhouse-server
 ```
 
-#### インタラクティブ モードで clickhouse-server を起動する {#start-clickhouse-server-in-interactive-mode}
+
+#### 対話モードで clickhouse-server を起動する {#start-clickhouse-server-in-interactive-mode}
 
 ```shell
 sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-このコマンドは、自動起動スクリプトの標準パラメータでサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+このコマンドは、自動起動スクリプトと同じ標準パラメータでサーバーをインタラクティブ アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+
 
 ### 設定パラメータ {#configuration-parameters}
 
@@ -189,6 +196,7 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 `clickhouse-client` を `stack-trace` パラメータ付きで起動すると、ClickHouse はエラーの説明とともにサーバー側のスタックトレースを返します。
 
 接続が切断されたことを示すメッセージが表示されることがあります。この場合は、クエリを再実行してみてください。クエリを実行するたびに接続が切断される場合は、サーバーログにエラーがないか確認してください。
+
 
 ## クエリ処理の効率 {#efficiency-of-query-processing}
 

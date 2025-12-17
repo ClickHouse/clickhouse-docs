@@ -70,7 +70,7 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
 
   テーブルへの1億行のロードには数分かかります。
 
-  または、個別のSQLステートメントを実行して、特定の数のファイルや行をロードすることもできます。
+  または、個別のSQL文を実行して、特定の数のファイルや行をロードすることもできます。
 
   ```sql
   INSERT INTO laion_5b_100m SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/laion-5b/laion5b_100m_part_1_of_10.parquet');
@@ -88,11 +88,11 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
 
-  id = 9999 の行のベクトルは、デリレストランの画像の埋め込みベクトルです。
+  The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
   ```
 
   ```response title="Response"
-  ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
    1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
    2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
    3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
@@ -116,15 +116,15 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
       └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
   #highlight-next-line
-  20行を取得。経過時間: 3.968秒。処理: 1億380万行、320.81 GB (2,530万行/秒、80.84 GB/秒)
+  20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
   ```
 
-  クエリのレイテンシを記録し、ANN（ベクトルインデックス使用時）のクエリレイテンシと比較できるようにしてください。
+  Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
   1億行のデータの場合、ベクトルインデックスを使用しない上記のクエリは、完了までに数秒から数分かかる可能性があります。
 
   ### ベクトル類似性インデックスを構築する
 
-  以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`列にベクトル類似度インデックスを定義および構築します：
+  以下のSQLを実行して、`laion_5b_100m`テーブルの`vector`カラムにベクトル類似度インデックスを定義および構築します:
 
   ```sql
   ALTER TABLE laion_5b_100m ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 768, 'bf16', 64, 512);
@@ -133,10 +133,11 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
   ```
 
   インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-  上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-  これらのパラメータの最適な値を選択する際は、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、慎重に決定する必要があります。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
-  完全な1億件のデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅によって、数時間を要する場合があります。
+  完全な1億件のデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、数時間を要する場合があります。
 
   ### ANN検索を実行する
 
@@ -147,6 +148,7 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
   FROM laion_5b_100m
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
+
   ```
 
   ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
@@ -169,28 +171,28 @@ ClickHouse は、1 億個のベクトルからなるサブセットを `S3` バ�
   device = "cuda" if torch.cuda.is_available() else "cpu"
   model, preprocess = clip.load("ViT-L/14", device=device)
 
-  # 犬と猫の両方が含まれる画像を検索
+  # Search for images that contain both a dog and a cat
   text = clip.tokenize(["a dog and a cat"]).to(device)
 
   with torch.no_grad():
       text_features = model.encode_text(text)
       np_arr = text_features.detach().cpu().numpy()
 
-      # ここでClickHouseの認証情報を渡す
+      # Pass ClickHouse credentials here
       chclient = clickhouse_connect.get_client()
 
       params = {'v1': list(np_arr[0])}
       result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
                               parameters=params)
 
-      # 結果をブラウザで開けるシンプルなHTMLページに書き出す。一部のURLは無効になっている可能性がある。
+      # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
       print("<html>")
       for r in result.result_rows:
           print("<img src = ", r[1], 'width="200" height="200">')
       print("</html>")
   ```
 
-  上記の検索結果を以下に示します：
+  上記の検索結果を以下に示します:
 
-  <Image img={search_results_image} alt="ベクトル類似検索結果" size="md" />
+  <Image img={search_results_image} alt="ベクトル類似検索の結果" size="md" />
 </VerticalStepper>

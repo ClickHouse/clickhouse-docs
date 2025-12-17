@@ -46,14 +46,14 @@ INSERT INTO user_shopping_sessions VALUES
     ('2024-01-02', 'new_customer', ['tablet_a', 'keyboard_c', 'tablet_a'], 15),
     ('2024-01-02', 'premium', ['smartphone_x', 'smartwatch_b', 'headphones_y'], 22);
 
--- セグメントタイプとエンゲージメントレベル別にユニーク商品閲覧数を集計
+-- Count unique products viewed by segment type and engagement level
 SELECT 
     session_date,
-    -- 新規顧客の長時間セッションにおけるユニーク商品閲覧数を集計
+    -- Count unique products viewed in long sessions by new customers
     uniqArrayIf(viewed_products, user_segment = 'new_customer' AND session_duration_minutes > 10) AS new_customer_engaged_products,
-    -- リピーター顧客によるユニーク商品閲覧数を集計
+    -- Count unique products viewed by returning customers
     uniqArrayIf(viewed_products, user_segment = 'returning') AS returning_customer_products,
-    -- 全セッションにおけるユニーク商品閲覧数を集計
+    -- Count unique products viewed across all sessions
     uniqArray(viewed_products) AS total_unique_products
 FROM user_shopping_sessions
 GROUP BY session_date

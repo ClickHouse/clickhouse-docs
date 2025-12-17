@@ -28,7 +28,7 @@ doc_type: 'guide'
 
 ```sql title="Query"
 SELECT replaceOne(
-    '顧客のJohn Smithがアカウントについて問い合わせてきました',
+    'Customer John Smith called about his account',
     'John Smith',
     '[CUSTOMER_NAME]'
 ) AS anonymized_text;
@@ -36,7 +36,7 @@ SELECT replaceOne(
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────┐
-│ 顧客 [CUSTOMER_NAME] がアカウントについて問い合わせました │
+│ Customer [CUSTOMER_NAME] called about his account │
 └───────────────────────────────────────────────────┘
 ```
 
@@ -53,7 +53,7 @@ SELECT
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────────────────────────────────────────┐
-│ [CUSTOMER_NAME] Smithが電話をかけてきました。その後、[CUSTOMER_NAME]と[CUSTOMER_NAME]も電話をかけてきました。 │
+│ [CUSTOMER_NAME] Smith called. Later, [CUSTOMER_NAME] and [CUSTOMER_NAME] also called. │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -329,7 +329,7 @@ ClickHouse OSS のユーザーで、特にログデータをマスクしたい�
 ```yaml
 <query_masking_rules>
     <rule>
-        <name>SSNを非表示</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>

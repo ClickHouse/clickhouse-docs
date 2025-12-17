@@ -261,7 +261,7 @@ WHERE pointInPolygon((lon, lat), (SELECT * FROM moscow))
 │  310463 │
 └─────────┘
 
-返回 1 行。耗时:0.067 秒。处理了 4328 万行,692.42 MB(每秒 6.4583 亿行,10.33 GB/秒)。
+1 rows in set. Elapsed: 0.067 sec. Processed 43.28 million rows, 692.42 MB (645.83 million rows/s., 10.33 GB/s.)
 ```
 
 ## 查看模式 {#review-of-the-schema}

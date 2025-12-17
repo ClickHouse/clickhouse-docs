@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # ODBC 表引擎 {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -28,7 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 )
-ENGINE = ODBC(数据源, external_database, external_table)
+ENGINE = ODBC(datasource, external_database, external_table)
 ```
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细说明。
@@ -36,7 +37,7 @@ ENGINE = ODBC(数据源, external_database, external_table)
 表结构可以与源表结构不同：
 
 * 列名应与源表中的列名相同，但你可以只使用其中的一部分列，且顺序可以任意。
-* 列类型可以与源表中的类型不同。ClickHouse 会尝试将值[转换](/sql-reference/functions/type-conversion-functions#cast)为 ClickHouse 的数据类型。
+* 列类型可以与源表中的类型不同。ClickHouse 会尝试将值[转换](/sql-reference/functions/type-conversion-functions#CAST)为 ClickHouse 的数据类型。
 * [external&#95;table&#95;functions&#95;use&#95;nulls](/operations/settings/settings#external_table_functions_use_nulls) 设置定义了如何处理 `Nullable` 列。默认值：1。若为 0，则表函数不会创建 `Nullable` 列，而是插入默认值来替代 `NULL`。这同样适用于数组中的 `NULL` 值。
 
 **引擎参数**
@@ -46,6 +47,7 @@ ENGINE = ODBC(数据源, external_database, external_table)
 * `external_table` — `external_database` 中表的名称。
 
 这些参数也可以通过[命名集合](operations/named-collections.md)传递。
+
 
 ## 使用示例 {#usage-example}
 
@@ -84,7 +86,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 已连接！                            |
+| Connected!                            |
 |                                       |
 ...
 ```
@@ -115,7 +117,7 @@ mysql> select * from test.test;
 1 row in set (0,00 sec)
 ```
 
-ClickHouse 中用于从 MySQL 表读取数据的表：
+在 ClickHouse 中用于从 MySQL 表读取数据的表：
 
 ```sql
 CREATE TABLE odbc_t
@@ -135,6 +137,7 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
+
 
 ## 另请参阅 {#see-also}
 

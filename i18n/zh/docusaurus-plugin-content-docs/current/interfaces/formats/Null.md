@@ -62,7 +62,7 @@ FORMAT Null
 此查询会处理数据，但不会产生任何输出。
 
 ```response
-结果集包含 0 行。耗时：0.154 秒。
+0 rows in set. Elapsed: 0.154 sec.
 ```
 
 ## 格式设置 {#format-settings}

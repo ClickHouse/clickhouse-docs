@@ -31,7 +31,7 @@ SELECT * FROM system.instrumentation FORMAT Vertical;
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 id:            0
 function_id:   231280
@@ -41,7 +41,7 @@ entry_type:    Entry
 symbol:        DB::QueryMetricLog::startQuery(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::chrono::time_point<std::__1::chrono::system_clock, std::__1::chrono::duration<long long, std::__1::ratio<1l, 1000000l>>>, unsigned long)
 parameters:    ['test']
 
-Строка 2:
+Row 2:
 ──────
 id:            1
 function_id:   231280
@@ -51,7 +51,7 @@ entry_type:    EntryAndExit
 symbol:        DB::QueryMetricLog::startQuery(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::chrono::time_point<std::__1::chrono::system_clock, std::__1::chrono::duration<long long, std::__1::ratio<1l, 1000000l>>>, unsigned long)
 parameters:    []
 
-Строка 3:
+Row 3:
 ──────
 id:            2
 function_id:   231280
@@ -61,7 +61,7 @@ entry_type:    Exit
 symbol:        DB::QueryMetricLog::startQuery(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, std::__1::chrono::time_point<std::__1::chrono::system_clock, std::__1::chrono::duration<long long, std::__1::ratio<1l, 1000000l>>>, unsigned long)
 parameters:    [0.3]
 
-Получено 3 строки. Прошло: 0.302 сек.
+3 rows in set. Elapsed: 0.302 sec.
 ```
 
 **См. также**

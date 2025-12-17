@@ -24,11 +24,11 @@ keywords: ['汎用 mysql', 'clickpipes', 'バイナリログ', 'ssl/tls', 'mysql
 MySQL インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認します。
 
 ```sql
-log_bin = ON                        -- デフォルト値
-binlog_format = ROW                 -- デフォルト値
-binlog_row_image = FULL             -- デフォルト値
+log_bin = ON                        -- default value
+binlog_format = ROW                 -- default value
+binlog_row_image = FULL             -- default value
 binlog_row_metadata = FULL
-binlog_expire_logs_seconds = 86400  -- 1日以上; デフォルトは30日
+binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
 これらの設定を確認するには、次の SQL コマンドを実行してください。
@@ -60,11 +60,11 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 MySQL 5.7 インスタンスでバイナリログを有効にするには、次の設定が行われていることを確認してください。
 
 ```sql
-server_id = 1            -- 1以上; 0以外の任意の値
+server_id = 1            -- or greater; anything but 0
 log_bin = ON
-binlog_format = ROW      -- デフォルト値
-binlog_row_image = FULL  -- デフォルト値
-expire_logs_days = 1     -- 1以上; 0を指定するとログが永久に保持されます
+binlog_format = ROW      -- default value
+binlog_row_image = FULL  -- default value
+expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
 これらの設定を確認するには、次の SQL コマンドを実行します。

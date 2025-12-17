@@ -101,7 +101,7 @@ async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-    # 输出：
+    # Output:
     # [('INFORMATION_SCHEMA',)]
 
 asyncio.run(main())

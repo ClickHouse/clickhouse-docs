@@ -21,10 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
 # 通过用户界面备份和恢复 {#ui-experience}
-
-
 
 ## AWS {#AWS}
 
@@ -62,7 +59,7 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
       "Sid": "backup service",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
+        "AWS":  "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
       },
       "Action": "sts:AssumeRole"
     }
@@ -80,18 +77,33 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
-      "Resource": ["arn:aws:s3:::byob-ui"],
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:Get*", "s3:List*", "s3:PutObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*"],
+      "Action": [
+        "s3:Get*",
+        "s3:List*",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:DeleteObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*/.lock"],
+      "Action": [
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*/.lock"
+      ],
       "Effect": "Allow"
     }
   ]
@@ -148,7 +160,6 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 
 ##### 创建新服务以进行恢复 {#create-new-service-to-restore-to}
 
-
 创建一个新服务用于恢复备份。
 
 ##### 添加服务 ARN {#add-service-arn}
@@ -182,7 +193,6 @@ AWS 使用基于角色的身份验证,因此需要创建一个 IAM 角色,使 Cl
 在新创建服务的 SQL 控制台中运行恢复命令以恢复备份。
 
 </VerticalStepper>
-
 
 ## GCP {#gcp}
 
@@ -284,7 +294,6 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份，如
 如果您将备份移动到其他位置，则需要自定义恢复命令以引用新位置。
 :::
 
-
 :::tip ASYNC 命令
 对于 Restore 命令，您可以选择在末尾添加 `ASYNC` 命令来处理大型恢复操作。
 这样可以使恢复过程异步执行，即使连接中断，恢复操作也会继续运行。
@@ -298,7 +307,6 @@ Backups 页面应在单独的表中显示您的存储桶中的这些备份，如
 在新创建的服务的 SQL 控制台中运行恢复命令来恢复备份。
 
 </VerticalStepper>
-
 
 ## Azure {#azure}
 

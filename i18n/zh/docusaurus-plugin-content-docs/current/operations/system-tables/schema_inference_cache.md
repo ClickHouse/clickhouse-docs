@@ -34,10 +34,10 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 假设我们有一个名为 `data.jsonl` 的文件，其内容如下：
 
 ```json
-{"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["足球", "烹饪", "音乐"]}
-{"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["网球", "艺术"]}
-{"id" :  3, "age" :  32, "name" :  "Lana", "hobbies" :  ["健身", "阅读", "购物"]}
-{"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["电影", "跳伞"]}
+{"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
+{"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
+{"id" :  3, "age" :  32, "name" :  "Lana", "hobbies" :  ["fitness", "reading", "shopping"]}
+{"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["movies", "skydiving"]}
 ```
 
 :::tip
@@ -73,14 +73,14 @@ FORMAT Vertical
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
-存储:                   File
-来源:                   /home/droscigno/user_files/data.jsonl
-格式:                   JSONEachRow
-附加格式信息:           schema_inference_hints=, max_rows_to_read_for_schema_inference=25000, schema_inference_make_columns_nullable=true, try_infer_integers=false, try_infer_dates=true, try_infer_datetimes=true, try_infer_numbers_from_strings=true, read_bools_as_numbers=true, try_infer_objects=false
-注册时间:               2022-12-29 17:49:52
-模式:                   id Nullable(Float64), age Nullable(Float64), name Nullable(String), hobbies Array(Nullable(String))
+storage:                File
+source:                 /home/droscigno/user_files/data.jsonl
+format:                 JSONEachRow
+additional_format_info: schema_inference_hints=, max_rows_to_read_for_schema_inference=25000, schema_inference_make_columns_nullable=true, try_infer_integers=false, try_infer_dates=true, try_infer_datetimes=true, try_infer_numbers_from_strings=true, read_bools_as_numbers=true, try_infer_objects=false
+registration_time:      2022-12-29 17:49:52
+schema:                 id Nullable(Float64), age Nullable(Float64), name Nullable(String), hobbies Array(Nullable(String))
 ```
 
 **另请参阅**

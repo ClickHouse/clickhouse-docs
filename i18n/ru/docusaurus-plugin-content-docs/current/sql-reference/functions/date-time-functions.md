@@ -1219,7 +1219,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**Псевдонимы**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**Псевдонимы**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **Аргументы**
 
@@ -1261,7 +1261,7 @@ SELECT dateDiff('hour', toDateTime('2018-01-01 22:00:00'), toDateTime('2018-01-0
 └─────┘
 ```
 
-**Вычисление разницы между датами в разных единицах измерения**
+**Вычисление разницы между датами в разных единицах времени**
 
 ```sql title=Query
 SELECT
@@ -1277,6 +1277,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │          1 │         1 │
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
+
 
 ## dateName {#dateName}
 
@@ -1411,7 +1412,7 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 
 `formatDateTime` использует стиль формата datetime MySQL, см. [документацию MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
-Обратной операцией для этой функции является [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime).
+Обратной операцией для этой функции является [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parseDateTime).
 
 Используя подстановочные поля, вы можете задать шаблон для результирующей строки.
 Пример столбца в таблице ниже показывает результат форматирования для `2018-01-02 22:33:44`.
@@ -1471,6 +1472,7 @@ formatDateTime(datetime, format[, timezone])
 **Синонимы**: `DATE_FORMAT`
 
 **Аргументы**
+
 
 * `datetime` — Дата или дата и время для форматирования. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
 * `format` — Строка формата со строками подстановки. [`String`](/sql-reference/data-types/string)
@@ -1539,7 +1541,7 @@ LIMIT 10
 
 Аналогична `formatDateTime`, за исключением того, что форматирует дату и время в стиле Joda вместо стиля MySQL. См. [документацию Joda Time](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 
-Обратная операция для этой функции — [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax).
+Обратная операция для этой функции — [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parseDateTimeInJodaSyntax).
 
 Используя поля подстановки, вы можете задать шаблон для результирующей строки.
 
@@ -1600,6 +1602,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 │ 2010-01-04 12:34:56                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
@@ -1795,7 +1798,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 Её можно вызывать двумя способами:
 
-* Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), функция возвращает значение типа [`DateTime`](../data-types/datetime.md), т.е. ведёт себя так же, как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+* Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), функция возвращает значение типа [`DateTime`](../data-types/datetime.md), т.е. ведёт себя так же, как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 * Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — строка формата-константа, а третий аргумент — необязательная строка часового пояса-константа, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя так же, как [`formatDateTime`](#formatDateTime).
   В этом случае используется [стиль форматирования даты и времени MySQL](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format).
 
@@ -1832,7 +1835,7 @@ SELECT fromUnixTimestamp(423543535)
 └──────────────────────────────┘
 ```
 
-**Преобразование Unix‑метки времени с форматированием**
+**Преобразование Unix‑метки времени в заданном формате**
 
 ```sql title=Query
 SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
@@ -1844,6 +1847,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 └─────────────────────┘
 ```
 
+
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
 Введена в версии v23.1
@@ -1852,7 +1856,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 Функцию можно вызывать двумя способами:
 
-Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), возвращается значение типа [`DateTime`](../data-types/datetime.md), т.е. функция ведёт себя как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime).
+Если передан один аргумент типа [`Integer`](../data-types/int-uint.md), возвращается значение типа [`DateTime`](../data-types/datetime.md), т.е. функция ведёт себя как [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime).
 
 Если переданы два или три аргумента, где первый аргумент — значение типа [`Integer`](../data-types/int-uint.md), [`Date`](../data-types/date.md), [`Date32`](../data-types/date32.md), [`DateTime`](../data-types/datetime.md) или [`DateTime64`](../data-types/datetime64.md), второй аргумент — константная строка формата, а третий аргумент — необязательная константная строка часового пояса, функция возвращает значение типа [`String`](../data-types/string.md), т.е. ведёт себя как [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax). В этом случае используется [стиль формата даты и времени Joda](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
 
@@ -1886,6 +1890,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 │ 2009-02-11 06:42:23 │
 └─────────────────────┘
 ```
+
 
 ## makeDate {#makeDate}
 
@@ -3538,6 +3543,61 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 │                                        10 │
 └───────────────────────────────────────────┘
 ```
+
+## toISOWeek {#toISOWeek}
+
+Введена в версии: v20.1
+
+Возвращает номер недели по ISO для даты или даты со временем.
+
+Это функция совместимости, эквивалентная `toWeek(date, 3)`.
+ISO‑недели начинаются с понедельника, а первая неделя года — это неделя, содержащая 4 января.
+Согласно ISO 8601, номера недель находятся в диапазоне от 1 до 53.
+
+Обратите внимание, что даты вблизи начала или конца года могут возвращать номер недели из предыдущего или следующего года. Например,
+29 декабря 2025 года относится к 1‑й неделе, потому что эта дата попадает в первую неделю, которая содержит 4 января 2026 года.
+
+**Синтаксис**
+
+```sql
+toISOWeek(datetime[, timezone])
+```
+
+**Аргументы**
+
+* `datetime` — дата или дата и время, из которой нужно получить номер ISO‑недели. [`Date`](/sql-reference/data-types/date) или [`DateTime`](/sql-reference/data-types/datetime) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — необязательный параметр. Часовой пояс. [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает номер ISO‑недели в соответствии со стандартом ISO 8601. Возвращает число от 1 до 53. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Получение номеров ISO‑недель**
+
+```sql title=Query
+SELECT toDate('2016-12-27') AS date, toISOWeek(date) AS isoWeek
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┐
+│ 2016-12-27 │      52 │
+└────────────┴─────────┘
+```
+
+**ISO‑неделя может приходиться на другой год**
+
+```sql title=Query
+SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS year
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┬─year─┐
+│ 2025-12-29 │       1 │ 2025 │
+└────────────┴─────────┴──────┘
+```
+
 
 ## toISOYear {#toISOYear}
 
@@ -5218,7 +5278,7 @@ from_date32:     1509840000
 Не имеет значения, сколько дней нового года приходится на эту неделю, даже если это был всего один день.
 Т. е. если последняя неделя декабря содержит 1 января следующего года, она будет неделей 1 следующего года.
 
-Первый аргумент также может быть задан как [`String`](../data-types/string.md) в формате, поддерживаемом функцией [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, на которую рассчитывают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависимой от новых настроек совместимости с MySQL и так как разбор строк в целом является медленной операцией, рекомендуется не использовать его.
+Первый аргумент также может быть задан как [`String`](../data-types/string.md) в формате, поддерживаемом функцией [`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, на которую рассчитывают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависимой от новых настроек совместимости с MySQL и так как разбор строк в целом является медленной операцией, рекомендуется не использовать его.
 
 **Синтаксис**
 
@@ -5251,6 +5311,7 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 │ 2016-12-27 │    52 │    52 │     1 │
 └────────────┴───────┴───────┴───────┘
 ```
+
 
 ## toYYYYMM {#toYYYYMM}
 
@@ -5439,7 +5500,7 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 
 Предупреждение: номер недели, возвращаемый `toYearWeek()`, может отличаться от номера, который возвращает `toWeek()`. Функция `toWeek()` всегда возвращает номер недели в контексте указанного года, и если `toWeek()` возвращает `0`, `toYearWeek()` возвращает значение, соответствующее последней неделе предыдущего года. См. `prev_yearWeek` в примере ниже.
 
-Первый аргумент также может быть передан как [`String`](../data-types/string.md) в формате, поддерживаемом [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, которой ожидают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависящей от новых настроек совместимости с MySQL, а разбор строк в целом является медленным, рекомендуется не использовать его.
+Первый аргумент также может быть передан как [`String`](../data-types/string.md) в формате, поддерживаемом [`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort). Поддержка строковых аргументов существует только по причинам совместимости с MySQL, которой ожидают некоторые сторонние инструменты. Поскольку в будущем поддержка строковых аргументов может быть сделана зависящей от новых настроек совместимости с MySQL, а разбор строк в целом является медленным, рекомендуется не использовать его.
 
 **Синтаксис**
 
@@ -5472,6 +5533,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 │ 2016-12-27 │    201652 │    201652 │    201701 │        202152 │
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
+
 
 ## today {#today}
 

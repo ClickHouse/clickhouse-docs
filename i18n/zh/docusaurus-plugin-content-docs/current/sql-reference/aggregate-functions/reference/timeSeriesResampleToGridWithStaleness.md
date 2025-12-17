@@ -30,17 +30,17 @@ doc_type: 'reference'
 
 ```sql
 WITH
-    -- 注意：140 和 190 之间的间隔用于展示在给定 staleness 窗口参数下，ts = 150、165、180 的值是如何被填充的
+    -- NOTE: the gap between 140 and 190 is to show how values are filled for ts = 150, 165, 180 according to staleness window parameter
     [110, 120, 130, 140, 190, 200, 210, 220, 230]::Array(DateTime) AS timestamps,
-    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- 与上方 timestamps 一一对应的值数组
-    90 AS start_ts,       -- 时间戳网格起点
-    90 + 120 AS end_ts,   -- 时间戳网格终点
-    15 AS step_seconds,   -- 时间戳网格的步长
-    30 AS window_seconds  -- “staleness” 时间窗口
+    [1, 1, 3, 4, 5, 5, 8, 12, 13]::Array(Float32) AS values, -- array of values corresponding to timestamps above
+    90 AS start_ts,       -- start of timestamp grid
+    90 + 120 AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    30 AS window_seconds  -- "staleness" window
 SELECT timeSeriesResampleToGridWithStaleness(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value)
 FROM
 (
-    -- 此子查询将 timestamps 和 values 数组展开为多行，每行包含 `timestamp` 和 `value`
+    -- This subquery converts arrays of timestamps and values into rows of `timestamp`, `value`
     SELECT
         arrayJoin(arrayZip(timestamps, values)) AS ts_and_val,
         ts_and_val.1 AS timestamp,

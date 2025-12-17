@@ -71,16 +71,16 @@ GRANT CREATE TEMPORARY TABLE, S3 ON *.* TO dlt;
 
 ```bash
 [destination.clickhouse.credentials]
-database = "dlt"                         # 您创建的数据库名称
-username = "dlt"                         # ClickHouse 用户名,默认通常为 "default"
-password = "Dlt*12345789234567"          # ClickHouse 密码(如有)
-host = "localhost"                       # ClickHouse 服务器主机地址
-port = 9000                              # ClickHouse 原生协议端口,默认为 9000
-http_port = 8443                         # 用于连接 ClickHouse 服务器 HTTP 接口的端口。默认为 8443。
-secure = 1                               # 如果使用 HTTPS 则设置为 1,否则为 0。
+database = "dlt"                         # The database name you created
+username = "dlt"                         # ClickHouse username, default is usually "default"
+password = "Dlt*12345789234567"          # ClickHouse password if any
+host = "localhost"                       # ClickHouse server host
+port = 9000                              # ClickHouse HTTP port, default is 9000
+http_port = 8443                         # HTTP Port to connect to ClickHouse server's HTTP interface. Defaults to 8443.
+secure = 1                               # Set to 1 if using HTTPS, else 0.
 
 [destination.clickhouse]
-dataset_table_separator = "___"          # 数据集表名与数据集之间的分隔符。
+dataset_table_separator = "___"          # Separator for dataset table names from dataset.
 ```
 
 :::note HTTP_PORT
@@ -94,7 +94,7 @@ dataset_table_separator = "___"          # 数据集表名与数据集之间的�
 您可以传递类似于 `clickhouse-driver` 库所使用的数据库连接字符串。上述凭据将如下所示:
 
 ```bash
-# 将此配置保持在 toml 文件的顶部，在任何节（section）开始之前。 {#keep-it-at-the-top-of-your-toml-file-before-any-section-starts}
+# keep it at the top of your toml file, before any section starts.
 destination.clickhouse.credentials="clickhouse://dlt:Dlt*12345789234567@localhost:9000/dlt?secure=1"
 ```
 

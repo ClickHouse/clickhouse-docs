@@ -31,7 +31,7 @@ CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
-Чтобы выбрать значения `key2`:
+Чтобы выбрать значения для `key2`:
 
 ```sql
 SELECT m['key2'] FROM tab;
@@ -47,8 +47,8 @@ SELECT m['key2'] FROM tab;
 └─────────────────────────┘
 ```
 
-Если запрошенный ключ `k` отсутствует в отображении (map), `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов.
-Чтобы проверить, существует ли ключ в отображении, можно использовать функцию [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains).
+Если запрошенный ключ `k` отсутствует в Map, `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов.
+Чтобы проверить, существует ли ключ в Map, можно использовать функцию [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains).
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -65,9 +65,10 @@ SELECT m['key1'] FROM tab;
 └─────────────────────────┘
 ```
 
+
 ## Преобразование Tuple в Map {#converting-tuple-to-map}
 
-Значения типа `Tuple()` можно привести к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#cast):
+Значения типа `Tuple()` можно привести к значениям типа `Map()` с помощью функции [CAST](/sql-reference/functions/type-conversion-functions#CAST):
 
 **Пример**
 
@@ -81,9 +82,10 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 
 ```text
 ┌─map───────────────────────────┐
-│ {1:'Готово',2:'Внимание',3:'Марш'} │
+│ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
+
 
 ## Чтение подстолбцов Map {#reading-subcolumns-of-map}
 
@@ -97,8 +99,8 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
-SELECT m.keys FROM tab; --   то же, что mapKeys(m)
-SELECT m.values FROM tab; -- то же, что mapValues(m)
+SELECT m.keys FROM tab; --   same as mapKeys(m)
+SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
 Результат:
@@ -116,9 +118,10 @@ SELECT m.values FROM tab; -- то же, что mapValues(m)
 **См. также**
 
 * Функция [map()](/sql-reference/functions/tuple-map-functions#map)
-* Функция [CAST()](/sql-reference/functions/type-conversion-functions#cast)
+* Функция [CAST()](/sql-reference/functions/type-conversion-functions#CAST)
 * [-Map-комбинатор для типа данных Map](../aggregate-functions/combinators.md#-map)
+
 
 ## Связанные материалы {#related-content}
 
-- Блог: [Решение для наблюдаемости на базе ClickHouse — часть 2: трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)
+- Блог: [Решение для обсервабилити на базе ClickHouse — часть 2: трейсы](https://clickhouse.com/blog/storing-traces-and-spans-open-telemetry-in-clickhouse)

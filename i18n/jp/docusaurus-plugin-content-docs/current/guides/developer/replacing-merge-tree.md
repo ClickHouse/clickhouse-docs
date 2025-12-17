@@ -12,6 +12,7 @@ import Image from '@theme/IdealImage';
 トランザクションデータベースは更新および削除を伴うトランザクションワークロードに最適化されていますが、OLAP データベースはそのような操作に対する保証は相対的に弱くなります。その代わりに、分析クエリを大幅に高速化するために、バッチで挿入される不変データ向けに最適化されています。ClickHouse はミューテーションによる更新操作と、行を削除する軽量な手段の両方を提供しますが、前述のとおりカラム指向の構造であるため、これらの操作は慎重にスケジュールする必要があります。これらの操作は非同期で処理され、単一スレッドで実行され、（更新の場合）ディスク上のデータを書き換える必要があります。そのため、多数の細かな変更には使用すべきではありません。
 上記のような使用パターンを避けつつ更新および削除対象の行ストリームを処理するために、ClickHouse のテーブルエンジンである ReplacingMergeTree を使用できます。
 
+
 ## 挿入行の自動アップサート {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree テーブルエンジン](/engines/table-engines/mergetree-family/replacingmergetree) を使用すると、ユーザーが同一行を複数回挿入し、そのうち 1 つを最新バージョンとして指定できるため、非効率な `ALTER` や `DELETE` 文を使用せずに行を更新できます。バックグラウンドプロセスによって、同じ行の古いバージョンが非同期に削除され、不変な挿入のみを用いて更新操作を効率的に模倣します。
@@ -42,7 +43,7 @@ ReplacingMergeTree では、さらに `deleted` 列を指定することもで�
 <br />
 
 ```sql
-SYSTEM SYNC REPLICA テーブル
+SYSTEM SYNC REPLICA table
 ```
 
 (1) が満たされていることが保証されてからインサート処理を一時停止し、このコマンドとその後のクリーンアップが完了するまで継続することを推奨します。
@@ -50,6 +51,7 @@ SYSTEM SYNC REPLICA テーブル
 > ReplacingMergeTree を用いた削除の処理は、上記の条件でクリーンアップのための期間をスケジュールできる場合を除き、削除件数が少量から中程度（10% 未満）のテーブルにのみ推奨されます。
 
 > ヒント: 変更が発生しなくなった特定のパーティションに対して `OPTIMIZE FINAL CLEANUP` を実行することもできます。
+
 
 ## プライマリキー／重複排除キーの選択 {#choosing-a-primarydeduplication-key}
 
@@ -94,7 +96,8 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```
 
-`ORDER BY` キーとして `(PostTypeId, toDate(CreationDate), CreationDate, Id)` を使用します。各投稿に対して一意な `Id` 列によって、行の重複排除を行えるようにしています。要件に応じて、スキーマには `Version` 列と `Deleted` 列が追加されます。
+`ORDER BY` キーとして `(PostTypeId, toDate(CreationDate), CreationDate, Id)` を使用します。各投稿に対して一意な `Id` カラムによって、行の重複排除を行えるようにしています。要件に応じて、スキーマには `Version` カラムと `Deleted` カラムが追加されます。
+
 
 ## ReplacingMergeTree でのクエリ実行 {#querying-replacingmergetree}
 
@@ -123,7 +126,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-ここで、回答後の統計情報を更新します。これらの値を直接更新するのではなく、5000 行の新しいコピーを挿入し、それらのバージョン番号に 1 を加えます（つまり、テーブル内には 150 行が存在することになります）。これは、シンプルな `INSERT INTO SELECT` でシミュレートできます。
+ここで、投稿の回答に関する統計情報を更新します。これらの値を直接更新するのではなく、5000 行分のコピーを新たに挿入し、それらのバージョン番号を 1 つ増やします（つまり、テーブル内には 150 行が存在することになります）。これは、簡単な `INSERT INTO SELECT` でシミュレートできます。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -151,14 +154,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --ランダムに100行を選択
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-0行が返されました。経過時間: 4.056秒。処理行数: 142万行、2.20 GB (34万9630行/秒、543.39 MB/秒)
+0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
-さらに、行を再挿入する際に deleted 列の値を 1 に設定することで、ランダムな 1000 件の投稿を削除します。同様に、これは単純な `INSERT INTO SELECT` でシミュレートできます。
+さらに、行を再挿入する際に `Deleted` 列の値を 1 に設定することで、ランダムな 1000 件の投稿を削除します。同様に、これは単純な `INSERT INTO SELECT` 文でシミュレートできます。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -186,14 +189,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --ランダムに100行を選択
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-0行が返されました。経過時間: 0.166秒。処理行数: 135.53千行、212.65 MB (816.30千行/秒、1.28 GB/秒)
+0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-上記の操作の結果は 16,000 行、すなわち 10,000 + 5000 + 1000 行になります。本来の正しい合計は、元の合計より 1000 行少ないだけであるべきなので、10,000 - 1000 = 9000 行になります。
+上記の操作の結果は 16,000 行、すなわち 10,000 + 5000 + 1000 行になります。本来の正しい合計は、元の合計から 1000 行差し引いた値、すなわち 10,000 - 1000 = 9000 行となるはずです。
 
 ```sql
 SELECT count()
@@ -205,7 +208,8 @@ FROM posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-ここで得られる結果は、実行されたマージ処理によって変動します。重複した行があるため、ここで表示されている合計値が異なっていることがわかります。テーブルに `FINAL` を適用すると、正しい結果が得られます。
+ここで得られる結果は、これまでに行われたマージ処理の内容によって変動します。重複した行が存在するため、ここで表示される合計値が本来と異なっていることがわかります。テーブルに `FINAL` を適用すると、正しい結果が得られます。
+
 
 ```sql
 SELECT count()
@@ -216,16 +220,16 @@ FINAL
 │    9000 │
 └─────────┘
 
-1行が返されました。経過時間: 0.006秒。処理された行数: 11.81千行、212.54 KB (2.14百万行/秒、38.61 MB/秒)
-ピークメモリ使用量: 8.14 MiB。
+1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
+Peak memory usage: 8.14 MiB.
 ```
+
 
 ## FINAL のパフォーマンス {#final-performance}
 
 `FINAL` 演算子は、クエリに対してわずかなパフォーマンス上のオーバーヘッドを伴います。
 これは、クエリがプライマリキー列でフィルタしていない場合に最も顕著で、
-より多くのデータを読み込むことになり、その結果、重複排除のオーバーヘッドが増加します。ユーザーが
-`WHERE` 条件でキー列をフィルタする場合、読み込まれて重複排除に渡されるデータ量は減少します。
+より多くのデータを読み込むことになり、その結果、重複排除のオーバーヘッドが増加します。`WHERE` 条件でキー列をフィルタする場合、読み込まれて重複排除に渡されるデータ量は減少します。
 
 `WHERE` 条件でキー列を使用していない場合、`FINAL` 使用時には現時点で ClickHouse は `PREWHERE` 最適化を利用しません。この最適化は、フィルタ対象外の列に対して読み取る行数を削減することを目的としています。この `PREWHERE` をエミュレートし、その結果としてパフォーマンスの向上につながる可能性がある例は[こちら](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)にあります。
 
@@ -281,7 +285,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-年単位でパーティション分割されたテーブルに対しても同じ手順を実行し、そのうえで `do_not_merge_across_partitions_select_final=1` を指定して上記のクエリを再実行します。
+年単位でパーティション分割したテーブルに対しても同じ手順を実行し、そのうえで `do_not_merge_across_partitions_select_final=1` を指定して上記のクエリを再実行します。
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
@@ -315,7 +319,8 @@ ORDER BY year ASC
 17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
-示したように、このケースではパーティショニングにより、重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリ性能が大幅に向上しました。
+示したように、このケースでは、パーティショニングによって重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリのパフォーマンスが大幅に向上しました。
+
 
 ## マージ動作に関する考慮事項 {#merge-behavior-considerations}
 
@@ -323,13 +328,13 @@ ClickHouse のマージ選択メカニズムは、単純にパーツをマージ
 
 ### マージ選択ロジック {#merge-selection-logic}
 
-マージの目的はパーツ数を最小限に抑えることですが、その一方で書き込み増幅のコストとのバランスも取られます。その結果として、内部計算に基づき、過度な書き込み増幅を招くパーツ範囲はマージ対象から除外されます。この動作により、不要なリソース消費を防ぎ、ストレージコンポーネントの寿命を延ばすことができます。
+マージの目的はパーツ数を最小限に抑えることですが、その一方で書き込み増幅によるコストとのバランスも考慮されます。その結果として、内部計算に基づき、過度な書き込み増幅を招くパーツの範囲はマージ対象から除外されます。この動作により、不要なリソース消費を防ぎ、ストレージコンポーネントの寿命を延ばすことができます。
 
 ### 大きなパーツに対するマージ動作 {#merging-behavior-on-large-parts}
 
 ClickHouse の ReplacingMergeTree エンジンは、指定された一意キーに基づいて各行の最新バージョンのみを保持するようにデータパーツをマージし、重複行を管理するよう最適化されています。しかし、マージされたパーツが `max_bytes_to_merge_at_max_space_in_pool` のしきい値に達すると、`min_age_to_force_merge_seconds` が設定されていても、それ以上マージ対象として選択されなくなります。その結果、継続的なデータ挿入によって蓄積される重複を自動マージに頼って除去することはできなくなります。
 
-これに対処するために、ユーザーは `OPTIMIZE FINAL` を実行してパーツを手動でマージし、重複を除去できます。自動マージとは異なり、`OPTIMIZE FINAL` は `max_bytes_to_merge_at_max_space_in_pool` のしきい値を無視し、主にディスク容量などの利用可能なリソースのみを基準として、各パーティションが 1 つのパーツになるまでマージを行います。ただし、この方法は大規模なテーブルではメモリ消費が大きくなり、新しいデータが追加されるたびに繰り返し実行が必要になる場合があります。
+これに対処するために、`OPTIMIZE FINAL` を実行してパーツを手動でマージし、重複を除去できます。自動マージとは異なり、`OPTIMIZE FINAL` は `max_bytes_to_merge_at_max_space_in_pool` のしきい値を無視し、主にディスク容量などの利用可能なリソースのみを基準として、各パーティションが 1 つのパーツになるまでマージを行います。ただし、この方法は大規模なテーブルではメモリ消費が大きくなり、新しいデータが追加されるたびに繰り返し実行が必要になる場合があります。
 
 パフォーマンスを維持しつつ、より持続的な解決策とするには、テーブルのパーティション分割を推奨します。これにより、データパーツが最大マージサイズに達することを防ぎ、継続的な手動最適化の必要性を低減できます。
 

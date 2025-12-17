@@ -22,6 +22,7 @@ FROM <left_table>
 
 Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
 
+
 ## Поддерживаемые типы JOIN {#supported-types-of-join}
 
 Поддерживаются все стандартные типы [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)):
@@ -126,7 +127,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
-│ B    │ Текст B │     15 │
+│ B    │ Text B │     15 │
 └──────┴────────┴────────┘
 ```
 
@@ -160,9 +161,9 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-По умолчанию условия с операторами неравенства поддерживаются, если в них используются столбцы из одной и той же таблицы.
+By default, non-equal conditions are supported as long as they use columns from the same table.
 Например, `t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`, поскольку `t1.b > 0` использует столбцы только из `t1`, а `t2.b > t2.c` использует столбцы только из `t2`.
-Однако вы можете включить экспериментальную поддержку условий вида `t1.a = t2.key AND t1.b > t2.key`; подробности см. в разделе ниже.
+However, you can try experimental support for conditions like `t1.a = t2.key AND t1.b > t2.key`, check out the section below for more details.
 
 :::
 
@@ -179,6 +180,7 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
+
 
 ## JOIN с условиями неравенства для столбцов из разных таблиц {#join-with-inequality-conditions-for-columns-from-different-tables}
 
@@ -230,6 +232,7 @@ key2    a2    1    1    1            0    0    \N
 key4    f    2    3    4            0    0    \N
 ```
 
+
 ## Значения NULL в ключах JOIN {#null-values-in-join-keys}
 
 `NULL` не равно ни одному значению, включая само себя. Это означает, что если ключ `JOIN` содержит значение `NULL` в одной таблице, оно не будет соответствовать значению `NULL` в другой таблице.
@@ -278,11 +281,12 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 
 ```markdown
 ┌─name────┬─score─┐
-│ Алиса   │    90 │
-│ Боб     │     0 │
-│ Чарли │    88 │
+│ Alice   │    90 │
+│ Bob     │     0 │
+│ Charlie │    88 │
 └─────────┴───────┘
 ```
+
 
 ## Использование ASOF JOIN {#asof-join-usage}
 
@@ -297,10 +301,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 Синтаксис `ASOF JOIN ... ON`:
 
 ```sql
-SELECT список_выражений
-FROM таблица_1
-ASOF LEFT JOIN таблица_2
-ON условие_равенства AND условие_ближайшего_соответствия
+SELECT expressions_list
+FROM table_1
+ASOF LEFT JOIN table_2
+ON equi_cond AND closest_match_cond
 ```
 
 Вы можете использовать любое количество условий равенства и ровно одно условие ближайшего соответствия. Например, `SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`.
@@ -310,10 +314,10 @@ ON условие_равенства AND условие_ближайшего_с�
 Синтаксис `ASOF JOIN ... USING`:
 
 ```sql
-SELECT список_выражений
-FROM таблица_1
-ASOF JOIN таблица_2
-USING (столбец_равенства1, ... столбец_равенстваN, столбец_asof)
+SELECT expressions_list
+FROM table_1
+ASOF JOIN table_2
+USING (equi_column1, ... equi_columnN, asof_column)
 ```
 
 `ASOF JOIN` использует `equi_columnX` для соединения по условию равенства и `asof_column` для соединения по ближайшему совпадению с условием `table_1.asof_column >= table_2.asof_column`. Столбец `asof_column` всегда должен быть последним в предложении `USING`.
@@ -337,6 +341,7 @@ USING (столбец_равенства1, ... столбец_равенства
 `ASOF JOIN` поддерживается только алгоритмами соединения `hash` и `full_sorting_merge`.
 Он **не** поддерживается в табличном движке [Join](../../../engines/table-engines/special/join.md).
 :::
+
 
 ## Использование PASTE JOIN {#paste-join-usage}
 
@@ -396,6 +401,7 @@ SETTINGS max_block_size = 2;
 └───┴──────┘
 ```
 
+
 ## Распределённый JOIN {#distributed-join}
 
 Существует два способа выполнить JOIN с участием распределённых таблиц:
@@ -420,7 +426,7 @@ SETTINGS max_block_size = 2;
 └───┴───┴───────────────┴───────────────┘
 ```
 
-и таблица `t_2`:
+и таблицу `t_2`:
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -446,6 +452,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 │  1 │   -1 │ Int32         │ Nullable(Int64) │
 └────┴──────┴───────────────┴─────────────────┘
 ```
+
 
 ## Рекомендации по использованию {#usage-recommendations}
 
@@ -536,6 +543,7 @@ LIMIT 10
 │    722884 │  77492 │  11056 │
 └───────────┴────────┴────────┘
 ```
+
 
 ## Связанные материалы {#related-content}
 

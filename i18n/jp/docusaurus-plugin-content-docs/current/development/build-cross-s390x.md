@@ -108,24 +108,24 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: デバッグ情報を出力
+      long: Emit debug information
       buildType: Debug
     release:
       short: Release
-      long: 生成コードを最適化
+      long: Optimize generated code
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: デバッグ情報付きリリース
+      long: Release with Debug Info
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: 最小サイズリリース
+      long: Minimum Size Release
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: ツールチェーンを選択
+  description: Select toolchain
   choices:
     default:
       short: x86_64
@@ -146,10 +146,10 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) qemuでs390xを起動",
+            "name": "(lldb) Launch s390x with qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "ClickHouseを実行",
+            "preLaunchTask": "Run ClickHouse"
         }
     ]
 }
@@ -170,7 +170,7 @@ toolchain:
 
 ```sh
 #! /bin/sh
-echo 'デバッガーセッションを開始します'
+echo 'Starting debugger session'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
@@ -184,7 +184,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "ClickHouseを実行",
+            "label": "Run ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -206,7 +206,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^デバッガーセッションを開始",
+                        "beginsPattern": "^Starting debugger session",
                         "endsPattern": ".*"
                     }
                 }

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # DROP 语句 {#drop-statements}
 
-删除已存在的实体。如果指定了 `IF EXISTS` 子句，当实体不存在时查询不会报错。如果指定了 `SYNC` 修饰符，则实体会被同步删除，不会产生延迟。
+删除已存在的实体。如果指定了 `IF EXISTS` 子句，当实体不存在时查询不会报错。如果指定了 `SYNC` 修饰符，则会立即删除该实体，不会产生延迟。
 
 ## DROP DATABASE {#drop-database}
 
@@ -78,6 +78,16 @@ DROP ROLE [IF EXISTS] name [,...] [ON CLUSTER cluster_name] [FROM access_storage
 
 ```sql
 DROP [ROW] POLICY [IF EXISTS] name [,...] ON [database.]table [,...] [ON CLUSTER cluster_name] [FROM access_storage_type]
+```
+
+## DROP MASKING POLICY {#drop-masking-policy}
+
+删除掩码策略。
+
+语法：
+
+```sql
+DROP MASKING POLICY [IF EXISTS] name ON [database.]table [ON CLUSTER cluster_name] [FROM access_storage_type]
 ```
 
 ## DROP QUOTA {#drop-quota}

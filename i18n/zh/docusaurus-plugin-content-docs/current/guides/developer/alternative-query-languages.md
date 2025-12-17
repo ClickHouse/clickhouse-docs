@@ -34,7 +34,7 @@ SET dialect = 'clickhouse'
 要启用 PRQL：
 
 ```sql
-SET allow_experimental_prql_dialect = 1; -- 仅 ClickHouse 版本 >= v25.1 需要此 SET 语句
+SET allow_experimental_prql_dialect = 1; -- this SET statement is required only for ClickHouse versions >= v25.1
 SET dialect = 'prql'
 ```
 
@@ -57,7 +57,7 @@ aggregate {
 若要启用 KQL：
 
 ```sql
-SET allow_experimental_kusto_dialect = 1; -- 此 SET 语句仅适用于 ClickHouse 版本 >= 25.1
+SET allow_experimental_kusto_dialect = 1; -- this SET statement is required only for ClickHouse versions >= 25.1
 SET dialect = 'kusto'
 ```
 

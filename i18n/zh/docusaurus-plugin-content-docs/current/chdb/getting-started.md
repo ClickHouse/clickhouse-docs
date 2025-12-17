@@ -320,7 +320,7 @@ df
 ```
 
 ```text
-                             上传者  观看次数  点赞数  踩数
+                             uploader  viewCount  likeCount  dislikeCount
 0                             Jeremih  139066569     812602         37842
 1                     TheKillersMusic  109313116     529361         11931
 2  LetsGoMartin- Canciones Infantiles  104747788     236615        141467

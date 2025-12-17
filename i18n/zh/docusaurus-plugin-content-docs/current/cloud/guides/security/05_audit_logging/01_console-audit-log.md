@@ -2,7 +2,7 @@
 sidebar_label: '控制台审计日志'
 slug: /cloud/security/audit-logging/console-audit-log
 title: '控制台审计日志'
-description: '本页介绍用户如何查看云端审计日志'
+description: '本页介绍如何查看云端审计日志'
 doc_type: 'guide'
 keywords: ['审计日志']
 ---
@@ -15,24 +15,19 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 # 控制台审计日志 {#console-audit-log}
 
-用户在控制台中的操作会记录到审计日志中，具有 Admin 或 Developer 组织角色的用户可以查看这些日志并将其与日志系统集成。控制台审计日志中包含的具体事件如下所示 
+控制台中的操作会记录到审计日志中。具有 Admin 或 Developer 组织角色的用户可以查看审计日志，并将其与日志系统集成。
 
-
-
-## 通过用户界面访问控制台日志 {#console-audit-log-ui}
+## 通过用户界面访问控制台审计日志 {#console-audit-log-ui}
 
 <VerticalStepper>
 
-
 ## 选择组织 {#select-org}
 
-在 ClickHouse Cloud 中，进入您的组织详情页面。
+在 ClickHouse Cloud 中，进入你的组织详情页面。
 
-<Image img={activity_log_1} size="md" alt="ClickHouse Cloud activity tab" border />
+<Image img={activity_log_1} size="md" alt="ClickHouse Cloud 活动选项卡" border />
 
 <br/>
-
-
 
 ## 选择审计 {#select-audit}
 
@@ -49,29 +44,19 @@ import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png
 
 <br/>
 
-
-
 ## 使用搜索栏 {#use-search-bar}
 
-您可以使用搜索栏根据特定条件(如服务名称或 IP 地址)筛选事件。您还可以将这些信息导出为 CSV 格式,以便分发或在外部工具中进行分析。
+你可以使用提供的搜索栏，根据某些条件（例如服务名称或 IP 地址）筛选事件。你还可以将这些信息导出为 CSV 格式，以便在外部工具中分发或分析。
 
 </VerticalStepper>
 
-<div class='eighty-percent'>
-  <Image
-    img={activity_log_3}
-    size='lg'
-    alt='ClickHouse Cloud 活动日志 CSV 导出'
-    border
-  />
+<div class="eighty-percent">
+    <Image img={activity_log_3} size="lg" alt="ClickHouse Cloud 活动 CSV 导出" border />
 </div>
-
 
 ## 通过 API 访问控制台审计日志 {#console-audit-log-api}
 
-用户可以使用 ClickHouse Cloud API 的 `activity` 端点来导出审计事件。更多详细信息请参阅 [API 参考](https://clickhouse.com/docs/cloud/manage/api/swagger)。
-
-
+你可以使用 ClickHouse Cloud API 的 `activity` 端点来导出审计事件。更多详细信息请参阅 [API 参考](https://clickhouse.com/docs/cloud/manage/api/swagger)。
 
 ## 日志集成 {#log-integrations}
 

@@ -34,7 +34,7 @@ SELECT * FROM system.numbers LIMIT 10;
 │      9 │
 └────────┘
 
-返回 10 行。耗时: 0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```
 
 你还可以使用谓词来限制输出结果。
@@ -57,5 +57,5 @@ SELECT * FROM system.numbers < 10;
 │      9 │
 └────────┘
 
-返回 10 行。耗时: 0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```

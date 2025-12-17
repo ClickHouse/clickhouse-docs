@@ -118,7 +118,7 @@ doc_type: 'guide'
 ```
 
 ```shell
-# clickhouse-keeper-client {#clickhouse-keeper-client}
+# clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
 / :) get /zk_configs/postgresql_port
@@ -174,11 +174,11 @@ doc_type: 'guide'
 
 ```xml
 <clickhouse>
-    <!-- Добавляет XML-поддерево, найденное по пути `/profiles-in-zookeeper` в ZK, к элементу `<profiles>`. -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- Заменяет элемент `include` поддеревом, найденным по пути `/users-in-zookeeper` в ZK. -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>
@@ -356,7 +356,7 @@ key: value
 Соответствующий XML-код:
 
 ```xml
-<key>значение</key>
+<key>value</key>
 ```
 
 Вложенный XML-узел представляется в виде YAML-отображения:

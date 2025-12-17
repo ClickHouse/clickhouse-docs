@@ -64,8 +64,8 @@ Tuple 只是一个由列组成的数组。比如，Tuple(String, UInt8) 就是�
 `Nullable(T)` 由 `Nulls ColUInt8` 和 `Values T` 构成，且二者的行数相同。
 
 ```go
-// Nulls 是 Values 列的可空性"掩码"。
-// 例如,编码 [null, "", "hello", null, "world"] 时:
+// Nulls is nullable "mask" on Values column.
+// For example, to encode [null, "", "hello", null, "world"]
 //      Values: ["", "", "hello", "", "world"] (len: 5)
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
@@ -84,16 +84,16 @@ Tuple 只是一个由列组成的数组。比如，Tuple(String, UInt8) 就是�
 其中 `K` 是 (UInt8, UInt16, UInt32, UInt64) 之一，具体取决于 `Index` 的大小。
 
 ```go
-// Index(即字典)列包含唯一值,Keys 列包含
-// Index 列中的索引序列,这些索引代表实际值。
+// Index (i.e. dictionary) column contains unique values, Keys column contains
+// sequence of indexes in Index column that represent actual values.
 //
-// 例如,["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] 可以
-// 编码为:
+// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
+// be encoded as:
 //      Index: ["Eko", "Amadela"] (String)
 //      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
-// CardinalityKey 根据 Index 大小选择,即所选类型的最大值
-// 应能够表示 Index 元素的任意索引。
+// The CardinalityKey is chosen depending on Index size, i.e. maximum value
+// of chosen type should be able to represent any index of Index element.
 ```
 
 ## Bool {#bool}

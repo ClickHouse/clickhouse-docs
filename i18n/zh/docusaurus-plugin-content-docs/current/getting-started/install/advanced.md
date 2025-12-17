@@ -15,8 +15,8 @@ doc_type: 'guide'
 你可以编译生成软件包并安装它们，或者在不安装软件包的情况下直接使用程序。
 
 ```xml
-客户端:<build_directory>/programs/clickhouse-client
-服务器:<build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 你需要手动创建数据和元数据目录，并使用 `chown` 将其所有权设置为指定用户。它们的路径可以在服务器配置文件（src/programs/server/config.xml）中修改，默认路径为：
@@ -28,10 +28,11 @@ doc_type: 'guide'
 
 在 Gentoo 上，你只需运行 `emerge clickhouse` 即可从源代码安装 ClickHouse。
 
+
 ## 安装 CI 生成的二进制文件 {#install-a-ci-generated-binary}
 
 ClickHouse 的持续集成（CI）基础设施会针对 [ClickHouse 代码仓库](https://github.com/clickhouse/clickhouse/) 中的每次提交生成专门的构建，例如 [sanitized](https://github.com/google/sanitizers) 构建、未优化（Debug）
-构建、交叉编译构建等。此类构建通常只在开发过程中有用，但在某些情况下，对用户也可能有用。
+构建、交叉编译构建等。此类构建通常只在开发过程中有用，但在某些情况下，对你来说也可能有用。
 
 :::note
 由于 ClickHouse 的 CI 会随着时间演进，下载 CI 生成构建的具体步骤可能会有所不同。

@@ -57,9 +57,9 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- 解析 DateTime
--- - 从字符串解析，
--- - 从整数解析（解释为自 1970-01-01 以来的秒数）。
+-- Parse DateTime
+-- - from string,
+-- - from integer interpreted as number of seconds since 1970-01-01.
 INSERT INTO dt VALUES ('2019-01-01 00:00:00', 1), (1546300800, 2);
 
 SELECT * FROM dt;

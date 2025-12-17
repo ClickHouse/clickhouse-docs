@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/production
-title: 'Переход к промышленной эксплуатации'
-sidebar_label: 'Промышленная эксплуатация'
+title: 'Вывод в продакшн'
+sidebar_label: 'Продакшн'
 pagination_prev: null
 pagination_next: null
-description: 'Переход к промышленной эксплуатации с ClickStack'
+description: 'Вывод в продакшн с ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'production', 'deployment', 'best practices', 'operations']
+keywords: ['clickstack', 'продакшн', 'развертывание', 'лучшие практики', 'эксплуатация']
 ---
 
 import Image from '@theme/IdealImage';
@@ -15,33 +15,35 @@ import hyperdx_cloud from '@site/static/images/use-cases/observability/hyperdx-c
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
 import hyperdx_login from '@site/static/images/use-cases/observability/hyperdx-login.png';
 
-При развертывании ClickStack в рабочей (production) среде необходимо учитывать ряд дополнительных факторов, чтобы обеспечить безопасность, стабильность и правильную конфигурацию.
+При развертывании ClickStack в продуктивной среде существует ряд дополнительных аспектов, которые необходимо учесть, чтобы обеспечить безопасность, стабильность и корректную конфигурацию.
+
 
 ## Безопасность сети и портов {#network-security}
 
-По умолчанию Docker Compose пробрасывает порты на хост, делая их доступными извне контейнеров — даже если включены такие инструменты, как `ufw` (Uncomplicated Firewall). Такое поведение связано с сетевой подсистемой Docker, которая может обходить правила файрвола на уровне хоста, если явно не настроена иначе.
+По умолчанию Docker Compose пробрасывает порты на хост, делая их доступными извне контейнера — даже если включены такие инструменты, как `ufw` (Uncomplicated Firewall). Такое поведение связано с сетевым стеком Docker, который может обходить правила файрвола на уровне хоста, если специально не настроен.
 
 **Рекомендация:**
 
-Открывайте только те порты, которые необходимы для работы в продакшене. Как правило, это OTLP-эндпоинты, API-сервер и фронтенд.
+Открывайте только те порты, которые необходимы в продакшн-среде. Как правило, это конечные точки OTLP, сервер API и frontend.
 
-Например, удалите или закомментируйте лишние сопоставления портов в вашем файле `docker-compose.yml`:
+Например, удалите или закомментируйте лишние сопоставления портов в файле `docker-compose.yml`:
 
 ```yaml
 ports:
   - "4317:4317"  # OTLP gRPC
   - "4318:4318"  # OTLP HTTP
-  - "8080:8080"  # Только при необходимости для API
-# Не открывайте внутренние порты, такие как ClickHouse 8123 или MongoDB 27017. {#avoid-exposing-internal-ports-like-clickhouse-8123-or-mongodb-27017}
+  - "8080:8080"  # Only if needed for the API
+# Avoid exposing internal ports like ClickHouse 8123 or MongoDB 27017.
 ```
 
-Обратитесь к [документации по сетевому взаимодействию Docker](https://docs.docker.com/network/), чтобы узнать подробности об изоляции контейнеров и повышении безопасности доступа.
+Обратитесь к [документации по сетевому взаимодействию Docker](https://docs.docker.com/network/) для получения подробной информации об изоляции контейнеров и повышении безопасности доступа.
+
 
 ## Настройка секрета сессии {#session-secret}
 
-В продуктивной среде необходимо задать надёжное случайное значение для переменной окружения `EXPRESS_SESSION_SECRET`, чтобы защитить данные сессий и предотвратить их подделку.
+В рабочей среде необходимо задать надёжное, случайное значение для переменной окружения `EXPRESS_SESSION_SECRET`, чтобы защитить данные сессии и предотвратить их подделку.
 
-Вот как добавить её в файл `docker-compose.yml` для сервиса приложения:
+Ниже показано, как добавить его в файл `docker-compose.yml` для сервиса приложения:
 
 ```yaml
   app:
@@ -69,73 +71,74 @@ ports:
       - db1
 ```
 
-Вы можете сгенерировать надёжный секретный ключ с помощью OpenSSL:
+Вы можете сгенерировать надёжный секрет с помощью `openssl`:
 
 ```shell
 openssl rand -hex 32
 ```
 
-Не добавляйте секреты в систему контроля версий. В рабочей (production) среде рассмотрите использование инструментов управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигураций CI/CD, специфичных для конкретных окружений).
+Не размещайте секреты в системе контроля версий. В продуктивной среде рекомендуется использовать инструменты управления переменными окружения (например, Docker Secrets, HashiCorp Vault или конфигурации CI/CD, зависящие от окружения).
+
 
 ## Безопасная ингестия {#secure-ingestion}
 
-Вся ингестия должна выполняться через OTLP‑порты, которые предоставляет дистрибутив ClickStack с коллектором OpenTelemetry (OTel). По умолчанию для этого требуется защищённый ключ API для приёма данных, который генерируется при запуске. Этот ключ необходим при отправке данных на порты OTel и его можно найти в интерфейсе HyperDX в разделе `Team Settings → API Keys`.
+Вся ингестия должна выполняться через OTLP-порты, которые предоставляет дистрибутив ClickStack с коллектором OpenTelemetry (OTel). По умолчанию для этого используется защищённый ключ API для приёма данных, который генерируется при запуске. Этот ключ необходим при отправке данных на порты OTel и доступен в интерфейсе HyperDX в разделе `Team Settings → API Keys`.
 
-<Image img={ingestion_key} alt="Ключи для ингестии" size="lg"/>
+<Image img={ingestion_key} alt="Ingestion keys" size="lg"/>
 
-Кроме того, рекомендуется включить TLS для OTLP‑эндпоинтов и создать [выделенного пользователя для ингестии в ClickHouse](#database-ingestion-user).
+Дополнительно мы рекомендуем включить TLS для OTLP-эндпоинтов и создать [выделенного пользователя для ингестии в ClickHouse](#database-ingestion-user).
 
 ## ClickHouse {#clickhouse}
 
-Для производственных развертываний мы рекомендуем использовать [ClickHouse Cloud](https://clickhouse.com/cloud), который по умолчанию применяет отраслевые [меры безопасности](/cloud/security), включая усиленное шифрование, аутентификацию и сетевое подключение, а также управляемое разграничение доступа. См. раздел ["ClickHouse Cloud"](#clickhouse-cloud-production) для пошагового руководства по использованию ClickHouse Cloud в соответствии с лучшими практиками.
+Для боевых развертываний мы рекомендуем использовать [ClickHouse Cloud](https://clickhouse.com/cloud), который по умолчанию применяет отраслевые [практики безопасности](/cloud/security) — включая усиленное шифрование, аутентификацию и сетевое взаимодействие, а также управляемое разграничение доступа. См. раздел ["ClickHouse Cloud"](#clickhouse-cloud-production) для подробного пошагового руководства по использованию ClickHouse Cloud в соответствии с лучшими практиками.
 
-### Права пользователя {#user-permissions}
+### Права доступа пользователя {#user-permissions}
 
 #### Пользователь HyperDX {#hyperdx-user}
 
-Для HyperDX в ClickHouse достаточно пользователя с правами `readonly`, который имеет возможность изменять следующие настройки:
+Пользователю ClickHouse для HyperDX достаточно быть пользователем `readonly` с доступом к изменению следующих настроек:
 
-- `max_rows_to_read` (не менее 1 миллиона)
+- `max_rows_to_read` (как минимум до 1&nbsp;миллиона)
 - `read_overflow_mode`
 - `cancel_http_readonly_queries_on_client_close`
 - `wait_end_of_query`
 
-По умолчанию пользователь `default` как в OSS, так и в ClickHouse Cloud обладает этими правами, но мы рекомендуем создать отдельного пользователя с такими правами.
+По умолчанию пользователь `default` как в OSS, так и в ClickHouse Cloud обладает этими правами, но мы рекомендуем создать отдельного пользователя с таким набором прав.
 
-#### Пользователь для базы данных и ингестии {#database-ingestion-user}
+#### Пользователь базы данных и ингестии {#database-ingestion-user}
 
-Мы рекомендуем создать отдельного пользователя, которого OTel collector будет использовать для ингестии в ClickHouse, и убедиться, что данные отправляются в конкретную базу данных, например `otel`. Подробности см. в разделе ["Создание пользователя для ингестии"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+Рекомендуем создать отдельного пользователя для OTel collector для ингестии данных в ClickHouse и направлять эти данные в определённую базу данных, например `otel`. Подробности см. в разделе ["Создание пользователя для ингестии"](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
 
-### Самостоятельное управление безопасностью {#self-managed-security}
+### Безопасность в самоуправляемой инфраструктуре {#self-managed-security}
 
-Если вы управляете собственным экземпляром ClickHouse, важно включить **SSL/TLS**, обеспечить обязательную аутентификацию и следовать передовым практикам по укреплению защиты доступа. См. [эту запись в блоге](https://www.wiz.io/blog/clickhouse-and-wiz) о типичных ошибках конфигурации в реальных системах и способах их избежать.
+Если вы управляете собственным экземпляром ClickHouse, крайне важно включить **TLS**, настроить аутентификацию и следовать лучшим практикам по усилению контроля доступа. См. [эту запись в блоге](https://www.wiz.io/blog/clickhouse-and-wiz) для контекста по реальным ошибкам настройки и способам их избежать.
 
-ClickHouse OSS предоставляет мощные средства безопасности «из коробки». Однако они требуют настройки:
+ClickHouse OSS предоставляет надежные средства безопасности «из коробки». Однако их необходимо сконфигурировать:
 
-- **Используйте SSL/TLS** через `tcp_port_secure` и `<openSSL>` в `config.xml`. См. [guides/sre/configuring-ssl](/guides/sre/configuring-ssl).
-- **Задайте надёжный пароль** для пользователя `default` или отключите его.
-- **Избегайте внешней публикации ClickHouse**, если это не требуется явно. По умолчанию ClickHouse привязывается только к `localhost`, пока не изменён `listen_host`.
-- **Используйте методы аутентификации**, такие как пароли, сертификаты, SSH-ключи или [external authenticators](/operations/external-authenticators).
+- **Используйте TLS** через `tcp_port_secure` и `<openSSL>` в `config.xml`. См. [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls).
+- **Задайте надежный пароль** для пользователя `default` или отключите его.
+- **Избегайте внешней публикации ClickHouse**, если это не требуется явно. По умолчанию ClickHouse привязывается только к `localhost`, пока не изменен `listen_host`.
+- **Используйте методы аутентификации**, такие как пароли, сертификаты, SSH-ключи или [внешние аутентификаторы](/operations/external-authenticators).
 - **Ограничивайте доступ** с помощью фильтрации по IP и предложения `HOST`. См. [sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host).
-- **Включите управление доступом на основе ролей (RBAC)** для выдачи тонко настраиваемых привилегий. См. [operations/access-rights](/operations/access-rights).
-- **Применяйте квоты и лимиты** с помощью [quotas](/operations/quotas), [settings profiles](/operations/settings/settings-profiles) и режимов только для чтения.
-- **Шифруйте данные на диске** и используйте защищённое внешнее хранилище. См. [operations/storing-data](/operations/storing-data) и [cloud/security/CMEK](/cloud/security/cmek).
-- **Не жёстко прописывайте учётные данные.** Используйте [named collections](/operations/named-collections) или IAM-роли в ClickHouse Cloud.
-- **Аудируйте доступ и запросы** с помощью [system logs](/operations/system-tables/query_log) и [session logs](/operations/system-tables/session_log).
+- **Включите управление доступом на основе ролей (RBAC)** для предоставления более тонко настроенных прав доступа. См. [operations/access-rights](/operations/access-rights).
+- **Применяйте квоты и лимиты** с помощью [квот](/operations/quotas), [профилей настроек](/operations/settings/settings-profiles) и режимов только для чтения.
+- **Шифруйте данные в состоянии покоя (at rest)** и используйте защищенное внешнее хранилище. См. [operations/storing-data](/operations/storing-data) и [cloud/security/CMEK](/cloud/security/cmek).
+- **Избегайте жестко прописанных учетных данных.** Используйте [именованные коллекции](/operations/named-collections) или IAM-роли в ClickHouse Cloud.
+- **Проводите аудит доступа и запросов** с помощью [системных логов](/operations/system-tables/query_log) и [логов сессий](/operations/system-tables/session_log).
 
-См. также [external authenticators](/operations/external-authenticators) и [query complexity settings](/operations/settings/query-complexity) для управления пользователями и обеспечения ограничений на запросы и использование ресурсов.
+См. также [внешние аутентификаторы](/operations/external-authenticators) и [настройки сложности запросов](/operations/settings/query-complexity) для управления пользователями и обеспечения ограничений на запросы и использование ресурсов.
 
-### Настройка Time To Live (TTL) {#configure-ttl}
+### Настройте Time To Live (TTL) {#configure-ttl}
 
-Убедитесь, что параметр [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) [правильно настроен](/use-cases/observability/clickstack/ttl#modifying-ttl) для вашего развертывания ClickStack. Он определяет срок хранения данных: значение по умолчанию — 3 дня, и его часто требуется изменить.
+Убедитесь, что для вашего развертывания ClickStack [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) [корректно настроен](/use-cases/observability/clickstack/ttl#modifying-ttl). Этот параметр определяет срок хранения данных — значение по умолчанию 3 дня часто требуется изменить.
 
 ## Рекомендации по MongoDB {#mongodb-guidelines}
 
-Следуйте официальному [контрольному списку мер безопасности MongoDB](https://www.mongodb.com/docs/manual/administration/security-checklist/).
+Следуйте официальному [контрольному списку по безопасности MongoDB](https://www.mongodb.com/docs/manual/administration/security-checklist/).
 
 ## ClickHouse Cloud {#clickhouse-cloud-production}
 
-Ниже представлен простой вариант развертывания ClickStack с использованием ClickHouse Cloud, соответствующий лучшим практикам.
+Ниже приведён простой вариант развертывания ClickStack с использованием ClickHouse Cloud, соответствующий рекомендациям по лучшим практикам.
 
 <VerticalStepper headerLevel="h3">
 
@@ -143,17 +146,17 @@ ClickHouse OSS предоставляет мощные средства безо
 
 Следуйте [руководству по началу работы с ClickHouse Cloud](/getting-started/quick-start/cloud/#1-create-a-clickhouse-service), чтобы создать сервис.
 
-### Скопируйте данные для подключения {#copy-connection-details}
+### Скопируйте параметры подключения {#copy-connection-details}
 
-Чтобы найти параметры подключения для HyperDX, перейдите в консоль ClickHouse Cloud и нажмите кнопку <b>Connect</b> на боковой панели, после чего зафиксируйте параметры HTTP-подключения, в частности URL.
+Чтобы найти параметры подключения для HyperDX, перейдите в консоль ClickHouse Cloud и нажмите кнопку <b>Connect</b> на боковой панели, обратив внимание на параметры HTTP-подключения, в частности URL.
 
-**Хотя вы можете использовать имя пользователя и пароль по умолчанию, показанные на этом шаге, для подключения HyperDX, мы рекомендуем создать отдельного пользователя — см. ниже**
+**Хотя вы можете использовать имя пользователя и пароль по умолчанию, показанные на этом шаге для подключения HyperDX, мы рекомендуем создать отдельного пользователя — см. ниже.**
 
-<Image img={connect_cloud} alt="Подключение к Cloud" size="md" background/>
+<Image img={connect_cloud} alt="Подключение к ClickHouse Cloud" size="md" background/>
 
 ### Создайте пользователя HyperDX {#create-a-user}
 
-Мы рекомендуем создать отдельного пользователя для HyperDX. Выполните следующие SQL-команды в [SQL-консоли Cloud](/cloud/get-started/sql-console), указав надёжный пароль, соответствующий требованиям к сложности:
+Мы рекомендуем создать отдельного пользователя для HyperDX. Выполните следующие SQL-команды в [консоли Cloud SQL](/cloud/get-started/sql-console), указав надёжный пароль, соответствующий требованиям к сложности:
 
 ```sql
 CREATE USER hyperdx IDENTIFIED WITH sha256_password BY '<YOUR_PASSWORD>' SETTINGS PROFILE 'readonly';
@@ -172,19 +175,19 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 
 ### Разверните ClickStack {#deploy-clickstack}
 
-Разверните ClickStack — предпочтительны модели развертывания [Helm](/use-cases/observability/clickstack/deployment/helm) или [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (модифицированный для исключения ClickHouse). 
+Разверните ClickStack — предпочтительны варианты развертывания с помощью [Helm](/use-cases/observability/clickstack/deployment/helm) или [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose) (модифицированного для исключения ClickHouse). 
 
-:::note Развёртывание компонентов по отдельности
-Опытные пользователи могут развернуть [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) и [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) отдельно, используя их автономные режимы развертывания.
+:::note Раздельное развертывание компонентов
+Если у вас достаточно опыта, вы можете развернуть [OTel collector](/use-cases/observability/clickstack/ingesting-data/opentelemetry#standalone) и [HyperDX](/use-cases/observability/clickstack/deployment/hyperdx-only) отдельно, используя соответствующие автономные режимы развертывания.
 :::
 
-Инструкции по использованию ClickHouse Cloud с Helm-чартом можно найти [здесь](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). Эквивалентные инструкции для Docker Compose можно найти [здесь](/use-cases/observability/clickstack/deployment/docker-compose).
+Инструкции по использованию ClickHouse Cloud с Helm-чартом приведены [здесь](/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). Аналогичные инструкции для Docker Compose приведены [здесь](/use-cases/observability/clickstack/deployment/docker-compose).
 
 ### Перейдите в интерфейс HyperDX {#navigate-to-hyperdx-ui}
 
-Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы получить доступ к интерфейсу HyperDX.
+Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
-Создайте пользователя, указав имя пользователя и пароль, соответствующие требованиям. 
+Создайте пользователя, указав имя пользователя и пароль, которые соответствуют требованиям. 
 
 <Image img={hyperdx_login} alt="Интерфейс HyperDX" size="lg"/>
 
@@ -198,6 +201,6 @@ GRANT SELECT, INSERT, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 
 ### Отправьте данные в ClickStack {#send-data}
 
-Чтобы отправить данные в ClickStack, см. раздел ["Sending OpenTelemetry data"](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data).
+Чтобы отправить данные в ClickStack, см. раздел «[Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-otel-data)».
 
 </VerticalStepper>

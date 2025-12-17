@@ -25,5 +25,5 @@ SELECT * FROM system.one LIMIT 10;
 │     0 │
 └───────┘
 
-返回 1 行。用时：0.001 秒。
+1 rows in set. Elapsed: 0.001 sec.
 ```

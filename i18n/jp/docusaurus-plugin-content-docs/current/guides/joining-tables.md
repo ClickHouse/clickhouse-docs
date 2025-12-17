@@ -39,7 +39,7 @@ Peak memory usage: 1.23 GiB.
 
 `INNER JOIN` ではなく `ANY INNER JOIN` を使用しているのは、直積（cartesian product）を避けたい、つまり各 post につき 1 件だけマッチさせたいからです。
 
-この結合はサブクエリを使って書き換えることができ、大幅なパフォーマンス向上が見込めます。
+この結合はサブクエリを使って書き換えることで、パフォーマンスを大幅に向上させられます。
 
 ```sql
 SELECT count()
@@ -57,7 +57,7 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 
-ClickHouse は、すべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な限りすべてのサブ句に条件を手動で適用することを常に推奨しています。こうすることで、`JOIN` するデータ量を最小限に抑えられます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいものとします。
+ClickHouse は、すべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な限りすべてのサブ句に条件を手動で適用することを常に推奨します。こうすることで、`JOIN` するデータ量を最小限に抑えられます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいものとします。
 
 左側に大きなテーブルを置いた素朴なクエリは、完了までに 56 秒かかります。
 
@@ -70,12 +70,10 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
+
+1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
 
-
-1 行の結果。経過時間: 56.642秒。252.30 百万行、1.62 GBを処理しました (4.45 百万行/秒、28.60 MB/秒)。
-
-````
 
 この結合の順序を変更することで、パフォーマンスが1.5秒まで劇的に改善されます:
 
@@ -90,9 +88,9 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
-````
+```
 
-左側のテーブルにフィルターを追加すると、処理時間はさらに短縮され、0.5秒になります。
+左側のテーブルにフィルターを追加すると、実行時間はさらに短縮され、0.5秒になります。
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -105,10 +103,10 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
-ピークメモリ使用量: 249.42 MiB.
+Peak memory usage: 249.42 MiB.
 ```
 
-前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルタを保持することで、このクエリをさらに改善できます。
+前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルターを保持することで、このクエリをさらに改善できます。
 
 ```sql
 SELECT count() AS upvotes
@@ -152,8 +150,6 @@ ClickHouse は、いくつかの[JOIN アルゴリズム](https://clickhouse.com
 
 適切な JOIN アルゴリズムの選択は、メモリ使用量とパフォーマンスのどちらを優先して最適化するかによって決まります。
 
-
-
 ## JOIN のパフォーマンス最適化 {#optimizing-join-performance}
 
 主な最適化指標がパフォーマンスであり、JOIN をできるだけ高速に実行したい場合は、適切な JOIN アルゴリズムを選択するために次の意思決定ツリーを使用できます。
@@ -177,8 +173,6 @@ partial merge join は、大規模なテーブルを結合する際のメモリ�
 grace hash join は、3 つのメモリ制約非依存 JOIN アルゴリズムの中で最も柔軟であり、[grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) 設定によってメモリ使用量と JOIN 速度のトレードオフをうまく制御できます。データ量に応じて、[バケット](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2)の数が両アルゴリズムのメモリ使用量がおおむね揃うように選択されている場合には、grace hash が partial merge アルゴリズムより高速になることもあれば、遅くなることもあります。grace hash join のメモリ使用量が full sorting merge のメモリ使用量とおおむね揃うように設定されている場合、われわれのテストでは常に full sorting merge のほうが高速でした。
 
 3 つのメモリ制約非依存アルゴリズムのうちどれが最速かは、データ量、データ型、および JOIN キーカラムの値分布によって決まります。どのアルゴリズムが最速かを判断するには、現実的なデータ量・データでベンチマークを実行するのが最善です。
-
-
 
 ## メモリ使用量の最適化 {#optimizing-for-memory}
 

@@ -51,9 +51,9 @@ HyperDX.init({
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストにトレースを関連付けるために設定します
-    consoleCapture: true, // console.log などのコンソールログを収集します（デフォルトは false）
-    advancedNetworkCapture: true, // HTTP リクエスト/レスポンスのヘッダーとボディをすべて収集します（デフォルトは false）
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
+    consoleCapture: true, // Capture console logs (default false)
+    advancedNetworkCapture: true, // Capture full HTTP request/response headers and bodies (default false)
 });
 ```
 
@@ -74,7 +74,7 @@ npm でインストールする代わりに、スクリプトタグ経由でス�
     url: 'http://localhost:4318',
     apiKey: 'YOUR_INGESTION_API_KEY',
     service: 'my-frontend-app',
-    tracePropagationTargets: [/api.myapp.domain/i], // フロントエンドからバックエンドへのリクエストにトレースを関連付けるために設定します
+    tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
   });
 </script>
 ```
@@ -109,7 +109,7 @@ HyperDX.setGlobalAttributes({
   userEmail: user.email,
   userName: user.name,
   teamName: user.team.name,
-  // その他のカスタムプロパティ...
+  // Other custom properties...
 });
 ```
 
@@ -118,11 +118,11 @@ HyperDX.setGlobalAttributes({
 React を使用している場合は、エラーバウンダリコンポーネントを `attachToReactErrorBoundary` 関数に渡すことで、そのエラーバウンダリ内で発生したエラーを自動的に捕捉できます。
 
 ```javascript
-// ErrorBoundaryをインポートします（例としてreact-error-boundaryを使用）
+// Import your ErrorBoundary (we're using react-error-boundary as an example)
 import { ErrorBoundary } from 'react-error-boundary';
 
-// ErrorBoundaryコンポーネントにフックし、そのすべてのインスタンス内で
-// 発生するエラーをキャプチャします。
+// This will hook into the ErrorBoundary component and capture any errors that occur
+// within any instance of it.
 HyperDX.attachToReactErrorBoundary(ErrorBoundary);
 ```
 
@@ -159,7 +159,7 @@ HyperDX.enableAdvancedNetworkCapture();
 var cors = require('cors');
 var onHeaders = require('on-headers');
 
-// ... その他すべての処理
+// ... all your stuff
 
 app.use(function (req, res, next) {
   onHeaders(res, function () {

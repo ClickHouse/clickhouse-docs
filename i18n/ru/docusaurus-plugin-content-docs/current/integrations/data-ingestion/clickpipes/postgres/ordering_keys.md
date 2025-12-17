@@ -22,10 +22,10 @@ keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', '
 ```sql
 CREATE MATERIALIZED VIEW posts_final
 REFRESH EVERY 10 second ENGINE = ReplacingMergeTree(_peerdb_version)
-ORDER BY (owneruserid,id) -- другой ключ сортировки, но с добавленным суффиксом первичного ключа postgres
+ORDER BY (owneruserid,id) -- different ordering key but with suffixed postgres pkey
 AS
 SELECT * FROM posts FINAL 
-WHERE _peerdb_is_deleted = 0; -- здесь происходит дедупликация
+WHERE _peerdb_is_deleted = 0; -- this does the deduplication
 ```
 
 ## Пользовательские ключи сортировки без обновляемых материализованных представлений {#custom-ordering-keys-without-refreshable-materialized-views}
@@ -49,8 +49,8 @@ WHERE _peerdb_is_deleted = 0; -- здесь происходит дедупли�
 Ниже приведён пример того, как сделать это для таблицы `events`. Убедитесь, что вы применили это ко всем таблицам с изменёнными ключами сортировки.
 
 ```sql
--- Создайте уникальный индекс для (owneruserid, id)
+-- Create a UNIQUE INDEX on (owneruserid, id)
 CREATE UNIQUE INDEX posts_unique_owneruserid_idx ON posts(owneruserid, id);
--- Установите REPLICA IDENTITY для использования этого индекса
+-- Set REPLICA IDENTITY to use this index
 ALTER TABLE posts REPLICA IDENTITY USING INDEX posts_unique_owneruserid_idx;
 ```

@@ -43,7 +43,7 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ 数据库上的新注释 │
+│ database_with_comment │
 └─────────────────────────┘
 ```
 

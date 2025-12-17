@@ -23,7 +23,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 子句为可选项
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -160,13 +160,13 @@ ORDER BY [...]
 表中向量列的存储占用（未压缩）：
 
 ```text
-存储消耗 = 向量数量 × 维度 × 列数据类型大小
+Storage consumption = Number of vectors * Dimension * Size of column data type
 ```
 
 以 [DBpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) 为例：
 
 ```text
-存储消耗 = 100 万 × 1536 × 4（Float32 类型）= 6.1 GB
+Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
 在执行搜索时，必须将向量相似度索引从磁盘完整加载到内存中。
@@ -175,19 +175,19 @@ ORDER BY [...]
 加载一个向量索引所需的内存占用：
 
 ```text
-索引中向量的内存占用 (mv) = 向量数量 × 维度 × 量化数据类型大小
-内存图的内存占用 (mg) = 向量数量 × hnsw_max_connections_per_layer × 每节点 ID 字节数 (= 4) × 层节点重复因子 (= 2)
+Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
+Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_layer * Bytes_per_node_id (= 4) * Layer_node_repetition_factor (= 2)
 
-内存消耗总量:mv + mg
+Memory consumption: mv + mg
 ```
 
 [dbpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M)的示例：
 
 ```text
-索引中向量的内存占用 (mv) = 100 万 × 1536 × 2 (BFloat16 格式) = 3072 MB
-内存图的内存占用 (mg) = 100 万 × 64 × 2 × 4 = 512 MB
+Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
+Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 
-总内存消耗 = 3072 + 512 = 3584 MB
+Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 上述公式未将向量相似度索引在分配运行时数据结构（例如预分配缓冲区和缓存）时所需的额外内存考虑在内。
@@ -204,7 +204,7 @@ ORDER BY [...]
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 子句为可选项
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -237,10 +237,10 @@ LIMIT 10;
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (投影名称)                                                                      │
- 2. │   Limit (初步 LIMIT(不含 OFFSET))                                                    │
- 3. │     Sorting (ORDER BY 排序)                                                              │
- 4. │       Expression ((ORDER BY 之前 + (投影 + 将列名更改为列标识符))) │
+ 1. │ Expression (Project names)                                                                      │
+ 2. │   Limit (preliminary LIMIT (without OFFSET))                                                    │
+ 3. │     Sorting (Sorting for ORDER BY)                                                              │
+ 4. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers))) │
  5. │         ReadFromMergeTree (default.tab)                                                         │
  6. │         Indexes:                                                                                │
  7. │           PrimaryKey                                                                            │
@@ -327,7 +327,7 @@ ClickHouse 将裁剪除 2025 分区外的所有分区。
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代亚洲帝国相关书籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 ```
 
@@ -342,7 +342,7 @@ LIMIT 10
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代亚洲帝国相关书籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 SETTING vector_search_index_fetch_multiplier = 3.0;
 ```
@@ -378,15 +378,15 @@ SETTINGS vector_search_with_rescoring = 0
 Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (投影列名)                                                                              │
+ 1. │ Expression (Project names)                                                                              │
  2. │ Header: id Int32                                                                                        │
- 3. │   Limit (初步 LIMIT(无 OFFSET))                                                            │
+ 3. │   Limit (preliminary LIMIT (without OFFSET))                                                            │
  4. │   Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64     │
  5. │           __table1.id Int32                                                                             │
- 6. │     Sorting (ORDER BY 排序)                                                                      │
+ 6. │     Sorting (Sorting for ORDER BY)                                                                      │
  7. │     Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64   │
  8. │             __table1.id Int32                                                                           │
- 9. │       Expression ((ORDER BY 之前 + (投影 + 列名转换为列标识符)))         │
+ 9. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers)))         │
 10. │       Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64 │
 11. │               __table1.id Int32                                                                         │
 12. │         ReadFromMergeTree (default.tab)                                                                 │
@@ -497,7 +497,7 @@ ClickHouse 向量索引支持以下量化选项：
 在 ClickHouse 中运行向量搜索的典型 Python 代码如下所示：
 
 ```python
-search_v = openai_client.embeddings.create(input = "[好书]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
+search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
 
 params = {'search_v': search_v}
 result = chclient.query(
@@ -518,7 +518,7 @@ result = chclient.query(
 因此，我们建议 Python 应用以二进制形式绑定参考向量参数，使用如下方式：
 
 ```python
-search_v = openai_client.embeddings.create(input = "[好书]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
+search_v = openai_client.embeddings.create(input = "[Good Books]", model='text-embedding-3-large', dimensions=1536).data[0].embedding
 
 params = {'$search_v_binary$': np.array(search_v, dtype=np.float32).tobytes()}
 result = chclient.query(
@@ -630,7 +630,7 @@ ClickHouse 提供了 Quantized Bit（`QBit`）数据类型，通过以下方式�
 要声明一个 `QBit` 类型的列，请使用以下语法：
 
 ```sql
-列名 QBit(元素类型, 维度)
+column_name QBit(element_type, dimension)
 ```
 
 其中：

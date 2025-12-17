@@ -75,7 +75,7 @@ LIMIT 1
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8 │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
 
-1 строка в наборе. Затрачено: 1.232 сек.
+1 row in set. Elapsed: 1.232 sec.
 ```
 
 Обратите внимание, что нам не нужно явно указывать формат файла. Вместо этого мы используем glob‑шаблон, чтобы прочитать все файлы `*.json.gz` в бакете. ClickHouse автоматически определяет, что формат — `JSONEachRow` (ndjson), по расширению и содержимому файла. Формат можно указать вручную с помощью параметризованных функций на случай, если ClickHouse не сможет определить его автоматически.
@@ -94,9 +94,16 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
 Ok.
 
-0 строк в наборе. Прошло: 10.445 сек. Обработано 19.49 млн строк, 35.71 МБ (1.87 млн строк/сек., 3.42 МБ/сек.)
+0 rows in set. Elapsed: 10.445 sec. Processed 19.49 million rows, 35.71 MB (1.87 million rows/s., 3.42 MB/s.)
 
 SELECT * FROM pypi LIMIT 2
+
+┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┐
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
+└────────────┴──────────────┴────────────────────┴───────┴──────────────┴──────────────┴────────┴─────────┘
+
+2 rows in set. Elapsed: 0.005 sec. Processed 8.19 thousand rows, 908.03 KB (1.63 million rows/s., 180.38 MB/s.)
 ```
 
 ┌───────date─┬─country&#95;code─┬─project────────────┬─type──┬─installer────┬─python&#95;minor─┬─system─┬─version─┐
@@ -106,26 +113,15 @@ SELECT * FROM pypi LIMIT 2
 
 2 строки в наборе. Время выполнения: 0.005 сек. Обработано 8.19 тысяч строк, 908.03 KB (1.63 миллиона строк/с., 180.38 MB/с.)
 
-````
-
-Строки также можно загрузить непосредственно в запросе, используя [предложение `FORMAT`](/sql-reference/statements/select/format), например:
+```sql
+INSERT INTO pypi
+FORMAT JSONEachRow
+{"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
 
 ```sql
 INSERT INTO pypi
 FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
-````
-
-В этих примерах используется формат `JSONEachRow`. Поддерживаются и другие распространённые форматы JSON; примеры их загрузки приведены [здесь](/integrations/data-formats/json/other-formats).
-
-## Загрузка полуструктурированного JSON {#loading-semi-structured-json}
-
-В нашем предыдущем примере мы загружали JSON с фиксированной структурой и хорошо известными именами ключей и типами. На практике так бывает не всегда — ключи могут добавляться, а их типы меняться. Это часто встречается в сценариях, связанных с данными для наблюдаемости (Observability).
-
-ClickHouse обрабатывает такие случаи с помощью специализированного типа [`JSON`](/sql-reference/data-types/newjson).
-
-Рассмотрим следующий пример из расширенной версии описанного выше набора данных [Python PyPI dataset](https://clickpy.clickhouse.com/). Здесь мы добавили произвольный столбец `tags` со случайными парами «ключ–значение».
-
 ```json
 {
   "date": "2022-09-22",
@@ -142,9 +138,21 @@ ClickHouse обрабатывает такие случаи с помощью с
   }
 }
 
-```
-
-Столбец `tags` здесь непредсказуем и, следовательно, его невозможно смоделировать. Чтобы загрузить эти данные, мы можем использовать нашу предыдущую схему, добавив дополнительный столбец `tags` типа [`JSON`](/sql-reference/data-types/newjson):
+```json
+{
+  "date": "2022-09-22",
+  "country_code": "IN",
+  "project": "clickhouse-connect",
+  "type": "bdist_wheel",
+  "installer": "bandersnatch",
+  "python_minor": "",
+  "system": "",
+  "version": "0.2.8",
+  "tags": {
+    "5gTux": "f3to*PMvaTYZsz!*rtzX1",
+    "nD8CV": "value"
+  }
+}
 
 ```sql
 SET enable_json_type = 1;
@@ -163,14 +171,46 @@ CREATE TABLE pypi_with_tags
 )
 ENGINE = MergeTree
 ORDER BY (project, date);
-```
+```sql
+SET enable_json_type = 1;
 
-Заполним таблицу тем же способом, что и исходный набор данных:
-
+CREATE TABLE pypi_with_tags
+(
+    `date` Date,
+    `country_code` String,
+    `project` String,
+    `type` String,
+    `installer` String,
+    `python_minor` String,
+    `system` String,
+    `version` String,
+    `tags` JSON
+)
+ENGINE = MergeTree
+ORDER BY (project, date);
 ```sql
 INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
-```
+```sql
+INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
+```sql
+INSERT INTO pypi_with_tags SELECT *
+FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
 
+Ok.
+
+0 rows in set. Elapsed: 255.679 sec. Processed 1.00 million rows, 29.00 MB (3.91 thousand rows/s., 113.43 KB/s.)
+Peak memory usage: 2.00 GiB.
+
+SELECT *
+FROM pypi_with_tags
+LIMIT 2
+
+┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┬─tags─────────────────────────────────────────────────────┐
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"nsBM":"5194603446944555691"}                           │
+│ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"4zD5MYQz4JkP1QqsJIS":"0","name":"8881321089124243208"} │
+└────────────┴──────────────┴────────────────────┴───────┴──────────────┴──────────────┴────────┴─────────┴──────────────────────────────────────────────────────────┘
+
+2 rows in set. Elapsed: 0.149 sec.
 ```sql
 INSERT INTO pypi_with_tags SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')

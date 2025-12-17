@@ -47,8 +47,8 @@ OPTIMIZE TABLE [db.]name [ON CLUSTER cluster] [PARTITION partition | PARTITION I
 **Синтаксис**
 
 ```sql
-OPTIMIZE TABLE table DEDUPLICATE; -- все столбцы
-OPTIMIZE TABLE table DEDUPLICATE BY *; -- исключает столбцы MATERIALIZED и ALIAS
+OPTIMIZE TABLE table DEDUPLICATE; -- all columns
+OPTIMIZE TABLE table DEDUPLICATE BY *; -- excludes MATERIALIZED and ALIAS columns
 OPTIMIZE TABLE table DEDUPLICATE BY colX,colY,colZ;
 OPTIMIZE TABLE table DEDUPLICATE BY * EXCEPT colX;
 OPTIMIZE TABLE table DEDUPLICATE BY * EXCEPT (colX, colY);

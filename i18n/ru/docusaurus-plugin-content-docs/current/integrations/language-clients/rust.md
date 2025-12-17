@@ -82,7 +82,7 @@ Crate [ch2rs](https://github.com/ClickHouse/ch2rs) полезен для ген�
 use clickhouse::Client;
 
 let client = Client::default()
-    // должен включать и протокол, и порт
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
@@ -101,7 +101,7 @@ URL должен включать и протокол, и порт, наприм
 
 ```rust
 fn read_env_var(key: &str) -> String {
-    env::var(key).unwrap_or_else(|_| panic!("Переменная окружения {key} должна быть установлена"))
+    env::var(key).unwrap_or_else(|_| panic!("{key} env variable should be set"))
 }
 
 let client = Client::default()
@@ -207,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// не забудьте завершить работу inserter при остановке приложения
-// и зафиксировать оставшиеся строки. `.end()` также вернёт статистику.
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -252,8 +252,8 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // Эта настройка применяется только к данному запросу;
-    // она переопределяет глобальную настройку клиента.
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
@@ -320,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // Как долго поддерживать конкретное неактивное соединение на стороне клиента (в миллисекундах).
-    // Это значение должно быть заметно меньше таймаута KeepAlive сервера ClickHouse,
-    // который по умолчанию составлял 3 секунды для версий до 23.11 и 10 секунд для последующих версий.
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // Устанавливает максимальное количество неактивных Keep-Alive соединений, допустимых в пуле.
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -459,7 +459,7 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // прошедшее время в с/мкс/мс/нс в зависимости от `DateTime64(X)`
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
     dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
@@ -546,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- должно быть u32!
+    id: String, // <- should be u32 instead!
 }
 ```
 
 При вставке данных может возникнуть следующая ошибка:
 
 ```response
-Ошибка: BadResponse("Код: 33. DB::Exception: Невозможно прочитать все данные. Прочитано байт: 5. Ожидалось байт: 23.: (в строке 1)\n: При выполнении BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 В этом примере это устраняется правильным определением структуры `EventLog`:

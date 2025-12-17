@@ -16,12 +16,13 @@ import TabItem from '@theme/TabItem';
 
 * 直接从 S3 或 GCS 将数据插入到 ClickHouse Cloud 中
 * 下载已准备好的分区
-* 或者，用户也可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)。
+* 或者，你也可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)。
 
 :::note
 下面的示例查询是在 ClickHouse Cloud 的 **生产** 实例上执行的。有关详细信息，请参见
 [&quot;Playground 规格说明&quot;](/getting-started/playground#specifications)。
 :::
+
 
 ## 创建 `trips` 表 {#create-the-table-trips}
 
@@ -125,7 +126,7 @@ FROM gcs(
 
 ## 示例查询 {#sample-queries}
 
-下面的查询是在上文所述的示例数据上执行的。用户可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上针对完整数据集运行这些示例查询，只需将下面的查询修改为使用表 `nyc_taxi.trips`。
+下面的查询是在上文所述的示例数据上执行的。你可以在 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上针对完整数据集运行这些示例查询，只需将下面的查询修改为使用表 `nyc_taxi.trips`。
 
 我们来看一下插入了多少行数据：
 
@@ -134,7 +135,7 @@ SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-每个 TSV 文件大约包含 100 万行，三个文件一共是 3,000,317 行。我们来看几行示例：
+每个 TSV 文件大约包含 100 万行，三个文件总计 3,000,317 行。我们来看几行示例：
 
 ```sql runnable
 SELECT *
@@ -167,7 +168,7 @@ WHERE passenger_count < 10
 GROUP BY passenger_count;
 ```
 
-下面展示了乘客数量与行程距离之间的关系：
+下面展示了乘客数量与行程距离之间的相关性：
 
 ```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsieGF4aXMiOiJwYXNzZW5nZXJfY291bnQiLCJ5YXhpcyI6ImRpc3RhbmNlIiwic2VyaWVzIjoiY291bnRyeSIsInRpdGxlIjoiQXZnIGZhcmUgYnkgcGFzc2VuZ2VyIGNvdW50In19'
 SELECT
@@ -178,6 +179,7 @@ FROM nyc_taxi.trips_small
 GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
+
 
 ## 下载预先生成的分区 {#download-of-prepared-partitions}
 

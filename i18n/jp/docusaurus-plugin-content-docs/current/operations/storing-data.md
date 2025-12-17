@@ -611,7 +611,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3の設定 ...
+                ... s3 configuration ...
             </s3>
             <cache>
                 <type>cache</type>
@@ -641,7 +641,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3の設定 ...
+                ... s3 configuration ...
                 <data_cache_enabled>1</data_cache_enabled>
                 <data_cache_max_size>10737418240</data_cache_max_size>
             </s3>

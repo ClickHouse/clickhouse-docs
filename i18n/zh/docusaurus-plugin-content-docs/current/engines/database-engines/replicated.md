@@ -117,7 +117,7 @@ node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 
 ```sql
 node1 :) SELECT uuid FROM system.databases WHERE database='r';
-node4 :) CREATE DATABASE r UUID '<前一查询的 uuid>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
+node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
 ```
 
 集群配置如下：

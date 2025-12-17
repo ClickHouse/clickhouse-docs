@@ -193,7 +193,7 @@ INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n": {"s": ["abc", "def"], 
 ```
 
 ```response title="Response"
-Код: 117. DB::Exception: Обнаружено неизвестное поле при парсинге формата JSONEachRow: n: (в строке 1)
+Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: n: (at row 1)
 ```
 
 ```sql title="Query"

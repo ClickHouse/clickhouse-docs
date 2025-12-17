@@ -56,7 +56,7 @@ import AddCustomConnectorPlugin from '@site/static/images/integrations/data-inge
 ```text
 'Connector Class' - 'com.clickhouse.kafka.connect.ClickHouseSinkConnector'
 'Connector type' - Sink
-'Sensitive properties' - 'password'。这将确保在配置期间对 ClickHouse 密码条目进行掩码处理。
+'Sensitive properties' - 'password'. This will ensure entries of the ClickHouse password are masked during configuration.
 ```
 
 Example:
