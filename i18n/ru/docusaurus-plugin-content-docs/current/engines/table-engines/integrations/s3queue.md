@@ -85,7 +85,6 @@ SETTINGS
     mode = 'ordered';
 ```
 
-
 ## Настройки {#settings}
 
 Чтобы получить список настроек таблицы, используйте таблицу `system.s3_queue_settings`. Доступно начиная с версии `24.10`.
@@ -143,7 +142,6 @@ SETTINGS
 Для перемещения данных из одного контейнера Azure в другой необходимо указать строку подключения Blob Storage в параметре `after_processing_move_connection_string` и имя контейнера в параметре `after_processing_move_container`. См. [настройки AzureQueue](../../../engines/table-engines/integrations/azure-queue.md#settings).
 
 Для добавления тегов необходимо указать ключ и значение тега в параметрах `after_processing_tag_key` и `after_processing_tag_value`.
-
 
 ### `after_processing_retries` {#after_processing_retries}
 
@@ -361,7 +359,6 @@ SETTINGS
     ...
 ```
 
-
 ## Упорядоченный режим (ordered) для S3Queue {#ordered-mode}
 
 Режим обработки `S3Queue` позволяет хранить меньше метаданных в ZooKeeper, но имеет ограничение: файлы, добавленные позже по времени, должны иметь имена, которые в алфавитно-цифровом порядке больше имён ранее добавленных файлов.
@@ -403,7 +400,6 @@ SETTINGS
 
   SELECT * FROM stats ORDER BY name;
 ```
-
 
 ## Виртуальные столбцы {#virtual-columns}
 

@@ -57,25 +57,25 @@ Helm-чарт для HyperDX можно найти [здесь](https://github.c
   Добавьте Helm-репозиторий ClickStack:
 
   ```shell
-helm repo add clickstack https://hyperdxio.github.io/helm-charts
-helm repo update
-```
+  helm repo add clickstack https://hyperdxio.github.io/helm-charts
+  helm repo update
+  ```
 
   ### Установка ClickStack
 
   Чтобы установить чарт ClickStack со значениями по умолчанию:
 
   ```shell
-helm install my-clickstack clickstack/clickstack
-```
+  helm install my-clickstack clickstack/clickstack
+  ```
 
   ### Проверка установки
 
   Проверьте установку:
 
   ```shell
-kubectl get pods -l "app.kubernetes.io/name=clickstack"
-```
+  kubectl get pods -l "app.kubernetes.io/name=clickstack"
+  ```
 
   Когда все поды будут готовы, продолжайте.
 
@@ -84,10 +84,10 @@ kubectl get pods -l "app.kubernetes.io/name=clickstack"
   Проброс портов позволяет получить доступ к HyperDX и выполнить его настройку. Пользователям, развертывающим систему в производственной среде, следует вместо этого предоставить доступ к сервису через входной шлюз или балансировщик нагрузки для обеспечения надлежащего сетевого доступа, терминации TLS и масштабируемости. Проброс портов оптимален для локальной разработки или разовых административных задач, но не подходит для долгосрочного использования или сред с высокими требованиями к доступности.
 
   ```shell
-kubectl port-forward \
-  pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
-  8080:3000
-```
+  kubectl port-forward \
+    pod/$(kubectl get pod -l app.kubernetes.io/name=clickstack -o jsonpath='{.items[0].metadata.name}') \
+    8080:3000
+  ```
 
   :::tip Настройка входного шлюза для production-окружения
   Для production-развертываний настройте входной шлюз с TLS вместо проброса портов. Подробные инструкции см. в [руководстве по настройке входного шлюза](/docs/use-cases/observability/clickstack/deployment/helm-configuration#ingress-setup).
@@ -114,40 +114,40 @@ kubectl port-forward \
   Настройки можно изменить с помощью флагов `--set`. Например:
 
   ```shell
-helm install my-clickstack clickstack/clickstack --set key=value
-```
+  helm install my-clickstack clickstack/clickstack --set key=value
+  ```
 
   Либо отредактируйте `values.yaml`. Для получения значений по умолчанию:
 
   ```shell
-helm show values clickstack/clickstack > values.yaml
-```
+  helm show values clickstack/clickstack > values.yaml
+  ```
 
   Пример конфигурации:
 
   ```yaml
-replicaCount: 2
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-  hosts:
-    - host: hyperdx.example.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-```
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: hyperdx.example.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+  ```
 
   ```shell
-helm install my-clickstack clickstack/clickstack -f values.yaml
-```
+  helm install my-clickstack clickstack/clickstack -f values.yaml
+  ```
 
   ### Использование секретов (необязательно)
 
@@ -160,44 +160,44 @@ helm install my-clickstack clickstack/clickstack -f values.yaml
   Если требуется применить секрет вручную, отредактируйте и примените предоставленный шаблон `secrets.yaml`:
 
   ```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: hyperdx-secret
-  annotations:
-    "helm.sh/resource-policy": keep
-type: Opaque
-data:
-  API_KEY: <base64-encoded-api-key>
-```
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: hyperdx-secret
+    annotations:
+      "helm.sh/resource-policy": keep
+  type: Opaque
+  data:
+    API_KEY: <base64-encoded-api-key>
+  ```
 
   Примените секрет к кластеру:
 
   ```shell
-kubectl apply -f secrets.yaml
-```
+  kubectl apply -f secrets.yaml
+  ```
 
   #### Создание пользовательского секрета
 
   При необходимости можно создать пользовательский секрет Kubernetes вручную:
 
   ```shell
-kubectl create secret generic hyperdx-secret \
-  --from-literal=API_KEY=my-secret-api-key
-```
+  kubectl create secret generic hyperdx-secret \
+    --from-literal=API_KEY=my-secret-api-key
+  ```
 
   #### Ссылка на секрет
 
   Для ссылки на секрет в `values.yaml`:
 
   ```yaml
-hyperdx:
-  apiKey:
-    valueFrom:
-      secretKeyRef:
-        name: hyperdx-secret
-        key: API_KEY
-```
+  hyperdx:
+    apiKey:
+      valueFrom:
+        secretKeyRef:
+          name: hyperdx-secret
+          key: API_KEY
+  ```
 
   :::tip Управление API-ключами
   Подробные инструкции по настройке API-ключей, включая различные методы конфигурации и процедуры перезапуска подов, см. в [руководстве по настройке API-ключей](/docs/use-cases/observability/clickstack/deployment/helm-configuration#api-key-setup).
@@ -209,12 +209,12 @@ hyperdx:
 Если вы используете ClickHouse Cloud, отключите экземпляр ClickHouse, развернутый с помощью Helm-чарта, и укажите учетные данные ClickHouse Cloud:
 
 ```shell
-# specify ClickHouse Cloud credentials
-export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
+# укажите учетные данные ClickHouse Cloud
+export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # полный https-адрес
 export CLICKHOUSE_USER=<CLICKHOUSE_USER>
 export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
-# how to overwrite default connection
+# как переопределить подключение по умолчанию
 helm install my-clickstack clickstack/clickstack \
   --set clickhouse.enabled=false \
   --set clickhouse.persistence.enabled=false \
@@ -242,18 +242,18 @@ hyperdx:
   defaultConnections: |
     [
       {
-        "name": "External ClickHouse",
-        "host": "http://your-clickhouse-server:8123",
+        "name": "Внешний ClickHouse",
+        "host": "http://ваш-clickhouse-сервер:8123",
         "port": 8123,
-        "username": "your-username",
-        "password": "your-password"
+        "username": "ваше-имя-пользователя",
+        "password": "ваш-пароль"
       }
     ]
 ```
 
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
-# or if installed...
+# или, если уже установлен...
 # helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
@@ -371,6 +371,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
+
 
 ## См. также {#related-documentation}
 

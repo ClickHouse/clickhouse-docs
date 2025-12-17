@@ -83,7 +83,6 @@ SETTINGS
     mode = 'ordered';
 ```
 
-
 ## 设置 {#settings}
 
 要获取为该表配置的设置列表，请查询 `system.s3_queue_settings` 系统表。自 `24.10` 版本起可用。
@@ -141,7 +140,6 @@ SETTINGS
 从一个 Azure 容器移动到另一个 Azure 容器时，需要提供 Blob Storage 连接字符串作为 `after_processing_move_connection_string`，以及容器名称作为 `after_processing_move_container`。参见 [AzureQueue 设置](../../../engines/table-engines/integrations/azure-queue.md#settings)。
 
 标记操作需要提供标签键和值，分别通过 `after_processing_tag_key` 和 `after_processing_tag_value` 配置。
-
 
 ### `after_processing_retries` {#after_processing_retries}
 
@@ -359,7 +357,6 @@ SETTINGS
     ...
 ```
 
-
 ## S3Queue 有序模式 {#ordered-mode}
 
 `S3Queue` 处理模式可以在 ZooKeeper 中存储更少的元数据，但有一个限制：按时间更晚添加的文件，其名称在字母数字顺序上必须更大。
@@ -402,7 +399,6 @@ S3Queue 引擎为 SELECT 查询提供了一个特殊设置：`commit_on_select`�
 
   SELECT * FROM stats ORDER BY name;
 ```
-
 
 ## 虚拟列 {#virtual-columns}
 

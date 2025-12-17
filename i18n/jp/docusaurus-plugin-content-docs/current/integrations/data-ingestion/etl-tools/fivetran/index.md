@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'ユーザーは dbt を使用して ClickHouse のデータを変換およびモデリングできます'
+description: 'dbt を使用して ClickHouse のデータを変換およびモデリングできます'
 title: 'Fivetran と ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -12,6 +12,7 @@ keywords: ['fivetran', 'データ移動', 'ETL', 'ClickHouse 宛先', '自動化
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Fivetran と ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
@@ -41,7 +42,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## ClickHouse Cloud 宛先 {#clickhouse-cloud-destination}
 
-Fivetran の公式ドキュメントを参照してください：
+Fivetran の公式ドキュメントをご覧ください：
 
 - [ClickHouse 宛先の概要](https://fivetran.com/docs/destinations/clickhouse)
 - [ClickHouse 宛先のセットアップガイド](https://fivetran.com/docs/destinations/clickhouse/setup-guide)

@@ -9,9 +9,10 @@ doc_type: 'reference'
 import postgresReplicas from '@site/static/images/integrations/data-ingestion/dbms/postgres-replicas.png';
 import Image from '@theme/IdealImage';
 
+
 ## Postgres と ClickHouse: 同等概念と相違点 {#postgres-vs-clickhouse-equivalent-and-different-concepts}
 
-OLTP システムを利用していて ACID トランザクションに慣れているユーザーは、ClickHouse がパフォーマンスと引き換えに、それらを完全には提供しないという意図的なトレードオフを行っていることを理解しておく必要があります。ClickHouse のセマンティクスを十分に理解すれば、高い耐久性保証と高い書き込みスループットを実現できます。ここでは、Postgres から ClickHouse を利用し始める前に理解しておくべき主要な概念をいくつか取り上げます。
+OLTP システムを利用していて ACID トランザクションに慣れているユーザーは、ClickHouse がパフォーマンスと引き換えに、それらを完全には提供しないという意図的なトレードオフを行っていることを理解しておく必要があります。ClickHouse のセマンティクスを十分に理解すれば、高い耐久性保証と高い書き込みスループットを実現できます。ここでは、Postgres から ClickHouse を利用し始める前に、皆さんに理解しておいていただきたい主要な概念をいくつか取り上げます。
 
 ### シャードとレプリカ {#shards-vs-replicas}
 
@@ -98,7 +99,7 @@ OSS でこの挙動を実現できるかどうかは、シャードおよびレ�
 
 これらの設定を有効にする方法の詳細は[こちら](/cloud/reference/shared-merge-tree#consistency)を参照してください。
 
-> シーケンシャル一貫性を使用すると、ClickHouse Keeper により大きな負荷がかかります。その結果、挿入および読み取りが遅くなる可能性があります。ClickHouse Cloud でメインのテーブルエンジンとして使用されている SharedMergeTree では、シーケンシャル一貫性による[オーバーヘッドが小さく、よりスケールしやすくなります](/cloud/reference/shared-merge-tree#consistency)。OSS ユーザーは、このアプローチを慎重に利用し、Keeper の負荷を測定する必要があります。
+> シーケンシャル一貫性を使用すると、ClickHouse Keeper により大きな負荷がかかります。その結果、挿入および読み取りが遅くなる可能性があります。ClickHouse Cloud でメインのテーブルエンジンとして使用されている SharedMergeTree では、シーケンシャル一貫性による[オーバーヘッドが小さく、よりスケールしやすくなります](/cloud/reference/shared-merge-tree#consistency)。OSS でこのアプローチを利用する場合は、慎重に行い、Keeper の負荷を測定する必要があります。
 
 ## トランザクション（ACID）サポート {#transactional-acid-support}
 
@@ -108,7 +109,7 @@ PostgreSQL から移行するユーザーは、トランザクションデータ
 
 このような仕組みは強力ではありますが、本質的な制約を伴い、ペタバイト級のスケールを扱うことを困難にします。ClickHouse は、高い書き込みスループットを維持しながら、大規模な高速分析クエリを提供するために、これらの特性の一部をトレードオフしています。
 
-ClickHouse は、[限定された構成](/guides/developer/transactional) の下で ACID 特性を提供します。最も単純な例は、1 つのパーティションを持つ、レプリケーションなしの MergeTree テーブルエンジンのインスタンスを使用する場合です。ユーザーは、これらのケース以外で ACID 特性が提供されることを前提とすべきではなく、それらが必須要件ではないことを確認する必要があります。
+ClickHouse は、[限定された構成](/guides/developer/transactional) の下で ACID 特性を提供します。最も単純な例は、1 つのパーティションを持つ、レプリケーションなしの MergeTree テーブルエンジンのインスタンスを使用する場合です。これらのケース以外で ACID 特性が提供されることを想定すべきではなく、それらが必須要件ではないことを確認してください。
 
 ## 圧縮 {#compression}
 
@@ -148,6 +149,7 @@ GROUP BY `table`
 ```
 
 圧縮の最適化と測定の詳細については、[こちら](/data-compression/compression-in-clickhouse)を参照してください。
+
 
 ## データ型のマッピング {#data-type-mappings}
 

@@ -55,7 +55,6 @@ LIMIT 100;
 
 请注意，`url` 函数可以方便地从 CSV 文件读取数据：
 
-
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
 │ date       │ location_key │ new_confirmed │ new_deceased │ new_recovered │ new_tested │ cumulative_confirmed │ cumulative_deceased │ cumulative_recovered │ cumulative_tested │
@@ -134,7 +133,6 @@ FROM covid19;
 │ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
-
 
 7. 你会注意到数据中有很多日期对应的数值为 0——要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新确诊病例的每日平均值：
 
@@ -232,7 +230,6 @@ WHERE location_key = 'US_DC';
 ```
 
 结果如下：
-
 
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐

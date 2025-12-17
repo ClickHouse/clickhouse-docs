@@ -60,7 +60,7 @@ Parquet ファイルを書き出す際、対応する Parquet 型が存在しな
 
 `Array` は入れ子にでき、引数として `Nullable` 型の値を持つことができます。`Tuple` 型および `Map` 型も入れ子にできます。
 
-ClickHouse テーブルのカラムのデータ型は、挿入される Parquet データ内の対応するフィールドの型と異なる場合があります。データ挿入時、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルのカラムに設定されているデータ型へ[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。たとえば、`UINT_32` の Parquet カラムは [IPv4](/sql-reference/data-types/ipv4.md) 型の ClickHouse カラムとして読み取ることができます。
+ClickHouse テーブルのカラムのデータ型は、挿入される Parquet データ内の対応するフィールドの型と異なる場合があります。データ挿入時、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルのカラムに設定されているデータ型へ[キャスト](/sql-reference/functions/type-conversion-functions#CAST)します。たとえば、`UINT_32` の Parquet カラムは [IPv4](/sql-reference/data-types/ipv4.md) 型の ClickHouse カラムとして読み取ることができます。
 
 一部の Parquet 型には、近い ClickHouse 型が存在しません。これらは次のように読み取ります。
 

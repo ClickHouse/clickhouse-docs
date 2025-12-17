@@ -1015,6 +1015,7 @@ clickhouse-user@clickhouse:~/imdb$ dbt snapshot
 |45332 |Mel       |Blanc       |909       |2022-05-25 19:31:47|NULL               |
 |621468|Bess      |Flowers     |672       |2022-05-25 19:31:47|NULL               |
 +------+----------+------------+----------+-------------------+-------------------+
+
 ```bash
     clickhouse-user@clickhouse:~/imdb$ clickhouse-client --password <password> --query
     "SELECT genre, ucase(substring(genre, 1, 3)) as code FROM imdb.genres GROUP BY genre

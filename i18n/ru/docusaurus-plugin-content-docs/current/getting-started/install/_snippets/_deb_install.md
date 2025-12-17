@@ -44,6 +44,7 @@ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D7
 # Add the ClickHouse repository to apt sources
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
+
     
 # Update apt package lists
 sudo apt-get update

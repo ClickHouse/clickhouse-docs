@@ -8,7 +8,7 @@ doc_type: 'guide'
 
 我们建议先阅读[本指南](/guides/inserting-data)，了解向 ClickHouse 插入数据的最佳实践，以优化插入性能。
 
-对于从 PostgreSQL 批量加载数据，用户可以使用：
+对于从 PostgreSQL 批量加载数据，您可以使用：
 
 - [ClickPipes](/integrations/clickpipes/postgres)，这是 ClickHouse Cloud 的托管集成服务。
 - `PeerDB by ClickHouse`，一款专为将 PostgreSQL 数据库复制到自托管 ClickHouse 和 ClickHouse Cloud 而设计的 ETL 工具。

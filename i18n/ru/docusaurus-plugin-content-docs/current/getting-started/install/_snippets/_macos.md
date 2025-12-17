@@ -3,13 +3,19 @@ import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verif
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
 
-# Установите ClickHouse с помощью Homebrew {#install-clickhouse-using-homebrew}
+# Установка ClickHouse с помощью Homebrew {#install-clickhouse-using-homebrew}
+
+:::warning
+Установка с использованием формулы Homebrew устарела и будет отключена 2026-09-01.
+Мы рекомендуем вместо этого использовать метод [быстрой установки](/install/quick-install-curl), который работает на любой платформе.
+:::
 
 <VerticalStepper>
 
-## Установка с помощью формулы Homebrew сообщества {#install-using-community-homebrew-formula}
+## Установка с использованием community-формулы Homebrew {#install-using-community-homebrew-formula}
 
-Чтобы установить ClickHouse на macOS с помощью [Homebrew](https://brew.sh/), воспользуйтесь формулой Homebrew, поддерживаемой сообществом ClickHouse ([clickhouse](https://formulae.brew.sh/cask/clickhouse)).
+Чтобы установить ClickHouse на macOS с помощью [Homebrew](https://brew.sh/), вы можете использовать
+[формулу Homebrew](https://formulae.brew.sh/cask/clickhouse), поддерживаемую сообществом ClickHouse.
 
 ```bash
 brew install --cask clickhouse
@@ -36,7 +42,7 @@ brew install --cask clickhouse
 
    <Image img={privacy_default} size="md" alt="Стандартный вид настроек Privacy & Security в macOS" border />
 
-3. Пролистайте окно вниз до сообщения вида &#95;&quot;clickhouse-macos-aarch64&quot; was blocked from use because it is not from an identified developer&quot;.
+3. Пролистайте окно вниз до сообщения вида _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer"_.
 
 4. Нажмите **Allow Anyway**.
 
@@ -84,9 +90,9 @@ clickhouse client [args]
 clickhouse benchmark [args]
 ```
 
-## Устранение проблемы путём переустановки ClickHouse {#fix-issue}
+## Устранение проблемы путем повторной установки ClickHouse {#fix-issue}
 
-Brew имеет параметр командной строки, который предотвращает помещение устанавливаемых бинарных файлов в карантин.
+В brew есть параметр командной строки, который изначально предотвращает помещение установленных бинарных файлов в карантин.
 
 Сначала удалите ClickHouse:
 
@@ -99,5 +105,4 @@ brew uninstall clickhouse
 ```shell
 brew install --no-quarantine clickhouse
 ```
-
 </VerticalStepper>

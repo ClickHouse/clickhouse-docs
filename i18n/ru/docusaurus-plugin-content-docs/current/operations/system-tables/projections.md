@@ -1,5 +1,5 @@
 ---
-description: 'Системная таблица, содержащая информацию о имеющихся проекциях во всех таблицах.'
+description: 'Системная таблица, содержащая информацию о существующих проекциях всех таблиц.'
 keywords: ['системная таблица', 'проекции']
 slug: /operations/system-tables/projections
 title: 'system.projections'
@@ -38,6 +38,7 @@ name:        improved_sorting_key
 type:        Normal
 sorting_key: ['user_id','date']
 query:       SELECT * ORDER BY user_id, date
+settings:     {}
 
 Row 2:
 ──────
@@ -47,4 +48,5 @@ name:        agg_no_key
 type:        Aggregate
 sorting_key: []
 query:       SELECT count()
+settings:     {}
 ```

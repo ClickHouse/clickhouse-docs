@@ -37,7 +37,7 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 В следующем примере предполагается, что вы запустили ClickStack, используя [инструкции для образа «всё-в-одном»](/use-cases/observability/clickstack/getting-started) и подключились к [локальному экземпляру ClickHouse](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) или экземпляру [ClickHouse Cloud](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection). 
 
 :::note HyperDX в ClickHouse Cloud
-Этот демонстрационный набор данных также может использоваться с HyperDX в ClickHouse Cloud, с незначительными изменениями в последовательности действий, отмеченными ниже. При использовании HyperDX в ClickHouse Cloud пользователям потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+Этот демонстрационный набор данных также может использоваться с HyperDX в ClickHouse Cloud, с незначительными изменениями в последовательности действий, отмеченными ниже. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
 :::
 
 <VerticalStepper>
@@ -64,11 +64,11 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
   [Образцы данных](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
   ```shell
-# curl
-curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-# or
-# wget https://storage.googleapis.com/hyperdx/sample.tar.gz
-```
+  # curl
+  curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
+  # или
+  # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
+  ```
 
   Этот файл содержит примеры логов, метрик и трейсов из нашего публичного [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) — простого интернет-магазина с микросервисами. Скопируйте этот файл в выбранную директорию.
 
@@ -83,24 +83,24 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
   :::
 
   ```shell
-# export API key
-export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
-```
+  # экспортируйте API-ключ
+  export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
+  ```
 
   Выполните следующую команду для отправки данных в OTel collector:
 
   ```shell
-for filename in $(tar -tf sample.tar.gz); do
-  endpoint="http://localhost:4318/v1/${filename%.json}"
-  echo "loading ${filename%.json}"
-  tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
-    -H "Content-Type: application/json" \
-    -H "authorization: ${CLICKSTACK_API_KEY}" \
-    --data-binary @-
+  for filename in $(tar -tf sample.tar.gz); do
+    endpoint="http://localhost:4318/v1/${filename%.json}"
+    echo "загружается ${filename%.json}"
+    tar -xOf sample.tar.gz "$filename" | while read -r line; do
+      printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+      -H "Content-Type: application/json" \
+      -H "authorization: ${CLICKSTACK_API_KEY}" \
+      --data-binary @-
+    done
   done
-done
-```
+  ```
 
   Это имитирует источники логов, трейсов и метрик OTLP, отправляющие данные в OTel collector. В production-среде такими источниками могут быть языковые клиенты или даже другие OTel collector.
 
