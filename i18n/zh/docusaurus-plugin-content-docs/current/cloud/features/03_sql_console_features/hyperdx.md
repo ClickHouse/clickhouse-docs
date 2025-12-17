@@ -17,7 +17,7 @@ HyperDX 是 [**ClickStack**](/use-cases/observability/clickstack) 的用户界�
 
 HyperDX 是专为探索和可视化可观测性数据构建的前端，支持 Lucene 风格和 SQL 查询、交互式仪表盘、告警、追踪探索等功能——并针对以 ClickHouse 作为后端的场景进行了全面优化。
 
-在 ClickHouse Cloud 中使用 HyperDX，使用户能够获得更加开箱即用的 ClickStack 体验 —— 无需管理基础设施，也无需单独配置身份验证。
+在 ClickHouse Cloud 中使用 HyperDX，使您能够获得更加开箱即用的 ClickStack 体验 —— 无需管理基础设施，也无需单独配置身份验证。
 HyperDX 可以一键启动并连接到您的数据 —— 与 ClickHouse Cloud 身份验证系统完全集成，为您的可观测性洞察提供无缝且安全的访问体验。
 
 

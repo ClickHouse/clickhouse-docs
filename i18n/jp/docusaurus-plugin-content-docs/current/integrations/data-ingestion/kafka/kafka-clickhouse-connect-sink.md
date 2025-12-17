@@ -503,6 +503,7 @@ consumer.fetch.max.wait.ms=300
 }
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
 ```json
@@ -551,6 +552,7 @@ SETTINGS
 "clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
 ```json
 "clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
+
 ```json
 "clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
 ```json
@@ -582,6 +584,7 @@ SETTINGS
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
+
 ```json
 {
   "name": "clickhouse-high-throughput",

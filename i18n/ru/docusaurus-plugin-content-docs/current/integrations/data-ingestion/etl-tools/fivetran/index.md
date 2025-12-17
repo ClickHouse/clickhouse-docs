@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Пользователи могут преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
+description: 'Вы можете преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
 title: 'Fivetran и ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -12,6 +12,7 @@ keywords: ['fivetran', 'перемещение данных', 'etl', 'ClickHouse
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
+
 
 # Fivetran и ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 

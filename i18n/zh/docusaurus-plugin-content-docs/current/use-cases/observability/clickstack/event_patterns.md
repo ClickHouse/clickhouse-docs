@@ -30,7 +30,7 @@ ClickStack 中的事件模式可以通过自动将相似的消息聚类在一起
 
 <Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
 
-这提供了相对于默认 **Results Table** 的另一种视图，默认视图允许用户逐条滚动浏览每一条日志或跟踪（trace）。
+这提供了相对于默认 **Results Table** 的另一种视图，默认视图允许你逐条滚动浏览每一条日志或跟踪（trace）。
 
 ## 建议 {#recommendations}
 

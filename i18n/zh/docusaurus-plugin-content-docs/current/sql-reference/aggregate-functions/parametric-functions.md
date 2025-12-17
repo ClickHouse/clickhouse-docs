@@ -83,7 +83,8 @@ FROM
 └────────┴───────┘
 ```
 
-在这种情况下，你需要记住自己并不知道直方图各分箱的边界。
+在这种情况下，你需要注意，此时你并不知道直方图各个箱的边界。
+
 
 ## sequenceMatch {#sequencematch}
 
@@ -115,6 +116,7 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 * 如果未匹配到模式，返回 0。
 
 类型：`UInt8`。
+
 
 #### 模式语法 {#pattern-syntax}
 
@@ -148,7 +150,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2) FROM t
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
-该函数找到了一个事件链，其中数字 2 紧跟在数字 1 之后。它跳过了中间的数字 3，因为该数字并未被描述为一个事件。如果我们希望在搜索示例中给出的该事件链时也将这个数字考虑在内，就需要为它单独添加一个条件。
+该函数找到了一个事件链，其中数字 2 紧随数字 1 之后。它跳过了中间的数字 3，因为该数字未被描述为事件。如果我们希望在搜索示例中给出的该事件链时也将这个数字考虑在内，就需要为它单独添加一个条件。
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM t
@@ -160,7 +162,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 3) FROM 
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-在这个例子中，函数无法找到与模式匹配的事件链，因为编号为 3 的事件发生在 1 和 2 之间。如果在相同情况下改为检查编号 4 的条件，则该序列就会与模式匹配。
+在这种情况下，函数无法找到与模式匹配的事件链，因为编号为 3 的事件发生在 1 和 2 之间。如果在同样的情况下改为检查编号为 4 的条件，则该序列就会与模式匹配。
 
 ```sql
 SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM t
@@ -175,6 +177,7 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 **另请参阅**
 
 * [sequenceCount](#sequencecount)
+
 
 ## sequenceCount {#sequencecount}
 
@@ -233,6 +236,7 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## sequenceMatchEvents {#sequencematchevents}
 
 返回与模式匹配的最长事件链中各事件的时间戳。
@@ -251,7 +255,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 
 * `timestamp` — 被视为包含时间数据的列。典型数据类型为 `Date` 和 `DateTime`。也可以使用任意受支持的 [UInt](../../sql-reference/data-types/int-uint.md) 数据类型。
 
-* `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。最多可以传递 32 个条件参数。函数只会将这些条件中描述的事件纳入考虑。如果序列中包含未在条件中描述的数据，函数会跳过它们。
+* `cond1`, `cond2` — 描述事件链的条件。数据类型：`UInt8`。最多可以传递 32 个条件参数。函数只会考虑这些条件中描述的事件。如果序列中包含未在条件中描述的数据，函数会跳过它们。
 
 **参数说明**
 
@@ -259,7 +263,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 
 **返回值**
 
-* 由事件链中与条件参数 (?N) 匹配的时间戳组成的数组。数组中元素的位置与该条件参数在模式中的位置一一对应。
+* 由事件链中与条件参数 (?N) 匹配的时间戳构成的数组。数组中元素的位置与该条件参数在模式中的位置一一对应。
 
 类型：Array。
 
@@ -278,7 +282,7 @@ sequenceMatchEvents(pattern)(timestamp, cond1, cond2, ...)
 └──────┴────────┘
 ```
 
-返回最长链中事件的时间戳
+返回最长事件链中各事件的时间戳
 
 ```sql
 SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2, number = 4) FROM t
@@ -293,6 +297,7 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 **另请参阅**
 
 * [sequenceMatch](#sequencematch)
+
 
 ## windowFunnel {#windowfunnel}
 
@@ -325,6 +330,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
   * `'strict_order'` — 不允许其他事件插入。例如在 `A->B->D->C` 的情况下，会在 `D` 处停止寻找 `A->B->C`，最大事件层级为 2。
   * `'strict_increase'` — 仅对时间戳严格递增的事件应用条件。
   * `'strict_once'` — 在事件链中每个事件只计数一次，即使它多次满足条件。
+  * `'allow_reentry'` — 忽略破坏严格顺序的事件。例如在 `A->A->B->C` 的情况下，通过忽略多余的 A 来找到 `A->B->C`，最大事件层级为 3。
 
 **返回值**
 
@@ -345,6 +351,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 4. 用户再次下单（`eventID = 1010`）。
 
 输入表：
+
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
@@ -389,6 +396,38 @@ ORDER BY level ASC;
 │     4 │ 1 │
 └───────┴───┘
 ```
+
+**使用 allow&#95;reentry 模式的示例**
+
+此示例演示 `allow_reentry` 模式在用户重新进入路径场景中的工作方式：
+
+```sql
+-- Sample data: user visits checkout -> product detail -> checkout again -> payment
+-- Without allow_reentry: stops at level 2 (product detail page)
+-- With allow_reentry: reaches level 4 (payment completion)
+
+SELECT
+    level,
+    count() AS users
+FROM
+(
+    SELECT
+        user_id,
+        windowFunnel(3600, 'strict_order', 'allow_reentry')(
+            timestamp,
+            action = 'begin_checkout',      -- Step 1: Begin checkout
+            action = 'view_product_detail', -- Step 2: View product detail  
+            action = 'begin_checkout',      -- Step 3: Begin checkout again (reentry)
+            action = 'complete_payment'     -- Step 4: Complete payment
+        ) AS level
+    FROM user_events
+    WHERE event_date = today()
+    GROUP BY user_id
+)
+GROUP BY level
+ORDER BY level ASC;
+```
+
 
 ## retention {#retention}
 
@@ -495,6 +534,7 @@ ORDER BY uid ASC
 
 结果：
 
+
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -549,6 +589,7 @@ Where:
 * `r2`- 在 2020-01-01 至 2020-01-02 之间某一特定时间段内访问该站点的独立访客数量（同时满足 `cond1` 和 `cond2` 条件）。
 * `r3`- 在 2020-01-01 和 2020-01-03 某一特定时间段内访问该站点的独立访客数量（同时满足 `cond1` 和 `cond3` 条件）。
 
+
 ## uniqUpTo(N)(x) {#uniquptonx}
 
 计算参数的不同取值数量，最多计算到指定的上限 `N`。如果不同取值的数量大于 `N`，则该函数返回 `N` + 1，否则返回精确值。
@@ -556,7 +597,7 @@ Where:
 推荐在 `N` 较小（最多为 10）时使用。`N` 的最大值为 100。
 
 对于聚合函数的状态，此函数使用的内存量等于 1 + `N` * 单个值的字节大小。
-在处理字符串时，此函数会存储一个 8 字节的非加密散列值；对于字符串的计算是近似值。
+在处理字符串时，此函数会存储一个 8 字节的非加密哈希值；对于字符串的计算是近似值。
 
 例如，如果你有一张表，用来记录网站上用户发起的每一次搜索查询。表中的每一行代表一次搜索查询，包含用户 ID、搜索查询内容和查询时间戳等列。你可以使用 `uniqUpTo` 生成一份报表，仅展示被至少 5 个不同用户搜索过的关键词。
 
@@ -568,6 +609,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
 `uniqUpTo(4)(UserID)` 会为每个 `SearchPhrase` 计算不同 `UserID` 的数量，但最多只统计 4 个。如果某个 `SearchPhrase` 对应的不同 `UserID` 数量超过 4，该函数会返回 5（4 + 1）。随后，`HAVING` 子句会过滤掉那些不同 `UserID` 数量小于 5 的 `SearchPhrase`。这样就可以得到一份至少被 5 个不同用户使用过的搜索关键词列表。
+
 
 ## sumMapFiltered {#summapfiltered}
 
@@ -618,6 +660,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## sumMapFilteredWithOverflow {#summapfilteredwithoverflow}
 
@@ -680,6 +723,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
 ```
+
 
 ## sequenceNextNode {#sequencenextnode}
 
@@ -747,7 +791,7 @@ SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A',
 └────┴───────────┘
 ```
 
-**`forward` 与 `head` 的行为**
+**`forward` 和 `head` 的行为**
 
 ```sql
 ALTER TABLE test_flow DELETE WHERE 1 = 1 settings mutations_sync = 1;
@@ -757,25 +801,24 @@ INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2,
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
 
+
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
                   dt   id   page
- 1970-01-01 09:00:01    1   Home // 基准点,匹配 Home
- 1970-01-01 09:00:02    1   Gift // 匹配 Gift
- 1970-01-01 09:00:03    1   Exit // 结果
+ 1970-01-01 09:00:01    1   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    1   Gift // Matched with Gift
+ 1970-01-01 09:00:03    1   Exit // The result
 
- 1970-01-01 09:00:01    2   Home // 基准点,匹配 Home
- 1970-01-01 09:00:02    2   Home // 不匹配 Gift
+ 1970-01-01 09:00:01    2   Home // Base point, Matched with Home
+ 1970-01-01 09:00:02    2   Home // Unmatched with Gift
  1970-01-01 09:00:03    2   Gift
  1970-01-01 09:00:04    2   Basket
-```
 
-1970-01-01 09:00:01    3   Gift // 基准点，未与 Home 匹配
-1970-01-01 09:00:02    3   Home
-1970-01-01 09:00:03    3   Gift
-1970-01-01 09:00:04    3   Basket
-
+ 1970-01-01 09:00:01    3   Gift // Base point, Unmatched with Home
+ 1970-01-01 09:00:02    3   Home
+ 1970-01-01 09:00:03    3   Gift
+ 1970-01-01 09:00:04    3   Basket
 ```
 
 **`backward` 和 `tail` 的行为**
@@ -786,17 +829,17 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, page = 'Basket', page 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
 1970-01-01 09:00:02    1   Gift
-1970-01-01 09:00:03    1   Exit // 基准点,与 Basket 不匹配
+1970-01-01 09:00:03    1   Exit // Base point, Unmatched with Basket
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // 结果
-1970-01-01 09:00:03    2   Gift // 与 Gift 匹配
-1970-01-01 09:00:04    2   Basket // 基准点,与 Basket 匹配
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Matched with Gift
+1970-01-01 09:00:04    2   Basket // Base point, Matched with Basket
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // 结果
+1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift // Base point, Matched with Gift
-1970-01-01 09:00:04    3   Basket // 基准点,与 Basket 匹配
+1970-01-01 09:00:04    3   Basket // Base point, Matched with Basket
 ```
 
 **`forward` 和 `first_match` 的行为**
@@ -806,36 +849,37 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // 基点
-1970-01-01 09:00:03    1   Exit // 结果
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // The result
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // 基点
-1970-01-01 09:00:04    2   Basket  // 结果
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket  The result
 
-1970-01-01 09:00:01    3   Gift // 基点
-1970-01-01 09:00:02    3   Home // 结果
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // The result
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 ```
+
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
 1970-01-01 09:00:01    1   Home
-1970-01-01 09:00:02    1   Gift // 基准点
-1970-01-01 09:00:03    1   Exit // 与 Home 不匹配
+1970-01-01 09:00:02    1   Gift // Base point
+1970-01-01 09:00:03    1   Exit // Unmatched with Home
 
 1970-01-01 09:00:01    2   Home
 1970-01-01 09:00:02    2   Home
-1970-01-01 09:00:03    2   Gift // 基准点
-1970-01-01 09:00:04    2   Basket // 与 Home 不匹配
+1970-01-01 09:00:03    2   Gift // Base point
+1970-01-01 09:00:04    2   Basket // Unmatched with Home
 
-1970-01-01 09:00:01    3   Gift // 基准点
-1970-01-01 09:00:02    3   Home // 与 Home 匹配
-1970-01-01 09:00:03    3   Gift // 结果
+1970-01-01 09:00:01    3   Gift // Base point
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // The result
 1970-01-01 09:00:04    3   Basket
 ```
 
@@ -843,41 +887,39 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift') FROM test_flow GROUP BY id;
-```
 
-dt   id   page
-1970-01-01 09:00:01    1   Home // 结果
-1970-01-01 09:00:02    1   Gift // 基准点
+                 dt   id   page
+1970-01-01 09:00:01    1   Home // The result
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
 1970-01-01 09:00:01    2   Home
-1970-01-01 09:00:02    2   Home // 结果
-1970-01-01 09:00:03    2   Gift // 基准点
+1970-01-01 09:00:02    2   Home // The result
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
 1970-01-01 09:00:01    3   Gift
-1970-01-01 09:00:02    3   Home // 结果
-1970-01-01 09:00:03    3   Gift // 基准点
+1970-01-01 09:00:02    3   Home // The result
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
-
 ```
 
 ```sql
 SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
 
                  dt   id   page
-1970-01-01 09:00:01    1   Home // 与 Home 匹配,结果为 null
-1970-01-01 09:00:02    1   Gift // 基点
+1970-01-01 09:00:01    1   Home // Matched with Home, the result is null
+1970-01-01 09:00:02    1   Gift // Base point
 1970-01-01 09:00:03    1   Exit
 
-1970-01-01 09:00:01    2   Home // 结果
-1970-01-01 09:00:02    2   Home // 与 Home 匹配
-1970-01-01 09:00:03    2   Gift // 基点
+1970-01-01 09:00:01    2   Home // The result
+1970-01-01 09:00:02    2   Home // Matched with Home
+1970-01-01 09:00:03    2   Gift // Base point
 1970-01-01 09:00:04    2   Basket
 
-1970-01-01 09:00:01    3   Gift // 结果
-1970-01-01 09:00:02    3   Home // 与 Home 匹配
-1970-01-01 09:00:03    3   Gift // 基点
+1970-01-01 09:00:01    3   Gift // The result
+1970-01-01 09:00:02    3   Home // Matched with Home
+1970-01-01 09:00:03    3   Gift // Base point
 1970-01-01 09:00:04    3   Basket
 ```
 
@@ -898,11 +940,12 @@ ORDER BY id;
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
 
+
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;
 
                   dt   id   page   ref
- 1970-01-01 09:00:01    1   A      ref4 // 头部记录不能作为基准点,因为其 ref 列的值与 'ref1' 不匹配。
+ 1970-01-01 09:00:01    1   A      ref4 // The head can not be base point because the ref column of the head unmatched with 'ref1'.
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
  1970-01-01 09:00:04    1   B      ref1
@@ -915,19 +958,17 @@ SELECT id, sequenceNextNode('backward', 'tail')(dt, page, ref = 'ref4', page = '
  1970-01-01 09:00:01    1   A      ref4
  1970-01-01 09:00:02    1   A      ref3
  1970-01-01 09:00:03    1   B      ref2
- 1970-01-01 09:00:04    1   B      ref1 // 尾部不能作为基点,因为尾部的 ref 列与 'ref4' 不匹配。
+ 1970-01-01 09:00:04    1   B      ref1 // The tail can not be base point because the ref column of the tail unmatched with 'ref4'.
 ```
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, ref = 'ref3', page = 'A') FROM test_flow_basecond GROUP BY id;
-```
 
-dt   id   page   ref
-1970-01-01 09:00:01    1   A      ref4 // 这一行不能作为基准点，因为 ref 列的值与 &#39;ref3&#39; 不一致。
-1970-01-01 09:00:02    1   A      ref3 // 基准点
-1970-01-01 09:00:03    1   B      ref2 // 结果
-1970-01-01 09:00:04    1   B      ref1
-
+                  dt   id   page   ref
+ 1970-01-01 09:00:01    1   A      ref4 // This row can not be base point because the ref column unmatched with 'ref3'.
+ 1970-01-01 09:00:02    1   A      ref3 // Base point
+ 1970-01-01 09:00:03    1   B      ref2 // The result
+ 1970-01-01 09:00:04    1   B      ref1
 ```
 
 ```sql
@@ -935,7 +976,7 @@ SELECT id, sequenceNextNode('backward', 'last_match')(dt, page, ref = 'ref2', pa
 
                   dt   id   page   ref
  1970-01-01 09:00:01    1   A      ref4
- 1970-01-01 09:00:02    1   A      ref3 // 结果
- 1970-01-01 09:00:03    1   B      ref2 // 基准点
- 1970-01-01 09:00:04    1   B      ref1 // 此行不能作为基准点,因为 ref 列与 'ref2' 不匹配。
+ 1970-01-01 09:00:02    1   A      ref3 // The result
+ 1970-01-01 09:00:03    1   B      ref2 // Base point
+ 1970-01-01 09:00:04    1   B      ref1 // This row can not be base point because the ref column unmatched with 'ref2'.
 ```

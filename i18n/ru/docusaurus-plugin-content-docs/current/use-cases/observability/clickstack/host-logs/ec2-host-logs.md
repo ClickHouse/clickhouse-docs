@@ -22,7 +22,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Мониторинг журналов хостов EC2 с помощью ClickStack {#ec2-host-logs-clickstack}
 
 :::note[Кратко]
@@ -507,7 +506,6 @@ sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetectio
 # If running in foreground, check stdout
 ```
 
-
 ### В HyperDX не отображаются логи
 
 **Проверьте, что файлы syslog существуют и в них ведётся запись:**
@@ -542,7 +540,6 @@ curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
 
-
 ### Некорректный разбор логов
 
 **Проверьте формат syslog:**
@@ -563,7 +560,6 @@ tail -5 /var/log/messages
 
 Если ваш формат отличается, в зависимости от вашей дистрибуции используйте соответствующую вкладку конфигурации в разделе [Create collector configuration](#create-config).
 
-
 ### Коллектор не запускается как служба systemd
 
 **Проверьте статус службы:**
@@ -583,7 +579,6 @@ sudo journalctl -u otelcol-contrib -n 50
 * API-ключ некорректно задан в переменных окружения
 * Ошибки синтаксиса в файле конфигурации
 * Проблемы с правами доступа к файлам логов
-
 
 ## Следующие шаги {#next-steps}
 

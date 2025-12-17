@@ -215,7 +215,7 @@ ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ### Экспоненциальные гистограммы {#exponential-histograms}
 
 :::note
-HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Пользователи могут настраивать их в источнике метрик, но поддержка появится в будущем.
+HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Вы можете настраивать их в источнике метрик, но поддержка появится в будущем.
 :::
 
 ```sql
@@ -264,6 +264,7 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
+
 
 ### Сводная таблица {#summary-table}
 

@@ -7,7 +7,7 @@ pagination_prev: null
 pagination_next: use-cases/observability/clickstack/ingesting-data/opentelemetry
 description: 'Обзор приёма данных в ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'наблюдаемость', 'логи', 'мониторинг', 'платформа']
+keywords: ['clickstack', 'обсервабилити', 'логи', 'мониторинг', 'платформа']
 ---
 
 import Image from '@theme/IdealImage';

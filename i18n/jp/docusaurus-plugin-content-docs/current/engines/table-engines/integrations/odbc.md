@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # ODBC テーブルエンジン {#odbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -36,7 +37,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 テーブル構造は、ソーステーブルの構造と異なっていてもかまいません。
 
 * 列名はソーステーブルと同じである必要がありますが、その一部の列だけを任意の順序で使用できます。
-* 列の型は、ソーステーブルとは異なっていてもかまいません。ClickHouse は値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#cast)しようとします。
+* 列の型は、ソーステーブルとは異なっていてもかまいません。ClickHouse は値を ClickHouse のデータ型に[キャスト](/sql-reference/functions/type-conversion-functions#CAST)しようとします。
 * [external&#95;table&#95;functions&#95;use&#95;nulls](/operations/settings/settings#external_table_functions_use_nulls) 設定は、Nullable 列をどのように扱うかを定義します。デフォルト値は 1 です。0 の場合、テーブル関数は Nullable 列を作成せず、null の代わりにデフォルト値を挿入します。これは配列内の NULL 値にも適用されます。
 
 **エンジンパラメータ**
@@ -46,6 +47,7 @@ ENGINE = ODBC(datasource, external_database, external_table)
 * `external_table` — `external_database` 内のテーブル名。
 
 これらのパラメータは、[named collections](operations/named-collections.md) を使用して指定することもできます。
+
 
 ## 使用例 {#usage-example}
 
@@ -135,6 +137,7 @@ SELECT * FROM odbc_t
 │      1 │           ᴺᵁᴸᴸ │
 └────────┴────────────────┘
 ```
+
 
 ## 関連項目 {#see-also}
 

@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 在 ClickHouse 与 Redshift 之间迁移数据的用户会立刻注意到，ClickHouse 提供的类型范围更广，而且限制更少。Redshift 要求用户指定字符串的可能长度，即使是可变长度；而 ClickHouse 通过以原始字节的形式存储字符串，取消了这一限制和负担。因此，ClickHouse 的 `String` 类型没有长度限制或长度声明要求。
 
-此外，用户可以利用 `Array`、`Tuple` 和 `Enum`——这些在 Redshift 中并不存在为一等公民（尽管可以通过 `SUPER` 模拟 Array/Struct），这也是用户常见的痛点。ClickHouse 还允许在查询时，甚至在表中，将聚合状态持久化保存。这样可以对数据进行预聚合，通常使用物化视图，从而显著提升常见查询的性能。
+此外，你可以利用 `Array`、`Tuple` 和 `Enum`——这些在 Redshift 中并不存在为一等公民（尽管可以通过 `SUPER` 模拟 Array/Struct），这也是用户常见的痛点。ClickHouse 还允许在查询时，甚至在表中，将聚合状态持久化保存。这样可以对数据进行预聚合，通常使用物化视图，从而显著提升常见查询的性能。
 
 下面我们为每种 Redshift 类型给出对应的 ClickHouse 类型映射：
 
@@ -39,8 +39,8 @@ doc_type: 'reference'
 | [`TIMETZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timetz)                             | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                           |
 | [`VARBYTE`](https://docs.aws.amazon.com/redshift/latest/dg/r_VARBYTE_type.html) **                                                   | 将 [`String`](/sql-reference/data-types/string) 与 [`Bit`](/sql-reference/functions/bit-functions) 和 [Encoding](/sql-reference/functions/encoding-functions/#hex) 函数组合使用                                                                           |
 
-<sub><span>*</span> ClickHouse 此外还支持具有扩展取值范围的无符号整数类型，即 <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32` 和 `UInt64`</a>。</sub><br />
-<sub><span>**</span>ClickHouse 的 String 类型默认不受长度限制，但可以通过使用 <a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>约束（Constraints）</a> 将其限定为特定长度。</sub>
+<sub><span>*</span> ClickHouse 此外还支持取值范围更大的无符号整数类型，即 <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32` 和 `UInt64`</a>。</sub><br />
+<sub><span>**</span>ClickHouse 的 String 类型默认不受长度限制，但可以通过使用 <a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>约束</a> 将其限制为特定长度。</sub>
 
 ## DDL 语法 {#compression}
 

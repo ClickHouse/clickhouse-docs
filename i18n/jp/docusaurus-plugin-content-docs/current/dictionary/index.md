@@ -87,7 +87,7 @@ Peak memory usage: 3.18 GiB.
 
 #### Dictionary の適用 {#applying-a-dictionary}
 
-これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、ユーザーはデータサイズに留意しておく必要があります。ここで、`votes` テーブルのサイズを確認します：
+これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -117,7 +117,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-Dictionary を作成するには、以下の DDL を実行します。先ほどのクエリが使われている点に注目してください。
+Dictionary を作成するには、以下の DDL を実行します。上記のクエリが使われている点に注目してください。
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -148,7 +148,8 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-特定の`PostId`に対する賛成票数と反対票数は、シンプルな`dictGet`関数で取得できるようになりました。以下の例では、投稿`11227902`の値を取得しています。
+特定の `PostId` に対する賛成票数と反対票数は、シンプルな `dictGet` 関数で取得できるようになりました。以下の例では、投稿 `11227902` の値を取得しています。
+
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
@@ -157,7 +158,7 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 │ (34999,32) │
 └────────────┘
 
-Exploiting this in our earlier query, we can remove the JOIN:
+これを先ほどのクエリに適用することで、JOINを削除できます：
 
 WITH PostIds AS
 (
@@ -174,8 +175,8 @@ WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
 
-3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
-Peak memory usage: 552.26 MiB.
+3行のセット。経過時間：0.551秒。処理：1億1964万行、3.29 GB（2億1696万行/秒、5.97 GB/秒）
+ピークメモリ使用量：552.26 MiB。
 ```
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。

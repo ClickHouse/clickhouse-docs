@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 ### Недостатки {#cons}
 
-* Пользователям необходимо настроить и поддерживать ETL/ELT‑инфраструктуру.
+* Вам необходимо настроить и поддерживать ETL/ELT‑инфраструктуру.
 * В архитектуру добавляется сторонний элемент, который может стать потенциальным узким местом для масштабирования.
 
 ## Получение данных из Redshift в ClickHouse {#pull-data-from-redshift-to-clickhouse}
@@ -139,7 +139,7 @@ Query id: 2d0f957c-8f4e-43b2-a66a-cc48cc96237b
 Ниже показан пример импорта данных с использованием выражения `INSERT INTO ... SELECT`.
 
 ```sql
-# TABLE CREATION with 3 columns
+# СОЗДАНИЕ ТАБЛИЦЫ с 3 столбцами {#table-creation-with-3-columns}
 CREATE TABLE users_imported
 (
    `username` String,
