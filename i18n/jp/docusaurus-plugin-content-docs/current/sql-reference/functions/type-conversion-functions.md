@@ -8557,7 +8557,7 @@ SELECT toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0') AS uuid
 導入バージョン: v20.12
 
 入力値を [UUID](../data-types/uuid.md) 型の値に変換しますが、エラーが発生した場合はゼロ UUID を返します。
-[`toUUID`](/sql-reference/functions/uuid-functions#touuid) と同様ですが、変換エラー時に例外をスローする代わりにゼロ UUID（`00000000-0000-0000-0000-000000000000`）を返します。
+[`toUUID`](/sql-reference/functions/type-conversion-functions#toUUID) と同様ですが、変換エラー時に例外をスローする代わりにゼロ UUID（`00000000-0000-0000-0000-000000000000`）を返します。
 
 サポートされる引数:
 

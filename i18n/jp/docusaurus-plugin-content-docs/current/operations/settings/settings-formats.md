@@ -2067,6 +2067,12 @@ Pretty 形式で表示する値の最大幅。これを超えた部分は切り�
 有効にすると、Pretty フォーマットは複数行のフィールドをテーブルセル内に整形して表示し、テーブルの枠組みが保持されます。
 無効にすると、それらはそのまま表示されるためテーブルのレイアウトが崩れる可能性がありますが、その代わり複数行の値をコピー＆ペーストしやすくなるという利点があります。
 
+## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Pretty フォーマットで、名前付きタプルを整形済みの JSON オブジェクトとして出力するかどうかを制御します。
+
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />

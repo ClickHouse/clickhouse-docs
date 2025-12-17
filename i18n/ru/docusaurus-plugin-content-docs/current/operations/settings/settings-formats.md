@@ -2067,6 +2067,12 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 Если включено, форматы Pretty будут отображать многострочные поля в пределах одной ячейки таблицы, так что границы таблицы будут сохранены.
 Если выключено, многострочные значения будут отображаться как есть, что потенциально может деформировать таблицу (одно из преимуществ отключения — более простое копирование и вставка многострочных значений).
 
+## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Определяет, будут ли именованные кортежи в формате Pretty выводиться как красиво отформатированные объекты JSON.
+
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />

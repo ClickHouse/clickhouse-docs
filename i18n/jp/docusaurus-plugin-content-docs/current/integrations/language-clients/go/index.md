@@ -1298,7 +1298,13 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 
 #### Decimal {#decimal}
 
-Decimal 型は [github.com/shopspring/decimal](https://github.com/shopspring/decimal) パッケージによってサポートされています。
+Go には組み込みの Decimal 型が存在しないため、元のクエリを変更することなくそのまま Decimal 型を扱うには、サードパーティパッケージである [github.com/shopspring/decimal](https://github.com/shopspring/decimal) の利用を推奨します。
+
+:::note
+サードパーティへの依存を避けるために Float を代わりに使いたくなるかもしれません。しかし、[正確な値が必要な場合には ClickHouse の Float 型は推奨されない](https://clickhouse.com/docs/sql-reference/data-types/float) 点に注意してください。
+
+それでもクライアント側で Go の組み込み Float 型を使用する場合は、ClickHouse クエリ内で [toFloat64() 関数](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64) または[そのバリエーション](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64OrZero)を使用して、Decimal を明示的に Float に変換する必要があります。この変換により精度が失われる可能性があることに留意してください。
+:::
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1348,6 +1354,7 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, co
 ```
 
 [完全なサンプルコード](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
+
 
 #### Nullable {#nullable}
 

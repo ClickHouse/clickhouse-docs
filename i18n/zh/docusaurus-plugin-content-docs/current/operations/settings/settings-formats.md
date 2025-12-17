@@ -2065,6 +2065,12 @@ Pretty 格式中单个值的最大显示宽度。如果超过该值，超出部�
 如果启用，Pretty 格式会在表格单元格内渲染多行字段，从而保留表格的整体结构。  
 如果未启用，它们会直接按原样渲染，可能会使表格变形（关闭该选项的一个好处是更便于复制粘贴多行值）。
 
+## output_format_pretty_named_tuples_as_json {#output_format_pretty_named_tuples_as_json}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+控制是否将 Pretty 格式中的具名元组以格式良好的 JSON 对象输出。
+
 ## output_format_pretty_row_numbers {#output_format_pretty_row_numbers}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />
