@@ -29,3 +29,4 @@ ClickStack 提供多种方式，将可观测性数据摄取到 ClickHouse 实例
 | [PostgreSQL Metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) | 监控 Postgres 性能 |
 | [Redis Logs](/use-cases/observability/clickstack/integrations/redis) | 收集 Redis 服务器日志 |
 | [Redis Metrics](/use-cases/observability/clickstack/integrations/redis-metrics) | 监控 Redis 性能 |
+| [Temporal Metrics](/use-cases/observability/clickstack/integrations/temporal-metrics)| 监控 Temporal Cloud 指标 |
