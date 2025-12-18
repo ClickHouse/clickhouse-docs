@@ -152,7 +152,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## Geometry {#geometry}
 
-`Geometry` 是上述所有类型的通用类型。它等价于这些类型的 `Variant`。
+`Geometry` 是上述所有类型的通用类型。它等价于这些类型的 `Variant`。在使用 Geometry 类型时，需要启用以下设置：`SET allow_suspicious_variant_types = 1`
 
 **示例**
 

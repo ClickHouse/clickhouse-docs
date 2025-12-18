@@ -18,19 +18,19 @@ ClickHouse 允许你轻松地从多种数据源将数据摄取到数据库中。
 | [Kafka](/integrations/kafka)                                          |
 | [MySQL](/integrations/mysql)                                          |
 | [Cassandra](/integrations/cassandra)                                  |
-| [Redis](/integrations/redis)                                          |
-| [RabbitMQ](/integrations/rabbitmq)                                    |
-| [MongoDB](/integrations/mongodb)                                      |
+| [Redis](/docs/sql-reference/table-functions/redis)                                          |
+| [RabbitMQ](/docs/engines/table-engines/integrations/rabbitmq)                                    |
+| [MongoDB](/docs/engines/table-engines/integrations/mongodb)                                      |
 | [Google Cloud Storage (GCS)](/integrations/gcs)                       |
-| [Hive](/integrations/hive)                                            |
-| [Hudi](/integrations/hudi)                                            |
-| [Iceberg](/integrations/iceberg)                                      |
+| [Hive](/docs/engines/table-engines/integrations/hive)                                            |
+| [Hudi](/docs/engines/table-engines/integrations/hudi)                                            |
+| [Iceberg](/docs/sql-reference/table-functions/iceberg)                                      |
 | [MinIO](/integrations/minio)                                          |
-| [Delta Lake](/integrations/deltalake)                                 |
-| [RocksDB](/integrations/rocksdb)                                      |
+| [Delta Lake](/docs/sql-reference/table-functions/deltalake)                                 |
+| [RocksDB](/docs/engines/table-engines/integrations/embedded-rocksdb)                                      |
 | [Splunk](/integrations/splunk)                                        |
-| [SQLite](/integrations/sqlite)                                        |
-| [NATS](/integrations/nats)                                            |
+| [SQLite](/docs/engines/table-engines/integrations/sqlite)                                        |
+| [NATS](/docs/engines/table-engines/integrations/nats)                                            |
 | [EMQX](/integrations/emqx)                                            |
 | [插入本地文件](/integrations/data-ingestion/insert-local-files) |
 | [JDBC](/integrations/jdbc/jdbc-with-clickhouse)                       |

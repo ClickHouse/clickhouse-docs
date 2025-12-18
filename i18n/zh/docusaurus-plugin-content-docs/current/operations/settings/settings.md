@@ -401,16 +401,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 启用 delta-kernel 写入功能。
 
-## allow_experimental_full_text_index {#allow_experimental_full_text_index} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "启用实验性文本索引"}]}]}/>
-
-当设置为 true 时，允许使用实验性文本索引。
-
 ## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
 
 <ExperimentalBadge/>
@@ -3214,6 +3204,18 @@ FORMAT PrettyCompactMonoBlock
 
 在执行查询期间，将日志记录到 system.filesystem 表的 prefetch_log 中。仅用于测试或调试，不建议默认启用。
 
+## enable_full_text_index {#enable_full_text_index} 
+
+<BetaBadge/>
+
+**别名**: `allow_experimental_full_text_index`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已进入 Beta 阶段。"}]}]}/>
+
+如果设置为 true，则允许使用文本索引。
+
 ## enable_global_with_statement {#enable_global_with_statement} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3238,7 +3240,7 @@ FORMAT PrettyCompactMonoBlock
 
 启用或禁用对 HTTP 请求响应中数据的压缩。
 
-更多信息请参阅 [HTTP 接口说明](../../interfaces/http.md)。
+更多信息请参阅 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
@@ -3495,9 +3497,9 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "默认在查询中启用共享存储快照"}]}]} />
 
 启用后，单个查询中的所有子查询会针对每个表共享同一个 `StorageSnapshot`。
 这可以确保整个查询过程中的数据视图一致，即使同一张表被多次访问。
@@ -4526,7 +4528,7 @@ HTTP 请求头中允许的最大字段数
 
 启用或禁用在从客户端解压 HTTP POST 数据时执行校验和检查。仅用于 ClickHouse 原生压缩格式（不适用于 `gzip` 或 `deflate`）。
 
-有关更多信息，请阅读 [HTTP 接口说明](../../interfaces/http.md)。
+有关更多信息，请阅读 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
@@ -10448,7 +10450,7 @@ S3Queue 的 Keeper 故障注入概率。
 
 启用或禁用在 `clickhouse-server` 响应中返回 `X-ClickHouse-Progress` HTTP 响应头。
 
-更多信息请参阅 [HTTP 接口说明](../../interfaces/http.md)。
+更多信息请参阅 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
