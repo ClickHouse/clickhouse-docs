@@ -59,6 +59,7 @@ func main() {
         if err != nil {
                 log.Fatal(err)
         }
+        defer rows.Close()
 
         for rows.Next() {
                 var name, uuid string
@@ -66,6 +67,11 @@ func main() {
                         log.Fatal(err)
                 }
                 log.Printf("name: %s, uuid: %s", name, uuid)
+        }
+
+        // NOTE: Do not skip rows.Err() check
+        if err := rows.Err(); err != nil {
+                log.Fatal(err)
         }
 
 }
@@ -867,6 +873,12 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -912,6 +924,11 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -1079,6 +1096,11 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -1707,6 +1729,11 @@ if err != nil {
 for rows.Next() {
 }
 
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 fmt.Printf("Total Rows: %d\n", totalRows)
 rows.Close()
 ```
@@ -1727,6 +1754,7 @@ rows, err := conn.Query(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
 var (
     columnTypes = rows.ColumnTypes()
     vars        = make([]interface{}, len(columnTypes))
@@ -1746,6 +1774,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -1798,6 +1830,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 rows.Close()
 
 var count uint64
@@ -1830,6 +1866,10 @@ rows := conn.QueryRow(clickhouse.Context(context.Background(), clickhouse.WithSp
     }),
 )), "SELECT COUNT() FROM (SELECT number FROM system.numbers LIMIT 5)")
 if err := rows.Scan(&count); err != nil {
+    return err
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
     return err
 }
 fmt.Printf("count: %d\n", count)
@@ -2189,6 +2229,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1             uint8
     col2, col3, col4 string
@@ -2202,6 +2244,10 @@ for rows.Next() {
         return err
     }
     fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2432,6 +2478,8 @@ rows, err := conn.QueryContext(ctx, "SELECT sleepEachRow(1), number FROM numbers
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
     col2 uint8
@@ -2449,6 +2497,10 @@ for rows.Next() {
     if col2 == 3 {
         cancel()
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2502,6 +2554,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
 )
@@ -2510,6 +2564,11 @@ for rows.Next() {
         return err
     }
     fmt.Printf("row: col1=%d\n", col1)
+}
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2529,6 +2588,8 @@ rows, err := conn.QueryContext(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
+
 columnTypes, err := rows.ColumnTypes()
 if err != nil {
     return err
@@ -2549,6 +2610,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2592,6 +2657,8 @@ rows, err := conn.QueryContext(ctx, "SELECT * FROM external_table_1")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 for rows.Next() {
     var (
         col1 uint8
@@ -2601,7 +2668,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
-rows.Close()
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
@@ -2633,6 +2703,10 @@ rows := conn.QueryRowContext(clickhouse.Context(context.Background(), clickhouse
     }),
 )), "SELECT COUNT() FROM (SELECT number FROM system.numbers LIMIT 5)")
 if err := rows.Scan(&count); err != nil {
+    return err
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
     return err
 }
 fmt.Printf("count: %d\n", count)
