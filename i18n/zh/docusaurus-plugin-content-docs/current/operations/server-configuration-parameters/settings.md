@@ -1803,9 +1803,13 @@ Example:
 ```
 
 
-## license_key {#license_key} 
+## license_file {#license_file} 
 
-ClickHouse Enterprise Edition 的许可证密钥
+ClickHouse Enterprise Edition 许可证文件内容
+
+## license_public_key_for_testing {#license_public_key_for_testing} 
+
+用于 CI 的许可证演示密钥，仅供使用
 
 ## listen&#95;backlog {#listen_backlog}
 

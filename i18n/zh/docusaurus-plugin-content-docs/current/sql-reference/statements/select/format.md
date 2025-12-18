@@ -14,7 +14,7 @@ ClickHouse 支持多种[序列化格式](../../../interfaces/formats.md)，可�
 
 ## 默认格式 {#default-format}
 
-如果省略 `FORMAT` 子句，则会使用默认格式。默认格式取决于配置以及用于访问 ClickHouse 服务器的接口。对于批处理模式下的 [HTTP 接口](../../../interfaces/http.md) 和 [命令行客户端](../../../interfaces/cli.md)，默认格式为 `TabSeparated`。对于交互式模式下的命令行客户端，默认格式为 `PrettyCompact`（生成紧凑且易读的表格）。
+如果省略 `FORMAT` 子句，则会使用默认格式。默认格式取决于配置以及用于访问 ClickHouse 服务器的接口。对于批处理模式下的 [HTTP 接口](/interfaces/http) 和 [命令行客户端](../../../interfaces/cli.md)，默认格式为 `TabSeparated`。对于交互式模式下的命令行客户端，默认格式为 `PrettyCompact`（生成紧凑且易读的表格）。
 
 ## 实现细节 {#implementation-details}
 

@@ -17,7 +17,7 @@ doc_type: '参考'
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] [SETTINGS ...] VALUES (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk)的表达式，例如 `*`，以及和/或带有 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier) 等[修饰符](../../sql-reference/statements/select/index.md#select-modifiers) 的表达式。
+你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk)（例如 `*`）和/或[修饰符](../../sql-reference/statements/select/index.md#select-modifiers)（如 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier)）的表达式。
 
 例如，考虑如下所示的表：
 
@@ -59,7 +59,7 @@ SELECT * FROM insert_select_testtable;
 └───┴───┴───┘
 ```
 
-在这个示例中，我们可以看到第二条插入的记录中，`a` 和 `c` 列由传入的值赋值，而 `b` 列使用默认值。也可以使用 `DEFAULT` 关键字来插入默认值：
+在这个示例中，我们可以看到第二行插入的数据中，`a` 和 `c` 列由传入的值填充，而 `b` 列使用默认值。也可以使用 `DEFAULT` 关键字来插入默认值：
 
 ```sql
 INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
@@ -82,7 +82,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse 会在数据之前移除所有空格以及一个换行符（如果存在）。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
+ClickHouse 会在数据之前移除所有前导空格以及一个换行符（如果存在）。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
 
 示例：
 
@@ -92,16 +92,17 @@ INSERT INTO t FORMAT TabSeparated
 22  Qwerty
 ```
 
-你可以使用[命令行客户端](/operations/utilities/clickhouse-local)或 [HTTP 接口](/interfaces/http/) 在查询之外单独插入数据。
+你可以使用[命令行客户端](/operations/utilities/clickhouse-local)或 [HTTP 接口](/interfaces/http) 在查询之外单独插入数据。
 
 :::note
-如果你想为 `INSERT` 查询指定 `SETTINGS`，必须在 `FORMAT` 子句之前进行设置，因为在 `FORMAT format_name` 之后的所有内容都会被视为数据。例如：
+如果你想为 `INSERT` 查询指定 `SETTINGS`，必须在 `FORMAT` 子句 *之前* 进行设置，因为在 `FORMAT format_name` 之后的所有内容都会被视为数据。例如：
 
 ```sql
 INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
+
 
 ## 约束 {#constraints}
 
@@ -119,7 +120,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] SELECT ...
 
 除 Values 格式外，其他任何数据格式都不允许将值指定为诸如 `now()`、`1 + 2` 等表达式。Values 格式允许有限地使用表达式，但不推荐这样做，因为在这种情况下会使用效率较低的代码来执行这些表达式。
 
-不支持其他用于修改数据部分的查询：`UPDATE`、`DELETE`、`REPLACE`、`MERGE`、`UPSERT`、`INSERT UPDATE`。
+不支持其他用于修改分区片段的查询：`UPDATE`、`DELETE`、`REPLACE`、`MERGE`、`UPSERT`、`INSERT UPDATE`。
 但是，你可以通过 `ALTER TABLE ... DROP PARTITION` 删除旧数据。
 
 如果 `SELECT` 子句包含表函数 [input()](../../sql-reference/table-functions/input.md)，则必须在查询末尾指定 `FORMAT` 子句。
@@ -132,6 +133,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] SELECT ...
 INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
+
 
 ## 从文件中插入数据 {#inserting-data-from-a-file}
 
@@ -149,9 +151,10 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **示例**
 
+
 ### 使用 FROM INFILE 的单个文件 {#single-file-with-from-infile}
 
-使用[命令行客户端](../../interfaces/cli.md)执行以下查询：
+使用 [命令行客户端](../../interfaces/cli.md) 执行以下查询：
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv
@@ -169,9 +172,10 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
+
 ### 使用通配符的多文件 FROM INFILE {#multiple-files-with-from-infile-using-globs}
 
-此示例与上一个非常相似，但这里是通过使用 `FROM INFILE 'input_*.csv'`，从多个文件中执行插入操作。
+此示例与上一个非常相似，不过这里是通过 `FROM INFILE 'input_*.csv'` 从多个文件中插入数据。
 
 ```bash
 echo 1,A > input_1.csv ; echo 2,B > input_2.csv
@@ -190,6 +194,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 ```
 
 :::
+
 
 ## 使用表函数插入数据 {#inserting-using-a-table-function}
 
@@ -220,6 +225,7 @@ SELECT * FROM simple_table;
 └─────┴───────────────────────┘
 ```
 
+
 ## 在 ClickHouse Cloud 中插入数据 {#inserting-into-clickhouse-cloud}
 
 默认情况下，ClickHouse Cloud 上的服务会提供多个副本以实现高可用性。当连接到某个服务时，连接会建立到这些副本中的一个。
@@ -233,6 +239,7 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 ```
 
 请注意，使用 `select_sequential_consistency` 会增加 ClickHouse Keeper（ClickHouse Cloud 内部使用的组件）的负载，并且可能会视该服务的负载情况导致性能下降。除非确有必要，否则我们不建议启用此设置。推荐的做法是在同一会话中执行读写操作，或者使用基于原生协议（从而支持粘性连接）的客户端驱动程序。
+
 
 ## 在复制部署中执行插入 {#inserting-into-a-replicated-setup}
 

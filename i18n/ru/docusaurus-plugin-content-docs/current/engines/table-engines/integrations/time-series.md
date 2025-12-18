@@ -10,6 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # Табличный движок TimeSeries {#timeseries-table-engine}
 
 <ExperimentalBadge />
@@ -30,6 +31,7 @@ metric_name2[...] = ...
 Выполните команду `set allow_experimental_time_series_table = 1`.
 :::
 
+
 ## Синтаксис {#syntax}
 
 ```sql
@@ -39,6 +41,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
+
 
 ## Использование {#usage}
 
@@ -50,8 +53,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 После этого эту таблицу можно использовать со следующими протоколами (порт должен быть указан в конфигурации сервера):
 
-* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](/interfaces/prometheus#remote-write)
+* [prometheus remote-read](/interfaces/prometheus#remote-read)
+
 
 ## Целевые таблицы {#target-tables}
 
@@ -95,9 +99,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 ### Таблица metrics {#metrics-table}
 
-Таблица _metrics_ содержит информацию о собираемых метриках, типах этих метрик и их описаниях.
+Таблица _metrics_ содержит сведения о собираемых метриках, их типах и описаниях.
 
-Таблица _metrics_ должна иметь столбцы:
+Таблица _metrics_ должна содержать следующие столбцы:
 
 | Имя | Обязательный? | Тип по умолчанию | Возможные типы | Описание |
 |---|---|---|---|---|
@@ -118,7 +122,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 CREATE TABLE my_table ENGINE=TimeSeries
 ```
 
-будет создана следующая таблица (это можно увидеть, выполнив `SHOW CREATE TABLE my_table`):
+фактически создаст следующую таблицу (это можно увидеть, выполнив `SHOW CREATE TABLE my_table`):
 
 ```sql
 CREATE TABLE my_table
@@ -145,8 +149,7 @@ METRICS ENGINE = ReplacingMergeTree ORDER BY metric_family_name
 METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
-Таким образом, столбцы были сгенерированы автоматически, и в этом операторе также присутствуют три внутренних UUID —
-по одному для каждой внутренней целевой таблицы, которая была создана.
+Таким образом, столбцы были сгенерированы автоматически, и в этом операторе также присутствуют три внутренних UUID — по одному для каждой внутренней целевой таблицы, которая была создана.
 (Внутренние UUID обычно не показываются, пока параметр
 [show&#95;table&#95;uuid&#95;in&#95;table&#95;create&#95;query&#95;if&#95;not&#95;nil](../../../operations/settings/settings#show_table_uuid_in_table_create_query_if_not_nil)
 не включён.)
@@ -193,6 +196,7 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
+
 ## Настройка типов столбцов {#adjusting-column-types}
 
 Вы можете изменить тип почти любого столбца во внутренних целевых таблицах, явно указав его
@@ -218,6 +222,7 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
+
 ## Столбец `id` {#id-column}
 
 Столбец `id` содержит идентификаторы; каждый идентификатор вычисляется для комбинации имени метрики и тегов.
@@ -231,6 +236,7 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
+
 
 ## Столбцы `tags` и `all_tags` {#tags-and-all-tags}
 
@@ -266,6 +272,7 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
+
 ## Движки внутренних целевых таблиц {#inner-table-engines}
 
 По умолчанию внутренние целевые таблицы используют следующие движки таблиц:
@@ -284,6 +291,7 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
+
 
 ## Внешние таблицы назначения {#external-target-tables}
 
@@ -306,6 +314,7 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
+
 ## Настройки {#settings}
 
 Ниже приведён список настроек, которые можно задать при определении таблицы `TimeSeries`:
@@ -321,6 +330,7 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 # Функции {#functions}
 
 Ниже приведен список функций, которые принимают таблицу `TimeSeries` в качестве аргумента:
+
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)
