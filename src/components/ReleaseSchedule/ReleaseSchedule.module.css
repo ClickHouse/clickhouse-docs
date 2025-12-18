@@ -1,5 +1,5 @@
 .tableWrapper {
-  overflow-x: auto;
+  overflow: visible;
   margin-bottom: 1rem;
 }
 
@@ -7,6 +7,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  overflow: visible;
 }
 
 .table th,
@@ -14,6 +15,7 @@
   border: 1px solid var(--ifm-table-border-color);
   padding: 0.75rem;
   text-align: left;
+  overflow: visible;
 }
 
 .table th {
@@ -25,6 +27,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  overflow: visible;
 }
 
 .statusIndicator {
@@ -54,21 +57,24 @@
 
 .tooltip {
   visibility: hidden;
-  width: 200px;
+  min-width: 150px;
   background-color: var(--ifm-color-emphasis-900);
   color: var(--ifm-color-content-inverse);
   text-align: center;
   border-radius: 6px;
-  padding: 5px;
+  padding: 8px 10px;
   position: absolute;
-  z-index: 1;
-  bottom: 125%; /* Position above */
+  bottom: calc(100% + 5px);
   left: 50%;
-  margin-left: -100px;
+  transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
   font-size: 0.8rem;
   pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
 }
 
 .tooltip::after {

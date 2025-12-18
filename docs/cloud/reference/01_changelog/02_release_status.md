@@ -42,11 +42,12 @@ The release dates given below are an estimate and may be subject to change.
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
     fast_date: 'Starting 2025-12-11',
-    regular_date: '2026-01-05',
+    regular_date: '2026-01-07',
     slow_date: 'TBD',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: 'In progress',
+    fast_delay_note: 'Complete',
+    regular_delay_note: 'Services with an upgrade window will receive 25.10 during their scheduled window in the week of Jan 05',
   }
 ]} />
