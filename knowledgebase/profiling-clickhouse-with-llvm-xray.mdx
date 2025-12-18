@@ -35,11 +35,12 @@ So, any official release already comes with this feature that can be triggered o
 affecting the overall performance when not enabled. The idea is to enable the minimum amount of
 instrumentation points to get valuable information.
 
-We can add a new profile instrumentation point using the [SYSTEM INSTRUMENT ADD PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-add-profile)
+We can add a new profile instrumentation point using the [SYSTEM INSTRUMENT ADD
+PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-add-profile)
 statement. The functions to be instrumented can be collected from
-[system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) system table.
-Say we want to profile the `sleepForNanoseconds` function, which is a convenient function
-to check how long it takes to run.
+[system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) system table. Say we
+want to profile the `sleepForNanoseconds` function, which is a convenient function to check how long
+it takes to run.
 
 ```sql
 SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
@@ -51,8 +52,10 @@ Then, we leave it running for the time period we want to profile and stop it.
 SYSTEM INSTRUMENT REMOVE ALL
 ```
 
-We convert the data collected in system.trace_log [to Chrome format](https://clickhouse.com/docs/operations/system-tables/trace_log#chrome-event-trace-format)
- to visualize it in [Perfetto](https://ui.perfetto.dev). Notice the query_id, cpu_id and stacktrace for every entry.
+We convert the data collected in system.trace_log [to Chrome
+format](https://clickhouse.com/docs/operations/system-tables/trace_log#chrome-event-trace-format) to
+visualize it in [Perfetto](https://ui.perfetto.dev). Notice the query_id, cpu_id and stacktrace for
+every entry.
 
 <Image img={clickhouse} size="md" alt="time-order" />
 
