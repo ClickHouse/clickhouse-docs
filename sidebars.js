@@ -782,6 +782,7 @@ const sidebars = {
         "integrations/data-sources/mysql",
         "integrations/data-sources/cassandra",
         "integrations/data-ingestion/gcs/index",
+        "integrations/data-ingestion/s3-minio",
         "integrations/data-ingestion/emqx/index",
         "integrations/data-ingestion/insert-local-files",
         "integrations/data-ingestion/dbms/jdbc-with-clickhouse",
