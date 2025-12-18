@@ -403,16 +403,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает функцию записи с использованием delta-kernel.
 
-## allow_experimental_full_text_index {#allow_experimental_full_text_index} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Включить экспериментальный текстовый индекс"}]}]}/>
-
-Если установлено значение true, позволяет использовать экспериментальный текстовый индекс.
-
 ## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
 
 <ExperimentalBadge/>
@@ -3243,7 +3233,7 @@ ClickHouse применяет этот параметр, когда запрос
 
 Включает или отключает сжатие данных в ответе на HTTP-запрос.
 
-Для получения дополнительной информации см. [описание HTTP-интерфейса](../../interfaces/http.md).
+Для получения дополнительной информации см. [описание HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 
@@ -3500,12 +3490,12 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "A new setting to share storage snapshot in query"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "A new setting to share storage snapshot in query"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "Enable share storage snapshot in query by default"}]}]} />
 
 Если параметр включён, все подзапросы внутри одного запроса будут использовать один и тот же StorageSnapshot для каждой таблицы.
-Это обеспечивает единый, согласованный вид данных для всего запроса, даже если к одной и той же таблице обращаются несколько раз.
+Это обеспечивает единый согласованный вид данных для всего запроса, даже если к одной и той же таблице обращаются несколько раз.
 
 Это требуется для запросов, в которых важна внутренняя согласованность частей данных. Пример:
 
@@ -4531,7 +4521,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Включает или отключает проверку контрольной суммы при декомпрессии данных HTTP POST-запроса от клиента. Используется только для нативного формата сжатия ClickHouse (не используется с `gzip` или `deflate`).
 
-Для получения дополнительной информации см. [описание HTTP-интерфейса](../../interfaces/http.md).
+Для получения дополнительной информации см. [описание HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 
@@ -10490,7 +10480,7 @@ FORMAT Null;
 
 Включает или отключает HTTP-заголовки `X-ClickHouse-Progress` в ответах `clickhouse-server`.
 
-Дополнительные сведения см. в [описании HTTP-интерфейса](../../interfaces/http.md).
+Дополнительные сведения см. в [описании HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 

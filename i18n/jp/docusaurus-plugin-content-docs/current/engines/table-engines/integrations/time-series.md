@@ -10,6 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # TimeSeries テーブルエンジン {#timeseries-table-engine}
 
 <ExperimentalBadge />
@@ -29,6 +30,7 @@ TimeSeries テーブルエンジンを使用するには、[allow&#95;experiment
 `set allow_experimental_time_series_table = 1` コマンドを実行します。
 :::
 
+
 ## 構文 {#syntax}
 
 ```sql
@@ -38,6 +40,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
+
 
 ## 使用方法 {#usage}
 
@@ -49,8 +52,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 このテーブルは、サーバー設定でポートを割り当てれば、次のプロトコルで利用できます：
 
-* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](/interfaces/prometheus#remote-write)
+* [prometheus remote-read](/interfaces/prometheus#remote-read)
+
 
 ## ターゲットテーブル {#target-tables}
 
@@ -73,7 +77,7 @@ _data_ テーブルは次のカラムを持たなければなりません:
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `id` | [x] | `UUID` | any | メトリック名とタグの組み合わせを識別します |
-| `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 時点 |
+| `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 時刻 |
 | `value` | [x] | `Float64` | `Float32` or `Float64` | `timestamp` に関連付けられた値 |
 
 ### Tags テーブル {#tags-table}
@@ -92,11 +96,11 @@ _tags_ テーブルは次のカラムを持たなければなりません:
 | `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最小タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
 | `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最大タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
 
-### Metrics テーブル {#metrics-table}
+### Metrics table {#metrics-table}
 
-_metrics_ テーブルには、収集されているメトリクスに関する情報、そのメトリクスの型および説明が格納されます。
+_metrics_ テーブルには、収集対象となるメトリクスに関する情報、そのメトリクスのタイプ、およびその説明が含まれます。
 
-_metrics_ テーブルは次のカラムを持たなければなりません:
+_metrics_ テーブルには、次のカラムが必要です。
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
@@ -192,6 +196,7 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
+
 ## 列型の調整 {#adjusting-column-types}
 
 メインテーブルを定義する際に型を明示的に指定することで、内部ターゲットテーブルのほとんどすべての列型を調整できます。例えば、
@@ -216,6 +221,7 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
+
 ## `id` 列 {#id-column}
 
 `id` 列には識別子が格納されており、各識別子はメトリクス名とタグの組み合わせに対して計算されます。
@@ -229,6 +235,7 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
+
 
 ## `tags` 列と `all_tags` 列 {#tags-and-all-tags}
 
@@ -260,6 +267,7 @@ ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
+
 ## 内部ターゲットテーブルのテーブルエンジン {#inner-table-engines}
 
 デフォルトでは、内部ターゲットテーブルは次のテーブルエンジンを使用します。
@@ -276,6 +284,7 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
+
 
 ## 外部ターゲットテーブル {#external-target-tables}
 
@@ -298,6 +307,7 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
+
 ## 設定 {#settings}
 
 `TimeSeries` テーブルを定義する際に指定できる設定の一覧は次のとおりです。
@@ -313,6 +323,7 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 # 関数 {#functions}
 
 `TimeSeries` テーブルを引数として受け取る関数は次のとおりです:
+
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

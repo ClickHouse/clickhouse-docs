@@ -401,16 +401,6 @@ catalog_type = 'unity' の実験的な DataLakeCatalog データベースエン�
 
 Delta Kernel の書き込み機能を有効にします。
 
-## allow_experimental_full_text_index {#allow_experimental_full_text_index} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Enable experimental text index"}]}]}/>
-
-true に設定すると、実験的なテキストインデックスの使用を許可します。
-
 ## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
 
 <ExperimentalBadge/>
@@ -3242,7 +3232,7 @@ HDFS ファイルに対して pread を有効または無効にします。デ�
 
 HTTP リクエストに対する応答で、データ圧縮を有効または無効にします。
 
-詳細については、[HTTP インターフェイスの説明](../../interfaces/http.md)を参照してください。
+詳細については、[HTTP インターフェイスの説明](/interfaces/http)を参照してください。
 
 設定可能な値:
 
@@ -3499,9 +3489,9 @@ true に設定されている場合、スカラーサブクエリによる大き
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "クエリ内でストレージスナップショットを共有する新しい設定"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "クエリ内でストレージスナップショットを共有する新しい設定"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "デフォルトでクエリ内のストレージスナップショット共有を有効にする"}]}]} />
 
 有効化すると、1 つのクエリ内のすべてのサブクエリは、各テーブルに対して同じ StorageSnapshot を共有します。
 これにより、同じテーブルに複数回アクセスする場合でも、クエリ全体でデータの一貫したビューが保証されます。
@@ -4531,7 +4521,7 @@ HTTPリクエストのURIの最大長を設定します。
 
 クライアントから送信された HTTP POST データを伸長する際に、チェックサム検証を有効または無効にします。ClickHouse ネイティブ圧縮形式でのみ使用されます（`gzip` や `deflate` では使用されません）。
 
-詳細については、[HTTP インターフェイスの説明](../../interfaces/http.md)を参照してください。
+詳細については、[HTTP インターフェイスの説明](/interfaces/http)を参照してください。
 
 設定可能な値:
 
@@ -10455,7 +10445,7 @@ S3 テーブル関数使用時のスキーマ推論でキャッシュを使用�
 
 `clickhouse-server` のレスポンスで、`X-ClickHouse-Progress` HTTP レスポンスヘッダーを有効または無効にします。
 
-詳細については、[HTTP インターフェイスの説明](../../interfaces/http.md)を参照してください。
+詳細については、[HTTP インターフェイスの説明](/interfaces/http)を参照してください。
 
 指定可能な値:
 
