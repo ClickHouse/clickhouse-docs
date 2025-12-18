@@ -22,7 +22,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   * `LoginSuccess` — 登录成功。
   * `Logout` — 从系统登出。
 * `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — 身份验证 ID，每次用户登录时都会自动生成的 UUID。
-* `session_id` ([String](../../sql-reference/data-types/string.md)) — 由客户端通过 [HTTP](../../interfaces/http.md) 接口传递的会话 ID。
+* `session_id` ([String](../../sql-reference/data-types/string.md)) — 由客户端通过 [HTTP](/interfaces/http) 接口传递的会话 ID。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — 登录/登出日期。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — 登录/登出时间。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — 具有微秒精度的登录/登出起始时间。

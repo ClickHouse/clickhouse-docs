@@ -43,11 +43,12 @@ Enterprise ティアのサービスでは、すべてのリリースチャネル
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
     fast_date: '2025-12-11 から開始予定',
-    regular_date: '2026-01-05',
+    regular_date: '2026-01-07',
     slow_date: 'TBD',
     fast_progress: 'green',
     regular_progress: 'green',
     slow_progress: 'green',
-    fast_delay_note: '進行中',
+    fast_delay_note: '完了',
+    regular_delay_note: 'アップグレードウィンドウが設定されているサービスは、1月5日の週に予定されているウィンドウ内で 25.10 にアップグレードされます',
   }
 ]} />

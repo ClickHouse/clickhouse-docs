@@ -17,10 +17,10 @@ ClickHouse 提供了两个网络接口（可选用 TLS 封装以增强安全性�
 
 在大多数情况下，建议使用合适的工具或库，而不是直接与这些接口交互。ClickHouse 官方支持以下方式：
 
-* [命令行客户端](../../interfaces/cli.md)
-* [JDBC 驱动](../../interfaces/jdbc.md)
-* [ODBC 驱动](../../interfaces/odbc.md)
-* [C++ 客户端库](../../interfaces/cpp.md)
+* [命令行客户端](/interfaces/cli)
+* [JDBC 驱动](/interfaces/jdbc)
+* [ODBC 驱动](/interfaces/odbc)
+* [C++ 客户端库](/interfaces/cpp)
 
 ClickHouse 还支持两种 RPC 协议：
 

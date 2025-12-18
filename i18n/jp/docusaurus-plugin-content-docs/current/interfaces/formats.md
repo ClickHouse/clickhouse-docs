@@ -147,7 +147,7 @@ ClickHouse の設定を使用して、一部のフォーマット処理パラメ
 クライアント側のカレントディレクトリからの相対パス、または絶対パスを指定できます。
 クライアントを[バッチモード](/interfaces/cli.md/#batch-mode)で使用する場合、セキュリティ上の理由から、スキーマへのパスは相対パスでなければなりません。
 
-[HTTP インターフェイス](/interfaces/http.md)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
+[HTTP インターフェイス](/interfaces/http)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
 サーバー設定の [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) で指定されたディレクトリ内に存在している必要があります。
 
 ## エラーのスキップ {#skippingerrors}

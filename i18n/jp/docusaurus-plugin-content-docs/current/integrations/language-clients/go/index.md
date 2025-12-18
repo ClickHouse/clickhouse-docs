@@ -40,77 +40,84 @@ go mod init clickhouse-golang-example
 package main
 
 import (
-        "context"
-        "crypto/tls"
-        "fmt"
-        "log"
+    "context"
+    "crypto/tls"
+    "fmt"
+    "log"
 
-        "github.com/ClickHouse/clickhouse-go/v2"
-        "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+    "github.com/ClickHouse/clickhouse-go/v2"
+    "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 )
 
 func main() {
-        conn, err := connect()
-        if err != nil {
-                panic(err)
-        }
+    conn, err := connect()
+    if err != nil {
+        panic(err)
+    }
 
-        ctx := context.Background()
-        rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
-        if err != nil {
-                log.Fatal(err)
-        }
+    ctx := context.Background()
+    rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
 
-        for rows.Next() {
-                var name, uuid string
-                if err := rows.Scan(&name, &uuid); err != nil {
-                        log.Fatal(err)
-                }
-                log.Printf("name: %s, uuid: %s", name, uuid)
+    for rows.Next() {
+        var name, uuid string
+        if err := rows.Scan(&name, &uuid); err != nil {
+            log.Fatal(err)
         }
+        log.Printf("name: %s, uuid: %s", name, uuid)
+    }
+
+    // NOTE: Do not skip rows.Err() check
+    if err := rows.Err(); err != nil {
+        log.Fatal(err)
+    }
 
 }
 
 func connect() (driver.Conn, error) {
-        var (
-                ctx       = context.Background()
-                conn, err = clickhouse.Open(&clickhouse.Options{
-                        Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
-                        Auth: clickhouse.Auth{
-                                Database: "default",
-                                Username: "default",
-                                Password: "<DEFAULT_USER_PASSWORD>",
-                        },
-                        ClientInfo: clickhouse.ClientInfo{
-                                Products: []struct {
-                                        Name    string
-                                        Version string
-                                }{
-                                        {Name: "an-example-go-client", Version: "0.1"},
-                                },
-                        },
-                        Debugf: func(format string, v ...interface{}) {
-                                fmt.Printf(format, v)
-                        },
-                        TLS: &tls.Config{
-                                InsecureSkipVerify: true,
-                        },
-                })
-        )
+    var (
+        ctx       = context.Background()
+        conn, err = clickhouse.Open(&clickhouse.Options{
+            Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
+            Auth: clickhouse.Auth{
+                Database: "default",
+                Username: "default",
+                Password: "<DEFAULT_USER_PASSWORD>",
+            },
+            ClientInfo: clickhouse.ClientInfo{
+                Products: []struct {
+                    Name    string
+                    Version string
+                }{
+                    {Name: "an-example-go-client", Version: "0.1"},
+                },
+            },
+            Debugf: func(format string, v ...interface{}) {
+                fmt.Printf(format, v)
+            },
+            TLS: &tls.Config{
+                InsecureSkipVerify: true,
+            },
+        })
+    )
 
-        if err != nil {
-                return nil, err
-        }
+    if err != nil {
+        return nil, err
+    }
 
-        if err := conn.Ping(ctx); err != nil {
-                if exception, ok := err.(*clickhouse.Exception); ok {
-                        fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
-                }
-                return nil, err
+    if err := conn.Ping(ctx); err != nil {
+        if exception, ok := err.(*clickhouse.Exception); ok {
+            fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
         }
-        return conn, nil
+        return nil, err
+    }
+    return conn, nil
 }
 ```
+
 
 ### go mod tidy を実行する {#run-go-mod-tidy}
 
@@ -878,10 +885,17 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
+
 
 #### Map {#map}
 
@@ -923,10 +937,16 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
+
 
 #### Tuples {#tuples}
 
@@ -1090,12 +1110,17 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完全な例 - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
-`flatten_nested` のデフォルト値として 1 を使用すると、ネストされたカラムは個別の配列にフラット化されます。これには、挿入および取得時にネストしたスライスを使用する必要があります。任意のレベルのネストでも動作する可能性はありますが、これは公式にはサポートされていません。
+`flatten_nested` のデフォルト値である 1 を使用すると、ネストされたカラムは個別の配列にフラット化されます。これには、挿入および取得時にネストしたスライスを使用する必要があります。任意のレベルのネストでも動作する場合がありますが、これは公式にはサポートされていません。
 
 
 ```go
@@ -1706,14 +1731,14 @@ for i := 1; i <= 6; i++ {
 
 ```go
 totalRows := uint64(0)
-// コンテキストを使用して進捗状況とプロファイル情報のコールバックを渡す
+// use context to pass a call back for progress and profile info
 ctx := clickhouse.Context(context.Background(), clickhouse.WithProgress(func(p *clickhouse.Progress) {
-    fmt.Println("進捗状況: ", p)
+    fmt.Println("progress: ", p)
     totalRows += p.Rows
 }), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
-    fmt.Println("プロファイル情報: ", p)
+    fmt.Println("profile info: ", p)
 }), clickhouse.WithLogs(func(log *clickhouse.Log) {
-    fmt.Println("ログ情報: ", log)
+    fmt.Println("log info: ", log)
 }))
 
 rows, err := conn.Query(ctx, "SELECT number from numbers(1000000) LIMIT 1000000")
@@ -1723,15 +1748,21 @@ if err != nil {
 for rows.Next() {
 }
 
-fmt.Printf("合計行数: %d\n", totalRows)
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
+fmt.Printf("Total Rows: %d\n", totalRows)
 rows.Close()
 ```
 
 [完全な例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
 
+
 ### 動的スキャン {#dynamic-scanning}
 
-返されるフィールドのスキーマや型が分からないテーブルを読み取る必要がある場合があります。これは、アドホックなデータ分析を行う場合や、汎用的なツールを作成する場合によくあります。そのため、クエリのレスポンスには列の型情報が含まれています。これを Go のリフレクションと組み合わせることで、実行時に正しい型の変数インスタンスを生成し、それらを Scan に渡すことができます。
+返されるフィールドのスキーマや型が分からないテーブルを読み取る必要がある場合があります。これは、アドホックなデータ分析を行う場合や、汎用的なツールを作成する場合によくあります。そのため、クエリのレスポンスにはカラムの型情報が含まれています。これを Go のリフレクションと組み合わせることで、実行時に正しい型の変数インスタンスを生成し、それらを Scan に渡すことができます。
 
 ```go
 const query = `
@@ -1743,6 +1774,7 @@ rows, err := conn.Query(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
 var (
     columnTypes = rows.ColumnTypes()
     vars        = make([]interface{}, len(columnTypes))
@@ -1762,6 +1794,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -1815,6 +1851,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 rows.Close()
 
 var count uint64
@@ -1834,6 +1874,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
 
+
 ### OpenTelemetry {#open-telemetry}
 
 ClickHouse では、ネイティブプロトコルの一部として [トレースコンテキスト](/operations/opentelemetry/) を渡せます。クライアントは、関数 `clickhouse.withSpan` を使用して Span を作成し、これを Context 経由で渡すことで、この機能を利用できます。
@@ -1849,12 +1890,17 @@ rows := conn.QueryRow(clickhouse.Context(context.Background(), clickhouse.WithSp
 if err := rows.Scan(&count); err != nil {
     return err
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 fmt.Printf("count: %d\n", count)
 ```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/open_telemetry.go)
 
 トレーシングの活用方法の詳細については、[OpenTelemetry サポート](/operations/opentelemetry/)をご覧ください。
+
 
 ## Database/SQL API {#databasesql-api}
 
@@ -2209,6 +2255,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1             uint8
     col2, col3, col4 string
@@ -2223,9 +2271,14 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完全なコード例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
+
 
 ### 非同期 Insert {#async-insert-1}
 
@@ -2454,6 +2507,8 @@ rows, err := conn.QueryContext(ctx, "SELECT sleepEachRow(1), number FROM numbers
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
     col2 uint8
@@ -2471,6 +2526,10 @@ for rows.Next() {
     if col2 == 3 {
         cancel()
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2525,6 +2584,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
 )
@@ -2534,9 +2595,15 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%d\n", col1)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
+
 
 ### 動的スキャン {#dynamic-scanning-1}
 
@@ -2552,6 +2619,8 @@ rows, err := conn.QueryContext(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
+
 columnTypes, err := rows.ColumnTypes()
 if err != nil {
     return err
@@ -2572,6 +2641,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2616,6 +2689,8 @@ rows, err := conn.QueryContext(ctx, "SELECT * FROM external_table_1")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 for rows.Next() {
     var (
         col1 uint8
@@ -2625,7 +2700,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
-rows.Close()
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
@@ -2644,6 +2722,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
+
 ### OpenTelemetry {#open-telemetry-1}
 
 ClickHouse では、ネイティブプロトコルの一部として [trace context](/operations/opentelemetry/) を渡すことが可能です。クライアントは、関数 `clickhouse.withSpan` を使用して Span を作成し、Context 経由で渡すことでこれを実現できます。この機能は、HTTP をトランスポートとして使用している場合にはサポートされません。
@@ -2659,10 +2738,15 @@ rows := conn.QueryRowContext(clickhouse.Context(context.Background(), clickhouse
 if err := rows.Scan(&count); err != nil {
     return err
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 fmt.Printf("count: %d\n", count)
 ```
 
 [完全なサンプル](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
+
 
 ## パフォーマンスのヒント {#performance-tips}
 
