@@ -61,8 +61,8 @@ every entry.
 
 ## Profiling a native application using XRay \{#profiling-a-native-application-using-xray\}
 
-The following section is left as a reference to know how XRay works under the hood and can be used out
-of the box to profile a native application.
+The following section is left as a reference to know how XRay works under the hood and how it can be
+used out of the box to profile a native application.
 
 ### Instrument the code \{#instrument-the-code\}
 
@@ -167,5 +167,13 @@ generating a flamegraph and a sandwich view of your data.
 
 ## Check out the docs \{#check-out-the-docs\}
 
-Take a look at the [XRay Instrumentation](https://llvm.org/docs/XRay.html) and [Debugging with
-XRay](https://llvm.org/docs/XRayExample.html) documentation to learn more details.
+- [SYSTEM INSTRUMENT](https://clickhouse.com/docs/sql-reference/statements/system#instrument) — Add
+  or remove instrumentation points.
+- [system.instrumentation](https://clickhouse.com/docs/operations/system-tables/instrumentation.md)
+  — Inspect instrumented points.
+- [system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols.md) — Inspect
+  symbols to add instrumentation points.
+- [system.trace_log](https://clickhouse.com/docs/operations/system-tables/trace_log) — Inspect data
+  collected using instrumentation points.
+- [XRay Instrumentation](https://llvm.org/docs/XRay.html)
+- [Debugging with XRay](https://llvm.org/docs/XRayExample.html) documentation to learn more details.
