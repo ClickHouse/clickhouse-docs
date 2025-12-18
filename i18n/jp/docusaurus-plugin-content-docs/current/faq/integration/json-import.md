@@ -10,11 +10,11 @@ doc_type: 'guide'
 
 # ClickHouse に JSON をインポートする方法 {#how-to-import-json-into-clickhouse}
 
-ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/formats)をサポートしています。その中には複数の JSON 系フォーマットがありますが、データのインジェストで最も一般的に使用されるのは [JSONEachRow](/interfaces/formats/JSONEachRow) です。これは、1 行に 1 つの JSON オブジェクトがあり、各オブジェクトが改行で区切られている形式を前提としています。
+ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/formats)をサポートしています。その中には複数の JSON 系フォーマットがありますが、データのインジェストで最も一般的に使用されるのは [JSONEachRow](/interfaces/formats/JSONEachRow) です。これは、1 行につき 1 つの JSON オブジェクトがあり、各オブジェクトが改行で区切られている形式を想定しています。
 
 ## 例 {#examples}
 
-[HTTP インターフェース](../../interfaces/http.md)を使用する場合：
+[HTTP インターフェース](/interfaces/http)を使用する場合：
 
 ```bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
@@ -26,7 +26,8 @@ $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test
 $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSONEachRow"
 ```
 
-データを手動で挿入するのではなく、[インテグレーションツール](../../integrations/index.mdx)の利用を検討してください。
+データを手動で挿入する代わりに、[インテグレーションツール](../../integrations/index.mdx)の利用も検討してください。
+
 
 ## 便利な設定 {#useful-settings}
 

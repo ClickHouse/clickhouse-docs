@@ -10,6 +10,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # TimeSeries 表引擎 {#timeseries-table-engine}
 
 <ExperimentalBadge />
@@ -29,6 +30,7 @@ metric_name2[...] = ...
 输入命令 `set allow_experimental_time_series_table = 1`。
 :::
 
+
 ## 语法 {#syntax}
 
 ```sql
@@ -38,6 +40,7 @@ CREATE TABLE name [(columns)] ENGINE=TimeSeries
 [TAGS db.tags_table_name | TAGS ENGINE tags_table_engine(arguments)]
 [METRICS db.metrics_table_name | METRICS ENGINE metrics_table_engine(arguments)]
 ```
+
 
 ## 用法 {#usage}
 
@@ -49,8 +52,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 然后即可通过以下协议使用该表（必须在服务器配置中分配端口）：
 
-* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](/interfaces/prometheus#remote-write)
+* [prometheus remote-read](/interfaces/prometheus#remote-read)
+
 
 ## 目标表 {#target-tables}
 
@@ -94,7 +98,7 @@ _tags_ 表必须包含以下列：
 
 ### Metrics 表 {#metrics-table}
 
-_metrics_ 表包含关于已收集度量的一些信息，包括这些度量的类型及其描述。
+_metrics_ 表包含关于已收集指标的一些信息、这些指标的类型以及它们的描述。
 
 _metrics_ 表必须包含以下列：
 
@@ -145,10 +149,10 @@ METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
 因此，这些列是自动生成的，并且在该语句中还有三个内部 UUID——
-为每个创建的内部目标表各生成一个。
+为每个创建的内部目标表各有一个。
 （内部 UUID 在默认情况下不会显示，除非将
 [show&#95;table&#95;uuid&#95;in&#95;table&#95;create&#95;query&#95;if&#95;not&#95;nil](../../../operations/settings/settings#show_table_uuid_in_table_create_query_if_not_nil)
-参数设为启用。）
+设为启用。）
 
 内部目标表的名称类似于 `.inner_id.data.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`、
 `.inner_id.tags.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`、`.inner_id.metrics.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`，
@@ -192,6 +196,7 @@ ENGINE = ReplacingMergeTree
 ORDER BY metric_family_name
 ```
 
+
 ## 调整列类型 {#adjusting-column-types}
 
 在定义主表时，通过显式指定列类型，可以调整内部目标表中几乎任意列的类型。例如，
@@ -216,6 +221,7 @@ ENGINE = MergeTree
 ORDER BY (id, timestamp)
 ```
 
+
 ## `id` 列 {#id-column}
 
 `id` 列包含标识符，每个标识符是根据指标名称与标签的组合计算得到的。
@@ -229,6 +235,7 @@ CREATE TABLE my_table
 )
 ENGINE=TimeSeries
 ```
+
 
 ## `tags` 与 `all_tags` 列 {#tags-and-all-tags}
 
@@ -248,7 +255,7 @@ SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
 
 到 `my_table` 以及其内部目标表 [tags](#tags-table) 的定义中。在这种情况下，`tags` 列将不会包含标签 `instance` 和 `job`，
-但 `all_tags` 列会包含它们。`all_tags` 列是一个临时列，其唯一用途是在 `id` 列的 DEFAULT 表达式中使用。
+但 `all_tags` 列会包含它们。`all_tags` 列是一个临时列，其唯一用途是用于在 `id` 列的 DEFAULT 表达式中使用。
 
 可以通过显式指定列类型来调整列的类型：
 
@@ -260,6 +267,7 @@ CREATE TABLE my_table (
 ENGINE=TimeSeries
 SETTINGS tags_to_columns = {'instance': 'instance', 'job': 'job'}
 ```
+
 
 ## 内部目标表的表引擎 {#inner-table-engines}
 
@@ -279,6 +287,7 @@ DATA ENGINE=ReplicatedMergeTree
 TAGS ENGINE=ReplicatedAggregatingMergeTree
 METRICS ENGINE=ReplicatedReplacingMergeTree
 ```
+
 
 ## 外部目标表 {#external-target-tables}
 
@@ -301,6 +310,7 @@ CREATE TABLE metrics_for_my_table ...
 CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_table METRICS metrics_for_my_table;
 ```
 
+
 ## 设置 {#settings}
 
 下面是定义 `TimeSeries` 表时可以指定的设置列表：
@@ -316,6 +326,7 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 # 函数 {#functions}
 
 以下是支持以 `TimeSeries` 表作为参数的函数列表：
+
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

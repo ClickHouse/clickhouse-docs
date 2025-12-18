@@ -1803,9 +1803,13 @@ Example:
 ```
 
 
-## license_key {#license_key} 
+## license_file {#license_file} 
 
-ClickHouse Enterprise Edition 用のライセンスキー
+ClickHouse Enterprise Edition 用のライセンスファイルの内容
+
+## license_public_key_for_testing {#license_public_key_for_testing} 
+
+ライセンス用デモキー。CI 専用。
 
 ## listen&#95;backlog {#listen_backlog}
 

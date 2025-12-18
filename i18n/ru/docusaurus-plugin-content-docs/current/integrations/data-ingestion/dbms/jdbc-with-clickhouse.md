@@ -15,6 +15,7 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
+
 # Подключение ClickHouse к внешним источникам данных с помощью JDBC {#connecting-clickhouse-to-external-data-sources-with-jdbc}
 
 :::note
@@ -64,7 +65,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
  cd ~/clickhouse-jdbc-bridge
  mkdir -p config/datasources
  touch config/datasources/mysql8.json
- ```
+```
 
 Теперь вы можете скопировать и вставить следующую конфигурацию в файл `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json`:
 
@@ -79,7 +80,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
    "password": "<password>"
    }
  }
- ```
+```
 
 :::note
 в конфигурационном файле выше
@@ -97,23 +98,24 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 ```bash
  cd ~/clickhouse-jdbc-bridge
  java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
- ```
+```
 
 :::note
-Мы запустили ClickHouse JDBC Bridge в режиме переднего плана. Чтобы остановить Bridge, вы можете вернуть показанное выше окно оболочки Unix на передний план и нажать `CTRL+C`.
+Мы запустили ClickHouse JDBC Bridge в переднем плане. Чтобы остановить Bridge, вы можете вернуть показанное выше окно оболочки Unix на передний план и нажать `CTRL+C`.
 :::
+
 
 ## Использование JDBC-подключения из ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
 Теперь ClickHouse может получать доступ к данным MySQL с помощью [табличной функции jdbc](/sql-reference/table-functions/jdbc.md) или [движка таблицы JDBC](/engines/table-engines/integrations/jdbc.md).
 
-Самый простой способ выполнить следующие примеры — скопировать и вставить их в [`clickhouse-client`](/interfaces/cli.md) или в [Play UI](/interfaces/http.md).
+Самый простой способ выполнить следующие примеры — скопировать и вставить их в [`clickhouse-client`](/interfaces/cli.md) или в [Play UI](/interfaces/http).
 
 * Табличная функция jdbc:
 
 ```sql
  SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
- ```
+```
 
 :::note
 В качестве первого параметра табличной функции `jdbc` мы используем имя именованного источника данных, который был настроен выше.
@@ -129,7 +131,7 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
  ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
  SELECT * FROM mytable;
- ```
+```
 
 :::note
 В качестве первого параметра в секции движка `jdbc` мы используем имя именованного источника данных, который мы настроили выше.
@@ -137,10 +139,13 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 Схема таблицы движка ClickHouse JDBC и схема подключённой таблицы MySQL должны быть согласованы: например, имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми.
 :::
 
+
 ## Внешняя установка ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
 
 Для распределённого кластера ClickHouse (кластера с более чем одним хостом ClickHouse) имеет смысл установить и запускать ClickHouse JDBC Bridge отдельно, на выделенном хосте:
+
 <Image img={Jdbc03} size="lg" alt="Схема внешнего развертывания ClickHouse JDBC Bridge" background='white'/>
+
 Преимущество такого подхода в том, что каждый хост ClickHouse может обращаться к JDBC Bridge. В противном случае JDBC Bridge пришлось бы устанавливать локально на каждый экземпляр ClickHouse, который должен обращаться к внешним источникам данных через Bridge.
 
 Для внешней установки ClickHouse JDBC Bridge выполните следующие шаги:
@@ -172,6 +177,7 @@ jdbc_bridge:
 </Tabs>
 
 :::note
+
 - необходимо заменить `JDBC-Bridge-Host` на имя хоста или IP-адрес выделенного хоста ClickHouse JDBC Bridge
 - указан порт ClickHouse JDBC Bridge по умолчанию `9019`; если вы используете для JDBC Bridge другой порт, необходимо соответствующим образом изменить конфигурацию выше
 :::
@@ -179,12 +185,15 @@ jdbc_bridge:
 [//]: # (## 4. Дополнительная информация)
 
 [//]: # ()
+
 [//]: # (TODO: )
 
 [//]: # (- упомянуть, что для функции таблицы jdbc более эффективно &#40;не по два запроса каждый раз&#41; также указывать схему в качестве параметра)
 
 [//]: # ()
+
 [//]: # (- упомянуть разницу между разовым запросом и табличным запросом, сохранённым запросом, именованным запросом)
 
 [//]: # ()
+
 [//]: # (- упомянуть insert into )
