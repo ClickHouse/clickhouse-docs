@@ -24,7 +24,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 ## 实现细节 {#implementation-details}
 
-* 此功能可在[命令行客户端](../../../interfaces/cli.md)和 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) 中使用。因此，通过 [HTTP 接口](../../../interfaces/http.md) 发送的查询将会失败。
+* 此功能可在[命令行客户端](../../../interfaces/cli.md)和 [clickhouse-local](../../../operations/utilities/clickhouse-local.md) 中使用。因此，通过 [HTTP 接口](/interfaces/http) 发送的查询将会失败。
 * 如果已存在同名文件，查询将会失败。
 * 默认的[输出格式](../../../interfaces/formats.md)为 `TabSeparated`（与命令行客户端批处理模式相同）。使用 [FORMAT](format.md) 子句来更改输出格式。
 * 如果在查询中包含 `AND STDOUT`，则写入文件的输出也会同时显示到标准输出上。如果启用了压缩，标准输出上显示的是未压缩的明文。

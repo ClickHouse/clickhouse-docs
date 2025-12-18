@@ -45,7 +45,7 @@ ClickHouse 中的查询可以分为几种类型：
 :::note
 在设置 `readonly = 1` 之后，用户无法在当前会话中更改 `readonly` 和 `allow_ddl` 设置。
 
-在 [HTTP 接口](../../interfaces/http.md) 中使用 `GET` 方法时，会自动设置 `readonly = 1`。要修改数据，请使用 `POST` 方法。
+在 [HTTP 接口](/interfaces/http) 中使用 `GET` 方法时，会自动设置 `readonly = 1`。要修改数据，请使用 `POST` 方法。
 
 设置 `readonly = 1` 会禁止用户更改设置。也可以只禁止用户更改特定设置；同样，也可以在 `readonly = 1` 的限制下，仅允许更改特定设置。详情参见[设置约束](../../operations/settings/constraints-on-settings.md)。
 :::

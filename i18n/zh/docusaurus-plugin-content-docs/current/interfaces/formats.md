@@ -149,7 +149,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 可以是绝对路径，也可以是相对于客户端当前目录的相对路径。
 如果在[批处理模式](/interfaces/cli.md/#batch-mode)下使用客户端，出于安全考虑，模式文件的路径必须是相对路径。
 
-如果通过 [HTTP 接口](/interfaces/http.md) 进行数据输入或输出，则格式模式中指定的文件名
+如果通过 [HTTP 接口](/interfaces/http) 进行数据输入或输出，则格式模式中指定的文件名
 必须位于服务器配置中由 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
 
 ## 跳过错误 {#skippingerrors}

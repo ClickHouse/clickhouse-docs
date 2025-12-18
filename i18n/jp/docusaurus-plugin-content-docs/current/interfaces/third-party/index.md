@@ -17,5 +17,5 @@ doc_type: 'landing-page'
 * [プロキシ](../../interfaces/third-party/proxy.md)
 
 :::note
-[ODBC](../../interfaces/odbc.md) や [JDBC](../../interfaces/jdbc.md) などの一般的な API をサポートする汎用ツールは、多くの場合 ClickHouse でも利用できますが、その数が非常に多いため、ここには掲載していません。
+[ODBC](/interfaces/odbc) や [JDBC](/interfaces/jdbc) などの一般的な API をサポートする汎用ツールは、多くの場合 ClickHouse でも利用できますが、その数が非常に多いため、ここには掲載していません。
 :::

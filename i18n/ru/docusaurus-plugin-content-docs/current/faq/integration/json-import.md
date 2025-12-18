@@ -14,9 +14,9 @@ ClickHouse поддерживает широкий спектр [формато�
 
 ## Примеры {#examples}
 
-С помощью [HTTP-интерфейса](../../interfaces/http.md):
+С помощью [HTTP-интерфейса](/interfaces/http):
 
-``` bash
+```bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
 ```
 
@@ -26,7 +26,8 @@ $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test
 $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSONEachRow"
 ```
 
-Вместо ручного ввода данных вы можете использовать [инструмент интеграции](../../integrations/index.mdx).
+Вместо ручного ввода данных можно воспользоваться [инструментом интеграции](../../integrations/index.mdx).
+
 
 ## Полезные настройки {#useful-settings}
 
