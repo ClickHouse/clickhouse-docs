@@ -21,7 +21,7 @@ available.
 The source code of the driver is available in the [ClickHouse-ODBC GitHub Repository](
 https://github.com/ClickHouse/clickhouse-odbc).
 
-:::note
+:::tip
 For better compatibility we strongly recommend to update your ClickHouse server to version 24.11 or later.
 :::
 
