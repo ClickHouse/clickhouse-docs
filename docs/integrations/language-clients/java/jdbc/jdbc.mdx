@@ -30,20 +30,6 @@ import TabItem from '@theme/TabItem';
 We recommend using the latest java client directly if performance/direct access is critical.
 :::
 
-## Changes from 0.7.x {#changes-from-07x}
-In 0.8 we tried to make the driver more strictly follow the JDBC specification, so there are some removed features that may affect you:
-
-| Old Feature                      | Notes                                                                                                                                                                                                                                                                                                           |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Transaction Support              | Early versions of the driver only **simulated** transaction support, which could have unexpected results.                                                                                                                                                                                                       |
-| Response Column Renaming         | `ResultSet` was mutable - for efficiency sake they're now read-only                                                                                                                                                                                                                                             |
-| Multi-Statement SQL              | Multi-statement support was only **simulated**, now it strictly follows 1:1                                                                                                                                                                                                                                     |
-| Named Parameters                 | Not part of the JDBC spec                                                                                                                                                                                                                                                                                       |
-| Stream-based `PreparedStatement` | Early version of the driver allowed for non-jdbc usage of `PreparedStatement` - if you desire such options, we recommend looking at the [Java Client](/integrations/language-clients/java/client/client.mdx) and its [examples](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2). |
-
-:::note
-`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
-:::
 
 ## Environment requirements {#environment-requirements}
 
@@ -104,6 +90,10 @@ Where possible methods will return an `SQLFeatureNotSupportedException` if the f
 | `default_query_settings`         | `null`  | Allows passing of default query settings with query operations |
 | `jdbc_resultset_auto_close`      | `true`  | Automatically closes `ResultSet` when `Statement` is closed    |
 | `beta.row_binary_for_simple_insert` | `false` | Use `PreparedStatement` implementation based on `RowBinary` writer. Works only for `INSERT INTO ... VALUES` queries. |
+| `jdbc_resultset_auto_close` | `true` | Automatically closes `ResultSet` when `Statement` is closed |
+| `jdbc_use_max_result_rows` | `false` | Enables using server property `max_result_rows` to limit number of rows returned by query. When enabled, overrides user-set overflow mode. See JavaDoc for details. |
+| `jdbc_sql_parser` | `JAVACC` | Configures which SQL parser to use. Choices: `ANTLR4`, `ANTLR4_PARAMS_PARSER`, `JAVACC`. |
+
 
 :::note Server Settings
 
@@ -131,6 +121,10 @@ JDBC Driver supports the same data formats as the underlying [java client](/inte
 you may want to consider using the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html) package. `ZonedDateTime` and
 `OffsetDateTime` are both great replacements for java.sql.Timestamp, java.sql.Date, and java.sql.Time.
 
+:::note
+`Date` is stored without timezone, while `DateTime` is stored with timezone. This can lead to unexpected results if you're not careful.
+:::
+
 ## Creating Connection {#creating-connection}
 
 ```java
@@ -141,6 +135,8 @@ DataSource dataSource = new DataSource(url, properties);//DataSource or DriverMa
 try (Connection conn = dataSource.getConnection()) {
 ... // do something with the connection
 ```
+
+
 
 ## Supplying Credentials and Settings {#supplying-credentials-and-settings}
 
@@ -265,6 +261,49 @@ After Setting those settings, you need to ensure that your client enables the Ke
 properties.setProperty("socket_keepalive", "true");
 ```
 
+## Migration Guide {#migration-guide}
+
+### Key Changes {#key-changes}
+
+| Feature | V1 (Old) | V2 (New) |
+|---------|----------|----------|
+| Transaction Support | Partially supported | Not supported |
+| Response Column Renaming | Partially supported | Not supported |
+| Multi-Statement SQL | Not supported | Not allowed |
+| Named Parameters | Supported | Not supported (not in JDBC spec) |
+| Streaming Data With `PreparedStatement` | Supported | Not supported |
+
+- JDBC V2 is implemented to be more lightweight and some features were removed.
+    - Streaming Data is not supported in JDBC V2 because it is not part of the JDBC spec and Java.
+- JDBC V2 expects explicit configuration. No failover defaults.
+    - Protocol should be specified in the URL. No implicit protocol detection using port numbers.
+
+### Configuration Changes {#configuration-changes}
+
+There are only two enums:
+- `com.clickhouse.jdbc.DriverProperties` - the driver own configuration properties.
+- `com.clickhouse.client.api.ClientConfigProperties` - the client configuration properties. Client configuration
+ changes are described in the [Java Client documentation](/integrations/language-clients/java/client/client.mdx#migration_from_v1_config).
+
+Connection properties are parsed in the following way:
+- URL is parsed first for properties. They override all other properties.
+- Driver properties are not passed to the client.
+- Endpoints (host, port, protocol) are parsed from the URL. 
+
+Example:
+```java
+String url = "jdbc:ch://my-server:8443/default?" +
+            "jdbc_ignore_unsupported_values=true&" +
+            "socket_rcvbuf=800000";
+
+Properties properties = new Properties();
+properties.setProperty("socket_rcvbuf", "900000");
+try (Connection conn = DriverManager.getConnection(url, properties)) {
+    // Connection will use socket_rcvbuf=800000 and jdbc_ignore_unsupported_values=true
+    // Endpoints: my-server:8443 protocol: http (not secure)
+    // Database: default
+}
+```
 </Version>
 
 <Version>
