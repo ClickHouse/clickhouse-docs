@@ -18,10 +18,10 @@ ClickHouse provides two network interfaces (they can be optionally wrapped in TL
 
 In most cases it is recommended to use an appropriate tool or library instead of interacting with those directly. The following are officially supported by ClickHouse:
 
-- [Command-line client](../../interfaces/cli.md)
-- [JDBC driver](../../interfaces/jdbc.md)
-- [ODBC driver](../../interfaces/odbc.md)
-- [C++ client library](../../interfaces/cpp.md)
+- [Command-line client](/interfaces/cli)
+- [JDBC driver](/interfaces/jdbc)
+- [ODBC driver](/interfaces/odbc)
+- [C++ client library](/interfaces/cpp)
 
 ClickHouse also supports two RPC protocols:
 - [gRPC protocol](grpc.md) specially designed for ClickHouse.
