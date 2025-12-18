@@ -3499,9 +3499,9 @@ true に設定されている場合、スカラーサブクエリによる大き
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "クエリ内でストレージスナップショットを共有する新しい設定"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "クエリ内でストレージスナップショットを共有する新しい設定"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "デフォルトでクエリ内のストレージスナップショット共有を有効にする"}]}]} />
 
 有効化すると、1 つのクエリ内のすべてのサブクエリは、各テーブルに対して同じ StorageSnapshot を共有します。
 これにより、同じテーブルに複数回アクセスする場合でも、クエリ全体でデータの一貫したビューが保証されます。
@@ -7096,16 +7096,20 @@ Cloud のデフォルト値: 1 TB。
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
-クエリ処理スレッドの最大数です。リモートサーバーからデータを取得するためのスレッドは含まれません（`max_distributed_connections` パラメータを参照）。
+クエリ処理スレッドの最大数です。リモートサーバーからデータを取得するためのスレッドは含まれません（[`max_distributed_connections`](/operations/settings/settings#max_distributed_connections) パラメータを参照）。
 
 このパラメータは、クエリ処理パイプラインの同じステージを並列に実行するスレッドに適用されます。
-たとえばテーブルから読み込む際に、関数を用いた式評価、WHERE によるフィルタリング、GROUP BY の事前集計を、少なくとも `max_threads` 個のスレッドで並列実行できる場合は、その数の `max_threads` が使用されます。
+たとえばテーブルから読み込む際に、関数を用いた式評価、`WHERE` によるフィルタリング、`GROUP BY` の事前集計を、少なくとも `max_threads` 個のスレッドで並列実行できる場合は、その数の `max_threads` が使用されます。
 
 LIMIT により短時間で完了するクエリでは、`max_threads` をより小さく設定できます。たとえば、必要な件数の行が各ブロックに含まれていて `max_threads = 8` の場合、本来は 1 ブロックだけ読めば十分でも、8 ブロックが読み込まれます。
 
 `max_threads` の値が小さいほど、消費されるメモリ量は少なくなります。
 
-Cloud のデフォルト値: `auto(3)`
+`max_threads` 設定のデフォルト値は、ClickHouse が利用できるハードウェアスレッド数に一致します。
+SMT（例: Intel HyperThreading）がない場合、これは CPU コア数に相当します。
+
+ClickHouse Cloud ユーザーの場合、デフォルト値は `auto(N)` と表示され、N はサービスの vCPU 数（例: 2vCPU/8GiB、4vCPU/16GiB など）に対応します。
+利用可能なすべてのサービスサイズの一覧は、Cloud コンソールの Settings タブで確認できます。
 
 ## max_threads_for_indexes {#max_threads_for_indexes} 
 
@@ -9427,9 +9431,9 @@ Possible values:
 
 ## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御するための新しい設定を追加しました。0 の場合、上限はありません。"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "100"},{"label": "より最適化されました"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御するための新しい設定を追加しました。0 の場合、上限はありません。"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "10000"},{"label": "パフォーマンスの改善後に上限を引き上げました"}]}, {"id": "row-3","items": [{"label": "25.11"},{"label": "100"},{"label": "より最適化されました"}]}]}/>
 
 遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御します。0 の場合、上限はありません。
 

@@ -14,9 +14,9 @@ ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其�
 
 ## 示例 {#examples}
 
-使用 [HTTP 接口](../../interfaces/http.md)：
+使用 [HTTP 接口](/interfaces/http)：
 
-``` bash
+```bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
 ```
 
@@ -27,6 +27,7 @@ $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSO
 ```
 
 与其手动插入数据，你可以考虑改用[集成工具](../../integrations/index.mdx)。
+
 
 ## 实用设置 {#useful-settings}
 

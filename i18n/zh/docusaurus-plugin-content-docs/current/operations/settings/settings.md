@@ -3495,9 +3495,9 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "默认在查询中启用共享存储快照"}]}]} />
 
 启用后，单个查询中的所有子查询会针对每个表共享同一个 `StorageSnapshot`。
 这可以确保整个查询过程中的数据视图一致，即使同一张表被多次访问。
@@ -7086,16 +7086,20 @@ Cloud 默认值：1 TB。
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
-处理查询时可用的最大线程数，不包括用于从远程服务器检索数据的线程（参见参数 `max_distributed_connections`）。
+处理查询时可用的最大线程数，不包括用于从远程服务器检索数据的线程（参见参数 ['max_distributed_connections'](/operations/settings/settings#max_distributed_connections)）。
 
 此参数适用于在查询处理流水线中并行执行同一阶段的线程。
-例如，在读取表时，如果可以使用至少 `max_threads` 个线程并行完成函数表达式求值、WHERE 过滤以及 GROUP BY 的预聚合，那么将会使用 `max_threads` 个线程。
+例如，在读取表时，如果可以使用至少 `max_threads` 个线程并行完成函数表达式求值、`WHERE` 过滤以及 `GROUP BY` 的预聚合，那么将会使用 `max_threads` 个线程。
 
-对于由于 LIMIT 而能很快完成的查询，可以将 `max_threads` 设置得更小。例如，如果在每个数据块中都已包含所需数量的记录，且 `max_threads = 8`，则会检索 8 个数据块，尽管只读取 1 个数据块就已经足够。
-
+对于由于 LIMIT 而能很快完成的查询，可以将 `max_threads` 设置得更小。
+例如，如果在每个数据块中都已包含所需数量的记录，且 `max_threads = 8`，则会检索 8 个数据块，尽管只读取 1 个数据块就已经足够。
 `max_threads` 的值越小，内存消耗越少。
 
-Cloud 默认值：`auto(3)`
+默认情况下，`max_threads` 设置与 ClickHouse 可用的硬件线程数相匹配。
+在没有 SMT（例如 Intel HyperThreading）的情况下，这与 CPU 核心数相对应。
+
+对于 ClickHouse Cloud 用户，默认值会显示为 `auto(N)`，其中 N 与服务的 vCPU 大小相对应，例如 2vCPU/8GiB、4vCPU/16GiB 等。
+有关所有服务规格的列表，请参见 Cloud 控制台中的 `Settings` 选项卡。
 
 ## max_threads_for_indexes {#max_threads_for_indexes} 
 
@@ -9417,9 +9421,9 @@ Possible values:
 
 ## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "添加了新的设置，用于控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "100"},{"label": "进一步优化"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "添加了新的设置，用于控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "10000"},{"label": "在性能改进后提高该限制"}]}, {"id": "row-3","items": [{"label": "25.11"},{"label": "100"},{"label": "进一步优化"}]}]}/>
 
 控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制。
 
