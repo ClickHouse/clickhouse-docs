@@ -1544,6 +1544,19 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)
 / 1024. В противном случае ClickHouse выбрасывает исключение.
 
+## min_columns_to_activate_adaptive_write_buffer {#min_columns_to_activate_adaptive_write_buffer} 
+
+<SettingsInfoBlock type="UInt64" default_value="500" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "500"},{"label": "New setting"}]}]}/>
+
+Позволяет снизить расход памяти для таблиц с большим числом столбцов за счёт использования адаптивных буферов записи.
+
+Возможные значения:
+
+- 0 — без ограничений
+- 1 — всегда включено
+
 ## min_compress_block_size {#min_compress_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
