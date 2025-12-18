@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis
-title: 'Monitoring Redis logs with ClickStack'
-sidebar_label: 'Redis logs'
+title: 'Monitoring Redis Logs with ClickStack'
+sidebar_label: 'Redis Logs'
 pagination_prev: null
 pagination_next: null
-description: 'Monitoring Redis logs with ClickStack'
+description: 'Monitoring Redis Logs with ClickStack'
 doc_type: 'guide'
 ---
 
@@ -17,14 +17,14 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Redis logs with ClickStack {#redis-clickstack}
+# Monitoring Redis Logs with ClickStack {#redis-clickstack}
 
 :::note[TL;DR]
 This guide shows you how to monitor Redis with ClickStack by configuring the OpenTelemetry collector to ingest Redis server logs. You'll learn how to:
 
 - Configure the OTel collector to parse the Redis log format
 - Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize Redis metrics (connections, commands, memory, errors)
+- Use a pre-built dashboard to visualize Redis Metrics (connections, commands, memory, errors)
 
 A demo dataset with sample logs is available if you want to test the integration before configuring your production Redis.
 
@@ -118,7 +118,7 @@ service:
 ```
 
 This configuration:
-- Reads Redis logs from their standard location
+- Reads Redis Logs from their standard location
 - Parses Redis's log format using regex to extract structured fields (`pid`, `role`, `timestamp`, `log_level`, `message`)
 - Adds `source: redis` attribute for filtering in HyperDX
 - Routes logs to the ClickHouse exporter via a dedicated pipeline
@@ -126,7 +126,7 @@ This configuration:
 :::note
 - You only define new receivers and pipelines in the custom config
 - The processors (`memory_limiter`, `transform`, `batch`) and exporters (`clickhouse`) are already defined in the base ClickStack configuration - you just reference them by name
-- The `time_parser` operator extracts timestamps from Redis logs to preserve original log timing
+- The `time_parser` operator extracts timestamps from Redis Logs to preserve original log timing
 - This configuration uses `start_at: beginning` to read all existing logs when the collector starts, allowing you to see logs immediately. For production deployments where you want to avoid re-ingesting logs on collector restarts, change to `start_at: end`.
 :::
 
@@ -163,7 +163,7 @@ docker run --name clickstack \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v /var/log/redis:/var/log/redis:ro \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
@@ -182,7 +182,7 @@ Once configured, log into HyperDX and verify that logs are flowing:
 
 ## Demo dataset {#demo-dataset}
 
-For users who want to test the Redis integration before configuring their production systems, we provide a sample dataset of pre-generated Redis logs with realistic patterns.
+For users who want to test the Redis integration before configuring their production systems, we provide a sample dataset of pre-generated Redis Logs with realistic patterns.
 
 <VerticalStepper headerLevel="h4">
 
@@ -246,7 +246,7 @@ docker run --name clickstack-demo \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/redis-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -v "$(pwd)/redis-server.log:/tmp/redis-demo/redis-server.log:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 :::note
@@ -257,11 +257,12 @@ docker run --name clickstack-demo \
 
 Once ClickStack is running:
 
-1. Open [HyperDX](http://localhost:8080/) and log in to your account, you may need to create an account first.
-2. Once logged in, open this [link](http://localhost:8080/search?from=1761577200000&to=1761663600000&isLive=false&source=690280cfd3754c36b73402cc&where=&select=Timestamp,ServiceName,SeverityText,Body&whereLanguage=lucene&orderBy=&filters=[]). You should see what's pictured in the screenshots below.
+1. Open [HyperDX](http://localhost:8080/) and log in to your account (you may need to create an account first)
+2. Navigate to the Search view and set the source to `Logs`
+3. Set the time range to **2025-10-26 10:00:00 - 2025-10-29 10:00:00**
 
-:::note
-If you don't see logs, ensure the time range is set to 2025-10-27 10:00:00 - 2025-10-28 10:00:00 and 'Logs' is selected as the source. Using the link is important to get the proper time range of results.
+:::note[Timezone Display]
+HyperDX displays timestamps in your browser's local timezone. The demo data spans **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)**. The wide time range ensures you'll see the demo logs regardless of your location. Once you see the logs, you can narrow the range to a 24-hour period for clearer visualizations.
 :::
 
 <Image img={log_view} alt="Log view"/>
@@ -272,7 +273,7 @@ If you don't see logs, ensure the time range is set to 2025-10-27 10:00:00 - 202
 
 ## Dashboards and visualization {#dashboards}
 
-To help you get started monitoring Redis with ClickStack, we provide essential visualizations for Redis logs.
+To help you get started monitoring Redis with ClickStack, we provide essential visualizations for Redis Logs.
 
 <VerticalStepper headerLevel="h4">
 
@@ -292,7 +293,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 #### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
 
 :::note
-Ensure the time range is set to 2025-10-27 10:00:00 - 2025-10-28 10:00:00. The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
@@ -365,12 +366,12 @@ docker volume inspect <volume-name>
 
 **Verify Redis log format matches expected pattern:**
 ```bash
-# Redis logs should look like:
+# Redis Logs should look like:
 # 12345:M 28 Oct 2024 14:23:45.123 * Server started
 tail -5 /var/log/redis/redis-server.log
 ```
 
-If your Redis logs have a different format, you may need to adjust the regex pattern in the `regex_parser` operator. The standard format is:
+If your Redis Logs have a different format, you may need to adjust the regex pattern in the `regex_parser` operator. The standard format is:
 - `pid:role timestamp level message`
 - Example: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
 

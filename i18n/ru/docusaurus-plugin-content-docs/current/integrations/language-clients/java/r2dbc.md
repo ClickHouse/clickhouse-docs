@@ -1,28 +1,28 @@
 ---
-slug: '/integrations/java/r2dbc'
-sidebar_label: 'R2DBC Драйвер'
+sidebar_label: 'Драйвер R2DBC'
 sidebar_position: 5
-description: 'ClickHouse R2DBC драйвер'
-title: 'R2DBC драйвер'
-keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
-doc_type: reference
+keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+description: 'Драйвер ClickHouse R2DBC'
+slug: /integrations/java/r2dbc
+title: 'Драйвер R2DBC'
+doc_type: 'reference'
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
+# Драйвер R2DBC {#r2dbc-driver}
 
-# R2DBC драйвер
+## Драйвер R2DBC {#r2dbc-driver}
 
-## R2DBC драйвер {#r2dbc-driver}
-
-[http://R2DBC](https://r2dbc.io/) упаковка асинхронного Java клиента для ClickHouse.
+[R2DBC](https://r2dbc.io/)‑обёртка над асинхронным Java‑клиентом ClickHouse.
 
 ### Требования к окружению {#environment-requirements}
 
-- [OpenJDK](https://openjdk.java.net) версия >= 8
+- [OpenJDK](https://openjdk.java.net) версии 8 и выше
 
-### Установка {#setup}
+### Настройка {#setup}
 
 ```xml
 <dependency>
@@ -51,7 +51,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Запрос {#query}
+### Query {#query}
 
 ```java showLineNumbers
 connection
@@ -68,7 +68,7 @@ connection
     .subscribe();
 ```
 
-### Вставка {#insert}
+### Insert {#insert}
 
 ```java showLineNumbers
 connection

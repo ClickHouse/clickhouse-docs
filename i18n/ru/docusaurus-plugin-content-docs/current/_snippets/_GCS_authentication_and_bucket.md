@@ -9,44 +9,43 @@ import GCS_guide_key from '@site/static/images/integrations/data-ingestion/s3/GC
 import Image from '@theme/IdealImage';
 
 <details>
-    <summary>Создание корзин GCS и ключа HMAC</summary>
+<summary>Создайте бакеты GCS и HMAC-ключ</summary>
 
 ### ch_bucket_us_east1 {#ch_bucket_us_east1}
 
-<Image size="md" img={GCS_bucket_1} alt="Создание корзины GCS в регионе US East 1" border />
+<Image size="md" img={GCS_bucket_1} alt="Создание GCS-бакета в регионе US East 1" border />
 
 ### ch_bucket_us_east4 {#ch_bucket_us_east4}
 
-<Image size="md" img={GCS_bucket_2} alt="Создание корзины GCS в регионе US East 4" border />
+<Image size="md" img={GCS_bucket_2} alt="Создание GCS-бакета в регионе US East 4" border />
 
-### Генерация ключа доступа {#generate-an-access-key}
+### Сгенерируйте ключ доступа {#generate-an-access-key}
 
-### Создание секретного ключа и HMAC для сервисного аккаунта {#create-a-service-account-hmac-key-and-secret}
+### Создайте HMAC-ключ и секрет для сервисного аккаунта {#create-a-service-account-hmac-key-and-secret}
 
-Откройте **Cloud Storage > Настройки > Взаимодействие** и выберите существующий **Ключ доступа** или **СОЗДАЙТЕ КЛЮЧ ДЛЯ СЕРВИСНОГО АККАНТА**. Этот гид охватывает путь для создания нового ключа для нового сервисного аккаунта.
+Откройте **Cloud Storage &gt; Settings &gt; Interoperability** и либо выберите существующий **Access key**, либо нажмите **CREATE A KEY FOR A SERVICE ACCOUNT**. В этом руководстве описывается процесс создания нового ключа для нового сервисного аккаунта.
 
-<Image size="md" img={GCS_create_service_account_key} alt="Генерация HMAC ключа сервисного аккаунта в GCS" border />
+<Image size="md" img={GCS_create_service_account_key} alt="Генерация HMAC-ключа сервисного аккаунта в GCS" border />
 
-### Добавить новый сервисный аккаунт {#add-a-new-service-account}
+### Добавьте новый сервисный аккаунт {#add-a-new-service-account}
 
-Если это проект без существующего сервисного аккаунта, **СОЗДАЙТЕ НОВЫЙ АККАНТ**.
+Если в проекте ещё нет сервисного аккаунта, нажмите **CREATE NEW ACCOUNT**.
 
 <Image size="md" img={GCS_create_service_account_0} alt="Добавление нового сервисного аккаунта в GCS" border />
 
-Создание сервисного аккаунта включает три шага. На первом шаге дайте аккаунту значимое имя, идентификатор и описание.
+Для создания сервисного аккаунта есть три шага; на первом шаге задайте аккаунту понятные имя, ID и описание.
 
-<Image size="md" img={GCS_create_service_account_a} alt="Определение имени и идентификатора нового сервисного аккаунта в GCS" border />
+<Image size="md" img={GCS_create_service_account_a} alt="Определение имени и ID нового сервисного аккаунта в GCS" border />
 
-В диалоговом окне настроек взаимодействия рекомендуется роль IAM **Storage Object Admin**; выберите эту роль на втором шаге.
+В диалоге настроек Interoperability рекомендуется назначить роль IAM **Storage Object Admin**; выберите эту роль на втором шаге.
 
-<Image size="md" img={GCS_create_service_account_2} alt="Выбор IAM роли Storage Object Admin в GCS" border />
+<Image size="md" img={GCS_create_service_account_2} alt="Выбор роли IAM Storage Object Admin в GCS" border />
 
-Третий шаг является необязательным и не используется в этом руководстве. Вы можете предоставить пользователям эти привилегии в соответствии с вашими политиками.
+Третий шаг является необязательным и в этом руководстве не используется. Вы можете предоставить пользователям эти привилегии в соответствии с вашими политиками.
 
 <Image size="md" img={GCS_create_service_account_3} alt="Настройка дополнительных параметров для нового сервисного аккаунта в GCS" border />
 
-HMAC ключ сервисного аккаунта будет отображен. Сохраните эту информацию, так как она будет использована в конфигурации ClickHouse.
+HMAC-ключ сервисного аккаунта будет отображён. Сохраните эту информацию, так как она будет использоваться в конфигурации ClickHouse.
 
-<Image size="md" img={GCS_guide_key} alt="Получение сгенерированного HMAC ключа для GCS" border />
-
+<Image size="md" img={GCS_guide_key} alt="Получение сгенерированного HMAC-ключа для GCS" border />
 </details>

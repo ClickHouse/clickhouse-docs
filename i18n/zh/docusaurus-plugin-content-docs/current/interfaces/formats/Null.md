@@ -1,34 +1,33 @@
 ---
-'alias': []
-'description': 'Null 格式的文档'
-'input_format': false
-'keywords':
-- 'Null'
-- 'format'
-'output_format': true
-'slug': '/interfaces/formats/Null'
-'title': 'Null'
-'doc_type': 'reference'
+alias: []
+description: 'Null 格式文档'
+input_format: false
+keywords: ['Null', 'format']
+output_format: true
+slug: /interfaces/formats/Null
+title: 'Null'
+doc_type: 'reference'
 ---
 
-| 输入  | 输出  | 别名  |
+| 输入 | 输出 | 别名 |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## 描述 {#description}
 
-在 `Null` 格式下 - 不会输出任何内容。 
-这听起来可能有点奇怪，但重要的是要注意，尽管没有输出内容，查询仍然会被处理，并且在使用命令行客户端时，数据会被传输到客户端。
+在 `Null` 格式下，不会输出任何内容。  
+乍一看可能有些奇怪，但需要注意的是，尽管没有任何输出，查询仍然会被处理，  
+并且在使用命令行客户端时，数据依然会被传输到客户端。
 
 :::tip
-`Null` 格式对于性能测试可能很有用。
+`Null` 格式可用于性能测试。
 :::
 
 ## 示例用法 {#example-usage}
 
 ### 读取数据 {#reading-data}
 
-考虑一个名为 `football` 的表，具有以下数据：
+假设有一个名为 `football` 的表，其中包含以下数据：
 
 ```text
     ┌───────date─┬─season─┬─home_team─────────────┬─away_team───────────┬─home_team_goals─┬─away_team_goals─┐
@@ -52,7 +51,7 @@
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-使用 `Null` 格式读取数据：
+以 `Null` 格式读取数据：
 
 ```sql
 SELECT *
@@ -60,7 +59,7 @@ FROM football
 FORMAT Null
 ```
 
-查询将处理数据，但不会输出任何内容。
+此查询会处理数据，但不会产生任何输出。
 
 ```response
 0 rows in set. Elapsed: 0.154 sec.

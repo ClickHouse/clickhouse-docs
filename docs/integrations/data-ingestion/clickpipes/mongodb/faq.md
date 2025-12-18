@@ -55,7 +55,7 @@ For more examples, see our [Working with JSON guide](./quickstart).
 
 ### How do I handle `resume of change stream was not possible, as the resume point may no longer be in the oplog.` error? {#resume-point-may-no-longer-be-in-the-oplog-error}
 
-This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend [increasing the oplog retention period](./source/atlas#enable-oplog-retention) (or [here](./source/generic#enable-oplog-retention) if you are on a self-managed MongoDB).
+This error typically occurs when the oplog is truncated and ClickPipe is unable to resume the change stream at the expected point. To resolve this issue, [resync the ClickPipe](./resync.md). To avoid this issue from recurring, we recommend increasing the oplog retention period. See instructions for [MongoDB Atlas](./source/atlas#enable-oplog-retention), [self-managed MongoDB](./source/generic#enable-oplog-retention), or [Amazon DocumentDB](./source/documentdb#configure-change-stream-log-retention).
 
 ### How is replication managed? {#how-is-replication-managed}
 
@@ -66,4 +66,21 @@ We use MongoDB's native Change Streams API to track changes in the database. Cha
 Which read preference to use depends on your specific use case. If you want to minimize the load on your primary node, we recommend using `secondaryPreferred` read preference. If you want to optimize ingestion latency, we recommend using `primaryPreferred` read preference. For more details, see [MongoDB documentation](https://www.mongodb.com/docs/manual/core/read-preference/#read-preference-modes-1).
 
 ### Does the MongoDB ClickPipe support Sharded Cluster? {#does-the-mongodb-clickpipe-support-sharded-cluster}
+
 Yes, the MongoDB ClickPipe supports both Replica Set and Sharded Cluster.
+
+### Does MongoDB ClickPipe support Amazon DocumentDB? {#documentdb-support}
+
+Yes, MongoDB ClickPipe supports Amazon DocumentDB 5.0. See [Amazon DocumentDB source setup guide](./source/documentdb.md) for details.
+
+### Does MongoDB ClickPipe support PrivateLink? {#privatelink-support}
+
+We support PrivateLink for MongoDB (and DocumentDB) cluster in AWS only. 
+
+Note that unlike single-node relational database, MongoDB client requires successful replica set discovery to be able to respect the configured `ReadPreference`. This requires setting up PrivateLink with all the nodes in the cluster so the MongoDB client can successfully establish replica set connection, as well as redirect to another node when the connected node goes down.
+
+If you prefer to connect to a single node in your cluster, you can skip replica set discovery by specifying `/?directConnection=true` in the connection string during ClickPipes setup. The PrivateLink setup in this case will be similar to a single-node relational database, and is the simplest option for PrivateLink support.
+
+For replica set connection, you can set up PrivateLink for MongoDB with either VPC Resource or VPC Endpoint Service. If you go with VPC Resource, you would need to create a `GROUP` resource configuration, plus a `CHILD` resource configuration for each node in the cluster. If you go with VPC Endpoint Service, you would need to create a separate Endpoint Service (and a separate NLB) for each node in the cluster. 
+
+See [AWS PrivateLink for ClickPipes](../aws-privatelink.md) documentation for more details. Please reach out to ClickHouse support for assistance.

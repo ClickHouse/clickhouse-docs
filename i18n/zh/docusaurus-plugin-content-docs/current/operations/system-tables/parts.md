@@ -1,138 +1,135 @@
 ---
-'description': '系统表包含关于MergeTree分区片段的信息'
-'keywords':
-- 'system table'
-- 'parts'
-'slug': '/operations/system-tables/parts'
-'title': 'system.parts'
-'doc_type': 'reference'
+description: '包含 MergeTree 数据分片信息的 system 表'
+keywords: ['system 表', '数据分片']
+slug: /operations/system-tables/parts
+title: 'system.parts'
+doc_type: 'reference'
 ---
 
+# system.parts {#systemparts}
 
-# system.parts
-
-包含有关 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的分片的信息。
+包含关于 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表数据分片（parts）的信息。
 
 每一行描述一个数据分片。
 
 列：
 
-- `partition` ([String](../../sql-reference/data-types/string.md)) – 分区名称。要了解什么是分区，请参见 [ALTER](/sql-reference/statements/alter) 查询的描述。
+* `partition` ([String](../../sql-reference/data-types/string.md)) – 分区名称。要了解什么是分区，请参阅 [ALTER](/sql-reference/statements/alter) 查询的说明。
 
-    格式：
+  格式：
 
-  - `YYYYMM` 用于按月自动分区。
-  - `any_string` 手动分区时使用。
+  * `YYYYMM`：按月自动分区。
+  * `any_string`：手动分区时使用任意字符串。
 
-- `name` ([String](../../sql-reference/data-types/string.md)) – 数据分片的名称。分片命名结构可以用于确定数据、摄取和合并模式的许多方面。分片命名格式如下：
+* `name` ([String](../../sql-reference/data-types/string.md)) – 数据分片名称。分片命名结构可用于判断数据、摄取以及合并模式等多个方面。分片命名格式如下：
 
 ```text
 <partition_id>_<minimum_block_number>_<maximum_block_number>_<level>_<data_version>
 ```
 
 * 定义：
-  - `partition_id` - 标识分区键
-  - `minimum_block_number` - 标识分片中的最小块编号。ClickHouse 始终合并连续块
-  - `maximum_block_number` - 标识分片中的最大块编号
-  - `level` - 每次对分片进行合并时加一。级别为 0 表示这是一个尚未合并的新分片。重要的是要记住，ClickHouse 中所有分片始终是不可变的
-  - `data_version` - 可选值，分片发生变化时递增（同样，由于分片是不可变的，变化的数据始终只会写入新的分片）
+  * `partition_id` - 标识分区 ID
+  * `minimum_block_number` - 标识该 part 中的最小块号。ClickHouse 始终合并连续的块
+  * `maximum_block_number` - 标识该 part 中的最大块号
+  * `level` - 每对该 part 进行一次合并，该值加一。level 为 0 表示这是一个尚未被合并的新 part。需要牢记的是，ClickHouse 中的所有 part 始终都是不可变的
+  * `data_version` - 可选值，在对 part 执行 mutate 操作时递增（同样，变更后的数据始终只会写入新的 part，因为 part 是不可变的）
 
-- `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - 数据分片的 UUID。
+* `uuid` ([UUID](../../sql-reference/data-types/uuid.md)) - 数据部件的 UUID。
 
-- `part_type` ([String](../../sql-reference/data-types/string.md)) — 存储数据分片的格式。
+* `part_type` ([String](../../sql-reference/data-types/string.md)) — 数据部分的存储格式。
 
-    可能的值：
+  可选值：
 
-  - `Wide` — 每个列存储在文件系统中的单独文件。
-  - `Compact` — 所有列存储在文件系统中的一个文件中。
+  * `Wide` — 每一列都作为单独的文件存储在文件系统中。
+  * `Compact` — 所有列都存储在文件系统中的同一个文件中。
 
-    数据存储格式由 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置控制。
+    数据存储格式由 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表中的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置项控制。
 
-- `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – 表示数据分片是否处于活动状态的标志。如果数据分片处于活动状态，则用于表中。否则，它将被删除。合并后，非活动数据分片仍然保留。
+* `active` ([UInt8](../../sql-reference/data-types/int-uint.md)) – 指示数据部分是否处于活动状态的标志位。处于活动状态的数据部分会在表中被使用，否则会被删除。合并后，非活动的数据部分仍会保留。
 
-- `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 标记的数量。要获取数据分片中行的近似数量，将 `marks` 乘以索引粒度（通常为 8192）（此提示不适用于自适应粒度）。
+* `marks` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 标记数量。要获得一个数据部分中大致的行数，将 `marks` 乘以索引粒度（通常为 8192）（此提示不适用于自适应粒度）。
 
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 行数。
+* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 行数。
 
-- `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片文件的总大小（以字节为单位）。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 所有数据部分文件的总大小（字节）。
 
-- `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片中压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片中压缩数据的总大小。不包含任何辅助文件（例如标记文件）。
 
-- `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片中未压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据片段中未压缩数据的总大小。不包括所有辅助文件（例如标记文件）。
 
-- `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 主键值在主.idx/cidx 文件中占用的内存量（以字节为单位）。
+* `primary_key_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 磁盘上 primary.idx/cidx 文件中主键值所占用的字节数。
 
-- `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 包含标记的文件的大小。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 标记文件的大小（字节）。
 
-- `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片中二级索引的压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。
+* `secondary_indices_compressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据部分中二级索引压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
 
-- `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据分片中二级索引的未压缩数据的总大小。所有辅助文件（例如，标记文件）不包括在内。
+* `secondary_indices_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 数据部分中二级索引未压缩数据的总大小。不包括任何辅助文件（例如标记文件）。
 
-- `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 二级索引的标记文件的大小。
+* `secondary_indices_marks_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 二级索引标记文件的大小（字节数）。
 
-- `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据分片目录被修改的时间。这通常对应于数据分片创建的时间。
+* `modification_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据部分所在目录的修改时间。该时间通常对应于数据部分的创建时间。
 
-- `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据分片变为非活动状态的时间。
+* `remove_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据片段变为非活跃状态的时间。
 
-- `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 数据分片使用的场所数量。大于 2 的值表示数据分片用于查询或合并。
+* `refcount` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 该数据分片被使用的引用次数。大于 2 的值表示该数据分片正被查询或合并操作使用。
 
-- `min_date` ([Date](../../sql-reference/data-types/date.md)) – 数据分片中日期键的最小值。
+* `min_date` ([Date](../../sql-reference/data-types/date.md)) – 数据片段中日期键的最小值。
 
-- `max_date` ([Date](../../sql-reference/data-types/date.md)) – 数据分片中日期键的最大值。
+* `max_date` ([Date](../../sql-reference/data-types/date.md)) – 数据部分中日期键的最大值。
 
-- `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据分片中日期和时间键的最小值。
+* `min_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据部分中日期时间键的最小值。
 
-- `max_time` ([DateTime](../../sql-reference/data-types/datetime.md)) – 数据分片中日期和时间键的最大值。
+* `max_time`([DateTime](../../sql-reference/data-types/datetime.md)) – 数据部分中日期时间键的最大值。
 
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) – 分区的 ID。
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) – 分区 ID。
 
-- `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后组成当前分片的最小数据块编号。
+* `min_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后构成当前部分的数据块的最小编号。
 
-- `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后组成当前分片的最大数据块编号。
+* `max_block_number` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 合并后构成当前数据片段的最大数据块编号。
 
-- `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 合并树的深度。零表示当前分片是通过插入创建的，而不是通过合并其他分片。
+* `level` ([UInt32](../../sql-reference/data-types/int-uint.md)) – 合并树的层级深度。零表示当前数据部件是通过插入创建的，而不是由其他部件合并得到的。
 
-- `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 用于确定应应用于数据分片的变更的数字（变更的版本高于 `data_version`）。
+* `data_version` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 用于确定应对该数据部分应用哪些变更（会应用版本号高于当前 `data_version` 的变更）的数字。
 
-- `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 占用的主键值内存量（以字节为单位）（在 `primary_key_lazy_load=1` 和 `use_primary_key_cache=1` 的情况下将为 `0`）。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 内存中主键值占用的字节数（当 `primary_key_lazy_load=1` 且 `use_primary_key_cache=1` 时，该值为 `0`）。
 
-- `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 为主键值分配的内存量（以字节为单位）（在 `primary_key_lazy_load=1` 和 `use_primary_key_cache=1` 的情况下将为 `0`）。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/int-uint.md)) – 为主键值预留的内存大小（以字节为单位，当 `primary_key_lazy_load=1` 且 `use_primary_key_cache=1` 时，该值为 `0`）。
 
-- `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – 表示存在分区数据备份的标志。1，备份存在。0，备份不存在。有关更多详细信息，请参见 [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)
+* `is_frozen` ([UInt8](../../sql-reference/data-types/int-uint.md)) – 标志位，表示是否存在该分区的数据备份。1 表示备份存在，0 表示备份不存在。更多详情请参见 [FREEZE PARTITION](/sql-reference/statements/alter/partition#freeze-partition)
 
-- `database` ([String](../../sql-reference/data-types/string.md)) – 数据库名称。
+* `database` ([String](../../sql-reference/data-types/string.md)) – 数据库名称。
 
-- `table` ([String](../../sql-reference/data-types/string.md)) – 表名称。
+* `table` ([String](../../sql-reference/data-types/string.md)) – 表名。
 
-- `engine` ([String](../../sql-reference/data-types/string.md)) – 没有参数的表引擎名称。
+* `engine` ([String](../../sql-reference/data-types/string.md)) – 表引擎的名称，不含参数。
 
-- `path` ([String](../../sql-reference/data-types/string.md)) – 数据分片文件夹的绝对路径。
+* `path` ([String](../../sql-reference/data-types/string.md)) – 包含数据部分文件的文件夹的绝对路径。
 
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) – 存储数据分片的磁盘名称。
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) – 用于存储该数据部分的磁盘名称。
 
-- `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 的压缩文件的哈希值。
+* `hash_of_all_files` ([String](../../sql-reference/data-types/string.md)) – 压缩文件的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
 
-- `hash_of_uncompressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 的未压缩文件的哈希值（标记文件、索引文件等）。
+* `hash_of_uncompressed_files`（[String](../../sql-reference/data-types/string.md)）– 未压缩文件（标记文件、索引文件等）的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
 
-- `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 的压缩文件数据如同未压缩。
+* `uncompressed_hash_of_compressed_files` ([String](../../sql-reference/data-types/string.md)) – 将压缩文件中的数据视为未压缩时所计算的 [sipHash128](/sql-reference/functions/hash-functions#sipHash128) 哈希值。
 
-- `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 的日期和时间键的最小值。
+* `delete_ttl_info_min` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 中日期时间键的最小值。
 
-- `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 的日期和时间键的最大值。
+* `delete_ttl_info_max` ([DateTime](../../sql-reference/data-types/datetime.md)) — [TTL DELETE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)的日期时间键的最大值。
 
-- `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 表达式数组。每个表达式定义一个 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)。
+* `move_ttl_info.expression` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) — 由表达式组成的数组。每个表达式都定义一条 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)。
 
 :::note
-`move_ttl_info.expression` 数组主要出于向后兼容性而保留，现在检查 `TTL MOVE` 规则的最简单方法是使用 `move_ttl_info.min` 和 `move_ttl_info.max` 字段。
+`move_ttl_info.expression` 数组主要是为了向后兼容而保留，现在检查 `TTL MOVE` 规则最简单的方式是使用 `move_ttl_info.min` 和 `move_ttl_info.max` 字段。
 :::
 
-- `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日期和时间值数组。每个元素描述一个 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 的最小键值。
+* `move_ttl_info.min` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日期和时间值的数组。每个元素表示 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)的最小键值。
 
-- `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日期和时间值数组。每个元素描述一个 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl) 的最大键值。
+* `move_ttl_info.max` ([Array](../../sql-reference/data-types/array.md)([DateTime](../../sql-reference/data-types/datetime.md))) — 日期和时间值的数组。每个元素表示 [TTL MOVE 规则](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)的最大键值。
 
-- `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `bytes_on_disk` 的别名。
+* `bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `bytes_on_disk` 的别名。
 
-- `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `marks_bytes` 的别名。
+* `marks_size` ([UInt64](../../sql-reference/data-types/int-uint.md)) – `marks_bytes` 的别名。
 
 **示例**
 
@@ -186,7 +183,7 @@ move_ttl_info.min:                     []
 move_ttl_info.max:                     []
 ```
 
-**另请参见**
+**另请参阅**
 
-- [MergeTree 家族](../../engines/table-engines/mergetree-family/mergetree.md)
-- [列和表的 TTL](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)
+* [MergeTree 系列](../../engines/table-engines/mergetree-family/mergetree.md)
+* [列和表的 TTL](../../engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-ttl)

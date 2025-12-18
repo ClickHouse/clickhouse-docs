@@ -1,17 +1,17 @@
 ---
-'title': 'ClickHouseでのJSON作業'
-'sidebar_label': 'JSONの作業'
-'slug': '/integrations/clickpipes/mongodb/quickstart'
-'description': 'MongoDBからClickHouseへClickPipesを介して複製されたJSONデータでの一般的なパターン'
-'doc_type': 'guide'
+title: 'ClickHouse での JSON の扱い方'
+sidebar_label: 'JSON の扱い方'
+slug: /integrations/clickpipes/mongodb/quickstart
+description: 'MongoDB から ClickPipes 経由で ClickHouse にレプリケートされた JSON データを扱うための一般的なパターン'
+doc_type: 'guide'
+keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
 ---
 
+# ClickHouse での JSON の取り扱い {#working-with-json-in-clickhouse}
 
-# JSONをClickHouseで扱う
+このガイドでは、MongoDB から ClickPipes 経由で ClickHouse にレプリケートされた JSON データを扱う際の、一般的なパターンを説明します。
 
-このガイドでは、MongoDBからClickHouseにClickPipesを通じてレプリケートされたJSONデータを扱うための一般的なパターンを提供します。
-
-MongoDBで顧客の注文を追跡するために`t1`というコレクションを作成したとしましょう：
+たとえば、顧客の注文を追跡するために、MongoDB に `t1` コレクションを作成したとします。
 
 ```javascript
 db.t1.insertOne({
@@ -38,7 +38,7 @@ db.t1.insertOne({
 })
 ```
 
-MongoDB CDCコネクターはMongoDBのドキュメントをClickHouseにレプリケートする際、ネイティブのJSONデータ型を使用します。ClickHouseのレプリケートされたテーブル`t1`は次のような行を含みます：
+MongoDB CDC Connector は、ClickHouse のネイティブ JSON データ型を使用して MongoDB ドキュメントを ClickHouse にレプリケートします。ClickHouse にレプリケートされたテーブル `t1` には、次のような行が含まれます。
 
 ```shell
 Row 1:
@@ -52,7 +52,7 @@ _peerdb_version:    0
 
 ## テーブルスキーマ {#table-schema}
 
-レプリケートされたテーブルは以下の標準スキーマを使用します：
+レプリケートされたテーブルは、以下の標準スキーマを使用します。
 
 ```shell
 ┌─name───────────────┬─type──────────┐
@@ -64,31 +64,31 @@ _peerdb_version:    0
 └────────────────────┴───────────────┘
 ```
 
-- `_id`: MongoDBからの主キー
-- `doc`: JSONデータ型としてレプリケートされたMongoDBドキュメント
-- `_peerdb_synced_at`: 行が最後に同期された日時を記録
-- `_peerdb_version`: 行のバージョンを追跡; 行が更新または削除されると増加
-- `_peerdb_is_deleted`: 行が削除されたかどうかを示すフラグ
+* `_id`: MongoDB のプライマリキー
+* `doc`: JSON データ型としてレプリケートされた MongoDB ドキュメント
+* `_peerdb_synced_at`: 行が最後に同期された時刻を記録
+* `_peerdb_version`: 行のバージョンを追跡し、行が更新または削除されるとインクリメントされる
+* `_peerdb_is_deleted`: 行が削除されているかどうかを示す
 
-### ReplacingMergeTreeテーブルエンジン {#replacingmergetree-table-engine}
+### ReplacingMergeTree テーブルエンジン {#replacingmergetree-table-engine}
 
-ClickPipesはMongoDBのコレクションをClickHouseに`ReplacingMergeTree`テーブルエンジンファミリーを使用してマップします。このエンジンを使うと、更新は指定された主キー（`_id`）のドキュメントの新しいバージョン（`_peerdb_version`）として挿入としてモデル化されるため、更新、置き換え、および削除をバージョン付き挿入として効率的に処理できます。
+ClickPipes は、MongoDB コレクションを `ReplacingMergeTree` テーブルエンジンファミリーを使用して ClickHouse にマッピングします。このエンジンでは、特定のプライマリキー（`_id`）に対して、ドキュメントのより新しいバージョン（`_peerdb_version`）を持つ挿入として更新を表現し、更新・置換・削除をバージョン付き挿入として効率的に処理できます。
 
-`ReplacingMergeTree`はバックグラウンドで非同期に重複データをクリアします。同じ行に対する重複を排除するには、[`FINAL`修飾子](/sql-reference/statements/select/from#final-modifier)を使用してください。例えば：
+`ReplacingMergeTree` はバックグラウンドで非同期に重複を削除します。同一行に対して重複が存在しないことを保証するには、[`FINAL` モディファイア](/sql-reference/statements/select/from#final-modifier) を使用します。たとえば次のようになります。
 
 ```sql
 SELECT * FROM t1 FINAL;
 ```
 
-### 削除の処理 {#handling-deletes}
+### 削除の扱い {#handling-deletes}
 
-MongoDBからの削除は、`_peerdb_is_deleted`カラムを使用して削除されたとマークされた新しい行として伝播されます。通常、これらをクエリでフィルターすることを望むでしょう：
+MongoDB からの削除は、`_peerdb_is_deleted` カラムで削除済みとしてマークされた新しい行として伝播されます。クエリでは通常、これらをフィルターで除外します。
 
 ```sql
 SELECT * FROM t1 FINAL WHERE _peerdb_is_deleted = 0;
 ```
 
-特定のクエリにフィルターを指定する代わりに、削除された行を自動的にフィルターする行レベルポリシーを作成することもできます：
+各クエリごとにフィルター条件を指定する代わりに、行レベルのポリシーを作成して削除済みの行を自動的に除外することもできます。
 
 ```sql
 CREATE ROW POLICY policy_name ON t1
@@ -97,7 +97,7 @@ FOR SELECT USING _peerdb_is_deleted = 0;
 
 ## JSONデータのクエリ {#querying-json-data}
 
-ドット構文を使用してJSONフィールドを直接クエリできます：
+ドット構文を使用して、JSONフィールドを直接クエリできます。
 
 ```sql title="Query"
 SELECT
@@ -112,7 +112,7 @@ FROM t1;
 └───────────────┴─────────────────────┘
 ```
 
-ドット構文を使用して_ネストされたオブジェクトフィールド_をクエリする際は、[`^`](https://clickhouse.com/docs/sql-reference/data-types/newjson#reading-json-sub-objects-as-sub-columns)演算子を追加してください：
+ドット構文で *ネストされたオブジェクトのフィールド* をクエリする場合は、必ず [`^`](https://clickhouse.com/docs/sql-reference/data-types/newjson#reading-json-sub-objects-as-sub-columns) 演算子を追加してください。
 
 ```sql title="Query"
 SELECT doc.^shipping as shipping_info FROM t1;
@@ -124,9 +124,9 @@ SELECT doc.^shipping as shipping_info FROM t1;
 └────────────────────────────────────────────────────┘
 ```
 
-### 動的型 {#dynamic-type}
+### Dynamic 型 {#dynamic-type}
 
-ClickHouseでは、JSON内の各フィールドは`Dynamic`型を持っています。動的型により、ClickHouseはあらかじめ型を知らなくても任意の型の値を保存できます。`toTypeName`関数でこれを確認できます：
+ClickHouse では、JSON の各フィールドは `Dynamic` 型になります。Dynamic 型を使うと、事前に型を知っておくことなく、任意の型の値を ClickHouse に保存できます。これは `toTypeName` 関数で確認できます。
 
 ```sql title="Query"
 SELECT toTypeName(doc.customer_id) AS type FROM t1;
@@ -138,7 +138,7 @@ SELECT toTypeName(doc.customer_id) AS type FROM t1;
 └─────────┘
 ```
 
-フィールドの基礎となるデータ型を調べるには、`dynamicType`関数を使用して確認できます。同じフィールド名に対して異なる行で異なるデータ型があることもあります：
+フィールドに対して実際に使用されているデータ型を確認するには、`dynamicType` 関数を使用します。同じフィールド名でも、行ごとに異なるデータ型を持つ場合があることに注意してください。
 
 ```sql title="Query"
 SELECT dynamicType(doc.customer_id) AS type FROM t1;
@@ -150,9 +150,9 @@ SELECT dynamicType(doc.customer_id) AS type FROM t1;
 └───────┘
 ```
 
-[通常の関数](https://clickhouse.com/docs/sql-reference/functions/regular-functions)は、通常のカラムと同様に動的型でも動作します：
+[Regular functions](https://clickhouse.com/docs/sql-reference/functions/regular-functions) は、通常のカラムと同様に dynamic 型に対しても利用できます。
 
-**例1: 日付の解析**
+**例 1: 日付のパース**
 
 ```sql title="Query"
 SELECT parseDateTimeBestEffortOrNull(doc.order_date) AS order_date FROM t1;
@@ -164,7 +164,7 @@ SELECT parseDateTimeBestEffortOrNull(doc.order_date) AS order_date FROM t1;
 └─────────────────────┘
 ```
 
-**例2: 条件ロジック**
+**例 2: 条件付きロジック**
 
 ```sql title="Query"
 SELECT multiIf(
@@ -192,16 +192,16 @@ SELECT length(doc.items) AS item_count FROM t1;
 └────────────┘
 ```
 
-### フィールドキャスティング {#field-casting}
+### フィールドのキャスト {#field-casting}
 
-ClickHouseの[集約関数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)は動的型と直接連携しません。例えば、動的型に対して`sum`関数を直接使用しようとすると、次のようなエラーが発生します：
+ClickHouse の[集約関数](https://clickhouse.com/docs/sql-reference/aggregate-functions/combinators)は、dynamic 型を直接扱うことはできません。たとえば、dynamic 型に対して `sum` 関数を直接使用しようとすると、次のエラーが発生します。
 
 ```sql
 SELECT sum(doc.shipping.cost) AS shipping_cost FROM t1;
 -- DB::Exception: Illegal type Dynamic of argument for aggregate function sum. (ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
-集約関数を使用するには、`CAST`関数または`::`構文を使用してフィールドを適切な型にキャストします：
+集約関数を使用するには、`CAST` 関数または `::` 構文を使ってフィールドを適切な型にキャストします。
 
 ```sql title="Query"
 SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
@@ -214,14 +214,14 @@ SELECT sum(doc.shipping.cost::Float32) AS shipping_cost FROM t1;
 ```
 
 :::note
-動的型から基礎となるデータ型（`dynamicType`で決定される）へのキャスティングは非常に高効率です。ClickHouseはすでに内部で基礎となる型に値を保存しています。
+`dynamicType` によって決定される基になるデータ型への dynamic 型からのキャストは非常に高パフォーマンスです。これは、ClickHouse が内部的に、値をすでにその基になる型で保存しているためです。
 :::
 
-## JSONのフラット化 {#flattening-json}
+## JSON のフラット化 {#flattening-json}
 
-### 通常のビュー {#normal-view}
+### 通常ビュー {#normal-view}
 
-JSONテーブルの上に通常のビューを作成して、フラット化/キャスト/変換のロジックをカプセル化し、リレーショナルテーブルに似たデータをクエリできます。通常のビューは軽量で、クエリ自体のみを保存し、基礎となるデータは保存しません。例えば：
+JSON テーブルに対して通常ビューを作成し、フラット化／キャスト／変換ロジックをカプセル化することで、リレーショナルテーブルと同様の形式でデータをクエリできるようにできます。通常ビューは基盤となるデータではなくクエリ自体のみを保存するため、軽量です。例えば次のように作成できます:
 
 ```sql
 CREATE VIEW v1 AS
@@ -238,7 +238,7 @@ FROM t1 FINAL
 WHERE _peerdb_is_deleted = 0;
 ```
 
-このビューは次のスキーマを持ちます：
+このビューのスキーマは次のとおりです。
 
 ```shell
 ┌─name────────────┬─type───────────┐
@@ -253,7 +253,7 @@ WHERE _peerdb_is_deleted = 0;
 └─────────────────┴────────────────┘
 ```
 
-これで、平坦化されたテーブルをクエリするかのようにビューをクエリできます：
+これで、このビューに対しても、フラット化されたテーブルと同じ要領でクエリを実行できます。
 
 ```sql
 SELECT
@@ -268,11 +268,11 @@ LIMIT 10;
 
 ### リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
 
-[リフレッシュ可能なマテリアライズドビュー](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view)を作成することで、重複行を除去し、その結果をフラットな宛先テーブルに格納するためのクエリ実行をスケジュールできます。各スケジュールされたリフレッシュの際に、宛先テーブルは最新のクエリ結果で置き換えられます。
+[リフレッシュ可能なマテリアライズドビュー](https://clickhouse.com/docs/materialized-view/refreshable-materialized-view)を作成できます。これにより、行の重複排除を行うクエリの実行をスケジューリングし、その結果をフラット化された宛先テーブルに保存できます。各リフレッシュのたびに、宛先テーブルは最新のクエリ結果で置き換えられます。
 
-この方法の主な利点は、`FINAL`キーワードを使用したクエリがリフレッシュ中に一度だけ実行されるため、宛先テーブルに対してその後のクエリが`FINAL`を使用する必要がなくなることです。
+この方法の主な利点は、`FINAL` キーワードを使用するクエリがリフレッシュ時に1回だけ実行されるため、その後の宛先テーブルに対するクエリで `FINAL` を使用する必要がなくなることです。
 
-欠点は、宛先テーブルのデータが最も最近のリフレッシュに基づいた最新のものでしかないということです。多くのユースケースでは、数分から数時間の範囲のリフレッシュ間隔がデータの新鮮さとクエリパフォーマンスのバランスを提供します。
+一方の欠点として、宛先テーブル内のデータは最新のリフレッシュ時点までしか反映されません。多くのユースケースでは、数分から数時間程度のリフレッシュ間隔にすることで、データの鮮度とクエリ性能のバランスをうまく取ることができます。
 
 ```sql
 CREATE TABLE flattened_t1 (
@@ -303,7 +303,7 @@ FROM t1 FINAL
 WHERE _peerdb_is_deleted = 0;
 ```
 
-これで、`FINAL`修飾子なしで`flattened_t1`テーブルを直接クエリできます：
+これで `FINAL` 修飾子なしでテーブル `flattened_t1` を直接クエリできるようになりました。
 
 ```sql
 SELECT
@@ -318,7 +318,7 @@ LIMIT 10;
 
 ### 増分マテリアライズドビュー {#incremental-materialized-view}
 
-フラットなカラムにリアルタイムでアクセスしたい場合、[増分マテリアライズドビュー](https://clickhouse.com/docs/materialized-view/incremental-materialized-view)を作成できます。テーブルに頻繁な更新がある場合、マテリアライズドビュー内で`FINAL`修飾子を使用することは推奨されません。すべての更新がマージを引き起こすためです。代わりに、マテリアライズドビューの上に通常のビューを構築することで、クエリ時にデータを重複排除できます。
+フラット化されたカラムにリアルタイムでアクセスしたい場合は、[増分マテリアライズドビュー](https://clickhouse.com/docs/materialized-view/incremental-materialized-view) を作成できます。テーブルに頻繁に更新が行われる場合は、更新のたびにマージが発生するため、マテリアライズドビューで `FINAL` 修飾子を使用することは推奨されません。代わりに、マテリアライズドビューの上に通常のビューを作成し、クエリ時にデータの重複排除を行うようにします。
 
 ```sql
 CREATE TABLE flattened_t1 (
@@ -357,7 +357,7 @@ CREATE VIEW flattened_t1_final AS
 SELECT * FROM flattened_t1 FINAL WHERE _peerdb_is_deleted = 0;
 ```
 
-これで、ビュー`flattened_t1_final`を次のようにクエリできます：
+これで、`flattened_t1_final` ビューを次のようにクエリできます。
 
 ```sql
 SELECT

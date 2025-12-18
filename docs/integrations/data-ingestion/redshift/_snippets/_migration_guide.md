@@ -10,7 +10,7 @@ import Image from '@theme/IdealImage';
 
 [Amazon Redshift](https://aws.amazon.com/redshift/) is a popular cloud data warehousing solution that is part of the Amazon Web Services offerings. This guide presents different approaches to migrating data from a Redshift instance to ClickHouse. We will cover three options:
 
-<Image img={redshiftToClickhouse} size="md" alt="Redshift to ClickHouse Migration Options" background="white"/>
+<Image img={redshiftToClickhouse} size="md" alt="Redshift to ClickHouse Migration Options"/>
 
 From the ClickHouse instance standpoint, you can either:
 
@@ -28,7 +28,7 @@ We used Redshift as a data source in this tutorial. However, the migration appro
 
 In the push scenario, the idea is to leverage a third-party tool or service (either custom code or an [ETL/ELT](https://en.wikipedia.org/wiki/Extract,_transform,_load#ETL_vs._ELT)) to send your data to your ClickHouse instance. For example, you can use a software like [Airbyte](https://www.airbyte.com/) to move data between your Redshift instance (as a source) and ClickHouse as a destination ([see our integration guide for Airbyte](/integrations/data-ingestion/etl-tools/airbyte-and-clickhouse.md))
 
-<Image img={push} size="md" alt="PUSH Redshift to ClickHouse" background="white"/>
+<Image img={push} size="md" alt="PUSH Redshift to ClickHouse"/>
 
 ### Pros {#pros}
 
@@ -38,14 +38,14 @@ In the push scenario, the idea is to leverage a third-party tool or service (eit
 
 ### Cons {#cons}
 
-* Users need to set up and maintain an ETL/ELT infrastructure.
+* You need to set up and maintain an ETL/ELT infrastructure.
 * Introduces a third-party element in the architecture which can turn into a potential scalability bottleneck.
 
 ## Pull Data from Redshift to ClickHouse {#pull-data-from-redshift-to-clickhouse}
 
 In the pull scenario, the idea is to leverage the ClickHouse JDBC Bridge to connect to a Redshift cluster directly from a ClickHouse instance and perform `INSERT INTO ... SELECT` queries:
 
-<Image img={pull} size="md" alt="PULL from Redshift to ClickHouse" background="white"/>
+<Image img={pull} size="md" alt="PULL from Redshift to ClickHouse"/>
 
 ### Pros {#pros-1}
 
@@ -177,7 +177,7 @@ Ok.
 
 In this scenario, we export data to S3 in an intermediary pivot format and, in a second step, load the data from S3 into ClickHouse.
 
-<Image img={pivot} size="md" alt="PIVOT from Redshift using S3" background="white"/>
+<Image img={pivot} size="md" alt="PIVOT from Redshift using S3"/>
 
 ### Pros {#pros-2}
 

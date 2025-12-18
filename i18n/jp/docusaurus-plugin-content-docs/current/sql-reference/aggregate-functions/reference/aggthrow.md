@@ -1,15 +1,15 @@
 ---
-'description': 'この関数は例外安全性のテストを目的として使用できます。指定された確率で作成時に例外をスローします。'
-'sidebar_position': 101
-'slug': '/sql-reference/aggregate-functions/reference/aggthrow'
-'title': 'aggThrow'
-'doc_type': 'reference'
+description: 'この関数は、例外安全性をテストするために使用できます。
+  指定した確率で生成時に例外をスローします。'
+sidebar_position: 101
+slug: /sql-reference/aggregate-functions/reference/aggthrow
+title: 'aggThrow'
+doc_type: 'reference'
 ---
 
+# aggThrow {#aggthrow}
 
-# aggThrow
-
-この関数は、例外安全性をテストする目的で使用できます。指定された確率で作成時に例外をスローします。
+この関数は、例外安全性をテストするために使用できます。指定した確率で、生成時に例外をスローします。
 
 **構文**
 
@@ -19,11 +19,11 @@ aggThrow(throw_prob)
 
 **引数**
 
-- `throw_prob` — 作成時にスローする確率。 [Float64](../../data-types/float.md)。
+* `throw_prob` — 作成時に例外をスローする確率。[Float64](../../data-types/float.md)。
 
-**返される値**
+**戻り値**
 
-- 例外: `Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`.
+* 例外: `Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully`。
 
 **例**
 

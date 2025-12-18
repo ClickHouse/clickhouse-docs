@@ -1,16 +1,15 @@
 ---
-'description': 'first_value 窗口函数的文档'
-'sidebar_label': 'first_value'
-'sidebar_position': 3
-'slug': '/sql-reference/window-functions/first_value'
-'title': 'first_value'
-'doc_type': 'reference'
+description: 'first_value 窗口函数的文档'
+sidebar_label: 'first_value'
+sidebar_position: 3
+slug: /sql-reference/window-functions/first_value
+title: 'first_value'
+doc_type: 'reference'
 ---
 
+# first&#95;value {#first&#95;value}
 
-# first_value
-
-返回在其有序框架内评估的第一个值。默认情况下，NULL 参数会被跳过，但可以使用 `RESPECT NULLS` 修饰符来覆盖此行为。
+返回在其排序窗口内计算得到的第一个值。默认情况下会跳过 NULL 参数，不过可以使用 `RESPECT NULLS` 修饰符来改变此行为。
 
 **语法**
 
@@ -22,24 +21,24 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-别名: `any`。
+别名：`any`。
 
 :::note
-在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保 `NULL` 参数不会被跳过。
-有关更多信息，请参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
+在 `first_value(column_name)` 后使用可选修饰符 `RESPECT NULLS` 将确保不会忽略 `NULL` 参数。
+更多信息参见 [NULL 处理](../aggregate-functions/index.md/#null-processing)。
 
-别名: `firstValueRespectNulls`
+别名：`firstValueRespectNulls`
 :::
 
-有关窗口函数语法的更多详细信息，请参见: [窗口函数 - 语法](./index.md/#syntax)。
+关于窗口函数语法的更多细节，请参见 [Window Functions - Syntax](./index.md/#syntax)。
 
 **返回值**
 
-- 在其有序框架内评估的第一个值。
+* 在其有序窗口帧内计算得到的第一个值。
 
 **示例**
 
-在此示例中，`first_value` 函数用于从虚构的英超联赛足球运动员薪资数据集中查找薪水最高的足球运动员。
+在此示例中，使用 `first_value` 函数从一个虚构的英超联赛足球运动员薪资数据集中找出薪资最高的球员。
 
 查询：
 

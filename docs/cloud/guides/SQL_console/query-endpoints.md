@@ -24,10 +24,14 @@ The **Query API Endpoints** feature allows you to create an API endpoint directl
 ## Pre-requisites {#quick-start-guide}
 
 Before proceeding, ensure you have:
-- an API key
-- an Admin Console Role.
+- An API key with appropriate permissions
+- An Admin Console Role
 
 You can follow this guide to [create an API key](/cloud/manage/openapi) if you don't yet have one.
+
+:::note Minimum permissions
+To query an API endpoint, the API key needs `Member` organization role with `Query Endpoints` service access. The database role is configured when you create the endpoint.
+:::
 
 <VerticalStepper headerLevel="h3">
 
@@ -166,6 +170,7 @@ POST /query-endpoints/{queryEndpointId}/run
 |-----------|----------|-------------|---------|
 | `format` | No | Response format (supports all ClickHouse formats) | `?format=JSONEachRow` |
 | `param_:name` | No | Query variables when request body is a stream. Replace `:name` with your variable name | `?param_year=2024` |
+| `request_timeout` | No | Query timeout in milliseconds (default: 30000) | `?request_timeout=60000` |
 | `:clickhouse_setting` | No | Any supported [ClickHouse setting](https://clickhouse.com/docs/operations/settings/settings) | `?max_threads=8` |
 
 #### Headers {#headers}

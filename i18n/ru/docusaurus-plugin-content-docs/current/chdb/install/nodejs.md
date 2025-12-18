@@ -1,14 +1,15 @@
 ---
-slug: '/chdb/install/nodejs'
-sidebar_label: NodeJS
-description: 'Как установить и использовать chDB с Node.js'
-title: 'Установка chDB для NodeJS'
-keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'NodeJS', 'установка']
-doc_type: guide
+title: 'chDB для Node.js'
+sidebar_label: 'Node.js'
+slug: /chdb/install/nodejs
+description: 'Как установить и использовать chDB в Node.js'
+keywords: ['chdb', 'nodejs', 'javascript', 'встраиваемая', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
-# chDB для Node.js
 
-chDB-node предоставляет привязки Node.js для chDB, позволяя выполнять запросы ClickHouse непосредственно в ваших приложениях Node.js без внешних зависимостей.
+# chDB для Node.js {#chdb-for-nodejs}
+
+chDB-node предоставляет биндинги chDB для Node.js, позволяя выполнять запросы к ClickHouse непосредственно в ваших Node.js-приложениях без каких-либо внешних зависимостей.
 
 ## Установка {#installation}
 
@@ -18,11 +19,11 @@ npm install chdb
 
 ## Использование {#usage}
 
-chDB-node поддерживает два режима выполнения запросов: автономные запросы для простых операций и запросы на основе сеансов для поддержания состояния базы данных.
+chDB-node поддерживает два режима выполнения запросов: автономные запросы для простых операций и сеансовые запросы для сохранения состояния базы данных.
 
 ### Автономные запросы {#standalone-queries}
 
-Для простых одноразовых запросов, которые не требуют постоянного состояния:
+Для простых разовых запросов, которым не нужно сохранять состояние:
 
 ```javascript
 const { query } = require("chdb");
@@ -44,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Запросы на основе сеансов {#session-based-queries}
+### Запросы по сессиям {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");
@@ -111,7 +112,7 @@ try {
         FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV') 
         LIMIT 1000
     `, "JSON");
-
+    
     console.log("External data analysis:", result);
 
     // Create table from external data
@@ -132,7 +133,7 @@ try {
         ORDER BY date
         LIMIT 10
     `, "Pretty");
-
+    
     console.log("Daily analytics:", analysis);
 
 } finally {
@@ -169,7 +170,7 @@ if (result.success) {
 // Error handling for sessions
 function safeSessionQuery() {
     const session = new Session("./error-test");
-
+    
     try {
         // This will throw an error due to invalid syntax
         const result = session.query("CREATE TABLE invalid syntax", "CSV");
@@ -185,8 +186,8 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## Репозиторий GitHub {#github-repository}
+## Репозиторий на GitHub {#github-repository}
 
-- **Репозиторий GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Проблемы и поддержка**: Сообщайте о проблемах в [репозиторий GitHub](https://github.com/chdb-io/chdb-node/issues)
-- **Пакет NPM**: [chdb на npm](https://www.npmjs.com/package/chdb)
+- **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+- **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)
+- **Пакет npm**: [chdb на npm](https://www.npmjs.com/package/chdb)

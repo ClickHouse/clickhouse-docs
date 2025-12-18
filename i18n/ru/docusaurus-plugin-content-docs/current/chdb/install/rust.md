@@ -1,18 +1,19 @@
 ---
-slug: '/chdb/install/rust'
-sidebar_label: Rust
-description: 'Как установить и использовать привязки chDB для Rust'
 title: 'Установка chDB для Rust'
-keywords: ['chdb', 'встроенный', 'clickhouse-lite', 'bun', 'установка']
-doc_type: guide
+sidebar_label: 'Rust'
+slug: /chdb/install/rust
+description: 'Как установить и использовать привязки chDB для Rust'
+keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bindings']
+doc_type: 'guide'
 ---
+
 # chDB для Rust {#chdb-for-rust}
 
-chDB-rust предоставляет экспериментальные FFI (интерфейс внешней функции) связывания для chDB, позволяя вам выполнять запросы ClickHouse непосредственно в ваших приложениях на Rust без внешних зависимостей.
+chDB-rust предоставляет экспериментальные привязки FFI (Foreign Function Interface) для chDB, позволяющие выполнять запросы к ClickHouse непосредственно в ваших Rust-приложениях без каких-либо внешних зависимостей.
 
 ## Установка {#installation}
 
-### Установите libchdb {#install-libchdb}
+### Установка libchdb {#install-libchdb}
 
 Установите библиотеку chDB:
 
@@ -22,11 +23,11 @@ curl -sL https://lib.chdb.io | bash
 
 ## Использование {#usage}
 
-chDB Rust предоставляет как статeless, так и stateful режимы выполнения запросов.
+chDB для Rust предоставляет как статический, так и состояние-сохраняющий режимы выполнения запросов.
 
-### Статeless использование {#stateless-usage}
+### Статический режим {#stateless-usage}
 
-Для простых запросов без постоянного состояния:
+Для простых запросов без сохранения состояния:
 
 ```rust
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
@@ -38,21 +39,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
     println!("ClickHouse version: {}", result.data_utf8()?);
-
+    
     // Query with CSV file
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
     println!("CSV data: {}", result.data_utf8()?);
-
+    
     Ok(())
 }
 ```
 
-### Stateful использование (Сессии) {#stateful-usage-sessions}
+### Использование с сохранением состояния (сеансы) {#stateful-usage-sessions}
 
-Для запросов, требующих постоянного состояния, таких как базы данных и таблицы:
+Для запросов, которым требуется постоянное состояние, например для работы с базами данных и таблицами:
 
 ```rust
 use chdb_rust::{
@@ -66,7 +67,7 @@ use tempdir::TempDir;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create a temporary directory for database storage
     let tmp = TempDir::new("chdb-rust")?;
-
+    
     // Build session with configuration
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
@@ -98,7 +99,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     )?;
 
     println!("Query results:\n{}", result.data_utf8()?);
-
+    
     // Get query statistics
     println!("Rows read: {}", result.rows_read());
     println!("Bytes read: {}", result.bytes_read());
@@ -110,28 +111,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Сборка и тестирование {#building-testing}
 
-### Соберите проект {#build-the-project}
+### Сборка проекта {#build-the-project}
 
 ```bash
 cargo build
 ```
 
-### Запустите тесты {#run-tests}
+### Запуск тестов {#run-tests}
 
 ```bash
 cargo test
 ```
 
-### Зависимости разработки {#development-dependencies}
+### Зависимости для разработки {#development-dependencies}
 
-Проект включает в себя следующие зависимости разработки:
-- `bindgen` (v0.70.1) - Генерация FFI связывания из заголовков C
-- `tempdir` (v0.3.7) - Обработка временных директорий в тестах
-- `thiserror` (v1) - Утилиты обработки ошибок
+В проекте используются следующие зависимости для разработки:
+
+* `bindgen` (v0.70.1) - генерация FFI-биндингов из заголовков C
+* `tempdir` (v0.3.7) - работа с временными каталогами в тестах
+* `thiserror` (v1) - утилиты для обработки ошибок
 
 ## Обработка ошибок {#error-handling}
 
-chDB Rust предоставляет обширную обработку ошибок через перечисление `Error`:
+chDB Rust предоставляет всестороннюю обработку ошибок с помощью перечисления `Error`:
 
 ```rust
 use chdb_rust::{execute, error::Error};
@@ -157,4 +159,4 @@ match execute("SELECT 1", None) {
 
 ## Репозиторий на GitHub {#github-repository}
 
-Вы можете найти репозиторий на GitHub для проекта по адресу [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust).
+Репозиторий проекта на GitHub доступен по адресу [chdb-io/chdb-rust](https://github.com/chdb-io/chdb-rust).

@@ -74,7 +74,7 @@ Marketplace billing follows the calendar month cycle. For example, for usage bet
 
 ClickHouse Cloud usage statements follow a different billing cycle where usage is metered and reported over 30 days starting from the day of sign up.
 
-The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, users can rely on statements to see the breakdown of costs.
+The usage and invoice dates will differ if these dates are not the same. Since usage statements track usage by day for a given service, you can rely on statements to see the breakdown of costs.
 
 ### Where can I find general billing information​? {#where-can-i-find-general-billing-information}
 

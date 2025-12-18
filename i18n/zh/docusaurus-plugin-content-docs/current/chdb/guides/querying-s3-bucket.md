@@ -1,57 +1,55 @@
 ---
-'title': '如何在 S3 存储桶中查询数据'
-'sidebar_label': '在 S3 中查询数据'
-'slug': '/chdb/guides/querying-s3'
-'description': '学习如何使用 chDB 在 S3 存储桶中查询数据。'
-'keywords':
-- 'chdb'
-- 's3'
-'doc_type': 'guide'
+title: '如何查询 S3 存储桶中的数据'
+sidebar_label: '在 S3 中查询数据'
+slug: /chdb/guides/querying-s3
+description: '了解如何使用 chDB 查询 S3 存储桶中的数据。'
+keywords: ['chdb', 's3']
+doc_type: 'guide'
 ---
 
-很多世界上的数据存储在 Amazon S3 桶中。
+世界上大量数据都存储在 Amazon S3 存储桶中。
 在本指南中，我们将学习如何使用 chDB 查询这些数据。
 
-## 设置 {#setup}
+## 环境准备 {#setup}
 
-首先让我们创建一个虚拟环境：
+先创建一个虚拟环境：
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-现在我们将安装 chDB。
-确保你有版本 2.0.2 或更高版本：
+接下来我们将安装 chDB。
+请确保已安装的版本为 2.0.2 或更高：
 
 ```bash
 pip install "chdb>=2.0.2"
 ```
 
-现在我们要安装 IPython：
+接下来我们来安装 IPython：
 
 ```bash
 pip install ipython
 ```
 
-我们将使用 `ipython` 运行本指南其余部分中的命令，你可以通过运行以下命令来启动它：
+接下来我们将使用 `ipython` 来运行本指南其余部分中的命令。你可以通过执行以下命令来启动它：
 
 ```bash
 ipython
 ```
 
-你也可以在 Python 脚本或你喜欢的笔记本中使用这些代码。
+你也可以在 Python 脚本或你常用的笔记本环境中使用这段代码。
 
-## 列出 S3 桶中的文件 {#listing-files-in-an-s3-bucket}
+## 列出 S3 bucket 中的文件 {#listing-files-in-an-s3-bucket}
 
-让我们首先列出 [一个包含亚马逊评论的 S3 桶](/getting-started/example-datasets/amazon-reviews) 中的所有文件。
-为此，我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3) 并传入文件的路径或一组文件的通配符。
+我们先从列出[包含 Amazon reviews 的 S3 bucket](/getting-started/example-datasets/amazon-reviews) 中的所有文件做起。
+为此，我们可以使用 [`s3` 表函数](/sql-reference/table-functions/s3)，并传入文件路径，或者使用通配符来匹配一组文件。
 
 :::tip
-如果你仅传入桶名称，它将抛出异常。
+如果你只传入 bucket 名，会抛出异常。
 :::
 
-我们还将使用 [`One`](/interfaces/formats#data-format-one) 输入格式，这样文件不会被解析，而是每个文件返回一行，我们可以通过 `_file` 虚拟列访问文件，通过 `_path` 虚拟列访问路径。
+我们还将使用 [`One`](/interfaces/formats/One) 输入格式，这样文件就不会被解析，而是每个文件返回一行记录，我们可以通过 `_file` 虚拟列访问文件，通过 `_path` 虚拟列访问路径。
 
 ```python
 import chdb
@@ -78,9 +76,9 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────┘
 ```
 
-这个桶仅包含 Parquet 文件。
+此存储桶仅包含 Parquet 文件。
 
-## 查询 S3 桶中的文件 {#querying-files-in-an-s3-bucket}
+## 在 S3 存储桶中查询文件 {#querying-files-in-an-s3-bucket}
 
 接下来，让我们学习如何查询这些文件。
 如果我们想统计每个文件中的行数，可以运行以下查询：
@@ -110,7 +108,7 @@ SETTINGS output_format_pretty_row_numbers=0
 └─────────────────────────────────────┴──────────┴─────────────────┘
 ```
 
-我们也可以传入 S3 桶的 HTTP URI，并获得相同的结果：
+我们也可以传入 S3 bucket 的 HTTP URI 来获得相同的结果：
 
 ```python
 chdb.query("""
@@ -124,7 +122,7 @@ SETTINGS output_format_pretty_row_numbers=0
 """, 'PrettyCompact')
 ```
 
-让我们使用 `DESCRIBE` 子句查看这些 Parquet 文件的架构：
+让我们使用 `DESCRIBE` 子句来查看这些 Parquet 文件的结构：
 
 ```python
 chdb.query("""
@@ -153,7 +151,7 @@ SETTINGS describe_compact_output=1
     └───────────────────┴──────────────────┘
 ```
 
-现在让我们计算基于评论数量的 top 产品类别，以及计算平均星级评分：
+接下来我们来统计按评论数量排名的产品类别，并计算其平均星级评分：
 
 ```python
 chdb.query("""
@@ -179,9 +177,9 @@ LIMIT 10
     └──────────────────┴──────────┴──────┘
 ```
 
-## 查询私有 S3 桶中的文件 {#querying-files-in-a-private-s3-bucket}
+## 在私有 S3 存储桶中查询文件 {#querying-files-in-a-private-s3-bucket}
 
-如果我们要查询私有 S3 桶中的文件，我们需要传入访问密钥和秘密。
+如果我们要在私有 S3 存储桶中查询文件，就需要提供访问密钥（access key）和私有密钥（secret）。
 我们可以将这些凭证传递给 `s3` 表函数：
 
 ```python
@@ -194,7 +192,7 @@ LIMIT 10
 ```
 
 :::note
-这个查询将不起作用，因为这是一个公共桶！
+此查询无法执行，因为这是一个公共存储桶（bucket）！
 :::
 
-另一种方法是使用 [命名集合](/operations/named-collections)，但这种方法尚不支持 chDB。
+另一种方式是使用[命名集合（named collections）](/operations/named-collections)，但这种方法目前尚未被 chDB 支持。

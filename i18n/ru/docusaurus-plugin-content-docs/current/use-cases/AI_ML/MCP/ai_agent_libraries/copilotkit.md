@@ -1,29 +1,26 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/copilotkit'
-'sidebar_label': 'Интеграция CopilotKit'
-'title': 'Как создать AI агента с CopilotKit и сервером ClickHouse MCP'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать агентное приложение, используя данные, хранящиеся
-  в ClickHouse с ClickHouse MCP и CopilotKit'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'copilotkit'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/copilotkit
+sidebar_label: 'Интеграция с CopilotKit'
+title: 'Как создать ИИ-агента с помощью CopilotKit и сервера ClickHouse MCP'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать агентное приложение на основе данных, хранящихся в ClickHouse, с помощью ClickHouse MCP и CopilotKit'
+keywords: ['ClickHouse', 'MCP', 'copilotkit']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server
 
-Это пример того, как создать агентное приложение, используя данные, хранящиеся в 
-ClickHouse. Он использует [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
-для запроса данных из ClickHouse и генерации графиков на основе этих данных.
+# Как создать AI-агента с помощью CopilotKit и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server}
 
-[CopilotKit](https://github.com/CopilotKit/CopilotKit) используется для разработки интерфейса 
+Это пример того, как создать агентское приложение, используя данные, хранящиеся в 
+ClickHouse. В нем используется [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 
+для выполнения запросов к данным в ClickHouse и построения графиков на основе этих данных.
+
+[CopilotKit](https://github.com/CopilotKit/CopilotKit) используется для создания пользовательского интерфейса 
 и предоставления пользователю чат-интерфейса.
 
 :::note Пример кода
-Код для этого примера можно найти в [репозитории примеров](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit).
+Код этого примера доступен в [репозитории с примерами](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit).
 :::
 
 ## Предварительные требования {#prerequisites}
@@ -36,25 +33,25 @@ ClickHouse. Он использует [ClickHouse MCP Server](https://github.com
 Клонируйте проект локально: `git clone https://github.com/ClickHouse/examples` и 
 перейдите в каталог `ai/mcp/copilotkit`.
 
-Пропустите этот раздел и выполните скрипт `./install.sh` для установки зависимостей. Если 
-вы хотите установить зависимости вручную, следуйте приведенным ниже инструкциям.
+Можете пропустить этот раздел и просто запустить скрипт `./install.sh` для установки зависимостей. Если 
+вы хотите установить зависимости вручную, следуйте инструкциям ниже.
 
-## Установка зависимостей вручную {#install-dependencies-manually}
+## Ручная установка зависимостей {#install-dependencies-manually}
 
 1. Установите зависимости:
 
-Запустите `npm install`, чтобы установить зависимости node.
+Выполните `npm install`, чтобы установить зависимости для Node.js.
 
 2. Установите mcp-clickhouse:
 
-Создайте новую папку `external` и клонируйте репозиторий mcp-clickhouse в нее.
+Создайте новую папку `external` и клонируйте в неё репозиторий mcp-clickhouse.
 
 ```sh
 mkdir -p external
 git clone https://github.com/ClickHouse/mcp-clickhouse external/mcp-clickhouse
 ```
 
-Установите зависимости Python и добавьте инструмент командной строки fastmcp.
+Установите зависимости Python и добавьте утилиту командной строки fastmcp.
 
 ```sh
 cd external/mcp-clickhouse
@@ -64,20 +61,20 @@ uv add fastmcp
 
 ## Настройка приложения {#configure-the-application}
 
-Скопируйте файл `env.example` в `.env` и отредактируйте его, чтобы указать ваш `ANTHROPIC_API_KEY`.
+Скопируйте файл `env.example` в `.env` и отредактируйте его, указав значение `ANTHROPIC_API_KEY`.
 
-## Используйте свой собственный LLM {#use-your-own-llm}
+## Используйте свою LLM {#use-your-own-llm}
 
-Если вы предпочитаете использовать другого провайдера LLM, а не Anthropic, вы можете изменить 
-время выполнения CopilotKit, чтобы использовать другой адаптер LLM.
-[Здесь](https://docs.copilotkit.ai/guides/bring-your-own-llm) находится список поддерживаемых 
+Если вы предпочитаете использовать другого провайдера LLM вместо Anthropic, вы можете изменить 
+среду выполнения Copilotkit, чтобы использовать другой адаптер LLM.
+[Здесь](https://docs.copilotkit.ai/guides/bring-your-own-llm) приведён список поддерживаемых 
 провайдеров.
 
-## Используйте свой собственный кластер ClickHouse {#use-your-own-clickhouse-cluster}
+## Использование собственного кластера ClickHouse {#use-your-own-clickhouse-cluster}
 
-По умолчанию пример настроен для подключения к 
-[демо-кластеру ClickHouse](https://sql.clickhouse.com/). Вы также можете использовать свой 
-собственный кластер ClickHouse, установив следующие переменные окружения:
+По умолчанию пример настроен на подключение к 
+[демо-кластеру ClickHouse](https://sql.clickhouse.com/). Вы также можете использовать 
+собственный кластер ClickHouse, задав следующие переменные окружения:
 
 - `CLICKHOUSE_HOST`
 - `CLICKHOUSE_PORT`
@@ -85,15 +82,13 @@ uv add fastmcp
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
+# Запуск приложения {#run-the-application}
 
-# Запустите приложение {#run-the-application}
+Выполните `npm run dev`, чтобы запустить сервер разработки.
 
-Запустите `npm run dev`, чтобы начать сервер разработки.
+Вы можете протестировать агента, использовав запрос, например:
 
-Вы можете протестировать агента, используя запрос, например:
+> «Покажи динамику цен в 
+Манчестере за последние 10 лет».
 
-> "Покажи мне динамику цен в 
-Манчестере за последние 10 лет."
-
-Откройте [http://localhost:3000](http://localhost:3000) в вашем браузере, чтобы увидеть 
-результат.
+Откройте [http://localhost:3000](http://localhost:3000) в браузере, чтобы увидеть результат.

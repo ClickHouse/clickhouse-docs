@@ -1,12 +1,13 @@
 ---
-slug: '/sql-reference/statements/create/database'
-sidebar_label: DATABASE
+description: 'Документация по оператору CREATE DATABASE'
+sidebar_label: 'DATABASE'
 sidebar_position: 35
-description: 'Документация для CREATE DATABASE'
+slug: /sql-reference/statements/create/database
 title: 'CREATE DATABASE'
-doc_type: reference
+doc_type: 'reference'
 ---
-# CREATE DATABASE
+
+# CREATE DATABASE {#create-database}
 
 Создает новую базу данных.
 
@@ -14,28 +15,28 @@ doc_type: reference
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [COMMENT 'Comment']
 ```
 
-## Clauses {#clauses}
+## Условия {#clauses}
 
 ### IF NOT EXISTS {#if-not-exists}
 
-Если база данных `db_name` уже существует, то ClickHouse не создает новую базу данных и:
+Если база данных `db_name` уже существует, ClickHouse не создаёт новую базу данных и:
 
-- Не выбрасывает исключение, если указан оператор.
-- Выбрасывает исключение, если оператор не указан.
+* Не выбрасывает исключение, если указано это условие.
+* Выбрасывает исключение, если это условие не указано.
 
 ### ON CLUSTER {#on-cluster}
 
-ClickHouse создает базу данных `db_name` на всех серверах указанного кластера. Более подробная информация в статье [Distributed DDL](../../../sql-reference/distributed-ddl.md).
+ClickHouse создаёт базу данных `db_name` на всех серверах указанного кластера. Подробнее см. в статье [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
 ### ENGINE {#engine}
 
-По умолчанию ClickHouse использует свой собственный [Atomic](../../../engines/database-engines/atomic.md) движок базы данных. Также доступны [Lazy](../../../engines/database-engines/lazy.md), [MySQL](../../../engines/database-engines/mysql.md), [PostgresSQL](../../../engines/database-engines/postgresql.md), [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md), [Replicated](../../../engines/database-engines/replicated.md), [SQLite](../../../engines/database-engines/sqlite.md).
+По умолчанию ClickHouse использует собственный движок базы данных [Atomic](../../../engines/database-engines/atomic.md). Также доступны [Lazy](../../../engines/database-engines/lazy.md), [MySQL](../../../engines/database-engines/mysql.md), [PostgresSQL](../../../engines/database-engines/postgresql.md), [MaterializedPostgreSQL](../../../engines/database-engines/materialized-postgresql.md), [Replicated](../../../engines/database-engines/replicated.md), [SQLite](../../../engines/database-engines/sqlite.md).
 
 ### COMMENT {#comment}
 
-Вы можете добавить комментарий к базе данных при ее создании.
+Вы можете добавить комментарий к базе данных при её создании.
 
-Комментарий поддерживается для всех движков баз данных.
+Комментарии поддерживаются всеми движками баз данных.
 
 **Синтаксис**
 

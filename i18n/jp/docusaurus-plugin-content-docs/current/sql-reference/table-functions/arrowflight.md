@@ -1,16 +1,15 @@
 ---
-'description': 'Apache Arrow Flight サーバーを通じて公開されたデータに対してクエリを実行することを可能にします。'
-'sidebar_label': 'arrowFlight'
-'sidebar_position': 186
-'slug': '/sql-reference/table-functions/arrowflight'
-'title': 'arrowFlight'
-'doc_type': 'reference'
+description: 'Apache Arrow Flight サーバーが公開するデータに対してクエリを実行できるようにします。'
+sidebar_label: 'arrowFlight'
+sidebar_position: 186
+slug: /sql-reference/table-functions/arrowflight
+title: 'arrowFlight'
+doc_type: 'reference'
 ---
 
+# arrowFlight テーブル関数 {#arrowflight-table-function}
 
-# arrowFlight テーブル関数
-
-Apache Arrow Flight サーバー経由で公開されているデータに対してクエリを実行することができます。
+[Apache Arrow Flight](../../interfaces/arrowflight.md) サーバーで公開されているデータに対してクエリを実行できます。
 
 **構文**
 
@@ -20,11 +19,12 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 
 **引数**
 
-* `host:port` — Arrow Flight サーバーのアドレス。 [String](../../sql-reference/data-types/string.md).
-* `dataset_name` — Arrow Flight サーバーで利用可能なデータセットまたはディスクリプターの名前。 [String](../../sql-reference/data-types/string.md).
-* `username` - 基本的な HTTP スタイルの認証に使用するユーザー名。
-* `password` - 基本的な HTTP スタイルの認証に使用するパスワード。
-`username` と `password` が指定されていない場合は、認証が使用されていないことを意味します（これは Arrow Flight サーバーがそれを許可している場合のみ機能します）。
+* `host:port` — Arrow Flight サーバーのアドレス。[String](../../sql-reference/data-types/string.md)。
+* `dataset_name` — Arrow Flight サーバー上で利用可能なデータセットまたはディスクリプターの名前。[String](../../sql-reference/data-types/string.md)。
+* `username` - HTTP ベーシック認証で使用するユーザー名。
+* `password` - HTTP ベーシック認証で使用するパスワード。
+  `username` と `password` が指定されていない場合は、認証を行わないことを意味します
+  （その場合に接続できるかどうかは、Arrow Flight サーバーが認証なし接続を許可している場合に限ります）。
 
 **返される値**
 
@@ -48,7 +48,7 @@ SELECT * FROM arrowFlight('127.0.0.1:9005', 'sample_dataset') ORDER BY id;
 └────┴─────────┴───────┘
 ```
 
-**参照**
+**関連項目**
 
 * [Arrow Flight](../../engines/table-engines/integrations/arrowflight.md) テーブルエンジン
 * [Apache Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html)

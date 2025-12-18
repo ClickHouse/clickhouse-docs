@@ -1,6 +1,9 @@
 {
-  "label": "Release notes",
+  "label": "Примечания к выпуску",
   "collapsible": true,
   "collapsed": true,
-  "link": { "type": "doc", "id": "cloud/reference/changelog/release_notes/index" }
+  "link": {
+    "type": "документация",
+    "id": "облако/справочник/журнал_изменений/примечания_к_релизу/index"
+  }
 }

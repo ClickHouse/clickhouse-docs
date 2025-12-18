@@ -1,9 +1,13 @@
 ---
-'slug': '/integrations/jupysql'
-'sidebar_label': 'Jupyter 笔记本'
-'description': 'JupySQL 是一个用于 Jupyter 的多平台数据库工具。'
-'title': '使用 JupySQL 和 ClickHouse'
-'doc_type': 'guide'
+slug: /integrations/jupysql
+sidebar_label: 'Jupyter 笔记本'
+description: 'JupySQL 是一个用于 Jupyter 的多平台数据库工具。'
+title: '将 JupySQL 与 ClickHouse 配合使用'
+keywords: ['JupySQL', 'Jupyter notebook', 'Python', '数据分析', '交互式 SQL']
+doc_type: 'guide'
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -11,39 +15,36 @@ import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+# 在 ClickHouse 中使用 JupySQL {#using-jupysql-with-clickhouse}
 
-# 使用 JupySQL 与 ClickHouse
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+在本指南中，我们将演示如何与 ClickHouse 集成。
 
-在本指南中，我们将展示与 ClickHouse 的集成。
+我们将使用 JupySQL 对 ClickHouse 中的数据执行查询。
+数据加载完成后，我们将通过 SQL 作图对其进行可视化。
 
-我们将使用 JupySQL 在 ClickHouse 上运行查询。
-一旦数据加载完成，我们将通过 SQL 绘图进行可视化。
-
-JupySQL 和 ClickHouse 之间的集成是通过使用 clickhouse_sqlalchemy 库实现的。该库允许两个系统之间的轻松通信，使用户能够连接到 ClickHouse 并传递 SQL 方言。连接后，用户可以直接从 ClickHouse 本地 UI 或直接从 Jupyter Notebook 运行 SQL 查询。
+JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库简化了这两个系统之间的通信，使你能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，你可以直接在 ClickHouse 原生界面中运行 SQL 查询，或直接在 Jupyter notebook 中执行查询。
 
 ```python
-
 # Install required packages
 %pip install --quiet jupysql clickhouse_sqlalchemy
 ```
 
-    注意：您可能需要重启内核以使用更新的包。
+注意：可能需要重启内核才能使用更新后的软件包。
 
 ```python
 import pandas as pd
 from sklearn_evaluation import plot
-
 
 # Import jupysql Jupyter extension to create SQL cells
 %load_ext sql
 %config SqlMagic.autocommit=False
 ```
 
-**您需要确保您的 Clickhouse 是可访问的，以便进行接下来的阶段。您可以使用本地或云版本。**
+**在继续后续步骤之前，需要确保你的 ClickHouse 已经启动并且可访问。你可以使用本地版本或 ClickHouse Cloud 版本。**
 
-**注意：** 您需要根据您尝试连接的实例类型调整连接字符串（url、user、password）。在下面的示例中，我们使用了本地实例。要了解更多信息，请查看[本指南](/get-started/quick-start)。
+**注意：**你需要根据要连接的实例类型调整连接字符串（URL、user、password）。在下面的示例中，我们使用的是本地实例。要了解更多信息，请查看[本指南](/get-started/quick-start)。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default
@@ -104,12 +105,11 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  已完成。
 
 <table>
-    <tr>
-    </tr>
+  <tr />
 </table>
 
 ```sql
@@ -166,72 +166,78 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  已完成。
 
 <table>
-    <tr>
-    </tr>
+  <tr />
 </table>
 
 ```python
 %sql SELECT count() FROM trips limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  已完成。
 
 <table>
-    <tr>
-        <th>count()</th>
-    </tr>
-    <tr>
-        <td>1999657</td>
-    </tr>
+  <tr>
+    <th>count()</th>
+  </tr>
+
+  <tr>
+    <td>1999657</td>
+  </tr>
 </table>
 
 ```python
 %sql SELECT DISTINCT(pickup_ntaname) FROM trips limit 5;
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  完成。
 
 <table>
-    <tr>
-        <th>pickup_ntaname</th>
-    </tr>
-    <tr>
-        <td>Morningside Heights</td>
-    </tr>
-    <tr>
-        <td>Hudson Yards-Chelsea-Flatiron-Union Square</td>
-    </tr>
-    <tr>
-        <td>Midtown-Midtown South</td>
-    </tr>
-    <tr>
-        <td>SoHo-Tribeca-Civic Center-Little Italy</td>
-    </tr>
-    <tr>
-        <td>Murray Hill-Kips Bay</td>
-    </tr>
+  <tr>
+    <th>pickup&#95;ntaname</th>
+  </tr>
+
+  <tr>
+    <td>Morningside Heights</td>
+  </tr>
+
+  <tr>
+    <td>Hudson Yards-Chelsea-Flatiron-Union Square</td>
+  </tr>
+
+  <tr>
+    <td>Midtown-Midtown South</td>
+  </tr>
+
+  <tr>
+    <td>SoHo-Tribeca-Civic Center-Little Italy</td>
+  </tr>
+
+  <tr>
+    <td>Murray Hill-Kips Bay</td>
+  </tr>
 </table>
 
 ```python
 %sql SELECT round(avg(tip_amount), 2) FROM trips
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  已完成。
 
 <table>
-    <tr>
-        <th>round(avg(tip_amount), 2)</th>
-    </tr>
-    <tr>
-        <td>1.68</td>
-    </tr>
+  <tr>
+    <th>round(avg(tip&#95;amount), 2)</th>
+  </tr>
+
+  <tr>
+    <td>1.68</td>
+  </tr>
 </table>
 
 ```sql
@@ -243,54 +249,64 @@ FROM trips
 GROUP BY passenger_count
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    完成。
+* clickhouse://default:***@localhost:8123/default
+  完成。
 
 <table>
-    <tr>
-        <th>passenger_count</th>
-        <th>average_total_amount</th>
-    </tr>
-    <tr>
-        <td>0</td>
-        <td>22.69</td>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>15.97</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>17.15</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>16.76</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>17.33</td>
-    </tr>
-    <tr>
-        <td>5</td>
-        <td>16.35</td>
-    </tr>
-    <tr>
-        <td>6</td>
-        <td>16.04</td>
-    </tr>
-    <tr>
-        <td>7</td>
-        <td>59.8</td>
-    </tr>
-    <tr>
-        <td>8</td>
-        <td>36.41</td>
-    </tr>
-    <tr>
-        <td>9</td>
-        <td>9.81</td>
-    </tr>
+  <tr>
+    <th>passenger&#95;count</th>
+    <th>average&#95;total&#95;amount</th>
+  </tr>
+
+  <tr>
+    <td>0</td>
+    <td>22.69</td>
+  </tr>
+
+  <tr>
+    <td>1</td>
+    <td>15.97</td>
+  </tr>
+
+  <tr>
+    <td>2</td>
+    <td>17.15</td>
+  </tr>
+
+  <tr>
+    <td>3</td>
+    <td>16.76</td>
+  </tr>
+
+  <tr>
+    <td>4</td>
+    <td>17.33</td>
+  </tr>
+
+  <tr>
+    <td>5</td>
+    <td>16.35</td>
+  </tr>
+
+  <tr>
+    <td>6</td>
+    <td>16.04</td>
+  </tr>
+
+  <tr>
+    <td>7</td>
+    <td>59.8</td>
+  </tr>
+
+  <tr>
+    <td>8</td>
+    <td>36.41</td>
+  </tr>
+
+  <tr>
+    <td>9</td>
+    <td>9.81</td>
+  </tr>
 </table>
 
 ```sql
@@ -305,49 +321,52 @@ ORDER BY pickup_date ASC
 limit 5;
 ```
 
-*  clickhouse://default:***@localhost:8123/default
-完成。
+* clickhouse://default:***@localhost:8123/default
+  已完成。
 
 <table>
-    <tr>
-        <th>pickup_date</th>
-        <th>pickup_ntaname</th>
-        <th>number_of_trips</th>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Bushwick North</td>
-        <td>2</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Brighton Beach</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Briarwood-Jamaica Hills</td>
-        <td>3</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Williamsburg</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>2015-07-01</td>
-        <td>Queensbridge-Ravenswood-Long Island City</td>
-        <td>9</td>
-    </tr>
+  <tr>
+    <th>pickup&#95;date</th>
+    <th>pickup&#95;ntaname</th>
+    <th>number&#95;of&#95;trips</th>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Bushwick North</td>
+    <td>2</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Brighton Beach</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Briarwood-Jamaica Hills</td>
+    <td>3</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Williamsburg</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>2015-07-01</td>
+    <td>Queensbridge-Ravenswood-Long Island City</td>
+    <td>9</td>
+  </tr>
 </table>
 
 ```python
-
 # %sql DESCRIBE trips;
 ```
 
 ```python
-
 # %sql SELECT DISTINCT(trip_distance) FROM trips limit 50;
 ```
 
@@ -358,8 +377,8 @@ FROM trips
 WHERE trip_distance < 6.3
 ```
 
-    *  clickhouse://default:***@localhost:8123/default
-    跳过执行...
+* clickhouse://default:***@localhost:8123/default
+  跳过执行...
 
 ```python
 %sqlplot histogram --table short-trips --column trip_distance --bins 10 --with short-trips
@@ -368,7 +387,8 @@ WHERE trip_distance < 6.3
 ```response
 <AxesSubplot: title={'center': "'trip_distance' from 'short-trips'"}, xlabel='trip_distance', ylabel='Count'>
 ```
-<Image img={jupysql_plot_1} size="md" alt="直方图显示短途行程数据集中行程距离的分布，带有 10 个区间" border />
+
+<Image img={jupysql_plot_1} size="md" alt="显示 short-trips 数据集中行程距离分布（10 个分箱）的直方图" border />
 
 ```python
 ax = %sqlplot histogram --table short-trips --column trip_distance --bins 50 --with short-trips
@@ -377,4 +397,4 @@ ax.set_title("Trip distance from trips < 6.3")
 _ = ax.set_xlabel("Trip distance")
 ```
 
-<Image img={jupysql_plot_2} size="md" alt="直方图显示短途行程数据集中行程距离的分布，带有 50 个区间和网格，标题为 'Trip distance from trips < 6.3'" border />
+<Image img={jupysql_plot_2} size="md" alt="直方图展示了在 50 个分箱和网格下的行程距离分布，标题为「行程距离（trips < 6.3）」" border />

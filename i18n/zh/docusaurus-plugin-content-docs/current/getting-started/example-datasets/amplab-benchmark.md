@@ -1,16 +1,17 @@
 ---
-'description': '用于比较数据仓库解决方案性能的基准数据集。'
-'sidebar_label': 'AMPLab 大数据基准测试'
-'slug': '/getting-started/example-datasets/amplab-benchmark'
-'title': 'AMPLab 大数据基准测试'
-'doc_type': 'reference'
+description: '用于比较数据仓库解决方案性能的基准数据集。'
+sidebar_label: 'AMPLab 大数据基准测试'
+slug: /getting-started/example-datasets/amplab-benchmark
+title: 'AMPLab 大数据基准测试'
+keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performance', 'benchmark dataset', 'getting started']
+doc_type: 'guide'
 ---
 
-See https://amplab.cs.berkeley.edu/benchmark/
+请参阅 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
 
-Sign up for a free account at https://aws.amazon.com. It requires a credit card, email, and phone number. Get a new access key at https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential
+在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册需要信用卡、电子邮件地址和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取一个新的访问密钥（access key）。
 
-Run the following in the console:
+在控制台中运行以下命令：
 
 ```bash
 $ sudo apt-get install s3cmd
@@ -25,7 +26,7 @@ $ s3cmd sync s3://big-data-benchmark/pavlo/text-deflate/5nodes/ .
 $ cd ..
 ```
 
-Run the following ClickHouse 查询:
+执行以下 ClickHouse 查询：
 
 ```sql
 CREATE TABLE rankings_tiny
@@ -89,7 +90,7 @@ CREATE TABLE uservisits_5nodes_on_single
 ) ENGINE = MergeTree(visitDate, visitDate, 8192);
 ```
 
-Go back to the console:
+回到控制台：
 
 ```bash
 $ for i in tiny/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO rankings_tiny FORMAT CSV"; done
@@ -100,7 +101,8 @@ $ for i in 5nodes/rankings/*.deflate; do echo $i; zlib-flate -uncompress < $i | 
 $ for i in 5nodes/uservisits/*.deflate; do echo $i; zlib-flate -uncompress < $i | clickhouse-client --host=example-perftest01j --query="INSERT INTO uservisits_5nodes_on_single FORMAT CSV"; done
 ```
 
-用于获取数据样本的查询:
+获取数据示例的查询：
+
 
 ```sql
 SELECT pageURL, pageRank FROM rankings_1node WHERE pageRank > 1000

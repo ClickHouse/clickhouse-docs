@@ -18,6 +18,7 @@ import mongodb_connection_details from '@site/static/images/integrations/data-in
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/select-destination-db.png'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
+import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
 # Ingesting data from MongoDB to ClickHouse (using CDC)
 
@@ -40,6 +41,8 @@ To get started, you first need to ensure that your MongoDB database is correctly
 1. [MongoDB Atlas](./mongodb/source/atlas)
 
 2. [Generic MongoDB](./mongodb/source/generic)
+
+3. [Amazon DocumentDB](./mongodb/source/documentdb)
 
 Once your source MongoDB database is set up, you can continue creating your ClickPipe.
 
@@ -69,6 +72,22 @@ Make sure you are logged in to your ClickHouse Cloud account. If you don't have 
    :::
 
    <Image img={mongodb_connection_details} alt="Fill in connection details" size="lg" border/>
+
+#### (Optional) Set up SSH Tunneling {#optional-set-up-ssh-tunneling}
+
+You can specify SSH tunneling details if your source MongoDB database is not publicly accessible.
+
+1. Enable the "Use SSH Tunnelling" toggle.
+2. Fill in the SSH connection details.
+
+   <Image img={ssh_tunnel} alt="SSH tunneling" size="lg" border/>
+
+3. To use Key-based authentication, click on "Revoke and generate key pair" to generate a new key pair and copy the generated public key to your SSH server under `~/.ssh/authorized_keys`.
+4. Click on "Verify Connection" to verify the connection.
+
+:::note
+Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+:::
 
 Once the connection details are filled in, click `Next`.
 

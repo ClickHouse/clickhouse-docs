@@ -1,19 +1,20 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/corrstable'
+description: 'Вычисляет коэффициент корреляции Пирсона, используя численно устойчивый алгоритм.'
 sidebar_position: 119
-description: 'Вычисляет коэффициент корреляции Пирсона, но использует численно устойчивый'
-title: corrStable
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/corrstable
+title: 'corrStable'
+doc_type: 'reference'
 ---
-# corrStable
 
-Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient): 
+# corrStable {#corrstable}
+
+Вычисляет [коэффициент корреляции Пирсона](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{\sqrt{\Sigma{(x - \bar{x})^2} * \Sigma{(y - \bar{y})^2}}}
 $$
 
-Похож на функцию [`corr`](../reference/corr.md), но использует численно устойчивый алгоритм. В результате `corrStable` медленнее, чем `corr`, но дает более точный результат.
+Аналогична функции [`corr`](../reference/corr.md), но использует численно устойчивый алгоритм. В результате `corrStable` работает медленнее, чем `corr`, но обеспечивает более точный результат.
 
 **Синтаксис**
 
@@ -23,14 +24,14 @@ corrStable(x, y)
 
 **Аргументы**
 
-- `x` — первая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
-- `y` — вторая переменная. [(U)Int*](../../data-types/int-uint.md), [Float*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `x` — первая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
+- `y` — вторая переменная. [(U)Int\*](../../data-types/int-uint.md), [Float\*](../../data-types/float.md), [Decimal](../../data-types/decimal.md).
 
 **Возвращаемое значение**
 
 - Коэффициент корреляции Пирсона. [Float64](../../data-types/float.md).
 
-***Пример**
+**\*Пример**
 
 Запрос:
 

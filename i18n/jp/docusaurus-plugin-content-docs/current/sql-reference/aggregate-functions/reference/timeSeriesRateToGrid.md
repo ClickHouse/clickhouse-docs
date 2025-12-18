@@ -1,28 +1,30 @@
 ---
-'description': '指定されたグリッド上の時系列データに対して PromQL のようなレートを計算する集約関数。'
-'sidebar_position': 225
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesRateToGrid'
-'title': 'timeSeriesRateToGrid'
-'doc_type': 'reference'
+description: '指定されたグリッド上の時系列データに対して、PromQL 風の rate を計算する集約関数。'
+sidebar_position: 225
+slug: /sql-reference/aggregate-functions/reference/timeSeriesRateToGrid
+title: 'timeSeriesRateToGrid'
+doc_type: 'reference'
 ---
 
-Aggregate function that takes time series data as pairs of timestamps and values and calculates [PromQL-like rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) from this data on a regular time grid described by start timestamp, end timestamp and step. For each point on the grid the samples for calculating `rate` are considered within the specified time window.
+タイムスタンプと値のペアからなる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップによって定義される等間隔の時間グリッド上で、このデータから [PromQL 風の rate](https://prometheus.io/docs/prometheus/latest/querying/functions/#rate) を計算する集約関数です。グリッド上の各ポイントについて、`rate` を計算するために使用するサンプルは、指定された時間ウィンドウ内のもののみが考慮されます。
 
 Parameters:
-- `start timestamp` - グリッドの開始を指定します。
-- `end timestamp` - グリッドの終了を指定します。
-- `grid step` - グリッドのステップを秒で指定します。
-- `staleness` - 考慮されるサンプルの最大「劣化」を秒で指定します。劣化ウィンドウは左が開いていて右が閉じている区間です。
+
+* `start timestamp` - グリッドの開始時刻を指定します。
+* `end timestamp` - グリッドの終了時刻を指定します。
+* `grid step` - グリッドのステップを秒単位で指定します。
+* `staleness` - 対象とするサンプルの最大の「staleness」（古さ）を秒単位で指定します。staleness ウィンドウは左開・右閉区間です。
 
 Arguments:
-- `timestamp` - サンプルのタイムスタンプ
-- `value` - `timestamp` に対応する時系列の値
+
+* `timestamp` - サンプルのタイムスタンプ
+* `value` - `timestamp` に対応する時系列の値
 
 Return value:
-指定されたグリッド上の `rate` 値を `Array(Nullable(Float64))` として返します。返される配列は、各タイムグリッドポイントのための1つの値を含んでいます。その値は、特定のグリッドポイントに対してレート値を計算するのに十分なサンプルがウィンドウ内にない場合は NULL です。
+指定されたグリッド上の `rate` の値を `Array(Nullable(Float64))` として返します。返される配列には、各時間グリッドポイントごとに 1 つの値が含まれます。特定のグリッドポイントに対して、そのウィンドウ内に rate を計算するのに十分なサンプルがない場合、その値は NULL になります。
 
 Example:
-以下のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] の `rate` 値を計算します。
+次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] 上の `rate` の値を計算します。
 
 ```sql
 WITH
@@ -44,7 +46,7 @@ FROM
 );
 ```
 
-Response:
+レスポンス:
 
 ```response
    ┌─timeSeriesRateToGrid(start_ts, ⋯w_seconds)(timestamps, values)─┐
@@ -52,7 +54,7 @@ Response:
    └────────────────────────────────────────────────────────────────┘
 ```
 
-また、タイムスタンプと値の複数のサンプルを同じサイズの配列として渡すことも可能です。配列引数を使用した同じクエリ：
+また、同じ長さの配列として複数のタイムスタンプと値のサンプルを渡すことも可能です。配列引数を用いた同じクエリは次のとおりです：
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesRateToGrid(start_ts, end_ts, step_seconds, window_seconds)(time
 ```
 
 :::note
-この関数は実験的です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定することで有効にします。
+この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
 :::

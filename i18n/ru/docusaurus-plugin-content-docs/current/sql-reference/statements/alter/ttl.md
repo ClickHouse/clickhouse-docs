@@ -1,26 +1,27 @@
 ---
-slug: '/sql-reference/statements/alter/ttl'
-sidebar_label: TTL
+description: 'Документация по работе с TTL таблицы'
+sidebar_label: 'TTL'
 sidebar_position: 44
-description: 'Документация по манипуляциям с Таблицей TTL'
-title: 'Манипуляции с TTL таблицы'
-doc_type: reference
+slug: /sql-reference/statements/alter/ttl
+title: 'Работа с TTL таблицы'
+doc_type: 'reference'
 ---
-# Манипуляции с TTL таблицы
+
+# Операции с TTL таблицы {#manipulations-with-table-ttl}
 
 :::note
-Если вас интересуют подробности использования TTL для управления старыми данными, ознакомьтесь с руководством пользователя [Управление данными с помощью TTL](/guides/developer/ttl.md). Документы ниже демонстрируют, как изменить или удалить существующее правило TTL.
+Если вам нужны подробные сведения об использовании TTL для управления старыми данными, ознакомьтесь с руководством [Управление данными с помощью TTL](/guides/developer/ttl.md). В приведённом ниже материале показано, как изменить или удалить существующее правило TTL.
 :::
 
-## ИЗМЕНИТЬ TTL {#modify-ttl}
+## ИЗМЕНЕНИЕ TTL {#modify-ttl}
 
-Вы можете изменить [TTL таблицы](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) с помощью запроса следующего вида:
+Вы можете изменить [TTL для таблицы](../../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) с помощью запроса следующего вида:
 
 ```sql
 ALTER TABLE [db.]table_name [ON CLUSTER cluster] MODIFY TTL ttl_expression;
 ```
 
-## УДАЛИТЬ TTL {#remove-ttl}
+## УДАЛЕНИЕ TTL {#remove-ttl}
 
 Свойство TTL можно удалить из таблицы с помощью следующего запроса:
 
@@ -30,7 +31,7 @@ ALTER TABLE [db.]table_name [ON CLUSTER cluster] REMOVE TTL
 
 **Пример**
 
-Рассмотрим таблицу с таблицей `TTL`:
+Рассмотрим таблицу с параметром `TTL`:
 
 ```sql
 CREATE TABLE table_with_ttl
@@ -49,12 +50,13 @@ INSERT INTO table_with_ttl VALUES (now(), 1, 'username1');
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
 ```
 
-Запустите `OPTIMIZE`, чтобы принудительно очистить `TTL`:
+Выполните `OPTIMIZE`, чтобы принудительно выполнить очистку по `TTL`:
 
 ```sql
 OPTIMIZE TABLE table_with_ttl FINAL;
 SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 ```
+
 Вторая строка была удалена из таблицы.
 
 ```text
@@ -69,7 +71,7 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 ALTER TABLE table_with_ttl REMOVE TTL;
 ```
 
-Повторно вставьте удалённую строку и снова принудительно очистите `TTL` с помощью `OPTIMIZE`:
+Повторно вставьте удалённую строку и принудительно выполните очистку `TTL` с помощью `OPTIMIZE`:
 
 ```sql
 INSERT INTO table_with_ttl VALUES (now() - INTERVAL 4 MONTH, 2, 'username2');
@@ -77,7 +79,7 @@ OPTIMIZE TABLE table_with_ttl FINAL;
 SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 ```
 
-`TTL` больше нет, поэтому вторая строка не удалена:
+`TTL` больше не задан, поэтому вторая строка не удаляется:
 
 ```text
 ┌─────────event_time────┬──UserID─┬─────Comment──┐
@@ -86,7 +88,7 @@ SELECT * FROM table_with_ttl FORMAT PrettyCompact;
 └───────────────────────┴─────────┴──────────────┘
 ```
 
-**Смотрите также**
+**См. также**
 
-- Подробнее о [TTL-выражении](../../../sql-reference/statements/create/table.md#ttl-expression).
-- Изменение колонки [с TTL](/sql-reference/statements/alter/ttl).
+* Подробнее о [TTL-выражении](../../../sql-reference/statements/create/table.md#ttl-expression).
+* Изменение столбца [с TTL](/sql-reference/statements/alter/ttl).

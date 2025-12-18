@@ -1,37 +1,29 @@
 ---
-'title': 'chDB for Node.js'
-'sidebar_label': 'Node.js'
-'slug': '/chdb/install/nodejs'
-'description': '如何安装和使用 chDB 与 Node.js'
-'keywords':
-- 'chdb'
-- 'nodejs'
-- 'javascript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+title: '适用于 Node.js 的 chDB'
+sidebar_label: 'Node.js'
+slug: /chdb/install/nodejs
+description: '如何在 Node.js 中安装和使用 chDB'
+keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
 
+# 适用于 Node.js 的 chDB {#chdb-for-nodejs}
 
-# chDB for Node.js
+chDB-node 为 chDB 提供了 Node.js 绑定，让你能够在 Node.js 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
 
-chDB-node 提供了 Node.js 的 chDB 绑定，使您能够直接在 Node.js 应用程序中运行 ClickHouse 查询，无需外部依赖。
-
-## Installation {#installation}
+## 安装 {#installation}
 
 ```bash
 npm install chdb
 ```
 
-## Usage {#usage}
+## 用法 {#usage}
 
-chDB-node 支持两种查询模式：用于简单操作的独立查询和用于维护数据库状态的会话查询。
+chDB-node 支持两种查询模式：用于简单操作的独立查询，以及用于维护数据库状态的会话查询。
 
-### Standalone queries {#standalone-queries}
+### 独立查询 {#standalone-queries}
 
-对于不需要持久状态的简单一次性查询：
+适用于不需要持久状态的简单一次性查询：
 
 ```javascript
 const { query } = require("chdb");
@@ -53,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Session-Based queries {#session-based-queries}
+### 基于会话的查询 {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");
@@ -104,7 +96,7 @@ try {
 }
 ```
 
-### Processing external data {#processing-external-data}
+### 处理外部数据 {#processing-external-data}
 
 ```javascript
 const { Session } = require("chdb");
@@ -120,7 +112,7 @@ try {
         FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV') 
         LIMIT 1000
     `, "JSON");
-
+    
     console.log("External data analysis:", result);
 
     // Create table from external data
@@ -141,7 +133,7 @@ try {
         ORDER BY date
         LIMIT 10
     `, "Pretty");
-
+    
     console.log("Daily analytics:", analysis);
 
 } finally {
@@ -149,9 +141,9 @@ try {
 }
 ```
 
-## Error handling {#error-handling}
+## 错误处理 {#error-handling}
 
-在使用 chDB 时始终适当地处理错误：
+在使用 chDB 时，请务必妥善处理错误：
 
 ```javascript
 const { query, Session } = require("chdb");
@@ -178,7 +170,7 @@ if (result.success) {
 // Error handling for sessions
 function safeSessionQuery() {
     const session = new Session("./error-test");
-
+    
     try {
         // This will throw an error due to invalid syntax
         const result = session.query("CREATE TABLE invalid syntax", "CSV");
@@ -194,8 +186,8 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## GitHub repository {#github-repository}
+## GitHub 仓库 {#github-repository}
 
-- **GitHub Repository**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Issues and Support**: 在 [GitHub repository](https://github.com/chdb-io/chdb-node/issues) 上报告问题
-- **NPM Package**: [chdb on npm](https://www.npmjs.com/package/chdb)
+- **GitHub 仓库**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+- **问题反馈与支持**: 请在 [GitHub 仓库](https://github.com/chdb-io/chdb-node/issues) 上提交 Issue
+- **NPM 包**: [chdb（npm）](https://www.npmjs.com/package/chdb)

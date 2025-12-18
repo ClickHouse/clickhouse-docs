@@ -1,36 +1,33 @@
 ---
-'slug': '/migrations/postgresql/rewriting-queries'
-'title': 'PostgreSQL クエリの再構築'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'rewriting queries'
-'description': 'PostgreSQL から ClickHouse への移行に関するガイドのパート 2'
-'sidebar_label': 'パート 2'
-'doc_type': 'guide'
+slug: /migrations/postgresql/rewriting-queries
+title: 'PostgreSQL クエリの書き換え'
+keywords: ['postgres', 'postgresql', 'rewriting queries']
+description: 'PostgreSQL から ClickHouse への移行ガイドのパート 2'
+sidebar_label: 'パート 2'
+doc_type: 'guide'
 ---
 
-> これは、PostgreSQL から ClickHouse への移行に関するガイドの **パート 2** です。実用的な例を用いて、リアルタイムレプリケーション (CDC) アプローチを使って効率的に移行を実行する方法を示します。取り上げる多くの概念は、PostgreSQL から ClickHouse への手動バルクデータ転送にも適用可能です。
+> これは PostgreSQL から ClickHouse への移行ガイドの **パート 2** です。実践的な例を用いて、リアルタイムレプリケーション（CDC）アプローチにより、どのように効率的に移行を行うかを示します。ここで解説する多くの概念は、PostgreSQL から ClickHouse への手動による一括データ転送にも適用できます。
 
-PostgreSQL のセットアップからのほとんどの SQL クエリは、変更なしで ClickHouse でも実行され、実行速度も速くなるでしょう。
+PostgreSQL 環境で使用しているほとんどの SQL クエリは、変更なしで ClickHouse 上でも実行でき、多くの場合より高速に動作します。
 
-## CDC を利用した重複排除 {#deduplication-cdc}
+## CDC を使用した重複排除 {#deduplication-cdc}
 
-リアルタイムレプリケーションを CDC で使用する場合、更新および削除が重複行を引き起こす可能性があることを考慮してください。これを管理するために、Views や Refreshable Materialized Views を利用する技術を使用できます。
+リアルタイムレプリケーションに CDC を用いる場合、更新や削除によって行が重複する可能性があることに注意してください。これに対処するために、ビューおよび Refreshable マテリアライズドビューを利用する手法が使えます。
 
-この [ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres) を参照して、CDC を使用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へのアプリケーション移行を最小限の摩擦で行う方法を学んでください。
+CDC を利用したリアルタイムレプリケーションで PostgreSQL から ClickHouse へアプリケーションをできるだけスムーズに移行する方法については、この[ガイド](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)を参照してください。
 
-## ClickHouse でのクエリ最適化 {#optimize-queries-in-clickhouse}
+## ClickHouse でクエリを最適化する {#optimize-queries-in-clickhouse}
 
-最小限のクエリの書き直しで移行することは可能ですが、ClickHouse の機能を活用してクエリを大幅に簡素化し、クエリパフォーマンスをさらに向上させることをお勧めします。
+最小限のクエリ書き換えで移行することも可能ですが、クエリを大幅に単純化し、さらにクエリパフォーマンスを向上させるために、ClickHouse の機能を活用することを推奨します。
 
-ここでの例は、一般的なクエリパターンをカバーし、ClickHouse を使用してそれらを最適化する方法を示します。これらは、PostgreSQL および ClickHouse における同等のリソース (8 コア、32GiB RAM) に基づく、全 [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow) (2024 年 4 月まで) を使用しています。
+ここでの例では一般的なクエリパターンを取り上げ、ClickHouse を用いてどのように最適化できるかを示します。これらは、PostgreSQL と ClickHouse で同等のリソース（8 コア、32GiB RAM）上に用意した [Stack Overflow データセット](/getting-started/example-datasets/stackoverflow)（2024 年 4 月まで）全体を使用しています。
 
-> 単純さのために、以下のクエリはデータの重複排除手法の使用を省略しています。 
+> 説明を簡潔にするため、以下のクエリではデータの重複排除のための手法は省略しています。
 
-> ここでのカウントはわずかに異なる場合があります。Postgres データには、外部キーの参照整合性を満たす行のみが含まれています。ClickHouse にはそのような制約がなく、したがって完全なデータセットが存在します。例として匿名ユーザーを含みます。
+> ここでの件数はわずかに異なります。これは、Postgres 側のデータには外部キーの参照整合性を満たす行のみが含まれている一方で、ClickHouse にはそのような制約がなく、たとえば匿名ユーザーを含む完全なデータセットが格納されているためです。
 
-質問数が 10 件を超えるユーザーで最もビューを受け取ったユーザー:
+最も多く閲覧されているユーザー（質問数が 10 件を超えるユーザー）:
 
 ```sql
 -- ClickHouse
@@ -75,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-最も多くのビューを受け取る `tags`:
+最も多く閲覧されている`tags`:
 
 ```sql
 --ClickHouse
@@ -133,7 +130,8 @@ Time: 112508.083 ms (01:52.508)
 
 **集約関数**
 
-可能な限り、ユーザーは ClickHouse 集約関数を活用すべきです。以下では、[argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用して、各年で最も閲覧された質問を計算する方法を示します。
+可能であれば、ClickHouse の集約関数を活用してください。以下では、各年でもっとも多く閲覧された質問を求めるために [argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用する例を示します。
+
 
 ```sql
 --ClickHouse
@@ -175,7 +173,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-これは、同等の Postgres クエリよりも大幅に簡単 (かつ高速) です:
+これは、同等の Postgres クエリよりも大幅にシンプル（かつ高速）です：
 
 ```sql
 --Postgres
@@ -209,9 +207,10 @@ ORDER BY Year;
 Time: 125822.015 ms (02:05.822)
 ```
 
-**条件分岐と配列**
+**条件式と配列**
 
-条件と配列関数は、クエリを大幅に簡素化します。以下のクエリは、2022 年から 2023 年にかけての割合の増加が最も大きい (10000 回以上の出現) タグを計算します。条件分岐、配列関数、HAVING および SELECT 句でのエイリアスの再利用機能のおかげで、以下の ClickHouse クエリが簡潔であることに注意してください。
+条件関数と配列関数を使うと、クエリを大幅に単純化できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、割合の増加が最も大きいものを計算します。条件関数や配列関数、そして HAVING 句や SELECT 句内でエイリアスを再利用できるおかげで、次の ClickHouse クエリがいかに簡潔になっているかに注目してください。
+
 
 ```sql
 --ClickHouse
@@ -274,4 +273,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[パート 3はこちら](/migrations/postgresql/data-modeling-techniques)
+[パート3はこちら](/migrations/postgresql/data-modeling-techniques)

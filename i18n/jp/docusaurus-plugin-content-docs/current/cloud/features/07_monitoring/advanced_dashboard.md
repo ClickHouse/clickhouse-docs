@@ -1,16 +1,12 @@
 ---
-'description': 'ClickHouse Cloudの高度なダッシュボード'
-'keywords':
-- 'monitoring'
-- 'observability'
-- 'advanced dashboard'
-- 'dashboard'
-- 'observability dashboard'
-'sidebar_label': '高度なダッシュボード'
-'sidebar_position': 45
-'slug': '/cloud/manage/monitor/advanced-dashboard'
-'title': 'ClickHouse Cloudの高度なダッシュボード'
-'doc_type': 'guide'
+description: 'ClickHouse Cloudの高度なダッシュボード'
+keywords: ['monitoring', 'observability', 'advanced dashboard', 'dashboard', 'observability
+    dashboard']
+sidebar_label: '高度なダッシュボード'
+sidebar_position: 45
+slug: /cloud/manage/monitor/advanced-dashboard
+title: 'ClickHouse Cloudの高度なダッシュボード'
+doc_type: 'guide'
 ---
 
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
@@ -19,17 +15,23 @@ import EditVisualization from '@site/static/images/cloud/manage/monitoring/edit_
 import InsertedRowsSec from '@site/static/images/cloud/manage/monitoring/inserted_rows_max_parts_for_partition.png';
 import ResourceIntensiveQuery from '@site/static/images/cloud/manage/monitoring/resource_intensive_query.png';
 import SelectedRowsPerSecond from '@site/static/images/cloud/manage/monitoring/selected_rows_sec.png';
+
 import Image from '@theme/IdealImage';
 
-データベースシステムを本番環境で監視することは、展開の健康状態を理解し、障害を防止または解決するために不可欠です。
+本番環境でデータベースシステムを監視することは、デプロイメントの健全性を
+理解し、障害を予防または解決するために不可欠です。
 
-高度なダッシュボードは、ClickHouseシステムとその環境に深い洞察を提供するために設計された軽量ツールであり、パフォーマンスのボトルネック、システムの障害、非効率性を事前に把握するのに役立ちます。
+高度なダッシュボードは、ClickHouseシステムとその環境に関する深い洞察を
+提供するための軽量ツールで、パフォーマンスのボトルネック、システム障害、
+非効率性を事前に把握するのに役立ちます。
 
-高度なダッシュボードは、ClickHouse OSS（オープンソースソフトウェア）およびクラウドの両方で利用可能です。この記事では、クラウドでの高度なダッシュボードの使用方法を示します。
+高度なダッシュボードは、ClickHouse OSS（オープンソースソフトウェア）と
+Cloudの両方で利用可能です。この記事では、Cloudでの高度なダッシュボードの
+使用方法を説明します。
 
 ## 高度なダッシュボードへのアクセス {#accessing-the-advanced-dashboard}
 
-高度なダッシュボードには、次のようにナビゲートしてアクセスできます：
+高度なダッシュボードには以下の方法でアクセスできます：
 
 * 左側のパネル
   * `Monitoring` → `Advanced dashboard`
@@ -38,112 +40,145 @@ import Image from '@theme/IdealImage';
 
 ## ネイティブ高度なダッシュボードへのアクセス {#accessing-the-native-advanced-dashboard}
 
-ネイティブ高度なダッシュボードには、次のようにナビゲートしてアクセスできます：
+ネイティブ高度なダッシュボードには以下の方法でアクセスできます：
 
 * 左側のパネル
   * `Monitoring` → `Advanced dashboard`
   * `You can still access the native advanced dashboard.`をクリック
 
-これにより、ネイティブ高度なダッシュボードが新しいタブで開きます。ダッシュボードにアクセスするには認証が必要です。
+これにより、新しいタブでネイティブ高度なダッシュボードが開きます。
+ダッシュボードにアクセスするには認証が必要です。
 
 <Image img={NativeAdvancedDashboard} size="lg" alt="高度なダッシュボード"/>
 
-各ビジュアライゼーションには、それを構成するSQLクエリが関連付けられています。このクエリはペンアイコンをクリックすることで編集できます。
+各ビジュアライゼーションには、データを取得するSQLクエリが関連付けられています。
+ペンアイコンをクリックすることで、このクエリを編集できます。
 
 <Image img={EditVisualization} size="lg" alt="高度なダッシュボード"/>
 
-## デフォルトのビジュアライゼーション {#out-of-box-visualizations}
+## 標準搭載のビジュアライゼーション {#out-of-box-visualizations}
 
-高度なダッシュボードのデフォルトチャートは、ClickHouseシステムのリアルタイムの可視性を提供するように設計されています。以下は各チャートの説明を含むリストです。これらはナビゲーションを助けるために3つのカテゴリにグループ化されています。
+高度なダッシュボードのデフォルトチャートは、ClickHouseシステムの
+リアルタイムの可視性を提供するように設計されています。以下は各チャートの
+説明付きリストです。ナビゲーションを容易にするため、3つのカテゴリに
+分類されています。
 
 ### ClickHouse固有 {#clickhouse-specific}
 
-これらのメトリックは、ClickHouseインスタンスの健康状態とパフォーマンスを監視するためにカスタマイズされています。
+これらのメトリクスは、ClickHouseインスタンスの健全性とパフォーマンスを
+監視するために調整されています。
 
-| メトリック                  | 説明                                                                                       |
-|---------------------------|------------------------------------------------------------------------------------------|
-| 1秒あたりのクエリ数       | 処理されるクエリの割合を追跡                                                              |
-| 選択された行/秒            | クエリによって読み込まれる行の数を示す                                                     |
-| 挿入された行/秒            | データ取り込み速度を測定                                                                  |
-| MergeTreeテーブルの総パーツ  | MergeTreeテーブルのアクティブなパーツの数を示し、バッチされていない挿入を特定するのに役立ちます  |
-| パーティション内の最大パーツ | 任意のパーティション内の最大パーツ数を強調                                                  |
-| 実行中のクエリ数            | 現在実行中のクエリの数を表示                                                                |
-| 1秒あたりの選択バイト数    | クエリによって読み込まれるデータの量を示す                                                 |
+| メトリクス | 説明 |
+|-----------|------|
+| Queries Per Second | 処理されているクエリのレートを追跡 |
+| Selected Rows/Sec | クエリによって読み取られている行数を示す |
+| Inserted Rows/Sec | データ取り込みレートを測定 |
+| Total MergeTree Parts | MergeTreeテーブル内のアクティブなパーツ数を表示し、バッチ化されていないインサートの特定に役立つ |
+| Max Parts for Partition | 任意のパーティション内の最大パーツ数を強調表示 |
+| Queries Running | 現在実行中のクエリ数を表示 |
+| Selected Bytes Per Second | クエリによって読み取られているデータ量を示す |
 
-### システム健康固有 {#system-health-specific}
+### システムヘルス固有 {#system-health-specific}
 
-基盤となるシステムを監視することは、ClickHouse自体を監視することと同じくらい重要です。
+基盤となるシステムの監視は、ClickHouse自体の監視と同様に重要です。
 
-| メトリック                        | 説明                                                               |
-|---------------------------------|--------------------------------------------------------------------|
-| I/O待機                          | I/O待機時間を追跡                                                   |
-| CPU待機                          | CPUリソースの競合によって引き起こされる遅延を測定                  |
-| ディスクからの読み取り           | ディスクまたはブロックデバイスから読み取られたバイト数を追跡       |
-| ファイルシステムからの読み取り   | ページキャッシュを含むファイルシステムから読み取られたバイト数を追跡 |
-| メモリ（トラッキング、バイト）   | ClickHouseによってトラッキングされたプロセスのメモリ使用量を表示   |
-| 負荷平均（15分）                | システムの現在の負荷平均を報告                                     |
-| OS CPU使用率（ユーザースペース） | ユーザースペースコードを実行しているCPU使用率                     |
-| OS CPU使用率（カーネル）        | カーネルコードを実行しているCPU使用率                             |
+| メトリクス | 説明 |
+|-----------|------|
+| IO Wait | I/O待機時間を追跡 |
+| CPU Wait | CPUリソース競合による遅延を測定 |
+| Read From Disk | ディスクまたはブロックデバイスから読み取られたバイト数を追跡 |
+| Read From Filesystem | ページキャッシュを含む、ファイルシステムから読み取られたバイト数を追跡 |
+| Memory (tracked, bytes) | ClickHouseによって追跡されているプロセスのメモリ使用量を表示 |
+| Load Average (15 minutes) | システムからの現在の15分間のロードアベレージを報告 |
+| OS CPU Usage (Userspace) | ユーザースペースコードを実行しているCPU使用率 |
+| OS CPU Usage (Kernel) | カーネルコードを実行しているCPU使用率 |
 
 ## ClickHouse Cloud固有 {#clickhouse-cloud-specific}
 
-ClickHouse Cloudは、オブジェクトストレージ（S3タイプ）を使用してデータを保存します。このインターフェイスを監視することで問題を検出するのに役立ちます。
+ClickHouse Cloudはオブジェクトストレージ（S3タイプ）を使用してデータを
+保存します。このインターフェースを監視することで、問題の検出に役立ちます。
 
-| メトリック                      | 説明                                                         |
-|-------------------------------|-------------------------------------------------------------|
-| S3読み取り待機                 | S3への読み取りリクエストのレイテンシを測定                   |
-| S3 1秒あたりの読み取りエラー   | 読み取りエラーの割合を追跡                                   |
-| S3からの読み取り（バイト/秒）   | S3ストレージから読み取られるデータの速度を追跡             |
-| ディスクS3書き込み要求/秒      | S3ストレージへの書き込み操作の頻度を監視                     |
-| ディスクS3読み取り要求/秒      | S3ストレージへの読み取り操作の頻度を監視                     |
-| ページキャッシュヒット率      | ページキャッシュのヒット率                                   |
-| ファイルシステムキャッシュヒット率 | ファイルシステムキャッシュのヒット率                         |
-| ファイルシステムキャッシュサイズ | 現在のファイルシステムキャッシュのサイズ                     |
-| ネットワーク送信バイト/秒      | 入力ネットワークトラフィックの現在の速度を追跡               |
-| ネットワーク受信バイト/秒      | 出力ネットワークトラフィックの現在の速度を追跡               |
-| 同時ネットワーク接続数        | 現在の同時ネットワーク接続数を追跡                           |
+| メトリクス | 説明 |
+|-----------|------|
+| S3 Read wait | S3への読み取りリクエストのレイテンシを測定 |
+| S3 read errors per second | 読み取りエラー率を追跡 |
+| Read From S3 (bytes/sec) | S3ストレージからのデータ読み取りレートを追跡 |
+| Disk S3 write req/sec | S3ストレージへの書き込み操作の頻度を監視 |
+| Disk S3 read req/sec | S3ストレージからの読み取り操作の頻度を監視 |
+| Page cache hit rate | ページキャッシュのヒット率 |
+| Filesystem cache hit rate | ファイルシステムキャッシュのヒット率 |
+| Filesystem cache size | ファイルシステムキャッシュの現在のサイズ |
+| Network send bytes/sec | 受信ネットワークトラフィックの現在の速度を追跡 |
+| Network receive bytes/sec | 送信ネットワークトラフィックの現在の速度を追跡 |
+| Concurrent network connections | 現在の同時ネットワーク接続数を追跡 |
 
-## 高度なダッシュボードを使用して問題を特定する {#identifying-issues-with-the-advanced-dashboard}
+## 高度なダッシュボードを使用した問題の特定 {#identifying-issues-with-the-advanced-dashboard}
 
-ClickHouseサービスの健康状態をリアルタイムで把握することは、ビジネスに影響を与える前に問題を軽減するのに非常に役立ちます。以下は高度なダッシュボードを使用して発見できるいくつかの問題です。
+ClickHouseサービスの健全性をリアルタイムで把握できることは、ビジネスに
+影響を与える前に問題を軽減したり、解決したりするのに大いに役立ちます。
+以下は、高度なダッシュボードを使用して発見できる問題の例です。
 
-### バッチされていない挿入 {#unbatched-inserts}
+### バッチ化されていないインサート {#unbatched-inserts}
 
-[bests practices documentation](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)に記載されているように、可能であれば常にClickHouseにデータをバルク挿入することが推奨されます。
+[ベストプラクティスドキュメント](/best-practices/selecting-an-insert-strategy#batch-inserts-if-synchronous)に
+記載されているように、同期的に行える場合は常にClickHouseへの一括インサートを
+推奨します。
 
-合理的なバッチサイズのバルク挿入によって、取り込み中に作成されるパーツ数が減少し、ディスクへの書き込み効率が向上し、マージ操作が少なくなります。
+適切なバッチサイズでの一括インサートは、取り込み時に作成されるパーツの数を
+減らし、より効率的なディスク書き込みとマージ操作の削減につながります。
 
-挿入を最適化できていないことを示す主要なメトリックは、**挿入された行/秒**と**パーティション内の最大パーツ**です。
+最適化されていないインサートを発見するための主要なメトリクスは
+**Inserted Rows/sec**と**Max Parts for Partition**です。
 
-<Image img={InsertedRowsSec} size="lg" alt="バッチされていない挿入"/>
+<Image img={InsertedRowsSec} size="lg" alt="バッチ化されていないインサート"/>
 
-上記の例では、13時から14時の間に**挿入された行/秒**と**パーティション内の最大パーツ**が2回のスパイクを示しています。これは、データが合理的な速度で挿入されていることを示しています。
+上記の例では、13時から14時の間に**Inserted Rows/sec**と
+**Max Parts for Partition**に2つのスパイクが見られます。
+これは、適切な速度でデータを取り込んでいることを示しています。
 
-次に、16時以降に**パーティション内の最大パーツ**で別の大きなスパイクが見られますが、**挿入された行/秒の速度**は非常に遅くなっています。多くのパーツが生成されているのに対し、生成されるデータは非常に少なく、パーツのサイズが最適ではないことを示しています。
+その後、16時以降に**Max Parts for Partition**で大きなスパイクがありますが、
+**Inserted Rows/sec**の速度は非常に遅くなっています。生成されるデータが
+非常に少ないにもかかわらず、多くのパーツが作成されており、パーツのサイズが
+最適でないことを示しています。
 
-### リソースを大量に消費するクエリ {#resource-intensive-query}
+### リソース集約型クエリ {#resource-intensive-query}
 
-CPUやメモリなどのリソースを大量に消費するSQLクエリを実行することは一般的ですが、これらのクエリを監視し、デプロイメント全体のパフォーマンスに対する影響を理解することが重要です。
+CPUやメモリなど、大量のリソースを消費するSQLクエリを実行することはよくあります。
+ただし、これらのクエリを監視し、デプロイメント全体のパフォーマンスへの
+影響を理解することが重要です。
 
-リソース消費の突然の変化がクエリのスループットの変化なしに発生する場合、よりコストのかかるクエリが実行されていることを示している可能性があります。実行しているクエリの種類によっては想定内かもしれませんが、高度なダッシュボードでそれらを特定するのは良いことです。
+クエリスループットの変化なしにリソース消費が急激に変化した場合、より高コストな
+クエリが実行されていることを示している可能性があります。実行しているクエリの
+種類によってはこれは想定内かもしれませんが、高度なダッシュボードから
+これらを発見することは重要です。
 
-以下は、実行されるクエリの数がほとんど変わらずにCPU使用量がピークに達する例です。
+以下は、1秒あたりに実行されるクエリ数に大きな変化がないにもかかわらず、
+CPU使用率がピークに達している例です。
 
-<Image img={ResourceIntensiveQuery} size="lg" alt="リソースを大量に消費するクエリ"/>
+<Image img={ResourceIntensiveQuery} size="lg" alt="リソース集約型クエリ"/>
 
-### 不適切な主キー設計 {#bad-primary-key-design}
+### 不適切なプライマリキー設計 {#bad-primary-key-design}
 
-高度なダッシュボードを使用して特定できる別の問題は、主キー設計が不適切であることです。["ClickHouseにおける主インデックスの実用的な紹介"](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)に記載されているように、使用ケースに最適な主キーを選択すると、ClickHouseがクエリを実行するために読み取る行数が減少し、パフォーマンスが大幅に向上します。
+高度なダッシュボードを使用して発見できるもう1つの問題は、不適切なプライマリキー
+設計です。["ClickHouseにおけるプライマリインデックスの実践的入門"](/guides/best-practices/sparse-primary-indexes#a-table-with-a-primary-key)に
+記載されているように、ユースケースに最適なプライマリキーを選択することで、
+ClickHouseがクエリを実行するために読み取る必要のある行数を減らし、
+パフォーマンスを大幅に向上させることができます。
 
-主キーの改善の可能性を特定するために追跡できるメトリックの一つは、**選択された行の数/秒**です。選択された行数の突然のピークは、全体的なクエリスループットの増加と、クエリを実行するために多くの行を選択するクエリの両方を示すことができます。
+プライマリキーの潜在的な改善点を発見するために追跡できるメトリクスの1つは
+**Selected Rows per second**です。選択された行数の急激なピークは、
+全体的なクエリスループットの一般的な増加と、クエリを実行するために
+大量の行を選択しているクエリの両方を示している可能性があります。
 
-<Image img={SelectedRowsPerSecond} size="lg" alt="リソースを大量に消費するクエリ"/>
+<Image img={SelectedRowsPerSecond} size="lg" alt="リソース集約型クエリ"/>
 
-タイムスタンプをフィルタとして使用することで、ピーク時に実行されたクエリを`system.query_log`テーブルで特定できます。
+タイムスタンプをフィルターとして使用することで、`system.query_log`テーブルで
+ピーク時に実行されたクエリを見つけることができます。
 
-たとえば、特定の日に11時から11時の間に実行されたすべてのクエリを表示するクエリを実行して、どのクエリが多くの行を読み込んでいるかを理解します：
+例えば、特定の日の午前11時から11時30分の間に実行されたすべてのクエリを
+表示し、どのクエリが多くの行を読み取っているかを理解するクエリを実行します：
 
-```sql title="Query"
+```sql title="クエリ"
 SELECT
     type,
     event_time,
@@ -158,7 +193,7 @@ LIMIT 5
 FORMAT VERTICAL
 ```
 
-```response title="Response"
+```response title="レスポンス"
 Row 1:
 ──────
 type:              QueryFinish
@@ -248,4 +283,7 @@ read_rows:         6242304
 tables:            ['default.amazon_reviews_pk']
 ```
 
-この例では、2つのテーブル`amazon_reviews_no_pk`および`amazon_reviews_pk`に対して同じクエリが実行されていることがわかります。これは、誰かが`amazon_reviews`テーブルの主キーオプションを試していたことを示唆しています。
+この例では、同じクエリが2つのテーブル`amazon_reviews_no_pk`と
+`amazon_reviews_pk`に対して実行されていることがわかります。
+誰かがテーブル`amazon_reviews`のプライマリキーオプションをテストしていたと
+結論付けることができます。

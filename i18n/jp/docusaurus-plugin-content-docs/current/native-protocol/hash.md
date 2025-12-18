@@ -1,43 +1,43 @@
 ---
-'slug': '/native-protocol/hash'
-'sidebar_position': 5
-'title': 'CityHash'
-'description': 'ネイティブプロトコルハッシュ'
-'doc_type': 'reference'
+slug: /native-protocol/hash
+sidebar_position: 5
+title: 'CityHash'
+description: 'ネイティブプロトコル用ハッシュ'
+doc_type: 'reference'
+keywords: ['CityHash', 'ネイティブプロトコル用ハッシュ', 'ハッシュ関数', 'Google CityHash', 'プロトコルハッシュ']
 ---
 
+# CityHash {#cityhash}
 
-# CityHash
-
-ClickHouseは、**以前の**バージョンの [CityHash from Google](https://github.com/google/cityhash) を使用しています。
+ClickHouse は [Google 製 CityHash](https://github.com/google/cityhash) の **以前のバージョンの 1 つ**を使用しています。
 
 :::info
-CityHashは、ClickHouseに追加した後にアルゴリズムを変更しました。
+CityHash は、ClickHouse に組み込んだ後でアルゴリズムが変更されました。
 
-CityHashのドキュメントには、ユーザーは特定のハッシュ値に頼らず、それをどこにも保存したり、シャーディングキーとして使用するべきではないと明記されています。
+CityHash のドキュメントでは、ユーザーは特定のハッシュ値に依存すべきではなく、それをどこかに保存したり、シャーディングキーとして使用したりすべきではないと明記されています。
 
-しかし、私たちはこの関数をユーザーに公開したため、CityHashのバージョンを固定する必要がありました（1.0.2）。そして現在、SQLで利用可能なCityHash関数の動作が変更されないことを保証します。
+しかし、この関数をユーザーに公開したため、CityHash のバージョン（1.0.2）を固定せざるを得ませんでした。現在、SQL で利用可能な CityHash 関数の挙動は変わらないことを保証しています。
 
 — Alexey Milovidov
 :::
 
-:::note 注
+:::note 注意
 
-GoogleのCityHashの現在のバージョンは、ClickHouseの`cityHash64`バリアントと [異なります](https://github.com/ClickHouse/ClickHouse/issues/8354)。
+現在の Google 製 CityHash のバージョンは、ClickHouse の `cityHash64` バリアントとは[異なります](https://github.com/ClickHouse/ClickHouse/issues/8354)。
 
-GoogleのCityHash値を取得するために`farmHash64`を使用しないでください！ [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) はCityHashの後継ですが、完全には互換性がありません。
+Google 製 CityHash の値を得るために `farmHash64` を使用しないでください。[FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) は CityHash の後継ですが、完全な互換性はありません。
 
-| 文字列                                               | ClickHouse64         | CityHash64          | FarmHash64           |
-|------------------------------------------------------|----------------------|---------------------|----------------------|
-| `Moscow`                                             | 12507901496292878638 | 5992710078453357409 | 5992710078453357409  |
+| String                                                     | ClickHouse64         | CityHash64          | FarmHash64           |
+|------------------------------------------------------------|----------------------|---------------------|----------------------|
+| `Moscow`                                                   | 12507901496292878638 | 5992710078453357409 | 5992710078453357409  |
 | `How can you write a big system without C++?  -Paul Glick` | 6237945311650045625  | 749291162957442504  | 11716470977470720228 |
 
 :::
 
-また、[Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) の記事も参照してください。これは、作成の理由と説明を提供しています。TL;DR **非暗号化**ハッシュで、[MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) よりも速く、しかしより複雑です。
+また、CityHash の説明と作成の背景については [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) も参照してください。要するに、**暗号用途を想定していない**ハッシュであり、[MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) より高速ですが、より複雑です。
 
 ## 実装 {#implementations}
 
 ### Go {#go}
 
-両方のバリアントを実装した [go-faster/city](https://github.com/go-faster/city) Goパッケージを使用できます。
+両方のバリアントに対応している Go パッケージ [go-faster/city](https://github.com/go-faster/city) を利用できます。

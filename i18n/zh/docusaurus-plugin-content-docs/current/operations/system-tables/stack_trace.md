@@ -1,44 +1,41 @@
 ---
-'description': '系统表，其中包含所有服务器线程的堆栈跟踪。允许开发人员检查服务器状态。'
-'keywords':
-- 'system table'
-- 'stack_trace'
-'slug': '/operations/system-tables/stack_trace'
-'title': 'system.stack_trace'
-'doc_type': 'reference'
+description: '包含所有服务器线程堆栈跟踪的系统表。允许开发人员检查服务器状态。'
+keywords: ['system table', 'stack_trace']
+slug: /operations/system-tables/stack_trace
+title: 'system.stack_trace'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.stack&#95;trace {#systemstack&#95;trace}
 
-# system.stack_trace
+<SystemTableCloud />
 
-<SystemTableCloud/>
+包含所有服务器线程的堆栈跟踪。用于帮助开发人员检查服务器状态。
 
-包含所有服务器线程的堆栈跟踪。允许开发人员检查服务器状态。
-
-要分析堆栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [反思函数](../../sql-reference/functions/introspection.md)。
+要分析栈帧，请使用 `addressToLine`、`addressToLineWithInlines`、`addressToSymbol` 和 `demangle` [自省函数](../../sql-reference/functions/introspection.md)。
 
 列：
 
-- `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名称。
-- `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于获取有关从 [query_log](../system-tables/query_log.md) 系统表运行的查询的详细信息。
-- `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 一个 [堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)，表示存储调用方法的物理地址列表。
+* `thread_name` ([String](../../sql-reference/data-types/string.md)) — 线程名称。
+* `thread_id` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 线程标识符。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — 查询标识符，可用于从 [query&#95;log](../system-tables/query_log.md) 系统表中获取当时正在运行查询的详细信息。
+* `trace` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — 一个[堆栈跟踪](https://en.wikipedia.org/wiki/Stack_trace)，表示被调用方法所在的物理地址列表。
 
 :::tip
-查看知识库以获取一些实用查询，包括 [如何查看当前运行的线程](/knowledgebase/find-expensive-queries) 和 [用于故障排除的有用查询](/knowledgebase/useful-queries-for-troubleshooting)。
+在知识库（Knowledge Base）中可以找到一些实用查询，包括[如何查看当前正在运行的线程](/knowledgebase/find-expensive-queries)以及[用于故障排查的常用查询](/knowledgebase/useful-queries-for-troubleshooting)。
 :::
 
 **示例**
 
-启用反思函数：
+启用自省函数：
 
 ```sql
 SET allow_introspection_functions = 1;
 ```
 
-从 ClickHouse 对象文件获取符号：
+从 ClickHouse 目标文件中获取符号信息：
 
 ```sql
 WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_name, thread_id, query_id, arrayStringConcat(all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -68,7 +65,7 @@ void std::__1::__function::__policy_invoker<void ()>::__call_impl<std::__1::__fu
 void* std::__1::__thread_proxy[abi:v15000]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void ThreadPoolImpl<std::__1::thread>::scheduleImpl<void>(std::__1::function<void ()>, Priority, std::__1::optional<unsigned long>, bool)::'lambda0'()>>(void*)
 ```
 
-获取 ClickHouse 源代码中的文件名和行号：
+在 ClickHouse 源代码中获取文件名和行号：
 
 ```sql
 WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/dbms/%', all) AS dbms SELECT thread_name, thread_id, query_id, arrayStringConcat(notEmpty(dbms) ? dbms : all, '\n') AS res FROM system.stack_trace LIMIT 1 \G;
@@ -102,7 +99,7 @@ res:       /lib/x86_64-linux-gnu/libc-2.27.so
 
 **另请参阅**
 
-- [反思函数](../../sql-reference/functions/introspection.md) — 可用的反思函数以及如何使用它们。
-- [system.trace_log](../system-tables/trace_log.md) — 包含由采样查询分析器收集的堆栈跟踪。
-- [arrayMap](/sql-reference/functions/array-functions#arrayMap) — `arrayMap` 函数的描述和使用示例。
-- [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — `arrayFilter` 函数的描述和使用示例。
+* [Introspection Functions](../../sql-reference/functions/introspection.md) — 可用的自省函数列表及其用法。
+* [system.trace&#95;log](../system-tables/trace_log.md) — 包含由采样查询分析器收集的堆栈跟踪信息。
+* [arrayMap](/sql-reference/functions/array-functions#arrayMap) — `arrayMap` 函数的说明及使用示例。
+* [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) — `arrayFilter` 函数的说明及使用示例。

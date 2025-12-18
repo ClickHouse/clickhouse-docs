@@ -1,16 +1,18 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/aws_lambda'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 6
-'description': 'AWS Lambda для ClickStack - Стек мониторинга ClickHouse'
-'title': 'AWS Lambda'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/aws_lambda
+pagination_prev: null
+pagination_next: null
+sidebar_position: 6
+description: 'AWS Lambda для ClickStack — стек наблюдаемости ClickHouse'
+title: 'AWS Lambda'
+doc_type: 'guide'
+keywords: ['ClickStack', 'observability', 'aws-lambda', 'lambda-layers']
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-**Этот руководство интегрирует:**
+**В этом руководстве настраивается интеграция:**
 
 <table>
   <tbody>
@@ -22,25 +24,25 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-## Установка слоев OpenTelemetry Lambda {#installing-the-otel-lambda-layers}
+## Установка Lambda-слоёв OpenTelemetry {#installing-the-otel-lambda-layers}
 
-Проект OpenTelemetry предоставляет отдельные слои lambda для:
+Проект OpenTelemetry предоставляет отдельные Lambda-слои для следующего:
 
-1. Автоматического инструментирования кода вашей Lambda функции с помощью авто-инструментирования OpenTelemetry.
+1. Автоматической инструментализации кода вашей Lambda-функции с помощью автоинструментирования OpenTelemetry.
 2. Пересылки собранных логов, метрик и трейсов в ClickStack.
 
-### Добавление слоя авто-инструментирования для конкретного языка {#adding-language-specific-auto-instrumentation}
+### Добавление языкового слоя автоинструментации {#adding-language-specific-auto-instrumentation}
 
-Слои авто-инструментирования для конкретного языка автоматически инструментируют код вашей Lambda функции с помощью пакета авто-инструментирования OpenTelemetry для вашего конкретного языка.
+Специализированные для конкретного языка слои Lambda для автоинструментации автоматически инструментируют код вашей функции Lambda с помощью пакета автоинструментации OpenTelemetry для выбранного языка. 
 
-Каждый язык и регион имеют свой собственный ARN слоя.
+Для каждого языка и региона используется собственный ARN слоя.
 
-Если ваша Lambda уже инструментирована с использованием SDK OpenTelemetry, вы можете пропустить этот шаг.
+Если ваша функция Lambda уже инструментирована с помощью OpenTelemetry SDK, вы можете пропустить этот шаг.
 
-**Чтобы начать**:
+**Для начала выполните следующее**:
 
-1. В разделе Слои нажмите "Добавить слой"
-2. Выберите указать ARN и выберите правильный ARN в зависимости от языка, убедитесь, что вы заменили `<region>` на ваш регион (например, `us-east-2`):
+1. В разделе Layers нажмите «Add a layer».
+2. Выберите вариант «Specify an ARN» и укажите корректный ARN в зависимости от языка, при этом замените `<region>` на ваш регион (например, `us-east-2`):
 
 <Tabs groupId="install-language-options">
 <TabItem value="javascript" label="Javascript" default>
@@ -76,9 +78,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
 
 </Tabs>
 
-_Последние версии слоев можно найти в [репозитории OpenTelemetry Lambda Layers на GitHub](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
+_The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
 
-3. Настройте следующие переменные окружения в вашей Lambda функции в разделе "Конфигурация" > "Переменные окружения".
+3. Configure the following environment variables in your Lambda function under "Configuration" > "Environment variables".
 
 <Tabs groupId="install-language-env">
 <TabItem value="javascript" label="Javascript" default>
@@ -126,40 +128,40 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### Установка слоя коллектора OpenTelemetry Lambda {#installing-the-otel-collector-layer}
+### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
-Слой коллектора Lambda позволяет пересылать логи, метрики и трейсы из вашей Lambda функции в ClickStack без воздействия на время отклика из-за задержки экспортера.
+The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
+to exporter latency.
 
-**Чтобы установить слой коллектора**:
+**To install the collector layer**:
 
-1. В разделе Слои нажмите "Добавить слой"
-2. Выберите указать ARN и выберите правильный ARN в зависимости от архитектуры, убедитесь, что вы заменили `<region>` на ваш регион (например, `us-east-2`):
+1. In the Layers section click "Add a layer"
+2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
 
 <Tabs groupId="install-language-layer">
 
 <TabItem value="x86_64" label="x86_64" default>
 
 ```shell
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
-```
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
+    ```
 
 </TabItem>
 
 <TabItem value="arm64" label="arm64" default>
 
 ```shell
-arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
-```
+    arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
+    ```
 
 </TabItem>
 
 </Tabs>
 
-3. Добавьте следующий файл `collector.yaml` в ваш проект, чтобы настроить коллектор для отправки в ClickStack:
+3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 
 ```yaml
-
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:
@@ -195,33 +197,43 @@ service:
       exporters: [otlphttp]
 ```
 
-4. Добавьте следующую переменную окружения:
+4. Add the following environment variable:
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
-## Проверка установки {#checking-the-installation}
+## Checking the installation {#checking-the-installation}
 
-После развертывания слоев вы должны увидеть трейс, автоматически собранный из вашей Lambda функции в HyperDX. Процессоры `decouple` и `batching` могут вводить задержку в сбор телеметрии, поэтому трейсы могут отображаться с задержкой. Чтобы эмитировать пользовательские логи или метрики, вам нужно инструментировать ваш код с помощью специфичных для языка SDK OpenTelemetry.
+After deploying the layers, you should now see traces automatically
+collected from your Lambda function in HyperDX. The `decouple` and `batching` 
+processor may introduce a delay in telemetry collection, so traces may be 
+delayed in showing up. To emit custom logs or metrics, you'll need to instrument your code your language-specific 
+OpenTelemetry SDKs.
 
-## Устранение неполадок {#troubleshoting}
+## Troubleshooting {#troubleshoting}
 
-### Пользовательское инструментирование не отправляется {#custom-instrumentation-not-sending}
+### Custom instrumentation not sending {#custom-instrumentation-not-sending}
 
-Если вы не видите ваши вручную определенные трейсы или другие телеметрические данные, возможно, вы используете несовместимую версию пакета OpenTelemetry API. Убедитесь, что ваш пакет OpenTelemetry API не выше версии, включенной в AWS lambda.
+If you're not seeing your manually defined traces or other telemetry, you may
+be using an incompatible version of the OpenTelemetry API package. Ensure your
+OpenTelemetry API package is at least the same or lower version than the 
+version included in the AWS lambda.
 
-### Включение отладочных логов SDK {#enabling-sdk-debug-logs}
+### Enabling SDK debug logs {#enabling-sdk-debug-logs}
 
-Установите переменную окружения `OTEL_LOG_LEVEL` в `DEBUG`, чтобы включить отладочные логи из SDK OpenTelemetry. Это поможет убедиться, что слой авто-инструментирования правильно инструментирует ваше приложение.
+Set the `OTEL_LOG_LEVEL` environment variable to `DEBUG` to enable debug logs from
+the OpenTelemetry SDK. This will help ensure that the auto-instrumentation layer
+is correctly instrumenting your application.
 
-### Включение отладочных логов коллектора {#enabling-collector-debug-logs}
+### Enabling collector debug logs {#enabling-collector-debug-logs}
 
-Для отладки проблем с коллектором вы можете включить отладочные логи, изменив файл конфигурации вашего коллектора, добавив экспортёр `logging` и установив уровень логирования телеметрии на `debug`, чтобы включить более подробную запись логов из слоя коллектора lambda.
+To debug collector issues, you can enable debug logs by modifying your collector
+configuration file to add the `logging` exporter and setting the telemetry 
+log level to `debug` to enable more verbose logging from the collector lambda layer.
 
 ```yaml
-
-# collector.yaml
+# collector.yaml {#collectoryaml}
 receivers:
   otlp:
     protocols:

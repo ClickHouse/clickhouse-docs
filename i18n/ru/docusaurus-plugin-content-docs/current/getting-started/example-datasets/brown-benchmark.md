@@ -1,23 +1,28 @@
 ---
-slug: '/getting-started/example-datasets/brown-benchmark'
-sidebar_label: 'Бенчмарк Университета Брауна'
-description: 'Новый аналитический Benchmark для машинно-генерируемых данных журналов'
-title: 'Бенчмарк Университета Брауна'
-doc_type: reference
+description: 'Новый аналитический бенчмарк для машинно-генерируемых журнальных логов'
+sidebar_label: 'Бенчмарк Brown University'
+slug: /getting-started/example-datasets/brown-benchmark
+title: 'Бенчмарк Brown University'
+keywords: ['Brown University Benchmark', 'MgBench', 'log data benchmark', 'machine-generated data', 'начало работы']
+doc_type: 'guide'
 ---
-`MgBench` — это новая аналитическая бенчмарка для данных логов, сгенерированных машинами, [Эндрю Кротти](http://cs.brown.edu/people/acrotty/).
 
-Скачайте данные:
+`MgBench` — это новый аналитический бенчмарк для машинно-генерируемых журнальных логов, разработанный [Эндрю Кроти](http://cs.brown.edu/people/acrotty/).
+
+Загрузите данные:
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
 Распакуйте данные:
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
 Создайте базу данных и таблицы:
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -81,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-Вставьте данные:
+Вставка данных:
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -89,7 +94,7 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## Запустите бенчмарк запросы {#run-benchmark-queries}
+## Выполните тестовые запросы {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
@@ -339,7 +344,8 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-Запрос 3.5 ниже использует оператор UNION. Установите режим для объединения результатов SELECT запросов. Настройка используется только при использовании с UNION без явного указания UNION ALL или UNION DISTINCT.
+Запрос 3.5 ниже использует UNION. Задайте режим объединения результатов запросов SELECT. Этот параметр применяется только к UNION без явного указания UNION ALL или UNION DISTINCT.
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
@@ -443,4 +449,4 @@ ORDER BY yr,
          mo;
 ```
 
-Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).
+Данные также доступны для интерактивных запросов в [Playground](https://sql.clickhouse.com), см. [пример](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND).

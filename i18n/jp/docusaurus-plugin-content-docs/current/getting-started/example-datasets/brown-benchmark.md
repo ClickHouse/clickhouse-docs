@@ -1,24 +1,28 @@
 ---
-'description': '機械生成のログデータ用の新しい分析ベンチマーク'
-'sidebar_label': 'ブラウン大学ベンチマーク'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': 'ブラウン大学ベンチマーク'
-'doc_type': 'reference'
+description: '機械生成ログデータ向けの新しい分析ベンチマーク'
+sidebar_label: 'Brown University ベンチマーク'
+slug: /getting-started/example-datasets/brown-benchmark
+title: 'Brown University ベンチマーク'
+keywords: ['Brown University ベンチマーク', 'MgBench', 'ログデータ用ベンチマーク', '機械生成データ', 'はじめに']
+doc_type: 'guide'
 ---
 
-`MgBench`は、機械生成ログデータのための新しい分析ベンチマークです。[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` は、[Andrew Crotty](http://cs.brown.edu/people/acrotty/) による機械生成ログデータ向けの新しい分析ベンチマークです。
 
-データをダウンロードします：
+データをダウンロード:
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
-データを解凍します：
+データを展開する：
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-データベースとテーブルを作成します：
+データベースとテーブルを作成する：
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -82,7 +86,7 @@ ENGINE = MergeTree()
 ORDER BY (event_type, log_time);
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```bash
 clickhouse-client --query "INSERT INTO mgbench.logs1 FORMAT CSVWithNames" < mgbench1.csv
@@ -90,7 +94,7 @@ clickhouse-client --query "INSERT INTO mgbench.logs2 FORMAT CSVWithNames" < mgbe
 clickhouse-client --query "INSERT INTO mgbench.logs3 FORMAT CSVWithNames" < mgbench3.csv
 ```
 
-## ベンチマーククエリを実行する {#run-benchmark-queries}
+## ベンチマーク用クエリを実行する {#run-benchmark-queries}
 
 ```sql
 USE mgbench;
@@ -137,6 +141,35 @@ ORDER BY machine_name,
 
 ```sql
 -- Q1.3: What are the hourly average metrics during the past 10 days for a specific workstation?
+
+SELECT dt,
+       hr,
+       AVG(load_fifteen) AS load_fifteen_avg,
+       AVG(load_five) AS load_five_avg,
+       AVG(load_one) AS load_one_avg,
+       AVG(mem_free) AS mem_free_avg,
+       AVG(swap_free) AS swap_free_avg
+FROM (
+  SELECT CAST(log_time AS DATE) AS dt,
+         EXTRACT(HOUR FROM log_time) AS hr,
+         load_fifteen,
+         load_five,
+         load_one,
+         mem_free,
+         swap_free
+  FROM logs1
+  WHERE machine_name = 'babbage'
+    AND load_fifteen IS NOT NULL
+    AND load_five IS NOT NULL
+    AND load_one IS NOT NULL
+    AND mem_free IS NOT NULL
+    AND swap_free IS NOT NULL
+    AND log_time >= TIMESTAMP '2017-01-01 00:00:00'
+) AS r
+GROUP BY dt,
+         hr
+ORDER BY dt,
+         hr;
 
 SELECT dt,
        hr,
@@ -340,7 +373,8 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-以下のクエリ3.5ではUNIONを使用します。SELECTクエリ結果を結合するためのモードを設定します。この設定は、UNION ALLまたはUNION DISTINCTを明示的に指定せずにUNIONと共有される場合にのみ使用されます。
+以下のクエリ3.5は UNION を使用します。SELECT クエリ結果の結合モードを設定します。この設定は、UNION ALL または UNION DISTINCT を明示的に指定せずに UNION を使用した場合にのみ適用されます。
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
@@ -444,4 +478,4 @@ ORDER BY yr,
          mo;
 ```
 
-データは、[Playground](https://sql.clickhouse.com)でインタラクティブクエリ用にも利用可能です。[例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+このデータは、インタラクティブクエリとして [Playground](https://sql.clickhouse.com) で利用でき、[example](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND) も参照できます。

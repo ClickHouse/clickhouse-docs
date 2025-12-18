@@ -1,49 +1,47 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/pydantic-ai'
-'sidebar_label': '集成 PydanticAI'
-'title': '如何使用 ClickHouse MCP Server 构建 PydanticAI 代理。'
-'pagination_prev': null
-'pagination_next': null
-'description': '学习如何构建一个可以与 ClickHouse MCP Server 交互的 PydanticAI 代理。'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'PydanticAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
+sidebar_label: '集成 PydanticAI'
+title: '如何使用 ClickHouse MCP 服务器构建 PydanticAI 代理'
+pagination_prev: null
+pagination_next: null
+description: '了解如何构建一个可以与 ClickHouse MCP 服务器交互的 PydanticAI 代理。'
+keywords: ['ClickHouse', 'MCP', 'PydanticAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# 如何使用 ClickHouse MCP Server 构建 PydanticAI 代理 {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
-# 如何使用 ClickHouse MCP 服务器构建 PydanticAI 代理
+在本指南中，您将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 代理，
+使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL 在线体验环境](https://sql.clickhouse.com/) 进行交互。
 
-在本指南中，您将学习如何构建一个可以使用 [ClickHouse 的 SQL 游乐场](https://sql.clickhouse.com/) 与 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 交互的 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 代理。
-
-:::note 示例笔记本
-此示例可以在 [示例库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) 中找到。
+:::note 示例 notebook
+该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) 中以 notebook 形式查阅。
 :::
 
-## 先决条件 {#prerequisites}
-- 您需要在系统上安装 Python。
-- 您需要在系统上安装 `pip`。
-- 您需要一个 Anthropic API 密钥，或者来自其他 LLM 提供商的 API 密钥。
+## 前提条件 {#prerequisites}
 
-您可以在 Python REPL 或通过脚本运行以下步骤。
+- 需要在系统上安装 Python。
+- 需要在系统上安装 `pip`。
+- 需要一个 Anthropic 的 API 密钥，或来自其他 LLM 提供商的 API 密钥。
+
+可以在 Python REPL 中或通过脚本来执行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
 ## 安装库 {#install-libraries}
 
-通过运行以下命令安装所需的库：
+通过运行以下命令来安装所需的库：
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q "pydantic-ai-slim[mcp]"
-!pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
+pip install -q --upgrade pip
+pip install -q "pydantic-ai-slim[mcp]"
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
 
-## 设置凭证 {#setup-credentials}
+## 设置凭据 {#setup-credentials}
 
-接下来，您需要提供您的 Anthropic API 密钥：
+接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os, getpass
@@ -55,11 +53,11 @@ Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥，并且想要使用其他 LLM 提供商，
-您可以在 [PydanticAI 文档](https://ai.pydantic.dev/models/) 中找到设置凭证的说明。
+如果你没有 Anthropic API 密钥，并且想使用其他 LLM 提供商，
+可以在 [PydanticAI 文档](https://ai.pydantic.dev/models/) 中找到配置凭据的说明
 :::
 
-接下来，定义连接到 ClickHouse SQL 游乐场所需的凭证：
+接下来，定义连接到 ClickHouse SQL playground 演示环境所需的凭据：
 
 ```python
 env = {
@@ -71,9 +69,9 @@ env = {
 }
 ```
 
-## 初始化 MCP 服务器和 PydanticAI 代理 {#initialize-mcp}
+## 初始化 MCP Server 和 PydanticAI 代理 {#initialize-mcp}
 
-现在配置 ClickHouse MCP 服务器以指向 ClickHouse SQL 游乐场：
+现在将 ClickHouse MCP Server 配置为连接到 ClickHouse SQL Playground：
 
 ```python
 from pydantic_ai import Agent
@@ -93,9 +91,9 @@ server = MCPServerStdio(
 agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 ```
 
-## 向代理提问 {#ask-agent}
+## 向智能体提问 {#ask-agent}
 
-最后，您可以向代理提问：
+最后，你可以向智能体提出一个问题：
 
 ```python
 async with agent.run_mcp_servers():
@@ -103,7 +101,7 @@ async with agent.run_mcp_servers():
     print(result.output)
 ```
 
-您将收到类似如下的响应：
+你会得到类似下面的响应：
 
 ```response title="Response"
 Based on the data from the ClickHouse GitHub repository, here are the top contributors by number of pull requests created:

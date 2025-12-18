@@ -1,24 +1,25 @@
 ---
-'description': '時間系列データの再サンプリングのための集約関数、PromQLのような irate および idelta 計算用'
-'sidebar_position': 224
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples'
-'title': 'timeSeriesLastTwoSamples'
-'doc_type': 'reference'
+description: 'PromQL風の irate および idelta 計算のために時系列データを再サンプリングする集約関数'
+sidebar_position: 224
+slug: /sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples
+title: 'timeSeriesLastTwoSamples'
+doc_type: 'reference'
 ---
 
-集約関数は、時系列データをタイムスタンプと値のペアとして受け取り、最新のサンプルを最大2つのみ保存します。
+タイムスタンプと値のペアとして渡された時系列データから、最大で直近2件のサンプルのみを保持する集約関数です。
 
 引数:
-- `timestamp` - サンプルのタイムスタンプ
-- `value` - `timestamp` に対応する時系列の値
-複数のタイムスタンプと値のサンプルを等しいサイズの配列として渡すことも可能です。
+
+* `timestamp` - サンプルのタイムスタンプ
+* `value` - `timestamp` に対応する時系列の値\
+  また、同じサイズの配列として、複数のタイムスタンプと値のサンプルを渡すこともできます。
 
 戻り値:
-`Tuple(Array(DateTime), Array(Float64))` - 長さが0から2の等しい2つの配列のペア。最初の配列にはサンプリングした時系列のタイムスタンプが含まれ、2番目の配列には対応する時系列の値が含まれます。
+`Tuple(Array(DateTime), Array(Float64))` - 長さが 0 から 2 の範囲の、同じ長さを持つ 2 つの配列から成るペア。1 つ目の配列にはサンプリングされた時系列のタイムスタンプが含まれ、2 つ目の配列にはそれに対応する時系列の値が含まれます。
 
 例:
-この集約関数は、グリッドに整列したタイムスタンプのために再サンプリングされた時系列データを保存するMaterialized ViewとAggregated tableとともに使用されることを意図しています。
-以下の例では、原データのためのテーブルと、再サンプリングされたデータを保存するためのテーブルを考慮します。
+この集約関数は、グリッドに揃えたタイムスタンプに対して再サンプリングされた時系列データを保存するマテリアライズドビューと集約テーブルでの利用を想定しています。
+以下の生データ用テーブルと、再サンプリングされたデータを保存するテーブルの例を考えます。
 
 ```sql
 -- Table for raw data
@@ -56,7 +57,8 @@ FROM t_raw_timeseries
 ORDER BY metric_id, grid_timestamp;
 ```
 
-いくつかのテストデータを挿入し、'2024-12-12 12:00:12' と '2024-12-12 12:00:30' の間のデータを読みます。
+いくつかテストデータを挿入し、&#39;2024-12-12 12:00:12&#39; から &#39;2024-12-12 12:00:30&#39; の間のデータを読み取ります
+
 ```sql
 -- Insert some data
 INSERT INTO t_raw_timeseries(metric_id, timestamp, value) SELECT number%10 AS metric_id, '2024-12-12 12:00:00'::DateTime64(3, 'UTC') + interval ((number/10)%100)*900 millisecond as timestamp, number%3+number%29 AS value FROM numbers(1000);
@@ -92,7 +94,8 @@ ORDER BY metric_id, timestamp;
 3    2024-12-12 12:00:30.869    25
 ```
 
-'2024-12-12 12:00:15' と '2024-12-12 12:00:30' のタイムスタンプの最後の2つのサンプルをクエリします:
+タイムスタンプ &#39;2024-12-12 12:00:15&#39; および &#39;2024-12-12 12:00:30&#39; の直近 2 件のサンプルをクエリします：
+
 ```sql
 -- Check re-sampled data
 SELECT metric_id, grid_timestamp, (finalizeAggregation(samples).1 as timestamp, finalizeAggregation(samples).2 as value) 
@@ -106,7 +109,7 @@ ORDER BY metric_id, grid_timestamp;
 3    2024-12-12 12:00:30    (['2024-12-12 12:00:29.969','2024-12-12 12:00:29.069'],[14,6])
 ```
 
-集約テーブルは、各15秒ごとに整列されたタイムスタンプに対して最後の2つの値のみを保存します。これにより、原テーブルに保存されているデータよりもはるかに少ないデータを読み取ることで、PromQLのような `irate` や `idelta` を計算することが可能になります。
+集約テーブルは、15 秒間隔に揃えられた各タイムスタンプについて、最新 2 つの値のみを保存します。これにより、生データのテーブルに保存されているデータ量よりはるかに少ないデータを読み込むだけで、PromQL の `irate` や `idelta` と同様の計算を行うことができます。
 
 ```sql
 -- Calculate idelta and irate from the raw data
@@ -155,5 +158,5 @@ GROUP BY metric_id;
 ```
 
 :::note
-この関数は実験的です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定することで有効にしてください。
+この関数は実験的機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効化してください。
 :::

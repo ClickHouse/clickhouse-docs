@@ -1,17 +1,16 @@
 ---
-'description': '集約関数で、期間のグループが互いに交差する最大回数を計算します（すべての期間が少なくとも一度交差する場合）。'
-'sidebar_position': 163
-'slug': '/sql-reference/aggregate-functions/reference/maxintersections'
-'title': 'maxIntersections'
-'doc_type': 'reference'
+description: '区間のグループにおいて、区間同士が互いに交差する回数の最大値を計算する集約関数（ただし、すべての区間が少なくとも 1 回は交差している場合）。'
+sidebar_position: 163
+slug: /sql-reference/aggregate-functions/reference/maxintersections
+title: 'maxIntersections'
+doc_type: 'reference'
 ---
 
+# maxIntersections {#maxintersections}
 
-# maxIntersections
+区間のグループ内で、すべての区間が少なくとも一度は互いに交差する場合に、その交差回数の最大値を計算する集約関数です。
 
-集約関数で、インターバルのグループが互いに交差する回数の最大値を計算します（すべてのインターバルが少なくとも1回交差する場合）。
-
-構文は次の通りです：
+構文は次のとおりです。
 
 ```sql
 maxIntersections(start_column, end_column)
@@ -19,13 +18,13 @@ maxIntersections(start_column, end_column)
 
 **引数**
 
-- `start_column` – 各インターバルの開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
+* `start_column` – 各インターバルの開始を表す数値カラム。`start_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-- `end_column` - 各インターバルの終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
+* `end_column` - 各インターバルの終了を表す数値カラム。`end_column` が `NULL` または 0 の場合、そのインターバルはスキップされます。
 
-**返される値**
+**戻り値**
 
-交差したインターバルの最大数を返します。
+交差するインターバルの最大数を返します。
 
 **例**
 
@@ -44,7 +43,7 @@ INSERT INTO my_events VALUES
    (3, 7);
 ```
 
-インターバルは次のようになります：
+間隔は次のようになります。
 
 ```response
 1 - 3
@@ -53,15 +52,16 @@ INSERT INTO my_events VALUES
     3 - - - 7
 ```
 
-これらのインターバルのうち3つは共通の値を持っています（値は `4` ですが、重要なのは共通の値ではなく、交差の数を測定しています）。インターバル `(1,3)` と `(3,7)` はエンドポイントを共有していますが、`maxIntersections` 関数では交差しているとは見なされません。
+これらの区間のうち 3 つは共通の値を取ります（値は `4` ですが、どの値が共通かは重要ではなく、交差している区間の数を数えています）。区間 `(1,3)` と `(3,7)` は端点を共有していますが、`maxIntersections` 関数では交差しているとはみなされません。
 
 ```sql
 SELECT maxIntersections(start, end) FROM my_events;
 ```
 
-レスポンス：
+レスポンス:
+
 ```response
 3
 ```
 
-最大インターバルの複数の発生がある場合、[`maxIntersectionsPosition` 関数](./maxintersectionsposition.md)を使用して、それらの発生の数と場所を特定できます。
+最大区間が複数回存在する場合は、[`maxIntersectionsPosition` 関数](./maxintersectionsposition.md)を使用して、その発生回数と位置を特定できます。

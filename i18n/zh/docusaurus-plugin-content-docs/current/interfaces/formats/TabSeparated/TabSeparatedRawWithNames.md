@@ -1,37 +1,32 @@
 ---
-'alias':
-- 'TSVRawWithNames'
-- 'RawWithNames'
-'description': 'TabSeparatedRawWithNames 格式的文档'
-'input_format': true
-'keywords':
-- 'TabSeparatedRawWithNames'
-- 'TSVRawWithNames'
-- 'RawWithNames'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRawWithNames'
-'title': 'TabSeparatedRawWithNames'
-'doc_type': 'reference'
+alias: ['TSVRawWithNames', 'RawWithNames']
+description: 'TabSeparatedRawWithNames 格式文档'
+input_format: true
+keywords: ['TabSeparatedRawWithNames', 'TSVRawWithNames', 'RawWithNames']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRawWithNames
+title: 'TabSeparatedRawWithNames'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias                             |
+| 输入 | 输出 | 别名                             |
 |-------|--------|-----------------------------------|
 | ✔     | ✔      | `TSVRawWithNames`, `RawWithNames` |
 
 ## 描述 {#description}
 
 与 [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) 格式不同，
-行是以不转义的方式写入的。
+该格式在写入行数据时不会对内容进行转义。
 
 :::note
-使用此格式解析时，每个字段中不允许包含制表符或换行符。
+使用此格式进行解析时，每个字段中不允许包含制表符或换行符。
 :::
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用名为 `football.tsv` 的以下 tsv 文件：
+使用以下名为 `football.tsv` 的 TSV 文件：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
@@ -62,7 +57,7 @@ INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRawWithNames;
 
 ### 读取数据 {#reading-data}
 
-使用 `TabSeparatedRawWithNames` 格式读取数据：
+使用 `TabSeparatedRawWithNames` 格式来读取数据：
 
 ```sql
 SELECT *
@@ -70,7 +65,7 @@ FROM football
 FORMAT TabSeparatedRawWithNames
 ```
 
-输出将采用制表符分隔格式，并带有单行标题：
+输出将采用制表符分隔的格式，且只有一行表头：
 
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals

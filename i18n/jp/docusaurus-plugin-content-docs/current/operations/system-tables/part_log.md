@@ -1,71 +1,68 @@
 ---
-'description': 'MergeTreeファミリーテーブルのデータパーツに関して発生したイベントの情報を含むシステムテーブル、例えばデータの追加やマージなど。'
-'keywords':
-- 'system table'
-- 'part_log'
-'slug': '/operations/system-tables/part_log'
-'title': 'system.part_log'
-'doc_type': 'reference'
+description: 'MergeTree ファミリーのテーブルで、データパーツに対して行われた追加やマージなどのイベントに関する情報を格納するシステムテーブル。'
+keywords: ['システムテーブル', 'part_log']
+slug: /operations/system-tables/part_log
+title: 'system.part_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.part&#95;log {#systempart&#95;log}
 
-# system.part_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+`system.part_log` テーブルは、[part&#95;log](/operations/server-configuration-parameters/settings#part_log) サーバー設定が指定されている場合にのみ作成されます。
 
-`system.part_log` テーブルは、[part_log](/operations/server-configuration-parameters/settings#part_log) サーバ設定が指定されている場合のみ作成されます。
+このテーブルには、データの追加やマージなど、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリーテーブルの[データパート](../../engines/table-engines/mergetree-family/custom-partitioning-key.md)で発生したイベントに関する情報が含まれています。
 
-このテーブルには、[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブル内の [data parts](../../engines/table-engines/mergetree-family/custom-partitioning-key.md) に関するイベントの情報が含まれ、データの追加やマージなどが記録されます。
+`system.part_log` テーブルには次の列が含まれます:
 
-`system.part_log` テーブルには、以下のカラムが含まれています：
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバーのホスト名。
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — このデータパートを作成した `INSERT` クエリの識別子。
+* `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — データパートで発生したイベントのタイプ。次のいずれかの値を持つことができます:
+  * `NewPart` — 新しいデータパートの挿入。
+  * `MergePartsStart` — データパートのマージが開始されました。
+  * `MergeParts` — データパートのマージが完了しました。
+  * `DownloadPart` — データパートのダウンロード。
+  * `RemovePart` — [DETACH PARTITION](/sql-reference/statements/alter/partition#detach-partitionpart) を使用したデータパートの削除またはデタッチ。
+  * `MutatePartStart` — データパートのミューテーションが開始されました。
+  * `MutatePart` — データパートのミューテーションが完了しました。
+  * `MovePart` — データパートをあるディスクから別のディスクに移動。
+* `merge_reason` ([Enum8](../../sql-reference/data-types/enum.md)) — タイプが `MERGE_PARTS` のイベントの理由。次のいずれかの値を持つことができます:
+  * `NotAMerge` — 現在のイベントのタイプは `MERGE_PARTS` 以外です。
+  * `RegularMerge` — 通常のマージ。
+  * `TTLDeleteMerge` — 期限切れデータのクリーンアップ。
+  * `TTLRecompressMerge` — データパートの再圧縮。
+* `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — タイプが `MERGE_PARTS` のイベントのマージアルゴリズム。次のいずれかの値を持つことができます:
+  * `Undecided`
+  * `Horizontal`
+  * `Vertical`
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベント日付。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベント時刻。
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のイベント時刻。
+* `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 期間。
+* `database` ([String](../../sql-reference/data-types/string.md)) — データパートが存在するデータベースの名前。
+* `table` ([String](../../sql-reference/data-types/string.md)) — データパートが存在するテーブルの名前。
+* `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — データパートが属するテーブルの UUID。
+* `part_name` ([String](../../sql-reference/data-types/string.md)) — データパートの名前。
+* `partition_id` ([String](../../sql-reference/data-types/string.md)) — データパートが挿入されたパーティションの ID。パーティショニングが `tuple()` による場合、この列は `all` 値を取ります。
+* `partition` ([String](../../sql-reference/data-types/string.md)) - パーティション名。
+* `part_type` ([String](../../sql-reference/data-types/string.md)) - パートのタイプ。可能な値: Wide および Compact。
+* `disk_name` ([String](../../sql-reference/data-types/string.md)) - データパートが存在するディスク名。
+* `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — データパートファイルを含むフォルダへの絶対パス。
+* `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパート内の行数。
+* `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパートのバイト単位のサイズ。
+* `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 現在のパートが構成されたパートの名前の配列(マージ後)。
+* `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮バイトのサイズ。
+* `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られた行数。
+* `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られたバイト数。
+* `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — このスレッドのコンテキストで割り当てられたメモリと解放されたメモリの量の最大差。
+* `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 発生したエラーのコード番号。
+* `exception` ([String](../../sql-reference/data-types/string.md)) — 発生したエラーのテキストメッセージ。
+* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — さまざまなメトリックを測定する ProfileEvents。これらの説明は、テーブル [system.events](/operations/system-tables/events) にあります。
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行しているサーバのホスト名。
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — このデータパートを作成した `INSERT` クエリの識別子。
-- `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — データパートに対して発生したイベントの種類。次のいずれかの値を取ることができます：
-  - `NewPart` — 新しいデータパートの挿入。
-  - `MergePartsStart` — データパートのマージが開始された。
-  - `MergeParts` — データパートのマージが完了した。
-  - `DownloadPart` — データパートのダウンロード。
-  - `RemovePart` — [DETACH PARTITION](/sql-reference/statements/alter/partition#detach-partitionpart) を使用してデータパートの削除または切り離し。
-  - `MutatePartStart` — データパートの変更が開始された。
-  - `MutatePart` — データパートの変更が完了した。
-  - `MovePart` — あるディスクから別のディスクへのデータパートの移動。
-- `merge_reason` ([Enum8](../../sql-reference/data-types/enum.md)) — `MERGE_PARTS` タイプのイベントの理由。次のいずれかの値を取ることができます：
-  - `NotAMerge` — 現在のイベントが `MERGE_PARTS` 以外のタイプである。
-  - `RegularMerge` — 通常のマージ。
-  - `TTLDeleteMerge` — 有効期限切れデータのクリーンアップ。
-  - `TTLRecompressMerge` — データパートの再圧縮。
-- `merge_algorithm` ([Enum8](../../sql-reference/data-types/enum.md)) — `MERGE_PARTS` タイプのイベントのマージアルゴリズム。次のいずれかの値を取ることができます：
-  - `Undecided`
-  - `Horizontal`
-  - `Vertical`
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — イベントの日付。
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — イベントの時刻。
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度のイベント時刻。
-- `duration_ms` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 継続時間。
-- `database` ([String](../../sql-reference/data-types/string.md)) — データパートが含まれているデータベースの名前。
-- `table` ([String](../../sql-reference/data-types/string.md)) — データパートが含まれているテーブルの名前。
-- `table_uuid` ([UUID](../../sql-reference/data-types/uuid.md)) — データパートが属するテーブルのUUID。
-- `part_name` ([String](../../sql-reference/data-types/string.md)) — データパートの名前。
-- `partition_id` ([String](../../sql-reference/data-types/string.md)) — データパートが挿入されたパーティションのID。このカラムは、パーティショニングが `tuple()` の場合は `all` の値を取ります。
-- `partition` ([String](../../sql-reference/data-types/string.md)) - パーティションの名前。
-- `part_type` ([String](../../sql-reference/data-types/string.md)) - パートのタイプ。可能な値: Wide と Compact。
-- `disk_name` ([String](../../sql-reference/data-types/string.md)) - データパートが存在するディスクの名前。
-- `path_on_disk` ([String](../../sql-reference/data-types/string.md)) — データパートファイルを含むフォルダへの絶対パス。
-- `rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパート内の行数。
-- `size_in_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — データパートのサイズ（バイト単位）。
-- `merged_from` ([Array(String)](../../sql-reference/data-types/array.md)) — 現在のパートがマージ後に構成されたパーツの名前の配列。
-- `bytes_uncompressed` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 非圧縮バイトのサイズ。
-- `read_rows` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られた行数。
-- `read_bytes` ([UInt64](../../sql-reference/data-types/int-uint.md)) — マージ中に読み取られたバイト数。
-- `peak_memory_usage` ([Int64](../../sql-reference/data-types/int-uint.md)) — このスレッドに関連する割り当てられたメモリと解放されたメモリの最大差。
-- `error` ([UInt16](../../sql-reference/data-types/int-uint.md)) — 発生したエラーのコード番号。
-- `exception` ([String](../../sql-reference/data-types/string.md)) — 発生したエラーのテキストメッセージ。
-- `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — 様々なメトリックを測定する ProfileEvents。それらの説明は [system.events](/operations/system-tables/events) テーブルにあります。
-
-`system.part_log` テーブルは、`MergeTree` テーブルに初めてデータが挿入された後に作成されます。
+`system.part_log` テーブルは、`MergeTree` テーブルに最初のデータを挿入した後に作成されます。
 
 **例**
 

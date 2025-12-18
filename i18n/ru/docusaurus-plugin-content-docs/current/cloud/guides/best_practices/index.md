@@ -1,33 +1,23 @@
 ---
-'slug': '/cloud/bestpractices'
-'keywords':
-- 'Cloud'
-- 'Best Practices'
-- 'Bulk Inserts'
-- 'Asynchronous Inserts'
-- 'Avoid Mutations'
-- 'Avoid Nullable Columns'
-- 'Avoid Optimize Final'
-- 'Low Cardinality Partitioning Key'
-- 'Multi Tenancy'
-- 'Usage Limits'
-'title': 'Обзор'
-'hide_title': true
-'description': 'Страница приветствия для раздела Лучшие Практики в ClickHouse Cloud'
-'doc_type': 'landing-page'
+slug: /cloud/bestpractices
+keywords: ['Облако', 'Лучшие практики', 'Массовые вставки', 'Асинхронные вставки', 'Избегайте мутаций', 'Избегайте столбцов Nullable', 'Избегайте OPTIMIZE FINAL', 'Ключ партиционирования с низкой кардинальностью', 'Мультиарендность', 'Ограничения использования']
+title: 'Обзор'
+hide_title: true
+description: 'Главная страница раздела «Лучшие практики» в ClickHouse Cloud'
+doc_type: 'landing-page'
 ---
+
 import TableOfContents from '@site/i18n/ru/docusaurus-plugin-content-docs/current/best-practices/_snippets/_table_of_contents.md';
 
+# Лучшие практики использования ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
 
-# Лучшие практики в ClickHouse Cloud {#best-practices-in-clickhouse-cloud}
+В этом разделе представлены рекомендации, которые помогут максимально эффективно использовать ClickHouse Cloud.
 
-В этом разделе представлены лучшие практики, которым следует следовать, чтобы максимально использовать ClickHouse Cloud.
-
-| Страница                                                     | Описание                                                                |
+| Страница                                                 | Описание                                                                   |
 |----------------------------------------------------------|----------------------------------------------------------------------------|
-| [Ограничения использования](/cloud/bestpractices/usage-limits)| Изучите ограничения ClickHouse.                                          |
-| [Многопользовательская архитектура](/cloud/bestpractices/multi-tenancy)| Узнайте о различных стратегиях реализации многопользовательской архитектуры.                                          |
+| [Usage Limits](/cloud/bestpractices/usage-limits)| Ознакомьтесь с ограничениями ClickHouse.                                  |
+| [Multi tenancy](/cloud/bestpractices/multi-tenancy)| Узнайте о различных стратегиях реализации многопользовательской модели.   |
 
-Эти рекомендации добавляются к стандартным лучшим практикам, которые применимы ко всем развертываниям ClickHouse.
+Эти рекомендации дополняют общие лучшие практики, применимые ко всем развертываниям ClickHouse.
 
 <TableOfContents />

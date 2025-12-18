@@ -1,37 +1,29 @@
 ---
-'title': 'chDB for Node.js'
-'sidebar_label': 'Node.js'
-'slug': '/chdb/install/nodejs'
-'description': 'Node.js で chDB をインストールして使用する方法'
-'keywords':
-- 'chdb'
-- 'nodejs'
-- 'javascript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+title: 'Node.js 向け chDB'
+sidebar_label: 'Node.js'
+slug: /chdb/install/nodejs
+description: 'Node.js での chDB のインストールと使用方法'
+keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
 
+# Node.js 向け chDB {#chdb-for-nodejs}
 
-# chDB for Node.js
+chDB-node は chDB の Node.js バインディングを提供し、外部依存なしで Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
 
-chDB-nodeは、Node.jsアプリケーション内でClickHouseクエリを直接実行できるNode.jsバインディングを提供し、外部依存関係なしで動作します。
-
-## Installation {#installation}
+## インストール {#installation}
 
 ```bash
 npm install chdb
 ```
 
-## Usage {#usage}
+## 使用方法 {#usage}
 
-chDB-nodeは2つのクエリモードをサポートしています: 簡単な操作のためのスタンドアロンクエリと、データベースの状態を維持するためのセッションベースのクエリ。
+chDB-node は 2 つのクエリモードをサポートしています。単純な操作向けのスタンドアロン クエリと、データベース状態を維持するためのセッションベースのクエリです。
 
-### Standalone queries {#standalone-queries}
+### スタンドアロン クエリ {#standalone-queries}
 
-永続的な状態を必要としない簡単な一回限りのクエリの場合:
+永続的な状態を必要としない、単発のクエリの場合:
 
 ```javascript
 const { query } = require("chdb");
@@ -53,7 +45,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Session-Based queries {#session-based-queries}
+### セッション単位のクエリ {#session-based-queries}
 
 ```javascript
 const { Session } = require("chdb");
@@ -104,7 +96,7 @@ try {
 }
 ```
 
-### Processing external data {#processing-external-data}
+### 外部データの処理 {#processing-external-data}
 
 ```javascript
 const { Session } = require("chdb");
@@ -120,7 +112,7 @@ try {
         FROM url('https://datasets.clickhouse.com/hits/hits.csv', 'CSV') 
         LIMIT 1000
     `, "JSON");
-
+    
     console.log("External data analysis:", result);
 
     // Create table from external data
@@ -141,7 +133,7 @@ try {
         ORDER BY date
         LIMIT 10
     `, "Pretty");
-
+    
     console.log("Daily analytics:", analysis);
 
 } finally {
@@ -149,9 +141,9 @@ try {
 }
 ```
 
-## Error handling {#error-handling}
+## エラー処理 {#error-handling}
 
-chDBを使用する際は、常に適切にエラーを処理してください:
+chDB を使用する際は、常にエラーを適切に処理してください。
 
 ```javascript
 const { query, Session } = require("chdb");
@@ -178,7 +170,7 @@ if (result.success) {
 // Error handling for sessions
 function safeSessionQuery() {
     const session = new Session("./error-test");
-
+    
     try {
         // This will throw an error due to invalid syntax
         const result = session.query("CREATE TABLE invalid syntax", "CSV");
@@ -194,8 +186,8 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-## GitHub repository {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
-- **GitHub Repository**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Issues and Support**: 問題は[GitHubリポジトリ](https://github.com/chdb-io/chdb-node/issues)で報告してください
-- **NPM Package**: [npmのchdb](https://www.npmjs.com/package/chdb)
+- **GitHub リポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+- **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb-node/issues) で Issue を報告してください
+- **NPM パッケージ**: [npm 上の chdb](https://www.npmjs.com/package/chdb)

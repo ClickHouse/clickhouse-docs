@@ -1,23 +1,26 @@
 ---
-'description': 'TPC-H 基准数据集和查询.'
-'sidebar_label': 'TPC-H'
-'slug': '/getting-started/example-datasets/tpch'
-'title': 'TPC-H (1999)'
-'doc_type': 'reference'
+description: 'TPC-H 基准数据集和查询。'
+sidebar_label: 'TPC-H'
+slug: /getting-started/example-datasets/tpch
+title: 'TPC-H (1999)'
+doc_type: 'guide'
+keywords: ['示例数据集', 'tpch', '基准测试', '示例数据', '性能测试']
 ---
 
-一个流行的基准测试，模拟了批发供应商的内部数据仓库。数据存储为 3NF（第三范式）表示，这在查询运行时需要大量的连接。尽管它有些陈旧，并且对数据均匀和独立分布的假设不现实，但截至目前，TPC-H 仍然是最受欢迎的 OLAP 基准测试。
+一种流行的基准测试，用于建模某批发供应商的内部数据仓库。
+数据以第三范式的形式存储，在查询执行时需要大量的 JOIN 操作。
+尽管年代久远，且在数据均匀且相互独立分布这一假设上不够现实，TPC-H 仍然是迄今最流行的 OLAP 基准测试。
 
 **参考文献**
 
-- [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [新的 TPC 基准测试用于决策支持和网络商务](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H 分析：有影响力的基准测试中的隐含信息和经验教训](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [量化 TPC-H 瓶颈及其优化](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+* [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291)（Poess 等，2000）
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5)（Boncz 等，2013）
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138)（Dresseler 等，2020）
 
 ## 数据生成与导入 {#data-generation-and-import}
 
-首先，检查 TPC-H 存储库并编译数据生成器：
+首先，检出 TPC-H 仓库代码并编译数据生成器：
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -25,35 +28,38 @@ cd tpch-kit/dbgen
 make
 ```
 
-然后，生成数据。参数 `-s` 指定规模因子。例如，使用 `-s 100`，将为表 'lineitem' 生成 6 亿行。
+然后生成数据。参数 `-s` 用于指定规模因子。例如，当使用 `-s 100` 时，会为表 &#39;lineitem&#39; 生成 6 亿行数据。
 
 ```bash
 ./dbgen -s 100
 ```
 
-规模因子为 100 的详细表大小：
+在规模因子 100 下的各表详细大小：
 
-| 表     | 大小（行数） | 在 ClickHouse 中的压缩大小  |
-|--------|--------------|-------------------------------|
-| nation | 25           | 2 kB                          |
-| region | 5            | 1 kB                          |
-| part   | 20,000,000   | 895 MB                        |
-| supplier | 1,000,000  | 75 MB                         |
-| partsupp | 80,000,000 | 4.37 GB                       |
-| customer | 15,000,000 | 1.19 GB                       |
-| orders | 150,000,000  | 6.15 GB                       |
-| lineitem | 600,000,000 | 26.69 GB                      |
+| Table    | size (in rows) | size (compressed in ClickHouse) |
+| -------- | -------------- | ------------------------------- |
+| nation   | 25             | 2 kB                            |
+| region   | 5              | 1 kB                            |
+| part     | 20.000.000     | 895 MB                          |
+| supplier | 1.000.000      | 75 MB                           |
+| partsupp | 80.000.000     | 4.37 GB                         |
+| customer | 15.000.000     | 1.19 GB                         |
+| orders   | 150.000.000    | 6.15 GB                         |
+| lineitem | 600.000.000    | 26.69 GB                        |
 
-（ClickHouse 中的压缩大小来自 `system.tables.total_bytes`，基于以下表定义。）
+（ClickHouse 中的压缩大小取自 `system.tables.total_bytes`，并基于下述表定义。）
 
 现在在 ClickHouse 中创建表。
 
-我们尽可能遵循 TPC-H 规范的规则：
-- 只为规范第 1.4.2.2 节中提到的列创建主键。
-- 替代参数根据规范第 2.1.x.4 节中的查询验证值被替换。
-- 根据第 1.4.2.1 节，表定义不使用可选的 `NOT NULL` 约束，即使 `dbgen` 默认生成它们。
-  ClickHouse 中 `SELECT` 查询的性能不受 `NOT NULL` 约束存在或不存在的影响。
-- 根据第 1.3.1 节，我们使用 ClickHouse 的本机数据类型（例如 `Int32`、`String`）来实现规范中提到的抽象数据类型（例如 `Identifier`、`Variable text, size N`）。这样做唯一的效果是提高可读性，通过 `dbgen` 生成的 SQL-92 数据类型（例如 `INTEGER`、`VARCHAR(40)`）在 ClickHouse 中也可以工作。
+我们尽可能严格遵循 TPC-H 规范中的规则：
+
+* 仅为规范第 1.4.2.2 节中提到的列创建主键。
+* 将规范第 2.1.x.4 节中用于查询验证的替换参数替换为对应的具体取值。
+* 根据第 1.4.2.1 节的说明，即使 `dbgen` 默认会生成，表定义也不使用可选的 `NOT NULL` 约束。
+  在 ClickHouse 中，`SELECT` 查询的性能不会因是否存在 `NOT NULL` 约束而受到影响。
+* 根据第 1.3.1 节，我们使用 ClickHouse 的原生数据类型（例如 `Int32`、`String`）来实现规范中提到的抽象数据类型
+  （例如 `Identifier`、`Variable text, size N`）。这仅带来更好的可读性，由 `dbgen` 生成的 SQL-92 数据类型
+  （例如 `INTEGER`、`VARCHAR(40)`) 在 ClickHouse 中同样可以正常工作。
 
 ```sql
 CREATE TABLE nation (
@@ -148,7 +154,7 @@ ORDER BY (l_orderkey, l_linenumber);
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-数据可以如下导入：
+可以通过以下方式导入数据：
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -162,7 +168,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 ```
 
 :::note
-除了使用 tpch-kit 自行生成表之外，您还可以选择从公共 S3 桶导入数据。确保先使用上述 `CREATE` 语句创建空表。
+你也可以选择从公共 S3 存储桶中导入数据，而不是使用 tpch-kit 自行生成这些表。请确保先使用上面的 `CREATE` 语句创建空表。
 
 ```sql
 -- Scaling factor 1
@@ -184,31 +190,33 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-````
+```
+
 :::
 
-## Queries {#queries}
+## 查询 {#queries}
 
 :::note
-Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
+应启用 [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) 设置，以获得符合 SQL 标准的正确结果。
 :::
 
 :::note
-Some TPC-H queries query use correlated subqueries which are available since v25.8.
-Please use at least this ClickHouse version to run the queries.
+部分 TPC-H 查询使用了关联子查询，该功能自 v25.8 起可用。
+请至少使用 ClickHouse v25.8 或更高版本来运行这些查询。
 
-In ClickHouse versions 25.5, 25.6, 25.7, it is necessary to set additionally:
+在 ClickHouse 25.5、25.6、25.7 版本中，还需要额外设置：
 
 ```sql
 SET allow_experimental_correlated_subqueries = 1;
 ```
+
 :::
 
-查询由 `./qgen -s <scaling_factor>` 生成。以下是 `s = 100` 的示例查询：
+查询由 `./qgen -s <scaling_factor>` 生成。下面是 `s = 100` 时的示例查询：
 
 **正确性**
 
-除非另有说明，查询结果与官方结果一致。要验证，请使用规模因子 = 1 生成 TPC-H 数据库（`dbgen`，见上文），并与 [tpch-kit 中的预期结果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) 进行比较。
+除非特别说明，查询结果与官方结果一致。要进行验证，请使用规模因子 = 1（`dbgen`，见上文）生成一个 TPC-H 数据库，并与 [tpch-kit 中的预期结果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers) 进行比较。
 
 **Q1**
 
@@ -236,7 +244,7 @@ ORDER BY
     l_linestatus;
 ```
 
-**Q2**
+**问题 2**
 
 ```sql
 SELECT
@@ -284,7 +292,7 @@ ORDER BY
     p_partkey;
 ```
 
-**Q3**
+**问题 3**
 
 ```sql
 SELECT
@@ -311,7 +319,7 @@ ORDER BY
     o_orderdate;
 ```
 
-**Q4**
+**问题 4**
 
 ```sql
 SELECT
@@ -337,7 +345,7 @@ ORDER BY
     o_orderpriority;
 ```
 
-**Q5**
+**问题 5**
 
 ```sql
 SELECT
@@ -381,9 +389,9 @@ WHERE
 ```
 
 ::::note
-截至 2025 年 2 月，由于小数加法的错误，该查询无法直接使用。相关问题：[https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
+截至 2025 年 2 月，由于 Decimal 加法中的一个错误，此查询无法开箱即用。对应的 issue： [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-这种替代形式有效，并且经过验证返回参考结果。
+下面的替代写法可以正常工作，并已验证能够返回参考结果。
 
 ```sql
 SELECT
@@ -396,9 +404,10 @@ WHERE
     AND l_discount BETWEEN 0.05 AND 0.07
     AND l_quantity < 24;
 ```
+
 ::::
 
-**Q7**
+**问答 7**
 
 ```sql
 SELECT
@@ -441,7 +450,7 @@ ORDER BY
     l_year;
 ```
 
-**Q8**
+**问题 8**
 
 ```sql
 SELECT
@@ -736,7 +745,7 @@ ORDER BY
     p_size;
 ```
 
-**Q17**
+**问题 17**
 
 ```sql
 SELECT
@@ -878,7 +887,7 @@ ORDER BY
     s_name;
 ```
 
-**Q21**
+**问题 21**
 
 ```sql
 SELECT
@@ -922,7 +931,7 @@ ORDER BY
     s_name;
 ```
 
-**Q22**
+**查询 22**
 
 ```sql
 SELECT

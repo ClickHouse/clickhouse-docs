@@ -1,14 +1,16 @@
 ---
-'description': 'データセットのサンプル分散を計算します。'
-'sidebar_position': 212
-'slug': '/sql-reference/aggregate-functions/reference/varSamp'
-'title': 'varSamp'
-'doc_type': 'reference'
+description: 'データセットの標本分散を計算します。'
+sidebar_position: 212
+slug: /sql-reference/aggregate-functions/reference/varSamp
+title: 'varSamp'
+doc_type: 'reference'
 ---
+
+
 
 ## varSamp {#varsamp}
 
-データセットのサンプル分散を計算します。
+データセットの標本分散を計算します。
 
 **構文**
 
@@ -16,35 +18,35 @@
 varSamp(x)
 ```
 
-エイリアス: `VAR_SAMP`。
+エイリアス: `VAR_SAMP`
 
 **パラメータ**
 
-- `x`: サンプル分散を計算するための母集団。[(U)Int*](../../data-types/int-uint.md)、[Float*](../../data-types/float.md)、[Decimal*](../../data-types/decimal.md)。
+- `x`: 標本分散を計算する対象のデータ。[(U)Int\*](../../data-types/int-uint.md)、[Float\*](../../data-types/float.md)、[Decimal\*](../../data-types/decimal.md)
 
-**返される値**
+**戻り値**
 
-- 入力データセット `x` のサンプル分散を返します。[Float64](../../data-types/float.md)。
+- 入力データセット `x` の標本分散を返します。[Float64](../../data-types/float.md)
 
 **実装の詳細**
 
-`varSamp` 関数は、次の式を使用してサンプル分散を計算します：
+`varSamp` 関数は、以下の式を使用して標本分散を計算します:
 
 $$
 \sum\frac{(x - \text{mean}(x))^2}{(n - 1)}
 $$
 
-ここで：
+ここで:
 
-- `x` はデータセット内の各個別データポイントです。
-- `mean(x)` はデータセットの算術平均です。
-- `n` はデータセット内のデータポイントの数です。
+- `x` はデータセット内の各データポイント
+- `mean(x)` はデータセットの算術平均
+- `n` はデータセット内のデータポイント数
 
-この関数は、入力データセットが大きな母集団からのサンプルであることを前提としています。全体の母集団の分散を計算したい場合（完全なデータセットがある場合）は、[`varPop`](../reference/varpop.md) を使用する必要があります。
+この関数は、入力データセットがより大きな母集団からの標本であることを前提としています。母集団全体の分散を計算する場合(完全なデータセットがある場合)は、代わりに [`varPop`](../reference/varpop.md) を使用してください。
 
 **例**
 
-クエリ：
+クエリ:
 
 ```sql
 DROP TABLE IF EXISTS test_data;
@@ -59,7 +61,7 @@ INSERT INTO test_data VALUES (10.5), (12.3), (9.8), (11.2), (10.7);
 SELECT round(varSamp(x),3) AS var_samp FROM test_data;
 ```
 
-レスポンス：
+レスポンス:
 
 ```response
 ┌─var_samp─┐

@@ -1,24 +1,28 @@
 ---
-'description': '用于机器生成日志数据的新分析基准'
-'sidebar_label': '布朗大学基准测试'
-'slug': '/getting-started/example-datasets/brown-benchmark'
-'title': '布朗大学基准测试'
-'doc_type': 'reference'
+description: '一种面向机器生成日志数据的新分析基准'
+sidebar_label: 'Brown University 基准测试'
+slug: /getting-started/example-datasets/brown-benchmark
+title: 'Brown University 基准测试'
+keywords: ['Brown University Benchmark', 'MgBench', '日志数据基准测试', '机器生成数据', '入门']
+doc_type: 'guide'
 ---
 
-`MgBench` 是一个针对机器生成日志数据的新分析基准，[Andrew Crotty](http://cs.brown.edu/people/acrotty/)。
+`MgBench` 是一个面向机器生成日志数据的新分析基准，由 [Andrew Crotty](http://cs.brown.edu/people/acrotty/) 提出。
 
 下载数据：
+
 ```bash
 wget https://datasets.clickhouse.com/mgbench{1..3}.csv.xz
 ```
 
 解压数据：
+
 ```bash
 xz -v -d mgbench{1..3}.csv.xz
 ```
 
-创建数据库和表：
+创建数据库和数据表：
+
 ```sql
 CREATE DATABASE mgbench;
 ```
@@ -340,7 +344,8 @@ GROUP BY device_name,
 ORDER BY ct DESC;
 ```
 
-以下查询 3.5 使用了 UNION。设置用于组合 SELECT 查询结果的模式。此设置仅在共享 UNION 时使用，而未明确指定 UNION ALL 或 UNION DISTINCT。
+下面的查询 3.5 使用了 UNION。设置用于合并 SELECT 查询结果的模式。该设置仅在与 UNION 一起使用且未显式指定 UNION ALL 或 UNION DISTINCT 时生效。
+
 ```sql
 SET union_default_mode = 'DISTINCT'
 ```
@@ -444,4 +449,4 @@ ORDER BY yr,
          mo;
 ```
 
-数据还可以在 [Playground](https://sql.clickhouse.com) 中进行互动查询，[示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。
+此外，这些数据也可以在 [Playground](https://sql.clickhouse.com) 中通过交互式查询进行访问，参见 [示例](https://sql.clickhouse.com?query_id=1MXMHASDLEQIP4P1D1STND)。

@@ -1,13 +1,14 @@
 ---
-'description': 'Сортирует временные ряды по временной метке в порядке возрастания.'
-'sidebar_position': 146
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesGroupArray'
-'title': 'timeSeriesGroupArray'
-'doc_type': 'reference'
+description: 'Сортирует временные ряды по возрастанию метки времени.'
+sidebar_position: 146
+slug: /sql-reference/aggregate-functions/reference/timeSeriesGroupArray
+title: 'timeSeriesGroupArray'
+doc_type: 'reference'
 ---
-# timeSeriesGroupArray
 
-Сортирует временные ряды по метке времени в порядке возрастания.
+# timeSeriesGroupArray {#timeseriesgrouparray}
+
+Сортирует временные ряды по метке времени по возрастанию.
 
 **Синтаксис**
 
@@ -17,12 +18,13 @@ timeSeriesGroupArray(timestamp, value)
 
 **Аргументы**
 
-- `timestamp` - метка времени образца
-- `value` - значение временного ряда, соответствующее метке времени `timestamp`
+* `timestamp` — временная метка выборки
+* `value` — значение временного ряда, соответствующее `timestamp`
 
 **Возвращаемое значение**
 
-Функция возвращает массив кортежей (`timestamp`, `value`), отсортированных по метке времени `timestamp` в порядке возрастания. Если для одной и той же метки времени существует несколько значений, то функция выбирает наибольшее из этих значений.
+Функция возвращает массив кортежей (`timestamp`, `value`), отсортированный по возрастанию `timestamp`.
+Если для одного и того же `timestamp` существует несколько значений, функция выбирает наибольшее из них.
 
 **Пример**
 
@@ -49,7 +51,7 @@ FROM
    └──────────────────────────────────────────────┘
 ```
 
-Также возможно передавать несколько образцов меток времени и значений в виде массивов одинакового размера. Тот же запрос с массивами в аргументах:
+Также можно передавать несколько меток времени и значений в виде массивов одинаковой длины. Тот же запрос с аргументами-массивами:
 
 ```sql
 WITH
@@ -59,5 +61,5 @@ SELECT timeSeriesGroupArray(timestamps, values);
 ```
 
 :::note
-Эта функция является экспериментальной, включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
+Эта функция экспериментальная; включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
 :::

@@ -1,49 +1,46 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/agno'
-'sidebar_label': '集成 Agno'
-'title': '如何使用 Agno 和 ClickHouse MCP 服务器构建 AI Agent'
-'pagination_prev': null
-'pagination_next': null
-'description': '学习如何使用 Agno 和 ClickHouse MCP 服务器构建 AI Agent'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'Agno'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/agno
+sidebar_label: '集成 Agno'
+title: '如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent'
+pagination_prev: null
+pagination_next: null
+description: '了解如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent'
+keywords: ['ClickHouse', 'MCP', 'Agno']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# 如何使用 Agno 和 ClickHouse MCP Server 构建 AI Agent {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
-# 如何使用 Agno 和 ClickHouse MCP 服务器构建 AI Agent
+在本指南中，你将学习如何构建一个 [Agno](https://github.com/agno-agi/agno) AI agent，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 
-在本指南中，您将学习如何构建一个可以与 [ClickHouse 的 SQL 游乐场](https://sql.clickhouse.com/) 进行交互的 [Agno](https://github.com/agno-agi/agno) AI 代理，使用 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)。
-
-:::note 示例笔记本
-此示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) 中找到作为笔记本。
+:::note 示例 Notebook
+该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) 中以 Notebook 的形式找到。
 :::
 
-## 前提条件 {#prerequisites}
+## 前置条件 {#prerequisites}
+
 - 您需要在系统上安装 Python。
 - 您需要在系统上安装 `pip`。
-- 您需要一个 Anthropic API 密钥，或来自其他 LLM 提供商的 API 密钥。
+- 您需要 Anthropic API 密钥或其他 LLM 提供商的 API 密钥。
 
-您可以从 Python REPL 或通过脚本运行以下步骤。
+您可以通过 Python REPL 或脚本运行以下步骤。
 
 <VerticalStepper headerLevel="h2">
 
 ## 安装库 {#install-libraries}
 
-通过运行以下命令安装 Agno 库：
+运行以下命令来安装 Agno 库：
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agno
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agno
+pip install -q ipywidgets
 ```
 
-## 设置凭据 {#setup-credentials}
+## 配置凭证 {#setup-credentials}
 
-接下来，您需要提供您的 Anthropic API 密钥：
+接下来，您需要提供 Anthropic API 密钥：
 
 ```python
 import os, getpass
@@ -55,11 +52,11 @@ Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥，并希望使用其他 LLM 提供商，
-您可以在 [DSPy 文档](https://dspy.ai/#__tabbed_1_1) 中找到设置凭据的说明。
+如果你没有 Anthropic API 密钥，并且想要使用其他 LLM 提供商，
+可以在 [Agno 文档](https://docs.agno.com/concepts/models/introduction) 中找到设置凭据的说明。
 :::
 
-接下来，定义连接到 ClickHouse SQL 游乐场所需的凭据：
+接下来，定义用于连接 ClickHouse SQL playground 的凭据：
 
 ```python
 env = {
@@ -73,7 +70,8 @@ env = {
 
 ## 初始化 MCP 服务器和 Agno 代理 {#initialize-mcp-and-agent}
 
-现在将 ClickHouse MCP 服务器配置为指向 ClickHouse SQL 游乐场，并初始化我们的 Agno 代理并向其提问：
+现在配置 ClickHouse MCP 服务器指向 ClickHouse SQL 演练场,
+并初始化 Agno 代理,然后向其提问:
 
 ```python
 from agno.agent import Agent

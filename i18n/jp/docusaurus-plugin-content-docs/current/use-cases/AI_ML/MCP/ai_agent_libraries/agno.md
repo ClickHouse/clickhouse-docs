@@ -1,50 +1,46 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/agno'
-'sidebar_label': 'Agnoを統合する'
-'title': 'AgnoとClickHouse MCPサーバーを使用してAIエージェントを構築する方法'
-'pagination_prev': null
-'pagination_next': null
-'description': 'AgnoとClickHouse MCPサーバーを使用してAIエージェントを構築する方法を学ぶ'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'Agno'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/agno
+sidebar_label: 'Agno を統合する'
+title: 'Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法を学ぶ'
+keywords: ['ClickHouse', 'MCP', 'Agno']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# Agno と ClickHouse MCP Server を使用して AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
+このガイドでは、[Agno](https://github.com/agno-agi/agno) を使って、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 
-# How to build an AI Agent with Agno and the ClickHouse MCP Server
-
-このガイドでは、[Agno](https://github.com/agno-agi/agno) AIエージェントを構築し、[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)と対話する方法を学びます。これは、[ClickHouseのMCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を使用しています。
-
-:::note 例のノートブック
-この例は、[examplesリポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb)のノートブックとして見つけることができます。
+:::note サンプルノートブック
+このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb) にノートブックとして用意されています。
 :::
 
 ## 前提条件 {#prerequisites}
-- システムにPythonがインストールされている必要があります。
-- システムに`pip`がインストールされている必要があります。
-- AnthropicのAPIキー、または他のLLMプロバイダーからのAPIキーが必要です。
 
-以下のステップは、Python REPLまたはスクリプトから実行できます。
+- システムにPythonがインストールされていること
+- システムに`pip`がインストールされていること
+- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキー
+
+以下の手順は、Python REPLまたはスクリプトから実行できます。
 
 <VerticalStepper headerLevel="h2">
 
-## ライブラリのインストール {#install-libraries}
+## ライブラリをインストールする {#install-libraries}
 
-次のコマンドを実行して、Agnoライブラリをインストールします。
+以下のコマンドを実行して Agno ライブラリをインストールします。
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agno
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agno
+pip install -q ipywidgets
 ```
 
 ## 認証情報の設定 {#setup-credentials}
 
-次に、AnthropicのAPIキーを提供する必要があります：
+次に、Anthropic API キーを指定する必要があります：
 
 ```python
 import os, getpass
@@ -55,12 +51,12 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 Enter Anthropic API Key: ········
 ```
 
-:::note 他のLLMプロバイダーの利用
-AnthropicのAPIキーがない場合、他のLLMプロバイダーを使用したい場合は、
-[ DSPy ドキュメント](https://dspy.ai/#__tabbed_1_1)に認証情報の設定に関する手順があります。
+:::note 他の LLM プロバイダーを使用する場合
+Anthropic の API キーを持っておらず、別の LLM プロバイダーを使用したい場合は、
+資格情報の設定手順を [Agno ドキュメント](https://docs.agno.com/concepts/models/introduction) で確認できます。
 :::
 
-次に、ClickHouse SQLプレイグラウンドに接続するために必要な認証情報を定義します：
+次に、ClickHouse の SQL Playground に接続するために必要な資格情報を定義します。
 
 ```python
 env = {
@@ -74,7 +70,8 @@ env = {
 
 ## MCPサーバーとAgnoエージェントの初期化 {#initialize-mcp-and-agent}
 
-Now ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドを指すように構成し、Agnoエージェントを初期化し、質問します：
+ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドに接続するように設定し、
+Agnoエージェントを初期化して質問してみます:
 
 ```python
 from agno.agent import Agent

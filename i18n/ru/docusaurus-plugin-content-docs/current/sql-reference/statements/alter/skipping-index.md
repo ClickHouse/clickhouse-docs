@@ -1,34 +1,36 @@
 ---
-slug: '/sql-reference/statements/alter/skipping-index'
-sidebar_label: INDEX
+description: 'Документация по операциям с индексами пропуска данных'
+sidebar_label: 'INDEX'
 sidebar_position: 42
-description: 'Документация по манипуляции индексами пропуска данных'
-title: 'Манипулирование индексами пропуска данных'
-doc_type: reference
+slug: /sql-reference/statements/alter/skipping-index
+title: 'Операции с индексами пропуска данных'
 toc_hidden_folder: true
+doc_type: 'reference'
 ---
-# Манипулирование индексами пропуска данных
+
+# Работа с индексами пропуска данных {#manipulating-data-skipping-indices}
 
 Доступны следующие операции:
 
-## ДОБАВИТЬ ИНДЕКС {#add-index}
+## ADD INDEX {#add-index}
 
-`ALTER TABLE [db.]table_name [ON CLUSTER cluster] ADD INDEX [IF NOT EXISTS] name expression TYPE type [GRANULARITY value] [FIRST|AFTER name]` - Добавляет описание индекса в метаданные таблиц.
+`ALTER TABLE [db.]table_name [ON CLUSTER cluster] ADD INDEX [IF NOT EXISTS] name expression TYPE type [GRANULARITY value] [FIRST|AFTER name]` - Добавляет описание индекса в метаданные таблицы.
 
-## УДАЛИТЬ ИНДЕКС {#drop-index}
+## DROP INDEX {#drop-index}
 
-`ALTER TABLE [db.]table_name [ON CLUSTER cluster] DROP INDEX [IF EXISTS] name` - Удаляет описание индекса из метаданных таблиц и удаляет файлы индекса с диска. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table_name [ON CLUSTER cluster] DROP INDEX [IF EXISTS] name` — удаляет описание индекса из метаданных таблицы и файлы индекса с диска. Реализована как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-## МАТЕРИАЛИЗОВАТЬ ИНДЕКС {#materialize-index}
+## MATERIALIZE INDEX {#materialize-index}
 
-`ALTER TABLE [db.]table_name [ON CLUSTER cluster] MATERIALIZE INDEX [IF EXISTS] name [IN PARTITION partition_name]` - Перестраивает вторичный индекс `name` для указанной `partition_name`. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations). Если часть `IN PARTITION` опущена, то индекс перестраивается для всех данных таблицы.
+`ALTER TABLE [db.]table_name [ON CLUSTER cluster] MATERIALIZE INDEX [IF EXISTS] name [IN PARTITION partition_name]` — перестраивает вторичный индекс `name` для указанного `partition_name`. Операция реализована как [мутация](/sql-reference/statements/alter/index.md#mutations). Если часть `IN PARTITION` опущена, индекс перестраивается для данных всей таблицы.
 
-## ОЧИСТИТЬ ИНДЕКС {#clear-index}
+## CLEAR INDEX {#clear-index}
 
-`ALTER TABLE [db.]table_name [ON CLUSTER cluster] CLEAR INDEX [IF EXISTS] name [IN PARTITION partition_name]` - Удаляет файлы вторичного индекса с диска, не удаляя описание. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
+`ALTER TABLE [db.]table_name [ON CLUSTER cluster] CLEAR INDEX [IF EXISTS] name [IN PARTITION partition_name]` — удаляет с диска файлы вторичного индекса, при этом не удаляя его описание. Эта операция реализована как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-Команды `ADD`, `DROP` и `CLEAR` являются легковесными в том смысле, что они изменяют только метаданные или удаляют файлы. Также они реплицируются, синхронизируя метаданные индексов через ClickHouse Keeper или ZooKeeper.
+Команды `ADD`, `DROP` и `CLEAR` являются «легковесными» в том смысле, что они только изменяют метаданные или удаляют файлы.
+Кроме того, они реплицируются, синхронизируя метаданные индексов через ClickHouse Keeper или ZooKeeper.
 
 :::note    
-Манипулирование индексами поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](/engines/table-engines/mergetree-family/replication.md) варианты).
+Управление индексами поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::

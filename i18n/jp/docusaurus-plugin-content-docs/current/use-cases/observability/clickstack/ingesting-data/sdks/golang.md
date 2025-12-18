@@ -1,16 +1,17 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/golang'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 2
-'description': 'Golang SDK for ClickStack - ClickHouse 可观测性堆栈'
-'title': 'Golang'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/golang
+pagination_prev: null
+pagination_next: null
+sidebar_position: 2
+description: 'ClickStack 用 Golang SDK - ClickHouse オブザーバビリティスタック'
+title: 'Golang'
+doc_type: 'guide'
+keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry 連携', 'Golang オブザーバビリティ', 'Go トレース計装', 'ClickStack Go SDK']
 ---
 
-ClickStackは、テレメトリデータ（ログとトレース）を収集するためにOpenTelemetry標準を使用しています。トレースは自動計測により自動的に生成されるため、トレースから価値を得るために手動の計測は必要ありません。
+ClickStack は、テレメトリデータ（ログおよびトレース）を収集するために OpenTelemetry の標準を使用します。トレースは自動計装によって自動生成されるため、トレースの活用価値を得るために手動で計装する必要はありません。
 
-**このガイドには次の内容が含まれています：**
+**このガイドで統合するもの:**
 
 <table>
   <tbody>
@@ -24,9 +25,9 @@ ClickStackは、テレメトリデータ（ログとトレース）を収集す�
 
 ## はじめに {#getting-started}
 
-### OpenTelemetryの計測パッケージをインストールする {#install-opentelemetry}
+### OpenTelemetry インストルメンテーションパッケージをインストールする {#install-opentelemetry}
 
-OpenTelemetryとHyperDXのGoパッケージをインストールするには、以下のコマンドを使用します。トレース情報が正しく添付されるように、[現在の計測パッケージ](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages)を確認し、必要なパッケージをインストールすることをお勧めします。
+OpenTelemetry と HyperDX の Go パッケージをインストールするには、以下のコマンドを使用してください。[現在のインストルメンテーションパッケージ](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages)を確認し、必要なパッケージをインストールして、トレース情報が正しく紐付けられるようにすることを推奨します。
 
 ```shell
 go get -u go.opentelemetry.io/otel
@@ -35,15 +36,15 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-### ネイティブHTTPサーバーの例 (net/http) {#native-http-server-example}
+### ネイティブ HTTP サーバーの例 (net/http) {#native-http-server-example}
 
-この例では、`net/http/otelhttp`を使用します。
+ここでは、`net/http/otelhttp` を使用します。
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
-Goアプリケーションの計測方法を学ぶには、コメント付きのセクションを参照してください。
+コメントアウトされたセクションを参照して、Go アプリケーションを計装（インストルメンテーション）する方法を確認してください。
 
 ```go
 
@@ -143,15 +144,15 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-### Ginアプリケーションの例 {#gin-application-example}
+### Gin アプリケーションの例 {#gin-application-example}
 
-この例では、`gin-gonic/gin`を使用します。
+この例では、`gin-gonic/gin` を使用します。
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ```
 
-Goアプリケーションの計測方法を学ぶには、コメント付きのセクションを参照してください。
+コメント付きセクションを参照して、Go アプリケーションの計装方法を確認してください。
 
 ```go
 
@@ -229,7 +230,7 @@ func main() {
 
 ### 環境変数を設定する {#configure-environment-variables}
 
-その後、テレメトリをClickStackに送信するために、シェルで以下の環境変数を設定する必要があります：
+続いて、ClickStack にテレメトリを送信するために、シェルに次の環境変数を設定する必要があります。
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
@@ -238,4 +239,4 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-`OTEL_EXPORTER_OTLP_HEADERS`環境変数には、HyperDXアプリの`Team Settings → API Keys`から利用可能なAPIキーが含まれています。
+`OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` で取得できる API キーを設定します。

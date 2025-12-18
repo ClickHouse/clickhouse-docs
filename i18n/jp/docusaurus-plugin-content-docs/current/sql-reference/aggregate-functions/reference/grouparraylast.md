@@ -1,20 +1,19 @@
 ---
-'description': '最後の引数値の配列を作成します。'
-'sidebar_position': 142
-'slug': '/sql-reference/aggregate-functions/reference/grouparraylast'
-'title': 'groupArrayLast'
-'doc_type': 'reference'
+description: '最後の引数の値の配列を作成します。'
+sidebar_position: 142
+slug: /sql-reference/aggregate-functions/reference/grouparraylast
+title: 'groupArrayLast'
+doc_type: 'reference'
 ---
 
-
-# groupArrayLast
+# groupArrayLast {#grouparraylast}
 
 構文: `groupArrayLast(max_size)(x)`
 
-最後の引数値の配列を作成します。  
-例えば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
+引数のうち最後の値からなる配列を作成します。
+たとえば、`groupArrayLast(1)(x)` は `[anyLast (x)]` と同等です。
 
-いくつかのケースでは、実行順序に依存することができます。これは、`SELECT` が小さいサブクエリから `ORDER BY` を使用してくる場合に適用されます。
+場合によっては、依然として実行順序に依存できます。これは、サブクエリの結果が十分に小さい場合に、`ORDER BY` を使用するサブクエリに対する `SELECT` のケースに適用されます。
 
 **例**
 
@@ -24,7 +23,7 @@
 SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
 ```
 
-結果:
+結果：
 
 ```text
 ┌─numbers─┐
@@ -32,7 +31,7 @@ SELECT groupArrayLast(2)(number+1) numbers FROM numbers(10)
 └─────────┘
 ```
 
-`groupArray` と比較して:
+`groupArray` と比較すると、
 
 ```sql
 SELECT groupArray(2)(number+1) numbers FROM numbers(10)

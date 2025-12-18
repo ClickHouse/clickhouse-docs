@@ -1,24 +1,26 @@
 ---
-slug: '/operations/system-tables/metric_log'
-description: 'Системная таблица, содержащая историю значений метрик из таблиц `system.metrics`'
-title: system.metric_log
-keywords: ['system table', 'metric_log']
-doc_type: reference
+description: 'Системная таблица, содержащая историю значений метрик таблиц `system.metrics`
+  и `system.events`, которые периодически сбрасываются на диск.'
+keywords: ['системная таблица', 'metric_log']
+slug: /operations/system-tables/metric_log
+title: 'system.metric_log'
+doc_type: 'reference'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.metric&#95;log {#systemmetric&#95;log}
 
-# system.metric_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
+Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, которые периодически сбрасываются на диск.
 
-Содержит историю значений метрик из таблиц `system.metrics` и `system.events`, периодически записываемых на диск.
+Столбцы:
 
-Колонки:
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с разрешением в микросекундах.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, на котором выполняется запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время события.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время события с точностью до микросекунд.
 
 **Пример**
 
@@ -55,16 +57,16 @@ CurrentMetric_DistributedFilesToInsert:                          0
 ```
 
 **Схема**
-Эту таблицу можно настраивать с различными типами схемы, используя XML тег `<schema_type>`. Тип схемы по умолчанию — `wide`, где каждая метрика или событие профиля хранится как отдельная колонка. Эта схема является наиболее производительной и эффективной для чтений по одной колонке.
+Эта таблица может быть настроена с разными типами схем с помощью XML-тега `<schema_type>`. Тип схемы по умолчанию — `wide`, при котором каждая метрика или событие профилирования хранятся в отдельном столбце. Такая схема является наиболее производительной и эффективной для операций чтения отдельных столбцов.
 
-Схема `transposed` хранит данные в формате, подобном `system.asynchronous_metric_log`, где метрики и события хранятся в виде строк. Эта схема полезна для установок с низкими ресурсами, так как снижает потребление ресурсов во время слияний.
+Схема `transposed` хранит данные в формате, аналогичном `system.asynchronous_metric_log`, где метрики и события хранятся в строках. Эта схема полезна для конфигураций с ограниченными ресурсами, так как снижает потребление ресурсов во время слияний.
 
-Существуют также совместимые схемы, такие как `transposed_with_wide_view`, которая хранит фактические данные в таблице с транспонированной схемой (`system.transposed_metric_log`) и создаёт представление на её основе, используя широкую схему. Это представление запрашивает транспонированную таблицу, что делает его полезным для миграции с широкой схемы на транспонированную.
+Существует также схема совместимости `transposed_with_wide_view`, которая хранит фактические данные в таблице с транспонированной схемой (`system.transposed_metric_log`) и создает поверх нее представление с использованием широкой схемы. Это представление запрашивает транспонированную таблицу, что делает его полезным для миграции со схемы `wide` на схему `transposed`.
 
 **См. также**
 
-- [настройка metric_log](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение настройки.
-- [system.asynchronous_metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически вычисляемые метрики.
-- [system.events](/operations/system-tables/events) — Содержит ряд произошедших событий.
-- [system.metrics](../../operations/system-tables/metrics.md) — Содержит мгновенно вычисляемые метрики.
-- [Мониторинг](../../operations/monitoring.md) — Основные концепции мониторинга ClickHouse.
+* [настройка metric&#95;log](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение настройки.
+* [system.asynchronous&#95;metrics](../../operations/system-tables/asynchronous_metrics.md) — Содержит периодически вычисляемые метрики.
+* [system.events](/operations/system-tables/events) — Содержит счетчики произошедших событий.
+* [system.metrics](../../operations/system-tables/metrics.md) — Содержит моментально вычисляемые метрики.
+* [Мониторинг](../../operations/monitoring.md) — Базовые концепции мониторинга ClickHouse.

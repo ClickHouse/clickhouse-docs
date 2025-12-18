@@ -1,23 +1,25 @@
 ---
-slug: '/interfaces/formats/ProtobufList'
-description: 'Документация по формату ProtobufList'
-title: ProtobufList
-keywords: ['ProtobufList']
-doc_type: reference
+alias: []
+description: 'Документация о формате ProtobufList'
 input_format: true
+keywords: ['ProtobufList']
 output_format: true
+slug: /interfaces/formats/ProtobufList
+title: 'ProtobufList'
+doc_type: 'reference'
 ---
+
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-<CloudNotSupportedBadge/>
+<CloudNotSupportedBadge />
 
-| Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| Ввод | Вывод | Алиас |
+| ---- | ----- | ----- |
+| ✔    | ✔     |       |
 
 ## Описание {#description}
 
-Формат `ProtobufList` похож на формат [`Protobuf`](./Protobuf.md), но строки представлены в виде последовательности подсообщений, содержащихся в сообщении с фиксированным именем "Envelope".
+Формат `ProtobufList` похож на формат [`Protobuf`](./Protobuf.md), но строки представлены в виде последовательности подсообщений, содержащихся в сообщении с фиксированным именем «Envelope».
 
 ## Пример использования {#example-usage}
 
@@ -31,7 +33,7 @@ SELECT * FROM test.table FORMAT ProtobufList SETTINGS format_schema = 'schemafil
 cat protobuflist_messages.bin | clickhouse-client --query "INSERT INTO test.table FORMAT ProtobufList SETTINGS format_schema='schemafile:MessageType'"
 ```
 
-Где файл `schemafile.proto` выглядит следующим образом:
+Файл `schemafile.proto` имеет следующий вид:
 
 ```capnp title="schemafile.proto"
 syntax = "proto3";
@@ -46,4 +48,4 @@ message Envelope {
 };
 ```
 
-## Настройки формата {#format-settings}
+## Параметры форматирования {#format-settings}

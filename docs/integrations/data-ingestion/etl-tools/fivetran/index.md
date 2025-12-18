@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Users can transform and model their data in ClickHouse using dbt'
+description: 'You can transform and model your data in ClickHouse using dbt'
 title: 'Fivetran and ClickHouse Cloud'
 doc_type: 'guide'
 integration:

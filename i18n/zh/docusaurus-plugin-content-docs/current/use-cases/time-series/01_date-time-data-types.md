@@ -1,33 +1,30 @@
 ---
-'title': '日期和时间数据类型 - 时间序列'
-'sidebar_label': '日期和时间数据类型'
-'description': 'ClickHouse中的时间序列数据类型。'
-'slug': '/use-cases/time-series/date-time-data-types'
-'keywords':
-- 'Time Series'
-- 'DateTime'
-'show_related_blogs': true
-'doc_type': 'reference'
+title: '日期和时间数据类型 - 时间序列'
+sidebar_label: '日期和时间数据类型'
+description: 'ClickHouse 中的时间序列数据类型。'
+slug: /use-cases/time-series/date-time-data-types
+keywords: ['时间序列', 'DateTime', 'DateTime64', 'Date', '数据类型', '时序数据', '时间戳']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
+# 日期和时间数据类型 {#date-and-time-data-types}
 
-# 日期和时间数据类型
+要有效管理时间序列数据，需要一套完整的日期和时间类型，而 ClickHouse 正好提供了这一点。
+从紧凑的日期表示到具有纳秒精度的高精度时间戳，这些类型在存储效率与不同时间序列应用的实际需求之间取得了平衡。
 
-拥有全面的日期和时间类型对于有效的时间序列数据管理是必要的，而 ClickHouse 正是提供了这一点。
-从紧凑的日期表示到以纳秒精度的高精度时间戳，这些类型旨在平衡存储效率与不同时间序列应用的实际需求。
+无论是处理历史金融数据、IoT 传感器读数，还是未来日期的事件，ClickHouse 的日期和时间类型都能提供处理各种时间数据场景所需的灵活性。
+支持的类型范围使你可以在保持用例所需精度的前提下，同时优化存储空间和查询性能。
 
-无论您是在处理历史金融数据、物联网传感器读数，还是未来日期的事件，ClickHouse 的日期和时间类型都提供了处理各种时间数据场景所需的灵活性。
-支持的类型范围使您能够在优化存储空间和查询性能的同时，保持您用例所需的精度。
+* 在大多数情况下，[`Date`](/sql-reference/data-types/date) 类型就足够了。该类型使用 2 字节存储一个日期，取值范围为 `[1970-01-01, 2149-06-06]`。
 
-* [`Date`](/sql-reference/data-types/date) 类型在大多数情况下都是足够的。此类型需要 2 个字节来存储一个日期，限制范围为 `[1970-01-01, 2149-06-06]`。
+* [`Date32`](/sql-reference/data-types/date32) 覆盖了更广的日期范围。它使用 4 字节存储一个日期，取值范围为 `[1900-01-01, 2299-12-31]`
 
-* [`Date32`](/sql-reference/data-types/date32) 覆盖了更广泛的日期范围。它需要 4 个字节来存储一个日期，限制范围为 `[1900-01-01, 2299-12-31]`。
+* [`DateTime`](/sql-reference/data-types/datetime) 以秒为精度存储日期时间值，取值范围为 `[1970-01-01 00:00:00, 2106-02-07 06:28:15]`，每个值需要 4 字节。
 
-* [`DateTime`](/sql-reference/data-types/datetime) 存储秒精度的日期时间值，范围为 `[1970-01-01 00:00:00, 2106-02-07 06:28:15]`。它需要每个值 4 个字节。
+* 当需要更高精度时，可以使用 [`DateTime64`](/sql-reference/data-types/datetime64)。它允许以最高纳秒精度存储时间，取值范围为 `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]`，每个值需要 8 字节。
 
-* 对于需要更多精度的情况，可以使用 [`DateTime64`](/sql-reference/data-types/datetime64)。这允许以纳秒精度存储时间，范围为 `[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999]`。它每个值需要 8 个字节。
-
-让我们创建一个存储各种日期类型的表：
+我们来创建一张存储多种日期类型的表：
 
 ```sql
 CREATE TABLE dates
@@ -42,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-我们可以使用 [`now()`](/sql-reference/functions/date-time-functions#now) 函数返回当前时间，并使用 [`now64()`](/sql-reference/functions/date-time-functions#now64) 通过第一个参数以指定精度获取时间。
+我们可以使用 [`now()`](/sql-reference/functions/date-time-functions#now) 函数返回当前时间，并使用 [`now64()`](/sql-reference/functions/date-time-functions#now64) 通过第一个参数指定精度来获取当前时间。
 
 ```sql
 INSERT INTO dates 
@@ -53,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-这将根据列类型相应填充我们的列：
+这会根据各列的类型填充相应的时间值：
 
 ```sql
 SELECT * FROM dates
@@ -72,7 +69,7 @@ very_precise_datetime: 2025-03-12 11:39:07.196724000
 
 ## 时区 {#time-series-timezones}
 
-许多用例还需要存储时区。我们可以将时区设为 `DateTime` 或 `DateTime64` 类型的最后一个参数：
+许多使用场景需要同时存储时区信息。我们可以将时区设置为 `DateTime` 或 `DateTime64` 类型的最后一个参数：
 
 ```sql
 CREATE TABLE dtz
@@ -87,7 +84,7 @@ ENGINE = MergeTree
 ORDER BY id;
 ```
 
-在我们的 DDL 中定义了时区后，我们现在可以使用不同的时区插入时间：
+在 DDL 中定义好时区后，我们现在可以插入使用不同时区的时间数据：
 
 ```sql
 INSERT INTO dtz 
@@ -104,7 +101,7 @@ SELECT 2,
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-现在让我们查看一下我们的表中有什么内容：
+现在来看一下表中的数据：
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -128,18 +125,19 @@ dt_2:   2022-12-12 12:13:15
 dt64_2: 2022-12-12 12:13:15.123456789
 ```
 
-在第一行中，我们使用 `America/New_York` 时区插入了所有值。
-* `dt_1` 和 `dt64_1` 在查询时自动转换为 `Europe/Berlin`。
-* `dt_2` 和 `dt64_2` 没有指定时区，因此使用服务器的本地时区，在这种情况下是 `Europe/London`。
+第一行中，我们使用 `America/New_York` 时区插入了所有值。
 
-在第二行中，我们插入的所有值都没有时区，因此使用了服务器的本地时区。
-与第一行一样，`dt_1` 和 `dt_3` 被转换为 `Europe/Berlin`，而 `dt_2` 和 `dt64_2` 使用了服务器的本地时区。
+* `dt_1` 和 `dt64_1` 在查询时会自动转换为 `Europe/Berlin`。
+* `dt_2` 和 `dt64_2` 没有指定时区，因此使用服务器的本地时区，在本例中是 `Europe/London`。
+
+第二行中，我们在未指定时区的情况下插入了所有值，因此使用了服务器的本地时区。
+与第一行相同，`dt_1` 和 `dt64_1` 被转换为 `Europe/Berlin`，而 `dt_2` 和 `dt64_2` 使用服务器的本地时区。
 
 ## 日期和时间函数 {#time-series-date-time-functions}
 
-ClickHouse 还提供了一组函数，允许我们在不同数据类型之间进行转换。
+ClickHouse 还提供了一组函数，用于在不同数据类型之间相互转换。
 
-例如，我们可以使用 [`toDate`](/sql-reference/functions/type-conversion-functions#todate) 将 `DateTime` 值转换为 `Date` 类型：
+例如，我们可以使用 [`toDate`](/sql-reference/functions/type-conversion-functions#toDate) 将 `DateTime` 值转换为 `Date` 类型：
 
 ```sql
 SELECT
@@ -159,7 +157,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-我们可以使用 [`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64) 将 `DateTime` 转换为 `DateTime64`：
+我们可以使用 [`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64) 将 `DateTime` 转换为 `DateTime64`：
 
 ```sql
 SELECT
@@ -179,7 +177,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-我们可以使用 [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime) 从 `Date` 或 `DateTime64` 回到 `DateTime`：
+此外，我们可以使用 [`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime) 将 `Date` 或 `DateTime64` 转换回 `DateTime`：
 
 ```sql
 SELECT

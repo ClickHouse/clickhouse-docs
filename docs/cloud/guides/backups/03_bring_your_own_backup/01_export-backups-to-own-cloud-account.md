@@ -16,7 +16,7 @@ For details of how ClickHouse Cloud backups work, including "full" vs. "incremen
 In this guide, we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
-Users should be aware that any usage where backups are being exported to a different region in the same cloud provider, will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we do not support cross cloud backups.
+Any usage where backups are being exported to a different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we don't support cross cloud backups.
 :::
 
 ## Requirements {#requirements}
@@ -97,7 +97,7 @@ AS test_backups_restored
 FROM S3('https://testchbackups.s3.amazonaws.com/backups/<uuid>', '<key id>', '<key secret>')
 ```
 
-See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-s3-endpoint) for more details.
+See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup/s3_endpoint) for more details.
 
 ## Backup / Restore to Azure Blob Storage {#backup--restore-to-azure-blob-storage}
 
@@ -128,7 +128,7 @@ AS test_backups_restored_azure
 FROM AzureBlobStorage('<AzureBlobStorage endpoint connection string>', '<container>', '<blob>/<uuid>')
 ```
 
-See: [Configuring BACKUP/RESTORE to use an S3 Endpoint](/operations/backup#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
+See: [Configuring BACKUP/RESTORE to use an AzureBlobStorage Endpoint](/operations/backup/azure#configuring-backuprestore-to-use-an-azureblobstorage-endpoint) for more details.
 
 ## Backup / Restore to Google Cloud Storage (GCS) {#backup--restore-to-google-cloud-storage-gcs}
 

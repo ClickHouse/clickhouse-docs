@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompactStringsEachRow 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONCompactStringsEachRow'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompactStringsEachRow'
-'title': 'JSONCompactStringsEachRow'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompactStringsEachRow 格式文档'
+input_format: true
+keywords: ['JSONCompactStringsEachRow']
+output_format: true
+slug: /interfaces/formats/JSONCompactStringsEachRow
+title: 'JSONCompactStringsEachRow'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,13 +15,13 @@
 
 ## 描述 {#description}
 
-与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 的区别在于数据字段作为字符串输出，而不是类型化的 JSON 值。
+与 [`JSONCompactEachRow`](./JSONCompactEachRow.md) 的唯一区别在于，数据字段以字符串形式输出，而不是以带类型的 JSON 值输出。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用名为 `football.json` 的 JSON 文件，其包含以下数据：
+使用一个名为 `football.json`、包含以下数据的 JSON 文件：
 
 ```json
 ["2022-04-30", "2021", "Sutton United", "Bradford City", "1", "4"]

@@ -1,30 +1,21 @@
 ---
-'title': 'chDB for Bun'
-'sidebar_label': 'Bun'
-'slug': '/chdb/install/bun'
-'description': '如何安装和使用 chDB 与 Bun 运行时'
-'keywords':
-- 'chdb'
-- 'bun'
-- 'javascript'
-- 'typescript'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-'doc_type': 'guide'
+title: '适用于 Bun 的 chDB'
+sidebar_label: 'Bun'
+slug: /chdb/install/bun
+description: '如何在 Bun 运行时环境中安装和使用 chDB'
+keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 'sql', 'olap']
+doc_type: 'guide'
 ---
 
+# Bun 上的 chDB {#chdb-for-bun}
 
-# chDB for Bun
-
-chDB-bun 提供实验性的 FFI (Foreign Function Interface) 绑定，允许您在 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
+chDB-bun 为 chDB 提供了实验性的 FFI（Foreign Function Interface，外部函数接口）绑定，使你能够在你的 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
 
 ## 安装 {#installation}
 
-### 步骤 1: 安装系统依赖 {#install-system-dependencies}
+### 步骤 1：安装系统依赖项 {#install-system-dependencies}
 
-首先，安装所需的系统依赖：
+首先安装所需的系统依赖项：
 
 #### 安装 libchdb {#install-libchdb}
 
@@ -34,15 +25,13 @@ curl -sL https://lib.chdb.io | bash
 
 #### 安装构建工具 {#install-build-tools}
 
-您需要在系统上安装 `gcc` 或 `clang`：
+你需要在系统上安装 `gcc` 或 `clang` 中的一个：
 
-### 步骤 2: 安装 chDB-bun {#install-chdb-bun}
+### 步骤 2：安装 chDB-bun {#install-chdb-bun}
 
 ```bash
-
 # Install from the GitHub repository
 bun add github:chdb-io/chdb-bun
-
 
 # Or clone and build locally
 git clone https://github.com/chdb-io/chdb-bun.git
@@ -51,13 +40,12 @@ bun install
 bun run build
 ```
 
-## 用法 {#usage}
+# 或者在本地克隆并构建 {#install-from-the-github-repository}
 
-chDB-bun 支持两种查询模式：用于一次性操作的临时查询和用于维护数据库状态的持久会话。
-
-### 临时查询 {#ephemeral-queries}
-
-对于简单的、一次性查询，且不需要持久状态：
+git clone [https://github.com/chdb-io/chdb-bun.git](https://github.com/chdb-io/chdb-bun.git)
+cd chdb-bun
+bun install
+bun run build
 
 ```typescript
 import { query } from 'chdb-bun';
@@ -79,9 +67,13 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-### 持久会话 {#persistent-sessions}
+## 用法
 
-对于需要在查询之间维护状态的复杂操作：
+chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以及用于维护数据库状态的持久会话。
+
+### 临时查询 {#persistent-sessions}
+
+适用于不需要保留状态的简单一次性查询：
 
 ```typescript
 import { Session } from 'chdb-bun';

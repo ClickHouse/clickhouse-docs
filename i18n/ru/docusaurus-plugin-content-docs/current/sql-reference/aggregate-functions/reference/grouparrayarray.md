@@ -1,22 +1,23 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/grouparrayarray'
-sidebar_position: 111
-description: 'Агрегирует массивы в большой массив из этих массивов.'
-title: groupArrayArray
+description: 'Агрегирует массивы в более крупный массив, состоящий из этих массивов.'
 keywords: ['groupArrayArray', 'array_concat_agg']
-doc_type: reference
+sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+title: 'groupArrayArray'
+doc_type: 'reference'
 ---
-# groupArrayArray
 
-Агрегирует массивы в больший массив этих массивов.  
-Совмещает функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) с комбинатором [Array](/sql-reference/aggregate-functions/combinators#-array).
+# groupArrayArray {#grouparrayarray}
+
+Агрегирует массивы в более крупный массив этих массивов.
+Использует функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) совместно с комбинатором [Array](/sql-reference/aggregate-functions/combinators#-array).
 
 Псевдоним: `array_concat_agg`
 
 **Пример**
 
-У нас есть данные, которые фиксируют сессии просмотра пользователей. Каждая сессия записывает последовательность страниц, которые посетил конкретный пользователь.  
-Мы можем использовать функцию `groupArrayArray`, чтобы проанализировать паттерны посещения страниц для каждого пользователя.
+У нас есть данные, фиксирующие пользовательские сессии просмотра сайта. Каждая сессия записывает последовательность страниц, которые посетил конкретный пользователь.
+Мы можем использовать функцию `groupArrayArray`, чтобы проанализировать паттерны посещений страниц для каждого пользователя.
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

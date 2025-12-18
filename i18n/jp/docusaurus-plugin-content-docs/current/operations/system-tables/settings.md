@@ -1,40 +1,39 @@
 ---
-'description': 'システムテーブルは、現在のユーザーのセッション設定に関する情報を含んでいます。'
-'keywords':
-- 'system table'
-- 'settings'
-'slug': '/operations/system-tables/settings'
-'title': 'system.settings'
-'doc_type': 'reference'
+description: '現在のユーザーのセッション設定情報を含む system テーブル。'
+keywords: ['system テーブル', '設定']
+slug: /operations/system-tables/settings
+title: 'system.settings'
+doc_type: 'reference'
 ---
 
+# system.settings {#systemsettings}
 
-# system.settings
+現在のユーザーのセッション設定に関する情報を含みます。
 
-現在のユーザーのセッション設定に関する情報が含まれています。
+列:
 
-Columns:
-
-- `name` ([String](../../sql-reference/data-types/string.md)) — 設定名。
-- `value` ([String](../../sql-reference/data-types/string.md)) — 設定値。
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 設定が構成ファイルで明示的に定義されているか、明示的に変更されたかを示します。
-- `description` ([String](../../sql-reference/data-types/string.md)) — 短い設定の説明。
-- `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 設定の最小値。もし [constraints](/operations/settings/constraints-on-settings) を介して設定されている場合。設定に最小値がない場合、[NULL](/operations/settings/formats#input_format_null_as_default) を含みます。
-- `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 設定の最大値。もし [constraints](/operations/settings/constraints-on-settings) を介して設定されている場合。設定に最大値がない場合、[NULL](/operations/settings/formats#input_format_null_as_default) を含みます。
-- `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 現在のユーザーが設定を変更できるかどうかを示します：
-  - `0` — 現在のユーザーは設定を変更できます。
-  - `1` — 現在のユーザーは設定を変更できません。
-- `default` ([String](../../sql-reference/data-types/string.md)) — 設定のデフォルト値。
-- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 設定が廃止されているかどうかを示します。
-- `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — この機能のサポートレベル。ClickHouseの機能は、開発の進捗や使用時の期待に応じて、異なるティアに整理されています。値：
-  - `'Production'` — 機能は安定しており、安全に使用でき、他の **production** 機能と相互作用する際に問題はありません。
-  - `'Beta'` — 機能は安定しており、安全です。他の機能と一緒に使用した場合の結果は不明であり、正確性は保証されていません。テストと報告は歓迎します。
-  - `'Experimental'` — 機能は開発中です。開発者やClickHouseの愛好者向けにのみ意図されています。この機能は動作する場合もあれば、しない場合もあり、いつでも削除される可能性があります。
-  - `'Obsolete'` — もはやサポートされていません。既に削除されたか、将来のリリースで削除される予定です。
+* `name` ([String](../../sql-reference/data-types/string.md)) — 設定名。
+* `value` ([String](../../sql-reference/data-types/string.md)) — 設定値。
+* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 設定が構成ファイルで明示的に定義されたか、または明示的に変更されたかどうかを示します。
+* `description` ([String](../../sql-reference/data-types/string.md)) — 設定の簡潔な説明。
+* `min` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — この設定に対して [constraints](/operations/settings/constraints-on-settings) によって最小値が設定されている場合、その最小値。設定に最小値がない場合は [NULL](/operations/settings/formats#input_format_null_as_default) を含みます。
+* `max` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — この設定に対して [constraints](/operations/settings/constraints-on-settings) によって最大値が設定されている場合、その最大値。設定に最大値がない場合は [NULL](/operations/settings/formats#input_format_null_as_default) を含みます。
+* `disallowed_values` ([Array](/sql-reference/data-types/array)([String](../../sql-reference/data-types/string.md))) — 許可されない値の一覧。
+* `readonly` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — 現在のユーザーが設定を変更できるかどうかを示します:
+  * `0` — 現在のユーザーは設定を変更できます。
+  * `1` — 現在のユーザーは設定を変更できません。
+* `default` ([String](../../sql-reference/data-types/string.md)) — 設定のデフォルト値。
+* `alias_for` ([String](../../sql-reference/data-types/string.md)) — この設定が他の設定のエイリアスである場合、その元の設定名。
+* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) - 設定が廃止済みかどうかを示します。
+* `tier` ([Enum8](../../sql-reference/data-types/enum.md)) — この機能のサポートレベル。ClickHouse の機能は、その開発の現在の状況および使用時に期待できる安定性に応じて階層化されています。値:
+  * `'Production'` — 機能は安定しており、安全に使用でき、他の **本番** 機能との相互作用にも問題がありません。
+  * `'Beta'` — 機能は安定しており安全です。他の機能と組み合わせて使用した場合の結果は不明であり、正しさは保証されません。テストおよびレポートを歓迎します。
+  * `'Experimental'` — 機能は開発中です。開発者および ClickHouse の愛好家のみを対象としています。機能が動作するかどうかは不明であり、いつでも削除される可能性があります。
+  * `'Obsolete'` — もはやサポートされていません。すでに削除されたか、今後のリリースで削除される予定です。
 
 **例**
 
-以下の例では、名前に `min_i` を含む設定に関する情報を取得する方法を示します。
+次の例は、名前に `min_i` を含む設定に関する情報を取得する方法を示しています。
 
 ```sql
 SELECT *
@@ -133,10 +132,10 @@ is_obsolete: 0
 tier:        Production
 ```
 
-`WHERE changed` の使用は、例えば以下の確認を行いたい場合に便利です：
+`WHERE changed` は、例えば以下を確認する際に有用です：
 
-- 構成ファイルの設定が正しくロードされ、使用されているかどうか。
-- 現在のセッションで変更された設定。
+- 設定ファイルの設定が正しく読み込まれ、使用されているか
+- 現在のセッションで変更された設定
 
 <!-- -->
 
@@ -144,9 +143,9 @@ tier:        Production
 SELECT * FROM system.settings WHERE changed AND name='load_balancing'
 ```
 
-**関連情報**
+**関連項目**
 
-- [Settings](/operations/system-tables/overview#system-tables-introduction)
-- [Permissions for Queries](/operations/settings/permissions-for-queries)
-- [Constraints on Settings](../../operations/settings/constraints-on-settings.md)
-- [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings) 文
+* [設定](/operations/system-tables/overview#system-tables-introduction)
+* [クエリの権限](/operations/settings/permissions-for-queries)
+* [設定の制約](../../operations/settings/constraints-on-settings.md)
+* [SHOW SETTINGS](../../sql-reference/statements/show.md#show-settings) ステートメント

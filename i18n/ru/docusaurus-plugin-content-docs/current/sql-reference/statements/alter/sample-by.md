@@ -1,12 +1,13 @@
 ---
-slug: '/sql-reference/statements/alter/sample-by'
+description: 'Документация по изменению выражений ключа выборки SAMPLE BY'
 sidebar_label: 'SAMPLE BY'
 sidebar_position: 41
-description: 'Документация по манипулированию выражением SAMPLE BY'
-title: 'Манипулирование выражениями ключа выборки'
-doc_type: reference
+slug: /sql-reference/statements/alter/sample-by
+title: 'Изменение выражений ключа выборки SAMPLE BY'
+doc_type: 'reference'
 ---
-# Работа с выражением SAMPLE BY
+
+# Работа с выражением SAMPLE BY {#manipulating-sample-by-expression}
 
 Доступны следующие операции:
 
@@ -16,7 +17,7 @@ doc_type: reference
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
-Команда изменяет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен содержать новый ключ выборки.
+Команда изменяет [sampling key](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен включать новый sampling key.
 
 ## REMOVE {#remove}
 
@@ -26,8 +27,8 @@ ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
 
 Команда удаляет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы.
 
-Команды `MODIFY` и `REMOVE` являются легковесными в том смысле, что они только изменяют метаданные или удаляют файлы.
+Команды `MODIFY` и `REMOVE` являются малозатратными в том смысле, что они только изменяют метаданные или удаляют файлы.
 
-:::note    
-Это работает только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
+:::note
+Работает только для таблиц семейства [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](../../../engines/table-engines/mergetree-family/replication.md) таблицы).
 :::

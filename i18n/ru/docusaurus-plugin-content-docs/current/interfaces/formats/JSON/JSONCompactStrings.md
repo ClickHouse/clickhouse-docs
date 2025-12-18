@@ -1,25 +1,27 @@
 ---
-slug: '/interfaces/formats/JSONCompactStrings'
-description: 'Документация для формата JSONCompactStrings'
-title: JSONCompactStrings
-keywords: ['JSONCompactStrings']
-doc_type: reference
+alias: []
+description: 'Документация по формату JSONCompactStrings'
 input_format: false
+keywords: ['JSONCompactStrings']
 output_format: true
+slug: /interfaces/formats/JSONCompactStrings
+title: 'JSONCompactStrings'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
+
+| Вход | Выход | Псевдоним |
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
 ## Описание {#description}
 
-Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) только тем, что строки данных выводятся в виде массивов, а не объектов.
+Формат `JSONCompactStrings` отличается от [JSONStrings](./JSONStrings.md) лишь тем, что строки данных выводятся как массивы, а не как объекты.
 
 ## Пример использования {#example-usage}
 
 ### Чтение данных {#reading-data}
 
-Чтение данных с использованием формата `JSONCompactStrings`:
+Считайте данные в формате `JSONCompactStrings`:
 
 ```sql
 SELECT *
@@ -27,7 +29,7 @@ FROM football
 FORMAT JSONCompactStrings
 ```
 
-Вывод будет в формате JSON:
+Результат будет в формате JSON:
 
 ```json
 {
@@ -91,4 +93,4 @@ FORMAT JSONCompactStrings
 }
 ```
 
-## Настройки формата {#format-settings}
+## Настройки форматирования {#format-settings}

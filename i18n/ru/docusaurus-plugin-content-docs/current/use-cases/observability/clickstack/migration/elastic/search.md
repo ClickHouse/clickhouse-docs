@@ -1,70 +1,73 @@
 ---
-'slug': '/use-cases/observability/clickstack/migration/elastic/search'
-'title': 'Поиск в ClickStack и Elastic'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_label': 'Поиск'
-'sidebar_position': 3
-'description': 'Поиск в ClickStack и Elastic'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/migration/elastic/search
+title: 'Поиск в ClickStack и Elastic'
+pagination_prev: null
+pagination_next: null
+sidebar_label: 'Поиск'
+sidebar_position: 3
+description: 'Поиск в ClickStack и Elastic'
+doc_type: 'guide'
+keywords: ['clickstack', 'поиск', 'логи', 'наблюдаемость', 'полнотекстовый поиск']
 ---
+
 import Image from '@theme/IdealImage';
 import hyperdx_search from '@site/static/images/use-cases/observability/hyperdx-search.png';
 import hyperdx_sql from '@site/static/images/use-cases/observability/hyperdx-sql.png';
 
+
 ## Поиск в ClickStack и Elastic {#search-in-clickstack-and-elastic}
 
-ClickHouse — это SQL-ориентированный движок, разработанный с нуля для высокопроизводительных аналитических нагрузок. В отличие от этого, Elasticsearch предоставляет SQL-подобный интерфейс, транспилируя SQL в основной язык запросов Elasticsearch DSL — это означает, что он не является первым классом, и [сравнение возможностей](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) ограничено.
+ClickHouse — это нативный SQL-движок, изначально спроектированный для высокопроизводительных аналитических нагрузок. В отличие от него, Elasticsearch предоставляет SQL-подобный интерфейс, который транслирует SQL в базовый Elasticsearch query DSL — то есть SQL не является для него языком первого класса, и [функциональный паритет](https://www.elastic.co/docs/explore-analyze/query-filter/languages/sql-limitations) ограничен. 
 
-ClickHouse не только поддерживает полный SQL, но и расширяет его рядом функций, ориентированных на мониторинг, таких как [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) и [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), которые упрощают запросы к структурированным логам, метрикам и трассам.
+ClickHouse не только полностью поддерживает SQL, но и расширяет его набором функций, ориентированных на обсервабилити, таких как [`argMax`](/sql-reference/aggregate-functions/reference/argmax), [`histogram`](/sql-reference/aggregate-functions/parametric-functions#histogram) и [`quantileTiming`](/sql-reference/aggregate-functions/reference/quantiletiming), которые упрощают выполнение запросов к структурированным логам, метрикам и трейсам.
 
-Для простой работы с логами и трассами HyperDX предоставляет [синтаксис в стиле Lucene](/use-cases/observability/clickstack/search) для интуитивного текстового фильтрации запросов на основе поля-значения, диапазонов, подстановочных знаков и многого другого. Это сопоставимо с [синтаксисом Lucene](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) в Elasticsearch и элементами [языка запросов Kibana](https://www.elastic.co/docs/reference/query-languages/kql).
+Для простой работы с логами и трейсами HyperDX предоставляет [синтаксис в стиле Lucene](/use-cases/observability/clickstack/search) для интуитивно понятной текстовой фильтрации по запросам вида поле-значение, диапазонам, шаблонам с подстановками (wildcards) и другим условиям. Это сопоставимо с [синтаксисом Lucene](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax) в Elasticsearch и элементами [Kibana Query Language](https://www.elastic.co/docs/reference/query-languages/kql).
 
 <Image img={hyperdx_search} alt="Поиск" size="lg"/>
 
-Интерфейс поиска HyperDX поддерживает этот знакомый синтаксис, но переводит его за кулисами в эффективные SQL-операторы `WHERE`, создавая знакомый опыт для пользователей Kibana, в то время как все еще позволяя пользователям использовать мощность SQL при необходимости. Это позволяет пользователям использовать весь спектр [функций поиска строк](/sql-reference/functions/string-search-functions), [функций схожести](/sql-reference/functions/string-functions#stringjaccardindex) и [функций работы с датами](/sql-reference/functions/date-time-functions) в ClickHouse.
+Интерфейс поиска HyperDX поддерживает этот привычный синтаксис, но «за кулисами» транслирует его в эффективные выражения SQL `WHERE`, делая работу привычной для пользователей Kibana и при этом позволяя использовать мощь SQL при необходимости. Это даёт вам возможность задействовать весь спектр [функций строкового поиска](/sql-reference/functions/string-search-functions), [функций сходства](/sql-reference/functions/string-functions#stringJaccardIndex) и [функций работы с датой и временем](/sql-reference/functions/date-time-functions) в ClickHouse.
 
 <Image img={hyperdx_sql} alt="SQL" size="lg"/>
 
-Ниже мы сравниваем языки запросов Lucene в ClickStack и Elasticsearch.
+Ниже мы сравниваем языки запросов в стиле Lucene в ClickStack и Elasticsearch.
 
-## Синтаксис поиска ClickStack против строки запроса Elasticsearch {#hyperdx-vs-elasticsearch-query-string}
+## Синтаксис поиска ClickStack vs Elasticsearch query string {#hyperdx-vs-elasticsearch-query-string}
 
-Как HyperDX, так и Elasticsearch предоставляют гибкие языки запросов для интуитивной фильтрации логов и трасс. В то время как строка запроса Elasticsearch тесно интегрирована с его DSL и движком индексации, HyperDX поддерживает синтаксис, вдохновленный Lucene, который транслируется в SQL ClickHouse под капотом. В таблице ниже описано, как общие шаблоны поиска ведут себя в обеих системах, подчеркивая сходства в синтаксисе и различия в выполнении на бэкенде.
+И HyperDX, и Elasticsearch предоставляют гибкие языки запросов для интуитивной фильтрации логов и трассировок. Хотя query string в Elasticsearch тесно интегрирован с его DSL и движком индексирования, HyperDX поддерживает синтаксис, вдохновлённый Lucene, который под капотом транслируется в ClickHouse SQL. В таблице ниже показано, как распространённые шаблоны поиска работают в обеих системах, с акцентом на сходство синтаксиса и различия в выполнении на стороне бэкенда.
 
-| **Особенность**        | **Синтаксис HyperDX**                 | **Синтаксис Elasticsearch**            | **Комментарии** |
-|------------------------|----------------------------------------|----------------------------------------|-----------------|
-| Поиск по свободному тексту | `error`                             | `error`                             | Совпадения во всех индексированных полях; в ClickStack это переписывается в многоцелевой SQL `ILIKE`. |
-| Совпадение по полю     | `level:error`                          | `level:error`                          | Идентичный синтаксис. HyperDX соответствует точным значениям полей в ClickHouse. |
-| Поиск по фразе        | `"disk full"`                          | `"disk full"`                          | Текст в кавычках соответствует точной последовательности; ClickHouse использует равенство строк или `ILIKE`. |
-| Совпадение по фразе поля | `message:"disk full"`                | `message:"disk full"`                  | Переводится в SQL `ILIKE` или точное совпадение. |
-| Условия OR             | `error OR warning`                     | `error OR warning`                     | Логическое ИЛИ для терминов; обе системы поддерживают это на родном уровне. |
-| Условия AND            | `error AND db`                         | `error AND db`                         | Оба переводятся в пересечение; нет различий в синтаксисе для пользователя. |
-| Отрицание              | `NOT error` или `-error`              | `NOT error` или `-error`              | Поддерживается идентично; HyperDX переводит в SQL `NOT ILIKE`. |
-| Группировка            | `(error OR fail) AND db`              | `(error OR fail) AND db`              | Стандартная булева группировка в обеих системах. |
-| Подстановочные знаки    | `error*` или `*fail*`                 | `error*`, `*fail*`                     | HyperDX поддерживает подстановочные знаки в начале/конце; ES по умолчанию отключает ведущие подстановочные знаки для производительности. Подстановочные знаки внутри терминов не поддерживаются, например `f*ail.` Подстановочные знаки должны применяться с совпадением по полю. |
-| Диапазоны (числовые/датовые) | `duration:[100 TO 200]`          | `duration:[100 TO 200]`               | HyperDX использует SQL `BETWEEN`; Elasticsearch расширяет до диапазонных запросов. Непредельные `*` в диапазонах не поддерживаются, например `duration:[100 TO *]`. Если необходимо, используйте `Непредельные диапазоны` ниже. |
-| Непредельные диапазоны (числовые/датовые) | `duration:>10` или `duration:>=10` | `duration:>10` или `duration:>=10` | HyperDX использует стандартные SQL-операторы |
-| Включительно/исключительно | `duration:{100 TO 200}` (исключительно) | То же самое                          | Фигурные скобки обозначают исключительные границы. `*` в диапазонах не поддерживаются. например `duration:[100 TO *]` |
-| Проверка на существование | N/A                                  | `_exists_:user` или `field:*`         | `_exists_` не поддерживается. Используйте `LogAttributes.log.file.path: *` для колонок `Map`, например `LogAttributes`. Для корневых колонок они должны существовать и будут иметь значение по умолчанию, если не включены в событие. Для поиска значений по умолчанию или отсутствующих колонок используйте тот же синтаксис, что и в Elasticsearch `ServiceName:*` или `ServiceName != ''`. |
-| Regex                   | `match` функция                        | `name:/joh?n(ath[oa]n)/`               | В настоящее время не поддерживается в синтаксисе Lucene. Пользователи могут использовать SQL и [`match`](/sql-reference/functions/string-search-functions#match) функцию или другие [функции поиска строк](/sql-reference/functions/string-search-functions). |
-| Нечеткое совпадение    | `editDistance('quikc', field) = 1`    | `quikc~`                               | В настоящее время не поддерживается в синтаксисе Lucene. Функции расстояния могут использоваться в SQL, например `editDistance('rror', SeverityText) = 1` или [другие функции схожести](/sql-reference/functions/string-functions#jarosimilarity). |
-| Поиск по близости      | Не поддерживается                      | `"fox quick"~5`                        | В настоящее время не поддерживается в синтаксе Lucene. |
-| Увеличение             | `quick^2 fox`                         | `quick^2 fox`                          | В настоящее время не поддерживается в HyperDX. |
-| Подстановочный знак поля | `service.*:error`                    | `service.*:error`                      | В настоящее время не поддерживается в HyperDX. |
-| Экранированные специальные символы | Экранировать резервированные символы с помощью `\` | То же самое                          | Экранирование требуется для зарезервированных символов. |
+| **Feature** | **HyperDX Syntax** | **Elasticsearch Syntax** | **Comments** |
+|-------------------------|----------------------------------------|----------------------------------------|--------------|
+| Free text search        | `error` | `error` | Совпадения по всем индексированным полям; в ClickStack это переписывается в SQL-запрос по нескольким полям с использованием `ILIKE`. |
+| Field match             | `level:error` | `level:error` | Идентичный синтаксис. HyperDX сопоставляет точные значения полей в ClickHouse. |
+| Phrase search           | `"disk full"` | `"disk full"` | Заключённый в кавычки текст соответствует точной последовательности; ClickHouse использует сравнение строк на равенство или `ILIKE`. |
+| Field phrase match      | `message:"disk full"` | `message:"disk full"` | Транслируется в SQL `ILIKE` или точное совпадение. |
+| OR conditions           | `error OR warning` | `error OR warning` | Логическое ИЛИ терминов; обе системы нативно поддерживают это. |
+| AND conditions          | `error AND db` | `error AND db` | Обе системы транслируют в пересечение; различий в пользовательском синтаксисе нет. |
+| Negation                | `NOT error` or `-error` | `NOT error` or `-error` | Поддерживается одинаково; HyperDX конвертирует в SQL `NOT ILIKE`. |
+| Grouping                | `(error OR fail) AND db` | `(error OR fail) AND db` | Стандартная булева группировка в обеих системах. |
+| Wildcards               | `error*` or `*fail*` | `error*`, `*fail*` | HyperDX поддерживает начальные и конечные подстановочные символы; в Elasticsearch начальные подстановки по умолчанию отключены из соображений производительности. Подстановки внутри термов не поддерживаются, например `f*ail.` Подстановки должны применяться вместе с указанием поля.|
+| Ranges (numeric/date)   | `duration:[100 TO 200]` | `duration:[100 TO 200]` | HyperDX использует SQL `BETWEEN`; Elasticsearch разворачивает в диапазонные запросы. Неограниченные `*` в диапазонах не поддерживаются, например `duration:[100 TO *]`. При необходимости используйте `Unbounded ranges` ниже.|
+| Unbounded ranges (numeric/date)   | `duration:>10` or `duration:>=10` | `duration:>10` or `duration:>=10` | HyperDX использует стандартные SQL-операторы. |
+| Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | Фигурные скобки обозначают исключающие границы. `*` в диапазонах не поддерживается, например `duration:[100 TO *]`. |
+| Exists check            | N/A                       | `_exists_:user` or `field:*` | `_exists_` не поддерживается. Используйте `LogAttributes.log.file.path: *` для столбцов типа `Map`, например `LogAttributes`. Для корневых столбцов требуется их существование, и они будут иметь значение по умолчанию, если не были включены в событие. Для поиска значений по умолчанию или отсутствующих столбцов используйте тот же синтаксис, что и в Elasticsearch: `ServiceName:*` или `ServiceName != ''`. |
+| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | В настоящее время не поддерживается в синтаксисе Lucene. Вы можете использовать SQL и функцию [`match`](/sql-reference/functions/string-search-functions#match) или другие [функции поиска по строкам](/sql-reference/functions/string-search-functions).|
+| Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | В настоящее время не поддерживается в синтаксисе Lucene. В SQL можно использовать функции расстояния, например `editDistance('rror', SeverityText) = 1`, или [другие функции сходства](/sql-reference/functions/string-functions#jaroSimilarity). |
+| Proximity search        | Not supported                       | `"fox quick"~5` | В настоящее время не поддерживается в синтаксисе Lucene. |
+| Boosting                | `quick^2 fox` | `quick^2 fox` | В настоящее время не поддерживается в HyperDX. |
+| Field wildcard          | `service.*:error` | `service.*:error` | В настоящее время не поддерживается в HyperDX. |
+| Escaped special chars   | Escape reserved characters with `\` | Same      | Для зарезервированных символов требуется экранирование. |
 
-## Различия в существовании/отсутствии {#empty-value-differences}
+## Отличия между существующими и отсутствующими значениями {#empty-value-differences}
 
-В отличие от Elasticsearch, где поле может быть полностью исключено из события и, следовательно, действительно "не существует", ClickHouse требует, чтобы все колонки в схеме таблицы существовали. Если поле не предоставлено в событии вставки:
+В отличие от Elasticsearch, где поле может быть полностью опущено в событии и, следовательно, действительно «не существовать», в ClickHouse требуется наличие всех столбцов, определённых в схеме таблицы. Если поле не указано в событии при вставке:
 
-- Для [`Nullable`](/sql-reference/data-types/nullable) полей оно будет установлено в `NULL`.
-- Для непустых полей (по умолчанию) будет заполнено значением по умолчанию (обычно пустой строкой, 0 или эквивалентным).
+- Для полей типа [`Nullable`](/sql-reference/data-types/nullable) ему будет присвоено значение `NULL`.
+- Для полей, не допускающих `NULL` (это поведение по умолчанию), оно будет заполнено значением по умолчанию (часто пустой строкой, 0 или эквивалентом).
 
-В ClickStack мы используем последнее, поскольку [`Nullable`](/sql-reference/data-types/nullable) [не рекомендуется](/optimize/avoid-nullable-columns).
+В ClickStack мы используем второй вариант, так как тип [`Nullable`](/sql-reference/data-types/nullable) [не рекомендуется](/optimize/avoid-nullable-columns).
 
-Это поведение означает, что проверка существования поля в смысле Elasticsearch напрямую не поддерживается.
+Такое поведение означает, что проверка, «существует» ли поле в смысле Elasticsearch, напрямую не поддерживается. 
 
-Вместо этого пользователи могут использовать `field:*` или `field != ''` для проверки наличия непустого значения. Таким образом, невозможно различить действительно отсутствующие и явно пустые поля.
+Вместо этого вы можете использовать `field:*` или `field != ''` для проверки наличия непустого значения. Таким образом, невозможно различить действительно отсутствующие и явно пустые поля.
 
-На практике эта разница редко вызывает проблемы для случаев мониторинга, но важно помнить об этом при переводе запросов между системами.
+На практике это различие редко приводит к проблемам для сценариев обсервабилити, но его важно учитывать при переносе запросов между системами.

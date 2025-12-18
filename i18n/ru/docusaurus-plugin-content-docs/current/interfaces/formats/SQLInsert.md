@@ -1,19 +1,21 @@
 ---
-slug: '/interfaces/formats/SQLInsert'
-description: 'Документация для формата SQLInsert'
-title: SQLInsert
-keywords: ['SQLInsert']
-doc_type: reference
+alias: []
+description: 'Документация по формату SQLInsert'
 input_format: false
+keywords: ['SQLInsert']
 output_format: true
+slug: /interfaces/formats/SQLInsert
+title: 'SQLInsert'
+doc_type: 'reference'
 ---
-| Input | Output | Alias |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+
+| Входные данные | Выходные данные | Псевдоним |
+|----------------|-----------------|-----------|
+| ✗              | ✔               |           |
 
 ## Описание {#description}
 
-Выводит данные в виде последовательности операторов `INSERT INTO table (columns...) VALUES (...), (...) ...;`.
+Выводит данные в виде последовательности операторов вида `INSERT INTO table (columns...) VALUES (...), (...) ...;`.
 
 ## Пример использования {#example-usage}
 
@@ -31,14 +33,14 @@ INSERT INTO table (x, y, z) VALUES (6, 7, 'Hello'), (7, 8, 'Hello');
 INSERT INTO table (x, y, z) VALUES (8, 9, 'Hello'), (9, 10, 'Hello');
 ```
 
-Чтобы прочитать данные, выведенные в этом формате, вы можете использовать формат ввода [MySQLDump](../formats/MySQLDump.md).
+Для чтения данных, выводимых этим форматом, можно использовать входной формат [MySQLDump](../formats/MySQLDump.md).
 
 ## Настройки формата {#format-settings}
 
-| Настройка                                                                                                                                 | Описание                                         | По умолчанию   |
-|-------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|----------------|
-| [`output_format_sql_insert_max_batch_size`](../../operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)       | Максимальное количество строк в одном операторе INSERT. | `65505`        |
-| [`output_format_sql_insert_table_name`](../../operations/settings/settings-formats.md/#output_format_sql_insert_table_name)               | Имя таблицы в выходном операторе INSERT.              | `'table'`      |
-| [`output_format_sql_insert_include_column_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) | Включить имена колонок в оператор INSERT.            | `true`         |
-| [`output_format_sql_insert_use_replace`](../../operations/settings/settings-formats.md/#output_format_sql_insert_use_replace)             | Использовать оператор REPLACE вместо INSERT.         | `false`        |
-| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)             | Обрамлять имена колонок символами "\`".           | `true`         |
+| Setting                                                                                                                                | Description                                                   | Default   |
+|----------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|-----------|
+| [`output_format_sql_insert_max_batch_size`](../../operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size)    | Максимальное количество строк в одном операторе INSERT.      | `65505`   |
+| [`output_format_sql_insert_table_name`](../../operations/settings/settings-formats.md/#output_format_sql_insert_table_name)            | Имя таблицы в результирующем операторе INSERT.               | `'table'` |
+| [`output_format_sql_insert_include_column_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_include_column_names) | Включать имена столбцов в оператор INSERT.                   | `true`    |
+| [`output_format_sql_insert_use_replace`](../../operations/settings/settings-formats.md/#output_format_sql_insert_use_replace)          | Использовать оператор REPLACE вместо INSERT.                 | `false`   |
+| [`output_format_sql_insert_quote_names`](../../operations/settings/settings-formats.md/#output_format_sql_insert_quote_names)          | Заключать имена столбцов в символы «\`».                     | `true`    |

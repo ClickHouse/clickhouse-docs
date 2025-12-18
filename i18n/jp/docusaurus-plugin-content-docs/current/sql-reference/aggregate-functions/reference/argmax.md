@@ -1,15 +1,15 @@
 ---
-'description': '最大の `val` 値のための `arg` 値を計算します。'
-'sidebar_position': 109
-'slug': '/sql-reference/aggregate-functions/reference/argmax'
-'title': 'argMax'
-'doc_type': 'reference'
+description: '最大の `val` に対応する `arg` の値を計算します。'
+sidebar_position: 109
+slug: /sql-reference/aggregate-functions/reference/argmax
+title: 'argMax'
+doc_type: 'reference'
 ---
 
+# argMax {#argmax}
 
-# argMax
-
-最大の `val` 値に対する `arg` 値を計算します。最大の `val` が同じ複数の行が存在する場合、どの関連する `arg` が返されるかは非決定的です。 `arg` と `max` の両方は [集約関数](/sql-reference/aggregate-functions/index.md) として動作し、両方とも処理中に `Null` を [スキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、利用可能な場合は `Null` でない値を返します。
+最大の `val` 値に対応する `arg` の値を計算します。最大値の `val` を持つ行が複数ある場合、どの行の `arg` が返されるかは決定的ではありません。
+`arg` 側と `max` 側はどちらも[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中はいずれも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` 以外の値が存在する場合には `Null` 以外の値を返します。
 
 **構文**
 
@@ -19,14 +19,14 @@ argMax(arg, val)
 
 **引数**
 
-- `arg` — 引数。
-- `val` — 値。
+* `arg` — 引数。
+* `val` — 値。
 
-**返される値**
+**戻り値**
 
-- 最大の `val` 値に対応する `arg` 値。
+* `val` の最大値に対応する `arg` の値。
 
-型: `arg` 型と一致します。
+型: `arg` と同じ型。
 
 **例**
 
@@ -46,7 +46,7 @@ argMax(arg, val)
 SELECT argMax(user, salary) FROM salary;
 ```
 
-結果:
+結果：
 
 ```text
 ┌─argMax(user, salary)─┐
@@ -54,7 +54,7 @@ SELECT argMax(user, salary) FROM salary;
 └──────────────────────┘
 ```
 
-**拡張例**
+**詳細な例**
 
 ```sql
 CREATE TABLE test
@@ -107,6 +107,6 @@ SELECT argMax(a, tuple(b)) FROM test;
 └─────────────────────┘
 ```
 
-**参考**
+**関連項目**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

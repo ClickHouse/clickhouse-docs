@@ -138,7 +138,7 @@ ALTER TABLE laion_5b_100m MATERIALIZE INDEX vector_index SETTINGS mutations_sync
 
 The parameters and performance considerations for index creation and search are described in the [documentation](../../engines/table-engines/mergetree-family/annindexes.md).
 The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
-Users need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
 corresponding to selected values.
 
 Building and saving the index could even take a few hours for the full l00 million dataset, depending on the number of CPU cores available and the storage bandwidth. 

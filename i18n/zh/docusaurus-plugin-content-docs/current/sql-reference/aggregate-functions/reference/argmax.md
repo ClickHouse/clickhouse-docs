@@ -1,15 +1,15 @@
 ---
-'description': '计算最大 `val` 值的 `arg` 值。'
-'sidebar_position': 109
-'slug': '/sql-reference/aggregate-functions/reference/argmax'
-'title': 'argMax'
-'doc_type': 'reference'
+description: '计算最大 `val` 值对应的 `arg` 值。'
+sidebar_position: 109
+slug: /sql-reference/aggregate-functions/reference/argmax
+title: 'argMax'
+doc_type: 'reference'
 ---
 
+# argMax {#argmax}
 
-# argMax
-
-计算最大 `val` 值的 `arg` 值。如果有多行具有相等的最大 `val`，则返回的相关 `arg` 不具备确定性。两个部分 `arg` 和 `max` 都作为 [聚合函数](/sql-reference/aggregate-functions/index.md) 行为，它们在处理过程中都 [跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在有可用的非 `Null` 值时返回非 `Null` 值。
+计算最大 `val` 所对应的 `arg` 值。如果存在多行的最大 `val` 相同，则返回的对应 `arg` 值是不确定的。
+`arg` 和 `max` 两个部分都作为[聚合函数](/sql-reference/aggregate-functions/index.md)运行，在处理过程中都会[跳过 `Null`](/sql-reference/aggregate-functions/index.md#null-processing)，并在存在非 `Null` 值时返回非 `Null` 值。
 
 **语法**
 
@@ -19,14 +19,14 @@ argMax(arg, val)
 
 **参数**
 
-- `arg` — 参数。
-- `val` — 值。
+* `arg` — 参数。
+* `val` — 值。
 
 **返回值**
 
-- 与最大 `val` 值相对应的 `arg` 值。
+* 与最大 `val` 值对应的 `arg`。
 
-类型：与 `arg` 类型匹配。
+类型：与 `arg` 的类型相同。
 
 **示例**
 
@@ -109,4 +109,4 @@ SELECT argMax(a, tuple(b)) FROM test;
 
 **另见**
 
-- [元组](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

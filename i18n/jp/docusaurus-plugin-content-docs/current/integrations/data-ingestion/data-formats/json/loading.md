@@ -1,29 +1,23 @@
 ---
-'sidebar_label': 'JSONを読み込む'
-'sidebar_position': 20
-'title': 'JSONを扱う'
-'slug': '/integrations/data-formats/json/loading'
-'description': 'JSONを読み込む'
-'keywords':
-- 'json'
-- 'clickhouse'
-- 'inserting'
-- 'loading'
-- 'inserting'
-'score': 15
-'doc_type': 'guide'
+sidebar_label: 'JSONのロード'
+sidebar_position: 20
+title: 'JSONの操作'
+slug: /integrations/data-formats/json/loading
+description: 'JSONのロード'
+keywords: ['json', 'clickhouse', 'inserting', 'loading', 'inserting']
+score: 15
+doc_type: 'guide'
 ---
 
+# JSONのロード {#loading-json}
 
-# JSONの読み込み {#loading-json}
+以下の例では、構造化および半構造化JSONデータをロードする非常にシンプルな例を示します。ネストされた構造を含むより複雑なJSONについては、ガイド[**JSONスキーマの設計**](/integrations/data-formats/json/schema)を参照してください。
 
-以下の例は、構造化および半構造化JSONデータの読み込みの非常にシンプルな例を示しています。ネストされた構造を含むより複雑なJSONについては、ガイド [**JSONスキーマの設計**](/integrations/data-formats/json/schema) を参照してください。
+## 構造化JSONのロード {#loading-structured-json}
 
-## 構造化JSONの読み込み {#loading-structured-json}
+このセクションでは、JSONデータが[`NDJSON`](https://github.com/ndjson/ndjson-spec)(改行区切りJSON)形式であることを前提としています。ClickHouseでは[`JSONEachRow`](/interfaces/formats/JSONEachRow)として知られており、列名と型が固定されている、つまり適切に構造化されていることを前提としています。`NDJSON`は、その簡潔さと効率的なスペース使用のため、JSONをロードするのに好ましい形式ですが、[入力と出力](/interfaces/formats/JSON)の両方で他の形式もサポートされています。
 
-このセクションでは、JSONデータが [`NDJSON`](https://github.com/ndjson/ndjson-spec) (改行区切りJSON) 形式であり、ClickHouseでは [`JSONEachRow`](/interfaces/formats#jsoneachrow) として知られ、カラム名とタイプが固定されていると仮定します。`NDJSON` はJSONを読み込むための好ましい形式であり、その簡潔さとスペースの効率的な使用が評価されますが、他の形式も [入力と出力](/interfaces/formats#json) の両方でサポートされています。
-
-以下のJSONサンプルを考えてみましょう。これは [Python PyPIデータセット](https://clickpy.clickhouse.com/) の行を表しています。
+次のJSONサンプルを考えてみましょう。これは、[Python PyPIデータセット](https://clickpy.clickhouse.com/)の行を表しています:
 
 ```json
 {
@@ -38,19 +32,19 @@
 }
 ```
 
-このJSONオブジェクトをClickHouseに読み込むためには、テーブルスキーマを定義する必要があります。
+このJSONオブジェクトをClickHouseにロードするには、テーブルスキーマを定義する必要があります。
 
-この単純な場合、私たちの構造は静的で、カラム名はわかっており、タイプも明確です。
+この単純なケースでは、構造は静的で、列名はわかっており、その型は明確に定義されています。
 
-ClickHouseは、キー名とそのタイプがダイナミックであるJSONタイプを介して半構造化データをサポートしていますが、ここでは必要ありません。
+ClickHouseは、キー名とその型が動的であるJSON型を通じて半構造化データをサポートしていますが、ここでは不要です。
 
-:::note 静的スキーマを可能な限り優先する
-カラムに固定の名前とタイプがあり、新しいカラムは予想されない場合、常に本番環境では静的に定義されたスキーマを優先してください。
+:::note 可能な限り静的スキーマを優先する
+列が固定された名前と型を持ち、新しい列が予期されない場合、本番環境では常に静的に定義されたスキーマを優先してください。
 
-JSONタイプは、カラムの名前とタイプが変更される可能性のある高いダイナミックデータに好まれます。このタイプは、プロトタイピングやデータ探索においても便利です。
+JSON型は、列の名前と型が変更される可能性がある高度に動的なデータに適しています。この型は、プロトタイピングとデータ探索にも役立ちます。
 :::
 
-これに対するシンプルなスキーマは以下に示されています。ここでは **JSONキーがカラム名にマッピングされています**：
+これに対する単純なスキーマを以下に示します。**JSONキーは列名にマッピング**されます:
 
 ```sql
 CREATE TABLE pypi (
@@ -67,11 +61,11 @@ ENGINE = MergeTree
 ORDER BY (project, date)
 ```
 
-:::note キーの順序
-ここでは `ORDER BY` 句を使用して順序付けキーを選択しました。順序付けキーの詳細とその選択方法については、[こちら](/data-modeling/schema-design#choosing-an-ordering-key) を参照してください。
+:::note 順序キー
+`ORDER BY`句を介してここで順序キーを選択しました。順序キーとその選択方法の詳細については、[こちら](/data-modeling/schema-design#choosing-an-ordering-key)を参照してください。
 :::
 
-ClickHouseは、拡張子と内容からタイプを自動的に推測し、複数の形式でJSONデータを読み込むことができます。上記のテーブルのJSONファイルを [S3関数](/sql-reference/table-functions/s3) を使用して読むことができます：
+ClickHouseは、いくつかの形式でJSONデータをロードでき、拡張子と内容から型を自動的に推論します。[S3関数](/sql-reference/table-functions/s3)を使用して、上記のテーブルのJSONファイルを読み取ることができます:
 
 ```sql
 SELECT *
@@ -84,17 +78,17 @@ LIMIT 1
 1 row in set. Elapsed: 1.232 sec.
 ```
 
-ファイル形式を指定する必要がないことに注意してください。代わりに、バケット内のすべての `*.json.gz` ファイルを読み込むためにグロブパターンを使用しています。ClickHouseはファイル拡張子と内容から形式が `JSONEachRow` (ndjson) であることを自動的に推測します。 ClickHouseが形式を検出できない場合は、パラメータ関数を介して手動で形式を指定できます。
+ファイル形式を指定する必要がないことに注意してください。代わりに、グロブパターンを使用して、バケット内のすべての`*.json.gz`ファイルを読み取ります。ClickHouseは、ファイル拡張子と内容から形式が`JSONEachRow`(ndjson)であることを自動的に推論します。ClickHouseが検出できない場合は、パラメータ関数を介して形式を手動で指定できます。
 
 ```sql
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
 ```
 
 :::note 圧縮ファイル
-上記のファイルは圧縮されています。これはClickHouseによって自動的に検出および処理されます。
+上記のファイルも圧縮されています。これはClickHouseによって自動的に検出され、処理されます。
 :::
 
-これらのファイルの行を読み込むには、[`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select) を使用できます：
+これらのファイルの行をロードするには、[`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select)を使用できます:
 
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
@@ -112,7 +106,7 @@ SELECT * FROM pypi LIMIT 2
 2 rows in set. Elapsed: 0.005 sec. Processed 8.19 thousand rows, 908.03 KB (1.63 million rows/s., 180.38 MB/s.)
 ```
 
-行は、[`FORMAT`句](/sql-reference/statements/select/format) を使用してインラインでも読み込むことができます。例えば：
+[`FORMAT`句](/sql-reference/statements/select/format)を使用して、インラインで行をロードすることもできます。例:
 
 ```sql
 INSERT INTO pypi
@@ -120,15 +114,15 @@ FORMAT JSONEachRow
 {"date":"2022-11-15","country_code":"CN","project":"clickhouse-connect","type":"bdist_wheel","installer":"bandersnatch","python_minor":"","system":"","version":"0.2.8"}
 ```
 
-これらの例は、 `JSONEachRow` 形式の使用を想定しています。他の一般的なJSON形式もサポートされており、これらの読み込みの例は [こちら](/integrations/data-formats/json/other-formats) で提供されています。
+これらの例は、`JSONEachRow`形式の使用を前提としています。他の一般的なJSON形式もサポートされており、これらのロード例は[こちら](/integrations/data-formats/json/other-formats)で提供されています。
 
-## 半構造化JSONの読み込み {#loading-semi-structured-json}
+## 半構造化JSONのロード {#loading-semi-structured-json}
 
-前の例では、キー名とタイプがよく知られている静的なJSONを読み込みました。これはしばしば当てはまりません - キーが追加されたり、そのタイプが変わることがあります。これは、可観測性データのようなユースケースでは一般的です。
+前の例では、既知のキー名と型を持つ静的なJSONをロードしました。これは必ずしもそうではありません - キーが追加されたり、型が変更されたりする可能性があります。これは、観測性データなどのユースケースで一般的です。
 
-ClickHouseは、専用の [`JSON`](/sql-reference/data-types/newjson) タイプを介してこれを処理します。
+ClickHouseは、専用の[`JSON`](/sql-reference/data-types/newjson)型を通じてこれを処理します。
 
-前述の [Python PyPIデータセット](https://clickpy.clickhouse.com/) の拡張版の例を考えましょう。ここでは、ランダムなキー値ペアを持つ任意の `tags` 列を追加しています。
+上記の[Python PyPIデータセット](https://clickpy.clickhouse.com/)データセットの拡張バージョンからの次の例を考えてみましょう。ここでは、ランダムなキーと値のペアを持つ任意の`tags`列を追加しました。
 
 ```json
 {
@@ -148,7 +142,7 @@ ClickHouseは、専用の [`JSON`](/sql-reference/data-types/newjson) タイプ�
 
 ```
 
-ここでのtags列は予測不可能であり、したがって私たちがモデル化することは不可能です。このデータを読み込むには、前のスキーマを使用し、[`JSON`](/sql-reference/data-types/newjson) タイプの追加の `tags` 列を提供します：
+ここでのtags列は予測不可能であるため、モデル化することは不可能です。このデータをロードするには、前のスキーマを使用できますが、[`JSON`](/sql-reference/data-types/newjson)型の追加の`tags`列を提供します:
 
 ```sql
 SET enable_json_type = 1;
@@ -169,7 +163,7 @@ ENGINE = MergeTree
 ORDER BY (project, date);
 ```
 
-元のデータセットと同じアプローチでテーブルをポピュレートします：
+元のデータセットと同じアプローチを使用してテーブルにデータを入力します:
 
 ```sql
 INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
@@ -196,20 +190,20 @@ LIMIT 2
 2 rows in set. Elapsed: 0.149 sec.
 ```
 
-ここでのデータ読み込みのパフォーマンスの違いに注目してください。JSONカラムは、挿入時にタイプ推測を必要とし、複数のタイプが存在するカラムがある場合は追加のストレージも必要です。JSONタイプは構成可能であり（[JSONスキーマの設計](/integrations/data-formats/json/schema) 参照）、カラムを明示的に宣言するのと同等のパフォーマンスを実現できますが、初めから柔軟性を持たせて設計されています。この柔軟性は、しかしいくらかのコストが伴います。
+データのロード時のパフォーマンスの違いに注意してください。JSON列は、挿入時に型推論を必要とし、複数の型を持つ列が存在する場合は追加のストレージも必要とします。JSON型は([JSONスキーマの設計](/integrations/data-formats/json/schema)を参照)、列を明示的に宣言するのと同等のパフォーマンスに設定できますが、デフォルトでは意図的に柔軟です。ただし、この柔軟性にはいくらかのコストが伴います。
 
-### JSONタイプを使用するタイミング {#when-to-use-the-json-type}
+### JSON型を使用するタイミング {#when-to-use-the-json-type}
 
-データが次の条件を満たす場合にJSONタイプを使用してください：
+次の場合にJSON型を使用します:
 
-* **予測不可能なキー**が時間とともに変更される可能性がある。
-* **異なるタイプの値**を含む (例：パスには時々文字列、時々数値が含まれる)。
-* 厳密な型付けが実行不可能な場合にスキーマの柔軟性が必要。
+* 時間の経過とともに変更される可能性がある**予測不可能なキー**を持つデータ。
+* **異なる型の値**を含むデータ(たとえば、パスに文字列が含まれる場合もあれば、数値が含まれる場合もある)。
+* 厳密な型指定が実行可能でないスキーマの柔軟性が必要な場合。
 
-データ構造が知られていて一貫している場合、JSONタイプが必要になることはほとんどありません。特に、データに以下の条件がある場合：
+データ構造がわかっており一貫している場合、データがJSON形式であっても、JSON型が必要になることはほとんどありません。具体的には、データに次のようなものがある場合:
 
-* **既知のキーを持つフラットな構造**：標準のカラムタイプ（例：String）を使用します。
-* **予測可能なネスト**：これらの構造にはTuple、Array、またはNestedタイプを使用します。
-* **異なるタイプの予測可能な構造**：その代わりにDynamicまたはVariantタイプを検討してください。
+* **既知のキーを持つフラットな構造**: 標準の列型(例: String)を使用します。
+* **予測可能なネスト**: これらの構造にはTuple、Array、またはNested型を使用します。
+* **異なる型を持つ予測可能な構造**: 代わりにDynamicまたはVariant型を検討してください。
 
-上記の例のように、予測可能な最上位キーに静的カラムを使用し、ペイロードの動的セクションに対して単一のJSONカラムを使用するなど、アプローチを組み合わせることもできます。
+上記の例で行ったように、アプローチを組み合わせることもできます。予測可能なトップレベルのキーには静的列を使用し、ペイロードの動的セクションには単一のJSON列を使用します。

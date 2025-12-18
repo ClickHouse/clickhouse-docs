@@ -1,18 +1,17 @@
 ---
-'description': '`cramersV` 関数の結果は、0（変数間の関連性がないことに対応）から1までの範囲で、各値が完全に他の値によって決定される場合のみ1に達することができます。これは、2つの変数間の関連性をそれらの最大可能な変動のパーセンテージとして見ることができます。'
-'sidebar_position': 127
-'slug': '/sql-reference/aggregate-functions/reference/cramersv'
-'title': 'cramersV'
-'doc_type': 'reference'
+description: '`cramersV` 関数の結果は 0（変数間に連関がないことに対応）から 1 の範囲を取り、一方の変数の各値が他方の変数の値によって完全に決定される場合にのみ 1 に達します。これは、2 つの変数間の連関の強さを、それらが取りうる理論上の最大変動に対する割合として解釈できます。'
+sidebar_position: 127
+slug: /sql-reference/aggregate-functions/reference/cramersv
+title: 'cramersV'
+doc_type: 'reference'
 ---
 
+# cramersV {#cramersv}
 
-# cramersV
-
-[Cramer's V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（場合によってはCramer's phiとも呼ばれる）は、テーブル内の2つのカラム間の関連性を測定する指標です。 `cramersV`関数の結果は、0（変数間に関連性がないことに対応）から1までの範囲で、各値が他の値によって完全に決定される場合にのみ1に到達します。これは、2つの変数間の関連性をその最大の可能な変動の割合として見ることができます。
+[Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（Cramer&#39;s phi と呼ばれることもあります）は、テーブル内の 2 つの列間の連関を測る指標です。`cramersV` 関数の結果は 0（変数間に連関がないことに対応）から 1 の範囲を取り、各値が他方によって完全に決定される場合にのみ 1 になります。これは、2 つの変数間の連関を、それらが取りうる最大の変動に対する割合として捉えることができます。
 
 :::note
-Cramer's Vのバイアス補正バージョンについては、以下を参照してください: [cramersVBiasCorrected](./cramersvbiascorrected.md)
+バイアス補正版の Cramer&#39;s V については次を参照してください: [cramersVBiasCorrected](./cramersvbiascorrected.md)
 :::
 
 **構文**
@@ -23,20 +22,20 @@ cramersV(column1, column2)
 
 **パラメータ**
 
-- `column1`: 比較される最初のカラム。
-- `column2`: 比較される2番目のカラム。
+* `column1`: 比較対象となる 1 つ目の列。
+* `column2`: 比較対象となる 2 つ目の列。
 
-**返される値**
+**戻り値**
 
-- カラムの値間に関連性がないことに対応する0から（完全な関連性に対応する）1までの値。
+* 0（列の値同士にまったく連関がないことに対応）から 1（完全な連関）までの値。
 
-タイプ: いつも [Float64](../../../sql-reference/data-types/float.md)。
+型: 常に [Float64](../../../sql-reference/data-types/float.md)。
 
 **例**
 
-以下で比較されている2つのカラムは互いに関連性がないため、`cramersV`の結果は0です：
+以下で比較している 2 つの列には互いに連関がないため、`cramersV` の結果は 0 になります：
 
-クエリ:
+クエリ：
 
 ```sql
 SELECT
@@ -51,7 +50,7 @@ FROM
     );
 ```
 
-結果:
+結果：
 
 ```response
 ┌─cramersV(a, b)─┐
@@ -59,7 +58,7 @@ FROM
 └────────────────┘
 ```
 
-以下の2つのカラムは比較的近い関連性を持っているため、`cramersV`の結果は高い値になります：
+以下の 2 つの列同士には比較的強い関連性があるため、`cramersV` の結果は高い値になります。
 
 ```sql
 SELECT
@@ -68,16 +67,16 @@ FROM
     (
         SELECT
             number % 10 AS a,
-            number % 5 AS b
+            if(number % 12 = 0, (number + 1) % 5, number % 5) AS b
         FROM
             numbers(150)
     );
 ```
 
-結果:
+結果：
 
 ```response
 ┌─────cramersV(a, b)─┐
-│ 0.8944271909999159 │
+│ 0.9066801892162646 │
 └────────────────────┘
 ```

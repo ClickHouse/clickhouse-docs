@@ -31,8 +31,8 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 ## Prerequisites {#prerequisites}
 We assume:
-* you are familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
-* The MSK broker is publicly accessible. See the [Public Access](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html) section of the Developer Guide.
+* you are familiar with [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md),
+* you are familiar with Amazon MSK and MSK Connectors. We recommend the Amazon MSK [Getting Started guide](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html) and [MSK Connect guide](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect.html).
 
 ## The official Kafka connector from ClickHouse with Amazon MSK {#the-official-kafka-connector-from-clickhouse-with-amazon-msk}
 

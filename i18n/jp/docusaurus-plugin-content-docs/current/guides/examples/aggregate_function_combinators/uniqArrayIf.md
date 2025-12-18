@@ -1,36 +1,33 @@
 ---
-'slug': '/examples/aggregate-function-combinators/uniqArrayIf'
-'title': 'uniqArrayIf'
-'description': 'uniqArrayIf コンビネータを使用した例'
-'keywords':
-- 'uniq'
-- 'array'
-- 'if'
-- 'combinator'
-- 'examples'
-- 'uniqArrayIf'
-'sidebar_label': 'uniqArrayIf'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/uniqArrayIf'
+title: 'uniqArrayIf'
+description: 'uniqArrayIf コンビネータを使用する例'
+keywords: ['uniq', 'array', 'if', 'combinator', 'examples', 'uniqArrayIf']
+sidebar_label: 'uniqArrayIf'
+doc_type: 'reference'
 ---
-
 
 # uniqArrayIf {#uniqarrayif}
 
 ## 説明 {#description}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) と [`If`](/sql-reference/aggregate-functions/combinators#-if) のコンビネータは、[`uniq`](/sql-reference/aggregate-functions/reference/uniq) 関数に適用して、条件が真である行の配列内のユニークな値の数を数えるための `uniqArrayIf` 集約コンビネータ関数を使用できます。
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) と [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+関数に適用して、条件が真である行について配列内の一意な値の数をカウントするための
+集約コンビネーター関数 `uniqArrayIf` を使用できます。
 
 :::note
-- `If` と `Array` は組み合わせることができます。ただし、`Array` が最初に来て、その後に `If` が続く必要があります。
+-`If` と -`Array` は組み合わせて使用できますが、`Array` を先に、その後に `If` を指定する必要があります。
 :::
 
-これは、`arrayJoin` を使用せずに特定の条件に基づいて配列内のユニークな要素を数えたい場合に便利です。
+これは、`arrayJoin` を使用せずに、特定の条件に基づいて配列内の一意な要素数をカウントしたい場合に有用です。
 
 ## 使用例 {#example-usage}
 
-### セグメントタイプとエンゲージメントレベルごとのユニークな製品のカウント {#count-unique-products}
+### セグメント種別とエンゲージメントレベルごとのユニークな閲覧商品数を集計する {#count-unique-products}
 
-この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、特定のユーザーセグメントのユーザーによって表示されたユニークな製品の数をカウントします。エンゲージメントメトリックは、セッションで費やした時間です。
+この例では、ユーザーのショッピングセッションデータを含むテーブルを使用して、
+特定のユーザーセグメントに属し、かつセッション内での滞在時間をエンゲージメント指標とする
+ユーザーが閲覧したユニークな商品の数を集計します。
 
 ```sql title="Query"
 CREATE TABLE user_shopping_sessions
@@ -80,7 +77,7 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-## 関連情報 {#see-also}
+## 関連項目 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 - [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

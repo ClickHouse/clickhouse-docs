@@ -1,20 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/countIf'
-sidebar_label: countIf
-description: 'Пример использования комбиниратора countIf'
-title: countIf
+title: 'countIf'
+description: 'Пример использования комбинатора countIf'
 keywords: ['count', 'if', 'combinator', 'examples', 'countIf']
-doc_type: reference
+sidebar_label: 'countIf'
+doc_type: 'reference'
 ---
+
 # countIf {#countif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count), чтобы подсчитать количество строк, где условие истинно, используя агрегационную функцию-комбинатор `countIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count)
+для подсчёта числа строк, удовлетворяющих условию,
+с помощью агрегатной функции-комбинатора `countIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит попытки входа пользователей, и мы использовали `countIf`, чтобы подсчитать количество успешных входов.
+В этом примере мы создадим таблицу, которая хранит попытки входа пользователей в систему,
+и используем `countIf`, чтобы посчитать количество успешных входов.
 
 ```sql title="Query"
 CREATE TABLE login_attempts(
@@ -38,7 +42,7 @@ FROM login_attempts
 GROUP BY user_id;
 ```
 
-Функция `countIf` будет считать только строки, где `is_successful = 1` для каждого пользователя.
+Функция `countIf` для каждого пользователя будет подсчитывать только те строки, в которых `is_successful = 1`.
 
 ```response title="Response"
    ┌─user_id─┬─successful_logins─┐
@@ -47,6 +51,6 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
-## Смотрите также {#see-also}
+## См. также {#see-also}
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If комбинатор`](/sql-reference/aggregate-functions/combinators#-if)
+- [`Комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

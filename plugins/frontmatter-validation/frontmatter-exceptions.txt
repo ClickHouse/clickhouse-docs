@@ -13,4 +13,4 @@
 # /docs\/imports\/.*\.mdx/
 # /\.temp\./
 
-docs/i18n/.*
+/i18n\/.*/

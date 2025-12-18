@@ -1,11 +1,12 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/avg'
-sidebar_position: 112
 description: 'Вычисляет среднее арифметическое.'
-title: avg
-doc_type: reference
+sidebar_position: 112
+slug: /sql-reference/aggregate-functions/reference/avg
+title: 'avg'
+doc_type: 'reference'
 ---
-# avg
+
+# avg {#avg}
 
 Вычисляет среднее арифметическое.
 
@@ -17,12 +18,12 @@ avg(x)
 
 **Аргументы**
 
-- `x` — входные значения, должны быть [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
+* `x` — входные значения, должны иметь тип [Integer](../../../sql-reference/data-types/int-uint.md), [Float](../../../sql-reference/data-types/float.md) или [Decimal](../../../sql-reference/data-types/decimal.md).
 
 **Возвращаемое значение**
 
-- Среднее арифметическое, всегда как [Float64](../../../sql-reference/data-types/float.md).
-- `NaN`, если входной параметр `x` пуст.
+* Среднее арифметическое, всегда типа [Float64](../../../sql-reference/data-types/float.md).
+* `NaN`, если входной параметр `x` пуст.
 
 **Пример**
 
@@ -50,7 +51,7 @@ SELECT avg(x) FROM VALUES('x Int8', 0, 1, 2, 3, 4, 5);
 CREATE TABLE test (t UInt8) ENGINE = Memory;
 ```
 
-Получите среднее арифметическое:
+Найдите среднее арифметическое:
 
 Запрос:
 

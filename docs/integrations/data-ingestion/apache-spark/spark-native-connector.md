@@ -35,17 +35,17 @@ catalog feature, it is now possible to add and work with multiple catalogs in a 
 
 ## Requirements {#requirements}
 
-- Java 8 or 17
-- Scala 2.12 or 2.13
-- Apache Spark 3.3 or 3.4 or 3.5
+- Java 8 or 17 (Java 17+ required for Spark 4.0)
+- Scala 2.12 or 2.13 (Spark 4.0 only supports Scala 2.13)
+- Apache Spark 3.3, 3.4, 3.5, or 4.0
 
 ## Compatibility matrix {#compatibility-matrix}
 
 | Version | Compatible Spark Versions | ClickHouse JDBC version |
 |---------|---------------------------|-------------------------|
-| main    | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
+| main    | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
+| 0.9.0   | Spark 3.3, 3.4, 3.5, 4.0  | 0.9.4                   |
 | 0.8.1   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
-| 0.8.0   | Spark 3.3, 3.4, 3.5       | 0.6.3                   |
 | 0.7.3   | Spark 3.3, 3.4            | 0.4.6                   |
 | 0.6.0   | Spark 3.3                 | 0.3.2-patch11           |
 | 0.5.0   | Spark 3.2, 3.3            | 0.3.2-patch11           |
@@ -547,7 +547,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | ClickHouse Data Type                                              | Spark Data Type                | Supported | Is Primitive | Notes                                              |
 |-------------------------------------------------------------------|--------------------------------|-----------|--------------|----------------------------------------------------|
 | `Nothing`                                                         | `NullType`                     | ✅         | Yes          |                                                    |
-| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                                                    |
+| `Bool`                                                            | `BooleanType`                  | ✅         | Yes          |                           |
 | `UInt8`, `Int16`                                                  | `ShortType`                    | ✅         | Yes          |                                                    |
 | `Int8`                                                            | `ByteType`                     | ✅         | Yes          |                                                    |
 | `UInt16`,`Int32`                                                  | `IntegerType`                  | ✅         | Yes          |                                                    |
@@ -570,7 +570,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No           | Specific interval type is used                     |
 | `Object`                                                          |                                | ❌         |              |                                                    |
 | `Nested`                                                          |                                | ❌         |              |                                                    |
-| `Tuple`                                                           |                                | ❌         |              |                                                    |
+| `Tuple`                                                           | `StructType`                   | ✅         | No           | Supports both named and unnamed tuples. Named tuples map to struct fields by name, unnamed tuples use `_1`, `_2`, etc. Supports nested structs and nullable fields |
 | `Point`                                                           |                                | ❌         |              |                                                    |
 | `Polygon`                                                         |                                | ❌         |              |                                                    |
 | `MultiPolygon`                                                    |                                | ❌         |              |                                                    |
@@ -585,7 +585,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 
 | Spark Data Type                     | ClickHouse Data Type | Supported | Is Primitive | Notes                                  |
 |-------------------------------------|----------------------|-----------|--------------|----------------------------------------|
-| `BooleanType`                       | `UInt8`              | ✅         | Yes          |                                        |
+| `BooleanType`                       | `Bool`               | ✅         | Yes          | Mapped to `Bool` type (not `UInt8`) since version 0.9.0 |
 | `ByteType`                          | `Int8`               | ✅         | Yes          |                                        |
 | `ShortType`                         | `Int16`              | ✅         | Yes          |                                        |
 | `IntegerType`                       | `Int32`              | ✅         | Yes          |                                        |
@@ -600,6 +600,8 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `TimestampType`                     | `DateTime`           | ✅         | Yes          |                                        |
 | `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | Array element type is also converted   |
 | `MapType`                           | `Map`                | ✅         | No           | Keys are limited to `StringType`       |
+| `StructType`                        | `Tuple`              | ✅         | No           | Converted to named Tuple with field names. |
+| `VariantType`                       | `VariantType`               | ❌         | No          |  |
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 

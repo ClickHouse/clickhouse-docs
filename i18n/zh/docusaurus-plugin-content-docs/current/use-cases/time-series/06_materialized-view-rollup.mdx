@@ -1,255 +1,248 @@
 ---
-'title': '使用物化视图构建快速时间序列分析的汇总'
-'slug': '/knowledgebase/materialized-view-rollup-timeseries'
-'description': '端到端示例，创建原始事件表、汇总表和用于低延迟分析的物化视图。'
-'keywords':
-- 'materialized view'
-- 'rollup'
-- 'aggregate'
-- 'timeseries'
-- 'tutorial'
-'doc_type': 'guide'
+title: '使用物化视图构建汇总表，实现快速时间序列分析'
+slug: /knowledgebase/materialized-view-rollup-timeseries
+description: '端到端示例：创建原始事件表、汇总表和物化视图，以实现低延迟分析。'
+keywords: ['物化视图', '汇总', '聚合', '时间序列', '教程']
+doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-> 本教程向您展示如何维护来自高流量事件表的预聚合汇总，使用 [**物化视图**](/materialized-views)。您将创建三个对象：一个原始表、一个汇总表，以及自动写入汇总的物化视图。
+> 本教程将演示如何使用 [**materialized views**](/materialized-views) 从高吞吐量事件表维护预聚合的汇总数据。
+> 您将创建三个对象：一个原始表、一个汇总表，以及一个会自动将数据写入该汇总表的物化视图。
 
-## 何时使用此模式 {#when-to-use}
+## 何时使用此模式 \{#when-to-use\}
 
 在以下情况下使用此模式：
-- 您有一个 **只追加事件流**（点击、页面浏览、物联网、日志）。
-- 大多数查询是针对时间范围的 **聚合**（每分钟/小时/天）。
-- 您希望在不重新扫描所有原始行的情况下实现 **一致的亚秒读取**。
+
+* 你有一个**仅追加写入的事件流**（点击、页面浏览、IoT、日志）。
+* 大多数查询是在时间范围上的**聚合**（按分钟/小时/天）。
+* 你希望获得**稳定的一致的亚秒级读取性能**，且无需重新扫描所有原始行。
 
 <VerticalStepper headerLevel="h2">
+  ## 创建原始事件表 \{#create-raw-events-table\}
 
-## 创建原始事件表 {#create-raw-events-table}
+  ```sql
+  CREATE TABLE events_raw
+  (
+      event_time   DateTime,
+      user_id      UInt64,
+      country      LowCardinality(String),
+      event_type   LowCardinality(String),
+      value        Float64
+  )
+  ENGINE = MergeTree
+  PARTITION BY toYYYYMM(event_time)
+  ORDER BY (event_time, user_id)
+  TTL event_time + INTERVAL 90 DAY DELETE
+  ```
 
-```sql
-CREATE TABLE events_raw
-(
-    event_time   DateTime,
-    user_id      UInt64,
-    country      LowCardinality(String),
-    event_type   LowCardinality(String),
-    value        Float64
-)
-ENGINE = MergeTree
-PARTITION BY toYYYYMM(event_time)
-ORDER BY (event_time, user_id)
-TTL event_time + INTERVAL 90 DAY DELETE
-```
+  **注意事项**
 
-**注意**
+  * `PARTITION BY toYYYYMM(event_time)` 可以使分区保持较小，便于删除。
+  * `ORDER BY (event_time, user_id)` 支持时间范围查询 + 二级过滤条件。
+  * `LowCardinality(String)` 能为类别型维度节省内存。
+  * `TTL` 会在 90 天后清理原始数据（可根据保留需求进行调整）。
 
-- `PARTITION BY toYYYYMM(event_time)` 保持分区小且易于删除。
-- `ORDER BY (event_time, user_id)` 支持时间边界查询 + 二级过滤。
-- `LowCardinality(String)` 为分类维度节省内存。
-- `TTL` 在 90 天后清理原始数据（根据您的保留要求进行调整）。
+  ## 设计汇总（聚合）表 \{#design-rollup\}
 
-## 设计汇总（聚合）表 {#design-rollup}
+  我们将预聚合到**小时**粒度。
+  请根据最常用的分析时间窗口选择合适的粒度。
 
-我们将预聚合到 **每小时** 的粒度。
-选择您的粒度以匹配最常见的分析窗口。
+  ```sql
+  CREATE TABLE events_rollup_1h
+  (
+      bucket_start  DateTime,            -- 小时起始时间
+      country       LowCardinality(String),  -- 国家
+      event_type    LowCardinality(String),  -- 事件类型
+      users_uniq    AggregateFunction(uniqExact, UInt64),  -- 唯一用户数
+      value_sum     AggregateFunction(sum, Float64),  -- 值求和
+      value_avg     AggregateFunction(avg, Float64),  -- 值平均值
+      events_count  AggregateFunction(count)  -- 事件数量
+  )
+  ENGINE = AggregatingMergeTree
+  PARTITION BY toYYYYMM(bucket_start)
+  ORDER BY (bucket_start, country, event_type)
+  ```
 
-```sql
-CREATE TABLE events_rollup_1h
-(
-    bucket_start  DateTime,            -- start of the hour
-    country       LowCardinality(String),
-    event_type    LowCardinality(String),
-    users_uniq    AggregateFunction(uniqExact, UInt64),
-    value_sum     AggregateFunction(sum, Float64),
-    value_avg     AggregateFunction(avg, Float64),
-    events_count  AggregateFunction(count)
-)
-ENGINE = AggregatingMergeTree
-PARTITION BY toYYYYMM(bucket_start)
-ORDER BY (bucket_start, country, event_type)
-```
+  我们存储**聚合状态**(例如 `AggregateFunction(sum, ...)`)来紧凑地表示部分聚合,这些状态可以在后续合并或完成最终计算。
 
-我们存储 **聚合状态**（例如，`AggregateFunction(sum, ...)`），它紧凑地表示部分聚合，并可以在稍后合并或最终确定。
+  ## 创建物化视图以填充汇总表 \{#create-materialized-view-to-populate-rollup\}
 
-## 创建填充汇总的物化视图 {#create-materialized-view-to-populate-rollup}
+  此物化视图在向 `events_raw` 插入数据时自动触发，并将**聚合状态**写入汇总表。
 
-这个物化视图在插入 `events_raw` 时自动触发，并将 **聚合状态** 写入汇总。
+  ```sql
+  CREATE MATERIALIZED VIEW mv_events_rollup_1h
+  TO events_rollup_1h
+  AS
+  SELECT
+      toStartOfHour(event_time) AS bucket_start,
+      country,
+      event_type,
+      uniqExactState(user_id)   AS users_uniq,
+      sumState(value)           AS value_sum,
+      avgState(value)           AS value_avg,
+      countState()              AS events_count
+  FROM events_raw
+  GROUP BY bucket_start, country, event_type;
+  ```
 
-```sql
-CREATE MATERIALIZED VIEW mv_events_rollup_1h
-TO events_rollup_1h
-AS
-SELECT
-    toStartOfHour(event_time) AS bucket_start,
-    country,
-    event_type,
-    uniqExactState(user_id)   AS users_uniq,
-    sumState(value)           AS value_sum,
-    avgState(value)           AS value_avg,
-    countState()              AS events_count
-FROM events_raw
-GROUP BY bucket_start, country, event_type;
-```
+  ## 插入示例数据 \{#insert-some-sample-data\}
 
-## 插入一些示例数据 {#insert-some-sample-data}
+  插入一些示例数据：
 
-插入一些示例数据：
+  ```sql
+  INSERT INTO events_raw VALUES
+      (now() - INTERVAL 4 SECOND, 101, 'US', 'view', 1),
+      (now() - INTERVAL 3 SECOND, 101, 'US', 'click', 1),
+      (now() - INTERVAL 2 SECOND, 202, 'DE', 'view', 1),
+      (now() - INTERVAL 1 SECOND, 101, 'US', 'view', 1);
+  ```
 
-```sql
-INSERT INTO events_raw VALUES
-    (now() - INTERVAL 4 SECOND, 101, 'US', 'view', 1),
-    (now() - INTERVAL 3 SECOND, 101, 'US', 'click', 1),
-    (now() - INTERVAL 2 SECOND, 202, 'DE', 'view', 1),
-    (now() - INTERVAL 1 SECOND, 101, 'US', 'view', 1);
-```
+  ## 查询汇总表 \{#querying-the-rollup\}
 
-## 查询汇总 {#querying-the-rollup}
+  您可以在读取时**合并**状态,或者**完成**它们:
 
-您可以在读取时 **合并** 状态，或 **最终确定** 它们：
+  <Tabs groupId="finalize">
+    <TabItem value="merge" label="在读取时合并">
+      ```sql
+      SELECT
+          bucket_start,
+          country,
+          event_type,
+          uniqExactMerge(users_uniq) AS users,
+          sumMerge(value_sum)        AS value_sum,
+          avgMerge(value_avg)        AS value_avg,
+          countMerge(events_count)   AS events
+      FROM events_rollup_1h
+      WHERE bucket_start >= now() - INTERVAL 1 DAY
+      GROUP BY ALL
+      ORDER BY bucket_start, country, event_type;
+      ```
+    </TabItem>
 
-<Tabs groupId="finalize">
-  <TabItem value="merge" label="读取时合并">
+    <TabItem value="finalize" label="使用 -Final 进行最终合并">
+      ```sql
+      SELECT
+          bucket_start,
+          country,
+          event_type,
+          uniqExactMerge(users_uniq) AS users,
+          sumMerge(value_sum)        AS value_sum,
+          avgMerge(value_avg)        AS value_avg,
+          countMerge(events_count)   AS events
+      FROM events_rollup_1h
+      WHERE bucket_start >= now() - INTERVAL 1 DAY
+      GROUP BY ALL
+      ORDER BY bucket_start, country, event_type
+      SETTINGS final = 1;  -- 或使用 SELECT ... FINAL
+      ```
+    </TabItem>
+  </Tabs>
 
-```sql
-SELECT
-    bucket_start,
-    country,
-    event_type,
-    uniqExactMerge(users_uniq) AS users,
-    sumMerge(value_sum)        AS value_sum,
-    avgMerge(value_avg)        AS value_avg,
-    countMerge(events_count)   AS events
-FROM events_rollup_1h
-WHERE bucket_start >= now() - INTERVAL 1 DAY
-GROUP BY ALL
-ORDER BY bucket_start, country, event_type;
-```
+  <br />
 
-  </TabItem>
-  <TabItem value="finalize" label="使用 -Final 最终确定">
+  :::tip
+  如果您预期读取操作始终命中汇总数据，可以创建**第二个物化视图**，将&#95;最终确定的&#95;数值写入&quot;普通&quot;的 `MergeTree` 表，保持相同的 1 小时粒度。
+  状态提供了更大的灵活性，而最终确定的数值则使读取操作更加简洁。
+  :::
 
-```sql
-SELECT
-    bucket_start,
-    country,
-    event_type,
-    uniqExactMerge(users_uniq) AS users,
-    sumMerge(value_sum)        AS value_sum,
-    avgMerge(value_avg)        AS value_avg,
-    countMerge(events_count)   AS events
-FROM events_rollup_1h
-WHERE bucket_start >= now() - INTERVAL 1 DAY
-GROUP BY ALL
-ORDER BY bucket_start, country, event_type
-SETTINGS final = 1;  -- or use SELECT ... FINAL
-```
+  ## 在主键字段上过滤以获得最佳性能 \{#filtering-performance\}
 
-  </TabItem>
-</Tabs>
+  您可以使用 `EXPLAIN` 命令查看索引如何用于裁剪数据:
 
-<br/>
-:::tip
-如果您希望读取始终命中汇总，您可以创建第二个 **物化视图**，将 *最终确定* 的数字写入同一小时粒度的“普通” `MergeTree` 表。
-状态提供更大的灵活性，而最终确定的数字提供稍微简化的读取。
-:::
+  ```sql title="Query"
+  EXPLAIN indexes=1
+  SELECT *
+  FROM events_rollup_1h
+  WHERE bucket_start BETWEEN now() - INTERVAL 3 DAY AND now()
+    AND country = 'US';
+  ```
 
-## 针对主键中的字段过滤以获得最佳性能 {#filtering-performance}
+  ```response title="Response"
+  ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      1.  │ Expression ((Project names + Projection))                                                                                          │
+      2.  │   Expression                                                                                                                       │
+      3.  │     ReadFromMergeTree (default.events_rollup_1h)                                                                                   │
+      4.  │     Indexes:                                                                                                                       │
+      5.  │       MinMax                                                                                                                       │
+      6.  │         Keys:                                                                                                                      │
+      7.  │           bucket_start                                                                                                             │
+      8.  │         Condition: and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))                                 │
+      9.  │         Parts: 1/1                                                                                                                 │
+      10. │         Granules: 1/1                                                                                                              │
+      11. │       Partition                                                                                                                    │
+      12. │         Keys:                                                                                                                      │
+      13. │           toYYYYMM(bucket_start)                                                                                                   │
+      14. │         Condition: and((toYYYYMM(bucket_start) in (-Inf, 202509]), (toYYYYMM(bucket_start) in [202509, +Inf)))                     │
+      15. │         Parts: 1/1                                                                                                                 │
+      16. │         Granules: 1/1                                                                                                              │
+      17. │       PrimaryKey                                                                                                                   │
+      18. │         Keys:                                                                                                                      │
+      19. │           bucket_start                                                                                                             │
+      20. │           country                                                                                                                  │
+      21. │         Condition: and((country in ['US', 'US']), and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))) │
+      22. │         Parts: 1/1                                                                                                                 │
+      23. │         Granules: 1/1                                                                                                              │
+          └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  ```
 
-您可以使用 `EXPLAIN` 命令查看索引如何用于修剪数据：
+  上述查询执行计划显示使用了三种类型的索引:
+  MinMax 索引、分区索引和主键索引。
+  每个索引都使用了主键中指定的字段:`(bucket_start, country, event_type)`。
+  为获得最佳过滤性能,请确保您的查询使用主键字段来裁剪数据。
 
-```sql title="Query"
-EXPLAIN indexes=1
-SELECT *
-FROM events_rollup_1h
-WHERE bucket_start BETWEEN now() - INTERVAL 3 DAY AND now()
-  AND country = 'US';
-```
+  ## 常见配置变体 \{#common-variations\}
 
-```response title="Response"
-    ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-1.  │ Expression ((Project names + Projection))                                                                                          │
-2.  │   Expression                                                                                                                       │
-3.  │     ReadFromMergeTree (default.events_rollup_1h)                                                                                   │
-4.  │     Indexes:                                                                                                                       │
-5.  │       MinMax                                                                                                                       │
-6.  │         Keys:                                                                                                                      │
-7.  │           bucket_start                                                                                                             │
-8.  │         Condition: and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))                                 │
-9.  │         Parts: 1/1                                                                                                                 │
-10. │         Granules: 1/1                                                                                                              │
-11. │       Partition                                                                                                                    │
-12. │         Keys:                                                                                                                      │
-13. │           toYYYYMM(bucket_start)                                                                                                   │
-14. │         Condition: and((toYYYYMM(bucket_start) in (-Inf, 202509]), (toYYYYMM(bucket_start) in [202509, +Inf)))                     │
-15. │         Parts: 1/1                                                                                                                 │
-16. │         Granules: 1/1                                                                                                              │
-17. │       PrimaryKey                                                                                                                   │
-18. │         Keys:                                                                                                                      │
-19. │           bucket_start                                                                                                             │
-20. │           country                                                                                                                  │
-21. │         Condition: and((country in ['US', 'US']), and((bucket_start in (-Inf, 1758550242]), (bucket_start in [1758291042, +Inf)))) │
-22. │         Parts: 1/1                                                                                                                 │
-23. │         Granules: 1/1                                                                                                              │
-    └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
+  * **不同粒度**：添加一个按日汇总：
 
-上面的查询执行计划显示正在使用三种类型的索引：
-一个 MinMax 索引、一个分区索引和一个主键索引。
-每个索引使用我们主键中指定的字段：`(bucket_start, country, event_type)`。
-为了获得最佳过滤性能，您需要确保查询利用主键字段来修剪数据。
+  ```sql
+  CREATE TABLE events_rollup_1d
+  (
+      bucket_start Date,
+      country      LowCardinality(String),
+      event_type   LowCardinality(String),
+      users_uniq   AggregateFunction(uniqExact, UInt64),
+      value_sum    AggregateFunction(sum, Float64),
+      value_avg    AggregateFunction(avg, Float64),
+      events_count AggregateFunction(count)
+  )
+  ENGINE = AggregatingMergeTree
+  PARTITION BY toYYYYMM(bucket_start)
+  ORDER BY (bucket_start, country, event_type);
+  ```
 
-## 常见变体 {#common-variations}
+  然后创建第二个物化视图：
 
-- **不同的粒度**：添加每日汇总：
+  ```sql
+  CREATE MATERIALIZED VIEW mv_events_rollup_1d
+  TO events_rollup_1d
+  AS
+  SELECT
+      toDate(event_time) AS bucket_start,
+      country,
+      event_type,
+      uniqExactState(user_id),
+      sumState(value),
+      avgState(value),
+      countState()
+  FROM events_raw
+  GROUP BY ALL;
+  ```
 
-```sql
-CREATE TABLE events_rollup_1d
-(
-    bucket_start Date,
-    country      LowCardinality(String),
-    event_type   LowCardinality(String),
-    users_uniq   AggregateFunction(uniqExact, UInt64),
-    value_sum    AggregateFunction(sum, Float64),
-    value_avg    AggregateFunction(avg, Float64),
-    events_count AggregateFunction(count)
-)
-ENGINE = AggregatingMergeTree
-PARTITION BY toYYYYMM(bucket_start)
-ORDER BY (bucket_start, country, event_type);
-```
+  * **压缩**：在原始表中的大列上应用压缩编解码器（例如：`Codec(ZSTD(3))`）。
+  * **成本控制**：将长保留策略应用于原始表，并保留生命周期较长的汇总表。
+  * **Backfilling（回填）**：在加载历史数据时，将数据插入到 `events_raw` 中，让物化视图自动完成汇总构建。对于已有行，如果适用，可以在创建物化视图时使用 `POPULATE`，或使用 `INSERT SELECT`。
 
-然后是第二个物化视图：
+  ## 清理与保留策略 \{#clean-up-and-retention\}
 
-```sql
-CREATE MATERIALIZED VIEW mv_events_rollup_1d
-TO events_rollup_1d
-AS
-SELECT
-    toDate(event_time) AS bucket_start,
-    country,
-    event_type,
-    uniqExactState(user_id),
-    sumState(value),
-    avgState(value),
-    countState()
-FROM events_raw
-GROUP BY ALL;
-```
+  * 延长原始数据的 TTL（例如 30/90 天），但将汇总数据的保留时间设得更长（例如 1 年）。
+  * 如果启用了分层存储，你也可以使用 **TTL 将** 旧的数据分片迁移到更便宜的存储中。
 
-- **压缩**：对大列应用编解码器（例如：`Codec(ZSTD(3))`）在原始表上。
-- **成本控制**：将重的保留推向原始表，保持长寿命汇总。
-- **回填**：在加载历史数据时，插入到 `events_raw` 并让物化视图自动构建汇总。对于现有行，如果适合，请在创建物化视图时使用 `POPULATE` 或 `INSERT SELECT`。
+  ## 故障排除 \{#troubleshooting\}
 
-## 清理和保留 {#clean-up-and-retention}
-
-- 增加原始数据的 TTL（例如，30/90 天），但保持汇总的数据时间更长（例如，1 年）。
-- 如果启用了分层，您还可以使用 **TTL 移动** 旧片段到更便宜的存储。
-
-## 故障排除 {#troubleshooting}
-
-- 物化视图未更新？检查插入是否进入 **events_raw**（而不是汇总表），以及物化视图目标是否正确（`TO events_rollup_1h`）。
-- 查询缓慢？确认它们命中汇总（直接查询汇总表），并且时间过滤与汇总粒度对齐。
-- 回填不匹配？使用 `SYSTEM FLUSH LOGS` 并检查 `system.query_log` / `system.parts` 确认插入和合并。
-
+  * 物化视图没有更新？检查插入是否写入到 **events&#95;raw**（而不是汇总表），并确认物化视图的目标表是否正确（`TO events_rollup_1h`）。
+  * 查询变慢？请确认这些查询确实命中了 rollup（直接查询 rollup 表），并确保时间过滤条件与 rollup 表的汇总粒度对齐。
+  * 回填数据有不一致？使用 `SYSTEM FLUSH LOGS`，并检查 `system.query_log` 和 `system.parts`，以确认插入和合并是否正确完成。
 </VerticalStepper>

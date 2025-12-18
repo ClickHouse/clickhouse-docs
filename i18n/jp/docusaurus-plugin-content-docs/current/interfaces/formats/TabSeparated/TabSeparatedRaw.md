@@ -1,36 +1,33 @@
 ---
-'alias':
-- 'TSVRaw'
-- 'Raw'
-'description': 'TabSeparatedRawフォーマットのDocumentation'
-'input_format': true
-'keywords':
-- 'TabSeparatedRaw'
-'output_format': true
-'slug': '/interfaces/formats/TabSeparatedRaw'
-'title': 'TabSeparatedRaw'
-'doc_type': 'reference'
+alias: ['TSVRaw', 'Raw']
+description: 'TabSeparatedRaw フォーマットのドキュメント'
+input_format: true
+keywords: ['TabSeparatedRaw']
+output_format: true
+slug: /interfaces/formats/TabSeparatedRaw
+title: 'TabSeparatedRaw'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias           |
-|-------|--------|-----------------|
-| ✔     | ✔      | `TSVRaw`, `Raw` |
+| 入力 | 出力 | エイリアス       |
+|------|------|------------------|
+| ✔    | ✔    | `TSVRaw`, `Raw`  |
 
 ## 説明 {#description}
 
-[`TabSeparated`](/interfaces/formats/TabSeparated) 形式とは異なり、行はエスケープなしで書き込まれます。
+このフォーマットは [`TabSeparated`](/interfaces/formats/TabSeparated) フォーマットと異なり、行をエスケープせずに書き込みます。
 
 :::note
-この形式で解析する場合、各フィールドにはタブまたは改行が含まれてはいけません。
+このフォーマットで解析する場合、各フィールド内にタブ文字または改行文字を含めることはできません。
 :::
 
-`TabSeparatedRaw` 形式と `RawBlob` 形式の比較については、[Raw Formats Comparison](../RawBLOB.md/#raw-formats-comparison)を参照してください。
+`TabSeparatedRaw` フォーマットと `RawBlob` フォーマットの比較については、[Raw フォーマットの比較](../RawBLOB.md/#raw-formats-comparison) を参照してください。
 
 ## 使用例 {#example-usage}
 
 ### データの挿入 {#inserting-data}
 
-以下の `football.tsv` という名前の TSV ファイルを使用します:
+次の TSV ファイル `football.tsv` を使用します:
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -52,15 +49,15 @@
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-データを挿入します:
+データを挿入します：
 
 ```sql
 INSERT INTO football FROM INFILE 'football.tsv' FORMAT TabSeparatedRaw;
 ```
 
-### データの読み取り {#reading-data}
+### データの読み込み {#reading-data}
 
-`TabSeparatedRaw` 形式を使用してデータを読み取ります:
+`TabSeparatedRaw` 形式でデータを読み込みます。
 
 ```sql
 SELECT *
@@ -68,7 +65,7 @@ FROM football
 FORMAT TabSeparatedRaw
 ```
 
-出力はタブ区切り形式になります:
+出力はタブ区切り形式になります。
 
 ```tsv
 2022-04-30      2021    Sutton United   Bradford City   1       4
@@ -90,4 +87,4 @@ FORMAT TabSeparatedRaw
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
 
-## 形式の設定 {#format-settings}
+## フォーマット設定 {#format-settings}

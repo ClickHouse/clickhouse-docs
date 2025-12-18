@@ -1,31 +1,27 @@
 ---
-'description': 'CoalescingMergeTree は MergeTree エンジンから派生します。その主な特徴は、パーツのマージ中に各カラムの最後の非
-  NULL 値を自動的に保存する機能です。'
-'sidebar_label': 'CoalescingMergeTree'
-'sidebar_position': 50
-'slug': '/engines/table-engines/mergetree-family/coalescingmergetree'
-'title': 'CoalescingMergeTree'
-'keywords':
-- 'CoalescingMergeTree'
-'show_related_blogs': true
-'doc_type': 'reference'
+description: 'CoalescingMergeTree は MergeTree エンジンを継承しています。その主な特徴は、パーツのマージ時に各列の直近の非 NULL 値を自動的に格納できることです。'
+sidebar_label: 'CoalescingMergeTree'
+sidebar_position: 50
+slug: /engines/table-engines/mergetree-family/coalescingmergetree
+title: 'CoalescingMergeTree テーブルエンジン'
+keywords: ['CoalescingMergeTree']
+show_related_blogs: true
+doc_type: 'reference'
 ---
 
+# CoalescingMergeTree テーブルエンジン {#coalescingmergetree-table-engine}
 
-# CoalescingMergeTree
-
-:::note
-バージョン 25.6 から利用可能
-このテーブルエンジンは、バージョン 25.6 以降の OSS と Cloud の両方で利用可能です。
+:::note Available from version 25.6
+このテーブルエンジンは、OSS と Cloud の両方でバージョン 25.6 以降で利用可能です。
 :::
 
-このエンジンは [MergeTree](/engines/table-engines/mergetree-family/mergetree) を継承しています。主な違いは、データパーツがマージされる方法にあります。`CoalescingMergeTree` テーブルでは、ClickHouse が同じ主キー（より正確には、同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、各カラムの最新の非NULL値を含む単一の行に置き換えます。
+このエンジンは [MergeTree](/engines/table-engines/mergetree-family/mergetree) を継承しています。主な違いはデータパートのマージ方法です。`CoalescingMergeTree` テーブルでは、ClickHouse は同じ主キー（より正確には、同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、各カラムについて最新の非 NULL 値を含む 1 行に置き換えます。
 
-これにより、カラムレベルのアップサートが可能になり、全行ではなく特定のカラムのみを更新できます。
+これによりカラム単位のアップサートが可能になり、行全体ではなく特定のカラムだけを更新できます。
 
-`CoalescingMergeTree` は、非キーのカラムにあらかじめ Nullable 型を持つデータの使用を意図しています。カラムが Nullable でない場合、動作は [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) と同じです。
+`CoalescingMergeTree` は、キー以外のカラムで Nullable 型と併用することを想定しています。カラムが Nullable でない場合は、その動作は [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) と同じになります。
 
-## テーブル作成 {#creating-a-table}
+## テーブルを作成する {#creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -44,26 +40,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ### CoalescingMergeTree のパラメータ {#parameters-of-coalescingmergetree}
 
-#### カラム {#columns}
+#### Columns {#columns}
 
-`columns` - 値が結合されるカラムの名前を持つタプル。オプショナルパラメータ。
-    カラムは数値型でなければならず、パーティションやソートキーには含まれてはいけません。
+`columns` - 値が統合されるカラム名のタプルです。省略可能なパラメータです。\
+カラムは数値型である必要があり、パーティションキーまたはソートキーに含まれていてはなりません。
 
- `columns` が指定されていない場合、ClickHouse はソートキーに含まれないすべてのカラムの値を結合します。
+`columns` が指定されていない場合、ClickHouse はソートキーに含まれていないすべてのカラムの値を統合します。
 
 ### クエリ句 {#query-clauses}
 
-`CoalescingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する場合と同様の [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
+`CoalescingMergeTree` テーブルを作成する際には、`MergeTree` テーブルを作成する場合と同じ [句](../../../engines/table-engines/mergetree-family/mergetree.md) が必要です。
 
 <details markdown="1">
+  <summary>非推奨のテーブル作成方法</summary>
 
-<summary>テーブル作成のための非推奨メソッド</summary>
+  :::note
+  新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上で説明した方法に切り替えてください。
+  :::
 
-:::note
-新しいプロジェクトではこの方法を使用せず、可能であれば古いプロジェクトを上記で説明した方法に切り替えてください。
-:::
-
-```sql
+  ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -72,15 +67,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] CoalescingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
-`columns` を除くすべてのパラメータは、`MergeTree` と同じ意味を持ちます。
+  `columns` を除くすべてのパラメータは、`MergeTree` における意味と同じです。
 
-- `columns` — 値が合算されるカラムの名前を持つタプル。オプショナルパラメータ。詳細については、上記のテキストを参照してください。
-
+  * `columns` — 値が合計されるカラム名のタプルです。省略可能なパラメータです。詳細な説明については上記のテキストを参照してください。
 </details>
 
 ## 使用例 {#usage-example}
 
-次のテーブルを考えます：
+次のテーブルを例にします。
 
 ```sql
 CREATE TABLE test_table
@@ -94,7 +88,7 @@ ENGINE = CoalescingMergeTree()
 ORDER BY key
 ```
 
-データを挿入します：
+データを挿入する：
 
 ```sql
 INSERT INTO test_table VALUES(1, NULL, NULL, '2025-01-01'), (2, 10, 'test', NULL);
@@ -102,7 +96,7 @@ INSERT INTO test_table VALUES(1, 42, 'win', '2025-02-01');
 INSERT INTO test_table(key, value_date) VALUES(2, '2025-02-01');
 ```
 
-結果は次のようになります：
+結果は次のようになります。
 
 ```sql
 SELECT * FROM test_table ORDER BY key;
@@ -117,7 +111,7 @@ SELECT * FROM test_table ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-正確で最終的な結果のための推奨クエリ：
+最終的な正しい結果を得るための推奨クエリ：
 
 ```sql
 SELECT * FROM test_table FINAL ORDER BY key;
@@ -130,11 +124,11 @@ SELECT * FROM test_table FINAL ORDER BY key;
 └─────┴───────────┴──────────────┴────────────┘
 ```
 
-`FINAL` 修飾子を使用すると、クエリ時に ClickHouse がマージロジックを適用するため、各カラムに対して正しい結合された「最新」の値を取得できます。これは、CoalescingMergeTree テーブルからクエリを行う際に最も安全で正確な方法です。
+`FINAL` 修飾子を使用すると、クエリ実行時に ClickHouse がマージロジックを適用し、各カラムごとに正しい統合後の「最新」値を必ず取得できます。これは、CoalescingMergeTree テーブルに対してクエリを実行する際に、最も安全で精度の高い方法です。
 
 :::note
 
-`GROUP BY` を使用するアプローチは、基になるパーツが完全にマージされていない場合、誤った結果を返す可能性があります。
+`GROUP BY` を用いるアプローチは、背後のパーツが完全にはマージされていない場合、誤った結果を返す可能性があります。
 
 ```sql
 SELECT key, last_value(value_int), last_value(value_string), last_value(value_date)  FROM test_table GROUP BY key; -- Not recommended.

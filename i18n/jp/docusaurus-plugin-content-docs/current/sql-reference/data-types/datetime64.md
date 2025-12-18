@@ -1,37 +1,36 @@
 ---
-'description': 'ClickHouseのDateTime64データ型に関するドキュメントで、サブ秒精度でタイムスタンプを保存します'
-'sidebar_label': 'DateTime64'
-'sidebar_position': 18
-'slug': '/sql-reference/data-types/datetime64'
-'title': 'DateTime64'
-'doc_type': 'reference'
+description: 'サブ秒精度のタイムスタンプを格納する ClickHouse の DateTime64 データ型に関するドキュメント'
+sidebar_label: 'DateTime64'
+sidebar_position: 18
+slug: /sql-reference/data-types/datetime64
+title: 'DateTime64'
+doc_type: 'reference'
 ---
 
+# DateTime64 {#datetime64}
 
-# DateTime64
+カレンダー日付と一日の時刻で表現できる時点を、サブ秒精度を指定して保存できるデータ型です。
 
-ある瞬間を保存することを可能にし、カレンダーの日付と1日の時刻として表現でき、定義されたサブ秒精度を持ちます。
+ティックサイズ（精度）は 10<sup>-precision</sup> 秒です。指定可能な範囲: [ 0 : 9 ]。\
+通常は 3（ミリ秒）、6（マイクロ秒）、9（ナノ秒）が使用されます。
 
-ティックサイズ（精度）：10<sup>-precision</sup> 秒。 有効範囲：[ 0 : 9 ]。  
-一般的に使用されるのは - 3（ミリ秒）、6（マイクロ秒）、9（ナノ秒）です。
-
-**構文：**
+**構文:**
 
 ```sql
 DateTime64(precision, [timezone])
 ```
 
-内部的には、エポック開始（1970-01-01 00:00:00 UTC）からのティックの数としてデータを Int64 として保存します。 ティックの解像度は、精度パラメータによって決まります。さらに、`DateTime64` 型は、全カラムにわたって同じタイムゾーンを保存でき、これにより `DateTime64` 型の値がテキスト形式で表示される方法や、文字列として指定された値がパースされる方法（'2020-01-01 05:00:01.000'）に影響を与えます。タイムゾーンはテーブルの行（または結果セット）には保存されませんが、カラムのメタデータに保存されます。詳細は [DateTime](../../sql-reference/data-types/datetime.md) をご覧ください。
+内部的には、エポック開始（1970-01-01 00:00:00 UTC）からの「ティック」数としてデータを Int64 で格納します。ティックの分解能は precision パラメータによって決まります。さらに、`DateTime64` 型では列全体で共通のタイムゾーンを保持でき、このタイムゾーンが `DateTime64` 型の値のテキスト形式での表示方法や、文字列として指定された値（&#39;2020-01-01 05:00:01.000&#39;）のパース方法に影響します。タイムゾーンはテーブルの行（または結果セット）には保存されず、列メタデータとして保存されます。詳細は [DateTime](../../sql-reference/data-types/datetime.md) を参照してください。
 
-サポートされる値の範囲：\[1900-01-01 00:00:00, 2299-12-31 23:59:59.99999999\]
+サポートされる値の範囲: [1900-01-01 00:00:00, 2299-12-31 23:59:59.999999999]
 
-小数点以下の桁数は、精度パラメータに依存します。
+小数点以下の桁数は precision パラメータに依存します。
 
-注意：最大値の精度は 8 です。最大精度の 9 桁（ナノ秒）が使用される場合、最大サポート値は `2262-04-11 23:47:16` UTC です。
+注記: 最大値に対する precision は 8 です。最大の 9 桁（ナノ秒）の precision を使用する場合、UTC におけるサポートされる最大値は `2262-04-11 23:47:16` です。
 
 ## 例 {#examples}
 
-1. `DateTime64` 型のカラムを持つテーブルを作成し、データを挿入する：
+1. `DateTime64` 型の列を持つテーブルを作成し、データを挿入する：
 
 ```sql
 CREATE TABLE dt64
@@ -60,8 +59,8 @@ SELECT * FROM dt64;
 └─────────────────────────┴──────────┘
 ```
 
-- 整数として日時を挿入すると、それは適切にスケーリングされた Unix タイムスタンプ（UTC）として扱われます。`1546300800000`（精度 3）は、`'2019-01-01 00:00:00'` UTC を表します。しかし、`timestamp` カラムに `Asia/Istanbul`（UTC+3）のタイムゾーンが指定されているため、文字列として出力される際には値は `'2019-01-01 03:00:00'` と表示されます。小数として日時を挿入すると、整数と同様に扱われますが、小数点前の値は秒までの Unix タイムスタンプとなり、小数点の後は精度として扱われます。
-- 文字列値を日時として挿入する場合、それはカラムのタイムゾーン内にあるとみなされます。`'2019-01-01 00:00:00'` は `Asia/Istanbul` タイムゾーンにあるとみなされ、`1546290000000` として保存されます。
+* datetime を整数として挿入する場合、それは適切にスケーリングされた Unix タイムスタンプ (UTC) として扱われます。精度 3 の `1546300800000` は UTC の `'2019-01-01 00:00:00'` を表します。ただし、`timestamp` 列にはタイムゾーンとして `Asia/Istanbul` (UTC+3) が指定されているため、文字列として出力すると、値は `'2019-01-01 03:00:00'` と表示されます。datetime を小数として挿入する場合も整数と同様に扱われますが、小数点より前の値は秒までを含む Unix タイムスタンプであり、小数点より後ろの値は精度として扱われます。
+* 文字列値を datetime として挿入する場合、それは当該列のタイムゾーンの時刻として解釈されます。`'2019-01-01 00:00:00'` は `Asia/Istanbul` タイムゾーンの時刻として扱われ、`1546290000000` として保存されます。
 
 2. `DateTime64` 値でのフィルタリング
 
@@ -75,7 +74,7 @@ SELECT * FROM dt64 WHERE timestamp = toDateTime64('2019-01-01 00:00:00', 3, 'Asi
 └─────────────────────────┴──────────┘
 ```
 
-`DateTime` とは異なり、`DateTime64` 値は自動的に `String` から変換されません。
+`DateTime` と異なり、`DateTime64` の値は `String` 型から自動的には変換されません。
 
 ```sql
 SELECT * FROM dt64 WHERE timestamp = toDateTime64(1546300800.123, 3);
@@ -88,9 +87,9 @@ SELECT * FROM dt64 WHERE timestamp = toDateTime64(1546300800.123, 3);
 └─────────────────────────┴──────────┘
 ```
 
-挿入する際とは対照的に、`toDateTime64` 関数はすべての値を小数バリアントとして扱うため、小数点の後に精度を指定する必要があります。
+挿入する場合とは異なり、`toDateTime64` 関数はすべての値を小数形式として扱うため、小数点以下の精度を指定する必要があります。
 
-3. `DateTime64` 型の値に対するタイムゾーンを取得する：
+3. `DateTime64` 型の値に対してタイムゾーンを取得する方法:
 
 ```sql
 SELECT toDateTime64(now(), 3, 'Asia/Istanbul') AS column, toTypeName(column) AS x;
@@ -119,14 +118,14 @@ FROM dt64;
 └─────────────────────────┴─────────────────────────┘
 ```
 
-**参考資料**
+**関連項目**
 
-- [型変換関数](../../sql-reference/functions/type-conversion-functions.md)
-- [日付と時刻に関する関数](../../sql-reference/functions/date-time-functions.md)
-- [`date_time_input_format` 設定](../../operations/settings/settings-formats.md#date_time_input_format)
-- [ `date_time_output_format` 設定](../../operations/settings/settings-formats.md#date_time_output_format)
-- [ `timezone` サーバー設定パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
-- [ `session_timezone` 設定](../../operations/settings/settings.md#session_timezone)
-- [日付と時刻を処理するための演算子](../../sql-reference/operators/index.md#operators-for-working-with-dates-and-times)
-- [`Date` データ型](../../sql-reference/data-types/date.md)
-- [`DateTime` データ型](../../sql-reference/data-types/datetime.md)
+* [型変換関数](../../sql-reference/functions/type-conversion-functions.md)
+* [日付と時刻を操作する関数](../../sql-reference/functions/date-time-functions.md)
+* [`date_time_input_format` 設定](../../operations/settings/settings-formats.md#date_time_input_format)
+* [`date_time_output_format` 設定](../../operations/settings/settings-formats.md#date_time_output_format)
+* [`timezone` サーバー構成パラメータ](../../operations/server-configuration-parameters/settings.md#timezone)
+* [`session_timezone` 設定](../../operations/settings/settings.md#session_timezone)
+* [日付と時刻を操作する演算子](../../sql-reference/operators/index.md#operators-for-working-with-dates-and-times)
+* [`Date` データ型](../../sql-reference/data-types/date.md)
+* [`DateTime` データ型](../../sql-reference/data-types/datetime.md)

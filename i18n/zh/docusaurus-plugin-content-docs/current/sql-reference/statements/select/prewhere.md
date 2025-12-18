@@ -1,35 +1,34 @@
 ---
-'description': '关于 PREWHERE 子句的文档'
-'sidebar_label': 'PREWHERE'
-'slug': '/sql-reference/statements/select/prewhere'
-'title': 'PREWHERE 子句'
-'doc_type': 'reference'
+description: 'PREWHERE 子句文档'
+sidebar_label: 'PREWHERE'
+slug: /sql-reference/statements/select/prewhere
+title: 'PREWHERE 子句'
+doc_type: 'reference'
 ---
 
+# PREWHERE 子句 {#prewhere-clause}
 
-# PREWHERE子句
+PREWHERE 是一种用于更高效执行过滤的优化机制。即使未显式指定 `PREWHERE` 子句，该优化也会默认启用。其工作方式是自动将部分 [WHERE](../../../sql-reference/statements/select/where.md) 条件移动到 PREWHERE 阶段。`PREWHERE` 子句的作用只是用于在你认为自己比默认策略更了解如何进行优化时，手动控制这一优化行为。
 
-Prewhere是一种优化，用于更有效地应用过滤。即使未显式指定`PREWHERE`子句，它默认为启用状态。它的工作原理是自动将部分[WHERE](../../../sql-reference/statements/select/where.md)条件移动到prewhere阶段。`PREWHERE`子句的作用仅是控制这种优化，如果你认为自己知道如何比默认情况更好地处理它。
+启用 PREWHERE 优化后，首先只读取执行 PREWHERE 表达式所需的列。之后，再读取执行查询其余部分所需的其他列，但仅限于那些在至少某些行上 PREWHERE 表达式为 `true` 的数据块。如果存在大量数据块在所有行上 PREWHERE 表达式均为 `false`，并且 PREWHERE 所需的列比查询其他部分所需的列更少，那么在执行查询时通常可以显著减少从磁盘读取的数据量。
 
-通过prewhere优化，最初仅读取执行prewhere表达式所需的列。然后读取其他列，以运行查询的其余部分，但仅限于那些在某些行中prewhere表达式为`true`的区块。如果存在许多区块，其中所有行的prewhere表达式均为`false`，并且prewhere所需的列少于查询的其他部分，这通常允许从磁盘中读取更少的数据以执行查询。
+## 手动控制 PREWHERE {#controlling-prewhere-manually}
 
-## 手动控制Prewhere {#controlling-prewhere-manually}
+该子句与 `WHERE` 子句具有相同的作用。区别在于它决定从表中读取哪些数据。对于在查询中仅被少数列使用、但能够提供强过滤效果的过滤条件，可以手动将其放入 `PREWHERE` 中进行控制，从而减少需要读取的数据量。
 
-该子句的含义与`WHERE`子句相同。区别在于从表中读取的数据。当手动控制`PREWHERE`时，针对查询中仅使用少数列的过滤条件，但提供强大的数据过滤。这减少了要读取的数据量。
+查询中可以同时指定 `PREWHERE` 和 `WHERE`。在这种情况下，`PREWHERE` 先于 `WHERE` 执行。
 
-一个查询可以同时指定`PREWHERE`和`WHERE`。在这种情况下，`PREWHERE`优先于`WHERE`。
+如果将 [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) 设置为 0，则会禁用将表达式的一部分从 `WHERE` 自动移动到 `PREWHERE` 的启发式算法。
 
-如果[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)设置为0，则禁用自动将表达式部分从`WHERE`移动到`PREWHERE`的启发式。
-
-如果查询具有[FINAL](/sql-reference/statements/select/from#final-modifier)修饰符，则`PREWHERE`优化并不总是正确的。只有在同时启用设置[optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere)和[optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final)时才会启用。
+如果查询带有 [FINAL](/sql-reference/statements/select/from#final-modifier) 修饰符，则 `PREWHERE` 优化并不总是正确。只有在同时启用了 [optimize_move_to_prewhere](../../../operations/settings/settings.md#optimize_move_to_prewhere) 和 [optimize_move_to_prewhere_if_final](../../../operations/settings/settings.md#optimize_move_to_prewhere_if_final) 两个设置时，才会启用该优化。
 
 :::note    
-`PREWHERE`部分在`FINAL`之前执行，因此在使用不在表的`ORDER BY`部分中的字段的`FROM ... FINAL`查询时，结果可能会偏斜。
+`PREWHERE` 部分在 `FINAL` 之前执行，因此，当在不属于表 `ORDER BY` 部分的字段上使用 `PREWHERE` 时，`FROM ... FINAL` 查询的结果可能会产生偏差。
 :::
 
 ## 限制 {#limitations}
 
-`PREWHERE`仅支持来自[*MergeTree](../../../engines/table-engines/mergetree-family/index.md)家族的表。
+`PREWHERE` 仅支持由 [*MergeTree](../../../engines/table-engines/mergetree-family/index.md) 系列表引擎创建的表。
 
 ## 示例 {#example}
 

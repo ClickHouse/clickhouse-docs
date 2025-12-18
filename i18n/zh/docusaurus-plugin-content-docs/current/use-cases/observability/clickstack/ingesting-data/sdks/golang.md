@@ -1,32 +1,33 @@
 ---
-'slug': '/use-cases/observability/clickstack/sdks/golang'
-'pagination_prev': null
-'pagination_next': null
-'sidebar_position': 2
-'description': 'Golang SDK 用于 ClickStack - ClickHouse 观察栈'
-'title': 'Golang'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/sdks/golang
+pagination_prev: null
+pagination_next: null
+sidebar_position: 2
+description: '适用于 ClickStack 的 Golang SDK - ClickHouse 可观测性栈'
+title: 'Golang'
+doc_type: 'guide'
+keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry 集成', 'Golang 可观测性', 'Go 链路追踪接入', 'ClickStack Go SDK']
 ---
 
-ClickStack使用OpenTelemetry标准来收集遥测数据（日志和跟踪）。跟踪是通过自动插装自动生成的，因此不需要手动插装即可从跟踪中获取价值。
+ClickStack 使用 OpenTelemetry 标准来收集遥测数据（日志和追踪）。通过自动插桩可以自动生成追踪数据，因此无需手动插桩也能从追踪中获得价值。
 
-**本指南集成了：**
+**本指南集成：**
 
 <table>
   <tbody>
     <tr>
       <td className="pe-2">✅ 日志</td>
       <td className="pe-2">✅ 指标</td>
-      <td className="pe-2">✅ 跟踪</td>
+      <td className="pe-2">✅ 链路追踪</td>
     </tr>
   </tbody>
 </table>
 
-## 开始使用 {#getting-started}
+## 快速开始 {#getting-started}
 
-### 安装OpenTelemetry插装包 {#install-opentelemetry}
+### 安装 OpenTelemetry 插桩包 {#install-opentelemetry}
 
-要安装OpenTelemetry和HyperDX Go包，请使用以下命令。建议查看[当前插装包](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages)，并安装必要的包以确保追踪信息正确附加。
+要安装 OpenTelemetry 和 HyperDX 的 Go 包，请使用以下命令。建议查看[当前可用的插桩包](https://github.com/open-telemetry/opentelemetry-go-contrib/tree/v1.4.0/instrumentation#instrumentation-packages)，并安装所需的包，以确保 Trace 信息能够被正确关联。
 
 ```shell
 go get -u go.opentelemetry.io/otel
@@ -35,15 +36,15 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-### 原生HTTP服务器示例（net/http） {#native-http-server-example}
+### 原生 HTTP 服务器示例（net/http） {#native-http-server-example}
 
-在此示例中，我们将使用`net/http/otelhttp`。
+在本示例中，我们将使用 `net/http/otelhttp` 包。
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp
 ```
 
-请参阅注释部分以了解如何插装您的Go应用程序。
+参考代码中的注释部分，了解如何为 Go 应用添加埋点（instrumentation）。
 
 ```go
 
@@ -143,15 +144,15 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-### Gin应用程序示例 {#gin-application-example}
+### Gin 应用程序示例 {#gin-application-example}
 
-在此示例中，我们将使用`gin-gonic/gin`。
+在本示例中，我们将使用 `gin-gonic/gin`。
 
 ```shell
 go get -u go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin
 ```
 
-请参阅注释部分以了解如何插装您的Go应用程序。
+请参考注释部分，了解如何为你的 Go 应用程序添加埋点（instrumentation）。
 
 ```go
 
@@ -229,7 +230,7 @@ func main() {
 
 ### 配置环境变量 {#configure-environment-variables}
 
-之后，您需要在Shell中配置以下环境变量，以将遥测信息发送到ClickStack：
+接下来需要在 shell 中配置下列环境变量，以将遥测数据发送到 ClickStack：
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
@@ -238,4 +239,4 @@ OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-`OTEL_EXPORTER_OTLP_HEADERS`环境变量包含可通过HyperDX应用程序在`团队设置 → API密钥`中获得的API密钥。
+环境变量 `OTEL_EXPORTER_OTLP_HEADERS` 包含可通过 HyperDX 应用的 `Team Settings → API Keys` 获取的 API Key。

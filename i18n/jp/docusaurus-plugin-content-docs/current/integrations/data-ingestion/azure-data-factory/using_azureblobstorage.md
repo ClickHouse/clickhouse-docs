@@ -1,50 +1,60 @@
 ---
-'sidebar_label': 'azureBlobStorageテーブル関数の使用'
-'slug': '/integrations/azure-data-factory/table-function'
-'description': 'ClickHouseのazureBlobStorageテーブル関数を使用'
-'keywords':
-- 'azure data factory'
-- 'azure'
-- 'microsoft'
-- 'data'
-- 'azureBlobStorage'
-'title': 'ClickHouseのazureBlobStorageテーブル関数を使用してAzureデータをClickHouseに取り込む'
-'doc_type': 'guide'
+sidebar_label: 'azureBlobStorage テーブル関数の使用'
+slug: /integrations/azure-data-factory/table-function
+description: 'ClickHouse の azureBlobStorage テーブル関数の使用'
+keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
+title: 'ClickHouse の azureBlobStorage テーブル関数を使用して Azure のデータを ClickHouse に取り込む'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
+# ClickHouse の azureBlobStorage テーブル関数の使用 {#using-azureBlobStorage-function}
 
-# ClickHouseのazureBlobStorageテーブル関数の使用 {#using-azureBlobStorage-function}
+これは、Azure Blob Storage または Azure Data Lake Storage から ClickHouse へ
+データをコピーするための、最も効率的かつシンプルな方法の 1 つです。このテーブル
+関数を使用すると、ClickHouse に Azure ストレージへ直接接続し、
+オンデマンドでデータを読み取らせることができます。
 
-これは、Azure Blob StorageやAzure Data Lake StorageからClickHouseにデータをコピーする最も効率的で簡単な方法の1つです。このテーブル関数を使用すると、ClickHouseにAzureストレージに直接接続して、オンデマンドでデータを読み取るよう指示できます。
+テーブルのようなインターフェースを提供し、ソースから直接データを
+`SELECT`、`INSERT`、フィルタリングできるようにします。この関数は高度に最適化されており、
+`CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` など、広く使用されている多くの
+ファイル形式をサポートしています。完全な一覧については ["Data formats"](/interfaces/formats)
+を参照してください。
 
-これは、ソースから直接データを選択、挿入、フィルタリングできるテーブルのようなインターフェイスを提供します。この関数は非常に最適化されており、`CSV`, `JSON`, `Parquet`, `Arrow`, `TSV`, `ORC`, `Avro`など、広く使用されている多くのファイル形式をサポートしています。完全なリストについては、["データ形式"](/interfaces/formats)を参照してください。
-
-このセクションでは、Azure Blob StorageからClickHouseへのデータ転送のための簡単なスタートアップガイドと、この関数を効果的に使用するための重要な考慮事項について説明します。詳細や高度なオプションについては、公式ドキュメントを参照してください：
+このセクションでは、Azure Blob Storage から ClickHouse へデータを転送するための
+シンプルな入門ガイドと、この関数を効果的に使用するための
+重要な考慮事項を説明します。詳細および高度なオプションについては、
+公式ドキュメントである
 [`azureBlobStorage` テーブル関数のドキュメントページ](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+を参照してください。
 
-## Azure Blob Storageアクセスキーの取得 {#acquiring-azure-blob-storage-access-keys}
+## Azure Blob Storage のアクセスキーの取得 {#acquiring-azure-blob-storage-access-keys}
 
-ClickHouseがAzure Blob Storageにアクセスできるようにするには、アクセスキーを含む接続文字列が必要です。
+ClickHouse が Azure Blob Storage にアクセスできるようにするには、アクセスキー付きの接続文字列が必要です。
 
-1. Azureポータルで、**ストレージアカウント**に移動します。
+1. Azure ポータルで、**Storage Account** に移動します。
 
-2. 左側のメニューで、**セキュリティ + ネットワーキング**セクションの下にある**アクセスキー**を選択します。
-   <Image img={azureDataStoreSettings} size="lg" alt="Azure データストア設定" border/>
+2. 左側のメニューで、**Security + networking** セクション内の **Access keys** を選択します。
+   <Image img={azureDataStoreSettings} size="lg" alt="Azure Data Store Settings" border/>
 
-3. **key1**または**key2**のいずれかを選択し、**接続文字列**フィールドの横にある**表示**ボタンをクリックします。
-   <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure データストアアクセスキー" border/>
+3. **key1** または **key2** のいずれかを選択し、**Connection string** フィールドの横にある **Show** ボタンをクリックします。
+   <Image img={azureDataStoreAccessKeys} size="lg" alt="Azure Data Store Access Keys" border/>
 
-4. 接続文字列をコピーします。これをazureBlobStorageテーブル関数のパラメータとして使用します。
+4. 接続文字列をコピーします。この接続文字列を azureBlobStorage テーブル関数のパラメータとして使用します。
 
-## Azure Blob Storageからのデータクエリ {#querying-the-data-from-azure-blob-storage}
+## Azure Blob Storage 上のデータをクエリする {#querying-the-data-from-azure-blob-storage}
 
-お好みのClickHouseクエリコンソールを開きます。これにはClickHouse CloudのWebインターフェイス、ClickHouse CLIクライアント、またはその他のクエリを実行するために使用するツールを含めることができます。接続文字列とClickHouseクエリコンソールの準備ができたら、Azure Blob Storageからデータを直接クエリできます。
+お使いの ClickHouse クエリコンソールを開きます。これは ClickHouse Cloud
+の Web インターフェイス、ClickHouse CLI クライアント、またはクエリを
+実行するために使用しているその他のツールのいずれでもかまいません。接続文字列と
+ClickHouse クエリコンソールの両方を準備できたら、Azure Blob Storage 上の
+データに対して直接クエリを実行できます。
 
-次の例では、data-containerという名前のコンテナ内のJSONファイルに保存されているすべてのデータをクエリします：
+次の例では、`data-container` という名前のコンテナ内にある JSON ファイルに保存された
+すべてのデータをクエリします。
 
 ```sql
 SELECT * FROM azureBlobStorage(
@@ -54,7 +64,8 @@ SELECT * FROM azureBlobStorage(
     'JSONEachRow');
 ```
 
-そのデータをローカルのClickHouseテーブル（例：my_table）にコピーしたい場合は、`INSERT INTO ... SELECT`ステートメントを使用できます：
+そのデータをローカルの ClickHouse テーブル（たとえば my&#95;table）にコピーしたい場合は、
+`INSERT INTO ... SELECT` 文を使用できます。
 
 ```sql
 INSERT INTO my_table
@@ -65,27 +76,29 @@ SELECT * FROM azureBlobStorage(
     'JSONEachRow');
 ```
 
-これにより、中間ETLステップを必要とせずに外部データをClickHouseに効率的に取り込むことができます。
+これにより、中間の ETL ステップを挟むことなく、外部データを効率的に ClickHouse に取り込めます。
 
-## 環境センサーデータセットを使用したシンプルな例 {#simple-example-using-the-environmental-sensors-dataset}
+## Environmental Sensors データセットを使った簡単な例 {#simple-example-using-the-environmental-sensors-dataset}
 
-例として、環境センサーのデータセットから単一のファイルをダウンロードします。
+例として、Environmental Sensors データセットから 1 つのファイルをダウンロードします。
 
-1. [サンプルファイル](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst)を[環境センサーデータセット](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors)からダウンロードします。
+1. [Environmental Sensors データセット](https://clickhouse.com/docs/getting-started/example-datasets/environmental-sensors) から
+   [サンプルファイル](https://clickhouse-public-datasets.s3.eu-central-1.amazonaws.com/sensors/monthly/2019-06_bmp180.csv.zst) をダウンロードします。
 
-2. Azureポータルで、新しいストレージアカウントを作成します。すでにある場合はこのステップをスキップできます。
+2. Azure Portal で、まだストレージアカウントを持っていない場合は新しいストレージアカウントを作成します。
 
 :::warning
-ストレージアカウントキーアクセスを**許可**することがストレージアカウントで有効にされていることを確認してください。そうしないと、アカウントキーを使用してデータにアクセスできません。
+ストレージアカウントで **Allow storage account key access** が有効になっていることを確認してください。有効になっていない場合、アカウントキーを使用してデータにアクセスできません。
 :::
 
-3. ストレージアカウント内に新しいコンテナを作成します。この例では、sensorsと名付けます。既存のコンテナを使用する場合はこのステップをスキップできます。
+3. ストレージアカウント内に新しいコンテナを作成します。この例では、コンテナ名を sensors とします。
+   既存のコンテナを使用する場合は、この手順をスキップできます。
 
-4. 前にダウンロードした`2019-06_bmp180.csv.zst`ファイルをコンテナにアップロードします。
+4. 先ほどダウンロードした `2019-06_bmp180.csv.zst` ファイルをコンテナにアップロードします。
 
-5. 以前に説明した手順に従って、Azure Blob Storageの接続文字列を取得します。
+5. 前述の手順に従って、Azure Blob Storage の接続文字列を取得します。
 
-すべての準備が整ったので、Azure Blob Storageから直接データをクエリできます：
+これですべての準備が整ったので、Azure Blob Storage からデータを直接クエリを実行できます。
 
 ```sql
 SELECT *
@@ -98,7 +111,9 @@ LIMIT 10
 SETTINGS format_csv_delimiter = ';'
 ```
 
-7. データをテーブルにロードするには、元のデータセットで使用されているスキーマの簡略版を作成します：
+7. テーブルにデータを読み込むには、元のデータセットで使用されている
+   スキーマの簡略版を作成します:
+
 ```sql
 CREATE TABLE sensors
 (
@@ -113,10 +128,12 @@ ORDER BY (timestamp, sensor_id);
 ```
 
 :::info
-Azure Blob Storageのような外部ソースをクエリするときの構成オプションとスキーマ推論についての詳細は、[入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)を参照してください。
+Azure Blob Storage のような外部ソースに対してクエリを実行する際の構成オプションや
+スキーマ推論の詳細については、[入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)
+を参照してください。
 :::
 
-8. それでは、Azure Blob Storageからsensorsテーブルにデータを挿入します：
+8. 次に、Azure Blob Storage から sensors テーブルにデータを挿入します:
 ```sql
 INSERT INTO sensors
 SELECT sensor_id, lat, lon, timestamp, temperature
@@ -128,12 +145,13 @@ FROM azureBlobStorage(
 SETTINGS format_csv_delimiter = ';'
 ```
 
-これで、sensorsテーブルはAzure Blob Storageに保存されている`2019-06_bmp180.csv.zst`ファイルからのデータで満たされています。
+`sensors` テーブルには、Azure Blob Storage に保存されている `2019-06_bmp180.csv.zst`
+ファイルのデータが取り込まれました。
 
 ## 追加リソース {#additional-resources}
 
-これは、azureBlobStorage関数の使用に関する基本的な紹介に過ぎません。より高度なオプションや構成の詳細については、公式ドキュメントを参照してください：
+ここでは `azureBlobStorage` 関数の基本的な使い方のみを紹介しました。より高度なオプションや設定の詳細については、以下の公式ドキュメントを参照してください：
 
-- [azureBlobStorageテーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-- [入力および出力データの形式](https://clickhouse.com/docs/sql-reference/formats)
+- [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+- [入力データおよび出力データのフォーマット](https://clickhouse.com/docs/sql-reference/formats)
 - [入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)

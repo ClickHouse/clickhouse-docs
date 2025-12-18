@@ -100,7 +100,7 @@ function CodeViewer({
   }
 
   const header = title ? (
-    <Text className='pl-[16px] pt-[14px]' size='md'>{title}</Text>
+    <Text className='pl-[16px] pt-[14px]' size='sm' style={{ opacity: 0.6 }}>{title}</Text>
   ) : null
 
   // Always show as editable Monaco editor when editable=true

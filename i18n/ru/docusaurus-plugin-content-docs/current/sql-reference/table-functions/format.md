@@ -1,14 +1,15 @@
 ---
-slug: '/sql-reference/table-functions/format'
-sidebar_label: format
+description: 'Разбирает данные из аргументов в соответствии с указанным входным форматом. Если аргумент `structure` не указан, он автоматически определяется по данным.'
+slug: /sql-reference/table-functions/format
 sidebar_position: 65
-description: 'Парсинг данных из аргументов в соответствии с указанным входным форматом.'
-title: format
-doc_type: reference
+sidebar_label: 'format'
+title: 'format'
+doc_type: 'reference'
 ---
-# format Table Function
 
-Парсит данные из аргументов в соответствии с заданным форматом ввода. Если аргумент structure не указан, он извлекается из данных.
+# Табличная функция format {#format-table-function}
+
+Разбирает данные из аргументов в соответствии с указанным входным форматом. Если аргумент структуры не указан, структура определяется по данным.
 
 ## Синтаксис {#syntax}
 
@@ -19,18 +20,19 @@ format(format_name, [structure], data)
 ## Аргументы {#arguments}
 
 - `format_name` — [формат](/sql-reference/formats) данных.
-- `structure` - Структура таблицы. Необязательный. Формат 'column1_name column1_type, column2_name column2_type, ...'.
-- `data` — Строковый литерал или константное выражение, которое возвращает строку, содержащую данные в заданном формате.
+- `structure` — структура таблицы. Необязательный параметр. Формат: `column1_name column1_type, column2_name column2_type, ...`.
+- `data` — строковый литерал или константное выражение, которое возвращает строку с данными в заданном формате.
 
 ## Возвращаемое значение {#returned_value}
 
-Таблица с данными, распарсенными из аргумента `data` в соответствии с заданным форматом и указанной или извлеченной структурой.
+Таблица с данными, полученными при разборе аргумента `data` в соответствии с указанным форматом и заданной или определённой структурой.
 
 ## Примеры {#examples}
 
 Без аргумента `structure`:
 
 **Запрос:**
+
 ```sql
 SELECT * FROM format(JSONEachRow,
 $$
@@ -53,6 +55,7 @@ $$)
 ```
 
 **Запрос:**
+
 ```sql
 DESC format(JSONEachRow,
 $$
@@ -75,6 +78,7 @@ $$)
 С аргументом `structure`:
 
 **Запрос:**
+
 ```sql
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
@@ -86,6 +90,7 @@ $$)
 ```
 
 **Результат:**
+
 ```response
 ┌─a─────┬───b─┐
 │ Hello │ 111 │
@@ -95,6 +100,6 @@ $$)
 └───────┴─────┘
 ```
 
-## Связанные {#related}
+## См. также {#related}
 
 - [Форматы](../../interfaces/formats.md)

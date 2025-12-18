@@ -1,36 +1,33 @@
 ---
-'slug': '/migrations/postgresql/rewriting-queries'
-'title': '重写 PostgreSQL 查询'
-'keywords':
-- 'postgres'
-- 'postgresql'
-- 'rewriting queries'
-'description': '关于从 PostgreSQL 迁移到 ClickHouse 的指南的第 2 部分'
-'sidebar_label': '第 2 部分'
-'doc_type': 'guide'
+slug: /migrations/postgresql/rewriting-queries
+title: '重写 PostgreSQL 查询'
+keywords: ['postgres', 'postgresql', 'rewriting queries']
+description: '从 PostgreSQL 迁移到 ClickHouse 指南的第 2 部分'
+sidebar_label: '第 2 部分'
+doc_type: 'guide'
 ---
 
-> 这是将 PostgreSQL 迁移到 ClickHouse 的指南的 **第二部分**。通过一个实际的示例，它演示了如何使用实时复制 (CDC) 方法高效地完成迁移。许多涵盖的概念也适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
+> 这是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，本文演示了如何采用实时复制（CDC，变更数据捕获）方式高效完成迁移。文中涉及的许多概念同样适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
 
-您的 PostgreSQL 设置中的大多数 SQL 查询在 ClickHouse 中应该可以无修改地运行，并且执行速度更快。
+在大多数情况下，现有 PostgreSQL 环境中的 SQL 查询无需修改即可在 ClickHouse 上运行，并且通常会执行得更快。
 
 ## 使用 CDC 进行去重 {#deduplication-cdc}
 
-在使用 CDC 进行实时复制时，请注意，更新和删除可能导致重复行。为了解决这个问题，您可以使用涉及视图和可刷新的物化视图的技术。
+在使用基于 CDC（变更数据捕获）的实时复制时，需要注意更新和删除操作可能会导致重复行。为解决这一问题，可以使用基于视图和可刷新物化视图的去重方案。
 
-请参考本 [指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)，了解如何在使用实时复制和 CDC 进行迁移时，将您的应用程序从 PostgreSQL 迁移到 ClickHouse，降低摩擦。
+请参考此[指南](/integrations/clickpipes/postgres/deduplication#query-like-with-postgres)，了解在使用基于 CDC 的实时复制时，如何以尽可能小的改动将应用程序从 PostgreSQL 迁移到 ClickHouse。
 
 ## 在 ClickHouse 中优化查询 {#optimize-queries-in-clickhouse}
 
-虽然可以在最小查询重写的情况下进行迁移，但建议利用 ClickHouse 的特性显著简化查询并进一步改善查询性能。
+虽然可以在对查询做最少改写的情况下完成迁移，但建议充分利用 ClickHouse 的特性，以显著简化查询并进一步提升查询性能。
 
-这里的示例涵盖了常见的查询模式，并展示了如何在 ClickHouse 中优化它们。它们使用完整的 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)（截至 2024 年 4 月）在 PostgreSQL 和 ClickHouse 中的等效资源（8 核心，32GiB 内存）。
+这里的示例涵盖了常见的查询模式，并展示了如何在 ClickHouse 中对它们进行优化。示例使用了 PostgreSQL 和 ClickHouse 上等价资源（8 核 CPU、32GiB 内存）的完整 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)（截至 2024 年 4 月）。
 
-> 为了简单起见，下面的查询省略了使用数据去重的技术。
+> 为了简化示例，下面的查询省略了数据去重技术。
 
-> 此处的计数会略有不同，因为 PostgreSQL 数据仅包含满足外键引用完整性的行。ClickHouse 不强加这样的约束，因此拥有完整的数据集，例如，包括匿名用户。
+> 这里的计数结果会略有不同，因为 Postgres 数据只包含满足外键参照完整性的行。ClickHouse 不施加此类约束，因此拥有完整的数据集，例如包括匿名用户。
 
-用户（提问超过 10 个）中获得最多浏览量的用户：
+获得最多浏览量的用户（问题数超过 10 个）：
 
 ```sql
 -- ClickHouse
@@ -75,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-哪些 `tags` 收到的 `views` 最多：
+哪些 `tags` 获得最多 `views`：
 
 ```sql
 --ClickHouse
@@ -133,7 +130,8 @@ Time: 112508.083 ms (01:52.508)
 
 **聚合函数**
 
-在可能的情况下，用户应利用 ClickHouse 的聚合函数。下面我们展示了使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每年最受欢迎的问题。
+在条件允许的情况下，你应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
+
 
 ```sql
 --ClickHouse
@@ -175,7 +173,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-这比等效的 PostgreSQL 查询显著更简单（且更快）：
+这比等价的 Postgres 查询要简单得多，而且更快：
 
 ```sql
 --Postgres
@@ -211,7 +209,8 @@ Time: 125822.015 ms (02:05.822)
 
 **条件和数组**
 
-条件和数组函数使查询简单得多。以下查询计算了 2022 年到 2023 年之间出现超过 10000 次的标签，其百分比增长最大。请注意，以下的 ClickHouse 查询因条件、数组函数以及在 HAVING 和 SELECT 子句中重用别名的能力而变得简明扼要。
+条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及能够在 HAVING 和 SELECT 子句中重复使用别名。
+
 
 ```sql
 --ClickHouse
@@ -274,4 +273,4 @@ LIMIT 5;
 Time: 116750.131 ms (01:56.750)
 ```
 
-[单击这里访问第三部分](/migrations/postgresql/data-modeling-techniques)
+[点击此处查看第3部分](/migrations/postgresql/data-modeling-techniques)

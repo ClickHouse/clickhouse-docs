@@ -1,22 +1,21 @@
 ---
-'description': 'UNDROP TABLE 的文档'
-'sidebar_label': 'UNDROP'
-'slug': '/sql-reference/statements/undrop'
-'title': 'UNDROP TABLE'
-'doc_type': 'reference'
+description: '`UNDROP TABLE` 文档'
+sidebar_label: 'UNDROP'
+slug: /sql-reference/statements/undrop
+title: 'UNDROP TABLE'
+doc_type: 'reference'
 ---
 
+# UNDROP TABLE {#undrop-table}
 
-# UNDROP TABLE
+撤销删除表的操作。
 
-取消删除表。
+从 ClickHouse 版本 23.3 开始，可以在 Atomic 数据库中，在执行 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec`（默认 8 分钟）时间窗口内，对表执行 UNDROP 操作。被删除的表会列在名为 `system.dropped_tables` 的系统表中。
 
-从 ClickHouse 版本 23.3 开始，可以在发出 DROP TABLE 语句后的 `database_atomic_delay_before_drop_table_sec`（默认情况下为 8 分钟）内在原子数据库中 UNDROP 表。被删除的表会在一个名为 `system.dropped_tables` 的系统表中列出。
-
-如果您有一个与被删除表相关联且没有 `TO` 子句的物化视图，则您还必须 UNDROP 那个视图的内部表。
+如果存在一个与已删除表关联且没有 `TO` 子句的物化视图，则还需要对该视图的内部表执行 UNDROP 操作。
 
 :::tip
-另请参见 [DROP TABLE](/sql-reference/statements/drop.md)
+另请参阅 [DROP TABLE](/sql-reference/statements/drop.md)
 :::
 
 语法：
@@ -75,13 +74,13 @@ FORMAT Vertical;
 ```
 
 ```response
-Row 1:
+第 1 行:
 ──────
-name:               id
-type:               UInt8
-default_type:       
-default_expression: 
-comment:            
-codec_expression:   
-ttl_expression:     
+名称:               id
+类型:               UInt8
+默认类型:       
+默认表达式: 
+注释:            
+编解码器表达式:   
+TTL 表达式:     
 ```

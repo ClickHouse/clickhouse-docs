@@ -1,26 +1,23 @@
 ---
-'description': '将数组聚合成一个更大的数组，这些数组。'
-'keywords':
-- 'groupArrayArray'
-- 'array_concat_agg'
-'sidebar_position': 111
-'slug': '/sql-reference/aggregate-functions/reference/grouparrayarray'
-'title': 'groupArrayArray'
-'doc_type': 'reference'
+description: '将多个数组聚合为包含这些数组的更大数组。'
+keywords: ['groupArrayArray', 'array_concat_agg']
+sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/grouparrayarray
+title: 'groupArrayArray'
+doc_type: 'reference'
 ---
 
+# groupArrayArray {#grouparrayarray}
 
-# groupArrayArray
+将多个数组聚合成一个由这些数组组成的更大数组。
+该函数将 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 与 [Array](/sql-reference/aggregate-functions/combinators#-array) 组合器结合使用。
 
-将数组聚合为一个更大的数组。
-将 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 函数与 [Array](/sql-reference/aggregate-functions/combinators#-array) 合并器结合使用。
-
-别名: `array_concat_agg`
+别名：`array_concat_agg`
 
 **示例**
 
-我们有捕捉用户浏览会话的数据。每个会话记录特定用户访问的页面序列。 
-我们可以使用 `groupArrayArray` 函数分析每个用户的页面访问模式。
+我们有用于记录用户浏览会话的数据。每个会话都会记录某个特定用户访问页面的顺序。
+我们可以使用 `groupArrayArray` 函数来分析每个用户的页面访问模式。
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

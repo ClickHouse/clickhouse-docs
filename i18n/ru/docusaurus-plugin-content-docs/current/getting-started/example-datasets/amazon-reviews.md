@@ -1,20 +1,22 @@
 ---
-'description': 'Более 150M отзывов клиентов о продуктах Amazon'
-'sidebar_label': 'Отзывы клиентов Amazon'
-'slug': '/getting-started/example-datasets/amazon-reviews'
-'title': 'Отзывы клиентов Amazon'
-'doc_type': 'reference'
+description: 'Более 150 млн отзывов покупателей о товарах Amazon'
+sidebar_label: 'Отзывы покупателей Amazon'
+slug: /getting-started/example-datasets/amazon-reviews
+title: 'Отзывы покупателей Amazon'
+doc_type: 'guide'
+keywords: ['отзывы Amazon', 'датасет с отзывами покупателей', 'данные электронной коммерции', 'пример датасета', 'начало работы']
 ---
-Этот набор данных содержит более 150 миллионов отзывов клиентов о продуктах Amazon. Данные находятся в сжатых snappy файлах Parquet в AWS S3 общим объемом 49 ГБ (сжатый). Давайте рассмотрим шаги по их вставке в ClickHouse.
+
+Этот датасет содержит более 150 млн отзывов покупателей о товарах Amazon. Данные хранятся в файлах формата Parquet, сжатых алгоритмом Snappy, в AWS S3; общий сжатый объём — 49 ГБ. Далее рассмотрим шаги по загрузке этого датасета в ClickHouse.
 
 :::note
-Запросы ниже были выполнены на **Продакшн** экземпляре ClickHouse Cloud. Дополнительную информацию см. в
-["Спецификации площадки"](/getting-started/playground#specifications).
+Приведённые ниже запросы выполнялись на **Production**-инстансе ClickHouse Cloud. Для получения дополнительной информации см. раздел
+[&quot;Playground specifications&quot;](/getting-started/playground#specifications).
 :::
 
 ## Загрузка набора данных {#loading-the-dataset}
 
-1. Не вставляя данные в ClickHouse, мы можем запросить их на месте. Давайте выберем несколько строк, чтобы увидеть, как они выглядят:
+1. Не загружая данные в ClickHouse, мы можем обращаться к ним напрямую. Давайте выберем несколько строк, чтобы посмотреть, как они выглядят:
 
 ```sql
 SELECT *
@@ -22,7 +24,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_review
 LIMIT 3
 ```
 
-Строки выглядят так:
+Строки имеют следующий вид:
 
 ```response
 Row 1:
@@ -80,7 +82,7 @@ review_headline:   but overall this case is pretty sturdy and provides good prot
 review_body:       The front piece was a little difficult to secure to the phone at first, but overall this case is pretty sturdy and provides good protection for the phone, which is what I need. I would buy this case again.
 ```
 
-2. Определим новую таблицу `MergeTree` с именем `amazon_reviews`, чтобы хранить эти данные в ClickHouse:
+2. Давайте создадим новую таблицу типа `MergeTree` с именем `amazon_reviews` для хранения этих данных в ClickHouse:
 
 ```sql
 CREATE DATABASE amazon
@@ -112,7 +114,7 @@ ENGINE = MergeTree
 ORDER BY (review_date, product_category)
 ```
 
-3. Следующая команда `INSERT` использует функцию таблицы `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно, используя все узлы вашего кластера. Мы также используем подстановочный символ для вставки любого файла, который начинается с имени `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
+3. Следующая команда `INSERT` использует табличную функцию `s3Cluster`, которая позволяет обрабатывать несколько файлов S3 параллельно на всех узлах кластера. Мы также используем подстановочный символ (wildcard), чтобы вставить любые файлы, имена которых начинаются с `https://datasets-documentation.s3.eu-west-3.amazonaws.com/amazon_reviews/amazon_reviews_*.snappy.parquet`:
 
 ```sql
 INSERT INTO amazon.amazon_reviews SELECT *
@@ -121,17 +123,17 @@ FROM s3Cluster('default',
 ```
 
 :::tip
-В ClickHouse Cloud название кластера - `default`. Замените `default` на имя вашего кластера... или используйте функцию таблицы `s3`, если у вас нет кластера.
+В ClickHouse Cloud имя кластера — `default`. Замените `default` на имя вашего кластера... или используйте табличную функцию `s3` (вместо `s3Cluster`), если кластера у вас нет.
 :::
 
-5. Этот запрос не занимает много времени - в среднем около 300,000 строк в секунду. В течение 5 минут вы должны увидеть, что все строки вставлены:
+5. Этот запрос выполняется недолго — в среднем около 300 000 строк в секунду. Примерно через 5 минут или около того вы должны увидеть все вставленные строки:
 
 ```sql runnable
 SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Давайте посмотрим, сколько места занимает наши данные:
+6. Давайте посмотрим, сколько места занимают наши данные:
 
 ```sql runnable
 SELECT
@@ -147,11 +149,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-Изначальные данные занимали около 70 ГБ, но сжатыми в ClickHouse они занимают около 30 ГБ.
+Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
 
 ## Примеры запросов {#example-queries}
 
-7. Давайте запустим несколько запросов. Вот 10 самых полезных отзывов в наборе данных:
+7. Давайте выполним несколько запросов. Ниже приведены 10 наиболее полезных отзывов в этом наборе данных:
 
 ```sql runnable
 SELECT
@@ -163,10 +165,10 @@ LIMIT 10
 ```
 
 :::note
-Этот запрос использует [проекцию](/data-modeling/projections) для ускорения производительности.
+Этот запрос использует [проекцию](/data-modeling/projections) для повышения производительности.
 :::
 
-8. Вот 10 продуктов на Amazon с наибольшим количеством отзывов:
+8. Вот топ‑10 товаров на Amazon по количеству отзывов:
 
 ```sql runnable
 SELECT
@@ -178,7 +180,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. Вот средние оценки отзывов по месяцам для каждого продукта (настоящий [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
+9. Вот средние рейтинги отзывов по месяцам для каждого товара (реальный [вопрос на собеседовании в Amazon](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -195,7 +197,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. Вот общее количество голосов по категориям продуктов. Этот запрос быстрый, потому что `product_category` находится в первичном ключе:
+10. Вот общее число голосов по категориям товаров. Этот запрос выполняется быстро, потому что `product_category` входит в первичный ключ:
 
 ```sql runnable
 SELECT
@@ -206,7 +208,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. Давайте найдем продукты, в отзыве о которых слово **"ужасно"** встречается чаще всего. Это большая задача - нужно проанализировать более 151 миллиона строк, чтобы найти одно слово:
+11. Найдём товары, в отзывах на которые слово **«awful»** встречается чаще всего. Это большая задача — нужно разобрать более 151 млн строк в поисках одного слова:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -221,9 +223,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-Обратите внимание на время выполнения запроса для такого объема данных. Результаты также интересно читать!
+Обратите внимание на время выполнения запроса для такого большого объёма данных. Результаты тоже любопытно почитать!
 
-12. Мы можем запустить тот же запрос снова, но на этот раз мы ищем **великолепно** в отзывах:
+12. Мы можем выполнить тот же запрос ещё раз, только на этот раз будем искать **awesome** в отзывах:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

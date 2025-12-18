@@ -1,55 +1,55 @@
 ---
-'alias': []
-'description': 'Regexp 形式のドキュメント'
-'input_format': true
-'keywords':
-- 'Regexp'
-'output_format': false
-'slug': '/interfaces/formats/Regexp'
-'title': 'Regexp'
-'doc_type': 'reference'
+alias: []
+description: 'Regexp フォーマットに関するドキュメント'
+input_format: true
+keywords: ['Regexp']
+output_format: false
+slug: /interfaces/formats/Regexp
+title: 'Regexp'
+doc_type: 'reference'
 ---
 
-| Input | Output | Alias |
+| 入力 | 出力 | エイリアス |
 |-------|--------|-------|
 | ✔     | ✗      |       |
 
 ## 説明 {#description}
 
-`Regex` フォーマットは、提供された正規表現に従ってインポートされたデータの各行を解析します。
+`Regex` フォーマットは、指定された正規表現に従って、インポートされたデータの各行をパースします。
 
-**使用法**
+**使用方法**
 
-[format_regexp](/operations/settings/settings-formats.md/#format_regexp) 設定からの正規表現は、インポートされたデータの各行に適用されます。正規表現のサブパターンの数は、インポートされたデータセットのカラム数と等しくなければなりません。
+[format_regexp](/operations/settings/settings-formats.md/#format_regexp) 設定で指定された正規表現が、インポートされたデータの各行に適用されます。正規表現内のサブパターンの数は、インポートされるデータセット内の列数と同じである必要があります。
 
-インポートされたデータの行は、改行文字 `'\n'` または DOS スタイルの改行 `"\r\n"` で区切る必要があります。
+インポートされるデータの各行は、改行文字 `'\n'` または DOS 形式の改行 `"\r\n"` で区切られている必要があります。
 
-一致した各サブパターンの内容は、[format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 設定に従って、対応するデータ型のメソッドで解析されます。
+マッチした各サブパターンの内容は、[format_regexp_escaping_rule](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) 設定に従い、対応するデータ型のパース方法で処理されます。
 
-正規表現が行と一致しない場合、かつ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されていると、その行は静かにスキップされます。それ以外の場合は、例外がスローされます。
+正規表現が行にマッチせず、かつ [format_regexp_skip_unmatched](/operations/settings/settings-formats.md/#format_regexp_escaping_rule) が 1 に設定されている場合、その行は何の通知もなくスキップされます。そうでない場合は、例外がスローされます。
 
 ## 使用例 {#example-usage}
 
-ファイル `data.tsv` を考慮してください：
+`data.tsv` というファイルがあるとします。
 
 ```text title="data.tsv"
 id: 1 array: [1,2,3] string: str1 date: 2020-01-01
 id: 2 array: [1,2,3] string: str2 date: 2020-01-02
 id: 3 array: [1,2,3] string: str3 date: 2020-01-03
 ```
-およびテーブル `imp_regex_table`：
+
+および `imp_regex_table` テーブル：
 
 ```sql
 CREATE TABLE imp_regex_table (id UInt32, array Array(UInt32), string String, date Date) ENGINE = Memory;
 ```
 
-次のクエリを使用して、前述のファイルからのデータを上記のテーブルに挿入します：
+先ほどのファイルのデータを、次のクエリで上記のテーブルに挿入します。
 
 ```bash
 $ cat data.tsv | clickhouse-client  --query "INSERT INTO imp_regex_table SETTINGS format_regexp='id: (.+?) array: (.+?) string: (.+?) date: (.+?)', format_regexp_escaping_rule='Escaped', format_regexp_skip_unmatched=0 FORMAT Regexp;"
 ```
 
-テーブルからデータを `SELECT` して、`Regex` フォーマットがファイルからデータをどのように解析したかを確認できます：
+これで、テーブルからデータを `SELECT` して、`Regex` フォーマットでファイル内のデータがどのように解析されたかを確認できます。
 
 ```sql title="Query"
 SELECT * FROM imp_regex_table;
@@ -65,15 +65,15 @@ SELECT * FROM imp_regex_table;
 
 ## フォーマット設定 {#format-settings}
 
-`Regexp` フォーマットで作業する際に、以下の設定を使用できます：
+`Regexp` フォーマットを使用する場合、次の設定を使用できます。
 
-- `format_regexp` — [文字列](/sql-reference/data-types/string.md)。 [re2](https://github.com/google/re2/wiki/Syntax) フォーマットの正規表現を含みます。
-- `format_regexp_escaping_rule` — [文字列](/sql-reference/data-types/string.md)。以下のエスケープルールがサポートされています：
+- `format_regexp` — [String](/sql-reference/data-types/string.md)。[re2](https://github.com/google/re2/wiki/Syntax) 形式の正規表現を指定します。
+- `format_regexp_escaping_rule` — [String](/sql-reference/data-types/string.md)。次のエスケープ規則がサポートされています。
 
-  - CSV ( [CSV](/interfaces/formats/CSV) と類似)
-  - JSON ( [JSONEachRow](/interfaces/formats/JSONEachRow) と類似)
-  - エスケープ ( [TSV](/interfaces/formats/TabSeparated) と類似)
-  - クオート ( [Values](/interfaces/formats/Values) と類似)
-  - 生 (サブパターンをそのまま抽出、エスケープルールなし、 [TSVRaw](/interfaces/formats/TabSeparated) と類似)
+  - CSV（[CSV](/interfaces/formats/CSV) と同様）
+  - JSON（[JSONEachRow](/interfaces/formats/JSONEachRow) と同様）
+  - Escaped（[TSV](/interfaces/formats/TabSeparated) と同様）
+  - Quoted（[Values](/interfaces/formats/Values) と同様）
+  - Raw（サブパターンを全体として抽出し、エスケープ規則は適用されません。[TSVRaw](/interfaces/formats/TabSeparated) と同様）
 
-- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md)。 `format_regexp` 式がインポートされたデータと一致しない場合に例外をスローする必要があるかどうかを定義します。 `0` または `1` に設定できます。
+- `format_regexp_skip_unmatched` — [UInt8](/sql-reference/data-types/int-uint.md)。`format_regexp` 式がインポートされたデータにマッチしない場合に例外をスローするかどうかを制御します。`0` または `1` に設定できます。

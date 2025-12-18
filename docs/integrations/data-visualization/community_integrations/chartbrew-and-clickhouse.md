@@ -29,7 +29,7 @@ import Image from '@theme/IdealImage';
 
 <CommunityMaintainedBadge/>
 
-[Chartbrew](https://chartbrew.com) is a data visualization platform that allows users to create dashboards and monitor data in real time. It supports multiple data sources, including ClickHouse, and provides a no-code interface for building charts and reports.
+[Chartbrew](https://chartbrew.com) is a data visualization platform that allows you to create dashboards and monitor data in real time. It supports multiple data sources, including ClickHouse, and provides a no-code interface for building charts and reports.
 
 ## Goal {#goal}
 

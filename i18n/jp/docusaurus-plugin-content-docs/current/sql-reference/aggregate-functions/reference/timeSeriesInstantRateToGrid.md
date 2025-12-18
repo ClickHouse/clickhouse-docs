@@ -1,28 +1,30 @@
 ---
-'description': '指定されたグリッド上の時系列データに対して、PromQLのような irate を計算する集約関数です。'
-'sidebar_position': 223
-'slug': '/sql-reference/aggregate-functions/reference/timeSeriesInstantRateToGrid'
-'title': 'timeSeriesInstantRateToGrid'
-'doc_type': 'reference'
+description: '指定されたグリッド上の時系列データに対して、PromQL ライクな irate を計算する集約関数。'
+sidebar_position: 223
+slug: /sql-reference/aggregate-functions/reference/timeSeriesInstantRateToGrid
+title: 'timeSeriesInstantRateToGrid'
+doc_type: 'reference'
 ---
 
-Aggregate function that takes time series data as pairs of timestamps and values and calculates [PromQL-like irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate) from this data on a regular time grid described by start timestamp, end timestamp and step. For each point on the grid, the samples for calculating `irate` are considered within the specified time window.
+タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、このデータから [PromQL ライクな irate](https://prometheus.io/docs/prometheus/latest/querying/functions/#irate) を計算する集約関数です。グリッド上の各点について、`irate` を計算するために使用するサンプルは、指定された時間ウィンドウ内のものが考慮されます。
 
 Parameters:
-- `start timestamp` - グリッドの開始を指定します。
-- `end timestamp` - グリッドの終了を指定します。
-- `grid step` - グリッドのステップを秒単位で指定します。
-- `staleness` - Considered samplesの最大の「古さ」を秒単位で指定します。古さのウィンドウは左開き、右閉じの区間です。
+
+* `start timestamp` - グリッドの開始を指定します。
+* `end timestamp` - グリッドの終了を指定します。
+* `grid step` - グリッドのステップを秒単位で指定します。
+* `staleness` - 対象とするサンプルの最大の「古さ（staleness）」を秒で指定します。staleness ウィンドウは左開・右閉区間です。
 
 Arguments:
-- `timestamp` - サンプルのタイムスタンプ
-- `value` - `timestamp`に対応する時系列の値
+
+* `timestamp` - サンプルのタイムスタンプ
+* `value` - `timestamp` に対応する時系列の値
 
 Return value:
-指定されたグリッド上の`irate`値を`Array(Nullable(Float64))`として返します。返される配列は各タイムグリッドポイントのために1つの値を含みます。特定のグリッドポイントの瞬時レート値を計算するのに十分なサンプルがウィンドウ内にない場合、その値はNULLです。
+指定されたグリッド上の `irate` の値を `Array(Nullable(Float64))` として返します。返される配列には、時間グリッドの各ポイントごとに 1 つの値が含まれます。特定のグリッドポイントに対して瞬時レート値を計算するのに十分なサンプルがウィンドウ内に存在しない場合、その値は NULL になります。
 
 Example:
-次のクエリは、グリッド[90, 105, 120, 135, 150, 165, 180, 195, 210]上で`irate`値を計算します：
+次のクエリは、グリッド [90, 105, 120, 135, 150, 165, 180, 195, 210] 上の `irate` の値を計算します。
 
 ```sql
 WITH
@@ -44,7 +46,7 @@ FROM
 );
 ```
 
-Response:
+レスポンス:
 
 ```response
    ┌─timeSeriesInstantRa⋯timestamps, values)─┐
@@ -52,7 +54,7 @@ Response:
    └─────────────────────────────────────────┘
 ```
 
-また、等しいサイズのArrayとしてタイムスタンプと値の複数のサンプルを渡すことも可能です。同じクエリを配列引数で実行した場合：
+また、同じ長さの配列として複数のタイムスタンプと値のサンプルを渡すことも可能です。配列引数を使用した同じクエリは次のとおりです。
 
 ```sql
 WITH
@@ -66,5 +68,5 @@ SELECT timeSeriesInstantRateToGrid(start_ts, end_ts, step_seconds, window_second
 ```
 
 :::note
-この関数は実験的です。`allow_experimental_ts_to_grid_aggregate_function=true`を設定することで有効にしてください。
+この関数は実験的な機能です。`allow_experimental_ts_to_grid_aggregate_function=true` を設定して有効にしてください。
 :::

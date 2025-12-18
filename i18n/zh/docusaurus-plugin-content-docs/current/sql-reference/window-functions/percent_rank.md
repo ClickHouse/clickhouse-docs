@@ -1,20 +1,19 @@
 ---
-'description': 'percent_rank 窗口函数的文档'
-'sidebar_label': 'percent_rank'
-'sidebar_position': 8
-'slug': '/sql-reference/window-functions/percent_rank'
-'title': 'percent_rank'
-'doc_type': 'reference'
+description: 'percent_rank 窗口函数文档'
+sidebar_label: 'percent_rank'
+sidebar_position: 8
+slug: /sql-reference/window-functions/percent_rank
+title: 'percent_rank'
+doc_type: 'reference'
 ---
 
+# percent&#95;rank {#percent&#95;rank}
 
-# percent_rank
-
-返回窗口分区内行的相对排名（即百分位数）。
+返回窗口分区内各行的相对排名（即百分位排名）。
 
 **语法**
 
-别名: `percentRank`（区分大小写）
+别名：`percentRank`（区分大小写）
 
 ```sql
 percent_rank ()
@@ -24,13 +23,13 @@ FROM table_name
 WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 ```
 
-默认和必要的窗口框架定义为 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
+默认且必需的窗口框架定义为 `RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`。
 
-有关窗口函数语法的更多详细信息，请参见: [Window Functions - Syntax](./index.md/#syntax)。
+关于窗口函数语法的更多详细说明，请参见：[Window Functions - Syntax](./index.md/#syntax)。
 
 **示例**
 
-查询:
+查询：
 
 ```sql
 CREATE TABLE salaries
@@ -58,7 +57,7 @@ SELECT player, salary,
 FROM salaries;
 ```
 
-结果:
+结果：
 
 ```response
 

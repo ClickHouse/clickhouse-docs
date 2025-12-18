@@ -1,0 +1,85 @@
+---
+title: Как находить запросы, использующие материализованные представления, в ClickHouse
+description: Узнайте, как выполнять запросы к журналам ClickHouse, чтобы находить все запросы, в которых задействованы материализованные представления, за указанный период времени.
+date: 2023-03-24
+tags: ['Системные таблицы']
+keywords: ['материализованные представления', 'create_table_query']
+---
+
+{frontMatter.description}
+
+{/* усечение */}
+
+***
+
+## Вопрос \{#question\}
+
+Как показать все запросы, связанные с материализованными представлениями, за последние 60 минут?
+
+## Ответ \{#answer\}
+
+Этот запрос отобразит все запросы, направленные к материализованным представлениям, с учётом того, что:
+
+* мы можем использовать поле `create_table_query` в таблице `system.tables`, чтобы определить, какие таблицы являются явными получателями (`TO`) материализованных представлений;
+* мы можем отследить (используя `uuid` и соглашение об именовании `.inner_id.<uuid>`), какие таблицы являются неявными получателями материализованных представлений;
+
+Мы также можем настроить, за какой период в прошлом мы хотим смотреть, изменив значение (по умолчанию `60` мин) в исходном CTE запроса.
+
+```sql
+WITH(60) -- по умолчанию 60 мин
+AS timeRange,
+(
+    --подготовка имён возможных неявных скрытых целевых таблиц материализованных представлений для *любой* таблицы с ненулевым uuid
+    SELECT groupArray(
+            concat('default.`.inner_id.', toString(uuid), '`')
+        )
+    FROM clusterAllReplicas(default, system.tables)
+    WHERE notEmpty(uuid)
+) AS MV_implicit_possible_hidden_target_tables_names_array,
+(
+    --извлечение имени материализованного представления и целевых таблиц (если указано TO)
+    --TODO похоже, что extract возвращает только первую группу захвата :( заменить на regexpExtract, когда станет доступно
+    SELECT arrayFilter(
+            x->x != '',
+            --удаление пустых результатов захвата
+            groupArray(
+                extract(
+                    create_table_query,
+                    '^CREATE MATERIALIZED VIEW\s(\w+\.\w+)\s(?:TO\s(\S+))?'
+                )
+            )
+        )
+    FROM clusterAllReplicas(default, system.tables)
+    WHERE engine = 'MaterializedView'
+) AS MV_explicit_target_tables_names_array
+SELECT event_time,
+    query,
+    tables as "Таблицы материализованных представлений"
+FROM clusterAllReplicas(default, system.query_log)
+WHERE (
+        -- только SELECT за последние 60 мин
+        event_time > now() - toIntervalMinute(timeRange)
+        AND startsWith(query, 'SELECT')
+    ) -- проверка, что запрос обращается к именам неявных целевых таблиц материализованных представлений
+    AND (
+        hasAny(
+            tables,
+            MV_implicit_possible_hidden_target_tables_names_array
+        )
+        OR -- проверка, что запрос обращается к явной целевой таблице материализованного представления
+        hasAny(tables, MV_explicit_target_tables_names_array)
+    )
+ORDER BY event_time DESC;
+```
+
+ожидаемый вывод:
+
+```sql
+| event_time          | query                                                                                          | MVs tables                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 2023-02-23 08:14:14 | SELECT     rand(),* FROM     default.sum_of_volumes,     default.big_changes,     system.users | ["default.big_changes_mv","default.sum_of_volumes_mv","system.users"] |
+| 2023-02-23 08:04:47 | SELECT     price,* FROM     default.sum_of_volumes,     default.big_changes                    | ["default.big_changes_mv","default.sum_of_volumes_mv"]                |
+
+```
+
+В примере выше объекты `default.big_changes_mv` и `default.sum_of_volumes_mv` являются материализованными представлениями.

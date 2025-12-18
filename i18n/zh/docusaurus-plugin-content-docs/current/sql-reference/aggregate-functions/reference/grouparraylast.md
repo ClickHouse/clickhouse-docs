@@ -1,20 +1,19 @@
 ---
-'description': '创建一个包含最后一个参数值的数组。'
-'sidebar_position': 142
-'slug': '/sql-reference/aggregate-functions/reference/grouparraylast'
-'title': 'groupArrayLast'
-'doc_type': 'reference'
+description: '生成包含最后一个参数值的数组。'
+sidebar_position: 142
+slug: /sql-reference/aggregate-functions/reference/grouparraylast
+title: 'groupArrayLast'
+doc_type: 'reference'
 ---
 
+# groupArrayLast {#grouparraylast}
 
-# groupArrayLast
+语法：`groupArrayLast(max_size)(x)`
 
-语法: `groupArrayLast(max_size)(x)`
+创建一个由最后若干个参数值组成的数组。
+例如，`groupArrayLast(1)(x)` 等价于 `[anyLast (x)]`。
 
-创建一个包含最后参数值的数组。
-例如，`groupArrayLast(1)(x)` 相当于 `[anyLast (x)]`。
-
-在某些情况下，您仍然可以依赖执行顺序。这适用于当 `SELECT` 来自一个使用 `ORDER BY` 的子查询，并且子查询结果足够小的情况。
+在某些情况下，仍然可以依赖执行顺序。这适用于以下场景：当 `SELECT` 来自使用了 `ORDER BY` 的子查询，且该子查询的结果足够小时。
 
 **示例**
 

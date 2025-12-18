@@ -1,13 +1,12 @@
 ---
-'alias': []
-'description': 'JSONCompact 格式的文档'
-'input_format': true
-'keywords':
-- 'JSONCompact'
-'output_format': true
-'slug': '/interfaces/formats/JSONCompact'
-'title': 'JSONCompact'
-'doc_type': 'reference'
+alias: []
+description: 'JSONCompact 格式文档'
+input_format: true
+keywords: ['JSONCompact']
+output_format: true
+slug: /interfaces/formats/JSONCompact
+title: 'JSONCompact'
+doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
@@ -16,13 +15,13 @@
 
 ## 描述 {#description}
 
-与 [JSON](./JSON.md) 的区别在于数据行以数组的形式输出，而不是对象。
+与 [JSON](./JSON.md) 的唯一区别在于，数据行以数组形式输出，而不是以对象形式输出。
 
 ## 示例用法 {#example-usage}
 
 ### 插入数据 {#inserting-data}
 
-使用以下数据的 JSON 文件，命名为 `football.json`：
+使用包含以下数据的 JSON 文件，将其命名为 `football.json`：
 
 ```json
 {
@@ -84,7 +83,7 @@ INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 
 ### 读取数据 {#reading-data}
 
-使用 `JSONCompact` 格式读取数据：
+以 `JSONCompact` 格式读取数据：
 
 ```sql
 SELECT *
@@ -92,7 +91,7 @@ FROM football
 FORMAT JSONCompact
 ```
 
-输出将是 JSON 格式：
+输出将为 JSON 格式：
 
 ```json
 {

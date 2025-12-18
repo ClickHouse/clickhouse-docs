@@ -1,20 +1,19 @@
 ---
-'description': '`Dictionary` 引擎将字典数据呈现为 ClickHouse 表。'
-'sidebar_label': 'Dictionary'
-'sidebar_position': 20
-'slug': '/engines/table-engines/special/dictionary'
-'title': '字典表引擎'
-'doc_type': 'reference'
+description: '`Dictionary` 引擎以 ClickHouse 表的形式展示字典数据。'
+sidebar_label: 'Dictionary'
+sidebar_position: 20
+slug: /engines/table-engines/special/dictionary
+title: 'Dictionary 表引擎'
+doc_type: 'reference'
 ---
 
+# Dictionary 表引擎 {#dictionary-table-engine}
 
-# 字典表引擎
-
-`Dictionary` 引擎将 [字典](../../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。
+`Dictionary` 引擎将 [dictionary](../../../sql-reference/dictionaries/index.md) 数据显示为 ClickHouse 表。
 
 ## 示例 {#example}
 
-作为一个示例，考虑一个 `products` 的字典，其配置如下：
+例如，假设有一个名为 `products` 的字典，其配置如下：
 
 ```xml
 <dictionaries>
@@ -47,7 +46,7 @@
 </dictionaries>
 ```
 
-查询字典数据：
+查询字典中的数据：
 
 ```sql
 SELECT
@@ -69,9 +68,9 @@ WHERE name = 'products'
 └──────────┴──────┴────────┴─────────────────┴─────────────────┴─────────────────┴───────────────┴─────────────────┘
 ```
 
-您可以使用 [dictGet\*](/sql-reference/functions/ext-dict-functions#dictget-dictgetordefault-dictgetornull) 函数以这种格式获取字典数据。
+可以使用 [dictGet*](/sql-reference/functions/ext-dict-functions) 函数按此格式获取字典数据。
 
-当您需要获取原始数据或在进行 `JOIN` 操作时，这种视图就不太有用了。在这些情况下，您可以使用 `Dictionary` 引擎，它以表格的形式显示字典数据。
+当需要获取原始数据或执行 `JOIN` 操作时，此视图并不适用。在这些情况下，可以使用 `Dictionary` 引擎，以表格形式展示字典数据。
 
 语法：
 
@@ -85,9 +84,9 @@ CREATE TABLE %table_name% (%fields%) engine = Dictionary(%dictionary_name%)`
 CREATE TABLE products (product_id UInt64, title String) ENGINE = Dictionary(products);
 ```
 
-      Ok
+好的
 
-查看表中的内容。
+看一下表里的内容。
 
 ```sql
 SELECT * FROM products LIMIT 1;
@@ -99,6 +98,6 @@ SELECT * FROM products LIMIT 1;
 └───────────────┴─────────────────┘
 ```
 
-**另请参见**
+**另请参阅**
 
-- [字典函数](/sql-reference/table-functions/dictionary)
+* [字典函数](/sql-reference/table-functions/dictionary)

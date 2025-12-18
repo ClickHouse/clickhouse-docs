@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/functions'
-description: 'Документация для INDEX'
-title: 'Целевая страница для функций'
-doc_type: landing-page
-sidebar: sqlreference
+description: 'Индекс документации'
+sidebar: 'sqlreference'
+slug: /sql-reference/functions
+title: 'Обзор функций'
+doc_type: 'landing-page'
 ---
-| Страница                                                            | Описание                                                                                                |
+
+| Страница                                                            | Описание                                                                                               |
 |---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| [Регулярные функции](/sql-reference/functions/regular-functions)    | Функции, результат которых для каждой строки независим от всех других строк.                          |
-| [Агрегатные функции](/sql-reference/aggregate-functions)           | Функции, которые накапливают набор значений по строкам.                                              |
-| [Табличные функции](/sql-reference/table-functions)                | Методы для построения таблиц.                                                                          |
-| [Оконные функции](/sql-reference/window-functions)                  | Функции, которые позволяют выполнять вычисления по набору строк, связанных с текущей строкой.       |
+| [Regular Functions](/sql-reference/functions/regular-functions)     | Функции, результат для каждой строки которых не зависит от остальных строк.                           |
+| [Aggregate Functions](/sql-reference/aggregate-functions)           | Функции, которые агрегируют набор значений по строкам.                                                |
+| [Table Functions](/sql-reference/table-functions)                   | Механизмы создания таблиц.                                                                            |
+| [Window Functions](/sql-reference/window-functions)                 | Функции, которые позволяют выполнять вычисления по набору строк, связанных с текущей строкой.         |

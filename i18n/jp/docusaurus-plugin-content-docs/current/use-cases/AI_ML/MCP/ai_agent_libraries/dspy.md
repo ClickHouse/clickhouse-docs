@@ -1,64 +1,60 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': 'DSPyを統合する'
-'title': 'DSPyとClickHouse MCPサーバーを使用してAIエージェントを構築する方法'
-'pagination_prev': null
-'pagination_next': null
-'description': 'DSPyとClickHouse MCPサーバーを使用してAIエージェントを構築する方法を学ぶ'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'DSPy'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
+sidebar_label: 'DSPy 連携'
+title: 'DSPy と ClickHouse MCP Server で AI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'DSPy と ClickHouse MCP Server で AI エージェントを構築する方法を解説します'
+keywords: ['ClickHouse', 'MCP', 'DSPy']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# DSPy と ClickHouse MCP Server を使って AI エージェントを構築する方法 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
-# AIエージェントをDSPyとClickHouse MCPサーバーで構築する方法
-
-このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph)を使用して、[ClickHouseのSQLプレイグラウンド](https://sql.clickhouse.com/)と相互作用できるAIエージェントを構築する方法を説明します。このエージェントは、[ClickHouseのMCPサーバー](https://github.com/ClickHouse/mcp-clickhouse)を使用します。
+このガイドでは、[DSPy](https://github.com/langchain-ai/langgraph) を使って、
+[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 
 ## 前提条件 {#prerequisites}
 
-- システムにPythonがインストールされている必要があります。
-- システムに`pip`がインストールされている必要があります。
-- AnthropicのAPIキー、または別のLLMプロバイダーのAPIキーが必要です。
+- システムに Python がインストールされている必要があります。
+- システムに `pip` がインストールされている必要があります。
+- Anthropic の API キー、または別の LLM プロバイダーの API キーが必要です。
 
-次の手順は、Python REPLまたはスクリプトを介して実行できます。
+以下の手順は、Python REPL からでも、スクリプトとしてでも実行できます。
 
-:::note 例のノートブック
-この例は、[例のリポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)のノートブックとして見つけることができます。
+:::note サンプルノートブック
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)内のノートブックとして参照できます。
 :::
 
 <VerticalStepper headerLevel="h2">
+  ## ライブラリのインストール
 
-## ライブラリをインストールする {#install-libraries}
+  `pip`を使用して以下のコマンドを実行し、必要なライブラリをインストールします：
 
-次のコマンドを`pip`を使用して実行し、必要なライブラリをインストールします。
-
-```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
+  ```shell
+pip install -q --upgrade pip
+pip install -q dspy
+pip install -q mcp
 ```
 
-## 資格情報を設定する {#setup-credentials}
+  ## 認証情報の設定
 
-次に、AnthropicのAPIキーを提供する必要があります：
+  次に、Anthropic APIキーを指定する必要があります:
 
-```python
+  ```python
 import os
 os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
-:::note 別のLLMプロバイダーを使用する
-AnthropicのAPIキーがなく、別のLLMプロバイダーを使用したい場合は、
-[ DSPyのドキュメント](https://dspy.ai/#__tabbed_1_1)で資格情報の設定に関する手順を見つけることができます。
-:::
+  :::note 別のLLMプロバイダーを使用する場合
+  Anthropic APIキーをお持ちでない場合や、別のLLMプロバイダーを使用したい場合は、
+  [DSPyドキュメント](https://dspy.ai/#__tabbed_1_1)で認証情報の設定手順をご確認ください。
+  :::
 
-次に、ClickHouse SQLプレイグラウンドに接続するために必要な資格情報を定義します：
+  次に、ClickHouse SQLプレイグラウンドに接続するための認証情報を定義します：
 
-```python
+  ```python
 env = {
     "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
     "CLICKHOUSE_PORT": "8443",
@@ -68,11 +64,11 @@ env = {
 }
 ```
 
-## MCPサーバーを初期化する {#initialize-mcp}
+  ## MCPサーバーの初期化
 
-次に、ClickHouse MCPサーバーをClickHouse SQLプレイグラウンドを指すように構成します。
+  次に、ClickHouse MCP ServerをClickHouse SQLプレイグラウンドに接続するように設定します。
 
-```python
+  ```python
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 import dspy
@@ -89,19 +85,19 @@ server_params = StdioServerParameters(
 )
 ```
 
-## LLMを初期化する {#initialize-llm}
+  ## LLMの初期化
 
-次に、以下の行を使用してLLMを初期化します：
+  次に、以下のコマンドでLLMを初期化します：
 
-```python
+  ```python
 dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
 ```
 
-## エージェントを実行する {#run-the-agent}
+  ## エージェントを実行する
 
-最後に、エージェントを初期化して実行します：
+  最後に、エージェントを初期化して実行します。
 
-```python
+  ```python
 class DataAnalyst(dspy.Signature):
     """You are a data analyst. You'll be asked questions and you need to try to answer them using the tools you have access to. """
 
@@ -128,7 +124,7 @@ async with stdio_client(server_params) as (read, write):
         print_dspy_result(result)
 ```
 
-```response title="Response"
+  ```response title="Response"
 ================================================================================
 🤖 DSPy ReAct Result
 ================================================================================

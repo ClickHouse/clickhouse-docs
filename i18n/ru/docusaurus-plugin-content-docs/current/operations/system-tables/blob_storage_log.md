@@ -1,42 +1,43 @@
 ---
-slug: '/operations/system-tables/blob_storage_log'
-description: 'Системная таблица, содержащая записи логирования с информацией о различных'
-title: system.blob_storage_log
+description: 'Системная таблица, содержащая записи журнала с информацией о различных операциях с блоб-хранилищем, таких как загрузка и удаление данных.'
 keywords: ['системная таблица', 'blob_storage_log']
-doc_type: reference
+slug: /operations/system-tables/blob_storage_log
+title: 'system.blob_storage_log'
+doc_type: 'reference'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-<SystemTableCloud/>
+<SystemTableCloud />
 
-Содержит записи журналов с информацией о различных операциях с блоб-хранилищем, таких как загрузка и удаление.
+Содержит записи журнала с информацией о различных операциях с блоб‑хранилищем, таких как загрузка и удаление объектов.
 
-Колонки:
+Столбцы:
 
-- `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
-- `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
-- `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
-- `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с точностью до микросекунд.
-- `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип события. Возможные значения:
-  - `'Upload'`
-  - `'Delete'`
-  - `'MultiPartUploadCreate'`
-  - `'MultiPartUploadWrite'`
-  - `'MultiPartUploadComplete'`
-  - `'MultiPartUploadAbort'`
-- `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, связанного с событием, если есть.
-- `thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Идентификатор потока, выполняющего операцию.
-- `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока, выполняющего операцию.
-- `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Имя связанного диска.
-- `bucket` ([String](../../sql-reference/data-types/string.md)) — Имя корзины.
-- `remote_path` ([String](../../sql-reference/data-types/string.md)) — Путь к удаленному ресурсу.
-- `local_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу метаданных на локальной системе, который ссылается на удаленный ресурс.
-- `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — Размер данных, участвующих в операции загрузки.
-- `error` ([String](../../sql-reference/data-types/string.md)) — Сообщение об ошибке, связанной с событием, если есть.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, выполняющего запрос.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата события.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время события.
+* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время события с точностью до микросекунд.
+* `event_type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип события. Возможные значения:
+  * `'Upload'`
+  * `'Delete'`
+  * `'MultiPartUploadCreate'`
+  * `'MultiPartUploadWrite'`
+  * `'MultiPartUploadComplete'`
+  * `'MultiPartUploadAbort'`
+* `query_id` ([String](../../sql-reference/data-types/string.md)) — Идентификатор запроса, связанного с событием, если он есть.
+* `thread_id` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Идентификатор потока, выполняющего операцию.
+* `thread_name` ([String](../../sql-reference/data-types/string.md)) — Имя потока, выполняющего операцию.
+* `disk_name` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — Имя связанного диска.
+* `bucket` ([String](../../sql-reference/data-types/string.md)) — Имя бакета.
+* `remote_path` ([String](../../sql-reference/data-types/string.md)) — Путь к удалённому ресурсу.
+* `local_path` ([String](../../sql-reference/data-types/string.md)) — Путь к файлу метаданных в локальной системе, который ссылается на удалённый ресурс.
+* `data_size` ([UInt32](/sql-reference/data-types/int-uint#integer-ranges)) — Размер данных, участвующих в событии загрузки.
+* `error` ([String](../../sql-reference/data-types/string.md)) — Сообщение об ошибке, связанной с событием, если оно есть.
 
 **Пример**
 
-Предположим, операция блоб-хранилища загружает файл, и событие записывается в журнал:
+Предположим, что в результате операции с блоб‑хранилищем загружается файл и соответствующее событие записывается в журнал:
 
 ```sql
 SELECT * FROM system.blob_storage_log WHERE query_id = '7afe0450-504d-4e4b-9a80-cd9826047972' ORDER BY event_date, event_time_microseconds \G
@@ -60,8 +61,8 @@ data_size:               259
 error:
 ```
 
-В этом примере операция загрузки была связана с запросом `INSERT` с идентификатором `7afe0450-504d-4e4b-9a80-cd9826047972`. Локальный файл метаданных `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` ссылается на удаленный путь `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` в корзине `bucket1` на диске `disk_s3`, с размером 259 байт.
+В этом примере операция загрузки была связана с запросом `INSERT` с идентификатором `7afe0450-504d-4e4b-9a80-cd9826047972`. Локальный файл метаданных `store/654/6549e8b3-d753-4447-8047-d462df6e6dbe/tmp_insert_all_1_1_0/checksums.txt` ссылается на удалённый путь `rrr/kxo/tbnqtrghgtnxkzgtcrlutwuslgawe` в бакете `bucket1` на диске `disk_s3` и имеет размер 259 байт.
 
-**Смотрите также**
+**См. также**
 
-- [Внешние диски для хранения данных](../../operations/storing-data.md)
+* [Внешние диски для хранения данных](../../operations/storing-data.md)

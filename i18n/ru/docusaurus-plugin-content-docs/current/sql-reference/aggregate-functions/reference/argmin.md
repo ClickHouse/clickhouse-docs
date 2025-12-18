@@ -1,13 +1,18 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/argmin'
+description: 'Вычисляет значение `arg` для минимального значения `val`. Если существует
+  несколько строк с одинаковым минимальным значением `val`, то то, какое из соответствующих
+  значений `arg` будет возвращено, не детерминировано.'
 sidebar_position: 110
-description: 'Вычисляет значение `arg` для минимального значения `val`. Если есть'
-title: argMin
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/argmin
+title: 'argMin'
+doc_type: 'reference'
 ---
-# argMin
 
-Вычисляет значение `arg` для минимального значения `val`. Если существует несколько строк с одинаковым максимальным значением `val`, то какое из связанных `arg` будет возвращено, не является детерминированным. Обе части `arg` и `min` ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), они обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) во время обработки и возвращают не `Null` значения, если такие доступны.
+# argMin {#argmin}
+
+Вычисляет значение `arg` для минимального значения `val`. Если имеется несколько строк с одинаковым значением `val`, являющимся минимальным, то выбор возвращаемого связанного значения `arg` не детерминирован.
+
+Обе части — `arg` и `min` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе [пропускают `Null`](/sql-reference/aggregate-functions/index.md#null-processing) при обработке и возвращают значения, отличные от `Null`, если такие значения доступны.
 
 **Синтаксис**
 
@@ -17,14 +22,14 @@ argMin(arg, val)
 
 **Аргументы**
 
-- `arg` — Аргумент.
-- `val` — Значение.
+* `arg` — аргумент.
+* `val` — значение.
 
 **Возвращаемое значение**
 
-- Значение `arg`, которое соответствует минимальному значению `val`.
+* Значение `arg`, соответствующее минимальному значению `val`.
 
-Тип: совпадает с типом `arg`.
+Тип: тот же, что и у `arg`.
 
 **Пример**
 
@@ -112,4 +117,4 @@ SELECT argMin(a, tuple(b)) FROM test;
 
 **См. также**
 
-- [Tuple](/sql-reference/data-types/tuple.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

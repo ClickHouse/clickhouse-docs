@@ -1,69 +1,75 @@
 ---
-'slug': '/faq/operations/production'
-'title': '在生产中使用哪个 ClickHouse 版本？'
-'toc_hidden': true
-'toc_priority': 10
-'description': '该页面提供关于在生产中使用哪个 ClickHouse 版本的指导'
-'doc_type': 'guide'
+slug: /faq/operations/production
+title: '在生产环境中应使用哪个 ClickHouse 版本？'
+toc_hidden: true
+toc_priority: 10
+description: '本页提供关于在生产环境中选择 ClickHouse 版本的指导'
+doc_type: 'guide'
+keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 ---
 
 
-# Which ClickHouse version to use in production? {#which-clickhouse-version-to-use-in-production}
 
-首先，让我们讨论一下人们为什么会问这个问题。主要有两个关键原因：
+# 在生产环境中应该使用哪个 ClickHouse 版本？ {#which-clickhouse-version-to-use-in-production}
 
-1.  ClickHouse 的开发速度非常快，通常每年会有超过 10 个稳定版本发布。这使得可选择的版本范围非常广泛，而选择并不简单。
-2.  有些用户希望避免花时间查明哪个版本最适合他们的使用场景，只想遵循别人的建议。
+首先，来看一下大家为什么会问这个问题。主要有两个原因：
 
-第二个原因更为根本，因此我们先从这一点开始，然后再讨论如何浏览不同的 ClickHouse 版本。
+1.  ClickHouse 的开发迭代速度非常快，通常每年会发布 10 个以上的稳定版本。可供选择的版本非常多，选起来并不那么简单。
+2.  有些用户不想花时间去摸索哪个版本最适合自己的使用场景，而是希望直接采纳他人的建议。
 
-## Which ClickHouse version do you recommend? {#which-clickhouse-version-do-you-recommend}
+第二个原因更为根本，所以我们先从这一点说起，然后再回到如何在各个 ClickHouse 版本之间做出选择。
 
-雇佣顾问或信任一些知名专家来摆脱对您的生产环境的责任是很有诱惑的。您安装某个特定的 ClickHouse 版本，这个版本是别人推荐的；如果出现了问题 - 那不是您的错，是别人的。这种推理是一个大的陷阱。没有外部人士比您更清楚您公司生产环境中发生了什么。
 
-那么，您如何正确选择要升级到的 ClickHouse 版本呢？或者，您如何选择第一个 ClickHouse 版本呢？首先，您需要投入时间设置一个 **真实的预生产环境**。理想情况下，它可以是一个完全相同的影子副本，但通常成本较高。
 
-以下是一些关键点，以在预生产环境中以较低的成本获得合理的保真度：
+## 你推荐使用哪个 ClickHouse 版本？ {#which-clickhouse-version-do-you-recommend}
 
-- 预生产环境需要运行与您打算在生产中运行的查询尽可能接近的查询集：
-  - 不要让它只读取一些冻结的数据。
-  - 不要让它只写入数据而不构建一些典型的报告。
-  - 不要清除它，而是应用模式迁移。
-- 使用真实生产数据和查询的样本。尝试选择一个仍然具有代表性的样本，并使 `SELECT` 查询返回合理的结果。如果您的数据敏感且内部政策不允许它离开生产环境，请使用混淆处理。
-- 确保预生产环境的监控和警报软件与生产环境一样得到覆盖。
-- 如果您的生产环境跨越多个数据中心或区域，请确保预生产环境也这样设置。
-- 如果您的生产使用复杂的特性，如复制、分布式表和级联物化视图，请确保它们在预生产中也这样配置。
-- 在预生产中使用与生产中大致相同数量的服务器或虚拟机（VM），但大小较小，或者数量较少但大小相同之间存在权衡。第一种选择可能会捕获额外的网络相关问题，而后者则更易于管理。
+人们往往倾向于雇佣顾问，或者依赖一些知名专家，以此来摆脱对生产环境的责任。你安装了某个别人推荐的 ClickHouse 版本；如果这个版本出了问题——那不是你的错，而是别人的错。这种思路是一个大陷阱。没有任何外部人员比你更了解你们公司生产环境中实际发生的情况。
 
-第二个投资领域是 **自动化测试基础设施**。不要假设如果某种查询成功执行过一次，它将永远继续这样做。虽然可以有一些单元测试，其中 ClickHouse 被模拟，但确保您的产品有一套合理的自动化测试，这些测试针对真实的 ClickHouse 运行，并检查所有重要的用例是否仍按预期工作。
+那么，应该如何正确地选择要升级到哪个 ClickHouse 版本？或者，如何选择你的第一个 ClickHouse 版本？首先，你需要投入精力搭建一个**真实的预生产环境**。在理想情况下，它可以是一个完全相同的影子环境，但这通常成本较高。
 
-进一步的步骤是为 [ClickHouse 的开源测试基础设施](https://github.com/ClickHouse/ClickHouse/tree/master/tests) 贡献这些自动化测试，这在其日常开发中不断使用。学习 [如何运行它](../../development/tests.md)，然后如何将您的测试适应这个框架，确实会花费一些额外的时间和精力，但这将通过确保 ClickHouse 发布时已进行测试而得到回报，而不是反复浪费时间在问题报告后，等待 Bug 修复去实施、回溯和发布。有些公司甚至将此类测试贡献作为其内部政策的要求（称为 [Beyonce's Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well) 在 Google 中）。
+下面是一些要点，可以在预生产环境中以不算太高的成本获得合理的真实性：
 
-当您准备好预生产环境和测试基础设施后，选择最佳版本就简单了：
+- 预生产环境需要运行与你计划在生产中运行的尽可能接近的一组查询：
+  - 不要让它只是对一些冻结数据的只读环境。
+  - 不要让它只是写入环境，只是复制数据却不构建一些典型报表。
+  - 不要在需要执行模式迁移时直接清空它。
+- 使用真实生产数据和查询的样本。尽量选择仍然具有代表性、并且能让 `SELECT` 查询返回合理结果的样本。如果你的数据很敏感且内部策略不允许数据离开生产环境，则使用脱敏/混淆。
+- 确保预生产环境和生产环境一样，被你的监控和告警软件所覆盖。
+- 如果你的生产环境跨多个数据中心或地区部署，请让预生产环境也做到这一点。
+- 如果你的生产环境使用了诸如复制、分布式表以及级联物化视图等复杂特性，请确保它们在预生产环境中的配置也类似。
+- 在预生产环境中使用与生产大致相同数量但规格更小的服务器或虚拟机，还是使用数量少得多但规格相同的服务器或虚拟机，这是一个权衡。前一种方案可能会暴露更多与网络相关的问题，而后一种方案更易于管理。
 
-1.  定期针对新的 ClickHouse 版本运行自动化测试。您甚至可以对标记为 `testing` 的 ClickHouse 版本进行测试，但不建议继续推进后续步骤。
-2.  部署通过测试的 ClickHouse 版本到预生产，并检查所有过程是否按预期运行。
-3.  报告您发现的任何问题到 [ClickHouse GitHub Issues](https://github.com/ClickHouse/ClickHouse/issues)。
-4.  如果没有重大问题，开始将 ClickHouse 版本部署到生产环境应该是安全的。投资于逐步发布自动化，实施类似于 [canary releases](https://martinfowler.com/bliki/CanaryRelease.html) 或 [green-blue deployments](https://martinfowler.com/bliki/BlueGreenDeployment.html) 的方法，可以进一步减少生产中出现问题的风险。
+第二个值得投入的领域是**自动化测试基础设施**。不要认为某类查询只要成功执行过一次，它就会永远继续成功执行。使用一些对 ClickHouse 做 mock 的单元测试是可以的，但要确保你的产品有一套合理的自动化测试集，是针对真实的 ClickHouse 运行的，并检查所有重要用例是否依然按预期工作。
 
-正如您可能注意到的，上述方法没有特别针对 ClickHouse - 如果人们认真对待他们的生产环境，他们对任何基础设施都会这样做。
+更进一步的一步，是把这些自动化测试贡献给 [ClickHouse 的开源测试基础设施](https://github.com/ClickHouse/ClickHouse/tree/master/tests)，这些测试在 ClickHouse 的日常开发中被持续使用。要学习[如何运行它](../../development/tests.md)，以及之后如何将你的测试适配到这个框架，确实需要一些额外的时间和精力，但这会带来回报：当 ClickHouse 版本被宣布为稳定版时，已经在这些测试上跑过了，而不是一遍又一遍地在事后花时间报告问题，然后再等待 bug 修复的实现、回溯移植和发布。有些公司甚至将对基础设施的此类测试贡献，作为内部政策的一部分（在 Google 被称为 [Beyonce's Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well)）。
 
-## How to choose between ClickHouse releases? {#how-to-choose-between-clickhouse-releases}
+当你已经搭建好了预生产环境和测试基础设施后，选择最佳版本就很直观了：
 
-如果您查看 ClickHouse 包存储库的内容，您会看到两种类型的软件包：
+1.  定期在新的 ClickHouse 发行版上运行你的自动化测试。即使是标记为 `testing` 的 ClickHouse 发行版你也可以这样做，但不推荐在后续步骤中继续使用这些版本。
+2.  将通过测试的 ClickHouse 发行版部署到预生产环境，并检查所有流程是否按预期运行。
+3.  将你发现的任何问题报告到 [ClickHouse GitHub Issues](https://github.com/ClickHouse/ClickHouse/issues)。
+4.  如果没有发现重大问题，就可以认为开始将该 ClickHouse 发行版部署到生产环境是安全的。投入精力实现渐进发布自动化，采用类似 [金丝雀发布](https://martinfowler.com/bliki/CanaryRelease.html) 或 [蓝绿部署](https://martinfowler.com/bliki/BlueGreenDeployment.html) 的方法，可以进一步降低生产环境中出现问题的风险。
+
+如你所见，上述方法中没有任何内容是 ClickHouse 特有的——只要认真对待生产环境，人们对任何他们所依赖的基础设施组件都会这样做。
+
+
+
+## 如何在不同 ClickHouse 发行版之间进行选择？ {#how-to-choose-between-clickhouse-releases}
+
+如果你查看 ClickHouse 软件包仓库的内容，会看到两类软件包：
 
 1.  `stable`
-2.  `lts`（长期支持）
+2.  `lts`（长期支持版，long-term support）
 
-以下是如何选择这两者之间的一些指导：
+下面是关于如何在它们之间进行选择的一些指导：
 
-- `stable` 是我们默认推荐的软件包类型。这些包大约每月发布一次（因此提供合理延迟的新功能），并且最新的三个稳定版本在诊断和回溯 Bug 修复方面受到支持。
-- `lts` 每年发布两次，并在初始发布后支持一年。您在以下情况下可能更喜欢它们而不是 `stable`：
-  - 您的公司有一些内部政策，不允许频繁升级或使用非 LTS 软件。
-  - 您在某些次要产品中使用 ClickHouse，这些产品既不需要任何复杂的 ClickHouse 特性，也没有足够的资源进行更新。
+- `stable` 是我们默认推荐的软件包类型。它们大约每月发布一次（因此能在合理的时间内提供新功能），并且最近的三个 `stable` 版本在诊断和错误修复回溯（backport）方面都提供支持。
+- `lts` 每年发布两次，并在初始发布后提供一年的支持。在以下情况下，你可能会更倾向于选择 `lts` 而不是 `stable`：
+  - 你的公司有内部策略，不允许频繁升级或使用非 LTS 软件。
+  - 你在一些次要产品中使用 ClickHouse，这些产品要么不需要任何复杂的 ClickHouse 特性，要么没有足够的资源保持其持续更新。
 
-许多最初认为 `lts` 是最佳选择的团队最终仍然会因某些对其产品重要的最近功能而转换回 `stable`。
+许多团队最初认为 `lts` 是最佳选择，但往往会因为某个对其产品非常重要的新功能而最终还是转用 `stable`。
 
 :::tip    
-在升级 ClickHouse 时还有一件事需要记住：我们始终关注各版本之间的兼容性，但有时保持兼容性是不合理的，一些小细节可能会发生变化。因此，在升级之前，请确保检查 [changelog](/whats-new/changelog/index.md)，以查看是否有关于向后不兼容更改的说明。
+升级 ClickHouse 时还有一点需要注意：我们始终致力于在不同发行版之间保持兼容性，但有时保持完全兼容并不合理，一些次要细节可能会发生变化。因此，在升级之前，请务必查看 [changelog](/whats-new/changelog/index.md)，确认是否有任何关于向后不兼容变更的说明。
 :::

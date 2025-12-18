@@ -1,12 +1,10 @@
 ---
-'title': 'OpenTelemetryの統合'
-'description': 'ObservabilityのためにOpenTelemetryとClickHouseを統合する'
-'slug': '/observability/integrating-opentelemetry'
-'keywords':
-- 'Observability'
-- 'OpenTelemetry'
-'show_related_blogs': true
-'doc_type': 'guide'
+title: 'OpenTelemetry の統合'
+description: 'OpenTelemetry と ClickHouse を統合してオブザーバビリティを実現する'
+slug: /observability/integrating-opentelemetry
+keywords: ['オブザーバビリティ', 'OpenTelemetry']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
 import observability_3 from '@site/static/images/use-cases/observability/observability-3.png';
@@ -19,78 +17,78 @@ import observability_9 from '@site/static/images/use-cases/observability/observa
 import Image from '@theme/IdealImage';
 
 
-# OpenTelemetryによるデータ収集の統合
+# データ収集のための OpenTelemetry の統合 {#integrating-opentelemetry-for-data-collection}
 
-任意の可観測性ソリューションには、ログやトレースを収集し、エクスポートする手段が必要です。この目的のために、ClickHouseは[OpenTelemetry (OTel) プロジェクト](https://opentelemetry.io/)を推奨します。
+あらゆるオブザーバビリティソリューションには、ログおよびトレースを収集してエクスポートする手段が必要です。この目的のために、ClickHouse は [OpenTelemetry (OTel) プロジェクト](https://opentelemetry.io/) を推奨しています。
 
-「OpenTelemetryは、トレース、メトリクス、ログなどのテレメトリデータを作成し、管理するために設計された可観測性フレームワークおよびツールキットです。」
+「OpenTelemetry は、トレース、メトリクス、ログなどのテレメトリデータを作成および管理するために設計されたオブザーバビリティフレームワーク兼ツールキットです。」
 
-ClickHouseやPrometheusとは異なり、OpenTelemetryは可観測性バックエンドではなく、テレメトリデータの生成、収集、管理、エクスポートに焦点を当てています。OpenTelemetryの初期の目標は、ユーザーが言語特有のSDKを使用してアプリケーションやシステムを容易に計装できるようにすることでしたが、現在はOpenTelemetryコレクターを通じてログの収集も含まれるようになりました。これは、テレメトリデータを受信、処理し、エクスポートするエージェントまたはプロキシです。
+ClickHouse や Prometheus とは異なり、OpenTelemetry はオブザーバビリティのバックエンドではなく、テレメトリデータの生成、収集、管理、およびエクスポートに特化しています。OpenTelemetry の当初の目的は、言語固有の SDKS を用いてアプリケーションやシステムを容易にインスツルメンテーションできるようにすることでしたが、現在では OpenTelemetry collector を通じたログ収集も含むように拡張されています。OpenTelemetry collector は、テレメトリデータを受信、処理、およびエクスポートするエージェントまたはプロキシです。
 
-## ClickHouse関連コンポーネント {#clickhouse-relevant-components}
+## ClickHouse 関連コンポーネント {#clickhouse-relevant-components}
 
-OpenTelemetryは多くのコンポーネントから成り立っています。データおよびAPIの仕様、標準化されたプロトコル、フィールド/カラムの命名規則を提供することに加えて、OTelはClickHouseでの可観測性ソリューションの構築に不可欠な2つの機能を提供します。
+OpenTelemetry は複数のコンポーネントで構成されています。データおよび API 仕様、標準化されたプロトコル、フィールドやカラムの命名規則を提供するだけでなく、OTel は ClickHouse を用いてオブザーバビリティソリューションを構築するうえで不可欠な 2 つの機能を提供します。
 
-- [OpenTelemetryコレクター](https://opentelemetry.io/docs/collector/)は、テレメトリデータを受信、処理、エクスポートするプロキシです。ClickHouseを利用したソリューションは、ログ収集とイベント処理の両方にこのコンポーネントを使用します。
-- テレメトリデータの仕様、API、エクスポートを実装する[言語SDK](https://opentelemetry.io/docs/languages/)です。これらのSDKは、アプリケーションのコード内でトレースが正しく記録されることを保証し、構成要素スパンを生成し、メタデータを介してサービス間でコンテキストが伝播されることを確実にすることで、分散トレースを形成し、スパンが相関できるようにします。これらのSDKは、ユーザーがコードを変更する必要がなく、即時計装を得られるようにする一般的なライブラリやフレームワークを自動的に実装するエコシステムによって補完されています。
+- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) は、テレメトリーデータを受信・処理・エクスポートするプロキシです。ClickHouse を基盤とするソリューションでは、このコンポーネントを、バッチ処理および挿入前のログ収集とイベント処理の両方に利用します。
+- [Language SDKs](https://opentelemetry.io/docs/languages/) は、仕様・API・テレメトリーデータのエクスポートを実装します。これらの SDK により、アプリケーションコード内でトレースが正しく記録され、構成要素となる span が生成され、メタデータを通じてサービス間でコンテキストが伝播されます。これにより分散トレースが形成され、span を相関付けられるようになります。さらに、これらの SDK は、一般的なライブラリやフレームワークを自動的に組み込むエコシステムによって補完されているため、ユーザーはコードを変更する必要がなく、そのまま利用可能なインスツルメンテーションを得られます。
 
-ClickHouseを利用した可観測性ソリューションは、これらのツールの両方を活用します。
+ClickHouse を基盤としたオブザーバビリティソリューションでは、これら 2 つのツールをいずれも活用します。
 
 ## ディストリビューション {#distributions}
 
-OpenTelemetryコレクターには[複数のディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-releases?tab=readme-ov-file)があります。ClickHouseソリューションに必要なfilelogレシーバーとClickHouseエクスポーターは、[OpenTelemetry Collector Contrib Distro](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)にのみ存在します。
+OpenTelemetry Collector には[複数のディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-releases?tab=readme-ov-file)があります。ClickHouse ソリューションに必要となる filelog receiver と ClickHouse exporter は、[OpenTelemetry Collector Contrib Distro](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib) にのみ含まれています。
 
-このディストリビューションには多くのコンポーネントが含まれており、ユーザーがさまざまな構成を試すことを可能にします。ただし、運用時には、環境に必要なコンポーネントのみを含むようコレクターを制限することをお勧めします。これにはいくつかの理由があります：
+このディストリビューションには多くのコンポーネントが含まれており、さまざまな構成を試すことができます。ただし本番環境で実行する場合は、その環境に必要なコンポーネントのみに Collector を限定することを推奨します。理由としては次のようなものがあります：
 
-- コレクターのサイズを減らすことで、コレクターのデプロイメント時間を短縮します。
-- 利用可能な攻撃対象範囲を減らすことで、コレクターのセキュリティを向上させます。
+- Collector のサイズを削減し、Collector のデプロイ時間を短縮できる
+- 利用可能な攻撃対象領域を減らすことで、Collector のセキュリティを向上できる
 
-[カスタムコレクター](https://opentelemetry.io/docs/collector/custom-collector/)は、[OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder)を使用して作成できます。
+[カスタム Collector](https://opentelemetry.io/docs/collector/custom-collector/) は、[OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder) を使用してビルドできます。
 
-## OTelによるデータの取り込み {#ingesting-data-with-otel}
+## OTel を使ったデータ取り込み {#ingesting-data-with-otel}
 
-### コレクター展開の役割 {#collector-deployment-roles}
+### コレクターのデプロイメントロール {#collector-deployment-roles}
 
-ログを収集し、ClickHouseに挿入するために、OpenTelemetryコレクターの使用をお勧めします。OpenTelemetryコレクターは、主に2つの役割で展開できます：
+ログを収集して ClickHouse に挿入するためには、OpenTelemetry Collector の利用を推奨します。OpenTelemetry Collector は、主に次の 2 つのロールでデプロイできます。
 
-- **エージェント** - エージェントインスタンスは、サーバーやKubernetesノードなどのエッジでデータを収集するか、OpenTelemetry SDKで計装されたアプリケーションからイベントを直接受信します。この場合、エージェントインスタンスはアプリケーションと共に、またはアプリケーションと同じホスト上（サイドカーやDaemonSetなど）で実行されます。エージェントは、データを直接ClickHouseに送信するか、ゲートウェイインスタンスに送信することができます。前者の場合、これは[エージェント展開パターン](https://opentelemetry.io/docs/collector/deployment/agent/)と呼ばれます。
-- **ゲートウェイ** - ゲートウェイインスタンスは、通常はクラスターごと、データセンターごと、またはリージョンごとのスタンドアロンサービス（Kubernetesのデプロイメントなど）を提供します。これらは、OTLPエンドポイントを介してアプリケーション（またはエージェントとして別のコレクター）からのイベントを受信します。通常、負荷を分散させるために、アウトオブボックスの負荷分散機能を使用されるゲートウェイインスタンスのセットが展開されます。すべてのエージェントとアプリケーションがこの単一エンドポイントに信号を送信する場合、これは[ゲートウェイ展開パターン](https://opentelemetry.io/docs/collector/deployment/gateway/)と呼ばれることがよくあります。
+- **Agent** - Agent インスタンスは、エッジ（例: サーバー上や Kubernetes ノード上）でデータを収集したり、OpenTelemetry SDK で計装されたアプリケーションからイベントを直接受信します。後者の場合、Agent インスタンスはアプリケーションと同一プロセス内、またはアプリケーションと同じホスト上（sidecar や デーモンセット など）で動作します。Agent は、収集したデータを直接 ClickHouse に送信することも、ゲートウェイインスタンスに送信することもできます。前者の場合、これは [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/) と呼ばれます。
+- **Gateway**  - Gateway インスタンスは、スタンドアロンのサービス（たとえば Kubernetes のデプロイメント）として、通常はクラスタ単位、データセンター単位、またはリージョン単位で提供されます。これらは、単一の OTLP エンドポイント経由で、アプリケーション（または Agent として動作する他のコレクター）からイベントを受信します。通常、複数の Gateway インスタンスがデプロイされ、それらの間で負荷を分散するために既存のロードバランサーが利用されます。すべての Agent とアプリケーションがこの単一エンドポイントにシグナルを送信する場合、これは [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/) と呼ばれることがよくあります。
 
-以下では、シンプルなエージェントコレクターがイベントを直接ClickHouseに送信することを前提とします。ゲートウェイの使用と、その適用時期についての詳細は[ゲートウェイでのスケーリング](#scaling-with-gateways)を参照してください。
+以下では、シンプルな Agent ロールのコレクターがイベントを直接 ClickHouse に送信する構成を前提とします。ゲートウェイの利用方法とそれが適用されるシナリオについては、[Scaling with Gateways](#scaling-with-gateways) を参照してください。
 
 ### ログの収集 {#collecting-logs}
 
-コレクターを使用する主な利点は、サービスがデータを迅速にオフロードできることです。これにより、コレクターが再試行、バッチ処理、暗号化、さらには機密データのフィルタリングなどの追加処理を担当します。
+Collector を使用する主な利点は、サービス側がデータをすばやくオフロードでき、その後のリトライ、バッチ処理、暗号化、さらには機密データのフィルタリングといった追加処理を Collector 側に任せられる点です。
 
-コレクターは、[レシーバ](https://opentelemetry.io/docs/collector/configuration/#receivers)、[プロセッサ](https://opentelemetry.io/docs/collector/configuration/#processors)、および[エクスポータ](https://opentelemetry.io/docs/collector/configuration/#exporters)という3つの主要な処理段階の用語を使用します。レシーバはデータ収集に使用され、プル方式またはプッシュ方式のいずれかです。プロセッサはメッセージの変換や強化機能を提供します。エクスポータは、受信したデータを下流のサービスに送信する役割を担っています。このサービスは理論的には別のコレクターでも可能ですが、以下の初期の議論では、すべてのデータが直接ClickHouseに送信されると仮定します。
+Collector では、3 つの主要な処理ステージを [receiver](https://opentelemetry.io/docs/collector/configuration/#receivers)、[processor](https://opentelemetry.io/docs/collector/configuration/#processors)、[exporter](https://opentelemetry.io/docs/collector/configuration/#exporters) という用語で表現します。Receiver はデータ収集のために使用され、pull 型と push 型のいずれにも対応します。Processor はメッセージの変換および付加情報の付与（enrichment）を行う機能を提供します。Exporter はデータを下流のサービスへ送信する役割を担います。この下流サービスは理論上は別の Collector でも構いませんが、以下の説明では、すべてのデータが直接 ClickHouse に送信されることを前提とします。
 
 <Image img={observability_3} alt="ログの収集" size="md"/>
 
-ユーザーが受信者、プロセッサ、エクスポータの完全なセットに慣れることをお勧めします。
+ユーザーは、すべての receiver、processor、exporter について一通り理解しておくことを推奨します。
 
-コレクターは、ログを収集するための主に2つのレシーバを提供します：
+Collector はログ収集のために、主に 2 種類の receiver を提供します。
 
-**OTLPを介して** - この場合、ログはOpenTelemetry SDKからOTLPプロトコルを介してコレクターに直接送信されます。[OpenTelemetryデモ](https://opentelemetry.io/docs/demo/)はこのアプローチを採用しており、各言語のOTLPエクスポータはローカルコレクターエンドポイントを仮定します。この場合、コレクターはOTLPレシーバで構成する必要があります。上記の[デモの構成](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12)を参照してください。このアプローチの利点は、ログデータが自動的にトレースIDを含むことであり、ユーザーは後で特定のログに対するトレースを識別できるようになります。
+**OTLP 経由** - この場合、ログは OpenTelemetry SDK から OTLP プロトコル経由で Collector に直接（push で）送信されます。[OpenTelemetry demo](https://opentelemetry.io/docs/demo/) はこの方式を採用しており、各言語の OTLP exporter はローカルの Collector エンドポイントを前提としています。この場合、Collector 側では OTLP receiver を有効にするよう設定しておく必要があります（上記 [デモの設定例](https://github.com/ClickHouse/opentelemetry-demo/blob/main/src/otelcollector/otelcol-config.yml#L5-L12) を参照してください）。この方式の利点は、ログデータに自動的に Trace ID が含まれるため、特定のログに対応するトレース、あるいはその逆を後から容易にたどれる点です。
 
-<Image img={observability_4} alt="OTLPを介したログの収集" size="md"/>
+<Image img={observability_4} alt="OTLP 経由でのログ収集" size="md"/>
 
-このアプローチでは、ユーザーが[適切な言語SDK](https://opentelemetry.io/docs/languages/)でコードを計装する必要があります。
+この方式では、対象のコードを [利用するプログラミング言語に対応した SDK](https://opentelemetry.io/docs/languages/) で計装（インストルメント）する必要があります。
 
-- **Filelogレシーバ経由のスクレイピング** - このレシーバは、ディスク上のファイルを追跡し、ログメッセージを形成し、それをClickHouseに送信します。このレシーバは、複数行メッセージの検出、ログのロールオーバーの処理、再起動に対する堅牢性のためのチェックポイント、および構造の抽出などの複雑なタスクを処理します。このレシーバは、DockerおよびKubernetesコンテナのログを追跡することもでき、helmチャートとして展開可能で、これらから[構造を抽出し](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/)、ポッドの詳細でそれを強化することができます。
+- **Filelog receiver によるスクレイピング** - この receiver はディスク上のファイルを tail してログメッセージを生成し、それらを ClickHouse に送信します。この receiver は、複数行メッセージの検出、ログローテーションの取り扱い、再起動に対する堅牢性を高めるためのチェックポイント処理、構造の抽出といった複雑なタスクに対応します。さらに、この receiver は Docker および Kubernetes コンテナのログを tail することもでき、Helm チャートとしてデプロイでき、[これらのログから構造を抽出](https://opentelemetry.io/blog/2024/otel-collector-container-log-parser/) し、ポッドの詳細を付加してログを拡充できます。
 
-<Image img={observability_5} alt="Filelogレシーバ" size="md"/>
+<Image img={observability_5} alt="Filelog receiver" size="md"/>
 
-**ほとんどの展開では、上記のレシーバを組み合わせて使用します。ユーザーは、[コレクターのドキュメント](https://opentelemetry.io/docs/collector/)を読み、基本概念や[構成構造](https://opentelemetry.io/docs/collector/configuration/)および[インストール方法](https://opentelemetry.io/docs/collector/installation/)について理解を深めることをお勧めします。**
+**多くのデプロイメントでは、上記の receiver を組み合わせて使用します。ユーザーには、[collector のドキュメント](https://opentelemetry.io/docs/collector/) を読み、基本概念に加えて [設定構造](https://opentelemetry.io/docs/collector/configuration/) や [インストール方法](https://opentelemetry.io/docs/collector/installation/) に慣れておくことをお勧めします。**
 
-:::note ヒント: `otelbin.io`
-[`otelbin.io`](https://www.otelbin.io/)は、構成を検証し、可視化するのに役立ちます。
+:::note Tip: `otelbin.io`
+[`otelbin.io`](https://www.otelbin.io/) は設定の検証と可視化に役立ちます。
 :::
 
 ## 構造化ログと非構造化ログ {#structured-vs-unstructured}
 
-ログは構造化されているか非構造化されています。
+ログには、構造化されたものと非構造化のものがあります。
 
-構造化ログは、JSONのようなデータ形式を使用し、HTTPコードやソースIPアドレスなどのメタデータフィールドを定義します。
+構造化ログでは JSON などのデータ形式を用いて、HTTP コードや送信元 IP アドレスといったメタデータフィールドを定義します。
 
 ```json
 {
@@ -104,28 +102,29 @@ OpenTelemetryコレクターには[複数のディストリビューション](h
 }
 ```
 
-非構造化ログは、通常、正規表現パターンを介して抽出可能な固有の構造を持ちながら、ログを純粋に文字列として表現します。
+非構造化ログは、多くの場合、正規表現パターンで抽出可能なある程度の構造を持ってはいますが、ログはあくまで文字列として表現されます。
 
 ```response
 54.36.149.41 - - [22/Jan/2019:03:56:14 +0330] "GET
 /filter/27|13%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,27|%DA%A9%D9%85%D8%AA%D8%B1%20%D8%A7%D8%B2%205%20%D9%85%DA%AF%D8%A7%D9%BE%DB%8C%DA%A9%D8%B3%D9%84,p53 HTTP/1.1" 200 30577 "-" "Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)" "-"
 ```
 
-ユーザーには、可能な限り構造化ログとJSON形式（つまり、ndjson）でログを記録することをお勧めします。これは、後でClickHouseに送信する前に[コレクタープロセッサ](https://opentelemetry.io/docs/collector/configuration/#processors)を使用してログを処理する際、もしくは挿入時にマテリアライズドビューを使用する際に、必要なログの処理を簡素化します。構造化ログは、最終的に後の処理リソースを節約し、ClickHouseソリューションで必要なCPUを削減します。
+可能な限り構造化ログを採用し、JSON（ndjson など）形式でログを出力することを推奨します。これにより、後続のログ処理が簡素化されます。具体的には、[Collector processors](https://opentelemetry.io/docs/collector/configuration/#processors) を使用して ClickHouse に送信する前、または insert 時に materialized view を用いて処理することが容易になります。構造化ログを使用することで、後段の処理に必要なリソースを最終的に削減でき、ClickHouse ソリューションで必要となる CPU も抑制できます。
+
 
 ### 例 {#example}
 
-例のために、構造化（JSON）ログと非構造化ログのデータセットを各約10M行で提供します。以下のリンクから入手できます：
+本節の例として、構造化（JSON形式）および非構造化の2種類のログデータセットを用意しています。いずれも約 1,000 万行で、以下のリンクから取得できます。
 
-- [非構造化](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)
-- [構造化](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)
+* [Unstructured](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz)
+* [Structured](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-structured.log.gz)
 
-以下の例には構造化データセットを使用します。次の例を再現するために、このファイルがダウンロードされ、抽出されていることを確認してください。
+以下の例では構造化されたデータセットを使用します。以降の例を再現できるよう、このファイルをダウンロードして解凍しておいてください。
 
-以下は、OTelコレクターがこれらのファイルをディスクから読み取り、filelogレシーバを使用して、結果のメッセージをstdoutに出力するためのシンプルな構成を示しています。私たちのログが構造化されているため、[`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md)オペレーターを使用します。access-structured.logファイルのパスを変更してください。
+次は、これらのファイルをディスクから読み取り、`filelog` receiver を使用して処理し、結果のメッセージを stdout に出力する、OTel collector のシンプルな構成例です。ログが構造化されているため、[`json_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/json_parser.md) operator を使用します。`access-structured.log` ファイルへのパスは適宜変更してください。
 
-:::note ClickHouseでの解析を検討
-以下の例では、ログからタイムスタンプを抽出します。これは、全体のログ行をJSON文字列に変換し、その結果を`LogAttributes`に配置する`json_parser`オペレーターの使用を必要とします。これは計算的に高価になる可能性があり、[ClickHouseではより効率的に行えます](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [SQLでの構造抽出](/use-cases/observability/schema-design#extracting-structure-with-sql)を参照してください。等価な非構造化の例は、`[regex_parser](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md)`を使用してこれを実現するものが[こちら](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==)で見つかります。
+:::note 解析には ClickHouse の利用も検討
+以下の例では、ログからタイムスタンプを抽出します。これは、ログの 1 行全体を JSON 文字列に変換して結果を `LogAttributes` に格納する `json_parser` operator の使用を必要とします。この処理は計算コストが高くなりますが、[ClickHouse でより効率的に実行できます](https://clickhouse.com/blog/worlds-fastest-json-querying-tool-clickhouse-local) - [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql)。同等の非構造化ログの例として、[`regex_parser`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/regex_parser.md) を使用して同様の処理を行うものを[こちら](https://pastila.nl/?01da7ee2/2ffd3ba8124a7d6e4ddf39422ad5b863#swBkiAXvGP7mRPgbuzzHFA==)で参照できます。
 :::
 
 **[config-structured-logs.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_1*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Blogging%5D%7E)**
@@ -156,15 +155,16 @@ service:
       exporters: [logging]
 ```
 
-ユーザーは、[公式の指示](https://opentelemetry.io/docs/collector/installation/)に従って、ローカルにコレクターをインストールできます。重要なのは、指示を[Contribディストリビューション](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)を使用するように変更することです（`filelog`レシーバを含みます）。たとえば、`otelcol_0.102.1_darwin_arm64.tar.gz`の代わりにユーザーは`otelcol-contrib_0.102.1_darwin_arm64.tar.gz`をダウンロードする必要があります。リリースは[こちら](https://github.com/open-telemetry/opentelemetry-collector-releases/releases)で見つけることができます。
+[公式手順](https://opentelemetry.io/docs/collector/installation/)に従って、ローカル環境に collector をインストールできます。重要な点として、手順の中で [contrib distribution](https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions/otelcol-contrib)（`filelog` receiver を含んでいます）を使用するようにしてください。例えば、`otelcol_0.102.1_darwin_arm64.tar.gz` の代わりに `otelcol-contrib_0.102.1_darwin_arm64.tar.gz` をダウンロードします。リリースは[こちら](https://github.com/open-telemetry/opentelemetry-collector-releases/releases)から確認できます。
 
-インストール後、OTelコレクターは以下のコマンドで実行できます。
+インストールが完了したら、OTel Collector は次のコマンドで実行できます。
 
 ```bash
 ./otelcol-contrib --config config-logs.yaml
 ```
 
-構造化ログを使用していると仮定すると、メッセージは以下の形式になります：
+構造化ログを使用している場合、出力されるメッセージは次の形式になります：
+
 
 ```response
 LogRecord #98
@@ -191,35 +191,36 @@ Span ID:
 Flags: 0
 ```
 
-上記はOTelコレクターが生成した単一のログメッセージを表しています。これらのメッセージは、後のセクションでClickHouseに取り込まれます。
+上記は、OTel collector によって出力された 1 つのログメッセージを表しています。同じメッセージを、後続のセクションで ClickHouse に取り込みます。
 
-ログメッセージの完全なスキーマは、他のレシーバを使用する場合に存在する可能性のある追加カラムとともに、[こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/)に保たれています。**ユーザーはこのスキーマに慣れることを強くお勧めします。**
+ログメッセージの完全なスキーマと、他の receiver を使用している場合に存在しうる追加カラムは [こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/) で管理されています。**このスキーマには必ず目を通し、内容を理解しておくことを強く推奨します。**
 
-ここでの重要な点は、ログ行自体が`Body`フィールド内に文字列として保持されますが、JSONは`Attributes`フィールドに自動抽出されていることです。この同じ[オペレーター](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available)が、適切な`Timestamp`カラムにタイムスタンプを抽出するために使用されています。OTelによるログ処理の推奨事項については、[処理](#processing---filtering-transforming-and-enriching)を参照してください。
+ここで重要なのは、ログ行自体は `Body` フィールド内の文字列として保持されている一方で、`json_parser` によって JSON が自動的に抽出され、`Attributes` フィールドに格納されている点です。同じ [operator](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md#what-operators-are-available) を使用して、タイムスタンプも適切な `Timestamp` カラムに抽出しています。OTel を用いたログ処理の推奨事項については [Processing](#processing---filtering-transforming-and-enriching) を参照してください。
 
-:::note オペレーター
-オペレーターは、ログ処理の最も基本的な単位です。各オペレーターは、ファイルから行を読み取る、またはフィールドからJSONを解析するなど、単一の責任を果たします。その後、オペレーターはパイプラインでチェーンして、所望の結果を達成します。
+:::note Operators
+Operators はログ処理の最も基本的な単位です。各 Operator は、ファイルから行を読み取る、あるフィールドから JSON をパースするなど、単一の責務を果たします。Operators は、その後パイプライン内で連結され、目的とする結果を得るために利用されます。
 :::
 
-上記のメッセージには`TraceID`や`SpanID`フィールドがありません。ユーザーが[分散トレーシング](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces)を実装している場合など、これらが存在する場合は、上記と同様の手法でJSONから抽出できます。
+上記のメッセージには `TraceID` や `SpanID` フィールドが存在しません。これらが存在する場合、たとえばユーザーが [分散トレーシング](https://opentelemetry.io/docs/concepts/observability-primer/#distributed-traces) を実装しているケースでは、先ほどと同様の手法を用いて JSON から抽出することができます。
 
-ローカルまたはKubernetesのログファイルを収集する必要のあるユーザーには、[filelogレシーバ](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration)の利用可能な構成オプションや、[オフセット](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking)および[マルチラインログ解析の取扱い](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing)についても理解することをお勧めします。
+ローカルまたは Kubernetes のログファイルを収集する必要があるユーザーは、[filelog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/filelogreceiver/README.md#configuration) で利用可能な設定オプション、および [offset](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#offset-tracking) と [複数行ログのパース方法](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/filelogreceiver#example---multiline-logs-parsing) について理解しておくことを推奨します。
 
-## Kubernetesログの収集 {#collecting-kubernetes-logs}
 
-Kubernetesログの収集には、[OpenTelemetryのドキュメントガイド](https://opentelemetry.io/docs/kubernetes/)を推奨します。[Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor)は、ポッドメタデータでログとメトリクスを強化するために推奨されます。これにより、ラベルなどの動的メタデータが生成され、`ResourceAttributes`カラムに保存される可能性があります。ClickHouseは現在、このカラムに対して`Map(String, String)`型を使用しています。マップの取り扱いおよび最適化の詳細については、[マップの使用](/use-cases/observability/schema-design#using-maps)および[マップからの抽出](/use-cases/observability/schema-design#extracting-from-maps)を参照してください。
+## Kubernetes ログの収集 {#collecting-kubernetes-logs}
+
+Kubernetes ログの収集には、[OpenTelemetry documentation guide](https://opentelemetry.io/docs/kubernetes/) を参照することを推奨します。[Kubernetes Attributes Processor](https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor) は、ポッドのメタデータでログとメトリクスを拡張するために推奨されます。これにより、ラベルなどの動的メタデータが `ResourceAttributes` カラムに保存される可能性があります。ClickHouse では現在、このカラムに `Map(String, String)` 型を使用しています。この型の扱いや最適化の詳細については、[Using Maps](/use-cases/observability/schema-design#using-maps) および [Extracting from maps](/use-cases/observability/schema-design#extracting-from-maps) を参照してください。
 
 ## トレースの収集 {#collecting-traces}
 
-コードを計装してトレースを収集したいユーザーには、公式の[OTelドキュメント](https://opentelemetry.io/docs/languages/)に従うことをお勧めします。
+コードを計装してトレースを収集したいユーザーは、公式の [OTel ドキュメント](https://opentelemetry.io/docs/languages/) を参照してください。
 
-ClickHouseにイベントを配信するには、適切なレシーバ経由でOTLPプロトコルを通じてトレースイベントを受信するOTelコレクターを展開する必要があります。OpenTelemetryデモは、[サポートされている各言語の計装例](https://opentelemetry.io/docs/demo/)を提供し、イベントをコレクターに送信します。以下の構成例は、イベントをstdoutに出力するための適切なコレクター構成を示しています。
+ClickHouse にイベントを送信するには、適切な receiver を介して OTLP プロトコル経由でトレースイベントを受信する OTel collector をデプロイする必要があります。OpenTelemetry のデモでは、[サポートされている各言語の計装例](https://opentelemetry.io/docs/demo/) と、イベントを collector に送信する方法を示しています。イベントを stdout に出力する collector 設定の一例を以下に示します。
 
 ### 例 {#example-1}
 
-トレースはOTLP経由で受信する必要があるため、[`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)ツールを使用してトレースデータを生成します。インストール手順は[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)を参照してください。
+トレースは OTLP 経由で受信する必要があるため、トレースデータを生成するために [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen) ツールを使用します。インストール手順は[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)を参照してください。
 
-以下の構成は、OTLPレシーバでトレースイベントを受信し、stdoutに送信します。
+次の設定では、OTLP レシーバーでトレースイベントを受信し、それらを標準出力 (stdout) に送信します。
 
 [config-traces.xml](https://www.otelbin.io/#config=receivers%3A*N_otlp%3A*N___protocols%3A*N_____grpc%3A*N_______endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N__timeout%3A_1s*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*Nservice%3A*N_pipelines%3A*N__traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Blogging%5D%7E)
 
@@ -243,19 +244,19 @@ service:
       exporters: [logging]
 ```
 
-以下のコマンドを使用してこの構成を実行します：
+この構成は次のコマンドで実行します:
 
 ```bash
 ./otelcol-contrib --config config-traces.yaml
 ```
 
-`telemetrygen`を使用してコレクターにトレースイベントを送信します：
+`telemetrygen` を使用してトレースイベントをコレクターに送信します：
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
-これにより、以下のようなトレースメッセージがstdoutに出力されます：
+これにより、次の例に示すようなトレースメッセージが stdout に出力されます。
 
 ```response
 Span #86
@@ -273,31 +274,32 @@ Attributes:
         -> peer.service: Str(telemetrygen-client)
 ```
 
-上記はOTelコレクターによって生成された単一のトレースメッセージを表しています。これらのメッセージは、後のセクションでClickHouseに取り込まれます。
+上記は、OTel collector が生成した単一のトレースメッセージです。同様のメッセージを、後続のセクションで ClickHouse に取り込みます。
 
-トレースメッセージの完全なスキーマは、[こちら](https://opentelemetry.io/docs/concepts/signals/traces/)に保たれています。ユーザーはこのスキーマに慣れることを強くお勧めします。
+トレースメッセージの完全なスキーマは[こちら](https://opentelemetry.io/docs/concepts/signals/traces/)で公開されています。このスキーマには事前に目を通しておくことを強く推奨します。
 
-## 処理 - フィルタリング、変換、強化 {#processing---filtering-transforming-and-enriching}
 
-前述のログイベントのタイムスタンプを設定する例で示されたように、ユーザーは必然的にイベントメッセージをフィルタリング、変換、強化したいと考えます。これは、OpenTelemetryのいくつかの機能を使用して実現できます：
+## Processing - filtering, transforming and enriching {#processing---filtering-transforming-and-enriching}
 
-- **プロセッサ** - プロセッサは[レシーバによって収集されたデータを修正または変換](https://opentelemetry.io/docs/collector/transforming-telemetry/)し、エクスポータに送信します。プロセッサは、コレクターの構成の`processors`セクションで設定された順序で適用されます。これらはオプションですが、最小限のセットは[通常推奨されます](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。ClickHouseを使用するOTelコレクターを使用する際は、プロセッサの制限をお勧めします：
+前の例でログイベントのタイムスタンプを設定したように、イベントメッセージをフィルタリング・変換し、付加情報を与えてエンリッチしたくなる場面は必ず発生します。これは、OpenTelemetry が持つ複数の機能を利用することで実現できます。
 
-  - `memory_limiter`(https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md)は、コレクターでメモリ不足の状況を防ぐために使用されます。推奨事項については[リソースの見積もり](#estimating-resources)を参照してください。
-  - コンテキストに基づいて強化を行うプロセッサ。例えば、[Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor)は、k8sメタデータによってスパン、メトリクス、ログリソース属性を自動的に設定できるスパンでイベントを強化します。
-  - 必要に応じてトレース用の[テールまたはヘッドサンプリング](https://opentelemetry.io/docs/concepts/sampling/)。
-  - [基本的なフィルタリング](https://opentelemetry.io/docs/collector/transforming-telemetry/) - オペレーター（以下参照）を介してこれができない場合に必要ないイベントを削除します。
-  - [バッチ処理](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - ClickHouseで作業する際にイベントがバッチとして送信されることを確認するために重要です。["ClickHouseへのエクスポート"](#exporting-to-clickhouse)を参照してください。
-  
-- **オペレーター** - [オペレーター](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md)は、レシーバで利用できる最も基本的な処理単位を提供します。基本的な解析がサポートされており、重要度やタイムスタンプなどのフィールドを設定できます。ここではJSONおよび正規表現解析がサポートされ、イベントのフィルタリングや基本的な変換が可能です。ここでイベントフィルタリングを行うことを推奨します。
+- **Processors** - Processors は、[receivers によって収集されたデータを exporters に送信する前に変更または変換](https://opentelemetry.io/docs/collector/transforming-telemetry/) します。Processors は collector の設定ファイル内の `processors` セクションで定義された順序で適用されます。必須ではありませんが、[最小限のセットが一般的に推奨されています](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。ClickHouse と組み合わせて OTel collector を使用する場合、processors は次のようなものに限定することを推奨します。
 
-ユーザーは、オペレーターや[変換プロセッサ](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md)を使用して過度なイベント処理を行わないことを推奨します。これは、特にJSON解析時にかなりのメモリおよびCPUオーバーヘッドを引き起こす可能性があります。特定の例外を除き、マテリアライズドビューやカラムでClickHouseで挿入時にすべての処理を行うことが可能です - 特に、k8sメタデータの追加などのコンテキスト認識の強化が必要です。詳細については、[SQLでの構造抽出](/use-cases/observability/schema-design#extracting-structure-with-sql)を参照してください。
+  - [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) は、collector におけるメモリ不足（Out Of Memory）の発生を防ぐために使用されます。推奨値については [Estimating Resources](#estimating-resources) を参照してください。
+  - コンテキストに基づいてエンリッチメントを行う processor。たとえば [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) は、k8s メタデータを用いて spans、metrics、logs の resource 属性を自動的に設定できます。例として、イベントにその発生元のポッド ID を付与してエンリッチできます。
+  - トレースに対して必要な場合の [tail または head サンプリング](https://opentelemetry.io/docs/concepts/sampling/)。
+  - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - 下記の operator では実施できない場合に、不要なイベントをドロップします。
+  - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - データをバッチ単位で送信できるようにするため、ClickHouse と連携する際には不可欠です。["Exporting to ClickHouse"](#exporting-to-clickhouse) を参照してください。
 
-OTelコレクターを使用して処理を行う場合、ゲートウェイインスタンスで変換を行い、エージェントインスタンスでの作業を最小限に抑えることをお勧めします。これにより、サーバー上で動作するエッジのエージェントが必要とするリソースを可能な限り最小限に抑えることができます。通常、ユーザーはフィルタリング（不必要なネットワーク使用を最小限に抑えるため）、タイムスタンプ設定（オペレーターを介して）、コンテキストを必要とする強化をエージェントで実行します。たとえば、ゲートウェイインスタンスが異なるKubernetesクラスターに居住する場合、k8sの強化はエージェント内で発生する必要があります。
+- **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) は、receiver で利用可能な最も基本的な処理単位を提供します。ここでは Severity や Timestamp といったフィールドを設定できる基本的なパースがサポートされています。JSON および正規表現によるパースに加え、イベントフィルタリングや基本的な変換が可能です。イベントフィルタリングはここで行うことを推奨します。
+
+operators や [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) を用いた過度なイベント処理は避けることを推奨します。特に JSON パースは、メモリと CPU に大きなオーバーヘッドを招く可能性があります。いくつかの例外を除いて、materialized view とカラムを用いることで、ClickHouse 側で挿入時にすべての処理を実行することが可能です。具体的には、コンテキストに依存するエンリッチメント、たとえば k8s メタデータの付与などが例外です。詳細については [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql) を参照してください。
+
+処理を OTel collector で行う場合、変換処理は gateway インスタンス側で実施し、agent インスタンス側での処理を最小限に抑えることを推奨します。これにより、サーバー上のエッジで稼働する agent が必要とするリソースを可能な限り少なくできます。一般的に、ユーザーは agent ではフィルタリング（不要なネットワーク使用を最小化するため）、タイムスタンプ設定（operators 経由）、およびコンテキストを必要とするエンリッチメントのみを実行しています。たとえば、gateway インスタンスが別の Kubernetes クラスターに存在する場合、k8s によるエンリッチメントは agent 内で行う必要があります。
 
 ### 例 {#example-2}
 
-以下の構成は、非構造化ログファイルの収集を示しています。ログ行から構造を抽出するためのオペレーター（`regex_parser`）とイベントをフィルタリングし、イベントをバッチ化およびメモリ使用量を制限するためのプロセッサの使用に注意してください。
+次の設定は、非構造化ログファイルを収集する例です。ログ行から構造を抽出してイベントをフィルタリングするオペレーター（`regex_parser`）と、イベントをバッチ処理してメモリ使用量を制限するプロセッサーの利用方法に注目してください。
 
 [config-unstructured-logs-with-processor.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-unstructured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_regex*_parser*N_______regex%3A_*%22%5E*C*QP*Lip*G%5B*Bd.%5D*P*D*Bs*P-*Bs*P-*Bs*P*B%5B*C*QP*Ltimestamp*G%5B%5E*B%5D%5D*P*D*B%5D*Bs*P%22*C*QP*Lmethod*G%5BA-Z%5D*P*D*Bs*P*C*QP*Lurl*G%5B%5E*Bs%5D*P*D*Bs*PHTTP%2F%5B%5E*Bs%5D*P%22*Bs*P*C*QP*Lstatus*G*Bd*P*D*Bs*P*C*QP*Lsize*G*Bd*P*D*Bs*P%22*C*QP*Lreferrer*G%5B%5E%22%5D***D%22*Bs*P%22*C*QP*Luser*_agent*G%5B%5E%22%5D***D%22*%22*N_______timestamp%3A*N_________parse*_from%3A_attributes.timestamp*N_________layout%3A_*%22*.d%2F*.b%2F*.Y%3A*.H%3A*.M%3A*.S_*.z*%22*N_________*H22%2FJan%2F2019%3A03%3A56%3A14_*P0330*N*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_1s*N___send*_batch*_size%3A_100*N_memory*_limiter%3A*N___check*_interval%3A_1s*N___limit*_mib%3A_2048*N___spike*_limit*_mib%3A_256*N*N*Nexporters%3A*N_logging%3A*N___loglevel%3A_debug*N*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%2C_memory*_limiter%5D*N_____exporters%3A_%5Blogging%5D%7E)
 
@@ -337,17 +339,18 @@ service:
 ./otelcol-contrib --config config-unstructured-logs-with-processor.yaml
 ```
 
-## ClickHouseへのエクスポート {#exporting-to-clickhouse}
 
-エクスポータは、1つ以上のバックエンドまたは宛先にデータを送信します。エクスポータはプルまたはプッシュ方式にできます。ClickHouseにイベントを送信するには、プッシュベースの[ClickHouseエクスポータ](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md)を使用する必要があります。
+## ClickHouse へのエクスポート {#exporting-to-clickhouse}
 
-:::note OpenTelemetry Collector Contribを使用
-ClickHouseエクスポータは[OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main)の一部であり、コアディストリビューションの一部ではありません。ユーザーは、contribディストリビューションを使用するか、[独自のコレクターを構築](https://opentelemetry.io/docs/collector/custom-collector/)できます。
+Exporter は、1 つ以上のバックエンドまたは送信先にデータを送信します。Exporter には、pull 型と push 型があります。イベントを ClickHouse に送信するには、push 型の [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md) を使用する必要があります。
+
+:::note OpenTelemetry Collector Contrib を使用
+ClickHouse exporter は [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main) の一部であり、コアディストリビューションには含まれていません。contrib ディストリビューションを使用するか、[独自の Collector をビルド](https://opentelemetry.io/docs/collector/custom-collector/) することができます。
 :::
 
-完全な構成ファイルは、以下のように示されています。
+完全な設定ファイルを以下に示します。
 
-[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*N Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -397,34 +400,36 @@ service:
       exporters: [clickhouse]
 ```
 
-以下の主要な設定に注意してください：
+次の重要な設定項目を確認してください：
 
-- **pipelines** - 上記の構成は、ログとトレースのための一連のレシーバ、プロセッサ、エクスポータから成る[パイプライン](https://opentelemetry.io/docs/collector/configuration/#pipelines)の使用を強調しています。
-- **endpoint** - ClickHouseとの通信は`endpoint`パラメーターを介して構成されます。接続文字列`tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1`により、通信がTCP経由で行われます。ユーザーがトラフィックスイッチの理由でHTTPを好む場合は、[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)で説明されているように、この接続文字列を変更します。ユーザー名およびパスワードをこの接続文字列内で指定する機能が含まれる完全な接続の詳細については、[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)で説明されています。
 
-**重要:** 上記の接続文字列は、圧縮（lz4）および非同期挿入の両方を有効にします。両方を常に有効にすることをお勧めします。非同期挿入に関する詳細は[バッチ処理](#batching)を参照してください。圧縮は常に指定する必要があり、旧バージョンのエクスポータではデフォルトで無効になっています。
+* **pipelines** - 上記の設定では、[pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines) の使用が重要になります。これは一連の receiver、processor、exporter から構成され、ログ用とトレース用にそれぞれ 1 つずつ定義されています。
+* **endpoint** - ClickHouse との通信は `endpoint` パラメータで設定します。接続文字列 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` により、通信は TCP 経由で行われます。トラフィック切り替えなどの理由で HTTP を利用したい場合は、この接続文字列を[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)で説明されているとおりに変更してください。ユーザー名とパスワードをこの接続文字列内で指定する方法を含む、完全な接続方法の詳細は[こちら](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)で説明されています。
 
-- **ttl** - ここでの値はデータが保持される期間を決定します。"データの管理"に関する詳細をご覧ください。これは、72hのような時間単位で指定する必要があります。下記の例ではデータが2019年のものであり、ClickHouseに挿入されるとすぐに削除されるためTTLを無効にしています。
-- **traces_table_name**および**logs_table_name** - ログおよびトレーステーブルの名前を決定します。
-- **create_schema** - 起動時にデフォルトスキーマでテーブルが作成されるかどうかを決定します。入門用にはtrueにデフォルト設定されています。ユーザーはこれをfalseに設定し、自分自身のスキーマを定義する必要があります。
-- **database** - 対象データベースです。
-- **retry_on_failure** - 失敗したバッチを再試行するかどうかを決定する設定です。
-- **batch** - バッチプロセッサは、イベントがバッチとして送信されることを保証します。5000程度の値と5秒のタイムアウトを推奨します。どちらが早く到達してもバッチのフラッシュがトリガーされます。これらの値を下げることで、遅延の少ないパイプラインを実現し、より早くクエリー可能なデータが得られますが、ClickHouseへの接続やバッチが増えるという犠牲が伴います。非同期挿入（https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse）を使用していない場合は、ClickHouse内の[パーツが多すぎる（too many parts）](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)という問題を引き起こす可能性があるため、これは推奨されません。逆に、非同期挿入を使用している場合は、クエリーのためのデータの可用性も非同期挿入の設定に依存します - ただし、コネクタからのデータはより早くフラッシュされます。詳細については、[バッチ処理](#batching)を参照してください。
-- **sending_queue** - 送信キューのサイズを制御します。キュー内の各アイテムにはバッチが含まれています。このキューを超えると（たとえば、ClickHouseが到達不可能になった場合でもイベントが到着し続ける場合）、バッチがドロップされます。
+**Important:** 上記の接続文字列では、圧縮 (lz4) と非同期インサートの両方が有効になっています。常に両方を有効にすることを推奨します。非同期インサートの詳細については [Batching](#batching) を参照してください。圧縮は常に明示的に指定する必要があり、古いバージョンの exporter ではデフォルトでは有効になりません。
 
-ユーザーが構造化ログファイルを抽出し、[ローカルインスタンスのClickHouse](/install)が実行されていると仮定すると、以下のコマンドを使用してこの構成を実行できます：
+* **ttl** - この値はデータの保持期間を決定します。詳細は「Managing data」を参照してください。単位付き時間 (例: 72h) で指定する必要があります。以下の例では、データが 2019 年のものであり、挿入すると ClickHouse によって即座に削除されてしまうため、有効期限 (TTL) を無効にしています。
+* **traces&#95;table&#95;name** と **logs&#95;table&#95;name** - ログテーブルとトレーステーブルの名前を決定します。
+* **create&#95;schema** - 起動時にデフォルトスキーマでテーブルを作成するかどうかを決定します。初期セットアップではデフォルトで true です。準備ができたら false に設定し、自分でスキーマを定義してください。
+* **database** - 対象のデータベース。
+* **retry&#95;on&#95;failure** - 失敗したバッチを再試行するかどうかを決定する設定です。
+* **batch** - batch processor はイベントをバッチとして送信します。約 5000 件、タイムアウト 5s 程度の設定を推奨します。これらのいずれかに達した時点で、バッチがフラッシュされ exporter に送信されます。これらの値を小さくすると、データがより早くクエリ可能になる低レイテンシなパイプラインになりますが、その分、多数の接続およびバッチが ClickHouse に送信されます。[非同期インサート](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) を使用していない場合、これは ClickHouse で[パーツが多すぎる](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)問題を引き起こす可能性があるため推奨されません。逆に、非同期インサートを使用している場合、クエリ可能になるまでのデータ可用性は非同期インサートの設定にも依存しますが、コネクタからのフラッシュ自体はより早く行われます。詳細は [Batching](#batching) を参照してください。
+* **sending&#95;queue** - 送信キューのサイズを制御します。キュー内の各要素は 1 つのバッチを含みます。たとえば ClickHouse に到達できない状態が継続する一方でイベントが到着し続け、このキューが溢れた場合、バッチは破棄されます。
+
+ユーザーが構造化ログファイルを展開済みで、(デフォルト認証の) [ローカルの ClickHouse インスタンス](/install) が稼働していることを前提に、この設定は次のコマンドで実行できます。
 
 ```bash
 ./otelcol-contrib --config clickhouse-config.yaml
 ```
 
-トレースデータをこのコレクターに送信するには、以下のコマンドを`telemetrygen`ツールを使用して実行します：
+このコレクターにトレースデータを送信するには、`telemetrygen` ツールを使用して次のコマンドを実行してください。
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 ```
 
-実行中に、シンプルなクエリーでログイベントが存在することを確認します：
+起動後、簡単なクエリを実行してログイベントが取り込まれていることを確認します。
+
 
 ```sql
 SELECT *
@@ -453,7 +458,7 @@ LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.f
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
 
-Likewise, for trace events, users can check the `otel_traces` table:
+Likewise, for trace events, you can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
@@ -485,15 +490,17 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-## Out of the box schema {#out-of-the-box-schema}
 
-デフォルトで、ClickHouseエクスポーターは、ログとトレースのためのターゲットログテーブルを作成します。これは、設定 `create_schema` によって無効にすることができます。さらに、ログとトレーステーブルの名前は、上記の設定を通じてデフォルトの `otel_logs` と `otel_traces` から変更できます。
+
+## すぐに利用できるスキーマ {#out-of-the-box-schema}
+
+デフォルトでは、ClickHouse exporter はログとトレースの両方に対して、出力先のログテーブルを作成します。これは `create_schema` 設定で無効化できます。さらに、ログおよびトレーステーブルの名前は、前述の設定によりデフォルトである `otel_logs` と `otel_traces` から変更できます。
 
 :::note
-以下のスキーマでは、TTLが72時間に有効になっていると仮定します。
+以下のスキーマでは、有効期限 (TTL) を 72時間に設定しているものと仮定しています。
 :::
 
-ログのデフォルトスキーマは以下の通りです（`otelcol-contrib v0.102.1`）:
+ログのデフォルトスキーマは以下のとおりです（`otelcol-contrib v0.102.1`）:
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -529,18 +536,19 @@ TTL toDateTime(Timestamp) + toIntervalDay(3)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-ここでのカラムは、[ここに記載されている](https://opentelemetry.io/docs/specs/otel/logs/data-model/) OTel公式仕様のログに関連しています。
+ここで示すカラムは、ログに関するOTelの公式仕様として[こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/)に文書化されている内容と対応しています。
 
-このスキーマに関するいくつかの重要な注意事項:
+このスキーマに関する重要な注意点をいくつか示します：
 
-- デフォルトでは、テーブルは `PARTITION BY toDate(Timestamp)` で日付ごとにパーティション分けされています。これにより、有効期限が切れたデータを効率的に削除できます。
-- TTLは `TTL toDateTime(Timestamp) + toIntervalDay(3)` により設定され、コレクター設定で設定された値に対応します。 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) は、全ての行が期限切れになっている場合のみ、全体が削除されることを意味します。これは、パーツ内の行を削除するよりも効率的です。行の削除には高コストがかかりますので、常にこの設定を推奨します。詳細は [データ管理とTTL](/observability/managing-data#data-management-with-ttl-time-to-live) をご覧ください。
-- テーブルはクラシックな [`MergeTree` エンジン](/engines/table-engines/mergetree-family/mergetree) を使用します。これはログとトレースのために推奨され、変更する必要はありません。
-- テーブルは `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` で順序付けされています。これにより、`ServiceName`、`SeverityText`、`Timestamp`、および `TraceId` に対するフィルターに対してクエリが最適化されます - リスト内の早いカラムは遅いカラムよりも早くフィルターされます。例えば、`ServiceName` でフィルターすることは `TraceId` でフィルターするよりも遥かに早くなります。ユーザーは、想定されるアクセスポイントに応じてこの順序を調整する必要があります - [主キーの選定]( /use-cases/observability/schema-design#choosing-a-primary-ordering-key) を参照してください。
-- 上記のスキーマは、カラムに `ZSTD(1)` を適用します。これはログのために最適な圧縮を提供します。ユーザーは、より良い圧縮のためにZSTD圧縮レベル（デフォルトの1以上）を上げることができますが、これはめったに有益ではありません。この値を上げると、挿入時（圧縮中）にCPUオーバーヘッドが増加しますが、データの非圧縮（およびクエリ）は依然として同等のままであるべきです。詳細は[こちら](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)をご覧ください。追加の[デルタエンコーディング](/sql-reference/statements/create/table#delta) がタイムスタンプに適用され、ディスク上のサイズを削減することを目指しています。
-- [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes)、および [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) がマップとして定義されている点に注意してください。これらの違いについてユーザーは理解する必要があります。これらのマップにアクセスし、キーの最適化されたアクセス方法を見るには、[マップの使用](/use-cases/observability/schema-design#using-maps) を参照してください。
-- ここでの他のほとんどの型（例えば、`ServiceName` はLowCardinalityとして）も最適化されています。`Body`は、私たちの例のログでJSONであるため、Stringとして格納されています。
-- ブルームフィルターがマップキーと値、さらに `Body` カラムにも適用されます。これにより、これらのカラムにアクセスするクエリの時間が改善されますが、通常は必要ありません。詳細は[セカンダリーデータスキッピングインデックス](/use-cases/observability/schema-design#secondarydata-skipping-indices)を参照してください。
+
+- デフォルトでは、テーブルは `PARTITION BY toDate(Timestamp)` によって日付でパーティション分割されます。これにより、有効期限切れのデータを効率的に削除できます。
+- 有効期限 (TTL) は `TTL toDateTime(Timestamp) + toIntervalDay(3)` によって設定されており、これはコレクターの設定で指定した値に対応します。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) は、含まれているすべての行が期限切れになったときに、テーブルのパーツ全体のみを削除することを意味します。これは、パーツ内の行だけを削除する場合と比べて、コストの高い削除処理を避けられるため、より効率的です。常にこの設定にすることを推奨します。詳細については、[Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) を参照してください。
+- テーブルは従来型の [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree) を使用しています。これはログやトレースに推奨されるものであり、通常は変更する必要はありません。
+- テーブルは `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)` によって並べ替えられています。これは、`ServiceName`、`SeverityText`、`Timestamp`、`TraceId` に対するフィルターにクエリが最適化されることを意味します。リストの先頭にあるカラムほど後ろのカラムよりも高速にフィルタリングされます。例えば、`ServiceName` でのフィルタリングは `TraceId` でのフィルタリングよりも有意に高速になります。想定されるアクセスパターンに応じて、この並び順を調整してください。詳細は [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key) を参照してください。
+- 上記のスキーマでは、カラムに `ZSTD(1)` が適用されています。これはログに対して最も優れた圧縮を提供します。より良い圧縮を得るために、ZSTD の圧縮レベル（デフォルト値 1 より大きい値）を上げることもできますが、メリットが出るケースは多くありません。この値を上げると、挿入時（圧縮処理中）の CPU オーバーヘッドが増加しますが、伸張（ひいてはクエリ）の性能は概ね同等のままです。詳細は[こちら](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema)を参照してください。さらに Timestamp に対しては、ディスク上のサイズを削減する目的で追加の [delta encoding](/sql-reference/statements/create/table#delta) が適用されています。
+- [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/)、[`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes)、[`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) が map であることに注意してください。これらの違いを理解することは重要です。これらの map へのアクセス方法および内部のキーアクセスを最適化する方法については、["Using maps"](/use-cases/observability/schema-design#using-maps) を参照してください。
+- `ServiceName` を LowCardinality にしていることなど、ここに挙がっているほとんどの型は最適化されています。例のログでは JSON である `Body` は String として保存される点に注意してください。
+- Bloom フィルターが map のキーおよび値、さらに `Body` カラムに適用されています。これらは、これらのカラムにアクセスするクエリの実行時間を改善することを目的としていますが、通常は必須ではありません。詳細は [Secondary/Data skipping indices](/use-cases/observability/schema-design#secondarydata-skipping-indices) を参照してください。
 
 ```sql
 CREATE TABLE default.otel_traces
@@ -581,70 +589,77 @@ TTL toDateTime(Timestamp) + toIntervalDay(3)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-再度、これは、[ここに記載されている](https://opentelemetry.io/docs/specs/otel/trace/api/) OTel公式仕様のトレースに対応するカラムと関連があります。ここでのスキーマは、上記のログスキーマと同様の設定を多く使用しており、スパンに特有の追加Linkカラムがあります。
+ここでも、[こちら](https://opentelemetry.io/docs/specs/otel/trace/api/) に記載されているトレース向けの OTel 公式仕様で定義されたカラムと整合するようになっています。ここでのスキーマは、上記のログ用スキーマと多くの設定を共有しつつ、Span 固有の Link カラムを追加で使用します。
 
-ユーザーには自動スキーマ作成を無効にして、手動でテーブルを作成することをお勧めします。これにより、主キーおよび副キーの変更、クエリパフォーマンスを最適化するための追加カラムの導入が可能になります。詳細については、[スキーマ設計](/use-cases/observability/schema-design)をご覧ください。
-## Optimizing inserts {#optimizing-inserts}
+自動スキーマ作成機能を無効にし、テーブルを手動で作成することを推奨します。これにより、プライマリキーおよびセカンダリキーを変更できるほか、クエリのパフォーマンスを最適化するための追加カラムを導入することも可能になります。詳細については [Schema design](/use-cases/observability/schema-design) を参照してください。
 
-高挿入パフォーマンスを達成しながら強力な整合性保証を得るために、ユーザーはコレクターを介してClickHouseに可観測データを挿入する際に、シンプルなルールに従うべきです。OTelコレクターが正しく構成されている場合、以下のルールは簡単に従うことができるはずです。これにより、ClickHouseを初めて使用する際のユーザーが直面する[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)を回避できます。
-### Batching {#batching}
 
-デフォルトでは、ClickHouseに送信された各挿入は、ClickHouseが直ちに挿入のデータと保存する必要のあるその他のメタデータを含むストレージのパートを作成させます。したがって、より多くのデータを含む少量の挿入を送信することは、少量のデータを含む多数の挿入を送信することに比べて、必要な書き込みの数を減少させます。ユーザーには、少なくとも1,000行の比較的大きなバッチでデータを挿入することをお勧めします。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)をご覧ください。
+## 挿入の最適化 {#optimizing-inserts}
 
-デフォルトでは、ClickHouseへの挿入は同期的で、同一である場合は冪等性があります。マージツリーエンジンファミリーのテーブルの場合、ClickHouseはデフォルトで自動的に[重複排除](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time)を行います。これは、次のような場合に挿入が許容されることを意味します：
+OTel collector 経由でオブザーバビリティデータを ClickHouse に挿入する際に、高い挿入パフォーマンスを維持しつつ強い一貫性保証を得るには、いくつかの簡単なルールに従ってください。OTel collector を正しく構成すれば、次に挙げるルールには容易に従えるはずです。これにより、ClickHouse を初めて使用するユーザーが直面しがちな[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)を回避するのにも役立ちます。
 
-- (1) データを受信するノードに問題がある場合、挿入クエリはタイムアウトし（またはより具体的なエラーが発生します）、確認が返されません。
-- (2) ノードによってデータが書き込まれた場合、ネットワークの中断によってクエリの送信者に確認を返すことができない場合、送信者はタイムアウトまたはネットワークエラーを受け取ります。
+### バッチ処理 {#batching}
 
-コレクターの視点から見ると、(1)と(2)は区別が難しいことがあります。しかし、いずれの場合も、未確認の挿入はただちに再試行することができます。再試行した挿入クエリに、同じ順序で同じデータが含まれている限り、ClickHouseは元の（未確認の）挿入が成功した場合に再試行した挿入を自動的に無視します。
+デフォルトでは、ClickHouse に送信された各 insert に対して、ClickHouse は、その insert で送られたデータと保存が必要なその他のメタデータを含むストレージのパートを即座に作成します。したがって、少量の insert にそれぞれ多くのデータを含めて送信する方が、多数の insert でそれぞれ少量のデータを送信する場合と比べて、必要な書き込み回数を削減できます。データは、一度に少なくとも 1,000 行以上という、比較的まとまったバッチで挿入することを推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)を参照してください。
 
-ユーザーには、上記の要件を満たす一貫した行のバッチが送信されることを確保するために、先に示した[バッチプロセッサ](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)を使用することをお勧めします。コレクターが高スループット（秒あたりのイベント数）を持つことが期待される場合、各挿入で少なくとも5000イベントを送信できる場合、これは通常、パイプラインに必要な唯一のバッチ処理です。この場合、コレクターは、バッチプロセッサの `timeout` に達する前にバッチをフラッシュし、パイプラインのエンドツーエンドのレイテンシが低く保たれるようにし、バッチが一貫したサイズであることを確保します。
-### Use asynchronous inserts {#use-asynchronous-inserts}
+デフォルトでは、ClickHouse への insert は同期的に行われ、かつ内容が同一であれば冪等です。MergeTree エンジンファミリーのテーブルでは、ClickHouse はデフォルトで自動的に [deduplicate inserts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time) を行います。これは、insert が次のようなケースでも問題なく扱えることを意味します。
 
-通常、ユーザーはコレクターのスループットが低いときに小さなバッチを送信せざるを得ず、それでもデータが最低限のエンドツーエンドのレイテンシ内でClickHouseに到達することを期待します。この場合、バッチプロセッサの `timeout` が期限切れになると小さなバッチが送信されます。これが問題を引き起こす可能性があり、この場合は非同期挿入が必要です。このケースは、**エージェント役割のコレクターが直接ClickHouseに送信するように設定されているときに一般的に発生します**。ゲートウェイは、集約者として機能することでこの問題を軽減できます - [ゲートウェイによるスケーリング](#scaling-with-gateways)を参照してください。
+- (1) データを受け取ったノードに問題がある場合、insert クエリはタイムアウト（または、より具体的なエラー）となり、確認応答（ACK）は返されません。
+- (2) ノードがデータを書き込んだものの、ネットワークの中断によりクエリ送信元へ ACK を返せない場合、送信元はタイムアウトまたはネットワークエラーを受け取ります。
 
-大きなバッチを保証できない場合、ユーザーは[非同期挿入](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)を使用してClickHouseにバッチ処理を委任できます。非同期挿入では、データはまずバッファに挿入され、その後、データベースストレージに書き込まれます。
+コレクターの視点からは、(1) と (2) を区別するのは難しい場合があります。しかし、どちらの場合でも ACK を受け取っていない insert は、そのまま即座に再試行して構いません。再試行された insert クエリが同じ順序で同じデータを含んでいる限り、未 ACK の元の insert が成功していた場合には、ClickHouse は再試行された insert を自動的に無視します。
+
+上記を満たすために、前の構成例で示した [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) を使用することを推奨します。これにより、上記要件を満たす行の一貫したバッチとして insert が送信されることが保証されます。コレクターが高スループット（毎秒イベント数）が想定され、各 insert で少なくとも 5000 イベントを送信できる場合、これは通常パイプラインで必要となる唯一のバッチ処理です。この場合、コレクターは batch processor の `timeout` に達する前にバッチをフラッシュし、パイプラインのエンドツーエンドレイテンシを低く保ちつつ、バッチサイズの一貫性を確保します。
+
+### 非同期インサートを利用する {#use-asynchronous-inserts}
+
+通常、コレクタのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えて ClickHouse にデータが到達することを期待します。この場合、バッチプロセッサの `timeout` が有効期限切れになると、小さなバッチが送信されます。これが問題を引き起こすことがあり、そのような場合に非同期インサートが必要となります。このケースは、**エージェントロールのコレクタが ClickHouse に直接送信するよう構成されている**ときによく発生します。Gateway はアグリゲータとして動作することでこの問題を軽減できます。詳細は [Gateway によるスケーリング](#scaling-with-gateways) を参照してください。
+
+大きなバッチを保証できない場合は、[非同期インサート](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期インサートでは、データはまずバッファに挿入され、その後データベースストレージに、後から（または非同期に）書き込まれます。
 
 <Image img={observability_6} alt="Async inserts" size="md"/>
 
-[非同期挿入が有効]( /optimize/asynchronous-inserts#enabling-asynchronous-inserts)な状態で、ClickHouseが① 挿入クエリを受信すると、クエリのデータが② まずメモリ内バッファに直ちに書き込まれます。③ 次のバッファフラッシュが行われると、バッファのデータは[ソート](https://guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns)され、データベースストレージにパートとして書き込まれます。データはデータベースストレージにフラッシュされる前はクエリによって検索可能ではない点に注意してください;バッファフラッシュは[構成可能]( /optimize/asynchronous-inserts)です。
+[非同期インサートを有効化](/optimize/asynchronous-inserts#enabling-asynchronous-inserts) した場合、ClickHouse が ① INSERT クエリを受信すると、そのクエリのデータは ② まずインメモリバッファに即座に書き込まれます。③ 次のバッファフラッシュが行われると、バッファ内のデータは[ソート](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) され、1 つのパーツとしてデータベースストレージに書き込まれます。注意点として、データベースストレージにフラッシュされるまでは、そのデータはクエリから検索できません。バッファフラッシュは[設定可能](/optimize/asynchronous-inserts)です。
 
-コレクター用に非同期挿入を有効にするには、接続文字列に `async_insert=1` を追加します。ユーザーには配信保証を得るために `wait_for_async_insert=1`（デフォルト）を使用することを推奨します - 詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)をご覧ください。
+コレクタで非同期インサートを有効にするには、接続文字列に `async_insert=1` を追加します。確実な配信保証を得るために、`wait_for_async_insert=1`（デフォルト）の使用を推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-非同期挿入からのデータは、ClickHouseバッファがフラッシュされた後に挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size)を超えた場合、または最初のINSERTクエリから[`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size)ミリ秒後に発生します。`async_insert_stale_timeout_ms`が0より大きい値に設定されている場合、データは前回のクエリから`async_insert_stale_timeout_ms`ミリ秒後に挿入されます。ユーザーは、これらの設定を調整してパイプラインのエンドツーエンドのレイテンシを制御できます。バッファフラッシュを調整するために使用できるさらに詳しい設定は、[ここ](/operations/settings/settings#async_insert)に記載されています。一般的に、デフォルトは適切です。
+非同期インサートからのデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` がゼロ以外の値に設定されている場合、最後のクエリから `async_insert_stale_timeout_ms` ミリ秒経過後にデータが挿入されます。これらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュの調整に使用できる追加の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
 
-:::note Adaptive Asynchronous Insertsを検討してください
-エージェントの数が少なく、スループットが低いが厳しいエンドツーエンドのレイテンシ要件がある場合、[適応型非同期挿入](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts)が役立つかもしれません。一般的に、これらはClickHouseで見る高スループットの可観測性ユースケースには適用されません。
+:::note 適応的非同期インサートの検討
+利用中のエージェント数が少なく、スループットも低い一方でエンドツーエンドレイテンシーに厳しい要件がある場合には、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse を用いた高スループットなオブザーバビリティ用途には適用されません。
 :::
 
-最後に、ClickHouseへの同期挿入に関連した以前の重複排除動作は、非同期挿入を使用しているときにはデフォルトで有効になりません。必要な場合は、設定[`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate)を参照してください。
+最後に、ClickHouse への同期インサートに関連する従来の重複排除動作は、非同期インサート使用時にはデフォルトでは有効になりません。必要に応じて、[`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate) の設定を参照してください。
 
-この機能の構成に関する詳細は[こちら]( /optimize/asynchronous-inserts#enabling-asynchronous-inserts)にあり、より深い内容は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)で確認できます。
-## Deployment architectures {#deployment-architectures}
+この機能の設定に関する詳細は[こちら](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)、深掘りした解説は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-OTelコレクターをClickHouseで使用する際に、いくつかのデプロイメントアーキテクチャが可能です。以下にそれぞれについて、その適用可能性を説明します。
-### Agents only {#agents-only}
+## デプロイメントアーキテクチャ {#deployment-architectures}
 
-エージェントのみのアーキテクチャでは、ユーザーはOTelコレクターをエージェントとしてエッジにデプロイします。これらはローカルアプリケーション（例：サイドカーコンテナ）からトレースを受信し、サーバーやKubernetesノードからログを収集します。このモードでは、エージェントはデータを直接ClickHouseに送信します。
+OTel collector を ClickHouse と組み合わせて使用する場合、いくつかのデプロイメントアーキテクチャが利用可能です。以下では、それぞれの構成と、その構成が適用しやすいケースについて説明します。
+
+### エージェントのみ {#agents-only}
+
+エージェントのみのアーキテクチャでは、ユーザーは OTel collector をエージェントとしてエッジにデプロイします。これらはローカルアプリケーション（例: サイドカーコンテナとして）からトレースを受信し、サーバーおよび Kubernetes ノードからログを収集します。このモードでは、エージェントはデータを直接 ClickHouse に送信します。
 
 <Image img={observability_7} alt="Agents only" size="md"/>
 
-このアーキテクチャは、小規模から中規模のデプロイに適しています。主な利点は、追加のハードウェアを必要とせず、ClickHouse可観測ソリューションのリソースフットプリントを最小限に抑え、アプリケーションとコレクターの間にシンプルなマッピングを維持できることです。
+このアーキテクチャは、小規模から中規模のデプロイメントに適しています。主な利点は、追加のハードウェアを必要とせず、ClickHouse によるオブザーバビリティソリューション全体のリソースフットプリントを最小限に抑えつつ、アプリケーションとコレクターの対応関係をシンプルに保てる点です。
 
-エージェントが数百を超えた場合は、ゲートウェイベースのアーキテクチャへの移行を検討すべきです。このアーキテクチャには、スケールが難しいいくつかの欠点があります：
+エージェントの数が数百を超える場合は、ゲートウェイベースのアーキテクチャへの移行を検討してください。このアーキテクチャには、スケールさせるうえで問題となるいくつかの欠点があります。
 
-- **接続のスケーリング** - 各エージェントはClickHouseへの接続を確立します。ClickHouseは数百（場合によっては数千）の同時挿入接続を維持することができますが、最終的には制約の要因となり、挿入を効果的でなくします - つまり、接続を維持するためにClickHouseがより多くのリソースを消費するようになります。ゲートウェイを使用すると、接続の数を最小限にし、挿入をより効率的にします。
-- **エッジでの処理** - このアーキテクチャでは、エッジまたはClickHouseで変換やイベント処理を行う必要があります。これにより、制約が生じ、複雑なClickHouseマテリアライズドビューや、重要なサービスに影響を与える可能性がある重要な計算をエッジに押し込むことになります。
-- **小さなバッチとレイテンシ** - エージェントコレクターは非常に少数のイベントを個別に収集する場合があります。これにより、配信SLAを満たすために設定した間隔でフラッシュする必要が生じます。これにより、コレクターがClickHouseに小さなバッチを送信することになります。これは欠点ですが、非同期挿入で緩和できます - [挿入の最適化](#optimizing-inserts)を参照してください。
-### Scaling with gateways {#scaling-with-gateways}
+- **接続のスケーリング** - 各エージェントは ClickHouse への接続を確立します。ClickHouse は何百（場合によっては何千）もの同時 INSERT 接続を維持できますが、最終的にはこれが制約要因となり、INSERT の効率を低下させます。つまり、接続を維持するために ClickHouse 側でより多くのリソースが消費されます。ゲートウェイを使用することで接続数を最小化し、INSERT をより効率的にできます。
+- **エッジでの処理** - このアーキテクチャでは、あらゆる変換処理やイベント処理をエッジ側、または ClickHouse 側で実行する必要があります。制約が大きいだけでなく、複雑な ClickHouse の materialized view が必要になったり、重要なサービスに影響が及びうるエッジ側に大きな計算処理を押し付けたりする可能性があります。エッジ側ではリソースが限られている場合もあります。
+- **小さなバッチとレイテンシ** - エージェントコレクターは、それぞれがごく少量のイベントしか収集しない場合があります。通常、配信の SLA を満たすために、一定間隔でフラッシュするよう設定する必要があります。その結果、コレクターが小さなバッチを ClickHouse に送信してしまうことがあります。これは欠点ですが、非同期 INSERT を使用することで軽減可能です。詳細は [Optimizing inserts](#optimizing-inserts) を参照してください。
 
-OTelコレクターは、上記の制限に対処するためにゲートウェイインスタンスとして展開することができます。これらは、通常、データセンターや地域ごとのスタンドアロンサービスを提供します。これらは、アプリケーション（またはエージェント役割の他のコレクター）からのイベントを単一のOTLPエンドポイントを介して受信します。通常、一連のゲートウェイインスタンスが展開され、負荷を分散するためにボックスから出たロードバランサーが使用されます。
+### ゲートウェイによるスケーリング {#scaling-with-gateways}
 
-<Image img={observability_8} alt="Scaling with gateways" size="md"/>
+OTel collector は、上記の制約に対処するために Gateway インスタンスとしてデプロイできます。これらはスタンドアロンのサービスを提供し、通常はデータセンターごと、あるいはリージョンごとに 1 つ配置します。これらは、単一の OTLP エンドポイントを介して、アプリケーション（またはエージェント役割を持つ他の collector）からイベントを受信します。通常、複数の Gateway インスタンスがデプロイされ、それらの間で負荷を分散するために、一般的なロードバランサーが使用されます。
 
-このアーキテクチャの目的は、エージェントから計算集約処理をオフロードし、リソース使用量を最小限に抑えることです。これらのゲートウェイは、エージェントが行う必要のある変換タスクを実行することができます。さらに、複数のエージェントからのイベントを集約することにより、ゲートウェイはClickHouseに大きなバッチを送信できるようにし、効率的な挿入を可能にします。これらのゲートウェイコレクターは、より多くのエージェントが追加され、イベントスループットが増加するにつれて簡単にスケールできます。以下は、関連するエージェント構成とともに、例のゲートウェイ構成を示します。エージェントとゲートウェイ間の通信にはOTLPが使用されている点に注意してください。
+<Image img={observability_8} alt="ゲートウェイによるスケーリング" size="md" />
 
-[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+このアーキテクチャの目的は、計算負荷の高い処理をエージェントからオフロードし、それによってエージェントのリソース使用量を最小化することです。これらのゲートウェイは、本来であればエージェントが担う必要がある変換処理を実行できます。さらに、多数のエージェントからのイベントを集約することで、ゲートウェイは ClickHouse に対して大きなバッチを送信し、効率的な挿入を可能にします。これらの gateway collector は、エージェントの追加やイベントスループットの増加に応じて容易にスケールアウトできます。サンプルの構造化ログファイルを取り込むエージェント設定と組み合わせたゲートウェイ設定の例を以下に示します。エージェントとゲートウェイ間の通信に OTLP を使用している点に注目してください。
+
+[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -677,7 +692,8 @@ service:
       exporters: [otlp]
 ```
 
-[clickhouse-gateway-config.yaml](https://www.otelbin.io/#config=receivers%3A*N__otlp%3A*N____protocols%3A*N____grpc%3A*N____endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_10000*N*Nexporters%3A*N__clickhouse%3A*N____endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*N____ttl%3A_96h*N____traces*_table*_name%3A_otel*_traces*N____logs*_table*_name%3A_otel*_logs*N____create*_schema%3A_true*N____timeout%3A_10s*N____database%3A_default*N____sending*_queue%3A*N____queue*_size%3A_10000*N____retry*_on*_failure%3A*N____enabled%3A_true*N____initial*_interval%3A_5s*N____max*_interval%3A_30s*N____max*_elapsed*_time%3A_300s*N*Nservice%3A*N__pipelines%3A*N____logs%3A*N______receivers%3A_%5Botlp%5D*N______processors%3A_%5Bbatch%5D*N______exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+
+[clickhouse-gateway-config.yaml](https://www.otelbin.io/#config=receivers%3A*N__otlp%3A*N____protocols%3A*N____grpc%3A*N____endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N__batch%3A*N____timeout%3A_5s*N____send*_batch*_size%3A_10000*N*Nexporters%3A*N__clickhouse%3A*N____endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*N____ttl%3A_96h*N____traces*_table*_name%3A_otel*_traces*N____logs*_table*_name%3A_otel*_logs*N____create*_schema%3A_true*N____timeout%3A_10s*N____database%3A_default*N____sending*_queue%3A*N____queue*_size%3A_10000*N____retry*_on*_failure%3A*N____enabled%3A_true*N____initial*_interval%3A_5s*N____max*_interval%3A_30s*N____max*_elapsed*_time%3A_300s*N*Nservice%3A*N__pipelines%3A*N____logs%3A*N______receivers%3A_%5Botlp%5D*N______processors%3A_%5Bbatch%5D*N______exporters%3A_%5Bclickhouse%5D%7E\&distro=otelcol-contrib%7E\&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -713,39 +729,42 @@ service:
       exporters: [clickhouse]
 ```
 
-これらの構成は、以下のコマンドで実行できます。
+これらの構成は、次のコマンドで適用できます。
 
 ```bash
 ./otelcol-contrib --config clickhouse-gateway-config.yaml
 ./otelcol-contrib --config clickhouse-agent-config.yaml
 ```
 
-このアーキテクチャの主な欠点は、コレクターの管理に関連するコストとオーバーヘッドです。
+このアーキテクチャの主な欠点は、複数の collector を管理するためのコストと運用負荷が発生することです。
 
-ゲートウェイベースのアーキテクチャを管理するための例とそれに関連する学びの例については、[このブログ記事](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog)をお勧めします。
-### Adding Kafka {#adding-kafka}
+より大規模なゲートウェイベースのアーキテクチャの管理方法と、そこから得られる知見の例については、この [ブログ記事](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog) を参考にすることをお勧めします。
 
-上記のアーキテクチャがメッセージキューとしてKafkaを使用していないことにお気づきかもしれません。
 
-Kafkaキューをメッセージバッファとして使用することは、ログアーキテクチャで見られる一般的な設計パターンであり、ELKスタックによって普及しました。これにはいくつかの利点があります；主に、強力なメッセージ配信保証を提供し、バックプレッシャーに対処するのに役立ちます。メッセージは、収集エージェントからKafkaに送信され、ディスクに書き込まれます。理論的には、クラスタ化されたKafkaインスタンスは、高スループットメッセージバッファを提供すべきです。これは、メッセージを解析および処理するよりも、ディスクにリニアに書き込む方が少ない計算オーバーヘッドがかかるためです。例えば、Elasticの場合、トークン化とインデックス作成には多くのオーバーヘッドがかかります。データをエージェントから遠ざけることにより、ソースでのログローテーションの影響でメッセージが失われるリスクも減少します。最後に、いくつかのメッセージ再実行およびクロスリージョンの複製機能が提供されており、一部のユースケースにとっては魅力的かもしれません。
+### Kafka の追加 {#adding-kafka}
 
-しかし、ClickHouseはデータを非常に迅速に挿入でき、適度なハードウェアで毎秒数百万行の挿入が可能です。ClickHouseからのバックプレッシャーは **稀** です。しばしば、Kafkaキューを利用することは、より多くのアーキテクチャの複雑さやコストを伴います。ログが銀行取引や他の重要なデータと同じ配信保証を必要としないという原則を受け入れられるのであれば、Kafkaの複雑さは避けることをお勧めします。
+ここまでに紹介したアーキテクチャでは、メッセージキューとして Kafka を使用していないことに気づく読者もいるかもしれません。
 
-さて、高い配信保証やデータの再実行の能力（複数のソースへの可能性）が必要な場合、Kafkaは有用なアーキテクチャ追加となる可能性があります。
+メッセージバッファとして Kafka キューを使用することは、ログ収集アーキテクチャでよく見られる一般的な設計パターンであり、ELK スタックによって広く普及しました。これにはいくつかの利点があります。主なものは、より強力なメッセージ配信保証を提供し、バックプレッシャーへの対応を助ける点です。メッセージは収集エージェントから Kafka に送信され、ディスクに書き込まれます。理論上、クラスタ構成の Kafka インスタンスは、高スループットなメッセージバッファを提供できます。これは、メッセージをパースして処理するよりも、データをディスクに線形に書き込む方が計算オーバーヘッドが小さいためです。例えば Elastic では、トークナイズとインデクシングに大きなオーバーヘッドが発生します。エージェント側からデータを切り離して退避させることで、ソース側でのログローテーションが原因でメッセージを失うリスクも低減できます。最後に、一部のユースケースにとって魅力的になり得るメッセージのリプレイ機能やリージョン間レプリケーション機能も提供します。
 
-<Image img={observability_9} alt="Adding kafka" size="md"/>
+しかし、ClickHouse はデータの挿入を非常に高速に処理でき、一般的なハードウェアでも毎秒数百万行を扱うことができます。ClickHouse 側からのバックプレッシャーは**まれ**です。多くの場合、Kafka キューを活用することは、アーキテクチャの複雑さとコストの増大を意味します。ログは銀行取引やその他のミッションクリティカルなデータと同レベルの配信保証を必要としない、という前提を受け入れられるのであれば、Kafka を導入することによるこの複雑さは避けることを推奨します。
 
-この場合、OTelエージェントは、[Kafkaエクスポーター](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) を介してデータをKafkaに送信するように構成できます。ゲートウェイインスタンスは、[Kafkaレシーバー](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md)を使用してメッセージを消費します。さらなる詳細については、ConfluentおよびOTelのドキュメントをお勧めします。
-### Estimating resources {#estimating-resources}
+一方で、高い配信保証や（複数の宛先に対して）データをリプレイする能力が必須要件である場合には、Kafka は有用なアーキテクチャ上のコンポーネントとなり得ます。
 
-OTelコレクターのリソース要件は、イベントのスループット、メッセージのサイズ、および実行される処理の量によって異なります。OpenTelemetryプロジェクトは、リソース要件を推定するための[ベンチマーク](https://opentelemetry.io/docs/collector/benchmarks/)を維持しています。
+<Image img={observability_9} alt="Kafka の追加" size="md"/>
 
-[私たちの経験では](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)、3つのコアと12GBのRAMを持つゲートウェイインスタンスは、毎秒約60kのイベントを処理できます。これは、フィールド名の変更を行う最小限の処理パイプラインが責任を負っている場合の想定です。
+この場合、OTel エージェントは [Kafka exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md) を介して Kafka にデータを送信するように設定できます。ゲートウェイインスタンスは、[Kafka receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/kafkareceiver/README.md) を使用してメッセージを消費します。詳細については、Confluent と OTel のドキュメントを参照することをお勧めします。
 
-イベントをゲートウェイに送信し、イベントのタイムスタンプのみを設定するエージェントインスタンスの場合、ユーザーは予想される毎秒のログに基づいてサイズを考慮することをお勧めします。以下は、ユーザーがスタートポイントとして使用できる近似値を示したものです：
+### リソース見積もり {#estimating-resources}
 
-| ロギングレート | コレクターエージェントに必要なリソース |
-|--------------|------------------------------|
-| 1k/秒    | 0.2CPU, 0.2GiB              |
-| 5k/秒    | 0.5 CPU, 0.5GiB             |
-| 10k/秒   | 1 CPU, 1GiB                 |
+OTel collector のリソース要件は、イベントスループット、メッセージサイズ、および実施する処理内容に依存します。OpenTelemetry プロジェクトでは、リソース要件を見積もる際に利用できる[ベンチマーク](https://opentelemetry.io/docs/collector/benchmarks/)を公開しています。
+
+[弊社の経験では](https://clickhouse.com/blog/building-a-logging-platform-with-clickhouse-and-saving-millions-over-datadog#architectural-overview)、3 コアと 12GB の RAM を搭載したゲートウェイインスタンスで、毎秒約 6 万件のイベントを処理できます。これは、フィールド名の変更のみを行い、正規表現を使用しない最小限の処理パイプラインを前提としています。
+
+ゲートウェイへのイベント送信と、イベントへのタイムスタンプ設定のみを担当するエージェントインスタンスについては、想定される 1 秒あたりのログ数に基づいてリソースを見積もることを推奨します。以下は、出発点として利用できるおおよその値です。
+
+| ログレート | collector エージェントに必要なリソース |
+|------------|----------------------------------------|
+| 1k/second  | 0.2CPU, 0.2GiB                        |
+| 5k/second  | 0.5 CPU, 0.5GiB                       |
+| 10k/second | 1 CPU, 1GiB                           |

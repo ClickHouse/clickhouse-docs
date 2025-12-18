@@ -1,13 +1,14 @@
 ---
-slug: '/sql-reference/aggregate-functions/reference/groupbitmapor'
+description: 'Выполняет операцию OR над битмап-столбцом и возвращает кардинальность типа UInt64; при добавлении суффикса -State возвращает объект битмапа. Эквивалентна функции `groupBitmapMerge`.'
 sidebar_position: 150
-description: 'Вычесляет OR для колонки битовой карты, возвращает кардинальность'
-title: groupBitmapOr
-doc_type: reference
+slug: /sql-reference/aggregate-functions/reference/groupbitmapor
+title: 'groupBitmapOr'
+doc_type: 'reference'
 ---
-# groupBitmapOr
 
-Вычисляет OR для битовой колонки, возвращает кардинальность типа UInt64, если добавить суффикс -State, то вернуть [объект битовой карты](../../../sql-reference/functions/bitmap-functions.md). Это эквивалентно `groupBitmapMerge`.
+# groupBitmapOr {#groupbitmapor}
+
+Вычисляет побитовое OR для битмап-столбца, возвращает мощность множества типа UInt64; если добавить суффикс `-State`, то возвращается [объект bitmap](../../../sql-reference/functions/bitmap-functions.md). Эквивалентно `groupBitmapMerge`.
 
 ```sql
 groupBitmapOr(expr)
@@ -15,7 +16,7 @@ groupBitmapOr(expr)
 
 **Аргументы**
 
-`expr` – Выражение, которое возвращает тип `AggregateFunction(groupBitmap, UInt*)`.
+`expr` – выражение, результат вычисления которого имеет тип `AggregateFunction(groupBitmap, UInt*)`.
 
 **Возвращаемое значение**
 

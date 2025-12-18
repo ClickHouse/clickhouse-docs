@@ -1,24 +1,30 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumSimpleState'
-sidebar_label: sumSimpleState
-description: 'Пример использования комбинатаора sumSimpleState'
-title: sumSimpleState
+title: 'sumSimpleState'
+description: 'Пример использования комбинатора sumSimpleState'
 keywords: ['sum', 'state', 'simple', 'combinator', 'examples', 'sumSimpleState']
-doc_type: reference
+sidebar_label: 'sumSimpleState'
+doc_type: 'reference'
 ---
+
 # sumSimpleState {#sumsimplestate}
 
 ## Описание {#description}
 
-Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применен к функции [`sum`](/sql-reference/aggregate-functions/reference/sum), чтобы вернуть сумму всех входных значений. Он возвращает результат с типом [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
+Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы по всем входным значениям. Результат имеет тип [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction).
 
 ## Пример использования {#example-usage}
 
-### Учет голосов "за" и "против" {#tracking-post-votes}
+### Отслеживание голосов «за» и «против» {#tracking-post-votes}
 
-Рассмотрим практический пример на основе таблицы, которая отслеживает голоса за посты. Для каждого поста мы хотим поддерживать текущие итоги голосов "за", "против" и общий счет. Использование типа `SimpleAggregateFunction` с суммой подходит для этой задачи, так как нам нужно хранить только текущие итоги, а не все состояние агрегации. В результате это будет быстрее и не потребует слияния частичных состояний агрегации.
+Рассмотрим практический пример с таблицей, которая отслеживает голоса по постам.
+Для каждого поста мы хотим поддерживать текущее количество голосов «за», голосов «против» и
+общий счёт. Использование типа `SimpleAggregateFunction` с суммированием подходит для
+этого сценария, так как нам нужно хранить только текущие суммы, а не всё состояние
+агрегации. В результате это будет быстрее и не потребует слияния
+частичных агрегатных состояний.
 
-Сначала мы создаем таблицу для сырых данных:
+Сначала создадим таблицу для сырых данных:
 
 ```sql title="Query"
 CREATE TABLE raw_votes
@@ -30,7 +36,7 @@ ENGINE = MergeTree()
 ORDER BY post_id;
 ```
 
-Затем мы создаем целевую таблицу, которая будет хранить агрегированные данные:
+Далее мы создадим целевую таблицу, которая будет хранить агрегированные данные:
 
 ```sql
 CREATE TABLE vote_aggregates
@@ -44,7 +50,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY post_id;
 ```
 
-Далее мы создаем материализованное представление с колонками типа `SimpleAggregateFunction`:
+Затем создаём материализованное представление со столбцами типа `SimpleAggregateFunction`:
 
 ```sql
 CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
@@ -60,7 +66,7 @@ SELECT
 FROM raw_votes;
 ```
 
-Вставим тестовые данные:
+Вставьте пример данных:
 
 ```sql
 INSERT INTO raw_votes VALUES
@@ -72,7 +78,7 @@ INSERT INTO raw_votes VALUES
     (3, 'downvote');
 ```
 
-Запросим материализованное представление, используя комбинатор `SimpleState`:
+Выполните запрос к материализованному представлению с помощью комбинатора `SimpleState`:
 
 ```sql
 SELECT
@@ -95,5 +101,5 @@ ORDER BY post_id ASC;
 
 ## См. также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`SimpleState combinator`](/sql-reference/aggregate-functions/combinators#-simplestate)
-- [`SimpleAggregateFunction type`](/sql-reference/data-types/simpleaggregatefunction)
+- [комбинатор `SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
+- [тип `SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

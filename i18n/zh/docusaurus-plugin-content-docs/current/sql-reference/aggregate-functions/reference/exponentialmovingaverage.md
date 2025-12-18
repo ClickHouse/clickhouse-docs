@@ -1,14 +1,14 @@
 ---
-'description': '计算在确定时间内值的指数移动平均。'
-'sidebar_position': 132
-'slug': '/sql-reference/aggregate-functions/reference/exponentialMovingAverage'
-'title': 'exponentialMovingAverage'
-'doc_type': 'reference'
+description: '计算在指定时间段内各数值的指数移动平均。'
+sidebar_position: 132
+slug: /sql-reference/aggregate-functions/reference/exponentialMovingAverage
+title: 'exponentialMovingAverage'
+doc_type: 'reference'
 ---
 
 ## exponentialMovingAverage {#exponentialmovingaverage}
 
-计算在确定时间内值的指数移动平均。
+计算在指定时间段内数值的指数移动平均值。
 
 **语法**
 
@@ -16,20 +16,20 @@
 exponentialMovingAverage(x)(value, timeunit)
 ```
 
-每个 `value` 对应于确定的 `timeunit`。半衰期 `x` 是指数权重衰减到一半的时间延迟。该函数返回加权平均值：时间点越旧，考虑的对应值的权重就越小。
+每个 `value` 对应一个给定的 `timeunit`。半衰期 `x` 是指数权重衰减到一半时对应的时间滞后。该函数返回加权平均值：时间点越早，其对应的 `value` 所占权重就越小。
 
 **参数**
 
-- `value` — 值。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。
-- `timeunit` — 时间单位。[整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。时间单位不是时间戳（秒），而是时间间隔的索引。可以使用 [intDiv](/sql-reference/functions/arithmetic-functions#intDiv) 进行计算。
+* `value` — 数值。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
+* `timeunit` — 时间单位。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。`timeunit` 不是时间戳（秒），而是时间区间的索引。可以使用 [intDiv](/sql-reference/functions/arithmetic-functions#intDiv) 计算。
 
-**参数**
+**函数参数**
 
-- `x` — 半衰期。 [整数](../../../sql-reference/data-types/int-uint.md), [浮点数](../../../sql-reference/data-types/float.md) 或 [小数](../../../sql-reference/data-types/decimal.md)。
+* `x` — 半衰期。[Integer](../../../sql-reference/data-types/int-uint.md)、[Float](../../../sql-reference/data-types/float.md) 或 [Decimal](../../../sql-reference/data-types/decimal.md)。
 
 **返回值**
 
-- 返回过去 `x` 时间在最新时间点的值的 [指数平滑移动平均](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)。
+* 在最新时间点上，返回过去 `x` 时间范围内的[指数平滑移动平均值](https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average)。
 
 类型：[Float64](/sql-reference/data-types/float)。
 

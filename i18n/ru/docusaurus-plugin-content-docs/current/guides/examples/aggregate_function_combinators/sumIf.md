@@ -1,20 +1,24 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
-sidebar_label: sumIf
-description: 'Пример использования комбинации sumIf'
-title: sumIf
+title: 'sumIf'
+description: 'Пример использования комбинатора sumIf'
 keywords: ['sum', 'if', 'combinator', 'examples', 'sumIf']
-doc_type: reference
+sidebar_label: 'sumIf'
+doc_type: 'reference'
 ---
+
 # sumIf {#sumif}
 
 ## Описание {#description}
 
-Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum) для вычисления суммы значений для строк, где условие истинно, используя агрегатную функцию комбинатора `sumIf`.
+Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
+для вычисления суммы значений по строкам, для которых условие истинно,
+используя агрегатную функцию-комбинатор `sumIf`.
 
 ## Пример использования {#example-usage}
 
-В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности, и мы будем использовать `sumIf` для расчета общей суммы продаж для успешных транзакций.
+В этом примере мы создадим таблицу, которая хранит данные о продажах с флагами успешности,
+а затем используем `sumIf` для вычисления общей суммы продаж по успешным транзакциям.
 
 ```sql title="Query"
 CREATE TABLE sales(
@@ -36,7 +40,8 @@ SELECT
 FROM sales;
 ```
 
-Функция `sumIf` будет суммировать только те суммы, где `is_successful = 1`. В этом случае она суммирует: 100.50 + 200.75 + 300.00 + 175.25.
+Функция `sumIf` будет суммировать только те значения поля `amount`, для которых `is_successful = 1`.
+В этом случае она просуммирует: 100.50 + 200.75 + 300.00 + 175.25.
 
 ```response title="Response"
    ┌─total_successful_sales─┐
@@ -44,9 +49,10 @@ FROM sales;
    └───────────────────────┘
 ```
 
-### Расчет торгового объема по направлению цены {#calculate-trading-vol-price-direction}
+### Расчет торгового объема по направлению движения цены {#calculate-trading-vol-price-direction}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по направлению цены за первую половину 2002 года.
+В этом примере мы используем таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы рассчитать торговый объем по направлению движения цены за первую половину 2002 года.
 
 ```sql title="Query"
 SELECT 
@@ -78,9 +84,11 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Расчет торгового объема по символу акции {#calculate-trading-volume}
+### Рассчитать торговый объём по тикеру {#calculate-trading-volume}
 
-В этом примере мы используем таблицу `stock`, доступную на [ClickHouse playground](https://sql.clickhouse.com/), чтобы рассчитать торговый объем по символу акции в 2006 году для трех крупнейших технологических компаний в то время.
+В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
+чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
+технологических компаний того времени.
 
 ```sql title="Query"
 SELECT 
@@ -113,6 +121,6 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
-## См. также {#see-also}
+## Смотрите также {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

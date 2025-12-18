@@ -1,9 +1,10 @@
 ---
-'slug': '/guides/developer/understanding-query-execution-with-the-analyzer'
-'sidebar_label': '理解查询执行与分析器'
-'title': '理解查询执行与分析器'
-'description': '描述如何使用分析器来理解 ClickHouse 如何执行您的查询'
-'doc_type': 'guide'
+slug: /guides/developer/understanding-query-execution-with-the-analyzer
+sidebar_label: '使用分析器理解查询执行'
+title: '使用分析器理解查询执行'
+description: '介绍如何使用分析器来理解 ClickHouse 如何执行你的查询'
+doc_type: 'guide'
+keywords: ['查询执行', '分析器', '查询优化', 'EXPLAIN', '性能']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,10 +14,9 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
+# 使用分析器理解查询执行 {#understanding-query-execution-with-the-analyzer}
 
-# 理解使用分析器的查询执行
-
-ClickHouse 对查询的处理速度非常快，但查询的执行并不是一个简单的故事。让我们尝试理解一个 `SELECT` 查询是如何执行的。为了说明这一点，让我们在 ClickHouse 中的一个表中添加一些数据：
+ClickHouse 可以以极高的速度处理查询，但查询的执行过程并不那么简单。下面我们来看看一个 `SELECT` 查询是如何执行的。为便于说明，我们先在 ClickHouse 的一张表中插入一些数据：
 
 ```sql
 CREATE TABLE session_events(
@@ -34,15 +34,15 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
    type Enum(\'type1\', \'type2\')', 1, 10, 2) LIMIT 1000;
 ```
 
-现在我们在 ClickHouse 中有了一些数据，我们想运行一些查询并理解它们的执行。查询的执行被分解为多个步骤。每个查询执行的步骤都可以通过相应的 `EXPLAIN` 查询进行分析和排查。这些步骤在下面的图表中总结：
+现在我们已经在 ClickHouse 中存有一些数据，接下来希望执行一些查询并了解它们的执行过程。查询的执行会被分解为许多步骤。查询执行的每个步骤都可以通过对应的 `EXPLAIN` 查询进行分析和诊断。这些步骤汇总在下图中：
 
-<Image img={analyzer1} alt="Explain query steps" size="md"/>
+<Image img={analyzer1} alt="Explain query steps" size="md" />
 
-让我们观察查询执行过程中每个实体的动作。我们将进行几个查询，然后使用 `EXPLAIN` 语句检查它们。
+现在让我们看看在查询执行过程中，各个实体是如何协同工作的。我们将选取几个查询，然后使用 `EXPLAIN` 语句对它们进行分析。
 
 ## 解析器 {#parser}
 
-解析器的目标是将查询文本转换为 AST（抽象语法树）。这个步骤可以使用 `EXPLAIN AST` 可视化：
+解析器的目标是将查询文本转换为 AST（抽象语法树）。可以通过 `EXPLAIN AST` 将此步骤可视化：
 
 ```sql
 EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
@@ -65,21 +65,21 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 └────────────────────────────────────────────────────┘
 ```
 
-输出是一个抽象语法树，可以如下所示可视化：
+输出是一个抽象语法树（AST），可以按如下方式进行可视化展示：
 
-<Image img={analyzer2} alt="AST output" size="md"/>
+<Image img={analyzer2} alt="AST output" size="md" />
 
-每个节点都有相应的子节点，整体树结构表示查询的整体结构。这是一个逻辑结构，用于帮助处理查询。从最终用户的角度来看（除非对查询执行感兴趣），它并不是非常有用；这个工具主要由开发者使用。
+每个节点都有相应的子节点，整棵树表示查询的整体结构。它是一种用于辅助处理查询的逻辑结构。对于最终用户而言（除非对查询执行感兴趣），它并不是特别有用；该工具主要供开发人员使用。
 
-## 分析器 {#analyzer}
+## Analyzer {#analyzer}
 
-ClickHouse 目前有两种架构供分析器使用。你可以通过设置 `enable_analyzer=0` 来使用旧架构。默认情况下启用新架构。我们将在这里仅描述新架构，因为旧架构将在新分析器普遍可用后被弃用。
+ClickHouse 当前为 Analyzer 提供了两种架构。你可以通过设置 `enable_analyzer=0` 使用旧架构。新架构默认启用。鉴于一旦新 analyzer 达到 GA 阶段，旧架构将被弃用，这里我们只介绍新架构。
 
 :::note
-新架构应为我们提供更好的框架，以提高 ClickHouse 的性能。然而，由于它是查询处理步骤的一个基本组成部分，它也可能对某些查询产生负面影响，并且存在[已知的不兼容性](/operations/analyzer#known-incompatibilities)。你可以通过在查询或用户级别更改 `enable_analyzer` 设置来恢复到旧分析器。
+新架构应当提供一个更好的框架来提升 ClickHouse 的性能。不过，由于它是查询处理流程中的基础组件，也可能对某些查询产生负面影响，而且存在[已知的不兼容性](/operations/analyzer#known-incompatibilities)。你可以通过在查询或用户级别修改 `enable_analyzer` 设置，切换回旧的 analyzer。
 :::
 
-分析器是查询执行的重要步骤。它接收 AST 并将其转换为查询树。与 AST 相比，查询树的主要好处在于许多组件将被解析，例如存储实例。我们还知道从哪个表读取，别名也被解析，树知道所使用的不同数据类型。拥有所有这些好处后，分析器可以应用优化。这些优化的工作方式是通过“传递”。每个传递将寻找不同的优化。你可以[在这里](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)看到所有的传递，让我们用之前的查询看看实际效果：
+Analyzer 是查询执行中的一个重要步骤。它接受 AST 并将其转换为查询树（query tree）。查询树相对于 AST 的主要优势在于，许多组件会被解析（resolved），例如具体的存储。我们也能知道要从哪张表读取数据，别名也会被解析，树本身还知道所使用的各种数据类型。基于这些优势，analyzer 可以应用各种优化。这些优化是通过一系列“pass”来实现的。每个 pass 会寻找不同类型的优化。你可以在[这里](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)查看所有 pass，下面让我们使用之前的查询来看一下它在实践中的表现：
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
@@ -126,11 +126,11 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-在两次执行之间，你可以看到别名和投影的解析。
+通过对比两次执行，你可以看到别名和投影是如何被解析的。
 
-## 计划器 {#planner}
+## 规划器 {#planner}
 
-计划器从查询树构建查询计划。查询树告诉我们针对特定查询要做什么，而查询计划告诉我们将如何做到这一点。计划过程还将进行额外的优化。你可以使用 `EXPLAIN PLAN` 或 `EXPLAIN` 查看查询计划（`EXPLAIN` 将执行 `EXPLAIN PLAN`）。
+规划器接收一个查询树，并基于它构建查询计划。查询树告诉我们针对某个特定查询“要做什么”，而查询计划则告诉我们“将如何去做”。额外的优化会作为查询计划的一部分执行。你可以使用 `EXPLAIN PLAN` 或 `EXPLAIN` 来查看查询计划（`EXPLAIN` 会执行 `EXPLAIN PLAN`）。
 
 ```sql
 EXPLAIN PLAN WITH
@@ -148,7 +148,7 @@ SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, cou
 └──────────────────────────────────────────────────┘
 ```
 
-虽然这给我们提供了一些信息，但我们可以获得更多信息。例如，也许我们想知道我们需要创建的投影的列名。你可以在查询中添加头部：
+虽然这已经为我们提供了一些信息，但我们还可以获取更多。比如，我们可能想知道需要在哪一列之上创建投影的列名。你可以在查询中添加一个请求头：
 
 ```SQL
 EXPLAIN header = 1
@@ -184,7 +184,7 @@ GROUP BY type
 └──────────────────────────────────────────────────┘
 ```
 
-现在你知道需要为最后的投影创建的列名（`minimum_date`、`maximum_date` 和 `percentage`），但你可能也想知道所有需要执行操作的详细信息。你可以通过设置 `actions=1` 来做到这一点。
+你已经知道需要为最后一个 Projection 创建的列名（`minimum_date`、`maximum_date` 和 `percentage`），但你可能还希望查看所有需要执行的操作的详细信息。你可以通过将 `actions` 设置为 `1` 来实现。
 
 ```sql
 EXPLAIN actions = 1
@@ -238,11 +238,11 @@ GROUP BY type
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-你现在可以看到所有使用的输入、函数、别名和数据类型。你可以在[这里](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)看到规划者将应用的一些优化。
+现在您可以查看所有正在使用的输入、函数、别名和数据类型。规划器将应用的部分优化可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)查看。
 
 ## 查询管道 {#query-pipeline}
 
-查询管道是从查询计划生成的。查询管道与查询计划非常相似，不同之处在于它不是树而是图。它突出了 ClickHouse 将如何执行查询以及将使用哪些资源。分析查询管道对于查看输入/输出方面的瓶颈非常有用。让我们用之前的查询看一下查询管道执行：
+查询管道是基于查询计划生成的。查询管道与查询计划非常相似，不同之处在于它不是树形结构，而是图结构。它可以直观展示 ClickHouse 将如何执行查询以及会使用哪些资源。分析查询管道对于定位输入/输出层面的瓶颈非常有帮助。下面我们拿之前的查询来看看其查询管道的执行情况：
 
 ```sql
 EXPLAIN PIPELINE
@@ -271,7 +271,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-括号内是查询计划步骤，旁边是处理器。这是非常好的信息，但由于这是一个图，最好将其可视化。我们有一个设置 `graph` 可以设置为 1，并指定输出格式为 TSV：
+括号内的是查询计划步骤，旁边的是处理器。虽然这些信息已经很有价值，但既然这是一个图结构，我们也希望能以图的形式进行可视化。我们可以将 `graph` 设置为 1，并将输出格式指定为 TSV：
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -288,7 +288,7 @@ digraph
  rankdir="LR";
  { node [shape = rect]
    subgraph cluster_0 {
-     label ="Expression";
+     label ="表达式";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -297,7 +297,7 @@ digraph
      }
    }
    subgraph cluster_1 {
-     label ="Aggregating";
+     label ="聚合";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -307,7 +307,7 @@ digraph
      }
    }
    subgraph cluster_2 {
-     label ="Expression";
+     label ="表达式";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -316,7 +316,7 @@ digraph
      }
    }
    subgraph cluster_3 {
-     label ="ReadFromMergeTree";
+     label ="从 MergeTree 读取";
      style=filled;
      color=lightgrey;
      node [style=filled,color=white];
@@ -332,11 +332,11 @@ digraph
 }
 ```
 
-然后你可以复制这个输出并粘贴到[这里](https://dreampuf.github.io/GraphvizOnline)，这将生成以下图：
+接着可以复制该输出并粘贴到[这里](https://dreampuf.github.io/GraphvizOnline)，即可生成如下图：
 
-<Image img={analyzer3} alt="Graph output" size="md"/>
+<Image img={analyzer3} alt="Graph output" size="md" />
 
-一个白色矩形对应于一个管道节点，灰色矩形对应于查询计划步骤，后面跟着数字的 `x` 对应于正在使用的输入/输出数量。如果你不想以紧凑形式查看它们，你可以始终添加 `compact=0`：
+白色矩形表示一个 pipeline 节点，灰色矩形表示查询计划步骤，而带有数字的 `x` 表示当前使用的输入/输出数量。如果不想以紧凑格式查看它们，可以添加 `compact=0`：
 
 ```sql
 EXPLAIN PIPELINE graph = 1, compact = 0
@@ -374,9 +374,9 @@ digraph
 }
 ```
 
-<Image img={analyzer4} alt="Compact graph output" size="md" />
+<Image img={analyzer4} alt="紧凑图形输出" size="md" />
 
-为什么 ClickHouse 不使用多线程从表中读取数据？让我们尝试在我们的表中添加更多数据：
+为什么 ClickHouse 在从表中读取数据时没有使用多线程？让我们尝试向表中添加更多数据：
 
 ```sql
 INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
@@ -433,10 +433,10 @@ digraph
 }
 ```
 
-<Image img={analyzer5} alt="Parallel graph output" size="md" />
+<Image img={analyzer5} alt="并行图输出" size="md" />
 
-因此，执行器决定不并行化操作，因为数据量不足。通过添加更多行，执行器随后决定使用多线程，如图所示。
+因此，执行器决定不并行执行这些操作，因为数据量还不够大。通过增加更多行之后，执行器就决定使用多线程进行处理，如图所示。
 
 ## 执行器 {#executor}
 
-最后，查询执行的最后一步由执行器完成。它将接收查询管道并执行它。根据你在执行 `SELECT`、`INSERT` 或 `INSERT SELECT` 时的不同，执行器有不同的类型。
+最后，查询执行的最终一步由执行器完成。它会接收查询流水线并将其执行。根据你是在执行 `SELECT`、`INSERT` 还是 `INSERT SELECT`，会使用不同类型的执行器。

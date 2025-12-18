@@ -1,181 +1,176 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/local-data'
-'title': 'Локальные журналы и метрики'
-'sidebar_position': 1
-'pagination_prev': null
-'pagination_next': null
-'description': 'Начало работы с данными и метриками локальных и системных ClickStack'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/getting-started/local-data
+title: 'Локальные логи и метрики'
+sidebar_position: 1
+pagination_prev: null
+pagination_next: null
+description: 'Знакомство с локальными и системными данными и метриками ClickStack'
+doc_type: 'guide'
+keywords: ['clickstack', 'пример данных', 'пример набора данных', 'логи', 'обсервабилити']
 ---
+
 import Image from '@theme/IdealImage';
-import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_20 from '@site/static/images/use-cases/observability/hyperdx-20.png';
-import hyperdx_3 from '@site/static/images/use-cases/observability/hyperdx-3.png';
-import hyperdx_4 from '@site/static/images/use-cases/observability/hyperdx-4.png';
 import hyperdx_21 from '@site/static/images/use-cases/observability/hyperdx-21.png';
 import hyperdx_22 from '@site/static/images/use-cases/observability/hyperdx-22.png';
 import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.png';
-import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
-Этот стартовый гид позволяет вам собирать локальные журналы и метрики из вашей системы, отправляя их в ClickStack для визуализации и анализа.
+Это вводное руководство позволяет собирать локальные логи и метрики с вашей системы и отправлять их в ClickStack для визуализации и анализа.
 
-**Этот пример работает только на системах OSX и Linux**
+**Этот пример работает только в системах OSX и Linux**
 
-Следующий пример предполагает, что вы запустили ClickStack, используя [инструкции для all-in-one образа](/use-cases/observability/clickstack/getting-started) и подключились к [локальному экземпляру ClickHouse](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) или к [экземпляру ClickHouse Cloud](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
-
-:::note HyperDX в ClickHouse Cloud
-Этот пример данных также можно использовать с HyperDX в ClickHouse Cloud, с лишь незначительными корректировками в процессе, как указано. Если вы используете HyperDX в ClickHouse Cloud, пользователям потребуется, чтобы локально работал сборщик Open Telemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
+:::note HyperDX in ClickHouse Cloud
+Этот пример набора данных также может использоваться с HyperDX в ClickHouse Cloud, с лишь незначительными изменениями конвейера, указанными в тексте. При использовании HyperDX в ClickHouse Cloud вам потребуется локально запущенный коллектор OpenTelemetry, как описано в [руководстве по началу работы для этой модели развертывания](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud).
 :::
 
 <VerticalStepper>
+## Создание пользовательской конфигурации OpenTelemetry {#create-otel-configuration}
 
-## Перейдите к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
+  Создайте файл `custom-local-config.yaml` со следующим содержимым:
 
-Перейдите к [http://localhost:8080](http://localhost:8080), чтобы получить доступ к интерфейсу HyperDX, если развертываете локально. Если вы используете HyperDX в ClickHouse Cloud, выберите ваш сервис и `HyperDX` в левом меню.
+  ```yaml
+  receivers:
+    filelog:
+      include:
+        - /host/var/log/**/*.log        # Linux logs from host
+        - /host/var/log/syslog
+        - /host/var/log/messages
+        - /host/private/var/log/*.log   # macOS logs from host
+      start_at: beginning
+      resource:
+        service.name: "system-logs"
 
-## Скопируйте ключ API для приема данных {#copy-ingestion-api-key}
+    hostmetrics:
+      collection_interval: 1s
+      scrapers:
+        cpu:
+          metrics:
+            system.cpu.time:
+              enabled: true
+            system.cpu.utilization:
+              enabled: true
+        memory:
+          metrics:
+            system.memory.usage:
+              enabled: true
+            system.memory.utilization:
+              enabled: true
+        filesystem:
+          metrics:
+            system.filesystem.usage:
+              enabled: true
+            system.filesystem.utilization:
+              enabled: true
+        paging:
+          metrics:
+            system.paging.usage:
+              enabled: true
+            system.paging.utilization:
+              enabled: true
+            system.paging.faults:
+              enabled: true
+        disk:
+        load:
+        network:
+        processes:
 
-:::note HyperDX в ClickHouse Cloud
-Этот шаг не требуется, если вы используете HyperDX в ClickHouse Cloud.
-:::
+  service:
+    pipelines:
+      logs/local:
+        receivers: [filelog]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+      metrics/hostmetrics:
+        receivers: [hostmetrics]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
-Перейдите в [`Настройки команды`](http://localhost:8080/team) и скопируйте `Ключ API для приема данных` из раздела `API Keys`. Этот ключ API обеспечивает безопасность приема данных через сборщик OpenTelemetry.
+  Данная конфигурация собирает системные журналы и метрики для систем OSX и Linux и отправляет результаты в ClickStack. Конфигурация расширяет коллектор ClickStack, добавляя новые приёмники и конвейеры — при этом используются существующий экспортёр `clickhouse` и процессоры (`memory_limiter`, `batch`), уже настроенные в базовом коллекторе ClickStack.
 
-<Image img={copy_api_key} alt="Скопировать ключ API" size="lg"/>
+  :::note Временные метки при ингестии
+  Данная конфигурация корректирует временные метки в процессе ингестии, присваивая каждому событию обновлённое значение времени. Вам следует [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) с помощью процессоров или операторов OTel в своих лог-файлах, чтобы обеспечить сохранение точного времени события.
 
-## Создайте локальную конфигурацию OpenTelemetry {#create-otel-configuration}
+  При такой настройке, если приёмник или процессор файлов настроен на чтение с начала файла, всем существующим записям журнала будет присвоена одинаковая скорректированная временная метка — время обработки, а не исходное время события. Любые новые события, добавляемые в файл, получат временные метки, приближённые к фактическому времени их генерации.
 
-Создайте файл `otel-local-file-collector.yaml` со следующим содержимым.
+  Чтобы избежать такого поведения, установите начальную позицию в значение `end` в конфигурации приёмника. Это обеспечит приём только новых записей с временными метками, соответствующими фактическому времени их поступления.
+  :::
 
-**Важно**: Заполните значение `<YOUR_INGESTION_API_KEY>` вашим ключом API для приема данных, скопированным выше (не требуется для HyperDX в ClickHouse Cloud).
+  Подробнее о структуре конфигурации OpenTelemetry (OTel) см. в [официальном руководстве](https://opentelemetry.io/docs/collector/configuration/).
 
-```yaml
-receivers:
-  filelog:
-    include:
-      - /var/log/**/*.log             # Linux
-      - /var/log/syslog
-      - /var/log/messages
-      - /private/var/log/*.log       # macOS
-      - /tmp/all_events.log # macos - see below
-    start_at: beginning # modify to collect new files only
+## Запуск ClickStack с пользовательской конфигурацией {#start-clickstack}
 
-  hostmetrics:
-    collection_interval: 1s
-    scrapers:
-      cpu:
-        metrics:
-          system.cpu.time:
-            enabled: true
-          system.cpu.utilization:
-            enabled: true
-      memory:
-        metrics:
-          system.memory.usage:
-            enabled: true
-          system.memory.utilization:
-            enabled: true
-      filesystem:
-        metrics:
-          system.filesystem.usage:
-            enabled: true
-          system.filesystem.utilization:
-            enabled: true
-      paging:
-        metrics:
-          system.paging.usage:
-            enabled: true
-          system.paging.utilization:
-            enabled: true
-          system.paging.faults:
-            enabled: true
-      disk:
-      load:
-      network:
-      processes:
+  Выполните следующую команду docker для запуска универсального контейнера с вашей конфигурацией:
 
-exporters:
-  otlp:
-    endpoint: localhost:4317
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    tls:
-      insecure: true
-    sending_queue:
-      enabled: true
-      num_consumers: 10
-      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
+  ```shell
+  docker run -d --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
-service:
-  pipelines:
-    logs:
-      receivers: [filelog]
-      exporters: [otlp]
-    metrics:
-      receivers: [hostmetrics]
-      exporters: [otlp]
-```
+  :::note Пользователь root
+  Мы запускаем коллектор от имени пользователя root для доступа ко всем системным журналам — это необходимо для сбора журналов из защищённых путей в системах на базе Linux. Однако такой подход не рекомендуется для production-окружения. В production-средах OpenTelemetry Collector следует развёртывать как локальный агент только с минимальными правами, необходимыми для доступа к целевым источникам журналов.
 
-Эта конфигурация собирает системные журналы и метрики для систем OSX и Linux, отправляя результаты в ClickStack через OTLP-эндпоинт на порту 4317.
+  Обратите внимание, что мы монтируем `/var/log` хоста в `/host/var/log` внутри контейнера во избежание конфликтов с собственными лог-файлами контейнера.
+  :::
 
-:::note Временные метки приема
-Эта конфигурация настраивает временные метки при приеме, присваивая обновленное значение времени каждому событию. Пользователям рекомендуется [предварительно обрабатывать или парсить временные метки](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching), используя процессоры OTel или операторы в своих журнальных файлах, чтобы обеспечить точное время появления событий.
+  Если вы используете HyperDX в ClickHouse Cloud с отдельным коллектором, используйте эту команду:
 
-С этой примерной настройкой, если приемник или файловый процессор настроены на начало с начала файла, все существующие записи журнала получат одну и ту же откорректированную временную метку — время обработки, а не оригинальное время события. Любые новые события, добавленные в файл, получат временные метки, приближенные к их фактическому времени генерации.
+  ```shell
+  docker run -d \
+    -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    clickhouse/clickstack-otel-collector:latest
+  ```
 
-Чтобы избежать этого поведения, вы можете установить позицию начала в `end` в конфигурации приемника. Это обеспечивает то, что только новые записи будут встроены и временные метки будут близки к их истинному времени прибытия.
-:::
+  Коллектор немедленно начнёт сбор локальных системных журналов и метрик.
 
-Для получения дополнительных сведений о структуре конфигурации OpenTelemetry (OTel) мы рекомендуем [официальное руководство](https://opentelemetry.io/docs/collector/configuration/).
+## Переход к интерфейсу HyperDX {#navigate-to-the-hyperdx-ui}
 
-:::note Подробные журналы для OSX
-Пользователи, желающие получить более подробные журналы на OSX, могут запустить команду `log stream --debug --style ndjson >> /tmp/all_events.log` перед запуском сборщика ниже. Это позволит захватить подробные журналы операционной системы в файл `/tmp/all_events.log`, который уже включен в вышеуказанную конфигурацию.
-:::
+  Перейдите по адресу [http://localhost:8080](http://localhost:8080) для доступа к интерфейсу HyperDX при локальном развёртывании. При использовании HyperDX в ClickHouse Cloud выберите ваш сервис и пункт `HyperDX` в меню слева.
 
-## Запустите сборщик {#start-the-collector}
+## Изучение системных логов {#explore-system-logs}
 
-Запустите следующую команду docker, чтобы стартовать экземпляр OTel сборщика.
+  В интерфейсе поиска должны отобразиться локальные системные логи. Разверните фильтры и выберите `system.log`:
 
-```shell
-docker run --network=host --rm -it \
-  --user 0:0 \
-  -v "$(pwd)/otel-local-file-collector.yaml":/etc/otel/config.yaml \
-  -v /var/log:/var/log:ro \
-  -v /private/var/log:/private/var/log:ro \
-  otel/opentelemetry-collector-contrib:latest \
-  --config /etc/otel/config.yaml
-```
+  <Image img={hyperdx_20} alt="Локальные логи HyperDX" size="lg" />
 
-:::note Пользователь root
-Мы запускаем сборщик от имени пользователя root для доступа ко всем системным журналам — это необходимо для захвата журналов из защищенных путей на системах на базе Linux. Тем не менее, этот подход не рекомендуется для использования в производственной среде. В производственных условиях сборщик OpenTelemetry должен быть развернут как локальный агент с минимально необходимыми разрешениями для доступа к предполагаемым источникам журналов.
-:::
+## Изучение системных метрик {#explore-system-metrics}
 
-Сборщик немедленно начнет собирать локальные системные журналы и метрики.
+  Метрики можно изучать с помощью графиков.
 
-## Исследуйте системные журналы {#explore-system-logs}
+  Перейдите в Chart Explorer через левое меню. Выберите источник `Metrics` и тип агрегации `Maximum`.
 
-Перейдите к интерфейсу HyperDX. Интерфейс поиска должен быть заполнен локальными системными журналами. Раскройте фильтры, чтобы выбрать `system.log`:
+  В меню `Select a Metric` введите `memory`, затем выберите `system.memory.utilization (Gauge)`.
 
-<Image img={hyperdx_20} alt="Локальные журналы HyperDX" size="lg"/>
+  Нажмите кнопку запуска для визуализации использования памяти во времени.
 
-## Исследуйте системные метрики {#explore-system-metrics}
+  <Image img={hyperdx_21} alt="Использование памяти во времени" size="lg" />
 
-Мы можем исследовать наши метрики с помощью графиков.
+  Обратите внимание, что число возвращается как число с плавающей точкой `%`. Для более наглядного отображения выберите `Set number format`.
 
-Перейдите к Исследователю графиков через левое меню. Выберите источник `Metrics` и `Maximum` в качестве типа агрегации.
+  <Image img={hyperdx_22} alt="Формат числа" size="lg" />
 
-В меню `Выберите метрику` просто введите `memory`, а затем выберите `system.memory.utilization (Gauge)`.
+  В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
 
-Нажмите кнопку запуска, чтобы визуализировать использование вашей памяти с течением времени.
-
-<Image img={hyperdx_21} alt="Память с течением времени" size="lg"/>
-
-Обратите внимание, что число выводится как плавающая точка в формате `%`. Чтобы отобразить его более четко, выберите `Установить формат числа`.
-
-<Image img={hyperdx_22} alt="Формат числа" size="lg"/>
-
-В последующем меню вы можете выбрать `Процент` из выпадающего списка `Формат вывода`, прежде чем нажать `Применить`.
-
-<Image img={hyperdx_23} alt="Процент памяти со временем" size="lg"/>
-
+  <Image img={hyperdx_23} alt="Память, % во времени" size="lg" />
 </VerticalStepper>

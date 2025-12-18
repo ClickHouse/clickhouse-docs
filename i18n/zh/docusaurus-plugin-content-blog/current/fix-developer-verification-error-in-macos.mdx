@@ -1,0 +1,104 @@
+---
+title: 修复 macOS 开发者验证错误
+description: 了解在运行 ClickHouse 命令时，如何通过系统设置或终端解决 macOS 的开发者验证错误。
+date: 2024-01-09
+tags: ['错误和异常']
+keywords: ['开发者验证', 'macOS']
+---
+
+import Image from "@theme/IdealImage";
+import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/dev-verification-error.png";
+import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
+import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
+
+{frontMatter.description}
+
+{/* truncate */}
+
+***
+
+## 修复 MacOS 中的开发者验证错误 \{#fix-the-developer-verification-error-in-macos\}
+
+如果使用 `brew` 安装 ClickHouse，可能会遇到来自 MacOS 的错误。
+默认情况下，MacOS 不会运行由无法验证身份的开发者创建的应用程序或工具。
+
+当尝试运行任何 `clickhouse` 命令时，您可能会看到如下错误：
+
+<Image img={dev_error} size="md" alt="MacOS 开发者验证错误对话框" border />
+
+要绕过此验证错误，您需要将该应用程序从 MacOS 的隔离区中移除，可以通过在“系统设置”窗口中找到相应设置、使用终端，或重新安装 ClickHouse 来完成。
+
+## 系统设置流程 \{#system-settings-process\}
+
+从隔离区中移除 `clickhouse` 可执行文件的最简单方法是：
+
+1. 打开 **System settings**（系统设置）。
+
+2. 前往 **Privacy &amp; Security**（隐私与安全）：
+
+   <Image img={privacy_default} size="md" alt="MacOS 隐私与安全设置的默认视图" border />
+
+3. 滚动到窗口底部，找到一条消息，内容为：*“clickhouse-macos-aarch64” was blocked from use because it is not from an identified developer*。
+
+4. 点击 **Allow Anyway**（仍要允许）。
+
+   <Image img={privacy_allow} size="md" alt="MacOS 隐私与安全设置中显示 Allow Anyway 按钮" border />
+
+5. 输入你的 macOS 用户密码。
+
+现在你应该可以在终端中运行 `clickhouse` 命令了。
+
+## 终端操作流程 \{#terminal-process\}
+
+有时即使点击 `Allow Anyway` 按钮也无法解决此问题，在这种情况下，您也可以通过命令行来完成这一操作。
+或者，您可能只是更喜欢使用命令行！
+
+首先，确认 Homebrew 将 `clickhouse` 可执行文件安装在何处：
+
+```shell
+which clickhouse
+```
+
+这将输出类似如下的结果：
+
+```shell
+/opt/homebrew/bin/clickhouse
+```
+
+运行 `xattr -d com.apple.quarantine` 命令，并在其后追加上一个命令输出的路径，将 `clickhouse` 从隔离区中移除：
+
+```shell
+xattr -d com.apple.quarantine /opt/homebrew/bin/clickhouse
+```
+
+现在你应该已经可以运行 `clickhouse` 可执行文件了：
+
+```shell
+clickhouse
+```
+
+这将输出类似如下的结果：
+
+```shell
+Use one of the following commands:
+clickhouse local [args]
+clickhouse client [args]
+clickhouse benchmark [args]
+...
+```
+
+## 通过重新安装 ClickHouse 解决问题 \{#fix-the-issue-by-reinstalling-clickhouse\}
+
+Brew 提供了命令行选项，可以在安装时避免对二进制文件进行隔离。
+
+首先，卸载 ClickHouse：
+
+```shell
+brew uninstall clickhouse
+```
+
+现在使用 `--no-quarantine` 参数重新安装 ClickHouse：
+
+```shell
+brew install --no-quarantine clickhouse
+```

@@ -1,29 +1,27 @@
 ---
-'slug': '/examples/aggregate-function-combinators/avgState'
-'title': 'avgState'
-'description': 'avgState コミネータを使用した例'
-'keywords':
-- 'avg'
-- 'state'
-- 'combinator'
-- 'examples'
-- 'avgState'
-'sidebar_label': 'avgState'
-'doc_type': 'reference'
+slug: '/examples/aggregate-function-combinators/avgState'
+title: 'avgState'
+description: 'avgState コンビネータの使用例'
+keywords: ['avg', 'state', 'combinator', 'examples', 'avgState']
+sidebar_label: 'avgState'
+doc_type: 'reference'
 ---
-
 
 # avgState {#avgState}
 
 ## 説明 {#description}
 
-[`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することができ、`AggregateFunction(avg, T)`タイプの中間状態を生成します。ここで `T` は指定された平均の型です。
+[`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、
+[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、
+`AggregateFunction(avg, T)` 型の中間状態を生成できます。ここで `T` は、
+平均の計算対象の型として指定された型です。
 
 ## 使用例 {#example-usage}
 
-この例では、`AggregateFunction`タイプをどのように使用し、`avgState`関数とともにウェブサイトのトラフィックデータを集約するかを見ていきます。
+この例では、`AggregateFunction` 型と `avgState` 関数を組み合わせて、
+ウェブサイトのトラフィックデータを集計する方法を見ていきます。
 
-最初に、ウェブサイトのトラフィックデータのソーステーブルを作成します：
+まず、ウェブサイトのトラフィックデータ用のソーステーブルを作成します。
 
 ```sql
 CREATE TABLE raw_page_views
@@ -37,7 +35,7 @@ ENGINE = MergeTree()
 ORDER BY (page_id, viewed_at);
 ```
 
-平均応答時間を保存する集約テーブルを作成します。`avg`は複雑な状態（合計とカウント）を必要とするため、`SimpleAggregateFunction`タイプを使用できないため、`AggregateFunction`タイプを使用します：
+平均応答時間を格納する集約テーブルを作成します。なお、`avg` は複合的な状態（合計値とカウント）を必要とするため、`SimpleAggregateFunction` 型は使用できません。そのため、`AggregateFunction` 型を使用します。
 
 ```sql
 CREATE TABLE page_performance
@@ -50,7 +48,7 @@ ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
 ```
 
-新しいデータの挿入トリガーとして機能し、上で定義されたターゲットテーブルに中間状態データを保存する増分マテリアライズドビューを作成します：
+増分更新マテリアライズドビューを作成します。このビューは新しいデータに対する挿入トリガーとして機能し、上で定義した対象テーブルに中間状態のデータを保存します。
 
 ```sql
 CREATE MATERIALIZED VIEW page_performance_mv
@@ -63,7 +61,7 @@ FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
 
-ソーステーブルに初期データを挿入し、ディスク上にパーツを作成します：
+ソーステーブルに初期データを挿入して、ディスク上にパーツを作成します:
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -75,7 +73,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
     (3, 'About', 90);
 ```
 
-さらにデータを挿入して、ディスク上に二つ目のパーツを作成します：
+ディスク上に2つ目のパートを作成するため、データをもう少し挿入します。
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
@@ -86,7 +84,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 (4, 'Contact', 65);
 ```
 
-ターゲットテーブル`page_performance`を調査します：
+ターゲットテーブル `page_performance` を確認します:
 
 ```sql
 SELECT 
@@ -109,9 +107,16 @@ FROM page_performance
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
-`avg_response_time`カラムが`AggregateFunction(avg, UInt32)`型であり、中間状態情報を保存していることに注意してください。また、`avg_response_time`の行データは私たちにとって有用ではなく、`�, n, F, }`のような奇妙なテキスト文字が表示されます。これはターミナルがバイナリデータをテキストとして表示しようとするためです。この理由は、`AggregateFunction`タイプが状態を効率的なストレージと計算のために最適化されたバイナリ形式で保存しているためで、人間が読める形式ではありません。このバイナリ状態には、平均を計算するために必要なすべての情報が含まれています。
+`avg_response_time` 列は型 `AggregateFunction(avg, UInt32)` であり、
+中間状態の情報を保持している点に注意してください。また、`avg_response_time`
+に対応する行データは私たちにとって有用ではなく、`�, n, F, }` のような
+奇妙な文字が表示されることにも気付くはずです。これは、ターミナルが
+バイナリデータをテキストとして表示しようとした結果です。その理由は、
+`AggregateFunction` 型が、その状態を人間の可読性ではなく、効率的な保存と
+計算のために最適化されたバイナリ形式で保持しているためです。このバイナリ状態には、
+平均値を計算するために必要なすべての情報が含まれています。
 
-これを利用するために、`Merge`コンビネータを使用します：
+これを利用するには、`Merge` コンビネータを使用してください。
 
 ```sql
 SELECT
@@ -123,7 +128,7 @@ GROUP BY page_id, page_name
 ORDER BY page_id;
 ```
 
-これで正しい平均値が表示されます：
+これで正しい平均値が得られます。
 
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
@@ -134,6 +139,6 @@ ORDER BY page_id;
 └─────────┴───────────┴──────────────────────────┘
 ```
 
-## 参照 {#see-also}
+## 関連情報 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

@@ -1,42 +1,39 @@
 ---
-'description': 'ZooKeeper 接続の歴史を示します (補助 ZooKeeper を含む)。'
-'keywords':
-- 'system table'
-- 'zookeeper_connection_log'
-'slug': '/operations/system-tables/zookeeper_connection_log'
-'title': 'system.zookeeper_connection_log'
-'doc_type': 'reference'
+description: 'ZooKeeper への接続履歴（補助的な ZooKeeper を含む）を表示します。'
+keywords: ['system table', 'zookeeper_connection_log']
+slug: /operations/system-tables/zookeeper_connection_log
+title: 'system.zookeeper_connection_log'
+doc_type: 'reference'
 ---
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.zookeeper&#95;connection&#95;log {#systemzookeeper&#95;connection&#95;log}
 
-# system.zookeeper_connection_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-'system.zookeeper_connection_log' テーブルは、ZooKeeper 接続の履歴（補助 ZooKeeper を含む）を示します。各行は接続に関する1つのイベントの情報を示します。
+&#39;system.zookeeper&#95;connection&#95;log&#39; テーブルは、ZooKeeper への接続履歴（補助 ZooKeeper を含む）を示します。各行は、接続に関する 1 件のイベント情報を表します。
 
 :::note
-このテーブルには、サーバーのシャットダウンによって引き起こされた切断のイベントは含まれていません。
+このテーブルには、サーバーのシャットダウンによって発生した切断イベントは含まれません。
 :::
 
-カラム:
+列:
 
--   `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — ZooKeeper に接続または切断されたサーバーのホスト名。
--   `type` ([Enum8](../../sql-reference/data-types/enum.md)) - イベントのタイプ。可能な値: `Connected`, `Disconnected`。
--   `event_date` ([Date](../../sql-reference/data-types/date.md)) - エントリーの日付。
--   `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - エントリーの時間。
--   `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - マイクロ秒精度のエントリー時間。
--   `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper クラスターの名前。
--   `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse が接続した ZooKeeper ノードのホスト名/IP。
--   `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続した ZooKeeper ノードのポート。
--   `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続または切断した ZooKeeper ノードのインデックス。インデックスは ZooKeeper の設定からのものです。
--   `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 接続のセッション ID。
--   `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API バージョン。
--   `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 有効な機能フラグ。ClickHouse Keeper のみに適用されます。可能な値は `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE`。
--   `availability_zone` ([String](../../sql-reference/data-types/string.md)) — アベイラビリティゾーン。
--   `reason` ([String](../../sql-reference/data-types/string.md)) — 接続または切断の理由。
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — ZooKeeper に接続または切断したサーバーのホスト名。
+* `type` ([Enum8](../../sql-reference/data-types/enum.md)) - イベントの種類。取りうる値: `Connected`, `Disconnected`。
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) - エントリの日付。
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - エントリの時刻。
+* `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - マイクロ秒精度でのエントリの時刻。
+* `name` ([String](../../sql-reference/data-types/string.md)) — ZooKeeper クラスター名。
+* `host` ([String](../../sql-reference/data-types/string.md)) — ClickHouse が接続した ZooKeeper ノードのホスト名/IP。
+* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続した ZooKeeper ノードのポート。
+* `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — ClickHouse が接続または切断した ZooKeeper ノードのインデックス。インデックスは ZooKeeper の設定に由来します。
+* `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — 接続のセッション ID。
+* `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Keeper API バージョン。
+* `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — 有効化されているフィーチャーフラグ。ClickHouse Keeper にのみ適用されます。取りうる値は `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE` です。
+* `availability_zone` ([String](../../sql-reference/data-types/string.md)) — アベイラビリティーゾーン。
+* `reason` ([String](../../sql-reference/data-types/string.md)) — 接続または切断の理由。
 
 例:
 

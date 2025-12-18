@@ -1,9 +1,10 @@
 ---
-'title': '控制 Postgres ClickPipe 的同步'
-'description': '用于控制 Postgres ClickPipe 同步的文档'
-'slug': '/integrations/clickpipes/postgres/sync_control'
-'sidebar_label': '控制同步'
-'doc_type': 'guide'
+title: '控制 Postgres ClickPipe 的同步'
+description: '用于控制 Postgres ClickPipe 同步的指南'
+slug: /integrations/clickpipes/postgres/sync_control
+sidebar_label: '控制同步'
+keywords: ['同步控制', 'Postgres', 'ClickPipes', '批处理大小', '同步间隔']
+doc_type: 'guide'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -12,54 +13,56 @@ import edit_sync_settings from '@site/static/images/integrations/data-ingestion/
 import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/cdc_syncs.png'
 import Image from '@theme/IdealImage';
 
-This document describes how to control the sync of a Postgres ClickPipe when the ClickPipe is in **CDC (Running) mode**.
+本文档介绍在 ClickPipe 处于 **CDC（运行中）模式** 时如何控制 Postgres ClickPipe 的同步。
 
-## Overview {#overview}
 
-Database ClickPipes have an architecture that consists of two parallel processes - pulling from the source database and pushing to the target database. The pulling process is controlled by a sync configuration that defines how often the data should be pulled and how much data should be pulled at a time. By "at a time", we mean one batch - since the ClickPipe pulls and pushes data in batches.
+## 概览 {#overview}
 
-There are two main ways to control the sync of a Postgres ClickPipe. The ClickPipe will start pushing when one of the below settings kicks in.
+数据库 ClickPipes 的架构由两个并行流程组成——从源数据库拉取数据以及向目标数据库推送数据。拉取流程由同步配置控制，同步配置定义了多长时间拉取一次数据以及每次拉取多少数据。这里的“每次”指的是一个批次——因为 ClickPipe 是按批次拉取和推送数据的。
 
-### Sync interval {#interval}
+控制 Postgres ClickPipe 同步有两种主要方式。当下面任一设置生效时，ClickPipe 就会开始推送数据。
 
-管道的同步间隔是 ClickPipe 从源数据库拉取记录的时间量（以秒为单位）。推送的数据到 ClickHouse 的时间不包括在这个间隔内。
+### 同步间隔 {#interval}
 
-默认值是 **1分钟**。
-同步间隔可以设置为任何正整数值，但建议保持在10秒以上。
+管道的同步间隔是 ClickPipe 从源数据库拉取记录的时间长度（以秒为单位）。将已有数据推送到 ClickHouse 所花费的时间不包含在该间隔内。
 
-### Pull batch size {#batch-size}
+默认值为 **1 分钟**。
+同步间隔可以设置为任意正整数值，但建议保持在 10 秒以上。
 
-拉取批次大小是 ClickPipe 在一个批次中从源数据库拉取的记录数量。记录包括在管道中表上进行的插入、更新和删除。
+### 拉取批大小 {#batch-size}
 
-默认情况下为 **100,000** 条记录。
-安全的最大值是 1000 万。
+拉取批大小是指 ClickPipe 在一个批次中从源数据库拉取的记录数量。这里的记录是指对属于该管道的表执行的插入、更新和删除操作。
 
-### An exception: Long-running transactions on source {#transactions}
+默认值为 **100,000** 条记录。
+安全的最大值为 1,000 万。
 
-当在源数据库上运行事务时，ClickPipe 会等待直到收到该事务的 COMMIT 后才继续。这将 **覆盖** 同步间隔和拉取批次大小。
+### 特例：源端的长事务 {#transactions}
 
-### Configuring sync settings {#configuring}
+当在源数据库上执行事务时，ClickPipe 会等待直到收到该事务的 COMMIT 之后才会继续推进。这会**覆盖**同步间隔和拉取批大小这两个设置。
 
-您可以在创建 ClickPipe 时或编辑现有 ClickPipe 时设置同步间隔和拉取批次大小。
-在创建 ClickPipe 时，可以在创建向导的第二步看到，如下所示：
+### 配置同步设置 {#configuring}
 
-<Image img={create_sync_settings} alt="Create sync settings" size="md"/>
+你可以在创建 ClickPipe 时或编辑现有 ClickPipe 时设置同步间隔和拉取批大小。
+在创建 ClickPipe 时，可以在创建向导的第二步中看到这些设置，如下所示：
 
-在编辑现有 ClickPipe 时，您可以前往管道的 **设置** 标签，暂停管道，然后点击这里的 **配置**：
+<Image img={create_sync_settings} alt="创建同步设置" size="md"/>
 
-<Image img={edit_sync_button} alt="Edit sync button" size="md"/>
+在编辑现有 ClickPipe 时，你可以前往该管道的 **Settings** 选项卡，先暂停管道，然后点击这里的 **Configure**：
 
-这将打开一个侧边栏，显示同步设置，您可以在这里更改同步间隔和拉取批次大小：
+<Image img={edit_sync_button} alt="编辑同步按钮" size="md"/>
 
-<Image img={edit_sync_settings} alt="Edit sync settings" size="md"/>
+这会打开一个包含同步设置的侧边面板，你可以在其中更改同步间隔和拉取批大小：
 
-### Tweaking the sync settings to help with replication slot growth {#tweaking}
+<Image img={edit_sync_settings} alt="编辑同步设置" size="md"/>
 
-让我们讨论如何使用这些设置来处理 CDC 管道的大型复制槽。
-推送到 ClickHouse 的时间不会随从源数据库拉取的时间线性缩放。这可以利用来减小大型复制槽的大小。
-通过增加同步间隔和拉取批次大小，ClickPipe 将一次性从源数据库拉取大量数据，然后再推送到 ClickHouse。
+### 调整同步设置以缓解 replication slot 膨胀 {#tweaking}
 
-### Monitoring sync control behaviour {#monitoring}
-您可以在 ClickPipe 的 **指标** 标签中的 **CDC Syncs** 表中查看每个批次所花费的时间。请注意，这里的持续时间包括推送时间，并且如果没有传入行，ClickPipe 会等待，等待时间也包括在持续时间内。
+下面介绍如何使用这些设置来处理 CDC 管道中较大的 replication slot。
+向 ClickHouse 推送数据所需的时间并不会与从源数据库拉取数据的时间线性扩展。可以利用这一点来减小较大 replication slot 的大小。
+通过同时增加同步间隔和拉取批大小，ClickPipe 会在一次拉取中从源数据库获取大量数据，然后再将其推送到 ClickHouse。
 
-<Image img={cdc_syncs} alt="CDC Syncs table" size="md"/>
+### 监控同步控制行为 {#monitoring}
+
+你可以在 ClickPipe 的 **Metrics** 选项卡中的 **CDC Syncs** 表里查看每个批次耗时多久。请注意，这里的时长包含推送时间；此外，如果没有新行到达，ClickPipe 会进行等待，这段等待时间也会计入时长之中。
+
+<Image img={cdc_syncs} alt="CDC Syncs 表" size="md"/>

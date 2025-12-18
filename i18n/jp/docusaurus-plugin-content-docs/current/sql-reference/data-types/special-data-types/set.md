@@ -1,13 +1,12 @@
 ---
-'description': 'IN式で使用されるSet特別データタイプのDocumentation'
-'sidebar_label': 'セット'
-'sidebar_position': 59
-'slug': '/sql-reference/data-types/special-data-types/set'
-'title': 'セット'
-'doc_type': 'reference'
+description: 'IN 式で使用される Set 特殊データ型に関するドキュメント'
+sidebar_label: 'Set'
+sidebar_position: 59
+slug: /sql-reference/data-types/special-data-types/set
+title: 'Set'
+doc_type: 'reference'
 ---
 
+# Set {#set}
 
-# Set
-
-[IN](/sql-reference/operators/in) 式の右半分に使用されます。
+[IN](/sql-reference/operators/in) 式の右側で使用されます。

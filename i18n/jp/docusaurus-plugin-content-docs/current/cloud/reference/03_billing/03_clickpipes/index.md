@@ -1,19 +1,18 @@
 ---
-'slug': '/cloud/reference/billing/clickpipes'
-'title': 'ClickPipes'
-'description': 'ClickPipes 請求'
-'keywords':
-- 'ClickPipes Billing'
-'doc_type': 'reference'
+slug: /cloud/reference/billing/clickpipes
+title: 'ClickPipes'
+description: 'ClickPipes の課金'
+keywords: ['ClickPipes の課金']
+doc_type: 'reference'
 ---
 
 :::note
-MySQLおよびMongoDB CDC ClickPipesの使用は、一般提供（GA）に達するまで無料です。顧客は、GAの開始前に通知され、ClickPipesの使用状況を確認および最適化することができます。
+MySQL および MongoDB の CDC ClickPipes は、General Availability（GA）になるまでは無料で利用できます。お客様には GA 移行前に通知され、その際に ClickPipes の利用状況を確認および最適化していただけます。
 :::
 
-[ClickPipes](/integrations/clickpipes)の請求は、**コンピュート使用量**と**取り込んだデータ**に基づいています。各カテゴリの価格モデルに関する詳細は、専用の請求ページを参照してください：
+[ClickPipes](/integrations/clickpipes) の課金は、**コンピュート使用量** と **取り込まれたデータ量** に基づきます。各カテゴリの料金モデルの詳細については、以下の専用課金ページを参照してください。
 
-| ページ                                                                                                                | 説明                                                                                                                                                                                                                                    |
+| Page                                                                                                                | Description                                                                                                                                                                                                                                    |
 |---------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Postgres CDCのためのClickPipes](/cloud/reference/billing/clickpipes/postgres-cdc)                                 | PostgreSQL CDC ClickPipesの価格。                |
-| [ストリーミングおよびオブジェクトストレージのためのClickPipes](/cloud/reference/billing/clickpipes/streaming-and-object-storage) | ストリーミングおよびオブジェクトストレージのClickPipesの価格。 |
+| [ClickPipes for Postgres CDC](/cloud/reference/billing/clickpipes/postgres-cdc)                                 | PostgreSQL CDC ClickPipes の料金。                |
+| [ClickPipes for streaming and object storage](/cloud/reference/billing/clickpipes/streaming-and-object-storage) | ストリーミングおよびオブジェクトストレージ向け ClickPipes の料金。 |

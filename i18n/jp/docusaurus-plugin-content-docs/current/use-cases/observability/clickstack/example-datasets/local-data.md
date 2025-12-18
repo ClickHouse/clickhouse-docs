@@ -1,182 +1,176 @@
 ---
-'slug': '/use-cases/observability/clickstack/getting-started/local-data'
-'title': 'ローカルログとメトリクス'
-'sidebar_position': 1
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickStackのローカルおよびシステムデータとメトリクスの取り扱いを始める'
-'doc_type': 'guide'
+slug: /use-cases/observability/clickstack/getting-started/local-data
+title: 'ローカルのログとメトリクス'
+sidebar_position: 1
+pagination_prev: null
+pagination_next: null
+description: 'ClickStack のローカルおよびシステムのデータとメトリクスの利用開始ガイド'
+doc_type: 'guide'
+keywords: ['clickstack', 'サンプルデータ', 'サンプルデータセット', 'ログ', 'オブザーバビリティ']
 ---
 
 import Image from '@theme/IdealImage';
-import hyperdx from '@site/static/images/use-cases/observability/hyperdx-1.png';
 import hyperdx_20 from '@site/static/images/use-cases/observability/hyperdx-20.png';
-import hyperdx_3 from '@site/static/images/use-cases/observability/hyperdx-3.png';
-import hyperdx_4 from '@site/static/images/use-cases/observability/hyperdx-4.png';
 import hyperdx_21 from '@site/static/images/use-cases/observability/hyperdx-21.png';
 import hyperdx_22 from '@site/static/images/use-cases/observability/hyperdx-22.png';
 import hyperdx_23 from '@site/static/images/use-cases/observability/hyperdx-23.png';
-import copy_api_key from '@site/static/images/use-cases/observability/copy_api_key.png';
 
-This getting started guide allows you collect local logs and metrics from your system, sending them to ClickStack for visualization and analysis.
+この入門ガイドでは、ローカル環境のログとメトリクスを収集し、それらを ClickStack に送信して可視化および分析します。
 
-**この例はOSXおよびLinuxシステムでのみ動作します**
+**このサンプルは OSX および Linux システムでのみ動作します**
 
-The following example assumes you have started ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started) and connected to the [local ClickHouse instance](/use-cases/observability/clickstack/getting-started#complete-connection-credentials) or a [ClickHouse Cloud instance](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection).
-
-:::note HyperDX in ClickHouse Cloud
-このサンプルデータセットは、HyperDX in ClickHouse Cloudでも使用できますが、フローにわずかな調整が必要です。 ClickHouse CloudでHyperDXを使用する場合、ユーザーは[この展開モデルのためのスタートガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルでOpen Telemetryコレクタを実行する必要があります。
+:::note ClickHouse Cloud 上の HyperDX
+このサンプルデータセットは、記載されているとおり手順にわずかな調整を加えるだけで、ClickHouse Cloud 上の HyperDX でも使用できます。ClickHouse Cloud で HyperDX を使用する場合は、[このデプロイメントモデル向けの入門ガイド](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)で説明されているように、ローカルで実行される OpenTelemetry collector が必要です。
 :::
 
 <VerticalStepper>
+## カスタムOpenTelemetry設定を作成する {#create-otel-configuration}
 
-## HyperDX UIに移動する {#navigate-to-the-hyperdx-ui}
+  以下の内容で `custom-local-config.yaml` ファイルを作成します：
 
-Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI if deploying locally. If using HyperDX in ClickHouse Cloud, select your service and `HyperDX` from the left menu.
+  ```yaml
+  receivers:
+    filelog:
+      include:
+        - /host/var/log/**/*.log        # Linux logs from host
+        - /host/var/log/syslog
+        - /host/var/log/messages
+        - /host/private/var/log/*.log   # macOS logs from host
+      start_at: beginning
+      resource:
+        service.name: "system-logs"
 
-## 取り込みAPIキーをコピーする {#copy-ingestion-api-key}
+    hostmetrics:
+      collection_interval: 1s
+      scrapers:
+        cpu:
+          metrics:
+            system.cpu.time:
+              enabled: true
+            system.cpu.utilization:
+              enabled: true
+        memory:
+          metrics:
+            system.memory.usage:
+              enabled: true
+            system.memory.utilization:
+              enabled: true
+        filesystem:
+          metrics:
+            system.filesystem.usage:
+              enabled: true
+            system.filesystem.utilization:
+              enabled: true
+        paging:
+          metrics:
+            system.paging.usage:
+              enabled: true
+            system.paging.utilization:
+              enabled: true
+            system.paging.faults:
+              enabled: true
+        disk:
+        load:
+        network:
+        processes:
 
-:::note HyperDX in ClickHouse Cloud
-このステップは、ClickHouse CloudでHyperDXを使用している場合は必要ありません。
-:::
+  service:
+    pipelines:
+      logs/local:
+        receivers: [filelog]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+      metrics/hostmetrics:
+        receivers: [hostmetrics]
+        processors:
+          - memory_limiter
+          - batch
+        exporters:
+          - clickhouse
+  ```
 
-Navigate to [`Team Settings`](http://localhost:8080/team) and copy the `Ingestion API Key` from the `API Keys` section. This API key ensures data ingestion through the OpenTelemetry collector is secure.
+  この設定は、macOSおよびLinuxシステムのシステムログとメトリクスを収集し、結果をClickStackに送信します。この設定では、新しいレシーバーとパイプラインを追加することでClickStackコレクターを拡張します。ベースのClickStackコレクターで既に設定されている`clickhouse`エクスポーターとプロセッサー（`memory_limiter`、`batch`）を参照してください。
 
-<Image img={copy_api_key} alt="APIキーをコピー" size="lg"/>
+  :::note インジェストのタイムスタンプ
+  この設定はインジェスト時にタイムスタンプを調整し、各イベントに更新された時刻値を割り当てます。正確なイベント時刻を保持するために、ログファイル内の[タイムスタンプを前処理または解析](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)する際に、OTelプロセッサーまたはオペレーターを使用することを推奨します。
 
-## ローカルOpenTelemetry構成を作成する {#create-otel-configuration}
+  この設定例では、receiverまたはfileプロセッサがファイルの先頭から開始するように構成されている場合、既存のすべてのログエントリには同一の調整済みタイムスタンプ（元のイベント時刻ではなく処理時刻）が割り当てられます。ファイルに追加される新しいイベントには、実際の生成時刻に近似したタイムスタンプが付与されます。
 
-Create a `otel-local-file-collector.yaml` file with the following content.
+  この動作を回避するには、レシーバー設定で開始位置を `end` に設定します。これにより、新しいエントリのみが取り込まれ、実際の到着時刻に近いタイムスタンプが付与されます。
+  :::
 
-**重要**: 上記でコピーした取り込みAPIキーの値を`<YOUR_INGESTION_API_KEY>`に設定してください (ClickHouse CloudでのHyperDXには必要ありません)。
+  OpenTelemetry (OTel) の設定構造の詳細については、[公式ガイド](https://opentelemetry.io/docs/collector/configuration/)を参照してください。
 
-```yaml
-receivers:
-  filelog:
-    include:
-      - /var/log/**/*.log             # Linux
-      - /var/log/syslog
-      - /var/log/messages
-      - /private/var/log/*.log       # macOS
-      - /tmp/all_events.log # macos - see below
-    start_at: beginning # modify to collect new files only
+## カスタム設定でClickStackを起動する {#start-clickstack}
 
-  hostmetrics:
-    collection_interval: 1s
-    scrapers:
-      cpu:
-        metrics:
-          system.cpu.time:
-            enabled: true
-          system.cpu.utilization:
-            enabled: true
-      memory:
-        metrics:
-          system.memory.usage:
-            enabled: true
-          system.memory.utilization:
-            enabled: true
-      filesystem:
-        metrics:
-          system.filesystem.usage:
-            enabled: true
-          system.filesystem.utilization:
-            enabled: true
-      paging:
-        metrics:
-          system.paging.usage:
-            enabled: true
-          system.paging.utilization:
-            enabled: true
-          system.paging.faults:
-            enabled: true
-      disk:
-      load:
-      network:
-      processes:
+  カスタム設定でオールインワンコンテナを起動するには、以下のdockerコマンドを実行します:
 
-exporters:
-  otlp:
-    endpoint: localhost:4317
-    headers:
-      authorization: <YOUR_INGESTION_API_KEY>
-    tls:
-      insecure: true
-    sending_queue:
-      enabled: true
-      num_consumers: 10
-      queue_size: 262144  # 262,144 items × ~8 KB per item ≈ 2 GB
+  ```shell
+  docker run -d --name clickstack \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    clickhouse/clickstack-all-in-one:latest
+  ```
 
-service:
-  pipelines:
-    logs:
-      receivers: [filelog]
-      exporters: [otlp]
-    metrics:
-      receivers: [hostmetrics]
-      exporters: [otlp]
-```
+  :::note rootユーザー
+  すべてのシステムログにアクセスするため、コレクターをrootユーザーとして実行します。これは、Linuxベースのシステムにおいて保護されたパスからログを取得するために必要です。ただし、この方法は本番環境では推奨されません。本番環境では、OpenTelemetry Collectorは、意図するログソースへのアクセスに必要な最小限の権限のみを持つローカルエージェントとしてデプロイする必要があります。
 
-この構成は、OSXおよびLinuxシステムのシステムログおよびメトリックを収集し、その結果をポート4317のOTLPエンドポイントを介してClickStackに送信します。
+  ホストの `/var/log` をコンテナ内の `/host/var/log` にマウントすることで、コンテナ自身のログファイルとの競合を回避しています。
+  :::
 
-:::note 取り込みのタイムスタンプ
-この構成は取り込み時にタイムスタンプを調整し、各イベントに更新された時間値を割り当てます。ユーザーは、正確なイベント時刻が保持されるように、OTelプロセッサやオペレーターを使用してログファイル内のタイムスタンプを[前処理または解析](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)することが理想的です。
+  スタンドアロンコレクターでClickHouse CloudのHyperDXを使用する場合は、代わりに以下のコマンドを使用してください：
 
-この例のセットアップでは、受信者またはファイルプロセッサがファイルの先頭から開始するように構成されている場合、すべての既存のログエントリには同じ調整されたタイムスタンプが割り当てられます - それはオリジナルのイベント時刻ではなく、処理の時間です。ファイルに追加された新しいイベントには、実際の生成時間に近いタイムスタンプが付与されます。
+  ```shell
+  docker run -d \
+    -p 4317:4317 -p 4318:4318 \
+    --user 0:0 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
+    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+    -v "$(pwd)/custom-local-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v /var/log:/host/var/log:ro \
+    -v /private/var/log:/host/private/var/log:ro \
+    clickhouse/clickstack-otel-collector:latest
+  ```
 
-この動作を避けるには、受信者の構成で開始位置を`end`に設定できます。これにより、新しいエントリのみが取り込まれ、真の到着時刻に近いタイムスタンプが付与されます。
-:::
+  コレクターは即座にローカルシステムのログとメトリクスの収集を開始します。
 
-For more details on the OpenTelemetry (OTel) configuration structure, we recommend [the official guide](https://opentelemetry.io/docs/collector/configuration/).
+## HyperDX UIへ移動する {#navigate-to-the-hyperdx-ui}
 
-:::note OSXの詳細ログ
-OSXでより詳細なログを取得したいユーザーは、以下のコマンドを実行してコレクタを開始する前に`log stream --debug --style ndjson >> /tmp/all_events.log`を実行できます。これにより、詳細なオペレーティングシステムログが`/tmp/all_events.log`ファイルにキャプチャされます。このファイルは、上記の構成ですでに含まれています。
-:::
+  ローカルにデプロイする場合は、[http://localhost:8080](http://localhost:8080)にアクセスしてHyperDX UIを開きます。ClickHouse CloudでHyperDXを使用する場合は、サービスを選択し、左メニューから`HyperDX`を選択します。
 
-## コレクタを起動する {#start-the-collector}
+## システムログの確認 {#explore-system-logs}
 
-Run the following docker command to start an instance of the OTel collector.
+  検索UIにローカルシステムログが表示されます。フィルタを展開して`system.log`を選択します：
 
-```shell
-docker run --network=host --rm -it \
-  --user 0:0 \
-  -v "$(pwd)/otel-local-file-collector.yaml":/etc/otel/config.yaml \
-  -v /var/log:/var/log:ro \
-  -v /private/var/log:/private/var/log:ro \
-  otel/opentelemetry-collector-contrib:latest \
-  --config /etc/otel/config.yaml
-```
+  <Image img={hyperdx_20} alt="HyperDX ローカルログ" size="lg" />
 
-:::note ルートユーザー
-すべてのシステムログにアクセスするためにコレクタをルートユーザーとして実行します - これはLinuxベースのシステムから保護されたパスのログをキャプチャするために必要です。ただし、このアプローチは本番環境では推奨されません。本番環境では、OpenTelemetryコレクタは、意図されたログソースにアクセスするために必要な最小限の権限でローカルエージェントとして展開されるべきです。
-:::
+## システムメトリクスを確認する {#explore-system-metrics}
 
-The collector will immediately begin collecting local system logs and metrics.
+  チャートを使用してメトリクスを確認できます。
 
-## システムログを探索する {#explore-system-logs}
+  左側のメニューから Chart Explorer に移動します。ソースとして `Metrics` を選択し、集計タイプとして `Maximum` を選択します。
 
-Navigate to the HyperDX UI. The search UI should be populated with local system logs. Expand the filters to select the `system.log`:
+  `Select a Metric`メニューで、`system.memory.utilization (Gauge)`を選択する前に`memory`と入力します。
 
-<Image img={hyperdx_20} alt="HyperDX ローカルログ" size="lg"/>
+  実行ボタンを押して、時系列でのメモリ使用率を可視化します。
 
-## システムメトリックを探索する {#explore-system-metrics}
+  <Image img={hyperdx_21} alt="メモリ使用量の推移" size="lg" />
 
-We can explore our metrics using charts.
+  数値は浮動小数点の`%`として返されます。より明確に表示するには、`数値形式を設定`を選択してください。
 
-Navigate to the Chart Explorer via the left menu. Select the source `Metrics` and `Maximum` as the aggregation type. 
+  <Image img={hyperdx_22} alt="数値形式" size="lg" />
 
-For the `Select a Metric` menu simply type `memory` before selecting `system.memory.utilization (Gauge)`.
+  表示されたメニューで、`Output format`ドロップダウンから`Percentage`を選択し、`Apply`をクリックします。
 
-Press the run button to visualize your memory utilization over time.
-
-<Image img={hyperdx_21} alt="時間経過によるメモリ" size="lg"/>
-
-Note the number is returned as a floating point `%`. To render it more clearly, select `Set number format`. 
-
-<Image img={hyperdx_22} alt="数値フォーマット" size="lg"/>
-
-From the subsequent menu you can select `Percentage` from the `Output format` drop down before clicking `Apply`.
-
-<Image img={hyperdx_23} alt="時間のメモリ %" size="lg"/>
-
+  <Image img={hyperdx_23} alt="メモリ使用率（％）" size="lg" />
 </VerticalStepper>

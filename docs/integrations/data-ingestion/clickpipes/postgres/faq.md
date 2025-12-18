@@ -323,13 +323,6 @@ WITH (publish_via_partition_root = true);
 This error typically occurs when the source Postgres database has a datatype which cannot be mapped during ingestion.
 For more specific issue, refer to the possibilities below.
 
-### `Cannot parse type Decimal(XX, YY), expected non-empty binary data with size equal to or less than ...` {#cannot-parse-type-decimal-expected-non-empty-binary-data-with-size-equal-to-or-less-than}
-
-Postgres `NUMERIC`s have really high precision (up to 131072 digits before the decimal point; up to 16383 digits after the decimal point) and ClickHouse Decimal type allows maximum of (76 digits, 39 scale).
-The system assumes that _usually_ the size would not get that high and does an optimistic cast for the same as source table can have large number of rows or the row can come in during the CDC phase.
-
-The current workaround would be to map the NUMERIC type to string on ClickHouse. To enable this please raise a ticket with the support team and this will be enabled for your ClickPipes.
-
 ### I'm seeing errors like `invalid memory alloc request size <XXX>` during replication/slot creation {#postgres-invalid-memalloc-bug}
 
 There was a bug introduced in Postgres patch versions 17.5/16.9/15.13/14.18/13.21 due to which certain workloads can cause an exponential increase in memory usage, leading to a memory allocation request >1GB which Postgres considers invalid. This bug [has been fixed](https://github.com/postgres/postgres/commit/d87d07b7ad3b782cb74566cd771ecdb2823adf6a) and will be in the next Postgres patch series (17.6...). Please check with your Postgres provider when this patch version will be available for upgrade. If an upgrade isn't immediately possible, a resync of the pipe will be needed as it hits the error.
@@ -368,3 +361,6 @@ This error suggests a transient issue with the logical decoding of aborted sub-t
 ### I am seeing errors like `error converting new tuple to map` or `error parsing logical message` during CDC replication {#logical-message-processing-errors}
 
 Postgres sends information about changes in the form of messages that have a fixed protocol. These errors arise when the ClickPipe receives a message that it is unable to parse, either due to corruption in transit or invalid messages being sent. While the exact issue tends to vary, we've seen several cases from Neon Postgres sources. In case you are seeing this issue with Neon as well, please raise a support ticket with them. In other cases, please reach out to our support team for guidance.
+
+### Can I include columns I initially excluded from replication? {#include-excluded-columns}
+This is not yet supported and is in our roadmap, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.

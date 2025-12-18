@@ -1,20 +1,24 @@
 ---
-'slug': '/guides/developer/merge-table-function'
-'sidebar_label': 'Merge table function'
-'title': 'Merge table function'
-'description': '同時に複数のテーブルにクエリを実行します。'
-'doc_type': 'reference'
+slug: /guides/developer/merge-table-function
+sidebar_label: 'Merge テーブル関数'
+title: 'Merge テーブル関数'
+description: '複数のテーブルに同時にクエリを実行します。'
+doc_type: 'reference'
+keywords: ['merge', 'table function', 'query patterns', 'table engine', 'data access']
 ---
 
-The [merge table function](https://clickhouse.com/docs/sql-reference/table-functions/merge) は、複数のテーブルに対して並行してクエリを実行することを可能にします。これを実現するために、一時的な [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) テーブルを作成し、その構造をカラムのユニオンを取ることで導出し、共通の型を導出します。
+[Merge テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/merge) を使用すると、複数のテーブルに対して並列にクエリを実行できます。
+一時的な [Merge](https://clickhouse.com/docs/engines/table-engines/special/merge) テーブルを作成し、対象となるテーブル群のカラムの和集合を取り、共通の型を導出することでそのテーブルの構造を決定します。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/b4YfRhD9SSI?si=MuoDwDWeikAV5ttk" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-## テーブルの設定 {#setup-tables}
+## テーブルのセットアップ {#setup-tables}
 
-私たちは、[Jeff Sackmann のテニスデータセット](https://github.com/JeffSackmann/tennis_atp)の助けを借りて、この関数の使い方を学びます。1960年代に遡る試合を含むCSVファイルを処理しますが、各10年ごとに少し異なるスキーマを作成します。1990年代には、いくつかの追加カラムも加えます。
+[Jeff Sackmann のテニスデータセット](https://github.com/JeffSackmann/tennis_atp)を使いながら、この関数の使い方を学んでいきます。
+1960年代までさかのぼる試合が記録された CSV ファイルを処理しますが、各年代ごとに少し異なるスキーマを作成します。
+また、1990年代のスキーマには、いくつか列も追加します。
 
-インポート文は以下の通りです：
+インポート文は以下のとおりです：
 
 ```sql
 CREATE OR REPLACE TABLE atp_matches_1960s ORDER BY tourney_id AS
@@ -46,7 +50,7 @@ SETTINGS schema_inference_make_columns_nullable=0,
 
 ## 複数テーブルのスキーマ {#schema-multiple-tables}
 
-各テーブルのカラムとその型を横並びでリストするために、以下のクエリを実行できます。これにより、違いが見やすくなります。
+次のクエリを実行すると、各テーブルのカラムとその型を横並びで一覧表示できるため、差分を把握しやすくなります。
 
 ```sql
 SELECT * EXCEPT(position) FROM (
@@ -77,15 +81,15 @@ SETTINGS output_format_pretty_max_value_width=25;
 └─────────────┴──────────────────┴─────────────────┴──────────────────┴───────────────────────────┘
 ```
 
-違いを見ていきましょう：
+違いを確認していきます。
 
-* 1970年代は `winner_seed` の型を `Nullable(String)` から `Nullable(UInt8)` に、`score` を `String` から `Array(String)` に変更します。
-* 1980年代は `winner_seed` と `loser_seed` の型を `Nullable(UInt8)` から `Nullable(UInt16)` に変更します。
-* 1990年代は `surface` の型を `String` から `Enum('Hard', 'Grass', 'Clay', 'Carpet')` に変更し、`walkover` と `retirement` のカラムを追加します。
+* 1970s では、`winner_seed` の型を `Nullable(String)` から `Nullable(UInt8)` に、`score` の型を `String` から `Array(String)` に変更しています。
+* 1980s では、`winner_seed` と `loser_seed` の型を `Nullable(UInt8)` から `Nullable(UInt16)` に変更しています。
+* 1990s では、`surface` の型を `String` から `Enum('Hard', 'Grass', 'Clay', 'Carpet')` に変更し、`walkover` および `retirement` 列を追加しています。
 
-## マージを使用した複数テーブルのクエリ {#querying-multiple-tables}
+## merge を使って複数テーブルをクエリする {#querying-multiple-tables}
 
-ジョン・マッケンローが第1シードの選手に勝った試合を見つけるクエリを書いてみましょう：
+John McEnroe が第1シードの選手に勝利した試合を見つけるクエリを書いてみましょう。
 
 ```sql
 SELECT loser_name, score
@@ -111,7 +115,8 @@ AND loser_seed = 1;
 └───────────────┴─────────────────────────────────┘
 ```
 
-次に、マッケンローが第3シード以下であった試合をフィルタリングしたいとしましょう。これは少し難しいです。なぜなら、`winner_seed` は異なるテーブルで異なる型を使用しているからです：
+次に、McEnroe が第 3 シード以下だった試合だけに絞り込みたいとします。
+ここからが少し厄介です。というのも、`winner_seed` はテーブルごとに異なる型を使っているためです。
 
 ```sql
 SELECT loser_name, score, winner_seed
@@ -125,7 +130,9 @@ AND multiIf(
 );
 ```
 
-[`variantType`](/docs/sql-reference/functions/other-functions#varianttype) 関数を使用して各行の `winner_seed` の型をチェックし、その後 [`variantElement`](/docs/sql-reference/functions/other-functions#variantelement) で基礎的な値を抽出します。型が `String` の場合、数値にキャストして比較を行います。クエリを実行した結果は以下の通りです：
+各行の `winner_seed` の型を確認するために [`variantType`](/docs/sql-reference/functions/other-functions#variantType) 関数を使用し、その後 [`variantElement`](/docs/sql-reference/functions/other-functions#variantElement) を用いて実際の値を抽出します。
+型が `String` の場合は数値にキャストしてから比較を行います。
+クエリを実行した結果を以下に示します。
 
 ```text
 ┌─loser_name────┬─score─────────┬─winner_seed─┐
@@ -136,9 +143,10 @@ AND multiIf(
 └───────────────┴───────────────┴─────────────┘
 ```
 
-## マージを使用する場合、行はどのテーブルから来るのか？ {#which-table-merge}
+## merge を使用している場合、行はどのテーブルに由来するのか？ {#which-table-merge}
 
-行がどのテーブルから来たのか知りたい場合は、以下のクエリのように `_table` 仮想カラムを使用できます：
+行がどのテーブルに由来しているのかを知りたい場合はどうすればよいでしょうか？
+次のクエリに示すように、`_table` 仮想カラムを使うことで確認できます。
 
 ```sql
 SELECT _table, loser_name, score, winner_seed
@@ -161,7 +169,7 @@ AND multiIf(
 └───────────────────┴───────────────┴───────────────┴─────────────┘
 ```
 
-この仮想カラムを利用して `walkover` カラムの値をカウントするクエリの一部としても使用できます：
+この仮想カラムは、`walkover` カラムの値をカウントするクエリの一部として使用することもできます。
 
 ```sql
 SELECT _table, walkover, count()
@@ -180,7 +188,8 @@ ORDER BY _table;
 └───────────────────┴──────────┴─────────┘
 ```
 
-`walkover` カラムは `atp_matches_1990s` を除いてすべて `NULL` であることがわかります。`walkover` カラムが `NULL` の場合、`score` カラムが `W/O` という文字列を含むかどうかを確認するようにクエリを更新する必要があります：
+`walkover` 列は `atp_matches_1990s` 以外ではすべて `NULL` になっていることが分かります。
+`walkover` 列が `NULL` の場合に、`score` 列に文字列 `W/O` が含まれているかどうかを確認するようクエリを更新する必要があります。
 
 ```sql
 SELECT _table,
@@ -200,7 +209,7 @@ GROUP BY ALL
 ORDER BY _table;
 ```
 
-`score` の基礎的な型が `Array(String)` である場合、配列を繰り返し `W/O` を探す必要がありますが、型が `String` の場合は、文字列内で直接 `W/O` を検索できます。
+`score` の実際の型が `Array(String)` の場合は、配列を走査して `W/O` を探す必要がありますが、型が `String` の場合は、その文字列内で `W/O` を検索するだけで済みます。
 
 ```text
 ┌─_table────────────┬─multiIf(isNo⋯, '%W/O%'))─┬─count()─┐

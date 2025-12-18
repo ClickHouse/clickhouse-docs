@@ -1,10 +1,11 @@
 ---
-'sidebar_label': 'プラグイン設定'
-'sidebar_position': 3
-'slug': '/integrations/grafana/config'
-'description': 'GrafanaにおけるClickHouseデータソースプラグインの設定オプション'
-'title': 'GrafanaでのClickHouseデータソースの設定'
-'doc_type': 'guide'
+sidebar_label: 'プラグイン設定'
+sidebar_position: 3
+slug: /integrations/grafana/config
+description: 'Grafana における ClickHouse データソースプラグインの設定オプション'
+title: 'Grafana における ClickHouse データソースの設定'
+doc_type: 'guide'
+keywords: ['Grafana プラグイン設定', 'データソース設定', '接続パラメータ', '認証設定', 'プラグインオプション']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,23 +19,24 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# ClickHouse データソースの Grafana での設定
+# Grafana での ClickHouse データソースの設定 {#configuring-clickhouse-data-source-in-grafana}
 
 <ClickHouseSupportedBadge/>
 
-設定を変更する最も簡単な方法は、Grafana UI のプラグイン設定ページで行うことですが、データソースは [YAML ファイルでプロビジョニングすることもできます](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
+設定を変更する最も簡単な方法は、Grafana の UI にあるプラグイン設定ページで行うことですが、データソースは[YAML ファイルでプロビジョニングする](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)こともできます。
 
-このページでは、ClickHouse プラグインでの設定に利用できるオプションのリストと、YAML を使用してデータソースをプロビジョニングするための設定スニペットを示します。
+このページでは、ClickHouse プラグインで設定可能なオプションの一覧と、YAML ファイルでデータソースをプロビジョニングする場合の設定スニペットを示します。
 
-すべてのオプションの簡単な概要については、すべての設定オプションの完全なリストを [こちら](#all-yaml-options) で確認できます。
+すべてのオプションを手早く把握したい場合は、設定オプションの完全な一覧を[こちら](#all-yaml-options)で確認できます。
 
-## 一般設定 {#common-settings}
+## 共通設定 {#common-settings}
 
-設定画面の例：
-<Image size="sm" img={config_common} alt="Example secure native config" border />
+設定画面の例:
 
-一般設定の例 YAML：
+<Image size="sm" img={config_common} alt="セキュアなネイティブ設定の例" border />
+
+共通設定向けの設定 YAML の例:
+
 ```yaml
 jsonData:
   host: 127.0.0.1 # (required) server address.
@@ -57,17 +59,17 @@ secureJsonData:
   tlsClientKey:  <string> # TLS client key
 ```
 
-UI から設定が保存されるときに `version` プロパティが追加されることに注意してください。これにより、設定が保存されたプラグインのバージョンが表示されます。
+UI から構成を保存すると、`version` プロパティが追加されることに注意してください。これは、その構成を保存したプラグインのバージョンを示します。
 
 ### HTTP プロトコル {#http-protocol}
 
-HTTP プロトコルを介して接続することを選択した場合、さらに設定が表示されます。
+HTTP プロトコル経由で接続する場合、追加の設定項目が表示されます。
 
-<Image size="md" img={config_http} alt="Extra HTTP config options" border />
+<Image size="md" img={config_http} alt="追加の HTTP 設定オプション" border />
 
 #### HTTP パス {#http-path}
 
-HTTP サーバーが異なる URL パスで公開されている場合は、ここに追加できます。
+HTTP サーバーが別の URL パスで公開されている場合は、ここに追加できます。
 
 ```yaml
 jsonData:
@@ -79,13 +81,15 @@ jsonData:
 
 サーバーに送信されるリクエストにカスタムヘッダーを追加できます。
 
-ヘッダーはプレーンテキストまたはセキュアな形式にできます。すべてのヘッダーキーはプレーンテキストで保存され、セキュアなヘッダー値はセキュアな設定に保存されます（`password` フィールドに類似）。
+ヘッダーはプレーンテキストまたはセキュア値として指定できます。
+すべてのヘッダーキーはプレーンテキストで保存され、セキュアヘッダーの値はセキュア設定に保存されます（`password` フィールドと同様）。
 
-:::warning セキュアな値は HTTP を介して送信される
-セキュアなヘッダー値は設定に安全に保存されていますが、セキュア接続が無効の場合、値は依然として HTTP 経由で送信されます。
+:::warning HTTP 経由のセキュア値
+セキュアヘッダーの値は設定内では安全に保存されますが、セキュア接続が無効な場合、その値は HTTP 経由で送信されます。
 :::
 
-プレーン/セキュアヘッダーの例 YAML：
+プレーン/セキュアヘッダーの YAML の例:
+
 ```yaml
 jsonData:
   httpHeaders:
@@ -101,11 +105,12 @@ secureJsonData:
 
 ## 追加設定 {#additional-settings}
 
-これらの追加設定はオプションです。
+これらの追加設定は必須ではありません。
 
-<Image size="sm" img={config_additional} alt="Example additional settings" border />
+<Image size="sm" img={config_additional} alt="追加設定の例" border />
 
-例の YAML：
+YAML の例:
+
 ```yaml
 jsonData:
   defaultDatabase: default # default database loaded by the query builder. Defaults to "default".
@@ -118,22 +123,27 @@ jsonData:
 
 ### OpenTelemetry {#opentelemetry}
 
-OpenTelemetry (OTel) はプラグイン内に深く統合されています。OpenTelemetry データは、私たちの [exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) を使用して ClickHouse にエクスポートできます。最適な使用のためには、OTel を [ログ](#logs) と [トレース](#traces) の両方に設定することを推奨します。
+OpenTelemetry (OTel) は、このプラグインに深く統合されています。
+OpenTelemetry データは、[exporter plugin](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) を使用して ClickHouse にエクスポートできます。
+最適に活用するために、[logs](#logs) と [traces](#traces) の両方に対して OTel を構成することを推奨します。
 
-[データリンク](./query-builder.md#data-links) を有効にするためのデフォルトを設定することが必要で、これは強力な可観測性ワークフローを可能にする機能です。
+また、強力なオブザーバビリティワークフローを実現する機能である [data links](./query-builder.md#data-links) を有効にするには、これらのデフォルトを構成することも必要です。
 
-### ログ {#logs}
+### Logs {#logs}
 
-[ログのクエリビルディングを加速するため](./query-builder.md#logs)、デフォルトのデータベース/テーブルおよびログクエリ用のカラムを設定できます。これにより、クエリビルダーが実行可能なログクエリで事前に読み込まれ、可観測性のためのエクスプローラーページでのブラウジングが速くなります。
+[ログ用クエリビルダー](./query-builder.md#logs)でのログクエリ作成を高速化するために、ログクエリ用のデフォルトのデータベース / テーブルおよびカラムを設定できます。これにより、実行可能なログクエリがあらかじめクエリビルダーに読み込まれ、Explore ページでの探索がオブザーバビリティの観点でより高速になります。
 
-OpenTelemetry を使用している場合は、「**OTel を使用する**」スイッチを有効にし、**デフォルトのログテーブル**を `otel_logs` に設定する必要があります。これにより、選択した OTel スキーマバージョンを使用するためにデフォルトのカラムを自動的に上書きします。
+OpenTelemetry を使用している場合は、「**Use OTel**」スイッチを有効にし、**default log table** を `otel_logs` に設定してください。
+これにより、選択した OTel スキーマバージョンを使用するように、デフォルトのカラムが自動的に上書きされます。
 
-OpenTelemetry はログには必要ありませんが、単一のログ/トレースデータセットを使用することで、[データリンク](./query-builder.md#data-links) を用いたスムーズな可観測性ワークフローが実現します。
+ログで OpenTelemetry が必須というわけではありませんが、ログ / トレースを単一のデータセットにまとめることで、[data linking](./query-builder.md#data-links) を用いたスムーズなオブザーバビリティワークフローを実現しやすくなります。
 
-ログ設定画面の例：
+ログ設定画面の例:
+
 <Image size="sm" img={config_logs} alt="Logs config" border />
 
-ログ設定の例 YAML：
+ログ設定 YAML の例:
+
 ```yaml
 jsonData:
   logs:
@@ -151,14 +161,18 @@ jsonData:
 
 ### トレース {#traces}
 
-[トレースのクエリビルディングを加速するため](./query-builder.md#traces)、デフォルトのデータベース/テーブルおよびトレースクエリ用のカラムを設定できます。これにより、クエリビルダーが実行可能なトレース検索クエリで事前に読み込まれ、可観測性のためのエクスプローラーページでのブラウジングが速くなります。
+[トレース用のクエリビルダー](./query-builder.md#traces)でのクエリ作成を高速化するために、トレースクエリ用のデフォルトのデータベース／テーブルおよびカラムを設定できます。これにより、クエリビルダーに実行可能なトレース検索クエリがあらかじめ読み込まれ、Explore ページ上でのオブザーバビリティ向けのブラウジングが高速化されます。
 
-OpenTelemetry を使用している場合は、「**OTel を使用する**」スイッチを有効にし、**デフォルトのトレーステーブル**を `otel_traces` に設定する必要があります。これにより、選択した OTel スキーマバージョンを使用するためにデフォルトのカラムを自動的に上書きします。OpenTelemetry は必須ではありませんが、この機能はトレースに OTel のスキーマを使用している場合に最も効果的に機能します。
+OpenTelemetry を使用している場合は、「**Use OTel**」スイッチを有効にし、**default trace table** を `otel_traces` に設定してください。
+これにより、選択した OTel スキーマバージョンを使用するように、デフォルトのカラムが自動的に上書きされます。
+OpenTelemetry は必須ではありませんが、この機能はトレースに対してそのスキーマを使用している場合に最も効果的に動作します。
 
-トレース設定画面の例：
+トレース設定画面の例:
+
 <Image size="sm" img={config_traces} alt="Traces config" border />
 
-トレース設定の例 YAML：
+トレース設定 YAML の例:
+
 ```yaml
 jsonData:
   traces:
@@ -183,17 +197,20 @@ jsonData:
 
 ### カラムエイリアス {#column-aliases}
 
-カラムエイリアスは、異なる名前や型でデータをクエリする便利な方法です。エイリアスを使用することで、ネストされたスキーマを平坦化し、Grafana で簡単に選択できるようになります。
+カラムエイリアスは、データを別名や別の型として扱ってクエリするための便利な方法です。
+エイリアスを使用すると、ネストされたスキーマをフラットな形に変換し、Grafana で簡単に選択できるようにできます。
 
-エイリアスが relevant である場合：
-- スキーマとそのほとんどのネストされたプロパティ/型を知っている
-- データを Map タイプで保存している
+次のような場合にエイリアスが特に有用です:
+
+- スキーマと、その大半のネストされたプロパティ／型を把握している
+- データを Map 型で保存している
 - JSON を文字列として保存している
-- 選択するカラムに関数を適用していることが多い
+- 選択するカラムに対して変換用の関数を適用することが多い
 
-#### テーブル定義のエイリアスカラム {#table-defined-alias-columns}
+#### テーブルで定義された ALIAS 列 {#table-defined-alias-columns}
 
-ClickHouse にはエイリアスカラムの組み込み機能があり、Grafana との互換性があります。エイリアスカラムは、テーブル上で直接定義できます。
+ClickHouse には列エイリアス機能が組み込まれており、Grafana と追加の設定なしに連携して動作します。
+エイリアス列はテーブル定義内で直接定義できます。
 
 ```sql
 CREATE TABLE alias_example (
@@ -202,17 +219,24 @@ CREATE TABLE alias_example (
 )
 ```
 
-上の例では、ナノ秒のタイムスタンプを `Date` 型に変換するエイリアス `TimestampDate` を作成しています。このデータは、最初のカラムのようにディスクに保存されるのではなく、クエリ時に計算されます。テーブル定義のエイリアスは `SELECT *` では返されませんが、これはサーバー設定で構成できます。
+上記の例では、ナノ秒単位のタイムスタンプを `Date` 型に変換する `TimestampDate` というエイリアスを作成しています。
+このデータは最初の列のようにディスク上に保存されるのではなく、クエリ実行時に計算されます。
+テーブルで定義されたエイリアス列は `SELECT *` では返されませんが、サーバー設定で変更可能です。
 
-詳細については、[ALIAS](/sql-reference/statements/create/table#alias) カラムタイプのドキュメントを参照してください。
+詳細については、[ALIAS](/sql-reference/statements/create/table#alias) カラム型のドキュメントを参照してください。
 
 #### カラムエイリアステーブル {#column-alias-tables}
 
-デフォルトでは、Grafana は `DESC table` からのレスポンスに基づいてカラムの提案を提供します。場合によっては、Grafana が見るカラムを完全に上書きしたいことがあります。これにより、テーブルの複雑さに応じて、Grafana でカラムを選択する際にスキーマを隠すことができます。
+デフォルトでは、Grafana は `DESC table` のレスポンスに基づいてカラム候補を提示します。
+場合によっては、Grafana から見えるカラムをまるごと別のものに置き換えたいことがあります。
+これにより、カラム選択時に Grafana 上でスキーマを見えにくくでき、テーブルの複雑さによってはユーザーエクスペリエンスを向上させられます。
 
-これに対する利点は、テーブルを変更することなく簡単に更新できることです。一部のスキーマでは、これが何千ものエントリになり、基になるテーブル定義を混乱させることがあります。また、ユーザーに無視させたいカラムを隠すこともできます。
+テーブル側で定義するエイリアスと比較した場合の利点は、テーブル自体を変更することなく簡単に更新できる点です。
+スキーマによってはエントリが数千件に及ぶことがあり、基盤となるテーブル定義が煩雑になる可能性があります。
+また、ユーザーに意識させたくないカラムを非表示にすることもできます。
 
-Grafana は、エイリアステーブルが以下のカラム構造を持っていることを要求します：
+Grafana では、エイリアステーブルは次のカラム構造を持つ必要があります。
+
 ```sql
 CREATE TABLE aliases (
   `alias` String,  -- The name of the alias, as seen in the Grafana column selector
@@ -221,7 +245,8 @@ CREATE TABLE aliases (
 )
 ```
 
-これが、エイリアステーブルを使用して `ALIAS` カラムの動作を再現する方法です：
+`ALIAS` 列の動作は、エイリアステーブルを使って次のように再現できます。
+
 ```sql
 CREATE TABLE example_table (
   TimestampNanos DateTime(9)
@@ -234,19 +259,22 @@ INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
 ('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
 ```
 
-このテーブルを Grafana で使用するように設定します。名前は何でも構いませんし、別のデータベースで定義することもできます：
-<Image size="md" img={alias_table_config_example} alt="Example alias table config" border />
+次に、このテーブルを Grafana で使用するように設定できます。名前は任意で、別のデータベースで定義することも可能です：
 
-これにより、Grafana は `DESC example_table` からの結果ではなく、エイリアステーブルの結果を見るようになります：
-<Image size="md" img={alias_table_select_example} alt="Example alias table select" border />
+<Image size="md" img={alias_table_config_example} alt="エイリアステーブル設定の例" border />
 
-両方のエイリアスタイプは、複雑な型変換や JSON フィールドの抽出を実行するために使用できます。
+これで Grafana は、`DESC example_table` の結果ではなく、エイリアステーブルの結果を参照するようになります：
+
+<Image size="md" img={alias_table_select_example} alt="エイリアステーブルの SELECT 例" border />
+
+これら 2 種類のエイリアスは、複雑な型変換や JSON フィールドの抽出を行うために利用できます。
 
 ## すべての YAML オプション {#all-yaml-options}
 
-これらは、プラグインによって提供されるすべての YAML 設定オプションです。一部のフィールドには例として値が示されていますが、他のフィールドは単にフィールドの型を示しています。
+以下は、プラグインで利用可能なすべての YAML 設定オプションです。
+一部のフィールドには値の例があり、他のフィールドはフィールドの型のみを示しています。
 
-YAML でデータソースをプロビジョニングする方法についての詳細は、[Grafana ドキュメント](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) を参照してください。
+YAML を使用したデータソースのプロビジョニングの詳細については、[Grafana のドキュメント](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)を参照してください。
 
 ```yaml
 datasources:

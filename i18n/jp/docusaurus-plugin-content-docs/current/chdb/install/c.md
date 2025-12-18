@@ -1,58 +1,47 @@
 ---
-'title': 'chDB for C と C++'
-'sidebar_label': 'C と C++'
-'slug': '/chdb/install/c'
-'description': 'C と C++ で chDB をインストールし、使用する方法'
-'keywords':
-- 'chdb'
-- 'c'
-- 'cpp'
-- 'embedded'
-- 'clickhouse'
-- 'sql'
-- 'olap'
-- 'api'
-'doc_type': 'guide'
+title: 'chDB for C and C++'
+sidebar_label: 'C and C++'
+slug: /chdb/install/c
+description: 'How to install and use chDB with C and C++'
+keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
+doc_type: 'guide'
 ---
 
+# C および C++ 用 chDB {#chdb-for-c-and-c}
 
-# chDB for C and C++
-
-chDBは、ClickHouseの機能を直接アプリケーションに組み込むためのネイティブC/C++ APIを提供します。このAPIは、シンプルなクエリや持続的接続、ストリーミングクエリ結果などの高度な機能の両方をサポートしています。
+chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、シンプルなクエリと、永続的な接続やストリーミングクエリ結果などの高度な機能の両方をサポートしています。
 
 ## インストール {#installation}
 
-### ステップ1: libchdbをインストール {#install-libchdb}
+### ステップ 1: libchdb をインストール {#install-libchdb}
 
-システムにchDBライブラリをインストールしてください。
+システムに chDB ライブラリをインストールします:
 
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
 
-### ステップ2: ヘッダーを含める {#include-headers}
+### ステップ 2: ヘッダーをインクルード {#include-headers}
 
-プロジェクトにchDBヘッダーを含めてください。
+プロジェクトに chDB ヘッダーをインクルードします:
 
 ```c
 #include <chdb.h>
 ```
 
-### ステップ3: ライブラリをリンク {#link-library}
+### ステップ 3: ライブラリをリンク {#link-library}
 
-chDBでアプリケーションをコンパイルしリンクしてください。
+chDB を使用してアプリケーションをコンパイルおよびリンクします:
 
 ```bash
-
-# C compilation
+# C コンパイル
 gcc -o myapp myapp.c -lchdb
 
-
-# C++ compilation  
+# C++ コンパイル
 g++ -o myapp myapp.cpp -lchdb
 ```
 
-## Cの例 {#c-examples}
+## C の例 {#c-examples}
 
 ### 基本的な接続とクエリ {#basic-connection-queries}
 
@@ -61,18 +50,18 @@ g++ -o myapp myapp.cpp -lchdb
 #include <chdb.h>
 
 int main() {
-    // Create connection arguments
+    // 接続引数を作成
     char* args[] = {"chdb", "--path", "/tmp/chdb-data"};
     int argc = 3;
 
-    // Connect to chDB
+    // chDB に接続
     chdb_connection* conn = chdb_connect(argc, args);
     if (!conn) {
         printf("Failed to connect to chDB\n");
         return 1;
     }
 
-    // Execute a query
+    // クエリを実行
     chdb_result* result = chdb_query(*conn, "SELECT version()", "CSV");
     if (!result) {
         printf("Query execution failed\n");
@@ -80,12 +69,12 @@ int main() {
         return 1;
     }
 
-    // Check for errors
+    // エラーをチェック
     const char* error = chdb_result_error(result);
     if (error) {
         printf("Query error: %s\n", error);
     } else {
-        // Get result data
+        // 結果データを取得
         char* data = chdb_result_buffer(result);
         size_t length = chdb_result_length(result);
         double elapsed = chdb_result_elapsed(result);
@@ -96,7 +85,7 @@ int main() {
         printf("Rows: %llu\n", rows);
     }
 
-    // Cleanup
+    // クリーンアップ
     chdb_destroy_query_result(result);
     chdb_close_conn(conn);
     return 0;
@@ -118,8 +107,8 @@ int main() {
         return 1;
     }
 
-    // Start streaming query
-    chdb_result* stream_result = chdb_stream_query(*conn, 
+    // ストリーミングクエリを開始
+    chdb_result* stream_result = chdb_stream_query(*conn,
         "SELECT number FROM system.numbers LIMIT 1000000", "CSV");
 
     if (!stream_result) {
@@ -130,16 +119,16 @@ int main() {
 
     uint64_t total_rows = 0;
 
-    // Process chunks
+    // チャンクを処理
     while (true) {
         chdb_result* chunk = chdb_stream_fetch_result(*conn, stream_result);
         if (!chunk) break;
 
-        // Check if we have data in this chunk
+        // このチャンクにデータがあるかチェック
         size_t chunk_length = chdb_result_length(chunk);
         if (chunk_length == 0) {
             chdb_destroy_query_result(chunk);
-            break; // End of stream
+            break; // ストリームの終了
         }
 
         uint64_t chunk_rows = chdb_result_rows_read(chunk);
@@ -147,12 +136,12 @@ int main() {
 
         printf("Processed chunk: %llu rows, %zu bytes\n", chunk_rows, chunk_length);
 
-        // Process the chunk data here
+        // ここでチャンクデータを処理
         // char* data = chdb_result_buffer(chunk);
 
         chdb_destroy_query_result(chunk);
 
-        // Progress reporting
+        // 進捗レポート
         if (total_rows % 100000 == 0) {
             printf("Progress: %llu rows processed\n", total_rows);
         }
@@ -160,7 +149,7 @@ int main() {
 
     printf("Streaming complete. Total rows: %llu\n", total_rows);
 
-    // Cleanup streaming query
+    // ストリーミングクエリのクリーンアップ
     chdb_destroy_query_result(stream_result);
     chdb_close_conn(conn);
     return 0;
@@ -179,24 +168,24 @@ int main() {
 
     const char* query = "SELECT number, toString(number) as str FROM system.numbers LIMIT 3";
 
-    // CSV format
+    // CSV フォーマット
     chdb_result* csv_result = chdb_query(*conn, query, "CSV");
-    printf("CSV Result:\n%.*s\n\n", 
-           (int)chdb_result_length(csv_result), 
+    printf("CSV Result:\n%.*s\n\n",
+           (int)chdb_result_length(csv_result),
            chdb_result_buffer(csv_result));
     chdb_destroy_query_result(csv_result);
 
-    // JSON format
+    // JSON フォーマット
     chdb_result* json_result = chdb_query(*conn, query, "JSON");
-    printf("JSON Result:\n%.*s\n\n", 
-           (int)chdb_result_length(json_result), 
+    printf("JSON Result:\n%.*s\n\n",
+           (int)chdb_result_length(json_result),
            chdb_result_buffer(json_result));
     chdb_destroy_query_result(json_result);
 
-    // Pretty format
+    // Pretty フォーマット
     chdb_result* pretty_result = chdb_query(*conn, query, "Pretty");
-    printf("Pretty Result:\n%.*s\n\n", 
-           (int)chdb_result_length(pretty_result), 
+    printf("Pretty Result:\n%.*s\n\n",
+           (int)chdb_result_length(pretty_result),
            chdb_result_buffer(pretty_result));
     chdb_destroy_query_result(pretty_result);
 
@@ -205,7 +194,7 @@ int main() {
 }
 ```
 
-## C++の例 {#cpp-example}
+## C++ の例 {#cpp-example}
 
 ```cpp
 #include <iostream>
@@ -219,7 +208,7 @@ private:
 
 public:
     ChDBConnection(const std::vector<std::string>& args) {
-        // Convert string vector to char* array
+        // string vector を char* 配列に変換
         std::vector<char*> argv;
         for (const auto& arg : args) {
             argv.push_back(const_cast<char*>(arg.c_str()));
@@ -252,7 +241,7 @@ public:
 
         std::string data(chdb_result_buffer(result), chdb_result_length(result));
 
-        // Get query statistics
+        // クエリ統計を取得
         std::cout << "Query statistics:\n";
         std::cout << "  Elapsed: " << chdb_result_elapsed(result) << " seconds\n";
         std::cout << "  Rows read: " << chdb_result_rows_read(result) << "\n";
@@ -265,18 +254,18 @@ public:
 
 int main() {
     try {
-        // Create connection
+        // 接続を作成
         ChDBConnection db({{"chdb", "--path", "/tmp/chdb-cpp"}});
 
-        // Create and populate table
+        // テーブルを作成してデータを投入
         db.query("CREATE TABLE test (id UInt32, value String) ENGINE = MergeTree() ORDER BY id");
         db.query("INSERT INTO test VALUES (1, 'hello'), (2, 'world'), (3, 'chdb')");
 
-        // Query with different formats
+        // 異なるフォーマットでクエリ
         std::cout << "CSV Results:\n" << db.query("SELECT * FROM test", "CSV") << "\n";
         std::cout << "JSON Results:\n" << db.query("SELECT * FROM test", "JSON") << "\n";
 
-        // Aggregation query
+        // 集計クエリ
         std::cout << "Count: " << db.query("SELECT COUNT(*) FROM test") << "\n";
 
     } catch (const std::exception& e) {
@@ -299,7 +288,7 @@ int safe_query_example() {
     chdb_result* result = NULL;
     int return_code = 0;
 
-    // Create connection
+    // 接続を作成
     char* args[] = {"chdb"};
     conn = chdb_connect(1, args);
     if (!conn) {
@@ -307,7 +296,7 @@ int safe_query_example() {
         return 1;
     }
 
-    // Execute query
+    // クエリを実行
     result = chdb_query(*conn, "SELECT invalid_syntax", "CSV");
     if (!result) {
         printf("Query execution failed\n");
@@ -315,7 +304,7 @@ int safe_query_example() {
         goto cleanup;
     }
 
-    // Check for query errors
+    // クエリエラーをチェック
     const char* error = chdb_result_error(result);
     if (error) {
         printf("Query error: %s\n", error);
@@ -323,9 +312,9 @@ int safe_query_example() {
         goto cleanup;
     }
 
-    // Process successful result
-    printf("Result: %.*s\n", 
-           (int)chdb_result_length(result), 
+    // 成功した結果を処理
+    printf("Result: %.*s\n",
+           (int)chdb_result_length(result),
            chdb_result_buffer(result));
 
 cleanup:
@@ -335,8 +324,8 @@ cleanup:
 }
 ```
 
-## GitHubリポジトリ {#github-repository}
+## GitHub リポジトリ {#github-repository}
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
-- **問題とサポート**: [GitHubリポジトリ](https://github.com/chdb-io/chdb/issues)で問題を報告
-- **C APIドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **イシューとサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues)で問題を報告してください
+- **C API ドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb/blob/main/bindings.md)

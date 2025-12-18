@@ -1,48 +1,47 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/agno'
-'sidebar_label': 'Интеграция Agno'
-'title': 'Как создать AI-агента с Agno и сервером ClickHouse MCP'
-'pagination_prev': null
-'pagination_next': null
-'description': 'Узнайте, как создать AI-агента с Agno и сервером ClickHouse MCP'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'Agno'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/agno
+sidebar_label: 'Интеграция Agno'
+title: 'Как создать AI-агента с помощью Agno и сервера ClickHouse MCP'
+pagination_prev: null
+pagination_next: null
+description: 'Узнайте, как создать AI-агента с помощью Agno и сервера ClickHouse MCP'
+keywords: ['ClickHouse', 'MCP', 'Agno']
+show_related_blogs: true
+doc_type: 'guide'
 ---
-# Как создать AI-агента с помощью Agno и сервера ClickHouse MCP
 
-В этом руководстве вы узнаете, как создать AI-агента [Agno](https://github.com/agno-agi/agno), который может взаимодействовать с 
-[SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с использованием [сервера ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
+# Как создать агента ИИ с помощью Agno и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
-:::note Пример заметки
-Этот пример можно найти в виде заметки в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb).
+В этом руководстве вы узнаете, как создать агента ИИ на базе [Agno](https://github.com/agno-agi/agno), способного взаимодействовать с 
+[SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+
+:::note Пример ноутбука
+Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb).
 :::
 
-## Предварительные условия {#prerequisites}
-- Вам нужно установить Python на вашу систему.
-- Вам нужно установить `pip` на вашу систему.
-- Вам нужен ключ API Anthropic или ключ API от другого поставщика LLM.
+## Предварительные требования {#prerequisites}
 
-Вы можете выполнить следующие шаги как из вашего Python REPL, так и через скрипт.
+- В вашей системе должен быть установлен Python.
+- В вашей системе должен быть установлен `pip`.
+- Вам потребуется API-ключ Anthropic или API-ключ другого поставщика LLM.
+
+Следующие шаги можно выполнить либо из Python REPL, либо с помощью скрипта.
 
 <VerticalStepper headerLevel="h2">
 
 ## Установка библиотек {#install-libraries}
 
-Установите библиотеку Agno, выполнив следующие команды:
+Установите библиотеку Agno с помощью следующих команд:
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q agno
-!pip install -q ipywidgets
+pip install -q --upgrade pip
+pip install -q agno
+pip install -q ipywidgets
 ```
 
 ## Настройка учетных данных {#setup-credentials}
 
-Далее вам нужно предоставить ваш ключ API Anthropic:
+Далее необходимо указать свой API-ключ Anthropic:
 
 ```python
 import os, getpass
@@ -53,12 +52,12 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 Enter Anthropic API Key: ········
 ```
 
-:::note Использование другого поставщика LLM
-Если у вас нет ключа API Anthropic и вы хотите использовать другого поставщика LLM,
-вы можете найти инструкции по настройке ваших учетных данных в [документации DSPy](https://dspy.ai/#__tabbed_1_1).
+:::note Использование другого провайдера LLM
+Если у вас нет API-ключа Anthropic и вы хотите использовать другого провайдера LLM,
+вы можете найти инструкции по настройке учётных данных в [документации Agno](https://docs.agno.com/concepts/models/introduction)
 :::
 
-Далее, определите учетные данные, необходимые для подключения к SQL-песочнице ClickHouse:
+Далее определите учётные данные, необходимые для подключения к песочнице ClickHouse SQL:
 
 ```python
 env = {
@@ -70,10 +69,10 @@ env = {
 }
 ```
 
-## Инициализация сервера MCP и агента Agno {#initialize-mcp-and-agent}
+## Инициализация MCP-сервера и агента Agno {#initialize-mcp-and-agent}
 
-Теперь настройте сервер ClickHouse MCP так, чтобы он указывал на SQL-песочницу ClickHouse 
-а также инициализируйте нашего агента Agno и задайте ему вопрос:
+Теперь настройте ClickHouse MCP-сервер для подключения к ClickHouse SQL playground
+и инициализируйте агента Agno, задав ему вопрос:
 
 ```python
 from agno.agent import Agent

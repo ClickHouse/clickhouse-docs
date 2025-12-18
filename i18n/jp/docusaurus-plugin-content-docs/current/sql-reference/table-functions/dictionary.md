@@ -1,34 +1,33 @@
 ---
-'description': 'ClickHouse テーブルとして辞書データを表示します。Dictionary エンジンと同様に動作します。'
-'sidebar_label': '辞書'
-'sidebar_position': 47
-'slug': '/sql-reference/table-functions/dictionary'
-'title': '辞書'
-'doc_type': 'reference'
+description: '辞書データを ClickHouse のテーブルとして表示します。Dictionary エンジンと同様に動作します。'
+sidebar_label: 'dictionary'
+sidebar_position: 47
+slug: /sql-reference/table-functions/dictionary
+title: 'dictionary'
+doc_type: 'reference'
 ---
 
+# dictionary テーブル関数 {#dictionary-table-function}
 
-# dictionary Table Function
+[dictionary](../../sql-reference/dictionaries/index.md) のデータを ClickHouse のテーブルとして扱います。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
 
-Displays the [dictionary](../../sql-reference/dictionaries/index.md) data as a ClickHouse table. Works the same way as [Dictionary](../../engines/table-engines/special/dictionary.md) engine.
-
-## Syntax {#syntax}
+## 構文 {#syntax}
 
 ```sql
 dictionary('dict')
 ```
 
-## Arguments {#arguments}
+## 引数 {#arguments}
 
-- `dict` — 辞書名。 [String](../../sql-reference/data-types/string.md)。
+- `dict` — 辞書名。[String](../../sql-reference/data-types/string.md) 型。
 
-## Returned value {#returned_value}
+## 戻り値 {#returned_value}
 
-A ClickHouse table.
+ClickHouse テーブルです。
 
-## Examples {#examples}
+## 例 {#examples}
 
-Input table `dictionary_source_table`:
+入力テーブル `dictionary_source_table`:
 
 ```text
 ┌─id─┬─value─┐
@@ -37,20 +36,20 @@ Input table `dictionary_source_table`:
 └────┴───────┘
 ```
 
-Create a dictionary:
+辞書を作成する：
 
 ```sql
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
-Query:
+クエリ：
 
 ```sql
 SELECT * FROM dictionary('new_dictionary');
 ```
 
-Result:
+結果：
 
 ```text
 ┌─id─┬─value─┐
@@ -59,6 +58,6 @@ Result:
 └────┴───────┘
 ```
 
-## Related {#related}
+## 関連 {#related}
 
-- [Dictionary engine](/engines/table-engines/special/dictionary)
+- [Dictionary エンジン](/engines/table-engines/special/dictionary)

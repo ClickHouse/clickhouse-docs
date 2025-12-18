@@ -4,11 +4,15 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-ClickStack имеет бета-поддержку [типа JSON](/interfaces/formats/JSON) с версии `2.0.4`.
+:::warning Beta Feature - not production ready
+Поддержка типа JSON в **ClickStack** находится в статусе **бета-версии**. Хотя сам тип JSON готов к промышленной эксплуатации в ClickHouse 25.3+, его интеграция в ClickStack всё ещё активно разрабатывается и может иметь ограничения, изменяться в будущем или содержать ошибки.
+:::
 
-Для получения преимуществ этого типа смотрите [Преимущества типа JSON](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
+Поддержка [типа JSON](/interfaces/formats/JSON) в ClickStack доступна в статусе бета-версии, начиная с версии `2.0.4`.
 
-Чтобы включить поддержку типа JSON, пользователи должны установить следующие переменные окружения:
+О преимуществах этого типа см. раздел [Преимущества типа JSON](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
 
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - включает поддержку в OTel collector, гарантируя, что схемы создаются с использованием типа JSON.
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` - включает поддержку в приложении HyperDX, позволяя запрашивать данные в формате JSON.
+Чтобы включить поддержку типа JSON, вам необходимо задать следующие переменные окружения:
+
+- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` — включает поддержку в OTel collector, гарантируя, что схемы создаются с использованием типа JSON.
+- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` — включает поддержку в приложении HyperDX, позволяя выполнять запросы к данным JSON.

@@ -1,49 +1,46 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/pydantic-ai'
-'sidebar_label': 'PydanticAI を統合する'
-'title': 'ClickHouse MCP サーバーを使用して PydanticAI エージェントを構築する方法。'
-'pagination_prev': null
-'pagination_next': null
-'description': 'ClickHouse MCP サーバーと対話できる PydanticAI エージェントの構築方法を学びましょう。'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'PydanticAI'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
+sidebar_label: 'PydanticAI を統合する'
+title: 'ClickHouse MCP Server を使用して PydanticAI エージェントを構築する方法'
+pagination_prev: null
+pagination_next: null
+description: 'ClickHouse MCP Server と対話できる PydanticAI エージェントの構築方法を学びます。'
+keywords: ['ClickHouse', 'MCP', 'PydanticAI']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# ClickHouse MCP Server を使用して PydanticAI エージェントを構築する方法 {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
-# ClickHouse MCP サーバーを使用して PydanticAI エージェントを構築する方法
-
-このガイドでは、[ClickHouseの SQL プレイグラウンド](https://sql.clickhouse.com/) と [ClickHouseの MCP サーバー](https://github.com/ClickHouse/mcp-clickhouse) を使用してインタラクションできる [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) エージェントを構築する方法を学びます。
+このガイドでは、[ClickHouse の MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使って [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) エージェントを構築する方法を学びます。
 
 :::note 例のノートブック
-この例は、[examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) のノートブックに含まれています。
+この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) にあるノートブックとして提供されています。
 :::
 
 ## 前提条件 {#prerequisites}
-- システムに Python がインストールされている必要があります。
-- システムに `pip` がインストールされている必要があります。
-- Anthropic API キー、または別の LLM プロバイダーからの API キーが必要です。
 
-以下の手順は、Python REPL またはスクリプト経由で実行できます。
+- システムにPythonがインストールされていること
+- システムに`pip`がインストールされていること
+- AnthropicのAPIキー、または他のLLMプロバイダーのAPIキー
+
+以下の手順は、Python REPLまたはスクリプトから実行できます。
 
 <VerticalStepper headerLevel="h2">
 
 ## ライブラリをインストールする {#install-libraries}
 
-以下のコマンドを実行して、必要なライブラリをインストールします。
+次のコマンドを実行して、必要なライブラリをインストールします。
 
 ```python
-!pip install -q --upgrade pip
-!pip install -q "pydantic-ai-slim[mcp]"
-!pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
+pip install -q --upgrade pip
+pip install -q "pydantic-ai-slim[mcp]"
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
 
-## 認証情報を設定する {#setup-credentials}
+## 資格情報の設定 {#setup-credentials}
 
-次に、あなたの Anthropic API キーを提供する必要があります：
+次に、Anthropic の API キーを指定する必要があります。
 
 ```python
 import os, getpass
@@ -54,12 +51,12 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 Enter Anthropic API Key: ········
 ```
 
-:::note 別の LLM プロバイダーを使用する
-Anthropic API キーをお持ちでない場合や、別の LLM プロバイダーを使用したい場合は、
-[ PydanticAI ドキュメント](https://ai.pydantic.dev/models/) で認証情報の設定に関する手順を見つけることができます。
+:::note 別の LLM プロバイダーを使用する場合
+Anthropic の API キーをお持ちでなく、別の LLM プロバイダーを使用したい場合は、
+認証情報の設定手順を [PydanticAI のドキュメント](https://ai.pydantic.dev/models/) で確認できます。
 :::
 
-次に、ClickHouse SQL プレイグラウンドに接続するために必要な認証情報を定義します：
+次に、ClickHouse SQL Playground に接続するために必要な認証情報を定義します。
 
 ```python
 env = {
@@ -71,9 +68,9 @@ env = {
 }
 ```
 
-## MCP サーバーと PydanticAI エージェントを初期化する {#initialize-mcp}
+## MCP Server と PydanticAI エージェントの初期化 {#initialize-mcp}
 
-次に、ClickHouse MCP サーバーを ClickHouse SQL プレイグラウンドに指すように構成します：
+次に、ClickHouse MCP Server を設定し、ClickHouse SQL playground を参照するようにします。
 
 ```python
 from pydantic_ai import Agent

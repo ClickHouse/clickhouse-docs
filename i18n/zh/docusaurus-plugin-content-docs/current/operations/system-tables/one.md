@@ -1,21 +1,18 @@
 ---
-'description': '系统表包含一行和一个`dummy` UInt8 列，其值为 0。类似于其他 DBMS 中的 `DUAL` 表。'
-'keywords':
-- 'system table'
-- 'one'
-'slug': '/operations/system-tables/one'
-'title': 'system.one'
-'doc_type': 'reference'
+description: '系统表，包含一行且仅有一个名为 `dummy` 的 UInt8 列，列值为 0。类似于其他 DBMS 中的 `DUAL` 表。'
+keywords: ['系统表', 'one']
+slug: /operations/system-tables/one
+title: 'system.one'
+doc_type: 'reference'
 ---
 
+# system.one {#systemone}
 
-# system.one
+该表包含一行数据，只有一个名为 `dummy` 的 UInt8 列，列中的值为 0。
 
-该表包含一行，包含一个 `dummy` UInt8 列，其中的值为 0。
+当 `SELECT` 查询中未指定 `FROM` 子句时，会使用该表。
 
-当 `SELECT` 查询未指定 `FROM` 子句时，将使用该表。
-
-这类似于在其他数据库管理系统中发现的 `DUAL` 表。
+这类似于其他 DBMS 中的 `DUAL` 表。
 
 **示例**
 

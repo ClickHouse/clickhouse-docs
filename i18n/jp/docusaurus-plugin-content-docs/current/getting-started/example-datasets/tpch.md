@@ -1,25 +1,26 @@
 ---
-'description': 'TPC-H ベンチマークデータセットとクエリ。'
-'sidebar_label': 'TPC-H'
-'slug': '/getting-started/example-datasets/tpch'
-'title': 'TPC-H (1999)'
-'doc_type': 'reference'
+description: 'TPC-H ベンチマークのデータセットとクエリ。'
+sidebar_label: 'TPC-H'
+slug: /getting-started/example-datasets/tpch
+title: 'TPC-H (1999)'
+doc_type: 'guide'
+keywords: ['サンプルデータセット', 'tpch', 'ベンチマーク', 'サンプルデータ', 'パフォーマンス テスト']
 ---
 
-A popular benchmark which models the internal data warehouse of a wholesale supplier.  
-このデータは、クエリ実行時に多くの結合を必要とする第三正規形の表現として保存されます。  
-その年齢と、データが均等かつ独立に分布しているという非現実的な仮定にもかかわらず、TPC-Hは現在まで最も人気のあるOLAPベンチマークです。
+卸売サプライヤーの社内データウェアハウスをモデル化した、広く用いられているベンチマークです。
+データは第 3 正規形で表現されており、クエリ実行時に多数の `JOIN` が必要になります。
+データが一様かつ互いに独立に分布しているという非現実的な前提と、ベンチマーク自体の古さにもかかわらず、TPC-H は現在も最も広く利用されている OLAP ベンチマークです。
 
-**References**
+**参考文献**
 
-- [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
-- [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
-- [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
-- [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
+* [TPC-H](https://www.tpc.org/tpc_documents_current_versions/current_specifications5.asp)
+* [New TPC Benchmarks for Decision Support and Web Commerce](https://doi.org/10.1145/369275.369291) (Poess et. al., 2000)
+* [TPC-H Analyzed: Hidden Messages and Lessons Learned from an Influential Benchmark](https://doi.org/10.1007/978-3-319-04936-6_5) (Boncz et. al.), 2013
+* [Quantifying TPC-H Choke Points and Their Optimizations](https://doi.org/10.14778/3389133.3389138) (Dresseler et. al.), 2020
 
-## Data Generation and Import {#data-generation-and-import}
+## データ生成とインポート {#data-generation-and-import}
 
-First, checkout the TPC-H repository and compile the data generator:
+まず、TPC-H リポジトリを取得し、データ生成ツールをコンパイルします。
 
 ```bash
 git clone https://github.com/gregrahn/tpch-kit.git
@@ -27,16 +28,16 @@ cd tpch-kit/dbgen
 make
 ```
 
-Then, generate the data. Parameter `-s` specifies the scale factor. For example, with `-s 100`, 600 million rows are generated for table 'lineitem'.
+次にデータを生成します。パラメータ `-s` はスケール係数を指定します。例えば `-s 100` の場合、テーブル&#39;lineitem&#39;に 6 億行のデータが生成されます。
 
 ```bash
 ./dbgen -s 100
 ```
 
-Detailed table sizes with scale factor 100:
+スケールファクター 100 の場合の詳細なテーブルサイズ:
 
 | Table    | size (in rows) | size (compressed in ClickHouse) |
-|----------|----------------|---------------------------------|
+| -------- | -------------- | ------------------------------- |
 | nation   | 25             | 2 kB                            |
 | region   | 5              | 1 kB                            |
 | part     | 20.000.000     | 895 MB                          |
@@ -46,17 +47,18 @@ Detailed table sizes with scale factor 100:
 | orders   | 150.000.000    | 6.15 GB                         |
 | lineitem | 600.000.000    | 26.69 GB                        |
 
-(Compressed sizes in ClickHouse are taken from `system.tables.total_bytes` and based on below table definitions.)
+（ClickHouse における圧縮後のサイズは `system.tables.total_bytes` から取得したもので、以下のテーブル定義に基づきます。）
 
-Now create tables in ClickHouse.
+次に、ClickHouse にテーブルを作成します。
 
-We stick as closely as possible to the rules of the TPC-H specification:
-- 主キーは仕様のセクション1.4.2.2で言及されているカラムのみに作成されます。
-- 置換パラメータは、仕様のセクション2.1.x.4でのクエリ検証のための値に置き換えられました。
-- セクション1.4.2.1に従い、テーブル定義ではオプションの`NOT NULL`制約を使用しません。`dbgen`がデフォルトで生成してもです。  
-  ClickHouseでの`SELECT`クエリのパフォーマンスは、`NOT NULL`制約の有無に影響されません。
-- セクション1.3.1に従い、ClickHouseのネイティブデータ型（例：`Int32`、`String`）を使用して仕様で言及される抽象データ型（例：`Identifier`、`Variable text, size N`）を実装します。  
-  このことの唯一の影響は可読性が向上することであり、`dbgen`によって生成されるSQL-92データ型（例：`INTEGER`、`VARCHAR(40)`）もClickHouseで機能します。
+TPC-H 仕様のルールにできるだけ忠実に従います:
+
+* 主キーは、仕様のセクション 1.4.2.2 で言及されているカラムに対してのみ作成します。
+* 置換パラメータは、仕様のセクション 2.1.x.4 にあるクエリ検証用の値に置き換えています。
+* セクション 1.4.2.1 に従い、テーブル定義ではオプションの `NOT NULL` 制約は使用しません。`dbgen` がデフォルトでそれらを生成する場合でも同様です。
+  ClickHouse における `SELECT` クエリのパフォーマンスは、`NOT NULL` 制約の有無によって影響を受けません。
+* セクション 1.3.1 に従い、抽象的なデータ型（例: `Identifier`, `Variable text, size N`）を実装するために、ClickHouse ネイティブのデータ型（例: `Int32`, `String`）を使用します。
+  これにより読みやすさが向上するだけであり、`dbgen` によって生成される SQL-92 のデータ型（例: `INTEGER`, `VARCHAR(40)`）も ClickHouse で問題なく動作します。
 
 ```sql
 CREATE TABLE nation (
@@ -151,7 +153,7 @@ ORDER BY (l_orderkey, l_linenumber);
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
-The data can be imported as follows:
+データは次の手順でインポートできます。
 
 ```bash
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO nation FORMAT CSV" < nation.tbl
@@ -164,9 +166,9 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO orders FORMAT 
 clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMAT CSV" < lineitem.tbl
 ```
 
-:::note  
-Instead of using tpch-kit and generating the tables by yourself, you can alternatively import the data from a public S3 bucket. Make sure  
-to create empty tables first using above `CREATE` statements.  
+:::note
+tpch-kit を使用して自分でテーブルを生成する代わりに、公開 S3 バケットからデータをインポートすることもできます。必ず、上記の `CREATE` 文を使って、先に空のテーブルを作成してください。
+
 ```sql
 -- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -187,32 +189,33 @@ INSERT INTO partsupp SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/customer.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/orders.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/lineitem.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
-````
+```
+
 :::
 
-## Queries {#queries}
+## クエリ {#queries}
 
 :::note
-Setting [`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) should be enabled to produce correct results according to SQL standard.
+SQL 標準に従った正しい結果を得るために、[`join_use_nulls`](../../operations/settings/settings.md#join_use_nulls) の設定を有効にする必要があります。
 :::
 
 :::note
-Some TPC-H queries query use correlated subqueries which are available since v25.8.
-Please use at least this ClickHouse version to run the queries.
+一部の TPC-H クエリは、v25.8 以降で利用可能な相関サブクエリを使用します。
+これらのクエリを実行するには、少なくともこのバージョン以降の ClickHouse を使用してください。
 
-In ClickHouse versions 25.5, 25.6, 25.7, it is necessary to set additionally:
+ClickHouse バージョン 25.5、25.6、25.7 では、追加で次の設定を行う必要があります：
 
 ```sql
 SET allow_experimental_correlated_subqueries = 1;
-```  
+```
+
 :::
 
-The queries are generated by `./qgen -s <scaling_factor>`. Example queries for `s = 100` below:
+クエリは `./qgen -s <scaling_factor>` によって生成されます。`s = 100` の場合のサンプルクエリを以下に示します。
 
-**Correctness**  
+**正確性**
 
-The result of the queries agrees with the official results unless mentioned otherwise. To verify, generate a TPC-H database with scale  
-factor = 1 (`dbgen`, see above) and compare with the [expected results in tpch-kit](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers).
+特に断りがない限り、クエリ結果は公式の結果と一致します。検証するには、スケールファクタ = 1 の TPC-H データベース（`dbgen`、前述）を生成し、[tpch-kit における期待される結果](https://github.com/gregrahn/tpch-kit/tree/master/dbgen/answers)と比較してください。
 
 **Q1**
 
@@ -384,10 +387,10 @@ WHERE
     AND l_quantity < 24;
 ```
 
-::::note  
-As of February 2025, the query does not work out-of-the box due to a bug with Decimal addition. Corresponding issue: https://github.com/ClickHouse/ClickHouse/issues/70136  
+::::note
+2025年2月時点では、Decimal 型の加算に関するバグにより、このクエリはそのままでは動作しません。対応する Issue: [https://github.com/ClickHouse/ClickHouse/issues/70136](https://github.com/ClickHouse/ClickHouse/issues/70136)
 
-This alternative formulation works and was verified to return the reference results.  
+以下の代替クエリは正常に動作し、リファレンス結果が返ることを確認済みです。
 
 ```sql
 SELECT
@@ -399,7 +402,8 @@ WHERE
     AND l_shipdate < DATE '1994-01-01' + INTERVAL '1' year
     AND l_discount BETWEEN 0.05 AND 0.07
     AND l_quantity < 24;
-```  
+```
+
 ::::
 
 **Q7**

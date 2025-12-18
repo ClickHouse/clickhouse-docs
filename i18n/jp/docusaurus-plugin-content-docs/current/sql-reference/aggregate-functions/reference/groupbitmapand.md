@@ -1,12 +1,12 @@
 ---
-'description': 'ビットマップカラムのANDを計算し、UInt64型の基数を返します。-Stateサフィックスを追加すると、ビットマップオブジェクトを返します。'
-'sidebar_position': 149
-'slug': '/sql-reference/aggregate-functions/reference/groupbitmapand'
-'title': 'groupBitmapAnd'
-'doc_type': 'reference'
+description: 'ビットマップ列に対して AND 演算を行い、型 UInt64 の基数を返します。-State サフィックスを付与すると、ビットマップオブジェクトを返します。'
+sidebar_position: 149
+slug: /sql-reference/aggregate-functions/reference/groupbitmapand
+title: 'groupBitmapAnd'
+doc_type: 'reference'
 ---
 
-ビットマップカラムのAND計算を行い、UInt64型の基数を返します。接尾辞-Stateを追加すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md)が返されます。
+ビットマップ列に対して AND 演算を行い、型 UInt64 の基数を返します。-State サフィックスを付与すると、[ビットマップオブジェクト](../../../sql-reference/functions/bitmap-functions.md) を返します。
 
 ```sql
 groupBitmapAnd(expr)
@@ -14,11 +14,11 @@ groupBitmapAnd(expr)
 
 **引数**
 
-`expr` – `AggregateFunction(groupBitmap, UInt*)`型の結果となる式。
+`expr` – `AggregateFunction(groupBitmap, UInt*)` 型の式。
 
 **戻り値**
 
-UInt64型の値。
+`UInt64` 型の値。
 
 **例**
 

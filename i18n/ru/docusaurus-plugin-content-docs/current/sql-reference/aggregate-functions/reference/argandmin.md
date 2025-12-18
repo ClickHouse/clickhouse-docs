@@ -1,0 +1,123 @@
+---
+description: 'Вычисляет значения `arg` и `val` для минимального значения `val`. Если существует несколько строк с одинаковым минимальным значением `val`, то то, какие связанные значения `arg` и `val` будут возвращены, не определено.'
+sidebar_position: 111
+slug: /sql-reference/aggregate-functions/reference/argandmin
+title: 'argAndMin'
+doc_type: 'reference'
+---
+
+# argAndMin {#argandmin}
+
+Вычисляет значения `arg` и `val` для минимального значения `val`. Если существует несколько строк с одинаковым минимальным значением `val`, то выбор того, какие связанные `arg` и `val` будут возвращены, недетерминирован.
+Обе части — `arg` и `val` — ведут себя как [агрегатные функции](/sql-reference/aggregate-functions/index.md), обе при обработке [пропускают значения `Null`](/sql-reference/aggregate-functions/index.md#null-processing) и возвращают значения, отличные от `Null`, если такие значения доступны.
+
+:::note
+Единственное отличие от `argMin` заключается в том, что `argAndMin` возвращает и аргумент, и значение.
+:::
+
+**Синтаксис**
+
+```sql
+argAndMin(arg, val)
+```
+
+**Аргументы**
+
+* `arg` — аргумент.
+* `val` — значение.
+
+**Возвращаемое значение**
+
+* Значение `arg`, которое соответствует минимальному значению `val`.
+* `val` — минимальное значение `val`.
+
+Тип: кортеж, в котором типы элементов соответствуют типам `arg` и `val` соответственно.
+
+**Пример**
+
+Входная таблица:
+
+```text
+┌─user─────┬─salary─┐
+│ director │   5000 │
+│ manager  │   3000 │
+│ worker   │   1000 │
+└──────────┴────────┘
+```
+
+Запрос:
+
+```sql
+SELECT argAndMin(user, salary) FROM salary
+```
+
+Результат:
+
+```text
+┌─argAndMin(user, salary)─┐
+│ ('worker',1000)         │
+└─────────────────────────┘
+```
+
+**Расширенный пример**
+
+```sql
+CREATE TABLE test
+(
+    a Nullable(String),
+    b Nullable(Int64)
+)
+ENGINE = Memory AS
+SELECT *
+FROM VALUES((NULL, 0), ('a', 1), ('b', 2), ('c', 2), (NULL, NULL), ('d', NULL));
+
+SELECT * FROM test;
+┌─a────┬────b─┐
+│ ᴺᵁᴸᴸ │    0 │
+│ a    │    1 │
+│ b    │    2 │
+│ c    │    2 │
+│ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │
+│ d    │ ᴺᵁᴸᴸ │
+└──────┴──────┘
+
+SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
+┌─argMin(a, b)─┬─argAndMin(a, b)─┬─min(b)─┐
+│ a            │ ('a',1)         │      0 │ -- argMin = a because it's the first not `NULL` value, min(b) is from another row!
+└──────────────┴─────────────────┴────────┘
+
+SELECT argAndMin(tuple(a), b) FROM test;
+┌─argAndMin((a), b)─┐
+│ ((NULL),0)        │ -- The 'a' `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
+└───────────────────┘
+
+SELECT (argAndMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
+┌─argMinA──┬─argMinB─┐
+│ (NULL,0) │       0 │ -- you can use `Tuple` and get both (all - tuple(*)) columns for the according min(b)
+└──────────┴─────────┘
+
+SELECT argAndMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
+┌─argAndMin(a, b)─┬─min(b)─┐
+│ ('',0)          │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
+└─────────────────┴────────┘
+
+SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;
+┌─argAndMin(a, (b, a))─┬─min((b, a))─┐
+│ ('a',(1,'a'))        │ (0,NULL)    │ -- 'a' is the first not `NULL` value for the min
+└──────────────────────┴─────────────┘
+
+SELECT argAndMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
+┌─argAndMin((a, b), (b, a))─┬─min((b, a))─┐
+│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin returns ((NULL,0),(0,NULL)) here because `Tuple` allows to don't skip `NULL` and min(tuple(b, a)) in this case is minimal value for this dataset
+└───────────────────────────┴─────────────┘
+
+SELECT argAndMin(a, tuple(b)) FROM test;
+┌─argAndMin(a, (b))─┐
+│ ('a',(1))         │ -- `Tuple` can be used in `min` to not skip rows with `NULL` values as b.
+└───────────────────┘
+```
+
+**См. также**
+
+* [argMin](/sql-reference/aggregate-functions/reference/argmin.md)
+* [Tuple](/sql-reference/data-types/tuple.md)

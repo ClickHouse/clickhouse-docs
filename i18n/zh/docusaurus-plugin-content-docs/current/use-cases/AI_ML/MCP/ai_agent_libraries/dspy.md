@@ -1,64 +1,59 @@
 ---
-'slug': '/use-cases/AI/MCP/ai-agent-libraries/DSPy'
-'sidebar_label': '集成 DSPy'
-'title': '如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
-'pagination_prev': null
-'pagination_next': null
-'description': '学习如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理'
-'keywords':
-- 'ClickHouse'
-- 'MCP'
-- 'DSPy'
-'show_related_blogs': true
-'doc_type': 'guide'
+slug: /use-cases/AI/MCP/ai-agent-libraries/DSPy
+sidebar_label: '集成 DSPy'
+title: '如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
+pagination_prev: null
+pagination_next: null
+description: '了解如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体'
+keywords: ['ClickHouse', 'MCP', 'DSPy']
+show_related_blogs: true
+doc_type: 'guide'
 ---
 
+# 如何使用 DSPy 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-dspy-and-the-clickhouse-mcp-server}
 
-# 如何使用 DSPy 和 ClickHouse MCP 服务器构建 AI 代理
+在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 智能体，使其能够通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互。
 
-在本指南中，您将学习如何使用 [DSPy](https://github.com/langchain-ai/langgraph) 构建一个 AI 代理，该代理可以使用 [ClickHouse 的 SQL 游乐场](https://sql.clickhouse.com/) 与 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 进行交互。
+## 前置条件 {#prerequisites}
 
-## 前提条件 {#prerequisites}
+- 系统中已安装 Python。
+- 系统中已安装 `pip`。
+- 拥有一个 Anthropic API key，或其他 LLM 提供商的 API key。
 
-- 您需要在系统上安装 Python。
-- 您需要在系统上安装 `pip`。
-- 您需要一个 Anthropic API 密钥，或者来自其他 LLM 提供商的 API 密钥。
+你可以在 Python REPL 中或通过脚本来运行以下步骤。
 
-您可以在 Python REPL 中或通过脚本运行以下步骤。
-
-:::note 示例笔记本
-此示例可在 [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb) 中找到。
+:::note 示例 Notebook
+你可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/dspy/dspy.ipynb)中以 Notebook 形式查看此示例。
 :::
 
 <VerticalStepper headerLevel="h2">
+  ## 安装依赖库
 
-## 安装库 {#install-libraries}
+  使用 `pip` 运行以下命令来安装所需的库：
 
-使用 `pip` 运行以下命令以安装所需的库：
-
-```shell
-!pip install -q --upgrade pip
-!pip install -q dspy
-!pip install -q mcp
+  ```shell
+pip install -q --upgrade pip
+pip install -q dspy
+pip install -q mcp
 ```
 
-## 设置凭据 {#setup-credentials}
+  ## 设置凭据
 
-接下来，您需要提供您的 Anthropic API 密钥：
+  接下来,您需要提供 Anthropic API 密钥:
 
-```python
+  ```python
 import os
 os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
-:::note 使用其他 LLM 提供商
-如果您没有 Anthropic API 密钥，并且想使用其他 LLM 提供商，
-您可以在 [DSPy docs](https://dspy.ai/#__tabbed_1_1) 中找到设置凭据的说明。
-:::
+  :::note 使用其他 LLM 提供商
+  如果您没有 Anthropic API 密钥且想使用其他 LLM 提供商,
+  可以在 [DSPy 文档](https://dspy.ai/#__tabbed_1_1)中查看凭据配置说明
+  :::
 
-接下来，定义连接到 ClickHouse SQL 游乐场所需的凭据：
+  接下来,定义连接到 ClickHouse SQL playground 所需的凭据:
 
-```python
+  ```python
 env = {
     "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
     "CLICKHOUSE_PORT": "8443",
@@ -68,11 +63,11 @@ env = {
 }
 ```
 
-## 初始化 MCP 服务器 {#initialize-mcp}
+  ## 初始化 MCP 服务器
 
-现在配置 ClickHouse MCP 服务器，以指向 ClickHouse SQL 游乐场。
+  现在配置 ClickHouse MCP Server 使其指向 ClickHouse SQL playground。
 
-```python
+  ```python
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 import dspy
@@ -89,19 +84,19 @@ server_params = StdioServerParameters(
 )
 ```
 
-## 初始化 LLM {#initialize-llm}
+  ## 初始化 LLM
 
-接下来，用以下行初始化 LLM：
+  接下来，使用以下代码行初始化 LLM：
 
-```python
+  ```python
 dspy.configure(lm=dspy.LM("anthropic/claude-sonnet-4-20250514"))
 ```
 
-## 运行代理 {#run-the-agent}
+  ## 运行 Agent
 
-最后，初始化并运行代理：
+  最后,初始化并运行 agent:
 
-```python
+  ```python
 class DataAnalyst(dspy.Signature):
     """You are a data analyst. You'll be asked questions and you need to try to answer them using the tools you have access to. """
 
@@ -128,7 +123,7 @@ async with stdio_client(server_params) as (read, write):
         print_dspy_result(result)
 ```
 
-```response title="Response"
+  ```response title="Response"
 ================================================================================
 🤖 DSPy ReAct Result
 ================================================================================

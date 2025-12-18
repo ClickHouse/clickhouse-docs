@@ -1,14 +1,12 @@
 ---
-'description': '系统数据库提供对数据库对象元数据的几乎标准化的与数据库管理系统无关的视图。'
-'keywords':
-- 'system database'
-- 'information_schema'
-'slug': '/operations/system-tables/information_schema'
-'title': 'INFORMATION_SCHEMA'
-'doc_type': 'reference'
+description: '提供几乎标准化、与 DBMS 无关的数据库对象元数据视图的系统数据库。'
+keywords: ['system database', 'information_schema']
+slug: /operations/system-tables/information_schema
+title: 'INFORMATION_SCHEMA'
+doc_type: 'reference'
 ---
 
-`INFORMATION_SCHEMA`（或：`information_schema`）是一个系统数据库，它提供了一个（在某种程度上）标准化的、[与 DBMS 无关的视图](https://en.wikipedia.org/wiki/Information_schema)，用于查看数据库对象的元数据。`INFORMATION_SCHEMA`中的视图通常不如普通系统表，但工具可以使用它们以跨 DBMS 的方式获取基本信息。`INFORMATION_SCHEMA`中视图的结构和内容应当以向后兼容的方式演进，即只添加新功能，但不更改或删除现有功能。在内部实现方面，`INFORMATION_SCHEMA`中的视图通常映射到普通系统表，如 [system.columns](../../operations/system-tables/columns.md)、[system.databases](../../operations/system-tables/databases.md) 和 [system.tables](../../operations/system-tables/tables.md)。
+`INFORMATION_SCHEMA`（或：`information_schema`）是一个系统数据库，用于针对数据库对象元数据提供一个（某种程度上）标准化的、[与 DBMS 无关的视图](https://en.wikipedia.org/wiki/Information_schema)。`INFORMATION_SCHEMA` 中的视图通常不如普通系统表强大，但各类工具可以使用它们以跨 DBMS 的方式获取基本信息。`INFORMATION_SCHEMA` 中视图的结构和内容应当以向后兼容的方式演进，即只添加新功能，而不修改或移除现有功能。从内部实现角度看，`INFORMATION_SCHEMA` 中的视图通常映射到普通系统表，例如 [system.columns](../../operations/system-tables/columns.md)、[system.databases](../../operations/system-tables/databases.md) 和 [system.tables](../../operations/system-tables/tables.md)。
 
 ```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
@@ -36,48 +34,27 @@ SHOW TABLES FROM information_schema;
 └─────────────────────────┘
 ```
 
-`INFORMATION_SCHEMA`包含以下视图：
+`INFORMATION_SCHEMA` 包含以下视图：
 
-- [COLUMNS](#columns)
-- [KEY_COLUMN_USAGE](#key_column_usage)
-- [REFERENTIAL_CONSTRAINTS](#referential_constraints)
-- [SCHEMATA](#schemata)
-- [STATISTICS](#statistics)
-- [TABLES](#tables)
-- [VIEWS](#views)
+* [COLUMNS](#columns)
+* [KEY&#95;COLUMN&#95;USAGE](#key_column_usage)
+* [REFERENTIAL&#95;CONSTRAINTS](#referential_constraints)
+* [SCHEMATA](#schemata)
+* [STATISTICS](#statistics)
+* [TABLES](#tables)
+* [VIEWS](#views)
 
-出于与其他数据库的兼容性，提供了不区分大小写的等效视图，例如 `INFORMATION_SCHEMA.columns`。同样适用于这些视图中的所有列 - 同时提供小写（例如，`table_name`）和大写（`TABLE_NAME`）变体。
+为与其他数据库兼容，提供了不区分大小写的等价视图，例如 `INFORMATION_SCHEMA.columns`。这些视图中的所有列也同样如此——同时提供小写（例如 `table_name`）和大写（例如 `TABLE_NAME`）两种形式。
 
-## COLUMNS {#columns}
+## 列 {#columns}
 
-包含从 [system.columns](../../operations/system-tables/columns.md) 系统表读取的列和在 ClickHouse 中不支持或没有意义的列（始终为 `NULL`），但必须符合标准。
+包含从 [system.columns](../../operations/system-tables/columns.md) 系统表中读取的列，以及那些在 ClickHouse 中不受支持或没有意义（始终为 `NULL`），但根据标准仍必须保留的列。
 
 列：
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 表名称。
-- `column_name` ([String](../../sql-reference/data-types/string.md)) — 列名称。
-- `ordinal_position` ([UInt64](../../sql-reference/data-types/int-uint.md)) — 表中列的序号，从 1 开始。
-- `column_default` ([String](../../sql-reference/data-types/string.md)) — 默认值的表达式，如果未定义则为空字符串。
-- `is_nullable` ([UInt8](../../sql-reference/data-types/int-uint.md)) — 指示列类型是否为 `Nullable` 的标志。
-- `data_type` ([String](../../sql-reference/data-types/string.md)) — 列类型。
-- `character_maximum_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 对于二进制数据、字符数据或文本数据和图像的最大字节长度。在 ClickHouse 仅对 `FixedString` 数据类型有意义。否则，返回 `NULL` 值。
-- `character_octet_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 对于二进制数据、字符数据或文本数据和图像的最大字节长度。在 ClickHouse 仅对 `FixedString` 数据类型有意义。否则，返回 `NULL` 值。
-- `numeric_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 近似数值数据、准确数值数据、整数数据或货币数据的精度。在 ClickHouse 中，它是整数类型的位宽和 `Decimal` 类型的十进制精度。否则，返回 `NULL` 值。
-- `numeric_precision_radix` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 数字系统的基数是近似数值数据、准确数值数据、整数数据或货币数据的精度。在 ClickHouse 中，对于整数类型为 2，`Decimal` 类型为 10。否则，返回 `NULL` 值。
-- `numeric_scale` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 近似数值数据、准确数值数据、整数数据或货币数据的刻度。在 ClickHouse 中仅对 `Decimal` 类型有意义。否则，返回 `NULL` 值。
-- `datetime_precision` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — `DateTime64` 数据类型的十进制精度。对于其他数据类型，返回 `NULL` 值。
-- `character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `character_set_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `collation_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `collation_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `collation_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `domain_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `domain_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `domain_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `extra` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 对于 `MATERIALIZED` 类型的列为 `STORED GENERATED`，对于 `ALIAS` 类型的列为 `VIRTUAL GENERATED`，对于 `DEFAULT` 类型的列为 `DEFAULT_GENERATED`，或为 `NULL`。
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }
 
 **示例**
 
@@ -148,17 +125,17 @@ domain_name:              ᴺᵁᴸᴸ
 
 ## SCHEMATA {#schemata}
 
-包含从 [system.databases](../../operations/system-tables/databases.md) 系统表读取的列，以及在 ClickHouse 中不支持或没有意义的列（始终为 `NULL`），但必须符合标准。
+包含从 [system.databases](../../operations/system-tables/databases.md) 系统表中读取的列，以及在 ClickHouse 中不受支持或没有意义（始终为 `NULL`），但根据标准要求必须存在的列。
 
 列：
 
-- `catalog_name` ([String](../../sql-reference/data-types/string.md)) — 数据库的名称。
-- `schema_name` ([String](../../sql-reference/data-types/string.md)) — 数据库的名称。
-- `schema_owner` ([String](../../sql-reference/data-types/string.md)) — 模式所有者名称，始终为 `'default'`。
-- `default_character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `default_character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `default_character_set_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
-- `sql_path` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不支持。
+* `catalog_name` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
+* `schema_name` ([String](../../sql-reference/data-types/string.md)) — 数据库名称。
+* `schema_owner` ([String](../../sql-reference/data-types/string.md)) — schema 所有者名称，始终为 `'default'`。
+* `default_character_set_catalog` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不受支持。
+* `default_character_set_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不受支持。
+* `default_character_set_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不受支持。
+* `sql_path` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — `NULL`，不受支持。
 
 **示例**
 
@@ -194,24 +171,24 @@ sql_path:                      ᴺᵁᴸᴸ
 
 ## TABLES {#tables}
 
-包含从 [system.tables](../../operations/system-tables/tables.md) 系统表读取的列。
+包含从 [system.tables](../../operations/system-tables/tables.md) 系统表中读取的列。
 
 列：
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 表名称。
-- `table_type` ([String](../../sql-reference/data-types/string.md)) — 表类型。可能的值：
-  - `BASE TABLE`
-  - `VIEW`
-  - `FOREIGN TABLE`
-  - `LOCAL TEMPORARY`
-  - `SYSTEM VIEW`
-- `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 行的总数。如果无法确定，则返回 NULL。
-- `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 磁盘上数据的大小。如果无法确定，则返回 NULL。
-- `index_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 主键、二级索引和所有标记的总大小。
-- `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 表的默认排序规则。始终为 `utf8mb4_0900_ai_ci`。
-- `table_comment` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 创建表时使用的注释。
+* `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+* `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+* `table_name` ([String](../../sql-reference/data-types/string.md)) — 表名。
+* `table_type` ([String](../../sql-reference/data-types/string.md)) — 表类型。可能的取值：
+  * `BASE TABLE`
+  * `VIEW`
+  * `FOREIGN TABLE`
+  * `LOCAL TEMPORARY`
+  * `SYSTEM VIEW`
+* `table_rows` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 总行数。如果无法确定则为 NULL。
+* `data_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 磁盘上的数据大小。如果无法确定则为 NULL。
+* `index_length` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md))) — 主键、二级索引以及所有标记的总大小。
+* `table_collation` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 表的默认排序规则。始终为 `utf8mb4_0900_ai_ci`。
+* `table_comment` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 创建表时使用的注释。
 
 **示例**
 
@@ -244,24 +221,24 @@ table_collation: utf8mb4_0900_ai_ci
 table_comment:   
 ```
 
-## VIEWS {#views}
+## 视图 {#views}
 
-包含从 [system.tables](../../operations/system-tables/tables.md) 系统表读取的列，当使用表引擎 [View](../../engines/table-engines/special/view.md) 时。
+在使用 [View](../../engines/table-engines/special/view.md) 表引擎时，包含从 [system.tables](../../operations/system-tables/tables.md) 系统表读取的列。
 
 列：
 
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 表名称。
-- `view_definition` ([String](../../sql-reference/data-types/string.md)) — 视图的 `SELECT` 查询。
-- `check_option` ([String](../../sql-reference/data-types/string.md)) — `NONE`，无检查。
-- `is_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，视图不可更新。
-- `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — 显示创建的视图是否为 [materialized](/sql-reference/statements/create/view#materialized-view)。可能的值：
-  - `NO` — 创建的视图不是物化的。
-  - `YES` — 创建的视图是物化的。
-- `is_trigger_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，触发器不可更新。
-- `is_trigger_deletable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，触发器不可删除。
-- `is_trigger_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，触发器中不插入数据。
+* `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+* `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所在数据库的名称。
+* `table_name` ([String](../../sql-reference/data-types/string.md)) — 表名。
+* `view_definition` ([String](../../sql-reference/data-types/string.md)) — 视图的 `SELECT` 查询。
+* `check_option` ([String](../../sql-reference/data-types/string.md)) — `NONE`，不进行检查。
+* `is_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，该视图不可更新。
+* `is_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — 指示创建的视图是否为[物化视图](/sql-reference/statements/create/view#materialized-view)。可能的值：
+  * `NO` — 创建的视图不是物化视图。
+  * `YES` — 创建的视图是物化视图。
+* `is_trigger_updatable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，该触发器不可更新。
+* `is_trigger_deletable` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，该触发器不会被删除。
+* `is_trigger_insertable_into` ([Enum8](../../sql-reference/data-types/enum.md)) — `NO`，不会向该触发器插入数据。
 
 **示例**
 
@@ -303,24 +280,24 @@ is_trigger_deletable:       NO
 is_trigger_insertable_into: NO
 ```
 
-## KEY_COLUMN_USAGE {#key_column_usage}
+## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
 
-包含来自 [system.tables](../../operations/system-tables/tables.md) 系统表的列，这些列受到约束的限制。
+包含 [system.tables](../../operations/system-tables/tables.md) 系统表中受约束限制的列。
 
 列：
 
-- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。始终为 `def`。
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 约束所属的模式（数据库）的名称。
-- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 约束的名称。
-- `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。始终为 `def`。
-- `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所属的模式（数据库）的名称。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 具有约束的表的名称。
-- `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 具有约束的列的名称。
-- `ordinal_position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 当前未使用。始终为 `1`。
-- `position_in_unique_constraint` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — 当前未使用。始终为 `NULL`。
-- `referenced_table_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
-- `referenced_table_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
-- `referenced_column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
+* `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。始终为 `def`。
+* `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 约束所属模式（数据库）的名称。
+* `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 约束名称。
+* `table_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。始终为 `def`。
+* `table_schema` ([String](../../sql-reference/data-types/string.md)) — 表所属模式（数据库）的名称。
+* `table_name` ([String](../../sql-reference/data-types/string.md)) — 具有该约束的表的名称。
+* `column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 具有该约束的列的名称。
+* `ordinal_position` ([UInt32](../../sql-reference/data-types/int-uint.md)) — 当前未使用。始终为 `1`。
+* `position_in_unique_constraint` ([Nullable](../../sql-reference/data-types/nullable.md)([UInt32](../../sql-reference/data-types/int-uint.md))) — 当前未使用。始终为 `NULL`。
+* `referenced_table_schema` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
+* `referenced_table_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
+* `referenced_column_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。始终为 NULL。
 
 **示例**
 
@@ -364,25 +341,25 @@ referenced_column_name:        ᴺᵁᴸᴸ
 
 ## REFERENTIAL_CONSTRAINTS {#referential_constraints}
 
-包含有关外键的信息。目前返回空结果（无行），这仅足以提供与第三方工具（如 Tableau Online）的兼容性。
+包含外键信息。目前返回空结果（无行），这一点已足以与 Tableau Online 等第三方工具保持兼容。
 
 列：
 
-- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。
-- `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 当前未使用。
-- `match_option` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `update_rule` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `delete_rule` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `table_name` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
-- `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 当前未使用。
+- `constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 目前未使用。
+- `unique_constraint_catalog` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `unique_constraint_schema` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `unique_constraint_name` ([Nullable](../../sql-reference/data-types/nullable.md)([String](../../sql-reference/data-types/string.md))) — 目前未使用。
+- `match_option` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `update_rule` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `delete_rule` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `table_name` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
+- `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
 
 ## STATISTICS {#statistics}
 
-提供有关表索引的信息。目前返回空结果（无行），这仅足以提供与第三方工具（如 Tableau Online）的兼容性。
+提供有关表索引的信息。目前返回空结果（无任何行），仅用于与 Tableau Online 等第三方工具保持兼容。
 
 列：
 

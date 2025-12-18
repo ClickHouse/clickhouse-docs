@@ -1,41 +1,39 @@
 ---
-'description': 'показывает историю соединений ZooKeeper (включая вспомогательный ZooKeeper).'
-'keywords':
-- 'system table'
-- 'zookeeper_connection_log'
-'slug': '/operations/system-tables/zookeeper_connection_log'
-'title': 'system.zookeeper_connection_log'
-'doc_type': 'reference'
+description: 'Показывает историю подключений к ZooKeeper (включая вспомогательные экземпляры ZooKeeper).'
+keywords: ['system table', 'zookeeper_connection_log']
+slug: /operations/system-tables/zookeeper_connection_log
+title: 'system.zookeeper_connection_log'
+doc_type: 'reference'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.zookeeper&#95;connection&#95;log {#systemzookeeper&#95;connection&#95;log}
 
-# system.zookeeper_connection_log
+<SystemTableCloud />
 
-<SystemTableCloud/>
-
-Таблица 'system.zookeeper_connection_log' отображает историю подключений к ZooKeeper (включая вспомогательные ZooKeeper). Каждая строка содержит информацию об одном событии, касающемся подключений.
+Таблица &#39;system.zookeeper&#95;connection&#95;log&#39; показывает историю подключений к ZooKeeper (включая вспомогательные ZooKeeper). Каждая строка содержит информацию об одном событии, связанном с подключениями.
 
 :::note
-Таблица не содержит событий о отключениях, вызванных отключением сервера.
+Таблица не содержит событий для отключений, вызванных остановкой сервера.
 :::
 
 Столбцы:
 
--   `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, который подключается к ZooKeeper или отключается от него.
--   `type` ([Enum8](../../sql-reference/data-types/enum.md)) - Тип события. Возможные значения: `Connected`, `Disconnected`.
--   `event_date` ([Date](../../sql-reference/data-types/date.md)) - Дата записи.
--   `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - Время записи.
--   `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - Время записи с точностью до микросекунд.
--   `name` ([String](../../sql-reference/data-types/string.md)) — Имя кластера ZooKeeper.
--   `host` ([String](../../sql-reference/data-types/string.md)) — Имя хоста/IP узла ZooKeeper, к которому подключился ClickHouse.
--   `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — Порт узла ZooKeeper, к которому подключился ClickHouse.
--   `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Индекс узла ZooKeeper, к которому подключился или от которого отключился ClickHouse. Индекс берется из конфигурации ZooKeeper.
--   `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — Идентификатор сессии соединения.
--   `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Версия API Keeper.
--   `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — Включенные флаги функций. Применимо только к ClickHouse Keeper. Возможные значения: `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE`.
--   `availability_zone` ([String](../../sql-reference/data-types/string.md)) — Зона доступности.
--   `reason` ([String](../../sql-reference/data-types/string.md)) — Причина подключения или отключения.
+* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — имя хоста сервера, который подключается к ZooKeeper или отключается от него.
+* `type` ([Enum8](../../sql-reference/data-types/enum.md)) - тип события. Возможные значения: `Connected`, `Disconnected`.
+* `event_date` ([Date](../../sql-reference/data-types/date.md)) - дата записи.
+* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) - время записи.
+* `event_time_microseconds` ([Date](../../sql-reference/data-types/datetime64.md)) - время записи с точностью до микросекунд.
+* `name` ([String](../../sql-reference/data-types/string.md)) — имя кластера ZooKeeper.
+* `host` ([String](../../sql-reference/data-types/string.md)) — имя хоста/IP узла ZooKeeper, к которому подключился ClickHouse.
+* `port` ([UIn16](../../sql-reference/data-types/int-uint.md)) — порт узла ZooKeeper, к которому подключился ClickHouse.
+* `index` ([UInt8](../../sql-reference/data-types/int-uint.md)) — индекс узла ZooKeeper, к которому ClickHouse подключился или от которого отключился. Индекс берётся из конфигурации ZooKeeper.
+* `client_id` ([Int64](../../sql-reference/data-types/int-uint.md)) — идентификатор сессии подключения.
+* `keeper_api_version` ([UInt8](../../sql-reference/data-types/int-uint.md)) — версия Keeper API.
+* `enabled_feature_flags` ([Array(Enum16)](../../sql-reference/data-types/array.md)) — включённые флаги функций. Применимо только к ClickHouse Keeper. Возможные значения: `FILTERED_LIST`, `MULTI_READ`, `CHECK_NOT_EXISTS`, `CREATE_IF_NOT_EXISTS`, `REMOVE_RECURSIVE`.
+* `availability_zone` ([String](../../sql-reference/data-types/string.md)) — зона доступности.
+* `reason` ([String](../../sql-reference/data-types/string.md)) — причина подключения или отключения.
 
 Пример:
 

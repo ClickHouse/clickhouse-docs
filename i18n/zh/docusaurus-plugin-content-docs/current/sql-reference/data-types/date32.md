@@ -1,16 +1,15 @@
 ---
-'description': 'ClickHouse 中 Date32 数据类型的文档，它存储的日期范围比 Date 更广泛'
-'sidebar_label': 'Date32'
-'sidebar_position': 14
-'slug': '/sql-reference/data-types/date32'
-'title': 'Date32'
-'doc_type': 'reference'
+description: 'ClickHouse 中 Date32 数据类型的文档，用于存储比 Date 具有更大取值范围的日期'
+sidebar_label: 'Date32'
+sidebar_position: 14
+slug: /sql-reference/data-types/date32
+title: 'Date32'
+doc_type: 'reference'
 ---
 
+# Date32 {#date32}
 
-# Date32
-
-一种日期。支持与 [DateTime64](../../sql-reference/data-types/datetime64.md) 相同的日期范围。以原生字节顺序存储为有符号32位整数，值表示自 `1900-01-01` 起的天数。**重要！** 0 表示 `1970-01-01`，负值表示在 `1970-01-01` 之前的天数。
+一种日期类型。支持与 [DateTime64](../../sql-reference/data-types/datetime64.md) 相同的日期范围。以本机字节序的有符号 32 位整数形式存储，其数值表示自 `1900-01-01` 起经过的天数。**重要！** 数值 0 表示 `1970-01-01`，负值表示 `1970-01-01` 之前的天数。
 
 **示例**
 
@@ -43,8 +42,8 @@ SELECT * FROM dt32;
 └────────────┴──────────┘
 ```
 
-**另见**
+**另请参阅**
 
-- [toDate32](../../sql-reference/functions/type-conversion-functions.md#todate32)
-- [toDate32OrZero](/sql-reference/functions/type-conversion-functions#todate32orzero)
-- [toDate32OrNull](/sql-reference/functions/type-conversion-functions#todate32ornull)
+* [toDate32](../../sql-reference/functions/type-conversion-functions.md#toDate32)
+* [toDate32OrZero](/sql-reference/functions/type-conversion-functions#toDate32OrZero)
+* [toDate32OrNull](/sql-reference/functions/type-conversion-functions#toDate32OrNull)

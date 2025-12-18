@@ -1,33 +1,34 @@
 ---
-slug: '/operations/system-tables/server_settings'
-description: 'Системная таблица, содержащая информацию о глобальных настройках для'
-title: system.server_settings
-keywords: ['системная таблица', 'server_settings']
-doc_type: reference
+description: 'Системная таблица, содержащая информацию о глобальных настройках сервера, заданных в `config.xml`.'
+keywords: ['system table', 'server_settings']
+slug: /operations/system-tables/server_settings
+title: 'system.server_settings'
+doc_type: 'reference'
 ---
+
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+# system.server&#95;settings {#systemserver&#95;settings}
 
-# system.server_settings
+<SystemTableCloud />
 
-<SystemTableCloud/>
+Содержит информацию о глобальных настройках сервера, которые задаются в `config.xml`.
+В настоящее время таблица показывает только настройки из первого уровня `config.xml` и не поддерживает вложенные конфигурации (например, [logger](../../operations/server-configuration-parameters/settings.md#logger)).
 
-Содержит информацию о глобальных настройках сервера, которые указаны в `config.xml`. В настоящее время таблица показывает только настройки из первого уровня `config.xml` и не поддерживает вложенные конфигурации (например, [logger](../../operations/server-configuration-parameters/settings.md#logger)).
+Столбцы:
 
-Колонки:
-
-- `name` ([String](../../sql-reference/data-types/string.md)) — Имя настройки сервера.
-- `value` ([String](../../sql-reference/data-types/string.md)) — Значение настройки сервера.
-- `default` ([String](../../sql-reference/data-types/string.md)) — Значение по умолчанию настройки сервера.
-- `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, была ли настройка указана в `config.xml`.
-- `description` ([String](../../sql-reference/data-types/string.md)) — Краткое описание настройки сервера.
-- `type` ([String](../../sql-reference/data-types/string.md)) — Тип значения настройки сервера.
-- `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — Можно ли изменить настройку во время работы сервера. Значения:
-  - `'No' `
-  - `'IncreaseOnly'`
-  - `'DecreaseOnly'`
-  - `'Yes'`
-- `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, является ли настройка устаревшей.
+* `name` ([String](../../sql-reference/data-types/string.md)) — Имя настройки сервера.
+* `value` ([String](../../sql-reference/data-types/string.md)) — Значение настройки сервера.
+* `default` ([String](../../sql-reference/data-types/string.md)) — Значение настройки сервера по умолчанию.
+* `changed` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, была ли настройка задана в `config.xml`.
+* `description` ([String](../../sql-reference/data-types/string.md)) — Краткое описание настройки сервера.
+* `type` ([String](../../sql-reference/data-types/string.md)) — Тип значения настройки сервера.
+* `changeable_without_restart` ([Enum8](../../sql-reference/data-types/enum.md)) — Можно ли изменить настройку во время работы сервера. Возможные значения:
+  * `'No' `
+  * `'IncreaseOnly'`
+  * `'DecreaseOnly'`
+  * `'Yes'`
+* `is_obsolete` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Показывает, является ли настройка устаревшей.
 
 **Пример**
 
@@ -59,16 +60,16 @@ WHERE name LIKE '%thread_pool%'
 ```
 
 Использование `WHERE changed` может быть полезно, например, когда вы хотите проверить,
-правильно ли загружены настройки из файлов конфигурации и используются ли они.
+правильно ли загружены настройки из конфигурационных файлов и действительно ли они применяются.
 
-<!-- -->
+{/* */ }
 
 ```sql
 SELECT * FROM system.server_settings WHERE changed AND name='max_thread_pool_size'
 ```
 
-**Смотрите также**
+**См. также**
 
-- [Настройки](../../operations/system-tables/settings.md)
-- [Файлы конфигурации](../../operations/configuration-files.md)
-- [Настройки сервера](../../operations/server-configuration-parameters/settings.md)
+* [Настройки](../../operations/system-tables/settings.md)
+* [Файлы конфигурации](../../operations/configuration-files.md)
+* [Настройки сервера](../../operations/server-configuration-parameters/settings.md)
