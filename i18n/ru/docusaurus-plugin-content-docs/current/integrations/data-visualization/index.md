@@ -4,7 +4,7 @@ sidebar_position: 1
 keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'bi', 'visualization', 'tool', 'lightdash']
 title: 'Визуализация данных в ClickHouse'
 slug: /integrations/data-visualization
-description: 'Узнайте, как визуализировать данные в ClickHouse'
+description: 'Узнайте больше о визуализации данных в ClickHouse'
 doc_type: 'guide'
 ---
 
@@ -46,6 +46,7 @@ doc_type: 'guide'
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
+- [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## Совместимость ClickHouse Cloud с инструментами визуализации данных {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
@@ -62,6 +63,7 @@ doc_type: 'guide'
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
+| [Holistics](./community_integrations/holistics-and-clickhouse.md)           | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
 | [Lightdash](./lightdash-and-clickhouse.md)      | Нативный коннектор | ✅      | ✅          |                                                                                                                                         |
 | [Looker](./looker-and-clickhouse.md)                 | Нативный коннектор              | ✅      | ✅          | Работает с некоторыми ограничениями, подробнее см. [документацию](./looker-and-clickhouse.md).                                        |
 | Looker                                                                  | Интерфейс MySQL               | 🚧     | ❌          |                                                                                                                                         |
@@ -77,4 +79,4 @@ doc_type: 'guide'
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | Интерфейс MySQL               | ✅      | ✅          | Работает с некоторыми ограничениями, подробнее см. [документацию](./tableau/tableau-online-and-clickhouse.md).                        |
 | [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |
-| [Superset (alternative entry)](./superset-and-clickhouse.md) | Официальный коннектор ClickHouse | ✅ | ✅ | Альтернативная запись для Apache Superset, оставлена для соответствия оригинальной структуры. |
+| [Apache Superset](./superset-and-clickhouse.md)      | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                                                         |

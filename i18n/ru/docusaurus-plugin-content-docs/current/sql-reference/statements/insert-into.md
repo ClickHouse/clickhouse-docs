@@ -82,7 +82,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse удаляет все пробелы и один перевод строки (если он есть) перед данными. При формировании запроса рекомендуется переносить данные на новую строку после операторов запроса, что особенно важно, если данные начинаются с пробелов.
+ClickHouse удаляет все пробелы и один символ перевода строки (если он есть) перед данными. При формировании запроса рекомендуется размещать данные на новой строке сразу после операторов запроса; это особенно важно, если данные начинаются с пробелов.
 
 Пример:
 
@@ -92,7 +92,7 @@ INSERT INTO t FORMAT TabSeparated
 22  Qwerty
 ```
 
-Вы можете загружать данные отдельно от запроса, используя [клиент командной строки](/operations/utilities/clickhouse-local) или [HTTP-интерфейс](/interfaces/http/).
+Вы можете загружать данные отдельно от запроса, используя [клиент командной строки](/operations/utilities/clickhouse-local) или [HTTP-интерфейс](/interfaces/http).
 
 :::note
 Если вы хотите указать `SETTINGS` для запроса `INSERT`, это необходимо сделать *перед* секцией `FORMAT`, так как всё, что идёт после `FORMAT format_name`, интерпретируется как данные. Например:
@@ -103,9 +103,10 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
+
 ## Ограничения {#constraints}
 
-Если у таблицы есть [ограничения](../../sql-reference/statements/create/table.md#constraints), их выражения проверяются для каждой строки вставляемых данных. Если какое-либо из этих ограничений не удовлетворено, сервер выбросит исключение с именем ограничения и его выражением, а выполнение запроса будет прекращено.
+Если у таблицы есть [ограничения](../../sql-reference/statements/create/table.md#constraints), их выражения проверяются для каждой строки вставляемых данных. Если какое-либо из этих ограничений нарушено, сервер выбросит исключение с именем ограничения и его выражением, а выполнение запроса будет прекращено.
 
 ## Вставка результатов запроса SELECT {#inserting-the-results-of-select}
 
@@ -133,6 +134,7 @@ INSERT INTO x WITH y AS (SELECT * FROM numbers(10)) SELECT * FROM y;
 WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 ```
 
+
 ## Вставка данных из файла {#inserting-data-from-a-file}
 
 **Синтаксис**
@@ -148,6 +150,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 Эта функциональность доступна в [клиенте командной строки](../../interfaces/cli.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
 
 **Примеры**
+
 
 ### Один файл с FROM INFILE {#single-file-with-from-infile}
 
@@ -169,6 +172,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
+
 ### Несколько файлов с FROM INFILE, использующим glob-шаблоны {#multiple-files-with-from-infile-using-globs}
 
 Этот пример очень похож на предыдущий, но вставка выполняется из нескольких файлов с использованием `FROM INFILE 'input_*.csv'`.
@@ -181,7 +185,7 @@ clickhouse-client --query="SELECT * FROM infile_globs FORMAT PrettyCompact;"
 ```
 
 :::tip
-Помимо выбора нескольких файлов с помощью символа `*`, вы можете использовать диапазоны (`{1,2}` или `{1..9}`) и другие [шаблоны glob](/sql-reference/table-functions/file.md/#globs-in-path). Следующие три варианта будут работать с приведённым выше примером:
+Помимо выбора нескольких файлов с помощью символа `*`, вы можете использовать диапазоны (`{1,2}` или `{1..9}`) и другие [шаблоны glob](/sql-reference/table-functions/file.md/#globs-in-path). Следующие три варианта также подойдут для приведённого выше примера:
 
 ```sql
 INSERT INTO infile_globs FROM INFILE 'input_*.csv' FORMAT CSV;
@@ -190,6 +194,7 @@ INSERT INTO infile_globs FROM INFILE 'input_?.csv' FORMAT CSV;
 ```
 
 :::
+
 
 ## Вставка с использованием табличной функции {#inserting-using-a-table-function}
 
@@ -220,6 +225,7 @@ SELECT * FROM simple_table;
 └─────┴───────────────────────┘
 ```
 
+
 ## Вставка в ClickHouse Cloud {#inserting-into-clickhouse-cloud}
 
 По умолчанию сервисы ClickHouse Cloud предоставляют несколько реплик для обеспечения высокой доступности. При подключении к сервису устанавливается соединение с одной из этих реплик.
@@ -233,6 +239,7 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 ```
 
 Обратите внимание, что использование `select_sequential_consistency` увеличит нагрузку на ClickHouse Keeper (который используется в ClickHouse Cloud) и может привести к снижению производительности в зависимости от нагрузки на сервис. Мы не рекомендуем включать эту настройку без необходимости. Рекомендуемый подход — выполнять операции чтения и записи в рамках одного сеанса или использовать клиентский драйвер, который работает по нативному протоколу (и, соответственно, поддерживает «липкие» подключения).
+
 
 ## Вставка в реплицируемую конфигурацию {#inserting-into-a-replicated-setup}
 
