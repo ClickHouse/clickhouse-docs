@@ -24,12 +24,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
     sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i '' 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
-    # Fix broken links in interface docs
-    sed -i '' 's|(../../operations/configuration-files)|(/operations/configuration-files)|g' docs/interfaces/mysql.md
-    sed -i '' 's|(../operations/configuration-files)|(/operations/configuration-files)|g' docs/interfaces/mysql.md
-    sed -i '' 's|(../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
-    sed -i '' 's|(../../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
-    sed -i '' 's|(../interfaces/cli.md)|(/interfaces/cli)|g' docs/interfaces/tcp.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
@@ -43,11 +37,4 @@ else
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3.md
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
-    # Fix broken links in interface docs
-    sed -i 's|(../../operations/configuration-files)|(/operations/configuration-files)|g' docs/interfaces/mysql.md
-    sed -i 's|(../operations/configuration-files)|(/operations/configuration-files)|g' docs/interfaces/mysql.md
-    sed -i 's|(../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
-    sed -i 's|(../../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
-    sed -i 's|(../interfaces/cli.md)|(/interfaces/cli)|g' docs/interfaces/tcp.md
-
 fi
