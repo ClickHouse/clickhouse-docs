@@ -15,6 +15,7 @@ import enroll_fast_release from '@site/static/images/cloud/manage/enroll_fast_re
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
+
 # 升级 {#upgrades}
 
 使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/cloud)。
@@ -68,11 +69,13 @@ Basic 等级服务会自动加入快速发布通道。
 <div class="eighty-percent">
     <Image img={fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 <div class="eighty-percent">
     <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 此 **快速发布（Fast release）** 通道适用于在非关键环境中测试新功能。**不建议用于具有严格可用性和可靠性要求的生产工作负载。**
@@ -101,6 +104,7 @@ Basic 等级服务会在快速发布通道之后不久进行升级。
 
 :::note
 你可以随时更改发布通道。但在某些情况下，更改只会应用于未来的发布。 
+
 - 切换到更快的通道会立即升级你的服务。例如：慢速到常规、常规到快速
 - 切换到更慢的通道不会将你的服务降级，并会让你保持当前版本，直到该通道中有更新的版本可用。例如：常规到慢速、快速到常规或慢速
 :::

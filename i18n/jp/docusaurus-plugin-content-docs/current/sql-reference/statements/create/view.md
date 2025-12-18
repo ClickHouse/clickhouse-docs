@@ -11,6 +11,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import DeprecatedBadge from '@theme/badges/DeprecatedBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # CREATE VIEW {#create-view}
 
 新しいビューを作成します。ビューには[通常ビュー](#normal-view)、[マテリアライズドビュー](#materialized-view)、[リフレッシュ可能なマテリアライズドビュー](#refreshable-materialized-view)、および[ウィンドウビュー](/sql-reference/statements/create/view#window-view)の種類があります。
@@ -40,11 +41,12 @@ CREATE VIEW view AS SELECT ...
 SELECT a, b, c FROM view
 ```
 
-このクエリは、サブクエリを使用したものと完全に同等です。
+このクエリは、サブクエリを使用した場合と完全に同等です。
 
 ```sql
 SELECT a, b, c FROM (SELECT ...)
 ```
+
 
 ## パラメータ化ビュー {#parameterized-view}
 
@@ -54,11 +56,12 @@ SELECT a, b, c FROM (SELECT ...)
 CREATE VIEW view AS SELECT * FROM TABLE WHERE Column1={column1:datatype1} and Column2={column2:datatype2} ...
 ```
 
-上記によりテーブルに対するビューが作成され、以下のようにパラメータを指定することでテーブル関数として利用できます。
+上記ではテーブルに対するビューを作成しており、以下のようにパラメータを指定することでテーブル関数として利用できます。
 
 ```sql
 SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
+
 
 ## マテリアライズドビュー {#materialized-view}
 
@@ -106,13 +109,14 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 
 `SELECT` クエリには `DISTINCT`、`GROUP BY`、`ORDER BY`、`LIMIT` を含めることができます。対応する変換は、挿入されたデータの各ブロックごとに独立して実行される点に注意してください。たとえば、`GROUP BY` が設定されている場合、データは挿入時に集約されますが、単一の挿入パケット内だけで集約されます。その後にさらに集約が行われることはありません。例外として、`SummingMergeTree` のように独立してデータ集約を実行する `ENGINE` を使用する場合があります。
 
-マテリアライズドビューに対する [ALTER](/sql-reference/statements/alter/view.md) クエリの実行には制限があり、例えば `SELECT` クエリを更新することはできないため、不便な場合があります。マテリアライズドビューが `TO [db.]name` 構文を使用している場合は、ビューを `DETACH` し、対象テーブルに対して `ALTER` を実行し、その後で先ほど `DETACH` したビューを `ATTACH` できます。
+マテリアライズドビューが `TO [db.]name` 構文を使用している場合は、ビューを `DETACH` し、対象テーブルに対して `ALTER` を実行し、その後で先ほど `DETACH` したビューを `ATTACH` できます。
 
 マテリアライズドビューは、[optimize&#95;on&#95;insert](/operations/settings/settings#optimize_on_insert) 設定の影響を受ける点に注意してください。ビューへの挿入前にデータがマージされます。
 
 ビューは通常のテーブルと同様に扱われます。たとえば、`SHOW TABLES` クエリの結果にも表示されます。
 
 ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view) を使用します。`DROP TABLE` も VIEW に対して動作します。
+
 
 ## SQL セキュリティ {#sql_security}
 
@@ -146,6 +150,7 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 ALTER TABLE MODIFY SQL SECURITY { DEFINER | INVOKER | NONE } [DEFINER = { user | CURRENT_USER }]
 ```
 
+
 ### 使用例 {#examples}
 
 ```sql
@@ -160,6 +165,7 @@ SQL SECURITY INVOKER
 AS SELECT ...
 ```
 
+
 ## ライブビュー {#live-view}
 
 <DeprecatedBadge/>
@@ -168,7 +174,7 @@ AS SELECT ...
 
 参考までに、旧ドキュメントは[こちら](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)にあります。
 
-## リフレッシュ可能なマテリアライズドビュー {#refreshable-materialized-view}
+## リフレッシャブルmaterialized view {#refreshable-materialized-view}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -201,8 +207,9 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 * SELECT クエリに制限はありません。テーブル関数（例: `url()`）、ビュー、UNION、JOIN などがすべて利用可能です。
 
 :::note
-クエリ中の `REFRESH ... SETTINGS` 部分にある設定はリフレッシュに関する設定（例: `refresh_retries`）であり、通常の設定（例: `max_threads`）とは異なります。通常の設定はクエリ末尾の `SETTINGS` で指定できます。
+クエリ中の `REFRESH ... SETTINGS` 部分にある設定はリフレッシュに関する設定（例: `refresh_retries`）であり、通常の設定（例: `max_threads`）とは異なります。通常の設定はクエリ末尾の `SETTINGS`で指定できます。
 :::
+
 
 ### リフレッシュスケジュール {#refresh-schedule}
 
@@ -222,7 +229,7 @@ REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is n
                        -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
-`RANDOMIZE FOR` は各リフレッシュのタイミングをランダムに調整します。例:
+`RANDOMIZE FOR` は各リフレッシュの実行時刻をランダム化します。例えば:
 
 ```sql
 REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
@@ -232,15 +239,16 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 さらに、`CREATE` クエリで `EMPTY` が指定されていない限り、マテリアライズドビューが作成されると直ちにリフレッシュが開始されます。`EMPTY` が指定されている場合、最初のリフレッシュはスケジュールに従って行われます。
 
+
 ### Replicated DB において {#in-replicated-db}
 
 リフレッシュ可能なマテリアライズドビューが [Replicated database](../../../engines/database-engines/replicated.md) 内にある場合、各レプリカは互いに調整し、各スケジュールされた時刻には 1 つのレプリカだけがリフレッシュを実行するようにします。[ReplicatedMergeTree](../../../engines/table-engines/mergetree-family/replication.md) テーブルエンジンが必須であり、これによりすべてのレプリカがリフレッシュによって生成されたデータを参照できます。
 
 `APPEND` モードでは、`SETTINGS all_replicas = 1` を使用して調整を無効化できます。これにより、レプリカは互いに独立してリフレッシュを実行します。この場合、ReplicatedMergeTree は必須ではありません。
 
-非 `APPEND` モードでは、協調リフレッシュのみがサポートされます。非協調なリフレッシュを行いたい場合は、`Atomic` データベースと `CREATE ... ON CLUSTER` クエリを使用して、すべてのレプリカ上にリフレッシュ可能なマテリアライズドビューを作成します。
+非 `APPEND` モードでは、協調リフレッシュのみがサポートされます。協調なしで実行したい場合は、`Atomic` データベースと `CREATE ... ON CLUSTER` クエリを使用して、すべてのレプリカ上にリフレッシュ可能なマテリアライズドビューを作成します。
 
-協調処理は Keeper を通じて行われます。znode のパスは、[default&#95;replica&#95;path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) サーバー設定によって決定されます。
+調整は Keeper を通じて行われます。znode パスは、[default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) サーバー設定によって決まります。
 
 ### 依存関係 {#refresh-dependencies}
 
@@ -259,7 +267,7 @@ CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SE
 
 この場合、その日の `source` のリフレッシュが完了してからでないと `destination` のリフレッシュは開始されないため、`destination` は最新のデータに基づくことになります。
 
-別の方法として、同じ結果を次のようにしても実現できます。
+別の方法として、同じ結果を次のようにしても得られます。
 
 ```sql
 CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
@@ -288,6 +296,7 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 `DEPENDS ON` は、リフレッシュ可能なマテリアライズドビュー同士でのみ機能します。`DEPENDS ON` のリストに通常のテーブルを指定すると、そのビューは一度もリフレッシュされなくなります（依存関係は `ALTER` で削除できます。後述を参照してください）。
 :::
 
+
 ### 設定 {#settings}
 
 利用可能なリフレッシュ設定:
@@ -298,19 +307,20 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 
 ### リフレッシュパラメータの変更 {#changing-refresh-parameters}
 
-リフレッシュパラメータを変更するには:
+リフレッシュパラメータを変更するには、次のようにします。
 
 ```sql
 ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
 :::note
-これは、スケジュール、依存関係、設定、および APPEND モードかどうかを含む *すべて* のリフレッシュパラメータを一括で置き換えます。たとえば、テーブルに `DEPENDS ON` がある状態で、`DEPENDS ON` を指定せずに `MODIFY REFRESH` を実行すると、依存関係は削除されます。
+これは、スケジュール、依存関係、設定、および APPEND モードかどうかを含む *すべて* のリフレッシュパラメータを一括で置き換えます。たとえばテーブルに `DEPENDS ON` がある状態で、`DEPENDS ON` を指定せずに `MODIFY REFRESH` を実行すると、その依存関係は削除されます。
 :::
+
 
 ### その他の操作 {#other-operations}
 
-すべてのリフレッシュ可能なマテリアライズドビューのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
+すべてのリフレッシャブルmaterialized viewのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
 
 リフレッシュを手動で停止、開始、トリガー、キャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views) を使用します。
 
@@ -343,9 +353,10 @@ Window view の作成方法は `MATERIALIZED VIEW` の作成と似ています�
 
 `TO [db].[table]` を指定せずに window view を作成する場合は、データを保存するテーブルエンジンとして `ENGINE` を必ず指定する必要があります。
 
+
 ### Time Window Functions {#time-window-functions}
 
-[Time window functions](../../functions/time-window-functions.md) は、レコードに対するウィンドウの下限と上限を取得するために使用されます。Window view は time window function と併用する必要があります。
+[Time window functions](../../functions/time-window-functions.md) は、レコードが属する時間ウィンドウの下限境界と上限境界を取得するために使用されます。Window view を使用する際は、time window function を必ず併用します。
 
 ### TIME ATTRIBUTES {#time-attributes}
 
@@ -373,7 +384,7 @@ CREATE WINDOW VIEW wv WATERMARK=ASCENDING AS SELECT count(number) FROM date GROU
 CREATE WINDOW VIEW wv WATERMARK=INTERVAL '3' SECOND AS SELECT count(number) FROM date GROUP BY tumble(timestamp, INTERVAL '5' SECOND);
 ```
 
-デフォルトでは、ウィンドウはウォーターマークが到達したときにトリガーされ、ウォーターマーク以降に到着した要素は破棄されます。Window view は、`ALLOWED_LATENESS=INTERVAL` を設定することで遅延イベントの処理をサポートします。遅延イベント処理の例は次のとおりです。
+デフォルトでは、ウィンドウはウォーターマークが到達したときにトリガーされ、ウォーターマークより後に到着した要素は破棄されます。Window view は、`ALLOWED_LATENESS=INTERVAL` を設定することで遅延イベントの処理をサポートします。遅延イベント処理の例は次のとおりです。
 
 ```sql
 CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTERVAL '2' SECOND AS SELECT count(a) AS count, tumbleEnd(wid) AS w_end FROM test.mt GROUP BY tumble(timestamp, INTERVAL '5' SECOND) AS wid;
@@ -381,7 +392,8 @@ CREATE WINDOW VIEW test.wv TO test.dst WATERMARK=ASCENDING ALLOWED_LATENESS=INTE
 
 遅延して発火した際に出力される要素は、以前の計算結果が更新されたものとして扱う必要があります。ウィンドウの終了時に発火するのではなく、ウィンドウビューは遅延イベントが到着したタイミングで即座に発火します。そのため、同じウィンドウに対して複数の出力が生成されます。ユーザーはこれらの重複した結果を考慮に入れるか、重複排除する必要があります。
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用して、ウィンドウビューで指定されている `SELECT` クエリを変更できます。新しい `SELECT` クエリで得られるデータ構造は、`TO [db.]name` 句の有無にかかわらず、元の `SELECT` クエリと同一である必要があります。中間状態は再利用できないため、現在のウィンドウ内のデータは失われることに注意してください。
+`ALTER TABLE ... MODIFY QUERY` ステートメントを使用することで、window view で指定された `SELECT` クエリを変更できます。新しい `SELECT` クエリによって得られるデータ構造は、`TO [db.]name` 句の有無にかかわらず、元の `SELECT` クエリのデータ構造と同一である必要があります。中間状態を再利用できないため、現在のウィンドウ内のデータは失われる点に注意してください。
+
 
 ### 新しいウィンドウの監視 {#monitoring-new-windows}
 
@@ -394,13 +406,14 @@ WATCH [db.]window_view
 [FORMAT format]
 ```
 
-`LIMIT` を指定すると、クエリを終了するまでに受信する更新の回数を制限できます。`EVENTS` 句を使用すると、クエリ結果そのものではなく最新のクエリウォーターマークのみを取得する、`WATCH` クエリの簡略な形式を利用できます。
+`LIMIT` を指定すると、クエリを終了するまでに受信する更新の回数を設定できます。`EVENTS` 句を使用すると、クエリ結果そのものではなく最新のクエリのウォーターマークのみを取得する、`WATCH` クエリの簡略版を利用できます。
+
 
 ### 設定 {#settings-1}
 
-* `window_view_clean_interval`: 古いデータを解放するための、ウィンドウビューのクリーン処理の間隔（秒）です。システムは、システム時刻または `WATERMARK` の設定に従ってまだ完全にはトリガーされていないウィンドウを保持し、それ以外のデータを削除します。
-* `window_view_heartbeat_interval`: `WATCH` クエリが稼働中であることを示すためのハートビート間隔（秒）です。
-* `wait_for_window_view_fire_signal_timeout`: イベント時間処理において、ウィンドウビューの発火シグナルを待機する際のタイムアウトです。
+* `window_view_clean_interval`: 古いデータを削除するための、ウィンドウビューのクリーンアップ間隔（秒）です。システムは、システム時刻または `WATERMARK` の設定に従ってまだ完全にはトリガーされていないウィンドウを保持し、それ以外のデータを削除します。
+* `window_view_heartbeat_interval`: `WATCH` クエリが実行中であることを示すためのハートビート送信間隔（秒）です。
+* `wait_for_window_view_fire_signal_timeout`: イベントタイム処理において、ウィンドウビューの発火シグナルを待機する際のタイムアウトです。
 
 ### 例 {#example}
 
@@ -416,19 +429,19 @@ CREATE TABLE data ( `id` UInt64, `timestamp` DateTime) ENGINE = Memory;
 CREATE WINDOW VIEW wv as select count(id), tumbleStart(w_id) as window_start from data group by tumble(timestamp, INTERVAL '10' SECOND) as w_id
 ```
 
-次に、結果を取得するために `WATCH` クエリを使用します。
+次に、結果を取得するために `WATCH` クエリを実行します。
 
 ```sql
 WATCH wv
 ```
 
-ログが`data`テーブルに挿入されると、
+ログが `data` テーブルに挿入されると、
 
 ```sql
 INSERT INTO data VALUES(1,now())
 ```
 
-`WATCH` クエリは、次のように結果を表示します。
+`WATCH` クエリは、結果を次のように出力します。
 
 ```text
 ┌─count(id)─┬────────window_start─┐
@@ -436,13 +449,14 @@ INSERT INTO data VALUES(1,now())
 └───────────┴─────────────────────┘
 ```
 
-別の方法として、`TO` 構文を使用して、出力先として別のテーブルを指定することもできます。
+別の方法として、`TO` 構文を使用して結果を別のテーブルに出力することもできます。
 
 ```sql
 CREATE WINDOW VIEW wv TO dst AS SELECT count(id), tumbleStart(w_id) as window_start FROM data GROUP BY tumble(timestamp, INTERVAL '10' SECOND) as w_id
 ```
 
-追加の例は、ClickHouse の stateful テストの中にあります（そこでの名前は `*window_view*` です）。
+追加の例は ClickHouse の stateful テスト内にあり、そこでは `*window_view*` という名前が付けられています。
+
 
 ### Window View の使用方法 {#window-view-usage}
 
@@ -492,9 +506,10 @@ CREATE TEMPORARY VIEW [IF NOT EXISTS] view_name AS <select_query>
 
 `OR REPLACE` は一時テーブルとの整合性を保つため、一時ビューでは**サポートされていません**。一時ビューを「置き換える」必要がある場合は、削除してから再作成してください。
 
+
 ### 例 {#temporary-views-examples}
 
-一時ソーステーブルと、その上に一時ビューを作成します:
+一時ソーステーブルを作成し、その上に一時ビューを作成します:
 
 ```sql
 CREATE TEMPORARY TABLE t_src (id UInt32, val String);
@@ -508,17 +523,18 @@ WHERE id <= 2;
 SELECT * FROM tview ORDER BY id;
 ```
 
-DDL を表示します:
+DDL を表示するには:
 
 ```sql
 SHOW CREATE TEMPORARY VIEW tview;
 ```
 
-削除するには:
+削除します:
 
 ```sql
 DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPORARY TABLE syntax
 ```
+
 
 ### 禁止事項 / 制限事項 {#temporary-views-limitations}
 
@@ -530,7 +546,7 @@ DROP TEMPORARY VIEW IF EXISTS tview;  -- temporary views are dropped with TEMPOR
 
 ### 分散クエリに関する注意事項 {#temporary-views-distributed-notes}
 
-一時 **ビュー** は単なる定義であり、転送されるデータ自体は存在しません。一時ビューが一時 **テーブル**（例: `Memory`）を参照している場合、そのデータは分散クエリの実行時に、一時テーブルと同様の方法でリモートサーバーに送信されます。
+一時 **ビュー** は単なる定義であり、実際に転送されるデータはありません。一時ビューが一時 **テーブル**（例: `Memory`）を参照している場合、そのデータは分散クエリの実行時に、一時テーブルと同様の方法でリモートサーバーに転送されます。
 
 #### 例 {#temporary-views-distributed-example}
 

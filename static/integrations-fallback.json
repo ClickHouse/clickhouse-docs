@@ -4904,7 +4904,7 @@
                 "createdAt": "2024-06-10T21:57:05.622Z",
                 "updatedAt": "2024-07-01T09:52:46.923Z",
                 "publishedAt": "2024-07-08T09:21:27.746Z",
-                "docsLink": "https://www.holistics.io/integrations/clickhouse/",
+                "docsLink": "https://docs.holistics.io/docs/connect/databases/clickhouse",
                 "about": null,
                 "changelog": null,
                 "version": null,

@@ -98,7 +98,6 @@ INTO OUTFILE 'my_output_file.ndjson'"
 
 ClickHouse がファイル名の拡張子から出力タイプを判別できない場合、または明示的にフォーマットを指定したい場合は、`FOMRAT` 句を追加してください。
 
-```sql
 ```bash
 ./clickhouse local -q "SELECT * FROM
    postgresql(

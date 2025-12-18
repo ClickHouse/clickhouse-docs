@@ -403,16 +403,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает функцию записи с использованием delta-kernel.
 
-## allow_experimental_full_text_index {#allow_experimental_full_text_index} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "Включить экспериментальный текстовый индекс"}]}]}/>
-
-Если установлено значение true, позволяет использовать экспериментальный текстовый индекс.
-
 ## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
 
 <ExperimentalBadge/>
@@ -1048,6 +1038,36 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Количество бакетов во временном кэше для применения частей патча в режиме Join.
 
+## apply_prewhere_after_final {#apply_prewhere_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка. При включении условия PREWHERE применяются после обработки FINAL."}]}]}/>
+
+При включении условия PREWHERE применяются после обработки FINAL для ReplacingMergeTree и аналогичных движков.
+Это может быть полезно, когда PREWHERE ссылается на столбцы, которые могут иметь разные значения в дублирующихся строках,
+и вы хотите, чтобы FINAL сначала выбрал итоговую строку, а уже затем выполнялась фильтрация. При отключении PREWHERE применяется во время чтения.
+Примечание: если включен apply_row_level_security_after_final и ROW POLICY использует столбцы, не входящие в ключ сортировки, выполнение PREWHERE также
+будет отложено, чтобы сохранить корректный порядок выполнения (ROW POLICY должен быть применён до PREWHERE).
+
+## apply_row_policy_after_final {#apply_row_policy_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+
+Если параметр включён, политики ROW POLICY и PREWHERE применяются после обработки FINAL для таблиц на движках *MergeTree (особенно для ReplacingMergeTree).
+Если параметр отключён, политики ROW POLICY применяются до FINAL, что может приводить к отличающимся результатам, когда политика
+отфильтровывает строки, которые должны использоваться для дедупликации в ReplacingMergeTree или аналогичных движках.
+
+Если выражение ROW POLICY зависит только от столбцов в ORDER BY, оно всё равно будет применяться до FINAL в целях оптимизации,
+поскольку такое фильтрование не может повлиять на результат дедупликации.
+
+Возможные значения:
+
+- 0 — политики ROW POLICY и PREWHERE применяются до FINAL (по умолчанию).
+- 1 — политики ROW POLICY и PREWHERE применяются после FINAL.
+
 ## apply_settings_from_server {#apply_settings_from_server} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1193,6 +1213,24 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 Включает асинхронное чтение из сокета при выполнении удалённого запроса.
 
 Включено по умолчанию.
+
+## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Порог объёма данных в байтах, читаемых с одной реплики, начиная с которого параллельные реплики включаются автоматически (применяется только при `automatic_parallel_replicas_mode`=1). Значение 0 означает отсутствие порога.
+
+## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+
+🚨 КРАЙНЕ ЭКСПЕРИМЕНТАЛЬНАЯ НАСТРОЙКА 🚨
+Включает автоматическое переключение на выполнение запросов с параллельными репликами на основе собранной статистики. Требует включения `parallel_replicas_local_plan` и указания `cluster_for_parallel_replicas`.
+0 — отключено, 1 — включено, 2 — включен только сбор статистики (переключение на выполнение с параллельными репликами отключено).
 
 ## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
 
@@ -1602,7 +1640,7 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-Включает или отключает сохранение типа данных `Nullable` при операциях [CAST](/sql-reference/functions/type-conversion-functions#cast).
+Включает или отключает сохранение типа данных `Nullable` при операциях [CAST](/sql-reference/functions/type-conversion-functions#CAST).
 
 Если настройка включена и аргумент функции `CAST` имеет тип `Nullable`, результат также приводится к типу `Nullable`. Если настройка отключена, результат всегда имеет точно целевой тип.
 
@@ -1645,7 +1683,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 **См. также**
 
-* Функция [CAST](/sql-reference/functions/type-conversion-functions#cast)
+* Функция [CAST](/sql-reference/functions/type-conversion-functions#CAST)
 
 
 ## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
@@ -1662,7 +1700,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
     ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
 
-- `'best_effort_us'` — Аналогичен `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus))
+- `'best_effort_us'` — Аналогичен `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
 
 - `'basic'` — Использовать базовый парсер.
 
@@ -3171,6 +3209,18 @@ ClickHouse применяет этот параметр, когда запрос
 
 Записывать в журнал system.filesystem prefetch_log во время выполнения запроса. Использовать только для тестирования или отладки, не рекомендуется включать по умолчанию.
 
+## enable_full_text_index {#enable_full_text_index} 
+
+<BetaBadge/>
+
+**Псевдонимы**: `allow_experimental_full_text_index`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Текстовый индекс был переведён в статус Beta."}]}]}/>
+
+Если значение параметра равно true, разрешается использование текстового индекса.
+
 ## enable_global_with_statement {#enable_global_with_statement} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3195,7 +3245,7 @@ ClickHouse применяет этот параметр, когда запрос
 
 Включает или отключает сжатие данных в ответе на HTTP-запрос.
 
-Для получения дополнительной информации см. [описание HTTP-интерфейса](../../interfaces/http.md).
+Для получения дополнительной информации см. [описание HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 
@@ -3320,7 +3370,7 @@ CREATE TABLE TAB(C1 Int, C2 Int, ALL Int) ENGINE=Memory();
 
 INSERT INTO TAB VALUES (10, 20, 30), (20, 20, 10), (30, 10, 20);
 
-SELECT * FROM TAB ORDER BY ALL; -- returns an error that ALL is ambiguous
+SELECT * FROM TAB ORDER BY ALL; -- возвращает ошибку о неоднозначности ALL
 
 SELECT * FROM TAB ORDER BY ALL SETTINGS enable_order_by_all = 0;
 ```
@@ -3388,6 +3438,23 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 ```
 
 
+## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка для управления позиционными аргументами в определениях PROJECTION."}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "Новая настройка для управления позиционными аргументами в определениях PROJECTION."}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": "0"},{"label": "Новая настройка для управления позиционными аргументами в определениях PROJECTION."}]}]}/>
+
+Включает или отключает поддержку позиционных аргументов в определениях PROJECTION. См. также настройку [enable_positional_arguments](#enable_positional_arguments).
+
+:::note
+Это настройка для экспертов, и вам не следует изменять её, если вы только начинаете работу с ClickHouse.
+:::
+
+Возможные значения:
+
+- 0 — позиционные аргументы не поддерживаются.
+- 1 — позиционные аргументы поддерживаются: можно использовать номера столбцов вместо имён столбцов.
+
 ## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3435,12 +3502,12 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "A new setting to share storage snapshot in query"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "A new setting to share storage snapshot in query"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "Enable share storage snapshot in query by default"}]}]} />
 
 Если параметр включён, все подзапросы внутри одного запроса будут использовать один и тот же StorageSnapshot для каждой таблицы.
-Это обеспечивает единый, согласованный вид данных для всего запроса, даже если к одной и той же таблице обращаются несколько раз.
+Это обеспечивает единый согласованный вид данных для всего запроса, даже если к одной и той же таблице обращаются несколько раз.
 
 Это требуется для запросов, в которых важна внутренняя согласованность частей данных. Пример:
 
@@ -3626,17 +3693,17 @@ CREATE TABLE tab
 )
 ENGINE = MergeTree ORDER BY tuple();
 
-SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a will be not be updated upon insert
---SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- neither index would be updated on insert
+SET exclude_materialize_skip_indexes_on_insert='idx_a'; -- idx_a не будет обновляться при вставке
+--SET exclude_materialize_skip_indexes_on_insert='idx_a, idx_b'; -- ни один из индексов не будет обновляться при вставке
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- only idx_b is updated
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- обновляется только idx_b
 
--- since it is a session setting it can be set on a per-query level
+-- поскольку это настройка сеанса, её можно установить на уровне отдельного запроса
 INSERT INTO tab SELECT number, number / 50 FROM numbers(100, 100) SETTINGS exclude_materialize_skip_indexes_on_insert='idx_b';
 
-ALTER TABLE tab MATERIALIZE INDEX idx_a; -- this query can be used to explicitly materialize the index
+ALTER TABLE tab MATERIALIZE INDEX idx_a; -- этот запрос можно использовать для явной материализации индекса
 
-SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- reset setting to default
+SET exclude_materialize_skip_indexes_on_insert = DEFAULT; -- сброс настройки на значение по умолчанию
 ```
 
 
@@ -3909,7 +3976,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3933,7 +4000,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3969,12 +4036,12 @@ Engine=MergeTree()
 ORDER BY key;
 
 SELECT * FROM data_01515;
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
-SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- query will produce INDEX_NOT_USED error.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Ok.
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Ok (example of full featured parser).
-SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- query will produce INDEX_NOT_USED error, since d1_null_idx is not used.
-SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Ok.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices=''; -- запрос приведет к ошибке CANNOT_PARSE_TEXT.
+SELECT * FROM data_01515 SETTINGS force_data_skipping_indices='d1_idx'; -- запрос приведет к ошибке INDEX_NOT_USED.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='d1_idx'; -- Корректно.
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`'; -- Корректно (пример полнофункционального парсера).
+SELECT * FROM data_01515 WHERE d1 = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- запрос приведет к ошибке INDEX_NOT_USED, так как индекс d1_null_idx не используется.
+SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS force_data_skipping_indices='`d1_idx`, d1_null_idx'; -- Корректно.
 ```
 
 
@@ -4131,7 +4198,7 @@ SELECT JSON_VALUE('{"hello":{"world":"!"}}', '$.hello') settings function_json_v
 │ {"world":"!"}                                    │
 └──────────────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+Получена 1 строка. Прошло: 0.001 сек.
 ```
 
 Возможные значения:
@@ -4153,7 +4220,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 │ ᴺᵁᴸᴸ                                   │
 └────────────────────────────────────────┘
 
-1 row in set. Elapsed: 0.001 sec.
+Получена 1 строка. Прошло: 0.001 сек.
 ```
 
 Возможные значения:
@@ -4466,7 +4533,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Включает или отключает проверку контрольной суммы при декомпрессии данных HTTP POST-запроса от клиента. Используется только для нативного формата сжатия ClickHouse (не используется с `gzip` или `deflate`).
 
-Для получения дополнительной информации см. [описание HTTP-интерфейса](../../interfaces/http.md).
+Для получения дополнительной информации см. [описание HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 
@@ -4684,11 +4751,11 @@ ORDER BY key;
 INSERT INTO data VALUES (1, 2, 3);
 
 SELECT * FROM data;
-SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- query will produce CANNOT_PARSE_TEXT error.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ok.
-SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ok.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices=''; -- запрос приведёт к ошибке CANNOT_PARSE_TEXT.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='x_idx'; -- Ок.
+SELECT * FROM data SETTINGS ignore_data_skipping_indices='na_idx'; -- Ок.
 
-SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- query will produce INDEX_NOT_USED error, since xy_idx is explicitly ignored.
+SELECT * FROM data WHERE x = 1 AND y = 1 SETTINGS ignore_data_skipping_indices='xy_idx',force_data_skipping_indices='xy_idx' ; -- запрос приведёт к ошибке INDEX_NOT_USED, так как индекс xy_idx явно игнорируется.
 SELECT * FROM data WHERE x = 1 AND y = 2 SETTINGS ignore_data_skipping_indices='xy_idx';
 ```
 
@@ -4893,11 +4960,11 @@ SETTINGS non_replicated_deduplication_window = 100;
 
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (1);
 
--- the next insert won't be deduplicated because insert_deduplication_token is different
+-- следующая вставка не будет дедуплицирована, поскольку insert_deduplication_token отличается
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test1' VALUES (1);
 
--- the next insert will be deduplicated because insert_deduplication_token
--- is the same as one of the previous
+-- следующая вставка будет дедуплицирована, поскольку insert_deduplication_token
+-- совпадает с одним из предыдущих
 INSERT INTO test_table SETTINGS insert_deduplication_token = 'test' VALUES (2);
 
 SELECT * FROM test_table
@@ -5052,6 +5119,20 @@ ClickHouse генерирует исключение:
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
+## insert_select_deduplicate {#insert_select_deduplicate} 
+
+<SettingsInfoBlock type="BoolAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+Включает или отключает дедупликацию блоков для `INSERT SELECT` (для таблиц с движком Replicated\*).
+Эта настройка переопределяет `insert_deduplicate` для запросов `INSERT SELECT`.
+У этой настройки есть три возможных значения:
+
+- 0 — дедупликация отключена для запроса `INSERT SELECT`.
+- 1 — дедупликация включена для запроса `INSERT SELECT`. Если результат запроса SELECT нестабилен, генерируется исключение.
+- auto — дедупликация включена, если `insert_deduplicate` включена и результат запроса SELECT стабилен, в противном случае — отключена.
+
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5173,9 +5254,12 @@ SELECT * FROM x_dist ORDER BY number ASC;
 
 - direct
 
-Этот алгоритм может применяться, когда хранилище для правой таблицы поддерживает key-value-запросы.
+Алгоритм `direct` (также известный как nested loop) выполняет поиск в правой таблице, используя строки из левой таблицы в качестве ключей.
+Он поддерживается специальными хранилищами, такими как [Dictionary](/engines/table-engines/special/dictionary), [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) и таблицами [MergeTree](/engines/table-engines/mergetree-family/mergetree).
 
-Алгоритм `direct` выполняет поиск в правой таблице, используя строки из левой таблицы в качестве ключей. Он поддерживается только специальными хранилищами, такими как [Dictionary](/engines/table-engines/special/dictionary) или [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md), и только для `LEFT` и `INNER` JOIN.
+Для таблиц MergeTree алгоритм проталкивает фильтры по ключам JOIN непосредственно на уровень хранилища. Это может быть более эффективно, когда ключ может использовать первичный ключевой индекс таблицы для поиска, иначе выполняется полное сканирование правой таблицы для каждого блока левой таблицы.
+
+Поддерживает `INNER` и `LEFT` JOIN и только одностолбцовые ключи соединения по равенству без других условий.
 
 - auto
 
@@ -6306,7 +6390,7 @@ SELECT multiMatchAny('abcd', ['ab','bcd','c','d']) SETTINGS max_hyperscan_regexp
 Результат:
 
 ```text
-Exception: Regexp length too large.
+Исключение: Длина регулярного выражения слишком велика.
 ```
 
 **Смотрите также**
@@ -6350,7 +6434,7 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 Результат:
 
 ```text
-Exception: Total regexp lengths too large.
+Исключение: Суммарная длина регулярных выражений слишком велика.
 ```
 
 **См. также**
@@ -6904,15 +6988,15 @@ leaf-узлах и игнорироваться на этапе слияния �
     </unlimited_sessions_profile>
 </profiles>
 <users>
-    <!-- User Alice can connect to a ClickHouse server no more than once at a time. -->
+    <!-- Пользователь Alice может подключаться к серверу ClickHouse не более одного раза одновременно. -->
     <Alice>
         <profile>single_session_user</profile>
     </Alice>
-    <!-- User Bob can use 2 simultaneous sessions. -->
+    <!-- Пользователь Bob может использовать 2 одновременных сессии. -->
     <Bob>
         <profile>two_sessions_profile</profile>
     </Bob>
-    <!-- User Charles can use arbitrarily many of simultaneous sessions. -->
+    <!-- Пользователь Charles может использовать неограниченное количество одновременных сессий. -->
     <Charles>
         <profile>unlimited_sessions_profile</profile>
     </Charles>
@@ -6940,6 +7024,14 @@ leaf-узлах и игнорироваться на этапе слияния �
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "100000000"},{"label": "Новая настройка."}]}, {"id": "row-2","items": [{"label": "24.12"},{"label": "1000000000000"},{"label": "Включает оптимизацию для более крупных таблиц."}]}]}/>
 
 Максимальное количество элементов, для которых допускается предварительное выделение памяти во всех хеш-таблицах суммарно перед выполнением операции JOIN
+
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Добавлена новая настройка, позволяющая ограничить количество потоков для обработки файлов в *Cluster table functions"}]}]}/>
+
+Если значение параметра не равно нулю, ограничивает количество потоков, читающих данные из файлов в *Cluster table functions.
 
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
@@ -7037,16 +7129,20 @@ leaf-узлах и игнорироваться на этапе слияния �
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
-Максимальное количество потоков обработки запроса, не включая потоки для получения данных с удалённых серверов (см. параметр `max_distributed_connections`).
+Максимальное количество потоков обработки запроса, не включая потоки для получения данных с удалённых серверов (см. параметр [`max_distributed_connections`](/operations/settings/settings#max_distributed_connections)).
 
 Этот параметр применяется к потокам, которые параллельно выполняют одни и те же этапы конвейера обработки запроса.
-Например, при чтении из таблицы, если возможно параллельно вычислять выражения с функциями, выполнять фильтрацию с помощью WHERE и предварительную агрегацию для GROUP BY с использованием как минимум `max_threads` потоков, то будет задействовано значение `max_threads`.
+Например, при чтении из таблицы, если возможно параллельно вычислять выражения с функциями, выполнять фильтрацию с помощью `WHERE` и предварительную агрегацию для `GROUP BY` с использованием как минимум `max_threads` потоков, то будет задействовано значение `max_threads`.
 
-Для запросов, которые завершаются быстро из‑за LIMIT, можно установить меньшее значение `max_threads`. Например, если необходимое количество записей находится в каждом блоке и `max_threads = 8`, то извлекается 8 блоков, хотя было бы достаточно прочитать только один.
-
+Для запросов, которые завершаются быстро из‑за `LIMIT`, можно установить меньшее значение `max_threads`.
+Например, если необходимое количество записей находится в каждом блоке и `max_threads = 8`, то извлекается 8 блоков, хотя было бы достаточно прочитать только один.
 Чем меньше значение `max_threads`, тем меньше потребляется памяти.
 
-Значение по умолчанию в Cloud: `auto(3)`
+По умолчанию значение `max_threads` соответствует количеству аппаратных потоков, доступных для ClickHouse.
+Без SMT (например, Intel HyperThreading) это соответствует количеству ядер CPU.
+
+Для пользователей ClickHouse Cloud значение по умолчанию отображается как `auto(N)`, где N соответствует vCPU‑размеру вашего сервиса, например 2vCPU/8GiB, 4vCPU/16GiB и т. д.
+Список всех размеров сервисов см. на вкладке настроек в консоли Cloud.
 
 ## max_threads_for_indexes {#max_threads_for_indexes} 
 
@@ -8550,6 +8646,14 @@ FROM fuse_tbl
 
 Если значение равно true, подзапрос для IN будет выполняться на каждой ведомой реплике.
 
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Разрешает использование materialized view с параллельными репликами"}]}]}/>
+
+Разрешает использование materialized view с параллельными репликами
+
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
 <BetaBadge/>
@@ -8864,8 +8968,8 @@ SELECT avg(number) AS number, max(number) FROM numbers(10);
 Результат:
 
 ```text
-Received exception from server (version 21.5.1):
-Code: 184. DB::Exception: Received from localhost:9000. DB::Exception: Aggregate function avg(number) is found inside another aggregate function in query: While processing avg(number) AS number.
+Получено исключение от сервера (версия 21.5.1):
+Код: 184. DB::Exception: Получено от localhost:9000. DB::Exception: Агрегатная функция avg(number) обнаружена внутри другой агрегатной функции в запросе: При обработке avg(number) AS number.
 ```
 
 Запрос:
@@ -9361,9 +9465,9 @@ a   Tuple(
 
 ## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "Добавлена новая настройка, задающая максимальное значение лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "100"},{"label": "Более оптимальное значение"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "Добавлена новая настройка, задающая максимальное значение лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "10000"},{"label": "Лимит увеличен после улучшения производительности"}]}, {"id": "row-3","items": [{"label": "25.11"},{"label": "100"},{"label": "Более оптимальное значение"}]}]}/>
 
 Задает максимальное значение лимита, при котором может использоваться план запроса для оптимизации ленивой материализации. Если значение равно нулю, лимит отсутствует.
 
@@ -9648,8 +9752,6 @@ a   Tuple(
 
 - 0 для отключения таймера.
 
-**Временно отключено в ClickHouse Cloud.**
-
 См. также:
 
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
@@ -9670,8 +9772,6 @@ a   Tuple(
             - 1000000000 (раз в секунду) для профилирования всего кластера.
 
 - 0 для отключения таймера.
-
-**Временно недоступен в ClickHouse Cloud.**
 
 См. также:
 
@@ -9991,7 +10091,7 @@ FORMAT Null;
 ```
 
 ```text title="Result"
-6666 rows in set. ...
+6666 строк в наборе. ...
 ```
 
 
@@ -10392,7 +10492,7 @@ FORMAT Null;
 
 Включает или отключает HTTP-заголовки `X-ClickHouse-Progress` в ответах `clickhouse-server`.
 
-Дополнительные сведения см. в [описании HTTP-интерфейса](../../interfaces/http.md).
+Дополнительные сведения см. в [описании HTTP-интерфейса](/interfaces/http).
 
 Возможные значения:
 
@@ -10467,7 +10567,7 @@ SELECT toDateTime64(toDateTime64('1999-12-12 23:23:23.123', 3), 3, 'Europe/Zuric
 CREATE TABLE test_tz (`d` DateTime('UTC')) ENGINE = Memory AS SELECT toDateTime('2000-01-01 00:00:00', 'UTC');
 
 SELECT *, timeZone() FROM test_tz WHERE d = toDateTime('2000-01-01 00:00:00') SETTINGS session_timezone = 'Asia/Novosibirsk'
-0 rows in set.
+0 строк в результате.
 
 SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS session_timezone = 'Asia/Novosibirsk'
 ┌───────────────────d─┬─timeZone()───────┐
@@ -10792,7 +10892,7 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 ```text
 ┌─event────────────────────┬─value─┬─description───────────────────────────────────────────┐
-│ QueryMemoryLimitExceeded │     0 │ Number of times when memory limit exceeded for query. │
+│ QueryMemoryLimitExceeded │     0 │ Количество превышений лимита памяти для запроса. │
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 

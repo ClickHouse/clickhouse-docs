@@ -22,6 +22,7 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # Сохранение журналов аудита ClickHouse Cloud в Splunk {#storing-clickhouse-cloud-audit-logs-into-splunk}
 
 <PartnerBadge/>

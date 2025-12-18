@@ -181,6 +181,7 @@ int main() {
            (int)chdb_result_length(json_result), 
            chdb_result_buffer(json_result));
     chdb_destroy_query_result(json_result);
+
     
     // 美化输出格式
     chdb_result* pretty_result = chdb_query(*conn, query, "Pretty");

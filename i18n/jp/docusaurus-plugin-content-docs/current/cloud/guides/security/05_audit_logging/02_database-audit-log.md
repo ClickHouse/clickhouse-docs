@@ -2,7 +2,7 @@
 sidebar_label: 'データベース監査ログ'
 slug: /cloud/security/audit-logging/database-audit-log
 title: 'データベース監査ログ'
-description: 'このページでは、ユーザーがデータベース監査ログを確認する方法について説明します'
+description: 'このページでは、データベース監査ログを確認する方法について説明します'
 doc_type: 'guide'
 keywords: ['監査ログ', 'データベースログ', 'コンプライアンス', 'セキュリティ', '監視']
 ---
@@ -24,7 +24,7 @@ ClickHouse は、主にセッションログとクエリログに、データベ
 ログイン失敗を表示するサンプルクエリ
 
 ```sql
-SELECT event_time
+select event_time
     ,type
     ,user
     ,auth_type
@@ -49,13 +49,15 @@ FROM clusterAllReplicas('default', system.query_log)
 WHERE user=’compromised_account’
 ```
 
+
 ## サービス内でのログデータの保持 {#reatining-log-data-within-services}
 
-より長期間の保持やログの耐久性を必要とするお客様は、マテリアライズドビューを使用してこれらの目的を達成できます。マテリアライズドビューとは何か、その利点や実装方法の詳細については、[materialized views](/materialized-views) に関する動画およびドキュメントを参照してください。
+より長期間の保持やログの耐久性が求められる場合は、materialized view を使用することでこれらの要件を満たせます。materialized view の概要、その利点、および実装方法の詳細については、[materialized views](/materialized-views) に関する動画およびドキュメントを参照してください。
 
 ## ログのエクスポート {#exporting-logs}
 
 システムログは、SIEM システムと互換性のあるさまざまな形式で、任意のストレージ先に書き込みまたはエクスポートできます。詳細については、[テーブル関数](/sql-reference/table-functions)のドキュメントを参照してください。最も一般的な方法は次のとおりです。
+
 - [S3 に書き込む](/sql-reference/table-functions/s3)
 - [GCS に書き込む](/sql-reference/table-functions/gcs)
 - [Azure Blob Storage に書き込む](/sql-reference/table-functions/azureBlobStorage)

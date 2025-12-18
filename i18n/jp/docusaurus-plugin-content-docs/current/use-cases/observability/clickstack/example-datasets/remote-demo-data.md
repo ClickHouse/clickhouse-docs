@@ -48,6 +48,7 @@ import DemoArchitecture from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 HyperDX が ClickHouse Cloud 上でホストされている場合、リモートデータベースはサポートされません。そのため、このデータセットもサポート対象外です。
 :::
 
+
 これは、公式 OpenTelemetry (OTel) デモの ClickHouse バージョンから取得した、およそ 40 時間分のデータを含みます。データは毎晩リプレイされ、その際タイムスタンプが現在の時間帯に合わせて調整されるため、ユーザーは HyperDX の統合されたログ、トレース、メトリクスを使用してシステムの挙動を観察・分析できます。
 
 :::note データの変動

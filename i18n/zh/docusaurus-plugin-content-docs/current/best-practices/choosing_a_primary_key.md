@@ -67,7 +67,7 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-假设某位用户希望计算在 2024 年之后提交的问题数量，而这代表了其最常见的访问模式。
+假设某位用户希望计算在 2024 年之后提交的问题数量,而这代表了其最常见的访问模式。
 
 ```sql
 SELECT count()
@@ -81,9 +81,9 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
-注意观察此查询读取的行数和字节数。在没有主键的情况下，查询必须扫描整个数据集。
+注意观察此查询读取的行数和字节数。在没有主键的情况下,查询必须扫描整个数据集。
 
-使用 `EXPLAIN indexes=1` 可以确认，由于缺少索引，执行的是全表扫描。
+使用 `EXPLAIN indexes=1` 可以确认,由于缺少索引,执行的是全表扫描。
 
 ```sql
 EXPLAIN indexes = 1
@@ -102,7 +102,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 5 rows in set. Elapsed: 0.003 sec.
 ```
 
-假设有一个名为 `posts_ordered` 的表，包含相同的数据，其在定义中使用的 `ORDER BY` 子句为 `(PostTypeId, toDate(CreationDate))`，即：
+假设有一个名为 `posts_ordered` 的表,包含相同的数据,其定义中的 ORDER BY 为 `(PostTypeId, toDate(CreationDate))`,即:
 
 ```sql
 CREATE TABLE posts_ordered
@@ -116,11 +116,11 @@ ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-`PostTypeId` 的基数为 8，是我们排序键中第一个条目的逻辑首选。考虑到按日期粒度进行过滤通常已经足够（同时仍然可以从 datetime 过滤中受益），因此我们使用 `toDate(CreationDate)` 作为排序键的第二个组成部分。这样还会生成更小的索引，因为日期可以用 16 位来表示，从而加快过滤速度。
+`PostTypeId` 的基数为 8,是我们排序键中第一个条目的逻辑首选。考虑到按日期粒度进行过滤通常已经足够(同时仍然可以从 datetime 过滤中受益),因此我们使用 `toDate(CreationDate)` 作为排序键的第二个组成部分。这样还会生成更小的索引,因为日期可以用 16 位来表示,从而加快过滤速度。
 
-下列动画展示了如何为 Stack Overflow 的 posts 表创建一个经过优化的稀疏主索引。索引针对的是数据块，而不是单独的行：
+下列动画展示了如何为 Stack Overflow 的 posts 表创建一个经过优化的稀疏主索引。索引针对的是数据块,而不是单独的行:
 
-<Image img={create_primary_key} size="lg" alt="Primary key" />
+<Image img={create_primary_key} size="lg" alt="主键" />
 
 如果在具有此排序键的表上重复执行相同的查询：
 
@@ -136,35 +136,10 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 
-┌─count()─┐
-│  192611 │
-└─────────┘
---highlight-next-line
-1 行结果。耗时 0.013 秒。处理了 196.53 千行，1.77 MB（14.64 百万行/秒，131.78 MB/秒）。
+此查询现在利用稀疏索引，显著减少了读取的数据量，并将执行时间提升了 4 倍——请注意读取的行数和字节数的减少。
 
-```sql
-EXPLAIN indexes = 1
-SELECT count()
-FROM stackoverflow.posts_ordered
-WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+可以通过执行 `EXPLAIN indexes=1` 来确认是否使用了该索引。
 
-┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
-│ Expression ((Project names + Projection))                                                   │
-│   Aggregating                                                                               │
-│     Expression (Before GROUP BY)                                                            │
-│       Expression                                                                            │
-│         ReadFromMergeTree (stackoverflow.posts_ordered)                                     │
-│         Indexes:                                                                            │
-│           PrimaryKey                                                                        │
-│             Keys:                                                                           │
-│               PostTypeId                                                                    │
-│               toDate(CreationDate)                                                          │
-│             Condition: and((PostTypeId in [1, 1]), (toDate(CreationDate) in [19723, +Inf))) │
-│             Parts: 14/14                                                                    │
-│             Granules: 39/7578                                                               │
-└─────────────────────────────────────────────────────────────────────────────────────────────┘
-
-13 rows in set. Elapsed: 0.004 sec.
 ```sql
 EXPLAIN indexes = 1
 SELECT count()

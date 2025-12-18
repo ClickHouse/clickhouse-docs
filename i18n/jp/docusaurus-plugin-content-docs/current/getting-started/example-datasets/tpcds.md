@@ -37,7 +37,6 @@ make
 では、ClickHouse にテーブルを作成します。
 `tools/tpcds.sql` にある元のテーブル定義をそのまま使うことも、プライマリキーインデックスが適切に定義され、必要に応じて LowCardinality 型カラムを用いた「チューニング済み」のテーブル定義を使うこともできます。
 
-
 ```sql
 CREATE TABLE call_center(
       cc_call_center_sk         Int64,
