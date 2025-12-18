@@ -102,7 +102,7 @@ SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリを実行した時点で、データセットには 27,450,499 行が含まれていました。ClickHouse におけるこのテーブルのストレージサイズを確認してみましょう。
+At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -110,13 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-テーブルのサイズがわずか 221.43 MiB しかないことに注目してください！
+Notice the size of the table is just 221.43 MiB!
 
-## いくつかクエリを実行する {#run-queries}
+## Run some queries {#run-queries}
 
-データを分析するために、いくつかクエリを実行します。
+Let's run some queries to analyze the data:
 
-### クエリ 1: 年ごとの平均価格 {#average-price}
+### Query 1. Average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -129,7 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-### クエリ 2. ロンドンの1年あたりの平均価格 {#average-price-london}
+### Query 2. average price per year in London {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -143,9 +143,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に異変が起きました！もっとも、それはおそらく驚くことではないでしょうが……
+Something happened to home prices in 2020! But that is probably not a surprise...
 
-### クエリ3. 最も高価なエリア {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT

@@ -28,7 +28,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD DICTIONARY {#reload-dictionary}
 
 Полностью перезагружает словарь `dictionary_name` независимо от его состояния (LOADED / NOT&#95;LOADED / FAILED).
@@ -43,7 +42,6 @@ SYSTEM RELOAD DICTIONARY [ON CLUSTER cluster_name] dictionary_name
 ```sql
 SELECT name, status FROM system.dictionaries;
 ```
-
 
 ## SYSTEM RELOAD MODELS {#reload-models}
 
@@ -60,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL {#reload-model}
 
 Перезагружает модель CatBoost, расположенную по пути `model_path`.
@@ -70,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS {#reload-functions}
 
@@ -83,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
 Повторно вычисляет все [асинхронные метрики](../../operations/system-tables/asynchronous_metrics.md). Поскольку асинхронные метрики периодически обновляются на основе настройки [asynchronous&#95;metrics&#95;update&#95;period&#95;s](../../operations/server-configuration-parameters/settings.md), их ручное обновление с помощью этого оператора, как правило, не требуется.
@@ -91,7 +86,6 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```sql
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM DROP DNS CACHE {#drop-dns-cache}
 
@@ -141,7 +135,6 @@ SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 Третий делает то же самое для всех реплицированных таблиц на локальном сервере.
 Четвёртый полезен для удаления метаданных мёртвой реплики, когда все остальные реплики таблицы были удалены. Он требует явного указания пути таблицы. Путь должен совпадать с тем, который был передан в первый аргумент движка `ReplicatedMergeTree` при создании таблицы.
 
-
 ## SYSTEM DROP DATABASE REPLICA {#drop-database-replica}
 
 &quot;Мёртвые&quot; реплики баз данных `Replicated` можно удалить с помощью следующего синтаксиса:
@@ -153,7 +146,6 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 ```
 
 Аналогично `SYSTEM DROP REPLICA`, но удаляет путь реплики базы данных `Replicated` из Zookeeper в случае, когда отсутствует база данных, для которой можно выполнить `DROP DATABASE`. Обратите внимание, что эта команда не удаляет реплики `ReplicatedMergeTree` (поэтому вам может понадобиться также `SYSTEM DROP REPLICA`). Имена сегмента и реплики — это имена, указанные в аргументах движка `Replicated` при создании базы данных. Также эти имена можно получить из столбцов `database_shard_name` и `database_replica_name` в `system.clusters`. Если предложение `FROM SHARD` опущено, то `replica_name` должен быть полным именем реплики в формате `shard_name|replica_name`.
-
 
 ## SYSTEM DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
@@ -180,7 +172,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 Очищает [кеш запросов](../../operations/query-cache.md).
 Если указан тег, удаляются только записи кеша запросов, помеченные этим тегом.
 
-
 ## SYSTEM DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 Очищает кеш схем, загружаемых из [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path).
@@ -194,7 +185,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS {#flush-logs}
 
@@ -211,7 +201,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG {#reload-config}
 
 Перезагружает конфигурацию ClickHouse. Используется, когда конфигурация хранится в Zookeeper. Обратите внимание, что `SYSTEM RELOAD CONFIG` не перезагружает конфигурацию пользователей (`USER`), хранящуюся в Zookeeper; он перезагружает только конфигурацию пользователей (`USER`), которая хранится в `users.xml`. Чтобы перезагрузить всю конфигурацию пользователей (`USER`), используйте `SYSTEM RELOAD USERS`.
@@ -220,7 +209,6 @@ SYSTEM FLUSH LOGS query_log, system.query_views_log;
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD USERS {#reload-users}
 
 Перезагружает все хранилища управления доступом, включая users.xml, локальное дисковое хранилище управления доступом и реплицируемое хранилище управления доступом (в Zookeeper).
@@ -228,7 +216,6 @@ SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
-
 
 ## ОСТАНОВКА СИСТЕМЫ {#shutdown}
 
@@ -262,16 +249,14 @@ SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
 
 где `FUNCTION` — любая функция или подстрока имени функции, например `QueryMetricLog::startQuery`, а обработчик — один из следующих вариантов
 
-
 #### LOG {#instrument-add-log}
 
 Выводит переданный в качестве аргумента текст и стек вызовов при входе (`ENTRY`) или выходе (`EXIT`) из функции.
 
 ```sql
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'это лог, выводимый при входе в функцию'
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'это лог, выводимый при выходе из функции'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'this is a log printed at entry'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'this is a log printed at exit'
 ```
-
 
 #### SLEEP {#instrument-add-sleep}
 
@@ -287,7 +272,6 @@ SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0.5
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0 1
 ```
 
-
 #### PROFILE {#instrument-add-profile}
 
 Измеряет время, прошедшее между `ENTRY` и `EXIT` функции.
@@ -297,7 +281,6 @@ SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0 1
 ```sql
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` PROFILE
 ```
-
 
 ### SYSTEM INSTRUMENT REMOVE {#instrument-remove}
 
@@ -310,7 +293,7 @@ SYSTEM INSTRUMENT REMOVE ID
 все они с параметром `ALL`:
 
 ```sql
-УДАЛИТЬ ВСЕ СИСТЕМНЫЕ ИНСТРУМЕНТЫ
+SYSTEM INSTRUMENT REMOVE ALL
 ```
 
 или набор идентификаторов из подзапроса:
@@ -320,7 +303,6 @@ SYSTEM INSTRUMENT REMOVE (SELECT id FROM system.instrumentation WHERE handler = 
 ```
 
 Идентификатор точки инструментирования можно получить из системной таблицы [`system.instrumentation`](../../operations/system-tables/instrumentation.md).
-
 
 ## Управление distributed таблицами {#managing-distributed-tables}
 
@@ -338,7 +320,6 @@ SYSTEM STOP DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_
 Если параметр [`prefer_localhost_replica`](../../operations/settings/settings.md#prefer_localhost_replica) включён (по умолчанию), данные всё равно будут вставляться в локальный сегмент.
 :::
 
-
 ### SYSTEM FLUSH DISTRIBUTED {#flush-distributed}
 
 Выполняет принудительную синхронную отправку данных с ClickHouse на узлы кластера. Если какие-либо узлы недоступны, ClickHouse генерирует исключение и останавливает выполнение запроса. Вы можете повторно выполнять запрос до тех пор, пока он не завершится успешно, что произойдёт, когда все узлы снова станут доступными.
@@ -353,7 +334,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 Каждый ожидающий блок хранится на диске с настройками из исходного оператора INSERT, поэтому иногда имеет смысл переопределить эти настройки.
 :::
 
-
 ### SYSTEM START DISTRIBUTED SENDS {#start-distributed-sends}
 
 Включает фоновое распределение при вставке данных в distributed таблицы.
@@ -361,7 +341,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```sql
 SYSTEM START DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM STOP LISTEN {#stop-listen}
 
@@ -378,7 +357,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 * Если указан модификатор `QUERIES DEFAULT [EXCEPT .. [,..]]`, останавливаются все протоколы по умолчанию, если они не указаны в секции `EXCEPT`.
 * Если указан модификатор `QUERIES CUSTOM [EXCEPT .. [,..]]`, останавливаются все пользовательские протоколы, если они не указаны в секции `EXCEPT`.
 
-
 ### SYSTEM START LISTEN {#start-listen}
 
 Разрешает устанавливать новые подключения по указанным протоколам.
@@ -388,7 +366,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## Управление таблицами MergeTree {#managing-mergetree-tables}
 
@@ -408,7 +385,6 @@ SYSTEM STOP MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]mer
 Выполнение `DETACH / ATTACH` таблицы запустит фоновые слияния для этой таблицы, даже если слияния ранее были остановлены для всех таблиц MergeTree.
 :::
 
-
 ### SYSTEM START MERGES {#start-merges}
 
 <CloudNotSupportedBadge />
@@ -419,7 +395,6 @@ SYSTEM STOP MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]mer
 SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP TTL MERGES {#stop-ttl-merges}
 
 Позволяет остановить фоновое удаление старых данных согласно [выражению TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц семейства MergeTree:
@@ -428,7 +403,6 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 ```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START TTL MERGES {#start-ttl-merges}
 
@@ -439,7 +413,6 @@ SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_n
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP MOVES {#stop-moves}
 
 Предоставляет возможность остановить фоновые перемещения данных согласно [TTL-выражению таблицы с предложением TO VOLUME или TO DISK](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) для таблиц семейства MergeTree.
@@ -448,7 +421,6 @@ SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_
 ```sql
 SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START MOVES {#start-moves}
 
@@ -459,7 +431,6 @@ SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM SYSTEM UNFREEZE {#query_language-system-unfreeze}
 
 Удаляет замороженную резервную копию с указанным именем со всех дисков. Подробнее о разморозке отдельных частей см. в [ALTER TABLE table&#95;name UNFREEZE WITH NAME ](/sql-reference/statements/alter/partition#unfreeze-partition).
@@ -468,7 +439,6 @@ SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 SYSTEM UNFREEZE WITH NAME <backup_name>
 ```
 
-
 ### SYSTEM WAIT LOADING PARTS {#wait-loading-parts}
 
 Ожидает завершения загрузки всех асинхронно загружаемых частей данных таблицы (устаревших частей данных).
@@ -476,7 +446,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## Управление таблицами ReplicatedMergeTree {#managing-replicatedmergetree-tables}
 
@@ -493,7 +462,6 @@ ClickHouse может управлять процессами репликаци
 SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START FETCHES {#start-fetches}
 
 <CloudNotSupportedBadge />
@@ -505,7 +473,6 @@ SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family
 SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATED SENDS {#stop-replicated-sends}
 
 Позволяет остановить фоновую отправку новых вставленных кусков данных другим репликам в кластере для таблиц семейства `ReplicatedMergeTree`:
@@ -513,7 +480,6 @@ SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_famil
 ```sql
 SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATED SENDS {#start-replicated-sends}
 
@@ -523,7 +489,6 @@ SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tr
 SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATION QUEUES {#stop-replication-queues}
 
 Предоставляет возможность остановить выполнение фоновых задач выборки данных из очередей репликации в ZooKeeper для таблиц семейства `ReplicatedMergeTree`. Типы возможных фоновых задач: слияния, выборки, мутации, DDL-команды с предложением ON CLUSTER:
@@ -531,7 +496,6 @@ SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_t
 ```sql
 SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATION QUEUES {#start-replication-queues}
 
@@ -541,7 +505,6 @@ SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_
 SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP PULLING REPLICATION LOG {#stop-pulling-replication-log}
 
 Останавливает загрузку новых записей из журнала репликации в очередь репликации таблицы `ReplicatedMergeTree`.
@@ -550,7 +513,6 @@ SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge
 SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START PULLING REPLICATION LOG {#start-pulling-replication-log}
 
 Отменяет действие команды `SYSTEM STOP PULLING REPLICATION LOG`.
@@ -558,7 +520,6 @@ SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_m
 ```sql
 SYSTEM START PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM SYNC REPLICA {#sync-replica}
 
@@ -576,7 +537,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
   Дополнительно модификатор `LIGHTWEIGHT` поддерживает необязательное предложение `FROM 'srcReplicas'`, где `srcReplicas` — это список имён исходных реплик, разделённых запятыми. Это расширение позволяет выполнять более целевую синхронизацию, фокусируясь только на задачах репликации, исходящих от указанных исходных реплик.
 * Если указан модификатор `PULL`, то оператор извлекает новые записи очереди репликации из Zookeeper, но не ожидает обработки каких-либо записей.
 
-
 ### SYNC DATABASE REPLICA {#sync-database-replica}
 
 Ожидает, пока указанная [реплицируемая база данных](/engines/database-engines/replicated) применит все изменения схемы из очереди DDL этой базы данных.
@@ -587,7 +547,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
 SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 ```
 
-
 ### SYSTEM RESTART REPLICA {#restart-replica}
 
 Предоставляет возможность повторно инициализировать состояние сессии Zookeeper для таблицы `ReplicatedMergeTree`: текущее состояние будет сверено с Zookeeper как источником истины, и при необходимости в очередь Zookeeper будут добавлены задания. Инициализация очереди репликации на основе данных Zookeeper выполняется так же, как при выполнении оператора `ATTACH TABLE`. В течение короткого времени таблица будет недоступна для любых операций.
@@ -595,7 +554,6 @@ SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 ```sql
 SYSTEM RESTART REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_table_name
 ```
-
 
 ### SYSTEM RESTORE REPLICA {#restore-replica}
 
@@ -636,7 +594,7 @@ CREATE TABLE repl_db.test_table (n UInt32)
 ENGINE = ReplicatedMergeTree
 ORDER BY n PARTITION BY n % 10;
 
--- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- потеря корня.
+-- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- root loss.
 
 SYSTEM RESTORE DATABASE REPLICA repl_db;
 ```
@@ -664,7 +622,7 @@ ORDER BY n PARTITION BY n % 10;
 
 INSERT INTO test SELECT * FROM numbers(1000);
 
--- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- потеря корня.
+-- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- root loss.
 
 SYSTEM RESTART REPLICA test;
 SYSTEM RESTORE REPLICA test;
@@ -675,7 +633,6 @@ SYSTEM RESTORE REPLICA test;
 ```sql
 SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 ```
-
 
 ### SYSTEM RESTART REPLICAS {#restart-replicas}
 
@@ -689,7 +646,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
 
-
 ### SYSTEM SYNC FILE CACHE {#sync-file-cache}
 
 :::note
@@ -699,9 +655,8 @@ SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 Вызывает системный вызов sync.
 
 ```sql
-SYSTEM SYNC FILE CACHE [ON CLUSTER имя_кластера]
+SYSTEM SYNC FILE CACHE [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM LOAD PRIMARY KEY {#load-primary-key}
 
@@ -712,9 +667,8 @@ SYSTEM LOAD PRIMARY KEY [db.]name
 ```
 
 ```sql
-СИСТЕМНАЯ ЗАГРУЗКА ПЕРВИЧНЫЙ КЛЮЧ
+SYSTEM LOAD PRIMARY KEY
 ```
-
 
 ### SYSTEM UNLOAD PRIMARY KEY {#unload-primary-key}
 
@@ -727,7 +681,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## Управление refreshable materialized views {#refreshable-materialized-views}
 
@@ -742,7 +695,6 @@ SYSTEM UNLOAD PRIMARY KEY
 ```sql
 SYSTEM REFRESH VIEW [db.]name
 ```
-
 
 ### SYSTEM WAIT VIEW {#wait-view}
 
@@ -759,9 +711,8 @@ SYSTEM STOP VIEW [db.]name
 ```
 
 ```sql
-ВИДЫ СИСТЕМНЫХ ОСТАНОВОК
+SYSTEM STOP VIEWS
 ```
-
 
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS {#start-view-start-views}
 
@@ -777,7 +728,6 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
-
 ### SYSTEM CANCEL VIEW {#cancel-view}
 
 Если для указанного представления на текущей реплике выполняется обновление, прерывает и отменяет его. В противном случае ничего не делает.
@@ -785,7 +735,6 @@ SYSTEM START VIEWS
 ```sql
 SYSTEM CANCEL VIEW [db.]name
 ```
-
 
 ### SYSTEM WAIT VIEW {#system-wait-view}
 

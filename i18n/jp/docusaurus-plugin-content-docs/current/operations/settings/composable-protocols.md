@@ -86,12 +86,12 @@ Composable プロトコルを使用すると、ClickHouse サーバーへの TCP
 ```xml
 <protocols>
 
-  <!-- httpモジュール -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- plain_httpモジュール上にTLSレイヤーとして設定されたhttpsモジュール -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>

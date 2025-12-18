@@ -98,7 +98,7 @@ HyperDX.init({
       format: winston.format.json(),
       transports: [
         new winston.transports.Console(),
-        HyperDX.getWinstonTransport('info', { // info 以上のログを送信
+        HyperDX.getWinstonTransport('info', { // Send logs info and above
           detectResources: true,
         }),
       ],
@@ -120,7 +120,7 @@ const logger = pino(
     pino.transport({
     mixin: HyperDX.getPinoMixinFunction,
     targets: [
-        HyperDX.getPinoTransport('info', { // info 以上のログを送信
+        HyperDX.getPinoTransport('info', { // Send logs info and above
         detectResources: true,
         }),
     ],
@@ -157,10 +157,10 @@ HyperDX.init({
 });
 const app = express();
 
-// ここにルートなどを追加します
+// Add your routes, etc.
 
-// すべてのルートを追加した後、
-// 他のエラー処理ミドルウェアが定義される前にこれを追加します
+// Add this after all routes,
+// but before any and other error-handling middlewares are defined
 HyperDX.setupExpressErrorHandler(app);
 
 app.listen(3000);
@@ -183,7 +183,7 @@ const app = new Koa();
 
 HyperDX.setupKoaErrorHandler(app);
 
-// ここにルートなどを追加します
+// Add your routes, etc.
 
 app.listen(3030);
 ```
@@ -195,7 +195,7 @@ app.listen(3030);
 const HyperDX = require('@hyperdx/node-opentelemetry');
 
 function myErrorHandler(error, req, res, next) {
-    // アプリケーション内のどこからでも使用できます
+    // This can be used anywhere in your application
     HyperDX.recordException(error);
 }
 ```
@@ -222,13 +222,21 @@ export OTEL_LOG_LEVEL=debug
 export HDX_NODE_CONSOLE_CAPTURE=0
 ```
 
-### ユーザー情報やメタデータを付与する {#attach-user-information-or-metadata}
+### Attach user information or metadata {#attach-user-information-or-metadata}
 
-特定の属性や識別子（例: ユーザー ID やメールアドレス）に関連するすべてのイベントに簡単にタグ付けするには、`setTraceAttributes` 関数を呼び出します。この関数は、呼び出し以降の現在のトレースに関連するすべてのログやスパンに、指定した属性をタグとして付与します。この関数は、特定のリクエスト/トレース内で可能な限り早いタイミング（例: Express のミドルウェアスタックの先頭付近）で呼び出すことを推奨します。
+To easily tag all events related to a given attribute or identifier (ex. user id
+or email), you can call the `setTraceAttributes` function which will tag every
+log/span associated with the current trace after the call with the declared
+attributes. It's recommended to call this function as early as possible within a
+given request/trace (ex. as early in an Express middleware stack as possible).
 
-これにより、識別子を自分で手動でタグ付けおよび伝播させる必要がなくなり、後から検索するために必要な識別子が、すべてのログやスパンに自動的にタグ付けされるようになります。
+This is a convenient way to ensure all logs/spans are automatically tagged with
+the right identifiers to be searched on later, instead of needing to manually
+tag and propagate identifiers yourself.
 
-`userId`、`userEmail`、`userName`、`teamName` は、対応する値を Sessions UI に表示するために利用されますが、必須ではありません。その他の任意の追加値も指定可能であり、イベント検索に利用できます。
+`userId`, `userEmail`, `userName`, and `teamName` will populate the sessions UI
+with the corresponding values, but can be omitted. Any other additional values
+can be specified and used to search for events.
 
 ```typescript
 import * as HyperDX from '@hyperdx/node-opentelemetry';
@@ -246,7 +254,9 @@ app.use((req, res, next) => {
 });
 ```
 
-トレース属性を有効にするには、`HDX_NODE_BETA_MODE` 環境変数を 1 に設定するか、`init` 関数に `betaMode: true` を渡してベータモードを有効にしてください。
+Make sure to enable beta mode by setting `HDX_NODE_BETA_MODE` environment
+variable to 1 or by passing `betaMode: true` to the `init` function to
+enable trace attributes.
 
 ```shell
 export HDX_NODE_BETA_MODE=1
@@ -254,25 +264,24 @@ export HDX_NODE_BETA_MODE=1
 
 ### Google Cloud Run {#google-cloud-run}
 
-アプリケーションを Google Cloud Run 上で実行している場合、Cloud Trace は
-受信リクエストに対して自動的にサンプリングヘッダーを付与し、
-各インスタンスごとに 1 秒あたり 0.1 リクエストのみが
-トレースとしてサンプリングされるように制限します。
+If you're running your application on Google Cloud Run, Cloud Trace
+automatically injects sampling headers into incoming requests, currently
+restricting traces to be sampled at 0.1 requests per second for each instance.
 
-`@hyperdx/node-opentelemetry` パッケージは、デフォルトでサンプルレートを
-1.0 に上書きします。
+The `@hyperdx/node-opentelemetry` package overwrites the sample rate to 1.0 by
+default.
 
-この挙動を変更したい場合、あるいは他の OpenTelemetry のインストール環境を
-構成したい場合は、環境変数
-`OTEL_TRACES_SAMPLER=parentbased_always_on` と `OTEL_TRACES_SAMPLER_ARG=1`
-を手動で設定することで、同じ結果を得ることができます。
+To change this behavior, or to configure other OpenTelemetry installations, you
+can manually configure the environment variables
+`OTEL_TRACES_SAMPLER=parentbased_always_on` and `OTEL_TRACES_SAMPLER_ARG=1` to
+achieve the same result.
 
-詳細や特定のリクエストに対してトレースを強制する方法については、
-[Google Cloud Run ドキュメント](https://cloud.google.com/run/docs/trace) を参照してください。
+To learn more, and to force tracing of specific requests, please refer to the
+[Google Cloud Run documentation](https://cloud.google.com/run/docs/trace).
 
-### 自動インストルメント対象ライブラリ {#auto-instrumented-libraries}
+### Auto-instrumented libraries {#auto-instrumented-libraries}
 
-次のライブラリは、SDK によって自動的にインストルメント（トレース）されます。
+The following libraries will be automatically instrumented (traced) by the SDK:
 
 - [`dns`](https://nodejs.org/dist/latest/docs/api/dns.html)
 - [`express`](https://www.npmjs.com/package/express)
@@ -292,21 +301,22 @@ export HDX_NODE_BETA_MODE=1
 - [`redis`](https://www.npmjs.com/package/redis)
 - [`winston`](https://www.npmjs.com/package/winston)
 
-## 別のインストール方法 {#alternative-installation}
+## Alternative installation {#alternative-installation}
 
-### ClickStack OpenTelemetry CLI を使用してアプリケーションを実行する {#run-the-application-with-cli}
+### Run the Application with ClickStack OpenTelemetry CLI {#run-the-application-with-cli}
 
-別の方法として、`opentelemetry-instrument` CLI を使用するか、Node.js の `--require` フラグを利用することで、コードを変更せずにアプリケーションを自動インストルメンテーションできます。CLI を使用すると、自動インストルメンテーションに対応した、より幅広いライブラリやフレームワークを利用できます。
+Alternatively, you can auto-instrument your application without any code changes by using the `opentelemetry-instrument` CLI or using the
+Node.js `--require` flag. The CLI installation exposes a wider range of auto-instrumented libraries and frameworks.
 
 <Tabs groupId="cli">
-<TabItem value="npx" label="NPX を使用する" default>
+<TabItem value="npx" label="Using NPX" default>
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' npx opentelemetry-instrument index.js
 ```
 
 </TabItem>
-<TabItem value="custom" label="カスタムエントリーポイント（例: Nodemon, ts-node など）">
+<TabItem value="custom" label="Custom Entry Point (ex. Nodemon, ts-node, etc.)">
 
 ```shell
 HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-node -r '@hyperdx/node-opentelemetry/build/src/tracing' index.js
@@ -314,7 +324,7 @@ HYPERDX_API_KEY='<YOUR_INGESTION_KEY>' OTEL_SERVICE_NAME='<YOUR_APP_NAME>' ts-no
 
 </TabItem>
 
-<TabItem value="code_import" label="コードインポート">
+<TabItem value="code_import" label="Code Import">
 
 ```javascript 
 // アプリケーションで最初に読み込まれるファイルの先頭でこれをインポートします
@@ -331,11 +341,11 @@ initSDK({
 
 </Tabs>
 
-_`OTEL_SERVICE_NAME` 環境変数は HyperDX アプリ内でサービスを識別するために使用されます。任意の名前を指定できます。_
+_The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 
-### 例外キャプチャの有効化 {#enabling-exception-capturing}
+### Enabling exception capturing {#enabling-exception-capturing}
 
-未処理の例外キャプチャを有効にするには、環境変数 `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` を 1 に設定してください。
+To enable uncaught exception capturing, you'll need to set the `HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE` environment variable to 1.
 
 ```shell
 HDX_NODE_EXPERIMENTAL_EXCEPTION_CAPTURE=1

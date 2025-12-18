@@ -34,16 +34,16 @@ SELECT * FROM system.metrics LIMIT 10
 
 ```text
 ┌─metric───────────────────────────────┬─value─┬─description────────────────────────────────────────────────────────────┐
-│ Query                                │     1 │ 実行中のクエリ数                                                       │
-│ Merge                                │     0 │ 実行中のバックグラウンドマージ数                                       │
-│ PartMutation                         │     0 │ ミューテーション数(ALTER DELETE/UPDATE)                                │
-│ ReplicatedFetch                      │     0 │ レプリカから取得中のデータパーツ数                                     │
-│ ReplicatedSend                       │     0 │ レプリカへ送信中のデータパーツ数                                       │
-│ ReplicatedChecks                     │     0 │ 整合性チェック中のデータパーツ数                                       │
-│ BackgroundMergesAndMutationsPoolTask │     0 │ 関連バックグラウンドプール内のアクティブなマージとミューテーション数   │
-│ BackgroundFetchesPoolTask            │     0 │ 関連バックグラウンドプール内のアクティブなフェッチ数                   │
-│ BackgroundCommonPoolTask             │     0 │ 関連バックグラウンドプール内のアクティブなタスク数                     │
-│ BackgroundMovePoolTask               │     0 │ BackgroundProcessingPool内の移動用アクティブタスク数                  │
+│ Query                                │     1 │ Number of executing queries                                            │
+│ Merge                                │     0 │ Number of executing background merges                                  │
+│ PartMutation                         │     0 │ Number of mutations (ALTER DELETE/UPDATE)                              │
+│ ReplicatedFetch                      │     0 │ Number of data parts being fetched from replicas                       │
+│ ReplicatedSend                       │     0 │ Number of data parts being sent to replicas                            │
+│ ReplicatedChecks                     │     0 │ Number of data parts checking for consistency                          │
+│ BackgroundMergesAndMutationsPoolTask │     0 │ Number of active merges and mutations in an associated background pool │
+│ BackgroundFetchesPoolTask            │     0 │ Number of active fetches in an associated background pool              │
+│ BackgroundCommonPoolTask             │     0 │ Number of active tasks in an associated background pool                │
+│ BackgroundMovePoolTask               │     0 │ Number of active tasks in BackgroundProcessingPool for moves           │
 └──────────────────────────────────────┴───────┴────────────────────────────────────────────────────────────────────────┘
 ```
 

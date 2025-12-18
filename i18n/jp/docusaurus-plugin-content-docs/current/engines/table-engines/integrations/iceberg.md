@@ -131,47 +131,47 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 次の一連の操作を考えてみます:
 
 ```sql
--- 2つの列を持つテーブルを作成
- CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
- order_number int, 
- product_code string
- ) 
- USING iceberg 
- OPTIONS ('format-version'='2')
+ -- Create a table with two columns
+  CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example (
+  order_number int, 
+  product_code string
+  ) 
+  USING iceberg 
+  OPTIONS ('format-version'='2')
 
--- テーブルにデータを挿入する
- INSERT INTO spark_catalog.db.time_travel_example VALUES 
-   (1, 'Mars')
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES 
+    (1, 'Mars')
 
- ts1 = now() // 疑似コードの一例
+  ts1 = now() // A piece of pseudo code
 
--- テーブルを変更して新しい列を追加する
- ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+-- Alter table to add a new column
+  ALTER TABLE spark_catalog.db.time_travel_example ADD COLUMN (price double)
+ 
+  ts2 = now()
 
- ts2 = now()
+-- Insert data into the table
+  INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
 
--- テーブルにデータを挿入する
- INSERT INTO spark_catalog.db.time_travel_example VALUES (2, 'Venus', 100)
+   ts3 = now()
 
-  ts3 = now()
-
--- 各タイムスタンプ時点でテーブルを問い合わせる
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
-
-+------------+------------+
-|order_number|product_code|
-+------------+------------+
-|           1|        Mars|
-+------------+------------+
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
+-- Query the table at each timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts1;
 
 +------------+------------+
 |order_number|product_code|
 +------------+------------+
 |           1|        Mars|
 +------------+------------+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts2;
 
- SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
++------------+------------+
+|order_number|product_code|
++------------+------------+
+|           1|        Mars|
++------------+------------+
+
+  SELECT * FROM spark_catalog.db.time_travel_example TIMESTAMP AS OF ts3;
 
 +------------+------------+-----+
 |order_number|product_code|price|
@@ -191,7 +191,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 現在時点を指定したタイムトラベルクエリでは、現在のテーブルとは異なるスキーマが表示される場合があります:
 
 ```sql
--- テーブルを作成する
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_2 (
   order_number int, 
   product_code string
@@ -199,15 +199,15 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
   USING iceberg 
   OPTIONS ('format-version'='2')
 
--- テーブルに初期データを挿入する
+-- Insert initial data into the table
   INSERT INTO spark_catalog.db.time_travel_example_2 VALUES (2, 'Venus');
 
--- テーブルを変更して新しい列を追加する
+-- Alter table to add a new column
   ALTER TABLE spark_catalog.db.time_travel_example_2 ADD COLUMN (price double);
 
   ts = now();
 
--- タイムスタンプ構文を使用して現在時点のテーブルをクエリする
+-- Query the table at a current moment but using timestamp syntax
 
   SELECT * FROM spark_catalog.db.time_travel_example_2 TIMESTAMP AS OF ts;
 
@@ -217,7 +217,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
     |           2|       Venus|
     +------------+------------+
 
--- 現在時点のテーブルをクエリする
+-- Query the table at a current moment
   SELECT * FROM spark_catalog.db.time_travel_example_2;
     +------------+------------+-----+
     |order_number|product_code|price|
@@ -233,7 +233,7 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 2つ目の制約は、タイムトラベルを行っても、テーブルに最初のデータが書き込まれる前の状態は取得できないという点です。
 
 ```sql
--- テーブルを作成
+-- Create a table
   CREATE TABLE IF NOT EXISTS spark_catalog.db.time_travel_example_3 (
   order_number int, 
   product_code string
@@ -243,8 +243,8 @@ SETTINGS iceberg_snapshot_id = 3547395809148285433
 
   ts = now();
 
--- 特定のタイムスタンプ時点でテーブルをクエリする
-  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- エラーで終了: ts より古いスナップショットが見つかりません
+-- Query the table at a specific timestamp
+  SELECT * FROM spark_catalog.db.time_travel_example_3 TIMESTAMP AS OF ts; -- Finises with error: Cannot find a snapshot older than ts.
 ```
 
 ClickHouse における挙動は Spark と同じです。概念的には Spark の SELECT クエリを ClickHouse の SELECT クエリに置き換えて考えれば、同じように動作します。

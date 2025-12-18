@@ -48,12 +48,12 @@ Row 1:
 name:        min_insert_block_size_rows
 value:       1048449
 changed:     0
-description: Задаёт минимальное количество строк в блоке, который может быть вставлен в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные.
+description: Sets the minimum number of rows in the block that can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-Возможные значения:
+Possible values:
 
-- Положительное целое число.
-- 0 — объединение отключено.
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -68,12 +68,12 @@ Row 2:
 name:        min_insert_block_size_bytes
 value:       268402944
 changed:     0
-description: Задаёт минимальное количество байтов в блоке, который может быть вставлен в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные.
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones.
 
-Возможные значения:
+Possible values:
 
-- Положительное целое число.
-- 0 — объединение отключено.
+- Positive integer.
+- 0 — Squashing disabled.
 min:         ᴺᵁᴸᴸ
 max:         ᴺᵁᴸᴸ
 readonly:    0
@@ -82,57 +82,55 @@ default:     268402944
 alias_for:   
 is_obsolete: 0
 tier:        Production
-```
 
 Row 3:
 ──────
-name:        min&#95;insert&#95;block&#95;size&#95;rows&#95;for&#95;materialized&#95;views
+name:        min_insert_block_size_rows_for_materialized_views
 value:       0
 changed:     0
-description: Задает минимальное количество строк в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
+description: Sets the minimum number of rows in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
 
 Possible values:
 
-* Любое положительное целое число.
-* 0 — объединение отключено.
+- Any positive integer.
+- 0 — Squashing disabled.
 
 **See Also**
 
-* [min&#95;insert&#95;block&#95;size&#95;rows](/operations/settings/settings#min_insert_block_size_rows)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
+- [min_insert_block_size_rows](/operations/settings/settings#min_insert_block_size_rows)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
 
 Row 4:
 ──────
-name:        min&#95;insert&#95;block&#95;size&#95;bytes&#95;for&#95;materialized&#95;views
+name:        min_insert_block_size_bytes_for_materialized_views
 value:       0
 changed:     0
-description: Задает минимальное количество байт в блоке, которое может быть вставлено в таблицу запросом `INSERT`. Блоки меньшего размера объединяются в более крупные. Этот параметр применяется только к блокам, вставляемым в [материализованное представление](../../sql-reference/statements/create/view.md). Настраивая этот параметр, вы управляете объединением блоков при записи в материализованное представление и избегаете чрезмерного потребления памяти.
+description: Sets the minimum number of bytes in the block which can be inserted into a table by an `INSERT` query. Smaller-sized blocks are squashed into bigger ones. This setting is applied only for blocks inserted into [materialized view](../../sql-reference/statements/create/view.md). By adjusting this setting, you control blocks squashing while pushing to materialized view and avoid excessive memory usage.
 
 Possible values:
 
-* Любое положительное целое число.
-* 0 — объединение отключено.
+- Any positive integer.
+- 0 — Squashing disabled.
 
 **See also**
 
-* [min&#95;insert&#95;block&#95;size&#95;bytes](/operations/settings/settings#min_insert_block_size_bytes)
-  min:         ᴺᵁᴸᴸ
-  max:         ᴺᵁᴸᴸ
-  readonly:    0
-  type:        UInt64
-  default:     0
-  alias&#95;for:\
-  is&#95;obsolete: 0
-  tier:        Production
-
-````
+- [min_insert_block_size_bytes](/operations/settings/settings#min_insert_block_size_bytes)
+min:         ᴺᵁᴸᴸ
+max:         ᴺᵁᴸᴸ
+readonly:    0
+type:        UInt64
+default:     0
+alias_for:   
+is_obsolete: 0
+tier:        Production
+```
 
 Использование `WHERE changed` может быть полезно, например, для проверки:
 
@@ -140,10 +138,6 @@ Possible values:
 - Настроек, которые изменились в текущей сессии.
 
 <!-- -->
-
-```sql
-SELECT * FROM system.settings WHERE changed AND name='load_balancing'
-````
 
 **См. также**
 

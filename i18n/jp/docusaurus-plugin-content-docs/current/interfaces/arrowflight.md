@@ -43,7 +43,7 @@ Arrow Flight インターフェイスは現在、実験的な段階であり、�
 ClickHouse サーバーを再起動します。起動に成功すると、次のようなログメッセージが表示されます。
 
 ```bash
-{} <Information> Application: Arrow Flight互換プロトコル: 0.0.0.0:9005
+{} <Information> Application: Arrow Flight compatibility protocol: 0.0.0.0:9005
 ```
 
 ## Arrow Flight SQL を使用して ClickHouse に接続する {#connecting-to-clickhouse}

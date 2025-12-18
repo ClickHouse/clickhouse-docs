@@ -55,7 +55,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 将你当前的 Nginx 镜像替换为启用 OpenTelemetry 的版本：
 
 ```yaml
-# 在你的 docker-compose.yml 或 Dockerfile 中 {#in-your-docker-composeyml-or-dockerfile}
+# In your docker-compose.yml or Dockerfile
 image: nginx:1.27-otel
 ```
 
@@ -85,32 +85,32 @@ events {
 }
 
 http {
-    # OpenTelemetry exporter 配置
+    # OpenTelemetry exporter configuration
     otel_exporter {
         endpoint <clickstack-host>:4317;
         header authorization ${CLICKSTACK_API_KEY};
     }
     
-    # 用于标识此 Nginx 实例的服务名称
+    # Service name for identifying this nginx instance
     otel_service_name "nginx-proxy";
     
-    # 启用追踪
+    # Enable tracing
     otel_trace on;
     
     server {
         listen 80;
         
         location / {
-            # 为此 location 启用追踪
+            # Enable tracing for this location
             otel_trace_context propagate;
             otel_span_name "$request_method $uri";
             
-            # 将请求详情添加到追踪中
+            # Add request details to traces
             otel_span_attr http.status_code $status;
             otel_span_attr http.request.method $request_method;
             otel_span_attr http.route $uri;
             
-            # 你现有的代理或应用配置
+            # Your existing proxy or application configuration
             proxy_pass http://your-backend;
         }
     }
@@ -156,10 +156,10 @@ nginx -t
 
 如果测试通过，重新加载 Nginx：
 ```bash
-# 对于 Docker {#for-docker}
+# For Docker
 docker-compose restart nginx
 
-# 对于 systemd {#for-systemd}
+# For systemd
 sudo systemctl reload nginx
 ```
 
@@ -296,7 +296,7 @@ nginx -V 2>&1 | grep otel
 **检查网络连通性：**
 
 ```bash
-telnet <clickstack-主机> 4317
+telnet <clickstack-host> 4317
 ```
 
 这应该可以成功连接到 OTLP gRPC 端点。
@@ -312,10 +312,10 @@ echo $CLICKSTACK_API_KEY
 **检查 nginx 错误日志：**
 
 ```bash
-# Docker 环境 {#for-docker}
+# For Docker
 docker logs <nginx-container> 2>&1 | grep -i otel
 
-# systemd 环境 {#for-systemd}
+# For systemd
 sudo tail -f /var/log/nginx/error.log | grep -i otel
 ```
 
@@ -324,7 +324,7 @@ sudo tail -f /var/log/nginx/error.log | grep -i otel
 **验证 nginx 是否正在接收请求：**
 
 ```bash
-# 检查访问日志以确认流量 {#check-access-logs-to-confirm-traffic}
+# Check access logs to confirm traffic
 tail -f /var/log/nginx/access.log
 ```
 

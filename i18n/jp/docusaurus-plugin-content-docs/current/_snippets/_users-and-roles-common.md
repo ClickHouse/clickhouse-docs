@@ -76,12 +76,12 @@ VALUES
 
 ##### テーブルの検証 {#verify}
 
-```sql title="クエリ"
+```sql title="Query"
 SELECT *
 FROM db1.table1
 ```
 
-```response title="レスポンス"
+```response title="Response"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -167,7 +167,7 @@ CREATE USER row_user IDENTIFIED BY 'password';
 ##### 他のロールが引き続き全ての行にアクセスできるよう明示的な権限を付与 {#grant-other-roles-access}
 
     ```sql
-    CREATE ROW POLICY allow_other_users_filter
+    CREATE ROW POLICY allow_other_users_filter 
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
 

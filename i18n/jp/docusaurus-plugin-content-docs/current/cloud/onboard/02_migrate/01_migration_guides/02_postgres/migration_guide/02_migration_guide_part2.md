@@ -47,8 +47,8 @@ LIMIT 5
 │ John                  │       17638812 │
 └─────────────────────────┴─────────────┘
 
-5行を返しました。経過時間: 0.360秒。処理: 2437万行、140.45 MB (6773万行/秒、390.38 MB/秒)
-ピークメモリ使用量: 510.71 MiB。
+5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
+Peak memory usage: 510.71 MiB.
 ```
 
 ```sql
@@ -72,7 +72,7 @@ LIMIT 5;
 Time: 107620.508 ms (01:47.621)
 ```
 
-どの`tags`が最も多くの`views`を獲得しているか:
+最も多く閲覧されている`tags`:
 
 ```sql
 --ClickHouse
@@ -132,6 +132,7 @@ Time: 112508.083 ms (01:52.508)
 
 可能であれば、ClickHouse の集約関数を活用してください。以下では、各年でもっとも多く閲覧された質問を求めるために [argMax](/sql-reference/aggregate-functions/reference/argmax) 関数を使用する例を示します。
 
+
 ```sql
 --ClickHouse
 SELECT  toYear(CreationDate) AS Year,
@@ -142,34 +143,34 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
-行 1:
+Row 1:
 ──────
 Year:                   2008
-MostViewedQuestionTitle: リスト内の指定されたアイテムのインデックスを見つける方法は？
+MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:           6316987
 
-行 2:
+Row 2:
 ──────
 Year:                   2009
-MostViewedQuestionTitle: Gitで最新のローカルコミットを取り消すにはどうすればよいですか？
+MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:           13962748
 
 ...
 
-行 16:
+Row 16:
 ───────
 Year:                   2023
-MostViewedQuestionTitle: pip 3を使用するたびに「error: externally-managed-environment」を解決するにはどうすればよいですか？
+MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:           506822
 
-行 17:
+Row 17:
 ───────
 Year:                   2024
-MostViewedQuestionTitle: 警告「サードパーティのCookieがブロックされます。詳細は問題タブをご覧ください」
+MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:           66975
 
-17行のセット。経過時間: 0.677秒。処理された行数: 2437万行、1.86 GB（3601万行/秒、2.75 GB/秒）
-ピークメモリ使用量: 554.31 MiB。
+17 rows in set. Elapsed: 0.677 sec. Processed 24.37 million rows, 1.86 GB (36.01 million rows/s., 2.75 GB/s.)
+Peak memory usage: 554.31 MiB.
 ```
 
 これは、同等の Postgres クエリよりも大幅にシンプル（かつ高速）です：
@@ -194,21 +195,22 @@ WHERE rn = 1
 ORDER BY Year;
  year |                                                 mostviewedquestiontitle                                                 | maxviewcount
 ------+-----------------------------------------------------------------------------------------------------------------------+--------------
- 2008 | リスト内の特定の項目のインデックスを見つける方法は？                                                                       |       6316987
- 2009 | Gitで最新のローカルコミットを取り消す方法は？                                                                     |       13962748
+ 2008 | How to find the index for a given item in a list?                                                                       |       6316987
+ 2009 | How do I undo the most recent local commits in Git?                                                                     |       13962748
 
 ...
 
- 2023 | pip 3を使用するたびに「error: externally-managed-environment」を解決する方法は？                                          |       506822
- 2024 | 警告「サードパーティCookieがブロックされます。詳細は問題タブを参照してください」                                              |       66975
-(17行)
+ 2023 | How do I solve "error: externally-managed-environment" every time I use pip 3?                                          |       506822
+ 2024 | Warning "Third-party cookie will be blocked. Learn more in the Issues tab"                                              |       66975
+(17 rows)
 
-時間: 125822.015 ms (02:05.822)
+Time: 125822.015 ms (02:05.822)
 ```
 
 **条件式と配列**
 
-条件関数と配列関数を使うと、クエリを大幅に簡潔に記述できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、増加率が最も大きいものを計算します。条件関数や配列関数、そして HAVING 句や SELECT 句内でエイリアスを再利用できるおかげで、次の ClickHouse クエリがいかに簡潔になっているかに注目してください。
+条件関数と配列関数を使うと、クエリを大幅に単純化できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、割合の増加が最も大きいものを計算します。条件関数や配列関数、そして HAVING 句や SELECT 句内でエイリアスを再利用できるおかげで、次の ClickHouse クエリがいかに簡潔になっているかに注目してください。
+
 
 ```sql
 --ClickHouse
@@ -230,12 +232,10 @@ LIMIT 5
 │ azure         │       11996 │         14049 │ -14.613139725247349 │
 │ docker        │       13885 │         16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
+
+5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)
+Peak memory usage: 403.04 MiB.
 ```
-
-5 行が返されました。経過時間: 0.247 秒。処理済み 5.08 百万行、155.73 MB (20.58 百万行/秒、630.61 MB/秒)。
-ピークメモリ使用量: 403.04 MiB。
-
-````
 
 ```sql
 --Postgres
@@ -271,6 +271,6 @@ LIMIT 5;
 (5 rows)
 
 Time: 116750.131 ms (01:56.750)
-````
+```
 
 [パート3はこちら](/migrations/postgresql/data-modeling-techniques)

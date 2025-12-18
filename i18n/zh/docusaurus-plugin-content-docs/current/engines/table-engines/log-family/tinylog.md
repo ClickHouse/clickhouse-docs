@@ -67,8 +67,8 @@ ENGINE = TinyLog
 写入数据：
 
 ```sql
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','第一条常规消息')
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','第二条常规消息'),(now(),'WARNING','第一条警告消息')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 我们使用了两个 `INSERT` 查询，在 `<column>.bin` 文件中创建了两个数据块。
@@ -81,8 +81,8 @@ SELECT * FROM tiny_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2024-12-10 13:11:58 │ REGULAR      │ 第一条常规消息  │
-│ 2024-12-10 13:12:12 │ REGULAR      │ 第二条常规消息 │
-│ 2024-12-10 13:12:12 │ WARNING      │ 第一条警告消息  │
+│ 2024-12-10 13:11:58 │ REGULAR      │ The first regular message  │
+│ 2024-12-10 13:12:12 │ REGULAR      │ The second regular message │
+│ 2024-12-10 13:12:12 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

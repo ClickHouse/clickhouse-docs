@@ -39,24 +39,24 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ```yaml
 jsonData:
-  host: 127.0.0.1 # (必需) 服务器地址。
-  port: 9000      # (必需) 服务器端口。native 协议默认使用 9440(安全)和 9000(非安全)。HTTP 协议默认使用 8443(安全)和 8123(非安全)。
+  host: 127.0.0.1 # (required) server address.
+  port: 9000      # (required) server port. For native, defaults to 9440 secure and 9000 insecure. For HTTP, defaults to 8443 secure and 8123 insecure.
 
-  protocol: native # (必需) 连接协议。可设置为 "native" 或 "http"。
-  secure: false    # 安全连接时设置为 true。
+  protocol: native # (required) the protocol used for the connection. Can be set to "native" or "http".
+  secure: false    # set to true if the connection is secure.
 
-  username: default # 身份验证用户名。
+  username: default # the username used for authentication.
 
-  tlsSkipVerify:     <boolean> # 设置为 true 时跳过 TLS 验证。
-  tlsAuth:           <boolean> # 设置为 true 启用 TLS 客户端身份验证。
-  tlsAuthWithCACert: <boolean> # 提供 CA 证书时设置为 true。验证自签名 TLS 证书时必需。
+  tlsSkipVerify:     <boolean> # skips TLS verification when set to true.
+  tlsAuth:           <boolean> # set to true to enable TLS client authentication.
+  tlsAuthWithCACert: <boolean> # set to true if CA certificate is provided. Required for verifying self-signed TLS certificates.
 
 secureJsonData:
-  password: secureExamplePassword # 身份验证密码。
+  password: secureExamplePassword # the password used for authentication.
 
-  tlsCACert:     <string> # TLS CA 证书
-  tlsClientCert: <string> # TLS 客户端证书
-  tlsClientKey:  <string> # TLS 客户端密钥
+  tlsCACert:     <string> # TLS CA certificate
+  tlsClientCert: <string> # TLS client certificate
+  tlsClientKey:  <string> # TLS client key
 ```
 
 请注意，从 UI 中保存配置时会添加一个 `version` 属性。该属性表示配置保存时所使用的插件版本。
@@ -73,7 +73,7 @@ secureJsonData:
 
 ```yaml
 jsonData:
-  # 不包括开头的斜杠
+  # excludes first slash
   path: additional/path/example
 ```
 
@@ -97,7 +97,7 @@ jsonData:
     value: plain text value
     secure: false
   - name: X-Example-Secure-Header
-    # "value" 已排除
+    # "value" is excluded
     secure: true
 secureJsonData:
   secureHttpHeaders.X-Example-Secure-Header: secure header value
@@ -113,12 +113,12 @@ YAML 示例：
 
 ```yaml
 jsonData:
-  defaultDatabase: default # 查询构建器加载的默认数据库。默认值为 "default"。
-  defaultTable: <string>   # 查询构建器加载的默认表。
+  defaultDatabase: default # default database loaded by the query builder. Defaults to "default".
+  defaultTable: <string>   # default table loaded by the query builder.
 
-  dialTimeout: 10    # 连接服务器时的拨号超时时间(秒)。默认值为 "10"。
-  queryTimeout: 60   # 执行查询时的超时时间(秒)。默认值为 60。此配置需要用户具有相应权限,如果遇到权限错误,可尝试将其设置为 "0" 以禁用超时限制。
-  validateSql: false # 设置为 true 时,将在 SQL 编辑器中验证 SQL 语句。
+  dialTimeout: 10    # dial timeout when connecting to the server, in seconds. Defaults to "10".
+  queryTimeout: 60   # query timeout when running a query, in seconds. Defaults to 60. This requires permissions on the user, if you get a permission error try setting it to "0" to disable it.
+  validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
 ### OpenTelemetry {#opentelemetry}
@@ -147,16 +147,16 @@ OpenTelemetry (OTel) 已与该插件深度集成。
 ```yaml
 jsonData:
   logs:
-    defaultDatabase: default # 默认日志数据库。
-    defaultTable: otel_logs  # 默认日志表。如果使用 OTel,应设置为 "otel_logs"。
+    defaultDatabase: default # default log database.
+    defaultTable: otel_logs  # default log table. If you're using OTel, this should be set to "otel_logs".
 
-    otelEnabled: false  # 如果启用 OTel,请设置为 true。
-    otelVersion: latest # 要使用的 OTel collector 架构版本。版本显示在 UI 中,但 "latest" 将使用插件中的最新可用版本。
+    otelEnabled: false  # set to true if OTel is enabled.
+    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
 
-    # 打开新日志查询时选择的默认列。如果启用 OTel,将被忽略。
-    timeColumn:       <string> # 日志的主时间列。
-    levelColumn:   <string> # 日志的级别/严重性。值通常为 "INFO"、"error" 或 "Debug"。
-    messageColumn: <string> # 日志的消息/内容。
+    # Default columns to be selected when opening a new log query. Will be ignored if OTel is enabled.
+    timeColumn:       <string> # the primary time column for the log.
+    levelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
+    messageColumn: <string> # the log's message/content.
 ```
 
 ### Traces {#traces}
@@ -176,23 +176,23 @@ jsonData:
 ```yaml
 jsonData:
   traces:
-    defaultDatabase: default  # 默认追踪数据库。
-    defaultTable: otel_traces # 默认追踪表。如果使用 OTel,应设置为 "otel_traces"。
+    defaultDatabase: default  # default trace database.
+    defaultTable: otel_traces # default trace table. If you're using OTel, this should be set to "otel_traces".
 
-    otelEnabled: false  # 启用 OTel 时设置为 true。
-    otelVersion: latest # 要使用的 OTel collector 架构版本。版本显示在 UI 中,"latest" 将使用插件中的最新可用版本。
+    otelEnabled: false  # set to true if OTel is enabled.
+    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
 
-    # 打开新追踪查询时选择的默认列。启用 OTel 时将被忽略。
-    traceIdColumn:       <string>    # 追踪 ID 列。
-    spanIdColumn:        <string>    # span ID 列。
-    operationNameColumn: <string>    # 操作名称列。
-    parentSpanIdColumn:  <string>    # 父 span ID 列。
-    serviceNameColumn:   <string>    # 服务名称列。
-    durationTimeColumn:  <string>    # 持续时间列。
-    durationUnitColumn:  <time unit> # 持续时间单位。可设置为 "seconds"、"milliseconds"、"microseconds" 或 "nanoseconds"。OTel 的默认值为 "nanoseconds"。
-    startTimeColumn:     <string>    # 开始时间列。这是追踪 span 的主时间列。
-    tagsColumn:          <string>    # 标签列。应为 map 类型。
-    serviceTagsColumn:   <string>    # 服务标签列。应为 map 类型。
+    # Default columns to be selected when opening a new trace query. Will be ignored if OTel is enabled.
+    traceIdColumn:       <string>    # trace ID column.
+    spanIdColumn:        <string>    # span ID column.
+    operationNameColumn: <string>    # operation name column.
+    parentSpanIdColumn:  <string>    # parent span ID column.
+    serviceNameColumn:   <string>    # service name column.
+    durationTimeColumn:  <string>    # duration time column.
+    durationUnitColumn:  <time unit> # duration time unit. Can be set to "seconds", "milliseconds", "microseconds", or "nanoseconds". For OTel the default is "nanoseconds".
+    startTimeColumn:     <string>    # start time column. This is the primary time column for the trace span.
+    tagsColumn:          <string>    # tags column. This is expected to be a map type.
+    serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
 ### 列别名 {#column-aliases}
@@ -237,9 +237,9 @@ Grafana 要求别名表具有如下列结构：
 
 ```sql
 CREATE TABLE aliases (
-  `alias` String,  -- 别名名称,显示在 Grafana 列选择器中
-  `select` String, -- SQL 生成器使用的 SELECT 语法
-  `type` String    -- 结果列的类型,插件据此调整 UI 选项以匹配数据类型
+  `alias` String,  -- The name of the alias, as seen in the Grafana column selector
+  `select` String, -- The SELECT syntax to use in the SQL generator
+  `type` String    -- The type of the resulting column, so the plugin can modify the UI options to match the data type.
 )
 ```
 
@@ -253,8 +253,8 @@ CREATE TABLE example_table (
 CREATE TABLE example_table_aliases (`alias` String, `select` String, `type` String);
 
 INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
-('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- 保留表中的原始列(可选)
-('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- 添加新列,将 TimestampNanos 转换为 Date 类型
+('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Preserve original column from table (optional)
+('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
 ```
 
 然后我们可以在 Grafana 中配置使用此表。请注意，名称可以是任意名称，甚至可以在单独的数据库中定义：
@@ -295,7 +295,7 @@ datasources:
       validateSql: false
       httpHeaders:
       - name: X-Example-Plain-Header
-        value: 纯文本值
+        value: plain text value
         secure: false
       - name: X-Example-Secure-Header
         secure: true
@@ -326,5 +326,5 @@ datasources:
       tlsCACert:     <string>
       tlsClientCert: <string>
       tlsClientKey:  <string>
-      secureHttpHeaders.X-Example-Secure-Header: 安全头部值
+      secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```

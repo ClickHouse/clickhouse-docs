@@ -67,8 +67,8 @@ ENGINE = TinyLog
 Добавление данных:
 
 ```sql
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','Первое обычное сообщение')
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','Второе обычное сообщение'),(now(),'WARNING','Первое предупреждение')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 Мы использовали два запроса `INSERT`, чтобы создать два блока данных внутри файлов `<column>.bin`.
@@ -81,8 +81,8 @@ SELECT * FROM tiny_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2024-12-10 13:11:58 │ REGULAR      │ Первое обычное сообщение   │
-│ 2024-12-10 13:12:12 │ REGULAR      │ Второе обычное сообщение   │
-│ 2024-12-10 13:12:12 │ WARNING      │ Первое предупреждение      │
+│ 2024-12-10 13:11:58 │ REGULAR      │ The first regular message  │
+│ 2024-12-10 13:12:12 │ REGULAR      │ The second regular message │
+│ 2024-12-10 13:12:12 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

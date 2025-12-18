@@ -80,8 +80,8 @@ sudo ./install.sh
 
 ```sql
 -- Tags: no-fasttest, no-replicated-database
--- no-fasttest: <укажите_причину_для_этого_тега>
--- no-replicated-database: <укажите_причину_здесь>
+-- no-fasttest: <provide_a_reason_for_the_tag_here>
+-- no-replicated-database: <provide_a_reason_here>
 
 SELECT 1
 ```
@@ -90,9 +90,9 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest, no-replicated-database {#tags-no-fasttest-no-replicated-database}
-# - no-fasttest: <укажите причину для данного тега> {#no-fasttest-provide_a_reason_for_the_tag_here}
-# - no-replicated-database: <укажите причину для данного тега> {#no-replicated-database-provide_a_reason_here}
+# Tags: no-fasttest, no-replicated-database
+# - no-fasttest: <provide_a_reason_for_the_tag_here>
+# - no-replicated-database: <provide_a_reason_here>
 ```
 
 Список доступных тегов:
@@ -137,15 +137,15 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Теги: no-fasttest {#tags-no-fasttest}
-# Ограничения случайных настроек: max_block_size=(1000, 10000); index_granularity=(100, None) {#random-settings-limits-max_block_size1000-10000-index_granularity100-none}
+# Tags: no-fasttest
+# Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 ```
 
 Для `.sql`-тестов теги размещаются как SQL-комментарий в строке рядом с тестом или в первой строке:
 
 ```sql
--- Теги: no-fasttest
--- Ограничения случайных настроек: max_block_size=(1000, 10000); index_granularity=(100, None)
+-- Tags: no-fasttest
+-- Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 SELECT 1
 ```
 

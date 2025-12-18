@@ -46,7 +46,7 @@ mkdir build
 export PATH=$(brew --prefix llvm)/bin:$PATH
 cmake -S . -B build
 cmake --build build
-# 生成的二进制文件将位于:build/programs/clickhouse {#the-resulting-binary-will-be-created-at-buildprogramsclickhouse}
+# The resulting binary will be created at: build/programs/clickhouse
 ```
 
 :::note

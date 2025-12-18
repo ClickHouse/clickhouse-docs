@@ -65,8 +65,8 @@ Tuple — это просто массив столбцов. Например, T
 `Nullable(T)` состоит из `Nulls ColUInt8` и `Values T` с одинаковым количеством строк.
 
 ```go
-// Nulls — это маска nullable-значений для столбца Values.
-// Например, для кодирования [null, "", "hello", null, "world"]
+// Nulls is nullable "mask" on Values column.
+// For example, to encode [null, "", "hello", null, "world"]
 //      Values: ["", "", "hello", "", "world"] (len: 5)
 //      Nulls:  [ 1,  0,       0,  1,       0] (len: 5)
 ```
@@ -85,16 +85,16 @@ Tuple — это просто массив столбцов. Например, T
 где `K` — один из (`UInt8`, `UInt16`, `UInt32`, `UInt64`) в зависимости от размера индекса `Index`.
 
 ```go
-// Столбец Index (т. е. словарь) содержит уникальные значения, столбец Keys содержит
-// последовательность индексов в столбце Index, представляющих фактические значения.
+// Index (i.e. dictionary) column contains unique values, Keys column contains
+// sequence of indexes in Index column that represent actual values.
 //
-// Например, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] может
-// быть закодирован следующим образом:
+// For example, ["Eko", "Eko", "Amadela", "Amadela", "Amadela", "Amadela"] can
+// be encoded as:
 //      Index: ["Eko", "Amadela"] (String)
 //      Keys:  [0, 0, 1, 1, 1, 1] (UInt8)
 //
-// CardinalityKey выбирается в зависимости от размера Index, т. е. максимальное значение
-// выбранного типа должно позволять представить любой индекс элемента Index.
+// The CardinalityKey is chosen depending on Index size, i.e. maximum value
+// of chosen type should be able to represent any index of Index element.
 ```
 
 ## Bool {#bool}

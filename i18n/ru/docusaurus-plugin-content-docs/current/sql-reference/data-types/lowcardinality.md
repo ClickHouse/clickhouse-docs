@@ -1,5 +1,5 @@
 ---
-description: 'Документация по оптимизации LowCardinality для столбцов строкового типа'
+description: 'Документация по оптимизации LowCardinality для строковых столбцов'
 sidebar_label: 'LowCardinality(T)'
 sidebar_position: 42
 slug: /sql-reference/data-types/lowcardinality
@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # LowCardinality(T) {#lowcardinalityt}
 
-Изменяет внутреннее представление других типов данных на словарно-кодированное.
+Изменяет внутреннее представление других типов данных на представление с использованием словарной кодировки.
 
 ## Синтаксис {#syntax}
 
@@ -20,6 +20,7 @@ LowCardinality(data_type)
 **Параметры**
 
 * `data_type` — [String](../../sql-reference/data-types/string.md), [FixedString](../../sql-reference/data-types/fixedstring.md), [Date](../../sql-reference/data-types/date.md), [DateTime](../../sql-reference/data-types/datetime.md) и числовые типы данных, за исключением [Decimal](../../sql-reference/data-types/decimal.md). `LowCardinality` неэффективен для некоторых типов данных, см. описание настройки [allow&#95;suspicious&#95;low&#95;cardinality&#95;types](../../operations/settings/settings.md#allow_suspicious_low_cardinality_types).
+
 
 ## Описание {#description}
 
@@ -43,6 +44,7 @@ ENGINE = MergeTree()
 ORDER BY id
 ```
 
+
 ## Связанные настройки и функции {#related-settings-and-functions}
 
 Настройки:
@@ -55,7 +57,7 @@ ORDER BY id
 
 Функции:
 
-- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
+- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
 ## Связанные материалы {#related-content}
 

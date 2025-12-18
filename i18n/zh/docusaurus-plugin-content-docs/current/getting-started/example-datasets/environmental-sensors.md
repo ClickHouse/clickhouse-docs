@@ -31,7 +31,6 @@ SETTINGS format_csv_delimiter = ';';
 
 数据存储在 CSV 文件中，但使用分号作为分隔符。行的格式如下：
 
-
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │
@@ -48,7 +47,6 @@ SETTINGS format_csv_delimiter = ';';
 ```
 
 2. 我们将使用以下 `MergeTree` 表在 ClickHouse 中存储数据：
-
 
 ```sql
 CREATE TABLE sensors
@@ -120,7 +118,7 @@ SETTINGS
 下面是响应结果——显示了行数和处理速度。其写入速率超过每秒 600 万行！
 
 ```response
-返回 0 行。耗时:3419.330 秒。已处理 206.9 亿行,1.67 TB(每秒 605 万行,488.52 MB/秒)
+0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
 ```
 
 4. 来看看 `sensors` 表需要多少磁盘存储空间：
@@ -175,6 +173,5 @@ ORDER BY day ASC;
 ```
 
 以下是结果的可视化：
-
 
 <Image img={sensors_02} size="md" alt="炎热潮湿的天气"/>

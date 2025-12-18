@@ -20,7 +20,7 @@ $ clickhouse-benchmark --query ["single query"] [keys]
 или
 
 ```bash
-$ echo "единичный запрос" | clickhouse-benchmark [keys]
+$ echo "single query" | clickhouse-benchmark [keys]
 ```
 
 или
@@ -89,22 +89,22 @@ clickhouse-benchmark [keys] < queries_file;
 ```text
 Queries executed: 10.
 
-localhost:9000, запросов 10, QPS: 6.772, RPS: 67904487.440, MiB/с: 518.070, результат RPS: 67721584.984, результат MiB/с: 516.675.
+localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, result RPS: 67721584.984, result MiB/s: 516.675.
 
-0.000%      0.145 сек.
-10.000%     0.146 сек.
-20.000%     0.146 сек.
-30.000%     0.146 сек.
-40.000%     0.147 сек.
-50.000%     0.148 сек.
-60.000%     0.148 сек.
-70.000%     0.148 сек.
-80.000%     0.149 сек.
-90.000%     0.150 сек.
-95.000%     0.150 сек.
-99.000%     0.150 сек.
-99.900%     0.150 сек.
-99.990%     0.150 сек.
+0.000%      0.145 sec.
+10.000%     0.146 sec.
+20.000%     0.146 sec.
+30.000%     0.146 sec.
+40.000%     0.147 sec.
+50.000%     0.148 sec.
+60.000%     0.148 sec.
+70.000%     0.148 sec.
+80.000%     0.149 sec.
+90.000%     0.150 sec.
+95.000%     0.150 sec.
+99.000%     0.150 sec.
+99.900%     0.150 sec.
+99.990%     0.150 sec.
 ```
 
 В отчёте вы найдёте:
@@ -136,12 +136,12 @@ $ echo "SELECT * FROM system.numbers LIMIT 10000000 OFFSET 10000000" | clickhous
 ```
 
 ```text
-Загружен 1 запрос.
+Loaded 1 queries.
 
-Выполнено запросов: 5.
+Queries executed: 5.
 
-localhost:9001, запросов 2, QPS: 3.764, RPS: 75446929.370, МиБ/с: 575.614, result RPS: 37639659.982, result МиБ/с: 287.168.
-localhost:9000, запросов 3, QPS: 3.815, RPS: 76466659.385, МиБ/с: 583.394, result RPS: 38148392.297, result МиБ/с: 291.049.
+localhost:9001, queries 2, QPS: 3.764, RPS: 75446929.370, MiB/s: 575.614, result RPS: 37639659.982, result MiB/s: 287.168.
+localhost:9000, queries 3, QPS: 3.815, RPS: 76466659.385, MiB/s: 583.394, result RPS: 38148392.297, result MiB/s: 291.049.
 
 0.000%          0.258 sec.      0.250 sec.
 10.000%         0.258 sec.      0.250 sec.
@@ -158,5 +158,5 @@ localhost:9000, запросов 3, QPS: 3.815, RPS: 76466659.385, МиБ/с: 58
 99.900%         0.273 sec.      0.269 sec.
 99.990%         0.273 sec.      0.269 sec.
 
-Различия не выявлены при уровне достоверности 99,5%
+No difference proven at 99.5% confidence
 ```

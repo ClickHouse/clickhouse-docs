@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-view(подзапрос)
+view(subquery)
 ```
 
 ## Аргументы {#arguments}
@@ -31,10 +31,10 @@ view(подзапрос)
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ Январь   │   31 │
-│  2 │ Февраль  │   29 │
-│  3 │ Март     │   31 │
-│  4 │ Апрель   │   30 │
+│  1 │ January  │   31 │
+│  2 │ February │   29 │
+│  3 │ March    │   31 │
+│  4 │ April    │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -48,10 +48,10 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ Январь  │
-│ Февраль │
-│ Март    │
-│ Апрель    │
+│ January  │
+│ February │
+│ March    │
+│ April    │
 └──────────┘
 ```
 

@@ -173,7 +173,7 @@ SELECT * FROM file('time.parquet', Parquet);
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- 整数转换为时间
+    toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
 ```
 

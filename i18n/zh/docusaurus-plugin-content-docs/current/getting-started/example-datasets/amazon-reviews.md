@@ -27,14 +27,14 @@ LIMIT 3
 这些行如下所示：
 
 ```response
-行 1:
+Row 1:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       25444946 -- 2544 万
+customer_id:       25444946 -- 25.44 million
 review_id:         R146L9MMZYG0WA
 product_id:        B00NV85102
-product_parent:    908181913 -- 9.08 亿
+product_parent:    908181913 -- 908.18 million
 product_title:     XIKEZAN iPhone 6 Plus 5.5 inch Waterproof Case, Shockproof Dirtproof Snowproof Full Body Skin Case Protective Cover with Hand Strap & Headphone Adapter & Kickstand
 product_category:  Wireless
 star_rating:       4
@@ -45,14 +45,14 @@ verified_purchase: true
 review_headline:   case is sturdy and protects as I want
 review_body:       I won't count on the waterproof part (I took off the rubber seals at the bottom because the got on my nerves). But the case is sturdy and protects as I want.
 
-行 2:
+Row 2:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       1974568 -- 197 万
+customer_id:       1974568 -- 1.97 million
 review_id:         R2LXDXT293LG1T
 product_id:        B00OTFZ23M
-product_parent:    951208259 -- 9.51 亿
+product_parent:    951208259 -- 951.21 million
 product_title:     Season.C Chicago Bulls Marilyn Monroe No.1 Hard Back Case Cover for Samsung Galaxy S5 i9600
 product_category:  Wireless
 star_rating:       1
@@ -63,14 +63,14 @@ verified_purchase: true
 review_headline:   One Star
 review_body:       Cant use the case because its big for the phone. Waist of money!
 
-行 3:
+Row 3:
 ──────
 review_date:       16462
 marketplace:       US
-customer_id:       24803564 -- 2480 万
+customer_id:       24803564 -- 24.80 million
 review_id:         R7K9U5OEIRJWR
 product_id:        B00LB8C4U4
-product_parent:    524588109 -- 5.25 亿
+product_parent:    524588109 -- 524.59 million
 product_title:     iPhone 5s Case, BUDDIBOX [Shield] Slim Dual Layer Protective Case with Kickstand for Apple iPhone 5 and 5s
 product_category:  Wireless
 star_rating:       4
@@ -133,7 +133,7 @@ SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. 查看数据占用的空间大小：
+6. Let's see how much space our data is using:
 
 ```sql runnable
 SELECT
@@ -149,11 +149,11 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-原始数据约为 70GB，在 ClickHouse 中压缩后仅占约 30GB。
+The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
 
-## 示例查询 {#example-queries}
+## Example queries {#example-queries}
 
-7. 现在来运行一些查询。下面是数据集中最有帮助的前 10 条评论：
+7. Let's run some queries. Here are the top 10 most-helpful reviews in the dataset:
 
 ```sql runnable
 SELECT
@@ -165,10 +165,10 @@ LIMIT 10
 ```
 
 :::note
-此查询使用 [projection](/data-modeling/projections) 来提升性能。
+This query is using a [projection](/data-modeling/projections) to speed up performance.
 :::
 
-8. 以下是在 Amazon 上评论数最多的前 10 款产品：
+8. Here are the top 10 products in Amazon with the most reviews:
 
 ```sql runnable
 SELECT
@@ -180,7 +180,7 @@ ORDER BY 2 DESC
 LIMIT 10;
 ```
 
-9. 以下是每个产品每个月的平均评论评分（这是一道真实的 [Amazon 求职面试题](https://datalemur.com/questions/sql-avg-review-ratings)！）：
+9. Here are the average review ratings per month for each product (an actual [Amazon job interview question](https://datalemur.com/questions/sql-avg-review-ratings)!):
 
 ```sql runnable
 SELECT
@@ -197,7 +197,7 @@ ORDER BY
 LIMIT 20;
 ```
 
-10. 以下是每个产品类别的总投票数。该查询速度很快，因为 `product_category` 是主键的一部分：
+10. Here are the total number of votes per product category. This query is fast because `product_category` is in the primary key:
 
 ```sql runnable
 SELECT
@@ -208,7 +208,7 @@ GROUP BY product_category
 ORDER BY 1 DESC
 ```
 
-11. 让我们查找在评论中 **&quot;awful&quot;** 这个单词出现最频繁的产品。这是一个很大的任务——需要解析超过 1.51 亿个字符串，只为查找这一个单词：
+11. Let's find the products with the word **"awful"** occurring most frequently in the review. This is a big task - over 151M strings have to be parsed looking for a single word:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT
@@ -223,9 +223,9 @@ ORDER BY count DESC
 LIMIT 50;
 ```
 
-注意观察针对如此大规模数据的查询耗时。查询结果本身读起来也很有趣！
+Notice the query time for such a large amount of data. The results are also a fun read!
 
-12. 我们可以再次运行相同的查询，不过这一次在评论中搜索 **awesome**：
+12. We can run the same query again, except this time we search for **awesome** in the reviews:
 
 ```sql runnable settings={'enable_parallel_replicas':1}
 SELECT 

@@ -94,11 +94,11 @@ constraints](settings/constraints-on-settings.md) を使用して、個々のユ
 ```xml
 <profiles>
     <default>
-        <!-- ユーザー／プロファイル 'default' のキャッシュの最大サイズ（バイト単位） -->
+        <!-- The maximum cache size in bytes for user/profile 'default' -->
         <query_cache_max_size_in_bytes>10000</query_cache_max_size_in_bytes>
-        <!-- ユーザー／プロファイル 'default' のキャッシュに保存される SELECT クエリ結果の最大件数 -->
+        <!-- The maximum number of SELECT query results stored in the cache for user/profile 'default' -->
         <query_cache_max_entries>100</query_cache_max_entries>
-        <!-- 両方の設定を読み取り専用にして、ユーザーが変更できないようにする -->
+        <!-- Make both settings read-only so the user cannot change them -->
         <constraints>
             <query_cache_max_size_in_bytes>
                 <readonly/>
@@ -133,7 +133,7 @@ SETTINGS use_query_cache = true, query_cache_min_query_duration = 5000;
 同じクエリに対して 3 つの異なるクエリキャッシュエントリを作成する例:
 
 ```sql
-SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag は暗黙的に ''（空文字列）になります
+SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag is implicitly '' (empty string)
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```

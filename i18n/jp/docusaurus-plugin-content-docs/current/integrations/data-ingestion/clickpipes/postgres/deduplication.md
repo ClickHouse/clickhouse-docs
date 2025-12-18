@@ -129,10 +129,10 @@ LIMIT 10
 この設定は、クエリ単位、またはセッション全体に対して適用できます。
 
 ```sql
--- クエリ単位でのFINAL設定
+-- Per query FINAL setting
 SELECT count(*) FROM posts SETTINGS FINAL = 1;
 
--- セッション全体にFINALを設定
+-- Set FINAL for the session
 SET final = 1;
 SELECT count(*) FROM posts; 
 ```
@@ -142,7 +142,7 @@ SELECT count(*) FROM posts;
 冗長な `_peerdb_is_deleted = 0` フィルターを明示的に記述しなくて済むようにする簡単な方法は、[ROW ポリシー](/docs/operations/access-rights#row-policy-management) を使用することです。以下は、votes テーブルに対するすべてのクエリから削除済み行を除外する ROW ポリシーを作成する例です。
 
 ```sql
--- 全ユーザーに行ポリシーを適用
+-- Apply row policy to all users
 CREATE ROW POLICY cdc_policy ON votes FOR SELECT USING _peerdb_is_deleted = 0 TO ALL;
 ```
 
@@ -170,7 +170,7 @@ CREATE VIEW comments_view AS SELECT * FROM comments FINAL WHERE _peerdb_is_delet
 次に、PostgreSQL で使用するのと同じクエリをビューに対して実行できます。
 
 ```sql
--- 最も閲覧された投稿
+-- Most viewed posts
 SELECT
     sum(viewcount) AS viewcount,
     owneruserid
@@ -190,10 +190,10 @@ LIMIT 10
 一方で、この方法の欠点は、宛先テーブル内のデータが直近のリフレッシュ時点までしか最新ではないことです。とはいえ、多くのユースケースでは、数分から数時間程度のリフレッシュ間隔で十分である場合が少なくありません。
 
 ```sql
--- 重複排除されたpostsテーブルを作成 
+-- Create deduplicated posts table 
 CREATE TABLE deduplicated_posts AS posts;
 
--- マテリアライズドビューを作成し、1時間ごとに実行するようスケジュール設定
+-- Create the Materialized view and schedule to run every hour
 CREATE MATERIALIZED VIEW deduplicated_posts_mv REFRESH EVERY 1 HOUR TO deduplicated_posts AS 
 SELECT * FROM posts FINAL WHERE _peerdb_is_deleted=0 
 ```

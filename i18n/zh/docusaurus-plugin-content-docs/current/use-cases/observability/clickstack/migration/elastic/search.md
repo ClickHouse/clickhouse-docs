@@ -50,7 +50,7 @@ HyperDX 和 Elasticsearch 都提供了灵活的查询语言，用于实现直观
 | Unbounded ranges (numeric/date)   | `duration:>10` or `duration:>=10` | `duration:>10` or `duration:>=10` | HyperDX 使用标准 SQL 比较运算符。|
 | Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | 花括号表示排他区间边界。不支持在范围中使用 `*`，例如 `duration:[100 TO *]`。|
 | Exists check            | N/A                       | `_exists_:user` or `field:*` | 不支持 `_exists_`。对于 `Map` 列（如 `LogAttributes`），请使用 `LogAttributes.log.file.path: *`。对于根级列，这些列必须存在，如果在事件中未包含，则会有默认值。要搜索默认值或缺失列，请使用与 Elasticsearch 相同的语法，例如 `ServiceName:*` 或 `ServiceName != ''`。 |
-| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 当前在 Lucene 语法中不支持。用户可以使用 SQL 以及 [`match`](/sql-reference/functions/string-search-functions#match) 函数，或其他[字符串搜索函数](/sql-reference/functions/string-search-functions)。|
+| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 当前在 Lucene 语法中不支持。你可以使用 SQL 以及 [`match`](/sql-reference/functions/string-search-functions#match) 函数，或其他[字符串搜索函数](/sql-reference/functions/string-search-functions)。|
 | Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | 当前在 Lucene 语法中不支持。可在 SQL 中使用距离函数，例如 `editDistance('rror', SeverityText) = 1`，或[其他相似度函数](/sql-reference/functions/string-functions#jaroSimilarity)。 |
 | Proximity search        | Not supported                       | `"fox quick"~5` | 当前在 Lucene 语法中不支持。 |
 | Boosting                | `quick^2 fox` | `quick^2 fox` | 目前在 HyperDX 中不支持。 |

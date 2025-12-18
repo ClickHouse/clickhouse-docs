@@ -103,30 +103,30 @@ SETTINGS
 ```xml
 <remote_servers>
     <logs>
-        <!-- Межсерверный секрет для распределённых запросов на уровне кластера
-             по умолчанию: секрет не задан (аутентификация не выполняется)
+        <!-- Inter-server per-cluster secret for Distributed queries
+             default: no secret (no authentication will be performed)
 
-             Если задан, распределённые запросы будут проверяться на шардах, поэтому необходимо как минимум:
-             - чтобы такой кластер существовал на шарде,
-             - чтобы у такого кластера был тот же секрет.
+             If set, then Distributed queries will be validated on shards, so at least:
+             - such cluster should exist on the shard,
+             - such cluster should have the same secret.
 
-             Кроме того (что более важно), initial_user будет
-             использоваться в качестве текущего пользователя для запроса.
+             And also (and which is more important), the initial_user will
+             be used as current user for the query.
         -->
         <!-- <secret></secret> -->
         
-        <!-- Необязательно. Разрешены ли распределённые DDL-запросы (конструкция ON CLUSTER) для этого кластера. По умолчанию: true (разрешены). -->        
+        <!-- Optional. Whether distributed DDL queries (ON CLUSTER clause) are allowed for this cluster. Default: true (allowed). -->        
         <!-- <allow_distributed_ddl_queries>true</allow_distributed_ddl_queries> -->
         
         <shard>
-            <!-- Необязательно. Вес шарда при записи данных. По умолчанию: 1. -->
+            <!-- Optional. Shard weight when writing data. Default: 1. -->
             <weight>1</weight>
-            <!-- Необязательно. Имя шарда. Должно быть непустым и уникальным среди шардов кластера. Если не указано, будет пустым. -->
+            <!-- Optional. The shard name.  Must be non-empty and unique among shards in the cluster. If not specified, will be empty. -->
             <name>shard_01</name>
-            <!-- Необязательно. Записывать ли данные только на одну из реплик. По умолчанию: false (записывать на все реплики). -->
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
             <internal_replication>false</internal_replication>
             <replica>
-                <!-- Необязательно. Приоритет реплики для балансировки нагрузки (см. также настройку load_balancing). По умолчанию: 1 (меньшее значение означает более высокий приоритет). -->
+                <!-- Optional. Priority of the replica for load balancing (see also load_balancing setting). Default: 1 (less value has more priority). -->
                 <priority>1</priority>
                 <host>example01-01-1</host>
                 <port>9000</port>

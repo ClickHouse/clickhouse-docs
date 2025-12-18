@@ -35,10 +35,10 @@ ClickPipes нативно поддерживает Supabase через IPv6 дл
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- Предоставить пользователю права на репликацию
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- Создать публикацию. Она будет использоваться при создании зеркала
+-- Create a publication. We will use this when creating the mirror
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 

@@ -60,7 +60,7 @@ FROM salaries;
 结果：
 
 ```response
-   ┌─球员────────────┬─薪资───┬─行号───────┐
+   ┌─player──────────┬─salary─┬─row_number─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          2 │
 3. │ Charles Juarez  │ 190000 │          3 │

@@ -125,9 +125,9 @@ Examples:
   :::
 
   ```sql
-  Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
-  ```
+Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
+      [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+```
 </details>
 
 :::info
@@ -190,7 +190,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
 
 ```xml
   <kafka>
-    <!-- Kafka 引擎类型所有表的全局配置选项 -->
+    <!-- Global configuration options for all tables of Kafka engine type -->
     <debug>cgrp</debug>
     <statistics_interval_ms>3000</statistics_interval_ms>
 
@@ -199,7 +199,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
         <statistics_interval_ms>4000</statistics_interval_ms>
     </kafka_topic>
 
-    <!-- 消费者配置 -->
+    <!-- Settings for consumer -->
     <consumer>
         <auto_offset_reset>smallest</auto_offset_reset>
         <kafka_topic>
@@ -213,7 +213,7 @@ Group 十分灵活，并且会在集群中同步。例如，如果你在一个�
         </kafka_topic>
     </consumer>
 
-    <!-- 生产者配置 -->
+    <!-- Settings for producer -->
     <producer>
         <kafka_topic>
             <name>logs</name>
@@ -238,7 +238,7 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
 示例：
 
 ```xml
-<!-- 启用 Kerberos 的 Kafka -->
+<!-- Kerberos-aware Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>

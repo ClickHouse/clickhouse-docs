@@ -36,9 +36,9 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 ```toml
 [features.mcp.stdio]
     enabled = true
-    # 仅允许列表中的可执行文件可用于 MCP stdio 服务器。
-    # 仅需可执行文件的基础名称,例如 "npx",而非 "/usr/bin/npx"。
-    # 暂时请勿注释此行,我们需要用它来解析可执行文件名称。
+    # Only the executables in the allow list can be used for MCP stdio server.
+    # Only need the base name of the executable, e.g. "npx", not "/usr/bin/npx".
+    # Please don't comment this line for now, we need it to parse the executable name.
     allowed_executables = [ "npx", "uvx", "uv" ]
 ```
 

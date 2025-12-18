@@ -13,13 +13,13 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-`minMap(键, 值)`
+`minMap(key, value)`
 ```
 
 或者
 
 ```sql
-minMap(元组(键, 值))
+minMap(Tuple(key, value))
 ```
 
 Alias: `minMappedArrays`

@@ -21,10 +21,7 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
 # ユーザーインターフェイスからのバックアップ／リストア {#ui-experience}
-
-
 
 ## AWS {#AWS}
 
@@ -62,7 +59,7 @@ AWSはロールベース認証を使用するため、ClickHouse Cloudサービ�
       "Sid": "backup service",
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
+        "AWS":  "arn:aws:iam::463754717262:role/CH-S3-bordeaux-ar-90-ue2-29-Role"
       },
       "Action": "sts:AssumeRole"
     }
@@ -80,18 +77,33 @@ ClickHouse CloudサービスがS3バケットに書き込めるように、こ�
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
-      "Resource": ["arn:aws:s3:::byob-ui"],
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:Get*", "s3:List*", "s3:PutObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*"],
+      "Action": [
+        "s3:Get*",
+        "s3:List*",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*"
+      ],
       "Effect": "Allow"
     },
     {
-      "Action": ["s3:DeleteObject"],
-      "Resource": ["arn:aws:s3:::byob-ui/*/.lock"],
+      "Action": [
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::byob-ui/*/.lock"
+      ],
       "Effect": "Allow"
     }
   ]
@@ -149,7 +161,6 @@ AWSからバックアップを復元するには、以下の手順を実行し�
 
 ##### 復元先の新しいサービスの作成 {#create-new-service-to-restore-to}
 
-
 バックアップを復元する新しいサービスを作成します。
 
 ##### サービスARNの追加 {#add-service-arn}
@@ -183,7 +194,6 @@ ASYNCコマンドは即座に成功ステータスを返すことに注意して
 新しく作成したサービスのSQLコンソールから復元コマンドを実行して、バックアップを復元します。
 
 </VerticalStepper>
-
 
 ## GCP {#gcp}
 
@@ -285,7 +295,6 @@ UI内のバックアップリストの上にある`access or restore a backup`�
 バックアップを別の場所に移動する場合、新しい場所を参照するように復元コマンドをカスタマイズする必要があります。
 :::
 
-
 :::tip ASYNCコマンド
 大規模なリストアを行う場合、Restoreコマンドの末尾にオプションで`ASYNC`コマンドを追加できます。
 これにより、リストアが非同期で実行されるため、接続が切断されてもリストア処理は継続されます。
@@ -300,7 +309,6 @@ ASYNCコマンドは即座に成功ステータスを返すことに注意が必
 バックアップをリストアします。
 
 </VerticalStepper>
-
 
 ## Azure {#azure}
 

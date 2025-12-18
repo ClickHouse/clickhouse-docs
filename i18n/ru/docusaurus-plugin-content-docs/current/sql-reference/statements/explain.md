@@ -45,16 +45,16 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (Установка лимитов и квоты после чтения из хранилища)
+          SettingQuotaAndLimits (Set limits and quota after reading from storage)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
-    MergingSorted (Слияние отсортированных потоков для ORDER BY)
-      MergeSorting (Слияние отсортированных блоков для ORDER BY)
-        PartialSorting (Сортировка каждого блока для ORDER BY)
+    MergingSorted (Merge sorted streams for ORDER BY)
+      MergeSorting (Merge sorted blocks for ORDER BY)
+        PartialSorting (Sort each block for ORDER BY)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (Установка лимитов и квоты после чтения из хранилища)
+                SettingQuotaAndLimits (Set limits and quota after reading from storage)
                   ReadFromStorage (SystemNumbers)
 ```
 
@@ -269,7 +269,6 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
 
-
 ```json
 [
   {
@@ -375,7 +374,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Projections": [
   {
     "Name": "region_proj",
-    "Description": "Проекция проанализирована и используется для фильтрации на уровне частей",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(region in ['us_west', 'us_west'])",
     "Search Algorithm": "binary search",
     "Selected Parts": 3,
@@ -386,7 +385,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   },
   {
     "Name": "user_id_proj",
-    "Description": "Проекция проанализирована и используется для фильтрации на уровне частей",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(user_id in [107, 107])",
     "Search Algorithm": "binary search",
     "Selected Parts": 1,
@@ -471,7 +470,7 @@ Union
     Filter ((WHERE + Change column names to column identifiers))
       ReadFromSystemNumbers
   Expression ((Project names + (Projection + Change column names to column identifiers)))
-    ReadFromRemote (Чтение с удалённой реплики)
+    ReadFromRemote (Read from remote replica)
       Expression ((Project names + Projection))
         Filter ((WHERE + Change column names to column identifiers))
           ReadFromSystemNumbers
@@ -486,21 +485,20 @@ EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
 ```
 
 ```sql
-Expression ((Названия проектов + Projection))
+Expression ((Project names + Projection))
   MergingAggregated
     Union
       Aggregating
-        Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+        Expression ((Before GROUP BY + Change column names to column identifiers))
           ReadFromMergeTree (default.test_table)
       ReadFromRemoteParallelReplicas
         BlocksMarshalling
           Aggregating
-            Expression ((Перед GROUP BY + Изменить имена столбцов на идентификаторы столбцов))
+            Expression ((Before GROUP BY + Change column names to column identifiers))
               ReadFromMergeTree (default.test_table)
 ```
 
 В обоих примерах план запроса показывает полный процесс выполнения, включая локальные и удалённые этапы.
-
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
@@ -587,7 +585,7 @@ PARTITION BY toYYYYMM(assumeNotNull(created))
 
 ```text
 ┌─explain─────────────────────────────────────────────────┐
-│ PARTITION BY использует столбцы: `created` Nullable(DateTime) │
+│ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘
 ```
 

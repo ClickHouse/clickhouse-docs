@@ -57,9 +57,9 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- DateTimeの解析
--- - 文字列から
--- - 1970-01-01からの経過秒数として解釈される整数から
+-- Parse DateTime
+-- - from string,
+-- - from integer interpreted as number of seconds since 1970-01-01.
 INSERT INTO dt VALUES ('2019-01-01 00:00:00', 1), (1546300800, 2);
 
 SELECT * FROM dt;

@@ -68,8 +68,8 @@ ENGINE = Log
 写入数据：
 
 ```sql
-INSERT INTO log_table VALUES (now(),'REGULAR','第一条普通消息')
-INSERT INTO log_table VALUES (now(),'REGULAR','第二条普通消息'),(now(),'WARNING','第一条警告消息')
+INSERT INTO log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 我们使用了两个 `INSERT` 查询，在 `<column>.bin` 文件中创建了两个数据块。
@@ -82,11 +82,11 @@ SELECT * FROM log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ 第二条普通消息 │
-│ 2019-01-18 14:34:53 │ WARNING      │ 第一条警告消息  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 第一条普通消息 │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -98,8 +98,8 @@ SELECT * FROM log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ 普通         │ 第一条普通消息              │
-│ 2019-01-18 14:27:32 │ 普通         │ 第二条普通消息              │
-│ 2019-01-18 14:34:53 │ 警告         │ 第一条警告消息              │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

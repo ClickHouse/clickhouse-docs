@@ -39,8 +39,8 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
   В локальном режиме интерфейс HyperDX запускается на порту 8080.
 
   ```shell
-  docker run -p 8080:8080 clickhouse/clickstack-local:latest
-  ```
+docker run -p 8080:8080 clickhouse/clickstack-local:latest
+```
 
   ### Перейдите в интерфейс HyperDX
 

@@ -29,9 +29,9 @@ ClickHouse 推荐使用 ClickHouse 内置的表函数，作为临时（即席）
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
-    列列表...
+    columns list...
 )
-ENGINE = JDBC(数据源名称, 外部数据库, 外部表)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
 **引擎参数**

@@ -50,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-这将根据各列的类型为其写入相应的时间值：
+这会根据各列的类型填充相应的时间值：
 
 ```sql
 SELECT * FROM dates
@@ -101,7 +101,7 @@ SELECT 2,
        toDateTime64('2022-12-12 12:13:15.123456789', 9);
 ```
 
-现在我们来看看表里的数据：
+现在来看一下表中的数据：
 
 ```sql
 SELECT dt_1, dt64_1, dt_2, dt64_2
@@ -169,7 +169,7 @@ FORMAT Vertical;
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 current_time:             2025-03-12 12:35:01
 toTypeName(current_time): DateTime

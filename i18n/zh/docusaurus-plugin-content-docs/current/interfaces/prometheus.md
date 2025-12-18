@@ -17,7 +17,7 @@ doc_type: 'reference'
 
 ClickHouse 可以将自身的指标暴露出来，以供 Prometheus 抓取：
 
-````xml
+```xml
 <prometheus>
     <port>9363</port>
     <endpoint>/metrics</endpoint>
@@ -29,8 +29,8 @@ ClickHouse 可以将自身的指标暴露出来，以供 Prometheus 抓取：
     <dimensional_metrics>true</dimensional_metrics>
 </prometheus>
 
-可以使用 `<prometheus.handlers>` 部分来创建更多扩展处理器。
-此部分类似于 [<http_handlers>](/interfaces/http),但用于 Prometheus 协议:
+Section `<prometheus.handlers>` can be used to make more extended handlers.
+This section is similar to [<http_handlers>](/interfaces/http) but works for prometheus protocols:
 
 ```xml
 <prometheus>
@@ -50,33 +50,32 @@ ClickHouse 可以将自身的指标暴露出来，以供 Prometheus 抓取：
         </my_rule_1>
     </handlers>
 </prometheus>
-````
+```
 
-设置：
+Settings:
 
-| Name                         | Default    | Description                                                                                    |
-| ---------------------------- | ---------- | ---------------------------------------------------------------------------------------------- |
-| `port`                       | none       | 用于对外提供指标协议服务的端口。                                                                               |
-| `endpoint`                   | `/metrics` | 供 Prometheus 服务器抓取指标的 HTTP endpoint。必须以 `/` 开头。不应与 `<handlers>` 小节同时使用。                        |
-| `url` / `headers` / `method` | none       | 用于根据请求查找匹配 handler 的过滤条件。与 [`<http_handlers>`](/interfaces/http) 小节中同名字段的含义相同。                 |
-| `metrics`                    | true       | 暴露 [system.metrics](/operations/system-tables/metrics) 表中的指标。                                  |
-| `asynchronous_metrics`       | true       | 暴露 [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics) 表中的当前指标值。 |
-| `events`                     | true       | 暴露 [system.events](/operations/system-tables/events) 表中的指标。                                    |
-| `errors`                     | true       | 暴露自上次服务器重启以来按错误码统计的错误次数。该信息也可以从 [system.errors](/operations/system-tables/errors) 表中获取。        |
-| `histograms`                 | true       | 暴露来自 [system.histogram&#95;metrics](/operations/system-tables/histogram_metrics) 的直方图指标。       |
-| `dimensional_metrics`        | true       | 暴露来自 [system.dimensional&#95;metrics](/operations/system-tables/dimensional_metrics) 的维度指标。    |
+| Name                         | Default    | Description                                                                                                                                                                                  |
+|------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `port`                       | none       | Port for serving the exposing metrics protocol.                                                                                                                                              |
+| `endpoint`                   | `/metrics` | HTTP endpoint for scraping metrics by prometheus server. Starts with `/`. Should not be used with the `<handlers>` section.                                                                  |
+| `url` / `headers` / `method` | none       | Filters used to find a matching handler for a request. Similar to the fields with the same names in the [`<http_handlers>`](/interfaces/http) section.                                    |
+| `metrics`                    | true       | Expose metrics from the [system.metrics](/operations/system-tables/metrics) table.                                                                                                        |
+| `asynchronous_metrics`       | true       | Expose current metrics values from the [system.asynchronous_metrics](/operations/system-tables/asynchronous_metrics) table.                                                               |
+| `events`                     | true       | Expose metrics from the [system.events](/operations/system-tables/events) table.                                                                                                          |
+| `errors`                     | true       | Expose the number of errors by error codes occurred since the last server restart. This information could be obtained from the [system.errors](/operations/system-tables/errors) as well. |
+| `histograms`                 | true       | Expose histogram metrics from [system.histogram_metrics](/operations/system-tables/histogram_metrics) |
+| `dimensional_metrics`        | true       | Expose dimensional metrics from [system.dimensional_metrics](/operations/system-tables/dimensional_metrics) |
 
-检查（将 `127.0.0.1` 替换为 ClickHouse 服务器的 IP 地址或主机名）：
-
+Check (replace `127.0.0.1` with the IP addr or hostname of your ClickHouse server):
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
 
-## Remote-write 协议 {#remote-write}
+## Remote-write protocol {#remote-write}
 
-ClickHouse 支持 [remote-write](https://prometheus.io/docs/specs/remote_write_spec/) 协议。
-通过该协议接收的数据会被写入一个 [TimeSeries](/engines/table-engines/special/time_series) 表
-（该表需要事先创建）。
+ClickHouse supports the [remote-write](https://prometheus.io/docs/specs/remote_write_spec/) protocol.
+Data are received by this protocol and written to a [TimeSeries](/engines/table-engines/special/time_series) table
+(which should be created beforehand).
 
 ```xml
 <prometheus>
@@ -96,17 +95,17 @@ ClickHouse 支持 [remote-write](https://prometheus.io/docs/specs/remote_write_s
 
 Settings:
 
-| Name                         | Default | Description                                                                                                  |
-| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `port`                       | none    | 用于提供 `remote-write` 协议服务的端口。                                                                                 |
-| `url` / `headers` / `method` | none    | 用于为请求查找匹配处理器的筛选条件。类似于 [`<http_handlers>`](/interfaces/http) 部分中具有相同名称的字段。                                    |
-| `table`                      | none    | 用于写入通过 `remote-write` 协议接收数据的 [TimeSeries](/engines/table-engines/special/time_series) 表名。该名称还可以选择性地包含数据库名称。 |
-| `database`                   | none    | 在 `table` 设置中未指定数据库名称时，此处指定 `table` 设置中所述表所在的数据库名称。                                                          |
+| Name                         | Default | Description                                                                                                                                                                                         |
+|------------------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `port`                       | none    | Port for serving the `remote-write` protocol.                                                                                                                                                       |
+| `url` / `headers` / `method` | none    | Filters used to find a matching handler for a request. Similar to the fields with the same names in the [`<http_handlers>`](/interfaces/http) section.                                           |
+| `table`                      | none    | The name of a [TimeSeries](/engines/table-engines/special/time_series) table to write data received by the `remote-write` protocol. This name can optionally contain the name of a database too. |
+| `database`                   | none    | The name of a database where the table specified in the `table` setting is located if it's not specified in the `table` setting.                                                                    |
 
-## 远程读取协议 {#remote-read}
+## Remote-read protocol {#remote-read}
 
-ClickHouse 支持 [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) 协议。
-数据从 [TimeSeries](/engines/table-engines/special/time_series) 表中读取，并通过该协议进行传输。
+ClickHouse supports the [remote-read](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) protocol.
+Data are read from a [TimeSeries](/engines/table-engines/special/time_series) table and sent via this protocol.
 
 ```xml
 <prometheus>
@@ -126,16 +125,16 @@ ClickHouse 支持 [remote-read](https://prometheus.io/docs/prometheus/latest/que
 
 Settings:
 
-| Name                         | Default | Description                                                                                                  |
-| ---------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `port`                       | none    | 用于提供 `remote-read` 协议服务的端口。                                                                                  |
-| `url` / `headers` / `method` | none    | 用于为请求查找匹配的处理程序的过滤器。类似于 [`<http_handlers>`](/interfaces/http) 部分中同名字段。                                        |
-| `table`                      | none    | 通过 `remote-read` 协议发送数据时要读取数据的 [TimeSeries](/engines/table-engines/special/time_series) 表名。该名称还可以可选地包含数据库名称。 |
-| `database`                   | none    | 如果在 `table` 设置中未指定数据库名称，则此处为包含该表的数据库名称。                                                                      |
+| Name                         | Default | Description                                                                                                                                                                                      |
+|------------------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `port`                       | none    | Port for serving the `remote-read` protocol.                                                                                                                                                     |
+| `url` / `headers` / `method` | none    | Filters used to find a matching handler for a request. Similar to the fields with the same names in the [`<http_handlers>`](/interfaces/http) section.                                        |
+| `table`                      | none    | The name of a [TimeSeries](/engines/table-engines/special/time_series) table to read data to send by the `remote-read` protocol. This name can optionally contain the name of a database too. |
+| `database`                   | none    | The name of a database where the table specified in the `table` setting is located if it's not specified in the `table` setting.                                                                 |
 
-## 多协议配置 {#multiple-protocols}
+## Configuration for multiple protocols {#multiple-protocols}
 
-可以在同一个位置同时指定多个协议：
+Multiple protocols can be specified together in one place:
 
 ```xml
 <prometheus>

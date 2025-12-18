@@ -121,5 +121,5 @@ client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 输出：[(2000, -50.9035)] {#output-2000-509035}
+# Output: [(2000, -50.9035)]
 ```

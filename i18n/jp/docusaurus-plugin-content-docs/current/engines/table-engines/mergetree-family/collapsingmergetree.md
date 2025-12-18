@@ -57,14 +57,14 @@ ENGINE = CollapsingMergeTree(Sign)
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) 
-  ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) 
+ENGINE [=] CollapsingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, Sign)
+```
 
   `Sign` — `1` が「state」行、`-1` が「cancel」行を表す行種別を持つカラムに付ける名前です。[Int8](/sql-reference/data-types/int-uint)。
 </details>
@@ -112,9 +112,9 @@ ENGINE = CollapsingMergeTree(Sign)
 
 ```text
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
-│ 4324182021466249494 │         5 │      146 │    1 │ -- 古い「状態」行は削除可能
-│ 4324182021466249494 │         5 │      146 │   -1 │ -- 「キャンセル」行は削除可能
-│ 4324182021466249494 │         6 │      185 │    1 │ -- 新しい「状態」行は残る
+│ 4324182021466249494 │         5 │      146 │    1 │ -- old "state" row can be deleted
+│ 4324182021466249494 │         5 │      146 │   -1 │ -- "cancel" row can be deleted
+│ 4324182021466249494 │         6 │      185 │    1 │ -- new "state" row remains
 └─────────────────────┴───────────┴──────────┴──────┘
 ```
 

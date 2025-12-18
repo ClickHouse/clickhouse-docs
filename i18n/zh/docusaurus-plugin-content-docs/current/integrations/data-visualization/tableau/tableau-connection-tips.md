@@ -48,13 +48,13 @@ LEFT([myUInt256], 2) // Error!
 若要像处理字符串一样处理大整数 Integer 字段，需要将该字段显式包装在 STR() 函数中。
 
 ```text
-LEFT(STR([myUInt256]), 2) // 运行良好！
+LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
 然而，此类字段最常用于统计唯一值的数量（*例如在 Yandex.Metrica 中的 Watch ID、Visit ID*），或作为用于控制可视化粒度的 *Dimension（维度）* 使用，在这些场景下表现良好。
 
 ```text
-COUNTD([myUInt256]) // 同样可以正常工作!
+COUNTD([myUInt256]) // Works well too!
 ```
 
 现在在对包含 UInt64 字段的表使用数据预览（View data）时，不会再出现错误。

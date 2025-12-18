@@ -237,7 +237,7 @@ spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 
 ```java
 public static void main(String[] args) {
-        // Spark セッションを作成する
+        // Create a Spark session
         SparkSession spark = SparkSession.builder()
                 .appName("example")
                 .master("local[*]")
@@ -342,124 +342,124 @@ df.show()
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
     ```java
-     public static void main(String[] args) throws AnalysisException {
+ public static void main(String[] args) throws AnalysisException {
 
-            // Sparkセッションを作成する
-            SparkSession spark = SparkSession.builder()
-                    .appName("example")
-                    .master("local[*]")
-                    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-                    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-                    .config("spark.sql.catalog.clickhouse.protocol", "http")
-                    .config("spark.sql.catalog.clickhouse.http_port", "8123")
-                    .config("spark.sql.catalog.clickhouse.user", "default")
-                    .config("spark.sql.catalog.clickhouse.password", "123456")
-                    .config("spark.sql.catalog.clickhouse.database", "default")
-                    .config("spark.clickhouse.write.format", "json")
-                    .getOrCreate();
+        // Create a Spark session
+        SparkSession spark = SparkSession.builder()
+                .appName("example")
+                .master("local[*]")
+                .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+                .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+                .config("spark.sql.catalog.clickhouse.protocol", "http")
+                .config("spark.sql.catalog.clickhouse.http_port", "8123")
+                .config("spark.sql.catalog.clickhouse.user", "default")
+                .config("spark.sql.catalog.clickhouse.password", "123456")
+                .config("spark.sql.catalog.clickhouse.database", "default")
+                .config("spark.clickhouse.write.format", "json")
+                .getOrCreate();
 
-            // DataFrameのスキーマを定義する
-            StructType schema = new StructType(new StructField[]{
-                    DataTypes.createStructField("id", DataTypes.IntegerType, false),
-                    DataTypes.createStructField("name", DataTypes.StringType, false),
-            });
+        // Define the schema for the DataFrame
+        StructType schema = new StructType(new StructField[]{
+                DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                DataTypes.createStructField("name", DataTypes.StringType, false),
+        });
 
-            List<Row> data = Arrays.asList(
-                    RowFactory.create(1, "Alice"),
-                    RowFactory.create(2, "Bob")
-            );
+        List<Row> data = Arrays.asList(
+                RowFactory.create(1, "Alice"),
+                RowFactory.create(2, "Bob")
+        );
 
-            // DataFrameを作成する
-            Dataset<Row> df = spark.createDataFrame(data, schema);
+        // Create a DataFrame
+        Dataset<Row> df = spark.createDataFrame(data, schema);
 
-            df.writeTo("clickhouse.default.example_table").append();
+        df.writeTo("clickhouse.default.example_table").append();
 
-            spark.stop();
-        }
-    ```
+        spark.stop();
+    }
+```
   </TabItem>
 
   <TabItem value="Scala" label="Scala">
     ```java
-    object NativeSparkWrite extends App {
-      // Sparkセッションを作成する
-      val spark: SparkSession = SparkSession.builder
-        .appName("example")
-        .master("local[*]")
-        .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-        .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-        .config("spark.sql.catalog.clickhouse.protocol", "http")
-        .config("spark.sql.catalog.clickhouse.http_port", "8123")
-        .config("spark.sql.catalog.clickhouse.user", "default")
-        .config("spark.sql.catalog.clickhouse.password", "123456")
-        .config("spark.sql.catalog.clickhouse.database", "default")
-        .config("spark.clickhouse.write.format", "json")
-        .getOrCreate
+object NativeSparkWrite extends App {
+  // Create a Spark session
+  val spark: SparkSession = SparkSession.builder
+    .appName("example")
+    .master("local[*]")
+    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+    .config("spark.sql.catalog.clickhouse.protocol", "http")
+    .config("spark.sql.catalog.clickhouse.http_port", "8123")
+    .config("spark.sql.catalog.clickhouse.user", "default")
+    .config("spark.sql.catalog.clickhouse.password", "123456")
+    .config("spark.sql.catalog.clickhouse.database", "default")
+    .config("spark.clickhouse.write.format", "json")
+    .getOrCreate
 
-      // DataFrameのスキーマを定義する
-      val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+  // Define the schema for the DataFrame
+  val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
-      val schema = List(
-        StructField("id", DataTypes.IntegerType, nullable = false),
-        StructField("name", StringType, nullable = true)
-      )
-      // dfを作成する
-      val df: DataFrame = spark.createDataFrame(
-        spark.sparkContext.parallelize(rows),
-        StructType(schema)
-      )
+  val schema = List(
+    StructField("id", DataTypes.IntegerType, nullable = false),
+    StructField("name", StringType, nullable = true)
+  )
+  // Create the df
+  val df: DataFrame = spark.createDataFrame(
+    spark.sparkContext.parallelize(rows),
+    StructType(schema)
+  )
 
-      df.writeTo("clickhouse.default.example_table").append()
+  df.writeTo("clickhouse.default.example_table").append()
 
-      spark.stop()
-    }
-    ```
+  spark.stop()
+}
+```
   </TabItem>
 
   <TabItem value="Python" label="Python">
     ```python
-    from pyspark.sql import SparkSession
-    from pyspark.sql import Row
+from pyspark.sql import SparkSession
+from pyspark.sql import Row
 
-    # 上記の互換性マトリックスを満たす任意のパッケージの組み合わせを使用できます。
-    packages = [
-        "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
-        "com.clickhouse:clickhouse-client:0.7.0",
-        "com.clickhouse:clickhouse-http-client:0.7.0",
-        "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+# Feel free to use any other packages combination satesfying the compatibility matrix provided above.
+packages = [
+    "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
+    "com.clickhouse:clickhouse-client:0.7.0",
+    "com.clickhouse:clickhouse-http-client:0.7.0",
+    "org.apache.httpcomponents.client5:httpclient5:5.2.1"
 
-    ]
+]
 
-    spark = (SparkSession.builder
-             .config("spark.jars.packages", ",".join(packages))
-             .getOrCreate())
+spark = (SparkSession.builder
+         .config("spark.jars.packages", ",".join(packages))
+         .getOrCreate())
 
-    spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-    spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-    spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
-    spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
-    spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
-    spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
-    spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
-    spark.conf.set("spark.clickhouse.write.format", "json")
+spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
+spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
+spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
+spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+spark.conf.set("spark.clickhouse.write.format", "json")
 
-    # DataFrameを作成
-    data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
-    df = spark.createDataFrame(data)
+# Create DataFrame
+data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+df = spark.createDataFrame(data)
 
-    # DataFrameをClickHouseに書き込む
-    df.writeTo("clickhouse.default.example_table").append()
+# Write DataFrame to ClickHouse
+df.writeTo("clickhouse.default.example_table").append()
 
-    ```
+```
   </TabItem>
 
   <TabItem value="SparkSQL" label="Spark SQL">
     ```sql
-        -- resultTable は clickhouse.default.example_table に挿入したい Spark の中間データフレームです
-       INSERT INTO TABLE clickhouse.default.example_table
-                    SELECT * FROM resultTable;
-                    
-    ```
+    -- resultTable is the Spark intermediate df we want to insert into clickhouse.default.example_table
+   INSERT INTO TABLE clickhouse.default.example_table
+                SELECT * FROM resultTable;
+                
+```
   </TabItem>
 </Tabs>
 
@@ -482,8 +482,8 @@ USE clickhouse;
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,
-  m           INT       NOT NULL COMMENT 'パーティションキー',
-  id          BIGINT    NOT NULL COMMENT 'ソートキー',
+  m           INT       NOT NULL COMMENT 'part key',
+  id          BIGINT    NOT NULL COMMENT 'sort key',
   value       STRING
 ) USING ClickHouse
 PARTITIONED BY (m)

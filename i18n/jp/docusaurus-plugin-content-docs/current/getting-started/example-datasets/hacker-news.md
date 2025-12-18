@@ -36,7 +36,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   clickhouse-local
   ```
 
-  次に、以下のコマンドを実行してデータを探索します。
+  次に、以下のコマンドを実行してデータを探索します:
 
   ```sql title="Query"
   SELECT *
@@ -93,7 +93,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ### スキーマ推論によるデータの読み込み
 
   データ読み込みに最もシンプルかつ強力なツールは`clickhouse-client`です。これは機能豊富なネイティブコマンドラインクライアントです。
-  データを読み込む際は、スキーマ推論を活用し、ClickHouseにカラムの型を判定させることができます。
+  To load data, you can again exploit schema inference, relying on ClickHouse to determine the types of the columns.
 
   以下のコマンドを実行して、テーブルを作成し、リモートCSVファイルから直接データを挿入します。ファイルの内容には[`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url)関数を使用してアクセスします。
   スキーマは自動的に推論されます：
@@ -104,8 +104,8 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
   ```
 
-  これにより、データから推測されたスキーマを使用して空のテーブルが作成されます。
-  [`DESCRIBE TABLE`](/sql-reference/statements/describe-table) コマンドを使用することで、割り当てられた型を確認できます。
+  This creates an empty table using the schema inferred from the data.
+  [`DESCRIBE TABLE`](/sql-reference/statements/describe-table)コマンドを使用することで、割り当てられた型を確認できます。
 
   ```sql title="Query"
   DESCRIBE TABLE hackernews
@@ -143,7 +143,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
 
   ### データを探索する
 
-  以下のクエリを実行して、Hacker Newsのストーリーと特定の列をサンプリングします：
+  以下のクエリを実行して、Hacker Newsのストーリーと特定のカラムをサンプリングします:
 
   ```sql title="Query"
   SELECT
@@ -161,7 +161,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ```
 
   ```response title="Response"
-  行 1:
+  Row 1:
   ──────
   id:    2596866
   title:
@@ -171,20 +171,20 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   url:
   score: 0
 
-  行 2:
+  Row 2:
   ──────
   id:    2596870
-  title: WordPressでユーザーの最終ログイン日時を取得する
+  title: WordPress capture users last login date and time
   type:  story
   by:    wpsnipp
   time:  1306685252
   url:   http://wpsnipp.com/index.php/date/capture-users-last-login-date-and-time/
   score: 1
 
-  行 3:
+  Row 3:
   ──────
   id:    2596872
-  title: 新卒者がスタートアップの知見を得る
+  title: Recent college graduates get some startup wisdom
   type:  story
   by:    whenimgone
   time:  1306685352
@@ -200,7 +200,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   時刻フィールドを`DateTime`型として宣言することに加えて、既存のデータセットを削除した後、以下の各フィールドに適切な型を定義します。
   ClickHouseでは、データのプライマリキーは`ORDER BY`句によって定義されます。
 
-  適切なデータ型を選択し、`ORDER BY`句に含める列を選定することで、クエリ速度と圧縮率を向上させることができます。
+  適切なデータ型を選択し、`ORDER BY`句に含めるカラムを選定することで、クエリ速度と圧縮率を向上させることができます。
 
   以下のクエリを実行して、既存のスキーマを削除し、改善されたスキーマを作成します:
 
@@ -229,8 +229,8 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   ORDER BY id
   ```
 
-  最適化されたスキーマを使用することで、ローカルファイルシステムからデータを挿入できます。
-  再び`clickhouse-client`を使用して、明示的な`INSERT INTO`文と`INFILE`句でファイルを挿入します。
+  最適化されたスキーマを使用することで、ローカルファイルシステムからデータを挿入できるようになります。
+  再び`clickhouse-client`を使用して、明示的な`INSERT INTO`と`INFILE`句でファイルを挿入します。
 
   ```sql title="Query"
   INSERT INTO hackernews FROM INFILE '/data/hacknernews.csv.gz' FORMAT CSVWithNames
@@ -273,7 +273,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   time:        1614699632
   score:       383
   descendants: 134
-  title:       ログストレージと分析におけるElasticsearchの代替としてのClickHouse
+  title:       ClickHouse as an alternative to Elasticsearch for log storage and analysis
   url:         https://pixeljets.com/blog/clickhouse-vs-elasticsearch/
   hn_url:      https://news.ycombinator.com/item?id=26316401
 
@@ -282,7 +282,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   time:        1465985177
   score:       243
   descendants: 70
-  title:       ClickHouse – 高性能オープンソース分散カラム指向DBMS
+  title:       ClickHouse – high-performance open-source distributed column-oriented DBMS
   url:         https://clickhouse.yandex/reference_en.html
   hn_url:      https://news.ycombinator.com/item?id=11908254
 
@@ -291,7 +291,7 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   time:        1578331410
   score:       216
   descendants: 86
-  title:       ClickHouseのコスト効率性の実証: Intel NUCで5000億行を分析
+  title:       ClickHouse cost-efficiency in action: analyzing 500B rows on an Intel NUC
   url:         https://www.altinity.com/blog/2020/1/1/clickhouse-cost-efficiency-in-action-analyzing-500-billion-rows-on-an-intel-nuc
   hn_url:      https://news.ycombinator.com/item?id=21970952
 
@@ -300,12 +300,12 @@ keywords: ['サンプルデータセット', 'Hacker News', 'サンプルデー�
   time:        1622160768
   score:       198
   descendants: 55
-  title:       ClickHouse: オープンソースのカラム指向データベース管理システム
+  title:       ClickHouse: An open-source column-oriented database management system
   url:         https://github.com/ClickHouse/ClickHouse
   hn_url:      https://news.ycombinator.com/item?id=27310247
   ```
 
-  ClickHouseは時間の経過とともにより多くのノイズを生成しているでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を利用できます：
+  ClickHouseは時間の経過とともにより多くの話題を生成しているでしょうか？ここでは、`time`フィールドを`DateTime`として定義することの有用性が示されています。適切なデータ型を使用することで、`toYYYYMM()`関数を利用できます：
 
   ```sql title="Query"
   SELECT

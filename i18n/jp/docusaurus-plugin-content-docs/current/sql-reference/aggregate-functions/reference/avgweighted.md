@@ -13,7 +13,7 @@ doc_type: 'reference'
 **構文**
 
 ```sql
-加重平均(x, weight)
+avgWeighted(x, weight)
 ```
 
 **引数**

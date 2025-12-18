@@ -101,22 +101,22 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 許可
-SELECT * FROM db.my_tables_0 -- 許可
-SELECT * FROM db.my_tables_1 -- 許可
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
 
-SELECT * FROM db.other_table -- 不許可
-SELECT * FROM db2.my_tables -- 不許可
+SELECT * FROM db.other_table -- not_granted
+SELECT * FROM db2.my_tables -- not_granted
 ```
 
 `GRANT SELECT ON db*.* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 許可される
-SELECT * FROM db.my_tables_0 -- 許可される
-SELECT * FROM db.my_tables_1 -- 許可される
-SELECT * FROM db.other_table -- 許可される
-SELECT * FROM db2.my_tables -- 許可される
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
+SELECT * FROM db.other_table -- granted
+SELECT * FROM db2.my_tables -- granted
 ```
 
 権限が付与されたパス内で新しく作成されたすべてのテーブルは、自動的に親に設定されたすべての権限を継承します。
@@ -125,13 +125,13 @@ SELECT * FROM db2.my_tables -- 許可される
 アスタリスク（*）はプレフィックスに対して**のみ**指定できます:
 
 ```sql
-GRANT SELECT ON db.* TO john -- 正しい
-GRANT SELECT ON db*.* TO john -- 正しい
+GRANT SELECT ON db.* TO john -- correct
+GRANT SELECT ON db*.* TO john -- correct
 
-GRANT SELECT ON *.my_table TO john -- 誤り
-GRANT SELECT ON foo*bar TO john -- 誤り
-GRANT SELECT ON *suffix TO john -- 誤り
-GRANT SELECT(foo) ON db.table* TO john -- 誤り
+GRANT SELECT ON *.my_table TO john -- wrong
+GRANT SELECT ON foo*bar TO john -- wrong
+GRANT SELECT ON *suffix TO john -- wrong
+GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
 
 ## 権限 {#privileges}
@@ -491,7 +491,7 @@ GRANT CLUSTER ON *.* TO <username>
 `CLUSTER` 権限を付与せずにクエリ内で `ON CLUSTER` を使用しようとすると、次のエラーが発生します：
 
 ```text
-権限が不足しています。このクエリを実行するには、CLUSTER ON *.* の権限が必要です。 
+Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
 デフォルトの動作は、`config.xml` の `access_control_improvements` セクション内にある `on_cluster_queries_require_cluster_grant` を `false` にすることで変更できます（下記参照）。
@@ -682,13 +682,13 @@ GRANT READ ON S3('regexp_pattern') TO user
 特定の S3 バケットパスへのアクセス権を付与:
 
 ```sql
--- ユーザーに s3://foo/ パスからの読み取りのみを許可
+-- Allow user to read only from s3://foo/ paths
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- ユーザーに特定のファイルパターンからの読み取りを許可
+-- Allow user to read from specific file patterns
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
--- 同じユーザーに複数のフィルターを付与可能
+-- Multiple filters can be granted to the same user
 GRANT READ ON S3('s3://foo/.*') TO john
 GRANT READ ON S3('s3://bar/.*') TO john
 ```
@@ -719,10 +719,10 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 元の権限付与に `WITH GRANT OPTION` が含まれている場合、`GRANT CURRENT GRANTS` を使用して再度付与できます:
 
 ```sql
--- GRANT OPTIONを使用した元の権限付与
+-- Original grant with GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- Johnは他のユーザーにこのアクセス権を再付与できるようになります
+-- John can now regrant this access to others
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 

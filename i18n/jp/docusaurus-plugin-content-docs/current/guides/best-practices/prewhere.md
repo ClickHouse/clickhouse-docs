@@ -123,8 +123,8 @@ SETTINGS optimize_move_to_prewhere = false;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3行のデータセット。経過時間: 0.056秒。処理: 231万行、23.36 MB (4109万行/秒、415.43 MB/秒)
-ピークメモリ使用量: 132.10 MiB。
+3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+Peak memory usage: 132.10 MiB.
 ```
 
 このクエリの実行では、ClickHouse は **23.36 MB** のカラムデータを読み取り、231 万行を処理しました。
@@ -148,8 +148,8 @@ SETTINGS optimize_move_to_prewhere = true;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3行のセット。経過時間: 0.017秒。処理: 231万行、6.74 MB (135.29百万行/秒、394.44 MB/秒)
-ピークメモリ使用量: 132.11 MiB。
+3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+Peak memory usage: 132.11 MiB.
 ```
 
 処理された行数は同じ（231万行）ですが、PREWHERE のおかげで ClickHouse が読み取る列データ量は 23.36 MB からわずか 6.74 MB へと 3 倍以上削減され、その結果、総実行時間も 3 分の 1 に短縮されました。
@@ -158,7 +158,7 @@ ClickHouse が内部で PREWHERE をどのように適用しているかをよ�
 
 [EXPLAIN](/sql-reference/statements/explain#explain-plan) 句を使って、クエリの論理プランを調べます：
 
-```sql
+```sql 
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -170,8 +170,8 @@ WHERE
 
 ```txt
 ...
-Prewhere情報                                                                                                                                                                                                                                          
-  Prewhereフィルター列: 
+Prewhere info                                                                                                                                                                                                                                          
+  Prewhere filter column: 
     and(greater(__table1.date, '2024-12-31'_String), 
     less(__table1.price, 10000_UInt16), 
     equals(__table1.town, 'LONDON'_String)) 

@@ -37,7 +37,7 @@ doc_type: 'guide'
 `format_template_row` 设置指定包含行格式字符串的文件路径，该文件中行格式字符串的语法如下：
 
 ```text
-分隔符_1${列_1:序列化为_1}分隔符_2${列_2:序列化为_2} ... 分隔符_N
+delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... delimiter_N
 ```
 
 其中：
@@ -65,7 +65,7 @@ doc_type: 'guide'
 下面通过一个示例来说明。给定如下格式字符串：
 
 ```text
-搜索词组:${s:Quoted},数量:${c:Escaped},广告价格:$$${p:JSON};
+Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 ```
 
 以下值将在列标记 `Search phrase:`、`, count:`、`, ad price: $` 和分隔符 `;` 之间依次被输出（如果使用 `SELECT`）或被期望作为输入提供（如果使用 `INPUT`）：
@@ -80,7 +80,7 @@ doc_type: 'guide'
 * 如果执行 `SELECT`，在值 `bathroom interior design`、`2166`、`$3` 已经存储在表的 `Search phrase`、`count`、`ad price` 列中的前提下，下方这一行就是输出结果。
 
 ```yaml
-搜索词组：'bathroom interior design'，数量：2166，广告价格：$3;
+Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
 ### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
@@ -140,16 +140,16 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```text title="/some/path/resultset.format"
 <!DOCTYPE HTML>
-<html> <head> <title>搜索词组</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>搜索词组</caption>
-    <tr> <th>搜索词组</th> <th>次数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     ${data}
   </table>
-  <table border="1"> <caption>最大值</caption>
+  <table border="1"> <caption>Max</caption>
     ${max}
   </table>
-  <b>已处理 ${rows_read:XML} 行，耗时 ${time:XML} 秒</b>
+  <b>Processed ${rows_read:XML} rows in ${time:XML} sec</b>
  </body>
 </html>
 ```
@@ -162,20 +162,20 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```html
 <!DOCTYPE HTML>
-<html> <head> <title>搜索词组</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>搜索词组</caption>
-    <tr> <th>搜索词组</th> <th>次数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     <tr> <td></td> <td>8267016</td> </tr>
     <tr> <td>bathroom interior design</td> <td>2166</td> </tr>
     <tr> <td>clickhouse</td> <td>1655</td> </tr>
     <tr> <td>spring 2014 fashion</td> <td>1549</td> </tr>
     <tr> <td>freeform photos</td> <td>1480</td> </tr>
   </table>
-  <table border="1"> <caption>最大值</caption>
+  <table border="1"> <caption>Max</caption>
     <tr> <td></td> <td>8873898</td> </tr>
   </table>
-  <b>已处理 3095973 行，耗时 0.1569913 秒</b>
+  <b>Processed 3095973 rows in 0.1569913 sec</b>
  </body>
 </html>
 ```
@@ -183,10 +183,10 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 ### 写入数据 {#inserting-data}
 
 ```text
-某个标题
-页面浏览量:5,用户 ID:4324182021466249494,无用字段:hello,持续时间:146,符号:-1
-页面浏览量:6,用户 ID:4324182021466249494,无用字段:world,持续时间:185,符号:1
-总行数:2
+Some header
+Page views: 5, User id: 4324182021466249494, Useless field: hello, Duration: 146, Sign: -1
+Page views: 6, User id: 4324182021466249494, Useless field: world, Duration: 185, Sign: 1
+Total rows: 2
 ```
 
 ```sql
@@ -196,11 +196,11 @@ FORMAT Template
 ```
 
 ```text title="/some/path/resultset.format"
-标题\n${data}\n总行数：${:CSV}\n
+Some header\n${data}\nTotal rows: ${:CSV}\n
 ```
 
 ```text title="/some/path/row.format"
-页面浏览量: ${PageViews:CSV}, 用户 ID: ${UserID:CSV}, 无用字段: ${:CSV}, 持续时间: ${Duration:CSV}, 签名: ${Sign:CSV}
+Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Duration: ${Duration:CSV}, Sign: ${Sign:CSV}
 ```
 
 占位符中的 `PageViews`、`UserID`、`Duration` 和 `Sign` 是表中的列名。行中 `Useless field` 之后的值，以及后缀中 `\nTotal rows:` 之后的值将被忽略。
@@ -223,13 +223,13 @@ SELECT * FROM formats
 FORMAT Template
 SETTINGS
  format_template_row_format='|`${0:XML}`|',
- format_template_resultset_format='|ClickHouse 格式|\n|---|\n${data}\n'
+ format_template_resultset_format='|ClickHouse Formats|\n|---|\n${data}\n'
 ```
 
 看看这个！我们不必再为构建那个 Markdown 表格而手动添加那些 `|` 和 `-` 了：
 
 ```response title="Response"
-|ClickHouse 格式|
+|ClickHouse Formats|
 |---|
 |`BSONEachRow`|
 |`CustomSeparatedWithNames`|

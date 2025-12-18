@@ -97,7 +97,7 @@ ClickHouse предоставляет интеграционные движки 
 #### Создайте целевую базу данных: {#create-the-destination-database}
 
 ```sql
-  CREATE DATABASE db
+CREATE DATABASE db
 ```
 
 #### Создайте таблицу-назначение с такой же схемой, как у таблицы MySQL: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
@@ -137,5 +137,5 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 #### Создайте целевую базу данных: {#create-the-destination-database-1}
 
 ```sql
-  CREATE DATABASE db
+CREATE DATABASE db
 ```

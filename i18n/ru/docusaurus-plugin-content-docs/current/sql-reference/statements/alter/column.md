@@ -91,7 +91,7 @@ ALTER TABLE visits DROP COLUMN browser
 ## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ {#rename-column}
 
 ```sql
-RENAME COLUMN [IF EXISTS] имя_столбца TO новое_имя
+RENAME COLUMN [IF EXISTS] name to new_name
 ```
 
 Переименовывает столбец `name` в `new_name`. Если указано предложение `IF EXISTS`, запрос не вернёт ошибку, даже если столбец не существует. Поскольку переименование не затрагивает исходные данные, запрос выполняется практически мгновенно.
@@ -107,7 +107,7 @@ ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ## ОЧИСТИТЬ СТОЛБЕЦ {#clear-column}
 
 ```sql
-CLEAR COLUMN [IF EXISTS] имя IN PARTITION имя_раздела
+CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ```
 
 Сбрасывает все данные в столбце для указанной партиции. Подробнее о задании имени партиции см. в разделе [How to set the partition expression](../alter/partition.md/#how-to-set-partition-expression).
@@ -123,7 +123,7 @@ ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ## Столбец COMMENT {#comment-column}
 
 ```sql
-COMMENT COLUMN [IF EXISTS] имя 'Текстовый комментарий'
+COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```
 
 Добавляет комментарий к столбцу. Если указана клауза `IF EXISTS`, запрос не вернёт ошибку, если столбец отсутствует.
@@ -135,7 +135,7 @@ COMMENT COLUMN [IF EXISTS] имя 'Текстовый комментарий'
 Пример:
 
 ```sql
-ALTER TABLE visits COMMENT COLUMN browser 'В этом столбце указан браузер, используемый для доступа к сайту.'
+ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
 
 ## ИЗМЕНЕНИЕ СТОЛБЦА {#modify-column}
@@ -224,7 +224,7 @@ DESCRIBE users;
 Синтаксис:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца REMOVE свойство;
+ALTER TABLE table_name MODIFY COLUMN column_name REMOVE property;
 ```
 
 **Пример**
@@ -264,7 +264,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 Синтаксис:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETTING имя,...;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ```
 
 **Пример**
@@ -272,7 +272,7 @@ ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETT
 Сбросьте настройку столбца `max_compress_block_size` к значению по умолчанию:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETTING max_compress_block_size;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
 
 ## MATERIALIZE COLUMN {#materialize-column}

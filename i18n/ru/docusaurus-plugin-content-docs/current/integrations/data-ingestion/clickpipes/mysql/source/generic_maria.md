@@ -22,12 +22,12 @@ keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', '
 Чтобы включить бинарное логирование на вашем экземпляре сервера MariaDB, убедитесь, что настроены следующие параметры:
 
 ```sql
-server_id = 1               -- или больше; любое значение, кроме 0
+server_id = 1               -- or greater; anything but 0
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  -- добавлен в версии 10.5.0
-expire_logs_days = 1        -- или больше; 0 означает, что журналы хранятся бессрочно
+binlog_row_metadata = FULL  -- introduced in 10.5.0
+expire_logs_days = 1        -- or higher; 0 would mean logs are preserved forever
 ```
 
 Чтобы проверить эти настройки, выполните следующие SQL-запросы:
@@ -49,7 +49,7 @@ server_id = 1
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  ; только в версиях 10.5.0 и новее
+binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 

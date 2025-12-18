@@ -23,6 +23,7 @@ import TabItem from '@theme/TabItem';
 [「Playground の仕様」](/getting-started/playground#specifications) を参照してください。
 :::
 
+
 ## trips テーブルを作成する {#create-the-table-trips}
 
 まずはタクシー乗車データ用のテーブルを作成します。
@@ -125,7 +126,7 @@ FROM gcs(
 
 ## サンプルクエリ {#sample-queries}
 
-以下のクエリは、前述のサンプルに対して実行されます。ユーザーは、以下のクエリを修正してテーブル `nyc_taxi.trips` を使用することで、完全なデータセットに対してサンプルクエリを [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上で実行できます。
+以下のクエリは、前述のサンプルに対して実行されます。以下のクエリを修正してテーブル `nyc_taxi.trips` を使用することで、完全なデータセットに対してサンプルクエリを [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) 上で実行できます。
 
 挿入された行数を確認してみましょう。
 
@@ -134,7 +135,7 @@ SELECT count()
 FROM nyc_taxi.trips_small;
 ```
 
-各 TSV ファイルには約 100 万行が含まれており、3 つのファイルの合計は 3,000,317 行です。いくつか行を見てみましょう。
+各 TSV ファイルには約 100 万行が含まれており、3 つのファイルの合計は 3,000,317 行です。いくつかの行を見てみましょう。
 
 ```sql runnable
 SELECT *
@@ -167,7 +168,7 @@ WHERE passenger_count < 10
 GROUP BY passenger_count;
 ```
 
-乗客数と移動距離の相関は次のとおりです。
+乗客数と移動距離の関係は次のとおりです。
 
 ```sql runnable chart_config='eyJ0eXBlIjoiaG9yaXpvbnRhbCBiYXIiLCJjb25maWciOnsieGF4aXMiOiJwYXNzZW5nZXJfY291bnQiLCJ5YXhpcyI6ImRpc3RhbmNlIiwic2VyaWVzIjoiY291bnRyeSIsInRpdGxlIjoiQXZnIGZhcmUgYnkgcGFzc2VuZ2VyIGNvdW50In19'
 SELECT
@@ -178,6 +179,7 @@ FROM nyc_taxi.trips_small
 GROUP BY passenger_count
 ORDER BY passenger_count ASC
 ```
+
 
 ## 準備済みパーティションのダウンロード {#download-of-prepared-partitions}
 

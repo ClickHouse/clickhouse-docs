@@ -322,7 +322,7 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 1. │ 329044175 │ -- 约 3.29 亿
    └───────────┘
 
-````
+```
 
 该表包含 3.2904 亿行数据,因此每个查询都会执行全表扫描。
 
@@ -356,7 +356,7 @@ Query id: f35c412a-edda-4089-914b-fa1622d69868
 4. │       Filter (WHERE)                                │
 5. │         ReadFromMergeTree (nyc_taxi.trips_small_inferred) │
    └─────────────────────────────────────────────────────┘
-````
+```
 
 输出结果一目了然。查询首先从 `nyc_taxi.trips_small_inferred` 表中读取数据，然后应用 WHERE 子句，基于计算值对行进行过滤。过滤后的数据被准备好用于聚合，并计算分位数。最后，对结果进行排序并输出。 
 
@@ -431,7 +431,7 @@ _最后，要留意离群值；某条查询偶尔运行缓慢是很常见的情�
 执行一条用于统计 NULL 值行数的 SQL 查询，可以很容易找出表中哪些列实际上需要使用 Nullable 类型。
 
 ```sql
--- 查找非空值列
+-- Find non-null values columns
 SELECT
     countIf(vendor_id IS NULL) AS vendor_id_nulls,
     countIf(pickup_datetime IS NULL) AS pickup_datetime_nulls,
@@ -449,9 +449,9 @@ SELECT
 FROM trips_small_inferred
 FORMAT VERTICAL
 
-查询 ID: 4a70fc5b-2501-41c8-813c-45ce241d85ae
+Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
-第 1 行:
+Row 1:
 ──────
 vendor_id_nulls:           0
 pickup_datetime_nulls:     0
@@ -479,7 +479,7 @@ dropoff_location_id_nulls: 0
 你可以使用下面的 SQL 查询来查找唯一值数量较少的列。
 
 ```sql
--- 识别低基数列
+-- Identify low cardinality columns
 SELECT
     uniq(ratecode_id),
     uniq(pickup_location_id),
@@ -488,9 +488,9 @@ SELECT
 FROM trips_small_inferred
 FORMAT VERTICAL
 
-查询 ID: d502c6a1-c9bc-4415-9d86-5de74dd6d932
+Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
-第 1 行:
+Row 1:
 ──────
 uniq(ratecode_id):         6
 uniq(pickup_location_id):  260
@@ -507,7 +507,7 @@ ClickHouse 支持大量数据类型。请务必在满足用例需求的前提下
 对于数值类型，你可以检查数据集中的最小值和最大值，以确认当前的精度是否符合数据集的实际取值范围。
 
 ```sql
--- 查找 payment_type 字段的最小值和最大值
+-- Find min/max values for the payment_type field
 SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
@@ -527,7 +527,7 @@ Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 让我们创建一个新表来使用优化后的 schema，并重新摄取这些数据。
 
 ```sql
--- 创建优化后的数据表
+-- Create table with optimized data
 CREATE TABLE trips_small_no_pk
 (
     `vendor_id` LowCardinality(String),
@@ -548,7 +548,7 @@ CREATE TABLE trips_small_no_pk
 )
 ORDER BY tuple();
 
--- 插入数据
+-- Insert the data
 INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 ```
 
@@ -577,7 +577,7 @@ GROUP BY
     `table`
 ORDER BY size DESC
 
-查询 ID: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
+Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
    ┌─table────────────────┬─compressed─┬─uncompressed─┬──────rows─┐
 1. │ trips_small_inferred │ 7.38 GiB   │ 37.41 GiB    │ 329044175 │
@@ -636,7 +636,7 @@ CREATE TABLE trips_small_pk
 )
 PRIMARY KEY (passenger_count, pickup_datetime, dropoff_datetime);
 
--- 插入数据
+-- Insert the data
 INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
 ```
 

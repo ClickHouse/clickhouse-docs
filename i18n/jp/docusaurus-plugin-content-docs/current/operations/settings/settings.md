@@ -1046,6 +1046,36 @@ true の場合、論理更新を表すパッチパーツが SELECT 時に適用�
 
 Join モードでパッチパーツを適用する際に使用する一時キャッシュのバケット数。
 
+## apply_prewhere_after_final {#apply_prewhere_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定。有効にすると、PREWHERE 条件は FINAL 処理の後に適用されます。"}]}]}/>
+
+有効にすると、PREWHERE 条件は ReplacingMergeTree および類似のエンジンに対して、FINAL 処理の後に適用されます。
+これは、PREWHERE が重複した行間で値が異なる可能性のあるカラムを参照しており、
+フィルタ処理の前に FINAL で「勝ち」行を選択させたい場合に有用です。無効にした場合、PREWHERE は読み取り中に適用されます。
+注意: apply_row_level_security_after_final が有効で、かつ ROW POLICY がソートキー以外のカラムを使用している場合は、
+正しい実行順序を維持するために PREWHERE も遅延されます（ROW POLICY は PREWHERE より前に適用される必要があります）。
+
+## apply_row_policy_after_final {#apply_row_policy_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+
+有効にすると、ROW POLICY および PREWHERE は *MergeTree テーブルに対する FINAL 処理の後に適用されます（特に ReplacingMergeTree に対して有効です）。
+無効にすると、ROW POLICY および PREWHERE は FINAL の前に適用されます。このとき、ReplacingMergeTree などのエンジンで重複排除に使われるべき行を
+ROW POLICY がフィルタリングしてしまうと、結果が異なる可能性があります。
+
+ROW POLICY の式が ORDER BY のカラムのみに依存している場合、最適化のため引き続き FINAL の前に適用されます。
+このようなフィルタリングは重複排除の結果に影響を与えないためです。
+
+取りうる値:
+
+- 0 — ROW POLICY および PREWHERE は FINAL の前に適用されます（デフォルト）。
+- 1 — ROW POLICY および PREWHERE は FINAL の後に適用されます。
+
 ## apply_settings_from_server {#apply_settings_from_server} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1191,6 +1221,24 @@ true に設定すると、非同期挿入に対して適応的なビジータイ
 リモートクエリの実行時に、ソケットからの非同期読み取りを有効にします。
 
 デフォルトで有効です。
+
+## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+`automatic_parallel_replicas_mode`=1 の場合にのみ適用される、自動的に並列レプリカを有効化するためのレプリカごとの読み取りバイト数のしきい値です。0 はしきい値なしを意味します。
+
+## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+🚨 非常に実験的な機能です 🚨
+収集された統計に基づき、並列レプリカでの実行への自動切り替えを有効にします。`parallel_replicas_local_plan` を有効にし、`cluster_for_parallel_replicas` を指定する必要があります。
+0 - 無効、1 - 有効、2 - 統計の収集のみを有効化（並列レプリカでの実行への切り替えは無効）。
 
 ## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
 
@@ -1600,7 +1648,7 @@ IPv4 型および IPv6 型への CAST 演算子による変換と、toIPv4 / toI
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-[CAST](/sql-reference/functions/type-conversion-functions#cast) 操作において `Nullable` データ型を保持するかどうかを切り替えます。
+[CAST](/sql-reference/functions/type-conversion-functions#CAST) 操作において `Nullable` データ型を保持するかどうかを切り替えます。
 
 この設定が有効で、`CAST` 関数の引数が `Nullable` の場合、結果も `Nullable` 型に変換されます。設定が無効な場合、結果は常に指定された変換先の型とまったく同じ型になります。
 
@@ -1626,7 +1674,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 └───┴───────────────────────────────────────────────────┘
 ```
 
-次のクエリにより、出力先のデータ型に `Nullable` 修飾が付与されます。
+次のクエリでは、結果の変換先データ型に `Nullable` 修飾が付きます。
 
 ```sql
 SET cast_keep_nullable = 1;
@@ -1643,7 +1691,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 **関連項目**
 
-* [CAST](/sql-reference/functions/type-conversion-functions#cast) 関数
+* [CAST](/sql-reference/functions/type-conversion-functions#CAST) 関数
 
 
 ## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
@@ -1660,7 +1708,7 @@ String からのキャスト時に、日付と時刻のテキスト表現を解�
 
     ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` と、すべての [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) の日付および時刻形式をパースできます。例えば、`'2018-06-08T01:02:03.000Z'` などです。
 
-- `'best_effort_us'` — `best_effort` と同様です（違いについては [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus) を参照）。
+- `'best_effort_us'` — `best_effort` と同様です（違いについては [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) を参照）。
 
 - `'basic'` — 基本パーサーを使用します。
 
@@ -3387,6 +3435,23 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 ```
 
 
+## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}]}/>
+
+PROJECTION 定義で位置引数をサポートするかどうかを制御します。[enable_positional_arguments](#enable_positional_arguments) 設定も参照してください。
+
+:::note
+これは上級者向けの設定です。ClickHouse を使い始めたばかりの場合は変更しないでください。
+:::
+
+Possible values:
+
+- 0 — 位置引数はサポートされません。
+- 1 — 位置引数がサポートされます。カラム名の代わりにカラム番号を使用できます。
+
 ## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3909,7 +3974,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -3933,7 +3998,7 @@ SHOW CREATE TABLE t_nest;
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-│
+SETTINGS index_granularity = 8192 │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -5053,6 +5118,20 @@ ClickHouse は次の状況で例外をスローします:
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
+## insert_select_deduplicate {#insert_select_deduplicate} 
+
+<SettingsInfoBlock type="BoolAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+`INSERT SELECT`（Replicated\* テーブル向け）のブロック重複排除を有効または無効にします。
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
+この設定には次の 3 つの値を指定できます。
+
+- 0 — `INSERT SELECT` クエリに対する重複排除を無効にします。
+- 1 — `INSERT SELECT` クエリに対する重複排除を有効にします。`SELECT` の結果が安定（決定的）でない場合は、例外がスローされます。
+- auto — `insert_deduplicate` が有効で、かつ `SELECT` の結果が安定（決定的）している場合に重複排除を有効にし、それ以外の場合は無効にします。
+
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5174,9 +5253,12 @@ Grace join の第 1 フェーズでは、右側のテーブルを読み取り、
 
 - direct
 
-このアルゴリズムは、右側のテーブルのストレージがキー・バリュー型の問い合わせをサポートしている場合に適用できます。
+`direct` (nested loop とも呼ばれます) アルゴリズムは、左側テーブルの行をキーとして使用し、右側テーブルをルックアップします。
+これは [Dictionary](/engines/table-engines/special/dictionary)、[EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md)、および [MergeTree](/engines/table-engines/mergetree-family/mergetree) テーブルなどの専用ストレージでサポートされます。
 
-`direct` アルゴリズムは、左側テーブルの行をキーとして右側テーブルをルックアップします。[Dictionary](/engines/table-engines/special/dictionary) や [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) のような専用ストレージでのみサポートされ、`LEFT` および `INNER` JOIN のみが対象です。
+MergeTree テーブルに対しては、このアルゴリズムは結合キーのフィルタをストレージレイヤーに直接プッシュダウンします。キーがテーブルの primary key 索引を用いたルックアップに利用できる場合はより効率的ですが、そうでない場合は左側テーブルの各ブロックに対して右側テーブルをフルスキャンします。
+
+`INNER` および `LEFT` JOIN をサポートし、他の条件を伴わない単一カラムの等値結合キーのみをサポートします。
 
 - auto
 
@@ -6916,6 +6998,14 @@ ORDER BY 演算で処理する必要がある行数が指定した値を超え�
 
 結合を行う前に、すべてのハッシュテーブルで事前に領域を確保できる要素数の合計上限。
 
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "ファイル処理における *Cluster テーブル関数でのストリーム数を制限する新しい設定を追加"}]}]}/>
+
+ゼロ以外の値に設定されている場合、*Cluster テーブル関数でファイルからデータを読み取るスレッド数を制限します。
+
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8518,6 +8608,14 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 
 true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます。
 
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "parallel replicas で materialized view を使用できるようにする"}]}]}/>
+
+parallel replicas で materialized view を使用できるようにする
+
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
 <BetaBadge/>
@@ -9615,8 +9713,6 @@ Only takes effect if setting [`query_plan_enable_optimizations`](#query_plan_ena
 
 - タイマーを無効化する場合は 0 を指定します。
 
-**ClickHouse Cloud では一時的に無効化されています。**
-
 関連項目:
 
 - システムテーブル [trace_log](/operations/system-tables/trace_log)
@@ -9637,8 +9733,6 @@ Only takes effect if setting [`query_plan_enable_optimizations`](#query_plan_ena
             - 1000000000（1 秒に 1 回）: クラスター全体のプロファイリング向け。
 
 - 0: タイマーを無効にします。
-
-**ClickHouse Cloud では一時的に無効化されています。**
 
 関連項目:
 

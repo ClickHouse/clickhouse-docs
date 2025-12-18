@@ -16,7 +16,7 @@ ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账
 本指南演示如何将完整和增量备份写入 AWS、GCP、Azure 对象存储，以及如何从这些备份中进行恢复。
 
 :::note
-用户需要注意，如果备份被导出到同一云服务提供商的其他区域，将会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
+凡是将备份导出到同一云服务提供商的其他区域的用法，都会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
 :::
 
 

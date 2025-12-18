@@ -372,6 +372,7 @@ helm install my-clickstack clickstack/clickstack \
   --set "otel.env[0].value=--feature-gates=clickhouse.json"
 ```
 
+
 ## См. также {#related-documentation}
 
 ### Руководства по развертыванию {#deployment-guides}

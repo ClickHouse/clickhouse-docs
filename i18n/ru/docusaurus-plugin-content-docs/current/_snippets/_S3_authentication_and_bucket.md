@@ -133,7 +133,6 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
    :::
 3. Оставьте параметр `Block all Public Access` включённым; публичный доступ не требуется.
 
-
 <Image
   size='md'
   img={s3_a}
@@ -216,10 +215,10 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   "Id": "Policy123456",
   "Statement": [
     {
-      "Sid": "abc123",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::921234567898:user/mars-s3-user"
+      "Sid" : "abc123",
+      "Effect" : "Allow",
+      "Principal" : {
+        "AWS" : "arn:aws:iam::921234567898:user/mars-s3-user"
       },
       "Action": "s3:*",
       "Resource": ["arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*"]
@@ -227,8 +226,6 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
   ]
 }
 ```
-
-```response
 |Параметр | Описание | Пример значения |
 |----------|-------------|----------------|
 |Version | Версия интерпретатора политики, оставьте без изменений | 2012-10-17 |
@@ -237,7 +234,6 @@ import s3_h from "@site/static/images/_snippets/s3/s3-h.png"
 |Principal | Учетные записи или пользователи, которым будет предоставлен доступ | arn:aws:iam::921234567898:user/mars-s3-user |
 |Action | Какие операции разрешены для корзины| s3:*|
 |Resource | Для каких ресурсов в корзине будут разрешены операции | "arn:aws:s3:::mars-doc-test", "arn:aws:s3:::mars-doc-test/*" |
-```
 
 :::note
 Рекомендуется согласовать используемые разрешения с вашей командой безопасности; приведенные настройки можно использовать в качестве отправной точки.

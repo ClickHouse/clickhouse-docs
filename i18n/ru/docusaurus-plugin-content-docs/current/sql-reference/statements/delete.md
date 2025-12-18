@@ -19,7 +19,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [IN PARTITION partition_expr] WHERE 
 ## Примеры {#examples}
 
 ```sql
--- Удаляет все строки из таблицы `hits`, где столбец `Title` содержит текст `hello`
+-- Deletes all rows from the `hits` table where the `Title` column contains the text `hello`
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
@@ -61,7 +61,7 @@ DELETE FROM hits WHERE Title LIKE '%hello%';
 Для выполнения `DELETE` требуется привилегия `ALTER DELETE`. Чтобы разрешить выполнение операторов `DELETE` для определённой таблицы и пользователя, выполните следующую команду:
 
 ```sql
-GRANT ALTER DELETE ON db.table TO username;
+GRANT ALTER DELETE ON db.table to username;
 ```
 
 ## Как легковесные операции DELETE работают внутри ClickHouse {#how-lightweight-deletes-work-internally-in-clickhouse}

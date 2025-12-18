@@ -83,37 +83,37 @@ SELECT * FROM test;
 
 SELECT argMin(a,b), argAndMin(a, b), min(b) FROM test;
 ┌─argMin(a, b)─┬─argAndMin(a, b)─┬─min(b)─┐
-│ a            │ ('a',1)         │      0 │ -- argMin = a,因为它是第一个非 `NULL` 值,而 min(b) 来自另一行!
+│ a            │ ('a',1)         │      0 │ -- argMin = a because it's the first not `NULL` value, min(b) is from another row!
 └──────────────┴─────────────────┴────────┘
 
 SELECT argAndMin(tuple(a), b) FROM test;
 ┌─argAndMin((a), b)─┐
-│ ((NULL),0)        │ -- 'a' `Tuple` 仅包含一个 `NULL` 值,但其本身不是 `NULL`,因此聚合函数不会因该 `NULL` 值而跳过该行
+│ ((NULL),0)        │ -- The 'a' `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └───────────────────┘
 
 SELECT (argAndMin((a, b), b) as t).1 argMinA, t.2 argMinB from test;
 ┌─argMinA──┬─argMinB─┐
-│ (NULL,0) │       0 │ -- 可以使用 `Tuple` 获取对应 min(b) 的两列(全部列 - tuple(*))
+│ (NULL,0) │       0 │ -- you can use `Tuple` and get both (all - tuple(*)) columns for the according min(b)
 └──────────┴─────────┘
 
 SELECT argAndMin(a, b), min(b) FROM test WHERE a IS NULL and b IS NULL;
 ┌─argAndMin(a, b)─┬─min(b)─┐
-│ ('',0)          │   ᴺᵁᴸᴸ │ -- 由于过滤条件,所有聚合行至少包含一个 `NULL` 值,因此所有行都被跳过,结果为 `NULL`
+│ ('',0)          │   ᴺᵁᴸᴸ │ -- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └─────────────────┴────────┘
 
 SELECT argAndMin(a, (b, a)), min(tuple(b, a)) FROM test;
 ┌─argAndMin(a, (b, a))─┬─min((b, a))─┐
-│ ('a',(1,'a'))        │ (0,NULL)    │ -- 'a' 是 min 对应的第一个非 `NULL` 值
+│ ('a',(1,'a'))        │ (0,NULL)    │ -- 'a' is the first not `NULL` value for the min
 └──────────────────────┴─────────────┘
 
 SELECT argAndMin((a, b), (b, a)), min(tuple(b, a)) FROM test;
 ┌─argAndMin((a, b), (b, a))─┬─min((b, a))─┐
-│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin 在此返回 ((NULL,0),(0,NULL)),因为 `Tuple` 允许不跳过 `NULL` 值,此时 min(tuple(b, a)) 是该数据集的最小值
+│ ((NULL,0),(0,NULL))       │ (0,NULL)    │ -- argAndMin returns ((NULL,0),(0,NULL)) here because `Tuple` allows to don't skip `NULL` and min(tuple(b, a)) in this case is minimal value for this dataset
 └───────────────────────────┴─────────────┘
 
 SELECT argAndMin(a, tuple(b)) FROM test;
 ┌─argAndMin(a, (b))─┐
-│ ('a',(1))         │ -- 可在 `min` 中使用 `Tuple` 以不跳过 b 为 `NULL` 值的行。
+│ ('a',(1))         │ -- `Tuple` can be used in `min` to not skip rows with `NULL` values as b.
 └───────────────────┘
 ```
 

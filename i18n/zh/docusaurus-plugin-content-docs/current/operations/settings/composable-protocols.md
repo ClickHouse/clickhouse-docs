@@ -31,7 +31,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 ```xml
 <protocols>
 
-  <!-- plain_http 模块 -->
+  <!-- plain_http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
@@ -87,12 +87,12 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 ```xml
 <protocols>
 
-  <!-- http 模块 -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- https 模块,配置为在 plain_http 模块之上的 TLS 层 -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>

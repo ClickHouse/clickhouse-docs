@@ -182,7 +182,7 @@ FROM Python(df)
 ```
 
 ```text
-   лучшийПоказатель    датаЛучшего  худшийПоказатель   датаХудшего
+   bestRatio    bestDate  worstRatio   worstDate
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 

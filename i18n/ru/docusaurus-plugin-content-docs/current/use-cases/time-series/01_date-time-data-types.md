@@ -39,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-Мы можем использовать функцию [`now()`](/sql-reference/functions/date-time-functions#now) для получения текущего времени и [`now64()`](/sql-reference/functions/date-time-functions#now64), чтобы получить его с заданной точностью, переданной первым аргументом.
+Мы можем использовать функцию [`now()`](/sql-reference/functions/date-time-functions#now) для получения текущего времени и [`now64()`](/sql-reference/functions/date-time-functions#now64) — для получения значения с заданной точностью, определяемой первым аргументом.
 
 ```sql
 INSERT INTO dates 
@@ -50,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-Это заполнит столбцы значениями времени в зависимости от их типа:
+Это заполнит столбцы временными значениями в соответствии с их типом:
 
 ```sql
 SELECT * FROM dates

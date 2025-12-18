@@ -71,18 +71,18 @@ ClickHouse 的集群发现（Cluster Discovery）功能通过允许节点在无�
         <discovery>
             <path>/clickhouse/discovery/cluster_name</path>
 
-            <!-- # 可选配置参数： -->
+            <!-- # Optional configuration parameters: -->
 
-            <!-- ## 用于访问集群中其他节点的身份验证凭据： -->
+            <!-- ## Authentication credentials to access all other nodes in cluster: -->
             <!-- <user>user1</user> -->
             <!-- <password>pass123</password> -->
-            <!-- ### 也可使用服务器间密钥代替密码： -->
+            <!-- ### Alternatively to password, interserver secret may be used: -->
             <!-- <secret>secret123</secret> -->
 
-            <!-- ## 当前节点的分片（见下文）： -->
+            <!-- ## Shard for current node (see below): -->
             <!-- <shard>1</shard> -->
 
-            <!-- ## 观察者模式（见下文）： -->
+            <!-- ## Observer mode (see below): -->
             <!-- <observer/> -->
         </discovery>
     </cluster_name>
@@ -215,6 +215,12 @@ INSERT INTO event_table ...
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
+
+┌─hostname()───┬─database─┬─table───────┐
+│ a6a68731c21b │ default  │ event_table │
+│ 92d3c04025e8 │ default  │ event_table │
+│ 8e62b9cb17a1 │ default  │ event_table │
+└──────────────┴──────────┴─────────────┘
 ```
 
 ┌─hostname()───┬─database─┬─table───────┐

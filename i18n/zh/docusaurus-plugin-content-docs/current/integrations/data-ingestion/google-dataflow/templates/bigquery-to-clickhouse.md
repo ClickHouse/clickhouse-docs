@@ -2,7 +2,7 @@
 sidebar_label: 'BigQuery 到 ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
-description: '用户可以使用 Google Dataflow 模板将 BigQuery 的数据摄取到 ClickHouse'
+description: '您可以使用 Google Dataflow 模板将 BigQuery 的数据摄取到 ClickHouse'
 title: 'Dataflow BigQuery 到 ClickHouse 模板'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
@@ -17,6 +17,7 @@ import dataflow_template_initial_form from '@site/static/images/integrations/dat
 import dataflow_extended_template_form from '@site/static/images/integrations/data-ingestion/google-dataflow/extended_template_form.png'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
 
 # Dataflow BigQuery 到 ClickHouse 模板 {#dataflow-bigquery-to-clickhouse-template}
 
@@ -34,6 +35,7 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 ## 模板参数 {#template-parameters}
 
 <br/>
+
 <br/>
 
 | 参数名称                | 参数说明                                                                                                                                                                                                                                                                                                                                            | 是否必填 | 备注                                                                                                                                                                                                                                                            |
@@ -56,7 +58,7 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 | `KMSEncryptionKey`      | 当使用 query 作为数据源从 BigQuery 读取时，使用此 Cloud KMS 密钥对创建的任何临时表进行加密。例如：`projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`。                                                                                                                     |          |                                                                                                                                                                                                                                                                  |
 
 :::note
-所有 `ClickHouseIO` 参数的默认值可以在 [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) 中找到。
+所有 `ClickHouseIO` 参数的默认值可在 [`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) 中找到。
 :::
 
 ## 源表与目标表的模式 {#source-and-target-tables-schema}
@@ -69,7 +71,7 @@ BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表�
 <br/>
 
 :::important
-因此，你的 BigQuery 数据集（无论是表还是查询）必须与 ClickHouse 目标表具有完全相同的列名。
+因此，BigQuery 数据集（无论是表还是查询）中的列名必须与 ClickHouse 目标表完全相同。
 :::
 
 ## 数据类型映射 {#data-types-mapping}
@@ -172,7 +174,11 @@ job:
 
 在 Google Cloud 控制台中导航到 [Dataflow Jobs 选项卡](https://console.cloud.google.com/dataflow/jobs)，以监控作业状态。你可以查看作业详情，包括进度和任何错误信息：
 
-<Image img={dataflow_inqueue_job} size="lg" border alt="DataFlow 控制台显示一个正在运行的从 BigQuery 到 ClickHouse 的作业" />
+### 监控作业 {#monitor-the-job}
+
+在 Google Cloud 控制台中导航到 [Dataflow Jobs 选项卡](https://console.cloud.google.com/dataflow/jobs)，以监控作业状态。你可以查看作业详情，包括进度和任何错误信息：
+
+<Image img={dataflow_inqueue_job} size="lg" border alt="Dataflow 控制台显示正在运行的 BigQuery to ClickHouse 作业" />
 
 ## 疑难解答 {#troubleshooting}
 

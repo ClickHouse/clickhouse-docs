@@ -21,7 +21,7 @@ doc_type: 'reference'
 `Executable` 表引擎需要两个参数：脚本名称和输入数据的格式。你还可以可选地传入一个或多个输入查询：
 
 ```sql
-可执行文件(script_name, format, [input_query...])
+Executable(script_name, format, [input_query...])
 ```
 
 以下是 `Executable` 表的相关设置：
@@ -50,17 +50,17 @@ import random
 
 def main():
 
-    # 读取输入值
+    # Read input value
     for number in sys.stdin:
         i = int(number)
 
-        # 生成一些随机行
+        # Generate some random rows
         for id in range(0, i):
             letters = string.ascii_letters
             random_string =  ''.join(random.choices(letters ,k=10))
             print(str(id) + '\t' + random_string + '\n', end='')
 
-        # 将结果刷新到标准输出
+        # Flush results to stdout
         sys.stdout.flush()
 
 if __name__ == "__main__":
@@ -173,7 +173,7 @@ FROM sentiment
 响应如下：
 
 ```response
-┌───────id─┬─情感值────┐
+┌───────id─┬─sentiment─┐
 │  7398199 │    0.4404 │
 │ 21640317 │    0.1779 │
 │ 21462000 │         0 │

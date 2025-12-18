@@ -55,7 +55,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 示例：
 
 ```sql
--- 没有 ver - 最后插入的'获胜'
+-- without ver - the last inserted 'wins'
 CREATE TABLE myFirstReplacingMT
 (
     `key` Int64,
@@ -75,7 +75,7 @@ SELECT * FROM myFirstReplacingMT FINAL;
 └─────┴─────────┴─────────────────────┘
 
 
--- 有 ver - 具有最大 ver 的行'获胜'
+-- with ver - the row with the biggest ver 'wins'
 CREATE TABLE mySecondReplacingMT
 (
     `key` Int64,
@@ -118,7 +118,7 @@ SELECT * FROM mySecondReplacingMT FINAL;
 示例：
 
 ```sql
--- 使用 ver 和 is_deleted
+-- with ver and is_deleted
 CREATE OR REPLACE TABLE myThirdReplacingMT
 (
     `key` Int64,
@@ -132,24 +132,21 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
-```
 
-select * from myThirdReplacingMT final;
+SELECT * FROM myThirdReplacingMT final;
 
-0 行记录。耗时：0.003 秒。
+0 rows in set. Elapsed: 0.003 sec.
 
--- 删除带有 is&#95;deleted 的行
+-- delete rows with is_deleted
 OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
 
-INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
+INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
 
-select * from myThirdReplacingMT final;
+SELECT * FROM myThirdReplacingMT final;
 
-┌─key─┬─someCol─┬───────────eventTime─┬─is&#95;deleted─┐
+┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
-
-```
 ```
 
 ## 查询子句 {#query-clauses}
@@ -165,12 +162,17 @@ select * from myThirdReplacingMT final;
 :::
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+CREATE TABLE rmt_example
 (
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
+    `number` UInt16
+)
+ENGINE = ReplacingMergeTree
+ORDER BY number
+
+INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
+FROM numbers(1000000000)
+
+0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
 ```
 
 除 `ver` 之外的所有参数与 `MergeTree` 中的含义相同。
@@ -185,22 +187,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 为了获得准确的结果，用户需要在后台合并的基础上，再配合查询时去重以及删除记录的剔除。这可以通过使用 `FINAL` 运算符来实现。例如，考虑以下示例：
 
 ```sql
-CREATE TABLE rmt_example
-(
-    `number` UInt16
-)
-ENGINE = ReplacingMergeTree
-ORDER BY number
-
-INSERT INTO rmt_example SELECT floor(randUniform(0, 100)) AS number
-FROM numbers(1000000000)
-
-返回 0 行。耗时：19.958 秒。处理了 10 亿行，8.00 GB（每秒 5011 万行，400.84 MB/s）。
-```
-
-在不使用 `FINAL` 的情况下进行查询会返回不正确的计数结果（具体数值会因合并情况而异）：
-
-```sql
 SELECT count()
 FROM rmt_example
 
@@ -208,7 +194,21 @@ FROM rmt_example
 │     200 │
 └─────────┘
 
-返回 1 行。耗时: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
+```
+
+在不使用 `FINAL` 的情况下进行查询会返回不正确的计数结果（具体数值会因合并情况而异）：
+
+```sql
+SELECT count()
+FROM rmt_example
+FINAL
+
+┌─count()─┐
+│     100 │
+└─────────┘
+
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 添加 FINAL 后即可得到正确的结果：

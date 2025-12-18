@@ -24,10 +24,10 @@ LIMIT 5
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
 
-5 行数据。耗时: 0.449 秒。
+5 rows in set. Elapsed: 0.449 sec.
 ```
 
-虽然这通常是最常用的 JSON 格式，但用户也可能遇到其他格式，或者需要将整个 JSON 当作单个对象来读取。
+虽然这通常是最常用的 JSON 格式，但你也可能遇到其他格式，或者需要将整个 JSON 当作单个对象来读取。
 
 下面我们提供了一些示例，展示如何读取和加载其他常见格式的 JSON。
 
@@ -54,10 +54,10 @@ LIMIT 5
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-结果集包含 5 行。用时：0.338 秒。
+5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` 在使用单个 JSON 对象列向表中插入行时非常有用，例如：
+`JSONAsObject` 在需要使用单个 JSON 对象列向表中插入数据行时非常有用，例如：
 
 ```sql
 CREATE TABLE pypi
@@ -89,18 +89,16 @@ LIMIT 2;
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
 
-耗时：1.198 秒。
+Elapsed: 1.198 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
+Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'record.subject' has type 'String' and in some - 'Tuple(`$type` String, cid String, uri String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'record.subject'. (INCORRECT_DATA) (version 24.12.1.18239 (official build))
+To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
+You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
 
-从服务器收到异常（版本 24.12.1）：
-代码：636。DB::Exception：从 sql-clickhouse.clickhouse.com:9440 收到。DB::Exception：无法从 JSONEachRow 格式的文件中提取表结构。错误：
-代码：117。DB::Exception：JSON 对象中的数据存在歧义：在某些对象中，路径 &#39;record.subject&#39; 的类型为 &#39;String&#39;，而在另一些对象中，其类型为 &#39;Tuple(`$type` String, cid String, uri String)&#39;。可以启用设置 input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects，以对路径 &#39;record.subject&#39; 使用 String 类型。(INCORRECT&#95;DATA)（版本 24.12.1.18239 (official build)）
-要增加用于结构推断的最大读取行数/字节数，请使用设置 input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference。
-可以手动指定结构：（在文件/URI bluesky/file&#95;0001.json.gz 中）。（CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE）
-
-````
- 
-相反,在这种情况下可以使用 `JSONAsObject`,因为 `JSON` 类型支持同一子列使用多种类型。
+相反，在这种情况下可以使用 `JSONAsObject`，因为 `JSON` 类型在同一子列中支持多种类型。
 
 ```sql
 SELECT count()
@@ -111,7 +109,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 └─────────┘
 
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
-````
+```
 
 ## JSON 对象数组 {#array-of-json-objects}
 
@@ -155,7 +153,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-我们使用 [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) 子句从本地文件加载数据，可以看到导入已经成功：
+我们使用 [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) 子句从本地文件加载数据，并且可以看到导入已成功完成：
 
 ```sql
 SELECT *
@@ -163,7 +161,7 @@ FROM sometable
 ```
 
 ```response
-┌─路径──────────────────────┬──────月份─┬─点击─┐
+┌─path──────────────────────┬──────month─┬─hits─┐
 │ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
 │ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
 │ Aegithina_tiphia          │ 2018-02-01 │   34 │
@@ -231,7 +229,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-请注意，`id` 列已经根据键值被正确填充。
+请注意，`id` 列已经被正确填充为键值。
 
 ## JSON 数组 {#json-arrays}
 
@@ -263,7 +261,7 @@ SELECT * FROM sometable
 
 ### 从 JSON 数组中导入单个列 {#importing-individual-columns-from-json-arrays}
 
-在某些情况下，数据可以按列编码，而不是按行编码。在这种情况下，父级 JSON 对象中包含各个列及其对应的值。请查看[以下文件](../assets/columns.json)：
+在某些情况下，数据可以按列编码，而不是按行编码。在这种情况下，父 JSON 对象中包含各列及其对应的值。请查看[以下文件](../assets/columns.json)：
 
 ```bash
 cat columns.json
@@ -277,7 +275,7 @@ cat columns.json
 }
 ```
 
-ClickHouse 使用 [`JSONColumns`](/interfaces/formats/JSONColumns) 格式来解析此类格式的数据：
+ClickHouse 使用 [`JSONColumns`](/interfaces/formats/JSONColumns) 格式来解析这类格式的数据：
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -317,7 +315,7 @@ cat custom.json
 [
   {"name": "Joe", "age": 99, "type": "person"},
   {"url": "/my.post.MD", "hits": 1263, "type": "post"},
-  {"message": "磁盘使用率警告", "type": "log"}
+  {"message": "Warning on disk usage", "type": "log"}
 ]
 ```
 
@@ -340,7 +338,7 @@ FROM INFILE 'custom.json'
 FORMAT JSONAsString
 ```
 
-然后我们可以使用 [JSON 函数](/sql-reference/functions/json-functions.md) 来查询已存储的对象：
+然后我们可以使用 [JSON 函数](/sql-reference/functions/json-functions.md) 来查询已保存的对象：
 
 ```sql
 SELECT
@@ -357,7 +355,7 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-请注意，对于每行一个 JSON 对象的文件（通常与 `JSONEachRow` 格式一起使用），`JSONAsString` 完全可以正常工作。
+请注意，对于每行一个 JSON 对象的文件（通常与 `JSONEachRow` 格式一起使用），`JSONAsString` 也可以很好地工作。
 
 ## 嵌套对象的模式 {#schema-for-nested-objects}
 
@@ -397,7 +395,7 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-通过这种方式，我们可以展开嵌套的 JSON 对象，或者利用其中的一些嵌套字段，将它们保存为单独的列。
+通过这种方式，我们可以展开嵌套的 JSON 对象，或者利用其中的一些嵌套值，将它们保存为单独的列。
 
 ## 跳过未知列 {#skipping-unknown-columns}
 
@@ -437,11 +435,11 @@ INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
 
 ```response
 Ok.
-客户端异常:
-Code: 117. DB::Exception: 解析 JSONEachRow 格式时发现未知字段: month: (位于文件/URI /data/clickhouse/user_files/list.json): (第 1 行)
+Exception on client:
+Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
 ```
 
-在 JSON 结构与表的列结构不一致的情况下，ClickHouse 会抛出异常。
+当 JSON 结构与表的列结构不一致时，ClickHouse 会抛出异常。
 
 ## BSON {#bson}
 
@@ -470,4 +468,4 @@ INTO OUTFILE 'out.bson'
 FORMAT BSONEachRow
 ```
 
-接下来，我们的数据会被导出到 `out.bson` 文件中。
+这样数据就会被导出到 `out.bson` 文件中。

@@ -81,7 +81,7 @@ $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWE
 结果：
 
 ```sql
-SELECT treasury_mammoth_hazelnut 在 nutmeg 和 span 之间，CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
+SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
 相同的查询，但使用另一个种子字符串：

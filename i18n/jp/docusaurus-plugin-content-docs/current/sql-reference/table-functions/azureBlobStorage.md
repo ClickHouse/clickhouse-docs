@@ -62,7 +62,7 @@ SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
 ```
 
 ```response
-┌───列1─┬────列2─┬───列3─┐
+┌───column1─┬────column2─┬───column3─┐
 │     3     │       2    │      1    │
 └───────────┴────────────┴───────────┘
 ```
@@ -142,7 +142,7 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 │      10 │
 └─────────┘
 
-1 行のセット。経過時間: 0.425 秒
+1 row in set. Elapsed: 0.425 sec.
 ```
 
 または、生成された [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers) を使用することもできます。
@@ -155,7 +155,7 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 │      10 │
 └─────────┘
 
-1 row in set. 経過時間: 0.153秒
+1 row in set. Elapsed: 0.153 sec.
 ```
 
 ## 関連項目 {#related}

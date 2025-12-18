@@ -22,7 +22,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Мониторинг журналов хостов EC2 с помощью ClickStack {#ec2-host-logs-clickstack}
 
 :::note[Кратко]
@@ -61,14 +60,14 @@ import TabItem from '@theme/TabItem';
   С вашего EC2-инстанса проверьте доступность сервиса метаданных:
 
   ```bash
-  # Получение токена метаданных (IMDSv2)
-  TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+# Get metadata token (IMDSv2)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-  # Проверка метаданных экземпляра
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
-  curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
-  ```
+# Verify instance metadata
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region
+curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type
+```
 
   Вы должны увидеть идентификатор экземпляра, регион и тип экземпляра. Если эти команды завершаются ошибкой, проверьте:
 
@@ -85,152 +84,152 @@ import TabItem from '@theme/TabItem';
   Убедитесь, что ваш инстанс EC2 записывает файлы syslog:
 
   ```bash
-  # Инстансы Ubuntu
-  ls -la /var/log/syslog
+# Ubuntu instances
+ls -la /var/log/syslog
 
-  # Инстансы Amazon Linux / RHEL
-  ls -la /var/log/messages
+# Amazon Linux / RHEL instances
+ls -la /var/log/messages
 
-  # Просмотр последних записей
-  tail -20 /var/log/syslog
-  # или
-  tail -20 /var/log/messages
-  ```
+# View recent entries
+tail -20 /var/log/syslog
+# or
+tail -20 /var/log/messages
+```
 
   #### Установка OpenTelemetry Collector
 
   Установите дистрибутив OpenTelemetry Collector Contrib на экземпляр EC2:
 
   ```bash
-  # Загрузите последний релиз
-  wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
+# Download the latest release
+wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.114.0/otelcol-contrib_0.114.0_linux_amd64.tar.gz
 
-  # Распакуйте и установите
-  tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
-  sudo mv otelcol-contrib /usr/local/bin/
+# Extract and install
+tar -xvf otelcol-contrib_0.114.0_linux_amd64.tar.gz
+sudo mv otelcol-contrib /usr/local/bin/
 
-  # Проверьте установку
-  otelcol-contrib --version
-  ```
+# Verify installation
+otelcol-contrib --version
+```
 
   #### Создайте конфигурацию коллектора
 
   Создайте файл конфигурации для OpenTelemetry Collector по пути `/etc/otelcol-contrib/config.yaml`:
 
   ```bash
-  sudo mkdir -p /etc/otelcol-contrib
-  ```
+sudo mkdir -p /etc/otelcol-contrib
+```
 
   Выберите конфигурацию в зависимости от вашего дистрибутива Linux:
 
   <Tabs groupId="os-type">
     <TabItem value="modern-linux" label="Современный Linux (Ubuntu 24.04+)" default>
       ```yaml
-      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/syslog
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout_type: gotime
-              layout: '2006-01-02T15:04:05.999999-07:00'
-            
-            - type: add
-              field: attributes.source
-              value: "ec2-host-logs"
+sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/syslog
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout_type: gotime
+        layout: '2006-01-02T15:04:05.999999-07:00'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-host-logs"
 
-      processors:
-        resourcedetection:
-          detectors: [ec2, system]
-          timeout: 5s
-          override: false
-          ec2:
-            tags:
-              - ^Name
-              - ^Environment
-              - ^Team
-        
-        batch:
-          timeout: 10s
-          send_batch_size: 1024
+processors:
+  resourcedetection:
+    detectors: [ec2, system]
+    timeout: 5s
+    override: false
+    ec2:
+      tags:
+        - ^Name
+        - ^Environment
+        - ^Team
+  
+  batch:
+    timeout: 10s
+    send_batch_size: 1024
 
-      exporters:
-        otlphttp:
-          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-          headers:
-            authorization: "${env:CLICKSTACK_API_KEY}"
+exporters:
+  otlphttp:
+    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+    headers:
+      authorization: "${env:CLICKSTACK_API_KEY}"
 
-      service:
-        pipelines:
-          logs:
-            receivers: [filelog/syslog]
-            processors: [resourcedetection, batch]
-            exporters: [otlphttp]
-      EOF
-      ```
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/syslog]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp]
+EOF
+```
     </TabItem>
 
     <TabItem value="legacy-linux" label="Устаревший Linux (Amazon Linux 2, RHEL, более старые версии Ubuntu)">
       ```yaml
-      sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
-      receivers:
-        filelog/syslog:
-          include:
-            - /var/log/messages
-            - /var/log/**/*.log
-          start_at: end
-          operators:
-            - type: regex_parser
-              regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-              parse_from: body
-              parse_to: attributes
-            
-            - type: time_parser
-              parse_from: attributes.timestamp
-              layout: '%b %d %H:%M:%S'
-            
-            - type: add
-              field: attributes.source
-              value: "ec2-host-logs"
+sudo tee /etc/otelcol-contrib/config.yaml > /dev/null << 'EOF'
+receivers:
+  filelog/syslog:
+    include:
+      - /var/log/messages
+      - /var/log/**/*.log
+    start_at: end
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\w+ \d+ \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%b %d %H:%M:%S'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-host-logs"
 
-      processors:
-        resourcedetection:
-          detectors: [ec2, system]
-          timeout: 5s
-          override: false
-          ec2:
-            tags:
-              - ^Name
-              - ^Environment
-              - ^Team
-        
-        batch:
-          timeout: 10s
-          send_batch_size: 1024
+processors:
+  resourcedetection:
+    detectors: [ec2, system]
+    timeout: 5s
+    override: false
+    ec2:
+      tags:
+        - ^Name
+        - ^Environment
+        - ^Team
+  
+  batch:
+    timeout: 10s
+    send_batch_size: 1024
 
-      exporters:
-        otlphttp:
-          endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
-          headers:
-            authorization: "${env:CLICKSTACK_API_KEY}"
+exporters:
+  otlphttp:
+    endpoint: "http://YOUR_CLICKSTACK_HOST:4318"
+    headers:
+      authorization: "${env:CLICKSTACK_API_KEY}"
 
-      service:
-        pipelines:
-          logs:
-            receivers: [filelog/syslog]
-            processors: [resourcedetection, batch]
-            exporters: [otlphttp]
-      EOF
-      ```
+service:
+  pipelines:
+    logs:
+      receivers: [filelog/syslog]
+      processors: [resourcedetection, batch]
+      exporters: [otlphttp]
+EOF
+```
     </TabItem>
   </Tabs>
 
@@ -266,23 +265,23 @@ import TabItem from '@theme/TabItem';
   Экспортируйте API-ключ ClickStack как переменную окружения:
 
   ```bash
-  export CLICKSTACK_API_KEY="your-api-key-here"
-  ```
+export CLICKSTACK_API_KEY="your-api-key-here"
+```
 
   Чтобы сохранить это значение после перезагрузки, добавьте его в профиль вашей командной оболочки:
 
   ```bash
-  echo 'export CLICKSTACK_API_KEY="ваш-api-ключ-здесь"' >> ~/.bashrc
-  source ~/.bashrc
-  ```
+echo 'export CLICKSTACK_API_KEY="your-api-key-here"' >> ~/.bashrc
+source ~/.bashrc
+```
 
   #### Запуск коллектора
 
   Запустите OpenTelemetry Collector:
 
   ```bash
-  CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
-  ```
+CLICKSTACK_API_KEY="your-api-key-here" /usr/local/bin/otelcol-contrib --config /etc/otelcol-contrib/config.yaml
+```
 
   :::note[Для использования в production-среде]
   Настройте коллектор для запуска в качестве службы systemd, чтобы он автоматически запускался при загрузке системы и перезапускался при сбоях. Подробности см. в [документации OpenTelemetry Collector](https://opentelemetry.io/docs/collector/deployment/).
@@ -318,8 +317,8 @@ import TabItem from '@theme/TabItem';
   Загрузите образец лог-файла:
 
   ```bash
-  curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
-  ```
+curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/host-logs/journal.log
+```
 
   Набор данных включает:
 
@@ -336,68 +335,68 @@ import TabItem from '@theme/TabItem';
   Создайте файл `ec2-host-logs-demo.yaml` со следующей конфигурацией:
 
   ```yaml
-  cat > ec2-host-logs-demo.yaml << 'EOF'
-  receivers:
-    filelog/journal:
-      include:
-        - /tmp/host-demo/journal.log
-      start_at: beginning
-      operators:
-        - type: regex_parser
-          regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
-          parse_from: body
-          parse_to: attributes
-        
-        - type: time_parser
-          parse_from: attributes.timestamp
-          layout: '%Y-%m-%dT%H:%M:%S%z'
-        
-        - type: add
-          field: attributes.source
-          value: "ec2-demo"
+cat > ec2-host-logs-demo.yaml << 'EOF'
+receivers:
+  filelog/journal:
+    include:
+      - /tmp/host-demo/journal.log
+    start_at: beginning
+    operators:
+      - type: regex_parser
+        regex: '^(?P<timestamp>\S+) (?P<hostname>\S+) (?P<unit>\S+?)(?:\[(?P<pid>\d+)\])?: (?P<message>.*)$'
+        parse_from: body
+        parse_to: attributes
+      
+      - type: time_parser
+        parse_from: attributes.timestamp
+        layout: '%Y-%m-%dT%H:%M:%S%z'
+      
+      - type: add
+        field: attributes.source
+        value: "ec2-demo"
 
-  processors:
-    # Имитация метаданных EC2 для демонстрации (реальный инстанс EC2 не требуется)
-    resource:
-      attributes:
-        - key: service.name
-          value: "ec2-demo"
-          action: insert
-        - key: cloud.provider
-          value: "aws"
-          action: insert
-        - key: cloud.platform
-          value: "aws_ec2"
-          action: insert
-        - key: cloud.region
-          value: "us-east-1"
-          action: insert
-        - key: cloud.availability_zone
-          value: "us-east-1a"
-          action: insert
-        - key: host.id
-          value: "i-0abc123def456789"
-          action: insert
-        - key: host.type
-          value: "t3.medium"
-          action: insert
-        - key: host.name
-          value: "prod-web-01"
-          action: insert
+processors:
+  # Simulate EC2 metadata for demo (no real EC2 instance required)
+  resource:
+    attributes:
+      - key: service.name
+        value: "ec2-demo"
+        action: insert
+      - key: cloud.provider
+        value: "aws"
+        action: insert
+      - key: cloud.platform
+        value: "aws_ec2"
+        action: insert
+      - key: cloud.region
+        value: "us-east-1"
+        action: insert
+      - key: cloud.availability_zone
+        value: "us-east-1a"
+        action: insert
+      - key: host.id
+        value: "i-0abc123def456789"
+        action: insert
+      - key: host.type
+        value: "t3.medium"
+        action: insert
+      - key: host.name
+        value: "prod-web-01"
+        action: insert
 
-  service:
-    pipelines:
-      logs/ec2-demo:
-        receivers: [filelog/journal]
-        processors:
-          - resource
-          - memory_limiter
-          - transform
-          - batch
-        exporters:
-          - clickhouse
-  EOF
-  ```
+service:
+  pipelines:
+    logs/ec2-demo:
+      receivers: [filelog/journal]
+      processors:
+        - resource
+        - memory_limiter
+        - transform
+        - batch
+      exporters:
+        - clickhouse
+EOF
+```
 
   :::note
   В демонстрационных целях метаданные EC2 добавляются вручную с помощью процессора `resource`. В продакшене с реальными инстансами EC2 используйте процессор `resourcedetection`, который автоматически запрашивает API метаданных EC2.
@@ -408,13 +407,13 @@ import TabItem from '@theme/TabItem';
   Запустите ClickStack с демонстрационными логами и конфигурацией:
 
   ```bash
-  docker run --name clickstack-demo \
-    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-    -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-    -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
-    docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
-  ```
+docker run --name clickstack-demo \
+  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+  -v "$(pwd)/ec2-host-logs-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+  -v "$(pwd)/journal.log:/tmp/host-demo/journal.log:ro" \
+  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+```
 
   #### Проверка логов в HyperDX
 
@@ -485,10 +484,10 @@ import TabItem from '@theme/TabItem';
 **Проверьте, что сервис метаданных EC2 доступен:**
 
 ```bash
-# Получение токена метаданных
+# Get metadata token
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-# Тестирование конечной точки метаданных
+# Test metadata endpoint
 curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id
 ```
 
@@ -501,12 +500,11 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 **Проверьте логи коллектора на наличие ошибок метаданных:**
 
 ```bash
-# Если запущен как systemd-сервис
+# If running as systemd service
 sudo journalctl -u otelcol-contrib -f | grep -i "ec2\|metadata\|resourcedetection"
 
-# Если запущен в интерактивном режиме, проверьте stdout
+# If running in foreground, check stdout
 ```
-
 
 ### В HyperDX не отображаются логи
 
@@ -526,22 +524,21 @@ cat /var/log/syslog | head -20
 **Проверьте сетевое подключение к ClickStack:**
 
 ```bash
-# Проверка OTLP-эндпоинта
+# Test OTLP endpoint
 curl -v http://YOUR_CLICKSTACK_HOST:4318/v1/logs
 
-# Должен вернуться ответ (даже при ошибке это означает, что эндпоинт доступен)
+# Should get a response (even if error, means endpoint is reachable)
 ```
 
 **Проверьте логи коллектора на наличие ошибок:**
 
 ```bash
-# Если запущен в режиме переднего плана
-# Ищите сообщения об ошибках в stdout
+# If running in foreground
+# Look for error messages in stdout
 
-# Если запущен как служба systemd
+# If running as systemd service
 sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 ```
-
 
 ### Некорректный разбор логов
 
@@ -550,19 +547,18 @@ sudo journalctl -u otelcol-contrib -f | grep -i "error\|failed"
 Для Ubuntu 24.04+:
 
 ```bash
-# Должен отображать формат ISO8601: 2025-11-17T20:55:44.826796+00:00
+# Should show ISO8601 format: 2025-11-17T20:55:44.826796+00:00
 tail -5 /var/log/syslog
 ```
 
 Для Amazon Linux 2 / Ubuntu 20.04:
 
 ```bash
-# Должен отобразить традиционный формат: Nov 17 14:16:16
+# Should show traditional format: Nov 17 14:16:16
 tail -5 /var/log/messages
 ```
 
 Если ваш формат отличается, в зависимости от вашей дистрибуции используйте соответствующую вкладку конфигурации в разделе [Create collector configuration](#create-config).
-
 
 ### Коллектор не запускается как служба systemd
 
@@ -583,7 +579,6 @@ sudo journalctl -u otelcol-contrib -n 50
 * API-ключ некорректно задан в переменных окружения
 * Ошибки синтаксиса в файле конфигурации
 * Проблемы с правами доступа к файлам логов
-
 
 ## Следующие шаги {#next-steps}
 

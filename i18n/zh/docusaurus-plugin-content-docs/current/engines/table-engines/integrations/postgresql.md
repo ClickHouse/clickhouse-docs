@@ -188,7 +188,7 @@ SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 
 ```sql
 INSERT INTO default.postgresql_copy
-SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password')
+SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
 WHERE int_id > maxIntID;
 ```
 

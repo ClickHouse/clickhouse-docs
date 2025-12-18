@@ -35,7 +35,7 @@ ClickHouse 支持五种跳过索引类型：
 `minmax` 索引最适合在松散排序的数据上执行范围条件，或用于与 `ORDER BY` 相关联的列。
 
 ```sql
--- 在 CREATE TABLE 中定义
+-- Define in CREATE TABLE
 CREATE TABLE events
 (
   ts DateTime,
@@ -46,14 +46,14 @@ CREATE TABLE events
 ENGINE=MergeTree
 ORDER BY ts;
 
--- 或后续添加并物化
+-- Or add later and materialize
 ALTER TABLE events ADD INDEX ts_minmax ts TYPE minmax GRANULARITY 1;
 ALTER TABLE events MATERIALIZE INDEX ts_minmax;
 
--- 利用该索引的查询
+-- Query that benefits from the index
 SELECT count() FROM events WHERE ts >= now() - 3600;
 
--- 验证索引使用情况
+-- Verify usage
 EXPLAIN indexes = 1
 SELECT count() FROM events WHERE ts >= now() - 3600;
 ```
@@ -95,11 +95,11 @@ SELECT * FROM events WHERE value IN (7, 42, 99);
 `ngrambf_v1` 索引将字符串划分为 n-gram。它非常适用于 `LIKE '%...%'` 查询。它支持 String/FixedString/Map（通过 mapKeys/mapValues），并且可以调节大小、哈希次数和种子。有关更多详细信息，请参阅 [N-gram Bloom 过滤器](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter) 的文档。
 
 ```sql
--- 为子串搜索创建索引
+-- Create index for substring search
 ALTER TABLE logs ADD INDEX msg_ngram msg TYPE ngrambf_v1(3, 10000, 3, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_ngram;
 
--- 子串搜索
+-- Substring search
 SELECT count() FROM logs WHERE msg LIKE '%timeout%';
 
 EXPLAIN indexes = 1
@@ -119,9 +119,9 @@ CREATE FUNCTION bfEstimateFunctions AS
 CREATE FUNCTION bfEstimateBmSize AS
 (total_grams, p_false) -> ceil((total_grams * log(p_false)) / log(1 / pow(2, log(2))));
 
--- 示例：计算 4300 个 n-gram、误报率 p_false = 0.0001 时的大小
-SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_bytes;  -- 约 10304
-SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- 约 13
+-- Example sizing for 4300 ngrams, p_false = 0.0001
+SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_bytes;  -- ~10304
+SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- ~13
 ```
 
 有关完整的调优指导，请参阅[参数文档](/engines/table-engines/mergetree-family/mergetree#n-gram-bloom-filter)。
@@ -136,7 +136,7 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) AS k; -- 约 13
 ALTER TABLE logs ADD INDEX msg_token lower(msg) TYPE tokenbf_v1(10000, 7, 7) GRANULARITY 1;
 ALTER TABLE logs MATERIALIZE INDEX msg_token;
 
--- 单词搜索(通过 lower 函数实现不区分大小写)
+-- Word search (case-insensitive via lower)
 SELECT count() FROM logs WHERE hasToken(lower(msg), 'exception');
 
 EXPLAIN indexes = 1
@@ -176,7 +176,7 @@ ALTER TABLE t MATERIALIZE INDEX idx_bf;
 EXPLAIN indexes = 1
 SELECT count() FROM t WHERE u64 IN (123, 456);
 
--- 可选：详细的修剪信息
+-- Optional: detailed pruning info
 SET send_logs_level = 'trace';
 ```
 
@@ -204,7 +204,7 @@ SET send_logs_level = 'trace';
 在测试和故障排查期间，可以针对单个查询按名称禁用特定索引。也可以通过相关设置在需要时强制使用索引。参见 [`ignore_data_skipping_indices`](/operations/settings/settings#ignore_data_skipping_indices)。
 
 ```sql
--- 按名称忽略索引
+-- Ignore an index by name
 SELECT * FROM logs
 WHERE hasToken(lower(msg), 'exception')
 SETTINGS ignore_data_skipping_indices = 'msg_token';

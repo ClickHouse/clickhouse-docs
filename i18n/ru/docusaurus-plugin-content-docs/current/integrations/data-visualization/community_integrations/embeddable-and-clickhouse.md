@@ -28,13 +28,13 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 Вы добавляете подключение к базе данных с помощью API Embeddable. Это подключение используется для подключения к вашему сервису ClickHouse. Вы можете добавить подключение с помощью следующего вызова API:
 
 ```javascript
-// из соображений безопасности это *никогда* не должно вызываться на клиентской стороне
+// for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${apiKey}` /* храните API-ключ в безопасности */,
+    Authorization: `Bearer ${apiKey}` /* keep your API Key secure */,
   },
   body: JSON.stringify({
     name: 'my-clickhouse-db',
@@ -48,7 +48,7 @@ fetch('https://api.embeddable.com/api/v1/connections', {
   }),
 });
 
-Ответ:
+Response:
 Status 201 { errorMessage: null }
 ```
 

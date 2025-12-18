@@ -36,7 +36,7 @@ ClickHouse サーバーをローカルで起動し、デフォルトポート（
 たとえばテスト `01428_hash_set_nan_key` を実行するには、リポジトリのフォルダーに移動して次のコマンドを実行します。
 
 ```sh
-PATH=<clickhouse-clientへのパス>:$PATH tests/clickhouse-test 01428_hash_set_nan_key
+PATH=<path to clickhouse-client>:$PATH tests/clickhouse-test 01428_hash_set_nan_key
 ```
 
 テスト結果（`stderr` および `stdout`）は、テストファイルと同じディレクトリに作成される `01428_hash_set_nan_key.[stderr|stdout]` というファイルに書き出されます（たとえば `queries/0_stateless/foo.sql` の場合、出力は `queries/0_stateless/foo.stdout` に書き出されます）。
@@ -80,8 +80,8 @@ sudo ./install.sh
 
 ```sql
 -- Tags: no-fasttest, no-replicated-database
--- no-fasttest: <このタグの理由をここに記載してください>
--- no-replicated-database: <理由をここに記載してください>
+-- no-fasttest: <provide_a_reason_for_the_tag_here>
+-- no-replicated-database: <provide_a_reason_here>
 
 SELECT 1
 ```
@@ -90,9 +90,9 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest, no-replicated-database {#tags-no-fasttest-no-replicated-database}
-# - no-fasttest: <ここにタグの理由を記載> {#no-fasttest-provide_a_reason_for_the_tag_here}
-# - no-replicated-database: <ここに理由を記載> {#no-replicated-database-provide_a_reason_here}
+# Tags: no-fasttest, no-replicated-database
+# - no-fasttest: <provide_a_reason_for_the_tag_here>
+# - no-replicated-database: <provide_a_reason_here>
 ```
 
 利用可能なタグの一覧は次のとおりです:
@@ -137,15 +137,15 @@ SELECT 1
 
 ```bash
 #!/usr/bin/env bash
-# Tags: no-fasttest {#tags-no-fasttest}
-# ランダム設定の制限: max_block_size=(1000, 10000); index_granularity=(100, None) {#random-settings-limits-max_block_size1000-10000-index_granularity100-none}
+# Tags: no-fasttest
+# Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 ```
 
 `.sql` テストでは、タグは対象行の直後の行か、先頭行に SQL コメントとして記述します。
 
 ```sql
 -- Tags: no-fasttest
--- ランダム設定の制限: max_block_size=(1000, 10000); index_granularity=(100, None)
+-- Random settings limits: max_block_size=(1000, 10000); index_granularity=(100, None)
 SELECT 1
 ```
 

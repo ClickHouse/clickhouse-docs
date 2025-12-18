@@ -10,7 +10,7 @@ doc_type: 'reference'
 # Оператор USE {#use-statement}
 
 ```sql
-USE [DATABASE] имя_бд
+USE [DATABASE] db
 ```
 
 Позволяет задать текущую базу данных для сессии.

@@ -53,7 +53,6 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 `*Log` ファミリーのエンジンは、障害発生時の自動データ復旧を提供しません。`CHECK TABLE` クエリを使用して、データ損失をタイムリーに検知してください。
 
-
 ## 例 {#examples}
 
 デフォルトでは、`CHECK TABLE` クエリはテーブル全体の総合的なチェック結果を表示します。
@@ -113,7 +112,6 @@ CHECK TABLE t0 PART '201003_111_222_0'
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
-
 ### 「Corrupted（破損）」という結果を受け取った場合 {#receiving-a-corrupted-result}
 
 :::warning
@@ -126,7 +124,7 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
@@ -139,7 +137,7 @@ Output:
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 checksums.txt ファイルが存在しない場合は、復元できます。特定のパーティションに対して `CHECK TABLE` コマンドを実行する際に再計算および再書き込みされ、ステータスは引き続き &#39;is&#95;passed = 1&#39; として報告されます。
 
@@ -165,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## データが破損している場合 {#if-the-data-is-corrupted}
 

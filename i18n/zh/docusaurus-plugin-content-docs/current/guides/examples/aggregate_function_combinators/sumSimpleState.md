@@ -58,11 +58,11 @@ CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- sum 状态的初始值（为 'upvote' 时为 1，否则为 0）
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- sum 状态的初始值（为 'downvote' 时为 1，否则为 0）
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- sum 状态的初始值（'upvote' 为 1，'downvote' 为 -1）
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
@@ -87,7 +87,7 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- 查询目标表数据
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```

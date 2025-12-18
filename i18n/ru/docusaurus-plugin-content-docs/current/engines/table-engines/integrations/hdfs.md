@@ -137,14 +137,14 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 Как и GraphiteMergeTree, движок HDFS поддерживает расширенную настройку с помощью конфигурационного файла ClickHouse. Доступны два ключа конфигурации: глобальный (`hdfs`) и пользовательский (`hdfs_*`). Сначала применяется глобальная конфигурация, а затем — пользовательская (если она есть).
 
 ```xml
-<!-- Глобальные параметры конфигурации для типа движка HDFS -->
+<!-- Global configuration options for HDFS engine type -->
 <hdfs>
   <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
   <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
   <hadoop_security_authentication>kerberos</hadoop_security_authentication>
 </hdfs>
 
-<!-- Конфигурация для пользователя "root" -->
+<!-- Configuration specific for user "root" -->
 <hdfs_root>
   <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
 </hdfs_root>

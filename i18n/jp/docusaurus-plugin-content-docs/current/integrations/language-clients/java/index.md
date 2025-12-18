@@ -11,7 +11,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-
 # Java クライアントの概要 {#java-clients-overview}
 
 - [Client 0.8+](./client/client.mdx)
@@ -155,21 +154,20 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 </dependencies>
 ```
 
-
 #### ロギングの設定 {#configuring-logging}
 
 ロギングの設定方法は、使用しているロギングフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` という名前のファイルでロギングを設定できます。
 
 ```xml title="logback.xml"
 <configuration>
-    <!-- コンソールアペンダー -->
+    <!-- Console Appender -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%level] [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- ファイルアペンダー -->
+    <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/app.log</file>
         <append>true</append>
@@ -178,13 +176,13 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
         </encoder>
     </appender>
 
-    <!-- ルートロガー -->
+    <!-- Root Logger -->
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
 
-    <!-- 特定のパッケージに対するカスタムログレベル -->
+    <!-- Custom Log Levels for Specific Packages -->
     <logger name="com.clickhouse" level="info" />
 </configuration>
 ```

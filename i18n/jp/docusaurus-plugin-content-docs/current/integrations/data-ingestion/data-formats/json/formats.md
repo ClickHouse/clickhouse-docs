@@ -33,9 +33,9 @@ LIMIT 5
 
 ## JSON をオブジェクトとして読み込む {#reading-json-as-an-object}
 
-前の例では、`JSONEachRow` が改行区切りの JSON をどのように読み込み、各行をテーブルの 1 行に対応する個別のオブジェクトとして扱い、各キーを列に対応付けるかを示しました。これは、JSON の構造が予測可能で、各列に単一の型が対応しているケースに最適です。
+前の例では、`JSONEachRow` が改行区切りの JSON をどのように読み込み、各行をテーブルの 1 行に対応する個別のオブジェクトとして扱い、各キーをカラムに対応付けるかを示しました。これは、JSON の構造が予測可能で、各カラムに単一の型が対応しているケースに最適です。
 
-これに対して `JSONAsObject` は、各行を 1 つの `JSON` オブジェクトとして扱い、型 [`JSON`](/sql-reference/data-types/newjson) の単一列に格納します。このため、ネストされた JSON ペイロードや、キーが動的であり、かつ 1 つのキーに複数の型が存在しうるケースにより適しています。
+これに対して `JSONAsObject` は、各行を 1 つの `JSON` オブジェクトとして扱い、型 [`JSON`](/sql-reference/data-types/newjson) の単一カラムに格納します。このため、ネストされた JSON ペイロードや、キーが動的であり、かつ 1 つのキーに複数の型が存在しうるケースにより適しています。
 
 行単位の挿入には `JSONEachRow` を使用し、柔軟または動的な JSON データを保存する場合は [`JSONAsObject`](/interfaces/formats/JSONAsObject) を使用してください。
 
@@ -54,10 +54,10 @@ LIMIT 5
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-5行のセット。経過時間: 0.338秒
+5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` は、1 つの JSON オブジェクト型カラムだけを使ってテーブルに行を挿入する場合に便利です。例:
+`JSONAsObject` は、単一の JSON オブジェクト型カラムを使ってテーブルに行を挿入する場合に便利です。例:`
 
 ```sql
 CREATE TABLE pypi
@@ -90,17 +90,15 @@ SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
 
 Elapsed: 1.198 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
+Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'record.subject' has type 'String' and in some - 'Tuple(`$type` String, cid String, uri String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'record.subject'. (INCORRECT_DATA) (version 24.12.1.18239 (official build))
+To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
+You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
 
-サーバー (バージョン 24.12.1) から例外を受信しました:
-Code: 636. DB::Exception: sql-clickhouse.clickhouse.com:9440 から受信しました。DB::Exception: JSONEachRow 形式のファイルからはテーブル構造を抽出できません。エラー:
-Code: 117. DB::Exception: JSON オブジェクトにあいまいなデータがあります: 一部のオブジェクトではパス &#39;record.subject&#39; の型が &#39;String&#39; であり、別のものでは &#39;Tuple(`$type` String, cid String, uri String)&#39; になっています。パス &#39;record.subject&#39; に対して String 型を使用するには、設定 input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects を有効にできます。 (INCORRECT&#95;DATA) (version 24.12.1.18239 (official build))
-構造推論のために読み取る行数やバイト数の上限を増やすには、設定 input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference / input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference を使用してください。
-構造を手動で指定することもできます (ファイル/URI bluesky/file&#95;0001.json.gz 内)。 (CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE)
-
-````
- 
-逆に、`JSON`型は同一のサブカラムに対して複数の型をサポートするため、このケースでは`JSONAsObject`を使用できます。
+一方、`JSON` 型は同一のサブカラムに対して複数の型をサポートするため、このケースでは `JSONAsObject` を使用できます。
 
 ```sql
 SELECT count()
@@ -111,7 +109,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 └─────────┘
 
 1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
-````
+```
 
 ## JSON オブジェクトの配列 {#array-of-json-objects}
 
@@ -155,7 +153,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-ローカルファイルからデータを読み込むために [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) 句を使用し、インポートが正常に完了したことを確認できます。
+ローカルファイルからデータを読み込むために [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) 句を使用しており、インポートが正常に完了していることが確認できます。
 
 ```sql
 SELECT *
@@ -231,7 +229,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-`id` 列にキーの値が正しく格納されていることに注目してください。
+`id` カラムにキー値が正しく格納されていることに注目してください。
 
 ## JSON 配列 {#json-arrays}
 
@@ -317,7 +315,7 @@ cat custom.json
 [
   {"name": "Joe", "age": 99, "type": "person"},
   {"url": "/my.post.MD", "hits": 1263, "type": "post"},
-  {"message": "ディスク使用量の警告", "type": "log"}
+  {"message": "Warning on disk usage", "type": "log"}
 ]
 ```
 
@@ -332,7 +330,7 @@ ENGINE = MergeTree
 ORDER BY ()
 ```
 
-これで、ファイルからこのテーブルにデータを読み込む際に、JSON オブジェクトをパースせずそのまま保持するためのフォーマットとして [`JSONAsString`](/interfaces/formats/JSONAsString) を使用できます。
+これで、ファイルからこのテーブルにデータを読み込む際には、JSON オブジェクトをパースせずそのまま保持するために [`JSONAsString`](/interfaces/formats/JSONAsString) フォーマットを使用できます。
 
 ```sql
 INSERT INTO events (data)
@@ -357,7 +355,7 @@ FROM events
 └────────┴──────────────────────────────────────────────────────┘
 ```
 
-`JSONAsString` は、1 行につき 1 つの JSON オブジェクトが含まれる形式のファイル（通常は `JSONEachRow` フォーマットとともに使用されます）の場合には、問題なく動作することに注意してください。
+`JSONAsString` は、1 行につき 1 つの JSON オブジェクトが含まれる形式のファイル（通常は `JSONEachRow` フォーマットとともに使用されます）の場合にも、正常に動作することに注意してください。
 
 ## ネストされたオブジェクト用のスキーマ {#schema-for-nested-objects}
 
@@ -397,7 +395,7 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-この方法により、ネストされた JSON オブジェクトをフラット化したり、ネスト内の一部の値を取り出して個別のカラムとして保存したりできます。
+この方法により、ネストされた JSON オブジェクトをフラット化したり、ネストされた値の一部を取り出して個別のカラムとして保存したりできます。
 
 ## 未知のカラムをスキップする {#skipping-unknown-columns}
 
@@ -437,11 +435,11 @@ INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
 
 ```response
 Ok.
-クライアント側の例外:
-Code: 117. DB::Exception: JSONEachRow形式の解析中に不明なフィールドが検出されました: month: (ファイル/URI: /data/clickhouse/user_files/list.json): (1行目)
+Exception on client:
+Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
 ```
 
-ClickHouse は、JSON とテーブル列の構造が一致しない場合、例外をスローします。
+ClickHouse は、JSON とテーブルのカラム構造が一致しない場合、例外をスローします。
 
 ## BSON {#bson}
 

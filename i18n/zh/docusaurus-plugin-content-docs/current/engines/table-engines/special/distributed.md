@@ -103,30 +103,30 @@ SETTINGS
 ```xml
 <remote_servers>
     <logs>
-        <!-- 分布式查询的集群间服务器密钥
-             默认值：无密钥（不执行身份验证）
+        <!-- Inter-server per-cluster secret for Distributed queries
+             default: no secret (no authentication will be performed)
 
-             如果设置，分布式查询将在分片上进行验证，因此至少需要满足：
-             - 该集群必须存在于分片上，
-             - 该集群必须具有相同的密钥。
+             If set, then Distributed queries will be validated on shards, so at least:
+             - such cluster should exist on the shard,
+             - such cluster should have the same secret.
 
-             此外（更重要的是），initial_user 将
-             作为查询的当前用户。
+             And also (and which is more important), the initial_user will
+             be used as current user for the query.
         -->
         <!-- <secret></secret> -->
         
-        <!-- 可选。是否允许此集群执行分布式 DDL 查询（ON CLUSTER 子句）。默认值：true（允许）。-->        
+        <!-- Optional. Whether distributed DDL queries (ON CLUSTER clause) are allowed for this cluster. Default: true (allowed). -->        
         <!-- <allow_distributed_ddl_queries>true</allow_distributed_ddl_queries> -->
         
         <shard>
-            <!-- 可选。写入数据时的分片权重。默认值：1。-->
+            <!-- Optional. Shard weight when writing data. Default: 1. -->
             <weight>1</weight>
-            <!-- 可选。分片名称。在集群的所有分片中必须非空且唯一。如果未指定，将为空。-->
+            <!-- Optional. The shard name.  Must be non-empty and unique among shards in the cluster. If not specified, will be empty. -->
             <name>shard_01</name>
-            <!-- 可选。是否仅将数据写入其中一个副本。默认值：false（将数据写入所有副本）。-->
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
             <internal_replication>false</internal_replication>
             <replica>
-                <!-- 可选。用于负载均衡的副本优先级（另请参阅 load_balancing 设置）。默认值：1（值越小优先级越高）。-->
+                <!-- Optional. Priority of the replica for load balancing (see also load_balancing setting). Default: 1 (less value has more priority). -->
                 <priority>1</priority>
                 <host>example01-01-1</host>
                 <port>9000</port>

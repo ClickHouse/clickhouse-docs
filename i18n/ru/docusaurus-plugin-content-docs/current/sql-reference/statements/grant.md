@@ -101,22 +101,22 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- доступ разрешён
-SELECT * FROM db.my_tables_0 -- доступ разрешён
-SELECT * FROM db.my_tables_1 -- доступ разрешён
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
 
-SELECT * FROM db.other_table -- доступ запрещён
-SELECT * FROM db2.my_tables -- доступ запрещён
+SELECT * FROM db.other_table -- not_granted
+SELECT * FROM db2.my_tables -- not_granted
 ```
 
 `GRANT SELECT ON db*.* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- предоставлено
-SELECT * FROM db.my_tables_0 -- предоставлено
-SELECT * FROM db.my_tables_1 -- предоставлено
-SELECT * FROM db.other_table -- предоставлено
-SELECT * FROM db2.my_tables -- предоставлено
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
+SELECT * FROM db.other_table -- granted
+SELECT * FROM db2.my_tables -- granted
 ```
 
 Все вновь созданные таблицы в рамках путей, для которых выданы права, автоматически наследуют все привилегии от своих родительских объектов.
@@ -125,13 +125,13 @@ SELECT * FROM db2.my_tables -- предоставлено
 Вы можете указывать звёздочку **только** для префиксов:
 
 ```sql
-GRANT SELECT ON db.* TO john -- корректно
-GRANT SELECT ON db*.* TO john -- корректно
+GRANT SELECT ON db.* TO john -- correct
+GRANT SELECT ON db*.* TO john -- correct
 
-GRANT SELECT ON *.my_table TO john -- некорректно
-GRANT SELECT ON foo*bar TO john -- некорректно
-GRANT SELECT ON *suffix TO john -- некорректно
-GRANT SELECT(foo) ON db.table* TO john -- некорректно
+GRANT SELECT ON *.my_table TO john -- wrong
+GRANT SELECT ON foo*bar TO john -- wrong
+GRANT SELECT ON *suffix TO john -- wrong
+GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
 
 ## Привилегии {#privileges}
@@ -491,7 +491,7 @@ GRANT CLUSTER ON *.* TO <username>
 Вы получите следующую ошибку, если попытаетесь использовать `ON CLUSTER` в запросе, не выдав предварительно привилегию `CLUSTER`:
 
 ```text
-Недостаточно привилегий. Для выполнения этого запроса необходимо иметь право CLUSTER ON *.*. 
+Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
 Поведение по умолчанию можно изменить, установив в значение `false` настройку `on_cluster_queries_require_cluster_grant` из раздела `access_control_improvements` файла `config.xml` (см. ниже).
@@ -680,13 +680,13 @@ GRANT READ ON S3('regexp_pattern') TO user
 Предоставить доступ к конкретным путям в бакете S3:
 
 ```sql
--- Разрешить пользователю читать только из путей s3://foo/
+-- Allow user to read only from s3://foo/ paths
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- Разрешить пользователю читать файлы по определённым шаблонам
+-- Allow user to read from specific file patterns
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
--- Одному пользователю можно предоставить несколько фильтров
+-- Multiple filters can be granted to the same user
 GRANT READ ON S3('s3://foo/.*') TO john
 GRANT READ ON S3('s3://bar/.*') TO john
 ```
@@ -716,10 +716,10 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 Если исходная команда GRANT содержит `WITH GRANT OPTION`, права можно повторно выдать с помощью `GRANT CURRENT GRANTS`:
 
 ```sql
--- Исходное разрешение с GRANT OPTION
+-- Original grant with GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- Теперь John может передать этот доступ другим пользователям
+-- John can now regrant this access to others
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 

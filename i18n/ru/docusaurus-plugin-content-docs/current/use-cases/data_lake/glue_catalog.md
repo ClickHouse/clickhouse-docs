@@ -87,7 +87,7 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
 ```sql title="Response"
-┌─statement───────────────────────────────────────────────┐
+  ┌─statement───────────────────────────────────────────────┐
 1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │
   │ (                                                       │
   │     `watchid` Nullable(Int64),                          │

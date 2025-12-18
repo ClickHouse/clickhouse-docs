@@ -198,7 +198,7 @@ ClickHouse の[集約関数](https://clickhouse.com/docs/sql-reference/aggregate
 
 ```sql
 SELECT sum(doc.shipping.cost) AS shipping_cost FROM t1;
--- DB::Exception: 集約関数sumの引数に対して型Dynamicは不正です。(ILLEGAL_TYPE_OF_ARGUMENT)
+-- DB::Exception: Illegal type Dynamic of argument for aggregate function sum. (ILLEGAL_TYPE_OF_ARGUMENT)
 ```
 
 集約関数を使用するには、`CAST` 関数または `::` 構文を使ってフィールドを適切な型にキャストします。

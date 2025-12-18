@@ -45,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# Базовый запрос SELECT {#basic-select}
+# Basic SELECT
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# Объединения JOIN (INNER/LEFT OUTER/FULL OUTER/CROSS) {#joins-innerleft-outerfull-outercross}
+# JOINs (INNER/LEFT OUTER/FULL OUTER/CROSS)
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -79,10 +79,10 @@ from clickhouse_connect.cc_sqlalchemy.ddl.tableengine import MergeTree
 from clickhouse_connect.cc_sqlalchemy.datatypes.sqltypes import UInt32, String, DateTime64
 
 with engine.begin() as conn:
-    # Базы данных
+    # Databases
     conn.execute(CreateDatabase("example_db", exists_ok=True))
 
-    # Таблицы
+    # Tables
     metadata = MetaData(schema="example_db")
     table = db.Table(
         "events",
@@ -94,7 +94,7 @@ with engine.begin() as conn:
     )
     table.create(conn)
 
-    # Отражение схемы
+    # Reflection
     reflected = db.Table("events", metadata, autoload_with=engine)
     assert reflected.engine is not None
 ```
@@ -106,11 +106,11 @@ with engine.begin() as conn:
 Операции вставки можно выполнять через SQLAlchemy Core, а также с помощью простых ORM-моделей для удобства.
 
 ```python
-# Вставка через Core {#core-insert}
+# Core insert
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# Базовая вставка через ORM {#basic-orm-insert}
+# Basic ORM insert
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))

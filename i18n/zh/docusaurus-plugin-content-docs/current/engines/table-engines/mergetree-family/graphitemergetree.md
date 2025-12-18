@@ -62,16 +62,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      EventDate Date,
-      Path String,
-      Time DateTime,
-      Value Float64,
-      Version <Numeric_type>
-      ...
-  ) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    EventDate Date,
+    Path String,
+    Time DateTime,
+    Value Float64,
+    Version <Numeric_type>
+    ...
+) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
+```
 
   除 `config_section` 以外，所有参数的含义都与 `MergeTree` 中相同。
 

@@ -146,3 +146,46 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::note
 我们建议将您的源 S3 与 ClickHouse Cloud Service 部署在同一地域，以降低数据传输费用。有关更多信息，请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)。
 :::
+
+
+## 高级操作控制 {#advanced-action-control}
+
+如果用户希望仅在请求源自 ClickHouse 的 VPC 时才允许返回对象，可以在上面创建的 [IAM assume role](#setting-up-iam-assume-role) 中添加以下策略。请查阅 [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) 以了解如何获取 ClickHouse Cloud 的 VPC 端点。
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+
+```

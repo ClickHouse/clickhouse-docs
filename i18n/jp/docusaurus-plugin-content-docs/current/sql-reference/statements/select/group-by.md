@@ -326,7 +326,7 @@ MySQL とは異なり（標準 SQL に準拠して）、GROUP BY 句のキーや
 SELECT
     domainWithoutWWW(URL) AS domain,
     count(),
-    any(Title) AS title -- 各ドメインで最初に出現したページヘッダーを取得
+    any(Title) AS title -- getting the first occurred page header for each domain.
 FROM hits
 GROUP BY domain
 ```
@@ -352,10 +352,10 @@ GROUP BY domain
 次の 2 つのクエリは等価です。
 
 ```sql
--- クエリ 1
+-- Query 1
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
--- クエリ 2
+-- Query 2
 SELECT year, month, day, count(*) FROM t GROUP BY
 GROUPING SETS
 (

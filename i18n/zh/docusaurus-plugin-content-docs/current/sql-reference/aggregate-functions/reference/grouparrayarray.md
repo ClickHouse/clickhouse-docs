@@ -20,18 +20,18 @@ doc_type: 'reference'
 我们可以使用 `groupArrayArray` 函数来分析每个用户的页面访问模式。
 
 ```sql title="Setup"
-CREATE TABLE 网站访问 (
-    用户ID UInt32,
-    会话ID UInt32,
-    页面访问 Array(String)
+CREATE TABLE website_visits (
+    user_id UInt32,
+    session_id UInt32,
+    page_visits Array(String)
 ) ENGINE = Memory;
 
-INSERT INTO 网站访问 VALUES
-(101, 1, ['首页', '产品', '结账']),
-(101, 2, ['搜索', '产品详情', '联系我们']),
-(102, 1, ['首页', '关于我们']),
-(101, 3, ['博客', '首页']),
-(102, 2, ['产品', '产品详情', '添加到购物车', '结账']);
+INSERT INTO website_visits VALUES
+(101, 1, ['homepage', 'products', 'checkout']),
+(101, 2, ['search', 'product_details', 'contact']),
+(102, 1, ['homepage', 'about_us']),
+(101, 3, ['blog', 'homepage']),
+(102, 2, ['products', 'product_details', 'add_to_cart', 'checkout']);
 ```
 
 ```sql title="Query"

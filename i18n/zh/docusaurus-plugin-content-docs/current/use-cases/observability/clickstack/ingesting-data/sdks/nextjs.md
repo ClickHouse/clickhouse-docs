@@ -38,7 +38,7 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // 忽略 OTel 包的警告 
+  // Ignore otel pkgs warnings 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -82,9 +82,9 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: '<YOUR_INGESTION_API_KEY>', // 可选:通过 `HYPERDX_API_KEY` 环境变量配置
-      service: '<MY_SERVICE_NAME>', // 可选:通过 `OTEL_SERVICE_NAME` 环境变量配置
-      additionalInstrumentations: [], // 可选,默认值:[]
+      apiKey: '<YOUR_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
+      service: '<MY_SERVICE_NAME>', // optionally configure via `OTEL_SERVICE_NAME` env var
+      additionalInstrumentations: [], // optional, default: []
     });
   }
 }

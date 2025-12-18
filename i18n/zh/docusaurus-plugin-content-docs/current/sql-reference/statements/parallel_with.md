@@ -14,7 +14,7 @@ doc_type: 'reference'
 ## 语法 {#syntax}
 
 ```sql
-语句1 PARALLEL WITH 语句2 [PARALLEL WITH 语句3 ...]
+statement1 PARALLEL WITH statement2 [PARALLEL WITH statement3 ...]
 ```
 
 并行执行语句 `statement1`、`statement2`、`statement3` 等，其输出会被丢弃。

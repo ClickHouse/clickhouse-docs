@@ -87,7 +87,7 @@ Controversial_ratio: 0
 
 #### 应用字典 {#applying-a-dictionary}
 
-为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），用户应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
+为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），你应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
 
 ```sql
 SELECT table,
@@ -117,7 +117,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-要创建我们的字典，需要使用以下 DDL——请注意其中使用了上面的查询：
+要创建该字典，我们需要使用以下 DDL——注意其中使用了上面的查询：
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -148,7 +148,8 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-现在，可以通过一个简单的 `dictGet` FUNCTION 来获取特定 `PostId` 的赞成票和反对票。下面我们检索 `PostId` 为 `11227902` 的帖子对应的这些值：
+现在，可以通过一个简单的 `dictGet` 函数来获取特定 `PostId` 的赞成票和反对票。下面我们检索 `PostId` 为 `11227902` 的帖子对应的这些值：
+
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes

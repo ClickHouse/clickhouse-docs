@@ -197,16 +197,16 @@ CREATE TABLE noaa
 (
    `station_id` LowCardinality(String),
    `date` Date32,
-   `tempAvg` Int32 COMMENT 'Средняя температура (десятые доли градуса Цельсия)',
-   `tempMax` Int32 COMMENT 'Максимальная температура (десятые доли градуса Цельсия)',
-   `tempMin` Int32 COMMENT 'Минимальная температура (десятые доли градуса Цельсия)',
-   `precipitation` UInt32 COMMENT 'Осадки (десятые доли мм)',
-   `snowfall` UInt32 COMMENT 'Снегопад (мм)',
-   `snowDepth` UInt32 COMMENT 'Глубина снежного покрова (мм)',
-   `percentDailySun` UInt8 COMMENT 'Дневной процент возможной инсоляции (проценты)',
-   `averageWindSpeed` UInt32 COMMENT 'Средняя суточная скорость ветра (десятые доли метров в секунду)',
-   `maxWindSpeed` UInt32 COMMENT 'Пиковая скорость порыва ветра (десятые доли метров в секунду)',
-   `weatherType` Enum8('Нормальная' = 0, 'Туман' = 1, 'Густой туман' = 2, 'Гроза' = 3, 'Мелкий град' = 4, 'Град' = 5, 'Гололёд' = 6, 'Пыль/Пепел' = 7, 'Дым/Мгла' = 8, 'Метель/Поземка' = 9, 'Торнадо' = 10, 'Сильный ветер' = 11, 'Водяные брызги' = 12, 'Дымка' = 13, 'Морось' = 14, 'Ледяная морось' = 15, 'Дождь' = 16, 'Ледяной дождь' = 17, 'Снег' = 18, 'Неизвестные осадки' = 19, 'Приземный туман' = 21, 'Ледяной туман' = 22),
+   `tempAvg` Int32 COMMENT 'Average temperature (tenths of a degrees C)',
+   `tempMax` Int32 COMMENT 'Maximum temperature (tenths of degrees C)',
+   `tempMin` Int32 COMMENT 'Minimum temperature (tenths of degrees C)',
+   `precipitation` UInt32 COMMENT 'Precipitation (tenths of mm)',
+   `snowfall` UInt32 COMMENT 'Snowfall (mm)',
+   `snowDepth` UInt32 COMMENT 'Snow depth (mm)',
+   `percentDailySun` UInt8 COMMENT 'Daily percent of possible sunshine (percent)',
+   `averageWindSpeed` UInt32 COMMENT 'Average daily wind speed (tenths of meters per second)',
+   `maxWindSpeed` UInt32 COMMENT 'Peak gust wind speed (tenths of meters per second)',
+   `weatherType` Enum8('Normal' = 0, 'Fog' = 1, 'Heavy Fog' = 2, 'Thunder' = 3, 'Small Hail' = 4, 'Hail' = 5, 'Glaze' = 6, 'Dust/Ash' = 7, 'Smoke/Haze' = 8, 'Blowing/Drifting Snow' = 9, 'Tornado' = 10, 'High Winds' = 11, 'Blowing Spray' = 12, 'Mist' = 13, 'Drizzle' = 14, 'Freezing Drizzle' = 15, 'Rain' = 16, 'Freezing Rain' = 17, 'Snow' = 18, 'Unknown Precipitation' = 19, 'Ground Fog' = 21, 'Freezing Fog' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
@@ -221,7 +221,7 @@ CREATE TABLE noaa
 Данные можно вставить из локального файла следующим образом (в клиенте ClickHouse):
 
 ```sql
-INSERT INTO noaa FROM INFILE '<путь>/noaa_enriched.parquet'
+INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 ```
 
 где `<path>` обозначает полный путь к локальному файлу на диске.
@@ -263,7 +263,7 @@ LIMIT 5
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1952-09-04 │
 └─────────┴───────────────────┴────────────────────────────────────────────────┴────────────┘
 
-Получено 5 строк. Прошло: 0.514 сек. Обработано 1.06 млрд строк, 4.27 ГБ (2.06 млрд строк/с., 8.29 ГБ/с.)
+5 rows in set. Elapsed: 0.514 sec. Processed 1.06 billion rows, 4.27 GB (2.06 billion rows/s., 8.29 GB/s.)
 ```
 
 Обнадеживающе соответствует [задокументированному рекорду](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded) в [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) по состоянию на 2023 год.
@@ -333,8 +333,8 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-Получено 5 строк. Время выполнения: 0.750 сек. Обработано 689.10 млн строк, 3.20 ГБ (918.20 млн строк/сек., 4.26 ГБ/сек.)
-Пиковое использование памяти: 67.66 МиБ.
+5 rows in set. Elapsed: 0.750 sec. Processed 689.10 million rows, 3.20 GB (918.20 million rows/s., 4.26 GB/s.)
+Peak memory usage: 67.66 MiB.
 ```
 
 ## Благодарности {#credits}

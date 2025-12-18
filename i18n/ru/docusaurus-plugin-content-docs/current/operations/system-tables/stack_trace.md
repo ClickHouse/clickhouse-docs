@@ -42,7 +42,7 @@ WITH arrayMap(x -> demangle(addressToSymbol(x)), trace) AS all SELECT thread_nam
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 thread_name: QueryPipelineEx
 thread_id:   743490
@@ -72,7 +72,7 @@ WITH arrayMap(x -> addressToLine(x), trace) AS all, arrayFilter(x -> x LIKE '%/d
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 thread_name: clickhouse-serv
 

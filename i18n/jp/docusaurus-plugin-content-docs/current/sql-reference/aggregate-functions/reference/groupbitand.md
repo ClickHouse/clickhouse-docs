@@ -27,7 +27,7 @@ groupBitAnd(expr)
 テストデータ:
 
 ```text
-2進数      10進数
+binary     decimal
 00101100 = 44
 00011100 = 28
 00001101 = 13
@@ -45,6 +45,6 @@ SELECT groupBitAnd(num) FROM t
 結果：
 
 ```text
-2進数      10進数
+binary     decimal
 00000100 = 4
 ```

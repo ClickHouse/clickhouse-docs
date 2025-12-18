@@ -16,7 +16,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-studentTTestOneSample([置信水平])(样本数据, 总体均值)
+studentTTestOneSample([confidence_level])(sample_data, population_mean)
 ```
 
 可选参数 `confidence_level` 用于启用置信区间计算。

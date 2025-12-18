@@ -29,19 +29,19 @@ ClickStack の Helm チャートは、複数のデプロイ構成をサポート
 手軽なテストや本番以外の環境では、この方法を使用してください。
 
 ```yaml
-# values-external-clickhouse.yaml {#values-external-clickhouseyaml}
+# values-external-clickhouse.yaml
 clickhouse:
-  enabled: false  # 組み込みClickHouseを無効化
+  enabled: false  # Disable the built-in ClickHouse
 
 otel:
   clickhouseEndpoint: "tcp://your-clickhouse-server:9000"
-  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # 任意
+  clickhousePrometheusEndpoint: "http://your-clickhouse-server:9363"  # Optional
 
 hyperdx:
   defaultConnections: |
     [
       {
-        "name": "外部ClickHouse",
+        "name": "External ClickHouse",
         "host": "http://your-clickhouse-server:8123",
         "port": 8123,
         "username": "your-username",
@@ -64,7 +64,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse.y
 
 #### 設定ファイルを作成する {#create-configuration}
 ```bash
-# connections.json を作成 {#create-connectionsjson}
+# Create connections.json
 cat <<EOF > connections.json
 [
   {
@@ -77,7 +77,7 @@ cat <<EOF > connections.json
 ]
 EOF
 
-# sources.json を作成 {#create-sourcesjson}
+# Create sources.json
 cat <<EOF > sources.json
 [
   {
@@ -125,13 +125,13 @@ kubectl create secret generic hyperdx-external-config \
   --from-file=connections.json=connections.json \
   --from-file=sources.json=sources.json
 
-# ローカルファイルを削除 {#clean-up-local-files}
+# Clean up local files
 rm connections.json sources.json
 ```
 
 #### Helm をシークレットを使うように設定する {#configure-helm-secret}
 ```yaml
-# values-external-clickhouse-secret.yaml {#values-external-clickhouse-secretyaml}
+# values-external-clickhouse-secret.yaml
 clickhouse:
   enabled: false
 
@@ -155,7 +155,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-clickhouse-s
 ClickHouse Cloud を利用する場合:
 
 ```yaml
-# values-clickhouse-cloud.yaml {#values-clickhouse-cloudyaml}
+# values-clickhouse-cloud.yaml
 clickhouse:
   enabled: false
   persistence:
@@ -178,9 +178,9 @@ ClickHouse Cloud への接続手順の全体像については、[「ClickHouse 
 既存の OTel collector インフラストラクチャがある場合は:
 
 ```yaml
-# values-external-otel.yaml {#values-external-otelyaml}
+# values-external-otel.yaml
 otel:
-  enabled: false  # 組み込みのOTel collectorを無効化
+  enabled: false  # Disable the built-in OTEL collector
 
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
@@ -197,7 +197,7 @@ helm install my-clickstack clickstack/clickstack -f values-external-otel.yaml
 既存のインフラストラクチャがある組織の場合は、HyperDX のみをデプロイします。
 
 ```yaml
-# values-minimal.yaml {#values-minimalyaml}
+# values-minimal.yaml
 clickhouse:
   enabled: false
 
@@ -207,7 +207,7 @@ otel:
 hyperdx:
   otelExporterEndpoint: "http://your-otel-collector:4318"
   
-  # オプション1: インライン（テスト用）
+  # Option 1: Inline (for testing)
   defaultConnections: |
     [
       {
@@ -219,7 +219,7 @@ hyperdx:
       }
     ]
   
-  # オプション2: 外部シークレット（本番環境用）
+  # Option 2: External secret (production)
   # useExistingConfigSecret: true
   # existingConfigSecret: "my-external-config"
   # existingConfigConnectionsKey: "connections.json"

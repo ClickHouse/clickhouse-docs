@@ -132,10 +132,10 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    你是 ClickHouse 助手。帮助用户使用 ClickHouse 查询和理解数据。
-                    - 使用 ClickHouse MCP 工具运行 SQL 查询
-                    - 在适当时以 Markdown 表格形式呈现结果
-                    - 保持输出简洁、实用且格式规范
+                    You are a ClickHouse assistant. Help users query and understand data using ClickHouse.
+                    - Run SQL queries using the ClickHouse MCP tool
+                    - Present results in markdown tables when relevant
+                    - Keep output concise, useful, and well-formatted
                 """),
                 markdown=True,
                 show_tool_calls=True,
@@ -158,7 +158,7 @@ def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # 结束流的标记值
+        queue.put(None)  # Sentinel to end stream
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -176,9 +176,9 @@ async def _agent_stream_to_queue(message, queue):
 添加 Streamlit 界面组件和聊天功能：
 
 ```python
-st.title("基于 ClickHouse 的 AI 智能体")
+st.title("A ClickHouse-backed AI agent")
 
-if st.button("💬 新建对话"):
+if st.button("💬 New Chat"):
   st.session_state.messages = []
   st.rerun()
 
@@ -191,7 +191,7 @@ for message in st.session_state.messages:
   with st.chat_message(message["role"]):
     st.markdown(message["content"])
 
-if prompt := st.chat_input("有什么可以帮您?"):
+if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.chat_message("user"):
     st.markdown(prompt)

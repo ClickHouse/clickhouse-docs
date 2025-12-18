@@ -51,13 +51,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+```
 
   Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
 
@@ -149,7 +149,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- эмулировать слияние 
+OPTIMIZE TABLE nested_sum FINAL; -- emulate merge 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐

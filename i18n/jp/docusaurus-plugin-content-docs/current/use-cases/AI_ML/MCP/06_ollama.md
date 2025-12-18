@@ -54,8 +54,8 @@ ollama ls
 ```
 
 ```text
-名前                       ID              サイズ      更新日時
-qwen3:latest               500a1f067a9f    5.2 GB    3日前
+NAME                       ID              SIZE      MODIFIED
+qwen3:latest               500a1f067a9f    5.2 GB    3 days ago
 ```
 
 ダウンロードしたモデルに関する詳細情報を確認するには、次のコマンドを使用します。
@@ -65,18 +65,18 @@ ollama show qwen3
 ```
 
 ```text
-  モデル
-    アーキテクチャ        qwen3
-    パラメータ数          8.2B
-    コンテキスト長      40960
-    埋め込み次元    4096
-    量子化方式        Q4_K_M
+  Model
+    architecture        qwen3
+    parameters          8.2B
+    context length      40960
+    embedding length    4096
+    quantization        Q4_K_M
 
-  対応機能
-    補完
-    ツール呼び出し
+  Capabilities
+    completion
+    tools
 
-  パラメータ
+  Parameters
     repeat_penalty    1
     stop              "<|im_start|>"
     stop              "<|im_end|>"
@@ -84,8 +84,8 @@ ollama show qwen3
     top_k             20
     top_p             0.95
 
-  ライセンス
-    Apache ライセンス
+  License
+    Apache License
     Version 2.0, January 2004
 ```
 
@@ -164,7 +164,7 @@ mcphost --model ollama:qwen3
 また、特定の設定ファイルを使用させたい場合は、次のように実行します:
 
 ```bash
-mcphost --model ollama:qwen3 --config ~/.mcphost.json
+mcphost --model ollama:qwen3 --config ~/.mcphost.json 
 ```
 
 :::warning
@@ -175,28 +175,28 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 
 ```text
   ┃                                                                                     ┃
-  ┃  モデルを読み込みました: ollama (qwen3)                                             ┃
+  ┃  Model loaded: ollama (qwen3)                                                       ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
   ┃                                                                                     ┃
-  ┃  モデルは GPU 上で正常に読み込まれました                                             ┃
+  ┃  Model loaded successfully on GPU                                                   ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
   ┃                                                                                     ┃
-  ┃  MCP サーバーから 3 個のツールを読み込みました                                      ┃
+  ┃  Loaded 3 tools from MCP servers                                                    ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
-  プロンプトを入力してください（コマンド一覧は /help、終了は Ctrl+C、生成のキャンセルは ESC）
+  Enter your prompt (Type /help for commands, Ctrl+C to quit, ESC to cancel generation)
 ```
 
 `/servers` コマンドを使用して、MCP サーバーの一覧を表示できます:
 
 ```text
   ┃                                                                                      ┃
-  ┃  ## 設定済み MCP サーバー                                                           ┃
+  ┃  ## Configured MCP Servers                                                           ┃
   ┃                                                                                      ┃
   ┃  1. mcp-ch                                                                           ┃
   ┃   MCPHost System (10:00)                                                             ┃
@@ -206,7 +206,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 また、`/tools` を使用して、利用可能なツールを一覧表示できます:
 
 ```text
-  ┃  ## 利用可能なツール                                                                 ┃
+  ┃  ## Available Tools                                                                  ┃
   ┃                                                                                      ┃
   ┃  1. mcp-ch__list_databases                                                           ┃
   ┃  2. mcp-ch__list_tables                                                              ┃

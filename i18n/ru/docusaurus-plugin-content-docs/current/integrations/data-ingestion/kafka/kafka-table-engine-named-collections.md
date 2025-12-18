@@ -42,10 +42,10 @@ doc_type: 'guide'
 Добавьте следующий раздел в файл конфигурации ClickHouse `config.xml`:
 
 ```xml
-<!-- Именованные коллекции для интеграции Kafka -->
+<!-- Named collections for Kafka integration -->
 <named_collections>
     <cluster_1>
-        <!-- Параметры движка ClickHouse Kafka -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -54,7 +54,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Расширенная конфигурация Kafka -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -67,7 +67,7 @@ doc_type: 'guide'
     </cluster_1>
 
     <cluster_2>
-        <!-- Параметры движка ClickHouse Kafka -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -76,7 +76,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Расширенная конфигурация Kafka -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>

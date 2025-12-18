@@ -27,7 +27,7 @@ SELECT * FROM system.detached_tables FORMAT Vertical;
 ```
 
 ```text
-第 1 行：
+Row 1:
 ──────
 database:                   base
 table:                      t1

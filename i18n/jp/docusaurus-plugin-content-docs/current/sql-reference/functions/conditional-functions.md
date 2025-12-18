@@ -51,15 +51,15 @@ SELECT
 SELECT
     left,
     right,
-    multiIf(left < right, '左の方が小さい', left > right, '右の方が小さい', '両方とも等しい') AS faulty_result
+    multiIf(left < right, 'left is smaller', left > right, 'right is smaller', 'Both equal') AS faulty_result
 FROM LEFT_RIGHT
 
 ┌─left─┬─right─┬─faulty_result────┐
-│ ᴺᵁᴸᴸ │     4 │ 両方とも等しい       │
-│    1 │     3 │ 左の方が小さい  │
-│    2 │     2 │ 両方とも等しい       │
-│    3 │     1 │ 右の方が小さい │
-│    4 │  ᴺᵁᴸᴸ │ 両方とも等しい       │
+│ ᴺᵁᴸᴸ │     4 │ Both equal       │
+│    1 │     3 │ left is smaller  │
+│    2 │     2 │ Both equal       │
+│    3 │     1 │ right is smaller │
+│    4 │  ᴺᵁᴸᴸ │ Both equal       │
 └──────┴───────┴──────────────────┘
 ```
 
@@ -136,7 +136,7 @@ WHERE number < 3
 
 3 行の結果。経過時間: 0.002 秒。
 
-````
+```
 
 この形式では、返り値の式を定数にする必要はありません。
 
@@ -165,8 +165,8 @@ WHERE number < 3
 │      2 │                        2 │
 └────────┴──────────────────────────┘
 
-3行のセット。経過時間: 0.001秒。
-````
+3 rows in set. Elapsed: 0.001 sec.
+```
 
 #### 注意事項 {#caveats}
 
@@ -236,7 +236,7 @@ WHERE number < 3
 │      2 │ 1970-01-01 00:00:00 │
 └────────┴─────────────────────┘
 
-3 行の結果。経過時間: 0.002 秒.
+3 rows in set. Elapsed: 0.002 sec.
 
 ```
 

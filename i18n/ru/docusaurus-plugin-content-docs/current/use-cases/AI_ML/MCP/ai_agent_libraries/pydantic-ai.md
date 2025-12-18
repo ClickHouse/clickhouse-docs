@@ -36,7 +36,7 @@ doc_type: 'guide'
 ```python
 pip install -q --upgrade pip
 pip install -q "pydantic-ai-slim[mcp]"
-pip install -q "pydantic-ai-slim[anthropic]" # замените на соответствующий пакет при использовании другого провайдера LLM
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
 
 ## Настройка учетных данных {#setup-credentials}
@@ -49,7 +49,7 @@ os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Введите ключ API Anthropic: ········
+Enter Anthropic API Key: ········
 ```
 
 :::note Использование другого провайдера LLM
@@ -103,27 +103,27 @@ async with agent.run_mcp_servers():
 
 Вы получите ответ, аналогичный приведенному ниже:
 
-```response title="Ответ"
-На основе данных из репозитория ClickHouse на GitHub, вот топ-контрибьюторов по количеству созданных pull request'ов:
+```response title="Response"
+Based on the data from the ClickHouse GitHub repository, here are the top contributors by number of pull requests created:
 
-**Топ-контрибьюторы ClickHouse по открытым PR:**
+**Top contributors to ClickHouse by PRs opened:**
 
-1. **alexey-milovidov** - 3,370 открытых PR
-2. **azat** - 1,905 открытых PR
-3. **rschu1ze** - 979 открытых PR
-4. **alesapin** - 947 открытых PR
-5. **tavplubix** - 896 открытых PR
-6. **kssenii** - 871 открытых PR
-7. **Avogar** - 805 открытых PR
-8. **KochetovNicolai** - 700 открытых PR
-9. **Algunenano** - 658 открытых PR
-10. **kitaisreal** - 630 открытых PR
+1. **alexey-milovidov** - 3,370 PRs opened
+2. **azat** - 1,905 PRs opened  
+3. **rschu1ze** - 979 PRs opened
+4. **alesapin** - 947 PRs opened
+5. **tavplubix** - 896 PRs opened
+6. **kssenii** - 871 PRs opened
+7. **Avogar** - 805 PRs opened
+8. **KochetovNicolai** - 700 PRs opened
+9. **Algunenano** - 658 PRs opened
+10. **kitaisreal** - 630 PRs opened
 
-**Алексей Миловидов** выделяется как безусловно самый активный контрибьютор с более чем 3,370 открытыми pull request'ами, что значительно больше, чем у любого другого контрибьютора. Это логично, поскольку Алексей Миловидов является одним из основателей и ведущих разработчиков ClickHouse.
+**Alexey Milovidov** stands out as by far the most active contributor with over 3,370 pull requests opened, which is significantly more than any other contributor. This makes sense as Alexey Milovidov is one of the founders and lead developers of ClickHouse.
 
-Данные также показывают, что alexey-milovidov был очень активен в управлении PR, с 12,818 событиями "закрытия" (вероятно, проверка и закрытие PR от других контрибьюторов) в дополнение к созданию собственных PR.
+The data also shows that alexey-milovidov has been very active in managing PRs, with 12,818 "closed" events (likely reviewing and closing PRs from other contributors) in addition to creating his own PRs.
 
-Стоит отметить, что я отфильтровал различные аккаунты роботов/ботов, которые обрабатывают автоматизированные процессы, сосредоточившись на человеческих контрибьюторах, чтобы дать вам наиболее значимый ответ о том, кто внес наибольший вклад в PR для ClickHouse.
+It's worth noting that I filtered out various robot/bot accounts that handle automated processes, focusing on human contributors to give you the most meaningful answer about who has contributed the most PRs to ClickHouse.
 ```
 
 </VerticalStepper>

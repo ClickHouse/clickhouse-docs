@@ -50,14 +50,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存のプロジェクトも上で説明した方法に切り替えてください。
   :::
 
-  ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-  ```
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+...
+) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+```
 
   `columns` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
@@ -149,7 +149,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- マージをエミュレートする 
+OPTIMIZE TABLE nested_sum FINAL; -- emulate merge 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐

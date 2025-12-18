@@ -100,15 +100,15 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 [Result set template](assets/output.results), который определяет структуру всего набора результатов:
 
 ```response
-== Топ-10 IP-адресов ==
+== Top 10 IPs ==
 ${data}
---- Прочитано строк: ${rows_read:XML} за ${time:XML} ---
+--- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
 Здесь `rows_read` и `time` — это системные метрики, доступные для каждого запроса. При этом `data` обозначает сгенерированные строки (`${data}` всегда должно быть первым плейсхолдером в этом файле), которые формируются по шаблону, определённому в [**файле шаблона строк**](assets/output.rows):
 
 ```response
-${ip:Escaped} создал ${total:Escaped} запросов
+${ip:Escaped} generated ${total:Escaped} requests
 ```
 
 Теперь используем эти шаблоны, чтобы экспортировать следующий запрос:
@@ -121,20 +121,20 @@ FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 FORMAT Template SETTINGS format_template_resultset = 'output.results',
                          format_template_row = 'output.rows';
 
-== Топ-10 IP-адресов ==
+== Top 10 IPs ==
 
-9.8.4.6 сгенерировал 3 запросов
-9.5.1.1 сгенерировал 3 запросов
-2.4.8.9 сгенерировал 3 запросов
-4.8.8.2 сгенерировал 3 запросов
-4.5.4.4 сгенерировал 3 запросов
-3.3.6.4 сгенерировал 2 запросов
-8.9.5.9 сгенерировал 2 запросов
-2.5.1.8 сгенерировал 2 запросов
-6.8.3.6 сгенерировал 2 запросов
-6.6.3.5 сгенерировал 2 запросов
+9.8.4.6 generated 3 requests
+9.5.1.1 generated 3 requests
+2.4.8.9 generated 3 requests
+4.8.8.2 generated 3 requests
+4.5.4.4 generated 3 requests
+3.3.6.4 generated 2 requests
+8.9.5.9 generated 2 requests
+2.5.1.8 generated 2 requests
+6.8.3.6 generated 2 requests
+6.6.3.5 generated 2 requests
 
---- Прочитано 1000 строк за 0.001380604 ---
+--- 1000 rows read in 0.001380604 ---
 ```
 
 ### Экспорт в HTML-файлы {#exporting-to-html-files}

@@ -87,7 +87,7 @@ Controversial_ratio: 0
 
 #### Dictionary の適用 {#applying-a-dictionary}
 
-これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、ユーザーはデータサイズに留意しておく必要があります。ここで、`votes` テーブルのサイズを確認します：
+これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -117,7 +117,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-Dictionary を作成するには、以下の DDL を実行します。先ほどのクエリが使われている点に注目してください。
+Dictionary を作成するには、以下の DDL を実行します。上記のクエリが使われている点に注目してください。
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -148,7 +148,8 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-特定の`PostId`に対する賛成票数と反対票数は、シンプルな`dictGet`関数で取得できるようになりました。以下の例では、投稿`11227902`の値を取得しています。
+特定の `PostId` に対する賛成票数と反対票数は、シンプルな `dictGet` 関数で取得できるようになりました。以下の例では、投稿 `11227902` の値を取得しています。
+
 
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes

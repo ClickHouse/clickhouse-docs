@@ -72,7 +72,7 @@ FROM salaries;
 結果：
 
 ```response
-   ┌─選手名──────────┬─給与───┬─最高給与選手───────┐
+   ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │
 3. │ Charles Juarez  │ 190000 │ Gary Chen           │

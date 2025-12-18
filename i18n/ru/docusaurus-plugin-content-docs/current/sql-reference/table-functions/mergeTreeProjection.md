@@ -15,7 +15,7 @@ doc_type: 'reference'
 ## Синтаксис {#syntax}
 
 ```sql
-mergeTreeProjection(база_данных, таблица, проекция)
+mergeTreeProjection(database, table, projection)
 ```
 
 ## Аргументы {#arguments}

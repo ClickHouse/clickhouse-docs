@@ -26,7 +26,7 @@ WHERE title ILIKE '%CPU%'
 Row 1:
 ──────
 dashboard: overview
-title:     Использование ЦП (ядра)
+title:     CPU Usage (cores)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUVirtualTimeMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -36,7 +36,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 2:
 ──────
 dashboard: overview
-title:     Ожидание ЦП
+title:     CPU Wait
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(ProfileEvent_OSCPUWaitMicroseconds) / 1000000
 FROM system.metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32}
@@ -46,7 +46,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 3:
 ──────
 dashboard: overview
-title:     Использование ЦП ОС (пользовательское пространство)
+title:     OS CPU Usage (Userspace)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSUserTimeNormalized'
@@ -56,7 +56,7 @@ ORDER BY t WITH FILL STEP {rounding:UInt32}
 Row 4:
 ──────
 dashboard: overview
-title:     Использование ЦП ОС (ядро)
+title:     OS CPU Usage (Kernel)
 query:     SELECT toStartOfInterval(event_time, INTERVAL {rounding:UInt32} SECOND)::INT AS t, avg(value)
 FROM system.asynchronous_metric_log
 WHERE event_date >= toDate(now() - {seconds:UInt32}) AND event_time >= now() - {seconds:UInt32} AND metric = 'OSSystemTimeNormalized'

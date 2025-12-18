@@ -11,7 +11,6 @@ import shared_merge_tree from '@site/static/images/cloud/reference/shared-merge-
 import shared_merge_tree_2 from '@site/static/images/cloud/reference/shared-merge-tree-2.png';
 import Image from '@theme/IdealImage';
 
-
 # SharedMergeTree 表引擎 {#sharedmergetree-table-engine}
 
 SharedMergeTree 表引擎系列是面向云环境、用于替代 ReplicatedMergeTree 引擎的解决方案，并针对在共享存储之上运行进行了优化（例如 Amazon S3、Google Cloud Storage、MinIO、Azure Blob Storage）。每一种具体的 MergeTree 引擎类型都有对应的 SharedMergeTree 变体，例如 SharedReplacingMergeTree 用来替代 ReplicatedReplacingMergeTree。
@@ -88,8 +87,8 @@ ORDER BY key;
 
 对于某个表，可以通过执行 `SHOW CREATE TABLE` 命令来查看其 `CREATE TABLE` 语句中使用的表引擎：
 
-```sql
-SHOW CREATE TABLE myFirstReplacingMT;
+```
+
 ```
 
 ```sql
@@ -98,7 +97,6 @@ CREATE TABLE default.myFirstReplacingMT
 ENGINE = SharedReplacingMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 ORDER BY key
 ```
-
 
 ## 设置 {#settings}
 

@@ -30,7 +30,7 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 API キーを Superset で利用できるようにします:
 
 ```bash
-echo "MAPBOX_API_KEY=pk.SAMPLE-実際のキーに置き換えてください" >> docker/.env-non-dev
+echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
 
 ## Superset バージョン 2.0.0 のデプロイ {#deploy-superset-version-200}

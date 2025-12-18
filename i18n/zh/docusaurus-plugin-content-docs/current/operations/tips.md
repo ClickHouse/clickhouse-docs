@@ -186,52 +186,59 @@ cpu_mode=host-passthrough
 zoo.cfg:
 
 ```bash
-# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html {#httphadoopapacheorgzookeeperdocscurrentzookeeperadminhtml}
+# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
 
-# 每个 tick 的毫秒数 {#the-number-of-milliseconds-of-each-tick}
+# The number of milliseconds of each tick
 tickTime=2000
-# 初始同步阶段可以占用的 tick 数量 {#the-number-of-ticks-that-the-initial}
-# 此值没有明确的依据 {#synchronization-phase-can-take}
+# The number of ticks that the initial
+# synchronization phase can take
+# This value is not quite motivated
 initLimit=300
-# 发送请求和接收确认之间可以经过的 tick 数量 {#this-value-is-not-quite-motivated}
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
 syncLimit=10
 
 maxClientCnxns=2000
 
-# 这是客户端可以请求且服务器将接受的最大值。 {#the-number-of-ticks-that-can-pass-between}
-# 服务器上设置较高的 maxSessionTimeout 是可以的,以便允许客户端在需要时使用较高的会话超时。 {#sending-a-request-and-getting-an-acknowledgement}
-# 但默认情况下我们请求 30 秒的会话超时(您可以在 ClickHouse 配置中使用 session_timeout_ms 更改它)。 {#it-is-the-maximum-value-that-client-may-request-and-the-server-will-accept}
+# It is the maximum value that client may request and the server will accept.
+# It is Ok to have high maxSessionTimeout on server to allow clients to work with high session timeout if they want.
+# But we request session timeout of 30 seconds by default (you can change it with session_timeout_ms in ClickHouse config).
 maxSessionTimeout=60000000
-# 存储快照的目录。 {#it-is-ok-to-have-high-maxsessiontimeout-on-server-to-allow-clients-to-work-with-high-session-timeout-if-they-want}
+# the directory where the snapshot is stored.
 dataDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/data
-# 将 dataLogDir 放置在单独的物理磁盘上以获得更好的性能 {#but-we-request-session-timeout-of-30-seconds-by-default-you-can-change-it-with-session_timeout_ms-in-clickhouse-config}
+# Place the dataLogDir to a separate physical disc for better performance
 dataLogDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/logs
 
 autopurge.snapRetainCount=10
 autopurge.purgeInterval=1
 
 
-# 为避免磁盘寻址,ZooKeeper 在事务日志文件中以 preAllocSize 千字节的块分配空间。 {#the-directory-where-the-snapshot-is-stored}
-# 默认块大小为 64M。更改块大小的一个原因是在更频繁地创建快照时减小块大小。 {#place-the-datalogdir-to-a-separate-physical-disc-for-better-performance}
-# (另请参阅 snapCount)。 {#to-avoid-seeks-zookeeper-allocates-space-in-the-transaction-log-file-in}
+# To avoid seeks ZooKeeper allocates space in the transaction log file in
+# blocks of preAllocSize kilobytes. The default block size is 64M. One reason
+# for changing the size of the blocks is to reduce the block size if snapshots
+# are taken more often. (Also, see snapCount).
 preAllocSize=131072
 
-# 客户端提交请求的速度可能快于 ZooKeeper 处理它们的速度, {#blocks-of-preallocsize-kilobytes-the-default-block-size-is-64m-one-reason}
-# 特别是在有大量客户端的情况下。为防止 ZooKeeper 因排队请求而耗尽内存, {#for-changing-the-size-of-the-blocks-is-to-reduce-the-block-size-if-snapshots}
-# ZooKeeper 将限制客户端,使系统中未完成的请求不超过 globalOutstandingLimit。 {#are-taken-more-often-also-see-snapcount}
-# 默认限制为 1000。 {#clients-can-submit-requests-faster-than-zookeeper-can-process-them}
-# globalOutstandingLimit=1000 {#especially-if-there-are-a-lot-of-clients-to-prevent-zookeeper-from-running}
+# Clients can submit requests faster than ZooKeeper can process them,
+# especially if there are a lot of clients. To prevent ZooKeeper from running
+# out of memory due to queued requests, ZooKeeper will throttle clients so that
+# there is no more than globalOutstandingLimit outstanding requests in the
+# system. The default limit is 1000.
+# globalOutstandingLimit=1000
 
-# ZooKeeper 将事务记录到事务日志中。在将 snapCount 个事务写入日志文件后, {#out-of-memory-due-to-queued-requests-zookeeper-will-throttle-clients-so-that}
-# 将启动快照并启动新的事务日志文件。默认 snapCount 为 100000。 {#there-is-no-more-than-globaloutstandinglimit-outstanding-requests-in-the}
+# ZooKeeper logs transactions to a transaction log. After snapCount transactions
+# are written to a log file a snapshot is started and a new transaction log file
+# is started. The default snapCount is 100000.
 snapCount=3000000
 
-# 如果定义了此选项,请求将被记录到名为 traceFile.year.month.day 的跟踪文件中。 {#system-the-default-limit-is-1000}
+# If this option is defined, requests will be will logged to a trace file named
+# traceFile.year.month.day.
 #traceFile=
 
-# Leader 接受客户端连接。默认值为 "yes"。Leader 机器协调更新。 {#globaloutstandinglimit1000}
-# 为了以略微牺牲读取吞吐量为代价获得更高的更新吞吐量, {#zookeeper-logs-transactions-to-a-transaction-log-after-snapcount-transactions}
-# 可以将 leader 配置为不接受客户端并专注于协调。 {#are-written-to-a-log-file-a-snapshot-is-started-and-a-new-transaction-log-file}
+# Leader accepts client connections. Default value is "yes". The leader machine
+# coordinates updates. For higher update throughput at thes slight expense of
+# read throughput the leader can be configured to not accept clients and focus
+# on coordination.
 leaderServes=yes
 
 standaloneEnabled=false
@@ -252,9 +259,9 @@ JVM 参数：
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
 ZOOCFGDIR=/etc/$NAME/conf
 
-# TODO 此处代码较为冗余 {#is-started-the-default-snapcount-is-100000}
-# 如何确定所需的 jar 文件? {#if-this-option-is-defined-requests-will-be-will-logged-to-a-trace-file-named}
-# log4j 似乎要求 log4j.properties 文件必须位于 classpath 中 {#tracefileyearmonthday}
+# TODO this is really ugly
+# How to find out, which jars are needed?
+# seems, that log4j requires the log4j.properties file to be in the classpath
 CLASSPATH="$ZOOCFGDIR:/usr/build/classes:/usr/build/lib/*.jar:/usr/share/zookeeper-3.6.2/lib/audience-annotations-0.5.0.jar:/usr/share/zookeeper-3.6.2/lib/commons-cli-1.2.jar:/usr/share/zookeeper-3.6.2/lib/commons-lang-2.6.jar:/usr/share/zookeeper-3.6.2/lib/jackson-annotations-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-core-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-databind-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/javax.servlet-api-3.1.0.jar:/usr/share/zookeeper-3.6.2/lib/jetty-http-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-io-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-security-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-server-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-servlet-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-util-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jline-2.14.6.jar:/usr/share/zookeeper-3.6.2/lib/json-simple-1.1.1.jar:/usr/share/zookeeper-3.6.2/lib/log4j-1.2.17.jar:/usr/share/zookeeper-3.6.2/lib/metrics-core-3.2.5.jar:/usr/share/zookeeper-3.6.2/lib/netty-buffer-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-codec-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-handler-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-resolver-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-epoll-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-unix-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_common-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_hotspot-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_servlet-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-api-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-log4j12-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/snappy-java-1.1.7.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-jute-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-prometheus-metrics-3.6.2.jar:/usr/share/zookeeper-3.6.2/etc"
 
 ZOOCFG="$ZOOCFGDIR/zoo.cfg"
@@ -280,7 +287,7 @@ JAVA_OPTS="-Xms{{ '{{' }} cluster.get('xms','128M') {{ '}}' }} \
 Salt 初始化：
 
 ```text
-description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} 集中式协调服务"
+description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} centralized coordination service"
 
 start on runlevel [2345]
 stop on runlevel [!2345]

@@ -55,15 +55,15 @@ CDC に必要な権限を付与した ClickPipes 用の新しいユーザーを�
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- 移動するテーブルに応じて、追加のスキーマに対してもこれらの権限を付与する必要がある場合があります
+-- You may need to grant these permissions on more schemas depending on the tables you're moving
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- ユーザーにレプリケーション権限を付与します
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- パブリケーションを作成します。パイプ作成時に使用します
--- ClickPipeに新しいテーブルを追加する際は、パブリケーションにも手動で追加する必要があります。 
+-- Create a publication. We will use this when creating the pipe
+-- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
 ```
 

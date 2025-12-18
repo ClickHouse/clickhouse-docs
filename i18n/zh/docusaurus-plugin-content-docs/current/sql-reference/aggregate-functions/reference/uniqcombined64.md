@@ -57,7 +57,7 @@ SELECT uniqCombined64(number) FROM numbers(1e10);
 
 ```response
 ┌─uniqCombined64(number)─┐
-│             9998568925 │ -- 100 亿
+│             9998568925 │ -- 10.00 billion
 └────────────────────────┘
 ```
 
@@ -73,7 +73,7 @@ SELECT uniqCombined(number) FROM numbers(1e10);
 
 ```response
 ┌─uniqCombined(number)─┐
-│           5545308725 │ -- 55.45 亿
+│           5545308725 │ -- 5.55 billion
 └──────────────────────┘
 ```
 

@@ -136,14 +136,14 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定ファイルを用いた拡張的な設定が可能です。使用できる設定キーは 2 種類あり、グローバル (`hdfs`) とユーザーレベル (`hdfs_*`) です。最初にグローバル設定が適用され、その後に（存在する場合は）ユーザーレベルの設定が適用されます。
 
 ```xml
-<!-- HDFSエンジンタイプのグローバル設定オプション -->
+<!-- Global configuration options for HDFS engine type -->
 <hdfs>
   <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
   <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
   <hadoop_security_authentication>kerberos</hadoop_security_authentication>
 </hdfs>
 
-<!-- ユーザー"root"固有の設定 -->
+<!-- Configuration specific for user "root" -->
 <hdfs_root>
   <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
 </hdfs_root>

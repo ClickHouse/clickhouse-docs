@@ -12,13 +12,13 @@ doc_type: 'reference'
 Синтаксис:
 
 ```sql
-ALTER QUOTA [IF EXISTS] имя [ON CLUSTER имя_кластера]
-    [RENAME TO новое_имя]
+ALTER QUOTA [IF EXISTS] name [ON CLUSTER cluster_name]
+    [RENAME TO new_name]
     [KEYED BY {user_name | ip_address | client_key | client_key,user_name | client_key,ip_address} | NOT KEYED]
-    [FOR [RANDOMIZED] INTERVAL число {second | minute | hour | day | week | month | quarter | year}
-        {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | execution_time} = число } [,...] |
+    [FOR [RANDOMIZED] INTERVAL number {second | minute | hour | day | week | month | quarter | year}
+        {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | execution_time} = number } [,...] |
         NO LIMITS | TRACKING ONLY} [,...]]
-    [TO {роль [,...] | ALL | ALL EXCEPT роль [,...]}]
+    [TO {role [,...] | ALL | ALL EXCEPT role [,...]}]
 ```
 
 Ключи `user_name`, `ip_address`, `client_key`, `client_key, user_name` и `client_key, ip_address` соответствуют столбцам таблицы [system.quotas](../../../operations/system-tables/quotas.md).
@@ -32,7 +32,7 @@ ALTER QUOTA [IF EXISTS] имя [ON CLUSTER имя_кластера]
 Ограничьте максимальное количество запросов для текущего пользователя до 123 запросов за 15 месяцев:
 
 ```sql
-ИЗМЕНИТЬ КВОТУ, ЕСЛИ СУЩЕСТВУЕТ qA НА ИНТЕРВАЛ 15 месяцев МАКСИМУМ запросов = 123 ДЛЯ CURRENT_USER;
+ALTER QUOTA IF EXISTS qA FOR INTERVAL 15 month MAX queries = 123 TO CURRENT_USER;
 ```
 
 Для пользователя по умолчанию задайте следующие ограничения: максимальное время выполнения — полсекунды в течение 30 минут, максимальное число запросов — 321, а максимальное число ошибок — 10 за 5 четвертей часа:

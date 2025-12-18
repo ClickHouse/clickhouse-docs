@@ -68,7 +68,7 @@ import (
   "go.opentelemetry.io/otel/sdk/resource"
 )
 
-// 为所有日志配置通用属性
+// configure common attributes for all logs
 func newResource() *resource.Resource {
   hostName, _ := os.Hostname()
   return resource.NewWithAttributes(
@@ -78,12 +78,12 @@ func newResource() *resource.Resource {
   )
 }
 
-// 将 trace ID 附加到日志
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctx 不包含有效的 span。
-    // 没有 trace 元数据可添加。
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -93,24 +93,24 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // 初始化 OTel 配置并在整个应用中使用
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("设置 OTel SDK 时出错 - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // 配置 OpenTelemetry logger provider
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
-  // 优雅关闭 logger 以在程序结束前刷新累积的信号
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // 使用 OpenTelemetry zap core 创建新 logger 并全局设置
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
   logger.Warn("hello world", zap.String("foo", "bar"))
@@ -122,19 +122,19 @@ func main() {
     port = "7777"
   }
 
-  logger.Info("** 服务已在端口 " + port + " 启动 **")
+  logger.Info("** Service Started on Port " + port + " **")
   if err := http.ListenAndServe(":"+port, nil); err != nil {
     logger.Fatal(err.Error())
   }
 }
 
-// 使用此函数包装所有 handler 以向 logger 添加 trace 元数据
+// Use this to wrap all handlers to add trace metadata to the logger
 func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
     logger := WithTraceMetadata(r.Context(), logger)
-    logger.Info("收到请求", zap.String("url", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request received", zap.String("url", r.URL.Path), zap.String("method", r.Method))
     handler(w, r)
-    logger.Info("请求完成", zap.String("path", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request completed", zap.String("path", r.URL.Path), zap.String("method", r.Method))
   }
 }
 
@@ -173,12 +173,12 @@ import (
   "go.uber.org/zap"
 )
 
-// 将 trace ID 附加到日志
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctx 不包含有效的 span。
-    // 无需添加 trace 元数据。
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -188,42 +188,42 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // 初始化 OTel 配置并在整个应用程序中使用
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("设置 OTel SDK 出错 - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
 
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // 配置 OpenTelemetry 日志提供器
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
 
-  // 优雅关闭日志记录器以在程序结束前刷新累积的信号
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // 使用 OpenTelemetry zap 核心创建新日志记录器并全局设置
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
 
-  // 创建新 Gin 路由器
+  // Create a new Gin router
   router := gin.Default()
 
   router.Use(otelgin.Middleware("service-name"))
 
-  // 定义响应根 URL GET 请求的路由
+  // Define a route that responds to GET requests on the root URL
   router.GET("/", func(c *gin.Context) {
     _logger := WithTraceMetadata(c.Request.Context(), logger)
     _logger.Info("Hello World!")
     c.String(http.StatusOK, "Hello World!")
   })
 
-  // 在端口 7777 运行服务器
+  // Run the server on port 7777
   router.Run(":7777")
 }
 ```

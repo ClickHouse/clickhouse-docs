@@ -39,9 +39,9 @@ WHERE cluster = 'test_cluster'
 LIMIT 2
 FORMAT Vertical
 
-クエリ ID: f544e72a-6641-43f1-836b-24baa1c9632a
+Query id: f544e72a-6641-43f1-836b-24baa1c9632a
 
-行 1:
+Row 1:
 ──────
 entry:             query-0000000000
 entry_version:     5
@@ -53,13 +53,13 @@ settings:          {'max_threads':'16','use_uncompressed_cache':'0'}
 query_create_time: 2023-09-01 16:15:14
 host:              clickhouse-01
 port:              9000
-status:            完了
+status:            Finished
 exception_code:    0
 exception_text:    
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
-行 2:
+Row 2:
 ──────
 entry:             query-0000000001
 entry_version:     5
@@ -71,11 +71,11 @@ settings:          {'max_threads':'16','use_uncompressed_cache':'0'}
 query_create_time: 2023-09-01 16:15:14
 host:              clickhouse-01
 port:              9000
-status:            完了
+status:            Finished
 exception_code:    630
-exception_text:    Code: 630. DB::Exception: test_db を削除または名前変更できません。依存するテーブルが存在するためです:
+exception_text:    Code: 630. DB::Exception: Cannot drop or rename test_db, because some tables depend on it:
 query_finish_time: 2023-09-01 16:15:14
 query_duration_ms: 154
 
-2 行を取得しました。経過時間: 0.025 秒
+2 rows in set. Elapsed: 0.025 sec.
 ```

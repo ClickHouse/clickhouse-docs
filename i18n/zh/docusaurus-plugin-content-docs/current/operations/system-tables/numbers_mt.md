@@ -30,5 +30,5 @@ SELECT * FROM system.numbers_mt LIMIT 10;
 │      9 │
 └────────┘
 
-返回 10 行。耗时: 0.001 秒。
+10 rows in set. Elapsed: 0.001 sec.
 ```

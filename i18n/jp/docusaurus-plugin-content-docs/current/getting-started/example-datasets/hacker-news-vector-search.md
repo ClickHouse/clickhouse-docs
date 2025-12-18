@@ -65,7 +65,7 @@ doc_type: 'guide'
 
   ### ベクトル類似性インデックスを構築する
 
-  以下のSQLを実行して、`hackernews`テーブルの`vector`列にベクトル類似性インデックスを定義および構築します：
+  以下のSQLを実行して、`hackernews`テーブルの`vector`カラムにベクトル類似性インデックスを定義および構築します:
 
   ```sql
   ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
@@ -74,8 +74,9 @@ doc_type: 'guide'
   ```
 
   インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-  上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-  これらのパラメータの最適な値を選択する際は、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、慎重に決定する必要があります。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
   2,874万件の完全なデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、数分から1時間程度かかる場合があります。
 
@@ -88,6 +89,7 @@ doc_type: 'guide'
   FROM hackernews
   ORDER BY cosineDistance( vector, <search vector>)
   LIMIT 10
+
   ```
 
   ベクトルインデックスの初回メモリロード時には、数秒から数分程度かかる場合があります。
@@ -106,45 +108,46 @@ doc_type: 'guide'
 
   import clickhouse_connect
 
-  print("初期化中...")
+  print("Initializing...")
 
   model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
   chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
   while True:
-      # ユーザーから検索クエリを取得
-      print("検索クエリを入力してください:")
+      # Take the search query from user
+      print("Enter a search query :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # モデルを実行して検索ベクトルを取得
-      print("埋め込みを生成中:", input_query);
+      # Run the model and obtain search vector
+      print("Generating the embedding for ", input_query);
       embeddings = model.encode(texts)
 
-      print("ClickHouseへクエリ実行中...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':20}
       result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-      print("結果:")
+      print("Results :")
       for row in result.result_rows:
           print(row[0], row[2][:100])
           print("---------")
+
   ```
 
   上記のPythonスクリプトの実行例と類似検索の結果を以下に示します
   (上位20件の投稿からそれぞれ100文字のみを出力):
 
   ```text
-  初期化中...
+  Initializing...
 
-  検索クエリを入力:
-  OLAPキューブは有用か
+  Enter a search query :
+  Are OLAP cubes useful
 
-  "OLAPキューブは有用か" の埋め込みを生成中
+  Generating the embedding for  "Are OLAP cubes useful"
 
-  ClickHouseへクエリ実行中...
+  Querying ClickHouse...
 
-  結果:
+  Results :
 
   27742647 smartmic:
   slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
@@ -208,38 +211,45 @@ doc_type: 'guide'
 
   アプリケーションは以下の手順を実行します：
 
-  1. ユーザーから *topic* の入力を受け付ける
+  1. ユーザーから *topic* を入力として受け取る
   2. `SentenceTransformers` の `all-MiniLM-L6-v2` モデルを使用して、*topic* の埋め込みベクトルを生成します
-  3. `hackernews` テーブルに対してベクトル類似度検索を実行し、関連性の高い投稿やコメントを取得します
+  3. `hackernews` テーブルに対してベクトル類似検索を実行し、関連性の高い投稿やコメントを取得します
   4. `LangChain` と OpenAI の `gpt-3.5-turbo` Chat API を使用して、ステップ #3 で取得したコンテンツを**要約**します。
-     ステップ #3 で取得した投稿やコメントは *コンテキスト* として Chat API に渡され、Generative AI を成立させる鍵となる要素となります。
+     ステップ #3 で取得した投稿やコメントは *コンテキスト* として Chat API に渡され、生成AIにおける中核的なつなぎ役となります。
 
   要約アプリケーションの実行例を以下に示し、その後に要約アプリケーションのコードを記載します。アプリケーションの実行には、環境変数 `OPENAI_API_KEY` に OpenAI API キーを設定する必要があります。OpenAI API キーは [https://platform.openai.com](https://platform.openai.com) での登録後に取得できます。
 
-  本アプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話の分析、法的文書、医療記録、会議議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIユースケースを実証します
+  本アプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話のマイニング、法的文書、医療記録、会議議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIユースケースを実証します
 
   ```shell
   $ python3 summarize.py
 
-  検索トピックを入力してください:
-  ClickHouseのパフォーマンス事例
+  Enter a search topic :
+  ClickHouse performance experiences
 
-  埋め込みを生成中 ---->  ClickHouseのパフォーマンス事例
+  Generating the embedding for ---->  ClickHouse performance experiences
 
-  関連記事を取得するためClickHouseへクエリを実行中...
+  Querying ClickHouse to retrieve relevant articles...
 
-  chatgpt-3.5-turboモデルを初期化中...
+  Initializing chatgpt-3.5-turbo model...
 
-  ClickHouseから取得した検索結果を要約中...
+  Summarizing search results retrieved from ClickHouse...
 
-  chatgpt-3.5による要約:
-  この議論では、ClickHouseをTimescaleDB、Apache Spark、AWS Redshift、QuestDBなどの各種データベースと比較しており、ClickHouseのコスト効率に優れた高性能と分析アプリケーションへの適合性を強調しています。ユーザーは、大規模な分析ワークロードを処理する際のClickHouseのシンプルさ、速度、リソース効率を高く評価していますが、DML操作やバックアップの難しさといった課題も指摘されています。ClickHouseは、リアルタイム集計計算機能と堅牢なエンジニアリングで評価されており、DruidやMemSQLなどの他のデータベースとの比較も行われています。全体として、ClickHouseはリアルタイムデータ処理、分析、大量データの効率的な処理のための強力なツールと見なされており、その優れたパフォーマンスとコスト効率性により人気を集めています。
+  Summary from chatgpt-3.5:
+  The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
+  AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
+  for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
+  in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
+  are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
+  engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
+  as a powerful tool for real-time data processing, analytics, and handling large volumes of data
+  efficiently, gaining popularity for its impressive performance and cost-effectiveness.
   ```
 
   上記アプリケーションのコード：
 
   ```python
-  print("初期化中...")
+  print("Initializing...")
 
   import sys
   import json
@@ -266,25 +276,25 @@ doc_type: 'guide'
   chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
   while True:
-      # ユーザーから検索クエリを取得
-      print("検索トピックを入力してください:")
+      # Take the search query from user
+      print("Enter a search topic :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # モデルを実行して検索ベクトルまたは参照ベクトルを取得
-      print("埋め込みを生成中 ----> ", input_query);
+      # Run the model and obtain search or reference vector
+      print("Generating the embedding for ----> ", input_query);
       embeddings = model.encode(texts)
 
-      print("ClickHouseへクエリ実行中...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':100}
       result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-      # すべての検索結果を結合
+      # Just join all the search results
       doc_results = ""
       for row in result.result_rows:
           doc_results = doc_results + "\n" + row[2]
 
-      print("chatgpt-3.5-turboモデルを初期化中")
+      print("Initializing chatgpt-3.5-turbo model")
       model_name = "gpt-3.5-turbo"
 
       text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
@@ -298,13 +308,13 @@ doc_type: 'guide'
       llm = ChatOpenAI(temperature=0, model_name=model_name)
 
       prompt_template = """
-  以下の内容を10文以内で簡潔に要約してください:
+  Write a concise summary of the following in not more than 10 sentences:
 
 
   {text}
 
 
-  簡潔な要約:
+  CONSCISE SUMMARY :
   """
 
       prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
@@ -314,7 +324,7 @@ doc_type: 'guide'
       gpt_35_turbo_max_tokens = 4096
       verbose = False
 
-      print("ClickHouseから取得した検索結果を要約中...")
+      print("Summarizing search results retrieved from ClickHouse...")
 
       if num_tokens <= gpt_35_turbo_max_tokens:
           chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
@@ -323,6 +333,6 @@ doc_type: 'guide'
 
       summary = chain.run(docs)
 
-      print(f"chatgpt-3.5による要約: {summary}")
+      print(f"Summary from chatgpt-3.5: {summary}")
   ```
 </VerticalStepper>

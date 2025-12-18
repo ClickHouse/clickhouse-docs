@@ -37,7 +37,7 @@ DECLARE n INT64;
 DECLARE i INT64;
 SET i = 0;
 
--- Рекомендуется задавать n в соответствии с количеством миллиардов строк. Например, при 5 миллиардах строк n = 5
+-- We recommend setting n to correspond to x billion rows. So 5 billion rows, n = 5
 SET n = 100;
 
 WHILE i < n DO
@@ -70,8 +70,8 @@ END WHILE;
 Сначала [создайте таблицу](/sql-reference/statements/create/table) в ClickHouse:
 
 ```sql
--- Если таблица BigQuery содержит столбец типа STRUCT, необходимо включить эту настройку
--- для сопоставления этого столбца со столбцом ClickHouse типа Nested
+-- If your BigQuery table contains a column of type STRUCT, you must enable this setting
+-- to map that column to a ClickHouse column of type Nested
 SET input_format_parquet_import_nested = 1;
 
 CREATE TABLE default.mytable

@@ -39,24 +39,24 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ```yaml
 jsonData:
-  host: 127.0.0.1 # (必須) サーバーアドレス。
-  port: 9000      # (必須) サーバーポート。nativeの場合、セキュアはデフォルトで9440、非セキュアは9000。HTTPの場合、セキュアはデフォルトで8443、非セキュアは8123。
+  host: 127.0.0.1 # (required) server address.
+  port: 9000      # (required) server port. For native, defaults to 9440 secure and 9000 insecure. For HTTP, defaults to 8443 secure and 8123 insecure.
 
-  protocol: native # (必須) 接続に使用するプロトコル。"native"または"http"を設定可能。
-  secure: false    # 接続がセキュアな場合はtrueに設定。
+  protocol: native # (required) the protocol used for the connection. Can be set to "native" or "http".
+  secure: false    # set to true if the connection is secure.
 
-  username: default # 認証に使用するユーザー名。
+  username: default # the username used for authentication.
 
-  tlsSkipVerify:     <boolean> # trueに設定するとTLS検証をスキップ。
-  tlsAuth:           <boolean> # TLSクライアント認証を有効にする場合はtrueに設定。
-  tlsAuthWithCACert: <boolean> # CA証明書が提供されている場合はtrueに設定。自己署名TLS証明書の検証に必要。
+  tlsSkipVerify:     <boolean> # skips TLS verification when set to true.
+  tlsAuth:           <boolean> # set to true to enable TLS client authentication.
+  tlsAuthWithCACert: <boolean> # set to true if CA certificate is provided. Required for verifying self-signed TLS certificates.
 
 secureJsonData:
-  password: secureExamplePassword # 認証に使用するパスワード。
+  password: secureExamplePassword # the password used for authentication.
 
-  tlsCACert:     <string> # TLS CA証明書
-  tlsClientCert: <string> # TLSクライアント証明書
-  tlsClientKey:  <string> # TLSクライアントキー
+  tlsCACert:     <string> # TLS CA certificate
+  tlsClientCert: <string> # TLS client certificate
+  tlsClientKey:  <string> # TLS client key
 ```
 
 UI から構成を保存すると、`version` プロパティが追加されることに注意してください。これは、その構成を保存したプラグインのバージョンを示します。
@@ -73,7 +73,7 @@ HTTP サーバーが別の URL パスで公開されている場合は、ここ�
 
 ```yaml
 jsonData:
-  # 先頭のスラッシュを除く
+  # excludes first slash
   path: additional/path/example
 ```
 
@@ -94,13 +94,13 @@ jsonData:
 jsonData:
   httpHeaders:
   - name: X-Example-Plain-Header
-    value: プレーンテキスト値
+    value: plain text value
     secure: false
   - name: X-Example-Secure-Header
-    # "value" は除外されます
+    # "value" is excluded
     secure: true
 secureJsonData:
-  secureHttpHeaders.X-Example-Secure-Header: セキュアヘッダー値
+  secureHttpHeaders.X-Example-Secure-Header: secure header value
 ```
 
 ## 追加設定 {#additional-settings}
@@ -113,12 +113,12 @@ YAML の例:
 
 ```yaml
 jsonData:
-  defaultDatabase: default # クエリビルダーで読み込まれるデフォルトデータベース。デフォルト値は "default"。
-  defaultTable: <string>   # クエリビルダーで読み込まれるデフォルトテーブル。
+  defaultDatabase: default # default database loaded by the query builder. Defaults to "default".
+  defaultTable: <string>   # default table loaded by the query builder.
 
-  dialTimeout: 10    # サーバー接続時のダイヤルタイムアウト(秒)。デフォルト値は "10"。
-  queryTimeout: 60   # クエリ実行時のタイムアウト(秒)。デフォルト値は60。ユーザー権限が必要です。権限エラーが発生する場合は "0" に設定して無効化してください。
-  validateSql: false # trueに設定すると、SQLエディタでSQLを検証します。
+  dialTimeout: 10    # dial timeout when connecting to the server, in seconds. Defaults to "10".
+  queryTimeout: 60   # query timeout when running a query, in seconds. Defaults to 60. This requires permissions on the user, if you get a permission error try setting it to "0" to disable it.
+  validateSql: false # when set to true, will validate the SQL in the SQL editor.
 ```
 
 ### OpenTelemetry {#opentelemetry}
@@ -147,16 +147,16 @@ OpenTelemetry を使用している場合は、「**Use OTel**」スイッチを
 ```yaml
 jsonData:
   logs:
-    defaultDatabase: default # デフォルトのログデータベース
-    defaultTable: otel_logs  # デフォルトのログテーブル。OTelを使用している場合は"otel_logs"に設定してください。
+    defaultDatabase: default # default log database.
+    defaultTable: otel_logs  # default log table. If you're using OTel, this should be set to "otel_logs".
 
-    otelEnabled: false  # OTelを有効にする場合はtrueに設定します。
-    otelVersion: latest # 使用するOTel collectorスキーマバージョン。バージョンはUIに表示されますが、"latest"を指定するとプラグインで利用可能な最新バージョンが使用されます。
+    otelEnabled: false  # set to true if OTel is enabled.
+    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
 
-    # 新しいログクエリを開く際に選択されるデフォルトのカラム。OTelが有効な場合は無視されます。
-    timeColumn:       <string> # ログのプライマリ時刻カラム
-    levelColumn:   <string> # ログのレベル/重大度。通常、"INFO"、"error"、"Debug"のような値になります。
-    messageColumn: <string> # ログのメッセージ/内容
+    # Default columns to be selected when opening a new log query. Will be ignored if OTel is enabled.
+    timeColumn:       <string> # the primary time column for the log.
+    levelColumn:   <string> # the log level/severity of the log. Values typically look like "INFO", "error", or "Debug".
+    messageColumn: <string> # the log's message/content.
 ```
 
 ### トレース {#traces}
@@ -176,23 +176,23 @@ OpenTelemetry は必須ではありませんが、この機能はトレースに
 ```yaml
 jsonData:
   traces:
-    defaultDatabase: default  # デフォルトのトレースデータベース
-    defaultTable: otel_traces # デフォルトのトレーステーブル。OTelを使用している場合は"otel_traces"に設定してください。
+    defaultDatabase: default  # default trace database.
+    defaultTable: otel_traces # default trace table. If you're using OTel, this should be set to "otel_traces".
 
-    otelEnabled: false  # OTelが有効な場合はtrueに設定してください。
-    otelVersion: latest # 使用するOTel collectorスキーマバージョン。バージョンはUIに表示されますが、"latest"を指定するとプラグインで利用可能な最新バージョンが使用されます。
+    otelEnabled: false  # set to true if OTel is enabled.
+    otelVersion: latest # the otel collector schema version to be used. Versions are displayed in the UI, but "latest" will use latest available version in the plugin.
 
-    # 新しいトレースクエリを開く際に選択されるデフォルトのカラム。OTelが有効な場合は無視されます。
-    traceIdColumn:       <string>    # トレースIDカラム
-    spanIdColumn:        <string>    # スパンIDカラム
-    operationNameColumn: <string>    # オペレーション名カラム
-    parentSpanIdColumn:  <string>    # 親スパンIDカラム
-    serviceNameColumn:   <string>    # サービス名カラム
-    durationTimeColumn:  <string>    # 期間カラム
-    durationUnitColumn:  <time unit> # 期間の単位。"seconds"、"milliseconds"、"microseconds"、または"nanoseconds"に設定できます。OTelのデフォルトは"nanoseconds"です。
-    startTimeColumn:     <string>    # 開始時刻カラム。トレーススパンの主要な時刻カラムです。
-    tagsColumn:          <string>    # タグカラム。マップ型であることが想定されます。
-    serviceTagsColumn:   <string>    # サービスタグカラム。マップ型であることが想定されます。
+    # Default columns to be selected when opening a new trace query. Will be ignored if OTel is enabled.
+    traceIdColumn:       <string>    # trace ID column.
+    spanIdColumn:        <string>    # span ID column.
+    operationNameColumn: <string>    # operation name column.
+    parentSpanIdColumn:  <string>    # parent span ID column.
+    serviceNameColumn:   <string>    # service name column.
+    durationTimeColumn:  <string>    # duration time column.
+    durationUnitColumn:  <time unit> # duration time unit. Can be set to "seconds", "milliseconds", "microseconds", or "nanoseconds". For OTel the default is "nanoseconds".
+    startTimeColumn:     <string>    # start time column. This is the primary time column for the trace span.
+    tagsColumn:          <string>    # tags column. This is expected to be a map type.
+    serviceTagsColumn:   <string>    # service tags column. This is expected to be a map type.
 ```
 
 ### カラムエイリアス {#column-aliases}
@@ -239,9 +239,9 @@ Grafana では、エイリアステーブルは次のカラム構造を持つ必
 
 ```sql
 CREATE TABLE aliases (
-  `alias` String,  -- Grafanaのカラムセレクターに表示されるエイリアス名
-  `select` String, -- SQLジェネレーターで使用するSELECT構文
-  `type` String    -- 結果カラムの型。プラグインがデータ型に応じてUIオプションを調整するために使用
+  `alias` String,  -- The name of the alias, as seen in the Grafana column selector
+  `select` String, -- The SELECT syntax to use in the SQL generator
+  `type` String    -- The type of the resulting column, so the plugin can modify the UI options to match the data type.
 )
 ```
 
@@ -255,8 +255,8 @@ CREATE TABLE example_table (
 CREATE TABLE example_table_aliases (`alias` String, `select` String, `type` String);
 
 INSERT INTO example_table_aliases (`alias`, `select`, `type`) VALUES
-('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- テーブルの元の列を保持（任意）
-('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- TimestampNanosをDate型に変換する新しい列を追加
+('TimestampNanos', 'TimestampNanos', 'DateTime(9)'), -- Preserve original column from table (optional)
+('TimestampDate', 'toDate(TimestampNanos)', 'Date'); -- Add new column that converts TimestampNanos to a Date
 ```
 
 次に、このテーブルを Grafana で使用するように設定できます。名前は任意で、別のデータベースで定義することも可能です：

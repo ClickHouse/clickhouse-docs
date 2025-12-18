@@ -23,32 +23,32 @@ ClickHouse における設定に対する「制約」とは、その設定に付
 <profiles>
   <user_name>
     <constraints>
-      <設定名_1>
+      <setting_name_1>
         <min>lower_boundary</min>
-      </設定名_1>
-      <設定名_2>
+      </setting_name_1>
+      <setting_name_2>
         <max>upper_boundary</max>
-      </設定名_2>
-      <設定名_3>
+      </setting_name_2>
+      <setting_name_3>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
-      </設定名_3>
-      <設定名_4>
+      </setting_name_3>
+      <setting_name_4>
         <readonly/>
-      </設定名_4>
-      <設定名_5>
+      </setting_name_4>
+      <setting_name_5>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <changeable_in_readonly/>
-      </設定名_5>
-      <設定名_6>
+      </setting_name_5>
+      <setting_name_6>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <disallowed>value1</disallowed>
         <disallowed>value2</disallowed>
         <disallowed>value3</disallowed>
         <changeable_in_readonly/>
-      </設定名_6>
+      </setting_name_6>
     </constraints>
   </user_name>
 </profiles>
@@ -135,9 +135,9 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: max_memory_usage は 20000000000 を超える値に設定してはいけません。
-Code: 452, e.displayText() = DB::Exception: max_memory_usage は 5000000000 未満の値に設定してはいけません。
-Code: 452, e.displayText() = DB::Exception: force_index_by_date は変更してはいけません。
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
+Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
 ```
 
 :::note

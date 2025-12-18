@@ -264,7 +264,7 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 **语法**
 
 ```sql
-bitmaskToArray(数字)
+bitmaskToArray(num)
 ```
 
 **参数**
@@ -310,7 +310,7 @@ SELECT bitmaskToArray(8) AS powers_of_two
 **语法**
 
 ```sql
-bitmaskToList(数字)
+bitmaskToList(num)
 ```
 
 **参数**

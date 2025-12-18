@@ -67,7 +67,7 @@ SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND
 Результат:
 
 ```text
-Строка 1:
+Row 1:
 ──────
 hostname:         clickhouse.eu-central1.internal
 type:             Request
@@ -100,7 +100,7 @@ stat_dataLength:  0
 stat_numChildren: 0
 children:         []
 
-Строка 2:
+Row 2:
 ──────
 type:             Response
 event_date:       2021-08-09

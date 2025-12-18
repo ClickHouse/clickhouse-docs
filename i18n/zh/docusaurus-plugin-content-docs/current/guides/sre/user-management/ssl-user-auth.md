@@ -14,7 +14,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-本指南提供了通过 SSL 用户证书配置认证所需的简单且最小化的配置。该教程建立在[配置 SSL-TLS 用户指南](../configuring-ssl.md)的基础之上。
+本指南提供了通过 SSL 用户证书配置认证所需的简单且最小化的配置。该教程建立在[配置 TLS 用户指南](../tls/configuring-tls.md)的基础之上。
 
 :::note
 在使用 `https`、`native`、`mysql` 和 `postgresql` 接口时支持 SSL 用户认证。
@@ -25,6 +25,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 > 我希望能够将我们的 NLB proxy protocol v2 配置为如下所示：`proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`。
 > :::
+
 
 ## 1. 创建 SSL 用户证书 {#1-create-ssl-user-certificates}
 
@@ -44,7 +45,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
     CN 值是任意的，任何字符串都可以用作证书标识符。后续步骤在创建用户时会用到该值。
     :::
 
-2.  生成并签署将用于身份验证的新用户证书。基本格式如下：
+2.  生成并签名用于身份验证的新用户证书。基本格式如下：
     ```bash
     openssl x509 -req -in <my_cert_name>.csr -out <my_cert_name>.crt -CA <my_ca_cert>.crt -CAkey <my_ca_cert>.key -days 365
     ```
@@ -85,7 +86,7 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
             </networks>
             <profile>default</profile>
             <access_management>1</access_management>
-            <!-- 其他选项 -->
+            <!-- additional options-->
         </cert_user>
     </users>
     ```
@@ -140,4 +141,4 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 ## 摘要 {#summary}
 
-本文介绍了为 SSL 证书认证创建和配置用户的基本方法。此方法可用于 `clickhouse-client`，或任何支持 `HTTPS` 接口且可以设置 HTTP 头部的客户端。由于生成的证书和密钥用于对用户在 ClickHouse 数据库上的操作进行认证和授权，因此必须妥善保管，并严格限制访问权限。请像对待密码一样对待该证书和密钥。
+本文介绍了为 SSL 证书认证创建和配置用户的基本方法。此方法可用于 `clickhouse-client`，或任何支持 `https` 接口且可以设置 HTTP 头的客户端。由于生成的证书和密钥用于对用户在 ClickHouse 数据库上的操作进行身份验证和授权，因此必须妥善保管，并严格限制访问权限。请像对待密码一样对待该证书和密钥。

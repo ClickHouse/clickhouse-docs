@@ -4,51 +4,51 @@ sidebar_label: '多租户'
 title: '多租户'
 description: '实现多租户的最佳实践'
 doc_type: 'guide'
-keywords: ['multitenancy', 'isolation', 'best practices', 'architecture', 'multi-tenant']
+keywords: ['多租户', '隔离', '最佳实践', '架构', '多租户架构']
 ---
 
-在 SaaS 数据分析平台中，让多个租户（例如组织、客户或业务单元）在共享同一套数据库基础设施的同时保持各自数据的逻辑隔离是很常见的做法。这样，不同用户就可以在同一平台上安全地访问各自的数据。
+在 SaaS 数据分析平台中，让多个租户（例如组织、客户或业务单元）共享同一套数据库基础设施，同时对各自数据进行逻辑隔离，是一种常见模式。通过这种方式，不同用户可以在同一平台上安全地访问各自的数据。
 
-根据不同的需求，实现多租户有多种方式。下面是使用 ClickHouse Cloud 实现多租户的指南。
+根据具体需求，实现多租户架构有多种方式。下面的指南将介绍如何在 ClickHouse Cloud 中实现这些方式。
 
 ## 共享表  {#shared-table}
 
-在这种方案下，所有租户的数据都存储在一张共享表中，并通过某个字段（或一组字段）来标识每个租户的数据。为了最大化性能，应将该字段包含在[主键](/sql-reference/statements/create/table#primary-key)中。为确保用户只能访问其所属租户的数据，我们通过[行策略](/operations/access-rights#row-policy-management)实现[基于角色的访问控制](/operations/access-rights)。
+在这种方案中，所有租户的数据都存储在单个共享表中，并使用一个字段（或一组字段）来标识每个租户的数据。为最大化性能，该字段应包含在[主键](/sql-reference/statements/create/table#primary-key)中。为确保只能访问各自租户的数据，我们使用[基于角色的访问控制](/operations/access-rights)，并通过[行策略](/operations/access-rights#row-policy-management)来实现。
 
-> **我们推荐采用这种方案，因为它最易于管理，尤其适用于所有租户共享相同数据模式且数据量适中（小于 TB 级别）时**
+> **推荐使用这种方案，因为它是最易于管理的选择，尤其适用于所有租户共享相同数据 schema 且数据量适中（&lt; TB 级）时**
 
-通过将所有租户数据整合到一张表中，可以借助优化的数据压缩和减少元数据开销来提升存储效率。此外，由于所有数据集中管理，模式更新也更加简单。
+通过将所有租户数据整合到一张表中，可通过优化数据压缩和减少元数据开销来提升存储效率。此外，由于所有数据集中管理，schema 更新也更为简单。
 
-这种方法在处理大量租户（可达数百万）时尤其有效。
+在需要处理大量租户（可能达到数百万）时，这种方法尤为有效。
 
-但是，如果不同租户具有不同的数据模式，或预期其模式会随着时间逐渐分化，则其他方法可能更为合适。
+但是，如果不同租户之间的数据 schema 存在差异，或者预期会随着时间逐渐分化，其他方案可能更为合适。
 
-当不同租户之间的数据量差异较大时，数据量较小的租户可能会受到不必要的查询性能影响。需要注意的是，将租户字段包含在主键中在很大程度上可以缓解这一问题。
+在不同租户之间存在显著数据量差异的情况下，小租户可能会承受不必要的查询性能影响。需要注意的是，通过在主键中包含租户字段，这一问题在很大程度上可以被缓解。
 
 ### 示例 {#shared-table-example}
 
-这是一个共享表的多租户模型实现示例。
+这是一个共享表多租户模型实现的示例。
 
-首先，让我们创建一个共享表，并在主键中包含字段 `tenant_id`。
+首先，让我们创建一个共享表，在主键中包含字段 `tenant_id`。
 
 ```sql
---- 创建表 events。使用 tenant_id 作为主键的一部分
+--- Create table events. Using tenant_id as part of the primary key
 CREATE TABLE events
 (
-    tenant_id UInt32,                 -- 租户标识符
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    tenant_id UInt32,                 -- Tenant identifier
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (tenant_id, timestamp)
 ```
 
-现在我们来插入一些示例数据。
+我们来插入一些示例数据。
 
 ```sql
--- 插入一些虚拟数据行
+-- Insert some dummy rows
 INSERT INTO events (tenant_id, id, type, timestamp, user_id, data)
 VALUES
 (1, '7b7e0439-99d0-4590-a4f7-1cfea1e192d1', 'user_login', '2025-03-19 08:00:00', 1001, '{"device": "desktop", "location": "LA"}'),
@@ -66,35 +66,36 @@ VALUES
 接下来创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- 创建用户
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-我们[创建行策略](/sql-reference/statements/create/row-policy)，使 `user_1` 和 `user_2` 只能访问各自租户的数据。
+我们[创建行策略](/sql-reference/statements/create/row-policy)，以将 `user_1` 和 `user_2` 限制为只能访问各自租户的数据。
 
 ```sql
--- 创建行级策略
+-- Create row policies
 CREATE ROW POLICY user_filter_1 ON default.events USING tenant_id=1 TO user_1
 CREATE ROW POLICY user_filter_2 ON default.events USING tenant_id=2 TO user_2
 ```
 
-然后使用一个通用角色，为共享表授予 [`GRANT SELECT`](/sql-reference/statements/grant#usage) 权限。
+然后通过一个通用角色，为共享表授予 [`GRANT SELECT`](/sql-reference/statements/grant#usage) 权限。
 
 ```sql
--- 创建角色
+-- Create role
 CREATE ROLE user_role
 
--- 授予 events 表的只读权限
+-- Grant read only to events table.
 GRANT SELECT ON default.events TO user_role
 GRANT user_role TO user_1
 GRANT user_role TO user_2
 ```
 
-现在，你可以以 `user_1` 身份连接并运行一个简单的 select 查询。只会返回来自第一个租户的行。
+
+现在你可以以 `user_1` 身份连接并执行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
 
 ```sql
--- 以 user_1 登录
+-- Logged as user_1
 SELECT *
 FROM events
 
@@ -107,47 +108,48 @@ FROM events
    └───────────┴──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
+
 ## 独立表 {#separate-tables}
 
-在这种方案中，每个租户的数据都存储在同一数据库内的独立表中，因此不再需要使用特定字段来标识租户。通过使用 [GRANT 语句](/sql-reference/statements/grant) 来实施用户访问控制，确保每个用户只能访问包含其所属租户数据的表。
+在这种方案中，每个租户的数据都存储在同一数据库中的独立表里，从而不再需要使用单独的字段来标识租户。通过使用 [GRANT 语句](/sql-reference/statements/grant) 来控制用户访问，确保每个用户只能访问包含其所属租户数据的表。
 
-> **当不同租户的数据模式（schema）不同时，使用独立表是一个不错的选择。**
+> **当不同租户使用不同的数据模式（schema）时，使用独立表是一个不错的选择。**
 
-对于租户数量较少、但每个租户都拥有非常大的数据集且查询性能至关重要的场景，此方案可能优于共享表模型。由于不需要过滤其他租户的数据，查询可以更加高效。此外，主键也可以进一步优化，因为不需要在主键中包含额外字段（例如租户 ID）。
+对于租户数量较少但每个租户都拥有非常大的数据集、且对查询性能要求较高的场景，这种方案可能会优于共享表模型。由于不需要过滤掉其他租户的数据，查询可以更加高效。此外，主键也可以进一步优化，因为不再需要在主键中包含额外字段（例如租户 ID）。
 
-请注意，这种方案不适用于扩展到成千上万的租户。参见 [使用限制](/cloud/bestpractices/usage-limits)。
+请注意，这种方案不适用于扩展到成千上百个租户。参见 [使用限制](/cloud/bestpractices/usage-limits)。
 
 ### 示例 {#separate-tables-example}
 
-这是独立表多租户模型实现的示例。
+这是一个独立表多租户模型实现的示例。
 
 首先,创建两个表,一个用于 `tenant_1` 的事件,另一个用于 `tenant_2` 的事件。
 
 ```sql
--- 为租户 1 创建表 
+-- Create table for tenant 1 
 CREATE TABLE events_tenant_1
 (
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
-ORDER BY (timestamp, user_id) -- 主键可以侧重于其他属性
+ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
 
--- 为租户 2 创建表 
+-- Create table for tenant 2 
 CREATE TABLE events_tenant_2
 (
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
-ORDER BY (timestamp, user_id) -- 主键可以侧重于其他属性
+ORDER BY (timestamp, user_id) -- Primary key can focus on other attributes
 ```
 
-插入模拟数据。
+插入测试数据。
 
 ```sql
 INSERT INTO events_tenant_1 (id, type, timestamp, user_id, data)
@@ -170,7 +172,7 @@ VALUES
 接下来创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- 创建用户 
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
@@ -178,15 +180,15 @@ CREATE USER user_2 IDENTIFIED BY '<password>'
 然后在相应的表上 `GRANT SELECT` 权限。
 
 ```sql
--- 授予事件表的只读权限。
+-- Grant read only to events table.
 GRANT SELECT ON default.events_tenant_1 TO user_1
 GRANT SELECT ON default.events_tenant_2 TO user_2
 ```
 
-现在您可以以 `user_1` 身份连接并对该用户对应的表运行简单的 select 查询。仅会返回第一个租户的行数据。 
+现在您可以以 `user_1` 身份连接并对该用户对应的表运行简单的 SELECT 查询。仅返回第一个租户的行。 
 
 ```sql
--- 以 user_1 登录
+-- Logged as user_1
 SELECT *
 FROM default.events_tenant_1
 
@@ -199,55 +201,56 @@ FROM default.events_tenant_1
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
+
 ## 独立数据库 {#separate-databases}
 
-每个租户的数据都存储在同一 ClickHouse 服务内的独立数据库中。
+每个租户的数据都存储在同一 ClickHouse 服务中的独立数据库内。
 
-> **如果每个租户需要大量的表，可能还包括物化视图，并且拥有不同的数据模式，那么这种方式会很适用。不过，如果租户数量非常多，管理起来可能会变得具有挑战性。**
+> **如果每个租户需要大量表并可能需要 materialized views，且各自的数据 schema 不同，这种方式会非常有用。不过，当租户数量非常多时，管理起来可能会变得很有挑战。**
 
-这种实现方式与独立表的方案类似，但不是在表级别授予权限，而是在数据库级别授予权限。
+实现方式与独立表方案类似，但不是在表级授予权限，而是在数据库级授予权限。
 
-请注意，这种方式无法很好地扩展到成千上万的租户。参见[使用限制](/cloud/bestpractices/usage-limits)。
+请注意，此方案无法扩展到成千上万个租户。请参阅[使用限制](/cloud/bestpractices/usage-limits)。
 
 ### 示例 {#separate-databases-example}
 
-以下示例展示了基于独立数据库的多租户模型实现。
+这是一个使用独立数据库实现多租户模型的示例。
 
-首先，让我们创建两个数据库，一个用于 `tenant_1`，另一个用于 `tenant_2`。
+首先，我们创建两个数据库，分别用于 `tenant_1` 和 `tenant_2`。
 
 ```sql
--- 为 tenant_1 创建数据库
+-- Create database for tenant_1
 CREATE DATABASE tenant_1;
 
--- 为 tenant_2 创建数据库
+-- Create database for tenant_2
 CREATE DATABASE tenant_2;
 ```
 
 ```sql
--- 为 tenant_1 创建表
+-- Create table for tenant_1
 CREATE TABLE tenant_1.events
 (
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 
--- 为 tenant_2 创建表
+-- Create table for tenant_2
 CREATE TABLE tenant_2.events
 (
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 ```
 
-现在插入一些模拟数据。
+现在插入一些示例数据。
 
 ```sql
 INSERT INTO tenant_1.events (id, type, timestamp, user_id, data)
@@ -267,26 +270,27 @@ VALUES
 ('5c150ceb-b869-4ebb-843d-ab42d3cb5410', 'user_login', '2025-03-19 09:00:00', 2004, '{"device": "mobile", "location": "SF"}')
 ```
 
-接下来，我们创建两个用户 `user_1` 和 `user_2`。
+然后创建两个用户 `user_1` 和 `user_2`。
 
 ```sql
--- 创建用户 
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 CREATE USER user_2 IDENTIFIED BY '<password>'
 ```
 
-然后在相应的表上授予 `SELECT` 权限。
+然后为相应的表授予 `SELECT` 权限。
 
 ```sql
--- 授予 events 表的只读权限。
+-- Grant read only to events table.
 GRANT SELECT ON tenant_1.events TO user_1
 GRANT SELECT ON tenant_2.events TO user_2
 ```
 
-现在，你可以以 `user_1` 身份连接，并在相应数据库中的 events 表上执行一个简单的 SELECT 查询。只会返回来自第一个租户的行。
+
+现在，你可以以 `user_1` 身份连接到数据库，并在相应数据库的 events 表上执行一个简单的 SELECT 查询。只会返回第一个租户的行。
 
 ```sql
--- 以 user_1 用户身份记录
+-- Logged as user_1
 SELECT *
 FROM tenant_1.events
 
@@ -299,44 +303,45 @@ FROM tenant_1.events
    └──────────────────────────────────────┴─────────────┴─────────────────────┴─────────┴─────────────────────────────────────────┘
 ```
 
+
 ## 计算-计算分离 {#compute-compute-separation}
 
-上述三种方法也可以通过使用 [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据存放在共享的对象存储中，但通过[计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation)，每个租户都可以根据不同的 CPU/内存比拥有自己的独立计算服务。 
+上面描述的三种方法也可以通过使用 [Warehouses](/cloud/reference/warehouses#what-is-a-warehouse) 进一步隔离。数据存储在共享的对象存储中，但借助于 [计算-计算分离](/cloud/reference/warehouses#what-is-compute-compute-separation)，每个租户都可以拥有自己的计算服务，并配置不同的 CPU/内存配比。 
 
 用户管理与前面描述的方法类似，因为同一 Warehouse 中的所有服务都会[共享访问控制](/cloud/reference/warehouses#database-credentials)。 
 
-请注意，同一 Warehouse 中子服务的数量被限制在一个较小的范围内。参见 [Warehouse limitations](/cloud/reference/warehouses#limitations)。
+请注意，一个 Warehouse 中的子服务数量有较小的上限。参见 [Warehouse 限制](/cloud/reference/warehouses#limitations)。
 
-## 独立云服务 {#separate-service}
+## 独立的云服务 {#separate-service}
 
-最彻底的方法是为每个租户使用不同的 ClickHouse 服务。 
+最激进的方法是为每个租户单独使用一个 ClickHouse 服务。 
 
-> **如果出于法律、安全或访问就近等原因，要求将各租户数据存储在不同区域，可以考虑采用这种较少使用的方法作为解决方案。**
+> **这种较少使用的方法适用于需要将租户数据存储在不同区域的场景——通常出于法律、安全或就近访问等原因。**
 
-必须在每个服务上为用户创建一个账户，以便用户可以访问其所属租户的数据。
+必须在每个服务上为用户创建账户，以便用户能够访问其各自租户的数据。
 
-这种方法更难管理，并且每个服务都会带来额外开销，因为每个服务都需要自己的基础设施来运行。服务可以通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 进行管理，也可以通过 [官方 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 实现编排。
+这种方法更难管理，并且每个服务都会带来额外开销，因为它们各自需要独立的基础设施来运行。服务可以通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 进行管理，也可以使用 [官方 Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs) 进行编排。
 
 ### 示例 {#separate-service-example}
 
-这是一个独立服务型多租户模型实现的示例。请注意，该示例展示的是在一个 ClickHouse 服务上创建表和用户，所有服务上都需要进行同样的配置。
+这是一个独立服务多租户模型实现示例。请注意，该示例展示了在一个 ClickHouse 服务上创建数据表和用户，同样的操作需要在所有服务上执行。
 
 首先，让我们创建表 `events`
 
 ```sql
--- 为 tenant_1 创建表
+-- Create table for tenant_1
 CREATE TABLE events
 (
-    id UUID,                    -- 唯一事件 ID
-    type LowCardinality(String), -- 事件类型
-    timestamp DateTime,          -- 事件的时间戳
-    user_id UInt32,               -- 触发事件的用户 ID
-    data String,                 -- 事件数据
+    id UUID,                    -- Unique event ID
+    type LowCardinality(String), -- Type of event
+    timestamp DateTime,          -- Timestamp of the event
+    user_id UInt32,               -- ID of the user who triggered the event
+    data String,                 -- Event data
 )
 ORDER BY (timestamp, user_id);
 ```
 
-接下来插入一些模拟数据。
+现在插入一些示例数据。
 
 ```sql
 INSERT INTO events (id, type, timestamp, user_id, data)
@@ -348,24 +353,24 @@ VALUES
 ('975fb0c8-55bd-4df4-843b-34f5cfeed0a9', 'user_login', '2025-03-19 08:50:00', 1004, '{"device": "desktop", "location": "LA"}')
 ```
 
-然后创建两个用户 `user_1`
+接下来创建两个用户 `user_1`
 
 ```sql
--- 创建用户 
+-- Create users 
 CREATE USER user_1 IDENTIFIED BY '<password>'
 ```
 
 然后为相应的表授予 `SELECT` 权限。
 
 ```sql
--- 授予 user_1 对 events 表的只读权限。
+-- Grant read only to events table.
 GRANT SELECT ON events TO user_1
 ```
 
-现在，你可以连接到租户 1 的服务上，以 `user_1` 身份运行一个简单的 SELECT 查询。结果中只会返回来自租户 1 的行。
+现在你可以以 `user_1` 身份连接到租户 1 的服务，并执行一个简单的 SELECT 查询。只会返回租户 1 的行。
 
 ```sql
--- 以 user_1 登录
+-- Logged as user_1
 SELECT *
 FROM events
 

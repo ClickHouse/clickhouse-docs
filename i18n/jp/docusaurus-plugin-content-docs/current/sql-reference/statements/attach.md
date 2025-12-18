@@ -126,7 +126,7 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 **構文**
 
 ```sql
-DICTIONARY をアタッチ [存在しない場合は作成] [db.]name [クラスタ cluster 上]
+ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
 ## 既存のデータベースをアタッチ {#attach-existing-database}
@@ -136,5 +136,5 @@ DICTIONARY をアタッチ [存在しない場合は作成] [db.]name [クラス
 **構文**
 
 ```sql
-ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<データベースエンジン>] [ON CLUSTER cluster]
+ATTACH DATABASE [IF NOT EXISTS] name [ENGINE=<database engine>] [ON CLUSTER cluster]
 ```

@@ -90,18 +90,18 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 graph TD
     subgraph network_read
     nr_root(("/"))
-    -->|100 одновременных запросов| nr_fair("fair")
-    -->|75% полосы пропускания| nr_prod["prod"]
+    -->|100 concurrent requests| nr_fair("fair")
+    -->|75% bandwidth| nr_prod["prod"]
     nr_fair
-    -->|25% полосы пропускания| nr_dev["dev"]
+    -->|25% bandwidth| nr_dev["dev"]
     end
 
     subgraph network_write
     nw_root(("/"))
-    -->|100 одновременных запросов| nw_fair("fair")
-    -->|75% полосы пропускания| nw_prod["prod"]
+    -->|100 concurrent requests| nw_fair("fair")
+    -->|75% bandwidth| nw_prod["prod"]
     nw_fair
-    -->|25% полосы пропускания| nw_dev["dev"]
+    -->|25% bandwidth| nw_dev["dev"]
     end
 ```
 
@@ -267,7 +267,7 @@ CREATE WORKLOAD all
 CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 10
 CREATE WORKLOAD production IN all SETTINGS max_concurrent_threads = 100
 CREATE WORKLOAD analytics IN production SETTINGS max_concurrent_threads = 60, weight = 9
-CREATE WORKLOAD ингестия IN production
+CREATE WORKLOAD ingestion IN production
 ```
 
 В этом примере конфигурации задаются независимые пулы CPU-слотов для административной и продуктивной нагрузок. Продуктивный пул разделяется между аналитикой и ингестией. Кроме того, если продуктивный пул перегружен, 9 из 10 освобождённых слотов будут при необходимости переназначены аналитическим запросам. Запросы ингестии в периоды перегрузки получат только 1 из 10 слотов. Это может улучшить время отклика пользовательских запросов. Аналитика имеет собственный лимит в 60 параллельных потоков, что всегда оставляет как минимум 40 потоков для поддержки ингестии. При отсутствии перегрузки ингестия может использовать все 100 потоков.

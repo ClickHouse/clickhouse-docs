@@ -23,7 +23,7 @@ LIMIT m
 **Альтернативный синтаксис TOP (совместимый с MS SQL Server):**
 
 ```sql
--- SELECT TOP число|процент имя_столбца(ов) FROM имя_таблицы
+-- SELECT TOP number|percent column_name(s) FROM table_name
 SELECT TOP 10 * FROM numbers(100);
 SELECT TOP 0.1 * FROM numbers(100);
 ```
@@ -34,7 +34,7 @@ SELECT TOP 0.1 * FROM numbers(100);
 
 ```sql
 LIMIT m OFFSET n
--- или эквивалентно:
+-- or equivalently:
 LIMIT n, m
 ```
 
@@ -76,8 +76,8 @@ LIMIT n, m
 Вы можете комбинировать стандартные целые числа с дробными или отрицательными смещениями:
 
 ```sql
-LIMIT 10 OFFSET 0.5    -- 10 строк, начиная с половины
-LIMIT 10 OFFSET -20    -- 10 строк после пропуска последних 20 строк
+LIMIT 10 OFFSET 0.5    -- 10 rows starting from the halfway point
+LIMIT 10 OFFSET -20    -- 10 rows after skipping the last 20
 ```
 
 ## LIMIT ... WITH TIES {#limit--with-ties-modifier}

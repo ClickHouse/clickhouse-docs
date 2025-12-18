@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 
 В этой статье рассказывается, как клиенты ClickPipes могут использовать доступ на основе ролей для аутентификации в Amazon Kinesis и безопасного доступа к своим потокам данных.
 
-
 ## Предварительные требования {#prerequisite}
 
 Для выполнения этого руководства вам потребуется:
 - Действующий сервис ClickHouse Cloud
 - Учетная запись AWS
-
-
 
 ## Введение {#introduction}
 
@@ -30,11 +27,9 @@ import Image from '@theme/IdealImage';
 
 Используя этот подход, клиенты могут централизованно управлять доступом ко всем своим потокам данных Kinesis через политику IAM принимаемой роли, без необходимости изменять политику доступа каждого потока по отдельности.
 
-
-
 ## Настройка {#setup}
 
-<VerticalStepper headerLevel="h3"/>
+<VerticalStepper headerLevel="h3">
 
 ### Получение ARN роли IAM сервиса ClickHouse {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -121,3 +116,5 @@ import Image from '@theme/IdealImage';
    ```
 
 - 4. После создания скопируйте новый **ARN роли IAM**. Он понадобится для доступа к вашему потоку Kinesis.
+
+</VerticalStepper>

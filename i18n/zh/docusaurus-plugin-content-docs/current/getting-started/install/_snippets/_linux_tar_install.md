@@ -33,9 +33,9 @@ export LATEST_VERSION
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Intel/AMD 64 位处理器
-  aarch64) ARCH=arm64 ;;        # ARM 64 位处理器
-  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # 架构不受支持时退出
+  x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
+  aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
 esac
 ```
 
@@ -58,7 +58,7 @@ done
 - `clickhouse-common-static`
 
 ```bash
-# 解压并安装 clickhouse-common-static 软件包 {#extract-and-install-clickhouse-common-static-package}
+# Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -67,7 +67,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 * `clickhouse-common-static-dbg`
 
 ```bash
-# 提取并安装调试符号包 {#extract-and-install-debug-symbols-package}
+# Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -76,17 +76,17 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 * `clickhouse-server`
 
 ```bash
-# 解压并安装服务器软件包及配置 {#extract-and-install-server-package-with-configuration}
+# Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # 启动服务器
+sudo /etc/init.d/clickhouse-server start  # Start the server
 ```
 
 * `clickhouse-client`
 
 ```bash
-# 提取并安装客户端软件包 {#extract-and-install-client-package}
+# Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

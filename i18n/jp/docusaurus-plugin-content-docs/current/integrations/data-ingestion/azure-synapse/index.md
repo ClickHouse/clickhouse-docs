@@ -13,6 +13,7 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Azure Synapse と ClickHouse の連携 {#integrating-azure-synapse-with-clickhouse}
 
 <ClickHouseSupportedBadge/>
@@ -73,8 +74,9 @@ Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](htt
 追加の設定については、[ClickHouse Spark 設定ページ](/integrations/apache-spark/spark-native-connector#configurations)を参照してください。
 
 :::info
-ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)を行ってください。\
+ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)を行ってください。
 :::
+
 
 ## セットアップの検証 {#setup-verification}
 

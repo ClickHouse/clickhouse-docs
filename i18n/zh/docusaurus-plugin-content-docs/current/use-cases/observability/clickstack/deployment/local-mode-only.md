@@ -39,8 +39,8 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   本地模式会在端口 8080 上部署 HyperDX UI。
 
   ```shell
-  docker run -p 8080:8080 clickhouse/clickstack-local:latest
-  ```
+docker run -p 8080:8080 clickhouse/clickstack-local:latest
+```
 
   ### 访问 HyperDX UI
 

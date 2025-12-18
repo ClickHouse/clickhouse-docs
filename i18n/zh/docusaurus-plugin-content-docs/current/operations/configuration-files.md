@@ -118,7 +118,7 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 ```
 
 ```shell
-# clickhouse-keeper-client {#clickhouse-keeper-client}
+# clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
 / :) get /zk_configs/postgresql_port
@@ -174,11 +174,11 @@ XML 配置文件应使用 `<clickhouse>...</clickhouse>` 作为顶层标签。
 
 ```xml
 <clickhouse>
-    <!-- 将 ZK 路径 `/profiles-in-zookeeper` 中的 XML 子树追加到 `<profiles>` 元素。 -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- 将 `include` 元素替换为 ZK 路径 `/users-in-zookeeper` 中的子树。 -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>

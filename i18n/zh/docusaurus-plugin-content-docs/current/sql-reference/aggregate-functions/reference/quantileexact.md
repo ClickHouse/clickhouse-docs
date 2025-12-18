@@ -51,7 +51,7 @@ FROM numbers(1)
 1. │ UInt64   │ Int32          │ Float32          │ Float64          │ Int64          │
    └──────────┴────────────────┴──────────────────┴──────────────────┴────────────────┘
 
-返回 1 行。耗时: 0.002 秒。
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 * 如果输入值的类型为 `Date`，则为 [Date](../../../sql-reference/data-types/date.md)。

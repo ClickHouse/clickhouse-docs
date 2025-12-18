@@ -67,7 +67,7 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10行のセット。経過時間: 0.409秒。
+10 rows in set. Elapsed: 0.409 sec.
 ```
 
 ### 簡単なクエリ {#simple-queries}
@@ -94,7 +94,7 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-4行のセット。経過時間: 0.212秒。
+4 rows in set. Elapsed: 0.212 sec.
 ```
 
 ```sql
@@ -113,7 +113,7 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-2行のデータセット。経過時間: 0.277秒 
+2 rows in set. Elapsed: 0.277 sec. 
 ```
 
 ```sql
@@ -133,7 +133,7 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-2行が設定されています。経過時間: 0.352秒。 
+2 rows in set. Elapsed: 0.352 sec. 
 ```
 
 ```sql
@@ -148,7 +148,7 @@ FROM
 │ 445 │
 └─────┘
 
-1 行。経過時間: 0.244 秒 
+1 row in set. Elapsed: 0.244 sec. 
 ```
 
 ### 複数の GROUP BY と GROUPING SETS の比較 {#comparing-multiple-group-by-statements-with-grouping-sets}
@@ -211,7 +211,7 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9行のセット。経過時間: 0.527秒。 
+9 rows in set. Elapsed: 0.527 sec. 
 ```
 
 GROUPING SETS を使って同じ情報を取得する場合：

@@ -91,30 +91,30 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 添加一个只读用户，用于读取源表（本例中为 `db.table`）：
 
 ```sql
-CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
-SETTINGS readonly = 1;
-```
+  CREATE USER exporter
+  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+  SETTINGS readonly = 1;
+  ```
 
 ```sql
-GRANT SELECT ON db.table TO exporter;
-```
+  GRANT SELECT ON db.table TO exporter;
+  ```
 
 复制该表的定义：
 
 ```sql
-SELECT create_table_query
-FROM system.tables
-WHERE database = 'db' AND table = 'table'
-```
+  SELECT create_table_query
+  FROM system.tables
+  WHERE database = 'db' AND table = 'table'
+  ```
 
 **在目标 ClickHouse Cloud 系统上（包含损坏表的那个系统）：**
 
 创建目标数据库：
 
 ```sql
-创建数据库 db
-```
+  CREATE DATABASE db
+  ```
 
 使用源端的 `CREATE TABLE` 语句来创建目标表：
 
@@ -123,18 +123,18 @@ WHERE database = 'db' AND table = 'table'
 :::
 
 ```sql
-CREATE TABLE db.table ...
-ENGINE = ReplicatedMergeTree
-ORDER BY ...
-```
+  CREATE TABLE db.table ...
+  ENGINE = ReplicatedMergeTree
+  ORDER BY ...
+  ```
 
 使用 `remoteSecure` 函数将数据从刚恢复的 ClickHouse Cloud 服务拉取到原始服务中：
 
 ```sql
-INSERT INTO db.table
-SELECT *
-FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-```
+  INSERT INTO db.table
+  SELECT *
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  ```
 
 在成功将数据插入到原有服务后，请务必在该服务中验证数据。数据验证完成后，还应删除新服务。
 
@@ -150,7 +150,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 将限制增加至 2TB
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::

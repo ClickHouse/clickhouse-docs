@@ -14,8 +14,8 @@ doc_type: 'reference'
 ## 语法 {#syntax}
 
 ```sql
-odbc(数据源, external_database, external_table)
-odbc(数据源, external_table)
+odbc(datasource, external_database, external_table)
+odbc(datasource, external_table)
 odbc(named_collection)
 ```
 
@@ -70,7 +70,7 @@ PASSWORD = clickhouse
 ```bash
 $ isql -v mysqlconn
 +-------------------------+
-| 已连接！                            |
+| Connected!                            |
 |                                       |
 ...
 ```

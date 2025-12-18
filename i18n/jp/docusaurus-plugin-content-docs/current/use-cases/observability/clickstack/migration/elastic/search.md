@@ -50,7 +50,7 @@ HyperDX と Elasticsearch はどちらも、ログやトレースを直感的に
 | Unbounded ranges (numeric/date)   | `duration:>10` or `duration:>=10` | `duration:>10` or `duration:>=10` | HyperDX は標準的な SQL 演算子を使用します。|
 | Inclusive/exclusive     | `duration:{100 TO 200}` (exclusive)    | Same                                   | 波括弧は排他的な境界を表します。範囲内での `*` はサポートされません (例: `duration:[100 TO *]`)。|
 | Exists check            | N/A                       | `_exists_:user` or `field:*` | `_exists_` はサポートされていません。`LogAttributes` のような `Map` カラムに対しては `LogAttributes.log.file.path: *` を使用してください。ルートカラムについては、イベントに含まれていない場合でも必ず存在しており、デフォルト値が設定されます。デフォルト値や欠損カラムを検索する場合は Elasticsearch と同じ構文 `ServiceName:*` や `ServiceName != ''` を使用してください。 |
-| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 現在、Lucene 構文ではサポートされていません。ユーザーは SQL と [`match`](/sql-reference/functions/string-search-functions#match) 関数、もしくはその他の [文字列検索関数](/sql-reference/functions/string-search-functions) を使用できます。|
+| Regex                   |      `match` function          | `name:/joh?n(ath[oa]n)/` | 現在、Lucene 構文ではサポートされていません。SQL と [`match`](/sql-reference/functions/string-search-functions#match) 関数、もしくはその他の [文字列検索関数](/sql-reference/functions/string-search-functions) を使用できます。|
 | Fuzzy match             |      `editDistance('quikc', field) = 1` | `quikc~` | 現在、Lucene 構文ではサポートされていません。SQL では距離関数を使用できます (例: `editDistance('rror', SeverityText) = 1`) や [その他の類似度関数](/sql-reference/functions/string-functions#jaroSimilarity) を利用できます。 |
 | Proximity search        | Not supported                       | `"fox quick"~5` | 現在、Lucene 構文ではサポートされていません。 |
 | Boosting                | `quick^2 fox` | `quick^2 fox` | 現時点では HyperDX ではサポートされていません。 |
@@ -68,6 +68,6 @@ ClickStack では、[`Nullable`](/sql-reference/data-types/nullable) は[推奨�
 
 この挙動により、Elasticsearch における意味でフィールドが「存在する」かどうかをチェックすることは、直接的にはサポートされません。
 
-代わりに、ユーザーは `field:*` や `field != ''` を使用して、空でない値が存在するかどうかを確認できます。そのため、真に欠落しているフィールドと、明示的に空にされているフィールドを区別することはできません。
+代わりに、`field:*` や `field != ''` を使用して、空でない値が存在するかどうかを確認できます。そのため、真に欠落しているフィールドと、明示的に空にされているフィールドを区別することはできません。
 
 実際のオブザーバビリティ用途においては、この違いが問題になることはまれですが、システム間でクエリを変換する際には念頭に置いておく必要があります。

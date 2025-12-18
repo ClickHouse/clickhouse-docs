@@ -139,7 +139,7 @@ ORDER BY s;
 **Пример 5:** Использование результатов скалярного подзапроса
 
 ```sql
-/* этот пример вернёт ТОП-10 самых больших таблиц */
+/* this example would return TOP 10 of most huge tables */
 WITH
     (
         SELECT sum(bytes)
@@ -350,7 +350,7 @@ SELECT DISTINCT * FROM search_graph ORDER BY from;
 ```
 
 ```text
-Код: 306. DB::Exception: Получено от localhost:9000. DB::Exception: Превышена максимальная глубина рекурсивного вычисления CTE (1000) при вычислении search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Рекомендуется увеличить значение параметра max_recursive_cte_evaluation_depth.: При выполнении RecursiveCTESource. (TOO_DEEP_RECURSION)
+Code: 306. DB::Exception: Received from localhost:9000. DB::Exception: Maximum recursive CTE evaluation depth (1000) exceeded, during evaluation of search_graph AS (SELECT from, to, label FROM graph AS g UNION ALL SELECT g.from, g.to, g.label FROM graph AS g, search_graph AS sg WHERE g.from = sg.to). Consider raising max_recursive_cte_evaluation_depth setting.: While executing RecursiveCTESource. (TOO_DEEP_RECURSION)
 ```
 
 Стандартный способ обработки циклов состоит в том, чтобы вычислить массив уже посещённых узлов:

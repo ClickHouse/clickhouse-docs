@@ -24,13 +24,13 @@ doc_type: 'reference'
 ```sql title="Query"
 DROP TABLE IF EXISTS line_as_string;
 CREATE TABLE line_as_string (field String) ENGINE = Memory;
-INSERT INTO line_as_string FORMAT LineAsString "我喜欢苹果", "我喜欢香蕉", "我喜欢橙子";
+INSERT INTO line_as_string FORMAT LineAsString "I love apple", "I love banana", "I love orange";
 SELECT * FROM line_as_string;
 ```
 
 ```text title="Response"
 ┌─field─────────────────────────────────────────────┐
-│ "我喜欢苹果", "我喜欢香蕉", "我喜欢橙子"; │
+│ "I love apple", "I love banana", "I love orange"; │
 └───────────────────────────────────────────────────┘
 ```
 

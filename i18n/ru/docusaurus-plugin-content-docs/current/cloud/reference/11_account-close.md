@@ -46,9 +46,9 @@ doc_type: 'guide'
 5. На экране &#39;Create new case&#39; введите следующее:
 
 ```text
-Приоритет: Серьезность 3
-Тема: Пожалуйста, закройте мой аккаунт ClickHouse
-Описание: Мы будем признательны, если вы укажете краткую причину закрытия аккаунта.
+Priority: Severity 3
+Subject: Please close my ClickHouse account
+Description: We would appreciate it if you would share a brief note about why you are cancelling.
 ```
 
 5. Нажмите «Create new case».

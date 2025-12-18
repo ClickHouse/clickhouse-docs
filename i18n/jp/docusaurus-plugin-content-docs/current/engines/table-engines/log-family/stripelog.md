@@ -62,8 +62,8 @@ ENGINE = StripeLog
 データの挿入:
 
 ```sql
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','最初の通常メッセージ')
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','2番目の通常メッセージ'),(now(),'WARNING','最初の警告メッセージ')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 2つの `INSERT` クエリを使用して、`data.bin` ファイル内に2つのデータブロックを作成しました。
@@ -71,16 +71,16 @@ INSERT INTO stripe_log_table VALUES (now(),'REGULAR','2番目の通常メッセ�
 ClickHouse はデータを選択する際に複数スレッドを使用します。各スレッドは別々のデータブロックを読み取り、処理が完了し次第、それぞれ独立して結果行を返します。その結果、出力される行ブロックの順序は、ほとんどの場合、入力時の同じブロックの順序と一致しません。例えば次のようになります。
 
 ```sql
-stripe_log_table から全てを選択する
+SELECT * FROM stripe_log_table
 ```
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ 2つ目の通常メッセージ       │
-│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ        │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ       │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -92,8 +92,8 @@ SELECT * FROM stripe_log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ 最初の通常メッセージ        │
-│ 2019-01-18 14:27:32 │ REGULAR      │ 2つ目の通常メッセージ       │
-│ 2019-01-18 14:34:53 │ WARNING      │ 最初の警告メッセージ        │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

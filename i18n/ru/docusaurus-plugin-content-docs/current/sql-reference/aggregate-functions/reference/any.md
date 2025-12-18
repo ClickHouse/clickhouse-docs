@@ -21,7 +21,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-any(столбец) [RESPECT NULLS]
+any(column) [RESPECT NULLS]
 ```
 
 Псевдонимы `any(column)` (без `RESPECT NULLS`)

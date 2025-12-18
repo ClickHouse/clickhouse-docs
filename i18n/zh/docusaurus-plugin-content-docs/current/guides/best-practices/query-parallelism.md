@@ -16,6 +16,7 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
+
 # ClickHouse 如何并行执行查询 {#how-clickhouse-executes-a-query-in-parallel}
 
 ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度并行的方式执行查询，利用所有可用的 CPU 核心，将数据分布到各个处理通道，并且经常将硬件推至其性能极限。
@@ -36,14 +37,20 @@ ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度
 
 <Image img={visual02} size="md" alt="4 个并行处理通道"/>
 
-<br/><br/>
-`n` 个并行处理通道的数量由 [max_threads](/operations/settings/settings#max_threads) 设置控制，默认情况下与 ClickHouse 在该服务器上可用的 CPU 核心数相匹配。在上面的示例中，我们假设有 `4` 个核心。 
+<br/>
+
+<br/>
+
+`n` 个并行处理通道的数量由 [`max_threads`](/operations/settings/settings#max_threads) 设置控制，默认情况下与服务器上 ClickHouse 可用的单个 CPU 的核心（线程）数量相匹配。在上面的示例中，我们假设有 `4` 个核心。 
 
 在一台具有 `8` 个核心的机器上，查询处理吞吐量大致会提升一倍（但内存使用也会相应增加），因为会有更多通道并行处理数据：
 
 <Image img={visual03} size="md" alt="8 个并行处理通道"/>
 
-<br/><br/>
+<br/>
+
+<br/>
+
 高效的通道分配是最大化 CPU 利用率并缩短整体查询时间的关键。
 
 ### 在分片表上处理查询 {#processing-queries-on-sharded-tables}
@@ -78,9 +85,9 @@ SETTINGS send_logs_level='trace';
 ```
 
 ```txt
-① <Debug> ...: 从 3 个范围读取 3609 个标记
-② <Trace> ...: 在流之间分配标记范围
-② <Debug> ...: 使用 59 个流读取约 29564928 行数据
+① <Debug> ...: 3609 marks to read from 3 ranges
+② <Trace> ...: Spreading mark ranges among streams
+② <Debug> ...: Reading approx. 29564928 rows with 59 streams
 ```
 
 我们可以看到：
@@ -121,6 +128,7 @@ ClickHouse 的[内嵌 Web UI](/interfaces/http)（在 `/play` 端点可用）可
 
 注意：请从左到右阅读该可视化。每一行代表一条并行处理通道，它以数据块为单位进行流式处理，并应用过滤、聚合以及最终处理阶段等转换。在本例中，你可以看到与 `max_threads = 4` 设置对应的四条并行通道。
 
+
 ### 在处理通道之间进行负载均衡 {#load-balancing-across-processing-lanes}
 
 请注意，物理计划中的 `Resize` 算子会[重新分区并重新分发](/academic_overview#4-2-multi-core-parallelization)数据块流到各个处理通道，以保持它们的利用率均衡。当不同数据范围中满足查询谓词的行数相差较大时，这种再平衡尤为重要，否则某些通道可能会过载，而其他通道则处于空闲状态。通过重新分配工作量，较快的通道可以有效帮助较慢的通道，从而优化整体查询执行时间。
@@ -139,7 +147,7 @@ SELECT getSetting('max_threads');
    └───────────────────────────┘
 ```
 
-然而，视所选处理的数据量不同，`max_threads` 的设置值可能会被忽略：
+然而，根据所选用于处理的数据量大小，`max_threads` 的配置值可能会被忽略：
 
 ```sql runnable=false
 EXPLAIN PIPELINE
@@ -170,14 +178,14 @@ WHERE town = 'LONDON';
 
 ```txt
    ┌─max(price)─┐
-1. │  594300000 │ -- 5.943 亿
+1. │  594300000 │ -- 594.30 million
    └────────────┘
    
-返回 1 行。耗时：0.013 秒。已处理 231 万行，13.66 MB（173.12 百万行/秒，1.02 GB/秒）
-峰值内存使用量：27.24 MiB。   
+1 row in set. Elapsed: 0.013 sec. Processed 2.31 million rows, 13.66 MB (173.12 million rows/s., 1.02 GB/s.)
+Peak memory usage: 27.24 MiB.   
 ```
 
-如上面的输出所示，该查询处理了约 231 万行数据并读取了 13.66 MB 的数据。原因是在索引分析阶段，ClickHouse 选择了 **282 个 granule（粒度单元）** 进行处理，每个 granule 包含 8,192 行，总计约 231 万行：
+如上面的输出所示，查询处理了约 231 万行数据并读取了 13.66 MB 的数据。这是因为在索引分析阶段，ClickHouse 选择了 **282 个 granule（粒度单元）** 进行处理，每个 granule 包含 8,192 行，合计约 231 万行：
 
 ```sql runnable=false
 EXPLAIN indexes = 1
@@ -223,9 +231,10 @@ WHERE town = 'LONDON';
 
 * [Merge&#95;tree&#95;min&#95;read&#95;task&#95;size](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_read_task_size) + [merge&#95;tree&#95;min&#95;bytes&#95;per&#95;task&#95;for&#95;remote&#95;reading](https://clickhouse.com/docs/operations/settings/settings#merge_tree_min_bytes_per_task_for_remote_reading)
 
-:::warning 不要修改这些设置
-我们不建议在生产环境中修改这些设置。这里只是为了说明为什么 `max_threads` 并不总是决定实际的并行度。
+:::warning 请勿修改这些设置
+我们不建议在生产环境中修改这些设置。这里展示它们仅用于说明为什么 `max_threads` 并不总是决定实际的并行度。
 :::
+
 
 出于演示目的，我们来查看在重写这些设置以强制使用最大并发时的物理计划：
 
@@ -253,6 +262,7 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 
 这表明，对于小数据集上的查询，ClickHouse 会有意限制并发度。仅在测试环境中临时覆盖这些设置——不要在生产环境中这样做——因为这可能导致执行效率低下或资源争用。
 
+
 ## 关键要点 {#key-takeaways}
 
 * ClickHouse 使用与 `max_threads` 绑定的处理通道来并行执行查询。
@@ -268,4 +278,5 @@ MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59
 * [Partial aggregation states explained](https://clickhouse.com/blog/clickhouse_vs_elasticsearch_mechanics_of_count_aggregations#-multi-core-parallelization) - 深入剖析 partial aggregation states 如何在多个处理通道之间实现高效的并行执行。
 
 * 一段视频教程，详细讲解 ClickHouse 查询处理的所有步骤：
+
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/hP6G2Nlz_cA?si=Imd_i427J_kZOXHe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

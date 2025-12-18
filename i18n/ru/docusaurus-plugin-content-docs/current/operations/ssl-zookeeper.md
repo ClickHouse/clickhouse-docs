@@ -55,7 +55,7 @@ sudo update-ca-certificates
 Запустите `clickhouse-server`. В логах вы увидите:
 
 ```text
-<Trace> ZooKeeper: инициализирован, хосты: secure://localhost:2281
+<Trace> ZooKeeper: initialized, hosts: secure://localhost:2281
 ```
 
 Префикс `secure://` указывает на то, что соединение защищено с помощью SSL.

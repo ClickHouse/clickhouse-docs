@@ -76,12 +76,12 @@ ClickHouse 会尝试对您的服务进行分组，以便在同一 Azure 区域�
 获得 API 密钥后，在运行任何命令之前，先设置以下环境变量：
 
 ```bash
-REGION=<区域代码,使用 Azure 格式,例如:westus3>
+REGION=<region code, use Azure format, for example: westus3>
 PROVIDER=azure
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥>
-ORG_ID=<ClickHouse 组织 ID>
-SERVICE_NAME=<您的 ClickHouse 服务名称>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 通过根据区域、云服务提供商和服务名称进行筛选来获取 ClickHouse `INSTANCE_ID`：
@@ -198,7 +198,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
   private_service_connection {
     name                              = "test-pl"
-    private_connection_resource_alias = "<在“Obtain Azure connection alias for Private Link”（获取 Azure Private Link 连接别名）步骤中获得的数据>"
+    private_connection_resource_alias = "<data from 'Obtain Azure connection alias for Private Link' step>"
     is_manual_connection              = true
   }
 }
@@ -293,12 +293,12 @@ resource "azurerm_private_dns_a_record" "example" {
 
 ```bash
 nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
-服务器：127.0.0.53
-地址：127.0.0.53#53
+Server: 127.0.0.53
+Address: 127.0.0.53#53
 
-非权威应答：
-名称：xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
-地址：10.0.0.4
+Non-authoritative answer:
+Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
+Address: 10.0.0.4
 ```
 
 ## 将专用终结点资源 ID 添加到你的 ClickHouse Cloud 组织 {#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization}
@@ -317,11 +317,11 @@ nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
 
 ```bash
 PROVIDER=azure
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥>
-ORG_ID=<设置 ClickHouse 组织 ID>
-ENDPOINT_ID=<私有终结点资源 ID>
-REGION=<区域代码,使用 Azure 格式>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+REGION=<region code, use Azure format>
 ```
 
 使用 [获取专用终结点资源 ID](#obtaining-private-endpoint-resourceid) 步骤中获取的数据来设置 `ENDPOINT_ID` 环境变量。
@@ -336,7 +336,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "azure",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Azure 私有终结点",
+        "description": "Azure private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -389,11 +389,11 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 ```bash
 PROVIDER=azure
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥密文>
-ORG_ID=<设置 ClickHouse 组织 ID>
-ENDPOINT_ID=<私有端点资源 ID>
-INSTANCE_ID=<实例 ID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 对每个需要通过 Private Link 访问的服务执行一次该命令。
@@ -449,10 +449,10 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 在运行任何命令之前，先设置以下环境变量：
 
 ```bash
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥密文>
-ORG_ID=<ClickHouse 组织 ID>
-INSTANCE_ID=<实例 ID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 运行以下命令：
@@ -481,7 +481,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 运行以下命令：
 
 ```bash
-nslookup <dns 名称>
+nslookup <dns name>
 ```
 
 其中 &quot;dns name&quot; 是来自 [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link) 的 `privateDnsHostname`<sup>API</sup> 或 `DNS name`<sup>console</sup>
@@ -489,9 +489,9 @@ nslookup <dns 名称>
 你应该会收到如下所示的响应：
 
 ```response
-非权威应答：
-名称：<dns name>
-地址：10.0.0.4
+Non-authoritative answer:
+Name: <dns name>
+Address: 10.0.0.4
 ```
 
 ### 连接被对端重置 {#connection-reset-by-peer}
@@ -513,24 +513,24 @@ openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
 ```
 
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-无可用的对等证书
+no peer certificate available
 ---
-未发送客户端证书 CA 名称
+No client certificate CA names sent
 ---
-SSL 握手已读取 0 字节并写入 335 字节
-验证：OK
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-新建，(无)，密码为 (无)
-不支持安全重新协商
-压缩：无
-扩展：无
-未协商 ALPN
-未发送早期数据
-验证返回码：0 (正常)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### 检查私有端点过滤器 {#checking-private-endpoint-filters}
@@ -538,10 +538,10 @@ SSL 握手已读取 0 字节并写入 335 字节
 在运行任何命令之前，先设置以下环境变量：
 
 ```bash
-KEY_ID=<密钥 ID>
-KEY_SECRET=<密钥密文>
-ORG_ID=<请设置 ClickHouse 组织 ID>
-INSTANCE_ID=<实例 ID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 运行以下命令检查 Private Endpoint 筛选器：

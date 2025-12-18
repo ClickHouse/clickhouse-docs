@@ -65,7 +65,7 @@ Where:
 例を見てみましょう。次のフォーマット文字列が与えられているとします。
 
 ```text
-検索フレーズ: ${s:Quoted}、件数: ${c:Escaped}、広告価格: $$${p:JSON};
+Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 ```
 
 以下の値は（`SELECT` を使用している場合は）出力され、（`INPUT` を使用している場合は）入力として期待されます。
@@ -81,7 +81,7 @@ Where:
 * `SELECT` を行う場合、下記の行は、値 `bathroom interior design`, `2166`, `$3` がすでにテーブル内のカラム `Search phrase`, `count`, `ad price` に保存されていると仮定したときの出力例です。
 
 ```yaml
-検索フレーズ: 'bathroom interior design'、件数: 2166、広告単価: $3;
+Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
 ### format&#95;template&#95;rows&#95;between&#95;delimiter {#format_template_rows_between_delimiter}
@@ -139,16 +139,16 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```text title="/some/path/resultset.format"
 <!DOCTYPE HTML>
-<html> <head> <title>検索フレーズ</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>検索フレーズ</caption>
-    <tr> <th>検索フレーズ</th> <th>件数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     ${data}
   </table>
-  <table border="1"> <caption>最大値</caption>
+  <table border="1"> <caption>Max</caption>
     ${max}
   </table>
-  <b>${rows_read:XML} 行を ${time:XML} 秒で処理しました</b>
+  <b>Processed ${rows_read:XML} rows in ${time:XML} sec</b>
  </body>
 </html>
 ```
@@ -161,20 +161,20 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 
 ```html
 <!DOCTYPE HTML>
-<html> <head> <title>検索フレーズ</title> </head>
+<html> <head> <title>Search phrases</title> </head>
  <body>
-  <table border="1"> <caption>検索フレーズ</caption>
-    <tr> <th>検索フレーズ</th> <th>件数</th> </tr>
+  <table border="1"> <caption>Search phrases</caption>
+    <tr> <th>Search phrase</th> <th>Count</th> </tr>
     <tr> <td></td> <td>8267016</td> </tr>
     <tr> <td>bathroom interior design</td> <td>2166</td> </tr>
     <tr> <td>clickhouse</td> <td>1655</td> </tr>
     <tr> <td>spring 2014 fashion</td> <td>1549</td> </tr>
     <tr> <td>freeform photos</td> <td>1480</td> </tr>
   </table>
-  <table border="1"> <caption>最大値</caption>
+  <table border="1"> <caption>Max</caption>
     <tr> <td></td> <td>8873898</td> </tr>
   </table>
-  <b>3095973行を0.1569913秒で処理しました</b>
+  <b>Processed 3095973 rows in 0.1569913 sec</b>
  </body>
 </html>
 ```
@@ -182,10 +182,10 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 ### データの挿入 {#inserting-data}
 
 ```text
-ヘッダー
-ページビュー: 5、ユーザーID: 4324182021466249494、不要なフィールド: hello、期間: 146、符号: -1
-ページビュー: 6、ユーザーID: 4324182021466249494、不要なフィールド: world、期間: 185、符号: 1
-合計行数: 2
+Some header
+Page views: 5, User id: 4324182021466249494, Useless field: hello, Duration: 146, Sign: -1
+Page views: 6, User id: 4324182021466249494, Useless field: world, Duration: 185, Sign: 1
+Total rows: 2
 ```
 
 ```sql
@@ -195,11 +195,11 @@ FORMAT Template
 ```
 
 ```text title="/some/path/resultset.format"
-ヘッダー\n${data}\n総行数: ${:CSV}\n
+Some header\n${data}\nTotal rows: ${:CSV}\n
 ```
 
 ```text title="/some/path/row.format"
-ページビュー: ${PageViews:CSV}, ユーザーID: ${UserID:CSV}, 未使用フィールド: ${:CSV}, 期間: ${Duration:CSV}, 符号: ${Sign:CSV}
+Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Duration: ${Duration:CSV}, Sign: ${Sign:CSV}
 ```
 
 プレースホルダー内の `PageViews`、`UserID`、`Duration` および `Sign` は、テーブル内の列名です。行中の `Useless field` 以降の値と、サフィックス中の `\nTotal rows:` 以降の値は無視されます。
@@ -222,13 +222,13 @@ SELECT * FROM formats
 FORMAT Template
 SETTINGS
  format_template_row_format='|`${0:XML}`|',
- format_template_resultset_format='|ClickHouse フォーマット|\n|---|\n${data}\n'
+ format_template_resultset_format='|ClickHouse Formats|\n|---|\n${data}\n'
 ```
 
 ご覧のとおり、あの markdown テーブルを作るために必要な `|` や `-` を、手作業で一つずつ追加していく手間を省くことができました：
 
 ```response title="Response"
-|ClickHouse フォーマット|
+|ClickHouse Formats|
 |---|
 |`BSONEachRow`|
 |`CustomSeparatedWithNames`|

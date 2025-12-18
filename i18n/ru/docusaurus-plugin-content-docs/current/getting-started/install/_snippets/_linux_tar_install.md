@@ -33,9 +33,9 @@ export LATEST_VERSION
 
 ```bash
 case $(uname -m) in
-  x86_64) ARCH=amd64 ;;         # Для 64-битных процессоров Intel/AMD
-  aarch64) ARCH=arm64 ;;        # Для 64-битных процессоров ARM
-  *) echo "Неизвестная архитектура $(uname -m)"; exit 1 ;; # Выход при неподдерживаемой архитектуре
+  x86_64) ARCH=amd64 ;;         # For Intel/AMD 64-bit processors
+  aarch64) ARCH=arm64 ;;        # For ARM 64-bit processors
+  *) echo "Unknown architecture $(uname -m)"; exit 1 ;; # Exit if architecture isn't supported
 esac
 ```
 
@@ -57,7 +57,7 @@ done
 - `clickhouse-common-static`
 
 ```bash
-# Извлечение и установка пакета clickhouse-common-static {#extract-and-install-clickhouse-common-static-package}
+# Extract and install clickhouse-common-static package
 tar -xzvf "clickhouse-common-static-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
@@ -66,7 +66,7 @@ sudo "clickhouse-common-static-$LATEST_VERSION/install/doinst.sh"
 * `clickhouse-common-static-dbg`
 
 ```bash
-# Извлеките и установите пакет отладочных символов {#extract-and-install-debug-symbols-package}
+# Extract and install debug symbols package
 tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-common-static-dbg-$LATEST_VERSION.tgz"
 sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
@@ -75,17 +75,17 @@ sudo "clickhouse-common-static-dbg-$LATEST_VERSION/install/doinst.sh"
 * `clickhouse-server`
 
 ```bash
-# Извлечение и установка серверного пакета с конфигурацией {#extract-and-install-server-package-with-configuration}
+# Extract and install server package with configuration
 tar -xzvf "clickhouse-server-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-server-$LATEST_VERSION.tgz"
 sudo "clickhouse-server-$LATEST_VERSION/install/doinst.sh" configure
-sudo /etc/init.d/clickhouse-server start  # Запуск сервера
+sudo /etc/init.d/clickhouse-server start  # Start the server
 ```
 
 * `clickhouse-client`
 
 ```bash
-# Извлечь и установить клиентский пакет {#extract-and-install-client-package}
+# Extract and install client package
 tar -xzvf "clickhouse-client-$LATEST_VERSION-${ARCH}.tgz" \
   || tar -xzvf "clickhouse-client-$LATEST_VERSION.tgz"
 sudo "clickhouse-client-$LATEST_VERSION/install/doinst.sh"

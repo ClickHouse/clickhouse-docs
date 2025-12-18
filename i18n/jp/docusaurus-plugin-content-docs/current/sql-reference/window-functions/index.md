@@ -62,7 +62,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 ```text
       PARTITION
-┌─────────────────┐  <-- UNBOUNDED PRECEDING (PARTITIONの先頭)
+┌─────────────────┐  <-- UNBOUNDED PRECEDING (BEGINNING of the PARTITION)
 │                 │
 │                 │
 │=================│  <-- N PRECEDING  <─┐
@@ -74,7 +74,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 │=================│  <-- M FOLLOWING  <─┘
 │                 │
 │                 │
-└─────────────────┘  <--- UNBOUNDED FOLLOWING (PARTITIONの末尾)
+└─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
 
 ### 関数 {#functions}
@@ -224,10 +224,10 @@ ORDER BY
 
 ┌─part_key─┬─value─┬─order─┬─frame_values─┐
 │        1 │     1 │     1 │ [1,2,3]      │   <┐   
-│        1 │     2 │     2 │ [1,2,3]      │    │  第1グループ
+│        1 │     2 │     2 │ [1,2,3]      │    │  1-st group
 │        1 │     3 │     3 │ [1,2,3]      │   <┘ 
-│        2 │     0 │     0 │ [0]          │   <- 第2グループ
-│        3 │     0 │     0 │ [0]          │   <- 第3グループ
+│        2 │     0 │     0 │ [0]          │   <- 2-nd group
+│        3 │     0 │     0 │ [0]          │   <- 3-d group
 └──────────┴───────┴───────┴──────────────┘
 ```
 
@@ -247,7 +247,7 @@ INSERT INTO wf_frame FORMAT Values
 ```
 
 ```sql
--- フレームはパーティションの境界で区切られます (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+-- Frame is bounded by bounds of a partition (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 SELECT
     part_key,
     value,
@@ -272,8 +272,8 @@ ORDER BY
 ```
 
 ```sql
--- 短縮形 - 境界式なし、ORDER BY なし
--- `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` と同等
+-- short form - no bound expression, no order by,
+-- an equalent of `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
 SELECT
     part_key,
     value,
@@ -296,7 +296,7 @@ ORDER BY
 ```
 
 ```sql
--- フレームはパーティションの先頭から現在行までの範囲となる
+-- frame is bounded by the beginning of a partition and the current row
 SELECT
     part_key,
     value,
@@ -321,8 +321,8 @@ ORDER BY
 ```
 
 ```sql
--- 短縮形式（フレームはパーティションの開始位置から現在行までの範囲）
--- `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` と同等
+-- short form (frame is bounded by the beginning of a partition and the current row)
+-- an equalent of `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
 SELECT
     part_key,
     value,
@@ -346,7 +346,7 @@ ORDER BY
 ```
 
 ```sql
--- フレームはパーティションの先頭から現在行までに制限されるが、順序は降順
+-- frame is bounded by the beginning of a partition and the current row, but order is backward
 SELECT
     part_key,
     value,
@@ -367,7 +367,7 @@ ORDER BY
 ```
 
 ```sql
--- スライディングフレーム - 1行前から現在行まで
+-- sliding frame - 1 PRECEDING ROW AND CURRENT ROW
 SELECT
     part_key,
     value,
@@ -392,7 +392,7 @@ ORDER BY
 ```
 
 ```sql
--- スライディングフレーム - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
+-- sliding frame - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
 SELECT
     part_key,
     value,
@@ -417,7 +417,7 @@ ORDER BY
 ```
 
 ```sql
--- row_numberはフレームを尊重しないため、rn_1 = rn_2 = rn_3 != rn_4となる
+-- row_number does not respect the frame, so rn_1 = rn_2 = rn_3 != rn_4
 SELECT
     part_key,
     value,
@@ -438,6 +438,14 @@ WINDOW
 ORDER BY
     part_key ASC,
     value ASC;
+
+┌─part_key─┬─value─┬─order─┬─frame_values─┬─rn_1─┬─rn_2─┬─rn_3─┬─rn_4─┐
+│        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
+│        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
+│        1 │     3 │     3 │ [5,4,3]      │    3 │    3 │    3 │    2 │
+│        1 │     4 │     4 │ [5,4]        │    2 │    2 │    2 │    2 │
+│        1 │     5 │     5 │ [5]          │    1 │    1 │    1 │    1 │
+└──────────┴───────┴───────┴──────────────┴──────┴──────┴──────┴──────┘
 ```
 
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
@@ -448,8 +456,30 @@ ORDER BY
 │        1 │     5 │     5 │ [5]          │    1 │    1 │    1 │    1 │
 └──────────┴───────┴───────┴──────────────┴──────┴──────┴──────┴──────┘
 
-````
+```sql
+-- first_value and last_value respect the frame
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    first_value(value) OVER w1 AS first_value_1,
+    last_value(value) OVER w1 AS last_value_1,
+    groupArray(value) OVER w2 AS frame_values_2,
+    first_value(value) OVER w2 AS first_value_2,
+    last_value(value) OVER w2 AS last_value_2
+FROM wf_frame
+WINDOW
+    w1 AS (PARTITION BY part_key ORDER BY order ASC),
+    w2 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
 
+┌─frame_values_1─┬─first_value_1─┬─last_value_1─┬─frame_values_2─┬─first_value_2─┬─last_value_2─┐
+│ [1]            │             1 │            1 │ [1]            │             1 │            1 │
+│ [1,2]          │             1 │            2 │ [1,2]          │             1 │            2 │
+│ [1,2,3]        │             1 │            3 │ [2,3]          │             2 │            3 │
+│ [1,2,3,4]      │             1 │            4 │ [3,4]          │             3 │            4 │
+│ [1,2,3,4,5]    │             1 │            5 │ [4,5]          │             4 │            5 │
+└────────────────┴───────────────┴──────────────┴────────────────┴───────────────┴──────────────┘
 ```sql
 -- first_value と last_value はフレームに従う
 SELECT
@@ -474,8 +504,24 @@ ORDER BY
 │ [1,2,3,4]      │             1 │            4 │ [3,4]          │             3 │            4 │
 │ [1,2,3,4,5]    │             1 │            5 │ [4,5]          │             4 │            5 │
 └────────────────┴───────────────┴──────────────┴────────────────┴───────────────┴──────────────┘
-````
+```sql
+-- second value within the frame
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    nth_value(value, 2) OVER w1 AS second_value
+FROM wf_frame
+WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
 
+┌─frame_values_1─┬─second_value─┐
+│ [1]            │            0 │
+│ [1,2]          │            2 │
+│ [1,2,3]        │            2 │
+│ [1,2,3,4]      │            2 │
+│ [2,3,4,5]      │            3 │
+└────────────────┴──────────────┘
 ```sql
 -- フレーム内の2番目の値
 SELECT
@@ -494,7 +540,24 @@ ORDER BY
 │ [1,2,3,4]      │            2 │
 │ [2,3,4,5]      │            3 │
 └────────────────┴──────────────┘
-```
+```sql
+-- second value within the frame + Null for missing values
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    nth_value(toNullable(value), 2) OVER w1 AS second_value
+FROM wf_frame
+WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
+
+┌─frame_values_1─┬─second_value─┐
+│ [1]            │         ᴺᵁᴸᴸ │
+│ [1,2]          │            2 │
+│ [1,2,3]        │            2 │
+│ [1,2,3,4]      │            2 │
+│ [2,3,4,5]      │            3 │
+└────────────────┴──────────────┘
 
 ```sql
 -- フレーム内の2番目の値 + 欠損値に対するNull
@@ -506,25 +569,6 @@ WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING 
 ORDER BY
     part_key ASC,
     value ASC;
-```
-
-┌─frame&#95;values&#95;1─┬─second&#95;value─┐
-│ [1]            │         ᴺᵁᴸᴸ │
-│ [1,2]          │            2 │
-│ [1,2,3]        │            2 │
-│ [1,2,3,4]      │            2 │
-│ [2,3,4,5]      │            3 │
-└────────────────┴──────────────┘
-
-```
-```
-
-## 実例 {#real-world-examples}
-
-以下は、現場でよくある課題を解決する例です。
-
-### 部門別の最大／合計給与 {#maximumtotal-salary-per-department}
-
 ```sql
 CREATE TABLE employees
 (
@@ -542,7 +586,6 @@ INSERT INTO employees FORMAT Values
    ('IT', 'Anna', 300),
    ('IT', 'Elen', 500);
 ```
-
 ```sql
 SELECT
     department,
@@ -577,10 +620,22 @@ FROM
 │ IT         │ Elen │    500 │                500 │                 1000 │               50 │
 │ IT         │ Tim  │    200 │                500 │                 1000 │               20 │
 └────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
-```
+```sql
+CREATE TABLE employees
+(
+    `department` String,
+    `employee_name` String,
+    `salary` Float
+)
+ENGINE = Memory;
 
-### 累積和 {#cumulative-sum}
-
+INSERT INTO employees FORMAT Values
+   ('Finance', 'Jonh', 200),
+   ('Finance', 'Joan', 210),
+   ('Finance', 'Jean', 505),
+   ('IT', 'Tim', 200),
+   ('IT', 'Anna', 300),
+   ('IT', 'Elen', 500);
 ```sql
 CREATE TABLE warehouse
 (
@@ -597,8 +652,40 @@ INSERT INTO warehouse VALUES
     ('sku1', '2020-01-01', 1),
     ('sku1', '2020-02-01', 1),
     ('sku1', '2020-03-01', 1);
-```
+```sql
+SELECT
+    department,
+    employee_name AS emp,
+    salary,
+    max_salary_per_dep,
+    total_salary_per_dep,
+    round((salary / total_salary_per_dep) * 100, 2) AS `share_per_dep(%)`
+FROM
+(
+    SELECT
+        department,
+        employee_name,
+        salary,
+        max(salary) OVER wndw AS max_salary_per_dep,
+        sum(salary) OVER wndw AS total_salary_per_dep
+    FROM employees
+    WINDOW wndw AS (
+        PARTITION BY department
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    )
+    ORDER BY
+        department ASC,
+        employee_name ASC
+);
 
+┌─department─┬─emp──┬─salary─┬─max_salary_per_dep─┬─total_salary_per_dep─┬─share_per_dep(%)─┐
+│ Finance    │ Jean │    505 │                505 │                  915 │            55.19 │
+│ Finance    │ Joan │    210 │                505 │                  915 │            22.95 │
+│ Finance    │ Jonh │    200 │                505 │                  915 │            21.86 │
+│ IT         │ Anna │    300 │                500 │                 1000 │               30 │
+│ IT         │ Elen │    500 │                500 │                 1000 │               50 │
+│ IT         │ Tim  │    200 │                500 │                 1000 │               20 │
+└────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
 ```sql
 SELECT
     item,
@@ -618,10 +705,22 @@ ORDER BY
 │ sku38 │ 2020-02-01 00:00:00 │     1 │            10 │
 │ sku38 │ 2020-03-01 00:00:00 │    -4 │             6 │
 └───────┴─────────────────────┴───────┴───────────────┘
-```
+```sql
+CREATE TABLE warehouse
+(
+    `item` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory
 
-### 移動平均 / スライディング平均（3行ごと） {#moving--sliding-average-per-3-rows}
-
+INSERT INTO warehouse VALUES
+    ('sku38', '2020-01-01', 9),
+    ('sku38', '2020-02-01', 1),
+    ('sku38', '2020-03-01', -4),
+    ('sku1', '2020-01-01', 1),
+    ('sku1', '2020-02-01', 1),
+    ('sku1', '2020-03-01', 1);
 ```sql
 CREATE TABLE sensors
 (
@@ -630,19 +729,34 @@ CREATE TABLE sensors
     `value` Float
 )
 ENGINE = Memory;
-```
 
-insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:03&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:04&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:05&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:06&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:07&#39;, 87);
+insert into sensors values('cpu_temp', '2020-01-01 00:00:00', 87),
+                          ('cpu_temp', '2020-01-01 00:00:01', 77),
+                          ('cpu_temp', '2020-01-01 00:00:02', 93),
+                          ('cpu_temp', '2020-01-01 00:00:03', 87),
+                          ('cpu_temp', '2020-01-01 00:00:04', 87),
+                          ('cpu_temp', '2020-01-01 00:00:05', 87),
+                          ('cpu_temp', '2020-01-01 00:00:06', 87),
+                          ('cpu_temp', '2020-01-01 00:00:07', 87);
+```sql
+SELECT
+    item,
+    ts,
+    value,
+    sum(value) OVER (PARTITION BY item ORDER BY ts ASC) AS stock_balance
+FROM warehouse
+ORDER BY
+    item ASC,
+    ts ASC;
 
-````
-
+┌─item──┬──────────────────ts─┬─value─┬─stock_balance─┐
+│ sku1  │ 2020-01-01 00:00:00 │     1 │             1 │
+│ sku1  │ 2020-02-01 00:00:00 │     1 │             2 │
+│ sku1  │ 2020-03-01 00:00:00 │     1 │             3 │
+│ sku38 │ 2020-01-01 00:00:00 │     9 │             9 │
+│ sku38 │ 2020-02-01 00:00:00 │     1 │            10 │
+│ sku38 │ 2020-03-01 00:00:00 │    -4 │             6 │
+└───────┴─────────────────────┴───────┴───────────────┘
 ```sql
 SELECT
     metric,
@@ -668,10 +782,14 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:00:06 │    87 │                87 │
 │ cpu_temp │ 2020-01-01 00:00:07 │    87 │                87 │
 └──────────┴─────────────────────┴───────┴───────────────────┘
-````
-
-### 移動平均／スライディング平均（10秒ごと） {#moving--sliding-average-per-10-seconds}
-
+```sql
+CREATE TABLE sensors
+(
+    `metric` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory;
 ```sql
 SELECT
     metric,
@@ -694,6 +812,59 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:06:00 │    87 │                         87 │
 │ cpu_temp │ 2020-01-01 00:07:10 │    87 │                         87 │
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
+```
+
+```sql
+CREATE TABLE sensors
+(
+    `metric` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory;
+
+insert into sensors values('ambient_temp', '2020-01-01 00:00:00', 16),
+                          ('ambient_temp', '2020-01-01 12:00:00', 16),
+                          ('ambient_temp', '2020-01-02 11:00:00', 9),
+                          ('ambient_temp', '2020-01-02 12:00:00', 9),                          
+                          ('ambient_temp', '2020-02-01 10:00:00', 10),
+                          ('ambient_temp', '2020-02-01 12:00:00', 10),
+                          ('ambient_temp', '2020-02-10 12:00:00', 12),                          
+                          ('ambient_temp', '2020-02-10 13:00:00', 12),
+                          ('ambient_temp', '2020-02-20 12:00:01', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16);
+```
+
+### 移動平均／スライディング平均（10秒ごと） {#moving--sliding-average-per-10-seconds}
+
+```sql
+SELECT
+    metric,
+    ts,
+    value,
+    round(avg(value) OVER (PARTITION BY metric ORDER BY toDate(ts) 
+       RANGE BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
+FROM sensors
+ORDER BY
+    metric ASC,
+    ts ASC;
+
+┌─metric───────┬──────────────────ts─┬─value─┬─moving_avg_10_days_temp─┐
+│ ambient_temp │ 2020-01-01 00:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-02 11:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-01-02 12:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-02-01 10:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-01 12:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-10 12:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-10 13:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-20 12:00:01 │    16 │                   13.33 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+└──────────────┴─────────────────────┴───────┴─────────────────────────┘
 ```
 
 ### 移動平均 / スライディング平均（10日ごと） {#moving--sliding-average-per-10-days}
@@ -723,7 +894,7 @@ insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&
 (&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
 (&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16);
 
-````
+```
 
 ```sql
 SELECT
@@ -751,7 +922,7 @@ ORDER BY
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
-````
+```
 
 ## 参考 {#references}
 

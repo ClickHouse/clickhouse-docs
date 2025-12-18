@@ -76,12 +76,12 @@ ClickHouse Cloud コンソールで、Private Link 経由で接続したいサ�
 API キーを取得したら、コマンドを実行する前に次の環境変数を設定します。
 
 ```bash
-REGION=<リージョンコード、Azure形式を使用、例: westus3>
+REGION=<region code, use Azure format, for example: westus3>
 PROVIDER=azure
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-SERVICE_NAME=<ClickHouseサービス名>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 リージョン、プロバイダー、サービス名でフィルタリングして、ClickHouse の `INSTANCE_ID` を取得します:
@@ -198,7 +198,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
   private_service_connection {
     name                              = "test-pl"
-    private_connection_resource_alias = "「Private Link 用の Azure 接続エイリアスを取得」の手順で取得したデータ"
+    private_connection_resource_alias = "<data from 'Obtain Azure connection alias for Private Link' step>"
     is_manual_connection              = true
   }
 }
@@ -317,11 +317,11 @@ Address: 10.0.0.4
 
 ```bash
 PROVIDER=azure
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-ENDPOINT_ID=<プライベートエンドポイントのリソースID>
-REGION=<リージョンコード、Azure形式を使用>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+REGION=<region code, use Azure format>
 ```
 
 [Obtaining the Private Endpoint Resource ID](#obtaining-private-endpoint-resourceid) の手順で取得したデータを使用して、`ENDPOINT_ID` 環境変数を設定します。
@@ -336,7 +336,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "azure",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Azureプライベートエンドポイント",
+        "description": "Azure private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -389,11 +389,11 @@ ClickHouse Cloud コンソールで、PrivateLink 経由で接続したいサー
 
 ```bash
 PROVIDER=azure
-KEY_ID=<キー ID>
-KEY_SECRET=<キー シークレット>
-ORG_ID=<ClickHouse 組織 ID を設定>
-ENDPOINT_ID=<プライベート エンドポイント リソース ID>
-INSTANCE_ID=<インスタンス ID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 Private Link 経由で利用可能にしたい各サービスごとに実行します。
@@ -449,10 +449,10 @@ ClickHouse Cloud コンソールで **Settings** に移動します。**Set up p
 任意のコマンドを実行する前に、次の環境変数を設定します:
 
 ```bash
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 次のコマンドを実行してください。
@@ -481,7 +481,7 @@ Private Link 経由で ClickHouse Cloud サービスに接続するには、`pri
 次のコマンドを実行します：
 
 ```bash
-nslookup <DNS名>
+nslookup <dns name>
 ```
 
 ここで「dns name」は、[プライベート リンク用の Azure 接続エイリアスの取得](#obtain-azure-connection-alias-for-private-link) で取得した `privateDnsHostname`<sup>API</sup> または `DNS name`<sup>console</sup> を指します。
@@ -489,7 +489,7 @@ nslookup <DNS名>
 次のようなレスポンスが返ってきます:
 
 ```response
-非権威応答:
+Non-authoritative answer:
 Name: <dns name>
 Address: 10.0.0.4
 ```
@@ -513,24 +513,24 @@ openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
 ```
 
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-ピア証明書が利用できません
+no peer certificate available
 ---
-クライアント証明書のCA名が送信されませんでした
+No client certificate CA names sent
 ---
-SSLハンドシェイクは0バイトを読み取り、335バイトを書き込みました
-検証: OK
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-新規、(なし)、暗号は(なし)
-セキュア再ネゴシエーションはサポートされていません
-圧縮: なし
-拡張: なし
-ALPNネゴシエーションなし
-早期データは送信されませんでした
-検証リターンコード: 0 (ok)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### プライベートエンドポイントフィルターの確認 {#checking-private-endpoint-filters}
@@ -538,10 +538,10 @@ ALPNネゴシエーションなし
 以下のコマンドを実行する前に、次の環境変数を設定してください。
 
 ```bash
-KEY_ID=<キーID>
-KEY_SECRET=<キーシークレット>
-ORG_ID=<ClickHouse組織IDを設定>
-INSTANCE_ID=<インスタンスID>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 プライベート エンドポイントのフィルターを確認するには、以下のコマンドを実行します。
