@@ -70,17 +70,17 @@ The parameters below represent the most commonly used settings for establishing 
 driver. They cover essential authentication, connection behavior, and data-handling options. A full list of supported
 parameters is available in the project’s GitHub page https://github.com/ClickHouse/clickhouse-odbc.
 
-- `Url` Specifies the full HTTP(S) endpoint of the ClickHouse server. This includes the protocol, host, port, and
+- `Url`: Specifies the full HTTP(S) endpoint of the ClickHouse server. This includes the protocol, host, port, and
   optional path.
-- `Username` The username used for authentication with the ClickHouse server.
-- `Password` The password associated with the specified username. If not provided, the driver connects without password
+- `Username`: The username used for authentication with the ClickHouse server.
+- `Password`: The password associated with the specified username. If not provided, the driver connects without password
   authentication.
-- `Database` The default database to use for the connection.
-- `Timeout` The maximum time (in seconds) the driver waits for a server response before aborting the request.
-- `ClientName` A custom identifier sent to the ClickHouse server as part of the client metadata. Useful for tracing or
+- `Database`: The default database to use for the connection.
+- `Timeout`: The maximum time (in seconds) the driver waits for a server response before aborting the request.
+- `ClientName`: A custom identifier sent to the ClickHouse server as part of the client metadata. Useful for tracing or
   distinguishing traffic from different applications. This parameter will be a part of the User-Agent header in the HTTP
   requests produced by the driver.
-- `Compression` Enables or disables HTTP compression for request and response payloads. When enabled, it can reduce
+- `Compression`: Enables or disables HTTP compression for request and response payloads. When enabled, it can reduce
   bandwidth usage and improve performance for large result sets.
 
 Here are some examples of the full connection string passed to the driver to setup a connection.
