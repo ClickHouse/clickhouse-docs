@@ -17,8 +17,6 @@ doc_type: 'reference'
 さらに、ユーザーは [`displaySecretsInShowAndSelect`](grant.md/#displaysecretsinshowandselect) 権限を持っている必要があります。
 :::
 
-
-
 ## SHOW CREATE TABLE | DICTIONARY | VIEW | DATABASE {#show-create-table--dictionary--view--database}
 
 これらのステートメントは、指定したオブジェクトの作成に使用された `CREATE` クエリを含む、`String` 型の単一列を返します。
@@ -52,6 +50,7 @@ SHOW DATABASES [[NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filena
 SELECT name FROM system.databases [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE filename] [FORMAT format]
 ```
 
+
 ### 例 {#examples}
 
 この例では、`SHOW` を使用して、名前に文字列 &#39;de&#39; を含むデータベース名を取得します。
@@ -66,7 +65,7 @@ SHOW DATABASES LIKE '%de%'
 └─────────┘
 ```
 
-大文字小文字を区別しない形で行うこともできます。
+大文字小文字を区別せずに検索することもできます。
 
 ```sql title="Query"
 SHOW DATABASES ILIKE '%DE%'
@@ -106,10 +105,10 @@ SHOW DATABASES LIMIT 2
 └────────────────────────────────┘
 ```
 
+
 ### 関連項目 {#see-also}
 
 * [`CREATE DATABASE`](/sql-reference/statements/create/database)
-
 
 ## SHOW TABLES {#show-tables}
 
@@ -129,6 +128,7 @@ SHOW [FULL] [TEMPORARY] TABLES [{FROM | IN} <db>] [[NOT] LIKE | ILIKE '<pattern>
 SELECT name FROM system.tables [WHERE name [NOT] LIKE | ILIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
 
+
 ### 例 {#examples-1}
 
 この例では、`SHOW TABLES` ステートメントを使用して、名前に&#39;user&#39; が含まれるすべてのテーブルを検索します。
@@ -144,7 +144,7 @@ SHOW TABLES FROM system LIKE '%user%'
 └──────────────────┘
 ```
 
-同じことを、大文字・小文字を区別せずに行うこともできます：
+同じことを大文字・小文字を区別せずに行うこともできます：
 
 ```sql title="Query"
 SHOW TABLES FROM system ILIKE '%USER%'
@@ -157,7 +157,7 @@ SHOW TABLES FROM system ILIKE '%USER%'
 └──────────────────┘
 ```
 
-または、名前に文字「s」を含まないテーブルを検索するには次のようにします。
+または、名前に「s」を含まないテーブルを検索するには次のようにします。
 
 ```sql title="Query"
 SHOW TABLES FROM system NOT LIKE '%s%'
@@ -184,11 +184,11 @@ SHOW TABLES FROM system LIMIT 2
 └────────────────────────────────┘
 ```
 
+
 ### 関連項目 {#see-also-1}
 
 * [`Create Tables`](/sql-reference/statements/create/table)
 * [`SHOW CREATE TABLE`](#show-create-table--dictionary--view--database)
-
 
 ## SHOW COLUMNS {#show_columns}
 
@@ -222,6 +222,7 @@ MySQL との互換性のために存在しています。`FULL` キーワード�
 | `comment`   | （`FULL` キーワードが指定された場合のみ）カラムに対するコメント                                        | `String`           |
 | `privilege` | （`FULL` キーワードが指定された場合のみ）このカラムに対して持っている権限。現在は利用できません                        | `String`           |
 
+
 ### Examples {#examples-2}
 
 この例では、テーブル &#39;orders&#39; のすべてのカラムについて、
@@ -238,10 +239,10 @@ SHOW COLUMNS FROM 'orders' LIKE 'delivery_%'
 └─────────────────┴──────────┴──────┴─────────┴─────────┴───────┘
 ```
 
+
 ### 関連項目 {#see-also-2}
 
-* [`system.columns`](../../operations/system-tables/columns.md)
-
+- [`system.columns`](../../operations/system-tables/columns.md)
 
 ## SHOW DICTIONARIES {#show-dictionaries}
 
@@ -260,6 +261,7 @@ SHOW DICTIONARIES [FROM <db>] [LIKE '<pattern>'] [LIMIT <N>] [INTO OUTFILE <file
 ```sql
 SELECT name FROM system.dictionaries WHERE database = <db> [AND name LIKE <pattern>] [LIMIT <N>] [INTO OUTFILE <filename>] [FORMAT <format>]
 ```
+
 
 ### 例 {#examples-3}
 
@@ -313,14 +315,14 @@ SHOW [EXTENDED] {INDEX | INDEXES | INDICES | KEYS } {FROM | IN} <table> [{FROM |
 | `visible`       | インデックスがオプティマイザーから可視である場合、常に `YES`。                                         | `String`           |
 | `expression`    | データスキップインデックスの場合、そのインデックス式。プライマリキーインデックスの場合は `''`（空文字列）。                   | `String`           |
 
-### Examples {#examples-4}
 
-この例では、`SHOW INDEX` ステートメントを使用して、テーブル &#39;tbl&#39; に存在するすべてのインデックスに関する情報を取得します。
+### 例 {#examples-4}
+
+この例では、`SHOW INDEX` 文を使用して、テーブル &#39;tbl&#39; に存在するすべての索引に関する情報を取得します。
 
 ```sql title="Query"
 SHOW INDEX FROM 'tbl'
 ```
-
 
 ```text title="Response"
 ┌─table─┬─non_unique─┬─key_name─┬─seq_in_index─┬─column_name─┬─collation─┬─cardinality─┬─sub_part─┬─packed─┬─null─┬─index_type───┬─comment─┬─index_comment─┬─visible─┬─expression─┐
@@ -333,11 +335,11 @@ SHOW INDEX FROM 'tbl'
 └───────┴────────────┴──────────┴──────────────┴─────────────┴───────────┴─────────────┴──────────┴────────┴──────┴──────────────┴─────────┴───────────────┴─────────┴────────────┘
 ```
 
+
 ### 関連項目 {#see-also-3}
 
 * [`system.tables`](../../operations/system-tables/tables.md)
 * [`system.data_skipping_indices`](../../operations/system-tables/data_skipping_indices.md)
-
 
 ## SHOW PROCESSLIST {#show-processlist}
 
@@ -453,11 +455,10 @@ SHOW USERS
 
 ### 構文 {#syntax-14}
 
-
-
 ```sql title="Syntax"
 SHOW [CURRENT|ENABLED] ROLES
 ```
+
 
 ## SHOW PROFILES {#show-profiles}
 
@@ -474,7 +475,7 @@ SHOW [SETTINGS] PROFILES
 ## SHOW POLICIES {#show-policies}
 
 `SHOW POLICIES` ステートメントは、指定したテーブルに対する [行ポリシー](../../guides/sre/user-management/index.md#row-policy-management) の一覧を返します。
-ユーザーアカウントに関するパラメーターを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
+ユーザーアカウントのパラメータを表示するには、システムテーブル [`system.row_policies`](/operations/system-tables/row_policies) を参照してください。
 
 ### 構文 {#syntax-16}
 
@@ -502,11 +503,10 @@ SHOW QUOTAS
 
 ### 構文 {#syntax-18}
 
-
-
 ```sql title="Syntax"
 SHOW [CURRENT] QUOTA
 ```
+
 
 ## SHOW ACCESS {#show-access}
 
@@ -534,6 +534,7 @@ SHOW ACCESS
 SHOW CLUSTER '<name>'
 SHOW CLUSTERS [[NOT] LIKE|ILIKE '<pattern>'] [LIMIT <N>]
 ```
+
 
 ### 例 {#examples-5}
 
@@ -589,6 +590,7 @@ port:                    9000
 SHOW [CHANGED] SETTINGS LIKE|ILIKE <name>
 ```
 
+
 ### 句 {#clauses}
 
 `LIKE|ILIKE` は設定名に対してマッチパターンを指定できます。`%` や `_` といったワイルドカードを含めることができます。`LIKE` 句は大文字と小文字を区別し、`ILIKE` 句は大文字と小文字を区別しません。
@@ -609,7 +611,7 @@ SHOW SETTINGS LIKE 'send_timeout';
 └──────────────┴─────────┴───────┘
 ```
 
-`ILIKE` 句を使ったクエリ:
+`ILIKE` 句を使用したクエリ：
 
 ```sql title="Query"
 SHOW SETTINGS ILIKE '%CONNECT_timeout%'
@@ -646,17 +648,17 @@ SHOW CHANGED SETTINGS ILIKE '%MEMORY%'
 SHOW SETTING <name>
 ```
 
+
 ### 関連項目 {#see-also-4}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
-
 
 ## SHOW FILESYSTEM CACHES {#show-filesystem-caches}
 
 ### 使用例 {#examples-7}
 
 ```sql title="Query"
-ファイルシステムキャッシュを表示
+SHOW FILESYSTEM CACHES
 ```
 
 ```text title="Response"
@@ -665,10 +667,10 @@ SHOW SETTING <name>
 └───────────┘
 ```
 
+
 ### 関連項目 {#see-also-5}
 
 * [`system.settings`](../../operations/system-tables/settings.md) テーブル
-
 
 ## SHOW ENGINES {#show-engines}
 
@@ -680,10 +682,10 @@ SHOW SETTING <name>
 SHOW ENGINES [INTO OUTFILE filename] [FORMAT format]
 ```
 
+
 ### 関連項目 {#see-also-6}
 
-* [system.table&#95;engines](../../operations/system-tables/table_engines.md) テーブル
-
+- [system.table_engines](../../operations/system-tables/table_engines.md) テーブル
 
 ## SHOW FUNCTIONS {#show-functions}
 
@@ -697,10 +699,10 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 
 `LIKE` 句または `ILIKE` 句が指定されている場合、クエリは名前が指定された `<pattern>` に一致するシステム関数の一覧を返します。
 
+
 ### 関連項目 {#see-also-7}
 
 * [`system.functions`](../../operations/system-tables/functions.md) テーブル
-
 
 ## SHOW MERGES {#show-merges}
 
@@ -724,6 +726,7 @@ SHOW FUNCTIONS [LIKE | ILIKE '<pattern>']
 SHOW MERGES [[NOT] LIKE|ILIKE '<table_name_pattern>'] [LIMIT <N>]
 ```
 
+
 ### 例 {#examples-8}
 
 ```sql title="Query"
@@ -744,4 +747,15 @@ SHOW MERGES LIKE 'your_t%' LIMIT 1;
 ┌─table──────┬─database─┬─estimate_complete─┬─elapsed─┬─progress─┬─is_mutation─┬─size_compressed─┬─memory_usage─┐
 │ your_table │ default  │              0.14 │    0.36 │    73.01 │           0 │        5.40 MiB │    10.25 MiB │
 └────────────┴──────────┴───────────────────┴─────────┴──────────┴─────────────┴─────────────────┴──────────────┘
+```
+
+
+## SHOW CREATE MASKING POLICY {#show-create-masking-policy}
+
+`SHOW CREATE MASKING POLICY` ステートメントは、[マスキングポリシーの作成](../../sql-reference/statements/create/masking-policy.md) の際に使用されたパラメーターを表示します。
+
+### 構文 {#syntax-26}
+
+```sql title="Syntax"
+SHOW CREATE MASKING POLICY name ON [database.]table
 ```

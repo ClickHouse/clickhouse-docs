@@ -7,14 +7,10 @@ title: 'Оконные функции'
 doc_type: 'reference'
 ---
 
-
-
 # Оконные функции  {#window-functions}
 
 Оконные функции позволяют выполнять вычисления над набором строк, связанных с текущей строкой.
 Часть таких вычислений аналогична тем, что можно выполнить с агрегатной функцией, но оконная функция не приводит к объединению строк в единый результирующий набор — отдельные строки по‑прежнему возвращаются.
-
-
 
 ## Стандартные оконные функции {#standard-window-functions}
 
@@ -36,8 +32,6 @@ ClickHouse поддерживает стандартную грамматику 
 | `lag/lead(value, offset)`                                                          | ✅ <br/> Вы также можете использовать один из следующих обходных решений:<br/> 1) `any(value) over (.... rows between <offset> preceding and <offset> preceding)`, или `following` для `lead` <br/> 2) `lagInFrame/leadInFrame`, которые являются аналогами, но учитывают оконный фрейм. Чтобы получить поведение, идентичное `lag/lead`, используйте `rows between unbounded preceding and unbounded following`                                                                 |
 | ntile(buckets) | ✅ <br/> Задайте окно следующим образом: (partition by x order by y rows between unbounded preceding and unbounded following). |
 
-
-
 ## Оконные функции ClickHouse {#clickhouse-specific-window-functions}
 
 Также доступна следующая оконная функция ClickHouse:
@@ -50,7 +44,6 @@ ClickHouse поддерживает стандартную грамматику 
 
 - `0` для первой строки,
 - ${\text{metric}_i - \text{metric}_{i-1} \over \text{timestamp}_i - \text{timestamp}_{i-1}}  * \text{interval}$ для $i$-й строки.
-
 
 ## Синтаксис {#syntax}
 
@@ -69,19 +62,19 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 ```text
       PARTITION
-┌─────────────────┐  <-- UNBOUNDED PRECEDING (НАЧАЛО РАЗДЕЛА)
+┌─────────────────┐  <-- UNBOUNDED PRECEDING (BEGINNING of the PARTITION)
 │                 │
 │                 │
 │=================│  <-- N PRECEDING  <─┐
-│   N СТРОК       │                     │  О
-│  До ТЕКУЩЕЙ     │                     │  К
-│~~~~~~~~~~~~~~~~~│  <-- CURRENT ROW    │  Н
-│   M СТРОК       │                     │  О
-│  После ТЕКУЩЕЙ  │                     │  
+│      N ROWS     │                     │  F
+│  Before CURRENT │                     │  R
+│~~~~~~~~~~~~~~~~~│  <-- CURRENT ROW    │  A
+│     M ROWS      │                     │  M
+│   After CURRENT │                     │  E
 │=================│  <-- M FOLLOWING  <─┘
 │                 │
 │                 │
-└─────────────────┘  <--- UNBOUNDED FOLLOWING (КОНЕЦ РАЗДЕЛА)
+└─────────────────┘  <--- UNBOUNDED FOLLOWING (END of the PARTITION)
 ```
 
 ### Функции {#functions}
@@ -96,7 +89,6 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - Присваивает ранг текущей строке в её разделе без пропусков.
 * [`lagInFrame(x)`](./lagInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк раньше текущей строки в упорядоченном фрейме.
 * [`leadInFrame(x)`](./leadInFrame.md) - Возвращает значение, вычисленное для строки, которая находится на заданное количество строк позже текущей строки в упорядоченном фрейме.
-
 
 ## Примеры {#examples}
 
@@ -131,13 +123,13 @@ FROM salaries;
 ```
 
 ```text
-┌─игрок───────────┬─зарплата─┬─строка─┐
+┌─player──────────┬─salary─┬─row─┐
 │ Michael Stanley │ 150000 │   1 │
 │ Scott Harrison  │ 150000 │   2 │
 │ Charles Juarez  │ 190000 │   3 │
 │ Gary Chen       │ 195000 │   4 │
 │ Robert George   │ 195000 │   5 │
-└─────────────────┴──────────┴────────┘
+└─────────────────┴────────┴─────┘
 ```
 
 ```sql
@@ -175,13 +167,13 @@ FROM salaries;
 ```
 
 ```text
-┌─игрок───────────┬─зарплата─┬─команда───────────────────┬─срКоманды─┬───разница─┐
+┌─player──────────┬─salary─┬─team──────────────────────┬─teamAvg─┬───diff─┐
 │ Charles Juarez  │ 190000 │ New Coreystad Archdukes   │  170000 │  20000 │
 │ Scott Harrison  │ 150000 │ New Coreystad Archdukes   │  170000 │ -20000 │
 │ Gary Chen       │ 195000 │ Port Elizabeth Barbarians │  180000 │  15000 │
 │ Michael Stanley │ 150000 │ Port Elizabeth Barbarians │  180000 │ -30000 │
 │ Robert George   │ 195000 │ Port Elizabeth Barbarians │  180000 │  15000 │
-└─────────────────┴──────────┴───────────────────────────┴──────────┴──────────┘
+└─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
 Сравните зарплату каждого игрока с максимальной зарплатой в его команде.
@@ -196,15 +188,14 @@ SELECT
 FROM salaries;
 ```
 
-
 ```text
-┌─игрок───────────┬─зарплата─┬─команда───────────────────┬─максКоманды─┬───разница─┐
-│ Charles Juarez  │   190000 │ New Coreystad Archdukes   │      190000 │         0 │
-│ Scott Harrison  │   150000 │ New Coreystad Archdukes   │      190000 │    -40000 │
-│ Gary Chen       │   195000 │ Port Elizabeth Barbarians │      195000 │         0 │
-│ Michael Stanley │   150000 │ Port Elizabeth Barbarians │      195000 │    -45000 │
-│ Robert George   │   195000 │ Port Elizabeth Barbarians │      195000 │         0 │
-└─────────────────┴──────────┴───────────────────────────┴─────────────┴───────────┘
+┌─player──────────┬─salary─┬─team──────────────────────┬─teamMax─┬───diff─┐
+│ Charles Juarez  │ 190000 │ New Coreystad Archdukes   │  190000 │      0 │
+│ Scott Harrison  │ 150000 │ New Coreystad Archdukes   │  190000 │ -40000 │
+│ Gary Chen       │ 195000 │ Port Elizabeth Barbarians │  195000 │      0 │
+│ Michael Stanley │ 150000 │ Port Elizabeth Barbarians │  195000 │ -45000 │
+│ Robert George   │ 195000 │ Port Elizabeth Barbarians │  195000 │      0 │
+└─────────────────┴────────┴───────────────────────────┴─────────┴────────┘
 ```
 
 ### Партиционирование по столбцу {#partitioning-by-column}
@@ -233,10 +224,10 @@ ORDER BY
 
 ┌─part_key─┬─value─┬─order─┬─frame_values─┐
 │        1 │     1 │     1 │ [1,2,3]      │   <┐   
-│        1 │     2 │     2 │ [1,2,3]      │    │  1-я группа
+│        1 │     2 │     2 │ [1,2,3]      │    │  1-st group
 │        1 │     3 │     3 │ [1,2,3]      │   <┘ 
-│        2 │     0 │     0 │ [0]          │   <- 2-я группа
-│        3 │     0 │     0 │ [0]          │   <- 3-я группа
+│        2 │     0 │     0 │ [0]          │   <- 2-nd group
+│        3 │     0 │     0 │ [0]          │   <- 3-d group
 └──────────┴───────┴───────┴──────────────┘
 ```
 
@@ -256,7 +247,7 @@ INSERT INTO wf_frame FORMAT Values
 ```
 
 ```sql
--- Фрейм ограничен границами раздела (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+-- Frame is bounded by bounds of a partition (BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
 SELECT
     part_key,
     value,
@@ -280,10 +271,9 @@ ORDER BY
 └──────────┴───────┴───────┴──────────────┘
 ```
 
-
 ```sql
--- краткая форма — без выражения границ, без ORDER BY,
--- эквивалент `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
+-- short form - no bound expression, no order by,
+-- an equalent of `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`
 SELECT
     part_key,
     value,
@@ -306,7 +296,7 @@ ORDER BY
 ```
 
 ```sql
--- фрейм ограничен началом партиции и текущей строкой
+-- frame is bounded by the beginning of a partition and the current row
 SELECT
     part_key,
     value,
@@ -331,8 +321,8 @@ ORDER BY
 ```
 
 ```sql
--- краткая форма (окно ограничено началом партиции и текущей строкой)
--- эквивалентно `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
+-- short form (frame is bounded by the beginning of a partition and the current row)
+-- an equalent of `ORDER BY order ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`
 SELECT
     part_key,
     value,
@@ -355,9 +345,8 @@ ORDER BY
 └──────────┴───────┴───────┴────────────────────┴──────────────┘
 ```
 
-
 ```sql
--- фрейм ограничен началом партиции и текущей строкой, но порядок сортировки обратный
+-- frame is bounded by the beginning of a partition and the current row, but order is backward
 SELECT
     part_key,
     value,
@@ -378,7 +367,7 @@ ORDER BY
 ```
 
 ```sql
--- скользящий фрейм - 1 предыдущая строка и текущая строка
+-- sliding frame - 1 PRECEDING ROW AND CURRENT ROW
 SELECT
     part_key,
     value,
@@ -403,7 +392,7 @@ ORDER BY
 ```
 
 ```sql
--- скользящее окно - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
+-- sliding frame - ROWS BETWEEN 1 PRECEDING AND UNBOUNDED FOLLOWING 
 SELECT
     part_key,
     value,
@@ -428,7 +417,7 @@ ORDER BY
 ```
 
 ```sql
--- row_number не учитывает границы окна, поэтому rn_1 = rn_2 = rn_3 != rn_4
+-- row_number does not respect the frame, so rn_1 = rn_2 = rn_3 != rn_4
 SELECT
     part_key,
     value,
@@ -449,8 +438,15 @@ WINDOW
 ORDER BY
     part_key ASC,
     value ASC;
-```
 
+┌─part_key─┬─value─┬─order─┬─frame_values─┬─rn_1─┬─rn_2─┬─rn_3─┬─rn_4─┐
+│        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
+│        1 │     2 │     2 │ [5,4,3,2]    │    4 │    4 │    4 │    2 │
+│        1 │     3 │     3 │ [5,4,3]      │    3 │    3 │    3 │    2 │
+│        1 │     4 │     4 │ [5,4]        │    2 │    2 │    2 │    2 │
+│        1 │     5 │     5 │ [5]          │    1 │    1 │    1 │    1 │
+└──────────┴───────┴───────┴──────────────┴──────┴──────┴──────┴──────┘
+```
 
 ┌─part&#95;key─┬─value─┬─order─┬─frame&#95;values─┬─rn&#95;1─┬─rn&#95;2─┬─rn&#95;3─┬─rn&#95;4─┐
 │        1 │     1 │     1 │ [5,4,3,2,1]  │    5 │    5 │    5 │    2 │
@@ -460,8 +456,30 @@ ORDER BY
 │        1 │     5 │     5 │ [5]          │    1 │    1 │    1 │    1 │
 └──────────┴──────┴──────┴──────────────┴──────┴──────┴──────┴──────┘
 
-````
+```sql
+-- first_value and last_value respect the frame
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    first_value(value) OVER w1 AS first_value_1,
+    last_value(value) OVER w1 AS last_value_1,
+    groupArray(value) OVER w2 AS frame_values_2,
+    first_value(value) OVER w2 AS first_value_2,
+    last_value(value) OVER w2 AS last_value_2
+FROM wf_frame
+WINDOW
+    w1 AS (PARTITION BY part_key ORDER BY order ASC),
+    w2 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 1 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
 
+┌─frame_values_1─┬─first_value_1─┬─last_value_1─┬─frame_values_2─┬─first_value_2─┬─last_value_2─┐
+│ [1]            │             1 │            1 │ [1]            │             1 │            1 │
+│ [1,2]          │             1 │            2 │ [1,2]          │             1 │            2 │
+│ [1,2,3]        │             1 │            3 │ [2,3]          │             2 │            3 │
+│ [1,2,3,4]      │             1 │            4 │ [3,4]          │             3 │            4 │
+│ [1,2,3,4,5]    │             1 │            5 │ [4,5]          │             4 │            5 │
+└────────────────┴───────────────┴──────────────┴────────────────┴───────────────┴──────────────┘
 ```sql
 -- first_value и last_value учитывают рамку окна
 SELECT
@@ -486,8 +504,24 @@ ORDER BY
 │ [1,2,3,4]      │             1 │            4 │ [3,4]          │             3 │            4 │
 │ [1,2,3,4,5]    │             1 │            5 │ [4,5]          │             4 │            5 │
 └────────────────┴───────────────┴──────────────┴────────────────┴───────────────┴──────────────┘
-````
+```sql
+-- second value within the frame
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    nth_value(value, 2) OVER w1 AS second_value
+FROM wf_frame
+WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
 
+┌─frame_values_1─┬─second_value─┐
+│ [1]            │            0 │
+│ [1,2]          │            2 │
+│ [1,2,3]        │            2 │
+│ [1,2,3,4]      │            2 │
+│ [2,3,4,5]      │            3 │
+└────────────────┴──────────────┘
 ```sql
 -- второе значение в рамках окна
 SELECT
@@ -506,7 +540,24 @@ ORDER BY
 │ [1,2,3,4]      │            2 │
 │ [2,3,4,5]      │            3 │
 └────────────────┴──────────────┘
-```
+```sql
+-- second value within the frame + Null for missing values
+SELECT
+    groupArray(value) OVER w1 AS frame_values_1,
+    nth_value(toNullable(value), 2) OVER w1 AS second_value
+FROM wf_frame
+WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING AND CURRENT ROW)
+ORDER BY
+    part_key ASC,
+    value ASC;
+
+┌─frame_values_1─┬─second_value─┐
+│ [1]            │         ᴺᵁᴸᴸ │
+│ [1,2]          │            2 │
+│ [1,2,3]        │            2 │
+│ [1,2,3,4]      │            2 │
+│ [2,3,4,5]      │            3 │
+└────────────────┴──────────────┘
 
 ```sql
 -- второе значение в рамке окна + Null для отсутствующих значений
@@ -518,27 +569,6 @@ WINDOW w1 AS (PARTITION BY part_key ORDER BY order ASC ROWS BETWEEN 3 PRECEDING 
 ORDER BY
     part_key ASC,
     value ASC;
-```
-
-
-┌─frame&#95;values&#95;1─┬─second&#95;value─┐
-│ [1]            │         ᴺᵁᴸᴸ │
-│ [1,2]          │            2 │
-│ [1,2,3]        │            2 │
-│ [1,2,3,4]      │            2 │
-│ [2,3,4,5]      │            3 │
-└────────────────┴──────────────┘
-
-```
-```
-
-
-## Примеры из реальной практики {#real-world-examples}
-
-Ниже приведены примеры, демонстрирующие решения распространённых практических задач.
-
-### Максимальная/общая зарплата по отделам {#maximumtotal-salary-per-department}
-
 ```sql
 CREATE TABLE employees
 (
@@ -556,7 +586,6 @@ INSERT INTO employees FORMAT Values
    ('IT', 'Anna', 300),
    ('IT', 'Elen', 500);
 ```
-
 ```sql
 SELECT
     department,
@@ -591,10 +620,22 @@ FROM
 │ IT         │ Elen │    500 │                500 │                 1000 │               50 │
 │ IT         │ Tim  │    200 │                500 │                 1000 │               20 │
 └────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
-```
+```sql
+CREATE TABLE employees
+(
+    `department` String,
+    `employee_name` String,
+    `salary` Float
+)
+ENGINE = Memory;
 
-### Кумулятивная сумма {#cumulative-sum}
-
+INSERT INTO employees FORMAT Values
+   ('Finance', 'Jonh', 200),
+   ('Finance', 'Joan', 210),
+   ('Finance', 'Jean', 505),
+   ('IT', 'Tim', 200),
+   ('IT', 'Anna', 300),
+   ('IT', 'Elen', 500);
 ```sql
 CREATE TABLE warehouse
 (
@@ -611,8 +652,40 @@ INSERT INTO warehouse VALUES
     ('sku1', '2020-01-01', 1),
     ('sku1', '2020-02-01', 1),
     ('sku1', '2020-03-01', 1);
-```
+```sql
+SELECT
+    department,
+    employee_name AS emp,
+    salary,
+    max_salary_per_dep,
+    total_salary_per_dep,
+    round((salary / total_salary_per_dep) * 100, 2) AS `share_per_dep(%)`
+FROM
+(
+    SELECT
+        department,
+        employee_name,
+        salary,
+        max(salary) OVER wndw AS max_salary_per_dep,
+        sum(salary) OVER wndw AS total_salary_per_dep
+    FROM employees
+    WINDOW wndw AS (
+        PARTITION BY department
+        ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    )
+    ORDER BY
+        department ASC,
+        employee_name ASC
+);
 
+┌─department─┬─emp──┬─salary─┬─max_salary_per_dep─┬─total_salary_per_dep─┬─share_per_dep(%)─┐
+│ Finance    │ Jean │    505 │                505 │                  915 │            55.19 │
+│ Finance    │ Joan │    210 │                505 │                  915 │            22.95 │
+│ Finance    │ Jonh │    200 │                505 │                  915 │            21.86 │
+│ IT         │ Anna │    300 │                500 │                 1000 │               30 │
+│ IT         │ Elen │    500 │                500 │                 1000 │               50 │
+│ IT         │ Tim  │    200 │                500 │                 1000 │               20 │
+└────────────┴──────┴────────┴────────────────────┴──────────────────────┴──────────────────┘
 ```sql
 SELECT
     item,
@@ -632,10 +705,22 @@ ORDER BY
 │ sku38 │ 2020-02-01 00:00:00 │     1 │            10 │
 │ sku38 │ 2020-03-01 00:00:00 │    -4 │             6 │
 └───────┴─────────────────────┴───────┴───────────────┘
-```
+```sql
+CREATE TABLE warehouse
+(
+    `item` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory
 
-### Скользящее среднее (по 3 строкам) {#moving--sliding-average-per-3-rows}
-
+INSERT INTO warehouse VALUES
+    ('sku38', '2020-01-01', 9),
+    ('sku38', '2020-02-01', 1),
+    ('sku38', '2020-03-01', -4),
+    ('sku1', '2020-01-01', 1),
+    ('sku1', '2020-02-01', 1),
+    ('sku1', '2020-03-01', 1);
 ```sql
 CREATE TABLE sensors
 (
@@ -644,20 +729,34 @@ CREATE TABLE sensors
     `value` Float
 )
 ENGINE = Memory;
-```
 
+insert into sensors values('cpu_temp', '2020-01-01 00:00:00', 87),
+                          ('cpu_temp', '2020-01-01 00:00:01', 77),
+                          ('cpu_temp', '2020-01-01 00:00:02', 93),
+                          ('cpu_temp', '2020-01-01 00:00:03', 87),
+                          ('cpu_temp', '2020-01-01 00:00:04', 87),
+                          ('cpu_temp', '2020-01-01 00:00:05', 87),
+                          ('cpu_temp', '2020-01-01 00:00:06', 87),
+                          ('cpu_temp', '2020-01-01 00:00:07', 87);
+```sql
+SELECT
+    item,
+    ts,
+    value,
+    sum(value) OVER (PARTITION BY item ORDER BY ts ASC) AS stock_balance
+FROM warehouse
+ORDER BY
+    item ASC,
+    ts ASC;
 
-insert into sensors values(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:01&#39;, 77),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:02&#39;, 93),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:03&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:04&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:05&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:06&#39;, 87),
-(&#39;cpu&#95;temp&#39;, &#39;2020-01-01 00:00:07&#39;, 87);
-
-````
-
+┌─item──┬──────────────────ts─┬─value─┬─stock_balance─┐
+│ sku1  │ 2020-01-01 00:00:00 │     1 │             1 │
+│ sku1  │ 2020-02-01 00:00:00 │     1 │             2 │
+│ sku1  │ 2020-03-01 00:00:00 │     1 │             3 │
+│ sku38 │ 2020-01-01 00:00:00 │     9 │             9 │
+│ sku38 │ 2020-02-01 00:00:00 │     1 │            10 │
+│ sku38 │ 2020-03-01 00:00:00 │    -4 │             6 │
+└───────┴─────────────────────┴───────┴───────────────┘
 ```sql
 SELECT
     metric,
@@ -683,10 +782,14 @@ ORDER BY
 │ cpu_temp │ 2020-01-01 00:00:06 │    87 │                87 │
 │ cpu_temp │ 2020-01-01 00:00:07 │    87 │                87 │
 └──────────┴─────────────────────┴───────┴───────────────────┘
-````
-
-### Скользящее среднее (за каждые 10 секунд) {#moving--sliding-average-per-10-seconds}
-
+```sql
+CREATE TABLE sensors
+(
+    `metric` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory;
 ```sql
 SELECT
     metric,
@@ -711,10 +814,6 @@ ORDER BY
 └──────────┴─────────────────────┴───────┴────────────────────────────┘
 ```
 
-### Скользящее среднее (за 10 дней) {#moving--sliding-average-per-10-days}
-
-Температура хранится с точностью до секунды, но, используя `Range` и `ORDER BY toDate(ts)`, мы формируем окно размером 10 единиц, и благодаря `toDate(ts)` единицей является день.
-
 ```sql
 CREATE TABLE sensors
 (
@@ -723,23 +822,22 @@ CREATE TABLE sensors
     `value` Float
 )
 ENGINE = Memory;
+
+insert into sensors values('ambient_temp', '2020-01-01 00:00:00', 16),
+                          ('ambient_temp', '2020-01-01 12:00:00', 16),
+                          ('ambient_temp', '2020-01-02 11:00:00', 9),
+                          ('ambient_temp', '2020-01-02 12:00:00', 9),                          
+                          ('ambient_temp', '2020-02-01 10:00:00', 10),
+                          ('ambient_temp', '2020-02-01 12:00:00', 10),
+                          ('ambient_temp', '2020-02-10 12:00:00', 12),                          
+                          ('ambient_temp', '2020-02-10 13:00:00', 12),
+                          ('ambient_temp', '2020-02-20 12:00:01', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16),
+                          ('ambient_temp', '2020-03-01 12:00:00', 16);
 ```
 
-
-insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
-(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
-(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
-(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 12:00:00&#39;, 9),\
-(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 10:00:00&#39;, 10),
-(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 12:00:00&#39;, 10),
-(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 12:00:00&#39;, 12),\
-(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 13:00:00&#39;, 12),
-(&#39;ambient&#95;temp&#39;, &#39;2020-02-20 12:00:01&#39;, 16),
-(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
-(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
-(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16);
-
-````
+### Скользящее среднее (за каждые 10 секунд) {#moving--sliding-average-per-10-seconds}
 
 ```sql
 SELECT
@@ -767,8 +865,64 @@ ORDER BY
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 │ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
 └──────────────┴─────────────────────┴───────┴─────────────────────────┘
-````
+```
 
+### Скользящее среднее (за 10 дней) {#moving--sliding-average-per-10-days}
+
+Температура хранится с точностью до секунды, но, используя `Range` и `ORDER BY toDate(ts)`, мы формируем окно размером 10 единиц, и благодаря `toDate(ts)` единицей является день.
+
+```sql
+CREATE TABLE sensors
+(
+    `metric` String,
+    `ts` DateTime,
+    `value` Float
+)
+ENGINE = Memory;
+```
+
+insert into sensors values(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 00:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 11:00:00&#39;, 9),
+(&#39;ambient&#95;temp&#39;, &#39;2020-01-02 12:00:00&#39;, 9),\
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 10:00:00&#39;, 10),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-01 12:00:00&#39;, 10),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 12:00:00&#39;, 12),\
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-10 13:00:00&#39;, 12),
+(&#39;ambient&#95;temp&#39;, &#39;2020-02-20 12:00:01&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16),
+(&#39;ambient&#95;temp&#39;, &#39;2020-03-01 12:00:00&#39;, 16);
+
+```
+
+```sql
+SELECT
+    metric,
+    ts,
+    value,
+    round(avg(value) OVER (PARTITION BY metric ORDER BY toDate(ts) 
+       RANGE BETWEEN 10 PRECEDING AND CURRENT ROW),2) AS moving_avg_10_days_temp
+FROM sensors
+ORDER BY
+    metric ASC,
+    ts ASC;
+
+┌─metric───────┬──────────────────ts─┬─value─┬─moving_avg_10_days_temp─┐
+│ ambient_temp │ 2020-01-01 00:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-01-02 11:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-01-02 12:00:00 │     9 │                    12.5 │
+│ ambient_temp │ 2020-02-01 10:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-01 12:00:00 │    10 │                      10 │
+│ ambient_temp │ 2020-02-10 12:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-10 13:00:00 │    12 │                      11 │
+│ ambient_temp │ 2020-02-20 12:00:01 │    16 │                   13.33 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+│ ambient_temp │ 2020-03-01 12:00:00 │    16 │                      16 │
+└──────────────┴─────────────────────┴───────┴─────────────────────────┘
+```
 
 ## Ссылки {#references}
 
@@ -803,8 +957,6 @@ https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-usage.html
 
 https://dev.mysql.com/doc/refman/8.0/en/window-functions-frames.html
-
-
 
 ## Связанные материалы {#related-content}
 

@@ -17,20 +17,15 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-
 # 查看和恢复备份 {#review-and-restore-backups}
 
 本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为你的服务配置备份的选项，以及如何从备份中恢复数据。
-
-
 
 ## 备份状态列表 {#backup-status-list}
 
 无论是默认的每日计划，还是你选择的[自定义计划](/cloud/manage/backups/configurable-backups)，你的服务都会按照设定的计划自动备份。所有可用的备份都可以在服务的 **Backups** 选项卡中查看。在这里，你可以看到备份的状态、耗时以及备份大小。你也可以通过 **Actions** 列来恢复特定的备份。
 
 <Image img={backup_status_list} size="md" alt="ClickHouse Cloud 中备份状态列表" border/>
-
-
 
 ## 了解备份成本 {#understanding-backup-cost}
 
@@ -50,8 +45,6 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 请记住，随着服务中数据量随时间增长，备份的预估成本也会发生变化。
 :::
 
-
-
 ## 恢复备份 {#restore-a-backup}
 
 备份会被恢复到一个新的 ClickHouse Cloud 服务中，而不是恢复到创建该备份的现有服务上。
@@ -63,8 +56,6 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 新服务将在服务列表中显示为 `Provisioning`，直到其准备就绪：
 
 <Image img={backup_service_provisioning} size="md" alt="服务正在 Provisioning 中" border/>
-
-
 
 ## 使用已恢复的服务 {#working-with-your-restored-service}
 
@@ -100,30 +91,30 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 添加一个只读用户，用于读取源表（本例中为 `db.table`）：
 
 ```sql
-CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
-SETTINGS readonly = 1;
-```
+  CREATE USER exporter
+  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+  SETTINGS readonly = 1;
+  ```
 
 ```sql
-GRANT SELECT ON db.table TO exporter;
-```
+  GRANT SELECT ON db.table TO exporter;
+  ```
 
 复制该表的定义：
 
 ```sql
-SELECT create_table_query
-FROM system.tables
-WHERE database = 'db' AND table = 'table'
-```
+  SELECT create_table_query
+  FROM system.tables
+  WHERE database = 'db' AND table = 'table'
+  ```
 
 **在目标 ClickHouse Cloud 系统上（包含损坏表的那个系统）：**
 
 创建目标数据库：
 
 ```sql
-创建数据库 db
-```
+  CREATE DATABASE db
+  ```
 
 使用源端的 `CREATE TABLE` 语句来创建目标表：
 
@@ -132,21 +123,20 @@ WHERE database = 'db' AND table = 'table'
 :::
 
 ```sql
-CREATE TABLE db.table ...
-ENGINE = ReplicatedMergeTree
-ORDER BY ...
-```
+  CREATE TABLE db.table ...
+  ENGINE = ReplicatedMergeTree
+  ORDER BY ...
+  ```
 
 使用 `remoteSecure` 函数将数据从刚恢复的 ClickHouse Cloud 服务拉取到原始服务中：
 
 ```sql
-INSERT INTO db.table
-SELECT *
-FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-```
+  INSERT INTO db.table
+  SELECT *
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  ```
 
 在成功将数据插入到原有服务后，请务必在该服务中验证数据。数据验证完成后，还应删除新服务。
-
 
 ## 恢复已删除的表 {#undeleting-or-undropping-tables}
 
@@ -160,7 +150,7 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 将限制增加至 2TB
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::
@@ -169,12 +159,9 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 将限制增加至 2TB
 旧版套餐：对于使用旧版套餐的客户，默认的每日备份保留 24 小时，其占用的存储空间已包含在存储费用中。
 :::
 
-
 ## 可配置备份 {#configurable-backups}
 
 如果您希望设置不同于默认备份计划的备份计划，请参阅[可配置备份](/cloud/manage/backups/configurable-backups)。
-
-
 
 ## 将备份导出到您自己的云账户 {#export-backups-to-your-own-cloud-account}
 

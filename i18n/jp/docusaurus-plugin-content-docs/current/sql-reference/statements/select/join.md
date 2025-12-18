@@ -7,9 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-
-
-# JOIN 句 {#join-clause}
+# JOIN clause {#join-clause}
 
 `JOIN` 句は、各テーブルに共通する値を用いて 1 つ以上のテーブルの列を結合し、新しいテーブルを生成します。これは SQL をサポートするデータベースで一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)における join に相当します。単一のテーブル内での結合という特殊なケースは、しばしば「自己結合 (self-join)」と呼ばれます。
 
@@ -55,8 +53,6 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) が `partial_merge` に設定されている場合、`RIGHT JOIN` および `FULL JOIN` は `ALL` ストリクト性の場合にのみサポートされます（`SEMI`、`ANTI`、`ANY`、`ASOF` はサポートされません）。
 :::
 
-
-
 ## 設定 {#settings}
 
 デフォルトの結合種別は、[`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 設定で上書きできます。
@@ -74,13 +70,11 @@ ClickHouse では、追加で次の JOIN タイプも利用できます:
 
 ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった場合の動作を指定するには、`cross_to_inner_join_rewrite` 設定を使用します。デフォルト値は `1` であり、この場合は結合を継続しますが、処理は遅くなります。エラーをスローしたい場合は `cross_to_inner_join_rewrite` を `0` に設定し、カンマ結合/クロス結合を実行せず、すべてのカンマ/クロス結合の書き換えを強制したい場合は `2` に設定します。値が `2` のときに書き換えが失敗すると、"Please, try to simplify `WHERE` section" というエラーメッセージが返されます。
 
-
-
 ## ON 句の条件 {#on-section-conditions}
 
 `ON` 句には、`AND` や `OR` 演算子を使って組み合わせた複数の条件を含めることができます。結合キーを指定する条件は、次を満たす必要があります。
 
-* 結合の左側および右側、両方のテーブルを参照すること
+* 結合の左側テーブルと右側テーブルの両方を参照すること
 * 等値演算子を使用すること
 
 その他の条件では他の論理演算子を使用できますが、クエリの左側または右側のいずれか一方のテーブルを参照していなければなりません。
@@ -90,7 +84,7 @@ ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった�
 `ON` 句内の `OR` 演算子はハッシュ結合アルゴリズムで動作します。すなわち、`JOIN` の結合キーを含む各 `OR` 引数ごとに別々のハッシュテーブルが作成されるため、`ON` 句内の `OR` 式の数が増加すると、それに比例してメモリ消費量とクエリの実行時間が線形に増加します。
 
 :::note
-条件が異なるテーブルの列を参照している場合、現時点では等値演算子（`=`）のみがサポートされています。
+条件が異なるテーブルのカラムを参照している場合、現時点では等値演算子（`=`）のみがサポートされています。
 :::
 
 **例**
@@ -105,19 +99,19 @@ ClickHouse が `CROSS JOIN` を `INNER JOIN` に書き換えられなかった�
 └────┴──────┘     └────┴────────────────┴────────┘
 ```
 
-結合キー 1 つと `table_2` に対する追加条件を指定したクエリ:
+結合キー条件 1 つと `table_2` に対する追加条件を指定したクエリ:
 
 ```sql
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
-結果には、名前が `C` の行と、空の text 列が含まれていることに注意してください。これは、結合に `OUTER` 型が使用されているために含まれています。
+結果には、名前が `C` の行と、空の text カラムが含まれていることに注意してください。これは、`OUTER` 型の結合が使用されているために含まれています。
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ テキスト A │
-│ B    │ テキスト B │
+│ A    │ Text A │
+│ B    │ Text B │
 │ C    │        │
 └──────┴────────┘
 ```
@@ -167,10 +161,9 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 
 :::note
 
-
-デフォルトでは、同じテーブルの列を使用している限り、非等価条件もサポートされます。
-たとえば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c` のような条件は有効です。これは、`t1.b > 0` が `t1` の列のみを使用し、`t2.b > t2.c` が `t2` の列のみを使用しているためです。
-ただし、`t1.a = t2.key AND t1.b > t2.key` のような条件に対する実験的サポートを有効化して試すこともできます。詳細については、以下のセクションを参照してください。
+デフォルトでは、非等値条件は同じテーブルのカラムを使用する限りサポートされます。
+たとえば、`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c` は、`t1.b > 0` が `t1` のカラムのみを使用し、`t2.b > t2.c` が `t2` のカラムのみを使用しているためサポートされます。
+ただし、`t1.a = t2.key AND t1.b > t2.key` のような条件に対する実験的サポートを試すこともできます。詳細については以下のセクションを参照してください。
 
 :::
 
@@ -308,10 +301,10 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 構文 `ASOF JOIN ... ON`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF LEFT JOIN table_2
-ON 等価条件 AND 最近接マッチ条件
+ON equi_cond AND closest_match_cond
 ```
 
 任意の数の等価条件と、最も近い一致条件を1つだけ使用できます。たとえば、`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t` のようになります。
@@ -321,7 +314,7 @@ ON 等価条件 AND 最近接マッチ条件
 構文 `ASOF JOIN ... USING`:
 
 ```sql
-SELECT 式リスト
+SELECT expressions_list
 FROM table_1
 ASOF JOIN table_2
 USING (equi_column1, ... equi_columnN, asof_column)
@@ -378,7 +371,7 @@ PASTE JOIN
 └───┴──────┘
 ```
 
-注意：この場合、読み取りが並列に行われると結果が非決定的になる可能性があります。たとえば、
+注意：この場合、読み取り処理が並列に行われると、結果が非決定的になる可能性があります。たとえば、
 
 ```sql
 SELECT *
@@ -418,8 +411,6 @@ SETTINGS max_block_size = 2;
 
 `GLOBAL` を使用する際は注意してください。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries) セクションを参照してください。
 
-
-
 ## 暗黙の型変換 {#implicit-type-conversion}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN`、`FULL JOIN` の各クエリでは、「結合キー」に対する暗黙の型変換がサポートされています。ただし、左側と右側のテーブルの結合キーを単一の型に変換できない場合は、クエリを実行できません（たとえば、`UInt64` と `Int64`、あるいは `String` と `Int32` の両方の値をすべて保持できるデータ型が存在しない場合など）。
@@ -451,7 +442,7 @@ SETTINGS max_block_size = 2;
 SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
 
-次の集合を返します：
+次の結果を返します：
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -475,7 +466,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 `USING` で指定するカラムは、両方のサブクエリで同じ名前でなければなりません。それ以外のカラムは異なる名前である必要があります。サブクエリ内のカラム名を変更するには、エイリアスを使用できます。
 
-`USING` 句では、結合に使用する 1 つ以上のカラムを指定し、これらのカラムが等しいことを定義します。カラムのリストはかっこなしで指定します。より複雑な結合条件はサポートされていません。
+`USING` 句では、結合に使用する 1 つ以上のカラムを指定し、これらのカラムが等しいことを確立します。カラムのリストはかっこなしで指定します。より複雑な結合条件はサポートされていません。
 
 ### 構文上の制限 {#syntax-limitations}
 
@@ -487,7 +478,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 `ON`、`WHERE`、`GROUP BY` 句について:
 
-- `ON`、`WHERE`、`GROUP BY` 句では任意の式は使用できませんが、`SELECT` 句で式を定義し、そのエイリアスを介してこれらの句で使用できます。
+- `ON`、`WHERE`、`GROUP BY` 句では任意の式を直接使用することはできませんが、`SELECT` 句で式を定義し、そのエイリアスを介してこれらの句で使用できます。
 
 ### パフォーマンス {#performance}
 
@@ -509,8 +500,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 - [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join) — ハッシュテーブルのサイズを制限します。
 
 これらのいずれかの制限に達した場合、ClickHouse は [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 設定の指示どおりに動作します。
-
-
 
 ## 例 {#examples}
 

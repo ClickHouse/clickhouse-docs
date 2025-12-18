@@ -14,7 +14,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 この記事では、ClickHouse Cloud のお客様がロールベースのアクセス制御を利用して Amazon Simple Storage Service (S3) に認証し、データへ安全にアクセスする方法を示します。
 
-
 ## はじめに {#introduction}
 
 セキュアな S3 アクセスの設定に入る前に、その仕組みを理解しておくことが重要です。以下では、ClickHouse の各種サービスが、顧客の AWS アカウント内のロールを引き受けることで、プライベートな S3 バケットへアクセスできる仕組みの概要を示します。
@@ -130,7 +129,6 @@ IAM ポリシー（`{BUCKET_NAME}` をバケット名に置き換えてくださ
 
 4 - 作成後に新しい **IAM Role Arn** をコピーします。これは S3 バケットにアクセスするために必要なものです。
 
-
 ## ClickHouseAccess ロールを使用して S3 バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud では、S3 テーブル関数の一部として `extra_credentials` を指定できる新機能が利用できます。以下は、上で作成した新しいロールを使用してクエリを実行する例です。
@@ -148,3 +146,46 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::note
 データ転送料金を抑えるため、ソースの S3 バケットは ClickHouse Cloud サービスと同じリージョンに配置することを推奨します。詳細については [S3 pricing](https://aws.amazon.com/s3/pricing/) を参照してください。
 :::
+
+
+## 高度なアクション制御 {#advanced-action-control}
+
+リクエストが ClickHouse の VPC から発行された場合にのみオブジェクトを返すように制限したいお客様は、上で作成した [IAM assume role](#setting-up-iam-assume-role) に対して次のポリシーを追加できます。ClickHouse Cloud の VPC エンドポイントを取得する手順については、[Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) を参照してください。
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+
+```

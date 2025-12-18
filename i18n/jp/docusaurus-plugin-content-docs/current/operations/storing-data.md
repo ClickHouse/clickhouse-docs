@@ -24,8 +24,6 @@ ClickHouse には外部テーブルエンジンのサポートもありますが
 3. Hadoop Distributed File System（サポート対象外）上のデータを扱うには、[HDFS](/engines/table-engines/integrations/hdfs.md) テーブルエンジンを使用します。
 :::
 
-
-
 ## 外部ストレージを構成する {#configuring-external-storage}
 
 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) および [`Log`](/engines/table-engines/log-family/log.md)
@@ -119,7 +117,6 @@ ClickHouse バージョン 24.1 以降では、新しい構成オプションを
 
 バージョン 24.1 以降では、次のような形にもなります：
 
-
 ```xml
 <clickhouse>
     <storage_configuration>
@@ -172,7 +169,6 @@ CREATE TABLE test (a Int32, b String)
 ENGINE = MergeTree() ORDER BY a
 SETTINGS disk = 's3';
 ```
-
 
 ## 動的設定 {#dynamic-configuration}
 
@@ -287,7 +283,6 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 
 ここで `web` はサーバー設定ファイルで定義された値です。
 
-
 ```xml
 <storage_configuration>
     <disks>
@@ -310,7 +305,6 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 | `secret_access_key` | 認証に使用される S3 シークレットアクセスキー。                                                                                                                                |
 
 #### オプションパラメータ {#optional-parameters-s3}
-
 
 | Parameter                                       | Description                                                                                                                                                                                                                                   | Default Value                            |
 |-------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
@@ -346,8 +340,6 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 :::
 
 ### プレーンストレージの使用 {#plain-storage}
-
-
 
 `22.10` で新しいディスクタイプ `s3_plain` が導入されました。これは一度だけ書き込めるストレージを提供します。
 このディスクタイプの設定パラメータは、`s3` ディスクタイプの場合と同じです。
@@ -436,7 +428,6 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 
 設定例:
 
-
 ```xml
 <storage_configuration>
     ...
@@ -498,7 +489,6 @@ Google Cloud Storage (GCS) も `s3` タイプとしてサポートされてい�
 :::note Zero-copy レプリケーションは本番環境利用の準備が整っていません
 Zero-copy レプリケーションは ClickHouse バージョン 22.8 以降ではデフォルトで無効です。この機能の本番環境での利用は推奨されません。
 :::
-
 
 ## HDFS ストレージの使用（サポート対象外） {#using-hdfs-storage-unsupported}
 
@@ -584,7 +574,6 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 
 ディスク設定の例:
 
-
 ```xml
 <clickhouse>
     <storage_configuration>
@@ -622,7 +611,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3の設定 ...
+                ... s3 configuration ...
             </s3>
             <cache>
                 <type>cache</type>
@@ -652,7 +641,7 @@ HDFS は一部のコーナーケースでは動作しない場合があること
             <s3>
                 <type>s3</type>
                 <endpoint>...</endpoint>
-                ... S3の設定 ...
+                ... s3 configuration ...
                 <data_cache_enabled>1</data_cache_enabled>
                 <data_cache_max_size>10737418240</data_cache_max_size>
             </s3>
@@ -673,7 +662,6 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 
 これらの設定は、ディスク構成セクション内で定義する必要があります。
 
-
 | Parameter                             | Type    | Default    | Description                                                                                                                                                                                  |
 |---------------------------------------|---------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `path`                                | String  | -          | **必須**。キャッシュを保存するディレクトリへのパス。                                                                                                                                      |
@@ -689,8 +677,6 @@ HDFS は一部のコーナーケースでは動作しない場合があること
 | `load_metadata_threads`               | Integer | `16`       | 起動時にキャッシュメタデータを読み込むスレッド数。                                                                                                                                            |
 
 > **Note**: サイズ指定値は `ki`、`Mi`、`Gi` などの単位をサポートします（例: `10Gi`）。
-
-
 
 ## ファイルキャッシュのクエリ／プロファイル設定 {#file-cache-query-profile-settings}
 
@@ -751,7 +737,6 @@ DESCRIBE FILESYSTEM CACHE 's3_cache'
 │ 10000000000 │      1048576 │             104857600 │            4194304 │                         1 │                    0 │         3276 │               54 │ /s3_cache/ │                           2 │                                  0 │
 └─────────────┴──────────────┴───────────────────────┴────────────────────┴───────────────────────────┴──────────────────────┴──────────────┴──────────────────┴────────────┴─────────────────────────────┴────────────────────────────────────┘
 ```
-
 
 | キャッシュ現在メトリクス              | キャッシュ非同期メトリクス          | キャッシュプロファイルイベント                                                                           |
 | ------------------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
@@ -827,7 +812,6 @@ Web データセットを日常的に使用しない想定であれば、スト�
 
 この `ATTACH TABLE` クエリでは、指定された `UUID` がデータのディレクトリ名と一致し、エンドポイントには GitHub の Raw コンテンツの URL を指定します。
 
-
 ```sql
 -- highlight-next-line
 ATTACH TABLE uk_price_paid UUID 'cf712b4f-2ca8-435c-ac23-c4393efe52f7'
@@ -882,7 +866,6 @@ ORDER BY (postcode1, postcode2, addr1, addr2)
 ```
 
 次のクエリを実行します。
-
 
 ```sql
 ATTACH TABLE test_hits UUID '1ae36516-d62d-4218-9ae3-6516d62da218'
@@ -1037,7 +1020,6 @@ SETTINGS storage_policy='web';
 | `endpoint` | `path` 形式のエンドポイント URL。エンドポイント URL には、アップロードされたデータを保存するためのルートパスを含める必要があります。 |
 
 #### オプションパラメータ {#optional-parameters-web}
-
 
 | Parameter                           | Description                                                                  | Default Value   |
 |-------------------------------------|------------------------------------------------------------------------------|-----------------|

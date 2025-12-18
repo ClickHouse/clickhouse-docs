@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Начало работы с ClickStack и удаленным демонстрационным набором данных'
 doc_type: 'guide'
-keywords: ['clickstack', 'примерные данные', 'демонстрационный набор данных', 'логи', 'наблюдаемость']
+keywords: ['clickstack', 'примерные данные', 'демонстрационный набор данных', 'логи', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';

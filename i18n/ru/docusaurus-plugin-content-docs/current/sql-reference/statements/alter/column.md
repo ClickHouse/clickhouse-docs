@@ -32,7 +32,6 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 * [MATERIALIZE COLUMN](#materialize-column) — Материализует столбец в частях таблицы, где этот столбец отсутствует.
   Эти действия подробно описаны ниже.
 
-
 ## ADD COLUMN {#add-column}
 
 ```sql
@@ -69,7 +68,6 @@ ToDrop  UInt32
 Added3  UInt32
 ```
 
-
 ## Удаление столбца {#drop-column}
 
 ```sql
@@ -90,11 +88,10 @@ DROP COLUMN [IF EXISTS] name
 ALTER TABLE visits DROP COLUMN browser
 ```
 
-
 ## ПЕРЕИМЕНОВАТЬ СТОЛБЕЦ {#rename-column}
 
 ```sql
-RENAME COLUMN [IF EXISTS] имя_столбца TO новое_имя
+RENAME COLUMN [IF EXISTS] name to new_name
 ```
 
 Переименовывает столбец `name` в `new_name`. Если указано предложение `IF EXISTS`, запрос не вернёт ошибку, даже если столбец не существует. Поскольку переименование не затрагивает исходные данные, запрос выполняется практически мгновенно.
@@ -107,11 +104,10 @@ RENAME COLUMN [IF EXISTS] имя_столбца TO новое_имя
 ALTER TABLE visits RENAME COLUMN webBrowser TO browser
 ```
 
-
 ## ОЧИСТИТЬ СТОЛБЕЦ {#clear-column}
 
 ```sql
-CLEAR COLUMN [IF EXISTS] имя IN PARTITION имя_раздела
+CLEAR COLUMN [IF EXISTS] name IN PARTITION partition_name
 ```
 
 Сбрасывает все данные в столбце для указанной партиции. Подробнее о задании имени партиции см. в разделе [How to set the partition expression](../alter/partition.md/#how-to-set-partition-expression).
@@ -124,11 +120,10 @@ CLEAR COLUMN [IF EXISTS] имя IN PARTITION имя_раздела
 ALTER TABLE visits CLEAR COLUMN browser IN PARTITION tuple()
 ```
 
-
 ## Столбец COMMENT {#comment-column}
 
 ```sql
-COMMENT COLUMN [IF EXISTS] имя 'Текстовый комментарий'
+COMMENT COLUMN [IF EXISTS] name 'Text comment'
 ```
 
 Добавляет комментарий к столбцу. Если указана клауза `IF EXISTS`, запрос не вернёт ошибку, если столбец отсутствует.
@@ -140,9 +135,8 @@ COMMENT COLUMN [IF EXISTS] имя 'Текстовый комментарий'
 Пример:
 
 ```sql
-ALTER TABLE visits COMMENT COLUMN browser 'В этом столбце указан браузер, используемый для доступа к сайту.'
+ALTER TABLE visits COMMENT COLUMN browser 'This column shows the browser used for accessing the site.'
 ```
-
 
 ## ИЗМЕНЕНИЕ СТОЛБЦА {#modify-column}
 
@@ -223,7 +217,6 @@ DESCRIBE users;
 Будьте осторожны при изменении столбца типа Nullable на Non-Nullable. Убедитесь, что он не содержит значений NULL, в противном случае это приведёт к проблемам при чтении из него. В таком случае обходным решением будет остановить мутацию (KILL MUTATION) и вернуть столбец к типу Nullable.
 :::
 
-
 ## MODIFY COLUMN REMOVE {#modify-column-remove}
 
 Удаляет одно из следующих свойств столбца: `DEFAULT`, `ALIAS`, `MATERIALIZED`, `CODEC`, `COMMENT`, `TTL`, `SETTINGS`.
@@ -231,7 +224,7 @@ DESCRIBE users;
 Синтаксис:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца REMOVE свойство;
+ALTER TABLE table_name MODIFY COLUMN column_name REMOVE property;
 ```
 
 **Пример**
@@ -245,7 +238,6 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 **См. также**
 
 * [REMOVE TTL](ttl.md).
-
 
 ## MODIFY COLUMN MODIFY SETTING {#modify-column-modify-setting}
 
@@ -265,7 +257,6 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING name=value,...;
 ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_block_size = 1048576;
 ```
 
-
 ## MODIFY COLUMN RESET SETTING {#modify-column-reset-setting}
 
 Сбрасывает настройку столбца и удаляет объявление этой настройки в определении столбца в запросе CREATE таблицы.
@@ -273,7 +264,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name MODIFY SETTING max_compress_blo
 Синтаксис:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETTING имя,...;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING name,...;
 ```
 
 **Пример**
@@ -281,9 +272,8 @@ ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETT
 Сбросьте настройку столбца `max_compress_block_size` к значению по умолчанию:
 
 ```sql
-ALTER TABLE имя_таблицы MODIFY COLUMN имя_столбца RESET SETTING max_compress_block_size;
+ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_block_size;
 ```
-
 
 ## MATERIALIZE COLUMN {#materialize-column}
 
@@ -344,7 +334,6 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 **См. также**
 
 * [MATERIALIZED](/sql-reference/statements/create/view#materialized-view).
-
 
 ## Ограничения {#limitations}
 

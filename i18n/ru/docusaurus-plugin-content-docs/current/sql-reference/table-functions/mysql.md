@@ -8,20 +8,15 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция `mysql` {#mysql-table-function}
 
 Позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере MySQL.
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 mysql({host:port, database, table, user, password[, replace_query, on_duplicate_clause] | named_collection[, option=value [,..]]})
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -53,7 +48,6 @@ SELECT name FROM mysql(`mysql{1|2|3}:3306`, 'mysql_database', 'mysql_table', 'us
 SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 'mysql_table', 'user', 'password');
 ```
 
-
 ## Возвращаемое значение {#returned_value}
 
 Объект таблицы с теми же столбцами, что и исходная таблица MySQL.
@@ -65,8 +59,6 @@ SELECT name FROM mysql(`mysql1:3306|mysql2:3306|mysql3:3306`, 'mysql_database', 
 :::note
 В запросе `INSERT` чтобы отличить табличную функцию `mysql(...)` от имени таблицы со списком имён столбцов, необходимо использовать ключевые слова `FUNCTION` или `TABLE FUNCTION`. См. примеры ниже.
 :::
-
-
 
 ## Примеры {#examples}
 
@@ -150,7 +142,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## См. также {#related}
 

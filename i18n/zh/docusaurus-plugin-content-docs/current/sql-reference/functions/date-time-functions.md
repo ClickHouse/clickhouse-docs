@@ -1218,7 +1218,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**别名**: `timestampDiff`, `date_diff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `timestamp_diff`
+**别名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **参数**
 
@@ -1276,6 +1276,7 @@ SELECT
 │ 2022-01-01 │ 2021-12-29 │        3 │          1 │         1 │
 └────────────┴────────────┴──────────┴────────────┴───────────┘
 ```
+
 
 ## dateName {#dateName}
 
@@ -1410,7 +1411,7 @@ SELECT now(), dateTrunc('hour', now(), 'Asia/Istanbul');
 
 `formatDateTime` 使用 MySQL datetime 格式样式，请参阅 [mysql docs](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
-该函数的反向操作是 [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parsedatetime)。
+该函数的反向操作是 [`parseDateTime`](/sql-reference/functions/type-conversion-functions#parseDateTime)。
 
 通过使用替换字段，你可以为结果字符串定义模式。
 下表中的示例列展示了对 `2018-01-02 22:33:44` 的格式化结果。
@@ -1470,6 +1471,7 @@ formatDateTime(datetime, format[, timezone])
 **别名**：`DATE_FORMAT`
 
 **参数**
+
 
 * `datetime` — 要格式化的日期或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 * `format` — 包含替换字段的格式字符串。[`String`](/sql-reference/data-types/string)
@@ -1538,37 +1540,37 @@ LIMIT 10
 
 与 `formatDateTime` 类似，但它使用 Joda 风格而不是 MySQL 风格来格式化日期时间。参见 [Joda Time 文档](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 
-此函数的反向操作为 [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parsedatetimeinjodasyntax)。
+此函数的反向操作为 [`parseDateTimeInJodaSyntax`](/sql-reference/functions/type-conversion-functions#parseDateTimeInJodaSyntax)。
 
 通过使用替换字段，可以为结果字符串定义格式模式。
 
 **替换字段：**
 
-| Placeholder | 描述                  | 呈现形式 | 示例                         |
-| ----------- | ------------------- | ---- | -------------------------- |
-| G           | 纪元                  | 文本   | AD                         |
-| C           | 世纪（&gt;=0）          | 数字   | 20                         |
-| Y           | 纪元中的年份（&gt;=0）      | 年    | 1996                       |
-| x           | 周年份（尚不支持）           | 年    | 1996                       |
-| w           | 周年份中的周（尚不支持）        | 数字   | 27                         |
-| e           | 一周中的第几天             | 数字   | 2                          |
-| E           | 一周中的第几天             | 文本   | Tuesday; Tue               |
-| y           | 年                   | 年    | 1996                       |
-| D           | 一年中的第几天             | 数字   | 189                        |
-| M           | 一年中的月份              | 月份   | July; Jul; 07              |
-| d           | 一个月中的第几天            | 数字   | 10                         |
-| a           | 上 / 下午              | 文本   | PM                         |
-| K           | 上 / 下午中的小时 (0~11)   | 数字   | 0                          |
-| h           | 上 / 下午中的时钟小时 (1~12) | 数字   | 12                         |
-| H           | 一天中的小时 (0~23)       | 数字   | 0                          |
-| k           | 一天中的时钟小时 (1~24)     | 数字   | 24                         |
-| m           | 分钟                  | 数字   | 30                         |
-| s           | 秒                   | 数字   | 55                         |
-| S           | 秒的小数部分              | 数字   | 978                        |
-| z           | 时区                  | 文本   | Eastern Standard Time; EST |
-| Z           | 时区偏移                | 时区   | -0800; -0812               |
-| &#39;       | 文本转义符               | 分隔符  |                            |
-| &#39;&#39;  | 单引号                 | 字面量  | &#39;                      |
+| Placeholder | 描述                | 呈现形式 | 示例                         |
+| ----------- | ----------------- | ---- | -------------------------- |
+| G           | 纪元                | 文本   | AD                         |
+| C           | 世纪 (&gt;=0)       | 数字   | 20                         |
+| Y           | 纪元中的年份 (&gt;=0)   | 年    | 1996                       |
+| x           | 周年份（尚不支持）         | 年    | 1996                       |
+| w           | 周年份中的周（尚不支持）      | 数字   | 27                         |
+| e           | 一周中的第几天           | 数字   | 2                          |
+| E           | 一周中的第几天           | 文本   | Tuesday; Tue               |
+| y           | 年                 | 年    | 1996                       |
+| D           | 一年中的第几天           | 数字   | 189                        |
+| M           | 一年中的月份            | 月份   | July; Jul; 07              |
+| d           | 一个月中的第几天          | 数字   | 10                         |
+| a           | 上/下午              | 文本   | PM                         |
+| K           | 上/下午中的小时 (0~11)   | 数字   | 0                          |
+| h           | 上/下午中的时钟小时 (1~12) | 数字   | 12                         |
+| H           | 一天中的小时 (0~23)     | 数字   | 0                          |
+| k           | 一天中的时钟小时 (1~24)   | 数字   | 24                         |
+| m           | 分钟                | 数字   | 30                         |
+| s           | 秒                 | 数字   | 55                         |
+| S           | 秒的小数部分            | 数字   | 978                        |
+| z           | 时区                | 文本   | Eastern Standard Time; EST |
+| Z           | 时区偏移              | 时区   | -0800; -0812               |
+| &#39;       | 文本转义符             | 分隔符  |                            |
+| &#39;&#39;  | 单引号               | 字面量  | &#39;                      |
 
 **语法**
 
@@ -1599,6 +1601,7 @@ SELECT formatDateTimeInJodaSyntax(toDateTime('2010-01-04 12:34:56'), 'yyyy-MM-dd
 │ 2010-01-04 12:34:56                                                                     │
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
 
 ## fromDaysSinceYearZero {#fromDaysSinceYearZero}
 
@@ -1794,7 +1797,7 @@ SELECT fromUTCTimestamp(toDateTime64('2023-03-16 10:00:00', 3), 'Asia/Shanghai')
 
 可以通过两种方式调用：
 
-* 当传入一个类型为 [`Integer`](../data-types/int-uint.md) 的单个参数时，返回类型为 [`DateTime`](../data-types/datetime.md) 的值，即行为类似于 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime)。
+* 当传入一个类型为 [`Integer`](../data-types/int-uint.md) 的单个参数时，返回类型为 [`DateTime`](../data-types/datetime.md) 的值，即行为类似于 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime)。
 * 当传入两个或三个参数时，其中第一个参数是类型为 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回类型为 [`String`](../data-types/string.md) 的值，即行为类似于 [`formatDateTime`](#formatDateTime)。
   在这种情况下，使用 [MySQL 的 datetime 格式样式](https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format)。
 
@@ -1843,6 +1846,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 └─────────────────────┘
 ```
 
+
 ## fromUnixTimestampInJodaSyntax {#fromUnixTimestampInJodaSyntax}
 
 引入版本：v23.1
@@ -1851,7 +1855,7 @@ SELECT fromUnixTimestamp(1234334543, '%Y-%m-%d %R:%S') AS DateTime
 
 可以以两种方式调用：
 
-当传入单个 [`Integer`](../data-types/int-uint.md) 类型的参数时，它返回 [`DateTime`](../data-types/datetime.md) 类型的值，即行为与 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#todatetime) 相同。
+当传入单个 [`Integer`](../data-types/int-uint.md) 类型的参数时，它返回 [`DateTime`](../data-types/datetime.md) 类型的值，即行为与 [`toDateTime`](../../sql-reference/functions/type-conversion-functions.md#toDateTime) 相同。
 
 当传入两个或三个参数时，其中第一个参数是 [`Integer`](../data-types/int-uint.md)、[`Date`](../data-types/date.md)、[`Date32`](../data-types/date32.md)、[`DateTime`](../data-types/datetime.md) 或 [`DateTime64`](../data-types/datetime64.md) 类型的值，第二个参数是常量格式字符串，第三个参数是可选的常量时区字符串，函数返回 [`String`](../data-types/string.md) 类型的值，即行为与 [`formatDateTimeInJodaSyntax`](#formatDateTimeInJodaSyntax) 相同。在这种情况下，使用 [Joda 日期时间格式样式](https://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html)。
 
@@ -1885,6 +1889,7 @@ SELECT fromUnixTimestampInJodaSyntax(1234334543, 'yyyy-MM-dd HH:mm:ss', 'UTC') A
 │ 2009-02-11 06:42:23 │
 └─────────────────────┘
 ```
+
 
 ## makeDate {#makeDate}
 
@@ -3535,6 +3540,61 @@ SELECT toHour(toDateTime('2023-04-21 10:20:30'))
 │                                        10 │
 └───────────────────────────────────────────┘
 ```
+
+## toISOWeek {#toISOWeek}
+
+引入版本：v20.1
+
+返回日期或带时间的日期对应的 ISO 周编号。
+
+这是一个兼容性函数，与 `toWeek(date, 3)` 等价。
+ISO 周从星期一开始计算，一年中的第一周是包含 1 月 4 日的那一周。
+根据 ISO 8601 标准，周编号的范围是 1 到 53。
+
+请注意，某些接近年初或年末的日期可能会返回前一年或下一年的周编号。例如，
+2025 年 12 月 29 日会返回第 1 周，因为它属于包含 2026 年 1 月 4 日的第一周。
+
+**语法**
+
+```sql
+toISOWeek(datetime[, timezone])
+```
+
+**参数**
+
+* `datetime` — 要获取 ISO 周编号的日期或带时间的日期。[`Date`](/sql-reference/data-types/date) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `timezone` — 可选。时区。[`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+返回符合 ISO 8601 标准的 ISO 周编号。返回 1 到 53 之间的数字。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**获取 ISO 周编号**
+
+```sql title=Query
+SELECT toDate('2016-12-27') AS date, toISOWeek(date) AS isoWeek
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┐
+│ 2016-12-27 │      52 │
+└────────────┴─────────┘
+```
+
+**ISO 周所属的年份可能不同**
+
+```sql title=Query
+SELECT toDate('2025-12-29') AS date, toISOWeek(date) AS isoWeek, toYear(date) AS year
+```
+
+```response title=Response
+┌───────date─┬─isoWeek─┬─year─┐
+│ 2025-12-29 │       1 │ 2025 │
+└────────────┴─────────┴──────┘
+```
+
 
 ## toISOYear {#toISOYear}
 
@@ -5217,7 +5277,7 @@ from_date32:     1509840000
 这一周在新的一年中包含多少天无关紧要，即使只包含一天也是如此。
 也就是说，如果 12 月的最后一周包含下一年的 1 月 1 日，那么它将成为下一年的第 1 周。
 
-第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式应为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) 所支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性原因，这是某些第三方工具所要求的。由于将来对字符串参数的支持可能会依赖新的 MySQL 兼容性 SETTING，并且字符串解析通常较慢，因此建议不要使用这种方式。
+第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式应为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort) 所支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性原因，这是某些第三方工具所要求的。由于将来对字符串参数的支持可能会依赖新的 MySQL 兼容性 SETTING，并且字符串解析通常较慢，因此建议不要使用这种方式。
 
 **语法**
 
@@ -5250,6 +5310,7 @@ SELECT toDate('2016-12-27') AS date, toWeek(date) AS week0, toWeek(date,1) AS we
 │ 2016-12-27 │    52 │    52 │     1 │
 └────────────┴───────┴───────┴───────┘
 ```
+
 
 ## toYYYYMM {#toYYYYMM}
 
@@ -5438,7 +5499,7 @@ SELECT toYearNumSinceEpoch(toDate('2024-10-01'))
 
 警告：`toYearWeek()` 返回的周数可能与 `toWeek()` 返回的不同。`toWeek()` 始终在给定年份的上下文中返回周数，如果 `toWeek()` 返回 `0`，则 `toYearWeek()` 会返回上一年最后一周对应的值。参见下面示例中的 `prev_yearWeek`。
 
-第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式需为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parsedatetime64besteffort) 支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性考虑，这是某些第三方工具所期望的行为。由于未来对字符串参数的支持可能会依赖新的 MySQL 兼容性设置，并且字符串解析通常较慢，因此建议不要使用这种方式。
+第一个参数也可以指定为 [`String`](../data-types/string.md)，其格式需为 [`parseDateTime64BestEffort()`](type-conversion-functions.md#parseDateTime64BestEffort) 支持的格式。对字符串参数的支持仅出于与 MySQL 的兼容性考虑，这是某些第三方工具所期望的行为。由于未来对字符串参数的支持可能会依赖新的 MySQL 兼容性设置，并且字符串解析通常较慢，因此建议不要使用这种方式。
 
 **语法**
 
@@ -5470,6 +5531,7 @@ SELECT toDate('2016-12-27') AS date, toYearWeek(date) AS yearWeek0, toYearWeek(d
 │ 2016-12-27 │    201652 │    201652 │    201701 │        202152 │
 └────────────┴───────────┴───────────┴───────────┴───────────────┘
 ```
+
 
 ## today {#today}
 

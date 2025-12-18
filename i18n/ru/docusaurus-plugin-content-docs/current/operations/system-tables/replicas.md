@@ -21,9 +21,9 @@ FORMAT Vertical
 ```
 
 ```text
-Идентификатор запроса: dc6dcbcb-dc28-4df9-ae27-4354f5b3b13e
+Query id: dc6dcbcb-dc28-4df9-ae27-4354f5b3b13e
 
-Строка 1:
+Row 1:
 ───────
 database:                    db
 table:                       test_table

@@ -36,11 +36,11 @@ groupArraySample(max_size[, seed])(x)
 
 ```text
 ┌─id─┬─color──┐
-│  1 │ красный    │
-│  2 │ синий   │
-│  3 │ зеленый  │
-│  4 │ белый  │
-│  5 │ оранжевый │
+│  1 │ red    │
+│  2 │ blue   │
+│  3 │ green  │
+│  4 │ white  │
+│  5 │ orange │
 └────┴────────┘
 ```
 

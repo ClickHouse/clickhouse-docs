@@ -6,29 +6,19 @@ title: '機械学習関数'
 doc_type: 'reference'
 ---
 
-
-
 # 機械学習関数 {#machine-learning-functions}
-
-
 
 ## evalMLMethod {#evalmlmethod}
 
 学習済みの回帰モデルを用いた予測には `evalMLMethod` 関数を使用します。詳細は `linearRegression` を参照してください。
 
-
-
 ## stochasticLinearRegression {#stochasticlinearregression}
 
 [stochasticLinearRegression](/sql-reference/aggregate-functions/reference/stochasticlinearregression) 集約関数は、線形モデルと MSE 損失関数を用いる確率的勾配降下法を実装します。新しいデータに対する予測には `evalMLMethod` を使用します。
 
-
-
 ## stochasticLogisticRegression {#stochasticlogisticregression}
 
 [stochasticLogisticRegression](/sql-reference/aggregate-functions/reference/stochasticlogisticregression) 集約関数は、二値分類問題に対して確率的勾配降下法を実装したものです。新しいデータに対する予測には `evalMLMethod` を使用します。
-
-
 
 ## naiveBayesClassifier {#naivebayesclassifier}
 
@@ -57,7 +47,7 @@ naiveBayesClassifier(model_name, input_text);
 言語検出モデルを用いてテキストを分類します：
 
 ```sql
-SELECT naiveBayesClassifier('language', 'お元気ですか?');
+SELECT naiveBayesClassifier('language', 'How are you?');
 ```
 
 ```response
@@ -129,7 +119,6 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 | **priors** | クラスの事前確率（各クラスに属するドキュメントの割合）                                                                    | クラス 0 が 60%、クラス 1 が 40%                                  | 一様分布    |
 
 **モデル学習ガイド**
-
 
 **ファイル形式**
 人間が読みやすい形式の出力では、`n=1` で `token` モードの場合、モデルは次のような形になります：

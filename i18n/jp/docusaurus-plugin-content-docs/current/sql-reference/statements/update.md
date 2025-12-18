@@ -28,7 +28,6 @@ UPDATE [db.]table [ON CLUSTER cluster] SET column1 = expr1 [, ...] [IN PARTITION
 `filter_expr` は `UInt8` 型でなければなりません。このクエリは、`filter_expr` が非ゼロの値を取る行について、指定された列の値を対応する式の評価結果に更新します。
 値は `CAST` 演算子を使用して列の型にキャストされます。プライマリキーまたはパーティションキーの計算に使用されている列の更新はサポートされていません。
 
-
 ## 例 {#examples}
 
 ```sql
@@ -37,14 +36,11 @@ UPDATE hits SET Title = 'Updated Title' WHERE EventDate = today();
 UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```
 
-
 ## 軽量な更新はデータを即時には更新しない {#lightweight-update-does-not-update-data-immediately}
 
 軽量な `UPDATE` は **パッチパーツ (patch parts)** を用いて実装されています。パッチパーツは、更新対象の列と行のみを含む特殊な種類のデータパーツです。
 軽量な `UPDATE` はパッチパーツを作成しますが、ストレージ上の元のデータはすぐに物理的に書き換えられるわけではありません。
 更新処理は `INSERT ... SELECT ...` クエリに似ていますが、`UPDATE` クエリはパッチパーツの作成が完了するまで待機してから結果を返します。
-
-
 
 更新された値は次のとおりです:
 - パッチの適用により `SELECT` クエリで**即座に参照可能**になります
@@ -57,13 +53,9 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 軽量アップデートを使用するには、テーブル設定 [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) および [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column) により `_block_number` および `_block_offset` カラムのマテリアライズを有効にする必要があります。
 
-
-
 ## 軽量な削除 {#lightweight-delete}
 
 [軽量な `DELETE`](/sql-reference/statements/delete) クエリは、`ALTER UPDATE` ミューテーションではなく、軽量な `UPDATE` として実行できます。軽量な `DELETE` の実装は、[`lightweight_delete_mode`](/operations/settings/settings#lightweight_delete_mode) の設定によって制御されます。
-
-
 
 ## パフォーマンスに関する考慮事項 {#performance-considerations}
 
@@ -79,14 +71,10 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 - ごく小さいアップデートを高頻度で行うと「too many parts」エラーにつながる可能性がある。`WHERE` 句内の単一の `IN` 句にアップデート対象の ID をまとめるなどして、複数のアップデートを 1 つのクエリにバッチ処理することが推奨される
 - 軽量アップデートは、テーブル全体の約 10% 程度までの少量の行を更新することを想定して設計されている。より多くの行を更新する必要がある場合は、[`ALTER TABLE ... UPDATE`](/sql-reference/statements/alter/update) ミューテーションを使用することが推奨される
 
-
-
 ## 同時実行操作 {#concurrent-operations}
 
 軽量な更新は、重いミューテーションとは異なり、現在実行中のマージやミューテーションの完了を待ちません。
 同時に行われる軽量更新の一貫性は、[`update_sequential_consistency`](/operations/settings/settings#update_sequential_consistency) および [`update_parallel_mode`](/operations/settings/settings#update_parallel_mode) の設定によって制御されます。
-
-
 
 ## 更新権限 {#update-permissions}
 
@@ -95,7 +83,6 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 ```sql
 GRANT ALTER UPDATE ON db.table TO username;
 ```
-
 
 ## 実装の詳細 {#details-of-the-implementation}
 
@@ -131,8 +118,6 @@ GRANT ALTER UPDATE ON db.table TO username;
 - `_block_number`, `_block_offset` カラムによるジョインを使用する。
 
 ジョインモードはマージモードよりも低速で、より多くのメモリを必要としますが、利用頻度は低くなります。
-
-
 
 ## 関連コンテンツ {#related-content}
 

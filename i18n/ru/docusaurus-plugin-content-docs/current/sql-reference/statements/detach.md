@@ -68,8 +68,8 @@ SELECT * FROM test;
 Результат:
 
 ```text
-Получено исключение от сервера (версия 21.4.1):
-Код: 60. DB::Exception: Получено от localhost:9000. DB::Exception: Таблица default.test не существует.
+Received exception from server (version 21.4.1):
+Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table default.test does not exist.
 ```
 
 :::note

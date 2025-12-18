@@ -12,8 +12,6 @@ ClickHouse 支持用于表示地理对象（例如位置、区域等）的数据
 **另请参阅**
 - [简单地理要素的表示](https://en.wikipedia.org/wiki/GeoJSON)。
 
-
-
 ## Point {#point}
 
 `Point` 由其 X 和 Y 坐标表示，存储为 [Tuple](tuple.md)([Float64](float.md), [Float64](float.md))。
@@ -120,7 +118,7 @@ INSERT INTO geo_polygon VALUES([[(20, 20), (50, 20), (50, 50), (20, 50)], [(30, 
 SELECT pg, toTypeName(pg) FROM geo_polygon;
 ```
 
-Result：
+结果：
 
 ```text
 ┌─pg────────────────────────────────────────────────────────────┬─toTypeName(pg)─┐
@@ -183,7 +181,7 @@ INSERT INTO geo VALUES ('POINT(0 0)', 2);
 INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
 INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
 INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
-INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+INSERT INTO geo_dst SELECT readWKT(geom) FROM geo ORDER BY id;
 
 SELECT * FROM geo_dst;
 ```

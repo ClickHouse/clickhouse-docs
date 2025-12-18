@@ -18,16 +18,16 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ```sql
 CREATE NAMED COLLECTION [IF NOT EXISTS] name [ON CLUSTER cluster] AS
-key_name1 = '某值' [[NOT] OVERRIDABLE],
-key_name2 = '某值' [[NOT] OVERRIDABLE],
-key_name3 = '某值' [[NOT] OVERRIDABLE],
+key_name1 = 'some value' [[NOT] OVERRIDABLE],
+key_name2 = 'some value' [[NOT] OVERRIDABLE],
+key_name3 = 'some value' [[NOT] OVERRIDABLE],
 ...
 ```
 
 **示例**
 
 ```sql
-CREATE NAMED COLLECTION foobar AS a = '1', b = '2' 可覆盖;
+CREATE NAMED COLLECTION foobar AS a = '1', b = '2' OVERRIDABLE;
 ```
 
 **相关语句**

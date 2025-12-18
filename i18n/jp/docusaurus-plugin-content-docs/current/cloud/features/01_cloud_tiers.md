@@ -7,8 +7,6 @@ keywords: ['クラウドサービスティア', 'サービスプラン', 'クラ
 doc_type: 'reference'
 ---
 
-
-
 # ClickHouse Cloud のティア {#clickhouse-cloud-tiers}
 
 ClickHouse Cloud には複数のティアが用意されています。 
@@ -16,8 +14,6 @@ ClickHouse Cloud には複数のティアが用意されています。
 このページでは、特定のユースケースに対してどのティアが適しているかを説明します。
 
 **クラウドティアの概要:**
-
-
 
 <table>
   <thead>
@@ -224,8 +220,6 @@ ClickHouse Cloud には複数のティアが用意されています。
 
 
 
-
-
 ## Basic {#basic}
 
 - 単一レプリカのデプロイメントをサポートするコスト効率の高いオプションです。
@@ -236,8 +230,6 @@ Basic ティアのサービスは、あらかじめ固定されたサイズで�
 スケーリングが必要な場合は、Scale または Enterprise ティアへアップグレードできます。
 :::
 
-
-
 ## Scale {#scale}
 
 高い SLA（2 つ以上のレプリカを持つデプロイメント）、スケーラビリティ、高度なセキュリティを必要とするワークロード向けに設計されています。
@@ -247,8 +239,6 @@ Basic ティアのサービスは、あらかじめ固定されたサイズで�
   - [コンピュート間の分離 (compute-compute separation)](../reference/warehouses#what-is-compute-compute-separation)
   - [柔軟なスケーリング](/manage/scaling) オプション（スケールアップ/ダウン、スケールイン/アウト）
   - [設定可能なバックアップ](/cloud/manage/backups/configurable-backups)
-
-
 
 ## エンタープライズ {#enterprise}
 
@@ -267,8 +257,6 @@ Basic ティアのサービスは、あらかじめ固定されたサイズで�
 :::note 
 3 つすべてのティアにおいて、単一レプリカのサービスはサイズを固定（`8 GiB`、`12 GiB`）とするよう設計されています。
 :::
-
-
 
 ## 別のプランへのアップグレード {#upgrading-to-a-different-tier}
 

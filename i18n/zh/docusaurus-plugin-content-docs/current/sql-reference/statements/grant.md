@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # GRANT 语句 {#grant-statement}
 
 - 向 ClickHouse 用户账户或角色授予[权限](#privileges)。
@@ -30,7 +29,6 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 `WITH GRANT OPTION` 子句为 `user` 或 `role` 授予执行 `GRANT` 查询的权限。用户可以授予与自己权限范围相同或更小范围的权限。
 `WITH REPLACE OPTION` 子句会将 `user` 或 `role` 的现有权限替换为新权限；如果未指定该子句，则会将新权限追加到现有权限上，而不是进行替换。
 
-
 ## 分配角色的语法 {#assigning-role-syntax}
 
 ```sql
@@ -42,7 +40,6 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 
 `WITH ADMIN OPTION` 子句向 `user` 或 `role` 授予 [ADMIN OPTION](#admin-option) 权限。
 `WITH REPLACE OPTION` 子句会用新的角色替换该 `user` 或 `role` 现有的角色；如果未指定该子句，则会在原有角色基础上追加新角色。
-
 
 ## GRANT CURRENT GRANTS 语法 {#grant-current-grants-syntax}
 
@@ -56,7 +53,6 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 
 使用 `CURRENT GRANTS` 语句可以为指定的用户或角色授予所有列出的权限。
 如果未指定任何权限，则该用户或角色将获得 `CURRENT_USER` 的所有可用权限。
-
 
 ## 用法 {#usage}
 
@@ -87,7 +83,6 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 
 你可以在一个查询中为多个账号授予多个权限。查询 `GRANT SELECT, INSERT ON *.* TO john, robin` 允许账号 `john` 和 `robin` 在服务器上所有数据库的所有表上执行 `INSERT` 和 `SELECT` 查询。
 
-
 ## 通配符授权 {#wildcard-grants}
 
 在指定权限时，可以使用星号（`*`）来代替表名或数据库名。例如，`GRANT SELECT ON db.* TO john` 查询允许 `john` 在 `db` 数据库中的所有表上执行 `SELECT` 查询。
@@ -106,22 +101,22 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 已授予权限
-SELECT * FROM db.my_tables_0 -- 已授予权限
-SELECT * FROM db.my_tables_1 -- 已授予权限
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
 
-SELECT * FROM db.other_table -- 未授予权限
-SELECT * FROM db2.my_tables -- 未授予权限
+SELECT * FROM db.other_table -- not_granted
+SELECT * FROM db2.my_tables -- not_granted
 ```
 
 `GRANT SELECT ON db*.* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 已授权
-SELECT * FROM db.my_tables_0 -- 已授权
-SELECT * FROM db.my_tables_1 -- 已授权
-SELECT * FROM db.other_table -- 已授权
-SELECT * FROM db2.my_tables -- 已授权
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
+SELECT * FROM db.other_table -- granted
+SELECT * FROM db2.my_tables -- granted
 ```
 
 在已授权路径中新创建的所有表都会自动继承其父对象的所有权限。
@@ -131,14 +126,13 @@ SELECT * FROM db2.my_tables -- 已授权
 
 ```sql
 GRANT SELECT ON db.* TO john -- correct
-GRANT SELECT ON db*.* TO john -- 正确
+GRANT SELECT ON db*.* TO john -- correct
 
-GRANT SELECT ON *.my_table TO john -- 错误
-GRANT SELECT ON foo*bar TO john -- 错误
-GRANT SELECT ON *suffix TO john -- 错误
-GRANT SELECT(foo) ON db.table* TO john -- 错误
+GRANT SELECT ON *.my_table TO john -- wrong
+GRANT SELECT ON foo*bar TO john -- wrong
+GRANT SELECT ON *suffix TO john -- wrong
+GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
-
 
 ## 权限 {#privileges}
 
@@ -399,7 +393,6 @@ GRANT SELECT(x,y) ON db.table TO john
 
 该权限允许 `john` 执行任何涉及 `db.table` 中 `x` 和/或 `y` 列数据的 `SELECT` 查询，例如 `SELECT x FROM db.table`。`john` 不能执行 `SELECT z FROM db.table`。也不能执行 `SELECT * FROM db.table`。在处理此查询时，ClickHouse 不会返回任何数据，连 `x` 和 `y` 也不会返回。唯一的例外是当表只包含 `x` 和 `y` 列时，在这种情况下，ClickHouse 会返回该表中的所有数据。
 
-
 ### INSERT {#insert}
 
 允许执行 [INSERT](../../sql-reference/statements/insert-into.md) 查询。
@@ -417,7 +410,6 @@ GRANT INSERT(x,y) ON db.table TO john
 ```
 
 授予的权限允许 `john` 向 `db.table` 表中的 `x` 和/或 `y` 列插入数据。
-
 
 ### ALTER {#alter}
 
@@ -469,7 +461,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### BACKUP {#backup}
 
-允许在查询中执行 [`BACKUP`] 语句。有关备份的更多信息，请参阅[《备份与恢复》](../../operations/backup.md)。
+允许在查询中执行 [`BACKUP`] 语句。有关备份的更多信息，请参阅[《备份与恢复》](/operations/backup/overview)。
 
 ### CREATE {#create}
 
@@ -499,7 +491,7 @@ GRANT CLUSTER ON *.* TO <username>
 如果在未先授予 `CLUSTER` 权限的情况下尝试在查询中使用 `ON CLUSTER`，则会收到如下错误：
 
 ```text
-权限不足。执行此查询需要 CLUSTER ON *.* 授权。 
+Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
 可以通过在 `config.xml` 的 `access_control_improvements` 部分（见下文）中将 `on_cluster_queries_require_cluster_grant` 设置项设为 `false` 来更改默认行为。
@@ -509,7 +501,6 @@ GRANT CLUSTER ON *.* TO <username>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
 </access_control_improvements>
 ```
-
 
 ### DROP {#drop}
 
@@ -691,13 +682,13 @@ GRANT READ ON S3('regexp_pattern') TO user
 授予对特定 S3 bucket 路径的访问权限：
 
 ```sql
--- 允许用户仅从 s3://foo/ 路径读取
+-- Allow user to read only from s3://foo/ paths
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- 允许用户从特定文件模式读取
+-- Allow user to read from specific file patterns
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
--- 可以向同一用户授予多个过滤器
+-- Multiple filters can be granted to the same user
 GRANT READ ON S3('s3://foo/.*') TO john
 GRANT READ ON S3('s3://bar/.*') TO john
 ```
@@ -727,10 +718,10 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 如果原有授权带有 `WITH GRANT OPTION`，则可以使用 `GRANT CURRENT GRANTS` 重新授予权限：
 
 ```sql
--- 带有 GRANT OPTION 的原始授权
+-- Original grant with GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- John 现在可以将此访问权限再授予其他人
+-- John can now regrant this access to others
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 
@@ -738,7 +729,6 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 * **不允许部分撤销：** 不能只撤销已授予过滤模式中的一部分。如有需要，必须撤销整个授权，然后使用新的模式重新授权。
 * **不允许使用通配符授权：** 不能使用 `GRANT READ ON *('regexp')` 或类似仅包含通配符的模式。必须提供具体的数据源。
-
 
 ### dictGet {#dictget}
 

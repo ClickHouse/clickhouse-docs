@@ -92,6 +92,14 @@ LIMIT 5
 11. │ type        │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
+
+   ┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is_obsolete─┬─tier───────┐
+1. │ dialect                 │ clickhouse │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ Dialect │           0 │ Production │
+2. │ min_compress_block_size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+3. │ max_compress_block_size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+4. │ max_block_size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+5. │ max_insert_block_size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+   └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
 ┌─имя────────────────────┬─значение───┬─изменено┬─мин──┬─макс──┬─тип────┬─is&#95;obsolete─┬─tier───────┐
@@ -103,13 +111,30 @@ LIMIT 5
 5. │ max&#95;insert&#95;block&#95;size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 
-````
+```sql title="Query"
+CREATE TABLE crypto_prices
+(
+    trade_date Date,
+    crypto_name String,
+    volume Float32,
+    price Float32,
+    market_cap Float32,
+    change_1_day Float32
+)
+ENGINE = MergeTree
+PRIMARY KEY (crypto_name, trade_date);
 
-### Использование `EXCEPT` и `INTERSECT` с данными о криптовалютах {#using-except-and-intersect-with-cryptocurrency-data}
+INSERT INTO crypto_prices
+   SELECT *
+   FROM s3(
+    'https://learn-clickhouse.s3.us-east-2.amazonaws.com/crypto_prices.csv',
+    'CSVWithNames'
+);
 
-Операторы `EXCEPT` и `INTERSECT` часто могут использоваться взаимозаменяемо с различной булевой логикой, и оба полезны при работе с двумя таблицами, имеющими общий столбец (или столбцы).
-Например, предположим, что у нас есть несколько миллионов строк исторических данных о криптовалютах, содержащих цены и объёмы торгов:
-
+SELECT * FROM crypto_prices
+WHERE crypto_name = 'Bitcoin'
+ORDER BY trade_date DESC
+LIMIT 10;
 ```sql title="Запрос"
 CREATE TABLE crypto_prices
 (
@@ -134,7 +159,6 @@ SELECT * FROM crypto_prices
 WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
-````
 
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
@@ -149,10 +173,19 @@ LIMIT 10;
 │ 2020-10-25 │ Bitcoin     │ 24406921000 │ 13031.17 │ 241425220000 │ -0.0058658565 │
 │ 2020-10-24 │ Bitcoin     │ 24542319000 │ 13108.06 │ 242839880000 │   0.013650347 │
 └────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
-```
-
-Теперь предположим, что у нас есть таблица `holdings`, в которой хранится список принадлежащих нам криптовалют и количество монет каждой:
-
+```response title="Response"
+┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
+│ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
+│ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
+│ 2020-10-31 │ Bitcoin     │ 30306464000 │ 13780.99 │ 255372070000 │   0.017308505 │
+│ 2020-10-30 │ Bitcoin     │ 30581486000 │ 13546.52 │ 251018150000 │   0.008084608 │
+│ 2020-10-29 │ Bitcoin     │ 56499500000 │ 13437.88 │ 248995320000 │   0.012552661 │
+│ 2020-10-28 │ Bitcoin     │ 35867320000 │ 13271.29 │ 245899820000 │   -0.02804481 │
+│ 2020-10-27 │ Bitcoin     │ 33749879000 │ 13654.22 │ 252985950000 │    0.04427984 │
+│ 2020-10-26 │ Bitcoin     │ 29461459000 │ 13075.25 │ 242251000000 │  0.0033826586 │
+│ 2020-10-25 │ Bitcoin     │ 24406921000 │ 13031.17 │ 241425220000 │ -0.0058658565 │
+│ 2020-10-24 │ Bitcoin     │ 24542319000 │ 13108.06 │ 242839880000 │   0.013650347 │
+└────────────┴─────────────┴─────────────┴──────────┴──────────────┴───────────────┘
 ```sql
 CREATE TABLE holdings
 (
@@ -169,37 +202,56 @@ INSERT INTO holdings VALUES
    ('Ethereum', 5000),
    ('DOGEFI', 10),
    ('Bitcoin Diamond', 5000);
-```
+```sql
+CREATE TABLE holdings
+(
+    crypto_name String,
+    quantity UInt64
+)
+ENGINE = MergeTree
+PRIMARY KEY (crypto_name);
 
-Мы можем использовать `EXCEPT`, чтобы ответить на вопрос вроде **&quot;Какие монеты, которыми мы владеем, никогда не торговались ниже $10?&quot;**:
-
+INSERT INTO holdings VALUES
+   ('Bitcoin', 1000),
+   ('Bitcoin', 200),
+   ('Ethereum', 250),
+   ('Ethereum', 5000),
+   ('DOGEFI', 10),
+   ('Bitcoin Diamond', 5000);
 ```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
-```
-
+```sql title="Query"
+SELECT crypto_name FROM holdings
+EXCEPT
+SELECT crypto_name FROM crypto_prices
+WHERE price < 10;
 ```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
 └─────────────┘
-```
-
-Это означает, что из четырёх криптовалют, которыми мы владеем, только Bitcoin ни разу не опускался ниже $10 (с учётом ограниченного объёма данных в этом примере).
-
-### Использование `EXCEPT DISTINCT` {#using-except-and-intersect-with-cryptocurrency-data}
-
-Обратите внимание, что в предыдущем запросе в результате у нас было несколько записей по Bitcoin. Вы можете добавить `DISTINCT` к `EXCEPT`, чтобы убрать дубликаты строк из результата:
-
+```response title="Response"
+┌─crypto_name─┐
+│ Bitcoin     │
+│ Bitcoin     │
+└─────────────┘
 ```sql title="Query"
 SELECT crypto_name FROM holdings
 EXCEPT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price < 10;
-```
-
+```sql title="Query"
+SELECT crypto_name FROM holdings
+EXCEPT DISTINCT
+SELECT crypto_name FROM crypto_prices
+WHERE price < 10;
+```response title="Response"
+┌─crypto_name─┐
+│ Bitcoin     │
+└─────────────┘
 ```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │

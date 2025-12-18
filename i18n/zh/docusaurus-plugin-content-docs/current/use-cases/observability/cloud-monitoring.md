@@ -14,7 +14,6 @@ import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
 # ClickHouse Cloud 监控 {#cloud-monitoring}
 
 本指南为正在评估 ClickHouse Cloud 的企业团队提供有关生产环境部署中监控与可观测性能力的全面信息。企业客户经常询问开箱即用的监控功能、与现有可观测性技术栈（包括 Datadog 和 AWS CloudWatch 等工具）的集成方式，以及 ClickHouse 的监控能力与自托管部署之间的对比。
@@ -69,13 +68,13 @@ ClickHouse Cloud 提供一个 Prometheus 端点。这样可以让用户延续现
 
 - **HyperDX in ClickHouse Cloud**（私有预览）：可以在任何 ClickHouse Cloud 服务上启动 HyperDX。
 - [Helm](/use-cases/observability/clickstack/deployment/helm)：推荐用于基于 Kubernetes 的调试环境。支持与 ClickHouse Cloud 集成，并允许通过 `values.yaml` 进行环境特定配置、资源限制和扩缩容。
-- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)：分别部署各个组件（ClickHouse、HyperDX、OTel collector、MongoDB）。在与 ClickHouse Cloud 集成时，用户可以修改 compose 文件以移除未使用的组件，尤其是 ClickHouse 和 OTel collector。
+- [Docker Compose](/use-cases/observability/clickstack/deployment/docker-compose)：分别部署各个组件（ClickHouse、HyperDX、OTel collector、MongoDB）。在与 ClickHouse Cloud 集成时，您可以修改 compose 文件以移除未使用的组件，尤其是 ClickHouse 和 OTel collector。
 - [HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only)：独立的 HyperDX 容器。
 
 有关完整的部署选项和架构详细信息，请参阅 [ClickStack 文档](/use-cases/observability/clickstack/overview)和[数据摄取指南](/use-cases/observability/clickstack/ingesting-data/overview)。
 
 :::note
-用户还可以通过 OTel collector 从 ClickHouse Cloud 的 Prometheus 端点收集指标，并将其转发到单独的 ClickStack 部署进行可视化。
+您还可以通过 OTel collector 从 ClickHouse Cloud 的 Prometheus 端点收集指标，并将其转发到单独的 ClickStack 部署进行可视化。
 :::
 
 <DirectIntegrations/>

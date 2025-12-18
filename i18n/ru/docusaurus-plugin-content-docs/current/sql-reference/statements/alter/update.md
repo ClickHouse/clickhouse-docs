@@ -7,8 +7,6 @@ title: 'Команды ALTER TABLE ... UPDATE'
 doc_type: 'reference'
 ---
 
-
-
 # Команды ALTER TABLE ... UPDATE {#alter-table-update-statements}
 
 ```sql
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [Мутации](/sql-reference/statements/alter/index.md#mutations)
 * [Синхронность ALTER-запросов](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
-
 
 ## Связанные материалы {#related-content}
 

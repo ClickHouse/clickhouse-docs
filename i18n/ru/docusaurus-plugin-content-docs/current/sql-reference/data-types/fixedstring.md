@@ -99,7 +99,7 @@ FROM FixedStringTable
 WHERE name LIKE 'a'
 FORMAT JSONStringsEachRow
 
-0 строк в результате.
+0 rows in set.
 
 
 SELECT name

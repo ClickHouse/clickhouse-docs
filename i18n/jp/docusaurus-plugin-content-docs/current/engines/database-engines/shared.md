@@ -11,7 +11,6 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 
 <CloudOnlyBadge />
 
-
 # Shared データベースエンジン {#shared-database-engine}
 
 `Shared` データベースエンジンは、Shared Catalog と連携して、[`SharedMergeTree`](/cloud/reference/shared-merge-tree) などのステートレスなテーブルエンジンを使用するデータベースを管理します。
@@ -20,15 +19,11 @@ import CloudOnlyBadge from '@theme/badges/CloudOnlyBadge';
 ClickHouse Cloud における `Shared` データベースエンジンは、ローカルディスクへの依存関係を取り除きます。
 これは純粋なインメモリ エンジンであり、必要とするのは CPU とメモリだけです。
 
-
-
 ## どのように動作するのか {#how-it-works}
 
 `Shared` データベースエンジンは、すべてのデータベースおよびテーブル定義を、Keeper をバックエンドとした中央の Shared Catalog に保存します。ローカルディスクへ書き込む代わりに、すべてのコンピュートノード間で共有される、単一のバージョン管理されたグローバルな状態を維持します。
 
 各ノードは最後に適用したバージョンのみを追跡し、起動時にローカルファイルや手動でのセットアップを必要とせずに最新の状態を取得します。
-
-
 
 ## 構文 {#syntax}
 

@@ -6,25 +6,19 @@ keywords: ['自前クラウド', 'byoc', 'プライベート', '政府機関向�
 doc_type: 'reference'
 ---
 
-
-
 # ClickHouse デプロイメントオプション {#clickhouse-deployment-options}
 
 ClickHouse は、多様な顧客要件に対応するため、制御性、コンプライアンス、および運用負荷の観点から異なる、幅広いデプロイメントオプションを提供しています。
-本ドキュメントでは、利用可能な各種デプロイメントタイプの特徴を整理し、利用者が自らのアーキテクチャ上の要件、規制上の義務、およびリソース管理戦略に最適に合致するソリューションを選択できるようにします。
-
-
+本ドキュメントでは、利用可能な各種デプロイメントタイプの特徴を整理し、あなたが自らのアーキテクチャ上の要件、規制上の義務、およびリソース管理戦略に最適に合致するソリューションを選択できるようにします。
 
 ## ClickHouse Cloud {#clickhouse-cloud}
 
 ClickHouse Cloud は、自己管理に伴う運用上の複雑さなしに、ClickHouse の性能とスピードを提供する、フルマネージドなクラウドネイティブサービスです。
-このオプションは、迅速なデプロイ、スケーラビリティ、最小限の管理負荷を重視するユーザーに最適です。
+このオプションは、迅速なデプロイ、スケーラビリティ、最小限の管理負荷を重視する場合に最適です。
 ClickHouse Cloud は、インフラストラクチャのプロビジョニング、スケーリング、メンテナンス、アップデートのあらゆる側面を引き受けるため、ユーザーはデータ分析やアプリケーション開発に専念できます。
 従量課金制の料金モデルと自動スケーリングを提供し、分析ワークロードに対して信頼性が高くコスト効率の良いパフォーマンスを実現します。AWS、GCP、Azure 上で利用可能で、マーケットプレイス経由の直接課金にも対応しています。
 
 詳しくは、[ClickHouse Cloud](/getting-started/quick-start/cloud) を参照してください。
-
-
 
 ## 自前クラウド環境での利用（Bring Your Own Cloud） {#byoc}
 
@@ -32,15 +26,11 @@ ClickHouse Bring Your Own Cloud (BYOC) は、組織が自社のクラウド環�
 
 詳しくは、[Bring Your Own Cloud](/cloud/reference/byoc/overview) を参照してください。
 
-
-
 ## ClickHouse Private {#clickhouse-private}
 
 ClickHouse Private は、ClickHouse をセルフホストして利用するためのバージョンであり、ClickHouse Cloud を支えるのと同じ独自技術を活用しています。このオプションはきわめて高いレベルの制御性を提供するため、厳格なコンプライアンス、ネットワークおよびセキュリティ要件を持つ組織や、自前のインフラストラクチャを運用できるだけの専門的な運用ノウハウを備えたチームに最適です。ClickHouse Cloud 環境で徹底的にテストされた定期的なアップデートおよびアップグレード、豊富な機能を備えたロードマップの恩恵を受けられ、さらに当社のエキスパートによるサポートチームによって支えられています。
 
 [ClickHouse Private](/cloud/infrastructure/clickhouse-private) の詳細については、こちらをご覧ください。
-
-
 
 ## ClickHouse Government {#clickhouse-government}
 

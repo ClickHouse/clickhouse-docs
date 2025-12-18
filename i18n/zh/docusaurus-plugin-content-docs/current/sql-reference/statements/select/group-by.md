@@ -6,8 +6,6 @@ title: 'GROUP BY 子句'
 doc_type: 'reference'
 ---
 
-
-
 # GROUP BY 子句 {#group-by-clause}
 
 `GROUP BY` 子句会将 `SELECT` 查询切换到聚合模式，其工作方式如下：
@@ -21,8 +19,6 @@ doc_type: 'reference'
 :::note
 还有另一种方式可以对表进行聚合。如果查询中只在聚合函数内部使用了表列，则可以省略 `GROUP BY` 子句，此时会假定按空键集进行聚合。此类查询总是恰好返回一行。
 :::
-
-
 
 ## NULL 处理 {#null-processing}
 
@@ -55,7 +51,6 @@ doc_type: 'reference'
 你可以看到，对于 `y = NULL` 的情况，`GROUP BY` 对 `x` 进行了求和，看起来就像把 `NULL` 当作一个实际的取值来处理。
 
 如果你向 `GROUP BY` 传入多个键列，结果会给出所选数据的所有组合，就好像把 `NULL` 当作一个特定的取值一样。
-
 
 ## ROLLUP 修饰符 {#rollup-modifier}
 
@@ -98,7 +93,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 * 以及总计（此时三个关键表达式对应的列都为零）。
 
 ```text
-┌─年份─┬─月份─┬─日期─┬─计数()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
 │ 2019 │     1 │   5 │       1 │
@@ -106,16 +101,16 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 │ 2019 │     1 │  15 │       1 │
 │ 2020 │    10 │   5 │       1 │
 └──────┴───────┴─────┴─────────┘
-┌─年份─┬─月份─┬─日期─┬─计数()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2019 │     1 │   0 │       2 │
 │ 2020 │     1 │   0 │       2 │
 │ 2020 │    10 │   0 │       2 │
 └──────┴───────┴─────┴─────────┘
-┌─年份─┬─月份─┬─日期─┬─计数()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2019 │     0 │   0 │       2 │
 │ 2020 │     0 │   0 │       4 │
 └──────┴───────┴─────┴─────────┘
-┌─年份─┬─月份─┬─日期─┬─计数()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │    0 │     0 │   0 │       6 │
 └──────┴───────┴─────┴─────────┘
 ```
@@ -129,7 +124,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 **另请参阅**
 
 * 用于实现 SQL 标准兼容性的 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
-
 
 ## CUBE 修饰符 {#cube-modifier}
 
@@ -146,7 +140,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 考虑表 t：
 
 ```text
-┌─年──┬─月───┬─日──┐
+┌─year─┬─month─┬─day─┐
 │ 2019 │     1 │   5 │
 │ 2019 │     1 │  15 │
 │ 2020 │     1 │   5 │
@@ -159,7 +153,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 查询：
 
 ```sql
-SELECT 年, 月, 日, count(*) FROM t GROUP BY CUBE(年, 月, 日);
+SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
 由于 `GROUP BY` 子句中有三个关键表达式，结果中包含八个对应所有关键表达式组合的小计表：
@@ -175,9 +169,8 @@ SELECT 年, 月, 日, count(*) FROM t GROUP BY CUBE(年, 月, 日);
 
 未包含在 `GROUP BY` 中的列会被填充为 0。
 
-
 ```text
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
 │ 2019 │     1 │   5 │       1 │
@@ -185,36 +178,36 @@ SELECT 年, 月, 日, count(*) FROM t GROUP BY CUBE(年, 月, 日);
 │ 2019 │     1 │  15 │       1 │
 │ 2020 │    10 │   5 │       1 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2019 │     1 │   0 │       2 │
 │ 2020 │     1 │   0 │       2 │
 │ 2020 │    10 │   0 │       2 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │     0 │   5 │       2 │
 │ 2019 │     0 │   5 │       1 │
 │ 2020 │     0 │  15 │       2 │
 │ 2019 │     0 │  15 │       1 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │ 2019 │     0 │   0 │       2 │
 │ 2020 │     0 │   0 │       4 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │    0 │     1 │   5 │       2 │
 │    0 │    10 │  15 │       1 │
 │    0 │    10 │   5 │       1 │
 │    0 │     1 │  15 │       2 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │    0 │     1 │   0 │       4 │
 │    0 │    10 │   0 │       2 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │    0 │     0 │   5 │       3 │
 │    0 │     0 │  15 │       3 │
 └──────┴───────┴─────┴─────────┘
-┌─年─┬─月─┬─日─┬─count()─┐
+┌─year─┬─month─┬─day─┬─count()─┐
 │    0 │     0 │   0 │       6 │
 └──────┴───────┴─────┴─────────┘
 ```
@@ -228,7 +221,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 **另请参阅**
 
 * 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
-
 
 ## WITH TOTALS 修饰符 {#with-totals-modifier}
 
@@ -265,8 +257,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 如果未使用 `max_rows_to_group_by` 和 `group_by_overflow_mode = 'any'`，则所有 `after_having` 变体的行为相同，你可以任选其一（例如 `after_having_auto`）。
 
 你可以在子查询中使用 `WITH TOTALS`，包括位于 [JOIN](/sql-reference/statements/select/join.md) 子句中的子查询（在这种情况下，相应的总计值会被合并）。
-
-
 
 ## GROUP BY ALL {#group-by-all}
 
@@ -316,7 +306,6 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-
 ## 示例 {#examples}
 
 示例：
@@ -337,13 +326,12 @@ FROM hits
 SELECT
     domainWithoutWWW(URL) AS domain,
     count(),
-    any(Title) AS title -- 获取每个域名的第一个出现的页面标题。
+    any(Title) AS title -- getting the first occurred page header for each domain.
 FROM hits
 GROUP BY domain
 ```
 
 对于遇到的每个不同的键值，`GROUP BY` 会计算一组聚合函数的结果。
-
 
 ## GROUPING SETS 修饰符 {#grouping-sets-modifier}
 
@@ -364,10 +352,10 @@ GROUP BY domain
 下面这两个查询是等价的。
 
 ```sql
--- 查询 1
+-- Query 1
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
--- 查询 2
+-- Query 2
 SELECT year, month, day, count(*) FROM t GROUP BY
 GROUPING SETS
 (
@@ -381,7 +369,6 @@ GROUPING SETS
 **另请参阅**
 
 * 有关 SQL 标准兼容性，请参见 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 设置。
-
 
 ## 实现细节 {#implementation-details}
 

@@ -30,8 +30,14 @@ curl -sL https://lib.chdb.io | bash
 ### ステップ 2: chDB-bun をインストールする {#install-chdb-bun}
 
 ```bash
-# GitHubリポジトリからインストールする
+# Install from the GitHub repository
 bun add github:chdb-io/chdb-bun
+
+# Or clone and build locally
+git clone https://github.com/chdb-io/chdb-bun.git
+cd chdb-bun
+bun install
+bun run build
 ```
 
 # またはローカル環境でクローンしてビルドする {#install-from-the-github-repository}
@@ -41,14 +47,31 @@ cd chdb-bun
 bun install
 bun run build
 
-```
+```typescript
+import { query } from 'chdb-bun';
+
+// Basic query
+const result = query("SELECT version()", "CSV");
+console.log(result); // "23.10.1.1"
+
+// Query with different output formats
+const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
+console.log(jsonResult);
+
+// Query with calculations
+const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
+console.log(mathResult);
+
+// Query system information
+const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
+console.log(systemInfo);
 ```
 
 ## 使用方法
 
 chDB-bun は、1 回限りの処理向けのエフェメラルクエリと、データベースの状態を保持する永続セッションという 2 つのクエリモードをサポートしています。
 
-### エフェメラルクエリ
+### エフェメラルクエリ {#persistent-sessions}
 
 永続的な状態を保持する必要がない、単純な一度限りのクエリには次を使用します:
 

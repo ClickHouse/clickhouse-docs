@@ -6,8 +6,6 @@
 - [查询处理](#troubleshooting-does-not-process-queries)
 - [查询效率](#troubleshooting-too-slow)
 
-
-
 ## 安装 {#troubleshooting-installation-errors}
 
 ### 无法通过 apt-get 从 ClickHouse 仓库获取 deb 包 {#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get}
@@ -26,23 +24,23 @@
 * 完整的警告信息类似于以下几种情况之一：
 
 ```bash
-N: 跳过获取已配置的文件 'main/binary-i386/Packages',因为软件源 'https://packages.clickhouse.com/deb stable InRelease' 不支持 'i386' 架构
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```bash
-E: 无法获取 https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  文件大小不符合预期 (30451 != 28154)。镜像同步正在进行中？
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```text
-E: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Origin' 值已从 'Artifactory' 变更为 'ClickHouse'
-E: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Label' 值已从 'Artifactory' 变更为 'ClickHouse'
-N: 仓库 'https://packages.clickhouse.com/deb stable InRelease' 的 'Suite' 值已从 'stable' 变更为 ''
-N: 在应用此仓库的更新之前,必须明确接受此变更。详情请参阅 apt-secure(8) 手册页。
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```bash
-错误:11 https://packages.clickhouse.com/deb stable InRelease
-  400  错误请求 [IP: 172.66.40.249 443]
+Err:11 https://packages.clickhouse.com/deb stable InRelease
+  400  Bad Request [IP: 172.66.40.249 443]
 ```
 
 要解决上述问题，请使用以下脚本：
@@ -73,9 +71,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
-Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (复制此消息时,务必包含以下内容):
-```
-
+Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
@@ -84,20 +80,16 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
 5. Poco::Util::Application::run() @ 0x000000001581cfda
 6. DB::Server::run() @ 0x000000000d1288f0
-7. Poco::Util::ServerApplication::run(int, char\*\*) @ 0x0000000015825e27
-8. mainEntryClickHouseServer(int, char\*\*) @ 0x000000000d125b38
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
 9. main @ 0x0000000007ea4eee
 10. ? @ 0x00007f67ff946d90
 11. ? @ 0x00007f67ff946e40
-12. \_start @ 0x00000000062e802e
-    (version 24.10.1.2812 (official build))
-
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 原因是 Docker 守护进程版本低于 `20.10.10`。解决方法是升级 Docker 守护进程,或运行 `docker run [--privileged | --security-opt seccomp=unconfined]`。后者具有安全风险。
-
-```
-
 
 ## 连接到服务器 {#troubleshooting-accepts-no-connections}
 
@@ -206,7 +198,6 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   你可能使用了错误的用户名或密码。
 
-
 ## 查询处理 {#troubleshooting-does-not-process-queries}
 
 如果 ClickHouse 无法处理查询，它会将错误描述发送给客户端。在 `clickhouse-client` 中，错误描述会显示在控制台中。如果使用 HTTP 接口，ClickHouse 会在响应体中返回错误描述。例如：
@@ -219,7 +210,6 @@ Code: 47, e.displayText() = DB::Exception: 未知标识符:a。注意您的查�
 如果使用 `stack-trace` 参数启动 `clickhouse-client`，ClickHouse 会连同错误描述一起返回服务器端的堆栈跟踪信息。
 
 你可能会看到一条有关连接断开的消息。在这种情况下，可以重试该查询。如果每次执行该查询时连接都会断开，请检查服务器端日志以查找错误。
-
 
 ## 查询处理效率 {#troubleshooting-too-slow}
 

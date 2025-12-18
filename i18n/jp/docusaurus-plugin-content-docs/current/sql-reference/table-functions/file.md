@@ -10,21 +10,17 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # file テーブル関数 {#file-table-function}
 
 `s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブルと同じように扱えるインターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/url.md) のテーブル関数 `s3()` を使用します。
 
 `file` 関数は、`SELECT` および `INSERT` クエリで使用して、ファイルからの読み取りやファイルへの書き込みを行うことができます。
 
-
-
 ## 構文 {#syntax}
 
 ```sql
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
-
 
 ## 引数 {#arguments}
 
@@ -36,13 +32,9 @@ file([path_to_archive ::] path [,format] [,structure] [,compression])
 | `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                       |
 | `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                        |
 
-
-
 ## 戻り値 {#returned_value}
 
 ファイル内のデータを読み書きするためのテーブル。
-
-
 
 ## ファイルへの書き込み例 {#examples-for-writing-to-a-file}
 
@@ -56,9 +48,8 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 その結果、データはファイル `test.tsv` に書き込まれます。
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test.tsv {#cat-varlibclickhouseuser_filestesttsv}
+# cat /var/lib/clickhouse/user_files/test.tsv
 1    2    3
 3    2    1
 1    3    2
@@ -77,31 +68,23 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 その結果、データは次の3つのファイルに書き込まれます：`test_1.tsv`、`test_2.tsv`、`test_3.tsv`。
 
-
 ```bash
-# cat /var/lib/clickhouse/user_files/test_1.tsv {#cat-varlibclickhouseuser_filestest_1tsv}
+# cat /var/lib/clickhouse/user_files/test_1.tsv
 3    2    1
-```
 
+# cat /var/lib/clickhouse/user_files/test_2.tsv
+1    3    2
+
+# cat /var/lib/clickhouse/user_files/test_3.tsv
+1    2    3
+```
 
 # cat /var/lib/clickhouse/user_files/test_2.tsv {#cat-varlibclickhouseuser_filestest_2tsv}
 1    3    2
 
-
-
 # cat /var/lib/clickhouse/user&#95;files/test&#95;3.tsv {#cat-varlibclickhouseuser_filestest_3tsv}
 
 1    2    3
-
-```
-```
-
-
-## ファイルから読み込む例 {#examples-for-reading-from-a-file}
-
-### CSV ファイルからの SELECT {#select-from-a-csv-file}
-
-まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
 ```bash
 $ grep user_files_path /etc/clickhouse-server/config.xml
@@ -113,13 +96,19 @@ $ cat /var/lib/clickhouse/user_files/test.csv
     78,43,45
 ```
 
-次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
+## ファイルから読み込む例 {#examples-for-reading-from-a-file}
+
+### CSV ファイルからの SELECT {#select-from-a-csv-file}
+
+まず、サーバー設定で `user_files_path` を設定し、`test.csv` というファイルを用意します。
 
 ```sql
 SELECT * FROM
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 LIMIT 2;
 ```
+
+次に、`test.csv` からテーブルにデータを読み込んで、先頭の 2 行を選択します。
 
 ```text
 ┌─column1─┬─column2─┬─column3─┐
@@ -128,13 +117,13 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
-
 ```sql
 INSERT INTO FUNCTION
 file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32')
 VALUES (1, 2, 3), (3, 2, 1);
 ```
+
+### ファイルからテーブルにデータを挿入する {#inserting-data-from-a-file-into-a-table}
 
 ```sql
 SELECT * FROM
@@ -148,12 +137,15 @@ file('test.csv', 'CSV', 'column1 UInt32, column2 UInt32, column3 UInt32');
 └─────────┴─────────┴─────────┘
 ```
 
-`archive1.zip` および/または `archive2.zip` に含まれている `table.csv` からデータを読み込む:
-
 ```sql
 SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 ```
 
+`archive1.zip` および/または `archive2.zip` に含まれている `table.csv` からデータを読み込む:
+
+```sql
+SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+```
 
 ## パス内のグロブ {#globs-in-path}
 
@@ -166,8 +158,6 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 - `**` — ディレクトリ配下のすべてのファイルを再帰的に表します。
 
 `{}` を用いる構文は、[remote](remote.md) および [hdfs](hdfs.md) テーブル関数と同様です。
-
-
 
 ## 例 {#examples}
 
@@ -185,19 +175,19 @@ SELECT * FROM file('user_files/archives/archive{1..2}.zip :: table.csv');
 すべてのファイルに含まれる行数の合計を問い合わせます：
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/some_file_{1..3}', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
 ```
 
 同じ結果が得られる別のパス式:
 
 ```sql
-SELECT count(*) FROM file('{some,another}_dir/*', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 ```
 
 暗黙的な `*` を用いて、`some_dir` の総行数を取得します:
 
 ```sql
-SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
 ```
 
 :::note
@@ -209,7 +199,7 @@ SELECT count(*) FROM file('some_dir', 'TSV', 'name String, value UInt32');
 `file000`、`file001`、...、`file999` という名前のファイルに含まれる行数の合計をクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
@@ -217,7 +207,7 @@ SELECT count(*) FROM file('big_dir/file{0..9}{0..9}{0..9}', 'CSV', 'name String,
 `big_dir/` ディレクトリ配下のすべてのファイルに対して、再帰的に行数の合計をクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
+SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
 ```
 
 **例**
@@ -225,9 +215,8 @@ SELECT count(*) FROM file('big_dir/**', 'CSV', 'name String, value UInt32');
 ディレクトリ `big_dir/` 以下のすべてのフォルダに含まれる `file002` ファイルの全行数を、再帰的にクエリします。
 
 ```sql
-SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt32');
+SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -235,8 +224,6 @@ SELECT count(*) FROM file('big_dir/**/file002', 'CSV', 'name String, value UInt3
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。ファイルサイズが不明な場合、値は `NULL` です。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` です。
-
-
 
 ## use&#95;hive&#95;partitioning 設定 {#hive-style-partitioning}
 
@@ -250,7 +237,6 @@ Hive スタイルのパーティショニングで作成された仮想列を使
 SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
 
-
 ## 設定 {#settings}
 
 | Setting                                                                                                            | Description                                                                                                                                                                 |
@@ -260,8 +246,6 @@ SELECT * FROM file('data/path/date=*/country=*/code=*/*.parquet') WHERE _date > 
 | [engine_file_allow_create_multiple_files](operations/settings/settings.md#engine_file_allow_create_multiple_files) | フォーマットにサフィックスがある場合、`INSERT` ごとに新しいファイルを作成できるようにします。デフォルトでは無効です。                                                                                       |
 | [engine_file_skip_empty_files](operations/settings/settings.md#engine_file_skip_empty_files)                       | 読み取り時に空のファイルをスキップできるようにします。デフォルトでは無効です。                                                                                                              |
 | [storage_file_read_method](/operations/settings/settings#engine_file_empty_if_not_exists)                          | ストレージファイルからデータを読み取る方法です。`read`、`pread`、`mmap` のいずれかです（`mmap` は clickhouse-local のみ）。デフォルト値: clickhouse-server では `pread`、clickhouse-local では `mmap`。 |
-
-
 
 ## 関連項目 {#related}
 

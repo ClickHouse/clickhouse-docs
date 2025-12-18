@@ -12,19 +12,15 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Табличная функция azureBlobStorage {#azureblobstorage-table-function}
 
 Предоставляет табличный интерфейс для чтения и записи файлов в [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs). Эта табличная функция аналогична [функции s3](../../sql-reference/table-functions/s3.md).
-
-
 
 ## Синтаксис {#syntax}
 
 ```sql
 azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -42,13 +38,9 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 | `partition_columns_in_data_file`            | Необязательный параметр. Используется только со стратегией партиционирования `HIVE`. Указывает ClickHouse, следует ли ожидать, что столбцы партиции будут записаны в файл данных. Значение по умолчанию — `false`.                                                                                                                                                                                                                                                                         |
 | `extra_credentials`                         | Используйте `client_id` и `tenant_id` для аутентификации. Если указаны `extra_credentials`, они имеют приоритет над `account_name` и `account_key`.
 
-
-
 ## Возвращаемое значение {#returned_value}
 
 Таблица заданной структуры для чтения данных из указанного файла или записи их в него.
-
-
 
 ## Примеры {#examples}
 
@@ -89,15 +81,12 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 └─────────┘
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_path` — Путь к файлу. Тип: `LowCardinality(String)`.
 - `_file` — Имя файла. Тип: `LowCardinality(String)`.
 - `_size` — Размер файла в байтах. Тип: `Nullable(UInt64)`. Если размер файла неизвестен, значение — `NULL`.
 - `_time` — Время последнего изменения файла. Тип: `Nullable(DateTime)`. Если время неизвестно, значение — `NULL`.
-
-
 
 ## Запись с партиционированием {#partitioned-write}
 
@@ -112,7 +101,7 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 **Пример стратегии партиционирования `HIVE`**
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Россия', 1), (2021, 'Бразилия', 2);
+INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
 ```
 
 ```result
@@ -123,7 +112,6 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 2. │ cont/azure_table_root/year=2020/country=Russia/7351307847378710528.csvwithnames │  1 │ 2020 │ Russia  │
    └─────────────────────────────────────────────────────────────────────────────────┴────┴──────┴─────────┘
 ```
-
 
 ## настройка use&#95;hive&#95;partitioning {#hive-style-partitioning}
 
@@ -138,7 +126,6 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
 ```sql
 SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
 ```
-
 
 ## Использование Shared Access Signatures (SAS) {#using-shared-access-signatures-sas-sas-tokens}
 
@@ -156,7 +143,7 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 │      10 │
 └─────────┘
 
-Получена 1 строка. Затрачено: 0.425 sec.
+1 row in set. Elapsed: 0.425 sec.
 ```
 
 В качестве альтернативы пользователи могут использовать сгенерированный [URL-адрес SAS для BLOB-объекта](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers):
@@ -169,9 +156,8 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 │      10 │
 └─────────┘
 
-Получена 1 строка. Прошло: 0,153 сек.
+1 row in set. Elapsed: 0.153 sec.
 ```
-
 
 ## См. также {#related}
 - [Движок таблицы AzureBlobStorage](engines/table-engines/integrations/azureBlobStorage.md)

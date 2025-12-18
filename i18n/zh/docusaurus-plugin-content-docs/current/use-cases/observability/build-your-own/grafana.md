@@ -19,10 +19,9 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
 # 使用 Grafana 和 ClickHouse 构建可观测性 {#using-grafana-and-clickhouse-for-observability}
 
-Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过 Grafana 官方的 ClickHouse 插件实现的。用户可以按照[此处](/integrations/grafana)的安装说明进行操作。
+Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过 Grafana 官方的 ClickHouse 插件实现的。你可以按照[此处](/integrations/grafana)的安装说明进行操作。
 
 该插件的 V4 版本在全新的查询构建体验中，将日志和链路追踪提升为一等公民。这最大限度地减少了 SRE 编写 SQL 查询的需求，并简化了基于 SQL 的可观测性，推动了这一新兴范式的发展。
 其中一项重要工作是将 OpenTelemetry (OTel) 置于插件的核心位置，因为我们认为，在未来几年中，它将成为基于 SQL 的可观测性以及数据采集方式的基础。
@@ -32,7 +31,7 @@ Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过
 在 Grafana 中配置 ClickHouse 数据源时，插件允许用户为日志和链路追踪指定默认的数据库和表，并指明这些表是否符合 OTel 模式（schema）。这使插件可以返回在 Grafana 中正确渲染日志和链路追踪所需的列。如果你对默认的 OTel 模式进行了修改，并希望使用自定义列名，也可以在此指定。对于诸如时间列（`Timestamp`）、日志级别（`SeverityText`）或消息体（`Body`）等列，使用默认的 OTel 列名意味着无需做任何额外更改。
 
 :::note HTTP 或 Native
-用户可以通过 HTTP 或 Native 协议将 Grafana 连接到 ClickHouse。后者在性能上略有优势，但在 Grafana 用户发起的聚合查询中通常并不明显。相对地，HTTP 协议通常更便于用户进行代理和流量调试与检查。
+你可以通过 HTTP 或 Native 协议将 Grafana 连接到 ClickHouse。后者在性能上略有优势，但在 Grafana 用户发起的聚合查询中通常并不明显。相对地，HTTP 协议通常更便于你进行代理和流量调试与检查。
 :::
 
 日志配置需要时间、日志级别和消息列，以便正确渲染日志。
@@ -41,11 +40,11 @@ Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过
 
 <Image img={observability_15} alt="连接器配置" size="sm"/>
 
-配置完成后，用户可以进入 [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)，开始搜索日志和链路追踪数据。
+配置完成后，你可以进入 [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/)，开始搜索日志和链路追踪数据。
 
 ## 日志 {#logs}
 
-如果符合 Grafana 的日志查询要求，用户可以在查询构建器中选择 `Query Type: Log`，然后点击 `Run Query`。查询构建器会生成一条查询语句，用于列出日志并确保它们能够正确渲染，例如：
+如果符合 Grafana 的日志查询要求，你可以在查询构建器中选择 `Query Type: Log`，然后点击 `Run Query`。查询构建器会生成一条查询语句，用于列出日志并确保它们能够正确渲染，例如：
 
 ```sql
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
@@ -58,7 +57,7 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 ### 从日志跳转到 Trace {#logs-to-traces}
 
-如果日志中包含 trace ID，用户可以从特定的日志行导航到对应的 trace 进行查看。
+如果日志中包含 trace ID，你可以从特定的日志行导航到对应的 trace 进行查看。
 
 <Image img={observability_17} alt="从日志跳转到 Trace" size="lg" border/>
 
@@ -84,7 +83,6 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 <Image img={observability_18} alt="Traces" size="lg" border />
 
 如需编写更复杂的查询，用户可以切换到 `SQL 编辑器`。
-
 
 ### 查看 Trace 详情 {#view-trace-details}
 
@@ -120,10 +118,9 @@ LIMIT 1000
 
 <Image img={observability_19} alt="Trace 详情" size="lg" border />
 
-
 ### Trace 到日志 {#traces-to-logs}
 
-如果日志中包含 trace ID，用户可以从某个 trace 跳转到其关联的日志。要查看日志，单击某个 trace ID 并选择 `View Logs`。在使用默认 OTel 列的情况下，将会执行如下查询。
+如果日志中包含 trace ID，你可以从某个 trace 跳转到其关联的日志。要查看日志，单击某个 trace ID 并选择 `View Logs`。在使用默认 OTel 列的情况下，将会执行如下查询。
 
 ```sql
 SELECT Timestamp AS "timestamp",
@@ -133,7 +130,7 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<Image img={observability_20} alt="从链路追踪到日志" size="lg" border />
+<Image img={observability_20} alt="Trace 到日志" size="lg" border />
 
 
 ## 仪表盘 {#dashboards}
@@ -165,7 +162,6 @@ LIMIT 100000
 
 <Image img={observability_22} alt="时间序列" size="lg" border />
 
-
 ### 多折线图 {#multi-line-charts}
 
 当查询满足以下条件时，会自动渲染为多折线图：
@@ -190,7 +186,6 @@ LIMIT 100000
 ```
 
 <Image img={observability_23} alt="多折线图" size="lg" border />
-
 
 ### 可视化地理数据 {#visualizing-geo-data}
 

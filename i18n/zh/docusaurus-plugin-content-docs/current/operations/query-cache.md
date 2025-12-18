@@ -85,7 +85,6 @@ use_query_cache = true`），但需要注意的是，此时所有 `SELECT` 查�
 查询缓存的总大小（字节数）、最大缓存条目数以及单个缓存条目的最大大小（按字节数和记录数）可以通过不同的
 [服务器配置选项](/operations/server-configuration-parameters/settings#query_cache) 进行配置。
 
-
 ```xml
 <query_cache>
     <max_size_in_bytes>1073741824</max_size_in_bytes>
@@ -103,11 +102,11 @@ constraints](settings/constraints-on-settings.md) 来限制单个用户的缓存
 ```xml
 <profiles>
     <default>
-        <!-- 用户/配置文件 'default' 的最大缓存大小(以字节为单位) -->
+        <!-- The maximum cache size in bytes for user/profile 'default' -->
         <query_cache_max_size_in_bytes>10000</query_cache_max_size_in_bytes>
-        <!-- 用户/配置文件 'default' 缓存中存储的 SELECT 查询结果的最大条目数 -->
+        <!-- The maximum number of SELECT query results stored in the cache for user/profile 'default' -->
         <query_cache_max_entries>100</query_cache_max_entries>
-        <!-- 将这两项设置设为只读,使用户无法修改 -->
+        <!-- Make both settings read-only so the user cannot change them -->
         <constraints>
             <query_cache_max_size_in_bytes>
                 <readonly/>
@@ -142,13 +141,12 @@ SETTINGS use_query_cache = true, query_cache_min_query_duration = 5000;
 为同一个查询创建三个不同查询缓存条目的示例：
 
 ```sql
-SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag 隐式为 ''(空字符串)
+SELECT 1 SETTINGS use_query_cache = true; -- query_cache_tag is implicitly '' (empty string)
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 1';
 SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 ```
 
 若只想从查询缓存中移除带有标签 `tag` 的条目，可以使用语句 `SYSTEM DROP QUERY CACHE TAG 'tag'`。
-
 
 ClickHouse 读取表数据时，以 [max_block_size](/operations/settings/settings#max_block_size) 行为一个块。由于过滤、聚合等操作，结果块通常远小于 `max_block_size`，但也可能出现远大于该值的情况。[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results)（默认启用）用于控制在将结果块插入查询结果缓存之前，如果结果块很小则将其压缩合并，如果很大则将其拆分为大小为 `max_block_size` 的块。这样会降低写入查询缓存时的性能，但可以提高缓存条目的压缩率，并在稍后从查询缓存返回查询结果时提供更自然的块粒度。
 

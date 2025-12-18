@@ -14,8 +14,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это обеспечивает простую интеграцию практически в любой существующий конвейер данных и позволяет в полной мере использовать преимущества ClickHouse.
 
-
-
 ## Форматы ввода {#input-formats}
 
 Форматы ввода используются для:
@@ -33,21 +31,16 @@ ClickHouse поддерживает большинство известных т
 Для детального разбора результатов и рекомендаций по лучшим практикам ознакомьтесь с полной [аналитикой бенчмарка](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient).
 Все результаты тестов доступны в онлайн-дашборде [FastFormats](https://fastformats.clickhouse.com/).
 
-
-
 ## Форматы вывода {#output-formats}
 
 Поддерживаемые форматы вывода используются для:
+
 - Представления результатов запроса `SELECT`
 - Выполнения операций `INSERT` в таблицы с файловой поддержкой
-
-
 
 ## Обзор форматов {#formats-overview}
 
 Поддерживаемые форматы:
-
-
 
 | Формат                                                                                                     | Ввод | Вывод |
 | ---------------------------------------------------------------------------------------------------------- | ---- | ----- |
@@ -116,13 +109,14 @@ ClickHouse поддерживает большинство известных т
 | [Arrow](./formats/Arrow/Arrow.md)                                                                          | ✔    | ✔     |
 | [ArrowStream](./formats/Arrow/ArrowStream.md)                                                              | ✔    | ✔     |
 | [ORC](./formats/ORC.md)                                                                                    | ✔    | ✔     |
-| [Один](./formats/One.md)                                                                                   | ✔    | ✗     |
+| [One](./formats/One.md)                                                                                    | ✔    | ✗     |
 | [Npy](./formats/Npy.md)                                                                                    | ✔    | ✔     |
 | [RowBinary](./formats/RowBinary/RowBinary.md)                                                              | ✔    | ✔     |
 | [RowBinaryWithNames](./formats/RowBinary/RowBinaryWithNames.md)                                            | ✔    | ✔     |
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔    | ✔     |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔    | ✗     |
 | [Native](./formats/Native.md)                                                                              | ✔    | ✔     |
+| [Буферы](./formats/Buffers.md)                                                                             | ✔    | ✔     |
 | [Null](./formats/Null.md)                                                                                  | ✗    | ✔     |
 | [Hash](./formats/Hash.md)                                                                                  | ✗    | ✔     |
 | [XML](./formats/XML.md)                                                                                    | ✗    | ✔     |
@@ -138,11 +132,7 @@ ClickHouse поддерживает большинство известных т
 | [Markdown](./formats/Markdown.md)                                                                          | ✗    | ✔     |
 | [Форма](./formats/Form.md)                                                                                 | ✔    | ✗     |
 
-
-
 Вы можете управлять некоторыми параметрами обработки форматов с помощью настроек ClickHouse. Подробнее см. раздел [Настройки](/operations/settings/settings-formats.md).
-
-
 
 ## Схема формата {#formatschema}
 
@@ -161,12 +151,11 @@ ClickHouse поддерживает большинство известных т
 должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
 в конфигурации сервера.
 
-
-
 ## Пропуск ошибок {#skippingerrors}
 
 Некоторые форматы, такие как `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` и `Protobuf`, могут пропускать некорректную строку при возникновении ошибки парсинга и продолжать разбор начиная со следующей строки. См. настройки [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) и
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio).
 Ограничения:
+
 - В случае ошибки парсинга `JSONEachRow` пропускает все данные до новой строки (или EOF), поэтому строки должны быть разделены символом `\n`, чтобы корректно подсчитывать ошибки.
 - `Template` и `CustomSeparated` используют разделитель после последнего столбца и разделитель между строками, чтобы найти начало следующей строки, поэтому пропуск ошибок работает только в том случае, если хотя бы один из этих разделителей не пуст.

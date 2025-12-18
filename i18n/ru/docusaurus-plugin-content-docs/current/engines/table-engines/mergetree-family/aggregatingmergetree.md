@@ -7,8 +7,6 @@ title: 'Движок таблицы AggregatingMergeTree'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблиц AggregatingMergeTree {#aggregatingmergetree-table-engine}
 
 Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и изменяет логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
@@ -26,8 +24,6 @@ doc_type: 'reference'
 - [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
 
 Имеет смысл использовать `AggregatingMergeTree`, если он уменьшает число строк на несколько порядков.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -59,17 +55,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   Все параметры имеют то же значение, что и в `MergeTree`.
 </details>
-
 
 ## SELECT и INSERT {#select-and-insert}
 
@@ -77,8 +72,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY` и те же агрегирующие функции, что и при вставке данных, но с суффиксом `-Merge`.
 
 В результатах запроса `SELECT` значения типа `AggregateFunction` имеют двоичное представление, зависящее от реализации, для всех форматов вывода ClickHouse. Например, если вы выгружаете данные в формате `TabSeparated` с помощью запроса `SELECT`, то этот дамп можно загрузить обратно с помощью запроса `INSERT`.
-
-
 
 ## Пример агрегированного материализованного представления {#example-of-an-aggregated-materialized-view}
 
@@ -164,7 +157,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 Выполните запрос `SELECT` ещё раз — будет выведен следующий результат:
 
 ```text
-┌───────────────ДатаНачала─┬─Посещения─┬─Пользователи─┐
+┌───────────────StartDate─┬─Visits─┬─Users─┐
 │ 2022-11-03 03:27:11.000 │     16 │     3 │
 │ 2022-11-26 07:00:31.000 │      5 │     1 │
 └─────────────────────────┴────────┴───────┘
@@ -186,14 +179,11 @@ AS SELECT
 FROM test.visits;
 ```
 
-
 :::note
 При использовании `initializeAggregation` агрегатное состояние создаётся для каждой отдельной строки без группировки.
 Каждая исходная строка даёт одну строку в материализованном представлении, а фактическая агрегация происходит позже, когда
 `AggregatingMergeTree` объединяет части. Это верно только в том случае, если `optimize_on_insert = 0`.
 :::
-
-
 
 ## Связанные материалы {#related-content}
 

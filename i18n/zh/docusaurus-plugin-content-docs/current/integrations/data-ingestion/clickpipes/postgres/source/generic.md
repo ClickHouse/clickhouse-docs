@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 ---
 
-
-
 # 通用 Postgres 源设置指南 {#generic-postgres-source-setup-guide}
 
 :::info
@@ -18,8 +16,6 @@ keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal 
 :::
 
 ClickPipes 支持 Postgres 12 及更高版本。
-
-
 
 ## 启用逻辑复制 {#enable-logical-replication}
 
@@ -56,8 +52,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ```
 3. 如果你对上述配置做了任何更改，必须重启 Postgres 实例，更改才会生效。
 
-
-
 ## 创建具备权限的用户和发布 {#creating-a-user-with-permissions-and-publication}
 
 让我们为 ClickPipes 创建一个具备 CDC 所需权限的新用户，
@@ -71,10 +65,10 @@ ClickPipes 支持 Postgres 12 及更高版本。
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 
--- 为用户授予复制权限
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 
--- 创建发布。创建 ClickPipe 时将使用此发布
+-- Create a publication. We will use this when creating the pipe
   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
 ```
 
@@ -83,7 +77,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
 请务必将 `clickpipes_user` 和 `clickpipes_password` 替换为你希望使用的用户名和密码。
 
 :::
-
 
 ## 在 pg_hba.conf 中为 ClickPipes 用户启用连接 {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
@@ -98,8 +91,6 @@ ClickPipes 支持 Postgres 12 及更高版本。
     ```sql
     SELECT pg_reload_conf();
     ```
-
-
 
 ## 增大 `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 
@@ -122,7 +113,6 @@ SELECT pg_reload_conf();
 如需获取该数值的更佳配置建议，请联系 ClickPipes 团队。
 
 :::
-
 
 ## 接下来是什么？ {#whats-next}
 

@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
 # TimescaleDB 拡張付き Postgres ソースのセットアップガイド {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
-
-
 
 ## 背景 {#background}
 
@@ -35,13 +32,9 @@ Timescale のハイパーテーブルはいくつかの点で通常の Postgres 
 これはレプリケーション処理を複雑にするため、Timescale のハイパーテーブルをレプリケートする機能は
 **ベストエフォート**として扱うべきです。
 
-
-
 ## サポートされている Postgres バージョン {#supported-postgres-versions}
 
 ClickPipes は Postgres バージョン 12 以降に対応しています。
-
-
 
 ## 論理レプリケーションを有効化する {#enable-logical-replication}
 
@@ -57,8 +50,6 @@ Timescale Cloud は論理レプリケーションをサポートしていませ�
 そのため、Timescale Cloud のユーザーは Postgres ClickPipe を使用したデータの一度きりのロード（`Initial Load Only`）のみ実行できます。
 :::
 
-
-
 ## 設定 {#configuration}
 
 Timescale のハイパーテーブル自体には、挿入されたデータは保存されません。代わりに、データは `_timescaledb_internal` スキーマ内にある対応する複数の「チャンク」テーブルに保存されます。ハイパーテーブルに対してクエリを実行する場合、これは問題になりません。しかし論理レプリケーション中は、ハイパーテーブルの変更ではなく、チャンクテーブルの変更を検出します。Postgres ClickPipe には、チャンクテーブルから親ハイパーテーブルへの変更を自動的に再マッピングするロジックがありますが、これには追加の手順が必要です。
@@ -72,8 +63,8 @@ Timescale のハイパーテーブル自体には、挿入されたデータは�
 ```sql
   CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- 必要に応じて、スキーマ全体ではなく個別のテーブルに対してのみGRANT権限を設定することもできます
-  -- ただし、ClickPipeに新しいテーブルを追加する場合は、そのテーブルに対する権限もユーザーに付与する必要があります。
+  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
+  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
 ```
@@ -85,7 +76,7 @@ Timescale のハイパーテーブル自体には、挿入されたデータは�
 2. PostgreSQL のスーパーユーザー／管理ユーザーとして、レプリケーションしたいテーブルおよびハイパーテーブルに加え、**`_timescaledb_internal` スキーマ全体を含む** publication をソースインスタンス上に作成します。ClickPipe を作成する際には、この publication を選択する必要があります。
 
 ```sql
--- ClickPipeに新しいテーブルを追加する場合は、パブリケーションにも手動で追加する必要があります。 
+-- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
   CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
 ```
 
@@ -103,12 +94,11 @@ publication を手動で作成する場合は、パイプに追加する前に�
 3. 先ほど作成したユーザーにレプリケーション権限を付与します。
 
 ```sql
--- ユーザーにレプリケーション権限を付与する
+-- Give replication permission to the USER
   ALTER USER clickpipes_user REPLICATION;
 ```
 
 これらの手順が完了すると、[ClickPipe を作成](../index.md)できるようになります。
-
 
 ## ネットワークアクセスの構成 {#configure-network-access}
 

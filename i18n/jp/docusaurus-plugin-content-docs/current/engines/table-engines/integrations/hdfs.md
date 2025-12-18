@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # HDFS テーブルエンジン {#hdfs-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -17,8 +16,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 このエンジンは、ClickHouse から [HDFS](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) 上のデータを管理できるようにすることで、[Apache Hadoop](https://en.wikipedia.org/wiki/Apache_Hadoop) エコシステムとの統合を提供します。このエンジンは [File](/engines/table-engines/special/file) エンジンや [URL](/engines/table-engines/special/url) エンジンと似ていますが、Hadoop 固有の機能を提供します。
 
 この機能は ClickHouse のエンジニアによる公式サポート対象ではなく、その品質には問題があることが知られています。問題が発生した場合は、ご自身で修正し、pull request を送信してください。
-
-
 
 ## 使用方法 {#usage}
 
@@ -66,7 +63,6 @@ SELECT * FROM hdfs_engine_table LIMIT 2
 │ two  │     2 │
 └──────┴───────┘
 ```
-
 
 ## 実装の詳細 {#implementation-details}
 
@@ -131,7 +127,6 @@ CREATE TABLE table_with_asterisk (name String, value UInt32) ENGINE = HDFS('hdfs
 
 `file000`、`file001`、...、`file999` という名前のファイルでテーブルを作成します。
 
-
 ```sql
 CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9000/big_dir/file{0..9}{0..9}{0..9}', 'CSV')
 ```
@@ -141,14 +136,14 @@ CREATE TABLE big_table (name String, value UInt32) ENGINE = HDFS('hdfs://hdfs1:9
 GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定ファイルを用いた拡張的な設定が可能です。使用できる設定キーは 2 種類あり、グローバル (`hdfs`) とユーザーレベル (`hdfs_*`) です。最初にグローバル設定が適用され、その後に（存在する場合は）ユーザーレベルの設定が適用されます。
 
 ```xml
-<!-- HDFSエンジンタイプのグローバル設定オプション -->
+<!-- Global configuration options for HDFS engine type -->
 <hdfs>
   <hadoop_kerberos_keytab>/tmp/keytab/clickhouse.keytab</hadoop_kerberos_keytab>
   <hadoop_kerberos_principal>clickuser@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
   <hadoop_security_authentication>kerberos</hadoop_security_authentication>
 </hdfs>
 
-<!-- ユーザー"root"固有の設定 -->
+<!-- Configuration specific for user "root" -->
 <hdfs_root>
   <hadoop_kerberos_principal>root@TEST.CLICKHOUSE.TECH</hadoop_kerberos_principal>
 </hdfs_root>
@@ -157,7 +152,6 @@ GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定フ
 ### 設定オプション {#configuration-options}
 
 #### libhdfs3 がサポートする項目 {#supported-by-libhdfs3}
-
 
 | **parameter**                                         | **default value**       |
 | -                                                  | -                    |
@@ -216,8 +210,6 @@ GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定フ
 ### 制限事項 {#limitations}
 * `hadoop_security_kerberos_ticket_cache_path` と `libhdfs3_conf` は、ユーザー単位ではなくグローバル設定としてのみ利用できます
 
-
-
 ## Kerberos サポート {#kerberos-support}
 
 `hadoop_security_authentication` パラメータの値が `kerberos` の場合、ClickHouse は Kerberos を介して認証を行います。
@@ -225,8 +217,6 @@ GraphiteMergeTree と同様に、HDFS エンジンでは ClickHouse の設定フ
 libhdfs3 の制限により、古典的な方式のみがサポートされており、
 データノードとの通信は SASL によって保護されません（`HADOOP_SECURE_DN_USER` はその種の
 セキュリティ方式の信頼できる指標です）。参考として `tests/integration/test_storage_kerberized_hdfs/hdfs_configs/bootstrap.sh` を使用してください。
-
-
 
 `hadoop_kerberos_keytab`、`hadoop_kerberos_principal` または `hadoop_security_kerberos_ticket_cache_path` が指定されている場合、Kerberos 認証が使用されます。この場合、`hadoop_kerberos_keytab` と `hadoop_kerberos_principal` は必須となります。
 
@@ -245,15 +235,12 @@ libhdfs3 は HDFS NameNode の HA をサポートします。
 
 * 次に、HDFS URI 内の名前ノードのアドレスとして、`hdfs-site.xml` の `dfs.nameservices` タグの値を使用します。たとえば、`hdfs://appadmin@192.168.101.11:8020/abc/` を `hdfs://appadmin@my_nameservice/abc/` に置き換えます。
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` となります。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` となります。
-
-
 
 ## ストレージ設定 {#storage-settings}
 

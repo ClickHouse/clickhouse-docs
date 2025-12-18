@@ -6,15 +6,11 @@ description: 'Описание утилиты clickhouse-static-files-disk-uploa
 doc_type: 'guide'
 ---
 
-
-
 # clickhouse-static-files-disk-uploader {#clickhouse-static-files-disk-uploader}
 
 Формирует каталог данных, содержащий метаданные для указанной таблицы ClickHouse. Эти метаданные можно использовать для создания таблицы ClickHouse на другом сервере с набором данных только для чтения, размещённым на диске `web`.
 
-Не используйте этот инструмент для миграции данных. Вместо этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup).
-
-
+Не используйте этот инструмент для миграции данных. Вместо этого используйте [команды `BACKUP` и `RESTORE`](/operations/backup/overview).
 
 ## Использование {#usage}
 
@@ -33,8 +29,6 @@ $ clickhouse static-files-disk-uploader [args]
 |`--link`|Создаёт символьные ссылки вместо копирования файлов в выходной каталог|
 |`--url [url]`|URL веб-сервера для режима `test`|
 |`--output-dir [dir]`|Каталог для вывода файлов в режиме `non-test`|
-
-
 
 ## Получение пути к метаданным для указанной таблицы {#retrieve-metadata-path-for-the-specified-table}
 
@@ -72,7 +66,7 @@ $ clickhouse static-files-disk-uploader --output-dir output --metadata-path ./st
 Если операция прошла успешно, вы увидите следующее сообщение, а в каталоге `output` будут находиться метаданные указанной таблицы:
 
 ```repsonse
-Путь к данным: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", целевой путь: "output"
+Data path: "/Users/john/store/bcc/bccc1cfd-d43d-43cf-a5b6-1cda8178f1ee", destination path: "output"
 ```
 
 

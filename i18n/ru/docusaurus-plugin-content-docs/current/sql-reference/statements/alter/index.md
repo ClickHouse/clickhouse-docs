@@ -7,8 +7,6 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-
-
 # ALTER {#alter}
 
 Большинство запросов `ALTER TABLE` изменяют настройки таблицы или данные:
@@ -51,8 +49,6 @@ doc_type: 'reference'
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | Добавляет, изменяет или удаляет комментарии к таблице, независимо от того, были ли они заданы ранее. |
 | [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | Изменяет [именованные коллекции](/operations/named-collections.md).                      |
 
-
-
 ## Мутации {#mutations}
 
 `ALTER`-запросы, предназначенные для изменения данных таблицы, реализованы с помощью механизма, называемого «мутациями», в первую очередь [ALTER TABLE ... DELETE](/sql-reference/statements/alter/delete.md) и [ALTER TABLE ... UPDATE](/sql-reference/statements/alter/update.md). Это асинхронные фоновые процессы, подобные слияниям в таблицах [MergeTree](/engines/table-engines/mergetree-family/index.md), которые создают новые «мутированные» версии частей данных.
@@ -65,8 +61,6 @@ doc_type: 'reference'
 Запрос мутации завершается немедленно после добавления записи о мутации (для реплицируемых таблиц — в ZooKeeper, для нереплицируемых — в файловую систему). Сама мутация выполняется асинхронно с использованием системных настроек профиля. Для отслеживания прогресса мутаций можно использовать таблицу [`system.mutations`](/operations/system-tables/mutations). Мутация, которая была успешно отправлена, продолжит выполняться даже при перезапуске серверов ClickHouse. Откатить мутацию после отправки невозможно, но если по какой-то причине мутация «зависла», ее можно отменить с помощью запроса [`KILL MUTATION`](/sql-reference/statements/kill.md/#kill-mutation).
 
 Записи о завершенных мутациях не удаляются сразу (количество сохраняемых записей определяется параметром движка хранения `finished_mutations_to_keep`). Более старые записи о мутациях удаляются.
-
-
 
 ## Синхронность запросов ALTER {#synchronicity-of-alter-queries}
 
@@ -81,8 +75,6 @@ doc_type: 'reference'
 :::note
 Для всех запросов `ALTER`, если `alter_sync = 2` и некоторые реплики неактивны дольше времени, указанного в настройке `replication_wait_for_inactive_replica_timeout`, будет сгенерировано исключение `UNFINISHED`.
 :::
-
-
 
 ## Связанные материалы {#related-content}
 

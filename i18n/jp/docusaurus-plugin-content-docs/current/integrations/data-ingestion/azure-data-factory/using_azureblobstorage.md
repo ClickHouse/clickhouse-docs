@@ -11,7 +11,6 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
 # ClickHouse の azureBlobStorage テーブル関数の使用 {#using-azureBlobStorage-function}
 
 これは、Azure Blob Storage または Azure Data Lake Storage から ClickHouse へ
@@ -32,8 +31,6 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 [`azureBlobStorage` テーブル関数のドキュメントページ](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 を参照してください。
 
-
-
 ## Azure Blob Storage のアクセスキーの取得 {#acquiring-azure-blob-storage-access-keys}
 
 ClickHouse が Azure Blob Storage にアクセスできるようにするには、アクセスキー付きの接続文字列が必要です。
@@ -48,8 +45,6 @@ ClickHouse が Azure Blob Storage にアクセスできるようにするには�
 
 4. 接続文字列をコピーします。この接続文字列を azureBlobStorage テーブル関数のパラメータとして使用します。
 
-
-
 ## Azure Blob Storage 上のデータをクエリする {#querying-the-data-from-azure-blob-storage}
 
 お使いの ClickHouse クエリコンソールを開きます。これは ClickHouse Cloud
@@ -63,7 +58,7 @@ ClickHouse クエリコンソールの両方を準備できたら、Azure Blob S
 
 ```sql
 SELECT * FROM azureBlobStorage(
-    '<接続文字列>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
@@ -75,14 +70,13 @@ SELECT * FROM azureBlobStorage(
 ```sql
 INSERT INTO my_table
 SELECT * FROM azureBlobStorage(
-    '<接続文字列を入力>',
+    '<YOUR CONNECTION STRING>',
     'data-container',
     '*.json',
     'JSONEachRow');
 ```
 
 これにより、中間の ETL ステップを挟むことなく、外部データを効率的に ClickHouse に取り込めます。
-
 
 ## Environmental Sensors データセットを使った簡単な例 {#simple-example-using-the-environmental-sensors-dataset}
 
@@ -119,18 +113,19 @@ SETTINGS format_csv_delimiter = ';'
 
 7. テーブルにデータを読み込むには、元のデータセットで使用されている
    スキーマの簡略版を作成します:
-   ```sql
-   CREATE TABLE sensors
-   (
-       sensor_id UInt16,
-       lat Float32,
-       lon Float32,
-       timestamp DateTime,
-       temperature Float32
-   )
-   ENGINE = MergeTree
-   ORDER BY (timestamp, sensor_id);
-   ```
+
+```sql
+CREATE TABLE sensors
+(
+    sensor_id UInt16,
+    lat Float32,
+    lon Float32,
+    timestamp DateTime,
+    temperature Float32
+)
+ENGINE = MergeTree
+ORDER BY (timestamp, sensor_id);
+```
 
 :::info
 Azure Blob Storage のような外部ソースに対してクエリを実行する際の構成オプションや
@@ -139,20 +134,19 @@ Azure Blob Storage のような外部ソースに対してクエリを実行す�
 :::
 
 8. 次に、Azure Blob Storage から sensors テーブルにデータを挿入します:
-   ```sql
-   INSERT INTO sensors
-   SELECT sensor_id, lat, lon, timestamp, temperature
-   FROM azureBlobStorage(
-       '<YOUR CONNECTION STRING>', 
-       'sensors',
-       '2019-06_bmp180.csv.zst', 
-       'CSVWithNames')
-   SETTINGS format_csv_delimiter = ';'
-   ```
+```sql
+INSERT INTO sensors
+SELECT sensor_id, lat, lon, timestamp, temperature
+FROM azureBlobStorage(
+    '<YOUR CONNECTION STRING>', 
+    'sensors',
+    '2019-06_bmp180.csv.zst', 
+    'CSVWithNames')
+SETTINGS format_csv_delimiter = ';'
+```
 
 `sensors` テーブルには、Azure Blob Storage に保存されている `2019-06_bmp180.csv.zst`
 ファイルのデータが取り込まれました。
-
 
 ## 追加リソース {#additional-resources}
 

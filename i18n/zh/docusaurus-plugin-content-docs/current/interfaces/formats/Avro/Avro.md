@@ -15,7 +15,6 @@ import DataTypeMapping from './_snippets/data-types-matching.md'
 | -- | -- | -- |
 | ✔  | ✔  |    |
 
-
 ## 描述 {#description}
 
 [Apache Avro](https://avro.apache.org/) 是一种面向行的序列化格式，使用二进制编码，实现高效的数据处理。`Avro` 格式支持读写 [Avro 数据文件](https://avro.apache.org/docs/++version++/specification/#object-container-files)。此格式要求消息是自描述的，并在其中内嵌 schema。如果您将 Avro 与 schema registry 结合使用，请参阅 [`AvroConfluent`](./AvroConfluent.md) 格式。
@@ -50,7 +49,7 @@ $ cat file.avro | clickhouse-client --query="INSERT INTO {some_table} FORMAT Avr
 为了在表列与 Avro 模式中的字段之间建立对应关系，ClickHouse 会比较它们的名称。
 此比较区分大小写，且未使用的字段会被跳过。
 
-ClickHouse 表列的数据类型可以与插入的 Avro 数据中对应字段的数据类型不同。在插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据按照对应的列类型进行[类型转换（cast）](/sql-reference/functions/type-conversion-functions#cast)。
+ClickHouse 表列的数据类型可以与插入的 Avro 数据中对应字段的数据类型不同。在插入数据时，ClickHouse 会根据上表解释数据类型，然后将数据按照对应的列类型进行[类型转换（cast）](/sql-reference/functions/type-conversion-functions#CAST)。
 
 在导入数据时，如果在模式中找不到某个字段，并且已启用设置 [`input_format_avro_allow_missing_fields`](/operations/settings/settings-formats.md/#input_format_avro_allow_missing_fields)，则会使用默认值，而不是抛出错误。
 
@@ -69,7 +68,6 @@ $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Avro" > file.avro
 * 后续字符只能包含 `[A-Za-z0-9_]`
 
 Avro 文件的输出压缩方式和同步间隔可以分别通过 [`output_format_avro_codec`](/operations/settings/settings-formats.md/#output_format_avro_codec) 和 [`output_format_avro_sync_interval`](/operations/settings/settings-formats.md/#output_format_avro_sync_interval) 设置进行配置。
-
 
 ### 推断 Avro 模式 {#inferring-the-avro-schema}
 

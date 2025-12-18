@@ -7,13 +7,9 @@ title: 'Оператор REVOKE'
 doc_type: 'reference'
 ---
 
-
-
 # Оператор REVOKE {#revoke-statement}
 
 Отзывает привилегии у пользователей или ролей.
-
-
 
 ## Синтаксис {#syntax}
 
@@ -26,9 +22,8 @@ REVOKE [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.t
 **Отзыв ролей у пользователей**
 
 ```sql
-OTMENITЬ [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | role | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user_name | role_name | CURRENT_USER} [,...]
+REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | role | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user_name | role_name | CURRENT_USER} [,...]
 ```
-
 
 ## Описание {#description}
 
@@ -37,8 +32,6 @@ OTMENITЬ [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | 
 ### Частичный отзыв привилегий {#partial-revokes}
 
 Вы можете отозвать часть привилегии. Например, если у пользователя есть привилегия `SELECT *.*`, вы можете отозвать у него привилегию на чтение данных из некоторой таблицы или базы данных.
-
-
 
 ## Примеры {#examples}
 

@@ -44,7 +44,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompactColumns;
 ```
 
-
 ### データの読み込み {#reading-data}
 
 `JSONCompactColumns` 形式を使用してデータを読み込みます。
@@ -69,6 +68,5 @@ FORMAT JSONCompactColumns
 ```
 
 ブロック内に存在しないカラムにはデフォルト値が補われます（ここでは [`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) 設定を使用できます）
-
 
 ## フォーマットの設定 {#format-settings}

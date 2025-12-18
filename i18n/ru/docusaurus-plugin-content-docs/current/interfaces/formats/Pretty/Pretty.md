@@ -15,7 +15,6 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ---- | ----- | --------- |
 | ✗    | ✔     |           |
 
-
 ## Описание {#description}
 
 Формат `Pretty` выводит данные в виде таблиц с использованием символов Unicode, 
@@ -25,8 +24,6 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 Это необходимо для того, чтобы блоки можно было выводить без буферизации результатов (буферизация потребовалась бы для предварительного расчёта видимой ширины всех значений).
 
 [NULL](/sql-reference/syntax.md) выводится как `ᴺᵁᴸᴸ`.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -45,12 +42,12 @@ SELECT * FROM t_null
 Строки не экранируются ни в одном из форматов семейства `Pretty`. Следующий пример показан для формата [`PrettyCompact`](./PrettyCompact.md):
 
 ```sql title="Query"
-SELECT 'Строка с \'кавычками\' и символом табуляции \t' AS Escaping_test
+SELECT 'String with \'quotes\' and \t character' AS Escaping_test
 ```
 
 ```response title="Response"
 ┌─Escaping_test────────────────────────┐
-│ Строка с 'кавычками' и      символом │
+│ String with 'quotes' and      character │
 └──────────────────────────────────────┘
 ```
 
@@ -85,18 +82,17 @@ FORMAT PrettyCompact
 │ 2014-03-23 │ 1046491 │
 └────────────┴─────────┘
 
-Итого:
+Totals:
 ┌──EventDate─┬───────c─┐
 │ 1970-01-01 │ 8873898 │
 └────────────┴─────────┘
 
-Минимальные и максимальные значения:
+Extremes:
 ┌──EventDate─┬───────c─┐
 │ 2014-03-17 │ 1031592 │
 │ 2014-03-23 │ 1406958 │
 └────────────┴─────────┘
 ```
-
 
 ## Параметры форматирования {#format-settings}
 

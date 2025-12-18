@@ -8,8 +8,6 @@ description: '介绍 ClickHouse Cloud 中的访问控制和账户管理'
 doc_type: 'guide'
 ---
 
-
-
 # 在 ClickHouse 中创建用户和角色 {#creating-users-and-roles-in-clickhouse}
 
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
@@ -40,8 +38,6 @@ ClickHouse 访问控制实体：
 :::
 
 要查看所有用户、角色、配置文件等以及它们被授予的所有权限，请使用 [`SHOW ACCESS`](/sql-reference/statements/show#show-access) 语句。
-
-
 
 ## 概览 {#access-control-usage}
 
@@ -111,9 +107,7 @@ ClickHouse 访问控制实体：
 
 可以通过 [GRANT](/sql-reference/statements/grant.md) 查询向角色授予权限。要从角色撤销权限，ClickHouse 提供 [REVOKE](/sql-reference/statements/revoke.md) 查询。
 
-#### 行级策略 {#row-policy-management}
-
-
+#### 行策略 {#row-policy-management}
 
 行策略是一种过滤器，用于定义某个用户或角色可以访问哪些行。行策略包含针对某个特定表的过滤条件，以及应使用此行策略的角色和/或用户列表。
 
@@ -166,8 +160,6 @@ ClickHouse 访问控制实体：
 
     默认情况下，基于 SQL 的访问控制和账户管理对所有用户均处于禁用状态。你需要在 `users.xml` 配置文件中至少配置一个用户，并将 [`access_management`](/operations/settings/settings-users.md#access_management-user-setting)、`named_collection_control`、`show_named_collections` 和 `show_named_collections_secrets` 设置的值设为 1。
 
-
-
 ## 定义 SQL 用户和角色 {#defining-sql-users-and-roles}
 
 :::tip
@@ -198,18 +190,17 @@ ClickHouse 访问控制实体：
     ```sql
     clickhouse-client --user default --password <password>
     ```
+
 ### 定义用户 {#defining-users}
 
 1. 创建一个 SQL 管理员账户：
     ```sql
     CREATE USER clickhouse_admin IDENTIFIED BY 'password';
     ```
-2. 授予新用户完整的管理权限：
+2. 授予新用户完整的管理权限
     ```sql
     GRANT ALL ON *.* TO clickhouse_admin WITH GRANT OPTION;
     ```
-
-
 
 ## ALTER 权限 {#alter-permissions}
 
@@ -222,7 +213,7 @@ ClickHouse 访问控制实体：
 1. 使用管理员用户创建一个示例用户
 
 ```sql
-创建用户 my_user，密码为 'password';
+CREATE USER my_user IDENTIFIED BY 'password';
 ```
 
 2. 创建示例数据库
@@ -248,7 +239,7 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 例如：
 
 ```sql
-授予 ALTER 权限 于 my_db.* 并允许转授
+  GRANT ALTER ON my_db.* WITH GRANT OPTION
 ```
 
 要执行 `GRANT` 或 `REVOKE` 操作来授予或收回权限，用户自身必须先拥有这些权限。
@@ -259,7 +250,7 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 `ALTER` 的层级结构：
 
 ```response
-├── ALTER (仅适用于表和视图)/
+├── ALTER (only for table and view)/
 │   ├── ALTER TABLE/
 │   │   ├── ALTER UPDATE
 │   │   ├── ALTER DELETE
@@ -299,7 +290,7 @@ CREATE USER my_alter_admin IDENTIFIED BY 'password';
 
 1. 为用户或角色授予 `ALTER` 权限
 
-使用 `GRANT ALTER on *.* TO my_user` 只会对顶级的 `ALTER TABLE` 和 `ALTER VIEW` 生效，其他 `ALTER` 语句必须分别单独授予或撤销。
+使用 `GRANT ALTER on *.* TO my_user` 只会对顶级的 `ALTER TABLE` 和 `ALTER VIEW` 生效，其他 `ALTER` 语句必须逐一授予或撤销。
 
 例如，授予基本的 `ALTER` 权限：
 
@@ -316,24 +307,24 @@ SHOW GRANTS FOR  my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-查询 ID: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
+Query id: 706befbc-525e-4ec1-a1a2-ba2508cc09e3
 
 ┌─GRANTS FOR my_user───────────────────────────────────────────┐
 │ GRANT ALTER TABLE, ALTER VIEW ON my_db.my_table TO my_user   │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-这将授予上面示例中 `ALTER TABLE` 和 `ALTER VIEW` 下的所有权限，但是不会授予某些其他 `ALTER` 权限，例如 `ALTER ROW POLICY`（参见前面的权限层级结构，可以看到 `ALTER ROW POLICY` 并不是 `ALTER TABLE` 或 `ALTER VIEW` 的子权限）。这些权限必须被显式授予或撤销。
+这将授予上面示例中 `ALTER TABLE` 和 `ALTER VIEW` 下的所有权限，但是不会授予某些其他 `ALTER` 权限，例如 `ALTER ROW POLICY`（参见前面的权限层级结构，可以看到 `ALTER ROW POLICY` 并不是 `ALTER TABLE` 或 `ALTER VIEW` 的子权限）。这些权限必须显式授予或撤销。
 
 如果只需要 `ALTER` 权限的一个子集，则可以分别授予每一项；如果该权限还有子权限，这些子权限也会被自动授予。
 
 例如：
 
 ```sql
-授予 my_user 在 my_db.my_table 上修改列的权限;
+GRANT ALTER COLUMN ON my_db.my_table TO my_user;
 ```
 
-权限将配置为：
+权限将被设置为：
 
 ```sql
 SHOW GRANTS FOR my_user;
@@ -349,7 +340,7 @@ Query id: 47b3d03f-46ac-4385-91ec-41119010e4e2
 │ GRANT ALTER COLUMN ON default.my_table TO my_user │
 └───────────────────────────────────────────────────┘
 
-1 行结果，耗时 0.004 秒。
+1 row in set. Elapsed: 0.004 sec.
 ```
 
 这还包括以下子权限：
@@ -363,16 +354,16 @@ ALTER CLEAR COLUMN
 ALTER RENAME COLUMN
 ```
 
-2. 从用户和角色撤销 `ALTER` 权限
+2. 撤销用户和角色的 `ALTER` 权限
 
 `REVOKE` 语句的行为与 `GRANT` 语句类似。
 
-如果某个用户/角色被授予了某个子权限，你可以直接撤销该子权限，也可以撤销其所继承的上级权限。
+如果某个用户/角色被授予了某个子权限,你可以直接撤销该子权限,也可以撤销其所继承的上级权限。
 
-例如，如果该用户被授予了 `ALTER ADD COLUMN`
+例如,如果该用户被授予了 `ALTER ADD COLUMN`
 
 ```sql
-授予 my_user 在 my_db.my_table 上执行 ALTER ADD COLUMN 的权限;
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```
 
 ```response
@@ -386,23 +377,23 @@ Ok.
 ```
 
 ```sql
-显示 my_user 的授权；
+SHOW GRANTS FOR my_user;
 ```
 
 ```response
-显示 my_user 的权限
+SHOW GRANTS FOR my_user
 
-查询 ID：27791226-a18f-46c8-b2b4-a9e64baeb683
+Query id: 27791226-a18f-46c8-b2b4-a9e64baeb683
 
-┌─my_user 的权限──────────────────────────────────────┐
-│ 授予 my_user 在 my_db.my_table 上的 ALTER ADD COLUMN 权限 │
+┌─GRANTS FOR my_user──────────────────────────────────┐
+│ GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user │
 └─────────────────────────────────────────────────────┘
 ```
 
 可以单独撤销某项权限：
 
 ```sql
-撤销 my_user 在 my_db.my_table 上的 ALTER 和 ADD COLUMN 权限；
+REVOKE ALTER ADD COLUMN ON my_db.my_table FROM my_user;
 ```
 
 也可以在任意上层级别撤销（撤销该 COLUMN 的所有子权限）：
@@ -416,9 +407,9 @@ REVOKE ALTER COLUMN ON my_db.my_table FROM my_user
 
 Query id: b882ba1b-90fb-45b9-b10f-3cda251e2ccc
 
-完成。
+Ok.
 
-0 行。耗时：0.002 秒。
+0 rows in set. Elapsed: 0.002 sec.
 ```
 
 ```sql
@@ -428,22 +419,22 @@ SHOW GRANTS FOR my_user;
 ```response
 SHOW GRANTS FOR my_user
 
-查询 ID: e7d341de-de65-490b-852c-fa8bb8991174
+Query id: e7d341de-de65-490b-852c-fa8bb8991174
 
-完成。
+Ok.
 
-结果集中有 0 行。耗时：0.003 秒。
+0 rows in set. Elapsed: 0.003 sec.
 ```
 
 **补充说明**
 
-这些权限必须由一个用户来授予，该用户不仅具有 `WITH GRANT OPTION`，而且自身也拥有这些权限。
+权限的授予必须由同时具备 `WITH GRANT OPTION` 和相应权限本身的用户来执行。
 
 1. 要为某个管理员用户授予相应的权限，并允许其管理一组权限，
    下面是一个示例：
 
 ```sql
-授予 my_alter_admin 在 my_db.my_table 上的 SELECT 和 ALTER COLUMN 权限，并具有授权选项；
+GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```
 
 现在用户可以授予或撤销 `ALTER COLUMN` 及其所有子权限。
@@ -453,7 +444,7 @@ SHOW GRANTS FOR my_user
 1. 授予 `SELECT` 权限
 
 ```sql
- 授予 my_user 在 my_db.my_table 上的 SELECT 权限；
+ GRANT SELECT ON my_db.my_table TO my_user;
 ```
 
 2. 为该用户授予 ADD COLUMN 权限
@@ -462,10 +453,10 @@ SHOW GRANTS FOR my_user
 GRANT ADD COLUMN ON my_db.my_table TO my_user;
 ```
 
-3. 使用受限权限用户登录
+3. 使用受限权限的用户登录
 
 ```bash
-clickhouse-client --user my_user --password password --port 9000 --host <你的 ClickHouse 主机地址>
+clickhouse-client --user my_user --password password --port 9000 --host <your_clickhouse_host>
 ```
 
 4. 测试添加一列
@@ -492,22 +483,20 @@ DESCRIBE my_db.my_table;
 ```response
 DESCRIBE TABLE my_db.my_table
 
-查询 ID: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
-```
+Query id: ab9cb2d0-5b1a-42e1-bc9c-c7ff351cb272
 
-
-┌─名称────┬─类型───┬─默认&#95;类型─┬─默认&#95;表达式─┬─注释─┬─编解码&#95;表达式─┬─TTL&#95;表达式─┐
+┌─name────┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ id      │ UInt64 │              │                    │         │                  │                │
 │ column1 │ String │              │                    │         │                  │                │
 │ column2 │ String │              │                    │         │                  │                │
 └─────────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
 
-````
+4. 测试删除一列
 
-4. 测试删除列
 ```sql
 ALTER TABLE my_db.my_table DROP COLUMN column2;
-````
+```
 
 ```response
 ALTER TABLE my_db.my_table
@@ -517,17 +506,17 @@ Query id: 50ad5f6b-f64b-4c96-8f5f-ace87cea6c47
 
 0 rows in set. Elapsed: 0.004 sec.
 
-从服务器收到异常 (version 22.5.1):
-Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: 权限不足。执行此查询需要授予 ALTER DROP COLUMN(column2) ON my_db.my_table 权限。(ACCESS_DENIED)
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```
 
-5. 通过授予权限测试 ALTER ADMIN
+5. 通过授予权限测试 alter admin 用户
 
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
 ```
 
-6. 使用 alter admin 用户登录
+6. 使用 ALTER ADMIN 用户登录
 
 ```bash
 clickhouse-client --user my_alter_admin --password password --port 9000 --host <my_clickhouse_host>
@@ -536,7 +525,7 @@ clickhouse-client --user my_alter_admin --password password --port 9000 --host <
 7. 授予子权限
 
 ```sql
-授予 my_user 在 my_db.my_table 上的 ALTER 和 ADD COLUMN 权限；
+GRANT ALTER ADD COLUMN ON my_db.my_table TO my_user;
 ```
 
 ```response
@@ -547,7 +536,7 @@ Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 Ok.
 ```
 
-8. 测试尝试为 alter 管理员用户授予一个其自身不具备、且并非该管理员用户现有授权子权限的权限。
+8. 测试：尝试为 alter 管理员用户授予一个其自身不具备、且并非其现有授权子权限的权限。
 
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;
@@ -556,13 +545,13 @@ GRANT ALTER UPDATE ON my_db.my_table TO my_user;
 ```response
 GRANT ALTER UPDATE ON my_db.my_table TO my_user
 
-查询 ID: 191690dc-55a6-4625-8fee-abc3d14a5545
+Query id: 191690dc-55a6-4625-8fee-abc3d14a5545
 
-返回 0 行。用时:0.004 秒。
+0 rows in set. Elapsed: 0.004 sec.
 
-服务器返回异常(版本 22.5.1):
-代码:497. DB::Exception: 来自 chnode1.marsnet.local:9440。DB::Exception: my_alter_admin: 权限不足。执行此查询需要具有 ALTER UPDATE ON my_db.my_table WITH GRANT OPTION 授权。(ACCESS_DENIED)
+Received exception from server (version 22.5.1):
+Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_alter_admin: Not enough privileges. To execute this query it's necessary to have grant ALTER UPDATE ON my_db.my_table WITH GRANT OPTION. (ACCESS_DENIED)
 ```
 
 **摘要**
-针对表和视图的 `ALTER`，其权限具有层级关系，但对其他 `ALTER` 语句则不适用。权限既可以按细粒度级别进行设置，也可以通过权限分组来统一设置，并且可以以类似方式撤销。执行授权或撤销操作的用户必须具有 `WITH GRANT OPTION`，才能为用户（包括其自身）设置权限，并且自身必须已经拥有相应的权限。如果执行操作的用户本身不具备相应的 grant option 权限，则无法撤销自己的权限。
+针对表和视图的 `ALTER`，其权限具有层级关系，但对其他 `ALTER` 语句则不适用。权限既可以按细粒度级别进行设置，也可以通过权限分组来统一设置，并且可以以类似方式撤销。执行授权或撤销操作的用户必须具有 `WITH GRANT OPTION`，才能为用户（包括其自身）设置权限，并且自身必须已经拥有相应的权限。如果执行操作的用户本身不具备 `WITH GRANT OPTION` 权限，则无法撤销自己的权限。

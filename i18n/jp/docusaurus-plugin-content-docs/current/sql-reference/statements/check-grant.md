@@ -9,18 +9,15 @@ doc_type: 'reference'
 
 `CHECK GRANT` クエリは、現在のユーザーまたはロールに特定の権限が付与されているかどうかを確認するために使用します。
 
-
-
 ## 構文 {#syntax}
 
 クエリの基本構文は以下のとおりです。
 
 ```sql
-CHECK GRANT 権限[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*}
+CHECK GRANT privilege[(column_name [,...])] [,...] ON {db.table[*]|db[*].*|*.*|table[*]|*}
 ```
 
 * `privilege` — 権限のタイプ。
-
 
 ## 例 {#examples}
 
@@ -49,7 +46,6 @@ CHECK GRANT SELECT(col2) ON table_2;
 │      0 │
 └────────┘
 ```
-
 
 ## ワイルドカード {#wildcard}
 権限を指定する際には、テーブル名やデータベース名の代わりにアスタリスク（`*`）を使用できます。ワイルドカードのルールについては [WILDCARD GRANTS](../../sql-reference/statements/grant.md#wildcard-grants) を参照してください。

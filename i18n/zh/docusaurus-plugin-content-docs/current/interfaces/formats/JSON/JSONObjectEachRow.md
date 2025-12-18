@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 在这种格式中，所有数据都表示为单个 JSON 对象，其中每一行对应该对象的一个独立字段，类似于 [`JSONEachRow`](./JSONEachRow.md) 格式。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -133,7 +129,6 @@ CREATE TABLE IF NOT EXISTS example_table
 
 以 `UserActivity` 表为例：
 
-
 ```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
 │ 4324182021466249494 │         5 │      146 │   -1 │
@@ -198,7 +193,7 @@ INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n": {"s": ["abc", "def"], 
 ```
 
 ```response title="Response"
-代码：117. DB::Exception：解析 JSONEachRow 格式时发现未知字段：n：（第 1 行）
+Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: n: (at row 1)
 ```
 
 ```sql title="Query"
@@ -213,10 +208,7 @@ SELECT * FROM json_each_row_nested
 └───────────────┴────────┘
 ```
 
-
 ## 格式设置 {#format-settings}
-
-
 
 | 配置                                                                                                                                                                           | 说明                                                                                                    | 默认       | 注意事项                                                                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -34,7 +34,6 @@ Nessie — это транзакционный каталог с открыты�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## Локальная среда разработки {#local-development-setup}
 
 Для локальной разработки и тестирования вы можете использовать контейнеризованную среду Nessie. Такой подход идеально подходит для обучения, прототипирования и разработки.
@@ -104,13 +103,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: '0:0'  # Обеспечивает права root
+    user: '0:0'  # Ensures root permissions
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Монтирование каталога с набором данных
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
     networks:
       - iceberg_net
     environment:
@@ -148,7 +147,6 @@ docker-compose logs -f
 Конфигурация Nessie использует хранилище версий в памяти и требует, чтобы сначала в таблицы Iceberg были загружены примеры данных. Перед выполнением запросов к этим таблицам через ClickHouse убедитесь, что в среде они уже созданы и заполнены.
 :::
 
-
 ### Подключение к локальному каталогу Nessie {#connecting-to-local-nessie-catalog}
 
 Подключитесь к контейнеру ClickHouse:
@@ -166,7 +164,6 @@ CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
-
 
 ## Запросы к таблицам каталога Nessie с помощью ClickHouse {#querying-nessie-catalog-tables-using-clickhouse}
 
@@ -250,7 +247,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://localhost:9002/my-bucket/default/taxis/', 'admin', '[HIDDEN]')      │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Загрузка данных из вашего хранилища Data Lake в ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

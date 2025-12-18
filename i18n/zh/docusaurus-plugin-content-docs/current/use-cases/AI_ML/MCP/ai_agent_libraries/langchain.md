@@ -32,22 +32,22 @@ doc_type: '指南'
   运行以下命令以安装所需的库：
 
   ```python
-  pip install -q --upgrade pip
-  pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
-  ```
+pip install -q --upgrade pip
+pip install -q langchain-mcp-adapters langgraph "langchain[anthropic]"
+```
 
   ## 设置凭据
 
   接下来,您需要提供 Anthropic API 密钥:
 
   ```python
-  import os, getpass
-  os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
-  ```
+import os, getpass
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
+```
 
   ```response title="Response"
-  输入 Anthropic API 密钥：········
-  ```
+Enter Anthropic API Key: ········
+```
 
   :::note 使用其他 LLM 提供商
   如果您没有 Anthropic API 密钥且希望使用其他 LLM 提供商,
@@ -59,26 +59,26 @@ doc_type: '指南'
   现在配置 ClickHouse MCP Server 以指向 ClickHouse SQL 演练场:
 
   ```python
-  from mcp import ClientSession, StdioServerParameters
-  from mcp.client.stdio import stdio_client
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
 
-  server_params = StdioServerParameters(
-      command="uv",
-      args=[
-          "run",
-          "--with", "mcp-clickhouse",
-          "--python", "3.13",
-          "mcp-clickhouse"
-      ],
-      env={
-          "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
-          "CLICKHOUSE_PORT": "8443",
-          "CLICKHOUSE_USER": "demo",
-          "CLICKHOUSE_PASSWORD": "",
-          "CLICKHOUSE_SECURE": "true"
-      }
-  )
-  ```
+server_params = StdioServerParameters(
+    command="uv",
+    args=[
+        "run",
+        "--with", "mcp-clickhouse",
+        "--python", "3.13",
+        "mcp-clickhouse"
+    ],
+    env={
+        "CLICKHOUSE_HOST": "sql-clickhouse.clickhouse.com",
+        "CLICKHOUSE_PORT": "8443",
+        "CLICKHOUSE_USER": "demo",
+        "CLICKHOUSE_PASSWORD": "",
+        "CLICKHOUSE_SECURE": "true"
+    }
+)
+```
 
   ## 配置流处理器
 
@@ -87,98 +87,98 @@ doc_type: '指南'
   配置流式输出的处理器以便更易于消费:
 
   ```python
-  class UltraCleanStreamHandler:
-      def __init__(self):
-          self.buffer = ""
-          self.in_text_generation = False
-          self.last_was_tool = False
-          
-      def handle_chunk(self, chunk):
-          event = chunk.get("event", "")
-          
-          if event == "on_chat_model_stream":
-              data = chunk.get("data", {})
-              chunk_data = data.get("chunk", {})
-              
-              # Only handle actual text content, skip tool invocation streams
-              if hasattr(chunk_data, 'content'):
-                  content = chunk_data.content
-                  if isinstance(content, str) and not content.startswith('{"'):
-                      # Add space after tool completion if needed
-                      if self.last_was_tool:
-                          print(" ", end="", flush=True)
-                          self.last_was_tool = False
-                      print(content, end="", flush=True)
-                      self.in_text_generation = True
-                  elif isinstance(content, list):
-                      for item in content:
-                          if (isinstance(item, dict) and 
-                              item.get('type') == 'text' and 
-                              'partial_json' not in str(item)):
-                              text = item.get('text', '')
-                              if text and not text.startswith('{"'):
-                                  # Add space after tool completion if needed
-                                  if self.last_was_tool:
-                                      print(" ", end="", flush=True)
-                                      self.last_was_tool = False
-                                  print(text, end="", flush=True)
-                                  self.in_text_generation = True
-                                  
-          elif event == "on_tool_start":
-              if self.in_text_generation:
-                  print(f"\n🔧 {chunk.get('name', 'tool')}", end="", flush=True)
-                  self.in_text_generation = False
-                  
-          elif event == "on_tool_end":
-              print(" ✅", end="", flush=True)
-              self.last_was_tool = True
-  ```
+class UltraCleanStreamHandler:
+    def __init__(self):
+        self.buffer = ""
+        self.in_text_generation = False
+        self.last_was_tool = False
+        
+    def handle_chunk(self, chunk):
+        event = chunk.get("event", "")
+        
+        if event == "on_chat_model_stream":
+            data = chunk.get("data", {})
+            chunk_data = data.get("chunk", {})
+            
+            # Only handle actual text content, skip tool invocation streams
+            if hasattr(chunk_data, 'content'):
+                content = chunk_data.content
+                if isinstance(content, str) and not content.startswith('{"'):
+                    # Add space after tool completion if needed
+                    if self.last_was_tool:
+                        print(" ", end="", flush=True)
+                        self.last_was_tool = False
+                    print(content, end="", flush=True)
+                    self.in_text_generation = True
+                elif isinstance(content, list):
+                    for item in content:
+                        if (isinstance(item, dict) and 
+                            item.get('type') == 'text' and 
+                            'partial_json' not in str(item)):
+                            text = item.get('text', '')
+                            if text and not text.startswith('{"'):
+                                # Add space after tool completion if needed
+                                if self.last_was_tool:
+                                    print(" ", end="", flush=True)
+                                    self.last_was_tool = False
+                                print(text, end="", flush=True)
+                                self.in_text_generation = True
+                                
+        elif event == "on_tool_start":
+            if self.in_text_generation:
+                print(f"\n🔧 {chunk.get('name', 'tool')}", end="", flush=True)
+                self.in_text_generation = False
+                
+        elif event == "on_tool_end":
+            print(" ✅", end="", flush=True)
+            self.last_was_tool = True
+```
 
   ## 调用 Agent
 
   最后，调用您的代理并询问谁向 ClickHouse 提交了最多的代码：
 
   ```python
-  async with stdio_client(server_params) as (read, write):
-      async with ClientSession(read, write) as session:
-          await session.initialize()
-          tools = await load_mcp_tools(session)
-          agent = create_react_agent("anthropic:claude-sonnet-4-0", tools)
-          
-          handler = UltraCleanStreamHandler()        
-          async for chunk in agent.astream_events(
-              {"messages": [{"role": "user", "content": "谁向 ClickHouse 提交的代码最多?"}]}, 
-              version="v1"
-          ):
-              handler.handle_chunk(chunk)
-              
-          print("\n")
-  ```
+async with stdio_client(server_params) as (read, write):
+    async with ClientSession(read, write) as session:
+        await session.initialize()
+        tools = await load_mcp_tools(session)
+        agent = create_react_agent("anthropic:claude-sonnet-4-0", tools)
+        
+        handler = UltraCleanStreamHandler()        
+        async for chunk in agent.astream_events(
+            {"messages": [{"role": "user", "content": "Who's committed the most code to ClickHouse?"}]}, 
+            version="v1"
+        ):
+            handler.handle_chunk(chunk)
+            
+        print("\n")
+```
 
   您应该看到类似以下的响应:
 
   ```response title="Response"
-  我将通过探索可用的数据库和表来帮助您查找向 ClickHouse 提交代码最多的人员,以定位 git 提交数据。
-  🔧 list_databases ✅ 我可以看到有一个 `git` 数据库,其中可能包含 git 提交信息。让我探索该数据库中的表:
-  🔧 list_tables ✅ 完美!我可以看到 git 数据库中的 `clickhouse_commits` 表包含 ClickHouse 提交数据,共有 80,644 次提交。该表包含每次提交的信息,包括作者、添加/删除的行数、修改的文件等。让我查询此表,根据不同的指标找出提交代码最多的人员。
-  🔧 run_select_query ✅ 让我也查看一下仅添加的行数,以了解谁贡献了最多的新代码:
-  🔧 run_select_query ✅ 根据 ClickHouse git 提交数据,**Alexey Milovidov** 在多个指标上向 ClickHouse 提交了最多的代码:
+I'll help you find who has committed the most code to ClickHouse by exploring the available databases and tables to locate git commit data.
+🔧 list_databases ✅ I can see there's a `git` database which likely contains git commit information. Let me explore the tables in that database:
+🔧 list_tables ✅ Perfect! I can see the `clickhouse_commits` table in the git database contains ClickHouse commit data with 80,644 commits. This table has information about each commit including the author, lines added/deleted, files modified, etc. Let me query this table to find who has committed the most code based on different metrics.
+🔧 run_select_query ✅ Let me also look at just the lines added to see who has contributed the most new code:
+🔧 run_select_query ✅ Based on the ClickHouse git commit data, **Alexey Milovidov** has committed the most code to ClickHouse by several measures:
 
-  ## 关键统计数据:
+## Key Statistics:
 
-  1. **总变更行数最多**: Alexey Milovidov,**总共变更 1,696,929 行**(添加 853,049 行 + 删除 843,880 行)
-  2. **添加行数最多**: Alexey Milovidov,**添加 853,049 行**
-  3. **提交次数最多**: Alexey Milovidov,**15,375 次提交**
-  4. **变更文件数最多**: Alexey Milovidov,**变更 73,529 个文件**
+1. **Most Total Lines Changed**: Alexey Milovidov with **1,696,929 total lines changed** (853,049 added + 843,880 deleted)
+2. **Most Lines Added**: Alexey Milovidov with **853,049 lines added**
+3. **Most Commits**: Alexey Milovidov with **15,375 commits**
+4. **Most Files Changed**: Alexey Milovidov with **73,529 files changed**
 
-  ## 按添加行数排名的主要贡献者:
+## Top Contributors by Lines Added:
 
-  1. **Alexey Milovidov**: 添加 853,049 行(15,375 次提交)
-  2. **s-kat**: 添加 541,609 行(50 次提交) 
-  3. **Nikolai Kochetov**: 添加 219,020 行(4,218 次提交)
-  4. **alesapin**: 添加 193,566 行(4,783 次提交)
-  5. **Vitaly Baranov**: 添加 168,807 行(1,152 次提交)
+1. **Alexey Milovidov**: 853,049 lines added (15,375 commits)
+2. **s-kat**: 541,609 lines added (50 commits) 
+3. **Nikolai Kochetov**: 219,020 lines added (4,218 commits)
+4. **alesapin**: 193,566 lines added (4,783 commits)
+5. **Vitaly Baranov**: 168,807 lines added (1,152 commits)
 
-  Alexey Milovidov 显然是 ClickHouse 最多产的贡献者,这是合理的,因为他是该项目的原始创建者和首席开发人员之一。无论是在代码总量还是提交次数方面,他的贡献都远超其他人,向项目提交了近 16,000 次,添加了超过 850,000 行代码。
-  ```
+Alexey Milovidov is clearly the most prolific contributor to ClickHouse, which makes sense as he is one of the original creators and lead developers of the project. His contribution dwarfs others both in terms of total code volume and number of commits, with nearly 16,000 commits and over 850,000 lines of code added to the project.
+```
 </VerticalStepper>

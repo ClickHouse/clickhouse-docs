@@ -7,11 +7,7 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-
-
 # argMinIf {#argminif}
-
-
 
 ## Описание {#description}
 
@@ -21,8 +17,6 @@ doc_type: 'reference'
 Функция `argMinIf` полезна, когда нужно найти значение, связанное 
 с минимальным значением `val` в наборе данных, но только для строк, которые удовлетворяют определённому 
 условию.
-
-
 
 ## Пример использования {#example-usage}
 
@@ -64,7 +58,6 @@ GROUP BY product_id;
 2. │          2 │                      20.99 │
    └────────────┴────────────────────────────┘
 ```
-
 
 ## См. также {#see-also}
 - [`argMin`](/sql-reference/aggregate-functions/reference/argmin)

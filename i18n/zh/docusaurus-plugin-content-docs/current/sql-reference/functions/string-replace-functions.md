@@ -65,12 +65,12 @@ SELECT format('{1} {0} {1}', 'World', 'Hello')
 **隐式编号**
 
 ```sql title=Query
-SELECT format('{} {}', '你好', '世界')
+SELECT format('{} {}', 'Hello', 'World')
 ```
 
 ```response title=Response
 ┌─format('{} {}', 'Hello', 'World')─┐
-│ 你好，世界                         │
+│ Hello World                       │
 └───────────────────────────────────┘
 ```
 
@@ -102,12 +102,12 @@ overlay(s, replace, offset[, length])
 **基本替换**
 
 ```sql title=Query
-SELECT overlay('我的父亲来自墨西哥。', '母亲', 4) AS res;
+SELECT overlay('私の父はメキシコ出身です。', '母', 4) AS res;
 ```
 
 ```response title=Response
 ┌─res──────────────────────┐
-│ 我妈妈来自墨西哥。        │
+│ 私の母はメキシコ出身です。│
 └──────────────────────────┘
 ```
 

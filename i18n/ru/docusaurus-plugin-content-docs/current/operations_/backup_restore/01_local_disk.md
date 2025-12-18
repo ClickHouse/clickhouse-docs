@@ -11,16 +11,11 @@ import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # Резервное копирование и восстановление на локальный диск {#backup-to-a-local-disk}
-
-
 
 ## Синтаксис {#syntax}
 
 <Syntax/>
-
-
 
 ## Настройка путей назначения резервного копирования для диска {#configure-backup-destinations-for-disk}
 
@@ -104,7 +99,6 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   данные сначала скачиваются, а затем загружаются, что крайне неэффективно. В таком случае рекомендуется использовать
   синтаксис `BACKUP ... TO S3(<endpoint>)` для этого сценария.
   :::
-
 
 ## Примеры использования операций резервного копирования и восстановления на локальный диск {#usage-examples}
 
@@ -234,7 +228,6 @@ SETTINGS password='qwerty'
 
 Чтобы создать резервную копию таблицы в формате tar:
 
-
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')
 ```
@@ -287,42 +280,42 @@ SETTINGS compression_method='lzma', compression_level=3
   <summary>Setup</summary>
 
   ```sql
-  CREATE IF NOT EXISTS test_db;
-         
-  -- Создадим партиционированную таблицу
-  CREATE TABLE test_db.partitioned (
-      id UInt32,
-      data String,
-      partition_key UInt8
-  ) ENGINE = MergeTree()
-  PARTITION BY partition_key
-  ORDER BY id;
+CREATE IF NOT EXISTS test_db;
+       
+-- Create a partitioend table
+CREATE TABLE test_db.partitioned (
+    id UInt32,
+    data String,
+    partition_key UInt8
+) ENGINE = MergeTree()
+PARTITION BY partition_key
+ORDER BY id;
 
-  INSERT INTO test_db.partitioned VALUES
-  (1, 'data1', 1),
-  (2, 'data2', 2),
-  (3, 'data3', 3),
-  (4, 'data4', 4);
+INSERT INTO test_db.partitioned VALUES
+(1, 'data1', 1),
+(2, 'data2', 2),
+(3, 'data3', 3),
+(4, 'data4', 4);
 
-  SELECT count() FROM test_db.partitioned;
+SELECT count() FROM test_db.partitioned;
 
-  SELECT partition_key, count() 
-  FROM test_db.partitioned
-  GROUP BY partition_key
-  ORDER BY partition_key;
-  ```
+SELECT partition_key, count() 
+FROM test_db.partitioned
+GROUP BY partition_key
+ORDER BY partition_key;
+```
 
   ```response
-     ┌─count()─┐
-  1. │       4 │
-     └─────────┘
-     ┌─partition_key─┬─count()─┐
-  1. │             1 │       1 │
-  2. │             2 │       1 │
-  3. │             3 │       1 │
-  4. │             4 │       1 │
-     └───────────────┴─────────┘
-  ```
+   ┌─count()─┐
+1. │       4 │
+   └─────────┘
+   ┌─partition_key─┬─count()─┐
+1. │             1 │       1 │
+2. │             2 │       1 │
+3. │             3 │       1 │
+4. │             4 │       1 │
+   └───────────────┴─────────┘
+```
 </details>
 
 Выполните следующую команду, чтобы создать резервную копию партиций 1 и 4:

@@ -14,7 +14,6 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-
 # 使用分析器理解查询执行 {#understanding-query-execution-with-the-analyzer}
 
 ClickHouse 可以以极高的速度处理查询，但查询的执行过程并不那么简单。下面我们来看看一个 `SELECT` 查询是如何执行的。为便于说明，我们先在 ClickHouse 的一张表中插入一些数据：
@@ -40,7 +39,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Explain query steps" size="md" />
 
 现在让我们看看在查询执行过程中，各个实体是如何协同工作的。我们将选取几个查询，然后使用 `EXPLAIN` 语句对它们进行分析。
-
 
 ## 解析器 {#parser}
 
@@ -72,7 +70,6 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 <Image img={analyzer2} alt="AST output" size="md" />
 
 每个节点都有相应的子节点，整棵树表示查询的整体结构。它是一种用于辅助处理查询的逻辑结构。对于最终用户而言（除非对查询执行感兴趣），它并不是特别有用；该工具主要供开发人员使用。
-
 
 ## Analyzer {#analyzer}
 
@@ -130,7 +127,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 通过对比两次执行，你可以看到别名和投影是如何被解析的。
-
 
 ## 规划器 {#planner}
 
@@ -203,51 +199,46 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
-```
-
 
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 表达式 ((Projection + ORDER BY 之前))                                                                                                       │
-│ 操作: INPUT :: 0 -&gt; type String : 0                                                                                                        │
-│          INPUT : 1 -&gt; min(timestamp) DateTime : 1                                                                                          │
-│          INPUT : 2 -&gt; max(timestamp) DateTime : 2                                                                                          │
-│          INPUT : 3 -&gt; count() UInt64 : 3                                                                                                   │
-│          COLUMN Const(Nullable(UInt64)) -&gt; total&#95;rows Nullable(UInt64) : 4                                                                 │
-│          COLUMN Const(UInt8) -&gt; 100 UInt8 : 5                                                                                              │
-│          ALIAS min(timestamp) :: 1 -&gt; minimum&#95;date DateTime : 6                                                                            │
-│          ALIAS max(timestamp) :: 2 -&gt; maximum&#95;date DateTime : 1                                                                            │
-│          FUNCTION divide(count() :: 3, total&#95;rows :: 4) -&gt; divide(count(), total&#95;rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count(), total&#95;rows) :: 2, 100 :: 5) -&gt; multiply(divide(count(), total&#95;rows), 100) Nullable(Float64) : 4 │
-│          ALIAS multiply(divide(count(), total&#95;rows), 100) :: 4 -&gt; percentage Nullable(Float64) : 5                                         │
-│ 位置: 0 6 1 5                                                                                                                                │
-│   聚合阶段                                                                                                                                    │
-│   键: type                                                                                                                                  │
-│   聚合:                                                                                                                                    │
+│ Expression ((Projection + Before ORDER BY))                                                                                                │
+│ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
+│          INPUT : 1 -> min(timestamp) DateTime : 1                                                                                          │
+│          INPUT : 2 -> max(timestamp) DateTime : 2                                                                                          │
+│          INPUT : 3 -> count() UInt64 : 3                                                                                                   │
+│          COLUMN Const(Nullable(UInt64)) -> total_rows Nullable(UInt64) : 4                                                                 │
+│          COLUMN Const(UInt8) -> 100 UInt8 : 5                                                                                              │
+│          ALIAS min(timestamp) :: 1 -> minimum_date DateTime : 6                                                                            │
+│          ALIAS max(timestamp) :: 2 -> maximum_date DateTime : 1                                                                            │
+│          FUNCTION divide(count() :: 3, total_rows :: 4) -> divide(count(), total_rows) Nullable(Float64) : 2                               │
+│          FUNCTION multiply(divide(count(), total_rows) :: 2, 100 :: 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
+│          ALIAS multiply(divide(count(), total_rows), 100) :: 4 -> percentage Nullable(Float64) : 5                                         │
+│ Positions: 0 6 1 5                                                                                                                         │
+│   Aggregating                                                                                                                              │
+│   Keys: type                                                                                                                               │
+│   Aggregates:                                                                                                                              │
 │       min(timestamp)                                                                                                                       │
-│         函数: min(DateTime) → DateTime                                                                                                     │
-│         参数: timestamp                                                                                                                    │
+│         Function: min(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
 │       max(timestamp)                                                                                                                       │
-│         函数: max(DateTime) → DateTime                                                                                                     │
-│         参数: timestamp                                                                                                                    │
+│         Function: max(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
 │       count()                                                                                                                              │
-│         函数: count() → UInt64                                                                                                             │
-│         参数: 无                                                                                                                           │
-│   跳过合并: 0                                                                                                                              │
-│     表达式 (GROUP BY 之前)                                                                                                                │
-│     操作: INPUT :: 0 -&gt; timestamp DateTime : 0                                                                                             │
-│              INPUT :: 1 -&gt; type String : 1                                                                                                 │
-│     位置: 0 1                                                                                                                              │
-│       ReadFromMergeTree (default.session&#95;events)                                                                                           │
+│         Function: count() → UInt64                                                                                                         │
+│         Arguments: none                                                                                                                    │
+│   Skip merging: 0                                                                                                                          │
+│     Expression (Before GROUP BY)                                                                                                           │
+│     Actions: INPUT :: 0 -> timestamp DateTime : 0                                                                                          │
+│              INPUT :: 1 -> type String : 1                                                                                                 │
+│     Positions: 0 1                                                                                                                         │
+│       ReadFromMergeTree (default.session_events)                                                                                           │
 │       ReadType: Default                                                                                                                    │
 │       Parts: 1                                                                                                                             │
 │       Granules: 1                                                                                                                          │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
 ```
 
 现在您可以查看所有正在使用的输入、函数、别名和数据类型。规划器将应用的部分优化可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)查看。
-```
-
 
 ## 查询管道 {#query-pipeline}
 
@@ -363,7 +354,6 @@ GROUP BY type
 FORMAT TSV
 ```
 
-
 ```response
 digraph
 {
@@ -446,7 +436,6 @@ digraph
 <Image img={analyzer5} alt="并行图输出" size="md" />
 
 因此，执行器决定不并行执行这些操作，因为数据量还不够大。通过增加更多行之后，执行器就决定使用多线程进行处理，如图所示。
-
 
 ## 执行器 {#executor}
 

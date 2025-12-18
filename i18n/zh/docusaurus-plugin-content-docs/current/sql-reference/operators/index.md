@@ -128,7 +128,6 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
 ## 用于处理数据集的运算符 {#operators-for-working-with-data-sets}
 
 请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
@@ -203,7 +202,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-
 ## 日期和时间运算符 {#operators-for-working-with-dates-and-times}
 
 ### EXTRACT {#extract}
@@ -270,7 +268,6 @@ FROM test.Orders;
 
 更多示例请参见[测试用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)。
 
-
 ### INTERVAL {#interval}
 
 创建一个 [Interval](../../sql-reference/data-types/special-data-types/interval.md) 类型的值，用于与 [Date](../../sql-reference/data-types/date.md) 和 [DateTime](../../sql-reference/data-types/datetime.md) 类型值进行算术运算。
@@ -289,7 +286,7 @@ FROM test.Orders;
 在设置 `INTERVAL` 的值时，也可以使用字符串字面量。例如，`INTERVAL 1 HOUR` 等同于 `INTERVAL '1 hour'` 或 `INTERVAL '1' hour`。
 
 :::tip
-不同类型的区间不能组合使用。不能使用 `INTERVAL 4 DAY 1 HOUR` 这样的表达式。请使用不大于该区间中最小单位的单位来指定区间，例如 `INTERVAL 25 HOUR`。可以像下面的示例一样使用连续运算。
+不同类型的区间不能组合使用。不能使用 `INTERVAL 4 DAY 1 HOUR` 这样的表达式。请使用小于或等于该区间中最小单位的时间单位来指定区间，例如 `INTERVAL 25 HOUR`。可以像下面的示例一样使用连续运算。
 :::
 
 示例:
@@ -343,7 +340,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 **另请参阅**
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
-* [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 类型转换函数
+* [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
 
 
 ## 逻辑 AND 运算符 {#logical-and-operator}
@@ -381,7 +378,6 @@ END
 如果表达式中没有 `ELSE c` 子句，则默认值为 `NULL`。
 
 `transform` 函数不支持 `NULL`。
-
 
 ## 连接运算符 {#concatenation-operator}
 
@@ -432,7 +428,6 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 │          101 │
 └──────────────┘
 ```
-
 
 ### IS NOT NULL {#is_not_null}
 

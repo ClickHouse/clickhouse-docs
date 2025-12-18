@@ -50,7 +50,7 @@ ClickStack images are now published as `clickhouse/clickstack-*` (previously `do
 :::
 
 :::tip Persisting data and settings
-To persist data and settings across restarts of the container, users can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. 
+To persist data and settings across restarts of the container, you can modify the above docker command to mount the paths `/data/db`, `/var/lib/clickhouse` and `/var/log/clickhouse-server`. 
 
 For example:
 
@@ -95,7 +95,7 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 ## Deploy with ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
-Users can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
+You can deploy ClickStack against ClickHouse Cloud, benefiting from a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows.
 
 <VerticalStepper headerLevel="h3">
 
@@ -194,6 +194,6 @@ Alternatively, for a quick exploration of the product, you can also click **Conn
 
 <Image img={hyperdx_2} alt="Credentials" size="md"/>
 
-If connecting to the demo server, users can explore the dataset with the [demo dataset instructions](/use-cases/observability/clickstack/getting-started/remote-demo-data).
+If connecting to the demo server, you can explore the dataset with the [demo dataset instructions](/use-cases/observability/clickstack/getting-started/remote-demo-data).
 
 </VerticalStepper>

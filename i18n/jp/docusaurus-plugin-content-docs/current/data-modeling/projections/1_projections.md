@@ -11,7 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-
 # プロジェクション {#projections}
 
 ## はじめに {#introduction}
@@ -70,11 +69,11 @@ ClickHouse はプライマリキーを自動的にサンプリングし、同じ
 これにより、ユーザーアプリケーションへの依存度が高まり、クライアント側の複雑さが増します。
 
 これらの利点にもかかわらず、プロジェクションには本質的な制約がいくつか存在するため、
-ユーザーはその点を理解したうえで、必要最小限の利用にとどめるべきです。
+その点を理解したうえで、必要最小限の利用にとどめるべきです。
 
 - プロジェクションでは、ソーステーブルと（非表示の）ターゲットテーブルで異なる TTL を
   使用することはできませんが、マテリアライズドビューでは異なる TTL を使用できます。
-- プロジェクションを持つテーブルでは、軽量な更新および削除はサポートされていません。
+- プロジェクションを持つテーブルでは、論理更新および削除はサポートされていません。
 - マテリアライズドビューはチェーン化できます。1 つのマテリアライズドビューのターゲットテーブルを、
   別のマテリアライズドビューのソーステーブルとして利用することができます。このようなことは
   プロジェクションでは不可能です。
@@ -89,7 +88,7 @@ ClickHouse はプライマリキーを自動的にサンプリングし、同じ
   使用することも可能ですが、集計の維持にはマテリアライズドビューの方が効果的です。
   クエリオプティマイザも、単純な並べ替え、すなわち `SELECT * ORDER BY x` を使用する
   プロジェクションの方をより活用しやすくなります。
-  ユーザーは、この式内で列のサブセットを選択することで、ストレージフットプリントを削減できます。
+  この式内で列のサブセットを選択することで、ストレージフットプリントを削減できます。
 - ストレージフットプリントの増加や、データを書き込む処理が 2 回になることに伴うオーバーヘッドを
   許容できる場合。挿入速度への影響をテストし、
   [ストレージオーバーヘッドを評価](/data-compression/compression-in-clickhouse)してください。
@@ -175,7 +174,6 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
-
 
 ### プロジェクションを使用してUK不動産価格データのクエリを高速化する {#using-projections-to-speed-up-UK-price-paid}
 
@@ -353,7 +351,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 2行のセット。経過時間: 0.006秒
 ```
 
-
 ### さらに例を示します {#further-examples}
 
 次の例では、同じ英国の価格データセットを使用し、プロジェクションを使用するクエリと使用しないクエリを比較します。
@@ -364,7 +361,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
-
 
 #### プロジェクションを作成する {#build-projection}
 
@@ -398,7 +394,6 @@ SETTINGS mutations_sync = 1
 
 次のクエリでは、プロジェクションあり／なしの場合のパフォーマンスを比較します。プロジェクションの使用を無効にするには、デフォルトで有効になっている設定 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections) を変更します。
 
-
 #### クエリ 1. 年ごとの平均価格 {#average-price-projections}
 
 ```sql runnable
@@ -425,7 +420,6 @@ ORDER BY year ASC
 
 結果は同じになるはずですが、後者の例のほうがパフォーマンスは良くなります。
 
-
 #### クエリ 2. ロンドンにおける年ごとの平均価格 {#average-price-london-projections}
 
 ```sql runnable
@@ -450,7 +444,6 @@ WHERE town = 'LONDON'
 GROUP BY year
 ORDER BY year ASC
 ```
-
 
 #### クエリ 3. 最も高価な地域 {#most-expensive-neighborhoods-projections}
 
@@ -492,7 +485,6 @@ LIMIT 100
 ```
 
 今回も結果は同じですが、2 番目のクエリではクエリ性能が向上している点に注目してください。
-
 
 ### 1 つのクエリでプロジェクションを組み合わせる {#combining-projections}
 
@@ -604,7 +596,6 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 ```
 
 上に示した `EXPLAIN` の出力は、論理クエリプランを上から下へと示しています。
-
 
 | 行番号 | 説明                                                                                                         |
 |--------|--------------------------------------------------------------------------------------------------------------|

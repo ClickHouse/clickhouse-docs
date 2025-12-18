@@ -124,7 +124,7 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- Следующий ключ сортировки является альтернативным, не соответствует официальным правилам TPC-H, но рекомендуется в разделе 4.5
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
 -- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (o_orderdate, o_orderkey);
 
@@ -146,7 +146,7 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- Следующий ключ сортировки является альтернативным, не соответствует официальным правилам TPC-H, но рекомендуется в разделе 4.5
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
 -- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
@@ -169,7 +169,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 создайте пустые таблицы, используя приведённые выше операторы `CREATE`.
 
 ```sql
--- Коэффициент масштабирования 1
+-- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -179,7 +179,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- Коэффициент масштабирования 100
+-- Scaling factor 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;

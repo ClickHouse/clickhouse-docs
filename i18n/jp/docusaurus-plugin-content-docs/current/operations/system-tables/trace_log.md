@@ -82,7 +82,7 @@ SELECT * FROM system.trace_log LIMIT 1 \G
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal
 event_date:              2025-11-11
@@ -92,7 +92,7 @@ timestamp_ns:            1762862039128333000
 revision:                54504
 trace_type:              Instrumentation
 cpu_id:                  19
-thread_id:               3166432 -- 317万
+thread_id:               3166432 -- 3.17 million
 query_id:                ef462508-e189-4ea2-b231-4489506728e8
 trace:                   [350594916,447733712,447742095,447727324,447726659,221642873,450882315,451852359,451905441,451885554,512404306,512509092,612861767,612863269,612466367,612455825,137631896259267,137631896856768]
 size:                    0
@@ -110,7 +110,9 @@ entry_type:              Exit
 duration_nanoseconds:   58435
 ```
 
-プロファイリングデータは、次のクエリで Chrome の Event Trace Format に変換できます。クエリを `chrome_trace.sql` というファイルに保存します。
+## Chrome Event Trace Format への変換 {#chrome-event-trace-format}
+
+プロファイリングデータは、次のクエリを使用して Chrome の Event Trace Format に変換できます。クエリを `chrome_trace.sql` ファイルとして保存してください：
 
 ```sql
 WITH traces AS (
@@ -139,15 +141,16 @@ SELECT
 FROM traces;
 ```
 
-そして、それを ClickHouse Client で実行し、`trace.json` ファイルとしてエクスポートします。このファイルは [Perfetto](https://ui.perfetto.dev/) または [speedscope](https://www.speedscope.app/) のいずれかでインポートできます。
+そして、ClickHouse Client でこれを実行して `trace.json` ファイルとしてエクスポートし、そのファイルを [Perfetto](https://ui.perfetto.dev/) または [speedscope](https://www.speedscope.app/) にインポートします。
 
 ```bash
 echo $(clickhouse client --query "$(cat chrome_trace.sql)") > trace.json
 ```
 
-よりコンパクトだが情報量の少ないトレースにしたい場合は、スタック情報の部分を省略できます。
+よりコンパクトだが情報量の少ないトレースにしたい場合は、スタック部分を省略できます。
 
 **関連項目**
 
-* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md) — 計測ポイントを追加または削除します。
-* [system.instrumentation](../../operations/system-tables/instrumentation.md) - 計測済みの関数を確認します。
+* [SYSTEM INSTRUMENT](../../sql-reference/statements/system.md#instrument) — 計測ポイントを追加または削除します。
+* [system.instrumentation](../../operations/system-tables/instrumentation.md) — 計測済みポイントを確認します。
+* [system.symbols](../../operations/system-tables/symbols.md) — 計測ポイントを追加するためのシンボルを確認します。

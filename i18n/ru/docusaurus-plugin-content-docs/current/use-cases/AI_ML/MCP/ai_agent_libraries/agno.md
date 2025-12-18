@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # Как создать агента ИИ с помощью Agno и ClickHouse MCP Server {#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server}
 
 В этом руководстве вы узнаете, как создать агента ИИ на базе [Agno](https://github.com/agno-agi/agno), способного взаимодействовать с 
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note Пример ноутбука
 Этот пример доступен в виде ноутбука в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/agno/agno.ipynb).
 :::
-
-
 
 ## Предварительные требования {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## Установка библиотек {#install-libraries}
 
 Установите библиотеку Agno с помощью следующих команд:
@@ -44,18 +39,17 @@ pip install -q agno
 pip install -q ipywidgets
 ```
 
-
 ## Настройка учетных данных {#setup-credentials}
 
 Далее необходимо указать свой API-ключ Anthropic:
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Введите API-ключ Anthropic:")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-Введите ключ API Anthropic: ········
+Enter Anthropic API Key: ········
 ```
 
 :::note Использование другого провайдера LLM
@@ -74,7 +68,6 @@ env = {
     "CLICKHOUSE_SECURE": "true"
 }
 ```
-
 
 ## Инициализация MCP-сервера и агента Agno {#initialize-mcp-and-agent}
 
@@ -97,7 +90,7 @@ async with MCPTools(command="uv run --with mcp-clickhouse --python 3.13 mcp-clic
 await agent.aprint_response("What's the most starred project in 2025?", stream=True)
 ```
 
-```response title="Ответ"
+```response title="Response"
 ▰▱▱▱▱▱▱ Thinking...
 ┏━ Message ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
@@ -121,26 +114,26 @@ await agent.aprint_response("What's the most starred project in 2025?", stream=T
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ┏━ Response (34.9s) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                                                                                                                 ┃
-┃ Чтобы ответить на ваш вопрос о проекте с наибольшим количеством звёзд в 2025 году, необходимо выполнить запрос к базе данных ClickHouse.     ┃
-┃ Однако сначала нужно собрать информацию и убедиться, что мы работаем с правильными данными. ┃
-┃ Проверю доступные базы данных и таблицы.Благодарю за предоставленный список баз данных. Вижу,  ┃
-┃ что существует база данных "github", которая, вероятно, содержит нужную информацию. Проверим ┃
-┃ таблицы в этой базе данных.Теперь, когда у нас есть информация о таблицах в базе данных github, можно запросить  ┃
-┃ необходимые данные для ответа на ваш вопрос о проекте с наибольшим количеством звёзд в 2025 году. Используем таблицу repo_events_per_day ┃
-┃ , которая содержит ежедневное количество событий для каждого репозитория, включая события добавления в избранное (WatchEvents).              ┃
+┃ To answer your question about the most starred project in 2025, I'll need to query the ClickHouse database.     ┃
+┃ However, before I can do that, I need to gather some information and make sure we're looking at the right data. ┃
+┃ Let me check the available databases and tables first.Thank you for providing the list of databases. I can see  ┃
+┃ that there's a "github" database, which is likely to contain the information we're looking for. Let's check the ┃
+┃ tables in this database.Now that we have information about the tables in the github database, we can query the  ┃
+┃ relevant data to answer your question about the most starred project in 2025. We'll use the repo_events_per_day ┃
+┃ table, which contains daily event counts for each repository, including star events (WatchEvents).              ┃
 ┃                                                                                                                 ┃
-┃ Создадим запрос для поиска проекта с наибольшим количеством звёзд в 2025 году:На основе результатов запроса можно ответить на ваш     ┃
-┃ вопрос о проекте с наибольшим количеством звёзд в 2025 году:                                                                ┃
+┃ Let's create a query to find the most starred project in 2025:Based on the query results, I can answer your     ┃
+┃ question about the most starred project in 2025:                                                                ┃
 ┃                                                                                                                 ┃
-┃ Проектом с наибольшим количеством звёзд в 2025 году стал deepseek-ai/DeepSeek-R1, который получил 84 962 звезды за этот год.     ┃
+┃ The most starred project in 2025 was deepseek-ai/DeepSeek-R1, which received 84,962 stars during that year.     ┃
 ┃                                                                                                                 ┃
-┃ Этот проект, DeepSeek-R1, представляет собой репозиторий, связанный с искусственным интеллектом, от организации DeepSeek AI. Он привлёк  ┃
-┃ значительное внимание и популярность в сообществе GitHub в 2025 году, получив наибольшее количество звёзд    ┃
-┃ среди всех проектов за этот год.                                                                               ┃
+┃ This project, DeepSeek-R1, appears to be an AI-related repository from the DeepSeek AI organization. It gained  ┃
+┃ significant attention and popularity among the GitHub community in 2025, earning the highest number of stars    ┃
+┃ for any project during that year.                                                                               ┃
 ┃                                                                                                                 ┃
-┃ Следует отметить, что эти данные основаны на событиях GitHub, зарегистрированных в базе данных, и представляют  ┃
-┃ звёзды (WatchEvents), накопленные именно в течение 2025 года. Общее количество звёзд этого проекта   ┃
-┃ может быть выше, если учитывать весь период его существования.                                                             ┃
+┃ It's worth noting that this data is based on the GitHub events recorded in the database, and it represents the  ┃
+┃ stars (WatchEvents) accumulated specifically during the year 2025. The total number of stars for this project   ┃
+┃ might be higher if we consider its entire lifespan.                                                             ┃
 ┃                                                                                                                 ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```

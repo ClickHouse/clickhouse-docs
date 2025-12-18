@@ -35,7 +35,6 @@ Nessie 是一个面向数据湖的开源事务型 catalog，提供：
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## 本地开发环境设置 {#local-development-setup}
 
 在进行本地开发和测试时，你可以使用容器化的 Nessie 环境。此方式非常适合用于学习、原型验证以及开发环境。
@@ -105,13 +104,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: '0:0'  # 确保 root 权限
+    user: '0:0'  # Ensures root permissions
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # 挂载数据集目录
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
     networks:
       - iceberg_net
     environment:
@@ -149,7 +148,6 @@ docker-compose logs -f
 Nessie 设置使用基于内存的版本存储，并要求先将示例数据加载到 Iceberg 表中。请确保在通过 ClickHouse 查询这些表之前，环境中已经创建并填充好这些表。
 :::
 
-
 ### 连接到本地 Nessie Catalog {#connecting-to-local-nessie-catalog}
 
 连接到 ClickHouse 容器：
@@ -167,7 +165,6 @@ CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
-
 
 ## 使用 ClickHouse 查询 Nessie 目录表 {#querying-nessie-catalog-tables-using-clickhouse}
 
@@ -251,7 +248,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://localhost:9002/my-bucket/default/taxis/', 'admin', '[HIDDEN]')      │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 将数据湖中的数据加载到 ClickHouse {#loading-data-from-your-data-lake-into-clickhouse}
 

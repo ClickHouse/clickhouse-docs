@@ -12,7 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 
-
 # Spark 连接器 {#spark-connector}
 
 此连接器利用 ClickHouse 特有的优化（例如高级分区和谓词下推），以提升查询性能和数据处理效率。
@@ -162,7 +161,6 @@ clickhouse-jdbc:all 中。
 [兼容性矩阵](#compatibility-matrix) 中的要求。
 :::
 
-
 ## 注册 catalog（必需） {#register-the-catalog-required}
 
 要访问 ClickHouse 表，需要使用以下配置创建一个新的 Spark catalog：
@@ -212,7 +210,6 @@ spark.sql.catalog.clickhouse2.option.ssl     true
 
 :::
 
-
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-settings}
 
 连接到 [ClickHouse Cloud](https://clickhouse.com) 时，请务必启用 SSL，并设置相应的 SSL 模式。例如：
@@ -222,7 +219,6 @@ spark.sql.catalog.clickhouse.option.ssl        true
 spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 ```
 
-
 ## 读取数据 {#read-data}
 
 <Tabs groupId="spark_apis">
@@ -230,7 +226,7 @@ spark.sql.catalog.clickhouse.option.ssl_mode   NONE
 
 ```java
 public static void main(String[] args) {
-        // 创建 Spark 会话
+        // Create a Spark session
         SparkSession spark = SparkSession.builder()
                 .appName("example")
                 .master("local[*]")
@@ -335,128 +331,128 @@ df.show()
 <Tabs groupId="spark_apis">
   <TabItem value="Java" label="Java" default>
     ```java
-     public static void main(String[] args) throws AnalysisException {
+ public static void main(String[] args) throws AnalysisException {
 
-            // 创建 Spark 会话
-            SparkSession spark = SparkSession.builder()
-                    .appName("example")
-                    .master("local[*]")
-                    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-                    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-                    .config("spark.sql.catalog.clickhouse.protocol", "http")
-                    .config("spark.sql.catalog.clickhouse.http_port", "8123")
-                    .config("spark.sql.catalog.clickhouse.user", "default")
-                    .config("spark.sql.catalog.clickhouse.password", "123456")
-                    .config("spark.sql.catalog.clickhouse.database", "default")
-                    .config("spark.clickhouse.write.format", "json")
-                    .getOrCreate();
+        // Create a Spark session
+        SparkSession spark = SparkSession.builder()
+                .appName("example")
+                .master("local[*]")
+                .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+                .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+                .config("spark.sql.catalog.clickhouse.protocol", "http")
+                .config("spark.sql.catalog.clickhouse.http_port", "8123")
+                .config("spark.sql.catalog.clickhouse.user", "default")
+                .config("spark.sql.catalog.clickhouse.password", "123456")
+                .config("spark.sql.catalog.clickhouse.database", "default")
+                .config("spark.clickhouse.write.format", "json")
+                .getOrCreate();
 
-            // 定义 DataFrame 的架构
-            StructType schema = new StructType(new StructField[]{
-                    DataTypes.createStructField("id", DataTypes.IntegerType, false),
-                    DataTypes.createStructField("name", DataTypes.StringType, false),
-            });
+        // Define the schema for the DataFrame
+        StructType schema = new StructType(new StructField[]{
+                DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                DataTypes.createStructField("name", DataTypes.StringType, false),
+        });
 
-            List<Row> data = Arrays.asList(
-                    RowFactory.create(1, "Alice"),
-                    RowFactory.create(2, "Bob")
-            );
+        List<Row> data = Arrays.asList(
+                RowFactory.create(1, "Alice"),
+                RowFactory.create(2, "Bob")
+        );
 
-            // 创建 DataFrame
-            Dataset<Row> df = spark.createDataFrame(data, schema);
+        // Create a DataFrame
+        Dataset<Row> df = spark.createDataFrame(data, schema);
 
-            df.writeTo("clickhouse.default.example_table").append();
+        df.writeTo("clickhouse.default.example_table").append();
 
-            spark.stop();
-        }
-    ```
+        spark.stop();
+    }
+```
   </TabItem>
 
   <TabItem value="Scala" label="Scala">
     ```java
-    object NativeSparkWrite extends App {
-      // 创建 Spark 会话
-      val spark: SparkSession = SparkSession.builder
-        .appName("example")
-        .master("local[*]")
-        .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-        .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-        .config("spark.sql.catalog.clickhouse.protocol", "http")
-        .config("spark.sql.catalog.clickhouse.http_port", "8123")
-        .config("spark.sql.catalog.clickhouse.user", "default")
-        .config("spark.sql.catalog.clickhouse.password", "123456")
-        .config("spark.sql.catalog.clickhouse.database", "default")
-        .config("spark.clickhouse.write.format", "json")
-        .getOrCreate
+object NativeSparkWrite extends App {
+  // Create a Spark session
+  val spark: SparkSession = SparkSession.builder
+    .appName("example")
+    .master("local[*]")
+    .config("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+    .config("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+    .config("spark.sql.catalog.clickhouse.protocol", "http")
+    .config("spark.sql.catalog.clickhouse.http_port", "8123")
+    .config("spark.sql.catalog.clickhouse.user", "default")
+    .config("spark.sql.catalog.clickhouse.password", "123456")
+    .config("spark.sql.catalog.clickhouse.database", "default")
+    .config("spark.clickhouse.write.format", "json")
+    .getOrCreate
 
-      // 定义 DataFrame 的架构
-      val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+  // Define the schema for the DataFrame
+  val rows = Seq(Row(1, "John"), Row(2, "Doe"))
 
-      val schema = List(
-        StructField("id", DataTypes.IntegerType, nullable = false),
-        StructField("name", StringType, nullable = true)
-      )
-      // 创建 DataFrame
-      val df: DataFrame = spark.createDataFrame(
-        spark.sparkContext.parallelize(rows),
-        StructType(schema)
-      )
+  val schema = List(
+    StructField("id", DataTypes.IntegerType, nullable = false),
+    StructField("name", StringType, nullable = true)
+  )
+  // Create the df
+  val df: DataFrame = spark.createDataFrame(
+    spark.sparkContext.parallelize(rows),
+    StructType(schema)
+  )
 
-      df.writeTo("clickhouse.default.example_table").append()
+  df.writeTo("clickhouse.default.example_table").append()
 
-      spark.stop()
-    }
-    ```
+  spark.stop()
+}
+```
   </TabItem>
 
   <TabItem value="Python" label="Python">
     ```python
-    from pyspark.sql import SparkSession
-    from pyspark.sql import Row
+from pyspark.sql import SparkSession
+from pyspark.sql import Row
 
-    # 可根据上述兼容性矩阵自由使用任何其他包组合。
-    packages = [
-        "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
-        "com.clickhouse:clickhouse-client:0.7.0",
-        "com.clickhouse:clickhouse-http-client:0.7.0",
-        "org.apache.httpcomponents.client5:httpclient5:5.2.1"
+# Feel free to use any other packages combination satesfying the compatibility matrix provided above.
+packages = [
+    "com.clickhouse.spark:clickhouse-spark-runtime-3.4_2.12:0.8.0",
+    "com.clickhouse:clickhouse-client:0.7.0",
+    "com.clickhouse:clickhouse-http-client:0.7.0",
+    "org.apache.httpcomponents.client5:httpclient5:5.2.1"
 
-    ]
+]
 
-    spark = (SparkSession.builder
-             .config("spark.jars.packages", ",".join(packages))
-             .getOrCreate())
+spark = (SparkSession.builder
+         .config("spark.jars.packages", ",".join(packages))
+         .getOrCreate())
 
-    spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
-    spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
-    spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
-    spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
-    spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
-    spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
-    spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
-    spark.conf.set("spark.clickhouse.write.format", "json")
+spark.conf.set("spark.sql.catalog.clickhouse", "com.clickhouse.spark.ClickHouseCatalog")
+spark.conf.set("spark.sql.catalog.clickhouse.host", "127.0.0.1")
+spark.conf.set("spark.sql.catalog.clickhouse.protocol", "http")
+spark.conf.set("spark.sql.catalog.clickhouse.http_port", "8123")
+spark.conf.set("spark.sql.catalog.clickhouse.user", "default")
+spark.conf.set("spark.sql.catalog.clickhouse.password", "123456")
+spark.conf.set("spark.sql.catalog.clickhouse.database", "default")
+spark.conf.set("spark.clickhouse.write.format", "json")
 
-    # 创建 DataFrame
-    data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
-    df = spark.createDataFrame(data)
+# Create DataFrame
+data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+df = spark.createDataFrame(data)
 
-    # 将 DataFrame 写入 ClickHouse
-    df.writeTo("clickhouse.default.example_table").append()
+# Write DataFrame to ClickHouse
+df.writeTo("clickhouse.default.example_table").append()
 
-    ```
+```
   </TabItem>
 
   <TabItem value="SparkSQL" label="Spark SQL">
     ```sql
-        -- resultTable 是我们要插入到 clickhouse.default.example_table 中的 Spark 中间数据框
-       INSERT INTO TABLE clickhouse.default.example_table
-                    SELECT * FROM resultTable;
-                    
-    ```
+    -- resultTable is the Spark intermediate df we want to insert into clickhouse.default.example_table
+   INSERT INTO TABLE clickhouse.default.example_table
+                SELECT * FROM resultTable;
+                
+```
   </TabItem>
 </Tabs>
 
-## DDL 操作
+## DDL 操作 {#ddl-operations}
 
 可以使用 Spark SQL 对 ClickHouse 实例执行 DDL 操作，所有更改都会立即持久化到 ClickHouse 中。
 Spark SQL 允许你以与在 ClickHouse 中相同的方式编写查询，
@@ -474,8 +470,8 @@ USE clickhouse;
 
 CREATE TABLE test_db.tbl_sql (
   create_time TIMESTAMP NOT NULL,
-  m           INT       NOT NULL COMMENT '分区键',
-  id          BIGINT    NOT NULL COMMENT '排序键',
+  m           INT       NOT NULL COMMENT 'part key',
+  id          BIGINT    NOT NULL COMMENT 'sort key',
   value       STRING
 ) USING ClickHouse
 PARTITIONED BY (m)
@@ -487,7 +483,6 @@ TBLPROPERTIES (
 ```
 
 上述示例展示了 Spark SQL 查询，您可以在应用程序中通过任意 API（Java、Scala、PySpark 或 shell）运行这些查询。
-
 
 ## 配置 {#configurations}
 

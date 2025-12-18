@@ -47,18 +47,17 @@ C0X100,2016-01-01 04:00:00,1021.2,15.8,74,1.7,8.0,,,,,,,,,,,,,,,,,,,,,,,
 ```bash
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/preprocessed_weather_daily_1896_2023.tar.gz
 
-# Опционально: Проверьте контрольную сумму {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum preprocessed_weather_daily_1896_2023.tar.gz
-# Контрольная сумма должна совпадать с: 11b484f5bd9ddafec5cfb131eb2dd008 {#checksum-should-be-equal-to-11b484f5bd9ddafec5cfb131eb2dd008}
+# Checksum should be equal to: 11b484f5bd9ddafec5cfb131eb2dd008
 
 tar -xzvf preprocessed_weather_daily_1896_2023.tar.gz
 daily_weather_preprocessed_1896_2023.csv
 
-# Опционально: Проверьте контрольную сумму {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum daily_weather_preprocessed_1896_2023.csv
-# Контрольная сумма должна совпадать с: 1132248c78195c43d93f843753881754 {#checksum-should-be-equal-to-1132248c78195c43d93f843753881754}
+# Checksum should be equal to: 1132248c78195c43d93f843753881754
 ```
-
 
 ### Исходные сырые данные {#original-raw-data}
 
@@ -73,9 +72,9 @@ mkdir tw_raw_weather_data && cd tw_raw_weather_data
 
 wget https://storage.googleapis.com/taiwan-weather-observaiton-datasets/raw_data_weather_daily_1896_2023.tar.gz
 
-# Опционально: Проверка контрольной суммы {#option-validate-the-checksum}
+# Option: Validate the checksum
 md5sum raw_data_weather_daily_1896_2023.tar.gz
-# Контрольная сумма должна совпадать с: b66b9f137217454d655e3004d7d1b51a {#checksum-should-be-equal-to-b66b9f137217454d655e3004d7d1b51a}
+# Checksum should be equal to: b66b9f137217454d655e3004d7d1b51a
 
 tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1928.csv
@@ -84,21 +83,19 @@ tar -xzvf raw_data_weather_daily_1896_2023.tar.gz
 466920_1931.csv
 ...
 
-# Опционально: Проверка контрольной суммы {#option-validate-the-checksum}
+# Option: Validate the checksum
 cat *.csv | md5sum
-# Контрольная сумма должна совпадать с: b26db404bf84d4063fac42e576464ce1 {#checksum-should-be-equal-to-b26db404bf84d4063fac42e576464ce1}
+# Checksum should be equal to: b26db404bf84d4063fac42e576464ce1
 ```
-
 
 #### Получение данных метеостанций Тайваня {#retrieve-the-taiwan-weather-stations}
 
 ```bash
 wget -O weather_sta_list.csv https://github.com/Raingel/weather_station_list/raw/main/data/weather_sta_list.csv
 
-# Опционально: Преобразование кодировки UTF-8-BOM в UTF-8 {#option-convert-the-utf-8-bom-to-utf-8-encoding}
+# Option: Convert the UTF-8-BOM to UTF-8 encoding
 sed -i '1s/^\xEF\xBB\xBF//' weather_sta_list.csv
 ```
-
 
 ## Создание схемы таблицы {#create-table-schema}
 
@@ -141,7 +138,6 @@ ENGINE = MergeTree
 ORDER BY (MeasuredDate);
 ```
 
-
 ## Вставка данных в ClickHouse {#inserting-into-clickhouse}
 
 ### Вставка данных из локального файла {#inserting-from-local-file}
@@ -157,13 +153,12 @@ INSERT INTO tw_weather_data FROM INFILE '/path/to/daily_weather_preprocessed_189
 Пример ответа после вставки данных в ClickHouse выглядит следующим образом:
 
 ```response
-Идентификатор запроса: 90e4b524-6e14-4855-817c-7e6f98fbeabb
+Query id: 90e4b524-6e14-4855-817c-7e6f98fbeabb
 
-Выполнено.
-131985329 строк в результате. Время выполнения: 71.770 сек. Обработано 131.99 млн строк, 10.06 ГБ (1.84 млн строк/сек., 140.14 МБ/сек.)
-Пиковое использование памяти: 583.23 МиБ.
+Ok.
+131985329 rows in set. Elapsed: 71.770 sec. Processed 131.99 million rows, 10.06 GB (1.84 million rows/s., 140.14 MB/s.)
+Peak memory usage: 583.23 MiB.
 ```
-
 
 ### Вставка из URL {#inserting-from-url}
 
@@ -174,7 +169,6 @@ FROM url('https://storage.googleapis.com/taiwan-weather-observaiton-datasets/dai
 ```
 
 Чтобы узнать, как ускорить этот процесс, ознакомьтесь с нашей публикацией в блоге о [настройке загрузки больших объёмов данных](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2).
-
 
 ## Проверка числа строк и объёма данных {#check-data-rows-and-sizes}
 
@@ -187,7 +181,7 @@ FROM tw_weather_data;
 
 ```response
 ┌─formatReadableQuantity(count())─┐
-│ 131,99 миллиона                 │
+│ 131.99 million                  │
 └─────────────────────────────────┘
 ```
 
@@ -206,7 +200,6 @@ WHERE (`table` = 'tw_weather_data') AND active
 │ 2.13 GiB  │ 32.94 GiB         │
 └───────────┴───────────────────┘
 ```
-
 
 ## Примеры запросов {#sample-queries}
 
@@ -253,9 +246,8 @@ GROUP BY StationId
 │ 466900    │      1 │
 └───────────┴────────┘
 
-Получено 30 строк. Затрачено: 0,045 сек. Обработано 6,41 млн строк, 187,33 МБ (143,92 млн строк/сек., 4,21 ГБ/сек.)
+30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
-
 
 ### Q2: Выборка сырых данных за заданный интервал времени, по полям и метеостанции {#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station}
 
@@ -292,9 +284,8 @@ LIMIT 10
 │  1028.3 │    ᴺᵁᴸᴸ │ 13.6 │ ᴺᵁᴸᴸ │ 91 │ 1.2 │ 273 │    4.4 │    256 │ -99.8 │     -99.8 │
 └─────────┴─────────┴──────┴──────┴────┴─────┴─────┴────────┴────────┴───────┴───────────┘
 
-Получено 10 строк. Затрачено: 0.009 сек. Обработано 91.70 тыс. строк, 2.33 МБ (9.67 млн. строк/сек., 245.31 МБ/сек.)
+10 rows in set. Elapsed: 0.009 sec. Processed 91.70 thousand rows, 2.33 MB (9.67 million rows/s., 245.31 MB/s.)
 ```
-
 
 ## Благодарности {#credits}
 

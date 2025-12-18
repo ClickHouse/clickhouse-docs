@@ -24,10 +24,10 @@ LIMIT 5
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
 
-Выбрано 5 строк. Затрачено: 0.449 сек.
+5 rows in set. Elapsed: 0.449 sec.
 ```
 
-Хотя это, как правило, наиболее распространённый формат JSON, пользователи могут столкнуться с другими форматами или им может понадобиться прочитать JSON как единый объект.
+Хотя это, как правило, наиболее распространённый формат JSON, вы можете столкнуться с другими форматами или вам может понадобиться прочитать JSON как единый объект.
 
 Ниже мы приводим примеры чтения и загрузки JSON в других распространённых форматах.
 
@@ -35,7 +35,7 @@ LIMIT 5
 
 Наши предыдущие примеры показывают, как `JSONEachRow` читает JSON, в котором каждая запись находится на отдельной строке: каждая строка интерпретируется как отдельный объект, сопоставляемый со строкой таблицы, а каждый ключ — со столбцом. Это идеально подходит для случаев, когда структура JSON предсказуема и для каждого столбца используется один тип.
 
-В отличие от этого, `JSONAsObject` обрабатывает каждую строку как один объект `JSON` и сохраняет его в одном столбце типа [`JSON`](/sql-reference/data-types/newjson), что делает его более подходящим для вложенных JSON-полезных нагрузок и случаев, когда ключи динамические, а значения по ним потенциально могут иметь более одного типа.
+В отличие от этого, `JSONAsObject` обрабатывает каждую строку как один объект `JSON` и сохраняет его в одном столбце типа [`JSON`](/sql-reference/data-types/newjson), что делает его более подходящим для вложенных JSON‑данных и случаев, когда ключи динамические, а значения по ним потенциально могут иметь более одного типа.
 
 Используйте `JSONEachRow` для построчных вставок, а [`JSONAsObject`](/interfaces/formats/JSONAsObject) — при хранении гибких или динамических JSON-данных.
 
@@ -54,10 +54,10 @@ LIMIT 5
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
-Получено 5 строк. Прошло: 0.338 сек.
+5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` подходит для вставки строк в таблицу с использованием единственного столбца с JSON-объектом, например:`
+`JSONAsObject` подходит для вставки строк в таблицу с использованием одного столбца с JSON-объектом, например:
 
 ```sql
 CREATE TABLE pypi
@@ -89,17 +89,15 @@ LIMIT 2;
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
 
-Затрачено: 1.198 сек.
+Elapsed: 1.198 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
+Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'record.subject' has type 'String' and in some - 'Tuple(`$type` String, cid String, uri String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'record.subject'. (INCORRECT_DATA) (version 24.12.1.18239 (official build))
+To increase the maximum number of rows/bytes to read for structure determination, use setting input_format_max_rows_to_read_for_schema_inference/input_format_max_bytes_to_read_for_schema_inference.
+You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz). (CANNOT_EXTRACT_TABLE_STRUCTURE)
 ```
 
-Получено исключение от сервера (версия 24.12.1):
-Code: 636. DB::Exception: Получено от sql-clickhouse.clickhouse.com:9440. DB::Exception: Структура таблицы не может быть извлечена из файла в формате JSONEachRow. Ошибка:
-Code: 117. DB::Exception: Объекты JSON содержат неоднозначные данные: в некоторых объектах путь &#39;record.subject&#39; имеет тип &#39;String&#39;, а в некоторых — &#39;Tuple(`$type` String, cid String, uri String)&#39;. Вы можете включить настройку input&#95;format&#95;json&#95;use&#95;string&#95;type&#95;for&#95;ambiguous&#95;paths&#95;in&#95;named&#95;tuples&#95;inference&#95;from&#95;objects, чтобы использовать тип String для пути &#39;record.subject&#39;. (INCORRECT&#95;DATA) (version 24.12.1.18239 (official build))
-Чтобы увеличить максимальное количество строк/байт для чтения при определении структуры, используйте настройку input&#95;format&#95;max&#95;rows&#95;to&#95;read&#95;for&#95;schema&#95;inference/input&#95;format&#95;max&#95;bytes&#95;to&#95;read&#95;for&#95;schema&#95;inference.
-Вы можете указать структуру вручную: (в файле/URI bluesky/file&#95;0001.json.gz). (CANNOT&#95;EXTRACT&#95;TABLE&#95;STRUCTURE)
-
-````
- 
 В данном случае можно использовать `JSONAsObject`, поскольку тип `JSON` поддерживает несколько типов для одной и той же подколонки.
 
 ```sql
@@ -110,8 +108,8 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 │ 1000000 │
 └─────────┘
 
-Получена 1 строка. Затрачено: 0,480 сек. Обработано 1,00 млн строк, 256,00 Б (2,08 млн строк/с., 533,76 Б/с.)
-````
+1 row in set. Elapsed: 0.480 sec. Processed 1.00 million rows, 256.00 B (2.08 million rows/s., 533.76 B/s.)
+```
 
 ## Массив JSON-объектов {#array-of-json-objects}
 
@@ -155,7 +153,7 @@ FROM INFILE 'list.json'
 FORMAT JSONEachRow
 ```
 
-Мы использовали предложение [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) для загрузки данных из локального файла, и можем видеть, что импорт прошёл успешно:
+Мы использовали предложение [FROM INFILE](/sql-reference/statements/insert-into.md/#inserting-data-from-a-file) для загрузки данных из локального файла и видим, что импорт прошёл успешно:
 
 ```sql
 SELECT *
@@ -163,11 +161,11 @@ FROM sometable
 ```
 
 ```response
-┌─путь──────────────────────┬──────месяц─┬─просмотры─┐
-│ 1971-72_Utah_Stars_season │ 2016-10-01 │         1 │
-│ Akiba_Hebrew_Academy      │ 2017-08-01 │       241 │
-│ Aegithina_tiphia          │ 2018-02-01 │        34 │
-└───────────────────────────┴────────────┴───────────┘
+┌─path──────────────────────┬──────month─┬─hits─┐
+│ 1971-72_Utah_Stars_season │ 2016-10-01 │    1 │
+│ Akiba_Hebrew_Academy      │ 2017-08-01 │  241 │
+│ Aegithina_tiphia          │ 2018-02-01 │   34 │
+└───────────────────────────┴────────────┴──────┘
 ```
 
 ## Ключи объектов JSON {#json-object-keys}
@@ -231,7 +229,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 └────┴─────────────────┴────────────┴──────┘
 ```
 
-Обратите внимание, что столбец `id` корректно заполнен значениями ключей.
+Обратите внимание, что столбец `id` правильно заполнен значениями ключей.
 
 ## Массивы JSON {#json-arrays}
 
@@ -263,7 +261,7 @@ SELECT * FROM sometable
 
 ### Импорт отдельных столбцов из JSON-массивов {#importing-individual-columns-from-json-arrays}
 
-В некоторых случаях данные могут быть закодированы по столбцам, а не по строкам. В этом случае родительский JSON-объект содержит столбцы со значениями. Рассмотрите [следующий файл](../assets/columns.json):
+В некоторых случаях данные могут быть закодированы по столбцам, а не по строкам. В этом случае родительский JSON-объект содержит столбцы со значениями. Рассмотрим [следующий файл](../assets/columns.json):
 
 ```bash
 cat columns.json
@@ -277,7 +275,7 @@ cat columns.json
 }
 ```
 
-ClickHouse использует формат [`JSONColumns`](/interfaces/formats/JSONColumns) для разбора данных, представленных в следующем формате:
+ClickHouse использует формат [`JSONColumns`](/interfaces/formats/JSONColumns) для разбора данных в таком формате:
 
 ```sql
 SELECT * FROM file('columns.json', JSONColumns)
@@ -317,7 +315,7 @@ cat custom.json
 [
   {"name": "Joe", "age": 99, "type": "person"},
   {"url": "/my.post.MD", "hits": 1263, "type": "post"},
-  {"message": "Предупреждение об использовании диска", "type": "log"}
+  {"message": "Warning on disk usage", "type": "log"}
 ]
 ```
 
@@ -397,7 +395,7 @@ LIMIT 1
 └───────────────┴──────────────────────┴────────────┴──────┘
 ```
 
-Таким образом мы можем раскрывать вложенные JSON-объекты или использовать вложенные значения и сохранять их в отдельных столбцах.
+Таким образом мы можем преобразовывать вложенные JSON-объекты в плоский вид или использовать отдельные вложенные значения и сохранять их в отдельных столбцах.
 
 ## Пропуск неизвестных столбцов {#skipping-unknown-columns}
 
@@ -428,7 +426,7 @@ SELECT * FROM shorttable
 └───────────────────────────┴──────┘
 ```
 
-ClickHouse будет игнорировать неизвестные столбцы при импорте данных. Это можно отключить с помощью параметра [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) в настройках:
+ClickHouse будет игнорировать неизвестные столбцы при импорте данных. Это можно отключить с помощью параметра настройки [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields):
 
 ```sql
 SET input_format_skip_unknown_fields = 0;
@@ -437,11 +435,11 @@ INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
 
 ```response
 Ok.
-Исключение на клиенте:
-Код: 117. DB::Exception: Обнаружено неизвестное поле при разборе формата JSONEachRow: month: (в файле/uri /data/clickhouse/user_files/list.json): (в строке 1)
+Exception on client:
+Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: month: (in file/uri /data/clickhouse/user_files/list.json): (at row 1)
 ```
 
-ClickHouse будет выбрасывать исключения в случае несоответствия структуры JSON структуре столбцов таблицы.
+ClickHouse будет выдавать исключения, если структура JSON не соответствует структуре столбцов таблицы.
 
 ## BSON {#bson}
 
@@ -454,11 +452,11 @@ SELECT * FROM file('data.bson', BSONEachRow)
 ```
 
 ```response
-┌─путь──────────────────────┬─месяц─┬─обращения─┐
-│ Bob_Dolman                │ 17106 │       245 │
-│ 1-krona                   │ 17167 │         4 │
-│ Ahmadabad-e_Kalij-e_Sofla │ 17167 │         3 │
-└───────────────────────────┴───────┴───────────┘
+┌─path──────────────────────┬─month─┬─hits─┐
+│ Bob_Dolman                │ 17106 │  245 │
+│ 1-krona                   │ 17167 │    4 │
+│ Ahmadabad-e_Kalij-e_Sofla │ 17167 │    3 │
+└───────────────────────────┴───────┴──────┘
 ```
 
 Мы также можем экспортировать данные в файлы BSON в том же формате:

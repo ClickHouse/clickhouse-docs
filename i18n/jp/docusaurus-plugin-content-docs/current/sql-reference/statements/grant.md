@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # GRANT 文 {#grant-statement}
 
 - ClickHouse のユーザーアカウントまたはロールに[権限](#privileges)を付与します。
@@ -30,7 +29,6 @@ GRANT [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.ta
 `WITH GRANT OPTION` 句は、`user` または `role` に `GRANT` クエリを実行する権限を付与します。ユーザーは、自分が持つスコープと同じ、またはそれよりも狭いスコープの権限を付与できます。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対する既存の権限を新しい権限に置き換えます。指定しない場合は、権限が追加されます。
 
-
 ## ロール割り当ての構文 {#assigning-role-syntax}
 
 ```sql
@@ -42,7 +40,6 @@ GRANT [ON CLUSTER cluster_name] role [,...] TO {user | another_role | CURRENT_US
 
 `WITH ADMIN OPTION` 句は、`user` または `role` に [ADMIN OPTION](#admin-option) 権限を付与します。
 `WITH REPLACE OPTION` 句は、`user` または `role` に対して既存のロールを新しいロールに置き換えます。指定されていない場合は、既存のロールにロールを追加します。
-
 
 ## GRANT CURRENT GRANTS 構文 {#grant-current-grants-syntax}
 
@@ -56,7 +53,6 @@ GRANT CURRENT GRANTS{(privilege[(column_name [,...])] [,...] ON {db.table|db.*|*
 
 `CURRENT GRANTS` ステートメントを使用すると、指定したユーザーまたはロールに、指定したすべての権限を付与できます。
 権限が 1 つも指定されていない場合、そのユーザーまたはロールには、`CURRENT_USER` に対して利用可能なすべての権限が付与されます。
-
 
 ## 使用方法 {#usage}
 
@@ -87,7 +83,6 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 
 1 つのクエリで複数のアカウントに複数の権限を付与できます。`GRANT SELECT, INSERT ON *.* TO john, robin` クエリは、アカウント `john` と `robin` に、サーバー上のすべてのデータベース内のすべてのテーブルに対して `INSERT` および `SELECT` クエリを実行することを許可します。
 
-
 ## ワイルドカードによる権限付与 {#wildcard-grants}
 
 権限を指定する際、テーブル名やデータベース名の代わりにアスタリスク（`*`）を使用できます。たとえば、`GRANT SELECT ON db.* TO john` クエリは、データベース `db` 内のすべてのテーブルに対して、`john` が `SELECT` クエリを実行できるようにします。
@@ -106,22 +101,22 @@ GRANT SELECT(x,y) ON db.table TO john WITH GRANT OPTION
 `GRANT SELECT ON db.my_tables* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 許可
-SELECT * FROM db.my_tables_0 -- 許可
-SELECT * FROM db.my_tables_1 -- 許可
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
 
-SELECT * FROM db.other_table -- 不許可
-SELECT * FROM db2.my_tables -- 不許可
+SELECT * FROM db.other_table -- not_granted
+SELECT * FROM db2.my_tables -- not_granted
 ```
 
 `GRANT SELECT ON db*.* TO john`
 
 ```sql
-SELECT * FROM db.my_tables -- 許可される
-SELECT * FROM db.my_tables_0 -- 許可される
-SELECT * FROM db.my_tables_1 -- 許可される
-SELECT * FROM db.other_table -- 許可される
-SELECT * FROM db2.my_tables -- 許可される
+SELECT * FROM db.my_tables -- granted
+SELECT * FROM db.my_tables_0 -- granted
+SELECT * FROM db.my_tables_1 -- granted
+SELECT * FROM db.other_table -- granted
+SELECT * FROM db2.my_tables -- granted
 ```
 
 権限が付与されたパス内で新しく作成されたすべてのテーブルは、自動的に親に設定されたすべての権限を継承します。
@@ -130,15 +125,14 @@ SELECT * FROM db2.my_tables -- 許可される
 アスタリスク（*）はプレフィックスに対して**のみ**指定できます:
 
 ```sql
-GRANT SELECT ON db.* TO john -- 正しい
-GRANT SELECT ON db*.* TO john -- 正しい
+GRANT SELECT ON db.* TO john -- correct
+GRANT SELECT ON db*.* TO john -- correct
 
-GRANT SELECT ON *.my_table TO john -- 誤り
-GRANT SELECT ON foo*bar TO john -- 誤り
-GRANT SELECT ON *suffix TO john -- 誤り
-GRANT SELECT(foo) ON db.table* TO john -- 誤り
+GRANT SELECT ON *.my_table TO john -- wrong
+GRANT SELECT ON foo*bar TO john -- wrong
+GRANT SELECT ON *suffix TO john -- wrong
+GRANT SELECT(foo) ON db.table* TO john -- wrong
 ```
-
 
 ## 権限 {#privileges}
 
@@ -399,7 +393,6 @@ GRANT SELECT(x,y) ON db.table TO john
 
 この権限により、`john` は `db.table` の `x` カラムおよび/または `y` カラムのデータを含む任意の `SELECT` クエリを実行できます。たとえば、`SELECT x FROM db.table` です。`john` は `SELECT z FROM db.table` を実行することはできません。`SELECT * FROM db.table` も実行できません。このクエリを処理する際、ClickHouse は `x` や `y` であっても一切データを返しません。唯一の例外は、テーブルが `x` と `y` カラムのみを含む場合であり、この場合は ClickHouse はすべてのデータを返します。
 
-
 ### INSERT {#insert}
 
 [INSERT](../../sql-reference/statements/insert-into.md) クエリの実行を許可します。
@@ -417,7 +410,6 @@ GRANT INSERT(x,y) ON db.table TO john
 ```
 
 付与された権限により、`john` は `db.table` の `x` カラムおよび `y` カラムの一方または両方にデータを挿入できます。
-
 
 ### ALTER {#alter}
 
@@ -469,7 +461,7 @@ GRANT INSERT(x,y) ON db.table TO john
 
 ### BACKUP {#backup}
 
-クエリ内で [`BACKUP`] を実行できるようにします。バックアップの詳細については「[Backup and Restore](../../operations/backup.md)」を参照してください。
+クエリ内で [`BACKUP`] を実行できるようにします。バックアップの詳細については「[Backup and Restore](/operations/backup/overview)」を参照してください。
 
 ### CREATE {#create}
 
@@ -499,7 +491,7 @@ GRANT CLUSTER ON *.* TO <username>
 `CLUSTER` 権限を付与せずにクエリ内で `ON CLUSTER` を使用しようとすると、次のエラーが発生します：
 
 ```text
-権限が不足しています。このクエリを実行するには、CLUSTER ON *.* の権限が必要です。 
+Not enough privileges. To execute this query, it's necessary to have the grant CLUSTER ON *.*. 
 ```
 
 デフォルトの動作は、`config.xml` の `access_control_improvements` セクション内にある `on_cluster_queries_require_cluster_grant` を `false` にすることで変更できます（下記参照）。
@@ -509,7 +501,6 @@ GRANT CLUSTER ON *.* TO <username>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
 </access_control_improvements>
 ```
-
 
 ### DROP {#drop}
 
@@ -691,13 +682,13 @@ GRANT READ ON S3('regexp_pattern') TO user
 特定の S3 バケットパスへのアクセス権を付与:
 
 ```sql
--- ユーザーに s3://foo/ パスからの読み取りのみを許可
+-- Allow user to read only from s3://foo/ paths
 GRANT READ ON S3('s3://foo/.*') TO john
 
--- ユーザーに特定のファイルパターンからの読み取りを許可
+-- Allow user to read from specific file patterns
 GRANT READ ON S3('s3://mybucket/data/2024/.*\.parquet') TO analyst
 
--- 同じユーザーに複数のフィルターを付与可能
+-- Multiple filters can be granted to the same user
 GRANT READ ON S3('s3://foo/.*') TO john
 GRANT READ ON S3('s3://bar/.*') TO john
 ```
@@ -728,10 +719,10 @@ GRANT READ ON URL('https://www\.google\.com') TO john;
 元の権限付与に `WITH GRANT OPTION` が含まれている場合、`GRANT CURRENT GRANTS` を使用して再度付与できます:
 
 ```sql
--- GRANT OPTIONを使用した元の権限付与
+-- Original grant with GRANT OPTION
 GRANT READ ON S3('s3://foo/.*') TO john WITH GRANT OPTION
 
--- Johnは他のユーザーにこのアクセス権を再付与できるようになります
+-- John can now regrant this access to others
 GRANT CURRENT GRANTS(READ ON S3) TO alice
 ```
 
@@ -739,7 +730,6 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 * **部分的な取り消しはできません:** 付与したフィルターパターンの一部だけを取り消すことはできません。必要な場合は、付与全体をいったん取り消し、新しいパターンで改めて付与する必要があります。
 * **ワイルドカードを使用した GRANT はできません:** `GRANT READ ON *('regexp')` のような、ワイルドカードのみを用いたパターンは使用できません。必ず特定のソースを指定する必要があります。
-
 
 ### dictGet {#dictget}
 

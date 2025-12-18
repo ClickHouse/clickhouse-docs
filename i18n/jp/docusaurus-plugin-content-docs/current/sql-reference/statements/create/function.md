@@ -12,7 +12,7 @@ doc_type: 'reference'
 **構文**
 
 ```sql
-CREATE FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
+CREATE [OR REPLACE] FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> expression
 ```
 
 関数は任意の数のパラメータを取ることができます。
@@ -59,6 +59,27 @@ SELECT number, parity_str(number) FROM numbers(3);
 │      1 │ odd                                  │
 │      2 │ even                                 │
 └────────┴──────────────────────────────────────┘
+```
+
+既存の UDF の置き換え:
+
+```sql
+CREATE FUNCTION exampleReplaceFunction AS frame -> frame;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+CREATE OR REPLACE FUNCTION exampleReplaceFunction AS frame -> frame + 1;
+SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
+```
+
+結果：
+
+```text
+┌─create_query─────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> frame │
+└──────────────────────────────────────────────────────────┘
+
+┌─create_query───────────────────────────────────────────────────┐
+│ CREATE FUNCTION exampleReplaceFunction AS frame -> (frame + 1) │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 

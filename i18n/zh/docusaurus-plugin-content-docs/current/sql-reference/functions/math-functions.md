@@ -57,7 +57,7 @@ SELECT acos(0.5);
 **语法**
 
 ```sql
-反双双曲余弧函数 acosh(x)
+acosh(x)
 ```
 
 **参数**
@@ -597,7 +597,7 @@ SELECT exp2(3);
 **语法**
 
 ```sql
-阶乘(n)
+factorial(n)
 ```
 
 **参数**
@@ -957,7 +957,7 @@ SELECT pow(2, 3);
 **语法**
 
 ```sql
-弧度(x)
+radians(x)
 ```
 
 **参数**
@@ -989,7 +989,7 @@ SELECT radians(180)
 **语法**
 
 ```sql
-符号(x)
+sign(x)
 ```
 
 **参数**

@@ -23,7 +23,6 @@ doc_type: 'reference'
 </protocols>
 ```
 
-
 ### 配置协议层 {#basic-modules-define-protocol-layers}
 
 可以使用基本模块（basic modules）来定义协议层。例如，要定义一个
@@ -32,7 +31,7 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 ```xml
 <protocols>
 
-  <!-- plain_http 模块 -->
+  <!-- plain_http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
@@ -58,7 +57,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 `gRPC` 协议处理器尚未在 `Composable protocols` 中实现。
 :::
 
-
 ### 配置端点 {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
 端点（监听端口）由 `<port>` 标签和可选的 `<host>` 标签表示。
@@ -82,7 +80,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 如果省略 `<host>` 标签，则会使用根级配置中的 `<listen_host>`。
 
-
 ### 配置层级序列 {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
 
 层级序列是通过使用 `<impl>` 标签并引用另一个模块来定义的。例如，要在我们的 plain&#95;http 模块之上配置一个 TLS 层，可以进一步按如下方式修改配置：
@@ -90,12 +87,12 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 ```xml
 <protocols>
 
-  <!-- http 模块 -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- https 模块,配置为在 plain_http 模块之上的 TLS 层 -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>
@@ -105,7 +102,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 </protocols>
 ```
-
 
 ### 将端点关联到层 {#endpoint-can-be-attached-to-any-layer}
 
@@ -129,7 +125,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 </protocols>
 ```
-
 
 ### 定义附加端点 {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
 
@@ -159,7 +154,6 @@ HTTP 层，可以在 `protocols` 配置节中添加一个新的基本模块（ba
 
 </protocols>
 ```
-
 
 ### 指定额外层参数 {#some-modules-can-contain-specific-for-its-layer-parameters}
 

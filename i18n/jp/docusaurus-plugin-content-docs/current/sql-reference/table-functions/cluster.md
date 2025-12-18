@@ -7,8 +7,6 @@ title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
 
-
-
 # clusterAllReplicas テーブル関数 {#clusterallreplicas-table-function}
 
 `remote_servers` セクションで設定されたクラスター内のすべてのシャードに、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずにアクセスできます。各シャードにつき 1 つのレプリカのみがクエリされます。
@@ -19,11 +17,7 @@ doc_type: 'reference'
 利用可能なすべてのクラスターは、[system.clusters](../../operations/system-tables/clusters.md) テーブルに一覧表示されています。
 :::
 
-
-
 ## 構文 {#syntax}
-
-
 
 ```sql
 cluster(['cluster_name', db.table, sharding_key])
@@ -40,12 +34,9 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 | `db.table` or `db`, `table` | データベース名とテーブル名。                                                                      |
 | `sharding_key`              | シャーディングキー。省略可能。クラスタに複数のシャードがある場合に指定する必要があります。                                       |
 
-
 ## 戻り値 {#returned_value}
 
 クラスタからのデータセット。
-
-
 
 ## マクロの使用 {#using_macros}
 
@@ -56,7 +47,6 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 ```sql
 SELECT * FROM cluster('{cluster}', default.example_table);
 ```
-
 
 ## 使用方法と推奨事項 {#usage_recommendations}
 
@@ -69,8 +59,6 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 - 手動で行う、頻度の低い分散リクエスト
 
 `host`、`port`、`user`、`password`、`compression`、`secure` といった接続設定は、`<remote_servers>` 設定セクションから取得されます。詳細は [Distributed engine](../../engines/table-engines/special/distributed.md) を参照してください。
-
-
 
 ## 関連項目 {#related}
 

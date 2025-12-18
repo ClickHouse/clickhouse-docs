@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['parquet', 'колоночный формат', 'формат данных', 'сжатие', 'apache parquet']
 ---
 
-
-
 # Работа с Parquet в ClickHouse {#working-with-parquet-in-clickhouse}
 
 Parquet — это эффективный файловый формат для хранения данных в колоночном формате.
@@ -22,8 +20,6 @@ ClickHouse поддерживает как чтение, так и запись 
 Если вы используете ClickHouse Server или ClickHouse Cloud через `clickhouse client`, чтение будет выполняться из пути, относительно директории `/var/lib/clickhouse/user_files/` на сервере.
 :::
 
-
-
 ## Импорт из Parquet {#importing-from-parquet}
 
 Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](assets/data.parquet):
@@ -35,11 +31,11 @@ DESCRIBE TABLE file('data.parquet', Parquet);
 Мы использовали [Parquet](/interfaces/formats/Parquet) в качестве второго аргумента, чтобы указать ClickHouse формат файла. Будут выведены столбцы и их типы:
 
 ```response
-┌─имя──┬─тип──────────────┬─тип_по_умолчанию─┬─выражение_по_умолчанию─┬─комментарий─┬─выражение_кодека─┬─выражение_ttl─┐
-│ path │ Nullable(String) │                  │                         │             │                  │               │
-│ date │ Nullable(String) │                  │                         │             │                  │               │
-│ hits │ Nullable(Int64)  │                  │                         │             │                  │               │
-└──────┴──────────────────┴──────────────────┴─────────────────────────┴─────────────┴──────────────────┴───────────────┘
+┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path │ Nullable(String) │              │                    │         │                  │                │
+│ date │ Nullable(String) │              │                    │         │                  │                │
+│ hits │ Nullable(Int64)  │              │                    │         │                  │                │
+└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 Мы также можем исследовать файлы перед импортом данных, используя всю мощь SQL:
@@ -62,7 +58,6 @@ LIMIT 3;
 Можно не указывать формат явно для `file()` и `INFILE`/`OUTFILE`.
 В этом случае ClickHouse автоматически определит формат по расширению файла.
 :::
-
 
 ## Импорт в существующую таблицу {#importing-to-an-existing-table}
 
@@ -102,7 +97,6 @@ LIMIT 5;
 
 Обратите внимание, что ClickHouse автоматически преобразовал строки формата Parquet (в столбце `date`) в тип `Date`. Это происходит потому, что ClickHouse выполняет приведение типов на основе типов в целевой таблице.
 
-
 ## Загрузка локального файла на удалённый сервер {#inserting-a-local-file-to-remote-server}
 
 Если вы хотите загрузить локальный файл Parquet на удалённый сервер ClickHouse, вы можете сделать это, передав его содержимое в `clickhouse-client` через pipe, как показано ниже:
@@ -110,7 +104,6 @@ LIMIT 5;
 ```sql
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
-
 
 ## Создание новых таблиц из файлов Parquet {#creating-new-tables-from-parquet-files}
 
@@ -131,15 +124,14 @@ DESCRIBE TABLE imported_from_parquet;
 ```
 
 ```response
-┌─имя──┬─тип──────────────┬─тип_по_умолчанию─┬─выражение_по_умолчанию─┬─комментарий─┬─выражение_кодека─┬─выражение_ttl─┐
-│ path │ Nullable(String) │                  │                         │             │                  │               │
-│ date │ Nullable(String) │                  │                         │             │                  │               │
-│ hits │ Nullable(Int64)  │                  │                         │             │                  │               │
-└──────┴──────────────────┴──────────────────┴─────────────────────────┴─────────────┴──────────────────┴───────────────┘
+┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path │ Nullable(String) │              │                    │         │                  │                │
+│ date │ Nullable(String) │              │                    │         │                  │                │
+│ hits │ Nullable(Int64)  │              │                    │         │                  │                │
+└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 По умолчанию ClickHouse строго проверяет имена столбцов, их типы и значения. Но иногда при импорте можно игнорировать несуществующие столбцы или неподдерживаемые значения. Это можно настроить с помощью [настроек Parquet](/interfaces/formats/Parquet#format-settings).
-
 
 ## Экспорт в формат Parquet {#exporting-to-parquet-format}
 
@@ -157,7 +149,6 @@ FORMAT Parquet
 ```
 
 В результате в текущем рабочем каталоге будет создан файл `export.parquet`.
-
 
 ## Типы данных ClickHouse и Parquet {#clickhouse-and-parquet-data-types}
 
@@ -182,7 +173,7 @@ SELECT * FROM file('time.parquet', Parquet);
 ```sql
 SELECT
     n,
-    toDateTime(time)                 <--- преобразование целого числа в DateTime
+    toDateTime(time)                 <--- int to time
 FROM file('time.parquet', Parquet);
 ```
 
@@ -195,7 +186,6 @@ FROM file('time.parquet', Parquet);
 │ 4 │ 2023-01-13 15:10:07 │
 └───┴─────────────────────┘
 ```
-
 
 ## Дополнительные материалы {#further-reading}
 

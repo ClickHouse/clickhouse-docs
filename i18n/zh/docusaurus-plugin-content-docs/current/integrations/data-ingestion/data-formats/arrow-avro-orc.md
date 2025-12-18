@@ -8,13 +8,9 @@ keywords: ['Apache Avro', 'Apache Arrow', 'ORC 格式', '列式格式', '大数�
 doc_type: 'guide'
 ---
 
-
-
 # 在 ClickHouse 中处理 Avro、Arrow 和 ORC 数据 {#working-with-avro-arrow-and-orc-data-in-clickhouse}
 
 Apache 已发布了多种在分析环境中广泛使用的数据格式，其中包括流行的 [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/) 和 [ORC](https://orc.apache.org/)。ClickHouse 支持使用上述任意一种格式导入和导出数据。
-
-
 
 ## 以 Avro 格式导入和导出 {#importing-and-exporting-in-avro-format}
 
@@ -92,7 +88,6 @@ kafka_group_name = 'some_group',
 kafka_format = 'AvroConfluent';
 ```
 
-
 ## 使用 Arrow 格式 {#working-with-arrow-format}
 
 另一种列式数据格式是 [Apache Arrow](https://arrow.apache.org/)，ClickHouse 也支持使用它进行导入和导出。要从 [Arrow 文件](assets/data.arrow) 导入数据，我们使用 [Arrow](/interfaces/formats/Arrow) 格式：
@@ -133,7 +128,7 @@ clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStrea
 ```
 
 ```response
-                           路径  命中次数
+                           path  hits
 0       b'Akiba_Hebrew_Academy'   241
 1           b'Aegithina_tiphia'    34
 2  b'1971-72_Utah_Stars_season'     1
@@ -146,7 +141,6 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 ```
 
 我们使用了 `arrow-stream` 作为 Arrow 流式数据的一个可能来源。
-
 
 ## 导入和导出 ORC 数据 {#importing-and-exporting-orc-data}
 
@@ -164,7 +158,6 @@ FORMAT ORC;
 ```
 
 另外，还应查看[数据类型匹配](/interfaces/formats/ORC)以及[附加设置](/interfaces/formats/Parquet#format-settings)，以便对导出和导入进行调优。
-
 
 ## 延伸阅读 {#further-reading}
 

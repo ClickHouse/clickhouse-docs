@@ -9,20 +9,15 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
 # ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
 
 添加、修改或删除表注释（无论之前是否设置过）。表注释的更改会同时反映在 [`system.tables`](../../../operations/system-tables/tables.md) 和 `SHOW CREATE TABLE` 查询的结果中。
-
-
 
 ## 语法 {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
-
 
 ## 示例 {#examples}
 
@@ -35,14 +30,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT '临时表';
+COMMENT 'The temporary table';
 ```
 
 若要修改表的注释：
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT '表的新注释';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 要查看已修改的注释：
@@ -55,7 +50,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ 表上的新注释           │
+│ new comment on a table │
 └────────────────────────┘
 ```
 
@@ -74,11 +69,10 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 ```
 
 ```text title="Response"
-┌─注释─┐
-│      │
-└──────┘
+┌─comment─┐
+│         │
+└─────────┘
 ```
-
 
 ## 注意事项 {#caveats}
 
@@ -86,8 +80,6 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 修改注释只会作用于单个副本。
 
 该功能自 23.9 版本起可用。在更早的 ClickHouse 版本中不可用。
-
-
 
 ## 相关内容 {#related-content}
 

@@ -79,37 +79,37 @@ last_updated                                           2024-07-15T15:50:08.67135
 last_updated_360                                                             None
 match_week                                                                      6
 competition_competition_id                                                    223
-competition_country_name                                            Южная Америка
-competition_competition_name                                         Кубок Америки
+competition_country_name                                            South America
+competition_competition_name                                         Copa America
 season_season_id                                                              282
 season_season_name                                                           2024
 home_team_home_team_id                                                        779
-home_team_home_team_name                                                Аргентина
-home_team_home_team_gender                                                   мужской
+home_team_home_team_name                                                Argentina
+home_team_home_team_gender                                                   male
 home_team_home_team_group                                                    None
 home_team_country_id                                                           11
-home_team_country_name                                                  Аргентина
+home_team_country_name                                                  Argentina
 home_team_managers              [{'id': 5677, 'name': 'Lionel Sebastián Scalon...
 away_team_away_team_id                                                        769
-away_team_away_team_name                                                 Колумбия
-away_team_away_team_gender                                                   мужской
+away_team_away_team_name                                                 Colombia
+away_team_away_team_gender                                                   male
 away_team_away_team_group                                                    None
 away_team_country_id                                                           49
-away_team_country_name                                                   Колумбия
+away_team_country_name                                                   Colombia
 away_team_managers              [{'id': 5905, 'name': 'Néstor Gabriel Lorenzo'...
 metadata_data_version                                                       1.1.0
 metadata_shot_fidelity_version                                                  2
 metadata_xy_fidelity_version                                                    2
 competition_stage_id                                                           26
-competition_stage_name                                                      Финал
+competition_stage_name                                                      Final
 stadium_id                                                                   5337
 stadium_name                                                    Hard Rock Stadium
 stadium_country_id                                                            241
-stadium_country_name                                                          США
+stadium_country_name                                     United States of America
 referee_id                                                                   2638
 referee_name                                                        Raphael Claus
 referee_country_id                                                             31
-referee_country_name                                                     Бразилия
+referee_country_name                                                       Brazil
 Name: 0, dtype: object
 ```
 
@@ -142,13 +142,13 @@ second                                                                  0
 possession                                                              1
 duration                                                              0.0
 type_id                                                                35
-type_name                                                     Стартовый состав
+type_name                                                     Starting XI
 possession_team_id                                                    779
-possession_team_name                                            Аргентина
+possession_team_name                                            Argentina
 play_pattern_id                                                         1
-play_pattern_name                                            Регулярная игра
+play_pattern_name                                            Regular Play
 team_id                                                               779
-team_name                                                       Аргентина
+team_name                                                       Argentina
 tactics_formation                                                   442.0
 tactics_lineup          [{'player': {'id': 6909, 'name': 'Damián Emili...
 match_id                                                          3943077
@@ -389,8 +389,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    Аргентина
-away_team_away_team_name     Колумбия
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527

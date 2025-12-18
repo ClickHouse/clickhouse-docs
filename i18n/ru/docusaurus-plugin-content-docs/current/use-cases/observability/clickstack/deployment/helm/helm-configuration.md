@@ -34,13 +34,11 @@ hyperdx:
 helm upgrade my-clickstack clickstack/clickstack -f values.yaml
 ```
 
-
 ### Метод 2: Обновление через `helm upgrade` с флагом `--set` {#api-key-set-flag}
 
 ```shell
-helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="ваш-api-ключ-здесь"
+helm upgrade my-clickstack clickstack/clickstack --set hyperdx.apiKey="your-api-key-here"
 ```
-
 
 ### Перезапустите поды, чтобы применить изменения {#restart-pods}
 
@@ -53,7 +51,6 @@ kubectl rollout restart deployment my-clickstack-clickstack-app my-clickstack-cl
 :::note
 Чарт автоматически создаёт секрет Kubernetes (`<release-name>-app-secrets`) с вашим API-ключом. Дополнительная настройка секрета не требуется, если вы не планируете использовать внешний секрет.
 :::
-
 
 ## Управление секретами {#secret-management}
 
@@ -83,7 +80,6 @@ data:
 kubectl apply -f secrets.yaml
 ```
 
-
 ### Создание пользовательского секрета {#creating-a-custom-secret}
 
 Создайте вручную пользовательский секрет Kubernetes:
@@ -92,7 +88,6 @@ kubectl apply -f secrets.yaml
 kubectl create secret generic hyperdx-secret \
   --from-literal=API_KEY=my-secret-api-key
 ```
-
 
 ### Ссылка на Secret в values.yaml {#referencing-a-secret}
 
@@ -105,7 +100,6 @@ hyperdx:
         key: API_KEY
 ```
 
-
 ## Настройка входного шлюза {#ingress-setup}
 
 Чтобы открыть доступ к интерфейсу и API HyperDX по доменному имени, включите конфигурацию входного шлюза в файле `values.yaml`.
@@ -114,7 +108,7 @@ hyperdx:
 
 ```yaml
 hyperdx:
-  frontendUrl: "https://hyperdx.yourdomain.com"  # Должен совпадать с хостом входного шлюза
+  frontendUrl: "https://hyperdx.yourdomain.com"  # Must match ingress host
   ingress:
     enabled: true
     host: "hyperdx.yourdomain.com"
@@ -123,7 +117,6 @@ hyperdx:
 :::note Важное примечание по конфигурации
 Значение `hyperdx.frontendUrl` должно совпадать с именем хоста входного шлюза и включать протокол (например, `https://hyperdx.yourdomain.com`). Это обеспечивает корректную работу всех сгенерированных ссылок, куки и перенаправлений.
 :::
-
 
 ### Включение TLS (HTTPS) {#enabling-tls}
 
@@ -148,7 +141,6 @@ hyperdx:
       enabled: true
       tlsSecretName: "hyperdx-tls"
 ```
-
 
 ### Пример конфигурации входного шлюза {#example-ingress-configuration}
 
@@ -181,7 +173,6 @@ spec:
       secretName: hyperdx-tls
 ```
 
-
 ### Частые проблемы с входным шлюзом {#common-ingress-pitfalls}
 
 **Конфигурация пути и переписывания (rewrite):**
@@ -206,7 +197,6 @@ spec:
 ```shell
 kubectl -n ingress-nginx get pods -l app.kubernetes.io/name=ingress-nginx -o jsonpath="{.items[0].spec.containers[0].image}"
 ```
-
 
 ## Входной шлюз для OTel collector {#otel-collector-ingress}
 
@@ -244,14 +234,13 @@ hyperdx:
 Если вам не нужно открывать OTel collector во внешний доступ, вы можете пропустить эту конфигурацию. Для большинства пользователей достаточно общей настройки входного шлюза.
 :::
 
-
 ## Диагностика проблем с входным шлюзом {#troubleshooting-ingress}
 
 **Проверьте ресурс входного шлюза:**
 
 ```shell
 kubectl get ingress -A
-kubectl describe ingress <имя-входного-шлюза>
+kubectl describe ingress <ingress-name>
 ```
 
 **Проверьте логи контроллера входного шлюза:**
@@ -266,7 +255,7 @@ kubectl logs -l app.kubernetes.io/name=ingress-nginx -n ingress-nginx
 
 ```shell
 curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
-# Должен вернуть Content-Type: application/javascript {#should-return-content-type-applicationjavascript}
+# Should return Content-Type: application/javascript
 ```
 
 **Инструменты разработчика браузера:**
@@ -281,7 +270,6 @@ curl -I https://hyperdx.yourdomain.com/_next/static/chunks/main-xxxx.js
 **Очистите кэш браузера и CDN:**
 
 * После изменений очистите кэш браузера и кэш CDN/прокси, чтобы избежать использования устаревших версий ресурсов
-
 
 ## Настройка значений {#customizing-values}
 
@@ -321,7 +309,6 @@ hyperdx:
 ```shell
 helm install my-clickstack clickstack/clickstack -f values.yaml
 ```
-
 
 ## Дальнейшие шаги {#next-steps}
 

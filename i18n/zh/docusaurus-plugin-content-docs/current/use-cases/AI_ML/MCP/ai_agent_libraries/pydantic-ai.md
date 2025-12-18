@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # 如何使用 ClickHouse MCP Server 构建 PydanticAI 代理 {#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server}
 
 在本指南中，您将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 代理，
@@ -20,8 +18,6 @@ doc_type: 'guide'
 :::note 示例 notebook
 该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) 中以 notebook 形式查阅。
 :::
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 安装库 {#install-libraries}
 
 通过运行以下命令来安装所需的库：
@@ -41,9 +36,8 @@ doc_type: 'guide'
 ```python
 pip install -q --upgrade pip
 pip install -q "pydantic-ai-slim[mcp]"
-pip install -q "pydantic-ai-slim[anthropic]" # 如果使用其他 LLM 提供商，请替换为对应的包
+pip install -q "pydantic-ai-slim[anthropic]" # replace with the appropriate package if using a different LLM provider
 ```
-
 
 ## 设置凭据 {#setup-credentials}
 
@@ -51,11 +45,11 @@ pip install -q "pydantic-ai-slim[anthropic]" # 如果使用其他 LLM 提供商�
 
 ```python
 import os, getpass
-os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("请输入 Anthropic API 密钥：")
+os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter Anthropic API Key:")
 ```
 
 ```response title="Response"
-请输入 Anthropic API 密钥：········
+Enter Anthropic API Key: ········
 ```
 
 :::note 使用其他 LLM 提供商
@@ -74,7 +68,6 @@ env = {
     "CLICKHOUSE_SECURE": "true"
 }
 ```
-
 
 ## 初始化 MCP Server 和 PydanticAI 代理 {#initialize-mcp}
 
@@ -98,40 +91,39 @@ server = MCPServerStdio(
 agent = Agent('anthropic:claude-sonnet-4-0', mcp_servers=[server])
 ```
 
-
 ## 向智能体提问 {#ask-agent}
 
 最后，你可以向智能体提出一个问题：
 
 ```python
 async with agent.run_mcp_servers():
-    result = await agent.run("谁为 ClickHouse 发起的 PR 最多？")
+    result = await agent.run("Who's done the most PRs for ClickHouse?")
     print(result.output)
 ```
 
 你会得到类似下面的响应：
 
-```response title="响应"
-基于 ClickHouse GitHub 仓库中的数据，以下是按创建拉取请求（pull request，简称 PR）数量统计的主要贡献者：
+```response title="Response"
+Based on the data from the ClickHouse GitHub repository, here are the top contributors by number of pull requests created:
 
-**按发起 PR 数量统计的 ClickHouse 主要贡献者：**
+**Top contributors to ClickHouse by PRs opened:**
 
-1. **alexey-milovidov** - 共发起 3,370 个 PR
-2. **azat** - 共发起 1,905 个 PR
-3. **rschu1ze** - 共发起 979 个 PR
-4. **alesapin** - 共发起 947 个 PR
-5. **tavplubix** - 共发起 896 个 PR
-6. **kssenii** - 共发起 871 个 PR
-7. **Avogar** - 共发起 805 个 PR
-8. **KochetovNicolai** - 共发起 700 个 PR
-9. **Algunenano** - 共发起 658 个 PR
-10. **kitaisreal** - 共发起 630 个 PR
+1. **alexey-milovidov** - 3,370 PRs opened
+2. **azat** - 1,905 PRs opened  
+3. **rschu1ze** - 979 PRs opened
+4. **alesapin** - 947 PRs opened
+5. **tavplubix** - 896 PRs opened
+6. **kssenii** - 871 PRs opened
+7. **Avogar** - 805 PRs opened
+8. **KochetovNicolai** - 700 PRs opened
+9. **Algunenano** - 658 PRs opened
+10. **kitaisreal** - 630 PRs opened
 
-**Alexey Milovidov** 无疑是迄今为止最活跃的贡献者，他发起了超过 3,370 个拉取请求，远高于其他任何贡献者。这也很好理解，因为 Alexey Milovidov 是 ClickHouse 的创始人和核心开发者之一。
+**Alexey Milovidov** stands out as by far the most active contributor with over 3,370 pull requests opened, which is significantly more than any other contributor. This makes sense as Alexey Milovidov is one of the founders and lead developers of ClickHouse.
 
-数据还显示，alexey-milovidov 在管理 PR 方面也非常活跃，除了创建自己的 PR 外，还记录了 12,818 次“关闭（closed）”事件（很可能是对其他贡献者的 PR 进行评审并关闭）。
+The data also shows that alexey-milovidov has been very active in managing PRs, with 12,818 "closed" events (likely reviewing and closing PRs from other contributors) in addition to creating his own PRs.
 
-需要说明的是，我过滤掉了负责自动化流程的机器人账户，只保留了人工贡献者的数据，以便为你提供关于谁为 ClickHouse 提交 PR 最多的更有参考价值的答案。
+It's worth noting that I filtered out various robot/bot accounts that handle automated processes, focusing on human contributors to give you the most meaningful answer about who has contributed the most PRs to ClickHouse.
 ```
 
 </VerticalStepper>

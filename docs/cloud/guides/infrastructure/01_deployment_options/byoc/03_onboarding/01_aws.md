@@ -59,9 +59,10 @@ After creating the CloudFormation stack, you will be prompted to set up the infr
 By default, ClickHouse Cloud will provision a dedicated VPC for better isolation in your BYOC deployment. However, you can also use an existing VPC in your account. This requires specific configuration and must be coordinated through ClickHouse Support.
 
 **Configure Your Existing VPC**
-1. Allocate at least 3 private subnets across 3 different availability zones for ClickHouse Cloud to use.
-2. Ensure each subnet has a minimum CIDR range of `/23` (e.g., 10.0.0.0/23) to provide sufficient IP addresses for the ClickHouse deployment.
-3. Add the tag `kubernetes.io/role/internal-elb=1` to each subnet to enable proper load balancer configuration.
+1. Tag the VPC with `clickhouse-byoc="true"`.
+2. Allocate at least 3 private subnets across 3 different availability zones for ClickHouse Cloud to use.
+3. Ensure each subnet has a minimum CIDR range of `/23` (e.g., 10.0.0.0/23) to provide sufficient IP addresses for the ClickHouse deployment.
+4. Add the tag `kubernetes.io/role/internal-elb=1` and `clickhouse-byoc="true"` to each subnet to enable proper load balancer configuration.
 
 <br />
 

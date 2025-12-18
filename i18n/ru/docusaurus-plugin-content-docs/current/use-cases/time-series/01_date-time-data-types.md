@@ -39,7 +39,7 @@ ENGINE = MergeTree
 ORDER BY tuple();
 ```
 
-Мы можем использовать функцию [`now()`](/sql-reference/functions/date-time-functions#now) для получения текущего времени и [`now64()`](/sql-reference/functions/date-time-functions#now64), чтобы получить его с заданной точностью, переданной первым аргументом.
+Мы можем использовать функцию [`now()`](/sql-reference/functions/date-time-functions#now) для получения текущего времени и [`now64()`](/sql-reference/functions/date-time-functions#now64) — для получения значения с заданной точностью, определяемой первым аргументом.
 
 ```sql
 INSERT INTO dates 
@@ -50,7 +50,7 @@ SELECT now(),
        now64(9) + toIntervalYear(200);
 ```
 
-Это заполнит столбцы значениями времени в зависимости от их типа:
+Это заполнит столбцы временными значениями в соответствии с их типом:
 
 ```sql
 SELECT * FROM dates
@@ -137,7 +137,7 @@ dt64_2: 2022-12-12 12:13:15.123456789
 
 ClickHouse также предоставляет набор функций, которые позволяют преобразовывать значения между различными типами данных.
 
-Например, мы можем использовать [`toDate`](/sql-reference/functions/type-conversion-functions#todate), чтобы преобразовать значение типа `DateTime` в тип `Date`:
+Например, мы можем использовать [`toDate`](/sql-reference/functions/type-conversion-functions#toDate), чтобы преобразовать значение типа `DateTime` в тип `Date`:
 
 ```sql
 SELECT
@@ -157,7 +157,7 @@ date_only:                2025-03-12
 toTypeName(date_only):    Date
 ```
 
-Для преобразования `DateTime` в `DateTime64` можно использовать функцию [`toDateTime64`](/sql-reference/functions/type-conversion-functions#todatetime64):
+Для преобразования `DateTime` в `DateTime64` можно использовать функцию [`toDateTime64`](/sql-reference/functions/type-conversion-functions#toDateTime64):
 
 ```sql
 SELECT
@@ -177,7 +177,7 @@ date_only:                2025-03-12 12:35:01.000
 toTypeName(date_only):    DateTime64(3)
 ```
 
-Также можно использовать [`toDateTime`](/sql-reference/functions/type-conversion-functions#todatetime), чтобы преобразовать `Date` или `DateTime64` обратно в `DateTime`:
+Также можно использовать [`toDateTime`](/sql-reference/functions/type-conversion-functions#toDateTime), чтобы преобразовать `Date` или `DateTime64` обратно в `DateTime`:
 
 ```sql
 SELECT

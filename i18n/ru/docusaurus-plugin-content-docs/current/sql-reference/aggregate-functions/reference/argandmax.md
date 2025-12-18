@@ -38,11 +38,11 @@ argAndMax(arg, val)
 Входная таблица:
 
 ```text
-┌─пользователь─┬─зарплата─┐
-│ директор     │     5000 │
-│ менеджер     │     3000 │
-│ работник     │     1000 │
-└──────────────┴──────────┘
+┌─user─────┬─salary─┐
+│ director │   5000 │
+│ manager  │   3000 │
+│ worker   │   1000 │
+└──────────┴────────┘
 ```
 
 Запрос:
@@ -83,32 +83,32 @@ SELECT * FROM test;
 
 SELECT argMax(a, b), argAndMax(a, b), max(b) FROM test;
 ┌─argMax(a, b)─┬─argAndMax(a, b)─┬─max(b)─┐
-│ b            │ ('b',2)         │      3 │ -- argMax = b, так как это первое не-NULL значение; max(b) взято из другой строки!
+│ b            │ ('b',2)         │      3 │ -- argMax = b because it the first not Null value, max(b) is from another row!
 └──────────────┴─────────────────┴────────┘
 
 SELECT argAndMax(tuple(a), b) FROM test;
 ┌─argAndMax((a), b)─┐
-│ ((NULL),3)        │-- `Tuple`, содержащий только значение `NULL`, сам не является `NULL`, поэтому агрегатные функции не пропустят эту строку из-за данного значения `NULL`
+│ ((NULL),3)        │-- The a `Tuple` that contains only a `NULL` value is not `NULL`, so the aggregate functions won't skip that row because of that `NULL` value
 └───────────────────┘
 
 SELECT (argMax((a, b), b) as t).1 argMaxA, t.2 argMaxB FROM test;
 ┌─argMaxA──┬─argMaxB─┐
-│ (NULL,3) │       3 │ -- можно использовать Tuple и получить оба столбца (все — tuple(*)) для соответствующего max(b)
+│ (NULL,3) │       3 │ -- you can use Tuple and get both (all - tuple(*)) columns for the according max(b)
 └──────────┴─────────┘
 
 SELECT argAndMax(a, b), max(b) FROM test WHERE a IS NULL AND b IS NULL;
 ┌─argAndMax(a, b)─┬─max(b)─┐
-│ ('',0)          │   ᴺᵁᴸᴸ │-- Все агрегируемые строки содержат хотя бы одно значение `NULL` из-за фильтра, поэтому все строки пропускаются, следовательно, результат будет `NULL`
+│ ('',0)          │   ᴺᵁᴸᴸ │-- All aggregated rows contains at least one `NULL` value because of the filter, so all rows are skipped, therefore the result will be `NULL`
 └─────────────────┴────────┘
 
 SELECT argAndMax(a, (b,a)) FROM test;
 ┌─argAndMax(a, (b, a))─┐
-│ ('c',(2,'c'))        │ -- Имеется две строки с b=2; `Tuple` в `Max` позволяет получить не первый `arg`
+│ ('c',(2,'c'))        │ -- There are two rows with b=2, `Tuple` in the `Max` allows to get not the first `arg`
 └──────────────────────┘
 
 SELECT argAndMax(a, tuple(b)) FROM test;
 ┌─argAndMax(a, (b))─┐
-│ ('b',(2))         │ -- `Tuple` можно использовать в `Max`, чтобы не пропускать NULL-значения в `Max`
+│ ('b',(2))         │ -- `Tuple` can be used in `Max` to not skip Nulls in `Max`
 └───────────────────┘
 ```
 

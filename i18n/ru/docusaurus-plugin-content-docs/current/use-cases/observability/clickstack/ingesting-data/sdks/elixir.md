@@ -36,27 +36,25 @@ def deps do
 end
 ```
 
-
 ### Настройте логгер {#configure-logger}
 
 Добавьте следующее в файл `config.exs`:
 
 ```elixir
-# config/releases.exs {#configreleasesexs}
+# config/releases.exs
 
 config :logger,
   level: :info,
   backends: [:console, {Hyperdx.Backend, :hyperdx}]
 ```
 
-
 ### Настройка переменных окружения {#configure-environment-variables}
 
 После этого вам нужно будет настроить следующие переменные окружения в оболочке, чтобы отправлять телеметрию в ClickStack:
 
 ```shell
-export HYPERDX_API_KEY='<ВАШ_API_КЛЮЧ_ДЛЯ_ПРИЕМА_ДАННЫХ>' \
-OTEL_SERVICE_NAME='<НАЗВАНИЕ_ВАШЕГО_ПРИЛОЖЕНИЯ_ИЛИ_СЕРВИСА>'
+export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации вашего сервиса

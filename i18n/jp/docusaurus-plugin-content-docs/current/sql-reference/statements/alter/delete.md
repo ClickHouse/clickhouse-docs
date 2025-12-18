@@ -7,12 +7,10 @@ title: 'ALTER TABLE ... DELETE 文'
 doc_type: 'reference'
 ---
 
-
-
 # ALTER TABLE ... DELETE 文 {#alter-table-delete-statement}
 
 ```sql
-ALTER TABLE [db.]table [ON CLUSTER cluster] WHERE 句 filter_expr を満たす行を削除
+ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 ```
 
 指定されたフィルタ式に一致するデータを削除します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] WHERE 句 filter_expr を満たす�
 * [Mutations](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER クエリの同期性](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 設定
-
 
 ## 関連コンテンツ {#related-content}
 

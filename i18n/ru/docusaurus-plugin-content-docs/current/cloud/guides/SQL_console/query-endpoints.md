@@ -17,7 +17,6 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # Настройка конечных точек API для запросов {#setting-up-query-api-endpoints}
 
 Возможность **Query API Endpoints** позволяет создавать конечные точки API непосредственно из любого сохранённого SQL-запроса в консоли ClickHouse Cloud. Вы сможете обращаться к конечным точкам API по HTTP для выполнения своих сохранённых запросов без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
@@ -135,7 +134,6 @@ GET /query-endpoints/{queryEndpointId}/run
 POST /query-endpoints/{queryEndpointId}/run
 ```
 
-
 ### HTTP-методы {#http-methods}
 
 | Метод | Сценарий использования | Параметры |
@@ -251,7 +249,6 @@ POST /query-endpoints/{queryEndpointId}/run
 SELECT database, name AS num_tables FROM system.tables LIMIT 3;
 ```
 
-
 #### Версия 1 {#version-1}
 
 <Tabs>
@@ -285,7 +282,7 @@ fetch(
   .catch((error) => console.error("Error:", error));
 ```
 
-```json title="Ответ"
+```json title="Response"
 {
   "data": {
     "columns": [
@@ -363,7 +360,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Запрос с переменными запроса и версией 2 в формате JSONCompactEachRow {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
+### Request with query variables and version 2 on JSONCompactEachRow format {#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format}
 
 **Query API Endpoint SQL:**
 
@@ -372,32 +369,35 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
 ```
 
 <Tabs>
-  <TabItem value="GET" label="GET (cURL)" default>
-    ```bash
+<TabItem value="GET" label="GET (cURL)" default>
+
+```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow&param_tableNameRegex=query.*&param_database=system' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
 
-    ```application/x-ndjson title="Ответ"
+```application/x-ndjson title="Ответ"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
 
-  <TabItem value="cURL" label="POST (cURL)">
-    ```bash
+</TabItem>
+<TabItem value="cURL" label="POST (cURL)">
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
     -H 'x-clickhouse-endpoint-version: 2' \
     -d '{ "queryVariables": { "tableNameRegex": "query.*", "database": "system" } }'
     ```
-  </TabItem>
+</TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript" default>
-    ```javascript
+<TabItem value="JavaScript" label="JavaScript" default>
+
+```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?format=JSONCompactEachRow",
       {
@@ -420,18 +420,17 @@ SELECT name, database FROM system.tables WHERE match(name, {tableNameRegex: Stri
       .catch((error) => console.error("Error:", error));
     ```
 
-    ```application/x-ndjson title="Ответ"
+```application/x-ndjson title="Ответ"
     ["query_cache", "system"]
     ["query_log", "system"]
     ["query_views_log", "system"]
     ```
-  </TabItem>
+</TabItem>
 </Tabs>
 
+### Request with array in the query variables that inserts data into a table {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
 
-### Запрос с массивом в переменных запроса, вставляющий данные в таблицу {#request-with-array-in-the-query-variables-that-inserts-data-into-a-table}
-
-**SQL таблицы:**
+**Table SQL:**
 
 ```SQL
 CREATE TABLE default.t_arr
@@ -442,15 +441,16 @@ ENGINE = MergeTree
 ORDER BY tuple()
 ```
 
-**SQL конечной точки API для запросов:**
+**Query API Endpoint SQL:**
 
 ```sql
 INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
 ```
 
 <Tabs>
-  <TabItem value="cURL" label="cURL" default>
-    ```bash
+<TabItem value="cURL" label="cURL" default>
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
@@ -486,41 +486,44 @@ INSERT INTO default.t_arr VALUES ({arr: Array(Array(Array(UInt32)))});
       .catch((error) => console.error("Ошибка:", error));
     ```
 
-    ```text title="Ответ"
+    ```text title="Response"
     OK
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Request with ClickHouse settings `max_threads` set to 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
 
-### Запрос с настройкой ClickHouse `max_threads`, равной 8 {#request-with-clickhouse-settings-max_threads-set-to-8}
-
-**SQL для конечной точки Query API:**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT * FROM system.tables;
 ```
 
 <Tabs>
-  <TabItem value="GET" label="GET (cURL)" default>
-    ```bash
+<TabItem value="GET" label="GET (cURL)" default>
+
+```bash
     curl 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'x-clickhouse-endpoint-version: 2'
     ```
-  </TabItem>
 
-  <TabItem value="cURL" label="POST (cURL)">
-    ```bash
+</TabItem>
+<TabItem value="cURL" label="POST (cURL)">
+
+```bash
     curl -X POST 'https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8,' \
     --user '<openApiKeyId:openApiKeySecret>' \
     -H 'Content-Type: application/json' \
     -H 'x-clickhouse-endpoint-version: 2' \
     ```
-  </TabItem>
 
-  <TabItem value="JavaScript" label="JavaScript">
-    ```javascript
+</TabItem>
+<TabItem value="JavaScript" label="JavaScript">
+
+```javascript
     fetch(
       "https://console-api.clickhouse.cloud/.api/query-endpoints/<endpoint id>/run?max_threads=8",
       {
@@ -536,21 +539,22 @@ SELECT * FROM system.tables;
       .then((data) => console.log(data))
       .catch((error) => console.error("Error:", error));
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
 
-### Выполнить запрос и разобрать ответ как поток` {#request-and-parse-the-response-as-a-stream}
-
-**SQL для конечной точки Query API:**
+**Query API Endpoint SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
 ```
 
 <Tabs>
-  <TabItem value="TypeScript" label="TypeScript" default>
-    ```typescript
+<TabItem value="TypeScript" label="TypeScript" default>
+
+```typescript
     async function fetchAndLogChunks(
       url: string,
       openApiKeyId: string,
@@ -600,20 +604,20 @@ SELECT name, database FROM system.tables;
     );
     ```
 
-    ```shell title="Вывод"
+```shell title="Вывод"
     > npx tsx index.ts
     > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
     > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
     ...
     > Stream ended.
     ```
-  </TabItem>
+
+</TabItem>
 </Tabs>
 
+### Insert a stream from a file into a table {#insert-a-stream-from-a-file-into-a-table}
 
-### Вставка потока из файла в таблицу {#insert-a-stream-from-a-file-into-a-table}
-
-Создайте файл `./samples/my_first_table_2024-07-11.csv` со следующим содержимым:
+Create a file `./samples/my_first_table_2024-07-11.csv` with the following content:
 
 ```csv
 "user_id","json","name"
@@ -621,7 +625,7 @@ SELECT name, database FROM system.tables;
 "2","{""name"":""Jane"",""age"":25}","Jane"
 ```
 
-**SQL-запрос для создания таблицы:**
+**Create Table SQL:**
 
 ```sql
 create table default.my_first_table
@@ -633,7 +637,7 @@ create table default.my_first_table
 ORDER BY user_id;
 ```
 
-**SQL для конечной точки API запросов:**
+**Query API Endpoint SQL:**
 
 ```sql
 INSERT INTO default.my_first_table

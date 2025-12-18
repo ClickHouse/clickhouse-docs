@@ -19,19 +19,19 @@ FORMAT Vertical
 ```
 
 ```text
-行 1:
+Row 1:
 ──────
 name:         production
 parent:       all
 create_query: CREATE WORKLOAD production IN `all` SETTINGS weight = 9
 
-行 2:
+Row 2:
 ──────
 name:         development
 parent:       all
 create_query: CREATE WORKLOAD development IN `all`
 
-行 3:
+Row 3:
 ──────
 name:         all
 parent:

@@ -45,19 +45,18 @@ Union
     Expression (Before ORDER BY and SELECT)
       Aggregating
         Expression (Before GROUP BY)
-          SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
+          SettingQuotaAndLimits (Set limits and quota after reading from storage)
             ReadFromStorage (SystemNumbers)
   Expression (Projection)
-    MergingSorted (ORDER BY用ソート済みストリームのマージ)
-      MergeSorting (ORDER BY用ソート済みブロックのマージ)
-        PartialSorting (ORDER BY用各ブロックのソート)
+    MergingSorted (Merge sorted streams for ORDER BY)
+      MergeSorting (Merge sorted blocks for ORDER BY)
+        PartialSorting (Sort each block for ORDER BY)
           Expression (Before ORDER BY and SELECT)
             Aggregating
               Expression (Before GROUP BY)
-                SettingQuotaAndLimits (ストレージ読み取り後の制限とクォータ設定)
+                SettingQuotaAndLimits (Set limits and quota after reading from storage)
                   ReadFromStorage (SystemNumbers)
 ```
-
 
 ## EXPLAIN の種類 {#explain-types}
 
@@ -100,7 +99,6 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
-
 
 ### EXPLAIN SYNTAX {#explain-syntax}
 
@@ -146,7 +144,6 @@ ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
 
-
 ### EXPLAIN QUERY TREE {#explain-query-tree}
 
 Settings:
@@ -176,21 +173,21 @@ QUERY id: 0
     TABLE id: 3, table_name: default.test_table
 ```
 
-
 ### EXPLAIN PLAN {#explain-plan}
 
 クエリプランのステップを出力します。
 
-設定:
+Settings:
 
 * `header` — ステップの出力ヘッダーを表示します。デフォルト: 0。
 * `description` — ステップの説明を表示します。デフォルト: 1。
-* `indexes` — 使用された索引と、適用された各索引ごとにフィルタリングされたパーツ数およびグラニュール数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされます。ClickHouse &gt;= v25.9 では、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ有用な出力を返します。
-* `projections` — 解析されたすべてのプロジェクションと、プロジェクションの主キー条件に基づくパーツレベルでのフィルタリングへの影響を表示します。各プロジェクションについて、このセクションには、そのプロジェクションの主キーを使って評価されたパーツ数、行数、マーク数、範囲数といった統計情報が含まれます。また、プロジェクション自体からデータを読み込むことなく、このフィルタリングによりスキップされたデータパーツの数も示します。プロジェクションが実際に読み取りに使用されたか、あるいはフィルタリングのために解析されたのみかは、`description` フィールドから判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされます。
-* `actions` — ステップ内のアクションに関する詳細情報を表示します。デフォルト: 0。
-* `json` — クエリプランのステップを [JSON](/interfaces/formats/JSON) 形式の行として表示します。デフォルト: 0。不要なエスケープを避けるため、[TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 形式の使用を推奨します。
-* `input_headers` - ステップの入力ヘッダーを表示します。デフォルト: 0。主に、入力・出力ヘッダーの不整合に関連する問題をデバッグする開発者にとって有用です。
-* `column_structure` - ヘッダー内のカラム名と型に加えて、そのカラムの構造も表示します。デフォルト: 0。主に、入力・出力ヘッダーの不整合に関連する問題をデバッグする開発者にとって有用です。
+* `indexes` — 使用された索引、それぞれの索引に対してフィルタリングされたパーツ数およびフィルタリングされたグラニュール数を表示します。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。ClickHouse &gt;= v25.9 以降、このステートメントは `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` と併用した場合にのみ有用な出力を表示します。
+* `projections` — 解析されたすべての PROJECTION と、その PROJECTION のプライマリキー条件に基づくパーツレベルのフィルタリングへの影響を表示します。各 PROJECTION について、このセクションには、PROJECTION のプライマリキーを使用して評価されたパーツ数、行数、マーク数、レンジ数などの統計情報が含まれます。また、PROJECTION 自体を読み取ることなく、このフィルタリングによってスキップされたデータパーツの数も表示します。PROJECTION が実際に読み取りに使用されたのか、それともフィルタリングのために解析されたのみなのかは、`description` フィールドによって判別できます。デフォルト: 0。[MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルでサポートされています。
+* `actions` — ステップのアクションに関する詳細情報を表示します。デフォルト: 0。
+* `json` — クエリプランのステップを [JSON](/interfaces/formats/JSON) 形式の 1 行として表示します。デフォルト: 0。[TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 形式を使用して不要なエスケープを避けることを推奨します。
+* `input_headers` — ステップの入力ヘッダーを表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
+* `column_structure` — 名前と型に加えて、ヘッダー内のカラム構造も表示します。デフォルト: 0。主に入力と出力のヘッダー不一致に関連する問題をデバッグする開発者にとって有用です。
+* `distributed` — 分散テーブルまたは並列レプリカに対してリモートノード上で実行されたクエリプランを表示します。デフォルト: 0。
 
 `json=1` の場合、ステップ名には一意なステップ識別子を含む追加のサフィックスが付きます。
 
@@ -211,10 +208,10 @@ Union
 ```
 
 :::note
-ステップおよびクエリのコスト見積もりには対応していません。
+ステップおよびクエリコストの見積もりには対応していません。
 :::
 
-`json = 1` の場合、クエリプランは JSON 形式で表現されます。各ノードは、必ず `Node Type` と `Plans` というキーを持つ辞書型オブジェクトです。`Node Type` はステップ名を表す文字列であり、`Plans` は子ステップの記述を含む配列です。ノードの種類と設定に応じて、その他の任意のキーが追加される場合があります。
+`json = 1` のとき、クエリプランは JSON 形式で表現されます。各ノードは、常に `Node Type` と `Plans` というキーを持つ Dictionary です。`Node Type` はステップ名を表す文字列です。`Plans` は子ステップの説明を含む配列です。その他の任意のキーが、ノードの種類や設定に応じて追加される場合があります。
 
 例:
 
@@ -255,7 +252,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-`description` = 1 の場合、ステップに `Description` キーが追加されます。
+`description` = 1 を指定すると、`Description` キーがステップに追加されます。
 
 ```json
 {
@@ -264,14 +261,13 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-`header` = 1 の場合、ステップに `Header` キーがカラム配列として追加されます。
+`header` = 1 の場合、`Header` キーがカラムの配列としてステップに追加されます。
 
-例:
+例：
 
 ```sql
 EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ```
-
 
 ```json
 [
@@ -378,7 +374,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Projections": [
   {
     "Name": "region_proj",
-    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(region in ['us_west', 'us_west'])",
     "Search Algorithm": "binary search",
     "Selected Parts": 3,
@@ -389,7 +385,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
   },
   {
     "Name": "user_id_proj",
-    "Description": "プロジェクションが分析され、パーツレベルのフィルタリングに使用されています",
+    "Description": "Projection has been analyzed and is used for part-level filtering",
     "Condition": "(user_id in [107, 107])",
     "Search Algorithm": "binary search",
     "Selected Parts": 1,
@@ -401,10 +397,9 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
+`actions` = 1 の場合、どのキーが追加されるかはステップの種類によって異なります。
 
-`actions` = 1 の場合、追加されるキーはステップタイプによって異なります。
-
-例:
+例：
 
 ```sql
 EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
@@ -461,6 +456,49 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+`distributed` = 1 の場合、出力にはローカルのクエリプランだけでなく、リモートノード上で実行されるクエリプランも含まれます。これは分散クエリの分析やデバッグに役立ちます。
+
+分散テーブルを用いた例：
+
+```sql
+EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
+```
+
+```sql
+Union
+  Expression ((Project names + (Projection + (Change column names to column identifiers + (Project names + Projection)))))
+    Filter ((WHERE + Change column names to column identifiers))
+      ReadFromSystemNumbers
+  Expression ((Project names + (Projection + Change column names to column identifiers)))
+    ReadFromRemote (Read from remote replica)
+      Expression ((Project names + Projection))
+        Filter ((WHERE + Change column names to column identifiers))
+          ReadFromSystemNumbers
+```
+
+並列レプリカの例:
+
+```sql
+SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
+
+EXPLAIN distributed=1 SELECT sum(number) FROM test_table GROUP BY number % 4;
+```
+
+```sql
+Expression ((Project names + Projection))
+  MergingAggregated
+    Union
+      Aggregating
+        Expression ((Before GROUP BY + Change column names to column identifiers))
+          ReadFromMergeTree (default.test_table)
+      ReadFromRemoteParallelReplicas
+        BlocksMarshalling
+          Aggregating
+            Expression ((Before GROUP BY + Change column names to column identifiers))
+              ReadFromMergeTree (default.test_table)
+```
+
+どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
 
 ### EXPLAIN PIPELINE {#explain-pipeline}
 
@@ -494,7 +532,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE {#explain-estimate}
 
 クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
@@ -522,7 +559,6 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE {#explain-table-override}
 

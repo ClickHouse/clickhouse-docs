@@ -13,7 +13,6 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
 # MySQL 接口 {#mysql-interface}
 
 ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原生 ClickHouse 连接器的客户端可以改用 MySQL 协议进行连接，并且已经与以下 BI 工具完成验证：
@@ -35,8 +34,6 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 为了更好地支持上述 BI 工具的 SQL 方言，ClickHouse 的 MySQL 接口会在设置 [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias) 的情况下隐式运行 SELECT 查询。
 这一行为无法关闭，并且在极少数边缘场景下，可能会导致发送到 ClickHouse 常规查询接口与 MySQL 查询接口的查询产生不同行为。
 ::::
-
-
 
 ## 在 ClickHouse Cloud 上启用 MySQL 接口 {#enabling-the-mysql-interface-on-clickhouse-cloud}
 
@@ -62,8 +59,6 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 
 <Image img={mysql3} alt="凭据界面 - 连接字符串" size="md"/>
 
-
-
 ## 在 ClickHouse Cloud 中创建多个 MySQL 用户 {#creating-multiple-mysql-users-in-clickhouse-cloud}
 
 默认情况下，系统内置了一个 `mysql4<subdomain>` 用户，它使用与 `default` 用户相同的密码。`<subdomain>` 部分是你的 ClickHouse Cloud 主机名的第一个片段。要与那些实现了安全连接、但在 TLS 握手中**不**提供 [SNI 信息](https://www.cloudflare.com/learning/ssl/what-is-sni) 的工具配合使用，就必须采用这种格式；否则在用户名中没有这个额外提示的情况下，无法完成内部路由（MySQL 控制台客户端就是此类工具之一）。
@@ -87,22 +82,22 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 2. 使用以下格式[创建用户](/sql-reference/statements/create/user)：`mysql4<subdomain>_<username>`（[见上文](#creating-multiple-mysql-users-in-clickhouse-cloud)）。密码必须为 double SHA1 格式。例如：
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$';
+    ```
 
    或者，如果你希望为该用户使用自定义配置文件：
 
    ```sql
-   CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
-   ```
+    CREATE USER mysql4foobar_team1 IDENTIFIED WITH double_sha1_password BY 'YourPassword42$' SETTINGS PROFILE 'my_custom_profile';
+    ```
 
    其中 `my_custom_profile` 是你之前创建的配置文件名称。
 
 3. 为新用户[授予](/sql-reference/statements/grant)与目标表或数据库交互所需的权限。例如，如果你只想授予对 `system.query_log` 的访问权限：
 
    ```sql
-   GRANT SELECT ON system.query_log TO mysql4foobar_team1;
-   ```
+    GRANT SELECT ON system.query_log TO mysql4foobar_team1;
+    ```
 
 4. 使用你创建的用户，通过 MySQL 接口连接到你的 ClickHouse Cloud 服务。
 
@@ -111,11 +106,10 @@ ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原�
 如果你创建了一个新的 MySQL 用户，并且在通过 MySQL CLI 客户端连接时看到如下错误：
 
 ```sql
-ERROR 2013 (HY000): 在'读取授权数据包'时与 MySQL 服务器失去连接,系统错误: 54
+ERROR 2013 (HY000): Lost connection to MySQL server at 'reading authorization packet', system error: 54
 ```
 
 在这种情况下，请确保用户名符合 `mysql4<subdomain>_<username>` 格式，如[上文](#creating-multiple-mysql-users-in-clickhouse-cloud)所述。
-
 
 ## 在自管 ClickHouse 上启用 MySQL 接口 {#enabling-the-mysql-interface-on-self-managed-clickhouse}
 
@@ -130,9 +124,8 @@ ERROR 2013 (HY000): 在'读取授权数据包'时与 MySQL 服务器失去连接
 启动 ClickHouse 服务器，并在日志中查找类似如下的信息，其中包含 “Listening for MySQL compatibility protocol”：
 
 ```bash
-{} <Information> Application: 正在监听 MySQL 兼容协议：127.0.0.1:9004
+{} <Information> Application: Listening for MySQL compatibility protocol: 127.0.0.1:9004
 ```
-
 
 ## 将 MySQL 连接到 ClickHouse {#connect-mysql-to-clickhouse}
 
@@ -151,16 +144,17 @@ $ mysql --protocol tcp -h 127.0.0.1 -u default -P 9004 default
 连接成功时的输出：
 
 ```text
-欢迎使用 MySQL 监视器。命令以 ; 或 \g 结束。
-您的 MySQL 连接 ID 为 4
-服务器版本:20.2.1.1-ClickHouse
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 20.2.1.1-ClickHouse
 
-版权所有 (c) 2000, 2019, Oracle 和/或其关联公司。保留所有权利。
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
 
-Oracle 是 Oracle Corporation 和/或其关联公司的注册商标。
-其他名称可能是其各自所有者的商标。
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-输入 'help;' 或 '\h' 获取帮助。输入 '\c' 清除当前输入语句。
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```

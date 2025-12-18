@@ -1,7 +1,5 @@
 # 在 Windows 上通过 WSL 安装 ClickHouse {#install-clickhouse-on-windows-with-wsl}
 
-
-
 ## 要求 {#requirements}
 
 :::note
@@ -9,7 +7,6 @@
 :::
 
 <VerticalStepper>
-
 
 ## 安装 WSL {#install-wsl}
 
@@ -22,9 +19,8 @@ wsl --install
 系统会提示你输入新的 UNIX 用户名和密码。输入所需的用户名和密码后，你应该会看到类似以下的消息：
 
 ```bash
-欢迎使用 Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 5.15.133.1-microsoft-WSL2 x86_64)
 ```
-
 
 ## 使用 curl 脚本安装 ClickHouse {#install-clickhouse-via-script-using-curl}
 
@@ -37,10 +33,9 @@ curl https://clickhouse.com/ | sh
 如果脚本运行成功，你将会看到如下消息：
 
 ```bash
-成功下载 ClickHouse 二进制文件后,可通过以下方式运行:
+Successfully downloaded the ClickHouse binary, you can run it as:
   ./clickhouse
 ```
-
 
 ## 启动 clickhouse-local {#start-clickhouse-local}
 
@@ -52,7 +47,6 @@ curl https://clickhouse.com/ | sh
 ./clickhouse
 ```
 
-
 ## 启动 clickhouse-server {#start-clickhouse-server}
 
 若要持久化数据，应运行 `clickhouse-server`。可以使用以下命令启动 ClickHouse 服务器：
@@ -60,7 +54,6 @@ curl https://clickhouse.com/ | sh
 ```bash
 ./clickhouse server
 ```
-
 
 ## Start clickhouse-client {#start-clickhouse-client}
 

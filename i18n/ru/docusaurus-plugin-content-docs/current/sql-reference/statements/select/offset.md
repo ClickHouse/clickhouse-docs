@@ -9,7 +9,11 @@ doc_type: 'reference'
 `OFFSET` и `FETCH` позволяют извлекать данные порциями. Они задают блок строк, который вы хотите получить одним запросом.
 
 ```sql
-OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+-- SQL Standard style:
+[OFFSET offset_row_count {ROW | ROWS}] [FETCH {FIRST | NEXT} fetch_row_count {ROW | ROWS} {ONLY | WITH TIES}]
+
+-- MySQL/PostgreSQL style:
+[LIMIT [n, ]m] [OFFSET offset_row_count]
 ```
 
 Значение `offset_row_count` или `fetch_row_count` может быть числом или литералом. Можно опустить `fetch_row_count`; по умолчанию оно равно 1.

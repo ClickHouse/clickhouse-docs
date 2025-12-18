@@ -37,7 +37,6 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 
 См. также [страницу crates.io](https://crates.io/crates/clickhouse).
 
-
 ## Возможности Cargo {#cargo-features}
 
 * `lz4` (включена по умолчанию) — включает варианты `Compression::Lz4` и `Compression::Lz4Hc(_)`. Если она включена, `Compression::Lz4` используется по умолчанию для всех запросов, кроме `WATCH`.
@@ -83,13 +82,12 @@ Crate [ch2rs](https://github.com/ClickHouse/ch2rs) полезен для ген�
 use clickhouse::Client;
 
 let client = Client::default()
-    // должен включать и протокол, и порт
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
     .with_database("test");
 ```
-
 
 ### Подключение по HTTPS или к ClickHouse Cloud {#https-or-clickhouse-cloud-connection}
 
@@ -103,7 +101,7 @@ URL должен включать и протокол, и порт, наприм
 
 ```rust
 fn read_env_var(key: &str) -> String {
-    env::var(key).unwrap_or_else(|_| panic!("Переменная окружения {key} должна быть установлена"))
+    env::var(key).unwrap_or_else(|_| panic!("{key} env variable should be set"))
 }
 
 let client = Client::default()
@@ -115,7 +113,6 @@ let client = Client::default()
 См. также:
 
 * [Пример HTTPS с ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs) в репозитории клиента. Его также можно использовать для HTTPS-подключений к on-premise‑инстансам.
-
 
 ### Выбор строк {#selecting-rows}
 
@@ -152,7 +149,6 @@ NB: так как весь ответ передаётся в потоке, ку
 Используйте `wait_end_of_query` с осторожностью при выборке строк, так как это может привести к более высокому потреблению памяти на стороне сервера и, вероятно, снизит общую производительность.
 :::
 
-
 ### Добавление строк {#inserting-rows}
 
 ```rust
@@ -175,7 +171,6 @@ insert.end().await?;
 * Строки отправляются постепенно в виде потока, чтобы распределить нагрузку на сеть.
 * ClickHouse вставляет пакеты строк атомарно, только если все строки попадают в один и тот же раздел и их количество меньше [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size).
 
-
 ### Асинхронная вставка (пакетирование на стороне сервера) {#async-insert-server-side-batching}
 
 Вы можете использовать [асинхронные вставки ClickHouse](/optimize/asynchronous-inserts), чтобы избежать пакетирования входящих данных на стороне клиента. Это можно сделать, просто указав параметр `async_insert` в методе `insert` (или даже в экземпляре `Client`, чтобы он влиял на все вызовы `insert`).
@@ -190,7 +185,6 @@ let client = Client::default()
 См. также:
 
 * [Пример асинхронной вставки](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs) в репозитории клиента.
-
 
 ### Возможность inserter (клиентская пакетная запись) {#inserter-feature-client-side-batching}
 
@@ -213,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// не забудьте завершить работу inserter при остановке приложения
-// и зафиксировать оставшиеся строки. `.end()` также вернёт статистику.
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -232,7 +226,6 @@ inserter.end().await?;
 ```
 
 :::
-
 
 ### Выполнение операторов DDL {#executing-ddls}
 
@@ -252,7 +245,6 @@ client
     .await?;
 ```
 
-
 ### Настройки ClickHouse {#clickhouse-settings}
 
 Вы можете применять различные [настройки ClickHouse](/operations/settings/settings), используя метод `with_option`. Например:
@@ -260,15 +252,14 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // Эта настройка применяется только к данному запросу;
-    // она переопределяет глобальную настройку клиента.
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
 ```
 
 Помимо `query`, аналогичным образом работают методы `insert` и `inserter`; кроме того, тот же метод можно вызвать у экземпляра `Client`, чтобы задать глобальные настройки для всех запросов.
-
 
 ### Идентификатор запроса {#query-id}
 
@@ -290,7 +281,6 @@ let numbers = client
 
 См. также: [пример query&#95;id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) в репозитории клиента.
 
-
 ### Идентификатор сессии {#session-id}
 
 Аналогично `query_id`, вы можете задать `session_id`, чтобы выполнять запросы в одной и той же сессии. `session_id` можно задать либо глобально на уровне клиента, либо для каждого отдельного вызова `query`, `insert` или `inserter`.
@@ -307,7 +297,6 @@ let client = Client::default()
 
 См. также: пример [session&#95;id](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) в репозитории клиента.
 
-
 ### Пользовательские HTTP‑заголовки {#custom-http-headers}
 
 Если вы используете аутентификацию через прокси или вам нужно передавать пользовательские заголовки, вы можете сделать это следующим образом:
@@ -320,7 +309,6 @@ let client = Client::default()
 
 См. также: [пример использования пользовательских HTTP-заголовков](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) в репозитории клиента.
 
-
 ### Пользовательский HTTP‑клиент {#custom-http-client}
 
 Это может быть полезно для тонкой настройки параметров лежащего в основе пула HTTP‑соединений.
@@ -332,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // Как долго поддерживать конкретное неактивное соединение на стороне клиента (в миллисекундах).
-    // Это значение должно быть заметно меньше таймаута KeepAlive сервера ClickHouse,
-    // который по умолчанию составлял 3 секунды для версий до 23.11 и 10 секунд для последующих версий.
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // Устанавливает максимальное количество неактивных Keep-Alive соединений, допустимых в пуле.
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -348,7 +336,6 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 :::
 
 См. также: [пример с пользовательским HTTP‑клиентом](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) в репозитории клиента.
-
 
 ## Типы данных {#data-types}
 
@@ -456,7 +443,6 @@ struct MyRow {
 }
 ```
 
-
 * `DateTime` сопоставляется с `u32` или newtype-обёрткой вокруг него и представляет количество секунд, прошедших с эпохи UNIX. Также поддерживается [`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) при использовании `serde::time::datetime`, для чего требуется фича `time`.
 
 ```rust
@@ -473,7 +459,7 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // прошедшее время в с/мкс/мс/нс в зависимости от `DateTime64(X)`
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
     dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
@@ -535,7 +521,6 @@ struct MyRow {
 
 * Типы данных `Variant`, `Dynamic` и новый тип данных `JSON` пока не поддерживаются.
 
-
 ## Мокирование {#mocking}
 
 Крейт предоставляет утилиты для мокирования сервера CH и тестирования DDL, а также запросов `SELECT`, `INSERT` и `WATCH`. Функциональность может быть включена с помощью feature `test-util`. Используйте её **только** как dev-зависимость.
@@ -561,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- должно быть u32!
+    id: String, // <- should be u32 instead!
 }
 ```
 
 При вставке данных может возникнуть следующая ошибка:
 
 ```response
-Ошибка: BadResponse("Код: 33. DB::Exception: Невозможно прочитать все данные. Прочитано байт: 5. Ожидалось байт: 23.: (в строке 1)\n: При выполнении BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 В этом примере это устраняется правильным определением структуры `EventLog`:
@@ -579,7 +564,6 @@ struct EventLog {
     id: u32
 }
 ```
-
 
 ## Известные ограничения {#known-limitations}
 

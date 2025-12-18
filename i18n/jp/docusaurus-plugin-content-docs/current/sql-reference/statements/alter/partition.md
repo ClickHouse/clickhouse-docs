@@ -29,10 +29,11 @@ doc_type: 'reference'
 
 {/* */ }
 
+
 ## DETACH PARTITION|PART {#detach-partitionpart}
 
 ```sql
-ALTER TABLE table_name [ON CLUSTER cluster] PARTITION を DETACH|PART partition_expr
+ALTER TABLE table_name [ON CLUSTER cluster] DETACH PARTITION|PART partition_expr
 ```
 
 指定したパーティションのすべてのデータを `detached` ディレクトリに移動します。サーバーは、そのデータパーティションが存在しないものとして扱います。[ATTACH](#attach-partitionpart) クエリを実行するまで、サーバーはこのデータを認識しません。
@@ -49,6 +50,7 @@ ALTER TABLE mt DETACH PART 'all_2_2_0';
 クエリが実行された後は、`detached` ディレクトリ内のデータに対して自由に操作できます。ファイルシステムから削除しても、そのまま残しておいてもかまいません。
 
 このクエリはレプリケートされるクエリであり、すべてのレプリカ上でデータを `detached` ディレクトリに移動します。なお、このクエリはリーダーレプリカでのみ実行できます。特定のレプリカがリーダーかどうかを確認するには、[system.replicas](/operations/system-tables/replicas) テーブルに対して `SELECT` クエリを実行します。別の方法としては、すべてのレプリカで `DETACH` クエリを実行する方が簡単です。リーダーレプリカ（複数のリーダーが存在し得ます）以外のすべてのレプリカは例外をスローします。
+
 
 ## DROP PARTITION|PART {#drop-partitionpart}
 
@@ -69,6 +71,7 @@ ALTER TABLE mt DROP PARTITION '2020-11-21';
 ALTER TABLE mt DROP PART 'all_4_4_0';
 ```
 
+
 ## DROP DETACHED PARTITION|PART {#drop-detached-partitionpart}
 
 ```sql
@@ -78,10 +81,11 @@ ALTER TABLE table_name [ON CLUSTER cluster] DROP DETACHED PARTITION|PART ALL|par
 指定したパーティション内の指定したパーツ、またはすべてのパーツを `detached` から削除します。
 パーティション式の設定については、[パーティション式の設定方法](#how-to-set-partition-expression) セクションを参照してください。
 
+
 ## FORGET PARTITION（パーティション情報の破棄） {#forget-partition}
 
 ```sql
-ALTER TABLE table_name PARTITION partition_expr を忘れる
+ALTER TABLE table_name FORGET PARTITION partition_expr
 ```
 
 空のパーティションに関するすべてのメタデータを ZooKeeper から削除します。パーティションが空でない場合や、存在しない（不明な）パーティションを指定した場合、クエリは失敗します。今後二度と使用しないパーティションに対してのみ実行するようにしてください。
@@ -93,6 +97,7 @@ ALTER TABLE table_name PARTITION partition_expr を忘れる
 ```sql
 ALTER TABLE mt FORGET PARTITION '20201121';
 ```
+
 
 ## ATTACH PARTITION|PART {#attach-partitionpart}
 
@@ -117,10 +122,11 @@ ALTER TABLE visits ATTACH PART 201901_2_2_0;
 
 1 つのレプリカ上の `detached` ディレクトリにデータを配置し、`ALTER ... ATTACH` クエリを使用して、すべてのレプリカ上のテーブルにそのデータを追加できます。
 
+
 ## ATTACH PARTITION FROM {#attach-partition-from}
 
 ```sql
-ALTER TABLE table2 [ON CLUSTER cluster] PARTITION partition_expr を table1 から アタッチ
+ALTER TABLE table2 [ON CLUSTER cluster] ATTACH PARTITION partition_expr FROM table1
 ```
 
 このクエリは、`table1` から `table2` へデータパーティションをコピーします。
@@ -136,6 +142,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] PARTITION partition_expr を table1 か�
 * 両方のテーブルは同じパーティションキー、同じ ORDER BY キー、および同じプライマリキーを持っていなければなりません。
 * 両方のテーブルは同じストレージポリシーを持っていなければなりません。
 * 宛先テーブルには、ソーステーブルのすべてのインデックスとプロジェクションが含まれていなければなりません。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致している必要があります。そうでない場合、宛先テーブルはソーステーブルのインデックスおよびプロジェクションのスーパーセットであってもかまいません。
+
 
 ## パーティションの置換 {#replace-partition}
 
@@ -157,6 +164,7 @@ ALTER TABLE table2 [ON CLUSTER cluster] REPLACE PARTITION partition_expr FROM ta
 * 両方のテーブルは同じストレージポリシーを持つ必要があります。
 * 宛先テーブルには、ソーステーブルのすべてのインデックスとプロジェクションが含まれている必要があります。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致していなければなりません。そうでない場合、宛先テーブルはソーステーブルのインデックスとプロジェクションのスーパーセットであってもかまいません。
 
+
 ## パーティションを別のテーブルへ移動 {#move-partition-to-table}
 
 ```sql
@@ -173,6 +181,7 @@ ALTER TABLE table_source [ON CLUSTER cluster] MOVE PARTITION partition_expr TO T
 * 両方のテーブルは同じエンジンファミリー（レプリケートあり／なし）である必要があります。
 * 宛先テーブルには、ソーステーブルに存在するすべてのインデックスとプロジェクションが含まれている必要があります。宛先テーブルで `enforce_index_structure_match_on_partition_manipulation` 設定が有効になっている場合、インデックスとプロジェクションは完全に一致していなければなりません。それ以外の場合、宛先テーブルはソーステーブルのインデックスおよびプロジェクションのスーパーセットであってもかまいません。
 
+
 ## パーティション内の列のクリア {#clear-column-in-partition}
 
 ```sql
@@ -186,6 +195,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] CLEAR COLUMN column_name IN PARTITIO
 ```sql
 ALTER TABLE visits CLEAR COLUMN hour in PARTITION 201902
 ```
+
 
 ## FREEZE PARTITION（パーティションのフリーズ） {#freeze-partition}
 
@@ -229,7 +239,8 @@ ALTER TABLE table_name [ON CLUSTER cluster] FREEZE [PARTITION partition_expr] [W
 
 クエリはパーツを並列に処理し、スレッド数は `max_threads` 設定で制御されます。
 
-バックアップとデータの復元の詳細については、[Data Backup](/operations/backup.md) セクションを参照してください。
+バックアップとデータの復元の詳細については、[&quot;Backup and Restore in ClickHouse&quot;](/operations/backup/overview) セクションを参照してください。
+
 
 ## UNFREEZE PARTITION {#unfreeze-partition}
 
@@ -239,6 +250,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] UNFREEZE [PARTITION 'part_expr'] WIT
 
 指定された名前の `frozen` パーティションをディスクから削除します。`PARTITION` 句を省略すると、すべてのパーティションのバックアップが一度に削除されます。
 
+
 ## パーティション内のインデックスのクリア {#clear-index-in-partition}
 
 ```sql
@@ -246,6 +258,7 @@ ALTER TABLE table_name [ON CLUSTER cluster] CLEAR INDEX index_name IN PARTITION 
 ```
 
 このクエリは `CLEAR COLUMN` と同様に動作しますが、カラムのデータではなくインデックスをリセットします。
+
 
 ## FETCH PARTITION|PART {#fetch-partitionpart}
 
@@ -285,6 +298,7 @@ ALTER TABLE users ATTACH PART 201901_2_2_0;
 
 このクエリは `ALTER TABLE` と呼ばれていますが、テーブル構造を変更せず、テーブルで利用可能なデータも即座には変更しません。
 
+
 ## MOVE PARTITION|PART {#move-partitionpart}
 
 `MergeTree` エンジンのテーブルに対して、パーティションまたはデータパーツを別のボリュームまたはディスクに移動します。詳細は [Using Multiple Block Devices for Data Storage](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-multiple-volumes) を参照してください。
@@ -306,6 +320,7 @@ ALTER TABLE hits MOVE PART '20190301_14343_16206_438' TO VOLUME 'slow'
 ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 ```
 
+
 ## UPDATE IN PARTITION {#update-in-partition}
 
 指定したフィルタリング式に一致するパーティション内のデータを変更します。[mutation](/sql-reference/statements/alter/index.md#mutations)として実装されています。
@@ -316,15 +331,17 @@ ALTER TABLE hits MOVE PARTITION '2019-09-01' TO DISK 'fast_ssd'
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_expr] WHERE filter_expr
 ```
 
+
 ### 例 {#example}
 
 ```sql
--- パーティション名を使用する場合
+-- using partition name
 ALTER TABLE mt UPDATE x = x + 1 IN PARTITION 2 WHERE p = 2;
 
--- パーティション ID を使用する場合
+-- using partition id
 ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ```
+
 
 ### 関連項目 {#see-also}
 
@@ -340,15 +357,17 @@ ALTER TABLE mt UPDATE x = x + 1 IN PARTITION ID '2' WHERE p = 2;
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE [IN PARTITION partition_expr] WHERE filter_expr
 ```
 
+
 ### 例 {#example-1}
 
 ```sql
--- パーティション名を使用する場合
+-- using partition name
 ALTER TABLE mt DELETE IN PARTITION 2 WHERE p = 2;
 
--- パーティションIDを使用する場合
+-- using partition id
 ALTER TABLE mt DELETE IN PARTITION ID '2' WHERE p = 2;
 ```
+
 
 ## パーツの再書き込み {#rewrite-parts}
 
@@ -361,19 +380,20 @@ ALTER TABLE mt REWRITE PARTS;
 ALTER TABLE mt REWRITE PARTS IN PARTITION 2;
 ```
 
+
 ### 関連項目 {#see-also-1}
 
-* [DELETE](/sql-reference/statements/alter/delete)
+- [DELETE](/sql-reference/statements/alter/delete)
 
 ## パーティション式の設定方法 {#how-to-set-partition-expression}
 
 `ALTER ... PARTITION` クエリでは、パーティション式を次のように指定できます。
 
-* `system.parts` テーブルの `partition` 列の値として指定する方法。たとえば、`ALTER TABLE visits DETACH PARTITION 201901`。
+* `system.parts` テーブルの `partition` カラムの値として指定する方法。たとえば、`ALTER TABLE visits DETACH PARTITION 201901`。
 * キーワード `ALL` を使用する方法。これは DROP/DETACH/ATTACH/ATTACH FROM でのみ使用できます。たとえば、`ALTER TABLE visits ATTACH PARTITION ALL`。
 * テーブルのパーティションキーのタプルと（型が）一致する式または定数のタプルとして指定する方法。パーティションキーが単一要素の場合は、その式を `tuple (...)` 関数でラップする必要があります。たとえば、`ALTER TABLE visits DETACH PARTITION tuple(toYYYYMM(toDate('2019-01-25')))`。
 * パーティション ID を使用する方法。パーティション ID はパーティションの文字列識別子（可能であれば人間が読める形）であり、ファイルシステムおよび ZooKeeper でのパーティション名として使用されます。パーティション ID は `PARTITION ID` 句で、単一引用符で囲んで指定する必要があります。たとえば、`ALTER TABLE visits DETACH PARTITION ID '201901'`。
-* [ALTER ATTACH PART](#attach-partitionpart) クエリおよび [DROP DETACHED PART](#drop-detached-partitionpart) クエリでは、パーツ名を指定するために、[system.detached&#95;parts](/operations/system-tables/detached_parts) テーブルの `name` 列の値を文字列リテラルとして指定します。たとえば、`ALTER TABLE visits ATTACH PART '201901_1_1_0'`。
+* [ALTER ATTACH PART](#attach-partitionpart) クエリおよび [DROP DETACHED PART](#drop-detached-partitionpart) クエリでは、パーツ名を指定するために、[system.detached&#95;parts](/operations/system-tables/detached_parts) テーブルの `name` カラムの値を文字列リテラルとして指定します。たとえば、`ALTER TABLE visits ATTACH PART '201901_1_1_0'`。
 
 パーティションを指定するときの引用符の使用方法は、パーティション式の型に依存します。たとえば、`String` 型では、その名前を引用符（`'`）で囲む必要があります。`Date` および `Int*` 型では引用符は不要です。
 

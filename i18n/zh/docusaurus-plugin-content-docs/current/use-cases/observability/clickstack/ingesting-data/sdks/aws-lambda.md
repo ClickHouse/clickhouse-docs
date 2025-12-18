@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## 安装 OpenTelemetry Lambda 层 {#installing-the-otel-lambda-layers}
 
 OpenTelemetry 项目提供了独立的 Lambda 层，用于：
@@ -79,9 +78,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
 
 </Tabs>
 
-_这些 layer 的最新发布版本可在 [OpenTelemetry Lambda Layers GitHub 仓库](https://github.com/open-telemetry/opentelemetry-lambda/releases) 中查看。_
+_The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
 
-3. 在 Lambda 函数的 “Configuration” > “Environment variables” 中配置以下环境变量。
+3. Configure the following environment variables in your Lambda function under "Configuration" > "Environment variables".
 
 <Tabs groupId="install-language-env">
 <TabItem value="javascript" label="Javascript" default>
@@ -129,30 +128,37 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### 安装 OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
+### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
-collector Lambda layer 允许你将日志、指标和追踪从 Lambda 函数转发到 ClickStack，同时不会因为导出器延迟而影响响应时间。
+The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
+to exporter latency.
 
-**安装 collector layer 的步骤如下**：
+**To install the collector layer**:
 
-1. 在 Layers 部分点击“Add a layer”
-2. 选择“Specify an ARN”，并根据架构选择正确的 ARN，确保将 `<region>` 替换为你的区域（例如 `us-east-2`）：
+1. In the Layers section click "Add a layer"
+2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
 
 <Tabs groupId="install-language-layer">
-  <TabItem value="x86_64" label="x86_64" default>
-    ```shell
+
+<TabItem value="x86_64" label="x86_64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
     ```
-  </TabItem>
 
-  <TabItem value="arm64" label="arm64" default>
-    ```shell
+</TabItem>
+
+<TabItem value="arm64" label="arm64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
     ```
-  </TabItem>
+
+</TabItem>
+
 </Tabs>
 
-3. 将以下 `collector.yaml` 文件添加到你的项目中，用于配置 collector 将数据发送到 ClickStack：
+3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 
 ```yaml
 # collector.yaml {#collectoryaml}
@@ -191,31 +197,40 @@ service:
       exporters: [otlphttp]
 ```
 
-4. 添加如下环境变量：
+4. Add the following environment variable:
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
+## Checking the installation {#checking-the-installation}
 
-## 检查安装情况 {#checking-the-installation}
+After deploying the layers, you should now see traces automatically
+collected from your Lambda function in HyperDX. The `decouple` and `batching` 
+processor may introduce a delay in telemetry collection, so traces may be 
+delayed in showing up. To emit custom logs or metrics, you'll need to instrument your code your language-specific 
+OpenTelemetry SDKs.
 
-在部署这些层之后，你现在应该可以在 HyperDX 中看到从 Lambda 函数自动收集到的 trace。`decouple` 和 `batching`
-processor 可能会在遥测数据收集过程中引入一定延迟，因此 trace 的展示可能会有所滞后。要发送自定义日志或指标，你需要使用与你所用编程语言对应的 OpenTelemetry SDKS 对代码进行埋点（instrumentation）。
+## Troubleshooting {#troubleshoting}
 
-## 疑难排解 {#troubleshoting}
+### Custom instrumentation not sending {#custom-instrumentation-not-sending}
 
-### 自定义埋点未发送 {#custom-instrumentation-not-sending}
+If you're not seeing your manually defined traces or other telemetry, you may
+be using an incompatible version of the OpenTelemetry API package. Ensure your
+OpenTelemetry API package is at least the same or lower version than the 
+version included in the AWS lambda.
 
-如果您看不到手动定义的 trace 或其他遥测数据，可能是因为使用了不兼容版本的 OpenTelemetry API 包。请确保您的 OpenTelemetry API 包版本不高于 AWS Lambda 中所包含的版本。
+### Enabling SDK debug logs {#enabling-sdk-debug-logs}
 
-### 启用 SDK 调试日志 {#enabling-sdk-debug-logs}
+Set the `OTEL_LOG_LEVEL` environment variable to `DEBUG` to enable debug logs from
+the OpenTelemetry SDK. This will help ensure that the auto-instrumentation layer
+is correctly instrumenting your application.
 
-将 `OTEL_LOG_LEVEL` 环境变量设置为 `DEBUG`，以启用 OpenTelemetry SDK 的调试日志。这有助于确保自动埋点层已正确对应用程序进行埋点。
+### Enabling collector debug logs {#enabling-collector-debug-logs}
 
-### 启用 collector 调试日志 {#enabling-collector-debug-logs}
-
-若要排查 collector 问题，可以通过修改 collector 配置文件，添加 `logging` exporter，并将遥测日志级别设置为 `debug`，以启用来自 collector Lambda 层的更详细日志记录。
+To debug collector issues, you can enable debug logs by modifying your collector
+configuration file to add the `logging` exporter and setting the telemetry 
+log level to `debug` to enable more verbose logging from the collector lambda layer.
 
 ```yaml
 # collector.yaml {#collectoryaml}

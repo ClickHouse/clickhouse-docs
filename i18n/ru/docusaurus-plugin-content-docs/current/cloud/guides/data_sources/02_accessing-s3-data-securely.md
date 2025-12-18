@@ -14,7 +14,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 В этой статье показано, как клиенты ClickHouse Cloud могут использовать ролевой доступ для аутентификации в Amazon Simple Storage Service (S3) и безопасного доступа к своим данным.
 
-
 ## Введение {#introduction}
 
 Прежде чем переходить к настройке безопасного доступа к S3, важно понять, как это работает. Ниже приведён обзор того, как сервисы ClickHouse могут получать доступ к приватным S3‑бакетам, принимая на себя роль в аккаунте AWS клиента.
@@ -130,7 +129,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 4 - После создания скопируйте новый **IAM Role Arn**. Он понадобится для доступа к вашему S3-бакету.
 
-
 ## Доступ к бакету S3 с ролью ClickHouseAccess {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 В ClickHouse Cloud появилась новая возможность указывать параметр `extra_credentials` в S3 table function. Ниже приведён пример того, как выполнить запрос, используя только что созданную роль, скопированную выше.
@@ -148,3 +146,46 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::note
 Мы рекомендуем размещать исходное хранилище S3 в том же регионе, что и ваш сервис ClickHouse Cloud, чтобы снизить затраты на передачу данных. Для получения дополнительной информации см. раздел [S3 pricing](https://aws.amazon.com/s3/pricing/).
 :::
+
+
+## Расширенное управление действиями {#advanced-action-control}
+
+Клиенты, которые хотят разрешить возврат объекта только в том случае, если запрос исходит из VPC ClickHouse, могут добавить следующую политику к созданной выше роли IAM (assume role). Пожалуйста, ознакомьтесь со страницей [IAM assume role](#setting-up-iam-assume-role) и разделом [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) для получения инструкций по получению конечных точек VPC ClickHouse Cloud.
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+
+```

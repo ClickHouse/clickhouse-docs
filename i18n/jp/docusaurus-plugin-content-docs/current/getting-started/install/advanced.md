@@ -8,8 +8,6 @@ hide_title: false
 doc_type: 'guide'
 ---
 
-
-
 ## ソースからコンパイルする {#compile-from-source}
 
 ClickHouse を手動でコンパイルするには、[Linux](/development/build.md) または [macOS](/development/build-osx.md) 向けの手順に従ってください。
@@ -17,8 +15,8 @@ ClickHouse を手動でコンパイルするには、[Linux](/development/build.
 パッケージをコンパイルしてインストールすることも、パッケージをインストールせずにプログラムを利用することもできます。
 
 ```xml
-クライアント: <build_directory>/programs/clickhouse-client
-サーバー: <build_directory>/programs/clickhouse-server
+Client: <build_directory>/programs/clickhouse-client
+Server: <build_directory>/programs/clickhouse-server
 ```
 
 `data` ディレクトリと `metadata` ディレクトリを手動で作成し、対象ユーザーに対して `chown` する必要があります。これらのパスはサーバーの設定ファイル（src/programs/server/config.xml）で変更できます。デフォルトでは次のとおりです。
@@ -36,7 +34,7 @@ Gentoo では、`emerge clickhouse` を実行するだけで、ソースから C
 ClickHouse の継続的インテグレーション (CI) 基盤は、[ClickHouse
 リポジトリ](https://github.com/clickhouse/clickhouse/) の各コミットごとに、例えば [sanitized](https://github.com/google/sanitizers) ビルド、最適化なしの (Debug)
 ビルド、クロスコンパイル済みビルドなどの特殊なビルドを生成します。これらのビルドは通常は開発中にのみ有用ですが、状況によっては
-ユーザーにとっても有用となる場合があります。
+あなたにとっても有用となる場合があります。
 
 :::note
 ClickHouse の CI は時間の経過とともに変化していくため、CI で生成されたビルドをダウンロードするための具体的な手順は変わる可能性があります。

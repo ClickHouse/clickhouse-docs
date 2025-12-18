@@ -13,7 +13,7 @@ KILL ステートメントには 2 種類あります。クエリを KILL する
 
 ```sql
 KILL QUERY [ON CLUSTER cluster]
-  WHERE <system.processes に対する SELECT クエリの WHERE 句条件式>
+  WHERE <where expression to SELECT FROM system.processes query>
   [SYNC|ASYNC|TEST]
   [FORMAT format]
 ```
@@ -56,10 +56,10 @@ SELECT
 クエリを強制終了する：
 
 ```sql
--- 指定されたquery_idを持つすべてのクエリを強制終了します:
+-- Forcibly terminates all queries with the specified query_id:
 KILL QUERY WHERE query_id='2-857d-4a57-9ee0-327da5d60a90'
 
--- 'username'が実行したすべてのクエリを同期的に終了します:
+-- Synchronously terminates all queries run by 'username':
 KILL QUERY WHERE user='username' SYNC
 ```
 
@@ -89,7 +89,7 @@ ClickHouse Cloud または自己管理クラスタでクエリを強制終了す
 
 ```sql
 KILL MUTATION
-  WHERE <system.mutationsクエリからSELECTする際のWHERE式>
+  WHERE <where expression to SELECT FROM system.mutations query>
   [TEST]
   [FORMAT format]
 ```
@@ -139,10 +139,10 @@ WHERE is_done = 0;
 必要に応じてミューテーションを終了します：
 
 ```sql
--- 単一テーブルのすべてのミューテーションをキャンセルして削除:
+-- Cancel and remove all mutations of the single table:
 KILL MUTATION WHERE database = 'default' AND table = 'table'
 
--- 特定のミューテーションをキャンセル:
+-- Cancel the specific mutation:
 KILL MUTATION WHERE database = 'default' AND table = 'table' AND mutation_id = 'mutation_3.txt'
 ```
 

@@ -128,7 +128,6 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
 ## データセットを扱う演算子 {#operators-for-working-with-data-sets}
 
 [IN 演算子](../../sql-reference/operators/in.md)および[EXISTS 演算子](../../sql-reference/operators/exists.md)を参照してください。
@@ -203,7 +202,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 └───┘
 ```
 
-
 ## 日付と時刻を扱う演算子 {#operators-for-working-with-dates-and-times}
 
 ### EXTRACT {#extract}
@@ -270,7 +268,6 @@ FROM test.Orders;
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
 
-
 ### INTERVAL {#interval}
 
 [Date](../../sql-reference/data-types/date.md) 型および [DateTime](../../sql-reference/data-types/datetime.md) 型の値との算術演算で使用するための [Interval](../../sql-reference/data-types/special-data-types/interval.md) 型の値を作成します。
@@ -289,7 +286,7 @@ FROM test.Orders;
 `INTERVAL` の値を設定する際には、文字列リテラルも使用できます。たとえば、`INTERVAL 1 HOUR` は `INTERVAL '1 hour'` や `INTERVAL '1' hour` と同じ意味になります。
 
 :::tip
-異なる型の interval は組み合わせられません。`INTERVAL 4 DAY 1 HOUR` のような式は使用できません。`INTERVAL 25 HOUR` のように、その interval の最小単位と同じか、それより小さい単位で指定してください。以下の例のように、演算を続けて適用することができます。
+異なる型の interval は組み合わせられません。`INTERVAL 4 DAY 1 HOUR` のような式は使用できません。`INTERVAL 25 HOUR` のように、その interval の最小単位と同じか、それより小さい単位で指定してください。以下の例のように、連続した演算として記述できます。
 :::
 
 例:
@@ -343,7 +340,7 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 **関連項目**
 
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
-* [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数
+* [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
 
 ## 論理AND演算子 {#logical-and-operator}
@@ -381,7 +378,6 @@ END
 式に `ELSE c` 句がない場合、デフォルト値は `NULL` になります。
 
 `transform` 関数は `NULL` を処理できません。
-
 
 ## 連結演算子 {#concatenation-operator}
 
@@ -432,7 +428,6 @@ SELECT x+100 FROM t_null WHERE y IS NULL
 │          101 │
 └──────────────┘
 ```
-
 
 ### IS NOT NULL {#is_not_null}
 

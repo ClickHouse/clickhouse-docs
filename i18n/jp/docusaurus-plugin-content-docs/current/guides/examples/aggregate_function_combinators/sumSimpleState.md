@@ -7,17 +7,11 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-
-
 # sumSimpleState {#sumsimplestate}
-
-
 
 ## 説明 {#description}
 
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを適用すると、すべての入力値の合計を返します。戻り値の型は [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -62,11 +56,11 @@ CREATE MATERIALIZED VIEW mv_vote_processor TO vote_aggregates
 AS
 SELECT
   post_id,
-  -- 合計状態の初期値（upvoteの場合は1、それ以外は0）
+  -- Initial value for sum state (1 if upvote, 0 otherwise)
   toUInt64(vote_type = 'upvote') AS upvotes,
-  -- 合計状態の初期値（downvoteの場合は1、それ以外は0）
+  -- Initial value for sum state (1 if downvote, 0 otherwise)
   toUInt64(vote_type = 'downvote') AS downvotes,
-  -- 合計状態の初期値（upvoteの場合は1、downvoteの場合は-1）
+  -- Initial value for sum state (1 for upvote, -1 for downvote)
   toInt64(vote_type) AS score
 FROM raw_votes;
 ```
@@ -91,7 +85,7 @@ SELECT
   sum(upvotes) AS total_upvotes,
   sum(downvotes) AS total_downvotes,
   sum(score) AS total_score
-FROM vote_aggregates -- ターゲットテーブルに対してクエリを実行
+FROM vote_aggregates -- Query the target table
 GROUP BY post_id
 ORDER BY post_id ASC;
 ```
@@ -103,7 +97,6 @@ ORDER BY post_id ASC;
 │       3 │             0 │               1 │          -1 │
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

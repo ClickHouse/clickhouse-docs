@@ -10,7 +10,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Табличный движок Kafka {#kafka-table-engine}
 
 :::tip
@@ -65,7 +64,6 @@ SETTINGS
 * `kafka_format` — формат сообщений. Использует ту же нотацию, что и SQL-функция `FORMAT`, например, `JSONEachRow`. Для получения дополнительной информации см. раздел [Formats](../../../interfaces/formats.md).
 
 Необязательные параметры:
-
 
 - `kafka_security_protocol` — Протокол, используемый для связи с брокерами. Возможные значения: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
 - `kafka_sasl_mechanism` — Механизм SASL, используемый для аутентификации. Возможные значения: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
@@ -136,7 +134,6 @@ SETTINGS
 Табличный движок Kafka не поддерживает столбцы со [значениями по умолчанию](/sql-reference/statements/create/table#default_values). Если вам нужны такие столбцы, их можно добавить на уровне materialized view (см. ниже).
 :::
 
-
 ## Описание {#description}
 
 Доставленные сообщения отслеживаются автоматически, поэтому каждое сообщение в группе учитывается только один раз. Если вам нужно получить данные дважды, создайте копию таблицы с другим именем группы.
@@ -187,14 +184,13 @@ SETTINGS
 
 Если вы хотите изменить целевую таблицу с помощью `ALTER`, рекомендуем отключить материализованное представление, чтобы избежать расхождений между целевой таблицей и данными из представления.
 
-
 ## Конфигурация {#configuration}
 
 Как и движок GraphiteMergeTree, движок Kafka поддерживает расширенную конфигурацию с использованием файла конфигурации ClickHouse. Вы можете использовать два ключа конфигурации: глобальный (в секции `<kafka>`) и на уровне топика (в секции `<kafka><kafka_topic>`). Сначала применяется глобальная конфигурация, а затем — конфигурация для конкретного топика (если она задана).
 
 ```xml
   <kafka>
-    <!-- Глобальные параметры конфигурации для всех таблиц с движком Kafka -->
+    <!-- Global configuration options for all tables of Kafka engine type -->
     <debug>cgrp</debug>
     <statistics_interval_ms>3000</statistics_interval_ms>
 
@@ -203,7 +199,7 @@ SETTINGS
         <statistics_interval_ms>4000</statistics_interval_ms>
     </kafka_topic>
 
-    <!-- Настройки для консьюмера -->
+    <!-- Settings for consumer -->
     <consumer>
         <auto_offset_reset>smallest</auto_offset_reset>
         <kafka_topic>
@@ -217,7 +213,7 @@ SETTINGS
         </kafka_topic>
     </consumer>
 
-    <!-- Настройки для продюсера -->
+    <!-- Settings for producer -->
     <producer>
         <kafka_topic>
             <name>logs</name>
@@ -234,7 +230,6 @@ SETTINGS
 
 Список доступных параметров конфигурации приведён в [справочнике по конфигурации librdkafka](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md). Используйте символ подчёркивания (`_`) вместо точки в конфигурации ClickHouse. Например, `check.crcs=true` будет записано как `<check_crcs>true</check_crcs>`.
 
-
 ### Поддержка Kerberos {#kafka-kerberos-support}
 
 Для работы с Kafka с поддержкой Kerberos добавьте дочерний элемент `security_protocol` со значением `sasl_plaintext`. Этого достаточно при наличии действительного Kerberos ticket-granting ticket (TGT), уже полученного и закэшированного средствами операционной системы.
@@ -243,14 +238,13 @@ ClickHouse может самостоятельно поддерживать уч
 Пример:
 
 ```xml
-<!-- Kafka с поддержкой Kerberos -->
+<!-- Kerberos-aware Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>
   <sasl_kerberos_principal>kafkauser/kafkahost@EXAMPLE.COM</sasl_kerberos_principal>
 </kafka>
 ```
-
 
 ## Виртуальные столбцы {#virtual-columns}
 
@@ -299,7 +293,6 @@ SETTINGS
   kafka_replica_name = '{replica}'
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
-
 
 ### Известные ограничения {#known-limitations}
 

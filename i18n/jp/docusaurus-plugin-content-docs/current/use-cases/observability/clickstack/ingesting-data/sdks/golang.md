@@ -36,7 +36,6 @@ go get -u github.com/hyperdxio/opentelemetry-go
 go get -u github.com/hyperdxio/opentelemetry-logs-go
 ```
 
-
 ### ネイティブ HTTP サーバーの例 (net/http) {#native-http-server-example}
 
 ここでは、`net/http/otelhttp` を使用します。
@@ -69,7 +68,7 @@ import (
   "go.opentelemetry.io/otel/sdk/resource"
 )
 
-// すべてのログに共通の属性を設定
+// configure common attributes for all logs
 func newResource() *resource.Resource {
   hostName, _ := os.Hostname()
   return resource.NewWithAttributes(
@@ -79,12 +78,12 @@ func newResource() *resource.Resource {
   )
 }
 
-// ログにトレースIDを付加
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctxに有効なスパンが含まれていません。
-    // 追加するトレースメタデータがありません。
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -94,24 +93,24 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // OTel設定を初期化し、アプリケーション全体で使用
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("OTel SDKのセットアップエラー - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // OpenTelemetryロガープロバイダーを設定
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
-  // プログラム終了前に蓄積されたシグナルをフラッシュするため、ロガーを正常にシャットダウン
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // OpenTelemetry zapコアで新しいロガーを作成し、グローバルに設定
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
   logger.Warn("hello world", zap.String("foo", "bar"))
@@ -123,19 +122,19 @@ func main() {
     port = "7777"
   }
 
-  logger.Info("** サービスがポート " + port + " で起動しました **")
+  logger.Info("** Service Started on Port " + port + " **")
   if err := http.ListenAndServe(":"+port, nil); err != nil {
     logger.Fatal(err.Error())
   }
 }
 
-// すべてのハンドラーをラップしてロガーにトレースメタデータを追加する際に使用
+// Use this to wrap all handlers to add trace metadata to the logger
 func wrapHandler(logger *zap.Logger, handler http.HandlerFunc) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
     logger := WithTraceMetadata(r.Context(), logger)
-    logger.Info("リクエストを受信しました", zap.String("url", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request received", zap.String("url", r.URL.Path), zap.String("method", r.Method))
     handler(w, r)
-    logger.Info("リクエストが完了しました", zap.String("path", r.URL.Path), zap.String("method", r.Method))
+    logger.Info("request completed", zap.String("path", r.URL.Path), zap.String("method", r.Method))
   }
 }
 
@@ -144,7 +143,6 @@ func ExampleHandler(w http.ResponseWriter, r *http.Request) {
   io.WriteString(w, `{"status":"ok"}`)
 }
 ```
-
 
 ### Gin アプリケーションの例 {#gin-application-example}
 
@@ -175,12 +173,12 @@ import (
   "go.uber.org/zap"
 )
 
-// ログにトレースIDを付与する
+// attach trace id to the log
 func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
   spanContext := trace.SpanContextFromContext(ctx)
   if !spanContext.IsValid() {
-    // ctxに有効なスパンが含まれていない
-    // 追加するトレースメタデータが存在しない
+    // ctx does not contain a valid span.
+    // There is no trace metadata to add.
     return logger
   }
   return logger.With(
@@ -190,46 +188,45 @@ func WithTraceMetadata(ctx context.Context, logger *zap.Logger) *zap.Logger {
 }
 
 func main() {
-  // OTel設定を初期化し、アプリケーション全体で使用する
+  // Initialize otel config and use it across the entire app
   otelShutdown, err := otelconfig.ConfigureOpenTelemetry()
   if err != nil {
-    log.Fatalf("OTel SDKのセットアップエラー - %e", err)
+    log.Fatalf("error setting up OTel SDK - %e", err)
   }
 
   defer otelShutdown()
 
   ctx := context.Background()
 
-  // OpenTelemetryロガープロバイダーを設定する
+  // configure opentelemetry logger provider
   logExporter, _ := otlplogs.NewExporter(ctx)
   loggerProvider := sdk.NewLoggerProvider(
     sdk.WithBatcher(logExporter),
   )
 
-  // プログラム終了前に蓄積されたシグナルをフラッシュするため、ロガーを正常終了する
+  // gracefully shutdown logger to flush accumulated signals before program finish
   defer loggerProvider.Shutdown(ctx)
 
-  // OpenTelemetry zapコアで新しいロガーを作成し、グローバルに設定する
+  // create new logger with opentelemetry zap core and set it globally
   logger := zap.New(otelzap.NewOtelCore(loggerProvider))
   zap.ReplaceGlobals(logger)
 
-  // 新しいGinルーターを作成する
+  // Create a new Gin router
   router := gin.Default()
 
   router.Use(otelgin.Middleware("service-name"))
 
-  // ルートURLへのGETリクエストに応答するルートを定義する
+  // Define a route that responds to GET requests on the root URL
   router.GET("/", func(c *gin.Context) {
     _logger := WithTraceMetadata(c.Request.Context(), logger)
     _logger.Info("Hello World!")
     c.String(http.StatusOK, "Hello World!")
   })
 
-  // ポート7777でサーバーを起動する
+  // Run the server on port 7777
   router.Run(":7777")
 }
 ```
-
 
 ### 環境変数を設定する {#configure-environment-variables}
 

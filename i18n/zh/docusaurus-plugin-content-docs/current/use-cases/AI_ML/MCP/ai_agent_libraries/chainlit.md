@@ -10,19 +10,13 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # 如何使用 Chainlit 和 ClickHouse MCP Server 构建 AI 智能体 {#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server}
 
 本指南介绍如何将功能强大的 Chainlit 聊天界面框架与 ClickHouse Model Context Protocol (MCP) Server 相结合，以构建交互式数据应用程序。Chainlit 使你可以用最少的代码为 AI 应用构建对话式界面，而 ClickHouse MCP Server 则提供与 ClickHouse 高性能列式数据库的无缝集成。
 
-
-
 ## 前提条件 {#prerequisites}
 - 需要一个 Anthropic API 密钥
 - 需要已安装 [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
-
-
 
 ## 基本 Chainlit 应用 {#basic-chainlit-app}
 
@@ -34,7 +28,6 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 
 然后访问 `http://localhost:8000`
 
-
 ## 添加 ClickHouse MCP Server {#adding-clickhouse-mcp-server}
 
 在添加 ClickHouse MCP Server 后，事情会变得更有趣。
@@ -43,9 +36,9 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 ```toml
 [features.mcp.stdio]
     enabled = true
-    # 仅允许列表中的可执行文件可用于 MCP stdio 服务器。
-    # 仅需可执行文件的基础名称,例如 "npx",而非 "/usr/bin/npx"。
-    # 暂时请勿注释此行,我们需要用它来解析可执行文件名称。
+    # Only the executables in the allow list can be used for MCP stdio server.
+    # Only need the base name of the executable, e.g. "npx", not "/usr/bin/npx".
+    # Please don't comment this line for now, we need it to parse the executable name.
     allowed_executables = [ "npx", "uvx", "uv" ]
 ```
 

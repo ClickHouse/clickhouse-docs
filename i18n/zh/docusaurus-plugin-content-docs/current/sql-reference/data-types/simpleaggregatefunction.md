@@ -7,11 +7,7 @@ title: 'SimpleAggregateFunction 类型'
 doc_type: 'reference'
 ---
 
-
-
 # SimpleAggregateFunction 类型 {#simpleaggregatefunction-type}
-
-
 
 ## 描述 {#description}
 
@@ -25,19 +21,16 @@ doc_type: 'reference'
 
 聚合函数的值通常是通过调用在函数名后追加 [`-SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器的聚合函数来生成的。
 
-
-
 ## 语法 {#syntax}
 
 ```sql
-SimpleAggregateFunction(聚合函数名, 参数类型...)
+SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 ```
 
 **参数**
 
 * `aggregate_function_name` - 聚合函数名称。
 * `Type` - 聚合函数参数类型。
-
 
 ## 支持的函数 {#supported-functions}
 
@@ -69,11 +62,7 @@ SimpleAggregateFunction(聚合函数名, 参数类型...)
 具有更好的性能。
 :::
 
-
-
 ## 示例 {#example}
-
-
 
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;

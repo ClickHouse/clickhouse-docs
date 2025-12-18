@@ -11,10 +11,7 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 使用 TTL（存活时间）管理数据 {#manage-data-with-ttl-time-to-live}
-
-
 
 ## TTL 概述 {#overview-of-ttl}
 
@@ -27,8 +24,6 @@ TTL（time-to-live，生存时间）指的是在经过一定时间间隔后，�
 :::note
 TTL 可以应用于整张表或特定列。
 :::
-
-
 
 ## TTL 语法 {#ttl-syntax}
 
@@ -53,7 +48,6 @@ ORDER BY tuple()
 TTL 规则可以被修改或删除。更多详情请参阅 [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) 页面。
 :::
 
-
 ## 触发 TTL 事件 {#triggering-ttl-events}
 
 过期行的删除或聚合并不会立即进行——它只会在表合并期间发生。如果你有一张由于某种原因没有主动进行合并的表，可以通过以下两个设置来触发 TTL 事件：
@@ -72,7 +66,6 @@ OPTIMIZE TABLE example1 FINAL
 
 `OPTIMIZE` 会对表中的各个数据分片触发一次即时合并，而当表已经只有一个分片时，`FINAL` 会强制重新执行优化。
 :::
-
 
 ## 删除行 {#removing-rows}
 
@@ -107,7 +100,6 @@ TTL time + INTERVAL 1 MONTH DELETE WHERE event != 'error',
     time + INTERVAL 6 MONTH DELETE WHERE event = 'error'
 ```
 
-
 ## 移除列 {#removing-columns}
 
 假设你并不想删除整行数据，而是只希望 `balance` 和 `address` 两列过期。让我们修改 `customers` 表，并为这两列都添加一个 2 小时的 TTL：
@@ -117,7 +109,6 @@ ALTER TABLE customers
 MODIFY COLUMN balance Int32 TTL timestamp + INTERVAL 2 HOUR,
 MODIFY COLUMN address String TTL timestamp + INTERVAL 2 HOUR
 ```
-
 
 ## 实现汇总（rollup） {#implementing-a-rollup}
 
@@ -147,7 +138,6 @@ TTL timestamp + INTERVAL 1 DAY
 * `TTL` 子句中的 `GROUP BY` 列必须是 `PRIMARY KEY` 的前缀，同时我们希望按当天起始时间对结果进行分组。因此，在主键中加入了 `toStartOfDay(timestamp)`
 * 我们添加了两个字段来存储聚合结果：`max_hits` 和 `sum_hits`
 * 将 `max_hits` 和 `sum_hits` 的默认值设置为 `hits` 是保证我们的逻辑生效所必需的，这取决于 `SET` 子句的定义方式
-
 
 ## 实现热/温/冷架构 {#implementing-a-hotwarmcold-architecture}
 
@@ -253,7 +243,7 @@ ALTER TABLE my_table
 6. 使用 `system.parts` 表验证您的数据是否已迁移到预期的磁盘上：
 
 ```sql
-使用 system.parts 表查看 crypto_prices 表的数据分片位于哪些磁盘上：
+Using the system.parts table, view which disks the parts are on for the crypto_prices table:
 
 SELECT
     name,
@@ -263,7 +253,6 @@ WHERE (table = 'my_table') AND (active = 1)
 ```
 
 响应结果将如下所示：
-
 
 ```response
 ┌─name────────┬─disk_name─┐

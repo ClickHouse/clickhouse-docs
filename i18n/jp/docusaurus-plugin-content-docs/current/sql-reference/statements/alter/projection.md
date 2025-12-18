@@ -21,8 +21,6 @@ doc_type: 'reference'
 
 プロジェクションの内部動作に関する、より技術的な詳細はこの[ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)を参照してください。
 
-
-
 ## プライマリキーを使わずにフィルタリングする例 {#example-filtering-without-using-primary-keys}
 
 テーブルの作成：
@@ -51,7 +49,7 @@ ORDER BY user_name
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
 ```
 
-データの挿入:
+データの挿入：
 
 ```sql
 INSERT INTO visits_order SELECT
@@ -63,7 +61,7 @@ FROM numbers(1, 100);
 ```
 
 この Projection により、元のテーブルで `user_name` が `PRIMARY_KEY` として定義されていなくても、`user_name` で高速にフィルタリングできるようになります。
-クエリ実行時に ClickHouse は、データが `user_name` でソートされているため、Projection を使用した方がより少ないデータ量で処理できると判断しました。
+クエリ実行時に ClickHouse は、データが `user_name` でソートされているため、Projection を使用した方が処理すべきデータ量が少なくなると判断しました。
 
 ```sql
 SELECT
@@ -73,7 +71,7 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-クエリがプロジェクションを使用しているか確認するには、`system.query_log` テーブルを確認します。`projections` フィールドには、使用されたプロジェクションの名前が格納されており、何も使用されていない場合は空になります。
+クエリが Projection を使用しているか確認するには、`system.query_log` テーブルを確認します。`projections` フィールドには、使用された Projection の名前が格納されており、使用されていない場合は空です。
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
@@ -133,7 +131,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-このプロジェクションを利用するには、事前集約および `GROUP BY` のフィールドの一部またはすべてを選択するクエリを実行できます。
+このプロジェクションを利用するには、事前集約および `GROUP BY` で使用されるフィールドの一部またはすべてを選択するクエリを実行します。
 
 ```sql
 SELECT
@@ -151,7 +149,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-前述のとおり、`system.query_log` テーブルを確認できます。`projections` フィールドには、使用されたプロジェクションの名前が格納されており、プロジェクションが使用されていない場合は空になります。
+前述のとおり、`system.query_log` テーブルを参照できます。`projections` フィールドには、使用されたプロジェクション名が格納されており、プロジェクションが使用されていない場合は空になります。
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
@@ -160,7 +158,7 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 
 ## `_part_offset` フィールドを用いた通常のプロジェクション {#normal-projection-with-part-offset-field}
 
-`_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルの作成：
+`_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルを作成します。
 
 ```sql
 CREATE TABLE events
@@ -186,6 +184,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
+
 ### `_part_offset` をセカンダリインデックスとして使用する {#normal-projection-secondary-index}
 
 `_part_offset` フィールドはマージやミューテーション後も値が保持されるため、セカンダリインデックスとして有用です。クエリでこれを活用できます。
@@ -207,25 +206,37 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 
 [プロジェクション](/engines/table-engines/mergetree-family/mergetree.md/#projections)に対して、次の操作を実行できます。
 
-
-
 ## PROJECTION を追加する {#add-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] )` - テーブルのメタデータに PROJECTION の定義を追加します。
+`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT <COLUMN LIST EXPR> [GROUP BY] [ORDER BY] ) [WITH SETTINGS ( setting_name1 = setting_value1, setting_name2 = setting_value2, ...)]` - テーブルのメタデータに PROJECTION の定義を追加します。
 
+### `WITH SETTINGS` 句 {#with-settings}
+
+`WITH SETTINGS` は **PROJECTION レベルの設定**を定義し、`index_granularity` や `index_granularity_bytes` のような設定によって、PROJECTION がデータをどのように保存するかをカスタマイズします。
+これらは **MergeTree テーブル設定**に直接対応しますが、**この PROJECTION に対してのみ適用**されます。
+
+例:
+
+```sql
+ALTER TABLE t
+ADD PROJECTION p (
+    SELECT x ORDER BY x
+) WITH SETTINGS (
+    index_granularity = 4096,
+    index_granularity_bytes = 1048576
+);
+```
+
+Projection の設定は、検証ルールに従う範囲で、その Projection に対して有効となるテーブル設定を上書きします（たとえば、無効または非互換な上書きは拒否されます）。
 
 
 ## DROP PROJECTION {#drop-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` - テーブルのメタデータからプロジェクションの定義を削除し、ディスクからプロジェクションファイルを削除します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
-
-
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
 `ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - このクエリは、パーティション `partition_name` 内でプロジェクション `name` を再構築します。[mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
-
-
 
 ## CLEAR PROJECTION {#clear-projection}
 

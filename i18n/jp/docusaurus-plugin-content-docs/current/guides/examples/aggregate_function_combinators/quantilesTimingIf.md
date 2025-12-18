@@ -7,18 +7,12 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-
-
 # quantilesTimingIf {#quantilestimingif}
-
-
 
 ## 説明 {#description}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターを [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
 関数に適用することで、`quantilesTimingIf` 集約コンビネーター関数を使い、条件が真である行のタイミング値の分位数を計算できます。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -77,13 +71,12 @@ GROUP BY endpoint;
 * 1.0（最大値）
 
 ```response title="Response"
-   ┌─エンドポイント─┬─応答時間分位数─────────────────────────────────────────────┐
-1. │ 注文     │ [82, 87, 92, 98, 103, 104, 105]                                     │
-2. │ 製品     │ [45, 47, 49, 51, 52, 52, 53]                                        │
-3. │ ユーザー │ [nan, nan, nan, nan, nan, nan, nan]                                 │
-   └────────────┴──────────────────────────────────────────────────────────────────┘
+   ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
+1. │ orders   │ [82, 87, 92, 98, 103, 104, 105]                                     │
+2. │ products │ [45, 47, 49, 51, 52, 52, 53]                                        │
+3. │ users    │ [nan, nan, nan, nan, nan, nan, nan]                                 │
+   └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 関連項目 {#see-also}
 - [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

@@ -7,8 +7,6 @@ title: 'Set 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # Set 表引擎 {#set-table-engine}
 
 :::note

@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы Log {#log-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -19,8 +18,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 `Log` отличается от [TinyLog](../../../engines/table-engines/log-family/tinylog.md) тем, что рядом с файлами столбцов хранится небольшой файл «меток». Эти метки записываются для каждого блока данных и содержат смещения, которые указывают, откуда нужно начать чтение файла, чтобы пропустить заданное количество строк. Это позволяет читать данные таблицы в несколько потоков.
 Для параллельного доступа к данным операции чтения могут выполняться одновременно, при этом операции записи блокируют чтение и друг друга.
 Движок `Log` не поддерживает индексы. Аналогично, если запись в таблицу завершилась ошибкой, таблица считается повреждённой, и чтение из неё приводит к ошибке. Движок `Log` подходит для временных данных, таблиц с однократной записью, а также для тестирования или демонстрационных целей.
-
-
 
 ## Создание таблицы {#table_engines-log-creating-a-table}
 
@@ -34,7 +31,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
-
 
 ## Запись данных {#table_engines-log-writing-the-data}
 
@@ -51,13 +47,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 2.    Для каждого столбца сжатые данные дописываются в соответствующий файл `<column>.bin`.
 3.    В файл `__marks.mrk` добавляются соответствующие записи, фиксирующие смещение и количество строк вновь вставленных данных.
 
-
-
 ## Чтение данных {#table_engines-log-reading-the-data}
 
 Файл меток позволяет ClickHouse выполнять параллельное чтение данных. Это означает, что запрос `SELECT` может возвращать строки в непредсказуемом порядке. Используйте конструкцию `ORDER BY`, чтобы отсортировать строки.
-
-
 
 ## Пример использования {#table_engines-log-example-of-use}
 
@@ -76,8 +68,8 @@ ENGINE = Log
 Вставка данных:
 
 ```sql
-INSERT INTO log_table VALUES (now(),'REGULAR','Первое обычное сообщение')
-INSERT INTO log_table VALUES (now(),'REGULAR','Второе обычное сообщение'),(now(),'WARNING','Первое предупреждение')
+INSERT INTO log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 Мы использовали два запроса `INSERT`, чтобы создать два блока данных внутри файлов `<column>.bin`.
@@ -90,11 +82,11 @@ SELECT * FROM log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -106,8 +98,8 @@ SELECT * FROM log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение   │
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение   │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение      │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

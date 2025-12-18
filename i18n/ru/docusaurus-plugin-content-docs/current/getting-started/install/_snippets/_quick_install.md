@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## Установка ClickHouse с помощью curl {#install-clickhouse-using-curl}
 
 Выполните следующую команду, чтобы скачать один бинарный файл для вашей операционной системы.
@@ -16,7 +15,6 @@ curl https://clickhouse.com/ | sh
 :::note
 Для пользователей Mac: если вы получаете сообщение об ошибке о том, что разработчик бинарного файла не может быть проверен, подробнее см. [здесь](/knowledgebase/fix-developer-verification-error-in-macos).
 :::
-
 
 ## Запустите clickhouse-local {#start-clickhouse-local}
 
@@ -31,7 +29,6 @@ curl https://clickhouse.com/ | sh
 ./clickhouse
 ```
 
-
 ## Запуск clickhouse-server {#start-clickhouse-server}
 
 Если вы хотите хранить данные, вам потребуется запустить `clickhouse-server`. Вы можете
@@ -40,7 +37,6 @@ curl https://clickhouse.com/ | sh
 ```bash
 ./clickhouse server
 ```
-
 
 ## Запуск clickhouse-client {#start-clickhouse-client}
 

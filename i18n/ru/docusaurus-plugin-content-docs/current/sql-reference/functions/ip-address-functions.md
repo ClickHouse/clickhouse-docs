@@ -217,7 +217,7 @@ SELECT
 **Синтаксис**
 
 ```sql
-IPv4StringToNumOrNull(строка)
+IPv4StringToNumOrNull(string)
 ```
 
 **Аргументы**

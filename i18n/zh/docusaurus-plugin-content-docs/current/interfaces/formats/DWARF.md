@@ -79,9 +79,8 @@ LIMIT 3
 │ ./src/AggregateFunctions/AggregateFunctionUniqCombined.cpp │ 22649 │
 └────────────────────────────────────────────────────────────┴───────┘
 
-返回了 3 行。耗时：1.487 秒。处理了 1.3976 亿行，1.12 GB（9397 万行/秒，752.77 MB/秒）。
-峰值内存使用：271.92 MiB。
+3 rows in set. Elapsed: 1.487 sec. Processed 139.76 million rows, 1.12 GB (93.97 million rows/s., 752.77 MB/s.)
+Peak memory usage: 271.92 MiB.
 ```
-
 
 ## 格式设置 {#format-settings}

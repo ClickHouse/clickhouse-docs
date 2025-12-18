@@ -7,11 +7,7 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-
-
 # uniqArray {#uniqarray}
-
-
 
 ## 描述 {#description}
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 函数，从而得到 `uniqArray` 聚合组合器函数，用于计算所有数组中唯一元素个数的近似值。
 
 当你需要在数据集中跨多个数组统计唯一元素时，`uniqArray` 函数非常有用。它等同于使用 `uniq(arrayJoin())`，其中 `arrayJoin` 会先将数组展开，然后 `uniq` 再统计唯一元素的数量。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -56,7 +50,6 @@ FROM user_interests;
 1. │                      5 │                          5 │
    └────────────────────────┴────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`uniq`](/sql-reference/aggregate-functions/reference/uniq)

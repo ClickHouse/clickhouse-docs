@@ -2,7 +2,7 @@
 sidebar_label: 'Java Runner'
 slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: 'Users can ingest data into ClickHouse using Google Dataflow Java Runner'
+description: 'You can ingest data into ClickHouse using Google Dataflow Java Runner'
 title: 'Dataflow Java Runner'
 doc_type: 'guide'
 keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'ClickHouseIO connector']

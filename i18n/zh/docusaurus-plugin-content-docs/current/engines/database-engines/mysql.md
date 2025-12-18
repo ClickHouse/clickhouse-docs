@@ -85,16 +85,16 @@ SELECT @@version;
 
 ```text
 mysql> USE test;
-数据库已更改
+Database changed
 
 mysql> CREATE TABLE `mysql_table` (
     ->   `int_id` INT NOT NULL AUTO_INCREMENT,
     ->   `float` FLOAT NOT NULL,
     ->   PRIMARY KEY (`int_id`));
-查询成功，影响了 0 行 (0,09 秒)
+Query OK, 0 rows affected (0,09 sec)
 
 mysql> insert into mysql_table (`int_id`, `float`) VALUES (1,2);
-查询成功，影响了 1 行 (0,00 秒)
+Query OK, 1 row affected (0,00 sec)
 
 mysql> select * from mysql_table;
 +------+-----+
@@ -102,7 +102,7 @@ mysql> select * from mysql_table;
 +------+-----+
 |      1 |     2 |
 +------+-----+
-结果集中有 1 行 (0,00 秒)
+1 row in set (0,00 sec)
 ```
 
 位于 ClickHouse 中、与 MySQL 服务器进行数据交换的数据库：

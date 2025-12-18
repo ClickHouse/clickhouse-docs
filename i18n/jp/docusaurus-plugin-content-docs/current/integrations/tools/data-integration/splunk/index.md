@@ -27,17 +27,13 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge/>
 
-[Splunk](https://www.splunk.com/) は、データ分析およびモニタリングプラットフォームです。
+[Splunk](https://www.splunk.com/) は、データ分析およびモニタリングのためのプラットフォームです。
 
 このアドオンを使用すると、[ClickHouse Cloud の監査ログ](/cloud/security/audit-logging) を Splunk に保存できます。監査ログのダウンロードには [ClickHouse Cloud API](/cloud/manage/api/api-overview) を利用します。
 
 このアドオンにはモジュラー入力のみが含まれており、追加の UI は提供されません。
 
-
-
 # インストール {#installation}
-
-
 
 ## Splunk Enterprise 向け {#for-splunk-enterprise}
 
@@ -55,16 +51,12 @@ Splunkbase からダウンロードしたアーカイブファイルを選択し
 
 インストールが正常に完了すると、ClickHouse Audit logs アプリケーションが表示されます。表示されない場合は、エラーがないか splunkd のログを確認してください。
 
-
-
 # モジュラー入力の設定 {#modular-input-configuration}
 
 モジュラー入力を設定するには、まず ClickHouse Cloud デプロイメントから次の情報を取得する必要があります。
 
 - 組織 ID
 - 管理者権限を持つ [API Key](/cloud/manage/openapi)
-
-
 
 ## ClickHouse Cloud から情報を取得する {#getting-information-from-clickhouse-cloud}
 
@@ -86,8 +78,6 @@ API Key と secret を安全な場所に保存します。
 
 <Image img={splunk_007} size="lg" alt="保存するために生成された API Key と secret を表示している ClickHouse Cloud console" border />
 
-
-
 ## Splunk でデータ入力を構成する {#configure-data-input-in-splunk}
 
 Splunk に戻り、Settings -> Data inputs に移動します。
@@ -107,8 +97,6 @@ ClickHouse Cloud Audit Logs のデータ入力を選択します。
 <Image img={splunk_011} size="lg" alt="ClickHouse データ入力設定が入力済みの Splunk 構成ページ" border />
 
 データ入力の構成が完了したので、監査ログの参照を開始できます。
-
-
 
 # 使用方法 {#usage}
 

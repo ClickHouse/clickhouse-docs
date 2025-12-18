@@ -24,7 +24,6 @@ import TabItem from '@theme/TabItem';
   </tbody>
 </table>
 
-
 ## Установка Lambda-слоёв OpenTelemetry {#installing-the-otel-lambda-layers}
 
 Проект OpenTelemetry предоставляет отдельные Lambda-слои для следующего:
@@ -79,9 +78,9 @@ arn:aws:lambda:<region>:184161586896:layer:opentelemetry-ruby-0_1_0:1
 
 </Tabs>
 
-_Последние версии слоев можно найти в [репозитории OpenTelemetry Lambda Layers на GitHub](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
+_The latest releases of the layers can be found in the [OpenTelemetry Lambda Layers GitHub repository](https://github.com/open-telemetry/opentelemetry-lambda/releases)._
 
-3. Настройте следующие переменные окружения в вашей функции Lambda в разделе «Configuration» > «Environment variables».
+3. Configure the following environment variables in your Lambda function under "Configuration" > "Environment variables".
 
 <Tabs groupId="install-language-env">
 <TabItem value="javascript" label="Javascript" default>
@@ -129,30 +128,37 @@ OTEL_TRACES_SAMPLER=always_on
 
 </Tabs>
 
-### Установка Lambda-слоя коллектора OpenTelemetry {#installing-the-otel-collector-layer}
+### Installing the OpenTelemetry collector Lambda layer {#installing-the-otel-collector-layer}
 
-Lambda-слой коллектора позволяет пересылать логи, метрики и трейсы из вашей Lambda-функции в ClickStack без влияния на время отклика из-за задержек экспортера.
+The collector Lambda layer allows you to forward logs, metrics, and traces from your Lambda function to ClickStack without impacting response times due 
+to exporter latency.
 
-**Чтобы установить слой коллектора**:
+**To install the collector layer**:
 
-1. В разделе Layers нажмите «Add a layer».
-2. Выберите вариант Specify an ARN и укажите правильный ARN в зависимости от архитектуры, не забудьте заменить `<region>` на ваш регион (например, `us-east-2`):
+1. In the Layers section click "Add a layer"
+2. Select specify an ARN and choose the correct ARN based on architecture,  ensure you replace the `<region>` with your region (ex. `us-east-2`):
 
 <Tabs groupId="install-language-layer">
-  <TabItem value="x86_64" label="x86_64" default>
-    ```shell
+
+<TabItem value="x86_64" label="x86_64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-amd64-0_8_0:1
     ```
-  </TabItem>
 
-  <TabItem value="arm64" label="arm64" default>
-    ```shell
+</TabItem>
+
+<TabItem value="arm64" label="arm64" default>
+
+```shell
     arn:aws:lambda:<region>:184161586896:layer:opentelemetry-collector-arm64-0_8_0:1
     ```
-  </TabItem>
+
+</TabItem>
+
 </Tabs>
 
-3. Добавьте следующий файл `collector.yaml` в ваш проект, чтобы настроить коллектор на отправку данных в ClickStack:
+3. Add the following `collector.yaml` file to your project to configure the collector to send to ClickStack:
 
 ```yaml
 # collector.yaml {#collectoryaml}
@@ -191,38 +197,40 @@ service:
       exporters: [otlphttp]
 ```
 
-4. Добавьте следующую переменную среды:
+4. Add the following environment variable:
 
 ```shell
 OPENTELEMETRY_COLLECTOR_CONFIG_FILE=/var/task/collector.yaml
 ```
 
+## Checking the installation {#checking-the-installation}
 
-## Проверка установки {#checking-the-installation}
+After deploying the layers, you should now see traces automatically
+collected from your Lambda function in HyperDX. The `decouple` and `batching` 
+processor may introduce a delay in telemetry collection, so traces may be 
+delayed in showing up. To emit custom logs or metrics, you'll need to instrument your code your language-specific 
+OpenTelemetry SDKs.
 
-После развертывания слоёв вы должны увидеть трассировки, автоматически
-собираемые из вашей Lambda-функции в HyperDX. Процессоры `decouple` и `batching` 
-могут вносить задержку в сбор телеметрии, поэтому появление трассировок 
-в интерфейсе может происходить с задержкой. Чтобы отправлять пользовательские логи или метрики, вам нужно инструментировать ваш код с помощью языковых SDKS OpenTelemetry.
+## Troubleshooting {#troubleshoting}
 
-## Диагностика и устранение неполадок {#troubleshoting}
+### Custom instrumentation not sending {#custom-instrumentation-not-sending}
 
-### Пользовательское инструментирование не отправляет данные {#custom-instrumentation-not-sending}
+If you're not seeing your manually defined traces or other telemetry, you may
+be using an incompatible version of the OpenTelemetry API package. Ensure your
+OpenTelemetry API package is at least the same or lower version than the 
+version included in the AWS lambda.
 
-Если вы не видите свои вручную определённые трассировки или другую телеметрию,
-возможно, вы используете несовместимую версию пакета OpenTelemetry API. Убедитесь,
-что версия вашего пакета OpenTelemetry API совпадает с версией, включённой
-в AWS Lambda, или ниже неё.
+### Enabling SDK debug logs {#enabling-sdk-debug-logs}
 
-### Включение отладочных логов SDK {#enabling-sdk-debug-logs}
+Set the `OTEL_LOG_LEVEL` environment variable to `DEBUG` to enable debug logs from
+the OpenTelemetry SDK. This will help ensure that the auto-instrumentation layer
+is correctly instrumenting your application.
 
-Установите переменную окружения `OTEL_LOG_LEVEL` в значение `DEBUG`, чтобы включить отладочное логирование
-SDK OpenTelemetry. Это поможет убедиться, что слой автоинструментирования
-корректно выполняет инструментирование вашего приложения.
+### Enabling collector debug logs {#enabling-collector-debug-logs}
 
-### Включение отладочных логов коллектора {#enabling-collector-debug-logs}
-
-Чтобы отладить проблемы с коллектором, вы можете включить отладочные логи, изменив конфигурационный файл коллектора, добавив экспортер `logging` и установив уровень логирования телеметрии в `debug`, чтобы включить более подробное логирование в Lambda-слое коллектора.
+To debug collector issues, you can enable debug logs by modifying your collector
+configuration file to add the `logging` exporter and setting the telemetry 
+log level to `debug` to enable more verbose logging from the collector lambda layer.
 
 ```yaml
 # collector.yaml {#collectoryaml}

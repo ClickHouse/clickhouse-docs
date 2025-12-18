@@ -23,7 +23,6 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/winI7256Ejk?si=TRThhzCJdq87xg_x" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## 前置条件 {#prerequisites}
 
 使用本指南前，您需要具备：
@@ -51,7 +50,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   如果您的部署需要 TLS 证书,请使用 Helm 安装 [cert-manager](https://cert-manager.io/):
 
   ```shell
-  # 添加 cert-manager 仓库 
+  # Add Cert manager repo 
 
   helm repo add jetstack https://charts.jetstack.io 
 
@@ -62,7 +61,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   此**步骤为可选项，适用于没有现有 Pod（容器组）需要监控的用户**。虽然已在 Kubernetes 环境中部署了现有服务的用户可以跳过此步骤，但本演示包含已插桩的微服务，这些微服务会生成追踪和会话回放数据，让用户能够体验 ClickStack 的所有功能。
 
-  以下步骤将在 Kubernetes 集群中部署 ClickStack 分支版本的 OpenTelemetry Demo Application 堆栈,专为可观测性测试和仪表化演示而定制。该堆栈包含后端微服务、负载生成器、遥测管道、支撑基础设施(如 Kafka、Redis)以及与 ClickStack 的 SDK 集成。
+  以下步骤将在 Kubernetes 集群中部署 ClickStack 分支版本的 OpenTelemetry Demo Application 堆栈，专为可观测性测试和仪表化演示而定制。该堆栈包含后端微服务、负载生成器、遥测管道、支撑基础设施（如 Kafka、Redis）以及与 ClickStack 的 SDK 集成。
 
   所有服务均部署到 `otel-demo` 命名空间。每个部署包括：
 
@@ -71,9 +70,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   * [将资源标签转发](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)，以便通过环境变量 `OTEL_RESOURCE_ATTRIBUTES` 关联日志、指标和追踪数据。
 
   ```shell
-  ## 下载演示 Kubernetes 清单文件
+  ## download demo Kubernetes manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
-  # wget 替代命令
+  # wget alternative
   # wget https://raw.githubusercontent.com/ClickHouse/opentelemetry-demo/refs/heads/main/kubernetes/opentelemetry-demo.yaml
   kubectl apply --namespace otel-demo -f opentelemetry-demo.yaml
   ```
@@ -147,9 +146,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     :::warning 生产环境中的 ClickStack
 
-    此 Chart 还会安装 ClickHouse 和 OTel collector。对于生产环境，建议使用 ClickHouse 和 OTel collector 的 Operator，和/或使用 ClickHouse Cloud。
+    此 Helm 图表还会安装 ClickHouse 和 OTel collector。在生产环境中，建议使用 ClickHouse 和 OTel collector 的 Operator，和/或使用 ClickHouse Cloud。
 
-    要禁用 ClickHouse 和 OTel collector，请设置以下配置项：
+    要禁用 ClickHouse 和 OTel collector，请设置以下值：
 
     ```shell
     helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set clickhouse.persistence.enabled=false --set otel.enabled=false
@@ -161,15 +160,15 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   <details>
     <summary>使用 ClickHouse Cloud</summary>
 
-    如果你更希望使用 ClickHouse Cloud，可以部署 ClickStack 并[禁用内置的 ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。
+    如果您更倾向于使用 ClickHouse Cloud，可以部署 ClickStack 并[禁用内置的 ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud)。
 
     :::note
-    该 chart 当前始终会同时部署 HyperDX 和 MongoDB。虽然这些组件提供了一条替代访问路径，但它们并未与 ClickHouse Cloud 的身份验证机制集成。在此部署模型中，这些组件主要供管理员使用，[用于获取安全摄取密钥](#retrieve-ingestion-api-key)，该密钥是通过已部署的 OTel collector 进行摄取所必需的，但不应向终端用户暴露。
+    该 chart 当前始终会同时部署 HyperDX 和 MongoDB。虽然这些组件提供了一种备用访问方式，但它们并未与 ClickHouse Cloud 的身份验证机制集成。在此部署模型中，这些组件主要供管理员使用，[用于获取安全摄取密钥](#retrieve-ingestion-api-key)，该密钥是通过已部署的 OTel collector 进行数据摄取所必需的，但不应向最终用户暴露。
     :::
 
     ```shell
-    # 指定 ClickHouse Cloud 凭据
-    export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # 完整的 https 地址
+    # specify ClickHouse Cloud credentials
+    export CLICKHOUSE_URL=<CLICKHOUSE_CLOUD_URL> # full https url
     export CLICKHOUSE_USER=<CLICKHOUSE_USER>
     export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 
@@ -208,7 +207,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   访问 [http://localhost:8080](http://localhost:8080) 以访问 HyperDX UI。
 
-  创建用户,提供满足复杂度要求的用户名和密码。
+  创建用户，提供满足复杂度要求的用户名和密码。
 
   <Image img={hyperdx_login} alt="HyperDX 界面" size="lg" />
 
@@ -225,12 +224,12 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   创建一个新的 Kubernetes secret,其中包含摄取 API key,以及一个 config map,用于存储通过 ClickStack Helm 图表部署的 OTel collector 的位置信息。后续组件将使用这些配置,以便将数据摄取到通过 ClickStack Helm 图表部署的 collector 中:
 
   ```shell
-  # 使用摄取 API key 创建 secret
+  # create secret with the ingestion API key
   kubectl create secret generic hyperdx-secret \
   --from-literal=HYPERDX_API_KEY=<ingestion_api_key> \
   -n otel-demo
 
-  # 创建 ConfigMap 指向上面部署的 ClickStack OTel collector
+  # create a ConfigMap pointing to the ClickStack OTel collector deployed above
   kubectl create configmap -n=otel-demo otel-config-vars --from-literal=YOUR_OTEL_COLLECTOR_ENDPOINT=http://my-hyperdx-hdx-oss-v2-otel-collector:4318
   ```
 
@@ -242,7 +241,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   演示服务的追踪和日志数据现在应开始流入 HyperDX。
 
-  <Image img={hyperdx_kubernetes_data} alt="HyperDX Kubernetes 数据" size="lg" />
+  <Image img={hyperdx_kubernetes_data} alt="HyperDX 中的 Kubernetes 数据" size="lg" />
 
   ### 添加 OpenTelemetry Helm 仓库
 
@@ -251,26 +250,26 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   这需要我们安装 OpenTelemetry Helm 仓库:
 
   ```shell
-  # 添加 OTel Helm 仓库
-  helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+  # Add Otel Helm repo
+  helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts 
   ```
 
   ### 部署 Kubernetes 采集器组件
 
   要从集群本身和各个节点收集日志和指标,需要部署两个独立的 OpenTelemetry 收集器,每个收集器使用各自的清单文件。所提供的两个清单文件 `k8s_deployment.yaml` 和 `k8s_daemonset.yaml` 协同工作,从 Kubernetes 集群中收集全面的遥测数据。
 
-  * `k8s_deployment.yaml` 会部署一个 **OpenTelemetry Collector 单实例**，负责采集**整个集群范围内的事件和元数据**。它会收集 Kubernetes 事件、集群指标，并使用 pod（容器组）标签和注解来丰富遥测数据。该收集器作为一个独立的部署运行，仅启用一个副本，以避免产生重复数据。
+  * `k8s_deployment.yaml` 会部署一个 **单个 OpenTelemetry Collector 实例**，负责采集**集群范围内的事件和元数据**。它会收集 Kubernetes 事件、集群指标，并使用 pod（容器组）标签和注解来丰富遥测数据。该收集器作为一个独立的部署运行，仅启用一个副本，以避免产生重复数据。
 
-  * `k8s_daemonset.yaml` 部署了一个**基于 DaemonSet 的采集器**，会在集群中的每个节点上运行。它使用 `kubeletstats`、`hostmetrics` 和 Kubernetes Attribute Processor 等组件，收集**节点级和 pod（容器组）级指标**以及容器日志。这些采集器为日志附加元数据，并通过 OTLP exporter 将其发送到 HyperDX。
+  * `k8s_daemonset.yaml` 部署了一个**基于 DaemonSet 的采集器**，会在集群中的每个节点上运行。它使用 `kubeletstats`、`hostmetrics` 和 Kubernetes Attribute Processor 等组件，收集**节点级和 pod（容器组）级指标**以及容器日志。该采集器为日志附加元数据，并通过 OTLP exporter 将其发送到 HyperDX。
 
   这些清单共同实现了集群的全栈可观测性,涵盖从基础设施到应用级别的遥测数据,并将增强后的数据发送到 ClickStack 进行集中分析。
 
-  首先,将收集器安装为 Deployment:
+  首先,将收集器安装为部署:
 
   ```shell
-  # 下载清单文件
+  # download manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_deployment.yaml
-  # 安装 helm 图表
+  # install the helm chart
   helm install --namespace otel-demo k8s-otel-deployment open-telemetry/opentelemetry-collector -f k8s_deployment.yaml
   ```
 
@@ -285,26 +284,26 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
       repository: otel/opentelemetry-collector-contrib
       tag: 0.123.0
      
-    # 我们只需要一个收集器实例 - 多个实例会产生重复数据
+    # We only want one of these collectors - any more and we'd produce duplicate data
     replicaCount: 1
      
     presets:
       kubernetesAttributes:
         enabled: true
-        # 启用后，处理器将提取关联 pod（容器组）的所有标签并将其添加为资源属性。
-        # 标签的确切名称将作为键。
+        # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
+        # The label's exact name will be the key.
         extractAllPodLabels: true
-        # 启用后，处理器将提取关联 pod（容器组）的所有注解并将其添加为资源属性。
-        # 注解的确切名称将作为键。
+        # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
+        # The annotation's exact name will be the key.
         extractAllPodAnnotations: true
-      # 配置收集器以收集 Kubernetes 事件。
-      # 将 k8sobject receiver 添加到日志管道，默认收集 Kubernetes 事件。
-      # 更多信息：https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
+      # Configures the collector to collect Kubernetes events.
+      # Adds the k8sobject receiver to the logs pipeline and collects Kubernetes events by default.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-objects-receiver
       kubernetesEvents:
         enabled: true
-      # 配置 Kubernetes Cluster Receiver 以收集集群级指标。
-      # 将 k8s_cluster receiver 添加到指标管道，并向 ClusterRole 添加必要的规则。
-      # 更多信息：https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
+      # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics.
+      # Adds the k8s_cluster receiver to the metrics pipeline and adds the necessary rules to ClusteRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-cluster-receiver
       clusterMetrics:
         enabled: true
 
@@ -342,9 +341,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   接下来，将收集器部署为 DaemonSet 守护进程集，用于收集节点和 pod（容器组）级别的指标和日志：
 
   ```shell
-  # 下载清单文件
+  # download manifest file
   curl -O https://raw.githubusercontent.com/ClickHouse/clickhouse-docs/refs/heads/main/docs/use-cases/observability/clickstack/example-datasets/_snippets/k8s_daemonset.yaml
-  # 安装 helm 图表
+  # install the helm chart
   helm install --namespace otel-demo k8s-otel-daemonset open-telemetry/opentelemetry-collector -f k8s_daemonset.yaml
   ```
 
@@ -361,7 +360,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
       repository: otel/opentelemetry-collector-contrib
       tag: 0.123.0
        
-    # 使用 kubeletstats CPU/内存利用率指标的必要配置
+    # Required to use the kubeletstats cpu/memory utilization metrics
     clusterRole:
       create: true
       rules:
@@ -377,20 +376,20 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
         enabled: true
       hostMetrics:
         enabled: true
-      # 配置 Kubernetes 处理器以添加 Kubernetes 元数据。
-      # 将 k8sattributes 处理器添加到所有管道，并向集群角色添加必要的规则。
-      # 更多信息：https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
+      # Configures the Kubernetes Processor to add Kubernetes metadata.
+      # Adds the k8sattributes processor to all the pipelines and adds the necessary rules to ClusterRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubernetes-attributes-processor
       kubernetesAttributes:
         enabled: true
-        # 启用后，处理器将提取关联 pod（容器组）的所有标签，并将其作为资源属性添加。
-        # 标签的确切名称将作为键。
+        # When enabled, the processor will extract all labels for an associated pod and add them as resource attributes.
+        # The label's exact name will be the key.
         extractAllPodLabels: true
-        # 启用后，处理器将提取关联 pod（容器组）的所有注解，并将其作为资源属性添加。
-        # 注解的确切名称将作为键。
+        # When enabled, the processor will extract all annotations for an associated pod and add them as resource attributes.
+        # The annotation's exact name will be the key.
         extractAllPodAnnotations: true
-      # 配置收集器从 kubelet 节点代理上的 API 服务器收集节点、pod（容器组）和容器指标。
-      # 将 kubeletstats 接收器添加到指标管道，并向集群角色添加必要的规则。
-      # 更多信息：https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
+      # Configures the collector to collect node, pod, and container metrics from the API server on a kubelet..
+      # Adds the kubeletstats receiver to the metrics pipeline and adds the necessary rules to ClusterRole.
+      # More Info: https://opentelemetry.io/docs/kubernetes/collector/components/#kubeletstats-receiver
       kubeletMetrics:
         enabled: true
 
@@ -409,7 +408,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     config:
       receivers:
-        # 配置额外的 kubelet 节点代理指标
+        # Configures additional kubelet metrics
         kubeletstats:
           collection_interval: 20s
           auth_type: 'serviceAccount'
@@ -474,7 +473,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     你还需要为 traces 和 metrics 创建数据源。
 
-    例如，要为 traces 和 OTel metrics 创建数据源，用户可以从顶部菜单中选择 `Create New Source`。
+    例如，要为 traces 和 OTel metrics 创建数据源，你可以从顶部菜单中选择 `Create New Source`。
 
     <Image force img={hyperdx_create_new_source} alt="HyperDX 创建新数据源" size="lg" />
 
@@ -490,7 +489,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   <details>
     <summary>使用自托管部署</summary>
 
-    要访问本地部署的 HyperDX，可以在本地执行端口转发命令，然后通过 [http://localhost:8080](http://localhost:8080) 访问 HyperDX。
+    要访问本地部署的 HyperDX，可在本地执行端口转发命令，然后在浏览器中通过 [http://localhost:8080](http://localhost:8080) 访问 HyperDX。
 
     ```shell
     kubectl port-forward \
@@ -499,8 +498,8 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
      -n otel-demo
     ```
 
-    :::note 生产环境中的 ClickStack
-    在生产环境中，如果未在 ClickHouse Cloud 中使用 HyperDX，建议使用启用了 TLS 的入口（Ingress）。例如：
+    :::note ClickStack in production
+    在生产环境中，如果未在 ClickHouse Cloud 中使用 HyperDX，建议使用启用 TLS 的入口资源（Ingress）。例如：
 
     ```shell
     helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \

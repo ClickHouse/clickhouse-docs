@@ -15,14 +15,12 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-
 # Использование MCP-сервера ClickHouse с LibreChat {#using-clickhouse-mcp-server-with-librechat}
 
 > В данном руководстве описывается настройка LibreChat с MCP-сервером ClickHouse с использованием Docker
 > и подключение к примерам наборов данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Установите Docker {#install-docker}
 
@@ -34,8 +32,6 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 <br/>
 Для получения дополнительной информации см. [документацию по Docker](https://docs.docker.com/get-docker/).
 
-
-
 ## Клонируйте репозиторий LibreChat {#clone-librechat-repo}
 
 Откройте консоль (Command Prompt, терминал или PowerShell) и клонируйте
@@ -45,7 +41,6 @@ import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.pn
 git clone https://github.com/danny-avila/LibreChat.git
 cd LibreChat
 ```
-
 
 ## Создайте и отредактируйте файл .env {#create-and-edit-env-file}
 
@@ -59,15 +54,14 @@ cp .env.example .env
 многих популярных провайдеров LLM, включая OpenAI, Anthropic, AWS Bedrock и др.,
 например:
 
-
 ```text title=".venv"
 #============#
-# Anthropic  # {#anthropic}
+# Anthropic  #
 #============#
 #highlight-next-line
 ANTHROPIC_API_KEY=user_provided
-# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307 {#anthropic_modelsclaude-opus-4-20250514claude-sonnet-4-20250514claude-3-7-sonnet-20250219claude-3-5-sonnet-20241022claude-3-5-haiku-20241022claude-3-opus-20240229claude-3-sonnet-20240229claude-3-haiku-20240307}
-# ANTHROPIC_REVERSE_PROXY= {#anthropic_reverse_proxy}
+# ANTHROPIC_MODELS=claude-opus-4-20250514,claude-sonnet-4-20250514,claude-3-7-sonnet-20250219,claude-3-5-sonnet-20241022,claude-3-5-haiku-20241022,claude-3-opus-20240229,claude-3-sonnet-20240229,claude-3-haiku-20240307
+# ANTHROPIC_REVERSE_PROXY=
 ```
 
 Замените `user_provided` на ваш API-ключ для используемого провайдера LLM.
@@ -78,7 +72,6 @@ ANTHROPIC_API_KEY=user_provided
 не изменяйте файл .env и переходите к следующим шагам.
 :::
 
-
 ## Создайте файл librechat.yaml {#create-librechat-yaml-file}
 
 Выполните следующую команду, чтобы создать новый файл `librechat.yaml`:
@@ -88,7 +81,6 @@ cp librechat.example.yaml librechat.yaml
 ```
 
 Это создаёт основной [конфигурационный файл](https://www.librechat.ai/docs/configuration/librechat_yaml) для LibreChat.
-
 
 ## Добавление сервера ClickHouse MCP в Docker Compose {#add-clickhouse-mcp-server-to-docker-compose}
 
@@ -142,7 +134,6 @@ services:
   />
 </Link>
 
-
 ## Настройка сервера MCP в librechat.yaml {#configure-mcp-server-in-librechat-yaml}
 
 Откройте `librechat.yaml` и разместите следующую конфигурацию в конце файла:
@@ -167,7 +158,6 @@ socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple', 'sa
 ```text title="librechat.yaml"
 socialLogins: []
 ```
-
 
 ## Добавление локальной LLM‑модели с помощью Ollama (необязательно) {#add-local-llm-using-ollama}
 
@@ -208,7 +198,6 @@ custom:
     modelDisplayLabel: "Ollama"
 ```
 
-
 ## Запустите все сервисы {#start-all-services}
 
 Из корневого каталога проекта LibreChat выполните следующую команду, чтобы запустить сервисы:
@@ -218,7 +207,6 @@ docker compose up
 ```
 
 Дождитесь, пока все сервисы будут полностью запущены.
-
 
 ## Откройте LibreChat в браузере {#open-librechat-in-browser}
 
@@ -234,8 +222,8 @@ docker compose up
 
 Теперь вы можете отправить запрос LLM для исследования примеров наборов данных ClickHouse. Попробуйте:
 
-```text title="Запрос"
-К каким наборам данных у вас есть доступ?
+```text title="Prompt"
+What datasets do you have access to?
 ```
 
 </VerticalStepper>

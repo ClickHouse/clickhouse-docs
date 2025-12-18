@@ -18,7 +18,6 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # 将 Databrain 连接到 ClickHouse {#connecting-databrain-to-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -31,15 +30,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 本指南将逐步介绍如何将 Databrain 连接到你的 ClickHouse 实例。
 
-
-
 ## 前置条件 {#pre-requisites}
 
 - 一个 ClickHouse 数据库，可以部署在自有基础设施上，或托管于 [ClickHouse Cloud](https://clickhouse.com/)。
 - 一个 [Databrain 账号](https://app.usedatabrain.com/users/sign-up)。
 - 一个 Databrain 工作区，用于连接数据源。
-
-
 
 ## 将 Databrain 连接到 ClickHouse 的步骤 {#steps-to-connect-databrain-to-clickhouse}
 
@@ -93,15 +88,14 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 确保你所使用的 ClickHouse 用户具有必要的权限：
 
 ```sql
--- 授予读取模式信息的权限
+-- Grant permissions to read schema information
 GRANT SELECT ON information_schema.* TO your_databrain_user;
 
--- 授予对数据库和表的读取访问权限
+-- Grant read access to your database and tables
 GRANT SELECT ON your_database.* TO your_databrain_user;
 ```
 
 将 `your_databrain_user` 和 `your_database` 替换为您实际使用的用户名和数据库名称。
-
 
 ## 将 Databrain 与 ClickHouse 配合使用 {#using-databrain-with-clickhouse}
 
@@ -152,8 +146,6 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 - **Embedded Analytics**：将仪表板和指标直接嵌入到你的应用程序中
 - **Semantic Layer**：创建可复用的数据模型和业务逻辑
 
-
-
 ## 故障排查 {#troubleshooting}
 
 ### 连接失败 {#connection-fails}
@@ -174,8 +166,6 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 2. **创建物化视图**：对于经常访问的聚合结果，考虑在 ClickHouse 中创建物化视图
 3. **使用合适的数据类型**：确保 ClickHouse 模式（schema）使用了最优的数据类型
 4. **索引优化**：利用 ClickHouse 的主键和跳过索引（skipping index）
-
-
 
 ## 进一步了解 {#learn-more}
 

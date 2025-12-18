@@ -7,6 +7,8 @@ description: '独自のクラウドインフラストラクチャ上に ClickHou
 doc_type: 'reference'
 ---
 
+import Image from '@theme/IdealImage';
+import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 
 ## 概要 {#overview}
@@ -15,13 +17,15 @@ BYOC（Bring Your Own Cloud）は、お客様自身のクラウドインフラ�
 
 > **ご利用を希望される場合は、[こちらからお問い合わせください](https://clickhouse.com/cloud/bring-your-own-cloud)。** 追加情報については、[利用規約](https://clickhouse.com/legal/agreements/terms-of-service)をご参照ください。
 
-現時点で、BYOC がサポートされているのは AWS のみです。GCP および Azure については、[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録いただけます。
-
 :::note 
 BYOC は特に大規模なデプロイメント向けに設計されており、ご利用にあたってはコミットメント契約の締結が必要です。
 :::
 
+対応しているクラウドサービスプロバイダー:
 
+* AWS (GA)
+* GCP (Private Preview)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
+* Azure (Roadmap)。ご興味のある方は[こちら](https://clickhouse.com/cloud/bring-your-own-cloud)からウェイティングリストにご登録ください。
 
 ## 用語集 {#glossary}
 
@@ -29,7 +33,15 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 - **Customer BYOC VPC:** 顧客のクラウドアカウントが所有し、ClickHouse Cloud によってプロビジョニングおよび管理される、ClickHouse Cloud の BYOC デプロイメント専用の VPC。
 - **Customer VPC:** Customer BYOC VPC に接続する必要があるアプリケーションのために、顧客のクラウドアカウントが所有するその他の VPC。
 
+## アーキテクチャ {#architecture}
 
+メトリクスとログは、顧客の BYOC VPC 内に保存されています。ログは現在、EBS のローカルストレージに保存されています。今後のアップデートでは、ログは LogHouse に保存される予定であり、LogHouse は顧客の BYOC VPC 内で動作する ClickHouse サービスです。メトリクスは、顧客の BYOC VPC 内にローカルで構成された Prometheus と Thanos のスタックによって実装されています。
+
+<br />
+
+<Image img={byoc1} size="lg" alt="BYOC アーキテクチャ" background='black'/>
+
+<br />
 
 ## 機能 {#features}
 
@@ -41,7 +53,7 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
   - サービスとそのステータスを表示。
 - **バックアップとリストア。**
 - **手動による垂直および水平スケーリング。**
-- **アイドリング機能。**
+- **自動アイドリング機能。**
 - **Warehouse**: Compute-Compute 分離
 - **Tailscale を用いたゼロトラストネットワーク。**
 - **監視**:
@@ -55,6 +67,6 @@ BYOC は特に大規模なデプロイメント向けに設計されており、
 ### 計画中の機能（現在は未サポート） {#planned-features-currently-unsupported}
 
 - [AWS KMS](https://aws.amazon.com/kms/)、別名 CMEK（customer-managed encryption keys）
-- 取り込み用の ClickPipes
+- ClickPipes
 - オートスケーリング
 - MySQL インターフェース

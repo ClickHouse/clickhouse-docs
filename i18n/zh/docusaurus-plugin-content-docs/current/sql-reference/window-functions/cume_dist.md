@@ -80,7 +80,7 @@ FROM salaries;
 `cume_dist()` 函数使用以下公式计算相对位置：
 
 ```text
-cume_dist = (小于等于当前行值的行数) / (分区内的总行数)
+cume_dist = (number of rows ≤ current row value) / (total number of rows in partition)
 ```
 
 具有相同值（同行）的行会获得相同的累积分布值，该值对应于该同行组中的最高位置。

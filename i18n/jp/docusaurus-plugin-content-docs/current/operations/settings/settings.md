@@ -1046,6 +1046,36 @@ true の場合、論理更新を表すパッチパーツが SELECT 時に適用�
 
 Join モードでパッチパーツを適用する際に使用する一時キャッシュのバケット数。
 
+## apply_prewhere_after_final {#apply_prewhere_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新しい設定。有効にすると、PREWHERE 条件は FINAL 処理の後に適用されます。"}]}]}/>
+
+有効にすると、PREWHERE 条件は ReplacingMergeTree および類似のエンジンに対して、FINAL 処理の後に適用されます。
+これは、PREWHERE が重複した行間で値が異なる可能性のあるカラムを参照しており、
+フィルタ処理の前に FINAL で「勝ち」行を選択させたい場合に有用です。無効にした場合、PREWHERE は読み取り中に適用されます。
+注意: apply_row_level_security_after_final が有効で、かつ ROW POLICY がソートキー以外のカラムを使用している場合は、
+正しい実行順序を維持するために PREWHERE も遅延されます（ROW POLICY は PREWHERE より前に適用される必要があります）。
+
+## apply_row_policy_after_final {#apply_row_policy_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting to control if row policies and PREWHERE are applied after FINAL processing for *MergeTree tables"}]}]}/>
+
+有効にすると、ROW POLICY および PREWHERE は *MergeTree テーブルに対する FINAL 処理の後に適用されます（特に ReplacingMergeTree に対して有効です）。
+無効にすると、ROW POLICY および PREWHERE は FINAL の前に適用されます。このとき、ReplacingMergeTree などのエンジンで重複排除に使われるべき行を
+ROW POLICY がフィルタリングしてしまうと、結果が異なる可能性があります。
+
+ROW POLICY の式が ORDER BY のカラムのみに依存している場合、最適化のため引き続き FINAL の前に適用されます。
+このようなフィルタリングは重複排除の結果に影響を与えないためです。
+
+取りうる値:
+
+- 0 — ROW POLICY および PREWHERE は FINAL の前に適用されます（デフォルト）。
+- 1 — ROW POLICY および PREWHERE は FINAL の後に適用されます。
+
 ## apply_settings_from_server {#apply_settings_from_server} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1191,6 +1221,24 @@ true に設定すると、非同期挿入に対して適応的なビジータイ
 リモートクエリの実行時に、ソケットからの非同期読み取りを有効にします。
 
 デフォルトで有効です。
+
+## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+`automatic_parallel_replicas_mode`=1 の場合にのみ適用される、自動的に並列レプリカを有効化するためのレプリカごとの読み取りバイト数のしきい値です。0 はしきい値なしを意味します。
+
+## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+🚨 非常に実験的な機能です 🚨
+収集された統計に基づき、並列レプリカでの実行への自動切り替えを有効にします。`parallel_replicas_local_plan` を有効にし、`cluster_for_parallel_replicas` を指定する必要があります。
+0 - 無効、1 - 有効、2 - 統計の収集のみを有効化（並列レプリカでの実行への切り替えは無効）。
 
 ## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
 
@@ -1600,7 +1648,7 @@ IPv4 型および IPv6 型への CAST 演算子による変換と、toIPv4 / toI
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-[CAST](/sql-reference/functions/type-conversion-functions#cast) 操作において `Nullable` データ型を保持するかどうかを切り替えます。
+[CAST](/sql-reference/functions/type-conversion-functions#CAST) 操作において `Nullable` データ型を保持するかどうかを切り替えます。
 
 この設定が有効で、`CAST` 関数の引数が `Nullable` の場合、結果も `Nullable` 型に変換されます。設定が無効な場合、結果は常に指定された変換先の型とまったく同じ型になります。
 
@@ -1626,7 +1674,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 └───┴───────────────────────────────────────────────────┘
 ```
 
-次のクエリにより、出力先のデータ型に `Nullable` 修飾が付与されます。
+次のクエリでは、結果の変換先データ型に `Nullable` 修飾が付きます。
 
 ```sql
 SET cast_keep_nullable = 1;
@@ -1643,7 +1691,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 **関連項目**
 
-* [CAST](/sql-reference/functions/type-conversion-functions#cast) 関数
+* [CAST](/sql-reference/functions/type-conversion-functions#CAST) 関数
 
 
 ## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
@@ -1660,7 +1708,7 @@ String からのキャスト時に、日付と時刻のテキスト表現を解�
 
     ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` と、すべての [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) の日付および時刻形式をパースできます。例えば、`'2018-06-08T01:02:03.000Z'` などです。
 
-- `'best_effort_us'` — `best_effort` と同様です（違いについては [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus) を参照）。
+- `'best_effort_us'` — `best_effort` と同様です（違いについては [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) を参照）。
 
 - `'basic'` — 基本パーサーを使用します。
 
@@ -1689,7 +1737,9 @@ String から Variant への変換時に型推論を行います。
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "CHECK TABLE をより有用にするために設定を変更"}]}]}/>
 
 `MergeTree` ファミリーのエンジンに対する [CHECK TABLE](/sql-reference/statements/check-table) クエリ結果の詳細レベルを定義します。
 
@@ -1821,6 +1871,16 @@ true の場合、カラム定義内の AUTO_INCREMENT キーワードを無視�
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 互換性設定: CREATE TABLE で照合順序を無視する
+
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+互換性のための設定です。有効にすると、署名付き URL のクエリパラメータ（例: X-Amz-*）を S3 キーに折り込み（従来の動作）、
+パス中では「?」がワイルドカードとして動作します。無効（デフォルト）の場合、署名付き URL のクエリパラメータは URL のクエリ部に保持され、
+「?」がワイルドカードとして解釈されないようにします。
 
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
@@ -2723,6 +2783,26 @@ ClickHouse Cloud でのみ効果があります。TCP が keepalive プローブ
 
 ClickHouse Cloud でのみ有効です。distributed cache との通信中に発生した例外、または distributed cache から受信した例外を再スローします。それ以外の場合は、エラー時に distributed cache をスキップするフォールバック動作になります。
 
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。読み取りリクエストにクライアントキャッシュを使用します。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。書き込みリクエストに対して clients cache を使用します。
+
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
 <CloudOnlyBadge/>
@@ -3354,6 +3434,23 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 └─────┴─────┴───────┘
 ```
 
+
+## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": "0"},{"label": "PROJECTION 内で位置引数を制御する新しい設定。"}]}]}/>
+
+PROJECTION 定義で位置引数をサポートするかどうかを制御します。[enable_positional_arguments](#enable_positional_arguments) 設定も参照してください。
+
+:::note
+これは上級者向けの設定です。ClickHouse を使い始めたばかりの場合は変更しないでください。
+:::
+
+Possible values:
+
+- 0 — 位置引数はサポートされません。
+- 1 — 位置引数がサポートされます。カラム名の代わりにカラム番号を使用できます。
 
 ## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
 
@@ -5021,6 +5118,20 @@ ClickHouse は次の状況で例外をスローします:
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
+## insert_select_deduplicate {#insert_select_deduplicate} 
+
+<SettingsInfoBlock type="BoolAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+`INSERT SELECT`（Replicated\* テーブル向け）のブロック重複排除を有効または無効にします。
+この設定は、`INSERT SELECT` クエリに対して `insert_deduplicate` を上書きします。
+この設定には次の 3 つの値を指定できます。
+
+- 0 — `INSERT SELECT` クエリに対する重複排除を無効にします。
+- 1 — `INSERT SELECT` クエリに対する重複排除を有効にします。`SELECT` の結果が安定（決定的）でない場合は、例外がスローされます。
+- auto — `insert_deduplicate` が有効で、かつ `SELECT` の結果が安定（決定的）している場合に重複排除を有効にし、それ以外の場合は無効にします。
+
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5142,9 +5253,12 @@ Grace join の第 1 フェーズでは、右側のテーブルを読み取り、
 
 - direct
 
-このアルゴリズムは、右側のテーブルのストレージがキー・バリュー型の問い合わせをサポートしている場合に適用できます。
+`direct` (nested loop とも呼ばれます) アルゴリズムは、左側テーブルの行をキーとして使用し、右側テーブルをルックアップします。
+これは [Dictionary](/engines/table-engines/special/dictionary)、[EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md)、および [MergeTree](/engines/table-engines/mergetree-family/mergetree) テーブルなどの専用ストレージでサポートされます。
 
-`direct` アルゴリズムは、左側テーブルの行をキーとして右側テーブルをルックアップします。[Dictionary](/engines/table-engines/special/dictionary) や [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) のような専用ストレージでのみサポートされ、`LEFT` および `INNER` JOIN のみが対象です。
+MergeTree テーブルに対しては、このアルゴリズムは結合キーのフィルタをストレージレイヤーに直接プッシュダウンします。キーがテーブルの primary key 索引を用いたルックアップに利用できる場合はより効率的ですが、そうでない場合は左側テーブルの各ブロックに対して右側テーブルをフルスキャンします。
+
+`INNER` および `LEFT` JOIN をサポートし、他の条件を伴わない単一カラムの等値結合キーのみをサポートします。
 
 - auto
 
@@ -6884,6 +6998,14 @@ ORDER BY 演算で処理する必要がある行数が指定した値を超え�
 
 結合を行う前に、すべてのハッシュテーブルで事前に領域を確保できる要素数の合計上限。
 
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "ファイル処理における *Cluster テーブル関数でのストリーム数を制限する新しい設定を追加"}]}]}/>
+
+ゼロ以外の値に設定されている場合、*Cluster テーブル関数でファイルからデータを読み取るスレッド数を制限します。
+
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8486,6 +8608,14 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 
 true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます。
 
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "parallel replicas で materialized view を使用できるようにする"}]}]}/>
+
+parallel replicas で materialized view を使用できるようにする
+
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
 <BetaBadge/>
@@ -9303,6 +9433,14 @@ Possible values:
 
 遅延マテリアライゼーション最適化でクエリプランを使用できる最大値を制御します。0 の場合、上限はありません。
 
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+minmax skip 索引と動的しきい値フィルタリングを使用して TopK 最適化のためのクエリプランを評価できる最大の LIMIT 値を制御します。0 を指定すると制限はありません。
+
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -9355,6 +9493,20 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "クエリプラン内のフィルタのマージを許可します"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "クエリプラン内のフィルタのマージを許可します。これは、新しいアナライザでのフィルタプッシュダウンを正しくサポートするために必要です。"}]}]}/>
 
 クエリプラン内のフィルタのマージを許可します。
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+クエリプランの最適化時に試行する JOIN 順序アルゴリズムを指定します。利用可能なアルゴリズムは次のとおりです:
+
+- 'greedy' - 基本的な貪欲法アルゴリズムです。高速に動作しますが、常に最適な JOIN 順序を生成できるとは限りません。
+ - 'dpsize' - 現在は Inner join に対してのみ有効な DPsize アルゴリズムです。考えられるすべての JOIN 順序を考慮して最適なものを選択しますが、多数のテーブルや JOIN 述語を含むクエリでは遅くなる可能性があります。
+複数のアルゴリズムを指定できます (例: 'dpsize,greedy')。
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
@@ -9412,6 +9564,14 @@ EXPLAIN PLAN におけるステップの説明文の最大長さ。
 
 - 0 - 無効
 - 1 - 有効
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+JOIN 操作において左側テーブルからの順序どおりの読み取りを維持し、その結果を後続のステップで利用できるようにします。
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
@@ -9553,8 +9713,6 @@ Only takes effect if setting [`query_plan_enable_optimizations`](#query_plan_ena
 
 - タイマーを無効化する場合は 0 を指定します。
 
-**ClickHouse Cloud では一時的に無効化されています。**
-
 関連項目:
 
 - システムテーブル [trace_log](/operations/system-tables/trace_log)
@@ -9575,8 +9733,6 @@ Only takes effect if setting [`query_plan_enable_optimizations`](#query_plan_ena
             - 1000000000（1 秒に 1 回）: クラスター全体のプロファイリング向け。
 
 - 0: タイマーを無効にします。
-
-**ClickHouse Cloud では一時的に無効化されています。**
 
 関連項目:
 
@@ -10071,6 +10227,15 @@ S3 へのマルチパートアップロードでアップロードする各パ�
 <SettingsInfoBlock type="UInt64" default_value="16777216" />
 
 S3 へのマルチパートアップロードでアップロードするパートの最小サイズ。
+
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "新しい設定"}]}]}/>
+
+ファイルを走査する際に glob リストの代わりに利用するため、クエリフィルタから抽出できる `_path` 値の最大数です。
+0 を指定すると無効になります。
 
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
@@ -10634,7 +10799,8 @@ FINAL 最適化中にパーツ範囲を交差するものと交差しないも�
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "デフォルトでは Kafka/RabbitMQ/FileLog への直接 SELECT を許可しない"}]}]}/>
 
-Kafka、RabbitMQ、FileLog、Redis Streams、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue、NATS エンジンに対して、直接の SELECT クエリの実行を許可します。materialized view がアタッチされている場合は、この設定が有効でも SELECT クエリは許可されません。
+materialized view がアタッチされていない場合、この設定を有効にするとデータを読み取れるようになります。通常は、読み取ったデータはキューから削除される点に注意してください。読み取ったデータを削除しないようにするには、関連するエンジンの設定を適切に構成する必要があります。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 
@@ -11184,6 +11350,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 - 0 — 無効。
 - 1 — 有効。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+TopK フィルタリングのためにデータスキッピングインデックスを使用できるようにします。
+
+有効にすると、`ORDER BY <column> LIMIT n` クエリのカラムに minmax データスキッピングインデックスが存在する場合、オプティマイザは最終結果に関係しないグラニュールをスキップするためにそのインデックスを使用しようとします。これにより、クエリのレイテンシを低減できる可能性があります。
+
+設定値:
+
+- 0 — 無効。
+- 1 — 有効。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11273,6 +11454,21 @@ AND と OR が混在する WHERE 句の条件を、skip 索引を用いて評価
 
 テキスト索引ポスティングリストのデシリアライズ結果をキャッシュとして使用するかどうかを制御します。
 text index postings cache を有効にすると、大量のテキスト索引クエリを処理する際のレイテンシを大幅に削減し、スループットを向上させることができます。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+`ORDER BY <column> LIMIT n` クエリを実行する際に、動的フィルタリングの最適化を有効にします。
+
+有効にすると、クエリエグゼキュータは、結果セットの最終的な `top N` 行には含まれないグラニュールおよび行をスキップしようとします。この最適化は動的な性質を持ち、レイテンシ改善の度合いはデータ分布およびクエリ内に存在する他の述語に依存します。
+
+取り得る値:
+
+- 0 — 無効。
+- 1 — 有効。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

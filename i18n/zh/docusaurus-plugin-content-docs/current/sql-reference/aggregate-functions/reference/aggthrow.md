@@ -35,6 +35,6 @@ SELECT number % 2 AS even, aggThrow(number) FROM numbers(10) GROUP BY even;
 结果：
 
 ```response
-接收到异常：
-代码：503. DB::Exception：聚合函数 aggThrow 已成功抛出异常：执行 AggregatingTransform 时发生。(AGGREGATE_FUNCTION_THROW)
+Received exception:
+Code: 503. DB::Exception: Aggregate function aggThrow has thrown exception successfully: While executing AggregatingTransform. (AGGREGATE_FUNCTION_THROW)
 ```

@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 
 # Движок таблиц SharedMergeTree {#sharedmergetree-table-engine}
 
-Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть ReplacingSharedMergeTree заменяет ReplacingReplicatedMergeTree.
+Семейство движков таблиц SharedMergeTree — это облачный (cloud‑native) аналог движков ReplicatedMergeTree, оптимизированный для работы поверх общего хранилища (например, Amazon S3, Google Cloud Storage, MinIO, Azure Blob Storage). Для каждого конкретного типа движка MergeTree существует соответствующий SharedMergeTree, то есть SharedReplacingMergeTree заменяет ReplicatedReplacingMergeTree.
 
 Семейство движков таблиц SharedMergeTree лежит в основе ClickHouse Cloud. Конечному пользователю не нужно ничего менять, чтобы начать использовать семейство движков SharedMergeTree вместо движков на основе ReplicatedMergeTree. Оно предоставляет следующие дополнительные преимущества:
 
@@ -34,8 +34,6 @@ import Image from '@theme/IdealImage';
 
 В отличие от ReplicatedMergeTree, SharedMergeTree не требует, чтобы реплики напрямую обменивались данными друг с другом. Вместо этого весь обмен происходит через общее хранилище и clickhouse-keeper. SharedMergeTree реализует асинхронную репликацию без лидера и использует clickhouse-keeper для координации и хранения метаданных. Это означает, что метаданные не нужно реплицировать при изменении масштаба сервиса. Это приводит к более быстрой репликации, выполнению мутаций, слияниям и операциям масштабирования. SharedMergeTree поддерживает сотни реплик для каждой таблицы, что делает возможным динамическое масштабирование без шардов. В ClickHouse Cloud используется подход распределённого выполнения запросов для задействования большего количества вычислительных ресурсов на один запрос.
 
-
-
 ## Интроспекция {#introspection}
 
 Большинство системных таблиц, используемых для интроспекции ReplicatedMergeTree, доступны и для SharedMergeTree, за исключением `system.replication_queue` и `system.replicated_fetches`, так как в SharedMergeTree нет репликации данных и метаданных. Однако для этих двух таблиц в SharedMergeTree есть соответствующие альтернативы.
@@ -48,13 +46,11 @@ import Image from '@theme/IdealImage';
 
 Эта таблица является альтернативой `system.replicated_fetches` для SharedMergeTree. Она содержит информацию о текущих выполняющихся операциях выборки (fetches) первичных ключей и контрольных сумм в память.
 
-
-
 ## Включение SharedMergeTree {#enabling-sharedmergetree}
 
 `SharedMergeTree` включён по умолчанию.
 
-Для сервисов, которые поддерживают движок таблиц SharedMergeTree, ничего не нужно включать вручную. Вы можете создавать таблицы так же, как делали это раньше, и будет автоматически использован основанный на SharedMergeTree движок таблиц, соответствующий движку, указанному в вашем запросе CREATE TABLE.
+Для сервисов, которые поддерживают движок таблиц SharedMergeTree, ничего не нужно включать вручную. Вы можете создавать таблицы так же, как делали это раньше, и автоматически будет использован табличный движок на основе SharedMergeTree, соответствующий движку, указанному в вашем запросе CREATE TABLE.
 
 ```sql
 CREATE TABLE my_table(
@@ -77,7 +73,7 @@ CREATE TABLE my_table(
 ORDER BY key
 ```
 
-Если вы используете таблицы ReplacingMergeTree, CollapsingMergeTree, AggregatingMergeTree, SummingMergeTree, VersionedCollapsingMergeTree или GraphiteMergeTree, они будут автоматически преобразованы в соответствующий табличный движок на основе SharedMergeTree.
+Если вы используете таблицы ReplacingMergeTree, CollapsingMergeTree, AggregatingMergeTree, SummingMergeTree, VersionedCollapsingMergeTree или GraphiteMergeTree, они будут автоматически преобразованы в соответствующие движки таблиц на базе SharedMergeTree.
 
 ```sql
 CREATE TABLE myFirstReplacingMT
@@ -111,8 +107,6 @@ ORDER BY key
 - `insert_quorum` -- все вставки в SharedMergeTree являются кворумными вставками (записываются в общее хранилище), поэтому эта настройка не требуется при использовании движка таблицы SharedMergeTree.
 - `insert_quorum_parallel` -- все вставки в SharedMergeTree являются кворумными вставками (записываются в общее хранилище), поэтому эта настройка не требуется при использовании движка таблицы SharedMergeTree.
 - `select_sequential_consistency` -- не требует кворумных вставок, приведёт к дополнительной нагрузке на clickhouse-keeper при выполнении запросов `SELECT`
-
-
 
 ## Согласованность {#consistency}
 

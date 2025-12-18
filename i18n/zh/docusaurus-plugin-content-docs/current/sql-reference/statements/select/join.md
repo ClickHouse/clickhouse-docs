@@ -7,8 +7,6 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-
-
 # JOIN 子句 {#join-clause}
 
 `JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
@@ -55,8 +53,6 @@ ClickHouse 还提供了额外的 join 类型：
 当 [join_algorithm](../../../operations/settings/settings.md#join_algorithm) 设置为 `partial_merge` 时，仅在严格性为 `ALL` 时才支持 `RIGHT JOIN` 和 `FULL JOIN`（不支持 `SEMI`、`ANTI`、`ANY` 和 `ASOF`）。
 :::
 
-
-
 ## 设置 {#settings}
 
 可以使用 [`join_default_strictness`](../../../operations/settings/settings.md#join_default_strictness) 设置来覆盖默认的 JOIN 类型。
@@ -74,8 +70,6 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 使用 `cross_to_inner_join_rewrite` 设置来定义当 ClickHouse 无法将 `CROSS JOIN` 重写为 `INNER JOIN` 时的行为。默认值为 `1`，此时允许 JOIN 继续执行，但会更慢。如果希望抛出错误，请将 `cross_to_inner_join_rewrite` 设为 `0`；若希望不执行 CROSS JOIN，而是强制重写所有逗号/CROSS JOIN，请将其设为 `2`。如果在值为 `2` 时重写失败，您将收到一条错误消息：“Please, try to simplify `WHERE` section”。
 
-
-
 ## ON 部分中的条件 {#on-section-conditions}
 
 `ON` 部分可以包含多个条件，这些条件通过 `AND` 和 `OR` 运算符组合。指定连接键的条件必须：
@@ -85,12 +79,12 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 其他条件可以使用其他逻辑运算符，但它们必须引用查询中的左表或右表之一。
 
-只有当整个复杂条件满足时，行才会被连接。如果条件不满足，行是否仍会包含在结果中取决于 `JOIN` 类型。注意，如果将相同的条件放在 `WHERE` 部分且条件不满足，那么这些行将始终从结果中过滤掉。
+只有当整个复杂条件满足时,行才会被连接。如果条件不满足,行是否仍会包含在结果中取决于 `JOIN` 类型。注意,如果将相同的条件放在 `WHERE` 部分且条件不满足,那么这些行将始终从结果中过滤掉。
 
-`ON` 子句中的 `OR` 运算符基于哈希连接算法工作——对于每个带有 `JOIN` 连接键的 `OR` 分支，都会创建一个单独的哈希表，因此随着 `ON` 子句中 `OR` 表达式数量的增加，内存消耗和查询执行时间会线性增长。
+`ON` 子句中的 `OR` 运算符基于哈希连接算法工作——对于每个带有 `JOIN` 连接键的 `OR` 分支,都会创建一个单独的哈希表,因此随着 `ON` 子句中 `OR` 表达式数量的增加,内存消耗和查询执行时间会线性增长。
 
 :::note
-如果一个条件引用了来自不同表的列，那么目前仅支持等号运算符（`=`）。
+如果一个条件引用了来自不同表的列,那么目前仅支持等号运算符(`=`)。
 :::
 
 **示例**
@@ -116,8 +110,8 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 ```response
 ┌─name─┬─text───┐
-│ A    │ 文本 A │
-│ B    │ 文本 B │
+│ A    │ Text A │
+│ B    │ Text B │
 │ C    │        │
 └──────┴────────┘
 ```
@@ -133,7 +127,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 ```sql
 ┌─name─┬─text───┬─scores─┐
-│ B    │ 文本 B │     15 │
+│ B    │ Text B │     15 │
 └──────┴────────┴────────┘
 ```
 
@@ -163,14 +157,13 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 └───┴────┴─────┘
 ```
 
-使用 `INNER` 类型 JOIN，且包含 `OR` 和 `AND` 条件的查询：
+使用 `INNER` 类型 JOIN,且包含 `OR` 和 `AND` 条件的查询:
 
 :::note
 
-
-默认情况下，支持非等号条件，只要这些条件中使用的列都来自同一张表。
-例如，`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`，因为 `t1.b > 0` 只使用了 `t1` 的列，而 `t2.b > t2.c` 只使用了 `t2` 的列。
-不过，你也可以尝试对类似 `t1.a = t2.key AND t1.b > t2.key` 这种条件的实验性支持，更多细节请参阅下方章节。
+By default, non-equal conditions are supported as long as they use columns from the same table.
+例如,`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`,因为 `t1.b > 0` 仅使用来自 `t1` 的列,而 `t2.b > t2.c` 仅使用来自 `t2` 的列。
+However, you can try experimental support for conditions like `t1.a = t2.key AND t1.b > t2.key`, check out the section below for more details.
 
 :::
 
@@ -256,7 +249,7 @@ key4    f    2    3    4            0    0    \N
 └──────┴─────────┘
 ```
 
-表 `B`：
+表 `B`:
 
 ```response
 ┌───id─┬─score─┐
@@ -308,37 +301,37 @@ SELECT A.name, B.score FROM A LEFT JOIN B ON isNotDistinctFrom(A.id, B.id)
 `ASOF JOIN ... ON` 语法：
 
 ```sql
-SELECT 表达式列表
-FROM 表_1
-ASOF LEFT JOIN 表_2
-ON 等值条件 AND 最近匹配条件
+SELECT expressions_list
+FROM table_1
+ASOF LEFT JOIN table_2
+ON equi_cond AND closest_match_cond
 ```
 
-你可以使用任意数量的等值条件，但最多只能使用一个最近匹配条件。例如：`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
+你可以使用任意数量的等值条件，但只能使用一个最近匹配条件。例如：`SELECT count() FROM table_1 ASOF LEFT JOIN table_2 ON table_1.a == table_2.b AND table_2.t <= table_1.t`。
 
-最近匹配所支持的条件有：`>`, `>=`, `<`, `<=`。
+最近匹配支持的条件为：`>`, `>=`, `<`, `<=`。
 
 语法 `ASOF JOIN ... USING`：
 
 ```sql
-SELECT 表达式列表
-FROM 表_1
-ASOF JOIN 表_2
-USING (等值列_1, ... 等值列_N, asof_列)
+SELECT expressions_list
+FROM table_1
+ASOF JOIN table_2
+USING (equi_column1, ... equi_columnN, asof_column)
 ```
 
-`ASOF JOIN` 使用 `equi_columnX` 进行等值连接，并使用 `asof_column` 在满足 `table_1.asof_column >= table_2.asof_column` 条件的情况下进行最接近的匹配连接。`asof_column` 列在 `USING` 子句中始终是最后一列。
+`ASOF JOIN` 使用 `equi_columnX` 进行等值连接，并使用 `asof_column` 在满足 `table_1.asof_column >= table_2.asof_column` 条件的情况下进行最近匹配。`asof_column` 列在 `USING` 子句中始终是最后一列。
 
 例如，考虑下列表：
 
 ```text
-         表_1                              表_2
-      事件    | 事件时间 | 用户ID       事件    | 事件时间 | 用户ID
+         table_1                           table_2
+      event   | ev_time | user_id       event   | ev_time | user_id
     ----------|---------|----------   ----------|---------|----------
                   ...                               ...
-    事件_1_1  |  12:00  |  42         事件_2_1  |  11:59  |   42
-                  ...                 事件_2_2  |  12:30  |   42
-    事件_1_2  |  13:00  |  42         事件_2_3  |  13:00  |   42
+    event_1_1 |  12:00  |  42         event_2_1 |  11:59  |   42
+                  ...                 event_2_2 |  12:30  |   42
+    event_1_2 |  13:00  |  42         event_2_3 |  13:00  |   42
                   ...                               ...
 ```
 
@@ -378,7 +371,7 @@ PASTE JOIN
 └───┴──────┘
 ```
 
-注意：在这种情况下，如果以并行方式进行读取，结果可能是不确定的。例如：
+注意：在这种情况下，如果以并行方式进行读取，结果可能是非确定性的。例如：
 
 ```sql
 SELECT *
@@ -418,8 +411,6 @@ SETTINGS max_block_size = 2;
 
 在使用 `GLOBAL` 时要小心。更多信息请参见[分布式子查询](/sql-reference/operators/in#distributed-subqueries)一节。
 
-
-
 ## 隐式类型转换 {#implicit-type-conversion}
 
 `INNER JOIN`、`LEFT JOIN`、`RIGHT JOIN` 和 `FULL JOIN` 查询支持对“连接键”进行隐式类型转换。但是，如果左右表的连接键无法被转换为同一种类型，则查询无法执行（例如，没有任何一种数据类型能够同时容纳来自 `UInt64` 和 `Int64`，或 `String` 和 `Int32` 的所有值）。
@@ -451,7 +442,7 @@ SETTINGS max_block_size = 2;
 SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 ```
 
-返回以下集合：
+返回如下结果集：
 
 ```response
 ┌──a─┬────b─┬─toTypeName(a)─┬─toTypeName(b)───┐
@@ -509,8 +500,6 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 - [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join) — 限制哈希表的大小。
 
 当达到上述任一限制时，ClickHouse 会按照 [join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置中的指示进行处理。
-
-
 
 ## 示例 {#examples}
 

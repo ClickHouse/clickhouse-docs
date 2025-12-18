@@ -7,11 +7,7 @@ title: 'Руководство по стилю C++'
 doc_type: 'guide'
 ---
 
-
-
 # Руководство по стилю кода C++ {#c-style-guide}
-
-
 
 ## Общие рекомендации {#general-recommendations}
 
@@ -19,8 +15,6 @@ doc_type: 'guide'
 Если вы редактируете код, имеет смысл придерживаться форматирования существующего кода.
 Стиль кода нужен для обеспечения единообразия. Единообразие упрощает чтение кода, а также облегчает поиск по коду.
 Многие правила не имеют логического обоснования; они продиктованы устоявшейся практикой.
-
-
 
 ## Форматирование {#formatting}
 
@@ -112,7 +106,7 @@ template <typename T>
 class MultiVersion
 {
 public:
-    /// Версия объекта для использования. shared_ptr управляет временем жизни версии.
+    /// Version of object for usage. shared_ptr manage lifetime of version.
     using Version = std::shared_ptr<const T>;
     ...
 }
@@ -125,7 +119,7 @@ public:
 Но если вложенный `statement` содержит фигурные скобки или `else`, внешний блок следует оформлять в фигурных скобках.
 
 ```cpp
-/// Завершить запись.
+/// Finish write.
 for (auto & stream : streams)
     stream.second->finalize();
 ```
@@ -133,7 +127,6 @@ for (auto & stream : streams)
 **18.** В конце строк не должно быть пробелов.
 
 **19.** Исходные файлы используют кодировку UTF-8.
-
 
 **20.** В строковых литералах можно использовать символы, выходящие за пределы ASCII.
 
@@ -150,19 +143,19 @@ for (auto & stream : streams)
 **24.** Модификатор `const` (относящийся к значению) должен записываться перед именем типа.
 
 ```cpp
-//корректно
+//correct
 const char * pos
 const std::string & s
-//некорректно
+//incorrect
 char const * pos
 ```
 
 **25.** При объявлении указателя или ссылки знаки `*` и `&` должны быть отделены пробелами с двух сторон.
 
 ```cpp
-//верно
+//correct
 const char * pos
-//неверно
+//incorrect
 const char* pos
 const char *pos
 ```
@@ -174,26 +167,26 @@ const char *pos
 `using` может объявляться локально, например, внутри функции.
 
 ```cpp
-//корректно
+//correct
 using FileStreams = std::map<std::string, std::shared_ptr<Stream>>;
 FileStreams streams;
-//некорректно
+//incorrect
 std::map<std::string, std::shared_ptr<Stream>> streams;
 ```
 
 **27.** Не объявляйте несколько переменных разных типов в одном объявлении.
 
 ```cpp
-//некорректно
+//incorrect
 int x, *y;
 ```
 
 **28.** Не используйте приведение типов в стиле C.
 
 ```cpp
-//некорректно
+//incorrect
 std::cerr << (int)c <<; std::endl;
-//корректно
+//correct
 std::cerr << static_cast<int>(c) << std::endl;
 ```
 
@@ -213,7 +206,6 @@ std::cerr << static_cast<int>(c) << std::endl;
 for (Names::const_iterator it = column_names.begin(); it != column_names.end(); ++it)
 ```
 
-
 ## Комментарии {#comments}
 
 **1.** Обязательно добавляйте комментарии ко всем нетривиальным фрагментам кода.
@@ -221,10 +213,10 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 Это очень важно. Написание комментария может помочь вам понять, что этот участок кода не нужен или что он спроектирован неправильно.
 
 ```cpp
-/** Часть области памяти, которая может быть использована.
-  * Например, если internal_buffer имеет размер 1 МБ, а из файла в буфер было загружено только 10 байт для чтения,
-  * то working_buffer будет иметь размер только 10 байт
-  * (working_buffer.end() будет указывать на позицию сразу после этих 10 доступных для чтения байт).
+/** Part of piece of memory, that can be used.
+  * For example, if internal_buffer is 1MB, and there was only 10 bytes loaded to buffer from file for reading,
+  * then working_buffer will have size of only 10 bytes
+  * (working_buffer.end() will point to position right after those 10 bytes available for read).
   */
 ```
 
@@ -233,14 +225,14 @@ for (Names::const_iterator it = column_names.begin(); it != column_names.end(); 
 **3.** Размещайте комментарии перед кодом, который они описывают. В редких случаях комментарии могут располагаться после кода, на одной строке.
 
 ```cpp
-/** Разбирает и выполняет запрос.
+/** Parses and executes the query.
 */
 void executeQuery(
-    ReadBuffer & istr, /// Откуда читать запрос (и данные для INSERT, если применимо)
-    WriteBuffer & ostr, /// Куда записывать результат
-    Context & context, /// БД, таблицы, типы данных, движки, функции, агрегатные функции...
-    BlockInputStreamPtr & query_plan, /// Здесь может быть записано описание выполнения запроса
-    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// До какой стадии обрабатывать SELECT-запрос
+    ReadBuffer & istr, /// Where to read the query from (and data for INSERT, if applicable)
+    WriteBuffer & ostr, /// Where to write the result
+    Context & context, /// DB, tables, data types, engines, functions, aggregate functions...
+    BlockInputStreamPtr & query_plan, /// Here could be written the description on how query was executed
+    QueryProcessingStage::Enum stage = QueryProcessingStage::Complete /// Up to which stage process the SELECT query
     )
 ```
 
@@ -252,22 +244,22 @@ void executeQuery(
 
 ```cpp
 /*
-* Имя процедуры:
-* Исходное имя процедуры:
-* Автор:
-* Дата создания:
-* Даты модификации:
-* Авторы модификаций:
-* Исходное имя файла:
-* Назначение:
-* Назначение:
-* Обозначение:
-* Используемые классы:
-* Константы:
-* Локальные переменные:
-* Параметры:
-* Дата создания:
-* Назначение:
+* Procedure Name:
+* Original procedure name:
+* Author:
+* Date of creation:
+* Dates of modification:
+* Modification authors:
+* Original file name:
+* Purpose:
+* Intent:
+* Designation:
+* Classes used:
+* Constants:
+* Local variables:
+* Parameters:
+* Date of creation:
+* Purpose:
 */
 ```
 
@@ -290,7 +282,7 @@ void executeQuery(
 **13.** Не пишите ЗАГЛАВНЫМИ БУКВАМИ. Не используйте избыточную пунктуацию.
 
 ```cpp
-/// ЧТО ЗА ОШИБКА???
+/// WHAT THE FAIL???
 ```
 
 **14.** Не используйте комментарии в качестве разделителей.
@@ -302,7 +294,7 @@ void executeQuery(
 **15.** Не начинайте обсуждения в комментариях.
 
 ```cpp
-/// Зачем вы это сделали?
+/// Why did you do this stuff?
 ```
 
 **16.** Нет необходимости писать в конце блока комментарий, поясняющий, чему он посвящён.
@@ -310,7 +302,6 @@ void executeQuery(
 ```cpp
 /// for
 ```
-
 
 ## Имена {#names}
 
@@ -401,7 +392,7 @@ FileQueueProcessor(
 **13.** Не должно быть различий в именовании локальных переменных и членов класса (префиксы не требуются).
 
 ```cpp
-timer (а не m_timer)
+timer (not m_timer)
 ```
 
 **14.** Для констант в `enum` используйте CamelCase, начиная с заглавной буквы. Допустим также вариант ALL&#95;CAPS. Если `enum` является нелокальным, используйте `enum class`.
@@ -429,7 +420,6 @@ enum class CompressionMethod
 Вы также можете использовать сокращение, если его полное название приведено рядом с ним в комментариях.
 
 **17.** Имена файлов с исходным кодом C++ должны иметь расширение `.cpp`. Заголовочные файлы должны иметь расширение `.h`.
-
 
 ## Как писать код {#how-to-write-code}
 
@@ -462,13 +452,13 @@ enum class CompressionMethod
 В функциях потоков следует перехватывать и сохранять все исключения, чтобы затем повторно выбросить их в главном потоке после `join`.
 
 ```cpp
-/// Если вычислений ещё не было, вычислить первый блок синхронно
+/// If there weren't any calculations yet, calculate the first block synchronously
 if (!started)
 {
     calculate();
     started = true;
 }
-else /// Если вычисления уже выполняются, ожидать результата
+else /// If calculations are already in progress, wait for the result
     pool.wait();
 
 if (exception)
@@ -478,7 +468,7 @@ if (exception)
 Никогда не подавляйте исключения, не обрабатывая их. Никогда не записывайте в лог все исключения без разбора.
 
 ```cpp
-//Неверно
+//Not correct
 catch (...) {}
 ```
 
@@ -498,7 +488,7 @@ catch (const DB::Exception & e)
 
 ```cpp
 if (0 != close(fd))
-    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "Не удалось закрыть файл {}", file_name);
+    throw ErrnoException(ErrorCodes::CANNOT_CLOSE_FILE, "Cannot close file {}", file_name);
 ```
 
 Вы можете использовать `assert` для проверки инвариантов в коде.
@@ -568,7 +558,6 @@ ready_any.set();
 
 Считайте `const` значением по умолчанию и используйте не-`const` только при необходимости.
 
-
 При передаче переменных по значению использование `const` обычно не имеет смысла.
 
 **11.** unsigned.
@@ -598,7 +587,7 @@ ready_any.set();
 ```cpp
 using AggregateFunctionPtr = std::shared_ptr<IAggregateFunction>;
 
-/** Позволяет создавать агрегатную функцию по её имени.
+/** Allows creating an aggregate function by its name.
   */
 class AggregateFunctionFactory
 {
@@ -630,7 +619,7 @@ public:
 ```cpp
 Loader(DB::Connection * connection_, const std::string & query, size_t max_block_size_);
 
-/// Для отложенной инициализации
+/// For deferred initialization
 Loader() {}
 ```
 
@@ -689,16 +678,15 @@ auto f() -> void
 **25.** Объявление и инициализация переменных.
 
 ```cpp
-//правильный способ
+//right way
 std::string s = "Hello";
 std::string s{"Hello"};
 
-//неправильный способ
+//wrong way
 auto s = std::string{"Hello"};
 ```
 
 **26.** Для виртуальных функций пишите `virtual` в базовом классе, а в производных классах пишите `override` вместо `virtual`.
-
 
 ## Неиспользуемые возможности C++ {#unused-features-of-c}
 
@@ -707,11 +695,11 @@ auto s = std::string{"Hello"};
 **2.** Конструкции, для которых в современном C++ есть удобный синтаксический сахар, например,
 
 ```cpp
-// Традиционный способ без синтаксического сахара
-template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // SFINAE через std::enable_if, использование ::value
-std::pair<int, int> func(const E<G> & e) // явно указанный возвращаемый тип
+// Traditional way without syntactic sugar
+template <typename G, typename = std::enable_if_t<std::is_same<G, F>::value, void>> // SFINAE via std::enable_if, usage of ::value
+std::pair<int, int> func(const E<G> & e) // explicitly specified return type
 {
-    if (elements.count(e)) // проверка принадлежности через .count()
+    if (elements.count(e)) // .count() membership test
     {
         // ...
     }
@@ -722,17 +710,17 @@ std::pair<int, int> func(const E<G> & e) // явно указанный возв
             [&](const auto x){
                 return x == 1;
             }),
-        elements.end()); // идиома remove-erase
+        elements.end()); // remove-erase idiom
 
-    return std::make_pair(1, 2); // создание пары через make_pair()
+    return std::make_pair(1, 2); // create pair via make_pair()
 }
 
-// С синтаксическим сахаром (C++14/17/20)
+// With syntactic sugar (C++14/17/20)
 template <typename G>
-requires std::same_v<G, F> // SFINAE через концепт C++20, использование псевдонима шаблона C++14
-auto func(const E<G> & e) // автовыведение возвращаемого типа (C++14)
+requires std::same_v<G, F> // SFINAE via C++20 concept, usage of C++14 template alias
+auto func(const E<G> & e) // auto return type (C++14)
 {
-    if (elements.contains(e)) // проверка принадлежности через .contains в C++20
+    if (elements.contains(e)) // C++20 .contains membership test
     {
         // ...
     }
@@ -741,12 +729,11 @@ auto func(const E<G> & e) // автовыведение возвращаемог
         elements,
         [&](const auto x){
             return x == 1;
-        }); // std::erase_if из C++20
+        }); // C++20 std::erase_if
 
-    return {1, 2}; // или: return std::pair(1, 2); // создание пары через список инициализации или прямую инициализацию (C++17)
+    return {1, 2}; // or: return std::pair(1, 2); // create pair via initialization list or value initialization (C++17)
 }
 ```
-
 
 ## Платформа {#platform}
 
@@ -771,8 +758,6 @@ auto func(const E<G> & e) // автовыведение возвращаемог
 **7.** Используйте статическую компоновку со всеми библиотеками, кроме тех, которые сложно подключать статически (см. вывод команды `ldd`).
 
 **8.** Код разрабатывается и отлаживается с релизными настройками.
-
-
 
 ## Инструменты {#tools}
 
@@ -802,8 +787,6 @@ auto func(const E<G> & e) // автовыведение возвращаемог
 
 **10.** Неиспользуемый код удаляется из репозитория.
 
-
-
 ## Библиотеки {#libraries}
 
 **1.** Используется стандартная библиотека C++20 (допускаются экспериментальные расширения), а также фреймворки `boost` и `Poco`.
@@ -811,8 +794,6 @@ auto func(const E<G> & e) // автовыведение возвращаемог
 **2.** Не допускается использование библиотек из пакетов ОС. Также не допускается использование предустановленных в системе библиотек. Все библиотеки должны быть размещены в виде исходного кода в каталоге `contrib` и собираться вместе с ClickHouse. Подробности см. в разделе [Рекомендации по добавлению сторонних библиотек](/development/contrib#adding-and-maintaining-third-party-libraries).
 
 **3.** Всегда следует отдавать предпочтение библиотекам, которые уже используются.
-
-
 
 ## Общие рекомендации {#general-recommendations-1}
 
@@ -827,8 +808,6 @@ auto func(const E<G> & e) // автовыведение возвращаемог
 **5.** По возможности не определяйте конструкторы копирования, операторы присваивания, деструкторы (кроме виртуального, если класс содержит хотя бы одну виртуальную функцию), конструкторы перемещения или операторы присваивания перемещением. Другими словами, сгенерированные компилятором функции должны работать корректно. Можно использовать `default`.
 
 **6.** Упрощение кода поощряется. По возможности минимизируйте объём кода.
-
-
 
 ## Дополнительные рекомендации {#additional-recommendations}
 

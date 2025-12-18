@@ -21,13 +21,9 @@ title: 'Уроки — проблема «Too many parts»'
 description: 'Решения и предотвращение проблемы «Too many parts»'
 ---
 
-
-
 # Проблема слишком большого количества частей {#the-too-many-parts-problem}
 *Это руководство является частью сборника выводов, полученных на встречах сообщества. Для получения большего количества практических решений и инсайтов вы можете [подобрать материалы по конкретным проблемам](./community-wisdom.md).*
 *Нужны дополнительные советы по оптимизации производительности? Ознакомьтесь с руководством с инсайтами от сообщества по теме [Performance Optimization](./performance-optimization.md).*
-
-
 
 ## Понимание проблемы {#understanding-the-problem}
 
@@ -37,8 +33,6 @@ ClickHouse выдает ошибку «Too many parts», чтобы предот
 - [Движок MergeTree](/engines/table-engines/mergetree-family/mergetree)
 - [Части](/parts)
 - [Системная таблица parts](/operations/system-tables/parts)
-
-
 
 ## Раннее выявление проблемы {#recognize-parts-problem}
 
@@ -75,7 +69,6 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
-
 
 ## Видеоматериалы {#video-sources}
 

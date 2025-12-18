@@ -32,12 +32,11 @@ make
 然后生成查询（使用相同的规模因子）：
 
 ```bash
-./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # 在 out/query_0.sql 中生成 99 条查询
+./dsqgen -DIRECTORY ../query_templates/ -INPUT ../query_templates/templates.lst  -SCALE 1 # generates 99 queries in out/query_0.sql
 ```
 
 现在在 ClickHouse 中创建表。
 你可以使用 tools/tpcds.sql 中的原始表定义，或者使用经过「调优」的表定义，在合适的地方正确定义主键索引并使用 LowCardinality 列类型。
-
 
 ```sql
 CREATE TABLE call_center(

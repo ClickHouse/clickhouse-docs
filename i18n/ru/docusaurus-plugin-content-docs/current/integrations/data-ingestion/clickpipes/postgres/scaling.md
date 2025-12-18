@@ -37,10 +37,10 @@ API масштабирования может быть полезен для:
 Перед выполнением команд задайте следующие переменные окружения:
 
 ```bash
-ORG_ID=<ID организации ClickHouse>
-SERVICE_ID=<ID сервиса ClickHouse>
-KEY_ID=<ID ключа ClickHouse>
-KEY_SECRET=<Секретный ключ ClickHouse>
+ORG_ID=<Your ClickHouse organization ID>
+SERVICE_ID=<Your ClickHouse service ID>
+KEY_ID=<Your ClickHouse key ID>
+KEY_SECRET=<Your ClickHouse key secret>
 ```
 
 Получите текущую конфигурацию масштабирования (при необходимости):
@@ -50,7 +50,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# пример результата: {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 2000,
@@ -84,7 +84,7 @@ curl --silent --user $KEY_ID:$KEY_SECRET \
 https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/clickpipesCdcScaling \
 | jq
 
-# пример результата: {#example-result}
+# example result:
 {
   "result": {
     "replicaCpuMillicores": 24000,

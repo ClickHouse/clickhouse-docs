@@ -7,13 +7,9 @@ keywords: ['CSV 形式', 'TSV 形式', 'カンマ区切り値', 'タブ区切り
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse での CSV および TSV データの扱い方 {#working-with-csv-and-tsv-data-in-clickhouse}
 
 ClickHouse は、CSV 形式でのデータのインポートおよびエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対処できるよう、フォーマットと設定が用意されています。
-
-
 
 ## CSV ファイルからのデータインポート {#importing-data-from-a-csv-file}
 
@@ -126,7 +122,6 @@ Joe,Nothing
 Nothing,70
 ```
 
-
 このファイルからデータを読み込むと、ClickHouse は `Nothing` を String として扱います（これは正しい挙動です）：
 
 ```sql
@@ -161,7 +156,6 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
-
 ## TSV (タブ区切り) ファイル {#tsv-tab-separated-files}
 
 タブ区切りデータ形式は、データ交換形式として広く使用されています。[TSV ファイル](assets/data_small.tsv)から ClickHouse にデータを読み込むには、[TabSeparated](/interfaces/formats/TabSeparated) 形式を使用します。
@@ -175,7 +169,6 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ### 生の TSV {#raw-tsv}
 
 TSV ファイルがタブや改行をエスケープせずに保存されている場合があります。そのようなファイルを処理するには [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) を使用します。
-
 
 ## CSV へのエクスポート {#exporting-to-csv}
 
@@ -226,7 +219,7 @@ FORMAT CSVWithNames
 ```
 
 ```response
-36838935行のセット。経過時間: 1.304秒。処理済み: 3684万行、1.42 GB (2824万行/秒、1.09 GB/秒)
+36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
 ClickHouse が 3,600 万行を CSV ファイルに保存するのに **約 1** 秒しかかかっていない点に注目してください。
@@ -263,7 +256,6 @@ Windows 環境で CSV ファイルを問題なく利用したい場合は、[out
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
 ```
-
 
 ## CSV ファイルのスキーマ推論 {#schema-inference-for-csv-files}
 
@@ -326,7 +318,6 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 これにより、ClickHouse は推測ではなく、（2行目の）ヘッダー行に基づいて列型を判定するようになりました。
 
-
 ## カスタム区切り文字、セパレーター、およびエスケープ規則 {#custom-delimiters-separators-and-escaping-rules}
 
 より複雑なケースでは、テキストデータが高度にカスタマイズされた形式で整形されていても、なお構造を持っている場合があります。ClickHouse にはそのようなケース向けの特別な [CustomSeparated](/interfaces/formats/CustomSeparated) フォーマットがあり、カスタムのエスケープ規則、区切り文字、行区切り、開始／終了記号を設定できます。
@@ -365,7 +356,6 @@ LIMIT 3
 
 ヘッダーを正しくエクスポートおよびインポートするために、[CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) を使用することもできます。さらに複雑なケースを扱うには、[regex and template](templates-regex.md) フォーマットを参照してください。
 
-
 ## 大きな CSV ファイルの扱い {#working-with-large-csv-files}
 
 CSV ファイルは大きくなることがありますが、ClickHouse はサイズに関係なく効率的に処理できます。大きなファイルは通常、圧縮された状態で提供されますが、ClickHouse では処理前に解凍する必要はありません。`INSERT` 時に `COMPRESSION` 句を使用できます:
@@ -386,7 +376,6 @@ COMPRESSION 'gzip' FORMAT CSV
 ```
 
 これにより圧縮済みの `data_csv.csv.gz` ファイルが作成されます。
-
 
 ## その他のフォーマット {#other-formats}
 

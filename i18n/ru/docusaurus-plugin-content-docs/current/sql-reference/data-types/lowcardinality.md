@@ -1,5 +1,5 @@
 ---
-description: 'Документация по оптимизации LowCardinality для столбцов строкового типа'
+description: 'Документация по оптимизации LowCardinality для строковых столбцов'
 sidebar_label: 'LowCardinality(T)'
 sidebar_position: 42
 slug: /sql-reference/data-types/lowcardinality
@@ -7,13 +7,9 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-
-
 # LowCardinality(T) {#lowcardinalityt}
 
-Изменяет внутреннее представление других типов данных на словарно-кодированное.
-
-
+Изменяет внутреннее представление других типов данных на представление с использованием словарной кодировки.
 
 ## Синтаксис {#syntax}
 
@@ -33,8 +29,6 @@ LowCardinality(data_type)
 Эффективность использования типа данных `LowCardinality` зависит от разнообразия данных. Если словарь содержит менее 10 000 различных значений, ClickHouse в большинстве случаев показывает более высокую эффективность чтения и хранения данных. Если словарь содержит более 100 000 различных значений, ClickHouse может работать хуже по сравнению с использованием обычных типов данных.
 
 Рассмотрите возможность использования `LowCardinality` вместо [Enum](../../sql-reference/data-types/enum.md) при работе со строками. `LowCardinality` обеспечивает большую гибкость в использовании и часто демонстрирует такую же или более высокую эффективность.
-
-
 
 ## Пример {#example}
 
@@ -63,9 +57,7 @@ ORDER BY id
 
 Функции:
 
-- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
-
-
+- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
 ## Связанные материалы {#related-content}
 

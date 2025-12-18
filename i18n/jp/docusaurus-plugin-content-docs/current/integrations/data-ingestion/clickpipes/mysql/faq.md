@@ -8,17 +8,18 @@ doc_type: 'reference'
 keywords: ['MySQL ClickPipes FAQ', 'ClickPipes MySQL のトラブルシューティング', 'MySQL から ClickHouse へのレプリケーション', 'ClickPipes MySQL のサポート', 'MySQL CDC ClickHouse']
 ---
 
-
-
 # MySQL 向け ClickPipes FAQ {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe は MariaDB をサポートしていますか？  {#does-the-clickpipe-support-mariadb}
+
 はい、MySQL ClickPipe は MariaDB 10.0 以上をサポートしています。設定は MySQL と非常によく似ており、デフォルトで GTID レプリケーションを使用します。
 
 ### MySQL ClickPipe は PlanetScale、Vitess、または TiDB をサポートしていますか？ {#does-the-clickpipe-support-planetscale-vitess}
+
 いいえ。これらのサービスは MySQL の binlog API をサポートしていません。
 
 ### レプリケーションはどのように管理されますか？ {#how-is-replication-managed}
+
 `GTID` と `FilePos` の両方のレプリケーションをサポートしています。Postgres と異なり、オフセットを管理するスロットはありません。その代わりに、MySQL サーバーで十分な binlog の保持期間を設定する必要があります。binlog へのオフセットが無効になった場合（*例: ミラーが長時間一時停止された、または `FilePos` レプリケーション使用中にデータベースフェイルオーバーが発生した*）は、パイプを再同期する必要があります。宛先テーブルに応じてマテリアライズドビューを最適化してください。非効率なクエリはインジェストを遅くし、保持期間に追いつけなくなる可能性があります。
 
 アクティブでないデータベースが、ClickPipes がより新しいオフセットに進む前にログファイルをローテーションしてしまう可能性もあります。その場合は、定期的に更新されるハートビートテーブルを設定する必要があるかもしれません。
@@ -45,8 +46,13 @@ MySQL に接続する際、`x509: certificate is not valid for any names` や `x
 
 ### MySQL の外部キーのカスケード削除 `ON DELETE CASCADE` のレプリケーションはサポートされていますか？ {#support-on-delete-cascade}
 
-MySQL の[カスケード削除の扱い](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html)上、これらは binlog に書き込まれません。そのため、ClickPipes（または任意の CDC ツール）でレプリケーションすることはできません。これにより不整合なデータが発生する可能性があります。カスケード削除をサポートするには、代わりにトリガーを使用することを推奨します。
+MySQL の[カスケード削除の扱い](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html)により、これらは binlog に書き込まれません。そのため、ClickPipes（または任意の CDC ツール）でレプリケーションすることはできません。これにより不整合なデータが発生する可能性があります。カスケード削除をサポートするには、代わりにトリガーを使用することを推奨します。
 
 ### ドットを含むテーブルをレプリケートできないのはなぜですか？ {#replicate-table-dot}
+
 PeerDB には現在、ソーステーブル識別子（スキーマ名またはテーブル名）の中にドットが含まれている場合、そのレプリケーションをサポートしないという制限があります。これは、PeerDB がドットで分割する際に、どれがスキーマでどれがテーブルかを識別できないためです。
 この制限を回避できるよう、スキーマとテーブルを別々に入力できるようにする取り組みが進められています。
+
+### レプリケーションから最初に除外したカラムを後から含めることはできますか？ {#include-excluded-columns}
+
+これはまだサポートされておらず、今後のロードマップに含まれています。代替手段としては、対象のカラムを含めたい[テーブルを再同期する](./table_resync.md)方法があります。

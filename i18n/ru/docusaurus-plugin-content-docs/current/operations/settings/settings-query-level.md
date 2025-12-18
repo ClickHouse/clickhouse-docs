@@ -42,7 +42,7 @@ doc_type: 'reference'
 Если вы изменили настройку и хотите вернуть её к значению по умолчанию, укажите значение `DEFAULT`. Синтаксис следующий:
 
 ```sql
-SET имя_настройки = DEFAULT
+SET setting_name = DEFAULT
 ```
 
 Например, по умолчанию `async_insert` имеет значение `0`. Предположим, вы измените его на `1`:
@@ -77,7 +77,6 @@ SELECT value FROM system.settings where name='async_insert';
 └─────────┘
 ```
 
-
 ## Пользовательские настройки {#custom_settings}
 
 В дополнение к общим [настройкам](/operations/settings/settings.md) пользователи могут задавать собственные настройки.
@@ -100,7 +99,6 @@ SET custom_a = 123;
 SELECT getSetting('custom_a');
 ```
 
-
 ## Примеры {#examples}
 
 Во всех этих примерах значение настройки `async_insert` устанавливается в `1` и демонстрируется, как просматривать настройки в работающей системе.
@@ -116,22 +114,20 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 SETTINGS async_insert = 1
 ```
 
-
 #### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment}
 
 ```sql
-ПОКАЗАТЬ ДОСТУП
+SHOW ACCESS
 ```
 
 ```response
 ┌─ACCESS─────────────────────────────────────────────────────────────────────────────┐
 │ ...                                                                                │
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 │ CREATE USER ingester IDENTIFIED WITH sha256_password SETTINGS async_insert = true  │
 │ ...                                                                                │
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### Использование SQL для создания профиля настроек и назначения его пользователю {#using-sql-to-create-a-settings-profile-and-assign-to-a-user}
 
@@ -150,7 +146,6 @@ IDENTIFIED WITH sha256_hash BY '7e099f39b84ea79559b3e85ea046804e63725fd1f46b37f2
 -- highlight-next-line
 SETTINGS PROFILE log_ingest
 ```
-
 
 ### Создание профиля настроек и пользователя с помощью XML {#using-xml-to-create-a-settings-profile-and-user}
 
@@ -180,8 +175,7 @@ SETTINGS PROFILE log_ingest
 </clickhouse>
 ```
 
-
-#### Просмотрите профиль настроек и его назначение {#examine-the-settings-profile-and-assignment-1}
+#### Examine the settings profile and assignment {#examine-the-settings-profile-and-assignment-1}
 
 ```sql
 ПОКАЗАТЬ ДОСТУП
@@ -200,8 +194,7 @@ SETTINGS PROFILE log_ingest
 └────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
-### Назначьте настройку сеансу {#assign-a-setting-to-a-session}
+### Assign a setting to a session {#assign-a-setting-to-a-session}
 
 ```sql
 SET async_insert =1;
@@ -214,8 +207,7 @@ SELECT value FROM system.settings where name='async_insert';
 └────────┘
 ```
 
-
-### Назначение настройки в запросе {#assign-a-setting-during-a-query}
+### Assign a setting during a query {#assign-a-setting-during-a-query}
 
 ```sql
 INSERT INTO YourTable
@@ -223,7 +215,6 @@ INSERT INTO YourTable
 SETTINGS async_insert=1
 VALUES (...)
 ```
-
 
 ## См. также {#see-also}
 

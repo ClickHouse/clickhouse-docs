@@ -7,8 +7,6 @@ title: 'PostgreSQL 表引擎'
 doc_type: '指南'
 ---
 
-
-
 # PostgreSQL 表引擎 {#postgresql-table-engine}
 
 PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
@@ -20,8 +18,6 @@ PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行
 :::tip
 建议 ClickHouse Cloud 用户使用 [ClickPipes](/integrations/clickpipes) 以流式方式将 PostgreSQL 数据导入 ClickHouse。该方式原生支持高性能插入，并通过可分别扩展摄取和集群资源，实现清晰的职责划分。
 :::
-
-
 
 ## 创建数据表 {#creating-a-table}
 
@@ -72,7 +68,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 SELECT * FROM postgresql(postgres_creds, table='table1');
 ```
 
-
 ## 实现细节 {#implementation-details}
 
 PostgreSQL 端的 `SELECT` 查询在只读 PostgreSQL 事务中以 `COPY (SELECT ...) TO STDOUT` 的形式运行，每个 `SELECT` 查询结束后都会提交事务。
@@ -119,7 +114,6 @@ PostgreSQL 字典源支持副本优先级。映射中的数字越大，优先级
 </postgresql>
 </source>
 ```
-
 
 ## 使用示例 {#usage-example}
 
@@ -194,7 +188,7 @@ SELECT max(`int_id`) AS maxIntID FROM default.postgresql_copy;
 
 ```sql
 INSERT INTO default.postgresql_copy
-SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password')
+SELECT * FROM postgresql('localhost:5432', 'public', 'test', 'postges_user', 'postgres_password');
 WHERE int_id > maxIntID;
 ```
 
@@ -229,7 +223,6 @@ CREATE TABLE pg_table_schema_with_dots (a UInt32)
 
 * [`postgresql` 表函数](../../../sql-reference/table-functions/postgresql.md)
 * [将 PostgreSQL 用作字典源](/sql-reference/dictionaries#mysql)
-
 
 ## 相关内容 {#related-content}
 

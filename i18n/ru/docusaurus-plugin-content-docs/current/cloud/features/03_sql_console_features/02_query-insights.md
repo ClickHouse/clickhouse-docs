@@ -14,12 +14,9 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
 # Аналитика запросов {#query-insights}
 
 Возможность **Query Insights** упрощает работу со встроенным журналом запросов ClickHouse за счёт различных визуализаций и таблиц. Таблица `system.query_log` в ClickHouse является ключевым источником информации для оптимизации запросов, отладки и мониторинга общего состояния и производительности кластера.
-
-
 
 ## Обзор запросов {#query-overview}
 
@@ -27,15 +24,11 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 
 <Image img={insights_overview} size="md" alt="Обзор интерфейса Query Insights" border/>
 
-
-
 ## Метрики верхнего уровня {#top-level-metrics}
 
 Статистические блоки в верхней части отображают базовые сводные метрики запросов за выбранный период времени. Ниже представлены три графика временных рядов, показывающие объем запросов, задержку и уровень ошибок с разбивкой по типам запросов (select, insert, other) за выбранный временной интервал. График задержки можно дополнительно настроить для отображения задержек p50, p90 и p99:
 
 <Image img={insights_latency} size="md" alt="График задержки в интерфейсе Query Insights" border/>
-
-
 
 ## Недавние запросы {#recent-queries}
 
@@ -44,8 +37,6 @@ import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_q
 <Image img={insights_recent} size="md" alt="Таблица Recent Queries в интерфейсе Query Insights" border/>
 
 Недавние запросы можно фильтровать и сортировать по любому из доступных полей. Таблицу также можно настроить для отображения или скрытия дополнительных полей, таких как таблицы, а также задержки p90 и p99.
-
-
 
 ## Детальный разбор запроса {#query-drill-down}
 

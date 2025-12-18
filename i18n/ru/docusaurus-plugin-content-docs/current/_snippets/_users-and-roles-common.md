@@ -32,7 +32,6 @@ DROP TABLE db1.table1;
 DROP DATABASE db1;
 ```
 
-
 ## Пользователи без прав администратора {#non-admin-users}
 
 Пользователи должны обладать только необходимыми привилегиями, и не все должны быть администраторами. В остальной части документа приведены примеры сценариев и требуемые роли.
@@ -77,12 +76,12 @@ VALUES
 
 ##### Проверьте таблицу {#verify}
 
-```sql title="Запрос"
+```sql title="Query"
 SELECT *
 FROM db1.table1
 ```
 
-```response title="Ответ"
+```response title="Response"
 Query id: 475015cc-6f51-4b20-bda2-3c9c41404e49
 
 ┌─id─┬─column1─┬─column2─┐
@@ -168,17 +167,15 @@ CREATE USER row_user IDENTIFIED BY 'password';
 ##### Предоставьте явные разрешения другим ролям для сохранения доступа ко всем строкам {#grant-other-roles-access}
 
     ```sql
-    CREATE ROW POLICY allow_other_users_filter
+    CREATE ROW POLICY allow_other_users_filter 
     ON db1.table1 FOR SELECT USING 1 TO clickhouse_admin, column1_users;
     ```
-
 
     :::note
     При привязке политики к таблице система применит её, и только указанные в ней пользователи и роли смогут выполнять операции с таблицей — всем остальным будет запрещён любой доступ. Чтобы ограничительная политика строк не распространялась на других пользователей, необходимо определить дополнительную политику, предоставляющую им стандартный или иной тип доступа.
     :::
 
 </VerticalStepper>
-
 
 ## Проверка {#verification}
 
@@ -293,8 +290,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
 
 </VerticalStepper>
 
-
-
 ## Изменение пользователей и ролей {#modifying-users-and-roles}
 
 Пользователю можно назначить несколько ролей для получения нужной комбинации привилегий. При использовании нескольких ролей система объединяет их при определении привилегий, в результате права, предоставляемые ролями, будут суммироваться.
@@ -365,8 +360,6 @@ CREATE USER row_user IDENTIFIED BY 'password';
    ```
 </VerticalStepper>
 
-
-
 ## Устранение неполадок {#troubleshooting}
 
 Иногда привилегии пересекаются или комбинируются, что приводит к неожиданным результатам. Следующие команды можно использовать для уточнения причины проблемы при работе под учетной записью администратора.
@@ -407,7 +400,7 @@ SHOW ROW POLICIES
 ```
 
 ```response
-Идентификатор запроса: f2c636e9-f955-4d79-8e80-af40ea227ebc
+Query id: f2c636e9-f955-4d79-8e80-af40ea227ebc
 
 ┌─name───────────────────────────────────┐
 │ A_row_filter ON db1.table1             │
@@ -428,7 +421,6 @@ Query id: 0d3b5846-95c7-4e62-9cdd-91d82b14b80b
 │ CREATE ROW POLICY A_row_filter ON db1.table1 FOR SELECT USING column1 = 'A' TO A_rows_users │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Примеры команд для управления ролями, политиками и пользователями {#example-commands-to-manage-roles-policies-and-users}
 
@@ -473,7 +465,6 @@ DROP ROLE A_rows_users;
 ```sql
 DROP USER row_user;
 ```
-
 
 ## Итоги {#summary}
 

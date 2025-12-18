@@ -27,8 +27,6 @@ doc_type: 'guide'
 Файлы конфигурации XML должны использовать `<clickhouse>...</clickhouse>` в качестве тега верхнего уровня.
 В конфигурационных файлах YAML тег `clickhouse:` является необязательным; если он отсутствует, парсер вставляет его автоматически.
 
-
-
 ## Объединение конфигураций {#merging}
 
 Два конфигурационных файла (обычно основной конфигурационный файл и дополнительный конфигурационный файл из `config.d/`) объединяются следующим образом:
@@ -119,9 +117,8 @@ doc_type: 'guide'
 </clickhouse>
 ```
 
-
 ```shell
-# clickhouse-keeper-client {#clickhouse-keeper-client}
+# clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
 / :) get /zk_configs/postgresql_port
@@ -166,7 +163,6 @@ doc_type: 'guide'
 </clickhouse>
 ```
 
-
 ## Подстановка содержимого из файла {#substitution-with-file-content}
 
 Также можно заменять части конфигурации содержимым файлов. Это можно сделать двумя способами:
@@ -178,11 +174,11 @@ doc_type: 'guide'
 
 ```xml
 <clickhouse>
-    <!-- Добавляет XML-поддерево, найденное по пути `/profiles-in-zookeeper` в ZK, к элементу `<profiles>`. -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- Заменяет элемент `include` поддеревом, найденным по пути `/users-in-zookeeper` в ZK. -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>
@@ -190,7 +186,6 @@ doc_type: 'guide'
 ```
 
 Если вы хотите объединить подставляемое содержимое с существующей конфигурацией вместо простого добавления в конец, вы можете использовать атрибут `merge="true"`. Например: `<include from_zk="/some_path" merge="true">`. В этом случае существующая конфигурация будет объединена с подставляемым содержимым, а текущие настройки конфигурации будут заменены значениями из подстановки.
-
 
 ## Шифрование и скрытие конфигурации {#encryption}
 
@@ -312,7 +307,6 @@ doc_type: 'guide'
 </clickhouse>
 ```
 
-
 ## Настройки пользователя {#user-settings}
 
 Файл `config.xml` может задавать отдельный конфигурационный файл с пользовательскими настройками, профилями и квотами. Относительный путь к этому файлу задаётся в элементе `users_config`. По умолчанию это `users.xml`. Если `users_config` не указан, пользовательские настройки, профили и квоты задаются непосредственно в `config.xml`.
@@ -322,8 +316,6 @@ doc_type: 'guide'
 Каталог `users.d` используется по умолчанию, так как `users_config` по умолчанию равен `users.xml`.
 
 Обратите внимание, что файлы конфигурации сначала [объединяются](#merging) с учётом настроек, а include-директивы обрабатываются после этого.
-
-
 
 ## Пример XML {#example}
 
@@ -348,7 +340,6 @@ $ cat /etc/clickhouse-server/users.d/alice.xml
 </clickhouse>
 ```
 
-
 ## Примеры YAML {#example-1}
 
 Здесь вы можете увидеть конфигурацию по умолчанию в формате YAML: [`config.yaml.example`](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.yaml.example).
@@ -365,7 +356,7 @@ key: value
 Соответствующий XML-код:
 
 ```xml
-<key>значение</key>
+<key>value</key>
 ```
 
 Вложенный XML-узел представляется в виде YAML-отображения:
@@ -463,7 +454,6 @@ map_key:
 ```xml
 <map_key attr1="value1">value2</map>
 ```
-
 
 ## Детали реализации {#implementation-details}
 

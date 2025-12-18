@@ -34,10 +34,10 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 Предположим, у нас есть файл `data.jsonl` со следующим содержимым:
 
 ```json
-{"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["футбол", "кулинария", "музыка"]}
-{"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["теннис", "искусство"]}
-{"id" :  3, "age" :  32, "name" :  "Lana", "hobbies" :  ["фитнес", "чтение", "шопинг"]}
-{"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["кино", "парашютный спорт"]}
+{"id" :  1, "age" :  25, "name" :  "Josh", "hobbies" :  ["football", "cooking", "music"]}
+{"id" :  2, "age" :  19, "name" :  "Alan", "hobbies" :  ["tennis", "art"]}
+{"id" :  3, "age" :  32, "name" :  "Lana", "hobbies" :  ["fitness", "reading", "shopping"]}
+{"id" :  4, "age" :  47, "name" :  "Brayan", "hobbies" :  ["movies", "skydiving"]}
 ```
 
 :::tip
@@ -73,7 +73,7 @@ FORMAT Vertical
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 storage:                File
 source:                 /home/droscigno/user_files/data.jsonl

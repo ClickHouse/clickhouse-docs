@@ -33,13 +33,13 @@ WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILI
 │       86 │
 └─────────┘
 
-返回 1 行。用时:8.209 秒。已处理 1.502 亿行,56.05 GB(1830 万行/秒,6.83 GB/秒)。
-峰值内存使用量:1.23 GiB。
+1 row in set. Elapsed: 8.209 sec. Processed 150.20 million rows, 56.05 GB (18.30 million rows/s., 6.83 GB/s.)
+Peak memory usage: 1.23 GiB.
 ```
 
-请注意，我们使用的是 `ANY INNER JOIN` 而不是普通的 `INNER JOIN`，因为我们不希望产生笛卡尔积，也就是说，我们只希望每篇帖子只对应一个匹配结果。
+请注意，我们使用的是 `ANY INNER JOIN` 而不是普通的 `INNER JOIN`，因为我们不希望产生笛卡尔积，也就是说，我们只希望每篇帖子对应一个匹配结果。
 
-这个 join 可以通过使用子查询来重写，从而显著提升性能：
+这个 `JOIN` 可以改写为使用子查询的形式，从而显著提升性能：
 
 ```sql
 SELECT count()
@@ -70,14 +70,12 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
+
+1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
 
 
-1 行结果。耗时 56.642 秒。已处理 2.523 亿行，1.62 GB（445 万行/秒，28.60 MB/秒）
-
-````
-
-重新调整此连接顺序可将性能显著提升至 1.5 秒:
+重新调整此 JOIN 的顺序可将性能显著提升至 1.5 秒：
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -90,9 +88,9 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
-````
+```
 
-在左侧表格上添加筛选条件后，性能进一步提升到 0.5 秒。
+在左表上添加过滤条件后，性能进一步提升到 0.5 秒。
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -104,11 +102,11 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 │  261915 │
 └─────────┘
 
-返回 1 行。耗时: 0.597 秒。处理了 81.14 百万行，1.31 GB (135.82 百万行/秒，2.19 GB/秒)。
-峰值内存使用: 249.42 MiB。
+1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
+Peak memory usage: 249.42 MiB.
 ```
 
-正如前面所述，还可以通过将 `INNER JOIN` 移动到子查询中来进一步改进此查询，同时在外层查询和内层查询中都保留该过滤条件。
+正如前面提到的，还可以通过将 `INNER JOIN` 下推到子查询中来进一步优化此查询，同时在外层查询和内层查询中都保留该过滤条件。
 
 ```sql
 SELECT count() AS upvotes
@@ -123,8 +121,8 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 │  261915 │
 └─────────┘
 
-返回 1 行。用时:0.383 秒。已处理 9964 万行,804.55 MB(2.5985 亿行/秒,2.10 GB/秒)。
-内存峰值:250.66 MiB。
+1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
+Peak memory usage: 250.66 MiB.
 ```
 
 
@@ -152,8 +150,6 @@ ClickHouse 支持多种 [JOIN 算法](https://clickhouse.com/blog/clickhouse-ful
 
 选择合适的 JOIN 算法取决于是优先优化内存占用，还是优先优化性能。
 
-
-
 ## 优化 JOIN 性能 {#optimizing-join-performance}
 
 如果你的首要优化指标是性能，并且希望尽可能快地执行 join，可以使用下面的决策树来选择合适的 join 算法：
@@ -177,8 +173,6 @@ Partial merge join 针对大表 join 场景在尽量降低内存使用方面进�
 Grace hash join 是三种非内存绑定 join 算法中最灵活的一种，并通过其 [grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) 设置，为在内存使用与 join 速度之间进行权衡提供了良好的控制能力。取决于数据量，当 [buckets](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2) 的数量选择得使两种算法的内存使用大致相当时，grace hash 的速度可能比 partial merge 算法更快，也可能更慢。而当 grace hash join 的内存使用被配置为与 full sorting merge 的内存使用大致一致时，在我们的测试中 full sorting merge 始终更快。
 
 这三种非内存绑定算法中哪一种最快，取决于数据量、数据类型以及 join key 列的值分布。为了确定哪一种算法最快，最好始终在具有真实数据规模和真实数据特征的情况下进行基准测试。
-
-
 
 ## 针对内存进行优化 {#optimizing-for-memory}
 

@@ -14,13 +14,11 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-
 # 使用 ClickHouse MCP 服务器与 Ollama {#using-clickhouse-mcp-server-with-ollama}
 
 > 本指南介绍如何使用 ClickHouse MCP 服务器与 Ollama。
 
 <VerticalStepper headerLevel="h2">
-
 
 ## 安装 Ollama {#install-ollama}
 
@@ -67,18 +65,18 @@ ollama show qwen3
 ```
 
 ```text
-  模型
-    架构                qwen3
-    参数量              8.2B
-    上下文长度          40960
-    嵌入维度            4096
-    量化方式            Q4_K_M
+  Model
+    architecture        qwen3
+    parameters          8.2B
+    context length      40960
+    embedding length    4096
+    quantization        Q4_K_M
 
-  能力
-    补全
-    工具
+  Capabilities
+    completion
+    tools
 
-  参数
+  Parameters
     repeat_penalty    1
     stop              "<|im_start|>"
     stop              "<|im_end|>"
@@ -86,13 +84,12 @@ ollama show qwen3
     top_k             20
     top_p             0.95
 
-  许可证
+  License
     Apache License
     Version 2.0, January 2004
 ```
 
 从该输出可以看出，默认的 qwen3 模型拥有稍多于 80 亿个参数。
-
 
 ## 安装 MCPHost {#install-mcphost}
 
@@ -107,7 +104,6 @@ go install github.com/mark3labs/mcphost@latest
 ```
 
 该可执行文件会安装在 `~/go/bin` 目录下，因此我们需要确保该目录已添加到我们的 `PATH` 中。
-
 
 ## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
@@ -157,7 +153,6 @@ export CLICKHOUSE_PASSWORD=""
 原则上，可以在 MCP 配置文件的 `environment` 字段下提供这些变量，但我们发现这样做并不起作用。
 :::
 
-
 ## 运行 MCPHost {#running-mcphost}
 
 配置好 ClickHouse MCP 服务器后,可以通过运行以下命令来运行 MCPHost:
@@ -169,7 +164,7 @@ mcphost --model ollama:qwen3
 或者,如果您希望使用特定的配置文件:
 
 ```bash
-mcphost --model ollama:qwen3 --config ~/.mcphost.json
+mcphost --model ollama:qwen3 --config ~/.mcphost.json 
 ```
 
 :::warning

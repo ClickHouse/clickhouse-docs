@@ -19,14 +19,14 @@ FORMAT Vertical
 ```
 
 ```text
-第 1 行：
+Row 1:
 ──────
 name:         io_read
 read_disks:   ['s3']
 write_disks:  []
 create_query: CREATE RESOURCE io_read (READ DISK s3)
 
-第 2 行：
+Row 2:
 ──────
 name:         io_write
 read_disks:   []

@@ -2,7 +2,7 @@
 description: 'インデックスのドキュメント'
 sidebar: 'sqlreference'
 slug: /sql-reference/functions
-title: '関数の一覧ページ'
+title: '関数の概要'
 doc_type: 'landing-page'
 ---
 

@@ -21,14 +21,11 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # QuickSight {#quicksight}
 
 <ClickHouseSupportedBadge/>
 
 QuickSight 可以通过官方 MySQL 数据源，并使用 Direct Query 模式，经由 MySQL 接口连接到本地部署的 ClickHouse 集群（23.11+）。
-
-
 
 ## 本地部署 ClickHouse 服务器的设置 {#on-premise-clickhouse-server-setup}
 
@@ -122,7 +119,6 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-
 ## 将 QuickSight 连接到 ClickHouse {#connecting-quicksight-to-clickhouse}
 
 首先，访问 [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)，进入 Datasets，然后单击 "New dataset"（新建数据集）：
@@ -162,8 +158,6 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 <br/>
 
 现在，您可以继续发布数据集并创建新的可视化了！
-
-
 
 ## 已知限制 {#known-limitations}
 

@@ -13,8 +13,6 @@ doc_type: 'reference'
 |------|-------|-----------------------------------|
 | ✔    | ✔     | `TSVRawWithNames`, `RawWithNames` |
 
-
-
 ## Описание {#description}
 
 Отличается от формата [`TabSeparatedWithNames`](./TabSeparatedWithNames.md) тем, 
@@ -23,8 +21,6 @@ doc_type: 'reference'
 :::note
 При разборе данных в этом формате символы табуляции или перевода строки внутри отдельных полей не допускаются.
 :::
-
-
 
 ## Пример использования {#example-usage}
 
@@ -91,6 +87,5 @@ date    season  home_team       away_team       home_team_goals away_team_goals
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## Параметры формата {#format-settings}

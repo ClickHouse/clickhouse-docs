@@ -8,13 +8,9 @@ keywords: ['Apache Avro', 'Apache Arrow', 'формат ORC', 'колоночн�
 doc_type: 'guide'
 ---
 
-
-
 # Работа с данными Avro, Arrow и ORC в ClickHouse {#working-with-avro-arrow-and-orc-data-in-clickhouse}
 
 Apache разработал несколько форматов данных, активно используемых в аналитических системах, включая популярные [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/) и [ORC](https://orc.apache.org/). ClickHouse поддерживает импорт и экспорт данных с использованием любого из этих форматов.
-
-
 
 ## Импорт и экспорт в формате Avro {#importing-and-exporting-in-avro-format}
 
@@ -92,7 +88,6 @@ kafka_group_name = 'some_group',
 kafka_format = 'AvroConfluent';
 ```
 
-
 ## Работа с форматом Arrow {#working-with-arrow-format}
 
 Ещё один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта данных. Чтобы импортировать данные из [файла в формате Arrow](assets/data.arrow), мы используем формат [Arrow](/interfaces/formats/Arrow):
@@ -133,7 +128,7 @@ clickhouse-client -q "SELECT path, hits FROM some_data LIMIT 3 FORMAT ArrowStrea
 ```
 
 ```response
-                           путь  обращений
+                           path  hits
 0       b'Akiba_Hebrew_Academy'   241
 1           b'Aegithina_tiphia'    34
 2  b'1971-72_Utah_Stars_season'     1
@@ -146,7 +141,6 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 ```
 
 Мы использовали `arrow-stream` как один из возможных источников потоковых данных Arrow.
-
 
 ## Импорт и экспорт данных ORC {#importing-and-exporting-orc-data}
 
@@ -164,7 +158,6 @@ FORMAT ORC;
 ```
 
 Также проверьте [соответствие типов данных](/interfaces/formats/ORC) и [дополнительные настройки](/interfaces/formats/Parquet#format-settings) для настройки экспорта и импорта.
-
 
 ## Дополнительные материалы {#further-reading}
 

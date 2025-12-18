@@ -26,7 +26,7 @@ PostgreSQL ワイヤープロトコルを有効化するには、サーバーの
 ClickHouse サーバーを起動し、**Listening for PostgreSQL compatibility protocol** という文言を含む、次のようなログメッセージを探します。
 
 ```response
-{} <Information> Application: PostgreSQL互換プロトコルでリッスン中: 127.0.0.1:9005
+{} <Information> Application: Listening for PostgreSQL compatibility protocol: 127.0.0.1:9005
 ```
 
 ## psql を ClickHouse に接続する {#connect-psql-to-clickhouse}
@@ -50,11 +50,11 @@ psql -p 9005 -h 127.0.0.1 -U alice default
 `psql` クライアントはパスワードの入力を求めます。
 
 ```response
-ユーザー alice のパスワード:
+Password for user alice:
 psql (14.2, server 22.3.1.1)
-警告: psql メジャーバージョン 14、サーバーメジャーバージョン 22。
-         一部の psql 機能が動作しない可能性があります。
-ヘルプを表示するには "help" と入力してください。
+WARNING: psql major version 14, server major version 22.
+         Some psql features might not work.
+Type "help" for help.
 
 default=>
 ```

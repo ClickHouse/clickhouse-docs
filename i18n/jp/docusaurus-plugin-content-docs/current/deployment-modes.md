@@ -41,8 +41,6 @@ ClickHouse Server は従来型のクライアント／サーバーアーキテ�
 
 このデプロイメントモードは、信頼性、パフォーマンス、そしてすべての機能を利用できることが重要となる本番環境における最有力な選択肢です。
 
-
-
 ## ClickHouse Cloud {#clickhouse-cloud}
 
 [ClickHouse Cloud](/cloud/overview) は、自前のデプロイメント運用に伴うオペレーション負荷を取り除く、完全マネージド版の ClickHouse です。ClickHouse Server の中核となる機能はすべて維持しつつ、開発と運用を効率化するために設計された追加機能によって、利用体験を一段と高めます。
@@ -57,8 +55,6 @@ ClickHouse Cloud の SQL Console には強力な [dashboarding](/cloud/manage/da
 
 マネージドサービスであることから、アップデート、バックアップ、スケーリング、セキュリティパッチについて心配する必要はありません — これらはすべて自動的に処理されます。そのため、データベース管理ではなく、自社のデータとアプリケーションに注力したい組織にとって理想的な選択肢となります。
 
-
-
 ## clickhouse-local {#clickhouse-local}
 
 [clickhouse-local](/operations/utilities/clickhouse-local) は、単体の実行ファイルとして ClickHouse の完全な機能を提供する強力なコマンドラインツールです。基本的には ClickHouse Server と同じデータベースですが、サーバーインスタンスを起動することなくコマンドラインから直接 ClickHouse の機能をすべて活用できるようにパッケージされています。
@@ -70,8 +66,6 @@ ClickHouse Cloud の SQL Console には強力な [dashboarding](/cloud/manage/da
 clickhouse-local には ClickHouse の全機能が含まれているため、データ変換、フォーマット変換、あるいは通常 ClickHouse Server で行うその他のデータベース操作にも利用できます。主に一時的な処理に使われますが、必要に応じて ClickHouse Server と同じストレージエンジンを使ってデータを永続化することも可能です。
 
 リモートテーブル関数とローカルファイルシステムへのアクセスを組み合わせることで、clickhouse-local は ClickHouse Server 上のデータとローカルマシン上のファイルを結合する必要があるシナリオでとくに有用です。サーバーにアップロードしたくない機密性の高いローカルデータや一時的なローカルデータを扱う場合に、きわめて有用です。
-
-
 
 ## chDB {#chdb}
 

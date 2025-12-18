@@ -22,10 +22,8 @@ import Image from '@theme/IdealImage';
 PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Control）来处理并发事务，这涉及维护同一数据的多个版本。
 这些事务一次通常只涉及少量行数据，但由于需要满足可靠性保证，会引入相当大的开销，从而限制插入性能。
 
-为了在保持强一致性保证的同时获得高插入性能，用户在向 ClickHouse 插入数据时应遵循下文所述的一些简单规则。
+为了在保持强一致性保证的同时获得高插入性能，你在向 ClickHouse 插入数据时应遵循下文所述的一些简单规则。
 遵循这些规则将有助于避免用户在首次使用 ClickHouse 时，尝试照搬适用于 OLTP 数据库的插入策略而常见的问题。
-
-
 
 ## 插入操作最佳实践 {#best-practices-for-inserts}
 
@@ -83,9 +81,7 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 :::note
 请注意，在数据被刷新到数据库存储之前，查询无法检索到这些数据；缓冲区刷新的时机是可配置的。
 
-
-
-有关配置异步插入的完整细节请参见[此处](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，更深入的讲解请参见[这里](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
+有关配置异步插入的完整详细信息请参见[此处](/optimize/asynchronous-inserts#enabling-asynchronous-inserts)，更深入的解析参见[此处](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)。
 :::
 
 ### 使用官方 ClickHouse 客户端 {#use-official-clickhouse-clients}
@@ -101,13 +97,13 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 这与 OLTP 数据库有显著差异，使得从外部来源加载数据更加容易——尤其是在结合[表函数](/sql-reference/table-functions)以及从磁盘文件加载数据的能力时。
 这些格式非常适合临时数据加载和数据工程任务。
 
-对于希望获得最佳插入性能的应用，用户应使用 [Native](/interfaces/formats/Native) 格式进行插入。
+对于希望获得最佳插入性能的应用，你应使用 [Native](/interfaces/formats/Native) 格式进行插入。
 大多数客户端（如 Go 和 Python）都支持该格式，并且由于该格式已经是列式的，因此可确保服务器所需的处理工作最少。
 通过这种方式，将数据转换为列式格式的责任由客户端承担。这对于高效扩展插入能力非常重要。
 
-或者，如果更偏好行格式，用户可以使用 [RowBinary 格式](/interfaces/formats/RowBinary)（Java 客户端所使用的格式）——通常比 Native 格式更容易写入。
+或者，如果更偏好行格式，你可以使用 [RowBinary 格式](/interfaces/formats/RowBinary)（Java 客户端所使用的格式）——通常比 Native 格式更容易写入。
 与其他行格式（如 [JSON](/interfaces/formats/JSON)）相比，它在压缩、网络开销以及服务器端处理方面更高效。
-对于写入吞吐量要求较低、希望快速集成的用户，可以考虑使用 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。需要注意的是，此格式会在 ClickHouse 中引入额外的 CPU 解析开销。
+如果你的写入吞吐量要求较低、希望快速集成，可以考虑使用 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式。需要注意的是，此格式会在 ClickHouse 中引入额外的 CPU 解析开销。
 
 ### 使用 HTTP 接口 {#use-the-http-interface}
 
@@ -120,18 +116,16 @@ ClickHouse 在插入（以及查询）时支持多种[输入格式](/interfaces/
 
 更多详情请参见 [HTTP 接口](/interfaces/http)。
 
-
-
 ## 基本示例 {#basic-example}
 
 你可以在 ClickHouse 中使用熟悉的 `INSERT INTO TABLE` 命令。现在让我们向在入门指南[“在 ClickHouse 中创建表”](./creating-tables)中创建的表插入一些数据。
 
 ```sql
 INSERT INTO helloworld.my_first_table (user_id, message, timestamp, metric) VALUES
-    (101, '你好,ClickHouse!',                                 now(),       -1.0    ),
-    (102, '每批次插入大量数据行',                     yesterday(), 1.41421 ),
-    (102, '根据常用查询对数据进行排序', today(),     2.718   ),
-    (101, 'Granule 是数据读取的最小单元',      now() + 5,   3.14159 )
+    (101, 'Hello, ClickHouse!',                                 now(),       -1.0    ),
+    (102, 'Insert a lot of rows per batch',                     yesterday(), 1.41421 ),
+    (102, 'Sort your data based on your commonly-used queries', today(),     2.718   ),
+    (101, 'Granules are the smallest chunks of data read',      now() + 5,   3.14159 )
 ```
 
 为验证其是否已生效，我们将运行以下 `SELECT` 查询：
@@ -144,10 +138,10 @@ SELECT * FROM helloworld.my_first_table
 
 ```response
 user_id message                                             timestamp           metric
-101         你好，ClickHouse！                                  2024-11-13 20:01:22     -1
-101         颗粒是读取的最小数据块           2024-11-13 20:01:27 3.14159
-102         每批次插入大量数据行                          2024-11-12 00:00:00 1.41421
-102         根据常用查询对数据进行排序  2024-11-13 00:00:00     2.718
+101         Hello, ClickHouse!                                  2024-11-13 20:01:22     -1
+101         Granules are the smallest chunks of data read           2024-11-13 20:01:27 3.14159
+102         Insert a lot of rows per batch                          2024-11-12 00:00:00 1.41421
+102         Sort your data based on your commonly-used queries  2024-11-13 00:00:00     2.718
 ```
 
 
@@ -164,8 +158,6 @@ user_id message                                             timestamp           
 :::note 需要帮助插入大型数据集？
 如果您在插入大型数据集时需要帮助，或在向 ClickHouse Cloud 导入数据时遇到任何错误，请通过 support@clickhouse.com 联系我们，我们会提供协助。
 :::
-
-
 
 ## 从命令行插入数据 {#inserting-data-from-command-line}
 

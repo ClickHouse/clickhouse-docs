@@ -16,7 +16,6 @@ import byoc_subnet_1 from '@site/static/images/cloud/reference/byoc-subnet-1.png
 import byoc_subnet_2 from '@site/static/images/cloud/reference/byoc-subnet-2.png';
 import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoint.png'
 
-
 ## 接入流程 {#onboarding-process}
 
 客户可以通过联系[我们](https://clickhouse.com/cloud/bring-your-own-cloud)来发起接入流程。客户需要准备一个专用的 AWS 账号，并确认将要使用的 Region。目前，我们仅允许用户在 ClickHouse Cloud 支持的 Region 中启动 BYOC 服务。
@@ -46,7 +45,7 @@ module "clickhouse_onboarding" {
 }
 ```
 
-{/* TODO: 在自助式引导实现后，为其余的引导流程添加截图。 */ }
+<!-- TODO: 在自助接入流程上线后，为其余接入步骤添加截图。 -->
 
 ### 设置 BYOC 基础设施 {#setup-byoc-infrastructure}
 
@@ -62,9 +61,10 @@ module "clickhouse_onboarding" {
 
 **配置您现有的 VPC**
 
-1. 至少在 3 个不同的可用区中分配 3 个私有子网供 ClickHouse Cloud 使用。
-2. 确保每个子网的 CIDR 范围至少为 `/23`（例如 10.0.0.0/23），以为 ClickHouse 部署提供足够的 IP 地址。
-3. 为每个子网添加标签 `kubernetes.io/role/internal-elb=1`，以启用正确的负载均衡器配置。
+1. 为该 VPC 添加标签 `clickhouse-byoc="true"`。
+2. 至少在 3 个不同的可用区中分配 3 个私有子网供 ClickHouse Cloud 使用。
+3. 确保每个子网的 CIDR 范围至少为 `/23`（例如 10.0.0.0/23），以为 ClickHouse 部署提供足够的 IP 地址。
+4. 为每个子网添加标签 `kubernetes.io/role/internal-elb=1` 和 `clickhouse-byoc="true"`，以启用正确的负载均衡器配置。
 
 <br />
 
@@ -83,28 +83,29 @@ module "clickhouse_onboarding" {
 
 <br />
 
-
 <Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 终端节点" background='black'/>
 
 <br />
 
 **联系 ClickHouse 支持团队**  
-创建一个支持工单，并提供以下信息：
+请创建一个支持工单，并提供以下信息：
 
 * 您的 AWS 账号 ID
-* 您希望部署服务的 AWS 区域
+* 您希望部署服务的 AWS Region
 * 您的 VPC ID
-* 您为 ClickHouse 分配的私有子网（Private Subnet）ID
-* 这些子网所在的可用区 (Availability Zones)
+* 您为 ClickHouse 分配的私有子网 ID
+* 这些子网所在的可用区
 
 ### 可选：设置 VPC Peering {#optional-setup-vpc-peering}
 
 要为 ClickHouse BYOC 创建或删除 VPC peering，请按照以下步骤操作：
 
 #### 步骤 1：为 ClickHouse BYOC 启用私有负载均衡器 {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+
 联系 ClickHouse 支持团队以启用 Private Load Balancer。
 
 #### 步骤 2 创建 peering 连接 {#step-2-create-a-peering-connection}
+
 1. 在 ClickHouse BYOC 账号中，进入 VPC Dashboard。
 2. 选择 Peering Connections。
 3. 点击 Create Peering Connection。
@@ -119,6 +120,7 @@ module "clickhouse_onboarding" {
 <br />
 
 #### 步骤 3 接受 peering 连接请求 {#step-3-accept-the-peering-connection-request}
+
 在对端账号中，进入 (VPC -> Peering connections -> Actions -> Accept request) 页面，客户可以在此批准该 VPC peering 请求。
 
 <br />
@@ -128,6 +130,7 @@ module "clickhouse_onboarding" {
 <br />
 
 #### 步骤 4 为 ClickHouse VPC 路由表添加目标 {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+
 在 ClickHouse BYOC 账号中：
 1. 在 VPC Dashboard 中选择 Route Tables。
 2. 搜索 ClickHouse VPC ID，编辑附加到私有子网的每个路由表。
@@ -143,6 +146,7 @@ module "clickhouse_onboarding" {
 <br />
 
 #### 步骤 5 为目标 VPC 路由表添加目标 {#step-5-add-destination-to-the-target-vpc-route-tables}
+
 在对端 AWS 账号中：
 1. 在 VPC Dashboard 中选择 Route Tables。
 2. 搜索目标 VPC ID。
@@ -158,18 +162,19 @@ module "clickhouse_onboarding" {
 <br />
 
 #### 步骤 6：编辑安全组以允许对等 VPC 访问 {#step-6-edit-security-group-to-allow-peered-vpc-access}
+
 在 ClickHouse BYOC 账号中，您需要更新 Security Group 设置，以允许来自对等 VPC 的流量。请联系 ClickHouse 支持团队，请求添加包含对等 VPC CIDR 范围的入站规则。
 
 ---
+
 现在应该可以从对等 VPC 访问 ClickHouse 服务。
 
 为了通过私有网络访问 ClickHouse，会为用户的对等 VPC 预配一个私有负载均衡器和私有终端节点，以提供安全连接。私有终端节点遵循公共终端节点的格式，并带有 `-private` 后缀。例如：
+
 - **公共终端节点**：`h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 - **私有终端节点**：`h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
 可选：在验证 peering 正常工作之后，您可以请求为 ClickHouse BYOC 删除公共负载均衡器。
-
-
 
 ## 升级流程 {#upgrade-process}
 
@@ -180,8 +185,6 @@ module "clickhouse_onboarding" {
 :::note
 维护窗口不适用于安全补丁和漏洞修复。这类升级将作为周期外升级进行处理，并通过及时沟通协调合适的时间，从而将对运行的影响降至最低。
 :::
-
-
 
 ## CloudFormation IAM 角色 {#cloudformation-iam-roles}
 
@@ -200,6 +203,7 @@ Bootstrap IAM 角色具有以下权限：
 除了通过 CloudFormation 创建的 `ClickHouseManagementRole` 之外，控制器还会创建多个其他角色。
 
 这些角色由在客户 EKS 集群中运行的应用程序来获取并使用（assume）：
+
 - **State Exporter Role（状态导出角色）**
   - ClickHouse 组件，用于向 ClickHouse Cloud 上报服务健康信息。
   - 需要有向 ClickHouse Cloud 拥有的 SQS 队列写入的权限。
@@ -216,8 +220,6 @@ Bootstrap IAM 角色具有以下权限：
 **K8s-control-plane** 和 **k8s-worker** 角色由 AWS EKS 服务来获取并使用（assume）。
 
 最后，**`data-plane-mgmt`** 允许一个 ClickHouse Cloud 控制平面组件对所需的自定义资源（例如 `ClickHouseCluster` 和 Istio Virtual Service/Gateway）进行协调（reconcile）。
-
-
 
 ## 网络边界 {#network-boundaries}
 
@@ -240,7 +242,7 @@ Istio 入口网关终止 TLS 连接。由 CertManager 使用 Let's Encrypt 签�
 
 *入站，公网（可配置为私网）*
 
-ClickHouse Cloud 工程师需要通过 Tailscale 获取故障排查访问权限。他们在 BYOC 部署中通过即时（just-in-time）的基于证书的认证方式获得访问。
+ClickHouse Cloud 工程师需要通过 Tailscale 获取故障排查访问权限。他们在 BYOC 部署中通过基于证书的 Just-in-time 认证方式获得访问。
 
 ### 计费采集器 {#billing-scraper}
 

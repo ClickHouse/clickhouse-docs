@@ -7,8 +7,6 @@ title: 'AggregatingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # AggregatingMergeTree 表引擎 {#aggregatingmergetree-table-engine}
 
 该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)，并对数据部分的合并逻辑进行了调整。ClickHouse 会将所有具有相同主键（更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行在单个数据部分内合并为一行，该行存储了聚合函数状态的组合。
@@ -26,8 +24,6 @@ doc_type: 'reference'
 - [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
 
 当使用 `AggregatingMergeTree` 能够将行数减少若干个数量级时，就适合采用该引擎。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -59,17 +55,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   所有参数的含义都与 `MergeTree` 引擎中的相同。
 </details>
-
 
 ## SELECT 和 INSERT {#select-and-insert}
 
@@ -77,8 +72,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 从 `AggregatingMergeTree` 表中选择数据时，使用 `GROUP BY` 子句，并使用与插入数据时相同的聚合函数，但需改用带有 `-Merge` 后缀的版本。
 
 在 `SELECT` 查询的结果中，`AggregateFunction` 类型的值在所有 ClickHouse 输出格式中都采用与实现相关的二进制表示形式。例如，如果使用 `SELECT` 查询将数据转储为 `TabSeparated` 格式，则可以通过 `INSERT` 查询将该转储重新加载回去。
-
-
 
 ## 聚合物化视图示例 {#example-of-an-aggregated-materialized-view}
 
@@ -164,7 +157,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 再次运行 `SELECT` 查询，此时会返回如下输出：
 
 ```text
-┌───────────────开始日期─┬─访问次数─┬─用户数─┐
+┌───────────────StartDate─┬─Visits─┬─Users─┐
 │ 2022-11-03 03:27:11.000 │     16 │     3 │
 │ 2022-11-26 07:00:31.000 │      5 │     1 │
 └─────────────────────────┴────────┴───────┘
@@ -182,13 +175,10 @@ AS SELECT
 FROM test.visits;
 ```
 
-
 :::note
 在使用 `initializeAggregation` 时，会为每一行单独创建一个聚合状态，而不进行分组。
 每一行源数据会在物化视图中生成一行，实际的聚合操作会在稍后 `AggregatingMergeTree` 合并数据分片（parts）时进行。仅当 `optimize_on_insert = 0` 时才是如此。
 :::
-
-
 
 ## 相关内容 {#related-content}
 

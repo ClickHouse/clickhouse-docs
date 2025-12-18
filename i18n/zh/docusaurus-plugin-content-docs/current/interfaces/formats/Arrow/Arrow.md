@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 Array 类型可以嵌套，并且可以将 `Nullable` 类型的值作为参数。`Tuple` 和 `Map` 类型同样可以嵌套。
 
-在 `INSERT` 查询中支持使用 `DICTIONARY` 类型；对于 `SELECT` 查询，可以通过 [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 设置，将 [LowCardinality](/sql-reference/data-types/lowcardinality.md) 类型作为 `DICTIONARY` 类型输出。
+在 `INSERT` 查询中支持使用 `DICTIONARY` 类型；对于 `SELECT` 查询，可以通过 [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 设置，将 [LowCardinality](/sql-reference/data-types/lowcardinality.md) 类型作为 `DICTIONARY` 类型输出。请注意，`LowCardinality` 字典中可能包含未使用的值，这会导致在输出 Arrow `DICTIONARY` 时同样包含未使用的值。
 
 不支持的 Arrow 数据类型：
 
@@ -60,7 +60,7 @@ Array 类型可以嵌套，并且可以将 `Nullable` 类型的值作为参数�
 - `UUID`
 - `ENUM`
 
-ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一致。插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#cast)为为 ClickHouse 表列所设置的数据类型。
+ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一致。插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#CAST)为为 ClickHouse 表列所设置的数据类型。
 
 ## 使用示例 {#example-usage}
 
@@ -72,7 +72,6 @@ ClickHouse 表列的数据类型不必与对应的 Arrow 数据字段完全一�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
 ### 选择数据 {#selecting-data}
 
 可以使用以下命令，从 ClickHouse 表中选择数据，并将其保存为 Arrow 格式的文件：
@@ -80,7 +79,6 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## 格式设置 {#format-settings}
 

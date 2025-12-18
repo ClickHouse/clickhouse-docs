@@ -14,11 +14,11 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-first_value (列名) [[RESPECT NULLS] | [IGNORE NULLS]]
-  OVER ([[PARTITION BY 分组列] [ORDER BY 排序列] 
-        [ROWS or RANGE 限定组内行的表达式]] | [窗口名称])
-FROM 表名
-WINDOW 窗口名称 as ([PARTITION BY 分组列] [ORDER BY 排序列])
+first_value (column_name) [[RESPECT NULLS] | [IGNORE NULLS]]
+  OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
+        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+FROM table_name
+WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
 别名：`any`。
@@ -72,7 +72,7 @@ FROM salaries;
 结果：
 
 ```response
-   ┌─球员────────────┬─薪资───┬─最高薪资球员────────┐
+   ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │
 3. │ Charles Juarez  │ 190000 │ Gary Chen           │

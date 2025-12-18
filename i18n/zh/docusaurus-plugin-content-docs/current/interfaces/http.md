@@ -10,18 +10,13 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-
 # HTTP 接口 {#http-interface}
-
-
 
 ## 前置条件 {#prerequisites}
 
 要完成本文中的示例，你需要：
 - 一个处于运行状态的 ClickHouse 服务器实例
 - 已安装 `curl`。在 Ubuntu 或 Debian 上，运行 `sudo apt install curl`，或参阅此[文档](https://curl.se/download.html)获取安装说明。
-
-
 
 ## 概览 {#overview}
 
@@ -42,7 +37,6 @@ Ok.
 &quot;Ok.&quot; 是在 [`http_server_default_response`](../operations/server-configuration-parameters/settings.md#http_server_default_response) 中定义的默认值，可根据需要进行修改。
 
 另请参阅：[HTTP 响应码注意事项](#http_response_codes_caveats)。
-
 
 ## Web 用户界面 {#web-ui}
 
@@ -69,7 +63,6 @@ Ok.
 $ curl 'http://localhost:8123/replicas_status'
 Ok.
 ```
-
 
 ## 通过 HTTP/HTTPS 查询 {#querying}
 
@@ -151,9 +144,9 @@ $ echo '1' | curl 'http://localhost:8123/?query=SELECT' --data-binary @-
 
 ```bash
 $ echo 'ECT 1' | curl 'http://localhost:8123/?query=SEL' --data-binary @-
-Code: 59, e.displayText() = DB::Exception: 语法错误：位置 0 失败：SEL
+Code: 59, e.displayText() = DB::Exception: Syntax error: failed at position 0: SEL
 ECT 1
-，期望的关键字：SHOW TABLES、SHOW DATABASES、SELECT、INSERT、CREATE、ATTACH、RENAME、DROP、DETACH、USE、SET、OPTIMIZE.，e.what() = DB::Exception
+, expected One of: SHOW TABLES, SHOW DATABASES, SELECT, INSERT, CREATE, ATTACH, RENAME, DROP, DETACH, USE, SET, OPTIMIZE., e.what() = DB::Exception
 ```
 
 默认情况下，数据以 [`TabSeparated`](/interfaces/formats/TabSeparated) 格式返回。
@@ -163,7 +156,6 @@ ECT 1
 ```bash title="command"
 wget -nv -O- 'http://localhost:8123/?query=SELECT 1, 2, 3 FORMAT JSON'
 ```
-
 
 ```response title="Response"
 {
@@ -221,7 +213,6 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 
 7
 ```
-
 
 ## 通过 HTTP/HTTPS 执行 INSERT 查询 {#insert-queries}
 
@@ -289,7 +280,6 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 对于成功但不返回数据表的请求，将返回空响应体。
 
-
 ## 压缩 {#compression}
 
 压缩可用于在传输大量数据时减少网络流量，也可用于创建直接以压缩形式保存的转储文件。
@@ -320,8 +310,6 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 :::info
 某些 HTTP 客户端可能会默认解压来自服务器的数据（例如使用 `gzip` 和 `deflate` 时），因此即使正确配置了压缩设置，仍有可能收到已解压的数据。
 :::
-
-
 
 ## 示例 {#examples-compression}
 
@@ -354,7 +342,6 @@ curl -sS "http://localhost:8123/?enable_http_compression=1" \
 2
 ```
 
-
 ## 默认数据库 {#default-database}
 
 你可以使用 `database` URL 参数或 `X-ClickHouse-Database` 请求头来指定默认数据库。
@@ -374,7 +361,6 @@ echo 'SELECT number FROM numbers LIMIT 10' | curl 'http://localhost:8123/?databa
 ```
 
 默认情况下，服务器设置中登记的数据库会被用作默认数据库。开箱即用时，该数据库名为 `default`。另外，你也可以通过在表名前加上“数据库名.” 的方式来显式指定要使用的数据库。
-
 
 ## 认证 {#authentication}
 
@@ -436,7 +422,6 @@ $ echo 'SELECT number FROM system.numbers LIMIT 10' | curl 'http://localhost:812
 * [设置](/operations/settings/settings)
 * [SET](/sql-reference/statements/set)
 
-
 ## 在 HTTP 协议中使用 ClickHouse 会话 {#using-clickhouse-sessions-in-the-http-protocol}
 
 你也可以在 HTTP 协议中使用 ClickHouse 会话。为此，需要在请求中添加 `session_id` `GET` 参数。你可以使用任意字符串作为会话 ID。
@@ -478,7 +463,6 @@ X-ClickHouse-Progress: {"read_rows":"1000000","read_bytes":"8000000","total_rows
 
 HTTP 接口允许传递外部数据（外部临时表）用于查询。更多信息请参见[“用于查询处理的外部数据”](/engines/table-engines/special/external-data)。
 
-
 ## 响应缓冲 {#response-buffering}
 
 可以在服务端启用响应缓冲。为此可使用以下 URL 参数：
@@ -505,7 +489,6 @@ curl -sS 'http://localhost:8123/?max_result_bytes=4000000&buffer_size=3000000&wa
 使用缓冲可以避免出现这样一种情况：在已经向客户端发送响应状态码和 HTTP 头之后，查询处理才发生错误。在这种情况下，错误消息会被写入响应正文的末尾，而在客户端只能在解析阶段才能检测到该错误。
 :::
 
-
 ## 使用查询参数设置角色 {#setting-role-with-query-parameters}
 
 该功能在 ClickHouse 24.4 中引入。
@@ -520,7 +503,7 @@ curl -sS "http://localhost:8123" --data-binary "SET ROLE my_role;SELECT * FROM m
 上面的命令会报错：
 
 ```sql
-代码:62. DB::Exception:语法错误(不允许使用多条语句)
+Code: 62. DB::Exception: Syntax error (Multi-statements are not allowed)
 ```
 
 要规避这一限制，请改用 `role` 查询参数：
@@ -539,7 +522,6 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 
 在这种情况下，`?role=my_role&role=my_other_role` 与在执行该语句之前运行 `SET ROLE my_role, my_other_role` 的效果类似。
 
-
 ## HTTP 响应状态码注意事项 {#http_response_codes_caveats}
 
 由于 HTTP 协议的限制，HTTP 200 响应状态码并不能保证查询一定成功。
@@ -548,11 +530,11 @@ curl -sS "http://localhost:8123?role=my_role&role=my_other_role" --data-binary "
 
 ```bash
 curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0.001),throwIf(number=2)from+numbers(5)"
-*   正在尝试连接 127.0.0.1:8123...
+*   Trying 127.0.0.1:8123...
 ...
 < HTTP/1.1 200 OK
 ...
-代码: 395. DB::Exception: 传递给 'throwIf' 函数的值为非零值: 执行 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))' 时发生错误
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(number, 2) :: 1) -> throwIf(equals(number, 2))
 ```
 
 出现这种行为的原因在于 HTTP 协议的特性。HTTP 首先会发送状态码为 200 的 HTTP 头部，然后是 HTTP body，接着错误会作为纯文本被注入到 body 中。
@@ -571,7 +553,7 @@ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow(0
 \r\n
 __exception__\r\n
 <TAG>\r\n
-<错误信息>\r\n
+<error message>\r\n
 <message_length> <TAG>\r\n
 __exception__\r\n
 
@@ -623,8 +605,13 @@ $ curl -v -Ss "http://localhost:8123/?max_block_size=1&query=select+sleepEachRow
 <
 0,0
 0,0
-```
 
+__exception__
+rumfyutuqkncbgau
+Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(equals(__table1.number, 2_UInt8) :: 1) -> throwIf(equals(__table1.number, 2_UInt8)) UInt8 : 0'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 25.11.1.1)
+262 rumfyutuqkncbgau
+__exception__
+```
 
 **异常**
 rumfyutuqkncbgau
@@ -632,9 +619,9 @@ Code: 395. DB::Exception: 传递给 &#39;throwIf&#39; 函数的值为非零：�
 262 rumfyutuqkncbgau
 **异常**
 
+```bash
+$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
 ```
-```
-
 
 ## 参数化查询 {#cli-queries-with-parameters}
 
@@ -643,52 +630,41 @@ Code: 395. DB::Exception: 传递给 &#39;throwIf&#39; 函数的值为非零：�
 ### 示例 {#example-3}
 
 ```bash
-$ curl -sS "<address>?param_id=2&param_phrase=test" -d "SELECT * FROM table WHERE int_column = {id:UInt8} and string_column = {phrase:String}"
+curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
 ```
 
 ### URL 参数中的制表符 {#tabs-in-url-parameters}
 
 查询参数是从“转义”格式中解析的。这样做有一些好处，比如可以将空值明确地解析为 `\N`。这意味着制表符应编码为 `\t`（或 `\` 加一个制表符）。例如，下面的字符串在 `abc` 和 `123` 之间包含一个实际的制表符，输入字符串会被拆分成两个值：
 
-```bash
-curl -sS "http://localhost:8123" -d "SELECT splitByChar('\t', 'abc      123')"
-```
-
 ```response
 ['abc','123']
+```
+
+```bash
+curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
+Code: 457. DB::Exception: Value abc    123 cannot be parsed as String for query parameter 'arg1' because it isn't parsed completely: only 3 of 7 bytes was parsed: abc. (BAD_QUERY_PARAMETER) (version 23.4.1.869 (official build))
 ```
 
 但是，如果你尝试在 URL 参数中使用 `%09` 来编码一个实际的 Tab 字符，它将无法被正确解析：
 
 ```bash
-curl -sS "http://localhost:8123?param_arg1=abc%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-代码:457. DB::Exception:查询参数 'arg1' 的值 abc    123 无法解析为 String 类型,原因是解析不完整:7 字节中仅解析了 3 字节:abc。(BAD_QUERY_PARAMETER)(版本 23.4.1.869(官方构建))
+curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
 ```
 
 如果您使用 URL 参数，则需要将 `\t` 编码为 `%5C%09`。例如：
-
-```bash
-curl -sS "http://localhost:8123?param_arg1=abc%5C%09123" -d "SELECT splitByChar('\t', {arg1:String})"
-```
 
 ```response
 ['abc','123']
 ```
 
-
-## 预定义的 HTTP 接口 {#predefined_http_interface}
-
-ClickHouse 通过 HTTP 接口支持特定查询。例如，可以通过以下方式向表中写入数据：
-
 ```bash
 $ echo '(4),(5),(6)' | curl 'http://localhost:8123/?query=INSERT%20INTO%20t%20VALUES' --data-binary @-
 ```
 
-ClickHouse 还支持预定义 HTTP 接口（Predefined HTTP Interface），可以帮助你更轻松地与第三方工具集成，比如 [Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter)。下面来看一个示例。
+## 预定义的 HTTP 接口 {#predefined_http_interface}
 
-首先，将以下配置段添加到你的服务器配置文件中。
-
-`http_handlers` 被配置为包含多个 `rule`。ClickHouse 会将收到的 HTTP 请求与 `rule` 中预定义的类型进行匹配，并运行第一个匹配到的处理器。如果匹配成功，ClickHouse 随后会执行对应的预定义查询。
+ClickHouse 通过 HTTP 接口支持特定查询。例如，可以通过以下方式向表中写入数据：
 
 ```yaml title="config.xml"
 <http_handlers>
@@ -705,8 +681,11 @@ ClickHouse 还支持预定义 HTTP 接口（Predefined HTTP Interface），可�
 </http_handlers>
 ```
 
-现在可以直接通过该 URL 请求 Prometheus 格式的数据：
+ClickHouse 还支持预定义 HTTP 接口（Predefined HTTP Interface），可以帮助你更轻松地与第三方工具集成，比如 [Prometheus exporter](https://github.com/ClickHouse/clickhouse_exporter)。下面来看一个示例。
 
+首先，将以下配置段添加到你的服务器配置文件中。
+
+`http_handlers` 被配置为包含多个 `rule`。ClickHouse 会将收到的 HTTP 请求与 `rule` 中预定义的类型进行匹配，并运行第一个匹配到的处理器。如果匹配成功，ClickHouse 随后会执行对应的预定义查询。
 
 ```bash
 $ curl -v 'http://localhost:8123/predefined_query'
@@ -729,102 +708,32 @@ $ curl -v 'http://localhost:8123/predefined_query'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-# HELP "Query" "Number of executing queries" {#help-query-number-of-executing-queries}
-# TYPE "Query" counter {#type-query-counter}
+# HELP "Query" "Number of executing queries"
+# TYPE "Query" counter
 "Query" 1
-```
 
-
-# HELP "Merge" "后台正在执行的合并数量" {#help-merge-number-of-executing-background-merges}
-# TYPE "Merge" counter {#type-merge-counter}
+# HELP "Merge" "Number of executing background merges"
+# TYPE "Merge" counter
 "Merge" 0
 
-
-
-# HELP "PartMutation" "Mutation 操作次数（ALTER DELETE/UPDATE）" {#help-partmutation-number-of-mutations-alter-deleteupdate}
-# TYPE "PartMutation" counter {#type-partmutation-counter}
+# HELP "PartMutation" "Number of mutations (ALTER DELETE/UPDATE)"
+# TYPE "PartMutation" counter
 "PartMutation" 0
 
-
-
-# HELP "ReplicatedFetch" "正在从副本拉取的数据分片数量" {#help-replicatedfetch-number-of-data-parts-being-fetched-from-replica}
-# TYPE "ReplicatedFetch" counter {#type-replicatedfetch-counter}
+# HELP "ReplicatedFetch" "Number of data parts being fetched from replica"
+# TYPE "ReplicatedFetch" counter
 "ReplicatedFetch" 0
 
+# HELP "ReplicatedSend" "Number of data parts being sent to replicas"
+# TYPE "ReplicatedSend" counter
+"ReplicatedSend" 0
 
+* Connection #0 to host localhost left intact
 
-# HELP &quot;ReplicatedSend&quot; &quot;正在发送到副本的数据分片数量&quot; {#help-replicatedsend-number-of-data-parts-being-sent-to-replicas}
-
-# TYPE &quot;ReplicatedSend&quot; counter {#type-replicatedsend-counter}
-
-&quot;ReplicatedSend&quot; 0
-
-* 与主机 localhost 的连接 #0 保持打开
-
-* 与主机 localhost 的连接 #0 保持打开
-
+* Connection #0 to host localhost left intact
 ```
 
-`http_handlers` 的配置选项工作方式如下。
-
-`rule` 可以配置以下参数:
-- `method`
-- `headers`
-- `url`
-- `full_url`
-- `handler`
-
-下面将逐一讨论这些参数:
-
-- `method` 负责匹配 HTTP 请求的方法部分。`method` 完全符合 HTTP 协议中 [`method`]    
-  (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods) 的定义。此为可选配置。如果在配置文件中未定义,则不会匹配 HTTP 请求的方法部分。
-
-- `url` 负责匹配 HTTP 请求的 URL 部分(路径和查询字符串)。
-  如果 `url` 以 `regex:` 为前缀,则需使用 [RE2](https://github.com/google/re2) 正则表达式。
-  此为可选配置。如果在配置文件中未定义,则不会匹配 HTTP 请求的 URL 部分。
-
-- `full_url` 与 `url` 相同,但包含完整的 URL,即 `schema://host:port/path?query_string`。
-  注意,ClickHouse 不支持"虚拟主机",因此 `host` 为 IP 地址(而非 `Host` 头的值)。
-
-- `empty_query_string` - 确保请求中不包含查询字符串(`?query_string`)
-
-- `headers` 负责匹配 HTTP 请求的头部分。它兼容 RE2 正则表达式。此为可选配置。如果在配置文件中未定义,则不会匹配 HTTP 请求的头部分。
-
-- `handler` 包含主要的处理逻辑。
-
-  它可以具有以下 `type`:
-  - [`predefined_query_handler`](#predefined_query_handler)
-  - [`dynamic_query_handler`](#dynamic_query_handler)
-  - [`static`](#static)
-  - [`redirect`](#redirect)
-
-  以及以下参数:
-  - `query` — 与 `predefined_query_handler` 类型配合使用,在调用处理程序时执行查询。
-  - `query_param_name` — 与 `dynamic_query_handler` 类型配合使用,提取并执行 HTTP 请求参数中与 `query_param_name` 值对应的值。
-  - `status` — 与 `static` 类型配合使用,指定响应状态码。
-  - `content_type` — 与任何类型配合使用,指定响应的 [content-type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)。
-  - `http_response_headers` — 与任何类型配合使用,指定响应头映射。也可用于设置内容类型。
-  - `response_content` — 与 `static` 类型配合使用,指定发送给客户端的响应内容。当使用前缀 'file://' 或 'config://' 时,从文件或配置中查找内容并发送给客户端。
-  - `user` - 执行查询的用户(默认用户为 `default`)。
-    **注意**,无需为此用户指定密码。
-
-接下来将讨论不同 `type` 的配置方法。
-
-### predefined_query_handler {#predefined_query_handler}
-
-`predefined_query_handler` 支持设置 `Settings` 和 `query_params` 值。您可以在 `predefined_query_handler` 类型中配置 `query`。
-
-`query` 值是 `predefined_query_handler` 的预定义查询,当 HTTP 请求匹配时由 ClickHouse 执行并返回查询结果。此为必需配置。
-
-以下示例定义了 [`max_threads`](../operations/settings/settings.md#max_threads) 和 [`max_final_threads`](/operations/settings/settings#max_final_threads) 设置的值,然后查询系统表以检查这些设置是否成功设置。
-
-:::note
-要保留默认的 `handlers`,例如 `query`、`play`、`ping`,请添加 `<defaults/>` 规则。
-:::
-
-例如:
-```
-
+现在可以直接通过该 URL 请求 Prometheus 格式的数据：
 
 ```yaml
 <http_handlers>
@@ -847,25 +756,33 @@ $ curl -v 'http://localhost:8123/predefined_query'
 </http_handlers>
 ```
 
+# HELP "Merge" "后台正在执行的合并数量" {#help-merge-number-of-executing-background-merges}
+# TYPE "Merge" counter {#type-merge-counter}
+"Merge" 0
+
+# HELP "PartMutation" "Mutation 操作次数（ALTER DELETE/UPDATE）" {#help-partmutation-number-of-mutations-alter-deleteupdate}
+# TYPE "PartMutation" counter {#type-partmutation-counter}
+"PartMutation" 0
+
+# HELP "ReplicatedFetch" "正在从副本拉取的数据分片数量" {#help-replicatedfetch-number-of-data-parts-being-fetched-from-replica}
+# TYPE "ReplicatedFetch" counter {#type-replicatedfetch-counter}
+"ReplicatedFetch" 0
+
+# HELP &quot;ReplicatedSend&quot; &quot;正在发送到副本的数据分片数量&quot; {#help-replicatedsend-number-of-data-parts-being-sent-to-replicas}
+
+# TYPE &quot;ReplicatedSend&quot; counter {#type-replicatedsend-counter}
+
+&quot;ReplicatedSend&quot; 0
+
+* 与主机 localhost 的连接 #0 保持打开
+
+* 与主机 localhost 的连接 #0 保持打开
+
 ```bash
 curl -H 'XXX:TEST_HEADER_VALUE' -H 'PARAMS_XXX:max_final_threads' 'http://localhost:8123/query_param_with_url/max_threads?max_threads=1&max_final_threads=2'
 max_final_threads    2
 max_threads    1
 ```
-
-:::note
-在一个 `predefined_query_handler` 中仅支持一个 `query`。
-:::
-
-### dynamic&#95;query&#95;handler {#dynamic_query_handler}
-
-在 `dynamic_query_handler` 中，查询通过 HTTP 请求参数传递。不同之处在于，在 `predefined_query_handler` 中，查询是写在配置文件中的。`query_param_name` 可以在 `dynamic_query_handler` 中进行配置。
-
-ClickHouse 会从 HTTP 请求的 URL 中提取并执行对应于 `query_param_name` 的值。`query_param_name` 的默认值是 `/query`。这是一个可选配置。如果在配置文件中没有定义，则不会传入该参数。
-
-要测试此功能，下面的示例会设置 [`max_threads`](../operations/settings/settings.md#max_threads) 和 `max_final_threads` 的值，并通过查询验证这些设置是否成功生效。
-
-示例：
 
 ```yaml
 <http_handlers>
@@ -887,11 +804,19 @@ max_threads 1
 max_final_threads   2
 ```
 
-### static {#static}
+:::note
+在一个 `predefined_query_handler` 中仅支持一个 `query`。
+:::
 
-`static` 可以返回 [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 和 `response_content`。其中，`response_content` 用于返回指定的内容。
+### dynamic&#95;query&#95;handler {#dynamic_query_handler}
 
-例如，要返回消息 &quot;Say Hi!&quot;：
+在 `dynamic_query_handler` 中，查询通过 HTTP 请求参数传递。不同之处在于，在 `predefined_query_handler` 中，查询是写在配置文件中的。`query_param_name` 可以在 `dynamic_query_handler` 中进行配置。
+
+ClickHouse 会从 HTTP 请求的 URL 中提取并执行对应于 `query_param_name` 的值。`query_param_name` 的默认值是 `/query`。这是一个可选配置。如果在配置文件中没有定义，则不会传入该参数。
+
+要测试此功能，下面的示例会设置 [`max_threads`](../operations/settings/settings.md#max_threads) 和 `max_final_threads` 的值，并通过查询验证这些设置是否成功生效。
+
+示例：
 
 ```yaml
 <http_handlers>
@@ -915,9 +840,6 @@ max_final_threads   2
 </http_handlers>
 ```
 
-可以使用 `http_response_headers` 来设置内容类型，而无需使用 `content_type`。
-
-
 ```yaml
 <http_handlers>
         <rule>
@@ -934,12 +856,18 @@ max_final_threads   2
                     <X-My-Custom-Header>43</X-My-Custom-Header>
                 </http_response_headers>
                 #end-highlight
-                <response_content>你好!</response_content>
+                <response_content>Say Hi!</response_content>
             </handler>
         </rule>
         <defaults/>
 </http_handlers>
 ```
+
+### static {#static}
+
+`static` 可以返回 [`content_type`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)、[status](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 和 `response_content`。其中，`response_content` 用于返回指定的内容。
+
+例如，要返回消息 &quot;Say Hi!&quot;：
 
 ```bash
 curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
@@ -963,7 +891,7 @@ curl -vv  -H 'XXX:xxx' 'http://localhost:8123/hi'
 Say Hi!%
 ```
 
-在发送给客户端的配置中查找内容。
+可以使用 `http_response_headers` 来设置内容类型，而无需使用 `content_type`。
 
 ```yaml
 <get_config_static_handler><![CDATA[<html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>]]></get_config_static_handler>
@@ -1003,8 +931,7 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 <html ng-app="SMI2"><head><base href="http://ui.tabix.io/"></head><body><div ui-view="" class="content-ui"></div><script src="http://loader.tabix.io/master.js"></script></body></html>%
 ```
 
-要在发送给客户端的文件中查找内容：
-
+在发送给客户端的配置中查找内容。
 
 ```yaml
 <http_handlers>
@@ -1039,8 +966,8 @@ $ curl -v  -H 'XXX:xxx' 'http://localhost:8123/get_config_static_handler'
 
 ```bash
 $ user_files_path='/var/lib/clickhouse/user_files'
-$ sudo echo "<html><body>相对路径文件</body></html>" > $user_files_path/relative_path_file.html
-$ sudo echo "<html><body>绝对路径文件</body></html>" > $user_files_path/absolute_path_file.html
+$ sudo echo "<html><body>Relative Path File</body></html>" > $user_files_path/relative_path_file.html
+$ sudo echo "<html><body>Absolute Path File</body></html>" > $user_files_path/absolute_path_file.html
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 *   Trying ::1...
 * Connected to localhost (::1) port 8123 (#0)
@@ -1058,7 +985,7 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_absolute_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>绝对路径文件</body></html>
+<html><body>Absolute Path File</body></html>
 * Connection #0 to host localhost left intact
 $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 *   Trying ::1...
@@ -1077,15 +1004,11 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 < Keep-Alive: timeout=10
 < X-ClickHouse-Summary: {"read_rows":"0","read_bytes":"0","written_rows":"0","written_bytes":"0","total_rows_to_read":"0","elapsed_ns":"662334","memory_usage":"8451671"}
 <
-<html><body>相对路径文件</body></html>
+<html><body>Relative Path File</body></html>
 * Connection #0 to host localhost left intact
 ```
 
-### redirect {#redirect}
-
-`redirect` 会将请求以 `302` 状态码重定向到 `location`
-
-例如，下面展示了如何在 ClickHouse Play 中自动将用户设置为 `play`：
+要在发送给客户端的文件中查找内容：
 
 ```xml
 <clickhouse>
@@ -1102,6 +1025,68 @@ $ curl -vv -H 'XXX:xxx' 'http://localhost:8123/get_relative_path_static_handler'
 </clickhouse>
 ```
 
+```xml
+<clickhouse>
+    <http_handlers>
+        <common_http_response_headers>
+            <X-My-Common-Header>Common header</X-My-Common-Header>
+        </common_http_response_headers>
+        <rule>
+            <methods>GET</methods>
+            <url>/ping</url>
+            <handler>
+                <type>ping</type>
+                <http_response_headers>
+                    <X-My-Custom-Header>Custom indeed</X-My-Custom-Header>
+                </http_response_headers>
+            </handler>
+        </rule>
+    </http_handlers>
+</clickhouse>
+```
+
+### redirect {#redirect}
+
+`redirect` 会将请求以 `302` 状态码重定向到 `location`
+
+例如，下面展示了如何在 ClickHouse Play 中自动将用户设置为 `play`：
+
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>3)+from+system.numbers+format+JSON+settings+max_block_size=1&http_write_exception_in_output_format=1'
+{
+    "meta":
+    [
+        {
+            "name": "number",
+            "type": "UInt64"
+        },
+        {
+            "name": "throwIf(greater(number, 2))",
+            "type": "UInt8"
+        }
+    ],
+
+    "data":
+    [
+        {
+            "number": "0",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "1",
+            "throwIf(greater(number, 2))": 0
+        },
+        {
+            "number": "2",
+            "throwIf(greater(number, 2))": 0
+        }
+    ],
+
+    "rows": 3,
+
+    "exception": "Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)"
+}
+```
 
 ## HTTP 响应头 {#http-response-headers}
 
@@ -1119,26 +1104,40 @@ ClickHouse 允许配置自定义的 HTTP 响应头，这些响应头可以应用
 
 在下面的示例中，每个服务器响应都将包含两个自定义响应头：`X-My-Common-Header` 和 `X-My-Custom-Header`。
 
-```xml
-<clickhouse>
-    <http_handlers>
-        <common_http_response_headers>
-            <X-My-Common-Header>通用标头</X-My-Common-Header>
-        </common_http_response_headers>
-        <rule>
-            <methods>GET</methods>
-            <url>/ping</url>
-            <handler>
-                <type>ping</type>
-                <http_response_headers>
-                    <X-My-Custom-Header>确实是自定义的</X-My-Custom-Header>
-                </http_response_headers>
-            </handler>
-        </rule>
-    </http_handlers>
-</clickhouse>
+```bash
+$ curl 'http://localhost:8123/?query=SELECT+number,+throwIf(number>2)+from+system.numbers+format+XML+settings+max_block_size=1&http_write_exception_in_output_format=1'
+<?xml version='1.0' encoding='UTF-8' ?>
+<result>
+    <meta>
+        <columns>
+            <column>
+                <name>number</name>
+                <type>UInt64</type>
+            </column>
+            <column>
+                <name>throwIf(greater(number, 2))</name>
+                <type>UInt8</type>
+            </column>
+        </columns>
+    </meta>
+    <data>
+        <row>
+            <number>0</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>1</number>
+            <field>0</field>
+        </row>
+        <row>
+            <number>2</number>
+            <field>0</field>
+        </row>
+    </data>
+    <rows>3</rows>
+    <exception>Code: 395. DB::Exception: Value passed to 'throwIf' function is non-zero: while executing 'FUNCTION throwIf(greater(number, 2) :: 2) -> throwIf(greater(number, 2)) UInt8 : 1'. (FUNCTION_THROW_IF_VALUE_IS_NON_ZERO) (version 23.8.1.1)</exception>
+</result>
 ```
-
 
 ## 在 HTTP 流式传输期间出现异常时返回合法的 JSON/XML 响应 {#valid-output-on-exception-http-streaming}
 

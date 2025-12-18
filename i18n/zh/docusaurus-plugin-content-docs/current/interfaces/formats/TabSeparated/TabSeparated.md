@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|--------|
 | ✔     | ✔      | `TSV`  |
 
-
-
 ## 描述 {#description}
 
 在 TabSeparated 格式中，数据按行写入。每一行包含由制表符分隔的值。每个值后面都跟着一个制表符，除了该行的最后一个值，它后面跟的是换行符。在所有场景下都假定使用 Unix 风格换行符。最后一行的末尾也必须包含一个换行符。各个值以文本格式写入，不带引号，且特殊字符会被转义。
@@ -42,7 +40,6 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 2014-03-23      1406958
 ```
 
-
 ## 数据格式化 {#tabseparated-data-formatting}
 
 整数以十进制形式书写。数字开头可以包含额外的“+”字符（解析时会被忽略，格式化输出时也不会被输出）。非负数不能包含负号。在读取时，允许将空字符串解析为零，或者（对于有符号类型）将仅包含一个减号的字符串解析为零。超出对应数据类型范围的数字可能会被解析为其他数值，而不会产生错误信息。
@@ -61,10 +58,10 @@ SELECT EventDate, count() AS c FROM test.hits GROUP BY EventDate WITH TOTALS ORD
 字符串输出时会对特殊字符进行反斜杠转义。输出时使用以下转义序列：`\b`、`\f`、`\r`、`\n`、`\t`、`\0`、`\'`、`\\`。解析时还支持序列 `\a`、`\v` 和 `\xHH`（十六进制转义序列），以及任意 `\c` 序列，其中 `c` 为任意字符（这些序列会被转换为 `c`）。因此，读取数据时支持多种格式，其中换行符可以写作 `\n`、写作反斜杠加换行，或直接写为换行符。例如，字符串 `Hello world` 如果在单词之间使用换行符而不是空格，则可以用以下任意变体进行解析：
 
 ```text
-你好\n世界
+Hello\nworld
 
-你好\
-世界
+Hello\
+world
 ```
 
 之所以支持第二种变体，是因为 MySQL 在写入制表符分隔的转储文件时会使用它。
@@ -107,7 +104,6 @@ SELECT * FROM nestedt FORMAT TSV
 ```response
 1  [1]    ['a']
 ```
-
 
 ## 使用示例 {#example-usage}
 
@@ -172,7 +168,6 @@ FORMAT TabSeparated
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}
 

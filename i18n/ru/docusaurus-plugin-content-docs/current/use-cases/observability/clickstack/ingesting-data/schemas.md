@@ -49,7 +49,6 @@ PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 ```
 
-
 ## Трейсы {#traces}
 
 ```sql
@@ -88,7 +87,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
 ```
-
 
 ## Метрики {#metrics}
 
@@ -130,7 +128,6 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### Суммирующие метрики {#sum}
 
 ```sql
@@ -170,7 +167,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ### Гистограммные метрики {#histogram}
 
@@ -216,11 +212,10 @@ PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
 
-
 ### Экспоненциальные гистограммы {#exponential-histograms}
 
 :::note
-HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Пользователи могут настраивать их в источнике метрик, но поддержка появится в будущем.
+HyperDX пока не поддерживает получение и отображение метрик экспоненциальных гистограмм. Вы можете настраивать их в источнике метрик, но поддержка появится в будущем.
 :::
 
 ```sql
@@ -306,7 +301,6 @@ ENGINE = SharedMergeTree('/clickhouse/tables/{uuid}/{shard}', '{replica}')
 PARTITION BY toDate(TimeUnix)
 ORDER BY (ServiceName, MetricName, Attributes, toUnixTimestamp64Nano(TimeUnix))
 ```
-
 
 ## Сессии {#sessions}
 

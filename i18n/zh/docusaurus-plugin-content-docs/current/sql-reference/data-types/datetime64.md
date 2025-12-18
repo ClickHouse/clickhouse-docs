@@ -17,7 +17,7 @@ doc_type: 'reference'
 **语法：**
 
 ```sql
-DateTime64(精度, [时区])
+DateTime64(precision, [timezone])
 ```
 
 在内部，数据以自纪元开始（1970-01-01 00:00:00 UTC）以来的若干个“tick”形式存储为 Int64。tick 的时间分辨率由 `precision` 参数决定。此外，`DateTime64` 类型可以存储一个对整列统一生效的时区，该时区会影响 `DateTime64` 类型值在文本格式中的显示方式，以及将字符串形式的值（如 `2020-01-01 05:00:01.000`）解析为 `DateTime64` 时的方式。时区不会存储在表的行（或结果集）中，而是存储在列的元数据中。详情参见 [DateTime](../../sql-reference/data-types/datetime.md)。
@@ -42,10 +42,10 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- 解析 DateTime
--- - 从整数解析，此整数被解释为自 1970-01-01 起的微秒数（精度为 3），
--- - 从小数解析，小数点前部分被解释为秒数，小数点后部分则根据精度表示小数秒，
--- - 从字符串解析。
+-- Parse DateTime
+-- - from integer interpreted as number of microseconds (because of precision 3) since 1970-01-01,
+-- - from decimal interpreted as number of seconds before the decimal part, and based on the precision after the decimal point,
+-- - from string.
 INSERT INTO dt64 VALUES (1546300800123, 1), (1546300800.123, 2), ('2019-01-01 00:00:00', 3);
 
 SELECT * FROM dt64;

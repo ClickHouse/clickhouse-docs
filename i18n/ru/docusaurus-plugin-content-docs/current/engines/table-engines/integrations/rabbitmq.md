@@ -7,8 +7,6 @@ title: 'Табличный движок RabbitMQ'
 doc_type: 'guide'
 ---
 
-
-
 # Табличный движок RabbitMQ {#rabbitmq-table-engine}
 
 Этот движок позволяет интегрировать ClickHouse с [RabbitMQ](https://www.rabbitmq.com).
@@ -17,8 +15,6 @@ doc_type: 'guide'
 
 - Публиковать или подписываться на потоки данных.
 - Обрабатывать потоки по мере их поступления.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -29,7 +25,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 ) ENGINE = RabbitMQ SETTINGS
-    rabbitmq_host_port = 'host:port' [или rabbitmq_address = 'amqp(s)://guest:guest@localhost/vhost'],
+    rabbitmq_host_port = 'host:port' [or rabbitmq_address = 'amqp(s)://guest:guest@localhost/vhost'],
     rabbitmq_exchange_name = 'exchange_name',
     rabbitmq_format = 'data_format'[,]
     [rabbitmq_exchange_type = 'exchange_type',]
@@ -62,7 +58,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `rabbitmq_format` – формат сообщений. Использует ту же нотацию, что и SQL-функция `FORMAT`, например `JSONEachRow`. Дополнительные сведения см. в разделе [Форматы](../../../interfaces/formats.md).
 
 Необязательные параметры:
-
 
 - `rabbitmq_exchange_type` – Тип обменника RabbitMQ: `direct`, `fanout`, `topic`, `headers`, `consistent_hash`. По умолчанию: `fanout`.
 - `rabbitmq_routing_key_list` – Список ключей маршрутизации (routing keys), разделённых запятыми.
@@ -97,8 +92,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Пример:
 
-
-
 ```sql
   CREATE TABLE queue (
     key UInt64,
@@ -129,7 +122,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     <vhost>clickhouse</vhost>
  </rabbitmq>
 ```
-
 
 ## Описание {#description}
 
@@ -192,7 +184,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   SELECT key, value FROM daily ORDER BY key;
 ```
 
-
 ## Виртуальные столбцы {#virtual-columns}
 
 - `_exchange_name` — имя exchange в RabbitMQ. Тип данных: `String`.
@@ -209,13 +200,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Примечание: виртуальные столбцы `_raw_message` и `_error` заполняются только в случае возникновения исключения во время разбора; при успешном разборе сообщения они всегда равны `NULL`.
 
-
-
 ## Ограничения {#caveats}
 
 Даже если вы укажете [выражения значений по умолчанию для столбцов](/sql-reference/statements/create/table.md/#default_values) (такие как `DEFAULT`, `MATERIALIZED`, `ALIAS`) в определении таблицы, они будут игнорироваться. Вместо этого столбцы будут заполняться значениями по умолчанию для соответствующих типов.
-
-
 
 ## Поддержка форматов данных {#data-formats-support}
 

@@ -10,7 +10,6 @@ doc_type: 'guide'
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Embeddable を ClickHouse に接続する {#connecting-embeddable-to-clickhouse}
 
 <CommunityMaintainedBadge/>
@@ -21,25 +20,21 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 組み込みの行レベルセキュリティ機能により、各ユーザーは自分に閲覧権限があるデータだけを常に正確に確認できます。さらに、完全に構成可能な 2 段階のキャッシュにより、スケールさせながら高速なリアルタイムアナリティクスを提供できます。
 
-
-
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
 <ConnectionDetails />
-
-
 
 ## 2. ClickHouse 接続タイプを作成する {#2-create-a-clickhouse-connection-type}
 
 Embeddable API を使用してデータベース接続を追加します。この接続は ClickHouse サービスへの接続に利用されます。次の API コールを使用して接続を追加できます。
 
 ```javascript
-// セキュリティ上の理由により、クライアント側から*決して*呼び出さないでください
+// for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${apiKey}` /* APIキーを安全に保管してください */,
+    Authorization: `Bearer ${apiKey}` /* keep your API Key secure */,
   },
   body: JSON.stringify({
     name: 'my-clickhouse-db',
@@ -53,7 +48,7 @@ fetch('https://api.embeddable.com/api/v1/connections', {
   }),
 });
 
-レスポンス:
+Response:
 Status 201 { errorMessage: null }
 ```
 

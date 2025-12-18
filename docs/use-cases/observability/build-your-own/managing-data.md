@@ -16,7 +16,7 @@ Deployments of ClickHouse for Observability invariably involve large datasets, w
 
 ## Partitions {#partitions}
 
-Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted. This allows users to move partitions, and thus subsets, between storage tiers efficiently on time or [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition).
+Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted. This allows you to move partitions, and thus subsets, between storage tiers efficiently on time or [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition).
 
 Partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain a SQL expression on any column/s, the results of which will define which partition a row is sent to.
 
@@ -145,7 +145,7 @@ This feature is exploited by TTL when the setting [`ttl_only_drop_parts=1`](/ope
 
 ### Applications {#applications}
 
-The above illustrates how data can be efficiently moved and manipulated by partition. In reality, users will likely most frequently exploit partition operations in Observability use cases for two scenarios:
+The above illustrates how data can be efficiently moved and manipulated by partition. In reality, you will likely most frequently exploit partition operations in Observability use cases for two scenarios:
 
 - **Tiered architectures** - Moving data between storage tiers (see [Storage tiers](#storage-tiers)), thus allowing hot-cold architectures to be constructed.
 - **Efficient deletion** - when data has reached a specified TTL (see [Data management with TTL](#data-management-with-ttl-time-to-live))
@@ -154,7 +154,7 @@ We explore both of these in detail below.
 
 ### Query performance {#query-performance}
 
-While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, users should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
+While partitions can assist with query performance, this depends heavily on the access patterns. If queries target only a few partitions (ideally one), performance can potentially improve. This is only typically useful if the partitioning key is not in the primary key and you are filtering by it. However, queries which need to cover many partitions may perform worse than if no partitioning is used (as there may possibly be more parts). The benefit of targeting a single partition will be even less pronounced to non-existent if the partitioning key is already an early entry in the primary key. Partitioning can also be used to [optimize GROUP BY queries](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) if values in each partition are unique. However, in general, you should ensure the primary key is optimized and only consider partitioning as a query optimization technique in exceptional cases where access patterns access a specific predictable subset of the data, e.g., partitioning by day, with most queries in the last day. See [here](https://medium.com/datadenys/using-partitions-in-clickhouse-3ea0decb89c4) for an example of this behavior.
 
 ## Data management with TTL (Time-to-live) {#data-management-with-ttl-time-to-live}
 
@@ -192,7 +192,7 @@ TTLs are not applied immediately but rather on a schedule, as noted above. The M
 
 ### Column level TTL {#column-level-ttl}
 
-The above example expires data at a table level. Users can also expire data at a column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
+The above example expires data at the table level. You can also expire data at the column level. As data ages, this can be used to drop columns whose value in investigations does not justify their resource overhead to retain. For example, we recommend retaining the `Body` column in case new dynamic metadata is added that has not been extracted at insert time, e.g., a new Kubernetes label. After a period e.g. 1 month, it might be obvious that this additional metadata is not useful - thus limiting the value in retaining the `Body` column.
 
 Below, we show how the `Body` column can be dropped after 30 days.
 
@@ -213,7 +213,7 @@ Specifying a column level TTL requires users to specify their own schema. This c
 
 ## Recompressing data {#recompressing-data}
 
-While we typically recommend `ZSTD(1)` for observability datasets, users can experiment with different compression algorithms or higher levels of compression e.g. `ZSTD(3)`. As well as being able to specify this on schema creation, the compression can be configured to change after a set period. This may be appropriate if a codec or compression algorithm improves compression but causes poorer query performance. This tradeoff might be acceptable on older data, which is queried less frequently, but not for recent data, which is subject to more frequent use in investigations.
+While we typically recommend `ZSTD(1)` for observability datasets, you can experiment with different compression algorithms or higher levels of compression e.g. `ZSTD(3)`. As well as being able to specify this on schema creation, the compression can be configured to change after a set period. This may be appropriate if a codec or compression algorithm improves compression but causes poorer query performance. This tradeoff might be acceptable on older data, which is queried less frequently, but not for recent data, which is subject to more frequent use in investigations.
 
 An example of this is shown below, where we compress the data using `ZSTD(3)` after 4 days instead of deleting it.
 
@@ -251,7 +251,7 @@ Further details and examples on configuring TTL can be found [here](/engines/tab
 
 ## Storage tiers {#storage-tiers}
 
-In ClickHouse, users may create storage tiers on different disks, e.g. hot/recent data on SSD and older data backed by S3. This architecture allows less expensive storage to be used for older data, which has higher query SLAs due to its infrequent use in investigations.
+In ClickHouse, you may create storage tiers on different disks, e.g. hot/recent data on SSD and older data backed by S3. This architecture allows less expensive storage to be used for older data, which has higher query SLAs due to its infrequent use in investigations.
 
 :::note Not relevant to ClickHouse Cloud
 ClickHouse Cloud uses a single copy of the data that is backed on S3, with SSD-backed node caches. Storage tiers in ClickHouse Cloud, therefore, are not required.
@@ -263,7 +263,7 @@ While data can be manually moved between disks using the `ALTER TABLE MOVE PARTI
 
 ## Managing schema changes {#managing-schema-changes}
 
-Log and trace schemas will invariably change over the lifetime of a system e.g. as users monitor new systems which have different metadata or pod labels. By producing data using the OTel schema, and capturing the original event data in structured format, ClickHouse schemas will be robust to these changes. However, as new metadata becomes available and query access patterns change, users will want to update schemas to reflect these developments.
+Log and trace schemas will invariably change over the lifetime of a system e.g. as users monitor new systems which have different metadata or pod labels. By producing data using the OTel schema, and capturing the original event data in structured format, ClickHouse schemas will be robust to these changes. However, as new metadata becomes available and query access patterns change, you will want to update schemas to reflect these developments.
 
 In order to avoid downtime during schema changes, users have several options, which we present below.
 
@@ -273,7 +273,7 @@ Columns can be added to the schema using [`DEFAULT` values](/sql-reference/state
 
 Schema changes can be made prior to modifying any materialized view transformation logic or OTel collector configuration, which causes these new columns to be sent.
 
-Once the schema has been changed, users can reconfigure OTel collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/docs/use-cases/observability/schema-design#extracting-structure-with-sql), where OTel collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
+Once the schema has been changed, you can reconfigure OTel collectors. Assuming users are using the recommended process outlined in ["Extracting structure with SQL"](/docs/use-cases/observability/schema-design#extracting-structure-with-sql), where OTel collectors send their data to a Null table engine with a materialized view responsible for extracting the target schema and sending the results to a target table for storage, the view can be modified using the [`ALTER TABLE ... MODIFY QUERY` syntax](/sql-reference/statements/alter/view). Suppose we have the target table below with its corresponding materialized view (similar to that used in "Extracting structure with SQL") to extract the target schema from the OTel structured logs:
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -373,9 +373,9 @@ Subsequent rows will have a `Size` column populated at insert time.
 
 ### Create new tables {#create-new-tables}
 
-As an alternative to the above process, users can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, users can version their tables e.g. `otel_logs_v3`.
+As an alternative to the above process, you can simply create a new target table with the new schema.  Any materialized views can then be modified to use the new table using the above `ALTER TABLE MODIFY QUERY.` With this approach, you can version your tables e.g. `otel_logs_v3`.
 
-This approach leaves the users with multiple tables to query. To query across tables, users can use the [`merge` function](/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the `otel_logs` table:
+This approach leaves the users with multiple tables to query. To query across tables, you can use the [`merge` function](/sql-reference/table-functions/merge) which accepts wildcard patterns for the table name. We demonstrate this below by querying a v2 and v3 of the `otel_logs` table:
 
 ```sql
 SELECT Status, count() AS c

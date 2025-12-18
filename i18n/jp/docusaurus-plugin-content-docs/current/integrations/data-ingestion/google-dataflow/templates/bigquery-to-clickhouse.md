@@ -26,19 +26,16 @@ BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テ�
 
 <TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
 
-
-
 ## パイプラインの要件 {#pipeline-requirements}
 
 * ソース BigQuery テーブルが存在している必要があります。
 * ターゲット ClickHouse テーブルが存在している必要があります。
 * ClickHouse ホストが Dataflow ワーカーマシンからアクセス可能である必要があります。
 
-
-
 ## テンプレートパラメータ {#template-parameters}
 
 <br/>
+
 <br/>
 
 | Parameter Name          | Parameter Description                                                                                                                                                                                                                                                                                                                              | Required | Notes                                                                                                                                                                                                                                                            |
@@ -60,13 +57,9 @@ BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テ�
 | `queryTempDataset`      | クエリ結果を保存する一時テーブルを作成するために使用する既存のデータセットを指定します。例: `temp_dataset`。                                                                                                                                                                                                                                     |          |                                                                                                                                                                                                                                                                  |
 | `KMSEncryptionKey`      | クエリソースを使用して BigQuery から読み取る場合に、一時テーブルを暗号化するために使用する Cloud KMS キー。例: `projects/your-project/locations/global/keyRings/your-keyring/cryptoKeys/your-key`。                                                                                                                                            |          |                                                                                                                                                                                                                                                                  |
 
-
-
 :::note
-すべての `ClickHouseIO` パラメータのデフォルト値は、[`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) で確認できます。
+すべての `ClickHouseIO` パラメータのデフォルト値は、[`ClickHouseIO` Apache Beam Connector](/integrations/apache-beam#clickhouseiowrite-parameters) に記載されています。
 :::
-
-
 
 ## ソースおよびターゲットテーブルのスキーマ {#source-and-target-tables-schema}
 
@@ -81,8 +74,6 @@ BigQuery のデータセットを ClickHouse に効果的にロードするた�
 ただし、BigQuery データセット（テーブルまたはクエリ）の列名は、ClickHouse のターゲットテーブルと完全に一致している必要があります。
 :::
 
-
-
 ## データ型のマッピング {#data-types-mapping}
 
 BigQuery の型は、ClickHouse テーブル定義に基づいて変換されます。したがって、上記の表では（特定の BigQuery テーブル／クエリに対して）ClickHouse 側のテーブルで使用することを推奨するマッピングを示しています。
@@ -95,9 +86,7 @@ BigQuery の型は、ClickHouse テーブル定義に基づいて変換されま
 | [**Datetime 型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type)             | [**Datetime 型**](../../../sql-reference/data-types/datetime)   | `Enum8`、`Enum16`、`FixedString` に対しても同様に使用できます。                                                                                                                                                                                                                                                                                                                                                        |
 | [**文字列型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)                  | [**文字列型**](../../../sql-reference/data-types/string)        | BigQuery では、すべての Int 型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）は `INT64` のエイリアスです。テンプレートは定義されたカラム型（`Int8`、`Int16`、`Int32`、`Int64`）に基づいてカラムを変換するため、ClickHouse では適切な整数サイズを設定することを推奨します。                                                                                           |
 | [**数値 - 整数型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)           | [**整数型**](../../../sql-reference/data-types/int-uint)        | BigQuery では、すべての Int 型（`INT`、`SMALLINT`、`INTEGER`、`BIGINT`、`TINYINT`、`BYTEINT`）は `INT64` のエイリアスです。テンプレートは定義されたカラム型（`Int8`、`Int16`、`Int32`、`Int64`）に基づいてカラムを変換するため、ClickHouse では適切な整数サイズを設定することを推奨します。また、ClickHouse テーブルで符号なし整数型（`UInt8`、`UInt16`、`UInt32`、`UInt64`）が使用されている場合も、テンプレートはそれらにも変換します。 |
-| [**数値 - 浮動小数点型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)     | [**浮動小数点型**](../../../sql-reference/data-types/float)     | サポートされる ClickHouse 型：`Float32` および `Float64` がサポートされています。                                                                                                                                                                                                                                                                                                                                      |
-
-
+| [**数値 - 浮動小数点型**](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types)     | [**浮動小数点型**](../../../sql-reference/data-types/float)     | サポートされる ClickHouse 型は `Float32` と `Float64` です。                                                                                                                                                                                                                                                                                                                                                          |
 
 ## テンプレートの実行 {#running-the-template}
 
@@ -185,13 +174,9 @@ job:
 ### ジョブの監視 {#monitor-the-job}
 
 Google Cloud Console の [Dataflow Jobs タブ](https://console.cloud.google.com/dataflow/jobs) に移動し、
-ジョブのステータスを監視します。進捗状況やエラーなどのジョブの詳細を確認できます。
-
-
+ジョブのステータスを監視します。進捗状況やエラーなどのジョブの詳細を確認できます:
 
 <Image img={dataflow_inqueue_job} size="lg" border alt="BigQuery から ClickHouse へのジョブが実行中の Dataflow コンソール" />
-
-
 
 ## トラブルシューティング {#troubleshooting}
 
@@ -202,8 +187,6 @@ Google Cloud Console の [Dataflow Jobs タブ](https://console.cloud.google.com
 * インスタンスのリソースを増やす: データ処理負荷に対応できるよう、より多くのメモリを持つ大きなインスタンスに ClickHouse サーバーをアップグレードします。
 * バッチサイズを減らす: Dataflow ジョブ設定でバッチサイズを調整し、より小さなデータチャンクを ClickHouse に送信することで、バッチごとのメモリ消費を抑えます。これらの変更により、データインジェスト時のリソース使用をバランスさせることができます。
 
-
-
 ## テンプレートのソースコード {#template-source-code}
 
-このテンプレートのソースコードは、ClickHouseの [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) フォーク先リポジトリで公開されています。
+このテンプレートのソースコードは、ClickHouse の [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) フォークで公開されています。

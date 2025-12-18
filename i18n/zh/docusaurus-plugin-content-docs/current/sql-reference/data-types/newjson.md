@@ -26,11 +26,11 @@ import Link from '@docusaurus/Link'
 要声明一个 `JSON` 类型的列，可以使用以下语法：
 
 ```sql
-<列名> JSON
+<column_name> JSON
 (
     max_dynamic_paths=N, 
     max_dynamic_types=M, 
-    some.path 类型名, 
+    some.path TypeName, 
     SKIP path.to.skip, 
     SKIP REGEXP 'paths_regexp'
 )
@@ -45,7 +45,6 @@ import Link from '@docusaurus/Link'
 | `some.path TypeName`        | 针对 JSON 中特定路径的可选类型提示。此类路径将始终作为具有指定类型的子列进行存储。                                                                                                                 |               |
 | `SKIP path.to.skip`         | 针对在 JSON 解析期间应跳过的特定路径的可选提示。此类路径将永远不会存储在 JSON 列中。若指定路径是一个嵌套 JSON 对象，则整个嵌套对象都会被跳过。                                                                             |               |
 | `SKIP REGEXP 'path_regexp'` | 使用正则表达式在 JSON 解析期间跳过路径的可选提示。所有匹配此正则表达式的路径将永远不会存储在 JSON 列中。                                                                                                   |               |
-
 
 ## 创建 JSON {#creating-json}
 
@@ -62,7 +61,7 @@ SELECT json FROM test;
 ```text title="Response (Example 1)"
 ┌─json────────────────────────────────────────┐
 │ {"a":{"b":"42"},"c":["1","2","3"]}          │
-│ {"f":"你好，世界！"}                       │
+│ {"f":"Hello, World!"}                       │
 │ {"a":{"b":"43","e":"10"},"c":["4","5","6"]} │
 └─────────────────────────────────────────────┘
 ```
@@ -76,7 +75,7 @@ SELECT json FROM test;
 ```text title="Response (Example 2)"
 ┌─json──────────────────────────────┐
 │ {"a":{"b":42},"c":["1","2","3"]}  │
-│ {"a":{"b":0},"f":"你好，世界！"} │
+│ {"a":{"b":0},"f":"Hello, World!"} │
 │ {"a":{"b":43},"c":["4","5","6"]}  │
 └───────────────────────────────────┘
 ```
@@ -93,7 +92,7 @@ SELECT '{"a" : {"b" : 42},"c" : [1, 2, 3], "d" : "Hello, World!"}'::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"你好，世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -106,7 +105,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"你好，世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -119,7 +118,7 @@ SELECT map('a', map('b', 42), 'c', [1,2,3], 'd', 'Hello, World!')::JSON AS json;
 
 ```text title="Response"
 ┌─json───────────────────────────────────────────────────┐
-│ {"a":{"b":"42"},"c":["1","2","3"],"d":"你好，世界！"} │
+│ {"a":{"b":"42"},"c":["1","2","3"],"d":"Hello, World!"} │
 └────────────────────────────────────────────────────────┘
 ```
 
@@ -144,7 +143,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 
 而**不是**：
 
-
 ```sql
    ┌─json───────────┐
 1. │ {"a.b.c":"42"} │
@@ -152,7 +150,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 :::
-
 
 ## 将 JSON 路径读取为子列 {#reading-json-paths-as-sub-columns}
 
@@ -222,7 +219,6 @@ SELECT json.non.existing.path FROM test;
 SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeName(json.d) FROM test;
 ```
 
-
 ```text title="Response"
 ┌─toTypeName(json.a.b)─┬─toTypeName(json.a.g)─┬─toTypeName(json.c)─┬─toTypeName(json.d)─┐
 │ UInt32               │ Dynamic              │ Dynamic            │ Dynamic            │
@@ -274,18 +270,17 @@ FROM test;
 ```
 
 ```text title="Response"
-服务器返回异常：
+Received exception from server:
 Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
-不支持数值类型与 UUID 之间的转换。
-传入的 UUID 可能未加引号： 
-执行 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0' 时发生错误。
+Conversion between numeric types and UUID is not supported. 
+Probably the passed UUID is unquoted: 
+while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
 (NOT_IMPLEMENTED)
 ```
 
 :::note
 要高效地从 Compact MergeTree 数据片段中读取子列，请确保已启用 MergeTree 设置 [write&#95;marks&#95;for&#95;substreams&#95;in&#95;compact&#95;parts](../../operations/settings/merge-tree-settings.md#write_marks_for_substreams_in_compact_parts)。
 :::
-
 
 ## 将 JSON 子对象读取为子列 {#reading-json-sub-objects-as-sub-columns}
 
@@ -321,7 +316,6 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 将子对象作为子列读取可能效率较低，因为这可能需要几乎对整个 JSON 数据进行扫描。
 :::
 
-
 ## 路径的类型推断 {#type-inference-for-paths}
 
 在解析 `JSON` 时，ClickHouse 会尝试为每个 JSON 路径推断出最合适的数据类型。
@@ -342,7 +336,7 @@ SELECT json.^a.b, json.^d.e.f FROM test;
 下面来看一些示例：
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=1, input_format_try_infer_datetimes=1;
 ```
 
 ```text title="Response"
@@ -352,7 +346,7 @@ SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'
 ```
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types SETTINGS input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
+SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'::JSON) AS paths_with_types settings input_format_try_infer_dates=0, input_format_try_infer_datetimes=0;
 ```
 
 ```text title="Response"
@@ -362,7 +356,7 @@ SELECT JSONAllPathsWithTypes('{"a" : "2020-01-01", "b" : "2020-01-01 10:00:00"}'
 ```
 
 ```sql title="Query"
-SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types SETTINGS schema_inference_make_columns_nullable=1;
+SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types settings schema_inference_make_columns_nullable=1;
 ```
 
 ```text title="Response"
@@ -381,7 +375,6 @@ SELECT JSONAllPathsWithTypes('{"a" : [1, 2, 3]}'::JSON) AS paths_with_types sett
 └──────────────────────┘
 ```
 
-
 ## 处理 JSON 对象数组 {#handling-arrays-of-json-objects}
 
 包含对象数组的 JSON 路径会被解析为 `Array(JSON)` 类型，并插入到该路径对应的 `Dynamic` 列中。
@@ -398,9 +391,9 @@ SELECT json FROM test;
 
 ```text title="Response"
 ┌─json────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ {"a":{"b":[{"c":"42","d":"你好","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"我的","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
+│ {"a":{"b":[{"c":"42","d":"Hello","f":[[{"g":42.42}]],"k":{"j":"1000"}},{"c":"43"},{"d":"My","e":["1","2","3"],"f":[[{"g":43.43,"h":"2020-01-01"}]],"k":{"j":"2000"}}]}} │
 │ {"a":{"b":["1","2","3"]}}                                                                                                                                               │
-│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"世界","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
+│ {"a":{"b":[{"c":"44","f":[[{"h":"2020-01-02"}]]},{"d":"World","e":["4","5","6"],"f":[[{"g":44.44}]],"k":{"j":"3000"}}]}}                                                │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -424,7 +417,6 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 ```sql title="Query"
 SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test; 
 ```
-
 
 ```text title="Response"
 ┌─json.a.b.:`Array(JSON)`.c─┬─json.a.b.:`Array(JSON)`.f───────────────────────────────────┬─json.a.b.:`Array(JSON)`.d─┐
@@ -494,7 +486,6 @@ SELECT json.a.b[].^k FROM test
 └──────────────────────────────────────┘
 ```
 
-
 ## 处理包含 NULL 的 JSON 键 {#handling-json-keys-with-nulls}
 
 在我们的 JSON 实现中，`null` 与值的缺失被视为等同：
@@ -510,7 +501,6 @@ SELECT '{}'::JSON AS json1, '{"a" : null}'::JSON AS json2, json1 = json2
 ```
 
 这意味着无法确定原始 JSON 数据中，是包含某个路径且其值为 NULL，还是根本不包含该路径。
-
 
 ## 处理包含点号的 JSON 键 {#handling-json-keys-with-dots}
 
@@ -542,7 +532,7 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json;
 ```
 
 ```text title="Response"
-代码：117. DB::Exception：无法将数据插入 JSON 列：解析 JSON 对象时发现重复路径：a.b。您可以启用 type_json_skip_duplicated_paths 设置以在插入时跳过重复路径：在作用域 SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json 中。(INCORRECT_DATA)
+Code: 117. DB::Exception: Cannot insert data into JSON column: Duplicate path found during parsing JSON object: a.b. You can enable setting type_json_skip_duplicated_paths to skip duplicated paths during insert: In scope SELECT CAST('{"a.b" : 42, "a" : {"b" : "Hello, World"}}', 'JSON') AS json. (INCORRECT_DATA)
 ```
 
 如果你希望保留带点号的键并避免将其格式化为嵌套对象，可以启用设置 [json&#95;type&#95;escape&#95;dots&#95;in&#95;keys](/operations/settings/formats#json_type_escape_dots_in_keys)（自 `25.8` 版本起可用）。在这种情况下，解析时 JSON 键中的所有点号都会被转义为 `%2E`，并在格式化时再还原回来。
@@ -584,7 +574,6 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`,
 
 注意：由于标识符解析器和分析器的限制，子列 `` json.`a.b` `` 等价于子列 `json.a.b`，且无法读取带有转义点号的路径：
 
-
 ```sql title="Query"
 SET json_type_escape_dots_in_keys=1;
 SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON AS json, json.`a%2Eb`, json.`a.b`, json.a.b;
@@ -616,10 +605,9 @@ SELECT '{"a.b" : 42, "a" : {"b" : "Hello World!"}}'::JSON(SKIP `a%2Eb`) as json,
 
 ```text title="Response"
 ┌─json───────────────────────┬─json.a%2Eb─┐
-│ {"a":{"b":"你好世界!"}} │ ᴺᵁᴸᴸ       │
+│ {"a":{"b":"Hello World!"}} │ ᴺᵁᴸᴸ       │
 └────────────────────────────┴────────────┘
 ```
-
 
 ## 从数据中读取 JSON 类型 {#reading-json-type-from-data}
 
@@ -646,14 +634,13 @@ SELECT json FROM format(JSONEachRow, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP d
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"你好，世界！"}                       │
+│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
 ```
 
 对于 `CSV`/`TSV`/等文本格式，会从包含 JSON 对象的字符串中解析 `JSON`：
-
 
 ```sql title="Query"
 SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'b.*\')',
@@ -668,12 +655,11 @@ SELECT json FROM format(TSV, 'json JSON(a.b.c UInt32, SKIP a.b.d, SKIP REGEXP \'
 ┌─json──────────────────────────────────────────────────────────┐
 │ {"a":{"b":{"c":1}},"c":"42","d":{"i":["1","2","3"]}}          │
 │ {"a":{"b":{"c":2}},"d":{"i":["4","5","6"]}}                   │
-│ {"a":{"b":{"c":3}},"e":"你好，世界！"}                       │
+│ {"a":{"b":{"c":3}},"e":"Hello, World!"}                       │
 │ {"a":{"b":{"c":4}},"c":"43"}                                  │
 │ {"a":{"b":{"c":5}},"d":{"h":"2020-02-02 10:00:00.000000000"}} │
 └───────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 达到 JSON 中动态路径数量的上限 {#reaching-the-limit-of-dynamic-paths-inside-json}
 
@@ -725,7 +711,6 @@ SELECT json, JSONDynamicPaths(json), JSONSharedDataPaths(json) FROM format(JSONE
 
 我们来看一个这样的合并示例。
 首先，我们创建一个带有 `JSON` 列的表，将动态路径的限制设置为 `3`，然后插入包含 `5` 个不同路径的值：
-
 
 ```sql title="Query"
 CREATE TABLE test (id UInt64, json JSON(max_dynamic_paths=3)) ENGINE=MergeTree ORDER BY id;
@@ -780,7 +765,6 @@ ORDER BY _part ASC
 ```
 
 正如我们看到的，ClickHouse 保留了最常见的路径 `a`、`b` 和 `c`，并将路径 `d` 和 `e` 放入了一个共享的数据结构中。
-
 
 ## 共享数据结构 {#shared-data-structure}
 
@@ -838,8 +822,6 @@ ORDER BY _part ASC
 注意：由于在数据结构中存储了额外信息，与 `map` 和 `map_with_buckets` 序列化方式相比，这种序列化在磁盘上的存储空间占用更高。
 
 如需更详细地了解新的共享数据序列化方式及其实现细节，请参阅这篇[博客文章](https://clickhouse.com/blog/json-data-type-gets-even-better)。
-
-
 
 ## 自省函数 {#introspection-functions}
 
@@ -924,7 +906,6 @@ FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz
 SETTINGS date_time_input_format = 'best_effort'
 ```
 
-
 ```text
 ┌─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┐
 │ ('actor.avatar_url',['String'])                             │
@@ -980,7 +961,6 @@ SETTINGS date_time_input_format = 'best_effort'
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
 
-
 ## 使用 ALTER MODIFY COLUMN 修改为 JSON 类型 {#alter-modify-column-to-json-type}
 
 可以对现有表执行修改操作，将列的类型更改为新的 `JSON` 类型。目前仅支持对 `String` 类型列执行 `ALTER` 操作。
@@ -1002,7 +982,6 @@ SELECT json, json.a, json.b, json.c FROM test;
 │ {"c":"2020-01-01"}           │ ᴺᵁᴸᴸ   │ ᴺᵁᴸᴸ    │ 2020-01-01 │
 └──────────────────────────────┴────────┴─────────┴────────────┘
 ```
-
 
 ## JSON 类型值的比较 {#comparison-between-values-of-the-json-type}
 
@@ -1042,7 +1021,6 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 **注意：** 当两个路径中包含不同数据类型的值时，将根据 `Variant` 数据类型的[比较规则](/sql-reference/data-types/variant#comparing-values-of-variant-data)进行比较。
 
-
 ## 更高效使用 JSON 类型的技巧 {#tips-for-better-usage-of-the-json-type}
 
 在创建 `JSON` 列并向其中加载数据之前，请考虑以下几点建议：
@@ -1051,8 +1029,6 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 - 考虑在实际使用中会需要哪些路径，以及哪些路径基本不会被使用。对于不需要的路径，在 `SKIP` 部分中进行指定；如有必要，再在 `SKIP REGEXP` 部分中指定。这将改善存储效果。
 - 不要将 `max_dynamic_paths` 参数设置得过高，否则可能会降低存储和读取效率。  
   虽然具体数值高度依赖于内存、CPU 等系统参数，但一个经验法则是：对于本地文件系统存储，不要将 `max_dynamic_paths` 设置为大于 10 000；对于远程文件系统存储，不要设置为大于 1024。
-
-
 
 ## 延伸阅读 {#further-reading}
 

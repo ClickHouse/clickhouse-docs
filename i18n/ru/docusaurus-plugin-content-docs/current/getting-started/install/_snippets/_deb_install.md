@@ -12,19 +12,19 @@ import TabItem from '@theme/TabItem';
 Чтобы установить ClickHouse, выполните следующие команды:
 
 ```bash
-# Установите необходимые пакеты {#install-prerequisite-packages}
+# Install prerequisite packages
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 
-# Загрузите GPG‑ключ ClickHouse и сохраните его в ключевом хранилище {#download-the-clickhouse-gpg-key-and-store-it-in-the-keyring}
+# Download the ClickHouse GPG key and store it in the keyring
 curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | sudo gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
 
-# Определите архитектуру системы {#get-the-system-architecture}
+# Get the system architecture
 ARCH=$(dpkg --print-architecture)
 
-# Добавьте репозиторий ClickHouse в список источников пакетов apt {#add-the-clickhouse-repository-to-apt-sources}
+# Add the ClickHouse repository to apt sources
 echo "deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg arch=${ARCH}] https://packages.clickhouse.com/deb stable main" | sudo tee /etc/apt/sources.list.d/clickhouse.list
 
-# Обновить списки пакетов apt {#update-apt-package-lists}
+# Update apt package lists
 sudo apt-get update
 ```
 
@@ -35,27 +35,28 @@ sudo apt-get update
 <summary>Устаревший метод установки deb-пакетов для дистрибутивов</summary>
 
 ```bash
-# Установите необходимые пакеты {#install-prerequisite-packages}
+# Install prerequisite packages
 sudo apt-get install apt-transport-https ca-certificates dirmngr
 
-# Добавьте GPG-ключ ClickHouse для аутентификации пакетов {#add-the-clickhouse-gpg-key-to-authenticate-packages}
+# Add the ClickHouse GPG key to authenticate packages
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8919F6BD2B48D754
 
-# Добавьте репозиторий ClickHouse в список источников APT {#add-the-clickhouse-repository-to-apt-sources}
+# Add the ClickHouse repository to apt sources
 echo "deb https://packages.clickhouse.com/deb stable main" | sudo tee \
     /etc/apt/sources.list.d/clickhouse.list
 
-# Обновите списки пакетов apt {#update-apt-package-lists}
+    
+# Update apt package lists
 sudo apt-get update
 
-# Установите пакеты сервера и клиента ClickHouse {#install-clickhouse-server-and-client-packages}
+# Install ClickHouse server and client packages
 sudo apt-get install -y clickhouse-server clickhouse-client
 
-# Запустите службу сервера ClickHouse {#start-the-clickhouse-server-service}
+# Start the ClickHouse server service
 sudo service clickhouse-server start
 
-# Запустите клиент командной строки ClickHouse {#launch-the-clickhouse-command-line-client}
-clickhouse-client # или "clickhouse-client --password", если вы указали пароль.
+# Launch the ClickHouse command line client
+clickhouse-client # or "clickhouse-client --password" if you set up a password.
 ```
 
 </details>

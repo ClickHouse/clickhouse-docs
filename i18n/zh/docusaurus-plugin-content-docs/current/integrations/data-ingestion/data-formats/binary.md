@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # 在 ClickHouse 中使用 Native 和二进制格式 {#using-native-and-binary-formats-in-clickhouse}
 
 ClickHouse 支持多种二进制格式，可以带来更好的性能和空间利用率。二进制格式在字符编码处理方面也更安全，因为数据是以二进制形式保存的。
 
 我们将使用 some_data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，可在自己的 ClickHouse 实例上进行复现。
-
-
 
 ## 以 ClickHouse 原生格式导出 {#exporting-in-a-native-clickhouse-format}
 
@@ -77,7 +74,6 @@ COMPRESSION 'lz4'
 FORMAT Native
 ```
 
-
 ## 导出为 RowBinary {#exporting-to-rowbinary}
 
 另一种受支持的二进制格式是 [RowBinary](/interfaces/formats/RowBinary)，它支持以二进制行的形式导入和导出数据：
@@ -100,7 +96,7 @@ LIMIT 5
 ```
 
 ```response
-┌─路径───────────────────────────┬──────月份─┬─访问次数─┐
+┌─path───────────────────────────┬──────month─┬─hits─┐
 │ Bangor_City_Forest             │ 2015-07-01 │   34 │
 │ Alireza_Afzal                  │ 2017-02-01 │   24 │
 │ Akhaura-Laksam-Chittagong_Line │ 2015-09-01 │   30 │
@@ -120,7 +116,6 @@ INSERT INTO sometable
 FROM INFILE 'data.binary'
 FORMAT RowBinary
 ```
-
 
 ## 使用 RawBLOB 导入单个二进制值 {#importing-single-binary-value-using-rawblob}
 
@@ -161,7 +156,6 @@ FORMAT RawBLOB
 
 请注意，我们必须使用 `LIMIT 1`，否则导出多个值会导致文件损坏。
 
-
 ## MessagePack {#messagepack}
 
 ClickHouse 支持使用 [MsgPack](/interfaces/formats/MsgPack) 以 [MessagePack](https://msgpack.org/) 格式进行导入和导出。要导出为 MessagePack 格式：
@@ -181,7 +175,6 @@ FROM INFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-
 ## Protocol Buffers {#protocol-buffers}
 
 <CloudNotSupportedBadge />
@@ -191,10 +184,10 @@ FORMAT MsgPack
 ```protobuf
 syntax = "proto3";
 
-message 消息类型 {
-  string 路径 = 1;
-  date 月份 = 2;
-  uint32 访问量 = 3;
+message MessageType {
+  string path = 1;
+  date month = 2;
+  uint32 hits = 3;
 };
 ```
 
@@ -208,7 +201,6 @@ SETTINGS format_schema = 'schema:MessageType'
 ```
 
 这会将数据保存到 [proto.bin](assets/proto.bin) 文件中。ClickHouse 还支持导入 Protobuf 数据以及包含嵌套消息的数据。对于处理单个 Protocol Buffer 消息的场景（此时会省略长度分隔符），请考虑使用 [ProtobufSingle](/interfaces/formats/ProtobufSingle)。
-
 
 ## Cap&#39;n Proto {#capn-proto}
 
@@ -240,7 +232,6 @@ SETTINGS format_schema = 'schema:PathStats'
 ```
 
 请注意，我们需要将 `Date` 列强制转换为 `UInt32` 类型，以便[与对应的数据类型匹配](/interfaces/formats/CapnProto#data_types-matching-capnproto)。
-
 
 ## 其他格式 {#other-formats}
 

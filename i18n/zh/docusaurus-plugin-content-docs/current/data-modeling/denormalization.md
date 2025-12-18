@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 
 在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
 
-
-
 ## 比较规范化与反规范化模式 {#comparing-normalized-vs-denormalized-schemas}
 
 对数据进行反规范化，是指有意地逆转规范化过程，以针对特定查询模式优化数据库性能。在规范化数据库中，数据被拆分到多个关联表中，以最小化冗余并确保数据完整性。反规范化通过合并表、复制数据，以及将计算字段并入单个或更少数量的表中来重新引入冗余——实质上是把原本在查询时执行的 `JOIN` 操作前移到写入（插入）阶段完成。
@@ -28,8 +26,6 @@ import Image from '@theme/IdealImage';
 <br />
 
 一种由 NoSQL 方案推广的常见技术，是在缺乏 `JOIN` 支持的情况下对数据进行反规范化，将所有统计信息或相关行作为列和嵌套对象存储在父行上。例如，在博客的示例模式中，我们可以将所有 `Comments` 作为对象的 `Array` 存储在各自对应的帖子记录中。
-
-
 
 ## 何时使用反规范化 {#when-to-use-denormalization}
 
@@ -43,8 +39,6 @@ import Image from '@theme/IdealImage';
 并非所有信息都需要反规范化——只需对那些需要被频繁访问的关键信息进行反规范化即可。
 
 反规范化工作可以在 ClickHouse 中完成，也可以在上游系统中完成，例如使用 Apache Flink。
-
-
 
 ## 避免对频繁更新的数据进行反规范化 {#avoid-denormalization-on-frequently-updated-data}
 
@@ -61,8 +55,6 @@ import Image from '@theme/IdealImage';
 
 因此，更常见的做法是采用批量更新流程，定期重新加载所有反规范化后的对象。
 
-
-
 ## 反规范化的实践案例 {#practical-cases-for-denormalization}
 
 我们来看看几个适合进行反规范化的实际示例，以及一些更适合采用其他方法的情形。
@@ -75,7 +67,7 @@ import Image from '@theme/IdealImage';
 
 ### Posts 与 Votes {#posts-and-votes}
 
-帖子上的投票以单独的表表示。下面展示的是该场景的优化后模式结构，以及用于加载数据的插入命令：
+帖子上的投票使用单独的表来表示。下面展示的是针对这一场景优化后的模式，以及用于加载数据的插入命令：
 
 ```sql
 CREATE TABLE votes
@@ -92,12 +84,12 @@ ORDER BY (VoteTypeId, CreationDate, PostId)
 
 INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
 
-返回 0 行。用时:26.272 秒。已处理 2.3898 亿行,2.13 GB(每秒 910 万行,80.97 MB/秒)
+0 rows in set. Elapsed: 26.272 sec. Processed 238.98 million rows, 2.13 GB (9.10 million rows/s., 80.97 MB/s.)
 ```
 
-乍一看，这些字段似乎是可以在 posts 表中进行反规范化处理的候选项。不过，这种做法也存在一些挑战。
+乍一看，这些看起来似乎可以作为在 posts 表上进行反规范化处理的候选对象。不过，这种做法也存在一些挑战。
 
-帖子会频繁收到新的投票。尽管随着时间推移，每个帖子的投票频率可能会下降，但下面这条查询显示，在 3 万多个帖子上，我们每小时大约会产生 4 万次投票。
+帖子会频繁收到投票。尽管随着时间推移，每个帖子的投票频率可能会下降，但下面这条查询显示，在 3 万多篇帖子上，我们每小时大约会产生 4 万次投票。
 
 ```sql
 SELECT round(avg(c)) AS avg_votes_per_hr, round(avg(posts)) AS avg_posts_per_hr
@@ -116,9 +108,9 @@ FROM
 └──────────────────┴──────────────────┘
 ```
 
-如果可以容忍一定的延迟，可以通过批处理来解决这个问题，但除非我们定期重新加载所有帖子（这通常并不是理想的做法），否则仍然需要处理更新。
+如果可以容忍一定的延迟，可以通过批处理来缓解这个问题，但除非我们定期重新加载所有帖子（这通常并不是理想的做法），否则仍然需要处理更新。
 
-更麻烦的是，有些帖子获得的投票数极其巨大：
+更麻烦的是，有些帖子获得的投票数极其之多：
 
 ```sql
 SELECT PostId, concat('https://stackoverflow.com/questions/', PostId) AS url, count() AS c
@@ -136,20 +128,20 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-这里的主要结论是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据（参见 [dictionaries](/dictionary)）。
+这里的关键点是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据（参见 [dictionaries](/dictionary)）。
+
 
 ### Users 和 Badges {#users-and-badges}
 
-现在我们来看一下 `Users` 和 `Badges`：
+现在我们来看看 `Users` 和 `Badges`：
 
-<Image img={denormalizationSchema} size="lg" alt="Users 和 Badges 模式" />
-
-<p />
-
-我们先使用以下命令插入数据：
+<Image img={denormalizationSchema} size="lg" alt="Users and Badges schema" />
 
 <p />
 
+首先，我们使用以下命令插入数据：
+
+<p />
 
 ```sql
 CREATE TABLE users
@@ -186,11 +178,11 @@ ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
 
-共 0 行。耗时：26.229 秒。已处理 22.48 百万行数据，1.36 GB（857.21 千行/秒，51.99 MB/秒）。
+0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
 
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
 
-共 0 行。耗时：18.126 秒。已处理 51.29 百万行数据，797.05 MB（2.83 百万行/秒，43.97 MB/秒）。
+0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
 虽然用户可能频繁获得徽章，但这不太可能是一个需要我们每天更新多次的数据集。徽章和用户之间的关系是一对多。也许我们可以简单地将徽章反规范化到用户记录中，作为一个元组列表存储？虽然可行，但对单个用户徽章数量上限的快速检查表明，这并不理想：
@@ -209,11 +201,12 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 将 1.9 万个对象全部反规范化到单行上可能并不现实。这个关系最好保持为单独的表，或者通过增加统计信息来处理。
 
-> 我们可能希望把徽章相关的统计信息反规范化到用户上，例如徽章的数量。在对该数据集进行插入时使用字典的示例中，我们会考虑这种情况。
+> 我们可能希望把徽章相关的统计信息反规范化到用户上，例如徽章的数量。在该数据集的插入阶段使用字典时，我们会考虑这种情况。
+
 
 ### Posts 和 PostLinks {#posts-and-postlinks}
 
-`PostLinks` 用于连接用户认为相关或重复的 `Posts`。下面的查询展示了表结构和加载命令：
+`PostLinks` 用于关联用户认为相关或重复的 `Posts`。下面的查询展示了表结构和加载命令：
 
 ```sql
 CREATE TABLE postlinks
@@ -232,7 +225,7 @@ INSERT INTO postlinks SELECT * FROM s3('https://datasets-documentation.s3.eu-wes
 0 rows in set. Elapsed: 4.726 sec. Processed 6.55 million rows, 129.70 MB (1.39 million rows/s., 27.44 MB/s.)
 ```
 
-可以确认，没有任何帖子因链接数量过多而无法进行反规范化：
+我们可以确认，没有任何帖子的链接数量多到会阻碍反规范化：
 
 ```sql
 SELECT PostId, count() AS c
@@ -249,8 +242,7 @@ ORDER BY c DESC LIMIT 5
 └──────────┴─────┘
 ```
 
-同样，这些链接也不是那种会非常频繁发生的事件：
-
+同样，这些链接本身也不是发生得特别频繁的事件：
 
 ```sql
 SELECT
@@ -271,7 +263,8 @@ FROM
 └──────────────────┴──────────────────┘
 ```
 
-我们在下面将其作为反规范化示例。
+在下文中，我们将以此作为反规范化的示例。
+
 
 ### 简单统计示例 {#simple-statistic-example}
 
@@ -281,13 +274,13 @@ FROM
 CREATE TABLE posts_with_duplicate_count
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... -其他列
+   ... -other columns
    `DuplicatePosts` UInt16
 ) ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-为了填充这张表，我们使用 `INSERT INTO SELECT` 语句，将重复统计结果与帖子数据进行关联。
+为了向这张表写入数据，我们使用 `INSERT INTO SELECT` 语句，将重复帖统计与帖子数据进行关联。
 
 ```sql
 INSERT INTO posts_with_duplicate_count SELECT
@@ -301,6 +294,7 @@ LEFT JOIN
     GROUP BY PostId
 ) AS postlinks ON posts.Id = postlinks.PostId
 ```
+
 
 ### 利用复杂类型处理一对多关系 {#exploiting-complex-types-for-one-to-many-relationships}
 
@@ -320,16 +314,16 @@ SET flatten_nested=0
 CREATE TABLE posts_with_links
 (
   `Id` Int32 CODEC(Delta(4), ZSTD(1)),
-   ... - 其他列
+   ... -other columns
    `LinkedPosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
    `DuplicatePosts` Nested(CreationDate DateTime64(3, 'UTC'), PostId Int32),
 ) ENGINE = MergeTree
 ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 ```
 
-> 请注意这里使用了设置 `flatten_nested=0`。我们建议禁用对嵌套数据的扁平化处理。
+> 请注意此处使用了设置 `flatten_nested=0`。我们建议禁用对嵌套数据的扁平化处理。
 
-我们可以通过使用带有 `OUTER JOIN` 查询的 `INSERT INTO SELECT` 语句来完成此反规范化操作：
+我们可以通过一条带有 `OUTER JOIN` 的 `INSERT INTO SELECT` 查询来完成此反规范化操作：
 
 ```sql
 INSERT INTO posts_with_links
@@ -352,10 +346,9 @@ Peak memory usage: 6.98 GiB.
 
 > 注意这里的耗时。我们在大约 2 分钟内对 6600 万行数据完成了反规范化处理。正如我们稍后会看到的，这是一个可以进行调度的操作。
 
+请注意这里使用了 `groupArray` 函数，在进行关联之前，将 `PostLinks` 按每个 `PostId` 聚合成一个数组。然后再将该数组过滤成两个子列表：`LinkedPosts` 和 `DuplicatePosts`，同时还会排除外连接产生的任何空结果。
 
-请注意这里使用 `groupArray` 函数，在关联之前将 `PostLinks` 聚合为每个 `PostId` 对应的数组。然后将该数组过滤成两个子列表：`LinkedPosts` 和 `DuplicatePosts`，同时排除外连接产生的任何空结果。
-
-我们可以查询部分行来查看新的反规范化结构：
+我们可以选择一些行来查看新的反规范化结构：
 
 ```sql
 SELECT LinkedPosts, DuplicatePosts
@@ -381,7 +374,7 @@ DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',
 
 在假设可以接受周期性批量加载流程的前提下，用户在 ClickHouse 中有多种方式来编排这一过程：
 
-- **[可刷新的物化视图](/materialized-view/refreshable-materialized-view)** - 可刷新的物化视图可以用来周期性地调度查询，并将结果写入目标表。在查询执行时，视图会确保对目标表的更新是原子性的。这提供了一种 ClickHouse 原生的任务调度方式。
+- **[可刷新materialized view](/materialized-view/refreshable-materialized-view)** - 可刷新materialized view 可以用来周期性地调度查询，并将结果写入目标表。在查询执行时，VIEW 会确保对目标表的更新是原子性的。这提供了一种 ClickHouse 原生的任务调度方式。
 - **外部工具** - 使用诸如 [dbt](https://www.getdbt.com/) 和 [Airflow](https://airflow.apache.org/) 等工具，定期调度转换任务。[ClickHouse 的 dbt 集成](/integrations/dbt) 确保该过程以原子方式执行：先创建目标表的新版本，然后通过 [EXCHANGE](/sql-reference/statements/exchange) 命令，将其与当前对外提供查询服务的版本进行原子交换。
 
 ### 流式处理 {#streaming}

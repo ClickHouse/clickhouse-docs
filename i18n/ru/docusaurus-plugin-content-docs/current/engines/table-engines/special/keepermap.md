@@ -8,8 +8,6 @@ title: 'Табличный движок KeeperMap'
 doc_type: 'reference'
 ---
 
-
-
 # Табличный движок KeeperMap {#keepermap-table-engine}
 
 Этот движок позволяет использовать кластер Keeper/ZooKeeper как согласованное хранилище ключ–значение с линеаризуемыми записями и последовательно согласованными чтениями.
@@ -25,7 +23,6 @@ doc_type: 'reference'
 ```
 
 где path может быть любым другим допустимым путем в ZooKeeper.
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -80,7 +77,6 @@ PRIMARY KEY key
 В результате можно использовать предложение `ON CLUSTER` при создании таблицы и разделять данные между несколькими экземплярами ClickHouse.\
 Разумеется, можно вручную выполнить `CREATE TABLE` с тем же путём на несвязанных экземплярах ClickHouse, чтобы получить тот же эффект совместного использования данных.
 
-
 ## Поддерживаемые операции {#supported-operations}
 
 ### Вставки {#inserts}
@@ -91,7 +87,7 @@ PRIMARY KEY key
 Пример:
 
 ```sql
-INSERT INTO keeper_map_table VALUES ('какой-то ключ', 1, 'значение', 3.2);
+INSERT INTO keeper_map_table VALUES ('some key', 1, 'value', 3.2);
 ```
 
 ### Удаления {#deletes}
@@ -119,7 +115,6 @@ TRUNCATE TABLE keeper_map_table;
 ```sql
 ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND v3 > 3.1;
 ```
-
 
 ## Связанные материалы {#related-content}
 

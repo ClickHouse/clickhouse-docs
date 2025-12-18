@@ -7,8 +7,6 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-
-
 # Interval {#interval}
 
 日時の間隔を表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
@@ -32,7 +30,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します。
+各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します:
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -71,7 +69,7 @@ SELECT now() AS current_date_time, current_date_time + (INTERVAL 4 DAY + INTERVA
 └─────────────────────┴────────────────────────────────────────────────────────────────────┘
 ```
 
-また、異なる間隔の値を比較するには、次のようにします：
+また、異なるインターバル同士の値を比較するには、次のようにします：
 
 ```sql
 SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
@@ -87,4 +85,4 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ## 関連項目 {#see-also}
 
 - [INTERVAL](/sql-reference/operators#interval) 演算子
-- [toInterval](/sql-reference/functions/type-conversion-functions#tointervalyear) 型変換関数
+- [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数

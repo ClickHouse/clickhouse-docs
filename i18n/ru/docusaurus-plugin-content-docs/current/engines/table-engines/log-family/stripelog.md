@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы StripeLog {#stripelog-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -17,8 +16,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 Этот движок относится к семейству лог-движков. Общие свойства лог-движков и их различия см. в статье [Log Engine Family](../../../engines/table-engines/log-family/index.md).
 
 Используйте этот движок в сценариях, когда необходимо создавать большое количество таблиц с небольшим объёмом данных (менее 1 миллиона строк). Например, такую таблицу можно использовать для хранения входящих пакетов данных для последующей трансформации, когда требуется их атомарная обработка. До 100 тыс. экземпляров таблиц этого типа являются нормальной конфигурацией для одного сервера ClickHouse. Этот табличный движок следует предпочесть движку [Log](./log.md), когда требуется большое количество таблиц, однако это происходит за счёт эффективности чтения.
-
-
 
 ## Создание таблицы {#table_engines-stripelog-creating-a-table}
 
@@ -33,7 +30,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 См. подробное описание запроса [CREATE TABLE](/sql-reference/statements/create/table).
 
-
 ## Запись данных {#table_engines-stripelog-writing-the-data}
 
 Движок `StripeLog` хранит все столбцы в одном файле. Для каждого запроса `INSERT` ClickHouse добавляет блок данных в конец файла таблицы, записывая столбцы по отдельности.
@@ -45,13 +41,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Движок `StripeLog` не поддерживает операции `ALTER UPDATE` и `ALTER DELETE`.
 
-
-
 ## Чтение данных {#table_engines-stripelog-reading-the-data}
 
 Файл с метками позволяет ClickHouse параллелизировать чтение данных. Это означает, что запрос `SELECT` возвращает строки в непредсказуемом порядке. Используйте оператор `ORDER BY` для сортировки строк.
-
-
 
 ## Пример использования {#table_engines-stripelog-example-of-use}
 
@@ -70,8 +62,8 @@ ENGINE = StripeLog
 Вставка данных:
 
 ```sql
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','Первое обычное сообщение')
-INSERT INTO stripe_log_table VALUES (now(),'REGULAR','Второе обычное сообщение'),(now(),'WARNING','Первое предупреждение')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO stripe_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 Мы использовали два запроса `INSERT`, чтобы создать два блока данных в файле `data.bin`.
@@ -84,11 +76,11 @@ SELECT * FROM stripe_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ┌───────────timestamp─┬─message_type─┬─message───────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message │
 └─────────────────────┴──────────────┴───────────────────────────┘
 ```
 
@@ -100,8 +92,8 @@ SELECT * FROM stripe_log_table ORDER BY timestamp
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2019-01-18 14:23:43 │ REGULAR      │ Первое обычное сообщение   │
-│ 2019-01-18 14:27:32 │ REGULAR      │ Второе обычное сообщение   │
-│ 2019-01-18 14:34:53 │ WARNING      │ Первое предупреждение      │
+│ 2019-01-18 14:23:43 │ REGULAR      │ The first regular message  │
+│ 2019-01-18 14:27:32 │ REGULAR      │ The second regular message │
+│ 2019-01-18 14:34:53 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

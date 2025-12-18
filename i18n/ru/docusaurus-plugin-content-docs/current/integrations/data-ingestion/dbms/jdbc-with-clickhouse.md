@@ -15,7 +15,6 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-
 # Подключение ClickHouse к внешним источникам данных с помощью JDBC {#connecting-clickhouse-to-external-data-sources-with-jdbc}
 
 :::note
@@ -42,8 +41,6 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 5. установлена и запущена актуальная версия **ClickHouse** ([см. установку](/getting-started/install/install.mdx))
 :::
 
-
-
 ## Установка ClickHouse JDBC Bridge локально {#install-the-clickhouse-jdbc-bridge-locally}
 
 Самый простой способ использовать ClickHouse JDBC Bridge — установить и запустить его на той же машине, где работает ClickHouse:<Image img={Jdbc02} size="lg" alt="Схема локального развертывания ClickHouse JDBC Bridge" background="white" />
@@ -64,25 +61,25 @@ wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0
 Чтобы подключиться к MySQL, создадим именованный источник данных:
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-mkdir -p config/datasources
-touch config/datasources/mysql8.json
-```
+ cd ~/clickhouse-jdbc-bridge
+ mkdir -p config/datasources
+ touch config/datasources/mysql8.json
+ ```
 
 Теперь вы можете скопировать и вставить следующую конфигурацию в файл `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json`:
 
 ```json
-{
-  "mysql8": {
-  "driverUrls": [
-    "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
-  ],
-  "jdbcUrl": "jdbc:mysql://<host>:<port>",
-  "username": "<username>",
-  "password": "<password>"
-  }
-}
-```
+ {
+   "mysql8": {
+   "driverUrls": [
+     "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
+   ],
+   "jdbcUrl": "jdbc:mysql://<host>:<port>",
+   "username": "<username>",
+   "password": "<password>"
+   }
+ }
+ ```
 
 :::note
 в конфигурационном файле выше
@@ -98,14 +95,13 @@ touch config/datasources/mysql8.json
 Теперь мы готовы запустить ClickHouse JDBC Bridge:
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
-```
+ cd ~/clickhouse-jdbc-bridge
+ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
+ ```
 
 :::note
 Мы запустили ClickHouse JDBC Bridge в режиме переднего плана. Чтобы остановить Bridge, вы можете вернуть показанное выше окно оболочки Unix на передний план и нажать `CTRL+C`.
 :::
-
 
 ## Использование JDBC-подключения из ClickHouse {#use-the-jdbc-connection-from-within-clickhouse}
 
@@ -116,8 +112,8 @@ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 * Табличная функция jdbc:
 
 ```sql
-SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
-```
+ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
+ ```
 
 :::note
 В качестве первого параметра табличной функции `jdbc` мы используем имя именованного источника данных, который был настроен выше.
@@ -126,21 +122,20 @@ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
 * Табличный движок JDBC:
 
 ```sql
-CREATE TABLE mytable (
-     <column> <column_type>,
-     ...
-)
-ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
+ CREATE TABLE mytable (
+      <column> <column_type>,
+      ...
+ )
+ ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
-SELECT * FROM mytable;
-```
+ SELECT * FROM mytable;
+ ```
 
 :::note
 В качестве первого параметра в секции движка `jdbc` мы используем имя именованного источника данных, который мы настроили выше.
 
 Схема таблицы движка ClickHouse JDBC и схема подключённой таблицы MySQL должны быть согласованы: например, имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми.
 :::
-
 
 ## Внешняя установка ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-externally}
 

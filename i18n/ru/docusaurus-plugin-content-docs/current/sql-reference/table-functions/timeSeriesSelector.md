@@ -7,14 +7,10 @@ title: 'timeSeriesSelector'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция timeSeriesSelector {#timeseriesselector-table-function}
 
 Считывает временные ряды из таблицы TimeSeries, отфильтрованные селектором и ограниченные временными метками указанного интервала.
 Эта функция аналогична [range selectors](https://prometheus.io/docs/prometheus/latest/querying/basics/#range-vector-selectors), но также используется для реализации [instant selectors](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors).
-
-
 
 ## Синтаксис {#syntax}
 
@@ -24,7 +20,6 @@ timeSeriesSelector(db_name.time_series_table, 'instant_query', min_time, max_tim
 timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 ```
 
-
 ## Аргументы {#arguments}
 
 - `db_name` — имя базы данных, в которой находится таблица TimeSeries.
@@ -32,8 +27,6 @@ timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 - `instant_query` — мгновенный селектор, записанный в [синтаксисе PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/#instant-vector-selectors), без модификаторов `@` или `offset`.
 - `min_time` — начальная метка времени (включительно).
 - `max_time` — конечная метка времени (включительно).
-
-
 
 ## Возвращаемое значение {#returned_value}
 
@@ -43,8 +36,6 @@ timeSeriesSelector('time_series_table', 'instant_query', min_time, max_time)
 - `value` — содержит значения.
 
 Порядок возвращаемых данных не гарантируется.
-
-
 
 ## Пример {#example}
 

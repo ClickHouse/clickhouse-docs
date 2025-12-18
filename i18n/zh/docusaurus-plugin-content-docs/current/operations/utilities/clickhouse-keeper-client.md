@@ -6,13 +6,9 @@ title: 'clickhouse-keeper-client 工具'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-keeper-client 工具 {#clickhouse-keeper-client-utility}
 
 一个通过其原生协议与 clickhouse-keeper 交互的客户端工具。
-
-
 
 ## 参数 {#clickhouse-keeper-client}
 
@@ -28,13 +24,11 @@ doc_type: 'reference'
 -   `--no-confirmation` — 如果启用，则在若干命令上不再需要确认。交互模式下的默认值为 `false`，查询模式下的默认值为 `true`。
 -   `--help` — 显示帮助信息。
 
-
-
 ## 示例 {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
-已连接到 ZooKeeper,地址为 [::1]:9181,会话 ID 为 137
+Connected to ZooKeeper at [::1]:9181 with session_id 137
 / :) ls
 keeper foo bar
 / :) cd 'keeper'
@@ -44,14 +38,13 @@ api_version
 /keeper/api_version :) ls
 
 /keeper/api_version :) cd 'xyz'
-路径 /keeper/api_version/xyz 不存在
+Path /keeper/api_version/xyz does not exist
 /keeper/api_version :) cd ../../
 / :) ls
 keeper foo bar
 / :) get 'keeper/api_version'
 2
 ```
-
 
 ## 命令 {#clickhouse-keeper-client-commands}
 

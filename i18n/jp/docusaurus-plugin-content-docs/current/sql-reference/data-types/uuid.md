@@ -7,8 +7,6 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-
-
 # UUID {#uuid}
 
 Universally Unique Identifier (UUID、汎用一意識別子) は、レコードを識別するために使用される 16 バイトの値です。UUID の詳細については、[Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier) を参照してください。
@@ -85,12 +83,9 @@ SELECT * FROM tab ORDER BY toUInt128(uuid);
 └──────────────────────────────────────┘
 ```
 
-
 ## UUID の生成 {#generating-uuids}
 
 ClickHouse は、ランダムな UUID バージョン 4 の値を生成するための関数 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) を提供します。
-
-
 
 ## 使用例 {#usage-example}
 
@@ -101,7 +96,7 @@ ClickHouse は、ランダムな UUID バージョン 4 の値を生成するた
 ```sql
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
-INSERT INTO t_uuid SELECT generateUUIDv4(), '例 1'
+INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 
 SELECT * FROM t_uuid
 ```
@@ -110,7 +105,7 @@ SELECT * FROM t_uuid
 
 ```text
 ┌────────────────────────────────────x─┬─y─────────┐
-│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ 例1 │
+│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
 ```
 
@@ -119,18 +114,17 @@ SELECT * FROM t_uuid
 この例では、レコード挿入時に UUID 列の値を指定しないため、つまりデフォルトの UUID 値が挿入されます。
 
 ```sql
-INSERT INTO t_uuid (y) VALUES ('例2')
+INSERT INTO t_uuid (y) VALUES ('Example 2')
 
 SELECT * FROM t_uuid
 ```
 
 ```text
 ┌────────────────────────────────────x─┬─y─────────┐
-│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ 例1 │
-│ 00000000-0000-0000-0000-000000000000 │ 例2 │
+│ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
+│ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## 制限事項 {#restrictions}
 

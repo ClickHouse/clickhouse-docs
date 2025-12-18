@@ -11,12 +11,9 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # 连接建议 {#connection-tips}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## 初始 SQL 选项卡 {#initial-sql-tab}
 
@@ -25,7 +22,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ```text
 SET my_setting=value;
 ```
-
 
 ## 高级选项卡 {#advanced-tab}
 
@@ -37,8 +33,6 @@ SET my_setting=value;
     UInt256=java.lang.Double,Int256=java.lang.Double
     ```
   关于类型映射的更多信息请参阅相应章节。
-
-
 
 * **JDBC Driver URL Parameters**。您可以在此字段中传递其余的[驱动参数](https://github.com/ClickHouse/clickhouse-jdbc#configuration)，例如 `jdbcCompliance`。请注意，参数值必须以 URL 编码格式传递；如果同时通过此字段以及 Advanced 选项卡前两个字段传递了 `custom_http_params` 或 `typeMappings`，则以 Advanced 选项卡中前两个字段的值为准。
 * **Set Session ID** 复选框。用于在 Initial SQL 选项卡中设置会话级别的设置，会生成一个带时间戳和伪随机数的 `session_id`，格式为 `"tableau-jdbc-connector-*{timestamp}*-*{number}*"`。
@@ -54,13 +48,13 @@ LEFT([myUInt256], 2) // Error!
 若要像处理字符串一样处理大整数 Integer 字段，需要将该字段显式包装在 STR() 函数中。
 
 ```text
-LEFT(STR([myUInt256]), 2) // 运行良好！
+LEFT(STR([myUInt256]), 2) // Works well!
 ```
 
 然而，此类字段最常用于统计唯一值的数量（*例如在 Yandex.Metrica 中的 Watch ID、Visit ID*），或作为用于控制可视化粒度的 *Dimension（维度）* 使用，在这些场景下表现良好。
 
 ```text
-COUNTD([myUInt256]) // 同样可以正常工作!
+COUNTD([myUInt256]) // Works well too!
 ```
 
 现在在对包含 UInt64 字段的表使用数据预览（View data）时，不会再出现错误。

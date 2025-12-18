@@ -10,7 +10,6 @@ keywords: ['ClickHouse Kafka Connect Sink', 'ClickHouse 用 Kafka コネクタ',
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # ClickHouse Kafka Connect Sink {#clickhouse-kafka-connect-sink}
 
 :::note
@@ -61,13 +60,13 @@ Kafka Connector Sink は [Apache 2.0 License](https://www.apache.org/licenses/LI
 ```yml
 connector.class=com.clickhouse.kafka.connect.ClickHouseSinkConnector
 tasks.max=1
-topics=&lt;topic_name&gt;
+topics=<topic_name>
 ssl=true
 jdbcConnectionProperties=?sslmode=STRICT
 security.protocol=SSL
-hostname=&lt;hostname&gt;
-database=&lt;database_name&gt;
-password=&lt;password&gt;
+hostname=<hostname>
+database=<database_name>
+password=<password>
 ssl.truststore.location=/tmp/kafka.client.truststore.jks
 port=8443
 value.converter.schemas.enable=false
@@ -91,7 +90,6 @@ ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報�
 * キーおよび値コンバーター: トピック上のデータ種別に基づいて設定します。ワーカー設定で既に定義されていない場合は必須です。
 
 設定オプションの完全な一覧表:
-
 
 | Property Name                                   | Description                                                                                                                                                                                                                        | Default Value                                            |
 |-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
@@ -123,8 +121,6 @@ ClickHouse Sink を ClickHouse サーバーに接続するには、次の情報�
 | `ignorePartitionsWhenBatching`                  | insert 用にメッセージを収集する際にパーティションを無視する（ただし `exactlyOnce` が `false` の場合のみ）。パフォーマンス上の注意: Connector Task が多いほど、1 Task あたりに割り当てられる Kafka パーティションは少なくなり、効果が逓減しうる。 | `"false"`                                                |
 
 ### 対象テーブル {#target-tables}
-
-
 
 ClickHouse Connect Sink は Kafka のトピックからメッセージを読み取り、適切なテーブルに書き込みます。ClickHouse Connect Sink が書き込むのは既存のテーブルのみです。データの挿入を開始する前に、対象テーブルが ClickHouse 上に適切なスキーマで作成済みであることを必ず確認してください。
 
@@ -204,7 +200,6 @@ ClickHouse Kafka Connect Sink に送信される前に送信メッセージを�
 #### 複数のトピックを対象とした基本構成 {#basic-configuration-with-multiple-topics}
 
 コネクタは複数のトピックからデータを読み取ることができます
-
 
 ```json
 {
@@ -305,7 +300,7 @@ ClickHouse Kafka Connect Sink に送信される前に送信メッセージを�
 Confluent Platform を使用している場合は、CLI コマンドを実行することでログを確認できます。
 
 ```bash
-confluent local services connect のログ
+confluent local services connect log
 ```
 
 詳細については、公式の[チュートリアル](https://docs.confluent.io/platform/current/connect/logging.html)を参照してください。
@@ -339,7 +334,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 * `record-send-rate`: 1 秒あたりに送信されたレコードの平均レート
 * `byte-rate`: 1 秒あたりに送信されたバイト数の平均レート
 * `compression-rate`: 達成された圧縮率
-
 
 **パーティションレベルのメトリクス:**
 - `records-sent-total`: パーティションに送信されたレコードの総数
@@ -430,8 +424,6 @@ JMX メトリクスの詳細な定義および Prometheus との統合につい�
 - デフォルトのコネクタ設定で既にスループット要件を満たしている場合
 - ClickHouse クラスターが受信負荷を容易に処理できている場合
 
-
-
 #### データフローの理解 {#understanding-the-data-flow}
 
 チューニングを行う前に、コネクタ内でデータがどのように流れるかを理解しておくことが重要です。
@@ -467,77 +459,29 @@ Kafka Connect（フレームワーク）は、コネクタとは独立してバ�
 
 ClickHouse のパフォーマンスを最適化するには、より大きなバッチサイズを目標としてください。
 
-
-
 ```properties
-# ポーリング1回あたりのレコード数を増やす {#increase-the-number-of-records-per-poll}
+# Increase the number of records per poll
 consumer.max.poll.records=5000
-```
 
+# Increase the partition fetch size (5 MB)
+consumer.max.partition.fetch.bytes=5242880
+
+# Optional: Increase minimum fetch size to wait for more data (1 MB)
+consumer.fetch.min.bytes=1048576
+
+# Optional: Reduce wait time if latency is critical
+consumer.fetch.max.wait.ms=300
+```
 
 # パーティションのフェッチサイズを増やす (5 MB) {#increase-the-partition-fetch-size-5-mb}
 consumer.max.partition.fetch.bytes=5242880
 
-
-
 # 任意: より多くのデータが揃うまで待つように最小フェッチサイズを増やす (1 MB) {#optional-increase-minimum-fetch-size-to-wait-for-more-data-1-mb}
 consumer.fetch.min.bytes=1048576
-
-
 
 # オプション: レイテンシがクリティカルな場合の待機時間を短縮する {#optional-reduce-wait-time-if-latency-is-critical}
 
 consumer.fetch.max.wait.ms=300
-
-````
-
-**重要**: Kafka Connect のフェッチ設定は圧縮データを前提としていますが、ClickHouse が受信するのは非圧縮データです。使用している圧縮率に応じて、これらの設定のバランスを調整してください。
-
-**トレードオフ**:
-- **より大きなバッチ** = ClickHouse へのインジェスト性能の向上、パーツ数の削減、オーバーヘッドの低減
-- **より大きなバッチ** = メモリ使用量の増加、エンドツーエンドのレイテンシー増大の可能性
-- **バッチが大きすぎる場合** = タイムアウト、OutOfMemory エラー、`max.poll.interval.ms` 超過のリスク
-
-詳細については、[Confluent ドキュメント](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) および [Kafka ドキュメント](https://kafka.apache.org/documentation/#consumerconfigs) を参照してください。
-
-#### 非同期インサート                         {#asynchronous-inserts}
-
-非同期インサートは、コネクタが比較的小さなバッチを送信する場合や、バッチ処理の責務を ClickHouse 側に移してインジェストをさらに最適化したい場合に有用な強力な機能です。
-
-##### 非同期インサートを使用すべき場合                              {#when-to-use-async-inserts}
-
-次のような場合は、非同期インサートを有効化することを検討してください:
-
-- **小さなバッチが多数ある場合**: コネクタが頻繁に小さなバッチ (1 バッチあたり 1000 行未満) を送信している
-- **高い同時実行性がある場合**: 複数のコネクタタスクが同じテーブルに書き込んでいる
-- **分散デプロイの場合**: 複数のホスト上で多数のコネクタインスタンスを実行している
-- **パーツ作成のオーバーヘッドが問題になっている場合**: 「too many parts」エラーが発生している
-- **ワークロードが混在している場合**: リアルタイムのインジェストとクエリワークロードを組み合わせている
-
-次のような場合は、非同期インサートを**使用しないでください**:
-
-- すでに制御された頻度で大きなバッチ (1 バッチあたり 10,000 行超) を送信している
-- 即時のデータ可視性が必要である (クエリがデータを即座に参照できなければならない)
-- `wait_for_async_insert=0` を用いた exactly-once セマンティクスが要件と競合する
-- クライアント側でのバッチ処理の改善の方がユースケースに適している
-
-##### 非同期インサートの動作                           {#how-async-inserts-work}
-
-非同期インサートを有効にすると、ClickHouse は次のように動作します:
-
-1. コネクタからインサートクエリを受信する
-2. データを (ディスクではなく) メモリ上のバッファに書き込む
-3. コネクタに成功を返す (`wait_for_async_insert=0` の場合)
-4. 次のいずれかの条件を満たしたタイミングでバッファをディスクにフラッシュする:
-   - バッファが `async_insert_max_data_size` (デフォルト: 10 MB) に達した場合
-   - 最初のインサートから `async_insert_busy_timeout_ms` ミリ秒が経過した場合 (デフォルト: 1000 ms)
-   - 蓄積されたクエリ数が最大値 (`async_insert_max_query_number`, デフォルト: 100) に達した場合
-
-これにより作成されるパーツ数が大幅に削減され、全体的なスループットが向上します。
-
-##### 非同期インサートの有効化                           {#enabling-async-inserts}
-
-`clickhouseSettings` 構成パラメータに非同期インサートの設定を追加します:
 
 ```json
 {
@@ -548,40 +492,20 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-````
-
-**主な設定**:
-
-* **`async_insert=1`**: 非同期インサートを有効にする
-* **`wait_for_async_insert=1`**（推奨）: コネクタは、ClickHouse ストレージへのフラッシュ完了を待ってから応答を返します。確実なデータ配信を保証します。
-* **`wait_for_async_insert=0`**: コネクタはバッファリング直後に応答を返します。パフォーマンスは向上しますが、フラッシュ前にサーバーがクラッシュした場合はデータが失われる可能性があります。
-
-##### 非同期インサート動作のチューニング {#tuning-async-inserts}
-
-非同期インサートのフラッシュ動作を細かく調整できます。
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
+```json
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
 
 ```json
 "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
-```
-
-一般的なチューニングパラメータ:
-
-* **`async_insert_max_data_size`** (デフォルト: 10485760 / 10 MB): フラッシュ前の最大バッファサイズ
-* **`async_insert_busy_timeout_ms`** (デフォルト: 1000): フラッシュまでの最大時間 (ミリ秒)
-* **`async_insert_stale_timeout_ms`** (デフォルト: 0): 最後の挿入からフラッシュまでの時間 (ミリ秒)
-* **`async_insert_max_query_number`** (デフォルト: 100): フラッシュ前の最大クエリ数
-
-**トレードオフ**:
-
-* **利点**: パーツ数の削減、マージ性能の向上、CPU オーバーヘッドの低減、高い並行性下でのスループット改善
-* **考慮事項**: データが即座にはクエリ可能にならない、エンドツーエンドのレイテンシがわずかに増加
-* **リスク**: `wait_for_async_insert=0` の場合にサーバークラッシュ時のデータ損失、大きなバッファによるメモリプレッシャー発生の可能性
-
-##### Exactly-once セマンティクスを伴う非同期インサート {#async-inserts-with-exactly-once}
-
-`exactlyOnce=true` を非同期インサートと併用する場合:
-
-
 ```json
 {
   "config": {
@@ -589,58 +513,30 @@ consumer.fetch.max.wait.ms=300
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
   }
 }
-```
-
-**重要**: データが永続化された後にのみオフセットコミットが行われるようにするため、exactly-once セマンティクスと併用する場合は常に `wait_for_async_insert=1` を使用してください。
-
-非同期インサートの詳細については、[ClickHouse の非同期インサートに関するドキュメント](/best-practices/selecting-an-insert-strategy#asynchronous-inserts)を参照してください。
-
-#### コネクタの並列度 {#connector-parallelism}
-
-スループットを向上させるには、並列度を高めてください。
-
-##### コネクタごとのタスク数 {#tasks-per-connector}
-
+```json
+{
+  "config": {
+    "exactlyOnce": "true",
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1"
+  }
+}
 ```json
 "tasks.max": "4"
-```
-
-各タスクはトピックパーティションの一部を処理します。タスク数を増やす = 並列度の向上ですが、次の点に注意が必要です:
-
-* 実効的な最大タスク数 = トピックパーティション数
-* 各タスクは個別に ClickHouse への接続を維持する
-* タスク数が増える = オーバーヘッド増加とリソース競合の可能性
-
-**推奨値**: まずは `tasks.max` をトピックパーティション数と同じ値に設定し、その後 CPU およびスループットのメトリクスに基づいて調整してください。
-
-##### バッチ処理時のパーティション無視 {#ignoring-partitions}
-
-デフォルトでは、コネクタはパーティションごとにメッセージをバッチ処理します。より高いスループットが必要な場合は、パーティションをまたいでバッチ処理できます:
-
+```json
+"tasks.max": "4"
 ```json
 "ignorePartitionsWhenBatching": "true"
-```
-
-**警告**: `exactlyOnce=false` の場合にのみ使用してください。この設定は、より大きなバッチを作成することでスループットを向上できますが、パーティション単位の順序の保証は失われます。
-
-#### 複数の高スループットトピック {#multiple-high-throughput-topics}
-
-コネクタが複数のトピックを購読するように構成されており、`topic2TableMap` を使用してトピックをテーブルにマッピングしていて、挿入時にボトルネックが発生しコンシューマラグが生じている場合は、代わりにトピックごとに 1 つのコネクタを作成することを検討してください。
-
-この問題が発生する主な理由は、現在、バッチがすべてのテーブルに対して[逐次的に](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/578ac07e8be1a920aaa3b26e49183595c3edd04b/src/main/java/com/clickhouse/kafka/connect/sink/ProxySinkTask.java#L95-L100)挿入されているためです。
-
-**推奨**: 高スループットのトピックが複数ある場合は、挿入の並列スループットを最大化するために、トピックごとに 1 つのコネクタインスタンスをデプロイしてください。
-
-#### ClickHouse テーブルエンジンに関する考慮事項 {#table-engine-considerations}
-
-ユースケースに適した ClickHouse テーブルエンジンを選択してください:
-
-* **`MergeTree`**: ほとんどのユースケースに最適で、クエリ性能と挿入性能のバランスが良い
-* **`ReplicatedMergeTree`**: 高可用性に必須だが、レプリケーションのオーバーヘッドが追加される
-* **適切な `ORDER BY` を設定した `*MergeTree`**: クエリパターンに合わせて最適化
-
-**検討すべき設定**:
-
+```json
+"ignorePartitionsWhenBatching": "true"
+```sql
+CREATE TABLE my_table (...)
+ENGINE = MergeTree()
+ORDER BY (timestamp, id)
+SETTINGS 
+    -- Increase max insert threads for parallel part writing
+    max_insert_threads = 4,
+    -- Allow inserts with quorum for reliability (ReplicatedMergeTree)
+    insert_quorum = 2
 ```sql
 CREATE TABLE my_table (...)
 ENGINE = MergeTree()
@@ -650,65 +546,44 @@ SETTINGS
     max_insert_threads = 4,
     -- 信頼性向上のためにクォーラム付きの INSERT を許可する（ReplicatedMergeTree）
     insert_quorum = 2
-```
-
-コネクタレベルの挿入設定:
-
 ```json
 "clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
-```
-
-#### コネクションプーリングとタイムアウト {#connection-pooling}
-
-コネクタは ClickHouse への HTTP 接続を維持します。レイテンシが高いネットワーク環境では、タイムアウトを調整してください。
+```json
+"clickhouseSettings": "insert_quorum=2,insert_quorum_timeout=60000"
+```json
+"clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
 
 ```json
 "clickhouseSettings": "socket_timeout=300000,connection_timeout=30000"
-```
-
-* **`socket_timeout`** (デフォルト: 30000 ms): 読み取り操作の最大待機時間
-* **`connection_timeout`** (デフォルト: 10000 ms): 接続が確立されるまでの最大待機時間
-
-大きなバッチでタイムアウトエラーが発生する場合は、これらの値を引き上げてください。
-
-#### パフォーマンスの監視とトラブルシューティング {#monitoring-performance}
-
-次の主要なメトリクスを監視します:
-
-1. **Consumer lag**: Kafka の監視ツールを使用してパーティションごとのラグ（遅延）を追跡
-2. **Connector metrics**: JMX 経由で `receivedRecords`、`recordProcessingTime`、`taskProcessingTime` を監視（[Monitoring](#monitoring) を参照）
-3. **ClickHouse metrics**:
-   * `system.asynchronous_inserts`: 非同期インサートバッファの使用状況を監視
-   * `system.parts`: パーツ数を監視してマージの問題を検出
-   * `system.merges`: 実行中のマージを監視
-   * `system.events`: `InsertedRows`、`InsertedBytes`、`FailedInsertQuery` を追跡
-
-**一般的なパフォーマンス問題**:
-
-
-| 症状                  | 考えられる原因              | 解決策                                                   |
-| ------------------- | -------------------- | ----------------------------------------------------- |
-| コンシューマーラグが大きい       | バッチが小さすぎる            | `max.poll.records` を増やし、async inserts を有効にする          |
-| 「Too many parts」エラー | 小さな挿入処理が高頻度で行われている   | async inserts を有効にし、バッチサイズを増やす                        |
-| タイムアウトエラー           | バッチサイズが大きい、ネットワークが遅い | バッチサイズを減らし、`socket_timeout` を増やし、ネットワークを確認する          |
-| CPU 使用率が高い          | 小さなパーツが多すぎる          | async inserts を有効にし、マージ関連の設定値を引き上げる                   |
-| OutOfMemory エラー     | バッチサイズが大きすぎる         | `max.poll.records` と `max.partition.fetch.bytes` を減らす |
-| タスク負荷が不均一           | パーティション分布が不均一        | パーティションを再バランスするか、`tasks.max` を調整する                    |
-
-#### ベストプラクティスのまとめ {#performance-best-practices}
-
-1. **まずはデフォルトから始め**、実際のパフォーマンスを測定してからチューニングする
-2. **可能な限り大きなバッチを優先する**: 1 回の insert あたり 10,000～100,000 行を目安にする
-3. **多数の小さなバッチを送信する場合や高い並行度が必要な場合は async inserts を使用する**
-4. **厳密な 1 回だけのセマンティクス（exactly-once）では常に `wait_for_async_insert=1` を使用する**
-5. **水平方向にスケールさせる**: パーティション数まで `tasks.max` を増やす
-6. **高トラフィックなトピックごとに 1 つのコネクタ** を割り当ててスループットを最大化する
-7. **継続的に監視する**: コンシューマーラグ、パーツ数、マージアクティビティを追跡する
-8. **十分にテストする**: 本番デプロイメント前に、現実的な負荷で設定変更を必ずテストする
-
-#### 例: 高スループット向け設定 {#example-high-throughput}
-
-以下は高スループット用に最適化した完全な例です。
+```json
+{
+  "name": "clickhouse-high-throughput",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    "tasks.max": "8",
+    
+    "topics": "high_volume_topic",
+    "hostname": "my-clickhouse-host.cloud",
+    "port": "8443",
+    "database": "default",
+    "username": "default",
+    "password": "<PASSWORD>",
+    "ssl": "true",
+    
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    
+    "exactlyOnce": "false",
+    "ignorePartitionsWhenBatching": "true",
+    
+    "consumer.max.poll.records": "10000",
+    "consumer.max.partition.fetch.bytes": "5242880",
+    "consumer.fetch.min.bytes": "1048576",
+    "consumer.fetch.max.wait.ms": "500",
+    
+    "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
+  }
+}
 
 ```json
 {
@@ -739,68 +614,18 @@ SETTINGS
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
-```
-
-**この構成では**:
-
-* ポーリングごとに最大 10,000 レコードを処理します
-* 大きな挿入に対応するため、パーティションをまたいでバッチ処理します
-* 16 MB のバッファを使用した非同期インサートを行います
-* 8 個のタスクを並列実行します（パーティション数に合わせて調整してください）
-* 厳密な順序性よりもスループットを優先するように最適化されています
-
-### トラブルシューティング {#troubleshooting}
-
-#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; {#state-mismatch-for-topic-sometopic-partition-0}
-
-これは、KeeperMap に保存されているオフセットと Kafka に保存されているオフセットが異なる場合に発生します。\
-通常、トピックが削除された場合や、オフセットが手動で調整された場合に起こります。\
-これを解消するには、該当するトピック + パーティションに対して保存されている古い値を削除する必要があります。
-
-**注意: この調整は exactly-once セマンティクスに影響を与える可能性があります。**
-
-#### &quot;What errors will the connector retry?&quot; {#what-errors-will-the-connector-retry}
-
-現時点では、再試行可能な一時的エラーを特定することに重点を置いており、次のものが含まれます:
-
-* `ClickHouseException` - これは ClickHouse によってスローされる汎用的な例外です。\
-  通常、サーバーが過負荷のときにスローされ、特に一時的とみなされるエラーコードは次のとおりです:
-  * 3 - UNEXPECTED&#95;END&#95;OF&#95;FILE
-  * 159 - TIMEOUT&#95;EXCEEDED
-  * 164 - READONLY
-  * 202 - TOO&#95;MANY&#95;SIMULTANEOUS&#95;QUERIES
-  * 203 - NO&#95;FREE&#95;CONNECTION
-  * 209 - SOCKET&#95;TIMEOUT
-  * 210 - NETWORK&#95;ERROR
-  * 242 - TABLE&#95;IS&#95;READ&#95;ONLY
-  * 252 - TOO&#95;MANY&#95;PARTS
-  * 285 - TOO&#95;FEW&#95;LIVE&#95;REPLICAS
-  * 319 - UNKNOWN&#95;STATUS&#95;OF&#95;INSERT
-  * 425 - SYSTEM&#95;ERROR
-  * 999 - KEEPER&#95;EXCEPTION
-  * 1002 - UNKNOWN&#95;EXCEPTION
-* `SocketTimeoutException` - ソケットがタイムアウトしたときにスローされます。
-* `UnknownHostException` - ホスト名が解決できないときにスローされます。
-* `IOException` - ネットワークに問題がある場合にスローされます。
-
-
-#### 「すべてのデータが空/ゼロになっている」 {#all-my-data-is-blankzeroes}
-
-おそらく、データ内のフィールドがテーブル内のフィールドと一致していません。これは特に CDC（変更データキャプチャ）や Debezium フォーマットでよく発生します。
-よくある解決策としては、コネクタ設定に `flatten` 変換を追加することです。
-
 ```properties
 transforms=flatten
 transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
 transforms.flatten.delimiter=_
-```
-
-これは、ネストされた JSON をフラットな JSON に変換します（`_` を区切り文字として使用）。テーブル内のフィールドは「field1&#95;field2&#95;field3」の形式（例: 「before&#95;id」、「after&#95;id」など）になります。
-
-#### 「ClickHouse で自分の Kafka キーを使いたい」 {#i-want-to-use-my-kafka-keys-in-clickhouse}
-
-Kafka のキーはデフォルトでは value フィールドに格納されませんが、`KeyToValue` 変換を使用して、キーを（新しい `_key` というフィールド名の下に）value フィールドへ移動できます。
-
+```properties
+transforms=flatten
+transforms.flatten.type=org.apache.kafka.connect.transforms.Flatten$Value
+transforms.flatten.delimiter=_
+```properties
+transforms=keyToValue
+transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
+transforms.keyToValue.field=_key
 ```properties
 transforms=keyToValue
 transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue

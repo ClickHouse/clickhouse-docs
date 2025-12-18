@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблицы JDBC {#jdbc-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -25,16 +24,14 @@ ClickHouse рекомендует использовать встроенные 
 
 Этот движок поддерживает тип данных [Nullable](../../../sql-reference/data-types/nullable.md).
 
-
-
 ## Создание таблицы {#creating-a-table}
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]имя_таблицы
+CREATE TABLE [IF NOT EXISTS] [db.]table_name
 (
-    список_столбцов...
+    columns list...
 )
-ENGINE = JDBC(источник_данных, внешняя_база_данных, внешняя_таблица)
+ENGINE = JDBC(datasource, external_database, external_table)
 ```
 
 **Параметры движка**
@@ -49,7 +46,6 @@ ENGINE = JDBC(источник_данных, внешняя_база_данны�
 * `external_table` — имя таблицы во внешней базе данных или оператор SELECT вида `select * from table1 where column1=1`.
 
 * Эти параметры также можно передавать с использованием [именованных коллекций](operations/named-collections.md).
-
 
 ## Пример использования {#usage-example}
 
@@ -105,7 +101,6 @@ INSERT INTO jdbc_table(`int_id`, `float`)
 SELECT toInt32(number), toFloat32(number * 1.0)
 FROM system.numbers
 ```
-
 
 ## См. также {#see-also}
 

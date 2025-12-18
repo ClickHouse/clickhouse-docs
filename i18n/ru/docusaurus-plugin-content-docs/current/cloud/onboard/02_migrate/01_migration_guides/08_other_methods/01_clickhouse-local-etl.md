@@ -17,7 +17,6 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-
 # Миграция в ClickHouse с использованием clickhouse-local {#migrating-to-clickhouse-using-clickhouse-local}
 
 <Image img={ch_local_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
@@ -98,9 +97,8 @@ ClickHouse предоставляет интеграционные движки 
 #### Создайте целевую базу данных: {#create-the-destination-database}
 
 ```sql
-  CREATE DATABASE db
+CREATE DATABASE db
 ```
-
 
 #### Создайте таблицу-назначение с такой же схемой, как у таблицы MySQL: {#create-a-destination-table-that-has-a-schema-equivalent-to-the-mysql-table}
 
@@ -111,7 +109,6 @@ ClickHouse предоставляет интеграционные движки 
 :::note
 Схемы целевой таблицы ClickHouse Cloud и исходной таблицы MySQL должны соответствовать друг другу (имена и порядок столбцов должны совпадать, а типы данных столбцов — быть совместимыми).
 :::
-
 
 ### На хосте с clickhouse-local: {#on-the-clickhouse-local-host-machine}
 
@@ -129,7 +126,6 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 и затем сразу записываются в целевую таблицу в ClickHouse Cloud.
 :::
 
-
 ## Пример 2. Миграция с MySQL в ClickHouse Cloud с использованием JDBC bridge {#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge}
 
 Мы будем использовать [табличный движок интеграции JDBC](/engines/table-engines/integrations/jdbc.md) (создаваемый на лету с помощью [табличной функции jdbc](/sql-reference/table-functions/jdbc.md)) вместе с [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) и JDBC-драйвером MySQL для чтения данных из исходной базы данных MySQL, а [табличную функцию remoteSecure](/sql-reference/table-functions/remote.md) — для записи данных в целевую таблицу в вашем сервисе ClickHouse Cloud.
@@ -141,5 +137,5 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 #### Создайте целевую базу данных: {#create-the-destination-database-1}
 
 ```sql
-  CREATE DATABASE db
+CREATE DATABASE db
 ```

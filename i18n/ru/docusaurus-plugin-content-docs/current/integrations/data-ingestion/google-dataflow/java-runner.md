@@ -2,7 +2,7 @@
 sidebar_label: 'Java Runner'
 slug: /integrations/google-dataflow/java-runner
 sidebar_position: 2
-description: 'Пользователи могут осуществлять приём данных в ClickHouse с помощью Java Runner для Google Dataflow'
+description: 'Вы можете осуществлять приём данных в ClickHouse с помощью Java Runner для Google Dataflow'
 title: 'Dataflow Java Runner'
 doc_type: 'guide'
 keywords: ['Dataflow Java Runner', 'Google Dataflow ClickHouse', 'Apache Beam Java ClickHouse', 'коннектор ClickHouseIO']
@@ -16,8 +16,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 Java-раннер Dataflow позволяет выполнять пользовательские конвейеры Apache Beam в службе Dataflow в Google Cloud. Такой подход обеспечивает максимальную гибкость и хорошо подходит для сложных ETL‑процессов.
-
-
 
 ## Как это работает {#how-it-works}
 

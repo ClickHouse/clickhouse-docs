@@ -77,7 +77,6 @@ if __name__ == '__main__':
 
 同様に、データを [TabSeparated](/interfaces/formats/TabSeparated) やその他の形式で保存することもできます。利用可能なすべてのフォーマットの概要については、[入力および出力データのフォーマット](/interfaces/formats) を参照してください。
 
-
 ## マルチスレッド、マルチプロセス、および非同期／イベント駆動のユースケース {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
 ClickHouse Connect は、マルチスレッド、マルチプロセス、さらにイベントループ駆動／非同期アプリケーションでも良好に動作します。すべてのクエリおよび INSERT の処理は単一スレッド内で実行されるため、操作は一般的にスレッドセーフです。（一部の処理を低レベルで並列化し、単一スレッドであることに起因する性能上のペナルティを解消する将来的な拡張の可能性はありますが、その場合でもスレッドセーフであることは維持されます。）
@@ -102,7 +101,7 @@ async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-    # 出力:
+    # Output:
     # [('INFORMATION_SCHEMA',)]
 
 asyncio.run(main())
@@ -115,7 +114,6 @@ asyncio.run(main())
 注意: 通常の `Client` と異なり、`AsyncClient` では `autogenerate_session_id` がデフォルトで `False` に強制されます。
 
 関連項目: [run&#95;async の例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
-
 
 ## ClickHouse セッション ID の管理 {#managing-clickhouse-session-ids}
 
@@ -141,7 +139,6 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 または、`autogenerate_session_id=False` を直接 `get_client(...)` に渡します。
 
 この場合、ClickHouse Connect は `session_id` を送信せず、サーバーは個々のリクエストを同じセッションに属するものとして扱いません。一時テーブルおよびセッションレベルの設定は、リクエスト間で保持されません。
-
 
 ## HTTP コネクションプールのカスタマイズ {#customizing-the-http-connection-pool}
 

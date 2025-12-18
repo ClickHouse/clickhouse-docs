@@ -19,13 +19,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) — это интегрированный аналитический сервис, который объединяет большие данные, data science и хранилища данных, обеспечивая быструю аналитику в крупном масштабе.
-В Synapse пулы Spark предоставляют масштабируемые по запросу кластеры [Apache Spark](https://spark.apache.org), которые позволяют пользователям выполнять сложные преобразования данных, задачи машинного обучения и интеграции с внешними системами.
+В Synapse пулы Spark предоставляют масштабируемые по запросу кластеры [Apache Spark](https://spark.apache.org), которые позволяют выполнять сложные преобразования данных, задачи машинного обучения и интеграции с внешними системами.
 
 В этой статье вы узнаете, как интегрировать [коннектор ClickHouse Spark](/integrations/apache-spark/spark-native-connector) при работе с Apache Spark в Azure Synapse.
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## Добавление зависимостей коннектора {#add-connector-dependencies}
 Azure Synapse поддерживает три уровня [управления пакетами](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries):
@@ -40,8 +38,6 @@ Azure Synapse поддерживает три уровня [управления
 - `clickhouse-jdbc-{java_client_version}-all.jar` — [официальный репозиторий Maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
 Ознакомьтесь с документацией [Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix), чтобы подобрать версии, соответствующие вашим требованиям.
-
-
 
 ## Добавить ClickHouse как каталог {#add-clickhouse-as-catalog}
 
@@ -78,18 +74,16 @@ Azure Synapse поддерживает три уровня [управления
 Перейдите на страницу [ClickHouse Spark configurations](/integrations/apache-spark/spark-native-connector#configurations) для получения дополнительных настроек.
 
 :::info
-При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).\
+При работе с ClickHouse Cloud обязательно задайте [обязательные параметры Spark](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings).
 :::
 
 
 ## Проверка настройки {#setup-verification}
 
 Чтобы убедиться, что зависимости и конфигурации были успешно настроены, перейдите в Spark UI вашего сеанса и откройте вкладку `Environment`.
-Там найдите параметры, связанные с ClickHouse:
+Там найдите параметры, относящиеся к ClickHouse:
 
 <Image img={sparkUICHSettings} size="xl" alt="Проверка настроек ClickHouse с помощью Spark UI" border/>
-
-
 
 ## Дополнительные ресурсы {#additional-resources}
 

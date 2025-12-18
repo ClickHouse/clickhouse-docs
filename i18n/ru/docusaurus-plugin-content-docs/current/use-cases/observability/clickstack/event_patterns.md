@@ -30,7 +30,7 @@ import event_patterns_highlight from '@site/static/images/use-cases/observabilit
 
 <Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
 
-Это является альтернативой настройке по умолчанию **Results Table**, при которой пользователи просматривают каждый отдельный лог или трейс.
+Это является альтернативой настройке по умолчанию **Results Table**, при которой можно просматривать каждый отдельный лог или трейс.
 
 ## Рекомендации {#recommendations}
 

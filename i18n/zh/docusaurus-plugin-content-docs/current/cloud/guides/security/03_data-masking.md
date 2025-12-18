@@ -36,7 +36,7 @@ SELECT replaceOne(
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────┐
-│ 客户 [CUSTOMER_NAME] 致电咨询其账户相关问题 │
+│ Customer [CUSTOMER_NAME] called about his account │
 └───────────────────────────────────────────────────┘
 ```
 
@@ -53,7 +53,7 @@ SELECT
 
 ```response title="Response"
 ┌─anonymized_text───────────────────────────────────────────────────────────────────────┐
-│ [客户姓名] Smith 打来电话。后来，[客户姓名] 和 [客户姓名] 也打来了电话。 │
+│ [CUSTOMER_NAME] Smith called. Later, [CUSTOMER_NAME] and [CUSTOMER_NAME] also called. │
 └───────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -329,7 +329,7 @@ ORDER BY user_id ASC
 ```yaml
 <query_masking_rules>
     <rule>
-        <name>隐藏 SSN</name>
+        <name>hide SSN</name>
         <regexp>(^|\D)\d{3}-\d{2}-\d{4}($|\D)</regexp>
         <replace>000-00-0000</replace>
     </rule>

@@ -7,8 +7,6 @@ keywords: ['ネイティブプロトコル', 'TCPプロトコル', 'プロトコ
 doc_type: 'guide'
 ---
 
-
-
 # 基本 {#basics}
 
 :::note
@@ -22,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
 
-
 ## Varint {#varint}
 
 長さやパケットコードなどには、*unsigned varint* エンコード方式が使われます。
@@ -31,8 +28,6 @@ import TabItem from '@theme/TabItem';
 :::note
 *signed* varint は使用されません。
 :::
-
-
 
 ## String {#string}
 
@@ -50,12 +45,12 @@ OOM によるメモリ枯渇を防ぐため、length を必ず検証すること
 ```go
 s := "Hello, world!"
 
-// 文字列長を uvarint として書き込む。
+// Writing string length as uvarint.
 buf := make([]byte, binary.MaxVarintLen64)
 n := binary.PutUvarint(buf, uint64(len(s)))
 buf = buf[:n]
 
-// 文字列本体を書き込む。
+// Writing string value.
 buf = append(buf, s...)
 ```
 
@@ -68,13 +63,13 @@ r := bytes.NewReader([]byte{
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
-// length を読み込む。
+// Read length.
 n, err := binary.ReadUvarint(r)
 if err != nil {
         panic(err)
 }
 
-// OOM や make() 時のランタイム例外を防ぐため n をチェックする。
+// Check n to prevent OOM or runtime exception in make().
 const maxSize = 1024 * 1024 * 10 // 10 MB
 if n > maxSize || n < 0 {
     panic("invalid n")
@@ -119,8 +114,6 @@ data := []byte{
 </TabItem>
 </Tabs>
 
-
-
 ## 整数 {#integers}
 
 :::tip
@@ -132,11 +125,11 @@ ClickHouse は固定サイズの整数に **リトルエンディアン (Little 
 ```go
 v := int32(1000)
 
-// エンコード
+// Encode.
 buf := make([]byte, 8)
 binary.LittleEndian.PutUint32(buf, uint32(v))
 
-// デコード
+// Decode.
 d := int32(binary.LittleEndian.Uint32(buf))
 fmt.Println(d) // 1000
 ```
@@ -144,17 +137,16 @@ fmt.Println(d) // 1000
 <Tabs>
   <TabItem value="hexdump" label="Hexダンプ">
     ```hexdump
-    00000000  e8 03 00 00 00 00 00 00                           |........|
-    ```
+00000000  e8 03 00 00 00 00 00 00                           |........|
+```
   </TabItem>
 
   <TabItem value="base64" label="Base64">
     ```text
-    6AMAAAAAAAA
-    ```
+6AMAAAAAAAA
+```
   </TabItem>
 </Tabs>
-
 
 ## Boolean {#boolean}
 

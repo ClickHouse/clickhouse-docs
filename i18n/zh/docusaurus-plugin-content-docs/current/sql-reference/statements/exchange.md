@@ -19,7 +19,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-交换表|字典 [db0.]name_A 和 [db1.]name_B [在集群 cluster 上]
+EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 ```
 
 ## EXCHANGE TABLES {#exchange-tables}
@@ -29,7 +29,7 @@ doc_type: 'reference'
 **语法**
 
 ```sql
-交换表 [db0.]table_A 和 [db1.]table_B [在集群 cluster 上]
+EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 ```
 
 ### 交换多个表 {#exchange-multiple-tables}
@@ -43,13 +43,13 @@ doc_type: 'reference'
 **示例**
 
 ```sql title="Query"
--- 创建表
+-- Create tables
 CREATE TABLE a (a UInt8) ENGINE=Memory;
 CREATE TABLE b (b UInt8) ENGINE=Memory;
 CREATE TABLE c (c UInt8) ENGINE=Memory;
 CREATE TABLE d (d UInt8) ENGINE=Memory;
 
--- 在单个查询中交换两对表
+-- Exchange two pairs of tables in one query
 EXCHANGE TABLES a AND b, c AND d;
 
 SHOW TABLE a;
@@ -59,7 +59,7 @@ SHOW TABLE d;
 ```
 
 ```sql title="Response"
--- 现在表 'a' 拥有表 'b' 的结构,表 'b' 拥有表 'a' 的结构
+-- Now table 'a' has the structure of 'b', and table 'b' has the structure of 'a'
 ┌─statement──────────────┐
 │ CREATE TABLE default.a↴│
 │↳(                     ↴│
@@ -75,7 +75,7 @@ SHOW TABLE d;
 │↳ENGINE = Memory        │
 └────────────────────────┘
 
--- 现在表 'c' 拥有表 'd' 的结构,表 'd' 拥有表 'c' 的结构
+-- Now table 'c' has the structure of 'd', and table 'd' has the structure of 'c'
 ┌─statement──────────────┐
 │ CREATE TABLE default.c↴│
 │↳(                     ↴│
@@ -99,7 +99,7 @@ SHOW TABLE d;
 **语法**
 
 ```sql
-交换字典 [db0.]dict_A 和 [db1.]dict_B [ON CLUSTER cluster]
+EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 ```
 
 **另请参阅**

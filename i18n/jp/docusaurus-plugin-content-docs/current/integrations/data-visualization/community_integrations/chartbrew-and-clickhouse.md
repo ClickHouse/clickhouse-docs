@@ -29,8 +29,6 @@ import Image from '@theme/IdealImage';
 
 [Chartbrew](https://chartbrew.com) は、ユーザーがダッシュボードを作成し、データをリアルタイムで監視できるデータ可視化プラットフォームです。複数のデータソース（ClickHouse を含む）をサポートしており、チャートやレポートをノーコードで作成できるインターフェースを提供します。
 
-
-
 ## 目的 {#goal}
 
 このガイドでは、Chartbrew を ClickHouse に接続し、SQL クエリを実行して、可視化を作成します。最後には、ダッシュボードは次のような表示になるかもしれません。
@@ -41,13 +39,9 @@ import Image from '@theme/IdealImage';
 作業に使えるデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用します。
 :::
 
-
-
 ## 1. 接続情報を準備する {#1-gather-your-connection-details}
 
 <ConnectionDetails />
-
-
 
 ## 2. Chartbrew を ClickHouse に接続する {#2-connect-chartbrew-to-clickhouse}
 
@@ -72,8 +66,6 @@ import Image from '@theme/IdealImage';
 
    <Image img={chartbrew_04} size="lg" alt="Chartbrew における ClickHouse の JSON スキーマ" />
 
-
-
 ## 3. データセットを作成して SQL クエリを実行する {#3-create-a-dataset-and-run-a-sql-query}
 
 1. **Create dataset** ボタンをクリックするか、**Datasets** タブを開いて新しいデータセットを作成します。
@@ -84,10 +76,10 @@ import Image from '@theme/IdealImage';
 可視化したいデータを取得するための SQL クエリを作成します。例えば、次のクエリは `uk_price_paid` データセットから、年ごとの支払価格の平均値を算出します。
 
 ```sql
-SELECT toYear(date) AS year, avg(price) AS avg_price
-FROM uk_price_paid
-GROUP BY year
-ORDER BY year;
+  SELECT toYear(date) AS year, avg(price) AS avg_price
+  FROM uk_price_paid
+  GROUP BY year
+  ORDER BY year;
 ```
 
 <Image img={chartbrew_07} size="lg" alt="Chartbrew での ClickHouse SQL クエリ" />
@@ -102,31 +94,27 @@ ORDER BY year;
 
 
 ## 4. 可視化を作成する {#4-create-a-visualization}
-   
-  1. 可視化用のメトリクス（数値）とディメンション（カテゴリ型の値）を定義します。
+
+1. 可視化用のメトリクス（数値）とディメンション（カテゴリ型の値）を定義します。
   2. データセットをプレビューし、クエリ結果の構造が正しいことを確認します。
   3. グラフの種類（例：折れ線グラフ、棒グラフ、円グラフ）を選択し、ダッシュボードに追加します。
   4. **Complete dataset** をクリックしてセットアップを完了します。
 
-  <Image img={chartbrew_08} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
+<Image img={chartbrew_08} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
 
-  データのさまざまな側面を可視化するために、必要なだけデータセットを作成できます。これらのデータセットを使って、さまざまなメトリクスを追跡する複数のダッシュボードを作成できます。
+データのさまざまな側面を可視化するために、必要なだけデータセットを作成できます。これらのデータセットを使って、さまざまなメトリクスを追跡する複数のダッシュボードを作成できます。
 
-  <Image img={chartbrew_01} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
-
-
+<Image img={chartbrew_01} size="lg" alt="ClickHouse データを表示している Chartbrew ダッシュボード" />
 
 ## 5. データ更新の自動化 {#5-automate-data-updates}
-   
-  ダッシュボードを最新の状態に保つために、データの自動更新をスケジュールできます。
 
-  1. データセット更新ボタンの横にあるカレンダーアイコンをクリックします。
+ダッシュボードを最新の状態に保つために、データの自動更新をスケジュールできます。
+
+1. データセット更新ボタンの横にあるカレンダーアイコンをクリックします。
   2. 更新間隔を設定します（例: 1時間ごと、毎日）。
   3. 設定を保存し、自動更新を有効にします。
 
-  <Image img={chartbrew_09} size="lg" alt="Chartbrew のデータセット更新設定" />
-
-
+<Image img={chartbrew_09} size="lg" alt="Chartbrew のデータセット更新設定" />
 
 ## さらに詳しく {#learn-more}
 

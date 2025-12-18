@@ -7,8 +7,6 @@ title: 'Join 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # Join 表引擎 {#join-table-engine}
 
 用于 [JOIN](/sql-reference/statements/select/join) 操作的可选预构建数据结构。
@@ -16,8 +14,6 @@ doc_type: 'reference'
 :::note
 在 ClickHouse Cloud 中，如果服务创建时使用的版本早于 25.4，则需要通过 `SET compatibility=25.4` 将兼容性级别设置为不低于 25.4。
 :::
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -30,7 +26,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 请参阅 [CREATE TABLE](/sql-reference/statements/create/table) 查询的详细描述。
-
 
 ## 引擎参数 {#engine-parameters}
 
@@ -47,8 +42,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `k1[, k2, ...]` – 来自 `USING` 子句的键列，`JOIN` 操作基于这些列进行。
 
 输入 `join_strictness` 和 `join_type` 参数时不要使用引号，例如 `Join(ANY, LEFT, col1)`。它们必须与该表将要使用的 `JOIN` 操作相匹配。如果参数不匹配，ClickHouse 不会抛出异常，并且可能返回错误的数据。
-
-
 
 ## 细节与建议 {#specifics-and-recommendations}
 
@@ -112,8 +105,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `Join` 引擎表不能用于 `GLOBAL JOIN` 操作。
 
 `Join` 引擎允许在 `CREATE TABLE` 语句中指定 [join_use_nulls](/operations/settings/settings.md/#join_use_nulls) 设置。[SELECT](/sql-reference/statements/select/index.md) 查询必须使用相同的 `join_use_nulls` 值。
-
-
 
 ## 用法示例 {#example}
 

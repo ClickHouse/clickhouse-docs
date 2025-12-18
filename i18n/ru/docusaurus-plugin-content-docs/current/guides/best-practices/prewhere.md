@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/prewhere_05.gif'
 
 import Image from '@theme/IdealImage';
 
-
 # Как работает оптимизация PREWHERE? {#how-does-the-prewhere-optimization-work}
 
 [Предложение PREWHERE](/sql-reference/statements/select/prewhere) — это оптимизация выполнения запроса в ClickHouse. Она уменьшает объём операций ввода-вывода и ускоряет выполнение запроса, избегая ненужного чтения данных и отфильтровывая лишние данные до чтения со встроенного диска столбцов, не участвующих в фильтрации.
 
 В этом руководстве объясняется, как работает PREWHERE, как измерить его влияние и как настроить его для наилучшей производительности.
-
-
 
 ## Обработка запроса без оптимизации PREWHERE {#query-processing-without-prewhere-optimization}
 
@@ -43,8 +40,6 @@ import Image from '@theme/IdealImage';
 ⑤ Оставшиеся фильтры затем применяются во время выполнения запроса.
 
 Как видно, без PREWHERE все потенциально подходящие столбцы загружаются до фильтрации, даже если фактически совпадает лишь небольшое количество строк.
-
-
 
 ## Как PREWHERE повышает эффективность запросов {#how-prewhere-improves-query-efficiency}
 
@@ -95,8 +90,6 @@ ClickHouse начинает обработку PREWHERE, ① читая выбр
 Обратите внимание, что ClickHouse обрабатывает одинаковое количество строк как в варианте запроса с PREWHERE, так и без него. Однако при применении оптимизаций PREWHERE нет необходимости загружать значения всех столбцов для каждой обрабатываемой строки.
 :::
 
-
-
 ## Оптимизация PREWHERE применяется автоматически {#prewhere-optimization-is-automatically-applied}
 
 Предложение PREWHERE можно добавить вручную, как показано в примере выше. Однако нет необходимости указывать PREWHERE вручную. Когда настройка [`optimize_move_to_prewhere`](/operations/settings/settings#optimize_move_to_prewhere) включена (по умолчанию true), ClickHouse автоматически переносит условия фильтрации из WHERE в PREWHERE, отдавая приоритет тем, которые сильнее всего уменьшают объём чтения.
@@ -106,8 +99,6 @@ ClickHouse начинает обработку PREWHERE, ① читая выбр
 Начиная с версии [23.2](https://clickhouse.com/blog/clickhouse-release-23-02#multi-stage-prewhere--alexander-gololobov) ClickHouse по умолчанию следует этой стратегии, сортируя столбцы фильтра PREWHERE для многошаговой обработки в порядке возрастания их несжатого размера.
 
 Начиная с версии [23.11](https://clickhouse.com/blog/clickhouse-release-23-11#column-statistics-for-prewhere), дополнительная статистика по столбцам позволяет ещё больше улучшить это поведение, выбирая порядок применения фильтров на основе фактической селективности данных, а не только размера столбца.
-
-
 
 ## Как измерить влияние PREWHERE {#how-to-measure-prewhere-impact}
 
@@ -132,8 +123,8 @@ SETTINGS optimize_move_to_prewhere = false;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3 строки в наборе. Затрачено: 0.056 сек. Обработано 2.31 миллиона строк, 23.36 МБ (41.09 миллиона строк/с., 415.43 МБ/с.)
-Пиковое использование памяти: 132.10 МиБ.
+3 rows in set. Elapsed: 0.056 sec. Processed 2.31 million rows, 23.36 MB (41.09 million rows/s., 415.43 MB/s.)
+Peak memory usage: 132.10 MiB.
 ```
 
 ClickHouse прочитал **23.36 MB** столбцовых данных при обработке 2.31 миллиона строк при выполнении запроса.
@@ -157,8 +148,8 @@ SETTINGS optimize_move_to_prewhere = true;
 3. │ AVENUE ROAD │
    └─────────────┘
 
-3 строки в наборе. Затрачено: 0.017 сек. Обработано 2.31 млн строк, 6.74 МБ (135.29 млн строк/с., 394.44 МБ/с.)
-Пиковое использование памяти: 132.11 МиБ.
+3 rows in set. Elapsed: 0.017 sec. Processed 2.31 million rows, 6.74 MB (135.29 million rows/s., 394.44 MB/s.)
+Peak memory usage: 132.11 MiB.
 ```
 
 Было обработано то же количество строк (2,31 миллиона), но благодаря PREWHERE ClickHouse прочитал более чем в три раза меньше столбцовых данных — всего 6,74 МБ вместо 23,36 МБ, — что сократило общее время выполнения в 3 раза.
@@ -167,7 +158,7 @@ SETTINGS optimize_move_to_prewhere = true;
 
 Мы изучаем логический план запроса с помощью предложения [EXPLAIN](/sql-reference/statements/explain#explain-plan):
 
-```sql
+```sql 
 EXPLAIN PLAN actions = 1
 SELECT
     street
@@ -179,8 +170,8 @@ WHERE
 
 ```txt
 ...
-Информация о Prewhere                                                                                                                                                                                                                                          
-  Столбец фильтра Prewhere: 
+Prewhere info                                                                                                                                                                                                                                          
+  Prewhere filter column: 
     and(greater(__table1.date, '2024-12-31'_String), 
     less(__table1.price, 10000_UInt16), 
     equals(__table1.town, 'LONDON'_String)) 
@@ -205,15 +196,14 @@ SETTINGS send_logs_level = 'test';
 
 ```txt
 ...
-<Trace> ... Условие greater(date, '2024-12-31'_String) перенесено в PREWHERE
-<Trace> ... Условие less(price, 10000_UInt16) перенесено в PREWHERE
-<Trace> ... Условие equals(town, 'LONDON'_String) перенесено в PREWHERE
+<Trace> ... Condition greater(date, '2024-12-31'_String) moved to PREWHERE
+<Trace> ... Condition less(price, 10000_UInt16) moved to PREWHERE
+<Trace> ... Condition equals(town, 'LONDON'_String) moved to PREWHERE
 ...
-<Test> ... Выполнение действий prewhere на блоке: greater(__table1.date, '2024-12-31'_String)
-<Test> ... Выполнение действий prewhere на блоке: less(__table1.price, 10000_UInt16)
+<Test> ... Executing prewhere actions on block: greater(__table1.date, '2024-12-31'_String)
+<Test> ... Executing prewhere actions on block: less(__table1.price, 10000_UInt16)
 ...
 ```
-
 
 ## Ключевые выводы {#key-takeaways}
 

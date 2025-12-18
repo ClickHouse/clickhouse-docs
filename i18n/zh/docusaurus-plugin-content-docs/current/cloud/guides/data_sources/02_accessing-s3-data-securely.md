@@ -14,7 +14,6 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 本文演示 ClickHouse Cloud 客户如何利用基于角色的访问控制与 Amazon Simple Storage Service (S3) 完成身份验证，并安全访问其数据。
 
-
 ## 介绍 {#introduction}
 
 在开始配置安全 S3 访问之前，了解其工作原理非常重要。下面概述了 ClickHouse 服务如何通过在客户的 AWS 账户中扮演一个角色来访问私有 S3 存储桶。
@@ -130,7 +129,6 @@ IAM 策略（请将 `{BUCKET_NAME}` 替换为您的存储桶名称）：
 
 4 - 在创建完成后复制新的 **IAM Role Arn**。这是访问你的 S3 bucket 所需的 Arn。
 
-
 ## 使用 ClickHouseAccess 角色访问你的 S3 bucket {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
 ClickHouse Cloud 新增了一个功能，允许你在 S3 表函数中指定 `extra_credentials`。下面是一个示例，展示如何使用上面新创建的角色来运行查询。
@@ -148,3 +146,46 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 :::note
 我们建议将您的源 S3 与 ClickHouse Cloud Service 部署在同一地域，以降低数据传输费用。有关更多信息，请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)。
 :::
+
+
+## 高级操作控制 {#advanced-action-control}
+
+如果用户希望仅在请求源自 ClickHouse 的 VPC 时才允许返回对象，可以在上面创建的 [IAM assume role](#setting-up-iam-assume-role) 中添加以下策略。请查阅 [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) 以了解如何获取 ClickHouse Cloud 的 VPC 端点。
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+
+```

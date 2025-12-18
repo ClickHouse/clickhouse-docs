@@ -7,13 +7,9 @@ title: '视图'
 doc_type: 'reference'
 ---
 
-
-
 # view 表函数 {#view-table-function}
 
 将子查询转换为一张表。该函数用于实现视图（参见 [CREATE VIEW](/sql-reference/statements/create/view)）。生成的表本身不存储数据，而只保存指定的 `SELECT` 查询。从该表读取时，ClickHouse 会执行该查询，并从结果中丢弃所有不需要的列。
-
-
 
 ## 语法 {#syntax}
 
@@ -21,18 +17,13 @@ doc_type: 'reference'
 view(subquery)
 ```
 
-
 ## 参数 {#arguments}
 
 - `subquery` — `SELECT` 查询。
 
-
-
 ## 返回值 {#returned_value}
 
 - 一张表。
-
-
 
 ## 示例 {#examples}
 
@@ -40,10 +31,10 @@ view(subquery)
 
 ```text
 ┌─id─┬─name─────┬─days─┐
-│  1 │ 一月     │   31 │
-│  2 │ 二月     │   29 │
-│  3 │ 三月     │   31 │
-│  4 │ 四月     │   30 │
+│  1 │ January  │   31 │
+│  2 │ February │   29 │
+│  3 │ March    │   31 │
+│  4 │ April    │   30 │
 └────┴──────────┴──────┘
 ```
 
@@ -57,10 +48,10 @@ SELECT * FROM view(SELECT name FROM months);
 
 ```text
 ┌─name─────┐
-│ 一月  │
-│ 二月 │
-│ 三月    │
-│ 四月    │
+│ January  │
+│ February │
+│ March    │
+│ April    │
 └──────────┘
 ```
 
@@ -73,7 +64,6 @@ SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```sql
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
-
 
 ## 相关内容 {#related}
 

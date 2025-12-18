@@ -45,5 +45,5 @@ is_generic_compression: 1
 is_encryption:          0
 is_timeseries_codec:    0
 is_experimental:        0
-description:            Очень быстрый; хорошее сжатие; сбалансированное соотношение скорости и эффективности.
+description:            Extremely fast; good compression; balanced speed and efficiency.
 ```

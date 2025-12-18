@@ -31,7 +31,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-
 ## 运行 {#running}
 
 要进行仿真，你需要适用于 s390x 的 QEMU user static 静态二进制文件。在 Ubuntu 上可以通过以下命令安装：
@@ -46,7 +45,6 @@ apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
 2
 ```
-
 
 ## 调试 {#debugging}
 
@@ -93,7 +91,6 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
-
 ## Visual Studio Code 集成 {#visual-studio-code-integration}
 
 - 进行可视化调试需要安装 [CodeLLDB](https://github.com/vadimcn/vscode-lldb) 扩展。
@@ -111,24 +108,24 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: 输出调试信息
+      long: Emit debug information
       buildType: Debug
     release:
       short: Release
-      long: 优化生成代码
+      long: Optimize generated code
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: 发布版本（含调试信息）
+      long: Release with Debug Info
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: 最小体积发布版本
+      long: Minimum Size Release
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: 选择工具链
+  description: Select toolchain
   choices:
     default:
       short: x86_64
@@ -140,7 +137,6 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-
 #### launch.json {#launchjson}
 
 ```json
@@ -150,15 +146,14 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) 使用 qemu 启动 s390x",
+            "name": "(lldb) Launch s390x with qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "运行 ClickHouse"
+            "preLaunchTask": "Run ClickHouse"
         }
     ]
 }
 ```
-
 
 #### settings.json {#settingsjson}
 
@@ -171,16 +166,14 @@ toolchain:
 }
 ```
 
-
 #### run-debug.sh {#run-debugsh}
 
 ```sh
 #! /bin/sh
-echo '正在启动调试器会话'
+echo 'Starting debugger session'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
-
 
 #### tasks.json {#tasksjson}
 
@@ -191,7 +184,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "运行 ClickHouse",
+            "label": "Run ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -213,7 +206,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^启动调试器会话",
+                        "beginsPattern": "^Starting debugger session",
                         "endsPattern": ".*"
                     }
                 }

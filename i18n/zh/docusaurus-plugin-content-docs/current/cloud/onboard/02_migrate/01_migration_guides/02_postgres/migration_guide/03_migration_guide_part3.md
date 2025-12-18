@@ -45,13 +45,11 @@ import Image from '@theme/IdealImage';
 
 关于选择排序键时的考虑因素与步骤，并以 posts 表为示例，请参阅[此处](/data-modeling/schema-design#choosing-an-ordering-key)。
 
-在使用 CDC 实时复制时，还需要考虑额外的约束条件。有关在 CDC 场景下如何自定义排序键的技术，请参考这篇[文档](/integrations/clickpipes/postgres/ordering_keys)。
-
-
+在使用 CDC 实时复制时，还需要考虑额外的约束条件。有关在 CDC 场景下如何自定义排序键的技术，请参考该[文档](/integrations/clickpipes/postgres/ordering_keys)。
 
 ## 分区 {#partitions}
 
-Postgres 用户对表分区这一概念应该很熟悉：通过将表拆分为更小、更易管理的片段（称为分区），以提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围、指定列表，或基于键的哈希来实现。这使管理员可以基于特定条件（如日期范围或地理位置）来组织数据。分区有助于通过分区裁剪和更高效的索引来提升查询性能，从而实现更快速的数据访问。同时，它也有助于维护任务，例如备份和数据清理，因为可以针对单个分区而不是整个表执行操作。此外，通过将负载分布到多个分区，分区还能显著提高 PostgreSQL 数据库的可扩展性。
+如果你来自 Postgres，你应该已经很熟悉表分区这一概念：通过将表拆分为更小、更易管理的片段（称为分区），以提升大型数据库的性能和可管理性。分区可以通过在指定列（例如日期）上使用范围、指定列表，或基于键的哈希来实现。这使管理员可以基于特定条件（如日期范围或地理位置）来组织数据。分区有助于通过分区裁剪和更高效的索引来提升查询性能，从而实现更快速的数据访问。同时，它也有助于维护任务，例如备份和数据清理，因为可以针对单个分区而不是整个表执行操作。此外，通过将负载分布到多个分区，分区还能显著提高 PostgreSQL 数据库的可扩展性。
 
 在 ClickHouse 中，分区是在表初始定义时通过 `PARTITION BY` 子句指定的。该子句可以包含基于任意列的 SQL 表达式，其结果将决定每一行被发送到哪个分区。
 
@@ -76,11 +74,12 @@ PARTITION BY toYear(CreationDate)
 
 有关分区的完整介绍，请参阅 [&quot;Table partitions&quot;](/partitions)。
 
+
 ### 分区的应用场景 {#applications-of-partitions}
 
-ClickHouse 中的分区与 Postgres 的应用场景类似，但也存在一些细微差别。更具体地说：
+ClickHouse 中的分区与 Postgres 有类似的应用场景，但也存在一些细微差异。更具体来说：
 
-* **数据管理** - 在 ClickHouse 中，用户应主要将分区视为一种数据管理功能，而不是查询优化技术。通过基于某个键对数据进行逻辑划分，每个分区都可以被独立操作，例如删除。这样，用户可以按时间等条件在不同[存储层级](/integrations/s3#storage-tiers)之间高效地迁移分区（也就是数据子集），或者[设置数据过期 / 高效地从集群中删除数据](/sql-reference/statements/alter/partition)。例如，下面我们会删除 2008 年的帖子。
+* **数据管理** - 在 ClickHouse 中，应主要将分区视为一种数据管理特性，而不是查询优化技术。通过按照某个键在逻辑上对数据进行划分，每个分区都可以被独立操作，例如删除。这使你可以按时间高效地在不同[存储层](/integrations/s3#storage-tiers)之间迁移分区（也就是数据子集），或者用于[让数据过期 / 高效地从集群中删除数据](/sql-reference/statements/alter/partition)。例如，在下面的示例中我们会删除 2008 年的帖子。
 
 ```sql
 SELECT DISTINCT partition
@@ -107,18 +106,18 @@ WHERE `table` = 'posts'
 │ 2024      │
 └───────────┘
 
-查询返回 17 行。用时:0.002 秒。
+17 rows in set. Elapsed: 0.002 sec.
 
 ALTER TABLE posts
 (DROP PARTITION '2008')
 
-执行成功。
+Ok.
 
-查询返回 0 行。用时:0.103 秒。
+0 rows in set. Elapsed: 0.103 sec.
 ```
 
+* **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，你应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
-- **查询优化** - 分区虽然可以帮助提升查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），性能有可能得到提升。只有在分区键不在主键中且你按该分区键进行过滤时，这才通常有用。然而，如果查询需要覆盖大量分区，其性能可能会比完全不使用分区时更差（因为分区可能会导致产生更多的 part）。如果分区键已经是主键中的前置列，则只针对单个分区的性能收益会大幅降低，甚至可以忽略不计。如果每个分区中的值是唯一的，分区还可以用于[优化 GROUP BY 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但总体而言，用户应首先确保主键已得到优化，只在极少数情况下将分区作为查询优化手段——仅当访问模式只会访问一天中某个可预测的特定时间子集时才考虑，例如按天分区且大部分查询都是针对最近一天的数据。
 
 ### 分区使用建议 {#recommendations-for-partitions}
 
@@ -129,8 +128,6 @@ ALTER TABLE posts
 > 在内部，ClickHouse 会为插入的数据[创建 part](/guides/best-practices/sparse-primary-indexes#clickhouse-index-design)。随着数据不断插入，part 的数量会增加。为了防止 part 数量过高（会导致要读取的文件增加，从而降低查询性能），系统会通过后台异步进程将多个 part 合并。如果 part 的数量超过预配置的上限，ClickHouse 会在插入时抛出异常——即 "too many parts" 错误。在正常运行下不应发生这种情况，只会在 ClickHouse 配置错误或使用方式不当（例如大量小批量插入操作）时出现。
 
 > 由于 part 是在每个分区内独立创建的，增加分区数量会导致 part 数量相应增加，即 part 数量是分区数量的倍数。因此，高基数的分区键可能会导致上述错误，应当避免。
-
-
 
 ## 物化视图与投影 {#materialized-views-vs-projections}
 
@@ -151,8 +148,8 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 
-返回 1 行。用时:0.040 秒。已处理 9038 万行,361.59 MB(22.5 亿行/秒,9.01 GB/秒)。
-峰值内存使用量:201.93 MiB。
+1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
+Peak memory usage: 201.93 MiB.
 ```
 
 由于 `UserId` 不是排序键，这个查询需要扫描全部 9,000 万行数据（尽管速度仍然很快）。
@@ -204,10 +201,10 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
 
-返回 1 行。用时:0.003 秒。
+1 row in set. Elapsed: 0.003 sec.
 ```
 
-如果我们再次执行上述查询，可以看到性能以增加额外存储为代价而显著提升。
+如果我们再次执行上述查询，可以看到性能显著提升，但代价是占用更多存储空间。
 
 ```sql
 SELECT avg(Score)
@@ -218,38 +215,36 @@ WHERE UserId = 8592047
 1. │ 0.18181818181818182 │
    └─────────────────────┘
 
-返回 1 行。用时:0.008 秒。已处理 1.636 万行,98.17 KB(215 万行/秒,12.92 MB/秒)。
-内存峰值:4.06 MiB。
+1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
+Peak memory usage: 4.06 MiB.
 ```
 
 通过 `EXPLAIN` 命令，我们还可以确认该查询确实使用了这个 projection：
+
 
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
-
-┌─explain─────────────────────────────────────────────┐
-
-1. │ 表达式 ((Projection + ORDER BY 之前))                 │
-2. │   聚合                                              │
-3. │   过滤                                              │
-4. │           ReadFromMergeTree (comments&#95;user&#95;id)      │
-5. │           索引：                                    │
-6. │           主键                                      │
-7. │           键：                                      │
-8. │           UserId                                    │
-9. │           条件： (UserId in [8592047, 8592047])     │
-10. │           数据片段： 2/2                            │
-11. │           粒度： 2/11360                            │
+    ┌─explain─────────────────────────────────────────────┐
+ 1. │ Expression ((Projection + Before ORDER BY))         │
+ 2. │   Aggregating                                       │
+ 3. │   Filter                                            │
+ 4. │           ReadFromMergeTree (comments_user_id)      │
+ 5. │           Indexes:                                  │
+ 6. │           PrimaryKey                                │
+ 7. │           Keys:                                     │
+ 8. │           UserId                                    │
+ 9. │           Condition: (UserId in [8592047, 8592047]) │
+10. │           Parts: 2/2                                │
+11. │           Granules: 2/11360                         │
     └─────────────────────────────────────────────────────┘
 
-11 行记录。耗时：0.004 秒。
-
+11 rows in set. Elapsed: 0.004 sec.
 ```
+
 
 ### 何时使用投影 {#when-to-use-projections}
 
@@ -259,11 +254,11 @@ WHERE UserId = 8592047
 
 这与物化视图形成对比,在物化视图中,用户必须根据过滤条件选择相应的优化目标表或重写查询。这对用户应用程序提出了更高要求,并增加了客户端复杂性。
 
-尽管有这些优势,投影也存在一些[固有限制](/data-modeling/projections#when-to-use-projections),用户应当了解这些限制,因此应谨慎部署。
+尽管有这些优势,投影也存在一些[固有限制](/data-modeling/projections#when-to-use-projections),你应当了解这些限制,因此应谨慎部署。
 
 我们建议在以下情况下使用投影:
 
-- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。用户可以在此表达式中选择列的子集以减少存储占用。
+- 需要对数据进行完全重新排序。虽然投影中的表达式理论上可以使用 `GROUP BY`,但物化视图在维护聚合方面更为有效。查询优化器也更有可能利用使用简单重新排序的投影,即 `SELECT * ORDER BY x`。你可以在此表达式中选择列的子集以减少存储占用。
 - 用户能够接受相关的存储占用增加以及两次写入数据的开销。测试对插入速度的影响并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
 :::note
@@ -271,8 +266,6 @@ WHERE UserId = 8592047
 
 有关更多详细信息,请参阅["投影"](/data-modeling/projections)
 :::
-```
-
 
 ## 反规范化 {#denormalization}
 
@@ -280,4 +273,4 @@ WHERE UserId = 8592047
 
 可参考这篇[指南](/data-modeling/denormalization)，了解在 ClickHouse 中对 Stack Overflow 数据集进行反规范化所带来的收益。
 
-本篇基础指南到此结束，面向的是从 Postgres 迁移到 ClickHouse 的用户。建议正在从 Postgres 迁移的用户阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)，以进一步了解 ClickHouse 的高级特性。
+如果你正从 Postgres 迁移到 ClickHouse，本篇基础指南到此结束。建议阅读[在 ClickHouse 中进行数据建模的指南](/data-modeling/schema-design)，以进一步了解 ClickHouse 的高级特性。

@@ -24,7 +24,7 @@ SET profile = 'profile-name-from-the-settings-file'
 对于值为 true 的布尔类型设置，可以通过省略赋值来使用简写语法。仅指定设置名称时，它会自动被设为 `1`（true）。
 
 ```sql
--- 以下两种写法等效：
+-- These are equivalent:
 SET force_index_by_date = 1
 SET force_index_by_date
 ```

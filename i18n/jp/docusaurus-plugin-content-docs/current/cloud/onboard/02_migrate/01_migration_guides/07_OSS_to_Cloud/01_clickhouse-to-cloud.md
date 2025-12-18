@@ -16,7 +16,6 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 
-
 # セルフマネージド ClickHouse と ClickHouse Cloud 間の移行 {#migrating-between-self-managed-clickhouse-and-clickhouse-cloud}
 
 <Image img={self_managed_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
@@ -70,7 +69,6 @@ FROM system.tables
 WHERE database = 'db' AND table = 'table'
 ```
 
-
 ### 移行先の ClickHouse Cloud システム上で: {#on-the-destination-clickhouse-cloud-system}
 
 * 移行先データベースを作成します。
@@ -117,7 +115,6 @@ INSERT INTO FUNCTION
 remoteSecure('HOSTNAME.clickhouse.cloud:9440', 'db.table',
 'default', 'PASS') SELECT * FROM db.table
 ```
-
 
 ## ClickHouse Cloud サービス間での移行 {#migrating-between-clickhouse-cloud-services}
 

@@ -11,7 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-
 # 投影 {#projections}
 
 ## 简介 {#introduction}
@@ -61,7 +60,7 @@ Projections 对新用户而言非常有吸引力，因为它们会在数据插�
 
 这与物化视图不同，后者要求用户根据过滤条件选择适当的已优化目标表，或者重写查询。这会对用户应用提出更高要求，并增加客户端的复杂度。
 
-尽管有这些优点，projections 也存在一些固有限制，用户应当了解这些限制，因此应谨慎使用，避免过度依赖。
+尽管有这些优点，projections 也存在一些固有限制，你应当了解这些限制，因此应谨慎使用，避免过度依赖。
 
 - Projections 不允许对源表和（隐藏的）目标表使用不同的 TTL，而物化视图允许使用不同的 TTL。
 - 对包含 projections 的表，不支持轻量级更新和删除。
@@ -71,7 +70,7 @@ Projections 对新用户而言非常有吸引力，因为它们会在数据插�
 
 我们建议在以下场景使用 projections：
 
-- 需要对数据进行完全重新排序时。虽然理论上，projection 中的表达式可以使用 `GROUP BY`，但物化视图在维护聚合方面更有效。查询优化器也更有可能利用仅做简单重排的 projections，即 `SELECT * ORDER BY x`。用户可以在该表达式中选择列的子集，以减少存储占用。
+- 需要对数据进行完全重新排序时。虽然理论上，projection 中的表达式可以使用 `GROUP BY`，但物化视图在维护聚合方面更有效。查询优化器也更有可能利用仅做简单重排的 projections，即 `SELECT * ORDER BY x`。你可以在该表达式中选择列的子集，以减少存储占用。
 - 用户能够接受可能带来的存储占用增加，以及将数据写入两次的额外开销时。请测试其对插入速度的影响，并[评估存储开销](/data-compression/compression-in-clickhouse)。
 
 ## 示例 {#examples}
@@ -154,7 +153,6 @@ WHERE query_id='<query_id>'
    │↳FROM trips WHERE tip_amount > 200 AND trip_duration_min > 0                   │                                  │
    └───────────────────────────────────────────────────────────────────────────────┴──────────────────────────────────┘
 ```
-
 
 ### 使用投影加速英国房价已付数据查询 {#using-projections-to-speed-up-UK-price-paid}
 
@@ -338,7 +336,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 返回 2 行。耗时：0.006 秒。
 ```
 
-
 ### 更多示例 {#further-examples}
 
 以下示例继续使用相同的英国价格数据集，对比使用和不使用投影的查询。
@@ -349,7 +346,6 @@ projections:    ['uk.uk_price_paid_with_projections.prj_obj_town_price']
 CREATE TABLE uk.uk_price_paid_with_projections_v2 AS uk.uk_price_paid;
 INSERT INTO uk.uk_price_paid_with_projections_v2 SELECT * FROM uk.uk_price_paid;
 ```
-
 
 #### 构建 Projection {#build-projection}
 
@@ -383,7 +379,6 @@ SETTINGS mutations_sync = 1
 
 以下查询对比了启用和未启用投影时的性能。若要禁用投影功能，请使用设置 [`optimize_use_projections`](/operations/settings/settings#optimize_use_projections)，该设置默认是启用的。
 
-
 #### 查询 1：各年份的平均价格 {#average-price-projections}
 
 ```sql runnable
@@ -410,7 +405,6 @@ ORDER BY year ASC
 
 结果应该是相同的，但后一个示例的性能会更优！
 
-
 #### 查询 2：伦敦历年平均价格 {#average-price-london-projections}
 
 ```sql runnable
@@ -435,7 +429,6 @@ WHERE town = 'LONDON'
 GROUP BY year
 ORDER BY year ASC
 ```
-
 
 #### 查询 3：最昂贵的街区 {#most-expensive-neighborhoods-projections}
 
@@ -477,7 +470,6 @@ LIMIT 100
 ```
 
 同样，结果相同，但请注意第二个查询的执行性能有所提升。
-
 
 ### 在单个查询中组合投影 {#combining-projections}
 
@@ -584,7 +576,6 @@ SELECT * FROM page_views WHERE region = 'us_west' AND user_id = 107;
 ```
 
 `EXPLAIN` 的输出（如上所示）自上而下展示了逻辑查询计划：
-
 
 | 行号 | 描述                                                                                              |
 |------|---------------------------------------------------------------------------------------------------|

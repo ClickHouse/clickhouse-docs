@@ -21,13 +21,9 @@ title: '经验总结 - Too Many Parts 问题'
 description: 'Too Many Parts 问题的解决方案与预防'
 ---
 
-
-
 # 部分过多问题 {#the-too-many-parts-problem}
 *本指南属于一系列基于社区线下交流与经验分享整理而成的内容。若想获取更多真实场景下的解决方案和见解，可以[按具体问题浏览](./community-wisdom.md)。*
 *需要更多性能优化方面的建议？请查看[性能优化](./performance-optimization.md)社区洞见指南。*
-
-
 
 ## 理解问题 {#understanding-the-problem}
 
@@ -37,8 +33,6 @@ ClickHouse 会抛出 “Too many parts” 错误，以避免出现严重的性�
 - [MergeTree Engine](/engines/table-engines/mergetree-family/mergetree)
 - [Parts](/parts)
 - [Parts System Table](/operations/system-tables/parts)
-
-
 
 ## 及早识别问题 {#recognize-parts-problem}
 
@@ -75,7 +69,6 @@ GROUP BY database, table
 ORDER BY total_parts DESC
 LIMIT 20;
 ```
-
 
 ## 视频资源 {#video-sources}
 

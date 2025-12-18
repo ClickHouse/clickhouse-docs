@@ -49,11 +49,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- 始値
-    `high`   Float32, -- 高値
-    `low`    Float32, -- 安値
-    `close`  Float32, -- 終値
-    `volume` UInt32   -- 出来高
+    `open`   Float32, -- opening price
+    `high`   Float32, -- daily high
+    `low`    Float32, -- daily low
+    `close`  Float32, -- closing price
+    `volume` UInt32   -- trade volume
 )
 Engine = Memory;
 
@@ -81,7 +81,7 @@ ORDER BY date DESC
 結果：
 
 ```response
-   ┌───────日付─┬──終値─┬─前日終値─┬─変動─┬─変動率─┐
+   ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │
 3. │ 2024-06-05 │ 122.44 │             116.44 │     6 │           5.15 │

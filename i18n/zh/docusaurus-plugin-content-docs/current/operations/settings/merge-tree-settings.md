@@ -41,17 +41,15 @@ SETTINGS max_suspicious_broken_parts = 500;
 ```sql
 ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 
--- 重置为全局默认值（取自 system.merge_tree_settings）
+-- reset to global default (value from system.merge_tree_settings)
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
-
 
 ## MergeTree 设置 {#mergetree-settings}
 
 {/* 以下设置由以下脚本自动生成：
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
-
 
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
@@ -120,7 +118,7 @@ time DateTime,
 key Int32,
 value String
 ) ENGINE = MergeTree
-ORDER BY (time DESC, key)  -- 'time' 字段按降序排列
+ORDER BY (time DESC, key)  -- Descending order on 'time' field
 SETTINGS allow_experimental_reverse_key = 1;
 
 SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
@@ -129,7 +127,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 在查询中使用 `ORDER BY time DESC` 时，会启用 `ReadInOrder`。
 
 **默认值：** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -614,17 +611,16 @@ INDEX idx_b b TYPE set(3)
 )
 ENGINE = MergeTree ORDER BY tuple() SETTINGS exclude_materialize_skip_indexes_on_merge = 'idx_a';
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- 此设置对 INSERT 操作无影响
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- setting has no effect on INSERTs
 
--- idx_a 将在后台合并或通过 OPTIMIZE TABLE FINAL 执行显式合并时被排除更新
+-- idx_a will be excluded from update during background or explicit merge via OPTIMIZE TABLE FINAL
 
--- 可通过提供列表排除多个索引
+-- can exclude multiple indexes by providing a list
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_a, idx_b';
 
--- 默认设置,合并期间不排除任何索引更新
+-- default setting, no indexes excluded from being updated during merge
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -888,7 +884,6 @@ slower than inserts" exception."
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -925,7 +920,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300，parts&#95;to&#95;delay&#95;insert = 150，max&#95;delay&#95;to&#95;insert = 1，
 min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 会被延迟 `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` 毫秒。
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1268,12 +1262,33 @@ MergeTree 表中 PROJECTION 的最大数量。
 
 控制该逻辑相对于分区中分区片段数量的触发时机。因子越大，响应就越滞后。
 
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+为 simple merge selector 启用启发式算法，以降低合并选择时的最大限制。
+这将增加并发合并的数量，有助于缓解 TOO_MANY_PARTS 错误，但同时也会提高写放大效应。
+
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用在选择要合并的分区片段时使用的启发式算法：如果范围右侧的分区片段大小小于 sum_size 的指定比例（0.01），则将其移除。
 适用于 Simple 和 StochasticSimple 合并选择器。
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+控制在构建下降曲线公式中所使用的指数值。降低该指数会减小单次合并的宽度，从而增加写放大效应，反之亦然。
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 
@@ -1530,7 +1545,6 @@ ClickHouse 会选择那个能在更大可用磁盘空闲空间范围内允许执
 ```xml
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
-
 
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
@@ -2062,7 +2076,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 

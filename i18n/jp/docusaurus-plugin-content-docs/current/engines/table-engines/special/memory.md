@@ -7,8 +7,6 @@ title: 'Memory テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # Memory テーブルエンジン {#memory-table-engine}
 
 :::note
@@ -29,8 +27,6 @@ Memory エンジンは、クエリの外部データ用一時テーブル（「�
 
 Memory エンジンのテーブルサイズを制限するために上限および下限を指定でき、事実上、循環バッファとして動作させることができます（[Engine Parameters](#engine-parameters) を参照）。
 
-
-
 ## エンジンパラメーター {#engine-parameters}
 
 - `min_bytes_to_keep` — メモリテーブルにサイズ制限がある場合に保持する最小バイト数。
@@ -45,8 +41,6 @@ Memory エンジンのテーブルサイズを制限するために上限およ�
   - デフォルト値: `0`
 - `compress` — メモリ上のデータを圧縮するかどうか。
   - デフォルト値: `false`
-
-
 
 ## 使用方法 {#usage}
 
@@ -64,23 +58,22 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 
 **注意:** `bytes` と `rows` の両方の上限パラメータは同時に設定できますが、`max` と `min` のうち小さい方の値が優先されます。
 
-
 ## 例 {#examples}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;
 
-/* 1. 最も古いブロックが最小しきい値により削除されないことをテスト - 3000 行 */
-INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 8'192 バイト
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
+INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 8'192 bytes
 
-/* 2. 削除されないブロックを追加 */
-INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 1'024 バイト
+/* 2. adding block that doesn't get deleted */
+INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 1'024 bytes
 
-/* 3. 最も古いブロックが削除されることをテスト - 9216 バイト - 1100 */
-INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 8'192 バイト
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
+INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 8'192 bytes
 
-/* 4. 非常に大きなブロックがすべてを置き換えることを確認 */
-INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 65'536 バイト
+/* 4. checking a very large block overrides all */
+INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 65'536 bytes
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
 ```
@@ -96,17 +89,17 @@ SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND data
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_rows_to_keep = 4000, max_rows_to_keep = 10000;
 
-/* 1. 最古のブロックが最小しきい値により削除されないことを確認 - 3000 行 */
-INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 行
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
+INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 rows
 
-/* 2. 削除されないブロックを追加する */
-INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 行
+/* 2. adding block that doesn't get deleted */
+INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 rows
 
-/* 3. 最古のブロックが削除されることを確認 - 9216 バイト - 1100 行 */
-INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 行
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
+INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 rows
 
-/* 4. 非常に大きなブロックがすべてを置き換えることを確認 */
-INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 行
+/* 4. checking a very large block overrides all */
+INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 rows
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
 ```

@@ -23,20 +23,20 @@ SSL 証明書認証を有効にするには、各 ClickHouse ユーザーに対�
             <ssl_certificates>
                 <common_name>host.domain.com:example_user</common_name>
                 <common_name>host.domain.com:example_user_dev</common_name>
-                <!-- 追加の名前 -->
+                <!-- More names -->
             </ssl_certificates>
-            <!-- その他の設定 -->
+            <!-- Other settings -->
         </user_name_1>
         <user_name_2>
             <ssl_certificates>
                 <subject_alt_name>DNS:host.domain.com</subject_alt_name>
-                <!-- 追加の名前 -->
+                <!-- More names -->
             </ssl_certificates>
-            <!-- その他の設定 -->
+            <!-- Other settings -->
         </user_name_2>
         <user_name_3>
             <ssl_certificates>
-                <!-- ワイルドカード対応 -->
+                <!-- Wildcard support -->
                 <subject_alt_name>URI:spiffe://foo.com/*/bar</subject_alt_name>
             </ssl_certificates>
         </user_name_3>

@@ -8,7 +8,6 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-
 # system.query_log {#systemquery_log}
 
 <SystemTableCloud/>
@@ -38,11 +37,7 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 
 可以使用 [log_formatted_queries](/operations/settings/settings#log_formatted_queries) 设置将格式化后的查询记录到 `formatted_query` 列中。
 
-
-
 ## 列 {#columns}
-
-
 
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 执行查询的服务器主机名。
 * `type` ([Enum8](../../sql-reference/data-types/enum.md)) — 执行查询时发生的事件类型。取值：
@@ -137,8 +132,6 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 
 
 
-
-
 ## 示例 {#examples}
 
 **基本示例**
@@ -148,7 +141,7 @@ SELECT * FROM system.query_log WHERE type = 'QueryFinish' ORDER BY query_start_t
 ```
 
 ```text
-第 1 行:
+Row 1:
 ──────
 hostname:                              clickhouse.eu-central1.internal
 type:                                  QueryFinish

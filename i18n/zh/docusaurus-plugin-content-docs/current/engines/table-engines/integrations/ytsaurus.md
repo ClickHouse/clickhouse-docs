@@ -11,15 +11,12 @@ doc_type: 'reference'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # YTsaurus 表引擎 {#ytsaurus-table-engine}
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>
 
 YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
-
-
 
 ## 创建数据表 {#creating-a-table}
 
@@ -46,7 +43,6 @@ YTsaurus 表引擎用于从 YTsaurus 集群导入数据。
 * `http_proxy_url` — YTsaurus HTTP 代理的 URL。
 * `cypress_path` — 指向数据源的 Cypress 路径。
 * `oauth_token` — OAuth 令牌。
-
 
 ## 使用示例 {#usage-example}
 
@@ -76,7 +72,6 @@ SELECT * FROM yt_saurus;
  │ 10 │ 20 │
  └────┴────┘
 ```
-
 
 ## 数据类型 {#data-types}
 

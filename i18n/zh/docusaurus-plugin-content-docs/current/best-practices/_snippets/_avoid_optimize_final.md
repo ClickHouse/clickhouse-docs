@@ -12,7 +12,7 @@ import simple_merges from '@site/static/images/bestpractices/simple_merges.png';
 虽然可能会想通过以下方式手动触发这种合并操作：
 
 ```sql
-OPTIMIZE TABLE <表名> FINAL;
+OPTIMIZE TABLE <table> FINAL;
 ```
 
 **在大多数情况下，你应该避免执行 `OPTIMIZE FINAL` 操作**，因为它会触发
@@ -23,7 +23,6 @@ OPTIMIZE TABLE <表名> FINAL;
 例如在使用 `ReplacingMergeTree` 时，为了获得没有重复的数据结果。通常，
 如果查询在与主键相同的列上进行过滤，那么使用 `FINAL` 是可以接受的。
 :::
-
 
 ## 为什么要避免？ {#why-avoid}
 
@@ -45,8 +44,6 @@ OPTIMIZE TABLE <表名> FINAL;
 * 它可能会尝试将**多个 150 GB 的 part** 合并成一个巨大的 part
 * 这可能导致**合并时间很长**、**内存压力增大**，甚至**内存耗尽错误**
 * 这些超大 part 后续可能难以再合并，即进一步尝试合并它们会因为上述原因而失败。在某些需要通过合并来保证查询行为正确的场景中，这可能会带来不良后果，例如 [ReplacingMergeTree 中重复数据不断累积](/guides/developer/deduplication#using-replacingmergetree-for-upserts)，从而降低查询时的性能。
-
-
 
 ## 让后台合并完成这项工作 {#let-background-merges-do-the-work}
 

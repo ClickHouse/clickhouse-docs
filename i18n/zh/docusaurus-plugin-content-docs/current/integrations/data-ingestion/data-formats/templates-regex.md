@@ -8,13 +8,9 @@ doc_type: 'guide'
 keywords: ['数据格式', '模板', '正则表达式', '自定义格式', '解析']
 ---
 
-
-
 # 在 ClickHouse 中使用 Templates 和 Regex 导入与导出自定义文本数据 {#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse}
 
 我们经常需要处理自定义文本格式的数据，这些数据可能是非标准格式、无效的 JSON，或损坏的 CSV。在这些情况下，使用 CSV 或 JSON 等标准解析器并不总是可行。好在 ClickHouse 提供了功能强大的 Template 和 Regex 格式，可以很好地应对这些场景。
-
-
 
 ## 基于模板导入 {#importing-based-on-a-template}
 
@@ -34,7 +30,7 @@ head error.log
 我们可以使用 [Template](/interfaces/formats/Template) 格式来导入这些数据。我们需要为输入数据的每一行定义一个包含值占位符的模板字符串：
 
 ```response
-<time> [error] 客户端：<ip>，服务器：<host> "<request>"
+<time> [error] client: <ip>, server: <host> "<request>"
 ```
 
 接下来创建一个表用于导入数据：
@@ -97,7 +93,6 @@ Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
 
-
 ## 使用模板导出数据 {#exporting-data-using-templates}
 
 我们也可以使用模板将数据导出为任何文本格式。在这种情况下，我们需要创建两个文件：
@@ -105,15 +100,15 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 [结果集模板](assets/output.results)，用于定义整个结果集的布局：
 
 ```response
-== 前 10 个 IP ==
+== Top 10 IPs ==
 ${data}
---- 已读取 ${rows_read:XML} 行,耗时 ${time:XML} ---
+--- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
 这里，`rows_read` 和 `time` 是每个请求都可用的系统指标。而 `data` 表示生成的行（`${data}` 在此文件中应始终作为第一个占位符），其内容基于 [**row template 文件**](assets/output.rows) 中定义的模板生成：
 
 ```response
-${ip:Escaped} 产生了 ${total:Escaped} 个请求
+${ip:Escaped} generated ${total:Escaped} requests
 ```
 
 现在让我们使用这些模板导出下面这个查询：
@@ -126,20 +121,20 @@ FROM error_log GROUP BY ip ORDER BY total DESC LIMIT 10
 FORMAT Template SETTINGS format_template_resultset = 'output.results',
                          format_template_row = 'output.rows';
 
-== 前 10 个 IP ==
+== Top 10 IPs ==
 
-9.8.4.6 产生了 3 个请求
-9.5.1.1 产生了 3 个请求
-2.4.8.9 产生了 3 个请求
-4.8.8.2 产生了 3 个请求
-4.5.4.4 产生了 3 个请求
-3.3.6.4 产生了 2 个请求
-8.9.5.9 产生了 2 个请求
-2.5.1.8 产生了 2 个请求
-6.8.3.6 产生了 2 个请求
-6.6.3.5 产生了 2 个请求
+9.8.4.6 generated 3 requests
+9.5.1.1 generated 3 requests
+2.4.8.9 generated 3 requests
+4.8.8.2 generated 3 requests
+4.5.4.4 generated 3 requests
+3.3.6.4 generated 2 requests
+8.9.5.9 generated 2 requests
+2.5.1.8 generated 2 requests
+6.8.3.6 generated 2 requests
+6.6.3.5 generated 2 requests
 
---- 已读取 1000 行，用时 0.001380604 秒 ---
+--- 1000 rows read in 0.001380604 ---
 ```
 
 ### 导出为 HTML 文件 {#exporting-to-html-files}
@@ -202,7 +197,6 @@ FORMAT XML
 
 ```
 
-
 ## 基于正则表达式导入数据 {#importing-data-based-on-regular-expressions}
 
 [Regexp](/interfaces/formats/Regexp) 格式适用于需要以更复杂方式解析输入数据的场景。我们再次解析 [error.log](assets/error.log) 示例文件，不过这次要提取文件名和协议，并将它们保存到单独的列中。首先，为此准备一张新表：
@@ -250,7 +244,6 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
-
 
 ## 其他格式 {#other-formats}
 

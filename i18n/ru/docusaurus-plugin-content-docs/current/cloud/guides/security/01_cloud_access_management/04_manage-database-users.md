@@ -2,7 +2,7 @@
 sidebar_label: 'Управление пользователями базы данных'
 slug: /cloud/security/manage-database-users
 title: 'Управление пользователями базы данных'
-description: 'На этой странице описано, как администраторам добавлять пользователей базы данных, управлять их правами доступа и удалять пользователей'
+description: 'На этой странице описано, как администраторам добавлять пользователей базы данных, управлять их назначениями и удалять этих пользователей'
 doc_type: 'guide'
 keywords: ['пользователи базы данных', 'управление доступом', 'безопасность', 'разрешения', 'управление пользователями']
 ---
@@ -12,10 +12,10 @@ import user_grant_permissions_options from '@site/static/images/cloud/security/c
 
 В этом руководстве рассматриваются два способа управления пользователями базы данных: через SQL-консоль и непосредственно в самой базе данных.
 
+
 ### Аутентификация в SQL-консоли без пароля {#sql-console-passwordless-authentication}
 
 Пользователи SQL-консоли создаются для каждого сеанса и аутентифицируются с использованием X.509-сертификатов, которые автоматически обновляются. Пользователь удаляется при завершении сеанса. При формировании списков доступа для аудита перейдите на вкладку Settings для соответствующего сервиса в консоли и учитывайте доступ через SQL-консоль помимо пользователей, уже существующих в базе данных. Если настроены пользовательские роли, доступ пользователя отражается в роли, имя которой оканчивается на имя пользователя.
-
 
 ## Пользователи и роли консоли SQL {#sql-console-users-and-roles}
 
@@ -52,8 +52,6 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 
 </VerticalStepper>
 
-
-
 ## Аутентификация в базе данных {#database-authentication}
 
 ### Идентификатор пользователя базы данных и пароль {#database-user-id--password}
@@ -69,6 +67,7 @@ GRANT database_developer TO `sql-console-role:my.user@domain.com`;
 CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 ```
 
+
 ### Пользователь базы данных с аутентификацией по SSH {#database-ssh}
 
 Чтобы настроить аутентификацию по SSH для пользователя базы данных ClickHouse Cloud:
@@ -79,7 +78,6 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 4. Используйте приватный ключ для аутентификации в сервисе.
 
 Подробное пошаговое руководство с примерами см. в статье [How to connect to ClickHouse Cloud using SSH keys](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys) в нашей базе знаний.
-
 
 ## Права доступа к базе данных {#database-permissions}
 
@@ -109,58 +107,60 @@ CREATE USER userName IDENTIFIED WITH sha256_hash BY 'hash';
 Рекомендуется создать новую учетную запись пользователя, связанную с конкретным человеком, и назначить этому пользователю default&#95;role. Это нужно для того, чтобы операции, выполняемые пользователями, были привязаны к их пользовательским идентификаторам, а учетная запись `default` была зарезервирована для действий типа break-glass (аварийный доступ).
 
 ```sql
-CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
-GRANT default_role to userID;
+  CREATE USER userID IDENTIFIED WITH sha256_hash by 'hashed_password';
+  GRANT default_role to userID;
 ```
 
-Пользователи могут использовать генератор хеша SHA256 или функцию в коде, такую как `hashlib` в Python, чтобы преобразовать пароль длиной 12+ символов с достаточной сложностью в строку SHA256 и передать её системному администратору в качестве пароля. Это гарантирует, что администратор не видит и не обрабатывает пароли в открытом виде.
+Пользователи могут использовать генератор SHA256-хеша или функцию в коде, такую как `hashlib` в Python, чтобы преобразовать пароль длиной 12+ символов с достаточной сложностью в SHA256-хеш и передать его системному администратору в качестве пароля. Это гарантирует, что администратор не видит и не обрабатывает пароли в открытом виде.
+
 
 ### Списки доступа к базе данных с пользователями SQL-консоли {#database-access-listings-with-sql-console-users}
 
-Следующий процесс можно использовать для формирования полного списка доступов по SQL-консоли и базам данных в вашей организации.
+Следующую процедуру можно использовать для формирования полного списка доступов по SQL-консоли и базам данных в вашей организации.
 
 <VerticalStepper headerLevel="h4">
-  #### Получить список всех грантов базы данных
 
-  Выполните следующие запросы, чтобы получить список всех грантов в базе данных.
+#### Получить список всех грантов базы данных {#get-a-list-of-all-database-grants}
 
-  ```sql
-  SELECT grants.user_name,
-  grants.role_name,
-  users.name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
-  LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
+Выполните следующие запросы, чтобы получить список всех грантов в базе данных. 
 
-  UNION ALL
+```sql
+SELECT grants.user_name,
+grants.role_name,
+users.name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.grants LEFT OUTER JOIN system.role_grants ON grants.role_name = role_grants.granted_role_name
+LEFT OUTER JOIN system.users ON role_grants.user_name = users.name
 
-  SELECT grants.user_name,
-  grants.role_name,
-  role_grants.role_name AS role_member,
-  grants.access_type,
-  grants.database,
-  grants.table
-  FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
-  WHERE role_grants.user_name is null;
-  ```
+UNION ALL
 
-  #### Соотнести список грантов с пользователями Console, имеющими доступ к SQL-консоли
+SELECT grants.user_name,
+grants.role_name,
+role_grants.role_name AS role_member,
+grants.access_type,
+grants.database,
+grants.table
+FROM system.role_grants LEFT OUTER JOIN system.grants ON role_grants.granted_role_name = grants.role_name
+WHERE role_grants.user_name is null;
+```
 
-  Соотнесите этот список с пользователями Console, которые имеют доступ к SQL-консоли.
+#### Соотнести список грантов с пользователями Console, имеющими доступ к SQL-консоли {#associate-grant-list-to-console-users-with-access-to-sql-console}
 
-  a. Перейдите в Console.
+Соотнесите этот список с пользователями Console, которые имеют доступ к SQL-консоли.
+   
+a. Перейдите в Console.
 
-  b. Выберите соответствующий сервис.
+b. Выберите соответствующий сервис.
 
-  c. Выберите Settings слева.
+c. Выберите Settings слева.
 
-  d. Пролистайте до раздела SQL console access.
+d. Пролистайте до раздела SQL console access.
 
-  e. Нажмите на ссылку с числом пользователей, имеющих доступ к базе данных `There are # users with access to this service.`, чтобы просмотреть список пользователей.
+e. Нажмите на ссылку с числом пользователей, имеющих доступ к базе данных `There are # users with access to this service.`, чтобы просмотреть список пользователей.
+
 </VerticalStepper>
-
 
 ## Пользователи warehouse {#warehouse-users}
 

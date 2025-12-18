@@ -68,8 +68,27 @@ estimated_recovery_time: 0
 database_shard_name:
 database_replica_name:
 is_active:               NULL
-```
 
+Row 2:
+──────
+cluster:                 test_cluster_two_shards
+shard_num:               2
+shard_name:              shard_02
+shard_weight:            1
+replica_num:             1
+host_name:               127.0.0.2
+host_address:            127.0.0.2
+port:                    9000
+is_local:                0
+user:                    default
+default_database:
+errors_count:            0
+slowdowns_count:         0
+estimated_recovery_time: 0
+database_shard_name:
+database_replica_name:
+is_active:               NULL
+```
 
 Строка 2:
 ──────

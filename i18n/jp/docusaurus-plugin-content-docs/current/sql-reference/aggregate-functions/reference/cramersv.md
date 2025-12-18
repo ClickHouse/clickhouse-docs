@@ -17,7 +17,7 @@ doc_type: 'reference'
 **構文**
 
 ```sql
-cramersV(列1, 列2)
+cramersV(column1, column2)
 ```
 
 **パラメータ**

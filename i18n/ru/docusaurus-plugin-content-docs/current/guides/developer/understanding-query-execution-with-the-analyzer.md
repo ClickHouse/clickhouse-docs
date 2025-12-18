@@ -14,7 +14,6 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-
 # Понимание выполнения запросов с помощью анализатора {#understanding-query-execution-with-the-analyzer}
 
 ClickHouse обрабатывает запросы чрезвычайно быстро, но процесс их выполнения довольно сложен. Попробуем разобраться, как выполняется запрос `SELECT`. Чтобы проиллюстрировать это, добавим немного данных в таблицу ClickHouse:
@@ -40,7 +39,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Этапы выполнения запроса EXPLAIN" size="md" />
 
 Давайте посмотрим на каждый объект в действии во время выполнения запроса. Мы возьмём несколько запросов и затем рассмотрим их с помощью оператора `EXPLAIN`.
-
 
 ## Парсер {#parser}
 
@@ -72,7 +70,6 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 <Image img={analyzer2} alt="AST output" size="md" />
 
 Каждый узел имеет соответствующие дочерние элементы, а дерево целиком представляет структуру вашего запроса. Это логическая структура, помогающая при обработке запроса. С точки зрения конечного пользователя (если только его не интересует выполнение запроса) она не особенно полезна; этот инструмент в основном используется разработчиками.
-
 
 ## Анализатор {#analyzer}
 
@@ -130,7 +127,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 ```
 
 Между двумя выполнениями вы можете увидеть, как разрешаются псевдонимы и проекции.
-
 
 ## Планировщик {#planner}
 
@@ -203,51 +199,46 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
-```
-
 
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Выражение ((Projection + Before ORDER BY))                                                                                                │
-│ Действия: INPUT :: 0 -&gt; type String : 0                                                                                                   │
-│          INPUT : 1 -&gt; min(timestamp) DateTime : 1                                                                                          │
-│          INPUT : 2 -&gt; max(timestamp) DateTime : 2                                                                                          │
-│          INPUT : 3 -&gt; count() UInt64 : 3                                                                                                   │
-│          COLUMN Const(Nullable(UInt64)) -&gt; total&#95;rows Nullable(UInt64) : 4                                                                 │
-│          COLUMN Const(UInt8) -&gt; 100 UInt8 : 5                                                                                              │
-│          ALIAS min(timestamp) :: 1 -&gt; minimum&#95;date DateTime : 6                                                                            │
-│          ALIAS max(timestamp) :: 2 -&gt; maximum&#95;date DateTime : 1                                                                            │
-│          FUNCTION divide(count() :: 3, total&#95;rows :: 4) -&gt; divide(count(), total&#95;rows) Nullable(Float64) : 2                               │
-│          FUNCTION multiply(divide(count(), total&#95;rows) :: 2, 100 :: 5) -&gt; multiply(divide(count(), total&#95;rows), 100) Nullable(Float64) : 4 │
-│          ALIAS multiply(divide(count(), total&#95;rows), 100) :: 4 -&gt; percentage Nullable(Float64) : 5                                         │
-│ Позиции: 0 6 1 5                                                                                                                          │
+│ Expression ((Projection + Before ORDER BY))                                                                                                │
+│ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
+│          INPUT : 1 -> min(timestamp) DateTime : 1                                                                                          │
+│          INPUT : 2 -> max(timestamp) DateTime : 2                                                                                          │
+│          INPUT : 3 -> count() UInt64 : 3                                                                                                   │
+│          COLUMN Const(Nullable(UInt64)) -> total_rows Nullable(UInt64) : 4                                                                 │
+│          COLUMN Const(UInt8) -> 100 UInt8 : 5                                                                                              │
+│          ALIAS min(timestamp) :: 1 -> minimum_date DateTime : 6                                                                            │
+│          ALIAS max(timestamp) :: 2 -> maximum_date DateTime : 1                                                                            │
+│          FUNCTION divide(count() :: 3, total_rows :: 4) -> divide(count(), total_rows) Nullable(Float64) : 2                               │
+│          FUNCTION multiply(divide(count(), total_rows) :: 2, 100 :: 5) -> multiply(divide(count(), total_rows), 100) Nullable(Float64) : 4 │
+│          ALIAS multiply(divide(count(), total_rows), 100) :: 4 -> percentage Nullable(Float64) : 5                                         │
+│ Positions: 0 6 1 5                                                                                                                         │
 │   Aggregating                                                                                                                              │
-│   Ключи: type                                                                                                                              │
-│   Агрегаты:                                                                                                                                │
+│   Keys: type                                                                                                                               │
+│   Aggregates:                                                                                                                              │
 │       min(timestamp)                                                                                                                       │
-│         Функция: min(DateTime) → DateTime                                                                                                  │
-│         Аргументы: timestamp                                                                                                               │
+│         Function: min(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
 │       max(timestamp)                                                                                                                       │
-│         Функция: max(DateTime) → DateTime                                                                                                  │
-│         Аргументы: timestamp                                                                                                               │
+│         Function: max(DateTime) → DateTime                                                                                                 │
+│         Arguments: timestamp                                                                                                               │
 │       count()                                                                                                                              │
-│         Функция: count() → UInt64                                                                                                          │
-│         Аргументы: нет                                                                                                                     │
-│   Пропуск слияния: 0                                                                                                                       │
-│     Выражение (Before GROUP BY)                                                                                                            │
-│     Действия: INPUT :: 0 -&gt; timestamp DateTime : 0                                                                                         │
-│              INPUT :: 1 -&gt; type String : 1                                                                                                │
-│     Позиции: 0 1                                                                                                                          │
-│       ReadFromMergeTree (default.session&#95;events)                                                                                       │
-│       Тип чтения: Default                                                                                                                  │
-│       Частей: 1                                                                                                                            │
-│       Гранул: 1                                                                                                                            │
+│         Function: count() → UInt64                                                                                                         │
+│         Arguments: none                                                                                                                    │
+│   Skip merging: 0                                                                                                                          │
+│     Expression (Before GROUP BY)                                                                                                           │
+│     Actions: INPUT :: 0 -> timestamp DateTime : 0                                                                                          │
+│              INPUT :: 1 -> type String : 1                                                                                                 │
+│     Positions: 0 1                                                                                                                         │
+│       ReadFromMergeTree (default.session_events)                                                                                           │
+│       ReadType: Default                                                                                                                    │
+│       Parts: 1                                                                                                                             │
+│       Granules: 1                                                                                                                          │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
 ```
 
 Теперь вы можете видеть все входные данные, функции, псевдонимы и типы данных, которые используются. Некоторые оптимизации, которые будет применять планировщик, можно посмотреть [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
-```
-
 
 ## Конвейер запроса {#query-pipeline}
 
@@ -363,7 +354,6 @@ GROUP BY type
 FORMAT TSV
 ```
 
-
 ```response
 digraph
 {
@@ -446,7 +436,6 @@ digraph
 <Image img={analyzer5} alt="Параллельный вывод на графике" size="md" />
 
 Таким образом, исполнитель запроса решил не параллелизировать операции, поскольку объем данных был недостаточно большим. После того как было добавлено больше строк, исполнитель запроса решил использовать несколько потоков, как видно на графике.
-
 
 ## Исполнитель {#executor}
 

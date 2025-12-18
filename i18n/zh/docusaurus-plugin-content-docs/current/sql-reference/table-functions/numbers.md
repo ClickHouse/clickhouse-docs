@@ -36,6 +36,6 @@ SELECT * FROM numbers(0, 20, 2);
 示例：
 
 ```sql
--- 生成从 2010-01-01 到 2010-12-31 的日期序列
+-- Generate a sequence of dates from 2010-01-01 to 2010-12-31
 SELECT toDate('2010-01-01') + number AS d FROM numbers(365);
 ```

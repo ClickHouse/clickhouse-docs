@@ -17,8 +17,6 @@ ClickHouse における `CHECK TABLE` クエリは、特定のテーブルまた
 このクエリはシステムのパフォーマンスを向上させるものではなく、何をしているか確信が持てない場合には実行すべきではありません。
 :::
 
-
-
 ## 構文 {#syntax}
 
 クエリの基本的な構文は次のとおりです。
@@ -32,7 +30,7 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 * `part_name`: （任意）テーブル内の特定のパーツのみをチェックしたい場合、パーツ名を指定する文字列リテラルを追加します。
 * `FORMAT format`: （任意）結果の出力フォーマットを指定できます。
 * `SETTINGS`: （任意）追加の設定を行えます。
-  * **`check_query_single_value_result`**: （任意）詳細な結果（`0`）と要約結果（`1`）を切り替えるための設定です。
+  * （任意）：[check&#95;query&#95;single&#95;value&#95;result](../../operations/settings/settings#check_query_single_value_result): 詳細な結果（`0`）と要約結果（`1`）を切り替えるための設定です。
   * その他の設定も適用できます。結果の順序が決定的である必要がない場合、クエリを高速化するために max&#95;threads を 1 より大きい値に設定できます。
 
 クエリのレスポンスは、`check_query_single_value_result` 設定の値に依存します。
@@ -41,8 +39,8 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 `check_query_single_value_result = 0` の場合、クエリは以下の列を返します。
 
 * `part_path`: データパーツのパスまたはファイル名を示します。
-* `is_passed`: このパーツのチェックが成功した場合は 1、そうでない場合は 0 を返します。
-* `message`: エラーや成功メッセージなど、チェックに関連する追加メッセージです。
+  * `is_passed`: このパーツのチェックが成功した場合は 1、そうでない場合は 0 を返します。
+  * `message`: エラーや成功メッセージなど、チェックに関連する追加メッセージです。
 
 `CHECK TABLE` クエリは、次のテーブルエンジンをサポートします。
 
@@ -54,7 +52,6 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 これら以外のテーブルエンジンのテーブルに対して実行した場合は、`NOT_IMPLEMENTED` 例外が発生します。
 
 `*Log` ファミリーのエンジンは、障害発生時の自動データ復旧を提供しません。`CHECK TABLE` クエリを使用して、データ損失をタイムリーに検知してください。
-
 
 ## 例 {#examples}
 
@@ -80,7 +77,7 @@ FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力：
+出力:
 
 ```text
 ┌─part_path────┬─is_passed─┬─message─┐
@@ -89,7 +86,7 @@ SETTINGS check_query_single_value_result = 0
 └──────────────┴───────────┴─────────┘
 ```
 
-同様に、`PART` キーワードを使用してテーブルの特定の部分だけを確認することもできます。
+同様に、`PART` キーワードを使用してテーブル内の特定のデータパーツのみをチェックすることもできます。
 
 ```sql
 CHECK TABLE t0 PART '201003_7_7_0'
@@ -105,20 +102,20 @@ SETTINGS check_query_single_value_result = 0
 └──────────────┴───────────┴─────────┘
 ```
 
-パーツが存在しない場合、クエリはエラーを返します。
+データパートが存在しない場合、そのクエリはエラーを返します。
 
 ```sql
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
 ```text
-DB::Exception: テーブル 'default.t0' に確認対象のデータパート '201003_111_222_0' が存在しません。(NO_SUCH_DATA_PART)
+DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
 ### 「Corrupted（破損）」という結果を受け取った場合 {#receiving-a-corrupted-result}
 
 :::warning
-免責事項: ここで説明する手順（データディレクトリ内のファイルを手動で操作・削除することを含みます）は、実験環境または開発環境でのみ使用してください。本番サーバーでは絶対に実行しないでください。データ損失やその他の予期しない結果を招くおそれがあります。
+免責事項：ここで説明する手順（データディレクトリ内のファイルを手動で操作・削除することを含みます）は、実験環境または開発環境でのみ使用してください。本番サーバーでは絶対に実行しないでください。データ損失やその他の予期しない結果を招くおそれがあります。
 :::
 
 既存のチェックサムファイルを削除します:
@@ -127,20 +124,20 @@ DB::Exception: テーブル 'default.t0' に確認対象のデータパート '2
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 
 
-出力:
+Output:
 
 ```text
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 checksums.txt ファイルが存在しない場合は、復元できます。特定のパーティションに対して `CHECK TABLE` コマンドを実行する際に再計算および再書き込みされ、ステータスは引き続き &#39;is&#95;passed = 1&#39; として報告されます。
 
@@ -151,7 +148,6 @@ CHECK ALL TABLES
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
-
 
 ```text
 ┌─database─┬─table────┬─part_path───┬─is_passed─┬─message─┐
@@ -167,7 +163,6 @@ SETTINGS check_query_single_value_result = 0
 │ default  │ t1       │ all_7_38_2  │         1 │         │
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
-
 
 ## データが破損している場合 {#if-the-data-is-corrupted}
 

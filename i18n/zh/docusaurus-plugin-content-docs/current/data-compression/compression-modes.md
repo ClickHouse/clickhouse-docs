@@ -20,8 +20,6 @@ ClickHouse 协议支持对带有校验和的**数据块**进行压缩。
 了解更多可用的[列压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)，并在创建表时或之后指定它们。
 :::
 
-
-
 ## 模式 {#modes}
 
 | value  | name               | description                              |
@@ -38,8 +36,6 @@ LZ4 和 ZSTD 均由同一位作者开发，但在性能取舍上有所不同。
 | **zstd** 1.4.5 -1 | 2.8   | 500 MB/s | 1660 MB/s |
 | **lz4** 1.9.2     | 2.1   | 740 MB/s | 4530 MB/s |
 
-
-
 ## 块 {#block}
 
 | 字段           | 类型    | 说明                                              |
@@ -55,8 +51,6 @@ LZ4 和 ZSTD 均由同一位作者开发，但在性能取舍上有所不同。
 头部由 (raw_size + data_size + mode) 组成，raw_size 为 len(header + compressed_data)。
 
 Checksum 为 `hash(header + compressed_data)`，使用 [ClickHouse CityHash](../native-protocol/hash.md)。
-
-
 
 ## None 模式 {#none-mode}
 

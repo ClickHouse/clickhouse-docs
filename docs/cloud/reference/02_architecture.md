@@ -47,7 +47,7 @@ For AWS, access to storage is controlled via AWS IAM, and each IAM role is uniqu
 For GCP and Azure, services have object storage isolation (all services have their own buckets or storage container).
 
 ## Compute-compute separation {#compute-compute-separation}
-[Compute-compute separation](/cloud/reference/warehouses) lets users create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed.
+[Compute-compute separation](/cloud/reference/warehouses) lets you create multiple compute node groups, each with their own service URL, that all use the same shared object storage. This allows for compute isolation of different use cases such as reads from writes, that share the same data. It also leads to more efficient resource utilization by allowing for independent scaling of the compute groups as needed.
 
 ## Concurrency limits {#concurrency-limits}
 

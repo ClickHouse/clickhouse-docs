@@ -51,7 +51,7 @@ doc_type: 'reference'
 
 配列は入れ子（ネスト）にすることができ、引数として `Nullable` 型の値を持つことができます。`Tuple` 型および `Map` 型も入れ子にすることができます。
 
-`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリに対しては、[LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力できるようにする [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定があります。
+`DICTIONARY` 型は `INSERT` クエリでサポートされており、`SELECT` クエリに対しては、[LowCardinality](/sql-reference/data-types/lowcardinality.md) 型を `DICTIONARY` 型として出力できるようにする [`output_format_arrow_low_cardinality_as_dictionary`](/operations/settings/formats#output_format_arrow_low_cardinality_as_dictionary) 設定があります。なお、`LowCardinality` の Dictionary には未使用の値が含まれている場合があり、その結果、出力される Arrow の `DICTIONARY` にも未使用の値が含まれる可能性があります。
 
 サポートされていない Arrow データ型は次のとおりです:
 
@@ -60,7 +60,7 @@ doc_type: 'reference'
 - `UUID`
 - `ENUM`.
 
-ClickHouse テーブル列のデータ型は、対応する Arrow データフィールドと一致している必要はありません。データを挿入する際、ClickHouse はまず上記の表に従ってデータ型を解釈し、その後、ClickHouse テーブル列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
+ClickHouse テーブル列のデータ型は、対応する Arrow データフィールドと一致している必要はありません。データを挿入する際、ClickHouse はまず上記の表に従ってデータ型を解釈し、その後、ClickHouse テーブル列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#CAST)します。
 
 ## 使用例 {#example-usage}
 
@@ -72,7 +72,6 @@ ClickHouse テーブル列のデータ型は、対応する Arrow データフ�
 $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT Arrow"
 ```
 
-
 ### データの選択 {#selecting-data}
 
 次のコマンドを使用して、ClickHouse のテーブルからデータを抽出し、Arrow 形式のファイルに保存できます。
@@ -80,7 +79,6 @@ $ cat filename.arrow | clickhouse-client --query="INSERT INTO some_table FORMAT 
 ```bash
 $ clickhouse-client --query="SELECT * FROM {some_table} FORMAT Arrow" > {filename.arrow}
 ```
-
 
 ## フォーマット設定 {#format-settings}
 

@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 このページでは、公式の ClickStack OpenTelemetry (OTel) コレクターの設定に関する詳細を説明します。
 
-
 ## コレクターのロール {#collector-roles}
 
 OpenTelemetry コレクターは、主に 2 つのロールでデプロイできます:
@@ -38,32 +37,32 @@ HyperDX のみのディストリビューションを使用する場合など、
 
 ### スタンドアロン {#standalone}
 
-ClickStack ディストリビューション版の OTel connector をスタンドアロン モードでデプロイするには、次の Docker コマンドを実行します。
+ClickStack ディストリビューション版の OTel コネクタをスタンドアロンモードでデプロイするには、次の Docker コマンドを実行します。
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` という環境変数を使うことで、対象の ClickHouse インスタンスを上書き設定できます。`CLICKHOUSE_ENDPOINT` にはプロトコルおよびポートを含んだ ClickHouse の完全な HTTP エンドポイントを指定します。例: `http://localhost:8123`。
+`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` という環境変数を使って、接続先の ClickHouse インスタンスを上書きできます。`CLICKHOUSE_ENDPOINT` には、プロトコルとポートを含む完全な ClickHouse の HTTP エンドポイントを指定します。たとえば `http://localhost:8123` のようになります。
 
 **これらの環境変数は、コネクタを含む任意の Docker ディストリビューションで使用できます。**
 
-`OPAMP_SERVER_URL` は、HyperDX のデプロイメントを指す必要があります。例: `http://localhost:4320`。HyperDX はデフォルトでポート `4320` 上の `/v1/opamp` で OpAMP (Open Agent Management Protocol) サーバーを公開します。HyperDX を実行しているコンテナからこのポートが公開されていることを確認してください (例: `-p 4320:4320` を使用)。
+`OPAMP_SERVER_URL` には、HyperDX のデプロイメントを指す URL を指定します。たとえば `http://localhost:4320` のようになります。HyperDX は、デフォルトでポート `4320` 上の `/v1/opamp` で OpAMP (Open Agent Management Protocol) サーバーを公開します。HyperDX を実行しているコンテナからこのポートが公開されていることを確認してください (例: `-p 4320:4320` を使用)。
 
 :::note OpAMP ポートの公開と接続
-コレクターが OpAMP ポートに接続できるようにするには、そのポートが HyperDX コンテナによって公開されている必要があります。例: `-p 4320:4320`。ローカルテストでは、macOS ユーザーは `OPAMP_SERVER_URL=http://host.docker.internal:4320` を設定できます。Linux ユーザーは `--network=host` を指定してコレクターコンテナを起動できます。
+Collector が OpAMP ポートに接続できるようにするには、そのポートが HyperDX コンテナから公開されている必要があります (例: `-p 4320:4320`)。ローカルテストの場合、OSX ユーザーは `OPAMP_SERVER_URL=http://host.docker.internal:4320` を設定できます。Linux ユーザーは `--network=host` を指定して Collector コンテナを起動できます。
 :::
 
-本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を持つユーザーアカウントを使用する必要があります。
+本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) を持つユーザーを使用してください。
 
 
 ### 構成の変更 {#modifying-otel-collector-configuration}
 
-#### docker の使用 {#using-docker}
+#### docker を使用する {#using-docker}
 
-OpenTelemetry collector を含むすべての docker イメージは、環境変数 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を使用して、ClickHouse インスタンスに接続するように設定できます。
+OpenTelemetry collector を含むすべての docker イメージは、環境変数 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を使用して ClickHouse インスタンスに接続するよう構成できます。
 
-例えば、オールインワンイメージの場合は次のとおりです。
+例えば、オールインワンイメージの場合:
 
 ```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
@@ -73,8 +72,12 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note 画像名の更新
+ClickStack のイメージは、現在 `clickhouse/clickstack-*`（以前は `docker.hyperdx.io/hyperdx/*`）として公開されています。
+:::
 
 
 #### Docker Compose {#docker-compose-otel}
@@ -101,17 +104,16 @@ Docker Compose を使用する際は、上記と同じ環境変数を使用し�
       - internal
 ```
 
-
 ### 高度な設定 {#advanced-configuration}
 
 ClickStack ディストリビューションの OTel collector では、カスタム設定ファイルをマウントし、環境変数を設定することで、基本設定を拡張できます。カスタム設定は、OpAMP を介して HyperDX によって管理されている基本設定とマージされます。
 
 #### コレクター設定の拡張 {#extending-collector-config}
 
-カスタムの receiver、processor、pipeline を追加するには、次の手順を実行します。
+カスタムの receiver、processor、または pipeline を追加するには:
 
 1. 追加の設定を含むカスタム設定ファイルを作成する
-2. ファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントする
+2. そのファイルを `/etc/otelcol-contrib/custom.config.yaml` にマウントする
 3. 環境変数 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml` を設定する
 
 **カスタム設定の例:**
@@ -167,17 +169,17 @@ service:
         - clickhouse
 ```
 
-**オールインワンイメージを使ってデプロイする：**
+**オールインワンイメージでデプロイする：**
 
 ```bash
 docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-**スタンドアロンコレクターを使用してデプロイする：**
+**スタンドアロン コレクターを使用してデプロイする：**
 
 ```bash
 docker run -d \
@@ -188,14 +190,14 @@ docker run -d \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 :::note
-新しい `receivers`、`processors`、`pipelines` はカスタム設定内でのみ定義してください。ベース設定側の `processors`（`memory_limiter`、`batch`）および `exporters`（`clickhouse`）はすでに定義済みなので、名前で参照します。カスタム設定はベース設定とマージされますが、既存のコンポーネントを上書きすることはできません。
+新しい receiver、processor、pipeline はカスタム設定内でのみ定義します。ベースの processor（`memory_limiter`、`batch`）および exporter（`clickhouse`）はすでに定義済みなので、名前で参照してください。カスタム設定はベース設定とマージされ、既存コンポーネントを上書きすることはできません。
 :::
 
-より複雑な設定については、[ClickStack コレクターのデフォルト設定](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)および [ClickHouse exporter のドキュメント](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)を参照してください。
+より複雑な設定については、[デフォルトの ClickStack collector 設定](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)および [ClickHouse exporter ドキュメント](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)を参照してください。
 
 
 #### 設定構造 {#configuration-structure}
@@ -227,7 +229,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 ```
 
 ここでは、collector がデータベース `otel` を使用するように設定されていることを前提としています。これは環境変数 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` で制御できます。[他の環境変数と同様に](#modifying-otel-collector-configuration)、collector を実行しているコンテナイメージにこの値を渡してください。
-
 
 ## 処理 - フィルタリング、変換、エンリッチメント {#processing-filtering-transforming-enriching}
 
@@ -309,7 +310,6 @@ service:
 
 より高度な設定については、[OpenTelemetry Collector のドキュメント](https://opentelemetry.io/docs/collector/) を参照してください。
 
-
 ## 挿入の最適化 {#optimizing-inserts}
 
 ClickStack collector 経由で Observability データを ClickHouse に挿入する際に、高い挿入性能と強い一貫性保証を両立するには、いくつかの単純なルールに従う必要があります。OTel collector を正しく構成すれば、これらのルールに従うことは容易になります。これにより、ClickHouse を初めて利用するユーザーが直面しがちな[一般的な問題](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)も回避できます。
@@ -329,9 +329,9 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 ### 非同期挿入を使用する {#use-asynchronous-inserts}
 
-通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ユーザーが Gateway として動作する ClickStack コレクターにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
+通常、コレクターのスループットが低い場合、ユーザーはより小さなバッチを送信せざるを得ませんが、それでもエンドツーエンドのレイテンシーを最小限に抑えつつ、データが ClickHouse に届くことを期待します。このような場合、バッチプロセッサの `timeout` が切れると小さなバッチが送信されます。これが問題を引き起こすことがあり、その際に非同期挿入が必要となります。ClickStack コレクターを Gateway として動作させてそこにデータを送信している場合、この問題はまれです。アグリゲーターとして動作することでこの問題を緩和できるためです。詳細は [Collector roles](#collector-roles) を参照してください。
 
-大きなバッチを保証できない場合、ユーザーは [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期挿入では、データはまずバッファに挿入され、その後データベースストレージに後から、すなわち非同期に書き込まれます。
+大きなバッチを保証できない場合、[Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts) を使用してバッチ処理を ClickHouse に委譲できます。非同期挿入では、データはまずバッファに挿入され、その後データベースストレージに後から、すなわち非同期に書き込まれます。
 
 <Image img={observability_6} alt="非同期挿入" size="md"/>
 
@@ -339,10 +339,10 @@ collector の視点からは、(1) と (2) を区別するのは難しい場合�
 
 コレクターで非同期挿入を有効にするには、接続文字列に `async_insert=1` を追加します。到達保証を得るために、`wait_for_async_insert=1`（デフォルト）の使用を推奨します。詳細は[こちら](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)を参照してください。
 
-非同期挿入によるデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` にゼロ以外の値が設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms milliseconds` 経過後にデータが挿入されます。ユーザーはこれらの設定を調整することで、パイプラインのエンドツーエンドレイテンシーを制御できます。バッファフラッシュの調整に使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
+非同期挿入によるデータは、ClickHouse のバッファがフラッシュされたときに挿入されます。これは、[`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) を超えた場合、または最初の INSERT クエリから [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) ミリ秒経過した場合のいずれかで発生します。`async_insert_stale_timeout_ms` にゼロ以外の値が設定されている場合は、最後のクエリから `async_insert_stale_timeout_ms milliseconds` 経過後にデータが挿入されます。これらの設定を調整することで、パイプラインのエンドツーエンドのレイテンシーを制御できます。バッファフラッシュの調整に使用できるその他の設定は[こちら](/operations/settings/settings#async_insert)に記載されています。一般的には、デフォルト値で問題ありません。
 
 :::note 適応型非同期挿入の検討
-エージェント数が少なく、スループットも低い一方でエンドツーエンドレイテンシーに厳しい要件がある場合、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse で見られるような高スループットの Observability ユースケースにはあまり適していません。
+エージェント数が少なく、スループットも低い一方でエンドツーエンドのレイテンシーに厳しい要件がある場合、[adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) が有用な場合があります。一般的に、これは ClickHouse で見られるような高スループットのオブザーバビリティユースケースにはあまり適していません。
 :::
 
 最後に、ClickHouse への同期挿入に関連付けられていた従来の重複排除動作は、非同期挿入を使用する場合はデフォルトでは有効になりません。必要に応じて、設定 [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate) を参照してください。
@@ -410,18 +410,18 @@ JSON 型は、ClickStack ユーザーに対して次のような利点を提供�
 - **より高速なクエリと低いメモリ消費** - `LogAttributes` のような属性に対する典型的な集計では、読み取るデータ量が 5〜10 倍少なくなり、クエリ速度が劇的に向上することで、クエリ時間とピークメモリ使用量の両方を削減できます。
 - **シンプルな管理** - 性能のためにカラムを事前にマテリアライズする必要はありません。各フィールドが独立したサブカラムとなり、ネイティブな ClickHouse カラムと同等の速度を実現します。
 
-### JSON サポートの有効化 {#enabling-json-support}
+### JSON サポートを有効化する {#enabling-json-support}
 
-コレクターでこのサポートを有効にするには、コレクターを含む任意のデプロイメントで環境変数 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` を設定します。これにより、ClickHouse でスキーマが JSON 型として作成されます。
+コレクターでこのサポートを有効にするには、コレクターを含む任意のデプロイメントに対して環境変数 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` を設定します。これにより、ClickHouse 上でスキーマが JSON 型として作成されます。
 
-:::note HyperDX support
-JSON 型のデータをクエリするには、環境変数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` を設定して、HyperDX のアプリケーション層でもサポートを有効化する必要があります。
+:::note HyperDX のサポート
+JSON 型をクエリできるようにするには、環境変数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` を設定し、HyperDX のアプリケーションレイヤーでもサポートを有効化する必要があります。
 :::
 
-例:
+たとえば、次のように設定します。
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 

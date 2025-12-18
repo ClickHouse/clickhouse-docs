@@ -29,7 +29,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 SYSTEM RELOAD DICTIONARIES [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD DICTIONARY {#reload-dictionary}
 
 Dictionary `dictionary_name` を、辞書の状態（LOADED / NOT&#95;LOADED / FAILED）に関係なく完全に再読み込みします。
@@ -45,7 +44,6 @@ Dictionary の状態は `system.dictionaries` テーブルをクエリするこ�
 SELECT name, status FROM system.dictionaries;
 ```
 
-
 ## SYSTEM RELOAD MODELS {#reload-models}
 
 :::note
@@ -60,7 +58,6 @@ SELECT name, status FROM system.dictionaries;
 SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD MODEL {#reload-model}
 
 `model_path` で指定されたCatBoostモデルを再読み込みします。
@@ -70,7 +67,6 @@ SYSTEM RELOAD MODELS [ON CLUSTER cluster_name]
 ```sql
 SYSTEM RELOAD MODEL [ON CLUSTER cluster_name] <model_path>
 ```
-
 
 ## SYSTEM RELOAD FUNCTIONS {#reload-functions}
 
@@ -83,7 +79,6 @@ SYSTEM RELOAD FUNCTIONS [ON CLUSTER cluster_name]
 SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```
 
-
 ## SYSTEM RELOAD ASYNCHRONOUS METRICS {#reload-asynchronous-metrics}
 
 すべての[非同期メトリクス](../../operations/system-tables/asynchronous_metrics.md)を再計算します。非同期メトリクスは、[asynchronous&#95;metrics&#95;update&#95;period&#95;s](../../operations/server-configuration-parameters/settings.md)設定に基づいて定期的に更新されるため、このステートメントを手動で実行して更新する必要は通常ありません。
@@ -91,7 +86,6 @@ SYSTEM RELOAD FUNCTION [ON CLUSTER cluster_name] function_name
 ```sql
 SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM DROP DNS CACHE {#drop-dns-cache}
 
@@ -141,7 +135,6 @@ SYSTEM DROP REPLICA 'replica_name' FROM ZKPATH '/path/to/table/in/zk';
 3つ目は、ローカルサーバー上のすべてのレプリケートテーブルに対して同じ操作を行います。
 4つ目は、テーブルの他のすべてのレプリカが削除されたあとに、ダウンしたレプリカのメタデータを削除する場合に有用です。テーブルパスを明示的に指定する必要があります。このパスは、テーブル作成時に `ReplicatedMergeTree` エンジンの第1引数として渡されたパスと同一でなければなりません。
 
-
 ## SYSTEM DROP DATABASE REPLICA {#drop-database-replica}
 
 `Replicated` データベースの不要なレプリカは、以下の構文で削除できます。
@@ -153,7 +146,6 @@ SYSTEM DROP DATABASE REPLICA 'replica_name' [FROM SHARD 'shard_name'] FROM ZKPAT
 ```
 
 `SYSTEM DROP REPLICA` と同様ですが、`DROP DATABASE` を実行する対象のデータベースが存在しない場合に、ZooKeeper から `Replicated` データベースのレプリカパスを削除します。なお、このステートメントは `ReplicatedMergeTree` のレプリカは削除しないため、必要に応じて `SYSTEM DROP REPLICA` も実行する必要があります。シャード名とレプリカ名は、データベース作成時に `Replicated` エンジンの引数として指定した名前です。また、これらの名前は `system.clusters` の `database_shard_name` および `database_replica_name` カラムから取得できます。`FROM SHARD` 句が省略された場合、`replica_name` は `shard_name|replica_name` 形式の完全なレプリカ名である必要があります。
-
 
 ## SYSTEM DROP UNCOMPRESSED CACHE {#drop-uncompressed-cache}
 
@@ -182,7 +174,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 [query cache](../../operations/query-cache.md) をクリアします。
 タグを指定した場合は、指定されたタグを持つクエリキャッシュエントリのみが削除されます。
 
-
 ## SYSTEM DROP FORMAT SCHEMA CACHE {#system-drop-schema-format}
 
 [`format_schema_path`](../../operations/server-configuration-parameters/settings.md#format_schema_path)から読み込まれたスキーマのキャッシュをクリアします。
@@ -196,7 +187,6 @@ SYSTEM DROP QUERY CACHE TAG '<tag>'
 ```sql
 SYSTEM DROP FORMAT SCHEMA CACHE [FOR Protobuf/Files]
 ```
-
 
 ## SYSTEM FLUSH LOGS {#flush-logs}
 
@@ -213,7 +203,6 @@ SYSTEM FLUSH LOGS [ON CLUSTER cluster_name] [log_name|[database.table]] [, ...]
 SYSTEM FLUSH LOGS query_log, system.query_views_log;
 ```
 
-
 ## SYSTEM RELOAD CONFIG {#reload-config}
 
 ClickHouseの設定を再読み込みします。設定がZooKeeperに保存されている場合に使用します。`SYSTEM RELOAD CONFIG` はZooKeeperに保存されている `USER` の設定は再読み込みせず、`users.xml` に保存されている `USER` の設定のみを再読み込みします。すべての `USER` 設定を再読み込むには `SYSTEM RELOAD USERS` を使用します。
@@ -222,7 +211,6 @@ ClickHouseの設定を再読み込みします。設定がZooKeeperに保存さ�
 SYSTEM RELOAD CONFIG [ON CLUSTER cluster_name]
 ```
 
-
 ## SYSTEM RELOAD USERS {#reload-users}
 
 users.xml、ローカルディスクのアクセスストレージ、ZooKeeper上でレプリケートされているアクセスストレージなど、すべてのアクセスストレージを再読み込みします。
@@ -230,7 +218,6 @@ users.xml、ローカルディスクのアクセスストレージ、ZooKeeper�
 ```sql
 SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 ```
-
 
 ## SYSTEM SHUTDOWN {#shutdown}
 
@@ -263,16 +250,14 @@ SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
 
 ここで、`FUNCTION` は `QueryMetricLog::startQuery` のような関数、または関数名の一部（サブストリング）を表し、handler には次のいずれかを指定します
 
-
 #### LOG {#instrument-add-log}
 
 関数の`ENTRY`または`EXIT`のタイミングで、引数として指定されたテキストとスタックトレースを出力します。
 
 ```sql
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'エントリ時に出力されるログ'
-SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT '終了時に出力されるログ'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG ENTRY 'this is a log printed at entry'
+SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` LOG EXIT 'this is a log printed at exit'
 ```
-
 
 #### SLEEP {#instrument-add-sleep}
 
@@ -288,16 +273,15 @@ SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0.5
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` SLEEP ENTRY 0 1
 ```
 
-
 #### PROFILE {#instrument-add-profile}
 
-関数の `ENTRY` から `EXIT` までに要した時間を計測します。
-プロファイリングの結果は [`system.trace_log`](../../operations/system-tables/trace_log.md) に保存されます。
+関数の`ENTRY`から`EXIT`までの処理に要した時間を計測します。
+プロファイリング結果は [`system.trace_log`](../../operations/system-tables/trace_log.md) に保存され、
+[Chrome Event Trace Format](../../operations/system-tables/trace_log.md#chrome-event-trace-format) に変換できます。
 
 ```sql
 SYSTEM INSTRUMENT ADD `QueryMetricLog::startQuery` PROFILE
 ```
-
 
 ### SYSTEM INSTRUMENT REMOVE {#instrument-remove}
 
@@ -321,7 +305,6 @@ SYSTEM INSTRUMENT REMOVE (SELECT id FROM system.instrumentation WHERE handler = 
 
 インストゥルメンテーションポイントのIDは、[`system.instrumentation`](../../operations/system-tables/instrumentation.md) システムテーブルから取得できます。
 
-
 ## 分散テーブルの管理 {#managing-distributed-tables}
 
 ClickHouseは[分散](../../engines/table-engines/special/distributed.md)テーブルを管理できます。ユーザーがこれらのテーブルにデータを挿入すると、ClickHouseは最初にクラスターノードに送信すべきデータのキューを作成し、その後非同期に送信します。キュー処理は、[`STOP DISTRIBUTED SENDS`](#stop-distributed-sends)、[FLUSH DISTRIBUTED](#flush-distributed)、[`START DISTRIBUTED SENDS`](#start-distributed-sends) クエリで管理できます。また、[`distributed_foreground_insert`](../../operations/settings/settings.md#distributed_foreground_insert) 設定を使用して、分散データを同期的に挿入することもできます。
@@ -338,7 +321,6 @@ SYSTEM STOP DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_
 [`prefer_localhost_replica`](../../operations/settings/settings.md#prefer_localhost_replica)が有効な場合(デフォルト)、ローカル分片へのデータは挿入されます。
 :::
 
-
 ### SYSTEM FLUSH DISTRIBUTED {#flush-distributed}
 
 ClickHouseにクラスタノードへのデータ送信を同期的に実行させます。いずれかのノードが利用できない場合、ClickHouseは例外をスローし、クエリの実行を停止します。すべてのノードがオンラインに復旧すると成功するため、それまでクエリを再試行できます。
@@ -353,7 +335,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 保留中の各ブロックは、最初の INSERT クエリの設定でディスクに保存されます。そのため、場合によっては設定を上書きする必要が生じることがあります。
 :::
 
-
 ### SYSTEM START DISTRIBUTED SENDS {#start-distributed-sends}
 
 分散テーブルへのデータ挿入時に、バックグラウンドでのデータ配信を有効化します。
@@ -361,7 +342,6 @@ SYSTEM FLUSH DISTRIBUTED [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```sql
 SYSTEM START DISTRIBUTED SENDS [db.]<distributed_table_name> [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM STOP LISTEN {#stop-listen}
 
@@ -378,7 +358,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 * `QUERIES DEFAULT [EXCEPT .. [,..]]` 修飾子が指定されている場合、`EXCEPT` 句で指定されたものを除き、すべてのデフォルトプロトコルが停止されます。
 * `QUERIES CUSTOM [EXCEPT .. [,..]]` 修飾子が指定されている場合、`EXCEPT` 句で指定されたものを除き、すべてのカスタムプロトコルが停止されます。
 
-
 ### SYSTEM START LISTEN {#start-listen}
 
 指定されたプロトコルで新しい接続を受け付けられるようにします。
@@ -388,7 +367,6 @@ SYSTEM STOP LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QU
 ```sql
 SYSTEM START LISTEN [ON CLUSTER cluster_name] [QUERIES ALL | QUERIES DEFAULT | QUERIES CUSTOM | TCP | TCP WITH PROXY | TCP SECURE | HTTP | HTTPS | MYSQL | GRPC | POSTGRESQL | PROMETHEUS | CUSTOM 'protocol']
 ```
-
 
 ## MergeTreeテーブルの管理 {#managing-mergetree-tables}
 
@@ -408,7 +386,6 @@ SYSTEM STOP MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]mer
 テーブルに対して `DETACH/ATTACH` を実行すると、すべての MergeTreeテーブルのマージが停止されている場合でも、そのテーブルのバックグラウンドでのマージ処理が開始されます。
 :::
 
-
 ### SYSTEM START MERGES {#start-merges}
 
 <CloudNotSupportedBadge />
@@ -419,7 +396,6 @@ MergeTree ファミリーのテーブルに対してバックグラウンドマ�
 SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP TTL MERGES {#stop-ttl-merges}
 
 MergeTreeファミリーのテーブルに対して、[TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) に従って古いデータをバックグラウンドで削除する処理を停止します。
@@ -428,7 +404,6 @@ MergeTreeファミリーのテーブルに対して、[TTL expression](../../eng
 ```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START TTL MERGES {#start-ttl-merges}
 
@@ -439,7 +414,6 @@ MergeTreeファミリーに属するテーブルに対して、[TTL expression](
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP MOVES {#stop-moves}
 
 MergeTreeファミリーのテーブルに対して、[TO VOLUME または TO DISK 句を含む有効期限 (TTL) テーブル式](../../engines/table-engines/mergetree-family/mergetree.md#mergetree-table-ttl) に基づくバックグラウンドでのデータ移動を停止するためのコマンドです。
@@ -448,7 +422,6 @@ MergeTreeファミリーのテーブルに対して、[TO VOLUME または TO DI
 ```sql
 SYSTEM STOP MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START MOVES {#start-moves}
 
@@ -459,7 +432,6 @@ MergeTree ファミリーのテーブルに対して、[TO VOLUME および TO D
 SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM SYSTEM UNFREEZE {#query_language-system-unfreeze}
 
 指定された名前の凍結されたバックアップを、すべてのディスクから削除します。個別のパーツを凍結解除する方法については、[ALTER TABLE table&#95;name UNFREEZE WITH NAME ](/sql-reference/statements/alter/partition#unfreeze-partition) を参照してください。
@@ -468,7 +440,6 @@ SYSTEM START MOVES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 SYSTEM UNFREEZE WITH NAME <backup_name>
 ```
 
-
 ### SYSTEM WAIT LOADING PARTS {#wait-loading-parts}
 
 テーブル内で非同期に読み込み中のすべてのデータパーツ（古いデータパーツ）の読み込みが完了するまで待機します。
@@ -476,7 +447,6 @@ SYSTEM UNFREEZE WITH NAME <backup_name>
 ```sql
 SYSTEM WAIT LOADING PARTS [ON CLUSTER cluster_name] [db.]merge_tree_family_table_name
 ```
-
 
 ## ReplicatedMergeTreeテーブルの管理 {#managing-replicatedmergetree-tables}
 
@@ -493,7 +463,6 @@ ClickHouseは、[ReplicatedMergeTree](/engines/table-engines/mergetree-family/re
 SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START FETCHES {#start-fetches}
 
 <CloudNotSupportedBadge />
@@ -505,7 +474,6 @@ SYSTEM STOP FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family
 SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATED SENDS {#stop-replicated-sends}
 
 `ReplicatedMergeTree` ファミリーのテーブルで、新しく挿入されたパーツをクラスタ内の他のレプリカへバックグラウンド送信する処理を停止します。
@@ -513,7 +481,6 @@ SYSTEM START FETCHES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_famil
 ```sql
 SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATED SENDS {#start-replicated-sends}
 
@@ -523,7 +490,6 @@ SYSTEM STOP REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tr
 SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP REPLICATION QUEUES {#stop-replication-queues}
 
 `ReplicatedMergeTree` ファミリーのテーブルについて、ZooKeeper に保存されているレプリケーションキュー内のバックグラウンドフェッチタスクを停止できます。対象となるバックグラウンドタスクの種類は、マージ、フェッチ、ミューテーション、ON CLUSTER 句付きの DDL ステートメントです。
@@ -531,7 +497,6 @@ SYSTEM START REPLICATED SENDS [ON CLUSTER cluster_name] [[db.]replicated_merge_t
 ```sql
 SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM START REPLICATION QUEUES {#start-replication-queues}
 
@@ -541,7 +506,6 @@ SYSTEM STOP REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_
 SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM STOP PULLING REPLICATION LOG {#stop-pulling-replication-log}
 
 `ReplicatedMergeTree`テーブルで、レプリケーションログからレプリケーションキューへの新規エントリの取り込みを停止します。
@@ -550,7 +514,6 @@ SYSTEM START REPLICATION QUEUES [ON CLUSTER cluster_name] [[db.]replicated_merge
 SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START PULLING REPLICATION LOG {#start-pulling-replication-log}
 
 `SYSTEM STOP PULLING REPLICATION LOG` を解除します。
@@ -558,7 +521,6 @@ SYSTEM STOP PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_m
 ```sql
 SYSTEM START PULLING REPLICATION LOG [ON CLUSTER cluster_name] [[db.]replicated_merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM SYNC REPLICA {#sync-replica}
 
@@ -576,7 +538,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
   加えて、`LIGHTWEIGHT` 修飾子はオプションの FROM &#39;srcReplicas&#39; 句をサポートします。ここで &#39;srcReplicas&#39; は、ソースレプリカ名のカンマ区切りリストです。この拡張により、指定されたソースレプリカから発生したレプリケーションタスクのみに対象を絞ることで、より的を絞った同期が可能になります。
 * `PULL` 修飾子が指定された場合、クエリは ZooKeeper から新しいレプリケーションキューエントリをフェッチしますが、いずれのエントリの処理完了も待機しません。
 
-
 ### SYNC DATABASE REPLICA {#sync-database-replica}
 
 指定された[レプリケートデータベース](/engines/database-engines/replicated)が、そのデータベースの DDL キューにあるすべてのスキーマ変更の適用を完了するまで待機します。
@@ -587,7 +548,6 @@ SYSTEM SYNC REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_
 SYSTEM SYNC DATABASE REPLICA replicated_database_name;
 ```
 
-
 ### SYSTEM RESTART REPLICA {#restart-replica}
 
 `ReplicatedMergeTree` テーブルに対して ZooKeeper セッションの状態を再初期化します。現在の状態を信頼できる唯一の情報源である ZooKeeper と比較し、必要に応じて ZooKeeper キューにタスクを追加します。
@@ -596,7 +556,6 @@ ZooKeeper のデータに基づくレプリケーションキューの初期化�
 ```sql
 SYSTEM RESTART REPLICA [ON CLUSTER cluster_name] [db.]replicated_merge_tree_family_table_name
 ```
-
 
 ### SYSTEM RESTORE REPLICA {#restore-replica}
 
@@ -637,7 +596,7 @@ CREATE TABLE repl_db.test_table (n UInt32)
 ENGINE = ReplicatedMergeTree
 ORDER BY n PARTITION BY n % 10;
 
--- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- ルートの喪失。
+-- zookeeper_delete_path("/clickhouse/repl_db", recursive=True) <- root loss.
 
 SYSTEM RESTORE DATABASE REPLICA repl_db;
 ```
@@ -665,7 +624,7 @@ ORDER BY n PARTITION BY n % 10;
 
 INSERT INTO test SELECT * FROM numbers(1000);
 
--- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- ルートの喪失。
+-- zookeeper_delete_path("/clickhouse/tables/test", recursive=True) <- root loss.
 
 SYSTEM RESTART REPLICA test;
 SYSTEM RESTORE REPLICA test;
@@ -676,7 +635,6 @@ SYSTEM RESTORE REPLICA test;
 ```sql
 SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 ```
-
 
 ### SYSTEM RESTART REPLICAS {#restart-replicas}
 
@@ -690,7 +648,6 @@ SYSTEM RESTORE REPLICA test ON CLUSTER cluster;
 SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```
 
-
 ### SYSTEM SYNC FILE CACHE {#sync-file-cache}
 
 :::note
@@ -702,7 +659,6 @@ SYSTEM DROP FILESYSTEM CACHE [ON CLUSTER cluster_name]
 ```sql
 SYSTEM SYNC FILE CACHE [ON CLUSTER cluster_name]
 ```
-
 
 ### SYSTEM LOAD PRIMARY KEY {#load-primary-key}
 
@@ -716,7 +672,6 @@ SYSTEM LOAD PRIMARY KEY [db.]name
 SYSTEM LOAD PRIMARY KEY
 ```
 
-
 ### SYSTEM UNLOAD PRIMARY KEY {#unload-primary-key}
 
 指定したテーブル、またはすべてのテーブルについてプライマリキーをアンロードします。
@@ -728,7 +683,6 @@ SYSTEM UNLOAD PRIMARY KEY [db.]name
 ```sql
 SYSTEM UNLOAD PRIMARY KEY
 ```
-
 
 ## リフレッシャブルmaterialized viewの管理 {#refreshable-materialized-views}
 
@@ -743,7 +697,6 @@ SYSTEM UNLOAD PRIMARY KEY
 ```sql
 SYSTEM REFRESH VIEW [db.]name
 ```
-
 
 ### SYSTEM WAIT VIEW {#wait-view}
 
@@ -763,7 +716,6 @@ SYSTEM STOP VIEW [db.]name
 SYSTEM STOP VIEWS
 ```
 
-
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS {#start-view-start-views}
 
 指定された VIEW、またはすべてのリフレッシュ可能な VIEW に対して、定期的なリフレッシュを有効にします。即時のリフレッシュは実行されません。
@@ -778,7 +730,6 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
-
 ### SYSTEM CANCEL VIEW {#cancel-view}
 
 現在のレプリカ上で指定されたビューのリフレッシュ処理が進行中であれば、それを中断してキャンセルします。進行中でなければ、何も行いません。
@@ -786,7 +737,6 @@ SYSTEM START VIEWS
 ```sql
 SYSTEM CANCEL VIEW [db.]name
 ```
-
 
 ### SYSTEM WAIT VIEW {#system-wait-view}
 

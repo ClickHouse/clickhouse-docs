@@ -7,11 +7,7 @@ sidebar_label: 'Обзор'
 doc_type: 'guide'
 ---
 
-
-
 # Сравнение ClickHouse с PostgreSQL {#comparing-clickhouse-and-postgresql}
-
-
 
 ## Почему стоит использовать ClickHouse вместо Postgres? {#why-use-clickhouse-over-postgres}
 
@@ -24,8 +20,6 @@ OLAP (online analytical processing), или системы оперативно�
 Более подробное сравнение ClickHouse и PostgreSQL см. [здесь](/migrations/postgresql/appendix#postgres-vs-clickhouse-equivalent-and-different-concepts).
 
 Чтобы увидеть потенциальные различия в производительности ClickHouse и Postgres на аналитических запросах, см. раздел [Rewriting PostgreSQL Queries in ClickHouse](/migrations/postgresql/rewriting-queries).
-
-
 
 ## Стратегии миграции {#migration-strategies}
 

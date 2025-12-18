@@ -17,7 +17,7 @@ ClickHouse Cloud を使用している場合、[Prometheus Integration](/integra
 
 ClickHouse は、自身のメトリクスを Prometheus からスクレイプできる形で公開できます。
 
-````xml
+```xml
 <prometheus>
     <port>9363</port>
     <endpoint>/metrics</endpoint>
@@ -50,7 +50,7 @@ ClickHouse は、自身のメトリクスを Prometheus からスクレイプで
         </my_rule_1>
     </handlers>
 </prometheus>
-````
+```
 
 Settings:
 

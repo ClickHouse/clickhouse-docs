@@ -299,8 +299,8 @@ LIMIT 5
 ```
 
 ```text
-home_team_home_team_name    アルゼンチン
-away_team_away_team_name     コロンビア
+home_team_home_team_name    Argentina
+away_team_away_team_name     Colombia
 home_score                          1
 away_score                          0
 home_passes                       527

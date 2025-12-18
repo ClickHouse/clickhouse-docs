@@ -33,11 +33,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Это дополнение содержит только модульный ввод (modular input); никаких дополнительных пользовательских интерфейсов оно не предоставляет.
 
-
-
 # Установка {#installation}
-
-
 
 ## Для Splunk Enterprise {#for-splunk-enterprise}
 
@@ -55,16 +51,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 Если всё прошло успешно, вы должны увидеть установленное приложение ClickHouse Audit logs. В противном случае проверьте логи Splunkd на наличие ошибок.
 
-
-
 # Модульная конфигурация входных данных {#modular-input-configuration}
 
 Чтобы настроить модульный ввод, вам сначала понадобится информация из вашего развертывания ClickHouse Cloud:
 
 - Идентификатор организации
 - Административный [API Key](/cloud/manage/openapi)
-
-
 
 ## Получение информации из ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
 
@@ -86,8 +78,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_007} size="lg" alt="Консоль ClickHouse Cloud с отображаемыми сгенерированными API Key и секретом, которые необходимо сохранить" border />
 
-
-
 ## Настройка источника данных в Splunk {#configure-data-input-in-splunk}
 
 Вернувшись в Splunk, перейдите в Settings -> Data inputs.
@@ -107,8 +97,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <Image img={splunk_011} size="lg" alt="Страница конфигурации Splunk с заполненными настройками источника данных ClickHouse" border />
 
 Источник данных настроен, можно приступать к просмотру журналов аудита.
-
-
 
 # Использование {#usage}
 

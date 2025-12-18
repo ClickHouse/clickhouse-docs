@@ -15,7 +15,7 @@ doc_type: 'reference'
 **Синтаксис**
 
 ```sql
-RENAME [DATABASE|TABLE|DICTIONARY] имя TO новое_имя [,...] [ON CLUSTER кластер]
+RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]
 ```
 
 ## RENAME DATABASE {#rename-database}

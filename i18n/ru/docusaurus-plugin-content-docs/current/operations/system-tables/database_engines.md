@@ -26,8 +26,8 @@ WHERE name IN ('Atomic', 'Lazy', 'Ordinary')
 
 ```text
 ┌─name─────┐
-│ Обычный  │
-│ Атомный  │
-│ Ленивый  │
+│ Ordinary │
+│ Atomic   │
+│ Lazy     │
 └──────────┘
 ```

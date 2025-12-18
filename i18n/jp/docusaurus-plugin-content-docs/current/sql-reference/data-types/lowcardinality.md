@@ -7,13 +7,9 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-
-
 # LowCardinality(T) {#lowcardinalityt}
 
 他のデータ型の内部表現を辞書エンコードされた形式に変更します。
-
-
 
 ## 構文 {#syntax}
 
@@ -33,8 +29,6 @@ LowCardinality(data_type)
 `LowCardinality` データ型の有効性は、データの多様性に依存します。辞書に含まれる異なる値が 10,000 未満である場合、ClickHouse は一般的にデータの読み取りおよび保存の効率が高くなります。辞書に 100,000 を超える異なる値が含まれている場合、通常のデータ型を使用した場合と比較して、ClickHouse のパフォーマンスが低下することがあります。
 
 文字列を扱う際は、[Enum](../../sql-reference/data-types/enum.md) の代わりに `LowCardinality` の使用を検討してください。`LowCardinality` は利用時の柔軟性が高く、多くの場合、同等またはそれ以上の効率を発揮します。
-
-
 
 ## 例 {#example}
 
@@ -63,9 +57,7 @@ ORDER BY id
 
 関数:
 
-- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
-
-
+- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
 ## 関連コンテンツ {#related-content}
 

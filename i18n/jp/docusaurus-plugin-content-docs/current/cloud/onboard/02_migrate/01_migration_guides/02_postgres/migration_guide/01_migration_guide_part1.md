@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 Postgres から ClickHouse への典型的なマイグレーション例を示すサンプルデータセットとして、[こちら](/getting-started/example-datasets/stackoverflow) で説明している Stack Overflow データセットを使用します。これは、2008 年から 2024 年 4 月までに Stack Overflow 上で発生したすべての `post`、`vote`、`user`、`comment`、`badge` を含みます。このデータ用の PostgreSQL スキーマを以下に示します。
 
-<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow schema"/>
+<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow schema" />
 
 *PostgreSQL でテーブルを作成するための DDL コマンドは [こちら](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==) から利用できます。*
 
@@ -28,63 +28,46 @@ Postgres から ClickHouse への典型的なマイグレーション例を示�
 
 マイグレーション手順を検証する目的で、このデータセットを PostgreSQL インスタンスに読み込みたいユーザー向けに、DDL とともにダウンロード可能な `pg_dump` 形式のデータを用意しています。続いて、データロード用コマンドを以下に示します。
 
-
-
 ```bash
-# ユーザー {#users}
+# users
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
-```
 
-
-# posts {#posts}
+# posts
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
 psql < posts.sql
 
-
-
-# posthistory {#posthistory}
+# posthistory
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
-
-
-# コメント {#comments}
+# comments
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
 
-
-
-# 投票 {#votes}
+# votes
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
 psql < votes.sql
 
-
-
-# badges {#badges}
+# badges
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
 psql < badges.sql
 
-
-
-# postlinks {#postlinks}
-
-wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz)
+# postlinks
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz
 gzip -d postlinks.sql.gz
-psql &lt; postlinks.sql
-
+psql < postlinks.sql
 ```
 
-ClickHouseにとっては小規模ですが、このデータセットはPostgresにとっては大規模です。上記は2024年の最初の3か月分のサブセットです。
+ClickHouse にとっては小規模ですが、このデータセットは Postgres にとってはかなりの規模です。上記は、2024 年最初の 3 か月をカバーするサブセットを表しています。
 
-> この例ではPostgresとClickHouseのパフォーマンス差を示すために完全なデータセットを使用していますが、以下に記載されているすべての手順は、小規模なサブセットでも同様に機能します。完全なデータセットをPostgresにロードする場合は[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記のスキーマで定義された外部キー制約により、PostgreSQL用の完全なデータセットには参照整合性を満たす行のみが含まれています。このような制約のない[Parquetバージョン](/getting-started/example-datasets/stackoverflow)は、必要に応じてClickHouseに直接ロードできます。
-```
+> この例では、Postgres と ClickHouse 間のパフォーマンス差を示すためにフルデータセットを使用していますが、以下で説明するすべての手順は、より小さいサブセットでも機能的にはまったく同一です。フルデータセットを Postgres にロードしたいユーザーは[こちら](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)を参照してください。上記スキーマで課されている外部キー制約により、PostgreSQL 用のフルデータセットには、参照整合性を満たす行のみが含まれます。このような制約のない [Parquet 版](/getting-started/example-datasets/stackoverflow) は、必要に応じて簡単に ClickHouse に直接ロードできます。
 
 
 ## データの移行 {#migrating-data}
@@ -123,7 +106,8 @@ PRIMARY KEY id
 ORDER BY id;
 ```
 
-セットアップが完了すると、ClickPipes は PostgreSQL から ClickHouse へのすべてのデータ移行を開始します。ネットワークやデプロイメントの規模によって所要時間は異なりますが、Stack Overflow データセットであれば数分程度で完了するはずです。
+セットアップが完了すると、ClickPipes は PostgreSQL から ClickHouse へのすべてのデータ移行処理を開始します。ネットワークやデプロイメントの規模によってかかる時間は異なりますが、Stack Overflow データセットであれば数分程度で完了するはずです。
+
 
 ### 手動による一括ロードと定期更新 {#initial-bulk-load-with-periodic-updates}
 
@@ -143,8 +127,7 @@ SETTINGS describe_compact_output = 1
 
 PostgreSQL と ClickHouse 間のデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
 
-このスキーマに対して型を最適化する手順は、データが他のソース（例：S3 上の Parquet）からロードされている場合と同じです。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
-
+このスキーマの型を最適化する手順は、データを他のソース（例：S3 上の Parquet）からロードした場合と同一です。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -174,26 +157,27 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '最適化された型'
+COMMENT 'Optimized types'
 ```
 
-PostgreSQL からデータを読み込み、ClickHouse に挿入する単純な `INSERT INTO SELECT` 文で、これを埋めることができます。
+PostgreSQL からデータを読み取り、ClickHouse に挿入する単純な `INSERT INTO SELECT` でデータをロードできます。
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
-増分ロードはスケジュール実行することもできます。Postgres テーブルが挿入のみを受け付け、単調増加する id もしくはタイムスタンプが存在する場合、ユーザーは上記のテーブル関数アプローチを用いて増分分のみをロードできます。すなわち、`SELECT` に `WHERE` 句を適用できます。このアプローチは、同じカラムが更新されることが保証されている場合には更新の取り込みにも利用できます。一方で、削除をサポートするには完全な再ロードが必要となりますが、テーブルが大きくなると、これを実現するのは難しくなる可能性があります。
+増分ロードは、スケジュール設定することもできます。Postgres テーブルが挿入のみを受け付けており、単調増加する id またはタイムスタンプが存在する場合は、上記のテーブル関数アプローチを用いて増分をロードできます。つまり、`SELECT` に対して `WHERE` 句を適用できます。このアプローチは、同一のカラムのみが更新されることが保証されている場合には、更新のサポートにも使用できます。一方で、削除をサポートするにはテーブル全体の再ロードが必要となり、テーブルが大きくなるにつれてこれを実現するのは困難になる可能性があります。
 
-ここでは、`CreationDate` を用いた初回ロードと増分ロードを示します（行が更新された場合、このカラムも更新されると仮定します）。
+ここでは、`CreationDate` を使用した初回ロードと増分ロードを示します（行が更新されると `CreationDate` も更新されると仮定します）。
 
 ```sql
--- 初期ロード
+-- initial load
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
+
 
 > ClickHouse は、`=`, `!=`, `>`,`>=`, `<`, `<=`, および IN といった単純な `WHERE` 句を PostgreSQL サーバー側へプッシュダウンします。これにより、変更セットの識別に使用されるカラムにインデックスを作成しておくことで、増分ロードをより効率的に実行できます。
 

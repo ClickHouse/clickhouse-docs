@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', 'ssl tls', 'самостоятельный хостинг']
 ---
 
-
-
 # Общая инструкция по настройке источника MariaDB {#generic-mariadb-source-setup-guide}
 
 :::info
@@ -17,8 +15,6 @@ keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', '
 
 :::
 
-
-
 ## Включение хранения бинарных логов {#enable-binlog-retention}
 
 Бинарные логи содержат информацию об изменениях данных, внесённых в экземпляр сервера MariaDB, и необходимы для репликации.
@@ -26,12 +22,12 @@ keywords: ['произвольный mariadb', 'clickpipes', 'binary logging', '
 Чтобы включить бинарное логирование на вашем экземпляре сервера MariaDB, убедитесь, что настроены следующие параметры:
 
 ```sql
-server_id = 1               -- или больше; любое значение, кроме 0
+server_id = 1               -- or greater; anything but 0
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  -- добавлен в версии 10.5.0
-expire_logs_days = 1        -- или больше; 0 означает, что журналы хранятся бессрочно
+binlog_row_metadata = FULL  -- introduced in 10.5.0
+expire_logs_days = 1        -- or higher; 0 would mean logs are preserved forever
 ```
 
 Чтобы проверить эти настройки, выполните следующие SQL-запросы:
@@ -53,7 +49,7 @@ server_id = 1
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  ; только в версиях 10.5.0 и новее
+binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 
@@ -66,7 +62,6 @@ expire_logs_days = 1
 Исключение столбцов не поддерживается для MariaDB &lt;= 10.4, так как настройка `binlog_row_metadata` ещё не была введена.
 
 :::
-
 
 ## Настройка пользователя базы данных {#configure-database-user}
 
@@ -97,8 +92,6 @@ expire_logs_days = 1
 
 :::
 
-
-
 ## Конфигурация SSL/TLS (рекомендуется) {#ssl-tls-configuration}
 
 Сертификаты SSL обеспечивают защищённые соединения с вашей базой данных MariaDB. Конфигурация зависит от типа сертификата:
@@ -112,8 +105,6 @@ expire_logs_days = 1
 **Самостоятельно развёрнутая MariaDB, начиная с версии 11.4** — если на вашем сервере настроен `ssl_ca`, следуйте варианту выше. В противном случае проконсультируйтесь с вашей ИТ-командой для выдачи корректного сертификата. В крайнем случае используйте переключатель «Skip Certificate Verification» в интерфейсе ClickPipes (не рекомендуется по соображениям безопасности).
 
 Для получения дополнительной информации по вариантам настройки SSL/TLS см. наш [FAQ](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error).
-
-
 
 ## Что дальше? {#whats-next}
 

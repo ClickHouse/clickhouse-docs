@@ -9,8 +9,6 @@ title: 'Табличный движок Memory'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблиц Memory {#memory-table-engine}
 
 :::note
@@ -31,8 +29,6 @@ doc_type: 'reference'
 
 Для ограничения размера таблицы с движком Memory можно задать верхнюю и нижнюю границы, фактически позволяя использовать её как кольцевой буфер (см. [Параметры движка](#engine-parameters)).
 
-
-
 ## Параметры движка {#engine-parameters}
 
 - `min_bytes_to_keep` — Минимальное количество байт, которое необходимо сохранять, когда размер таблицы в памяти ограничен.
@@ -47,8 +43,6 @@ doc_type: 'reference'
   - Значение по умолчанию: `0`
 - `compress` — Определяет, нужно ли сжимать данные в памяти.
   - Значение по умолчанию: `false`
-
-
 
 ## Использование {#usage}
 
@@ -66,22 +60,21 @@ ALTER TABLE memory MODIFY SETTING min_rows_to_keep = 100, max_rows_to_keep = 100
 
 **Примечание:** Параметры ограничения `bytes` и `rows` могут быть заданы одновременно, однако будет использоваться меньшее из значений `max` и `min`.
 
-
 ## Примеры {#examples}
 
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_bytes_to_keep = 4096, max_bytes_to_keep = 16384;
 
-/* 1. проверка, что самый старый блок не удаляется из-за минимального порога — 3000 строк */
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
 INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 8'192 bytes
 
-/* 2. добавление блока, который не удаляется */
+/* 2. adding block that doesn't get deleted */
 INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 1'024 bytes
 
-/* 3. проверка, что самый старый блок удаляется — 9216 байт — 1100 строк */
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
 INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 8'192 bytes
 
-/* 4. проверка, что очень большой блок вытесняет все остальные */
+/* 4. checking a very large block overrides all */
 INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 65'536 bytes
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
@@ -98,17 +91,17 @@ SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND data
 ```sql
 CREATE TABLE memory (i UInt32) ENGINE = Memory SETTINGS min_rows_to_keep = 4000, max_rows_to_keep = 10000;
 
-/* 1. проверяем, что самый старый блок не удаляется из‑за минимального порога — 3000 строк */
-INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 строк
+/* 1. testing oldest block doesn't get deleted due to min-threshold - 3000 rows */
+INSERT INTO memory SELECT * FROM numbers(0, 1600); -- 1'600 rows
 
-/* 2. добавляем блок, который не удаляется */
-INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 строк
+/* 2. adding block that doesn't get deleted */
+INSERT INTO memory SELECT * FROM numbers(1000, 100); -- 100 rows
 
-/* 3. проверяем, что самый старый блок удаляется — 9216 байт — 1100 строк */
-INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 строк
+/* 3. testing oldest block gets deleted - 9216 bytes - 1100 */
+INSERT INTO memory SELECT * FROM numbers(9000, 1000); -- 1'000 rows
 
-/* 4. проверяем, что очень большой блок вытесняет все остальные */
-INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 строк
+/* 4. checking a very large block overrides all */
+INSERT INTO memory SELECT * FROM numbers(9000, 10000); -- 10'000 rows
 
 SELECT total_bytes, total_rows FROM system.tables WHERE name = 'memory' AND database = currentDatabase();
 ```
