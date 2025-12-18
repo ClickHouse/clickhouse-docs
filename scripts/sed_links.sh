@@ -30,19 +30,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
     sed -i '' 's|(../../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
     sed -i '' 's|(../interfaces/cli.md)|(/interfaces/cli)|g' docs/interfaces/tcp.md
-    # Fix duplicate interface slugs by appending -old to docs/interfaces/ files
-    sed -i '' 's|slug: /interfaces/arrowflight|slug: /interfaces/arrowflight-old|g' docs/interfaces/arrowflight.md
-    sed -i '' 's|slug: /interfaces/cpp|slug: /interfaces/cpp-old|g' docs/interfaces/cpp.md
-    sed -i '' 's|slug: /interfaces/grpc|slug: /interfaces/grpc-old|g' docs/interfaces/grpc.md
-    sed -i '' 's|slug: /interfaces/http|slug: /interfaces/http-old|g' docs/interfaces/http.md
-    sed -i '' 's|slug: /interfaces/jdbc|slug: /interfaces/jdbc-old|g' docs/interfaces/jdbc.md
-    sed -i '' 's|slug: /interfaces/mysql|slug: /interfaces/mysql-old|g' docs/interfaces/mysql.md
-    sed -i '' 's|slug: /interfaces/odbc|slug: /interfaces/odbc-old|g' docs/interfaces/odbc.md
-    sed -i '' 's|slug: /interfaces/overview|slug: /interfaces/overview-old|g' docs/interfaces/overview.md
-    sed -i '' 's|slug: /interfaces/postgresql|slug: /interfaces/postgresql-old|g' docs/interfaces/postgresql.md
-    sed -i '' 's|slug: /interfaces/prometheus|slug: /interfaces/prometheus-old|g' docs/interfaces/prometheus.md
-    sed -i '' 's|slug: /interfaces/ssh|slug: /interfaces/ssh-old|g' docs/interfaces/ssh.md
-    sed -i '' 's|slug: /interfaces/tcp|slug: /interfaces/tcp-old|g' docs/interfaces/tcp.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
@@ -62,17 +49,5 @@ else
     sed -i 's|(../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
     sed -i 's|(../../operations/server-configuration-parameters/settings.md#postgresql_port)|(/operations/server-configuration-parameters/settings#postgresql_port)|g' docs/interfaces/postgresql.md
     sed -i 's|(../interfaces/cli.md)|(/interfaces/cli)|g' docs/interfaces/tcp.md
-    # Fix duplicate interface slugs by appending -old to docs/interfaces/ files
-    sed -i 's|slug: /interfaces/arrowflight|slug: /interfaces/arrowflight-old|g' docs/interfaces/arrowflight.md
-    sed -i 's|slug: /interfaces/cpp|slug: /interfaces/cpp-old|g' docs/interfaces/cpp.md
-    sed -i 's|slug: /interfaces/grpc|slug: /interfaces/grpc-old|g' docs/interfaces/grpc.md
-    sed -i 's|slug: /interfaces/http|slug: /interfaces/http-old|g' docs/interfaces/http.md
-    sed -i 's|slug: /interfaces/jdbc|slug: /interfaces/jdbc-old|g' docs/interfaces/jdbc.md
-    sed -i 's|slug: /interfaces/mysql|slug: /interfaces/mysql-old|g' docs/interfaces/mysql.md
-    sed -i 's|slug: /interfaces/odbc|slug: /interfaces/odbc-old|g' docs/interfaces/odbc.md
-    sed -i 's|slug: /interfaces/overview|slug: /interfaces/overview-old|g' docs/interfaces/overview.md
-    sed -i 's|slug: /interfaces/postgresql|slug: /interfaces/postgresql-old|g' docs/interfaces/postgresql.md
-    sed -i 's|slug: /interfaces/prometheus|slug: /interfaces/prometheus-old|g' docs/interfaces/prometheus.md
-    sed -i 's|slug: /interfaces/ssh|slug: /interfaces/ssh-old|g' docs/interfaces/ssh.md
-    sed -i 's|slug: /interfaces/tcp|slug: /interfaces/tcp-old|g' docs/interfaces/tcp.md
+
 fi
