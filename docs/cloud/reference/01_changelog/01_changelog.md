@@ -47,7 +47,7 @@ In addition to this ClickHouse Cloud changelog, please see the [Cloud Compatibil
   This allows customers to try out the new authentication method while we continue work to bring database user management to the console.
 - **Unordered mode now available in S3 ClickPipes**:
   Customers can now ingest data from Amazon S3 into ClickHouse Cloud in any order for even-driven analytics.
-  Files are no longer required to be inlexicographical order for consumption. More details available in the announcement [blog].(https://clickhouse.com/blog/clickpipes-s3-unordered-mode).
+  Files are no longer required to be inlexicographical order for consumption. More details available in the announcement [blog](https://clickhouse.com/blog/clickpipes-s3-unordered-mode).
 - The Fivetran connector has recently moved to beta. If you’re using Fivetran and want to set up ClickHouse as a destination, check out these [docs](https://fivetran.com/docs/destinations/clickhouse/setup-guide).
 
 ## December 12, 2025 {#december-12-2025}
