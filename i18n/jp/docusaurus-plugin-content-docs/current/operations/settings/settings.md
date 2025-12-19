@@ -485,8 +485,6 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
-<BetaBadge/>
-
 **エイリアス**: `enable_parallel_replicas`
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1784,8 +1782,6 @@ Cloud 上で許可されるエンジンファミリー。
 公開される部分を最小限に抑えるための UInt64
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 現在のサーバーが配置されている分片用のクラスター
 
@@ -8596,8 +8592,6 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます"}]}]}/>
@@ -8613,8 +8607,6 @@ true の場合、IN 句のサブクエリがすべてのフォロワー レプ�
 parallel replicas で materialized view を使用できるようにする
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8680,15 +8672,11 @@ parallel replicas を用いたクエリ実行時に、リモートレプリカ�
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 true の場合、ClickHouse はレプリケーションされていない MergeTree テーブルに対しても parallel replicas アルゴリズムを適用します
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8698,8 +8686,6 @@ true の場合、ClickHouse はレプリケーションされていない MergeT
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します。現在はパフォーマンス上の問題により無効になっています"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します。現在はパフォーマンス上の問題により無効になっています"}]}]}/>
@@ -8707,8 +8693,6 @@ true の場合、ClickHouse はレプリケーションされていない MergeT
 parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8718,8 +8702,6 @@ parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカ�
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "この SETTING の値は現在自動的に決定されます"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "新しい parallel replicas coordinator 実装においてセグメントサイズを制御するための新しい SETTING を追加"}]}]}/>
@@ -8728,15 +8710,11 @@ parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカ�
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 クエリで使用されるレプリカの数を (読み取りが見込まれる行数 / min_number_of_rows_per_replica) に制限します。上限は引き続き 'max_parallel_replicas' によって決まります。
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8746,8 +8724,6 @@ parallel replicas で使用するカスタムキーに基づいて適用する�
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Parallel replicas は analyzer が有効な場合にのみサポートされます"}]}]}/>
@@ -8756,8 +8732,6 @@ Parallel replicas を使用するには analyzer を有効にする必要があ�
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "この設定が true の場合で、JOIN を parallel replicas アルゴリズムで実行でき、右側の JOIN 部分のすべてのストレージが *MergeTree であるときは、GLOBAL JOIN の代わりにローカル JOIN が使用されます。"}]}]}/>
@@ -8765,8 +8739,6 @@ Parallel replicas を使用するには analyzer を有効にする必要があ�
 この設定が true の場合で、JOIN を parallel replicas アルゴリズムで実行でき、右側の JOIN 部分のすべてのストレージが *MergeTree であるときは、GLOBAL JOIN の代わりにローカル JOIN が使用されます。
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 

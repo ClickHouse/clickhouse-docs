@@ -485,8 +485,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
-<BetaBadge/>
-
 **别名**: `enable_parallel_replicas`
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1781,8 +1779,6 @@ Cloud 模式
 使用 UInt64 以尽量缩小对外公开部分
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 包含当前服务器所在分片的集群
 
@@ -8586,8 +8582,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "如果为 true，IN 子查询会在每个从属副本上执行。"}]}]}/>
@@ -8603,8 +8597,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 允许在使用并行副本时使用 materialized views
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8670,15 +8662,11 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 true，ClickHouse 也会对非副本 MergeTree 表使用并行副本算法
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8688,8 +8676,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "在使用并行副本的分布式 INSERT SELECT 中使用本地流水线。目前由于性能问题已禁用"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "在使用并行副本的分布式 INSERT SELECT 中使用本地流水线。目前由于性能问题已禁用"}]}]}/>
@@ -8697,8 +8683,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 在使用并行副本的分布式 INSERT SELECT 中使用本地流水线
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8708,8 +8692,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "此设置的值现在由系统自动确定"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "添加新的设置，用于控制新的并行副本协调器实现中的段大小"}]}]}/>
@@ -8718,15 +8700,11 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-将用于查询的副本数量限制为 (预估待读取的行数 / min_number_of_rows_per_replica)。最大值仍受 `max_parallel_replicas` 限制。
+将用于查询的副本数量限制为（预估待读取的行数 / min_number_of_rows_per_replica）。最大值仍受 `max_parallel_replicas` 限制。
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8736,8 +8714,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "仅在启用 analyzer 时支持 parallel replicas"}]}]}/>
@@ -8746,8 +8722,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "如果为 true，并且可以使用并行副本算法执行 JOIN，且右侧 JOIN 部分的所有存储引擎都是 *MergeTree，则将使用本地 JOIN，而不是 GLOBAL JOIN。"}]}]}/>
@@ -8755,8 +8729,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 如果为 true，并且可以使用并行副本算法执行 JOIN，且右侧 JOIN 部分的所有存储引擎都是 *MergeTree，则将使用本地 JOIN，而不是 GLOBAL JOIN。
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
