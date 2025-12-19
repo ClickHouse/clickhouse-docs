@@ -39,75 +39,81 @@ Copy this code into the `clickhouse-golang-example` directory as `main.go`.
 package main
 
 import (
-        "context"
-        "crypto/tls"
-        "fmt"
-        "log"
+    "context"
+    "crypto/tls"
+    "fmt"
+    "log"
 
-        "github.com/ClickHouse/clickhouse-go/v2"
-        "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+    "github.com/ClickHouse/clickhouse-go/v2"
+    "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 )
 
 func main() {
-        conn, err := connect()
-        if err != nil {
-                panic(err)
-        }
+    conn, err := connect()
+    if err != nil {
+        panic(err)
+    }
 
-        ctx := context.Background()
-        rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
-        if err != nil {
-                log.Fatal(err)
-        }
+    ctx := context.Background()
+    rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
 
-        for rows.Next() {
-                var name, uuid string
-                if err := rows.Scan(&name, &uuid); err != nil {
-                        log.Fatal(err)
-                }
-                log.Printf("name: %s, uuid: %s", name, uuid)
+    for rows.Next() {
+        var name, uuid string
+        if err := rows.Scan(&name, &uuid); err != nil {
+            log.Fatal(err)
         }
+        log.Printf("name: %s, uuid: %s", name, uuid)
+    }
+
+    // NOTE: Do not skip rows.Err() check
+    if err := rows.Err(); err != nil {
+        log.Fatal(err)
+    }
 
 }
 
 func connect() (driver.Conn, error) {
-        var (
-                ctx       = context.Background()
-                conn, err = clickhouse.Open(&clickhouse.Options{
-                        Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
-                        Auth: clickhouse.Auth{
-                                Database: "default",
-                                Username: "default",
-                                Password: "<DEFAULT_USER_PASSWORD>",
-                        },
-                        ClientInfo: clickhouse.ClientInfo{
-                                Products: []struct {
-                                        Name    string
-                                        Version string
-                                }{
-                                        {Name: "an-example-go-client", Version: "0.1"},
-                                },
-                        },
-                        Debugf: func(format string, v ...interface{}) {
-                                fmt.Printf(format, v)
-                        },
-                        TLS: &tls.Config{
-                                InsecureSkipVerify: true,
-                        },
-                })
-        )
+    var (
+        ctx       = context.Background()
+        conn, err = clickhouse.Open(&clickhouse.Options{
+            Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
+            Auth: clickhouse.Auth{
+                Database: "default",
+                Username: "default",
+                Password: "<DEFAULT_USER_PASSWORD>",
+            },
+            ClientInfo: clickhouse.ClientInfo{
+                Products: []struct {
+                    Name    string
+                    Version string
+                }{
+                    {Name: "an-example-go-client", Version: "0.1"},
+                },
+            },
+            Debugf: func(format string, v ...interface{}) {
+                fmt.Printf(format, v)
+            },
+            TLS: &tls.Config{
+                InsecureSkipVerify: true,
+            },
+        })
+    )
 
-        if err != nil {
-                return nil, err
-        }
+    if err != nil {
+        return nil, err
+    }
 
-        if err := conn.Ping(ctx); err != nil {
-                if exception, ok := err.(*clickhouse.Exception); ok {
-                        fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
-                }
-                return nil, err
+    if err := conn.Ping(ctx); err != nil {
+        if exception, ok := err.(*clickhouse.Exception); ok {
+            fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
         }
-        return conn, nil
+        return nil, err
+    }
+    return conn, nil
 }
 ```
 
@@ -867,6 +873,12 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -912,6 +924,11 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -1079,6 +1096,11 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
@@ -1285,7 +1307,13 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 
 #### Decimal {#decimal}
 
-The Decimal type is supported by [github.com/shopspring/decimal](https://github.com/shopspring/decimal) package.
+Due to Go's lack of a built-in Decimal type, we recommend using the third-party package [github.com/shopspring/decimal](https://github.com/shopspring/decimal) to work with Decimal types natively without modifying your original queries.
+
+:::note
+You may be tempted to use Float instead to avoid third-party dependencies. However, be aware that [Float types in ClickHouse are not recommended when accurate values are required](https://clickhouse.com/docs/sql-reference/data-types/float).
+
+If you still choose to use Go's built-in Float type on the client side, you must explicitly convert Decimal to Float using the [toFloat64() function](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64) or [its variants](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64OrZero) in your ClickHouse queries. Be aware that this conversion may result in loss of precision.
+:::
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1701,6 +1729,11 @@ if err != nil {
 for rows.Next() {
 }
 
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 fmt.Printf("Total Rows: %d\n", totalRows)
 rows.Close()
 ```
@@ -1721,6 +1754,7 @@ rows, err := conn.Query(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
 var (
     columnTypes = rows.ColumnTypes()
     vars        = make([]interface{}, len(columnTypes))
@@ -1740,6 +1774,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -1792,6 +1830,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 rows.Close()
 
 var count uint64
@@ -1824,6 +1866,10 @@ rows := conn.QueryRow(clickhouse.Context(context.Background(), clickhouse.WithSp
     }),
 )), "SELECT COUNT() FROM (SELECT number FROM system.numbers LIMIT 5)")
 if err := rows.Scan(&count); err != nil {
+    return err
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
     return err
 }
 fmt.Printf("count: %d\n", count)
@@ -2183,6 +2229,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1             uint8
     col2, col3, col4 string
@@ -2196,6 +2244,10 @@ for rows.Next() {
         return err
     }
     fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2426,6 +2478,8 @@ rows, err := conn.QueryContext(ctx, "SELECT sleepEachRow(1), number FROM numbers
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
     col2 uint8
@@ -2443,6 +2497,10 @@ for rows.Next() {
     if col2 == 3 {
         cancel()
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2496,6 +2554,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
 )
@@ -2504,6 +2564,11 @@ for rows.Next() {
         return err
     }
     fmt.Printf("row: col1=%d\n", col1)
+}
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2523,6 +2588,8 @@ rows, err := conn.QueryContext(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
+
 columnTypes, err := rows.ColumnTypes()
 if err != nil {
     return err
@@ -2543,6 +2610,10 @@ for rows.Next() {
             fmt.Println(*v)
         }
     }
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
 }
 ```
 
@@ -2586,6 +2657,8 @@ rows, err := conn.QueryContext(ctx, "SELECT * FROM external_table_1")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 for rows.Next() {
     var (
         col1 uint8
@@ -2595,7 +2668,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
-rows.Close()
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
@@ -2627,6 +2703,10 @@ rows := conn.QueryRowContext(clickhouse.Context(context.Background(), clickhouse
     }),
 )), "SELECT COUNT() FROM (SELECT number FROM system.numbers LIMIT 5)")
 if err := rows.Scan(&count); err != nil {
+    return err
+}
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
     return err
 }
 fmt.Printf("count: %d\n", count)

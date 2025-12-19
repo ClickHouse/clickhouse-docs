@@ -42,7 +42,6 @@ ENGINE = AzureQueue('DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;
 SETTINGS mode = 'unordered'
 ```
 
-
 ## Settings {#settings}
 
 Набор поддерживаемых настроек в основном совпадает с настройками для движка таблицы `S3Queue`, но без префикса `s3queue_`. См. [полный список настроек](../../../engines/table-engines/integrations/s3queue.md#settings).
@@ -86,7 +85,6 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-
 ## SELECT из движка таблицы AzureQueue {#select}
 
 Запросы SELECT по умолчанию запрещены для таблиц AzureQueue. Это соответствует общей модели работы очередей, в которой данные читаются один раз, а затем удаляются из очереди. SELECT запрещён, чтобы предотвратить случайную потерю данных.
@@ -119,7 +117,6 @@ CREATE MATERIALIZED VIEW consumer TO stats
 
 SELECT * FROM stats ORDER BY key;
 ```
-
 
 ## Виртуальные столбцы {#virtual-columns}
 

@@ -3,7 +3,7 @@ sidebar_label: 'Go'
 sidebar_position: 1
 keywords: ['clickhouse', 'go', 'client', 'golang']
 slug: /integrations/go
-description: 'ClickHouse 的 Go 客户端允许用户通过 Go 标准库的 database/sql 接口或经过优化的原生接口连接到 ClickHouse。'
+description: 'ClickHouse 的 Go 客户端允许你通过 Go 标准库的 database/sql 接口或经过优化的原生接口连接到 ClickHouse。'
 title: 'ClickHouse Go'
 doc_type: 'reference'
 integration:
@@ -12,6 +12,7 @@ integration:
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
+
 
 # ClickHouse Go {#clickhouse-go}
 
@@ -39,77 +40,84 @@ go mod init clickhouse-golang-example
 package main
 
 import (
-        "context"
-        "crypto/tls"
-        "fmt"
-        "log"
+    "context"
+    "crypto/tls"
+    "fmt"
+    "log"
 
-        "github.com/ClickHouse/clickhouse-go/v2"
-        "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
+    "github.com/ClickHouse/clickhouse-go/v2"
+    "github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 )
 
 func main() {
-        conn, err := connect()
-        if err != nil {
-                panic(err)
-        }
+    conn, err := connect()
+    if err != nil {
+        panic(err)
+    }
 
-        ctx := context.Background()
-        rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
-        if err != nil {
-                log.Fatal(err)
-        }
+    ctx := context.Background()
+    rows, err := conn.Query(ctx, "SELECT name, toString(uuid) as uuid_str FROM system.tables LIMIT 5")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
 
-        for rows.Next() {
-                var name, uuid string
-                if err := rows.Scan(&name, &uuid); err != nil {
-                        log.Fatal(err)
-                }
-                log.Printf("name: %s, uuid: %s", name, uuid)
+    for rows.Next() {
+        var name, uuid string
+        if err := rows.Scan(&name, &uuid); err != nil {
+            log.Fatal(err)
         }
+        log.Printf("name: %s, uuid: %s", name, uuid)
+    }
+
+    // NOTE: Do not skip rows.Err() check
+    if err := rows.Err(); err != nil {
+        log.Fatal(err)
+    }
 
 }
 
 func connect() (driver.Conn, error) {
-        var (
-                ctx       = context.Background()
-                conn, err = clickhouse.Open(&clickhouse.Options{
-                        Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
-                        Auth: clickhouse.Auth{
-                                Database: "default",
-                                Username: "default",
-                                Password: "<DEFAULT_USER_PASSWORD>",
-                        },
-                        ClientInfo: clickhouse.ClientInfo{
-                                Products: []struct {
-                                        Name    string
-                                        Version string
-                                }{
-                                        {Name: "an-example-go-client", Version: "0.1"},
-                                },
-                        },
-                        Debugf: func(format string, v ...interface{}) {
-                                fmt.Printf(format, v)
-                        },
-                        TLS: &tls.Config{
-                                InsecureSkipVerify: true,
-                        },
-                })
-        )
+    var (
+        ctx       = context.Background()
+        conn, err = clickhouse.Open(&clickhouse.Options{
+            Addr: []string{"<CLICKHOUSE_SECURE_NATIVE_HOSTNAME>:9440"},
+            Auth: clickhouse.Auth{
+                Database: "default",
+                Username: "default",
+                Password: "<DEFAULT_USER_PASSWORD>",
+            },
+            ClientInfo: clickhouse.ClientInfo{
+                Products: []struct {
+                    Name    string
+                    Version string
+                }{
+                    {Name: "an-example-go-client", Version: "0.1"},
+                },
+            },
+            Debugf: func(format string, v ...interface{}) {
+                fmt.Printf(format, v)
+            },
+            TLS: &tls.Config{
+                InsecureSkipVerify: true,
+            },
+        })
+    )
 
-        if err != nil {
-                return nil, err
-        }
+    if err != nil {
+        return nil, err
+    }
 
-        if err := conn.Ping(ctx); err != nil {
-                if exception, ok := err.(*clickhouse.Exception); ok {
-                        fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
-                }
-                return nil, err
+    if err := conn.Ping(ctx); err != nil {
+        if exception, ok := err.(*clickhouse.Exception); ok {
+            fmt.Printf("Exception [%d] %s \n%s\n", exception.Code, exception.Message, exception.StackTrace)
         }
-        return conn, nil
+        return nil, err
+    }
+    return conn, nil
 }
 ```
+
 
 ### 运行 go mod tidy {#run-go-mod-tidy}
 
@@ -166,7 +174,7 @@ clickhouse-go 提供了一个高级接口，允许用户使用面向行的语义
 
 从 2.3 版本开始，clickhouse-go 在编码、解码和压缩等底层功能上使用 ch-go。请注意，clickhouse-go 还支持 Go 标准的 `database/sql` 接口。两个客户端在编码时都使用原生格式，以提供最佳性能，并可以通过原生 ClickHouse 协议进行通信。对于需要对流量进行代理或负载均衡的场景，clickhouse-go 也支持使用 HTTP 作为传输机制。
 
-在选择客户端库时，用户应了解各自的优缺点——参见 Choosing a Client Library。
+在选择客户端库时，应当了解每个客户端库各自的优缺点。有关指导，请参阅[《Choosing a Library》](/integrations/go#choosing-a-client)。
 
 |               | 原生格式 | 原生协议 | HTTP 协议 | 行导向 API | 列导向 API | 类型灵活性 | 压缩 | 查询占位符 |
 |:-------------:|:--------:|:--------:|:---------:|:----------:|:----------:|:----------:|:----:|:----------:|
@@ -177,7 +185,7 @@ clickhouse-go 提供了一个高级接口，允许用户使用面向行的语义
 
 选择客户端库取决于你的使用模式以及对性能的要求。对于写入量极大的场景（例如每秒需要进行数百万次插入），我们推荐使用低层级客户端 [ch-go](https://github.com/ClickHouse/ch-go)。该客户端避免了按 ClickHouse 原生格式要求，将数据从行式格式转换为列式格式所带来的额外开销。此外，它也避免了任何反射机制或使用 `interface{}`（`any`）类型，从而简化了使用。
 
-对于以聚合查询为主，或插入吞吐量要求较低的工作负载，[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) 提供了熟悉的 `database/sql` 接口以及更直观的行语义。用户也可以选择使用 HTTP 作为传输协议，并利用辅助函数在行与 struct 之间进行编组和解编组（marshal/unmarshal）。
+对于以聚合查询为主，或插入吞吐量要求较低的工作负载，[clickhouse-go](https://github.com/ClickHouse/clickhouse-go) 提供了熟悉的 `database/sql` 接口以及更直观的行语义。你也可以选择使用 HTTP 作为传输协议，并利用辅助函数在行与 struct 之间进行编组和解编组（marshal/unmarshal）。
 
 ## clickhouse-go 客户端 {#the-clickhouse-go-client}
 
@@ -197,7 +205,7 @@ clickhouse-go 客户端提供了两种与 ClickHouse 通信的 API 接口：
 
 ## 安装 {#installation}
 
-驱动程序的 v1 版本已被弃用，将不再收到新功能更新或对新增 ClickHouse 类型的支持。用户应迁移到 v2，它提供更高的性能。
+驱动程序的 v1 版本已被弃用，将不再收到新功能更新或对新增 ClickHouse 类型的支持。建议迁移到 v2，其性能更优。
 
 要安装 2.x 版本的客户端，请在 go.mod 文件中添加该包：
 
@@ -241,6 +249,7 @@ go mod tidy
 go run main.go
 
 ```
+
 
 ### 版本管理与兼容性 {#versioning--compatibility}
 
@@ -663,6 +672,7 @@ return rows.Err()
 
 最后，请注意可以向 `Query` 和 `QueryRow` 方法传入 `Context`。这可用于配置查询级别的设置——更多详情请参阅 [使用 Context](#using-context)。
 
+
 ### 异步插入 {#async-insert}
 
 支持通过 Async 方法进行异步插入。它允许用户指定客户端是应等待服务器完成插入操作，还是在服务器接收数据后立即返回响应。这实际上控制了参数 [wait&#95;for&#95;async&#95;insert](/operations/settings/settings#wait_for_async_insert)。
@@ -814,7 +824,7 @@ for i := 0; i < 1_000; i++ {
 
 ### 类型转换 {#type-conversions}
 
-该客户端在接受用于插入和响应编组（marshaling）的变量类型方面，力求尽可能灵活。大多数情况下，ClickHouse 列类型都存在等价的 Golang 类型，例如，[UInt64](/sql-reference/data-types/int-uint/) 对应 [uint64](https://pkg.go.dev/builtin#uint64)。这些逻辑映射应始终得到支持。用户可能希望使用某些变量类型，只要先对变量或接收的数据进行转换，就可以用于插入列或接收响应。客户端旨在透明地支持这些转换，从而使用户无需在插入前为精确对齐而显式转换数据，并在查询时提供灵活的编组能力。此类透明转换不允许出现精度损失。例如，`uint32` 不能用于从 `UInt64` 列接收数据。反之，只要满足格式要求，字符串就可以插入到 `DateTime64` 列中。
+该客户端在接受用于插入和响应编组（marshaling）的变量类型方面，力求尽可能灵活。大多数情况下，ClickHouse 列类型都存在等价的 Golang 类型，例如，[UInt64](/sql-reference/data-types/int-uint/) 对应 [uint64](https://pkg.go.dev/builtin#uint64)。这些逻辑映射应始终得到支持。您可能希望使用某些变量类型，只要先对变量或接收的数据进行转换，就可以用于插入列或接收响应。客户端旨在透明地支持这些转换，从而使用户无需在插入前为精确对齐而显式转换数据，并在查询时提供灵活的编组能力。此类透明转换不允许出现精度损失。例如，`uint32` 不能用于从 `UInt64` 列接收数据。反之，只要满足格式要求，字符串就可以插入到 `DateTime64` 列中。
 
 当前针对基础类型（primitive types）所支持的类型转换记录在[此处](https://github.com/ClickHouse/clickhouse-go/blob/main/TYPES.md)。
 
@@ -875,10 +885,17 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/array.go)
+
 
 #### Map {#map}
 
@@ -920,10 +937,16 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/map.go)
+
 
 #### Tuples {#tuples}
 
@@ -1087,12 +1110,18 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%v, col2=%v\n", col1, col2)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
 rows.Close()
 ```
 
 [完整示例 - `flatten_tested=0`](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/nested.go#L28-L118)
 
 如果 `flatten_nested` 使用默认值 1，嵌套列会被扁平化为多个独立数组。这要求在插入和查询时使用嵌套切片。尽管任意层级的嵌套在实践中可能可行，但这并未得到官方支持。
+
 
 ```go
 conn, err := GetNativeConnection(nil, nil, nil)
@@ -1248,7 +1277,7 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&point, &ring, &polygo
 
 #### UUID {#uuid}
 
-UUID 类型由 [github.com/google/uuid](https://github.com/google/uuid) 包提供支持。用户也可以将 UUID 作为字符串发送并进行编组（marshal），或使用任意实现了 `sql.Scanner` 或 `Stringify` 的类型。
+UUID 类型由 [github.com/google/uuid](https://github.com/google/uuid) 包提供支持。你也可以将 UUID 作为字符串发送并进行编组（marshal），或使用任意实现了 `sql.Scanner` 或 `Stringify` 接口的类型。
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1291,9 +1320,16 @@ if err = conn.QueryRow(ctx, "SELECT * FROM example").Scan(&col1, &col2); err != 
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/uuid.go)
 
+
 #### Decimal {#decimal}
 
-`Decimal` 类型由 [github.com/shopspring/decimal](https://github.com/shopspring/decimal) 包支持。
+由于 Go 缺少内置的 `Decimal` 类型，我们建议使用第三方包 [github.com/shopspring/decimal](https://github.com/shopspring/decimal)，以便在不修改原始查询的情况下原生支持 `Decimal` 类型。
+
+:::note
+你可能会想改用 `Float` 来避免第三方依赖。不过需要注意，[在需要精确数值的场景下，不推荐在 ClickHouse 中使用 Float 类型](https://clickhouse.com/docs/sql-reference/data-types/float)。
+
+如果你仍然选择在客户端使用 Go 的内置 `Float` 类型，那么必须在 ClickHouse 查询中显式地使用 [toFloat64() 函数](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64) 或[其变体](https://clickhouse.com/docs/sql-reference/functions/type-conversion-functions#toFloat64OrZero) 将 `Decimal` 转换为 `Float`。请注意，这种转换可能会导致精度丢失。
+:::
 
 ```go
 if err = conn.Exec(ctx, `
@@ -1343,6 +1379,7 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v\n", col1, col2, col3, co
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/decimal.go)
+
 
 #### Nullable {#nullable}
 
@@ -1555,46 +1592,47 @@ fmt.Printf("命名绑定计数: %d\n", count)
 
 ```go
 var count uint64
-// 数组将被展开
+// arrays will be unfolded
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN (?)", []int{100, 200, 300, 400, 500}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("数组展开后的计数: %d\n", count)
-// 数组将保留 [] 形式
+fmt.Printf("Array unfolded count: %d\n", count)
+// arrays will be preserved with []
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col4 = ?", clickhouse.ArraySet{300, 301}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("数组计数: %d\n", count)
-// 分组集合允许我们构造 ( ) 列表
+fmt.Printf("Array count: %d\n", count)
+// Group sets allow us to form ( ) lists
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col1 IN ?", clickhouse.GroupSet{[]interface{}{100, 200, 300, 400, 500}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("分组计数: %d\n", count)
-// 需要嵌套时更为实用
+fmt.Printf("Group count: %d\n", count)
+// More useful when we need nesting
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE (Col1, Col5) IN (?)", []clickhouse.GroupSet{{[]interface{}{100, 101}}, {[]interface{}{200, 201}}}).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("分组计数: %d\n", count)
-// 需要时间精度时使用 DateNamed
+fmt.Printf("Group count: %d\n", count)
+// Use DateNamed when you need a precision in your time#
 if err = conn.QueryRow(ctx, "SELECT count() FROM example WHERE Col3 >= @col3", clickhouse.DateNamed("col3", now.Add(time.Duration(500)*time.Millisecond), clickhouse.NanoSeconds)).Scan(&count); err != nil {
     return err
 }
-fmt.Printf("命名日期计数: %d\n", count)
+fmt.Printf("NamedDate count: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/bind_special.go)
 
+
 ### 使用 context {#using-context}
 
-Go 的 context 提供了一种在 API 边界之间传递截止时间、取消信号及其他请求作用域值的机制。连接上的所有方法都将 context 作为其第一个参数。虽然前面的示例使用的是 `context.Background()`，但用户可以利用这一能力来传递设置和截止时间，并取消查询。
+Go 的 context 提供了一种在 API 边界之间传递截止时间、取消信号及其他请求作用域值的机制。连接上的所有方法都将 context 作为其第一个参数。虽然前面的示例使用的是 `context.Background()`，但你可以利用这一能力来传递设置和截止时间，并取消查询。
 
 传入一个通过 `withDeadline` 创建的 context，可以对查询施加执行时间限制。注意这是一个绝对时间，到期时只会释放连接并向 ClickHouse 发送取消信号。也可以使用 `WithCancel` 来显式取消查询。
 
 辅助方法 `clickhouse.WithQueryID` 和 `clickhouse.WithQuotaKey` 允许指定查询 ID 和配额键。查询 ID 对于在日志中跟踪查询以及用于取消查询非常有用。配额键可用于基于唯一键值对 ClickHouse 的使用施加限制——更多详情参见 [Quotas Management ](/operations/access-rights#quotas-management)。
 
-用户还可以利用 context 确保某个设置仅应用于特定查询，而不是整个连接，如 [Connection Settings](#connection-settings) 中所示。
+你还可以利用 context 确保某个设置仅应用于特定查询，而不是整个连接，如 [Connection Settings](#connection-settings) 中所示。
 
-最后，用户可以通过 `clickhouse.WithBlockSize` 控制块缓冲区的大小。它会覆盖连接级别的 `BlockBufferSize` 设置，并控制在任意时刻解码并保留在内存中的最大块数。更大的值通常意味着更多的并行化，但会增加内存消耗。
+最后，你可以通过 `clickhouse.WithBlockSize` 控制块缓冲区的大小。它会覆盖连接级别的 `BlockBufferSize` 设置，并控制在任意时刻解码并保留在内存中的最大块数。更大的值通常意味着更多的并行化，但会增加内存消耗。
 
 上述内容的示例如下所示。
 
@@ -1619,14 +1657,14 @@ if err != nil {
 if err := clickhouse_tests.CheckMinServerServerVersion(conn, 22, 6, 1); err != nil {
     return nil
 }
-// 可以使用 context 将设置传递给特定的 API 调用
+// we can use context to pass settings to a specific API call
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 
 conn.Exec(ctx, "DROP TABLE IF EXISTS example")
 
-// 创建 JSON 列需要设置 allow_experimental_object_type=1
+// to create a JSON column we need allow_experimental_object_type=1
 if err = conn.Exec(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -1636,24 +1674,24 @@ if err = conn.Exec(ctx, `
     return err
 }
 
-// 可以通过 context 取消查询
+// queries can be cancelled using the context
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
 }()
 if err = conn.QueryRow(ctx, "SELECT sleep(3)").Scan(); err == nil {
-    return fmt.Errorf("应已取消")
+    return fmt.Errorf("expected cancel")
 }
 
-// 为查询设置截止时间 - 达到指定时间后将取消查询。
-// 查询在 ClickHouse 中会继续执行直至完成
+// set a deadline for a query - this will cancel the query after the absolute time is reached.
+// queries will continue to completion in ClickHouse
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.Ping(ctx); err == nil {
-    return fmt.Errorf("应已超过截止时间")
+    return fmt.Errorf("expected deadline exceeeded")
 }
 
-// 设置查询 ID 以便在日志中跟踪查询,例如查看 system.query_log
+// set a query id to assist tracing queries in logs e.g. see system.query_log
 var one uint8
 queryId, _ := uuid.NewUUID()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(queryId.String()))
@@ -1666,7 +1704,7 @@ defer func() {
     conn.Exec(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// 设置配额键 - 首先需要创建配额
+// set a quota key - first create the quota
 if err = conn.Exec(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
@@ -1684,6 +1722,7 @@ for i := 1; i <= 6; i++ {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/context.go)
 
+
 ### 进度 / Profile / 日志信息 {#progressprofilelog-information}
 
 在查询中可以请求 Progress、Profile 和 Log 信息。Progress 信息会报告在 ClickHouse 中已读取和处理的行数和字节数等统计数据。相比之下，Profile 信息会提供返回给客户端的数据摘要，包括未压缩字节数、行数和数据块数量等总计信息。最后，Log 信息会提供线程相关统计信息，例如内存使用情况和数据处理速度。
@@ -1692,14 +1731,14 @@ for i := 1; i <= 6; i++ {
 
 ```go
 totalRows := uint64(0)
-// 使用 context 传递进度和配置信息的回调函数
+// use context to pass a call back for progress and profile info
 ctx := clickhouse.Context(context.Background(), clickhouse.WithProgress(func(p *clickhouse.Progress) {
-    fmt.Println("进度: ", p)
+    fmt.Println("progress: ", p)
     totalRows += p.Rows
 }), clickhouse.WithProfileInfo(func(p *clickhouse.ProfileInfo) {
-    fmt.Println("配置信息: ", p)
+    fmt.Println("profile info: ", p)
 }), clickhouse.WithLogs(func(log *clickhouse.Log) {
-    fmt.Println("日志信息: ", log)
+    fmt.Println("log info: ", log)
 }))
 
 rows, err := conn.Query(ctx, "SELECT number from numbers(1000000) LIMIT 1000000")
@@ -1709,11 +1748,17 @@ if err != nil {
 for rows.Next() {
 }
 
-fmt.Printf("总行数: %d\n", totalRows)
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
+
+fmt.Printf("Total Rows: %d\n", totalRows)
 rows.Close()
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/progress.go)
+
 
 ### 动态扫描 {#dynamic-scanning}
 
@@ -1729,6 +1774,7 @@ rows, err := conn.Query(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
 var (
     columnTypes = rows.ColumnTypes()
     vars        = make([]interface{}, len(columnTypes))
@@ -1749,9 +1795,14 @@ for rows.Next() {
         }
     }
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完整示例代码](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/dynamic_scan_types.go)
+
 
 ### 外部表 {#external-tables}
 
@@ -1800,6 +1851,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 rows.Close()
 
 var count uint64
@@ -1819,6 +1874,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/clickhouse_api/external_data.go)
 
+
 ### OpenTelemetry {#open-telemetry}
 
 ClickHouse 允许在原生协议中传递[跟踪上下文](/operations/opentelemetry/)。客户端支持通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 传递，从而实现这一点。
@@ -1834,6 +1890,10 @@ rows := conn.QueryRow(clickhouse.Context(context.Background(), clickhouse.WithSp
 if err := rows.Scan(&count); err != nil {
     return err
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 fmt.Printf("count: %d\n", count)
 ```
 
@@ -1841,9 +1901,10 @@ fmt.Printf("count: %d\n", count)
 
 关于如何使用链路追踪的完整说明，请参见 [OpenTelemetry 支持](/operations/opentelemetry/)。
 
+
 ## Database/SQL API {#databasesql-api}
 
-`database/sql` 或“标准”API 允许用户在应用代码应与底层数据库解耦、只依赖统一标准接口的场景下使用该客户端。这样做的代价是增加了额外的抽象层和间接层，并引入了一些不一定与 ClickHouse 完全契合的基础原语。但在需要通过工具连接多个数据库的场景中，这些成本通常是可以接受的。
+`database/sql` 或“标准”API 允许你在应用代码应与底层数据库解耦、只依赖统一标准接口的场景下使用该客户端。这样做的代价是增加了额外的抽象层和间接层，并引入了一些不一定与 ClickHouse 完全契合的基础原语。但在需要通过工具连接多个数据库的场景中，这些成本通常是可以接受的。
 
 此外，该客户端支持使用 HTTP 作为传输层——数据仍将以原生格式进行编码，以获得最佳性能。
 
@@ -1909,7 +1970,7 @@ func ConnectDSN() error {
   * `zstd`、`lz4` - 将被忽略
 * `secure` - 建立安全的 SSL 连接（默认 `false`）
 * `skip_verify` - 跳过证书校验（默认 `false`）
-* `block_buffer_size` - 允许用户控制块缓冲区大小。参见 [`BlockBufferSize`](#connection-settings)。（默认 `2`）
+* `block_buffer_size` - 允许你控制块缓冲区大小。参见 [`BlockBufferSize`](#connection-settings)。（默认 `2`）
 
 ```go
 func ConnectSettings() error {
@@ -1927,9 +1988,10 @@ func ConnectSettings() error {
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/connect_settings.go)
 
+
 #### 连接池 {#connection-pooling-1}
 
-用户可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。
+你可以按照[连接到多个节点](#connecting-to-multiple-nodes)中的说明，控制所提供节点地址列表的使用方式。不过，按照设计，连接管理和连接池功能由 `sql.DB` 负责处理。
 
 #### 通过 HTTP 连接 {#connecting-over-http}
 
@@ -2110,7 +2172,7 @@ func ConnectDSNAuth() error {
 
 ### 执行 {#execution-1}
 
-获取连接后，用户可以使用 Exec 方法执行 `sql` 语句。
+获取连接后，你可以使用 Exec 方法执行 `sql` 语句。
 
 ```go
 conn.Exec(`DROP TABLE IF EXISTS example`)
@@ -2129,6 +2191,7 @@ _, err = conn.Exec("INSERT INTO example VALUES (1, 'test-1')")
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/exec.go)
 
 此方法不支持接收 context 参数——默认情况下，它使用后台 context 执行。如果有此需求，用户可以使用 `ExecContext`——参见[使用 Context](#using-context)。
+
 
 ### 批量插入 {#batch-insert-1}
 
@@ -2192,6 +2255,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1             uint8
     col2, col3, col4 string
@@ -2206,9 +2271,14 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%d, col2=%s, col3=%s, col4=%s, col5=%v, col6=%v, col7=%v, col8=%v\n", col1, col2, col3, col4, col5, col6, col7, col8)
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/query_rows.go)
+
 
 ### 异步插入 {#async-insert-1}
 
@@ -2259,7 +2329,7 @@ ctx := clickhouse.Context(context.Background(), clickhouse.WithStdAsync(false))
 
 #### 映射（Maps） {#maps}
 
-与 ClickHouse API 不同，标准 API 要求映射在扫描阶段必须是强类型的。举例来说，用户不能为 `Map(String,String)` 字段传入 `map[string]interface{}`，而必须使用 `map[string]string`。`interface{}` 变量始终是兼容的，可用于更复杂的结构。在读取时不支持 struct（结构体）。
+与 ClickHouse API 不同，标准 API 要求映射在扫描阶段必须是强类型的。举例来说，你不能为 `Map(String,String)` 字段传入 `map[string]interface{}`，而必须使用 `map[string]string`。`interface{}` 变量始终是兼容的，可用于更复杂的结构。在读取时不支持 struct（结构体）。
 
 ```go
 var (
@@ -2303,6 +2373,7 @@ fmt.Printf("col1=%v, col2=%v, col3=%v, col4=%v, col5=%v", col1, col2, col3, col4
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/map.go)
 
 插入行为与 ClickHouse API 保持一致。
+
 
 ### 压缩 {#compression-1}
 
@@ -2373,16 +2444,16 @@ fmt.Printf("命名绑定计数: %d\n", count)
 
 ### 使用 context {#using-context-1}
 
-标准 API 与 [ClickHouse API](#using-context) 一样，支持通过 context 传递截止时间、取消信号以及其他与请求范围关联的值。不同于 ClickHouse API，这里是通过使用带有 `Context` 后缀的方法变体来实现的。也就是说，像 `Exec` 这类默认使用后台 context 的方法，会提供一个变体 `ExecContext`，它将 context 作为第一个参数传入。这样就可以在应用流程的任意阶段传递 context。例如，用户可以在通过 `ConnContext` 建立连接时传入 context，或者在通过 `QueryRowContext` 请求查询行时传入 context。下文给出了所有可用方法的示例。
+标准 API 与 [ClickHouse API](#using-context) 一样，支持通过 context 传递截止时间、取消信号以及其他与请求范围关联的值。不同于 ClickHouse API，这里是通过使用带有 `Context` 后缀的方法变体来实现的。也就是说，像 `Exec` 这类默认使用后台 context 的方法，会提供一个变体 `ExecContext`，它将 context 作为第一个参数传入。这样就可以在应用流程的任意阶段传递 context。例如，你可以在通过 `ConnContext` 建立连接时传入 context，或者在通过 `QueryRowContext` 请求查询行时传入 context。下文给出了所有可用方法的示例。
 
-关于使用 context 传递截止时间、取消信号、查询 id、配额键以及连接设置的更多细节，请参阅 [ClickHouse API](#using-context) 中的 Using Context 一节。
+关于使用 context 传递截止时间、取消信号、查询 ID、配额键以及连接设置的更多细节，请参阅 [ClickHouse API](#using-context) 中的 Using Context 一节。
 
 ```go
 ctx := clickhouse.Context(context.Background(), clickhouse.WithSettings(clickhouse.Settings{
     "allow_experimental_object_type": "1",
 }))
 conn.ExecContext(ctx, "DROP TABLE IF EXISTS example")
-// 创建 JSON 列需要设置 allow_experimental_object_type=1
+// to create a JSON column we need allow_experimental_object_type=1
 if _, err = conn.ExecContext(ctx, `
     CREATE TABLE example (
             Col1 JSON
@@ -2392,7 +2463,7 @@ if _, err = conn.ExecContext(ctx, `
     return err
 }
 
-// 可以通过 context 取消查询
+// queries can be cancelled using the context
 ctx, cancel := context.WithCancel(context.Background())
 go func() {
     cancel()
@@ -2401,15 +2472,15 @@ if err = conn.QueryRowContext(ctx, "SELECT sleep(3)").Scan(); err == nil {
     return fmt.Errorf("expected cancel")
 }
 
-// 为查询设置截止时间 - 达到绝对时间后将取消查询。同样仅终止连接,
-// 查询将在 ClickHouse 中继续执行直至完成
+// set a deadline for a query - this will cancel the query after the absolute time is reached. Again terminates the connection only,
+// queries will continue to completion in ClickHouse
 ctx, cancel = context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
 defer cancel()
 if err := conn.PingContext(ctx); err == nil {
     return fmt.Errorf("expected deadline exceeeded")
 }
 
-// 设置查询 ID 以便在日志中跟踪查询,例如查看 system.query_log
+// set a query id to assist tracing queries in logs e.g. see system.query_log
 var one uint8
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQueryID(uuid.NewString()))
 if err = conn.QueryRowContext(ctx, "SELECT 1").Scan(&one); err != nil {
@@ -2421,14 +2492,14 @@ defer func() {
     conn.ExecContext(context.Background(), "DROP QUOTA IF EXISTS foobar")
 }()
 ctx = clickhouse.Context(context.Background(), clickhouse.WithQuotaKey("abcde"))
-// 设置配额键 - 首先创建配额
+// set a quota key - first create the quota
 if _, err = conn.ExecContext(ctx, "CREATE QUOTA IF NOT EXISTS foobar KEYED BY client_key FOR INTERVAL 1 minute MAX queries = 5 TO default"); err != nil {
     return err
 }
 
-// 可以通过 context 取消查询
+// queries can be cancelled using the context
 ctx, cancel = context.WithCancel(context.Background())
-// 取消前将获得部分结果
+// we will get some results before cancel
 ctx = clickhouse.Context(ctx, clickhouse.WithSettings(clickhouse.Settings{
     "max_block_size": "1",
 }))
@@ -2436,6 +2507,8 @@ rows, err := conn.QueryContext(ctx, "SELECT sleepEachRow(1), number FROM numbers
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
     col2 uint8
@@ -2454,9 +2527,14 @@ for rows.Next() {
         cancel()
     }
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/context.go)
+
 
 ### 会话 {#sessions}
 
@@ -2506,6 +2584,8 @@ rows, err := conn.Query("SELECT * FROM example")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 var (
     col1 uint8
 )
@@ -2515,13 +2595,19 @@ for rows.Next() {
     }
     fmt.Printf("row: col1=%d\n", col1)
 }
+
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/session.go)
 
+
 ### 动态扫描 {#dynamic-scanning-1}
 
-与 [ClickHouse API](#dynamic-scanning) 类似，这里也可以获取列的类型信息，便于用户在运行时创建类型正确的变量实例并将其传递给 Scan。这样即使事先不知道列的类型，也可以读取这些列。
+与 [ClickHouse API](#dynamic-scanning) 类似，这里也可以获取列的类型信息，便于你在运行时创建类型正确的变量实例并将其传递给 Scan。这样即使事先不知道列的类型，也可以读取这些列。
 
 ```go
 const query = `
@@ -2533,6 +2619,8 @@ rows, err := conn.QueryContext(context.Background(), query)
 if err != nil {
     return err
 }
+defer rows.Close()
+
 columnTypes, err := rows.ColumnTypes()
 if err != nil {
     return err
@@ -2554,9 +2642,14 @@ for rows.Next() {
         }
     }
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/dynamic_scan_types.go)
+
 
 ### 外部表 {#external-tables-1}
 
@@ -2596,6 +2689,8 @@ rows, err := conn.QueryContext(ctx, "SELECT * FROM external_table_1")
 if err != nil {
     return err
 }
+defer rows.Close()
+
 for rows.Next() {
     var (
         col1 uint8
@@ -2605,7 +2700,10 @@ for rows.Next() {
     rows.Scan(&col1, &col2, &col3)
     fmt.Printf("col1=%d, col2=%s, col3=%v\n", col1, col2, col3)
 }
-rows.Close()
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 
 var count uint64
 if err := conn.QueryRowContext(ctx, "SELECT COUNT(*) FROM external_table_1").Scan(&count); err != nil {
@@ -2624,6 +2722,7 @@ fmt.Printf("external_table_1 UNION external_table_2: %d\n", count)
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/external_data.go)
 
+
 ### OpenTelemetry {#open-telemetry-1}
 
 ClickHouse 允许在原生协议中传递 [trace context](/operations/opentelemetry/)。客户端可以通过函数 `clickhouse.withSpan` 创建一个 Span，并通过 Context 进行传递来实现这一点。当使用 HTTP 作为传输协议时，不支持该功能。
@@ -2639,10 +2738,15 @@ rows := conn.QueryRowContext(clickhouse.Context(context.Background(), clickhouse
 if err := rows.Scan(&count); err != nil {
     return err
 }
+// NOTE: Do not skip rows.Err() check
+if err := rows.Err(); err != nil {
+    return err
+}
 fmt.Printf("count: %d\n", count)
 ```
 
 [完整示例](https://github.com/ClickHouse/clickhouse-go/blob/main/examples/std/open_telemetry.go)
+
 
 ## 性能建议 {#performance-tips}
 

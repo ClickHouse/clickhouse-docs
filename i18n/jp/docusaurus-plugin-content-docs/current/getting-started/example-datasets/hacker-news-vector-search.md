@@ -65,7 +65,7 @@ doc_type: 'guide'
 
   ### ベクトル類似性インデックスを構築する
 
-  以下のSQLを実行して、`hackernews`テーブルの`vector`列にベクトル類似性インデックスを定義および構築します：
+  以下のSQLを実行して、`hackernews`テーブルの`vector`カラムにベクトル類似性インデックスを定義および構築します:
 
   ```sql
   ALTER TABLE hackernews ADD INDEX vector_index vector TYPE vector_similarity('hnsw', 'cosineDistance', 384, 'bf16', 64, 512);
@@ -74,8 +74,9 @@ doc_type: 'guide'
   ```
 
   インデックスの作成と検索に関するパラメータおよびパフォーマンスの考慮事項については、[ドキュメント](../../engines/table-engines/mergetree-family/annindexes.md)を参照してください。
-  上記のステートメントでは、HNSWハイパーパラメータ`M`と`ef_construction`にそれぞれ64と512の値を使用しています。
-  これらのパラメータの最適な値を選択する際は、選択した値に対応するインデックス構築時間と検索結果の品質を評価し、慎重に決定する必要があります。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
   2,874万件の完全なデータセットに対するインデックスの構築と保存には、利用可能なCPUコア数とストレージ帯域幅に応じて、数分から1時間程度かかる場合があります。
 
@@ -102,105 +103,105 @@ doc_type: 'guide'
   以下に、`sentence_transformers` Pythonパッケージを使用してプログラムで埋め込みベクトルを生成する方法を示すPythonスクリプトの例を示します。検索用の埋め込みベクトルは、`SELECT`クエリ内の[`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance)関数に引数として渡されます。
 
   ```python
-from sentence_transformers import SentenceTransformer
-import sys
+  from sentence_transformers import SentenceTransformer
+  import sys
 
-import clickhouse_connect
+  import clickhouse_connect
 
-print("Initializing...")
+  print("Initializing...")
 
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+  model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-chclient = clickhouse_connect.get_client() # ClickHouse credentials here
+  chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
-while True:
-    # Take the search query from user
-    print("Enter a search query :")
-    input_query = sys.stdin.readline();
-    texts = [input_query]
+  while True:
+      # Take the search query from user
+      print("Enter a search query :")
+      input_query = sys.stdin.readline();
+      texts = [input_query]
 
-    # Run the model and obtain search vector
-    print("Generating the embedding for ", input_query);
-    embeddings = model.encode(texts)
+      # Run the model and obtain search vector
+      print("Generating the embedding for ", input_query);
+      embeddings = model.encode(texts)
 
-    print("Querying ClickHouse...")
-    params = {'v1':list(embeddings[0]), 'v2':20}
-    result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-    print("Results :")
-    for row in result.result_rows:
-        print(row[0], row[2][:100])
-        print("---------")
+      print("Querying ClickHouse...")
+      params = {'v1':list(embeddings[0]), 'v2':20}
+      result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
+      print("Results :")
+      for row in result.result_rows:
+          print(row[0], row[2][:100])
+          print("---------")
 
-```
+  ```
 
   上記のPythonスクリプトの実行例と類似検索の結果を以下に示します
   (上位20件の投稿からそれぞれ100文字のみを出力):
 
   ```text
-Initializing...
+  Initializing...
 
-Enter a search query :
-Are OLAP cubes useful
+  Enter a search query :
+  Are OLAP cubes useful
 
-Generating the embedding for  "Are OLAP cubes useful"
+  Generating the embedding for  "Are OLAP cubes useful"
 
-Querying ClickHouse...
+  Querying ClickHouse...
 
-Results :
+  Results :
 
-27742647 smartmic:
-slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
----------
-27744260 georgewfraser:A data mart is a logical organization of data to help humans understand the schema. Wh
----------
-27761434 mwexler:&quot;We model data according to rigorous frameworks like Kimball or Inmon because we must r
----------
-28401230 chotmat:
-erosenbe0: OLAP database is just a copy, replica, or archive of data with a schema designe
----------
-22198879 Merick:+1 for Apache Kylin, it&#x27;s a great project and awesome open source community. If anyone i
----------
-27741776 crazydoggers:I always felt the value of an OLAP cube was uncovering questions you may not know to as
----------
-22189480 shadowsun7:
-_Codemonkeyism: After maintaining an OLAP cube system for some years, I&#x27;m not that
----------
-27742029 smartmic:
-gengstrand: My first exposure to OLAP was on a team developing a front end to Essbase that
----------
-22364133 irfansharif:
-simo7: I&#x27;m wondering how this technology could work for OLAP cubes.<p>An OLAP cube
----------
-23292746 scoresmoke:When I was developing my pet project for Web analytics (<a href="https:&#x2F;&#x2F;github
----------
-22198891 js8:It seems that the article makes a categorical error, arguing that OLAP cubes were replaced by co
----------
-28421602 chotmat:
-7thaccount: Is there any advantage to OLAP cube over plain SQL (large historical database r
----------
-22195444 shadowsun7:
-lkcubing: Thanks for sharing. Interesting write up.<p>While this article accurately capt
----------
-22198040 lkcubing:Thanks for sharing. Interesting write up.<p>While this article accurately captures the issu
----------
-3973185 stefanu:
-sgt: Interesting idea. Ofcourse, OLAP isn't just about the underlying cubes and dimensions,
----------
-22190903 shadowsun7:
-js8: It seems that the article makes a categorical error, arguing that OLAP cubes were r
----------
-28422241 sradman:OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the history of
----------
-28421480 chotmat:
-sradman: OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the
----------
-27742515 BadInformatics:
-quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the actual titl
----------
-28422935 chotmat:
-rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
----------
-```
+  27742647 smartmic:
+  slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
+  ---------
+  27744260 georgewfraser:A data mart is a logical organization of data to help humans understand the schema. Wh
+  ---------
+  27761434 mwexler:&quot;We model data according to rigorous frameworks like Kimball or Inmon because we must r
+  ---------
+  28401230 chotmat:
+  erosenbe0: OLAP database is just a copy, replica, or archive of data with a schema designe
+  ---------
+  22198879 Merick:+1 for Apache Kylin, it&#x27;s a great project and awesome open source community. If anyone i
+  ---------
+  27741776 crazydoggers:I always felt the value of an OLAP cube was uncovering questions you may not know to as
+  ---------
+  22189480 shadowsun7:
+  _Codemonkeyism: After maintaining an OLAP cube system for some years, I&#x27;m not that
+  ---------
+  27742029 smartmic:
+  gengstrand: My first exposure to OLAP was on a team developing a front end to Essbase that
+  ---------
+  22364133 irfansharif:
+  simo7: I&#x27;m wondering how this technology could work for OLAP cubes.<p>An OLAP cube
+  ---------
+  23292746 scoresmoke:When I was developing my pet project for Web analytics (<a href="https:&#x2F;&#x2F;github
+  ---------
+  22198891 js8:It seems that the article makes a categorical error, arguing that OLAP cubes were replaced by co
+  ---------
+  28421602 chotmat:
+  7thaccount: Is there any advantage to OLAP cube over plain SQL (large historical database r
+  ---------
+  22195444 shadowsun7:
+  lkcubing: Thanks for sharing. Interesting write up.<p>While this article accurately capt
+  ---------
+  22198040 lkcubing:Thanks for sharing. Interesting write up.<p>While this article accurately captures the issu
+  ---------
+  3973185 stefanu:
+  sgt: Interesting idea. Ofcourse, OLAP isn't just about the underlying cubes and dimensions,
+  ---------
+  22190903 shadowsun7:
+  js8: It seems that the article makes a categorical error, arguing that OLAP cubes were r
+  ---------
+  28422241 sradman:OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the history of
+  ---------
+  28421480 chotmat:
+  sradman: OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the
+  ---------
+  27742515 BadInformatics:
+  quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the actual titl
+  ---------
+  28422935 chotmat:
+  rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
+  ---------
+  ```
 
   ## 要約デモアプリケーション
 
@@ -210,15 +211,15 @@ rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probab
 
   アプリケーションは以下の手順を実行します：
 
-  1. ユーザーから *topic* の入力を受け付ける
+  1. ユーザーから *topic* を入力として受け取る
   2. `SentenceTransformers` の `all-MiniLM-L6-v2` モデルを使用して、*topic* の埋め込みベクトルを生成します
-  3. `hackernews` テーブルに対してベクトル類似度検索を実行し、関連性の高い投稿やコメントを取得します
+  3. `hackernews` テーブルに対してベクトル類似検索を実行し、関連性の高い投稿やコメントを取得します
   4. `LangChain` と OpenAI の `gpt-3.5-turbo` Chat API を使用して、ステップ #3 で取得したコンテンツを**要約**します。
-     ステップ #3 で取得した投稿やコメントは *コンテキスト* として Chat API に渡され、Generative AI を成立させる鍵となる要素となります。
+     ステップ #3 で取得した投稿やコメントは *コンテキスト* として Chat API に渡され、生成AIにおける中核的なつなぎ役となります。
 
   要約アプリケーションの実行例を以下に示し、その後に要約アプリケーションのコードを記載します。アプリケーションの実行には、環境変数 `OPENAI_API_KEY` に OpenAI API キーを設定する必要があります。OpenAI API キーは [https://platform.openai.com](https://platform.openai.com) での登録後に取得できます。
 
-  本アプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話の分析、法的文書、医療記録、会議議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIユースケースを実証します
+  本アプリケーションは、顧客感情分析、技術サポートの自動化、ユーザー会話のマイニング、法的文書、医療記録、会議議事録、財務諸表など、複数のエンタープライズ領域に適用可能な生成AIユースケースを実証します
 
   ```shell
   $ python3 summarize.py

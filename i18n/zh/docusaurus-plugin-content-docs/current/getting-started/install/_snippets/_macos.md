@@ -5,11 +5,17 @@ import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-v
 
 # 使用 Homebrew 安装 ClickHouse {#install-clickhouse-using-homebrew}
 
+:::warning
+通过 Homebrew Formulae 安装的方式现已被弃用，并将于 2026-09-01 起停用。
+我们推荐使用适用于任何平台的[快速安装](/install/quick-install-curl)方式。
+:::
+
 <VerticalStepper>
 
-## 使用社区 Homebrew 配方进行安装 {#install-using-community-homebrew-formula}
+## 使用社区 Homebrew formula 安装 {#install-using-community-homebrew-formula}
 
-要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，可以使用 ClickHouse 社区提供的 [Homebrew 配方](https://formulae.brew.sh/cask/clickhouse)。
+要在 macOS 上使用 [Homebrew](https://brew.sh/) 安装 ClickHouse，可以使用
+ClickHouse 社区提供的 [homebrew formula](https://formulae.brew.sh/cask/clickhouse)。
 
 ```bash
 brew install --cask clickhouse
@@ -84,20 +90,19 @@ clickhouse client [args]
 clickhouse benchmark [args]
 ```
 
-## 通过重新安装 ClickHouse 来解决此问题 {#fix-issue}
+## 通过重新安装 ClickHouse 来修复问题 {#fix-issue}
 
-Brew 提供了一个命令行选项,可以在首次安装时避免对二进制文件进行隔离检查。
+Homebrew 提供了一个命令行选项，可以从一开始就避免对已安装的二进制文件进行隔离。
 
-首先,卸载 ClickHouse:
+首先卸载 ClickHouse：
 
 ```shell
 brew uninstall clickhouse
 ```
 
-现在使用 `--no-quarantine` 重新安装 ClickHouse:
+现在使用 `--no-quarantine` 选项重新安装 ClickHouse：
 
 ```shell
 brew install --no-quarantine clickhouse
 ```
-
 </VerticalStepper>

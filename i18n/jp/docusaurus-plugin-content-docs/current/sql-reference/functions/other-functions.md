@@ -452,9 +452,9 @@ FROM system.numbers LIMIT 5
 
 導入バージョン: v20.5
 
-実行中の ClickHouse サーバー バイナリに対して、コンパイラによって生成されたビルド ID を返します。
+実行中の ClickHouse サーバーのバイナリに対して、コンパイラによって生成されたビルド ID を返します。
 分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
-それ以外の場合は、定数値を返します。
+それ以外の場合は、定数値を生成します。
 
 **構文**
 
@@ -483,6 +483,7 @@ SELECT buildId()
 │ AB668BEF095FAA6BD26537F197AC2AF48A927FB4 │
 └──────────────────────────────────────────┘
 ```
+
 
 ## byteSize {#byteSize}
 
@@ -4453,7 +4454,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 導入バージョン: v22.6
 
 現在のサーバーで構成されている Secure Sockets Layer (SSL) 証明書に関する情報を表示します。
-ClickHouse を OpenSSL 証明書を使用して接続を検証するように構成する方法については、[Configuring SSL-TLS](/guides/sre/configuring-ssl) を参照してください。
+ClickHouse を OpenSSL 証明書を使用して接続を検証するように構成する方法については、[Configuring TLS](/guides/sre/tls/configuring-tls) を参照してください。
 
 **構文**
 
@@ -4480,6 +4481,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```response title=Response
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
+
 
 ## sleep {#sleep}
 
@@ -4662,7 +4664,7 @@ message MessageName
 
 導入バージョン: v20.12
 
-サーバーが待ち受けている [native interface](../../interfaces/tcp.md) の TCP ポート番号を返します。
+サーバーが待ち受けている [native interface](/interfaces/tcp) の TCP ポート番号を返します。
 分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
 それ以外の場合は、定数値を生成します。
 
@@ -4693,6 +4695,7 @@ SELECT tcpPort()
 │      9000 │
 └───────────┘
 ```
+
 
 ## throwIf {#throwIf}
 

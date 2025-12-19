@@ -25,6 +25,7 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 
 在通过调优线程数和块大小来提升插入性能之前，我们建议用户先了解 S3 插入的工作机制。如果你已经熟悉插入机制，或者只想快速获得一些调优建议，可以直接跳转到下面的[示例](/integrations/s3/performance#example-dataset)部分。
 
+
 ## 插入机制（单节点） {#insert-mechanics-single-node}
 
 在硬件配置之外，还有两个主要因素会影响 ClickHouse 单节点数据插入机制的性能和资源使用：**插入块大小** 和 **插入并行度**。
@@ -44,11 +45,11 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 在数据完全加载之前，服务器会执行一个循环：
 
 ```bash
-① 拉取并解析下一批数据，并从中形成内存数据块（每个分区键对应一个数据块）。
+① Pull and parse the next portion of data and form an in-memory data block (one per partitioning key) from it.
 
-② 将数据块写入存储中的新部分。
+② Write the block into a new part on storage.
 
-转到 ① 
+Go to ① 
 ```
 
 在 ① 中，大小取决于插入块的大小，可以通过两个设置进行控制：
@@ -59,6 +60,7 @@ import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/har
 当插入块中累积到指定数量的行，或者达到配置的数据量（以先发生者为准）时，就会触发将该块写入一个新的 part。插入循环随后回到步骤 ① 继续执行。
 
 请注意，`min_insert_block_size_bytes` 的值表示内存中未压缩的块大小（而不是压缩后的磁盘 part 大小）。另外需要注意的是，创建出来的块和 part 很少会精确包含配置的行数或字节数，因为 ClickHouse 是按行‑[块](/operations/settings/settings#max_block_size)粒度对数据进行流式[处理](https://clickhouse.com/company/events/query-performance-introspection)的。因此，这些设置指定的是最小阈值。
+
 
 #### 注意合并操作 {#be-aware-of-merges}
 
@@ -75,39 +77,38 @@ ClickHouse 会持续[合并 part](https://clickhouse.com/blog/asynchronous-data-
 单个 ClickHouse 服务器会利用多个[后台合并线程](/operations/server-configuration-parameters/settings#background_pool_size)来执行并发的[part 合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges:~:text=to%20execute%20concurrent-,part%20merges,-.%20Each%20thread%20executes)。每个线程都会执行一个循环：
 
 ```bash
-① 确定接下来要合并的部分,并将这些部分以块的形式加载到内存中。
+① Decide which parts to merge next, and load these parts as blocks into memory.
 
-② 将内存中已加载的块合并成一个更大的块。
+② Merge the loaded blocks in memory into a larger block.
+
+③ Write the merged block into a new part on disk.
+
+Go to ①
 ```
 
-③ 将合并后的数据块写入磁盘中的一个新的 part。
+请注意，[增加](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) CPU 核心数和 RAM 大小会提高后台合并的吞吐量。
 
-回到 ①
+已经被合并进更大 part 的 part 会被标记为[非活动](/operations/system-tables/parts)，并在经过[可配置](/operations/settings/merge-tree-settings#old_parts_lifetime)的若干分钟后最终被删除。随着时间推移，这会形成一个由合并后 part 组成的树状结构（这也是 [`MergeTree`](/engines/table-engines/mergetree-family) 表名称的由来）。
 
-```
-
-请注意,[增加](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#hardware-size) CPU 核心数和 RAM 大小可提高后台合并吞吐量。
-
-合并为更大部分的数据部分会被标记为 [inactive](/operations/system-tables/parts),并在[可配置](/operations/settings/merge-tree-settings#old_parts_lifetime)的分钟数后最终删除。随着时间推移,这会形成一个合并部分的树形结构(因此得名 [`MergeTree`](/engines/table-engines/mergetree-family) 表)。
 
 ### 插入并行性 {#insert-parallelism}
 
 <Image img={ResourceUsage} size="lg" border alt="插入并行性的资源使用情况" />
 
-ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会影响 ClickHouse 服务器的摄取吞吐量和内存使用。并行加载和处理数据需要更多主内存,但由于数据处理速度更快,可以提高摄取吞吐量。
+ClickHouse 服务器可以并行处理和插入数据。插入并行性的级别会影响 ClickHouse 服务器的摄取吞吐量和内存使用。并行加载和处理数据需要更多主内存，但由于数据处理速度更快，可以提高摄取吞吐量。
 
-像 s3 这样的表函数允许通过 glob 模式指定待加载文件名集合。当 glob 模式匹配多个现有文件时,ClickHouse 可以并行读取这些文件内部和之间的数据,并通过利用并行运行的插入线程(每个服务器)将数据并行插入到表中: 
+像 s3 这样的表函数允许通过 glob 模式指定一组待加载的文件名。当某个 glob 模式匹配多个现有文件时，ClickHouse 可以在这些文件之间以及文件内部并行读取数据，并通过运行多个并行插入线程（每个服务器）将数据并行插入到表中：
 
 <Image img={InsertThreads} size="lg" border alt="ClickHouse 中的并行插入线程" />
 
-在处理完所有文件的所有数据之前,每个插入线程执行一个循环: 
+在处理完所有文件的所有数据之前，每个插入线程都会执行一个循环：
 
 ```bash
-① 获取下一部分未处理的文件数据(部分大小基于配置的块大小)并从中创建内存数据块。
+① Get the next portion of unprocessed file data (portion size is based on the configured block size) and create an in-memory data block from it.
 
-② 将该块写入存储上的新部分。
+② Write the block into a new part on storage.
 
-转到 ①。 
+Go to ①. 
 ```
 
 此类并行插入线程的数量可以通过 [`max_insert_threads`](/operations/settings/settings#max_insert_threads) 设置进行配置。开源版 ClickHouse 的默认值为 `1`，而 [ClickHouse Cloud](https://clickhouse.com/cloud) 的默认值为 `4`。
@@ -115,6 +116,7 @@ ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会
 在处理大量文件时，多插入线程的并行处理效果良好，可以充分利用可用的 CPU 核心以及网络带宽（用于并行下载文件）。在仅向表中加载少量大文件的场景下，ClickHouse 会自动建立较高的数据处理并行度，并通过为每个插入线程派生额外的读取线程来并行读取（下载）大文件中更多彼此独立的区间，从而优化网络带宽的使用。
 
 对于 s3 函数和表，单个文件是否并行下载由 [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) 和 [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) 的取值决定。只有当文件大小大于 `2 * max_download_buffer_size` 时，文件才会被并行下载。默认情况下，`max_download_buffer_size` 设置为 10MiB。在某些情况下，可以放心地将该缓冲区大小增大到 50 MB（`max_download_buffer_size=52428800`），以确保每个文件由单个线程下载。这样可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。此外，对于过小而不适合并行读取的文件，为了提高吞吐量，ClickHouse 会通过异步预读此类文件来自动预取数据。
+
 
 ## 性能衡量 {#measuring-performance}
 
@@ -124,17 +126,17 @@ ClickHouse 服务器可以并行处理和插入数据。插入并行性级别会
 
 <Image img={HardwareSize} size="lg" border alt="硬件规模对 ClickHouse 性能的影响" />
 
-可用的 CPU 核心数量和内存大小会影响：
+可用的 CPU 核心数量和内存容量会影响：
 
-- 支持的[初始 part 大小](#insert-block-size)
+- 支持的[初始分区片段大小](#insert-block-size)
 - 可实现的[写入并行度](#insert-parallelism)
-- [后台 part 合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)的吞吐量
+- [后台分区片段合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)的吞吐量
 
 从而影响整体的摄取吞吐量。
 
 ## 区域本地性 {#region-locality}
 
-请确保你的 bucket 与 ClickHouse 实例位于同一地域（region）。这个简单的优化可以显著提升吞吐性能，尤其是在你将 ClickHouse 实例部署在 AWS 基础设施上时。
+请确保你的存储桶（bucket）与 ClickHouse 实例位于同一地域（region）。这个简单的优化可以显著提升吞吐量表现，尤其是在你将 ClickHouse 实例部署在 AWS 基础设施上时。
 
 ## 格式 {#formats}
 
@@ -175,21 +177,22 @@ LIMIT 5
 │ user3559349      │      3068 │
 └──────────────────┴───────────┘
 
-返回 5 行。耗时:3.013 秒。处理了 5982 万行,24.03 GB(1986 万行/秒,7.98 GB/秒)。
-峰值内存使用量:603.64 MiB。
+5 rows in set. Elapsed: 3.013 sec. Processed 59.82 million rows, 24.03 GB (19.86 million rows/s., 7.98 GB/s.)
+Peak memory usage: 603.64 MiB.
 
--- 加载到 posts 表
+-- Load into posts table
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 
-返回 0 行。耗时:191.692 秒。处理了 5982 万行,24.03 GB(31.206 万行/秒,125.37 MB/秒)。
+0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
 ```
 
-在我们的示例中，我们只返回少量行数据。如果要衡量向客户端返回大量数据的 `SELECT` 查询的性能，可以在查询中使用 [null format](/interfaces/formats/Null)，或者将结果写入 [`Null` engine](/engines/table-engines/special/null.md)。这样可以避免客户端被数据淹没以及网络带宽出现饱和。
+在我们的示例中，我们只返回少量行数据。如果要衡量向客户端返回大量数据的 `SELECT` 查询的性能，可以在查询中使用 [null format](/interfaces/formats/Null)，或者将结果写入 [`Null` engine](/engines/table-engines/special/null.md)。这样可以避免客户端被数据淹没以及网络带宽饱和。
 
 :::info
-在读取查询结果时，初次执行的查询往往看起来比重复执行同一查询更慢。这通常是由于 S3 自身的缓存机制以及 [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) 所致。后者会存储针对文件推断出的 schema，从而在后续访问中跳过推断步骤，降低查询时间。
+在读取查询结果时，初次执行的查询往往看起来比重复执行同一查询更慢。这通常是由于 S3 自身的缓存机制以及 [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) 所致。后者会存储针对文件推断出的 schema，从而在后续访问中跳过推断步骤，缩短查询时间。
 :::
+
 
 ## 在读取中使用线程 {#using-threads-for-reads}
 
@@ -237,23 +240,24 @@ SETTINGS max_threads = 64
 Peak memory usage: 639.99 MiB.
 ```
 
+
 ## 为插入操作调优线程数与块大小 {#tuning-threads-and-block-size-for-inserts}
 
 为了获得最大的摄取性能，你必须基于以下三点进行选择：(1) 插入块大小；(2) 合适的插入并行度；(3) 可用 CPU 内核数和 RAM 容量。总结如下：
 
-* [插入块大小](#insert-block-size)配置得越大，ClickHouse 需要创建的 part 就越少，所需的[磁盘文件 I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)也就越少。
+* [插入块大小](#insert-block-size)配置得越大，ClickHouse 需要创建的分区片段就越少，所需的[磁盘文件 I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)也就越少。
 * [并行插入线程数](#insert-parallelism)配置得越高，数据处理速度就越快。
 
-这两个性能因素之间（以及与后台 part 合并之间）存在此消彼长的权衡。ClickHouse 服务器可用的主内存是有限的。更大的块会占用更多主内存，从而限制可使用的并行插入线程数。反过来，更高的并行插入线程数又需要更多主内存，因为插入线程数决定了同时在内存中创建的插入块数量，这会限制插入块的可选大小。此外，插入线程与后台合并线程之间也可能出现资源竞争。配置较多的插入线程会 (1) 产生更多需要合并的 part，并且 (2) 占用本可用于后台合并线程的 CPU 内核和内存空间。
+这两个性能因素之间（以及与后台分区片段合并之间）存在此消彼长的权衡。ClickHouse 服务器可用的主内存是有限的。更大的块会占用更多主内存，从而限制可使用的并行插入线程数。反过来，更高的并行插入线程数又需要更多主内存，因为插入线程数决定了同时在内存中创建的插入块数量，这会限制插入块的可选大小。此外，插入线程与后台合并线程之间也可能出现资源竞争。配置较多的插入线程会 (1) 产生更多需要合并的分区片段，并且 (2) 占用本可用于后台合并线程的 CPU 内核和内存空间。
 
 关于这些参数的行为如何影响性能和资源的详细说明，我们建议[阅读这篇博客文章](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。正如文中所述，调优可能需要在这两个参数之间进行精细平衡。这种穷举式测试往往不切实际，因此，总结来说，我们建议：
 
 ```bash
-• max_insert_threads:选择约一半的可用 CPU 核心数用于插入线程(以便为后台合并保留足够的专用核心)
+• max_insert_threads: choose ~ half of the available CPU cores for insert threads (to leave enough dedicated cores for background merges)
 
-• peak_memory_usage_in_bytes:选择预期的峰值内存使用量;如果是独立摄取,可使用全部可用 RAM,否则使用一半或更少(以便为其他并发任务预留空间)
+• peak_memory_usage_in_bytes: choose an intended peak memory usage; either all available RAM (if it is an isolated ingest) or half or less (to leave room for other concurrent tasks)
 
-然后:
+Then:
 min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_threads)
 ```
 
@@ -273,6 +277,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 ```
 
 如上所示，通过调整这些设置，插入性能提升了 `33%` 以上。我们将其留给读者自行尝试，看看能否进一步提升单节点性能。
+
 
 ## 基于资源和节点的扩展 {#scaling-with-resources-and-nodes}
 
@@ -302,12 +307,13 @@ SETTINGS max_threads = 92
 ```
 
 :::note
-单个节点同样可能因为网络带宽和 S3 GET 请求形成瓶颈，从而无法通过纵向扩容线性提升性能。
+单个节点也可能受限于网络性能和 S3 GET 请求，从而无法通过垂直扩展线性提升性能。
 :::
+
 
 ### 水平扩展 {#horizontal-scaling}
 
-最终，出于硬件可用性和成本效益的考虑，通常需要进行水平扩展。在 ClickHouse Cloud 中，生产集群至少包含 3 个节点。用户也因此可能希望在一次插入中利用所有节点。
+最终，出于硬件可用性和成本效益的考虑，通常需要进行水平扩展。在 ClickHouse Cloud 中，生产集群至少包含 3 个节点。因此用户也可能希望在一次插入中利用所有节点。
 
 要在集群中读取 S3，需要按照[利用集群](/integrations/s3#utilizing-clusters)中所述使用 `s3Cluster` 函数。这样可以将读取操作分布到多个节点上。
 
@@ -338,22 +344,22 @@ SETTINGS max_threads = 16
 │ user3559349      │      3068 │
 └──────────────────┴───────────┘
 
-返回 5 行。用时:0.622 秒。处理了 5982 万行,24.03 GB(9613 万行/秒,38.62 GB/秒)。
-峰值内存使用量:176.74 MiB。
+5 rows in set. Elapsed: 0.622 sec. Processed 59.82 million rows, 24.03 GB (96.13 million rows/s., 38.62 GB/s.)
+Peak memory usage: 176.74 MiB.
 ```
 
-同样，我们的 INSERT 查询也可以做成分布式的，并使用之前为单节点确定的改进设置：
+同样，我们也可以将 INSERT 查询做成分布式的，并使用之前为单节点确定的改进设置：
 
 ```sql
 INSERT INTO posts SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
 
-返回 0 行。用时：171.202 秒。已处理 5982 万行，24.03 GB（每秒 34.941 万行，140.37 MB/秒）
+0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
-读者会注意到，文件读取带来了查询性能的提升，但没有改善写入性能。默认情况下，尽管读取是通过 `s3Cluster` 分布式执行的，插入操作仍然是在发起请求的节点上进行的。这意味着，虽然每个节点都会参与读取，但生成的行会被路由回发起节点再进行分发。在高吞吐场景下，这可能成为瓶颈。为了解决这个问题，需要为 `s3cluster` 函数设置参数 `parallel_distributed_insert_select`。
+读者会注意到，文件读取的改进提升了查询性能，但并未提升插入性能。默认情况下，尽管读取是通过 `s3Cluster` 分布式执行的，但插入操作仍然在发起节点上进行。这意味着读取会在每个节点上执行，但生成的行会被路由回发起节点再进行分发。在高吞吐量场景下，这可能会成为瓶颈。为了解决这一问题，请为 `s3cluster` 函数设置参数 `parallel_distributed_insert_select`。
 
-将其设置为 `parallel_distributed_insert_select=2`，可以确保 `SELECT` 和 `INSERT` 会在每个分片上执行，并针对每个节点上分布式引擎的底层表进行读写。
+将其设置为 `parallel_distributed_insert_select=2`，可以确保在每个节点上，分布式引擎底层表的每个分片上都会执行对应的 `SELECT` 和 `INSERT` 操作。
 
 ```sql
 INSERT INTO posts
@@ -366,6 +372,7 @@ Peak memory usage: 11.75 GiB.
 ```
 
 如预期，这会使插入性能降低到原来的三分之一。
+
 
 ## 进一步调优 {#further-tuning}
 
@@ -386,11 +393,12 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 Peak memory usage: 26.57 GiB.
 ```
 
+
 ### 插入时优化 {#optimize-on-insert}
 
-在 ClickHouse 中，`optimize_on_insert` 设置用于控制是否在插入过程中合并数据分片。启用该设置时（默认 `optimize_on_insert = 1`），小分片在插入时会被合并为更大的分片，通过减少需要读取的分片数量来提升查询性能。不过，这种合并会给插入过程增加开销，可能会减慢高吞吐量插入。
+在 ClickHouse 中，`optimize_on_insert` 设置用于控制是否在插入过程中合并数据分区片段。启用该设置时（默认 `optimize_on_insert = 1`），小分区片段在插入时会被合并为更大的分区片段，通过减少需要读取的分区片段数量来提升查询性能。不过，这种合并会给插入过程增加开销，可能会减慢高吞吐量插入。
 
-禁用该设置（`optimize_on_insert = 0`）会跳过插入时的合并，使数据能够更快写入，尤其是在处理频繁的小批量插入时。合并过程将被推迟到后台执行，从而提升插入性能，但会在一段时间内增加小分片的数量，在后台合并完成之前可能会降低查询速度。当插入性能优先、且后台合并过程可以在之后高效完成优化时，该设置尤为适用。如下所示，禁用该设置可以提升插入吞吐量：
+禁用该设置（`optimize_on_insert = 0`）会跳过插入时的合并，使数据能够更快写入，尤其是在处理频繁的小批量插入时。合并过程将被推迟到后台执行，从而提升插入性能，但会在一段时间内增加小分区片段的数量，在后台合并完成之前可能会降低查询速度。当插入性能优先、且后台合并过程可以在之后高效完成优化时，该设置尤为适用。如下所示，禁用该设置后可以提升插入吞吐量：
 
 ```sql
 SELECT *
@@ -400,6 +408,7 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
 
+
 ## 其他注意事项 {#misc-notes}
 
-* 在内存受限的场景下，如需向 S3 插入数据，考虑调低 `max_insert_delayed_streams_for_parallel_write`。
+* 在内存紧张的场景下，如果需要向 S3 插入数据，可以考虑调低 `max_insert_delayed_streams_for_parallel_write`。

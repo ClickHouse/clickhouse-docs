@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # Форматы входных и выходных данных {#formats-for-input-and-output-data}
 
 ClickHouse поддерживает большинство известных текстовых и бинарных форматов данных. Это обеспечивает простую интеграцию практически в любой существующий конвейер данных и позволяет в полной мере использовать преимущества ClickHouse.
@@ -33,6 +34,7 @@ ClickHouse поддерживает большинство известных т
 ## Форматы вывода {#output-formats}
 
 Поддерживаемые форматы вывода используются для:
+
 - Представления результатов запроса `SELECT`
 - Выполнения операций `INSERT` в таблицы с файловой поддержкой
 
@@ -107,13 +109,14 @@ ClickHouse поддерживает большинство известных т
 | [Arrow](./formats/Arrow/Arrow.md)                                                                          | ✔    | ✔     |
 | [ArrowStream](./formats/Arrow/ArrowStream.md)                                                              | ✔    | ✔     |
 | [ORC](./formats/ORC.md)                                                                                    | ✔    | ✔     |
-| [Один](./formats/One.md)                                                                                   | ✔    | ✗     |
+| [One](./formats/One.md)                                                                                    | ✔    | ✗     |
 | [Npy](./formats/Npy.md)                                                                                    | ✔    | ✔     |
 | [RowBinary](./formats/RowBinary/RowBinary.md)                                                              | ✔    | ✔     |
 | [RowBinaryWithNames](./formats/RowBinary/RowBinaryWithNames.md)                                            | ✔    | ✔     |
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔    | ✔     |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔    | ✗     |
 | [Native](./formats/Native.md)                                                                              | ✔    | ✔     |
+| [Буферы](./formats/Buffers.md)                                                                             | ✔    | ✔     |
 | [Null](./formats/Null.md)                                                                                  | ✗    | ✔     |
 | [Hash](./formats/Hash.md)                                                                                  | ✗    | ✔     |
 | [XML](./formats/XML.md)                                                                                    | ✗    | ✔     |
@@ -144,7 +147,7 @@ ClickHouse поддерживает большинство известных т
 может содержать абсолютный путь или путь относительно текущего каталога на клиенте.
 Если вы используете клиент в [пакетном режиме](/interfaces/cli.md/#batch-mode), путь к схеме должен быть относительным — по соображениям безопасности.
 
-Если вы вводите или выводите данные через [HTTP-интерфейс](/interfaces/http.md), имя файла, указанное в схеме формата,
+Если вы вводите или выводите данные через [HTTP-интерфейс](/interfaces/http), имя файла, указанное в схеме формата,
 должно находиться в каталоге, указанном в [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
 в конфигурации сервера.
 
@@ -153,5 +156,6 @@ ClickHouse поддерживает большинство известных т
 Некоторые форматы, такие как `CSV`, `TabSeparated`, `TSKV`, `JSONEachRow`, `Template`, `CustomSeparated` и `Protobuf`, могут пропускать некорректную строку при возникновении ошибки парсинга и продолжать разбор начиная со следующей строки. См. настройки [input_format_allow_errors_num](/operations/settings/settings-formats.md/#input_format_allow_errors_num) и
 [input_format_allow_errors_ratio](/operations/settings/settings-formats.md/#input_format_allow_errors_ratio).
 Ограничения:
+
 - В случае ошибки парсинга `JSONEachRow` пропускает все данные до новой строки (или EOF), поэтому строки должны быть разделены символом `\n`, чтобы корректно подсчитывать ошибки.
 - `Template` и `CustomSeparated` используют разделитель после последнего столбца и разделитель между строками, чтобы найти начало следующей строки, поэтому пропуск ошибок работает только в том случае, если хотя бы один из этих разделителей не пуст.

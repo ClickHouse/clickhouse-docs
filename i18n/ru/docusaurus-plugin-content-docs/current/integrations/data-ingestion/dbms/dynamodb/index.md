@@ -15,7 +15,6 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-
 # CDC из DynamoDB в ClickHouse {#cdc-from-dynamodb-to-clickhouse}
 
 На этой странице описано, как настроить CDC из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
@@ -107,7 +106,6 @@ ORDER BY id;
 * Таблица должна использовать ключ партиционирования в качестве ключа сортировки (задается через `ORDER BY`)
   * Строки с одним и тем же ключом сортировки будут дедуплироваться на основе столбца `version`.
 
-
 ### Создайте ClickPipe для снимка {#create-the-snapshot-clickpipe}
 
 Теперь вы можете создать ClickPipe для загрузки данных снимка из S3 в ClickHouse. Следуйте руководству по S3 ClickPipe [здесь](/integrations/clickpipes/object-storage/s3/overview), но используйте следующие настройки:
@@ -122,7 +120,6 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 * **Table**: Ваша таблица snapshot (например, `default.snapshot` в примере выше)
 
 После создания данные начнут поступать в таблицу snapshot и целевую таблицу. Вам не нужно дожидаться завершения загрузки snapshot, чтобы переходить к следующему шагу.
-
 
 ## 4. Создание Kinesis ClickPipe {#4-create-the-kinesis-clickpipe}
 

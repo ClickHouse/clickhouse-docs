@@ -37,7 +37,7 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 以下示例假定你已经按照[一体化镜像的使用说明](/use-cases/observability/clickstack/getting-started)启动了 ClickStack，并已连接到[本地 ClickHouse 实例](/use-cases/observability/clickstack/getting-started#complete-connection-credentials)或 [ClickHouse Cloud 实例](/use-cases/observability/clickstack/getting-started#create-a-cloud-connection)。 
 
 :::note ClickHouse Cloud 中的 HyperDX
-此示例数据集也可以配合 ClickHouse Cloud 中的 HyperDX 使用，只需对流程进行少量调整，具体如文中所述。如果在 ClickHouse Cloud 中使用 HyperDX，用户需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)在本地运行一个 OpenTelemetry 收集器。
+此示例数据集也可以配合 ClickHouse Cloud 中的 HyperDX 使用，只需对流程进行少量调整，具体如文中所述。如果在 ClickHouse Cloud 中使用 HyperDX，你需要按照[该部署模型的入门指南](/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud)在本地运行一个 OpenTelemetry 收集器。
 :::
 
 <VerticalStepper>
@@ -64,11 +64,11 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
   [示例数据](https://storage.googleapis.com/hyperdx/sample.tar.gz)
 
   ```shell
-# curl
-curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
-# or
-# wget https://storage.googleapis.com/hyperdx/sample.tar.gz
-```
+  # curl
+  curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
+  # 或者
+  # wget https://storage.googleapis.com/hyperdx/sample.tar.gz
+  ```
 
   此文件包含来自我们公开的 [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) 的示例日志、指标和追踪数据——这是一个基于微服务架构的简单电商应用。请将此文件复制到您选择的目录中。
 
@@ -83,24 +83,24 @@ curl -O https://storage.googleapis.com/hyperdx/sample.tar.gz
   :::
 
   ```shell
-# export API key
-export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
-```
+  # 导出 API 密钥
+  export CLICKSTACK_API_KEY=<YOUR_INGESTION_API_KEY>
+  ```
 
   运行以下命令将数据发送到 OTel collector：
 
   ```shell
-for filename in $(tar -tf sample.tar.gz); do
-  endpoint="http://localhost:4318/v1/${filename%.json}"
-  echo "loading ${filename%.json}"
-  tar -xOf sample.tar.gz "$filename" | while read -r line; do
-    printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
-    -H "Content-Type: application/json" \
-    -H "authorization: ${CLICKSTACK_API_KEY}" \
-    --data-binary @-
+  for filename in $(tar -tf sample.tar.gz); do
+    endpoint="http://localhost:4318/v1/${filename%.json}"
+    echo "正在加载 ${filename%.json}"
+    tar -xOf sample.tar.gz "$filename" | while read -r line; do
+      printf '%s\n' "$line" | curl -s -o /dev/null -X POST "$endpoint" \
+      -H "Content-Type: application/json" \
+      -H "authorization: ${CLICKSTACK_API_KEY}" \
+      --data-binary @-
+    done
   done
-done
-```
+  ```
 
   这模拟了 OTLP 日志、追踪和指标数据源向 OTel collector 发送数据。在生产环境中,这些数据源可能是语言客户端,甚至是其他 OTel collector。
 

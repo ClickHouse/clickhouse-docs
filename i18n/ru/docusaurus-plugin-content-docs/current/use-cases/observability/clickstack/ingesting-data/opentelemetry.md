@@ -45,7 +45,7 @@ OTel collector из ClickStack также может быть развернут
 * **HTTP (OTLP):** `http://localhost:4318`
 * **gRPC (OTLP):** `localhost:4317`
 
-Для большинства [языковых SDK](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, которые поддерживают OpenTelemetry, достаточно задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в своем приложении:
+Для большинства [языковых SDK](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, которые поддерживают OpenTelemetry, вы можете просто задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в своем приложении:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318

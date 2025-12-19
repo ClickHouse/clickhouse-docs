@@ -10,6 +10,7 @@ keywords: ['google dataflow', 'gcp', 'データパイプライン', 'テンプ�
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+
 # Google Dataflow テンプレート {#google-dataflow-templates}
 
 <ClickHouseSupportedBadge/>
@@ -24,10 +25,11 @@ Google Dataflow テンプレートは、カスタムコードを記述するこ�
 
 ## Dataflow テンプレートの実行方法 {#how-to-run-dataflow-templates}
 
-現時点では、ClickHouse の公式テンプレートは Google Cloud コンソール、CLI、または Dataflow REST API を通じて利用できます。
-詳しい手順については、[Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates) を参照してください。
+現時点では、ClickHouse 公式テンプレートは Google Cloud コンソール、CLI、または Dataflow REST API から実行できます。
+ステップごとの詳細な手順については、[Google Dataflow Run Pipeline From a Template Guide](https://cloud.google.com/dataflow/docs/templates/provided-templates) を参照してください。
 
 ## ClickHouse テンプレート一覧 {#list-of-clickhouse-templates}
+
 * [BigQuery To ClickHouse](./templates/bigquery-to-clickhouse)
 * [GCS To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3)（近日公開予定！）
 * [Pub Sub To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4)（近日公開予定！）

@@ -20,7 +20,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 # 使用 ClickStack 监控主机日志 {#host-logs-clickstack}
 
 :::note[TL;DR]
@@ -424,7 +423,6 @@ docker exec <container-name> printenv CUSTOM_OTELCOL_CONFIG_FILE
 docker exec <container-name> cat /etc/otelcol-contrib/custom.config.yaml | head -10
 ```
 
-
 ### HyperDX 中没有日志显示
 
 **验证 syslog 文件是否存在且正在被写入：**
@@ -461,7 +459,6 @@ docker exec <container> cat /etc/otel/supervisor-data/agent.log | grep -i "filel
 docker exec <container> cat /tmp/host-demo/journal.log | wc -l
 ```
 
-
 ### 日志解析不正确
 
 **请确认您的 syslog 格式与所选配置一致：**
@@ -483,7 +480,6 @@ tail -5 /var/log/system.log
 ```
 
 如果你的格式不同，请在[创建自定义 OTel collector 配置](#custom-otel)章节中选择相应的配置选项卡。
-
 
 ## 后续步骤 {#next-steps}
 

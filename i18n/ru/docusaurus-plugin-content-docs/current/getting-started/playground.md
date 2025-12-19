@@ -10,9 +10,9 @@ doc_type: 'guide'
 # Песочница ClickHouse {#clickhouse-playground}
 
 [ClickHouse Playground](https://sql.clickhouse.com) позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.
-В Playground доступно несколько примеров наборов данных.
+В Playground доступно несколько примерных наборов данных.
 
-Вы можете отправлять запросы в Playground с помощью любого HTTP‑клиента, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить подключение с использованием драйверов [JDBC](../interfaces/jdbc.md) или [ODBC](../interfaces/odbc.md). Дополнительная информация о программном обеспечении, поддерживающем ClickHouse, доступна [здесь](../integrations/index.mdx).
+Вы можете отправлять запросы в Playground с помощью любого HTTP‑клиента, например [curl](https://curl.haxx.se) или [wget](https://www.gnu.org/software/wget/), или настроить подключение с использованием драйверов [JDBC](/interfaces/jdbc) или [ODBC](/interfaces/odbc). Дополнительная информация о программном обеспечении, поддерживающем ClickHouse, доступна [здесь](../integrations/index.mdx).
 
 ## Учетные данные {#credentials}
 
@@ -45,6 +45,7 @@ curl "https://play.clickhouse.com/?user=explorer" --data-binary "SELECT 'Play Cl
 ```bash
 clickhouse client --secure --host play.clickhouse.com --user explorer
 ```
+
 
 ## Характеристики Playground {#specifications}
 

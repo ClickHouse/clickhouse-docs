@@ -6,14 +6,14 @@ tags: ['Производительность и оптимизации', 'Инс
 ---
 
 import Image from "@theme/IdealImage";
+import clickhouse from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/profile.png'
 import time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/time-order.png'
 import left_heavy from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/left-heavy.png'
 import sandwich from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/sandwich.png'
-import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png'
 
 {frontMatter.description}
 
-{/* TRUNCATE */}
+{/* truncate */}
 
 ## Типы профайлеров \{#types-of-profilers\}
 
@@ -25,7 +25,39 @@ LLVM уже включает инструмент, который добавля
 состояния приложения. Поэтому учитываются только те функции, которые выполняются в момент снятия снимка.
 [perf](https://en.wikipedia.org/wiki/Perf_%28Linux%29) — очень известный статистический профайлер.
 
-## Как проводить профилирование с помощью XRay \{#how-to-profile-with-xray\}
+## Профилирование ClickHouse с помощью интеграции XRay&#39;a \{#profiling-clickhouse-using-xray-integration\}
+
+В ClickHouse 25.12 XRay интегрирован, что позволяет прозрачно добавлять новые точки инструментирования в функции.
+Таким образом, любой официальный релиз уже содержит эту возможность, которую можно включать по
+требованию, не влияя на общую производительность, пока она не активна. Идея состоит в том, чтобы
+включать минимально необходимое количество точек инструментирования для получения ценной информации.
+
+Мы можем добавить новую точку профилирования с помощью команды [SYSTEM INSTRUMENT ADD
+PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-add-profile).
+Функции, для которых нужно включить инструментирование, можно получить из системной таблицы
+[system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols). Допустим, мы
+хотим профилировать функцию `sleepForNanoseconds`, которая является удобным способом проверить,
+сколько времени занимает выполнение.
+
+```sql
+SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
+```
+
+Затем оставляем его работать в течение требуемого периода профилирования, после чего останавливаем.
+
+```sql
+SYSTEM INSTRUMENT REMOVE ALL
+```
+
+Мы преобразуем данные, собранные в system.trace&#95;log, [в формат Chrome](https://clickhouse.com/docs/operations/system-tables/trace_log#chrome-event-trace-format),
+чтобы визуализировать их в [Perfetto](https://ui.perfetto.dev). Обратите внимание на query&#95;id, cpu&#95;id и стек-трейс для
+каждой записи.
+
+<Image img={clickhouse} size="md" alt="time-order" />
+
+## Профилирование нативного приложения с помощью XRay \{#profiling-a-native-application-using-xray\}
+
+Следующий раздел приведён в качестве справки, чтобы показать, как XRay устроен «под капотом» и как его можно использовать без дополнительной настройки для профилирования нативного приложения.
 
 ### Инструментируйте код \{#instrument-the-code\}
 
@@ -98,7 +130,7 @@ XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1" ./test
 
 ### Преобразование трассировок \{#convert-the-trace\}
 
-Трассировки XRAy можно преобразовывать в несколько форматов. Формат `trace_event` очень удобен, так как его легко парсить, и уже существует множество инструментов, которые его поддерживают, поэтому мы будем использовать именно его:
+Трассировки XRay можно преобразовывать в несколько форматов. Формат `trace_event` очень удобен, так как его легко парсить, и уже существует множество инструментов, которые его поддерживают, поэтому мы будем использовать именно его:
 
 ```bash
 llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xray-log.test.14imlN | gzip > test-trace.txt.gz
@@ -124,23 +156,15 @@ llvm-xray convert --symbolize --instr_map=./test --output-format=trace_event xra
 
 <Image img={sandwich} size="md" alt="сэндвич" />
 
-## Профилирование ClickHouse \{#profiling-clickhouse\}
-
-1. Передайте `-DENABLE_XRAY=1` в `cmake` при сборке ClickHouse. Это [устанавливает необходимые
-   флаги компилятора](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
-2. Установите переменную окружения `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` при запуске
-   ClickHouse для генерации трейса.
-3. Преобразуйте трейс в удобный формат, например trace event: `llvm-xray convert --symbolize --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
-   gzip > clickhouse-trace.txt.gz`.
-4. Визуализируйте трейс в [speedscope.app](https://www.speedscope.app/) или
-   [Perfetto](https://ui.perfetto.dev).
-
-<Image img={clickhouse_time_order} alt="ClickHouse: порядок по времени" size="md" />
-
-Обратите внимание, что это визуализация только одного потока. Вы можете выбрать другие `tid` на
-верхней панели.
-
 ## Ознакомьтесь с документацией \{#check-out-the-docs\}
 
-Подробнее см. документацию [XRay Instrumentation](https://llvm.org/docs/XRay.html) и [Debugging with
-XRay](https://llvm.org/docs/XRayExample.html).
+* [SYSTEM INSTRUMENT](https://clickhouse.com/docs/sql-reference/statements/system#instrument) — добавление
+  или удаление точек инструментирования.
+* [system.instrumentation](https://clickhouse.com/docs/operations/system-tables/instrumentation)
+  — просмотр установленных точек инструментирования.
+* [system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) — просмотр
+  символов для добавления точек инструментирования.
+* [system.trace&#95;log](https://clickhouse.com/docs/operations/system-tables/trace_log) — просмотр данных,
+  собранных с использованием точек инструментирования.
+* [XRay Instrumentation](https://llvm.org/docs/XRay.html)
+* [Debugging with XRay](https://llvm.org/docs/XRayExample.html) — дополнительная документация для более детального изучения.

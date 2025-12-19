@@ -15,6 +15,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 | ---- | ----- | --------- |
 | ✗    | ✔     |           |
 
+
 ## Описание {#description}
 
 Отличается от [Pretty](/interfaces/formats/Pretty) тем, что не используются [последовательности управляющих кодов ANSI](http://en.wikipedia.org/wiki/ANSI_escape_code).  
@@ -29,8 +30,9 @@ $ watch -n1 "clickhouse-client --query='SELECT event, value FROM system.events F
 ```
 
 :::note
-[HTTP-интерфейс](../../../interfaces/http.md) можно использовать для отображения данного формата в браузере.
+[HTTP-интерфейс](/interfaces/http) можно использовать для отображения данного формата в браузере.
 :::
+
 
 ## Параметры форматирования {#format-settings}
 

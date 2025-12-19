@@ -9,13 +9,13 @@ title: 'ORC'
 doc_type: 'reference'
 ---
 
-| Входной | Выходной | Псевдоним |
-|--------|----------|-----------|
-| ✔      | ✔        |           |
+| Вход | Выход | Псевдоним |
+|------|-------|-----------|
+| ✔    | ✔     |           |
 
 ## Описание {#description}
 
-[Apache ORC](https://orc.apache.org/) — это колоночный формат хранения, широко используемый в экосистеме [Hadoop](https://hadoop.apache.org/).
+[Apache ORC](https://orc.apache.org/) — это столбцовой формат хранения, широко используемый в экосистеме [Hadoop](https://hadoop.apache.org/).
 
 ## Соответствие типов данных {#data-types-matching-orc}
 
@@ -44,7 +44,7 @@ doc_type: 'reference'
 
 - Другие типы не поддерживаются.
 - Массивы могут быть вложенными и иметь в качестве аргумента значение типа `Nullable`. Типы `Tuple` и `Map` также могут быть вложенными.
-- Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями ORC. При вставке данных ClickHouse интерпретирует типы данных согласно таблице выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#cast) данные к типу, заданному для столбца таблицы ClickHouse.
+- Типы данных столбцов таблицы ClickHouse не обязаны совпадать с соответствующими полями ORC. При вставке данных ClickHouse интерпретирует типы данных согласно таблице выше, а затем [приводит](/sql-reference/functions/type-conversion-functions#CAST) данные к типу, заданному для столбца таблицы ClickHouse.
 
 ## Пример использования {#example-usage}
 
@@ -74,11 +74,12 @@ doc_type: 'reference'
     └────────────┴────────┴───────────────────────┴─────────────────────┴─────────────────┴─────────────────┘
 ```
 
-Введите данные:
+Вставьте данные:
 
 ```sql
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
+
 
 ### Чтение данных {#reading-data}
 
@@ -95,6 +96,7 @@ FORMAT ORC
 ORC — это бинарный формат, который не отображается в человекочитаемом виде в терминале. Используйте оператор `INTO OUTFILE` для вывода данных в файлы ORC.
 :::
 
+
 ## Настройки формата {#format-settings}
 
 | Setting                                                                                                                                                                                                      | Description                                                                                      | Default |
@@ -105,4 +107,4 @@ ORC — это бинарный формат, который не отображ
 | [`input_format_arrow_allow_missing_columns`](/operations/settings/settings-formats.md/#input_format_arrow_allow_missing_columns)                                                                     | Разрешить отсутствующие столбцы при чтении данных в формате Arrow.                              | `false` |
 | [`input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference) | Разрешить пропуск столбцов с неподдерживаемыми типами при определении схемы для формата Arrow.  | `false` |
 
-Для обмена данными с Hadoop вы можете использовать [движок таблиц HDFS](/engines/table-engines/integrations/hdfs.md).
+Для обмена данными с Hadoop вы можете использовать [табличный движок HDFS](/engines/table-engines/integrations/hdfs.md).

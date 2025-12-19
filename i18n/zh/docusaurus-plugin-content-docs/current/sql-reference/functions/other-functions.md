@@ -450,9 +450,9 @@ FROM system.numbers LIMIT 5
 
 引入版本：v20.5
 
-返回编译器为当前运行的 ClickHouse 服务器二进制文件生成的构建 ID。
-如果在分布式表的上下文中执行，该函数会生成一个普通列，包含每个分片对应的值。
-否则，它会返回一个常量值。
+返回编译器为正在运行的 ClickHouse 服务器二进制文件生成的构建 ID。
+如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
+否则将返回一个常量。
 
 **语法**
 
@@ -481,6 +481,7 @@ SELECT buildId()
 │ AB668BEF095FAA6BD26537F197AC2AF48A927FB4 │
 └──────────────────────────────────────────┘
 ```
+
 
 ## byteSize {#byteSize}
 
@@ -4449,7 +4450,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 自 v22.6 引入
 
 如果当前服务器已配置安全套接字层 (SSL) 证书，则显示该证书的信息。
-有关如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅[配置 SSL-TLS](/guides/sre/configuring-ssl)。
+有关如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅[配置 TLS](/guides/sre/tls/configuring-tls)。
 
 **语法**
 
@@ -4476,6 +4477,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```response title=Response
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
+
 
 ## sleep {#sleep}
 
@@ -4657,7 +4659,7 @@ message MessageName
 
 引入版本：v20.12
 
-返回服务器监听的 [原生接口](../../interfaces/tcp.md) TCP 端口号。
+返回服务器监听的 [原生接口](/interfaces/tcp) TCP 端口号。
 如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
 否则将返回一个常量。
 
@@ -4688,6 +4690,7 @@ SELECT tcpPort()
 │      9000 │
 └───────────┘
 ```
+
 
 ## throwIf {#throwIf}
 

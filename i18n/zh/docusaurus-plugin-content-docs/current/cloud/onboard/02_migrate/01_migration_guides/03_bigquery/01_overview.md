@@ -11,7 +11,8 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud 与 BigQuery 对比  {#comparing-clickhouse-cloud-and-bigquery}
+
+# ClickHouse Cloud 与 BigQuery 对比  {#comparing-clickhouse-cloud-and-bigquery} 
 
 ## 资源组织 {#resource-organization}
 
@@ -25,7 +26,7 @@ ClickHouse Cloud 中资源的组织方式与 [BigQuery 的资源层级结构](ht
 
 ### BigQuery Projects 与 ClickHouse Cloud Services 的对比 {#bigquery-projects-vs-clickhouse-cloud-services}
 
-在组织内，你可以创建与 BigQuery projects 大致等价的服务，因为存储在 ClickHouse Cloud 中的数据是与某个服务关联的。ClickHouse Cloud 中提供了[多种服务类型](/cloud/manage/cloud-tiers)。每个 ClickHouse Cloud 服务部署在特定区域，并包含：
+在组织内，你可以创建与 BigQuery projects 大致等价的服务，因为 ClickHouse Cloud 中存储的数据都与某个服务关联。ClickHouse Cloud 中提供了[多种服务类型](/cloud/manage/cloud-tiers)。每个 ClickHouse Cloud 服务部署在特定区域，并包含：
 
 1. 一组计算节点（当前 Development 层级服务为 2 个节点，Production 层级服务为 3 个节点）。对于这些节点，ClickHouse Cloud [支持纵向和横向扩缩容](/manage/scaling#how-scaling-works-in-clickhouse-cloud)，既可手动也可自动完成。
 2. 一个对象存储目录，用于保存该服务的所有数据。
@@ -37,17 +38,17 @@ ClickHouse 以数据库的形式对表进行逻辑分组。与 BigQuery datasets
 
 ### BigQuery Folders {#bigquery-folders}
 
-ClickHouse Cloud 当前没有与 BigQuery folders 等价的概念。
+ClickHouse Cloud 当前没有与 BigQuery folders 对应的概念。
 
 ### BigQuery Slot reservations 和 Quotas {#bigquery-slot-reservations-and-quotas}
 
 与 BigQuery slot reservations 类似，你可以在 ClickHouse Cloud 中[配置纵向和横向自动扩缩容](/manage/scaling#configuring-vertical-auto-scaling)。对于纵向自动扩缩容，你可以为某个服务的计算节点设置内存和 CPU 核心数的最小值和最大值。随后，服务会在这些边界内按需扩缩容。这些设置也可以在初始创建服务的流程中配置。服务中的每个计算节点规格相同。你可以通过[横向扩缩容](/manage/scaling#manual-horizontal-scaling)更改服务中的计算节点数量。
 
-此外，与 BigQuery quotas 类似，ClickHouse Cloud 提供并发控制、内存使用限制和 I/O 调度，使用户能够将查询隔离到不同的工作负载类别中。通过对特定工作负载类别设置共享资源（CPU 核心、DRAM、磁盘和网络 I/O）的限制，可确保这些查询不会影响其他关键业务查询。并发控制可在高并发查询场景中防止线程过度订阅。
+此外，与 BigQuery quotas 类似，ClickHouse Cloud 提供并发控制、内存使用限制和 I/O 调度，使你能够将查询隔离到不同的工作负载类别中。通过对特定工作负载类别设置共享资源（CPU 核心、DRAM、磁盘和网络 I/O）的限制，可确保这些查询不会影响其他关键业务查询。并发控制可在高并发查询场景中防止线程过度订阅。
 
 ClickHouse 会在服务器级、用户级和查询级跟踪内存分配的字节大小，从而支持灵活的内存使用限制。内存超分配允许查询在保证内存之外使用额外的空闲内存，同时仍然保证其他查询的内存限制。此外，还可以限制聚合、排序和连接子句的内存使用，在超出内存限制时回退到外部算法。
 
-最后，I/O 调度允许用户基于最大带宽、在途请求数量和策略，对工作负载类别的本地和远程磁盘访问进行限制。
+最后，I/O 调度允许你基于最大带宽、在途请求数量和策略，对工作负载类别的本地和远程磁盘访问进行限制。
 
 ### 权限 {#permissions}
 
@@ -96,8 +97,8 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 - **Token Bloom 过滤器索引（Token Bloom Filter Index）**：
   - 类似于 Bloom 过滤器索引，但用于分词后的字符串，适合全文搜索查询。
 - **最小-最大索引（Min-Max Index）**：
-  - 为每个数据部分维护某列的最小值和最大值。
-  - 有助于跳过读取不在指定范围内的数据部分。
+  - 为每个分区片段维护某列的最小值和最大值。
+  - 有助于跳过读取不在指定范围内的分区片段。
 
 ## 搜索索引 {#search-indexes}
 
@@ -105,7 +106,7 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 
 ## 向量索引 {#vector-indexes}
 
-BigQuery 最近以 Pre-GA 功能的形式推出了[向量索引](https://cloud.google.com/bigquery/docs/vector-index)。同样，ClickHouse 也对[用于加速向量搜索的索引](/engines/table-engines/mergetree-family/annindexes)提供了实验性支持，以满足向量搜索用例的需求。
+BigQuery 最近以 Pre-GA 功能的形式推出了[向量索引](https://cloud.google.com/bigquery/docs/vector-index)。同样，ClickHouse 也对[用于加速向量搜索的索引](/engines/table-engines/mergetree-family/annindexes)提供了实验性支持。
 
 ## 分区 {#partitioning}
 
@@ -119,7 +120,7 @@ BigQuery 最近以 Pre-GA 功能的形式推出了[向量索引](https://cloud.g
 
 ## 物化视图 {#materialized-views}
 
-BigQuery 和 ClickHouse 都支持物化视图——基于对基础表执行转换查询的预计算结果，用于提升性能和效率。
+BigQuery 和 ClickHouse 都支持物化视图——基于对基础表进行转换查询所得结果的预计算，用于提升性能和效率。
 
 ## 查询物化视图 {#querying-materialized-views}
 
@@ -242,6 +243,7 @@ ORDER BY offset;
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join) 子句
 
+
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
 SELECT element, num-1 AS offset
@@ -351,6 +353,7 @@ FROM Sequences;
 
 [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) 函数
 
+
 ```sql
 WITH Sequences AS
     (
@@ -377,7 +380,7 @@ FROM Sequences;
 
 *BigQuery*
 
-需要先通过 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符将数组临时转换回表
+需要使用 [`UNNEST`](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#unnest_operator) 运算符临时将数组转换回表
 
 ```sql
 WITH
@@ -453,7 +456,8 @@ FROM Sequences AS s;
 
 *ClickHouse*
 
-[arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 等函数，或者 90 多种任一已有聚合函数的名称，作为 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 函数的参数
+[arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 等函数，或者 90 多种任一现有聚合函数的名称，作为 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 函数的参数
+
 
 ```sql
 WITH Sequences AS

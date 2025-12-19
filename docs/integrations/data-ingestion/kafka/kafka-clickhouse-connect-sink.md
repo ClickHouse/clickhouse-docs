@@ -448,12 +448,20 @@ Kafka Connect (the framework) fetches messages from Kafka topics in the backgrou
 - **`fetch.max.bytes`**: Maximum amount of data to fetch in a single request (default: 52428800 / 50 MB)
 - **`fetch.max.wait.ms`**: Maximum time to wait before returning data if `fetch.min.bytes` is not met (default: 500 ms)
 
+:::note  
+On Confluent Cloud, adjustment of these settings requires opening a support case through Confluent Cloud.  
+:::  
+
 ##### Poll settings {#poll-settings}
 
 The connector polls for messages from the framework's buffer:
 
 - **`max.poll.records`**: Maximum number of records returned in a single poll (default: 500)
 - **`max.partition.fetch.bytes`**: Maximum amount of data per partition (default: 1048576 / 1 MB)
+
+:::note  
+On Confluent Cloud, adjustment of these settings requires opening a support case through Confluent Cloud.  
+:::  
 
 ##### Recommended settings for high throughput {#recommended-batch-settings}
 

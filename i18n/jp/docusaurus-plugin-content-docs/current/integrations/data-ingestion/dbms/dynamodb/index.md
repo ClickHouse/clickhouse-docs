@@ -15,7 +15,6 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-
 # DynamoDB から ClickHouse への CDC {#cdc-from-dynamodb-to-clickhouse}
 
 このページでは、ClickPipes を使用して DynamoDB から ClickHouse への CDC を設定する方法を説明します。この連携は、次の 2 つのコンポーネントから構成されます。
@@ -107,7 +106,6 @@ ORDER BY id;
 * テーブルは、パーティションキーをソートキー（`ORDER BY` で指定）として使用する必要があります
   * 同じソートキーを持つ行は、`version` カラムに基づいて重複排除されます。
 
-
 ### スナップショット用 ClickPipe を作成する {#create-the-snapshot-clickpipe}
 
 これで、S3 から ClickHouse へスナップショットデータをロードするための ClickPipe を作成できます。S3 ClickPipe ガイドは[こちら](/integrations/clickpipes/object-storage/s3/overview)を参照し、以下の設定を使用してください。
@@ -122,7 +120,6 @@ https://{bucket}.s3.amazonaws.com/{prefix}/AWSDynamoDB/{export-id}/data/*
 * **Table**: スナップショット用のテーブル（例: 上記の例では `default.snapshot`）
 
 作成が完了すると、スナップショットテーブルと宛先テーブルへのデータ投入が始まります。次のステップに進む前に、スナップショットのロード完了を待つ必要はありません。
-
 
 ## 4. Kinesis ClickPipe を作成する {#4-create-the-kinesis-clickpipe}
 
