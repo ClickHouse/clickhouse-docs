@@ -1458,7 +1458,7 @@ ClickHouse Cloud でのみ利用可能。データパーツに対して packed �
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "500"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "New setting"}]}]}/>
 
 多数のカラムを持つテーブルに対して、アダプティブ書き込みバッファを使用することでメモリ使用量を削減します。
 

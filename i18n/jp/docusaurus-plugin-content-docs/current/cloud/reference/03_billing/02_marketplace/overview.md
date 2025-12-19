@@ -85,9 +85,9 @@ ClickHouse Cloud の利用状況ステートメントは、サインアップ日
 
 マーケットプレイス経由での課金と、ClickHouse に直接サインアップした場合の料金に違いはありません。どちらの場合も、ClickHouse Cloud の利用は ClickHouse Cloud Credits (CHC) によって計測され、同じ方法でメータリングおよび請求が行われます。
 
-### 単一のクラウドマーケットプレイスの請求アカウントまたはサブアカウント（AWS、GCP、Azure）に対して、複数の ClickHouse Organization を紐付けて請求することはできますか？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### 複数の ClickHouse Organization を、単一のクラウドマーケットプレイスの請求アカウント（AWS、GCP、または Azure）に紐づけて請求することはできますか？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-1 つの ClickHouse Organization は、1 つのクラウドマーケットプレイスの請求アカウントまたはサブアカウントのみを請求先として構成できます。
+はい。複数の ClickHouse Organization を、同一のクラウドマーケットプレイスの請求アカウント（AWS、GCP、または Azure）に対して後払いで請求されるよう構成できます。ただし、前払いクレジットはデフォルトでは Organization 間で共有されません。Organization 間でクレジットを共有する必要がある場合は、[ClickHouse Cloud Support](https://clickhouse.com/support/program) までお問い合わせください。
 
 ### ClickHouse Organization の請求がクラウドマーケットプレイスのコミットメント契約経由になっている場合、クレジットを使い切ると自動的に PAYG（従量課金）に切り替わりますか？ {#automatically-move-to-PAYG-when-running-out-of-credit}
 

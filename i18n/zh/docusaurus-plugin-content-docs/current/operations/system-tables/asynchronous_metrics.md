@@ -212,9 +212,17 @@ ClickHouse 日志路径所在卷上的 inode 总数。
 
 HTTP 接口服务器的线程数（不包括 TLS）。
 
+### HTTPSecureThreads {#httpsecurethreads}
+
+HTTPS 接口服务器所使用的线程数。
+
 ### InterserverThreads {#interserverthreads}
 
 用于副本间通信协议服务器的线程数量（不使用 TLS）。
+
+### InterserverSecureThreads {#interserversecurethreads}
+
+用于副本间通信协议的服务器线程数量（使用 TLS）。
 
 ### 抖动 {#jitter}
 
@@ -523,6 +531,26 @@ CPU 核心运行用户态代码时间的占比。该指标是系统级的，包�
 ### TCPThreads {#tcpthreads}
 
 TCP 协议服务器的线程数（不使用 TLS）。
+
+### TCPSecureThreads {#tcpsecurethreads}
+
+TCP 协议服务器在启用 TLS 时的线程数量。
+
+### GRPCThreads {#grpcthreads}
+
+GRPC 协议服务器使用的线程数。
+
+### PrometheusThreads {#prometheusthreads}
+
+Prometheus 端点服务器中的线程数。注意：Prometheus 端点也可以通过常规 HTTP/HTTPS 端口访问。
+
+### KeeperTCPThreads {#keepertcpthreads}
+
+Keeper TCP 协议服务器的线程数（未启用 TLS）。
+
+### KeeperTCPSecureThreads {#keepertcpsecurethreads}
+
+启用 TLS 的 Keeper TCP 协议服务器的线程数。
 
 ### Temperature_*N* {#temperature_n}
 

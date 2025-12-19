@@ -3140,12 +3140,6 @@ ClickHouse применяет этот параметр, когда запрос
 
 Записывать информацию об операциях с blob-хранилищем в таблицу system.blob_storage_log
 
-## enable_deflate_qpl_codec {#enable_deflate_qpl_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-Если параметр включён, кодек DEFLATE_QPL может использоваться для сжатия столбцов.
-
 ## enable_early_constant_folding {#enable_early_constant_folding} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3593,14 +3587,6 @@ WHERE (_part, _part_offset) IN (
 
 - 0 — отключено
 - 1 — включено
-
-## enable_zstd_qat_codec {#enable_zstd_qat_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "Добавлен новый кодек ZSTD_QAT"}]}]}/>
-
-Если параметр включён, кодек ZSTD_QAT можно использовать для сжатия столбцов.
 
 ## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
 

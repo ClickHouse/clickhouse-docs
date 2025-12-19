@@ -3135,12 +3135,6 @@ FORMAT PrettyCompactMonoBlock
 
 将 blob 存储操作相关信息写入 system.blob_storage_log 表
 
-## enable_deflate_qpl_codec {#enable_deflate_qpl_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-开启后，可以使用 DEFLATE_QPL 编解码器来压缩列。
-
 ## enable_early_constant_folding {#enable_early_constant_folding} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3588,14 +3582,6 @@ WHERE (_part, _part_offset) IN (
 
 - 0 - 禁用
 - 1 - 启用
-
-## enable_zstd_qat_codec {#enable_zstd_qat_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "新增 ZSTD_QAT 编解码器"}]}]}/>
-
-启用后，可以使用 ZSTD_QAT 编解码器压缩列数据。
 
 ## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
 

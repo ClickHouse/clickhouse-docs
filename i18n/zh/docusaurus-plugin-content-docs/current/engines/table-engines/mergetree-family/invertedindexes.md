@@ -7,12 +7,12 @@ title: '使用文本索引实现全文搜索'
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 
 # 使用文本索引进行全文搜索 {#full-text-search-using-text-indexes}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 ClickHouse 中的文本索引（也称为 ["倒排索引"](https://en.wikipedia.org/wiki/Inverted_index)）为字符串数据提供快速的全文检索能力。
 索引会将列中的每个标记（token）映射到包含该标记的行。
@@ -25,7 +25,7 @@ ClickHouse 中的文本索引（也称为 ["倒排索引"](https://en.wikipedia.
 要创建文本索引，首先启用相应的实验性设置：
 
 ```sql
-SET allow_experimental_full_text_index = true;
+SET enable_full_text_index = true;
 ```
 
 可以使用以下语法在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md) 列（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 映射函数）上定义文本索引：

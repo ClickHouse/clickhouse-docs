@@ -85,15 +85,15 @@ SETTINGS
 
 ## 設定 {#settings}
 
-テーブルに対して構成されている設定の一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
+テーブルに対して構成されている設定一覧を取得するには、`system.s3_queue_settings` テーブルを使用します。ClickHouse 24.10 以降で利用可能です。
 
 :::note 設定名 (24.7+)
-バージョン 24.7 以降、S3Queue の設定は `s3queue_` プレフィックスの有無にかかわらず指定できます。
+バージョン 24.7 以降では、S3Queue の設定は `s3queue_` プレフィックスの有無どちらでも指定できます。
 
-- **モダン構文** (24.7+): `processing_threads_num`、`tracked_file_ttl_sec` など
+- **モダンな構文** (24.7+): `processing_threads_num`、`tracked_file_ttl_sec` など
 - **レガシー構文** (全バージョン): `s3queue_processing_threads_num`、`s3queue_tracked_file_ttl_sec` など
 
-24.7 以降では両方の形式がサポートされています。このページの例では、プレフィックスなしのモダン構文を使用します。
+24.7 以降のバージョンでは、どちらの形式もサポートされています。本ページの例では、プレフィックスなしのモダンな構文を使用します。
 :::
 
 ### Mode {#mode}
@@ -143,11 +143,11 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 ### `after_processing_retries` {#after_processing_retries}
 
-要求された後処理アクションに対して、処理を中止するまでに行う再試行回数。
+要求された後処理アクションに対して、処理を断念するまでに行う再試行回数。
 
-設定可能な値:
+可能な値:
 
-* 0 以上の整数。
+- 0 以上の整数。
 
 デフォルト値: `10`。
 
@@ -357,14 +357,14 @@ SETTINGS
     ...
 ```
 
-## S3Queue の ordered モード {#ordered-mode}
+## S3Queue ordered モード {#ordered-mode}
 
-`S3Queue` の処理モードでは、ZooKeeper に保存するメタデータ量を減らせますが、時間的に後から追加されるファイルの名前は、英数字としてそれ以前のファイル名より大きくなる必要があるという制約があります。
+`S3Queue` の処理モードは ZooKeeper に保存するメタデータ量を減らせますが、その代わりに、後から追加されるファイルほど名前が英数字の辞書順で大きくなっている必要があるという制限があります。
 
-`S3Queue` の `ordered` モードは、`unordered` と同様に `(s3queue_)processing_threads_num` 設定（`s3queue_` プレフィックスは任意）をサポートしており、サーバー上で `S3` ファイルのローカル処理を行うスレッド数を制御できます。
-さらに、`ordered` モードでは、論理スレッド（logical threads）を意味する `(s3queue_)buckets` という別の設定も導入されています。これは、`S3Queue` テーブルのレプリカを持つ複数のサーバーが存在するような分散シナリオにおいて、この設定が処理単位の数を定義することを意味します。例えば、各 `S3Queue` レプリカ上の各処理スレッドは、処理対象として特定の `bucket` をロックしようとし、各 `bucket` はファイル名のハッシュによって特定のファイルに割り当てられます。そのため、分散シナリオでは、`(s3queue_)buckets` 設定をレプリカ数以上、またはそれより大きく設定することが強く推奨されます。`bucket` の数がレプリカ数より多くても問題ありません。最適な構成は、`(s3queue_)buckets` 設定が `number_of_replicas` と `(s3queue_)processing_threads_num` の積と等しくなるようにすることです。
-`(s3queue_)processing_threads_num` 設定は、バージョン `24.6` より前での使用は推奨されません。
-`(s3queue_)buckets` 設定は、バージョン `24.6` から利用可能です。
+`S3Queue` の `ordered` モードは、`unordered` と同様に `(s3queue_)processing_threads_num` という設定（`s3queue_` プレフィックスは省略可能）をサポートしており、サーバー上でローカルに `S3` ファイルを処理するスレッド数を制御できます。
+加えて、`ordered` モードでは `(s3queue_)buckets` という別の設定も導入されており、これは「論理スレッド」を意味します。これは、`S3Queue` テーブルのレプリカを持つサーバーが複数存在するような分散シナリオにおいて、この設定が処理ユニット数を定義することを意味します。例えば、各 `S3Queue` レプリカ上の各処理スレッドは、処理対象として特定の `bucket` をロックしようとし、各 `bucket` はファイル名のハッシュによって特定のファイルに割り当てられます。そのため、分散シナリオでは `(s3queue_)buckets` 設定をレプリカ数以上にすることが強く推奨されます。`buckets` の数がレプリカ数より多くても問題ありません。最も望ましい構成は、`(s3queue_)buckets` 設定を `number_of_replicas` と `(s3queue_)processing_threads_num` の積に等しくすることです。
+`(s3queue_)processing_threads_num` 設定はバージョン `24.6` より前では使用を推奨しません。
+`(s3queue_)buckets` 設定はバージョン `24.6` 以降で利用可能です。
 
 ## S3Queue テーブルエンジンからの SELECT {#select}
 
@@ -401,10 +401,10 @@ S3Queue エンジンには、SELECT クエリ用の特別な設定 `commit_on_se
 
 ## 仮想カラム {#virtual-columns}
 
-* `_path` — ファイルへのパス。
-* `_file` — ファイル名。
-* `_size` — ファイルサイズ。
-* `_time` — ファイルの作成時刻。
+- `_path` — ファイルへのパス。
+- `_file` — ファイル名。
+- `_size` — ファイルのサイズ。
+- `_time` — ファイルの作成時刻。
 
 仮想カラムの詳細については[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
@@ -501,12 +501,11 @@ Query id: 0ad619c3-0f2a-4ee4-8b40-c73d86e04314
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
-ORDER BY (event_date, event_time)
-│
+ORDER BY (event_date, event_time) │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-`system.s3queue_log` を使用するには、サーバーの設定ファイルでその設定を定義する必要があります。
+`system.s3queue_log` を使用するには、サーバー設定ファイルで構成を定義する必要があります。
 
 ```xml
     <s3queue_log>

@@ -413,26 +413,13 @@ ClickHouse поддерживает кодеки как общего, так и 
 
 Высокие уровни сжатия полезны для асимметричных сценариев, например, когда данные один раз сжимаются и многократно распаковываются. Более высокие уровни обеспечивают лучшее сжатие и более высокую нагрузку на CPU.
 
-#### ZSTD&#95;QAT {#zstd_qat}
-
-<CloudNotSupportedBadge />
-
-`ZSTD_QAT[(level)]` — [алгоритм сжатия ZSTD](https://en.wikipedia.org/wiki/Zstandard) с настраиваемым уровнем, реализованный с помощью [Intel® QATlib](https://github.com/intel/qatlib) и [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin). Возможные уровни: [1, 12]. Уровень по умолчанию: 1. Рекомендуемый диапазон уровней: [6, 12]. Применяются некоторые ограничения:
-
-* ZSTD&#95;QAT по умолчанию отключён и может использоваться только после включения настройки конфигурации [enable&#95;zstd&#95;qat&#95;codec](../../../operations/settings/settings.md#enable_zstd_qat_codec).
-* Для сжатия ZSTD&#95;QAT пытается использовать аппаратное устройство Intel® QAT для разгрузки ([QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)). Если такое устройство не найдено, выполняется переход к программному сжатию ZSTD.
-* Распаковка всегда выполняется программно.
-
-#### DEFLATE_QPL {#deflate_qpl}
+#### Устарело: ZSTD_QAT {#zstd_qat}
 
 <CloudNotSupportedBadge/>
 
-`DEFLATE_QPL` — [алгоритм сжатия Deflate](https://github.com/intel/qpl), реализованный в Intel® Query Processing Library. Имеет ряд ограничений:
+#### Устарело: DEFLATE_QPL {#deflate_qpl}
 
-- DEFLATE_QPL отключен по умолчанию и может использоваться только после включения параметра конфигурации [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec).
-- DEFLATE_QPL требует сборку ClickHouse, скомпилированную с использованием инструкций SSE 4.2 (по умолчанию это так). Подробнее см. в разделе [Сборка ClickHouse с DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl).
-- DEFLATE_QPL работает наилучшим образом, если в системе есть устройство разгрузки Intel® IAA (In-Memory Analytics Accelerator). Подробнее см. [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) и [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl).
-- Данные, сжатые с помощью DEFLATE_QPL, могут передаваться только между узлами ClickHouse, скомпилированными с включённой SSE 4.2.
+<CloudNotSupportedBadge/>
 
 ### Специализированные кодеки {#specialized-codecs}
 
