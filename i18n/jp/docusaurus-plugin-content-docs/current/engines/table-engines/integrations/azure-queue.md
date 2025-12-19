@@ -43,8 +43,8 @@ SETTINGS mode = 'unordered'
 
 ## Settings {#settings}
 
-サポートされている設定項目は、ほとんどが `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスは付きません。[設定の全リスト](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
-テーブルに対して構成されている設定の一覧を取得するには、`system.azure_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
+サポートされている設定群は、基本的には `S3Queue` テーブルエンジンと同じですが、`s3queue_` というプレフィックスは付きません。設定の[完全な一覧](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
+テーブルに対して構成されている設定の一覧を取得するには、`system.azure_queue_settings` テーブルを使用します。`24.10` 以降のバージョンで利用可能です。
 
 以下は、AzureQueue にのみ対応し、S3Queue には適用されない設定です。
 
@@ -86,9 +86,9 @@ SETTINGS
 
 ## AzureQueue テーブルエンジンからの SELECT {#select}
 
-AzureQueue テーブルに対する SELECT クエリは、既定では禁止されています。これは、データを一度読み取ったらキューから削除するという一般的なキューの利用パターンに従うためです。誤ってデータを失わないようにする目的で、SELECT は禁止されています。
-ただし、状況によってはこれが必要になる場合もあります。その場合は、SETTING `stream_like_engine_allow_direct_select` を `True` に設定する必要があります。
-AzureQueue エンジンには、SELECT クエリ用の特別な SETTING `commit_on_select` があります。これを `False` に設定すると、読み取り後もキュー内のデータを保持し、`True` に設定すると削除します。
+AzureQueue テーブルでは、デフォルトで SELECT クエリは禁止されています。これは、データを一度読み取ったらキューから削除するという一般的なキューのパターンに従うためです。誤ってデータを失わないようにするため、SELECT は禁止されています。
+ただし、場合によっては SELECT が必要になることもあります。その場合は、`stream_like_engine_allow_direct_select` 設定を `True` にする必要があります。
+AzureQueue エンジンには、SELECT クエリ用の特別な設定 `commit_on_select` があります。キューから読み取った後もデータを保持したい場合は `False` に、読み取り後に削除したい場合は `True` に設定します。
 
 ## 説明 {#description}
 
@@ -119,10 +119,10 @@ SELECT * FROM stats ORDER BY key;
 
 ## 仮想カラム {#virtual-columns}
 
-* `_path` — ファイルパス。
-* `_file` — ファイル名。
+- `_path` — ファイルへのパス。
+- `_file` — ファイル名。
 
-仮想カラムの詳細については[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
+仮想カラムの詳細については、[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
 ## イントロスペクション {#introspection}
 

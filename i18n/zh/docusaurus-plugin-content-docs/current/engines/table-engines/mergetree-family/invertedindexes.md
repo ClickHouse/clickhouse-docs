@@ -7,12 +7,12 @@ title: '使用文本索引实现全文搜索'
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 
 # 使用文本索引进行全文搜索 {#full-text-search-using-text-indexes}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 ClickHouse 中的文本索引（也称为 ["倒排索引"](https://en.wikipedia.org/wiki/Inverted_index)）为字符串数据提供快速的全文检索能力。
 索引会将列中的每个标记（token）映射到包含该标记的行。

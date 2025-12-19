@@ -44,15 +44,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- 新しいメトリック `cost` と
--- 新しいディメンション `browser` を追加します。
+-- Let's add the new measurement `cost`
+-- and the new dimension `browser`.
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- マテリアライズドビューと TO
--- (宛先テーブル) のカラムは一致する必要がないため、次の ALTER は挿入処理を中断しません。
+-- Column do not have to match in a materialized view and TO
+-- (destination table), so the next alter does not break insertion.
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -66,7 +66,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- マテリアライズドビューをまだ変更していないため、新しいカラム `browser` と `cost` は空になっています。
+-- New columns `browser` and `cost` are empty because we did not change Materialized View yet.
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -88,21 +88,20 @@ ALTER TABLE mv MODIFY QUERY
   sum(cost) cost
   FROM events
   GROUP BY ts, event_type, browser;
-```
 
 INSERT INTO events
-SELECT Date &#39;2020-01-03&#39; + interval number * 900 second,
-[&#39;imp&#39;, &#39;click&#39;][number%2+1],
-[&#39;firefox&#39;, &#39;safary&#39;, &#39;chrome&#39;][number%3+1],
-10/(number+1)%33
+SELECT Date '2020-01-03' + interval number * 900 second,
+       ['imp', 'click'][number%2+1],
+       ['firefox', 'safary', 'chrome'][number%3+1],
+       10/(number+1)%33
 FROM numbers(100);
 
-SELECT ts, event&#95;type, browser, sum(events&#95;cnt) events&#95;cnt, round(sum(cost),2) cost
-FROM events&#95;by&#95;day
-GROUP BY ts, event&#95;type, browser
-ORDER BY ts, event&#95;type;
+SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
+FROM events_by_day
+GROUP BY ts, event_type, browser
+ORDER BY ts, event_type;
 
-┌──────────────────ts─┬─event&#95;type─┬─browser─┬─events&#95;cnt─┬──cost─┐
+┌──────────────────ts─┬─event_type─┬─browser─┬─events_cnt─┬──cost─┐
 │ 2020-01-01 00:00:00 │ click      │         │         48 │     0 │
 │ 2020-01-01 00:00:00 │ imp        │         │         48 │     0 │
 │ 2020-01-02 00:00:00 │ click      │         │         50 │     0 │
@@ -121,53 +120,50 @@ ORDER BY ts, event&#95;type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! `MODIFY ORDER BY` の実行中に PRIMARY KEY が暗黙的に設定されました。
+-- !!! During `MODIFY ORDER BY` PRIMARY KEY was implicitly introduced.
 
-SHOW CREATE TABLE events&#95;by&#95;day FORMAT TSVRaw
+SHOW CREATE TABLE events_by_day FORMAT TSVRaw
 
-CREATE TABLE test.events&#95;by&#95;day
+CREATE TABLE test.events_by_day
 (
-`ts` DateTime,
-`event_type` String,
-`browser` String,
-`events_cnt` UInt64,
-`cost` Float64
+    `ts` DateTime,
+    `event_type` String,
+    `browser` String,
+    `events_cnt` UInt64,
+    `cost` Float64
 )
 ENGINE = SummingMergeTree
-PRIMARY KEY (event&#95;type, ts)
-ORDER BY (event&#95;type, ts, browser)
-SETTINGS index&#95;granularity = 8192
+PRIMARY KEY (event_type, ts)
+ORDER BY (event_type, ts, browser)
 
--- !!! カラム定義は変更されていませんが問題ありません。クエリしているのは
--- MATERIALIZED VIEW ではなく、TO 句で指定したストレージテーブルです。
--- SELECT 句が更新されています。
+-- !!! The columns' definition is unchanged but it does not matter, we are not querying
+-- MATERIALIZED VIEW, we are querying TO (storage) table.
+-- SELECT section is updated.
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
-CREATE MATERIALIZED VIEW test.mv TO test.events&#95;by&#95;day
+CREATE MATERIALIZED VIEW test.mv TO test.events_by_day
 (
-`ts` DateTime,
-`event_type` String,
-`events_cnt` UInt64
+    `ts` DateTime,
+    `event_type` String,
+    `events_cnt` UInt64
 ) AS
 SELECT
-toStartOfDay(ts) AS ts,
-event&#95;type,
-browser,
-count() AS events&#95;cnt,
-sum(cost) AS cost
+    toStartOfDay(ts) AS ts,
+    event_type,
+    browser,
+    count() AS events_cnt,
+    sum(cost) AS cost
 FROM test.events
 GROUP BY
-ts,
-event&#95;type,
-browser
-
+    ts,
+    event_type,
+    browser
 ```
 
-**TOテーブルを使用しない例**
+**TO テーブルを使用しない例**
 
-この方法は非常に制限的であり、新しいカラムを追加することなく`SELECT`セクションのみを変更することができます。
-```
+新しいカラムを追加できず、`SELECT` 句の部分しか変更できないため、このアプリケーションの柔軟性は大きく制限されます。
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -200,6 +196,7 @@ SELECT * FROM mv;
 └───┘
 ```
 
+
 ## ALTER TABLE ... MODIFY REFRESH ステートメント {#alter-table--modify-refresh-statement}
 
-`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシュ可能なマテリアライズドビュー](../create/view.md#refreshable-materialized-view)のリフレッシュパラメーターを変更します。詳しくは[リフレッシュパラメーターの変更](../create/view.md#changing-refresh-parameters)を参照してください。
+`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシャブルmaterialized view](../create/view.md#refreshable-materialized-view)のリフレッシュパラメーターを変更します。詳しくは[リフレッシュパラメーターの変更](../create/view.md#changing-refresh-parameters)を参照してください。

@@ -1,27 +1,27 @@
 ---
-title: '在 ClickHouse 中使用 JOIN'
-description: '如何在 ClickHouse 中进行表连接'
-keywords: ['JOIN', '表连接']
+title: "在 ClickHouse 中使用 JOIN"
+description: "如何在 ClickHouse 中进行表连接"
+keywords: ["JOIN", "表连接"]
 slug: /guides/joining-tables
-doc_type: 'guide'
+doc_type: "guide"
 ---
 
-import Image from '@theme/IdealImage';
-import joins_1 from '@site/static/images/guides/joins-1.png';
-import joins_2 from '@site/static/images/guides/joins-2.png';
-import joins_3 from '@site/static/images/guides/joins-3.png';
-import joins_4 from '@site/static/images/guides/joins-4.png';
-import joins_5 from '@site/static/images/guides/joins-5.png';
+import Image from "@theme/IdealImage"
+import joins_1 from "@site/static/images/guides/joins-1.png"
+import joins_2 from "@site/static/images/guides/joins-2.png"
+import joins_3 from "@site/static/images/guides/joins-3.png"
+import joins_4 from "@site/static/images/guides/joins-4.png"
+import joins_5 from "@site/static/images/guides/joins-5.png"
 
 ClickHouse 具有[完整的 `JOIN` 支持](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)，并提供多种连接算法可供选择。为最大化性能，我们建议遵循本指南中列出的连接优化建议。
 
-* 为获得最佳性能，用户应尽量减少查询中的 `JOIN` 数量，特别是对于需要毫秒级性能的实时分析型工作负载。单个查询中的 `JOIN` 数量最好控制在 3 到 4 个以内。我们在[数据建模章节](/data-modeling/schema-design)中详细介绍了多种减少 `JOIN` 的方式，包括反规范化、字典以及物化视图。
-* 当前 ClickHouse 不会自动重排 `JOIN` 的顺序。请始终确保最小的表位于 `JOIN` 的右侧。对于大多数连接算法，右侧的表会被保留在内存中，从而保证查询的内存开销最低。
+* 为获得最佳性能，用户应尽量减少查询中的 `JOIN` 数量，特别是对于需要毫秒级性能的实时分析型工作负载。单个查询中的 `JOIN` 数量最好控制在 3 到 4 个以内。我们在[数据建模章节](/data-modeling/schema-design)中详细介绍了多种减少 `JOIN` 的方式，包括反规范化、字典以及 materialized views。
+* 从 ClickHouse 24.12 开始，查询规划器会自动重排双表连接，将较小的表放在右侧以获得最佳性能。在 25.9 版本中，这一机制被扩展，可优化包含三张或更多表的查询的 JOIN 顺序。
 * 如果查询需要直接连接（例如 `LEFT ANY JOIN`，如下所示），在可能的情况下，我们建议使用 [Dictionaries](/dictionary)。
 
-<Image img={joins_1} size="sm" alt="Left any join" />
+<Image img={joins_1} size="sm" alt="LEFT ANY JOIN（ANY 模式的左连接）" />
 
-* 如果执行的是内连接（inner join），通常将其改写为使用 `IN` 子查询会更加高效。请考虑下面两个在功能上等价的查询。两者都用于查找这样一些 `posts`：在问题中没有提到 ClickHouse，但在 `comments` 中提到了。
+* 如果执行的是内连接（inner join），通常将其改写为使用 `IN` 子查询会更加高效。请考虑下面两个在功能上等价的查询。两者都用于查找这样一些 `posts`：在问题中没有提到 ClickHouse，但在 `comments` 中提到了它。
 
 ```sql
 SELECT count()
@@ -37,9 +37,9 @@ WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILI
 Peak memory usage: 1.23 GiB.
 ```
 
-请注意，我们使用的是 `ANY INNER JOIN` 而不是普通的 `INNER JOIN`，因为我们不希望产生笛卡尔积，也就是说，我们只希望每篇帖子对应一个匹配结果。
+请注意,我们使用的是 `ANY INNER JOIN` 而不是普通的 `INNER JOIN`,因为我们不希望产生笛卡尔积,也就是说,我们只希望每篇帖子对应一个匹配结果。
 
-这个 `JOIN` 可以改写为使用子查询的形式，从而显著提升性能：
+这个 `JOIN` 可以改写为使用子查询的形式,从而显著提升性能:
 
 ```sql
 SELECT count()
@@ -57,9 +57,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 
-尽管 ClickHouse 会尝试将过滤条件下推到所有 `JOIN` 子句和子查询中，但我们仍然建议用户在可能的情况下始终在所有相关子句中手动应用这些条件，从而最大限度减少参与 `JOIN` 的数据量。请看下面的示例，我们希望统计自 2020 年以来与 Java 相关的帖子获得的点赞数量。
+尽管 ClickHouse 会尝试将过滤条件下推到所有 `JOIN` 子句和子查询中,但我们仍然建议用户在可能的情况下始终在所有相关子句中手动应用这些条件,从而最大限度减少参与 `JOIN` 的数据量。请看下面的示例,我们希望统计自 2020 年以来与 Java 相关的帖子获得的点赞数量。
 
-一个较为朴素的查询，将较大的表放在左侧，完成耗时为 56 秒：
+一个较为朴素的查询,将较大的表放在左侧,完成耗时为 56 秒:
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -73,7 +73,6 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
-
 
 重新调整此 JOIN 的顺序可将性能显著提升至 1.5 秒：
 

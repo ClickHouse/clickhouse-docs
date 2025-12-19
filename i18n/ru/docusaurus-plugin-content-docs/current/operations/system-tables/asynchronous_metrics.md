@@ -212,9 +212,17 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 Количество потоков сервера HTTP-интерфейса (без TLS).
 
+### HTTPSecureThreads {#httpsecurethreads}
+
+Количество потоков в сервере HTTPS-интерфейса.
+
 ### InterserverThreads {#interserverthreads}
 
 Количество потоков в сервере протокола взаимодействия реплик (без TLS).
+
+### InterserverSecureThreads {#interserversecurethreads}
+
+Количество потоков в сервере протокола обмена данными между репликами (с TLS).
 
 ### Джиттер {#jitter}
 
@@ -523,6 +531,26 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 ### TCPThreads {#tcpthreads}
 
 Количество потоков на сервере протокола TCP (без TLS).
+
+### TCPSecureThreads {#tcpsecurethreads}
+
+Количество потоков в сервере протокола TCP (с поддержкой TLS).
+
+### GRPCThreads {#grpcthreads}
+
+Количество потоков в сервере gRPC.
+
+### PrometheusThreads {#prometheusthreads}
+
+Количество потоков на сервере эндпоинта Prometheus. Примечание: эндпоинты Prometheus также могут использоваться через обычные порты HTTP/HTTPS.
+
+### KeeperTCPThreads {#keepertcpthreads}
+
+Количество потоков на сервере протокола Keeper TCP (без TLS).
+
+### KeeperTCPSecureThreads {#keepertcpsecurethreads}
+
+Количество потоков на сервере протокола Keeper TCP (с TLS).
 
 ### Temperature_*N* {#temperature_n}
 

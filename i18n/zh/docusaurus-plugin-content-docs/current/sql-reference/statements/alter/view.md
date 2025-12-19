@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 # ALTER TABLE ... MODIFY QUERY 语句 {#alter-table-modify-query-statement}
 
-您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[物化视图](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询,而不会中断数据摄入过程。
+您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[物化视图](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据摄取过程。
 
-此命令用于更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构,也不会更改物化视图的列定义,因此,对于没有使用 `TO [db.]name` 子句创建的物化视图,此命令的应用非常有限。
+此命令用于更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改物化视图的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的物化视图，此命令的适用范围非常有限。
 
 **使用 TO 表的示例**
 
@@ -44,15 +44,15 @@ ORDER BY ts, event_type;
 │ 2020-01-02 00:00:00 │ imp        │               2 │
 └─────────────────────┴────────────┴─────────────────┘
 
--- 让我们添加新的测量值 `cost`
--- 和新的维度 `browser`。
+-- Let's add the new measurement `cost`
+-- and the new dimension `browser`.
 
 ALTER TABLE events
   ADD COLUMN browser String,
   ADD COLUMN cost Float64;
 
--- 物化视图和 TO（目标表）中的列不必匹配,
--- 因此下一个 alter 操作不会中断插入。
+-- Column do not have to match in a materialized view and TO
+-- (destination table), so the next alter does not break insertion.
 
 ALTER TABLE events_by_day
     ADD COLUMN cost Float64,
@@ -66,7 +66,7 @@ SELECT Date '2020-01-02' + interval number * 900 second,
        10/(number+1)%33
 FROM numbers(100);
 
--- 新列 `browser` 和 `cost` 是空的,因为我们还没有更改物化视图。
+-- New columns `browser` and `cost` are empty because we did not change Materialized View yet.
 
 SELECT ts, event_type, browser, sum(events_cnt) events_cnt, round(sum(cost),2) cost
 FROM events_by_day
@@ -120,7 +120,7 @@ ORDER BY ts, event_type;
 │ 2020-01-04 00:00:00 │ imp        │ chrome  │          1 │   0.1 │
 └─────────────────────┴────────────┴─────────┴────────────┴───────┘
 
--- !!! 在 `MODIFY ORDER BY` 期间,PRIMARY KEY 被隐式引入。
+-- !!! During `MODIFY ORDER BY` PRIMARY KEY was implicitly introduced.
 
 SHOW CREATE TABLE events_by_day FORMAT TSVRaw
 
@@ -135,11 +135,10 @@ CREATE TABLE test.events_by_day
 ENGINE = SummingMergeTree
 PRIMARY KEY (event_type, ts)
 ORDER BY (event_type, ts, browser)
-SETTINGS index_granularity = 8192
 
--- !!! 列定义保持不变,但这并不重要,我们不是在查询
--- 物化视图,而是在查询 TO（存储）表。
--- SELECT 部分已更新。
+-- !!! The columns' definition is unchanged but it does not matter, we are not querying
+-- MATERIALIZED VIEW, we are querying TO (storage) table.
+-- SELECT section is updated.
 
 SHOW CREATE TABLE mv FORMAT TSVRaw;
 
@@ -162,9 +161,9 @@ GROUP BY
     browser
 ```
 
-**不使用 TO 表的示例**
+**没有 TO 表的示例**
 
-应用非常有限,因为您只能更改 `SELECT` 部分而不能添加新列。
+该用法非常受限制，因为你只能修改 `SELECT` 部分，而无法添加新的列。
 
 ```sql
 CREATE TABLE src_table (`a` UInt32) ENGINE = MergeTree ORDER BY a;
@@ -172,17 +171,20 @@ CREATE MATERIALIZED VIEW mv (`a` UInt32) ENGINE = MergeTree ORDER BY a AS SELECT
 INSERT INTO src_table (a) VALUES (1), (2);
 SELECT * FROM mv;
 ```
+
 ```text
 ┌─a─┐
 │ 1 │
 │ 2 │
 └───┘
 ```
+
 ```sql
 ALTER TABLE mv MODIFY QUERY SELECT a * 2 as a FROM src_table;
 INSERT INTO src_table (a) VALUES (3), (4);
 SELECT * FROM mv;
 ```
+
 ```text
 ┌─a─┐
 │ 6 │
@@ -193,6 +195,7 @@ SELECT * FROM mv;
 │ 2 │
 └───┘
 ```
+
 
 ## ALTER TABLE ... MODIFY REFRESH 语句 {#alter-table--modify-refresh-statement}
 

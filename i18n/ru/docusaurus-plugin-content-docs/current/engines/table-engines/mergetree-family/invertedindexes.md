@@ -7,12 +7,12 @@ title: 'Полнотекстовый поиск с использованием 
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 
 # Полнотекстовый поиск с использованием текстовых индексов {#full-text-search-using-text-indexes}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 Текстовые индексы в ClickHouse (также известные как ["обратные индексы"](https://en.wikipedia.org/wiki/Inverted_index)) обеспечивают быстрый полнотекстовый поиск по строковым данным.
 Индекс сопоставляет каждый токен в столбце со строками, которые содержат этот токен.
