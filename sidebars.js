@@ -1022,6 +1022,7 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/estuary',
         'integrations/data-ingestion/etl-tools/fivetran/index',
         'integrations/data-ingestion/etl-tools/nifi-and-clickhouse',
         'integrations/data-ingestion/etl-tools/vector-to-clickhouse',
