@@ -3139,12 +3139,6 @@ Distributed への INSERT クエリで read-only レプリカをスキップす�
 
 BLOB ストレージの操作情報を system.blob_storage_log テーブルに書き込みます
 
-## enable_deflate_qpl_codec {#enable_deflate_qpl_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-有効にすると、DEFLATE_QPL コーデックを使用してカラムを圧縮できます。
-
 ## enable_early_constant_folding {#enable_early_constant_folding} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3592,14 +3586,6 @@ WHERE (_part, _part_offset) IN (
 
 - 0 - 無効
 - 1 - 有効
-
-## enable_zstd_qat_codec {#enable_zstd_qat_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "新しい ZSTD_QAT コーデックを追加"}]}]}/>
-
-有効にすると、カラムの圧縮に ZSTD_QAT コーデックを使用できます。
 
 ## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
 
@@ -8297,7 +8283,11 @@ analyzer 使用時のみサポートされています（`enable_analyzer = 1`�
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-`WHERE/PREWHERE` にシャーディングキー条件を含む [SELECT](../../sql-reference/statements/select/index.md) クエリに対して、使用されない分片をスキップするかどうかを切り替えます（データがシャーディングキーで分散されていることが前提であり、そうでない場合はクエリ結果が不正確になります）。
+`WHERE/PREWHERE` にシャーディングキー条件を含む [SELECT](../../sql-reference/statements/select/index.md) クエリに対して、使用されない分片をスキップするかどうかを切り替え、分散クエリに対する関連する最適化（例: シャーディングキーによる集約）を有効にします。
+
+:::note
+データがシャーディングキーで分散されていることを前提としています。そうでない場合、クエリ結果は不正確になります。
+:::
 
 Possible values:
 

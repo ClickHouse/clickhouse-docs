@@ -213,9 +213,17 @@ ClickHouse のメインパスがマウントされているボリューム上で
 
 HTTP インターフェイスサーバーのスレッド数（TLS なし）。
 
+### HTTPSecureThreads {#httpsecurethreads}
+
+HTTPS インターフェイスサーバーのスレッド数。
+
 ### InterserverThreads {#interserverthreads}
 
 レプリカ間通信プロトコル用サーバーにおけるスレッド数（TLS を使用しない）。
+
+### InterserverSecureThreads {#interserversecurethreads}
+
+レプリカ間通信プロトコル（TLS 使用）のサーバーで使用されるスレッド数。
 
 ### ジッター {#jitter}
 
@@ -524,6 +532,26 @@ Replicated テーブル全体にわたるキューサイズの合計（get や m
 ### TCPThreads {#tcpthreads}
 
 TCP プロトコル（TLS なし）のサーバーのスレッド数。
+
+### TCPSecureThreads {#tcpsecurethreads}
+
+TLS を使用する TCP プロトコルサーバーのスレッド数。
+
+### GRPCThreads {#grpcthreads}
+
+gRPC プロトコルサーバーにおけるスレッド数。
+
+### PrometheusThreads {#prometheusthreads}
+
+Prometheus エンドポイントのサーバーのスレッド数。なお、Prometheus エンドポイントは通常の HTTP/HTTPS ポート経由でも使用できます。
+
+### KeeperTCPThreads {#keepertcpthreads}
+
+TLS を使用しない Keeper TCP プロトコルサーバーのスレッド数。
+
+### KeeperTCPSecureThreads {#keepertcpsecurethreads}
+
+TLS を使用する Keeper TCP プロトコルサーバーのスレッド数。
 
 ### Temperature_*N* {#temperature_n}
 

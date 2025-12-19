@@ -1435,7 +1435,7 @@ MergeTree 表中 PROJECTION 的最大数量。
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "500"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "新设置"}]}]}/>
 
 允许通过为包含大量列的表使用自适应写入缓冲区来减少内存使用。
 
