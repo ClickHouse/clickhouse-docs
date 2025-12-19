@@ -1,5 +1,5 @@
 ---
-slug: /use-cases/observability/clickstack/integrations/bindplane
+slug: /use-cases/observability/clickstack/integration-partners/bindplane
 title: 'Sending OpenTelemetry to ClickStack with Bindplane'
 sidebar_label: 'Bindplane'
 pagination_prev: null
