@@ -12,4 +12,4 @@ ClickStack provides the core building blocks of modern observability, bringing t
 
 | Section | Description |
 |------|-------------|
-| [Bindplane](/use-cases/observability/clickstack/integrations/host-logs) | Bindplane is an OpenTelemetry-native telemetry pipeline that provides centralized management for OpenTelemetry Collectors. |
+| [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) | Bindplane is an OpenTelemetry-native telemetry pipeline that provides centralized management for OpenTelemetry Collectors. |
