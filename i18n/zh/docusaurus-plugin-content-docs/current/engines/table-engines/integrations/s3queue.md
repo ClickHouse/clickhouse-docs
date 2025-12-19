@@ -85,15 +85,15 @@ SETTINGS
 
 ## 设置 {#settings}
 
-要获取为该表配置的设置列表，请查询 `system.s3_queue_settings` 系统表。自 `24.10` 版本起可用。
+要获取为该表配置的设置列表，请使用 `system.s3_queue_settings` 表。自 `24.10` 起可用。
 
 :::note 设置名称（24.7+）
-从 24.7 版本开始，S3Queue 的设置项既可以带有 `s3queue_` 前缀，也可以不带：
+从 24.7 版本开始，在指定 S3Queue 设置时，既可以带 `s3queue_` 前缀，也可以不带：
 
 - **现代语法**（24.7+）：`processing_threads_num`、`tracked_file_ttl_sec` 等。
-- **旧版语法**（所有版本）：`s3queue_processing_threads_num`、`s3queue_tracked_file_ttl_sec` 等。
+- **旧语法**（所有版本）：`s3queue_processing_threads_num`、`s3queue_tracked_file_ttl_sec` 等。
 
-在 24.7+ 中两种形式都受支持。本页中的示例均使用不带前缀的现代语法。
+在 24.7+ 中，两种形式都受支持。本页示例使用不带前缀的现代语法。
 :::
 
 ### Mode {#mode}
@@ -143,11 +143,11 @@ SETTINGS
 
 ### `after_processing_retries` {#after_processing_retries}
 
-在放弃之前，对所请求的后处理操作进行重试的次数。
+在放弃之前，对请求的后处理操作进行重试的次数。
 
-可能的取值：
+可能的值：
 
-* 非负整数。
+- 非负整数。
 
 默认值：`10`。
 
@@ -359,12 +359,11 @@ SETTINGS
 
 ## S3Queue 有序模式 {#ordered-mode}
 
-`S3Queue` 处理模式可以在 ZooKeeper 中存储更少的元数据，但有一个限制：按时间更晚添加的文件，其名称在字母数字顺序上必须更大。
+`S3Queue` 处理模式允许在 ZooKeeper 中存储更少的元数据，但有一个限制：后续按时间添加的文件，其名称在字母数字顺序上必须更大。
 
-`S3Queue` 的 `ordered` 模式与 `unordered` 模式一样，支持 `(s3queue_)processing_threads_num` 设置（`s3queue_` 前缀是可选的），用于控制在服务器本地处理 `S3` 文件的线程数量。
-此外，`ordered` 模式还引入了另一个名为 `(s3queue_)buckets` 的设置，表示“逻辑线程”。在分布式场景中，当存在多个带有 `S3Queue` 表副本的服务器时，该设置定义了处理单元的数量。比如，每个 `S3Queue` 副本上的每个处理线程都会尝试锁定某个用于处理的 `bucket`，每个 `bucket` 通过文件名的哈希与特定文件关联。因此，在分布式场景下，强烈建议将 `(s3queue_)buckets` 设置为至少等于副本数量或更大。`buckets` 数量大于副本数量是可以的。最优的情况是将 `(s3queue_)buckets` 设置为 `number_of_replicas` 与 `(s3queue_)processing_threads_num` 的乘积。
-
-不建议在 `24.6` 版本之前使用 `(s3queue_)processing_threads_num` 设置。
+`S3Queue` 的 `ordered` 模式与 `unordered` 模式一样，支持 `(s3queue_)processing_threads_num` 设置（`s3queue_` 前缀是可选的），该设置用于控制在服务器本地处理 `S3` 文件的线程数量。
+此外，`ordered` 模式还引入了另一个名为 `(s3queue_)buckets` 的设置，表示“逻辑线程”。这意味着在分布式场景下，当存在多个带有 `S3Queue` 表副本的服务器时，该设置用于定义处理单元的数量。例如，每个 `S3Queue` 副本上的每个处理线程都会尝试锁定某个用于处理的 `bucket`，每个 `bucket` 通过文件名的哈希映射到特定的一组文件。因此，在分布式场景下，强烈建议将 `(s3queue_)buckets` 设置值配置为至少不小于副本数量，或更大。`buckets` 的数量大于副本数量是没有问题的。最优的场景是将 `(s3queue_)buckets` 设置为 `number_of_replicas` 与 `(s3queue_)processing_threads_num` 的乘积。
+不推荐在 `24.6` 之前的版本中使用 `(s3queue_)processing_threads_num` 设置。
 `(s3queue_)buckets` 设置从 `24.6` 版本开始可用。
 
 ## 从 S3Queue 表引擎中执行 SELECT 查询 {#select}
@@ -402,10 +401,10 @@ S3Queue 引擎为 SELECT 查询提供了一个特殊设置：`commit_on_select`�
 
 ## 虚拟列 {#virtual-columns}
 
-* `_path` — 文件路径。
-* `_file` — 文件名。
-* `_size` — 文件大小。
-* `_time` — 文件创建时间。
+- `_path` — 文件路径。
+- `_file` — 文件名。
+- `_size` — 文件大小。
+- `_time` — 文件创建时间。
 
 有关虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 
@@ -502,12 +501,11 @@ Query id: 0ad619c3-0f2a-4ee4-8b40-c73d86e04314
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
-ORDER BY (event_date, event_time)
-│
+ORDER BY (event_date, event_time) │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-要使用 `system.s3queue_log`，需要在服务器配置文件中定义其配置：
+要使用 `system.s3queue_log`，需要在服务器配置文件中进行相应配置：
 
 ```xml
     <s3queue_log>

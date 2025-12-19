@@ -1,5 +1,5 @@
 ---
-description: 'テキスト内の検索語句を素早く見つけます。'
+description: 'テキスト内の検索語句を迅速に見つけます。'
 keywords: ['全文検索', 'テキストインデックス', 'インデックス', 'インデックス（複数形）']
 sidebar_label: 'テキストインデックスを使用した全文検索'
 slug: /engines/table-engines/mergetree-family/invertedindexes
@@ -7,12 +7,12 @@ title: 'テキストインデックスを使用した全文検索'
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 
 # テキストインデックスを使用した全文検索 {#full-text-search-using-text-indexes}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 ClickHouse のテキストインデックス（["inverted indexes"](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます）は、文字列データに対して高速な全文検索機能を提供します。
 インデックスは、列内の各トークンを、そのトークンを含む行に対応付けます。
@@ -25,10 +25,10 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 テキストインデックスを作成するには、まず該当する実験的な設定を有効にしてください。
 
 ```sql
-SET allow_experimental_full_text_index = true;
+SET enable_full_text_index = true;
 ```
 
-テキストインデックスは、次の構文を使用して、[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) マップ関数を通じて）列に定義できます。
+テキストインデックスは、次の構文を使用して、[String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) マップ関数を使って）列に定義できます。
 
 ```sql
 CREATE TABLE tab

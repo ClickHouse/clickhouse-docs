@@ -7,12 +7,12 @@ title: 'Полнотекстовый поиск с использованием 
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 
 # Полнотекстовый поиск с использованием текстовых индексов {#full-text-search-using-text-indexes}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 Текстовые индексы в ClickHouse (также известные как ["обратные индексы"](https://en.wikipedia.org/wiki/Inverted_index)) обеспечивают быстрый полнотекстовый поиск по строковым данным.
 Индекс сопоставляет каждый токен в столбце со строками, которые содержат этот токен.
@@ -25,7 +25,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 Чтобы создать текстовый индекс, сначала включите соответствующий экспериментальный параметр:
 
 ```sql
-SET allow_experimental_full_text_index = true;
+SET enable_full_text_index = true;
 ```
 
 Текстовый индекс может быть определён для столбцов типов [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues)) с использованием следующего синтаксиса:

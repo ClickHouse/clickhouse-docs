@@ -86,9 +86,9 @@ ClickHouse Cloud 用量报表遵循不同的计费周期：从你注册当日开
 
 通过 Marketplace 计费与直接向 ClickHouse 注册在价格上没有差别。在这两种情况下，您对 ClickHouse Cloud 的使用量都以 ClickHouse Cloud Credits（CHC）计量，用量的计量方式相同，并据此计费。
 
-### 我可以将多个 ClickHouse Organization 绑定到同一个云 Marketplace 计费账户或子账户（AWS、GCP 或 Azure）吗？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### 我可以设置多个 ClickHouse 组织，将其计费统一关联到同一个云市场计费账户（AWS、GCP 或 Azure）吗？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-一个 ClickHouse Organization 只能配置为计费到一个云 Marketplace 计费账户或子账户。
+可以。可以将多个 ClickHouse 组织配置为将其后付费用量统一计入同一个云市场计费账户（AWS、GCP 或 Azure）。不过，预付费额度默认不会在不同组织之间共享。如果您需要在多个组织之间共享额度，请联系 [ClickHouse Cloud Support](https://clickhouse.com/support/program)。
 
 ### 如果我的 ClickHouse Organization 通过云 Marketplace 承诺消费协议计费，在用完额度后会自动切换到 PAYG 计费吗？ {#automatically-move-to-PAYG-when-running-out-of-credit}
 

@@ -2790,6 +2790,8 @@ SELECT ignore(0, 'ClickHouse', NULL)
 这允许根据相应条件在索引范围内选取数据，但不会再基于该条件执行后续过滤。
 ClickHouse 中的索引是稀疏的，使用 `indexHint` 会比直接指定相同条件返回更多数据。
 
+注意：无法利用 `indexHint` 函数对查询进行优化。`indexHint` 函数不会优化查询，因为它不会为查询分析提供任何额外信息。将某个表达式放在 `indexHint` 函数中并不会比不使用 `indexHint` 函数更好。`indexHint` 函数只能用于内部分析和调试目的，不能提升性能。如果你看到除了 ClickHouse 贡献者之外的任何人使用 `indexHint`，这很可能是误用，应当将其移除。
+
 **语法**
 
 ```sql
@@ -2820,6 +2822,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 │ 2025-09-30 │    8167 │
 └────────────┴─────────┘
 ```
+
 
 ## initialQueryID {#initialQueryID}
 

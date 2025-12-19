@@ -1548,7 +1548,7 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "500"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "New setting"}]}]}/>
 
 Позволяет снизить расход памяти для таблиц с большим числом столбцов за счёт использования адаптивных буферов записи.
 
