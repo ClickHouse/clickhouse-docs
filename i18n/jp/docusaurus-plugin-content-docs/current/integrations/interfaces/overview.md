@@ -17,10 +17,10 @@ ClickHouse は 2 つのネットワークインターフェースを提供しま
 
 ほとんどの場合、これらのインターフェースに直接アクセスするのではなく、適切なツールやライブラリを使用することを推奨します。以下は ClickHouse によって公式にサポートされているコンポーネントです:
 
-* [コマンドラインクライアント](../../interfaces/cli.md)
-* [JDBC ドライバー](../../interfaces/jdbc.md)
-* [ODBC ドライバー](../../interfaces/odbc.md)
-* [C++ クライアントライブラリ](../../interfaces/cpp.md)
+* [コマンドラインクライアント](/interfaces/cli)
+* [JDBC ドライバー](/interfaces/jdbc)
+* [ODBC ドライバー](/interfaces/odbc)
+* [C++ クライアントライブラリ](/interfaces/cpp)
 
 ClickHouse は 2 つの RPC プロトコルにも対応しています:
 

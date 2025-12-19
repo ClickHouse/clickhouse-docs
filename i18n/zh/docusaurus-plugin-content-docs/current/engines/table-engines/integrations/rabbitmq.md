@@ -59,17 +59,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 可选参数：
 
+
 - `rabbitmq_exchange_type` – RabbitMQ exchange 的类型：`direct`、`fanout`、`topic`、`headers`、`consistent_hash`。默认值：`fanout`。
 - `rabbitmq_routing_key_list` – 以逗号分隔的路由键（routing key）列表。
 - `rabbitmq_schema` – 当格式需要 schema 定义时必须使用的参数。例如， [Cap'n Proto](https://capnproto.org/) 需要提供 schema 文件的路径以及根 `schema.capnp:Message` 对象的名称。
 - `rabbitmq_num_consumers` – 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请设置更多的 consumer。默认值：`1`。
 - `rabbitmq_num_queues` – 队列总数。增大该值可以显著提升性能。默认值：`1`。
 - `rabbitmq_queue_base` - 为队列名称提供一个提示（前缀/基名）。此设置的使用场景会在下文中说明。
-- `rabbitmq_deadletter_exchange` - 为 [dead letter exchange](https://www.rabbitmq.com/dlx.html) 指定名称。你可以使用该 exchange 名称创建另一个表，并在消息被重新发布到 dead letter exchange 时收集这些消息。默认情况下不会指定 dead letter exchange。
 - `rabbitmq_persistent` - 如果设置为 1（true），在 insert 查询中，投递模式（delivery mode）会被设置为 2（将消息标记为“persistent”）。默认值：`0`。
 - `rabbitmq_skip_broken_messages` – 每个数据块中 RabbitMQ 消息解析器对与 schema 不兼容消息的容忍数量。如果 `rabbitmq_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 RabbitMQ 消息（每条消息对应一行数据）。默认值：`0`。
 - `rabbitmq_max_block_size` - 在从 RabbitMQ 刷新（flush）数据前累积的行数。默认值：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `rabbitmq_flush_interval_ms` - 从 RabbitMQ 刷新（flush）数据的超时时间。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
+- `rabbitmq_flush_interval_ms` - 从 RabbitMQ 刷新（flush）数据的超时时间（毫秒）。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
 - `rabbitmq_queue_settings_list` - 允许在创建队列时设置 RabbitMQ 参数。可用设置包括：`x-max-length`、`x-max-length-bytes`、`x-message-ttl`、`x-expires`、`x-priority`、`x-max-priority`、`x-overflow`、`x-dead-letter-exchange`、`x-queue-type`。队列的 `durable` 设置会自动启用。
 - `rabbitmq_address` - 连接地址。此设置与 `rabbitmq_host_port` 二选一。
 - `rabbitmq_vhost` - RabbitMQ vhost。默认值：`'\'`。
@@ -79,16 +79,17 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `reject_unhandled_messages` - 在出现错误时拒绝消息（向 RabbitMQ 发送负确认）。如果在 `rabbitmq_queue_settings_list` 中定义了 `x-dead-letter-exchange`，则此设置会自动启用。
 - `rabbitmq_commit_on_select` - 在执行 select 查询时提交消息。默认值：`false`。
 - `rabbitmq_max_rows_per_message` — 对于基于行的格式，在一条 RabbitMQ 消息中写入的最大行数。默认值：`1`。
-- `rabbitmq_empty_queue_backoff_start` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避起点。
-- `rabbitmq_empty_queue_backoff_end` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避终点。
+- `rabbitmq_empty_queue_backoff_start_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避起点（毫秒）。
+- `rabbitmq_empty_queue_backoff_end_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作的退避终点（毫秒）。
+- `rabbitmq_empty_queue_backoff_step_ms` — 当 RabbitMQ 队列为空时，重新调度读取操作时使用的退避步长（毫秒）。
 - `rabbitmq_handle_error_mode` — RabbitMQ 引擎的错误处理方式。可选值：`default`（如果解析消息失败，将抛出异常）、`stream`（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、`dead_letter_queue`（与错误相关的数据将保存在 `system.dead_letter_queue` 中）。
 
-  * [ ] SSL 连接：
+### SSL 连接 {#ssl-connection}
 
-使用 `rabbitmq_secure = 1`，或在连接地址中使用 `amqps`：`rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
-所用库的默认行为是不检查已建立的 TLS 连接是否足够安全。无论证书是否过期、自签名、缺失或无效，连接都会被直接允许。未来可能会实现对证书的更严格检查。
+使用 `rabbitmq_secure = 1` 或在连接地址中使用 `amqps`：`rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
+所使用的库的默认行为是不会检查所建立的 TLS 连接是否足够安全。无论证书是否过期、自签名、缺失或无效，连接照样会被允许。将来可能会实现对证书更严格的检查。
 
-还可以在与 RabbitMQ 相关的设置中同时添加格式相关的设置。
+同时还可以在 rabbitmq 相关设置中添加格式相关的设置。
 
 示例：
 
@@ -122,6 +123,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     <vhost>clickhouse</vhost>
  </rabbitmq>
 ```
+
 
 ## 描述 {#description}
 
@@ -184,6 +186,7 @@ Exchange 类型说明：
   SELECT key, value FROM daily ORDER BY key;
 ```
 
+
 ## 虚拟列 {#virtual-columns}
 
 - `_exchange_name` - RabbitMQ 交换器（exchange）名称。数据类型：`String`。
@@ -202,7 +205,7 @@ Exchange 类型说明：
 
 ## 注意事项 {#caveats}
 
-即使你在表定义中指定了[默认列值表达式](/sql-reference/statements/create/table.md/#default_values)（例如 `DEFAULT`、`MATERIALIZED`、`ALIAS`），这些设置也会被忽略。列将根据各自的数据类型自动填充为默认值。
+即使在表定义中指定了[默认列表达式](/sql-reference/statements/create/table.md/#default_values)（例如 `DEFAULT`、`MATERIALIZED`、`ALIAS`），这些也会被忽略。列将使用其各自数据类型的默认值进行填充。
 
 ## 数据格式支持 {#data-formats-support}
 

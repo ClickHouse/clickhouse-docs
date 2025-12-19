@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # arrowFlight 表函数 {#arrowflight-table-function}
 
-可对通过 [Apache Arrow Flight](../../interfaces/arrowflight.md) 服务器公开的数据执行查询。
+可对通过 [Apache Arrow Flight](/interfaces/arrowflight) 服务器公开的数据执行查询。
 
 **语法**
 
@@ -22,8 +22,8 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 * `host:port` — Arrow Flight 服务器地址。[String](../../sql-reference/data-types/string.md)。
 * `dataset_name` — Arrow Flight 服务器上可用的数据集或描述符名称。[String](../../sql-reference/data-types/string.md)。
 * `username` - 用于基本 HTTP 认证的用户名。
-* `password` - 用于基本 HTTP 认证的密码。\
-  如果未指定 `username` 和 `password`，则表示不使用认证\
+* `password` - 用于基本 HTTP 认证的密码。
+  如果未指定 `username` 和 `password`，则表示不使用认证
   （仅在 Arrow Flight 服务器允许匿名访问时可用）。
 
 **返回值**

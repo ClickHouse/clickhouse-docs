@@ -22,7 +22,7 @@ Columns:
   * `LoginSuccess` — ログイン成功。
   * `Logout` — システムからのログアウト。
 * `auth_id` ([UUID](../../sql-reference/data-types/uuid.md)) — 認証 ID。ユーザーがログインするたびに自動生成される UUID。
-* `session_id` ([String](../../sql-reference/data-types/string.md)) — クライアントから [HTTP](../../interfaces/http.md) インターフェイス経由で渡されるセッション ID。
+* `session_id` ([String](../../sql-reference/data-types/string.md)) — クライアントから [HTTP](/interfaces/http) インターフェイス経由で渡されるセッション ID。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — ログイン／ログアウトの日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — ログイン／ログアウトの時刻。
 * `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — マイクロ秒精度でのログイン／ログアウト開始時刻。

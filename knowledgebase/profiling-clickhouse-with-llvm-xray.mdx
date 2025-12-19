@@ -6,10 +6,10 @@ tags: ['Performance and Optimizations', 'Tools and Utilities']
 ---
 
 import Image from "@theme/IdealImage";
+import clickhouse from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/profile.png'
 import time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/time-order.png'
 import left_heavy from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/left-heavy.png'
 import sandwich from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/sandwich.png'
-import clickhouse_time_order from '@site/static/images/knowledgebase/profiling-clickhouse-with-llvm-xray/clickhouse-time-order.png'
 
 {frontMatter.description}
 {/* truncate */}
@@ -28,7 +28,41 @@ periodically to see the state of the application. So, only the functions running
 is taken are considered. [perf](https://en.wikipedia.org/wiki/Perf_%28Linux%29) is a very well-known
 statistical profiler.
 
-## How to profile with XRay \{#how-to-profile-with-xray\}
+## Profiling ClickHouse using XRay's integration \{#profiling-clickhouse-using-xray-integration\}
+
+On ClickHouse 25.12, XRay is integrated to seamlessly add new instrumentation points to functions.
+So, any official release already comes with this feature that can be triggered on demand, without
+affecting the overall performance when not enabled. The idea is to enable the minimum amount of
+instrumentation points to get valuable information.
+
+We can add a new profile instrumentation point using the [SYSTEM INSTRUMENT ADD
+PROFILE](https://clickhouse.com/docs/sql-reference/statements/system#instrument-add-profile)
+statement. The functions to be instrumented can be collected from
+[system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) system table. Say we
+want to profile the `sleepForNanoseconds` function, which is a convenient function to check how long
+it takes to run.
+
+```sql
+SYSTEM INSTRUMENT ADD `sleepForNanoseconds` PROFILE
+```
+
+Then, we leave it running for the time period we want to profile and stop it.
+
+```sql
+SYSTEM INSTRUMENT REMOVE ALL
+```
+
+We convert the data collected in system.trace_log [to Chrome
+format](https://clickhouse.com/docs/operations/system-tables/trace_log#chrome-event-trace-format) to
+visualize it in [Perfetto](https://ui.perfetto.dev). Notice the query_id, cpu_id and stacktrace for
+every entry.
+
+<Image img={clickhouse} size="md" alt="time-order" />
+
+## Profiling a native application using XRay \{#profiling-a-native-application-using-xray\}
+
+The following section is left as a reference to know how XRay works under the hood and how it can be
+used out of the box to profile a native application.
 
 ### Instrument the code \{#instrument-the-code\}
 
@@ -104,7 +138,7 @@ Finish
 
 ### Convert the trace \{#convert-the-trace\}
 
-XRAy's traces can be converted to several formats. The `trace_event` format is very useful because
+XRay's traces can be converted to several formats. The `trace_event` format is very useful because
 it's easy to parse and there are already a number of tools that support it, so we'll use that one:
 
 ```bash
@@ -131,24 +165,15 @@ generating a flamegraph and a sandwich view of your data.
 
 <Image img={sandwich} size="md" alt="sandwich" />
 
-## Profiling ClickHouse \{#profiling-clickhouse\}
-
-1. Pass `-DENABLE_XRAY=1` to `cmake` when building ClickHouse. This [sets the proper compiler
-   flags](https://github.com/ClickHouse/ClickHouse/blob/9caac43b2aa5e7c5474a87b7596dea95f5a2569a/cmake/xray_instrumentation.cmake).
-2. Set `XRAY_OPTIONS="patch_premain=true xray_mode=xray-basic verbosity=1"` env var when running
-   ClickHouse to generate the trace.
-3. Convert the trace to an interesting format such as trace event: `llvm-xray convert --symbolize
-   --instr_map=./build/programs/clickhouse --output-format=trace_event xray-log.clickhouse.ZqKprE |
-   gzip > clickhouse-trace.txt.gz`.
-4. Visualize the trace in [speedscope.app](https://www.speedscope.app/) or
-   [Perfetto](https://ui.perfetto.dev).
-
-<Image img={clickhouse_time_order} alt="clickhouse time-order" size="md"/>
-
-Notice that this is the visualization of only one thread. You can select the others `tid`s on the
-top bar.
-
 ## Check out the docs \{#check-out-the-docs\}
 
-Take a look at the [XRay Instrumentation](https://llvm.org/docs/XRay.html) and [Debugging with
-XRay](https://llvm.org/docs/XRayExample.html) documentation to learn more details.
+- [SYSTEM INSTRUMENT](https://clickhouse.com/docs/sql-reference/statements/system#instrument) — Add
+  or remove instrumentation points.
+- [system.instrumentation](https://clickhouse.com/docs/operations/system-tables/instrumentation)
+  — Inspect instrumented points.
+- [system.symbols](https://clickhouse.com/docs/operations/system-tables/symbols) — Inspect
+  symbols to add instrumentation points.
+- [system.trace_log](https://clickhouse.com/docs/operations/system-tables/trace_log) — Inspect data
+  collected using instrumentation points.
+- [XRay Instrumentation](https://llvm.org/docs/XRay.html)
+- [Debugging with XRay](https://llvm.org/docs/XRayExample.html) documentation to learn more details.
