@@ -42,13 +42,13 @@ At scale, managing fleets of OpenTelemetry Collectors becomes the operational bo
 
 Bindplane solves this by providing:
 
-- Centralized management for thousands to over one million OpenTelemetry Collectors
+- Centralized management for OpenTelemetry Collectors from thousands to over a million
 - Visual configuration editing with safe, one-click rollouts
 - Automatic resource detection and enrichment applied consistently before data reaches ClickStack
 - Fan-out routing, so the same telemetry streams can be sent to ClickStack and other destinations simultaneously
 - Full pipeline visibility, including collector health, throughput, and end-to-end performance
 
-:::tip Key Takeaways:
+:::tip Key takeaways
 - **ClickStack handles extreme ingestion volumes, storage, and fast analytical queries**
 - **Bindplane manages the ingestion pipeline and operational complexity of running collector fleets**
 :::
@@ -80,7 +80,7 @@ Bindplane solves this by providing:
 6. Give the destination a name (e.g., "ClickStack Production")
 7. Click **Save** to create the destination
 
-:::tip Key Takeaways:
+:::tip Key takeaways
 The ClickStack destination supports both HTTP and gRPC protocols. For high-volume scenarios, gRPC with compression (gzip, zstd, or snappy) is recommended for better performance.
 :::
 
@@ -100,7 +100,7 @@ Once your ClickStack destination is configured, create a configuration to proces
    - Select the ClickStack destination you created in the previous step
    - Choose which telemetry types to send (Logs, Metrics, Traces, or all)
 
-:::tip Key Takeaways:
+:::tip Key takeaways
 You can add processors for filtering, sampling, masking, enrichment, batching, and more to shape telemetry before it reaches ClickStack. This ensures consistent, structured data arrives in ClickHouse.
 :::
 
@@ -132,7 +132,7 @@ These processors are applied consistently across your collector fleet before dat
    - Bindplane will validate the configuration before rolling it out
    - Monitor the rollout status in the Bindplane UI
 
-:::tip Key Takeaways:
+:::tip Key takeaways
 Bindplane provides safe, one-click rollouts with validation. You can monitor collector health, throughput, and any errors in real-time through the Bindplane interface.
 :::
 
