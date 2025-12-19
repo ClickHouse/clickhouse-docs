@@ -487,8 +487,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
-<BetaBadge/>
-
 **Псевдонимы**: `enable_parallel_replicas`
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1786,8 +1784,6 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 UInt64, чтобы минимизировать публичную часть
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 Кластер для сегмента, в котором расположен текущий сервер
 
@@ -8628,8 +8624,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "Если значение равно true, подзапрос для IN будет выполняться на каждой ведомой реплике"}]}]}/>
@@ -8645,8 +8639,6 @@ FROM fuse_tbl
 Разрешает использование materialized view с параллельными репликами
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8712,15 +8704,11 @@ FROM fuse_tbl
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение установлено в `true`, ClickHouse также будет использовать алгоритм параллельных реплик для нереплицируемых таблиц MergeTree.
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8730,8 +8718,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами. В настоящее время отключён из-за проблем с производительностью"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами. В настоящее время отключён из-за проблем с производительностью"}]}]}/>
@@ -8739,8 +8725,6 @@ FROM fuse_tbl
 Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8750,8 +8734,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "Значение для этого SETTING теперь определяется автоматически"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "Добавлен новый SETTING для управления размером сегмента в новой реализации координатора параллельных реплик"}]}]}/>
@@ -8760,15 +8742,11 @@ FROM fuse_tbl
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-Ограничивает число реплик, используемых в запросе, значением (оцениваемое число строк для чтения / min_number_of_rows_per_replica). Максимальное число по-прежнему ограничено параметром `max_parallel_replicas`.
+Ограничивает число реплик, используемых в запросе, значением (оценочное количество строк для чтения / min_number_of_rows_per_replica). Максимальное число по-прежнему ограничено параметром `max_parallel_replicas`.
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8778,8 +8756,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Параллельные реплики поддерживаются только при включённом анализаторе"}]}]}/>
@@ -8788,8 +8764,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "Если установлено значение true, JOIN может быть выполнен с использованием алгоритма параллельных реплик, и все хранилища правой части JOIN являются *MergeTree, будет использован локальный JOIN вместо GLOBAL JOIN."}]}]}/>
@@ -8797,8 +8771,6 @@ FROM fuse_tbl
 Если установлено значение true, JOIN может быть выполнен с использованием алгоритма параллельных реплик, и все хранилища правой части JOIN являются *MergeTree, будет использован локальный JOIN вместо GLOBAL JOIN.
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
