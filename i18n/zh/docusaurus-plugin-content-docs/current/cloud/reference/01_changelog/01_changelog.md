@@ -42,6 +42,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 :::
 
 
+## 2025 年 12 月 19 日 {#december-19-2025}
+
+- AWS ap-south-1 现在支持部署符合 PCI 标准的服务。
+- **统一用户身份功能私有预览**
+  有兴趣通过控制台管理数据库用户的客户，现在可以为 SQL 控制台启用一种新的身份验证方法。
+  这使客户能够在我们继续将数据库用户管理功能引入控制台的同时，抢先试用新的身份验证方式。
+- **S3 ClickPipes 现已支持无序模式（Unordered mode）**：
+  客户现在可以以任意顺序从 Amazon S3 摄取数据到 ClickHouse Cloud，用于事件驱动型分析。
+  文件不再需要按字典序排列即可被读取。更多详情请参阅公告[博客](https://clickhouse.com/blog/clickpipes-s3-unordered-mode)。
+- Fivetran 连接器最近已进入 beta 阶段。如果您在使用 Fivetran，并希望将 ClickHouse 配置为目标端，请查看这些[文档](https://fivetran.com/docs/destinations/clickhouse/setup-guide)。
+
 ## 2025 年 12 月 12 日 {#december-12-2025}
 
 - **SAML SSO 自助配置**
