@@ -42,6 +42,17 @@ import dashboards from '@site/static/images/cloud/reference/may-30-dashboards.pn
 :::
 
 
+## 2025年12月19日 {#december-19-2025}
+
+- AWS ap-south-1 で PCI 準拠のサービスを起動できるようになりました。
+- **Unified user identity プライベートプレビュー**
+  コンソールからデータベースユーザーを管理したいお客様は、SQL コンソール向けの新しい認証方式を有効化できます。
+  これにより、コンソールにデータベースユーザー管理機能を追加する作業を進めている間も、新しい認証方式をお試しいただけます。
+- **Unordered mode が S3 ClickPipes で利用可能に**:
+  お客様は、Amazon S3 から ClickHouse Cloud へ、イベントドリブンな分析向けに任意の順序でデータを取り込むことができるようになりました。
+  取り込み対象のファイルは、辞書順で並んでいる必要がなくなりました。詳細はアナウンスメントの[ブログ記事](https://clickhouse.com/blog/clickpipes-s3-unordered-mode)を参照してください。
+- Fivetran コネクタは最近ベータ版に移行しました。Fivetran を使用していて、ClickHouse を宛先としてセットアップしたい場合は、こちらの[ドキュメント](https://fivetran.com/docs/destinations/clickhouse/setup-guide)を参照してください。
+
 ## 2025年12月12日 {#december-12-2025}
 
 - **SAML SSO セルフサービス設定**
