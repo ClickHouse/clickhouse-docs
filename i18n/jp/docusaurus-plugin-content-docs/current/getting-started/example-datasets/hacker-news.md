@@ -488,7 +488,7 @@ Parquet ファイルに対する型推論では、CSV ファイルのスキー�
   └─────────────┴────────────────────────┴
   ```
 
-  CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます。
+  CSV ファイルの場合と同様に、選択する型をより細かく制御するためにスキーマを手動で指定し、S3 から直接データを挿入できます:
 
   ```sql
   CREATE TABLE hackernews
@@ -545,16 +545,16 @@ Parquet ファイルに対する型推論では、CSV ファイルのスキー�
 
   ```response title="Response"
   #highlight-next-line
-  1行が返されました。経過時間: 0.843秒。処理済み: 2874万行、9.75 GB (3408万行/秒、11.57 GB/秒)
+  1 row in set. Elapsed: 0.843 sec. Processed 28.74 million rows, 9.75 GB (34.08 million rows/s., 11.57 GB/s.)
   ┌─count()─┐
   │     516 │
   └─────────┘
   ```
 
-  次に、このクエリを高速化するために、「comment」列に転置[インデックス](/engines/table-engines/mergetree-family/invertedindexes)を作成します。
+  次に、このクエリを高速化するために、「comment」列に転置[索引](/engines/table-engines/mergetree-family/textindexes)を作成します。
   なお、コメントは小文字に変換されてインデックス化されるため、大文字小文字を区別せずに用語を検索できます。
 
-  以下のコマンドを実行してインデックスを作成します。
+  以下のコマンドを実行してインデックスを作成します:
 
   ```sql
   ALTER TABLE hackernews ADD INDEX comment_idx(lower(comment)) TYPE inverted;
@@ -575,7 +575,7 @@ Parquet ファイルに対する型推論では、CSV ファイルのスキー�
 
   ```response title="Response"
   #highlight-next-line
-  1行が返されました。経過時間: 0.248秒。処理行数: 454万行、1.79 GB (1,834万行/秒、7.24 GB/秒)
+  1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
   ┌─count()─┐
   │    1145 │
   └─────────┘

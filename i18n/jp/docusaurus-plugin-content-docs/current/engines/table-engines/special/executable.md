@@ -39,7 +39,7 @@ Executable(script_name, format, [input_query...])
   * 説明: コマンドの標準入力へデータを書き込むタイムアウト（ミリ秒）
   * デフォルト値: 10000
 
-例を見てみましょう。次の Python スクリプトは `my_script.py` という名前で、`user_scripts` フォルダ内に保存されています。数値 `i` を入力として受け取り、`i` 個のランダムな文字列を出力します。各文字列の先頭には、タブで区切られた番号が付与されます：
+例を見てみましょう。次の Python スクリプトは `my_script.py` という名前で、`user_scripts` フォルダ内に保存されています。数値 `i` を入力として受け取り、`i` 個のランダムな文字列を出力します。各文字列の先頭には、タブ区切りの番号が付与されます：
 
 ```python
 #!/usr/bin/python3
@@ -102,7 +102,7 @@ SELECT * FROM my_executable_table
 
 Hacker News サイトのユーザーはコメントを投稿します。Python には自然言語処理ツールキット (`nltk`) があり、その中の `SentimentIntensityAnalyzer` を使うと、コメントがポジティブかネガティブかニュートラルかを判定し、-1（非常にネガティブなコメント）から 1（非常にポジティブなコメント）の値を割り当てることができます。`nltk` を使って Hacker News のコメントのセンチメント（感情）を計算する `Executable` テーブルを作成してみましょう。
 
-この例では、[こちら](/engines/table-engines/mergetree-family/invertedindexes/#hacker-news-dataset) で説明している `hackernews` テーブルを使用します。`hackernews` テーブルには、型が `UInt64` の `id` 列と、`comment` という名前の `String` 型の列があります。まずは `Executable` テーブルを定義することから始めましょう。
+この例では、[こちら](/engines/table-engines/mergetree-family/textindexes/#hacker-news-dataset) で説明している `hackernews` テーブルを使用します。`hackernews` テーブルには、型が `UInt64` の `id` カラムと、`comment` という名前の `String` 型のカラムがあります。まずは `Executable` テーブルを定義することから始めましょう。
 
 ```sql
 CREATE TABLE sentiment (

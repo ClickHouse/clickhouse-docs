@@ -17,6 +17,7 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
+
 # 查看和恢复备份 {#review-and-restore-backups}
 
 本指南介绍 ClickHouse Cloud 中备份的工作机制、可用于为你的服务配置备份的选项，以及如何从备份中恢复数据。
@@ -36,6 +37,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 <Image img={backup_usage} size="md" alt="ClickHouse Cloud 中的备份使用情况图表" border/>
 
 要估算备份的总成本，你需要先设置一个备份计划。我们也在更新我们的[价格计算器](https://clickhouse.com/pricing)，以便你在设置计划之前就能获得每月成本的预估值。你需要提供以下参数来估算成本：
+
 - 全量和增量备份的大小
 - 期望的备份频率
 - 期望的保留时间
@@ -94,19 +96,19 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
   CREATE USER exporter
   IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
   SETTINGS readonly = 1;
-  ```
+```
 
 ```sql
   GRANT SELECT ON db.table TO exporter;
-  ```
+```
 
-复制该表的定义：
+复制该表的表结构定义：
 
 ```sql
   SELECT create_table_query
   FROM system.tables
   WHERE database = 'db' AND table = 'table'
-  ```
+```
 
 **在目标 ClickHouse Cloud 系统上（包含损坏表的那个系统）：**
 
@@ -114,7 +116,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 ```sql
   CREATE DATABASE db
-  ```
+```
 
 使用源端的 `CREATE TABLE` 语句来创建目标表：
 
@@ -126,7 +128,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
   CREATE TABLE db.table ...
   ENGINE = ReplicatedMergeTree
   ORDER BY ...
-  ```
+```
 
 使用 `remoteSecure` 函数将数据从刚恢复的 ClickHouse Cloud 服务拉取到原始服务中：
 
@@ -134,9 +136,10 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
   INSERT INTO db.table
   SELECT *
   FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
-  ```
+```
 
-在成功将数据插入到原有服务后，请务必在该服务中验证数据。数据验证完成后，还应删除新服务。
+在成功将数据插入原始服务后，请务必在该服务中验证数据。数据验证完成后，还应删除新服务。
+
 
 ## 恢复已删除的表 {#undeleting-or-undropping-tables}
 
@@ -156,8 +159,27 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 :::
 
 :::note
-旧版套餐：对于使用旧版套餐的客户，默认的每日备份保留 24 小时，其占用的存储空间已包含在存储费用中。
+旧版套餐：对于使用旧版套餐的客户，默认保留 24 小时的每日备份，其占用的存储空间已包含在存储费用中。
 :::
+
+
+## 备份耗时 {#backup-durations}
+
+备份和恢复所需时间取决于多个因素，例如数据库大小、架构（schema），以及数据库中的表数量。
+增量备份通常会比完整备份快得多，因为备份的数据量更少。
+从增量备份恢复时会比从完整备份稍慢一些，因为如上所述，恢复过程中会包含备份链中的所有增量备份以及最后一个完整备份。
+
+在我们的测试中，约 1 TB 的较小备份可能需要大约 10–15 分钟或更长时间才能完成。
+小于 20 TB 的备份通常应在一小时内完成，而备份 50 TB 的数据大约需要 2–3 小时。
+在更大规模时，备份会有规模收益，我们观察到部分内部服务的备份规模可达 1 PB，且在大约 10 小时内即可完成。
+
+:::note
+备份到外部存储桶的速度可能会比备份到 ClickHouse 存储桶更慢。
+:::
+
+恢复所需时间与备份所需时间大致相同。
+
+我们建议使用您自己的数据库或示例数据进行测试，以获得更准确的估算，因为实际耗时取决于上文所述的多个因素。
 
 ## 可配置备份 {#configurable-backups}
 
