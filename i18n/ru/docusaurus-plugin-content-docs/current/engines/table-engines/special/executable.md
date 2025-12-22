@@ -1,6 +1,6 @@
 ---
-description: 'Движки таблиц `Executable` и `ExecutablePool` позволяют создать
-  таблицу, строки которой генерируются скриптом, который вы задаёте (записывая строки
+description: 'Движки таблиц `Executable` и `ExecutablePool` позволяют определить
+  таблицу, строки которой генерируются указанным вами скриптом (путём записи строк
   в **stdout**).'
 sidebar_label: 'Executable/ExecutablePool'
 sidebar_position: 40
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     main()
 ```
 
-Таблица `my_executable_table` ниже создаётся на основе вывода `my_script.py`, который будет генерировать 10 случайных строк каждый раз, когда вы выполняете `SELECT` из `my_executable_table`:
+Следующая таблица `my_executable_table` создаётся на основе вывода скрипта `my_script.py`, который будет генерировать 10 случайных строк каждый раз при выполнении запроса `SELECT` к `my_executable_table`:
 
 ```sql
 CREATE TABLE my_executable_table (
@@ -100,11 +100,12 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
+
 ## Передача результатов запроса в скрипт {#passing-query-results-to-a-script}
 
 Пользователи веб‑сайта Hacker News оставляют комментарии. В Python есть набор инструментов для обработки естественного языка (`nltk`) с `SentimentIntensityAnalyzer` для определения, являются ли комментарии положительными, отрицательными или нейтральными, — в том числе для присвоения значения от -1 (очень негативный комментарий) до 1 (очень позитивный комментарий). Давайте создадим таблицу `Executable`, которая вычисляет тональность комментариев Hacker News с помощью `nltk`.
 
-В этом примере используется таблица `hackernews`, описанная [здесь](/engines/table-engines/mergetree-family/invertedindexes/#hacker-news-dataset). Таблица `hackernews` включает столбец `id` типа `UInt64` и столбец типа `String` с именем `comment`. Начнём с определения таблицы `Executable`:
+В этом примере используется таблица `hackernews`, описанная [здесь](/engines/table-engines/mergetree-family/textindexes/#hacker-news-dataset). Таблица `hackernews` включает столбец `id` типа `UInt64` и столбец типа `String` с именем `comment`. Начнём с определения таблицы `Executable`:
 
 ```sql
 CREATE TABLE sentiment (
@@ -172,7 +173,8 @@ SELECT *
 FROM sentiment
 ```
 
-Ответ будет выглядеть следующим образом:
+Результат будет таким:
+
 
 ```response
 ┌───────id─┬─sentiment─┐
@@ -198,6 +200,7 @@ FROM sentiment
 │ 21465723 │   -0.6956 │
 └──────────┴───────────┘
 ```
+
 
 ## Создание таблицы `ExecutablePool` {#creating-an-executablepool-table}
 
