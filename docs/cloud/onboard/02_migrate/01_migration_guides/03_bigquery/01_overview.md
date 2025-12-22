@@ -101,7 +101,7 @@ In addition to the primary index created from the values of a table's primary ke
 
 ## Search indexes {#search-indexes}
 
-Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/invertedindexes) can be created for ClickHouse tables on columns with string values.
+Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/textindexes) can be created for ClickHouse tables on columns with string values.
 
 ## Vector indexes {#vector-indexes}
 

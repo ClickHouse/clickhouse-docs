@@ -3700,6 +3700,11 @@
       "source": "/docs/about-us/faq",
       "destination": "/docs/concepts/faq",
       "permanent": true
+    },
+    {
+      "source": "/docs/engines/table-engines/mergetree-family/invertedindexes",
+      "destination": "/docs/engines/table-engines/mergetree-family/textindexes",
+      "permanent": true
     }
   ]
 }
