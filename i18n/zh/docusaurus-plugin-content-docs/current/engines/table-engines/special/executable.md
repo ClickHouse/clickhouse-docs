@@ -67,7 +67,7 @@ if __name__ == "__main__":
     main()
 ```
 
-下面的 `my_executable_table` 是由 `my_script.py` 的输出构建而成的，每次你对 `my_executable_table` 执行一次 `SELECT` 查询时，`my_script.py` 都会生成 10 个随机字符串：
+下面的 `my_executable_table` 是基于 `my_script.py` 的输出构建的，每次你从 `my_executable_table` 执行一次 `SELECT` 查询时，`my_script.py` 都会生成 10 个随机字符串：
 
 ```sql
 CREATE TABLE my_executable_table (
@@ -77,7 +77,7 @@ CREATE TABLE my_executable_table (
 ENGINE = Executable('my_script.py', TabSeparated, (SELECT 10))
 ```
 
-创建该表会立即返回，不会触发脚本执行。对 `my_executable_table` 发起查询时会触发脚本执行：
+创建该表后会立即返回，不会触发脚本执行。对 `my_executable_table` 发起查询时会调用脚本：
 
 ```sql
 SELECT * FROM my_executable_table
@@ -98,11 +98,12 @@ SELECT * FROM my_executable_table
 └───┴────────────┘
 ```
 
+
 ## 将查询结果传递给脚本 {#passing-query-results-to-a-script}
 
 Hacker News 网站的用户会留下评论。Python 提供了一个自然语言处理工具包（`nltk`），其中的 `SentimentIntensityAnalyzer` 可用于判断评论是正面、负面还是中性，并为其打分，分值范围在 -1（极度负面评论）到 1（极度正面评论）之间。我们来创建一个 `Executable` 表，使用 `nltk` 计算 Hacker News 评论的情感。
 
-本示例使用了 [此处](/engines/table-engines/mergetree-family/invertedindexes/#hacker-news-dataset) 描述的 `hackernews` 表。`hackernews` 表包含一个类型为 `UInt64` 的 `id` 列，以及一个名为 `comment` 的 `String` 列。我们先从定义 `Executable` 表开始：
+本示例使用了 [此处](/engines/table-engines/mergetree-family/textindexes/#hacker-news-dataset) 描述的 `hackernews` 表。`hackernews` 表包含一个类型为 `UInt64` 的 `id` 列，以及一个名为 `comment` 的 `String` 列。我们先从定义 `Executable` 表开始：
 
 ```sql
 CREATE TABLE sentiment (
@@ -170,7 +171,8 @@ SELECT *
 FROM sentiment
 ```
 
-响应如下：
+返回结果如下：
+
 
 ```response
 ┌───────id─┬─sentiment─┐
@@ -196,6 +198,7 @@ FROM sentiment
 │ 21465723 │   -0.6956 │
 └──────────┴───────────┘
 ```
+
 
 ## 创建 `ExecutablePool` 表 {#creating-an-executablepool-table}
 

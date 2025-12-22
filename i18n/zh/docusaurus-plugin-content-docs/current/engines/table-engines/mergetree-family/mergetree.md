@@ -494,7 +494,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### 文本索引 {#text}
 
-支持全文检索，详见[此处](invertedindexes.md)。
+支持全文检索，详见[此处](textindexes.md)。
 
 #### 向量相似度 {#vector-similarity}
 

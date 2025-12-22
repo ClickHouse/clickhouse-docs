@@ -496,7 +496,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### Текстовый индекс {#text}
 
-Поддерживает полнотекстовый поиск, подробнее см. [здесь](invertedindexes.md).
+Поддерживает полнотекстовый поиск, подробнее см. [здесь](textindexes.md).
 
 #### Сходство векторов {#vector-similarity}
 

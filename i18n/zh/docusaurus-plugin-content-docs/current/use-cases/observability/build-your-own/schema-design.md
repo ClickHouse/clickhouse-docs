@@ -474,7 +474,7 @@ FROM otel_logs
 
 ## 使用 map {#using-maps}
 
-前面的示例展示了使用 `map['key']` 语法来访问 `Map(String, String)` 列中的值。除了使用 map 语法访问嵌套键之外，还可以使用 ClickHouse 提供的专用 [map 函数](/sql-reference/functions/tuple-map-functions#mapkeys) 来过滤或选取这些列。
+前面的示例展示了使用 `map['key']` 语法来访问 `Map(String, String)` 列中的值。除了使用 map 语法访问嵌套键之外，还可以使用 ClickHouse 提供的专用 [map 函数](/sql-reference/functions/tuple-map-functions#mapKeys) 来过滤或选取这些列。
 
 例如，下面的查询先使用 [`mapKeys` 函数](/sql-reference/functions/tuple-map-functions#mapkeys)，再配合 [`groupArrayDistinctArray` 函数](/sql-reference/aggregate-functions/combinators)（一种组合器），来识别 `LogAttributes` 列中所有可用的唯一键。
 
@@ -492,7 +492,7 @@ Peak memory usage: 71.90 MiB.
 ```
 
 :::note 避免使用点号
-我们不建议在 Map 类型的列名中使用点号，并且可能会在未来废弃对点号的支持。请改用 `_`。
+我们不建议在 Map 类型的列名中使用点号，将来可能会废弃这种用法。请改用 `_`。
 :::
 
 

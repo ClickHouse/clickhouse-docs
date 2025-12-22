@@ -25,7 +25,7 @@ doc_type: 'reference'
 * [Regexp](/interfaces/formats/Regexp) キャッシュ。
 * コンパイル済み式のキャッシュ。
 * [ベクトル類似性インデックス](../engines/table-engines/mergetree-family/annindexes.md) キャッシュ。
-* [テキストインデックス](../engines/table-engines/mergetree-family/invertedindexes.md#caching) キャッシュ。
+* [テキストインデックス](../engines/table-engines/mergetree-family/textindexes.md#caching) キャッシュ。
 * [Avro format](/interfaces/formats/Avro) スキーマキャッシュ。
 * [Dictionaries](../sql-reference/dictionaries/index.md) データキャッシュ。
 * スキーマ推論キャッシュ。
