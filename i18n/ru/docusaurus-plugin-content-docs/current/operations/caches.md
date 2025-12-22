@@ -25,7 +25,7 @@ doc_type: 'reference'
 * Кэш [Regexp](/interfaces/formats/Regexp).
 * Кэш скомпилированных выражений.
 * Кэш [индекса векторного сходства](../engines/table-engines/mergetree-family/annindexes.md).
-* Кэш [текстового индекса](../engines/table-engines/mergetree-family/invertedindexes.md#caching).
+* Кэш [текстового индекса](../engines/table-engines/mergetree-family/textindexes.md#caching).
 * Кэш схем [формата Avro](/interfaces/formats/Avro).
 * Кэш данных [словарей](../sql-reference/dictionaries/index.md).
 * Кэш инференса схем.

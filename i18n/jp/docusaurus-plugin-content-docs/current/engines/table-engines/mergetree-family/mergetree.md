@@ -495,7 +495,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 {#text}
 
-全文検索をサポートしています。詳細は[こちら](invertedindexes.md)を参照してください。
+全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 {#vector-similarity}
 
