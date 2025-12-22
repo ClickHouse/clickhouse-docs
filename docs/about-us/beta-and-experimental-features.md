@@ -49,36 +49,6 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
-| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
-| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
-| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
-| [allow_experimental_parallel_reading_from_replicas](/operations/settings/settings#allow_experimental_parallel_reading_from_replicas) | `0` |
-| [parallel_replicas_mode](/operations/settings/settings#parallel_replicas_mode) | `read_tasks` |
-| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
-| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
-| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
-| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
-| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
-| [cluster_for_parallel_replicas](/operations/settings/settings#cluster_for_parallel_replicas) | `` |
-| [parallel_replicas_allow_in_with_subquery](/operations/settings/settings#parallel_replicas_allow_in_with_subquery) | `1` |
-| [parallel_replicas_for_non_replicated_merge_tree](/operations/settings/settings#parallel_replicas_for_non_replicated_merge_tree) | `0` |
-| [parallel_replicas_min_number_of_rows_per_replica](/operations/settings/settings#parallel_replicas_min_number_of_rows_per_replica) | `0` |
-| [parallel_replicas_prefer_local_join](/operations/settings/settings#parallel_replicas_prefer_local_join) | `1` |
-| [parallel_replicas_mark_segment_size](/operations/settings/settings#parallel_replicas_mark_segment_size) | `0` |
-| [parallel_replicas_local_plan](/operations/settings/settings#parallel_replicas_local_plan) | `1` |
-| [parallel_replicas_index_analysis_only_on_coordinator](/operations/settings/settings#parallel_replicas_index_analysis_only_on_coordinator) | `1` |
-| [parallel_replicas_support_projection](/operations/settings/settings#parallel_replicas_support_projection) | `1` |
-| [parallel_replicas_only_with_analyzer](/operations/settings/settings#parallel_replicas_only_with_analyzer) | `1` |
-| [parallel_replicas_insert_select_local_pipeline](/operations/settings/settings#parallel_replicas_insert_select_local_pipeline) | `1` |
-| [parallel_replicas_connect_timeout_ms](/operations/settings/settings#parallel_replicas_connect_timeout_ms) | `300` |
-| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
-| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
-| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
-| [session_timezone](/operations/settings/settings#session_timezone) | `` |
-| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
-| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
-| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
-| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 | [shared_merge_tree_activate_coordinated_merges_tasks](/operations/settings/merge-tree-settings#shared_merge_tree_activate_coordinated_merges_tasks) | `0` |
 | [shared_merge_tree_enable_coordinated_merges](/operations/settings/merge-tree-settings#shared_merge_tree_enable_coordinated_merges) | `0` |
 | [shared_merge_tree_enable_keeper_parts_extra_data](/operations/settings/merge-tree-settings#shared_merge_tree_enable_keeper_parts_extra_data) | `0` |
@@ -91,6 +61,22 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [shared_merge_tree_merge_coordinator_min_period_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_coordinator_min_period_ms) | `1` |
 | [shared_merge_tree_merge_worker_fast_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_fast_timeout_ms) | `100` |
 | [shared_merge_tree_merge_worker_regular_timeout_ms](/operations/settings/merge-tree-settings#shared_merge_tree_merge_worker_regular_timeout_ms) | `10000` |
+| [geotoh3_argument_order](/operations/settings/settings#geotoh3_argument_order) | `lat_lon` |
+| [enable_lightweight_update](/operations/settings/settings#enable_lightweight_update) | `1` |
+| [allow_experimental_correlated_subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries) | `1` |
+| [parallel_replicas_count](/operations/settings/settings#parallel_replicas_count) | `0` |
+| [parallel_replica_offset](/operations/settings/settings#parallel_replica_offset) | `0` |
+| [parallel_replicas_custom_key](/operations/settings/settings#parallel_replicas_custom_key) | `` |
+| [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
+| [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
+| [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
+| [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
+| [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
+| [session_timezone](/operations/settings/settings#session_timezone) | `` |
+| [low_priority_query_wait_time_ms](/operations/settings/settings#low_priority_query_wait_time_ms) | `1000` |
+| [allow_statistics_optimize](/operations/settings/settings#allow_statistics_optimize) | `1` |
+| [enable_full_text_index](/operations/settings/settings#enable_full_text_index) | `0` |
+| [allow_experimental_delta_kernel_rs](/operations/settings/settings#allow_experimental_delta_kernel_rs) | `1` |
 
 
 ## Experimental settings {#experimental-settings}
@@ -114,6 +100,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
+| [automatic_parallel_replicas_mode](/operations/settings/settings#automatic_parallel_replicas_mode) | `0` |
+| [automatic_parallel_replicas_min_bytes_per_replica](/operations/settings/settings#automatic_parallel_replicas_min_bytes_per_replica) | `0` |
 | [allow_experimental_materialized_postgresql_table](/operations/settings/settings#allow_experimental_materialized_postgresql_table) | `0` |
 | [allow_experimental_funnel_functions](/operations/settings/settings#allow_experimental_funnel_functions) | `0` |
 | [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions) | `0` |

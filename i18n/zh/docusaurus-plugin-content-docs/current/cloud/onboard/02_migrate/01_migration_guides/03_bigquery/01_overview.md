@@ -91,12 +91,12 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 
 除了基于表主键列值创建的主索引之外，ClickHouse 还允许你在非主键列上创建二级索引。ClickHouse 提供多种类型的二级索引，每种都适用于不同类型的查询：
 
-- **Bloom 过滤器索引（Bloom Filter Index）**：
+- [**Bloom 过滤器索引（Bloom Filter Index）**](/engines/table-engines/mergetree-family/mergetree#bloom-filter)：
   - 用于加速带有等值条件（例如 =、IN）的查询。
   - 使用概率型数据结构来判断某个值是否存在于数据块中。
-- **Token Bloom 过滤器索引（Token Bloom Filter Index）**：
+- [**Token Bloom 过滤器索引（Token Bloom Filter Index）**](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter)：
   - 类似于 Bloom 过滤器索引，但用于分词后的字符串，适合全文搜索查询。
-- **最小-最大索引（Min-Max Index）**：
+- [**最小-最大索引（Min-Max Index）**](/engines/table-engines/mergetree-family/mergetree#minmax)：
   - 为每个分区片段维护某列的最小值和最大值。
   - 有助于跳过读取不在指定范围内的分区片段。
 
