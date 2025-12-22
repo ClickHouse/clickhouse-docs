@@ -474,7 +474,7 @@ ClickHouse のオブザーバビリティデータに対しては、[Nullable](/
 
 ## マップの使用 {#using-maps}
 
-前の例では、`Map(String, String)` カラム内の値にアクセスするために、`map['key']` のようなマップ構文を使用する方法を示しました。ネストされたキーにアクセスするためにマップ構文を使用できるだけでなく、これらのカラムをフィルタリングまたは選択するために、ClickHouse に用意されている専用の [map 関数](/sql-reference/functions/tuple-map-functions#mapkeys)も利用できます。
+前の例では、`Map(String, String)` カラム内の値にアクセスするために、`map['key']` のようなマップ構文を使用する方法を示しました。ネストされたキーにアクセスするためにマップ構文を使用できるだけでなく、これらのカラムをフィルタリングまたは選択するために、ClickHouse に用意されている専用の [map 関数](/sql-reference/functions/tuple-map-functions#mapKeys)も利用できます。
 
 例えば、次のクエリは、[`mapKeys` 関数](/sql-reference/functions/tuple-map-functions#mapkeys)と、それに続く（コンビネータである）[`groupArrayDistinctArray` 関数](/sql-reference/aggregate-functions/combinators)を使用して、`LogAttributes` カラム内で利用可能なすべての一意なキーを特定します。
 
@@ -492,7 +492,7 @@ Peak memory usage: 71.90 MiB.
 ```
 
 :::note ドットの使用を避ける
-Map 型のカラム名にドットを使うことは推奨しておらず、将来的に非推奨とする可能性があります。代わりに `_` を使用してください。
+Map 型のカラム名にドットを使うことは推奨しておらず、将来的にその使用を非推奨とする可能性があります。代わりに `_` を使用してください。
 :::
 
 
