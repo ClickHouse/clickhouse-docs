@@ -156,6 +156,24 @@ SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 Legacy Plans: For customers on legacy plans, default daily backups retained for 24 hours, are included in the storage cost.
 :::
 
+## Backup durations {#backup-durations}
+
+Backup and restore durations depend on several factors such as the size of the database as well as the schema and the number of tables in the database.
+Incremental backups will usually complete much faster than a full backup as less data is being backed up.
+Restoring from an incremental backup will be slightly slower than restoring from a full backup as all incremental backups and the last full backup in the chain are included in the restore as explained above.
+
+In our testing, we have seen that smaller backups of ~1 TB could take around 10-15 minutes or longer to back up.
+Backups less than 20 TB should complete within an hour, and backing up 50 TB of data should take about 2-3 hours.
+Backups get economies of scale at larger sizes, and we have seen backups of up to 1 PB for some internal services complete in about 10 hours.
+
+:::note
+Backups to external buckets may be slower than backups to ClickHouse buckets
+:::
+
+Restore durations are about the same as the backup durations.
+
+We recommend testing with your own database or sample data to get better estimates as the actual duration depends on several factors as outlined above.
+
 ## Configurable backups {#configurable-backups}
 
 If you want to set up a backups schedule different from the default backup schedule, take a look at [Configurable Backups](/cloud/manage/backups/configurable-backups).
