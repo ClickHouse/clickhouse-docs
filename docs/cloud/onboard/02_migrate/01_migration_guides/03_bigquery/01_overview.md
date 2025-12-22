@@ -90,12 +90,12 @@ In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse do
 
 In addition to the primary index created from the values of a table's primary key columns, ClickHouse allows you to create secondary indexes on columns other than those in the primary key.  ClickHouse offers several types of secondary indexes, each suited to different types of queries:
 
-- **Bloom Filter Index**:
+- [**Bloom Filter Index**](/engines/table-engines/mergetree-family/mergetree#bloom-filter):
   - Used to speed up queries with equality conditions (e.g., =, IN).
   - Uses probabilistic data structures to determine whether a value exists in a data block.
-- **Token Bloom Filter Index**:
+- [**Token Bloom Filter Index**](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter):
   - Similar to a Bloom Filter Index but used for tokenized strings and  suitable for full-text search queries.
-- **Min-Max Index**:
+- [**Min-Max Index**](/engines/table-engines/mergetree-family/mergetree#minmax):
   - Maintains the minimum and maximum values of a column for each data part.
   - Helps to skip reading data parts that do not fall within the specified range.
 
