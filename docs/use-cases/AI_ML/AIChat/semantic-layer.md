@@ -151,7 +151,7 @@ Always include these categorizations when generating traffic or revenue reports.
 </business_rules>
 ```
 
-## Example: Data Structure Quirks {#example-data-quirks}
+## Example: Data structure quirks {#example-data-quirks}
 
 Document unconventional data formats or legacy schema decisions:
 
