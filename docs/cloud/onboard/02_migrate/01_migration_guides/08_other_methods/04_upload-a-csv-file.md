@@ -111,4 +111,3 @@ the data based on the error message for the failed insert.
 <Image img={csv_10} alt="upload_file_11" />
 
 </VerticalStepper>
-
