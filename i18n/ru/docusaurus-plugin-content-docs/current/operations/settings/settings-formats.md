@@ -411,6 +411,12 @@ import VersionHistory from '@theme/VersionHistory/VersionHistory';
 
 Считывать типы данных в бинарном формате вместо имен типов во входном формате RowBinaryWithNamesAndTypes.
 
+## input_format_binary_max_type_complexity {#input_format_binary_max_type_complexity}   
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+Максимальное количество узлов типов при декодировании бинарных типов (не глубина, а общее число). `Map(String, UInt32)` = 3 узла. Защищает от вредоносных входных данных. 0 = без ограничения.
+
 ## input_format_binary_read_json_as_string {#input_format_binary_read_json_as_string}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
