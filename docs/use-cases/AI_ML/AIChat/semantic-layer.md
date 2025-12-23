@@ -48,7 +48,7 @@ Structure your instructions using clear, actionable language. Include:
 
 </VerticalStepper>
 
-## Best Practices {#best-practices}
+## Best practices {#best-practices}
 
 ### Treat context as a finite resource {#finite-resource}
 
