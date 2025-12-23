@@ -94,7 +94,7 @@ Examples are the "pictures worth a thousand words." Rather than stuffing every e
 
 Note: Minimal doesn't necessarily mean short. You need enough detail to ensure the agent adheres to expected behavior, just avoid unnecessary verbosity.
 
-## Example: Calculated Metrics from Raw Data {#example-calculated-metrics}
+## Example: Calculated Metrics from raw data {#example-calculated-metrics}
 
 Guide the agent when metrics require specific calculations rather than direct column access:
 
