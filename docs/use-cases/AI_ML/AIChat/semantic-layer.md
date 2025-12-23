@@ -117,7 +117,7 @@ GROUP BY date;
 </metric_calculations>
 ```
 
-## Example: Business Logic Rules {#example-business-logic}
+## Example: Business logic rules {#example-business-logic}
 
 Define domain-specific calculations and categorizations:
 
