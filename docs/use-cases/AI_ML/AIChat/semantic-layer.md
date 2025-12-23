@@ -17,7 +17,7 @@ The Ask AI chat agent can be customized to understand your specific business log
 
 By creating an AGENTS.md file, you can provide custom instructions that are injected at the start of every conversation to guide SQL query generation and data analysis based on your organization's unique requirements, calculations, and conventions.
 
-## How It Works {#how-it-works}
+## How it works {#how-it-works}
 
 When you save a query named "AGENTS.md" (case-sensitive) in the Cloud Console:
 
