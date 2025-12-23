@@ -180,7 +180,7 @@ FROM products;
 </data_structure_notes>
 ```
 
-## Example: Domain Terminology {#example-terminology}
+## Example: domain terminology {#example-terminology}
 
 Map business terms to technical implementation:
 
