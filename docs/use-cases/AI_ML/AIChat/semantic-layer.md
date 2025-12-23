@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: 'Semantic Layer'
+sidebar_label: 'Semantic layer'
 title: 'Optimizing Ask AI Agent Conversations with a Semantic Layer'
 pagination_prev: null
 pagination_next: null
