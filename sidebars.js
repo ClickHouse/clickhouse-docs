@@ -738,6 +738,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/pause_and_resume',
                 'integrations/data-ingestion/clickpipes/mongodb/table_resync',
                 'integrations/data-ingestion/clickpipes/mongodb/resync',
+                'integrations/data-ingestion/clickpipes/mongodb/controlling_sync',
               ],
             },
             {
