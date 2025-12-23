@@ -11,7 +11,7 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# Customizing Ask AI Chat with a Semantic Layer
+# Customizing Ask AI chat with a semantic layer
 
 The Ask AI chat agent can be customized to understand your specific business logic, data structures, and domain knowledge through **AGENTS.md**—a special saved query that acts as a semantic layer over the agent's system prompt.
 
