@@ -412,6 +412,12 @@ Avro/AvroConfluent フォーマットの場合: null が指定された Nullable
 
 RowBinaryWithNamesAndTypes 入力フォーマットで、型名ではなくデータ型をバイナリ形式で読み取ります
 
+## input_format_binary_max_type_complexity {#input_format_binary_max_type_complexity}   
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+バイナリ型をデコードする際の型ノードの最大数（深さではなく合計数）。`Map(String, UInt32)` = 3 ノード。悪意のある入力から保護するための制限。0 = 無制限。
+
 ## input_format_binary_read_json_as_string {#input_format_binary_read_json_as_string}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
