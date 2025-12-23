@@ -3705,6 +3705,11 @@
       "source": "/docs/engines/table-engines/mergetree-family/invertedindexes",
       "destination": "/docs/engines/table-engines/mergetree-family/textindexes",
       "permanent": true
+    },
+    {
+      "source": "/docs/guides/sre/configuring-ssl",
+      "destination": "/docs/guides/sre/tls/configuring-tls",
+      "permanent": true
     }
   ]
 }
