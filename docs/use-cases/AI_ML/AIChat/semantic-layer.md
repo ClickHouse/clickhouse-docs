@@ -92,7 +92,9 @@ Examples are the "pictures worth a thousand words." Rather than stuffing every e
 - Remove outdated or rarely-used rules
 - Ensure sufficient information to guide desired behavior
 
-Note: Minimal doesn't necessarily mean short. You need enough detail to ensure the agent adheres to expected behavior, just avoid unnecessary verbosity.
+:::tip
+Minimal doesn't necessarily mean short. You need enough detail to ensure the agent adheres to expected behavior, just avoid unnecessary verbosity.
+:::
 
 ## Example: Calculated Metrics from raw data {#example-calculated-metrics}
 
