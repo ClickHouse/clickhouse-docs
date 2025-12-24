@@ -2786,9 +2786,43 @@ SELECT ignore(0, 'ClickHouse', NULL)
 它会忽略其参数并始终返回 1。
 这些参数不会被求值。
 
-但在进行索引分析时，假定该函数的参数没有被 `indexHint` 包裹。
-这允许根据相应条件在索引范围内选取数据，但不会再基于该条件执行后续过滤。
+在进行索引分析时，假定该函数的参数没有被 `indexHint` 包裹。
+这允许你依据相应条件在索引范围内选取数据，但不会再根据该条件执行后续过滤。
 ClickHouse 中的索引是稀疏的，使用 `indexHint` 会比直接指定相同条件返回更多数据。
+
+<details>
+  <summary>说明</summary>
+
+  当你运行：
+
+  ```sql
+  SELECT * FROM test WHERE key = 123;
+  ```
+
+  ClickHouse 会做两件事：
+
+  1. 使用索引找到可能包含 `key = 123` 的 granule（约 8192 行的数据块）
+  2. 读取这些 granule，并逐行过滤，只返回 `key = 123` 的行
+
+  因此，即使它从磁盘读取了 8,192 行，也只会返回真正匹配的 1 行。
+
+  使用 `indexHint` 时，当你运行：
+
+  ```sql
+  SELECT * FROM test WHERE indexHint(key = 123);
+  ```
+
+  ClickHouse 只会做一件事：
+
+  1. 使用索引找到可能包含 key = 123 的 granule，并从这些 granule 中返回所有行，**不再**进行过滤。
+
+  它会返回全部 8,192 行，包括 `key = 456`、`key = 789` 等行（所有恰好存储在同一 granule 中的内容）。
+  `indexHint()` 不是为了性能，而是为了调试以及理解 ClickHouse 索引的工作方式：
+
+  * 我的条件选中了哪些 granule？
+  * 这些 granule 中有多少行？
+  * 我的索引是否被有效使用？
+</details>
 
 注意：无法利用 `indexHint` 函数对查询进行优化。`indexHint` 函数不会优化查询，因为它不会为查询分析提供任何额外信息。将某个表达式放在 `indexHint` 函数中并不会比不使用 `indexHint` 函数更好。`indexHint` 函数只能用于内部分析和调试目的，不能提升性能。如果你看到除了 ClickHouse 贡献者之外的任何人使用 `indexHint`，这很可能是误用，应当将其移除。
 

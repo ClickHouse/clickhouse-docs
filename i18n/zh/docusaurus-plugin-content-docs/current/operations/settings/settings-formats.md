@@ -411,6 +411,12 @@ Cloud 默认值：`'best_effort'`。
 
 在 RowBinaryWithNamesAndTypes 输入格式中，将数据类型以二进制格式读取，而不是读取类型名称
 
+## input_format_binary_max_type_complexity {#input_format_binary_max_type_complexity}   
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+解码二进制类型时允许的最大类型节点数（按总节点数而非深度计算）。`Map(String, UInt32)` = 3 个节点。用于防护恶意输入。0 表示不受限制。
+
 ## input_format_binary_read_json_as_string {#input_format_binary_read_json_as_string}   
 
 <SettingsInfoBlock type="Bool" default_value="0" />
