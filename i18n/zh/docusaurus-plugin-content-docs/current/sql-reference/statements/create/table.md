@@ -722,6 +722,19 @@ ENGINE = engine
 COMMENT 'Comment'
 ```
 
+:::note
+`COMMENT` 子句必须在任何存储相关子句之后指定，例如 `PARTITION BY`、`ORDER BY` 和存储相关的 `SETTINGS`。
+
+在 `COMMENT` 子句之后，只会解析查询相关的 `SETTINGS`（例如 `max_threads` 等），而不会解析与存储相关的 `SETTINGS`。
+
+这意味着正确的子句顺序是：
+
+* `ENGINE`
+* 存储子句
+* `COMMENT`
+* 查询设置（如果有）
+  :::
+
 **示例**
 
 查询:
