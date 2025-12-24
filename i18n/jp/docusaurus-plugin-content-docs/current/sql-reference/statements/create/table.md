@@ -724,6 +724,19 @@ ENGINE = engine
 COMMENT 'Comment'
 ```
 
+:::note
+`COMMENT` 句は、`PARTITION BY`、`ORDER BY` などのストレージ固有の句や、ストレージ固有の `SETTINGS` の**後**に指定する必要があります。
+
+`COMMENT` 句の後にパースされるのは、`max_threads` などのクエリ固有の `SETTINGS` のみであり、ストレージ関連の設定はパースされません。
+
+これは、正しい句の順序が次のようになることを意味します:
+
+* `ENGINE`
+* ストレージ関連の句
+* `COMMENT`
+* クエリ設定 (ある場合)
+  :::
+
 **例**
 
 クエリ：
