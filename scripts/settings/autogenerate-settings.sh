@@ -6,6 +6,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 target_dir=$(dirname "$(dirname "$SCRIPT_DIR")") # Should be project root: .../clickhouse-docs
 # Temporary directory within the target project structure
 tmp_dir="$target_dir/scripts/tmp"
+
+# --- Feature Flags ---
+GENERATE_SETTINGS=true              # Set to true to enable settings documentation generation
+GENERATE_FUNCTIONS=true             # Set to true to enable regular function documentation generation
+GENERATE_SYSTEM_TABLES=true         # Set to true to enable system tables documentation generation
+GENERATE_AGGREGATE_FUNCTIONS=true   # Set to true to enable aggregate function generation
+
 # --- Parse Command Line Arguments ---
 CUSTOM_BINARY=""
 while getopts "b:" opt; do
@@ -216,14 +223,15 @@ if ! $INSTALL_SUCCESS; then
     exit 1
 fi
 # --- Auto-generate Settings Documentation ---
-echo "[$SCRIPT_NAME] Auto-generating settings markdown pages..."
-# Process other SQL files first (non-function and non-system-tables related)
-sql_files_found=$(find "$SCRIPT_DIR" -maxdepth 1 -name '*.sql' ! -name 'generate-functions.sql' ! -name 'system-tables.sql' -print -quit)
+if [ "$GENERATE_SETTINGS" = "true" ]; then
+    echo "[$SCRIPT_NAME] Auto-generating settings markdown pages..."
+    # Process other SQL files first (non-function and non-system-tables related)
+    sql_files_found=$(find "$SCRIPT_DIR" -maxdepth 1 -name '*.sql' ! -name 'generate-functions.sql' ! -name 'system-tables.sql' ! -name 'generate-aggregate-functions.sql' -print -quit)
 if [ -z "$sql_files_found" ]; then
     echo "[$SCRIPT_NAME] Warning: No settings *.sql files found in $SCRIPT_DIR to process."
 else
     for SQL_FILE in "$SCRIPT_DIR"/*.sql; do
-      if [ -f "$SQL_FILE" ] && [ "$(basename "$SQL_FILE")" != "generate-functions.sql" ] && [ "$(basename "$SQL_FILE")" != "system-tables.sql" ]; then
+      if [ -f "$SQL_FILE" ] && [ "$(basename "$SQL_FILE")" != "generate-functions.sql" ] && [ "$(basename "$SQL_FILE")" != "system-tables.sql" ] && [ "$(basename "$SQL_FILE")" != "generate-aggregate-functions.sql" ]; then
         echo "[$SCRIPT_NAME] Processing SQL file: $SQL_FILE"
         # Run ClickHouse from CWD ($tmp_dir), passing absolute path to SQL file
         "$script_path" --queries-file "$SQL_FILE" || {
@@ -235,6 +243,79 @@ else
       fi
     done
 fi
+    # --- temporary sed replacements ---
+    sed -i.bak \
+      -e 's/Limit the max number of partitions that can be accessed in one query. <= 0 means unlimited./Limit the max number of partitions that can be accessed in one query. `<=` 0 means unlimited./g' \
+      -e 's/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g' \
+      -e 's/If >= 1, columns will be always written in full serialization\./If `>= 1`, columns will be always written in full serialization./g' \
+      -e 's#<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>#`<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`#g' \
+      -e 's#(<part>/columns and <part>/checksums)#`(<part>/columns and <part>/checksums)`#g' \
+      "$tmp_dir"/generated_merge_tree_settings.md 2>/dev/null || true
+    # --- Move Generated Files ---
+    # Define destination paths relative to the project root ($target_dir)
+    move_src_files=("settings-formats.md" "settings.md" "server_settings.md")
+    move_dest_files=(
+        "docs/operations/settings/settings-formats.md"
+        "docs/operations/settings/settings.md"
+        "docs/operations/server-configuration-parameters/settings.md"
+    )
+    append_src_files=("generated_merge_tree_settings.md")
+    append_dest_files=(
+        "docs/operations/settings/merge-tree-settings.md"
+    )
+    echo "[$SCRIPT_NAME] Moving generated markdown files to documentation directories..."
+    # Iterate using index; declare loop variables WITHOUT 'local'
+    for i in "${!move_src_files[@]}"; do
+        src_file="${move_src_files[i]}"
+        # Construct full destination path using $target_dir (project root)
+        dest_full_path="$target_dir/${move_dest_files[i]}"
+        # Source file is relative to CWD ($tmp_dir)
+        src_rel_path="./$src_file"
+        if [ -f "$src_rel_path" ]; then
+            # Ensure destination directory exists
+            mkdir -p "$(dirname "$dest_full_path")" || { echo "[$SCRIPT_NAME] Error: Failed to create directory for $dest_full_path"; exit 1; }
+            echo "[$SCRIPT_NAME] Moving $src_rel_path to $dest_full_path"
+            # Use correct source and destination paths
+            mv "$src_rel_path" "$dest_full_path" || { echo "[$SCRIPT_NAME] Error: Failed to move $src_file to $dest_full_path"; exit 1; }
+        else
+            echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping move."
+        fi
+    done
+    echo "[$SCRIPT_NAME] Appending generated markdown files to documentation directories..."
+    # Iterate using index; declare loop variables WITHOUT 'local'
+    for i in "${!append_src_files[@]}"; do
+         src_file="${append_src_files[i]}"
+         # Construct full destination path using $target_dir (project root)
+         dest_full_path="$target_dir/${append_dest_files[i]}"
+         # Source file is relative to CWD ($tmp_dir)
+         src_rel_path="./$src_file"
+         if [ -f "$src_rel_path" ]; then
+            # Ensure destination directory exists
+            mkdir -p "$(dirname "$dest_full_path")" || { echo "[$SCRIPT_NAME] Error: Failed to create directory for $dest_full_path"; exit 1; }
+            echo "[$SCRIPT_NAME] Appending $src_rel_path to $dest_full_path"
+            # Use correct source path
+            cat "$src_rel_path" >> "$dest_full_path" || { echo "[$SCRIPT_NAME] Error: Failed to append $src_file to $dest_full_path"; exit 1; }
+            # Remove source file after successful append
+            rm -f "$src_rel_path"
+         else
+            echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping append."
+         fi
+    done
+    # Insert experimental-beta-settings.md between tags
+    if [ -f "experimental-beta-settings.md" ]; then
+        dest_full_path="$target_dir/docs/about-us/beta-and-experimental-features.md"
+        if grep -q "<!--AUTOGENERATED_START-->" "$dest_full_path" && grep -q "<!--AUTOGENERATED_END-->" "$dest_full_path"; then
+            echo "[$SCRIPT_NAME] Inserting experimental-beta-settings.md into $dest_full_path"
+            insert_content_between_tags "./experimental-beta-settings.md" "$dest_full_path"
+        fi
+        rm -f "./experimental-beta-settings.md"
+    fi
+else
+    echo "[$SCRIPT_NAME] Settings generation is disabled (GENERATE_SETTINGS=false). Skipping."
+fi
+
+# --- Auto-generate Function Documentation ---
+if [ "$GENERATE_FUNCTIONS" = "true" ]; then
 # Generate function documentation using the consolidated SQL file
 FUNCTION_SQL_FILE="$SCRIPT_DIR/generate-functions.sql"
 if [ -f "$FUNCTION_SQL_FILE" ]; then
@@ -303,168 +384,113 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
 else
     echo "[$SCRIPT_NAME] Warning: Consolidated function SQL file not found at $FUNCTION_SQL_FILE"
 fi
-# --- temporary sed replacements ---
-sed -i.bak \
-  -e 's/Limit the max number of partitions that can be accessed in one query. <= 0 means unlimited./Limit the max number of partitions that can be accessed in one query. `<=` 0 means unlimited./g' \
-  -e 's/\(this merge is created when set min_age_to_force_merge_seconds > 0 and min_age_to_force_merge_on_partition_only = true\)/(this merge is created when set `min_age_to_force_merge_seconds > 0` and `min_age_to_force_merge_on_partition_only = true`)/g' \
-  -e 's/If >= 1, columns will be always written in full serialization\./If `>= 1`, columns will be always written in full serialization./g' \
-  -e 's#<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>#`<candidate partitions for mutations only (partitions that cannot be merged)>/<candidate partitions for mutations>`#g' \
-  -e 's#(<part>/columns and <part>/checksums)#`(<part>/columns and <part>/checksums)`#g' \
-  "$tmp_dir"/generated_merge_tree_settings.md > /dev/null
-# --- Move Generated Files ---
-# Define destination paths relative to the project root ($target_dir)
-move_src_files=("settings-formats.md" "settings.md" "server_settings.md")
-move_dest_files=(
-    "docs/operations/settings/settings-formats.md"
-    "docs/operations/settings/settings.md"
-    "docs/operations/server-configuration-parameters/settings.md"
-)
-append_src_files=("generated_merge_tree_settings.md")
-append_dest_files=(
-    "docs/operations/settings/merge-tree-settings.md"
-)
-echo "[$SCRIPT_NAME] Moving generated markdown files to documentation directories..."
-# Iterate using index; declare loop variables WITHOUT 'local'
-for i in "${!move_src_files[@]}"; do
-    src_file="${move_src_files[i]}"
-    # Construct full destination path using $target_dir (project root)
-    dest_full_path="$target_dir/${move_dest_files[i]}"
-    # Source file is relative to CWD ($tmp_dir)
-    src_rel_path="./$src_file"
-    if [ -f "$src_rel_path" ]; then
-        # Ensure destination directory exists
-        mkdir -p "$(dirname "$dest_full_path")" || { echo "[$SCRIPT_NAME] Error: Failed to create directory for $dest_full_path"; exit 1; }
-        echo "[$SCRIPT_NAME] Moving $src_rel_path to $dest_full_path"
-        # Use correct source and destination paths
-        mv "$src_rel_path" "$dest_full_path" || { echo "[$SCRIPT_NAME] Error: Failed to move $src_file to $dest_full_path"; exit 1; }
-    else
-        echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping move."
-    fi
-done
-echo "[$SCRIPT_NAME] Appending generated markdown files to documentation directories..."
-# Iterate using index; declare loop variables WITHOUT 'local'
-for i in "${!append_src_files[@]}"; do
-     src_file="${append_src_files[i]}"
-     # Construct full destination path using $target_dir (project root)
-     dest_full_path="$target_dir/${append_dest_files[i]}"
-     # Source file is relative to CWD ($tmp_dir)
-     src_rel_path="./$src_file"
-     if [ -f "$src_rel_path" ]; then
+    # --- Append content between tags for function files ---
+    insert_src_files=(
+      "arithmetic-functions.md"
+      "arrays-functions.md"
+      "bit-functions.md"
+      "bitmap-functions.md"
+      "comparison-functions.md"
+      "conditional-functions.md"
+      "distance-functions.md"
+      "dates_and_times-functions.md"
+      "dictionary-functions.md"
+      "encoding-functions.md"
+      "financial-functions.md"
+      "null-functions.md"
+      "encryption-functions.md"
+      "hash-functions.md"
+      "introspection-functions.md"
+      "ip_address-functions.md"
+      "json-functions.md"
+      "logical-functions.md"
+      "mathematical-functions.md"
+      "natural_language_processing-functions.md"
+      "random_number-functions.md"
+      "numericindexedvector-functions.md"
+      "string_splitting-functions.md"
+      "rounding-functions.md"
+      "string_search-functions.md"
+      "time_series-functions.md"
+      "other-functions.md"
+      "time_window-functions.md"
+      "string_replacement-functions.md"
+      "string-functions.md"
+      "tuple-functions.md"
+      "type_conversion-functions.md"
+      "map-functions.md"
+      "ulid-functions.md"
+      "url-functions.md"
+      "uuid-functions.md"
+    )
+    insert_dest_files=(
+        "docs/sql-reference/functions/arithmetic-functions.md"
+        "docs/sql-reference/functions/array-functions.md"
+        "docs/sql-reference/functions/bit-functions.md"
+        "docs/sql-reference/functions/bitmap-functions.md"
+        "docs/sql-reference/functions/comparison-functions.md"
+        "docs/sql-reference/functions/conditional-functions.md"
+        "docs/sql-reference/functions/distance-functions.md"
+        "docs/sql-reference/functions/date-time-functions.md"
+        "docs/sql-reference/functions/ext-dict-functions.md"
+        "docs/sql-reference/functions/encoding-functions.md"
+        "docs/sql-reference/functions/financial-functions.md"
+        "docs/sql-reference/functions/functions-for-nulls.md"
+        "docs/sql-reference/functions/encryption-functions.md"
+        "docs/sql-reference/functions/hash-functions.md"
+        "docs/sql-reference/functions/introspection.md"
+        "docs/sql-reference/functions/ip-address-functions.md"
+        "docs/sql-reference/functions/json-functions.md"
+        "docs/sql-reference/functions/logical-functions.md"
+        "docs/sql-reference/functions/math-functions.md"
+        "docs/sql-reference/functions/nlp-functions.md"
+        "docs/sql-reference/functions/random-functions.md"
+        "docs/sql-reference/functions/numeric-indexed-vector-functions.md"
+        "docs/sql-reference/functions/splitting-merging-functions.md"
+        "docs/sql-reference/functions/rounding-functions.md"
+        "docs/sql-reference/functions/string-search-functions.md"
+        "docs/sql-reference/functions/time-series-functions.md"
+        "docs/sql-reference/functions/other-functions.md"
+        "docs/sql-reference/functions/time-window-functions.md"
+        "docs/sql-reference/functions/string-replace-functions.md"
+        "docs/sql-reference/functions/string-functions.md"
+        "docs/sql-reference/functions/tuple-functions.md"
+        "docs/sql-reference/functions/type-conversion-functions.md"
+        "docs/sql-reference/functions/tuple-map-functions.md"
+        "docs/sql-reference/functions/ulid-functions.md"
+        "docs/sql-reference/functions/url-functions.md"
+        "docs/sql-reference/functions/uuid-functions.md"
+    )
+    echo "[$SCRIPT_NAME] Inserting generated markdown content between AUTOGENERATED_START and AUTOGENERATED_END tags"
+    for i in "${!insert_src_files[@]}"; do
+      src_file="${insert_src_files[i]}"
+      # Construct full destination path using $target_dir (project root)
+      dest_full_path="$target_dir/${insert_dest_files[i]}"
+      # Source file is relative to CWD ($tmp_dir)
+      src_rel_path="./$src_file"
+      if [ -f "$src_rel_path" ]; then
         # Ensure destination directory exists
         mkdir -p "$(dirname "$dest_full_path")" || { echo "[$SCRIPT_NAME] Error: Failed to create directory for $dest_full_path"; exit 1; }
         echo "[$SCRIPT_NAME] Appending $src_rel_path to $dest_full_path"
-        # Use correct source path
-        cat "$src_rel_path" >> "$dest_full_path" || { echo "[$SCRIPT_NAME] Error: Failed to append $src_file to $dest_full_path"; exit 1; }
+        # Replace the content between <!--AUTOGENERATED_START--> and <!--AUTOGENERATED_END--> tags
+        if grep -q "<!--AUTOGENERATED_START-->" "$dest_full_path" && grep -q "<!--AUTOGENERATED_END-->" "$dest_full_path"; then
+          insert_content_between_tags "$src_rel_path" "$dest_full_path"
+        else
+          echo "[$SCRIPT_NAME] Error: Expected to find AUTOGENERATED_START and AUTOGENERATED_END tags in $dest_full_path, but did not"
+          exit 1
+        fi
         # Remove source file after successful append
         rm -f "$src_rel_path"
-     else
+      else
         echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping append."
-     fi
-done
-# --- Append content between <!-- AUTOGENERATED_START --><!-- AUTOGENERATED_END --> tags on the page
-insert_src_files=(
-  "experimental-beta-settings.md"
-  "arithmetic-functions.md"
-  "arrays-functions.md"
-  "bit-functions.md"
-  "bitmap-functions.md"
-  "comparison-functions.md"
-  "conditional-functions.md"
-  "distance-functions.md"
-  "dates_and_times-functions.md"
-  "dictionary-functions.md"
-  "encoding-functions.md"
-  "financial-functions.md"
-  "null-functions.md"
-  "encryption-functions.md"
-  "hash-functions.md"
-  "introspection-functions.md"
-  "ip_address-functions.md"
-  "json-functions.md"
-  "logical-functions.md"
-  "mathematical-functions.md"
-  "natural_language_processing-functions.md"
-  "random_number-functions.md"
-  "numericindexedvector-functions.md"
-  "string_splitting-functions.md"
-  "rounding-functions.md"
-  "string_search-functions.md"
-  "time_series-functions.md"
-  "other-functions.md"
-  "time_window-functions.md"
-  "string_replacement-functions.md"
-  "string-functions.md"
-  "tuple-functions.md"
-  "type_conversion-functions.md"
-  "map-functions.md"
-  "ulid-functions.md"
-  "url-functions.md"
-  "uuid-functions.md"
-)
-insert_dest_files=(
-    "docs/about-us/beta-and-experimental-features.md"
-    "docs/sql-reference/functions/arithmetic-functions.md"
-    "docs/sql-reference/functions/array-functions.md"
-    "docs/sql-reference/functions/bit-functions.md"
-    "docs/sql-reference/functions/bitmap-functions.md"
-    "docs/sql-reference/functions/comparison-functions.md"
-    "docs/sql-reference/functions/conditional-functions.md"
-    "docs/sql-reference/functions/distance-functions.md"
-    "docs/sql-reference/functions/date-time-functions.md"
-    "docs/sql-reference/functions/ext-dict-functions.md"
-    "docs/sql-reference/functions/encoding-functions.md"
-    "docs/sql-reference/functions/financial-functions.md"
-    "docs/sql-reference/functions/functions-for-nulls.md"
-    "docs/sql-reference/functions/encryption-functions.md"
-    "docs/sql-reference/functions/hash-functions.md"
-    "docs/sql-reference/functions/introspection.md"
-    "docs/sql-reference/functions/ip-address-functions.md"
-    "docs/sql-reference/functions/json-functions.md"
-    "docs/sql-reference/functions/logical-functions.md"
-    "docs/sql-reference/functions/math-functions.md"
-    "docs/sql-reference/functions/nlp-functions.md"
-    "docs/sql-reference/functions/random-functions.md"
-    "docs/sql-reference/functions/numeric-indexed-vector-functions.md"
-    "docs/sql-reference/functions/splitting-merging-functions.md"
-    "docs/sql-reference/functions/rounding-functions.md"
-    "docs/sql-reference/functions/string-search-functions.md"
-    "docs/sql-reference/functions/time-series-functions.md"
-    "docs/sql-reference/functions/other-functions.md"
-    "docs/sql-reference/functions/time-window-functions.md"
-    "docs/sql-reference/functions/string-replace-functions.md"
-    "docs/sql-reference/functions/string-functions.md"
-    "docs/sql-reference/functions/tuple-functions.md"
-    "docs/sql-reference/functions/type-conversion-functions.md"
-    "docs/sql-reference/functions/tuple-map-functions.md"
-    "docs/sql-reference/functions/ulid-functions.md"
-    "docs/sql-reference/functions/url-functions.md"
-    "docs/sql-reference/functions/uuid-functions.md"
-)
-echo "[$SCRIPT_NAME] Inserting generated markdown content between AUTOGENERATED_START and AUTOGENERATED_END tags"
-for i in "${!insert_src_files[@]}"; do
-  src_file="${insert_src_files[i]}"
-  # Construct full destination path using $target_dir (project root)
-  dest_full_path="$target_dir/${insert_dest_files[i]}"
-  # Source file is relative to CWD ($tmp_dir)
-  src_rel_path="./$src_file"
-  if [ -f "$src_rel_path" ]; then
-    # Ensure destination directory exists
-    mkdir -p "$(dirname "$dest_full_path")" || { echo "[$SCRIPT_NAME] Error: Failed to create directory for $dest_full_path"; exit 1; }
-    echo "[$SCRIPT_NAME] Appending $src_rel_path to $dest_full_path"
-    # Replace the content between <!--AUTOGENERATED_START--> and <!--AUTOGENERATED_END--> tags
-    if grep -q "<!--AUTOGENERATED_START-->" "$dest_full_path" && grep -q "<!--AUTOGENERATED_END-->" "$dest_full_path"; then
-      insert_content_between_tags "$src_rel_path" "$dest_full_path"
-    else
-      echo "[$SCRIPT_NAME] Error: Expected to find AUTOGENERATED_START and AUTOGENERATED_END tags in $dest_full_path, but did not"
-      exit 1
-    fi
-    # Remove source file after successful append
-    rm -f "$src_rel_path"
-  else
-    echo "[$SCRIPT_NAME] Warning: Expected output file $src_rel_path not found in $tmp_dir. Skipping append."
-  fi
-done
+      fi
+    done
+else
+    echo "[$SCRIPT_NAME] Function generation is disabled (GENERATE_FUNCTIONS=false). Skipping."
+fi
 
+# --- Auto-generate System Tables Documentation ---
+if [ "$GENERATE_SYSTEM_TABLES" = "true" ]; then
 # --- Dynamically retrieve system tables list ---
 echo "[$SCRIPT_NAME] Retrieving list of system tables from ClickHouse..."
 
@@ -552,6 +578,109 @@ done
 
 echo "[$SCRIPT_NAME] System tables documentation completed."
 echo "[$SCRIPT_NAME] Processed ${#SYSTEM_TABLES[@]} system tables."
+else
+    echo "[$SCRIPT_NAME] System tables generation is disabled (GENERATE_SYSTEM_TABLES=false). Skipping."
+fi
+
+# --- Function: Generate Aggregate Function Documentation ---
+generate_aggregate_functions() {
+    if [ "$GENERATE_AGGREGATE_FUNCTIONS" != "true" ]; then
+        echo "[$SCRIPT_NAME] Aggregate function generation is disabled (GENERATE_AGGREGATE_FUNCTIONS=false). Skipping."
+        return 0
+    fi
+
+    echo "[$SCRIPT_NAME] Starting aggregate function documentation generation..."
+
+    local AGGREGATE_FUNC_SQL_FILE="$SCRIPT_DIR/generate-aggregate-functions.sql"
+    if [ ! -f "$AGGREGATE_FUNC_SQL_FILE" ]; then
+        echo "[$SCRIPT_NAME] Error: Aggregate function SQL file not found at $AGGREGATE_FUNC_SQL_FILE"
+        return 1
+    fi
+
+    local AGGREGATE_FUNC_DIR="$target_dir/docs/sql-reference/aggregate-functions/reference"
+    if [ ! -d "$AGGREGATE_FUNC_DIR" ]; then
+        echo "[$SCRIPT_NAME] Error: Aggregate functions directory not found at $AGGREGATE_FUNC_DIR"
+        return 1
+    fi
+
+    local processed_count=0
+    local skipped_count=0
+    local error_count=0
+
+    # Iterate through all .md files
+    for md_file in "$AGGREGATE_FUNC_DIR"/*.md; do
+        [ -e "$md_file" ] || continue
+
+        local filename=$(basename "$md_file")
+        local function_name="${filename%.md}"
+
+        # Skip index.md
+        if [ "$function_name" = "index" ]; then
+            continue
+        fi
+
+        echo "[$SCRIPT_NAME] Processing aggregate function file: $filename"
+
+        # Check if file has AUTOGENERATED tags
+        if ! grep -q "<!--AUTOGENERATED_START-->" "$md_file" || ! grep -q "<!--AUTOGENERATED_END-->" "$md_file"; then
+            echo "[$SCRIPT_NAME] Warning: File $filename does not have AUTOGENERATED tags. Skipping."
+            ((skipped_count++))
+            continue
+        fi
+
+        # Check if function exists in system.functions with is_aggregate=1
+        local function_exists
+        function_exists=$("$script_path" --query "SELECT count() FROM system.functions WHERE name = '$function_name' AND is_aggregate = 1" 2>/dev/null)
+
+        if [ "$function_exists" != "1" ]; then
+            echo "[$SCRIPT_NAME] Warning: Function '$function_name' not found in system.functions with is_aggregate=1. Skipping."
+            ((skipped_count++))
+            continue
+        fi
+
+        # Generate documentation
+        echo "[$SCRIPT_NAME] Generating documentation for aggregate function: $function_name"
+        if ! "$script_path" --param_function_name="$function_name" --queries-file "$AGGREGATE_FUNC_SQL_FILE" 2>/dev/null; then
+            echo "[$SCRIPT_NAME] Error: Failed to generate documentation for $function_name"
+            ((error_count++))
+            continue
+        fi
+
+        # Check if output file was created
+        local temp_file="$tmp_dir/temp-aggregate-function.md"
+        if [ ! -f "$temp_file" ]; then
+            echo "[$SCRIPT_NAME] Warning: Expected output file $temp_file not found for $function_name. Skipping."
+            ((error_count++))
+            continue
+        fi
+
+        # Insert generated content between AUTOGENERATED tags
+        echo "[$SCRIPT_NAME] Inserting generated content into $md_file"
+        if ! insert_content_between_tags "$temp_file" "$md_file"; then
+            echo "[$SCRIPT_NAME] Error: Failed to insert content for $function_name"
+            ((error_count++))
+            rm -f "$temp_file"
+            continue
+        fi
+
+        rm -f "$temp_file"
+        ((processed_count++))
+        echo "[$SCRIPT_NAME] Successfully processed $function_name"
+    done
+
+    echo "[$SCRIPT_NAME] Aggregate function generation completed."
+    echo "[$SCRIPT_NAME] Summary: $processed_count processed, $skipped_count skipped, $error_count errors"
+
+    if [ $error_count -gt 0 ]; then
+        return 1
+    fi
+    return 0
+}
+
+# --- Auto-generate Aggregate Functions Documentation ---
+generate_aggregate_functions || {
+    echo "[$SCRIPT_NAME] Warning: Aggregate function generation encountered errors, but continuing..."
+}
 
 # --- Final Cleanup ---
 echo "[$SCRIPT_NAME] Performing final cleanup..."
