@@ -158,6 +158,24 @@ S3 ClickPipe は、パブリックバケットとプライベートバケット�
 
 S3 へのアクセスに必要な信頼ポリシーを持つロールを作成するには、[このガイド](/cloud/data-sources/secure-s3)に従い、[ロールを作成](/cloud/data-sources/secure-s3#option-2-manually-create-iam-role)してください。その後、`IAM role ARN` に IAM ロール ARN を入力します。
 
+### ネットワークアクセス {#network-access}
+
+S3 ClickPipes は、メタデータの検出とデータのインジェストのために 2 つの異なるネットワークパス（それぞれ ClickPipes サービスと ClickHouse Cloud サービス）を使用します。追加のネットワークセキュリティレイヤー（コンプライアンス目的など）を構成する場合は、ネットワークアクセスを**両方のパスに対して構成する必要があります**。
+
+* **IP ベースのアクセス制御**の場合、S3 バケットポリシーで、[こちら](/integrations/clickpipes#list-of-static-ips)に記載されている ClickPipes サービスリージョンの静的 IP と、ClickHouse Cloud サービスの[静的 IP](/manage/data-sources/cloud-endpoints-api) の両方を許可する必要があります。利用中の ClickHouse Cloud リージョンの静的 IP を取得するには、ターミナルを開いて次を実行します。
+
+    ```bash
+    # <your-region> を利用中の ClickHouse Cloud リージョンに置き換えてください
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
+* **VPC エンドポイントベースのアクセス制御**の場合、S3 バケットは ClickHouse Cloud サービスと同じリージョンに存在し、`GetObject` 操作を ClickHouse Cloud サービスの VPC エンドポイント ID に制限する必要があります。利用中の ClickHouse Cloud リージョンの VPC エンドポイントを取得するには、ターミナルを開いて次を実行します。
+
+    ```bash
+    # <your-region> を利用中の ClickHouse Cloud リージョンに置き換えてください
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+    ```
+
 ## 高度な設定 {#advanced-settings}
 
 ClickPipes には、ほとんどのユースケースの要件を満たす妥当なデフォルト設定が用意されています。ユースケースに応じて追加のチューニングが必要な場合は、次の設定を調整できます:

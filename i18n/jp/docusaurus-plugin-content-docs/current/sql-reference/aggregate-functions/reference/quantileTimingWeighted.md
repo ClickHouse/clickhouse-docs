@@ -1,0 +1,85 @@
+---
+description: '指定された精度で、数値データ系列の各要素に割り当てられた重みに基づいて、その系列の分位数を計算します。'
+slug: /sql-reference/aggregate-functions/reference/quantiletimingweighted
+title: 'quantileTimingWeighted'
+doc_type: 'reference'
+---
+
+# quantileTimingWeighted {#quantiletimingweighted}
+
+指定された精度で、各シーケンス要素の重みに基づいて数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
+
+結果は決定的です（クエリの処理順序には依存しません）。この関数は、ウェブページの読み込み時間やバックエンドのレスポンス時間のような分布を表すシーケンスで動作するように最適化されています。
+
+1 つのクエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来よりも非効率に動作します）。このような場合は、[quantiles](../../../sql-reference/aggregate-functions/reference/quantiles.md) 関数を使用してください。
+
+**構文**
+
+```sql
+quantileTimingWeighted(level)(expr, weight)
+```
+
+エイリアス: `medianTimingWeighted`.
+
+**引数**
+
+* `level` — 分位数のレベル。省略可能なパラメータ。0 以上 1 以下の定数の浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。デフォルト値: 0.5。`level=0.5` のとき、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算します。
+
+* `expr` — カラム値に対する[式](/sql-reference/syntax#expressions)で、[Float*](../../../sql-reference/data-types/float.md) 型の数値を返します。
+
+  * 負の値が関数に渡された場合、その動作は未定義です。
+  * 値が 30,000（ページ読み込み時間が 30 秒を超える場合）より大きい場合、30,000 とみなされます。
+
+* `weight` — シーケンスの要素の重みを持つカラム。重みは値の出現回数です。
+
+**精度**
+
+次の場合、計算は正確です:
+
+* 値の総数が 5670 を超えない。
+* 値の総数が 5670 を超えるが、ページ読み込み時間が 1024 ms 未満である。
+
+それ以外の場合、計算結果は 16 ms の最も近い倍数に丸められます。
+
+:::note
+ページ読み込み時間の分位数を計算する場合、この関数は [quantile](/sql-reference/aggregate-functions/reference/quantile) よりも効率的かつ高精度です。
+:::
+
+**戻り値**
+
+* 指定したレベルの分位数。
+
+型: `Float32`。
+
+:::note
+関数に値が 1 つも渡されない場合（`quantileTimingIf` を使用する場合）、[NaN](/sql-reference/data-types/float#nan-and-inf) が返されます。これは、結果がゼロになるケースと区別するためです。`NaN` 値のソートに関する注意点については、[ORDER BY 句](/sql-reference/statements/select/order-by) を参照してください。
+:::
+
+**例**
+
+入力テーブル:
+
+```text
+┌─response_time─┬─weight─┐
+│            68 │      1 │
+│           104 │      2 │
+│           112 │      3 │
+│           126 │      2 │
+│           138 │      1 │
+│           162 │      1 │
+└───────────────┴────────┘
+```
+
+クエリ：
+
+```sql
+SELECT quantileTimingWeighted(response_time, weight) FROM t
+```
+
+結果：
+
+```text
+┌─quantileTimingWeighted(response_time, weight)─┐
+│                                           112 │
+└───────────────────────────────────────────────┘
+```

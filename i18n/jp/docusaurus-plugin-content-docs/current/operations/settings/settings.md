@@ -2642,6 +2642,14 @@ ClickHouse Cloud でのみ有効です。未読みのデータがある場合に
 
 ClickHouse Cloud でのみ有効です。system.distributed_cache_metrics および system.distributed_cache_events から、現在のアベイラビリティゾーンに関するメトリクスのみを取得します。
 
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "新しい設定。"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。CI テスト専用の設定で、distributed cache で使用する filesystem cache 名を指定します。
+
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
 <CloudOnlyBadge/>
@@ -4823,6 +4831,14 @@ MergeTree ファミリーのテーブルに対応しています。
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 レプリケートされたアクセスエンティティを管理するクエリにおいて、ON CLUSTER 句を無視します。
+
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "レプリケーテッドデータベースを使用するDDLクエリで、ON CLUSTER句を無視する新しい設定を追加。"}]}]}/>
+
+レプリケーテッドデータベースを使用するDDLクエリでは、ON CLUSTER句を常に無視します。
 
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 

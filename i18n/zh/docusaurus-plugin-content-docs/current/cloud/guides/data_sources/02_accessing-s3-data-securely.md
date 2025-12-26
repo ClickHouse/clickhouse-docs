@@ -12,15 +12,16 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.png';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
-本文演示 ClickHouse Cloud 客户如何利用基于角色的访问控制与 Amazon Simple Storage Service (S3) 完成身份验证，并安全访问其数据。
+本文演示如何利用基于角色的访问控制与 Amazon Simple Storage Service (S3) 完成身份验证，并从 ClickHouse Cloud 安全地访问您的数据。
+
 
 ## 介绍 {#introduction}
 
-在开始配置安全 S3 访问之前，了解其工作原理非常重要。下面概述了 ClickHouse 服务如何通过在客户的 AWS 账户中扮演一个角色来访问私有 S3 存储桶。
+在开始配置安全 S3 访问之前，了解其工作原理非常重要。下面概述了 ClickHouse 服务如何通过在您的 AWS 账户中扮演一个角色来访问私有 S3 存储桶。
 
 <Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 
-这种方式使客户可以在同一处（被扮演角色的 IAM 策略）集中管理对其 S3 存储桶的所有访问，而无需逐一修改各个存储桶策略来增加或移除访问权限。
+这种方式使您可以在同一处（被扮演角色的 IAM 策略）集中管理对您的 S3 存储桶的所有访问，而无需逐一修改各个存储桶策略来增加或移除访问权限。
 
 ## 安装与配置 {#setup}
 
@@ -28,7 +29,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 1 - 登录到你的 ClickHouse Cloud 账户。
 
-2 - 选择要为其创建集成的 ClickHouse 服务。
+2 - 选择你要从中进行连接的 ClickHouse 服务。
 
 3 - 选择 **Settings** 选项卡。
 
@@ -42,35 +43,33 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 #### 选项 1：使用 CloudFormation 堆栈部署 {#option-1-deploying-with-cloudformation-stack}
 
-1 - 在浏览器中使用具有创建和管理 IAM 角色权限的 IAM 用户登录到你的 AWS 账户。
+1 - 在浏览器中使用具备足够权限以创建和管理 IAM 角色的 IAM 用户登录到您的 AWS 账户。
 
-2 - 访问 [此 URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) 以创建并填充 CloudFormation 堆栈。
+2 - 访问[此 URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3)，以预填 CloudFormation 堆栈。
 
-3 - 输入（或粘贴）ClickHouse 服务使用的 **IAM 角色**。
+3 - 输入您在[上一步](#obtaining-the-clickhouse-service-iam-role-arn)中记录的 ClickHouse 服务 **IAM Role**。
 
 4 - 配置 CloudFormation 堆栈。以下是这些参数的补充说明。
 
-| Parameter                 | Default Value        | Description                                                                                         |
-| :---                      |    :----:            | :----                                                                                               |
-| RoleName                  | ClickHouseAccess-001 | ClickHouse Cloud 用于访问你的 S3 bucket 的新角色名称                                               |
-| Role Session Name         |      *               | Role Session Name 可作为共享密钥，以进一步保护你的 bucket。                                        |
-| ClickHouse Instance Roles |                      | 允许使用此 Secure S3 集成的 ClickHouse 服务 IAM 角色的逗号分隔列表。                               |
-| Bucket Access             |    Read              | 为所提供的 bucket 设置访问级别。                                                                    |
-| Bucket Names              |                      | 此角色可访问的 **bucket 名称** 的逗号分隔列表。                                                     |
+| Parameter                 | Default Value        | Description                                                                                        |
+| :---                      |    :----:            | :----                                                                                              |
+| RoleName                  | ClickHouseAccess-001 | ClickHouse Cloud 用来访问您的 S3 bucket 的新角色名称。                   |
+| Role Session Name         |      *               | Role Session Name 可用作共享密钥，以进一步保护您的 bucket。                   |
+| ClickHouse Instance Roles |                      | 允许使用此安全 S3 集成的 ClickHouse 服务 IAM 角色的逗号分隔列表。      |
+| Bucket Access             |    Read              | 为指定的 bucket 设置访问权限级别。                                                 |
+| Bucket Names              |                      | 此角色可访问的 bucket 名称的逗号分隔列表。**注意：**使用 bucket 名称，而不是完整的 bucket ARN。                       |
 
-*Note*: 不要填写完整的 bucket ARN，只需填写 bucket 名称。
-
-5 - 勾选 **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** 复选框。
+5 - 勾选 **I acknowledge that AWS CloudFormation might create IAM resources with custom names** 复选框。
 
 6 - 点击右下角的 **Create stack** 按钮。
 
-7 - 确认 CloudFormation 堆栈成功完成且没有错误。
+7 - 确认 CloudFormation 堆栈创建完成且没有错误。
 
-8 - 选择 CloudFormation 堆栈的 **Outputs**。
+8 - 在 CloudFormation 堆栈中选择 **Outputs**。
 
-9 - 复制此集成的 **RoleArn** 值。该值用于访问你的 S3 bucket。
+9 - 复制此集成的 **RoleArn** 值。在[下一步（使用 ClickHouseAccess 角色访问您的 S3 bucket）](#access-your-s3-bucket-with-the-clickhouseaccess-role)时需要用到该值。
 
-<Image img={s3_output} size="lg" alt="显示 IAM Role ARN 的 CloudFormation 堆栈输出" border />
+<Image img={s3_output} size="lg" alt="显示 IAM Role ARN 的 CloudFormation stack 输出" border />
 
 #### 选项 2：手动创建 IAM 角色 {#option-2-manually-create-iam-role}
 
@@ -78,9 +77,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 2 - 打开 IAM 服务控制台。
 
-3 - 使用以下 IAM 策略和信任策略创建一个新的 IAM 角色。
+3 - 使用以下信任策略和 IAM 策略创建一个新的 IAM 角色，并将 `{ClickHouse_IAM_ARN}` 替换为属于您 ClickHouse 实例的 IAM 角色 ARN，将 `{BUCKET_NAME}` 替换为存储桶名称。
 
-信任策略（请将 `{ClickHouse_IAM_ARN}` 替换为属于您 ClickHouse 实例的 IAM 角色 ARN）：
+**信任策略**
 
 ```json
 {
@@ -97,7 +96,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 }
 ```
 
-IAM 策略（请将 `{BUCKET_NAME}` 替换为您的存储桶名称）：
+**IAM 策略**
 
 ```json
 {
@@ -127,7 +126,8 @@ IAM 策略（请将 `{BUCKET_NAME}` 替换为您的存储桶名称）：
 }
 ```
 
-4 - 在创建完成后复制新的 **IAM Role Arn**。这是访问你的 S3 bucket 所需的 Arn。
+4 - 在创建完成后复制新的 **IAM Role Arn**。在[下一步](#access-your-s3-bucket-with-the-clickhouseaccess-role)中配置访问 S3 bucket 时会用到它。
+
 
 ## 使用 ClickHouseAccess 角色访问你的 S3 bucket {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
@@ -144,13 +144,20 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 ```
 
 :::note
-我们建议将您的源 S3 与 ClickHouse Cloud Service 部署在同一地域，以降低数据传输费用。有关更多信息，请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)。
+我们建议将您的 S3 bucket 与 ClickHouse Cloud 服务部署在同一地域，以降低数据传输费用。有关更多信息，请参阅 [S3 定价](https://aws.amazon.com/s3/pricing/)。
 :::
 
 
 ## 高级操作控制 {#advanced-action-control}
 
-如果用户希望仅在请求源自 ClickHouse 的 VPC 时才允许返回对象，可以在上面创建的 [IAM assume role](#setting-up-iam-assume-role) 中添加以下策略。请查阅 [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) 以了解如何获取 ClickHouse Cloud 的 VPC 端点。
+为了实现更严格的访问控制，可以使用 [`aws:SourceVpce` 条件](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html#example-bucket-policies-restrict-accesss-vpc-endpoint)，将存储桶策略限制为仅接受来源于 ClickHouse Cloud 的 VPC 端点的请求。要获取 ClickHouse Cloud 所在区域的 VPC 端点，请打开终端并运行：
+
+```bash
+# Replace <your-region> with your ClickHouse Cloud region
+curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+```
+
+然后，在 IAM 策略中添加一条使用前面获取到的端点的拒绝规则：
 
 ```json
 {
@@ -187,5 +194,6 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
             }
         ]
 }
-
 ```
+
+有关访问 ClickHouse Cloud 服务端点的更多详细信息，请参阅 [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api)。

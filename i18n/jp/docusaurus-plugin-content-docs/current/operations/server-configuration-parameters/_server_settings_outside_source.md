@@ -100,6 +100,26 @@ ClickHouse Cloud のデプロイメントでは、デフォルトで有効にな
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+さまざまなバックグラウンドプールを介して実行されるすべてのバックグラウンドタスクに関する情報を保持します。
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
 [Bcrypt アルゴリズム](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/) を使用する `bcrypt_password` 認証タイプのワークファクターです。

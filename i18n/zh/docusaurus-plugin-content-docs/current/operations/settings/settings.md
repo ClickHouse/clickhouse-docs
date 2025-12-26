@@ -2638,6 +2638,14 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。在 system.distributed_cache_metrics 和 system.distributed_cache_events 表中，仅从当前可用区获取指标数据。
 
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting."}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。此设置仅在 CI 测试中使用——用于指定在分布式缓存上使用的文件系统缓存名称。
+
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
 <CloudOnlyBadge/>
@@ -4818,6 +4826,14 @@ Expression ((Projection + Before ORDER BY))
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在副本访问实体管理查询中忽略 ON CLUSTER 子句。
+
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "添加一个新的设置，用于在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。"}]}]}/>
+
+始终在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。
 
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
