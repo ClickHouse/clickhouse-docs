@@ -114,6 +114,21 @@ BlobEndpoint=https://storage-account-name.blob.core.windows.net/;SharedAccessSig
 
 Generate a SAS token in the Azure Portal under **Storage Account > Shared access signature** with the appropriate permissions (`Read`, `List`) for the container and blobs you want to ingest.
 
+### Network access {#network-access}
+
+ABS ClickPipes use two distinct network paths for metadata discovery and data ingestion: the ClickPipes service and the ClickHouse Cloud service, respectively. If you want to configure an additional layer of network security (e.g., for compliance reasons), network access **must be configured for both paths**.
+
+:::warning
+IP-based access control **does not work** if your Azure Blob Storage container is in the same Azure region as your ClickHouse Cloud service. When both services are co-located, traffic is routed through Azure's internal network, rather than the public internet.
+:::
+
+* For **IP-based access control**, the [IP network rules](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security) for your Azure Storage firewall must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes#list-of-static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.azure[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## Advanced settings {#advanced-settings}
 
 ClickPipes provides sensible defaults that cover the requirements of most use cases. If your use case requires additional fine-tuning, you can adjust the following settings:
