@@ -78,11 +78,11 @@ connecting to a ClickHouse Cloud instance using several additional parameters:
 
 clickhouse::Client client{
     clickhouse::ClientOptions{}
-        .SetHost("your.instance.clickhouse.cloud")
-         .SetUser("default")
-        .SetPassword("your-password")
+      .SetHost("your.instance.clickhouse.cloud")
+      .SetUser("default")
+      .SetPassword("your-password")
       .SetSSLOptions({})   // Enable SSL
-      .SetPort(9440)       // for connections over SS ClickHouse Cloud uses 9440
+      .SetPort(9440)       // for connections over SSL ClickHouse Cloud uses port 9440
     };
 ```
 
