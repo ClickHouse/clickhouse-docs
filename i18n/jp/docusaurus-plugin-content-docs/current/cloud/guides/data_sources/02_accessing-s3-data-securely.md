@@ -12,15 +12,16 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.png';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
-この記事では、ClickHouse Cloud のお客様がロールベースのアクセス制御を利用して Amazon Simple Storage Service (S3) に認証し、データへ安全にアクセスする方法を示します。
+この記事では、ClickHouse Cloud からロールベースのアクセス制御を利用して Amazon Simple Storage Service (S3) に認証し、データへ安全にアクセスする方法を示します。
+
 
 ## はじめに {#introduction}
 
-セキュアな S3 アクセスの設定に入る前に、その仕組みを理解しておくことが重要です。以下では、ClickHouse の各種サービスが、顧客の AWS アカウント内のロールを引き受けることで、プライベートな S3 バケットへアクセスできる仕組みの概要を示します。
+セキュアな S3 アクセスの設定に入る前に、その仕組みを理解しておくことが重要です。以下では、ClickHouse の各種サービスが、自身の AWS アカウント内のロールを引き受けることで、プライベートな S3 バケットへアクセスできる仕組みの概要を示します。
 
 <Image img={secure_s3} size="lg" alt="ClickHouse によるセキュアな S3 アクセスの概要"/>
 
-この方法により、顧客は S3 バケットへのすべてのアクセスを、各バケットのポリシーを個別に確認してアクセス権限を追加・削除することなく、引き受けられるロールに設定された IAM ポリシー 1 箇所で一元的に管理できます。
+この方法により、S3 バケットへのすべてのアクセスを、各バケットのポリシーを個別に確認してアクセス権限を追加・削除することなく、引き受けられるロールに設定された IAM ポリシー 1 箇所で一元的に管理できます。
 
 ## セットアップ {#setup}
 
@@ -28,7 +29,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 1 - ClickHouse Cloud アカウントにログインします。
 
-2 - 連携を作成したい ClickHouse サービスを選択します。
+2 - 接続元にする ClickHouse サービスを選択します。
 
 3 - **Settings** タブを選択します。
 
@@ -40,27 +41,25 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 ### IAM ロールの引き受けの設定 {#setting-up-iam-assume-role}
 
-#### オプション 1: CloudFormation スタックを使用してデプロイする {#option-1-deploying-with-cloudformation-stack}
+#### オプション 1: CloudFormation スタックでデプロイする {#option-1-deploying-with-cloudformation-stack}
 
-1 - IAM ロールの作成および管理権限を持つ IAM ユーザーで、ウェブブラウザから自分の AWS アカウントにログインします。
+1 - IAM ロールを作成および管理できる十分な権限を持つ IAM ユーザーで、Web ブラウザーから AWS アカウントにログインします。
 
 2 - CloudFormation スタックを作成するために [この URL](https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/quickcreate?templateURL=https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/secure-s3.yaml&stackName=ClickHouseSecureS3) にアクセスします。
 
-3 - ClickHouse サービスに対応する **IAM Role** を入力（またはペースト）します。
+3 - [前の手順](#obtaining-the-clickhouse-service-iam-role-arn) でメモしておいた ClickHouse サービスの **IAM Role** を入力します。
 
-4 - CloudFormation スタックを設定します。以下は各パラメータに関する補足情報です。
+4 - CloudFormation スタックを設定します。以下は各パラメーターに関する追加情報です。
 
 | Parameter                 | Default Value        | Description                                                                                        |
 | :---                      |    :----:            | :----                                                                                              |
-| RoleName                  | ClickHouseAccess-001 | ClickHouse Cloud が S3 バケットへアクセスする際に使用する、新しいロールの名前です。                |
-| Role Session Name         |      *               | Role Session Name は、共有シークレットとして使用し、バケットをさらに保護するために利用できます。  |
-| ClickHouse Instance Roles |                      | この Secure S3 連携を使用できる ClickHouse サービス IAM ロールの、カンマ区切りリストです。        |
-| Bucket Access             |    Read              | 指定されたバケットに対するアクセスレベルを設定します。                                              |
-| Bucket Names              |                      | このロールがアクセス権を持つ **バケット名** のカンマ区切りリストです。                             |
+| RoleName                  | ClickHouseAccess-001 | ClickHouse Cloud が S3 バケットにアクセスするために使用する、新しいロールの名前です。                   |
+| Role Session Name         |      *               | Role Session Name は、共有シークレットとして使用することで、バケットをさらに保護するために利用できます。                   |
+| ClickHouse Instance Roles |                      | このセキュアな S3 連携を利用できる ClickHouse サービス IAM ロールのカンマ区切りリストです。      |
+| Bucket Access             |    Read              | 指定したバケットに対するアクセスレベルを設定します。                                                 |
+| Bucket Names              |                      | このロールがアクセスできるバケット名のカンマ区切りリストです。**注意:** バケット ARN 全体ではなく、バケット名を使用してください。                       |
 
-*注意*: バケットの完全な ARN ではなく、バケット名のみを指定してください。
-
-5 - **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** チェックボックスを選択します。
+5 - **I acknowledge that AWS CloudFormation might create IAM resources with custom names** チェックボックスを選択します。
 
 6 - 右下の **Create stack** ボタンをクリックします。
 
@@ -68,9 +67,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 8 - CloudFormation スタックの **Outputs** を選択します。
 
-9 - この連携用に **RoleArn** の値をコピーします。これは S3 バケットへアクセスするために必要な値です。
+9 - この連携用に **RoleArn** の値をコピーします。これは [次の手順](#access-your-s3-bucket-with-the-clickhouseaccess-role) で S3 バケットへのアクセスを設定する際に必要になります。
 
-<Image img={s3_output} size="lg" alt="CloudFormation スタックの出力に表示された IAM Role ARN" border />
+<Image img={s3_output} size="lg" alt="IAM Role ARN を表示している CloudFormation スタックの出力" border />
 
 #### オプション 2: IAM ロールを手動で作成する {#option-2-manually-create-iam-role}
 
@@ -78,9 +77,9 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 
 2 - IAM サービスコンソールにアクセスします。
 
-3 - 次の IAM ポリシーおよび信頼ポリシーを使用して、新しい IAM ロールを作成します。
+3 - 次の信頼ポリシーおよび IAM ポリシーを使用して新しい IAM ロールを作成し、`{ClickHouse_IAM_ARN}` を ClickHouse インスタンスに対応する IAM ロール ARN に、`{BUCKET_NAME}` をバケット名に置き換えます。
 
-信頼ポリシー（`{ClickHouse_IAM_ARN}` を、ClickHouse インスタンスに対応する IAM ロール ARN に置き換えてください）:
+**信頼ポリシー**
 
 ```json
 {
@@ -97,7 +96,7 @@ import s3_output from '@site/static/images/cloud/security/secures3_output.jpg';
 }
 ```
 
-IAM ポリシー（`{BUCKET_NAME}` をバケット名に置き換えてください）：
+**IAM ポリシー**
 
 ```json
 {
@@ -127,7 +126,8 @@ IAM ポリシー（`{BUCKET_NAME}` をバケット名に置き換えてくださ
 }
 ```
 
-4 - 作成後に新しい **IAM Role Arn** をコピーします。これは S3 バケットにアクセスするために必要なものです。
+4 - 作成後に新しい **IAM Role Arn** をコピーします。これは[次のステップ](#access-your-s3-bucket-with-the-clickhouseaccess-role)で S3 バケットへのアクセスを設定するために必要です。
+
 
 ## ClickHouseAccess ロールを使用して S3 バケットにアクセスする {#access-your-s3-bucket-with-the-clickhouseaccess-role}
 
@@ -137,20 +137,27 @@ ClickHouse Cloud では、S3 テーブル関数の一部として `extra_credent
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001'))
 ```
 
-以下は、`role_session_name` を共有シークレットとして使用し、バケットからデータをクエリするサンプルクエリです。`role_session_name` が正しくない場合、この操作は失敗します。
+以下は、`role_session_name` を共有シークレットとして使用し、バケット内のデータをクエリするクエリ例です。`role_session_name` が正しくない場合、この操作は失敗します。
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))
 ```
 
 :::note
-データ転送料金を抑えるため、ソースの S3 バケットは ClickHouse Cloud サービスと同じリージョンに配置することを推奨します。詳細については [S3 pricing](https://aws.amazon.com/s3/pricing/) を参照してください。
+データ転送料金を抑えるため、S3 バケットは ClickHouse Cloud サービスと同じリージョンに配置することを推奨します。詳細については [S3 pricing](https://aws.amazon.com/s3/pricing/) を参照してください。
 :::
 
 
 ## 高度なアクション制御 {#advanced-action-control}
 
-リクエストが ClickHouse の VPC から発行された場合にのみオブジェクトを返すように制限したいお客様は、上で作成した [IAM assume role](#setting-up-iam-assume-role) に対して次のポリシーを追加できます。ClickHouse Cloud の VPC エンドポイントを取得する手順については、[Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) を参照してください。
+より厳格なアクセス制御を行うために、[`aws:SourceVpce` 条件](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html#example-bucket-policies-restrict-accesss-vpc-endpoint) を使用して、ClickHouse Cloud の VPC エンドポイントから発行されたリクエストのみを受け付けるようにバケットポリシーを制限できます。ご利用の ClickHouse Cloud リージョンの VPC エンドポイントを取得するには、ターミナルを開いて次を実行します。
+
+```bash
+# Replace <your-region> with your ClickHouse Cloud region
+curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+```
+
+次に、取得したエンドポイントを使用して、IAM ポリシーに Deny ルールを追加します。
 
 ```json
 {
@@ -187,5 +194,6 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
             }
         ]
 }
-
 ```
+
+ClickHouse Cloud サービスのエンドポイントへのアクセス方法の詳細については、[Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api) を参照してください。

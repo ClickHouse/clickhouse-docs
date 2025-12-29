@@ -403,7 +403,7 @@ Starting AI SQL generation with schema discovery...
 ✨ SQL query generated successfully!
 ──────────────────────────────────────────────────
 
-SELECT 
+SELECT
     c.name AS category,
     COUNT(DISTINCT o.order_id) AS order_count
 FROM sales_db.orders o
@@ -871,6 +871,7 @@ ClickHouse リポジトリ内のサンプル設定ファイルを参照してく
 | `-s [ --secure ]`                | TLS を使用するかどうかを指定します。<br/><br/>ポート 9440（デフォルトのセキュアポート）または ClickHouse Cloud に接続する場合は自動的に有効になります。<br/><br/>[configuration file](#configuration_files) で CA 証明書を設定する必要がある場合があります。利用可能な設定は [server-side TLS configuration](../operations/server-configuration-parameters/settings.md#openssl) と同じです。 | ポート 9440 または ClickHouse Cloud に接続する際に自動的に有効化                                                |
 | `--ssh-key-file <path-to-file>`  | サーバーへの認証に使用する SSH 秘密鍵を含むファイル。                                                                                                                                                                                                                                                                               | -                                                                                                                |
 | `--ssh-key-passphrase <value>`   | `--ssh-key-file` で指定された SSH 秘密鍵のパスフレーズ。                                                                                                                                                                                                                                                                           | -                                                                                                                |
+| `--tls-sni-override <server name>`       | TLS を使用する場合に、ハンドシェイクで渡すサーバー名（SNI）を指定します。                                                                                                                                                                                                                                                                                               | `-h` または `--host` で指定されたホスト名。                                                                                                        |
 | `-u [ --user ] <username>`       | 接続に使用するデータベースユーザー。                                                                                                                                                                                                                                                                                               | `default`                                                                                                        |
 
 :::note

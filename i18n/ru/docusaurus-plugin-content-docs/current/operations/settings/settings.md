@@ -1783,6 +1783,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - 1 - переписывать DDL-запросы на использование *ReplicatedMergeTree
 - 2 - переписывать DDL-запросы на использование SharedMergeTree
 - 3 - переписывать DDL-запросы на использование SharedMergeTree, за исключением случаев, когда явно указан переданный remote-диск
+- 4 - то же, что в 3, плюс дополнительно использовать Alias вместо Distributed
 
 UInt64, чтобы минимизировать публичную часть
 
@@ -2642,6 +2643,14 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "Параметр для ClickHouse Cloud"}]}]}/>
 
 Действует только в ClickHouse Cloud. Получать метрики только из текущей зоны доступности в system.distributed_cache_metrics и system.distributed_cache_events.
+
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "Новая настройка."}]}]}/>
+
+Действует только в ClickHouse Cloud. Настройка, используемая только в CI-тестах — имя файлового кэша, используемого в распределённом кэше.
 
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
@@ -4824,6 +4833,14 @@ Expression ((Projection + Before ORDER BY))
 
 Игнорирует предложение ON CLUSTER в запросах управления реплицируемыми объектами доступа.
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Добавлен новый параметр для игнорирования предложения ON CLUSTER в DDL-запросах к реплицируемой базе данных."}]}]}/>
+
+Всегда игнорирует предложение ON CLUSTER в DDL-запросах к реплицируемым базам данных.
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5358,6 +5375,26 @@ ClickHouse всегда пытается использовать JOIN `partial_
 
 Количество хеш-функций в фильтре Блума, используемом как runtime-фильтр для операций JOIN (см. настройку enable_join_runtime_filters).
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "Новая настройка"}]}]}/>
+
+Если доля установленных битов в runtime bloom-фильтре превышает заданное значение, фильтр полностью отключается для снижения накладных расходов.
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+Количество блоков, которые пропускаются до попытки динамически снова включить runtime-фильтр, ранее отключённый из-за низкой эффективности фильтрации.
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5367,6 +5404,16 @@ ClickHouse всегда пытается использовать JOIN `partial_
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "Новая настройка"}]}]}/>
 
 Максимальное количество элементов в runtime-фильтре, которые хранятся как есть в виде множества; при превышении этого порога фильтр переключается на Bloom-фильтр.
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "Новая настройка"}]}]}/>
+
+Если отношение количества прошедших строк к количеству проверенных строк больше этого порога, runtime-фильтр считается неэффективным и отключается на следующие `join_runtime_filter_blocks_to_skip_before_reenabling` блоки для снижения накладных расходов.
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 

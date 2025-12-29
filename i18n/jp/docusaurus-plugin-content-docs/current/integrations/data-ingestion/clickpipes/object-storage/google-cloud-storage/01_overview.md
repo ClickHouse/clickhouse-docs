@@ -103,6 +103,17 @@ GCS ClickPipe は、パブリックバケットおよびプライベートバケ
 
 HMAC キー付きのサービスアカウントを作成するには、[このガイド](https://clickhouse.com/docs/integrations/gcs#create-a-service-account-hmac-key-and-secret) に従ってください。
 
+### ネットワークアクセス {#network-access}
+
+GCS ClickPipes は、メタデータの検出とデータインジェストのために、それぞれ ClickPipes サービスと ClickHouse Cloud サービスという 2 つの異なるネットワークパスを使用します。追加のネットワークセキュリティ層（例：コンプライアンス目的）を構成したい場合、**両方のパスに対してネットワークアクセスを設定する必要があります**。
+
+* **IP ベースのアクセス制御**を使用する場合は、GCS バケットの [IP フィルタリングルール](https://docs.cloud.google.com/storage/docs/ip-filtering-overview) で、[こちら](/integrations/clickpipes#list-of-static-ips)に記載されている ClickPipes サービスリージョンの固定 IP アドレスに加え、ClickHouse Cloud サービスの [固定 IP アドレス](/manage/data-sources/cloud-endpoints-api) も許可する必要があります。ClickHouse Cloud リージョンの固定 IP アドレスを取得するには、ターミナルを開いて次のコマンドを実行します。
+
+    ```bash
+    # <your-region> を ClickHouse Cloud のリージョンに置き換えてください
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.gcp[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## 詳細設定 {#advanced-settings}
 
 ClickPipes には、多くのユースケースの要件を満たす妥当なデフォルト値が用意されています。ユースケースによっては、さらに細かい調整が必要な場合は、次の設定を変更できます。

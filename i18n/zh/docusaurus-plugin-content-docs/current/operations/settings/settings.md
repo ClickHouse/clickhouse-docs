@@ -1778,6 +1778,7 @@ Cloud 模式
 - 1 - 将 DDL 语句重写为使用 *ReplicatedMergeTree
 - 2 - 将 DDL 语句重写为使用 SharedMergeTree
 - 3 - 将 DDL 语句重写为使用 SharedMergeTree，但在显式指定远程磁盘时除外
+- 4 - 与 3 相同，并且额外使用 Alias 代替 Distributed
 
 使用 UInt64 以尽量缩小对外公开部分
 
@@ -2637,6 +2638,14 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "ClickHouse Cloud 的一个设置"}]}]}/>
 
 仅在 ClickHouse Cloud 中生效。在 system.distributed_cache_metrics 和 system.distributed_cache_events 表中，仅从当前可用区获取指标数据。
+
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting."}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。此设置仅在 CI 测试中使用——用于指定在分布式缓存上使用的文件系统缓存名称。
 
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
@@ -4819,6 +4828,14 @@ Expression ((Projection + Before ORDER BY))
 
 在副本访问实体管理查询中忽略 ON CLUSTER 子句。
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "添加一个新的设置，用于在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。"}]}]}/>
+
+始终在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5353,6 +5370,26 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 Bloom filter 中用于 JOIN 运行时过滤器的哈希函数数量（参见 enable_join_runtime_filters 设置项）。
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+如果运行时 Bloom 过滤器中被置位的位数超过此比例，将完全禁用该过滤器以减少开销。
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+在再次尝试动态重新启用某个运行时过滤器之前，需要跳过的数据块数量。该过滤器此前因过滤效果较差而被禁用。
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5362,6 +5399,16 @@ Bloom filter 中用于 JOIN 运行时过滤器的哈希函数数量（参见 ena
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "新设置"}]}]}/>
 
 在运行时过滤器中，以原样存储在集合中的元素的最大数量。当超过此阈值时，将改为使用 Bloom 过滤器。
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+如果已通过的行数与已检查行数的比例大于此阈值，则该运行时过滤器会被视为性能较差，并在接下来的 `join_runtime_filter_blocks_to_skip_before_reenabling` 个数据块中被禁用，以降低开销。
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 

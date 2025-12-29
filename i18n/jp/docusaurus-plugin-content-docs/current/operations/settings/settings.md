@@ -1781,6 +1781,7 @@ Cloud 上で許可されるエンジンファミリー。
 - 1 - DDL を *ReplicatedMergeTree を使用するように書き換える
 - 2 - DDL を SharedMergeTree を使用するように書き換える
 - 3 - 明示的に指定された remote disk がある場合を除き、DDL を SharedMergeTree を使用するように書き換える
+- 4 - 3 と同じだが、さらに Distributed の代わりに Alias を使用する
 
 公開される部分を最小限に抑えるための UInt64
 
@@ -2641,6 +2642,14 @@ ClickHouse Cloud でのみ有効です。未読みのデータがある場合に
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "ClickHouse Cloud 向けの設定"}]}]}/>
 
 ClickHouse Cloud でのみ有効です。system.distributed_cache_metrics および system.distributed_cache_events から、現在のアベイラビリティゾーンに関するメトリクスのみを取得します。
+
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "新しい設定。"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。CI テスト専用の設定で、distributed cache で使用する filesystem cache 名を指定します。
 
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
@@ -4824,6 +4833,14 @@ MergeTree ファミリーのテーブルに対応しています。
 
 レプリケートされたアクセスエンティティを管理するクエリにおいて、ON CLUSTER 句を無視します。
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "レプリケーテッドデータベースを使用するDDLクエリで、ON CLUSTER句を無視する新しい設定を追加。"}]}]}/>
+
+レプリケーテッドデータベースを使用するDDLクエリでは、ON CLUSTER句を常に無視します。
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5359,6 +5376,26 @@ JOIN のランタイムフィルターとして使用される Bloom フィル�
 
 JOIN のランタイムフィルターとして使用する Bloom フィルターで用いるハッシュ関数の数です（enable_join_runtime_filters 設定を参照）。
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+ランタイム Bloom フィルター内のセットビット数がこの割合を超えた場合、オーバーヘッドを削減するためにそのフィルターは完全に無効化されます。
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+フィルタリング率が低いために以前に無効化されたランタイムフィルタを、動的に再度有効化しようとする前にスキップするブロック数。
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5368,6 +5405,16 @@ JOIN のランタイムフィルターとして使用する Bloom フィルタ�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "新しい設定"}]}]}/>
 
 ランタイムフィルタ内で、set としてそのまま保存される要素数の上限。このしきい値を超えると、Bloom フィルタに切り替わります。
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+通過した行数と検査した行数の比率がこのしきい値を超える場合、そのランタイムフィルターは性能が低いとみなされ、オーバーヘッドを削減するために、次の `join_runtime_filter_blocks_to_skip_before_reenabling` 個のブロックに対しては無効化されます。
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 
