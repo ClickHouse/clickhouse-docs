@@ -103,6 +103,17 @@ GCS ClickPipe поддерживает публичные и приватные 
 
 Воспользуйтесь [этим руководством](https://clickhouse.com/docs/integrations/gcs#create-a-service-account-hmac-key-and-secret), чтобы создать учетную запись службы с ключом и секретом HMAC.
 
+### Сетевой доступ {#network-access}
+
+GCS ClickPipes используют два отдельных сетевых маршрута для обнаружения метаданных и ингестии данных: сервис ClickPipes и сервис ClickHouse Cloud соответственно. Если вы хотите настроить дополнительный уровень сетевой безопасности (например, для соблюдения требований комплаенса), сетевой доступ **должен быть настроен для обоих маршрутов**.
+
+* Для **управления доступом на основе IP-адресов** правила [IP-фильтрации](https://docs.cloud.google.com/storage/docs/ip-filtering-overview) для вашего GCS-бакета должны разрешать статические IP-адреса для региона сервиса ClickPipes, перечисленные [здесь](/integrations/clickpipes#list-of-static-ips), а также [статические IP-адреса](/manage/data-sources/cloud-endpoints-api) для сервиса ClickHouse Cloud. Чтобы получить статические IP-адреса для вашего региона ClickHouse Cloud, откройте терминал и выполните:
+
+    ```bash
+    # Замените <your-region> на ваш регион ClickHouse Cloud
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.gcp[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## Расширенные настройки {#advanced-settings}
 
 ClickPipes предоставляет разумные значения по умолчанию, которые покрывают требования большинства сценариев использования. Если вашему сценарию требуется дополнительная тонкая настройка, вы можете изменить следующие параметры:

@@ -103,6 +103,17 @@ GCS ClickPipe 支持公共和私有存储桶。**不**支持 [Requester Pays](ht
 
 请参阅[本指南](https://clickhouse.com/docs/integrations/gcs#create-a-service-account-hmac-key-and-secret)来创建带有 HMAC 密钥的服务账号。
 
+### 网络访问 {#network-access}
+
+GCS ClickPipes 在元数据发现和数据摄取时使用两条不同的网络路径：分别是 ClickPipes 服务和 ClickHouse Cloud 服务。如果希望配置额外一层网络安全（例如出于合规要求），则**必须为这两条路径都配置网络访问**。
+
+* 对于**基于 IP 的访问控制**，你的 GCS 存储桶的 [IP 过滤规则](https://docs.cloud.google.com/storage/docs/ip-filtering-overview)必须允许 ClickPipes 服务区域在[此处](/integrations/clickpipes#list-of-static-ips)列出的静态 IP，以及 ClickHouse Cloud 服务的[静态 IP](/manage/data-sources/cloud-endpoints-api)。要获取所用 ClickHouse Cloud 区域的静态 IP，请打开终端并运行：
+
+    ```bash
+    # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.gcp[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## 高级设置 {#advanced-settings}
 
 ClickPipes 提供了合理的默认配置，能够满足大多数使用场景的需求。如果你的场景需要进一步微调，可以调整以下设置：

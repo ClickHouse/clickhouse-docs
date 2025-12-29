@@ -336,6 +336,26 @@ ClickHouse 服务器用于存储通过 SQL 命令创建的用户和角色配置�
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+包含关于通过各种后台池执行的所有后台任务的信息。
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
 
 <SettingsInfoBlock type="Float" default_value="0.8" />线程池中可用于同时执行同一类型任务的线程数的最大占比。
@@ -1890,6 +1910,7 @@ ClickHouse Enterprise Edition 许可证文件内容
 | `log`                  | 日志文件的路径。                                                                                                                                          |
 | `errorlog`             | 错误日志文件的路径。                                                                                                                                    |
 | `size`                 | 轮转策略：日志文件的最大大小（字节）。当日志文件大小超过该阈值时，会被重命名并归档，并创建新的日志文件。 |
+| `rotation`             | 轮转策略：控制何时轮转日志文件。轮转可以基于大小、时间或两者的组合。例如：100M、daily、100M,daily。当日志文件超过指定大小或达到指定时间间隔时，会被重命名并归档，并创建新的日志文件。 |
 | `count`                | 轮转策略：最多保留多少个 ClickHouse 历史日志文件。                                                                                        |
 | `stream_compress`      | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 以启用。                                                                                                   |
 | `console`              | 启用输出到控制台的日志。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，默认值为 `1`，否则为 `0`。                            |

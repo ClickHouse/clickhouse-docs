@@ -117,6 +117,21 @@ BlobEndpoint=https://storage-account-name.blob.core.windows.net/;SharedAccessSig
 Azure Portal の **Storage Account &gt; Shared access signature** で、取り込み対象のコンテナおよび BLOB に対して必要な権限（`Read`、`List`）を付与した SAS トークンを生成します。
 
 
+### ネットワークアクセス {#network-access}
+
+ABS ClickPipes は、メタデータ検出とデータのインジェストに対して、それぞれ ClickPipes サービスと ClickHouse Cloud サービスという 2 つの異なるネットワークパスを使用します。追加のネットワークセキュリティ層（コンプライアンス目的など）を構成したい場合は、**両方のパスに対してネットワークアクセスを構成する必要があります**。
+
+:::warning
+Azure Blob Storage コンテナが ClickHouse Cloud サービスと同一の Azure リージョンにある場合、IP ベースのアクセス制御は**機能しません**。両方のサービスが同一リージョン内にある場合、トラフィックはパブリックインターネットではなく Azure の内部ネットワーク経由でルーティングされます。
+:::
+
+* **IP ベースのアクセス制御**を行う場合、Azure Storage ファイアウォールの [IP ネットワークルール](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security) で、[こちら](/integrations/clickpipes#list-of-static-ips)に記載されている ClickPipes サービスリージョンの固定 IP に加えて、ClickHouse Cloud サービスの[固定 IP](/manage/data-sources/cloud-endpoints-api) も許可する必要があります。利用している ClickHouse Cloud リージョンの固定 IP を取得するには、ターミナルを開いて次を実行します:
+
+    ```bash
+    # <your-region> を利用している ClickHouse Cloud リージョンに置き換えてください
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.azure[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## 高度な設定 {#advanced-settings}
 
 ClickPipes は、ほとんどのユースケースの要件を満たす適切なデフォルト値を提供します。ユースケースに応じてさらなる調整が必要な場合は、次の設定を変更できます。
