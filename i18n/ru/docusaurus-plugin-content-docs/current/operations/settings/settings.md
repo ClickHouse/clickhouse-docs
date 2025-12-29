@@ -2643,6 +2643,14 @@ ENGINE = Log
 
 Действует только в ClickHouse Cloud. Получать метрики только из текущей зоны доступности в system.distributed_cache_metrics и system.distributed_cache_events.
 
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "Новая настройка."}]}]}/>
+
+Действует только в ClickHouse Cloud. Настройка, используемая только в CI-тестах — имя файлового кэша, используемого в распределённом кэше.
+
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
 <CloudOnlyBadge/>
@@ -4823,6 +4831,14 @@ Expression ((Projection + Before ORDER BY))
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Игнорирует предложение ON CLUSTER в запросах управления реплицируемыми объектами доступа.
+
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Добавлен новый параметр для игнорирования предложения ON CLUSTER в DDL-запросах к реплицируемой базе данных."}]}]}/>
+
+Всегда игнорирует предложение ON CLUSTER в DDL-запросах к реплицируемым базам данных.
 
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 

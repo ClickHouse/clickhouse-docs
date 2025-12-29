@@ -12,7 +12,6 @@ import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
 import postman4 from '@site/static/images/cloud/manage/postman/postman4.png';
-import postman5 from '@site/static/images/cloud/manage/postman/postman5.png';
 import postman6 from '@site/static/images/cloud/manage/postman/postman6.png';
 import postman7 from '@site/static/images/cloud/manage/postman/postman7.png';
 import postman8 from '@site/static/images/cloud/manage/postman/postman8.png';
@@ -29,11 +28,12 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 このガイドでは、[Postman](https://www.postman.com/product/what-is-postman/) を使用して ClickHouse Cloud API をテストする方法を説明します。
 Postman アプリケーションは Web ブラウザ上で利用できるほか、デスクトップにダウンロードして利用することもできます。
 
+
 ### アカウントを作成する {#create-an-account}
 
 * 無料アカウントは [https://www.postman.com](https://www.postman.com) から作成できます。
 
-<Image img={postman1} size="md" alt="Postman サイト" border />
+<Image img={postman1} size="md" alt="Postman サイト" border/>
 
 ### ワークスペースを作成する {#create-a-workspace}
 
@@ -51,9 +51,7 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 <Image img={postman4} size="md" alt="API URL の入力" border />
 
-* API アドレス「[https://api.clickhouse.cloud/v1](https://api.clickhouse.cloud/v1)」を入力し、Enter キーを押します:
-
-<Image img={postman5} size="md" alt="Import" border />
+* API アドレス「https://api.clickhouse.cloud/v1」を入力し、Enter キーを押します:
 
 * 「Import」ボタンをクリックして「Postman Collection」を選択します:
 
@@ -63,11 +61,11 @@ Postman アプリケーションは Web ブラウザ上で利用できるほか�
 
 * 「API spec for ClickHouse Cloud」が「Collections」（左ナビゲーション）内に表示されます。
 
-<Image img={postman7} size="md" alt="API のインポート" border />
+<Image img={postman7} size="md" alt="API のインポート" border/>
 
 * 「API spec for ClickHouse Cloud」をクリックし、中央ペインの「Authorization」タブを選択します:
 
-<Image img={postman8} size="md" alt="インポート完了" border />
+<Image img={postman8} size="md" alt="インポート完了" border/>
 
 ### 認証を設定する {#set-authorization}
 

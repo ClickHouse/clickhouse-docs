@@ -117,6 +117,21 @@ BlobEndpoint=https://storage-account-name.blob.core.windows.net/;SharedAccessSig
 Сгенерируйте SAS-токен в Azure Portal в разделе **Storage Account &gt; Shared access signature** с соответствующими правами (`Read`, `List`) для контейнера и BLOB-объектов, данные из которых вы хотите принимать.
 
 
+### Сетевой доступ {#network-access}
+
+ABS ClickPipes используют два отдельных сетевых пути для обнаружения метаданных и ингестии данных: сервис ClickPipes и сервис ClickHouse Cloud соответственно. Если вы хотите настроить дополнительный уровень сетевой безопасности (например, по требованиям соответствия), сетевой доступ **должен быть настроен для обоих путей**.
+
+:::warning
+Управление доступом на основе IP-адресов **не работает**, если ваш контейнер Azure Blob Storage находится в том же регионе Azure, что и ваш сервис ClickHouse Cloud. Когда оба сервиса находятся в одном регионе, трафик маршрутизируется через внутреннюю сеть Azure, а не через публичный интернет.
+:::
+
+* Для **управления доступом на основе IP-адресов** [сетевые правила IP](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security) для вашего брандмауэра Azure Storage должны разрешать статические IP-адреса для региона сервиса ClickPipes, перечисленные [здесь](/integrations/clickpipes#list-of-static-ips), а также [статические IP-адреса](/manage/data-sources/cloud-endpoints-api) для сервиса ClickHouse Cloud. Чтобы получить статические IP-адреса для вашего региона ClickHouse Cloud, откройте терминал и выполните:
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.azure[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## Расширенные настройки {#advanced-settings}
 
 ClickPipes предоставляет оптимальные настройки по умолчанию, которые удовлетворяют требованиям большинства сценариев использования. Если вашему сценарию требуется дополнительная тонкая настройка, вы можете изменить следующие параметры:

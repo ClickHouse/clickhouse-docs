@@ -14,5 +14,3 @@ doc_type: 'landing-page'
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | 了解付款阈值的工作机制以及如何进行调整。 |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | 排查常见计费问题。                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | 与 Marketplace 相关主题的入口页面。                 |
-
-https://clickhouse.com/docs/cloud/

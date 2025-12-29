@@ -117,6 +117,21 @@ BlobEndpoint=https://storage-account-name.blob.core.windows.net/;SharedAccessSig
 在 Azure 门户中通过 **Storage Account &gt; Shared access signature** 生成一个 SAS 令牌，为你要摄取的容器和 blob 授予相应的权限（`Read`、`List`）。
 
 
+### 网络访问 {#network-access}
+
+ABS ClickPipes 在元数据发现和数据摄取时分别使用两条不同的网络路径：即 ClickPipes 服务和 ClickHouse Cloud 服务。如果你希望配置额外的网络安全层（例如出于合规性原因），则**必须为这两条路径都配置网络访问**。
+
+:::warning
+如果你的 Azure Blob Storage 容器与 ClickHouse Cloud 服务位于同一 Azure 区域，则基于 IP 的访问控制**不起作用**。当两个服务部署在同一地区时，流量会通过 Azure 的内部网络而不是公共互联网进行路由。
+:::
+
+* 对于**基于 IP 的访问控制**，Azure Storage 防火墙的 [IP 网络规则](https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security)必须同时允许 ClickPipes 服务所在区域的静态 IP（列在[此处](/integrations/clickpipes#list-of-static-ips)），以及 ClickHouse Cloud 服务的[静态 IP](/manage/data-sources/cloud-endpoints-api)。要获取对应 ClickHouse Cloud 区域的静态 IP，请打开终端并运行：
+
+    ```bash
+    # Replace <your-region> with your ClickHouse Cloud region
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.azure[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
 ## 高级设置 {#advanced-settings}
 
 ClickPipes 提供了合理的默认值，能够满足大多数使用场景的需求。如果您的使用场景需要额外的微调，可以调整以下设置：
