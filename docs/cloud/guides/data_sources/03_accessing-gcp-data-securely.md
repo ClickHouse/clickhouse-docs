@@ -1,9 +1,9 @@
 ---
 slug: /cloud/data-sources/secure-gcp
-sidebar_label: 'Accessing GCP data securely'
-title: 'Accessing GCP data securely'
-description: 'This article demonstrates how ClickHouse Cloud customers can access their GCP data securely'
-keywords: ['GCP']
+sidebar_label: 'Accessing GCS data securely'
+title: 'Accessing GCS data securely'
+description: 'This article demonstrates how ClickHouse Cloud customers can access their GCS data securely'
+keywords: ['GCS']
 doc_type: 'guide'
 ---
 
