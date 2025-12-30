@@ -8,7 +8,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import VerticalStepper from '@site/src/components/VerticalStepper';
 import IAM_and_admin from '@site/static/images/cloud/guides/accessing-data/GCS/IAM_and_admin.png';
 import create_service_account from '@site/static/images/cloud/guides/accessing-data/GCS/create_service_account.png';
 import create_and_continue from '@site/static/images/cloud/guides/accessing-data/GCS/create_and_continue.png';
