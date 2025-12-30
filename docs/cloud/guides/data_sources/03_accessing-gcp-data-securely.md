@@ -138,7 +138,7 @@ Click `CREATE KEY`:
 The HMAC key will be displayed.
 Save both the Access Key and Secret immediately - you won't be able to view the secret again.
 
-Example:
+Example keys are shown below:
 
 ```vbnet
 Access Key: GOOG1EF4YBJVNFQ2YGCP3SLV4Y7CMFHW7HPC6EO7RITLJDDQ75639JK56SQVD
