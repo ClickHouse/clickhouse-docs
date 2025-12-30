@@ -431,6 +431,19 @@ When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `Pooled
 
 ---
 
+#### DateTime handling {#best-practice-datetime}
+
+1. **Use UTC whenever possible.** Store timestamps as `DateTime('UTC')` columns and use `DateTimeKind.Utc` in your code. This eliminates timezone ambiguity.
+
+2. **Use `DateTimeOffset` for explicit timezone handling.** It always represents a specific instant and includes the offset information.
+
+3. **Specify timezone in HTTP parameter type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns:
+   ```csharp
+   command.AddParameter("dt", value, "DateTime('Europe/Amsterdam')");
+   ```
+
+---
+
 #### Async inserts {#async-inserts}
 
 [Async inserts](/docs/optimize/asynchronous-inserts) shift batching responsibility from the client to the server. Instead of requiring client-side batching, the server buffers incoming data and flushes it to storage based on configurable thresholds. This is useful for high-concurrency scenarios like observability workloads where many agents send small payloads.
@@ -571,6 +584,44 @@ Decimal type conversion is controlled via the UseCustomDecimals setting.
 | Time | `TimeSpan` |
 | Time64 | `TimeSpan` |
 
+ClickHouse stores `DateTime` and `DateTime64` values internally as Unix timestamps (seconds or sub-second units since epoch). While the storage is always in UTC, columns can have an associated timezone that affects how values are displayed and interpreted.
+
+When reading `DateTime` values, the `DateTime.Kind` property is set based on the column's timezone:
+
+| Column Timezone | Returned `DateTime.Kind` |
+|-----------------|-------------------------|
+| UTC | `DateTimeKind.Utc` |
+| Any other timezone | `DateTimeKind.Unspecified` |
+| No timezone specified | `DateTimeKind.Unspecified` |
+
+For non-UTC columns, the returned `DateTime` represents the wall-clock time in that timezone. Use `ClickHouseDataReader.GetDateTimeOffset()` to get a `DateTimeOffset` with the correct offset for that timezone:
+
+```csharp
+var reader = (ClickHouseDataReader)await connection.ExecuteReaderAsync(
+    "SELECT toDateTime('2024-06-15 14:30:00', 'Europe/Amsterdam')");
+reader.Read();
+
+var dt = reader.GetDateTime(0);    // 2024-06-15 14:30:00, Kind=Unspecified
+var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
+```
+
+##### UseServerTimezone setting {#datetime-handling-useservertimezone}
+
+For columns **without** an explicit timezone (e.g., `DateTime` instead of `DateTime('Europe/Amsterdam')`), the `UseServerTimezone` connection string setting controls which timezone is used:
+
+| `UseServerTimezone` | Timezone Used | Default |
+|---------------------|---------------|---------|
+| `true` | Server's timezone (from `X-ClickHouse-Timezone` header) | **Yes** |
+| `false` | Client's system timezone | No |
+
+When a column has an explicit timezone, that timezone is always used regardless of this setting.
+
+| Column Definition | `UseServerTimezone=true` | `UseServerTimezone=false` |
+|-------------------|--------------------------|---------------------------|
+| `DateTime('UTC')` | UTC, Kind=Utc | UTC, Kind=Utc |
+| `DateTime('Europe/Amsterdam')` | Amsterdam, Kind=Unspecified | Amsterdam, Kind=Unspecified |
+| `DateTime` (no tz) | Server timezone, Kind=Unspecified | Client timezone, Kind=Unspecified |
+
 #### Other types {#type-map-reading-other}
 
 | ClickHouse Type | .NET Type |
@@ -667,6 +718,60 @@ When inserting data, the driver converts .NET types to their corresponding Click
 | Time | `TimeSpan`, `int` | Clamped to ±999:59:59; int treated as seconds |
 | Time64 | `TimeSpan`, `decimal`, `double`, `float`, `int`, `long`, `string` | String parsed as `[-]HHH:MM:SS[.fraction]`; clamped to ±999:59:59.999999999 |
 
+The driver respects `DateTime.Kind` when writing values:
+
+| `DateTime.Kind` | Behavior |
+|-----------------|----------|
+| `Utc` | Instant is preserved exactly |
+| `Local` | Converted to UTC using system timezone, instant preserved |
+| `Unspecified` | Treated as wall-clock time in target column's timezone |
+
+`DateTimeOffset` values always preserve the exact instant, regardless of the offset.
+
+**Example: UTC DateTime (instant preserved)**
+```csharp
+var utcTime = new DateTime(2024, 1, 15, 12, 0, 0, DateTimeKind.Utc);
+// Stored as 12:00 UTC
+// Read from DateTime('Europe/Amsterdam') column: 13:00 (UTC+1)
+// Read from DateTime('UTC') column: 12:00 UTC
+```
+
+**Example: Unspecified DateTime (wall-clock time)**
+```csharp
+var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
+// Written to DateTime('Europe/Amsterdam') column: stored as 14:30 Amsterdam time
+// Read back from DateTime('Europe/Amsterdam') column: 14:30
+```
+
+**Recommendation:** For simplest and most predictable behavior, use `DateTimeKind.Utc` or `DateTimeOffset` for all DateTime operations. This ensures your code works consistently regardless of server timezone, client timezone, or column timezone.
+
+#### HTTP Parameters vs Bulk Copy {#datetime-http-param-vs-bulkcopy}
+
+There is an important difference between HTTP parameter binding and bulk copy when writing `Unspecified` DateTime values:
+
+**Bulk Copy** knows the target column's timezone and correctly interprets `Unspecified` values in that timezone.
+
+**HTTP Parameters** do not automatically know the column timezone. You must specify it in the parameter type hint:
+
+```csharp
+// CORRECT: Timezone in type hint
+command.AddParameter("dt", myDateTime, "DateTime('Europe/Amsterdam')");
+command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime('Europe/Amsterdam')})";
+
+// INCORRECT: Without timezone hint, interpreted as UTC
+command.AddParameter("dt", myDateTime);
+command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
+// String value "2024-01-15 14:30:00" interpreted as UTC, not Amsterdam time!
+```
+
+| `DateTime.Kind` | Target Column | HTTP Param (with tz hint) | HTTP Param (no tz hint) | Bulk Copy |
+|-----------------|---------------|---------------------------|-------------------------|-----------|
+| `Utc` | UTC | Instant preserved | Instant preserved | Instant preserved |
+| `Utc` | Europe/Amsterdam | Instant preserved | Instant preserved | Instant preserved |
+| `Local` | Any | Instant preserved | Instant preserved | Instant preserved |
+| `Unspecified` | UTC | Treated as UTC | Treated as UTC | Treated as UTC |
+| `Unspecified` | Europe/Amsterdam | Treated as Amsterdam time | **Treated as UTC** | Treated as Amsterdam time |
+
 #### Decimal types {#type-map-writing-decimal}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
@@ -720,23 +825,6 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 ---
 
-### DateTime handling {#datetime-handling}
-
-`ClickHouse.Driver` handles timezones and the `DateTime.Kind` property in accordance with the column's timezone in ClickHouse. Specifically:
-
-When reading:
-
-- If the column's timezone has zero offset (UTC/GMT), returns DateTimeKind.Utc
-- If the column's timezone has non-zero offset, returns `DateTimeKind.Unspecified` (representing the local time in that timezone)
-
-When writing:
-  - `UTC` `DateTime`s are inserted 'as is', because ClickHouse stores them in UTC internally.
-  - `Local` `DateTime`s are converted to UTC according to user's local timezone settings.
-  - `Unspecified` `DateTime`s are considered to be in target column's timezone, and hence are converted to UTC according to that timezone.
-
-- For columns without timezone specified, server timezone is used by default. `UseServerTimezone` flag in connection string can be used to control whether the server or the client system timezone is used.
-
-HTTP PARAM VS BULK COPY! We don't actually know the column timezone in the http param case, do we?! ???????????? TODO
 
 
 ### Nested type handling {#nested-type-handling}
