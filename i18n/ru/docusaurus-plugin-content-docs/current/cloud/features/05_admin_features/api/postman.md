@@ -53,6 +53,8 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 * Введите адрес API: «https://api.clickhouse.cloud/v1» и нажмите Enter:
 
+<Image img={postman5} size="md" alt="Import" border />
+
 * Выберите «Postman Collection», нажав кнопку «Import»:
 
 <Image img={postman6} size="md" alt="Collection > Import" border />

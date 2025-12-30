@@ -8085,8 +8085,8 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - [isNull](/sql-reference/functions/functions-for-nulls#isNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [count](/sql-reference/aggregate-functions/reference/count) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
-- [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
-- [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
 
 Возможные значения:
 
