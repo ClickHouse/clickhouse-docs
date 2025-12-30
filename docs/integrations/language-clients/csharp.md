@@ -825,8 +825,6 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
-
-
 ### Nested type handling {#nested-type-handling}
 
 ClickHouse nested types (`Nested(...)`) can be read and written using array semantics.
