@@ -8053,8 +8053,8 @@ WHERE、PREWHERE、ON、HAVING、QUALIFY の各式において、論理和（OR�
 - [isNull](/sql-reference/functions/functions-for-nulls#isNull) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
 - [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
 - [count](/sql-reference/aggregate-functions/reference/count) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
-- [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) は [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
-- [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) は [values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
+- [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) は [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
+- [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) は [values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
 
 設定可能な値:
 
