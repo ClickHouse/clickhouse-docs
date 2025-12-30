@@ -55,7 +55,7 @@ For following this guide you will need:
 
 <Image img={IAM_and_admin} size="md" alt=""/>
 
-2. Click `Service accounts` from the left-hand menu, then click `CREATE SERVICE ACCOUNT`:
+2. Click `Service accounts` from the left-hand menu, then click `Create service account`:
 
 <Image img={create_service_account} size="md" alt=""/>
 
@@ -66,7 +66,7 @@ Service account name: clickhouse-gcs-access (or your preferred name)
 Service account description: Service account for ClickHouse Cloud to access GCS buckets
 ```
 
-Click `CREATE AND CONTINUE`
+Click `Create and continue`
 
 <Image img={create_and_continue} size="md" alt=""/>
 
@@ -81,7 +81,7 @@ For read-only access, use `Storage Object Viewer` instead
 For more granular control, you can create a custom role
 :::
 
-Click `CONTINUE`, then `DONE`
+Click `Continue`, then `Done`
 
 Make note of the service account email address:
 
@@ -95,20 +95,20 @@ You can grant access at either the project level or individual bucket level.
 
 1. Navigate to `Cloud Storage` → `Buckets`
 2. Click on the bucket you want to grant access to
-3. Go to the `PERMISSIONS` tab
-4. Under "Permissions" click `GRANT ACCESS` for the principal created in the previous steps
+3. Go to the `Permissions` tab
+4. Under "Permissions" click `Grant access` for the principal created in the previous steps
 5. In the "New principals" field, enter your service account email
 6. Select the appropriate role:
 - Storage Object User for read/write access
 - Storage Object Viewer for read-only access
-7. Click `SAVE`
+7. Click `Save`
 8. Repeat for any additional buckets
 
 #### Option 2: Grant project-level access {#option-2}
 
 1. Navigate to `IAM & Admin` → `IAM`
-2. Click `GRANT ACCESS`
-3. Enter your service account email in the "New principals" field
+2. Click `Grant access`
+3. Enter your service account email in the `New principals` field
 4. Select Storage Object User (or Storage Object Viewer for read-only)
 5. Click SAVE
 
@@ -122,15 +122,15 @@ Navigate to `Cloud Storage` → `Settings` → `Interoperability`:
 
 <Image img={cloud_storage_settings} size="md" alt=""/>
 
-If you don't see an "Access keys" section, click `ENABLE INTEROPERABILITY ACCESS`
+If you don't see an "Access keys" section, click `Enable interoperability access`
 
-Under "Access keys for service accounts", click `CREATE A KEY FOR A SERVICE ACCOUNT`:
+Under "Access keys for service accounts", click `Create a key for a service account`:
 
 <Image img={create_key_for_service_account} size="md" alt=""/>
 
 Select the service account you created earlier (e.g clickhouse-gcs-access@your-project.iam.gserviceaccount.com)
 
-Click `CREATE KEY`:
+Click `Create key`:
 
 <Image img={create_key} size="md" alt=""/>
 
