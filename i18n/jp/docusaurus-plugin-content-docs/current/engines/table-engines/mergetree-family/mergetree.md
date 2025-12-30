@@ -495,7 +495,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 {#text}
 
-全文検索をサポートしています。詳細は[こちら](invertedindexes.md)を参照してください。
+全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 {#vector-similarity}
 
@@ -579,6 +579,41 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ```
 
 プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
+
+### Projection indexes {#projection-index}
+
+Projection indexes は、軽量で明示的な方法で projection レベルの索引を定義できるようにすることで、projection サブシステムを拡張します。
+概念的には、projection index も依然として projection の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータとして利用するのではなく、フィルタリング専用の式を定義します。
+
+#### 構文 {#projection-index-syntax}
+
+```sql
+PROJECTION <name> INDEX <index_expr> TYPE <index_type>
+```
+
+例：
+
+```sql
+CREATE TABLE example
+(
+    id UInt64,
+    region String,
+    user_id UInt32,
+    PROJECTION region_proj INDEX region TYPE basic,
+    PROJECTION uid_proj INDEX user_id TYPE basic
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+#### インデックスの種類 {#projection-index-types}
+
+現在サポートされている種類は次のとおりです:
+
+* **basic**: 式に対する通常の MergeTree のインデックスと同等です。
+
+このフレームワークにより、将来的にさらに多くのインデックスの種類を追加できます。
 
 ### Projection のストレージ {#projection-storage}
 

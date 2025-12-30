@@ -1,27 +1,27 @@
 ---
-title: 'Использование операторов JOIN в ClickHouse'
-description: 'Как объединять таблицы в ClickHouse'
-keywords: ['join-операции', 'объединение таблиц']
+title: "Использование операторов JOIN в ClickHouse"
+description: "Как объединять таблицы в ClickHouse"
+keywords: ["join-операции", "объединение таблиц"]
 slug: /guides/joining-tables
-doc_type: 'guide'
+doc_type: "guide"
 ---
 
-import Image from '@theme/IdealImage';
-import joins_1 from '@site/static/images/guides/joins-1.png';
-import joins_2 from '@site/static/images/guides/joins-2.png';
-import joins_3 from '@site/static/images/guides/joins-3.png';
-import joins_4 from '@site/static/images/guides/joins-4.png';
-import joins_5 from '@site/static/images/guides/joins-5.png';
+import Image from "@theme/IdealImage"
+import joins_1 from "@site/static/images/guides/joins-1.png"
+import joins_2 from "@site/static/images/guides/joins-2.png"
+import joins_3 from "@site/static/images/guides/joins-3.png"
+import joins_4 from "@site/static/images/guides/joins-4.png"
+import joins_5 from "@site/static/images/guides/joins-5.png"
 
 ClickHouse имеет [полную поддержку `JOIN`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) с широким выбором алгоритмов соединения. Для максимальной производительности рекомендуется следовать рекомендациям по оптимизации соединений, перечисленным в этом руководстве.
 
 * Для оптимальной производительности пользователям следует стремиться сократить количество `JOIN` в запросах, особенно для аналитических нагрузок в реальном времени, где требуется время отклика на уровне миллисекунд. Старайтесь ограничиваться максимум 3–4 `JOIN` в запросе. Мы подробно рассматриваем ряд подходов, позволяющих минимизировать количество `JOIN`, в [разделе моделирования данных](/data-modeling/schema-design), включая денормализацию, словари и материализованные представления.
-* В настоящее время ClickHouse не меняет порядок соединений. Следите за тем, чтобы на правой стороне `JOIN` всегда находилась наименьшая таблица. Она будет удерживаться в памяти для большинства алгоритмов соединения, что обеспечит минимальные накладные расходы по памяти для запроса.
+* Начиная с ClickHouse 24.12, планировщик запросов автоматически перестраивает порядок соединения двух таблиц, помещая меньшую таблицу справа для оптимальной производительности. В версии 25.9 этот механизм был расширен: теперь оптимизируется порядок соединений в запросах с тремя и более таблицами.
 * Если в вашем запросе требуется прямое соединение, т. е. `LEFT ANY JOIN`, как показано ниже, мы рекомендуем по возможности использовать [Dictionaries](/dictionary).
 
 <Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
-* При выполнении внутренних соединений (`INNER JOIN`) часто более эффективно записывать их как подзапросы с использованием выражения `IN`. Рассмотрим следующие запросы, которые функционально эквивалентны. Оба находят количество `posts`, которые не упоминают ClickHouse в вопросе, но упоминают его в `comments`.
+* При выполнении внутренних соединений (`INNER JOIN`) часто более эффективно записывать их в виде подзапросов с использованием оператора `IN`. Рассмотрим следующие запросы, которые функционально эквивалентны. Оба находят количество `posts`, в которых ClickHouse не упоминается в вопросе, но упоминается в `comments`.
 
 ```sql
 SELECT count()
@@ -73,7 +73,6 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
-
 
 Перестановка порядка этого соединения значительно повышает производительность — до 1,5 с:
 

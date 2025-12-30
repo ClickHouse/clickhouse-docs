@@ -496,7 +496,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### Текстовый индекс {#text}
 
-Поддерживает полнотекстовый поиск, подробнее см. [здесь](invertedindexes.md).
+Поддерживает полнотекстовый поиск, подробнее см. [здесь](textindexes.md).
 
 #### Сходство векторов {#vector-similarity}
 
@@ -580,6 +580,41 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ```
 
 Проекции можно изменять или удалять с помощью команды [ALTER](/sql-reference/statements/alter/projection.md).
+
+### Индексы проекций {#projection-index}
+
+Индексы проекций расширяют подсистему проекций, предоставляя облегчённый и явный способ определения индексов на уровне проекций.
+Концептуально индекс проекции по‑прежнему является проекцией, но с упрощённым синтаксисом и более понятным назначением: он определяет выражение, предназначенное для фильтрации, а не для того, чтобы служить материализованными данными.
+
+#### Синтаксис {#projection-index-syntax}
+
+```sql
+PROJECTION <name> INDEX <index_expr> TYPE <index_type>
+```
+
+Пример:
+
+```sql
+CREATE TABLE example
+(
+    id UInt64,
+    region String,
+    user_id UInt32,
+    PROJECTION region_proj INDEX region TYPE basic,
+    PROJECTION uid_proj INDEX user_id TYPE basic
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+#### Типы индексов {#projection-index-types}
+
+В настоящее время поддерживается:
+
+* **basic**: эквивалент обычному индексу MergeTree по выражению.
+
+Фреймворк позволяет добавлять новые типы индексов в будущем.
 
 ### Хранение проекций {#projection-storage}
 

@@ -158,6 +158,24 @@ S3 ClickPipe 支持公共和私有存储桶。[Requester Pays](https://docs.aws.
 
 请按照[本指南](/cloud/data-sources/secure-s3)中的说明，[创建一个 IAM 角色](/cloud/data-sources/secure-s3#option-2-manually-create-iam-role)，并为 S3 访问配置所需的信任策略。然后，在 `IAM role ARN` 字段中填写该 IAM 角色的 ARN。
 
+### 网络访问 {#network-access}
+
+S3 ClickPipes 会使用两条不同的网络路径分别执行元数据发现和数据摄取：分别通过 ClickPipes 服务和 ClickHouse Cloud 服务。如果你希望配置额外一层网络安全（例如出于合规性原因），则 **必须为这两条路径都配置网络访问**。
+
+* 对于 **基于 IP 的访问控制**，S3 存储桶策略必须同时允许 ClickPipes 服务区域中列出的静态 IP（见[此处](/integrations/clickpipes#list-of-static-ips)），以及 ClickHouse Cloud 服务的[静态 IP](/manage/data-sources/cloud-endpoints-api)。要获取你所使用的 ClickHouse Cloud 区域的静态 IP，请打开终端并运行：
+
+    ```bash
+    # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
+* 对于 **基于 VPC endpoint 的访问控制**，S3 存储桶必须与 ClickHouse Cloud 服务处于同一 region，并且将 `GetObject` 操作限制为 ClickHouse Cloud 服务的 VPC endpoint ID。要获取你所使用的 ClickHouse Cloud 区域的 VPC endpoint，请打开终端并运行：
+
+    ```bash
+    # 将 <your-region> 替换为你的 ClickHouse Cloud 区域
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+    ```
+
 ## 高级设置 {#advanced-settings}
 
 ClickPipes 提供了合理的默认值，能够满足大多数用例的需求。如果您的用例需要进一步微调，可以调整以下设置：

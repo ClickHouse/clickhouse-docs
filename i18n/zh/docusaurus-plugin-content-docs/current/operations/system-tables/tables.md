@@ -84,7 +84,7 @@ doc_type: '参考'
 
 * `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依赖加载的表列表。
 
-`system.tables` 表在实现 `SHOW TABLES` 查询时使用。
+`system.tables` 表用于实现 `SHOW TABLES` 查询。
 
 **示例**
 

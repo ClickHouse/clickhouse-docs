@@ -100,6 +100,26 @@
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+Содержит информацию обо всех фоновых задачах, которые выполняются через различные пулы фоновых задач.
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
 Коэффициент сложности для типа аутентификации `bcrypt_password`, который использует [алгоритм Bcrypt](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/).
@@ -901,6 +921,7 @@ Backlog (размер очереди ожидающих подключений) 
 | `log`                  | Путь к файлу журнала.                                                                                                                                              |
 | `errorlog`             | Путь к файлу журнала ошибок.                                                                                                                                       |
 | `size`                 | Политика ротации: максимальный размер файлов журнала в байтах. После превышения этого порога файл журнала переименовывается и архивируется, а затем создаётся новый файл журнала. |
+| `rotation`             | Политика ротации: управляет тем, когда выполняется ротация файлов журнала. Ротация может основываться на размере, времени или их комбинации. Примеры: 100M, daily, 100M,daily. После превышения указанного размера файла журнала или достижения заданного временного интервала файл переименовывается и архивируется, а затем создаётся новый файл журнала. |
 | `count`                | Политика ротации: максимальное количество исторических файлов журнала ClickHouse, которое будет сохраняться.                                                      |
 | `stream_compress`      | Сжимать сообщения журнала с использованием LZ4. Установите `1` или `true`, чтобы включить.                                                                         |
 | `console`              | Включить логирование в консоль. Установите `1` или `true`, чтобы включить. По умолчанию — `1`, если ClickHouse не запущен в режиме демона, иначе — `0`.           |

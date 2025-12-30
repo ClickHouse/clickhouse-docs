@@ -546,13 +546,13 @@ CSV представляет собой довольно удобный вари
 
   ```response title="Response"
   #highlight-next-line
-  Получена 1 строка. Затрачено: 0,843 сек. Обработано 28,74 млн строк, 9,75 ГБ (34,08 млн строк/с., 11,57 ГБ/с.)
+  1 row in set. Elapsed: 0.843 sec. Processed 28.74 million rows, 9.75 GB (34.08 million rows/s., 11.57 GB/s.)
   ┌─count()─┐
   │     516 │
   └─────────┘
   ```
 
-  Далее создайте инвертированный [индекс](/engines/table-engines/mergetree-family/invertedindexes) для столбца &quot;comment&quot;,
+  Далее создайте инвертированный [индекс](/engines/table-engines/mergetree-family/textindexes) для столбца &quot;comment&quot;,
   чтобы ускорить выполнение этого запроса.
   Обратите внимание, что комментарии будут индексироваться в нижнем регистре для поиска терминов независимо от регистра.
 
@@ -577,7 +577,7 @@ CSV представляет собой довольно удобный вари
 
   ```response title="Response"
   #highlight-next-line
-  Получена 1 строка. Затрачено: 0,248 сек. Обработано 4,54 млн строк, 1,79 ГБ (18,34 млн строк/сек., 7,24 ГБ/сек.)
+  1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
   ┌─count()─┐
   │    1145 │
   └─────────┘

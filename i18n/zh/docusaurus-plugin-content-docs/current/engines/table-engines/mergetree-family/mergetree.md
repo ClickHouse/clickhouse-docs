@@ -494,7 +494,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### 文本索引 {#text}
 
-支持全文检索，详见[此处](invertedindexes.md)。
+支持全文检索，详见[此处](textindexes.md)。
 
 #### 向量相似度 {#vector-similarity}
 
@@ -578,6 +578,41 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ```
 
 可以使用 [ALTER](/sql-reference/statements/alter/projection.md) 语句修改或删除投影。
+
+### 投影索引 {#projection-index}
+
+投影索引通过提供一种轻量级且显式的方式来定义投影级别的索引，从而扩展了投影子系统。
+从概念上来说，投影索引本质上仍然是一个投影，但语法更为简化、用途也更明确：它定义的是一个专用于过滤的表达式，而不是用于提供物化数据。
+
+#### 语法 {#projection-index-syntax}
+
+```sql
+PROJECTION <name> INDEX <index_expr> TYPE <index_type>
+```
+
+示例：
+
+```sql
+CREATE TABLE example
+(
+    id UInt64,
+    region String,
+    user_id UInt32,
+    PROJECTION region_proj INDEX region TYPE basic,
+    PROJECTION uid_proj INDEX user_id TYPE basic
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+#### 索引类型 {#projection-index-types}
+
+目前支持：
+
+* **basic**：等同于在该表达式上的普通 MergeTree 索引。
+
+该框架未来可以扩展支持更多索引类型。
 
 ### 投影存储 {#projection-storage}
 

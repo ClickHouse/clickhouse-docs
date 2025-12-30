@@ -1454,6 +1454,19 @@ ClickHouse Cloud でのみ利用可能。データパーツに対して packed �
 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)
 / 1024 の値より小さくしてはいけません。そうでない場合、ClickHouse は例外をスローします。
 
+## min_columns_to_activate_adaptive_write_buffer {#min_columns_to_activate_adaptive_write_buffer} 
+
+<SettingsInfoBlock type="UInt64" default_value="500" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "New setting"}]}]}/>
+
+多数のカラムを持つテーブルに対して、アダプティブ書き込みバッファを使用することでメモリ使用量を削減します。
+
+指定可能な値:
+
+- 0 - 無制限
+- 1 - 常に有効
+
 ## min_compress_block_size {#min_compress_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Табличная функция arrowFlight {#arrowflight-table-function}
 
-Позволяет выполнять запросы к данным, предоставляемым сервером [Apache Arrow Flight](../../interfaces/arrowflight.md).
+Позволяет выполнять запросы к данным, предоставляемым сервером [Apache Arrow Flight](/interfaces/arrowflight).
 
 **Синтаксис**
 

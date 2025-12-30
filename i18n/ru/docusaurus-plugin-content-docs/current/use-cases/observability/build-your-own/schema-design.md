@@ -474,9 +474,9 @@ FROM otel_logs
 
 ## Использование Map {#using-maps}
 
-В предыдущих примерах показано использование синтаксиса `map['key']` для доступа к значениям в столбцах типа `Map(String, String)`. Помимо обращения к вложенным ключам через нотацию map, в ClickHouse доступны специализированные [функции для работы с map](/sql-reference/functions/tuple-map-functions#mapkeys) для фильтрации или выборочного извлечения данных из этих столбцов.
+В предыдущих примерах показано использование синтаксиса `map['key']` для доступа к значениям в столбцах типа `Map(String, String)`. Помимо обращения к вложенным ключам через нотацию map, в ClickHouse доступны специализированные [функции для работы с map](/sql-reference/functions/tuple-map-functions#mapKeys) для фильтрации или выборочного извлечения данных из этих столбцов.
 
-Например, следующий запрос определяет все уникальные ключи, присутствующие в столбце `LogAttributes`, с помощью функции [`mapKeys`](/sql-reference/functions/tuple-map-functions#mapkeys), а затем функции [`groupArrayDistinctArray`](/sql-reference/aggregate-functions/combinators) (комбинатор).
+Например, следующий запрос определяет все уникальные ключи, присутствующие в столбце `LogAttributes`, с помощью функции [`mapKeys`](/sql-reference/functions/tuple-map-functions#mapKeys), а затем функции [`groupArrayDistinctArray`](/sql-reference/aggregate-functions/combinators) (комбинатор).
 
 ```sql
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
@@ -492,7 +492,7 @@ Peak memory usage: 71.90 MiB.
 ```
 
 :::note Избегайте точек
-Мы не рекомендуем использовать точки в именах столбцов типа Map и в будущем можем отказаться от их поддержки. Используйте символ `_`.
+Мы не рекомендуем использовать точки в именах столбцов Map и в дальнейшем можем объявить такое использование устаревшим. Используйте символ `_`.
 :::
 
 

@@ -43,10 +43,10 @@ SETTINGS mode = 'unordered'
 
 ## Settings {#settings}
 
-支持的设置大多与 `S3Queue` 表引擎相同，只是没有 `s3queue_` 前缀。参见[完整的设置列表](../../../engines/table-engines/integrations/s3queue.md#settings)。
-要获取为该表配置的设置列表，请使用 `system.azure_queue_settings` 表。从 `24.10` 版本起可用。
+支持的设置大部分与 `S3Queue` 表引擎相同，但不包含 `s3queue_` 前缀。请参阅[完整设置列表](../../../engines/table-engines/integrations/s3queue.md#settings)。
+要获取为该表配置的设置列表，请使用 `system.azure_queue_settings` 表。从 `24.10` 版本开始可用。
 
-下面是仅与 AzureQueue 兼容、而不适用于 S3Queue 的设置。
+下面列出的是仅与 AzureQueue 兼容、而不适用于 S3Queue 的设置。
 
 ### `after_processing_move_connection_string` {#after_processing_move_connection_string}
 
@@ -84,11 +84,11 @@ SETTINGS
     after_processing_move_container = 'dst-container';
 ```
 
-## 从 AzureQueue 表引擎中执行 SELECT {#select}
+## 从 AzureQueue 表引擎中执行 SELECT 查询 {#select}
 
-在 AzureQueue 表上默认禁止执行 SELECT 查询。这遵循常见的队列模式，即数据只被读取一次，然后从队列中移除。禁止 SELECT 是为了防止意外数据丢失。
-不过，在某些情况下直接执行 SELECT 可能会很有用。要实现这一点，需要将设置 `stream_like_engine_allow_direct_select` 设为 `True`。
-AzureQueue 引擎针对 SELECT 查询有一个特殊设置：`commit_on_select`。将其设为 `False` 可在读取后保留队列中的数据，设为 `True` 则会在读取后将其移除。
+默认情况下，AzureQueue 表上禁止执行 SELECT 查询。这符合常见的队列模式：数据只被读取一次，随后便会从队列中移除。禁止 SELECT 是为了防止意外的数据丢失。
+不过，有时启用 SELECT 可能会很有用。要实现这一点，需要将设置 `stream_like_engine_allow_direct_select` 设为 `True`。
+AzureQueue 引擎针对 SELECT 查询有一个特殊设置：`commit_on_select`。将其设置为 `False` 可以在读取之后保留队列中的数据，而设置为 `True` 则会在读取后删除数据。
 
 ## 描述 {#description}
 
@@ -119,10 +119,10 @@ SELECT * FROM stats ORDER BY key;
 
 ## 虚拟列 {#virtual-columns}
 
-* `_path` — 文件路径。
-* `_file` — 文件名。
+- `_path` — 文件路径。
+- `_file` — 文件名。
 
-有关虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
+关于虚拟列的更多信息，请参阅[此处](../../../engines/table-engines/index.md#table_engines-virtual_columns)。
 
 ## 自省 {#introspection}
 
@@ -138,7 +138,7 @@ SELECT * FROM stats ORDER BY key;
     <database>system</database>
     <table>azure_queue_log</table>
   </azure_queue_log>
-  ```
+```
 
 这个持久化表与 `system.s3queue` 表包含相同的信息，但记录的是已处理和失败的文件。
 

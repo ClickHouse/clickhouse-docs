@@ -337,6 +337,26 @@ Example:
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+Содержит информацию обо всех фоновых задачах, которые выполняются в различных фоновых пулах.
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
 
 <SettingsInfoBlock type="Float" default_value="0.8" />Максимальная доля потоков в пуле, которые могут одновременно выполнять задачи одного типа.
@@ -1806,9 +1826,13 @@ Example:
 ```
 
 
-## license_key {#license_key} 
+## license_file {#license_file} 
 
-Лицензионный ключ для ClickHouse Enterprise Edition
+Содержимое файла лицензии для ClickHouse Enterprise Edition
+
+## license_public_key_for_testing {#license_public_key_for_testing} 
+
+Демонстрационный лицензионный ключ, предназначенный только для использования в CI
 
 ## listen&#95;backlog {#listen_backlog}
 
@@ -1889,6 +1913,7 @@ Backlog (размер очереди ожидающих установления
 | `log`                  | Путь к файлу журнала.                                                                                                                                              |
 | `errorlog`             | Путь к файлу журнала ошибок.                                                                                                                                       |
 | `size`                 | Политика ротации: максимальный размер файлов журнала в байтах. Когда размер файла журнала превышает этот порог, он переименовывается и архивируется, а затем создаётся новый файл журнала. |
+| `rotation`             | Политика ротации: определяет, когда выполняется ротация файлов журнала. Ротация может осуществляться на основе размера, времени или их комбинации. Примеры: 100M, daily, 100M,daily. Когда размер файла журнала превышает указанный порог или наступает заданный интервал времени, файл переименовывается и архивируется, а затем создаётся новый файл журнала. |
 | `count`                | Политика ротации: максимальное количество архивных файлов журнала ClickHouse, которые будут храниться.                                                            |
 | `stream_compress`      | Сжимать сообщения журнала с помощью LZ4. Установите `1` или `true` для включения.                                                                                  |
 | `console`              | Включить логирование в консоль. Установите `1` или `true` для включения. Значение по умолчанию — `1`, если ClickHouse не запущен в режиме демона, иначе `0`.      |

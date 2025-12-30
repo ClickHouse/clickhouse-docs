@@ -413,26 +413,13 @@ ClickHouse 支持通用编解码器和专用编解码器。
 
 高压缩级别对于不对称场景很有用,例如压缩一次,重复解压缩。更高的级别意味着更好的压缩和更高的 CPU 使用率。
 
-#### ZSTD_QAT {#zstd_qat}
+#### 已弃用：ZSTD_QAT {#zstd_qat}
 
 <CloudNotSupportedBadge/>
 
-`ZSTD_QAT[(level)]` — 具有可配置级别的 [ZSTD 压缩算法](https://en.wikipedia.org/wiki/Zstandard)，由 [Intel® QATlib](https://github.com/intel/qatlib) 和 [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin) 实现。可能的级别：\[1, 12\]。默认级别：1。推荐的级别范围：\[6, 12\]。存在一些限制：
-
-- ZSTD_QAT 默认禁用，只能在启用配置设置 [enable_zstd_qat_codec](../../../operations/settings/settings.md#enable_zstd_qat_codec) 后使用。
-- 对于压缩，ZSTD_QAT 会尝试使用 Intel® QAT 硬件卸载设备（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）。如果未找到此类设备，则会回退为使用软件实现的 ZSTD 压缩。
-- 解压缩始终由软件执行。
-
-#### DEFLATE_QPL {#deflate_qpl}
+#### 已弃用：DEFLATE_QPL {#deflate_qpl}
 
 <CloudNotSupportedBadge/>
-
-`DEFLATE_QPL` — 由 Intel® Query Processing Library 实现的 [Deflate 压缩算法](https://github.com/intel/qpl)，具有以下一些限制：
-
-- DEFLATE_QPL 默认禁用,只能在启用配置设置 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) 后使用。
-- DEFLATE_QPL 需要使用 SSE 4.2 指令编译的 ClickHouse 构建(默认情况下是这种情况)。有关更多详细信息,请参阅 [使用 DEFLATE_QPL 构建 ClickHouse](/development/building_and_benchmarking_deflate_qpl)。
-- 如果系统具有 Intel® IAA(内存分析加速器)卸载设备,DEFLATE_QPL 效果最佳。有关更多详细信息,请参阅 [加速器配置](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) 和 [使用 DEFLATE_QPL 进行基准测试](/development/building_and_benchmarking_deflate_qpl)。
-- DEFLATE_QPL 压缩的数据只能在启用 SSE 4.2 的 ClickHouse 节点之间传输。
 
 ### 专用编解码器 {#specialized-codecs}
 
@@ -734,6 +721,19 @@ CREATE TABLE db.table_name
 ENGINE = engine
 COMMENT 'Comment'
 ```
+
+:::note
+`COMMENT` 子句必须在任何存储相关子句之后指定，例如 `PARTITION BY`、`ORDER BY` 和存储相关的 `SETTINGS`。
+
+在 `COMMENT` 子句之后，只会解析查询相关的 `SETTINGS`（例如 `max_threads` 等），而不会解析与存储相关的 `SETTINGS`。
+
+这意味着正确的子句顺序是：
+
+* `ENGINE`
+* 存储子句
+* `COMMENT`
+* 查询设置（如果有）
+  :::
 
 **示例**
 

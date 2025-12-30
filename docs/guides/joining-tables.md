@@ -16,7 +16,7 @@ import joins_5 from '@site/static/images/guides/joins-5.png';
 ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1), with a wide selection of join algorithms. To maximize performance, we recommend following the join optimization suggestions listed in this guide.
 
 - For optimal performance, you should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millisecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
-- Currently, ClickHouse does not reorder joins. Always ensure the smallest table is on the right-hand side of the Join. This will be held in memory for most join algorithms and will ensure the lowest memory overhead for the query.
+- As of ClickHouse 24.12, the query planner automatically reorders two-table joins to place the smaller table on the right-hand side for optimal performance. In version 25.9, this was extended to optimize join order across queries joining three or more tables.
 - If your query requires a direct join i.e. a `LEFT ANY JOIN` - as shown below, we recommend using [Dictionaries](/dictionary) where possible.
 
 <Image img={joins_1} size="sm" alt="Left any join"/>

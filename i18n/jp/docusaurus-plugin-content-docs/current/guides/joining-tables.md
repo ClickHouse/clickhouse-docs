@@ -1,27 +1,27 @@
 ---
-title: 'ClickHouse における JOIN の使い方'
-description: 'ClickHouse でテーブルを JOIN する方法'
-keywords: ['JOIN', 'テーブル結合']
+title: "ClickHouse における JOIN の使い方"
+description: "ClickHouse でテーブルを JOIN する方法"
+keywords: ["JOIN", "テーブル結合"]
 slug: /guides/joining-tables
-doc_type: 'guide'
+doc_type: "guide"
 ---
 
-import Image from '@theme/IdealImage';
-import joins_1 from '@site/static/images/guides/joins-1.png';
-import joins_2 from '@site/static/images/guides/joins-2.png';
-import joins_3 from '@site/static/images/guides/joins-3.png';
-import joins_4 from '@site/static/images/guides/joins-4.png';
-import joins_5 from '@site/static/images/guides/joins-5.png';
+import Image from "@theme/IdealImage"
+import joins_1 from "@site/static/images/guides/joins-1.png"
+import joins_2 from "@site/static/images/guides/joins-2.png"
+import joins_3 from "@site/static/images/guides/joins-3.png"
+import joins_4 from "@site/static/images/guides/joins-4.png"
+import joins_5 from "@site/static/images/guides/joins-5.png"
 
 ClickHouse は[完全な `JOIN` サポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を提供しており、幅広い結合アルゴリズムを利用できます。パフォーマンスを最大化するために、本ガイドで挙げる結合最適化の推奨事項に従うことをお勧めします。
 
-* 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN は最大 3〜4 個を目安にします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
-* 現在、ClickHouse は JOIN の順序を並べ替えません。常に最も小さいテーブルが JOIN の右側に来るようにしてください。ほとんどの結合アルゴリズムでは右側のテーブルがメモリ上に保持されるため、これによりクエリのメモリオーバーヘッドを最小限にできます。
-* クエリが、以下に示すような `LEFT ANY JOIN` のような直接結合を必要とする場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
+* 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN の数は最大 3〜4 個を目安とします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
+* ClickHouse 24.12 以降では、クエリプランナーが 2 つのテーブル間の JOIN を自動的に並べ替え、小さいテーブルを右側に配置してパフォーマンスを最適化します。バージョン 25.9 では、3 つ以上のテーブルを結合するクエリに対して JOIN の順序を最適化できるように拡張されました。
+* クエリで、以下に示す `LEFT ANY JOIN` のような直接結合が必要な場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
 
-<Image img={joins_1} size="sm" alt="Left any join" />
+<Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
-* 内部結合を実行する場合、多くのケースで `IN` 句を使用したサブクエリとして記述した方がより効率的です。次のクエリを考えてみてください。これらは機能的には同等であり、いずれも質問文には ClickHouse が含まれていないが `comments` には含まれている `posts` の件数を取得します。
+* 内部結合を実行する場合、多くの場合は `IN` 句を使用したサブクエリとして記述した方がより効率的です。次のクエリを考えてみてください。これらは機能的には同等であり、いずれも質問本文には ClickHouse が含まれていないが `comments` には含まれている `posts` の件数を取得します。
 
 ```sql
 SELECT count()
@@ -73,7 +73,6 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 
 1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
-
 
 この結合の順序を変更することで、パフォーマンスが1.5秒まで劇的に改善されます:
 

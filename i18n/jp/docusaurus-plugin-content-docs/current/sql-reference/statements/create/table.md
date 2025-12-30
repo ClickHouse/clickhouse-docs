@@ -413,26 +413,13 @@ ClickHouse は、汎用 codec と用途特化 codec の両方をサポートし�
 
 高い圧縮レベルは、一度圧縮しておき、そのデータを繰り返し伸長するといった非対称なシナリオで有用です。レベルを上げると圧縮率は向上しますが、CPU 使用率も増加します。
 
-#### ZSTD_QAT {#zstd_qat}
+#### 廃止済み: ZSTD_QAT {#zstd_qat}
 
 <CloudNotSupportedBadge/>
 
-`ZSTD_QAT[(level)]` — [Intel® QATlib](https://github.com/intel/qatlib) および [Intel® QAT ZSTD Plugin](https://github.com/intel/QAT-ZSTD-Plugin) で実装された、レベルを指定できる [ZSTD 圧縮アルゴリズム](https://en.wikipedia.org/wiki/Zstandard) です。指定可能なレベル: \[1, 12\]。デフォルトレベル: 1。推奨レベル範囲: \[6, 12\]。いくつかの制限があります。
-
-- ZSTD_QAT はデフォルトでは無効で、設定項目 [enable_zstd_qat_codec](../../../operations/settings/settings.md#enable_zstd_qat_codec) を有効化して初めて使用できます。
-- 圧縮時、ZSTD_QAT は Intel® QAT オフロードデバイス（[QuickAssist Technology](https://www.intel.com/content/www/us/en/developer/topic-technology/open/quick-assist-technology/overview.html)）の利用を試みます。そのようなデバイスが見つからない場合は、ソフトウェアによる ZSTD 圧縮にフォールバックします。
-- 伸長は常にソフトウェアで実行されます。
-
-#### DEFLATE_QPL {#deflate_qpl}
+#### 非推奨: DEFLATE_QPL {#deflate_qpl}
 
 <CloudNotSupportedBadge/>
-
-`DEFLATE_QPL` — Intel® Query Processing Library によって実装された [Deflate 圧縮アルゴリズム](https://github.com/intel/qpl) です。いくつかの制限事項があります。
-
-- DEFLATE_QPL はデフォルトでは無効になっており、設定 [enable_deflate_qpl_codec](../../../operations/settings/settings.md#enable_deflate_qpl_codec) を有効化した後にのみ使用できます。
-- DEFLATE_QPL には、SSE 4.2 命令でコンパイルされた ClickHouse ビルドが必要です（デフォルトでそのようにビルドされています）。詳細は [Build Clickhouse with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
-- DEFLATE_QPL は、システムに Intel® IAA (In-Memory Analytics Accelerator) オフロードデバイスがある場合に最も効果的に動作します。詳細は [Accelerator Configuration](https://intel.github.io/qpl/documentation/get_started_docs/installation.html#accelerator-configuration) および [Benchmark with DEFLATE_QPL](/development/building_and_benchmarking_deflate_qpl) を参照してください。
-- DEFLATE_QPL で圧縮されたデータは、SSE 4.2 を有効にしてコンパイルされた ClickHouse ノード間でのみ転送できます。
 
 ### Specialized Codecs {#specialized-codecs}
 
@@ -736,6 +723,19 @@ CREATE TABLE db.table_name
 ENGINE = engine
 COMMENT 'Comment'
 ```
+
+:::note
+`COMMENT` 句は、`PARTITION BY`、`ORDER BY` などのストレージ固有の句や、ストレージ固有の `SETTINGS` の**後**に指定する必要があります。
+
+`COMMENT` 句の後にパースされるのは、`max_threads` などのクエリ固有の `SETTINGS` のみであり、ストレージ関連の設定はパースされません。
+
+これは、正しい句の順序が次のようになることを意味します:
+
+* `ENGINE`
+* ストレージ関連の句
+* `COMMENT`
+* クエリ設定 (ある場合)
+  :::
 
 **例**
 

@@ -1003,7 +1003,7 @@ background_schedule_pool 中触发选择任务，这在大规模集群中会导�
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-已弃用的设置，目前不起任何作用。
+已弃用的设置，不再产生任何效果。
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
@@ -1430,6 +1430,19 @@ MergeTree 表中 PROJECTION 的最大数量。
 `min_bytes_to_rebalance_partition_over_jbod` 设置项的值不应小于
 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)
 / 1024 的值。否则，ClickHouse 将抛出异常。
+
+## min_columns_to_activate_adaptive_write_buffer {#min_columns_to_activate_adaptive_write_buffer} 
+
+<SettingsInfoBlock type="UInt64" default_value="500" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "新设置"}]}]}/>
+
+允许通过为包含大量列的表使用自适应写入缓冲区来减少内存使用。
+
+可能的取值：
+
+- 0 - 不限制
+- 1 - 始终启用
 
 ## min_compress_block_size {#min_compress_block_size} 
 
