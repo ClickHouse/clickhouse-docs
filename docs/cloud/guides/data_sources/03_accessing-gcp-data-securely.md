@@ -1,0 +1,221 @@
+---
+slug: /cloud/data-sources/secure-gcp
+sidebar_label: 'Accessing GCP data securely'
+title: 'Accessing GCP data securely'
+description: 'This article demonstrates how ClickHouse Cloud customers can access their GCP data securely'
+keywords: ['GCP']
+doc_type: 'guide'
+---
+
+import Image from '@theme/IdealImage';
+import VerticalStepper from '@site/src/components/VerticalStepper';
+import IAM_and_admin from '@site/static/images/cloud/guides/accessing-data/GCS/IAM_and_admin.png';
+import create_service_account from '@site/static/images/cloud/guides/accessing-data/GCS/create_service_account.png';
+import create_and_continue from '@site/static/images/cloud/guides/accessing-data/GCS/create_and_continue.png';
+import storage_object_user_role from '@site/static/images/cloud/guides/accessing-data/GCS/storage_object_user.png';
+import note_service_account_email from '@site/static/images/cloud/guides/accessing-data/GCS/note_service_account_email.png';
+import cloud_storage_settings from '@site/static/images/cloud/guides/accessing-data/GCS/cloud_storage_settings.png';
+import create_key_for_service_account from '@site/static/images/cloud/guides/accessing-data/GCS/create_key_for_service_account.png';
+import create_key from '@site/static/images/cloud/guides/accessing-data/GCS/create_a_key.png';
+
+This article demonstrates how to securely authenticate with Google Cloud Storage (GCS) and access your data from ClickHouse Cloud.
+
+## Introduction {#introduction}
+
+Currently, ClickHouse Cloud connects to GCS using HMAC (Hash-based Message Authentication Code) keys associated with a Google Cloud service account.
+This approach provides secure access to your GCS buckets without embedding credentials directly in your queries.
+
+:::note Workload Identity Federation
+ClickHouse Cloud currently only supports HMAC key authentication for GCS access.
+Support for Workload Identity Federation (the GCP equivalent of AWS IAM role assumption) is planned for a future release.
+:::
+
+How it works:
+
+1. You create a Google Cloud service account with appropriate GCS permissions
+2. You generate HMAC keys for that service account
+3. You provide these HMAC credentials to ClickHouse Cloud
+4. ClickHouse Cloud uses these credentials to access your GCS buckets
+
+This approach allows you to manage all access to GCS buckets through IAM policies on the service account, making it easier to grant or revoke access without modifying individual bucket policies.
+
+## Prerequisites {#prerequisites}
+
+For following this guide you will need:
+- An active ClickHouse Cloud service
+- A Google Cloud project with Cloud Storage enabled
+- Permissions to create service accounts and generate HMAC keys in your GCP project
+
+## Setup {#setup}
+
+<VerticalStepper headerLevel="h3">
+
+### Create a Google Cloud service account {#create-gcs-account}
+
+1. In the Google Cloud Console, navigate to IAM & Admin → Service Accounts
+
+<Image img={IAM_and_admin} size="md" alt=""/>
+
+2. Click `Service accounts` from the left-hand menu, then click `CREATE SERVICE ACCOUNT`:
+
+<Image img={create_service_account} size="md" alt=""/>
+
+Enter a name and description for your service account, for example:
+
+```text
+Service account name: clickhouse-gcs-access (or your preferred name)
+Service account description: Service account for ClickHouse Cloud to access GCS buckets
+```
+
+Click `CREATE AND CONTINUE`
+
+<Image img={create_and_continue} size="md" alt=""/>
+
+Grant the service account the `Storage Object User` role:
+
+<Image img={storage_object_user_role} size="md" alt=""/>
+
+This role provides read and write access to GCS objects
+
+:::tip
+For read-only access, use `Storage Object Viewer` instead
+For more granular control, you can create a custom role
+:::
+
+Click `CONTINUE`, then `DONE`
+
+Make note of the service account email address:
+
+<Image img={note_service_account_email} size="md" alt=""/>
+
+### Grant bucket access to the service account {#grant-bucket-access-to-service-account}
+
+You can grant access at either the project level or individual bucket level.
+
+#### Option 1: Grant access to specific buckets (recommended) {#option-1}
+
+1. Navigate to `Cloud Storage` → `Buckets`
+2. Click on the bucket you want to grant access to
+3. Go to the `PERMISSIONS` tab
+4. Under "Permissions" click `GRANT ACCESS` for the principal created in the previous steps
+5. In the "New principals" field, enter your service account email
+6. Select the appropriate role:
+- Storage Object User for read/write access
+- Storage Object Viewer for read-only access
+7. Click `SAVE`
+8. Repeat for any additional buckets
+
+#### Option 2: Grant project-level access {#option-2}
+
+1. Navigate to `IAM & Admin` → `IAM`
+2. Click `GRANT ACCESS`
+3. Enter your service account email in the "New principals" field
+4. Select Storage Object User (or Storage Object Viewer for read-only)
+5. Click SAVE
+
+:::warning Security best practice
+Grant access only to the specific buckets that ClickHouse needs to access, rather than project-wide permissions.
+:::
+
+### Generate HMAC keys for the service account {#generate-hmac-keys-for-service-account}
+
+Navigate to `Cloud Storage` → `Settings` → `Interoperability`:
+
+<Image img={cloud_storage_settings} size="md" alt=""/>
+
+If you don't see an "Access keys" section, click `ENABLE INTEROPERABILITY ACCESS`
+
+Under "Access keys for service accounts", click `CREATE A KEY FOR A SERVICE ACCOUNT`:
+
+<Image img={create_key_for_service_account} size="md" alt=""/>
+
+Select the service account you created earlier (e.g clickhouse-gcs-access@your-project.iam.gserviceaccount.com)
+
+Click `CREATE KEY`:
+
+<Image img={create_key} size="md" alt=""/>
+
+The HMAC key will be displayed.
+Save both the Access Key and Secret immediately - you won't be able to view the secret again.
+
+Example:
+
+```vbnet
+Access Key: GOOG1EF4YBJVNFQ2YGCP3SLV4Y7CMFHW7HPC6EO7RITLJDDQ75639JK56SQVD
+Secret: nFy6DFRr4sM9OnV6BG4FtWVPR25JfqpmcdZ6w9nV
+```
+
+:::danger Important
+Store these credentials securely.
+The secret cannot be retrieved again after this screen is closed.
+You will need to generate new keys if you lose the secret.
+:::
+
+## Use HMAC keys with ClickHouse Cloud {#use-hmac-keys-with-clickhouse-cloud}
+
+Now you can use the HMAC credentials to access GCS from ClickHouse Cloud.
+For this, use the GCS table function:
+
+```sql
+SELECT *
+FROM gcs(
+    'https://storage.googleapis.com/clickhouse-docs-example-bucket/epidemiology.csv',
+    'GOOG1E...YOUR_ACCESS_KEY',
+    'YOUR_SECRET_KEY',
+    'CSVWithNames'
+);
+```
+
+Use wildcards for multiple files:
+
+```sql
+SELECT *
+FROM gcs(
+'https://storage.googleapis.com/clickhouse-docs-example-bucket/*.parquet',
+'GOOG1E...YOUR_ACCESS_KEY',
+'YOUR_SECRET_KEY',
+'Parquet'
+);
+```
+
+</VerticalStepper>
+
+## Best practices {#best-practices}
+
+### Use separate service accounts for different environments {#separate-service-accounts}
+
+Create separate service accounts for development, staging, and production environments. For example:
+- `clickhouse-gcs-dev@project.iam.gserviceaccount.com`
+- `clickhouse-gcs-staging@project.iam.gserviceaccount.com`
+- `clickhouse-gcs-prod@project.iam.gserviceaccount.com`
+
+This allows you to easily revoke access for a specific environment without affecting others.
+
+### Apply least-privilege access {#apply-least-privilege-access}
+
+Grant only the minimum required permissions:
+- Use **Storage Object Viewer** for read-only access
+- Grant access to specific buckets rather than project-wide
+- Consider using bucket-level conditions to restrict access to specific paths
+
+### Rotate HMAC keys regularly {#rotate-hmac-keys}
+
+Implement a key rotation schedule:
+
+- Generate new HMAC keys
+- Update ClickHouse configurations with new keys
+- Verify functionality with new keys
+- Delete old HMAC keys
+
+:::tip
+Google Cloud doesn't enforce HMAC key expiration, so you must implement your own rotation policy.
+:::
+
+### Monitor access with Cloud Audit Logs {#monitor-access}
+
+Enable and monitor Cloud Audit Logs for Cloud Storage:
+
+1. Navigate to IAM & Admin → Audit Logs
+2. Find Cloud Storage in the list
+3. Enable `Admin Read`, `Data Read`, and `Data Write logs`
+4. Use these logs to monitor access patterns and detect anomalies
