@@ -223,6 +223,397 @@ That way, you would be able to access clickhouse1 table `<ck_db>.<ck_table>` fro
 
 :::
 
+## Using the TableProvider API (Format-based Access) {#using-the-tableprovider-api}
+
+In addition to the catalog-based approach, the ClickHouse Spark connector supports a **format-based access pattern** via the TableProvider API.
+
+### Format-based Read Example {#format-based-read}
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.getOrCreate()
+
+# Read from ClickHouse using format API
+df = spark.read \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-host") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "your_table") \
+    .option("user", "default") \
+    .option("password", "your_password") \
+    .option("ssl", "true") \
+    .load()
+
+df.show()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+val df = spark.read
+  .format("clickhouse")
+  .option("host", "your-clickhouse-host")
+  .option("protocol", "https")
+  .option("http_port", "8443")
+  .option("database", "default")
+  .option("table", "your_table")
+  .option("user", "default")
+  .option("password", "your_password")
+  .option("ssl", "true")
+  .load()
+
+df.show()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+Dataset<Row> df = spark.read()
+    .format("clickhouse")
+    .option("host", "your-clickhouse-host")
+    .option("protocol", "https")
+    .option("http_port", "8443")
+    .option("database", "default")
+    .option("table", "your_table")
+    .option("user", "default")
+    .option("password", "your_password")
+    .option("ssl", "true")
+    .load();
+
+df.show();
+```
+
+</TabItem>
+</Tabs>
+
+### Format-based Write Example {#format-based-write}
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Write to ClickHouse using format API
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-host") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "your_table") \
+    .option("user", "default") \
+    .option("password", "your_password") \
+    .option("ssl", "true") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+df.write
+  .format("clickhouse")
+  .option("host", "your-clickhouse-host")
+  .option("protocol", "https")
+  .option("http_port", "8443")
+  .option("database", "default")
+  .option("table", "your_table")
+  .option("user", "default")
+  .option("password", "your_password")
+  .option("ssl", "true")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+df.write()
+    .format("clickhouse")
+    .option("host", "your-clickhouse-host")
+    .option("protocol", "https")
+    .option("http_port", "8443")
+    .option("database", "default")
+    .option("table", "your_table")
+    .option("user", "default")
+    .option("password", "your_password")
+    .option("ssl", "true")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+### TableProvider Features {#tableprovider-features}
+
+The TableProvider API provides several powerful features:
+
+#### Automatic Table Creation {#automatic-table-creation}
+
+When writing to a non-existent table, the connector automatically creates the table with an appropriate schema. The connector provides intelligent defaults:
+
+- **Engine**: Defaults to `MergeTree()` if not specified. You can specify a different engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, etc.)
+- **ORDER BY**: **Required** - You must explicitly specify the `order_by` option when creating a new table. The connector validates that all specified columns exist in the schema.
+- **Nullable Key Support**: Automatically adds `settings.allow_nullable_key=1` if ORDER BY contains nullable columns
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Table will be created automatically with explicit ORDER BY (required)
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "new_table") \
+    .option("order_by", "id") \
+    .mode("append") \
+    .save()
+
+# Specify table creation options with custom engine
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "new_table") \
+    .option("order_by", "id, timestamp") \
+    .option("engine", "ReplacingMergeTree()") \
+    .option("settings.allow_nullable_key", "1") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+// Table will be created automatically with explicit ORDER BY (required)
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "new_table")
+  .option("order_by", "id")
+  .mode("append")
+  .save()
+
+// With explicit table creation options and custom engine
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "new_table")
+  .option("order_by", "id, timestamp")
+  .option("engine", "ReplacingMergeTree()")
+  .option("settings.allow_nullable_key", "1")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Table will be created automatically with explicit ORDER BY (required)
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "new_table")
+    .option("order_by", "id")
+    .mode("append")
+    .save();
+
+// With explicit table creation options and custom engine
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "new_table")
+    .option("order_by", "id, timestamp")
+    .option("engine", "ReplacingMergeTree()")
+    .option("settings.allow_nullable_key", "1")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+:::important
+**ORDER BY Required**: The `order_by` option is **required** when creating a new table via the TableProvider API. You must explicitly specify which column(s) to use for the ORDER BY clause. The connector validates that all specified columns exist in the schema and will throw an error if any columns are missing.
+
+**Engine Selection**: The default engine is `MergeTree()`, but you can specify any ClickHouse table engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()`, etc.).
+:::
+
+### TableProvider Options {#tableprovider-options}
+
+When using the format-based API, the following options are available:
+
+#### Connection Options {#connection-options}
+
+| Option       | Description                                      | Default Value  | Required |
+|--------------|--------------------------------------------------|----------------|----------|
+| `host`       | ClickHouse server hostname                       | `localhost`    | Yes      |
+| `protocol`   | Connection protocol (`http` or `https`)          | `http`         | No       |
+| `http_port`  | HTTP/HTTPS port                                  | `8123`         | No       |
+| `database`   | Database name                                    | `default`      | Yes      |
+| `table`      | Table name                                       | N/A            | Yes      |
+| `user`       | Username for authentication                      | `default`      | No       |
+| `password`   | Password for authentication                      | (empty string) | No       |
+| `ssl`        | Enable SSL connection                            | `false`        | No       |
+| `ssl_mode`   | SSL mode (`NONE`, `STRICT`, etc.)                | `STRICT`       | No       |
+| `timezone`   | Timezone for date/time operations                | `server`       | No       |
+
+#### Table Creation Options {#table-creation-options}
+
+These options are used when the table doesn't exist and needs to be created:
+
+| Option                      | Description                                                                 | Default Value     | Required |
+|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
+| `order_by`                  | Column(s) to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
+| `engine`                    | ClickHouse table engine (e.g., `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, etc.) | `MergeTree()`     | No       |
+| `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
+| `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
+| `cluster`                   | Cluster name for Distributed tables                                         | N/A               | No       |
+
+\* The `order_by` option is required when creating a new table. All specified columns must exist in the schema.  
+\** Automatically set to `1` if ORDER BY contains nullable columns and not explicitly provided.
+
+:::tip
+**Best Practice**: For ClickHouse Cloud, explicitly set `settings.allow_nullable_key=1` if your ORDER BY columns might be nullable, as ClickHouse Cloud requires this setting.
+:::
+
+#### Writing Modes {#writing-modes}
+
+The TableProvider API supports the following Spark write modes:
+
+- **`append`**: Add data to existing table
+- **`overwrite`**: Replace all data in the table (truncates table)
+
+```python
+# Overwrite mode (truncates table first)
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .mode("overwrite") \
+    .save()
+```
+
+## Databricks Integration {#databricks-integration}
+
+The ClickHouse Spark connector works seamlessly with Databricks, including support for **Databricks Unity Catalog** environments. This section covers setup and usage specific to Databricks.
+
+### Installation on Databricks {#databricks-installation}
+
+#### Option 1: Upload JAR via Databricks UI
+
+1. Build or download the runtime JAR:
+   ```bash
+   clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
+   ```
+
+2. Navigate to your Databricks workspace:
+   - Go to **Compute** → Select your cluster
+   - Click the **Libraries** tab
+   - Click **Install New**
+   - Select **Upload** → **JAR**
+   - Upload the runtime JAR file
+   - Click **Install**
+
+3. Restart the cluster to load the library
+
+#### Option 2: Install via Databricks CLI
+
+```bash
+# Upload JAR to DBFS
+databricks fs cp clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar \
+  dbfs:/FileStore/jars/
+
+# Install on cluster
+databricks libraries install \
+  --cluster-id <your-cluster-id> \
+  --jar dbfs:/FileStore/jars/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
+```
+
+#### Option 3: Maven Coordinates (Recommended)
+
+In your cluster configuration, add the Maven coordinates:
+
+```text
+com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}
+```
+
+:::note
+The Spark 4.0 runtime JAR includes shaded Jackson dependencies to prevent conflicts with Databricks Hudi's Jackson version. This is built into the standard JAR, so **no special classifier, variant, or separate Databricks jar is needed** - just use the standard `clickhouse-spark-runtime-4.0_2.13` artifact.
+:::
+
+### Databricks Notebook Usage {#databricks-notebook-usage}
+
+#### Using Format-based API (Recommended for Databricks)
+
+The format-based API (TableProvider) is the **recommended approach** for Databricks, especially with Unity Catalog. It provides better compatibility and avoids catalog conflicts:
+
+<Tabs groupId="databricks_usage">
+<TabItem value="Read" label="Reading Data" default>
+
+```python
+# Read from ClickHouse using TableProvider API
+df = spark.read \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "events") \
+    .option("user", "default") \
+    .option("password", dbutils.secrets.get(scope="clickhouse", key="password")) \
+    .option("ssl", "true") \
+    .load()
+
+# Schema is automatically inferred
+df.display()
+```
+
+</TabItem>
+<TabItem value="Write" label="Writing Data">
+
+```python
+# Write to ClickHouse - table will be created automatically if it doesn't exist
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
+    .option("protocol", "https") \
+    .option("http_port", "8443") \
+    .option("database", "default") \
+    .option("table", "events_copy") \
+    .option("user", "default") \
+    .option("password", dbutils.secrets.get(scope="clickhouse", key="password")) \
+    .option("ssl", "true") \
+    .option("order_by", "id") \  # Required: specify ORDER BY when creating a new table
+    .option("settings.allow_nullable_key", "1") \  # Required for ClickHouse Cloud if ORDER BY has nullable columns
+    .mode("append") \
+    .save()
+```
+
+### Databricks-Specific Considerations {#databricks-considerations}
+
+**Important**: In Databricks environments, only the TableProvider API (format-based access) is supported. The Catalog API is not available in Databricks.
+
+Use the format-based API as shown in the [Format-based Read Example](#format-based-read) and [Format-based Write Example](#format-based-write) sections above.
+
 ## ClickHouse Cloud settings {#clickhouse-cloud-settings}
 
 When connecting to [ClickHouse Cloud](https://clickhouse.com), make sure to enable SSL and set the appropriate SSL mode. For example:
@@ -506,7 +897,32 @@ PySpark, or shell.
 
 ## Configurations {#configurations}
 
-The following are the adjustable configurations available in the connector:
+The following are the adjustable configurations available in the connector.
+
+:::note
+**Using Configurations**: These are Spark-level configuration options that apply to both Catalog API and TableProvider API. They can be set in two ways:
+
+1. **Global Spark configuration** (applies to all operations):
+   ```python
+   spark.conf.set("spark.clickhouse.write.batchSize", "20000")
+   spark.conf.set("spark.clickhouse.write.compression.codec", "lz4")
+   ```
+
+2. **Per-operation override** (TableProvider API only - can override global settings):
+   ```python
+   df.write \
+       .format("clickhouse") \
+       .option("host", "your-host") \
+       .option("database", "default") \
+       .option("table", "my_table") \
+       .option("spark.clickhouse.write.batchSize", "20000") \
+       .option("spark.clickhouse.write.compression.codec", "lz4") \
+       .mode("append") \
+       .save()
+   ```
+
+Alternatively, set them in `spark-defaults.conf` or when creating the Spark session.
+:::
 
 <br/>
 
