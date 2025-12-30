@@ -12,7 +12,7 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 ## Architecture {#architecture}
 
-Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored in locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally in the customer's BYOC VPC.
+BYOC involves deploying ClickHouse servers and keepers alongside ClickHouse-managed backend services, such as the clickhouse operator, clickhouse scaler, and the Promethues monitroing stack, within your cloud environment, typically inside your own Virtual Private Cloud (VPC). This setup ensures that your data is stored and processed within your own infrastructure. In addition, Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, logs will be stored in LogHouse, which is a ClickHouse service in the customer's BYOC VPC. Metrics are implemented via a Prometheus and Thanos stack stored locally or in an independent bucket in the customer's BYOC VPC.
 
 <br />
 

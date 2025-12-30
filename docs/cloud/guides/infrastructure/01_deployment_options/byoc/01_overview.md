@@ -12,7 +12,7 @@ import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
 
 ## Overview {#overview}
 
-BYOC (Bring Your Own Cloud) allows you to deploy ClickHouse Cloud on your own cloud infrastructure. This is useful if you have specific requirements or constraints that prevent you from using the ClickHouse Cloud managed service.
+Bring Your Own Cloud (BYOC) empowers you to deploy ClickHouse services and store your data directly within your own cloud accounts, rather than relying on the default ClickHouse Cloud infrastructure. This approach is particularly well-suited for organizations with stringent security policies or regulatory compliance requirements that demand complete control and sovereignty over their data.
 
 > **If you would like access, please [contact us](https://clickhouse.com/cloud/bring-your-own-cloud).** Refer to our [Terms of Service](https://clickhouse.com/legal/agreements/terms-of-service) for additional information.
 
@@ -46,25 +46,29 @@ Metrics and logs are stored within the customer's BYOC VPC. Logs are currently s
 ### Supported features {#supported-features}
 
 - **SharedMergeTree**: ClickHouse Cloud and BYOC use the same binary and configuration. Therefore all features from ClickHouse core are supported in BYOC such as SharedMergeTree.
+- **Shared Catalog**
 - **Console access for managing service state**:
   - Supports operations such as start, stop, and terminate.
   - View services and status.
-- **Backup and restore.**
+- **Backup and restore**
 - **Manual vertical and horizontal scaling.**
-- **Auto Idling.**
+- **Auto Idling**
 - **Warehouses**: Compute-Compute Separation
 - **Zero Trust Network via Tailscale.**
 - **Monitoring**:
   - The Cloud console includes built-in health dashboards for monitoring service health.
   - Prometheus scraping for centralized monitoring with Prometheus, Grafana, and Datadog. See the [Prometheus documentation](/integrations/prometheus) for setup instructions.
-- **VPC Peering.**
+- **VPC Peering**
 - **Integrations**: See the full list on [this page](/integrations).
-- **Secure S3.**
-- **[AWS PrivateLink](https://aws.amazon.com/privatelink/).**
+- **Secure S3**
+- **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
+- **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **ClickPipes**: Kafka, S3(Private Priview)
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
 
-- [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
-- ClickPipes
+- SQL Console
+- ClickPipes (CDC)
 - Autoscaling
 - MySQL interface
+- [AWS KMS](https://aws.amazon.com/kms/) aka CMEK (customer-managed encryption keys)
