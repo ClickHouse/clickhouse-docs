@@ -1,5 +1,5 @@
 ---
-slug: /cloud/data-sources/secure-gcp
+slug: /cloud/data-sources/secure-gcs
 sidebar_label: 'Accessing GCS data securely'
 title: 'Accessing GCS data securely'
 description: 'This article demonstrates how ClickHouse Cloud customers can access their GCS data securely'
@@ -68,11 +68,11 @@ Service account description: Service account for ClickHouse Cloud to access GCS 
 
 Click `Create and continue`
 
-<Image img={create_and_continue} size="md" alt=""/>
+<Image img={create_and_continue} size="sm" alt=""/>
 
 Grant the service account the `Storage Object User` role:
 
-<Image img={storage_object_user_role} size="md" alt=""/>
+<Image img={storage_object_user_role} size="sm" alt=""/>
 
 This role provides read and write access to GCS objects
 
@@ -120,7 +120,7 @@ Grant access only to the specific buckets that ClickHouse needs to access, rathe
 
 Navigate to `Cloud Storage` → `Settings` → `Interoperability`:
 
-<Image img={cloud_storage_settings} size="md" alt=""/>
+<Image img={cloud_storage_settings} size="sm" alt=""/>
 
 If you don't see an "Access keys" section, click `Enable interoperability access`
 
