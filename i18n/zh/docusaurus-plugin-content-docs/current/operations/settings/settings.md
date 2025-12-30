@@ -8043,8 +8043,8 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 将 [isNull](/sql-reference/functions/functions-for-nulls#isNull) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
 - 将 [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
 - 将 [count](/sql-reference/aggregate-functions/reference/count) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
-- 将 [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) 改写为读取 [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
-- 将 [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) 改写为读取 [values](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
+- 将 [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) 改写为读取 [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
+- 将 [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) 改写为读取 [values](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
 
 可选值：
 
