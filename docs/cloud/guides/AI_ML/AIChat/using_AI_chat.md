@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: 'AI chat'
-title: 'Using AI Chat in ClickHouse Cloud'
+sidebar_label: 'Use Ask AI chat in ClickHouse Cloud'
+title: 'Use Ask AI chat in ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'Guide to enabling and using the AI Chat feature in ClickHouse Cloud Console'
@@ -21,7 +21,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Using AI Chat in ClickHouse Cloud
+# Use Ask AI chat in ClickHouse Cloud
 
 > This guide explains how to enable and use the AI Chat feature in the ClickHouse Cloud Console.
 

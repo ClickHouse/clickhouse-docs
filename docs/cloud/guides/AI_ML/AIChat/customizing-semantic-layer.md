@@ -1,17 +1,16 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: 'Semantic layer'
+sidebar_label: 'Customizing Ask AI chat with a semantic layer'
 title: 'Optimizing Ask AI Agent Conversations with a Semantic Layer'
 pagination_prev: null
 pagination_next: null
 description: 'Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the Ask AI chat agent'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
-sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# Customizing Ask AI chat with a semantic layer
+# Customize Ask AI chat with a semantic layer
 
 The Ask AI chat agent can be customized to understand your specific business logic, data structures, and domain knowledge through **AGENTS.md**—a special saved query that acts as a semantic layer over the agent's system prompt.
 

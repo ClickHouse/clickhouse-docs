@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'ClickHouse Cloud remote MCP'
+sidebar_label: 'Enable remote MCP server'
 title: 'Enabling the ClickHouse Cloud Remote MCP Server'
 pagination_prev: null
 pagination_next: null
