@@ -518,7 +518,7 @@ The ClickHouse Spark connector works seamlessly with Databricks, including suppo
 
 ### Installation on Databricks {#databricks-installation}
 
-#### Option 1: Upload JAR via Databricks UI
+#### Option 1: Upload JAR via Databricks UI {#databricks-installation-ui}
 
 1. Build or download the runtime JAR:
    ```bash
@@ -535,7 +535,7 @@ The ClickHouse Spark connector works seamlessly with Databricks, including suppo
 
 3. Restart the cluster to load the library
 
-#### Option 2: Install via Databricks CLI
+#### Option 2: Install via Databricks CLI {#databricks-installation-cli}
 
 ```bash
 # Upload JAR to DBFS
@@ -548,7 +548,7 @@ databricks libraries install \
   --jar dbfs:/FileStore/jars/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
 ```
 
-#### Option 3: Maven Coordinates (Recommended)
+#### Option 3: Maven Coordinates (Recommended) {#databricks-installation-maven}
 
 In your cluster configuration, add the Maven coordinates:
 
@@ -562,7 +562,7 @@ The Spark 4.0 runtime JAR includes shaded Jackson dependencies to prevent confli
 
 ### Databricks Notebook Usage {#databricks-notebook-usage}
 
-#### Using Format-based API (Recommended for Databricks)
+#### Using Format-based API (Recommended for Databricks) {#databricks-format-api}
 
 The format-based API (TableProvider) is the **recommended approach** for Databricks, especially with Unity Catalog. It provides better compatibility and avoids catalog conflicts:
 
@@ -1040,7 +1040,7 @@ spark.sql("""
 
 When creating tables with VariantType columns, you can specify which ClickHouse types to use:
 
-#### JSON Type (Default)
+#### JSON Type (Default) {#json-type-default}
 
 If no `variant_types` property is specified, the column defaults to ClickHouse's `JSON` type, which only accepts JSON objects:
 
@@ -1057,7 +1057,7 @@ TBLPROPERTIES (
 
 This creates: `CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id`
 
-#### Variant Type with Multiple Types
+#### Variant Type with Multiple Types {#variant-type-multiple-types}
 
 To support primitives, arrays, and JSON objects, specify the types in the `variant_types` property:
 
