@@ -6476,15 +6476,40 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 
 ## max_insert_block_size {#max_insert_block_size} 
 
+**Псевдонимы**: `max_insert_block_size_rows`
+
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-Размер блоков (в количестве строк), формируемых для вставки в таблицу.
-Этот параметр применяется только в случаях, когда блоки формирует сервер.
-Например, при выполнении INSERT через HTTP-интерфейс сервер разбирает формат данных и формирует блоки указанного размера.
-Но при использовании clickhouse-client клиент разбирает данные самостоятельно, и настройка `max_insert_block_size` на сервере не влияет на размер вставляемых блоков.
-Настройка также не применяется при использовании INSERT SELECT, поскольку данные вставляются теми же блоками, которые формируются после SELECT.
+Максимальный размер блоков (в количестве строк), формируемых для вставки в таблицу.
 
-Значение по умолчанию немного больше, чем `max_block_size`. Причина в том, что некоторые движки таблиц (`*MergeTree`) формируют на диске часть данных (data part) для каждого вставленного блока, и это довольно крупная сущность. Аналогично, таблицы `*MergeTree` сортируют данные во время вставки, и достаточно большой размер блока позволяет отсортировать больше данных в оперативной памяти.
+Этот параметр управляет формированием блоков при разборе форматов. Когда сервер разбирает строчно-ориентированные форматы ввода (CSV, TSV, JSONEachRow и т. д.) или формат Values из любого интерфейса (HTTP, clickhouse-client с inline‑данными, gRPC, протокол PostgreSQL wire), он использует это значение, чтобы определить момент выдачи блока.
+Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла сам клиент разбирает данные, и эта настройка применяется на стороне клиента.
+
+Блок выдаётся, когда выполнено одно из условий:
+
+- Минимальные пороги (И): одновременно достигнуты и `min_insert_block_size_rows`, и `min_insert_block_size_bytes`
+- Максимальные пороги (ИЛИ): достигнут либо `max_insert_block_size`, либо `max_insert_block_size_bytes`
+
+Значение по умолчанию немного больше, чем max_block_size. Причина в том, что некоторые движки таблиц (`*MergeTree`) формируют на диске часть данных (data part) для каждого вставленного блока, и это довольно крупная сущность. Аналогично, таблицы `*MergeTree` сортируют данные во время вставки, и достаточно большой размер блока позволяет отсортировать больше данных в оперативной памяти.
+
+Возможные значения:
+
+- Положительное целое число.
+
+## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Новая настройка, которая позволяет контролировать размер блоков в байтах при разборе данных в Row Input Format."}]}]}/>
+
+Максимальный размер блоков (в байтах), формируемых при вставке в таблицу.
+
+Эта настройка работает совместно с max_insert_block_size_rows и управляет формированием блоков в том же контексте. См. max_insert_block_size_rows для подробной информации о том, когда и как применяются эти настройки.
+
+Возможные значения:
+
+- Положительное целое число.
+- 0 — настройка не участвует в формировании блоков.
 
 ## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
 
@@ -7593,12 +7618,14 @@ ClickHouse использует этот параметр при чтении д
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
-Устанавливает минимальный размер блока в байтах, который может быть вставлен в таблицу с помощью запроса `INSERT`. Блоки меньшего размера объединяются в более крупные.
+Минимальный размер блока (в байтах), формируемого для вставки в таблицу.
+
+Этот параметр работает совместно с min_insert_block_size_rows и управляет формированием блоков в тех же контекстах (разбор формата и операции `INSERT`). Подробную информацию о том, когда и как применяются эти параметры, см. в описании min_insert_block_size_rows.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — объединение отключено.
+- 0 — параметр не участвует в формировании блоков.
 
 ## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
 
@@ -7619,12 +7646,25 @@ ClickHouse использует этот параметр при чтении д
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-Устанавливает минимальное количество строк в блоке, которое может быть вставлено в таблицу при выполнении запроса `INSERT`. Блоки меньшего размера объединяются в более крупные.
+Минимальный размер блоков (в строках), формируемых для вставки в таблицу.
+
+Этот параметр управляет формированием блоков в двух контекстах:
+
+1. Разбор форматов: когда сервер разбирает построчные форматы ввода (CSV, TSV, JSONEachRow и т. д.) из любого интерфейса (HTTP, clickhouse-client со встроенными данными, gRPC, протокол PostgreSQL wire), он использует этот параметр, чтобы определить момент формирования блока.
+Примечание: при использовании clickhouse-client или clickhouse-local для чтения из файла разбор данных выполняет сам клиент, и этот параметр применяется на стороне клиента.
+2. Операции INSERT: во время запросов INSERT...SELECT и когда данные проходят через materialized views, блоки объединяются на основе этого параметра перед записью в хранилище.
+
+Блок при разборе формата формируется, когда выполняется одно из условий:
+
+- Минимальные пороги (И): достигнуты оба параметра min_insert_block_size_rows И min_insert_block_size_bytes
+- Максимальные пороги (ИЛИ): достигнут один из параметров max_insert_block_size ИЛИ max_insert_block_size_bytes
+
+Блоки меньшего размера для операций вставки объединяются в более крупные и формируются, когда достигается одно из значений min_insert_block_size_rows или min_insert_block_size_bytes.
 
 Возможные значения:
 
 - Положительное целое число.
-- 0 — объединение отключено.
+- 0 — параметр не участвует в формировании блоков.
 
 ## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
 
@@ -8085,8 +8125,8 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - [isNull](/sql-reference/functions/functions-for-nulls#isNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
 - [count](/sql-reference/aggregate-functions/reference/count) для чтения подстолбца [null](../../sql-reference/data-types/nullable.md/#finding-null).
-- [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
-- [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) для чтения подстолбца [keys](/sql-reference/data-types/map#reading-subcolumns-of-map).
+- [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) для чтения подстолбца [values](/sql-reference/data-types/map#reading-subcolumns-of-map).
 
 Возможные значения:
 
