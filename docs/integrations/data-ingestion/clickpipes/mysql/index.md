@@ -46,12 +46,12 @@ To get started, you first need to ensure that your MySQL database is correctly c
 | Name                 | Logo | Details           |
 |----------------------|------|-------------------|
 | **Amazon RDS MySQL** <br></br> _One-time load, CDC_ | <RDSsvg class="image" alt="Amazon RDS logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon RDS MySQL](./mysql/source/rds) configuration guide. |
-| **Amazon Aurora MySQL** _One-time load, CDC_ | <Aurorasvg class="image" alt="Amazon Aurora logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon Aurora MySQL](./mysql/source/aurora) configuration guide. |
-| **Cloud SQL for MySQL** _One-time load, CDC_ | <CloudSQLsvg class="image" alt="Cloud SQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Cloud SQL for MySQL](./mysql/source/gcp) configuration guide. |
-| **Azure Flexible Server for MySQL** _One-time load_ | <AFSsvg class="image" alt="Azure Flexible Server for MySQL logo" style={{width: '2.5rem', height: 'auto'}}/> | **CDC not supported** Follow the [Azure Flexible Server for MySQL](./mysql/source/azure-flexible-server-mysql) configuration guide. |
-| **Self-hosted MySQL** _One-time load, CDC_ | <MySQLsvg class="image" alt="MySQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MySQL](./mysql/source/generic) configuration guide. |
-| **Amazon RDS MariaDB** _One-time load, CDC_ | <RDSsvg class="image" alt="Amazon RDS logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon RDS MariaDB](./mysql/source/rds_maria) configuration guide. |
-| **Self-hosted MariaDB** _One-time load, CDC_ | <MariaDBsvg class="image" alt="MariaDB logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MariaDB](./mysql/source/generic_maria) configuration guide. |
+| **Amazon Aurora MySQL** <br></br> _One-time load, CDC_ | <Aurorasvg class="image" alt="Amazon Aurora logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon Aurora MySQL](./mysql/source/aurora) configuration guide. |
+| **Cloud SQL for MySQL** <br></br> _One-time load, CDC_ | <CloudSQLsvg class="image" alt="Cloud SQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Cloud SQL for MySQL](./mysql/source/gcp) configuration guide. |
+| **Azure Flexible Server for MySQL** <br></br> _One-time load_ | <AFSsvg class="image" alt="Azure Flexible Server for MySQL logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Azure Flexible Server for MySQL](./mysql/source/azure-flexible-server-mysql) configuration guide. |
+| **Self-hosted MySQL** <br></br> _One-time load, CDC_ | <MySQLsvg class="image" alt="MySQL logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MySQL](./mysql/source/generic) configuration guide. |
+| **Amazon RDS MariaDB** <br></br> _One-time load, CDC_ | <RDSsvg class="image" alt="Amazon RDS logo" style={{width: '2.5rem', height: 'auto'}}/> | Follow the [Amazon RDS MariaDB](./mysql/source/rds_maria) configuration guide. |
+| **Self-hosted MariaDB** <br></br> _One-time load, CDC_ | <MariaDBsvg class="image" alt="MariaDB logo" style={{width: '2.5rem', height: 'auto'}}/>|  Follow the [Generic MariaDB](./mysql/source/generic_maria) configuration guide. |
 
 Once your source MySQL database is set up, you can continue creating your ClickPipe.
 
