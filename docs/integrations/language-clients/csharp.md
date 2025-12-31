@@ -94,7 +94,6 @@ Below is a full list of all the settings, their default values, and their effect
 | Property | Type | Default | Connection String Key | Description |
 |----------|------|---------|----------------------|-------------|
 | UseCompression | `bool` | `true` | `Compression` | Enable gzip compression for data transfer |
-| UseServerTimezone | `bool` | `true` | `UseServerTimezone` | Use server timezone for DateTime conversion; if false, uses local timezone |
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
 
@@ -596,11 +595,11 @@ ClickHouse stores `DateTime` and `DateTime64` values internally as Unix timestam
 
 When reading `DateTime` values, the `DateTime.Kind` property is set based on the column's timezone:
 
-| Column Timezone | Returned `DateTime.Kind` |
-|-----------------|-------------------------|
-| UTC | `DateTimeKind.Utc` |
-| Any other timezone | `DateTimeKind.Unspecified` |
-| No timezone specified | `DateTimeKind.Unspecified` |
+| Column Definition | Returned DateTime.Kind | Notes |
+|-------------------|------------------------|-------|
+| `DateTime('UTC')` | `Utc` | Explicit UTC timezone |
+| `DateTime('Europe/Amsterdam')` | `Unspecified` | Offset applied |
+| `DateTime` | `Unspecified` | Wall-clock time preserved as-is |
 
 For non-UTC columns, the returned `DateTime` represents the wall-clock time in that timezone. Use `ClickHouseDataReader.GetDateTimeOffset()` to get a `DateTimeOffset` with the correct offset for that timezone:
 
@@ -613,22 +612,11 @@ var dt = reader.GetDateTime(0);    // 2024-06-15 14:30:00, Kind=Unspecified
 var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 ```
 
-##### UseServerTimezone setting {#datetime-handling-useservertimezone}
+For columns **without** an explicit timezone (i.e., `DateTime` instead of `DateTime('Europe/Amsterdam')`), the driver returns a `DateTime` with `Kind=Unspecified`. This preserves the wall-clock time exactly as stored without making assumptions about timezone.
 
-For columns **without** an explicit timezone (i.e., `DateTime` instead of `DateTime('Europe/Amsterdam')`), the `UseServerTimezone` connection string setting controls which timezone is used:
-
-| `UseServerTimezone` | Timezone Used | Default |
-|---------------------|---------------|---------|
-| `true` | Server's timezone (from `X-ClickHouse-Timezone` header) | **Yes** |
-| `false` | Client's system timezone | No |
-
-When a column has an explicit timezone, that timezone is always used regardless of this setting.
-
-| Column Definition | `UseServerTimezone=true` | `UseServerTimezone=false` |
-|-------------------|--------------------------|---------------------------|
-| `DateTime('UTC')` | UTC, Kind=Utc | UTC, Kind=Utc |
-| `DateTime('Europe/Amsterdam')` | Amsterdam, Kind=Unspecified | Amsterdam, Kind=Unspecified |
-| `DateTime` (no tz) | Server timezone, Kind=Unspecified | Client timezone, Kind=Unspecified |
+If you need timezone-aware behavior for columns without explicit timezones, either:
+1. Use explicit timezones in your column definitions: `DateTime('UTC')` or `DateTime('Europe/Amsterdam')`
+2. Apply the timezone yourself after reading.
 
 ---
 
