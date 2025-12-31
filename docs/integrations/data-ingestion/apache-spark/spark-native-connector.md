@@ -608,6 +608,9 @@ df.write \
     .save()
 ```
 
+</TabItem>
+</Tabs>
+
 ### Databricks-Specific Considerations {#databricks-considerations}
 
 **Important**: In Databricks environments, only the TableProvider API (format-based access) is supported. The Catalog API is not available in Databricks.
@@ -895,6 +898,336 @@ TBLPROPERTIES (
 The above examples demonstrate Spark SQL queries, which you can run within your application using any API—Java, Scala,
 PySpark, or shell.
 
+## Working with VariantType {#working-with-varianttype}
+
+:::note
+VariantType support is available in Spark 4.0+ and requires ClickHouse 25.3+ with experimental JSON/Variant types enabled.
+:::
+
+The connector supports Spark's `VariantType` for working with semi-structured data. VariantType maps to ClickHouse's `JSON` and `Variant` types, allowing you to store and query flexible schema data efficiently.
+
+### ClickHouse Type Mapping {#clickhouse-type-mapping}
+
+| ClickHouse Type | Spark Type | Description |
+|----------------|------------|-------------|
+| `JSON` | `VariantType` | Stores JSON objects only (must start with `{`) |
+| `Variant(T1, T2, ...)` | `VariantType` | Stores multiple types including primitives, arrays, and JSON |
+
+### Reading VariantType Data {#reading-varianttype-data}
+
+When reading from ClickHouse, `JSON` and `Variant` columns are automatically mapped to Spark's `VariantType`:
+
+<Tabs>
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+// Read JSON column as VariantType
+val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+
+// Access variant data
+df.show()
+
+// Convert variant to JSON string for inspection
+import org.apache.spark.sql.functions._
+df.select(
+  col("id"),
+  to_json(col("data")).as("data_json")
+).show()
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+# Read JSON column as VariantType
+df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+
+# Access variant data
+df.show()
+
+# Convert variant to JSON string for inspection
+from pyspark.sql.functions import to_json
+df.select(
+    "id",
+    to_json("data").alias("data_json")
+).show()
+```
+
+</TabItem>
+</Tabs>
+
+### Writing VariantType Data {#writing-varianttype-data}
+
+You can write VariantType data to ClickHouse using either JSON or Variant column types:
+
+<Tabs>
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+import org.apache.spark.sql.functions._
+
+// Create DataFrame with JSON data
+val jsonData = Seq(
+  (1, """{"name": "Alice", "age": 30}"""),
+  (2, """{"name": "Bob", "age": 25}"""),
+  (3, """{"name": "Charlie", "city": "NYC"}""")
+).toDF("id", "json_string")
+
+// Parse JSON strings to VariantType
+val variantDF = jsonData.select(
+  col("id"),
+  parse_json(col("json_string")).as("data")
+)
+
+// Write to ClickHouse with JSON type (JSON objects only)
+variantDF.writeTo("clickhouse.default.user_data").create()
+
+// Or specify Variant with multiple types
+spark.sql("""
+  CREATE TABLE clickhouse.default.mixed_data (
+    id INT,
+    data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'id'
+  )
+""")
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+from pyspark.sql.functions import parse_json
+
+# Create DataFrame with JSON data
+json_data = [
+    (1, '{"name": "Alice", "age": 30}'),
+    (2, '{"name": "Bob", "age": 25}'),
+    (3, '{"name": "Charlie", "city": "NYC"}')
+]
+df = spark.createDataFrame(json_data, ["id", "json_string"])
+
+# Parse JSON strings to VariantType
+variant_df = df.select(
+    "id",
+    parse_json("json_string").alias("data")
+)
+
+# Write to ClickHouse with JSON type
+variant_df.writeTo("clickhouse.default.user_data").create()
+
+# Or specify Variant with multiple types
+spark.sql("""
+  CREATE TABLE clickhouse.default.mixed_data (
+    id INT,
+    data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'id'
+  )
+""")
+```
+
+</TabItem>
+</Tabs>
+
+### Configuring Variant Types {#configuring-variant-types}
+
+When creating tables with VariantType columns, you can specify which ClickHouse types to use:
+
+#### JSON Type (Default)
+
+If no `variant_types` property is specified, the column defaults to ClickHouse's `JSON` type, which only accepts JSON objects:
+
+```sql
+CREATE TABLE clickhouse.default.json_table (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+This creates: `CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id`
+
+#### Variant Type with Multiple Types
+
+To support primitives, arrays, and JSON objects, specify the types in the `variant_types` property:
+
+```sql
+CREATE TABLE clickhouse.default.flexible_data (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'clickhouse.column.data.variant_types' = 'String, Int64, Float64, Bool, Array(String), JSON',
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+This creates: `CREATE TABLE flexible_data (id Int32, data Variant(String, Int64, Float64, Bool, Array(String), JSON)) ENGINE = MergeTree() ORDER BY id`
+
+### Supported Variant Types {#supported-variant-types}
+
+The following ClickHouse types can be used in `Variant()`:
+
+- **Primitives**: `String`, `Int8`, `Int16`, `Int32`, `Int64`, `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Float32`, `Float64`, `Bool`
+- **Arrays**: `Array(T)` where T is any supported type, including nested arrays
+- **JSON**: `JSON` for storing JSON objects
+
+### Read Format Configuration {#read-format-configuration}
+
+By default, JSON and Variant columns are read as `VariantType`. You can override this behavior to read them as strings:
+
+```scala
+// Read JSON/Variant as strings instead of VariantType
+spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+
+val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+// data column will be StringType containing JSON strings
+```
+
+### Write Format Support {#write-format-support}
+
+VariantType write support varies by format:
+
+| Format | Support | Notes |
+|--------|---------|-------|
+| JSON | ✅ Full | Supports both `JSON` and `Variant` types. Recommended for VariantType data |
+| Arrow | ⚠️ Partial | Supports writing to ClickHouse `JSON` type. Does not support ClickHouse `Variant` type. |
+
+Configure the write format:
+
+```scala
+spark.conf.set("spark.clickhouse.write.format", "json")  // Recommended for Variant types
+```
+
+:::tip
+If you need to write to a ClickHouse `Variant` type, use JSON format. Arrow format only supports writing to `JSON` type.
+:::
+
+### Best Practices {#varianttype-best-practices}
+
+1. **Use JSON type for JSON-only data**: If you only store JSON objects, use the default JSON type (no `variant_types` property)
+2. **Specify types explicitly**: When using `Variant()`, explicitly list all types you plan to store
+3. **Enable experimental features**: Ensure ClickHouse has `allow_experimental_json_type = 1` enabled
+4. **Use JSON format for writes**: JSON format is recommended for VariantType data for better compatibility
+5. **Consider query patterns**: JSON/Variant types support ClickHouse's JSON path queries for efficient filtering
+
+### Example: Complete Workflow {#varianttype-example-workflow}
+
+<Tabs>
+<TabItem value="Scala" label="Scala" default>
+
+```scala
+import org.apache.spark.sql.functions._
+
+// Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1")
+
+// Create table with Variant column
+spark.sql("""
+  CREATE TABLE clickhouse.default.events (
+    event_id BIGINT,
+    event_time TIMESTAMP,
+    event_data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'event_time'
+  )
+""")
+
+// Prepare data with mixed types
+val events = Seq(
+  (1L, "2024-01-01 10:00:00", """{"action": "login", "user_id": 123}"""),
+  (2L, "2024-01-01 10:05:00", """{"action": "purchase", "amount": 99.99}"""),
+  (3L, "2024-01-01 10:10:00", """{"action": "logout", "duration": 600}""")
+).toDF("event_id", "event_time", "json_data")
+
+// Convert to VariantType and write
+val variantEvents = events.select(
+  col("event_id"),
+  to_timestamp(col("event_time")).as("event_time"),
+  parse_json(col("json_data")).as("event_data")
+)
+
+variantEvents.writeTo("clickhouse.default.events").append()
+
+// Read and query
+val result = spark.sql("""
+  SELECT event_id, event_time, event_data
+  FROM clickhouse.default.events
+  WHERE event_time >= '2024-01-01'
+  ORDER BY event_time
+""")
+
+result.show(false)
+```
+
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+from pyspark.sql.functions import parse_json, to_timestamp
+
+# Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1")
+
+# Create table with Variant column
+spark.sql("""
+  CREATE TABLE clickhouse.default.events (
+    event_id BIGINT,
+    event_time TIMESTAMP,
+    event_data VARIANT
+  ) USING clickhouse
+  TBLPROPERTIES (
+    'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON',
+    'engine' = 'MergeTree()',
+    'order_by' = 'event_time'
+  )
+""")
+
+# Prepare data with mixed types
+events = [
+    (1, "2024-01-01 10:00:00", '{"action": "login", "user_id": 123}'),
+    (2, "2024-01-01 10:05:00", '{"action": "purchase", "amount": 99.99}'),
+    (3, "2024-01-01 10:10:00", '{"action": "logout", "duration": 600}')
+]
+df = spark.createDataFrame(events, ["event_id", "event_time", "json_data"])
+
+# Convert to VariantType and write
+variant_events = df.select(
+    "event_id",
+    to_timestamp("event_time").alias("event_time"),
+    parse_json("json_data").alias("event_data")
+)
+
+variant_events.writeTo("clickhouse.default.events").append()
+
+# Read and query
+result = spark.sql("""
+  SELECT event_id, event_time, event_data
+  FROM clickhouse.default.events
+  WHERE event_time >= '2024-01-01'
+  ORDER BY event_time
+""")
+
+result.show(truncate=False)
+```
+
+</TabItem>
+</Tabs>
+
 ## Configurations {#configurations}
 
 The following are the adjustable configurations available in the connector.
@@ -968,7 +1301,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `Int128`,`UInt128`, `Int256`, `UInt256`                           | `DecimalType(38, 0)`           | ✅         | Yes          |                                                    |
 | `Float32`                                                         | `FloatType`                    | ✅         | Yes          |                                                    |
 | `Float64`                                                         | `DoubleType`                   | ✅         | Yes          |                                                    |
-| `String`, `JSON`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`       | `StringType`                   | ✅         | Yes          |                                                    |
+| `String`, `UUID`, `Enum8`, `Enum16`, `IPv4`, `IPv6`              | `StringType`                   | ✅         | Yes          |                                                    |
 | `FixedString`                                                     | `BinaryType`, `StringType`     | ✅         | Yes          | Controlled by configuration `READ_FIXED_STRING_AS` |
 | `Decimal`                                                         | `DecimalType`                  | ✅         | Yes          | Precision and scale up to `Decimal128`             |
 | `Decimal32`                                                       | `DecimalType(9, scale)`        | ✅         | Yes          |                                                    |
@@ -981,6 +1314,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `IntervalYear`                                                    | `YearMonthIntervalType(Year)`  | ✅         | Yes          |                                                    |
 | `IntervalMonth`                                                   | `YearMonthIntervalType(Month)` | ✅         | Yes          |                                                    |
 | `IntervalDay`, `IntervalHour`, `IntervalMinute`, `IntervalSecond` | `DayTimeIntervalType`          | ✅         | No           | Specific interval type is used                     |
+| `JSON`, `Variant`                                                 | `VariantType`                  | ✅         | No           | Requires Spark 4.0+ and ClickHouse 25.3+. Can be read as `StringType` with `spark.clickhouse.read.jsonAs=string` |
 | `Object`                                                          |                                | ❌         |              |                                                    |
 | `Nested`                                                          |                                | ❌         |              |                                                    |
 | `Tuple`                                                           | `StructType`                   | ✅         | No           | Supports both named and unnamed tuples. Named tuples map to struct fields by name, unnamed tuples use `_1`, `_2`, etc. Supports nested structs and nullable fields |
@@ -1014,7 +1348,7 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `ArrayType` (list, tuple, or array) | `Array`              | ✅         | No           | Array element type is also converted   |
 | `MapType`                           | `Map`                | ✅         | No           | Keys are limited to `StringType`       |
 | `StructType`                        | `Tuple`              | ✅         | No           | Converted to named Tuple with field names. |
-| `VariantType`                       | `VariantType`               | ❌         | No          |  |
+| `VariantType`                       | `JSON` or `Variant`  | ✅         | No           | Requires Spark 4.0+ and ClickHouse 25.3+. Defaults to `JSON` type. Use `clickhouse.column.<name>.variant_types` property to specify `Variant` with multiple types. |
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
 
