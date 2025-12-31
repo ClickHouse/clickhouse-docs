@@ -370,7 +370,7 @@ If you are overriding the `QueryId` parameter, you need to ensure its uniqueness
 
 ### Raw streaming {#raw-streaming}
 
-It is possible to stream data in a particular format directly, bypassing the data reader. This can be useful in situations where you want to save the data to file in a particular format. For example:
+It's possible to stream data in a particular format directly, bypassing the data reader. This can be useful in situations where you want to save the data to file in a particular format. For example:
 
 ```csharp
 using var command = connection.CreateCommand();
@@ -736,16 +736,16 @@ var utcTime = new DateTime(2024, 1, 15, 12, 0, 0, DateTimeKind.Utc);
 // Read from DateTime('UTC') column: 12:00 UTC
 ```
 
-**Example: Unspecified DateTime (wall-clock time)**
+**Example: unspecified DateTime (wall-clock time)**
 ```csharp
 var wallClock = new DateTime(2024, 1, 15, 14, 30, 0, DateTimeKind.Unspecified);
 // Written to DateTime('Europe/Amsterdam') column: stored as 14:30 Amsterdam time
 // Read back from DateTime('Europe/Amsterdam') column: 14:30
 ```
 
-**Recommendation:** For simplest and most predictable behavior, use `DateTimeKind.Utc` or `DateTimeOffset` for all DateTime operations. This ensures your code works consistently regardless of server timezone, client timezone, or column timezone.
+**Recommendation:** for simplest and most predictable behavior, use `DateTimeKind.Utc` or `DateTimeOffset` for all DateTime operations. This ensures your code works consistently regardless of server timezone, client timezone, or column timezone.
 
-#### HTTP Parameters vs Bulk Copy {#datetime-http-param-vs-bulkcopy}
+#### HTTP parameters vs bulk copy {#datetime-http-param-vs-bulkcopy}
 
 There is an important difference between HTTP parameter binding and bulk copy when writing `Unspecified` DateTime values:
 
@@ -1121,7 +1121,7 @@ Important considerations when providing a custom HttpClient
 
 ### Dapper {#orm-support-dapper}
 
-`ClickHouse.Driver` can be used with Dapper, but anonymous objects are currently not supported.
+`ClickHouse.Driver` can be used with Dapper, but anonymous objects are not supported.
 
 **Working example:**
 
