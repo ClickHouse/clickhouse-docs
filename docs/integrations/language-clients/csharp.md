@@ -41,8 +41,6 @@ Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 * .NET 9.0
 * .NET 10.0
 
----
-
 ## Installation {#installation}
 
 Install the package from NuGet:
@@ -57,8 +55,6 @@ Or using the NuGet Package Manager:
 Install-Package ClickHouse.Driver
 ```
 
----
-
 ## Quick start {#quick-start}
 
 ```csharp
@@ -71,9 +67,14 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 }
 ```
 
----
-
 ## Configuration {#configuration}
+
+There are two ways of configuring your connection to ClickHouse:
+
+* **Connection string:** Semicolon-separated key/value pairs that specify the host, authentication credentials, and other connection options.
+* **`ClickHouseClientSettings` object:** A strongly typed configuration object that can be loaded from configuration files or set in code.
+
+Below is a full list of all the settings, their default values, and their effects.
 
 ### Connection settings {#connection-settings}
 
@@ -87,18 +88,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=ht
 | Protocol | `string` | `"http"` | `Protocol` | Connection protocol: `"http"` or `"https"` |
 | Path | `string` | `null` | `Path` | URL path for reverse proxy scenarios (e.g., `/clickhouse`) |
 | Timeout | `TimeSpan` | 2 minutes | `Timeout` | Operation timeout (stored as seconds in connection string) |
-
-The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.
-
-Select a service and click **Connect**:
-
-<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border />
-
-Choose **HTTPS**. Connection details are displayed below.
-
-<Image img={connection_details_csharp} size="md" alt="ClickHouse Cloud C# connection details" border />
-
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
 
 ### Data format & serialization {#data-format-serialization}
 
@@ -115,6 +104,12 @@ If you are using self-managed ClickHouse, the connection details are set by your
 |----------|------|---------|----------------------|-------------|
 | UseSession | `bool` | `false` | `UseSession` | Enable stateful sessions; serializes requests |
 | SessionId | `string` | `null` | `SessionId` | Session ID; auto-generates GUID if null and UseSession is true |
+
+:::note
+The `UseSession` flag enables persistence of the server session, allowing use of `SET` statements and temporary tables. Sessions will be reset after 60 seconds of inactivity (default timeout). Session lifetime can be extended by setting session settings via ClickHouse statements or the server configuration.
+
+The `ClickHouseConnection` class normally allows for parallel operation (multiple threads can run queries concurrently). However, enabling `UseSession` flag will limit that to one active query per connection at any moment of time (this is a server-side limitation).
+:::
 
 ### Security {#security}
 
@@ -146,7 +141,11 @@ If you are using self-managed ClickHouse, the connection details are set by your
 
 :::note
 When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, do not use the `set_` prefix.
+
+For a full list of available settings, see [here](https://clickhouse.com/docs/operations/settings/settings).
 :::
+
+---
 
 ### Connection string examples {#connection-string-examples}
 
@@ -162,21 +161,23 @@ Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
-:::note
-
-The `UseSession` flag enables persistence of the server session, allowing use of `SET` statements and temporary tables. Sessions will be reset after 60 seconds of inactivity (default timeout). Session lifetime can be extended by setting session settings via ClickHouse statements or the server configuration.
-
-The `ClickHouseConnection` class normally allows for parallel operation (multiple threads can run queries concurrently). However, enabling `UseSession` flag will limit that to one active query per connection at any moment of time (this is a server-side limitation).
-
-:::
-
----
-
 ## Usage {#usage}
 
 ### Connecting {#connecting}
 
-To connect to ClickHouse, create a `ClickHouseConnection` with a connection string or a `ClickHouseClientSettings` object. The connection string consists of semicolon-separated key/value pairs that specify the host, authentication credentials, and other connection options. See the [Configuration](#configuration) section for available options.
+To connect to ClickHouse, create a `ClickHouseConnection` with a connection string or a `ClickHouseClientSettings` object. See the [Configuration](#configuration) section for available options.
+
+The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.
+
+Select a service and click **Connect**:
+
+<Image img={cloud_connect_button} size="md" alt="ClickHouse Cloud service connect button" border />
+
+Choose **C#**. Connection details are displayed below.
+
+<Image img={connection_details_csharp} size="md" alt="ClickHouse Cloud C# connection details" border />
+
+If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
 
 Using a connection string:
 
@@ -187,7 +188,7 @@ using var connection = new ClickHouseConnection("Host=localhost;Username=default
 await connection.OpenAsync();
 ```
 
-Or using ClickHouseClientSettings:
+Or using `ClickHouseClientSettings`:
 
 ```csharp
 var settings = new ClickHouseClientSettings
@@ -200,11 +201,11 @@ using var connection2 = new ClickHouseConnection(settings);
 await connection2.OpenAsync();
 ```
 
-**Recommendations:**
-
+:::note
 * A `ClickHouseConnection` represents a "session" with the server. It performs feature discovery by querying server version (so there is a minor overhead on opening), but generally it is safe to create and destroy such objects multiple times.
 * Recommended lifetime for a connection is one connection object per large "transaction" spanning multiple queries. The `ClickHouseConnection` object can be long-lived. There is a minor overhead on connection startup, so it's not recommended to create a connection object for each query.
 * If an application operates on large volumes of transactions and requires to create/destroy `ClickHouseConnection` objects often, it is recommended to use `IHttpClientFactory` or a static instance of `HttpClient` to manage connections.
+:::
 
 ---
 
@@ -217,12 +218,12 @@ using ClickHouse.Driver.ADO;
 
 using (var connection = new ClickHouseConnection(connectionString))
 {
-    connection.Open();
+    await connection.OpenAsync();
 
     using (var command = connection.CreateCommand())
     {
         command.CommandText = "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory";
-        command.ExecuteNonQuery();
+        await command.ExecuteNonQueryAsync();
     }
 }
 ```
@@ -238,14 +239,14 @@ using ClickHouse.Driver.ADO;
 
 using (var connection = new ClickHouseConnection(connectionString))
 {
-    connection.Open();
+    await connection.OpenAsync();
 
     using (var command = connection.CreateCommand())
     {
         command.AddParameter("id", "Int64", 1);
         command.AddParameter("name", "String", "test");
         command.CommandText = "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})";
-        command.ExecuteNonQuery();
+        await command.ExecuteNonQueryAsync();
     }
 }
 ```
@@ -267,7 +268,7 @@ using ClickHouse.Driver.ADO;
 using ClickHouse.Driver.Copy;
 
 using var connection = new ClickHouseConnection(connectionString);
-connection.Open();
+await connection.OpenAsync();
 
 using var bulkCopy = new ClickHouseBulkCopy(connection)
 {
@@ -307,13 +308,13 @@ using System.Data;
 
 using (var connection = new ClickHouseConnection(connectionString))
 {
-    connection.Open();
-    
+    await connection.OpenAsync();
+
     using (var command = connection.CreateCommand())
     {
         command.AddParameter("id", "Int64", 10);
         command.CommandText = "SELECT * FROM default.my_table WHERE id < {id:Int64}";
-        using var reader = command.ExecuteReader();
+        using var reader = await command.ExecuteReaderAsync();
         while (reader.Read())
         {
             Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
@@ -379,7 +380,7 @@ command.CommandText = "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachR
 using var result = await command.ExecuteRawResultAsync(CancellationToken.None);
 using var stream = await result.ReadAsStreamAsync();
 using var reader = new StreamReader(stream);
-var json = reader.ReadToEnd();
+var json = await reader.ReadToEndAsync();
 ```
 
 ---
@@ -410,8 +411,6 @@ See the [format settings documentation](/docs/operations/settings/formats) for o
 
 For additional practical usage examples, see the [examples directory](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples) in the GitHub repository.
 
----
-
 ## Best practices {#best-practices}
 
 ### Connection lifetime and pooling {#best-practices-connection-lifetime}
@@ -432,7 +431,7 @@ When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `Pooled
 
 ---
 
-#### DateTime handling {#best-practice-datetime}
+### DateTime handling {#best-practice-datetime}
 
 1. **Use UTC whenever possible.** Store timestamps as `DateTime('UTC')` columns and use `DateTimeKind.Utc` in your code. This eliminates timezone ambiguity.
 
@@ -445,7 +444,7 @@ When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `Pooled
 
 ---
 
-#### Async inserts {#async-inserts}
+### Async inserts {#async-inserts}
 
 [Async inserts](/docs/optimize/asynchronous-inserts) shift batching responsibility from the client to the server. Instead of requiring client-side batching, the server buffers incoming data and flushes it to storage based on configurable thresholds. This is useful for high-concurrency scenarios like observability workloads where many agents send small payloads.
 
@@ -482,7 +481,7 @@ With `wait_for_async_insert=0`, errors only surface during flush and cannot be t
 
 ---
 
-#### Sessions {#best-practices-sessions}
+### Sessions {#best-practices-sessions}
 
 Only enable sessions when you need stateful server-side features, e.g.:
 
@@ -513,8 +512,6 @@ await using var cmd3 = connection.CreateCommand("SELECT * FROM users WHERE id IN
 await using var reader = await cmd3.ExecuteReaderAsync();
 ```
 
----
-
 ## Supported data types {#supported-data-types}
 
 `ClickHouse.Driver` supports all ClickHouse data types. The tables below show the mappings between ClickHouse types and native .NET types when reading data from the database.
@@ -538,6 +535,8 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 | Int256 | `BigInteger` |
 | UInt256 | `BigInteger` |
 
+---
+
 #### Floating point types {#type-map-reading-floating-points}
 
 | ClickHouse Type | .NET Type |
@@ -545,6 +544,8 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 | Float32 | `float` |
 | Float64 | `double` |
 | BFloat16 | `float` |
+
+---
 
 #### Decimal types {#type-map-reading-decimal}
 
@@ -560,11 +561,15 @@ await using var reader = await cmd3.ExecuteReaderAsync();
 Decimal type conversion is controlled via the UseCustomDecimals setting.
 :::
 
+---
+
 #### Boolean type {#type-map-reading-boolean}
 
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
 | Bool | `bool` |
+
+---
 
 #### String types {#type-map-reading-strings}
 
@@ -572,6 +577,8 @@ Decimal type conversion is controlled via the UseCustomDecimals setting.
 |-----------------|-----------|
 | String | `string` |
 | FixedString(N) | `byte[]` |
+
+---
 
 #### Date and time types {#type-map-reading-datetime}
 
@@ -608,7 +615,7 @@ var dto = reader.GetDateTimeOffset(0); // 2024-06-15 14:30:00 +02:00 (CEST)
 
 ##### UseServerTimezone setting {#datetime-handling-useservertimezone}
 
-For columns **without** an explicit timezone (e.g., `DateTime` instead of `DateTime('Europe/Amsterdam')`), the `UseServerTimezone` connection string setting controls which timezone is used:
+For columns **without** an explicit timezone (i.e., `DateTime` instead of `DateTime('Europe/Amsterdam')`), the `UseServerTimezone` connection string setting controls which timezone is used:
 
 | `UseServerTimezone` | Timezone Used | Default |
 |---------------------|---------------|---------|
@@ -622,6 +629,8 @@ When a column has an explicit timezone, that timezone is always used regardless 
 | `DateTime('UTC')` | UTC, Kind=Utc | UTC, Kind=Utc |
 | `DateTime('Europe/Amsterdam')` | Amsterdam, Kind=Unspecified | Amsterdam, Kind=Unspecified |
 | `DateTime` (no tz) | Server timezone, Kind=Unspecified | Client timezone, Kind=Unspecified |
+
+---
 
 #### Other types {#type-map-reading-other}
 
@@ -649,6 +658,8 @@ When a column has an explicit timezone, that timezone is always used regardless 
 The Dynamic and Variant types will be converted to the corresponding type for the actual underlying type in each row.
 :::
 
+---
+
 #### Geometry types {#type-map-reading-geometry}
 
 | ClickHouse Type | .NET Type |
@@ -664,6 +675,8 @@ The Dynamic and Variant types will be converted to the corresponding type for th
 :::note
 The Geometry type is a Variant type that can hold any of the geometry types. It will be converted to the corresponding type.
 :::
+
+---
 
 ### Type mapping: writing to ClickHouse {#clickhouse-native-type-map-writing}
 
@@ -686,6 +699,8 @@ When inserting data, the driver converts .NET types to their corresponding Click
 | Int256 | `BigInteger`, `decimal`, `double`, `float`, `int`, `uint`, `long`, `ulong`, any `Convert.ToInt64()` compatible | |
 | UInt256 | `BigInteger`, `decimal`, `double`, `float`, `int`, `uint`, `long`, `ulong`, any `Convert.ToInt64()` compatible | |
 
+---
+
 #### Floating point types {#type-map-writing-floating-point}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
@@ -694,11 +709,15 @@ When inserting data, the driver converts .NET types to their corresponding Click
 | Float64 | `double`, any `Convert.ToDouble()` compatible | |
 | BFloat16 | `float`, any `Convert.ToSingle()` compatible | Truncates to 16-bit brain float format |
 
+---
+
 #### Boolean type {#type-map-writing-boolean}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
 |-----------------|---------------------|-------|
 | Bool | `bool` |  |
+
+---
 
 #### String types {#type-map-writing-strings}
 
@@ -707,13 +726,15 @@ When inserting data, the driver converts .NET types to their corresponding Click
 | String | `string`, any `Convert.ToString()` compatible |  |
 | FixedString(N) | `string`, `byte[]` | String is UTF-8 encoded and padded/truncated; byte[] must be exactly N bytes |
 
+---
+
 #### Date and time types {#type-map-writing-datetime}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
 |-----------------|---------------------|-------|
 | Date | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as UInt16 |
 | Date32 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as Int32 |
-| DateTime | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix seconds |
+| DateTime | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | See below for details|
 | DateTime32 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Same as DateTime |
 | DateTime64 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Precision based on Scale parameter |
 | Time | `TimeSpan`, `int` | Clamped to ±999:59:59; int treated as seconds |
@@ -727,7 +748,7 @@ The driver respects `DateTime.Kind` when writing values:
 | `Local` | Converted to UTC using system timezone, instant preserved |
 | `Unspecified` | Treated as wall-clock time in target column's timezone |
 
-`DateTimeOffset` values always preserve the exact instant, regardless of the offset.
+`DateTimeOffset` values always preserve the exact instant.
 
 **Example: UTC DateTime (instant preserved)**
 ```csharp
@@ -773,6 +794,8 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | `Unspecified` | UTC | Treated as UTC | Treated as UTC | Treated as UTC |
 | `Unspecified` | Europe/Amsterdam | Treated as Amsterdam time | **Treated as UTC** | Treated as Amsterdam time |
 
+---
+
 #### Decimal types {#type-map-writing-decimal}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
@@ -782,6 +805,8 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | Decimal64 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 18 |
 | Decimal128 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 38 |
 | Decimal256 | `decimal`, `ClickHouseDecimal`, any `Convert.ToDecimal()` compatible | Max precision 76 |
+
+---
 
 #### Other types {#type-map-writing-other}
 
@@ -805,6 +830,8 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | Variant(T1, T2, ...) | Value matching one of T1, T2, ... | Throws `ArgumentException` if no type match |
 | QBit(T, dim) | `IList` | Delegates to Array; dimension is metadata only |
 
+---
+
 #### Geometry types {#type-map-writing-geometry}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
@@ -816,6 +843,8 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | MultiLineString | `IList` of LineStrings | |
 | MultiPolygon | `IList` of Polygons | |
 | Geometry | Any geometry type above | Variant of all geometry types |
+
+---
 
 #### Not supported for writing  {#type-map-writing-not-supported}
 
@@ -848,8 +877,6 @@ var row2 = new object[] { 2, new[] { 4, 5, 6 }, new[] { "v4", "v5", "v6" } };
 
 await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 ```
-
----
 
 ## Logging and diagnostics {#logging-and-diagnostics}
 
@@ -998,8 +1025,6 @@ var settings = new ClickHouseClientSettings()
 };
 ```
 
----
-
 ## OpenTelemetry {#opentelemetry}
 
 The driver provides built-in support for OpenTelemetry distributed tracing via the .NET [`System.Diagnostics.Activity`](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing) API. When enabled, the driver emits spans for database operations that can be exported to observability backends like Jaeger or ClickHouse itself (via the [OpenTelemetry Collector](https://clickhouse.com/docs/observability/integrating-opentelemetry)).
@@ -1062,8 +1087,6 @@ ClickHouseDiagnosticsOptions.StatementMaxLength = 500;
 Enabling `IncludeSqlInActivityTags` may expose sensitive data in your traces. Use with caution in production environments.
 :::
 
----
-
 ## TLS configuration {#tls-configuration}
 
 When connecting to ClickHouse over HTTPS, you can configure TLS/SSL behavior in several ways.
@@ -1115,8 +1138,6 @@ Important considerations when providing a custom HttpClient
 - **Automatic decompression**: You must enable `AutomaticDecompression` if compression is not disabled (compression is enabled by default).
 - **Idle timeout**: Set `PooledConnectionIdleTimeout` smaller than the server's `keep_alive_timeout` (10 seconds for ClickHouse Cloud) to avoid connection errors from half-open connections.
 :::
-
----
 
 ## ORM support {#orm-support}
 
@@ -1205,8 +1226,6 @@ await table.BulkCopyAsync(options, products);
 ### Entity framework core {#orm-support-ef-core}
 
 Entity Framework Core is currently not supported.
-
----
 
 ## Limitations {#limitations}
 
