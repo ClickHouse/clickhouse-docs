@@ -88,11 +88,25 @@ Connect to your RDS Postgres instance as an admin user and execute the following
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. Create a publication for replication:
+4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   :::
+
+   - To create a publication for specific tables:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - To create a publication for all tables in a specific schema:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
 ## Configure network access {#configure-network-access}
 

@@ -105,10 +105,10 @@ Connect to your AlloyDB instance as an admin user and execute the following comm
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
-## Configure network security {#configure-network-security}
+## Configure network access {#configure-network-access}
 
 :::note
-ClickPipes does not support Private Service Connect (PSC) connections. If you do not allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-security) to connect securely. PSC will be supported in the future.
+ClickPipes does not support Private Service Connect (PSC) connections. If you do not allow public access to your AlloyDB instance, you can [use an SSH tunnel](#configure-network-access) to connect securely. PSC will be supported in the future.
 :::
 
 Next, you must allow connections to your AlloyDB instance from ClickPipes.

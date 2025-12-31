@@ -23,35 +23,49 @@ ClickPipes supports Supabase via IPv6 natively for seamless replication.
 
 ## Creating a user with permissions and replication slot {#creating-a-user-with-permissions-and-replication-slot}
 
-Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
-and also create a publication that we'll use for replication.
+Connect to your Supabase instance as an admin user and execute the following commands:
 
-For this, you can head over to the **SQL Editor** for your Supabase Project.
-Here, we can run the following SQL commands:
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+1. Create a dedicated user for ClickPipes:
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+2. Grant the dedicated user permissions on the schema(s) you want to replicate.
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
-<Image img={supabase_commands} alt="User and publication commands" size="large" border/>
+   The example above shows permissions for the `public` schema. Repeat the sequence of commands for each schema you want to replicate using ClickPipes.
 
-Click on **Run** to have a publication and a user ready.
+3. Grant the dedicated user permissions to manage replication:
 
-:::note
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-Make sure to replace `clickpipes_user` and `clickpipes_password` with your desired username and password.
+4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
-Also, remember to use the same publication name when creating the mirror in ClickPipes.
+   :::warning
+   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   :::
 
-:::
+   - To create a publication for specific tables:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - To create a publication for all tables in a specific schema:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
 ## Increase `max_slot_wal_keep_size` {#increase-max_slot_wal_keep_size}
 

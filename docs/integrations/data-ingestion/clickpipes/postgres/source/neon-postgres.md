@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 ---
 
-import neon_commands from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-commands.png'
 import neon_enable_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-enable-replication.png'
 import neon_enabled_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-enabled-replication.png'
 import neon_ip_allow from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-ip-allow.png'
@@ -21,28 +20,49 @@ Make sure you're signed in to your [Neon console](https://console.neon.tech/app/
 
 ## Creating a user with permissions {#creating-a-user-with-permissions}
 
-Let's create a new user for ClickPipes with the necessary permissions suitable for CDC,
-and also create a publication that we'll use for replication.
+Connect to your Neon instance as an admin user and execute the following commands:
 
-For this, you can head over to the **SQL Editor** tab.
-Here, we can run the following SQL commands:
+1. Create a dedicated user for ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. Grant the dedicated user permissions on the schema(s) you want to replicate.
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+   The example above shows permissions for the `public` schema. Repeat the sequence of commands for each schema you want to replicate using ClickPipes.
 
-<Image size="lg" img={neon_commands} alt="User and publication commands" border/>
+3. Grant the dedicated user permissions to manage replication:
 
-Click on **Run** to have a publication and a user ready.
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
+
+4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
+
+   :::warning
+   All tables included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
+   :::
+
+   - To create a publication for specific tables:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - To create a publication for all tables in a specific schema:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
 ## Enable logical replication {#enable-logical-replication}
 In Neon, you can enable logical replication through the UI. This is necessary for ClickPipes's CDC to replicate data.
