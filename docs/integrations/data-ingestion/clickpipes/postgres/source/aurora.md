@@ -74,7 +74,7 @@ Connect to your Aurora PostgreSQL writer instance as an admin user and execute t
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Grant schema permissions. The following example shows permissions for the `public` schema. Repeat these commands for each schema you want to replicate:
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -82,7 +82,7 @@ Connect to your Aurora PostgreSQL writer instance as an admin user and execute t
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. Grant replication privileges:
+3. Grant replication privileges to the user:
 
     ```sql
     GRANT rds_replication TO clickpipes_user;

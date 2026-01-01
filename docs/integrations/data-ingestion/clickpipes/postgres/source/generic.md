@@ -62,7 +62,7 @@ Connect to your Postgres instance as an admin user and execute the following com
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Grant the dedicated user permissions on the schema(s) you want to replicate.
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
    
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -70,9 +70,7 @@ Connect to your Postgres instance as an admin user and execute the following com
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-   The example above shows permissions for the `public` schema. Repeat the sequence of commands for each schema you want to replicate using ClickPipes.
-
-3. Grant the dedicated user permissions to manage replication:
+3. Grant replication privileges to the user:
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;

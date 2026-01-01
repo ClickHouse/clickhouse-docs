@@ -29,13 +29,13 @@ SHOW max_replication_slots; -- should be 10
 
 Connect to your Crunchy Bridge Postgres through the `postgres` user and run the below commands:
 
-1. Create a Postgres user exclusively for ClickPipes.
+1. Create a dedicated user for ClickPipes:
 
     ```sql
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Grant read-only access to the schema from which you are replicating tables to `clickpipes_user`. Below example shows granting permissions for the `public` schema. If you want to grant access to multiple schemas, you can run these three commands for each schema.
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -43,7 +43,7 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. Grant replication access to this user:
+3. Grant replication privileges to the user:
 
     ```sql
      ALTER ROLE clickpipes_user REPLICATION;

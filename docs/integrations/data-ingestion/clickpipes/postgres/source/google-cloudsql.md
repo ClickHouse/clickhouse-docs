@@ -47,13 +47,13 @@ Anything on or after Postgres 12
 
 Connect to your Cloud SQL Postgres through the admin user and run the below commands:
 
-1. Create a Postgres user for exclusively ClickPipes.
+1. Create a dedicated user for ClickPipes:
 
    ```sql
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Provide read-only access to the schema from which you are replicating tables to the `clickpipes_user`. Below example shows setting up permissions for the `public` schema. If you want to grant access to multiple schemas, you can run these three commands for each schema.
+2. Grant schema-level, read-only access to the user you created in the previous step. The following example shows permissions for the `public` schema. Repeat these commands for each schema containing tables you want to replicate:
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -61,7 +61,7 @@ Connect to your Cloud SQL Postgres through the admin user and run the below comm
    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
    ```
 
-3. Grant replication access to this user:
+3. Grant replication privileges to the user:
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
