@@ -253,7 +253,7 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 ## 版权 {#copyright}
 
-*   Copyright (c) 2025，ClickHouse
+*   Copyright (c) 2025-2026，ClickHouse
 *   部分版权 (c) 2023-2025，Ildus Kurbangaliev
 *   部分版权 (c) 2019-2023，Adjust GmbH
 *   部分版权 (c) 2012-2019，PostgreSQL Global Development Group

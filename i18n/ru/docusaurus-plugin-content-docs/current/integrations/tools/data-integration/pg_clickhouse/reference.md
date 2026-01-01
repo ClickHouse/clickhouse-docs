@@ -556,7 +556,7 @@ pg&#95;clickhouse не проверяет настройки, а передаё�
 
 ## Авторские права {#copyright}
 
-* Copyright (c) 2025, ClickHouse
+* Copyright (c) 2025-2026, ClickHouse
 * Отдельные части Copyright (c) 2023-2025, Ildus Kurbangaliev
 * Отдельные части Copyright (c) 2019-2023, Adjust GmbH
 * Отдельные части Copyright (c) 2012-2019, PostgreSQL Global Development Group
