@@ -63,10 +63,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
    Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
    :::
 
-   ```sql
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-   ```
-
    - To create a publication for specific tables:
 
       ```sql

@@ -94,10 +94,6 @@ Connect to your Aurora PostgreSQL writer instance as an admin user and execute t
    Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
    :::
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
-
    - To create a publication for specific tables:
 
       ```sql
