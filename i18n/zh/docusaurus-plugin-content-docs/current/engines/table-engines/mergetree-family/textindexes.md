@@ -28,7 +28,7 @@ ClickHouse 中的文本索引（也称为["倒排索引"](https://en.wikipedia.o
 SET enable_full_text_index = true;
 ```
 
-可以使用以下语法在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) map 函数）列上定义文本索引：
+可以使用以下语法在 [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md) 以及 [Map](/sql-reference/data-types/map.md)（通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) map 函数）列上定义文本索引：
 
 ```sql
 CREATE TABLE tab
@@ -323,7 +323,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)（是 `mapContainsKey` 的别名）用于在 map 的键中匹配单个词元。
+函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)（是 `mapContainsKey` 的别名）用于在 map 的键中匹配单个词元。
 
 示例：
 
@@ -414,14 +414,14 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slo
 随着日志量增加，这些查询会变慢。
 
 可以通过为 [Map](/sql-reference/data-types/map.md) 的键和值创建文本索引来解决。
-当需要按字段名或属性类型查找日志时，可使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 来创建文本索引：
+当需要按字段名或属性类型查找日志时，可使用 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 来创建文本索引：
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-在需要在属性的实际内容中执行搜索时，使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 来创建文本索引：
+当需要在属性的实际内容中进行搜索时，使用 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 来创建文本索引：
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
