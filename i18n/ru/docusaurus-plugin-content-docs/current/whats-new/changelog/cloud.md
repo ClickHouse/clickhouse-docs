@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: -9999
 sidebar_label: 'Облако'
 title: 'Журнал изменений ClickHouse Cloud'
 slug: /whats-new/changelog/cloud

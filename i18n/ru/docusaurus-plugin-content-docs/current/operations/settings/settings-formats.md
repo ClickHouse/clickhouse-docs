@@ -2275,6 +2275,12 @@ z   IPv4
 + 0 — Отключить (выдавать ошибку при несоответствии типов).
 + 1 — Включить (пропускать поле при несоответствии типов).
 
+## type_json_use_partial_match_to_skip_paths_by_regexp {#type_json_use_partial_match_to_skip_paths_by_regexp}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+Когда этот параметр включён, при разборе JSON-объекта в тип JSON для пропуска пути по регулярному выражению, заданному с помощью SKIP REGEXP, будет достаточно частичного совпадения. Когда параметр выключен, будет требоваться полное совпадение.
+
 ## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />

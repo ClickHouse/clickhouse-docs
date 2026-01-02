@@ -16,11 +16,12 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
+
 # Руководство по настройке источника данных RDS Postgres {#rds-postgres-source-setup-guide}
 
 ## Поддерживаемые версии Postgres {#supported-postgres-versions}
 
-ClickPipes поддерживает Postgres версии 12 и выше.
+ClickPipes поддерживает Postgres версии 12 и новее.
 
 ## Включите логическую репликацию {#enable-logical-replication}
 
@@ -65,17 +66,18 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="Перезапуск RDS Postgres" size="lg" border />
 
+
 ## Настройка пользователя базы данных {#configure-database-user}
 
-Подключитесь к вашему экземпляру RDS PostgreSQL под учетной записью администратора и выполните следующие команды:
+Подключитесь к вашему экземпляру RDS Postgres под учётной записью администратора и выполните следующие команды:
 
-1. Создайте отдельную учетную запись пользователя для ClickPipes:
+1. Создайте выделенного пользователя для ClickPipes:
 
     ```sql
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. Предоставьте права на схему. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, которую вы хотите реплицировать:
+2. Предоставьте пользователю, созданному на предыдущем шаге, права только на чтение на уровне схемы. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,17 +85,31 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. Предоставьте привилегии репликации:
+3. Предоставьте пользователю привилегии для репликации:
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. Создайте публикацию для репликации:
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только необходимые таблицы, чтобы избежать лишних накладных расходов и деградации производительности.
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **первичный ключ**, _либо_ для неё должна быть настроена **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по выбору области публикаций.
+   :::
+
+   - Чтобы создать публикацию для конкретных таблиц:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в конкретной схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий об изменениях, сгенерированных из указанных таблиц, и в дальнейшем будет использоваться для приёма потока репликации.
 
 ## Настройка сетевого доступа {#configure-network-access}
 
@@ -110,11 +126,12 @@ postgres=> SHOW wal_sender_timeout ;
 Чтобы подключаться к вашему экземпляру RDS через частную сеть, можно использовать AWS PrivateLink. Следуйте нашему [руководству по настройке AWS PrivateLink для ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes), чтобы настроить подключение.
 
 ### Обходные решения для RDS Proxy {#workarounds-for-rds-proxy}
+
 RDS Proxy не поддерживает подключения для логической репликации. Если у вас динамические IP-адреса в RDS и вы не можете использовать DNS-имя или функцию AWS Lambda, рассмотрите следующие альтернативы:
 
 1. С помощью cron-задачи периодически определяйте IP-адрес конечной точки RDS и обновляйте NLB, если он изменился.
 2. Использование RDS Event Notifications с EventBridge/SNS: автоматически инициируйте обновления с помощью уведомлений о событиях AWS RDS.
-3. Постоянный экземпляр EC2: разверните экземпляр EC2, который будет выступать в роли сервиса опроса или прокси на основе IP-адресов.
+3. Постоянно работающий экземпляр EC2: разверните экземпляр EC2, который будет выступать в роли сервиса опроса или прокси на основе IP-адресов.
 4. Автоматизируйте управление IP-адресами с помощью таких инструментов, как Terraform или CloudFormation.
 
 ## Что дальше? {#whats-next}

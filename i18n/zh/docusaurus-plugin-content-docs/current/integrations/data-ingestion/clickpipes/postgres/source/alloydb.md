@@ -72,7 +72,7 @@ SHOW  wal_level;
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. 为该专用用户授予需要复制的 schema 的权限。
+2. 为上一步创建的用户授予 schema 级别的只读访问权限。下面的示例展示了针对 `public` schema 的权限设置。对于每个包含需要复制的表的 schema，重复执行这些命令：
    
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -80,9 +80,7 @@ SHOW  wal_level;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-   上面的示例展示了针对 `public` schema 的权限设置。对每个希望通过 ClickPipes 进行复制的 schema 重复执行上述命令序列。
-
-3. 为该专用用户授予管理复制的权限：
+3. 为该用户授予复制权限：
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
@@ -91,7 +89,7 @@ SHOW  wal_level;
 4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议仅在 publication 中包含实际需要的表，以避免额外的性能开销。
 
    :::warning
-   包含在 publication 中的所有表必须要么定义了 **primary key**，要么将其 **replica identity** 配置为 `FULL`。关于范围设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   包含在 publication 中的任意表必须要么定义了 **primary key**，要么将其 **replica identity** 配置为 `FULL`。关于范围设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
    - 为特定表创建 publication：
@@ -108,10 +106,10 @@ SHOW  wal_level;
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，稍后将用于摄取复制流。
 
-## 配置网络安全 {#configure-network-security}
+## 配置网络访问 {#configure-network-access}
 
 :::note
-ClickPipes 不支持 Private Service Connect (PSC) 连接。如果你不允许对 AlloyDB 实例的公共访问，可以[使用 SSH 隧道](#configure-network-security)以安全方式连接。PSC 将在未来提供支持。
+ClickPipes 不支持 Private Service Connect (PSC) 连接。如果你不允许对 AlloyDB 实例的公共访问，可以[使用 SSH 隧道](#configure-network-access)以安全方式连接。PSC 将在未来提供支持。
 :::
 
 接下来，你需要允许 ClickPipes 连接到你的 AlloyDB 实例。

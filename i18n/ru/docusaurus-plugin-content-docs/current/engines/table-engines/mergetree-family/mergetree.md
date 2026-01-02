@@ -403,7 +403,7 @@ bloom_filter([false_positive_rate])
 * `Map`
 
 :::note Тип данных Map: указание создания индекса по ключам или значениям
-Для типа данных `Map` клиент может указать, должен ли индекс создаваться по ключам или по значениям, используя функции [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) или [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues).
+Для типа данных `Map` клиент может указать, должен ли индекс создаваться по ключам или по значениям, используя функции [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) или [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues).
 :::
 
 
@@ -523,7 +523,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [меньше (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                    | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [больше (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [меньше или равно (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
-| [greaterOrEquals (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                               | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
+| [больше или равно (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                              | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗              | ✔      | ✗              | ✗              | ✗                | ✔                | ✗     |
 | [has](/sql-reference/functions/array-functions#has)                                                                       | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
@@ -535,7 +535,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗              | ✗      | ✗              | ✔              | ✗                | ✗                | ✗     |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
-| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                   | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
+| [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)                                                | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 
 Функции с константным аргументом, значение которого меньше размера n-граммы, не могут использоваться индексом `ngrambf_v1` для оптимизации запросов.
 

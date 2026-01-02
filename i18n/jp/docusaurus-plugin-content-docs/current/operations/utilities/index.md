@@ -18,3 +18,5 @@ doc_type: 'landing-page'
 | [clickhouse-disks](../../operations/utilities/clickhouse-disks.md) | 複数の ClickHouse ディスク間で、ファイルに対するファイルシステムのような操作を提供します。|
 | [clickhouse-odbc-bridge](../../operations/utilities/odbc-bridge.md) | ODBC ドライバー用のプロキシサーバーです。|
 | [clickhouse_backupview](../../operations/utilities/backupview.md) | ClickHouse のバックアップを解析するための Python モジュールです。|
+| [clickhouse-keeper-client](../../operations/utilities/clickhouse-keeper-client.md) | ClickHouse Keeper と対話するためのクライアントアプリケーションです。|
+| [Keeper HTTP API](../../operations/utilities/clickhouse-keeper-http-api.md) | ClickHouse Keeper 用の HTTP API および組み込みダッシュボードです。|

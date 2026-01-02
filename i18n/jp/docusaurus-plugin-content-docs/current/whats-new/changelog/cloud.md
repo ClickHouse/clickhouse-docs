@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: -9999
 sidebar_label: 'クラウド'
 title: 'クラウドの変更履歴'
 slug: /whats-new/changelog/cloud

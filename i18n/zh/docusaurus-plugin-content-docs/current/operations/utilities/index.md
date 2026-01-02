@@ -18,3 +18,5 @@ doc_type: 'landing-page'
 | [clickhouse-disks](../../operations/utilities/clickhouse-disks.md) | 为不同 ClickHouse 磁盘上的文件提供类似文件系统的操作能力。|
 | [clickhouse-odbc-bridge](../../operations/utilities/odbc-bridge.md) | 用于 ODBC 驱动程序的代理服务器。|
 | [clickhouse_backupview](../../operations/utilities/backupview.md) | 用于分析 ClickHouse 备份的 Python 模块。|
+| [clickhouse-keeper-client](../../operations/utilities/clickhouse-keeper-client.md) | 用于与 ClickHouse Keeper 交互的客户端应用程序。|
+| [Keeper HTTP API](../../operations/utilities/clickhouse-keeper-http-api.md) | ClickHouse Keeper 的 HTTP API 和内置仪表板。|

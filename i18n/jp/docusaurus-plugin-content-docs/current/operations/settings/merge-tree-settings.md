@@ -488,9 +488,9 @@ ClickHouse Cloud でのみ利用可能です。マージ中に compact パーツ
 
 ## dynamic_serialization_version {#dynamic_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Dynamic データ型のシリアル化バージョンを制御する設定を追加"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Dynamic データ型のシリアル化バージョンを制御する設定を追加"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "Dynamic データ型に対して v3 シリアル化バージョンをデフォルトで有効化し、シリアル化/デシリアル化を改善"}]}]}/>
 
 Dynamic データ型のシリアル化バージョン。互換性のために必要です。
 
@@ -522,7 +522,7 @@ Dynamic データ型のシリアル化バージョン。互換性のために必
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加。"}]}]}/>
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の両設定が、
@@ -1765,9 +1765,9 @@ ClickHouse Cloud でのみ利用可能です。マージ対象として考慮す
 
 ## object_serialization_version {#object_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "JSON シリアル化のバージョンを制御する設定を追加"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "JSON シリアル化のバージョンを制御する設定を追加"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "高度な共有データのシリアル化を利用するために、JSON 用のシリアル化バージョン v3 をデフォルトで有効化"}]}]}/>
 
 JSON データ型用のシリアル化バージョン。互換性を保つために必要です。
 
@@ -1797,9 +1797,9 @@ Wide パーツにおける JSON 共有データシリアル化時のバケット
 
 ## object_shared_data_serialization_version {#object_shared_data_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "JSON シリアル化バージョンを制御するための設定を追加"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "JSON シリアル化バージョンを制御するための設定を追加"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "高度な共有データシリアル化バージョンをデフォルトで有効にする"}]}]}/>
 
 JSON データ型内の共有データに対するシリアル化バージョンです。
 
@@ -1816,9 +1816,9 @@ JSON データ型内の共有データに対するシリアル化バージョン
 
 ## object_shared_data_serialization_version_for_zero_level_parts {#object_shared_data_serialization_version_for_zero_level_parts} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map_with_buckets" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "ゼロレベルパーツに対する JSON シリアル化バージョンを制御する設定を追加"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "ゼロレベルパーツに対する JSON シリアル化バージョンを制御する設定を追加"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "map_with_buckets"},{"label": "ゼロレベルパーツに対する共有データのシリアル化バージョンとして map_with_buckets をデフォルトで有効化"}]}]}/>
 
 この設定では、挿入時に作成されるゼロレベルパーツに対して、JSON 型内の共有データのシリアル化バージョンを個別に指定できます。
 ゼロレベルパーツに対しては、共有データのシリアル化として `advanced` を使用しないことを推奨します。挿入時間が大きく増加する可能性があるためです。

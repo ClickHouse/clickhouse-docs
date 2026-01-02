@@ -28,7 +28,7 @@ ClickHouse のテキストインデックス（["inverted indexes"](https://en.w
 SET enable_full_text_index = true;
 ```
 
-テキストインデックスは、次の構文を使用して [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（map 関数 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) を介して）のカラムに定義できます。
+テキストインデックスは、次の構文を使用して [String](/sql-reference/data-types/string.md)、[FixedString](/sql-reference/data-types/fixedstring.md)、[Array(String)](/sql-reference/data-types/array.md)、[Array(FixedString)](/sql-reference/data-types/array.md)、および [Map](/sql-reference/data-types/map.md)（map 関数 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) を介して）のカラムに定義できます。
 
 ```sql
 CREATE TABLE tab
@@ -323,7 +323,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-[mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) 関数（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンにマッチします。
+[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数（`mapContainsKey` のエイリアス）は、マップのキーに含まれる単一のトークンにマッチします。
 
 例:
 
@@ -414,14 +414,14 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slo
 ログ量が増えると、これらのクエリは遅くなります。
 
 解決策は、[Map](/sql-reference/data-types/map.md) のキーと値に対してテキスト索引を作成することです。
-フィールド名や属性タイプでログを検索する必要がある場合は、[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) を使用してテキスト索引を作成します。
+フィールド名や属性タイプでログを検索する必要がある場合は、[mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) を使用してテキスト索引を作成します。
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-属性の実際のテキスト内容を検索する必要がある場合は、[mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues) を使用してテキスト索引を作成します。
+属性の実際のテキスト内容を検索する必要がある場合は、[mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) を使用してテキスト索引を作成します。
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
@@ -526,6 +526,7 @@ Positions:
 現在、I/O を削減するために、テキストインデックスのデシリアライズ済みの Dictionary ブロック、ヘッダー、およびポスティングリスト向けのキャッシュが用意されています。
 これらは設定 [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache)、[use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache)、および [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache) で有効化できます。
 デフォルトでは、すべてのキャッシュは無効になっています。
+キャッシュを削除するには、[SYSTEM DROP TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches) 文を使用します。
 
 キャッシュを構成するには、以下のサーバー設定を参照してください。
 

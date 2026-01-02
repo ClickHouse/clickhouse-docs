@@ -2273,6 +2273,12 @@ z   IPv4
 + 0 — 禁用（在类型不匹配时抛出错误）。
 + 1 — 启用（在类型不匹配时跳过字段）。
 
+## type_json_use_partial_match_to_skip_paths_by_regexp {#type_json_use_partial_match_to_skip_paths_by_regexp}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+启用时，在将 JSON 对象解析为 JSON 类型的过程中，使用 SKIP REGEXP 指定的正则表达式只需部分匹配即可跳过某个路径。禁用时，则需要完全匹配才能跳过路径。
+
 ## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />

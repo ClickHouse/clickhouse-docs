@@ -48,7 +48,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 指定したキー `k` がマップ内に含まれていない場合、`m[k]` は値型のデフォルト値を返します。例えば、整数型なら `0`、文字列型なら `''` です。
-マップ内にキーが存在するかどうかを確認するには、[mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains) 関数を使用します。
+マップ内にキーが存在するかどうかを確認するには、[mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 関数を使用します。
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -56,7 +56,7 @@ INSERT INTO tab VALUES ({'key1':100}), ({});
 SELECT m['key1'] FROM tab;
 ```
 
-結果：
+結果:
 
 ```text
 ┌─arrayElement(m, 'key1')─┐

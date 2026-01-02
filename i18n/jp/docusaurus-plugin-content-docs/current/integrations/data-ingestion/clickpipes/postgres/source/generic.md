@@ -52,31 +52,49 @@ ClickPipes は Postgres バージョン 12 以降をサポートしています�
     ```
 3. 上記のとおり構成に変更を加えた場合は、その変更を反映させるために Postgres インスタンスを再起動する必要があります。
 
-## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
+## 権限とパブリケーションを設定したユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
-CDC に必要な権限を持つ ClickPipes 用の新しいユーザーを作成し、
-さらにレプリケーションに使用するパブリケーションも作成します。
+管理者ユーザーとして Postgres インスタンスに接続し、次のコマンドを実行します。
 
-そのためには、Postgres インスタンスに接続し、次の SQL コマンドを実行します。
+1. ClickPipes 用の専用ユーザーを作成します:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 先ほど作成したユーザーに対して、スキーマレベルの読み取り専用アクセス権を付与します。次の例は `public` スキーマに対する権限を示しています。レプリケーションしたいテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください。
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the pipe
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. ユーザーにレプリケーション権限を付与します。
 
-:::note
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-`clickpipes_user` と `clickpipes_password` を、使用したいユーザー名とパスワードに置き換えてください。
+4. レプリケーションしたいテーブルを対象とする [パブリケーション](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスへの余計なオーバーヘッドを避けるため、パブリケーションには必要なテーブルのみを含めることを強く推奨します。
 
-:::
+   :::warning
+   パブリケーションに含めるすべてのテーブルは、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープの設定に関するガイダンスについては [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
+
+   - 特定のテーブルに対するパブリケーションを作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 特定のスキーマ内のすべてのテーブルに対するパブリケーションを作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` パブリケーションには、指定したテーブルから生成された変更イベントの集合が含まれ、後にレプリケーションストリームを取り込むために使用されます。
 
 ## pg_hba.conf で ClickPipes ユーザーへの接続を有効にする {#enabling-connections-in-pg_hbaconf-to-the-clickpipes-user}
 
@@ -110,9 +128,10 @@ SELECT pg_reload_conf();
 
 :::note
 
-この値の最適な設定については、ClickPipes チームまでお問い合わせください。
+この値の最適な設定については、ClickPipes チームにお問い合わせください。
 
 :::
+
 
 ## 次のステップ {#whats-next}
 

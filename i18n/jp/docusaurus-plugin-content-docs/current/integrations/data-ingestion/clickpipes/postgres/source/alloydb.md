@@ -72,7 +72,7 @@ SHOW  wal_level;
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. レプリケーションしたいスキーマに対する権限を専用ユーザーに付与します。
+2. 前の手順で作成したユーザーに対し、スキーマ単位の読み取り専用アクセス権を付与します。次の例は、`public` スキーマに対する権限を示しています。レプリケーションしたいテーブルを含む各スキーマについて、このコマンド群を繰り返してください:
    
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -80,9 +80,7 @@ SHOW  wal_level;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-   上記の例は、`public` スキーマに対する権限を示しています。ClickPipes を使ってレプリケーションしたい各スキーマごとに、この一連のコマンドを繰り返してください。
-
-3. レプリケーションを管理するための権限を専用ユーザーに付与します:
+3. ユーザーにレプリケーション権限を付与します:
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
@@ -91,7 +89,7 @@ SHOW  wal_level;
 4. レプリケーションしたいテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスのオーバーヘッドを抑えるため、publication には必要なテーブルのみを含めることを強く推奨します。
 
    :::warning
-   publication に含まれるすべてのテーブルには、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープの決め方については、[Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   publication に含まれるいずれのテーブルも、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープの決め方については、[Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
    :::
 
    - 特定のテーブルに対する publication を作成するには:
@@ -108,10 +106,10 @@ SHOW  wal_level;
 
    `clickpipes` publication は、指定したテーブルから生成される変更イベントのセットを保持し、後でレプリケーションストリームを取り込む際に使用されます。
 
-## ネットワークセキュリティを構成する {#configure-network-security}
+## ネットワークアクセスを構成する {#configure-network-access}
 
 :::note
-ClickPipes は Private Service Connect (PSC) 接続をサポートしていません。AlloyDB インスタンスへのパブリックアクセスを許可しない場合は、安全に接続するために[SSH トンネルを使用](#configure-network-security)できます。PSC は今後サポートされる予定です。
+ClickPipes は Private Service Connect (PSC) 接続をサポートしていません。AlloyDB インスタンスへのパブリックアクセスを許可しない場合は、安全に接続するために[SSH トンネルを使用](#configure-network-access)できます。PSC は今後サポートされる予定です。
 :::
 
 次に、ClickPipes から AlloyDB インスタンスへの接続を許可する必要があります。
@@ -123,7 +121,7 @@ ClickPipes は Private Service Connect (PSC) 接続をサポートしていま�
 
 2. **Instances in your cluster** までスクロールし、**Edit primary** をクリックします。
 
-3. **Enable Public IP** チェックボックスをオンにして、パブリックインターネット経由でインスタンスへの接続を許可します。**Authorized external networks** で、サービスをデプロイしているリージョンに対応した [ClickPipes の静的 IP アドレス一覧](../../index.md#list-of-static-ips) を入力します。
+3. **Enable Public IP** チェックボックスをオンにして、パブリックインターネット経由でインスタンスへの接続を許可します。**Authorized external networks** で、サービスをデプロイしているリージョンに対応した [ClickPipes の 静的 IP アドレス一覧](../../index.md#list-of-static-ips) を入力します。
 
    <Image img={configure_network_security} alt="IP 許可リストを使用してパブリックアクセス用のネットワークを構成する" size="lg" border/>
 

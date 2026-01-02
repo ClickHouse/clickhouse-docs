@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
+
 # TimescaleDB 拡張付き Postgres ソースのセットアップガイド {#postgres-with-timescaledb-source-setup-guide}
 
 <BetaBadge/>
@@ -58,40 +59,47 @@ Timescale のハイパーテーブル自体には、挿入されたデータは�
 データの一度限りのロード（`Initial Load Only`）のみを行いたい場合は、手順 2 以降をスキップしてください。
 :::
 
-1. ClickPipe 用の Postgres ユーザーを作成し、レプリケーションしたいテーブルに対する `SELECT` 権限を付与します。
+1. ClickPipes 用の Postgres ユーザーを作成します。
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  -- If desired, you can refine these GRANTs to individual tables alone, instead of the entire schema
-  -- But when adding new tables to the ClickPipe, you'll need to add them to the user as well.
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
-:::note
-`clickpipes_user` と `clickpipes_password` は、必ず任意のユーザー名とパスワードに置き換えてください。
-:::
+2. 前の手順で作成したユーザーに対して、スキーマレベルの読み取り専用アクセス権を付与します。次の例では、`public` スキーマに対する権限を示しています。レプリケーションしたいテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください。
 
-2. PostgreSQL のスーパーユーザー／管理ユーザーとして、レプリケーションしたいテーブルおよびハイパーテーブルに加え、**`_timescaledb_internal` スキーマ全体を含む** publication をソースインスタンス上に作成します。ClickPipe を作成する際には、この publication を選択する必要があります。
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
-```sql
--- When adding new tables to the ClickPipe, you'll need to add them to the publication as well manually. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, TABLES IN SCHEMA _timescaledb_internal;
-```
+3. ユーザーにレプリケーション権限を付与します。
 
-:::tip
-`FOR ALL TABLES` で publication を作成することは推奨しません。その場合、Postgres から ClickPipes へのトラフィック（パイプに含まれていない他のテーブルの変更送信）が増加し、全体的な効率が低下します。
+   ```sql
+   GRANT rds_replication TO clickpipes_user;
+   ```
 
-publication を手動で作成する場合は、パイプに追加する前に、対象とするテーブルをすべて publication に追加してください。
-:::
+4. レプリケーションしたいテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスのオーバーヘッドを避けるため、publication には必要なテーブルのみを含めることを強く推奨します。
 
-:::info
-一部のマネージドサービスでは、スキーマ全体に対する publication を作成するために必要な権限が管理者ユーザーに付与されていません。
-この場合は、プロバイダーにサポートチケットを起票してください。あるいは、この手順と後続の手順をスキップし、一度きりのデータロードを実行することもできます。
-:::
+   :::warning
+   publication に含めるテーブルはすべて、**主キー** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープ設定のガイダンスについては、[Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
 
-3. 先ほど作成したユーザーにレプリケーション権限を付与します。
+   * 特定のテーブル向けに publication を作成するには、次のようにします。
+
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
+
+   * 特定スキーマ内のすべてのテーブル向けに publication を作成するには、次のようにします。
+
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
+
+   `clickpipes` publication には、指定したテーブルから生成される変更イベントの集合が含まれ、後でレプリケーションストリームを取り込むために使用されます。
+
+5. 先ほど作成したユーザーにレプリケーション権限を付与します。
 
 ```sql
 -- Give replication permission to the USER
@@ -99,6 +107,7 @@ publication を手動で作成する場合は、パイプに追加する前に�
 ```
 
 これらの手順が完了すると、[ClickPipe を作成](../index.md)できるようになります。
+
 
 ## ネットワークアクセスの構成 {#configure-network-access}
 

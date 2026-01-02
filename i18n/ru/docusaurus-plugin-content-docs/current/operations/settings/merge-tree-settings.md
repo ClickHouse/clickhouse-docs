@@ -510,9 +510,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## dynamic_serialization_version {#dynamic_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeDynamicSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Добавлена настройка для управления версиями динамической сериализации"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Добавлена настройка для управления версиями динамической сериализации"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "Версия сериализации v3 для Dynamic включена по умолчанию для улучшения сериализации и десериализации"}]}]}/>
 
 Версия сериализации для типа данных Dynamic. Требуется для совместимости.
 
@@ -544,7 +544,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Добавлена новая настройка для ограничения максимального объёма данных (в байтах) для min_age_to_force_merge."}]}]}/>
 
 Определяет, должны ли настройки `min_age_to_force_merge_seconds` и
 `min_age_to_force_merge_on_partition_only` учитывать настройку
@@ -1883,9 +1883,9 @@ ZooKeeper перед очисткой.
 
 ## object_serialization_version {#object_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v2" />
+<SettingsInfoBlock type="MergeTreeObjectSerializationVersion" default_value="v3" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Добавлена настройка для управления версиями сериализации JSON"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "v2"},{"label": "Добавлена настройка для управления версиями сериализации JSON"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "v3"},{"label": "Включена версия сериализации v3 для JSON по умолчанию для использования расширенной сериализации общих данных"}]}]}/>
 
 Версия сериализации для типа данных JSON. Требуется для обеспечения совместимости.
 
@@ -1915,9 +1915,9 @@ ZooKeeper перед очисткой.
 
 ## object_shared_data_serialization_version {#object_shared_data_serialization_version} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="advanced" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Добавлена настройка, позволяющая управлять версиями сериализации JSON"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Добавлена настройка, позволяющая управлять версиями сериализации JSON"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "advanced"},{"label": "Расширенная версия сериализации общих данных включена по умолчанию"}]}]}/>
 
 Версия сериализации общих данных в типе данных JSON.
 
@@ -1933,9 +1933,9 @@ ZooKeeper перед очисткой.
 
 ## object_shared_data_serialization_version_for_zero_level_parts {#object_shared_data_serialization_version_for_zero_level_parts} 
 
-<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map" />
+<SettingsInfoBlock type="MergeTreeObjectSharedDataSerializationVersion" default_value="map_with_buckets" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Добавлена настройка для управления версиями сериализации JSON для частей нулевого уровня"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "map"},{"label": "Добавлена настройка для управления версиями сериализации JSON для частей нулевого уровня"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "map_with_buckets"},{"label": "Включена по умолчанию версия сериализации общих данных map_with_buckets для частей нулевого уровня"}]}]}/>
 
 Эта настройка позволяет задать отдельную версию сериализации общих данных внутри типа JSON для частей нулевого уровня, которые создаются при вставке данных.
 Не рекомендуется использовать `advanced` сериализацию общих данных для частей нулевого уровня, поскольку это может значительно увеличить время вставки.

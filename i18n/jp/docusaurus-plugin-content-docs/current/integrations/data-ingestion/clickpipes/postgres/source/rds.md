@@ -16,6 +16,7 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
+
 # RDS Postgres ソース設定ガイド {#rds-postgres-source-setup-guide}
 
 ## サポートされている Postgres のバージョン {#supported-postgres-versions}
@@ -65,17 +66,18 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="RDS Postgres の再起動" size="lg" border />
 
+
 ## データベースユーザーの設定 {#configure-database-user}
 
-管理者権限を持つユーザーで RDS Postgres インスタンスに接続し、次のコマンドを実行します。
+管理ユーザーとして RDS Postgres インスタンスに接続し、次のコマンドを実行します。
 
-1. ClickPipes 用の専用ユーザーを作成します：
+1. ClickPipes 用の専用ユーザーを作成します:
 
     ```sql
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. スキーマの権限を付与します。次の例では、`public` スキーマに対する権限を示しています。レプリケーションしたい各スキーマに対して、これらのコマンドを繰り返してください：
+2. 前の手順で作成したユーザーに、スキーマ単位の読み取り専用アクセス権を付与します。次の例では、`public` スキーマに対する権限を示しています。レプリケーション対象とするテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください:
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,17 +85,31 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. レプリケーション権限を付与します：
+3. ユーザーにレプリケーション権限を付与します:
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. レプリケーション用のパブリケーションを作成します：
+4. レプリケーション対象とするテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスへのオーバーヘッドを避けるため、publication には必要なテーブルのみを含めることを強く推奨します。
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   publication に含めるテーブルはすべて、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープ設定については [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
+
+   - 特定のテーブルに対する publication を作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 特定のスキーマ内のすべてのテーブルに対する publication を作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication には、指定したテーブルから生成される変更イベントの一連の集合が含まれ、後でレプリケーションストリームを取り込む際に使用されます。
 
 ## ネットワークアクセスを設定する {#configure-network-access}
 
@@ -110,6 +126,7 @@ RDS インスタンスへのトラフィックを制限する場合は、[ドキ
 RDS インスタンスへプライベートネットワーク経由で接続するには、AWS PrivateLink を使用できます。接続を設定するには、[ClickPipes 向け AWS PrivateLink セットアップガイド](/knowledgebase/aws-privatelink-setup-for-clickpipes) に従ってください。
 
 ### RDS Proxy の回避策 {#workarounds-for-rds-proxy}
+
 RDS Proxy はロジカルレプリケーション接続をサポートしていません。RDS の IP アドレスが動的で、DNS 名や Lambda 関数を利用できない場合は、次のような代替策があります。
 
 1. cron ジョブを使用して、RDS エンドポイントの IP を定期的に名前解決し、変更されている場合は NLB を更新する。

@@ -483,6 +483,16 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 自然言語処理向けの実験的関数を有効にします。
 
+## allow_experimental_object_storage_queue_hive_partitioning {#allow_experimental_object_storage_queue_hive_partitioning} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新しい設定です。"}]}]}/>
+
+S3Queue/AzureQueue エンジンで Hive パーティショニングを許可します
+
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
 **エイリアス**: `enable_parallel_replicas`
@@ -6467,15 +6477,40 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 
 ## max_insert_block_size {#max_insert_block_size} 
 
+**エイリアス**: `max_insert_block_size_rows`
+
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-テーブルへの挿入時に作成されるブロックのサイズ（行数単位）を指定します。
-この設定が適用されるのは、サーバー側でブロックを形成する場合のみです。
-たとえば HTTP インターフェース経由での INSERT では、サーバーがデータフォーマットをパースし、指定されたサイズのブロックを形成します。
-一方、clickhouse-client を使用する場合はクライアント側でデータがパースされるため、サーバー上の `max_insert_block_size` 設定は挿入されるブロックのサイズに影響しません。
-また、INSERT SELECT を使用する場合にもこの設定は意味を持ちません。データは、SELECT の結果として形成されたブロックと同じブロック単位で挿入されるためです。
+テーブルへの挿入時に作成されるブロックの最大サイズ（行数単位）を指定します。
 
-デフォルト値は `max_block_size` よりわずかに大きくなっています。これは、特定のテーブルエンジン（`*MergeTree`）が、挿入された各ブロックごとにディスク上にデータパートを形成し、これがかなり大きなエンティティとなるためです。同様に、`*MergeTree` テーブルは挿入時にデータをソートするため、十分に大きなブロックサイズをとることで、より多くのデータを RAM 内でソートできるようにしています。
+この設定は、フォーマットのパース時におけるブロックの形成を制御します。サーバーが行ベースの入力フォーマット（CSV、TSV、JSONEachRow など）や、任意のインターフェース（HTTP、インラインデータを持つ clickhouse-client、gRPC、PostgreSQL wire protocol）からの Values フォーマットをパースする際に、この設定を使ってブロックを出力するタイミングを決定します。  
+注記: clickhouse-client または clickhouse-local を使用してファイルから読み込む場合は、クライアント自身がデータをパースし、この設定はクライアント側に適用されます。
+
+次のいずれかの条件が満たされた時点でブロックが出力されます:
+
+- 最小しきい値（AND）: min_insert_block_size_rows と min_insert_block_size_bytes の両方に到達した場合
+- 最大しきい値（OR）: max_insert_block_size または max_insert_block_size_bytes のいずれかに到達した場合
+
+デフォルト値は max_block_size よりわずかに大きくなっています。これは、特定のテーブルエンジン（`*MergeTree`）が、挿入された各ブロックごとにディスク上にデータパートを形成し、これがかなり大きなエンティティとなるためです。同様に、`*MergeTree` テーブルは挿入時にデータをソートするため、十分に大きなブロックサイズをとることで、より多くのデータを RAM 内でソートできるようにしています。
+
+取りうる値:
+
+- 正の整数。
+
+## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Row Input Format でデータをパースする際のブロックサイズをバイト単位で制御できる新しい設定。"}]}]}/>
+
+テーブルに挿入する際に作成されるブロックの最大サイズ（バイト単位）。
+
+この設定は max_insert_block_size_rows と連動して、同じコンテキストでのブロックの生成を制御します。これらの設定がいつ、どのように適用されるかの詳細については、max_insert_block_size_rows を参照してください。
+
+設定可能な値:
+
+- 正の整数。
+- 0 — ブロックの生成に影響しません。
 
 ## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
 
@@ -7561,12 +7596,14 @@ INSERT を実行するために必要な最小ディスク空き容量の比率�
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
-`INSERT` クエリでテーブルに挿入できるブロックの最小バイト数を設定します。これより小さいサイズのブロックは、より大きなブロックにまとめられます。
+テーブルに挿入する際に作成されるブロックの最小サイズ（バイト単位）を設定します。
+
+この設定は `min_insert_block_size_rows` と連携して動作し、同じコンテキスト（フォーマットのパースおよび `INSERT` 処理）でのブロック形成を制御します。これらの設定がいつ、どのように適用されるかの詳細については `min_insert_block_size_rows` を参照してください。
 
 指定可能な値:
 
 - 正の整数。
-- 0 — まとめ処理を無効化。
+- 0 — ブロック形成に関与しません。
 
 ## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
 
@@ -7587,12 +7624,25 @@ INSERT を実行するために必要な最小ディスク空き容量の比率�
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-`INSERT` クエリによってテーブルに挿入されるブロックの最小行数を設定します。より小さいサイズのブロックは、より大きなブロックにまとめられます。
+テーブルにデータを挿入する際に生成されるブロックの最小サイズ（行数）。
 
-設定可能な値:
+この設定は、次の 2 つのコンテキストでのブロック生成を制御します。
+
+1. フォーマットのパース: サーバーが任意のインターフェイス（HTTP、インラインデータ付きの clickhouse-client、gRPC、PostgreSQL ワイヤプロトコル）から行ベースの入力フォーマット（CSV、TSV、JSONEachRow など）をパースする際、この設定を使用してブロックを出力するタイミングを決定します。  
+注記: clickhouse-client または clickhouse-local でファイルから読み取る場合、クライアント自身がデータをパースし、この設定はクライアント側に適用されます。
+2. INSERT 操作: INSERT...SELECT クエリの実行中およびデータが materialized view を経由して流れる際、ストレージに書き込まれる前に、この設定に基づいてブロックがまとめられます。
+
+フォーマットのパースにおいては、次のいずれかの条件を満たしたときにブロックが出力されます:
+
+- 最小しきい値（AND）: min_insert_block_size_rows と min_insert_block_size_bytes の両方に到達したとき
+- 最大しきい値（OR）: max_insert_block_size または max_insert_block_size_bytes のいずれかに到達したとき
+
+INSERT 操作においては、小さいサイズのブロックはより大きなブロックにまとめられ、min_insert_block_size_rows または min_insert_block_size_bytes のいずれかに到達したときに出力されます。
+
+許可される値:
 
 - 正の整数。
-- 0 — まとめ処理を無効にする。
+- 0 — ブロック生成に関与しません。
 
 ## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
 
@@ -8053,8 +8103,8 @@ WHERE、PREWHERE、ON、HAVING、QUALIFY の各式において、論理和（OR�
 - [isNull](/sql-reference/functions/functions-for-nulls#isNull) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
 - [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
 - [count](/sql-reference/aggregate-functions/reference/count) は [null](../../sql-reference/data-types/nullable.md/#finding-null) サブカラムの読み取りに変換されます。
-- [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) は [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
-- [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) は [values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
+- [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) は [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
+- [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) は [values](/sql-reference/data-types/map#reading-subcolumns-of-map) サブカラムの読み取りに変換されます。
 
 設定可能な値:
 

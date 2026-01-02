@@ -15,26 +15,26 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 ### Python {#python}
 
-* [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
-* [infi.clickhouse&#95;orm](https://github.com/Infinidat/infi.clickhouse_orm)
-* [clickhouse-driver](https://github.com/mymarilyn/clickhouse-driver)
-* [clickhouse-client](https://github.com/yurial/clickhouse-client)
-* [aiochclient](https://github.com/maximdanilchenko/aiochclient)
-* [asynch](https://github.com/long2ice/asynch)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
+- [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)
+- [clickhouse-driver](https://github.com/mymarilyn/clickhouse-driver)
+- [clickhouse-client](https://github.com/yurial/clickhouse-client)
+- [aiochclient](https://github.com/maximdanilchenko/aiochclient)
+- [asynch](https://github.com/long2ice/asynch)
 
 ### PHP {#php}
 
-* [smi2/phpclickhouse](https://packagist.org/packages/smi2/phpClickHouse)
-* [8bitov/clickhouse-php-client](https://packagist.org/packages/8bitov/clickhouse-php-client)
-* [bozerkins/clickhouse-client](https://packagist.org/packages/bozerkins/clickhouse-client)
-* [simpod/clickhouse-client](https://packagist.org/packages/simpod/clickhouse-client)
-* [seva-code/php-click-house-client](https://packagist.org/packages/seva-code/php-click-house-client)
-* [C++-клиент SeasClick](https://github.com/SeasX/SeasClick)
-* [one-ck](https://github.com/lizhichao/one-ck)
-* [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
-* [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
-* [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
-* [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
+- [smi2/phpclickhouse](https://packagist.org/packages/smi2/phpClickHouse)
+- [8bitov/clickhouse-php-client](https://packagist.org/packages/8bitov/clickhouse-php-client)
+- [bozerkins/clickhouse-client](https://packagist.org/packages/bozerkins/clickhouse-client)
+- [simpod/clickhouse-client](https://packagist.org/packages/simpod/clickhouse-client)
+- [seva-code/php-click-house-client](https://packagist.org/packages/seva-code/php-click-house-client)
+- [C++-клиент SeasClick](https://github.com/SeasX/SeasClick)
+- [one-ck](https://github.com/lizhichao/one-ck)
+- [glushkovds/phpclickhouse-laravel](https://packagist.org/packages/glushkovds/phpclickhouse-laravel)
+- [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
+- [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
+- [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
 
 ### Go {#go}
 
@@ -47,19 +47,19 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 ### Swift {#swift}
 
-* [ClickHouseNIO](https://github.com/patrick-zippenfenig/ClickHouseNIO)
-* [ClickHouseVapor ORM](https://github.com/patrick-zippenfenig/ClickHouseVapor)
+- [ClickHouseNIO](https://github.com/patrick-zippenfenig/ClickHouseNIO)
+- [ClickHouseVapor ORM](https://github.com/patrick-zippenfenig/ClickHouseVapor)
 
 ### Node.js {#nodejs}
 
-* [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
-* [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
-* [node-clickhouse](https://github.com/apla/node-clickhouse)
-* [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)
-* [clickhouse-client](https://github.com/depyronick/clickhouse-client)
-* [node-clickhouse-orm](https://github.com/zimv/node-clickhouse-orm)
-* [clickhouse-ts](https://github.com/bytadaniel/clickhouse-ts)
-* [clickcache](https://github.com/bytadaniel/clickcache)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
+- [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
+- [node-clickhouse](https://github.com/apla/node-clickhouse)
+- [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)
+- [clickhouse-client](https://github.com/depyronick/clickhouse-client)
+- [node-clickhouse-orm](https://github.com/zimv/node-clickhouse-orm)
+- [clickhouse-ts](https://github.com/bytadaniel/clickhouse-ts)
+- [clickcache](https://github.com/bytadaniel/clickcache)
 
 ### Perl {#perl}
 
@@ -80,7 +80,7 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 ### R {#r}
 
-* [RClickHouse](https://github.com/IMSMWU/RClickHouse)
+- [RClickHouse](https://github.com/IMSMWU/RClickHouse)
 
 ### Java {#java}
 
@@ -94,6 +94,10 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 ### Kotlin {#kotlin}
 
 * [AORM](https://github.com/TanVD/AORM)
+
+### C++ {#cpp}
+
+- [Драйвер ClickHouse для фреймворка userver](https://userver.tech/dd/ddb/clickhouse_driver.html)
 
 ### C# {#c}
 

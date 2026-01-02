@@ -9,6 +9,7 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # Профилирование выделений памяти {#allocation-profiling}
 
 ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc) в качестве глобального аллокатора. Jemalloc предоставляет инструменты для сэмплирования и профилирования выделений памяти.  
@@ -40,6 +41,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 Поскольку ClickHouse — приложение с интенсивным использованием выделения памяти, выборочное отслеживание jemalloc может привести к дополнительным накладным расходам и снижению производительности.
 :::
 
+
 ## Хранение выборок jemalloc в `system.trace_log` {#storing-jemalloc-samples-in-system-trace-log}
 
 Вы можете хранить все выборки jemalloc в `system.trace_log` с типом записи `JemallocSample`.
@@ -56,6 +58,7 @@ ClickHouse использует [jemalloc](https://github.com/jemalloc/jemalloc)
 :::
 
 Вы также можете включить это для отдельного запроса, используя настройку `jemalloc_collect_profile_samples_in_trace_log`.
+
 
 ### Пример анализа использования памяти запросом с помощью `system.trace_log` {#example-analyzing-memory-usage-trace-log}
 
@@ -78,7 +81,7 @@ Peak memory usage: 12.65 MiB.
 ```
 
 :::note
-Если ClickHouse был запущен с `jemalloc_enable_global_profiler`, вам не нужно включать `jemalloc_enable_profiler`.\
+Если ClickHouse был запущен с `jemalloc_enable_global_profiler`, вам не нужно включать `jemalloc_enable_profiler`.
 То же самое относится к `jemalloc_collect_global_profile_samples_in_trace_log` и `jemalloc_collect_profile_samples_in_trace_log`.
 :::
 
@@ -88,7 +91,7 @@ Peak memory usage: 12.65 MiB.
 SYSTEM FLUSH LOGS trace_log
 ```
 
-и выполнять к нему запрос, чтобы получить потребление памяти нашим запросом для каждого момента времени:
+и выполним к нему запрос, чтобы получить использование памяти нашим запросом в каждый момент времени:
 
 ```sql
 WITH per_bucket AS
@@ -112,7 +115,7 @@ FROM per_bucket
 ORDER BY bucket_time
 ```
 
-Мы также можем найти момент времени, когда использование памяти достигало максимума:
+Мы также можем найти момент времени, когда использование памяти было максимальным:
 
 ```sql
 SELECT
@@ -142,7 +145,7 @@ FROM
 )
 ```
 
-Мы можем использовать этот результат, чтобы увидеть, откуда шло больше всего активных выделений памяти в тот момент времени:
+Мы можем использовать этот результат, чтобы увидеть, откуда происходило больше всего активных выделений памяти в тот момент времени:
 
 ```sql
 SELECT
@@ -175,9 +178,10 @@ GROUP BY ALL
 ORDER BY per_trace_sum ASC
 ```
 
+
 ## Сброс профилей кучи {#flushing-heap-profiles}
 
-По умолчанию файл профиля кучи создаётся в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер для текущего профиля кучи.\
+По умолчанию файл профиля кучи создаётся в `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap`, где `_pid_` — это PID ClickHouse, а `_seqnum_` — глобальный порядковый номер для текущего профиля кучи.
 Для Keeper файл по умолчанию — `/tmp/jemalloc_keeper._pid_._seqnum_.heap` и подчиняется тем же правилам.
 
 Вы можете попросить `jemalloc` сбросить текущий профиль, выполнив:
@@ -198,14 +202,15 @@ ORDER BY per_trace_sum ASC
   </TabItem>
 </Tabs>
 
-Другое местоположение можно задать, дополнив переменную окружения `MALLOC_CONF` опцией `prof_prefix`.\
+Другое местоположение можно задать, дополнив переменную окружения `MALLOC_CONF` опцией `prof_prefix`.
 Например, если вы хотите генерировать профили в каталоге `/data`, где префиксом имени файла будет `my_current_profile`, вы можете запустить ClickHouse/Keeper со следующей переменной окружения:
 
 ```sh
 MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
-К имени сгенерированного файла будет добавлен префикс с PID и порядковым номером.
+К префиксу имени сгенерированного файла будут добавлены PID и порядковый номер.
+
 
 ## Анализ профилей кучи {#analyzing-heap-profiles}
 
@@ -215,8 +220,43 @@ MALLOC_CONF=prof_prefix:/data/my_current_profile
 * С помощью системного менеджера пакетов
 * Клонировать [репозиторий jemalloc](https://github.com/jemalloc/jemalloc) и запустить `autogen.sh` из корневого каталога. В результате в каталоге `bin` появится скрипт `jeprof`.
 
+Существует множество различных форматов, которые можно получить из профиля кучи с помощью `jeprof`.
+Вы можете запустить `jeprof --help`, чтобы получить информацию об использовании и о различных опциях, которые предоставляет этот инструмент.
+
+### Символизированные профили кучи {#symbolized-heap-profiles}
+
+Начиная с версии 26.1+ ClickHouse автоматически генерирует символизированные профили кучи при выполнении команды `SYSTEM JEMALLOC FLUSH PROFILE`.
+Символизированный профиль (с расширением `.symbolized`) содержит встроенные символы функций и может анализироваться с помощью `jeprof` без необходимости в исполняемом файле ClickHouse.
+
+Например, при выполнении:
+
+```sql
+SYSTEM JEMALLOC FLUSH PROFILE
+```
+
+ClickHouse вернёт путь к символизированному профилю (например, `/tmp/jemalloc_clickhouse.12345.0.heap.symbolized`).
+
+Затем вы можете напрямую проанализировать его с помощью `jeprof`:
+
+```sh
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --output_format [ > output_file]
+```
+
 :::note
-`jeprof` использует `addr2line` для генерации стек-трейсов, что может работать очень медленно.\
+
+**Бинарный файл не требуется**: При использовании символизированных профилей (файлы `.symbolized`) вам не нужно указывать путь к бинарнику ClickHouse для `jeprof`. Это значительно упрощает анализ профилей на разных машинах или после обновления бинарного файла.
+
+:::
+
+Если у вас есть старый несимволизированный профиль кучи и по-прежнему есть доступ к бинарному файлу ClickHouse, вы можете использовать традиционный подход:
+
+```sh
+jeprof path/to/clickhouse path/to/heap/profile --output_format [ > output_file]
+```
+
+:::note
+
+Для несимволизированных профилей `jeprof` использует `addr2line` для генерации стек-трейсов, что может работать очень медленно.
 В таком случае рекомендуется установить [альтернативную реализацию](https://github.com/gimli-rs/addr2line) этого инструмента.
 
 ```bash
@@ -226,38 +266,49 @@ cargo build --features bin --release
 cp ./target/release/addr2line path/to/current/addr2line
 ```
 
-В качестве альтернативы `llvm-addr2line` работает так же эффективно.
+В качестве альтернативы можно использовать `llvm-addr2line` — он работает не хуже (но обратите внимание, что `llvm-objdump` не совместим с `jeprof`).
+
+После этого используйте его следующим образом: `jeprof --tools addr2line:/usr/bin/llvm-addr2line,nm:/usr/bin/llvm-nm,objdump:/usr/bin/objdump,c++filt:/usr/bin/llvm-cxxfilt`
 
 :::
 
-Существует множество различных форматов, которые можно получить из профиля кучи с помощью `jeprof`.
-Рекомендуется запустить `jeprof --help`, чтобы получить информацию об использовании и о различных опциях, которые предоставляет этот инструмент.
-
-В целом команду `jeprof` обычно используют следующим образом:
+При сравнении двух профилей вы можете использовать аргумент `--base`:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
+jeprof --base /path/to/first.heap.symbolized /path/to/second.heap.symbolized --output_format [ > output_file]
 ```
 
-Если вы хотите сравнить, какие выделения памяти произошли между двумя профилями, укажите аргумент `base`:
-
-```sh
-jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
-```
 
 ### Примеры {#examples}
 
-* если вы хотите сгенерировать текстовый файл, в котором каждая процедура будет записана в отдельной строке:
+Использование символизированных профилей (рекомендуется):
+
+* Создайте текстовый файл, в котором каждая процедура указана в отдельной строке:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --text > result.txt
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --text > result.txt
 ```
 
-* если вы хотите сгенерировать PDF-файл с графом вызовов:
+* Сгенерируйте PDF-файл с графом вызовов:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --pdf > result.pdf
 ```
+
+Использование несиволизированных профилей (требуется бинарник):
+
+* Сгенерируйте текстовый файл, в котором каждая процедура указана в отдельной строке:
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --text > result.txt
+```
+
+* Создайте PDF-файл с графом вызовов:
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --pdf > result.pdf
+```
+
 
 ### Построение flame-графа {#generating-flame-graph}
 
@@ -266,7 +317,13 @@ jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
 Для этого следует использовать аргумент `--collapsed`:
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --collapsed > result.collapsed
+```
+
+Или с профилем без символов:
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --collapsed > result.collapsed
 ```
 
 После этого вы можете использовать различные инструменты для визуализации свернутых стеков.
@@ -277,7 +334,8 @@ jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
 ```
 
-Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет анализировать собранные стеки в более интерактивном режиме.
+Еще один полезный инструмент — [speedscope](https://www.speedscope.app/), который позволяет более интерактивно анализировать собранные стеки.
+
 
 ## Дополнительные параметры профилировщика {#additional-options-for-profiler}
 
@@ -305,6 +363,7 @@ FORMAT Vertical
 ```
 
 [Справочник](/operations/system-tables/asynchronous_metrics)
+
 
 ### Системная таблица `jemalloc_bins` {#system-table-jemalloc_bins}
 
