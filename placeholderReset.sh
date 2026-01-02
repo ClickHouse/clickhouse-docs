@@ -19,6 +19,19 @@ for folder in "${FOLDER_ARRAY[@]}"; do
     fi
 done
 
-cp $PLACEHOLDER/changelog/_index.md $DOCS/whats-new/changelog/index.md
-echo "Copying completed"
+# Generate changelog index dynamically (year calculated at runtime)
+current_year="$(date +%Y)"
+cat > "$DOCS/whats-new/changelog/index.md" << EOF
+---
+description: 'Changelog for $current_year'
+note: 'This file is generated with yarn build'
+slug: /whats-new/changelog/
+sidebar_position: -9998
+sidebar_label: '$current_year'
+title: 'Changelog $current_year'
+doc_type: 'changelog'
+---
+
+EOF
+echo "Changelog placeholder generated for $current_year"
 echo "----END----"
