@@ -301,4 +301,3 @@ transformedDF.write
 - [Spark Native Connector Guide](/docs/integrations/data-ingestion/apache-spark/spark-native-connector) - Complete connector documentation
 - [TableProvider API Documentation](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#using-the-tableprovider-api-format-based-access) - Format-based access details
 - [Catalog API Documentation](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) - Catalog-based access details
-

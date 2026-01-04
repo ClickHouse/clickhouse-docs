@@ -46,7 +46,6 @@ The ClickHouse Spark connector supports two access patterns: the **Catalog API**
 | **Databricks Unity Catalog** | ❌ Not supported (blocked by Unity Catalog) | ✅ Fully supported |
 | **Use Case** | Long-term, stable connections with centralized config | Ad-hoc, dynamic, or temporary access |
 
-
 <TOCInline toc={toc}></TOCInline>
 
 ## Requirements {#requirements}
@@ -479,7 +478,7 @@ df.write()
 
 Both the Catalog API and TableProvider API support configuring ClickHouse-specific options (not connector options). These are passed through to ClickHouse when creating tables or executing queries.
 
-#### Using TableProvider API
+#### Using TableProvider API {#using-tableprovider-api-options}
 
 With the TableProvider API, use the `settings.<key>` option format:
 
@@ -534,7 +533,7 @@ df.write()
 </TabItem>
 </Tabs>
 
-#### Using Catalog API
+#### Using Catalog API {#using-catalog-api-options}
 
 With the Catalog API, use the `spark.sql.catalog.<catalog_name>.option.<key>` format in your Spark configuration:
 
