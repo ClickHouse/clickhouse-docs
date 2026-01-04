@@ -1470,13 +1470,13 @@ const sidebars = {
           ],
         },
         'guides/sre/user-management/index',
-            {
+        {
           type: 'category',
           label: 'External authenticators',
-              collapsed: true,
-              collapsible: true,
+          collapsed: true,
+          collapsible: true,
           link: { type: 'doc', id: 'operations/external-authenticators/index' },
-              items: [
+          items: [
             {
               type: 'category',
               label: 'SSL',
