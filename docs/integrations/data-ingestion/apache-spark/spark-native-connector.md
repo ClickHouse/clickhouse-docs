@@ -11,8 +11,11 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
+import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Spark connector
+
+<ClickHouseSupportedBadge/>
 
 This connector leverages ClickHouse-specific optimizations, such as advanced partitioning and predicate pushdown, to
 improve query performance and data handling.
@@ -27,6 +30,22 @@ catalog plugins.
 
 Spark's default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
+
+## Choosing Between Catalog API and TableProvider API {#choosing-between-apis}
+
+The ClickHouse Spark connector supports two access patterns: the **Catalog API** and the **TableProvider API** (format-based access). Understanding the differences helps you choose the right approach for your use case.
+
+### Catalog API vs TableProvider API {#catalog-vs-tableprovider-comparison}
+
+| Feature | Catalog API | TableProvider API |
+|---------|-------------|-------------------|
+| **Configuration** | Centralized via Spark configuration | Per-operation via options |
+| **Table Discovery** | Automatic via catalog | Manual table specification |
+| **DDL Operations** | Full support (CREATE, DROP, ALTER) | Limited (automatic table creation only) |
+| **Spark SQL Integration** | Native (`clickhouse.database.table`) | Requires format specification |
+| **Databricks Unity Catalog** | ❌ Not supported (blocked by Unity Catalog) | ✅ Fully supported |
+| **Use Case** | Long-term, stable connections with centralized config | Ad-hoc, dynamic, or temporary access |
+
 
 <TOCInline toc={toc}></TOCInline>
 
@@ -456,6 +475,89 @@ df.write()
 **Engine Selection**: The default engine is `MergeTree()`, but you can specify any ClickHouse table engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()`, etc.).
 :::
 
+### Configuring ClickHouse Options {#configuring-clickhouse-options}
+
+Both the Catalog API and TableProvider API support configuring ClickHouse-specific options (not connector options). These are passed through to ClickHouse when creating tables or executing queries.
+
+#### Using TableProvider API
+
+With the TableProvider API, use the `settings.<key>` option format:
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .option("order_by", "id") \
+    .option("settings.allow_nullable_key", "1") \
+    .option("settings.index_granularity", "8192") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .option("order_by", "id")
+  .option("settings.allow_nullable_key", "1")
+  .option("settings.index_granularity", "8192")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .option("order_by", "id")
+    .option("settings.allow_nullable_key", "1")
+    .option("settings.index_granularity", "8192")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+#### Using Catalog API
+
+With the Catalog API, use the `spark.sql.catalog.<catalog_name>.option.<key>` format in your Spark configuration:
+
+```text
+spark.sql.catalog.clickhouse.option.allow_nullable_key 1
+spark.sql.catalog.clickhouse.option.index_granularity 8192
+```
+
+Or set them when creating tables via Spark SQL:
+
+```sql
+CREATE TABLE clickhouse.default.my_table (
+  id INT,
+  name STRING
+) USING ClickHouse
+TBLPROPERTIES (
+  engine = 'MergeTree()',
+  order_by = 'id',
+  'settings.allow_nullable_key' = '1',
+  'settings.index_granularity' = '8192'
+)
+```
+
 ### TableProvider Options {#tableprovider-options}
 
 When using the format-based API, the following options are available:
@@ -486,6 +588,7 @@ These options are used when the table doesn't exist and needs to be created:
 | `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
 | `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
 | `cluster`                   | Cluster name for Distributed tables                                         | N/A               | No       |
+| `clickhouse.column.<name>.variant_types` | Comma-separated list of ClickHouse types for Variant columns (e.g., `String, Int64, Bool, JSON`). Type names are case-sensitive. Spaces after commas are optional. | N/A | No |
 
 \* The `order_by` option is required when creating a new table. All specified columns must exist in the schema.  
 \** Automatically set to `1` if ORDER BY contains nullable columns and not explicitly provided.
@@ -499,7 +602,10 @@ These options are used when the table doesn't exist and needs to be created:
 The TableProvider API supports the following Spark write modes:
 
 - **`append`**: Add data to existing table
-- **`overwrite`**: Replace all data in the table (truncates table)
+- **`overwrite`**: Replace all data in the table (truncates table).
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 # Overwrite mode (truncates table first)
@@ -512,110 +618,36 @@ df.write \
     .save()
 ```
 
-## Databricks Integration {#databricks-integration}
+</TabItem>
+<TabItem value="Scala" label="Scala">
 
-The ClickHouse Spark connector works seamlessly with Databricks, including support for **Databricks Unity Catalog** environments. This section covers setup and usage specific to Databricks.
-
-### Installation on Databricks {#databricks-installation}
-
-#### Option 1: Upload JAR via Databricks UI {#databricks-installation-ui}
-
-1. Build or download the runtime JAR:
-   ```bash
-   clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
-   ```
-
-2. Navigate to your Databricks workspace:
-   - Go to **Compute** → Select your cluster
-   - Click the **Libraries** tab
-   - Click **Install New**
-   - Select **Upload** → **JAR**
-   - Upload the runtime JAR file
-   - Click **Install**
-
-3. Restart the cluster to load the library
-
-#### Option 2: Install via Databricks CLI {#databricks-installation-cli}
-
-```bash
-# Upload JAR to DBFS
-databricks fs cp clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar \
-  dbfs:/FileStore/jars/
-
-# Install on cluster
-databricks libraries install \
-  --cluster-id <your-cluster-id> \
-  --jar dbfs:/FileStore/jars/clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
-```
-
-#### Option 3: Maven Coordinates (Recommended) {#databricks-installation-maven}
-
-In your cluster configuration, add the Maven coordinates:
-
-```text
-com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}
-```
-
-:::note
-The Spark 4.0 runtime JAR includes shaded Jackson dependencies to prevent conflicts with Databricks Hudi's Jackson version. This is built into the standard JAR, so **no special classifier, variant, or separate Databricks jar is needed** - just use the standard `clickhouse-spark-runtime-4.0_2.13` artifact.
-:::
-
-### Databricks Notebook Usage {#databricks-notebook-usage}
-
-#### Using Format-based API (Recommended for Databricks) {#databricks-format-api}
-
-The format-based API (TableProvider) is the **recommended approach** for Databricks, especially with Unity Catalog. It provides better compatibility and avoids catalog conflicts:
-
-<Tabs groupId="databricks_usage">
-<TabItem value="Read" label="Reading Data" default>
-
-```python
-# Read from ClickHouse using TableProvider API
-df = spark.read \
-    .format("clickhouse") \
-    .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
-    .option("protocol", "https") \
-    .option("http_port", "8443") \
-    .option("database", "default") \
-    .option("table", "events") \
-    .option("user", "default") \
-    .option("password", dbutils.secrets.get(scope="clickhouse", key="password")) \
-    .option("ssl", "true") \
-    .load()
-
-# Schema is automatically inferred
-df.display()
+```scala
+// Overwrite mode (truncates table first)
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .mode("overwrite")
+  .save()
 ```
 
 </TabItem>
-<TabItem value="Write" label="Writing Data">
+<TabItem value="Java" label="Java">
 
-```python
-# Write to ClickHouse - table will be created automatically if it doesn't exist
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-clickhouse-cloud-host.clickhouse.cloud") \
-    .option("protocol", "https") \
-    .option("http_port", "8443") \
-    .option("database", "default") \
-    .option("table", "events_copy") \
-    .option("user", "default") \
-    .option("password", dbutils.secrets.get(scope="clickhouse", key="password")) \
-    .option("ssl", "true") \
-    .option("order_by", "id") \  # Required: specify ORDER BY when creating a new table
-    .option("settings.allow_nullable_key", "1") \  # Required for ClickHouse Cloud if ORDER BY has nullable columns
-    .mode("append") \
-    .save()
+```java
+// Overwrite mode (truncates table first)
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .mode("overwrite")
+    .save();
 ```
 
 </TabItem>
 </Tabs>
-
-### Databricks-Specific Considerations {#databricks-considerations}
-
-**Important**: In Databricks environments, only the TableProvider API (format-based access) is supported. The Catalog API is not available in Databricks.
-
-Use the format-based API as shown in the [Format-based Read Example](#format-based-read) and [Format-based Write Example](#format-based-write) sections above.
 
 ## ClickHouse Cloud settings {#clickhouse-cloud-settings}
 
@@ -906,6 +938,10 @@ VariantType support is available in Spark 4.0+ and requires ClickHouse 25.3+ wit
 
 The connector supports Spark's `VariantType` for working with semi-structured data. VariantType maps to ClickHouse's `JSON` and `Variant` types, allowing you to store and query flexible schema data efficiently.
 
+:::note
+This section focuses specifically on VariantType mapping and usage. For a complete overview of all supported data types, see the [Supported data types](#supported-data-types) section.
+:::
+
 ### ClickHouse Type Mapping {#clickhouse-type-mapping}
 
 | ClickHouse Type | Spark Type | Description |
@@ -917,7 +953,7 @@ The connector supports Spark's `VariantType` for working with semi-structured da
 
 When reading from ClickHouse, `JSON` and `Variant` columns are automatically mapped to Spark's `VariantType`:
 
-<Tabs>
+<Tabs groupId="spark_apis">
 <TabItem value="Scala" label="Scala" default>
 
 ```scala
@@ -954,13 +990,31 @@ df.select(
 ```
 
 </TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Read JSON column as VariantType
+Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
+
+// Access variant data
+df.show();
+
+// Convert variant to JSON string for inspection
+import static org.apache.spark.sql.functions.*;
+df.select(
+    col("id"),
+    to_json(col("data")).as("data_json")
+).show();
+```
+
+</TabItem>
 </Tabs>
 
 ### Writing VariantType Data {#writing-varianttype-data}
 
 You can write VariantType data to ClickHouse using either JSON or Variant column types:
 
-<Tabs>
+<Tabs groupId="spark_apis">
 <TabItem value="Scala" label="Scala" default>
 
 ```scala
@@ -1034,7 +1088,75 @@ spark.sql("""
 ```
 
 </TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+import static org.apache.spark.sql.functions.*;
+
+// Create DataFrame with JSON data
+List<Row> jsonData = Arrays.asList(
+    RowFactory.create(1, "{\"name\": \"Alice\", \"age\": 30}"),
+    RowFactory.create(2, "{\"name\": \"Bob\", \"age\": 25}"),
+    RowFactory.create(3, "{\"name\": \"Charlie\", \"city\": \"NYC\"}")
+);
+StructType schema = new StructType(new StructField[]{
+    DataTypes.createStructField("id", DataTypes.IntegerType, false),
+    DataTypes.createStructField("json_string", DataTypes.StringType, false)
+});
+Dataset<Row> jsonDF = spark.createDataFrame(jsonData, schema);
+
+// Parse JSON strings to VariantType
+Dataset<Row> variantDF = jsonDF.select(
+    col("id"),
+    parse_json(col("json_string")).as("data")
+);
+
+// Write to ClickHouse with JSON type (JSON objects only)
+variantDF.writeTo("clickhouse.default.user_data").create();
+
+// Or specify Variant with multiple types
+spark.sql("CREATE TABLE clickhouse.default.mixed_data (" +
+    "id INT, " +
+    "data VARIANT" +
+    ") USING clickhouse " +
+    "TBLPROPERTIES (" +
+    "'clickhouse.column.data.variant_types' = 'String, Int64, Bool, JSON', " +
+    "'engine' = 'MergeTree()', " +
+    "'order_by' = 'id'" +
+    ")");
+```
+
+</TabItem>
 </Tabs>
+
+### Creating VariantType Tables with Spark SQL {#creating-varianttype-tables-spark-sql}
+
+You can create VariantType tables using Spark SQL DDL:
+
+```sql
+-- Create table with JSON type (default)
+CREATE TABLE clickhouse.default.json_table (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
+
+```sql
+-- Create table with Variant type supporting multiple types
+CREATE TABLE clickhouse.default.flexible_data (
+  id INT,
+  data VARIANT
+) USING clickhouse
+TBLPROPERTIES (
+  'clickhouse.column.data.variant_types' = 'String, Int64, Float64, Bool, Array(String), JSON',
+  'engine' = 'MergeTree()',
+  'order_by' = 'id'
+)
+```
 
 ### Configuring Variant Types {#configuring-variant-types}
 
@@ -1055,7 +1177,11 @@ TBLPROPERTIES (
 )
 ```
 
-This creates: `CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id`
+This creates the following ClickHouse query:
+
+```sql
+CREATE TABLE json_table (id Int32, data JSON) ENGINE = MergeTree() ORDER BY id
+```
 
 #### Variant Type with Multiple Types {#variant-type-multiple-types}
 
@@ -1073,7 +1199,14 @@ TBLPROPERTIES (
 )
 ```
 
-This creates: `CREATE TABLE flexible_data (id Int32, data Variant(String, Int64, Float64, Bool, Array(String), JSON)) ENGINE = MergeTree() ORDER BY id`
+This creates the following ClickHouse query:
+
+```sql
+CREATE TABLE flexible_data (
+  id Int32, 
+  data Variant(String, Int64, Float64, Bool, Array(String), JSON)
+) ENGINE = MergeTree() ORDER BY id
+```
 
 ### Supported Variant Types {#supported-variant-types}
 
@@ -1087,6 +1220,9 @@ The following ClickHouse types can be used in `Variant()`:
 
 By default, JSON and Variant columns are read as `VariantType`. You can override this behavior to read them as strings:
 
+<Tabs groupId="spark_apis">
+<TabItem value="Scala" label="Scala" default>
+
 ```scala
 // Read JSON/Variant as strings instead of VariantType
 spark.conf.set("spark.clickhouse.read.jsonAs", "string")
@@ -1095,6 +1231,31 @@ val df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
 // data column will be StringType containing JSON strings
 ```
 
+</TabItem>
+<TabItem value="Python" label="Python">
+
+```python
+# Read JSON/Variant as strings instead of VariantType
+spark.conf.set("spark.clickhouse.read.jsonAs", "string")
+
+df = spark.sql("SELECT id, data FROM clickhouse.default.json_table")
+# data column will be StringType containing JSON strings
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Read JSON/Variant as strings instead of VariantType
+spark.conf().set("spark.clickhouse.read.jsonAs", "string");
+
+Dataset<Row> df = spark.sql("SELECT id, data FROM clickhouse.default.json_table");
+// data column will be StringType containing JSON strings
+```
+
+</TabItem>
+</Tabs>
+
 ### Write Format Support {#write-format-support}
 
 VariantType write support varies by format:
@@ -1102,7 +1263,7 @@ VariantType write support varies by format:
 | Format | Support | Notes |
 |--------|---------|-------|
 | JSON | ✅ Full | Supports both `JSON` and `Variant` types. Recommended for VariantType data |
-| Arrow | ⚠️ Partial | Supports writing to ClickHouse `JSON` type. Does not support ClickHouse `Variant` type. |
+| Arrow | ⚠️ Partial | Supports writing to ClickHouse `JSON` type. Does not support ClickHouse `Variant` type. Full support is pending resolution of https://github.com/ClickHouse/ClickHouse/issues/92752 |
 
 Configure the write format:
 
@@ -1124,7 +1285,7 @@ If you need to write to a ClickHouse `Variant` type, use JSON format. Arrow form
 
 ### Example: Complete Workflow {#varianttype-example-workflow}
 
-<Tabs>
+<Tabs groupId="spark_apis">
 <TabItem value="Scala" label="Scala" default>
 
 ```scala
@@ -1223,6 +1384,58 @@ result = spark.sql("""
 """)
 
 result.show(truncate=False)
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+import static org.apache.spark.sql.functions.*;
+
+// Enable experimental JSON type in ClickHouse
+spark.sql("SET allow_experimental_json_type = 1");
+
+// Create table with Variant column
+spark.sql("CREATE TABLE clickhouse.default.events (" +
+    "event_id BIGINT, " +
+    "event_time TIMESTAMP, " +
+    "event_data VARIANT" +
+    ") USING clickhouse " +
+    "TBLPROPERTIES (" +
+    "'clickhouse.column.event_data.variant_types' = 'String, Int64, Bool, JSON', " +
+    "'engine' = 'MergeTree()', " +
+    "'order_by' = 'event_time'" +
+    ")");
+
+// Prepare data with mixed types
+List<Row> events = Arrays.asList(
+    RowFactory.create(1L, "2024-01-01 10:00:00", "{\"action\": \"login\", \"user_id\": 123}"),
+    RowFactory.create(2L, "2024-01-01 10:05:00", "{\"action\": \"purchase\", \"amount\": 99.99}"),
+    RowFactory.create(3L, "2024-01-01 10:10:00", "{\"action\": \"logout\", \"duration\": 600}")
+);
+StructType eventSchema = new StructType(new StructField[]{
+    DataTypes.createStructField("event_id", DataTypes.LongType, false),
+    DataTypes.createStructField("event_time", DataTypes.StringType, false),
+    DataTypes.createStructField("json_data", DataTypes.StringType, false)
+});
+Dataset<Row> eventsDF = spark.createDataFrame(events, eventSchema);
+
+// Convert to VariantType and write
+Dataset<Row> variantEvents = eventsDF.select(
+    col("event_id"),
+    to_timestamp(col("event_time")).as("event_time"),
+    parse_json(col("json_data")).as("event_data")
+);
+
+variantEvents.writeTo("clickhouse.default.events").append();
+
+// Read and query
+Dataset<Row> result = spark.sql("SELECT event_id, event_time, event_data " +
+    "FROM clickhouse.default.events " +
+    "WHERE event_time >= '2024-01-01' " +
+    "ORDER BY event_time");
+
+result.show(false);
 ```
 
 </TabItem>

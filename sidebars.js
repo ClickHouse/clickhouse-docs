@@ -486,14 +486,6 @@ const sidebars = {
         },
       ],
     },
-    {
-      type: 'category',
-      label: 'Data Lakes',
-      collapsed: false,
-      collapsible: false,
-      link: { type: 'doc', id: 'sql-reference/datalakes' },
-      items: [],
-    },
   ],
 
   integrations: [
@@ -966,6 +958,7 @@ const sidebars = {
           items: [
             'integrations/data-ingestion/apache-spark/index',
             'integrations/data-ingestion/apache-spark/spark-native-connector',
+            'integrations/data-ingestion/apache-spark/databricks',
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
