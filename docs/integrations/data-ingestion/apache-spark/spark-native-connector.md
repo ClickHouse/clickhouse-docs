@@ -473,11 +473,108 @@ df.write()
 **Engine Selection**: The default engine is `MergeTree()`, but you can specify any ClickHouse table engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()`, etc.).
 :::
 
-### Configuring ClickHouse Options {#configuring-clickhouse-options}
+### TableProvider Connection Options {#tableprovider-connection-options}
+
+When using the format-based API, the following connection options are available:
+
+#### Connection Options {#connection-options}
+
+| Option       | Description                                      | Default Value  | Required |
+|--------------|--------------------------------------------------|----------------|----------|
+| `host`       | ClickHouse server hostname                       | `localhost`    | Yes      |
+| `protocol`   | Connection protocol (`http` or `https`)          | `http`         | No       |
+| `http_port`  | HTTP/HTTPS port                                  | `8123`         | No       |
+| `database`   | Database name                                    | `default`      | Yes      |
+| `table`      | Table name                                       | N/A            | Yes      |
+| `user`       | Username for authentication                      | `default`      | No       |
+| `password`   | Password for authentication                      | (empty string) | No       |
+| `ssl`        | Enable SSL connection                            | `false`        | No       |
+| `ssl_mode`   | SSL mode (`NONE`, `STRICT`, etc.)                | `STRICT`       | No       |
+| `timezone`   | Timezone for date/time operations                | `server`       | No       |
+
+#### Table Creation Options {#table-creation-options}
+
+These options are used when the table doesn't exist and needs to be created:
+
+| Option                      | Description                                                                 | Default Value     | Required |
+|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
+| `order_by`                  | Column(s) to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
+| `engine`                    | ClickHouse table engine (e.g., `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, etc.) | `MergeTree()`     | No       |
+| `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
+| `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
+| `cluster`                   | Cluster name for Distributed tables                                         | N/A               | No       |
+| `clickhouse.column.<name>.variant_types` | Comma-separated list of ClickHouse types for Variant columns (e.g., `String, Int64, Bool, JSON`). Type names are case-sensitive. Spaces after commas are optional. | N/A | No |
+
+\* The `order_by` option is required when creating a new table. All specified columns must exist in the schema.  
+\** Automatically set to `1` if ORDER BY contains nullable columns and not explicitly provided.
+
+:::tip
+**Best Practice**: For ClickHouse Cloud, explicitly set `settings.allow_nullable_key=1` if your ORDER BY columns might be nullable, as ClickHouse Cloud requires this setting.
+:::
+
+#### Writing Modes {#writing-modes}
+
+The Spark connector (both TableProvider API and Catalog API) supports the following Spark write modes:
+
+- **`append`**: Add data to existing table
+- **`overwrite`**: Replace all data in the table (truncates table)
+
+:::important
+**Partition Overwrite Not Supported**: The connector does not currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
+:::
+
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
+
+```python
+# Overwrite mode (truncates table first)
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .mode("overwrite") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+// Overwrite mode (truncates table first)
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .mode("overwrite")
+  .save()
+```
+
+</TabItem>
+<TabItem value="Java" label="Java">
+
+```java
+// Overwrite mode (truncates table first)
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .mode("overwrite")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+## Configuring ClickHouse Options {#configuring-clickhouse-options}
 
 Both the Catalog API and TableProvider API support configuring ClickHouse-specific options (not connector options). These are passed through to ClickHouse when creating tables or executing queries.
 
-#### Using TableProvider API {#using-tableprovider-api-options}
+ClickHouse options allow you to configure ClickHouse-specific settings like `allow_nullable_key`, `index_granularity`, and other table-level or query-level settings. These are different from connector options (like `host`, `database`, `table`) which control how the connector connects to ClickHouse.
+
+### Using TableProvider API {#using-tableprovider-api-options}
 
 With the TableProvider API, use the `settings.<key>` option format:
 
@@ -532,7 +629,7 @@ df.write()
 </TabItem>
 </Tabs>
 
-#### Using Catalog API {#using-catalog-api-options}
+### Using Catalog API {#using-catalog-api-options}
 
 With the Catalog API, use the `spark.sql.catalog.<catalog_name>.option.<key>` format in your Spark configuration:
 
@@ -555,97 +652,6 @@ TBLPROPERTIES (
   'settings.index_granularity' = '8192'
 )
 ```
-
-### TableProvider Options {#tableprovider-options}
-
-When using the format-based API, the following options are available:
-
-#### Connection Options {#connection-options}
-
-| Option       | Description                                      | Default Value  | Required |
-|--------------|--------------------------------------------------|----------------|----------|
-| `host`       | ClickHouse server hostname                       | `localhost`    | Yes      |
-| `protocol`   | Connection protocol (`http` or `https`)          | `http`         | No       |
-| `http_port`  | HTTP/HTTPS port                                  | `8123`         | No       |
-| `database`   | Database name                                    | `default`      | Yes      |
-| `table`      | Table name                                       | N/A            | Yes      |
-| `user`       | Username for authentication                      | `default`      | No       |
-| `password`   | Password for authentication                      | (empty string) | No       |
-| `ssl`        | Enable SSL connection                            | `false`        | No       |
-| `ssl_mode`   | SSL mode (`NONE`, `STRICT`, etc.)                | `STRICT`       | No       |
-| `timezone`   | Timezone for date/time operations                | `server`       | No       |
-
-#### Table Creation Options {#table-creation-options}
-
-These options are used when the table doesn't exist and needs to be created:
-
-| Option                      | Description                                                                 | Default Value     | Required |
-|-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | Column(s) to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
-| `engine`                    | ClickHouse table engine (e.g., `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, etc.) | `MergeTree()`     | No       |
-| `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
-| `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
-| `cluster`                   | Cluster name for Distributed tables                                         | N/A               | No       |
-| `clickhouse.column.<name>.variant_types` | Comma-separated list of ClickHouse types for Variant columns (e.g., `String, Int64, Bool, JSON`). Type names are case-sensitive. Spaces after commas are optional. | N/A | No |
-
-\* The `order_by` option is required when creating a new table. All specified columns must exist in the schema.  
-\** Automatically set to `1` if ORDER BY contains nullable columns and not explicitly provided.
-
-:::tip
-**Best Practice**: For ClickHouse Cloud, explicitly set `settings.allow_nullable_key=1` if your ORDER BY columns might be nullable, as ClickHouse Cloud requires this setting.
-:::
-
-#### Writing Modes {#writing-modes}
-
-The TableProvider API supports the following Spark write modes:
-
-- **`append`**: Add data to existing table
-- **`overwrite`**: Replace all data in the table (truncates table).
-
-<Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
-
-```python
-# Overwrite mode (truncates table first)
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "my_table") \
-    .mode("overwrite") \
-    .save()
-```
-
-</TabItem>
-<TabItem value="Scala" label="Scala">
-
-```scala
-// Overwrite mode (truncates table first)
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "my_table")
-  .mode("overwrite")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// Overwrite mode (truncates table first)
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "my_table")
-    .mode("overwrite")
-    .save();
-```
-
-</TabItem>
-</Tabs>
 
 ## ClickHouse Cloud settings {#clickhouse-cloud-settings}
 
