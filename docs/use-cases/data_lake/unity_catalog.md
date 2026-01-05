@@ -69,7 +69,7 @@ Now that the connection is in place, you can start querying via the Unity catalo
 ```sql
 USE unity;
 
-SHOW TABLES;
+SHOW TABLES IN UNITY;
 
 ┌─name───────────────────────────────────────────────┐
 │ clickbench.delta_hits                              │
@@ -109,7 +109,7 @@ SHOW TABLES;
 If you're using the Iceberg client, only the Delta tables with Uniform-enabled will be shown:
 
 ```sql
-SHOW TABLES
+SHOW TABLES IN UNITY
 
 ┌─name───────────────┐
 │ uniform.delta_hits │
