@@ -31,7 +31,7 @@ CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
-Чтобы выбрать значения для `key2`:
+Чтобы выбрать значения по ключу `key2`:
 
 ```sql
 SELECT m['key2'] FROM tab;
@@ -48,7 +48,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 Если запрошенный ключ `k` отсутствует в Map, `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов.
-Чтобы проверить, существует ли ключ в Map, можно использовать функцию [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains).
+Чтобы проверить, существует ли ключ в Map, можно использовать функцию [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey).
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
