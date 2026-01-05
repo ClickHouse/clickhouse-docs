@@ -771,6 +771,10 @@ df.show()
 
 ## Write data {#write-data}
 
+:::important
+**Partition Overwrite Not Supported**: The Catalog API does not currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
+:::
+
 <Tabs groupId="spark_apis">
 <TabItem value="Java" label="Java" default>
 
