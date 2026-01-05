@@ -43,7 +43,6 @@ The ClickHouse Spark connector supports two access patterns: the **Catalog API**
 | **Table Discovery** | Automatic via catalog | Manual table specification |
 | **DDL Operations** | Full support (CREATE, DROP, ALTER) | Limited (automatic table creation only) |
 | **Spark SQL Integration** | Native (`clickhouse.database.table`) | Requires format specification |
-| **Databricks Unity Catalog** | ❌ Not supported (blocked by Unity Catalog) | ✅ Fully supported |
 | **Use Case** | Long-term, stable connections with centralized config | Ad-hoc, dynamic, or temporary access |
 
 <TOCInline toc={toc}></TOCInline>
@@ -1281,6 +1280,7 @@ If you need to write to a ClickHouse `Variant` type, use JSON format. Arrow form
 3. **Enable experimental features**: Ensure ClickHouse has `allow_experimental_json_type = 1` enabled
 4. **Use JSON format for writes**: JSON format is recommended for VariantType data for better compatibility
 5. **Consider query patterns**: JSON/Variant types support ClickHouse's JSON path queries for efficient filtering
+6. **Column hints for performance**: When using JSON fields in ClickHouse, adding column hints improves query performance. Currently, adding column hints via Spark is not supported. See [GitHub issue #497](https://github.com/ClickHouse/spark-clickhouse-connector/issues/497) for tracking this feature.
 
 ### Example: Complete Workflow {#varianttype-example-workflow}
 

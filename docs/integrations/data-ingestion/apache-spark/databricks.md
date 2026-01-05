@@ -21,7 +21,14 @@ The ClickHouse Spark connector works seamlessly with Databricks. This guide cove
 
 ## API Selection for Databricks {#api-selection}
 
-In Databricks, you **must** use the **TableProvider API** (format-based access). Unity Catalog blocks any attempt to register Spark catalogs, so the Catalog API is not available in Databricks environments.
+By default, Databricks uses Unity Catalog, which blocks Spark catalog registration. In this case, you **must** use the **TableProvider API** (format-based access).
+
+However, if you disable Unity Catalog by creating a cluster with **No isolation shared** access mode, you can use the **Catalog API** instead. The Catalog API provides centralized configuration and native Spark SQL integration.
+
+| Unity Catalog Status | Recommended API | Notes |
+|---------------------|------------------|-------|
+| **Enabled** (default) | TableProvider API (format-based) | Unity Catalog blocks Spark catalog registration |
+| **Disabled** (No isolation shared) | Catalog API | Requires cluster with "No isolation shared" access mode |
 
 ## Installation on Databricks {#installation}
 
@@ -32,17 +39,23 @@ In Databricks, you **must** use the **TableProvider API** (format-based access).
    clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}-{{ stable_version }}.jar
    ```
 
-2. Navigate to your Databricks workspace:
+2. Upload the JAR to your Databricks workspace:
+   - Go to **Workspace** → Navigate to your desired folder
+   - Click **Upload** → Select the JAR file
+   - The JAR will be stored in your workspace
+
+3. Install the library on your cluster:
    - Go to **Compute** → Select your cluster
    - Click the **Libraries** tab
    - Click **Install New**
-   - Select **Upload** → **JAR**
-   - Upload the runtime JAR file
+   - Select **DBFS** or **Workspace** → Navigate to the uploaded JAR file
    - Click **Install**
 
-3. Restart the cluster to load the library
+<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-libraries-tab.png')} alt="Databricks Libraries tab" />
 
-<!-- TODO: Add screenshot of Databricks Libraries UI -->
+<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-install-from-volume.png')} alt="Installing library from workspace volume" />
+
+4. Restart the cluster to load the library
 
 ### Option 2: Install via Databricks CLI {#installation-cli}
 
@@ -59,19 +72,27 @@ databricks libraries install \
 
 ### Option 3: Maven Coordinates (Recommended) {#installation-maven}
 
-In your cluster configuration, add the Maven coordinates:
+1. Navigate to your Databricks workspace:
+   - Go to **Compute** → Select your cluster
+   - Click the **Libraries** tab
+   - Click **Install New**
+   - Select **Maven** tab
+
+2. Add the Maven coordinates:
 
 ```text
 com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scala_binary_version }}:{{ stable_version }}
 ```
 
-<!-- TODO: Add screenshot of Databricks cluster Maven libraries configuration -->
+<Image img={require('@site/static/images/integrations/data-ingestion/apache-spark/databricks/databricks-maven-tab.png')} alt="Databricks Maven libraries configuration" />
+
+3. Click **Install** and restart the cluster to load the library
 
 ## Using TableProvider API {#tableprovider-api}
 
-In Databricks, you **must** use the TableProvider API (format-based access). Unity Catalog blocks any attempt to register Spark catalogs.
+When Unity Catalog is enabled (default), you **must** use the TableProvider API (format-based access) because Unity Catalog blocks Spark catalog registration. If you've disabled Unity Catalog by using a cluster with "No isolation shared" access mode, you can use the [Catalog API](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) instead.
 
-### Reading Data {#reading-data-unity}
+### Reading Data {#reading-data-table-provider}
 
 <Tabs groupId="databricks_usage">
 <TabItem value="Python" label="Python" default>
@@ -187,19 +208,6 @@ When connecting to ClickHouse Cloud from Databricks:
 
 1. Use **HTTPS protocol** (`protocol: https`, `http_port: 8443`)
 2. Enable **SSL** (`ssl: true`)
-
-### Performance Optimization {#performance}
-
-- Set appropriate **batch sizes** via `spark.clickhouse.write.batchSize`
-- Consider using **JSON format** for VariantType data
-- Enable **predicate pushdown** (enabled by default)
-
-### Runtime Compatibility {#runtime-compatibility}
-
-- **Spark 3.3, 3.4, 3.5, 4.0**: Fully supported
-- **Scala 2.12, 2.13**: Supported (Spark 4.0 requires Scala 2.13)
-- **Python 3**: Supported
-- **Java 8, 17**: Supported (Java 17+ required for Spark 4.0)
 
 ## Examples {#examples}
 
