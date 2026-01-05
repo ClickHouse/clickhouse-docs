@@ -11,6 +11,7 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
+
 # Supabase ソースセットアップガイド {#supabase-source-setup-guide}
 
 本ガイドでは、ClickPipes で利用するための Supabase の Postgres データベースのセットアップ方法について説明します。
@@ -21,38 +22,49 @@ ClickPipes は、シームレスなレプリケーションのために、Supaba
 
 :::
 
-## 権限とレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
+## 権限およびレプリケーションスロットを持つユーザーの作成 {#creating-a-user-with-permissions-and-replication-slot}
 
-CDC に適した必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
-レプリケーションに使用するパブリケーションも作成します。
+管理者ユーザーとして Supabase インスタンスに接続し、次のコマンドを実行します。
 
-そのために、Supabase プロジェクトの **SQL Editor** を開きます。
-ここで、次の SQL コマンドを実行します。
+1. ClickPipes 専用のユーザーを作成します。
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 前の手順で作成したユーザーに対して、スキーマレベルの読み取り専用アクセス権を付与します。次の例は `public` スキーマに対する権限を示しています。レプリケートしたいテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください。
+   
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
--- Create a publication. We will use this when creating the mirror
-  CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-```
+3. ユーザーにレプリケーション権限を付与します。
 
-<Image img={supabase_commands} alt="ユーザーとパブリケーションのコマンド" size="large" border />
+   ```sql
+   ALTER ROLE clickpipes_user REPLICATION;
+   ```
 
-**Run** をクリックして、パブリケーションとユーザーを準備します。
+4. レプリケートしたいテーブルを含む [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) を作成します。パフォーマンスへのオーバーヘッドを避けるため、publication には必要なテーブルのみを含めることを強く推奨します。
 
-:::note
+   :::warning
+   publication に含めるすべてのテーブルは、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープ設定の指針については [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
 
-`clickpipes_user` と `clickpipes_password` は、任意のユーザー名とパスワードに置き換えてください。
+   - 特定のテーブルに対する publication を作成する場合:
 
-また、ClickPipes でミラーを作成する際には、必ず同じパブリケーション名を使用してください。
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
 
-:::
+   - 特定のスキーマ内のすべてのテーブルに対する publication を作成する場合:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication には、指定したテーブルから生成される変更イベントの一連の集合が含まれ、後でレプリケーションストリームを取り込む際に使用されます。
 
 ## `max_slot_wal_keep_size` を増やす {#increase-max_slot_wal_keep_size}
 
@@ -87,6 +99,7 @@ ClickPipes の Postgres ユーザーは RLS ポリシーで制限してはいけ
 ```sql
 ALTER USER clickpipes_user BYPASSRLS;
 ```
+
 
 ## 次のステップ {#whats-next}
 
