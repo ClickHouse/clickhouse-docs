@@ -143,6 +143,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time) | `auto` |
 | [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) | `0` |
 | [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning) | `0` |
+| [allow_experimental_object_storage_queue_hive_partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning) | `0` |
 | [query_plan_optimize_join_order_algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm) | `greedy` |
 | [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
 | [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
