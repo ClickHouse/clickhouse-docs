@@ -28,7 +28,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 SET enable_full_text_index = true;
 ```
 
-Текстовый индекс можно определить для столбца следующих типов: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues)) с помощью следующего синтаксиса:
+Текстовый индекс можно определить для столбца следующих типов: [String](/sql-reference/data-types/string.md), [FixedString](/sql-reference/data-types/fixedstring.md), [Array(String)](/sql-reference/data-types/array.md), [Array(FixedString)](/sql-reference/data-types/array.md) и [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)) с помощью следующего синтаксиса:
 
 ```sql
 CREATE TABLE tab
@@ -323,7 +323,7 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 
 #### `mapContains` {#functions-example-mapcontains}
 
-Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains) (псевдоним `mapContainsKey`) сопоставляет отдельный токен с ключами map.
+Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) (псевдоним `mapContainsKey`) сопоставляет отдельный токен с ключами map.
 
 Пример:
 
@@ -331,6 +331,18 @@ SELECT count() FROM tab WHERE has(array, 'clickhouse');
 SELECT count() FROM tab WHERE mapContainsKey(map, 'clickhouse');
 -- OR
 SELECT count() FROM tab WHERE mapContains(map, 'clickhouse');
+```
+
+
+#### `mapContainsKeyLike` и `mapContainsValueLike` {#functions-example-mapcontainslike}
+
+Функции [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike) и [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike) сопоставляют заданный шаблон со всеми ключами или, соответственно, значениями отображения.
+
+Пример:
+
+```sql
+SELECT count() FROM tab WHERE mapContainsKeyLike(map, '% clickhouse %');
+SELECT count() FROM tab WHERE mapContainsValueLike(map, '% clickhouse %');
 ```
 
 
@@ -414,14 +426,14 @@ SELECT count() FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- slo
 По мере увеличения объёма логов такие запросы начинают работать медленно.
 
 Решение — создать текстовый индекс для ключей и значений [Map](/sql-reference/data-types/map.md).
-Используйте [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapkeys), чтобы создать текстовый индекс, когда нужно находить логи по именам полей или типам атрибутов:
+Используйте [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys), чтобы создать текстовый индекс, когда нужно находить логи по именам полей или типам атрибутов:
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_keys_idx mapKeys(attributes) TYPE text(tokenizer = array);
 ALTER TABLE posts MATERIALIZE INDEX attributes_keys_idx;
 ```
 
-Используйте [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapvalues), чтобы создать текстовый индекс, когда вам нужно выполнять поиск по собственному содержимому атрибутов:
+Используйте [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues), чтобы создать текстовый индекс, когда нужно выполнять поиск по самим значениям атрибутов:
 
 ```sql
 ALTER TABLE logs ADD INDEX attributes_vals_idx mapValues(attributes) TYPE text(tokenizer = array);
@@ -436,6 +448,9 @@ SELECT * FROM logs WHERE mapContainsKey(attributes, 'rate_limit'); -- fast
 
 -- Finds all logs from a specific IP:
 SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
+
+-- Finds all logs where any attribute includes an error:
+SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
@@ -526,6 +541,7 @@ Positions:
 В настоящее время существуют кэши для десериализованных блоков словаря, заголовков и списков вхождений (posting lists) текстового индекса, позволяющие сократить количество операций ввода-вывода (I/O).
 Эти кэши включаются с помощью настроек [use_text_index_dictionary_cache](/operations/settings/settings#use_text_index_dictionary_cache), [use_text_index_header_cache](/operations/settings/settings#use_text_index_header_cache) и [use_text_index_postings_cache](/operations/settings/settings#use_text_index_postings_cache).
 По умолчанию все кэши отключены.
+Для сброса кэшей используйте команду [SYSTEM DROP TEXT INDEX CACHES](../../../sql-reference/statements/system#drop-text-index-caches).
 
 Для их настройки воспользуйтесь следующими параметрами сервера.
 

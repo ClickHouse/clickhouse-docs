@@ -483,6 +483,16 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 启用自然语言处理相关的实验性函数。
 
+## allow_experimental_object_storage_queue_hive_partitioning {#allow_experimental_object_storage_queue_hive_partitioning} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+允许在 S3Queue/AzureQueue 引擎中使用 Hive 分区
+
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
 **别名**: `enable_parallel_replicas`
@@ -6458,16 +6468,40 @@ SELECT multiMatchAny('abcd', ['ab','bc','c','d']) SETTINGS max_hyperscan_regexp_
 
 ## max_insert_block_size {#max_insert_block_size} 
 
+**别名**: `max_insert_block_size_rows`
+
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048449" />
 
-要插入到表中的数据所形成的块大小（按行数计）。
+插入到表中的数据块所能包含的最大行数。
 
-此设置仅适用于由服务器负责组装数据块的情况。
-例如，通过 HTTP 接口执行 INSERT 时，服务器会解析数据格式，并根据指定的大小组装数据块。
-但在使用 clickhouse-client 时，客户端会自行解析数据，此时服务器端的 `max_insert_block_size` 设置不会影响插入块的大小。
-在使用 INSERT SELECT 时，该设置同样无效，因为数据是以执行 SELECT 后已经形成的那些数据块的形式进行插入的。
+此设置控制在解析格式时的数据块生成。当服务器从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire 协议）解析基于行的输入格式（CSV、TSV、JSONEachRow 等）或 Values 格式时，会使用该设置来决定何时输出一个数据块。  
+注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自身负责解析数据，此设置应用在客户端一侧。
 
-默认值略大于 `max_block_size`。原因在于，某些表引擎（`*MergeTree`）会为每个插入块在磁盘上形成一个数据分片（part），而这是一个相当大的实体。同样地，`*MergeTree` 表在插入过程中会对数据进行排序，较大的块大小则允许在内存（RAM）中对更多数据进行排序。
+在满足以下任一条件时会输出一个数据块：
+
+- 最小阈值（AND）：同时达到 min_insert_block_size_rows 和 min_insert_block_size_bytes
+- 最大阈值（OR）：达到 max_insert_block_size 或 max_insert_block_size_bytes 之一
+
+默认值略大于 max_block_size。原因在于，某些表引擎（`*MergeTree`）会为每个插入块在磁盘上形成一个数据分片（part），而这是一个相当大的实体。同样地，`*MergeTree` 表在插入过程中会对数据进行排序，较大的块大小则允许在内存（RAM）中对更多数据进行排序。
+
+可能的值：
+
+- 正整数。
+
+## max_insert_block_size_bytes {#max_insert_block_size_bytes} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "新的设置，允许在使用 Row Input Format 解析数据时按字节控制数据块的大小。"}]}]}/>
+
+插入到表中的数据块的最大大小（以字节为单位）。
+
+此设置与 max_insert_block_size_rows 配合使用，并在相同上下文中控制数据块的生成。有关这些设置在何时以及如何应用的详细信息，请参阅 max_insert_block_size_rows。
+
+可能的取值：
+
+- 正整数。
+- 0 — 此设置不参与数据块的生成。
 
 ## max_insert_delayed_streams_for_parallel_write {#max_insert_delayed_streams_for_parallel_write} 
 
@@ -7552,12 +7586,14 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的数
 
 <SettingsInfoBlock type="UInt64" default_value="268402944" />
 
-设置通过 `INSERT` 查询插入到表中的单个数据块所需的最小字节数。更小的数据块会被合并成更大的块。
+设置插入到表中的数据块的最小大小（以字节为单位）。
+
+此设置与 min_insert_block_size_rows 一起使用，在相同的上下文中（格式解析和 INSERT 操作）控制数据块的生成。有关这些设置在何时以及如何应用的详细信息，请参阅 min_insert_block_size_rows。
 
 可能的取值：
 
 - 正整数。
-- 0 — 不进行合并。
+- 0 — 此设置在数据块生成中不起作用。
 
 ## min_insert_block_size_bytes_for_materialized_views {#min_insert_block_size_bytes_for_materialized_views} 
 
@@ -7578,12 +7614,25 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的数
 
 <SettingsInfoBlock type="UInt64" default_value="1048449" />
 
-设置通过 `INSERT` 查询插入到表中的数据块所能包含的最小行数。更小的数据块会被合并成更大的块。
+插入到表中的数据在形成块时的最小块大小（以行数计）。
+
+该设置在两个场景下控制块的形成：
+
+1. 格式解析：当服务端从任意接口（HTTP、带内联数据的 clickhouse-client、gRPC、PostgreSQL wire protocol 等）解析基于行的输入格式（CSV、TSV、JSONEachRow 等）时，会使用该设置来决定何时生成一个块。  
+   注意：当使用 clickhouse-client 或 clickhouse-local 从文件读取时，由客户端自行解析数据，此设置作用于客户端侧。
+2. INSERT 操作：在执行 INSERT...SELECT 查询以及数据通过 materialized view 流动时，在写入存储之前，会根据该设置将块压缩合并。
+
+在格式解析中，当满足以下任一条件时会生成一个块：
+
+- 最小阈值（AND）：同时达到 min_insert_block_size_rows 和 min_insert_block_size_bytes
+- 最大阈值（OR）：达到 max_insert_block_size 或 max_insert_block_size_bytes 任意一个
+
+对于插入操作中的较小块，会被压缩合并为更大的块，并在满足 min_insert_block_size_rows 或 min_insert_block_size_bytes 其中之一时生成。
 
 可能的取值：
 
 - 正整数。
-- 0 — 不进行合并。
+- 0 — 此设置不参与块形成。
 
 ## min_insert_block_size_rows_for_materialized_views {#min_insert_block_size_rows_for_materialized_views} 
 
@@ -8043,8 +8092,8 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 将 [isNull](/sql-reference/functions/functions-for-nulls#isNull) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
 - 将 [isNotNull](/sql-reference/functions/functions-for-nulls#isNotNull) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
 - 将 [count](/sql-reference/aggregate-functions/reference/count) 改写为读取 [null](../../sql-reference/data-types/nullable.md/#finding-null) 子列。
-- 将 [mapKeys](/sql-reference/functions/tuple-map-functions#mapkeys) 改写为读取 [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
-- 将 [mapValues](/sql-reference/functions/tuple-map-functions#mapvalues) 改写为读取 [values](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
+- 将 [mapKeys](/sql-reference/functions/tuple-map-functions#mapKeys) 改写为读取 [keys](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
+- 将 [mapValues](/sql-reference/functions/tuple-map-functions#mapValues) 改写为读取 [values](/sql-reference/data-types/map#reading-subcolumns-of-map) 子列。
 
 可选值：
 
@@ -11268,9 +11317,9 @@ Cloud 默认值：`1`
 
 ## use_join_disjunctions_push_down {#use_join_disjunctions_push_down} 
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "启用该优化。"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "New setting."}]}]}/>
 
 启用将 JOIN 条件中由 OR 连接的部分下推到对应的输入侧（“部分下推”）。
 这样可以让存储引擎更早进行过滤，从而减少数据读取量。
@@ -11311,6 +11360,19 @@ Cloud 默认值：`1`
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。"}]}]}/>
 
 为 Paimon 表函数启用 Paimon 分区裁剪
+
+## use_primary_key {#use_primary_key} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "1"},{"label": "用于控制 MergeTree 是否在粒度级别剪枝时使用主键的新设置。"}]}]}/>
+
+在对 MergeTree 表执行查询时，使用主键对粒度进行剪枝。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
 
 ## use_query_cache {#use_query_cache} 
 

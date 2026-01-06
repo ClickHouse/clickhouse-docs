@@ -401,7 +401,7 @@ bloom_filter([false_positive_rate])
 * `Map`
 
 :::note Map 数据类型：指定针对键或值创建索引
-对于 `Map` 数据类型，客户端可以通过使用 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 函数指定索引应针对键还是针对值创建。
+对于 `Map` 数据类型，客户端可以通过使用 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数指定索引应针对键还是针对值创建。
 :::
 
 
@@ -533,7 +533,10 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                  | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                              | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                    | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContainsValueLike](/sql-reference/functions/tuple-map-functions#mapContainsValueLike)                                | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 
 对于常量参数小于 ngram 大小的函数，`ngrambf_v1` 不能用于查询优化。
 
