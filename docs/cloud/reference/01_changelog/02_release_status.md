@@ -39,6 +39,17 @@ The release dates given below are an estimate and may be subject to change.
 
 <ReleaseSchedule releases={[
    {
+    changelog_link: 'https://clickhouse.com/docs/changelogs/25.8',
+    version: '25.8',
+    fast_date: 'Completed',
+    regular_date: 'Completed (2025-12-19)',
+    slow_date: '2026-01-15',
+    fast_progress: 'green',
+    regular_progress: 'green',
+    slow_progress: 'green',
+    regular_delay_note: 'Services with upgrade window will be upgraded starting Jan 07.',
+  },
+  {
     changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
     version: '25.10',
     fast_date: '2025-12-11 (completed 2025-12-15)',
