@@ -48,8 +48,8 @@ ClickHouse Cloud を利用する主な利点は次のとおりです。
 
 ## ClickHouse Cloud はどのバージョンの ClickHouse を使用していますか？ {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
-ClickHouse Cloud は、お使いのサービスを継続的に新しいバージョンへアップグレードします。コアとなるデータベースバージョンをオープンソースとして公開した後、クラウドのステージング環境で追加の検証を行い、通常は本番環境へのロールアウトまでに 6〜8 週間かかります。ロールアウトは、クラウドサービスプロバイダー、サービスの種類、リージョンごとに段階的に行われます。
+ClickHouse Cloud は、お使いのサービスを、修正・新機能・パフォーマンス向上を含む新しいバージョンへ定期的にアップグレードします。コアとなるデータベースバージョンをオープンソースとして公開した後、クラウドのステージング環境で追加の検証を行い、通常は本番環境へのロールアウトまでに 6〜8 週間かかります。ロールアウトは、クラウドサービスプロバイダー、サービスの種類、リージョンごとに段階的に行われます。
 
-通常のリリーススケジュールより先行してアップデートを受け取るために利用できる「Fast」リリースチャネルを提供しています。詳細については、["Fast Release Channel"](/manage/updates#fast-release-channel-early-upgrades) を参照してください。
+特定のリリースチャネルを購読することで、ClickHouse Cloud サービスのアップグレードスケジュールを指定できます。たとえば、通常のリリーススケジュールより先行してアップデートを受け取るために利用できる ["Fast" Release Channel](/manage/updates#fast-release-channel-early-upgrades) のほか、アップグレードを延期するための ["Slow" Release Channel](/manage/updates#slow-release-channel-deferred-upgrades) や、より細かなスケジューリングオプションも提供しています。
 
-より古いバージョンの機能に依存している場合、場合によっては、サービスの互換性設定を使用して以前の動作に戻すことができます。
+後方互換性の保証を含む ClickHouse Cloud のアップグレードプロセスの概要については、[Upgrades](/manage/updates) のリファレンスドキュメントを参照してください。
