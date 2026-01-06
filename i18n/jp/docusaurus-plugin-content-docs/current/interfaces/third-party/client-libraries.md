@@ -10,7 +10,7 @@ doc_type: 'reference'
 # サードパーティ開発者によるクライアントライブラリ {#client-libraries-from-third-party-developers}
 
 :::note
-ClickHouse Inc は、以下に記載されているライブラリをメンテナンスしておらず、その品質を保証するための広範なテストも実施していません。
+ClickHouse Inc は、以下に記載されているライブラリをメンテナンスしておらず、その品質を保証するための包括的なテストも実施していません。
 :::
 
 ### Python {#python}
@@ -47,19 +47,19 @@ ClickHouse Inc は、以下に記載されているライブラリをメンテ�
 
 ### Swift {#swift}
 
-* [ClickHouseNIO](https://github.com/patrick-zippenfenig/ClickHouseNIO)
-* [ClickHouseVapor ORM](https://github.com/patrick-zippenfenig/ClickHouseVapor)
+- [ClickHouseNIO](https://github.com/patrick-zippenfenig/ClickHouseNIO)
+- [ClickHouseVapor ORM](https://github.com/patrick-zippenfenig/ClickHouseVapor)
 
 ### Node.js {#nodejs}
 
-* [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
-* [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
-* [node-clickhouse](https://github.com/apla/node-clickhouse)
-* [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)
-* [clickhouse-client](https://github.com/depyronick/clickhouse-client)
-* [node-clickhouse-orm](https://github.com/zimv/node-clickhouse-orm)
-* [clickhouse-ts](https://github.com/bytadaniel/clickhouse-ts)
-* [clickcache](https://github.com/bytadaniel/clickcache)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
+- [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
+- [node-clickhouse](https://github.com/apla/node-clickhouse)
+- [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)
+- [clickhouse-client](https://github.com/depyronick/clickhouse-client)
+- [node-clickhouse-orm](https://github.com/zimv/node-clickhouse-orm)
+- [clickhouse-ts](https://github.com/bytadaniel/clickhouse-ts)
+- [clickcache](https://github.com/bytadaniel/clickcache)
 
 ### Perl {#perl}
 
@@ -69,8 +69,8 @@ ClickHouse Inc は、以下に記載されているライブラリをメンテ�
 
 ### Ruby {#ruby}
 
-* [ClickHouse（Ruby）](https://github.com/shlima/click_house)
-* [clickhouse-activerecord](https://github.com/PNixx/clickhouse-activerecord)
+- [ClickHouse（Ruby）](https://github.com/shlima/click_house)
+- [clickhouse-activerecord](https://github.com/PNixx/clickhouse-activerecord)
 
 ### Rust {#rust}
 
@@ -95,6 +95,10 @@ ClickHouse Inc は、以下に記載されているライブラリをメンテ�
 
 * [AORM](https://github.com/TanVD/AORM)
 
+### C++ {#cpp}
+
+- [userver フレームワーク用 ClickHouse ドライバ](https://userver.tech/dd/ddb/clickhouse_driver.html)
+
 ### C# {#c}
 
 * [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
@@ -111,7 +115,7 @@ ClickHouse Inc は、以下に記載されているライブラリをメンテ�
 
 ### Nim {#nim}
 
-* [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
+- [nim-clickhouse](https://github.com/leonardoce/nim-clickhouse)
 
 ### Haskell {#haskell}
 
