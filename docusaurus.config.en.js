@@ -136,11 +136,11 @@ const config = {
           editUrl: ({ docPath }) => {
             if (docPath === "index.md") return false;
             if (
-              docPath.includes("development") ||
-              docPath.includes("engines") ||
-              docPath.includes("interfaces") ||
-              docPath.includes("operations") ||
-              docPath.includes("sql-reference")
+              docPath.startsWith("development/") ||
+              docPath.startsWith("engines/") ||
+              docPath.startsWith("interfaces/") ||
+              docPath.startsWith("operations/") ||
+              docPath.startsWith("sql-reference/")
             ) {
               return (
                 "https://github.com/ClickHouse/ClickHouse/tree/master/docs/en/" +
