@@ -711,6 +711,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mysql/source/rds',
                 'integrations/data-ingestion/clickpipes/mysql/source/aurora',
                 'integrations/data-ingestion/clickpipes/mysql/source/gcp',
+                'integrations/data-ingestion/clickpipes/mysql/source/azure-flexible-server-mysql',
                 'integrations/data-ingestion/clickpipes/mysql/source/generic',
                 'integrations/data-ingestion/clickpipes/mysql/source/rds_maria',
                 'integrations/data-ingestion/clickpipes/mysql/source/generic_maria',
