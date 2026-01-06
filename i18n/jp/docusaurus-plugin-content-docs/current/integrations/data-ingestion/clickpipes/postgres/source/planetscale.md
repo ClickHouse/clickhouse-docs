@@ -11,6 +11,7 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
+
 # PlanetScale for Postgres ソースセットアップガイド {#planetscale-for-postgres-source-setup-guide}
 
 :::info
@@ -47,31 +48,50 @@ PlanetScale コンソールでこの設定を変更すると、再起動が発�
 
 ## 権限とパブリケーションを持つユーザーの作成 {#creating-a-user-with-permissions-and-publication}
 
-CDC に必要な権限を付与した ClickPipes 用の新しいユーザーを作成し、
-あわせてレプリケーションに使用するパブリケーションも作成します。
+デフォルトの `postgres.<...>` ユーザーを使用して PlanetScale Postgres インスタンスに接続し、次のコマンドを実行します。
 
-そのために、デフォルトの `postgres.<...>` ユーザーを使用して PlanetScale Postgres インスタンスに接続し、次の SQL コマンドを実行します。
+1. ClickPipes 専用のユーザーを作成します:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- You may need to grant these permissions on more schemas depending on the tables you're moving
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```sql
+    CREATE USER clickpipes_user PASSWORD 'some-password';
+    ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. 前の手順で作成したユーザーに対して、スキーマ単位の読み取り専用アクセス権を付与します。次の例では、`public` スキーマに対する権限を示しています。レプリケーションしたいテーブルを含む各スキーマに対して、これらのコマンドを繰り返してください。
 
--- Create a publication. We will use this when creating the pipe
--- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
-```
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
-:::note
-`clickpipes_user` と `clickpipes_password` を、必ずご希望のユーザー名とパスワードに置き換えてください。
-:::
+3. ユーザーにレプリケーション権限を付与します:
+
+    ```sql
+    GRANT rds_replication TO clickpipes_user;
+    ```
+
+4. レプリケーションしたいテーブルを含む[パブリケーション](https://www.postgresql.org/docs/current/logical-replication-publication.html)を作成します。パフォーマンスへの余分な負荷を避けるため、パブリケーションには必要なテーブルのみを含めることを強く推奨します。
+
+   :::warning
+   パブリケーションに含めるすべてのテーブルは、**primary key** が定義されているか、**replica identity** が `FULL` に設定されている必要があります。スコープ設定の指針については、[Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) を参照してください。
+   :::
+
+   - 特定のテーブルに対するパブリケーションを作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 特定スキーマ内のすべてのテーブルに対するパブリケーションを作成するには:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` パブリケーションには、指定したテーブルから生成される変更イベント群が含まれ、後でレプリケーション・ストリームを取り込むために使用されます。
 
 ## 注意事項 {#caveats}
+
 1. PlanetScale Postgres に接続するには、上で作成したユーザー名に現在のブランチ名を付加する必要があります。たとえば、作成したユーザーが `clickpipes_user` という名前だった場合、ClickPipe 作成時に指定する実際のユーザー名は `clickpipes_user`.`branch` とする必要があります。このとき `branch` は、現在の PlanetScale Postgres の[ブランチ](https://planetscale.com/docs/postgres/branching)の "id" を指します。これを手早く確認するには、先ほどユーザー作成に使用した `postgres` ユーザーのユーザー名を参照してください。ピリオド以降の部分がブランチ ID になります。
 2. PlanetScale Postgres に接続する CDC パイプには `PSBouncer` ポート（現在 `6432`）を使用しないでください。通常のポート `5432` を使用する必要があります。初回ロード専用のパイプであれば、どちらのポートも使用できます。
 3. 必ずプライマリインスタンスのみに接続していることを確認してください。[レプリカインスタンスへの接続](https://planetscale.com/docs/postgres/scaling/replicas#how-to-query-postgres-replicas)は現在サポートされていません。 
