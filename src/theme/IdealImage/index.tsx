@@ -154,7 +154,6 @@ export default function IdealImage(
 
     return (
         <div style={{
-          position: "relative",
           ...(background
               ? { backgroundColor: background == "white" ? "white" : "rgb(31 31 28)" }
               : {}),
