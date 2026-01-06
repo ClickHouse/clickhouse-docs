@@ -68,6 +68,50 @@ OPTIMIZE TABLE example1 FINAL
 `OPTIMIZE` initializes an unscheduled merge of the parts of your table, and `FINAL` forces a reoptimization if your table is already a single part.
 :::
 
+## Best practice - partition by your TTL date field {#best-practices-partition-by-ttl-date}
+
+:::important
+When using table-level TTL to remove old rows, we recommend to **partition your table by the date or month** of the same time field used in your TTL expression.
+:::
+
+ClickHouse can drop entire partitions much more efficiently than deleting individual rows.
+When your partition key aligns with your TTL expression, ClickHouse can drop whole partitions at once when they expire, rather than rewriting data parts to remove expired rows.
+
+The following is an example of a good partition strategy,
+where the table is partitioned by month of the TTL field:
+
+```sql
+CREATE TABLE events (
+    event_time DateTime,
+    user_id UInt32,
+    event_type String
+)
+ENGINE = MergeTree
+PARTITION BY toYYYYMM(event_time)
+ORDER BY (user_id, event_time)
+TTL event_time + INTERVAL 6 MONTH
+```
+
+The example below shows a less ideal partitioning strategy:
+
+```sql
+CREATE TABLE events (
+    event_time DateTime,
+    user_id UInt32,
+    event_type String
+)
+ENGINE = MergeTree
+PARTITION BY user_id
+ORDER BY (user_id, event_time)
+TTL event_time + INTERVAL 6 MONTH
+```
+
+:::tip
+Choose your partition granularity based on your TTL period:
+- For TTL of days/weeks: partition by day using `toYYYYMMDD(date_field)`
+- For TTL of months/years: partition by month using `toYYYYMM(date_field)` or `toStartOfMonth(date_field)`
+:::
+
 ## Removing rows {#removing-rows}
 
 To remove entire rows from a table after a certain amount of time, define the TTL rule at the table level:
