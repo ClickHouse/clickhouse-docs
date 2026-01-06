@@ -9,6 +9,7 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 # アロケーションプロファイリング {#allocation-profiling}
 
 ClickHouse はグローバルアロケータとして [jemalloc](https://github.com/jemalloc/jemalloc) を使用しています。jemalloc には、アロケーションのサンプリングおよびプロファイリング用のツールが付属しています。  
@@ -40,6 +41,7 @@ ClickHouse はグローバルアロケータとして [jemalloc](https://github.
 ClickHouse はアロケーションが多いアプリケーションであるため、jemalloc のサンプリングによりパフォーマンス上のオーバーヘッドが発生する可能性があります。
 :::
 
+
 ## `system.trace_log` に jemalloc サンプルを保存する {#storing-jemalloc-samples-in-system-trace-log}
 
 すべての jemalloc サンプルを `JemallocSample` 型として `system.trace_log` に格納できます。
@@ -56,6 +58,7 @@ ClickHouse はメモリ割り当てを多用するアプリケーションであ
 :::
 
 `jemalloc_collect_profile_samples_in_trace_log` 設定を使用して、クエリごとに有効化することもできます。
+
 
 ### `system.trace_log` を使用してクエリのメモリ使用量を分析する例 {#example-analyzing-memory-usage-trace-log}
 
@@ -78,7 +81,7 @@ Peak memory usage: 12.65 MiB.
 ```
 
 :::note
-ClickHouse を起動するときに `jemalloc_enable_global_profiler` を有効にしている場合、`jemalloc_enable_profiler` を有効にする必要はありません。\
+ClickHouse を `jemalloc_enable_global_profiler` を有効にして起動した場合、`jemalloc_enable_profiler` を有効にする必要はありません。
 `jemalloc_collect_global_profile_samples_in_trace_log` と `jemalloc_collect_profile_samples_in_trace_log` についても同様です。
 :::
 
@@ -88,7 +91,7 @@ ClickHouse を起動するときに `jemalloc_enable_global_profiler` を有効�
 SYSTEM FLUSH LOGS trace_log
 ```
 
-そして、各時点において実行したクエリのメモリ使用量を取得するためにクエリします。
+そして、それに対してクエリを実行し、各時点で実行したクエリのメモリ使用量を取得します。
 
 ```sql
 WITH per_bucket AS
@@ -142,7 +145,7 @@ FROM
 )
 ```
 
-その結果を使って、その時点でどこが最も活発に割り当てを行っていたかを確認できます。
+その結果を使って、その時点でどこからの割り当てが最も活発だったかを確認できます。
 
 ```sql
 SELECT
@@ -175,9 +178,10 @@ GROUP BY ALL
 ORDER BY per_trace_sum ASC
 ```
 
+
 ## ヒーププロファイルのフラッシュ {#flushing-heap-profiles}
 
-デフォルトでは、ヒーププロファイル用ファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse の PID、`_seqnum_` は現在のヒーププロファイルに対応するグローバルなシーケンス番号です。\
+デフォルトでは、ヒーププロファイル用ファイルは `/tmp/jemalloc_clickhouse._pid_._seqnum_.heap` に生成されます。ここで `_pid_` は ClickHouse の PID、`_seqnum_` は現在のヒーププロファイルに対応するグローバルなシーケンス番号です。
 Keeper のデフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.heap` で、同じルールに従います。
 
 `jemalloc` に現在のプロファイルをフラッシュさせるには、次を実行します。
@@ -198,26 +202,64 @@ Keeper のデフォルトファイルは `/tmp/jemalloc_keeper._pid_._seqnum_.he
   </TabItem>
 </Tabs>
 
-`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、別の保存場所を指定できます。\
+`MALLOC_CONF` 環境変数に `prof_prefix` オプションを追加することで、別の保存場所を指定できます。
 例えば、`/data` ディレクトリ内に、ファイル名のプレフィックスを `my_current_profile` としてプロファイルを生成したい場合は、次の環境変数を指定して ClickHouse/Keeper を実行します。
 
 ```sh
 MALLOC_CONF=prof_prefix:/data/my_current_profile
 ```
 
-生成されるファイル名には、プレフィックスに続いて PID とシーケンス番号が付加されます。
+生成されるファイル名は、プレフィックスに PID とシーケンス番号を連結したものになります。
+
 
 ## ヒーププロファイルの分析 {#analyzing-heap-profiles}
 
-ヒーププロファイルが生成されたら、それらを分析する必要があります。\
+ヒーププロファイルが生成されたら、それらを分析する必要があります。
 そのために、`jemalloc` のツールである [jeprof](https://github.com/jemalloc/jemalloc/blob/dev/bin/jeprof.in) を使用できます。次のいずれかの方法でインストールできます。
 
-* システムのパッケージマネージャーを使用する
-* [jemalloc リポジトリ](https://github.com/jemalloc/jemalloc)をクローンし、ルートディレクトリで `autogen.sh` を実行する。これにより、`bin` ディレクトリ内に `jeprof` スクリプトが作成されます
+- システムのパッケージマネージャーを使用する
+- [jemalloc リポジトリ](https://github.com/jemalloc/jemalloc)をクローンし、ルートディレクトリで `autogen.sh` を実行する。これにより、`bin` ディレクトリ内に `jeprof` スクリプトが作成されます
+
+`jeprof` を使用して、ヒーププロファイルからさまざまな形式を生成できます。
+ツールの使い方や提供される各種オプションについては、`jeprof --help` を実行して確認できます。
+
+### シンボル情報付きヒーププロファイル {#symbolized-heap-profiles}
+
+バージョン 26.1 以降では、`SYSTEM JEMALLOC FLUSH PROFILE` を使用してフラッシュを実行すると、ClickHouse は自動的にシンボル情報付きのヒーププロファイルを生成します。
+シンボル情報付きプロファイル（拡張子は `.symbolized`）には関数シンボルが埋め込まれており、ClickHouse のバイナリを用意しなくても `jeprof` で分析できます。
+
+たとえば、次のように実行すると：
+
+```sql
+SYSTEM JEMALLOC FLUSH PROFILE
+```
+
+ClickHouse は、シンボル化されたプロファイルへのパスを返します（例: `/tmp/jemalloc_clickhouse.12345.0.heap.symbolized`）。
+
+その後、これを `jeprof` で直接解析できます。
+
+```sh
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --output_format [ > output_file]
+```
 
 :::note
-`jeprof` はスタックトレースを生成するために `addr2line` を使用しますが、処理が非常に遅くなる場合があります。\
-そのような場合には、このツールの[代替実装](https://github.com/gimli-rs/addr2line)をインストールすることを推奨します。
+
+**バイナリは不要です**: シンボル化されたプロファイル（`.symbolized` ファイル）を使用する場合、`jeprof` に ClickHouse バイナリのパスを指定する必要はありません。これにより、別のマシン上で、あるいはバイナリを更新した後でも、プロファイルをはるかに簡単に分析できるようになります。
+
+:::
+
+古いシンボル化されていないヒーププロファイルがあり、引き続き ClickHouse バイナリにアクセスできる場合は、従来の方法を使用できます。
+
+```sh
+jeprof path/to/clickhouse path/to/heap/profile --output_format [ > output_file]
+```
+
+:::note
+
+シンボル化されていないプロファイルの場合、`jeprof` はスタックトレースを生成するために `addr2line` を使用しますが、処理が非常に遅くなることがあります。
+その場合は、このツールの[代替実装](https://github.com/gimli-rs/addr2line)をインストールすることを推奨します。
+
+:::
 
 ```bash
 git clone https://github.com/gimli-rs/addr2line.git --depth=1 --branch=0.23.0
@@ -226,47 +268,64 @@ cargo build --features bin --release
 cp ./target/release/addr2line path/to/current/addr2line
 ```
 
-また、`llvm-addr2line` も同様に問題なく動作します。
+また、`llvm-addr2line` も同様に問題なく動作します（ただし、`llvm-objdump` は `jeprof` とは互換性がない点に注意してください）。
+
+その後、次のように指定して使用します: `jeprof --tools addr2line:/usr/bin/llvm-addr2line,nm:/usr/bin/llvm-nm,objdump:/usr/bin/objdump,c++filt:/usr/bin/llvm-cxxfilt`
 
 :::
 
-`jeprof` を使用して、ヒーププロファイルからさまざまな形式を生成できます。
-ツールの使い方や提供される各種オプションについては、`jeprof --help` を実行して確認することを推奨します。
-
-一般的に、`jeprof` コマンドは次のように使用します。
+2つのプロファイルを比較する際には、`--base` 引数を使用できます。
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --output_format [ > output_file]
+jeprof --base /path/to/first.heap.symbolized /path/to/second.heap.symbolized --output_format [ > output_file]
 ```
 
-2つのプロファイルを比較して、その間にどの割り当てが発生したかを確認したい場合は、`base` 引数を指定します。
-
-```sh
-jeprof path/to/binary --base path/to/first/heap/profile path/to/second/heap/profile --output_format [ > output_file]
-```
 
 ### 例 {#examples}
 
-* 各プロシージャを1行ごとに記述したテキストファイルを生成したい場合:
+シンボル化されたプロファイルを使用する（推奨）：
+
+* 各プロシージャを 1 行に 1 つずつ記載したテキストファイルを生成します：
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --text > result.txt
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --text > result.txt
 ```
 
-* コールグラフを含む PDF ファイルを生成したい場合:
+* コールグラフを含む PDF ファイルを生成する：
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --pdf > result.pdf
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --pdf > result.pdf
 ```
+
+シンボル化されていないプロファイルを使用する場合（バイナリが必要）:
+
+* 各関数を 1 行ずつ記述したテキストファイルを生成します。
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --text > result.txt
+```
+
+* コールグラフを含む PDF ファイルを生成する：
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --pdf > result.pdf
+```
+
 
 ### フレームグラフの生成 {#generating-flame-graph}
 
-`jeprof` を使用すると、フレームグラフの作成に必要な折り畳みスタック（collapsed stacks）を生成できます。
+`jeprof` を使用すると、フレームグラフの作成に必要なコラプスされたスタック（collapsed stacks）を生成できます。
 
 `--collapsed` 引数を使用する必要があります。
 
 ```sh
-jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
+jeprof /tmp/jemalloc_clickhouse.12345.0.heap.symbolized --collapsed > result.collapsed
+```
+
+あるいは、シンボル情報のないプロファイルの場合:
+
+```sh
+jeprof /path/to/clickhouse /tmp/jemalloc_clickhouse.12345.0.heap --collapsed > result.collapsed
 ```
 
 その後は、コラプスされたスタックを可視化するために利用できるツールが多数あります。
@@ -274,10 +333,11 @@ jeprof path/to/binary path/to/heap/profile --collapsed > result.collapsed
 最も広く使われているのは [FlameGraph](https://github.com/brendangregg/FlameGraph) で、`flamegraph.pl` というスクリプトが含まれています。
 
 ```sh
-cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="メモリ割り当てフレームグラフ" --width 2400 > result.svg
+cat result.collapsed | /path/to/FlameGraph/flamegraph.pl --color=mem --title="Allocation Flame Graph" --width 2400 > result.svg
 ```
 
-もう 1 つ便利なツールに [speedscope](https://www.speedscope.app/) があり、収集したスタックをよりインタラクティブに分析できます。
+もう 1 つ便利なツールとして [speedscope](https://www.speedscope.app/) があり、収集したスタックをよりインタラクティブに分析できます。
+
 
 ## プロファイラ用の追加オプション {#additional-options-for-profiler}
 
@@ -305,6 +365,7 @@ FORMAT Vertical
 ```
 
 [リファレンス](/operations/system-tables/asynchronous_metrics)
+
 
 ### システムテーブル `jemalloc_bins` {#system-table-jemalloc_bins}
 

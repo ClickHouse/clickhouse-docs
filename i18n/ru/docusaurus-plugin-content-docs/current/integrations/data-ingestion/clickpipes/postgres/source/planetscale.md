@@ -11,6 +11,7 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
+
 # Руководство по настройке источника данных PlanetScale for Postgres {#planetscale-for-postgres-source-setup-guide}
 
 :::info
@@ -47,29 +48,47 @@ ClickPipes поддерживает Postgres, начиная с версии 12.
 
 ## Создание пользователя с правами доступа и публикацией {#creating-a-user-with-permissions-and-publication}
 
-Создадим нового пользователя для ClickPipes с необходимыми правами доступа, подходящими для CDC,
-а также создадим публикацию, которую будем использовать для репликации.
+Подключитесь к экземпляру PlanetScale Postgres, используя пользователя по умолчанию `postgres.<...>`, и выполните следующие команды:
 
-Для этого вы можете подключиться к вашему экземпляру PlanetScale Postgres, используя пользователя по умолчанию `postgres.&lt;...&gt;`, и выполнить следующие SQL-команды:
+1. Создайте отдельного пользователя для ClickPipes:
 
-```sql
-  CREATE USER clickpipes_user PASSWORD 'clickpipes_password';
-  GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
--- You may need to grant these permissions on more schemas depending on the tables you're moving
-  GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-  ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```sql
+    CREATE USER clickpipes_user PASSWORD 'some-password';
+    ```
 
--- Give replication permission to the USER
-  ALTER USER clickpipes_user REPLICATION;
+2. Выдайте пользователю, созданному на предыдущем шаге, права только на чтение на уровне схемы. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
 
--- Create a publication. We will use this when creating the pipe
--- When adding new tables to the ClickPipe, you'll need to manually add them to the publication as well. 
-  CREATE PUBLICATION clickpipes_publication FOR TABLE <...>, <...>, <...>;
-```
+    ```sql
+    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+    ```
 
-:::note
-Обязательно замените `clickpipes_user` и `clickpipes_password` на выбранные вами имя пользователя и пароль.
-:::
+3. Выдайте пользователю привилегии репликации:
+
+    ```sql
+    GRANT rds_replication TO clickpipes_user;
+    ```
+
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только необходимые таблицы, чтобы избежать лишних накладных расходов на производительность.
+
+   :::warning
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **primary key**, _либо_ для неё должна быть настроена **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по выбору области публикаций.
+   :::
+
+   - Чтобы создать публикацию для отдельных таблиц:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в определённой схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и впоследствии будет использоваться для приёма потока репликации.
 
 ## Особенности и ограничения {#caveats}
 1. Для подключения к PlanetScale Postgres к имени пользователя, созданному выше, необходимо добавить текущую ветку. Например, если созданный пользователь назывался `clickpipes_user`, фактическое имя пользователя, указываемое при создании ClickPipe, должно быть `clickpipes_user`.`branch`, где `branch` — это `id` текущей [ветки](https://planetscale.com/docs/postgres/branching) PlanetScale Postgres. Чтобы быстро определить это значение, вы можете посмотреть на имя пользователя `postgres`, под которым вы создавали этого пользователя ранее, — часть после точки и будет идентификатором ветки.
