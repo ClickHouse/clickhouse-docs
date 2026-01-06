@@ -17,7 +17,7 @@ import cloud_storage_settings from '@site/static/images/cloud/guides/accessing-d
 import create_key_for_service_account from '@site/static/images/cloud/guides/accessing-data/GCS/create_key_for_service_account.png';
 import create_key from '@site/static/images/cloud/guides/accessing-data/GCS/create_a_key.png';
 
-This article demonstrates how to securely authenticate with Google Cloud Storage (GCS) and access your data from ClickHouse Cloud.
+This guide demonstrates how to securely authenticate with Google Cloud Storage (GCS) and access your data from ClickHouse Cloud.
 
 ## Introduction {#introduction}
 
