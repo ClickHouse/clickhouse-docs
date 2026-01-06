@@ -31,7 +31,7 @@ CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
-若要选择 `key2` 的值：
+要查询 `key2` 的值：
 
 ```sql
 SELECT m['key2'] FROM tab;
@@ -48,7 +48,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 如果访问的键 `k` 不在 map 中，`m[k]` 会返回该值类型的默认值，例如整数类型为 `0`，字符串类型为 `''`。
-要检查某个键是否存在于 map 中，可以使用函数 [mapContains](../../sql-reference/functions/tuple-map-functions#mapcontains)。
+要检查某个键是否存在于 map 中，可以使用函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)。
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
