@@ -49,6 +49,19 @@ ORDER BY tuple()
 TTL rules can be altered or deleted. See the [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) page for more details.
 :::
 
+## Best practice - partition by your TTL date field {#best-practices-partition-by-ttl-date}
+
+:::tip Best practice
+When using table-level TTL to remove old rows, we recommend to **partition your table by the date or month** of the same time field used in your TTL expression.
+
+ClickHouse can drop entire partitions much more efficiently than deleting individual rows.
+When your partition key aligns with your TTL expression, ClickHouse can drop whole partitions at once when they expire, rather than rewriting data parts to remove expired rows.
+
+Choose your partition granularity based on your TTL period:
+- For TTL of days/weeks: partition by day using `toYYYYMMDD(date_field)`
+- For TTL of months/years: partition by month using `toYYYYMM(date_field)` or `toStartOfMonth(date_field)`
+:::
+
 ## Triggering TTL events {#triggering-ttl-events}
 
 The deleting or aggregating of expired rows is not immediate - it only occurs during table merges. If you have a table that's not actively merging (for whatever reason), there are two settings that trigger TTL events:
@@ -66,50 +79,6 @@ OPTIMIZE TABLE example1 FINAL
 ```
 
 `OPTIMIZE` initializes an unscheduled merge of the parts of your table, and `FINAL` forces a reoptimization if your table is already a single part.
-:::
-
-## Best practice - partition by your TTL date field {#best-practices-partition-by-ttl-date}
-
-:::important
-When using table-level TTL to remove old rows, we recommend to **partition your table by the date or month** of the same time field used in your TTL expression.
-:::
-
-ClickHouse can drop entire partitions much more efficiently than deleting individual rows.
-When your partition key aligns with your TTL expression, ClickHouse can drop whole partitions at once when they expire, rather than rewriting data parts to remove expired rows.
-
-The following is an example of a good partition strategy,
-where the table is partitioned by month of the TTL field:
-
-```sql
-CREATE TABLE events (
-    event_time DateTime,
-    user_id UInt32,
-    event_type String
-)
-ENGINE = MergeTree
-PARTITION BY toYYYYMM(event_time)
-ORDER BY (user_id, event_time)
-TTL event_time + INTERVAL 6 MONTH
-```
-
-The example below shows a less ideal partitioning strategy:
-
-```sql
-CREATE TABLE events (
-    event_time DateTime,
-    user_id UInt32,
-    event_type String
-)
-ENGINE = MergeTree
-PARTITION BY user_id
-ORDER BY (user_id, event_time)
-TTL event_time + INTERVAL 6 MONTH
-```
-
-:::tip
-Choose your partition granularity based on your TTL period:
-- For TTL of days/weeks: partition by day using `toYYYYMMDD(date_field)`
-- For TTL of months/years: partition by month using `toYYYYMM(date_field)` or `toStartOfMonth(date_field)`
 :::
 
 ## Removing rows {#removing-rows}
