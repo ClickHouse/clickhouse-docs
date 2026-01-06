@@ -49,8 +49,6 @@ ORDER BY tuple()
 TTL rules can be altered or deleted. See the [Manipulations with Table TTL](/sql-reference/statements/alter/ttl.md) page for more details.
 :::
 
-## Best practice - partition by your TTL date field {#best-practices-partition-by-ttl-date}
-
 :::tip Best practice
 When using table-level TTL to remove old rows, we recommend to **partition your table by the date or month** of the same time field used in your TTL expression.
 
