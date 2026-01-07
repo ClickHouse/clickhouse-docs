@@ -137,7 +137,7 @@ df.show()
 </TabItem>
 </Tabs>
 
-### Writing Data {#writing-data-unity}
+### Writing data {#writing-data-unity}
 
 <Tabs groupId="databricks_usage">
 <TabItem value="Python" label="Python" default>
@@ -187,9 +187,9 @@ df.write
 This example assumes preconfigured secret scopes in Databricks. For setup instructions, see the Databricks [Secret management documentation](https://docs.databricks.com/aws/en/security/secrets/).
 :::
 
-## Databricks-Specific Considerations {#considerations}
+## Databricks-specific considerations {#considerations}
 
-### Secret Management {#secret-management}
+### Secret management {#secret-management}
 
 Use Databricks secret scopes to securely store ClickHouse credentials:
 
@@ -202,7 +202,7 @@ For setup instructions, see the Databricks [Secret management documentation](htt
 
 <!-- TODO: Add screenshot of Databricks secret scopes configuration -->
 
-### ClickHouse Cloud Connection {#clickhouse-cloud}
+### ClickHouse Cloud connection {#clickhouse-cloud}
 
 When connecting to ClickHouse Cloud from Databricks:
 
@@ -211,7 +211,7 @@ When connecting to ClickHouse Cloud from Databricks:
 
 ## Examples {#examples}
 
-### Complete Workflow Example {#workflow-example}
+### Complete workflow example {#workflow-example}
 
 <Tabs groupId="databricks_usage">
 <TabItem value="Python" label="Python" default>
@@ -304,7 +304,7 @@ transformedDF.write
 </TabItem>
 </Tabs>
 
-## Related Documentation {#related}
+## Related documentation {#related}
 
 - [Spark Native Connector Guide](/docs/integrations/data-ingestion/apache-spark/spark-native-connector) - Complete connector documentation
 - [TableProvider API Documentation](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#using-the-tableprovider-api-format-based-access) - Format-based access details
