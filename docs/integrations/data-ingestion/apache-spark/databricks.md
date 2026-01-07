@@ -92,7 +92,7 @@ com.clickhouse.spark:clickhouse-spark-runtime-{{ spark_binary_version }}_{{ scal
 
 When Unity Catalog is enabled (default), you **must** use the TableProvider API (format-based access) because Unity Catalog blocks Spark catalog registration. If you've disabled Unity Catalog by using a cluster with "No isolation shared" access mode, you can use the [Catalog API](/docs/integrations/data-ingestion/apache-spark/spark-native-connector#register-the-catalog-required) instead.
 
-### Reading Data {#reading-data-table-provider}
+### Reading data {#reading-data-table-provider}
 
 <Tabs groupId="databricks_usage">
 <TabItem value="Python" label="Python" default>
