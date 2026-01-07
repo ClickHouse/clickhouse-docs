@@ -12,7 +12,6 @@ import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
 import postman4 from '@site/static/images/cloud/manage/postman/postman4.png';
-import postman5 from '@site/static/images/cloud/manage/postman/postman5.png';
 import postman6 from '@site/static/images/cloud/manage/postman/postman6.png';
 import postman7 from '@site/static/images/cloud/manage/postman/postman7.png';
 import postman8 from '@site/static/images/cloud/manage/postman/postman8.png';
@@ -29,11 +28,12 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 Это руководство поможет вам протестировать ClickHouse Cloud API с помощью [Postman](https://www.postman.com/product/what-is-postman/).
 Приложение Postman доступно в веб-браузере или его можно загрузить на рабочий компьютер.
 
+
 ### Создайте учетную запись {#create-an-account}
 
 * Бесплатные учетные записи доступны по адресу [https://www.postman.com](https://www.postman.com).
 
-<Image img={postman1} size="md" alt="Сайт Postman" border />
+<Image img={postman1} size="md" alt="Сайт Postman" border/>
 
 ### Создайте рабочее пространство {#create-a-workspace}
 
@@ -51,9 +51,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 <Image img={postman4} size="md" alt="Ввод URL API" border />
 
-* Введите адрес API: «[https://api.clickhouse.cloud/v1](https://api.clickhouse.cloud/v1)» и нажмите Enter:
-
-<Image img={postman5} size="md" alt="Import" border />
+* Введите адрес API: «https://api.clickhouse.cloud/v1» и нажмите Enter:
 
 * Выберите «Postman Collection», нажав кнопку «Import»:
 
@@ -86,7 +84,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 #### Установите идентификатор организации и идентификатор сервиса {#set-the-organization-id-and-service-id}
 
 * В коллекции нажмите вкладку «Variables» в средней панели (Base URL был задан при предыдущем импорте API).
-* Под `baseURL` нажмите на поле «Add new value» и подставьте свои идентификатор организации и идентификатор сервиса:
+* Под `baseURL` нажмите на поле «Add new value» и подставьте идентификаторы вашей организации и сервиса:
 
 <Image img={postman11} size="md" alt="Идентификатор организации и идентификатор сервиса" border />
 

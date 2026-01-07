@@ -403,7 +403,7 @@ Starting AI SQL generation with schema discovery...
 ✨ SQL query generated successfully!
 ──────────────────────────────────────────────────
 
-SELECT 
+SELECT
     c.name AS category,
     COUNT(DISTINCT o.order_id) AS order_count
 FROM sales_db.orders o
@@ -871,6 +871,7 @@ ClickHouse Client 会按以下顺序查找配置文件，并使用找到的第�
 | `-s [ --secure ]`                | 是否使用 TLS。<br/><br/>在连接到端口 9440（默认安全端口）或 ClickHouse Cloud 时会自动启用。<br/><br/>你可能需要在[配置文件](#configuration_files)中配置 CA 证书。可用的配置设置与[服务端 TLS 配置](../operations/server-configuration-parameters/settings.md#openssl)相同。                                   | 在连接到端口 9440 或 ClickHouse Cloud 时自动启用                                                                 |
 | `--ssh-key-file <path-to-file>`  | 包含用于与服务器进行身份验证的 SSH 私钥的文件。                                                                                                                                                                                                                                                                                     | -                                                                                                                |
 | `--ssh-key-passphrase <value>`   | 为 `--ssh-key-file` 中指定的 SSH 私钥提供的密码短语。                                                                                                                                                                                                                                                                              | -                                                                                                                |
+| `--tls-sni-override <server name>`       | 如果使用 TLS，在握手时发送的服务器名称（SNI）。                                                                                                                                                                                                                                                                                                   | 通过 `-h` 或 `--host` 提供的主机名。                                                                                                        |
 | `-u [ --user ] <username>`       | 用于连接的数据库用户。                                                                                                                                                                                                                                                                                                             | `default`                                                                                                        |
 
 :::note

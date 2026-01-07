@@ -30,6 +30,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Описание параметров запроса см. в [описании запроса](../../../sql-reference/statements/create/table.md).
 
+
 ### Параметры SummingMergeTree {#parameters-of-summingmergetree}
 
 #### Столбцы {#columns}
@@ -44,13 +45,14 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 При создании таблицы `SummingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
-  <summary>Устаревший метод создания таблицы</summary>
 
-  :::note
-  Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
-  :::
+<summary>Устаревший метод создания таблицы</summary>
 
-  ```sql
+:::note
+Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
+:::
+
+```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
@@ -59,9 +61,10 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
-  Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
+Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
 
-  * `columns` — кортеж с именами столбцов, значения которых будут суммироваться. Необязательный параметр. Описание см. в тексте выше.
+- `columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр. Для описания см. текст выше.
+
 </details>
 
 ## Пример использования {#usage-example}
@@ -96,6 +99,7 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 │   1 │          3 │
 └─────┴────────────┘
 ```
+
 
 ## Обработка данных {#data-processing}
 
@@ -184,9 +188,10 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) для агрегации значений типа `Map`.
+При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) для агрегации `Map`.
 
-Для вложенных структур данных не нужно указывать их столбцы в кортеже столбцов для суммирования.
+Для вложенной структуры данных не нужно указывать её столбцы в кортеже столбцов, по которым выполняется суммирование.
+
 
 ## Связанные материалы {#related-content}
 

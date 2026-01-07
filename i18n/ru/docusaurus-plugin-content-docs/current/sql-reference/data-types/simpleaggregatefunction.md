@@ -44,34 +44,35 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 * `aggregate_function_name` — имя агрегатной функции.
 * `Type` — типы аргументов агрегатной функции.
 
+
 ## Поддерживаемые функции {#supported-functions}
 
 Поддерживаются следующие агрегатные функции:
 
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`any_respect_nulls`](/sql-reference/aggregate-functions/reference/any)
-- [`anyLast`](/sql-reference/aggregate-functions/reference/anylast)
-- [`anyLast_respect_nulls`](/sql-reference/aggregate-functions/reference/anylast)
-- [`min`](/sql-reference/aggregate-functions/reference/min)
-- [`max`](/sql-reference/aggregate-functions/reference/max)
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`sumWithOverflow`](/sql-reference/aggregate-functions/reference/sumwithoverflow)
-- [`groupBitAnd`](/sql-reference/aggregate-functions/reference/groupbitand)
-- [`groupBitOr`](/sql-reference/aggregate-functions/reference/groupbitor)
-- [`groupBitXor`](/sql-reference/aggregate-functions/reference/groupbitxor)
-- [`groupArrayArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`groupUniqArrayArray`](../../sql-reference/aggregate-functions/reference/groupuniqarray.md)
+- [`any`](/sql-reference/aggregate-functions/reference/any.md)
+- [`any_respect_nulls`](/sql-reference/aggregate-functions/reference/any.md)
+- [`anyLast`](/sql-reference/aggregate-functions/reference/anyLast.md)
+- [`anyLast_respect_nulls`](/sql-reference/aggregate-functions/reference/anyLast.md)
+- [`min`](/sql-reference/aggregate-functions/reference/min.md)
+- [`max`](/sql-reference/aggregate-functions/reference/max.md)
+- [`sum`](/sql-reference/aggregate-functions/reference/sum.md)
+- [`sumWithOverflow`](/sql-reference/aggregate-functions/reference/sumWithOverflow.md)
+- [`groupBitAnd`](/sql-reference/aggregate-functions/reference/groupBitAnd.md)
+- [`groupBitOr`](/sql-reference/aggregate-functions/reference/groupBitOr.md)
+- [`groupBitXor`](/sql-reference/aggregate-functions/reference/groupBitXor.md)
+- [`groupArrayArray`](/sql-reference/aggregate-functions/reference/groupArrayArray.md)
+- [`groupUniqArrayArray`](../../sql-reference/aggregate-functions/reference/groupUniqArray.md)
 - [`groupUniqArrayArrayMap`](../../sql-reference/aggregate-functions/combinators#-map)
-- [`sumMap`](/sql-reference/aggregate-functions/reference/summap)
-- [`minMap`](/sql-reference/aggregate-functions/reference/minmap)
-- [`maxMap`](/sql-reference/aggregate-functions/reference/maxmap)
+- [`sumMap`](/sql-reference/aggregate-functions/reference/sumMap.md)
+- [`minMap`](/sql-reference/aggregate-functions/reference/minMap.md)
+- [`maxMap`](/sql-reference/aggregate-functions/reference/maxMap.md)
 
 :::note
 Значения типа `SimpleAggregateFunction(func, Type)` имеют тот же тип `Type`, 
-поэтому в отличие от типа `AggregateFunction` нет необходимости применять 
+поэтому, в отличие от типа `AggregateFunction`, нет необходимости применять 
 комбинаторы `-Merge`/`-State`.
 
-Тип `SimpleAggregateFunction` обеспечивает более высокую производительность, чем `AggregateFunction`
+Тип `SimpleAggregateFunction` обеспечивает более высокую производительность, чем тип `AggregateFunction`
 для одних и тех же агрегатных функций.
 :::
 
@@ -80,6 +81,7 @@ SimpleAggregateFunction(aggregate_function_name, types_of_arguments...)
 ```sql
 CREATE TABLE simple (id UInt64, val SimpleAggregateFunction(sum, Double)) ENGINE=AggregatingMergeTree ORDER BY id;
 ```
+
 
 ## Связанные материалы {#related-content}
 

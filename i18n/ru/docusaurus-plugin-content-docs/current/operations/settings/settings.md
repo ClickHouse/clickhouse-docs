@@ -487,8 +487,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
-<BetaBadge/>
-
 **Псевдонимы**: `enable_parallel_replicas`
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1216,6 +1214,8 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
 
+<ExperimentalBadge/>
+
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
@@ -1224,11 +1224,12 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 ## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
 
+<ExperimentalBadge/>
+
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]}/>
 
-🚨 КРАЙНЕ ЭКСПЕРИМЕНТАЛЬНАЯ НАСТРОЙКА 🚨
 Включает автоматическое переключение на выполнение запросов с параллельными репликами на основе собранной статистики. Требует включения `parallel_replicas_local_plan` и указания `cluster_for_parallel_replicas`.
 0 — отключено, 1 — включено, 2 — включен только сбор статистики (переключение на выполнение с параллельными репликами отключено).
 
@@ -1782,12 +1783,11 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 - 1 - переписывать DDL-запросы на использование *ReplicatedMergeTree
 - 2 - переписывать DDL-запросы на использование SharedMergeTree
 - 3 - переписывать DDL-запросы на использование SharedMergeTree, за исключением случаев, когда явно указан переданный remote-диск
+- 4 - то же, что в 3, плюс дополнительно использовать Alias вместо Distributed
 
 UInt64, чтобы минимизировать публичную часть
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 Кластер для сегмента, в котором расположен текущий сервер
 
@@ -2643,6 +2643,14 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "Параметр для ClickHouse Cloud"}]}]}/>
 
 Действует только в ClickHouse Cloud. Получать метрики только из текущей зоны доступности в system.distributed_cache_metrics и system.distributed_cache_events.
+
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "Новая настройка."}]}]}/>
+
+Действует только в ClickHouse Cloud. Настройка, используемая только в CI-тестах — имя файлового кэша, используемого в распределённом кэше.
 
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
@@ -4825,6 +4833,14 @@ Expression ((Projection + Before ORDER BY))
 
 Игнорирует предложение ON CLUSTER в запросах управления реплицируемыми объектами доступа.
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "Добавлен новый параметр для игнорирования предложения ON CLUSTER в DDL-запросах к реплицируемой базе данных."}]}]}/>
+
+Всегда игнорирует предложение ON CLUSTER в DDL-запросах к реплицируемым базам данных.
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5359,6 +5375,26 @@ ClickHouse всегда пытается использовать JOIN `partial_
 
 Количество хеш-функций в фильтре Блума, используемом как runtime-фильтр для операций JOIN (см. настройку enable_join_runtime_filters).
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "Новая настройка"}]}]}/>
+
+Если доля установленных битов в runtime bloom-фильтре превышает заданное значение, фильтр полностью отключается для снижения накладных расходов.
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+Количество блоков, которые пропускаются до попытки динамически снова включить runtime-фильтр, ранее отключённый из-за низкой эффективности фильтрации.
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5368,6 +5404,16 @@ ClickHouse всегда пытается использовать JOIN `partial_
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "Новая настройка"}]}]}/>
 
 Максимальное количество элементов в runtime-фильтре, которые хранятся как есть в виде множества; при превышении этого порога фильтр переключается на Bloom-фильтр.
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "Новая настройка"}]}]}/>
+
+Если отношение количества прошедших строк к количеству проверенных строк больше этого порога, runtime-фильтр считается неэффективным и отключается на следующие `join_runtime_filter_blocks_to_skip_before_reenabling` блоки для снижения накладных расходов.
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 
@@ -8628,8 +8674,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "Если значение равно true, подзапрос для IN будет выполняться на каждой ведомой реплике"}]}]}/>
@@ -8645,8 +8689,6 @@ FROM fuse_tbl
 Разрешает использование materialized view с параллельными репликами
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8712,15 +8754,11 @@ FROM fuse_tbl
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 Если значение установлено в `true`, ClickHouse также будет использовать алгоритм параллельных реплик для нереплицируемых таблиц MergeTree.
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8730,8 +8768,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами. В настоящее время отключён из-за проблем с производительностью"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами. В настоящее время отключён из-за проблем с производительностью"}]}]}/>
@@ -8739,8 +8775,6 @@ FROM fuse_tbl
 Использовать локальный конвейер при выполнении распределённой операции INSERT SELECT с параллельными репликами
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8750,8 +8784,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "Значение для этого SETTING теперь определяется автоматически"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "Добавлен новый SETTING для управления размером сегмента в новой реализации координатора параллельных реплик"}]}]}/>
@@ -8760,15 +8792,11 @@ FROM fuse_tbl
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-Ограничивает число реплик, используемых в запросе, значением (оцениваемое число строк для чтения / min_number_of_rows_per_replica). Максимальное число по-прежнему ограничено параметром `max_parallel_replicas`.
+Ограничивает число реплик, используемых в запросе, значением (оценочное количество строк для чтения / min_number_of_rows_per_replica). Максимальное число по-прежнему ограничено параметром `max_parallel_replicas`.
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8778,8 +8806,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Параллельные реплики поддерживаются только при включённом анализаторе"}]}]}/>
@@ -8788,8 +8814,6 @@ FROM fuse_tbl
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "Если установлено значение true, JOIN может быть выполнен с использованием алгоритма параллельных реплик, и все хранилища правой части JOIN являются *MergeTree, будет использован локальный JOIN вместо GLOBAL JOIN."}]}]}/>
@@ -8797,8 +8821,6 @@ FROM fuse_tbl
 Если установлено значение true, JOIN может быть выполнен с использованием алгоритма параллельных реплик, и все хранилища правой части JOIN являются *MergeTree, будет использован локальный JOIN вместо GLOBAL JOIN.
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11055,6 +11077,17 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 - 1 — трассировка событий профиля включена.
 - 0 — трассировка событий профиля отключена.
+
+## trace_profile_events_list {#trace_profile_events_list} 
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting"}]}]}/>
+
+Когда настройка `trace_profile_events` включена, с помощью этого параметра можно ограничить отслеживаемые события указанным списком имён, разделённых запятыми.
+Если `trace_profile_events_list` — пустая строка (по умолчанию), отслеживаются все события профилирования.
+
+Пример значения: 'DiskS3ReadMicroseconds,DiskS3ReadRequestsCount,SelectQueryTimeMicroseconds,ReadBufferFromS3Bytes'
+
+Использование этой настройки позволяет более точно собирать данные для большого количества запросов, потому что в противном случае огромный объём событий может переполнить внутреннюю очередь системного журнала, и часть из них будет отброшена.
 
 ## transfer_overflow_mode {#transfer_overflow_mode} 
 

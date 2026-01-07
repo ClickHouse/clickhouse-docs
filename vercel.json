@@ -3468,7 +3468,7 @@
     },
     {
       "source": "/docs/faq/troubleshooting",
-      "destination": "/docs/knowledge-base/unable-to-access-cloud-service",
+      "destination": "/docs/knowledgebase/unable-to-access-cloud-service",
       "permanent": true
     },
     {
@@ -3699,6 +3699,16 @@
     {
       "source": "/docs/about-us/faq",
       "destination": "/docs/concepts/faq",
+      "permanent": true
+    },
+    {
+      "source": "/docs/engines/table-engines/mergetree-family/invertedindexes",
+      "destination": "/docs/engines/table-engines/mergetree-family/textindexes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/sre/configuring-ssl",
+      "destination": "/docs/guides/sre/tls/configuring-tls",
       "permanent": true
     }
   ]

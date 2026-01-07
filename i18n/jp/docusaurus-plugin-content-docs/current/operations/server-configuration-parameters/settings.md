@@ -335,6 +335,26 @@ MergeTree エンジンを使用するテーブルに対して、バックグラ�
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+さまざまなバックグラウンドプールで実行されるすべてのバックグラウンドタスクに関する情報が格納されています。
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## background_schedule_pool_max_parallel_tasks_per_type_ratio {#background_schedule_pool_max_parallel_tasks_per_type_ratio} 
 
 <SettingsInfoBlock type="Float" default_value="0.8" />プール内のスレッドのうち、同一タイプのタスクを同時に実行できる最大比率を指定します。
@@ -1890,6 +1910,7 @@ listen を試みている間に IPv6 または IPv4 ネットワークが使用�
 | `log`                  | ログファイルへのパス。                                                                                                                                             |
 | `errorlog`             | エラーログファイルへのパス。                                                                                                                                       |
 | `size`                 | ローテーションポリシー: ログファイルの最大サイズ（バイト単位）。ログファイルサイズがこの閾値を超えると、名前が変更されてアーカイブされ、新しいログファイルが作成されます。 |
+| `rotation`             | ローテーションポリシー: ログファイルをいつローテーションするかを制御します。サイズ、時間、またはその両方の組み合わせに基づいてローテーションできます。例: 100M, daily, 100M,daily。ログファイルが指定サイズを超えるか、指定された時間間隔に達すると、名前が変更されてアーカイブされ、新しいログファイルが作成されます。 |
 | `count`                | ローテーションポリシー: 保持される ClickHouse の履歴ログファイル数の上限。                                                                                        |
 | `stream_compress`      | LZ4 を使用してログメッセージを圧縮します。有効化するには `1` または `true` を設定します。                                                                           |
 | `console`              | コンソールへのログ出力を有効化します。有効化するには `1` または `true` を設定します。ClickHouse がデーモンモードで動作していない場合のデフォルトは `1`、それ以外は `0` です。 |

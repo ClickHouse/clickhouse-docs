@@ -485,8 +485,6 @@ MaterializedPostgreSQL テーブルエンジンの使用を許可します。こ
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
 
-<BetaBadge/>
-
 **エイリアス**: `enable_parallel_replicas`
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1214,6 +1212,8 @@ true に設定すると、非同期挿入に対して適応的なビジータイ
 
 ## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
 
+<ExperimentalBadge/>
+
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
@@ -1222,11 +1222,12 @@ true に設定すると、非同期挿入に対して適応的なビジータイ
 
 ## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
 
+<ExperimentalBadge/>
+
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-🚨 非常に実験的な機能です 🚨
 収集された統計に基づき、並列レプリカでの実行への自動切り替えを有効にします。`parallel_replicas_local_plan` を有効にし、`cluster_for_parallel_replicas` を指定する必要があります。
 0 - 無効、1 - 有効、2 - 統計の収集のみを有効化（並列レプリカでの実行への切り替えは無効）。
 
@@ -1780,12 +1781,11 @@ Cloud 上で許可されるエンジンファミリー。
 - 1 - DDL を *ReplicatedMergeTree を使用するように書き換える
 - 2 - DDL を SharedMergeTree を使用するように書き換える
 - 3 - 明示的に指定された remote disk がある場合を除き、DDL を SharedMergeTree を使用するように書き換える
+- 4 - 3 と同じだが、さらに Distributed の代わりに Alias を使用する
 
 公開される部分を最小限に抑えるための UInt64
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 現在のサーバーが配置されている分片用のクラスター
 
@@ -2642,6 +2642,14 @@ ClickHouse Cloud でのみ有効です。未読みのデータがある場合に
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "1"},{"label": "ClickHouse Cloud 向けの設定"}]}]}/>
 
 ClickHouse Cloud でのみ有効です。system.distributed_cache_metrics および system.distributed_cache_events から、現在のアベイラビリティゾーンに関するメトリクスのみを取得します。
+
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "新しい設定。"}]}]}/>
+
+ClickHouse Cloud でのみ有効です。CI テスト専用の設定で、distributed cache で使用する filesystem cache 名を指定します。
 
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
@@ -4825,6 +4833,14 @@ MergeTree ファミリーのテーブルに対応しています。
 
 レプリケートされたアクセスエンティティを管理するクエリにおいて、ON CLUSTER 句を無視します。
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "レプリケーテッドデータベースを使用するDDLクエリで、ON CLUSTER句を無視する新しい設定を追加。"}]}]}/>
+
+レプリケーテッドデータベースを使用するDDLクエリでは、ON CLUSTER句を常に無視します。
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5360,6 +5376,26 @@ JOIN のランタイムフィルターとして使用される Bloom フィル�
 
 JOIN のランタイムフィルターとして使用する Bloom フィルターで用いるハッシュ関数の数です（enable_join_runtime_filters 設定を参照）。
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+ランタイム Bloom フィルター内のセットビット数がこの割合を超えた場合、オーバーヘッドを削減するためにそのフィルターは完全に無効化されます。
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+フィルタリング率が低いために以前に無効化されたランタイムフィルタを、動的に再度有効化しようとする前にスキップするブロック数。
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5369,6 +5405,16 @@ JOIN のランタイムフィルターとして使用する Bloom フィルタ�
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "新しい設定"}]}]}/>
 
 ランタイムフィルタ内で、set としてそのまま保存される要素数の上限。このしきい値を超えると、Bloom フィルタに切り替わります。
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+通過した行数と検査した行数の比率がこのしきい値を超える場合、そのランタイムフィルターは性能が低いとみなされ、オーバーヘッドを削減するために、次の `join_runtime_filter_blocks_to_skip_before_reenabling` 個のブロックに対しては無効化されます。
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 
@@ -8596,8 +8642,6 @@ CAP_SYS_NICE ケーパビリティが必要で、ない場合は何も行われ�
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "true の場合、IN 句のサブクエリがすべてのフォロワー レプリカで実行されます"}]}]}/>
@@ -8613,8 +8657,6 @@ true の場合、IN 句のサブクエリがすべてのフォロワー レプ�
 parallel replicas で materialized view を使用できるようにする
 
 ## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8680,15 +8722,11 @@ parallel replicas を用いたクエリ実行時に、リモートレプリカ�
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 true の場合、ClickHouse はレプリケーションされていない MergeTree テーブルに対しても parallel replicas アルゴリズムを適用します
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8698,8 +8736,6 @@ true の場合、ClickHouse はレプリケーションされていない MergeT
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します。現在はパフォーマンス上の問題により無効になっています"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します。現在はパフォーマンス上の問題により無効になっています"}]}]}/>
@@ -8707,8 +8743,6 @@ true の場合、ClickHouse はレプリケーションされていない MergeT
 parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカルパイプラインを使用します
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8718,8 +8752,6 @@ parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカ�
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "この SETTING の値は現在自動的に決定されます"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "新しい parallel replicas coordinator 実装においてセグメントサイズを制御するための新しい SETTING を追加"}]}]}/>
@@ -8728,15 +8760,11 @@ parallel replicas 機能を用いた分散 INSERT SELECT 実行時にローカ�
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 クエリで使用されるレプリカの数を (読み取りが見込まれる行数 / min_number_of_rows_per_replica) に制限します。上限は引き続き 'max_parallel_replicas' によって決まります。
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8746,8 +8774,6 @@ parallel replicas で使用するカスタムキーに基づいて適用する�
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Parallel replicas は analyzer が有効な場合にのみサポートされます"}]}]}/>
@@ -8756,8 +8782,6 @@ Parallel replicas を使用するには analyzer を有効にする必要があ�
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "この設定が true の場合で、JOIN を parallel replicas アルゴリズムで実行でき、右側の JOIN 部分のすべてのストレージが *MergeTree であるときは、GLOBAL JOIN の代わりにローカル JOIN が使用されます。"}]}]}/>
@@ -8765,8 +8789,6 @@ Parallel replicas を使用するには analyzer を有効にする必要があ�
 この設定が true の場合で、JOIN を parallel replicas アルゴリズムで実行でき、右側の JOIN 部分のすべてのストレージが *MergeTree であるときは、GLOBAL JOIN の代わりにローカル JOIN が使用されます。
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -11017,6 +11039,17 @@ HAVING 句が存在する場合や、max_rows_to_group_by と group_by_overflow_
 
 - 1 — プロファイルイベントのトレースが有効。
 - 0 — プロファイルイベントのトレースが無効。
+
+## trace_profile_events_list {#trace_profile_events_list} 
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "新しい設定"}]}]}/>
+
+`trace_profile_events` 設定が有効な場合、トレース対象のイベントを、カンマ区切りで指定した名前のリストに制限します。
+`trace_profile_events_list` が空文字列（デフォルト）の場合、すべてのプロファイルイベントをトレースします。
+
+例: 'DiskS3ReadMicroseconds,DiskS3ReadRequestsCount,SelectQueryTimeMicroseconds,ReadBufferFromS3Bytes'
+
+この設定を使用すると、大量のクエリに対してより正確にデータを収集できます。そうしない場合、イベント数が非常に多くなり、内部の system ログキューがあふれて一部のイベントがドロップされる可能性があります。
 
 ## transfer_overflow_mode {#transfer_overflow_mode} 
 

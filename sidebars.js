@@ -711,6 +711,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mysql/source/rds',
                 'integrations/data-ingestion/clickpipes/mysql/source/aurora',
                 'integrations/data-ingestion/clickpipes/mysql/source/gcp',
+                'integrations/data-ingestion/clickpipes/mysql/source/azure-flexible-server-mysql',
                 'integrations/data-ingestion/clickpipes/mysql/source/generic',
                 'integrations/data-ingestion/clickpipes/mysql/source/rds_maria',
                 'integrations/data-ingestion/clickpipes/mysql/source/generic_maria',
@@ -738,6 +739,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/pause_and_resume',
                 'integrations/data-ingestion/clickpipes/mongodb/table_resync',
                 'integrations/data-ingestion/clickpipes/mongodb/resync',
+                'integrations/data-ingestion/clickpipes/mongodb/controlling_sync',
               ],
             },
             {

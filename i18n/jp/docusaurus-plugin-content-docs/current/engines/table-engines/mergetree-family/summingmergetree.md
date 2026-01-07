@@ -30,6 +30,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 リクエストパラメータの説明については、[リクエストの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
+
 ### SummingMergeTree のパラメータ {#parameters-of-summingmergetree}
 
 #### カラム {#columns}
@@ -53,15 +54,15 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 (
-name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-...
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
 ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
 ```
 
   `columns` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
-  * `columns` — 値を集計（合計）するカラム名を含むタプルです。省略可能なパラメータです。詳細は上記を参照してください。
+- `columns` — 値を集計（合計）するカラム名を含むタプルです。省略可能なパラメータです。詳細は上記を参照してください。
 </details>
 
 ## 使用例 {#usage-example}
@@ -96,6 +97,7 @@ SELECT key, sum(value) FROM summtt GROUP BY key
 │   1 │          3 │
 └─────┴────────────┘
 ```
+
 
 ## データ処理 {#data-processing}
 
@@ -184,9 +186,10 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
-データを取得する際は、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 関数を使用します。
+データを取得する際には、`Map` を集計するために [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) 関数を使用します。
 
-ネストされたデータ構造の場合、集計対象のカラムのタプル内で、その構造に含まれるカラムを個別に指定する必要はありません。
+ネストしたデータ構造の場合は、合計対象カラムのタプル内で、その構造内のカラムを個別に指定する必要はありません。
+
 
 ## 関連コンテンツ {#related-content}
 

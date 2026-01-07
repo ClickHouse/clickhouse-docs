@@ -91,18 +91,18 @@ ClickHouse でも、テーブルに主キーを設定できます。BigQuery と
 
 テーブルのプライマリキー列の値から作成されるプライマリインデックスに加えて、ClickHouse ではプライマリキー以外の列にもセカンダリインデックスを作成できます。ClickHouse には複数種類のセカンダリインデックスがあり、それぞれ異なるタイプのクエリに適しています。
 
-- **Bloom Filter インデックス**:
+- [**Bloom Filter インデックス**](/engines/table-engines/mergetree-family/mergetree#bloom-filter):
   - 等価条件（例: =、IN）を含むクエリの高速化に使用されます。
   - 確率的データ構造を用いて、データブロック内に値が存在するかどうかを判定します。
-- **Token Bloom Filter インデックス**:
+- [**Token Bloom Filter インデックス**](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter):
   - Bloom Filter インデックスと似ていますが、トークン化された文字列に対して使用され、全文検索クエリに適しています。
-- **Min-Max インデックス**:
+- [**Min-Max インデックス**](/engines/table-engines/mergetree-family/mergetree#minmax):
   - 各データパートごとに、その列の最小値と最大値を保持します。
   - 指定された範囲に含まれないデータパートの読み取りをスキップするのに役立ちます。
 
 ## 検索インデックス {#search-indexes}
 
-BigQuery の [search indexes](https://cloud.google.com/bigquery/docs/search-index) と同様に、ClickHouse のテーブルでは、文字列値を持つカラムに対して [full-text indexes](/engines/table-engines/mergetree-family/invertedindexes) を作成できます。
+BigQuery の [search indexes](https://cloud.google.com/bigquery/docs/search-index) と同様に、ClickHouse のテーブルでは、文字列値を持つカラムに対して [full-text indexes](/engines/table-engines/mergetree-family/textindexes) を作成できます。
 
 ## ベクトルインデックス {#vector-indexes}
 

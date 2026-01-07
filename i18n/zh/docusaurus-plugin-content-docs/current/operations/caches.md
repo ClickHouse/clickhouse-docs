@@ -25,7 +25,7 @@ doc_type: 'reference'
 * [Regexp](/interfaces/formats/Regexp) 缓存。
 * 已编译表达式缓存。
 * [向量相似度索引](../engines/table-engines/mergetree-family/annindexes.md)缓存。
-* [文本索引](../engines/table-engines/mergetree-family/invertedindexes.md#caching)缓存。
+* [文本索引](../engines/table-engines/mergetree-family/textindexes.md#caching)缓存。
 * [Avro 格式](/interfaces/formats/Avro) Schema 缓存。
 * [字典](../sql-reference/dictionaries/index.md)数据缓存。
 * Schema 推断缓存。

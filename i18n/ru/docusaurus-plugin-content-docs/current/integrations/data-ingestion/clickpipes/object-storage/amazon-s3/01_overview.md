@@ -158,6 +158,24 @@ S3 ClickPipe поддерживает как общедоступные, так 
 
 Воспользуйтесь [этим руководством](/cloud/data-sources/secure-s3), чтобы [создать роль](/cloud/data-sources/secure-s3#option-2-manually-create-iam-role) с необходимой политикой доверия для доступа к S3. Затем укажите ARN роли IAM в поле `IAM role ARN`.
 
+### Сетевой доступ {#network-access}
+
+S3 ClickPipes используют два отдельных сетевых маршрута для обнаружения метаданных и ингестии данных: сервис ClickPipes и сервис ClickHouse Cloud соответственно. Если вы хотите настроить дополнительный уровень сетевой безопасности (например, для целей соответствия требованиям), сетевой доступ **должен быть настроен для обоих маршрутов**.
+
+* Для **контроля доступа на основе IP-адресов** политика корзины S3 должна разрешать статические IP-адреса для региона сервиса ClickPipes, перечисленные [здесь](/integrations/clickpipes#list-of-static-ips), а также [статические IP-адреса](/manage/data-sources/cloud-endpoints-api) для сервиса ClickHouse Cloud. Чтобы получить статические IP-адреса для вашего региона ClickHouse Cloud, откройте терминал и выполните:
+
+    ```bash
+    # Замените <your-region> на ваш регион ClickHouse Cloud
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .egress_ips[]'
+    ```
+
+* Для **контроля доступа на основе конечных точек VPC (VPC endpoint)** корзина S3 должна находиться в том же регионе, что и сервис ClickHouse Cloud, и ограничивать операции `GetObject` идентификаторами конечных точек VPC сервиса ClickHouse Cloud. Чтобы получить конечные точки VPC для вашего региона ClickHouse Cloud, откройте терминал и выполните:
+
+    ```bash
+    # Замените <your-region> на ваш регион ClickHouse Cloud
+    curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+    ```
+
 ## Расширенные настройки {#advanced-settings}
 
 ClickPipes предоставляет оптимальные значения по умолчанию, которые удовлетворяют требованиям большинства сценариев. Если вашему сценарию требуется дополнительная настройка, вы можете изменить следующие параметры:

@@ -100,6 +100,26 @@
 ```
 
 
+## background&#95;schedule&#95;pool&#95;log {#background_schedule_pool_log}
+
+包含通过各类后台池执行的所有后台任务的相关信息。
+
+```xml
+<background_schedule_pool_log>
+    <database>system</database>
+    <table>background_schedule_pool_log</table>
+    <partition_by>toYYYYMM(event_date)</partition_by>
+    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    <max_size_rows>1048576</max_size_rows>
+    <reserved_size_rows>8192</reserved_size_rows>
+    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
+    <flush_on_crash>false</flush_on_crash>
+    <!-- Only tasks longer than duration_threshold_milliseconds will be logged. Zero means log everything -->
+    <duration_threshold_milliseconds>0</duration_threshold_milliseconds>
+</background_schedule_pool_log>
+```
+
+
 ## bcrypt&#95;workfactor {#bcrypt_workfactor}
 
 用于 `bcrypt_password` 认证类型的工作因子，该类型使用 [Bcrypt 算法](https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/)。
@@ -897,10 +917,11 @@ ClickHouse 支持在无需同时停止所有副本以更新其配置的情况下
 
 | Key                    | Description                                                                                                                                                        |
 |------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `level`                | 日志级别。可接受的值：`none`（关闭日志），`fatal`，`critical`，`error`，`warning`，`notice`，`information`，`debug`，`trace`，`test`                 |
+| `level`                | 日志级别。可接受的值：`none`（关闭日志）、`fatal`、`critical`、`error`、`warning`、`notice`、`information`、`debug`、`trace`、`test`                 |
 | `log`                  | 日志文件的路径。                                                                                                                                          |
 | `errorlog`             | 错误日志文件的路径。                                                                                                                                    |
 | `size`                 | 轮转策略：日志文件的最大大小（字节数）。一旦日志文件大小超过该阈值，它会被重命名并归档，然后创建新的日志文件。 |
+| `rotation`             | 轮转策略：控制何时轮转日志文件。轮转可以基于大小、时间或两者的组合。例如：`100M`、`daily`、`100M,daily`。一旦日志文件超过指定大小或达到指定时间间隔，它会被重命名并归档，然后创建新的日志文件。 |
 | `count`                | 轮转策略：最多保留的历史日志文件数量。                                                                                        |
 | `stream_compress`      | 使用 LZ4 压缩日志消息。设置为 `1` 或 `true` 以启用。                                                                                                   |
 | `console`              | 启用日志输出到控制台。设置为 `1` 或 `true` 以启用。如果 ClickHouse 不以守护进程模式运行，默认值为 `1`，否则为 `0`。                            |
