@@ -16,6 +16,7 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
+
 # RDS Postgres 数据源配置指南 {#rds-postgres-source-setup-guide}
 
 ## 支持的 Postgres 版本 {#supported-postgres-versions}
@@ -65,9 +66,10 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
 
+
 ## 配置数据库用户 {#configure-database-user}
 
-以管理员用户身份连接到您的 RDS Postgres 实例，并执行以下命令：
+以管理员身份连接到你的 RDS Postgres 实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
@@ -75,7 +77,7 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. 授予 schema 权限。以下示例展示了为 `public` schema 授权的命令。对于每个希望复制的 schema，重复执行这些命令：
+2. 为你在上一步创建的用户授予 schema 级别的只读访问权限。以下示例展示了对 `public` schema 的权限配置。对于每个包含你希望复制的表的 schema，重复执行这些命令：
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,17 +85,31 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. 授予复制权限：
+3. 为该用户授予复制权限：
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. 为复制创建一个 publication（发布集）：
+4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。我们强烈建议仅在该 publication 中包含所需的表，以避免额外的性能开销。
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   任何包含在 publication 中的表都必须定义 **primary key（主键）**，_或者_ 将其 **replica identity** 配置为 `FULL`。关于作用域设置的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
+
+   - 为特定表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 为特定 schema 中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，之后会被用来摄取复制流。
 
 ## 配置网络访问 {#configure-network-access}
 
@@ -110,6 +126,7 @@ postgres=> SHOW wal_sender_timeout ;
 要通过私有网络连接到 RDS 实例，可以使用 AWS PrivateLink。请按照我们的[适用于 ClickPipes 的 AWS PrivateLink 配置指南](/knowledgebase/aws-privatelink-setup-for-clickpipes)来完成连接设置。
 
 ### RDS Proxy 的变通方案 {#workarounds-for-rds-proxy}
+
 RDS Proxy 不支持逻辑复制类型的连接。如果你在 RDS 中使用动态 IP 地址且无法使用 DNS 名称或 Lambda 函数，可以考虑以下替代方案：
 
 1. 使用 cron 作业，定期解析 RDS 端点的 IP，并在发生变化时更新 NLB。
