@@ -10,7 +10,6 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Разработка на ClickHouse с Moose OLAP {#developing-on-clickhouse-with-moose-olap}
 
 <CommunityMaintainedBadge/>
@@ -57,10 +56,10 @@ bash -i <(curl -fsSL https://fiveonefour.com/install.sh) moose
 **Важно**: ваш продуктивный ClickHouse останется нетронутым. Это только инициализирует новый проект Moose OLAP с моделями данных, построенными на основе ваших таблиц ClickHouse.
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language typescript
 
-# Python {#python}
+# Python
 moose init my-project --from-remote <YOUR_CLICKHOUSE_CONNECTION_STRING> --language python
 ```
 
@@ -75,21 +74,21 @@ https://username:password@host:port/?database=database_name
 У вас ещё не запущен ClickHouse? Используйте ClickHouse Playground, чтобы опробовать Moose OLAP!
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language typescript
 
-# Python {#python}
+# Python
 moose init my-project --from-remote https://explorer:@play.clickhouse.com:443/?database=default --language python
 ```
 
 ### Установите зависимости {#step-3-install-dependencies}
 
 ```bash
-# TypeScript {#typescript}
+# TypeScript
 cd my-project
 npm install
 
-# Python {#python}
+# Python
 cd my-project
 python3 -m venv .venv
 source .venv/bin/activate

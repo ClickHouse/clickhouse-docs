@@ -7,21 +7,15 @@ title: 'Amazon Redshift SQL 変換ガイド'
 doc_type: 'reference'
 ---
 
-
-
 # Amazon Redshift SQL 変換ガイド {#amazon-redshift-sql-translation-guide}
-
-
 
 ## データ型 {#data-types}
 
 ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHouse がより幅広く、かつ制約の少ない型を提供していることにすぐ気付くでしょう。Redshift では、可変長の場合であってもユーザーは文字列の長さを指定する必要がありますが、ClickHouse は文字列をエンコードせずバイト列として格納することで、この制限と負担をユーザーから取り除きます。そのため、ClickHouse の `String` 型には長さの上限や長さ指定の要件がありません。
 
-さらに、ユーザーは Redshift には第一級のデータ型としては存在しない（`SUPER` を使用して配列や構造体を模倣することは可能なものの、多くのユーザーの不満の原因となっている）`Array`、`Tuple`、`Enum` を活用できます。加えて ClickHouse では、集約状態をクエリ時、あるいはテーブル内に保持することも可能です。これにより、通常はマテリアライズドビューを使用してデータを事前集約でき、よく実行されるクエリのパフォーマンスを劇的に向上させることができます。
+さらに、Redshift には第一級のデータ型としては存在しない（`SUPER` を使用して配列や構造体を模倣することは可能なものの、多くのユーザーの不満の原因となっている）`Array`、`Tuple`、`Enum` を活用できます。加えて ClickHouse では、集約状態をクエリ時、あるいはテーブル内に保持することも可能です。これにより、通常はマテリアライズドビューを使用してデータを事前集約でき、よく実行されるクエリのパフォーマンスを劇的に向上させることができます。
 
 以下では、各 Redshift 型に対して同等の ClickHouse 型を対応付けて示します。
-
-
 
 | Redshift                                                                                                                             | ClickHouse                                                                                                                                                                                                                                       |
 | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -45,12 +39,8 @@ ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHou
 | [`TIMETZ`](https://docs.aws.amazon.com/redshift/latest/dg/r_Datetime_types.html#r_Datetime_types-timetz)                             | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64)                                                                                                                                           |
 | [`VARBYTE`](https://docs.aws.amazon.com/redshift/latest/dg/r_VARBYTE_type.html) **                                                   | [`String`](/sql-reference/data-types/string) を [`Bit`](/sql-reference/functions/bit-functions) 関数および [Encoding](/sql-reference/functions/encoding-functions/#hex) 関数と組み合わせて使用する                                                                  |
 
-
-
 <sub><span>*</span> ClickHouse は、より広い範囲を持つ符号なし整数、すなわち <a href='http://clickhouse.com/docs/sql-reference/data-types/int-uint'>`UInt8`、`UInt32`、`UInt32`、`UInt64`</a> もサポートしています。</sub><br />
-<sub><span>**</span>ClickHouse の String 型はデフォルトでは長さが無制限ですが、<a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>Constraints</a> を使用して特定の長さに制約できます。</sub>
-
-
+<sub><span>**</span>ClickHouse の String 型はデフォルトでは長さが無制限ですが、<a href='http://clickhouse.com/docs/sql-reference/statements/create/table#constraints'>Constraints</a> を使用して特定の長さに制限できます。</sub>
 
 ## DDL 構文 {#compression}
 
@@ -85,7 +75,7 @@ Redshift はソートキー用のいくつかの便利な機能をサポート�
 [projections](/data-modeling/projections) をサポートしており、
 セットアップはやや異なりますが、同様の結果を実現します。
 
-ユーザーは「primary key」という概念が ClickHouse と Redshift で
+「primary key」という概念が ClickHouse と Redshift で
 異なるものを表していることを理解しておく必要があります。Redshift における primary key は、
 制約を強制することを意図した、従来の RDBMS の概念に似ています。しかし、Redshift では
 これらは厳密には強制されず、代わりにクエリプランナーおよびノード間でのデータ分散のための

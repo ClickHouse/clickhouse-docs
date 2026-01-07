@@ -21,7 +21,7 @@ import Image from '@theme/IdealImage';
 
 # Using Grafana and ClickHouse for Observability
 
-Grafana represents the preferred visualization tool for Observability data in ClickHouse. This is achieved using the official ClickHouse plugin for Grafana. Users can follow the installation instructions found [here](/integrations/grafana).
+Grafana represents the preferred visualization tool for Observability data in ClickHouse. This is achieved using the official ClickHouse plugin for Grafana. You can follow the installation instructions found [here](/integrations/grafana).
 
 V4 of the plugin makes logs and traces a first-class citizen in a new query builder experience. This minimizes the need for SREs to write SQL queries and simplifies SQL-based Observability, moving the needle forward for this emerging paradigm.
 Part of this has been placing OpenTelemetry (OTel) at the core of the plugin, as we believe this will be the foundation of SQL-based Observability over the coming years and how data will be collected.
@@ -31,7 +31,7 @@ Part of this has been placing OpenTelemetry (OTel) at the core of the plugin, as
 On configuring a ClickHouse datasource in Grafana, the plugin allows the user to specify a default database and table for logs and traces and whether these tables conform to the OTel schema. This allows the plugin to return the columns required for correct log and trace rendering in Grafana. If you've made changes to the default OTel schema and prefer to use your own column names, these can be specified. Usage of the default OTel column names for columns such as time (`Timestamp`), log level (`SeverityText`), or message body (`Body`) means no changes need to be made.
 
 :::note HTTP or Native
-Users can connect Grafana to ClickHouse over either the HTTP or Native protocol. The latter offers marginal performance advantages which are unlikely to be appreciable in the aggregation queries issued by Grafana users. Conversely, the HTTP protocol is typically simpler for users to proxy and introspect.
+You can connect Grafana to ClickHouse over either the HTTP or Native protocol. The latter offers marginal performance advantages which are unlikely to be appreciable in the aggregation queries issued by Grafana users. Conversely, the HTTP protocol is typically simpler for you to proxy and introspect.
 :::
 
 The Logs configuration requires a time, log level, and message column in order for logs to be rendered correctly.
@@ -40,11 +40,11 @@ The Traces configuration is slightly more complex (full list [here](/engines/tab
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-Once configured users can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
+Once configured you can navigate to [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) and begin searching logs and traces.
 
 ## Logs {#logs}
 
-If adhering to the Grafana requirements for logs, users can select `Query Type: Log` in the query builder and click `Run Query`. The query builder will formulate a query to list the logs and ensure they are rendered e.g.
+If adhering to the Grafana requirements for logs, you can select `Query Type: Log` in the query builder and click `Run Query`. The query builder will formulate a query to list the logs and ensure they are rendered e.g.
 
 ```sql
 SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as traceID FROM "default"."otel_logs" WHERE ( timestamp >= $__fromTime AND timestamp <= $__toTime ) ORDER BY timestamp DESC LIMIT 1000
@@ -52,11 +52,11 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 <Image img={observability_16} alt="Connector logs config" size="lg" border/>
 
-The query builder provides a simple means of modifying the query, avoiding the need for users to write SQL. Filtering, including finding logs containing keywords, can be performed from the query builder. Users wishing to write more complex queries can switch to the SQL editor. Provided the appropriate columns are returned, and `logs` selected as the Query Type, the results will be rendered as logs. The required columns for log rendering are listed [here](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
+The query builder provides a simple means of modifying the query, avoiding the need for you to write SQL. Filtering, including finding logs containing keywords, can be performed from the query builder. Users wishing to write more complex queries can switch to the SQL editor. Provided the appropriate columns are returned, and `logs` selected as the Query Type, the results will be rendered as logs. The required columns for log rendering are listed [here](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format).
 
 ### Logs to traces {#logs-to-traces}
 
-If logs contain trace Ids, users can benefit from being able to navigate through to a trace for a specific log line.
+If logs contain trace Ids, you can benefit from being able to navigate through to a trace for a specific log line.
 
 <Image img={observability_17} alt="Logs to traces" size="lg" border/>
 
@@ -119,7 +119,7 @@ Note how the above query uses the materialized view `otel_traces_trace_id_ts` to
 
 ### Traces to logs {#traces-to-logs}
 
-If logs contain trace ids, users can navigate from a trace to its associated logs. To view the logs click on a trace id and select `View Logs`. This issues the following query assuming default OTel columns.
+If logs contain trace ids, you can navigate from a trace to its associated logs. To view the logs click on a trace id and select `View Logs`. This issues the following query assuming default OTel columns.
 
 ```sql
 SELECT Timestamp AS "timestamp",
@@ -133,7 +133,7 @@ ORDER BY timestamp ASC LIMIT 1000
 
 ## Dashboards {#dashboards}
 
-Users can build dashboards in Grafana using the ClickHouse data source. We recommend the Grafana and ClickHouse [data source documentation](https://github.com/grafana/clickhouse-datasource) for further details, especially the [concept of macros](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros) and [variables](https://grafana.com/docs/grafana/latest/dashboards/variables/).
+You can build dashboards in Grafana using the ClickHouse data source. We recommend the Grafana and ClickHouse [data source documentation](https://github.com/grafana/clickhouse-datasource) for further details, especially the [concept of macros](https://github.com/grafana/clickhouse-datasource?tab=readme-ov-file#macros) and [variables](https://grafana.com/docs/grafana/latest/dashboards/variables/).
 
 The plugin provides several out-of-the-box dashboards, including an example dashboard, "Simple ClickHouse OTel dashboarding," for logging and tracing data conforming to the OTel specification. This requires users to conform to the default column names for OTel and can be installed from the data source configuration.
 

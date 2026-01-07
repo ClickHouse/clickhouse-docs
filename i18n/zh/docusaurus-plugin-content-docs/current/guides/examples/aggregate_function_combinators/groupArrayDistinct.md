@@ -7,18 +7,12 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-
-
 # groupArrayDistinct {#sumdistinct}
-
-
 
 ## 描述 {#description}
 
 [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器
 可以应用于 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 聚合函数，以创建一个由唯一参数值组成的数组。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -36,7 +30,6 @@ GROUP BY URLDomain
 ORDER BY URLDomain ASC
 LIMIT 20;
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)

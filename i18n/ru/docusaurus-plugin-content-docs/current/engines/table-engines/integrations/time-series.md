@@ -53,8 +53,8 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 После этого эту таблицу можно использовать со следующими протоколами (порт должен быть указан в конфигурации сервера):
 
-* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](/interfaces/prometheus#remote-write)
+* [prometheus remote-read](/interfaces/prometheus#remote-read)
 
 
 ## Целевые таблицы {#target-tables}
@@ -99,11 +99,9 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 ### Таблица metrics {#metrics-table}
 
-Таблица _metrics_ содержит информацию о собираемых метриках, типах этих метрик и их описаниях.
+Таблица _metrics_ содержит сведения о собираемых метриках, их типах и описаниях.
 
-Таблица _metrics_ должна иметь столбцы:
-
-
+Таблица _metrics_ должна содержать следующие столбцы:
 
 | Имя | Обязательный? | Тип по умолчанию | Возможные типы | Описание |
 |---|---|---|---|---|
@@ -115,8 +113,6 @@ CREATE TABLE my_table ENGINE=TimeSeries
 Любая строка, вставленная в таблицу `TimeSeries`, фактически будет сохранена в этих трёх целевых таблицах.
 Таблица `TimeSeries` содержит все столбцы из таблиц [data](#data-table), [tags](#tags-table), [metrics](#metrics-table).
 
-
-
 ## Создание {#creation}
 
 Существует несколько способов создать таблицу с движком `TimeSeries`.
@@ -126,7 +122,7 @@ CREATE TABLE my_table ENGINE=TimeSeries
 CREATE TABLE my_table ENGINE=TimeSeries
 ```
 
-будет создана следующая таблица (это можно увидеть, выполнив `SHOW CREATE TABLE my_table`):
+фактически создаст следующую таблицу (это можно увидеть, выполнив `SHOW CREATE TABLE my_table`):
 
 ```sql
 CREATE TABLE my_table
@@ -153,8 +149,7 @@ METRICS ENGINE = ReplacingMergeTree ORDER BY metric_family_name
 METRICS INNER UUID '01234567-89ab-cdef-0123-456789abcdef'
 ```
 
-Таким образом, столбцы были сгенерированы автоматически, и в этом операторе также присутствуют три внутренних UUID —
-по одному для каждой внутренней целевой таблицы, которая была создана.
+Таким образом, столбцы были сгенерированы автоматически, и в этом операторе также присутствуют три внутренних UUID — по одному для каждой внутренней целевой таблицы, которая была создана.
 (Внутренние UUID обычно не показываются, пока параметр
 [show&#95;table&#95;uuid&#95;in&#95;table&#95;create&#95;query&#95;if&#95;not&#95;nil](../../../operations/settings/settings#show_table_uuid_in_table_create_query_if_not_nil)
 не включён.)
@@ -332,11 +327,10 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `aggregate_min_time_and_max_time` | Bool | true | При создании внутренней целевой таблицы `tags` этот флаг включает использование `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` вместо просто `Nullable(DateTime64(3))` как типа столбца `min_time`, и аналогично для столбца `max_time` |
 | `filter_by_min_time_and_max_time` | Bool | true | Если установлено значение `true`, таблица будет использовать столбцы `min_time` и `max_time` для фильтрации временных рядов |
 
-
-
 # Функции {#functions}
 
 Ниже приведен список функций, которые принимают таблицу `TimeSeries` в качестве аргумента:
+
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

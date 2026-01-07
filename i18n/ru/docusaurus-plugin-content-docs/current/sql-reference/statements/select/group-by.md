@@ -6,8 +6,6 @@ title: 'Оператор GROUP BY'
 doc_type: 'reference'
 ---
 
-
-
 # Оператор GROUP BY {#group-by-clause}
 
 Оператор `GROUP BY` переводит запрос `SELECT` в режим агрегации, который работает следующим образом:
@@ -21,8 +19,6 @@ doc_type: 'reference'
 :::note
 Существует дополнительный способ выполнения агрегации над таблицей. Если в запросе столбцы таблицы встречаются только внутри агрегатных функций, оператор `GROUP BY` можно опустить, и будет подразумеваться агрегация по пустому набору ключей. Такие запросы всегда возвращают ровно одну строку.
 :::
-
-
 
 ## Обработка NULL {#null-processing}
 
@@ -56,7 +52,6 @@ doc_type: 'reference'
 
 Если указать в `GROUP BY` несколько ключей, в результате вы получите все комбинации выборки, как если бы `NULL` рассматривался как конкретное значение.
 
-
 ## Модификатор ROLLUP {#rollup-modifier}
 
 Модификатор `ROLLUP` используется для вычисления промежуточных итогов для ключевых выражений в соответствии с их порядком в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
@@ -74,7 +69,7 @@ doc_type: 'reference'
 Рассмотрим таблицу t:
 
 ```text
-┌─год──┬─месяц─┬─день─┐
+┌─year─┬─month─┬─day─┐
 │ 2019 │     1 │   5 │
 │ 2019 │     1 │  15 │
 │ 2020 │     1 │   5 │
@@ -130,7 +125,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * Параметр [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для обеспечения совместимости со стандартом SQL.
 
-
 ## Модификатор CUBE {#cube-modifier}
 
 Модификатор `CUBE` используется для вычисления промежуточных итогов для каждой комбинации ключевых выражений в списке `GROUP BY`. Строки с промежуточными итогами добавляются после результирующей таблицы.
@@ -146,7 +140,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 Рассмотрим таблицу t:
 
 ```text
-┌─год──┬─месяц─┬─день─┐
+┌─year─┬─month─┬─day─┐
 │ 2019 │     1 │   5 │
 │ 2019 │     1 │  15 │
 │ 2020 │     1 │   5 │
@@ -174,7 +168,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 * и общие итоги.
 
 Столбцы, не включённые в `GROUP BY`, заполняются нулями.
-
 
 ```text
 ┌─year─┬─month─┬─day─┬─count()─┐
@@ -229,7 +222,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 * Настройка [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для совместимости со стандартом SQL.
 
-
 ## Модификатор WITH TOTALS {#with-totals-modifier}
 
 Если указан модификатор `WITH TOTALS`, будет вычислена дополнительная строка. В этой строке ключевые столбцы будут содержать значения по умолчанию (нули или пустые строки), а столбцы с агрегирующими функциями — значения, вычисленные по всем строкам (итоговые значения).
@@ -265,8 +257,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 Если `max_rows_to_group_by` и `group_by_overflow_mode = 'any'` не используются, все варианты `after_having` эквивалентны, и можно использовать любой из них (например, `after_having_auto`).
 
 Вы можете использовать `WITH TOTALS` во вложенных подзапросах, включая подзапросы в предложении [JOIN](/sql-reference/statements/select/join.md) (в этом случае соответствующие итоговые значения объединяются).
-
-
 
 ## GROUP BY ALL {#group-by-all}
 
@@ -316,7 +306,6 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
-
 ## Примеры {#examples}
 
 Пример:
@@ -337,13 +326,12 @@ FROM hits
 SELECT
     domainWithoutWWW(URL) AS domain,
     count(),
-    any(Title) AS title -- получение первого встреченного заголовка страницы для каждого домена.
+    any(Title) AS title -- getting the first occurred page header for each domain.
 FROM hits
 GROUP BY domain
 ```
 
 Для каждого различного значения ключа оператор `GROUP BY` вычисляет набор значений агрегатных функций.
-
 
 ## Модификатор GROUPING SETS {#grouping-sets-modifier}
 
@@ -364,10 +352,10 @@ GROUP BY domain
 Следующие два запроса эквивалентны.
 
 ```sql
--- Запрос 1
+-- Query 1
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
--- Запрос 2
+-- Query 2
 SELECT year, month, day, count(*) FROM t GROUP BY
 GROUPING SETS
 (
@@ -381,7 +369,6 @@ GROUPING SETS
 **См. также**
 
 * настройку [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) для обеспечения совместимости со стандартом SQL.
-
 
 ## Подробности реализации {#implementation-details}
 

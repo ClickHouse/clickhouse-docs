@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 [Apache ORC](https://orc.apache.org/) は、[Hadoop](https://hadoop.apache.org/) エコシステムで広く使用されている列指向ストレージ形式です。
-
-
 
 ## データ型の対応関係 {#data-types-matching-orc}
 
@@ -48,9 +44,7 @@ doc_type: 'reference'
 
 - 上記以外の型はサポートされていません。
 - 配列はネスト可能であり、要素として `Nullable` 型の値を取ることができます。`Tuple` および `Map` 型もネスト可能です。
-- ClickHouse テーブルの列のデータ型は、対応する ORC データフィールドと一致している必要はありません。データを挿入する際、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルの列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#cast)します。
-
-
+- ClickHouse テーブルの列のデータ型は、対応する ORC データフィールドと一致している必要はありません。データを挿入する際、ClickHouse は上記の表に従ってデータ型を解釈し、その後 ClickHouse テーブルの列に設定されているデータ型へデータを[キャスト](/sql-reference/functions/type-conversion-functions#CAST)します。
 
 ## 使用例 {#example-usage}
 
@@ -86,6 +80,7 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
 
+
 ### データの読み込み {#reading-data}
 
 `ORC` 形式でデータを読み込みます：
@@ -110,6 +105,6 @@ ORC はバイナリ形式のため、ターミナル上で人間が読める形�
 | [`output_format_orc_compression_method`](/operations/settings/settings-formats.md/#output_format_orc_compression_method)                                                                             | 出力 ORC フォーマットで使用される圧縮方式を指定します。                               | `none`     |
 | [`input_format_arrow_case_insensitive_column_matching`](/operations/settings/settings-formats.md/#input_format_arrow_case_insensitive_column_matching)                                               | Arrow の列を ClickHouse の列に対応付ける際に大文字小文字を区別しません。              | `false`    |
 | [`input_format_arrow_allow_missing_columns`](/operations/settings/settings-formats.md/#input_format_arrow_allow_missing_columns)                                                                     | Arrow データの読み取り時に、欠落している列を許可します。                              | `false`    |
-| [`input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference) | Arrow フォーマットのスキーマ推論時に、未サポート型を持つ列をスキップすることを許可します。 | `false`    |
+| [`input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference`](/operations/settings/settings-formats.md/#input_format_arrow_skip_columns_with_unsupported_types_in_schema_inference) | Arrow フォーマットのスキーマ推論時に、サポートされていない型を持つ列をスキップできるようにします。 | `false`    |
 
 Hadoop とデータをやり取りするには、[HDFS テーブルエンジン](/engines/table-engines/integrations/hdfs.md) を使用できます。

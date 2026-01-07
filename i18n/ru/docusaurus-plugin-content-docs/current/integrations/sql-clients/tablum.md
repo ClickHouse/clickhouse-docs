@@ -17,12 +17,9 @@ import tablum_ch_2 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-3.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
 # Интеграция TABLUM.IO с ClickHouse {#connecting-tablumio-to-clickhouse}
 
 <CommunityMaintainedBadge/>
-
-
 
 ## Откройте стартовую страницу TABLUM.IO {#open-the-tablumio-startup-page}
 
@@ -30,15 +27,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   Вы можете установить самостоятельно размещаемую (self-hosted) версию TABLUM.IO на свой Linux-сервер с помощью Docker.
 :::
 
-
-
 ## 1. Зарегистрируйтесь или войдите в сервис {#1-sign-up-or-sign-in-to-the-service}
 
   Сначала зарегистрируйтесь в TABLUM.IO, используя свою электронную почту, или выполните быстрый вход через учетную запись Google или Facebook.
 
 <Image img={tablum_ch_0} size="md" border alt="Страница входа в TABLUM.IO" />
-
-
 
 ## 2. Добавление коннектора ClickHouse {#2-add-a-clickhouse-connector}
 
@@ -54,15 +47,11 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={tablum_ch_1} size="lg" border alt="Добавление коннектора ClickHouse в TABLUM.IO" />
 
-
-
 ## 3. Выберите коннектор {#3-select-the-connector}
 
 Перейдите на вкладку **Dataset**. Выберите недавно созданный коннектор ClickHouse в выпадающем списке. В правой панели вы увидите список доступных таблиц и схем.
 
 <Image img={tablum_ch_2} size="lg" border alt="Выбор коннектора ClickHouse в TABLUM.IO" />
-
-
 
 ## 4. Введите SQL‑запрос и выполните его {#4-input-a-sql-query-and-run-it}
 
@@ -80,8 +69,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 * выполнять запросы к любым загруженным данным независимо от источника данных,
 * делиться результатами в виде новой базы данных ClickHouse.
 :::
-
-
 
 ## Узнать больше {#learn-more}
 

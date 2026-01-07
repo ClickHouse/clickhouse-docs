@@ -114,12 +114,12 @@ SELECT overlay('Мой отец из Мексики.', 'мать', 4) AS res;
 **Замена с заданной длиной**
 
 ```sql title=Query
-SELECT overlay('Мой отец родом из Мексики.', 'папа', 5, 8) AS res;
+SELECT overlay('My father is from Mexico.', 'dad', 4, 6) AS res;
 ```
 
 ```response title=Response
 ┌─res───────────────────┐
-│ Мой отец из Мексики.│
+│ My dad is from Mexico.│
 └───────────────────────┘
 ```
 
@@ -451,9 +451,8 @@ translate(s, from, to)
 **Примеры**
 
 **Сопоставление символов**
-
 ```sql title=Query
-SELECT translate('Привет, мир!', 'delor', 'DELOR') AS res
+SELECT translate('Hello, World!', 'delor', 'DELOR') AS res
 ```
 
 ```response title=Response

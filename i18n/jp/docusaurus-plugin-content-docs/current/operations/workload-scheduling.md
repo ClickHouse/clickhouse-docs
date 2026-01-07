@@ -13,15 +13,13 @@ ClickHouse が複数のクエリを同時に実行する場合、それらは共
 現在、[リモートディスク IO](#disk_config) と [CPU](#cpu_scheduling) は、ここで説明する方法を用いてスケジューリングできます。柔軟なメモリ制限については [Memory overcommit](settings/memory-overcommit.md) を参照してください。
 :::
 
-
-
 ## ディスク構成 {#disk_config}
 
 特定のディスクに対して IO ワークロードのスケジューリングを有効にするには、WRITE および READ アクセス用の読み取りリソースと書き込みリソースを作成する必要があります。
 
 ```sql
 CREATE RESOURCE resource_name (WRITE DISK disk_name, READ DISK disk_name)
--- または
+-- or
 CREATE RESOURCE read_resource_name (WRITE DISK write_disk_name)
 CREATE RESOURCE write_resource_name (READ DISK read_disk_name)
 ```
@@ -71,7 +69,6 @@ ClickHouse の設定によるワークロードのスケジューリングは非
 
 サーバー側の設定オプションのほうが、リソースを SQL で定義する方法よりも優先されることに注意してください。
 
-
 ## ワークロードのマーキング {#workload_markup}
 
 クエリには、異なるワークロードを区別するために設定 `workload` を指定できます。`workload` が設定されていない場合は、値「default」が使用されます。設定プロファイルを使用して別の値を指定することも可能です。設定の制約機能を利用すると、特定のユーザーからのすべてのクエリが `workload` 設定の固定値でマークされるように、`workload` を一定の値に固定できます。
@@ -85,7 +82,6 @@ SELECT count() FROM my_table WHERE value = 42 SETTINGS workload = 'production'
 SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 ```
 
-
 ## リソーススケジューリング階層 {#hierarchy}
 
 スケジューリングサブシステムの観点では、リソースはスケジューリングノードの階層として扱われます。
@@ -94,18 +90,18 @@ SELECT count() FROM my_table WHERE value = 13 SETTINGS workload = 'development'
 graph TD
     subgraph network_read
     nr_root(("/"))
-    -->|同時リクエスト100件| nr_fair("fair")
-    -->|帯域幅75%| nr_prod["prod"]
+    -->|100 concurrent requests| nr_fair("fair")
+    -->|75% bandwidth| nr_prod["prod"]
     nr_fair
-    -->|帯域幅25%| nr_dev["dev"]
+    -->|25% bandwidth| nr_dev["dev"]
     end
 
     subgraph network_write
     nw_root(("/"))
-    -->|同時リクエスト100件| nw_fair("fair")
-    -->|帯域幅75%| nw_prod["prod"]
+    -->|100 concurrent requests| nw_fair("fair")
+    -->|75% bandwidth| nw_prod["prod"]
     nw_fair
-    -->|帯域幅25%| nw_dev["dev"]
+    -->|25% bandwidth| nw_dev["dev"]
     end
 ```
 
@@ -164,7 +160,6 @@ ClickHouse の設定を用いたワークロードスケジューリングは非
 </clickhouse>
 ```
 
-
 ## ワークロード分類子 {#workload_classifiers}
 
 :::warning
@@ -193,7 +188,6 @@ ClickHouse の設定を用いたワークロードスケジューリングは非
     </workload_classifiers>
 </clickhouse>
 ```
-
 
 ## ワークロード階層 {#workloads}
 
@@ -237,7 +231,6 @@ CREATE OR REPLACE WORKLOAD all SETTINGS max_io_requests = 100, max_bytes_per_sec
 Workload の設定は、適切な一連のスケジューリングノードに変換されます。より低レイヤーの詳細については、スケジューリングノードの[種類とオプション](#hierarchy)の説明を参照してください。
 :::
 
-
 ## CPU scheduling {#cpu_scheduling}
 
 ワークロードに対して CPU スケジューリングを有効にするには、CPU リソースを設定し、同時スレッド数の上限を指定します。
@@ -272,9 +265,9 @@ master スレッドの同時実行数を制限しても、同時実行クエリ�
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
 CREATE WORKLOAD all
 CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 10
-CREATE WORKLOAD 本番環境 IN all SETTINGS max_concurrent_threads = 100
-CREATE WORKLOAD analytics IN 本番環境 SETTINGS max_concurrent_threads = 60, weight = 9
-CREATE WORKLOAD ingestion IN 本番環境
+CREATE WORKLOAD production IN all SETTINGS max_concurrent_threads = 100
+CREATE WORKLOAD analytics IN production SETTINGS max_concurrent_threads = 60, weight = 9
+CREATE WORKLOAD ingestion IN production
 ```
 
 この構成例では、admin と production 用に独立した CPU スロットプールが用意されています。production プールは analytics とインジェストで共有されます。さらに、production プールが過負荷になった場合、解放されたスロットのうち 10 個中 9 個は、必要に応じて分析クエリに再スケジューリングされます。インジェストクエリは、過負荷期間中は 10 個中 1 個のスロットしか割り当てを受けません。これにより、ユーザー向けクエリのレイテンシが改善される可能性があります。Analytics ワークロードには同時実行スレッド数 60 個という独自の上限があり、インジェストを支えるために少なくとも 40 個のスレッドが常に確保されます。過負荷がない場合、インジェストは 100 個すべてのスレッドを使用できます。
@@ -289,12 +282,9 @@ CPU スケジューリングは、マージおよびミューテーションに�
 スロットスケジューリングは、[クエリの同時実行数](/operations/settings/settings.md#max_threads) を制御する手段を提供しますが、サーバー設定 `cpu_slot_preemption` が `true` に設定されていない限り、公平な CPU 時間割り当ては保証されません。その場合、公平性は競合するワークロード間の CPU スロット割り当て数に基づいてのみ提供されます。これは CPU 秒数が等しくなることを意味しません。プリエンプションがない場合、CPU スロットは無期限に保持される可能性があるためです。スレッドは開始時にスロットを取得し、処理が完了したときにスロットを解放します。
 :::
 
-
 :::note
 CPU リソースを宣言すると、[`concurrent_threads_soft_limit_num`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_num) および [`concurrent_threads_soft_limit_ratio_to_cores`](server-configuration-parameters/settings.md#concurrent_threads_soft_limit_ratio_to_cores) 設定の効果は無効になります。代わりに、特定のワークロードに割り当てられる CPU 数を制限するために、ワークロード設定 `max_concurrent_threads` が使用されます。従来の動作を再現するには、WORKER THREAD リソースのみを定義し、ワークロード `all` に対して `max_concurrent_threads` を `concurrent_threads_soft_limit_num` と同じ値に設定し、`workload = "all"` クエリ設定を使用してください。この構成は、[`concurrent_threads_scheduler`](server-configuration-parameters/settings.md#concurrent_threads_scheduler) 設定に "fair_round_robin" が指定されている状態に相当します。
 :::
-
-
 
 ## スレッドと CPU {#threads_vs_cpus}
 
@@ -323,10 +313,10 @@ CPU スロットリングとスレッド数制限の両方を組み合わせた�
 CREATE RESOURCE cpu (MASTER THREAD, WORKER THREAD)
 CREATE WORKLOAD all SETTINGS max_concurrent_threads_ratio_to_cores = 2
 CREATE WORKLOAD admin IN all SETTINGS max_concurrent_threads = 2, priority = -1
-CREATE WORKLOAD 本番 IN all SETTINGS weight = 4
-CREATE WORKLOAD analytics IN 本番 SETTINGS max_cpu_share = 0.7, weight = 3
-CREATE WORKLOAD ingestion IN 本番
-CREATE WORKLOAD 開発 IN all SETTINGS max_cpu_share = 0.3
+CREATE WORKLOAD production IN all SETTINGS weight = 4
+CREATE WORKLOAD analytics IN production SETTINGS max_cpu_share = 0.7, weight = 3
+CREATE WORKLOAD ingestion IN production
+CREATE WORKLOAD development IN all SETTINGS max_cpu_share = 0.3
 ```
 
 ここでは、すべてのクエリに対するスレッドの総数を、利用可能な CPU 数の 2 倍に制限しています。管理（admin）ワークロードは、利用可能な CPU 数に関係なく、最大でも 2 スレッドに制限されます。Admin の優先度は -1（デフォルトの 0 より低い）であり、必要な場合にはどの CPU スロットよりも優先して割り当てを受けます。Admin がクエリを実行していないときは、CPU リソースは本番（production）と開発（development）のワークロードの間で分配されます。CPU 時間の保証された持分は重み（4 対 1）に基づいており、少なくとも 80% が本番に（必要な場合）、少なくとも 20% が開発に（必要な場合）割り当てられます。重みが下限（保証）を定める一方で、CPU スロットルが上限（制限）を定めます。本番には上限がなく 100% まで消費できますが、開発には 30% の上限があり、これは他のワークロードからクエリがまったくない場合でも適用されます。本番ワークロードはリーフではないため、そのリソースは分析（analytics）とインジェスト（ingestion）の間で重み（3 対 1）に従って分割されます。つまり、分析には少なくとも 0.8 * 0.75 = 60% の保証があり、`max_cpu_share` に基づいて、合計 CPU リソースの 70% の上限があります。一方で、インジェストには少なくとも 0.8 * 0.25 = 20% の保証が与えられますが、上限はありません。
@@ -334,7 +324,6 @@ CREATE WORKLOAD 開発 IN all SETTINGS max_cpu_share = 0.3
 :::note
 ClickHouse サーバー上で CPU 利用率を最大化したい場合は、ルートワークロード `all` に対して `max_cpus` と `max_cpu_share` を使用するのは避けてください。その代わり、`max_concurrent_threads` をより高い値に設定します。例えば、CPU が 8 個あるシステムでは、`max_concurrent_threads = 16` と設定します。これにより、8 スレッドが CPU タスクを実行し、残りの 8 スレッドが I/O 処理を担当できます。追加のスレッドによって CPU プレッシャーが生じ、スケジューリングルールが確実に適用されるようになります。対照的に、`max_cpus = 8` を設定すると、サーバーは利用可能な 8 個の CPU を超えて使用できないため、CPU プレッシャーが発生することはありません。
 :::
-
 
 ## クエリスロットスケジューリング {#query_scheduling}
 
@@ -355,12 +344,9 @@ CREATE WORKLOAD all SETTINGS max_concurrent_queries = 100, max_queries_per_secon
 ブロックされたクエリは、すべての制約が満たされるまで無期限に待機し、その間は `SHOW PROCESSLIST` に表示されません。
 :::
 
-
 ## ワークロードおよびリソースのストレージ {#workload_entity_storage}
 
 `CREATE WORKLOAD` および `CREATE RESOURCE` クエリの形式で定義されたすべてのワークロードとリソースは、ディスク上の `workload_path`、または ZooKeeper 上の `workload_zookeeper_path` のいずれかに永続的に保存されます。ノード間の整合性を確保するには、ZooKeeper でのストレージを推奨します。代わりに、ディスクストレージと組み合わせて `ON CLUSTER` 句を使用することもできます。
-
-
 
 ## 設定ベースのワークロードとリソース {#config_based_workloads}
 
@@ -394,7 +380,6 @@ SQL ベースの定義に加えて、ワークロードとリソースはサー�
 
 別のユースケースとしては、異種混在クラスタ内でノードごとに異なる設定を行うことが挙げられます。
 
-
 ## 厳格なリソースアクセス {#strict_resource_access}
 
 すべてのクエリにリソーススケジューリングポリシーの適用を強制するために、サーバー設定 `throw_on_unknown_workload` を使用できます。これが `true` に設定されている場合、すべてのクエリは有効な `workload` クエリ設定を使用する必要があり、そうでない場合は `RESOURCE_ACCESS_DENIED` 例外がスローされます。`false` に設定されている場合、そのようなクエリはリソーススケジューラを使用せず、つまり任意の `RESOURCE` に対して無制限にアクセスできます。クエリ設定 `use_concurrency_control = 0` により、クエリは CPU スケジューラをバイパスし、CPU への無制限アクセスを得ることができます。CPU スケジューリングを強制するには、`use_concurrency_control` を読み取り専用の定数値として固定する設定制約を作成します。
@@ -402,8 +387,6 @@ SQL ベースの定義に加えて、ワークロードとリソースはサー�
 :::note
 `CREATE WORKLOAD default` を実行していない限り、`throw_on_unknown_workload` を `true` に設定しないでください。起動時に `workload` を明示的に設定していないクエリが実行されると、サーバーの起動に問題が発生する可能性があります。
 :::
-
-
 
 ## 関連項目 {#see-also}
 - [system.scheduler](/operations/system-tables/scheduler.md)

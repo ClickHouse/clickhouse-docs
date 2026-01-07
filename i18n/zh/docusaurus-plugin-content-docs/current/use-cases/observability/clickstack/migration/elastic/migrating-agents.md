@@ -24,9 +24,9 @@ Elastic Stack 提供了多种用于可观测性数据采集的代理。具体包
 
 - [Beats 系列](https://www.elastic.co/beats)，例如 [Filebeat](https://www.elastic.co/beats/filebeat)、[Metricbeat](https://www.elastic.co/beats/metricbeat) 和 [Packetbeat](https://www.elastic.co/beats/packetbeat)，都基于 `libbeat` 库构建。这些 Beats 支持通过 Lumberjack 协议[将数据发送到 Elasticsearch、Kafka、Redis 或 Logstash](https://www.elastic.co/docs/reference/beats/filebeat/configuring-output)。
 - [`Elastic Agent`](https://www.elastic.co/elastic-agent) 是一个统一代理，能够采集日志、指标和链路追踪。该代理可以通过 [Elastic Fleet Server](https://www.elastic.co/docs/reference/fleet/manage-elastic-agents-in-fleet) 进行集中管理，并支持将数据输出到 Elasticsearch、Logstash、Kafka 或 Redis。
-- Elastic 还提供了 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 的一个发行版。尽管目前它无法由 Fleet Server 进行编排，但它为迁移到 ClickStack 的用户提供了一条更加灵活和开放的路径。
+- Elastic 还提供了 [OpenTelemetry Collector - EDOT](https://www.elastic.co/docs/reference/opentelemetry) 的一个发行版。尽管目前它无法由 Fleet Server 进行编排，但如果你正在迁移到 ClickStack，它为你提供了一条更加灵活和开放的路径。
 
-最佳迁移路径取决于当前正在使用的代理类型。在接下来的小节中，我们将分别介绍每种主要代理类型的迁移选项。我们的目标是尽量减少迁移阻力，并在可能的情况下允许用户在过渡期间继续使用现有代理。
+最佳迁移路径取决于当前正在使用的代理类型。在接下来的小节中，我们将分别介绍每种主要代理类型的迁移选项。我们的目标是尽量减少迁移阻力，并在可能的情况下允许你在过渡期间继续使用现有代理。
 
 ## 首选迁移路径 {#prefered-migration-path}
 
@@ -71,7 +71,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
 
   这可以与您的 Elastic Stack OTel collector 安装在同一实例上。
 
-  用户在[将 Vector 部署到生产环境](https://vector.dev/docs/setup/going-to-prod/)时,应遵循架构和安全性方面的最佳实践。
+  在[将 Vector 部署到生产环境](https://vector.dev/docs/setup/going-to-prod/)时,应遵循架构和安全性方面的最佳实践。
 
   ### 配置 Vector
 
@@ -83,8 +83,8 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
       type: logstash
       address: 0.0.0.0:5044
       tls:
-        enabled: false  # 如果使用 TLS,请设置为 true
-        # 以下文件根据 https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs 中的步骤生成
+        enabled: false  # Set to true if you're using TLS
+        # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
         # crt_file: logstash.crt
         # key_file: logstash.key
         # ca_file: ca.crt
@@ -108,32 +108,32 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   注意,它从上述 `beats` 源接收事件。重映射脚本如下所示。该脚本仅针对日志事件进行了测试,但可作为其他格式的基础。
 
   <details>
-    <summary>VRL - 从 ECS 到 OTel</summary>
+    <summary>VRL - ECS 到 OTel</summary>
 
     ```javascript
-    # 定义根级别需忽略的键
+    # Define keys to ignore at root level
     ignored_keys = ["@metadata"]
 
-    # 定义资源键前缀
+    # Define resource key prefixes
     resource_keys = ["host", "cloud", "agent", "service"]
 
-    # 为资源和日志记录字段创建独立对象
+    # Create separate objects for resource and log record fields
     resource_obj = {}
     log_record_obj = {}
 
-    # 将所有未忽略的根键复制到对应对象
+    # Copy all non-ignored root keys to appropriate objects
     root_keys = keys(.)
     for_each(root_keys) -> |_index, key| {
         if !includes(ignored_keys, key) {
             val, err = get(., [key])
             if err == null {
-                # 检查是否为资源字段
+                # Check if this is a resource field
                 is_resource = false
                 if includes(resource_keys, key) {
                     is_resource = true
                 }
 
-                # 添加到对应对象
+                # Add to appropriate object
                 if is_resource {
                     resource_obj = set(resource_obj, [key], val) ?? resource_obj
                 } else {
@@ -143,11 +143,11 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
         }
     }
 
-    # 分别展平两个对象
+    # Flatten both objects separately
     flattened_resources = flatten(resource_obj, separator: ".")
     flattened_logs = flatten(log_record_obj, separator: ".")
 
-    # 处理资源属性
+    # Process resource attributes
     resource_attributes = []
     resource_keys_list = keys(flattened_resources)
     for_each(resource_keys_list) -> |_index, field_key| {
@@ -165,7 +165,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
         }
     }
 
-    # 处理日志记录属性
+    # Process log record attributes
     log_attributes = []
     log_keys_list = keys(flattened_logs)
     for_each(log_keys_list) -> |_index, field_key| {
@@ -183,14 +183,14 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
         }
     }
 
-    # 获取 timeUnixNano 时间戳(转换为纳秒)
+    # Get timestamp for timeUnixNano (convert to nanoseconds)
     timestamp_nano = if exists(.@timestamp) {
         to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
     } else {
         to_unix_timestamp(now(), unit: "nanoseconds")
     }
 
-    # 获取消息/正文字段
+    # Get message/body field
     body_value = if exists(.message) {
         to_string!(.message)
     } else if exists(.body) {
@@ -199,7 +199,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
         ""
     }
 
-    # 创建 OpenTelemetry 结构
+    # Create the OpenTelemetry structure
     . = {
         "resourceLogs": [
             {
@@ -234,10 +234,10 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
   sinks:
     otlp:
       type: opentelemetry
-      inputs: [remap_filebeat] # 从 remap 转换接收事件 - 见下文
+      inputs: [remap_filebeat] # receives events from a remap transform - see below
       protocol:
-        type: http  # 端口 4317 使用 "grpc"
-        uri: http://localhost:4318/v1/logs # OTel collector 的日志端点 
+        type: http  # Use "grpc" for port 4317
+        uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
         method: post
         encoding:
           codec: json
@@ -260,7 +260,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
       type: logstash
       address: 0.0.0.0:5044
       tls:
-        enabled: false  # 如果使用 TLS，设置为 true
+        enabled: false  # Set to true if you're using TLS
           #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
           #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
           #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
@@ -277,7 +277,7 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
       type: opentelemetry
       inputs: [remap_filebeat]
       protocol:
-        type: http  # 端口 4317 使用 "grpc"
+        type: http  # Use "grpc" for port 4317
         uri: http://localhost:4318/v1/logs
         method: post
         encoding:
@@ -290,22 +290,22 @@ Beats 代理使用 [Elastic Common Schema (ECS)](https://www.elastic.co/docs/ref
 
   ### 配置 Filebeat
 
-  现有的 Filebeat 安装只需修改配置即可将事件发送到 Vector。这需要配置 Logstash 输出——同样,TLS 可选配置:
+  现有的 Filebeat 安装只需修改配置即可将事件发送到 Vector。这需要配置 Logstash 输出——同样,可选配置 TLS:
 
   ```yaml
-  # ------------------------------ Logstash 输出 -------------------------------
+  # ------------------------------ Logstash Output -------------------------------
   output.logstash:
-    # Logstash 主机地址
+    # The Logstash hosts
     hosts: ["localhost:5044"]
 
-    # 可选 SSL 配置，默认关闭
-    # 用于 HTTPS 服务器验证的根证书列表
+    # Optional SSL. By default is off.
+    # List of root certificates for HTTPS server verifications
     #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-    # SSL 客户端身份验证证书
+    # Certificate for SSL client authentication
     #ssl.certificate: "/etc/pki/client/cert.pem"
 
-    # 客户端证书私钥
+    # Client Certificate Key
     #ssl.key: "/etc/pki/client/cert.key"
   ```
 </VerticalStepper>
@@ -317,7 +317,7 @@ Elastic Agent 将不同的 Elastic Beats 整合为一个单一软件包。该 Ag
 已经部署 Elastic Agent 的用户有多种迁移方案可选：
 
 - 将 Agent 配置为通过 Lumberjack 协议发送到 Vector endpoint。**目前仅对使用 Elastic Agent 采集日志数据的用户完成了测试。** 可通过 Kibana 中的 Fleet UI 进行集中配置。
-- [将 Agent 作为 Elastic OpenTelemetry Collector（EDOT）运行](https://www.elastic.co/docs/reference/fleet/otel-agent)。Elastic Agent 包含嵌入式 EDOT Collector，可让你对应用和基础设施进行一次性接入，然后将数据发送到多个厂商和后端。在该配置下，用户只需将 EDOT collector 配置为通过 OTLP 将事件转发到 ClickStack OTel collector。**这种方式支持所有事件类型。**
+- [将 Agent 作为 Elastic OpenTelemetry Collector（EDOT）运行](https://www.elastic.co/docs/reference/fleet/otel-agent)。Elastic Agent 包含嵌入式 EDOT Collector，可让你对应用和基础设施进行一次性接入，然后将数据发送到多个厂商和后端。在该配置下，你只需将 EDOT collector 配置为通过 OTLP 将事件转发到 ClickStack OTel collector。**这种方式支持所有事件类型。**
 
 下面我们将演示这两种方案。
 
@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### 将 Elastic Agent 作为 OpenTelemetry 收集器运行
+### 将 Elastic Agent 作为 OpenTelemetry 收集器运行 {#sending-data-via-vector}
 
 Elastic Agent 包含一个内置的 EDOT Collector，使你可以一次性为应用和基础设施添加观测能力，并将数据发送到多个厂商和后端。
 

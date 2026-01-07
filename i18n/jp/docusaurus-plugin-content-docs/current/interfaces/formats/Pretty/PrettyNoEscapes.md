@@ -19,9 +19,7 @@ import PrettyFormatSettings from './_snippets/common-pretty-format-settings.md';
 ## 説明 {#description}
 
 [Pretty](/interfaces/formats/Pretty) とは異なり、[ANSI エスケープシーケンス](http://en.wikipedia.org/wiki/ANSI_escape_code) を使用しません。  
-これは、この形式をブラウザで表示したり、`watch` コマンドラインユーティリティで使用したりするために必要です。
-
-
+これは、この形式をブラウザで表示したり、`watch` コマンドラインユーティリティで利用したりするために必要となります。
 
 ## 使用例 {#example-usage}
 
@@ -32,7 +30,7 @@ $ watch -n1 "clickhouse-client --query='SELECT event, value FROM system.events F
 ```
 
 :::note
-[HTTP インターフェイス](../../../interfaces/http.md)を使用して、この形式をブラウザで表示できます。
+[HTTP インターフェイス](/interfaces/http)を使用して、この形式をブラウザで表示できます。
 :::
 
 

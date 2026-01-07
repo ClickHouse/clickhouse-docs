@@ -31,7 +31,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 尽管名称相似，[Merge](/engines/table-engines/special/merge) 引擎与 `*MergeTree` 引擎是不同的。
 :::
 
-## 创建表 {#table&#95;engine-mergetree-creating-a-table}
+## 创建表 {#table_engine-mergetree-creating-a-table}
 
 ```sql
 CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -64,7 +64,7 @@ ORDER BY expr
 
 `ENGINE` — 引擎名称和参数。`ENGINE = MergeTree()`。`MergeTree` 引擎没有参数。
 
-#### ORDER BY {#order&#95;by}
+#### ORDER BY {#order_by}
 
 `ORDER BY` — 排序键。
 
@@ -131,13 +131,13 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] MergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+```
 
   **MergeTree() 参数**
 
@@ -149,39 +149,39 @@ ENGINE MergeTree() PARTITION BY toYYYYMM(EventDate) ORDER BY (CounterID, EventDa
   **示例**
 
   ```sql
-  MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
-  ```
+MergeTree(EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID)), 8192)
+```
 
   `MergeTree` 引擎的配置方式与上面主要引擎配置方法中的示例相同。
 </details>
 
 ## 数据存储 {#mergetree-data-storage}
 
-一张表由按主键排序的数据部分（data parts）组成。
+一个表由按主键排序的数据分区片段组成。
 
-当向表中插入数据时，会创建独立的数据部分，每个数据部分都会按主键进行字典序排序。比如，如果主键是 `(CounterID, Date)`，那么该数据部分中的数据首先按 `CounterID` 排序，并且在每个 `CounterID` 内部再按 `Date` 排序。
+当向表中插入数据时，会创建单独的数据分区片段，并且每个分区片段都会按主键进行字典序排序。比如，如果主键是 `(CounterID, Date)`，则该分区片段中的数据会先按 `CounterID` 排序，在每个 `CounterID` 内按 `Date` 排序。
 
-属于不同分区的数据会被存放到不同的数据部分中。在后台，ClickHouse 会合并数据部分以实现更高效的存储。属于不同分区的数据部分不会被合并。合并机制并不保证具有相同主键的所有行都会落在同一个数据部分中。
+属于不同分区的数据会被拆分到不同的分区片段中。在后台，ClickHouse 会合并数据分区片段以提高存储效率。属于不同分区的分区片段不会被合并。合并机制不保证具有相同主键的所有行都会位于同一个数据分区片段中。
 
-数据部分可以以 `Wide` 或 `Compact` 格式存储。在 `Wide` 格式下，每一列都作为单独的文件存储在文件系统中；在 `Compact` 格式下，所有列都存储在同一个文件中。`Compact` 格式可用于提升小批量且频繁插入场景下的性能。
+数据分区片段可以以 `Wide` 或 `Compact` 格式存储。在 `Wide` 格式下，每一列在文件系统中存储为单独的文件；在 `Compact` 格式下，所有列都存储在一个文件中。`Compact` 格式可用于提升小批量且高频插入场景下的性能。
 
-数据存储格式由表引擎的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置控制。如果某个数据部分中的字节数或行数小于对应设置的值，则该数据部分会以 `Compact` 格式存储；否则将以 `Wide` 格式存储。如果这两个设置都未配置，数据部分将以 `Wide` 格式存储。
+数据存储格式由表引擎的 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置控制。如果数据分区片段中的字节数或行数小于对应设置的值，则该分区片段以 `Compact` 格式存储；否则以 `Wide` 格式存储。如果这两个设置都未配置，数据分区片段将以 `Wide` 格式存储。
 
-每个数据部分在逻辑上被划分为多个粒度（granule）。粒度是 ClickHouse 在查询数据时读取的最小不可再分的数据集。ClickHouse 不会拆分行或单个值，因此每个粒度始终包含整数数量的行。粒度的第一行会用该行的主键值进行标记。对于每个数据部分，ClickHouse 会创建一个索引文件来存储这些标记（marks）。对于每一列（无论是否包含在主键中），ClickHouse 也会存储相同的标记。这些标记可以让系统直接在列文件中定位数据。
+每个数据分区片段在逻辑上被划分为多个粒度（granule）。粒度是 ClickHouse 在查询数据时读取的最小不可再分的数据集。ClickHouse 不会拆分行或值，因此每个粒度始终包含整数数量的行。一个粒度的第一行会用该行的主键值进行标记。对于每个数据分区片段，ClickHouse 会创建一个索引文件来存储这些标记。对于每一列，无论是否在主键中，ClickHouse 也会存储相同的标记。这些标记使得可以直接在列文件中定位数据。
 
-粒度大小受表引擎的 `index_granularity` 和 `index_granularity_bytes` 设置限制。每个粒度中的行数位于 `[1, index_granularity]` 范围内，具体取决于每行数据的大小。如果单行数据的大小超过 `index_granularity_bytes` 的值，则粒度的大小可以超过 `index_granularity_bytes`。在这种情况下，粒度大小等于该行数据的大小。
+粒度大小由表引擎的 `index_granularity` 和 `index_granularity_bytes` 设置限制。一个粒度中的行数在 `[1, index_granularity]` 范围内，具体取决于行的大小。如果单行的大小大于该设置的值，则粒度的大小可以超过 `index_granularity_bytes`。在这种情况下，粒度的大小等于该行的大小。
 
 ## 查询中的主键和索引 {#primary-keys-and-indexes-in-queries}
 
-以 `(CounterID, Date)` 主键为例。在这种情况下，排序和索引可以表示如下：
+以 `(CounterID, Date)` 主键为例。在这种情况下，排序和索引可以示意如下：
 
 ```text
-全部数据:       [---------------------------------------------]
+Whole data:     [---------------------------------------------]
 CounterID:      [aaaaaaaaaaaaaaaaaabbbbcdeeeeeeeeeeeeefgggggggghhhhhhhhhiiiiiiiiikllllllll]
 Date:           [1111111222222233331233211111222222333211111112122222223111112223311122333]
-标记点:          |      |      |      |      |      |      |      |      |      |      |
+Marks:           |      |      |      |      |      |      |      |      |      |      |
                 a,1    a,2    a,3    b,3    e,2    e,3    g,1    h,2    i,1    i,3    l,3
-标记点编号:      0      1      2      3      4      5      6      7      8      9      10
+Marks numbers:   0      1      2      3      4      5      6      7      8      9      10
 ```
 
 如果数据查询包含以下条件：
@@ -202,28 +202,28 @@ ClickHouse 不要求主键唯一。你可以插入多行具有相同主键的记
 
 ### 选择主键 {#selecting-a-primary-key}
 
-主键中的列数没有显式限制。可以根据数据结构，在主键中包含更多或更少的列。这可能会：
+主键中的列数没有明确限制。根据数据结构，你可以在主键中包含更多或更少的列。这可能会：
 
-* 提高索引性能。
+- 提高索引性能。
 
-  如果主键是 `(a, b)`，那么在满足以下条件时，添加另一列 `c` 会提高性能：
+    如果主键是 `(a, b)`，那么在满足以下条件时，添加另一列 `c` 将提高性能：
 
-  * 存在带有列 `c` 条件的查询。
-  * 通常会出现较长的数据范围（长度是 `index_granularity` 的数倍）在 `(a, b)` 上具有相同的值。换句话说，添加另一列可以使系统跳过相当长的数据范围。
+  - 查询中包含针对列 `c` 的条件。
+  - 具有相同 `(a, b)` 值的长数据范围（长度是 `index_granularity` 的数倍）很常见。换句话说，当添加另一列可以跳过相当长的数据范围时。
 
-* 改善数据压缩。
+- 改善数据压缩。
 
-  ClickHouse 会按主键对数据进行排序，因此数据按主键越集中、有序，压缩效果越好。
+    ClickHouse 按主键对数据进行排序，因此一致性越高，压缩效果越好。
 
-* 在 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 和 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) 引擎中，为合并数据部分提供额外的逻辑。
+- 在 [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree) 和 [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree.md) 引擎中，为合并数据分区片段提供额外逻辑。
 
-  在这种情况下，指定与主键不同的*排序键（sorting key）*是有意义的。
+    在这种情况下，将 *sorting key*（排序键）设置为不同于主键是合理的。
 
 较长的主键会对插入性能和内存消耗产生负面影响，但在执行 `SELECT` 查询时，主键中的额外列不会影响 ClickHouse 的性能。
 
-可以使用 `ORDER BY tuple()` 语法创建没有主键的表。在这种情况下，ClickHouse 按插入顺序存储数据。如果希望在使用 `INSERT ... SELECT` 查询插入数据时保持数据顺序，请将 [max&#95;insert&#95;threads = 1](/operations/settings/settings#max_insert_threads) 设置为 1。
+你可以使用 `ORDER BY tuple()` 语法创建没有主键的表。在这种情况下，ClickHouse 按插入顺序存储数据。如果你希望在通过 `INSERT ... SELECT` 查询插入数据时保留数据顺序，请设置 [max_insert_threads = 1](/operations/settings/settings#max_insert_threads)。
 
-要按初始顺序选择数据，请使用[单线程](/operations/settings/settings.md/#max_threads)的 `SELECT` 查询。
+要按初始顺序查询数据，请使用[单线程](/operations/settings/settings.md/#max_threads)的 `SELECT` 查询。
 
 ### 选择与排序键不同的主键 {#choosing-a-primary-key-that-differs-from-the-sorting-key}
 
@@ -251,7 +251,7 @@ ORDER BY (CounterID, EventDate)
 SETTINGS index_granularity=8192
 ```
 
-在这种情况下，在查询时：
+在这种情况下，对于以下查询：
 
 ```sql
 SELECT count() FROM table
@@ -285,13 +285,13 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 ### 对部分单调主键使用索引 {#use-of-index-for-partially-monotonic-primary-keys}
 
-以月份中的日期为例。在一个月内，它们构成一个[单调序列](https://en.wikipedia.org/wiki/Monotonic_function)，但在更长的时间范围内则不是单调的。这就是一个部分单调序列。如果用户使用部分单调的主键创建表，ClickHouse 会像往常一样创建稀疏索引。当用户从这种类型的表中查询数据时，ClickHouse 会分析查询条件。如果用户希望获取索引中两个标记点之间的数据，并且这两个标记点都落在同一个月内，ClickHouse 就可以在这种特定情况下使用索引，因为它可以计算查询参数与索引标记之间的距离。
+以一个例子说明：考虑一个月中的日期。在一个月的范围内，它们构成一个[单调序列](https://en.wikipedia.org/wiki/Monotonic_function)，但在更长时间范围内就不是单调的了。这就是一个部分单调序列。如果用户使用部分单调的主键创建表，ClickHouse 仍会照常创建稀疏索引。当用户从这类表中查询数据时，ClickHouse 会分析查询条件。如果用户希望获取索引中两个标记之间的数据，并且这两个索引标记都落在同一个月内，那么在这种特定情况下 ClickHouse 可以使用索引，因为它可以计算查询参数与索引标记之间的距离。
 
-如果查询参数范围内的主键值不构成单调序列，ClickHouse 无法使用索引。在这种情况下，ClickHouse 会使用全表扫描方法。
+如果查询参数范围内主键的取值不构成单调序列，ClickHouse 就无法使用索引。在这种情况下，ClickHouse 会采用全表扫描的方法。
 
-ClickHouse 不仅对月份日期序列使用这一逻辑，也会对任何表示部分单调序列的主键使用这一逻辑。
+ClickHouse 不仅对月份日期序列使用这套逻辑，还会对任何表示部分单调序列的主键使用同样的逻辑。
 
-### 数据跳过索引 {#table&#95;engine-mergetree-data&#95;skipping-indexes}
+### 数据跳过索引 {#table_engine-mergetree-data_skipping-indexes}
 
 索引声明在 `CREATE` 查询的 `columns` 部分中。
 
@@ -321,7 +321,7 @@ CREATE TABLE table_name
 ...
 ```
 
-示例中的索引可供 ClickHouse 在以下查询中使用，以减少从磁盘读取的数据量：
+这些示例中的索引可以帮助 ClickHouse 在以下查询中减少从磁盘读取的数据量：
 
 ```sql
 SELECT count() FROM table WHERE u64 == 10;
@@ -332,30 +332,29 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 数据跳过索引也可以建立在复合列上：
 
 ```sql
--- 在 Map 类型的列上：
+-- on columns of type Map:
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
--- 在 Tuple 类型的列上：
+-- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 
--- 在 Nested 类型的列上：
+-- on columns of type Nested:
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
 ### 跳过索引类型 {#skip-index-types}
 
-`MergeTree` 表引擎支持以下几种跳过索引类型。\
-有关如何使用跳过索引进行性能优化的更多信息，\
-请参阅[《理解 ClickHouse 数据跳过索引》](/optimize/skipping-indexes)。
+`MergeTree` 表引擎支持以下类型的跳过索引：
+有关如何使用跳过索引进行性能优化的更多信息，请参阅 [“理解 ClickHouse 数据跳过索引”](/optimize/skipping-indexes)。
 
-* [`MinMax`](#minmax) 索引
-* [`Set`](#set) 索引
-* [`bloom_filter`](#bloom-filter) 索引
-* [`ngrambf_v1`](#n-gram-bloom-filter) 索引
-* [`tokenbf_v1`](#token-bloom-filter) 索引
+- [`MinMax`](#minmax) 索引
+- [`Set`](#set) 索引
+- [`bloom_filter`](#bloom-filter) 索引
+- [`ngrambf_v1`](#n-gram-bloom-filter) 索引
+- [`tokenbf_v1`](#token-bloom-filter) 索引
 
 #### MinMax 跳过索引 {#minmax}
 
@@ -368,22 +367,23 @@ minmax
 
 #### Set {#set}
 
-对于每个索引粒度，最多会存储 `max_rows` 个指定表达式的唯一值。
-`max_rows = 0` 表示“存储所有唯一值”。
+对于每个索引粒度，至多会存储由指定表达式得到的 `max_rows` 个唯一值。
+`max_rows = 0` 表示 “存储所有唯一值”。
 
 ```text title="Syntax"
 set(max_rows)
 ```
 
+
 #### 布隆过滤器 {#bloom-filter}
 
-对于每个索引粒度，都会为指定列存储一个[布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
+每个索引粒度都会为指定的列存储一个 [Bloom 过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
 ```text title="Syntax"
 bloom_filter([false_positive_rate])
 ```
 
-`false_positive_rate` 参数可以取 0 到 1 之间的值（默认值：`0.025`），用于指定产生假阳性（false positive）结果的概率（该值越大，需要读取的数据量越多）。
+`false_positive_rate` 参数可以取 0 到 1 之间的数值（默认值：`0.025`），用于指定产生正匹配结果的概率（这会增加需要读取的数据量）。
 
 支持以下数据类型：
 
@@ -400,24 +400,25 @@ bloom_filter([false_positive_rate])
 * `UUID`
 * `Map`
 
-:::note Map 数据类型：使用键或值创建索引
-对于 `Map` 数据类型，客户端可以通过 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 函数指定索引是针对键还是针对值创建。
+:::note Map 数据类型：指定针对键或值创建索引
+对于 `Map` 数据类型，客户端可以通过使用 [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapkeys) 或 [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapvalues) 函数指定索引应针对键还是针对值创建。
 :::
+
 
 #### N-gram 布隆过滤器 {#n-gram-bloom-filter}
 
-对于每个索引粒度，会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
+每个索引粒度都会为指定列的 [n-gram](https://en.wikipedia.org/wiki/N-gram) 存储一个 [布隆过滤器](https://en.wikipedia.org/wiki/Bloom_filter)。
 
 ```text title="Syntax"
 ngrambf_v1(n, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
-| 参数                              | 描述                                                               |
-| ------------------------------- | ---------------------------------------------------------------- |
-| `n`                             | n-gram 大小                                                        |
-| `size_of_bloom_filter_in_bytes` | 布隆过滤器（Bloom filter）的字节大小。此处可以使用较大的值，例如 `256` 或 `512`，因为它可以很好地压缩。 |
-| `number_of_hash_functions`      | 布隆过滤器中使用的哈希函数数量。                                                 |
-| `random_seed`                   | 布隆过滤器哈希函数使用的随机种子。                                                |
+| Parameter                       | Description                                             |
+| ------------------------------- | ------------------------------------------------------- |
+| `n`                             | n-gram 大小                                               |
+| `size_of_bloom_filter_in_bytes` | 布隆过滤器的大小（字节数）。可以在这里使用较大的值，例如 `256` 或 `512`，因为它可以被很好地压缩。 |
+| `number_of_hash_functions`      | 布隆过滤器中使用的哈希函数数量。                                        |
+| `random_seed`                   | 布隆过滤器哈希函数使用的随机种子。                                       |
 
 此索引仅适用于以下数据类型：
 
@@ -425,7 +426,7 @@ ngrambf_v1(n, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_se
 * [`FixedString`](/sql-reference/data-types/fixedstring.md)
 * [`Map`](/sql-reference/data-types/map.md)
 
-要估算 `ngrambf_v1` 的参数，可以使用以下[用户自定义函数（UDF）](/sql-reference/statements/create/function.md)。
+要估算 `ngrambf_v1` 的参数，可以使用以下[用户定义函数 (UDF)](/sql-reference/statements/create/function.md)。
 
 ```sql title="UDFs for ngrambf_v1"
 CREATE FUNCTION bfEstimateFunctions [ON CLUSTER cluster]
@@ -445,23 +446,23 @@ AS
 (number_of_hash_functions, probability_of_false_positives, size_of_bloom_filter_in_bytes) -> ceil(size_of_bloom_filter_in_bytes / (-number_of_hash_functions / log(1 - exp(log(probability_of_false_positives) / number_of_hash_functions))))
 ```
 
-要使用这些函数，您至少需要指定两个参数：
+要使用这些函数，至少需要指定两个参数：
 
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-例如，在一个 granule 中有 `4300` 个 ngram，并且您预期误报率小于 `0.0001`。
-然后可以通过执行以下查询来估算其余参数：
+例如，某个 granule 中有 `4300` 个 ngram，并且你预期误报率小于 `0.0001`。
+此时可以通过执行以下查询来估算其他参数：
 
 ```sql
---- 估算过滤器中的位数
+--- estimate number of bits in the filter
 SELECT bfEstimateBmSize(4300, 0.0001) / 8 AS size_of_bloom_filter_in_bytes;
 
 ┌─size_of_bloom_filter_in_bytes─┐
 │                         10304 │
 └───────────────────────────────┘
 
---- 估算哈希函数的数量
+--- estimate number of hash functions
 SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_hash_functions
 
 ┌─number_of_hash_functions─┐
@@ -469,67 +470,70 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 └──────────────────────────┘
 ```
 
-当然，你也可以使用这些函数来估算其他条件下的参数。
-上述函数参考了[此处](https://hur.st/bloomfilter)的布隆过滤器计算器。
+当然，你也可以使用这些函数来估算在其他条件下的参数。
+上述函数参考了布隆过滤器计算器，见 [here](https://hur.st/bloomfilter)。
 
-#### Token bloom filter {#token-bloom-filter}
 
-Token bloom filter 与 `ngrambf_v1` 相同，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
+#### Token 布隆过滤器 {#token-bloom-filter}
+
+`token bloom filter` 与 `ngrambf_v1` 类似，但存储的是 token（由非字母数字字符分隔的序列），而不是 ngram。
 
 ```text title="Syntax"
-tokenbf_v1(布隆过滤器字节大小, 哈希函数数量, 随机种子)
+tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
+
 
 #### 稀疏 grams 布隆过滤器 {#sparse-grams-bloom-filter}
 
-稀疏 grams 布隆过滤器与 `ngrambf_v1` 类似，但使用的是[稀疏 grams 标记](/sql-reference/functions/string-functions.md/#sparseGrams)而不是 ngrams。
+稀疏 grams 布隆过滤器类似于 `ngrambf_v1`，但使用的是[稀疏 grams 标记](/sql-reference/functions/string-functions.md/#sparseGrams)，而不是 ngrams。
 
 ```text title="Syntax"
 sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
 ```
 
+
 ### 文本索引 {#text}
 
-支持全文搜索，详情见[这里](invertedindexes.md)。
+支持全文检索，详见[此处](textindexes.md)。
 
 #### 向量相似度 {#vector-similarity}
 
-支持近似最近邻检索，详见[此处](annindexes.md)。
+支持近似最近邻搜索，详见[此处](annindexes.md)。
 
 ### 函数支持 {#functions-support}
 
-`WHERE` 子句中的条件可能包含对作用于列的函数的调用。如果该列是索引的一部分，ClickHouse 会在执行这些函数时尝试使用该索引。ClickHouse 对可用于索引的函数提供了不同的支持子集。
+`WHERE` 子句中的条件包含对作用于列的函数的调用。如果该列是索引的一部分，ClickHouse 会在执行这些函数时尝试使用该索引。ClickHouse 对可用于索引的函数支持不同的子集。
 
 类型为 `set` 的索引可被所有函数使用。其他类型的索引支持情况如下：
 
-| 函数（运算符）/ 索引                                                                                                               | 主键 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | text |
-| ------------------------------------------------------------------------------------------------------------------------- | -- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
-| [equals（=，==）](/sql-reference/functions/comparison-functions.md/#equals)                                                  | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗  | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
-| [in](/sql-reference/functions/in-functions)                                                                               | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [小于（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                         | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [大于 (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                     | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [lessOrEquals (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                     | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [大于等于 (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                          | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗  | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
-| [has](/sql-reference/functions/array-functions#has)                                                                       | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                 | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
-| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                 | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
-| [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)                                                 | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
-| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull)                                     | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
-| [hasTokenCaseInsensitive（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitive)              | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
-| [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
-| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
-| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                   | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| 函数（运算符）/ 索引                                                                                                              | 主键 | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | text |
+| ------------------------------------------------------------------------------------------------------------------------ | -- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
+| [equals（=，==）](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                   | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [like](/sql-reference/functions/string-search-functions.md/#like)                                                        | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                  | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [match](/sql-reference/functions/string-search-functions.md/#match)                                                      | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                   | ✔  | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                       | ✗  | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                    | ✗  | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
+| [in](/sql-reference/functions/in-functions)                                                                              | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notIn](/sql-reference/functions/in-functions)                                                                           | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [小于（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                        | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [大于（`>`）](/sql-reference/functions/comparison-functions.md/#greater)                                                     | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [小于等于 (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                            | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [大于等于 (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                         | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [empty](/sql-reference/functions/array-functions/#empty)                                                                 | ✔  | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                           | ✗  | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
+| [has](/sql-reference/functions/array-functions#has)                                                                      | ✔  | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [hasAny](/sql-reference/functions/array-functions#hasAny)                                                                | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [hasAll](/sql-reference/functions/array-functions#hasAll)                                                                | ✗  | ✗      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)                                                | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
+| [hasTokenOrNull](/sql-reference/functions/string-search-functions.md/#hasTokenOrNull)                                    | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✔    |
+| [hasTokenCaseInsensitive（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitive)             | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
+| [hasTokenCaseInsensitiveOrNull（`*`）](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗  | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
+| [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                        | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [mapContains](/sql-reference/functions/tuple-map-functions#mapcontains)                                                  | ✗  | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 
 对于常量参数小于 ngram 大小的函数，`ngrambf_v1` 不能用于查询优化。
 
@@ -575,9 +579,44 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 可以使用 [ALTER](/sql-reference/statements/alter/projection.md) 语句修改或删除投影。
 
+### 投影索引 {#projection-index}
+
+投影索引通过提供一种轻量级且显式的方式来定义投影级别的索引，从而扩展了投影子系统。
+从概念上来说，投影索引本质上仍然是一个投影，但语法更为简化、用途也更明确：它定义的是一个专用于过滤的表达式，而不是用于提供物化数据。
+
+#### 语法 {#projection-index-syntax}
+
+```sql
+PROJECTION <name> INDEX <index_expr> TYPE <index_type>
+```
+
+示例：
+
+```sql
+CREATE TABLE example
+(
+    id UInt64,
+    region String,
+    user_id UInt32,
+    PROJECTION region_proj INDEX region TYPE basic,
+    PROJECTION uid_proj INDEX user_id TYPE basic
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+#### 索引类型 {#projection-index-types}
+
+目前支持：
+
+* **basic**：等同于在该表达式上的普通 MergeTree 索引。
+
+该框架未来可以扩展支持更多索引类型。
+
 ### 投影存储 {#projection-storage}
 
-投影存储在数据分片（part）目录中。它类似于索引，但包含一个子目录，用于存放一个匿名 `MergeTree` 表的分片。该表由投影的定义查询所派生。如果存在 `GROUP BY` 子句，则其底层存储引擎变为 [AggregatingMergeTree](aggregatingmergetree.md)，并且所有聚合函数都会被转换为 `AggregateFunction`。如果存在 `ORDER BY` 子句，则该 `MergeTree` 表会将其作为主键表达式使用。在合并过程中，投影分片通过其存储引擎的合并流程进行合并。父表分片的校验和会与投影分片的校验和组合在一起。其他维护任务与跳过索引（skip index）类似。
+投影存储在数据部件目录内。它类似于一个索引，但会包含一个子目录，用于存放一个匿名 `MergeTree` 表的数据部件。该表由投影的定义查询所确定。如果存在 `GROUP BY` 子句，则底层存储引擎会变为 [AggregatingMergeTree](aggregatingmergetree.md)，并且所有聚合函数都会被转换为 `AggregateFunction`。如果存在 `ORDER BY` 子句，则该 `MergeTree` 表会将其用作主键表达式。在合并过程中，投影部件会通过其存储引擎的合并流程进行合并。父表部件的校验和会与投影部件的校验和组合在一起。其他维护任务与跳过索引类似。
 
 ### 查询分析 {#projection-query-analysis}
 
@@ -587,11 +626,11 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 ## 并发数据访问 {#concurrent-data-access}
 
-对于对表的并发访问，我们使用多版本机制。换句话说，当一个表被同时读取和更新时，查询会从在查询时刻“当前”的那一组数据分片中读取数据。不会出现长时间持有的锁。插入操作不会阻塞读取操作。
+对于对表的并发访问，我们使用多版本机制。换句话说，当一个表被同时读取和更新时，查询会从在查询时刻“当前”的那一组分区片段中读取数据。不会出现长时间持有的锁。插入操作不会阻塞读取操作。
 
 从表中读取会自动并行执行。
 
-## 列和表的 TTL {#table&#95;engine-mergetree-ttl}
+## 列和表的 TTL {#table_engine-mergetree-ttl}
 
 用于指定数据值的生命周期。
 
@@ -615,11 +654,11 @@ TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
 
-### 列 TTL {#mergetree-column-ttl}
+### 列生存时间 (TTL) {#mergetree-column-ttl}
 
-当列中的值过期时，ClickHouse 会将其替换为该列数据类型的默认值。如果某个数据部分中该列的所有值都已过期，ClickHouse 会从文件系统中的该数据部分删除此列。
+当某列中的值过期时，ClickHouse 会将其替换为该列数据类型的默认值。如果某个数据片段中该列的所有值都过期，ClickHouse 会从文件系统中的该数据片段中删除此列。
 
-`TTL` 子句不能用于键列。
+`TTL` 子句不能用于键列上。
 
 **示例**
 
@@ -638,7 +677,7 @@ PARTITION BY toYYYYMM(d)
 ORDER BY d;
 ```
 
-#### 向现有表的列添加 TTL {#adding-ttl-to-a-column-of-an-existing-table}
+#### 为现有表中的列添加生存时间 (TTL) {#adding-ttl-to-a-column-of-an-existing-table}
 
 ```sql
 ALTER TABLE tab
@@ -646,7 +685,8 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 DAY;
 ```
 
-#### 更改列的 TTL {#altering-ttl-of-the-column}
+
+#### 修改列的生存时间 (TTL) {#altering-ttl-of-the-column}
 
 ```sql
 ALTER TABLE tab
@@ -654,38 +694,40 @@ ALTER TABLE tab
     c String TTL d + INTERVAL 1 MONTH;
 ```
 
-### 表 TTL {#mergetree-table-ttl}
 
-表可以定义一个用于删除过期行的表达式，以及多个用于在[磁盘或卷](#table_engine-mergetree-multiple-volumes)之间自动迁移分片的表达式。当表中的行过期时，ClickHouse 会删除所有对应的行。对于分片移动或重新压缩操作，某个分片中的所有行都必须满足 `TTL` 表达式所定义的条件。
+### 表级 TTL {#mergetree-table-ttl}
+
+表可以定义一个用于删除过期行的表达式，以及多个用于在[磁盘或卷](#table_engine-mergetree-multiple-volumes)之间自动迁移分区片段的表达式。当表中的行过期时，ClickHouse 会删除所有对应的行。对于分区片段的移动或重新压缩，只有当该分区片段中的所有行都满足 `TTL` 表达式条件时，才会执行相应操作。
 
 ```sql
-TTL 表达式
-    [DELETE|RECOMPRESS 编解码器名称1|TO DISK 'xxx'|TO VOLUME 'xxx'][, DELETE|RECOMPRESS 编解码器名称2|TO DISK 'aaa'|TO VOLUME 'bbb'] ...
-    [WHERE 条件]
-    [GROUP BY 键表达式 [SET v1 = 聚合函数(v1) [, v2 = 聚合函数(v2) ...]] ]
+TTL expr
+    [DELETE|RECOMPRESS codec_name1|TO DISK 'xxx'|TO VOLUME 'xxx'][, DELETE|RECOMPRESS codec_name2|TO DISK 'aaa'|TO VOLUME 'bbb'] ...
+    [WHERE conditions]
+    [GROUP BY key_expr [SET v1 = aggr_func(v1) [, v2 = aggr_func(v2) ...]] ]
 ```
 
-TTL 规则的类型可以紧跟在每个 TTL 表达式之后。它会影响在表达式满足条件（到达当前时间）时要执行的操作：
+每个 TTL 表达式后面可以指定一个 TTL 规则类型。它会影响在表达式满足条件（达到当前时间）后要执行的操作：
 
-* `DELETE` - 删除已过期的行（默认操作）；
-* `RECOMPRESS codec_name` - 使用 `codec_name` 重新压缩数据分片；
-* `TO DISK 'aaa'` - 将分片移动到名为 `aaa` 的磁盘；
-* `TO VOLUME 'bbb'` - 将分片移动到名为 `bbb` 的卷；
-* `GROUP BY` - 聚合已过期的行。
+* `DELETE` - 删除过期行（默认操作）；
+* `RECOMPRESS codec_name` - 使用 `codec_name` 重新压缩数据片段；
+* `TO DISK 'aaa'` - 将数据片段移动到磁盘 `aaa`；
+* `TO VOLUME 'bbb'` - 将数据片段移动到卷 `bbb`；
+* `GROUP BY` - 聚合过期行。
 
-`DELETE` 操作可以与 `WHERE` 子句一起使用，根据筛选条件只删除部分已过期的行：
+`DELETE` 操作可以与 `WHERE` 子句一起使用，以便只删除满足过滤条件的部分过期行：
 
 ```sql
 TTL time_column + INTERVAL 1 MONTH DELETE WHERE column = 'value'
 ```
 
-`GROUP BY` 表达式必须是表主键的前缀。
+`GROUP BY` 表达式必须是表的主键的前缀。
 
-如果某列既不是 `GROUP BY` 表达式的一部分，又没有在 `SET` 子句中显式设置，那么在结果行中，该列会包含分组行中的任意一个值（就像对该列应用了聚合函数 `any` 一样）。
+如果某列既不是 `GROUP BY` 表达式的一部分，也没有在 `SET` 子句中显式设置，那么在结果行中，该列会包含来自被分组行中的任意一个值（就好像对它应用了聚合函数 `any` 一样）。
 
 **示例**
 
-#### 创建带有 `TTL` 的表： {#creating-a-table-with-ttl-1}
+
+#### 创建带有生存时间 (TTL) 的表： {#creating-a-table-with-ttl-1}
 
 ```sql
 CREATE TABLE tab
@@ -701,14 +743,15 @@ TTL d + INTERVAL 1 MONTH DELETE,
     d + INTERVAL 2 WEEK TO DISK 'bbb';
 ```
 
-#### 修改表的 `TTL`： {#altering-ttl-of-the-table}
+
+#### 修改表的生存时间 (TTL)： {#altering-ttl-of-the-table}
 
 ```sql
 ALTER TABLE tab
     MODIFY TTL d + INTERVAL 1 DAY;
 ```
 
-创建一个表，行在一个月后过期。对已过期的行，仅删除日期为星期一的记录：
+创建一个表，行在一个月后过期。对于已过期的行，日期为星期一的会被删除：
 
 ```sql
 CREATE TABLE table_with_where
@@ -722,7 +765,8 @@ ORDER BY d
 TTL d + INTERVAL 1 MONTH DELETE WHERE toDayOfWeek(d) = 1;
 ```
 
-#### 创建对过期行重新压缩的表： {#creating-a-table-where-expired-rows-are-recompressed}
+
+#### 创建一个对过期行进行重新压缩的表： {#creating-a-table-where-expired-rows-are-recompressed}
 
 ```sql
 CREATE TABLE table_for_recompression
@@ -737,7 +781,7 @@ TTL d + INTERVAL 1 MONTH RECOMPRESS CODEC(ZSTD(17)), d + INTERVAL 1 YEAR RECOMPR
 SETTINGS min_rows_for_wide_part = 0, min_bytes_for_wide_part = 0;
 ```
 
-创建一个用于聚合已过期行的表。最终结果行中，`x` 包含该分组内的最大值，`y` 为最小值，`d` 为该分组中的任意一个值。
+创建一个用于聚合过期行的表。结果行中，`x` 为分组行中的最大值，`y` 为最小值，`d` 为分组行中的任意一个值。
 
 ```sql
 CREATE TABLE table_for_aggregation
@@ -753,32 +797,33 @@ ORDER BY (k1, k2)
 TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ```
 
-### 删除过期数据 {#mergetree-removing-expired-data}
 
-TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
+### 删除已过期数据 {#mergetree-removing-expired-data}
 
-当 ClickHouse 检测到数据已过期时，会执行一次非计划合并。要控制此类合并的频率，可以设置 `merge_with_ttl_timeout`。如果该值过低，可能会触发大量非计划合并，消耗大量资源。
+`TTL` 已过期的数据会在 ClickHouse 合并数据分区片段时被删除。
 
-在两次合并之间执行 `SELECT` 查询时，可能会读到已过期的数据。为避免这种情况，请在执行 `SELECT` 之前先执行 [OPTIMIZE](/sql-reference/statements/optimize.md) 查询。
+当 ClickHouse 检测到数据已过期时，会执行一次非调度的合并。要控制此类合并的频率，可以设置 `merge_with_ttl_timeout`。如果该值过低，将会触发大量非调度合并，可能会消耗大量资源。
+
+如果你在两次合并之间执行 `SELECT` 查询，可能会读到已过期的数据。为避免这种情况，请在执行 `SELECT` 之前先使用 [OPTIMIZE](/sql-reference/statements/optimize.md) 查询。
 
 **另请参阅**
 
-* [ttl&#95;only&#95;drop&#95;parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 设置
+- [ttl_only_drop_parts](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 设置
 
 ## 磁盘类型 {#disk-types}
 
 除了本地块设备之外，ClickHouse 还支持以下存储类型：
 
-* [`s3` 用于 S3 和 MinIO](#table_engine-mergetree-s3)
-* [`gcs` 用于 GCS](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
-* [`blob_storage_disk` 用于 Azure Blob Storage](/operations/storing-data#azure-blob-storage)
-* [`hdfs` 用于 HDFS](/engines/table-engines/integrations/hdfs)
-* [`web` 用于从 Web 进行只读访问](/operations/storing-data#web-storage)
-* [`cache` 用于本地缓存](/operations/storing-data#using-local-cache)
-* [`s3_plain` 用于备份到 S3](/operations/backup#backuprestore-using-an-s3-disk)
-* [`s3_plain_rewritable` 用于 S3 中的不可变且非复制的表](/operations/storing-data.md#s3-plain-rewritable-storage)
+- [`s3` 用于 S3 和 MinIO](#table_engine-mergetree-s3)
+- [`gcs` 用于 GCS](/integrations/data-ingestion/gcs/index.md/#creating-a-disk)
+- [`blob_storage_disk` 用于 Azure Blob Storage](/operations/storing-data#azure-blob-storage)
+- [`hdfs` 用于 HDFS](/engines/table-engines/integrations/hdfs)
+- [`web` 用于从 Web 进行只读访问](/operations/storing-data#web-storage)
+- [`cache` 用于本地缓存](/operations/storing-data#using-local-cache)
+- [`s3_plain` 用于备份到 S3](/operations/backup/disk)
+- [`s3_plain_rewritable` 用于 S3 中的不可变且非复制的表](/operations/storing-data.md#s3-plain-rewritable-storage)
 
-## 使用多个块设备用于数据存储 {#table&#95;engine-mergetree-multiple-volumes}
+## 使用多个块设备用于数据存储 {#table_engine-mergetree-multiple-volumes}
 
 ### 简介 {#introduction}
 
@@ -788,14 +833,14 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 
 ### 术语 {#terms}
 
-* Disk — 挂载到文件系统的块设备。
-* Default disk — 存储 [path](/operations/server-configuration-parameters/settings.md/#path) 服务器设置中所指定路径数据的磁盘。
-* Volume — 由一组相同磁盘按顺序组织而成的集合（类似于 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)）。
-* Storage policy — 卷的集合以及在这些卷之间迁移数据的规则。
+- Disk — 挂载到文件系统的块设备。
+- Default disk — 存储 [path](/operations/server-configuration-parameters/settings.md/#path) 服务器设置中所指定路径数据的磁盘。
+- Volume — 由一组相同磁盘按顺序组织而成的集合（类似于 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures)）。
+- Storage policy — 卷的集合以及在这些卷之间迁移数据的规则。
 
-这些实体的名称可以在系统表 [system.storage&#95;policies](/operations/system-tables/storage_policies) 和 [system.disks](/operations/system-tables/disks) 中找到。要为某个表应用已配置的存储策略之一，请在 `MergeTree` 引擎族表中使用 `storage_policy` 设置。
+这些实体的名称可以在系统表 [system.storage_policies](/operations/system-tables/storage_policies) 和 [system.disks](/operations/system-tables/disks) 中找到。要为某个表应用已配置的存储策略之一，请在 `MergeTree` 引擎族表中使用 `storage_policy` 设置。
 
-### 配置 {#table&#95;engine-mergetree-multiple-volumes&#95;configure}
+### 配置 {#table_engine-mergetree-multiple-volumes_configure}
 
 应在 `config.d` 目录下的配置文件中，通过 `<storage_configuration>` 标签声明磁盘、卷和存储策略。
 
@@ -809,7 +854,7 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 ```xml
 <storage_configuration>
     <disks>
-        <disk_name_1> <!-- 磁盘名称 -->
+        <disk_name_1> <!-- disk name -->
             <path>/mnt/fast_ssd/clickhouse/</path>
         </disk_name_1>
         <disk_name_2>
@@ -850,17 +895,17 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
                     <load_balancing>round_robin</load_balancing>
                 </volume_name_1>
                 <volume_name_2>
-                    <!-- 配置信息 -->
+                    <!-- configuration -->
                 </volume_name_2>
-                <!-- 更多卷配置 -->
+                <!-- more volumes -->
             </volumes>
             <move_factor>0.2</move_factor>
         </policy_name_1>
         <policy_name_2>
-            <!-- 配置信息 -->
+            <!-- configuration -->
         </policy_name_2>
 
-        <!-- 更多策略配置 -->
+        <!-- more policies -->
     </policies>
     ...
 </storage_configuration>
@@ -869,18 +914,18 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 标签：
 
 * `policy_name_N` — 策略名称。策略名称必须唯一。
-* `volume_name_N` — 卷名。卷名必须唯一。
-* `disk` — 卷中的一个磁盘。
-* `max_data_part_size_bytes` — 可以存储在任意卷磁盘上的数据分片的最大大小。如果预计合并后的分片大小会大于 `max_data_part_size_bytes`，那么该分片会被写入下一个卷。基本上，此功能允许将新的/较小的分片保存在“热”（SSD）卷上，并在它们变大时移动到“冷”（HDD）卷。如果你的策略只有一个卷，请不要使用此设置。
-* `move_factor` — 当可用空间比例低于该系数时，如果存在下一个卷，数据会自动开始移动到下一个卷（默认值为 0.1）。ClickHouse 会按从大到小（降序）对现有分片按大小排序，并选择其总大小足以满足 `move_factor` 条件的分片。如果所有分片的总大小仍不足，则会移动所有分片。
-* `perform_ttl_move_on_insert` — 禁用在插入数据分片（data part）时执行 TTL 移动。默认情况下（启用时），如果插入的分片根据 TTL 移动规则已经过期，它会立即被写入移动规则中指定的卷/磁盘。如果目标卷/磁盘较慢（例如 S3），这可能会显著减慢插入速度。如果禁用，则已过期的数据分片会先写入默认卷，然后紧接着再移动到 TTL 卷。
+* `volume_name_N` — 卷名称。卷名称必须唯一。
+* `disk` — 卷内的一个磁盘。
+* `max_data_part_size_bytes` — 可以存储在任意卷中磁盘上的单个分区片段的最大大小。如果预估合并后的分区片段大小超过 `max_data_part_size_bytes`，则该分区片段会被写入下一个卷。该功能通常用于将新的/较小的分区片段保存在热（SSD）卷上，并在它们变大时将其移动到冷（HDD）卷上。如果策略中只有一个卷，请不要使用此设置。
+* `move_factor` — 当可用空间量低于此因子时，如果存在下一个卷，数据将自动开始移动到下一个卷（默认值为 0.1）。ClickHouse 会按大小从大到小（降序）对现有分区片段进行排序，并选择总大小足以满足 `move_factor` 条件的分区片段。如果所有分区片段的总大小仍不足，则会移动所有分区片段。
+* `perform_ttl_move_on_insert` — 禁用在数据分区 INSERT 时执行的生存时间 (TTL) 移动操作。默认情况下（启用时），如果插入的数据分区已经根据 TTL 移动规则过期，它会立即被写入该移动规则中声明的卷/磁盘。如果目标卷/磁盘较慢（例如 S3），这会显著降低插入性能。如果禁用，则已过期的数据分区会先写入默认卷，随后立即被移动到 TTL 卷。
 * `load_balancing` - 磁盘负载均衡策略，`round_robin` 或 `least_used`。
-* `least_used_ttl_ms` - 配置在所有磁盘上更新可用空间的超时时间（毫秒）（`0` - 始终更新，`-1` - 从不更新，默认值为 `60000`）。注意，如果磁盘只能被 ClickHouse 使用，并且不会进行在线文件系统扩容/缩容，则可以使用 `-1`；在其他所有情况下都不推荐使用，因为最终会导致空间分布不正确。
-* `prefer_not_to_merge` — 你不应该使用此设置。禁用在该卷上合并数据分片（这有害并会导致性能下降）。当启用此设置时（不要这样做），不允许在该卷上进行数据合并（这很糟糕）。这允许你（但你并不需要）控制（如果你想控制什么，你就是在犯错）ClickHouse 如何与慢磁盘交互（但 ClickHouse 更了解情况，所以请不要使用此设置）。
-* `volume_priority` — 定义填充卷的优先级（顺序）。数值越小优先级越高。该参数的取值应为自然数，并且整体上从 1 到 N（给出的最低优先级）连续覆盖，中间不能缺少任何数字。
-  * 如果 *所有* 卷都打了标签，则按给定顺序确定它们的优先级。
-  * 如果只有 *部分* 卷打了标签，则未打标签的卷具有最低优先级，并按它们在配置中的定义顺序确定优先级。
-  * 如果 *没有* 卷打标签，则它们的优先级对应于它们在配置中声明的顺序。
+* `least_used_ttl_ms` - 配置更新所有磁盘可用空间信息的超时时间（毫秒）（`0` - 始终更新，`-1` - 从不更新，默认值为 `60000`）。注意，如果磁盘只能被 ClickHouse 使用且不会进行在线文件系统扩容/缩容，则可以使用 `-1`；在其他所有情况下不建议这么做，因为最终会导致空间分布不正确。
+* `prefer_not_to_merge` — 不应使用此设置。禁用在该卷上进行数据分区片段合并操作（这会有害并导致性能下降）。启用此设置时（请不要这么做），不允许在该卷上合并数据（这是不好的）。这允许（但你并不需要）控制（如果你想控制某些东西，你就是在犯错）ClickHouse 如何处理慢磁盘（但 ClickHouse 更清楚，所以请不要使用此设置）。
+* `volume_priority` — 定义填充卷的优先级（顺序）。数值越小优先级越高。该参数的取值应为自然数，并整体覆盖从 1 到 N（给定的最低优先级）的范围，中间不得跳号。
+  * 如果 *所有* 卷都被打了标签，它们会按给定顺序确定优先级。
+  * 如果只有 *部分* 卷被打了标签，未打标签的卷具有最低优先级，并按它们在配置中的定义顺序确定优先级。
+  * 如果 *没有* 卷被打标签，它们的优先级会与它们在配置中的声明顺序相对应。
   * 两个卷不能具有相同的优先级值。
 
 配置示例：
@@ -889,9 +934,9 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
 <storage_configuration>
     ...
     <policies>
-        <hdd_in_order> <!-- 策略名称 -->
+        <hdd_in_order> <!-- policy name -->
             <volumes>
-                <single> <!-- 卷名称 -->
+                <single> <!-- volume name -->
                     <disk>disk1</disk>
                     <disk>disk2</disk>
                 </single>
@@ -925,6 +970,7 @@ TTL 已过期的数据会在 ClickHouse 合并数据部分时被删除。
     ...
 </storage_configuration>
 ```
+
 
 在给定的示例中，`hdd_in_order` 策略实现了 [round-robin](https://en.wikipedia.org/wiki/Round-robin_scheduling)（轮询）方式。因此，该策略仅定义了一个卷（`single`），数据 part 会以循环顺序存储在该卷的所有磁盘上。如果系统中挂载了多个相似的磁盘但没有配置 RAID，此类策略会非常有用。请记住，每个单独的磁盘驱动器都不够可靠，您可能需要通过将复制因子设置为 3 或更多来进行补偿。
 
@@ -981,7 +1027,7 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 用户可以使用 [min&#95;bytes&#95;to&#95;rebalance&#95;partition&#95;over&#95;jbod](/operations/settings/merge-tree-settings.md/#min_bytes_to_rebalance_partition_over_jbod) 设置，将新的大型部件在 [JBOD](https://en.wikipedia.org/wiki/Non-RAID_drive_architectures) 卷的不同磁盘上以均衡的方式进行分配。
 
-## 使用外部存储进行数据存储 {#table&#95;engine-mergetree-s3}
+## 使用外部存储进行数据存储 {#table_engine-mergetree-s3}
 
 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 系列表引擎可以通过类型分别为 `s3`、`azure_blob_storage`、`hdfs` 的磁盘，将数据存储到 `S3`、`AzureBlobStorage`、`HDFS` 中。有关更多详细信息，请参见[配置外部存储选项](/operations/storing-data.md/#configuring-external-storage)。
 
@@ -1036,19 +1082,19 @@ ClickHouse 版本 22.3 至 22.7 使用了不同的缓存配置，如果你正在
 
 ## 虚拟列 {#virtual-columns}
 
-* `_part` — 数据部分（part）的名称。
-* `_part_index` — 该数据部分在查询结果中的顺序索引。
-* `_part_starting_offset` — 该数据部分在查询结果中的累计起始行号。
-* `_part_offset` — 该数据部分中的行号。
-* `_part_granule_offset` — 该数据部分中的 granule 编号。
-* `_partition_id` — 分区的名称。
-* `_part_uuid` — 数据部分的唯一标识符（如果启用了 MergeTree 设置 `assign_part_uuids`）。
-* `_part_data_version` — 数据部分的数据版本（最小块号或变更版本）。
-* `_partition_value` — `partition by` 表达式的值（一个元组）。
-* `_sample_factor` — 采样因子（来自查询）。
-* `_block_number` — 插入时为该行分配的原始块号；在启用设置 `enable_block_number_column` 时，在合并过程中会被保留。
-* `_block_offset` — 插入时为该行在块中的原始行号；在启用设置 `enable_block_offset_column` 时，在合并过程中会被保留。
-* `_disk_name` — 用于存储的磁盘名称。
+- `_part` — 分片名称。
+- `_part_index` — 分片在查询结果中的顺序索引。
+- `_part_starting_offset` — 分片在查询结果中起始位置的累计行号。
+- `_part_offset` — 分片内的行号。
+- `_part_granule_offset` — 分片内 granule 的编号。
+- `_partition_id` — 分区名称。
+- `_part_uuid` — 分片的唯一标识符（如果启用了 MergeTree 设置 `assign_part_uuids`）。
+- `_part_data_version` — 分片的数据版本（最小块号或变更版本）。
+- `_partition_value` — `partition by` 表达式的值（一个元组）。
+- `_sample_factor` — 采样因子（来自查询）。
+- `_block_number` — 行在插入时被分配的原始块号，在启用 `enable_block_number_column` 设置时合并过程中会保留。
+- `_block_offset` — 行在插入时被分配的块内原始行号，在启用 `enable_block_offset_column` 设置时合并过程中会保留。
+- `_disk_name` — 用于存储的磁盘名称。
 
 ## 列统计信息 {#column-statistics}
 
@@ -1080,29 +1126,29 @@ ALTER TABLE tab DROP STATISTICS a;
 
 ### 可用的列统计类型 {#available-types-of-column-statistics}
 
-* `MinMax`
+- `MinMax`
 
-  列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
+    列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
 
-  语法：`minmax`
+    语法：`minmax`
 
-* `TDigest`
+- `TDigest`
 
-  [TDigest](https://github.com/tdunning/t-digest) Sketch 数据结构，用于计算数值列的近似分位数（例如第 90 个百分位数）。
+    基于 [TDigest](https://github.com/tdunning/t-digest) 的 sketch 数据结构，用于计算数值列的近似分位数（例如第 90 百分位）。
 
-  语法：`tdigest`
+    语法：`tdigest`
 
-* `Uniq`
+- `Uniq`
 
-  [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) Sketch 数据结构，用于估算某列中包含的不同值的数量。
+    基于 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 的 sketch 数据结构，用于估算某列中包含多少个不同的取值。
 
-  语法：`uniq`
+    语法：`uniq`
 
-* `CountMin`
+- `CountMin`
 
-  [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) Sketch 数据结构，用于对某列中每个值的出现频率进行近似计数。
+    基于 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 的 sketch 数据结构，用于近似统计某列中每个值出现的频率。
 
-  语法：`countmin`
+    语法：`countmin`
 
 ### 支持的数据类型 {#supported-data-types}
 
@@ -1126,8 +1172,8 @@ ALTER TABLE tab DROP STATISTICS a;
 
 某些 MergeTree 设置可以在列级别进行覆盖：
 
-* `max_compress_block_size` — 在写入表之前，对未压缩数据块进行压缩时所允许的最大未压缩数据块大小。
-* `min_compress_block_size` — 在写入下一个标记时，为执行压缩所需的最小未压缩数据块大小。
+* `max_compress_block_size` — 在写入表之前，用于压缩的未压缩数据块的最大大小。
+* `min_compress_block_size` — 在写入下一个标记时进行压缩所需的未压缩数据块的最小大小。
 
 示例：
 
@@ -1155,7 +1201,7 @@ ALTER TABLE tab MODIFY COLUMN document REMOVE SETTINGS;
 ALTER TABLE tab MODIFY COLUMN document MODIFY SETTING min_compress_block_size = 8192;
 ```
 
-* 重置一个或多个设置，同时会从该表的 `CREATE` 查询语句中的列表达式里删除相应的设置声明。
+* 重置一个或多个设置，并同时从该表的 `CREATE` 查询中的列表达式删除相应的设置声明。
 
 ```sql
 ALTER TABLE tab MODIFY COLUMN document RESET SETTING min_compress_block_size;

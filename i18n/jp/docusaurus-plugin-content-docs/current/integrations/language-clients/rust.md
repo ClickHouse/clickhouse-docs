@@ -37,7 +37,6 @@ clickhouse = { version = "0.12.2", features = ["test-util"] }
 
 あわせて [crates.io のページ](https://crates.io/crates/clickhouse) も参照してください。
 
-
 ## Cargo features {#cargo-features}
 
 * `lz4`（デフォルトで有効） — `Compression::Lz4` と `Compression::Lz4Hc(_)` バリアントを有効にします。有効な場合、`Compression::Lz4` は `WATCH` を除くすべてのクエリでデフォルトとして使用されます。
@@ -83,13 +82,12 @@ examples や以下のドキュメントに不明な点や不足している点�
 use clickhouse::Client;
 
 let client = Client::default()
-    // プロトコルとポートの両方を含める必要があります
+    // should include both protocol and port
     .with_url("http://localhost:8123")
     .with_user("name")
     .with_password("123")
     .with_database("test");
 ```
-
 
 ### HTTPS または ClickHouse Cloud への接続 {#https-or-clickhouse-cloud-connection}
 
@@ -115,7 +113,6 @@ let client = Client::default()
 関連情報:
 
 * クライアントリポジトリにある [ClickHouse Cloud を利用した HTTPS のサンプル](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/clickhouse_cloud.rs)。これはオンプレミス環境での HTTPS 接続にも利用できます。
-
 
 ### 行を選択する {#selecting-rows}
 
@@ -152,7 +149,6 @@ while let Some(row) = cursor.next().await? { .. }
 行を選択する際に `wait_end_of_query` を使用する場合は注意してください。サーバー側でのメモリ使用量が増加し、全体的なパフォーマンスが低下する可能性が高くなります。
 :::
 
-
 ### 行を挿入する {#inserting-rows}
 
 ```rust
@@ -175,7 +171,6 @@ insert.end().await?;
 * 行はネットワーク負荷を分散するために、ストリームとして順次送信されます。
 * ClickHouse は、すべての行が同じパーティションに収まり、かつ行数が [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 未満である場合にのみ、バッチをアトミックに挿入します。
 
-
 ### 非同期挿入（サーバー側バッチ処理） {#async-insert-server-side-batching}
 
 受信データをクライアント側でバッチ処理しないようにするには、[ClickHouse asynchronous inserts](/optimize/asynchronous-inserts) を利用できます。これは、`insert` メソッドに `async_insert` オプションを指定する（あるいは `Client` インスタンス自体に指定して、すべての `insert` 呼び出しに適用する）だけで実現できます。
@@ -190,7 +185,6 @@ let client = Client::default()
 こちらも参照してください：
 
 * クライアントリポジトリの [非同期インサートの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/async_insert.rs)。
-
 
 ### Inserter 機能（クライアント側バッチ処理） {#inserter-feature-client-side-batching}
 
@@ -213,8 +207,8 @@ if stats.rows > 0 {
     );
 }
 
-// アプリケーションのシャットダウン時には、inserterを終了して
-// 残りの行をコミットすることを忘れないでください。`.end()`も統計情報を返します。
+// don't forget to finalize the inserter during the application shutdown
+// and commit the remaining rows. `.end()` will provide stats as well.
 inserter.end().await?;
 ```
 
@@ -232,7 +226,6 @@ inserter.end().await?;
 ```
 
 :::
-
 
 ### DDL の実行 {#executing-ddls}
 
@@ -252,7 +245,6 @@ client
     .await?;
 ```
 
-
 ### ClickHouse の設定 {#clickhouse-settings}
 
 `with_option` メソッドを使用して、さまざまな [ClickHouse の設定](/operations/settings/settings) を適用できます。例:
@@ -260,15 +252,14 @@ client
 ```rust
 let numbers = client
     .query("SELECT number FROM system.numbers")
-    // この設定はこの特定のクエリにのみ適用されます。
-    // グローバルクライアント設定を上書きします。
+    // This setting will be applied to this particular query only;
+    // it will override the global client setting.
     .with_option("limit", "3")
     .fetch_all::<u64>()
     .await?;
 ```
 
 `query` だけでなく、`insert` および `inserter` メソッドでも同様に動作します。さらに、同じメソッドを `Client` インスタンスに対して呼び出すことで、すべてのクエリに適用されるグローバル設定を行うことができます。
-
 
 ### クエリ ID {#query-id}
 
@@ -290,7 +281,6 @@ let numbers = client
 
 参考: クライアントリポジトリ内の [query&#95;id のサンプル](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/query_id.rs) も参照してください。
 
-
 ### セッション ID {#session-id}
 
 `query_id` と同様に、同じセッションでステートメントを実行するために `session_id` を設定できます。`session_id` はクライアントレベルでグローバルに設定することも、`query`、`insert`、`inserter` の各呼び出しごとに個別に設定することもできます。
@@ -307,7 +297,6 @@ let client = Client::default()
 
 関連項目: クライアントリポジトリ内の [session&#95;id の例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/session_id.rs) を参照してください。
 
-
 ### カスタム HTTP ヘッダー {#custom-http-headers}
 
 プロキシ認証を使用している場合やカスタムヘッダーを渡す必要がある場合は、次のように指定できます。
@@ -320,7 +309,6 @@ let client = Client::default()
 
 参考: クライアントリポジトリ内の [カスタム HTTP ヘッダーの例](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_headers.rs) も参照してください。
 
-
 ### カスタム HTTP クライアント {#custom-http-client}
 
 これは、内部の HTTP 接続プールの設定を調整する際に役立ちます。
@@ -332,11 +320,11 @@ use hyper_util::rt::TokioExecutor;
 
 let connector = HttpConnector::new(); // or HttpsConnectorBuilder
 let hyper_client = HyperClient::builder(TokioExecutor::new())
-    // クライアント側で特定のアイドルソケットを生存させる時間（ミリ秒単位）。
-    // ClickHouseサーバーのKeepAliveタイムアウトよりもかなり短く設定することが推奨されます。
-    // デフォルトでは23.11以前のバージョンでは3秒、それ以降のバージョンでは10秒です。
+    // For how long keep a particular idle socket alive on the client side (in milliseconds).
+    // It is supposed to be a fair bit less that the ClickHouse server KeepAlive timeout,
+    // which was by default 3 seconds for pre-23.11 versions, and 10 seconds after that.
     .pool_idle_timeout(Duration::from_millis(2_500))
-    // プール内で許可されるアイドル状態のKeep-Alive接続の最大数を設定します。
+    // Sets the maximum idle Keep-Alive connections allowed in the pool.
     .pool_max_idle_per_host(4)
     .build(connector);
 
@@ -348,7 +336,6 @@ let client = Client::with_http_client(hyper_client).with_url("http://localhost:8
 :::
 
 あわせて、クライアントリポジトリ内の [custom HTTP client example](https://github.com/ClickHouse/clickhouse-rs/blob/main/examples/custom_http_client.rs) も参照してください。
-
 
 ## データ型 {#data-types}
 
@@ -456,7 +443,6 @@ struct MyRow {
 }
 ```
 
-
 * `DateTime` は `u32` またはそれを包む newtype との間でマッピングされ、UNIX エポックからの経過秒数を表します。加えて、[`time::OffsetDateTime`](https://docs.rs/time/latest/time/struct.OffsetDateTime.html) も、`time` feature を必要とする `serde::time::datetime` を使用することでサポートされます。
 
 ```rust
@@ -473,15 +459,15 @@ struct MyRow {
 ```rust
 #[derive(Row, Serialize, Deserialize)]
 struct MyRow {
-    ts: i64, // `DateTime64(X)` に応じた経過時間 (秒/マイクロ秒/ミリ秒/ナノ秒)
+    ts: i64, // elapsed s/us/ms/ns depending on `DateTime64(X)`
     #[serde(with = "clickhouse::serde::time::datetime64::secs")]
-    dt64s: OffsetDateTime,  // `DateTime64(0)` (秒単位)
+    dt64s: OffsetDateTime,  // `DateTime64(0)`
     #[serde(with = "clickhouse::serde::time::datetime64::millis")]
-    dt64ms: OffsetDateTime, // `DateTime64(3)` (ミリ秒単位)
+    dt64ms: OffsetDateTime, // `DateTime64(3)`
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
-    dt64us: OffsetDateTime, // `DateTime64(6)` (マイクロ秒単位)
+    dt64us: OffsetDateTime, // `DateTime64(6)`
     #[serde(with = "clickhouse::serde::time::datetime64::nanos")]
-    dt64ns: OffsetDateTime, // `DateTime64(9)` (ナノ秒単位)
+    dt64ns: OffsetDateTime, // `DateTime64(9)`
 }
 ```
 
@@ -535,7 +521,6 @@ struct MyRow {
 
 * `Variant`、`Dynamic`、（新しい）`JSON` データ型は現在まだサポートされていません。
 
-
 ## モック機能 {#mocking}
 
 このクレートは、ClickHouse サーバーのモックや DDL、`SELECT`、`INSERT`、`WATCH` クエリのテスト用ユーティリティを提供します。この機能は `test-util` フィーチャーを有効にすると利用できます。**開発時の依存関係（dev-dependency）としてのみ**使用してください。
@@ -561,14 +546,14 @@ ORDER BY timestamp
 ```rust
 #[derive(Debug, Serialize, Deserialize, Row)]
 struct EventLog {
-    id: String, // <- 本来は u32 型にすべきです！
+    id: String, // <- should be u32 instead!
 }
 ```
 
 データを挿入する際、次のエラーが発生することがあります:
 
 ```response
-エラー: BadResponse("Code: 33. DB::Exception: すべてのデータを読み取れません。読み取ったバイト数: 5。期待されるバイト数: 23.: (行 1)\n: BinaryRowInputFormat の実行中。 (CANNOT_READ_ALL_DATA)")
+Error: BadResponse("Code: 33. DB::Exception: Cannot read all data. Bytes read: 5. Bytes expected: 23.: (at row 1)\n: While executing BinaryRowInputFormat. (CANNOT_READ_ALL_DATA)")
 ```
 
 この例では、`EventLog` 構造体を正しく定義することで、この問題は解決されます。
@@ -579,7 +564,6 @@ struct EventLog {
     id: u32
 }
 ```
-
 
 ## 既知の制限事項 {#known-limitations}
 

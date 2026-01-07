@@ -2,7 +2,7 @@
 slug: /cloud/manage/postman
 sidebar_label: '使用 Postman 以编程方式访问 API'
 title: '使用 Postman 以编程方式访问 API'
-description: '本指南将帮助您使用 Postman 测试 ClickHouse Cloud API'
+description: '本指南将帮助你使用 Postman 测试 ClickHouse Cloud API'
 doc_type: 'guide'
 keywords: ['api', 'postman', 'rest api', '云管理', '集成']
 ---
@@ -12,7 +12,6 @@ import postman1 from '@site/static/images/cloud/manage/postman/postman1.png';
 import postman2 from '@site/static/images/cloud/manage/postman/postman2.png';
 import postman3 from '@site/static/images/cloud/manage/postman/postman3.png';
 import postman4 from '@site/static/images/cloud/manage/postman/postman4.png';
-import postman5 from '@site/static/images/cloud/manage/postman/postman5.png';
 import postman6 from '@site/static/images/cloud/manage/postman/postman6.png';
 import postman7 from '@site/static/images/cloud/manage/postman/postman7.png';
 import postman8 from '@site/static/images/cloud/manage/postman/postman8.png';
@@ -28,6 +27,7 @@ import postman17 from '@site/static/images/cloud/manage/postman/postman17.png';
 
 本指南将帮助你使用 [Postman](https://www.postman.com/product/what-is-postman/) 测试 ClickHouse Cloud API。
 Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面运行。
+
 
 ### 创建账户 {#create-an-account}
 
@@ -51,9 +51,7 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 <Image img={postman4} size="md" alt="API URL 输入" border />
 
-* 输入 API 地址：[https://api.clickhouse.cloud/v1](https://api.clickhouse.cloud/v1)，然后按 Enter 键：
-
-<Image img={postman5} size="md" alt="Import" border />
+* 输入 API 地址："https://api.clickhouse.cloud/v1"，然后按 Enter 键：
 
 * 点击 “Import” 按钮，选择 “Postman Collection”：
 
@@ -73,11 +71,11 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 
 * 展开下拉菜单并选择 “Basic Auth”：
 
-<Image img={postman9} size="md" alt="Basic auth" border />
+<Image img={postman9} size="md" alt="Basic auth" border/>
 
 * 输入你在设置 ClickHouse Cloud API keys 时获得的用户名（Username）和密码（Password）：
 
-<Image img={postman10} size="md" alt="凭据" border />
+<Image img={postman10} size="md" alt="凭据" border/>
 
 ### 启用变量 {#enable-variables}
 
@@ -88,8 +86,7 @@ Postman 应用程序可以在网页浏览器中使用，也可以下载到桌面
 * 在 “Collection” 中，点击中间面板的 “Variables” 选项卡（Base URL 会在之前导入 API 时自动设置）：
 * 在 `baseURL` 下方点击空白字段 “Add new value”，并替换为你的 organization ID 和 service ID：
 
-<Image img={postman11} size="md" alt="Organization ID 和 Service ID" border />
-
+<Image img={postman11} size="md" alt="Organization ID 和 service ID" border/>
 
 ## 测试 ClickHouse Cloud API 功能 {#test-the-clickhouse-cloud-api-functionalities}
 

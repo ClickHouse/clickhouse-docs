@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 > このガイドでは、ClickHouse での配列の使い方と、よく使用される[配列関数](/sql-reference/functions/array-functions)のいくつかについて学びます。
 
-
-
 ## 配列の概要 {#array-basics}
 
 配列は、値をひとまとめにするインメモリのデータ構造です。
@@ -28,7 +26,7 @@ array(T)
 []
 ```
 
-例えば、数値の配列を作成できます。
+例えば、数値の配列を作成できます：
 
 ```sql
 SELECT array(1, 2, 3) AS numeric_array
@@ -68,8 +66,8 @@ SELECT array('Hello', 'world', 1, 2, 3)
 共通のスーパータイプが存在しない場合、配列を作成しようとすると例外が発生します。
 
 ```sql
-例外が発生しました:
-Code: 386. DB::Exception: 型 String、String、UInt8、UInt8、UInt8 に対する共通のスーパータイプが存在しません。一部が String/FixedString/Enum 型であり、一部がそれ以外の型であるためです: スコープ SELECT ['Hello', 'world', 1, 2, 3] 内。(NO_COMMON_TYPE)
+Received exception:
+Code: 386. DB::Exception: There is no supertype for types String, String, UInt8, UInt8, UInt8 because some of them are String/FixedString/Enum and some of them are not: In scope SELECT ['Hello', 'world', 1, 2, 3]. (NO_COMMON_TYPE)
 ```
 
 配列をその場で作成する場合、ClickHouse はすべての要素が収まる最も狭い型を選択します。
@@ -104,7 +102,7 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
   └──────────────────────────────────────┴──────────────────────────────────────────────┘
   ```
 
-  この設定により、配列から型名を指定して値を読み出すこともできます:
+  この設定により、配列から型名を指定して各型の値を読み出すこともできます：
 
   ```sql
   SELECT
@@ -126,8 +124,7 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 ClickHouse では、配列インデックスが常に **1** から始まることを知っておくことが重要です。
 これは、他の多くのプログラミング言語で配列が 0 始まり（ゼロインデックス）であることに慣れている場合とは異なる点です。
 
-
-例えば、配列がある場合、次のように書くことでその先頭要素を取得できます。
+たとえば、配列が与えられた場合、次のように記述することで配列の最初の要素を選択できます：
 
 ```sql
 WITH array('hello', 'world') AS string_array
@@ -182,7 +179,7 @@ SELECT length(string_array);
 └──────────────────────┘
 ```
 
-[`arrayEnumerate`](/sql-reference/functions/array-functions#arrayEnumerate) 関数を使用して、要素のインデックスからなる配列を返すこともできます：
+[`arrayEnumerate`](/sql-reference/functions/array-functions#arrayEnumerate) 関数を使用して、要素の索引からなる配列を返すこともできます：
 
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
@@ -193,7 +190,7 @@ SELECT arrayEnumerate(string_array);
 └──────────────────────────────┘
 ```
 
-特定の値のインデックスを取得するには、`indexOf` 関数を使用します。
+特定の値のインデックスを求めるには、`indexOf` 関数を使用します。
 
 ```sql
 SELECT indexOf([4, 2, 8, 8, 9], 8);
@@ -249,7 +246,7 @@ hasAll_false: 0
 ### groupArray {#grouparray}
 
 このデータセットには多くのカラムがありますが、ここではその一部に注目します。
-次のクエリを実行して、データの内容を確認してみましょう:
+次のクエリを実行して、データの内容を確認してみましょう：
 
 ```sql runnable
 -- SELECT
@@ -288,7 +285,7 @@ GROUP BY FlightDate, Origin
 ORDER BY length(Destinations)
 ```
 
-上記のクエリで使用している [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#tostringcuttozero) は、一部の空港コード（3文字）の後に現れるヌル文字を取り除くために使われています。
+上記のクエリで使用している [`toStringCutToZero`](/sql-reference/functions/type-conversion-functions#toStringCutToZero) は、一部の空港コード（3文字）の後に現れるヌル文字を取り除くために使われています。
 
 データがこの形式になっていれば、集約された「Destinations」配列の長さを求めることで、最も利用の多い空港の順位を簡単に特定できます。
 
@@ -314,6 +311,7 @@ FROM busy_airports
 ORDER BY outward_flights DESC
 ```
 
+
 ### arrayMap と arrayZip {#arraymap}
 
 前のクエリで、デンバー国際空港が、今回選択した特定の日に最も出発便の多い空港であることがわかりました。
@@ -330,27 +328,25 @@ WITH arrayMap(
               d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME')),
               groupArray(DepDelayMinutes)
     ) AS statuses
-```
-
 
 SELECT
-Origin,
-toStringCutToZero(Dest) AS Destination,
-arrayZip(groupArray(Tail&#95;Number), statuses) as tailNumberStatuses
+    Origin,
+    toStringCutToZero(Dest) AS Destination,
+    arrayZip(groupArray(Tail_Number), statuses) as tailNumberStatuses
 FROM ontime.ontime
-WHERE Origin = &#39;DEN&#39;
-AND FlightDate = &#39;2024-01-01&#39;
-AND DepTime IS NOT NULL
-AND DepDelayMinutes IS NOT NULL
+WHERE Origin = 'DEN'
+  AND FlightDate = '2024-01-01'
+  AND DepTime IS NOT NULL
+  AND DepDelayMinutes IS NOT NULL
 GROUP BY ALL
+```
 
-````
+上記のクエリでは、`arrayMap` 関数は単一要素の配列 `[DepDelayMinutes]` を受け取り、ラムダ式 `d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'` を適用して遅延状況を分類します。
+その後、生成された配列の先頭要素を `[DepDelayMinutes][1]` で取得します。
+[`arrayZip`](/sql-reference/functions/array-functions#arrayZip) 関数は、`Tail_Number` 配列と `statuses` 配列を 1 つの配列に結合します。
 
-上記のクエリでは、`arrayMap`関数が単一要素の配列`[DepDelayMinutes]`を受け取り、ラムダ関数`d -> if(d >= 30, 'DELAYED', if(d >= 15, 'WARNING', 'ON-TIME'`を適用して分類を行います。
-次に、結果の配列の最初の要素が`[DepDelayMinutes][1]`で抽出されます。
-[`arrayZip`](/sql-reference/functions/array-functions#arrayZip)関数は、`Tail_Number`配列と`statuses`配列を単一の配列に結合します。
 
-### arrayFilter                {#arrayfilter}
+### arrayFilter {#arrayfilter}
 
 次に、空港`DEN`、`ATL`、`DFW`について、30分以上遅延したフライトの数のみを確認します:
 
@@ -365,7 +361,7 @@ WHERE Origin IN ('DEN', 'ATL', 'DFW')
     AND FlightDate = '2024-01-01'
 GROUP BY Origin, OriginCityName
 ORDER BY num_delays_30_min_or_more DESC
-````
+```
 
 上記のクエリでは、[`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) 関数の第1引数としてラムダ関数を渡しています。
 このラムダ関数自体は、遅延時間（分）を表す `d` を受け取り、条件が満たされれば `1` を、そうでなければ `0` を返します。
@@ -373,6 +369,7 @@ ORDER BY num_delays_30_min_or_more DESC
 ```sql
 d -> d >= 30
 ```
+
 
 ### arraySort と arrayIntersect {#arraysort-and-arrayintersect}
 
@@ -415,11 +412,11 @@ LIMIT 10
 その後、各ペアごとに `arrayIntersect` 関数を使って、両方の空港のリストに共通して現れる目的地を特定します。
 `length` 関数は、それらが共通して持つ目的地の数をカウントします。
 
+条件 `a1.Origin < a2.Origin` によって、各ペアが 1 回だけ現れるようにしています。
+これがない場合、同じ比較であるにもかかわらず、JFK-LAX と LAX-JFK が別々の結果として返されてしまい、冗長になります。
+最後に、クエリは結果をソートし、共有している目的地の数が最も多い空港ペアを上位 10 件だけ返します。
+これにより、どの主要ハブ空港同士が最もルートネットワークの重なりが大きいかが分かり、複数の航空会社が同じ都市ペアに就航している競合市場や、類似した地理的地域にサービスを提供しており、旅行者にとって代替的な乗り継ぎ地点として利用しうるハブを把握できます。
 
-`a1.Origin < a2.Origin` という条件により、各ペアが 1 回だけ現れるようにしています。
-これがないと、同じ比較であるにもかかわらず、JFK-LAX と LAX-JFK の両方が別々の結果として返されてしまい、冗長になります。
-最後に、このクエリは結果をソートして、どの空港ペアが最も多くの共通の目的地を持っているかを示し、上位 10 件だけを返します。
-これにより、どの主要ハブが最もルートネットワークの重なりが大きいかが分かり、複数の航空会社が同じ都市ペアを運航している競合市場である可能性や、類似した地理的地域にサービスを提供していて旅行者にとって代替的な乗り継ぎ拠点として利用できるハブである可能性を示唆します。
 
 ### arrayReduce {#arrayReduce}
 
@@ -442,8 +439,9 @@ GROUP BY Origin, Destination
 ORDER BY avg_delay DESC
 ```
 
-上の例では、`arrayReduce` を使用して、`DEN` から出発するさまざまな便について、平均遅延時間と最大遅延時間を求めました。
-`arrayReduce` は、関数の最初のパラメータで指定された集約関数を、関数の 2 番目のパラメータで指定された配列の要素に適用します。
+上の例では、`arrayReduce` を使用して、`DEN` から出発するさまざまな便について、平均遅延時間と最大遅延時間を算出しました。
+`arrayReduce` は、関数の第 1 引数で指定された集約関数を、関数の第 2 引数で指定された配列の要素に適用します。
+
 
 ### arrayJoin {#arrayJoin}
 
@@ -463,7 +461,7 @@ WITH range(0, 100, 10) AS delay
 SELECT delay
 ```
 
-`arrayJoin` を使ったクエリを書くことで、2 つの空港間のフライトについて、遅延時間がある分数以下となる便が何件あったかを求めることができます。
+`arrayJoin` を使ったクエリを書くことで、2 つの空港間のフライトについて、それぞれの遅延時間がその分数以下となる便が何件あったかを求めることができます。
 以下のクエリは、累積遅延バケットを使って、2024 年 1 月 1 日におけるデンバー (DEN) からマイアミ (MIA) へのフライト遅延の分布を示すヒストグラムを作成します。
 
 ```sql runnable
@@ -496,7 +494,7 @@ WITH range(0, 100, 10) AS delay,
      toStringCutToZero(Dest) AS Destination
 
 SELECT    
-    del || '分まで' AS delayTime,
+    'Up to ' || del || ' minutes' AS delayTime,
     countIf(DepDelayMinutes >= del) flightsDelayed
 FROM ontime.ontime
 ARRAY JOIN delay AS del

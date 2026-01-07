@@ -20,7 +20,6 @@ ClickHouse 支持与多个目录集成（Unity、Glue、Polaris 等）。在本�
 Glue 支持多种不同的表格式，但此集成仅支持 Iceberg 表。
 :::
 
-
 ## 在 AWS 中配置 Glue {#configuring}
 
 要连接到 Glue 数据目录，您需要确定目录所在的区域，并提供访问密钥和秘密访问密钥。 
@@ -42,7 +41,6 @@ SETTINGS
     aws_access_key_id = '<access-key>', 
     aws_secret_access_key = '<secret-key>'
 ```
-
 
 ## 使用 ClickHouse 查询 Glue 数据目录 {#query-glue-catalog}
 
@@ -81,9 +79,8 @@ SELECT count(*) FROM `iceberg-benchmark.hitsiceberg`;
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
-
 ```sql title="Response"
-┌─statement───────────────────────────────────────────────┐
+  ┌─statement───────────────────────────────────────────────┐
 1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │
   │ (                                                       │
   │     `watchid` Nullable(Int64),                          │

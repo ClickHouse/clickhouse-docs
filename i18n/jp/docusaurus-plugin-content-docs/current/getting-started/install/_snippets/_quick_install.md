@@ -4,7 +4,6 @@
 
 <VerticalStepper>
 
-
 ## curl を使用して ClickHouse をインストールする {#install-clickhouse-using-curl}
 
 以下のコマンドを実行して、使用しているオペレーティングシステム向けの単一のバイナリをダウンロードします。
@@ -16,7 +15,6 @@ curl https://clickhouse.com/ | sh
 :::note
 Mac をお使いの方へ: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos) を参照してください。
 :::
-
 
 ## clickhouse-local を起動する {#start-clickhouse-local}
 
@@ -30,7 +28,6 @@ Mac をお使いの方へ: バイナリの開発元を検証できないとい�
 ./clickhouse
 ```
 
-
 ## clickhouse-server を起動する {#start-clickhouse-server}
 
 データを永続化する場合は、`clickhouse-server` を起動します。ClickHouse サーバーは、次のコマンドで起動できます。
@@ -38,7 +35,6 @@ Mac をお使いの方へ: バイナリの開発元を検証できないとい�
 ```bash
 ./clickhouse server
 ```
-
 
 ## clickhouse-client を起動する {#start-clickhouse-client}
 

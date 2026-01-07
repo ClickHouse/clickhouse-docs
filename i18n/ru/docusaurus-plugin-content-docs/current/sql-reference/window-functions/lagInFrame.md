@@ -49,11 +49,11 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 CREATE TABLE stock_prices
 (
     `date`   Date,
-    `open`   Float32, -- цена открытия
-    `high`   Float32, -- максимум дня
-    `low`    Float32, -- минимум дня
-    `close`  Float32, -- цена закрытия
-    `volume` UInt32   -- объём торгов
+    `open`   Float32, -- opening price
+    `high`   Float32, -- daily high
+    `low`    Float32, -- daily low
+    `close`  Float32, -- closing price
+    `volume` UInt32   -- trade volume
 )
 Engine = Memory;
 
@@ -81,11 +81,11 @@ ORDER BY date DESC
 Результат:
 
 ```response
-   ┌───────дата─┬──закрытие─┬─закрытие_предыдущего_дня─┬─дельта─┬─процентное_изменение─┐
+   ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │
 3. │ 2024-06-05 │ 122.44 │             116.44 │     6 │           5.15 │
 4. │ 2024-06-04 │ 116.44 │                115 │  1.44 │           1.25 │
 5. │ 2024-06-03 │    115 │                115 │     0 │              0 │
-   └────────────┴────────┴────────────────────────────┴────────┴──────────────────────┘
+   └────────────┴────────┴────────────────────┴───────┴────────────────┘
 ```

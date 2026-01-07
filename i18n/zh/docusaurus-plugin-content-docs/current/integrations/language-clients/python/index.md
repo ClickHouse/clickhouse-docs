@@ -16,7 +16,6 @@ import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
 # 介绍 {#introduction}
 
 ClickHouse Connect 是一个核心数据库驱动，为各类 Python 应用程序提供互操作能力。
@@ -88,7 +87,6 @@ import clickhouse_connect
 client = clickhouse_connect.get_client(host='localhost', username='default', password='password')
 ```
 
-
 #### 使用 ClickHouse Connect 客户端实例连接到 ClickHouse Cloud 服务： {#use-a-clickhouse-connect-client-instance-to-connect-to-a-clickhouse-cloud-service}
 
 :::tip
@@ -100,7 +98,6 @@ import clickhouse_connect
 
 client = clickhouse_connect.get_client(host='HOSTNAME.clickhouse.cloud', port=8443, username='default', password='your password')
 ```
-
 
 ### 与数据库交互 {#interact-with-your-database}
 
@@ -124,5 +121,5 @@ client.insert('new_table', data, column_names=['key', 'value', 'metric'])
 ```python
 result = client.query('SELECT max(key), avg(metric) FROM new_table')
 print(result.result_rows)
-# 输出：[(2000, -50.9035)] {#output-2000-509035}
+# Output: [(2000, -50.9035)]
 ```

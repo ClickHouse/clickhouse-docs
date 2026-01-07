@@ -81,7 +81,6 @@ doc_type: 'reference'
 INSERT INTO football FROM INFILE 'football.json' FORMAT JSONCompact;
 ```
 
-
 ### データの読み込み {#reading-data}
 
 `JSONCompact` 形式を使用してデータを読み込みます。
@@ -155,6 +154,5 @@ FORMAT JSONCompact
     }
 }
 ```
-
 
 ## フォーマット設定 {#format-settings}

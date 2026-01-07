@@ -127,7 +127,8 @@ CREATE TABLE orders  (
     o_shippriority   Int32,
     o_comment        String)
 ORDER BY (o_orderkey);
--- 以下是替代的排序键,不符合官方 TPC-H 规范,但在"Quantifying TPC-H Choke Points and Their Optimizations"第 4.5 节中推荐使用:
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (o_orderdate, o_orderkey);
 
 CREATE TABLE lineitem (
@@ -148,7 +149,8 @@ CREATE TABLE lineitem (
     l_shipmode       String,
     l_comment        String)
 ORDER BY (l_orderkey, l_linenumber);
--- 以下是替代的排序键,不符合官方 TPC-H 规范,但在"Quantifying TPC-H Choke Points and Their Optimizations"第 4.5 节中推荐使用:
+-- The following is an alternative order key which is not compliant with the official TPC-H rules but recommended by sec. 4.5 in
+-- "Quantifying TPC-H Choke Points and Their Optimizations":
 -- ORDER BY (l_shipdate, l_orderkey, l_linenumber);
 ```
 
@@ -169,7 +171,7 @@ clickhouse-client --format_csv_delimiter '|' --query "INSERT INTO lineitem FORMA
 你也可以选择从公共 S3 存储桶中导入数据，而不是使用 tpch-kit 自行生成这些表。请确保先使用上面的 `CREATE` 语句创建空表。
 
 ```sql
--- 扩展因子 1
+-- Scaling factor 1
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/nation.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/region.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/part.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -179,7 +181,7 @@ INSERT INTO customer SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 INSERT INTO orders SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/orders.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/1/lineitem.tbl', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 
--- 扩展因子 100
+-- Scaling factor 100
 INSERT INTO nation SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/nation.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO region SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/region.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
 INSERT INTO part SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.com/h/100/part.tbl.gz', NOSIGN, CSV) SETTINGS format_csv_delimiter = '|', input_format_defaults_for_omitted_fields = 1, input_format_csv_empty_as_default = 1;
@@ -673,39 +675,34 @@ WHERE
 **Q15**
 
 ```sql
-CREATE VIEW revenue0 (supplier_no, total_revenue) AS
-    SELECT
-        l_suppkey,
-        sum(l_extendedprice * (1 - l_discount))
-    FROM
+with revenue_view as (
+    select
+        l_suppkey as supplier_no,
+        sum(l_extendedprice * (1 - l_discount)) as total_revenue
+    from
         lineitem
-    WHERE
-        l_shipdate >= DATE '1996-01-01'
-        AND l_shipdate < DATE '1996-01-01' + INTERVAL '3' MONTH
-    GROUP BY
-        l_suppkey;
-
-SELECT
+    where
+        l_shipdate >= '1996-01-01'
+      and l_shipdate < '1996-04-01'
+    group by
+        l_suppkey)
+select
     s_suppkey,
     s_name,
-    s_address,
-    s_phone,
     total_revenue
-FROM
+from
     supplier,
-    revenue0
-WHERE
+    revenue_view
+where
     s_suppkey = supplier_no
-    AND total_revenue = (
-        SELECT
+    and total_revenue = (
+        select
             max(total_revenue)
-        FROM
-            revenue0
+        from
+            revenue_view
     )
-ORDER BY
+order by
     s_suppkey;
-
-DROP VIEW revenue0;
 ```
 
 **Q16**
@@ -844,6 +841,7 @@ WHERE
 ```
 
 **Q20**
+
 
 ```sql
 SELECT

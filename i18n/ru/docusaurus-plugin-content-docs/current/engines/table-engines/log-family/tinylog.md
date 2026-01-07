@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # Движок таблиц TinyLog {#tinylog-table-engine}
 
 <CloudNotSupportedBadge/>
@@ -20,8 +19,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Запросы выполняются в одном потоке. Другими словами, этот движок предназначен для относительно небольших таблиц (примерно до 1 000 000 строк). Имеет смысл использовать этот табличный движок, если у вас много маленьких таблиц, поскольку он проще, чем движок [Log](../../../engines/table-engines/log-family/log.md) (нужно открыть меньше файлов).
 
-
-
 ## Характеристики {#characteristics}
 
 - **Более простая структура**: В отличие от движка `Log`, `TinyLog` не использует mark-файлы. Это снижает сложность, но также ограничивает возможности оптимизации производительности для больших наборов данных.
@@ -29,8 +26,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - **Эффективен для небольших таблиц**: Простота движка `TinyLog` делает его предпочтительным при работе с большим количеством небольших таблиц, так как он требует меньше файловых операций по сравнению с движком `Log`.
 
 В отличие от движка `Log`, `TinyLog` не использует mark-файлы. Это снижает сложность, но также ограничивает возможности оптимизации производительности для более крупных наборов данных.
-
-
 
 ## Создание таблицы {#table_engines-tinylog-creating-a-table}
 
@@ -45,7 +40,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Подробное описание запроса см. в разделе [CREATE TABLE](/sql-reference/statements/create/table).
 
-
 ## Запись данных {#table_engines-tinylog-writing-the-data}
 
 Движок `TinyLog` хранит все столбцы в одном файле. Для каждого запроса `INSERT` ClickHouse добавляет блок данных в конец файла таблицы, записывая столбцы один за другим.
@@ -55,8 +49,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `<column>.bin`: файл данных для каждого столбца, содержащий сериализованные и сжатые данные.
 
 Движок `TinyLog` не поддерживает операции `ALTER UPDATE` и `ALTER DELETE`.
-
-
 
 ## Пример использования {#table_engines-tinylog-example-of-use}
 
@@ -75,8 +67,8 @@ ENGINE = TinyLog
 Добавление данных:
 
 ```sql
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','Первое обычное сообщение')
-INSERT INTO tiny_log_table VALUES (now(),'REGULAR','Второе обычное сообщение'),(now(),'WARNING','Первое предупреждение')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The first regular message')
+INSERT INTO tiny_log_table VALUES (now(),'REGULAR','The second regular message'),(now(),'WARNING','The first warning message')
 ```
 
 Мы использовали два запроса `INSERT`, чтобы создать два блока данных внутри файлов `<column>.bin`.
@@ -89,8 +81,8 @@ SELECT * FROM tiny_log_table
 
 ```text
 ┌───────────timestamp─┬─message_type─┬─message────────────────────┐
-│ 2024-12-10 13:11:58 │ REGULAR      │ Первое обычное сообщение   │
-│ 2024-12-10 13:12:12 │ REGULAR      │ Второе обычное сообщение   │
-│ 2024-12-10 13:12:12 │ WARNING      │ Первое предупреждение      │
+│ 2024-12-10 13:11:58 │ REGULAR      │ The first regular message  │
+│ 2024-12-10 13:12:12 │ REGULAR      │ The second regular message │
+│ 2024-12-10 13:12:12 │ WARNING      │ The first warning message  │
 └─────────────────────┴──────────────┴────────────────────────────┘
 ```

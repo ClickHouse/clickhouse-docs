@@ -7,11 +7,7 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-
-
 # avgState {#avgState}
-
-
 
 ## 説明 {#description}
 
@@ -19,8 +15,6 @@ doc_type: 'reference'
 [`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用することで、
 `AggregateFunction(avg, T)` 型の中間状態を生成できます。ここで `T` は、
 平均の計算対象の型として指定された型です。
-
-
 
 ## 使用例 {#example-usage}
 
@@ -34,7 +28,7 @@ CREATE TABLE raw_page_views
 (
     page_id UInt32,
     page_name String,
-    response_time_ms UInt32,  -- ページ応答時間（ミリ秒単位）
+    response_time_ms UInt32,  -- Page response time in milliseconds
     viewed_at DateTime DEFAULT now()
 )
 ENGINE = MergeTree()
@@ -48,7 +42,7 @@ CREATE TABLE page_performance
 (
     page_id UInt32,
     page_name String,
-    avg_response_time AggregateFunction(avg, UInt32)  -- avg の計算に必要な状態を保持する
+    avg_response_time AggregateFunction(avg, UInt32)  -- Stores the state needed for avg calculation
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY page_id;
@@ -62,7 +56,7 @@ TO page_performance
 AS SELECT
     page_id,
     page_name,
-    avgState(response_time_ms) AS avg_response_time  -- -State コンビネータを使用している
+    avgState(response_time_ms) AS avg_response_time  -- Using -State combinator
 FROM raw_page_views
 GROUP BY page_id, page_name;
 ```
@@ -71,23 +65,23 @@ GROUP BY page_id, page_name;
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
-    (1, 'ホームページ', 120),
-    (1, 'ホームページ', 135),
-    (2, '製品', 95),
-    (2, '製品', 105),
-    (3, '会社概要', 80),
-    (3, '会社概要', 90);
+    (1, 'Homepage', 120),
+    (1, 'Homepage', 135),
+    (2, 'Products', 95),
+    (2, 'Products', 105),
+    (3, 'About', 80),
+    (3, 'About', 90);
 ```
 
 ディスク上に2つ目のパートを作成するため、データをもう少し挿入します。
 
 ```sql
 INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
-(1, 'ホームページ', 150),
-(2, '製品ページ', 110),
-(3, '会社概要', 70),
-(4, 'お問い合わせ', 60),
-(4, 'お問い合わせ', 65);
+(1, 'Homepage', 150),
+(2, 'Products', 110),
+(3, 'About', 70),
+(4, 'Contact', 60),
+(4, 'Contact', 65);
 ```
 
 ターゲットテーブル `page_performance` を確認します:
@@ -103,13 +97,13 @@ FROM page_performance
 
 ```response
 ┌─page_id─┬─page_name─┬─avg_response_time─┬─toTypeName(avg_response_time)──┐
-│       1 │ ホームページ  │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ 製品  │ �                 │ AggregateFunction(avg, UInt32) │
-│       3 │ 概要     │ �                 │ AggregateFunction(avg, UInt32) │
-│       1 │ ホームページ  │ �                 │ AggregateFunction(avg, UInt32) │
-│       2 │ 製品  │ n                 │ AggregateFunction(avg, UInt32) │
-│       3 │ 概要     │ F                 │ AggregateFunction(avg, UInt32) │
-│       4 │ お問い合わせ   │ }                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ �                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ �                 │ AggregateFunction(avg, UInt32) │
+│       1 │ Homepage  │ �                 │ AggregateFunction(avg, UInt32) │
+│       2 │ Products  │ n                 │ AggregateFunction(avg, UInt32) │
+│       3 │ About     │ F                 │ AggregateFunction(avg, UInt32) │
+│       4 │ Contact   │ }                 │ AggregateFunction(avg, UInt32) │
 └─────────┴───────────┴───────────────────┴────────────────────────────────┘
 ```
 
@@ -136,16 +130,14 @@ ORDER BY page_id;
 
 これで正しい平均値が得られます。
 
-
 ```response
 ┌─page_id─┬─page_name─┬─average_response_time_ms─┐
-│       1 │ ホームページ │                      135 │
-│       2 │ 製品        │       103.33333333333333 │
-│       3 │ 概要        │                       80 │
-│       4 │ お問い合わせ │                     62.5 │
+│       1 │ Homepage  │                      135 │
+│       2 │ Products  │       103.33333333333333 │
+│       3 │ About     │                       80 │
+│       4 │ Contact   │                     62.5 │
 └─────────┴───────────┴──────────────────────────┘
 ```
-
 
 ## 関連情報 {#see-also}
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)

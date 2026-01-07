@@ -8,7 +8,6 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
 # 副本感知路由 {#replica-aware-routing}
 
 <PrivatePreviewBadge/>
@@ -27,8 +26,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 请注意，原始主机名仍然会使用 `LEAST_CONNECTION` 负载均衡，这是默认的路由算法。
 
-
-
 ## 副本感知路由的限制 {#limitations-of-replica-aware-routing}
 
 ### 副本感知路由不保证隔离 {#replica-aware-routing-does-not-guarantee-isolation}
@@ -38,8 +35,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 ### 副本感知路由无法开箱即用地与 Private Link 搭配使用 {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
 
 客户需要手动添加一条 DNS 记录，才能使新的主机名模式的名称解析生效。如果使用不当，这可能会导致服务器负载不均衡。
-
-
 
 ## 配置副本感知路由 {#configuring-replica-aware-routing}
 

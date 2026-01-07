@@ -54,19 +54,19 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 <VerticalStepper headerLevel="h3">
   ### 复制服务凭证(可选)
 
-  **如果您已有希望在服务中可视化的可观测性事件，则可以跳过此步骤。**
+  **如果您已有希望在服务中可视化的可观测性事件,则可以跳过此步骤。**
 
   导航至主服务列表,选择您要在 HyperDX 中可视化可观测性事件的服务。
 
   从导航菜单中点击 `Connect` 按钮。系统将弹出一个对话框,其中包含您服务的连接凭据以及通过不同接口和语言进行连接的操作说明。从下拉列表中选择 `HTTPS`,并记录连接端点和凭据信息。
 
-  <Image img={cloud_connect} alt="ClickHouse Cloud 连接" size="lg" />
+  <Image img={cloud_connect} alt="ClickHouse Cloud 连接界面" size="lg" />
 
   ### 部署 OpenTelemetry Collector(可选)
 
-  **如果您已有希望在服务中可视化的可观测性事件，则可以跳过此步骤。**
+  **如果您已有希望在服务中可视化的可观测性事件,则可以跳过此步骤。**
 
-  此步骤确保使用 OpenTelemetry (OTel) 架构创建表,从而可以无缝地在 HyperDX 中创建数据源。这还提供了一个 OLTP 端点,可用于加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)并将 OTel 事件发送到 ClickStack。
+  此步骤确保使用 OpenTelemetry (OTel) 架构创建表,从而可以无缝地在 HyperDX 中创建数据源。这还提供了一个 OTLP 端点,可用于加载[示例数据集](/use-cases/observability/clickstack/sample-datasets)并将 OTel 事件发送到 ClickStack。
 
   :::note 使用标准 OpenTelemetry collector
   以下说明使用标准发行版的 OTel collector,而非 ClickStack 发行版。ClickStack 发行版需要 OpAMP 服务器进行配置,目前在私有预览阶段尚不支持。以下配置复制了 ClickStack 发行版 collector 所使用的版本,提供一个 OTLP 端点用于接收事件。
@@ -100,7 +100,8 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
           - context: log
             error_mode: ignore
             statements:
-              # JSON 解析:使用结构化日志主体内容中的字段扩展日志属性,可以是 OTEL 映射或包含 JSON 内容的字符串。
+              # JSON parsing: Extends log attributes with the fields from structured log body content, either as an OTEL map or
+              # as a string containing JSON content.
               - set(log.cache, ExtractPatterns(log.body, "(?P<0>(\\{.*\\}))")) where
                 IsString(log.body)
               - merge_maps(log.attributes, ParseJSON(log.cache["0"]), "upsert")
@@ -112,45 +113,45 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
             conditions:
               - severity_number == 0 and severity_text == ""
             statements:
-              # 推断:从主体的前 256 个字符中提取第一个日志级别关键字
+              # Infer: extract the first log level keyword from the first 256 characters of the body
               - set(log.cache["substr"], log.body.string) where Len(log.body.string)
                 < 256
               - set(log.cache["substr"], Substring(log.body.string, 0, 256)) where
                 Len(log.body.string) >= 256
               - set(log.cache, ExtractPatterns(log.cache["substr"],
                 "(?i)(?P<0>(alert|crit|emerg|fatal|error|err|warn|notice|debug|dbug|trace))"))
-              # 推断:检测 FATAL
+              # Infer: detect FATAL
               - set(log.severity_number, SEVERITY_NUMBER_FATAL) where
                 IsMatch(log.cache["0"], "(?i)(alert|crit|emerg|fatal)")
               - set(log.severity_text, "fatal") where log.severity_number ==
                 SEVERITY_NUMBER_FATAL
-              # 推断:检测 ERROR
+              # Infer: detect ERROR
               - set(log.severity_number, SEVERITY_NUMBER_ERROR) where
                 IsMatch(log.cache["0"], "(?i)(error|err)")
               - set(log.severity_text, "error") where log.severity_number ==
                 SEVERITY_NUMBER_ERROR
-              # 推断:检测 WARN
+              # Infer: detect WARN
               - set(log.severity_number, SEVERITY_NUMBER_WARN) where
                 IsMatch(log.cache["0"], "(?i)(warn|notice)")
               - set(log.severity_text, "warn") where log.severity_number ==
                 SEVERITY_NUMBER_WARN
-              # 推断:检测 DEBUG
+              # Infer: detect DEBUG
               - set(log.severity_number, SEVERITY_NUMBER_DEBUG) where
                 IsMatch(log.cache["0"], "(?i)(debug|dbug)")
               - set(log.severity_text, "debug") where log.severity_number ==
                 SEVERITY_NUMBER_DEBUG
-              # 推断:检测 TRACE
+              # Infer: detect TRACE
               - set(log.severity_number, SEVERITY_NUMBER_TRACE) where
                 IsMatch(log.cache["0"], "(?i)(trace)")
               - set(log.severity_text, "trace") where log.severity_number ==
                 SEVERITY_NUMBER_TRACE
-              # 推断:其他情况
+              # Infer: else
               - set(log.severity_text, "info") where log.severity_number == 0
               - set(log.severity_number, SEVERITY_NUMBER_INFO) where log.severity_number == 0
           - context: log
             error_mode: ignore
             statements:
-              # 规范化 severity_text 的大小写
+              # Normalize the severity_text case
               - set(log.severity_text, ConvertCase(log.severity_text, "lower"))
       resourcedetection:
         detectors:
@@ -161,9 +162,9 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
         override: false
       batch:
       memory_limiter:
-        # 最大内存的 80%,上限为 2G,可根据低内存环境进行调整
+        # 80% of maximum memory up to 2G, adjust for low memory environments
         limit_mib: 1500
-        # 限制的 25%,上限为 2G,可根据低内存环境进行调整
+        # 25% of limit up to 2G, adjust for low memory environments
         spike_limit_mib: 512
         check_interval: 5s
     connectors:
@@ -228,19 +229,20 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
           receivers: [routing/logs]
           processors: [memory_limiter, batch]
           exporters: [clickhouse/rrweb]
+
     ```
   </details>
 
   使用以下 Docker 命令部署采集器,将相应的环境变量设置为先前记录的连接配置,并根据操作系统选择对应的命令执行。
 
   ```bash
-  # 修改为您的云端点地址
+  # modify to your cloud endpoint
   export CLICKHOUSE_ENDPOINT=
   export CLICKHOUSE_PASSWORD=
-  # 可选修改项 
+  # optionally modify 
   export CLICKHOUSE_DATABASE=default
 
-  # macOS
+  # osx
   docker run --rm -it \
     -p 4317:4317 -p 4318:4318 \
     -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
@@ -254,7 +256,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
     otel/opentelemetry-collector-contrib:latest \
     --config /etc/otel/config.yaml
 
-  # Linux 命令
+  # linux command
 
   # docker run --network=host --rm -it \
   #   -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
@@ -270,7 +272,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   ```
 
   :::note
-  在生产环境中,我们建议为摄取操作创建专用用户,并限制其对所需数据库和表的访问权限。详情请参阅 [&quot;数据库和摄取用户&quot;](/use-cases/observability/clickstack/production#database-ingestion-user)。
+  在生产环境中,我们建议为摄取操作创建专用用户,并限制其对所需数据库和表的访问权限。详情请参阅[&quot;数据库和摄取用户&quot;](/use-cases/observability/clickstack/production#database-ingestion-user)。
   :::
 
   ### 连接到 HyperDX
@@ -293,15 +295,15 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
   1. 在 ClickHouse Cloud 控制台中转到您的服务
   2. 转到 **Settings（设置）** → **SQL Console Access（SQL 控制台访问）**
-  3. 为每个用户设置合适的权限级别：
-     * **Service Admin → Full Access** - 启用告警所必需
-     * **Service Read Only → Read Only** - 可查看观测数据并创建仪表盘
+  3. 为每个用户设置相应的权限级别：
+     * **Service Admin → Full Access** - 启用告警功能所必需
+     * **Service Read Only → Read Only** - 可查看可观测性数据并创建仪表盘
      * **No access** - 无法访问 HyperDX
 
   <Image img={read_only} alt="ClickHouse Cloud 只读访问" />
 
   :::important 告警功能需要管理员访问权限
-  要启用告警功能,至少需要一位拥有 **Service Admin** 权限(在 SQL Console Access 下拉菜单中对应 **Full Access**)的用户登录 HyperDX 一次。此操作将在数据库中创建一个专用用户账户,用于执行告警查询。
+  要启用告警功能,至少需要一位拥有 **Service Admin** 权限(在 SQL Console Access 下拉菜单中对应 **Full Access**)的用户登录 HyperDX 一次。此操作将在数据库中创建一个专用用户,用于执行告警查询。
   :::
 
   ### 创建数据源
@@ -314,7 +316,7 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
   <Image img={hyperdx_cloud_datasource} alt="ClickHouse Cloud HyperDX 数据源" size="lg" />
 
-  要为追踪和 OTel 指标创建数据源,用户可从顶部菜单选择 `创建新数据源`。
+  要为追踪和 OTel 指标创建数据源,您可以从顶部菜单选择 `创建新数据源`。
 
   <Image img={hyperdx_create_new_source} alt="HyperDX：创建新数据源" size="lg" />
 
@@ -326,13 +328,13 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   请注意，ClickStack 中的不同数据源（如日志和追踪）可以相互关联。要启用此功能，需要对每个来源进行额外配置。例如，在日志来源中可以指定对应的追踪来源，在追踪来源中也可以指定对应的日志来源。有关更多详细信息，请参阅[&quot;关联来源&quot;](/use-cases/observability/clickstack/config#correlated-sources)。
   :::
 
-  #### 使用自定义模式
+  #### 使用自定义架构
 
-  需要将 HyperDX 连接到现有数据服务的用户可按需完成数据库和表的配置。如果表结构符合 ClickHouse 的 OpenTelemetry 模式,相关设置将被自动检测。
+  需要将 HyperDX 连接到现有数据服务的用户可按需完成数据库和表的配置。如果表结构符合 ClickHouse 的 OpenTelemetry 架构,相关设置将被自动检测。
 
   如果使用自定义架构，我们建议创建日志源并确保指定所有必需字段 - 详情请参阅[&quot;日志源设置&quot;](/use-cases/observability/clickstack/config#logs)。
 </VerticalStepper>
 
 <JSONSupport/>
 
-此外，用户应联系 support@clickhouse.com，确保其 ClickHouse Cloud 服务已启用 JSON 功能。
+此外，您应联系 support@clickhouse.com，确保您的 ClickHouse Cloud 服务已启用 JSON 功能。

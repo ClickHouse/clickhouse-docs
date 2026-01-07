@@ -25,7 +25,6 @@ ClickStack 可以从 Next.js 13.2 及以上版本的
 如果你在寻找会话回放或浏览器端监控，请改为安装 [Browser integration](/use-cases/observability/clickstack/sdks/browser)。
 :::
 
-
 ## 安装 {#installing}
 
 ### 启用 instrumentation hook（v15 及以下版本必需） {#enable-instrumentation-hook}
@@ -39,7 +38,7 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // 忽略 OTel 包的警告 
+  // Ignore otel pkgs warnings 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -54,7 +53,6 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
-
 
 ### 安装 ClickHouse OpenTelemetry SDK {#install-sdk}
 
@@ -84,16 +82,15 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: '<YOUR_INGESTION_API_KEY>', // 可选:通过 `HYPERDX_API_KEY` 环境变量配置
-      service: '<MY_SERVICE_NAME>', // 可选:通过 `OTEL_SERVICE_NAME` 环境变量配置
-      additionalInstrumentations: [], // 可选,默认值:[]
+      apiKey: '<YOUR_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
+      service: '<MY_SERVICE_NAME>', // optionally configure via `OTEL_SERVICE_NAME` env var
+      additionalInstrumentations: [], // optional, default: []
     });
   }
 }
 ```
 
 这将使 Next.js 能在调用任何 Serverless 函数时导入 OpenTelemetry 插桩。
-
 
 ### 配置环境变量 {#configure-environment-variables}
 

@@ -34,7 +34,6 @@ with engine.begin() as conn:
 
 Полный список поддерживаемых параметров см. в разделе [Connection arguments and Settings](driver-api.md#connection-arguments) ниже. Их также можно передавать через DSN SQLAlchemy.
 
-
 ## Основные запросы {#sqlalchemy-core-queries}
 
 Диалект поддерживает `SELECT`-запросы SQLAlchemy Core с объединениями, фильтрацией, сортировкой, ограничениями и смещениями (LIMIT/OFFSET), а также `DISTINCT`.
@@ -46,11 +45,11 @@ metadata = MetaData(schema="mydb")
 users = Table("users", metadata, autoload_with=engine)
 orders = Table("orders", metadata, autoload_with=engine)
 
-# Базовый запрос SELECT {#basic-select}
+# Basic SELECT
 with engine.begin() as conn:
     rows = conn.execute(select(users.c.id, users.c.name).order_by(users.c.id).limit(10)).fetchall()
 
-# Объединения JOIN (INNER/LEFT OUTER/FULL OUTER/CROSS) {#joins-innerleft-outerfull-outercross}
+# JOINs (INNER/LEFT OUTER/FULL OUTER/CROSS)
 with engine.begin() as conn:
     stmt = (
         select(users.c.name, orders.c.product)
@@ -68,7 +67,6 @@ with engine.begin() as conn:
     conn.execute(delete(users).where(users.c.name.like("%temp%")))
 ```
 
-
 ## DDL и рефлексия {#sqlalchemy-ddl-reflection}
 
 Вы можете создавать базы данных и таблицы, используя предоставленные DDL‑помощники и конструкторы типов/движков. Поддерживается рефлексия таблиц (включая типы столбцов и движок).
@@ -81,10 +79,10 @@ from clickhouse_connect.cc_sqlalchemy.ddl.tableengine import MergeTree
 from clickhouse_connect.cc_sqlalchemy.datatypes.sqltypes import UInt32, String, DateTime64
 
 with engine.begin() as conn:
-    # Базы данных
+    # Databases
     conn.execute(CreateDatabase("example_db", exists_ok=True))
 
-    # Таблицы
+    # Tables
     metadata = MetaData(schema="example_db")
     table = db.Table(
         "events",
@@ -96,24 +94,23 @@ with engine.begin() as conn:
     )
     table.create(conn)
 
-    # Отражение схемы
+    # Reflection
     reflected = db.Table("events", metadata, autoload_with=engine)
     assert reflected.engine is not None
 ```
 
 Отражённые столбцы включают атрибуты, специфичные для диалекта, такие как `clickhousedb_default_type`, `clickhousedb_codec_expression` и `clickhousedb_ttl_expression`, если они заданы на сервере.
 
-
 ## Операции вставки (Core и базовый ORM) {#sqlalchemy-inserts}
 
 Операции вставки можно выполнять через SQLAlchemy Core, а также с помощью простых ORM-моделей для удобства.
 
 ```python
-# Вставка через Core {#core-insert}
+# Core insert
 with engine.begin() as conn:
     conn.execute(table.insert().values(id=1, user="joe"))
 
-# Базовая вставка через ORM {#basic-orm-insert}
+# Basic ORM insert
 from sqlalchemy.orm import declarative_base, Session
 
 Base = declarative_base(metadata=MetaData(schema="example_db"))
@@ -131,7 +128,6 @@ with Session(engine) as session:
     session.bulk_save_objects([User(id=2, name="Bob")])
     session.commit()
 ```
-
 
 ## Область применения и ограничения {#scope-and-limitations}
 

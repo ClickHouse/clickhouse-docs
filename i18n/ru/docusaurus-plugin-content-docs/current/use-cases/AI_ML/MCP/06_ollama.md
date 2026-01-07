@@ -14,13 +14,11 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
-
 # Использование сервера ClickHouse MCP совместно с Ollama {#using-clickhouse-mcp-server-with-ollama}
 
 > В этом руководстве объясняется, как использовать сервер ClickHouse MCP совместно с Ollama.
 
 <VerticalStepper headerLevel="h2">
-
 
 ## Установите Ollama {#install-ollama}
 
@@ -56,8 +54,8 @@ ollama ls
 ```
 
 ```text
-ИМЯ                        ID              РАЗМЕР    ИЗМЕНЕНО
-qwen3:latest               500a1f067a9f    5.2 GB    3 дня назад
+NAME                       ID              SIZE      MODIFIED
+qwen3:latest               500a1f067a9f    5.2 GB    3 days ago
 ```
 
 Мы можем использовать следующую команду, чтобы получить дополнительную информацию о модели, которую мы скачали:
@@ -67,18 +65,18 @@ ollama show qwen3
 ```
 
 ```text
-  Модель
-    архитектура        qwen3
-    число параметров   8.2B
-    длина контекста    40960
-    длина эмбеддинга   4096
-    квантование        Q4_K_M
+  Model
+    architecture        qwen3
+    parameters          8.2B
+    context length      40960
+    embedding length    4096
+    quantization        Q4_K_M
 
-  Возможности
-    завершение
-    инструменты
+  Capabilities
+    completion
+    tools
 
-  Параметры
+  Parameters
     repeat_penalty    1
     stop              "<|im_start|>"
     stop              "<|im_end|>"
@@ -86,13 +84,12 @@ ollama show qwen3
     top_k             20
     top_p             0.95
 
-  Лицензия
+  License
     Apache License
     Version 2.0, January 2004
 ```
 
 Из этого вывода видно, что у модели qwen3 по умолчанию чуть больше 8 миллиардов параметров.
-
 
 ## Установите MCPHost {#install-mcphost}
 
@@ -107,7 +104,6 @@ go install github.com/mark3labs/mcphost@latest
 ```
 
 Исполняемый файл будет установлен в `~/go/bin`, поэтому нужно убедиться, что этот каталог входит в переменную окружения `PATH`.
-
 
 ## Настройка сервера ClickHouse MCP {#configure-clickhouse-mcp-server}
 
@@ -157,7 +153,6 @@ export CLICKHOUSE_PASSWORD=""
 Теоретически вы должны иметь возможность указать эти переменные под ключом `environment` в конфигурационном файле MCP, но на практике это не работает.
 :::
 
-
 ## Running MCPHost {#running-mcphost}
 
 После того как вы настроили сервер ClickHouse MCP, вы можете запустить MCPHost, выполнив следующую команду:
@@ -169,7 +164,7 @@ mcphost --model ollama:qwen3
 Или, если вы хотите использовать определённый файл конфигурации:
 
 ```bash
-mcphost --model ollama:qwen3 --config ~/.mcphost.json
+mcphost --model ollama:qwen3 --config ~/.mcphost.json 
 ```
 
 :::warning
@@ -180,28 +175,28 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 
 ```text
   ┃                                                                                     ┃
-  ┃  Модель загружена: ollama (qwen3)                                                   ┃
+  ┃  Model loaded: ollama (qwen3)                                                       ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
   ┃                                                                                     ┃
-  ┃  Модель успешно загружена на GPU                                                    ┃
+  ┃  Model loaded successfully on GPU                                                   ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
   ┃                                                                                     ┃
-  ┃  Загружено 3 инструмента с MCP-серверов                                             ┃
+  ┃  Loaded 3 tools from MCP servers                                                    ┃
   ┃   MCPHost System (09:52)                                                            ┃
   ┃                                                                                     ┃
 
-  Введите запрос (введите /help для списка команд, Ctrl+C для выхода, ESC для отмены генерации)
+  Enter your prompt (Type /help for commands, Ctrl+C to quit, ESC to cancel generation)
 ```
 
 Мы можем использовать команду `/servers`, чтобы вывести список MCP-серверов:
 
 ```text
   ┃                                                                                      ┃
-  ┃  ## Настроенные MCP-серверы                                                          ┃
+  ┃  ## Configured MCP Servers                                                           ┃
   ┃                                                                                      ┃
   ┃  1. mcp-ch                                                                           ┃
   ┃   MCPHost System (10:00)                                                             ┃
@@ -211,7 +206,7 @@ mcphost --model ollama:qwen3 --config ~/.mcphost.json
 А команду `/tools` — чтобы вывести список доступных инструментов:
 
 ```text
-  ┃  ## Доступные инструменты                                                            ┃
+  ┃  ## Available Tools                                                                  ┃
   ┃                                                                                      ┃
   ┃  1. mcp-ch__list_databases                                                           ┃
   ┃  2. mcp-ch__list_tables                                                              ┃

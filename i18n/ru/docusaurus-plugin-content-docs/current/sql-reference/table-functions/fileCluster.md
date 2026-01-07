@@ -7,8 +7,6 @@ title: 'fileCluster'
 doc_type: 'reference'
 ---
 
-
-
 # Табличная функция fileCluster {#filecluster-table-function}
 
 Позволяет одновременно обрабатывать файлы, соответствующие заданному пути, на нескольких узлах кластера. Инициатор устанавливает соединения с рабочими узлами, разворачивает glob-шаблоны в пути к файлам и делегирует задачи чтения файлов рабочим узлам. Каждый рабочий узел запрашивает у инициатора следующий файл для обработки и повторяет это до тех пор, пока все задачи не будут выполнены (все файлы не будут прочитаны).
@@ -18,14 +16,11 @@ doc_type: 'reference'
 Если эти файлы различаются между узлами, возвращаемое значение нельзя заранее предсказать, так как оно зависит от порядка, в котором рабочие узлы запрашивают задачи у инициатора.
 :::
 
-
-
 ## Синтаксис {#syntax}
 
 ```sql
 fileCluster(cluster_name, path[, format, structure, compression_method])
 ```
-
 
 ## Аргументы {#arguments}
 
@@ -36,8 +31,6 @@ fileCluster(cluster_name, path[, format, structure, compression_method])
 | `format`             | [Формат](/sql-reference/formats) файлов. Тип: [String](../../sql-reference/data-types/string.md).                                                                                 |
 | `structure`          | Структура таблицы в формате `'UserID UInt64, Name String'`. Определяет имена и типы столбцов. Тип: [String](../../sql-reference/data-types/string.md).                            |
 | `compression_method` | Метод сжатия. Поддерживаемые типы сжатия: `gz`, `br`, `xz`, `zst`, `lz4` и `bz2`.                                                                                                 |
-
-
 
 ## Возвращаемое значение {#returned_value}
 
@@ -88,12 +81,9 @@ SELECT * FROM fileCluster('my_cluster', 'file{1,2}.csv', 'CSV', 'i UInt32, s Str
 └────┴────────┘
 ```
 
-
 ## Глоб-шаблоны в пути {#globs-in-path}
 
 Все шаблоны, поддерживаемые табличной функцией [File](../../sql-reference/table-functions/file.md#globs-in-path), также поддерживаются функцией FileCluster.
-
-
 
 ## Смотрите также {#related}
 

@@ -34,9 +34,9 @@ ClickHouse 支持同时使用多个不同的地理库（区域层级结构），
 示例：
 
 ```sql
-regionToCountry(RegionID) – 使用默认字典:/opt/geo/regions_hierarchy.txt
-regionToCountry(RegionID, '') – 使用默认字典:/opt/geo/regions_hierarchy.txt
-regionToCountry(RegionID, 'ua') – 使用 'ua' 键的字典:/opt/geo/regions_hierarchy_ua.txt
+regionToCountry(RegionID) – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, '') – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
+regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/geo/regions_hierarchy_ua.txt
 ```
 
 ### regionToName {#regiontoname}

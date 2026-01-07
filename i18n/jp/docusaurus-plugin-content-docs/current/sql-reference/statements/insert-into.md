@@ -7,8 +7,6 @@ title: 'INSERT INTO ステートメント'
 doc_type: 'reference'
 ---
 
-
-
 # INSERT INTO ステートメント {#insert-into-statement}
 
 テーブルにデータを挿入します。
@@ -61,7 +59,7 @@ SELECT * FROM insert_select_testtable;
 └───┴───┴───┘
 ```
 
-この例では、2 行目として挿入された行では `a` 列と `c` 列が指定した値で埋められ、`b` 列にはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
+この例では、2 番目に挿入された行では `a` 列と `c` 列には指定した値が入り、`b` 列にはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
 
 ```sql
 INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
@@ -69,10 +67,10 @@ INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
 
 列リストに既存のすべての列が含まれていない場合、残りの列には次の値が設定されます。
 
-* テーブル定義で指定された `DEFAULT` 式から計算された値。
-* `DEFAULT` 式が定義されていない場合は、ゼロおよび空文字列。
+* テーブル定義で指定された `DEFAULT` 式から計算された値
+* `DEFAULT` 式が定義されていない場合はゼロおよび空文字列
 
-データは、ClickHouse がサポートする任意の[フォーマット](/sql-reference/formats)で INSERT に渡すことができます。フォーマットはクエリ内で明示的に指定する必要があります。
+データは、ClickHouse がサポートする任意の[フォーマット](/sql-reference/formats)で INSERT 文に渡すことができます。フォーマットはクエリ内で明示的に指定する必要があります。
 
 ```sql
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
@@ -84,17 +82,17 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse は、データの前にあるすべてのスペースと、（存在する場合は）1 つの改行を削除します。クエリを構築する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の後で改行し、その次の行にデータを配置することを推奨します。
+ClickHouse は、データの前にあるすべての空白文字と（存在する場合は）1 つの改行を削除します。クエリを作成する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の直後で改行し、その次の行にデータを配置することを推奨します。
 
 例:
 
 ```sql
 INSERT INTO t FORMAT TabSeparated
-11  こんにちは、世界！
+11  Hello, world!
 22  Qwerty
 ```
 
-クエリとは別にデータを挿入するには、[コマンドラインクライアント](/operations/utilities/clickhouse-local) または [HTTP インターフェイス](/interfaces/http/) を使用できます。
+クエリとは別にデータを挿入するには、[コマンドラインクライアント](/operations/utilities/clickhouse-local) または [HTTP インターフェイス](/interfaces/http) を使用できます。
 
 :::note
 `INSERT` クエリに対して `SETTINGS` を指定する場合は、`FORMAT` 句の *前に* 指定する必要があります。`FORMAT format_name` 以降はすべてデータとして扱われるためです。例えば、次のようにします。
@@ -109,8 +107,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ## 制約 {#constraints}
 
 テーブルに[制約](../../sql-reference/statements/create/table.md#constraints)がある場合、それらの式は挿入されたデータの各行に対して評価されます。これらの制約のいずれかが満たされない場合、サーバーは制約名と式を含む例外をスローし、クエリの実行は中断されます。
-
-
 
 ## SELECT の結果の挿入 {#inserting-the-results-of-select}
 
@@ -155,6 +151,7 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 **例**
 
+
 ### FROM INFILE を用いた単一ファイル {#single-file-with-from-infile}
 
 次のクエリを [command-line client](../../interfaces/cli.md) を使って実行します。
@@ -175,6 +172,7 @@ clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 └────┴──────┘
 ```
 
+
 ### FROM INFILE でグロブを使用した複数ファイル {#multiple-files-with-from-infile-using-globs}
 
 この例は前の例と非常によく似ていますが、`FROM INFILE 'input_*.csv'` を使用して複数のファイルからデータを挿入します。
@@ -187,7 +185,7 @@ clickhouse-client --query="SELECT * FROM infile_globs FORMAT PrettyCompact;"
 ```
 
 :::tip
-`*` を使って複数のファイルを選択するだけでなく、範囲（`{1,2}` や `{1..9}`）や、その他の [グロブの展開](/sql-reference/table-functions/file.md/#globs-in-path) も利用できます。上記の例では、次の 3 つはいずれも有効です。
+`*` を使って複数のファイルを選択するだけでなく、範囲指定（`{1,2}` や `{1..9}`）や、その他の [グロブの展開](/sql-reference/table-functions/file.md/#globs-in-path) も利用できます。上記の例では、次の 3 つはいずれも有効です。
 
 ```sql
 INSERT INTO infile_globs FROM INFILE 'input_*.csv' FORMAT CSV;
@@ -215,7 +213,7 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 ```sql
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
-    VALUES (100, 'remote()経由で挿入');
+    VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
@@ -230,7 +228,7 @@ SELECT * FROM simple_table;
 
 ## ClickHouse Cloud への挿入 {#inserting-into-clickhouse-cloud}
 
-デフォルトでは、ClickHouse Cloud のサービスは高可用性を実現するために複数のレプリカを持ちます。サービスに接続すると、これらのレプリカのいずれかに接続が確立されます。
+デフォルトでは、ClickHouse Cloud のサービスでは高可用性を実現するために複数のレプリカが提供されています。サービスに接続すると、これらのレプリカのいずれかに接続が確立されます。
 
 `INSERT` が成功すると、データは基盤となるストレージに書き込まれます。ただし、レプリカがこれらの更新を受け取るまでに時間がかかる場合があります。そのため、別の接続を使用して他のレプリカのいずれかで `SELECT` クエリを実行した場合、更新後のデータがまだ反映されていない可能性があります。
 
@@ -248,8 +246,6 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 レプリケーション構成では、データは複製が完了した後に他のレプリカ上で参照できるようになります。`INSERT` の直後から、データのレプリケーション（他のレプリカへのダウンロード）が開始されます。これは、データが即座に共有ストレージに書き込まれ、レプリカがメタデータの変更をサブスクライブする ClickHouse Cloud とは挙動が異なります。
 
 レプリケーション構成では、分散コンセンサスのために ClickHouse Keeper へのコミットが必要となるため、`INSERT` が完了するまでに比較的長い時間（1 秒程度）がかかる場合がある点に注意してください。ストレージに S3 を使用すると、さらに追加のレイテンシーが発生します。
-
-
 
 ## パフォーマンス上の考慮事項 {#performance-considerations}
 
@@ -271,7 +267,7 @@ SELECT .... SETTINGS select_sequential_consistency = 1;
 
 ### 大規模または長時間実行される挿入 {#large-or-long-running-inserts}
 
-大量のデータを挿入する場合、ClickHouse は「squashing」と呼ばれる処理により書き込みパフォーマンスを最適化します。メモリ上の小さな挿入データブロックはマージされて 1 つの大きなブロックにまとめられてからディスクに書き込まれます。squashing により、各書き込み操作に関連するオーバーヘッドが削減されます。この処理では、ClickHouse が各 [`max_insert_block_size`](/operations/settings/settings#max_insert_block_size) 行の書き込みを完了するたびに、挿入されたデータがクエリで利用可能になります。
+大量のデータを挿入する場合、ClickHouse は「squashing」と呼ばれる処理により書き込みパフォーマンスを最適化します。メモリ上の小さな挿入データブロックはマージされて、より大きなブロックにまとめられてからディスクに書き込まれます。squashing により、各書き込み操作に関連するオーバーヘッドが削減されます。この処理では、ClickHouse が各 [`max_insert_block_size`](/operations/settings/settings#max_insert_block_size) 行の書き込みを完了するたびに、挿入されたデータがクエリで利用可能になります。
 
 **参照**
 

@@ -8,17 +8,18 @@ doc_type: 'reference'
 keywords: ['MySQL ClickPipes 常见问题', 'ClickPipes MySQL 故障排查', 'MySQL ClickHouse 复制', 'ClickPipes MySQL 支持', 'MySQL CDC ClickHouse']
 ---
 
-
-
 # ClickPipes for MySQL 常见问题 {#clickpipes-for-mysql-faq}
 
 ### MySQL ClickPipe 是否支持 MariaDB？ {#does-the-clickpipe-support-mariadb}
+
 是的，MySQL ClickPipe 支持 MariaDB 10.0 及以上版本。其配置与 MySQL 非常相似，默认使用 GTID 复制。
 
 ### MySQL ClickPipe 是否支持 PlanetScale、Vitess 或 TiDB？ {#does-the-clickpipe-support-planetscale-vitess}
+
 不支持，这些系统不支持 MySQL 的 binlog API。
 
 ### 复制是如何管理的？ {#how-is-replication-managed}
+
 我们同时支持 `GTID` 和 `FilePos` 复制。与 Postgres 不同，这里没有用于管理偏移量的 slot。相应地，您必须将 MySQL 服务器配置为具有足够的 binlog 保留期。如果我们在 binlog 中的偏移量失效（例如管道暂停时间过长，或在使用 `FilePos` 复制时数据库发生故障切换），则需要重新同步该 pipe。请务必根据目标表优化物化视图，因为低效查询会减慢摄取速度，导致落后于保留期。
 
 对于不活跃的数据库，也有可能在尚未允许 ClickPipes 推进到更近期偏移量之前就轮换日志文件。您可能需要设置一个带有定期更新的心跳表。
@@ -48,5 +49,10 @@ keywords: ['MySQL ClickPipes 常见问题', 'ClickPipes MySQL 故障排查', 'My
 由于 MySQL [处理级联删除的方式](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html)，这类操作不会写入 binlog。因此，ClickPipes（或任何 CDC 工具）都无法复制它们。这可能导致数据不一致。建议改用触发器来支持级联删除。
 
 ### 为什么我无法复制名称中包含点的表？ {#replicate-table-dot}
+
 PeerDB 目前存在一个限制：源表标识符（即 schema 名称或表名）中包含点时，将不支持复制，因为在按点分割后，PeerDB 无法区分哪部分是 schema、哪部分是表名。
 我们正致力于支持分别输入 schema 和表名，以绕过这一限制。
+
+### 我可以将最初在复制中排除的列重新纳入复制吗？ {#include-excluded-columns}
+
+目前尚不支持此操作，但已在我们的开发计划中。替代方案是对包含这些列的表进行[重新同步](./table_resync.md)。

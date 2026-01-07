@@ -13,16 +13,11 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-
 # Amazon DocumentDB 数据源配置指南 {#amazon-documentdb-source-setup-guide}
-
-
 
 ## 支持的 DocumentDB 版本 {#supported-documentdb-versions}
 
 ClickPipes 支持 DocumentDB 5.0 版本。
-
-
 
 ## 配置变更流日志保留期 {#configure-change-stream-log-retention}
 
@@ -60,7 +55,6 @@ aws docdb describe-db-cluster-parameters --db-cluster-parameter-group-name <PARA
 aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <PARAMETER_GROUP_NAME> --parameters "ParameterName=change_stream_log_retention_duration,ParameterValue=259200,ApplyMethod=immediate"
 ```
 
-
 ## 配置数据库用户 {#configure-database-user}
 
 以管理员用户身份连接到 DocumentDB 集群，并执行以下命令，为 MongoDB CDC ClickPipes 创建一个数据库用户：
@@ -68,7 +62,7 @@ aws docdb modify-db-cluster-parameter-group --db-cluster-parameter-group-name <P
 ```javascript
 db.getSiblingDB("admin").createUser({
     user: "clickpipes_user",
-    pwd: "安全密码",
+    pwd: "some_secure_password",
     roles: ["readAnyDatabase", "clusterMonitor"],
 })
 ```
@@ -76,7 +70,6 @@ db.getSiblingDB("admin").createUser({
 :::note
 请确保将 `clickpipes_user` 和 `some_secure_password` 替换为你要使用的用户名和密码。
 :::
-
 
 ## 接下来 {#whats-next}
 

@@ -25,8 +25,6 @@ Synapse 内では、Spark プールがオンデマンドかつスケーラブル
 
 <TOCInline toc={toc}></TOCInline>
 
-
-
 ## コネクタの依存関係を追加する {#add-connector-dependencies}
 Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries)がサポートされています：
 1. 既定のパッケージ
@@ -40,8 +38,6 @@ Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](htt
 - `clickhouse-jdbc-{java_client_version}-all.jar` - [公式 Maven](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
 どのバージョンが要件に適合するかを確認するには、[Spark Connector Compatibility Matrix](/integrations/apache-spark/spark-native-connector#compatibility-matrix) ドキュメントを参照してください。
-
-
 
 ## ClickHouse をカタログとして追加する {#add-clickhouse-as-catalog}
 
@@ -78,7 +74,7 @@ Azure Synapse では、次の 3 つのレベルでの[パッケージ管理](htt
 追加の設定については、[ClickHouse Spark 設定ページ](/integrations/apache-spark/spark-native-connector#configurations)を参照してください。
 
 :::info
-ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)を行ってください。\
+ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)を行ってください。
 :::
 
 
@@ -88,8 +84,6 @@ ClickHouse Cloud を利用する場合は、必ず [必須の Spark 設定](/int
 そこで、ClickHouse に関連する設定を探します。
 
 <Image img={sparkUICHSettings} size="xl" alt="Spark UI を使用した ClickHouse 設定の検証" border/>
-
-
 
 ## 参考資料 {#additional-resources}
 

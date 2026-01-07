@@ -43,12 +43,12 @@ SETTINGS mode = 'unordered'
 
 ## Settings {#settings}
 
-サポートされている設定項目は、ほとんどが `S3Queue` テーブルエンジンと同じですが、`s3queue_` プレフィックスは付きません。[設定の全リスト](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
-テーブルに対して構成されている設定の一覧を取得するには、`system.azure_queue_settings` テーブルを使用します。`24.10` 以降で利用可能です。
+サポートされている設定群は、基本的には `S3Queue` テーブルエンジンと同じですが、`s3queue_` というプレフィックスは付きません。設定の[完全な一覧](../../../engines/table-engines/integrations/s3queue.md#settings)を参照してください。
+テーブルに対して構成されている設定の一覧を取得するには、`system.azure_queue_settings` テーブルを使用します。`24.10` 以降のバージョンで利用可能です。
 
 以下は、AzureQueue にのみ対応し、S3Queue には適用されない設定です。
 
-### `after_processing_move_connection_string` {#after&#95;processing&#95;move&#95;connection&#95;string}
+### `after_processing_move_connection_string` {#after_processing_move_connection_string}
 
 宛先が別の Azure コンテナーである場合に、正常に処理されたファイルを移動するための Azure Blob Storage 接続文字列。
 
@@ -58,7 +58,7 @@ SETTINGS mode = 'unordered'
 
 デフォルト値: 空文字列。
 
-### `after_processing_move_container` {#after&#95;processing&#95;move&#95;container}
+### `after_processing_move_container` {#after_processing_move_container}
 
 移動先が別の Azure コンテナである場合に、正常に処理されたファイルを移動する移動先コンテナ名。
 
@@ -83,6 +83,12 @@ SETTINGS
     after_processing_move_connection_string = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     after_processing_move_container = 'dst-container';
 ```
+
+## AzureQueue テーブルエンジンからの SELECT {#select}
+
+AzureQueue テーブルでは、デフォルトで SELECT クエリは禁止されています。これは、データを一度読み取ったらキューから削除するという一般的なキューのパターンに従うためです。誤ってデータを失わないようにするため、SELECT は禁止されています。
+ただし、場合によっては SELECT が必要になることもあります。その場合は、`stream_like_engine_allow_direct_select` 設定を `True` にする必要があります。
+AzureQueue エンジンには、SELECT クエリ用の特別な設定 `commit_on_select` があります。キューから読み取った後もデータを保持したい場合は `False` に、読み取り後に削除したい場合は `True` に設定します。
 
 ## 説明 {#description}
 
@@ -113,10 +119,10 @@ SELECT * FROM stats ORDER BY key;
 
 ## 仮想カラム {#virtual-columns}
 
-* `_path` — ファイルパス。
-* `_file` — ファイル名。
+- `_path` — ファイルへのパス。
+- `_file` — ファイル名。
 
-仮想カラムの詳細については[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
+仮想カラムの詳細については、[こちら](../../../engines/table-engines/index.md#table_engines-virtual_columns)を参照してください。
 
 ## イントロスペクション {#introspection}
 
@@ -134,7 +140,7 @@ SELECT * FROM stats ORDER BY key;
   </azure_queue_log>
 ```
 
-この永続テーブルは、`system.s3queue` と同様の情報を保持しますが、対象は処理済みおよび失敗したファイルです。
+この永続テーブルは、`system.s3queue` と同じ情報を保持しますが、処理済みおよび失敗したファイルに関するものです。
 
 このテーブルの構造は次のとおりです。
 
@@ -142,24 +148,23 @@ SELECT * FROM stats ORDER BY key;
 
 CREATE TABLE system.azure_queue_log
 (
-    `hostname` LowCardinality(String) COMMENT 'ホスト名',
-    `event_date` Date COMMENT 'このログ行の書き込みイベント日付',
-    `event_time` DateTime COMMENT 'このログ行の書き込みイベント時刻',
-    `database` String COMMENT '現在のS3Queueテーブルが存在するデータベース名。',
-    `table` String COMMENT 'S3Queueテーブル名。',
-    `uuid` String COMMENT 'S3QueueテーブルのUUID',
-    `file_name` String COMMENT '処理対象ファイルのファイル名',
-    `rows_processed` UInt64 COMMENT '処理された行数',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'ファイル処理のステータス',
-    `processing_start_time` Nullable(DateTime) COMMENT 'ファイル処理の開始時刻',
-    `processing_end_time` Nullable(DateTime) COMMENT 'ファイル処理の終了時刻',
-    `exception` String COMMENT '例外が発生した場合の例外メッセージ'
+    `hostname` LowCardinality(String) COMMENT 'Hostname',
+    `event_date` Date COMMENT 'Event date of writing this log row',
+    `event_time` DateTime COMMENT 'Event time of writing this log row',
+    `database` String COMMENT 'The name of a database where current S3Queue table lives.',
+    `table` String COMMENT 'The name of S3Queue table.',
+    `uuid` String COMMENT 'The UUID of S3Queue table',
+    `file_name` String COMMENT 'File name of the processing file',
+    `rows_processed` UInt64 COMMENT 'Number of processed rows',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Status of the processing file',
+    `processing_start_time` Nullable(DateTime) COMMENT 'Time of the start of processing the file',
+    `processing_end_time` Nullable(DateTime) COMMENT 'Time of the end of processing the file',
+    `exception` String COMMENT 'Exception message if happened'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
-SETTINGS index_granularity = 8192
-COMMENT 'S3Queueエンジンによって処理されるファイルの情報を含むログエントリを格納する。'
+COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
 
 ```
 
@@ -171,7 +176,7 @@ FROM system.azure_queue_log
 LIMIT 1
 FORMAT Vertical
 
-行 1:
+Row 1:
 ──────
 hostname:              clickhouse
 event_date:            2024-12-16
@@ -186,6 +191,6 @@ processing_start_time: 2024-12-16 13:42:47
 processing_end_time:   2024-12-16 13:42:47
 exception:
 
-1行が結果セットに含まれています。経過時間: 0.002秒。
+1 row in set. Elapsed: 0.002 sec.
 
 ```

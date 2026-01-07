@@ -50,7 +50,6 @@ keywords: ['示例数据集', 'noaa', '天气数据', '样本数据', '气候']
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
-
 ### 原始数据 {#original-data}
 
 下面将说明下载并转换原始数据，以便将其加载到 ClickHouse 的步骤。
@@ -62,7 +61,6 @@ wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriche
 ```bash
 for i in {1900..2023}; do wget https://noaa-ghcn-pds.s3.amazonaws.com/csv.gz/${i}.csv.gz; done
 ```
-
 
 #### 数据采样 {#sampling-the-data}
 
@@ -85,7 +83,6 @@ $ clickhouse-local --query "SELECT * FROM '2021.csv.gz' LIMIT 10" --format Prett
 以下内容总结自[格式文档](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn)：
 
 按顺序对格式说明及各列进行概述：
-
 
 - 一个 11 个字符的测站识别码。本身编码了一些有用的信息。
 - YEAR/MONTH/DAY = 8 个字符的日期，格式为 YYYYMMDD（例如 19860529 = 1986 年 5 月 29 日）
@@ -120,7 +117,6 @@ FROM file('*.csv.gz', CSV, 'station_id String, date String, measurement String, 
 ```
 
 由于数据量超过 26 亿行，这个查询执行得并不快，因为需要解析所有文件。在我们的 8 核机器上，这大约需要 160 秒。
-
 
 ### 透视数据 {#pivot-data}
 
@@ -160,7 +156,6 @@ done
 
 此查询会生成一个 50GB 的单个文件 `noaa.csv`。
 
-
 ### 丰富数据 {#enriching-the-data}
 
 这些数据除了包含前缀为国家代码的站点 ID 外，不包含任何其他位置信息。理想情况下，每个站点都应关联有纬度和经度。为此，NOAA 贴心地将每个站点的详细信息单独提供在一个 [ghcnd-stations.txt](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file) 文件中。该文件包含[多列数据](https://github.com/awslabs/open-data-docs/tree/main/docs/noaa/noaa-ghcn#format-of-ghcnd-stationstxt-file)，其中有五列对后续分析很有用：id、latitude、longitude、elevation 和 name。
@@ -193,7 +188,6 @@ FROM file('noaa.csv', CSV,
 
 此查询运行需要几分钟时间，并生成一个大小为 6.4 GB 的文件 `noaa_enriched.parquet`。
 
-
 ## 创建表 {#create-table}
 
 使用 ClickHouse 客户端在 ClickHouse 中创建一个 MergeTree 表。
@@ -203,23 +197,22 @@ CREATE TABLE noaa
 (
    `station_id` LowCardinality(String),
    `date` Date32,
-   `tempAvg` Int32 COMMENT '平均气温（十分之一摄氏度）',
-   `tempMax` Int32 COMMENT '最高气温（十分之一摄氏度）',
-   `tempMin` Int32 COMMENT '最低气温（十分之一摄氏度）',
-   `precipitation` UInt32 COMMENT '降水量（十分之一毫米）',
-   `snowfall` UInt32 COMMENT '降雪量（毫米）',
-   `snowDepth` UInt32 COMMENT '积雪深度（毫米）',
-   `percentDailySun` UInt8 COMMENT '日照百分比（百分比）',
-   `averageWindSpeed` UInt32 COMMENT '日平均风速（十分之一米/秒）',
-   `maxWindSpeed` UInt32 COMMENT '最大阵风风速（十分之一米/秒）',
-   `weatherType` Enum8('正常' = 0, '雾' = 1, '浓雾' = 2, '雷暴' = 3, '小冰雹' = 4, '冰雹' = 5, '雨凇' = 6, '尘埃/火山灰' = 7, '烟雾/霾' = 8, '吹雪/飘雪' = 9, '龙卷风' = 10, '大风' = 11, '浪花飞溅' = 12, '薄雾' = 13, '毛毛雨' = 14, '冻毛毛雨' = 15, '雨' = 16, '冻雨' = 17, '雪' = 18, '未知降水' = 19, '地面雾' = 21, '冻雾' = 22),
+   `tempAvg` Int32 COMMENT 'Average temperature (tenths of a degrees C)',
+   `tempMax` Int32 COMMENT 'Maximum temperature (tenths of degrees C)',
+   `tempMin` Int32 COMMENT 'Minimum temperature (tenths of degrees C)',
+   `precipitation` UInt32 COMMENT 'Precipitation (tenths of mm)',
+   `snowfall` UInt32 COMMENT 'Snowfall (mm)',
+   `snowDepth` UInt32 COMMENT 'Snow depth (mm)',
+   `percentDailySun` UInt8 COMMENT 'Daily percent of possible sunshine (percent)',
+   `averageWindSpeed` UInt32 COMMENT 'Average daily wind speed (tenths of meters per second)',
+   `maxWindSpeed` UInt32 COMMENT 'Peak gust wind speed (tenths of meters per second)',
+   `weatherType` Enum8('Normal' = 0, 'Fog' = 1, 'Heavy Fog' = 2, 'Thunder' = 3, 'Small Hail' = 4, 'Hail' = 5, 'Glaze' = 6, 'Dust/Ash' = 7, 'Smoke/Haze' = 8, 'Blowing/Drifting Snow' = 9, 'Tornado' = 10, 'High Winds' = 11, 'Blowing Spray' = 12, 'Mist' = 13, 'Drizzle' = 14, 'Freezing Drizzle' = 15, 'Rain' = 16, 'Freezing Rain' = 17, 'Snow' = 18, 'Unknown Precipitation' = 19, 'Ground Fog' = 21, 'Freezing Fog' = 22),
    `location` Point,
    `elevation` Float32,
    `name` LowCardinality(String)
 ) ENGINE = MergeTree() ORDER BY (station_id, date);
 
 ```
-
 
 ## 向 ClickHouse 写入数据 {#inserting-into-clickhouse}
 
@@ -228,13 +221,12 @@ CREATE TABLE noaa
 在 ClickHouse 客户端中，可以按如下方式从本地文件插入数据：
 
 ```sql
-INSERT INTO noaa FROM INFILE '<路径>/noaa_enriched.parquet'
+INSERT INTO noaa FROM INFILE '<path>/noaa_enriched.parquet'
 ```
 
 其中 `<path>` 表示磁盘上本地文件的完整路径。
 
 有关如何加快加载速度，请参见[此处](https://clickhouse.com/blog/real-world-data-noaa-climate-data#load-the-data)。
-
 
 ### 从 S3 中导入数据 {#inserting-from-s3}
 
@@ -245,7 +237,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enr
 ```
 
 如需了解如何加快这一过程，请参阅我们的博文：[优化大规模数据加载](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。
-
 
 ## 查询示例 {#sample-queries}
 
@@ -272,11 +263,10 @@ LIMIT 5
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1952-09-04 │
 └─────────┴───────────────────┴────────────────────────────────────────────────┴────────────┘
 
-5 行结果集。耗时:0.514 秒。已处理 10.6 亿行,4.27 GB(20.6 亿行/秒,8.29 GB/秒)。
+5 rows in set. Elapsed: 0.514 sec. Processed 1.06 billion rows, 4.27 GB (2.06 billion rows/s., 8.29 GB/s.)
 ```
 
 令人放心的是，其与截至 2023 年 [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667) 的[官方记录](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)高度一致。
-
 
 ### 最佳滑雪胜地 {#best-ski-resorts}
 
@@ -343,10 +333,9 @@ LIMIT 5
 │ Alpine Meadows, CA   │        4.926 │ (-120.22,39.17) │     201902 │
 └──────────────────────┴──────────────┴─────────────────┴────────────┘
 
-返回 5 行。用时:0.750 秒。处理了 6.891 亿行,3.20 GB(9.182 亿行/秒,4.26 GB/秒)。
-峰值内存用量:67.66 MiB。
+5 rows in set. Elapsed: 0.750 sec. Processed 689.10 million rows, 3.20 GB (918.20 million rows/s., 4.26 GB/s.)
+Peak memory usage: 67.66 MiB.
 ```
-
 
 ## 致谢 {#credits}
 

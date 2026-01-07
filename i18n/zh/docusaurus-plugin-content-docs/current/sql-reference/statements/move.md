@@ -28,9 +28,9 @@ MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO a
 示例：
 
 ```sql
-将用户 test 移动到 local_directory
+MOVE USER test TO local_directory
 ```
 
 ```sql
-移动 角色 test 到 内存
+MOVE ROLE test TO memory
 ```

@@ -88,11 +88,11 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
 
-  id = 9999 这一行中的向量是熟食店图像的嵌入向量。
+  The vector in the row with id = 9999 is the embedding for an image of a Deli restaurant.
   ```
 
   ```response title="Response"
-  ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+      ┌───────id─┬─url───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
    1. │     9999 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts.jpg                                                                                                                                  │
    2. │ 60180509 │ https://certapro.com/belleville/wp-content/uploads/sites/1369/2017/01/McAlistersFairviewHgts-686x353.jpg                                                                                                                          │
    3. │  1986089 │ https://www.gannett-cdn.com/-mm-/ceefab710d945bb3432c840e61dce6c3712a7c0a/c=30-0-4392-3280/local/-/media/2017/02/14/FortMyers/FortMyers/636226855169587730-McAlister-s-Exterior-Signage.jpg?width=534&amp;height=401&amp;fit=crop │
@@ -116,10 +116,10 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
       └──────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
   #highlight-next-line
-  返回 20 行。用时:3.968 秒。处理了 1.0038 亿行,320.81 GB(每秒 2530 万行,80.84 GB/秒)
+  20 rows in set. Elapsed: 3.968 sec. Processed 100.38 million rows, 320.81 GB (25.30 million rows/s., 80.84 GB/s.)
   ```
 
-  记录查询延迟,以便与 ANN(使用向量索引)的查询延迟进行对比。
+  Note down the query latency so that we can compare it with the query latency of ANN (using vector index).
   在 1 亿行数据的情况下,上述未使用向量索引的查询可能需要几秒到几分钟才能完成。
 
   ### 构建向量相似度索引
@@ -133,8 +133,9 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
   ```
 
   索引创建和搜索的参数及性能考量详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
-  上述语句分别将 HNSW 超参数 `M` 和 `ef_construction` 设置为 64 和 512。
-  用户需要通过评估索引构建时间和搜索结果质量来仔细选择这些参数的最优值。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
   对于完整的 1 亿条数据集,构建和保存索引可能需要数小时,具体取决于可用 CPU 核心数和存储带宽。
 
@@ -147,6 +148,7 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
   FROM laion_5b_100m
   ORDER BY cosineDistance( vector, (SELECT vector FROM laion_5b_100m WHERE id = 9999) ) ASC
   LIMIT 20
+
   ```
 
   首次将向量索引加载到内存可能需要几秒钟至几分钟。
@@ -157,7 +159,7 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
 
   下面提供了一个 Python 脚本示例,演示如何使用 `CLIP` API 以编程方式生成嵌入向量。然后将搜索嵌入向量作为参数传递给 `SELECT` 查询中的 [`cosineDistance()`](/sql-reference/functions/distance-functions#cosineDistance) 函数。
 
-  要安装 `clip` 包，请参考 [OpenAI GitHub 仓库](https://github.com/openai/clip)。
+  要安装 `clip` 包,请参考 [OpenAI GitHub 仓库](https://github.com/openai/clip)。
 
   ```python
   import torch
@@ -169,21 +171,21 @@ ClickHouse 在一个 `S3` 存储桶中提供了包含 1 亿个向量的子集。
   device = "cuda" if torch.cuda.is_available() else "cpu"
   model, preprocess = clip.load("ViT-L/14", device=device)
 
-  # 搜索同时包含狗和猫的图像
+  # Search for images that contain both a dog and a cat
   text = clip.tokenize(["a dog and a cat"]).to(device)
 
   with torch.no_grad():
       text_features = model.encode_text(text)
       np_arr = text_features.detach().cpu().numpy()
 
-      # 在此处传递 ClickHouse 凭据
+      # Pass ClickHouse credentials here
       chclient = clickhouse_connect.get_client()
 
       params = {'v1': list(np_arr[0])}
       result = chclient.query("SELECT id, url FROM laion_5b_100m ORDER BY cosineDistance(vector, %(v1)s) LIMIT 100",
                               parameters=params)
 
-      # 将结果写入可在浏览器中打开的简单 HTML 页面。部分 URL 可能已失效。
+      # Write the results to a simple HTML page that can be opened in the browser. Some URLs may have become obsolete.
       print("<html>")
       for r in result.result_rows:
           print("<img src = ", r[1], 'width="200" height="200">')

@@ -6,16 +6,12 @@ title: 'Обновление в самоуправляемой среде'
 doc_type: 'guide'
 ---
 
-
-
 ## Обзор обновления ClickHouse {#clickhouse-upgrade-overview}
 
 В этом документе:
 - общие рекомендации
 - рекомендуемый план
 - подробная информация об обновлении бинарных файлов на ваших системах
-
-
 
 ## Общие рекомендации {#general-guidelines}
 
@@ -51,8 +47,6 @@ doc_type: 'guide'
 - выполнить обновление с простоем (остановить все серверы, обновить все серверы, запустить все серверы);
 - либо обновиться через промежуточную версию (версию, вышедшую менее чем на год позже текущей).
 
-
-
 ## Рекомендуемый план {#recommended-plan}
 
 Ниже приведены рекомендуемые шаги для обновления ClickHouse без простоя:
@@ -77,13 +71,12 @@ doc_type: 'guide'
 Такое сообщение об ошибке ожидаемо, когда в реплицируемой среде одновременно работают несколько версий ClickHouse. Вы перестанете видеть эти сообщения, когда все реплики будут обновлены до одной и той же версии.
 
 ```text
-MergeFromLogEntryTask: Code: 40. DB::Exception: Контрольные суммы частей не совпадают:
-хеш несжатых файлов не совпадает. (CHECKSUM_DOESNT_MATCH)  Данные после слияния побайтово
-не идентичны данным на других репликах.
+MergeFromLogEntryTask: Code: 40. DB::Exception: Checksums of parts don't match:
+hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  Data after merge is not
+byte-identical to data on another replicas.
 ```
 
 :::
-
 
 ## Процесс обновления исполняемого файла сервера ClickHouse {#clickhouse-server-binary-upgrade-process}
 

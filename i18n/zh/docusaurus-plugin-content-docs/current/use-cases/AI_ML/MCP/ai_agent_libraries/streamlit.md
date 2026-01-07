@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-
-
 # 如何使用 Streamlit 构建基于 ClickHouse 的 AI 代理 {#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit}
 
 在本指南中，您将学习如何使用 [Streamlit](https://streamlit.io/) 构建一个基于 Web 的 AI 代理，它可以通过 [ClickHouse 的 MCP Server](https://github.com/ClickHouse/mcp-clickhouse) 和 [Agno](https://github.com/agno-agi/agno) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
@@ -20,8 +18,6 @@ doc_type: 'guide'
 此示例会创建一个完整的 Web 应用程序，提供用于查询 ClickHouse 数据的聊天界面。
 您可以在 [示例仓库](https://github.com/ClickHouse/examples/tree/main/ai/mcp/streamlit) 中找到该示例的源代码。
 :::
-
-
 
 ## 前置条件 {#prerequisites}
 
@@ -33,7 +29,6 @@ doc_type: 'guide'
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 安装库 {#install-libraries}
 
 通过运行以下命令来安装所需的库：
@@ -41,7 +36,6 @@ doc_type: 'guide'
 ```bash
 pip install streamlit agno ipywidgets
 ```
-
 
 ## 创建工具文件 {#create-utilities}
 
@@ -68,7 +62,6 @@ def apply_styles():
   <hr class='divider' />""", unsafe_allow_html=True)
 ```
 
-
 ## 设置凭证 {#setup-credentials}
 
 将 Anthropic API 密钥设置为环境变量：
@@ -81,7 +74,6 @@ export ANTHROPIC_API_KEY="your_api_key_here"
 如果你没有 Anthropic 的 API 密钥，并且希望使用其他 LLM 提供商，
 可以在 [Agno「Integrations（集成）」文档](https://docs.agentops.ai/v2/integrations/ag2) 中找到配置凭据的相关说明。
 :::
-
 
 ## 导入所需的库 {#import-libraries}
 
@@ -106,7 +98,6 @@ import asyncio
 import threading
 from queue import Queue
 ```
-
 
 ## 定义代理的流式函数 {#define-agent-function}
 
@@ -141,10 +132,10 @@ async def stream_clickhouse_agent(message):
                 model=Claude(id="claude-3-5-sonnet-20240620"),
                 tools=[mcp_tools],
                 instructions=dedent("""\
-                    你是 ClickHouse 助手。帮助用户使用 ClickHouse 查询和理解数据。
-                    - 使用 ClickHouse MCP 工具运行 SQL 查询
-                    - 在适当时以 Markdown 表格形式呈现结果
-                    - 保持输出简洁、实用且格式规范
+                    You are a ClickHouse assistant. Help users query and understand data using ClickHouse.
+                    - Run SQL queries using the ClickHouse MCP tool
+                    - Present results in markdown tables when relevant
+                    - Keep output concise, useful, and well-formatted
                 """),
                 markdown=True,
                 show_tool_calls=True,
@@ -158,7 +149,6 @@ async def stream_clickhouse_agent(message):
                     yield chunk.content
 ```
 
-
 ## 添加同步包装函数 {#add-wrapper-functions}
 
 在 Streamlit 中添加用于处理异步流式传输的帮助函数：
@@ -168,7 +158,7 @@ def run_agent_query_sync(message):
     queue = Queue()
     def run():
         asyncio.run(_agent_stream_to_queue(message, queue))
-        queue.put(None)  # 结束流的标记值
+        queue.put(None)  # Sentinel to end stream
     threading.Thread(target=run, daemon=True).start()
     while True:
         chunk = queue.get()
@@ -181,15 +171,14 @@ async def _agent_stream_to_queue(message, queue):
         queue.put(chunk)
 ```
 
-
 ## 创建 Streamlit 界面 {#create-interface}
 
 添加 Streamlit 界面组件和聊天功能：
 
 ```python
-st.title("基于 ClickHouse 的 AI 智能体")
+st.title("A ClickHouse-backed AI agent")
 
-if st.button("💬 新建对话"):
+if st.button("💬 New Chat"):
   st.session_state.messages = []
   st.rerun()
 
@@ -202,7 +191,7 @@ for message in st.session_state.messages:
   with st.chat_message(message["role"]):
     st.markdown(message["content"])
 
-if prompt := st.chat_input("有什么可以帮您?"):
+if prompt := st.chat_input("What is up?"):
   st.session_state.messages.append({"role": "user", "content": prompt})
   with st.chat_message("user"):
     st.markdown(prompt)
@@ -210,7 +199,6 @@ if prompt := st.chat_input("有什么可以帮您?"):
     response = st.write_stream(run_agent_query_sync(prompt))
   st.session_state.messages.append({"role": "assistant", "content": response})
 ```
-
 
 ## 运行应用程序 {#run-application}
 

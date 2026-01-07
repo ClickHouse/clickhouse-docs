@@ -7,18 +7,12 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-
-
 # sumMap {#summap}
-
-
 
 ## 描述 {#description}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)
 函数，此时会使用 `sumMap` 聚合组合器函数，根据每个键计算 Map 中对应值的总和。
-
-
 
 ## 示例用法 {#example-usage}
 
@@ -60,12 +54,11 @@ GROUP BY timeslot;
   * 状态 &#39;g&#39;：115 + 125 = 240
 
 ```response title="Response"
-   ┌────────────时隙────────┬─状态求和映射(sumMap)───────────────────┐
+   ┌────────────timeslot─┬─sumMap(status)───────────────────────┐
 1. │ 2000-01-01 00:01:00 │ {'d':75,'e':85,'f':200,'g':240}      │
 2. │ 2000-01-01 00:00:00 │ {'a':15,'b':25,'c':80,'d':55,'e':65} │
    └─────────────────────┴──────────────────────────────────────┘
 ```
-
 
 ## 另请参阅 {#see-also}
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)

@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Движок таблицы Alias {#alias-table-engine}
 
 <ExperimentalBadge/>
@@ -40,7 +39,6 @@ ENGINE = Alias(target_db, target_table)
 :::note
 Таблица `Alias` не поддерживает явное определение столбцов. Столбцы автоматически наследуются от целевой таблицы. Это гарантирует, что таблица `Alias` всегда соответствует схеме целевой таблицы.
 :::
-
 
 ## Параметры движка {#engine-parameters}
 
@@ -84,7 +82,7 @@ ENGINE = Alias(target_db, target_table)
 Создайте простой алиас в этой же базе данных:
 
 ```sql
--- Создать исходную таблицу
+-- Create source table
 CREATE TABLE source_data (
     id UInt32,
     name String,
@@ -92,13 +90,13 @@ CREATE TABLE source_data (
 ) ENGINE = MergeTree
 ORDER BY id;
 
--- Вставить данные
+-- Insert some data
 INSERT INTO source_data VALUES (1, 'one', 10.1), (2, 'two', 20.2);
 
--- Создать псевдоним
+-- Create alias
 CREATE TABLE data_alias ENGINE = Alias('source_data');
 
--- Выполнить запрос через псевдоним
+-- Query through alias
 SELECT * FROM data_alias;
 ```
 
@@ -109,17 +107,16 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-
 ### Межбазовый псевдоним {#cross-database-alias}
 
 Создайте псевдоним, ссылающийся на таблицу в другой базе данных:
 
 ```sql
--- Создать базы данных
+-- Create databases
 CREATE DATABASE db1;
 CREATE DATABASE db2;
 
--- Создать исходную таблицу в db1
+-- Create source table in db1
 CREATE TABLE db1.events (
     timestamp DateTime,
     event_type String,
@@ -127,17 +124,16 @@ CREATE TABLE db1.events (
 ) ENGINE = MergeTree
 ORDER BY timestamp;
 
--- Создать псевдоним в db2, указывающий на db1.events
+-- Create alias in db2 pointing to db1.events
 CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 
--- Или используя формат database.table
+-- Or using database.table format
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
--- Оба псевдонима работают одинаково
+-- Both aliases work identically
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
-
 
 ### Операции записи через алиас {#write-operations}
 
@@ -153,22 +149,21 @@ ORDER BY ts;
 
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
--- Вставка через псевдоним
+-- Insert through alias
 INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
 
--- Вставка с SELECT
+-- Insert with SELECT
 INSERT INTO metrics_alias 
 SELECT now(), 'disk_usage', number * 10 
 FROM system.numbers 
 LIMIT 5;
 
--- Проверка данных в целевой таблице
-SELECT count() FROM metrics;  -- Возвращает 7
-SELECT count() FROM metrics_alias;  -- Возвращает 7
+-- Verify data is in the target table
+SELECT count() FROM metrics;  -- Returns 7
+SELECT count() FROM metrics_alias;  -- Returns 7
 ```
-
 
 ### Изменение схемы {#schema-modification}
 
@@ -183,10 +178,10 @@ ORDER BY id;
 
 CREATE TABLE users_alias ENGINE = Alias('users');
 
--- Добавление столбца через псевдоним
+-- Add column through alias
 ALTER TABLE users_alias ADD COLUMN email String DEFAULT '';
 
--- Столбец добавляется в целевую таблицу
+-- Column is added to target table
 DESCRIBE users;
 ```
 
@@ -197,7 +192,6 @@ DESCRIBE users;
 │ email │ String │ DEFAULT      │ ''                 │
 └───────┴────────┴──────────────┴────────────────────┘
 ```
-
 
 ### Мутации данных {#data-mutations}
 
@@ -219,23 +213,22 @@ INSERT INTO products_alias VALUES
     (2, 'item_two', 200.0, 'active'),
     (3, 'item_three', 300.0, 'inactive');
 
--- Обновление через алиас
+-- Update through alias
 ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 
--- Удаление через алиас
+-- Delete through alias
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- Изменения применяются к целевой таблице
+-- Changes are applied to target table
 SELECT * FROM products ORDER BY id;
 ```
 
 ```text
 ┌─id─┬─name─────┬─price─┬─status─┐
-│  1 │ item_one │ 110.0 │ активный │
-│  2 │ item_two │ 220.0 │ активный │
+│  1 │ item_one │ 110.0 │ active │
+│  2 │ item_two │ 220.0 │ active │
 └────┴──────────┴───────┴────────┘
 ```
-
 
 ### Операции с партициями {#partition-operations}
 
@@ -257,17 +250,16 @@ INSERT INTO logs_alias VALUES
     ('2024-02-15', 'ERROR', 'message2'),
     ('2024-03-15', 'INFO', 'message3');
 
--- Отсоединить партицию через псевдоним
+-- Detach partition through alias
 ALTER TABLE logs_alias DETACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- Возвращает 2 (партиция 202402 отсоединена)
+SELECT count() FROM logs_alias;  -- Returns 2 (partition 202402 detached)
 
--- Присоединить партицию обратно
+-- Attach partition back
 ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- Возвращает 3
+SELECT count() FROM logs_alias;  -- Returns 3
 ```
-
 
 ### Оптимизация таблицы {#table-optimization}
 
@@ -282,27 +274,26 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- Множественные вставки создают несколько частей
+-- Multiple inserts create multiple parts
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- Проверка количества частей
+-- Check parts count
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
   AND active;
 
--- Оптимизация через алиас
+-- Optimize through alias
 OPTIMIZE TABLE events_alias FINAL;
 
--- Части объединяются в целевой таблице
+-- Parts are merged in target table
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
-  AND active;  -- Возвращает 1
+  AND active;  -- Returns 1
 ```
-
 
 ### Управление алиасами {#alias-management}
 
@@ -319,15 +310,15 @@ INSERT INTO important_data VALUES (1, 'critical'), (2, 'important');
 
 CREATE TABLE old_alias ENGINE = Alias('important_data');
 
--- Переименование псевдонима (целевая таблица не изменяется)
+-- Rename alias (target table unchanged)
 RENAME TABLE old_alias TO new_alias;
 
--- Создание ещё одного псевдонима для той же таблицы
+-- Create another alias to same table
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- Удаление одного псевдонима (целевая таблица и другие псевдонимы не изменяются)
+-- Drop one alias (target table and other aliases unchanged)
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- По-прежнему работает
-SELECT count() FROM important_data;  -- Данные не повреждены, возвращается 2
+SELECT * FROM another_alias;  -- Still works
+SELECT count() FROM important_data;  -- Data intact, returns 2
 ```

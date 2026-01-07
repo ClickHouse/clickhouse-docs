@@ -1,5 +1,5 @@
 ---
-description: 'このエンジンにより、ClickHouse と RabbitMQ を統合できます。'
+description: 'このエンジンを使用すると、ClickHouse を RabbitMQ と統合できます。'
 sidebar_label: 'RabbitMQ'
 sidebar_position: 170
 slug: /engines/table-engines/integrations/rabbitmq
@@ -7,18 +7,14 @@ title: 'RabbitMQ テーブルエンジン'
 doc_type: 'guide'
 ---
 
-
-
 # RabbitMQ テーブルエンジン {#rabbitmq-table-engine}
 
 このエンジンを使用すると、ClickHouse を [RabbitMQ](https://www.rabbitmq.com) と統合できます。
 
 `RabbitMQ` を利用すると、次のことが可能です。
 
-- データフローをパブリッシュまたはサブスクライブできる。
-- ストリームを、利用可能になったタイミングで処理できる。
-
-
+- データフローを公開または購読できる。
+- ストリームを、利用可能になり次第処理できる。
 
 ## テーブルの作成 {#creating-a-table}
 
@@ -70,7 +66,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `rabbitmq_num_consumers` – テーブルごとの consumer 数。1 つの consumer のスループットが不十分な場合は、より多くの consumer を指定します。デフォルト: `1`
 - `rabbitmq_num_queues` – キューの総数。この値を増やすとパフォーマンスを大幅に向上できる場合があります。デフォルト: `1`。
 - `rabbitmq_queue_base` - キュー名のヒントを指定します。この設定のユースケースは以下で説明します。
-- `rabbitmq_deadletter_exchange` - [dead letter exchange](https://www.rabbitmq.com/dlx.html) の名前を指定します。別のテーブルをこの exchange 名で作成し、メッセージが dead letter exchange に再パブリッシュされた場合にそれらのメッセージを収集できます。デフォルトでは dead letter exchange は指定されていません。
 - `rabbitmq_persistent` - 1 (true) に設定すると、INSERT クエリで delivery mode が 2 に設定され (メッセージが「persistent」としてマークされます)。デフォルト: `0`。
 - `rabbitmq_skip_broken_messages` – ブロックごとのスキーマ非互換メッセージに対する RabbitMQ メッセージパーサーの許容数。`rabbitmq_skip_broken_messages = N` の場合、パースできない RabbitMQ メッセージ *N* 件 (メッセージ 1 件はデータの 1 行に相当) をエンジンがスキップします。デフォルト: `0`。
 - `rabbitmq_max_block_size` - RabbitMQ からフラッシュする前に収集する行数。デフォルト: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
@@ -83,21 +78,20 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `rabbitmq_password` - RabbitMQ のパスワード。
 - `reject_unhandled_messages` - エラー発生時にメッセージを reject し (RabbitMQ に negative acknowledgement を送信)、処理しません。`rabbitmq_queue_settings_list` に `x-dead-letter-exchange` が定義されている場合、この設定は自動的に有効になります。
 - `rabbitmq_commit_on_select` - SELECT クエリが実行されたときにメッセージをコミットします。デフォルト: `false`。
-- `rabbitmq_max_rows_per_message` — 行ベースフォーマットで 1 件の RabbitMQ メッセージに書き込まれる最大行数。デフォルト: `1`。
-- `rabbitmq_empty_queue_backoff_start` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ開始ポイント。
-- `rabbitmq_empty_queue_backoff_end` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ終了ポイント。
+- `rabbitmq_max_rows_per_message` — 行ベースのフォーマットで 1 件の RabbitMQ メッセージに書き込まれる最大行数。デフォルト: `1`。
+- `rabbitmq_empty_queue_backoff_start_ms` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ開始ポイント (ミリ秒)。
+- `rabbitmq_empty_queue_backoff_end_ms` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフ終了ポイント (ミリ秒)。
+- `rabbitmq_empty_queue_backoff_step_ms` — RabbitMQ キューが空の場合に再読み取りをスケジュールし直す際のバックオフステップ (ミリ秒)。
 - `rabbitmq_handle_error_mode` — RabbitMQ エンジンにおけるエラーの処理方法。指定可能な値: `default` (メッセージのパースに失敗した場合に例外をスロー)、`stream` (例外メッセージと生メッセージを仮想カラム `_error` および `_raw_message` に保存)、`dead_letter_queue` (エラー関連データを system.dead_letter_queue に保存)。
 
-  * [ ] SSL connection:
+### SSL 接続 {#ssl-connection}
 
-`rabbitmq_secure = 1` を使用するか、接続アドレスで `amqps` を使用します: `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
-使用しているライブラリのデフォルトの動作では、作成された TLS 接続が十分に安全かどうかをチェックしません。証明書の有効期限切れ、自署名、欠落、無効といった状態であっても、接続はそのまま許可されます。証明書に対するより厳格な検証は、将来的に実装される可能性があります。
+`rabbitmq_secure = 1` を使用するか、接続アドレスに `amqps` を指定します: `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`。
+使用しているライブラリのデフォルト動作では、確立された TLS 接続が十分に安全かどうかは検証されません。証明書の有効期限切れや自己署名、欠如、その他の無効な状態であっても、接続はそのまま許可されます。証明書のより厳密な検証は、将来的に実装される可能性があります。
 
-また、RabbitMQ 関連の設定とあわせてフォーマット設定を追加することもできます。
+また、RabbitMQ 関連の設定と併せてフォーマット設定を追加することもできます。
 
 例:
-
-
 
 ```sql
   CREATE TABLE queue (
@@ -209,13 +203,9 @@ INSERT クエリでは、公開された各メッセージに対して追加さ�
 
 注意: `_raw_message` および `_error` 仮想カラムは、パース中に例外が発生した場合にのみ値が設定され、メッセージが正常にパースされた場合は常に `NULL` です。
 
-
-
 ## 注意事項 {#caveats}
 
 テーブル定義で [`DEFAULT`、`MATERIALIZED`、`ALIAS`] などの[デフォルトの列式](/sql-reference/statements/create/table.md/#default_values)を指定することはできますが、これらは無視されます。その代わり、各列には対応する型のデフォルト値が設定されます。
-
-
 
 ## データ形式のサポート {#data-formats-support}
 

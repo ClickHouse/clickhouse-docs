@@ -401,16 +401,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 启用 delta-kernel 写入功能。
 
-## allow_experimental_full_text_index {#allow_experimental_full_text_index} 
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "0"},{"label": "启用实验性文本索引"}]}]}/>
-
-当设置为 true 时，允许使用实验性文本索引。
-
 ## allow_experimental_funnel_functions {#allow_experimental_funnel_functions} 
 
 <ExperimentalBadge/>
@@ -433,9 +423,9 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "New setting"}]}]}/>
 
-允许显式对 Iceberg 表使用 `OPTIMIZE`。
+允许在 iceberg 表上显式使用 `OPTIMIZE` 命令。
 
 ## allow_experimental_insert_into_iceberg {#allow_experimental_insert_into_iceberg} 
 
@@ -494,8 +484,6 @@ File/S3 引擎和表函数在归档文件扩展名正确时，会将包含 `::` 
 启用自然语言处理相关的实验性函数。
 
 ## allow_experimental_parallel_reading_from_replicas {#allow_experimental_parallel_reading_from_replicas} 
-
-<BetaBadge/>
 
 **别名**: `enable_parallel_replicas`
 
@@ -1046,6 +1034,33 @@ Cloud 默认值：`1`。
 
 在 Join 模式下用于应用补丁分区片段的临时缓存的 bucket 数量。
 
+## apply_prewhere_after_final {#apply_prewhere_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置。启用后，PREWHERE 条件会在 FINAL 处理之后应用。"}]}]}/>
+
+启用后，对于 ReplacingMergeTree 和类似的引擎，PREWHERE 条件会在 FINAL 处理之后应用。
+当 PREWHERE 引用的列在重复行之间可能具有不同的值，且您希望先由 FINAL 选出“获胜”行再进行过滤时，这会很有用。禁用时，PREWHERE 在读取阶段应用。
+注意：如果启用了 apply_row_level_security_after_final 且 ROW POLICY 使用了非排序键列，则 PREWHERE 也会被延后，以保持正确的执行顺序（必须先应用 ROW POLICY，之后再应用 PREWHERE）。
+
+## apply_row_policy_after_final {#apply_row_policy_after_final} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在 *MergeTree 表的 FINAL 处理之后再应用 row policy 和 PREWHERE 的新设置项"}]}]}/>
+
+启用时，row policy 和 PREWHERE 会在 *MergeTree 表的 FINAL 处理之后应用（尤其适用于 ReplacingMergeTree）。
+禁用时，row policy 会在 FINAL 之前应用，当策略过滤掉本应用于 ReplacingMergeTree 或类似引擎中去重的行时，可能会导致结果不同。
+
+如果 row policy 表达式只依赖于 ORDER BY 中的列，出于优化目的，它仍会在 FINAL 之前应用，
+因为这类过滤不会影响去重结果。
+
+可能的取值：
+
+- 0 — 在 FINAL 之前应用 row policy 和 PREWHERE（默认）。
+- 1 — 在 FINAL 之后应用 row policy 和 PREWHERE。
+
 ## apply_settings_from_server {#apply_settings_from_server} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1191,6 +1206,27 @@ Cloud 默认值：`1`。
 在执行远程查询时启用通过 socket 的异步读取。
 
 默认启用。
+
+## automatic_parallel_replicas_min_bytes_per_replica {#automatic_parallel_replicas_min_bytes_per_replica} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+每个副本需读取的最小字节数阈值，达到该值时会自动启用并行副本（仅在 `automatic_parallel_replicas_mode` = 1 时生效）。0 表示不设置阈值。
+
+## automatic_parallel_replicas_mode {#automatic_parallel_replicas_mode} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "新设置"}]}]}/>
+
+基于收集到的统计信息，启用自动切换为使用并行副本执行查询。需要启用 `parallel_replicas_local_plan` 并提供 `cluster_for_parallel_replicas`。
+0 - 禁用，1 - 启用，2 - 仅启用统计信息收集（禁用切换为使用并行副本执行查询）。
 
 ## azure_allow_parallel_part_upload {#azure_allow_parallel_part_upload} 
 
@@ -1600,7 +1636,7 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-启用或禁用在 [CAST](/sql-reference/functions/type-conversion-functions#cast) 操作中保留 `Nullable` 数据类型。
+启用或禁用在 [CAST](/sql-reference/functions/type-conversion-functions#CAST) 操作中保留 `Nullable` 数据类型。
 
 当启用该设置且 `CAST` 函数的参数为 `Nullable` 时，结果也会被转换为 `Nullable` 类型。禁用该设置时，结果始终精确为目标类型。
 
@@ -1626,7 +1662,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 └───┴───────────────────────────────────────────────────┘
 ```
 
-以下查询会使目标数据类型带上 `Nullable` 修饰：
+以下查询的结果是带有 `Nullable` 修饰的目标数据类型：
 
 ```sql
 SET cast_keep_nullable = 1;
@@ -1643,7 +1679,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 **另请参阅**
 
-* [CAST](/sql-reference/functions/type-conversion-functions#cast) 函数
+* [CAST](/sql-reference/functions/type-conversion-functions#CAST) 函数
 
 
 ## cast_string_to_date_time_mode {#cast_string_to_date_time_mode} 
@@ -1660,7 +1696,7 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
     ClickHouse 可以解析基础的 `YYYY-MM-DD HH:MM:SS` 格式以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如：`'2018-06-08T01:02:03.000Z'`。
 
-- `'best_effort_us'` — 与 `best_effort` 类似（差异参见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parsedatetimebesteffortus)）。
+- `'best_effort_us'` — 与 `best_effort` 类似（差异参见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)）。
 
 - `'basic'` — 使用基础解析器。
 
@@ -1689,7 +1725,9 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## check_query_single_value_result {#check_query_single_value_result} 
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "已修改该设置，使 CHECK TABLE 更实用"}]}]}/>
 
 定义 `MergeTree` 系列表引擎中 [CHECK TABLE](/sql-reference/statements/check-table) 查询结果的详细程度。
 
@@ -1740,12 +1778,11 @@ Cloud 模式
 - 1 - 将 DDL 语句重写为使用 *ReplicatedMergeTree
 - 2 - 将 DDL 语句重写为使用 SharedMergeTree
 - 3 - 将 DDL 语句重写为使用 SharedMergeTree，但在显式指定远程磁盘时除外
+- 4 - 与 3 相同，并且额外使用 Alias 代替 Distributed
 
 使用 UInt64 以尽量缩小对外公开部分
 
 ## cluster_for_parallel_replicas {#cluster_for_parallel_replicas} 
-
-<BetaBadge/>
 
 包含当前服务器所在分片的集群
 
@@ -1821,6 +1858,16 @@ Cloud 模式
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 在 CREATE TABLE 中忽略排序规则的兼容性选项
+
+## compatibility_s3_presigned_url_query_in_path {#compatibility_s3_presigned_url_query_in_path} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+兼容性：启用时，会将预签名 URL 的查询参数（例如 X-Amz-*）折叠并入 S3 键中（与旧版行为一致），
+因此 `?` 会在路径中充当通配符。禁用时（默认），预签名 URL 的查询参数会保留在 URL 查询部分，
+以避免将 `?` 解释为通配符。
 
 ## compile_aggregate_expressions {#compile_aggregate_expressions} 
 
@@ -2592,6 +2639,14 @@ ENGINE = Log
 
 仅在 ClickHouse Cloud 中生效。在 system.distributed_cache_metrics 和 system.distributed_cache_events 表中，仅从当前可用区获取指标数据。
 
+## distributed_cache_file_cache_name {#distributed_cache_file_cache_name} 
+
+<CloudOnlyBadge/>
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting."}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。此设置仅在 CI 测试中使用——用于指定在分布式缓存上使用的文件系统缓存名称。
+
 ## distributed_cache_log_mode {#distributed_cache_log_mode} 
 
 <CloudOnlyBadge/>
@@ -2721,6 +2776,26 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "0"},{"label": "ClickHouse Cloud 的一个设置"}]}]}/>
 
 仅在 ClickHouse Cloud 中生效。会重新抛出在与分布式缓存通信期间发生的异常，或从分布式缓存接收到的异常。否则，在发生错误时会退回为跳过分布式缓存。
+
+## distributed_cache_use_clients_cache_for_read {#distributed_cache_use_clients_cache_for_read} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对读请求使用客户端缓存。
+
+## distributed_cache_use_clients_cache_for_write {#distributed_cache_use_clients_cache_for_write} 
+
+<CloudOnlyBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+仅在 ClickHouse Cloud 中生效。对写请求使用客户端缓存。
 
 ## distributed_cache_wait_connection_from_pool_milliseconds {#distributed_cache_wait_connection_from_pool_milliseconds} 
 
@@ -2865,9 +2940,9 @@ FORMAT PrettyCompactMonoBlock
 
 <ExperimentalBadge/>
 
-<SettingsInfoBlock type="UInt64" default_value="8" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="8" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "新增的实验性设置。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "8"},{"label": "新实验性设置。"}]}]}/>
 
 分布式 shuffle-hash-join 的默认桶数。
 
@@ -3068,12 +3143,6 @@ FORMAT PrettyCompactMonoBlock
 
 将 blob 存储操作相关信息写入 system.blob_storage_log 表
 
-## enable_deflate_qpl_codec {#enable_deflate_qpl_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-开启后，可以使用 DEFLATE_QPL 编解码器来压缩列。
-
 ## enable_early_constant_folding {#enable_early_constant_folding} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3137,6 +3206,18 @@ FORMAT PrettyCompactMonoBlock
 
 在执行查询期间，将日志记录到 system.filesystem 表的 prefetch_log 中。仅用于测试或调试，不建议默认启用。
 
+## enable_full_text_index {#enable_full_text_index} 
+
+<BetaBadge/>
+
+**别名**: `allow_experimental_full_text_index`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "文本索引已进入 Beta 阶段。"}]}]}/>
+
+如果设置为 true，则允许使用文本索引。
+
 ## enable_global_with_statement {#enable_global_with_statement} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3161,7 +3242,7 @@ FORMAT PrettyCompactMonoBlock
 
 启用或禁用对 HTTP 请求响应中数据的压缩。
 
-更多信息请参阅 [HTTP 接口说明](../../interfaces/http.md)。
+更多信息请参阅 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
@@ -3354,6 +3435,23 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 ```
 
 
+## enable_positional_arguments_for_projections {#enable_positional_arguments_for_projections} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": "0"},{"label": "用于控制 PROJECTION 中位置参数的新设置。"}]}]}/>
+
+启用或禁用在 PROJECTION 定义中使用位置参数。另请参阅 [enable_positional_arguments](#enable_positional_arguments) 设置。
+
+:::note
+这是一个面向专家级用户的设置，如果您刚开始使用 ClickHouse，建议不要更改它。
+:::
+
+可能的取值：
+
+- 0 — 不支持位置参数。
+- 1 — 支持位置参数：可以使用列序号代替列名。
+
 ## enable_producing_buckets_out_of_order_in_aggregation {#enable_producing_buckets_out_of_order_in_aggregation} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3401,9 +3499,9 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 ## enable&#95;shared&#95;storage&#95;snapshot&#95;in&#95;query {#enable_shared_storage_snapshot_in_query}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "0"},{"label": "用于在查询中共享存储快照的新设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "默认在查询中启用共享存储快照"}]}]} />
 
 启用后，单个查询中的所有子查询会针对每个表共享同一个 `StorageSnapshot`。
 这可以确保整个查询过程中的数据视图一致，即使同一张表被多次访问。
@@ -3492,14 +3590,6 @@ WHERE (_part, _part_offset) IN (
 
 - 0 - 禁用
 - 1 - 启用
-
-## enable_zstd_qat_codec {#enable_zstd_qat_codec} 
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.1"},{"label": "0"},{"label": "新增 ZSTD_QAT 编解码器"}]}]}/>
-
-启用后，可以使用 ZSTD_QAT 编解码器压缩列数据。
 
 ## enforce_strict_identifier_format {#enforce_strict_identifier_format} 
 
@@ -4432,7 +4522,7 @@ HTTP 请求头中允许的最大字段数
 
 启用或禁用在从客户端解压 HTTP POST 数据时执行校验和检查。仅用于 ClickHouse 原生压缩格式（不适用于 `gzip` 或 `deflate`）。
 
-有关更多信息，请阅读 [HTTP 接口说明](../../interfaces/http.md)。
+有关更多信息，请阅读 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
@@ -4738,6 +4828,14 @@ Expression ((Projection + Before ORDER BY))
 
 在副本访问实体管理查询中忽略 ON CLUSTER 子句。
 
+## ignore_on_cluster_for_replicated_database {#ignore_on_cluster_for_replicated_database} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0"},{"label": "添加一个新的设置，用于在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。"}]}]}/>
+
+始终在针对复制数据库的 DDL 查询中忽略 ON CLUSTER 子句。
+
 ## ignore_on_cluster_for_replicated_named_collections_queries {#ignore_on_cluster_for_replicated_named_collections_queries} 
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5018,6 +5116,20 @@ timeout = min(insert_keeper_retry_max_backoff_ms, latest_timeout * 2)
 - [insert_quorum_parallel](#insert_quorum_parallel)
 - [select_sequential_consistency](#select_sequential_consistency)
 
+## insert_select_deduplicate {#insert_select_deduplicate} 
+
+<SettingsInfoBlock type="BoolAuto" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "auto"},{"label": "New setting"}]}]}/>
+
+启用或禁用针对 `INSERT SELECT` 的数据块去重（适用于 Replicated\* 表）。
+该设置会在 `INSERT SELECT` 查询中覆盖 `insert_deduplicate` 的行为。
+此设置有三种可能的取值：
+
+- 0 — 对 `INSERT SELECT` 查询禁用去重。
+- 1 — 对 `INSERT SELECT` 查询启用去重。如果 SELECT 结果不稳定，将抛出异常。
+- auto — 当 `insert_deduplicate` 启用且 SELECT 结果稳定时启用去重，否则禁用去重。
+
 ## insert&#95;shard&#95;id {#insert_shard_id}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5139,9 +5251,12 @@ Grace join 的第一阶段会读取右表，并根据键列的哈希值将其拆
 
 - direct
 
-当右表的存储支持键值查询时，可以使用此算法。
+`direct`（也称为嵌套循环）算法使用左表的行作为键，在右表中进行查找。
+它由 [Dictionary](/engines/table-engines/special/dictionary)、[EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) 和 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 表等特殊存储提供支持。
 
-`direct` 算法使用左表的行作为键，在右表中进行查找。它仅受 [Dictionary](/engines/table-engines/special/dictionary) 或 [EmbeddedRocksDB](../../engines/table-engines/integrations/embedded-rocksdb.md) 等特殊存储支持，并且只支持 `LEFT` 和 `INNER` JOIN。
+对于 MergeTree 表，该算法会将 join 键过滤条件下推到存储层。如果该键可以使用表的主键索引进行查找，这通常会更高效；否则，会对右表为每个左表数据块执行全表扫描。
+
+支持 `INNER` 和 `LEFT` join，并且只支持单列等值 join 键且无其他条件。
 
 - auto
 
@@ -5255,6 +5370,26 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 Bloom filter 中用于 JOIN 运行时过滤器的哈希函数数量（参见 enable_join_runtime_filters 设置项）。
 
+## join_runtime_bloom_filter_max_ratio_of_set_bits {#join_runtime_bloom_filter_max_ratio_of_set_bits} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+如果运行时 Bloom 过滤器中被置位的位数超过此比例，将完全禁用该过滤器以减少开销。
+
+## join_runtime_filter_blocks_to_skip_before_reenabling {#join_runtime_filter_blocks_to_skip_before_reenabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "30"},{"label": "New setting"}]}]}/>
+
+在再次尝试动态重新启用某个运行时过滤器之前，需要跳过的数据块数量。该过滤器此前因过滤效果较差而被禁用。
+
 ## join_runtime_filter_exact_values_limit {#join_runtime_filter_exact_values_limit} 
 
 <ExperimentalBadge/>
@@ -5264,6 +5399,16 @@ Bloom filter 中用于 JOIN 运行时过滤器的哈希函数数量（参见 ena
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "10000"},{"label": "新设置"}]}]}/>
 
 在运行时过滤器中，以原样存储在集合中的元素的最大数量。当超过此阈值时，将改为使用 Bloom 过滤器。
+
+## join_runtime_filter_pass_ratio_threshold_for_disabling {#join_runtime_filter_pass_ratio_threshold_for_disabling} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Double" default_value="0.7" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "0.7"},{"label": "New setting"}]}]}/>
+
+如果已通过的行数与已检查行数的比例大于此阈值，则该运行时过滤器会被视为性能较差，并在接下来的 `join_runtime_filter_blocks_to_skip_before_reenabling` 个数据块中被禁用，以降低开销。
 
 ## join_to_sort_maximum_table_rows {#join_to_sort_maximum_table_rows} 
 
@@ -6879,6 +7024,14 @@ Cloud 默认值：`0`。
 
 在执行 join 之前，允许在所有哈希表中为元素预先分配空间的总元素数量上限
 
+## max_streams_for_files_processing_in_cluster_functions {#max_streams_for_files_processing_in_cluster_functions} 
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "添加一个新的设置，用于限制 *Cluster 表函数* 在处理文件时的流数量"}]}]}/>
+
+如果该值不为零，则限制 *Cluster 表函数* 中从文件读取数据的线程数量。
+
 ## max_streams_for_merge_tree_reading {#max_streams_for_merge_tree_reading} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -6967,16 +7120,20 @@ Cloud 默认值：1 TB。
 
 <SettingsInfoBlock type="MaxThreads" default_value="'auto(N)'" />
 
-处理查询时可用的最大线程数，不包括用于从远程服务器检索数据的线程（参见参数 `max_distributed_connections`）。
+处理查询时可用的最大线程数，不包括用于从远程服务器检索数据的线程（参见参数 ['max_distributed_connections'](/operations/settings/settings#max_distributed_connections)）。
 
 此参数适用于在查询处理流水线中并行执行同一阶段的线程。
-例如，在读取表时，如果可以使用至少 `max_threads` 个线程并行完成函数表达式求值、WHERE 过滤以及 GROUP BY 的预聚合，那么将会使用 `max_threads` 个线程。
+例如，在读取表时，如果可以使用至少 `max_threads` 个线程并行完成函数表达式求值、`WHERE` 过滤以及 `GROUP BY` 的预聚合，那么将会使用 `max_threads` 个线程。
 
-对于由于 LIMIT 而能很快完成的查询，可以将 `max_threads` 设置得更小。例如，如果在每个数据块中都已包含所需数量的记录，且 `max_threads = 8`，则会检索 8 个数据块，尽管只读取 1 个数据块就已经足够。
-
+对于由于 LIMIT 而能很快完成的查询，可以将 `max_threads` 设置得更小。
+例如，如果在每个数据块中都已包含所需数量的记录，且 `max_threads = 8`，则会检索 8 个数据块，尽管只读取 1 个数据块就已经足够。
 `max_threads` 的值越小，内存消耗越少。
 
-Cloud 默认值：`auto(3)`
+默认情况下，`max_threads` 设置与 ClickHouse 可用的硬件线程数相匹配。
+在没有 SMT（例如 Intel HyperThreading）的情况下，这与 CPU 核心数相对应。
+
+对于 ClickHouse Cloud 用户，默认值会显示为 `auto(N)`，其中 N 与服务的 vCPU 大小相对应，例如 2vCPU/8GiB、4vCPU/16GiB 等。
+有关所有服务规格的列表，请参见 Cloud 控制台中的 `Settings` 选项卡。
 
 ## max_threads_for_indexes {#max_threads_for_indexes} 
 
@@ -8162,7 +8319,11 @@ SELECT * FROM test2;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-启用或禁用对于在 `WHERE/PREWHERE` 中包含分片键条件的 [SELECT](../../sql-reference/statements/select/index.md) 查询跳过未使用的分片（假定数据是按分片键进行分布的，否则查询结果将不正确）。
+启用或禁用在 `WHERE/PREWHERE` 中包含分片键条件的 [SELECT](../../sql-reference/statements/select/index.md) 查询跳过未使用的分片功能，并为分布式查询启用相关优化（例如按分片键进行聚合）。
+
+:::note
+假定数据是按分片键进行分布的，否则查询结果将不正确。
+:::
 
 可能的取值：
 
@@ -8471,17 +8632,21 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_allow_in_with_subquery {#parallel_replicas_allow_in_with_subquery} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "如果为 true，IN 子查询会在每个从属副本上执行。"}]}]}/>
 
 如果为 true，IN 子查询会在每个从属副本上执行。
 
-## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
+## parallel_replicas_allow_materialized_views {#parallel_replicas_allow_materialized_views} 
 
-<BetaBadge/>
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "允许在使用并行副本时使用 materialized views"}]}]}/>
+
+允许在使用并行副本时使用 materialized views
+
+## parallel_replicas_connect_timeout_ms {#parallel_replicas_connect_timeout_ms} 
 
 <SettingsInfoBlock type="Milliseconds" default_value="300" />
 
@@ -8547,15 +8712,11 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_for_non_replicated_merge_tree {#parallel_replicas_for_non_replicated_merge_tree} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 如果为 true，ClickHouse 也会对非副本 MergeTree 表使用并行副本算法
 
 ## parallel_replicas_index_analysis_only_on_coordinator {#parallel_replicas_index_analysis_only_on_coordinator} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8565,8 +8726,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_insert_select_local_pipeline {#parallel_replicas_insert_select_local_pipeline} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "在使用并行副本的分布式 INSERT SELECT 中使用本地流水线。目前由于性能问题已禁用"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "0"},{"label": "在使用并行副本的分布式 INSERT SELECT 中使用本地流水线。目前由于性能问题已禁用"}]}]}/>
@@ -8574,8 +8733,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 在使用并行副本的分布式 INSERT SELECT 中使用本地流水线
 
 ## parallel_replicas_local_plan {#parallel_replicas_local_plan} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -8585,8 +8742,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_mark_segment_size {#parallel_replicas_mark_segment_size} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.9"},{"label": "0"},{"label": "此设置的值现在由系统自动确定"}]}, {"id": "row-2","items": [{"label": "24.1"},{"label": "128"},{"label": "添加新的设置，用于控制新的并行副本协调器实现中的段大小"}]}]}/>
@@ -8595,15 +8750,11 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_min_number_of_rows_per_replica {#parallel_replicas_min_number_of_rows_per_replica} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-将用于查询的副本数量限制为 (预估待读取的行数 / min_number_of_rows_per_replica)。最大值仍受 `max_parallel_replicas` 限制。
+将用于查询的副本数量限制为（预估待读取的行数 / min_number_of_rows_per_replica）。最大值仍受 `max_parallel_replicas` 限制。
 
 ## parallel_replicas_mode {#parallel_replicas_mode} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="ParallelReplicasMode" default_value="read_tasks" />
 
@@ -8613,8 +8764,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_only_with_analyzer {#parallel_replicas_only_with_analyzer} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "仅在启用 analyzer 时支持 parallel replicas"}]}]}/>
@@ -8623,8 +8772,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 
 ## parallel_replicas_prefer_local_join {#parallel_replicas_prefer_local_join} 
 
-<BetaBadge/>
-
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1"},{"label": "如果为 true，并且可以使用并行副本算法执行 JOIN，且右侧 JOIN 部分的所有存储引擎都是 *MergeTree，则将使用本地 JOIN，而不是 GLOBAL JOIN。"}]}]}/>
@@ -8632,8 +8779,6 @@ Linux 中查询处理线程的 nice 值。值越低，CPU 优先级越高。
 如果为 true，并且可以使用并行副本算法执行 JOIN，且右侧 JOIN 部分的所有存储引擎都是 *MergeTree，则将使用本地 JOIN，而不是 GLOBAL JOIN。
 
 ## parallel_replicas_support_projection {#parallel_replicas_support_projection} 
-
-<BetaBadge/>
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
@@ -9290,11 +9435,19 @@ Possible values:
 
 ## query_plan_max_limit_for_lazy_materialization {#query_plan_max_limit_for_lazy_materialization} 
 
-<SettingsInfoBlock type="UInt64" default_value="100" />
+<SettingsInfoBlock type="UInt64" default_value="10000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "添加了新的设置，用于控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "100"},{"label": "进一步优化"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "10"},{"label": "添加了新的设置，用于控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "10000"},{"label": "在性能改进后提高该限制"}]}, {"id": "row-3","items": [{"label": "25.11"},{"label": "100"},{"label": "进一步优化"}]}]}/>
 
 控制可使用查询计划进行惰性物化优化时的最大上限值。若为零，则表示无限制。
+
+## query_plan_max_limit_for_top_k_optimization {#query_plan_max_limit_for_top_k_optimization} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting."}]}]}/>
+
+控制在使用 minmax 跳过索引和动态阈值过滤来评估 TopK 优化查询计划时所允许的最大 `LIMIT` 值。如果为 0，则表示不限。
 
 ## query_plan_max_optimizations_to_apply {#query_plan_max_optimizations_to_apply} 
 
@@ -9348,6 +9501,21 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。要在使用新的 analyzer 时正确支持过滤下推（filter-push-down），需要启用该选项。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
+
+## query_plan_optimize_join_order_algorithm {#query_plan_optimize_join_order_algorithm} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="JoinOrderAlgorithm" default_value="greedy" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "greedy"},{"label": "New experimental setting."}]}]}/>
+
+指定在查询计划优化期间要尝试的 JOIN 顺序算法。可用的算法如下：
+
+- 'greedy' - 基本的贪心算法，执行速度快，但可能无法产生最优的 JOIN 顺序
+- 'dpsize' - 实现 DPsize 算法，目前仅适用于 INNER JOIN，会考虑所有可能的 JOIN 顺序并找到最优的那个，但对于包含许多表和 JOIN 谓词的查询可能会较慢。
+
+可以指定多个算法，例如 'dpsize,greedy'。
 
 ## query_plan_optimize_join_order_limit {#query_plan_optimize_join_order_limit} 
 
@@ -9405,6 +9573,14 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 - 0 - 禁用
 - 1 - 启用
+
+## query_plan_read_in_order_through_join {#query_plan_read_in_order_through_join} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
+
+在 JOIN 操作中从左表按顺序持续读取，以便供后续步骤使用。
 
 ## query_plan_remove_redundant_distinct {#query_plan_remove_redundant_distinct} 
 
@@ -9547,8 +9723,6 @@ EXPLAIN PLAN 中步骤描述的最大长度。
 
 - 0 表示关闭计时器。
 
-**在 ClickHouse Cloud 中暂时被禁用。**
-
 另请参阅：
 
 - 系统表 [trace_log](/operations/system-tables/trace_log)
@@ -9569,8 +9743,6 @@ EXPLAIN PLAN 中步骤描述的最大长度。
             - 1000000000（每秒 1 次），用于集群范围的分析。
 
 - 0 表示关闭计时器。
-
-**在 ClickHouse Cloud 中暂时不可用。**
 
 另请参阅：
 
@@ -10067,6 +10239,15 @@ S3 分块上传的最大分块编号。
 
 在向 S3 执行分段上传时，每个上传分段的最小大小。
 
+## s3_path_filter_limit {#s3_path_filter_limit} 
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1000"},{"label": "New setting"}]}]}/>
+
+从查询过滤条件中提取 `_path` 值用于文件遍历（替代 glob 列举）的最大数量。
+0 表示禁用。
+
 ## s3_request_timeout_ms {#s3_request_timeout_ms} 
 
 <SettingsInfoBlock type="UInt64" default_value="30000" />
@@ -10281,7 +10462,7 @@ S3Queue 的 Keeper 故障注入概率。
 
 启用或禁用在 `clickhouse-server` 响应中返回 `X-ClickHouse-Progress` HTTP 响应头。
 
-更多信息请参阅 [HTTP 接口说明](../../interfaces/http.md)。
+更多信息请参阅 [HTTP 接口说明](/interfaces/http)。
 
 可能的取值：
 
@@ -10301,6 +10482,14 @@ S3Queue 的 Keeper 故障注入概率。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.4"},{"label": "0"},{"label": "NewSetting"}]}]}/>
 
 序列化用于分布式处理的查询计划
+
+## serialize_string_in_memory_with_zero_byte {#serialize_string_in_memory_with_zero_byte} 
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新增设置"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "1"},{"label": "新增设置"}]}]}/>
+
+在聚合期间对 String 类型的值进行序列化时，在末尾添加一个零字节。启用该设置以在对版本不兼容的集群执行查询时保持兼容性。
 
 ## session&#95;timezone {#session_timezone}
 
@@ -10621,7 +10810,8 @@ SELECT ((4 + 2) + 1, ((4 + 2) + 1) + 2)
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "21.12"},{"label": "0"},{"label": "默认情况下不允许对 Kafka/RabbitMQ/FileLog 执行直接 SELECT"}]}]}/>
 
-允许对 Kafka、RabbitMQ、FileLog、Redis Streams 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+允许对 Kafka、RabbitMQ、FileLog、Redis Streams、S3Queue、AzureQueue 和 NATS 引擎执行直接 SELECT 查询。如果存在附加的 materialized view，即使启用了此设置，也不允许执行 SELECT 查询。
+如果没有附加的 materialized view，启用此设置后可以读取数据。请注意，已读取的数据通常会从队列中删除。为避免删除已读取的数据，应正确配置相关引擎的设置。
 
 ## stream_like_engine_insert_queue {#stream_like_engine_insert_queue} 
 
@@ -10841,6 +11031,17 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 - 1 — 启用 profile events 的追踪。
 - 0 — 禁用 profile events 的追踪。
+
+## trace_profile_events_list {#trace_profile_events_list} 
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": ""},{"label": "New setting"}]}]}/>
+
+当启用 `trace_profile_events` 设置时，将被跟踪的事件限制为指定的、以逗号分隔的事件名称列表。
+如果 `trace_profile_events_list` 为空字符串（默认值），则会跟踪所有 profile 事件。
+
+示例值：'DiskS3ReadMicroseconds,DiskS3ReadRequestsCount,SelectQueryTimeMicroseconds,ReadBufferFromS3Bytes'
+
+使用此设置可以在存在大量查询时更精确地收集数据，否则，海量事件可能会导致内部系统日志队列溢出，从而使其中一部分事件被丢弃。
 
 ## transfer_overflow_mode {#transfer_overflow_mode} 
 
@@ -11170,6 +11371,21 @@ Cloud 默认值：`1`
 - 0 — 禁用。
 - 1 — 启用。
 
+## use_skip_indexes_for_top_k {#use_skip_indexes_for_top_k} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+启用在 TopK 过滤中使用数据跳过索引。
+
+启用后，如果在 `ORDER BY &lt;column&gt; LIMIT n` 查询中使用的列上存在 minmax 跳过索引，优化器会尝试使用该 minmax 索引来跳过与最终结果无关的 granule。这可以降低查询延迟。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
+
 ## use_skip_indexes_if_final {#use_skip_indexes_if_final} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11259,6 +11475,21 @@ Cloud 默认值：`1`
 
 是否启用已反序列化文本索引倒排列表的缓存。
 在处理大量文本索引查询时，启用文本索引倒排列表缓存可以显著降低延迟并提高吞吐量。
+
+## use_top_k_dynamic_filtering {#use_top_k_dynamic_filtering} 
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+
+在执行 `ORDER BY <column> LIMIT n` 查询时启用动态过滤优化。
+
+启用后，查询执行器会尝试跳过那些不会出现在最终结果集中 `top N` 行中的数据粒度块和行。此优化具有动态特性，其延迟改善效果取决于数据分布以及查询中是否存在其他谓词。
+
+可能的取值：
+
+- 0 — 禁用。
+- 1 — 启用。
 
 ## use_uncompressed_cache {#use_uncompressed_cache} 
 

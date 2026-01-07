@@ -74,10 +74,11 @@ doc_type: 'guide'
   ```
 
   索引创建和搜索的参数及性能考量详见[文档](../../engines/table-engines/mergetree-family/annindexes.md)。
-  上述语句分别将 HNSW 超参数 `M` 和 `ef_construction` 设置为 64 和 512。
-  用户需要通过评估索引构建时间和搜索结果质量来仔细选择这些参数的最优值。
+  The statement above uses values of 64 and 512 respectively for the HNSW hyperparameters `M` and `ef_construction`.
+  You need to carefully select optimal values for these parameters by evaluating index build time and search results quality
+  corresponding to selected values.
 
-  对于完整的 2874 万条数据集,构建和保存索引可能需要几分钟到一小时,具体取决于可用 CPU 核心数和存储带宽。
+  对于完整的 2874 万条数据集,构建和保存索引可能需要几分钟到一小时,具体取决于可用的 CPU 核心数和存储带宽。
 
   ### 执行 ANN 搜索
 
@@ -88,6 +89,7 @@ doc_type: 'guide'
   FROM hackernews
   ORDER BY cosineDistance( vector, <search vector>)
   LIMIT 10
+
   ```
 
   首次将向量索引加载到内存可能需要几秒钟至几分钟。
@@ -106,97 +108,98 @@ doc_type: 'guide'
 
   import clickhouse_connect
 
-  print("初始化中...")
+  print("Initializing...")
 
   model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-  chclient = clickhouse_connect.get_client() # 此处填写 ClickHouse 凭据
+  chclient = clickhouse_connect.get_client() # ClickHouse credentials here
 
   while True:
-      # 获取用户输入的搜索查询
-      print("请输入搜索查询:")
+      # Take the search query from user
+      print("Enter a search query :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # 运行模型并获取搜索向量
-      print("正在生成嵌入向量:", input_query);
+      # Run the model and obtain search vector
+      print("Generating the embedding for ", input_query);
       embeddings = model.encode(texts)
 
-      print("查询 ClickHouse 中...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':20}
       result = chclient.query("SELECT id, title, text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
-      print("查询结果:")
+      print("Results :")
       for row in result.result_rows:
           print(row[0], row[2][:100])
           print("---------")
+
   ```
 
   以下展示了运行上述 Python 脚本的示例及相似度搜索结果
   (仅显示前 20 条结果中每条的前 100 个字符):
 
   ```text
-  初始化中...
+  Initializing...
 
-  输入搜索查询:
-  OLAP 多维数据集是否有用
+  Enter a search query :
+  Are OLAP cubes useful
 
-  正在为 "OLAP 多维数据集是否有用" 生成嵌入向量
+  Generating the embedding for  "Are OLAP cubes useful"
 
-  正在查询 ClickHouse...
+  Querying ClickHouse...
 
-  结果:
+  Results :
 
   27742647 smartmic:
-  slt2021: OLAP 多维数据集并未过时,只要您使用某种形式的:<p>1. GROUP BY 多个字段
+  slt2021: OLAP Cube is not dead, as long as you use some form of:<p>1. GROUP BY multiple fi
   ---------
-  27744260 georgewfraser:数据集市是数据的逻辑组织方式,用于帮助人们理解数据模式。当
+  27744260 georgewfraser:A data mart is a logical organization of data to help humans understand the schema. Wh
   ---------
-  27761434 mwexler:&quot;我们根据 Kimball 或 Inmon 等严格的框架对数据进行建模,因为我们必须
+  27761434 mwexler:&quot;We model data according to rigorous frameworks like Kimball or Inmon because we must r
   ---------
   28401230 chotmat:
-  erosenbe0: OLAP 数据库只是数据的副本、复制或归档,其模式设计
+  erosenbe0: OLAP database is just a copy, replica, or archive of data with a schema designe
   ---------
-  22198879 Merick:+1 支持 Apache Kylin,这是一个优秀的项目,拥有出色的开源社区。如果有人
+  22198879 Merick:+1 for Apache Kylin, it&#x27;s a great project and awesome open source community. If anyone i
   ---------
-  27741776 crazydoggers:我一直认为 OLAP 多维数据集的价值在于发现您可能不知道要提出的问题
+  27741776 crazydoggers:I always felt the value of an OLAP cube was uncovering questions you may not know to as
   ---------
   22189480 shadowsun7:
-  _Codemonkeyism: 在维护 OLAP 多维数据集系统几年后,我并不那么
+  _Codemonkeyism: After maintaining an OLAP cube system for some years, I&#x27;m not that
   ---------
   27742029 smartmic:
-  gengstrand: 我第一次接触 OLAP 是在一个为 Essbase 开发前端界面的团队中
+  gengstrand: My first exposure to OLAP was on a team developing a front end to Essbase that
   ---------
   22364133 irfansharif:
-  simo7: 我想知道这项技术如何应用于 OLAP 多维数据集。<p>OLAP 多维数据集
+  simo7: I&#x27;m wondering how this technology could work for OLAP cubes.<p>An OLAP cube
   ---------
-  23292746 scoresmoke:当我开发用于 Web 分析的个人项目时 (<a href="https:&#x2F;&#x2F;github
+  23292746 scoresmoke:When I was developing my pet project for Web analytics (<a href="https:&#x2F;&#x2F;github
   ---------
-  22198891 js8:这篇文章似乎犯了一个分类错误,认为 OLAP 多维数据集被
+  22198891 js8:It seems that the article makes a categorical error, arguing that OLAP cubes were replaced by co
   ---------
   28421602 chotmat:
-  7thaccount: OLAP 多维数据集相比普通 SQL(大型历史数据库)有什么优势
+  7thaccount: Is there any advantage to OLAP cube over plain SQL (large historical database r
   ---------
   22195444 shadowsun7:
-  lkcubing: 感谢分享。很有意思的文章。<p>虽然这篇文章准确地阐述了
+  lkcubing: Thanks for sharing. Interesting write up.<p>While this article accurately capt
   ---------
-  22198040 lkcubing:感谢分享。很有意思的文章。<p>虽然这篇文章准确地阐述了问题
+  22198040 lkcubing:Thanks for sharing. Interesting write up.<p>While this article accurately captures the issu
   ---------
   3973185 stefanu:
-  sgt: 有趣的想法。当然,OLAP 不仅仅涉及底层多维数据集和维度,
+  sgt: Interesting idea. Ofcourse, OLAP isn't just about the underlying cubes and dimensions,
   ---------
   22190903 shadowsun7:
-  js8: 这篇文章似乎犯了一个分类错误,认为 OLAP 多维数据集被
+  js8: It seems that the article makes a categorical error, arguing that OLAP cubes were r
   ---------
-  28422241 sradman:OLAP 多维数据集已被列式存储所取代。除非您对历史感兴趣
+  28422241 sradman:OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the history of
   ---------
   28421480 chotmat:
-  sradman: OLAP 多维数据集已被列式存储所取代。除非您对
+  sradman: OLAP Cubes have been disrupted by Column Stores. Unless you are interested in the
   ---------
   27742515 BadInformatics:
-  quantified: 原帖使用了反向条件:"OLAP != OLAP 多维数据集" 才是实际标题
+  quantified: OP posts with inverted condition: “OLAP != OLAP Cube” is the actual titl
   ---------
   28422935 chotmat:
-  rstuart4133: 我记得很久以前就听说过 OLAP 多维数据集(可能不远
+  rstuart4133: I remember hearing about OLAP cubes donkey&#x27;s years ago (probably not far
   ---------
   ```
 
@@ -208,40 +211,47 @@ doc_type: 'guide'
 
   应用程序执行以下步骤：
 
-  1. 接收用户输入的 *topic*
+  1. 从用户处接收一个 *主题* 作为输入
   2. 使用 `SentenceTransformers` 的 `all-MiniLM-L6-v2` 模型为该 *topic* 生成嵌入向量
-  3. 在 `hackernews` 表中使用基于向量相似度的搜索检索高度相关的帖子和评论
-  4. 使用 `LangChain` 和 OpenAI `gpt-3.5-turbo` Chat API 来对步骤 #3 中检索到的内容进行**总结**。\
-     步骤 #3 中检索到的帖子/评论会作为*上下文*传递给 Chat API，是生成式 AI 中的关键一环。
+  3. 使用向量相似度搜索从 `hackernews` 表中检索高度相关的帖子和评论
+  4. 使用 `LangChain` 和 OpenAI `gpt-3.5-turbo` Chat API 对步骤 #3 中检索到的内容进行**摘要**。
+     步骤 #3 中检索到的帖子和评论会作为*上下文*传递给 Chat API，是生成式 AI 中的关键一环。
 
   下面首先列出运行摘要应用程序的示例，随后是摘要应用程序的代码。运行该应用程序需要在环境变量 `OPENAI_API_KEY` 中设置 OpenAI API 密钥。可在 [https://platform.openai.com](https://platform.openai.com) 注册后获取 OpenAI API 密钥。
 
-  此应用程序演示了一个生成式 AI 用例，适用于多个企业领域，例如：
+  此应用程序演示了一个生成式 AI 用例,适用于多个企业领域,例如:
   客户情感分析、技术支持自动化、用户对话挖掘、法律文档、医疗记录、
   会议记录、财务报表等
 
   ```shell
   $ python3 summarize.py
 
-  输入搜索主题:
-  ClickHouse 性能使用体验
+  Enter a search topic :
+  ClickHouse performance experiences
 
-  正在为 ----> ClickHouse 性能使用体验 生成嵌入向量
+  Generating the embedding for ---->  ClickHouse performance experiences
 
-  正在查询 ClickHouse 以检索相关文章...
+  Querying ClickHouse to retrieve relevant articles...
 
-  正在初始化 chatgpt-3.5-turbo 模型...
+  Initializing chatgpt-3.5-turbo model...
 
-  正在汇总从 ClickHouse 检索到的搜索结果...
+  Summarizing search results retrieved from ClickHouse...
 
-  来自 chatgpt-3.5 的汇总结果:
-  讨论重点是将 ClickHouse 与 TimescaleDB、Apache Spark、AWS Redshift 和 QuestDB 等多种数据库进行对比,突出了 ClickHouse 在分析应用场景中的高性能和成本优势。用户对 ClickHouse 在处理大规模分析工作负载时的简洁性、速度和资源利用效率给予高度评价,同时也提到了一些挑战,例如 DML 操作和备份难度。ClickHouse 凭借其实时聚合计算能力和扎实的工程实现获得认可,并与 Druid 和 MemSQL 等其他数据库进行了对比。总体而言,ClickHouse 被视为实时数据处理、分析和高效处理海量数据的强大工具,凭借其卓越的性能和成本效益而日益受到欢迎。
+  Summary from chatgpt-3.5:
+  The discussion focuses on comparing ClickHouse with various databases like TimescaleDB, Apache Spark,
+  AWS Redshift, and QuestDB, highlighting ClickHouse's cost-efficient high performance and suitability
+  for analytical applications. Users praise ClickHouse for its simplicity, speed, and resource efficiency
+  in handling large-scale analytics workloads, although some challenges like DMLs and difficulty in backups
+  are mentioned. ClickHouse is recognized for its real-time aggregate computation capabilities and solid
+  engineering, with comparisons made to other databases like Druid and MemSQL. Overall, ClickHouse is seen
+  as a powerful tool for real-time data processing, analytics, and handling large volumes of data
+  efficiently, gaining popularity for its impressive performance and cost-effectiveness.
   ```
 
   上述应用程序的代码:
 
   ```python
-  print("初始化中...")
+  print("Initializing...")
 
   import sys
   import json
@@ -268,25 +278,25 @@ doc_type: 'guide'
   chclient = clickhouse_connect.get_client(compress=False) # ClickHouse credentials here
 
   while True:
-      # 获取用户输入的搜索查询
-      print("请输入搜索主题:")
+      # Take the search query from user
+      print("Enter a search topic :")
       input_query = sys.stdin.readline();
       texts = [input_query]
 
-      # 运行模型并获取搜索向量或参考向量
-      print("正在生成嵌入向量 ----> ", input_query);
+      # Run the model and obtain search or reference vector
+      print("Generating the embedding for ----> ", input_query);
       embeddings = model.encode(texts)
 
-      print("查询 ClickHouse 中...")
+      print("Querying ClickHouse...")
       params = {'v1':list(embeddings[0]), 'v2':100}
       result = chclient.query("SELECT id,title,text FROM hackernews ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-      # 合并所有搜索结果
+      # Just join all the search results
       doc_results = ""
       for row in result.result_rows:
           doc_results = doc_results + "\n" + row[2]
 
-      print("初始化 chatgpt-3.5-turbo 模型中")
+      print("Initializing chatgpt-3.5-turbo model")
       model_name = "gpt-3.5-turbo"
 
       text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
@@ -300,13 +310,13 @@ doc_type: 'guide'
       llm = ChatOpenAI(temperature=0, model_name=model_name)
 
       prompt_template = """
-  请用不超过 10 句话简明总结以下内容:
+  Write a concise summary of the following in not more than 10 sentences:
 
 
   {text}
 
 
-  简明摘要:
+  CONSCISE SUMMARY :
   """
 
       prompt = PromptTemplate(template=prompt_template, input_variables=["text"])
@@ -316,7 +326,7 @@ doc_type: 'guide'
       gpt_35_turbo_max_tokens = 4096
       verbose = False
 
-      print("正在总结从 ClickHouse 检索的搜索结果...")
+      print("Summarizing search results retrieved from ClickHouse...")
 
       if num_tokens <= gpt_35_turbo_max_tokens:
           chain = load_summarize_chain(llm, chain_type="stuff", prompt=prompt, verbose=verbose)
@@ -325,6 +335,6 @@ doc_type: 'guide'
 
       summary = chain.run(docs)
 
-      print(f"chatgpt-3.5 生成的摘要: {summary}")
+      print(f"Summary from chatgpt-3.5: {summary}")
   ```
 </VerticalStepper>

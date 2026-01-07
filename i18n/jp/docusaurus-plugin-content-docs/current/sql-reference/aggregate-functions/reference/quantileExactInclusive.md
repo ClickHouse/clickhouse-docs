@@ -1,0 +1,58 @@
+---
+description: '数値データ列の分位数を厳密に計算します。'
+slug: /sql-reference/aggregate-functions/reference/quantileExactInclusive
+title: 'quantileExactInclusive'
+doc_type: 'reference'
+---
+
+# quantileExactInclusive {#quantileexactinclusive}
+
+数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
+
+厳密な値を得るために、渡されたすべての値を配列にまとめ、その配列を部分的にソートします。そのため、この関数は `O(n)` のメモリを消費します。ここで `n` は渡された値の個数です。ただし、値の個数が少ない場合、この関数は非常に効率的です。
+
+この関数は、Excel の関数 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed)（[type R7](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)）と等価です。
+
+1 つのクエリ内で異なるレベルの `quantileExactInclusive` 関数を複数使用する場合、内部状態は結合されません（つまり、そのクエリは本来可能なほど効率的には実行されません）。このような場合は、[quantilesExactInclusive](../../../sql-reference/aggregate-functions/reference/quantilesExactInclusive) 関数を使用してください。
+
+**構文**
+
+```sql
+quantileExactInclusive(level)(expr)
+```
+
+**引数**
+
+* `expr` — 数値型の[データ型](/sql-reference/data-types)、[Date](../../../sql-reference/data-types/date.md) または [DateTime](../../../sql-reference/data-types/datetime.md) を結果とするカラム値に対する式。
+
+**パラメータ**
+
+* `level` — 分位数のレベル。省略可能。取りうる値: [0, 1] — 両端を含む。デフォルト値: 0.5。`level=0.5` の場合、この関数は[中央値](https://en.wikipedia.org/wiki/Median)を計算する。[Float](../../../sql-reference/data-types/float.md)。
+
+**返される値**
+
+* 指定されたレベルの分位数。
+
+型:
+
+* 数値データ型の入力に対しては [Float64](../../../sql-reference/data-types/float.md)。
+* 入力値が `Date` 型の場合は [Date](../../../sql-reference/data-types/date.md)。
+* 入力値が `DateTime` 型の場合は [DateTime](../../../sql-reference/data-types/datetime.md)。
+
+**例**
+
+クエリ:
+
+```sql
+CREATE TABLE num AS numbers(1000);
+
+SELECT quantileExactInclusive(0.6)(x) FROM (SELECT number AS x FROM num);
+```
+
+結果:
+
+```text
+┌─quantileExactInclusive(0.6)(x)─┐
+│                          599.4 │
+└────────────────────────────────┘
+```

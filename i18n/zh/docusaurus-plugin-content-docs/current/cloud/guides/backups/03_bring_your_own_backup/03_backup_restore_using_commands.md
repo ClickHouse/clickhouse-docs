@@ -14,11 +14,9 @@ import TabItem from '@theme/TabItem';
 
 # 使用命令备份或恢复备份 {#commands-experience}
 
-用户可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
+您可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
 此外也可以通过[用户界面进行备份或恢复](/cloud/manage/backups/backup-restore-via-ui)。
 本指南提供了针对三大云服务提供商（CSP）的相关命令。
-
-
 
 ## 要求 {#requirements}
 
@@ -47,12 +45,10 @@ import TabItem from '@theme/TabItem';
   </TabItem>
 </Tabs>
 
-
-
 ## 备份 / 恢复特定数据库 {#backup_restore_db}
 
 此处演示如何对 *单个* 数据库进行备份和恢复。
-完整的备份和恢复命令请参见[备份命令摘要](/operations/backup#command-summary)。
+完整的备份和恢复命令请参见[备份命令摘要](/operations/backup/overview#command-summary)。
 
 ### AWS S3 {#aws-s3-bucket}
 
@@ -153,8 +149,6 @@ FROM AzureBlobStorage(
   </TabItem>
 </Tabs>
 
-
-
 ## 备份 / 恢复整个服务 {#backup_restore_entire_service}
 
 要备份整个服务，请使用以下命令。
@@ -196,8 +190,6 @@ FROM S3(
 ```
 </TabItem>
 </Tabs>
-
-
 
 ## 常见问题解答 {#backups-faq}
 

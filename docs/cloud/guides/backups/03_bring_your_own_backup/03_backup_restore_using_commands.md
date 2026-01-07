@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 # Take a backup or restore a backup using commands {#commands-experience}
 
-Users can utilize `BACKUP` and `RESTORE` commands to export backups to their storage buckets,
+You can utilize `BACKUP` and `RESTORE` commands to export backups to their storage buckets,
 in addition to backing up or restoring [via user interface](/cloud/manage/backups/backup-restore-via-ui).
 Commands for all three CSPs are given in this guide.
 
@@ -47,7 +47,7 @@ You will need the following details to export/restore backups to your own CSP st
 ## Backup / Restore specific DB {#backup_restore_db}
 
 Here we show the backup and restore of a *single* database.
-See the [backup command summary](/operations/backup#command-summary) for full backup and restore commands.
+See the [backup command summary](/operations/backup/overview#command-summary) for full backup and restore commands.
 
 ### AWS S3 {#aws-s3-bucket}
 

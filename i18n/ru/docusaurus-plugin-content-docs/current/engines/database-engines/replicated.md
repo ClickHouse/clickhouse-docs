@@ -9,15 +9,11 @@ title: 'Replicated'
 doc_type: 'reference'
 ---
 
-
-
 # Replicated {#replicated}
 
 Движок основан на движке [Atomic](../../engines/database-engines/atomic.md). Он поддерживает репликацию метаданных по журналу DDL, который записывается в ZooKeeper и выполняется на всех репликах заданной базы данных.
 
 Один сервер ClickHouse может одновременно запускать и обновлять несколько реплицируемых баз данных. Однако для одной и той же реплицируемой базы данных не может существовать несколько реплик.
-
-
 
 ## Создание базы данных {#creating-a-database}
 
@@ -37,7 +33,6 @@ CREATE DATABASE testdb [UUID '...'] ENGINE = Replicated('zoo_path', 'shard_name'
 
 Для таблиц [ReplicatedMergeTree](/engines/table-engines/mergetree-family/replication), если аргументы не заданы, используются значения по умолчанию: `/clickhouse/tables/{uuid}/{shard}` и `{replica}`. Их можно изменить в настройках сервера [default&#95;replica&#95;path](../../operations/server-configuration-parameters/settings.md#default_replica_path) и [default&#95;replica&#95;name](../../operations/server-configuration-parameters/settings.md#default_replica_name). Макрос `{uuid}` раскрывается в UUID таблицы, `{shard}` и `{replica}` раскрываются в значения из конфигурации сервера, а не из аргументов движка базы данных. В будущем можно будет использовать `shard_name` и `replica_name` реплицируемой базы данных.
 
-
 ## Особенности и рекомендации {#specifics-and-recommendations}
 
 DDL-запросы с базой данных `Replicated` работают аналогично запросам [ON CLUSTER](../../sql-reference/distributed-ddl.md), но с небольшими отличиями.
@@ -53,8 +48,6 @@ DDL-запросы с базой данных `Replicated` работают ан
 Запросы [`ALTER TABLE FREEZE|ATTACH|FETCH|DROP|DROP DETACHED|DETACH PARTITION|PART`](../../sql-reference/statements/alter/partition.md) разрешены, но не реплицируются. Движок базы данных будет добавлять/получать/удалять раздел/часть только на текущей реплике. Однако, если сама таблица использует реплицируемый движок таблицы, то данные будут реплицированы после использования `ATTACH`.
 
 Если вам необходимо только настроить кластер без поддержки репликации таблиц, воспользуйтесь функцией [Cluster Discovery](../../operations/cluster-discovery.md).
-
-
 
 ## Пример использования {#usage-example}
 
@@ -126,11 +119,10 @@ node4 :) CREATE DATABASE r ENGINE=Replicated('some/path/r','other_shard','r2');
 
 ```sql
 node1 :) SELECT uuid FROM system.databases WHERE database='r';
-node4 :) CREATE DATABASE r UUID '<uuid из предыдущего запроса>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
+node4 :) CREATE DATABASE r UUID '<uuid from previous query>' ENGINE=Replicated('some/path/{uuid}','other_shard','r2');
 ```
 
 Конфигурация кластера будет выглядеть следующим образом:
-
 
 ```text
 ┌─cluster─┬─shard_num─┬─replica_num─┬─host_name─┬─host_address─┬─port─┬─is_local─┐
@@ -153,7 +145,6 @@ node2 :) SELECT materialize(hostName()) AS host, groupArray(n) FROM r.d GROUP BY
 │ node4 │  [0,2,4,6,8]  │
 └───────┴───────────────┘
 ```
-
 
 ## Параметры {#settings}
 

@@ -46,12 +46,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   mkdir cluster_2S_2R
   cd cluster_2S_2R
 
-  # clickhouse-keeperディレクトリを作成
+  # Create clickhouse-keeper directories
   for i in {01..03}; do
     mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
   done
 
-  # clickhouse-serverディレクトリを作成
+  # Create clickhouse-server directories
   for i in {01..04}; do
     mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
   done
@@ -261,11 +261,11 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ```xml
   <logger>
-     <level>debug</level>
-     <log>/var/log/clickhouse-server/clickhouse-server.log</log>
-     <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
-     <size>1000M</size>
-     <count>3</count>
+    <level>debug</level>
+    <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+    <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+    <size>1000M</size>
+    <count>3</count>
   </logger>
   ```
 
@@ -282,11 +282,11 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ```xml
   <remote_servers>
-     <!-- クラスタ名（ドットを含めないこと） -->
+    <!-- cluster name (should not contain dots) -->
     <cluster_2S_2R>
         <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
         <shard>
-            <!-- オプション。レプリカの1つのみにデータを書き込むかどうか。デフォルト: false（全レプリカにデータを書き込む） -->
+            <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
             <internal_replication>true</internal_replication>
             <replica>
                 <host>clickhouse-01</host>
@@ -350,8 +350,8 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ```xml
   <macros>
-     <shard>01</shard>
-     <replica>01</replica>
+    <shard>01</shard>
+    <replica>01</replica>
   </macros>
   ```
 
@@ -438,20 +438,20 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ```bash
   [+] Running 8/8
-   ✔ Network   cluster_2s_2r_default     Created
-   ✔ Container clickhouse-keeper-03      Started
-   ✔ Container clickhouse-keeper-02      Started
-   ✔ Container clickhouse-keeper-01      Started
-   ✔ Container clickhouse-01             Started
-   ✔ Container clickhouse-02             Started
-   ✔ Container clickhouse-04             Started
-   ✔ Container clickhouse-03             Started
+  ✔ Network   cluster_2s_2r_default     Created
+  ✔ Container clickhouse-keeper-03      Started
+  ✔ Container clickhouse-keeper-02      Started
+  ✔ Container clickhouse-keeper-01      Started
+  ✔ Container clickhouse-01             Started
+  ✔ Container clickhouse-02             Started
+  ✔ Container clickhouse-04             Started
+  ✔ Container clickhouse-03             Started
   ```
 
   クラスタが稼働していることを確認するには、いずれかのノードに接続して以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
 
   ```bash
-  # 任意のノードに接続
+  # Connect to any node
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
@@ -473,14 +473,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   FROM system.clusters;
   ```
 
-  ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+    ```response title="Response"
+    ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
   1. │ cluster_2S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
   2. │ cluster_2S_2R │         1 │           2 │ clickhouse-03 │ 9000 │
   3. │ cluster_2S_2R │         2 │           1 │ clickhouse-02 │ 9000 │
   4. │ cluster_2S_2R │         2 │           2 │ clickhouse-04 │ 9000 │
   5. │ default       │         1 │           1 │ localhost     │ 9000 │
-     └───────────────┴───────────┴─────────────┴───────────────┴──────┘
+    └───────────────┴───────────┴─────────────┴───────────────┴──────┘
   ```
 
   以下のクエリを実行して、ClickHouse Keeperクラスタのステータスを確認します：
@@ -491,13 +491,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   WHERE path IN ('/', '/clickhouse')
   ```
 
-  ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
+    ```response title="Response"
+    ┌─name───────┬─value─┬─path────────┐
   1. │ task_queue │       │ /clickhouse │
   2. │ sessions   │       │ /clickhouse │
   3. │ keeper     │       │ /           │
   4. │ clickhouse │       │ /           │
-     └────────────┴───────┴─────────────┘
+    └────────────┴───────┴─────────────┘
   ```
 
   <VerifyKeeperStatus />
@@ -525,12 +525,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────────────┐
+    ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
-     └────────────────────┘
+    └────────────────────┘
   ```
 
   `clickhouse-01` クライアントから、`ON CLUSTER` 句を使用して以下の**分散型** DDL クエリを実行し、`uk` という名前の新しいデータベースを作成します：
@@ -548,14 +548,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌─name───────────────┐
+    ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
   4. │ system             │
   #highlight-next-line
   5. │ uk                 │
-     └────────────────────┘
+    └────────────────────┘
   ```
 
   ## クラスタ上にテーブルを作成する
@@ -619,9 +619,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name────────────────┐
+    ┌─name────────────────┐
   1. │ uk_price_paid_local │
-     └─────────────────────┘
+    └─────────────────────┘
   ```
 
   ## 分散テーブルへのデータ挿入
@@ -641,10 +641,10 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   各ホストの`uk`データベースに、以下のテーブルが表示されるようになります：
 
   ```sql
-  ┌─name──────────────────────┐
+    ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │
-     └───────────────────────────┘
+    └───────────────────────────┘
   ```
 
   データは、以下のクエリを使用して、いずれかのホストクライアントから `uk_price_paid_distributed` テーブルに挿入できます:
@@ -698,13 +698,13 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021万
-     └──────────┘
+    ┌──count()─┐
+  1. │ 30212555 │ -- 30.21 million
+    └──────────┘
 
-     ┌──count()─┐
-  1. │ 15105983 │ -- 1511万
-     └──────────┘
+    ┌──count()─┐
+  1. │ 15105983 │ -- 15.11 million
+    └──────────┘
   ```
 </VerticalStepper>
 

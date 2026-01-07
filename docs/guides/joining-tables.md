@@ -15,8 +15,8 @@ import joins_5 from '@site/static/images/guides/joins-5.png';
 
 ClickHouse has [full `JOIN` support](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1), with a wide selection of join algorithms. To maximize performance, we recommend following the join optimization suggestions listed in this guide.
 
-- For optimal performance, users should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millisecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
-- Currently, ClickHouse does not reorder joins. Always ensure the smallest table is on the right-hand side of the Join. This will be held in memory for most join algorithms and will ensure the lowest memory overhead for the query.
+- For optimal performance, you should aim to reduce the number of `JOIN`s in queries, especially for real-time analytical workloads where millisecond performance is required. Aim for a maximum of 3 to 4 joins in a query. We detail a number of changes to minimize joins in the [data modeling section](/data-modeling/schema-design), including denormalization, dictionaries, and materialized views.
+- As of ClickHouse 24.12, the query planner automatically reorders two-table joins to place the smaller table on the right-hand side for optimal performance. In version 25.9, this was extended to optimize join order across queries joining three or more tables.
 - If your query requires a direct join i.e. a `LEFT ANY JOIN` - as shown below, we recommend using [Dictionaries](/dictionary) where possible.
 
 <Image img={joins_1} size="sm" alt="Left any join"/>
@@ -134,7 +134,7 @@ ClickHouse supports a number of [join algorithms](https://clickhouse.com/blog/cl
 
 <br />
 
-These algorithms dictate the manner in which a join query is planned and executed. By default, ClickHouse uses the direct or the hash join algorithm based on the used join type and strictness and engine of the joined tables. Alternatively, ClickHouse can be configured to adaptively choose and dynamically change the join algorithm to use at runtime, depending on resource availability and usage: When `join_algorithm=auto`, ClickHouse tries the hash join algorithm first, and if that algorithm's memory limit is violated, the algorithm is switched on the fly to partial merge join. You can observe which algorithm was chosen via trace logging. ClickHouse also allows users to specify the desired join algorithm themselves via the `join_algorithm` setting.
+These algorithms dictate the manner in which a join query is planned and executed. By default, ClickHouse uses the direct or the hash join algorithm based on the used join type and strictness and engine of the joined tables. Alternatively, ClickHouse can be configured to adaptively choose and dynamically change the join algorithm to use at runtime, depending on resource availability and usage: When `join_algorithm=auto`, ClickHouse tries the hash join algorithm first, and if that algorithm's memory limit is violated, the algorithm is switched on the fly to partial merge join. You can observe which algorithm was chosen via trace logging. ClickHouse also allows you to specify the desired join algorithm themselves via the `join_algorithm` setting.
 
 The supported `JOIN` types for each join algorithm are shown below and should be considered prior to optimization:
 

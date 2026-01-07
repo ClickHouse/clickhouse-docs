@@ -23,24 +23,17 @@ import looker_studio_enable_mysql from '@site/static/images/integrations/data-vi
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
 # Looker Studio {#looker-studio}
 
 <PartnerBadge/>
 
 Looker Studio 可以通过 MySQL 接口，使用 Google 官方提供的 MySQL 数据源连接到 ClickHouse。
 
-
-
 ## ClickHouse Cloud 配置 {#clickhouse-cloud-setup}
 <MySQLCloudSetup />
 
-
-
 ## 本地部署 ClickHouse 服务器的设置 {#on-premise-clickhouse-server-setup}
 <MySQLOnPremiseSetup />
-
-
 
 ## 将 Looker Studio 连接到 ClickHouse {#connecting-looker-studio-to-clickhouse}
 
@@ -76,8 +69,6 @@ Looker Studio 可以通过 MySQL 接口，使用 Google 官方提供的 MySQL �
 <br/>
 
 现在，你可以开始探索数据或创建新的报表了！
-
-
 
 ## 在 ClickHouse Cloud 中使用 Looker Studio {#using-looker-studio-with-clickhouse-cloud}
 

@@ -4,9 +4,9 @@ title: 'Начало работы с ClickStack'
 sidebar_label: 'Начало работы'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
-description: 'Начало работы с ClickStack — стек наблюдаемости ClickHouse'
+description: 'Начало работы с ClickStack — ClickHouse Observability Stack'
 doc_type: 'guide'
-keywords: ['ClickStack', 'начало работы', 'развертывание в Docker', 'HyperDX UI', 'ClickHouse Cloud', 'локальное развертывание']
+keywords: ['ClickStack', 'начало работы', 'развертывание в Docker', 'интерфейс HyperDX', 'ClickHouse Cloud', 'локальное развертывание']
 ---
 
 import Image from '@theme/IdealImage';
@@ -23,18 +23,18 @@ import delete_connection from '@site/static/images/use-cases/observability/delet
 import created_sources from '@site/static/images/use-cases/observability/created_sources.png';
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 
-Благодаря готовым Docker-образам начать работу с **ClickStack** очень просто. Эти образы собраны на основе официального Debian-пакета ClickHouse и доступны в нескольких вариантах для разных сценариев использования.
+Начать работу с **ClickStack** несложно — доступны готовые Docker-образы. Эти образы основаны на официальном Debian-пакете ClickHouse и поставляются в нескольких вариантах для разных сценариев использования.
 
 
 ## Локальное развертывание {#local-deployment}
 
-Самый простой вариант — **единый образ** (single-image distribution), который включает все основные компоненты стека, упакованные вместе:
+Самый простой вариант — **единый образ**, который включает все основные компоненты стека в одном пакете:
 
 - **HyperDX UI**
-- **OTel collector**
+- **OpenTelemetry (OTel) collector**
 - **ClickHouse**
 
-Этот образ «все-в-одном» позволяет запустить полный стек одной командой, что делает его удобным для тестирования, экспериментов или быстрых локальных развертываний.
+Этот образ «всё в одном» позволяет запустить полный стек одной командой, что делает его удобным для тестирования, экспериментов или быстрого локального развертывания.
 
 <VerticalStepper headerLevel="h3">
 
@@ -43,16 +43,20 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 Следующая команда запустит OTel collector (на портах 4317 и 4318) и HyperDX UI (на порту 8080).
 
 ```shell
-docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-:::note Сохранение данных и настроек
-Чтобы сохранять данные и настройки между перезапусками контейнера, вы можете изменить приведённую выше команду Docker, чтобы примонтировать пути `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. 
+:::note Обновление имени образа
+Образы ClickStack теперь публикуются как `clickhouse/clickstack-*` (ранее `docker.hyperdx.io/hyperdx/*`).
+:::
+
+:::tip Сохранение данных и настроек
+Чтобы сохранять данные и настройки между перезапусками контейнера, вы можете изменить приведённую выше команду Docker, чтобы примонтировать каталоги `/data/db`, `/var/lib/clickhouse` и `/var/log/clickhouse-server`. 
 
 Например:
 
 ```shell
-# измените команду, чтобы примонтировать пути {#modify-command-to-mount-paths}
+# измените команду, чтобы примонтировать пути
 docker run \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -60,61 +64,61 @@ docker run \
   -v "$(pwd)/.volumes/db:/data/db" \
   -v "$(pwd)/.volumes/ch_data:/var/lib/clickhouse" \
   -v "$(pwd)/.volumes/ch_logs:/var/log/clickhouse-server" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+  clickhouse/clickstack-all-in-one:latest
 ```
 :::
 
-### Перейдите в HyperDX UI {#navigate-to-hyperdx-ui}
+### Откройте HyperDX UI {#navigate-to-hyperdx-ui}
 
-Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы получить доступ к HyperDX UI.
+Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть HyperDX UI.
 
-Создайте пользователя, указав имя пользователя и пароль, удовлетворяющий требованиям к сложности. 
+Создайте пользователя, указав имя пользователя и пароль, удовлетворяющие требованиям к сложности. 
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-HyperDX автоматически подключится к локальному кластеру и создаст источники данных для логов, трассировок, метрик и сеансов, что позволит вам сразу начать изучать продукт.
+HyperDX автоматически подключится к локальному кластеру и создаст источники данных для логов, трейсов, метрик и сессий — это позволит вам сразу начать работать с продуктом.
 
 ### Изучите продукт {#explore-the-product}
 
-После развертывания стека попробуйте один из наших примерных наборов данных.
+После развертывания стека попробуйте один из наших примерных датасетов.
 
 Чтобы продолжить работу с локальным кластером:
 
-- [Пример набора данных](/use-cases/observability/clickstack/getting-started/sample-data) — загрузите пример набора данных из нашего публичного демо и продиагностируйте простую проблему.
-- [Локальные файлы и метрики](/use-cases/observability/clickstack/getting-started/local-data) — загрузите локальные файлы и настройте мониторинг системы на OSX или Linux с использованием локального OTel collector.
+- [Примерный датасет](/use-cases/observability/clickstack/getting-started/sample-data) — Загрузите примерный датасет из нашего публичного демо и продиагностируйте простую проблему.
+- [Локальные файлы и метрики](/use-cases/observability/clickstack/getting-started/local-data) — Загрузите локальные файлы и отслеживайте состояние системы на OSX или Linux, используя локальный OTel collector.
 
 <br/>
-Либо вы можете подключиться к демо-кластеру, где доступен более крупный набор данных: 
+Либо вы можете подключиться к демо-кластеру, где доступен более крупный датасет: 
 
-- [Удалённый демонстрационный набор данных](/use-cases/observability/clickstack/getting-started/remote-demo-data) — изучите демо-набор данных в нашем демо-сервисе ClickHouse.
+- [Удалённый демо-датасет](/use-cases/observability/clickstack/getting-started/remote-demo-data) — Изучите демо-датасет в нашем демо-сервисе ClickHouse.
 
 </VerticalStepper>
 
-## Развертывание с ClickHouse Cloud {#deploy-with-clickhouse-cloud}
+## Развёртывание с использованием ClickHouse Cloud {#deploy-with-clickhouse-cloud}
 
-Пользователи могут развернуть ClickStack с использованием ClickHouse Cloud, получая полностью управляемый и защищённый бэкенд при сохранении полного контроля над ингестией, схемой и процессами наблюдаемости.
+Вы можете развернуть ClickStack, используя ClickHouse Cloud, получив преимущества полностью управляемого, безопасного бэкенда при сохранении полного контроля над приёмом данных, схемой и процессами обсервабилити.
 
 <VerticalStepper headerLevel="h3">
 
-### Создание сервиса ClickHouse Cloud {#create-a-service}
+### Создайте сервис ClickHouse Cloud {#create-a-service}
 
 Следуйте [руководству по началу работы с ClickHouse Cloud](/getting-started/quick-start/cloud#1-create-a-clickhouse-service), чтобы создать сервис.
 
-### Копирование параметров подключения {#copy-cloud-connection-details}
+### Скопируйте параметры подключения {#copy-cloud-connection-details}
 
 Чтобы найти параметры подключения для HyperDX, перейдите в консоль ClickHouse Cloud и нажмите кнопку <b>Connect</b> на боковой панели. 
 
-Скопируйте параметры HTTP-подключения, в частности HTTPS-эндпойнт (`endpoint`) и пароль.
+Скопируйте параметры HTTP-подключения, в частности HTTPS-эндпоинт (`endpoint`) и пароль.
 
-<Image img={connect_cloud} alt="Connect Cloud" size="md"/>
+<Image img={connect_cloud} alt="Подключение ClickHouse Cloud" size="md"/>
 
-:::note Развертывание в продакшене
-Хотя для подключения HyperDX мы будем использовать пользователя `default`, мы рекомендуем создать выделенного пользователя при [переходе в продакшн](/use-cases/observability/clickstack/production#create-a-user).
+:::note Развёртывание в продакшн
+Хотя для подключения HyperDX мы будем использовать пользователя `default`, мы рекомендуем создать отдельного пользователя при [выходе в продакшн](/use-cases/observability/clickstack/production#create-a-user).
 :::
 
-### Развертывание с помощью Docker {#deploy-with-docker}
+### Развёртывание с помощью Docker {#deploy-with-docker}
 
-Откройте терминал и экспортируйте скопированные выше учётные данные:
+Откройте терминал и экспортируйте учётные данные, скопированные выше:
 
 ```shell
 export CLICKHOUSE_USER=default
@@ -125,34 +129,34 @@ export CLICKHOUSE_PASSWORD=<YOUR_PASSWORD>
 Выполните следующую команду docker:
 
 ```shell
-docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
-Будет запущен OTel collector (на портах 4317 и 4318), а также интерфейс HyperDX (на порту 8080).
+После этого будут доступны OTel collector (на портах 4317 и 4318) и интерфейс HyperDX (на порту 8080).
 
-### Переход в интерфейс HyperDX {#navigate-to-hyperdx-ui-cloud}
+### Перейдите в интерфейс HyperDX {#navigate-to-hyperdx-ui-cloud}
 
 Перейдите по адресу [http://localhost:8080](http://localhost:8080), чтобы открыть интерфейс HyperDX.
 
-Создайте пользователя, указав имя пользователя и пароль, соответствующий требованиям к сложности. 
+Создайте пользователя, указав имя пользователя и пароль, удовлетворяющий требованиям к сложности. 
 
-<Image img={hyperdx_login} alt="HyperDX Login" size="lg"/>
+<Image img={hyperdx_login} alt="Вход в HyperDX" size="lg"/>
 
-### Создание подключения к ClickHouse Cloud {#create-a-cloud-connection}
+### Создайте подключение к ClickHouse Cloud {#create-a-cloud-connection}
 
 Перейдите в `Team Settings` и нажмите `Edit` для `Local Connection`:
 
-<Image img={edit_connection} alt="Edit Connection" size="lg"/>
+<Image img={edit_connection} alt="Редактирование подключения" size="lg"/>
 
 Переименуйте подключение в `Cloud` и заполните форму учётными данными вашего сервиса ClickHouse Cloud, затем нажмите `Save`:
 
-<Image img={edit_cloud_connection} alt="Create Cloud connection" size="lg"/>
+<Image img={edit_cloud_connection} alt="Создание подключения к Cloud" size="lg"/>
 
-### Изучение продукта {#explore-the-product-cloud}
+### Изучите продукт {#explore-the-product-cloud}
 
 После развертывания стека попробуйте один из наших примерных наборов данных.
 
-- [Пример набора данных](/use-cases/observability/clickstack/getting-started/sample-data) — загрузите пример набора данных из нашего публичного демо и продиагностируйте простую проблему.
+- [Пример набора данных](/use-cases/observability/clickstack/getting-started/sample-data) — загрузите пример набора данных из нашего публичного демо. Разберите простую проблему.
 - [Локальные файлы и метрики](/use-cases/observability/clickstack/getting-started/local-data) — загрузите локальные файлы и отслеживайте состояние системы на OSX или Linux, используя локальный OTel collector.
 
 </VerticalStepper>
@@ -161,9 +165,9 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 Локальный режим — это способ развернуть HyperDX без необходимости проходить аутентификацию. 
 
-Аутентификация в этом режиме не поддерживается. 
+Аутентификация не поддерживается. 
 
-Этот режим предназначен для быстрого тестирования, разработки, демонстраций и отладки, когда аутентификация и сохранение настроек не требуются.
+Этот режим предназначен для быстрого тестирования, разработки, демонстраций и отладки в сценариях, когда аутентификация и сохранение настроек не требуются.
 
 ### Облачная версия {#hosted-version}
 
@@ -175,22 +179,22 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 ### Запуск с помощью Docker {#run-local-with-docker}
 
-Локальный образ в режиме самостоятельного размещения также поставляется с преднастроенными коллектором OpenTelemetry и сервером ClickHouse. Это упрощает приём телеметрических данных из ваших приложений и их визуализацию в HyperDX при минимальных внешних настройках. Чтобы начать работу с этой версией, просто запустите контейнер Docker с пробросом необходимых портов:
+Локальный режим в самостоятельно размещаемой версии включает предварительно настроенные OpenTelemetry collector и ClickHouse server. Это упрощает прием телеметрических данных из ваших приложений и их визуализацию в HyperDX при минимальной внешней настройке. Чтобы начать работу с самостоятельно размещаемой версией, просто запустите контейнер Docker с пробросом необходимых портов:
 
 ```shell
-docker run -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx-local
+docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-Вам не будет предложено создать пользователя, так как локальный режим не включает аутентификацию.
+Вам не будет предложено создать пользователя, так как локальный режим не предусматривает аутентификации.
 
-### Полные реквизиты подключения {#complete-connection-credentials}
+### Полные учетные данные для подключения {#complete-connection-credentials}
 
-Чтобы подключиться к своему **внешнему кластеру ClickHouse**, вы можете вручную ввести реквизиты подключения.
+Чтобы подключиться к вашему собственному **внешнему кластеру ClickHouse**, вы можете вручную указать учетные данные подключения.
 
-Либо, для быстрой оценки продукта, вы можете нажать **Connect to Demo Server**, чтобы получить доступ к предзагруженным наборам данных и опробовать ClickStack без какой-либо настройки.
+Также, для быстрого ознакомления с продуктом, вы можете нажать **Connect to Demo Server**, чтобы получить доступ к предзагруженным датасетам и опробовать ClickStack без какой-либо предварительной настройки.
 
-<Image img={hyperdx_2} alt="Реквизиты подключения" size="md"/>
+<Image img={hyperdx_2} alt="Учетные данные" size="md"/>
 
-При подключении к демо-серверу пользователи могут изучать набор данных, следуя [инструкциям по демонстрационному набору данных](/use-cases/observability/clickstack/getting-started/remote-demo-data).
+При подключении к демо-серверу вы можете исследовать датасет, следуя [инструкциям по демо-датасету](/use-cases/observability/clickstack/getting-started/remote-demo-data).
 
 </VerticalStepper>

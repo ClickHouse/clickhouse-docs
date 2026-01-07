@@ -7,8 +7,6 @@ doc_type: '指南'
 keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托管']
 ---
 
-
-
 # 通用 MariaDB 源设置指南 {#generic-mariadb-source-setup-guide}
 
 :::info
@@ -17,8 +15,6 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 
 :::
 
-
-
 ## 启用二进制日志保留 {#enable-binlog-retention}
 
 二进制日志包含对 MariaDB 服务器实例所做的数据修改的信息，是实现复制所必需的。
@@ -26,12 +22,12 @@ keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托
 要在 MariaDB 实例上启用二进制日志，请确保配置了以下设置：
 
 ```sql
-server_id = 1               -- 大于等于 1;任何非 0 的值
+server_id = 1               -- or greater; anything but 0
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  -- 10.5.0 版本引入
-expire_logs_days = 1        -- 大于等于 1;设为 0 表示日志永久保留
+binlog_row_metadata = FULL  -- introduced in 10.5.0
+expire_logs_days = 1        -- or higher; 0 would mean logs are preserved forever
 ```
 
 要验证这些配置，请运行以下 SQL 命令：
@@ -53,7 +49,7 @@ server_id = 1
 log_bin = ON
 binlog_format = ROW
 binlog_row_image = FULL
-binlog_row_metadata = FULL  ; 仅在 10.5.0 及更新版本中可用
+binlog_row_metadata = FULL  ; only in 10.5.0 and newer
 expire_logs_days = 1
 ```
 
@@ -66,7 +62,6 @@ expire_logs_days = 1
 对于 MariaDB &lt;= 10.4，不支持列排除功能，因为这些版本尚未引入 `binlog_row_metadata` 设置。
 
 :::
-
 
 ## 配置数据库用户 {#configure-database-user}
 
@@ -97,8 +92,6 @@ expire_logs_days = 1
 
 :::
 
-
-
 ## SSL/TLS 配置（推荐） {#ssl-tls-configuration}
 
 SSL 证书可确保与 MariaDB 数据库之间的连接安全。具体配置取决于您的证书类型：
@@ -112,8 +105,6 @@ SSL 证书可确保与 MariaDB 数据库之间的连接安全。具体配置取�
 **自托管 MariaDB（从 11.4 开始）** - 如果您的服务器已配置 `ssl_ca`，请按上述选项操作。否则，请咨询您的 IT 团队以签发合适的证书。作为最后的手段，您可以在 ClickPipes UI 中启用“Skip Certificate Verification”开关（出于安全原因不推荐）。
 
 有关 SSL/TLS 选项的更多信息，请参阅我们的[常见问题](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error)。
-
-
 
 ## 接下来 {#whats-next}
 

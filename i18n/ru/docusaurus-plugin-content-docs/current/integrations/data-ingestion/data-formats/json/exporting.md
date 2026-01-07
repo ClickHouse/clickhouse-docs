@@ -162,7 +162,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow
 ```
 
 ```response
-Получено 36838935 строк. Время выполнения: 2.220 сек. Обработано 36.84 млн строк, 1.27 ГБ (16.60 млн строк/сек., 572.47 МБ/сек.)
+36838935 rows in set. Elapsed: 2.220 sec. Processed 36.84 million rows, 1.27 GB (16.60 million rows/s., 572.47 MB/s.)
 ```
 
 ClickHouse потребовалось всего 2 секунды, чтобы экспортировать почти 37 миллионов записей в JSON-файл. Мы также можем выполнить экспорт, используя оператор `COMPRESSION`, чтобы включить сжатие на лету:
@@ -172,7 +172,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 ```
 
 ```response
-Выбрано 36838935 строк. Время выполнения: 22.680 сек. Обработано 36.84 млн строк, 1.27 ГБ (1.62 млн строк/с., 56.02 МБ/с.)
+36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
 Требует больше времени на выполнение, но создаёт значительно меньший сжатый файл:

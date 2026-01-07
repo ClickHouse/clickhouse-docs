@@ -7,8 +7,6 @@ title: 'Табличный движок RabbitMQ'
 doc_type: 'guide'
 ---
 
-
-
 # Табличный движок RabbitMQ {#rabbitmq-table-engine}
 
 Этот движок позволяет интегрировать ClickHouse с [RabbitMQ](https://www.rabbitmq.com).
@@ -17,8 +15,6 @@ doc_type: 'guide'
 
 - Публиковать или подписываться на потоки данных.
 - Обрабатывать потоки по мере их поступления.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -29,7 +25,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     name2 [type2],
     ...
 ) ENGINE = RabbitMQ SETTINGS
-    rabbitmq_host_port = 'host:port' [или rabbitmq_address = 'amqp(s)://guest:guest@localhost/vhost'],
+    rabbitmq_host_port = 'host:port' [or rabbitmq_address = 'amqp(s)://guest:guest@localhost/vhost'],
     rabbitmq_exchange_name = 'exchange_name',
     rabbitmq_format = 'data_format'[,]
     [rabbitmq_exchange_type = 'exchange_type',]
@@ -70,7 +66,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `rabbitmq_num_consumers` – Количество consumers на таблицу. Укажите большее число consumers, если пропускной способности одного недостаточно. По умолчанию: `1`.
 - `rabbitmq_num_queues` – Общее количество очередей. Увеличение этого числа может значительно повысить производительность. По умолчанию: `1`.
 - `rabbitmq_queue_base` - Укажите префикс для имён очередей. Сценарии использования этого параметра описаны ниже.
-- `rabbitmq_deadletter_exchange` - Укажите имя для [dead letter exchange](https://www.rabbitmq.com/dlx.html). Вы можете создать другую таблицу с этим именем exchange и собирать сообщения в случаях, когда они повторно публикуются в dead letter exchange. По умолчанию dead letter exchange не задан.
 - `rabbitmq_persistent` - Если установлено в 1 (true), в запросе INSERT режим доставки будет установлен в 2 (помечает сообщения как `persistent`). По умолчанию: `0`.
 - `rabbitmq_skip_broken_messages` – Допустимое количество сообщений RabbitMQ, несовместимых со схемой, в одном блоке при разборе. Если `rabbitmq_skip_broken_messages = N`, то движок пропускает *N* сообщений RabbitMQ, которые не удаётся разобрать (одно сообщение соответствует одной строке данных). По умолчанию: `0`.
 - `rabbitmq_max_block_size` - Количество строк, собираемых перед сбросом данных из RabbitMQ. По умолчанию: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size).
@@ -84,20 +79,19 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 - `reject_unhandled_messages` - Отклонять сообщения (отправлять в RabbitMQ отрицательное подтверждение) в случае ошибок. Этот параметр автоматически включается, если задан `x-dead-letter-exchange` в `rabbitmq_queue_settings_list`.
 - `rabbitmq_commit_on_select` - Фиксировать сообщения при выполнении запроса SELECT. По умолчанию: `false`.
 - `rabbitmq_max_rows_per_message` — Максимальное количество строк, записываемых в одно сообщение RabbitMQ для построчных форматов. По умолчанию: `1`.
-- `rabbitmq_empty_queue_backoff_start` — Начальная точка backoff для переназначения чтения, если очередь RabbitMQ пуста.
-- `rabbitmq_empty_queue_backoff_end` — Конечная точка backoff для переназначения чтения, если очередь RabbitMQ пуста.
+- `rabbitmq_empty_queue_backoff_start_ms` — Начальная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
+- `rabbitmq_empty_queue_backoff_end_ms` — Конечная точка backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
+- `rabbitmq_empty_queue_backoff_step_ms` — Шаг backoff (в миллисекундах) для переназначения чтения, если очередь RabbitMQ пуста.
 - `rabbitmq_handle_error_mode` — Способ обработки ошибок для движка RabbitMQ. Возможные значения: default (будет выброшено исключение, если не удаётся разобрать сообщение), stream (текст исключения и исходное сообщение будут сохранены во виртуальных столбцах `_error` и `_raw_message`), dead_letter_queue (данные, связанные с ошибкой, будут сохранены в system.dead_letter_queue).
 
-  * [ ] SSL connection:
+### SSL-соединение {#ssl-connection}
 
 Используйте либо `rabbitmq_secure = 1`, либо `amqps` в адресе подключения: `rabbitmq_address = 'amqps://guest:guest@localhost/vhost'`.
-Поведение используемой библиотеки по умолчанию — не проверять, является ли созданное TLS‑подключение достаточно безопасным. Независимо от того, истёк ли срок действия сертификата, он самоподписанный, отсутствует или недействителен, соединение просто разрешается. Более строгая проверка сертификатов может быть реализована в будущем.
+Используемая библиотека по умолчанию не проверяет, достаточно ли безопасно установленное TLS-соединение. Независимо от того, истёк ли срок действия сертификата, является ли он самоподписанным, отсутствующим или недействительным, соединение просто разрешается. В будущем может быть реализована более строгая проверка сертификатов.
 
-Также к настройкам, связанным с RabbitMQ, могут быть добавлены параметры формата.
+Также вместе с настройками RabbitMQ могут быть добавлены настройки формата.
 
 Пример:
-
-
 
 ```sql
   CREATE TABLE queue (
@@ -122,7 +116,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
  </rabbitmq>
 ```
 
-Дополнительная настройка:
+Дополнительная конфигурация:
 
 ```xml
  <rabbitmq>
@@ -209,13 +203,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Примечание: виртуальные столбцы `_raw_message` и `_error` заполняются только в случае возникновения исключения во время разбора; при успешном разборе сообщения они всегда равны `NULL`.
 
-
-
 ## Ограничения {#caveats}
 
-Даже если вы укажете [выражения значений по умолчанию для столбцов](/sql-reference/statements/create/table.md/#default_values) (такие как `DEFAULT`, `MATERIALIZED`, `ALIAS`) в определении таблицы, они будут игнорироваться. Вместо этого столбцы будут заполняться значениями по умолчанию для соответствующих типов.
-
-
+Даже если вы укажете [выражения значений по умолчанию для столбцов](/sql-reference/statements/create/table.md/#default_values) (например, `DEFAULT`, `MATERIALIZED`, `ALIAS`) в определении таблицы, они будут игнорироваться. Вместо этого столбцы будут заполняться значениями по умолчанию своих типов.
 
 ## Поддержка форматов данных {#data-formats-support}
 

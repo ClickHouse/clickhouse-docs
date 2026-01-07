@@ -38,7 +38,7 @@ import Image from '@theme/IdealImage';
 
 ### 缺点 {#cons}
 
-* 用户需要搭建并维护 ETL/ELT 基础设施。
+* 你需要搭建并维护 ETL/ELT 基础设施。
 * 在架构中引入第三方组件，可能成为系统扩展性的潜在瓶颈。
 
 ## 从 Redshift 拉取数据到 ClickHouse {#pull-data-from-redshift-to-clickhouse}

@@ -24,10 +24,8 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 <ScalePlanFeatureBadge feature="Automatic vertical scaling"/>
 
 :::note
-Scale および Enterprise ティアは単一レプリカとマルチレプリカの両方のサービスをサポートしますが、Basic ティアは単一レプリカのサービスのみをサポートします。単一レプリカのサービスはサイズが固定されており、垂直・水平どちらのスケーリングもできません。ユーザーは、サービスをスケーリングするために Scale または Enterprise ティアへアップグレードできます。
+Scale および Enterprise ティアは単一レプリカとマルチレプリカの両方のサービスをサポートしますが、Basic ティアは単一レプリカのサービスのみをサポートします。単一レプリカのサービスはサイズが固定されており、垂直・水平どちらのスケーリングもできません。サービスをスケーリングするには、Scale または Enterprise ティアにアップグレードできます。
 :::
-
-
 
 ## ClickHouse Cloud におけるスケーリングの仕組み {#how-scaling-works-in-clickhouse-cloud}
 
@@ -89,8 +87,6 @@ Enterprise ティアのサービスでは、標準の 1:4 プロファイルが�
 ただし、サポートに連絡することで、これらのサービスも垂直方向にスケーリングできます。
 :::
 
-
-
 ## 手動による水平スケーリング {#manual-horizontal-scaling}
 
 <ScalePlanFeatureBadge feature="Manual horizontal scaling"/>
@@ -129,8 +125,6 @@ UI からサービスを水平スケーリングするには、**Settings** ペ�
 
 <Image img={scaling_memory_allocation} size="md" alt="スケーリング後のメモリ割り当て" border />
 
-
-
 ## 自動アイドル化 {#automatic-idling}
 **Settings** ページでは、上の画像に示されているように、サービスが非アクティブなとき（つまり、サービスがユーザーが送信したクエリを一切実行していないとき）に自動的にアイドル状態にするかどうかも選択できます。自動アイドル化を有効にすると、サービスが一時停止している間はコンピュートリソースに対して課金されないため、コストを削減できます。
 
@@ -143,8 +137,6 @@ UI からサービスを水平スケーリングするには、**Settings** ペ�
 :::danger 自動アイドル化を使用すべきでない場合
 クエリに応答するまでの遅延を許容できるユースケースにのみ自動アイドル化を使用してください。サービスが一時停止している間は、そのサービスへの接続はタイムアウトするためです。自動アイドル化は、利用頻度が低く、ある程度の遅延を許容できるサービスに最適です。頻繁に利用される顧客向け機能を支えるサービスには推奨されません。
 :::
-
-
 
 ## ワークロードのスパイクへの対応 {#handling-bursty-workloads}
 

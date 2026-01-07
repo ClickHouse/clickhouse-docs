@@ -36,6 +36,6 @@ SELECT * FROM numbers(0, 20, 2);
 例：
 
 ```sql
--- 2010-01-01から2010-12-31までの日付シーケンスを生成する
+-- Generate a sequence of dates from 2010-01-01 to 2010-12-31
 SELECT toDate('2010-01-01') + number AS d FROM numbers(365);
 ```

@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 [`TabSeparated`](./TabSeparated.md) フォーマットと似ていますが、値を `name=value` 形式で出力します。
@@ -22,15 +20,15 @@ doc_type: 'reference'
 
 ```text
 SearchPhrase=   count()=8267016
-SearchPhrase=バスルームインテリアデザイン    count()=2166
+SearchPhrase=bathroom interior design    count()=2166
 SearchPhrase=clickhouse     count()=1655
-SearchPhrase=2014年春ファッション    count()=1549
-SearchPhrase=フリーフォーム写真       count()=1480
-SearchPhrase=アンジェリーナ・ジョリー    count()=1245
-SearchPhrase=オムスク       count()=1112
-SearchPhrase=犬種の写真    count()=1091
-SearchPhrase=カーテンデザイン        count()=1064
-SearchPhrase=バクー       count()=1000
+SearchPhrase=2014 spring fashion    count()=1549
+SearchPhrase=freeform photos       count()=1480
+SearchPhrase=angelina jolie    count()=1245
+SearchPhrase=omsk       count()=1112
+SearchPhrase=photos of dog breeds    count()=1091
+SearchPhrase=curtain designs        count()=1064
+SearchPhrase=baku       count()=1000
 ```
 
 ```sql title="Query"
@@ -56,7 +54,6 @@ x=1    y=\N
 インポート時、[`input_format_skip_unknown_fields`](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 設定が `1` に設定されている場合、名前が不明なカラムはスキップされます。
 
 [NULL](/sql-reference/syntax.md) は `\N` としてフォーマットされます。
-
 
 ## 利用例 {#example-usage}
 
@@ -102,7 +99,6 @@ FORMAT TSKV
 
 出力は、列名と型を示す 2 行のヘッダー付きのタブ区切り形式になります。
 
-
 ```tsv
 date=2022-04-30 season=2021     home_team=Sutton United away_team=Bradford City home_team_goals=1       away_team_goals=4
 date=2022-04-30 season=2021     home_team=Swindon Town  away_team=Barrow        home_team_goals=2       away_team_goals=1
@@ -122,6 +118,5 @@ date=2022-05-07 season=2021     home_team=Oldham Athletic       away_team=Crawle
 date=2022-05-07 season=2021     home_team=Stevenage Borough     away_team=Salford City  home_team_goals=4       away_team_goals=2
 date=2022-05-07 season=2021     home_team=Walsall       away_team=Swindon Town  home_team_goals=0       away_team_goals=3
 ```
-
 
 ## フォーマットの設定 {#format-settings}

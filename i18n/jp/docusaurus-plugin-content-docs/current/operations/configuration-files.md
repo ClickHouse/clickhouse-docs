@@ -27,8 +27,6 @@ XML と YAML の設定ファイルを混在させることができ、例えば�
 XML 設定ファイルでは、トップレベルのタグとして `<clickhouse>...</clickhouse>` を使用する必要があります。
 YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略された場合はパーサーが自動的に挿入します。
 
-
-
 ## 設定のマージ {#merging}
 
 2 つの設定ファイル（通常はメインの設定ファイルと `config.d/` 内の別の設定ファイル）は、次のようにマージされます。
@@ -119,9 +117,8 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 </clickhouse>
 ```
 
-
 ```shell
-# clickhouse-keeper-client {#clickhouse-keeper-client}
+# clickhouse-keeper-client
 / :) touch /zk_configs
 / :) create /zk_configs/postgresql_port "9005"
 / :) get /zk_configs/postgresql_port
@@ -166,7 +163,6 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 </clickhouse>
 ```
 
-
 ## ファイル内容による置換 {#substitution-with-file-content}
 
 設定の一部をファイルの内容で置き換えることも可能です。これは次の 2 つの方法で行えます。
@@ -178,11 +174,11 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 
 ```xml
 <clickhouse>
-    <!-- `/profiles-in-zookeeper` ZKパスにあるXMLサブツリーを `<profiles>` 要素に追加します。 -->
+    <!-- Appends XML subtree found at `/profiles-in-zookeeper` ZK path to `<profiles>` element. -->
     <profiles from_zk="/profiles-in-zookeeper" />
 
     <users>
-        <!-- `/users-in-zookeeper` ZKパスにあるサブツリーで `include` 要素を置き換えます。 -->
+        <!-- Replaces `include` element with the subtree found at `/users-in-zookeeper` ZK path. -->
         <include from_zk="/users-in-zookeeper" />
         <include from_zk="/other-users-in-zookeeper" />
     </users>
@@ -190,7 +186,6 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 ```
 
 既存の設定に追記するのではなく、include で差し込む内容を既存の設定とマージしたい場合は、属性 `merge="true"` を使用できます。たとえば、`<include from_zk="/some_path" merge="true">` のように指定します。この場合、既存の設定は include で読み込まれる内容とマージされ、既存の設定値は読み込まれた側の値で置き換えられます。
-
 
 ## 設定の暗号化と秘匿 {#encryption}
 
@@ -312,7 +307,6 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 </clickhouse>
 ```
 
-
 ## ユーザー設定 {#user-settings}
 
 `config.xml` ファイルでは、ユーザー設定、プロファイル、およびクォータを含む別の設定ファイルを指定できます。この設定ファイルへの相対パスは `users_config` 要素で設定します。デフォルトでは `users.xml` が使用されます。`users_config` が省略された場合、ユーザー設定、プロファイル、およびクォータは `config.xml` 内で直接指定されます。
@@ -322,8 +316,6 @@ YAML 設定ファイルでは、`clickhouse:` は省略可能であり、省略�
 `users_config` のデフォルトが `users.xml` であるため、デフォルトでは `users.d` ディレクトリが使用されます。
 
 設定ファイルは、まず設定値を考慮して[マージ](#merging)され、その後に include が処理される点に注意してください。
-
-
 
 ## XML の例 {#example}
 
@@ -348,7 +340,6 @@ $ cat /etc/clickhouse-server/users.d/alice.xml
 </clickhouse>
 ```
 
-
 ## YAML の例 {#example-1}
 
 ここでは、YAML で記述されたデフォルト設定を確認できます: [`config.yaml.example`](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.yaml.example)。
@@ -365,7 +356,7 @@ key: value
 対応する XML:
 
 ```xml
-<key>値</key>
+<key>value</key>
 ```
 
 ネストされた XML ノードは YAML マップとして表現されます。
@@ -463,7 +454,6 @@ map_key:
 ```xml
 <map_key attr1="value1">value2</map>
 ```
-
 
 ## 実装の詳細 {#implementation-details}
 

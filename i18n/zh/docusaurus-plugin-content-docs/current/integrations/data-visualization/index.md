@@ -8,8 +8,6 @@ description: '了解如何在 ClickHouse 中可视化数据'
 doc_type: 'guide'
 ---
 
-
-
 # 在 ClickHouse 中可视化数据 {#visualizing-data-in-clickhouse}
 
 <div class='vimeo-container'>
@@ -48,8 +46,7 @@ doc_type: 'guide'
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
-
-
+- [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## ClickHouse Cloud 与数据可视化工具的兼容性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
@@ -66,13 +63,14 @@ doc_type: 'guide'
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
+| [Holistics](./community_integrations/holistics-and-clickhouse.md)           | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Lightdash](./lightdash-and-clickhouse.md)      | 原生连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Looker](./looker-and-clickhouse.md)                 | 原生连接器              | ✅      | ✅      | 存在一些限制，更多详情请参见[文档](./looker-and-clickhouse.md)。                    |
 | Looker                                                                  | MySQL 接口               | 🚧     | ❌      |                                                                                                                                         |
 | [Luzmo](./community_integrations/luzmo-and-clickhouse.md)                   | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Looker Studio](./looker-studio-and-clickhouse.md)   | MySQL 接口               | ✅      | ✅      |                                                                                                                                         |
 | [Metabase](./metabase-and-clickhouse.md)             | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                                                         |
-| [Metabase (MySQL 接口)](./metabase-and-clickhouse.md) | MySQL 接口 | ✅ | ✅ | 有时可通过 MySQL 接口连接（取决于配置）。 |
+| [Metabase (MySQL 接口)](./metabase-and-clickhouse.md)             | MySQL 接口 | ✅      | ✅      | 有些部署或版本可能通过 MySQL 接口访问（取决于配置）。                                                                 |
 | [Mitzu](./community_integrations/mitzu-and-clickhouse.md)                   |  原生连接器 | ✅      | ✅      |                                                                                                                                         |
 | [Omni](./omni-and-clickhouse.md)                     | 原生连接器              | ✅      | ✅      |                                                                                                                                         |
 | [Power BI Desktop](./powerbi-and-clickhouse.md)      | ClickHouse 官方连接器 | ✅      | ✅      | 通过 ODBC，支持直接查询模式。                                                                                                    |

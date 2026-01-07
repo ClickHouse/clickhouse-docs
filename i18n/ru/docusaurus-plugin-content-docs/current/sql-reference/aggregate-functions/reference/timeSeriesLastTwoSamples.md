@@ -1,6 +1,5 @@
 ---
 description: 'Агрегатная функция для ресемплинга временных рядов для вычислений irate и idelta в стиле PromQL'
-sidebar_position: 224
 slug: /sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples
 title: 'timeSeriesLastTwoSamples'
 doc_type: 'reference'
@@ -11,17 +10,17 @@ doc_type: 'reference'
 Аргументы:
 
 * `timestamp` — метка времени измерения
-* `value` — значение временного ряда, соответствующее `timestamp`\
+* `value` — значение временного ряда, соответствующее `timestamp`
   Также можно передавать несколько измерений (метки времени и значения) в виде массивов одинакового размера.
 
-Возвращаемое значение:\
+Возвращаемое значение:
 `Tuple(Array(DateTime), Array(Float64))` — пара массивов одинаковой длины (от 0 до 2 элементов). Первый массив содержит метки времени выборок временного ряда, второй массив содержит соответствующие значения временного ряда.
 
-Пример:\
+Пример:
 Эта агрегатная функция предназначена для использования с материализованным представлением и агрегированной таблицей, которые хранят ресемплированные данные временных рядов для временных меток, выровненных по сетке (grid-aligned). Рассмотрим следующую таблицу с сырыми данными и таблицу для хранения ресемплированных данных:
 
 ```sql
--- Таблица для необработанных данных
+-- Table for raw data
 CREATE TABLE t_raw_timeseries
 (
     metric_id UInt64,
@@ -31,17 +30,17 @@ CREATE TABLE t_raw_timeseries
 ENGINE = MergeTree()
 ORDER BY (metric_id, timestamp);
 
--- Таблица с данными, пересэмплированными с более крупным временным шагом (15 с)
+-- Table with data re-sampled to bigger (15 sec) time steps
 CREATE TABLE t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
-    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- Метка времени, выровненная с шагом 15 секунд
+    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- Timestamp aligned to 15 sec
     samples AggregateFunction(timeSeriesLastTwoSamples, DateTime64(3, 'UTC'), Float64)
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY (metric_id, grid_timestamp);
 
--- Материализованное представление (MV) для заполнения пересэмплированной таблицы
+-- MV for populating re-sampled table
 CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
@@ -50,19 +49,19 @@ CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_se
 )
 AS SELECT
     metric_id,
-    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- Округлить метку времени до следующей временной точки сетки
+    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- Round timestamp up to the next grid point
     initializeAggregation('timeSeriesLastTwoSamplesState', timestamp, value) AS samples
 FROM t_raw_timeseries
 ORDER BY metric_id, grid_timestamp;
 ```
 
-Вставьте немного тестовых данных и прочитайте данные за период между &#39;2024-12-12 12:00:12&#39; и &#39;2024-12-12 12:00:30&#39;
+Вставьте немного тестовых данных и выберите данные в диапазоне между &#39;2024-12-12 12:00:12&#39; и &#39;2024-12-12 12:00:30&#39;
 
 ```sql
--- Вставим немного данных
+-- Insert some data
 INSERT INTO t_raw_timeseries(metric_id, timestamp, value) SELECT number%10 AS metric_id, '2024-12-12 12:00:00'::DateTime64(3, 'UTC') + interval ((number/10)%100)*900 millisecond as timestamp, number%3+number%29 AS value FROM numbers(1000);
 
--- Проверим сырые данные
+-- Check raw data
 SELECT *
 FROM t_raw_timeseries
 WHERE metric_id = 3 AND timestamp BETWEEN '2024-12-12 12:00:12' AND '2024-12-12 12:00:31'
@@ -94,10 +93,10 @@ ORDER BY metric_id, timestamp;
 3    2024-12-12 12:00:30.869    25
 ```
 
-Выполните запрос двух последних записей с метками времени &#39;2024-12-12 12:00:15&#39; и &#39;2024-12-12 12:00:30&#39;:
+Выберите два последних сэмпла для временных меток &#39;2024-12-12 12:00:15&#39; и &#39;2024-12-12 12:00:30&#39;:
 
 ```sql
--- Проверьте ресемплированные данные
+-- Check re-sampled data
 SELECT metric_id, grid_timestamp, (finalizeAggregation(samples).1 as timestamp, finalizeAggregation(samples).2 as value) 
 FROM t_resampled_timeseries_15_sec
 WHERE metric_id = 3 AND grid_timestamp BETWEEN '2024-12-12 12:00:15' AND '2024-12-12 12:00:30'
@@ -109,15 +108,15 @@ ORDER BY metric_id, grid_timestamp;
 3    2024-12-12 12:00:30    (['2024-12-12 12:00:29.969','2024-12-12 12:00:29.069'],[14,6])
 ```
 
-Агрегированная таблица хранит только два последних значения для каждой 15‑секундной выровненной отметки времени. Это позволяет вычислять PromQL‑подобные `irate` и `idelta`, считывая значительно меньше данных, чем хранится в сырой таблице.
+Агрегированная таблица хранит только 2 последних значения для каждого временного штампа, выровненного по 15‑секундному интервалу. Это позволяет вычислять PromQL-подобные `irate` и `idelta`, считывая значительно меньше данных, чем записано в исходной таблице.
 
 ```sql
--- Вычислить idelta и irate по сырым данным
+-- Calculate idelta and irate from the raw data
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- начало сетки временных меток
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- конец сетки временных меток
-    15 AS step_seconds,   -- шаг сетки временных меток
-    45 AS window_seconds  -- окно устаревания данных
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    45 AS window_seconds  -- "staleness" window
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value),
@@ -133,12 +132,12 @@ GROUP BY metric_id;
 
 
 ```sql
--- Вычислить idelta и irate из пересемплированных данных
+-- Calculate idelta and irate from the re-sampled data
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- начало временной сетки
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- конец временной сетки
-    15 AS step_seconds,   -- шаг временной сетки
-    45 AS window_seconds  -- окно «устаревания» данных
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    45 AS window_seconds  -- "staleness" window
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamps, values),
@@ -161,3 +160,7 @@ GROUP BY metric_id;
 :::note
 Эта функция экспериментальная; включите её, установив `allow_experimental_ts_to_grid_aggregate_function=true`.
 :::
+
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }

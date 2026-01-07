@@ -13,7 +13,6 @@
 Приведенные ниже команды необходимо выполнять из корневой директории репозитория GitHub `superset`.
 :::
 
-
 ## Официальный драйвер ClickHouse Connect {#official-clickhouse-connect-driver}
 
 Чтобы драйвер ClickHouse Connect был доступен в развертывании Superset, добавьте его в локальный файл `requirements`:
@@ -21,7 +20,6 @@
 ```bash
 echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```
-
 
 ## Mapbox {#mapbox}
 
@@ -34,7 +32,6 @@ echo "clickhouse-connect" >> ./docker/requirements-local.txt
 ```bash
 echo "MAPBOX_API_KEY=pk.SAMPLE-Use-your-key-instead" >> docker/.env-non-dev
 ```
-
 
 ## Развертывание Superset версии 2.0.0 {#deploy-superset-version-200}
 

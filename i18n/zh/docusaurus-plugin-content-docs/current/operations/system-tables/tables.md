@@ -84,7 +84,7 @@ doc_type: '参考'
 
 * `loading_dependent_table` ([Array](../../sql-reference/data-types/array.md)([String](../../sql-reference/data-types/string.md))) - 依赖加载的表列表。
 
-`system.tables` 表在实现 `SHOW TABLES` 查询时使用。
+`system.tables` 表用于实现 `SHOW TABLES` 查询。
 
 **示例**
 
@@ -105,8 +105,8 @@ metadata_path:              /var/lib/clickhouse/store/461/461cf698-fd0b-406d-8c0
 metadata_modification_time: 2021-01-25 19:14:32
 dependencies_database:      []
 dependencies_table:         []
-create_table_query:         CREATE TABLE base.t1 (`n` UInt64) ENGINE = MergeTree ORDER BY n SETTINGS index_granularity = 8192
-engine_full:                MergeTree ORDER BY n SETTINGS index_granularity = 8192
+create_table_query:         CREATE TABLE base.t1 (`n` UInt64) ENGINE = MergeTree ORDER BY n
+engine_full:                MergeTree ORDER BY n
 as_select:                  SELECT database AS table_catalog
 partition_key:
 sorting_key:                n
@@ -136,8 +136,8 @@ metadata_path:              /var/lib/clickhouse/metadata/default/53r93yleapyears
 metadata_modification_time: 2020-09-23 09:05:36
 dependencies_database:      []
 dependencies_table:         []
-create_table_query:         CREATE TABLE default.`53r93yleapyears` (`id` Int8, `febdays` Int8) ENGINE = MergeTree ORDER BY id SETTINGS index_granularity = 8192
-engine_full:                MergeTree ORDER BY id SETTINGS index_granularity = 8192
+create_table_query:         CREATE TABLE default.`53r93yleapyears` (`id` Int8, `febdays` Int8) ENGINE = MergeTree ORDER BY id
+engine_full:                MergeTree ORDER BY id
 as_select:                  SELECT name AS catalog_name
 partition_key:
 sorting_key:                id

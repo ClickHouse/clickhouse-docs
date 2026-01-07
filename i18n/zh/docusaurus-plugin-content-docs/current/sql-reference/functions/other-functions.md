@@ -159,7 +159,7 @@ SELECT MACStringToOUI('00:50:56:12:34:56') AS oui;
 20566
 ```
 
-## &#95;&#95;applyFilter {#&#95;&#95;applyFilter}
+## __applyFilter {#__applyFilter}
 
 引入于：v25.10
 
@@ -179,8 +179,6 @@ __applyFilter(filter_name, key)
 **返回值**
 
 如果应当过滤该 key，则返回 False [`Bool`](/sql-reference/data-types/boolean)
-
-**示例**
 
 **示例**
 
@@ -452,9 +450,9 @@ FROM system.numbers LIMIT 5
 
 引入版本：v20.5
 
-返回编译器为当前运行的 ClickHouse 服务器二进制文件生成的构建 ID。
-如果在分布式表的上下文中执行，该函数会生成一个普通列，包含每个分片对应的值。
-否则，它会返回一个常量值。
+返回编译器为正在运行的 ClickHouse 服务器二进制文件生成的构建 ID。
+如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
+否则将返回一个常量。
 
 **语法**
 
@@ -483,6 +481,7 @@ SELECT buildId()
 │ AB668BEF095FAA6BD26537F197AC2AF48A927FB4 │
 └──────────────────────────────────────────┘
 ```
+
 
 ## byteSize {#byteSize}
 
@@ -2787,9 +2786,45 @@ SELECT ignore(0, 'ClickHouse', NULL)
 它会忽略其参数并始终返回 1。
 这些参数不会被求值。
 
-但在进行索引分析时，假定该函数的参数没有被 `indexHint` 包裹。
-这允许根据相应条件在索引范围内选取数据，但不会再基于该条件执行后续过滤。
+在进行索引分析时，假定该函数的参数没有被 `indexHint` 包裹。
+这允许你依据相应条件在索引范围内选取数据，但不会再根据该条件执行后续过滤。
 ClickHouse 中的索引是稀疏的，使用 `indexHint` 会比直接指定相同条件返回更多数据。
+
+<details>
+  <summary>说明</summary>
+
+  当你运行：
+
+  ```sql
+  SELECT * FROM test WHERE key = 123;
+  ```
+
+  ClickHouse 会做两件事：
+
+  1. 使用索引找到可能包含 `key = 123` 的 granule（约 8192 行的数据块）
+  2. 读取这些 granule，并逐行过滤，只返回 `key = 123` 的行
+
+  因此，即使它从磁盘读取了 8,192 行，也只会返回真正匹配的 1 行。
+
+  使用 `indexHint` 时，当你运行：
+
+  ```sql
+  SELECT * FROM test WHERE indexHint(key = 123);
+  ```
+
+  ClickHouse 只会做一件事：
+
+  1. 使用索引找到可能包含 key = 123 的 granule，并从这些 granule 中返回所有行，**不再**进行过滤。
+
+  它会返回全部 8,192 行，包括 `key = 456`、`key = 789` 等行（所有恰好存储在同一 granule 中的内容）。
+  `indexHint()` 不是为了性能，而是为了调试以及理解 ClickHouse 索引的工作方式：
+
+  * 我的条件选中了哪些 granule？
+  * 这些 granule 中有多少行？
+  * 我的索引是否被有效使用？
+</details>
+
+注意：无法利用 `indexHint` 函数对查询进行优化。`indexHint` 函数不会优化查询，因为它不会为查询分析提供任何额外信息。将某个表达式放在 `indexHint` 函数中并不会比不使用 `indexHint` 函数更好。`indexHint` 函数只能用于内部分析和调试目的，不能提升性能。如果你看到除了 ClickHouse 贡献者之外的任何人使用 `indexHint`，这很可能是误用，应当将其移除。
 
 **语法**
 
@@ -2821,6 +2856,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 │ 2025-09-30 │    8167 │
 └────────────┴─────────┘
 ```
+
 
 ## initialQueryID {#initialQueryID}
 
@@ -4451,7 +4487,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 自 v22.6 引入
 
 如果当前服务器已配置安全套接字层 (SSL) 证书，则显示该证书的信息。
-有关如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅[配置 SSL-TLS](/guides/sre/configuring-ssl)。
+有关如何配置 ClickHouse 使用 OpenSSL 证书来验证连接的详细信息，请参阅[配置 TLS](/guides/sre/tls/configuring-tls)。
 
 **语法**
 
@@ -4478,6 +4514,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```response title=Response
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
+
 
 ## sleep {#sleep}
 
@@ -4659,7 +4696,7 @@ message MessageName
 
 引入版本：v20.12
 
-返回服务器监听的 [原生接口](../../interfaces/tcp.md) TCP 端口号。
+返回服务器监听的 [原生接口](/interfaces/tcp) TCP 端口号。
 如果在分布式表的上下文中执行，该函数会生成一个普通列，其中的值对应各个分片。
 否则将返回一个常量。
 
@@ -4690,6 +4727,7 @@ SELECT tcpPort()
 │      9000 │
 └───────────┘
 ```
+
 
 ## throwIf {#throwIf}
 

@@ -6,11 +6,7 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # 通过命名集合集成 ClickHouse 与 Kafka {#integrating-clickhouse-with-kafka-using-named-collections}
-
-
 
 ## 介绍 {#introduction}
 
@@ -21,16 +17,12 @@ doc_type: 'guide'
 
 本指南已在 Apache Kafka 3.4.1 和 ClickHouse 24.5.1 上完成测试。
 
-
-
 ## 前提假设 {#assumptions}
 
 本文档假定已具备：
 1. 一个可正常运行的 Kafka 集群。
 2. 一个已部署并正在运行的 ClickHouse 集群。
 3. 具备 SQL 基础，并熟悉 ClickHouse 和 Kafka 的基本配置。
-
-
 
 ## 先决条件 {#prerequisites}
 
@@ -45,16 +37,15 @@ doc_type: 'guide'
 
 有关如何启用访问控制的更多详情，请参阅[用户管理指南](./../../../guides/sre/user-management/index.md)。
 
-
 ## 配置 {#configuration}
 
 在 ClickHouse 的 `config.xml` 文件中添加以下配置段：
 
 ```xml
-<!-- Kafka 集成的命名集合 -->
+<!-- Named collections for Kafka integration -->
 <named_collections>
     <cluster_1>
-        <!-- ClickHouse Kafka 引擎参数 -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -63,7 +54,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka 扩展配置 -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -76,7 +67,7 @@ doc_type: 'guide'
     </cluster_1>
 
     <cluster_2>
-        <!-- ClickHouse Kafka 引擎参数 -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -85,7 +76,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka 扩展配置 -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -105,7 +96,6 @@ doc_type: 'guide'
 2. `<kafka>` 之前的部分包含 ClickHouse Kafka 引擎参数。完整参数列表请参阅 [Kafka 引擎参数](/engines/table-engines/integrations/kafka)。
 3. `<kafka>` 内的部分包含额外的 Kafka 配置选项。更多可用选项请参阅 [librdkafka 配置说明](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md)。
 4. 本示例使用 `SASL_SSL` 安全协议和 `PLAIN` 机制。请根据实际的 Kafka 集群配置调整这些设置。
-
 
 ## 创建表和数据库 {#creating-tables-and-databases}
 
@@ -192,7 +182,6 @@ SELECT
     last_name
 FROM second_kafka_table;
 ```
-
 
 ## 验证设置 {#verifying-the-setup}
 

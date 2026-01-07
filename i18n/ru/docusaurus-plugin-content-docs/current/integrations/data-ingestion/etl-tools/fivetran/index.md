@@ -2,7 +2,7 @@
 sidebar_label: 'Fivetran'
 slug: /integrations/fivetran
 sidebar_position: 2
-description: 'Пользователи могут преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
+description: 'Вы можете преобразовывать и моделировать свои данные в ClickHouse с помощью dbt'
 title: 'Fivetran и ClickHouse Cloud'
 doc_type: 'guide'
 integration:
@@ -17,8 +17,6 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 # Fivetran и ClickHouse Cloud {#fivetran-and-clickhouse-cloud}
 
 <ClickHouseSupportedBadge/>
-
-
 
 ## Обзор {#overview}
 
@@ -42,16 +40,12 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
   </iframe>
 </div>
 
-
-
 ## ClickHouse Cloud в качестве назначения {#clickhouse-cloud-destination}
 
 См. официальную документацию на сайте Fivetran:
 
 - [Обзор назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse)
 - [Руководство по настройке назначения ClickHouse](https://fivetran.com/docs/destinations/clickhouse/setup-guide)
-
-
 
 ## Свяжитесь с нами {#contact-us}
 

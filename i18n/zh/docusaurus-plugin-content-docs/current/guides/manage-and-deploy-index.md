@@ -28,7 +28,7 @@ keywords: ['部署', '管理', '管理与维护', '运维', '指南']
 | [Startup Scripts](/operations/startup-scripts)                                                | 演示如何在启动过程中运行启动脚本的示例，可用于迁移或自动创建模式（schema）。                         |
 | [External Disks for Storing Data](/operations/storing-data)                                   | 有关在 ClickHouse 中配置外部存储的信息和示例。                                                         |
 | [Allocation profiling](/operations/allocation-profiling)                                      | 有关使用 jemalloc 进行内存分配采样和分析的信息和示例。                                                      |
-| [Backup and Restore](/operations/backup)                                                      | 将数据备份到本地磁盘或外部存储的指南。                                                                          |
+| [Backup and Restore](/operations/backup/overview)                                             | 将数据备份到本地磁盘或外部存储的指南。                                                                          |
 | [Caches](/operations/caches)                                                                  | 说明 ClickHouse 中各种缓存类型的文档。                                                                               |
 | [Workload scheduling](/operations/workload-scheduling)                                        | 说明 ClickHouse 中工作负载调度的文档。                                                                                   |
 | [Self-managed Upgrade](/operations/update)                                                    | 执行自主管理升级的指南。                                                                                |

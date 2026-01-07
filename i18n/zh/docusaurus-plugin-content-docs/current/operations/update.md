@@ -6,16 +6,12 @@ title: '自托管升级'
 doc_type: 'guide'
 ---
 
-
-
 ## ClickHouse 升级概览 {#clickhouse-upgrade-overview}
 
 本文档包含：
 - 通用指南
 - 推荐方案
 - 在系统上升级二进制文件的具体说明
-
-
 
 ## 一般指南 {#general-guidelines}
 
@@ -51,8 +47,6 @@ doc_type: 'guide'
 - 通过停机升级（停止所有 server、升级所有 server、重新启动所有 server）。
 - 或通过中间版本进行升级（选择一个比当前版本新但发布时间不超过一年的版本作为中间版本）。
 
-
-
 ## 推荐方案 {#recommended-plan}
 
 以下是实现 ClickHouse 零停机升级的推荐步骤：
@@ -67,8 +61,9 @@ doc_type: 'guide'
 * 将服务器升级到目标版本
 * 启动 ClickHouse 服务器
 * 等待 Keeper 消息表明系统已稳定
-* 继续处理下一个副本6. 检查 Keeper 日志和 ClickHouse 日志中的错误
+* 继续处理下一个副本
 
+6. 检查 Keeper 日志和 ClickHouse 日志中的错误
 7. 将步骤 4 中确定的副本升级到新版本。
 8. 参考步骤 1 至 3 中整理的变更清单，执行需要在升级后完成的变更。
 
@@ -76,12 +71,12 @@ doc_type: 'guide'
 在复制环境中同时运行多个版本的 ClickHouse 时，出现此错误消息是预期行为。当所有副本都升级到同一版本后，该错误消息将不再出现。
 
 ```text
-MergeFromLogEntryTask: Code: 40. DB::Exception: 数据分片校验和不匹配:
-未压缩文件哈希值不匹配。(CHECKSUM_DOESNT_MATCH) 合并后的数据与其他副本的数据不完全一致。
+MergeFromLogEntryTask: Code: 40. DB::Exception: Checksums of parts don't match:
+hash of uncompressed files doesn't match. (CHECKSUM_DOESNT_MATCH)  Data after merge is not
+byte-identical to data on another replicas.
 ```
 
 :::
-
 
 ## ClickHouse 服务器二进制升级流程 {#clickhouse-server-binary-upgrade-process}
 

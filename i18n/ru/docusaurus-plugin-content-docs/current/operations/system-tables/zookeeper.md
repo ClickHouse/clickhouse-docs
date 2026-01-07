@@ -50,7 +50,7 @@ FORMAT Vertical
 ```
 
 ```text
-Строка 1:
+Row 1:
 ──────
 name:           example01-08-1
 value:
@@ -67,7 +67,7 @@ numChildren:    7
 pzxid:          987021031383
 path:           /clickhouse/tables/01-08/visits/replicas
 
-Строка 2:
+Row 2:
 ──────
 name:           example01-08-2
 value:

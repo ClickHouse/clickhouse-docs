@@ -60,9 +60,9 @@ ClickHouse Cloud の利用を停止し、既存の ClickHouse Cloud サービス
 その場合は、通常どおり ClickHouse Cloud を購読してください（マーケットプレイス経由での ClickHouse Cloud の購読に関するセクションを参照してください）。
 
 - AWS Marketplace の場合、新しい ClickHouse Cloud 組織が作成され、マーケットプレイスに接続されます。
-- GCP Marketplace の場合、以前の組織が再アクティブ化されます。
+- GCP Marketplace の場合、以前の組織が再有効化されます。
 
-マーケットプレイス組織の再アクティブ化に問題がある場合は、[ClickHouse Cloud Support](https://clickhouse.com/support/program) までお問い合わせください。
+マーケットプレイス組織の再有効化に問題がある場合は、[ClickHouse Cloud サポート](https://clickhouse.com/support/program) までお問い合わせください。
 
 ### ClickHouse Cloud サービスのマーケットプレイスサブスクリプションに対する請求書にはどのようにアクセスできますか？​ {#how-do-i-access-my-invoice-for-my-marketplace-subscription-to-the-clickhouse-cloud-service}
 
@@ -73,11 +73,9 @@ ClickHouse Cloud の利用を停止し、既存の ClickHouse Cloud サービス
 
 マーケットプレイスの課金は暦月サイクルに従います。たとえば、12 月 1 日から 1 月 1 日までの利用分については、1 月 3 日から 1 月 5 日の間に請求書が発行されます。
 
+ClickHouse Cloud の利用状況ステートメントは、サインアップ日を起点として 30 日間の利用量を計測・報告する、別の課金サイクルに従っています。
 
-
-ClickHouse Cloud の利用明細は、サインアップした日を起点とする 30 日間を対象に、利用量が計測・集計されてレポートされる、通常とは異なる課金サイクルに従います。
-
-これらの日付が同一でない場合、利用期間と請求書発行日の間に差異が生じます。利用明細では、特定のサービスの利用状況が日単位で追跡されるため、ユーザーは明細を確認することでコストの内訳を把握できます。
+これらの起算日が同一でない場合、利用状況ステートメントと請求書の日付は一致しません。利用状況ステートメントは、特定のサービスについて日単位で利用状況を追跡しているため、コストの内訳を確認する際はステートメントを参照できます。
 
 ### 一般的な請求情報はどこで確認できますか？ {#where-can-i-find-general-billing-information}
 
@@ -87,9 +85,9 @@ ClickHouse Cloud の利用明細は、サインアップした日を起点とす
 
 マーケットプレイス経由での課金と、ClickHouse に直接サインアップした場合の料金に違いはありません。どちらの場合も、ClickHouse Cloud の利用は ClickHouse Cloud Credits (CHC) によって計測され、同じ方法でメータリングおよび請求が行われます。
 
-### 単一のクラウドマーケットプレイスの請求アカウントまたはサブアカウント（AWS、GCP、Azure）に対して、複数の ClickHouse Organization を紐付けて請求することはできますか？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
+### 複数の ClickHouse Organization を、単一のクラウドマーケットプレイスの請求アカウント（AWS、GCP、または Azure）に紐づけて請求することはできますか？ {#multiple-organizations-to-bill-to-single-cloud-marketplace-account}
 
-1 つの ClickHouse Organization は、1 つのクラウドマーケットプレイスの請求アカウントまたはサブアカウントにのみ紐付けて請求するよう構成できます。
+はい。複数の ClickHouse Organization を、同一のクラウドマーケットプレイスの請求アカウント（AWS、GCP、または Azure）に対して後払いで請求されるよう構成できます。ただし、前払いクレジットはデフォルトでは Organization 間で共有されません。Organization 間でクレジットを共有する必要がある場合は、[ClickHouse Cloud Support](https://clickhouse.com/support/program) までお問い合わせください。
 
 ### ClickHouse Organization の請求がクラウドマーケットプレイスのコミットメント契約経由になっている場合、クレジットを使い切ると自動的に PAYG（従量課金）に切り替わりますか？ {#automatically-move-to-PAYG-when-running-out-of-credit}
 

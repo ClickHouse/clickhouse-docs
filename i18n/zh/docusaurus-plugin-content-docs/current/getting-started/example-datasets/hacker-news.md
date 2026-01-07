@@ -46,14 +46,14 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   ```
 
   ```response title="Response"
-  第 1 行:
+  Row 1:
   ──────
   id:          344065
   deleted:     0
   type:        comment
   by:          callmeed
   time:        2008-10-26 05:06:58
-  text:        您需要什么类型的报告?<p>ActiveMerchant 只是将您的应用程序连接到网关以进行信用卡批准和处理。<p>Braintree 提供非常完善的交易报告,并且退款操作非常简便。<p>此外,您使用的毕竟是 Rails——从订阅者基础生成一些报告是相当容易的。
+  text:        What kind of reports do you need?<p>ActiveMerchant just connects your app to a gateway for cc approval and processing.<p>Braintree has very nice reports on transactions and it's very easy to refund a payment.<p>Beyond that, you are dealing with Rails after all–it's pretty easy to scaffold out some reports from your subscriber base.
   dead:        0
   parent:      344038
   poll:        0
@@ -64,7 +64,7 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   parts:       []
   descendants: 0
 
-  第 2 行:
+  Row 2:
   ──────
   id:          344066
   deleted:     0
@@ -78,21 +78,21 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   kids:        [344111,344202,344329,344606]
   url:         http://antoniocangiano.com/2008/10/26/what-arc-should-learn-from-ruby/
   score:       33
-  title:       Arc 应该从 Ruby 学习什么
+  title:       What Arc should learn from Ruby
   parts:       []
   descendants: 10
   ```
 
-  该命令包含许多强大的功能。
+  There are a lot of subtle capabilities in this command.
   [`file`](/sql-reference/functions/files/#file) 操作符允许您从本地磁盘读取文件,只需指定 `CSVWithNames` 格式即可。
-  最重要的是,系统会根据文件内容自动推断数据模式。
-  另外请注意,`clickhouse-local` 能够读取压缩文件,并根据扩展名自动识别 gzip 格式。
-  使用 `Vertical` 格式可以更方便地查看每列的数据。
+  Most importantly, the schema is automatically inferred for you from the file contents.
+  Note also how `clickhouse-local` is able to read the compressed file, inferring the gzip format from the extension.
+  The `Vertical` format is used to more easily see the data for each column.
 
-  ### 使用架构推断加载数据
+  ### 使用模式推断加载数据
 
   用于数据加载的最简单且最强大的工具是 `clickhouse-client`:一个功能丰富的原生命令行客户端。
-  加载数据时,您可以再次利用模式推断功能,由 ClickHouse 自动确定列的类型。
+  To load data, you can again exploit schema inference, relying on ClickHouse to determine the types of the columns.
 
   运行以下命令创建表并直接从远程 CSV 文件插入数据,通过 [`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url) 函数访问文件内容。
   架构会自动推断:
@@ -103,8 +103,8 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   ) EMPTY AS SELECT * FROM url('https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz', 'CSVWithNames');
   ```
 
-  这将根据从数据中推断出的模式创建一个空表。
-  使用 [`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 命令可以查看这些分配的类型。
+  This creates an empty table using the schema inferred from the data.
+  [`DESCRIBE TABLE`](/sql-reference/statements/describe-table) 语句可用于查看这些分配的类型。
 
   ```sql title="Query"
   DESCRIBE TABLE hackernews
@@ -142,7 +142,7 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
 
   ### 探索数据
 
-  通过运行以下查询对 Hacker News 数据的特定列进行采样：
+  通过运行以下查询对 Hacker News 故事和特定列进行采样：
 
   ```sql title="Query"
   SELECT
@@ -160,7 +160,7 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   ```
 
   ```response title="Response"
-  行 1:
+  Row 1:
   ──────
   id:    2596866
   title:
@@ -170,20 +170,20 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   url:
   score: 0
 
-  行 2:
+  Row 2:
   ──────
   id:    2596870
-  title: WordPress 记录用户最后登录日期和时间
+  title: WordPress capture users last login date and time
   type:  story
   by:    wpsnipp
   time:  1306685252
   url:   http://wpsnipp.com/index.php/date/capture-users-last-login-date-and-time/
   score: 1
 
-  行 3:
+  Row 3:
   ──────
   id:    2596872
-  title: 应届大学毕业生获得创业建议
+  title: Recent college graduates get some startup wisdom
   type:  story
   by:    whenimgone
   time:  1306685352
@@ -195,13 +195,13 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
 
   ### 定义架构
 
-  一个显而易见的优化方法是为每个字段定义类型。
+  An obvious immediate optimization is to define a type for each field.
   除了将时间字段声明为 `DateTime` 类型外,在删除现有数据集后,我们还需为下列各字段定义相应的类型。
-  在 ClickHouse 中,数据的主键通过 `ORDER BY` 子句定义。
+  In ClickHouse the primary key id for the data is defined via the `ORDER BY` clause.
 
   选择合适的数据类型并确定 `ORDER BY` 子句中应包含哪些列,有助于提升查询速度和压缩率。
 
-  运行以下查询以删除旧模式并创建改进的模式：
+  运行以下查询以删除旧架构并创建改进的架构:
 
   ```sql title="Query"
   DROP TABLE IF EXISTS hackernews;
@@ -258,7 +258,7 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   ```
 
   ```response title="Response"
-  行 1:
+  Row 1:
   ──────
   time:        1632154428
   score:       519
@@ -267,39 +267,39 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
   url:         https://github.com/ClickHouse/ClickHouse/blob/master/website/blog/en/2021/clickhouse-inc.md
   hn_url:      https://news.ycombinator.com/item?id=28595419
 
-  行 2:
+  Row 2:
   ──────
   time:        1614699632
   score:       383
   descendants: 134
-  title:       ClickHouse 作为 Elasticsearch 日志存储与分析的替代方案
+  title:       ClickHouse as an alternative to Elasticsearch for log storage and analysis
   url:         https://pixeljets.com/blog/clickhouse-vs-elasticsearch/
   hn_url:      https://news.ycombinator.com/item?id=26316401
 
-  行 3:
+  Row 3:
   ──────
   time:        1465985177
   score:       243
   descendants: 70
-  title:       ClickHouse – 高性能开源分布式列式数据库管理系统
+  title:       ClickHouse – high-performance open-source distributed column-oriented DBMS
   url:         https://clickhouse.yandex/reference_en.html
   hn_url:      https://news.ycombinator.com/item?id=11908254
 
-  行 4:
+  Row 4:
   ──────
   time:        1578331410
   score:       216
   descendants: 86
-  title:       ClickHouse 成本效益实战:在 Intel NUC 上分析 5000 亿行数据
+  title:       ClickHouse cost-efficiency in action: analyzing 500B rows on an Intel NUC
   url:         https://www.altinity.com/blog/2020/1/1/clickhouse-cost-efficiency-in-action-analyzing-500-billion-rows-on-an-intel-nuc
   hn_url:      https://news.ycombinator.com/item?id=21970952
 
-  行 5:
+  Row 5:
   ──────
   time:        1622160768
   score:       198
   descendants: 55
-  title:       ClickHouse:开源列式数据库管理系统
+  title:       ClickHouse: An open-source column-oriented database management system
   url:         https://github.com/ClickHouse/ClickHouse
   hn_url:      https://news.ycombinator.com/item?id=27310247
   ```
@@ -385,7 +385,7 @@ keywords: ['示例数据集', 'Hacker News', '样本数据', '文本分析', '�
 
   看起来 &quot;ClickHouse&quot; 的受欢迎程度正在不断提升。
 
-  #### 谁是 ClickHouse 相关文章的热门评论者?
+  #### 谁是 ClickHouse 相关文章的热门评论者？
 
   ```sql title="Query"
   SELECT
@@ -545,13 +545,13 @@ Parquet 仅支持少量数据类型，ClickHouse 需要遵循这些类型，而�
 
   ```response title="Response"
   #highlight-next-line
-  返回 1 行。用时:0.843 秒。已处理 2874 万行,9.75 GB(3408 万行/秒,11.57 GB/秒)
+  1 row in set. Elapsed: 0.843 sec. Processed 28.74 million rows, 9.75 GB (34.08 million rows/s., 11.57 GB/s.)
   ┌─count()─┐
   │     516 │
   └─────────┘
   ```
 
-  接下来,您将在 &quot;comment&quot; 列上创建一个倒排[索引](/engines/table-engines/mergetree-family/invertedindexes),以加快查询速度。
+  接下来,您将在 &quot;comment&quot; 列上创建一个倒排[索引](/engines/table-engines/mergetree-family/textindexes),以加快查询速度。
   请注意,评论内容将以小写形式建立索引,从而实现不区分大小写的词条查找。
 
   运行以下命令以创建索引：
@@ -575,7 +575,7 @@ Parquet 仅支持少量数据类型，ClickHouse 需要遵循这些类型，而�
 
   ```response title="Response"
   #highlight-next-line
-  返回 1 行。用时:0.248 秒。已处理 454 万行,1.79 GB(1834 万行/秒,7.24 GB/秒)
+  1 row in set. Elapsed: 0.248 sec. Processed 4.54 million rows, 1.79 GB (18.34 million rows/s., 7.24 GB/s.)
   ┌─count()─┐
   │    1145 │
   └─────────┘
@@ -612,7 +612,7 @@ Parquet 仅支持少量数据类型，ClickHouse 需要遵循这些类型，而�
 
   注意索引如何通过跳过大量数据颗粒来加速查询。
 
-  现在还可以高效地搜索单个术语或所有多个术语:
+  现在还可以高效地搜索单个词条或多个词条:
 
   ```sql title="Query"
   SELECT count(*)

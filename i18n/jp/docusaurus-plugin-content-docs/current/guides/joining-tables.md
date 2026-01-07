@@ -1,27 +1,27 @@
 ---
-title: 'ClickHouse における JOIN の使い方'
-description: 'ClickHouse でテーブルを JOIN する方法'
-keywords: ['JOIN', 'テーブル結合']
+title: "ClickHouse における JOIN の使い方"
+description: "ClickHouse でテーブルを JOIN する方法"
+keywords: ["JOIN", "テーブル結合"]
 slug: /guides/joining-tables
-doc_type: 'guide'
+doc_type: "guide"
 ---
 
-import Image from '@theme/IdealImage';
-import joins_1 from '@site/static/images/guides/joins-1.png';
-import joins_2 from '@site/static/images/guides/joins-2.png';
-import joins_3 from '@site/static/images/guides/joins-3.png';
-import joins_4 from '@site/static/images/guides/joins-4.png';
-import joins_5 from '@site/static/images/guides/joins-5.png';
+import Image from "@theme/IdealImage"
+import joins_1 from "@site/static/images/guides/joins-1.png"
+import joins_2 from "@site/static/images/guides/joins-2.png"
+import joins_3 from "@site/static/images/guides/joins-3.png"
+import joins_4 from "@site/static/images/guides/joins-4.png"
+import joins_5 from "@site/static/images/guides/joins-5.png"
 
 ClickHouse は[完全な `JOIN` サポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を提供しており、幅広い結合アルゴリズムを利用できます。パフォーマンスを最大化するために、本ガイドで挙げる結合最適化の推奨事項に従うことをお勧めします。
 
-* 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN は最大 3〜4 個を目安にします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
-* 現在、ClickHouse は JOIN の順序を並べ替えません。常に最も小さいテーブルが JOIN の右側に来るようにしてください。ほとんどの結合アルゴリズムでは右側のテーブルがメモリ上に保持されるため、これによりクエリのメモリオーバーヘッドを最小限にできます。
-* クエリが、以下に示すような `LEFT ANY JOIN` のような直接結合を必要とする場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
+* 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN の数は最大 3〜4 個を目安とします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
+* ClickHouse 24.12 以降では、クエリプランナーが 2 つのテーブル間の JOIN を自動的に並べ替え、小さいテーブルを右側に配置してパフォーマンスを最適化します。バージョン 25.9 では、3 つ以上のテーブルを結合するクエリに対して JOIN の順序を最適化できるように拡張されました。
+* クエリで、以下に示す `LEFT ANY JOIN` のような直接結合が必要な場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
 
-<Image img={joins_1} size="sm" alt="Left any join" />
+<Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
-* 内部結合を実行する場合、多くのケースで `IN` 句を使用したサブクエリとして記述した方がより効率的です。次のクエリを考えてみてください。これらは機能的には同等であり、いずれも質問文には ClickHouse が含まれていないが `comments` には含まれている `posts` の件数を取得します。
+* 内部結合を実行する場合、多くの場合は `IN` 句を使用したサブクエリとして記述した方がより効率的です。次のクエリを考えてみてください。これらは機能的には同等であり、いずれも質問本文には ClickHouse が含まれていないが `comments` には含まれている `posts` の件数を取得します。
 
 ```sql
 SELECT count()
@@ -39,7 +39,7 @@ Peak memory usage: 1.23 GiB.
 
 `INNER JOIN` ではなく `ANY INNER JOIN` を使用しているのは、直積（cartesian product）を避けたい、つまり各 post につき 1 件だけマッチさせたいからです。
 
-この結合はサブクエリを使って書き換えることができ、大幅なパフォーマンス向上が見込めます。
+この結合はサブクエリを使って書き換えることで、パフォーマンスを大幅に向上させられます。
 
 ```sql
 SELECT count()
@@ -57,7 +57,7 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 
-ClickHouse は、すべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な限りすべてのサブ句に条件を手動で適用することを常に推奨しています。こうすることで、`JOIN` するデータ量を最小限に抑えられます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいものとします。
+ClickHouse は、すべての `JOIN` 句およびサブクエリに対して条件のプッシュダウンを試みますが、可能な限りすべてのサブ句に条件を手動で適用することを常に推奨します。こうすることで、`JOIN` するデータ量を最小限に抑えられます。以下の例では、2020 年以降の Java 関連の投稿に対するアップボート数を計算したいものとします。
 
 左側に大きなテーブルを置いた素朴なクエリは、完了までに 56 秒かかります。
 
@@ -70,12 +70,9 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
+
+1 row in set. Elapsed: 56.642 sec. Processed 252.30 million rows, 1.62 GB (4.45 million rows/s., 28.60 MB/s.)
 ```
-
-
-1 行の結果。経過時間: 56.642秒。252.30 百万行、1.62 GBを処理しました (4.45 百万行/秒、28.60 MB/秒)。
-
-````
 
 この結合の順序を変更することで、パフォーマンスが1.5秒まで劇的に改善されます:
 
@@ -90,9 +87,9 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 1.519 sec. Processed 252.30 million rows, 1.62 GB (166.06 million rows/s., 1.07 GB/s.)
-````
+```
 
-左側のテーブルにフィルターを追加すると、処理時間はさらに短縮され、0.5秒になります。
+左側のテーブルにフィルターを追加すると、実行時間はさらに短縮され、0.5秒になります。
 
 ```sql
 SELECT countIf(VoteTypeId = 2) AS upvotes
@@ -105,10 +102,10 @@ WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.
 └─────────┘
 
 1 row in set. Elapsed: 0.597 sec. Processed 81.14 million rows, 1.31 GB (135.82 million rows/s., 2.19 GB/s.)
-ピークメモリ使用量: 249.42 MiB.
+Peak memory usage: 249.42 MiB.
 ```
 
-前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルタを保持することで、このクエリをさらに改善できます。
+前述のとおり、`INNER JOIN` をサブクエリに移動し、外側と内側の両方のクエリでフィルターを保持することで、このクエリをさらに改善できます。
 
 ```sql
 SELECT count() AS upvotes
@@ -152,8 +149,6 @@ ClickHouse は、いくつかの[JOIN アルゴリズム](https://clickhouse.com
 
 適切な JOIN アルゴリズムの選択は、メモリ使用量とパフォーマンスのどちらを優先して最適化するかによって決まります。
 
-
-
 ## JOIN のパフォーマンス最適化 {#optimizing-join-performance}
 
 主な最適化指標がパフォーマンスであり、JOIN をできるだけ高速に実行したい場合は、適切な JOIN アルゴリズムを選択するために次の意思決定ツリーを使用できます。
@@ -177,8 +172,6 @@ partial merge join は、大規模なテーブルを結合する際のメモリ�
 grace hash join は、3 つのメモリ制約非依存 JOIN アルゴリズムの中で最も柔軟であり、[grace_hash_join_initial_buckets](https://github.com/ClickHouse/ClickHouse/blob/23.5/src/Core/Settings.h#L759) 設定によってメモリ使用量と JOIN 速度のトレードオフをうまく制御できます。データ量に応じて、[バケット](https://clickhouse.com/blog/clickhouse-fully-supports-joins-hash-joins-part2#description-2)の数が両アルゴリズムのメモリ使用量がおおむね揃うように選択されている場合には、grace hash が partial merge アルゴリズムより高速になることもあれば、遅くなることもあります。grace hash join のメモリ使用量が full sorting merge のメモリ使用量とおおむね揃うように設定されている場合、われわれのテストでは常に full sorting merge のほうが高速でした。
 
 3 つのメモリ制約非依存アルゴリズムのうちどれが最速かは、データ量、データ型、および JOIN キーカラムの値分布によって決まります。どのアルゴリズムが最速かを判断するには、現実的なデータ量・データでベンチマークを実行するのが最善です。
-
-
 
 ## メモリ使用量の最適化 {#optimizing-for-memory}
 

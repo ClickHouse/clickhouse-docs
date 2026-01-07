@@ -26,10 +26,10 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- Разбор даты
--- - из строки,
--- - из «малого» целого числа, интерпретируемого как количество дней с 1970-01-01, и
--- - из «большого» целого числа, интерпретируемого как количество секунд с 1970-01-01.
+-- Parse Date
+-- - from string,
+-- - from 'small' integer interpreted as number of days since 1970-01-01, and
+-- - from 'big' integer interpreted as number of seconds since 1970-01-01.
 INSERT INTO dt32 VALUES ('2100-01-01', 1), (47482, 2), (4102444800, 3);
 
 SELECT * FROM dt32;
@@ -45,6 +45,6 @@ SELECT * FROM dt32;
 
 **Смотрите также**
 
-* [toDate32](../../sql-reference/functions/type-conversion-functions.md#todate32)
-* [toDate32OrZero](/sql-reference/functions/type-conversion-functions#todate32orzero)
-* [toDate32OrNull](/sql-reference/functions/type-conversion-functions#todate32ornull)
+* [toDate32](../../sql-reference/functions/type-conversion-functions.md#toDate32)
+* [toDate32OrZero](/sql-reference/functions/type-conversion-functions#toDate32OrZero)
+* [toDate32OrNull](/sql-reference/functions/type-conversion-functions#toDate32OrNull)

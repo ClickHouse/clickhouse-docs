@@ -452,9 +452,9 @@ FROM system.numbers LIMIT 5
 
 導入バージョン: v20.5
 
-実行中の ClickHouse サーバー バイナリに対して、コンパイラによって生成されたビルド ID を返します。
+実行中の ClickHouse サーバーのバイナリに対して、コンパイラによって生成されたビルド ID を返します。
 分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
-それ以外の場合は、定数値を返します。
+それ以外の場合は、定数値を生成します。
 
 **構文**
 
@@ -483,6 +483,7 @@ SELECT buildId()
 │ AB668BEF095FAA6BD26537F197AC2AF48A927FB4 │
 └──────────────────────────────────────────┘
 ```
+
 
 ## byteSize {#byteSize}
 
@@ -2789,9 +2790,45 @@ SELECT ignore(0, 'ClickHouse', NULL)
 引数を無視し、常に 1 を返します。
 引数は評価されません。
 
-ただしインデックス解析時には、この関数の引数は `indexHint` でラップされていないものとして扱われます。
+インデックス解析時には、この関数の引数は `indexHint` でラップされていないものとして扱われます。
 これにより、対応する条件を用いてインデックス範囲でデータを選択しつつ、その条件によるそれ以上のフィルタリングを行わないようにできます。
 ClickHouse におけるインデックスはスパースであり、`indexHint` を使用すると、同じ条件を直接指定した場合よりも多くのデータが返されます。
+
+<details>
+  <summary>説明</summary>
+
+  次のクエリを実行すると:
+
+  ```sql
+  SELECT * FROM test WHERE key = 123;
+  ```
+
+  ClickHouse は次の 2 つの処理を行います:
+
+  1. インデックスを使って、`key = 123` を含む可能性のある granule（約 8,192 行のブロック）を特定する
+  2. その granule を読み取り、`key = 123` に一致する行だけを返すように 1 行ずつフィルタリングする
+
+  そのため、ディスクから 8,192 行を読み取ったとしても、実際に条件に一致した 1 行だけを返します。
+
+  `indexHint` を使って次のクエリを実行すると:
+
+  ```sql
+  SELECT * FROM test WHERE indexHint(key = 123);
+  ```
+
+  ClickHouse は 1 つのことだけを行います:
+
+  1. インデックスを使って key = 123 を含む可能性のある granule を特定し、**フィルタリングを行わずに** それらの granule に含まれるすべての行を返す
+
+  これにより、`key = 456` や `key = 789` などを含む行も含め、その granule に格納されているすべての 8,192 行を返します。
+  `indexHint()` はパフォーマンス向上のためのものではありません。ClickHouse のインデックスがどのように動作しているかを理解しデバッグするためのものです:
+
+  * 自分の条件はどの granule を選択しているのか？
+  * それらの granule には何行含まれているのか？
+  * 自分のインデックスは効果的に利用されているのか？
+</details>
+
+注意: `indexHint` 関数を使ってクエリを最適化することはできません。`indexHint` 関数はクエリ解析に追加の情報を一切提供しないため、クエリの最適化には寄与しません。`indexHint` 関数内に式を入れても、`indexHint` 関数を使わない場合と比べて何ら有利にはなりません。`indexHint` 関数は内部動作の調査およびデバッグの目的にのみ使用でき、パフォーマンスを向上させることはありません。ClickHouse のコントリビューター以外が `indexHint` を使用しているのを見かけた場合、それはおそらく誤用であり、削除すべきです。
 
 **構文**
 
@@ -2823,6 +2860,7 @@ SELECT FlightDate AS k, count() FROM ontime WHERE indexHint(k = '2025-09-15') GR
 │ 2025-09-30 │    8167 │
 └────────────┴─────────┘
 ```
+
 
 ## initialQueryID {#initialQueryID}
 
@@ -4453,7 +4491,7 @@ SELECT dummy, shardNum(), shardCount() FROM shard_num_example;
 導入バージョン: v22.6
 
 現在のサーバーで構成されている Secure Sockets Layer (SSL) 証明書に関する情報を表示します。
-ClickHouse を OpenSSL 証明書を使用して接続を検証するように構成する方法については、[Configuring SSL-TLS](/guides/sre/configuring-ssl) を参照してください。
+ClickHouse を OpenSSL 証明書を使用して接続を検証するように構成する方法については、[Configuring TLS](/guides/sre/tls/configuring-tls) を参照してください。
 
 **構文**
 
@@ -4480,6 +4518,7 @@ SELECT showCertificate() FORMAT LineAsString;
 ```response title=Response
 {'version':'1','serial_number':'2D9071D64530052D48308473922C7ADAFA85D6C5','signature_algo':'sha256WithRSAEncryption','issuer':'/CN=marsnet.local CA','not_before':'May  7 17:01:21 2024 GMT','not_after':'May  7 17:01:21 2025 GMT','subject':'/CN=chnode1','pkey_algo':'rsaEncryption'}
 ```
+
 
 ## sleep {#sleep}
 
@@ -4662,7 +4701,7 @@ message MessageName
 
 導入バージョン: v20.12
 
-サーバーが待ち受けている [native interface](../../interfaces/tcp.md) の TCP ポート番号を返します。
+サーバーが待ち受けている [native interface](/interfaces/tcp) の TCP ポート番号を返します。
 分散テーブルのコンテキストで実行された場合、この関数は各分片に対応する値を持つ通常のカラムを生成します。
 それ以外の場合は、定数値を生成します。
 
@@ -4693,6 +4732,7 @@ SELECT tcpPort()
 │      9000 │
 └───────────┘
 ```
+
 
 ## throwIf {#throwIf}
 

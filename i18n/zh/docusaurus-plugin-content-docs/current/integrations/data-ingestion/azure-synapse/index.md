@@ -19,13 +19,11 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) 是一项集成分析服务，将大数据、数据科学和数据仓库能力融合在一起，用于实现快速的大规模数据分析。
-在 Synapse 中，Spark 池提供按需、可伸缩的 [Apache Spark](https://spark.apache.org) 集群，使用户能够运行复杂的数据转换、机器学习任务，以及与外部系统的集成。
+在 Synapse 中，Spark 池提供按需、可伸缩的 [Apache Spark](https://spark.apache.org) 集群，使你能够运行复杂的数据转换、机器学习任务，以及与外部系统的集成。
 
 本文将介绍在 Azure Synapse 中使用 Apache Spark 时，如何集成 [ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector)。
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## 添加连接器的依赖项 {#add-connector-dependencies}
 Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us/azure/synapse-analytics/spark/apache-spark-azure-portal-add-libraries)：
@@ -40,8 +38,6 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 - `clickhouse-jdbc-{java_client_version}-all.jar` - [官方 Maven 仓库](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)
 
 请查阅我们的 [Spark Connector 兼容性矩阵](/integrations/apache-spark/spark-native-connector#compatibility-matrix)文档，以了解哪些版本更适合你的需求。
-
-
 
 ## 将 ClickHouse 添加为目录 {#add-clickhouse-as-catalog}
 
@@ -61,10 +57,10 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 {
     "conf": {
         "spark.sql.catalog.clickhouse": "com.clickhouse.spark.ClickHouseCatalog",
-        "spark.sql.catalog.clickhouse.host": "<ClickHouse 主机地址>",
+        "spark.sql.catalog.clickhouse.host": "<clickhouse host>",
         "spark.sql.catalog.clickhouse.protocol": "https",
-        "spark.sql.catalog.clickhouse.http_port": "<端口号>",
-        "spark.sql.catalog.clickhouse.user": "<用户名>",
+        "spark.sql.catalog.clickhouse.http_port": "<port>",
+        "spark.sql.catalog.clickhouse.user": "<username>",
         "spark.sql.catalog.clickhouse.password": "password",
         "spark.sql.catalog.clickhouse.database": "default"
     }
@@ -78,18 +74,16 @@ Azure Synapse 支持三种级别的[包维护](https://learn.microsoft.com/en-us
 请访问 [ClickHouse Spark 配置页面](/integrations/apache-spark/spark-native-connector#configurations)以获取更多配置信息。
 
 :::info
-在使用 ClickHouse Cloud 时，请务必设置[必需的 Spark 配置项](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)。\
+在使用 ClickHouse Cloud 时，请务必设置[必需的 Spark 配置项](/integrations/apache-spark/spark-native-connector#clickhouse-cloud-settings)。
 :::
 
 
 ## 设置验证 {#setup-verification}
 
 要验证依赖和配置是否已成功完成，请访问本次会话的 Spark UI，然后进入 `Environment` 选项卡。
-在其中查找与你的 ClickHouse 相关的设置：
+在其中查找与 ClickHouse 相关的设置：
 
 <Image img={sparkUICHSettings} size="xl" alt="使用 Spark UI 验证 ClickHouse 设置" border/>
-
-
 
 ## 其他资源 {#additional-resources}
 

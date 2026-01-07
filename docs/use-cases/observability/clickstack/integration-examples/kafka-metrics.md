@@ -101,7 +101,7 @@ This example shows a complete setup with Kafka, the JMX Metric Gatherer, and Cli
 ```yaml
 services:
   clickstack:
-    image: docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+    image: clickhouse/clickstack-all-in-one:latest
     ports:
       - "8080:8080"
       - "4317:4317"
@@ -234,7 +234,7 @@ Start a ClickStack instance:
 ```bash
 docker run -d --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
 #### Load metrics into ClickStack {#load-metrics}

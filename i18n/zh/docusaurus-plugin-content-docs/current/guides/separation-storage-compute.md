@@ -12,6 +12,7 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
+
 # 存储与计算分离 {#separation-of-storage-and-compute}
 
 ## 概览 {#overview}
@@ -93,6 +94,7 @@ chown clickhouse:clickhouse /etc/clickhouse-server/config.d/storage_config.xml
 service clickhouse-server restart
 ```
 
+
 ## 2. 创建一个基于 S3 的表 {#2-create-a-table-backed-by-s3}
 
 为了验证我们是否已正确配置 S3 磁盘，可以尝试创建并查询一张表。
@@ -140,7 +142,7 @@ INSERT INTO my_s3_table (id, column1)
   VALUES (1, 'abc'), (2, 'xyz');
 ```
 
-让我们来确认一下这些行是否已经插入：
+让我们来确认一下这些行是否已成功插入：
 
 ```sql
 SELECT * FROM my_s3_table;
@@ -152,7 +154,7 @@ SELECT * FROM my_s3_table;
 │  2 │ xyz     │
 └────┴─────────┘
 
-返回 2 行。耗时: 0.284 秒。
+2 rows in set. Elapsed: 0.284 sec.
 ```
 
 在 AWS 控制台中，如果数据已经成功写入 S3，你应该能看到 ClickHouse 已在你指定的 S3 存储桶中创建了新的文件。
@@ -160,6 +162,7 @@ SELECT * FROM my_s3_table;
 如果一切正常，你现在已经在使用实现存储与计算分离的 ClickHouse 了！
 
 <Image img={s3_bucket_example} size="md" alt="使用存储与计算分离的 S3 存储桶示例" border />
+
 
 ## 3. 为容错实现复制（可选） {#3-implementing-replication-for-fault-tolerance-optional}
 
@@ -170,6 +173,7 @@ SELECT * FROM my_s3_table;
 为了实现容错，您可以使用多个 ClickHouse 服务器节点，并将它们分布在多个 AWS 区域中，每个节点使用一个独立的 S3 存储桶。
 
 使用基于 S3 的磁盘进行复制可以通过 `ReplicatedMergeTree` 表引擎来实现。有关详细信息，请参阅以下指南：
+
 - [使用 S3 对象存储在两个 AWS 区域间复制单个分片](/integrations/s3#s3-multi-region)。
 
 ## 延伸阅读 {#further-reading}

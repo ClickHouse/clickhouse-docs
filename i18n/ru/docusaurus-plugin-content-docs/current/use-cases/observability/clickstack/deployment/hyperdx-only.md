@@ -15,7 +15,7 @@ import hyperdx_logs from '@site/static/images/use-cases/observability/hyperdx-lo
 import hyperdx_2 from '@site/static/images/use-cases/observability/hyperdx-2.png';
 import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_json_support.md';
 
-Этот вариант предназначен для пользователей, у которых уже есть запущенный экземпляр ClickHouse с данными наблюдаемости и/или событий.
+Этот вариант предназначен для случаев, когда у вас уже есть запущенный экземпляр ClickHouse с данными наблюдаемости и/или событий.
 
 HyperDX может использоваться независимо от остальной части стека и совместим с любой схемой данных, а не только с OpenTelemetry (OTel). Это делает его подходящим для кастомных конвейеров наблюдаемости, уже построенных на ClickHouse.
 

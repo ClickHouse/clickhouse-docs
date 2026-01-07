@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 # EXCHANGE ステートメント {#exchange-statement}
 
-2つのテーブルまたはディクショナリの名前をアトミックに交換します。
-この処理は、一時的な名前を用いた [`RENAME`](./rename.md) クエリでも実行できますが、その場合、この操作はアトミックではありません。
+2 つのテーブルまたは辞書の名前をアトミックに入れ替えます。
+この操作は一時的な名前を用いた [`RENAME`](./rename.md) クエリでも行えますが、その場合はアトミックではありません。
 
-:::note\
-`EXCHANGE` クエリは、[`Atomic`](../../engines/database-engines/atomic.md) および [`Shared`](/cloud/reference/shared-catalog#shared-database-engine) データベースエンジンでのみサポートされています。
+:::note
+`EXCHANGE` クエリは [`Atomic`](../../engines/database-engines/atomic.md) および [`Shared`](/cloud/reference/shared-catalog#shared-database-engine) データベースエンジンでのみサポートされています。
 :::
 
 **構文**
@@ -22,9 +22,9 @@ doc_type: 'reference'
 EXCHANGE TABLES|DICTIONARIES [db0.]name_A AND [db1.]name_B [ON CLUSTER cluster]
 ```
 
-## テーブルの入れ替え {#exchange-tables}
+## EXCHANGE TABLES {#exchange-tables}
 
-2 つのテーブルの名前を入れ替えます。
+2つのテーブルの名前を入れ替えます。
 
 **構文**
 
@@ -37,19 +37,19 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 カンマで区切ることで、1つのクエリで複数のテーブルペアを入れ替えることができます。
 
 :::note
-複数のテーブルペアを入れ替える場合、入れ替えは**アトミックではなく逐次的に**行われます。操作中にエラーが発生した場合、一部のテーブルペアだけが入れ替えられ、他のテーブルペアは入れ替えられないままになる可能性があります。
+複数のテーブルペアを入れ替える場合、入れ替えは**アトミックではなく順次**実行されます。操作中にエラーが発生した場合、一部のテーブルペアだけが入れ替えられ、他のペアは入れ替えられていない可能性があります。
 :::
 
 **例**
 
 ```sql title="Query"
--- テーブルを作成
+-- Create tables
 CREATE TABLE a (a UInt8) ENGINE=Memory;
 CREATE TABLE b (b UInt8) ENGINE=Memory;
 CREATE TABLE c (c UInt8) ENGINE=Memory;
 CREATE TABLE d (d UInt8) ENGINE=Memory;
 
--- 1つのクエリで2組のテーブルを交換
+-- Exchange two pairs of tables in one query
 EXCHANGE TABLES a AND b, c AND d;
 
 SHOW TABLE a;
@@ -59,7 +59,7 @@ SHOW TABLE d;
 ```
 
 ```sql title="Response"
--- テーブル 'a' はテーブル 'b' の構造を持ち、テーブル 'b' はテーブル 'a' の構造を持つ
+-- Now table 'a' has the structure of 'b', and table 'b' has the structure of 'a'
 ┌─statement──────────────┐
 │ CREATE TABLE default.a↴│
 │↳(                     ↴│
@@ -75,7 +75,7 @@ SHOW TABLE d;
 │↳ENGINE = Memory        │
 └────────────────────────┘
 
--- テーブル 'c' はテーブル 'd' の構造を持ち、テーブル 'd' はテーブル 'c' の構造を持つ
+-- Now table 'c' has the structure of 'd', and table 'd' has the structure of 'c'
 ┌─statement──────────────┐
 │ CREATE TABLE default.c↴│
 │↳(                     ↴│
@@ -104,4 +104,4 @@ EXCHANGE DICTIONARIES [db0.]dict_A AND [db1.]dict_B [ON CLUSTER cluster]
 
 **関連項目**
 
-* [辞書 (Dictionaries)](../../sql-reference/dictionaries/index.md)
+* [辞書](../../sql-reference/dictionaries/index.md)

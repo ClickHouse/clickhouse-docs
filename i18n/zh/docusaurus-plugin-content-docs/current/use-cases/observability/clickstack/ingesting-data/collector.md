@@ -19,7 +19,6 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 本页详细介绍如何配置官方 ClickStack OpenTelemetry（OTel）收集器。
 
-
 ## Collector 角色 {#collector-roles}
 
 OpenTelemetry collector 可以以两种主要角色进行部署：
@@ -38,32 +37,32 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
 
 ### 独立模式 {#standalone}
 
-要以独立模式部署 ClickStack 发行版中的 OTel 连接器，运行以下 Docker 命令：
+要以独立模式部署 ClickStack 发行版提供的 OTel 连接器，请运行以下 Docker 命令：
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-请注意，我们可以通过设置环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 来覆盖目标 ClickHouse 实例的配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse HTTP 端点，包括协议和端口，例如 `http://localhost:8123`。
+请注意，我们可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 来覆盖目标 ClickHouse 实例的配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse HTTP 端点，包括协议和端口，例如：`http://localhost:8123`。
 
 **这些环境变量可用于任何包含该连接器的 Docker 发行版。**
 
-`OPAMP_SERVER_URL` 应指向你的 HyperDX 部署，例如 `http://localhost:4320`。HyperDX 默认在端口 `4320` 上的 `/v1/opamp` 暴露一个 OpAMP（Open Agent Management Protocol，开放代理管理协议）服务器。请确保从运行 HyperDX 的容器中暴露此端口（例如使用 `-p 4320:4320`）。
+`OPAMP_SERVER_URL` 应指向你的 HyperDX 部署，例如 `http://localhost:4320`。HyperDX 默认在端口 `4320` 的 `/v1/opamp` 上暴露一个 OpAMP（Open Agent Management Protocol，开放代理管理协议）服务器。请确保在运行 HyperDX 的容器中暴露此端口（例如使用 `-p 4320:4320`）。
 
-:::note Exposing and connecting to the OpAMP port
-为了让 collector 连接到 OpAMP 端口，该端口必须由 HyperDX 容器暴露，例如 `-p 4320:4320`。对于本地测试，macOS 用户可以将 `OPAMP_SERVER_URL` 设置为 `http://host.docker.internal:4320`。Linux 用户可以通过 `--network=host` 启动 collector 容器。
+:::note 暴露并连接到 OpAMP 端口
+为了让 collector 能够连接到 OpAMP 端口，该端口必须由 HyperDX 容器暴露，例如 `-p 4320:4320`。在本地测试中，macOS 用户可以将 `OPAMP_SERVER_URL` 设置为 `http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动 collector 容器。
 :::
 
-在生产环境中，用户应使用具有[相应凭据](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
+在生产环境中，你应使用具备[相应凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的专用用户。
 
 
 ### 修改配置 {#modifying-otel-collector-configuration}
 
 #### 使用 Docker {#using-docker}
 
-所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为连接某个 ClickHouse 实例：
+所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为连接到某个 ClickHouse 实例：
 
-例如，一体化（all-in-one）镜像：
+例如，all-in-one 镜像：
 
 ```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
@@ -73,8 +72,12 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```
 
 ```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
+
+:::note 镜像名称更新
+ClickStack 镜像现在以 `clickhouse/clickstack-*` 的名称发布（此前为 `docker.hyperdx.io/hyperdx/*`）。
+:::
 
 
 #### Docker Compose {#docker-compose-otel}
@@ -101,7 +104,6 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
       - internal
 ```
 
-
 ### 高级配置 {#advanced-configuration}
 
 ClickStack 发行版的 OTel collector 支持通过挂载自定义配置文件并设置环境变量来扩展基础配置。自定义配置会与由 HyperDX 通过 OpAMP 管理的基础配置合并。
@@ -110,9 +112,9 @@ ClickStack 发行版的 OTel collector 支持通过挂载自定义配置文件�
 
 要添加自定义 receivers、processors 或 pipelines：
 
-1. 创建一个自定义配置文件，并写入你的附加配置
+1. 创建一个包含额外配置的自定义配置文件
 2. 将该文件挂载到 `/etc/otelcol-contrib/custom.config.yaml`
-3. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+3. 将环境变量设置为 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
 
 **自定义配置示例：**
 
@@ -167,17 +169,17 @@ service:
         - clickhouse
 ```
 
-**使用一体式镜像部署：**
+**使用一体化镜像部署：**
 
 ```bash
 docker run -d --name clickstack \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
   -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-**使用独立收集器部署：**
+**使用独立采集器部署：**
 
 ```bash
 docker run -d \
@@ -188,14 +190,14 @@ docker run -d \
   -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
   -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
   -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+  clickhouse/clickstack-otel-collector:latest
 ```
 
 :::note
-你只需要在自定义配置中定义新的 `receivers`、`processors` 和 `pipelines`。基础处理器（`memory_limiter`、`batch`）和导出器（`clickhouse`）已经定义好——直接通过它们的名称进行引用即可。自定义配置会与基础配置合并，且不会覆盖已有组件。
+你只需在自定义配置中定义新的 receivers、processors 和 pipelines。基础 processors（`memory_limiter`、`batch`）和 exporter（`clickhouse`）已预先定义——通过名称引用它们即可。自定义配置会与基础配置合并，且不能覆盖已有组件。
 :::
 
-对于更复杂的配置，请参阅[默认 ClickStack collector 配置](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml)和 [ClickHouse exporter 文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
+对于更复杂的配置，请参考 [默认的 ClickStack 收集器配置](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) 和 [ClickHouse exporter 文档](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
 
 
 #### 配置结构 {#configuration-structure}
@@ -204,7 +206,7 @@ docker run -d \
 
 ## 保护 collector {#securing-the-collector}
 
-ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，用户必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
+ClickStack 发行版中的 OpenTelemetry collector 内置了对 OpAMP（Open Agent Management Protocol）的支持，用于安全地配置和管理 OTLP 端点。启动时，您必须提供一个 `OPAMP_SERVER_URL` 环境变量——其值应指向 HyperDX 应用，该应用在 `/v1/opamp` 路径下提供 OpAMP API。
 
 此集成确保 OTLP 端点通过在部署 HyperDX 应用时自动生成的摄取 API key 得到保护。所有发送到 collector 的遥测数据都必须包含此 API key 以完成身份验证。您可以在 HyperDX 应用的 `Team Settings → API Keys` 中找到该 key。
 
@@ -228,7 +230,6 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 
 这里假定 collector 已配置为使用数据库 `otel`。可以通过环境变量 `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE` 来控制这一点。将该环境变量传递给运行 collector 的镜像，[方式与其他环境变量类似](#modifying-otel-collector-configuration)。
 
-
 ## 处理 —— 过滤、转换和富化 {#processing-filtering-transforming-enriching}
 
 用户在数据摄取过程中通常会希望对事件消息进行过滤、转换和富化。由于无法修改 ClickStack connector 的配置，我们建议需要进一步进行事件过滤和处理的用户采用以下任一方式：
@@ -238,7 +239,7 @@ GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hy
 
 如果使用 OTel collector 进行处理，我们建议在网关实例上执行转换工作，并尽量减少在 agent 实例上的工作负载。这样可以确保在边缘、运行在服务器上的 agent 所需资源尽可能少。通常，我们看到用户只在 agent 中执行过滤（以减少不必要的网络使用）、时间戳设置（通过 operators），以及需要上下文的富化操作。例如，如果网关实例位于不同的 Kubernetes 集群中，则需要在 agent 中执行 k8s 富化。
 
-OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
+OpenTelemetry 支持以下可供使用的处理和过滤功能：
 
 - **Processors** - Processors 获取由 [receivers 收集到的数据并对其进行修改或转换](https://opentelemetry.io/docs/collector/transforming-telemetry/)，然后再发送给 exporters。Processors 按照在 collector 配置中 `processors` 部分指定的顺序应用。这些是可选的，但[通常建议使用一个最小集合](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor#recommended-processors)。在将 OTel collector 与 ClickHouse 一起使用时，我们建议将 processors 限制为：
 
@@ -250,7 +251,7 @@ OpenTelemetry 支持以下可供用户利用的处理和过滤功能：
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) 提供了在 receiver 侧可用的最基本处理单元。支持基础解析，允许设置诸如 Severity 和 Timestamp 等字段。此处支持 JSON 和正则解析，以及事件过滤和基础转换。我们建议在此执行事件过滤。
 
-我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过物化视图和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
+我们建议用户避免使用 operators 或 [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md) 进行过度的事件处理。这些操作可能带来相当大的内存和 CPU 开销，尤其是 JSON 解析。完全可以在 ClickHouse 插入时通过 materialized view 和列完成所有处理，但有一些例外 —— 尤其是具备上下文感知的富化，例如添加 k8s 元数据。有关更多详细信息，请参阅 [使用 SQL 提取结构](/use-cases/observability/schema-design#extracting-structure-with-sql)。
 
 ### 示例 {#example-processing}
 
@@ -309,10 +310,9 @@ service:
 
 如需更高级的配置，我们建议参考 [OpenTelemetry collector 文档](https://opentelemetry.io/docs/collector/)。
 
-
 ## 优化插入 {#optimizing-inserts}
 
-为了在获得强一致性保证的同时实现高效的插入性能，用户在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
+为了在获得强一致性保证的同时实现高效的插入性能，你在通过 ClickStack collector 向 ClickHouse 插入可观测性数据时，应当遵循一些简单的规则。只要正确配置 OTel collector，遵循以下规则就会非常简单。这样也可以避免用户在首次使用 ClickHouse 时遇到的一些[常见问题](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse)。
 
 ### 批处理 {#batching}
 
@@ -412,16 +412,16 @@ JSON 类型为 ClickStack 用户提供了以下优势：
 
 ### 启用 JSON 支持 {#enabling-json-support}
 
-要在收集器中启用 JSON 支持，请在包含该收集器的任意部署上设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这样可以确保在 ClickHouse 中使用 JSON 类型创建模式（schema）。
+要为 collector 启用此支持，请在包含 collector 的任意部署上设置环境变量 `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`。这样可以确保在 ClickHouse 中使用 JSON 类型创建这些 schema。
 
-:::note HyperDX support
-为了能够查询 JSON 类型，还必须在 HyperDX 应用层通过环境变量 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 启用相应支持。
+:::note HyperDX 支持
+为了对 JSON 类型执行查询，还必须在 HyperDX 应用层通过环境变量 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 启用对该类型的支持。
 :::
 
 例如：
 
 ```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-otel-collector
+docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
 

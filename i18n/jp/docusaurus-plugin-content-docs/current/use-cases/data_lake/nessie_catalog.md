@@ -34,7 +34,6 @@ Nessie は、次の機能を備えたデータレイク向けのオープンソ�
 `SET allow_experimental_database_iceberg = 1;`
 :::
 
-
 ## ローカル開発環境のセットアップ {#local-development-setup}
 
 ローカル開発およびテストには、コンテナ化された Nessie セットアップを利用できます。このアプローチは、学習、プロトタイピング、開発用途に最適です。
@@ -104,13 +103,13 @@ services:
   clickhouse:
     image: clickhouse/clickhouse-server:head
     container_name: nessie-clickhouse
-    user: '0:0'  # root権限を確保
+    user: '0:0'  # Ensures root permissions
     ports:
       - "8123:8123"
       - "9000:9000"
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # データセットフォルダーをマウント
+      - ./clickhouse/data_import:/var/lib/clickhouse/data_import  # Mount dataset folder
     networks:
       - iceberg_net
     environment:
@@ -148,7 +147,6 @@ docker-compose logs -f
 Nessie のセットアップではインメモリのバージョンストアを使用し、最初にサンプルデータを Iceberg テーブルにロードしておく必要があります。ClickHouse からクエリを実行する前に、その環境でテーブルが作成され、データが投入されていることを必ず確認してください。
 :::
 
-
 ### ローカル Nessie カタログへの接続 {#connecting-to-local-nessie-catalog}
 
 ClickHouse コンテナに接続します。
@@ -166,7 +164,6 @@ CREATE DATABASE demo
 ENGINE = DataLakeCatalog('http://nessie:19120/iceberg', 'admin', 'password')
 SETTINGS catalog_type = 'rest', storage_endpoint = 'http://minio:9002/my-bucket', warehouse = 'warehouse'
 ```
-
 
 ## ClickHouse を使用した Nessie カタログテーブルのクエリ実行 {#querying-nessie-catalog-tables-using-clickhouse}
 
@@ -250,7 +247,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://localhost:9002/my-bucket/default/taxis/', 'admin', '[HIDDEN]')      │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## データレイクから ClickHouse へのデータ読み込み {#loading-data-from-your-data-lake-into-clickhouse}
 

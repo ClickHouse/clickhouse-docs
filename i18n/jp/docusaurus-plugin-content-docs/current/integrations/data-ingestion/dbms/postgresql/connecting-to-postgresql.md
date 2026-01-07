@@ -82,7 +82,7 @@ host    db_in_psg             clickhouse_user 192.168.1.0/24          password
 8. 新しい `clickhouse_user` がログインできることを確認します。
 
 ```text
-psql -U clickhouse_user -W -d db_in_psg -h <PostgreSQLホスト>
+psql -U clickhouse_user -W -d db_in_psg -h <your_postgresql_host>
 ```
 
 :::note
@@ -139,7 +139,7 @@ SELECT * FROM db_in_ch.table1
 ClickHouse のテーブルには、PostgreSQL のテーブル内に既に存在していた 2 行が自動的に格納されているはずです。
 
 ```response
-クエリID: 34193d31-fe21-44ac-a182-36aaefbd78bf
+Query id: 34193d31-fe21-44ac-a182-36aaefbd78bf
 
 ┌─id─┬─column1─┐
 │  1 │ abc     │
@@ -286,10 +286,10 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 9. 新しい `clickhouse_user` でログインできるかテストします。
 
 ```text
- psql -U clickhouse_user -W -d db1 -h <PostgreSQLホスト>
+ psql -U clickhouse_user -W -d db1 -h <your_postgresql_host>
 ```
 
-### 2. ClickHouse で
+### 2. ClickHouse で {#2-in-clickhouse}
 
 1. ClickHouse CLI にログインする
 

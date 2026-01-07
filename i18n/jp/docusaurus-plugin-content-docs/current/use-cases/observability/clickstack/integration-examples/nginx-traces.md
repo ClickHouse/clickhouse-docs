@@ -17,7 +17,6 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # ClickStack を使った Nginx トレースのモニタリング {#nginx-traces-clickstack}
 
 :::note[TL;DR]
@@ -174,21 +173,21 @@ sudo systemctl reload nginx
 
 ## デモ用データセット {#demo-dataset}
 
-本番システムを設定する前に nginx トレース連携をテストしたいユーザー向けに、現実的なトラフィックパターンを持つ事前生成済みの nginx トレースのサンプルデータセットを提供しています。
+本番環境を設定する前に nginx トレース連携をテストしたいユーザー向けに、実際のトラフィックパターンに近い事前生成済みの Nginx トレースのサンプルデータセットを提供しています。
 
 <VerticalStepper headerLevel="h4">
 
 #### ClickStack を起動する {#start-clickstack}
 
-まだ ClickStack を起動していない場合は、次のコマンドで起動してください:
+まだ ClickStack を起動していない場合は、次のコマンドで起動します:
 
 ```bash
 docker run --name clickstack-demo \
   -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  docker.hyperdx.io/hyperdx/hyperdx-all-in-one:latest
+  clickhouse/clickstack-all-in-one:latest
 ```
 
-続行する前に、ClickStack が完全に初期化されるまで約 30 秒待ちます。
+続行する前に、ClickStack が完全に初期化されるまで約 30 秒待ってください。
 
 - ポート 8080: HyperDX の Web インターフェイス
 - ポート 4317: OTLP gRPC エンドポイント (nginx モジュールで使用)
@@ -199,15 +198,15 @@ docker run --name clickstack-demo \
 サンプルトレースファイルをダウンロードし、タイムスタンプを現在時刻に更新します:
 
 ```bash
-# Download the traces {#download-the-traces}
+# トレースをダウンロード
 curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/nginx-traces-sample.json
 ```
 
-このデータセットには以下が含まれます:
-- 現実的なタイミングを持つ 1,000 個のトレーススパン
-- 多様なトラフィックパターンを持つ 9 種類のエンドポイント
-- 約 93% の成功率 (200)、約 3% のクライアントエラー (404)、約 4% のサーバーエラー (500)
-- 10ms 〜 800ms の範囲のレイテンシ
+このデータセットには次の内容が含まれます:
+- 実際に近いタイミングの 1,000 個のトレーススパン
+- トラフィックパターンが異なる 9 つのエンドポイント
+- 約 93% の成功 (200)、約 3% のクライアントエラー (404)、約 4% のサーバーエラー (500)
+- 10ms から 800ms までのレイテンシ
 - 元のトラフィックパターンを保持したまま、現在時刻にシフト済み
 
 #### トレースを ClickStack に送信する {#send-traces}
@@ -218,12 +217,12 @@ API key を環境変数として設定します (まだ設定していない場�
 export CLICKSTACK_API_KEY=your-api-key-here
 ```
 
-**API key を取得する:**
+**API key を取得する手順:**
 1. ClickStack の URL で HyperDX を開きます
 2. Settings → API Keys に移動します
-3. **Ingestion API Key** をコピーします
+3. **インジェスト API key** をコピーします
 
-その後、トレースを ClickStack に送信します:
+続いて、トレースを ClickStack に送信します:
 
 ```bash
 curl -X POST http://localhost:4318/v1/traces \
@@ -233,21 +232,21 @@ curl -X POST http://localhost:4318/v1/traces \
 ```
 
 :::note[localhost での実行]
-このデモでは、ClickStack が `localhost:4318` 上でローカルに動作していることを前提としています。リモート環境の場合は、`localhost` を ClickStack のホスト名に置き換えてください。
+このデモでは、ClickStack が `localhost:4318` でローカル実行されていることを前提としています。リモートインスタンスの場合は、`localhost` を ClickStack のホスト名に置き換えてください。
 :::
 
-`{"partialSuccess":{}}` のようなレスポンスが表示されれば、トレースが正常に送信されたことを示しています。すべての 1,000 件のトレースが ClickStack にインジェストされます。
+`{"partialSuccess":{}}` のようなレスポンスが表示されれば、トレースが正常に送信されたことを示します。1,000 件すべてのトレースが ClickStack にインジェストされます。
 
 #### HyperDX でトレースを確認する {#verify-demo-traces}
 
-1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします (必要に応じてアカウントを作成してください)
-2. Search ビューに移動し、ソースを `Traces` に設定します
-3. タイムレンジを **2025-10-25 13:00:00 - 2025-10-28 13:00:00** に設定します
+1. [HyperDX](http://localhost:8080/) を開き、アカウントにログインします (必要に応じて先にアカウントを作成します)
+2. Search ビューに移動し、source を `Traces` に設定します
+3. 時間範囲を **2025-10-25 13:00:00 - 2025-10-28 13:00:00** に設定します
 
 Search ビューでは次のように表示されるはずです:
 
 :::note[タイムゾーン表示]
-HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** の範囲をカバーしています。広めのタイムレンジを指定することで、どの場所からアクセスしてもデモトレースを確認できるようにしています。トレースが確認できたら、24 時間の範囲に狭めて、より見やすい可視化にすることができます。
+HyperDX はタイムスタンプをブラウザのローカルタイムゾーンで表示します。デモデータは **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** の期間をカバーしています。広めの時間範囲を指定することで、どのロケーションからでもデモトレースが確実に表示されます。トレースが表示されたら、より見やすい可視化のために時間範囲を 24 時間に絞り込むことができます。
 :::
 
 <Image img={view_traces} alt="トレースを表示"/>
@@ -328,7 +327,6 @@ OpenTelemetry 関連のエラーが発生していないか確認します。
 # アクセスログを確認してトラフィックを検証する {#check-access-logs-to-confirm-traffic}
 tail -f /var/log/nginx/access.log
 ```
-
 
 ## 次のステップ {#next-steps}
 

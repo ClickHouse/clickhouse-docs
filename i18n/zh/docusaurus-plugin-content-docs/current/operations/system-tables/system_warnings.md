@@ -47,11 +47,11 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 ```text
 Row 1:
 ──────
-message:               活跃分区数超过 10 个。
-message_format_string: 活跃分区数超过 {}。
+message:               The number of active parts is more than 10.
+message_format_string: The number of active parts is more than {}.
 
 Row 2:
 ──────
-message:               已挂载数据库数超过 2 个。
-message_format_string: 已挂载数据库数超过 {}。
+message:               The number of attached databases is more than 2.
+message_format_string: The number of attached databases is more than {}.
 ```

@@ -12,8 +12,6 @@ doc_type: 'reference'
 - 调试更简单
 - jdbc-bridge 可以以同样的方式实现
 
-
-
 ## 用法 {#usage}
 
 `clickhouse-server` 在 ODBC 表函数和 StorageODBC 引擎中使用此工具。
@@ -24,8 +22,6 @@ doc_type: 'reference'
 - `max_block_size` -- 可选参数，用于设置单个数据块的最大大小。
 
 查询在 POST 请求的请求体中发送，响应以 RowBinary 格式返回。
-
-
 
 ## 示例： {#example}
 

@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 作为一个用于展示从 Postgres 迁移到 ClickHouse 的典型过程的示例数据集，我们使用了 [此处](/getting-started/example-datasets/stackoverflow) 文档化的 Stack Overflow 数据集。该数据集包含从 2008 年到 2024 年 4 月期间在 Stack Overflow 上产生的每一条 `post`、`vote`、`user`、`comment` 和 `badge`。该数据在 PostgreSQL 中的模式（schema）如下所示：
 
-<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow 模式"/>
+<Image img={postgres_stackoverflow_schema} size="lg" alt="PostgreSQL Stack Overflow 模式" />
 
 *用于在 PostgreSQL 中创建这些表的 DDL 命令可在 [此处](https://pastila.nl/?001c0102/eef2d1e4c82aab78c4670346acb74d83#TeGvJWX9WTA1V/5dVVZQjg==) 获取。*
 
@@ -28,63 +28,46 @@ import Image from '@theme/IdealImage';
 
 对于希望将该数据集导入 PostgreSQL 实例以测试迁移步骤的用户，我们提供了包含 DDL 的 `pg_dump` 格式数据供下载，后续的数据加载命令如下所示：
 
-
-
 ```bash
-# 用户 {#users}
+# users
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/users.sql.gz
 gzip -d users.sql.gz
 psql < users.sql
-```
 
-
-# posts 表 {#posts}
+# posts
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posts.sql.gz
 gzip -d posts.sql.gz
-psql &lt; posts.sql
+psql < posts.sql
 
-
-
-# posthistory {#posthistory}
+# posthistory
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/posthistory.sql.gz
 gzip -d posthistory.sql.gz
 psql < posthistory.sql
 
-
-
-# 评论 {#comments}
+# comments
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/comments.sql.gz
 gzip -d comments.sql.gz
 psql < comments.sql
 
-
-
-# votes 表 {#votes}
+# votes
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/votes.sql.gz
 gzip -d votes.sql.gz
-psql &lt; votes.sql
+psql < votes.sql
 
-
-
-# badges 徽章 {#badges}
+# badges
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/badges.sql.gz
 gzip -d badges.sql.gz
-psql &lt; badges.sql
+psql < badges.sql
 
-
-
-# postlinks {#postlinks}
-
-wget [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz)
+# postlinks
+wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/pdump/2024/postlinks.sql.gz
 gzip -d postlinks.sql.gz
-psql &lt; postlinks.sql
-
+psql < postlinks.sql
 ```
 
-虽然对 ClickHouse 而言此数据集规模较小,但对 Postgres 来说却相当庞大。上述内容为涵盖 2024 年前三个月的数据子集。
+对于 ClickHouse 来说该数据集算小，但对于 Postgres 来说已经相当可观。上述内容表示的是覆盖 2024 年前 3 个月的一个子集。
 
-> 虽然我们的示例结果使用完整数据集来展示 Postgres 和 ClickHouse 之间的性能差异,但下文记录的所有步骤在功能上与使用较小子集完全相同。如需将完整数据集加载到 Postgres,请参阅[此处](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)。由于上述模式施加的外键约束,PostgreSQL 的完整数据集仅包含满足引用完整性的行。如有需要,可直接将无此类约束的 [Parquet 版本](/getting-started/example-datasets/stackoverflow)轻松加载到 ClickHouse 中。
-```
+> 虽然我们的示例结果使用完整数据集来展示 Postgres 与 ClickHouse 之间的性能差异，但下文记录的所有步骤在较小子集上执行时在功能上是完全相同的。希望将完整数据集加载到 Postgres 的用户请参见[此处](https://pastila.nl/?00d47a08/1c5224c0b61beb480539f15ac375619d#XNj5vX3a7ZjkdiX7In8wqA==)。由于上述模式中施加的外键约束，PostgreSQL 的完整数据集仅包含满足引用完整性的行。一个不包含此类约束的 [Parquet 版本](/getting-started/example-datasets/stackoverflow) 可以在需要时直接加载到 ClickHouse 中。
 
 
 ## 迁移数据 {#migrating-data}
@@ -125,6 +108,7 @@ ORDER BY id;
 
 完成设置后，ClickPipes 会开始将 PostgreSQL 中的所有数据迁移到 ClickHouse。根据网络状况和部署规模，对于 Stack Overflow 数据集，这通常只需要几分钟。
 
+
 ### 手动批量加载与定期更新 {#initial-bulk-load-with-periodic-updates}
 
 采用手动方式时，可以通过以下方法完成数据集的初始批量加载：
@@ -137,14 +121,13 @@ ORDER BY id;
 PostgreSQL 与 ClickHouse 之间的数据类型可能不同。要为每个表列确定对应的数据类型，可以将 `DESCRIBE` 命令与 [Postgres 表函数](/sql-reference/table-functions/postgresql) 结合使用。以下命令用于查看 PostgreSQL 中 `posts` 表的结构，请根据你的环境进行修改：
 
 ```sql title="Query"
-DESCRIBE TABLE postgresql('<主机>:<端口>', 'postgres', 'posts', '<用户名>', '<密码>')
+DESCRIBE TABLE postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 SETTINGS describe_compact_output = 1
 ```
 
 关于 PostgreSQL 与 ClickHouse 之间数据类型映射的概览，请参阅[附录文档](/migrations/postgresql/appendix#data-type-mappings)。
 
 针对该 schema 优化数据类型的步骤，与从其他数据源（例如 S3 上的 Parquet）加载数据时完全相同。按照[使用 Parquet 的替代指南](/data-modeling/schema-design)中描述的流程操作，将得到如下 schema：
-
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -174,26 +157,27 @@ CREATE TABLE stackoverflow.posts
 )
 ENGINE = MergeTree
 ORDER BY tuple()
-COMMENT '已优化类型'
+COMMENT 'Optimized types'
 ```
 
-我们可以使用一个简单的 `INSERT INTO SELECT` 语句来填充数据，从 PostgreSQL 读取数据并插入到 ClickHouse 中：
+我们可以使用一个简单的 `INSERT INTO SELECT` 语句，从 PostgreSQL 读取数据并插入到 ClickHouse 中：
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
-增量加载同样可以被调度。如果 Postgres 表只接收插入，并且存在递增的 id 或时间戳，用户可以使用上述表函数方法来加载增量数据，即在 `SELECT` 中应用 `WHERE` 子句。若可以保证更新只会修改同一列，此方法也可用于支持更新。然而，若要支持删除，则需要对整张表进行完全重载；随着表规模的增大，这可能会变得难以实现。
+增量加载反过来也可以进行调度。如果 Postgres 表只接收插入操作，并且存在递增的 id 或时间戳，则可以使用上述表函数方式来加载增量数据，即在 `SELECT` 中应用 `WHERE` 子句。若更新操作可以保证只更新同一列，此方法也可以用于支持更新。然而，要支持删除操作则需要进行完整重新加载，而随着表规模增长，这可能会变得难以实现。
 
-我们使用 `CreationDate` 演示一次初始加载和一次增量加载（我们假设如果行被更新，此字段会随之更新）。
+我们使用 `CreationDate` 来演示一次初始加载和后续的增量加载（我们假设当行被更新时，该字段也会更新）。
 
 ```sql
--- 初始加载
+-- initial load
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password')
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
+
 
 > ClickHouse 会将简单的 `WHERE` 子句（例如 `=`, `!=`, `>`, `>=`, `<`, `<=` 和 IN）下推至 PostgreSQL 服务器。通过确保在用于标识变更集的列上建立索引，可以让增量加载更加高效。
 

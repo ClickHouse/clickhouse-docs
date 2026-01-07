@@ -10,9 +10,8 @@ doc_type: 'reference'
 ClickHouse は、位置情報や領域などの地理的オブジェクトを表現するためのデータ型をサポートします。
 
 **関連項目**
+
 - [単純な地理的地物の表現](https://en.wikipedia.org/wiki/GeoJSON)。
-
-
 
 ## Point {#point}
 
@@ -154,7 +153,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## Geometry {#geometry}
 
-`Geometry` は、上記のすべての型に共通する型です。これらの型の `Variant` 型と同等です。
+`Geometry` は、上記のすべての型に共通する型です。これらの型を要素とする `Variant` と同等です。Geometry 型を使用する場合は、次の設定を有効化する必要があります: `SET allow_suspicious_variant_types = 1`
 
 **例**
 
@@ -183,12 +182,12 @@ INSERT INTO geo VALUES ('POINT(0 0)', 2);
 INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
 INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
 INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
-INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+INSERT INTO geo_dst SELECT readWKT(geom) FROM geo ORDER BY id;
 
 SELECT * FROM geo_dst;
 ```
 
-結果：
+結果:
 
 ```text
    ┌─geom─────────────────────────────────────────────────────────────────────────────────────────────────────────────┐

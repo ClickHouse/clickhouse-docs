@@ -7,8 +7,6 @@ title: '第三方库'
 doc_type: 'reference'
 ---
 
-
-
 # 第三方库 {#third-party-libraries}
 
 ClickHouse 出于不同目的会使用第三方库，例如连接到其他数据库、在从磁盘加载/保存到磁盘时对数据进行解码/编码，或实现某些专用 SQL 函数。
@@ -23,7 +21,6 @@ SELECT library_name, license_type, license_path FROM system.licenses ORDER BY li
 根据构建选项的不同，部分库可能不会被编译，因此其功能在运行时可能不可用。
 
 [示例](https://sql.clickhouse.com?query_id=478GCPU7LRTSZJBNY3EJT3)
-
 
 ## 添加和维护第三方库 {#adding-and-maintaining-third-party-libraries}
 

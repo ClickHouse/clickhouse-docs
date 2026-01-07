@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 このガイドでは、chDB からリモート ClickHouse サーバーにクエリを実行する方法について説明します。
 
-
-
 ## セットアップ {#setup}
 
 まずは仮想環境を作成します。
@@ -41,7 +39,6 @@ ipython
 
 このコードは、Python スクリプトやお使いのノートブック環境でも利用できます。
 
-
 ## ClickPy 入門 {#an-intro-to-clickpy}
 
 これからクエリを実行する対象となるリモート ClickHouse サーバーは [ClickPy](https://clickpy.clickhouse.com) です。
@@ -49,8 +46,6 @@ ClickPy は PyPI パッケージのすべてのダウンロードを記録し、
 基盤となるデータベースは `play` ユーザーでクエリできます。
 
 ClickPy について詳しくは、[GitHub リポジトリ](https://github.com/ClickHouse/clickpy)を参照してください。
-
-
 
 ## ClickPy ClickHouse サービスにクエリを実行する {#querying-the-clickpy-clickhouse-service}
 
@@ -133,7 +128,6 @@ sklearn_df.sort_values(by=["x"], ascending=False).head(n=10)
 2383  2024-09-23  1777554
 ```
 
-
 ## Pandas の DataFrame を結合する {#merging-pandas-dataframes}
 
 これで 2 つの DataFrame が揃ったので、日付（`x` 列）をキーとして、次のように結合できます。
@@ -172,7 +166,6 @@ df.head(n=5)
 4  2018-03-02         5      23842  0.000210
 ```
 
-
 ## Pandas DataFrame をクエリする {#querying-pandas-dataframes}
 
 次に、最も良い比率と最も悪い比率となっている日付を見つけたいとします。
@@ -189,7 +182,7 @@ FROM Python(df)
 ```
 
 ```text
-   最良比率    最良日付  最悪比率   最悪日付
+   bestRatio    bestDate  worstRatio   worstDate
 0   0.693855  2024-09-19    0.000003  2020-02-09
 ```
 

@@ -8,20 +8,15 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
 # ALTER TABLE ... MODIFY COMMENT {#alter-table-modify-comment}
 
 テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
-
 
 ## 例 {#examples}
 
@@ -34,14 +29,14 @@ CREATE TABLE table_with_comment
     `s` String
 )
 ENGINE = Memory()
-COMMENT '一時テーブル';
+COMMENT 'The temporary table';
 ```
 
 テーブルのコメントを変更するには:
 
 ```sql
 ALTER TABLE table_with_comment 
-MODIFY COMMENT 'テーブルの新しいコメント';
+MODIFY COMMENT 'new comment on a table';
 ```
 
 変更されたコメントを表示するには:
@@ -54,7 +49,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 ```text title="Response"
 ┌─comment────────────────┐
-│ テーブルに対する新しいコメント │
+│ new comment on a table │
 └────────────────────────┘
 ```
 
@@ -78,15 +73,12 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 └─────────┘
 ```
 
-
 ## 注意事項 {#caveats}
 
 Replicated テーブルの場合、コメントはレプリカごとに異なる場合があります。
 コメントの変更は 1 つのレプリカにのみ適用されます。
 
 この機能はバージョン 23.9 以降で利用可能です。以前の ClickHouse のバージョンでは使用できません。
-
-
 
 ## 関連コンテンツ {#related-content}
 

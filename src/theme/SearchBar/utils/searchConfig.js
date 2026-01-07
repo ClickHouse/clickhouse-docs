@@ -60,15 +60,73 @@ export function createSearchParameters(props, contextualSearch, contextualSearch
  * Create navigator for handling search result clicks
  * @param {Object} history - React router history object
  * @param {RegExp} externalUrlRegex - Regex to match external URLs
+ * @param {string} currentLocale - Current locale
  * @returns {Object} - Navigator object
  */
-export function createSearchNavigator(history, externalUrlRegex) {
+export function createSearchNavigator(history, externalUrlRegex, currentLocale) {
   return {
     navigate({ itemUrl }) {
-      if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
-        window.location.href = itemUrl;
+      let url = itemUrl;
+
+      try {
+        let pathname, hash;
+
+        // Handle both absolute and relative URLs
+        if (itemUrl.startsWith('http://') || itemUrl.startsWith('https://')) {
+          // Absolute URL - parse it
+          const urlObj = new URL(itemUrl);
+          pathname = urlObj.pathname;
+          hash = urlObj.hash;
+        } else {
+          // Relative URL - split pathname and hash manually
+          const hashIndex = itemUrl.indexOf('#');
+          if (hashIndex !== -1) {
+            pathname = itemUrl.substring(0, hashIndex);
+            hash = itemUrl.substring(hashIndex);
+          } else {
+            pathname = itemUrl;
+            hash = '';
+          }
+        }
+
+        // Transform the pathname if it starts with /docs
+        if (currentLocale !== 'en') {
+          const prefix = `/docs/${currentLocale}`;
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        } else {
+          const prefix = '/docs';
+          if (pathname.startsWith(prefix)) {
+            url = pathname.substring(prefix.length) || '/';
+          } else {
+            url = pathname;
+          }
+        }
+
+        url += hash;
+      } catch (e) {
+        // If parsing fails, use as-is
+      }
+
+      // If the URL is relative, prepend the locale-specific baseUrl
+      // This is needed because history.push expects the full path including baseUrl
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        // Construct the baseUrl based on locale
+        const baseUrl = currentLocale !== 'en' ? `/docs/${currentLocale}` : '/docs';
+
+        // Only prepend if the URL doesn't already start with the baseUrl
+        if (!url.startsWith(baseUrl)) {
+          url = baseUrl + url;
+        }
+      }
+
+      if (isRegexpStringMatch(externalUrlRegex, url)) {
+        window.location.href = url;
       } else {
-        history.push(itemUrl);
+        history.push(url);
       }
     },
   };
@@ -143,7 +201,11 @@ export function transformSearchItems(items, options) {
     return transformed;
   });
 
-  const result = transformItems ? transformItems(items) : baseTransform(items);
+  // Always apply base transformation first to fix URLs
+  const baseTransformed = baseTransform(items);
+
+  // Then optionally apply custom transformation on top
+  const result = transformItems ? transformItems(baseTransformed) : baseTransformed;
 
   return result;
 }

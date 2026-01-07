@@ -5,8 +5,6 @@ title: 'Оверкоммит памяти'
 doc_type: 'reference'
 ---
 
-
-
 # Оверкоммит памяти (memory overcommit) {#memory-overcommit}
 
 Оверкоммит памяти — это экспериментальный механизм, предназначенный для более гибкой настройки лимитов памяти для запросов.
@@ -20,8 +18,6 @@ doc_type: 'reference'
 
 Выбор запроса для остановки или завершения выполняется либо глобальным, либо пользовательским трекером оверкоммита, в зависимости от того, какой лимит памяти был достигнут.
 Если трекер оверкоммита не может выбрать запрос для остановки, генерируется исключение MEMORY_LIMIT_EXCEEDED.
-
-
 
 ## Отслеживание перерасхода памяти пользователем {#user-overcommit-tracker}
 
@@ -37,7 +33,6 @@ doc_type: 'reference'
 ```sql
 SELECT number FROM numbers(1000) GROUP BY number SETTINGS memory_overcommit_ratio_denominator_for_user=4000, memory_usage_overcommit_max_wait_microseconds=500
 ```
-
 
 ## Глобальный трекер перерасхода памяти {#global-overcommit-tracker}
 

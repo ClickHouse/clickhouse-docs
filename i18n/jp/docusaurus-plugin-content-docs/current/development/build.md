@@ -41,7 +41,6 @@ sudo apt-get update
 sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm yasm gawk lsb-release wget software-properties-common gnupg
 ```
 
-
 ## Clang コンパイラをインストールする {#install-the-clang-compiler}
 
 Ubuntu/Debian に Clang をインストールするには、[こちら](https://apt.llvm.org/) から LLVM の自動インストールスクリプトを使用してください。
@@ -54,7 +53,6 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 2025 年 3 月時点では、Clang 19 以上が必要です。
 GCC などの他のコンパイラはサポートされていません。
-
 
 ## Rust コンパイラのインストール（任意） {#install-the-rust-compiler-optional}
 
@@ -75,7 +73,6 @@ rustup default nightly-2025-07-07
 rustup component add rust-src
 ```
 
-
 ## ClickHouse をビルドする {#build-clickhouse}
 
 すべてのビルド成果物を格納するために、`ClickHouse` ディレクトリ内に専用の `build` ディレクトリを作成することを推奨します。
@@ -90,8 +87,8 @@ cd build
 オプション: 複数のコンパイラバージョンがインストールされている場合、使用するコンパイラを明示的に指定することもできます。
 
 ```sh
-export CC=clang-19
-export CXX=clang++-19
+export CC=clang-21
+export CXX=clang++-21
 ```
 
 開発用途には、`debug` ビルドの使用を推奨します。
@@ -112,7 +109,7 @@ gdb のようなデバッガを使用したい場合は、上記のコマンド�
 ninja clickhouse
 ```
 
-すべてのバイナリ（ユーティリティおよびテスト）をビルドするには、引数を付けずに `ninja` を実行します。
+すべてのバイナリ（ユーティリティおよびテスト）をビルドするには、引数を指定せずに `ninja` を実行します。
 
 ```sh
 ninja
@@ -125,11 +122,11 @@ ninja -j 1 clickhouse-server clickhouse-client
 ```
 
 :::tip
-CMake には、上記のコマンドを簡略化するショートカットが用意されています:
+CMake には、上記のコマンドを簡略化するためのショートカットが用意されています：
 
 ```sh
-cmake -S . -B build  # ビルドを構成します。リポジトリのトップレベルディレクトリから実行してください
-cmake --build build  # コンパイルします
+cmake -S . -B build  # configure build, run from repository top-level directory
+cmake --build build  # compile
 ```
 
 :::
@@ -150,7 +147,6 @@ macOS または FreeBSD で `Connection refused` というメッセージが表�
 clickhouse client --host 127.0.0.1
 ```
 
-
 ## 高度なオプション {#advanced-options}
 
 ### 最小構成でのビルド {#minimal-build}
@@ -168,7 +164,6 @@ Rust にはインターネット接続が必要です。Rust サポートを無�
 ```sh
 cmake -DENABLE_RUST=OFF
 ```
-
 
 ### ClickHouse バイナリの実行 {#running-the-clickhouse-executable-1}
 
@@ -190,7 +185,6 @@ sudo service clickhouse-server start
 sudo service clickhouse-server stop
 sudo -u clickhouse ClickHouse/build/programs/clickhouse server --config-file /etc/clickhouse-server/config.xml
 ```
-
 
 ### 任意の Linux 環境でのビルド {#building-on-any-linux}
 
@@ -214,7 +208,6 @@ mkdir build
 cmake -S . -B build
 cmake --build build
 ```
-
 
 ### Docker でのビルド {#building-in-docker}
 

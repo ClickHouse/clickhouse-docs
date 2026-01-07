@@ -10,7 +10,6 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
 # 字典 {#dictionary}
 
 ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/dictionaries#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
@@ -86,10 +85,9 @@ Controversial_ratio: 0
 
 虽然这个查询很快，但它要求我们在编写 `JOIN` 时格外小心，才能获得良好的性能。理想情况下，我们只需先过滤出包含“SQL”的帖子，然后再查看这部分帖子对应的 `UpVote` 和 `DownVote` 计数来计算我们的指标。
 
-
 #### 应用字典 {#applying-a-dictionary}
 
-为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），用户应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
+为了演示这些概念，我们为投票数据使用一个字典。由于字典通常存放在内存中（[ssd&#95;cache](/sql-reference/dictionaries#ssd_cache) 是一个例外），你应当注意数据的大小。先确认一下我们的 `votes` 表的大小：
 
 ```sql
 SELECT table,
@@ -119,7 +117,7 @@ FROM votes
 GROUP BY PostId
 ```
 
-要创建我们的字典，需要使用以下 DDL——请注意其中使用了上面的查询：
+要创建该字典，我们需要使用以下 DDL——注意其中使用了上面的查询：
 
 ```sql
 CREATE DICTIONARY votes_dict
@@ -150,7 +148,7 @@ WHERE name = 'votes_dict'
 └──────────┘
 ```
 
-现在，可以通过一个简单的 `dictGet` FUNCTION 来获取特定 `PostId` 的赞成票和反对票。下面我们检索 `PostId` 为 `11227902` 的帖子对应的这些值：
+现在，可以通过一个简单的 `dictGet` 函数来获取特定 `PostId` 的赞成票和反对票。下面我们检索 `PostId` 为 `11227902` 的帖子对应的这些值：
 
 
 ```sql
@@ -182,7 +180,6 @@ LIMIT 3
 ```
 
 这个查询不仅简单得多，而且速度也提升了两倍多！还可以通过只将赞成票和反对票之和超过 10 的帖子加载到字典中，并仅存储预先计算好的争议度值来进一步优化。
-
 
 ## 查询时富化 {#query-time-enrichment}
 
@@ -247,7 +244,6 @@ LIMIT 5
 5 行结果。耗时：0.763 秒。处理了 59.82 百万行，239.28 MB（78.40 百万行/秒，313.60 MB/秒）。
 峰值内存使用：248.84 MiB。
 ```
-
 
 ## 索引时富化 {#index-time-enrichment}
 
@@ -317,7 +313,6 @@ LIMIT 4
 返回 4 行。用时:0.142 秒。已处理 5982 万行,1.08 GB(420.73 百万行/秒,7.60 GB/秒)。
 内存峰值:666.82 MiB。
 ```
-
 
 ## 字典高级主题 {#advanced-dictionary-topics}
 

@@ -24,16 +24,16 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 下面来看一下 &#39;users.xml&#39; 文件中定义配额的片段。
 
 ```xml
-<!-- 配额 -->
+<!-- Quotas -->
 <quotas>
-    <!-- 配额名称 -->
+    <!-- Quota name. -->
     <default>
-        <!-- 时间段限制。可以设置多个具有不同限制的时间间隔。 -->
+        <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
         <interval>
-            <!-- 间隔长度 -->
+            <!-- Length of the interval. -->
             <duration>3600</duration>
 
-            <!-- 不限制。仅收集指定时间间隔的数据。 -->
+            <!-- Unlimited. Just collect data for the specified time interval. -->
             <queries>0</queries>
             <query_selects>0</query_selects>
             <query_inserts>0</query_inserts>
@@ -50,9 +50,9 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 ```xml
 <statbox>
-    <!-- 时间段限制。可以设置多个具有不同限制的时间间隔。 -->
+    <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
     <interval>
-        <!-- 间隔长度。 -->
+        <!-- Length of the interval. -->
         <duration>3600</duration>
 
         <queries>1000</queries>
@@ -110,22 +110,21 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 `failed_sequential_authentications` - 连续身份验证错误的总次数。
 
-
 如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始（即何时可以再次发送查询）。
 
 配额可以使用“quota key”功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
 
 ```xml
-<!-- 用于全局报告设计器。 -->
+<!-- For the global reports designer. -->
 <web_global>
-    <!-- keyed – 通过查询参数传递 quota_key "key",
-            配额将针对每个键值分别跟踪。
-        例如,可以将用户名作为键传递,
-            这样配额将针对每个用户名分别计数。
-        仅当 quota_key 由程序传输而非用户传输时,使用键才有意义。
+    <!-- keyed – The quota_key "key" is passed in the query parameter,
+            and the quota is tracked separately for each key value.
+        For example, you can pass a username as the key,
+            so the quota will be counted separately for each username.
+        Using keys makes sense only if quota_key is transmitted by the program, not by a user.
 
-        也可以写成 <keyed_by_ip />,这样 IP 地址将用作配额键。
-        (但请注意,用户可以相当容易地更改 IPv6 地址。)
+        You can also write <keyed_by_ip />, so the IP address is used as the quota key.
+        (But keep in mind that users can change the IPv6 address fairly easily.)
     -->
     <keyed />
 ```
@@ -135,7 +134,6 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 在分布式查询处理中，累积用量存储在发起请求的服务器上。因此，如果用户切换到另一台服务器，该服务器上的配额将会从头开始重新计算。
 
 当服务器重启时，配额会被重置。
-
 
 ## 相关内容 {#related-content}
 

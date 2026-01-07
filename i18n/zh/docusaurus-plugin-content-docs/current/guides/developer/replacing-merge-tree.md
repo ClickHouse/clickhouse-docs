@@ -10,16 +10,13 @@ import postgres_replacingmergetree from '@site/static/images/migrations/postgres
 import Image from '@theme/IdealImage';
 
 虽然事务型数据库针对事务性更新和删除型工作负载进行了优化，但 OLAP 数据库对这类操作提供的保障较少。相应地，它们针对以批量方式插入的不可变数据进行了优化，从而显著加速分析型查询。虽然 ClickHouse 通过 mutation 提供更新操作，并提供了一种轻量级的行删除方式，但由于其列式结构，这些操作应按上述说明谨慎调度。这些操作以异步方式处理，由单线程执行，并且（在更新的情况下）需要在磁盘上重写数据。因此，不适合用于执行大量、细粒度的小变更。
-
 为了在处理包含更新和删除行的流式数据时避免上述使用模式，我们可以使用 ClickHouse 表引擎 ReplacingMergeTree。
 
 
 ## 已插入行的自动 Upsert {#automatic-upserts-of-inserted-rows}
 
 [ReplacingMergeTree 表引擎](/engines/table-engines/mergetree-family/replacingmergetree) 允许对行执行更新操作，而无需使用低效的 `ALTER` 或 `DELETE` 语句。它通过允许用户插入同一行的多个副本，并将其中一条标记为最新版本来实现这一点。随后，一个后台进程会异步移除同一行的旧版本，通过仅追加的不可变插入，高效地模拟更新操作。
-
 这一机制依赖于表引擎识别重复行的能力。它使用 `ORDER BY` 子句来确定唯一性，即如果两行在 `ORDER BY` 中指定的列上的值相同，则它们被视为重复。在定义表时可以指定一个 `version` 列，当两行被识别为重复时，该列用于保留该行的最新版本，即保留 `version` 值最大的那一行。
-
 我们在下面的示例中演示这一过程。这里，行由 A 列唯一标识（该表的 `ORDER BY`）。我们假设这些行是以两个批次插入的，从而在磁盘上形成了两个数据 part。之后，在一个异步后台进程中，这些 part 会被合并在一起。
 
 ReplacingMergeTree 还允许指定一个 deleted 列。该列的值可以是 0 或 1，其中值为 1 表示该行（及其重复行）已被删除，否则为 0。**注意：已删除的行在合并时并不会被移除。**
@@ -46,7 +43,7 @@ ReplacingMergeTree 还允许指定一个 deleted 列。该列的值可以是 0 �
 <br />
 
 ```sql
-SYSTEM SYNC REPLICA 表名
+SYSTEM SYNC REPLICA table
 ```
 
 我们建议在确保条件 (1) 已满足后暂停插入，并保持暂停状态，直到此命令及后续清理操作全部完成。
@@ -62,7 +59,7 @@ SYSTEM SYNC REPLICA 表名
 
 熟悉 ClickHouse 的用户已经习惯于为其表的 `ORDER BY` 子句选择列，以[优化查询性能](/data-modeling/schema-design#choosing-an-ordering-key)。一般来说，这些列应当根据[常用查询选择，并按基数从低到高的顺序列出](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。需要特别注意的是，ReplacingMergeTree 引入了一个额外约束——这些列必须是不可变的。也就是说，如果是从 Postgres 进行复制，只有当某列在底层 Postgres 数据中不会发生变化时，才应将其加入该子句。虽然其他列可以变化，但用于唯一行标识的这些列必须保持一致。
 
-对于分析型工作负载而言，Postgres 主键通常用途不大，因为用户很少会执行单行点查。鉴于我们推荐按基数递增的顺序对列进行排序，以及[ORDER BY 中靠前的列通常能更快完成匹配和过滤](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)这一事实，Postgres 主键应当追加在 `ORDER BY` 的末尾（除非它本身具有分析价值）。如果在 Postgres 中主键由多个列组成，则应按其基数及其对查询价值的可能性，将这些列依次追加到 `ORDER BY` 中。用户也可以选择通过 `MATERIALIZED` 列，将多个取值连接起来生成一个唯一主键。
+对于分析型工作负载而言，Postgres 主键通常用途不大，因为你很少会执行单行点查。鉴于我们推荐按基数递增的顺序对列进行排序，以及[ORDER BY 中靠前的列通常能更快完成匹配和过滤](/guides/best-practices/sparse-primary-indexes#ordering-key-columns-efficiently)这一事实，Postgres 主键应当追加在 `ORDER BY` 的末尾（除非它本身具有分析价值）。如果在 Postgres 中主键由多个列组成，则应按其基数及其对查询价值的可能性，将这些列依次追加到 `ORDER BY` 中。你也可以选择通过 `MATERIALIZED` 列，将多个取值连接起来生成一个唯一主键。
 
 来看 Stack Overflow 数据集中的 posts 表。
 
@@ -106,7 +103,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 在合并时，ReplacingMergeTree 会识别重复行，将 `ORDER BY` 列的值用作唯一标识，并且要么仅保留最高版本，要么在最新版本表示删除的情况下移除所有重复行。不过，这种机制只能在最终状态上趋于正确——并不能保证所有行一定都会被去重，因此不应依赖它。由于查询会同时考虑更新行和删除行，查询结果可能因此不正确。
 
-要获得正确结果，用户需要在后台合并的基础上，再在查询时执行去重并移除被标记为删除的记录。这可以通过使用 `FINAL` 运算符来实现。
+要获得正确结果，你需要在后台合并的基础上，再在查询时执行去重并移除被标记为删除的记录。这可以通过使用 `FINAL` 运算符来实现。
 
 考虑上面的 posts 表。我们可以使用常规方法加载该数据集，但在此基础上额外指定一个 deleted 列和一个 version 列，并将它们的值设为 0。出于示例目的，我们只加载 10000 行数据。
 
@@ -114,7 +111,7 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
 
-返回 0 行。用时:1.980 秒。已处理 8.19 千行,3.52 MB(4.14 千行/秒,1.78 MB/秒)
+0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
 现在来确认一下行数：
@@ -157,14 +154,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --选择 100 个随机行
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
 
-返回 0 行。耗时:4.056 秒。已处理 142 万行,2.20 GB(每秒 34.96 万行,每秒 543.39 MB)。
+0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
-此外，我们通过重新插入这些行、但将 `deleted` 列的值设为 1，来“删除”1000 条随机帖子。同样，这一步也可以通过一个简单的 `INSERT INTO SELECT` 来模拟。
+此外，我们通过重新插入这些行、但将 `deleted` 列的值设为 1，来删除 1000 条随机帖子。同样，可以通过一个简单的 `INSERT INTO SELECT` 来模拟这一操作。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -192,14 +189,14 @@ INSERT INTO posts_updateable SELECT
         ParentId,
         CommunityOwnedDate,
         ClosedDate
-FROM posts_updateable --随机选择 100 行
+FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
 
-返回 0 行。耗时:0.166 秒。已处理 13.553 万行,212.65 MB(81.63 万行/秒,1.28 GB/秒)
+0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-上述操作的结果将是 16,000 行，即 10,000 + 5,000 + 1,000。实际上，这里的正确总数应该是：我们理应只比原始总数少 1,000 行，即 10,000 - 1,000 = 9,000。
+上述操作的结果会是 16,000 行，即 10,000 + 5,000 + 1,000。实际上，这里的正确总数应该是：我们相较于原始总数只应少 1,000 行，即 10,000 - 1,000 = 9,000。
 
 ```sql
 SELECT count()
@@ -211,7 +208,7 @@ FROM posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-这里的结果会因已发生的合并而有所不同。我们可以看到，由于存在重复行，这里的总数不同。对该表使用 `FINAL` 可以得到正确的结果。
+这里的结果会因已发生的合并而有所不同。我们可以看到，由于存在重复行，这里的总数不同。对该表使用 `FINAL` 运算符可以得到正确的结果。
 
 
 ```sql
@@ -223,8 +220,8 @@ FINAL
 │    9000 │
 └─────────┘
 
-返回 1 行。耗时: 0.006 秒。处理了 11.81 千行，212.54 KB (214 万行/秒，38.61 MB/秒)。
-峰值内存使用: 8.14 MiB。
+1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
+Peak memory usage: 8.14 MiB.
 ```
 
 
@@ -232,13 +229,11 @@ FINAL
 
 在查询中使用 `FINAL` 运算符确实会带来一定的性能开销。
 当查询没有基于主键列进行过滤时，这一点会最为明显，
-因为会导致读取更多数据并增加去重的开销。如果用户
+因为会导致读取更多数据并增加去重的开销。如果你
 在 `WHERE` 条件中基于主键列进行过滤，加载并传递给去重的数据量将会减少。
 
 如果 `WHERE` 条件未使用主键列，在使用 `FINAL` 时 ClickHouse 当前不会使用 `PREWHERE` 优化。
 该优化旨在减少为未参与过滤的列读取的行数。关于如何通过模拟 `PREWHERE` 从而潜在地提升性能的示例，请参见[此处](https://clickhouse.com/blog/clickhouse-postgresql-change-data-capture-cdc-part-1#final-performance)。
-
-
 
 ## 利用 ReplacingMergeTree 分区 {#exploiting-partitions-with-replacingmergetree}
 
@@ -265,7 +260,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
-为了确保 `FINAL` 必须实际执行一些工作，我们更新 100 万行数据——通过插入重复行来增加它们的 `AnswerCount` 值。
+为了确保 `FINAL` 确实需要做一些工作，我们更新 100 万行数据——通过插入重复行来增加它们的 `AnswerCount` 值。
 
 ```sql
 INSERT INTO posts_no_part SELECT Version + 1 AS Version, Deleted, Id, PostTypeId, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount + 1 AS AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate
@@ -292,7 +287,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-对于按年份分区的表重复上述步骤，并在设置 `do_not_merge_across_partitions_select_final=1` 后再次运行上述查询。
+对于按年份分区的表重复上述步骤，并在将 `do_not_merge_across_partitions_select_final` 设置为 1 后再次运行上述查询。
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
@@ -306,7 +301,7 @@ ENGINE = ReplacingMergeTree
 PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
-// 已省略填充和更新操作
+// populate & update omitted
 
 SELECT toYear(CreationDate) AS year, sum(AnswerCount) AS total_answers
 FROM posts_with_part
@@ -323,10 +318,10 @@ ORDER BY year ASC
 │ 2024 │       127765  │
 └──────┴───────────────┘
 
-返回 17 行。用时:0.994 秒。处理了 6465 万行,983.64 MB(6502 万行/秒,989.23 MB/秒)。
+17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
-如上所示，在本例中，通过在分区级别并行执行去重过程，分区显著提升了查询性能。
+如上所示，在本例中，分区通过允许在分区级别并行执行去重过程，显著提升了查询性能。
 
 
 ## 合并行为注意事项 {#merge-behavior-considerations}
@@ -335,7 +330,7 @@ ClickHouse 的合并选择机制不仅仅是简单地合并数据部分。下面
 
 ### 合并选择逻辑 {#merge-selection-logic}
 
-合并的目标虽然是减少数据部分（parts）的数量，但同时也需要在这一目标与写放大成本之间取得平衡。因此，如果某些连续的数据部分在内部计算后被认为会导致过高的写放大，它们就会被排除在合并范围之外。这种行为有助于避免不必要的资源消耗并延长存储组件的使用寿命。
+合并的目标虽然是减少分区片段（parts）的数量，但同时也需要在这一目标与写放大成本之间取得平衡。因此，如果某些连续的分区片段在内部计算后被认为会导致过高的写放大，它们就会被排除在合并范围之外。这种行为有助于避免不必要的资源消耗并延长存储组件的使用寿命。
 
 ### 大数据部分的合并行为 {#merging-behavior-on-large-parts}
 

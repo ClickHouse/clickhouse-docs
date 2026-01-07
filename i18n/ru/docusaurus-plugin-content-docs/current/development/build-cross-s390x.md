@@ -31,7 +31,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-s390x.cmake ..
 ninja
 ```
 
-
 ## Запуск {#running}
 
 Для эмуляции вам понадобится статический бинарник qemu-user для s390x. В Ubuntu его можно установить с помощью:
@@ -46,7 +45,6 @@ apt-get install binfmt-support binutils-s390x-linux-gnu qemu-user-static
 qemu-s390x-static -L /usr/s390x-linux-gnu ./programs/clickhouse local --query "Select 2"
 2
 ```
-
 
 ## Отладка {#debugging}
 
@@ -93,7 +91,6 @@ Process 1 stopped
    453      /// PHDR cache is required for query profiler to work reliably
 ```
 
-
 ## Интеграция с Visual Studio Code {#visual-studio-code-integration}
 
 - Для визуальной отладки требуется расширение [CodeLLDB](https://github.com/vadimcn/vscode-lldb).
@@ -111,24 +108,24 @@ buildType:
   choices:
     debug:
       short: Debug
-      long: Включить отладочную информацию
+      long: Emit debug information
       buildType: Debug
     release:
       short: Release
-      long: Оптимизировать генерируемый код
+      long: Optimize generated code
       buildType: Release
     relwithdebinfo:
       short: RelWithDebInfo
-      long: Релизная сборка с отладочной информацией
+      long: Release with Debug Info
       buildType: RelWithDebInfo
     tsan:
       short: MinSizeRel
-      long: Релизная сборка минимального размера
+      long: Minimum Size Release
       buildType: MinSizeRel
 
 toolchain:
   default: default
-  description: Выберите набор инструментов
+  description: Select toolchain
   choices:
     default:
       short: x86_64
@@ -140,7 +137,6 @@ toolchain:
         CMAKE_TOOLCHAIN_FILE: cmake/linux/toolchain-s390x.cmake
 ```
 
-
 #### launch.json {#launchjson}
 
 ```json
@@ -150,15 +146,14 @@ toolchain:
         {
             "type": "lldb",
             "request": "custom",
-            "name": "(lldb) Запуск s390x с qemu",
+            "name": "(lldb) Launch s390x with qemu",
             "targetCreateCommands": ["target create ${command:cmake.launchTargetPath}"],
             "processCreateCommands": ["gdb-remote 2159"],
-            "preLaunchTask": "Запуск ClickHouse"
+            "preLaunchTask": "Run ClickHouse"
         }
     ]
 }
 ```
-
 
 #### settings.json {#settingsjson}
 
@@ -171,16 +166,14 @@ toolchain:
 }
 ```
 
-
 #### run-debug.sh {#run-debugsh}
 
 ```sh
 #! /bin/sh
-echo 'Запуск сеанса отладчика'
+echo 'Starting debugger session'
 cd $1
 qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
 ```
-
 
 #### tasks.json {#tasksjson}
 
@@ -191,7 +184,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Запустить ClickHouse",
+            "label": "Run ClickHouse",
             "type": "shell",
             "isBackground": true,
             "command": "${workspaceFolder}/.vscode/run-debug.sh",
@@ -213,7 +206,7 @@ qemu-s390x-static -g 2159 -L /usr/s390x-linux-gnu $2 $3 $4
                     ],
                     "background": {
                         "activeOnStart": true,
-                        "beginsPattern": "^Начало сеанса отладки",
+                        "beginsPattern": "^Starting debugger session",
                         "endsPattern": ".*"
                     }
                 }

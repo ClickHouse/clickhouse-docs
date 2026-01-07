@@ -64,7 +64,7 @@ LIMIT 5;
 └────────────┴──────────┘
 ```
 
-We've used the [`toDate()`](/sql-reference/functions/type-conversion-functions#todate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
+We've used the [`toDate()`](/sql-reference/functions/type-conversion-functions#toDate) function here, which converts the specified time to a date type. Alternatively, we can batch by an hour and filter on the specific date:
 
 ```sql
 SELECT
@@ -108,7 +108,7 @@ ORDER BY interval ASC
 LIMIT 6;
 ```
 
-Or we can use the [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#tointervalhour) function
+Or we can use the [`toIntervalHour()`](/docs/sql-reference/functions/type-conversion-functions#toIntervalHour) function
 
 ```sql
 SELECT

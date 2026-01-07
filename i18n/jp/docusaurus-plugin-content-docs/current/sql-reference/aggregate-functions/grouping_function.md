@@ -5,11 +5,7 @@ title: 'GROUPING'
 doc_type: 'リファレンス'
 ---
 
-
-
 # グループ化 {#grouping}
-
-
 
 ## GROUPING {#grouping}
 
@@ -18,8 +14,6 @@ doc_type: 'リファレンス'
 GROUPING 関数は複数のカラムを引数として取り、ビットマスクを返します。 
 - `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
 - `0` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計ではないことを示します
-
-
 
 ## GROUPING SETS {#grouping-sets}
 
@@ -73,7 +67,7 @@ FROM
 │ Westport    │ RHEL   │ 9          │       70 │
 └─────────────┴────────┴────────────┴──────────┘
 
-10行のセット。経過時間: 0.409秒。
+10 rows in set. Elapsed: 0.409 sec.
 ```
 
 ### 簡単なクエリ {#simple-queries}
@@ -100,7 +94,7 @@ GROUP BY
 │ Westport    │ RHEL   │ 150 │
 └─────────────┴────────┴─────┘
 
-4行のセット。経過時間: 0.212秒。
+4 rows in set. Elapsed: 0.212 sec.
 ```
 
 ```sql
@@ -119,7 +113,7 @@ GROUP BY
 │ Schenectady │ 230 │
 └─────────────┴─────┘
 
-2行のデータセット。経過時間: 0.277秒 
+2 rows in set. Elapsed: 0.277 sec. 
 ```
 
 ```sql
@@ -139,9 +133,8 @@ GROUP BY
 │ RHEL   │ 290 │
 └────────┴─────┘
 
-2行が設定されています。経過時間: 0.352秒。 
+2 rows in set. Elapsed: 0.352 sec. 
 ```
-
 
 ```sql
 SELECT
@@ -155,7 +148,7 @@ FROM
 │ 445 │
 └─────┘
 
-1 行。経過時間: 0.244 秒 
+1 row in set. Elapsed: 0.244 sec. 
 ```
 
 ### 複数の GROUP BY と GROUPING SETS の比較 {#comparing-multiple-group-by-statements-with-grouping-sets}
@@ -218,7 +211,7 @@ FROM
 │ ᴺᵁᴸᴸ       │ RHEL   │ 290 │
 └────────────┴────────┴─────┘
 
-9行のセット。経過時間: 0.527秒。 
+9 rows in set. Elapsed: 0.527 sec. 
 ```
 
 GROUPING SETS を使って同じ情報を取得する場合：
@@ -264,7 +257,6 @@ GROUP BY
 ### GROUPING SETS との比較 {#comparing-cube-with-grouping-sets}
 
 次のクエリにおける CUBE `CUBE(datacenter,distro,version)` は、意味のある階層にはなりません。Arch と RHEL ではリリースサイクルやバージョン命名規則が異なるため、2 つのディストリビューションをまたいでバージョンを見ることには意味がありません。この後に続く GROUPING SETS の例のほうが適切であり、`distro` と `version` を同じセット内でグループ化しています。
-
 
 ```sql
 SELECT
@@ -330,7 +322,6 @@ ORDER BY
 :::note
 上記の例におけるバージョンは、ディストリビューションと結び付いていない場合には、あまり意味をなさないかもしれません。カーネルバージョンを追跡しているのであれば、カーネルバージョンはどちらのディストリビューションにも結び付けられるため、意味を持つと言えるでしょう。次の例で示すように `GROUPING SETS` を使用する方が、より適切な選択肢となる場合があります。
 :::
-
 
 ```sql
 SELECT

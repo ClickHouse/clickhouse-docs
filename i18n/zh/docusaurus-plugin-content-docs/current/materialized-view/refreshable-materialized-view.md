@@ -19,7 +19,6 @@ import Image from '@theme/IdealImage';
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-KhFJSY8yrs?si=VPRSZb20vaYkuR_C" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
-
 ## 何时应使用可刷新物化视图？ {#when-should-refreshable-materialized-views-be-used}
 
 ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图的方案具有更好的可扩展性，尤其是在需要对单个表执行聚合的场景中。通过仅在数据块插入时对每个数据块进行聚合计算，并在最终表中合并这些增量状态，查询始终只在数据的子集上执行。此方法可以扩展到潜在的 PB 级别数据量，通常是首选方法。
@@ -27,8 +26,6 @@ ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图
 然而，在某些用例中，这种增量处理不是必需的，或者并不适用。有些问题要么与增量方法不兼容，要么不需要实时更新，此时周期性重建会更合适。例如，你可能希望定期对整个数据集上的视图进行完整的重新计算，因为该视图使用了复杂的 `JOIN`，而这与增量方法不兼容。
 
 >  可刷新物化视图可以运行批处理过程来执行诸如反规范化之类的任务。可以在可刷新物化视图之间创建依赖关系，使一个视图依赖另一个视图的结果，并仅在其完成后才执行。这可以替代预定的工作流或简单的有向无环图（DAG），例如 [dbt](https://www.getdbt.com/) 任务。要了解更多关于如何在可刷新物化视图之间设置依赖关系的信息，请参阅 [CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) 中的 `Dependencies` 部分。
-
-
 
 ## 如何刷新可刷新物化视图？ {#how-do-you-refresh-a-refreshable-materialized-view}
 
@@ -50,7 +47,6 @@ SYSTEM REFRESH VIEW table_name_mv;
 你还可以取消、停止或启动视图。
 有关更多信息，请参阅[管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
 
-
 ## 可刷新物化视图最近一次刷新是什么时候？ {#when-was-a-refreshable-materialized-view-last-refreshed}
 
 要查找某个可刷新物化视图最近一次的刷新时间，可以按如下方式查询 [`system.view_refreshes`](/operations/system-tables/view_refreshes) 系统表：
@@ -68,7 +64,6 @@ FROM system.view_refreshes;
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
 
-
 ## 如何修改刷新频率？ {#how-can-i-change-the-refresh-rate}
 
 要修改可刷新的物化视图的刷新频率，请使用 [`ALTER TABLE...MODIFY REFRESH`](/sql-reference/statements/alter/view#alter-table--modify-refresh-statement) 语法。
@@ -85,7 +80,6 @@ MODIFY REFRESH EVERY 30 SECONDS;
 │ database │ table_name_mv    │ 已调度    │ 2024-11-11 12:22:30 │ 2024-11-11 12:22:30 │ 2024-11-11 12:23:00 │   5491132 │       817718 │
 └──────────┴──────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┴───────────┴──────────────┘
 ```
-
 
 ## 使用 `APPEND` 添加新行 {#using-append-to-add-new-rows}
 
@@ -172,8 +166,6 @@ FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
-```
-
 
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
@@ -185,10 +177,7 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:13:50 │ fff  │ 6203361 │
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
-
 ```
-```
-
 
 ## 示例 {#examples}
 
@@ -274,7 +263,6 @@ ORDER BY movies DESC
 LIMIT 5;
 ```
 
-
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬───────────avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
 │  45332 │ Mel Blanc    │        909 │ 5.7884792542982515 │            19 │            148 │ 2024-11-11 12:01:35 │
@@ -284,8 +272,8 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi  │        544 │                  0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴────────────────────┴───────────────┴────────────────┴─────────────────────┘
 
-返回 5 行。耗时:0.393 秒。已处理 545 万行,86.82 MB(1387 万行/秒,221.01 MB/秒)。
-内存峰值:1.38 GiB。
+5 rows in set. Elapsed: 0.393 sec. Processed 5.45 million rows, 86.82 MB (13.87 million rows/s., 221.01 MB/s.)
+Peak memory usage: 1.38 GiB.
 ```
 
 返回结果所需的时间并不算长，但假设我们希望它更快一些、计算开销更低。
@@ -351,7 +339,6 @@ ORDER BY num_movies DESC
 LIMIT 5
 ```
 
-
 ```text
 ┌─────id─┬─name─────────┬─num_movies─┬──avg_rank─┬─unique_genres─┬─uniq_directors─┬──────────updated_at─┐
 │  45332 │ Mel Blanc    │        909 │ 5.7884793 │            19 │            148 │ 2024-11-11 12:01:35 │
@@ -361,7 +348,7 @@ LIMIT 5
 │  41669 │ Adoor Bhasi  │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴──────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
-返回 5 行数据。用时:0.007 秒。
+5 rows in set. Elapsed: 0.007 sec.
 ```
 
 假设我们在源数据中添加了一位新演员 &quot;Clicky McClickHouse&quot;，并且他恰好出演了很多电影！
@@ -395,5 +382,5 @@ LIMIT 5;
 │  41669 │ Adoor Bhasi         │        544 │         0 │             4 │            121 │ 2024-11-11 12:01:35 │
 └────────┴─────────────────────┴────────────┴───────────┴───────────────┴────────────────┴─────────────────────┘
 
-5 行数据。耗时: 0.006 秒。
+5 rows in set. Elapsed: 0.006 sec.
 ```

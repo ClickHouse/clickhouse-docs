@@ -1,8 +1,8 @@
 ---
 slug: /materialized-view/incremental-materialized-view
-title: 'インクリメンタルマテリアライズドビュー'
-description: 'インクリメンタルマテリアライズドビューを使用してクエリを高速化する方法'
-keywords: ['インクリメンタルマテリアライズドビュー', 'クエリの高速化', 'クエリ最適化']
+title: 'インクリメンタルmaterialized view'
+description: 'クエリを高速化するインクリメンタルmaterialized viewの使い方'
+keywords: ['インクリメンタルmaterialized view', 'クエリを高速化', 'クエリ最適化']
 score: 10000
 doc_type: 'guide'
 ---
@@ -13,23 +13,21 @@ import Image from '@theme/IdealImage';
 
 ## 背景 {#background}
 
-インクリメンタルマテリアライズドビュー（マテリアライズドビュー）を使用すると、計算コストをクエリ実行時からデータ挿入時に移すことができ、その結果、`SELECT` クエリを高速化できます。
+インクリメンタルmaterialized view（以下、materialized view）を使用すると、計算コストをクエリ実行時から挿入時に移し替えることで、`SELECT` クエリを高速化できます。
 
-Postgres のようなトランザクション型データベースとは異なり、ClickHouse のマテリアライズドビューは、テーブルにデータブロックが挿入される際にクエリを実行する単なるトリガーです。このクエリの結果は、2つ目の「ターゲット」テーブルに挿入されます。さらに行が挿入されると、その結果が再びターゲットテーブルに送られ、中間結果が更新・マージされます。このマージ済みの結果は、すべての元データに対してクエリを実行した場合と同等の結果になります。
+Postgres のようなトランザクション型データベースとは異なり、ClickHouse の materialized view は、テーブルにデータブロックが挿入される際にクエリを実行するトリガーにすぎません。このクエリの結果は 2 つ目の「ターゲット」テーブルに挿入されます。さらに行が挿入されると、結果は再度ターゲットテーブルに送られ、中間結果が更新・マージされます。このマージされた結果は、元のすべてのデータに対してクエリを実行した場合と同等のものです。
 
-マテリアライズドビューの主な目的は、ターゲットテーブルに挿入される結果が、行に対する集約、フィルタリング、または変換の結果を表している点にあります。これらの結果は、多くの場合、元のデータよりも小さな表現（集約の場合は部分的なスケッチ表現）になります。さらに、ターゲットテーブルから結果を読み出すためのクエリは単純であるため、同じ計算を元のデータ上で実行する場合と比べてクエリ時間が短くなり、計算（ひいてはクエリレイテンシ）をクエリ実行時から挿入時に移すことができます。
+Materialized Views の主な目的は、ターゲットテーブルに挿入される結果が、行に対する集計・フィルタリング・変換の結果を表す点にあります。これらの結果は、多くの場合、元のデータをよりコンパクトに表現したもの（集計の場合は部分的なスケッチ（近似表現））となります。これに加えて、ターゲットテーブルから結果を読み取るためのクエリが単純になることで、同じ計算を元データに対して実行する場合と比べてクエリ時間が短くなり、計算（ひいてはクエリレイテンシ）がクエリ実行時から挿入時に移動します。
 
-ClickHouse のマテリアライズドビューは、それらが基づくテーブルにデータが流入するのに合わせてリアルタイムに更新され、継続的に更新されるインデックスのように機能します。これは、他の多くのデータベースにおける、更新が必要な静的なクエリ結果のスナップショットとしてのマテリアライズドビュー（ClickHouse の [Refreshable Materialized Views](/sql-reference/statements/create/view#refreshable-materialized-view) に類似）とは対照的です。
+ClickHouse の materialized view は、ベースとなるテーブルにデータが流入するとリアルタイムで更新され、継続的に更新される索引のように機能します。これは、多くの他のデータベースでは Materialized Views が通常、リフレッシュが必要なクエリの静的なスナップショット（ClickHouse の [Refreshable Materialized Views](/sql-reference/statements/create/view#refreshable-materialized-view) に類似）として扱われるのとは対照的です。
 
-<Image img={materializedViewDiagram} size="md" alt="マテリアライズドビューの図"/>
-
-
+<Image img={materializedViewDiagram} size="md" alt="Materialized view のダイアグラム"/>
 
 ## 例 {#example}
 
-例として、[&quot;Schema Design&quot;](/data-modeling/schema-design) で説明されている Stack Overflow のデータセットを使用します。
+この例では、[&quot;Schema Design&quot;](/data-modeling/schema-design) で説明されている Stack Overflow データセットを使用します。
 
-ある投稿について、1 日あたりの賛成票と反対票の数を取得したいとします。
+ある投稿について、日ごとの賛成票と反対票の数を取得したいとします。
 
 ```sql
 CREATE TABLE votes
@@ -49,7 +47,7 @@ INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.
 0 rows in set. Elapsed: 29.359 sec. Processed 238.98 million rows, 2.13 GB (8.14 million rows/s., 72.45 MB/s.)
 ```
 
-これは、[`toStartOfDay`](/sql-reference/functions/date-time-functions#toStartOfDay) 関数のおかげで、ClickHouse では比較的単純なクエリです。
+これは、[`toStartOfDay`](/sql-reference/functions/date-time-functions#toStartOfDay) 関数のおかげで、ClickHouse では比較的シンプルなクエリになります。
 
 ```sql
 SELECT toStartOfDay(CreationDate) AS day,
@@ -79,9 +77,9 @@ Peak memory usage: 363.22 MiB.
 
 このクエリは ClickHouse のおかげですでに高速ですが、さらに高速化できるでしょうか？
 
-これをマテリアライズドビューを使って挿入時に計算する場合、その結果を受け取るためのテーブルが必要です。このテーブルは 1 日あたり 1 行だけを保持する必要があります。既存の日付に対して更新があった場合は、他のカラムは既存の日付の行にマージされる必要があります。このようにインクリメンタルな状態をマージできるようにするには、他のカラムについても部分的な状態を保存しておく必要があります。
+挿入時に materialized view を使ってこれを計算したい場合、その結果を受け取るテーブルが必要です。このテーブルは 1 日あたり 1 行のみを保持する必要があります。既存の日付に対する更新を受信した場合、他のカラムは既存の日付の行にマージされる必要があります。この増分状態をマージできるようにするには、他のカラムについて部分的な状態を保存しておく必要があります。
 
-そのためには、ClickHouse では特別なテーブルエンジンである [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) を使用します。これは、同じソートキーを持つすべての行を、数値カラムの値を合計した 1 行に置き換えます。次のテーブルは、同じ日付を持つ行をマージし、数値カラムを合計します。
+これには ClickHouse では特別な種類のエンジンが必要です。それが [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree) です。これは、同じソートキーを持つすべての行を、数値カラムの合計値を含む 1 行に置き換えます。次のテーブルは、同じ日付を持つ行をマージし、数値カラムを合計します。
 
 ```sql
 CREATE TABLE up_down_votes_per_day
@@ -94,7 +92,7 @@ ENGINE = SummingMergeTree
 ORDER BY Day
 ```
 
-マテリアライズドビューを説明するために、まず `votes` テーブルが空で、まだデータを一切受け取っていない状態を想定します。マテリアライズドビューは、`votes` に挿入されたデータに対して上記の `SELECT` を実行し、その結果を `up_down_votes_per_day` に格納します。
+この materialized view を説明するために、`votes` テーブルが空で、まだ一切データを受信していないものとします。materialized view は、`votes` に挿入されたデータに対して上記の `SELECT` を実行し、その結果を `up_down_votes_per_day` に保存します。
 
 ```sql
 CREATE MATERIALIZED VIEW up_down_votes_per_day_mv TO up_down_votes_per_day AS
@@ -105,10 +103,10 @@ FROM votes
 GROUP BY Day
 ```
 
-ここでの `TO` 句が重要で、結果の送信先、つまり `up_down_votes_per_day` を指定します。
+ここでの `TO` 句が重要で、結果の送信先、つまり `up_down_votes_per_day` を指定しています。
 
+先ほどの INSERT 文を使って、votes テーブルに再度データを投入できます。
 
-先ほどの `INSERT` 文を使って `votes` テーブルに再度データを投入できます。
 
 ```sql
 INSERT INTO votes SELECT toUInt32(Id) AS Id, toInt32(PostId) AS PostId, VoteTypeId, CreationDate, UserId, BountyAmount
@@ -118,7 +116,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 Peak memory usage: 283.49 MiB.
 ```
 
-処理が完了したら、`up_down_votes_per_day` の行数を確認します。1 日につき 1 行になっているはずです。
+完了したら、`up_down_votes_per_day` の行数を確認します。1 日あたり 1 行になっているはずです。
 
 ```sql
 SELECT count()
@@ -130,12 +128,12 @@ FINAL
 └─────────┘
 ```
 
-ここでは、クエリ結果を保存することで、`votes` にあった 2 億 3800 万行を 5000 行まで効果的に削減しました。ここで重要なのは、新しい投票が `votes` テーブルに挿入されると、その日の `up_down_votes_per_day` に新しい値が送られ、バックグラウンドで非同期的に自動マージされる点です。その結果、1 日あたり 1 行のみが保持されます。したがって、`up_down_votes_per_day` は常に小さく、かつ最新の状態に保たれます。
+ここでは、`votes` の 2 億 3,800 万行から、クエリ結果を保存することで 5,000 行まで実質的に削減しました。ここで重要なのは、`votes` テーブルに新しい投票が挿入されると、その該当日についての新しい値が `up_down_votes_per_day` に送られ、バックグラウンドで非同期に自動マージされる点です。その結果、1 日あたり 1 行のみが保持されます。したがって、`up_down_votes_per_day` は常に小さく、かつ最新の状態に保たれます。
 
-行のマージは非同期で行われるため、ユーザがクエリを実行した時点では 1 日あたり複数の行が存在する場合があります。クエリ実行時に未マージの行も確実に統合するには、次の 2 つの方法があります。
+行のマージは非同期で行われるため、ユーザがクエリを実行した時点では、1 日あたり複数の行が存在している可能性があります。クエリ時に未マージの行を確実にマージするには、次の 2 つの方法があります。
 
-* テーブル名に `FINAL` 修飾子を使用する。上記のカウントクエリではこの方法を使用しました。
-* 最終テーブルで使用している並び替えキー、すなわち `CreationDate` で集約し、メトリクスを合計する。この方法は一般的により効率的かつ柔軟（テーブルを他の用途にも利用可能）ですが、前者のほうが一部のクエリでは単純になる場合があります。以下に両方の方法を示します。
+* テーブル名に `FINAL` 修飾子を付けて使用する。上記のカウントクエリではこれを行いました。
+* 最終テーブルで使用している並び替えキー、すなわち `CreationDate` で集約し、メトリクスを合計する。通常、こちらの方が効率的で柔軟性があります（テーブルを他の用途にも使える）が、前者の方が一部のクエリではよりシンプルです。以下に両方の方法を示します。
 
 ```sql
 SELECT
@@ -147,8 +145,8 @@ FINAL
 ORDER BY Day ASC
 LIMIT 10
 
-10行を取得しました。経過時間: 0.004秒。処理済み: 8.97千行、89.68 KB (209万行/秒、20.89 MB/秒)
-ピークメモリ使用量: 289.75 KiB
+10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
+Peak memory usage: 289.75 KiB.
 
 SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
 FROM up_down_votes_per_day
@@ -168,22 +166,22 @@ LIMIT 10
 │ 2008-08-09 │     576 │        46 │
 └────────────┴─────────┴───────────┘
 
-10行を取得しました。経過時間: 0.010秒。処理済み: 8.97千行、89.68 KB (90.73万行/秒、9.07 MB/秒)
-ピークメモリ使用量: 567.61 KiB
+10 rows in set. Elapsed: 0.010 sec. Processed 8.97 thousand rows, 89.68 KB (907.32 thousand rows/s., 9.07 MB/s.)
+Peak memory usage: 567.61 KiB.
 ```
 
-これにより、クエリの実行時間は 0.133 秒から 0.004 秒へ短縮され、25 倍以上の高速化が実現しました！
+これにより、クエリの処理時間は 0.133 秒から 0.004 秒に短縮され、25 倍以上高速化されました。
 
 :::important 重要: `ORDER BY` = `GROUP BY`
-ほとんどの場合、`SummingMergeTree` または `AggregatingMergeTree` テーブルエンジンを使用する際は、マテリアライズドビュー変換の `GROUP BY` 句で使用される列を、対象テーブルの `ORDER BY` 句で使用される列と一致させる必要があります。これらのエンジンは、バックグラウンドのマージ処理中に同一の値を持つ行をマージするために `ORDER BY` 列に依存しています。`GROUP BY` 列と `ORDER BY` 列が一致していないと、クエリパフォーマンスの低下、不十分なマージ、さらにはデータ不整合を引き起こす可能性があります。
+ほとんどの場合、materialized view の変換処理における `GROUP BY` 句で使用するカラムは、ターゲットテーブルで `SummingMergeTree` または `AggregatingMergeTree` テーブルエンジンを使用している場合、そのテーブルの `ORDER BY` 句で使用するカラムと一致させる必要があります。これらのエンジンは、バックグラウンドのマージ処理中に同一値を持つ行をマージするために `ORDER BY` カラムに依存しています。`GROUP BY` と `ORDER BY` のカラムが揃っていないと、クエリ性能の低下、不適切なマージ、さらにはデータ不整合を招く可能性があります。
 :::
 
-### さらに複雑な例 {#a-more-complex-example}
 
+### より複雑な例 {#a-more-complex-example}
 
-上記の例では、マテリアライズドビューを使用して、1 日あたり 2 つの合計値を計算および保持しています。合計値は部分的な状態を保持するための最も単純な集約形式であり、新しい値が到着したときに既存の値にただ加算していけば済みます。ただし、ClickHouse のマテリアライズドビューは、あらゆる種類の集約に対して使用できます。
+上記の例では、1 日あたり 2 つの合計値を計算・維持するために Materialized Views を使用しています。合計値は中間状態を維持するための最も単純な集約形式であり、新しい値が到着したときに既存の値に加算するだけで済みます。ただし、ClickHouse の Materialized Views はあらゆる種類の集約に利用できます。
 
-次に、各日の投稿に対していくつかの統計量を計算したいとします。具体的には、`Score` の 99.9 パーセンタイルと `CommentCount` の平均です。これを計算するクエリは次のようになります。
+ここでは、各日の投稿についていくつかの統計量を計算したいとします。具体的には、`Score` の 99.9 パーセンタイル値と `CommentCount` の平均値です。これを計算するクエリは次のようになります。
 
 ```sql
 SELECT
@@ -208,21 +206,21 @@ LIMIT 10
 │ 2024-03-22 00:00:00 │ 9.310999999999694 │ 1.2388059701492538 │
 └─────────────────────┴───────────────────┴────────────────────┘
 
-10行を取得しました。経過時間: 0.113秒。処理: 5982万行、777.65 MB (5億2848万行/秒、6.87 GB/秒)
-ピークメモリ使用量: 658.84 MiB
+10 rows in set. Elapsed: 0.113 sec. Processed 59.82 million rows, 777.65 MB (528.48 million rows/s., 6.87 GB/s.)
+Peak memory usage: 658.84 MiB.
 ```
 
-前と同様に、`posts` テーブルに新しい投稿が挿入されるたびに、上記のクエリを実行するマテリアライズドビューを作成できます。
+前と同様に、`posts` テーブルに新しい投稿が挿入されるたびに、上記のクエリを実行する materialized view を作成できます。
 
-この例では、S3 から投稿データを読み込まないようにするため、`posts` と同じスキーマを持つ複製テーブル `posts_null` を作成します。ただし、このテーブルはデータを一切保存せず、行が挿入された際にマテリアライズドビューによってのみ使用されます。データの保存を防ぐために、[`Null` テーブルエンジン](/engines/table-engines/special/null) を使用できます。
+サンプル用であり、かつ S3 から投稿データを読み込むことを避けるために、`posts` と同じスキーマを持つ複製テーブル `posts_null` を作成します。ただし、このテーブルはデータを一切保存せず、行が挿入されたときに materialized view によって参照されるだけです。データの保存を防ぐためには、[`Null` table engine type](/engines/table-engines/special/null) を使用できます。
 
 ```sql
 CREATE TABLE posts_null AS posts ENGINE = Null
 ```
 
-Null テーブルエンジンは強力な最適化機構で、`/dev/null` のようなものだと考えることができます。`posts_null` テーブルに行が挿入されたタイミングで、マテリアライズドビューが要約統計量を計算して保存します。これは単なるトリガーにすぎません。ただし、生データ自体は保存されません。今回のケースでは元の `posts` も保存しておきたいと考えるのが自然ですが、この方法を用いると、生データのストレージオーバーヘッドを発生させずに集計を計算できます。
+Null テーブルエンジンは強力な最適化機構で、`/dev/null` のようなものと考えることができます。`posts_null` テーブルが挿入時に行を受け取ると、materialized view がサマリー統計量を計算して保存しますが、これはトリガーの役割を果たすだけです。ただし、生データは保存されません。この例ではおそらく元の投稿データも保存しておきたいところですが、この手法を使うことで、生データの保存コストを避けつつ集計値を計算できます。
 
-したがって、マテリアライズドビューは次のようになります。
+このように、materialized view は次のようになります。
 
 ```sql
 CREATE MATERIALIZED VIEW post_stats_mv TO post_stats_per_day AS
@@ -233,11 +231,11 @@ FROM posts_null
 GROUP BY Day
 ```
 
-集約関数の末尾にサフィックス `State` を付けていることに注目してください。これにより、関数の最終結果ではなく、集約状態が返されるようになります。この状態には、この部分的な状態を他の状態とマージできるようにするための追加情報が含まれます。例えば平均値の場合、この状態には列の件数と合計が含まれます。
+集約関数の末尾にサフィックスとして `State` を付与している点に注目してください。これにより、関数の最終結果ではなく、関数の集約状態が返されます。この集約状態には、他の状態とマージできるようにするための追加情報が含まれます。たとえば平均値の場合、対象カラムの件数と合計が含まれます。
 
-> 部分的な集約状態は、正しい結果を計算するために必要です。例えば平均値を計算する場合、単純に各部分範囲の平均値同士を平均しても、正しい結果にはなりません。
+> 正しい結果を計算するには、部分集約状態が必要です。たとえば平均値を計算する場合、部分範囲ごとの平均値を単に平均しても、正しい結果にはなりません。
 
-次に、これらの部分的な集約状態を保存する、このビュー `post_stats_per_day` のターゲットテーブルを作成します。
+次に、これらの部分集約状態を保存するための、VIEW `post_stats_per_day` のターゲットテーブルを作成します。
 
 
 ```sql
@@ -251,10 +249,10 @@ ENGINE = AggregatingMergeTree
 ORDER BY Day
 ```
 
-以前は `SummingMergeTree` でカウントを保存するには十分でしたが、他の関数のためにはより高度なテーブルエンジンが必要です。そのため、[`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree) を使用します。
-ClickHouse に集約状態が保存されることを認識させるために、`Score_quantiles` と `AvgCommentCount` を型 `AggregateFunction` として定義し、部分状態の元となる関数と、そのソースカラムの型を指定します。`SummingMergeTree` と同様に、同じ `ORDER BY` キー値を持つ行はマージされます（上記の例では `Day`）。
+以前は `SummingMergeTree` だけでカウントを保存するには十分でしたが、他の関数向けには、より高度なエンジンタイプが必要になります。それが [`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree) です。
+ClickHouse が集約状態を保存することを認識できるようにするために、`Score_quantiles` と `AvgCommentCount` の型を `AggregateFunction` として定義し、部分状態を生成する関数と、その元となるカラムの型を指定します。`SummingMergeTree` と同様に、同じ `ORDER BY` キー値を持つ行はマージされます（上記の例では `Day`）。
 
-マテリアライズドビュー経由で `post_stats_per_day` にデータを投入するには、`posts` から `posts_null` にすべての行をそのまま挿入するだけです。
+materialized view を介して `post_stats_per_day` にデータを投入するには、`posts` から `posts_null` にすべての行を単純に挿入するだけで済みます。
 
 ```sql
 INSERT INTO posts_null SELECT * FROM posts
@@ -262,9 +260,9 @@ INSERT INTO posts_null SELECT * FROM posts
 0 rows in set. Elapsed: 13.329 sec. Processed 119.64 million rows, 76.99 GB (8.98 million rows/s., 5.78 GB/s.)
 ```
 
-> 本番環境では通常、マテリアライズドビューは `posts` テーブルにアタッチします。ここではヌルテーブルを示すために `posts_null` を使用しています。
+> 本番環境では、通常この materialized view を `posts` テーブルに関連付けます。ここでは、null テーブルを示すために `posts_null` を使用しています。
 
-最終的なクエリでは（カラムに部分集約状態が保存されているため）、`Merge` 接尾辞付きの関数を使用する必要があります。
+最終的なクエリでは、（カラムが部分集計の状態を保持しているため）関数に `Merge` というサフィックスを付けて使用する必要があります。
 
 ```sql
 SELECT
@@ -282,24 +280,25 @@ LIMIT 10
 
 ## その他の用途 {#other-applications}
 
-ここまでは主に、マテリアライズドビューを使用してデータの部分集計をインクリメンタルに更新し、計算をクエリ実行時から挿入時へと移動する方法に焦点を当てました。この一般的なユースケースに加えて、マテリアライズドビューには他にもさまざまな用途があります。
+上記では主に、Materialized View を使用してデータの部分集計をインクリメンタルに更新し、計算処理をクエリ実行時から挿入時へと移す方法に焦点を当てました。この一般的なユースケースに加えて、Materialized View には他にもさまざまな用途があります。
 
 ### フィルタリングと変換 {#filtering-and-transformation}
 
-状況によっては、挿入時に行や列の一部だけを取り込めばよい場合があります。この場合、`posts_null` テーブルで挿入を受け付け、`posts` テーブルへ挿入する前に `SELECT` クエリで行をフィルタリングすることができます。例えば、`posts` テーブル内の `Tags` 列を変換したいとします。この列にはパイプ区切りのタグ名リストが含まれています。これを配列に変換することで、個々のタグ値ごとに集計しやすくなります。
+状況によっては、挿入時に行やカラムの一部だけを挿入したい場合があります。この場合、`posts_null` テーブルで挿入を受け付け、その後に `SELECT` クエリで行をフィルタリングしてから `posts` テーブルに挿入できます。例えば、`posts` テーブル内の `Tags` カラムを変換したいとします。これはタグ名をパイプ区切りで格納したリストです。これらを配列に変換することで、個々のタグ値ごとに集計しやすくなります。
 
-> この変換は、`INSERT INTO SELECT` を実行する際に行うこともできます。マテリアライズドビューを使用すると、このロジックを ClickHouse の DDL 内にカプセル化でき、`INSERT` 自体はシンプルなまま、すべての新規行に対して変換が適用されるようにできます。
+> この変換は `INSERT INTO SELECT` を実行する際に行うこともできます。materialized view を利用すると、このロジックを ClickHouse の DDL として定義し、`INSERT` 自体はシンプルなまま、新しい行に対して自動的に変換を適用できます。
 
-この変換用のマテリアライズドビューを以下に示します。
+この変換用の materialized view は以下のようになります。
 
 ```sql
 CREATE MATERIALIZED VIEW posts_mv TO posts AS
         SELECT * EXCEPT Tags, arrayFilter(t -> (t != ''), splitByChar('|', Tags)) as Tags FROM posts_null
 ```
 
+
 ### ルックアップテーブル {#lookup-table}
 
-ユーザーは ClickHouse のソートキーを選択する際、自身のアクセスパターンを考慮する必要があります。フィルタ句や集約句で頻繁に使用されるカラムを含めるべきです。これは、アクセスパターンが多様で単一のカラム集合では表現しきれないシナリオにおいては制約となり得ます。たとえば、次のような `comments` テーブルを考えてみます。
+ClickHouse の ORDER BY キーを選択する際には、そのアクセスパターンを考慮する必要があります。フィルタや集約句で頻繁に使用されるカラムを利用するべきです。これは、ユーザーがより多様なアクセスパターンを持ち、それらを単一のカラム集合に収められないシナリオでは制約となり得ます。たとえば、次のような `comments` テーブルを考えてみます。
 
 ```sql
 CREATE TABLE comments
@@ -318,9 +317,9 @@ ORDER BY PostId
 0 rows in set. Elapsed: 46.357 sec. Processed 90.38 million rows, 11.14 GB (1.95 million rows/s., 240.22 MB/s.)
 ```
 
-ここで指定しているソートキーは、`PostId` でフィルタするクエリに対してテーブルを最適化します。
+ここでの並び替えキーは、`PostId` でフィルタするクエリに対してテーブルを最適化します。
 
-特定の `UserId` でフィルタし、その平均 `Score` を計算したいユーザーがいると仮定します。
+ユーザーが特定の `UserId` でフィルタし、そのユーザーの平均 `Score` を計算したいとします。
 
 ```sql
 SELECT avg(Score)
@@ -335,9 +334,9 @@ WHERE UserId = 8592047
 Peak memory usage: 217.08 MiB.
 ```
 
-ClickHouse にとってはデータ量が小さいため高速ではありますが、処理された行数（9038 万行）から、このクエリではテーブル全体のフルスキャンが行われていることが分かります。より大きなデータセットの場合、`UserId` 列でフィルタリングする際に、並び替えキーである `PostId` の値を参照するためにマテリアライズドビューを利用できます。これらの値を使って効率的にルックアップを行うことができます。
+高速ではありますが（ClickHouse にとってはデータ量が小さいため）、処理された行数が 9,038 万行であることから、フルテーブルスキャンが行われていると分かります。より大きなデータセットに対しては、フィルタリング対象のカラム `UserId` に対応する並び替えキー `PostId` の値をルックアップするために materialized view を使用できます。これらの値を使って効率的なルックアップを実行できます。
 
-この例では、マテリアライズドビューは非常に単純で、`comments` への insert 時に `PostId` と `UserId` のみを選択します。これらの結果は、`UserId` で並び替えられた `comments_posts_users` テーブルに送られます。以下で `Comments` テーブルの空のバージョンを作成し、これを使ってビューおよび `comments_posts_users` テーブルを埋めます。
+この例では、materialized view は非常にシンプルで、挿入時に `comments` から `PostId` と `UserId` のみを選択します。これらの結果は、`UserId` で並び替えられたテーブル `comments_posts_users` に送られます。以下で `Comments` テーブルの空バージョンを作成し、これを使って materialized view と `comments_posts_users` テーブルにデータを投入します。
 
 ```sql
 CREATE TABLE comments_posts_users (
@@ -356,7 +355,7 @@ INSERT INTO comments_null SELECT * FROM comments
 0 rows in set. Elapsed: 5.163 sec. Processed 90.38 million rows, 17.25 GB (17.51 million rows/s., 3.34 GB/s.)
 ```
 
-これで、このビューをサブクエリとして利用し、先ほどのクエリを高速化できます。
+これで、この VIEW をサブクエリとして利用し、先ほどのクエリを高速化できます。
 
 ```sql
 SELECT avg(Score)
@@ -370,37 +369,33 @@ WHERE PostId IN (
 ┌──────────avg(Score)─┐
 │ 0.18181818181818182 │
 └─────────────────────┘
+
+1 row in set. Elapsed: 0.012 sec. Processed 88.61 thousand rows, 771.37 KB (7.09 million rows/s., 61.73 MB/s.)
 ```
 
 
-1 行がセットに含まれました。経過時間: 0.012 秒。処理: 88.61 千行、771.37 KB (7.09 百万行/秒、61.73 MB/秒)。
+### materialized view のチェーン／カスケード {#chaining}
 
-```
+materialized view はチェーン（またはカスケード）させることができ、複雑なワークフローを構築できます。
+詳細は、ガイド「[Cascading materialized views](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)」を参照してください。
 
-### マテリアライズドビューのチェーン/カスケード {#chaining}
+## materialized view と JOIN {#materialized-views-and-joins}
 
-マテリアライズドビューはチェーン(またはカスケード)することができ、複雑なワークフローを構築できます。
-詳細については、ガイド["Cascading materialized views"](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)を参照してください。
-```
-
-
-## マテリアライズドビューと JOIN {#materialized-views-and-joins}
-
-:::note リフレッシュ型マテリアライズドビュー
-以下の内容はインクリメンタルマテリアライズドビューにのみ適用されます。リフレッシュ型マテリアライズドビューは、対象となる全データセットに対して定期的にクエリを実行するため、JOIN を完全にサポートします。結果の鮮度の低下をある程度許容できる場合は、複雑な JOIN ではこちらの利用を検討してください。
+:::note リフレッシャブルmaterialized view
+以下の内容はインクリメンタルmaterialized view のみに適用されます。リフレッシャブルmaterialized view は、対象となる全データセットに対してクエリを定期的に実行し、JOIN を完全にサポートします。結果の鮮度がある程度低下しても許容できる場合は、複雑な JOIN にはリフレッシャブルmaterialized view の利用を検討してください。
 :::
 
-ClickHouse のインクリメンタルマテリアライズドビューは `JOIN` 演算を完全にサポートしますが、1 つ重要な制約があります。それは、**マテリアライズドビューはソーステーブル（クエリ内の最も左側のテーブル）への挿入時にのみトリガーされる**という点です。JOIN の右側のテーブルは、そのデータが変更されても更新をトリガーしません。この挙動は、挿入時にデータを集約または変換する **インクリメンタル** マテリアライズドビューを構築する際に特に重要です。
+ClickHouse におけるインクリメンタルmaterialized view は `JOIN` 操作を完全にサポートしますが、1 つ重要な制約があります。**materialized view は、ソーステーブル（クエリ内の最も左側のテーブル）への挿入時にのみトリガーされる**という点です。JOIN の右側のテーブルは、データが変更されても更新をトリガーしません。この挙動は、挿入時にデータを集約または変換する **インクリメンタル** materialized view を構築する際に特に重要です。
 
-`JOIN` を使ってインクリメンタルマテリアライズドビューを定義した場合、`SELECT` クエリ内の最も左側のテーブルがソースとして機能します。このテーブルに新しい行が挿入されると、ClickHouse はマテリアライズドビューのクエリを、その新しく挿入された行に対してのみ実行します。JOIN の右側のテーブルは、この実行時に全件が読み込まれますが、それらのテーブルだけが変更されてもビューはトリガーされません。
+インクリメンタルmaterialized view が `JOIN` を使って定義されている場合、`SELECT` クエリ内の最も左側のテーブルがソースとして機能します。このテーブルに新しい行が挿入されると、ClickHouse は materialized view のクエリを、その新しく挿入された行に対して *のみ* 実行します。JOIN の右側のテーブルは、この実行中に全件読み出されますが、それらのテーブルだけが変更されても view はトリガーされません。
 
-この挙動により、マテリアライズドビューにおける JOIN は、静的なディメンションデータに対するスナップショット JOIN に近い動作になります。
+この挙動により、materialized view 上での JOIN は、静的なディメンションデータに対するスナップショット的な JOIN に近いものになります。
 
-これは、リファレンステーブルやディメンションテーブルを用いてデータを付加する用途にはうまく機能します。しかし、右側のテーブル（例：ユーザーメタデータ）に対する更新は、マテリアライズドビューを遡って更新することはありません。更新されたデータを反映させるには、ソーステーブルに新しい行が挿入される必要があります。
+これは、リファレンスまたはディメンションテーブルを用いたデータの付加（エンリッチ）には有効です。ただし、右側のテーブル（例: ユーザーメタデータ）に対する更新は、materialized view を遡って更新しません。更新後のデータを反映させるには、ソーステーブルに新たな挿入が行われる必要があります。
 
 ### 例 {#materialized-views-and-joins-example}
 
-[Stack Overflow データセット](/data-modeling/schema-design) を用いた具体例を見ていきます。ここでは、`users` テーブルからユーザーの表示名を含めて、**ユーザーごとの日次バッジ数** を計算するマテリアライズドビューを作成します。
+[Stack Overflow データセット](/data-modeling/schema-design) を使った具体例を見ていきます。`users` テーブルからユーザーの表示名を含めて、**ユーザーごとの1日あたりのバッジ数** を計算するために materialized view を使用します。
 
 おさらいとして、テーブルスキーマは次のとおりです。
 
@@ -433,14 +428,14 @@ ENGINE = MergeTree
 ORDER BY Id;
 ```
 
-`users` テーブルにはあらかじめデータが投入されているものとします。
+`users` テーブルには既にデータが投入されている前提とします。
 
 ```sql
 INSERT INTO users
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet');
 ```
 
-マテリアライズドビューとそれに関連付けられたターゲットテーブルは、次のように定義されます。
+materialized view と、それに関連付けられたターゲットテーブルは次のように定義されています：
 
 ```sql
 CREATE TABLE daily_badges_by_user
@@ -468,11 +463,11 @@ LEFT JOIN users AS u ON b.UserId = u.Id
 GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
-:::note Grouping and Ordering Alignment
-マテリアライズドビューの `GROUP BY` 句には、`SummingMergeTree` のターゲットテーブルの `ORDER BY` と整合させるために、`DisplayName`、`UserId`、`Day` を含めなければなりません。これにより、行が正しく集約およびマージされます。これらのいずれかを省略すると、結果が不正確になったり、マージが非効率になったりする可能性があります。
+:::note グループ化と並び順の整合性
+materialized view の `GROUP BY` 句には、`SummingMergeTree` ターゲットテーブルの `ORDER BY` と整合させるために、`DisplayName`、`UserId`、`Day` を含める必要があります。これにより、行が正しく集約・マージされます。いずれかを省略すると、誤った結果や非効率なマージにつながる可能性があります。
 :::
 
-ここでバッジを投入すると、ビューがトリガーされ、`daily_badges_by_user` テーブルにデータが書き込まれます。
+ここで badge データを投入すると、materialized view がトリガーされ、`daily_badges_by_user` テーブルにデータが書き込まれます。
 
 ```sql
 INSERT INTO badges SELECT *
@@ -481,7 +476,7 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 0 rows in set. Elapsed: 433.762 sec. Processed 1.16 billion rows, 28.50 GB (2.67 million rows/s., 65.70 MB/s.)
 ```
 
-特定のユーザーが獲得したバッジを確認したい場合、次のようなクエリを実行できます。
+特定のユーザーが獲得したバッジを表示したい場合、次のクエリを実行できます。
 
 
 ```sql
@@ -504,7 +499,7 @@ WHERE DisplayName = 'gingerwizard'
 8 rows in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 642.14 KB (1.86 million rows/s., 36.44 MB/s.)
 ```
 
-これで、このユーザーが新しいバッジを獲得し、行が挿入されると、ビューが更新されます。
+ここで、このユーザーに新しいバッジが付与されて行が挿入されると、VIEW が更新されます。
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -531,10 +526,10 @@ WHERE DisplayName = 'gingerwizard'
 ```
 
 :::warning
-ここでの挿入レイテンシに注意してください。挿入されたユーザー行は `users` テーブル全体と結合されるため、挿入パフォーマンスが大きく低下します。これに対処する方法については、以下の [&quot;Using source table in filters and joins&quot;](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views) で説明します。
+ここでの挿入処理のレイテンシに注目してください。挿入された user 行は `users` テーブル全体と JOIN されるため、挿入パフォーマンスに大きな影響があります。これに対処する手法については、以下の [&quot;フィルタおよび JOIN でソーステーブルを使用する&quot;](/materialized-view/incremental-materialized-view#using-source-table-in-filters-and-joins-in-materialized-views) で説明します。
 :::
 
-逆に、新しいユーザーに対して先にバッジを挿入し、その後でユーザー行を挿入した場合、マテリアライズドビューはそのユーザーのメトリクスを取りこぼしてしまいます。
+逆に、新しいユーザーに対して先に badge を挿入し、その後にユーザーの行を挿入した場合、materialized view はユーザーのメトリクスを正しく取りこぼすことなく取得できません。
 
 ```sql
 INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0);
@@ -551,7 +546,7 @@ WHERE DisplayName = 'brand_new_user';
 0 rows in set. Elapsed: 0.017 sec. Processed 32.77 thousand rows, 644.32 KB (1.98 million rows/s., 38.94 MB/s.)
 ```
 
-このケースでは、この `view` はユーザー行が存在する前のバッジ挿入時にのみ実行されます。ユーザー用に別のバッジを挿入すると、想定どおり行が挿入されます。
+この場合、このビューは、ユーザーの行が存在する前に行われるバッジの挿入に対してのみ実行されます。ユーザーに対して別のバッジを挿入すると、期待どおり行が挿入されます。
 
 ```sql
 INSERT INTO badges VALUES (53505060, 23923286, 'Teacher', now(), 'Bronze', 0);
@@ -565,36 +560,37 @@ WHERE DisplayName = 'brand_new_user'
 │ 2025-04-13 │ 23923286 │ brand_new_user │    0 │      0 │      1 │
 └────────────┴──────────┴────────────────┴──────┴────────┴────────┘
 
-1行のセット。経過時間: 0.018秒。処理済み: 32.77千行、644.48 KB (187万行/秒、36.72 MB/秒)
+1 row in set. Elapsed: 0.018 sec. Processed 32.77 thousand rows, 644.48 KB (1.87 million rows/s., 36.72 MB/s.)
 ```
 
-ただし、この結果は正しくありません。
+ただし、この結果は誤っています。
 
-### マテリアライズドビューにおける JOIN のベストプラクティス {#join-best-practices}
 
-* **左端のテーブルをトリガーとして使用する。** `SELECT` 文の左側のテーブルだけがマテリアライズドビューをトリガーします。右側のテーブルへの変更では更新はトリガーされません。
+### materialized view における JOIN のベストプラクティス {#join-best-practices}
 
-* **JOIN するデータを事前に挿入しておく。** 結合対象のテーブル内のデータは、ソーステーブルに行を挿入する前に存在していることを必ず確認してください。JOIN は挿入時に評価されるため、データが欠けているとマッチしない行や null になります。
+- **左側のテーブルをトリガーとして使用する。** `SELECT` 文の左側にあるテーブルのみが materialized view をトリガーします。右側のテーブルへの変更では更新がトリガーされません。
 
-* **JOIN から取得する列を絞り込む。** メモリ使用量を最小化し、挿入時のレイテンシを削減するために、JOIN 先テーブルからは必要な列だけを選択します（後述）。
+- **結合対象のデータを事前に挿入する。** ソーステーブルに行を挿入する前に、JOIN 先テーブルに必要なデータが存在していることを確認します。JOIN は挿入時に評価されるため、データが欠けていると、マッチしない行や null が発生します。
 
-* **挿入時のパフォーマンスを評価する。** JOIN は、特に右側のテーブルが大きい場合、挿入処理のコストを増加させます。本番環境を代表するデータセットを使って挿入レートをベンチマークしてください。
+- **JOIN から取得するカラムを絞り込む。** メモリ使用量を最小限に抑え、挿入時のレイテンシーを削減するために、JOIN 先テーブルからは必要なカラムのみを選択します（下記参照）。
 
-* **単純なルックアップには Dictionary を優先する。** 高コストな JOIN を避けるため、キー・バリューのルックアップ（例: ユーザー ID から名前など）には [Dictionaries](/dictionary) を使用してください。
+- **挿入時のパフォーマンスを評価する。** JOIN は挿入コストを増加させます。特に右側のテーブルが大きい場合は顕著です。本番相当の代表的なデータを用いて挿入レートをベンチマークしてください。
 
-* **マージ効率のために `GROUP BY` と `ORDER BY` を揃える。** `SummingMergeTree` や `AggregatingMergeTree` を使用する場合、ターゲットテーブルでは `GROUP BY` が `ORDER BY` 句と一致するようにして、行マージを効率良く行えるようにします。
+- **単純なルックアップには Dictionary を優先して使う。** コストの高い JOIN 処理を避けるため、キー・バリュールックアップ（例: ユーザー ID から名前への対応）には [Dictionaries](/dictionary) を使用します。
 
-* **明示的なカラムエイリアスを使用する。** テーブル間で列名が重複している場合は、エイリアスを使用して曖昧さを回避し、ターゲットテーブルで正しい結果を得られるようにします。
+- **`GROUP BY` と `ORDER BY` をマージ効率のために揃える。** `SummingMergeTree` や `AggregatingMergeTree` を使用する場合、ターゲットテーブルの `ORDER BY` 句と `GROUP BY` を一致させて、行のマージを効率的に行えるようにします。
 
-* **挿入ボリュームと頻度を考慮する。** JOIN は中程度の挿入ワークロードには適していますが、高スループットなインジェストでは、ステージングテーブル、事前 JOIN、あるいは Dictionaries や [Refreshable Materialized Views](/materialized-view/refreshable-materialized-view) などの別のアプローチを検討してください。
+- **明示的なカラムエイリアスを使用する。** テーブル間でカラム名が重複している場合は、あいまいさを防ぎ、ターゲットテーブルで正しい結果を得るためにエイリアスを使用します。
 
-### フィルターや JOIN でのソーステーブルの使用 {#using-source-table-in-filters-and-joins-in-materialized-views}
+- **挿入量と頻度を考慮する。** JOIN は中程度の挿入ワークロードではうまく機能します。高スループットのインジェストが必要な場合は、ステージングテーブル、事前に JOIN を行う方式、あるいは Dictionary や [Refreshable Materialized Views](/materialized-view/refreshable-materialized-view) などの別手法の利用を検討してください。
 
-ClickHouse のマテリアライズドビューを扱う際には、マテリアライズドビューのクエリ実行中にソーステーブルがどのように扱われるかを理解しておくことが重要です。具体的には、マテリアライズドビューのクエリ内のソーステーブルは、挿入されたデータブロックに置き換えられます。この挙動を正しく理解していないと、予期しない結果につながる可能性があります。
+### フィルタおよび JOIN におけるソーステーブルの使用 {#using-source-table-in-filters-and-joins-in-materialized-views}
 
-#### 例となるシナリオ {#example-scenario}
+ClickHouse で materialized view を扱う際には、その materialized view のクエリ実行時にソーステーブルがどのように扱われるかを理解しておくことが重要です。具体的には、materialized view のクエリ内にあるソーステーブルは、挿入中のデータブロックで置き換えられます。この動作を正しく理解していないと、予期しない結果につながる可能性があります。
 
-次のようなセットアップを考えます：
+#### シナリオ例 {#example-scenario}
+
+次のような構成を考えます。
 
 ```sql
 CREATE TABLE t0 (`c0` Int) ENGINE = Memory;
@@ -631,19 +627,19 @@ SELECT * FROM mvw2;
 ```
 
 
-#### 解説 {#explanation}
+#### 説明 {#explanation}
 
-上記の例では、`mvw1` と `mvw2` という 2 つのマテリアライズドビューがあり、同様の処理を行いますが、ソーステーブル `t0` の参照方法にわずかな違いがあります。
+上記の例では、`mvw1` と `mvw2` という 2 つの materialized view があり、どちらも似た処理を行いますが、ソーステーブル `t0` の参照方法にわずかな違いがあります。
 
-`mvw1` では、テーブル `t0` は JOIN の右側にある `(SELECT * FROM t0)` サブクエリ内で直接参照されています。`t0` にデータが挿入されると、マテリアライズドビューのクエリは、`t0` の代わりに挿入されたデータブロックを用いて実行されます。これは、JOIN 処理がテーブル全体ではなく、新たに挿入された行のみに対して行われることを意味します。
+`mvw1` では、テーブル `t0` は JOIN の右側にある `(SELECT * FROM t0)` サブクエリの中で直接参照されています。`t0` にデータが挿入されると、その materialized view のクエリは、`t0` の代わりに挿入されたデータブロックを用いて実行されます。これは、JOIN 処理がテーブル全体ではなく、新しく挿入された行に対してのみ実行されることを意味します。
 
-2 つ目のケースである `vt0` との JOIN では、そのビューは `t0` からすべてのデータを読み出します。これにより、JOIN 処理は新たに挿入されたブロックだけでなく、`t0` にあるすべての行を対象とすることが保証されます。
+2 つ目の `vt0` との JOIN のケースでは、その VIEW は `t0` からすべてのデータを読み取ります。これにより、JOIN 処理は新しく挿入されたブロックだけでなく、`t0` 内のすべての行を対象とすることが保証されます。
 
-重要な違いは、ClickHouse がマテリアライズドビューのクエリ内でソーステーブルをどのように扱うかにあります。マテリアライズドビューが INSERT によってトリガーされた場合、ソーステーブル（この例では `t0`）は挿入されたデータブロックに置き換えられます。この挙動はクエリの最適化に活用できますが、想定外の結果を避けるためには慎重な検討が必要です。
+重要な違いは、ClickHouse が materialized view のクエリ内でソーステーブルをどのように扱うかにあります。materialized view が insert によってトリガーされると、ソーステーブル（この例では `t0`）は挿入されたデータブロックに置き換えられます。この挙動はクエリの最適化に活用できますが、一方で予期しない結果を避けるために注意深い検討も必要です。
 
 ### ユースケースと注意点 {#use-cases-and-caveats}
 
-実際には、この挙動を利用して、ソーステーブルのデータの一部のみを処理すればよいマテリアライズドビューを最適化することができます。例えば、他のテーブルと JOIN を行う前に、サブクエリを使ってソーステーブルをフィルタリングできます。これにより、マテリアライズドビューが処理するデータ量を減らし、パフォーマンスを向上させることができます。
+実運用では、この動作を利用して、ソーステーブルのデータの一部だけを処理すればよい materialized view を最適化できます。たとえば、他のテーブルと結合する前に、サブクエリを使ってソーステーブルをフィルタリングできます。これにより、materialized view が処理するデータ量を減らし、パフォーマンスを向上させられます。
 
 ```sql
 CREATE TABLE t0 (id UInt32, value String) ENGINE = MergeTree() ORDER BY id;
@@ -659,11 +655,12 @@ JOIN (SELECT * FROM t1 WHERE t1.id IN (SELECT id FROM t0)) AS t1
 ON t0.id = t1.id;
 ```
 
-この例では、`IN (SELECT id FROM t0)` サブクエリから構築される集合には、新しく挿入された行のみが含まれます。これにより、その集合を使って `t1` をフィルタリングできます。
+この例では、`IN (SELECT id FROM t0)` サブクエリから構築される Set には新規に挿入された行のみが含まれており、その Set を使って `t1` を絞り込むことができます。
 
-#### Stack Overflow を用いた例 {#example-with-stack-overflow}
 
-ユーザーごとの**1 日あたりのバッジ数**を計算し、さらに `users` テーブルからユーザーの表示名を含めるために、[前述のマテリアライズドビューの例](/materialized-view/incremental-materialized-view#example)を考えてみます。
+#### スタックオーバーフローの例 {#example-with-stack-overflow}
+
+`users` テーブルからユーザーの表示名を取得しつつ、**ユーザーごとの日次バッジ数** を計算するための [先ほどの materialized view の例](/materialized-view/incremental-materialized-view#example) を考えます。
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -679,15 +676,15 @@ LEFT JOIN users AS u ON b.UserId = u.Id
 GROUP BY Day, b.UserId, u.DisplayName;
 ```
 
-このビューにより、`badges` テーブルへの挿入レイテンシが大きく影響を受けました。例えば、次のようになります。
+このビューにより、`badges` テーブルへの挿入レイテンシが大きく悪化しました。例えば:
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
-1行のセット。経過時間: 7.517秒
+1 row in set. Elapsed: 7.517 sec.
 ```
 
-上記のアプローチを用いて、このビューを最適化します。挿入されたバッジ行のユーザー ID を使って `users` テーブルにフィルター条件を追加します。
+上記のアプローチを用いて、このビューを最適化していきます。挿入されたバッジ行に含まれるユーザー ID を使って、`users` テーブルにフィルタ条件を追加します。
 
 ```sql
 CREATE MATERIALIZED VIEW daily_badges_by_user_mv TO daily_badges_by_user
@@ -716,37 +713,34 @@ GROUP BY
     u.DisplayName
 ```
 
-これは初回の badges の挿入を高速化するだけでなく、
+これはバッジの初回挿入処理を高速化するだけでなく、
 
 ```sql
 INSERT INTO badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
+
+0 rows in set. Elapsed: 132.118 sec. Processed 323.43 million rows, 4.69 GB (2.45 million rows/s., 35.49 MB/s.)
+Peak memory usage: 1.99 GiB.
 ```
 
-
-0 行。経過時間: 132.118 秒。処理済み 323.43 百万行、4.69 GB (2.45 百万行/秒、35.49 MB/秒)。
-最大メモリ使用量: 1.99 GiB。
-
-````
-
-また、今後のバッジ挿入も効率的に実行できることを意味します：
+さらに、今後のバッジ挿入も効率的になります。
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
 
 1 row in set. Elapsed: 0.583 sec.
-````
+```
 
-上記の操作では、ユーザー ID `2936484` に対して `users` テーブルから 1 行だけが取得されます。このルックアップは、`Id` をテーブルの並び替えキーとして指定することで最適化されています。
+上記の操作では、ユーザー ID が `2936484` の行が users テーブルから 1 行だけ取得されます。このルックアップは、テーブルの並び替えキーとして `Id` 列を使用することで最適化されています。
 
 
-## マテリアライズドビューと UNION {#materialized-views-and-unions}
+## materialized view と UNION {#materialized-views-and-unions}
 
-`UNION ALL` クエリは、複数のソーステーブルからのデータを1つの結果セットに結合するためによく使用されます。
+`UNION ALL` クエリは、複数のソーステーブルにあるデータを 1 つの結果セットに結合するためによく使用されます。
 
-`UNION ALL` はインクリメンタルマテリアライズドビューでは直接はサポートされませんが、各 `SELECT` 句ごとに個別のマテリアライズドビューを作成し、その結果を共通のターゲットテーブルに書き込むことで、同じ結果を得ることができます。
+`UNION ALL` はインクリメンタルmaterialized view では直接サポートされていませんが、各 `SELECT` ブランチごとに個別の materialized view を作成し、その結果を共有のターゲットテーブルに書き込むことで、同じ結果を得ることができます。
 
-この例では Stack Overflow データセットを使用します。以下の `badges` テーブルと `comments` テーブルを考えてみます。これらは、それぞれユーザーが獲得したバッジと、ユーザーが投稿に対して行ったコメントを表します。
+この例では Stack Overflow データセットを使用します。以下の `badges` テーブルと `comments` テーブルを考えます。これらは、それぞれユーザーが獲得したバッジと、投稿に対して行ったコメントを表しています。
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -775,7 +769,7 @@ ENGINE = MergeTree
 ORDER BY UserId
 ```
 
-これらには、以下の `INSERT INTO` コマンドでデータを投入できます。
+これらには次の `INSERT INTO` コマンドでデータを投入できます。
 
 ```sql
 INSERT INTO stackoverflow.badges SELECT *
@@ -784,7 +778,7 @@ INSERT INTO stackoverflow.comments SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/*.parquet')
 ```
 
-これら 2 つのテーブルを組み合わせて、各ユーザーの直近のアクティビティを表示する統合ビューを作成したいとします。
+これら 2 つのテーブルを組み合わせて、各ユーザーの最新アクティビティを表示するユーザーアクティビティの統合ビューを作成したいとします。
 
 ```sql
 SELECT
@@ -813,7 +807,7 @@ ORDER BY last_activity DESC
 LIMIT 10
 ```
 
-このクエリの結果を受け取るターゲットテーブルがあるものとします。結果が正しくマージされるようにするために、[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) テーブルエンジンと [AggregateFunction](/sql-reference/data-types/aggregatefunction) の使用に注目してください。
+このクエリの結果を受け取るためのターゲットテーブルがあると仮定しましょう。[AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree) テーブルエンジンと [AggregateFunction](/sql-reference/data-types/aggregatefunction) を使用して、結果が正しくマージされるようにしている点に注意してください。
 
 ```sql
 CREATE TABLE user_activity
@@ -827,7 +821,7 @@ ENGINE = AggregatingMergeTree
 ORDER BY UserId
 ```
 
-`badges` または `comments` のどちらかに新しい行が挿入されるたびにこのテーブルも更新されるようにしたいとします。これに対するナイーブなアプローチとしては、先ほどの UNION クエリを使ってマテリアライズドビューを作成しようとすることが考えられます。
+`badges` または `comments` のいずれかに新しい行が挿入されるたびにこのテーブルを更新したい場合、この問題に対する安直なアプローチとしては、前述の UNION クエリを使って materialized view を作成することが考えられます。
 
 ```sql
 CREATE MATERIALIZED VIEW user_activity_mv TO user_activity AS
@@ -856,7 +850,8 @@ GROUP BY UserId
 ORDER BY last_activity DESC
 ```
 
-これは構文的には正しいものの、意図しない結果を招きます。ビューは `comments` テーブルへの INSERT だけをトリガーすることになります。例えば、次のようになります。
+構文的には正しいですが、意図しない結果になります。VIEW は `comments` テーブルへの挿入に対してしかトリガーされません。例えば:
+
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -869,18 +864,15 @@ SELECT
 FROM user_activity
 WHERE UserId = '2936484'
 GROUP BY UserId
-```
 
-
-┌─UserId──┬─description──────┬─activity&#95;type─┬───────────last&#95;activity─┐
-│ 2936484 │ 答えは 42 です   │ comment       │ 2025-04-15 09:56:19.000 │
+┌─UserId──┬─description──────┬─activity_type─┬───────────last_activity─┐
+│ 2936484 │ The answer is 42 │ comment       │ 2025-04-15 09:56:19.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
-1 行が取得されました。経過時間: 0.005 秒。
+1 row in set. Elapsed: 0.005 sec.
+```
 
-````
-
-`badges`テーブルへの挿入はビューをトリガーしないため、`user_activity`は更新されません:
+`badges` テーブルへの挿入ではその VIEW はトリガーされないため、`user_activity` は更新されません。
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -899,9 +891,9 @@ GROUP BY UserId;
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
 
 1 row in set. Elapsed: 0.005 sec.
-````
+```
 
-この問題を解決するには、各 `SELECT` 文ごとにマテリアライズドビューを作成するだけです。
+この問題を解決するには、各 SELECT 文ごとに materialized view を1つずつ作成します。
 
 ```sql
 DROP TABLE user_activity_mv;
@@ -926,7 +918,7 @@ FROM stackoverflow.badges
 GROUP BY UserId;
 ```
 
-どちらのテーブルに挿入しても、正しい結果が得られるようになりました。たとえば、`comments` テーブルに対して次のように挿入します。
+どちらのテーブルにデータを挿入しても、正しい結果が得られるようになりました。たとえば、`comments` テーブルに対して次のように挿入します。
 
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
@@ -947,7 +939,7 @@ GROUP BY UserId;
 1 row in set. Elapsed: 0.006 sec.
 ```
 
-同様に、`badges` テーブルへの INSERT 操作は、`user_activity` テーブルにも反映されます。
+同様に、`badges` テーブルへの挿入は `user_activity` テーブルにも反映されます。
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
@@ -971,11 +963,11 @@ GROUP BY UserId
 
 ## 並列処理と逐次処理 {#materialized-views-parallel-vs-sequential}
 
-前の例で示したように、1つのテーブルは複数のマテリアライズドビューのソースとして機能できます。これらが実行される順序は、設定 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing) によって決まります。
+前の例で示したように、1 つのテーブルは複数の materialized view のソースとして機能できます。これらが実行される順序は、設定 [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing) によって決まります。
 
-デフォルトでは、この設定は `0` (`false`) であり、マテリアライズドビューは `uuid` の順番で逐次的に実行されます。
+デフォルトでは、この設定は `0`（`false`）であり、materialized view は `uuid` の順序で順次実行されます。
 
-たとえば、次のような `source` テーブルと、それぞれが行を `target` テーブルに送信する3つのマテリアライズドビューを考えます。
+例として、次の `source` テーブルと、それぞれが `target` テーブルに行を送る 3 つの materialized view を考えます。
 
 ```sql
 CREATE TABLE source
@@ -1020,17 +1012,17 @@ AS SELECT
 FROM source;
 ```
 
-それぞれのビューは、自身の名前と挿入時刻を含めつつ、`target` テーブルに行を挿入する前に 1 秒間一時停止することに注意してください。
+それぞれの VIEW は、自身の名前と挿入時刻を含めつつ、`target` テーブルに行を挿入する前に 1 秒間一時停止することに注意してください。
 
-`source` テーブルに 1 行を挿入する処理には約 3 秒かかり、それぞれのビューが順番に実行されます。
+`source` テーブルに 1 行を挿入するには約 3 秒かかり、それぞれの VIEW は順次実行されます。
 
 ```sql
 INSERT INTO source VALUES ('test')
 
-1行のセット。経過時間: 3.786秒。
+1 row in set. Elapsed: 3.786 sec.
 ```
 
-`SELECT` 文で各行が取り込まれたことを確認できます：
+`SELECT` 文を実行して、各行が到着していることを確認できます。
 
 ```sql
 SELECT
@@ -1046,10 +1038,10 @@ ORDER BY now ASC
 │ test    │ mv2  │ 2025-04-15 14:52:03.309250283 │
 └─────────┴──────┴───────────────────────────────┘
 
-3行が返されました。経過時間: 0.015秒
+3 rows in set. Elapsed: 0.015 sec.
 ```
 
-これはビューの `uuid` に対応します。
+これは各ビューの `uuid` と対応しています:
 
 ```sql
 SELECT
@@ -1068,7 +1060,7 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-一方で、`parallel_view_processing=1` を有効にした状態で行を挿入するとどうなるかを考えてみましょう。これを有効にするとビューは並列に実行されるため、行が対象テーブルに到達する順序は一切保証されません。
+一方で、`parallel_view_processing=1` を有効にした状態で行を挿入するとどうなるかを考えてみます。これを有効にすると、VIEW は並列に実行され、行がターゲットテーブルに挿入される順序については一切保証されません。
 
 ```sql
 TRUNCATE target;
@@ -1095,41 +1087,40 @@ ORDER BY now ASC
 ```
 
 
-各ビューから到着する行の順序はここでは同じになっていますが、これは保証されていません。各行の挿入時刻が近いことからも分かるとおりです。また、挿入パフォーマンスが改善されている点にも注目してください。
+各 VIEW から到着する行の順序は同じですが、保証されているわけではありません。各行の挿入時刻が非常に近いことからもそれが分かります。また、挿入処理のパフォーマンスが向上している点にも注目してください。
 
-### 並列処理を利用するタイミング {#materialized-views-when-to-use-parallel}
+### 並列処理をいつ有効化するか {#materialized-views-when-to-use-parallel}
 
-`parallel_view_processing=1` を有効にすると、特に 1 つのテーブルに複数の Materialized Views がアタッチされている場合に、上記のとおり挿入スループットを大きく向上させることができます。ただし、その際のトレードオフを理解しておくことが重要です。
+`parallel_view_processing=1` を有効にすると、特に 1 つのテーブルに複数の Materialized Views がアタッチされている場合、上記のとおり挿入スループットが大きく向上する可能性があります。ただし、その際のトレードオフを理解しておくことが重要です。
 
-- **挿入負荷の増加**: すべての Materialized Views が同時に実行されるため、CPU およびメモリ使用量が増加します。各ビューが重い計算や JOIN を実行する場合、システムに過大な負荷がかかる可能性があります。
-- **厳密な実行順序の必要性**: ビューの実行順序が重要になる（たとえば連鎖した依存関係がある）ワークフローではまれに、並列実行によって不整合な状態やレースコンディションが発生する可能性があります。設計上の工夫で回避することも可能ですが、そのような構成は脆く、将来のバージョンで動作しなくなるおそれがあります。
+- **挿入負荷の増大**: すべての Materialized Views が同時に実行されるため、CPU とメモリ使用量が増加します。各 view が重い計算や JOIN を実行する場合、システムが過負荷になる可能性があります。
+- **厳密な実行順序の必要性**: view の実行順序が重要となる（例: 連鎖した依存関係がある）ワークフローではまれに、並列実行によって不整合な状態やレースコンディションが発生する可能性があります。これを回避するように設計することも可能ですが、そのような構成は脆く、将来のバージョンで動作しなくなる場合があります。
 
-:::note Historical defaults and stability
-逐次実行は長い間デフォルトであり、その一因はエラー処理の複雑さにあります。歴史的には、1 つのマテリアライズドビューで障害が発生すると、他のビューの実行が妨げられることがありました。新しいバージョンでは、ブロック単位で障害を分離することでこれを改善していますが、逐次実行は依然として失敗時の挙動がより明確になります。
+:::note 過去のデフォルトと安定性
+逐次実行は長い間デフォルトでしたが、その一因としてエラー処理の複雑さがありました。歴史的には、1 つの materialized view の失敗によって、他の view の実行が妨げられることがありました。新しいバージョンではブロック単位で失敗を分離することでこの点が改善されていますが、逐次実行は依然として失敗時の挙動をより明確にします。
 :::
 
-一般的には、次のような場合に `parallel_view_processing=1` を有効にします。
+一般的には、次のような場合に `parallel_view_processing=1` を有効化します:
 
 - 複数の独立した Materialized Views がある場合
-- 挿入パフォーマンスを最大化したい場合
-- ビューの同時実行を処理できるシステムのキャパシティを把握している場合
+- 挿入パフォーマンスの最大化を目指している場合
+- view の同時実行を処理できるシステムのキャパシティを把握している場合
 
-次のような場合は無効のままにしておきます。
+次のような場合は無効のままにしておきます:
+
 - Materialized Views 同士に依存関係がある場合
 - 予測可能で順序どおりの実行が必要な場合
-- 挿入動作をデバッグまたは監査しており、決定的なリプレイを行いたい場合
+- 挿入動作のデバッグや監査を行っており、決定的なリプレイを行いたい場合
 
+## materialized view と共通テーブル式 (CTE) {#materialized-views-common-table-expressions-ctes}
 
+**非再帰的な** 共通テーブル式 (CTE) は materialized view でサポートされています。
 
-## マテリアライズドビューと共通テーブル式 (CTE) {#materialized-views-common-table-expressions-ctes}
-
-**非再帰の**共通テーブル式 (CTE) はマテリアライズドビューでサポートされています。
-
-:::note 共通テーブル式は**マテリアライズされません**
-ClickHouse は CTE をマテリアライズせず、代わりに CTE の定義をクエリ内に直接展開します。その結果、CTE が複数回使用される場合には、同じ式が複数回評価される可能性があります。
+:::note 共通テーブル式は **マテリアライズされません**
+ClickHouse は CTE をマテリアライズしません。その代わり、CTE の定義をそのままクエリ内に展開します。このため、（CTE が 2 回以上使用される場合には）同じ式が複数回評価される可能性があります。
 :::
 
-次の例では、各投稿タイプごとの日次アクティビティを計算します。
+各投稿タイプごとの日次アクティビティを計算する、次の例を考えます。
 
 ```sql
 CREATE TABLE daily_post_activity
@@ -1151,13 +1142,13 @@ WITH filtered_posts AS (
  Score,
  ViewCount
     FROM posts
-    WHERE Score > 0 AND PostTypeId IN (1, 2)  -- 質問または回答
+    WHERE Score > 0 AND PostTypeId IN (1, 2)  -- Question or Answer
 )
 SELECT
     Day,
     CASE PostTypeId
-        WHEN 1 THEN '質問'
-        WHEN 2 THEN '回答'
+        WHEN 1 THEN 'Question'
+        WHEN 2 THEN 'Answer'
     END AS PostType,
     count() AS PostsCreated,
     avgState(Score) AS AvgScore,
@@ -1166,7 +1157,7 @@ FROM filtered_posts
 GROUP BY Day, PostTypeId;
 ```
 
-ここでは CTE は厳密には不要ですが、例示のために使用しており、このビューは期待どおりに動作します。
+ここではCTEは厳密には不要ですが、例示のために使用しており、このVIEWは期待どおりに動作します。
 
 ```sql
 INSERT INTO posts
@@ -1201,14 +1192,14 @@ LIMIT 10
 │ 2024-03-27 │ Answer   │ 1.4907539118065434 │          703 │          0 │
 └────────────┴──────────┴────────────────────┴──────────────┴────────────┘
 
-10行のセット。経過時間: 0.013秒。処理済み: 11.45千行、663.87 KB (866.53千行/秒、50.26 MB/秒)
-ピークメモリ使用量: 989.53 KiB。
+10 rows in set. Elapsed: 0.013 sec. Processed 11.45 thousand rows, 663.87 KB (866.53 thousand rows/s., 50.26 MB/s.)
+Peak memory usage: 989.53 KiB.
 ```
 
-ClickHouse では、CTE はインライン展開されるため、最適化の際にクエリ内へ実質的にコピー＆ペーストされたような形になり、**マテリアライズされません**。これは次のことを意味します。
+ClickHouse において、CTE はインライン展開されます。つまり、最適化の過程でクエリ内に実質的にコピーペーストされるだけで、**マテリアライズ** されません。これは次のことを意味します。
 
-* CTE がソーステーブル（つまりマテリアライズドビューが紐づいているテーブル）とは別のテーブルを参照していて、`JOIN` や `IN` 句で使用されている場合、それはトリガーではなくサブクエリや JOIN と同様に動作します。
-* マテリアライズドビューは依然としてメインのソーステーブルへの挿入時にのみトリガーされますが、CTE は挿入のたびに再実行されます。そのため、特に参照されるテーブルが大きい場合には、不要なオーバーヘッドを引き起こす可能性があります。
+* CTE がソーステーブル（すなわち、その materialized view が紐付いているテーブル）とは別のテーブルを参照しており、かつ `JOIN` や `IN` 句で使用されている場合、それはトリガーではなく、サブクエリまたは JOIN のように動作します。
+* materialized view は依然としてメインのソーステーブルへの INSERT のみをトリガーとしますが、CTE は INSERT ごとに再実行されます。参照しているテーブルが大きい場合、これは不要なオーバーヘッドを引き起こす可能性があります。
 
 例えば、
 
@@ -1220,6 +1211,6 @@ WITH recent_users AS (
 SELECT * FROM stackoverflow.posts WHERE OwnerUserId IN (SELECT Id FROM recent_users)
 ```
 
-この場合、`users` の CTE は `posts` への挿入のたびに再評価され、マテリアライズドビューは新しい行が `users` に挿入されても更新されず、`posts` に挿入が行われたときにのみ更新されます。
+この場合、`users` CTE は `posts` への挿入ごとに再評価され、`users` に新しい行が挿入されても materialized view は更新されず、`posts` に行が挿入されたときにのみ更新されます。
 
-一般的には、CTE はマテリアライズドビューが関連付けられている同じソーステーブルに対して動作するロジックに使用するか、参照するテーブルが小さく、パフォーマンスのボトルネックになりにくいことを確認してください。あるいは、[JOIN を伴うマテリアライズドビューに対する同様の最適化](/materialized-view/incremental-materialized-view#join-best-practices)の適用を検討してください。
+一般的には、materialized view が紐づいている同じソーステーブルに対して処理を行うロジックに CTE を使用するか、参照されるテーブルが小さく、パフォーマンスのボトルネックになりにくいことを確認してください。あるいは、[Materialized Views での JOIN と同様の最適化](/materialized-view/incremental-materialized-view#join-best-practices)を検討してください。

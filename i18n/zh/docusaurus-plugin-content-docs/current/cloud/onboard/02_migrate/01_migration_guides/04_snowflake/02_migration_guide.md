@@ -11,7 +11,6 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
 # 从 Snowflake 迁移到 ClickHouse {#migrate-from-snowflake-to-clickhouse}
 
 > 本指南介绍如何将数据从 Snowflake 迁移到 ClickHouse。
@@ -19,7 +18,6 @@ import Image from '@theme/IdealImage';
 在 Snowflake 和 ClickHouse 之间迁移数据需要使用对象存储(如 S3)作为传输的中间存储。迁移过程还依赖于使用 Snowflake 的 `COPY INTO` 命令和 ClickHouse 的 `INSERT INTO SELECT` 命令。
 
 <VerticalStepper headerLevel="h2">
-
 
 ## 从 Snowflake 导出数据 {#1-exporting-data-from-snowflake}
 
@@ -45,19 +43,18 @@ CREATE TABLE MYDATASET (
 ```sql
 CREATE FILE FORMAT my_parquet_format TYPE = parquet;
 
--- 创建外部阶段，指定要复制数据到的 S3 存储桶
+-- Create the external stage that specifies the S3 bucket to copy into
 CREATE OR REPLACE STAGE external_stage
 URL='s3://mybucket/mydataset'
 CREDENTIALS=(AWS_KEY_ID='<key>' AWS_SECRET_KEY='<secret>')
 FILE_FORMAT = my_parquet_format;
 
--- 为所有文件应用"mydataset"前缀，并指定最大文件大小为 150MB
--- 必须使用 `header=true` 参数以获取列名
+-- Apply "mydataset" prefix to all files and specify a max file size of 150mb
+-- The `header=true` parameter is required to get column names
 COPY INTO @external_stage/mydataset from mydataset max_file_size=157286400 header=true;
 ```
 
 对于大约 5TB 的数据集（单个文件最大 150MB），在同一 AWS `us-east-1` 区域使用 2X-Large Snowflake 仓库时，将数据复制到 S3 存储桶大约需要 30 分钟。
-
 
 ## 导入 ClickHouse {#2-importing-to-clickhouse}
 
@@ -95,8 +92,8 @@ SELECT
     'Tuple(filename String, description String)'
   ) AS complex_data,
 FROM s3('https://mybucket.s3.amazonaws.com/mydataset/mydataset*.parquet')
-SETTINGS input_format_null_as_default = 1, -- 确保当值为 null 时,列以默认值插入
-input_format_parquet_case_insensitive_column_matching = 1 -- 源数据与目标表之间的列匹配不区分大小写
+SETTINGS input_format_null_as_default = 1, -- Ensure columns are inserted as default if values are null
+input_format_parquet_case_insensitive_column_matching = 1 -- Column matching between source data and target table should be case insensitive
 ```
 
 :::note 关于嵌套列结构的说明
@@ -104,7 +101,6 @@ input_format_parquet_case_insensitive_column_matching = 1 -- 源数据与目标�
 
 诸如 `some_file` 之类的嵌套结构在通过 Snowflake 复制导出时会被转换为 JSON 字符串。导入这些数据时，我们需要在向 ClickHouse 插入时使用如上所示的 [JSONExtract 函数](/sql-reference/functions/json-functions#JSONExtract)，将这些结构转换为 Tuple。
 :::
-
 
 ## 测试数据导出是否成功 {#3-testing-successful-data-export}
 

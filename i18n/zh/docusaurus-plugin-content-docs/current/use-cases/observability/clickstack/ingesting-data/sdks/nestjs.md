@@ -36,7 +36,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 @Module({
   imports: [
     HyperDXNestLoggerModule.forRoot({
-      apiKey: ***您的摄取 API 密钥***,
+      apiKey: ***YOUR_INGESTION_API_KEY***,
       maxLevel: 'info',
       service: 'my-app',
     }),
@@ -82,7 +82,7 @@ import { HyperDXNestLoggerModule } from '@hyperdx/node-logger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: HyperDXNestLoggerModule.createLogger({
-      apiKey: ***您的摄取 API 密钥***,
+      apiKey: ***YOUR_INGESTION_API_KEY***,
       maxLevel: 'info',
       service: 'my-app',
     })

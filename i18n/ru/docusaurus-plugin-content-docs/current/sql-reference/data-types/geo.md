@@ -10,9 +10,8 @@ doc_type: 'reference'
 ClickHouse поддерживает геометрические типы данных для представления географических объектов — местоположений, территорий и т. д.
 
 **См. также**
+
 - [Представление простых географических объектов](https://en.wikipedia.org/wiki/GeoJSON).
-
-
 
 ## Point {#point}
 
@@ -154,7 +153,7 @@ SELECT mpg, toTypeName(mpg) FROM geo_multipolygon;
 
 ## Геометрия {#geometry}
 
-`Geometry` — это общий тип для всех перечисленных выше типов. Он эквивалентен типу Variant, объединяющему эти типы.
+`Geometry` — это общий тип для всех перечисленных выше типов. Он эквивалентен типу Variant, объединяющему эти типы. При использовании типа Geometry необходимо включить следующую настройку: `SET allow_suspicious_variant_types = 1`
 
 **Пример**
 
@@ -183,7 +182,7 @@ INSERT INTO geo VALUES ('POINT(0 0)', 2);
 INSERT INTO geo VALUES ('MULTIPOLYGON(((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4)),((-10 -10,-10 -9,-9 10,-10 -10)))', 3);
 INSERT INTO geo VALUES ('LINESTRING(1 0,10 0,10 10,0 10,1 0)', 4);
 INSERT INTO geo VALUES ('MULTILINESTRING((1 0,10 0,10 10,0 10,1 0),(4 4,5 4,5 5,4 5,4 4))', 5);
-INSERT INTO geo_dst SELECT readWkt(geom) FROM geo ORDER BY id;
+INSERT INTO geo_dst SELECT readWKT(geom) FROM geo ORDER BY id;
 
 SELECT * FROM geo_dst;
 ```

@@ -55,7 +55,6 @@ Install-Package ClickHouse.Driver
 
 ***
 
-
 ## Быстрый старт {#quick-start}
 
 ```csharp
@@ -82,7 +81,6 @@ using (var connection = new ClickHouseConnection("Host=my.clickhouse"))
 ```
 
 ***
-
 
 ## Использование {#usage}
 
@@ -154,7 +152,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### Вставка данных {#inserting-data}
 
 Вставляйте данные с использованием параметризованных запросов:
@@ -178,7 +175,6 @@ using (var connection = new ClickHouseConnection(connectionString))
 
 ***
 
-
 ### Массовая вставка {#bulk-insert}
 
 Для использования `ClickHouseBulkCopy` необходимы:
@@ -201,13 +197,13 @@ using var bulkCopy = new ClickHouseBulkCopy(connection)
     MaxDegreeOfParallelism = 2
 };
 
-await bulkCopy.InitAsync(); // Подготавливает экземпляр ClickHouseBulkCopy, загружая типы целевых столбцов
+await bulkCopy.InitAsync(); // Prepares ClickHouseBulkCopy instance by loading target column types
 
 var values = Enumerable.Range(0, 1000000)
-    .Select(i => new object[] { (long)i, "значение" + i });
+    .Select(i => new object[] { (long)i, "value" + i });
 
 await bulkCopy.WriteToServerAsync(values);
-Console.WriteLine($"Записано строк: {bulkCopy.RowsWritten}");
+Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
 :::note
@@ -220,7 +216,6 @@ Console.WriteLine($"Записано строк: {bulkCopy.RowsWritten}");
   :::
 
 ***
-
 
 ### Выполнение запросов SELECT {#performing-select-queries}
 
@@ -241,14 +236,13 @@ using (var connection = new ClickHouseConnection(connectionString))
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            Console.WriteLine($"выборка: Id: {reader.GetInt64(0)}, Имя: {reader.GetString(1)}");
+            Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
         }
     }
 }
 ```
 
 ***
-
 
 ### Необработанный стриминг {#raw-streaming}
 
@@ -262,7 +256,6 @@ var json = reader.ReadToEnd();
 ```
 
 ***
-
 
 ### Поддержка вложенных столбцов {#nested-columns}
 
@@ -289,7 +282,6 @@ await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
 
 ***
 
-
 ### Столбцы типа AggregateFunction {#aggregatefunction-columns}
 
 Столбцы типа `AggregateFunction(...)` нельзя напрямую использовать в запросах или при вставке данных.
@@ -307,7 +299,6 @@ SELECT uniqMerge(c) FROM t;
 ```
 
 ***
-
 
 ### Параметры SQL {#sql-parameters}
 
@@ -338,7 +329,6 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
   :::
 
 ***
-
 
 ## Поддерживаемые типы данных {#supported-data-types}
 
@@ -455,7 +445,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 #### Использование appsettings.json {#logging-appsettings-config}
 
 Вы можете настроить уровни логирования с помощью стандартной системы конфигурации .NET:
@@ -485,7 +474,6 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
 await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
-
 
 #### Использование конфигурации в оперативной памяти {#logging-inmemory-config}
 
@@ -523,7 +511,6 @@ await using var connection = new ClickHouseConnection(settings);
 await connection.OpenAsync();
 ```
 
-
 ### Категории и источники {#logging-categories}
 
 Драйвер использует отдельные категории, чтобы вы могли точно настраивать уровни логирования для каждого компонента:
@@ -558,7 +545,6 @@ await connection.OpenAsync();
 * события открытия и закрытия подключений
 * отслеживание идентификаторов сессий
 
-
 ### Режим отладки: трассировка сети и диагностика {#logging-debugmode}
 
 Чтобы упростить диагностику сетевых проблем, библиотека драйвера предоставляет вспомогательный инструмент, позволяющий включить низкоуровневую трассировку внутренних сетевых механизмов .NET. Чтобы включить её, необходимо передать `LoggerFactory` с уровнем `Trace` и установить `EnableDebugMode` в значение `true` (или включить её вручную через класс `ClickHouse.Driver.Diagnostic.TraceHelper`). Предупреждение: это приведёт к генерации чрезвычайно подробных логов и повлияет на производительность. Не рекомендуется включать режим отладки в боевой (production) среде.
@@ -568,18 +554,17 @@ var loggerFactory = LoggerFactory.Create(builder =>
 {
     builder
         .AddConsole()
-        .SetMinimumLevel(LogLevel.Trace); // Необходим уровень Trace для просмотра сетевых событий
+        .SetMinimumLevel(LogLevel.Trace); // Must be Trace level to see network events
 });
 
 var settings = new ClickHouseClientSettings()
 {
     LoggerFactory = loggerFactory,
-    EnableDebugMode = true,  // Включить низкоуровневую трассировку сетевых событий
+    EnableDebugMode = true,  // Enable low-level network tracing
 };
 ```
 
 ***
-
 
 ### Поддержка ORM и Dapper {#orm-support}
 

@@ -1,4 +1,5 @@
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+import {getUserId} from "../lib/galaxy/galaxy";
 
 function putUTMsInStorage() {
     const expirationTime = new Date()
@@ -108,10 +109,7 @@ function appendGoogleAnalyticsCookieToLink(url) {
 }
 
 function appendGalaxySessionIDToLink(url) {
-    const galaxy_id = window?.galaxy?.getSessionId() || null
-
-    if (!galaxy_id) return url
-
+    const galaxy_id = getUserId()
     const urlObject = new URL(url)
     urlObject.searchParams.set('glxid', galaxy_id)
     return urlObject.toString()

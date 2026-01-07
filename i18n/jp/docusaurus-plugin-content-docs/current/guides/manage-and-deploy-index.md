@@ -28,7 +28,7 @@ keywords: ['デプロイメント', '管理', '運用管理', '運用', 'ガイ�
 | [Startup Scripts](/operations/startup-scripts)                                                | マイグレーションや自動スキーマ作成に有用な、起動時にスタートアップスクリプトを実行する方法の例。                                        |
 | [External Disks for Storing Data](/operations/storing-data)                                   | ClickHouse で外部ストレージを構成する方法に関する情報と例。                                                                             |
 | [Allocation profiling](/operations/allocation-profiling)                                      | jemalloc を用いたアロケーションサンプリングおよびプロファイリングに関する情報と例。                                                     |
-| [Backup and Restore](/operations/backup)                                                      | ローカルディスクまたは外部ストレージへのバックアップに関するガイド。                                                                   |
+| [Backup and Restore](/operations/backup/overview)                                             | ローカルディスクまたは外部ストレージへのバックアップに関するガイド。                                                                   |
 | [Caches](/operations/caches)                                                                  | ClickHouse におけるさまざまなキャッシュタイプの解説。                                                                                   |
 | [Workload scheduling](/operations/workload-scheduling)                                        | ClickHouse におけるワークロードスケジューリングの解説。                                                                                 |
 | [Self-managed Upgrade](/operations/update)                                                    | セルフマネージド環境でアップグレードを実施する際のガイドライン。                                                                        |

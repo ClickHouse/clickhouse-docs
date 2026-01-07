@@ -8,8 +8,6 @@ title: '系统表概述'
 doc_type: 'reference'
 ---
 
-
-
 ## 系统表概览 {#system-tables-introduction}
 
 系统表提供以下信息：
@@ -60,7 +58,6 @@ doc_type: 'reference'
 
 默认情况下，表的大小不设上限。要控制表的大小，可以使用 [TTL](/sql-reference/statements/alter/ttl) 设置来删除过期的日志记录，还可以使用 `MergeTree` 引擎表的分区功能。
 
-
 ## 系统指标的来源 {#system-tables-sources-of-system-metrics}
 
 为了收集系统指标，ClickHouse 服务器会使用：
@@ -86,8 +83,6 @@ doc_type: 'reference'
 在 Linux 内核 5.14.x 及之后的版本中，`OSIOWaitMicroseconds` 默认被禁用。
 可以通过执行 `sudo sysctl kernel.task_delayacct=1` 来启用它，或者在 `/etc/sysctl.d/` 中创建一个 `.conf` 文件，并写入 `kernel.task_delayacct = 1`。
 :::
-
-
 
 ## ClickHouse Cloud 中的 system 表 {#system-tables-in-clickhouse-cloud}
 
@@ -146,7 +141,7 @@ SHOW TABLES FROM system LIKE 'query_log%'
 │ query_log_9  │
 └──────────────┘
 
-11 行结果，耗时 0.004 秒。
+11 rows in set. Elapsed: 0.004 sec.
 ```
 
 ### 跨多个版本查询 {#querying-multiple-versions}
@@ -174,31 +169,13 @@ ORDER BY most_recent DESC
 │ query_log_10 │ 2025-03-18 14:01:33 │
 │ query_log_9  │ 2025-03-18 14:01:32 │
 └──────────────┴─────────────────────┘
-```
 
+11 rows in set. Elapsed: 0.373 sec. Processed 6.44 million rows, 25.77 MB (17.29 million rows/s., 69.17 MB/s.)
+Peak memory usage: 28.45 MiB.
+```
 
 11 行数据。耗时：0.373 秒。已处理 644 万行，25.77 MB（每秒 1,729 万行，69.17 MB/s）。
 峰值内存使用：28.45 MiB。
-
-````
-
-:::note 不要依赖数字后缀来确定顺序
-虽然表上的数字后缀可以暗示数据的顺序,但绝不应依赖它。因此,在查询特定日期范围时,应始终使用 merge 表函数结合日期过滤器。
-:::
-
-重要的是,这些表仍然是**每个节点的本地表**。
-
-### 跨节点查询                          {#querying-across-nodes}
-
-要全面查看整个集群,用户可以结合使用 [`clusterAllReplicas`](/sql-reference/table-functions/cluster) 函数和 `merge` 函数。`clusterAllReplicas` 函数允许在"default"集群内的所有副本上查询系统表,将各节点的数据整合为统一的结果。与 `merge` 函数结合使用时,可以查询集群中特定表的所有系统数据。 
-
-这种方法对于监控和调试集群范围的操作特别有价值,确保用户能够有效分析其 ClickHouse Cloud 部署的健康状况和性能。
-
-:::note
-ClickHouse Cloud 提供多副本集群以实现冗余和故障转移。这使其能够实现动态自动扩展和零停机升级等功能。在某个特定时刻,新节点可能正在添加到集群或从集群中移除。要跳过这些节点,请在使用 `clusterAllReplicas` 的查询中添加 `SETTINGS skip_unavailable_shards = 1`,如下所示。
-:::
-
-例如,考虑查询 `query_log` 表时的差异——该表通常对分析至关重要。
 
 ```sql
 SELECT
@@ -228,12 +205,49 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 
 3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
-````
+```sql
+SELECT
+    hostname() AS host,
+    count()
+FROM system.query_log
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host
 
-### 跨节点和版本查询 {#querying-across-nodes-and-versions}
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+└───────────────────────────────┴─────────┘
 
-由于系统表存在版本控制，这仍然无法反映集群中的完整数据。将上述方法与 `merge` 函数结合使用后，我们就能在指定日期范围内获得精确结果：
+1 row in set. Elapsed: 0.010 sec. Processed 17.87 thousand rows, 71.51 KB (1.75 million rows/s., 7.01 MB/s.)
 
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', system.query_log)
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
+
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │  650543 │
+│ c-ecru-qn-34-server-6em4y4t-0 │  656029 │
+│ c-ecru-qn-34-server-iejrkg0-0 │  641155 │
+└───────────────────────────────┴─────────┘
+
+3 rows in set. Elapsed: 0.026 sec. Processed 1.97 million rows, 7.88 MB (75.51 million rows/s., 302.05 MB/s.)
+```sql
+SELECT
+    hostname() AS host,
+    count()
+FROM clusterAllReplicas('default', merge('system', '^query_log'))
+WHERE (event_time >= '2025-04-01 00:00:00') AND (event_time <= '2025-04-12 00:00:00')
+GROUP BY host SETTINGS skip_unavailable_shards = 1
+
+┌─host──────────────────────────┬─count()─┐
+│ c-ecru-qn-34-server-s5bnysl-0 │ 3008000 │
+│ c-ecru-qn-34-server-6em4y4t-0 │ 3659443 │
+│ c-ecru-qn-34-server-iejrkg0-0 │ 1078287 │
+└───────────────────────────────┴─────────┘
+
+3 rows in set. Elapsed: 0.462 sec. Processed 7.94 million rows, 31.75 MB (17.17 million rows/s., 68.67 MB/s.)
 ```sql
 SELECT
     hostname() AS host,
@@ -249,12 +263,10 @@ GROUP BY host SETTINGS skip_unavailable_shards = 1
 └───────────────────────────────┴─────────┘
 ```
 
-
 3 行数据。耗时：0.462 秒。已处理 7.94 百万行，31.75 MB（17.17 百万行/秒，68.67 MB/秒）。
 
 ```
 ```
-
 
 ## 相关内容 {#related-content}
 

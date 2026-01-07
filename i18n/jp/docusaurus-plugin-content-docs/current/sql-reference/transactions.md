@@ -8,10 +8,7 @@ doc_type: 'guide'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # トランザクション（ACID）対応 {#transactional-acid-support}
-
-
 
 ## ケース 1: MergeTree* ファミリーの 1 つのテーブルの 1 つのパーティションへの INSERT {#case-1-insert-into-one-partition-of-one-table-of-the-mergetree-family}
 
@@ -22,34 +19,24 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 永続性 (Durable): 成功した INSERT は、クライアントに応答する前にファイルシステムに書き込まれます。これは単一レプリカまたは複数レプリカ（`insert_quorum` 設定で制御）に対して行われ、ClickHouse は OS に対してストレージメディア上のファイルシステムデータの同期を要求できます（`fsync_after_insert` 設定で制御）。
 - マテリアライズドビューが関与している場合、1 つのステートメントで複数のテーブルに対する INSERT が可能です（クライアントからの INSERT は、関連するマテリアライズドビューを持つテーブルに対して行われます）。
 
-
-
 ## ケース 2: MergeTree* ファミリーの 1 つのテーブルに対する、複数パーティションへの INSERT {#case-2-insert-into-multiple-partitions-of-one-table-of-the-mergetree-family}
 
 上記のケース 1 と同様ですが、次の点が異なります:
 - テーブルに多数のパーティションがあり、INSERT が多くのパーティションにまたがる場合、各パーティションへの挿入はそれぞれ独立したトランザクションとして扱われます
-
-
 
 ## ケース 3: MergeTree* ファミリーの 1 つの分散テーブルへの INSERT {#case-3-insert-into-one-distributed-table-of-the-mergetree-family}
 
 上のケース 1 と同様ですが、次の点が異なります：
 - Distributed テーブルへの INSERT は全体としてはトランザクションとして扱われませんが、各シャードへの挿入はトランザクションとして扱われます
 
-
-
 ## ケース 4: Buffer テーブルの使用 {#case-4-using-a-buffer-table}
 
 - Buffer テーブルへの INSERT 操作では、アトミック性 (Atomicity)、分離性 (Isolation)、一貫性 (Consistency)、永続性 (Durability) のいずれも保証されません
-
-
 
 ## ケース5: async_insert の使用 {#case-5-using-async_insert}
 
 上記のケース1と同様ですが、次の点が異なります：
 - `async_insert` が有効で、`wait_for_async_insert` が 1（デフォルト）に設定されている場合にはアトミック性が保証されますが、`wait_for_async_insert` が 0 に設定されている場合にはアトミック性は保証されません。
-
-
 
 ## Notes {#notes}
 - クライアントからあるデータフォーマットで挿入された行は、次の場合に 1 つのブロックにまとめられます:
@@ -62,8 +49,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 - 典型的な構成で永続的な INSERT を保証するには、異なるアベイラビリティゾーン（AZ）への `insert_quorum` か `fsync` のいずれかを有効化する必要があります
 - ACID における「一貫性」は分散システムのセマンティクスを対象としていません。分散システムの一貫性については https://jepsen.io/consistency を参照してください。これは（`select_sequential_consistency` などの）別の設定によって制御されます
 - この説明では、複数テーブルやマテリアライズドビュー、複数の SELECT などに対してフル機能のトランザクションを提供する新しいトランザクション機能は扱っていません（次の「Transactions, Commit, and Rollback」のセクションを参照してください）
-
-
 
 ## トランザクション、コミット、ロールバック {#transactions-commit-and-rollback}
 
@@ -204,7 +189,6 @@ ENGINE = MergeTree
 ORDER BY n
 ```
 
-
 ```response
 Ok.
 ```
@@ -321,7 +305,6 @@ elapsed:     210.017820947
 is_readonly: 1
 state:       RUNNING
 ```
-
 
 ## 詳細情報 {#more-details}
 

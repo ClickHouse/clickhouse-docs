@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.x']
 ---
 
-
-
 # 通用 MySQL 数据源配置指南 {#generic-mysql-source-setup-guide}
 
 :::info
@@ -16,8 +14,6 @@ keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.
 如果你使用的是侧边栏中列出的受支持提供商之一，请参考相应提供商的专用指南。
 
 :::
-
-
 
 ## 启用二进制日志保留 {#enable-binlog-retention}
 
@@ -28,11 +24,11 @@ keywords: ['通用 MySQL', 'ClickPipes', '二进制日志', 'SSL/TLS', 'MySQL 8.
 要在 MySQL 实例上启用二进制日志，请确保已配置以下设置：
 
 ```sql
-log_bin = ON                        -- 默认值
-binlog_format = ROW                 -- 默认值
-binlog_row_image = FULL             -- 默认值
+log_bin = ON                        -- default value
+binlog_format = ROW                 -- default value
+binlog_row_image = FULL             -- default value
 binlog_row_metadata = FULL
-binlog_expire_logs_seconds = 86400  -- 1 天或更长；默认为 30 天
+binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
 要检查这些设置，请运行以下 SQL 命令：
@@ -64,11 +60,11 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 要在 MySQL 5.7 实例上启用二进制日志，请确保已配置以下设置：
 
 ```sql
-server_id = 1            -- 大于等于 1；任何非 0 值
+server_id = 1            -- or greater; anything but 0
 log_bin = ON
-binlog_format = ROW      -- 默认值
-binlog_row_image = FULL  -- 默认值
-expire_logs_days = 1     -- 大于等于 1；0 表示永久保留日志
+binlog_format = ROW      -- default value
+binlog_row_image = FULL  -- default value
+expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
 若要检查这些设置，请运行以下 SQL 命令：
@@ -100,7 +96,6 @@ expire_logs_days = 1
 
 :::
 
-
 ## 配置数据库用户 {#configure-database-user}
 
 以 root 用户身份连接到你的 MySQL 实例，并执行以下命令：
@@ -130,8 +125,6 @@ expire_logs_days = 1
 
 :::
 
-
-
 ## SSL/TLS 配置（推荐） {#ssl-tls-configuration}
 
 SSL 证书可确保到 MySQL 数据库的连接安全。具体配置取决于证书类型：
@@ -145,8 +138,6 @@ SSL 证书可确保到 MySQL 数据库的连接安全。具体配置取决于证
 **无法访问服务器的自托管 MySQL** - 联系您的 IT 团队获取证书。作为最后手段，可以在 ClickPipes 界面中使用 “Skip Certificate Verification” 开关（出于安全原因不推荐）。
 
 有关 SSL/TLS 选项的更多信息，请查看我们的[常见问题](https://clickhouse.com/docs/integrations/clickpipes/mysql/faq#tls-certificate-validation-error)。
-
-
 
 ## 下一步 {#whats-next}
 

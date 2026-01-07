@@ -13,17 +13,14 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
 # Spark JDBC {#spark-jdbc}
 
 <ClickHouseSupportedBadge/>
 
 JDBC 是 Spark 中最常用的数据源之一。
-在本节中，我们将介绍如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 集成。
+在本节中,我们将介绍如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 集成。
 
 <TOCInline toc={toc}></TOCInline>
-
-
 
 ## 读取数据 {#read-data}
 
@@ -102,7 +99,7 @@ object ReadData extends App {
 
   df2.show()
 
-  // 停止 Spark 会话// 停止 Spark 会话
+  // 停止 Spark 会话
   spark.stop()
 
 }
@@ -118,34 +115,29 @@ jar_files = [
     "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
 ]
 
-```
-
-
-# 使用 JAR 文件初始化 Spark 会话 {#initialize-spark-session-with-jars}
-
+# 使用 JAR 文件初始化 Spark 会话
 spark = SparkSession.builder \
- .appName("example") \
- .master("local") \
- .config("spark.jars", ",".join(jar_files)) \
- .getOrCreate()
+    .appName("example") \
+    .master("local") \
+    .config("spark.jars", ",".join(jar_files)) \
+    .getOrCreate()
 
 url = "jdbc:ch://localhost:8123/default"
 user = "your_user"
-password = "your_password"  
-query = "select \* from example_table where id > 2"
+password = "your_password"
+query = "select * from example_table where id > 2"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
 df = (spark.read
-.format('jdbc')
-.option('driver', driver)
-.option('url', url)
-.option('user', user)
-.option('password', password).option(
-'query', query).load())
+      .format('jdbc')
+      .option('driver', driver)
+      .option('url', url)
+      .option('user', user)
+      .option('password', password).option(
+    'query', query).load())
 
 df.show()
-
-````
+```
 
 </TabItem>
 <TabItem value="SparkSQL" label="Spark SQL">
@@ -162,11 +154,10 @@ df.show()
            );
 
    SELECT * FROM jdbcTable;
-````
+```
 
 </TabItem>
 </Tabs>
-
 
 ## 写入数据 {#write-data}
 
@@ -250,17 +241,17 @@ object WriteData extends App {
     StructType(schema)
   )
 
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
   // 使用 jdbc 方法将 DataFrame 写入 ClickHouse
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
 
   df.write
     .mode(SaveMode.Append)
     .jdbc(jdbcUrl, "example_table", jdbcProperties)
 
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
   // 使用 save 方法将 DataFrame 写入 ClickHouse
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------------------------------
 
   df.write
     .format("jdbc")
@@ -271,7 +262,7 @@ object WriteData extends App {
     .option("password", "123456")
     .save()
 
-  // 停止 Spark 会话// 停止 Spark 会话
+  // 停止 Spark 会话
   spark.stop()
 
 }
@@ -288,42 +279,33 @@ jar_files = [
     "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
 ]
 
-```
-
-
-# 使用 JAR 包初始化 Spark 会话 {#initialize-spark-session-with-jars}
+# 使用 JAR 包初始化 Spark 会话
 spark = SparkSession.builder \
     .appName("example") \
     .master("local") \
     .config("spark.jars", ",".join(jar_files)) \
     .getOrCreate()
 
-
-
-# 创建 DataFrame {#create-dataframe}
+# 创建 DataFrame
 data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
 df = spark.createDataFrame(data)
 
 url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
+user = "your_user"
+password = "your_password"
 driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
-
-
-# 将 DataFrame 写入 ClickHouse {#write-dataframe-to-clickhouse}
-
+# 将 DataFrame 写入 ClickHouse
 df.write \
- .format("jdbc") \
- .option("driver", driver) \
- .option("url", url) \
- .option("user", user) \
- .option("password", password) \
- .option("dbtable", "example_table") \
- .mode("append") \
- .save()
-
-````
+    .format("jdbc") \
+    .option("driver", driver) \
+    .option("url", url) \
+    .option("user", user) \
+    .option("password", password) \
+    .option("dbtable", "example_table") \
+    .mode("append") \
+    .save()
+```
 
 </TabItem>
 <TabItem value="SparkSQL" label="Spark SQL">
@@ -341,22 +323,18 @@ df.write \
    -- resultTable 可以通过 df.createTempView 或 Spark SQL 创建
    INSERT INTO TABLE jdbcTable
                 SELECT * FROM resultTable;
-
-````
+```
 
 </TabItem>
 </Tabs>
 
-
 ## 并行度 {#parallelism}
 
-使用 Spark JDBC 时，Spark 默认只使用单个分区读取数据。要获得更高的并行度，你需要指定
-`partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，用于定义在由多个 worker 并行读取时如何对表进行分区。
-如需了解更多信息，请参阅 Apache Spark 官方文档中的
+使用 Spark JDBC 时,Spark 默认只使用单个分区读取数据。要获得更高的并行度,你需要指定
+`partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`,用于定义在由多个 worker 并行读取时如何对表进行分区。
+如需了解更多信息,请参阅 Apache Spark 官方文档中的
 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
-
-
 
 ## JDBC 限制 {#jdbc-limitations}
 
-* 截至目前，通过 JDBC 只能将数据插入到已存在的表中（目前无法像 Spark 使用其他连接器那样，在插入 DataFrame 时自动创建表）。
+* 截至目前,通过 JDBC 只能将数据插入到已存在的表中(目前无法像 Spark 使用其他连接器那样,在插入 DataFrame 时自动创建表)。

@@ -8,16 +8,12 @@ doc_type: 'guide'
 
 ClickHouse может автоматически определять структуру данных в формате JSON. Это можно использовать для непосредственного выполнения запросов к JSON-данным, например на локальном диске с помощью `clickhouse-local` или в S3-бакетах, и/или для автоматического создания схем перед загрузкой данных в ClickHouse.
 
-
-
 ## Когда использовать вывод типов {#when-to-use-type-inference}
 
 * **Однородная структура** — данные, на основе которых вы собираетесь выводить типы, содержат все ключи, которые вас интересуют. Вывод типов основан на выборке данных до [максимального числа строк](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) или [байт](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference). Данные после выборки, с дополнительными столбцами, будут игнорироваться и будут недоступны для запросов.
 * **Однородные типы** — типы данных для конкретных ключей должны быть совместимы, то есть должна быть возможность автоматически привести один тип к другому.
 
 Если у вас более динамический JSON, в который добавляются новые ключи и для одного и того же пути возможны несколько типов, см. раздел ["Работа с полуструктурированными и динамическими данными"](/integrations/data-formats/json/inference#working-with-semi-structured-data).
-
-
 
 ## Определение типов {#detecting-types}
 
@@ -30,21 +26,21 @@ ClickHouse может автоматически определять струк
   "id": "2101.11408",
   "submitter": "Daniel Lemire",
   "authors": "Daniel Lemire",
-  "title": "Парсинг чисел со скоростью гигабайт в секунду",
-  "comments": "ПО доступно по адресам https://github.com/fastfloat/fast_float и\n https://github.com/lemire/simple_fastfloat_benchmark/",
+  "title": "Number Parsing at a Gigabyte per Second",
+  "comments": "Software at https://github.com/fastfloat/fast_float and\n https://github.com/lemire/simple_fastfloat_benchmark/",
   "journal-ref": "Software: Practice and Experience 51 (8), 2021",
   "doi": "10.1002/spe.2984",
   "report-no": null,
   "categories": "cs.DS cs.MS",
   "license": "http://creativecommons.org/licenses/by/4.0/",
-  "abstract": "При том, что диски и сети обеспечивают пропускную способность в гигабайты в секунду ....\n",
+  "abstract": "With disks and networks providing gigabytes per second ....\n",
   "versions": [
     {
-      "created": "Пн, 11 янв. 2021 20:31:27 GMT",
+      "created": "Mon, 11 Jan 2021 20:31:27 GMT",
       "version": "v1"
     },
     {
-      "created": "Сб, 30 янв. 2021 23:57:29 GMT",
+      "created": "Sat, 30 Jan 2021 23:57:29 GMT",
       "version": "v2"
     }
   ],
@@ -63,7 +59,7 @@ ClickHouse может автоматически определять струк
 
 Этот набор данных хранится в публичном бакете S3 по адресу `s3://datasets-documentation/arxiv/arxiv.json.gz`.
 
-Как видно, приведённый выше набор данных содержит вложенные объекты JSON. Хотя пользователям следует разрабатывать и версионировать свои схемы, механизм вывода типов позволяет автоматически определять типы по самим данным. Это даёт возможность автоматически генерировать DDL-описание схемы, устраняя необходимость создавать её вручную и ускоряя процесс разработки.
+Как видно, приведённый выше набор данных содержит вложенные объекты JSON. Хотя вам следует разрабатывать и версионировать свои схемы, механизм вывода типов позволяет автоматически определять типы по самим данным. Это даёт возможность автоматически генерировать DDL-описание схемы, устраняя необходимость создавать её вручную и ускоряя процесс разработки.
 
 :::note Автоопределение формата
 Помимо определения схемы, механизм вывода схемы JSON автоматически определит формат данных по расширению файла и его содержимому. В результате приведённый выше файл автоматически распознаётся как NDJSON.
@@ -106,8 +102,6 @@ SETTINGS describe_compact_output = 1
 Автоопределение значений типов `date` и `datetime` настраивается с помощью параметров [`input_format_try_infer_dates`](/operations/settings/formats#input_format_try_infer_dates) и [`input_format_try_infer_datetimes`](/operations/settings/formats#input_format_try_infer_datetimes) соответственно (оба включены по умолчанию). Интерпретация объектов как кортежей контролируется параметром [`input_format_json_try_infer_named_tuples_from_objects`](/operations/settings/formats#input_format_json_try_infer_named_tuples_from_objects). Другие параметры, управляющие определением схемы для JSON (например, автоопределением чисел), можно найти [здесь](/interfaces/schema-inference#text-formats).
 :::
 
-
-
 ## Запросы к JSON {#querying-json}
 
 Далее предполагается, что JSON имеет единообразную структуру и один тип данных для каждого пути.
@@ -149,7 +143,7 @@ LIMIT 1 BY year
 │ 2024 │ ATLAS Collaboration                        │ 120 │
 └──────┴────────────────────────────────────────────┴─────┘
 
-18 строк в наборе. Прошло: 20.172 сек. Обработано 2.52 млн строк, 1.39 ГБ (124.72 тыс. строк/с., 68.76 МБ/с.)
+18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
 Автоматическое определение схемы позволяет выполнять запросы к JSON-файлам без необходимости явно её задавать, что ускоряет выполнение разовых задач по анализу данных.
@@ -195,6 +189,7 @@ ORDER BY update_date
 ```
 
 Выше приведена корректная схема для этих данных. Определение схемы основано на выборочном построчном чтении данных. Значения столбцов извлекаются в соответствии с форматом, а для определения типа каждого значения используются рекурсивные парсеры и эвристики. Максимальное количество строк и байт, читаемых из данных при определении схемы, контролируется настройками [`input_format_max_rows_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_rows_to_read_for_schema_inference) (по умолчанию 25000) и [`input_format_max_bytes_to_read_for_schema_inference`](/operations/settings/formats#input_format_max_bytes_to_read_for_schema_inference) (по умолчанию 32 МБ). Если определение окажется некорректным, пользователи могут задать подсказки, как описано [здесь](/operations/settings/formats#schema_inference_make_columns_nullable).
+
 
 ### Создание таблиц из фрагментов {#creating-tables-from-snippets}
 
@@ -259,13 +254,13 @@ FORMAT PrettyJSONEachRow
   "submitter": "David Callan",
   "authors": "David Callan",
   "title": "A determinant of Stirling cycle numbers counts unlabeled acyclic",
-  "comments": "11 страниц",
+  "comments": "11 pages",
   "journal-ref": "",
   "doi": "",
   "report-no": "",
   "categories": "math.CO",
   "license": "",
-  "abstract": "  Мы показываем, что определитель чисел циклов Стирлинга считает немаркированные ациклические\nавтоматы с одним источником.",
+  "abstract": "  We show that a determinant of Stirling cycle numbers counts unlabeled acyclic\nsingle-source automata.",
   "versions": [
     {
       "created": "Sat, 31 Mar 2007 03:16:14 GMT",
@@ -281,15 +276,13 @@ FORMAT PrettyJSONEachRow
   ]
 }
 
-Получена 1 строка. Прошло: 0.009 сек.
+1 row in set. Elapsed: 0.009 sec.
 ```
 
 
 ## Обработка ошибок {#handling-errors}
 
 Иногда во входных данных могут встречаться ошибки. Например, отдельные столбцы могут иметь неверный тип или JSON-объект может быть некорректно отформатирован. Для таких случаев вы можете использовать настройки [`input_format_allow_errors_num`](/operations/settings/formats#input_format_allow_errors_num) и [`input_format_allow_errors_ratio`](/operations/settings/formats#input_format_allow_errors_ratio), чтобы разрешить игнорирование определённого числа строк, если данные вызывают ошибки операции вставки. Дополнительно можно задать [подсказки](/operations/settings/formats#schema_inference_hints), чтобы упростить вывод схемы.
-
-
 
 ## Работа с полуструктурированными и динамическими данными {#working-with-semi-structured-data}
 
@@ -318,12 +311,12 @@ ClickHouse обрабатывает такие случаи с помощью с
 }
 ```
 
-Образец этих данных общедоступен в формате JSON, где каждая запись находится на отдельной строке. Если попытаться автоматически вывести схему для этого файла, вы обнаружите, что производительность окажется низкой, а ответ — крайне объёмным:
+Образец этих данных публично доступен в формате JSON с разделением по строкам. Если выполнить вывод схемы для этого файла, вы обнаружите, что производительность низкая, а ответ — крайне подробный:
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
--- результат опущен для краткости
+-- result omitted for brevity
 
 9 rows in set. Elapsed: 127.066 sec.
 ```
@@ -362,7 +355,7 @@ SETTINGS describe_compact_output = 1
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
 
-1 строка. Затрачено: 0,081 сек.
+1 row in set. Elapsed: 0.081 sec.
 ```
 
 :::note Приведение типов
@@ -378,18 +371,16 @@ SETTINGS describe_compact_output = 1
 
 В этом случае невозможно выполнить какое-либо приведение типов. Команда `DESCRIBE` завершится с ошибкой:
 
+
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
 
-Прошло: 0.755 сек.
+Elapsed: 0.755 sec.
+
+Received exception from server (version 24.12.1):
+Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
+Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
-
-
-Получено исключение от сервера (версия 24.12.1):
-Код: 636. DB::Exception: Получено от sql-clickhouse.clickhouse.com:9440. DB::Exception: Не удаётся извлечь структуру таблицы из файла в формате JSON. Ошибка:
-Код: 53. DB::Exception: Тип Tuple(b Int64), автоматически определённый для столбца &#39;a&#39; в строке 1, отличается от типа, определённого в предыдущих строках: Int64. Вы можете явно указать тип для этого столбца с помощью настройки schema&#95;inference&#95;hints.
-
-````
 
 В данном случае `JSONAsObject` рассматривает каждую строку как единый тип [`JSON`](/sql-reference/data-types/newjson) (который поддерживает использование нескольких типов в одном столбце). Это важно:
 
@@ -402,7 +393,7 @@ SETTINGS enable_json_type = 1, describe_compact_output = 1
 └──────┴──────┘
 
 1 row in set. Elapsed: 0.010 sec.
-````
+```
 
 
 ## Дополнительные материалы {#further-reading}

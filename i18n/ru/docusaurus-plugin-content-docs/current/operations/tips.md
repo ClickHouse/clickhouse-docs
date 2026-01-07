@@ -11,7 +11,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 <SelfManaged />
 
-
 ## Регулятор частоты CPU {#cpu-scaling-governor}
 
 Всегда используйте регулятор `performance`. Режим `on-demand` работает значительно хуже при постоянно высокой нагрузке.
@@ -19,7 +18,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 ```bash
 $ echo 'performance' | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
-
 
 ## Ограничения по CPU {#cpu-limitations}
 
@@ -40,7 +38,6 @@ $ echo 0 | sudo tee /proc/sys/vm/overcommit_memory
 
 Используйте `perf top`, чтобы отслеживать время, затрачиваемое в ядре на управление памятью.
 Постоянные большие страницы (huge pages) также не требуется выделять.
-
 
 ### Использование менее 16 ГБ ОЗУ {#using-less-than-16gb-of-ram}
 
@@ -101,7 +98,6 @@ $ echo 4096 | sudo tee /sys/block/md2/md/stripe_cache_size
 
 Убедитесь, что [`fstrim`](https://en.wikipedia.org/wiki/Trim_\(computing\)) включён для дисков NVMe и SSD в вашей ОС (обычно это реализуется с помощью задания cron или сервиса systemd).
 
-
 ## Файловая система {#file-system}
 
 Ext4 — наиболее надёжный вариант. Установите опцию монтирования `noatime`. XFS тоже хорошо подходит.
@@ -142,7 +138,6 @@ $ GRUB_CMDLINE_LINUX_DEFAULT="transparent_hugepage=madvise ..."
 
 После этого выполните команду `sudo update-grub`, затем перезагрузите систему, чтобы изменения вступили в силу.
 
-
 ## Настройка гипервизора {#hypervisor-configuration}
 
 Если вы используете OpenStack, задайте
@@ -163,7 +158,6 @@ cpu_mode=host-passthrough
 
 Это важно для того, чтобы ClickHouse мог получать корректную информацию из инструкции `cpuid`.
 В противном случае вы можете сталкиваться с аварийным завершением работы с ошибкой `Illegal instruction` при запуске гипервизора на старых моделях CPU.
-
 
 ## ClickHouse Keeper и ZooKeeper {#zookeeper}
 
@@ -193,59 +187,59 @@ cpu_mode=host-passthrough
 zoo.cfg:
 
 ```bash
-# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html {#httphadoopapacheorgzookeeperdocscurrentzookeeperadminhtml}
+# http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
 
-# Количество миллисекунд в каждом тике {#the-number-of-milliseconds-of-each-tick}
+# The number of milliseconds of each tick
 tickTime=2000
-# Количество тиков, которое может занять начальная {#the-number-of-ticks-that-the-initial}
-# фаза синхронизации {#synchronization-phase-can-take}
-# Это значение не имеет строгого обоснования {#this-value-is-not-quite-motivated}
+# The number of ticks that the initial
+# synchronization phase can take
+# This value is not quite motivated
 initLimit=300
-# Количество тиков, которое может пройти между {#the-number-of-ticks-that-can-pass-between}
-# отправкой запроса и получением подтверждения {#sending-a-request-and-getting-an-acknowledgement}
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
 syncLimit=10
 
 maxClientCnxns=2000
 
-# Максимальное значение, которое может запросить клиент и которое примет сервер. {#it-is-the-maximum-value-that-client-may-request-and-the-server-will-accept}
-# Допустимо устанавливать высокое значение maxSessionTimeout на сервере, чтобы клиенты могли работать с большим таймаутом сессии при необходимости. {#it-is-ok-to-have-high-maxsessiontimeout-on-server-to-allow-clients-to-work-with-high-session-timeout-if-they-want}
-# По умолчанию запрашивается таймаут сессии 30 секунд (можно изменить с помощью параметра session_timeout_ms в конфигурации ClickHouse). {#but-we-request-session-timeout-of-30-seconds-by-default-you-can-change-it-with-session_timeout_ms-in-clickhouse-config}
+# It is the maximum value that client may request and the server will accept.
+# It is Ok to have high maxSessionTimeout on server to allow clients to work with high session timeout if they want.
+# But we request session timeout of 30 seconds by default (you can change it with session_timeout_ms in ClickHouse config).
 maxSessionTimeout=60000000
-# Каталог для хранения снимков состояния. {#the-directory-where-the-snapshot-is-stored}
+# the directory where the snapshot is stored.
 dataDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/data
-# Разместите dataLogDir на отдельном физическом диске для повышения производительности {#place-the-datalogdir-to-a-separate-physical-disc-for-better-performance}
+# Place the dataLogDir to a separate physical disc for better performance
 dataLogDir=/opt/zookeeper/{{ '{{' }} cluster['name'] {{ '}}' }}/logs
 
 autopurge.snapRetainCount=10
 autopurge.purgeInterval=1
 
 
-# Чтобы избежать операций поиска, ZooKeeper выделяет место в файле журнала транзакций {#to-avoid-seeks-zookeeper-allocates-space-in-the-transaction-log-file-in}
-# блоками размером preAllocSize килобайт. Размер блока по умолчанию — 64M. Одна из причин {#blocks-of-preallocsize-kilobytes-the-default-block-size-is-64m-one-reason}
-# изменения размера блоков — уменьшение размера блока при более частом создании снимков состояния. {#for-changing-the-size-of-the-blocks-is-to-reduce-the-block-size-if-snapshots}
-# (См. также snapCount). {#are-taken-more-often-also-see-snapcount}
+# To avoid seeks ZooKeeper allocates space in the transaction log file in
+# blocks of preAllocSize kilobytes. The default block size is 64M. One reason
+# for changing the size of the blocks is to reduce the block size if snapshots
+# are taken more often. (Also, see snapCount).
 preAllocSize=131072
 
-# Клиенты могут отправлять запросы быстрее, чем ZooKeeper способен их обработать, {#clients-can-submit-requests-faster-than-zookeeper-can-process-them}
-# особенно при большом количестве клиентов. Чтобы предотвратить исчерпание памяти {#especially-if-there-are-a-lot-of-clients-to-prevent-zookeeper-from-running}
-# из-за запросов в очереди, ZooKeeper ограничивает клиентов так, чтобы {#out-of-memory-due-to-queued-requests-zookeeper-will-throttle-clients-so-that}
-# в системе находилось не более globalOutstandingLimit необработанных запросов. {#there-is-no-more-than-globaloutstandinglimit-outstanding-requests-in-the}
-# Ограничение по умолчанию — 1000. {#system-the-default-limit-is-1000}
-# globalOutstandingLimit=1000 {#globaloutstandinglimit1000}
+# Clients can submit requests faster than ZooKeeper can process them,
+# especially if there are a lot of clients. To prevent ZooKeeper from running
+# out of memory due to queued requests, ZooKeeper will throttle clients so that
+# there is no more than globalOutstandingLimit outstanding requests in the
+# system. The default limit is 1000.
+# globalOutstandingLimit=1000
 
-# ZooKeeper записывает транзакции в журнал транзакций. После записи snapCount транзакций {#zookeeper-logs-transactions-to-a-transaction-log-after-snapcount-transactions}
-# в файл журнала создается снимок состояния и начинается новый файл журнала транзакций. {#are-written-to-a-log-file-a-snapshot-is-started-and-a-new-transaction-log-file}
-# Значение snapCount по умолчанию — 100000. {#is-started-the-default-snapcount-is-100000}
+# ZooKeeper logs transactions to a transaction log. After snapCount transactions
+# are written to a log file a snapshot is started and a new transaction log file
+# is started. The default snapCount is 100000.
 snapCount=3000000
 
-# Если эта опция определена, запросы будут записываться в файл трассировки с именем {#if-this-option-is-defined-requests-will-be-will-logged-to-a-trace-file-named}
-# traceFile.year.month.day. {#tracefileyearmonthday}
+# If this option is defined, requests will be will logged to a trace file named
+# traceFile.year.month.day.
 #traceFile=
 
-# Лидер принимает клиентские соединения. Значение по умолчанию — "yes". Узел-лидер {#leader-accepts-client-connections-default-value-is-yes-the-leader-machine}
-# координирует обновления. Для повышения пропускной способности обновлений за счет незначительного снижения {#coordinates-updates-for-higher-update-throughput-at-thes-slight-expense-of}
-# пропускной способности чтения лидер может быть настроен так, чтобы не принимать клиентов и сосредоточиться {#read-throughput-the-leader-can-be-configured-to-not-accept-clients-and-focus}
-# на координации. {#on-coordination}
+# Leader accepts client connections. Default value is "yes". The leader machine
+# coordinates updates. For higher update throughput at thes slight expense of
+# read throughput the leader can be configured to not accept clients and focus
+# on coordination.
 leaderServes=yes
 
 standaloneEnabled=false
@@ -253,7 +247,6 @@ dynamicConfigFile=/etc/zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}/conf/zoo.
 ```
 
 Версия для Java:
-
 
 ```text
 openjdk 11.0.5-shenandoah 2019-10-15
@@ -263,14 +256,13 @@ OpenJDK 64-Bit Server VM (build 11.0.5-shenandoah+10-adhoc.heretic.src, mixed mo
 
 Параметры JVM:
 
-
 ```bash
 NAME=zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }}
 ZOOCFGDIR=/etc/$NAME/conf
 
-# TODO это выглядит неаккуратно {#todo-this-is-really-ugly}
-# Как узнать, какие jar-файлы требуются? {#how-to-find-out-which-jars-are-needed}
-# Судя по всему, log4j требует наличия файла log4j.properties в classpath {#seems-that-log4j-requires-the-log4jproperties-file-to-be-in-the-classpath}
+# TODO this is really ugly
+# How to find out, which jars are needed?
+# seems, that log4j requires the log4j.properties file to be in the classpath
 CLASSPATH="$ZOOCFGDIR:/usr/build/classes:/usr/build/lib/*.jar:/usr/share/zookeeper-3.6.2/lib/audience-annotations-0.5.0.jar:/usr/share/zookeeper-3.6.2/lib/commons-cli-1.2.jar:/usr/share/zookeeper-3.6.2/lib/commons-lang-2.6.jar:/usr/share/zookeeper-3.6.2/lib/jackson-annotations-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-core-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/jackson-databind-2.10.3.jar:/usr/share/zookeeper-3.6.2/lib/javax.servlet-api-3.1.0.jar:/usr/share/zookeeper-3.6.2/lib/jetty-http-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-io-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-security-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-server-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-servlet-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jetty-util-9.4.24.v20191120.jar:/usr/share/zookeeper-3.6.2/lib/jline-2.14.6.jar:/usr/share/zookeeper-3.6.2/lib/json-simple-1.1.1.jar:/usr/share/zookeeper-3.6.2/lib/log4j-1.2.17.jar:/usr/share/zookeeper-3.6.2/lib/metrics-core-3.2.5.jar:/usr/share/zookeeper-3.6.2/lib/netty-buffer-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-codec-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-handler-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-resolver-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-epoll-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/netty-transport-native-unix-common-4.1.50.Final.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_common-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_hotspot-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/simpleclient_servlet-0.6.0.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-api-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/slf4j-log4j12-1.7.25.jar:/usr/share/zookeeper-3.6.2/lib/snappy-java-1.1.7.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-jute-3.6.2.jar:/usr/share/zookeeper-3.6.2/lib/zookeeper-prometheus-metrics-3.6.2.jar:/usr/share/zookeeper-3.6.2/etc"
 
 ZOOCFG="$ZOOCFGDIR/zoo.cfg"
@@ -296,7 +288,7 @@ JAVA_OPTS="-Xms{{ '{{' }} cluster.get('xms','128M') {{ '}}' }} \
 Инициализация соли:
 
 ```text
-description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} служба централизованной координации"
+description "zookeeper-{{ '{{' }} cluster['name'] {{ '}}' }} centralized coordination service"
 
 start on runlevel [2345]
 stop on runlevel [!2345]
@@ -323,7 +315,6 @@ script
         -Dzookeeper.root.logger=${ZOO_LOG4J_PROP} $ZOOMAIN $ZOOCFG
 end script
 ```
-
 
 ## Антивирусное программное обеспечение {#antivirus-software}
 

@@ -29,15 +29,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 [Splunk](https://www.splunk.com/) 是一个数据分析和监控平台。
 
-此附加组件允许用户将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 下载审计日志。
+此附加组件允许您将 [ClickHouse Cloud 审计日志](/cloud/security/audit-logging) 存储到 Splunk 中。它通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 下载审计日志。
 
 此附加组件仅包含模块化输入，不提供任何额外的 UI。
 
-
-
 # 安装 {#installation}
-
-
 
 ## 适用于 Splunk Enterprise {#for-splunk-enterprise}
 
@@ -55,16 +51,12 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 如果一切正常，此时应能看到已安装的 ClickHouse Audit logs 应用。否则，请检查 Splunkd 日志以定位错误。
 
-
-
 # 模块化输入配置 {#modular-input-configuration}
 
 要配置模块化输入，首先需要从您的 ClickHouse Cloud 部署中获取以下信息：
 
 - 组织 ID
 - 管理员 [API Key](/cloud/manage/openapi)
-
-
 
 ## 从 ClickHouse Cloud 获取信息 {#getting-information-from-clickhouse-cloud}
 
@@ -86,8 +78,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <Image img={splunk_007} size="lg" alt="ClickHouse Cloud 控制台展示需要保存的已生成 API Key 和 secret" border />
 
-
-
 ## 在 Splunk 中配置数据输入 {#configure-data-input-in-splunk}
 
 回到 Splunk，依次进入 Settings -> Data inputs。
@@ -107,8 +97,6 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 <Image img={splunk_011} size="lg" alt="已完成 ClickHouse 数据输入设置的 Splunk 配置页面" border />
 
 数据输入已配置完成，现在可以开始浏览审计日志。
-
-
 
 # 用法 {#usage}
 

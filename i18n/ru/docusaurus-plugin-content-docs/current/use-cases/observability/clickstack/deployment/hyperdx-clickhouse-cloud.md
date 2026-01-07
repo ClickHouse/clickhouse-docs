@@ -6,7 +6,7 @@ pagination_next: null
 sidebar_position: 1
 description: 'Развертывание ClickStack с ClickHouse Cloud'
 doc_type: 'guide'
-keywords: ['clickstack', 'развертывание', 'настройка', 'конфигурация', 'наблюдаемость']
+keywords: ['clickstack', 'развертывание', 'настройка', 'конфигурация', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';
@@ -54,9 +54,9 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 <VerticalStepper headerLevel="h3">
   ### Копирование учетных данных службы (необязательно)
 
-  **Если у вас уже есть события наблюдаемости, которые требуется визуализировать в вашем сервисе, этот шаг можно пропустить.**
+  **Если у вас уже есть события обсервабилити, которые требуется визуализировать в вашем сервисе, этот шаг можно пропустить.**
 
-  Перейдите к основному списку сервисов и выберите сервис, события наблюдаемости которого вы хотите визуализировать в HyperDX.
+  Перейдите к основному списку сервисов и выберите сервис, события обсервабилити которого вы хотите визуализировать в HyperDX.
 
   Нажмите кнопку `Connect` в меню навигации. Откроется модальное окно с учетными данными для подключения к вашему сервису и инструкциями по подключению через различные интерфейсы и языки программирования. Выберите `HTTPS` из выпадающего списка и сохраните адрес конечной точки подключения и учетные данные.
 
@@ -64,7 +64,7 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 
   ### Развертывание OpenTelemetry Collector (необязательно)
 
-  **Если у вас уже есть события наблюдаемости, которые требуется визуализировать в вашем сервисе, этот шаг можно пропустить.**
+  **Если у вас уже есть события обсервабилити, которые требуется визуализировать в вашем сервисе, этот шаг можно пропустить.**
 
   Этот шаг обеспечивает создание таблиц со схемой OpenTelemetry (OTel), которая в дальнейшем может быть использована для создания источника данных в HyperDX. Также предоставляется конечная точка OLTP для загрузки [примеров наборов данных](/use-cases/observability/clickstack/sample-datasets) и отправки событий OTel в ClickStack.
 
@@ -100,8 +100,8 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
           - context: log
             error_mode: ignore
             statements:
-              # Парсинг JSON: расширяет атрибуты лога полями из структурированного содержимого тела лога — либо в виде карты OTEL, либо
-              # в виде строки с JSON-содержимым.
+              # JSON parsing: Extends log attributes with the fields from structured log body content, either as an OTEL map or
+              # as a string containing JSON content.
               - set(log.cache, ExtractPatterns(log.body, "(?P<0>(\\{.*\\}))")) where
                 IsString(log.body)
               - merge_maps(log.attributes, ParseJSON(log.cache["0"]), "upsert")
@@ -113,45 +113,45 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
             conditions:
               - severity_number == 0 and severity_text == ""
             statements:
-              # Определение: извлечение первого ключевого слова уровня лога из первых 256 символов тела
+              # Infer: extract the first log level keyword from the first 256 characters of the body
               - set(log.cache["substr"], log.body.string) where Len(log.body.string)
                 < 256
               - set(log.cache["substr"], Substring(log.body.string, 0, 256)) where
                 Len(log.body.string) >= 256
               - set(log.cache, ExtractPatterns(log.cache["substr"],
                 "(?i)(?P<0>(alert|crit|emerg|fatal|error|err|warn|notice|debug|dbug|trace))"))
-              # Определение: обнаружение FATAL
+              # Infer: detect FATAL
               - set(log.severity_number, SEVERITY_NUMBER_FATAL) where
                 IsMatch(log.cache["0"], "(?i)(alert|crit|emerg|fatal)")
               - set(log.severity_text, "fatal") where log.severity_number ==
                 SEVERITY_NUMBER_FATAL
-              # Определение: обнаружение ERROR
+              # Infer: detect ERROR
               - set(log.severity_number, SEVERITY_NUMBER_ERROR) where
                 IsMatch(log.cache["0"], "(?i)(error|err)")
               - set(log.severity_text, "error") where log.severity_number ==
                 SEVERITY_NUMBER_ERROR
-              # Определение: обнаружение WARN
+              # Infer: detect WARN
               - set(log.severity_number, SEVERITY_NUMBER_WARN) where
                 IsMatch(log.cache["0"], "(?i)(warn|notice)")
               - set(log.severity_text, "warn") where log.severity_number ==
                 SEVERITY_NUMBER_WARN
-              # Определение: обнаружение DEBUG
+              # Infer: detect DEBUG
               - set(log.severity_number, SEVERITY_NUMBER_DEBUG) where
                 IsMatch(log.cache["0"], "(?i)(debug|dbug)")
               - set(log.severity_text, "debug") where log.severity_number ==
                 SEVERITY_NUMBER_DEBUG
-              # Определение: обнаружение TRACE
+              # Infer: detect TRACE
               - set(log.severity_number, SEVERITY_NUMBER_TRACE) where
                 IsMatch(log.cache["0"], "(?i)(trace)")
               - set(log.severity_text, "trace") where log.severity_number ==
                 SEVERITY_NUMBER_TRACE
-              # Определение: в остальных случаях
+              # Infer: else
               - set(log.severity_text, "info") where log.severity_number == 0
               - set(log.severity_number, SEVERITY_NUMBER_INFO) where log.severity_number == 0
           - context: log
             error_mode: ignore
             statements:
-              # Нормализация регистра поля severity_text
+              # Normalize the severity_text case
               - set(log.severity_text, ConvertCase(log.severity_text, "lower"))
       resourcedetection:
         detectors:
@@ -162,9 +162,9 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
         override: false
       batch:
       memory_limiter:
-        # 80% от максимальной памяти (до 2 ГБ), настройте для сред с ограниченной памятью
+        # 80% of maximum memory up to 2G, adjust for low memory environments
         limit_mib: 1500
-        # 25% от лимита (до 2 ГБ), настройте для сред с ограниченной памятью
+        # 25% of limit up to 2G, adjust for low memory environments
         spike_limit_mib: 512
         check_interval: 5s
     connectors:
@@ -229,16 +229,17 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
           receivers: [routing/logs]
           processors: [memory_limiter, batch]
           exporters: [clickhouse/rrweb]
+
     ```
   </details>
 
   Разверните коллектор с помощью следующей команды Docker, указав соответствующие переменные окружения со значениями параметров подключения, зафиксированными ранее, и выбрав подходящую команду ниже в зависимости от вашей операционной системы.
 
   ```bash
-  # укажите endpoint вашего облачного экземпляра
+  # modify to your cloud endpoint
   export CLICKHOUSE_ENDPOINT=
   export CLICKHOUSE_PASSWORD=
-  # при необходимости измените 
+  # optionally modify 
   export CLICKHOUSE_DATABASE=default
 
   # osx
@@ -255,7 +256,7 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
     otel/opentelemetry-collector-contrib:latest \
     --config /etc/otel/config.yaml
 
-  # команда для linux
+  # linux command
 
   # docker run --network=host --rm -it \
   #   -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
@@ -296,7 +297,7 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
   2. Перейдите в раздел **Settings** → **SQL Console Access**
   3. Установите соответствующий уровень прав доступа для каждого пользователя:
      * **Service Admin → Full Access** - Необходимо для включения оповещений
-     * **Service Read Only → Read Only** - Позволяет просматривать данные наблюдаемости и создавать дашборды
+     * **Service Read Only → Read Only** - Позволяет просматривать данные обсервабилити и создавать дашборды
      * **No access** - Не имеет доступа к HyperDX
 
   <Image img={read_only} alt="ClickHouse Cloud (только чтение)" />
@@ -317,7 +318,7 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 
   Для создания источников трассировок и метрик OTel выберите `Создать Новый Источник` в верхнем меню.
 
-  <Image img={hyperdx_create_new_source} alt="Создать Новый Источник в HyperDX" size="lg" />
+  <Image img={hyperdx_create_new_source} alt="Создание нового источника в HyperDX" size="lg" />
 
   Здесь выберите требуемый тип источника, затем соответствующую таблицу — например, для трассировок выберите таблицу `otel_traces`. Все настройки должны определиться автоматически.
 
@@ -336,4 +337,4 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 
 <JSONSupport/>
 
-Кроме того, пользователям следует связаться с support@clickhouse.com, чтобы убедиться, что в их сервисе ClickHouse Cloud включена поддержка JSON.
+Кроме того, вам следует связаться с support@clickhouse.com, чтобы убедиться, что в вашем сервисе ClickHouse Cloud включена поддержка JSON.

@@ -71,7 +71,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
 
   Это можно установить на том же экземпляре, что и ваш OTel collector Elastic Stack.
 
-  Пользователи могут следовать лучшим практикам по архитектуре и безопасности при [переводе Vector в production](https://vector.dev/docs/setup/going-to-prod/).
+  Вы можете следовать лучшим практикам по архитектуре и безопасности при [переводе Vector в production](https://vector.dev/docs/setup/going-to-prod/).
 
   ### Настройка Vector
 
@@ -83,8 +83,8 @@ OpenTelemetry Collector обеспечивает масштабируемое и
       type: logstash
       address: 0.0.0.0:5044
       tls:
-        enabled: false  # Установите значение true при использовании TLS
-        # Файлы ниже генерируются в соответствии с инструкциями по адресу https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
+        enabled: false  # Set to true if you're using TLS
+        # The files below are generated from the steps at https://www.elastic.co/docs/reference/fleet/secure-logstash-connections#generate-logstash-certs
         # crt_file: logstash.crt
         # key_file: logstash.key
         # ca_file: ca.crt
@@ -111,29 +111,29 @@ OpenTelemetry Collector обеспечивает масштабируемое и
     <summary>VRL — из ECS в OTel</summary>
 
     ```javascript
-    # Определение ключей для игнорирования на корневом уровне
+    # Define keys to ignore at root level
     ignored_keys = ["@metadata"]
 
-    # Определение префиксов ключей ресурсов
+    # Define resource key prefixes
     resource_keys = ["host", "cloud", "agent", "service"]
 
-    # Создание отдельных объектов для полей ресурсов и записей журнала
+    # Create separate objects for resource and log record fields
     resource_obj = {}
     log_record_obj = {}
 
-    # Копирование всех неигнорируемых корневых ключей в соответствующие объекты
+    # Copy all non-ignored root keys to appropriate objects
     root_keys = keys(.)
     for_each(root_keys) -> |_index, key| {
         if !includes(ignored_keys, key) {
             val, err = get(., [key])
             if err == null {
-                # Проверка, является ли это полем ресурса
+                # Check if this is a resource field
                 is_resource = false
                 if includes(resource_keys, key) {
                     is_resource = true
                 }
 
-                # Добавление в соответствующий объект
+                # Add to appropriate object
                 if is_resource {
                     resource_obj = set(resource_obj, [key], val) ?? resource_obj
                 } else {
@@ -143,11 +143,11 @@ OpenTelemetry Collector обеспечивает масштабируемое и
         }
     }
 
-    # Выравнивание обоих объектов по отдельности
+    # Flatten both objects separately
     flattened_resources = flatten(resource_obj, separator: ".")
     flattened_logs = flatten(log_record_obj, separator: ".")
 
-    # Обработка атрибутов ресурсов
+    # Process resource attributes
     resource_attributes = []
     resource_keys_list = keys(flattened_resources)
     for_each(resource_keys_list) -> |_index, field_key| {
@@ -165,7 +165,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
         }
     }
 
-    # Обработка атрибутов записей журнала
+    # Process log record attributes
     log_attributes = []
     log_keys_list = keys(flattened_logs)
     for_each(log_keys_list) -> |_index, field_key| {
@@ -183,14 +183,14 @@ OpenTelemetry Collector обеспечивает масштабируемое и
         }
     }
 
-    # Получение временной метки для timeUnixNano (преобразование в наносекунды)
+    # Get timestamp for timeUnixNano (convert to nanoseconds)
     timestamp_nano = if exists(.@timestamp) {
         to_unix_timestamp!(parse_timestamp!(.@timestamp, format: "%Y-%m-%dT%H:%M:%S%.3fZ"), unit: "nanoseconds")
     } else {
         to_unix_timestamp(now(), unit: "nanoseconds")
     }
 
-    # Получение поля message/body
+    # Get message/body field
     body_value = if exists(.message) {
         to_string!(.message)
     } else if exists(.body) {
@@ -199,7 +199,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
         ""
     }
 
-    # Создание структуры OpenTelemetry
+    # Create the OpenTelemetry structure
     . = {
         "resourceLogs": [
             {
@@ -234,10 +234,10 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   sinks:
     otlp:
       type: opentelemetry
-      inputs: [remap_filebeat] # получает события из преобразования remap — см. ниже
+      inputs: [remap_filebeat] # receives events from a remap transform - see below
       protocol:
-        type: http  # Используйте "grpc" для порта 4317
-        uri: http://localhost:4318/v1/logs # конечная точка логов для OTel collector 
+        type: http  # Use "grpc" for port 4317
+        uri: http://localhost:4318/v1/logs # logs endpoint for the OTel collector 
         method: post
         encoding:
           codec: json
@@ -250,7 +250,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
 
   Значение `YOUR_INGESTION_API_KEY` генерируется ClickStack. Ключ можно найти в приложении HyperDX в разделе `Team Settings → API Keys`.
 
-  <Image img={ingestion_key} alt="Ключи для ингестии" size="lg" />
+  <Image img={ingestion_key} alt="Ключи ингестии" size="lg" />
 
   Итоговая полная конфигурация представлена ниже:
 
@@ -260,7 +260,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
       type: logstash
       address: 0.0.0.0:5044
       tls:
-        enabled: false  # Установите значение true, если используете TLS
+        enabled: false  # Set to true if you're using TLS
           #crt_file: /data/elasticsearch-9.0.1/logstash/logstash.crt
           #key_file: /data/elasticsearch-9.0.1/logstash/logstash.key
           #ca_file: /data/elasticsearch-9.0.1/ca/ca.crt
@@ -277,7 +277,7 @@ OpenTelemetry Collector обеспечивает масштабируемое и
       type: opentelemetry
       inputs: [remap_filebeat]
       protocol:
-        type: http  # Используйте "grpc" для порта 4317
+        type: http  # Use "grpc" for port 4317
         uri: http://localhost:4318/v1/logs
         method: post
         encoding:
@@ -293,19 +293,19 @@ OpenTelemetry Collector обеспечивает масштабируемое и
   Существующие установки Filebeat достаточно изменить для отправки событий в Vector. Для этого необходимо настроить выходной канал Logstash — при необходимости можно также настроить TLS:
 
   ```yaml
-  # ------------------------------ Вывод Logstash -------------------------------
+  # ------------------------------ Logstash Output -------------------------------
   output.logstash:
-    # Хосты Logstash
+    # The Logstash hosts
     hosts: ["localhost:5044"]
 
-    # Необязательный параметр SSL. По умолчанию отключен.
-    # Список корневых сертификатов для проверки HTTPS-серверов
+    # Optional SSL. By default is off.
+    # List of root certificates for HTTPS server verifications
     #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-    # Сертификат для аутентификации SSL-клиента
+    # Certificate for SSL client authentication
     #ssl.certificate: "/etc/pki/client/cert.pem"
 
-    # Ключ клиентского сертификата
+    # Client Certificate Key
     #ssl.key: "/etc/pki/client/cert.key"
   ```
 </VerticalStepper>
@@ -317,7 +317,7 @@ Elastic Agent объединяет различные Elastic Beats в един�
 У пользователей, у которых развернут Elastic Agent, есть несколько вариантов миграции:
 
 - Настроить агент на отправку данных на конечную точку Vector по протоколу Lumberjack. **В настоящее время это протестировано только для пользователей, собирающих логи с помощью Elastic Agent.** Это может быть централизованно настроено через интерфейс Fleet в Kibana.
-- [Запустить агент как Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/fleet/otel-agent). Elastic Agent включает встроенный EDOT Collector, который позволяет один раз инструментировать ваши приложения и инфраструктуру и отправлять данные нескольким поставщикам и в различные backend-системы. В этой конфигурации пользователи могут просто настроить EDOT collector на пересылку событий в ClickStack OTel collector по OTLP. **Этот подход поддерживает все типы событий.**
+- [Запустить агент как Elastic OpenTelemetry Collector (EDOT)](https://www.elastic.co/docs/reference/fleet/otel-agent). Elastic Agent включает встроенный EDOT Collector, который позволяет один раз инструментировать ваши приложения и инфраструктуру и отправлять данные нескольким поставщикам и в различные backend-системы. В этой конфигурации вы можете просто настроить EDOT collector на пересылку событий в ClickStack OTel collector по OTLP. **Этот подход поддерживает все типы событий.**
 
 Ниже приводятся оба этих варианта.
 
@@ -361,7 +361,7 @@ sources:
 
 </VerticalStepper>
 
-### Запуск Elastic Agent как коллектора OpenTelemetry
+### Запуск Elastic Agent как коллектора OpenTelemetry {#sending-data-via-vector}
 
 Elastic Agent включает встроенный EDOT Collector, который позволяет один раз инструментировать ваши приложения и инфраструктуру и отправлять данные нескольким поставщикам и в разные бэкэнды.
 

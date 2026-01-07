@@ -17,5 +17,5 @@ doc_type: 'landing-page'
 * [代理](../../interfaces/third-party/proxy.md)
 
 :::note
-支持诸如 [ODBC](../../interfaces/odbc.md) 或 [JDBC](../../interfaces/jdbc.md) 等通用 API 的通用工具通常也可以与 ClickHouse 一起配合使用，但由于这类工具数量过多，因此未在此列出。
+支持诸如 [ODBC](/interfaces/odbc) 或 [JDBC](/interfaces/jdbc) 等通用 API 的通用工具通常也可以与 ClickHouse 一起配合使用，但由于这类工具数量过多，因此未在此列出。
 :::

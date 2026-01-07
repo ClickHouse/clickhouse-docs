@@ -36,7 +36,7 @@ Child single services can scale vertically unlike single parent services.
 
 _Fig. 1 - current service in ClickHouse Cloud_
 
-Compute-compute separation allows users to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
+Compute-compute separation allows you to create multiple compute node groups, each with its own endpoint, that are using the same object storage folder, and thus, with the same tables, views, etc.
 
 Each compute node group will have its own endpoint so you can choose which set of replicas to use for your workloads. Some of your workloads may be satisfied with only one small-size replica, and others may require full high-availability (HA) and hundreds of gigs of memory. Compute-compute separation also allows you to separate read operations from write operations so they don't interfere with each other:
 
@@ -74,7 +74,7 @@ You can sort services by the warehouse that they belong to.
 
 ### Database credentials {#database-credentials}
 
-Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. Users will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
+Because all in a warehouse share the same set of tables, they also share access controls to those other services. This means that all database users that are created in Service 1 will also be able to use Service 2 with the same permissions (grants for tables, views, etc), and vice versa. You will use another endpoint for each service but will use the same username and password. In other words, _users are shared across services that work with the same storage:_
 
 <Image img={compute_3} size="md" alt="User access across services sharing same data" />
 
@@ -106,7 +106,8 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
 1. Read-only services currently allow user management operations (create, drop, etc). This behavior may be changed in the future.
-2. Currently, refreshable materialized views are executed on all services in the warehouse, including read-only services. This behavior will be changed in the future, however, and they will be executed on RW services only.
+2. Refreshable materialized views run **only** on read-write (RW) services in a warehouse. They are **not** executed on read-only (RO) services.
+
 :::
 
 ## Scaling {#scaling}

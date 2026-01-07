@@ -30,18 +30,17 @@ import Image from '@theme/IdealImage';
   </iframe>
 </div>
 
-
-
 ## Предварительные требования {#prerequisites}
+
 Предполагается, что вы знакомы со следующим:
+
 * [ClickHouse Connector Sink](../kafka-clickhouse-connect-sink.md)
 * Confluent Cloud
-
-
 
 ## Официальный коннектор Kafka от ClickHouse для Confluent Cloud {#the-official-kafka-connector-from-clickhouse-with-confluent-cloud}
 
 #### Создание топика {#create-a-topic}
+
 Создать топик в Confluent Cloud довольно просто; подробные инструкции приведены [здесь](https://docs.confluent.io/cloud/current/client-apps/topics/manage.html).
 
 #### Важные замечания {#important-notes}
@@ -50,13 +49,17 @@ import Image from '@theme/IdealImage';
 * Большее число партиций не всегда означает более высокую производительность — следите за нашим будущим руководством с дополнительной информацией и рекомендациями по производительности.
 
 #### Соберите параметры подключения {#gather-your-connection-details}
+
 <ConnectionDetails />
 
 #### Установка коннектора {#install-connector}
+
 Установите полностью управляемый ClickHouse Sink Connector в Confluent Cloud, следуя [официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html).
 
 #### Настройка коннектора {#configure-the-connector}
+
 Во время настройки ClickHouse Sink Connector вам потребуется указать следующие параметры:
+
 - имя хоста (hostname) сервера ClickHouse
 - порт сервера ClickHouse (по умолчанию 8443)
 - имя пользователя и пароль для сервера ClickHouse
@@ -65,5 +68,10 @@ import Image from '@theme/IdealImage';
 
 Интерфейс Confluent Cloud поддерживает расширенные параметры конфигурации для задания интервалов опроса, размеров пакетов и других параметров с целью оптимизации производительности.
 
+:::note  
+В Confluent Cloud изменение некоторых настроек, таких как [fetch settings](/integrations/kafka/clickhouse-kafka-connect-sink/#fetch-settings) и [poll settings](/integrations/kafka/clickhouse-kafka-connect-sink/#poll-settings), требует открытия запроса в службу поддержки через Confluent Cloud.
+:::  
+
 #### Известные ограничения {#known-limitations}
+
 * См. список [ограничений коннектора в официальной документации](https://docs.confluent.io/cloud/current/connectors/cc-clickhouse-sink-connector/cc-clickhouse-sink.html#limitations)

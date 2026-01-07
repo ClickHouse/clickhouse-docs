@@ -1,0 +1,58 @@
+---
+description: '精确计算数值序列的分位数。'
+slug: /sql-reference/aggregate-functions/reference/quantileExactInclusive
+title: 'quantileExactInclusive'
+doc_type: 'reference'
+---
+
+# quantileExactInclusive {#quantileexactinclusive}
+
+精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
+
+为了获得精确值，所有传入的值会被合并到一个数组中，然后对该数组进行部分排序。因此，该函数会消耗 `O(n)` 的内存，其中 `n` 是传入值的数量。不过，当值的数量较少时，该函数非常高效。
+
+此函数等价于 Excel 的 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed) 函数（[type R7](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample)）。
+
+在一个查询中使用多个具有不同分位水平（level）的 `quantileExactInclusive` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于理论上的最优情况）。在这种情况下，请使用 [quantilesExactInclusive](../../../sql-reference/aggregate-functions/reference/quantilesExactInclusive) 函数。
+
+**语法**
+
+```sql
+quantileExactInclusive(level)(expr)
+```
+
+**参数**
+
+* `expr` — 对列值进行运算的表达式，结果类型为数值型[数据类型](/sql-reference/data-types)，[Date](../../../sql-reference/data-types/date.md) 或 [DateTime](../../../sql-reference/data-types/datetime.md)。
+
+**参数说明**
+
+* `level` — 分位数级别。可选。可取值范围：[0, 1]（包含边界）。默认值：0.5。当 `level=0.5` 时，函数计算[中位数](https://en.wikipedia.org/wiki/Median)。[Float](../../../sql-reference/data-types/float.md)。
+
+**返回值**
+
+* 指定级别的分位数。
+
+类型：
+
+* 数值型数据类型输入返回 [Float64](../../../sql-reference/data-types/float.md)。
+* 如果输入值为 `Date` 类型，则返回 [Date](../../../sql-reference/data-types/date.md)。
+* 如果输入值为 `DateTime` 类型，则返回 [DateTime](../../../sql-reference/data-types/datetime.md)。
+
+**示例**
+
+查询：
+
+```sql
+CREATE TABLE num AS numbers(1000);
+
+SELECT quantileExactInclusive(0.6)(x) FROM (SELECT number AS x FROM num);
+```
+
+结果：
+
+```text
+┌─quantileExactInclusive(0.6)(x)─┐
+│                          599.4 │
+└────────────────────────────────┘
+```

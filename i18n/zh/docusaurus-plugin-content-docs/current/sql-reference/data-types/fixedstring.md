@@ -14,7 +14,7 @@ doc_type: 'reference'
 要声明一个 `FixedString` 类型的列，请使用以下语法：
 
 ```sql
-<列名> FixedString(N)
+<column_name> FixedString(N)
 ```
 
 其中 `N` 是自然数。
@@ -99,7 +99,7 @@ FROM FixedStringTable
 WHERE name LIKE 'a'
 FORMAT JSONStringsEachRow
 
-结果集中包含 0 行。
+0 rows in set.
 
 
 SELECT name

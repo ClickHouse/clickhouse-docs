@@ -7,17 +7,11 @@ title: '設定への制約'
 doc_type: 'reference'
 ---
 
-
-
 # 設定上の制約事項 {#constraints-on-settings}
-
-
 
 ## 概要 {#overview}
 
 ClickHouse における設定に対する「制約」とは、その設定に付与できる制限やルールを指します。これらの制約を適用することで、データベースの安定性、セキュリティ、および予測可能な動作を維持できます。
-
-
 
 ## 制約の定義 {#defining-constraints}
 
@@ -29,39 +23,38 @@ ClickHouse における設定に対する「制約」とは、その設定に付
 <profiles>
   <user_name>
     <constraints>
-      <設定名_1>
+      <setting_name_1>
         <min>lower_boundary</min>
-      </設定名_1>
-      <設定名_2>
+      </setting_name_1>
+      <setting_name_2>
         <max>upper_boundary</max>
-      </設定名_2>
-      <設定名_3>
+      </setting_name_2>
+      <setting_name_3>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
-      </設定名_3>
-      <設定名_4>
+      </setting_name_3>
+      <setting_name_4>
         <readonly/>
-      </設定名_4>
-      <設定名_5>
+      </setting_name_4>
+      <setting_name_5>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <changeable_in_readonly/>
-      </設定名_5>
-      <設定名_6>
+      </setting_name_5>
+      <setting_name_6>
         <min>lower_boundary</min>
         <max>upper_boundary</max>
         <disallowed>value1</disallowed>
         <disallowed>value2</disallowed>
         <disallowed>value3</disallowed>
         <changeable_in_readonly/>
-      </設定名_6>
+      </setting_name_6>
     </constraints>
   </user_name>
 </profiles>
 ```
 
 ユーザーが制約に違反しようとすると例外がスローされ、設定は変更されずにそのまま維持されます。
-
 
 ## 制約の種類 {#types-of-constraints}
 
@@ -93,7 +86,6 @@ ClickHouse でサポートされている制約には、いくつかの種類が
 
 :::
 
-
 ## 複数の制約プロファイル {#multiple-constraint-profiles}
 
 ユーザーに対して複数のプロファイルがアクティブな場合、それらの制約はマージされます。
@@ -101,8 +93,6 @@ ClickHouse でサポートされている制約には、いくつかの種類が
 - **true** (推奨): 同じ設定に対する制約はマージ時に置き換えられ、最後に適用される制約のみが使用され、それ以前のものはすべて無視されます。
   これには、新しい制約で設定されていないフィールドも含まれます。
 - **false** (デフォルト): 同じ設定に対する制約は、未設定の種類の制約は前のプロファイルから引き継ぎ、設定されている種類の制約は新しいプロファイルの値で置き換える形でマージされます。
-
-
 
 ## 読み取り専用モード {#read-only}
 
@@ -145,15 +135,14 @@ SET force_index_by_date=1;
 ```
 
 ```text
-Code: 452, e.displayText() = DB::Exception: max_memory_usage は 20000000000 を超える値に設定してはいけません。
-Code: 452, e.displayText() = DB::Exception: max_memory_usage は 5000000000 未満の値に設定してはいけません。
-Code: 452, e.displayText() = DB::Exception: force_index_by_date は変更してはいけません。
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be greater than 20000000000.
+Code: 452, e.displayText() = DB::Exception: Setting max_memory_usage should not be less than 5000000000.
+Code: 452, e.displayText() = DB::Exception: Setting force_index_by_date should not be changed.
 ```
 
 :::note
 `default` プロファイルは特別に扱われます。`default` プロファイルに定義されたすべての制約はデフォルトの制約となり、各ユーザーに対して明示的に上書きされるまで、すべてのユーザーに対して制約として適用されます。
 :::
-
 
 ## MergeTree 設定に対する制約 {#constraints-on-merge-tree-settings}
 

@@ -6,8 +6,6 @@ title: 'ARRAY JOIN 句'
 doc_type: 'reference'
 ---
 
-
-
 # ARRAY JOIN 句 {#array-join-clause}
 
 配列カラムを含むテーブルに対して、元の配列カラムの各要素ごとに 1 行を持つ新しいテーブルを生成し、その他のカラムの値は複製するという操作は一般的です。これは `ARRAY JOIN` 句が行う処理の基本的なケースです。
@@ -29,7 +27,6 @@ FROM <left_subquery>
 * `ARRAY JOIN` - 通常、空配列は `JOIN` の結果に含まれません。
 * `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値（通常は 0、空文字列、または NULL）に設定されます。
 
-
 ## 基本的な ARRAY JOIN の例 {#basic-array-join-examples}
 
 ### ARRAY JOIN と LEFT ARRAY JOIN {#array-join-left-array-join-examples}
@@ -44,14 +41,14 @@ CREATE TABLE arrays_test
 ) ENGINE = Memory;
 
 INSERT INTO arrays_test
-VALUES ('こんにちは', [1,2]), ('世界', [3,4,5]), ('さようなら', []);
+VALUES ('Hello', [1,2]), ('World', [3,4,5]), ('Goodbye', []);
 ```
 
 ```response
 ┌─s───────────┬─arr─────┐
-│ こんにちは  │ [1,2]   │
-│ 世界        │ [3,4,5] │
-│ さようなら  │ []      │
+│ Hello       │ [1,2]   │
+│ World       │ [3,4,5] │
+│ Goodbye     │ []      │
 └─────────────┴─────────┘
 ```
 
@@ -65,11 +62,11 @@ ARRAY JOIN arr;
 
 ```response
 ┌─s─────┬─arr─┐
-│ こんにちは │   1 │
-│ こんにちは │   2 │
-│ 世界 │   3 │
-│ 世界 │   4 │
-│ 世界 │   5 │
+│ Hello │   1 │
+│ Hello │   2 │
+│ World │   3 │
+│ World │   4 │
+│ World │   5 │
 └───────┴─────┘
 ```
 
@@ -83,12 +80,12 @@ LEFT ARRAY JOIN arr;
 
 ```response
 ┌─s───────────┬─arr─┐
-│ こんにちは    │   1 │
-│ こんにちは    │   2 │
-│ 世界         │   3 │
-│ 世界         │   4 │
-│ 世界         │   5 │
-│ さようなら    │   0 │
+│ Hello       │   1 │
+│ Hello       │   2 │
+│ World       │   3 │
+│ World       │   4 │
+│ World       │   5 │
+│ Goodbye     │   0 │
 └─────────────┴─────┘
 ```
 
@@ -151,9 +148,8 @@ ORDER BY Reaches DESC
 LIMIT 10
 ```
 
-
 ```text
-┌──ゴールID─┬─到達数─┬─訪問数─┐
+┌──GoalID─┬─Reaches─┬─Visits─┐
 │   53225 │    3214 │   1097 │
 │ 2825062 │    3188 │   1097 │
 │   56600 │    2803 │    488 │
@@ -167,7 +163,6 @@ LIMIT 10
 └─────────┴─────────┴────────┘
 ```
 
-
 ## エイリアスの使用 {#using-aliases}
 
 `ARRAY JOIN` 句では、配列にエイリアスを指定できます。この場合、配列要素にはそのエイリアスを用いてアクセスできますが、配列自体には元の名前でアクセスします。例：
@@ -180,11 +175,11 @@ ARRAY JOIN arr AS a;
 
 ```response
 ┌─s─────┬─arr─────┬─a─┐
-│ こんにちは │ [1,2]   │ 1 │
-│ こんにちは │ [1,2]   │ 2 │
-│ 世界 │ [3,4,5] │ 3 │
-│ 世界 │ [3,4,5] │ 4 │
-│ 世界 │ [3,4,5] │ 5 │
+│ Hello │ [1,2]   │ 1 │
+│ Hello │ [1,2]   │ 2 │
+│ World │ [3,4,5] │ 3 │
+│ World │ [3,4,5] │ 4 │
+│ World │ [3,4,5] │ 5 │
 └───────┴─────────┴───┘
 ```
 
@@ -220,11 +215,11 @@ ARRAY JOIN arr AS a, arrayEnumerate(arr) AS num, arrayMap(x -> x + 1, arr) AS ma
 
 ```response
 ┌─s─────┬─arr─────┬─a─┬─num─┬─mapped─┐
-│ こんにちは │ [1,2]   │ 1 │   1 │      2 │
-│ こんにちは │ [1,2]   │ 2 │   2 │      3 │
-│ 世界       │ [3,4,5] │ 3 │   1 │      4 │
-│ 世界       │ [3,4,5] │ 4 │   2 │      5 │
-│ 世界       │ [3,4,5] │ 5 │   3 │      6 │
+│ Hello │ [1,2]   │ 1 │   1 │      2 │
+│ Hello │ [1,2]   │ 2 │   2 │      3 │
+│ World │ [3,4,5] │ 3 │   1 │      4 │
+│ World │ [3,4,5] │ 4 │   2 │      5 │
+│ World │ [3,4,5] │ 5 │   3 │      6 │
 └───────┴─────────┴───┴─────┴────────┘
 ```
 
@@ -254,7 +249,6 @@ FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
-
 ```response
 ┌─s───────┬─arr─────┬─a─┬─b─────────┐
 │ Hello   │ [1,2]   │ 1 │ ['a','b'] │
@@ -266,7 +260,6 @@ SETTINGS enable_unaligned_array_join = 1;
 │ Goodbye │ []      │ 0 │ ['c']     │
 └─────────┴─────────┴───┴───────────┘
 ```
-
 
 ## ネストされたデータ構造での ARRAY JOIN {#array-join-with-nested-data-structure}
 
@@ -287,9 +280,9 @@ VALUES ('Hello', [1,2], [10,20]), ('World', [3,4,5], [30,40,50]), ('Goodbye', []
 
 ```response
 ┌─s───────┬─nest.x──┬─nest.y─────┐
-│ こんにちは   │ [1,2]   │ [10,20]    │
-│ 世界       │ [3,4,5] │ [30,40,50] │
-│ さようなら │ []      │ []         │
+│ Hello   │ [1,2]   │ [10,20]    │
+│ World   │ [3,4,5] │ [30,40,50] │
+│ Goodbye │ []      │ []         │
 └─────────┴─────────┴────────────┘
 ```
 
@@ -301,11 +294,11 @@ ARRAY JOIN nest;
 
 ```response
 ┌─s─────┬─nest.x─┬─nest.y─┐
-│ こんにちは │      1 │     10 │
-│ こんにちは │      2 │     20 │
-│ 世界 │      3 │     30 │
-│ 世界 │      4 │     40 │
-│ 世界 │      5 │     50 │
+│ Hello │      1 │     10 │
+│ Hello │      2 │     20 │
+│ World │      3 │     30 │
+│ World │      4 │     40 │
+│ World │      5 │     50 │
 └───────┴────────┴────────┘
 ```
 
@@ -319,18 +312,18 @@ ARRAY JOIN `nest.x`, `nest.y`;
 
 ```response
 ┌─s─────┬─nest.x─┬─nest.y─┐
-│ こんにちは │      1 │     10 │
-│ こんにちは │      2 │     20 │
-│ 世界 │      3 │     30 │
-│ 世界 │      4 │     40 │
-│ 世界 │      5 │     50 │
+│ Hello │      1 │     10 │
+│ Hello │      2 │     20 │
+│ World │      3 │     30 │
+│ World │      4 │     40 │
+│ World │      5 │     50 │
 └───────┴────────┴────────┘
 ```
 
 このバリエーションも妥当です。
 
 ```sql
-SELECT s、`nest.x`、`nest.y`
+SELECT s, `nest.x`, `nest.y`
 FROM nested_test
 ARRAY JOIN `nest.x`;
 ```
@@ -371,7 +364,6 @@ FROM nested_test
 ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 ```
 
-
 ```response
 ┌─s─────┬─n.x─┬─n.y─┬─nest.x──┬─nest.y─────┬─num─┐
 │ Hello │   1 │  10 │ [1,2]   │ [10,20]    │   1 │
@@ -382,7 +374,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
 
-
 ## 実装の詳細 {#implementation-details}
 
 `ARRAY JOIN` を実行する際、クエリの実行順序は最適化されます。クエリ内では `ARRAY JOIN` は常に [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md) 句より前に指定する必要がありますが、技術的には、`ARRAY JOIN` の結果がフィルタリングに使用されない限り、どの順序で実行されても問題ありません。処理順序はクエリオプティマイザによって制御されます。
@@ -392,8 +383,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 [ショートサーキット関数評価](/operations/settings/settings#short_circuit_function_evaluation) は、`if`、`multiIf`、`and`、`or` などの特定の関数において、複雑な式の実行を最適化するための機能です。これにより、ゼロ除算のような、これらの関数の実行中に発生しうる例外を防止します。
 
 `arrayJoin` は常に実行され、ショートサーキット関数評価をサポートしません。これは、クエリ解析および実行時に他のすべての関数とは別に処理される特殊な関数であり、ショートサーキット関数実行とは両立しない追加のロジックを必要とするためです。その理由は、結果の行数が `arrayJoin` の結果に依存しており、`arrayJoin` の遅延実行を実装するのはあまりに複雑かつ高コストであるためです。
-
-
 
 ## 関連コンテンツ {#related-content}
 

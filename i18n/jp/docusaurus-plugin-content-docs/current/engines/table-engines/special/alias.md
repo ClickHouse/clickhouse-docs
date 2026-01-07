@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Alias テーブルエンジン {#alias-table-engine}
 
 <ExperimentalBadge/>
@@ -40,7 +39,6 @@ ENGINE = Alias(target_db, target_table)
 :::note
 `Alias` テーブルでは、明示的な列定義を行うことはできません。列はターゲットテーブルから自動的に継承されます。これにより、エイリアスは常にターゲットテーブルのスキーマと一致します。
 :::
-
 
 ## エンジンパラメータ {#engine-parameters}
 
@@ -84,7 +82,7 @@ ENGINE = Alias(target_db, target_table)
 同一データベース内で簡単なエイリアスを作成します。
 
 ```sql
--- ソーステーブルを作成
+-- Create source table
 CREATE TABLE source_data (
     id UInt32,
     name String,
@@ -92,13 +90,13 @@ CREATE TABLE source_data (
 ) ENGINE = MergeTree
 ORDER BY id;
 
--- データを挿入
+-- Insert some data
 INSERT INTO source_data VALUES (1, 'one', 10.1), (2, 'two', 20.2);
 
--- エイリアスを作成
+-- Create alias
 CREATE TABLE data_alias ENGINE = Alias('source_data');
 
--- エイリアス経由でクエリ
+-- Query through alias
 SELECT * FROM data_alias;
 ```
 
@@ -109,17 +107,16 @@ SELECT * FROM data_alias;
 └────┴──────┴───────┘
 ```
 
-
 ### データベース間エイリアス {#cross-database-alias}
 
 別のデータベース内のテーブルを参照するエイリアスを作成します。
 
 ```sql
--- データベースを作成
+-- Create databases
 CREATE DATABASE db1;
 CREATE DATABASE db2;
 
--- db1にソーステーブルを作成
+-- Create source table in db1
 CREATE TABLE db1.events (
     timestamp DateTime,
     event_type String,
@@ -127,17 +124,16 @@ CREATE TABLE db1.events (
 ) ENGINE = MergeTree
 ORDER BY timestamp;
 
--- db1.eventsを指すエイリアスをdb2に作成
+-- Create alias in db2 pointing to db1.events
 CREATE TABLE db2.events_alias ENGINE = Alias('db1', 'events');
 
--- またはdatabase.table形式を使用
+-- Or using database.table format
 CREATE TABLE db2.events_alias2 ENGINE = Alias('db1.events');
 
--- どちらのエイリアスも同じように動作します
+-- Both aliases work identically
 INSERT INTO db2.events_alias VALUES (now(), 'click', 100);
 SELECT * FROM db2.events_alias2;
 ```
-
 
 ### エイリアス経由での書き込み操作 {#write-operations}
 
@@ -153,22 +149,21 @@ ORDER BY ts;
 
 CREATE TABLE metrics_alias ENGINE = Alias('metrics');
 
--- エイリアス経由で挿入
+-- Insert through alias
 INSERT INTO metrics_alias VALUES 
     (now(), 'cpu_usage', 45.2),
     (now(), 'memory_usage', 78.5);
 
--- SELECTで挿入
+-- Insert with SELECT
 INSERT INTO metrics_alias 
 SELECT now(), 'disk_usage', number * 10 
 FROM system.numbers 
 LIMIT 5;
 
--- ターゲットテーブルにデータが格納されていることを確認
-SELECT count() FROM metrics;  -- 7を返す
-SELECT count() FROM metrics_alias;  -- 7を返す
+-- Verify data is in the target table
+SELECT count() FROM metrics;  -- Returns 7
+SELECT count() FROM metrics_alias;  -- Returns 7
 ```
-
 
 ### スキーマの変更 {#schema-modification}
 
@@ -183,10 +178,10 @@ ORDER BY id;
 
 CREATE TABLE users_alias ENGINE = Alias('users');
 
--- エイリアス経由でカラムを追加
+-- Add column through alias
 ALTER TABLE users_alias ADD COLUMN email String DEFAULT '';
 
--- カラムは対象テーブルに追加される
+-- Column is added to target table
 DESCRIBE users;
 ```
 
@@ -197,7 +192,6 @@ DESCRIBE users;
 │ email │ String │ DEFAULT      │ ''                 │
 └───────┴────────┴──────────────┴────────────────────┘
 ```
-
 
 ### データの変更 {#data-mutations}
 
@@ -219,13 +213,13 @@ INSERT INTO products_alias VALUES
     (2, 'item_two', 200.0, 'active'),
     (3, 'item_three', 300.0, 'inactive');
 
--- エイリアス経由で更新
+-- Update through alias
 ALTER TABLE products_alias UPDATE price = price * 1.1 WHERE status = 'active';
 
--- エイリアス経由で削除
+-- Delete through alias
 ALTER TABLE products_alias DELETE WHERE status = 'inactive';
 
--- 変更は対象テーブルに適用される
+-- Changes are applied to target table
 SELECT * FROM products ORDER BY id;
 ```
 
@@ -235,7 +229,6 @@ SELECT * FROM products ORDER BY id;
 │  2 │ item_two │ 220.0 │ active │
 └────┴──────────┴───────┴────────┘
 ```
-
 
 ### パーティション操作 {#partition-operations}
 
@@ -257,17 +250,16 @@ INSERT INTO logs_alias VALUES
     ('2024-02-15', 'ERROR', 'message2'),
     ('2024-03-15', 'INFO', 'message3');
 
--- エイリアス経由でパーティションをデタッチ
+-- Detach partition through alias
 ALTER TABLE logs_alias DETACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- 2を返す（パーティション202402はデタッチ済み）
+SELECT count() FROM logs_alias;  -- Returns 2 (partition 202402 detached)
 
--- パーティションを再アタッチ
+-- Attach partition back
 ALTER TABLE logs_alias ATTACH PARTITION '202402';
 
-SELECT count() FROM logs_alias;  -- 3を返す
+SELECT count() FROM logs_alias;  -- Returns 3
 ```
-
 
 ### テーブル最適化 {#table-optimization}
 
@@ -282,27 +274,26 @@ ORDER BY id;
 
 CREATE TABLE events_alias ENGINE = Alias('events');
 
--- 複数の INSERT により複数のパートが作成される
+-- Multiple inserts create multiple parts
 INSERT INTO events_alias VALUES (1, 'data1');
 INSERT INTO events_alias VALUES (2, 'data2');
 INSERT INTO events_alias VALUES (3, 'data3');
 
--- パート数を確認
+-- Check parts count
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
   AND active;
 
--- エイリアス経由で最適化
+-- Optimize through alias
 OPTIMIZE TABLE events_alias FINAL;
 
--- ターゲットテーブルでパートがマージされる
+-- Parts are merged in target table
 SELECT count() FROM system.parts 
 WHERE database = currentDatabase() 
   AND table = 'events' 
-  AND active;  -- 1 を返す
+  AND active;  -- Returns 1
 ```
-
 
 ### エイリアスの管理 {#alias-management}
 
@@ -319,15 +310,15 @@ INSERT INTO important_data VALUES (1, 'critical'), (2, 'important');
 
 CREATE TABLE old_alias ENGINE = Alias('important_data');
 
--- エイリアスの名前を変更（対象テーブルは変更されません）
+-- Rename alias (target table unchanged)
 RENAME TABLE old_alias TO new_alias;
 
--- 同じテーブルに別のエイリアスを作成
+-- Create another alias to same table
 CREATE TABLE another_alias ENGINE = Alias('important_data');
 
--- エイリアスを1つ削除（対象テーブルと他のエイリアスは変更されません）
+-- Drop one alias (target table and other aliases unchanged)
 DROP TABLE new_alias;
 
-SELECT * FROM another_alias;  -- 引き続き動作します
-SELECT count() FROM important_data;  -- データは保持されており、2を返します
+SELECT * FROM another_alias;  -- Still works
+SELECT count() FROM important_data;  -- Data intact, returns 2
 ```

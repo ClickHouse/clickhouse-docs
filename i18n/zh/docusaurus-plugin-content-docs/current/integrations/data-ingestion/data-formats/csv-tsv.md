@@ -7,13 +7,9 @@ keywords: ['CSV 格式', 'TSV 格式', '逗号分隔值', '制表符分隔值', 
 doc_type: 'guide'
 ---
 
-
-
 # 在 ClickHouse 中处理 CSV 和 TSV 数据 {#working-with-csv-and-tsv-data-in-clickhouse}
 
 ClickHouse 支持从 CSV 导入数据并导出为 CSV。由于 CSV 文件在具体格式上可能有所不同，包括表头行、自定义分隔符以及转义符号，ClickHouse 提供了相应的格式和设置，以高效处理每种情况。
-
-
 
 ## 从 CSV 文件导入数据 {#importing-data-from-a-csv-file}
 
@@ -126,7 +122,6 @@ Joe,Nothing
 Nothing,70
 ```
 
-
 如果我们从这个文件加载数据，ClickHouse 会将 `Nothing` 当作字符串（这是正确的）：
 
 ```sql
@@ -136,8 +131,8 @@ SELECT * FROM file('nulls.csv')
 ```response
 ┌─c1──────┬─c2──────┐
 │ Donald  │ 90      │
-│ Joe     │ 无 │
-│ 无 │ 70      │
+│ Joe     │ Nothing │
+│ Nothing │ 70      │
 └─────────┴─────────┘
 ```
 
@@ -161,7 +156,6 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
-
 ## TSV（制表符分隔）文件 {#tsv-tab-separated-files}
 
 制表符分隔的数据格式是一种常用的数据交换格式。要将 [TSV 文件](assets/data_small.tsv) 中的数据加载到 ClickHouse，需要使用 [TabSeparated](/interfaces/formats/TabSeparated) 格式：
@@ -175,7 +169,6 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ### 原始 TSV {#raw-tsv}
 
 有时，TSV 文件在保存时没有对制表符和换行符进行转义。这种情况下，应使用 [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw) 来处理此类文件。
-
 
 ## 导出为 CSV {#exporting-to-csv}
 
@@ -226,7 +219,7 @@ FORMAT CSVWithNames
 ```
 
 ```response
-返回 36838935 行。用时:1.304 秒。已处理 3684 万行,1.42 GB(2824 万行/秒,1.09 GB/秒)
+36838935 rows in set. Elapsed: 1.304 sec. Processed 36.84 million rows, 1.42 GB (28.24 million rows/s., 1.09 GB/s.)
 ```
 
 请注意，ClickHouse 将 3600 万行保存到一个 CSV 文件中只花了大约 **1** 秒。
@@ -263,7 +256,6 @@ FORMAT CSV
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
 ```
-
 
 ## 针对 CSV 文件的模式推断 {#schema-inference-for-csv-files}
 
@@ -317,15 +309,14 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 ```
 
 ```response
-┌─名称──┬─类型───┬─默认类型─┬─默认表达式─┬─注释─┬─编解码器表达式─┬─TTL表达式─┐
-│ 路径  │ String │              │                    │         │                  │                │
-│ 月份 │ Date   │              │                    │         │                  │                │
-│ 点击数  │ UInt32 │              │                    │         │                  │                │
+┌─name──┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ path  │ String │              │                    │         │                  │                │
+│ month │ Date   │              │                    │         │                  │                │
+│ hits  │ UInt32 │              │                    │         │                  │                │
 └───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
 现在，ClickHouse 会根据（第二行）表头行来确定列类型，而不再依赖猜测。
-
 
 ## 自定义分隔符、分隔标记和转义规则 {#custom-delimiters-separators-and-escaping-rules}
 
@@ -365,7 +356,6 @@ LIMIT 3
 
 我们也可以使用 [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames) 来正确导出和导入表头。要处理更复杂的情况，请查看 [regex and template](templates-regex.md) 格式。
 
-
 ## 处理大型 CSV 文件 {#working-with-large-csv-files}
 
 CSV 文件可能会很大，而 ClickHouse 能高效处理任意大小的文件。大型文件通常是压缩的，ClickHouse 可以直接处理，无需事先解压缩。我们可以在执行插入操作时使用 `COMPRESSION` 子句：
@@ -386,7 +376,6 @@ COMPRESSION 'gzip' FORMAT CSV
 ```
 
 这将生成压缩的 `data_csv.csv.gz` 文件。
-
 
 ## 其他格式 {#other-formats}
 

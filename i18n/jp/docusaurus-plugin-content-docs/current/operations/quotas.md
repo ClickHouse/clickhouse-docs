@@ -24,16 +24,16 @@ doc_type: 'guide'
 クォータを定義している「users.xml」ファイルの該当セクションを見てみましょう。
 
 ```xml
-<!-- クォータ -->
+<!-- Quotas -->
 <quotas>
-    <!-- クォータ名 -->
+    <!-- Quota name. -->
     <default>
-        <!-- 時間間隔に対する制限。異なる制限を持つ複数の間隔を設定できます。 -->
+        <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
         <interval>
-            <!-- 間隔の長さ -->
+            <!-- Length of the interval. -->
             <duration>3600</duration>
 
-            <!-- 無制限。指定された時間間隔のデータを収集するのみ。 -->
+            <!-- Unlimited. Just collect data for the specified time interval. -->
             <queries>0</queries>
             <query_selects>0</query_selects>
             <query_inserts>0</query_inserts>
@@ -50,9 +50,9 @@ doc_type: 'guide'
 
 ```xml
 <statbox>
-    <!-- 期間に対する制限。異なる制限を持つ複数の間隔を設定できます。 -->
+    <!-- Restrictions for a time period. You can set many intervals with different restrictions. -->
     <interval>
-        <!-- 間隔の長さ。 -->
+        <!-- Length of the interval. -->
         <duration>3600</duration>
 
         <queries>1000</queries>
@@ -110,22 +110,21 @@ doc_type: 'guide'
 
 `failed_sequential_authentications` - 連続して発生した認証エラーの合計回数。
 
-
 少なくとも 1 つの時間間隔で制限を超過した場合、どの制限がどの間隔で超過されたか、さらに新しい時間間隔（再びクエリを送信できるようになるタイミング）がいつ開始するかについてのメッセージを含む例外がスローされます。
 
 クォータは「quota key」機能を使用して、複数のキーごとにリソースを独立して集計・報告できます。以下はその例です。
 
 ```xml
-<!-- グローバルレポートデザイナー用 -->
+<!-- For the global reports designer. -->
 <web_global>
-    <!-- keyed – quota_key「key」がクエリパラメータで渡され、
-            クォータは各キー値ごとに個別に追跡されます。
-        例えば、キーとしてユーザー名を渡すことで、
-            クォータはユーザー名ごとに個別にカウントされます。
-        キーの使用は、quota_keyがユーザーではなくプログラムによって送信される場合にのみ有効です。
+    <!-- keyed – The quota_key "key" is passed in the query parameter,
+            and the quota is tracked separately for each key value.
+        For example, you can pass a username as the key,
+            so the quota will be counted separately for each username.
+        Using keys makes sense only if quota_key is transmitted by the program, not by a user.
 
-        <keyed_by_ip />と記述することもでき、その場合IPアドレスがクォータキーとして使用されます。
-        (ただし、ユーザーはIPv6アドレスを比較的容易に変更できる点に留意してください。)
+        You can also write <keyed_by_ip />, so the IP address is used as the quota key.
+        (But keep in mind that users can change the IPv6 address fairly easily.)
     -->
     <keyed />
 ```
@@ -135,7 +134,6 @@ doc_type: 'guide'
 分散クエリ処理では、累積値はリクエスト元サーバーに保存されます。そのため、ユーザーが別のサーバーへ移動した場合、そのサーバーでのクォータはゼロからカウントし直しになります。
 
 サーバーを再起動すると、クォータはリセットされます。
-
 
 ## 関連コンテンツ {#related-content}
 

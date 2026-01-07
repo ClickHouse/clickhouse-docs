@@ -23,7 +23,6 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 `SET allow_database_iceberg = 1;`
 :::
 
-
 ## 收集 OneLake 所需信息 {#gathering-requirements}
 
 在 Microsoft Fabric 中查询数据表之前，你需要收集以下信息：
@@ -43,7 +42,6 @@ Microsoft OneLake 的 lakehouse 支持多种表格式。借助 ClickHouse，你�
 SET allow_database_iceberg=1
 ```
 
-
 ### 连接 OneLake {#connect-onelake}
 
 ```sql
@@ -58,7 +56,6 @@ auth_scope = 'https://storage.azure.com/.default',
 onelake_client_id = '<client_id>',
 onelake_client_secret = '<client_secret>'
 ```
-
 
 ## 使用 ClickHouse 查询 OneLake {#querying-onelake-using-clickhouse}
 
@@ -120,7 +117,6 @@ source_file:           green_tripdata_2017-05.parquet
 
 要查看该表的 DDL：
 
-
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
 
@@ -155,7 +151,6 @@ Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
    └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-
 ## 将数据湖中的数据导入 ClickHouse {#loading-data-from-onelake-into-clickhouse}
 
 如果您需要从 OneLake 向 ClickHouse 导入数据：
@@ -167,10 +162,10 @@ ORDER BY coalesce(VendorID, 0)
 AS SELECT *
 FROM onelake_catalog.`year_2017.green_tripdata_2017`
 
-查询 ID: d15983a6-ef6a-40fe-80d5-19274b9fe328
+Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
-完成。
+Ok.
 
-返回 0 行。耗时:32.570 秒。已处理 1174 万行,275.37 MB(36.036 万行/秒,8.45 MB/秒)。
-峰值内存使用量:1.31 GiB。
+0 rows in set. Elapsed: 32.570 sec. Processed 11.74 million rows, 275.37 MB (360.36 thousand rows/s., 8.45 MB/s.)
+Peak memory usage: 1.31 GiB.
 ```

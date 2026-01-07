@@ -44,7 +44,7 @@
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "3.7.0",
     "@docusaurus/theme-search-algolia": "^3.7.0",
-    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/react": "^3.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-navigation-menu": "^1.2.13",
     "@redocly/cli": "^1.34.0",
@@ -53,7 +53,7 @@
     "docusaurus-plugin-sass": "^0.2.6",
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.27.2",
     "esbuild-loader": "^4.3.0",
     "filesize": "^10.1.6",
     "flexsearch": "^0.7.43",
@@ -75,7 +75,8 @@
     "sass": "^1.89.1",
     "search-insights": "^2.17.3",
     "short-uuid": "^5.2.0",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@argos-ci/cli": "^2.5.5",
@@ -83,14 +84,14 @@
     "@docusaurus/module-type-aliases": "3.8.1",
     "@playwright/test": "^1.52.0",
     "@tailwindcss/postcss": "^4.1.5",
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^19.0.4",
     "@types/styled-jsx": "^3.4.4",
     "cheerio": "^1.0.0",
     "markdownlint-rule-helpers": "^0.29.0",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.6",
     "rsync": "^0.6.1",
-    "tailwindcss": "^4.1.3",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.8.3"
   },
   "browserslist": {

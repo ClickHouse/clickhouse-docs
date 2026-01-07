@@ -23,20 +23,20 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
             <ssl_certificates>
                 <common_name>host.domain.com:example_user</common_name>
                 <common_name>host.domain.com:example_user_dev</common_name>
-                <!-- Дополнительные имена -->
+                <!-- More names -->
             </ssl_certificates>
-            <!-- Прочие настройки -->
+            <!-- Other settings -->
         </user_name_1>
         <user_name_2>
             <ssl_certificates>
                 <subject_alt_name>DNS:host.domain.com</subject_alt_name>
-                <!-- Дополнительные имена -->
+                <!-- More names -->
             </ssl_certificates>
-            <!-- Прочие настройки -->
+            <!-- Other settings -->
         </user_name_2>
         <user_name_3>
             <ssl_certificates>
-                <!-- Поддержка масок -->
+                <!-- Wildcard support -->
                 <subject_alt_name>URI:spiffe://foo.com/*/bar</subject_alt_name>
             </ssl_certificates>
         </user_name_3>

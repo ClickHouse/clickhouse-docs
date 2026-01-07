@@ -86,7 +86,7 @@ FROM foo.randomNumbers
 如果不这样做，当我们尝试从 chDB 连接到数据库时，就会遇到如下错误：
 
 ```text
-ChdbError: 代码：76. DB::Exception: 无法锁定文件 demo.chdb/status。同一目录下已有另一个服务器实例正在运行。(CANNOT_OPEN_FILE)
+ChdbError: Code: 76. DB::Exception: Cannot lock file demo.chdb/status. Another server instance in same directory is already running. (CANNOT_OPEN_FILE)
 ```
 
 ## 连接到 clickhouse-local 数据库 {#connecting-to-a-clickhouse-local-database}
@@ -111,7 +111,7 @@ SELECT quantilesExact(0, 0.5, 0.75, 0.99)(number) AS quants
 FROM foo.randomNumbers
 """, "Vertical")
 
-第 1 行:
+Row 1:
 ──────
 quants: [0,9976599,2147776478,4209286886]
 ```

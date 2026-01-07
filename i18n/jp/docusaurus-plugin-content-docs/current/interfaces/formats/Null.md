@@ -13,8 +13,6 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✗     | ✔      |       |
 
-
-
 ## 説明 {#description}
 
 `Null` フォーマットでは、何も出力されません。  
@@ -24,8 +22,6 @@ doc_type: 'reference'
 :::tip
 `Null` フォーマットは、パフォーマンス測定や性能テストに役立ちます。
 :::
-
-
 
 ## 使用例 {#example-usage}
 
@@ -66,8 +62,7 @@ FORMAT Null
 このクエリはデータを処理しますが、何も出力しません。
 
 ```response
-0行のセット。経過時間: 0.154秒
+0 rows in set. Elapsed: 0.154 sec.
 ```
-
 
 ## フォーマット設定 {#format-settings}

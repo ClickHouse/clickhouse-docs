@@ -11,16 +11,11 @@ import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/ope
 import ExampleSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
 # ローカルディスクへのバックアップ／リストア {#backup-to-a-local-disk}
-
-
 
 ## 構文 {#syntax}
 
 <Syntax/>
-
-
 
 ## ディスク用のバックアップ先を構成する {#configure-backup-destinations-for-disk}
 
@@ -102,7 +97,6 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
   代わりに一度ダウンロードしてからアップロードするため、非常に非効率です。このようなケースでは、
   この用途には `BACKUP ... TO S3(<endpoint>)` 構文の使用を推奨します。
   :::
-
 
 ## ローカルディスクへのバックアップ／リストアの使用例 {#usage-examples}
 
@@ -228,7 +222,6 @@ tar アーカイブに対する機能は zip アーカイブの場合と同様�
 
 テーブルを tar アーカイブとしてバックアップするには、次のようにします。
 
-
 ```sql
 BACKUP TABLE test_db.test_table TO Disk('backups', '1.tar')
 ```
@@ -280,42 +273,42 @@ SETTINGS compression_method='lzma', compression_level=3
   <summary>セットアップ</summary>
 
   ```sql
-  CREATE IF NOT EXISTS test_db;
-         
-  -- パーティション分割テーブルを作成
-  CREATE TABLE test_db.partitioned (
-      id UInt32,
-      data String,
-      partition_key UInt8
-  ) ENGINE = MergeTree()
-  PARTITION BY partition_key
-  ORDER BY id;
+CREATE IF NOT EXISTS test_db;
+       
+-- Create a partitioned table
+CREATE TABLE test_db.partitioned (
+    id UInt32,
+    data String,
+    partition_key UInt8
+) ENGINE = MergeTree()
+PARTITION BY partition_key
+ORDER BY id;
 
-  INSERT INTO test_db.partitioned VALUES
-  (1, 'data1', 1),
-  (2, 'data2', 2),
-  (3, 'data3', 3),
-  (4, 'data4', 4);
+INSERT INTO test_db.partitioned VALUES
+(1, 'data1', 1),
+(2, 'data2', 2),
+(3, 'data3', 3),
+(4, 'data4', 4);
 
-  SELECT count() FROM test_db.partitioned;
+SELECT count() FROM test_db.partitioned;
 
-  SELECT partition_key, count() 
-  FROM test_db.partitioned
-  GROUP BY partition_key
-  ORDER BY partition_key;
-  ```
+SELECT partition_key, count() 
+FROM test_db.partitioned
+GROUP BY partition_key
+ORDER BY partition_key;
+```
 
   ```response
-     ┌─count()─┐
-  1. │       4 │
-     └─────────┘
-     ┌─partition_key─┬─count()─┐
-  1. │             1 │       1 │
-  2. │             2 │       1 │
-  3. │             3 │       1 │
-  4. │             4 │       1 │
-     └───────────────┴─────────┘
-  ```
+   ┌─count()─┐
+1. │       4 │
+   └─────────┘
+   ┌─partition_key─┬─count()─┐
+1. │             1 │       1 │
+2. │             2 │       1 │
+3. │             3 │       1 │
+4. │             4 │       1 │
+   └───────────────┴─────────┘
+```
 </details>
 
 次のコマンドを実行して、パーティション 1 と 4 のバックアップを作成します。

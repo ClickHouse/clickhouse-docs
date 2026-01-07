@@ -25,7 +25,7 @@ import byoc_s3_endpoint from '@site/static/images/cloud/reference/byoc-s3-endpoi
 
 Рекомендуется подготовить отдельную учетную запись AWS для размещения развертывания ClickHouse BYOC, чтобы обеспечить лучшую изоляцию. Однако возможно также использование общей учетной записи и существующего VPC. Подробности см. в разделе *Setup BYOC Infrastructure* ниже.
 
-Имея эту учетную запись и первичный адрес электронной почты администратора организации, вы можете связаться со службой поддержки ClickHouse.
+Имея эту учетную запись и адрес электронной почты первоначального администратора организации, вы можете связаться со службой поддержки ClickHouse.
 
 ### Инициализация настройки BYOC {#initialize-byoc-setup}
 
@@ -46,7 +46,8 @@ module "clickhouse_onboarding" {
 }
 ```
 
-{/* TODO: Добавить скриншот для оставшейся части онбординга, как только будет реализован онбординг в режиме самообслуживания. */ }
+{/* TODO: Добавить скриншот для оставшихся шагов онбординга после реализации онбординга в режиме самообслуживания. */ }
+
 
 ### Настройка инфраструктуры BYOC {#setup-byoc-infrastructure}
 
@@ -62,9 +63,10 @@ module "clickhouse_onboarding" {
 
 **Настройка существующей VPC**
 
-1. Выделите как минимум 3 приватные подсети в 3 разных зонах доступности для использования ClickHouse Cloud.
-2. Убедитесь, что у каждой подсети минимальный диапазон CIDR `/23` (например, 10.0.0.0/23), чтобы обеспечить достаточное количество IP-адресов для развертывания ClickHouse.
-3. Добавьте тег `kubernetes.io/role/internal-elb=1` к каждой подсети, чтобы обеспечить корректную конфигурацию балансировщика нагрузки.
+1. Добавьте к VPC тег `clickhouse-byoc="true"`.
+2. Выделите как минимум 3 приватные подсети в 3 разных зонах доступности для использования ClickHouse Cloud.
+3. Убедитесь, что у каждой подсети минимальный диапазон CIDR `/23` (например, 10.0.0.0/23), чтобы обеспечить достаточное количество IP-адресов для развертывания ClickHouse.
+4. Добавьте теги `kubernetes.io/role/internal-elb=1` и `clickhouse-byoc="true"` к каждой подсети, чтобы обеспечить корректную конфигурацию балансировщика нагрузки.
 
 <br />
 
@@ -83,18 +85,17 @@ module "clickhouse_onboarding" {
 
 <br />
 
-
-<Image img={byoc_s3_endpoint} size="lg" alt="BYOC S3 Endpint" background='black'/>
+<Image img={byoc_s3_endpoint} size="lg" alt="Endpoint S3 для BYOC" background="black" />
 
 <br />
 
-**Свяжитесь со службой поддержки ClickHouse**  
-Создайте запрос в поддержку со следующей информацией:
+**Связаться со службой поддержки ClickHouse**  
+Создайте обращение в службу поддержки со следующей информацией:
 
-* ID вашего AWS-аккаунта
+* ID вашей учетной записи AWS
 * Регион AWS, в котором вы хотите развернуть сервис
-* ID вашего VPC
-* ID частных подсетей, которые вы выделили для ClickHouse
+* ID вашей VPC
+* ID приватных подсетей, которые вы выделили для ClickHouse
 * Зоны доступности, в которых находятся эти подсети
 
 ### Необязательно: настройка VPC peering {#optional-setup-vpc-peering}
@@ -102,14 +103,16 @@ module "clickhouse_onboarding" {
 Чтобы создать или удалить VPC peering для ClickHouse BYOC, выполните следующие шаги:
 
 #### Шаг 1: Включите частный балансировщик нагрузки для ClickHouse BYOC {#step-1-enable-private-load-balancer-for-clickhouse-byoc}
+
 Свяжитесь со службой поддержки ClickHouse, чтобы включить Private Load Balancer.
 
 #### Шаг 2 Создайте peering-подключение {#step-2-create-a-peering-connection}
+
 1. Перейдите в VPC Dashboard в аккаунте ClickHouse BYOC.
 2. Выберите Peering Connections.
 3. Нажмите Create Peering Connection.
-4. Установите VPC Requester в ID VPC ClickHouse.
-5. Установите VPC Accepter в целевой VPC ID. (При необходимости выберите другой аккаунт.)
+4. Установите VPC Requester на ID VPC ClickHouse.
+5. Установите VPC Accepter на ID целевого VPC. (При необходимости выберите другой аккаунт.)
 6. Нажмите Create Peering Connection.
 
 <br />
@@ -119,6 +122,7 @@ module "clickhouse_onboarding" {
 <br />
 
 #### Шаг 3 Примите запрос на peering-подключение {#step-3-accept-the-peering-connection-request}
+
 Перейдите в аккаунт, с которым настраивается peering, на странице (VPC -> Peering connections -> Actions -> Accept request) клиент может одобрить этот запрос на VPC peering.
 
 <br />
@@ -128,7 +132,9 @@ module "clickhouse_onboarding" {
 <br />
 
 #### Шаг 4 Добавьте пункт назначения в таблицы маршрутизации VPC ClickHouse {#step-4-add-destination-to-clickhouse-vpc-route-tables}
+
 В аккаунте ClickHouse BYOC:
+
 1. Выберите Route Tables в VPC Dashboard.
 2. Найдите ClickHouse VPC ID. Отредактируйте каждую таблицу маршрутизации, привязанную к частным подсетям.
 3. Нажмите кнопку Edit на вкладке Routes.
@@ -143,7 +149,9 @@ module "clickhouse_onboarding" {
 <br />
 
 #### Шаг 5 Добавьте пункт назначения в таблицы маршрутизации целевого VPC {#step-5-add-destination-to-the-target-vpc-route-tables}
+
 В AWS-аккаунте, с которым настроен peering:
+
 1. Выберите Route Tables в VPC Dashboard.
 2. Найдите целевой VPC ID.
 3. Нажмите кнопку Edit на вкладке Routes.
@@ -158,18 +166,19 @@ module "clickhouse_onboarding" {
 <br />
 
 #### Шаг 6: Отредактируйте security group, чтобы разрешить доступ из peered VPC {#step-6-edit-security-group-to-allow-peered-vpc-access}
+
 В аккаунте ClickHouse BYOC вам нужно обновить настройки группы безопасности (Security Group), чтобы разрешить трафик из вашего peered VPC. Пожалуйста, свяжитесь со службой поддержки ClickHouse, чтобы запросить добавление правил входящего трафика (inbound rules), включающих CIDR-диапазоны вашего peered VPC.
 
 ---
+
 Теперь сервис ClickHouse должен быть доступен из peered VPC.
 
 Для приватного доступа к ClickHouse создаются частный балансировщик нагрузки и приватный endpoint для безопасного подключения из peered VPC пользователя. Приватный endpoint следует формату публичного endpoint с суффиксом `-private`. Например:
+
 - **Публичный endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 - **Приватный endpoint**: `h5ju65kv87-private.mhp0y4dmph.us-west-2.aws.byoc.clickhouse.cloud`
 
 Необязательно: после проверки работоспособности peering вы можете запросить отключение публичного балансировщика нагрузки для ClickHouse BYOC.
-
-
 
 ## Процесс обновления {#upgrade-process}
 
@@ -180,8 +189,6 @@ module "clickhouse_onboarding" {
 :::note
 Окна обслуживания не распространяются на устранение уязвимостей и исправления, связанные с безопасностью. Они выполняются как внеплановые обновления; мы заблаговременно согласуем подходящее время, чтобы минимизировать влияние на эксплуатацию.
 :::
-
-
 
 ## Роли IAM для CloudFormation {#cloudformation-iam-roles}
 
@@ -200,6 +207,7 @@ module "clickhouse_onboarding" {
 Помимо `ClickHouseManagementRole`, создаваемой через CloudFormation, контроллер создаст несколько дополнительных ролей.
 
 Эти роли используются приложениями, работающими внутри кластера EKS заказчика:
+
 - **State Exporter Role**
   - Компонент ClickHouse, который передаёт информацию о состоянии сервиса в ClickHouse Cloud.
   - Требует разрешения на запись в очередь SQS, принадлежащую ClickHouse Cloud.
@@ -216,8 +224,6 @@ module "clickhouse_onboarding" {
 Роли **K8s-control-plane** и **k8s-worker** предназначены для использования сервисами AWS EKS.
 
 Наконец, **`data-plane-mgmt`** позволяет компоненту Control Plane ClickHouse Cloud синхронизировать необходимые пользовательские ресурсы (Custom Resources), такие как `ClickHouseCluster` и Istio Virtual Service/Gateway.
-
-
 
 ## Границы сети {#network-boundaries}
 
@@ -240,15 +246,15 @@ module "clickhouse_onboarding" {
 
 *Входящий, публичный (может быть приватным)*
 
-Инженерам ClickHouse Cloud требуется доступ для устранения неполадок через Tailscale. Им предоставляется just-in-time аутентификация на основе сертификатов для развертываний BYOC.
+Инженерам ClickHouse Cloud требуется доступ для устранения неполадок через Tailscale. Им предоставляется just-in-time аутентификация на основе сертификатов для BYOC‑развертываний.
 
 ### Сборщик биллинга {#billing-scraper}
 
 *Исходящий, приватный*
 
-Сборщик биллинга (Billing scraper) собирает биллинговые данные из ClickHouse и отправляет их в S3‑бакет, принадлежащий ClickHouse Cloud.
+Сборщик биллинга (Billing scraper) собирает данные биллинга из ClickHouse и отправляет их в S3‑бакет, принадлежащий ClickHouse Cloud.
 
-Он запускается как вспомогательный контейнер (sidecar) рядом с контейнером сервера ClickHouse, периодически собирая метрики CPU и памяти. Запросы внутри одного региона маршрутизируются через VPC gateway service endpoints.
+Он запускается как вспомогательный контейнер (sidecar) рядом с контейнером сервера ClickHouse и периодически собирает метрики CPU и памяти. Запросы внутри одного региона маршрутизируются через сервисные endpoint'ы шлюза VPC (VPC gateway service endpoints).
 
 ### Оповещения {#alerts}
 

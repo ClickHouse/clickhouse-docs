@@ -21,12 +21,9 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
 # Postgres から ClickHouse へのデータ取り込み（CDC を使用） {#ingesting-data-from-postgres-to-clickhouse-using-cdc}
 
 ClickPipes を使用して、ソースの Postgres データベースから ClickHouse Cloud にデータを取り込むことができます。ソースの Postgres データベースは、オンプレミス環境だけでなく、Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase などを含む各種クラウドサービス上にホストすることもできます。
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -57,8 +54,6 @@ PgBouncer、RDS Proxy、Supabase Pooler などの Postgres プロキシは、CDC
 :::
 
 ソース Postgres データベースのセットアップが完了したら、ClickPipe の作成に進みます。
-
-
 
 ## ClickPipe の作成 {#creating-your-clickpipe}
 
@@ -137,8 +132,6 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 
    <Image img={select_destination_db} alt="宛先データベースの選択" size="lg" border/>
 
-
-
 7. ソースの Postgres データベースから、レプリケーションしたいテーブルを選択できます。テーブルを選択する際、宛先の ClickHouse データベース側でテーブル名を変更したり、特定のカラムを除外したりすることも可能です。
 
    :::warning
@@ -150,8 +143,6 @@ ClickPipes が SSH トンネルを確立できるように、SSH バスティオ
 8. 権限のドロップダウンから "Full access" ロールを選択し、"Complete Setup" をクリックします。
 
    <Image img={ch_permissions} alt="権限の確認" size="lg" border/>
-
-
 
 ## 次のステップ {#whats-next}
 

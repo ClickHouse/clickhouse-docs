@@ -7,13 +7,9 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-
-
 # LowCardinality(T) {#lowcardinalityt}
 
 将其他数据类型的内部表示转换为字典编码。
-
-
 
 ## 语法 {#syntax}
 
@@ -33,8 +29,6 @@ LowCardinality(data_type)
 使用 `LowCardinality` 数据类型的效率取决于数据的多样性。如果字典包含少于 10,000 个不同取值，那么在大多数情况下，ClickHouse 在数据读取和存储方面会表现出更高的效率。如果字典包含超过 100,000 个不同取值，那么与使用普通数据类型相比，ClickHouse 的性能可能更差。
 
 在处理字符串时，可以考虑使用 `LowCardinality` 来替代 [Enum](../../sql-reference/data-types/enum.md)。`LowCardinality` 在使用上提供了更高的灵活性，并且通常可以达到同等或更高的效率。
-
-
 
 ## 示例 {#example}
 
@@ -63,9 +57,7 @@ ORDER BY id
 
 函数：
 
-- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#tolowcardinality)
-
-
+- [toLowCardinality](../../sql-reference/functions/type-conversion-functions.md#toLowCardinality)
 
 ## 相关内容 {#related-content}
 

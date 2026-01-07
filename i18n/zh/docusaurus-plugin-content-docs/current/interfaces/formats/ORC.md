@@ -13,13 +13,9 @@ doc_type: 'reference'
 |-------|--------|-------|
 | ✔     | ✔      |       |
 
-
-
 ## 描述 {#description}
 
 [Apache ORC](https://orc.apache.org/) 是一种列式存储格式，在 [Hadoop](https://hadoop.apache.org/) 生态系统中被广泛使用。
-
-
 
 ## 数据类型匹配 {#data-types-matching-orc}
 
@@ -48,9 +44,7 @@ doc_type: 'reference'
 
 - 其他类型不受支持。
 - 数组可以嵌套，并且其参数可以是 `Nullable` 类型。`Tuple` 和 `Map` 类型也可以嵌套。
-- ClickHouse 表列的数据类型不必与对应的 ORC 数据字段完全一致。在插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#cast)为为 ClickHouse 表列设置的数据类型。
-
-
+- ClickHouse 表列的数据类型不必与对应的 ORC 数据字段完全一致。在插入数据时，ClickHouse 会根据上表解析数据类型，然后将数据[转换](/sql-reference/functions/type-conversion-functions#CAST)为 ClickHouse 表列设置的数据类型。
 
 ## 示例用法 {#example-usage}
 
@@ -85,6 +79,7 @@ doc_type: 'reference'
 ```sql
 INSERT INTO football FROM INFILE 'football.orc' FORMAT ORC;
 ```
+
 
 ### 读取数据 {#reading-data}
 

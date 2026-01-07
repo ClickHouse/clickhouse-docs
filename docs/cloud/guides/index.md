@@ -28,22 +28,24 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Cloud IP addresses](/manage/data-sources/cloud-endpoints-api) | This page documents the Cloud Endpoints API security features within ClickHouse. It details how to secure your ClickHouse deployments by managing access through authentication and authorization mechanisms. |
 | [Common access management queries](/cloud/security/common-access-management-queries) | This article shows the basics of defining SQL users and roles and applying those privileges and permissions to databases, tables, rows, and columns. |
 | [Configure backup schedules](/cloud/manage/backups/configurable-backups) | Guide showing how to configure backups |
-| [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how users can review the cloud audit log |
+| [Console audit log](/cloud/security/audit-logging/console-audit-log) | This page describes how you can review the cloud audit log |
 | [Data encryption](/cloud/security/cmek) | Learn more about data encryption in ClickHouse Cloud |
 | [Data masking in ClickHouse](/cloud/guides/data-masking) | A guide to data masking in ClickHouse |
-| [Database audit log](/cloud/security/audit-logging/database-audit-log) | This page describes how users can review the database audit log |
+| [Database audit log](/cloud/security/audit-logging/database-audit-log) | This page describes how you can review the database audit log |
 | [Export Backups to your Own Cloud Account](/cloud/manage/backups/export-backups-to-own-cloud-account) | Describes how to export backups to your own Cloud account |
 | [Gather your connection details](/cloud/guides/sql-console/gather-connection-details) | Gather your connection details |
 | [GCP private service connect](/manage/security/gcp-private-service-connect) | This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists. |
 | [HIPAA onboarding](/cloud/security/compliance/hipaa-onboarding) | Learn more about how to onboard to HIPAA compliant services |
 | [Manage cloud users](/cloud/security/manage-cloud-users) | This page describes how administrators can add users, manage assignments, and remove users |
 | [Manage database users](/cloud/security/manage-database-users) | This page describes how administrators can add database users, manage assignments, and remove database users |
-| [Manage my account](/cloud/security/manage-my-account) | This page describes how users can accept invitations, manage MFA settings, and reset passwords |
+| [Manage my account](/cloud/security/manage-my-account) | This page describes how you can accept invitations, manage MFA settings, and reset passwords |
 | [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Guide showing how to manage SQL console role assignments |
+| [Migrating from CMEK v1 to v2](/cloud/security/cmek-migration) | Migration instructions to move from legacy CMEK to version 2 |
 | [Multi tenancy](/cloud/bestpractices/multi-tenancy) | Best practices to implement multi tenancy |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
 | [Query API Endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
+| [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |
 | [Usage limits](/cloud/bestpractices/usage-limits) | Describes the recommended usage limits in ClickHouse Cloud |

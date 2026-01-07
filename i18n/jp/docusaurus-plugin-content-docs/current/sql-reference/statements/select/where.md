@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['WHERE']
 ---
 
-
-
 # WHERE 句 {#where-clause}
 
 `WHERE` 句は、`SELECT` の [`FROM`](../../../sql-reference/statements/select/from.md) 句から得られるデータをフィルタリングするために使用します。
@@ -26,8 +24,6 @@ PREWHERE は、フィルタリングをより効率的に適用するための�
 `PREWHERE` 句が明示的に指定されていなくても、デフォルトで有効になっています。
 :::
 
-
-
 ## `NULL` の判定 {#testing-for-null}
 
 値が[`NULL`](/sql-reference/syntax#null)かどうかを判定する必要がある場合は、次を使用します。
@@ -35,8 +31,6 @@ PREWHERE は、フィルタリングをより効率的に適用するための�
 - [`IS NOT NULL`](/sql-reference/operators#is_not_null) または [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 `NULL` を含む式は、上記のように明示的に判定しない限り、真になることはありません。
-
-
 
 ## 論理演算子を使用したデータのフィルタリング {#filtering-data-with-logical-operators}
 
@@ -47,14 +41,10 @@ PREWHERE は、フィルタリングをより効率的に適用するための�
 - [`or()`](/sql-reference/functions/logical-functions#or) または `OR`
 - [`xor()`](/sql-reference/functions/logical-functions#xor)
 
-
-
 ## 条件としての UInt8 列の使用 {#using-uint8-columns-as-a-condition}
 
 ClickHouse では、`UInt8` 列をブール条件として直接使用でき、`0` は `false`、それ以外の非ゼロ値（一般的には `1`）は `true` を表します。
 その例については、[下記](#example-uint8-column-as-condition)のセクションで説明します。
-
-
 
 ## 比較演算子の使用 {#using-comparison-operators}
 
@@ -76,8 +66,6 @@ ClickHouse では、`UInt8` 列をブール条件として直接使用でき、`
 | `a BETWEEN b AND c` | `a >= b AND a <= c` | 範囲チェック（両端を含む） | `price BETWEEN 100 AND 500` |
 | `a NOT BETWEEN b AND c` | `a < b OR a > c` | 範囲外のチェック | `price NOT BETWEEN 100 AND 500` |
 
-
-
 ## パターンマッチングと条件式 {#pattern-matching-and-conditional-expressions}
 
 比較演算子に加えて、`WHERE` 句ではパターンマッチングと条件式も使用できます。
@@ -91,8 +79,6 @@ ClickHouse では、`UInt8` 列をブール条件として直接使用でき、`
 | `CASE`      | `CASE WHEN ... THEN ... END`   | 該当なし           | 高速           | SQL 標準の条件ロジック                   |
 
 使用例については「[パターンマッチングと条件式](#examples-pattern-matching-and-conditional-expressions)」を参照してください。
-
-
 
 ## リテラル、カラム、サブクエリを用いた式 {#expressions-with-literals-columns-subqueries}
 
@@ -114,21 +100,18 @@ WHERE price > 100 AND category = 'Electronics'
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
 -- リテラル + カラム + サブクエリ
-WHERE category = 'Electronics' 
+WHERE category = 'Electronics'
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
-```
-
 
 -- 3 つすべてに論理演算子を使用
-WHERE (price &gt; 100 OR category IN (SELECT category FROM featured))
-AND in&#95;stock = true
-AND name LIKE &#39;%Special%&#39;
+WHERE (price > 100 OR category IN (SELECT category FROM featured))
+  AND in_stock = true
+  AND name LIKE '%Special%'
+```
+## 例 {#examples}
 
-````
-## 例             {#examples}
-
-### `NULL` のテスト                              {#examples-testing-for-null}
+### `NULL` のテスト {#examples-testing-for-null}
 
 `NULL` 値を含むクエリ:
 
@@ -138,7 +121,7 @@ INSERT INTO t_null VALUES (1, NULL), (2, 3);
 
 SELECT * FROM t_null WHERE y IS NULL;
 SELECT * FROM t_null WHERE y != 0;
-````
+```
 
 ```response
 ┌─x─┬────y─┐
@@ -239,7 +222,6 @@ WHERE (category = 'Electronics' OR category = 'Furniture')
   AND in_stock = true
   AND price < 400;
 ```
-
 
 ```response
    ┌─id─┬─name────┬─price─┬─category────┬─in_stock─┐
@@ -365,7 +347,6 @@ WHERE category = 'Electronics' AND in_stock = true;
 以下の例では、上記の[例](#example-filtering-with-logical-operators)と同じテーブルとデータを使用します。説明を簡潔にするため、結果は省略します。
 
 #### LIKE の例 {#like-examples}
-
 
 ```sql
 -- 名前に 'o' を含む製品を検索

@@ -39,10 +39,7 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
-
 # Интеграция EMQX с ClickHouse {#integrating-emqx-with-clickhouse}
-
-
 
 ## Подключение EMQX {#connecting-emqx}
 
@@ -60,8 +57,6 @@ import Image from '@theme/IdealImage';
 * Вы используете EMQX или EMQX Cloud в качестве высокопроизводительного движка обработки сообщений в реальном времени, обеспечивающего потоковую обработку событий для IoT‑устройств в крупном масштабе.
 * Вы подготовили экземпляр ClickHouse Cloud для долговременного хранения данных устройств.
 * Мы используем [MQTT X](https://mqttx.app/) как тестовый MQTT‑клиент для подключения к развертыванию EMQX Cloud и публикации MQTT‑данных. Также подойдут и другие способы подключения к брокеру MQTT.
-
-
 
 ## Получение сервиса ClickHouse Cloud {#get-your-clickhouse-cloudservice}
 
@@ -101,7 +96,6 @@ PRIMARY KEY (client_id, timestamp)
 ```
 
 <Image img={clickhouse_cloud_6} size="lg" border alt="Выполнение SQL-запроса на создание базы данных и таблицы в ClickHouse Cloud" />
-
 
 ## Создание MQTT-сервиса в EMQX Cloud {#create-an-mqtt-service-on-emqx-cloud}
 
@@ -150,8 +144,6 @@ EMQX Cloud по умолчанию не допускает анонимные п
 <Image img={emqx_cloud_nat_gateway} size="lg" border alt="Панель конфигурации NAT Gateway в EMQX Cloud" />
 
 После его создания вы найдёте публичный IP-адрес в этом виджете. Обратите внимание, что если вы выбрали «Connect from a specific location» при настройке ClickHouse Cloud, вам нужно будет добавить этот IP-адрес в список разрешённых IP-адресов.
-
-
 
 ## Интеграция EMQX Cloud с ClickHouse Cloud {#integration-emqx-cloud-with-clickhouse-cloud}
 
@@ -232,7 +224,6 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 <Image img={data_integration_details} size="md" border alt="Сведения о правиле интеграции данных EMQX Cloud, показывающие сводное описание конфигурации" />
 
 Все MQTT-сообщения, отправленные в топик `temp_hum/emqx`, будут сохранены в вашей базе данных ClickHouse Cloud.
-
 
 ## Сохранение данных в ClickHouse {#saving-data-into-clickhouse}
 

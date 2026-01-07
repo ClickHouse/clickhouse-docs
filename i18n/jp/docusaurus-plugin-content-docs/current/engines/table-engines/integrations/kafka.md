@@ -10,7 +10,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # Kafka テーブルエンジン {#kafka-table-engine}
 
 :::tip
@@ -65,7 +64,6 @@ SETTINGS
 * `kafka_format` — メッセージ形式。SQL の `FORMAT` 関数と同じ指定方法を使用し、`JSONEachRow` などを指定します。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
 
 オプションパラメータ：
-
 
 - `kafka_security_protocol` - ブローカーとの通信に使用するプロトコル。指定可能な値: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`。
 - `kafka_sasl_mechanism` - 認証に使用する SASL メカニズム。指定可能な値: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`。
@@ -136,7 +134,6 @@ Examples:
 Kafka テーブルエンジンは、[default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。default value を持つカラムが必要な場合は、materialized view 側で追加できます（下記参照）。
 :::
 
-
 ## 説明 {#description}
 
 配信されたメッセージは自動的に追跡されるため、グループ内の各メッセージは 1 回だけカウントされます。データを 2 回取得したい場合は、別のグループ名でテーブルのコピーを作成してください。
@@ -187,14 +184,13 @@ Kafka テーブルエンジンは、[default value](/sql-reference/statements/cr
 
 `ALTER` を使用してターゲットテーブルを変更する場合は、ターゲットテーブルとビューからのデータとの不整合を避けるため、マテリアライズドビューを無効化することを推奨します。
 
-
 ## 設定 {#configuration}
 
 GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定ファイルを用いた詳細な設定をサポートしています。使用できる設定キーは 2 種類あり、グローバル（`<kafka>` の下）とトピックレベル（`<kafka><kafka_topic>` の下）です。まずグローバル設定が適用され、その後にトピックレベルの設定（存在する場合）が適用されます。
 
 ```xml
   <kafka>
-    <!-- Kafkaエンジンタイプの全テーブルに対するグローバル設定オプション -->
+    <!-- Global configuration options for all tables of Kafka engine type -->
     <debug>cgrp</debug>
     <statistics_interval_ms>3000</statistics_interval_ms>
 
@@ -203,7 +199,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
         <statistics_interval_ms>4000</statistics_interval_ms>
     </kafka_topic>
 
-    <!-- コンシューマー設定 -->
+    <!-- Settings for consumer -->
     <consumer>
         <auto_offset_reset>smallest</auto_offset_reset>
         <kafka_topic>
@@ -217,7 +213,7 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
         </kafka_topic>
     </consumer>
 
-    <!-- プロデューサー設定 -->
+    <!-- Settings for producer -->
     <producer>
         <kafka_topic>
             <name>logs</name>
@@ -234,7 +230,6 @@ GraphiteMergeTree と同様に、Kafka エンジンは ClickHouse の設定フ�
 
 利用可能な設定オプションの一覧については、[librdkafka の configuration reference](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) を参照してください。ClickHouse の設定では、ドットの代わりにアンダースコア（`_`）を使用します。たとえば、`check.crcs=true` は `<check_crcs>true</check_crcs>` に対応します。
 
-
 ### Kerberos サポート {#kafka-kerberos-support}
 
 Kerberos 対応の Kafka を扱うには、`security_protocol` の子要素として `sasl_plaintext` を追加します。Kerberos のチケット授与チケット (TGT) が OS の機能によって取得・キャッシュされていれば十分です。
@@ -243,14 +238,13 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理
 例:
 
 ```xml
-<!-- Kerberos対応Kafka -->
+<!-- Kerberos-aware Kafka -->
 <kafka>
   <security_protocol>SASL_PLAINTEXT</security_protocol>
   <sasl_kerberos_keytab>/home/kafkauser/kafkauser.keytab</sasl_kerberos_keytab>
   <sasl_kerberos_principal>kafkauser/kafkahost@EXAMPLE.COM</sasl_kerberos_principal>
 </kafka>
 ```
-
 
 ## 仮想カラム {#virtual-columns}
 
@@ -299,7 +293,6 @@ SETTINGS
   kafka_replica_name = '{replica}'
 SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 ```
-
 
 ### 既知の制限事項 {#known-limitations}
 

@@ -10,8 +10,6 @@ doc_type: 'reference'
 |-------|--------|------------------------------------------------|
 |     ✔    |     ✔     | `TSVWithNamesAndTypes`, `RawWithNamesAndTypes` |
 
-
-
 ## 描述 {#description}
 
 与 [`TabSeparated`](./TabSeparated.md) 格式的区别在于：第一行写入列名，第二行写入列类型。
@@ -23,8 +21,6 @@ doc_type: 'reference'
 - 如果将 [`input_format_with_types_use_header`](../../../operations/settings/settings-formats.md/#input_format_with_types_use_header) 设置为 `1`，  
 则会将输入数据中的类型与表中对应列的类型进行比较。否则，第二行将被跳过。
 :::
-
-
 
 ## 使用示例 {#example-usage}
 
@@ -72,7 +68,6 @@ FORMAT TabSeparatedWithNamesAndTypes
 
 输出将采用制表符分隔的格式，并包含两行表头，分别表示列名和列类型：
 
-
 ```tsv
 date    season  home_team       away_team       home_team_goals away_team_goals
 Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
@@ -94,6 +89,5 @@ Date    Int16   LowCardinality(String)  LowCardinality(String)  Int8    Int8
 2022-05-07      2021    Stevenage Borough       Salford City    4       2
 2022-05-07      2021    Walsall Swindon Town    0       3
 ```
-
 
 ## 格式设置 {#format-settings}

@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
 # 厳密ベクトル検索と近似ベクトル検索 {#exact-and-approximate-vector-search}
 
 多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、または略してベクトル検索と呼ばれます。
@@ -24,7 +23,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 句は任意です
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -34,7 +33,6 @@ LIMIT <N>
 `&lt;DistanceFunction&gt;` は、参照点と格納されているすべての点との距離を計算します。
 この処理には、利用可能な任意の [distance function](/sql-reference/functions/distance-functions) を使用できます。
 `&lt;N&gt;` は、返すべき近傍点の数を指定します。
-
 
 ## 厳密なベクトル検索 {#exact-nearest-neighbor-search}
 
@@ -65,7 +63,6 @@ LIMIT 3;
 3. │  8 │ [0,2.2] │
    └────┴─────────┘
 ```
-
 
 ## 近似ベクトル検索 {#approximate-nearest-neighbor-search}
 
@@ -146,7 +143,6 @@ ORDER BY [...]
 すべての HNSW 固有パラメータのデフォルト値は、ほとんどのユースケースで良好に機能します。
 したがって、HNSW 固有パラメータのカスタマイズは推奨しません。
 
-
 さらなる制限があります:
 
 * ベクター類似度インデックスは、[Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) 型の列に対してのみ作成できます。`Array(Nullable(Float32))` や `Array(LowCardinality(Float32))` のような nullable や low-cardinality の浮動小数点数配列は使用できません。
@@ -164,13 +160,13 @@ ORDER BY [...]
 テーブル内のベクター列のストレージ使用量（非圧縮）:
 
 ```text
-ストレージ消費量 = ベクトル数 × 次元数 × カラムデータ型のサイズ
+Storage consumption = Number of vectors * Dimension * Size of column data type
 ```
 
 [dbpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
 
 ```text
-ストレージ消費量 = 100万 × 1536 × 4（Float32の場合）= 6.1 GB
+Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
 ベクトル類似度インデックスで検索を行うには、ディスクから主メモリに完全に読み込まれている必要があります。
@@ -179,19 +175,19 @@ ORDER BY [...]
 ベクトルインデックスをロードする際に必要なメモリ使用量:
 
 ```text
-インデックス内のベクトル用メモリ (mv) = ベクトル数 * 次元数 * 量子化データ型のサイズ
-インメモリグラフ用メモリ (mg) = ベクトル数 * hnsw_max_connections_per_layer * ノードIDあたりのバイト数 (= 4) * レイヤーノード繰り返し係数 (= 2)
+Memory for vectors in the index (mv) = Number of vectors * Dimension * Size of quantized data type
+Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_layer * Bytes_per_node_id (= 4) * Layer_node_repetition_factor (= 2)
 
-メモリ消費量: mv + mg
+Memory consumption: mv + mg
 ```
 
 [DBpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例:
 
 ```text
-インデックス内のベクトル用メモリ (mv) = 100万 × 1536 × 2 (BFloat16の場合) = 3072 MB
-インメモリグラフ用メモリ (mg) = 100万 × 64 × 2 × 4 = 512 MB
+Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
+Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 
-メモリ消費量 = 3072 + 512 = 3584 MB
+Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 上記の式には、事前割り当てバッファやキャッシュなど、ベクトル類似性インデックスがランタイムのデータ構造を割り当てるために必要となる追加メモリは含まれていません。
@@ -208,7 +204,7 @@ ORDER BY [...]
 WITH [...] AS reference_vector
 SELECT [...]
 FROM table
-WHERE [...] -- WHERE 句は任意
+WHERE [...] -- a WHERE clause is optional
 ORDER BY <DistanceFunction>(vectors, reference_vector)
 LIMIT <N>
 ```
@@ -219,7 +215,6 @@ SELECT クエリ内の距離関数がインデックス定義で指定されて�
 上級ユーザーは、検索時の候補リストのサイズを調整するために、[hnsw&#95;candidate&#95;list&#95;size&#95;for&#95;search](../../../operations/settings/settings.md#hnsw_candidate_list_size_for_search)（HNSW のハイパーパラメータ「ef&#95;search」としても知られる）に任意の値を設定できます（例: `SELECT [...] SETTINGS hnsw_candidate_list_size_for_search = <value>`）。
 この設定のデフォルト値である 256 は、ほとんどのユースケースで良好に機能します。
 この値を大きくすると精度は向上しますが、その分パフォーマンスが低下します。
-
 
 クエリでベクター類似性インデックスを使用する場合、ClickHouse は SELECT クエリで指定された LIMIT `<N>` が妥当な範囲内かどうかをチェックします。
 より具体的には、`<N>` が設定値 [max&#95;limit&#95;for&#95;vector&#95;search&#95;queries](../../../operations/settings/settings.md#max_limit_for_vector_search_queries)（デフォルト値は 100）より大きい場合はエラーが返されます。
@@ -242,10 +237,10 @@ LIMIT 10;
 
 ```result
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (プロジェクト名)                                                                      │
- 2. │   Limit (予備LIMIT (OFFSETなし))                                                    │
- 3. │     Sorting (ORDER BY用のソート)                                                              │
- 4. │       Expression ((ORDER BY前 + (射影 + 列名を列識別子に変更))) │
+ 1. │ Expression (Project names)                                                                      │
+ 2. │   Limit (preliminary LIMIT (without OFFSET))                                                    │
+ 3. │     Sorting (Sorting for ORDER BY)                                                              │
+ 4. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers))) │
  5. │         ReadFromMergeTree (default.tab)                                                         │
  6. │         Indexes:                                                                                │
  7. │           PrimaryKey                                                                            │
@@ -308,7 +303,6 @@ ClickHouse は、2025 年のパーティション以外をすべてプルーニ�
 
 追加のフィルタ条件がインデックス（PRIMARY KEY インデックス、スキッピングインデックス）を使って評価できない場合、ClickHouse はポストフィルタリングを適用します。
 
-
 *追加のフィルターはプライマリキーインデックスを用いて評価できる*
 
 追加のフィルター条件が [プライマリキー](mergetree.md#primary-key) を用いて評価可能な場合（すなわち、プライマリキーのプレフィックスを構成している場合）、かつ
@@ -333,7 +327,7 @@ ClickHouse は、2025 年のパーティション以外をすべてプルーニ�
 SELECT bookid, author, title
 FROM books
 WHERE price < 2.00
-ORDER BY cosineDistance(book_vector, getEmbedding('古代アジアの帝国に関する書籍'))
+ORDER BY cosineDistance(book_vector, getEmbedding('Books on ancient Asian empires'))
 LIMIT 10
 ```
 
@@ -371,7 +365,6 @@ ClickHouse のスキップインデックスは一般的にグラニュールレ
 概要としては、ClickHouse が最も類似したベクターとその距離を仮想カラム `_distances` として利用可能にします。
 これを確認するには、`EXPLAIN header = 1` を付けてベクター検索クエリを実行します。
 
-
 ```sql
 EXPLAIN header = 1
 WITH [0., 2.] AS reference_vec
@@ -386,15 +379,15 @@ SETTINGS vector_search_with_rescoring = 0
 Query id: a2a9d0c8-a525-45c1-96ca-c5a11fa66f47
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression (名前の射影)                                                                              │
+ 1. │ Expression (Project names)                                                                              │
  2. │ Header: id Int32                                                                                        │
- 3. │   Limit (予備的LIMIT(OFFSETなし))                                                            │
+ 3. │   Limit (preliminary LIMIT (without OFFSET))                                                            │
  4. │   Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64     │
  5. │           __table1.id Int32                                                                             │
- 6. │     Sorting (ORDER BYのソート)                                                                      │
+ 6. │     Sorting (Sorting for ORDER BY)                                                                      │
  7. │     Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64   │
  8. │             __table1.id Int32                                                                           │
- 9. │       Expression ((ORDER BY前 + (射影 + カラム名のカラム識別子への変更)))         │
+ 9. │       Expression ((Before ORDER BY + (Projection + Change column names to column identifiers)))         │
 10. │       Header: L2Distance(__table1.vec, _CAST([0., 2.]_Array(Float64), 'Array(Float64)'_String)) Float64 │
 11. │               __table1.id Int32                                                                         │
 12. │         ReadFromMergeTree (default.tab)                                                                 │
@@ -443,7 +436,6 @@ CREATE TABLE tab(id Int32, vec Array(Float32) CODEC(NONE), INDEX idx vec TYPE ve
 たとえば、インデックス作成を、すべてのデータが取り込まれるまで、あるいは週末のようなシステム負荷の低い期間まで延期することができます。
 
 **インデックス使用のチューニング**
-
 
 SELECT クエリでベクトル類似性インデックスを使用するには、それらをメインメモリにロードする必要があります。
 同じベクトル類似性インデックスが繰り返しメインメモリにロードされることを避けるため、ClickHouse はそのようなインデックス用の専用インメモリキャッシュを提供しています。
@@ -516,7 +508,6 @@ result = chclient.query(
     parameters = params)
 ```
 
-
 埋め込みベクトル（上記スニペットの `search_v`）は、非常に大きな次元数を持つ場合があります。
 たとえば、OpenAI は 1536 次元や 3072 次元の埋め込みベクトルを生成するモデルを提供しています。
 上記のコードでは、ClickHouse Python ドライバは埋め込みベクトルを人間が読める文字列に置き換え、その後 SELECT クエリ全体を文字列として送信します。
@@ -574,7 +565,6 @@ WHERE type = 'vector_similarity';
 しかし、ClickHouse はディスクからメモリへデータを読み込む際にグラニュールの粒度で処理するため、サブインデックスはマッチした行をグラニュール単位にまで拡張して扱います。
 これは、インデックスブロックの粒度でデータをスキップする通常のスキッピングインデックスとは異なります。
 
-
 `GRANULARITY` パラメータは、いくつのベクトル類似度サブインデックスを作成するかを決定します。
 より大きな `GRANULARITY` の値では、サブインデックスの数は少なくなる一方、それぞれのサブインデックスはより大きくなり、最終的にはあるカラム（またはカラムのデータパーツ）が単一のサブインデックスしか持たない状態になります。
 その場合、そのサブインデックスはカラム行全体に対する「グローバル」なビューを持ち、関連する行を含むカラム（パーツ）のすべてのグラニュールを直接返すことができます（そのようなグラニュールは最大でも `LIMIT [N]` 個です）。
@@ -630,7 +620,6 @@ ClickHouse は、これらの制約を解決する Quantized Bit (`QBit`) デー
 
 1. 元のフル精度データを保存する。
 2. クエリ時に量子化精度を指定できるようにする。
-
 
 これは、データをビットグループ化形式（すべてのベクトルの i 番目のビットをまとめて保存する形式）で保存することで実現され、要求された精度レベルだけを読み出せるようにします。これにより、量子化による I/O と計算量の削減による高速化の恩恵を受けつつ、必要に応じて元のデータをすべて利用可能な状態に保てます。最大精度が選択された場合、検索は厳密なもの（完全一致）になります。
 
@@ -715,7 +704,6 @@ ORDER BY distance;
 6. │ dog    │   3.17766975527459 │
    └────────┴────────────────────┘
 ```
-
 
 12 ビット量子化では、クエリ実行が高速化されつつ、距離を良好に近似できることに注目してください。相対的な順位付けも概ね一貫しており、依然として「apple」が最も近い一致となっています。
 

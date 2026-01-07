@@ -19,7 +19,6 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-
 # 観測性のための Grafana と ClickHouse の利用 {#using-grafana-and-clickhouse-for-observability}
 
 Grafana は、ClickHouse における観測性データの推奨可視化ツールです。これは、Grafana 向け公式 ClickHouse プラグインを使用して実現します。インストール手順は[こちら](/integrations/grafana)を参照してください。
@@ -32,7 +31,7 @@ Grafana は、ClickHouse における観測性データの推奨可視化ツー�
 Grafana で ClickHouse のデータソースを設定する際、プラグインではログおよびトレース用のデフォルトのデータベースとテーブル、さらにこれらのテーブルが OTel スキーマに準拠しているかどうかも指定できます。これにより、Grafana でログとトレースを正しくレンダリングするために必要なカラムをプラグインが返せるようになります。デフォルトの OTel スキーマに変更を加えており、独自のカラム名を使用したい場合は、それらを指定できます。`Timestamp`（時刻）、`SeverityText`（ログレベル）、`Body`（メッセージ本文）などのデフォルトの OTel カラム名を使用している場合は、変更を行う必要はありません。
 
 :::note HTTP or Native
-ユーザーは Grafana を HTTP プロトコルまたは Native プロトコルのいずれかで ClickHouse に接続できます。後者はわずかなパフォーマンス上の利点を提供しますが、Grafana ユーザーによって発行される集約クエリでは体感できない可能性が高いです。対照的に、HTTP プロトコルは、プロキシ経由での利用やトラフィックの検査が一般的により簡単です。
+Grafana を HTTP プロトコルまたは Native プロトコルのいずれかで ClickHouse に接続できます。後者はわずかなパフォーマンス上の利点を提供しますが、Grafana ユーザーによって発行される集約クエリでは体感できない可能性が高いです。対照的に、HTTP プロトコルは、プロキシ経由での利用やトラフィックの検査が一般的により簡単です。
 :::
 
 Logs 設定では、ログを正しくレンダリングするために、時刻、ログレベル、およびメッセージのカラムが必要です。
@@ -41,7 +40,7 @@ Traces 設定はやや複雑です（完全なリストは[こちら](/engines/t
 
 <Image img={observability_15} alt="Connector config" size="sm"/>
 
-設定が完了したら、ユーザーは [Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) に移動し、ログおよびトレースの検索を開始できます。
+設定が完了したら、[Grafana Explore](https://grafana.com/docs/grafana/latest/explore/) に移動し、ログおよびトレースの検索を開始できます。
 
 ## ログ {#logs}
 
@@ -58,7 +57,7 @@ SELECT Timestamp as timestamp, Body as body, SeverityText as level, TraceId as t
 
 ### ログからトレースへ {#logs-to-traces}
 
-ログにトレース ID が含まれている場合、ユーザーは特定のログ行から対応するトレースへ遷移できると便利です。
+ログにトレース ID が含まれている場合、特定のログ行から対応するトレースへ遷移できると便利です。
 
 <Image img={observability_17} alt="Logs to traces" size="lg" border/>
 
@@ -84,7 +83,6 @@ WHERE ( Timestamp >= $__fromTime AND Timestamp <= $__toTime )
 <Image img={observability_18} alt="Traces" size="lg" border />
 
 より複雑なクエリを記述したいユーザーは、`SQL Editor` に切り替えることができます。
-
 
 ### トレースの詳細を表示する {#view-trace-details}
 
@@ -120,7 +118,6 @@ LIMIT 1000
 
 <Image img={observability_19} alt="トレースの詳細" size="lg" border />
 
-
 ### トレースからログへの遷移 {#traces-to-logs}
 
 ログにトレース ID が含まれている場合、ユーザーはトレースから関連するログへ遷移できます。ログを表示するには、トレース ID をクリックして `View Logs` を選択します。これにより、デフォルトの OTel 列を前提として次のクエリが実行されます。
@@ -133,7 +130,7 @@ WHERE ( traceID = '<trace_id>' )
 ORDER BY timestamp ASC LIMIT 1000
 ```
 
-<Image img={observability_20} alt="トレースからログへの切り替え" size="lg" border />
+<Image img={observability_20} alt="トレースからログへの遷移" size="lg" border />
 
 
 ## ダッシュボード {#dashboards}
@@ -165,7 +162,6 @@ LIMIT 100000
 
 <Image img={observability_22} alt="時系列" size="lg" border />
 
-
 ### マルチラインチャート {#multi-line-charts}
 
 次の条件を満たすクエリでは、自動的にマルチラインチャートがレンダリングされます。
@@ -190,7 +186,6 @@ LIMIT 100000
 ```
 
 <Image img={observability_23} alt="複数の折れ線チャート" size="lg" border />
-
 
 ### 地理データの可視化 {#visualizing-geo-data}
 

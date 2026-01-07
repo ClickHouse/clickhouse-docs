@@ -6,11 +6,7 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-
-
 # 名前付きコレクションを用いた ClickHouse と Kafka の統合 {#integrating-clickhouse-with-kafka-using-named-collections}
-
-
 
 ## はじめに {#introduction}
 
@@ -21,16 +17,12 @@ doc_type: 'guide'
 
 このガイドは、Apache Kafka 3.4.1 と ClickHouse 24.5.1 で検証されています。
 
-
-
 ## 前提条件 {#assumptions}
 
 このドキュメントでは、以下を前提としています。
 1. 稼働中の Kafka クラスター。
 2. セットアップ済みで稼働中の ClickHouse クラスター。
 3. SQL の基本的な知識と、ClickHouse および Kafka の設定に関する基本的な理解。
-
-
 
 ## 前提条件 {#prerequisites}
 
@@ -45,16 +37,15 @@ doc_type: 'guide'
 
 アクセス制御を有効にする方法の詳細については、[User Management Guide](./../../../guides/sre/user-management/index.md) を参照してください。
 
-
 ## 設定 {#configuration}
 
 次のセクションを ClickHouse の `config.xml` ファイルに追加してください。
 
 ```xml
-<!-- Kafka統合用の名前付きコレクション -->
+<!-- Named collections for Kafka integration -->
 <named_collections>
     <cluster_1>
-        <!-- ClickHouse Kafkaエンジンのパラメータ -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c1-kafka-1:9094,c1-kafka-2:9094,c1-kafka-3:9094</kafka_broker_list>
         <kafka_topic_list>cluster_1_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_1_clickhouse_consumer</kafka_group_name>
@@ -63,7 +54,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka拡張構成 -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -76,7 +67,7 @@ doc_type: 'guide'
     </cluster_1>
 
     <cluster_2>
-        <!-- ClickHouse Kafkaエンジンのパラメータ -->
+        <!-- ClickHouse Kafka engine parameters -->
         <kafka_broker_list>c2-kafka-1:29094,c2-kafka-2:29094,c2-kafka-3:29094</kafka_broker_list>
         <kafka_topic_list>cluster_2_clickhouse_topic</kafka_topic_list>
         <kafka_group_name>cluster_2_clickhouse_consumer</kafka_group_name>
@@ -85,7 +76,7 @@ doc_type: 'guide'
         <kafka_num_consumers>1</kafka_num_consumers>
         <kafka_thread_per_consumer>1</kafka_thread_per_consumer>
 
-        <!-- Kafka拡張構成 -->
+        <!-- Kafka extended configuration -->
         <kafka>
             <security_protocol>SASL_SSL</security_protocol>
             <enable_ssl_certificate_verification>false</enable_ssl_certificate_verification>
@@ -105,7 +96,6 @@ doc_type: 'guide'
 2. `<kafka>` の前のセクションには、ClickHouse の Kafka エンジンのパラメータが含まれます。パラメータの一覧については、[Kafka engine parameters](/engines/table-engines/integrations/kafka) を参照してください。
 3. `<kafka>` 内のセクションには、追加の Kafka 設定オプションが含まれます。利用可能なオプションの詳細については、[librdkafka configuration](https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md) を参照してください。
 4. この例では、`SASL_SSL` セキュリティプロトコルと `PLAIN` メカニズムを使用しています。これらの設定は、利用している Kafka クラスター構成に応じて調整してください。
-
 
 ## テーブルとデータベースの作成 {#creating-tables-and-databases}
 
@@ -192,7 +182,6 @@ SELECT
     last_name
 FROM second_kafka_table;
 ```
-
 
 ## セットアップの検証 {#verifying-the-setup}
 

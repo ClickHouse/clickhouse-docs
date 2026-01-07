@@ -11,7 +11,6 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
 # 去重策略 {#deduplication-strategies}
 
 **去重**是指***删除数据集中重复行***的过程。在 OLTP 数据库中，这很容易实现，因为每一行都有唯一的主键——但代价是写入速度较慢。每次插入前都需要先查找该主键，如果已存在则需要进行替换。
@@ -30,8 +29,6 @@ ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不
 
 </div>
 
-
-
 ## 去重选项 {#options-for-deduplication}
 
 在 ClickHouse 中，通过以下表引擎实现去重：
@@ -41,8 +38,6 @@ ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不
 2. 折叠行：`CollapsingMergeTree` 和 `VersionedCollapsingMergeTree` 表引擎采用的逻辑是“取消”一条现有行并插入一条新行。与 `ReplacingMergeTree` 相比，它们实现起来更复杂，但您的查询和聚合可以写得更简单，而无需担心数据是否已经完成合并。这两种表引擎在您需要频繁更新数据时非常有用。
 
 下面我们将演示这两种技术的使用方法。欲了解更多详情，请查看我们免费的按需培训模块 [Deleting and Updating Data 培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)。
-
-
 
 ## 使用 ReplacingMergeTree 实现 Upsert {#using-replacingmergetree-for-upserts}
 
@@ -71,8 +66,8 @@ INSERT INTO hackernews_rmt VALUES
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', '这是帖子 #1', 100),
-   (2, 'ch_fan', '这是帖子 #2', 200)
+   (1, 'ricardo', 'This is post #1', 100),
+   (2, 'ch_fan', 'This is post #2', 200)
 ```
 
 该表现在包含 4 行数据：
@@ -84,12 +79,12 @@ FROM hackernews_rmt
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是帖子 #2 │     0 │
-│  1 │ ricardo │ 这是帖子 #1 │     0 │
+│  2 │ ch_fan  │ This is post #2 │     0 │
+│  1 │ ricardo │ This is post #1 │     0 │
 └────┴─────────┴─────────────────┴───────┘
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是帖子 #2 │   200 │
-│  1 │ ricardo │ 这是帖子 #1 │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -103,8 +98,8 @@ FINAL
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ 这是第 2 条帖子  │   200 │
-│  1 │ ricardo │ 这是第 1 条帖子  │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -132,7 +127,6 @@ INSERT INTO hackernews_rmt VALUES
 SELECT *
 FROM hackernews_rmt
 ```
-
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
@@ -163,15 +157,14 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ 这是第 2 篇帖子 │        250 │
-│  1 │ ricardo │ 这是第 1 篇帖子 │        150 │
+│  2 │ ch_fan  │ This is post #2 │        250 │
+│  1 │ ricardo │ This is post #1 │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 
 如上面查询所示那样进行分组，在查询性能方面实际上可能比使用 `FINAL` 关键字更高效。
 
 我们的[删除和更新数据培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)在此示例基础上进行了扩展，其中包括如何将 `version` 列与 `ReplacingMergeTree` 一起使用。
-
 
 ## 使用 CollapsingMergeTree 处理频繁的列更新 {#using-collapsingmergetree-for-updating-columns-frequently}
 
@@ -257,7 +250,6 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 
 :::
-
 
 ## 来自多个线程的实时更新 {#real-time-updates-from-multiple-threads}
 
@@ -348,7 +340,6 @@ FROM hackernews_views_vcmt
 ```
 
 当你希望在从多个客户端和/或线程插入数据时实现去重时，`VersionedCollapsingMergeTree` 表非常实用。
-
 
 ## 为什么我的行没有被去重？ {#why-arent-my-rows-being-deduplicated}
 

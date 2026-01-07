@@ -21,23 +21,17 @@ title: '実践から学ぶマテリアライズドビュー'
 description: 'マテリアライズドビューの実例と、発生しうる問題およびその解決策'
 ---
 
-
-
 # マテリアライズドビュー: 諸刃の剣になり得る理由 {#materialized-views-the-double-edged-sword}
 
 *このガイドは、コミュニティミートアップで得られた知見をまとめたコレクションの一部です。より実践的なソリューションや知見については、[特定の問題別に閲覧](./community-wisdom.md)できます。*
 *大量のパーツがデータベースのパフォーマンスを低下させていませんか？[Too Many Parts](./too-many-parts.md) コミュニティインサイトガイドを参照してください。*
 *[マテリアライズドビュー](/materialized-views) についてさらに詳しく学びましょう。*
 
-
-
 ## 10倍ストレージアンチパターン {#storage-antipattern}
 
 **実際の本番環境で発生した問題:** *「マテリアライズドビューを使っていました。生ログテーブルは約20GBでしたが、そのログテーブルを元にしたビューが190GBまで膨れ上がり、生テーブルのほぼ10倍のサイズになってしまいました。これは、属性ごとに1行ずつ作成しており、各ログが最大で10個の属性を持つ可能性があったために起きました。」*
 
 **ルール:** `GROUP BY` によって削減される行数よりも多くの行が生成される場合、それはマテリアライズドビューではなく、高コストなインデックスを作っていることになります。
-
-
 
 ## 本番環境マテリアライズドビューの健全性検証 {#mv-health-validation}
 
@@ -50,7 +44,7 @@ description: 'マテリアライズドビューの実例と、発生しうる問
 * **ストレージ倍率** = MV のサイズがどれだけ増減するか
 
 ```sql
--- 実際のテーブル名とカラム名に置き換えてください
+-- Replace with your actual table and columns
 SELECT 
     count() as total_rows,
     uniq(your_group_by_columns) as unique_combinations,
@@ -58,10 +52,9 @@ SELECT
 FROM your_table
 WHERE your_filter_conditions;
 
--- aggregation_ratioが70%を超える場合、マテリアライズドビューの設計を再検討してください
--- aggregation_ratioが10%未満の場合、良好な圧縮率が得られます
+-- If aggregation_ratio > 70%, reconsider your MV design
+-- If aggregation_ratio < 10%, you'll get good compression
 ```
-
 
 ## マテリアライズドビューが問題になるとき {#mv-problems}
 
@@ -72,8 +65,6 @@ WHERE your_filter_conditions;
 - これまで発生していなかった挿入タイムアウト
 
 `system.query_log` を使用してクエリ実行時間の推移を追跡することで、マテリアライズドビューを追加する前後の挿入パフォーマンスを比較できます。
-
-
 
 ## 動画資料 {#video-sources}
 - [ClickHouse at CommonRoom - Kirill Sapchuk](https://www.youtube.com/watch?v=liTgGiTuhJE) - 「マテリアライズドビューに過度に熱狂した」事例と「20GB から 190GB への爆発的増加」事例の出典

@@ -18,14 +18,11 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-
 # ClickPipes 向け AWS PrivateLink {#aws-privatelink-for-clickpipes}
 
 [AWS PrivateLink](https://aws.amazon.com/privatelink/) を使用すると、VPC、AWS サービス、オンプレミス環境、および ClickHouse Cloud 間で、安全な接続を確立できます。このとき、トラフィックをパブリックインターネットに公開する必要はありません。
 
 本ドキュメントでは、AWS PrivateLink の VPC エンドポイントを構成するための、ClickPipes のリバースプライベートエンドポイント機能について説明します。
-
-
 
 ## サポートされている ClickPipes データソース {#supported-sources}
 
@@ -35,8 +32,6 @@ ClickPipes のリバースプライベートエンドポイント機能は、以
 - Postgres
 - MySQL
 - MongoDB
-
-
 
 ## サポートされているAWS PrivateLinkエンドポイントタイプ {#aws-privatelink-endpoint-types}
 
@@ -136,7 +131,6 @@ aws vpc-lattice create-resource-configuration \
 
 リソースを共有するには、リソース共有が必要です。これはResource Access Manager（RAM）を通じて実現されます。
 
-
 Resource-ConfigurationをResource-Shareに配置するには、[AWSコンソール](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html)を使用するか、ClickPipesアカウントID `072088201116`（arn:aws:iam::072088201116:root）を指定して以下のコマンドを実行します。
 
 ```bash
@@ -199,7 +193,6 @@ ClickPipesアカウントID `072088201116`を、VPCエンドポイントサー�
 ClickPipes向けに[クロスリージョンアクセス](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)を設定できます。VPCエンドポイントサービスの許可されたリージョンに[ClickPipeのリージョン](#aws-privatelink-regions)を追加してください。
 :::
 
-
 ## リバースプライベートエンドポイントを使用して ClickPipe を作成する {#creating-clickpipe}
 
 <VerticalStepper headerLevel="list">
@@ -260,8 +253,6 @@ RDS でリージョンをまたいだアクセスが必要な場合は、VPC エ
 
 </VerticalStepper>
 
-
-
 ## 既存のリバースプライベートエンドポイントの管理 {#managing-existing-endpoints}
 
 ClickHouse Cloud のサービス設定で、既存のリバースプライベートエンドポイントを管理できます。
@@ -282,16 +273,12 @@ ClickHouse Cloud のサービス設定で、既存のリバースプライベー
 
 </VerticalStepper>
 
-
-
 ## サポートされている AWS リージョン {#aws-privatelink-regions}
 
 AWS PrivateLink のサポートは、ClickPipes 用では特定の AWS リージョンに限定されています。
 利用可能なリージョンについては、[ClickPipes のリージョン一覧](/integrations/clickpipes#list-of-static-ips)を参照してください。
 
 この制限は、リージョン間接続が有効になっている PrivateLink VPC エンドポイントサービスには適用されません。
-
-
 
 ## 制限事項 {#limitations}
 

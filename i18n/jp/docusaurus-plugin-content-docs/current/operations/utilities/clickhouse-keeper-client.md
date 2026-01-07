@@ -6,13 +6,9 @@ title: 'clickhouse-keeper-client ユーティリティ'
 doc_type: 'reference'
 ---
 
-
-
 # clickhouse-keeper-client ユーティリティ {#clickhouse-keeper-client-utility}
 
 ネイティブプロトコルを使用して clickhouse-keeper と通信するためのクライアントアプリケーションです。
-
-
 
 ## オプション {#clickhouse-keeper-client}
 
@@ -28,13 +24,11 @@ doc_type: 'reference'
 -   `--no-confirmation` — 指定した場合、いくつかのコマンドで確認を求めません。 インタラクティブモードではデフォルト値は `false`、クエリでは `true` です。
 -   `--help` — ヘルプメッセージを表示します。
 
-
-
 ## 例 {#clickhouse-keeper-client-example}
 
 ```bash
 ./clickhouse-keeper-client -h localhost -p 9181 --connection-timeout 30 --session-timeout 30 --operation-timeout 30
-ZooKeeperに接続しました [::1]:9181 session_id 137
+Connected to ZooKeeper at [::1]:9181 with session_id 137
 / :) ls
 keeper foo bar
 / :) cd 'keeper'
@@ -44,14 +38,13 @@ api_version
 /keeper/api_version :) ls
 
 /keeper/api_version :) cd 'xyz'
-パス /keeper/api_version/xyz は存在しません
+Path /keeper/api_version/xyz does not exist
 /keeper/api_version :) cd ../../
 / :) ls
 keeper foo bar
 / :) get 'keeper/api_version'
 2
 ```
-
 
 ## コマンド {#clickhouse-keeper-client-commands}
 

@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 
 # 深入了解 ClickHouse 数据跳过索引 {#understanding-clickhouse-data-skipping-indexes}
 
-
-
 ## 简介 {#introduction}
 
 影响 ClickHouse 查询性能的因素有很多。在大多数场景中，关键因素是 ClickHouse 在评估查询的 WHERE 子句条件时，能否利用主键。因此，为最常见的查询模式选择合适的主键，对实现高效的表设计至关重要。
@@ -27,8 +25,6 @@ import Image from '@theme/IdealImage';
 
 为此，ClickHouse 提供了一种不同类型的索引，在特定情况下可以显著提升查询速度。这些结构被称为“跳过（Skip）索引”，因为它们使 ClickHouse 能够跳过读取那些可以确定不包含任何匹配值的大块数据。
 
-
-
 ## 基本操作 {#basic-operation}
 
 用户只能在 MergeTree 系列的表上使用数据跳过索引（Data Skipping Indexes）。每个数据跳过索引有四个主要参数：
@@ -36,7 +32,7 @@ import Image from '@theme/IdealImage';
 * 索引名称。索引名称用于在每个分区中创建索引文件。同时，在删除或物化该索引时，它也必须作为参数提供。
 * 索引表达式。索引表达式用于计算存储在索引中的值集合。它可以是列、简单运算符和/或由索引类型决定的一部分函数的组合。
 * TYPE。索引类型决定用于判断是否可以跳过读取和计算各索引块的计算方式。
-* GRANULARITY。每个被索引的块由 GRANULARITY 个粒度（granule）组成。例如，如果主表索引的粒度是 8192 行，而索引粒度是 4，那么每个被索引的“块”将是 32768 行。
+* GRANULARITY。每个被索引的块由 GRANULARITY 个粒度（granule）组成。例如，如果主表索引的粒度是 8192 行，而索引粒度是 4，那么每个被索引的 &quot;block&quot; 将是 32768 行。
 
 当用户创建一个数据跳过索引时，在该表的每个数据部分目录中会新增两个文件。
 
@@ -57,7 +53,8 @@ SETTINGS index_granularity=8192;
 INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000);
 ```
 
-当执行未使用主键的简单查询时，`my_value` 列中的全部 1 亿条记录都会被扫描：
+当执行未使用主键的简单查询时，`my_value`
+列中的全部 1 亿条记录都会被扫描：
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
@@ -68,16 +65,16 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.079 秒。已处理 1 亿行,800.10 MB(12.6 亿行/秒,10.10 GB/秒)。
+8192 rows in set. Elapsed: 0.079 sec. Processed 100.00 million rows, 800.10 MB (1.26 billion rows/s., 10.10 GB/s.
 ```
 
-现在添加一个非常简单的跳过索引（skip index）：
+现在添加一个非常基础的跳过索引：
 
 ```sql
 ALTER TABLE skip_table ADD INDEX vix my_value TYPE set(100) GRANULARITY 2;
 ```
 
-通常情况下，skip index 只会应用于新插入的数据，因此仅添加该索引不会对上述查询产生影响。
+通常情况下，跳过索引只会应用于新插入的数据，因此仅仅添加该索引不会对上述查询产生影响。
 
 要为已有数据建立索引，请使用以下语句：
 
@@ -96,7 +93,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 │    ... |      ... |
 └────────┴──────────┘
 
-返回 8192 行。用时:0.051 秒。已处理 32.77 千行,360.45 KB(643.75 千行/秒,7.08 MB/秒)
+8192 rows in set. Elapsed: 0.051 sec. Processed 32.77 thousand rows, 360.45 KB (643.75 thousand rows/s., 7.08 MB/s.)
 ```
 
 相比处理 1 亿行、800 兆字节的数据，ClickHouse 只读取并分析了 32768 行、360 千字节的数据——
@@ -107,7 +104,7 @@ SELECT * FROM skip_table WHERE my_value IN (125, 700)
 
 <Image img={simple_skip} size="md" alt="Simple Skip" />
 
-用户可以在执行查询时启用 trace，以查看跳过索引使用情况的详细信息。
+你可以在执行查询时启用 trace，以查看跳过索引使用情况的详细信息。
 在 clickhouse-client 中，设置 `send_logs_level`：
 
 ```sql
@@ -116,14 +113,15 @@ SET send_logs_level='trace';
 
 在调优查询 SQL 和表索引时，这将提供有用的调试信息。根据上面的示例，调试日志显示跳过索引过滤掉了除两个 granule 以外的所有 granule：
 
-
 ```sql
-<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): 索引 `vix` 已丢弃 6102/6104 个颗粒。
+<Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
+
 
 ## 跳过索引类型 {#skip-index-types}
 
 {/* vale off */ }
+
 
 ### minmax {#minmax}
 
@@ -135,6 +133,7 @@ SET send_logs_level='trace';
 
 {/* vale off */ }
 
+
 ### set {#set}
 
 {/* vale on */ }
@@ -142,6 +141,7 @@ SET send_logs_level='trace';
 这种轻量级索引类型接受一个参数，即每个数据块中值集合的最大大小 `max_size`（0 表示允许无限数量的离散值）。该集合包含数据块中的所有值（如果值的数量超过 `max_size`，则集合为空）。这种索引类型非常适合在每组 granule 内基数较低（本质上是“聚在一起”），但整体基数较高的列。
 
 此索引的成本、性能和有效性取决于数据块内部的基数。如果每个数据块包含大量唯一值，要么针对一个很大的索引集合评估查询条件会非常昂贵，要么由于超过 `max_size` 导致索引为空而无法应用索引。
+
 
 ### Bloom filter 类型 {#bloom-filter-types}
 
@@ -153,7 +153,7 @@ SET send_logs_level='trace';
 
 * 基本的 **bloom&#95;filter**，它接受一个可选参数，用于指定允许的“误报率”（false positive rate），在 0 到 1 之间（如果未指定，则使用 0.025）。
 
-* 专用的 **tokenbf&#95;v1**。它接受三个参数，全部与所使用的 Bloom filter 调优相关：(1) 过滤器的大小（字节数，过滤器越大，误报越少，但存储成本更高），(2) 应用的哈希函数数量（同样，更多的哈希函数可以减少误报），(3) Bloom filter 哈希函数的种子。有关这些参数如何影响 Bloom filter 功能的更多细节，请参见[此处](https://hur.st/bloomfilter/)的计算器。
+* 专用的 **tokenbf&#95;v1**。它接受三个参数，全部与所使用的 Bloom filter 调优相关：(1) 过滤器的大小（字节数，过滤器越大，误报越少，但存储成本更高），(2) 应用的哈希函数数量（同样，更多的哈希函数可以减少误报），(3) Bloom filter 哈希函数的种子。有关这些参数如何影响 Bloom filter 功能的更多细节，请参见[此处](https://hur.st/bloomfilter/)的计算器。  
   该索引仅适用于 String、FixedString 和 Map 数据类型。输入表达式会按非字母数字字符进行拆分，分成多个字符序列。例如，列值 `This is a candidate for a "full text" search` 将包含标记 `This` `is` `a` `candidate` `for` `full` `text` `search`。它旨在用于 LIKE、EQUALS、IN、`hasToken()` 以及类似的在较长字符串中搜索单词和其他值的查询。例如，一个可能的用例是在包含自由格式应用日志行的列中，搜索少量类名或行号。
 
 * 专用的 **ngrambf&#95;v1**。此索引的工作方式与 token 索引相同。它在 Bloom filter 设置之前额外接受一个参数，即要索引的 ngram 大小。ngram 是长度为 `n` 的任意字符字符串，因此，对于字符串 `A short string`，在 ngram 大小为 4 时，会被索引为：
@@ -162,7 +162,6 @@ SET send_logs_level='trace';
   ```
 
 该索引同样可用于文本搜索，特别是对于没有单词间空格分隔的语言，例如中文。
-
 
 ## 跳过索引函数 {#skip-index-functions}
 
@@ -173,16 +172,12 @@ SET send_logs_level='trace';
 每种类型的跳过索引都只适用于部分 ClickHouse 函数，具体取决于索引的实现，如
 [此处](/engines/table-engines/mergetree-family/mergetree/#functions-support)所列。一般来说，集合索引和基于 Bloom filter 的索引（另一种集合索引）都是无序的，因此不支持范围查询。相比之下，minmax 索引在处理范围时表现尤为出色，因为判断范围是否相交的速度非常快。部分匹配函数 LIKE、startsWith、endsWith 和 hasToken 的效果取决于所用的索引类型、索引表达式以及数据本身的分布特征。
 
-
-
 ## 跳过索引设置 {#skip-index-settings}
 
 有两个适用于跳过索引的设置。
 
 * **use_skip_indexes**（0 或 1，默认 1）。并非所有查询都能高效使用跳过索引。如果某个特定过滤条件很可能命中大多数数据粒度（granule），那么应用数据跳过索引会带来不必要、有时甚至相当可观的开销。对于不太可能从任何跳过索引中获益的查询，将该值设置为 0。
 * **force_data_skipping_indices**（以逗号分隔的索引名称列表）。此设置可用于防止某些低效查询。在某些情况下，如果不使用跳过索引，对表进行查询的代价过高，那么使用此设置并指定一个或多个索引名称时，对于任何未使用所列索引的查询都会返回异常。这样可以防止设计不良的查询消耗服务器资源。
-
-
 
 ## Skip 索引最佳实践 {#skip-best-practices}
 
@@ -223,6 +218,7 @@ SELECT timestamp, url FROM table WHERE visitor_id = 1001`
 
 
 ## 相关文档 {#related-docs}
+
 - [最佳实践指南](/best-practices/use-data-skipping-indices-where-appropriate)
 - [数据跳过索引示例](/optimize/skipping-indexes/examples)
 - [管理数据跳过索引](/sql-reference/statements/alter/skipping-index)

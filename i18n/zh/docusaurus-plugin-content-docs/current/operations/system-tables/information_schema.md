@@ -11,7 +11,7 @@ doc_type: 'reference'
 ```sql
 SHOW TABLES FROM INFORMATION_SCHEMA;
 
--- 或者：
+-- or:
 SHOW TABLES FROM information_schema;
 ```
 
@@ -45,7 +45,6 @@ SHOW TABLES FROM information_schema;
 * [VIEWS](#views)
 
 为与其他数据库兼容，提供了不区分大小写的等价视图，例如 `INFORMATION_SCHEMA.columns`。这些视图中的所有列也同样如此——同时提供小写（例如 `table_name`）和大写（例如 `TABLE_NAME`）两种形式。
-
 
 ## 列 {#columns}
 
@@ -97,7 +96,7 @@ FORMAT Vertical;
 结果：
 
 ```text
-第 1 行:
+Row 1:
 ──────
 table_catalog:            default
 table_schema:             default
@@ -123,7 +122,6 @@ domain_catalog:           ᴺᵁᴸᴸ
 domain_schema:            ᴺᵁᴸᴸ
 domain_name:              ᴺᵁᴸᴸ
 ```
-
 
 ## SCHEMATA {#schemata}
 
@@ -171,7 +169,6 @@ default_character_set_name:    ᴺᵁᴸᴸ
 sql_path:                      ᴺᵁᴸᴸ
 ```
 
-
 ## TABLES {#tables}
 
 包含从 [system.tables](../../operations/system-tables/tables.md) 系统表中读取的列。
@@ -214,7 +211,7 @@ FORMAT Vertical;
 结果：
 
 ```text
-第 1 行:
+Row 1:
 ──────
 table_catalog:   default
 table_schema:    default
@@ -223,7 +220,6 @@ table_type:      BASE TABLE
 table_collation: utf8mb4_0900_ai_ci
 table_comment:   
 ```
-
 
 ## 视图 {#views}
 
@@ -284,7 +280,6 @@ is_trigger_deletable:       NO
 is_trigger_insertable_into: NO
 ```
 
-
 ## KEY&#95;COLUMN&#95;USAGE {#key_column_usage}
 
 包含 [system.tables](../../operations/system-tables/tables.md) 系统表中受约束限制的列。
@@ -344,7 +339,6 @@ referenced_table_name:         ᴺᵁᴸᴸ
 referenced_column_name:        ᴺᵁᴸᴸ
 ```
 
-
 ## REFERENTIAL_CONSTRAINTS {#referential_constraints}
 
 包含外键信息。目前返回空结果（无行），这一点已足以与 Tableau Online 等第三方工具保持兼容。
@@ -362,8 +356,6 @@ referenced_column_name:        ᴺᵁᴸᴸ
 - `delete_rule` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
 - `table_name` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
 - `referenced_table_name` ([String](../../sql-reference/data-types/string.md)) — 目前未使用。
-
-
 
 ## STATISTICS {#statistics}
 

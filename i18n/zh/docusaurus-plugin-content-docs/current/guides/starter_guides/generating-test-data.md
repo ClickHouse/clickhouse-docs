@@ -180,12 +180,12 @@ ORDER BY tuple()
 AS SELECT * 
 FROM generateRandom(
     'col1 UInt32, col2 String, col3 Float64, col4 DateTime',
-    1,  -- 数据生成种子
-    10  -- 不同随机值数量
+    1,  -- seed for data generation
+    10  -- number of different random values
 )
-LIMIT 100;  -- 100 行
+LIMIT 100;  -- 100 rows
 
--- 步骤 2：查询新表
+-- Step 2: Query your new table
 SELECT * FROM my_test_table LIMIT 5;
 ```
 
@@ -244,9 +244,9 @@ SELECT * FROM fully_random_table LIMIT 1 FORMAT vertical;
 ```
 
 ```response
-第 1 行:
+Row 1:
 ──────
-c1: 80416293882.257732 -- 804.2 亿
+c1: 80416293882.257732 -- 80.42 billion
 c2: c2V1
 c3: -84
 c4: 1a9429b3-fd8b-1d72-502f-c051aeb7018e

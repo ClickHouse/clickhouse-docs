@@ -7,20 +7,15 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-
-
 # postgresql テーブル関数 {#postgresql-table-function}
 
 リモートの PostgreSQL サーバー上に保存されたデータに対して、`SELECT` および `INSERT` クエリを実行できます。
-
-
 
 ## 構文 {#syntax}
 
 ```sql
 postgresql({host:port, database, table, user, password[, schema, [, on_conflict]] | named_collection[, option=value [,..]]})
 ```
-
 
 ## 引数 {#arguments}
 
@@ -36,8 +31,6 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 
 引数は [named collections](operations/named-collections.md) を使用して渡すこともできます。この場合、`host` と `port` は個別に指定する必要があります。この方法を本番環境で使用することを推奨します。
 
-
-
 ## 返される値 {#returned_value}
 
 元の PostgreSQL テーブルと同じ列を持つテーブルオブジェクト。
@@ -45,8 +38,6 @@ postgresql({host:port, database, table, user, password[, schema, [, on_conflict]
 :::note
 `INSERT` クエリで、テーブル関数 `postgresql(...)` と、列名リストを伴うテーブル名の指定とを区別するには、キーワード `FUNCTION` または `TABLE FUNCTION` を使用する必要があります。以下の例を参照してください。
 :::
-
-
 
 ## 実装の詳細 {#implementation-details}
 
@@ -78,7 +69,6 @@ SELECT name FROM postgresql(`postgres1:5431|postgres2:5432`, 'postgres_database'
 
 PostgreSQL の辞書ソースで、レプリカの優先度指定をサポートします。マップ内の数値が大きいほど優先度は低くなります。最も高い優先度は `0` です。
 
-
 ## 例 {#examples}
 
 PostgreSQL のテーブルの例:
@@ -101,7 +91,7 @@ postgresql> SELECT * FROM test;
   int_id | int_nullable | float | str  | float_nullable
  --------+--------------+-------+------+----------------
        1 |              |     2 | test |
-（1行）
+(1 row)
 ```
 
 通常の引数を使って ClickHouse からデータを取得する：
@@ -156,7 +146,6 @@ postgres=# INSERT INTO "nice.schema"."nice.table" SELECT i FROM generate_series(
 CREATE TABLE pg_table_schema_with_dots (a UInt32)
         ENGINE PostgreSQL('localhost:5432', 'clickhouse', 'nice.table', 'postgrsql_user', 'password', 'nice.schema');
 ```
-
 
 ## 関連 {#related}
 

@@ -26,8 +26,6 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 作为此次变更的一部分，在升级事件期间，历史系统表数据最多会被保留 30 天。此外，对于运行在 AWS 或 GCP 上的服务，所有早于 2024 年 12 月 19 日的系统表数据，以及对于运行在 Azure 上的服务，所有早于 2025 年 1 月 14 日的系统表数据，在迁移到新的组织层级时都不会被保留。
 :::
 
-
-
 ## 版本兼容性 {#version-compatibility}
 
 当你创建服务时，在服务首次预配的时刻，[`compatibility`](/operations/settings/settings#compatibility) 设置会被设为当时 ClickHouse Cloud 所提供的最新 ClickHouse 版本。
@@ -36,15 +34,11 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 你无法在服务级别管理服务的默认 `compatibility` 设置。如果你希望更改服务默认 `compatibility` 设置所使用的版本，必须[联系技术支持](https://clickhouse.com/support/program)。不过，你可以在用户、角色、配置文件（profile）、查询或会话级别，通过标准的 ClickHouse 设置机制来覆盖 `compatibility` 设置，例如在会话中使用 `SET compatibility = '22.3'`，或在查询中使用 `SETTINGS compatibility = '22.3'`。
 
-
-
 ## 维护模式 {#maintenance-mode}
 
 在某些情况下，我们可能需要更新您的服务，这可能会要求我们暂时禁用某些功能，例如扩缩容或空闲休眠。在极少数情况下，我们可能需要对出现问题的服务采取措施，使其恢复到健康状态。在此类维护期间，您会在服务页面上看到一条横幅，显示 _"Maintenance in progress"_。在这段时间内，您通常仍然可以继续使用该服务进行查询。
 
 在服务处于维护状态的这段时间内，我们不会向您收取费用。_维护模式_ 的出现非常罕见，不应与常规的服务升级相混淆。
-
-
 
 ## 发布通道（升级计划） {#release-channels-upgrade-schedule}
 
@@ -75,11 +69,13 @@ Basic 等级服务会自动加入快速发布通道。
 <div class="eighty-percent">
     <Image img={fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 <div class="eighty-percent">
     <Image img={enroll_fast_release} size="lg" alt="Select Plan" border/>
 </div>
+
 <br/>
 
 此 **快速发布（Fast release）** 通道适用于在非关键环境中测试新功能。**不建议用于具有严格可用性和可靠性要求的生产工作负载。**
@@ -108,11 +104,10 @@ Basic 等级服务会在快速发布通道之后不久进行升级。
 
 :::note
 你可以随时更改发布通道。但在某些情况下，更改只会应用于未来的发布。 
+
 - 切换到更快的通道会立即升级你的服务。例如：慢速到常规、常规到快速
 - 切换到更慢的通道不会将你的服务降级，并会让你保持当前版本，直到该通道中有更新的版本可用。例如：常规到慢速、快速到常规或慢速
 :::
-
-
 
 ## 计划升级 {#scheduled-upgrades}
 

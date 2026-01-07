@@ -59,8 +59,7 @@ FORMAT Hash
 ```response
 df2ec2f0669b000edff6adee264e7d68
 
-返回 1 行。用时：0.154 秒。
+1 rows in set. Elapsed: 0.154 sec.
 ```
-
 
 ## 格式设置 {#format-settings}

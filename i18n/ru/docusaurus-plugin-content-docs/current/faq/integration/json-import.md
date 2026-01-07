@@ -8,17 +8,13 @@ keywords: ['импорт JSON', 'формат JSONEachRow', 'импорт дан
 doc_type: 'guide'
 ---
 
-
-
 # Как импортировать JSON в ClickHouse? {#how-to-import-json-into-clickhouse}
 
 ClickHouse поддерживает широкий спектр [форматов данных для ввода и вывода](/interfaces/formats). Среди них есть несколько вариантов JSON, но наиболее часто для ингестии данных используется формат [JSONEachRow](/interfaces/formats/JSONEachRow). Он ожидает по одному JSON‑объекту в строке, при этом каждый объект должен быть разделён символом перевода строки.
 
-
-
 ## Примеры {#examples}
 
-С помощью [HTTP-интерфейса](../../interfaces/http.md):
+С помощью [HTTP-интерфейса](/interfaces/http):
 
 ```bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-
@@ -30,7 +26,7 @@ $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test
 $ echo '{"foo":"bar"}'  | clickhouse-client --query="INSERT INTO test FORMAT JSONEachRow"
 ```
 
-Вместо ручного ввода данных вы можете использовать [инструмент интеграции](../../integrations/index.mdx).
+Вместо ручного ввода данных можно воспользоваться [инструментом интеграции](../../integrations/index.mdx).
 
 
 ## Полезные настройки {#useful-settings}

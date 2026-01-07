@@ -7,15 +7,11 @@ title: 'SummingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-
-
 # SummingMergeTree 表引擎 {#summingmergetree-table-engine}
 
-该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。不同之处在于，当对 `SummingMergeTree` 表的数据部分进行合并时，ClickHouse 会将所有具有相同主键（更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的多行，替换为一行，其中数值数据类型列的值为这些行的求和结果。如果排序键的设计使得单个键值对应大量行，这种方式可以显著减少存储体积并加速数据查询。
+该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。不同之处在于，当对 `SummingMergeTree` 表的数据分区片段进行合并时，ClickHouse 会将所有具有相同主键（更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的多行，替换为一行，其中数值数据类型列的值为这些行的求和结果。如果排序键的设计使得单个键值对应大量行，这种方式可以显著减少存储体积并加速数据查询。
 
 我们建议将此引擎与 `MergeTree` 结合使用。在 `MergeTree` 表中存储完整数据，并使用 `SummingMergeTree` 存储聚合后的数据，例如在生成报表时使用。这样的做法可以避免由于主键设计不当而导致有价值数据的丢失。
-
-
 
 ## 创建表 {#creating-a-table}
 
@@ -33,6 +29,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 ```
 
 有关请求参数的描述，请参阅[请求描述](../../../sql-reference/statements/create/table.md)。
+
 
 ### SummingMergeTree 的参数 {#parameters-of-summingmergetree}
 
@@ -55,19 +52,18 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-  ```
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+```
 
   除 `columns` 之外的所有参数与 `MergeTree` 中的含义相同。
 
   * `columns` — 一个由其值将被求和的列名组成的元组（tuple）。可选参数。说明见上文。
 </details>
-
 
 ## 使用示例 {#usage-example}
 
@@ -121,7 +117,7 @@ ClickHouse 合并数据部分的方式可能导致：不同的合并结果数据
 
 ### AggregateFunction 列中的求和 {#the-summation-in-the-aggregatefunction-columns}
 
-对于 [AggregateFunction 类型](../../../sql-reference/data-types/aggregatefunction.md) 的列，ClickHouse 的行为类似于 [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎，会根据该函数进行聚合。
+对于 [AggregateFunction 类型](../../../sql-reference/data-types/aggregatefunction.md) 的列，ClickHouse 的行为类似于 [AggregatingMergeTree](../../../engines/table-engines/mergetree-family/aggregatingmergetree.md) 引擎，会根据该函数对数据进行聚合。
 
 ### 嵌套结构 {#nested-structures}
 
@@ -155,7 +151,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- 模拟合并 
+OPTIMIZE TABLE nested_sum FINAL; -- emulate merge 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐
@@ -190,11 +186,9 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
+在查询数据时，对 `Map` 类型进行聚合请使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) 函数。
 
-在查询数据时，对 `Map` 进行聚合请使用 [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) 函数。
-
-对于嵌套数据结构，在用于求和的列元组中，无需单独指定其各个字段。
-
+对于嵌套数据结构，无需在用于求和的列元组中显式指定其中的列。
 
 
 ## 相关内容 {#related-content}

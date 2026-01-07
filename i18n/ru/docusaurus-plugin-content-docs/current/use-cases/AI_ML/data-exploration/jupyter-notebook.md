@@ -18,7 +18,6 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-
 # Исследование данных с помощью Jupyter Notebook и chDB {#exploring-data-with-jupyter-notebooks-and-chdb}
 
 В этом руководстве вы узнаете, как исследовать данные в ClickHouse Cloud в Jupyter Notebook с помощью [chDB](/chdb) — быстрого встроенного SQL OLAP-движка на базе ClickHouse.
@@ -66,7 +65,7 @@ ClickHouse автоматически создаст таблицу `pp_complete
 
 ```bash
 export CLICKHOUSE_USER=default
-export CLICKHOUSE_PASSWORD=ваш_реальный_пароль
+export CLICKHOUSE_PASSWORD=your_actual_password
 ```
 
 :::note
@@ -108,10 +107,9 @@ pip install chdb
 ```python
 import chdb
 
-result = chdb.query("SELECT 'Привет, ClickHouse!' as message")
+result = chdb.query("SELECT 'Hello, ClickHouse!' as message")
 print(result)
 ```
-
 
 ## Исследование данных {#exploring-the-data}
 
@@ -131,7 +129,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-# Загрузить переменные окружения из файла .env {#load-environment-variables-from-env-file}
+# Load environment variables from .env file
 load_dotenv()
 
 username = os.environ.get('CLICKHOUSE_USER')
@@ -202,8 +200,8 @@ plt.xlabel('Year')
 plt.ylabel('Price (£)')
 plt.title('Price of London property over time')
 
-# Показывать каждый второй год во избежание перегруженности {#show-every-2nd-year-to-avoid-crowding}
-years_to_show = df['year'][::2]  # Каждый второй год
+# Show every 2nd year to avoid crowding
+years_to_show = df['year'][::2]  # Every 2nd year
 plt.xticks(years_to_show, rotation=45)
 
 plt.grid(True, alpha=0.3)
@@ -237,36 +235,35 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
-
 <details>
   <summary>Чтение из нескольких источников за один шаг</summary>
   Также можно читать данные из нескольких источников за один шаг. Для этого вы можете использовать приведённый ниже запрос с `JOIN`:
 
   ```python
-  query = f"""
+query = f"""
+SELECT 
+    toYear(date) AS year,
+    avg(price) AS avg_price, housesSold
+FROM remoteSecure(
+'****.europe-west4.gcp.clickhouse.cloud',
+default.pp_complete,
+'{username}',
+'{password}'
+) AS remote
+JOIN (
   SELECT 
-      toYear(date) AS year,
-      avg(price) AS avg_price, housesSold
-  FROM remoteSecure(
-  '****.europe-west4.gcp.clickhouse.cloud',
-  default.pp_complete,
-  '{username}',
-  '{password}'
-  ) AS remote
-  JOIN (
-    SELECT 
-      toYear(date) AS year,
-      sum(houses_sold)*1000 AS housesSold
-      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-    WHERE area = 'city of london' AND houses_sold IS NOT NULL
-    GROUP BY toYear(date)
-    ORDER BY year
-  ) AS local ON local.year = remote.year
-  WHERE town = 'LONDON'
+    toYear(date) AS year,
+    sum(houses_sold)*1000 AS housesSold
+    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+  WHERE area = 'city of london' AND houses_sold IS NOT NULL
   GROUP BY toYear(date)
-  ORDER BY year;
-  """
-  ```
+  ORDER BY year
+) AS local ON local.year = remote.year
+WHERE town = 'LONDON'
+GROUP BY toYear(date)
+ORDER BY year;
+"""
+```
 </details>
 
 <Image size="md" img={image_8} alt="предварительный просмотр DataFrame" />
@@ -275,39 +272,39 @@ df_2.head()
 В новой ячейке выполните следующую команду:
 
 ```python
-# Создание графика с двумя осями Y {#create-a-figure-with-two-y-axes}
+# Create a figure with two y-axes
 fig, ax1 = plt.subplots(figsize=(14, 8))
 
-# Построение графика проданных домов на левой оси Y {#plot-houses-sold-on-the-left-y-axis}
+# Plot houses sold on the left y-axis
 color = 'tab:blue'
 ax1.set_xlabel('Year')
-ax1.set_ylabel('Проданные дома', color=color)
-ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='Проданные дома', linewidth=2)
+ax1.set_ylabel('Houses Sold', color=color)
+ax1.plot(df_2['year'], df_2['houses_sold'], marker='o', color=color, label='Houses Sold', linewidth=2)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.grid(True, alpha=0.3)
 
-# Создание второй оси Y для данных о ценах {#create-a-second-y-axis-for-price-data}
+# Create a second y-axis for price data
 ax2 = ax1.twinx()
 color = 'tab:red'
-ax2.set_ylabel('Средняя цена (£)', color=color)
+ax2.set_ylabel('Average Price (£)', color=color)
 
-# Построение графика данных о ценах до 2019 года включительно {#plot-price-data-up-until-2019}
-ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='Средняя цена', linewidth=2)
+# Plot price data up until 2019
+ax2.plot(df[df['year'] <= 2019]['year'], df[df['year'] <= 2019]['avg_price'], marker='s', color=color, label='Average Price', linewidth=2)
 ax2.tick_params(axis='y', labelcolor=color)
 
-# Форматирование оси цен с отображением валюты {#format-price-axis-with-currency-formatting}
+# Format price axis with currency formatting
 ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'£{x:,.0f}'))
 
-# Установка заголовка и отображение каждого второго года {#set-title-and-show-every-2nd-year}
-plt.title('Рынок недвижимости Лондона: объём продаж и цены в динамике', fontsize=14, pad=20)
+# Set title and show every 2nd year
+plt.title('London Housing Market: Sales Volume vs Prices Over Time', fontsize=14, pad=20)
 
-# Использование годов только до 2019 включительно для обоих наборов данных {#use-years-only-up-to-2019-for-both-datasets}
+# Use years only up to 2019 for both datasets
 all_years = sorted(list(set(df_2[df_2['year'] <= 2019]['year']).union(set(df[df['year'] <= 2019]['year']))))
-years_to_show = all_years[::2]  # Каждый второй год
+years_to_show = all_years[::2]  # Every 2nd year
 ax1.set_xticks(years_to_show)
 ax1.set_xticklabels(years_to_show, rotation=45)
 
-# Добавление легенд {#add-legends}
+# Add legends
 ax1.legend(loc='upper left')
 ax2.legend(loc='upper right')
 
@@ -322,7 +319,6 @@ plt.show()
 Цены, напротив, демонстрировали стабильный и плавный рост: с примерно £150 000 в 1995 году до около £300 000 к 2005 году.
 После 2012 года рост существенно ускорился, резко поднявшись примерно с £400 000 до более чем £1 000 000 к 2019 году.
 В отличие от объёма продаж, цены испытали минимальное влияние кризиса 2008 года и сохранили восходящую тенденцию. Вот это да!
-
 
 ## Итоги {#summary}
 

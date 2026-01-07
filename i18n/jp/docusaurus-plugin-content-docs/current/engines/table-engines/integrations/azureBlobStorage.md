@@ -7,13 +7,9 @@ title: 'AzureBlobStorage テーブルエンジン'
 doc_type: 'reference'
 ---
 
-
-
 # AzureBlobStorage テーブルエンジン {#azureblobstorage-table-engine}
 
 このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合機能を提供します。
-
-
 
 ## テーブルを作成する {#create-table}
 
@@ -60,15 +56,12 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## 仮想カラム {#virtual-columns}
 
 - `_path` — ファイルへのパス。型: `LowCardinality(String)`。
 - `_file` — ファイル名。型: `LowCardinality(String)`。
 - `_size` — ファイルサイズ（バイト単位）。型: `Nullable(UInt64)`。サイズが不明な場合、値は `NULL` になります。
 - `_time` — ファイルの最終更新時刻。型: `Nullable(DateTime)`。時刻が不明な場合、値は `NULL` になります。
-
-
 
 ## 認証 {#authentication}
 
@@ -98,7 +91,7 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 <clickhouse>
     <filesystem_caches>
         <cache_for_azure>
-            <path>キャッシュディレクトリへのパス</path>
+            <path>path to cache directory</path>
             <max_size>10Gi</max_size>
         </cache_for_azure>
     </filesystem_caches>
@@ -129,18 +122,12 @@ arthur :) create table azure_table (year UInt16, country String, counter UInt8) 
 arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2);
 
 arthur :) select _path, * from azure_table;
-```
 
-
-┌─&#95;path──────────────────────────────────────────────────────────────────────┬─年─┬─国─┬─カウンタ─┐
-
-1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
-2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
+   ┌─_path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
+1. │ cont/hive_partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
+2. │ cont/hive_partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
    └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
-
 ```
-```
-
 
 ## 関連項目 {#see-also}
 

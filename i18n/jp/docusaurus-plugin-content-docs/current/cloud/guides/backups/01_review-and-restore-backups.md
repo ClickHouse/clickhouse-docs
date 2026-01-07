@@ -22,15 +22,11 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップ設定に利用できるオプション、およびバックアップからの復元方法について説明します。
 
-
-
 ## バックアップステータス一覧 {#backup-status-list}
 
 サービスは、デフォルトの毎日スケジュールまたは選択した[カスタムスケジュール](/cloud/manage/backups/configurable-backups)に従ってバックアップされます。利用可能なすべてのバックアップは、サービスの **Backups** タブから確認できます。ここでは、バックアップのステータス、所要時間、およびバックアップサイズを確認できます。また、**Actions** 列から特定のバックアップを復元することも可能です。
 
 <Image img={backup_status_list} size="md" alt="ClickHouse Cloud におけるバックアップステータスの一覧" border/>
-
-
 
 ## バックアップコストについて {#understanding-backup-cost}
 
@@ -41,6 +37,7 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 <Image img={backup_usage} size="md" alt="ClickHouse Cloud におけるバックアップ使用状況チャート" border/>
 
 バックアップの総コストを見積もるには、スケジュールを設定する必要があります。スケジュールを設定する前に月額コストを見積もれるよう、現在 [pricing calculator](https://clickhouse.com/pricing)（料金計算ツール）の更新にも取り組んでいます。コストを見積もるには、次の入力値が必要です。
+
 - フルバックアップおよび増分バックアップのサイズ
 - 希望する実行頻度
 - 希望する保持期間
@@ -49,8 +46,6 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 :::note
 サービス内のデータサイズは時間の経過とともに増加するため、バックアップの推定コストも変化する点に注意してください。
 :::
-
-
 
 ## バックアップの復元 {#restore-a-backup}
 
@@ -63,8 +58,6 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 新しいサービスは、利用可能になるまでサービス一覧で `Provisioning` と表示されます。
 
 <Image img={backup_service_provisioning} size="md" alt="サービスプロビジョニング中" border/>
-
-
 
 ## 復元したサービスの操作 {#working-with-your-restored-service}
 
@@ -100,21 +93,21 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 ソーステーブル（この例では `db.table`）を読み取ることができる読み取り専用ユーザーを追加します。
 
 ```sql
-CREATE USER exporter
-IDENTIFIED WITH SHA256_PASSWORD BY 'ここにパスワードを入力'
-SETTINGS readonly = 1;
+  CREATE USER exporter
+  IDENTIFIED WITH SHA256_PASSWORD BY 'password-here'
+  SETTINGS readonly = 1;
 ```
 
 ```sql
-GRANT SELECT ON db.table TO exporter;
+  GRANT SELECT ON db.table TO exporter;
 ```
 
-テーブル定義をコピーしてください。
+テーブル定義をコピーします。
 
 ```sql
-SELECT create_table_query
-FROM system.tables
-WHERE database = 'db' AND table = 'table'
+  SELECT create_table_query
+  FROM system.tables
+  WHERE database = 'db' AND table = 'table'
 ```
 
 **宛先側の ClickHouse Cloud システム（破損したテーブルがあった方）で:**
@@ -122,7 +115,7 @@ WHERE database = 'db' AND table = 'table'
 宛先のデータベースを作成します。
 
 ```sql
-CREATE DATABASE db
+  CREATE DATABASE db
 ```
 
 ソースの `CREATE TABLE` 文を使用して、復元先にテーブルを作成します。
@@ -132,17 +125,17 @@ CREATE DATABASE db
 :::
 
 ```sql
-CREATE TABLE db.table ...
-ENGINE = ReplicatedMergeTree
-ORDER BY ...
+  CREATE TABLE db.table ...
+  ENGINE = ReplicatedMergeTree
+  ORDER BY ...
 ```
 
 `remoteSecure` 関数を使用して、新しく復元した ClickHouse Cloud サービスから元のサービスにデータを取り込みます。
 
 ```sql
-INSERT INTO db.table
-SELECT *
-FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
+  INSERT INTO db.table
+  SELECT *
+  FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 ```
 
 元のサービスへのデータ挿入が正常に完了したら、そのサービス上でデータを必ず検証してください。データの検証が完了したら、新しいサービスは削除してください。
@@ -160,21 +153,37 @@ FROM remoteSecure('source-hostname', db, table, 'exporter', 'password-here')
 
 ```sql
 DROP TABLE IF EXISTS table_to_drop
-SYNC SETTINGS max_table_size_to_drop=2000000000000 -- 制限を2TBに増やします
+SYNC SETTINGS max_table_size_to_drop=2000000000000 -- increases the limit to 2TB
 ```
 
 :::
 
 :::note
-レガシープラン: レガシープランをご利用のお客様の場合、24時間保持されるデフォルトの日次バックアップはストレージコストに含まれます。
+レガシープラン: レガシープランをご利用のお客様の場合、保持期間24時間のデフォルト日次バックアップはストレージ料金に含まれます。
 :::
 
 
+## バックアップの所要時間 {#backup-durations}
+
+バックアップおよびリストアにかかる時間は、データベースのサイズ、スキーマ、テーブル数など、複数の要因によって異なります。
+増分バックアップはバックアップ対象のデータ量が少ないため、通常はフルバックアップよりもはるかに短時間で完了します。
+増分バックアップからのリストアは、チェーン内のすべての増分バックアップと直近のフルバックアップがリストア処理に含まれるため、上で説明したとおり、フルバックアップからのリストアよりもわずかに時間がかかります。
+
+テストでは、約 1 TB の比較的小さなバックアップであれば、バックアップに 10〜15 分程度、もしくはそれ以上かかることがあると確認しています。
+20 TB 未満のバックアップであれば 1 時間以内に完了するはずであり、50 TB のデータのバックアップにはおおよそ 2〜3 時間かかります。
+バックアップはサイズが大きくなるほどスケールメリットがあり、社内の一部サービスでは最大 1 PB のバックアップが約 10 時間で完了した例もあります。
+
+:::note
+外部バケットへのバックアップは、ClickHouse バケットへのバックアップよりも遅くなる場合があります。
+:::
+
+リストアにかかる時間は、バックアップにかかる時間とほぼ同じです。
+
+実際の所要時間は上述のように複数の要因に依存するため、独自のデータベースまたはサンプルデータを用いてテストを実施し、より正確な見積もりを取得することを推奨します。
+
 ## 設定可能なバックアップ {#configurable-backups}
 
-デフォルトとは異なるバックアップスケジュールを設定する場合は、[設定可能なバックアップ](/cloud/manage/backups/configurable-backups)を参照してください。
-
-
+デフォルトとは異なるバックアップのスケジュールを設定したい場合は、[設定可能なバックアップ](/cloud/manage/backups/configurable-backups)を参照してください。
 
 ## 自分のクラウドアカウントへのバックアップのエクスポート {#export-backups-to-your-own-cloud-account}
 

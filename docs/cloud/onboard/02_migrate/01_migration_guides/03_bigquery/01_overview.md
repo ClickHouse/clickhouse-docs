@@ -43,11 +43,11 @@ ClickHouse Cloud currently has no concept equivalent to BigQuery folders.
 
 Like BigQuery slot reservations, you can [configure vertical and horizontal autoscaling](/manage/scaling#configuring-vertical-auto-scaling) in ClickHouse Cloud. For vertical autoscaling, you can set the minimum and maximum size for the memory and CPU cores of the compute nodes for a service. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each compute node in the service has the same size. You can change the number of compute nodes within a service with [horizontal scaling](/manage/scaling#manual-horizontal-scaling).
 
-Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling users to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
+Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling you to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries do not affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
 
 ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallback to external algorithms when the memory limit is exceeded.
 
-Lastly, I/O scheduling allows users to restrict local and remote disk accesses for workload classes based on maximum bandwidth, in-flight requests, and policy.
+Lastly, I/O scheduling allows you to restrict local and remote disk accesses for workload classes based on maximum bandwidth, in-flight requests, and policy.
 
 ### Permissions {#permissions}
 
@@ -55,7 +55,7 @@ ClickHouse Cloud controls user access in two places, via the [cloud console](/cl
 
 ## Data types {#data-types}
 
-ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC` and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types, ClickHouse users can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
+ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC` and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types, you can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
 
 | BigQuery | ClickHouse                                                                                                                                                                        |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -90,18 +90,18 @@ In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse do
 
 In addition to the primary index created from the values of a table's primary key columns, ClickHouse allows you to create secondary indexes on columns other than those in the primary key.  ClickHouse offers several types of secondary indexes, each suited to different types of queries:
 
-- **Bloom Filter Index**:
+- [**Bloom Filter Index**](/engines/table-engines/mergetree-family/mergetree#bloom-filter):
   - Used to speed up queries with equality conditions (e.g., =, IN).
   - Uses probabilistic data structures to determine whether a value exists in a data block.
-- **Token Bloom Filter Index**:
+- [**Token Bloom Filter Index**](/engines/table-engines/mergetree-family/mergetree#token-bloom-filter):
   - Similar to a Bloom Filter Index but used for tokenized strings and  suitable for full-text search queries.
-- **Min-Max Index**:
+- [**Min-Max Index**](/engines/table-engines/mergetree-family/mergetree#minmax):
   - Maintains the minimum and maximum values of a column for each data part.
   - Helps to skip reading data parts that do not fall within the specified range.
 
 ## Search indexes {#search-indexes}
 
-Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/invertedindexes) can be created for ClickHouse tables on columns with string values.
+Similar to [search indexes](https://cloud.google.com/bigquery/docs/search-index) in BigQuery, [full-text indexes](/engines/table-engines/mergetree-family/textindexes) can be created for ClickHouse tables on columns with string values.
 
 ## Vector indexes {#vector-indexes}
 

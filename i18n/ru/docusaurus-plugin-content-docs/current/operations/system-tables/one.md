@@ -26,5 +26,5 @@ SELECT * FROM system.one LIMIT 10;
 │     0 │
 └───────┘
 
-Получена 1 строка. Время выполнения: 0.001 сек.
+1 rows in set. Elapsed: 0.001 sec.
 ```

@@ -44,12 +44,12 @@ SETTINGS mode = 'unordered'
 
 ## Settings {#settings}
 
-Набор поддерживаемых настроек в основном совпадает с настройками для движка таблиц `S3Queue`, но без префикса `s3queue_`. См. [полный список настроек](../../../engines/table-engines/integrations/s3queue.md#settings).
-Чтобы получить список настроек, заданных для таблицы, используйте таблицу `system.azure_queue_settings`. Доступно начиная с версии 24.10.
+Набор поддерживаемых настроек в основном совпадает с набором для движка таблиц `S3Queue`, но без префикса `s3queue_`. См. [полный список настроек](../../../engines/table-engines/integrations/s3queue.md#settings).
+Чтобы получить список настроек, заданных для таблицы, используйте таблицу `system.azure_queue_settings`. Доступно начиная с версии `24.10`.
 
-Ниже приведены настройки, совместимые только с AzureQueue и не применимые к S3Queue.
+Ниже приведены настройки, совместимы только с AzureQueue и не применяются к S3Queue.
 
-### `after_processing_move_connection_string` {#after&#95;processing&#95;move&#95;connection&#95;string}
+### `after_processing_move_connection_string` {#after_processing_move_connection_string}
 
 Строка подключения к Azure Blob Storage, в которую будут перемещаться успешно обработанные файлы, если в качестве назначения используется другой контейнер Azure.
 
@@ -59,7 +59,7 @@ SETTINGS mode = 'unordered'
 
 Значение по умолчанию: пустая строка.
 
-### `after_processing_move_container` {#after&#95;processing&#95;move&#95;container}
+### `after_processing_move_container` {#after_processing_move_container}
 
 Имя контейнера, в который необходимо переместить успешно обработанные файлы, если целевым контейнером является другой контейнер Azure.
 
@@ -84,6 +84,12 @@ SETTINGS
     after_processing_move_connection_string = 'DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite1:10000/devstoreaccount1/;',
     after_processing_move_container = 'dst-container';
 ```
+
+## SELECT из движка таблицы AzureQueue {#select}
+
+Запросы SELECT по умолчанию запрещены для таблиц AzureQueue. Это соответствует распространённому шаблону работы с очередями, при котором данные читаются один раз и затем удаляются из очереди. SELECT запрещён для предотвращения случайной потери данных.
+Однако иногда это может быть полезно. Для этого необходимо установить параметр `stream_like_engine_allow_direct_select` в значение `True`.
+Движок AzureQueue имеет специальный параметр для запросов SELECT: `commit_on_select`. Установите его в `False`, чтобы сохранять данные в очереди после чтения, или в `True`, чтобы удалять их.
 
 ## Описание {#description}
 
@@ -114,10 +120,10 @@ SELECT * FROM stats ORDER BY key;
 
 ## Виртуальные столбцы {#virtual-columns}
 
-* `_path` — Путь к файлу.
-* `_file` — Имя файла.
+- `_path` — путь к файлу.
+- `_file` — имя файла.
 
-Дополнительные сведения о виртуальных столбцах см. [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
+Подробнее о виртуальных столбцах см. [здесь](../../../engines/table-engines/index.md#table_engines-virtual_columns).
 
 ## Интроспекция {#introspection}
 
@@ -143,24 +149,23 @@ SELECT * FROM stats ORDER BY key;
 
 CREATE TABLE system.azure_queue_log
 (
-    `hostname` LowCardinality(String) COMMENT 'Имя хоста',
-    `event_date` Date COMMENT 'Дата события записи данной строки журнала',
-    `event_time` DateTime COMMENT 'Время события записи данной строки журнала',
-    `database` String COMMENT 'Имя базы данных, в которой находится таблица S3Queue.',
-    `table` String COMMENT 'Имя таблицы S3Queue.',
-    `uuid` String COMMENT 'UUID таблицы S3Queue',
-    `file_name` String COMMENT 'Имя обрабатываемого файла',
-    `rows_processed` UInt64 COMMENT 'Количество обработанных строк',
-    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Статус обработки файла',
-    `processing_start_time` Nullable(DateTime) COMMENT 'Время начала обработки файла',
-    `processing_end_time` Nullable(DateTime) COMMENT 'Время завершения обработки файла',
-    `exception` String COMMENT 'Сообщение об исключении при его возникновении'
+    `hostname` LowCardinality(String) COMMENT 'Hostname',
+    `event_date` Date COMMENT 'Event date of writing this log row',
+    `event_time` DateTime COMMENT 'Event time of writing this log row',
+    `database` String COMMENT 'The name of a database where current S3Queue table lives.',
+    `table` String COMMENT 'The name of S3Queue table.',
+    `uuid` String COMMENT 'The UUID of S3Queue table',
+    `file_name` String COMMENT 'File name of the processing file',
+    `rows_processed` UInt64 COMMENT 'Number of processed rows',
+    `status` Enum8('Processed' = 0, 'Failed' = 1) COMMENT 'Status of the processing file',
+    `processing_start_time` Nullable(DateTime) COMMENT 'Time of the start of processing the file',
+    `processing_end_time` Nullable(DateTime) COMMENT 'Time of the end of processing the file',
+    `exception` String COMMENT 'Exception message if happened'
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMM(event_date)
 ORDER BY (event_date, event_time)
-SETTINGS index_granularity = 8192
-COMMENT 'Содержит записи журнала с информацией о файлах, обработанных движком S3Queue.'
+COMMENT 'Contains logging entries with the information files processes by S3Queue engine.'
 
 ```
 
@@ -172,7 +177,7 @@ FROM system.azure_queue_log
 LIMIT 1
 FORMAT Vertical
 
-Строка 1:
+Row 1:
 ──────
 hostname:              clickhouse
 event_date:            2024-12-16
@@ -187,6 +192,6 @@ processing_start_time: 2024-12-16 13:42:47
 processing_end_time:   2024-12-16 13:42:47
 exception:
 
-Получена 1 строка. Затрачено: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 
 ```

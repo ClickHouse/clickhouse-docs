@@ -27,7 +27,6 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
 # Azure Private Link {#azure-private-link}
 
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
@@ -54,15 +53,11 @@ Azure поддерживает межрегиональное подключен
 В ClickHouse Cloud для Azure PrivateLink фильтрация была переведена с использования resourceGUID на фильтры по Resource ID. Вы всё ещё можете использовать resourceGUID, так как он сохраняет обратную совместимость, но мы рекомендуем перейти на фильтры по Resource ID. Для миграции просто создайте новую конечную точку (endpoint) с использованием Resource ID, привяжите её к сервису и удалите старую конечную точку, основанную на resourceGUID.
 :::
 
-
-
 ## Внимание {#attention}
 ClickHouse пытается сгруппировать ваши сервисы, чтобы повторно использовать одну и ту же опубликованную [службу Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview) в пределах региона Azure. Однако такая группировка не гарантируется, особенно если вы распределяете свои сервисы между несколькими организациями ClickHouse.
 Если у вас уже настроен Private Link для других сервисов в вашей организации ClickHouse, вы в большинстве случаев можете пропустить основную часть шагов благодаря этой группировке и перейти сразу к последнему шагу: [добавить идентификатор ресурса Private Endpoint в список разрешённых для ваших сервисов](#add-private-endpoint-id-to-services-allow-list).
 
 Примеры Terraform можно найти в репозитории [Terraform Provider для ClickHouse](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/).
-
-
 
 ## Получение псевдонима подключения Azure для Private Link {#obtain-azure-connection-alias-for-private-link}
 
@@ -81,12 +76,12 @@ ClickHouse пытается сгруппировать ваши сервисы, 
 После того как у вас будет ключ API, перед выполнением каких‑либо команд задайте следующие переменные окружения:
 
 ```bash
-REGION=<код региона, используйте формат Azure, например: westus3>
+REGION=<region code, use Azure format, for example: westus3>
 PROVIDER=azure
-KEY_ID=<ID ключа>
-KEY_SECRET=<секрет ключа>
-ORG_ID=<укажите ID организации ClickHouse>
-SERVICE_NAME=<имя вашего сервиса ClickHouse>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+SERVICE_NAME=<Your ClickHouse service name>
 ```
 
 Получите значение `INSTANCE_ID` для вашего ClickHouse, отфильтровав результаты по региону, провайдеру и названию сервиса:
@@ -108,7 +103,6 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```
 
 Сохраните значение `endpointServiceId`. Оно потребуется на следующем шаге.
-
 
 ## Создание приватной конечной точки в Azure {#create-private-endpoint-in-azure}
 
@@ -204,7 +198,7 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 
   private_service_connection {
     name                              = "test-pl"
-    private_connection_resource_alias = "<данные из шага «Получение псевдонима подключения Azure для Private Link»>"
+    private_connection_resource_alias = "<data from 'Obtain Azure connection alias for Private Link' step>"
     is_manual_connection              = true
   }
 }
@@ -215,7 +209,6 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 Чтобы использовать Private Link, вам необходимо добавить идентификатор ресурса подключения частной конечной точки в список разрешённых для вашего сервиса.
 
 Идентификатор ресурса частной конечной точки доступен в портале Azure. Откройте частную конечную точку, созданную на предыдущем шаге, и нажмите **JSON View**:
-
 
 <Image img={azure_pe_view} size="lg" alt="Просмотр частной конечной точки" border />
 
@@ -228,8 +221,6 @@ resource "azurerm_private_endpoint" "example_clickhouse_cloud" {
 Вы по-прежнему можете использовать resourceGUID для обеспечения обратной совместимости. Найдите поле `resourceGuid` и скопируйте его значение:
 
 <Image img={azure_pe_resource_guid} size="lg" alt="Resource GUID частной конечной точки" border />
-
-
 
 ## Настройка DNS для Private Link {#setting-up-dns-for-private-link}
 
@@ -302,14 +293,13 @@ resource "azurerm_private_dns_a_record" "example" {
 
 ```bash
 nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
-Сервер: 127.0.0.53
-Адрес: 127.0.0.53#53
+Server: 127.0.0.53
+Address: 127.0.0.53#53
 
-Неавторитетный ответ:
-Имя: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
-Адрес: 10.0.0.4
+Non-authoritative answer:
+Name: xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud
+Address: 10.0.0.4
 ```
-
 
 ## Добавление идентификатора ресурса Private Endpoint в организацию ClickHouse Cloud {#add-the-private-endpoint-id-to-your-clickhouse-cloud-organization}
 
@@ -327,11 +317,11 @@ nslookup xxxxxxxxxx.westus3.privatelink.azure.clickhouse.cloud.
 
 ```bash
 PROVIDER=azure
-KEY_ID=<идентификатор ключа>
-KEY_SECRET=<секрет ключа>
-ORG_ID=<укажите идентификатор организации ClickHouse>
-ENDPOINT_ID=<идентификатор ресурса частной конечной точки (Private Endpoint)>
-REGION=<код региона в формате Azure>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+REGION=<region code, use Azure format>
 ```
 
 Установите переменную среды `ENDPOINT_ID`, используя данные из шага [Получение идентификатора ресурса частной конечной точки](#obtaining-private-endpoint-resourceid).
@@ -346,7 +336,7 @@ cat <<EOF | tee pl_config_org.json
       {
         "cloudProvider": "azure",
         "id": "${ENDPOINT_ID:?}",
-        "description": "Частная конечная точка Azure",
+        "description": "Azure private endpoint",
         "region": "${REGION:?}"
       }
     ]
@@ -379,7 +369,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}" -d @pl_config_org.json
 ```
 
-
 ## Добавьте идентификатор ресурса частной конечной точки (Private Endpoint Resource ID) в allow list вашего сервиса (или сервисов) {#add-private-endpoint-id-to-services-allow-list}
 
 По умолчанию сервис ClickHouse Cloud недоступен по соединению Private Link, даже если соединение Private Link одобрено и установлено. Необходимо явно добавить идентификатор ресурса частной конечной точки (Private Endpoint Resource ID) для каждого сервиса, который должен быть доступен через Private Link.
@@ -400,11 +389,11 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 
 ```bash
 PROVIDER=azure
-KEY_ID=<идентификатор ключа>
-KEY_SECRET=<секретный ключ>
-ORG_ID=<укажите идентификатор организации ClickHouse>
-ENDPOINT_ID=<идентификатор ресурса Private Endpoint>
-INSTANCE_ID=<идентификатор экземпляра>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+ENDPOINT_ID=<Private Endpoint Resource ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 Выполните эту команду для каждого сервиса, который должен быть доступен через Private Link.
@@ -443,7 +432,6 @@ EOF
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" -d @pl_config.json | jq
 ```
 
-
 ## Доступ к вашему сервису ClickHouse Cloud с использованием Private Link {#access-your-clickhouse-cloud-service-using-private-link}
 
 Каждый сервис с включённым Private Link имеет публичную и приватную конечную точку. Для подключения через Private Link необходимо использовать приватную конечную точку — это `privateDnsHostname`<sup>API</sup> или `DNS name`<sup>console</sup>, полученные на шаге [Получение псевдонима подключения Azure для Private Link](#obtain-azure-connection-alias-for-private-link).
@@ -461,10 +449,10 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X PATCH -H "Content-Type: ap
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<ID ключа>
-KEY_SECRET=<секрет ключа>
-ORG_ID=<идентификатор организации ClickHouse>
-INSTANCE_ID=<идентификатор экземпляра>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 Выполните следующую команду:
@@ -478,14 +466,13 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 ```response
 {
   ...
-  "privateDnsHostname": "xxxxxxx.&lt;код региона&gt;.privatelink.azure.clickhouse.cloud"
+  "privateDnsHostname": "xxxxxxx.<region code>.privatelink.azure.clickhouse.cloud"
 }
 ```
 
 В этом примере подключение к имени хоста `xxxxxxx.region_code.privatelink.azure.clickhouse.cloud` будет направляться через Private Link, а `xxxxxxx.region_code.azure.clickhouse.cloud` — через Интернет.
 
 Используйте `privateDnsHostname` для подключения к вашей службе ClickHouse Cloud через Private Link.
-
 
 ## Устранение неполадок {#troubleshooting}
 
@@ -494,7 +481,7 @@ curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" "https://api.clickhouse.cloud
 Выполните следующую команду:
 
 ```bash
-nslookup &lt;имя DNS&gt;
+nslookup <dns name>
 ```
 
 где «dns name» — это `privateDnsHostname`<sup>API</sup> или `DNS name`<sup>console</sup> из раздела [Obtain Azure connection alias for Private Link](#obtain-azure-connection-alias-for-private-link)
@@ -502,9 +489,9 @@ nslookup &lt;имя DNS&gt;
 В ответ вы получите следующее:
 
 ```response
-Неавторитетный ответ:
-Имя: <dns name>
-Адрес: 10.0.0.4
+Non-authoritative answer:
+Name: <dns name>
+Address: 10.0.0.4
 ```
 
 ### Сброс соединения удалённым узлом {#connection-reset-by-peer}
@@ -525,26 +512,25 @@ OpenSSL должен успешно подключиться (см. CONNECTED в
 openssl s_client -connect abcd.westus3.privatelink.azure.clickhouse.cloud:9440
 ```
 
-
 ```response
-# highlight-next-line {#highlight-next-line}
+# highlight-next-line
 CONNECTED(00000003)
 write:errno=104
 ---
-сертификат удалённой стороны недоступен
+no peer certificate available
 ---
-имена УЦ для клиентских сертификатов не отправлены
+No client certificate CA names sent
 ---
-при SSL-рукопожатии прочитано 0 байт и записано 335 байт
-Проверка: успешно
+SSL handshake has read 0 bytes and written 335 bytes
+Verification: OK
 ---
-Новое соединение, (NONE), шифр: (NONE)
-Безопасная повторная инициализация НЕ поддерживается
-Сжатие: нет
-Декомпрессия: нет
-Протокол ALPN не согласован
-ранние данные не отправлялись
-Код возврата проверки: 0 (успешно)
+New, (NONE), Cipher is (NONE)
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
 ```
 
 ### Проверка фильтров частных конечных точек {#checking-private-endpoint-filters}
@@ -552,10 +538,10 @@ write:errno=104
 Перед выполнением любых команд задайте следующие переменные окружения:
 
 ```bash
-KEY_ID=<идентификатор ключа>
-KEY_SECRET=<секретный ключ>
-ORG_ID=<укажите идентификатор организации ClickHouse>
-INSTANCE_ID=<идентификатор инстанса>
+KEY_ID=<Key ID>
+KEY_SECRET=<Key secret>
+ORG_ID=<please set ClickHouse organization ID>
+INSTANCE_ID=<Instance ID>
 ```
 
 Выполните следующую команду, чтобы проверить фильтры Private Endpoint:
@@ -563,7 +549,6 @@ INSTANCE_ID=<идентификатор инстанса>
 ```bash
 curl --silent --user "${KEY_ID:?}:${KEY_SECRET:?}" -X GET -H "Content-Type: application/json" "https://api.clickhouse.cloud/v1/organizations/${ORG_ID:?}/services/${INSTANCE_ID:?}" | jq .result.privateEndpointIds
 ```
-
 
 ## Дополнительная информация {#more-information}
 

@@ -41,10 +41,9 @@ SETTINGS max_suspicious_broken_parts = 500;
 ```sql
 ALTER TABLE tab MODIFY SETTING max_suspicious_broken_parts = 100;
 
--- сброс до глобального значения по умолчанию (значение из system.merge_tree_settings)
+-- reset to global default (value from system.merge_tree_settings)
 ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 ```
-
 
 ## Настройки MergeTree {#mergetree-settings}
 
@@ -52,10 +51,9 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/settings/autogenerate-settings.sh
   */ }
 
-
 ## adaptive_write_buffer_initial_size {#adaptive_write_buffer_initial_size} 
 
-<SettingsInfoBlock type="UInt64" default_value="16384" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="16384" />
 
 Начальный размер адаптивного буфера записи
 
@@ -132,7 +130,7 @@ time DateTime,
 key Int32,
 value String
 ) ENGINE = MergeTree
-ORDER BY (time DESC, key)  -- Сортировка по убыванию по полю 'time'
+ORDER BY (time DESC, key)  -- Descending order on 'time' field
 SETTINGS allow_experimental_reverse_key = 1;
 
 SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
@@ -141,7 +139,6 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 При использовании в запросе `ORDER BY time DESC` будет применён `ReadInOrder`.
 
 **Значение по умолчанию:** false
-
 
 ## allow_floating_point_partition_key {#allow_floating_point_partition_key} 
 
@@ -391,9 +388,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 ## compact_parts_max_granules_to_buffer {#compact_parts_max_granules_to_buffer} 
 
-<SettingsInfoBlock type="UInt64" default_value="128" />
+<SettingsInfoBlock type="NonZeroUInt64" default_value="128" />
 
-Доступен только в ClickHouse Cloud. Максимальное количество гранул, которые можно записать в одну полосу в компактных частях
+Доступен только в ClickHouse Cloud. Максимальное число гранул, которые можно записать в одну полосу компактных частей.
 
 ## compact_parts_merge_max_bytes_to_prefetch_part {#compact_parts_merge_max_bytes_to_prefetch_part} 
 
@@ -658,17 +655,16 @@ INDEX idx_b b TYPE set(3)
 )
 ENGINE = MergeTree ORDER BY tuple() SETTINGS exclude_materialize_skip_indexes_on_merge = 'idx_a';
 
-INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- настройка не действует на INSERT
+INSERT INTO tab SELECT number, number / 50 FROM numbers(100); -- setting has no effect on INSERTs
 
--- idx_a будет исключён из обновления при фоновом или явном слиянии через OPTIMIZE TABLE FINAL
+-- idx_a will be excluded from update during background or explicit merge via OPTIMIZE TABLE FINAL
 
--- можно исключить несколько индексов, указав их списком
+-- can exclude multiple indexes by providing a list
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = 'idx_a, idx_b';
 
--- настройка по умолчанию, индексы не исключаются из обновления при слиянии
+-- default setting, no indexes excluded from being updated during merge
 ALTER TABLE tab MODIFY SETTING exclude_materialize_skip_indexes_on_merge = '';
 ```
-
 
 ## execute_merges_on_single_replica_time_threshold {#execute_merges_on_single_replica_time_threshold} 
 
@@ -966,7 +962,6 @@ drop или rebuild.
 <max_concurrent_queries>50</max_concurrent_queries>
 ```
 
-
 ## max&#95;delay&#95;to&#95;insert {#max_delay_to_insert}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -1005,7 +1000,6 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 = 300, parts&#95;to&#95;delay&#95;insert = 150, max&#95;delay&#95;to&#95;insert = 1,
 min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается на `max( 10, 1 * 1000 *
 (224 - 150 + 1) / (300 - 150) ) = 500` миллисекунд.
-
 
 ## max_delay_to_mutate_ms {#max_delay_to_mutate_ms} 
 
@@ -1087,15 +1081,15 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 
 ## max_part_loading_threads {#max_part_loading_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревшая настройка, не оказывает эффекта.
+Устаревшая настройка, не оказывает никакого эффекта.
 
 ## max_part_removal_threads {#max_part_removal_threads} 
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
-Устаревшая настройка, не оказывает никакого эффекта.
+Устаревший параметр, не оказывает эффекта.
 
 ## max_partitions_to_read {#max_partitions_to_read} 
 
@@ -1370,6 +1364,18 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Определяет, когда срабатывает логика по отношению к количеству частей в
 партиции. Чем больше коэффициент, тем позже будет реакция.
 
+## merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once {#merge_selector_enable_heuristic_to_lower_max_parts_to_merge_at_once} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting"}]}]}/>
+
+Включает эвристику для простого селектора слияний, которая будет снижать максимальное ограничение при выборе слияний.
+Таким образом, число одновременных слияний увеличится, что может помочь с ошибками TOO_MANY_PARTS,
+но при этом увеличится write amplification.
+
 ## merge_selector_enable_heuristic_to_remove_small_parts_at_right {#merge_selector_enable_heuristic_to_remove_small_parts_at_right} 
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1377,6 +1383,16 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 Включает эвристику выбора частей для слияния, которая удаляет части с правой
 границы диапазона, если их размер меньше заданного соотношения (0.01) от sum_size.
 Работает для селекторов слияний Simple и StochasticSimple.
+
+## merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent {#merge_selector_heuristic_to_lower_max_parts_to_merge_at_once_exponent} 
+
+<ExperimentalBadge/>
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "5"},{"label": "New setting"}]}]}/>
+
+Управляет значением показателя степени, используемым в формулах, описывающих нисходящую кривую. Уменьшение показателя степени приведёт к уменьшению ширины слияний, что увеличит коэффициент усиления записи. Обратное также верно.
 
 ## merge_selector_window_size {#merge_selector_window_size} 
 
@@ -1528,6 +1544,19 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, `INSERT` задерживается
 [max_bytes_to_merge_at_max_space_in_pool](/operations/settings/merge-tree-settings#max_bytes_to_merge_at_max_space_in_pool)
 / 1024. В противном случае ClickHouse выбрасывает исключение.
 
+## min_columns_to_activate_adaptive_write_buffer {#min_columns_to_activate_adaptive_write_buffer} 
+
+<SettingsInfoBlock type="UInt64" default_value="500" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.1"},{"label": "500"},{"label": "New setting"}]}]}/>
+
+Позволяет снизить расход памяти для таблиц с большим числом столбцов за счёт использования адаптивных буферов записи.
+
+Возможные значения:
+
+- 0 — без ограничений
+- 1 — всегда включено
+
 ## min_compress_block_size {#min_compress_block_size} 
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -1654,7 +1683,6 @@ ClickHouse будет ориентироваться на то значение,
 ```xml
 <min_marks_to_honor_max_concurrent_queries>10</min_marks_to_honor_max_concurrent_queries>
 ```
-
 
 ## min_merge_bytes_to_use_direct_io {#min_merge_bytes_to_use_direct_io} 
 
@@ -2233,7 +2261,7 @@ WHERE table LIKE 'my_sparse_table';
 Вы можете увидеть, какие части `s` были сохранены в разрежённом формате сериализации:
 
 ```response
-┌─столбец─┬─serialization_kind─┐
+┌─column─┬─serialization_kind─┐
 │ id     │ Default            │
 │ s      │ Default            │
 │ id     │ Default            │
@@ -2258,7 +2286,6 @@ WHERE table LIKE 'my_sparse_table';
 │ s      │ Sparse             │
 └────────┴────────────────────┘
 ```
-
 
 ## reduce_blocking_parts_sleep_ms {#reduce_blocking_parts_sleep_ms} 
 

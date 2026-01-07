@@ -12,7 +12,7 @@ import secure_s3 from '@site/static/images/cloud/security/secures3.png';
 import s3_info from '@site/static/images/cloud/security/secures3_arn.png';
 import s3_output from '@site/static/images/cloud/security/secures3_output.png';
 
-This article demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service (S3) and access their data securely.
+This guide demonstrates how ClickHouse Cloud customers can leverage role-based access to authenticate with Amazon Simple Storage Service (S3) and access their data securely.
 Before diving into the setup for secure S3 access, it is important to understand how this works. Below is an overview of how ClickHouse services can access private S3 buckets by assuming into a role within customers' AWS account.
 
 <Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
@@ -62,11 +62,11 @@ Do not put the full bucket ARN but instead just the bucket name only.
 
 | Parameter                 | Default Value        | Description                                                                                        |
 | :---                      |    :----:            | :----                                                                                              |
-| RoleName                  | ClickHouseAccess-001 | The name of the new role that ClickHouse Cloud will use to access your S3 bucket                   |
+| RoleName                  | ClickHouseAccess-001 | The name of the new role that ClickHouse Cloud will use to access your S3 bucket.                   |
 | Role Session Name         |      *               | Role Session Name can be used as a shared secret to further protect your bucket.                   |
-| ClickHouse Instance Roles |                      | Comma separated list of ClickHouse service IAM roles that can use this Secure S3 integration.      |
+| ClickHouse Instance Roles |                      | Comma-separated list of ClickHouse service IAM roles that can use this secure S3 integration.      |
 | Bucket Access             |    Read              | Sets the level of access for the provided buckets.                                                 |
-| Bucket Names              |                      | Comma separated list of **bucket names** that this role will have access to.                       |
+| Bucket Names              |                      | Comma-separated list of bucket names that this role will have access to. **Note:** use the bucket name, not the full bucket ARN.                       |
 
 6. Select the **I acknowledge that AWS CloudFormation might create IAM resources with custom names.** checkbox
 
@@ -105,7 +105,7 @@ Trust policy (Please replace `{ClickHouse_IAM_ARN}` with the IAM Role arn belong
 }
 ```
 
-IAM policy (Please replace `{BUCKET_NAME}` with your bucket name):
+**IAM policy**
 
 ```json
 {
@@ -157,3 +157,53 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 We recommend that your source S3 is in the same region as your ClickHouse Cloud Service to reduce on data transfer costs.
 For more information, refer to [S3 pricing]( https://aws.amazon.com/s3/pricing/)
 :::
+
+## Advanced action control {#advanced-action-control}
+
+For stricter access control, it's possible to restrict the bucket policy to only accept requests that originate from ClickHouse Cloud's VPC endpoints using the [`aws:SourceVpce` condition](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies-vpc-endpoint.html#example-bucket-policies-restrict-accesss-vpc-endpoint). To obtain the VPC endpoints for your ClickHouse Cloud region, open a terminal and run:
+
+```bash
+# Replace <your-region> with your ClickHouse Cloud region
+curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<your-region>") | .s3_endpoints[]'
+```
+
+Then, add a deny rule to the IAM policy with the returned endpoints:
+
+```json
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "s3:List*",
+                    "s3:Get*"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::{BUCKET_NAME}",
+                    "arn:aws:s3:::{BUCKET_NAME}/*"
+                ]
+            },
+            {
+                "Sid": "VisualEditor3",
+                "Effect": "Deny",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": "*",
+                "Condition": {
+                    "StringNotEquals": {
+                        "aws:SourceVpce": [
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}",
+                            "{ClickHouse VPC ID from your S3 region}"
+                        ]
+                    }
+                }
+            }
+        ]
+}
+```
+
+For more details on accessing endpoints for ClickHouse Cloud services, see [Cloud IP Addresses](/manage/data-sources/cloud-endpoints-api).

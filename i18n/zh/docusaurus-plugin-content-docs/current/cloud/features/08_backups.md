@@ -36,8 +36,6 @@ ClickHouse Cloud 的备份由“完整备份”和“增量备份”组合而成
 
 有关更多详细信息，请参阅 ["查看和恢复备份"](/cloud/manage/backups/overview)。
 
-
-
 ## 可配置备份 {#configurable-backups}
 
 <ScalePlanFeatureBadge feature="Configurable Backups" linking_verb_are="True"/>
@@ -56,8 +54,6 @@ ClickHouse Cloud 允许您为 **Scale** 和 **Enterprise** 等级的服务配置
 
 有关配置备份计划的步骤，请参阅 ["Configure backup schedules"](/cloud/manage/backups/configurable-backups)。
 
-
-
 ## 自有对象存储（BYOB）备份 {#byob}
 
 <EnterprisePlanFeatureBadge/>
@@ -71,7 +67,7 @@ ClickHouse Cloud 允许将备份导出到您自己的云服务提供商（CSP）
 我们还会提供备份/恢复命令，帮助您将备份导出到 bucket 并从中恢复。
 
 :::note 跨区域备份
-用户应注意，将备份导出到同一云服务提供商中不同区域的任何用例，都会产生 [数据传输](/cloud/manage/network-data-transfer) 费用。
+将备份导出到同一云服务提供商中不同区域的任何用例，都会产生 [数据传输](/cloud/manage/network-data-transfer) 费用。
 
 目前，我们不支持跨云备份，也不支持使用 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) 的服务或受监管服务的备份/恢复。
 :::

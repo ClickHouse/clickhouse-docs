@@ -46,7 +46,6 @@ SELECT * FROM json_as_string;
 └───────────────────────────────────┘
 ```
 
-
 ### JSON 对象数组 {#an-array-of-json-objects}
 
 ```sql title="Query"
@@ -62,6 +61,5 @@ SELECT * FROM json_square_brackets;
 │ {"id": 2, "name": "name2"} │
 └────────────────────────────┘
 ```
-
 
 ## 格式设置 {#format-settings}

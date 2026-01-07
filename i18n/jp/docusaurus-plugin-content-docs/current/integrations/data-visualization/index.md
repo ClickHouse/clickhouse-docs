@@ -8,8 +8,6 @@ description: 'ClickHouse におけるデータ可視化について学ぶ'
 doc_type: 'guide'
 ---
 
-
-
 # ClickHouse でのデータの可視化 {#visualizing-data-in-clickhouse}
 
 <div class='vimeo-container'>
@@ -48,8 +46,7 @@ doc_type: 'guide'
 - [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 - [Tableau](./tableau/tableau-and-clickhouse.md)
 - [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
-
-
+- [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## ClickHouse Cloud とデータ可視化ツールの互換性 {#clickhouse-cloud-compatibility-with-data-visualization-tools}
 
@@ -66,6 +63,7 @@ doc_type: 'guide'
 | [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)                  | ネイティブコネクタ              | ✅      | ✅          |                                                                                                                                         |
 | [Grafana](./grafana/index.md)                        | ClickHouse 公式コネクタ | ✅      | ✅          |                                                                                                                                         |
 | [Hashboard](./community_integrations/hashboard-and-clickhouse.md)           | ネイティブコネクタ              | ✅      | ✅          |                                                                                                                                         |
+| [Holistics](./community_integrations/holistics-and-clickhouse.md)           | ネイティブコネクタ              | ✅      | ✅          |                                                                                                                                         |
 | [Lightdash](./lightdash-and-clickhouse.md)      | ネイティブコネクタ | ✅      | ✅          | 
             |
 | [Looker](./looker-and-clickhouse.md)                 | ネイティブコネクタ              | ✅      | ✅          | いくつかの制限があります。詳細は [ドキュメント](./looker-and-clickhouse.md) を参照してください                    |

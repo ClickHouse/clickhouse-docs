@@ -39,7 +39,6 @@ ENGINE = MergeTree
 ORDER BY (postcode1, postcode2, addr1, addr2);
 ```
 
-
 ## データの前処理と挿入 {#preprocess-import-data}
 
 `url` 関数を使用してデータを ClickHouse にストリーミングします。その前に、受信データの一部を前処理する必要があります。内容は次のとおりです：
@@ -94,7 +93,6 @@ FROM url(
 
 データの挿入が完了するまで待ちます。ネットワーク速度にもよりますが、1～2分ほどかかります。
 
-
 ## データを検証する {#validate-data}
 
 何行挿入されたかを確認して、正しく動作したことを検証します。
@@ -104,7 +102,7 @@ SELECT count()
 FROM uk.uk_price_paid
 ```
 
-このクエリを実行した時点で、データセットには 27,450,499 行が含まれていました。ClickHouse におけるこのテーブルのストレージサイズを確認してみましょう。
+At the time this query was run, the dataset had 27,450,499 rows. Let's see what the storage size is of the table in ClickHouse:
 
 ```sql runnable
 SELECT formatReadableSize(total_bytes)
@@ -112,14 +110,13 @@ FROM system.tables
 WHERE name = 'uk_price_paid'
 ```
 
-テーブルのサイズがわずか 221.43 MiB しかないことに注目してください！
+Notice the size of the table is just 221.43 MiB!
 
+## Run some queries {#run-queries}
 
-## いくつかクエリを実行する {#run-queries}
+Let's run some queries to analyze the data:
 
-データを分析するために、いくつかクエリを実行します。
-
-### クエリ 1: 年ごとの平均価格 {#average-price}
+### Query 1. Average price per year {#average-price}
 
 ```sql runnable
 SELECT
@@ -132,8 +129,7 @@ GROUP BY year
 ORDER BY year
 ```
 
-
-### クエリ 2. ロンドンの1年あたりの平均価格 {#average-price-london}
+### Query 2. average price per year in London {#average-price-london}
 
 ```sql runnable
 SELECT
@@ -147,10 +143,9 @@ GROUP BY year
 ORDER BY year
 ```
 
-2020年に住宅価格に異変が起きました！もっとも、それはおそらく驚くことではないでしょうが……
+Something happened to home prices in 2020! But that is probably not a surprise...
 
-
-### クエリ3. 最も高価なエリア {#most-expensive-neighborhoods}
+### Query 3. The most expensive neighborhoods {#most-expensive-neighborhoods}
 
 ```sql runnable
 SELECT
@@ -168,7 +163,6 @@ HAVING c >= 100
 ORDER BY price DESC
 LIMIT 100
 ```
-
 
 ## プロジェクションによるクエリの高速化 {#speeding-up-queries-with-projections}
 

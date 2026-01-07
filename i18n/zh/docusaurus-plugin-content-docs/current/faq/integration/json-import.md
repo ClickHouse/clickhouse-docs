@@ -8,17 +8,13 @@ keywords: ['JSON 导入', 'JSONEachRow 格式', '数据导入', 'JSON 摄取', '
 doc_type: 'guide'
 ---
 
-
-
 # 如何将 JSON 导入 ClickHouse？ {#how-to-import-json-into-clickhouse}
 
 ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其中包含多种 JSON 变体，但在数据摄取场景中最常用的是 [JSONEachRow](/interfaces/formats/JSONEachRow)。它要求每行一个 JSON 对象，各对象之间以换行符分隔。
 
-
-
 ## 示例 {#examples}
 
-使用 [HTTP 接口](../../interfaces/http.md)：
+使用 [HTTP 接口](/interfaces/http)：
 
 ```bash
 $ echo '{"foo":"bar"}' | curl 'http://localhost:8123/?query=INSERT%20INTO%20test%20FORMAT%20JSONEachRow' --data-binary @-

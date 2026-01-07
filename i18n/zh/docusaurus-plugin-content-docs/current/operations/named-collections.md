@@ -25,6 +25,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 `allow_named_collection_override_by_default`（该选项默认启用）。
 :::
 
+
 ## 在 system 数据库中存储命名集合 {#storing-named-collections-in-the-system-database}
 
 ### DDL 示例 {#ddl-example}
@@ -41,6 +42,7 @@ url = 'https://connection.url/'
 * `key_1` 始终可以被覆盖。
 * `key_2` 永远不能被覆盖。
 * `url` 是否可以被覆盖取决于 `allow_named_collection_override_by_default` 的取值。
+
 
 ### 使用 DDL 创建命名集合的权限 {#permissions-to-create-named-collections-with-ddl}
 
@@ -61,8 +63,9 @@ url = 'https://connection.url/'
 ```
 
 :::tip
-在上面的示例中，`password_sha256_hex` 的值是该密码的 SHA256 哈希的十六进制表示。针对用户 `default` 的这段配置包含属性 `replace=true`，因为在默认配置中为该用户设置的是明文 `password`，而同一个用户不能同时设置明文密码和 SHA256 十六进制密码。
+在上面的示例中，`password_sha256_hex` 的值是该密码的 SHA256 哈希的十六进制表示。针对用户 `default` 的这段配置包含属性 `replace=true`，因为在默认配置中为该用户配置的是明文 `password`，而同一用户不能同时配置明文密码和 SHA256 十六进制密码。
 :::
+
 
 ### 命名集合的存储 {#storage-for-named-collections}
 
@@ -90,6 +93,7 @@ url = 'https://connection.url/'
 
 可选配置参数 `update_timeout_ms` 的默认值为 `5000` 毫秒。
 
+
 ## 在配置文件中存储命名集合 {#storing-named-collections-in-configuration-files}
 
 ### XML 示例 {#xml-example}
@@ -111,6 +115,7 @@ url = 'https://connection.url/'
 * `key_1` 始终可以被覆盖。
 * `key_2` 不可被覆盖。
 * `url` 是否可以被覆盖取决于 `allow_named_collection_override_by_default` 的值。
+
 
 ## 修改命名集合 {#modifying-named-collections}
 
@@ -143,18 +148,20 @@ ALTER NAMED COLLECTION collection2 DELETE key2
 ALTER NAMED COLLECTION collection2 SET key1=4, DELETE key3
 ```
 
-若要强制某个键使用 `overridable` 标志的默认设置，必须先删除该键，然后再重新添加。
+若要强制某个键使用 `overridable` 标志位的默认设置，需要先删除该键，然后再重新添加。
 
 ```sql
 ALTER NAMED COLLECTION collection2 DELETE key1;
 ALTER NAMED COLLECTION collection2 SET key1=4;
 ```
 
+
 ### 删除 DDL 命名集合 `collection2`： {#drop-the-ddl-named-collection-collection2}
 
 ```sql
 DROP NAMED COLLECTION collection2
 ```
+
 
 ## 用于访问 S3 的命名集合 {#named-collections-for-accessing-s3}
 
@@ -169,6 +176,7 @@ secret_access_key = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
 format = 'CSV',
 url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 ```
+
 
 ### XML 示例 {#xml-example-1}
 
@@ -185,6 +193,7 @@ url = 'https://s3.us-east-1.amazonaws.com/yourbucket/mydata/'
 </clickhouse>
 ```
 
+
 ### s3() 函数和 S3 表命名集合示例 {#s3-function-and-s3-table-named-collection-examples}
 
 以下两个示例都使用同一个命名集合 `s3_mydata`：
@@ -198,8 +207,9 @@ SELECT * FROM numbers(10000);
 ```
 
 :::tip
-上述 `s3()` 函数的第一个参数是集合名称 `s3_mydata`。如果不使用具名集合，那么在每次调用 `s3()` 函数时，都必须传入访问密钥 ID、秘密访问密钥、格式和 URL。
+上述 `s3()` 函数的第一个参数是命名集合 `s3_mydata` 的名称。如果不使用命名集合，则在每次调用 `s3()` 函数时，都必须传入访问密钥 ID、秘密访问密钥、格式和 URL。
 :::
+
 
 #### S3 表 {#s3-table}
 
@@ -215,6 +225,7 @@ SELECT * FROM s3_engine_table LIMIT 3;
 │      2 │
 └────────┘
 ```
+
 
 ## 用于访问 MySQL 数据库的命名集合 {#named-collections-for-accessing-mysql-database}
 
@@ -232,6 +243,7 @@ database = 'test',
 connection_pool_size = 8,
 replace_query = 1
 ```
+
 
 ### XML 示例 {#xml-example-2}
 
@@ -251,6 +263,7 @@ replace_query = 1
 </clickhouse>
 ```
 
+
 ### mysql() 函数、MySQL 表、MySQL 数据库和 Dictionary 命名集合示例 {#mysql-function-mysql-table-mysql-database-and-dictionary-named-collection-examples}
 
 下面四个示例都使用同一个名为 `mymysql` 的命名集合：
@@ -269,6 +282,7 @@ SELECT count() FROM mysql(mymysql, table = 'test');
 该命名集合未指定 `table` 参数，因此在函数调用时通过 `table = 'test'` 来指定该参数。
 :::
 
+
 #### MySQL 表 {#mysql-table}
 
 ```sql
@@ -281,8 +295,9 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-该 DDL 会覆盖命名集合中对 connection&#95;pool&#95;size 的配置。
+该 DDL 会覆盖命名集合中关于 connection&#95;pool&#95;size 的设置。
 :::
+
 
 #### MySQL 数据库 {#mysql-database}
 
@@ -296,6 +311,7 @@ SHOW TABLES FROM mydatabase;
 │ test   │
 └────────┘
 ```
+
 
 #### MySQL 字典 {#mysql-dictionary}
 
@@ -312,6 +328,7 @@ SELECT dictGet('dict', 'B', 2);
 │ two                     │
 └─────────────────────────┘
 ```
+
 
 ## 用于访问 PostgreSQL 数据库的命名集合 {#named-collections-for-accessing-postgresql-database}
 
@@ -342,7 +359,7 @@ database = 'test',
 schema = 'test_schema'
 ```
 
-示例配置：
+配置示例：
 
 ```xml
 <clickhouse>
@@ -358,6 +375,7 @@ schema = 'test_schema'
     </named_collections>
 </clickhouse>
 ```
+
 
 ### 在 PostgreSQL 函数中使用命名集合的示例 {#example-of-using-named-collections-with-the-postgresql-function}
 
@@ -377,6 +395,7 @@ SELECT * FROM postgresql(mypg, table = 'test', schema = 'public');
 └───┘
 ```
 
+
 ### 在 PostgreSQL 引擎数据库中使用命名集合的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql}
 
 ```sql
@@ -392,10 +411,11 @@ SELECT * FROM mypgtable;
 ```
 
 :::note
-在创建表时，PostgreSQL 会从命名集合中复制数据。之后对该集合的更改不会影响现有的表。
+在创建表时，PostgreSQL 会从命名集合中复制数据。之后对该集合的更改不会影响已存在的表。
 :::
 
-### 在使用 PostgreSQL 引擎的数据库中使用命名集合的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
+
+### 在 PostgreSQL 引擎数据库中使用命名集合的示例 {#example-of-using-named-collections-with-database-with-engine-postgresql-1}
 
 ```sql
 CREATE DATABASE mydatabase ENGINE = PostgreSQL(mypg);
@@ -407,7 +427,8 @@ SHOW TABLES FROM mydatabase
 └──────┘
 ```
 
-### 在以 POSTGRESQL 为源的字典中使用具名集合的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
+
+### 在以 PostgreSQL 为源的字典中使用命名集合的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-postgresql}
 
 ```sql
 CREATE DICTIONARY dict (a Int64, b String)
@@ -422,6 +443,7 @@ SELECT dictGet('dict', 'b', 2);
 │ two                     │
 └─────────────────────────┘
 ```
+
 
 ## 用于访问远程 ClickHouse 数据库的命名集合 {#named-collections-for-accessing-a-remote-clickhouse-database}
 
@@ -454,7 +476,8 @@ secure = 1
 </clickhouse>
 ```
 
-由于已使用 `remoteSecure`，建立连接时不需要设置 `secure`，但它仍可用于字典。
+由于已使用 `remoteSecure`，进行连接时无需设置 `secure`，但它仍可用于字典。
+
 
 ### 使用命名集合与 `remote`/`remoteSecure` 函数的示例 {#example-of-using-named-collections-with-the-remoteremotesecure-functions}
 
@@ -477,6 +500,7 @@ SELECT * FROM remote(remote1, database = default, table = test);
 └───┴───┘
 ```
 
+
 ### 在以 ClickHouse 为源的字典中使用命名集合的示例 {#example-of-using-named-collections-with-a-dictionary-with-source-clickhouse}
 
 ```sql
@@ -491,6 +515,7 @@ SELECT dictGet('dict', 'b', 1);
 │ a                       │
 └─────────────────────────┘
 ```
+
 
 ## 用于访问 Kafka 的命名集合 {#named-collections-for-accessing-kafka}
 
@@ -508,6 +533,7 @@ kafka_max_block_size = '1048576';
 
 ```
 
+
 ### XML 示例 {#xml-example-3}
 
 ```xml
@@ -523,6 +549,7 @@ kafka_max_block_size = '1048576';
     </named_collections>
 </clickhouse>
 ```
+
 
 ### 在 Kafka 表中使用命名集合的示例 {#example-of-using-named-collections-with-a-kafka-table}
 
@@ -548,15 +575,17 @@ SETTINGS kafka_num_consumers = 4,
          kafka_thread_per_consumer = 1;
 ```
 
+
 ## 用于备份的命名集合 {#named-collections-for-backups}
 
-有关参数说明，请参阅 [备份和恢复](./backup.md)。
+有关参数说明，请参阅 [备份和恢复](/operations/backup/overview)。
 
 ### DDL 示例 {#ddl-example-4}
 
 ```sql
 BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
 ```
+
 
 ### XML 示例 {#xml-example-4}
 
@@ -571,6 +600,7 @@ BACKUP TABLE default.test to S3(named_collection_s3_backups, 'directory')
     </named_collections>
 </clickhouse>
 ```
+
 
 ## 用于访问 MongoDB 表和字典的命名集合 {#named-collections-for-accessing-mongodb-table-and-dictionary}
 
@@ -588,6 +618,7 @@ database = 'test',
 collection = 'my_collection',
 options = 'connectTimeoutMS=10000'
 ```
+
 
 ### XML 示例 {#xml-example-5}
 
@@ -607,7 +638,8 @@ options = 'connectTimeoutMS=10000'
 </clickhouse>
 ```
 
-#### MongoDB 集合 {#mongodb-table}
+
+#### MongoDB 表 {#mongodb-table}
 
 ```sql
 CREATE TABLE mytable(log_type VARCHAR, host VARCHAR, command VARCHAR) ENGINE = MongoDB(mymongo, options='connectTimeoutMS=10000&compressors=zstd')
@@ -619,8 +651,9 @@ SELECT count() FROM mytable;
 ```
 
 :::note
-DDL 会覆盖选项中指定集合的设置。
+DDL 中的 options 设置会覆盖命名集合中的对应设置。
 :::
+
 
 #### MongoDB 字典 {#mongodb-dictionary}
 
@@ -643,5 +676,5 @@ SELECT dictGet('dict', 'b', 2);
 ```
 
 :::note
-命名的集合将集合名称指定为 `my_collection`。在函数调用中，通过 `collection = 'my_dict'` 覆盖该名称，以选择另一个集合。
+该命名集合将集合名指定为 `my_collection`。在函数调用中，通过 `collection = 'my_dict'` 覆盖该名称，以选择另一个集合。
 :::

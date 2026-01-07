@@ -27,7 +27,6 @@ doc_type: 'reference'
 </protocols>
 ```
 
-
 ### Настройка уровней протокола {#basic-modules-define-protocol-layers}
 
 Вы можете задавать уровни протокола с помощью базовых модулей. Например, чтобы задать
@@ -62,7 +61,6 @@ doc_type: 'reference'
 Обработчик протокола `gRPC` не реализован для `Composable protocols`.
 :::
 
-
 ### Настройка конечных точек {#endpoint-ie-listening-port-is-denoted-by-port-and-optional-host-tags}
 
 Конечные точки (прослушивающие порты) задаются с помощью тегов `<port>` и
@@ -87,7 +85,6 @@ doc_type: 'reference'
 
 Если тег `<host>` опущен, используется `<listen_host>` из корневой конфигурации.
 
-
 ### Настройка последовательностей слоёв {#layers-sequence-is-defined-by-impl-tag-referencing-another-module}
 
 Последовательности слоёв задаются с помощью тега `<impl>`, ссылающегося на другой
@@ -97,12 +94,12 @@ doc_type: 'reference'
 ```xml
 <protocols>
 
-  <!-- модуль http -->
+  <!-- http module -->
   <plain_http>
     <type>http</type>
   </plain_http>
 
-  <!-- модуль https, настроенный как TLS-слой поверх модуля plain_http -->
+  <!-- https module configured as a tls layer on top of plain_http module -->
   <https>
     <type>tls</type>
     <impl>plain_http</impl>
@@ -112,7 +109,6 @@ doc_type: 'reference'
 
 </protocols>
 ```
-
 
 ### Привязка конечных точек к слоям {#endpoint-can-be-attached-to-any-layer}
 
@@ -137,7 +133,6 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 
 </protocols>
 ```
-
 
 ### Определение дополнительных конечных точек {#additional-endpoints-can-be-defined-by-referencing-any-module-and-omitting-type-tag}
 
@@ -169,7 +164,6 @@ HTTP (порт 8123) и HTTPS (порт 8443):
 
 </protocols>
 ```
-
 
 ### Указание дополнительных параметров слоя {#some-modules-can-contain-specific-for-its-layer-parameters}
 

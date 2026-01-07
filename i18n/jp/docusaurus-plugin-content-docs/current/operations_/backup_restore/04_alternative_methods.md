@@ -6,8 +6,6 @@ title: '代替のバックアップおよび復元方法'
 doc_type: 'reference'
 ---
 
-
-
 # 代替バックアップ方法 {#alternative-backup-methods}
 
 ClickHouse はデータをディスク上に保存しており、ディスクをバックアップする方法は多数あります。

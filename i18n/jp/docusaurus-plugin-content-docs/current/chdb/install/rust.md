@@ -7,13 +7,9 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bin
 doc_type: 'guide'
 ---
 
-
-
 # Rust 向け chDB {#chdb-for-rust}
 
 chDB-rust は chDB 向けの実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存関係なしに Rust アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
-
-
 
 ## インストール {#installation}
 
@@ -24,7 +20,6 @@ chDB ライブラリをインストールします。
 ```bash
 curl -sL https://lib.chdb.io | bash
 ```
-
 
 ## 使用方法 {#usage}
 
@@ -38,19 +33,19 @@ chDB Rust は、ステートレスおよびステートフルの 2 種類のク�
 use chdb_rust::{execute, arg::Arg, format::OutputFormat};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // シンプルなクエリを実行
+    // Execute a simple query
     let result = execute(
         "SELECT version()",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("ClickHouseのバージョン: {}", result.data_utf8()?);
+    println!("ClickHouse version: {}", result.data_utf8()?);
     
-    // CSVファイルに対するクエリ
+    // Query with CSV file
     let result = execute(
         "SELECT * FROM file('data.csv', 'CSV')",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)])
     )?;
-    println!("CSVデータ: {}", result.data_utf8()?);
+    println!("CSV data: {}", result.data_utf8()?);
     
     Ok(())
 }
@@ -70,17 +65,17 @@ use chdb_rust::{
 use tempdir::TempDir;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // データベースストレージ用の一時ディレクトリを作成
+    // Create a temporary directory for database storage
     let tmp = TempDir::new("chdb-rust")?;
     
-    // 設定を使用してセッションを構築
+    // Build session with configuration
     let session = SessionBuilder::new()
         .with_data_path(tmp.path())
         .with_arg(Arg::LogLevel(LogLevel::Debug))
-        .with_auto_cleanup(true)  // ドロップ時に自動クリーンアップ
+        .with_auto_cleanup(true)  // Cleanup on drop
         .build()?;
 
-    // データベースとテーブルを作成
+    // Create database and table
     session.execute(
         "CREATE DATABASE demo; USE demo", 
         Some(&[Arg::MultiQuery])
@@ -91,29 +86,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None,
     )?;
 
-    // データを挿入
+    // Insert data
     session.execute(
         "INSERT INTO logs (id, msg) VALUES (1, 'Hello'), (2, 'World')",
         None,
     )?;
 
-    // データをクエリ実行
+    // Query data
     let result = session.execute(
         "SELECT * FROM logs ORDER BY id",
         Some(&[Arg::OutputFormat(OutputFormat::JSONEachRow)]),
     )?;
 
-    println!("クエリ結果:\n{}", result.data_utf8()?);
+    println!("Query results:\n{}", result.data_utf8()?);
     
-    // クエリ統計情報を取得
-    println!("読み取り行数: {}", result.rows_read());
-    println!("読み取りバイト数: {}", result.bytes_read());
-    println!("クエリ実行時間: {:?}", result.elapsed());
+    // Get query statistics
+    println!("Rows read: {}", result.rows_read());
+    println!("Bytes read: {}", result.bytes_read());
+    println!("Query time: {:?}", result.elapsed());
 
     Ok(())
 }
 ```
-
 
 ## ビルドとテスト {#building-testing}
 
@@ -137,7 +131,6 @@ cargo test
 * `tempdir` (v0.3.7) - テスト用の一時ディレクトリ処理
 * `thiserror` (v1) - エラー処理ユーティリティ
 
-
 ## エラー処理 {#error-handling}
 
 chDB Rust は、`Error` 列挙型を通じて包括的なエラー処理機能を提供します。
@@ -147,23 +140,22 @@ use chdb_rust::{execute, error::Error};
 
 match execute("SELECT 1", None) {
     Ok(result) => {
-        println!("成功: {}", result.data_utf8()?);
+        println!("Success: {}", result.data_utf8()?);
     },
     Err(Error::QueryError(msg)) => {
-        eprintln!("クエリ失敗: {}", msg);
+        eprintln!("Query failed: {}", msg);
     },
     Err(Error::NoResult) => {
-        eprintln!("結果が返されませんでした");
+        eprintln!("No result returned");
     },
     Err(Error::NonUtf8Sequence(e)) => {
-        eprintln!("無効なUTF-8: {}", e);
+        eprintln!("Invalid UTF-8: {}", e);
     },
     Err(e) => {
-        eprintln!("その他のエラー: {}", e);
+        eprintln!("Other error: {}", e);
     }
 }
 ```
-
 
 ## GitHub リポジトリ {#github-repository}
 

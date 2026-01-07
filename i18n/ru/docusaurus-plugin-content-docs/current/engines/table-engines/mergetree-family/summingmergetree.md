@@ -7,15 +7,11 @@ title: 'Табличный движок SummingMergeTree'
 doc_type: 'reference'
 ---
 
-
-
 # Движок таблиц SummingMergeTree {#summingmergetree-table-engine}
 
 Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree). Разница в том, что при слиянии частей данных для таблиц `SummingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой, которая содержит суммы значений для столбцов с числовым типом данных. Если ключ сортировки построен таким образом, что одному значению ключа соответствует большое количество строк, это существенно уменьшает объем хранимых данных и ускоряет выборку.
 
 Мы рекомендуем использовать этот движок совместно с `MergeTree`. Храните полные данные в таблице `MergeTree`, а `SummingMergeTree` используйте для хранения агрегированных данных, например при подготовке отчетов. Такой подход поможет избежать потери ценных данных из-за некорректно составленного первичного ключа.
-
-
 
 ## Создание таблицы {#creating-a-table}
 
@@ -34,6 +30,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Описание параметров запроса см. в [описании запроса](../../../sql-reference/statements/create/table.md).
 
+
 ### Параметры SummingMergeTree {#parameters-of-summingmergetree}
 
 #### Столбцы {#columns}
@@ -48,26 +45,27 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 При создании таблицы `SummingMergeTree` требуются те же [части запроса](../../../engines/table-engines/mergetree-family/mergetree.md), что и при создании таблицы `MergeTree`.
 
 <details markdown="1">
-  <summary>Устаревший метод создания таблицы</summary>
 
-  :::note
-  Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
-  :::
+<summary>Устаревший метод создания таблицы</summary>
 
-  ```sql
-  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-  (
-      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-      ...
-  ) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
-  ```
+:::note
+Не используйте этот метод в новых проектах и, по возможности, переведите старые проекты на метод, описанный выше.
+:::
 
-  Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
+```sql
+CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+(
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+) ENGINE [=] SummingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [columns])
+```
 
-  * `columns` — кортеж с именами столбцов, значения которых будут суммироваться. Необязательный параметр. Описание см. в тексте выше.
+Все параметры, кроме `columns`, имеют то же значение, что и в `MergeTree`.
+
+- `columns` — кортеж с именами столбцов, значения в которых будут суммироваться. Необязательный параметр. Для описания см. текст выше.
+
 </details>
-
 
 ## Пример использования {#usage-example}
 
@@ -155,7 +153,7 @@ INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['Chrome', 'Firefox'], [20, 1],
 INSERT INTO nested_sum VALUES ('2020-01-01', 12, ['IE'], [22], [0]);
 INSERT INTO nested_sum VALUES ('2020-01-01', 10, ['Chrome'], [4], [3]);
 
-OPTIMIZE TABLE nested_sum FINAL; -- эмулировать слияние 
+OPTIMIZE TABLE nested_sum FINAL; -- emulate merge 
 
 SELECT * FROM nested_sum;
 ┌───────date─┬─site─┬─hitsMap.browser───────────────────┬─hitsMap.imps─┬─hitsMap.clicks─┐
@@ -190,11 +188,9 @@ ARRAY JOIN
 └──────┴─────────┴─────────────┴────────┘
 ```
 
+При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/sumMap.md) для агрегации `Map`.
 
-При запросе данных используйте функцию [sumMap(key, value)](../../../sql-reference/aggregate-functions/reference/summap.md) для агрегации значений типа `Map`.
-
-Для вложенных структур данных не нужно указывать их столбцы в кортеже столбцов для суммирования.
-
+Для вложенной структуры данных не нужно указывать её столбцы в кортеже столбцов, по которым выполняется суммирование.
 
 
 ## Связанные материалы {#related-content}

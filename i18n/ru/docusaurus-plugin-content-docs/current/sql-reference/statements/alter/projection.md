@@ -8,6 +8,7 @@ doc_type: 'reference'
 ---
 
 Проекции хранят данные в формате, который оптимизирует выполнение запросов. Этот механизм полезен для:
+
 - Выполнения запросов по столбцу, который не является частью первичного ключа
 - Предварительной агрегации столбцов, что снижает как вычислительные затраты, так и нагрузку на операции ввода-вывода (I/O)
 
@@ -20,8 +21,6 @@ doc_type: 'reference'
 :::
 
 Более технические подробности об устройстве проекций можно найти на этой [странице](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections).
-
-
 
 ## Пример фильтрации без использования первичного ключа {#example-filtering-without-using-primary-keys}
 
@@ -123,7 +122,7 @@ INSERT INTO visits SELECT
 FROM numbers(100, 500);
 ```
 
-Мы выполним первый запрос с использованием `GROUP BY` по полю `user_agent`; этот запрос не будет использовать заданную проекцию, так как предагрегация не соответствует условиям запроса.
+Мы выполним первый запрос с оператором `GROUP BY` по полю `user_agent`. Этот запрос не будет использовать заданную проекцию, так как она не соответствует предагрегации.
 
 ```sql
 SELECT
@@ -133,7 +132,7 @@ FROM visits
 GROUP BY user_agent
 ```
 
-Чтобы использовать проекцию, мы можем выполнять запросы, которые выбирают часть или все поля предагрегации и группировки (`GROUP BY`).
+Чтобы воспользоваться проекцией, можно выполнять запросы, которые выбирают часть или все поля предагрегации и группировки (`GROUP BY`).
 
 ```sql
 SELECT
@@ -186,6 +185,7 @@ ORDER BY (event_id);
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
 
+
 ### Использование `_part_offset` в качестве вторичного индекса {#normal-projection-secondary-index}
 
 Поле `_part_offset` сохраняет свое значение при слияниях и мутациях, что делает его полезным для вторичного индексирования. Это можно использовать в запросах:
@@ -207,25 +207,37 @@ SETTINGS enable_shared_storage_snapshot_in_query = 1
 
 Доступны следующие операции с [проекциями](/engines/table-engines/mergetree-family/mergetree.md/#projections):
 
-
-
 ## ДОБАВИТЬ ПРОЕКЦИЮ {#add-projection}
 
-`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] )` — добавляет в метаданные таблицы описание проекции.
+`ALTER TABLE [db.]name [ON CLUSTER cluster] ADD PROJECTION [IF NOT EXISTS] name ( SELECT &lt;COLUMN LIST EXPR&gt; [GROUP BY] [ORDER BY] ) [WITH SETTINGS ( setting_name1 = setting_value1, setting_name2 = setting_value2, ...)]` — добавляет в метаданные таблицы описание проекции.
 
+### Предложение `WITH SETTINGS` {#with-settings}
+
+`WITH SETTINGS` определяет **настройки уровня проекции**, которые задают, как проекция хранит данные (например, `index_granularity` или `index_granularity_bytes`).
+Они напрямую соответствуют **настройкам таблицы MergeTree**, но применяются **только к этой проекции**.
+
+Пример:
+
+```sql
+ALTER TABLE t
+ADD PROJECTION p (
+    SELECT x ORDER BY x
+) WITH SETTINGS (
+    index_granularity = 4096,
+    index_granularity_bytes = 1048576
+);
+```
+
+Настройки проекции переопределяют настройки таблицы, применяемые к этой проекции, с учётом правил проверки (например, недопустимые или несовместимые переопределения будут отклонены).
 
 
 ## DROP PROJECTION {#drop-projection}
 
 `ALTER TABLE [db.]name [ON CLUSTER cluster] DROP PROJECTION [IF EXISTS] name` — удаляет из метаданных таблицы описание проекции и соответствующие файлы проекции на диске. Реализовано как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
-
-
 ## MATERIALIZE PROJECTION {#materialize-projection}
 
-`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` - запрос перестраивает проекцию `name` в партиции `partition_name`. Реализован как [мутация](/sql-reference/statements/alter/index.md#mutations).
-
-
+`ALTER TABLE [db.]table [ON CLUSTER cluster] MATERIALIZE PROJECTION [IF EXISTS] name [IN PARTITION partition_name]` — запрос, который перестраивает проекцию `name` в партиции `partition_name`. Реализован как [мутация](/sql-reference/statements/alter/index.md#mutations).
 
 ## CLEAR PROJECTION {#clear-projection}
 

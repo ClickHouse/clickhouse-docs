@@ -41,8 +41,6 @@ ClickHouse Server 采用传统的客户端/服务器架构，非常适合用于�
 
 这种部署模式是生产环境的首选方案，尤其适用于对可靠性、性能以及完整功能特性使用有严格要求的场景。
 
-
-
 ## ClickHouse Cloud {#clickhouse-cloud}
 
 [ClickHouse Cloud](/cloud/overview) 是 ClickHouse 的全托管版本，免除了自建部署带来的运维开销。在保留 ClickHouse Server 全部核心能力的同时，它通过一系列附加功能提升整体体验，从而进一步简化开发和运维工作。
@@ -57,11 +55,9 @@ ClickHouse Cloud 中的 SQL Console 内置强大的[仪表板](/cloud/manage/das
 
 由于服务为托管模式，无需操心更新、备份、弹性伸缩或安全补丁——这些都由平台自动处理。因此，对于希望将精力集中在数据与应用，而非数据库运维管理的组织而言，这是一个理想选择。
 
-
-
 ## clickhouse-local {#clickhouse-local}
 
-[clickhouse-local](/operations/utilities/clickhouse-local) 是一个功能强大的命令行工具，在一个独立可执行文件中提供完整的 ClickHouse 功能。本质上，它与 ClickHouse Server 使用的是同一个数据库，但采用了不同的打包方式，使你无需运行服务器实例即可直接在命令行中使用 ClickHouse 的全部能力。
+[clickhouse-local](/operations/utilities/clickhouse-local) 是一个功能强大的命令行工具，以独立可执行文件的形式提供完整的 ClickHouse 功能。本质上，它与 ClickHouse Server 是同一个数据库，但采用了不同的打包方式，使你无需运行服务器实例即可直接在命令行中使用 ClickHouse 的全部能力。
 
 <Image img={chLocal} alt="clickHouse-local" size="sm"/>
 
@@ -69,9 +65,7 @@ ClickHouse Cloud 中的 SQL Console 内置强大的[仪表板](/cloud/manage/das
 
 由于 clickhouse-local 包含 ClickHouse 的全部功能，你可以使用它完成数据转换、格式转换，或任何通常在 ClickHouse Server 上执行的数据库操作。虽然它主要用于临时操作，但在需要时也可以使用与 ClickHouse Server 相同的存储引擎来持久化数据。
 
-远程表函数与本地文件系统访问能力的结合，使得 clickhouse-local 在需要在 ClickHouse Server 与本地机器上的文件之间进行数据关联时尤其实用。对于那些你不希望上传到服务器的敏感或临时本地数据，这一点显得尤为有价值。
-
-
+远程表函数与本地文件系统访问能力的结合，使得 clickhouse-local 在需要在 ClickHouse Server 与本地机器上的文件之间进行数据联接时尤其实用。对于那些你不希望上传到服务器的敏感或临时本地数据，这一点显得尤为有价值。
 
 ## chDB {#chdb}
 

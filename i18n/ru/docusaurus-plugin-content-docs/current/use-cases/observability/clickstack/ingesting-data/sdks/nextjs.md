@@ -25,7 +25,6 @@ ClickStack может выполнять приём трасс OpenTelemetry в 
 Если вам нужна запись пользовательских сессий и мониторинг на стороне браузера, вместо этого установите [интеграцию для браузера](/use-cases/observability/clickstack/sdks/browser).
 :::
 
-
 ## Установка {#installing}
 
 ### Включите хук инструментирования (требуется для версий v15 и ниже) {#enable-instrumentation-hook}
@@ -39,7 +38,7 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  // Игнорировать предупреждения пакетов OTel 
+  // Ignore otel pkgs warnings 
   // https://github.com/open-telemetry/opentelemetry-js/issues/4173#issuecomment-1822938936
   webpack: (
     config,
@@ -54,7 +53,6 @@ const nextConfig = {
 
 module.exports = nextConfig;
 ```
-
 
 ### Установите SDK OpenTelemetry для ClickHouse {#install-sdk}
 
@@ -84,16 +82,15 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { init } = await import('@hyperdx/node-opentelemetry');
     init({
-      apiKey: '<YOUR_INGESTION_API_KEY>', // опционально: настраивается через переменную окружения `HYPERDX_API_KEY`
-      service: '<MY_SERVICE_NAME>', // опционально: настраивается через переменную окружения `OTEL_SERVICE_NAME`
-      additionalInstrumentations: [], // опционально; по умолчанию: []
+      apiKey: '<YOUR_INGESTION_API_KEY>', // optionally configure via `HYPERDX_API_KEY` env var
+      service: '<MY_SERVICE_NAME>', // optionally configure via `OTEL_SERVICE_NAME` env var
+      additionalInstrumentations: [], // optional, default: []
     });
   }
 }
 ```
 
 Это позволит Next.js импортировать инструментацию OpenTelemetry при любом вызове бессерверной функции.
-
 
 ### Настройка переменных окружения {#configure-environment-variables}
 

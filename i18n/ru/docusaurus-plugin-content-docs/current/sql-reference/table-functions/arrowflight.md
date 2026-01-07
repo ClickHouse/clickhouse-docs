@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 # Табличная функция arrowFlight {#arrowflight-table-function}
 
-Позволяет выполнять запросы к данным, предоставляемым сервером [Apache Arrow Flight](../../interfaces/arrowflight.md).
+Позволяет выполнять запросы к данным, предоставляемым сервером [Apache Arrow Flight](/interfaces/arrowflight).
 
 **Синтаксис**
 
 ```sql
-arrowFlight('хост:порт', 'имя_набора_данных' [, 'имя_пользователя', 'пароль'])
+arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 ```
 
 **Аргументы**

@@ -120,11 +120,11 @@ Kerberos может использоваться как метод провер�
 Когда в ClickHouse включена [SQL-управляемая система контроля доступа и управления учётными записями](/operations/access-rights#access-control-usage), пользователей, аутентифицируемых через Kerberos, также можно создавать с помощью SQL-выражений.
 
 ```sql
-СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ my_user ИДЕНТИФИЦИРОВАН С kerberos РЕАЛМ 'EXAMPLE.COM'
+CREATE USER my_user IDENTIFIED WITH kerberos REALM 'EXAMPLE.COM'
 ```
 
 ...или без фильтрации по реалму:
 
 ```sql
-CREATE USER my_user AUTHENTIFICIROVAN S POMOSHCH'YU kerberos
+CREATE USER my_user IDENTIFIED WITH kerberos
 ```

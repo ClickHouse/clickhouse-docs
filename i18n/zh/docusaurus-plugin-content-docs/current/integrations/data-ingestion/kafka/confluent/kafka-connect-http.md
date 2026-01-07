@@ -15,6 +15,7 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
+
 # Confluent HTTP sink connector {#confluent-http-sink-connector}
 
 HTTP Sink Connector 与数据类型无关，因此不需要 Kafka schema，同时也支持 ClickHouse 特定的数据类型，例如 Map 和 Array。这个额外的灵活性会带来一定的配置复杂度提升。
@@ -27,7 +28,7 @@ HTTP Connector 是在 [Confluent Enterprise License](https://docs.confluent.io/k
 
 ### 快速开始步骤 {#quick-start-steps}
 
-#### 1. 收集你的连接信息 {#1-gather-your-connection-details}
+#### 1. 收集连接信息 {#1-gather-your-connection-details}
 
 <ConnectionDetails />
 
@@ -60,6 +61,7 @@ CREATE TABLE default.my_table
 )
 ORDER BY tuple()
 ```
+
 
 #### 4. 配置 HTTP Sink {#4-configure-http-sink}
 
@@ -102,9 +104,9 @@ ORDER BY tuple()
 
 在由你的 HTTP Sink 配置的主题中创建一条消息：
 
-<Image img={createMessageInTopic} size="md" alt="Confluent Cloud 界面展示如何在 Kafka 主题中创建测试消息" border />
+<Image img={createMessageInTopic} size="md" alt="Confluent Cloud 界面展示如何在 Kafka 主题中创建测试消息" border/>
 
-<br />
+<br/>
 
 并验证该消息已写入你的 ClickHouse 实例。
 
@@ -116,20 +118,21 @@ ORDER BY tuple()
 
 > 对于包含不同 Kafka header 值的消息，HTTP Sink connector 不会对请求进行批处理。
 
-1. 验证你的 Kafka 记录是否具有相同的 key。
-2. 当你在 HTTP API URL 中添加参数时，每条记录可能会对应一个唯一的 URL。基于这一原因，在使用额外 URL 参数时会禁用批处理。
+1. 确认你的 Kafka 记录使用相同的 key。
+2. 当你在 HTTP API URL 中添加参数时，每条记录都可能生成唯一的 URL。基于这一点，当使用额外的 URL 参数时会禁用批处理功能。
 
 #### 400 Bad Request {#400-bad-request}
 
-##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING {#cannot&#95;parse&#95;quoted&#95;string}
+##### CANNOT&#95;PARSE&#95;QUOTED&#95;STRING {#cannot_parse_quoted_string}
 
 如果在向 `String` 列插入 JSON 对象时，HTTP Sink 失败并出现以下消息：
 
 ```response
-Code: 26. DB::ParsingException: 无法解析 JSON 字符串：缺少起始引号（在读取键 key_name 的值时）：执行 JSONEachRowRowInputFormat 时（第 1 行）。（CANNOT_PARSE_QUOTED_STRING）
+Code: 26. DB::ParsingException: Cannot parse JSON string: expected opening quote: (while reading the value of key key_name): While executing JSONEachRowRowInputFormat: (at row 1). (CANNOT_PARSE_QUOTED_STRING)
 ```
 
-在 URL 中将 `input_format_json_read_objects_as_strings=1` 设置为编码后的字符串 `SETTINGS%20input_format_json_read_objects_as_strings%3D1`
+在 URL 中将参数 `input_format_json_read_objects_as_strings=1` 以编码字符串 `SETTINGS%20input_format_json_read_objects_as_strings%3D1` 的形式设置
+
 
 ### 加载 GitHub 数据集（可选） {#load-the-github-dataset-optional}
 
@@ -139,7 +142,7 @@ Code: 26. DB::ParsingException: 无法解析 JSON 字符串：缺少起始引号
 
 根据您的安装类型，遵循[这些说明](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install)来设置 Connect，并注意 standalone 集群与 distributed 集群之间的差异。如果使用 Confluent Cloud，则应采用 distributed 设置。
 
-最重要的参数是 `http.api.url`。ClickHouse 的 [HTTP 接口](../../../../interfaces/http.md) 要求您将 INSERT 语句作为参数编码在 URL 中。该语句必须包含格式（在本例中为 `JSONEachRow`）以及目标数据库。该格式必须与 Kafka 数据保持一致，Kafka 数据会在 HTTP 请求负载中被转换为字符串。这些参数必须进行 URL 转义。下面展示了一个适用于 GitHub 数据集的示例格式（假设您在本地运行 ClickHouse）：
+最重要的参数是 `http.api.url`。ClickHouse 的 [HTTP 接口](/interfaces/http) 要求您将 INSERT 语句作为参数编码在 URL 中。该语句必须包含格式（在本例中为 `JSONEachRow`）以及目标数据库。该格式必须与 Kafka 数据保持一致，Kafka 数据会在 HTTP 请求负载中被转换为字符串。这些参数必须进行 URL 转义。下面展示了一个适用于 GitHub 数据集的示例格式（假设您在本地运行 ClickHouse）：
 
 ```response
 <protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow
@@ -163,7 +166,8 @@ http://localhost:8123?query=INSERT%20INTO%20default.github%20FORMAT%20JSONEachRo
 
 包含如何配置代理、重试以及高级 SSL 在内的完整设置列表可在[此处](https://docs.confluent.io/kafka-connect-http/current/connector_config.html)找到。
 
-Github 示例数据的配置文件示例可以在[此处](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)找到，前提是 Connect 以 standalone 模式运行，并且 Kafka 部署在 Confluent Cloud 上。
+GitHub 示例数据的配置文件示例可在[此处](https://github.com/ClickHouse/clickhouse-docs/tree/main/docs/integrations/data-ingestion/kafka/code/connectors/http_sink)找到，前提是 Connect 以 standalone 模式运行且 Kafka 部署在 Confluent Cloud 中。
+
 
 ##### 2. 创建 ClickHouse 表 {#2-create-the-clickhouse-table}
 
@@ -201,6 +205,7 @@ CREATE TABLE github
 
 ```
 
+
 ##### 3. 向 Kafka 添加数据 {#3-add-data-to-kafka}
 
 向 Kafka 写入消息。下面我们使用 [kcat](https://github.com/edenhill/kcat) 向 Kafka 写入 1 万条消息。
@@ -209,7 +214,7 @@ CREATE TABLE github
 head -n 10000 github_all_columns.ndjson | kcat -b <host>:<port> -X security.protocol=sasl_ssl -X sasl.mechanisms=PLAIN -X sasl.username=<username>  -X sasl.password=<password> -t github
 ```
 
-对目标表 &quot;Github&quot; 执行一次简单查询即可确认数据已成功插入。
+对目标表 &quot;Github&quot; 进行一次简单查询即可确认数据已成功写入。
 
 ```sql
 SELECT count() FROM default.github;

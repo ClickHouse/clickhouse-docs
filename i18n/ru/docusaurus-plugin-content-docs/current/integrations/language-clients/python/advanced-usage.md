@@ -77,7 +77,6 @@ if __name__ == '__main__':
 
 Аналогичным образом вы можете сохранять данные в формате [TabSeparated](/interfaces/formats/TabSeparated), а также в других форматах. Обзор всех доступных вариантов приведён в разделе [Форматы входных и выходных данных](/interfaces/formats).
 
-
 ## Многопоточные, многопроцессные и асинхронные/с управлением через цикл событий варианты использования {#multithreaded-multiprocess-and-asyncevent-driven-use-cases}
 
 ClickHouse Connect хорошо работает в многопоточных, многопроцессных и асинхронных приложениях, управляемых циклом событий. Вся обработка запросов и вставок выполняется в одном потоке, поэтому операции в целом потокобезопасны. (Параллельная обработка некоторых операций на низком уровне рассматривается как потенциальное будущее улучшение для преодоления накладных расходов, связанных с использованием одного потока, но даже в этом случае потокобезопасность будет сохранена.)
@@ -102,7 +101,7 @@ async def main():
     client = await clickhouse_connect.get_async_client()
     result = await client.query("SELECT name FROM system.databases LIMIT 1")
     print(result.result_rows)
-    # Результат:
+    # Output:
     # [('INFORMATION_SCHEMA',)]
 
 asyncio.run(main())
@@ -115,7 +114,6 @@ asyncio.run(main())
 Примечание: в отличие от обычного `Client`, `AsyncClient` принудительно устанавливает `autogenerate_session_id` в значение `False` по умолчанию.
 
 См. также: [пример run&#95;async](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py).
-
 
 ## Управление идентификаторами сессий ClickHouse {#managing-clickhouse-session-ids}
 
@@ -134,14 +132,13 @@ asyncio.run(main())
 from clickhouse_connect import common
 import clickhouse_connect
 
-common.set_setting('autogenerate_session_id', False)  # Необходимо установить перед созданием клиента
+common.set_setting('autogenerate_session_id', False)  # This should always be set before creating a client
 client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', password=1234)
 ```
 
 В качестве альтернативы передайте `autogenerate_session_id=False` напрямую в `get_client(...)`.
 
 В этом случае ClickHouse Connect не отправляет `session_id`, и сервер не будет считать отдельные запросы принадлежащими одному сеансу. Временные таблицы и параметры сеанса не будут сохраняться между запросами.
-
 
 ## Настройка пула HTTP‑подключений {#customizing-the-http-connection-pool}
 

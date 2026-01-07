@@ -42,11 +42,9 @@ import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03
 5. 已安装并运行较新的 **ClickHouse** 版本（参见[安装指南](/getting-started/install/install.mdx)）
 :::
 
-
-
 ## 在本地安装 ClickHouse JDBC Bridge {#install-the-clickhouse-jdbc-bridge-locally}
 
-使用 ClickHouse JDBC Bridge 最简单的方式，是将其安装并运行在与 ClickHouse 相同的主机上：<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge 本地部署示意图" background="white" />
+使用 ClickHouse JDBC Bridge 最简单的用法，是将它安装并运行在与 ClickHouse 相同的主机上：<Image img={Jdbc02} size="lg" alt="ClickHouse JDBC Bridge 本地部署示意图" background="white" />
 
 首先连接到运行 ClickHouse 的那台机器的 Unix shell，并创建一个本地目录，稍后我们会将 ClickHouse JDBC Bridge 安装到该目录中（目录名称和位置可按需自定义）：
 
@@ -61,27 +59,27 @@ cd ~/clickhouse-jdbc-bridge
 wget https://github.com/ClickHouse/clickhouse-jdbc-bridge/releases/download/v2.0.7/clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ```
 
-为了能够连接到 MySQL，我们将创建一个具名数据源：
+为了能够连接到 MySQL，我们将创建一个命名的数据源：
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-mkdir -p config/datasources
-touch config/datasources/mysql8.json
+ cd ~/clickhouse-jdbc-bridge
+ mkdir -p config/datasources
+ touch config/datasources/mysql8.json
 ```
 
 现在可以将以下配置复制并粘贴到文件 `~/clickhouse-jdbc-bridge/config/datasources/mysql8.json` 中：
 
 ```json
-{
-  "mysql8": {
-  "driverUrls": [
-    "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
-  ],
-  "jdbcUrl": "jdbc:mysql://<host>:<port>",
-  "username": "<用户名>",
-  "password": "<密码>"
-  }
-}
+ {
+   "mysql8": {
+   "driverUrls": [
+     "https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar"
+   ],
+   "jdbcUrl": "jdbc:mysql://<host>:<port>",
+   "username": "<username>",
+   "password": "<password>"
+   }
+ }
 ```
 
 :::note
@@ -98,12 +96,12 @@ touch config/datasources/mysql8.json
 现在我们可以启动 ClickHouse JDBC Bridge 了：
 
 ```bash
-cd ~/clickhouse-jdbc-bridge
-java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
+ cd ~/clickhouse-jdbc-bridge
+ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 ```
 
 :::note
-我们已在前台模式下启动了 ClickHouse JDBC Bridge。要停止该 Bridge，可以将上面的 Unix shell 窗口切换到前台，然后按下 `CTRL+C`。
+我们已在前台模式下启动了 ClickHouse JDBC Bridge。要停止该 Bridge，可以将上面的 Unix shell 窗口切回到前台，然后按下 `CTRL+C`。
 :::
 
 
@@ -111,28 +109,28 @@ java -jar clickhouse-jdbc-bridge-2.0.7-shaded.jar
 
 ClickHouse 现在可以通过使用 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎](/engines/table-engines/integrations/jdbc.md) 来访问 MySQL 数据。
 
-执行以下示例的最简单方式是将它们复制并粘贴到 [`clickhouse-client`](/interfaces/cli.md) 或 [Play UI](/interfaces/http.md) 中。
+执行以下示例的最简单方式是将它们复制并粘贴到 [`clickhouse-client`](/interfaces/cli.md) 或 [Play UI](/interfaces/http) 中。
 
 * jdbc 表函数：
 
 ```sql
-SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
+ SELECT * FROM jdbc('mysql8', 'mydatabase', 'mytable');
 ```
 
 :::note
-作为 `jdbc` 表函数的第一个参数，我们使用的是上面配置的命名数据源名称。
+作为 `jdbc` 表函数的第一个参数，我们使用的是上面配置的命名数据源的名称。
 :::
 
 * JDBC 表引擎：
 
 ```sql
-CREATE TABLE mytable (
-     <column> <column_type>,
-     ...
-)
-ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
+ CREATE TABLE mytable (
+      <column> <column_type>,
+      ...
+ )
+ ENGINE = JDBC('mysql8', 'mydatabase', 'mytable');
 
-SELECT * FROM mytable;
+ SELECT * FROM mytable;
 ```
 
 :::note
@@ -184,12 +182,15 @@ jdbc_bridge:
 [//]: # (## 4. Additional Info)
 
 [//]: # ()
+
 [//]: # (TODO: )
 
 [//]: # (- mention that for jdbc table function it is more performant &#40;not two queries each time&#41; to also specify the schema as a parameter)
 
 [//]: # ()
+
 [//]: # (- mention ad hoc query vs table query, saved query, named query)
 
 [//]: # ()
+
 [//]: # (- mention insert into )

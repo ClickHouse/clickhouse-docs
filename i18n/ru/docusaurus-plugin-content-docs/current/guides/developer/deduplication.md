@@ -11,7 +11,6 @@ doc_type: 'guide'
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
 # Стратегии дедупликации {#deduplication-strategies}
 
 **Дедупликация** — это процесс ***удаления дублирующихся строк из набора данных***. В OLTP-СУБД это делается проще, так как каждая строка имеет уникальный первичный ключ — но ценой более медленных вставок. Каждую вставляемую строку сначала нужно найти, и, если она найдена, заменить.
@@ -30,8 +29,6 @@ ClickHouse оптимизирован для высокой скорости в�
 
 </div>
 
-
-
 ## Варианты дедупликации {#options-for-deduplication}
 
 Дедупликация в ClickHouse реализуется с использованием следующих движков таблиц:
@@ -41,8 +38,6 @@ ClickHouse оптимизирован для высокой скорости в�
 2. Коллапсирующие строки: движки таблиц `CollapsingMergeTree` и `VersionedCollapsingMergeTree` используют логику, при которой существующая строка «отменяется», а новая строка вставляется. Их сложнее реализовать, чем `ReplacingMergeTree`, но запросы и агрегации могут быть проще, без необходимости беспокоиться о том, были ли данные уже объединены. Эти два движка таблиц полезны, когда вам нужно часто обновлять данные.
 
 Ниже мы рассмотрим оба этих подхода. Для получения дополнительной информации ознакомьтесь с нашим бесплатным онлайн‑[обучающим модулем по удалению и обновлению данных](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs).
-
-
 
 ## Использование ReplacingMergeTree для операций upsert {#using-replacingmergetree-for-upserts}
 
@@ -63,16 +58,16 @@ PRIMARY KEY (author, id)
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', 'Это пост #1', 0),
-   (2, 'ch_fan', 'Это пост #2', 0)
+   (1, 'ricardo', 'This is post #1', 0),
+   (2, 'ch_fan', 'This is post #2', 0)
 ```
 
 Чтобы обновить столбец `views`, вставьте новую строку с тем же первичным ключом (обратите внимание на новые значения столбца `views`).
 
 ```sql
 INSERT INTO hackernews_rmt VALUES
-   (1, 'ricardo', 'Это пост №1', 100),
-   (2, 'ch_fan', 'Это пост №2', 200)
+   (1, 'ricardo', 'This is post #1', 100),
+   (2, 'ch_fan', 'This is post #2', 200)
 ```
 
 В таблице теперь 4 строки:
@@ -84,12 +79,12 @@ FROM hackernews_rmt
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост #2 │     0 │
-│  1 │ ricardo │ Это пост #1 │     0 │
+│  2 │ ch_fan  │ This is post #2 │     0 │
+│  1 │ ricardo │ This is post #1 │     0 │
 └────┴─────────┴─────────────────┴───────┘
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост #2 │   200 │
-│  1 │ ricardo │ Это пост #1 │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -103,8 +98,8 @@ FINAL
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
-│  2 │ ch_fan  │ Это пост №2     │   200 │
-│  1 │ ricardo │ Это пост №1     │   100 │
+│  2 │ ch_fan  │ This is post #2 │   200 │
+│  1 │ ricardo │ This is post #1 │   100 │
 └────┴─────────┴─────────────────┴───────┘
 ```
 
@@ -132,7 +127,6 @@ INSERT INTO hackernews_rmt VALUES
 SELECT *
 FROM hackernews_rmt
 ```
-
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─views─┐
@@ -163,15 +157,14 @@ GROUP BY (id, author, comment)
 
 ```response
 ┌─id─┬─author──┬─comment─────────┬─max(views)─┐
-│  2 │ ch_fan  │ Это пост №2     │        250 │
-│  1 │ ricardo │ Это пост №1     │        150 │
+│  2 │ ch_fan  │ This is post #2 │        250 │
+│  1 │ ricardo │ This is post #1 │        150 │
 └────┴─────────┴─────────────────┴────────────┘
 ```
 
 Группировка, как показано в запросе выше, на практике может быть более эффективной по производительности, чем использование ключевого слова `FINAL`.
 
 Наш [учебный модуль «Deleting and Updating Data»](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs) подробнее разбирает этот пример, в том числе показывает, как использовать столбец `version` с `ReplacingMergeTree`.
-
 
 ## Использование CollapsingMergeTree для частого обновления столбцов {#using-collapsingmergetree-for-updating-columns-frequently}
 
@@ -257,7 +250,6 @@ INSERT INTO hackernews_views(id, author, sign) VALUES
 ```
 
 :::
-
 
 ## Обновления в реальном времени из нескольких потоков {#real-time-updates-from-multiple-threads}
 
@@ -348,7 +340,6 @@ FROM hackernews_views_vcmt
 ```
 
 Таблица `VersionedCollapsingMergeTree` особенно удобна, когда нужно реализовать дедупликацию при одновременной вставке строк из нескольких клиентов и/или потоков.
-
 
 ## Почему мои строки не дедуплицируются? {#why-arent-my-rows-being-deduplicated}
 

@@ -53,7 +53,7 @@ PARTITION BY toDate(TimestampTime)
 PRIMARY KEY (ServiceName, TimestampTime)
 ORDER BY (ServiceName, TimestampTime, Timestamp)
 TTL TimestampTime + toIntervalDay(3)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
+SETTINGS ttl_only_drop_parts = 1
 ```
 
 在 ClickHouse 中进行分区，可以根据某一列或 SQL 表达式在磁盘上对数据进行逻辑划分。通过对数据进行逻辑分隔，每个分区都可以被独立操作，例如在其按 TTL 策略到期时将其删除。
@@ -76,7 +76,7 @@ SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1
 
 ## 修改 TTL {#modifying-ttl}
 
-要修改 TTL，用户可以：
+要修改 TTL，你可以：
 
 1. **修改数据表结构（schema）（推荐）**。这需要连接到 ClickHouse 实例，例如使用 [clickhouse-client](/interfaces/cli) 或 [Cloud SQL Console](/cloud/get-started/sql-console)。例如，我们可以使用以下 DDL 修改 `otel_logs` 表的 TTL：
 
@@ -96,7 +96,7 @@ exporters:
 
 ### 列级 TTL {#column-level-ttl}
 
-上述示例是在表级别设置数据过期。用户也可以在列级别设置数据过期策略。随着数据随时间推移而老化，可以借此删除那些在排障与分析中带来的价值不足以抵消其保留所需资源开销的列。例如，我们建议保留 `Body` 列，以防后续添加了在写入时尚未被提取的新动态元数据，例如新的 Kubernetes 标签。经过一段时间（例如 1 个月）后，如果明显这些附加元数据并无实际用处，那么继续保留 `Body` 列的价值就有限了。
+上述示例是在表级别设置数据过期。你也可以在列级别设置数据过期策略。随着数据随时间推移而老化，可以借此删除那些在排障与分析中带来的价值不足以抵消其保留所需资源开销的列。例如，我们建议保留 `Body` 列，以防后续添加了在写入时尚未被提取的新动态元数据，例如新的 Kubernetes 标签。经过一段时间（例如 1 个月）后，如果明显这些附加元数据并无实际用处，那么继续保留 `Body` 列的价值就有限了。
 
 下面展示如何在 30 天后删除 `Body` 列。
 

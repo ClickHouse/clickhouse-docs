@@ -9,10 +9,10 @@ doc_type: 'reference'
 
 # Оператор EXCHANGE {#exchange-statement}
 
-Атомарно обменивает именами две таблицы или два словаря.
-Эту задачу также можно выполнить с помощью запроса [`RENAME`](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.
+Атомарно меняет местами имена двух таблиц или двух словарей.
+Эту задачу можно также выполнить с помощью запроса [`RENAME`](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.
 
-:::note\
+:::note
 Запрос `EXCHANGE` поддерживается только движками баз данных [`Atomic`](../../engines/database-engines/atomic.md) и [`Shared`](/cloud/reference/shared-catalog#shared-database-engine).
 :::
 
@@ -34,22 +34,22 @@ EXCHANGE TABLES [db0.]table_A AND [db1.]table_B [ON CLUSTER cluster]
 
 ### ОБМЕН НЕСКОЛЬКИМИ ТАБЛИЦАМИ {#exchange-multiple-tables}
 
-Вы можете обменять несколько пар таблиц в рамках одного запроса, разделив их запятыми.
+Вы можете поменять местами несколько пар таблиц в одном запросе, разделяя их запятыми.
 
 :::note
-При обмене несколькими парами таблиц операции обмена выполняются **последовательно, а не атомарно**. Если во время операции произойдёт ошибка, некоторые пары таблиц могут быть обменены, а другие — нет.
+При обмене несколькими парами таблиц операции выполняются **последовательно, а не атомарно**. Если во время операции произойдет ошибка, некоторые пары таблиц уже могут быть обменяны местами, а другие — нет.
 :::
 
 **Пример**
 
 ```sql title="Query"
--- Создать таблицы
+-- Create tables
 CREATE TABLE a (a UInt8) ENGINE=Memory;
 CREATE TABLE b (b UInt8) ENGINE=Memory;
 CREATE TABLE c (c UInt8) ENGINE=Memory;
 CREATE TABLE d (d UInt8) ENGINE=Memory;
 
--- Обменять две пары таблиц в одном запросе
+-- Exchange two pairs of tables in one query
 EXCHANGE TABLES a AND b, c AND d;
 
 SHOW TABLE a;
@@ -59,7 +59,7 @@ SHOW TABLE d;
 ```
 
 ```sql title="Response"
--- Теперь таблица 'a' имеет структуру таблицы 'b', а таблица 'b' — структуру таблицы 'a'
+-- Now table 'a' has the structure of 'b', and table 'b' has the structure of 'a'
 ┌─statement──────────────┐
 │ CREATE TABLE default.a↴│
 │↳(                     ↴│
@@ -75,7 +75,7 @@ SHOW TABLE d;
 │↳ENGINE = Memory        │
 └────────────────────────┘
 
--- Теперь таблица 'c' имеет структуру таблицы 'd', а таблица 'd' — структуру таблицы 'c'
+-- Now table 'c' has the structure of 'd', and table 'd' has the structure of 'c'
 ┌─statement──────────────┐
 │ CREATE TABLE default.c↴│
 │↳(                     ↴│

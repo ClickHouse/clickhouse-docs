@@ -18,7 +18,6 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-
 # 在 Claude Desktop 中使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server-with-claude-desktop}
 
 > 本指南介绍如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器,
@@ -37,19 +36,14 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
 <VerticalStepper headerLevel="h2">
 
-
 ## 安装 uv {#install-uv}
 
 你需要先安装 [uv](https://docs.astral.sh/uv/)，才能按照本指南中的步骤进行操作。
 如果你不打算使用 uv，则需要更新 MCP Server 配置以改用其他包管理器。
 
-
-
 ## 下载 Claude Desktop {#download-claude-desktop}
 
 你还需要安装 Claude Desktop 应用程序，可以从 [Claude Desktop 网站](https://claude.ai/desktop) 下载。
-
-
 
 ## 配置 ClickHouse MCP 服务器 {#configure-clickhouse-mcp-server}
 
@@ -112,7 +106,6 @@ MCP mcp-clickhouse: spawn uv ENOENT
 
 如果发生这种情况，你需要更新 `command`，将 `uv` 的完整路径填入其中。比如，如果你是通过 Cargo 安装的，路径会是 `/Users/&lt;username&gt;/.cargo/bin/uv`
 :::
-
 
 ## 使用 ClickHouse MCP 服务器 {#using-clickhouse-mcp-server}
 

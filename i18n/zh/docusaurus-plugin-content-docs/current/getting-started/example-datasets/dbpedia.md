@@ -30,16 +30,19 @@ CREATE TABLE dbpedia
 
 ```
 
+## 加载表数据 {#load-table}
 
-## 加载表 {#load-table}
-
-要从所有 Parquet 文件中加载数据集，请运行以下 Shell 命令：
+要从所有 Parquet 文件中加载数据集，请运行以下 shell 命令：
 
 ```shell
-$ seq 0 25 | xargs -P1 -I{} clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/{}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+for i in $(seq 0 25); do
+  echo "Processing file ${i}..."
+  clickhouse client -q "INSERT INTO dbpedia SELECT _id, title, text, \"text-embedding-3-large-1536-embedding\" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/${i}.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;"
+  echo "File ${i} complete."
+done
 ```
 
-或者，也可以按照下方所示分别执行 SQL 语句，逐个加载这 25 个 Parquet 文件：
+另外，也可以按下方所示分别运行 SQL 语句，来加载这 25 个 Parquet 文件中的每一个：
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -49,7 +52,7 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 
 ```
 
-确认 `dbpedia` 表中有 100 万行记录：
+确认 `dbpedia` 表中已有 100 万行数据：
 
 ```sql
 SELECT count(*)
@@ -59,7 +62,6 @@ FROM dbpedia
 1. │ 1000000 │
    └─────────┘
 ```
-
 
 ## 语义搜索 {#semantic-search}
 
@@ -109,12 +111,11 @@ LIMIT 20
 20. │ <dbpedia:Kazuo_Ishiguro>                  │ Kazuo Ishiguro                  │
     └───────────────────────────────────────────┴─────────────────────────────────┘
 #highlight-next-line
-返回 20 行。用时:0.261 秒。已处理 100 万行,6.22 GB(384 万行/秒,23.81 GB/秒)
+20 rows in set. Elapsed: 0.261 sec. Processed 1.00 million rows, 6.22 GB (3.84 million rows/s., 23.81 GB/s.)
 ```
 
 记下查询延迟，以便后续与 ANN（基于向量索引）的查询延迟进行比较。
 同时分别记录在 OS 文件缓存为冷状态时，以及在将 `max_threads` 设置为 1 时的查询延迟，以识别实际的计算资源占用和存储带宽使用情况（从而可以将结果推算到包含数百万向量的生产数据集！）
-
 
 ## 构建向量相似度索引 {#build-vector-similarity-index}
 
@@ -129,7 +130,6 @@ ALTER TABLE dbpedia MATERIALIZE INDEX vector_index SETTINGS mutations_sync = 2;
 索引创建和搜索的参数及性能方面的考虑在[文档](../../engines/table-engines/mergetree-family/annindexes.md)中有详细说明。
 
 根据可用 CPU 核心数量和存储带宽的不同，构建并保存索引可能需要几分钟时间。
-
 
 ## 执行 ANN 搜索 {#perform-ann-search}
 
@@ -174,9 +174,8 @@ LIMIT 20
 20. │ <dbpedia:Schynige_Platte_railway>               │ Schynige Platte railway               │
     └─────────────────────────────────────────────────┴───────────────────────────────────────┘
 #highlight-next-line
-返回 20 行。用时:0.025 秒。已处理 3.203 万行,2.10 MB(129 万行/秒,84.80 MB/秒)。
+20 rows in set. Elapsed: 0.025 sec. Processed 32.03 thousand rows, 2.10 MB (1.29 million rows/s., 84.80 MB/s.)
 ```
-
 
 ## 为搜索查询生成嵌入向量 {#generating-embeddings-for-search-query}
 
@@ -200,17 +199,17 @@ def get_embedding(text, model):
 
 
 while True:
-    # 接受用户的搜索查询
-    print("请输入搜索查询:")
+    # Accept the search query from user
+    print("Enter a search query :")
     input_query = sys.stdin.readline();
 
-    # 调用 OpenAI API 端点获取嵌入向量
-    print("正在生成嵌入向量:", input_query);
+    # Call OpenAI API endpoint to get the embedding
+    print("Generating the embedding for ", input_query);
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
-    # 在 ClickHouse 中执行向量搜索查询
-    print("正在查询 ClickHouse...")
+    # Execute vector search query in ClickHouse
+    print("Querying clickhouse...")
     params = {'v1':embedding, 'v2':10}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
@@ -218,7 +217,6 @@ while True:
         print(row[0], row[1], row[2])
         print("---------------")
 ```
-
 
 ## 问答演示应用 {#q-and-a-demo-application}
 
@@ -240,18 +238,18 @@ while True:
 ```shell
 $ python3 QandA.py
 
-输入主题:FIFA world cup 1990
-正在为 'FIFA world cup 1990' 生成嵌入向量并从 ClickHouse 收集 100 篇相关文章...
+Enter a topic : FIFA world cup 1990
+Generating the embedding for 'FIFA world cup 1990' and collecting 100 articles related to it from ClickHouse...
 
-输入您的问题:Who won the golden boot
-意大利的萨尔瓦托雷·斯基拉奇在 1990 年国际足联世界杯中赢得了金靴奖。
+Enter your question : Who won the golden boot
+Salvatore Schillaci of Italy won the Golden Boot at the 1990 FIFA World Cup.
 
 
-输入主题:Cricket world cup
-正在为 'Cricket world cup' 生成嵌入向量并从 ClickHouse 收集 100 篇相关文章...
+Enter a topic : Cricket world cup
+Generating the embedding for 'Cricket world cup' and collecting 100 articles related to it from ClickHouse...
 
-输入您的问题:Which country has hosted the world cup most times
-英格兰和威尔士举办板球世界杯的次数最多,该赛事在这两个国家共举办了五次——分别在 1975 年、1979 年、1983 年、1999 年和 2019 年。
+Enter your question : Which country has hosted the world cup most times
+England and Wales have hosted the Cricket World Cup the most times, with the tournament being held in these countries five times - in 1975, 1979, 1983, 1999, and 2019.
 
 $
 ```
@@ -264,56 +262,56 @@ import time
 from openai import OpenAI
 import clickhouse_connect
 
-ch_client = clickhouse_connect.get_client(compress=False) # 在此处传递 ClickHouse 凭据
-openai_client = OpenAI() # 设置 OPENAI_API_KEY 环境变量
+ch_client = clickhouse_connect.get_client(compress=False) # Pass ClickHouse credentials here
+openai_client = OpenAI() # Set the OPENAI_API_KEY environment variable
 
 def get_embedding(text, model):
   text = text.replace("\n", " ")
   return openai_client.embeddings.create(input = [text], model=model, dimensions=1536).data[0].embedding
 
 while True:
-    # 从用户获取感兴趣的主题
-    print("输入主题:", end="", flush=True)
+    # Take the topic of interest from user
+    print("Enter a topic : ", end="", flush=True)
     input_query = sys.stdin.readline()
     input_query = input_query.rstrip()
 
-    # 为搜索主题生成嵌入向量并查询 ClickHouse
-    print("正在为 '" + input_query + "' 生成嵌入向量,并从 ClickHouse 收集 100 篇相关文章...");
+    # Generate an embedding vector for the search topic and query ClickHouse
+    print("Generating the embedding for '" + input_query + "' and collecting 100 articles related to it from ClickHouse...");
     embedding = get_embedding(input_query,
                               model='text-embedding-3-large')
 
     params = {'v1':embedding, 'v2':100}
     result = ch_client.query("SELECT id,title,text FROM dbpedia ORDER BY cosineDistance(vector, %(v1)s) LIMIT %(v2)s", parameters=params)
 
-    # 收集所有匹配的文章/文档
+    # Collect all the matching articles/documents
     results = ""
     for row in result.result_rows:
         results = results + row[2]
 
-    print("\n输入您的问题:", end="", flush=True)
+    print("\nEnter your question : ", end="", flush=True)
     question = sys.stdin.readline();
 
-    # OpenAI Chat API 的提示词
-    query = f"""使用以下内容回答后续问题。如果找不到答案,请回复"我不知道。"
+    # Prompt for the OpenAI Chat API
+    query = f"""Use the below content to answer the subsequent question. If the answer cannot be found, write "I don't know."
 
-内容:
+Content:
 \"\"\"
 {results}
 \"\"\"
 
-问题:{question}"""
+Question: {question}"""
 
     GPT_MODEL = "gpt-3.5-turbo"
     response = openai_client.chat.completions.create(
         messages=[
-        {'role': 'system', 'content': "你负责回答关于 {input_query} 的问题。"},
+        {'role': 'system', 'content': "You answer questions about {input_query}."},
         {'role': 'user', 'content': query},
        ],
        model=GPT_MODEL,
        temperature=0,
     )
 
-    # 打印问题的答案!
+    # Print the answer to the question!
     print(response.choices[0].message.content)
     print("\n")
 ```

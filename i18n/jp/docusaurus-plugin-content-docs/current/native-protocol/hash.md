@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['CityHash', 'ネイティブプロトコル用ハッシュ', 'ハッシュ関数', 'Google CityHash', 'プロトコルハッシュ']
 ---
 
-
-
 # CityHash {#cityhash}
 
 ClickHouse は [Google 製 CityHash](https://github.com/google/cityhash) の **以前のバージョンの 1 つ**を使用しています。
@@ -37,8 +35,6 @@ Google 製 CityHash の値を得るために `farmHash64` を使用しないで�
 :::
 
 また、CityHash の説明と作成の背景については [Introducing CityHash](https://opensource.googleblog.com/2011/04/introducing-cityhash.html) も参照してください。要するに、**暗号用途を想定していない**ハッシュであり、[MurmurHash](http://en.wikipedia.org/wiki/MurmurHash) より高速ですが、より複雑です。
-
-
 
 ## 実装 {#implementations}
 

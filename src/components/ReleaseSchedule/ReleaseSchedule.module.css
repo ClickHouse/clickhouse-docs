@@ -1,0 +1,108 @@
+.tableWrapper {
+  overflow: visible;
+  margin-bottom: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  overflow: visible;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--ifm-table-border-color);
+  padding: 0.75rem;
+  text-align: left;
+  overflow: visible;
+}
+
+.table th {
+  background-color: var(--ifm-table-head-background);
+  font-weight: bold;
+}
+
+.statusCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: visible;
+}
+
+.statusIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.statusGreen {
+  background-color: #28a745;
+}
+
+.statusOrange {
+  background-color: #fd7e14;
+}
+
+.statusRed {
+  background-color: #dc3545;
+}
+
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.tooltip {
+  visibility: hidden;
+  min-width: 150px;
+  background-color: var(--ifm-color-emphasis-900);
+  color: var(--ifm-color-content-inverse);
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 10px;
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.8rem;
+  pointer-events: none;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--ifm-color-emphasis-900) transparent transparent transparent;
+}
+
+.tooltipContainer:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.infoIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-content);
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}

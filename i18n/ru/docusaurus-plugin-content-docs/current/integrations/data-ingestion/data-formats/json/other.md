@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 Если объекты очень динамичны, не имеют предсказуемой структуры и содержат произвольные вложенные объекты, следует использовать тип `String`. Значения можно извлекать во время выполнения запроса с помощью JSON‑функций, как показано ниже.
 
-Обработка данных с использованием описанного выше структурированного подхода часто неприменима для пользователей, работающих с динамическим JSON, который либо подвержен изменениям, либо чья схема плохо известна. Для максимальной гибкости пользователи могут просто хранить JSON как `String` и затем использовать функции для извлечения требуемых полей. Это представляет собой полную противоположность обработке JSON как структурированного объекта. Такая гибкость имеет свою цену и приводит к существенным недостаткам — в первую очередь к увеличению сложности синтаксиса запросов, а также к ухудшению производительности.
+Обработка данных с использованием описанного выше структурированного подхода часто неприменима, если вы работаете с динамическим JSON, который либо подвержен изменениям, либо чья схема плохо известна. Для максимальной гибкости вы можете просто хранить JSON как `String` и затем использовать функции для извлечения требуемых полей. Это представляет собой полную противоположность обработке JSON как структурированного объекта. Такая гибкость имеет свою цену и приводит к существенным недостаткам — в первую очередь к увеличению сложности синтаксиса запросов, а также к ухудшению производительности.
 
 Как отмечалось ранее, для [исходного объекта person](/integrations/data-formats/json/schema#static-vs-dynamic-json) мы не можем гарантировать структуру столбца `tags`. Мы вставляем исходную строку (включая `company.labels`, который пока игнорируем), объявляя столбец `Tags` как `String`:
 
@@ -40,13 +40,13 @@ ENGINE = MergeTree
 ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
-{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"Хранилище данных в реальном времени для аналитики","labels":{"type":"системы управления базами данных","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Базы данных","holidays":[{"year":2024,"location":"Азорские острова, Португалия"}],"car":{"model":"Tesla","year":2023}}}
+{"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Мы можем выбрать столбец `tags` и увидеть, что JSON был вставлен в виде строки:
+Мы можем выбрать столбец `tags` и убедиться, что JSON был сохранён в виде строки:
 
 ```sql
 SELECT tags
@@ -59,7 +59,7 @@ FROM people
 1 row in set. Elapsed: 0.001 sec.
 ```
 
-С помощью функций [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) можно извлекать значения из этого JSON-документа. Рассмотрим простой пример ниже:
+С помощью функций [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-functions) можно извлекать значения из этого JSON. Рассмотрим простой пример ниже:
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
@@ -68,7 +68,7 @@ SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
 
-Получена 1 строка. Прошло: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
 Обратите внимание, что функциям требуется как ссылка на столбец типа `String` `tags`, так и путь в JSON для извлечения. Вложенные пути требуют вложенного вызова функций, например `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')`, который извлекает столбец `tags.car.year`. Извлечение вложенных путей можно упростить с помощью функций [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) и [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE).
@@ -88,13 +88,14 @@ ENGINE = MergeTree ORDER BY ()
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
 
-0 строк в наборе. Прошло: 25.186 с. Обработано 2.52 миллиона строк, 1.38 ГБ (99.89 тысячи строк/с, 54.79 МБ/с.)
+0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
+
 
 Предположим, мы хотим посчитать количество статей, выпущенных по годам. Сравним следующий запрос, использующий только строковое поле, с [структурированной версией](/integrations/data-formats/json/inference#creating-tables) схемы:
 
 ```sql
--- с использованием структурированной схемы
+-- using structured schema
 SELECT
     toYear(parseDateTimeBestEffort(versions.created[1])) AS published_year,
     count() AS c
@@ -116,9 +117,9 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-10 строк в наборе. Время выполнения: 0.264 с. Обработано 2.31 миллиона строк, 153.57 МБ (8.75 миллиона строк/с, 582.58 МБ/с.)
+10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
 
--- с использованием неструктурированной строки
+-- using unstructured String
 
 SELECT
     toYear(parseDateTimeBestEffort(JSON_VALUE(body, '$.versions[0].created'))) AS published_year,
@@ -141,8 +142,8 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-10 строк в наборе. Время выполнения: 1.281 с. Обработано 2.49 миллиона строк, 4.22 ГБ (1.94 миллиона строк/с, 3.29 ГБ/с.)
-Пиковое использование памяти: 205.98 МиБ.
+10 rows in set. Elapsed: 1.281 sec. Processed 2.49 million rows, 4.22 GB (1.94 million rows/s., 3.29 GB/s.)
+Peak memory usage: 205.98 MiB.
 ```
 
 Обратите внимание на использование XPath-выражения для фильтрации JSON по методу, т.е. `JSON_VALUE(body, '$.versions[0].created')`.
@@ -150,6 +151,7 @@ LIMIT 10
 Строковые функции заметно медленнее (&gt; 10x), чем явные преобразования типов с использованием индексов. Приведённым выше запросам всегда требуется полное сканирование таблицы и обработка каждой строки. Хотя такие запросы всё ещё будут быстрыми на небольших наборах данных, как в этом примере, по мере роста объёма данных производительность будет ухудшаться.
 
 Гибкость такого подхода имеет очевидную цену в виде потерь производительности и усложнения синтаксиса, поэтому его следует использовать только для высокодинамичных объектов в схеме.
+
 
 ### Простые JSON-функции {#simple-json-functions}
 
@@ -173,7 +175,7 @@ LIMIT 10
 {"@timestamp":893964617,"clientip":"40.135.0.0","request":{"method":"GET",
     "path":"/images/hm_bg.jpg","version":"HTTP/1.0"},"status":200,"size":24736}
 
-В некоторых случаях, когда производительность критична, а ваш JSON соответствует вышеуказанным требованиям, эти функции могут быть подходящими. Ниже показан пример предыдущего запроса, переписанный с использованием функций `simpleJSON*`:
+In some circumstances, where performance is critical and your JSON meets the above requirements, these may be appropriate. An example of the earlier query, re-written to use `simpleJSON*` functions, is shown below:
 
 ```sql
 SELECT
@@ -197,11 +199,12 @@ LIMIT 10
 │           1996 │ 15872 │
 └────────────────┴───────┘
 
-Получено 10 строк. Затрачено: 0.964 сек. Обработано 2.48 млн строк, 4.21 ГБ (2.58 млн строк/сек., 4.36 ГБ/сек.)
-Пиковое использование памяти: 211.49 МиБ.
+10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
+Peak memory usage: 211.49 MiB.
 ````
 
-Приведённый выше запрос использует `simpleJSONExtractString` для извлечения ключа `created`, учитывая, что нам нужно только первое значение для даты публикации. В этом случае ограничения функций `simpleJSON*` приемлемы ради повышения производительности.
+В приведённом выше запросе используется `simpleJSONExtractString` для извлечения ключа `created`, используя тот факт, что для даты публикации нам нужно только первое значение. В этом случае ограничения функций `simpleJSON*` приемлемы ради выигрыша в производительности.
+
 
 ## Использование типа Map {#using-map}
 
@@ -217,7 +220,7 @@ LIMIT 10
 При моделировании объектов как `Map` в качестве ключа используется строка (`String`), в которой хранится имя ключа JSON. Поэтому `Map` всегда будет иметь вид `Map(String, T)`, где `T` зависит от данных.
 :::
 
-#### Примитивные значения {#primitive-values}
+#### Примитивные значения
 
 Простейшее применение `Map` — когда объект содержит значения одного и того же примитивного типа. В большинстве случаев это означает использование типа `String` для значения `T`.
 
@@ -247,38 +250,39 @@ ORDER BY username
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
-Ок.
+Ok.
 
-Обработана 1 строка. Прошло: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
-Для выборки этих полей в объекте request нужно использовать синтаксис map, например:
+Для выборки этих полей из объекта `request` необходимо использовать синтаксис `Map`, например:
 
 ```sql
 SELECT company.labels FROM people
 
 ┌─company.labels───────────────────────────────┐
-│ {'type':'системы баз данных','founded':'2021'} │
+│ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
-1 строка в наборе. Прошло: 0,001 сек.
+1 row in set. Elapsed: 0.001 sec.
 
 SELECT company.labels['type'] AS type FROM people
 
 ┌─type─────────────┐
-│ системы баз данных │
+│ database systems │
 └──────────────────┘
 
-1 строка в наборе. Прошло: 0,001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
-Полный набор функций `Map`, доступных для выполнения запросов, описан [здесь](/sql-reference/functions/tuple-map-functions.md). Если ваши данные не имеют согласованного типа, существуют функции для выполнения [необходимого приведения типов](/sql-reference/functions/type-conversion-functions).
+Полный набор функций `Map`, доступных для выполнения запросов, описан [здесь](/sql-reference/functions/tuple-map-functions.md). Если ваши данные не являются однородными по типу, существуют функции для выполнения [необходимого приведения типов](/sql-reference/functions/type-conversion-functions).
 
-#### Значения объектов {#object-values}
 
-Тип `Map` также можно использовать для представления объектов с вложенными объектами, при условии, что у последних согласованы их типы.
+#### Объектные значения
 
-Предположим, ключ `tags` для нашего объекта `persons` требует согласованной структуры, где вложенный объект для каждого `tag` имеет столбцы `name` и `time`. Упрощённый пример такого JSON-документа может выглядеть следующим образом:
+Тип `Map` также можно использовать для объектов, которые содержат вложенные объекты, если для вложенных объектов используются согласованные типы.
+
+Предположим, что ключ `tags` для нашего объекта `persons` требует согласованной структуры, где вложенный объект для каждого `tag` имеет столбцы `name` и `time`. Упрощённый пример такого JSON-документа может выглядеть следующим образом:
 
 ```json
 {
@@ -288,7 +292,7 @@ SELECT company.labels['type'] AS type FROM people
   "email": "clicky@clickhouse.com",
   "tags": {
     "hobby": {
-      "name": "Дайвинг",
+      "name": "Diving",
       "time": "2024-07-11 14:18:01"
     },
     "car": {
@@ -318,7 +322,7 @@ INSERT INTO people FORMAT JSONEachRow
 
 Ok.
 
-Получена 1 строка. Прошло: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 
 SELECT tags['hobby'] AS hobby
 FROM people
@@ -326,10 +330,10 @@ FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
 
-Получена 1 строка. Прошло: 0.001 сек.
+1 row in set. Elapsed: 0.001 sec.
 ```
 
-Использование `Map` в данном случае встречается довольно редко и указывает на то, что модель данных следует изменить так, чтобы динамические имена ключей не имели вложенных объектов. Например, приведённую выше структуру можно изменить следующим образом, что позволит использовать `Array(Tuple(key String, name String, time DateTime))`.
+Использование `Map` в таком случае, как правило, встречается редко и свидетельствует о том, что данные лучше переработать так, чтобы динамические имена ключей не имели вложенных объектов. Например, приведённую выше структуру можно изменить следующим образом, что позволит использовать `Array(Tuple(key String, name String, time DateTime))`.
 
 ```json
 {
@@ -340,7 +344,7 @@ FORMAT JSONEachRow
   "tags": [
     {
       "key": "hobby",
-      "name": "Дайвинг",
+      "name": "Diving",
       "time": "2024-07-11 14:18:01"
     },
     {
@@ -352,7 +356,8 @@ FORMAT JSONEachRow
 }
 ```
 
-## Использование типа Nested {#using-nested}
+
+## Использование типа Nested
 
 Тип [Nested](/sql-reference/data-types/nested-data-structures/nested) можно использовать для моделирования статических объектов, которые редко изменяются, в качестве альтернативы `Tuple` и `Array(Tuple)`. В целом мы рекомендуем избегать использования этого типа для JSON, поскольку его поведение часто оказывается запутанным. Основное преимущество `Nested` заключается в том, что подколонки могут использоваться в ключах сортировки.
 
@@ -372,10 +377,10 @@ FORMAT JSONEachRow
 }
 ```
 
-Мы можем объявить ключ `request` типом `Nested`. Подобно `Tuple`, необходимо явно указать подстолбцы.
+Мы можем объявить ключ `request` как тип `Nested`. Подобно `Tuple`, необходимо явно указать подстолбцы.
 
 ```sql
--- по умолчанию
+-- default
 SET flatten_nested=1
 CREATE table http
 (
@@ -387,11 +392,12 @@ CREATE table http
 ) ENGINE = MergeTree() ORDER BY (status, timestamp);
 ```
 
-### flatten&#95;nested {#flatten&#95;nested}
+
+### flatten_nested {#flatten_nested}
 
 Параметр `flatten_nested` управляет поведением типа данных `Nested`.
 
-#### flatten&#95;nested=1 {#flatten&#95;nested1}
+#### flatten&#95;nested=1
 
 Значение `1` (по умолчанию) не поддерживает произвольную глубину вложенности. При таком значении проще всего рассматривать вложенную структуру данных как несколько столбцов [Array](/sql-reference/data-types/array) одинаковой длины. Поля `method`, `path` и `version` фактически являются отдельными столбцами `Array(Type)` с одним критическим ограничением: **длина полей `method`, `path` и `version` должна быть одинаковой.** Если мы воспользуемся `SHOW CREATE TABLE`, это иллюстрируется следующим образом:
 
@@ -412,7 +418,7 @@ ENGINE = MergeTree
 ORDER BY (status, timestamp)
 ```
 
-Ниже выполняем вставку в эту таблицу:
+Ниже вставляем данные в эту таблицу:
 
 ```sql
 SET input_format_import_nested_json = 1;
@@ -443,7 +449,7 @@ FORMAT JSONEachRow
         "/french/images/hm_nav_bar.gif"
       ],
       "version": [
-        "HTTP/1.0"]
+        "HTTP/1.0"
       ]
     },
     "status": 200,
@@ -459,16 +465,17 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
-Получена 1 строка. Время выполнения: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
-Обратите внимание, что использование `Array` для подстолбцов означает, что можно потенциально использовать весь спектр [функций работы с массивами](/sql-reference/functions/array-functions), включая клаузу [`ARRAY JOIN`](/sql-reference/statements/select/array-join), что полезно, если ваши столбцы содержат несколько значений.
+Обратите внимание, что использование `Array` для подстолбцов означает, что потенциально может быть задействован полный набор [функций для массивов](/sql-reference/functions/array-functions), включая предложение [`ARRAY JOIN`](/sql-reference/statements/select/array-join) — это полезно, если ваши столбцы содержат несколько значений.
 
-#### flatten&#95;nested=0 {#flatten&#95;nested0}
+
+#### flatten&#95;nested=0
 
 Это позволяет использовать произвольный уровень вложенности и означает, что вложенные столбцы остаются одним массивом `Tuple` — по сути, они становятся тем же самым, что и `Array(Tuple)`.
 
-**Это предпочтительный и часто самый простой способ использования JSON с `Nested`. Как показано ниже, для этого лишь требуется, чтобы все объекты представляли собой список.**
+**Это предпочтительный и часто самый простой способ использования JSON с `Nested`. Как показано ниже, для этого требуется лишь, чтобы все объекты представляли собой список.**
 
 Ниже мы заново создаём нашу таблицу и повторно вставляем строку:
 
@@ -486,7 +493,7 @@ ORDER BY (status, timestamp)
 
 SHOW CREATE TABLE http
 
--- обратите внимание, что тип Nested сохранён.
+-- note Nested type is preserved.
 CREATE TABLE default.http
 (
     `timestamp` Int32,
@@ -533,10 +540,11 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
-Получена 1 строка. Время выполнения: 0.002 сек.
+1 row in set. Elapsed: 0.002 sec.
 ```
 
-### Пример {#example}
+
+### Пример
 
 Более объёмный пример приведённых выше данных доступен в общедоступном бакете в S3 по адресу: `s3://datasets-documentation/http/`.
 
@@ -558,7 +566,7 @@ FORMAT PrettyJSONEachRow
     "size": "24736"
 }
 
-Получена 1 строка. Прошло: 0.312 сек.
+1 row in set. Elapsed: 0.312 sec.
 ```
 
 С учетом ограничений и формата входных данных JSON мы вставляем этот пример набора данных с помощью следующего запроса. Здесь мы задаем `flatten_nested=0`.
@@ -572,7 +580,7 @@ size FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/doc
 'JSONEachRow');
 ```
 
-Чтобы выполнять запросы к этим данным, нам необходимо обращаться к полям запроса как к массивам. Ниже мы агрегируем ошибки и HTTP-методы за фиксированный период времени.
+Для выполнения запросов к этим данным нам нужно обращаться к полям запроса как к массивам. Ниже мы агрегируем ошибки и HTTP-методы за фиксированный период времени.
 
 ```sql
 SELECT status, request.method[1] AS method, count() AS c
@@ -590,10 +598,11 @@ ORDER BY c DESC LIMIT 5;
 │    400 │ GET    │    81 │
 └────────┴────────┴───────┘
 
-5 строк в наборе. Прошло: 0,007 сек.
+5 rows in set. Elapsed: 0.007 sec.
 ```
 
-### Использование парных массивов {#using-pairwise-arrays}
+
+### Использование парных массивов
 
 Парные массивы обеспечивают баланс между гибкостью представления JSON в виде строк (`String`) и производительностью более структурированного подхода. Схема гибкая в том смысле, что любые новые поля потенциально могут быть добавлены в корень. Однако это требует значительно более сложного синтаксиса запросов и несовместимо с вложенными структурами.
 
@@ -607,7 +616,7 @@ CREATE TABLE http_with_arrays (
 ENGINE = MergeTree  ORDER BY tuple();
 ```
 
-Чтобы выполнить вставку в эту таблицу, нам нужно структурировать JSON в виде списка ключей и значений. Следующий запрос демонстрирует использование `JSONExtractKeysAndValues` для достижения этого:
+Чтобы выполнить вставку в эту таблицу, нам нужно структурировать JSON в виде списка ключей и значений. Следующий запрос демонстрирует использование `JSONExtractKeysAndValues` для этого:
 
 ```sql
 SELECT
@@ -625,7 +634,7 @@ values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","v
 1 row in set. Elapsed: 0.416 sec.
 ```
 
-Обратите внимание, что столбец `request` остаётся вложенной структурой, представленной в виде строки. Мы можем добавлять любые новые ключи на верхнем уровне. Также в самом JSON могут быть произвольные различия. Чтобы вставить данные в нашу локальную таблицу, выполните следующее:
+Обратите внимание, что столбец `request` остаётся вложенной структурой, представленной строкой. Мы можем добавлять любые новые ключи на верхнем уровне. При этом в самом JSON могут быть произвольные различия. Чтобы вставить данные в нашу локальную таблицу, выполните следующее:
 
 ```sql
 INSERT INTO http_with_arrays
@@ -634,7 +643,7 @@ SELECT
     arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
 
-0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825,01 тыс. строк/с., 8,85 МБ/с.)
+0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
 Для выполнения запросов к этой структуре необходимо использовать функцию [`indexOf`](/sql-reference/functions/array-functions#indexOf) для определения индекса нужного ключа (который должен соответствовать порядку в массиве значений). Это можно использовать для доступа к столбцу массива значений, т.е. `values[indexOf(keys, 'status')]`. Для столбца request по‑прежнему требуется метод парсинга JSON — в данном случае `simpleJSONExtractString`.
@@ -655,10 +664,7 @@ GROUP BY method, status ORDER BY c DESC LIMIT 5;
 │    500 │ POST   │   115 │
 │    400 │ GET    │    81 │
 └────────┴────────┴───────┘
-```
 
-5 строк в наборе. Прошло времени: 0.383 сек. Обработано 8.22 млн строк, 1.97 ГБ (21.45 млн строк/с, 5.15 ГБ/с.)
-Пиковое потребление памяти: 51.35 МиБ.
-
-```
+5 rows in set. Elapsed: 0.383 sec. Processed 8.22 million rows, 1.97 GB (21.45 million rows/s., 5.15 GB/s.)
+Peak memory usage: 51.35 MiB.
 ```

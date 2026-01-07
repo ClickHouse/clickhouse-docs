@@ -1,6 +1,5 @@
 ---
 description: '用于对时间序列数据进行重采样，以支持类似 PromQL 中 irate 和 idelta 的计算的聚合函数'
-sidebar_position: 224
 slug: /sql-reference/aggregate-functions/reference/timeSeriesLastTwoSamples
 title: 'timeSeriesLastTwoSamples'
 doc_type: 'reference'
@@ -11,18 +10,18 @@ doc_type: 'reference'
 参数：
 
 * `timestamp` - 样本的时间戳
-* `value` - 对应于该 `timestamp` 的时间序列值\
+* `value` - 对应于该 `timestamp` 的时间序列值
   也可以将多个时间戳和数值样本作为大小相同的 Array 传入。
 
-返回值：\
+返回值：
 一个 `Tuple(Array(DateTime), Array(Float64))` —— 一对长度为 0 到 2 的等长数组。第一个数组包含采样后时间序列的时间戳，第二个数组包含时间序列对应的数值。
 
-示例：\
-该聚合函数旨在与物化视图和用于存储针对网格对齐时间戳的重采样时间序列数据的聚合表一起使用。\
+示例：
+该聚合函数旨在与物化视图和用于存储针对网格对齐时间戳的重采样时间序列数据的聚合表一起使用。
 考虑下面这个原始数据示例表，以及一个用于存储重采样数据的表：
 
 ```sql
--- 原始数据表
+-- Table for raw data
 CREATE TABLE t_raw_timeseries
 (
     metric_id UInt64,
@@ -32,17 +31,17 @@ CREATE TABLE t_raw_timeseries
 ENGINE = MergeTree()
 ORDER BY (metric_id, timestamp);
 
--- 重采样至更大时间步长（15 秒）的数据表
+-- Table with data re-sampled to bigger (15 sec) time steps
 CREATE TABLE t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
-    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- 对齐至 15 秒的时间戳
+    grid_timestamp DateTime('UTC') CODEC(DoubleDelta, ZSTD), -- Timestamp aligned to 15 sec
     samples AggregateFunction(timeSeriesLastTwoSamples, DateTime64(3, 'UTC'), Float64)
 )
 ENGINE = AggregatingMergeTree()
 ORDER BY (metric_id, grid_timestamp);
 
--- 用于填充重采样表的物化视图
+-- MV for populating re-sampled table
 CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_sec
 (
     metric_id UInt64,
@@ -51,19 +50,19 @@ CREATE MATERIALIZED VIEW mv_resampled_timeseries TO t_resampled_timeseries_15_se
 )
 AS SELECT
     metric_id,
-    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- 将时间戳向上舍入至下一个网格点
+    ceil(toUnixTimestamp(timestamp + interval 999 millisecond) / 15, 0) * 15 AS grid_timestamp,   -- Round timestamp up to the next grid point
     initializeAggregation('timeSeriesLastTwoSamplesState', timestamp, value) AS samples
 FROM t_raw_timeseries
 ORDER BY metric_id, grid_timestamp;
 ```
 
-插入一些测试数据，并读取时间在 &#39;2024-12-12 12:00:12&#39; 到 &#39;2024-12-12 12:00:30&#39; 之间的数据
+插入一些测试数据，并读取 &#39;2024-12-12 12:00:12&#39; 到 &#39;2024-12-12 12:00:30&#39; 之间的数据
 
 ```sql
--- 插入数据
+-- Insert some data
 INSERT INTO t_raw_timeseries(metric_id, timestamp, value) SELECT number%10 AS metric_id, '2024-12-12 12:00:00'::DateTime64(3, 'UTC') + interval ((number/10)%100)*900 millisecond as timestamp, number%3+number%29 AS value FROM numbers(1000);
 
--- 查看原始数据
+-- Check raw data
 SELECT *
 FROM t_raw_timeseries
 WHERE metric_id = 3 AND timestamp BETWEEN '2024-12-12 12:00:12' AND '2024-12-12 12:00:31'
@@ -95,10 +94,10 @@ ORDER BY metric_id, timestamp;
 3    2024-12-12 12:00:30.869    25
 ```
 
-查询时间戳为 &#39;2024-12-12 12:00:15&#39; 和 &#39;2024-12-12 12:00:30&#39; 的最近 2 个样本：
+查询时间戳为 &#39;2024-12-12 12:00:15&#39; 和 &#39;2024-12-12 12:00:30&#39; 的最后 2 个样本：
 
 ```sql
--- 检查重新采样的数据
+-- Check re-sampled data
 SELECT metric_id, grid_timestamp, (finalizeAggregation(samples).1 as timestamp, finalizeAggregation(samples).2 as value) 
 FROM t_resampled_timeseries_15_sec
 WHERE metric_id = 3 AND grid_timestamp BETWEEN '2024-12-12 12:00:15' AND '2024-12-12 12:00:30'
@@ -110,15 +109,15 @@ ORDER BY metric_id, grid_timestamp;
 3    2024-12-12 12:00:30    (['2024-12-12 12:00:29.969','2024-12-12 12:00:29.069'],[14,6])
 ```
 
-聚合表仅为每个按 15 秒对齐的时间戳存储最近的 2 个值。这样在计算 PromQL 风格的 `irate` 和 `idelta` 时，只需读取的数据量就远小于原始表中的数据量。
+聚合表仅为每个按 15 秒对齐的时间戳存储最近的 2 个值。这样在计算类似 PromQL 的 `irate` 和 `idelta` 时，只需读取远少于原始表的数据量。
 
 ```sql
--- 从原始数据计算 idelta 和 irate
+-- Calculate idelta and irate from the raw data
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- 时间戳网格起始时间
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- 时间戳网格结束时间
-    15 AS step_seconds,   -- 时间戳网格步长
-    45 AS window_seconds  -- "陈旧性"窗口
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    45 AS window_seconds  -- "staleness" window
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamp, value),
@@ -134,12 +133,12 @@ GROUP BY metric_id;
 
 
 ```sql
--- 从重新采样的数据计算 idelta 和 irate
+-- Calculate idelta and irate from the re-sampled data
 WITH
-    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- 时间戳网格起始点
-    start_ts + INTERVAL 60 SECOND AS end_ts,   -- 时间戳网格结束点
-    15 AS step_seconds,   -- 时间戳网格步长
-    45 AS window_seconds  -- "陈旧性"窗口
+    '2024-12-12 12:00:15'::DateTime64(3,'UTC') AS start_ts,       -- start of timestamp grid
+    start_ts + INTERVAL 60 SECOND AS end_ts,   -- end of timestamp grid
+    15 AS step_seconds,   -- step of timestamp grid
+    45 AS window_seconds  -- "staleness" window
 SELECT
     metric_id,
     timeSeriesInstantDeltaToGrid(start_ts, end_ts, step_seconds, window_seconds)(timestamps, values),
@@ -162,3 +161,7 @@ GROUP BY metric_id;
 :::note
 此函数为实验性功能，可通过设置 `allow_experimental_ts_to_grid_aggregate_function=true` 来启用。
 :::
+
+{/*AUTOGENERATED_START*/ }
+
+{/*AUTOGENERATED_END*/ }

@@ -52,8 +52,8 @@ CREATE TABLE my_table ENGINE=TimeSeries
 
 このテーブルは、サーバー設定でポートを割り当てれば、次のプロトコルで利用できます：
 
-* [prometheus remote-write](../../../interfaces/prometheus.md#remote-write)
-* [prometheus remote-read](../../../interfaces/prometheus.md#remote-read)
+* [prometheus remote-write](/interfaces/prometheus#remote-write)
+* [prometheus remote-read](/interfaces/prometheus#remote-read)
 
 
 ## ターゲットテーブル {#target-tables}
@@ -77,7 +77,7 @@ _data_ テーブルは次のカラムを持たなければなりません:
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
 | `id` | [x] | `UUID` | any | メトリック名とタグの組み合わせを識別します |
-| `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 時点 |
+| `timestamp` | [x] | `DateTime64(3)` | `DateTime64(X)` | 時刻 |
 | `value` | [x] | `Float64` | `Float32` or `Float64` | `timestamp` に関連付けられた値 |
 
 ### Tags テーブル {#tags-table}
@@ -96,13 +96,11 @@ _tags_ テーブルは次のカラムを持たなければなりません:
 | `min_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最小タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
 | `max_time` | [ ] | `Nullable(DateTime64(3))` | `DateTime64(X)` or `Nullable(DateTime64(X))` | 当該 `id` を持つ時系列の最大タイムスタンプ。[store_min_time_and_max_time](#settings) が `true` の場合に作成されます |
 
-### Metrics テーブル {#metrics-table}
+### Metrics table {#metrics-table}
 
-_metrics_ テーブルには、収集されているメトリクスに関する情報、そのメトリクスの型および説明が格納されます。
+_metrics_ テーブルには、収集対象となるメトリクスに関する情報、そのメトリクスのタイプ、およびその説明が含まれます。
 
-_metrics_ テーブルは次のカラムを持たなければなりません:
-
-
+_metrics_ テーブルには、次のカラムが必要です。
 
 | Name | Mandatory? | Default type | Possible types | Description |
 |---|---|---|---|---|
@@ -113,8 +111,6 @@ _metrics_ テーブルは次のカラムを持たなければなりません:
 
 `TimeSeries` テーブルに挿入された行はすべて、実際にはこれら 3 つのターゲットテーブルに保存されます。
 `TimeSeries` テーブルには、[data](#data-table)、[tags](#tags-table)、[metrics](#metrics-table) 各テーブルのすべてのカラムが含まれます。
-
-
 
 ## 作成 {#creation}
 
@@ -324,11 +320,10 @@ CREATE TABLE my_table ENGINE=TimeSeries DATA data_for_my_table TAGS tags_for_my_
 | `aggregate_min_time_and_max_time` | Bool | true | 内部ターゲットの `tags` テーブルを作成する際に、このフラグを有効にすると、`min_time` カラムの型として単なる `Nullable(DateTime64(3))` ではなく `SimpleAggregateFunction(min, Nullable(DateTime64(3)))` を使用し、`max_time` カラムについても同様にします |
 | `filter_by_min_time_and_max_time` | Bool | true | true に設定すると、テーブルは時系列をフィルタリングする際に `min_time` および `max_time` カラムを使用します |
 
-
-
 # 関数 {#functions}
 
 `TimeSeries` テーブルを引数として受け取る関数は次のとおりです:
+
 - [timeSeriesData](../../../sql-reference/table-functions/timeSeriesData.md)
 - [timeSeriesTags](../../../sql-reference/table-functions/timeSeriesTags.md)
 - [timeSeriesMetrics](../../../sql-reference/table-functions/timeSeriesMetrics.md)

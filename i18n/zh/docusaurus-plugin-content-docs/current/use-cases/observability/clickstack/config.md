@@ -14,15 +14,14 @@ import hyperdx_26 from '@site/static/images/use-cases/observability/hyperdx-26.p
 
 ClickStack 的每个组件都提供如下配置选项：
 
-
 ## 修改设置 {#modifying-settings}
 
 ### Docker {#docker}
 
-如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需配置，例如：
+如果使用 [All in One](/use-cases/observability/clickstack/deployment/all-in-one)、[HyperDX Only](/use-cases/observability/clickstack/deployment/hyperdx-only) 或 [Local Mode](/use-cases/observability/clickstack/deployment/local-mode-only)，只需通过环境变量传递所需设置，例如：
 
 ```shell
-docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 docker.hyperdx.io/hyperdx/hyperdx-all-in-one
+docker run  -e HYPERDX_LOG_LEVEL='debug' -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
 ```
 
 
@@ -42,7 +41,6 @@ services:
       HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
       # ... 其他配置
 ```
-
 
 ### Helm {#helm}
 
@@ -96,7 +94,6 @@ ingress:
     - name: CLICKHOUSE_USER
       value: abc
 ```
-
 
 ## HyperDX {#hyperdx}
 
@@ -203,7 +200,7 @@ ClickStack 随附的 ClickHouse 默认 schema 是由 [ClickHouse exporter for th
 
 ### 关联来源 {#correlated-sources}
 
-要在 ClickStack 中启用跨来源的完整关联功能，用户必须为 logs、traces、metrics 和 sessions 配置关联来源。这使 HyperDX 能够将相关数据关联起来，并在展示事件时提供丰富的上下文。
+要在 ClickStack 中启用跨来源的完整关联功能，你必须为 logs、traces、metrics 和 sessions 配置关联来源。这使 HyperDX 能够将相关数据关联起来，并在展示事件时提供丰富的上下文。
 
 - `Logs`：可以与 traces 和 metrics 关联。
 - `Traces`：可以与 logs、sessions 和 metrics 关联。
