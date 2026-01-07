@@ -15,23 +15,24 @@ import self_managed_03 from '@site/static/images/integrations/migration/self-man
 import self_managed_04 from '@site/static/images/integrations/migration/self-managed-04.png';
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
+import CompatibilityNote from '@site/docs/_snippets/compatibility.mdx'
 
 # Migrating between self-managed ClickHouse and ClickHouse Cloud
 
 <Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
-This guide will show how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services. The [`remoteSecure`](/sql-reference/table-functions/remote) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
+This guide shows you how to migrate from a self-managed ClickHouse server to ClickHouse Cloud, and also how to migrate between ClickHouse Cloud services.
+The [`remoteSecure`](/sql-reference/table-functions/remote) function is used in `SELECT` and `INSERT` queries to allow access to remote ClickHouse servers, which makes migrating tables as simple as writing an `INSERT INTO` query with an embedded `SELECT`.
 
 ## Migrating from Self-managed ClickHouse to ClickHouse Cloud {#migrating-from-self-managed-clickhouse-to-clickhouse-cloud}
 
 <Image img={self_managed_02} size='lg' alt='Migrating Self-managed ClickHouse'  />
 
-:::note
-Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you just create a destination table (you can leave out the Engine parameter for this table, it will be automatically a ReplicatedMergeTree table),
-and ClickHouse Cloud will automatically take care of vertical and horizontal scaling. There is no need from your side to think about how to replicate and shard the table.
-:::
+Regardless of if your source table is sharded and/or replicated, on ClickHouse Cloud you only need to create a destination table (you can leave out the Engine parameter for this table, `SharedMergeTree` will be selected automatically as the table engine),
+and ClickHouse Cloud will automatically take care of vertical and horizontal scaling.
+There is no need from your side to think about how to replicate and shard the table.
 
-In this example the self-managed ClickHouse server is the *source* and the ClickHouse Cloud service is the *destination*.
+In this example, the self-managed ClickHouse server is the *source* and the ClickHouse Cloud service is the *destination*.
 
 ### Overview {#overview}
 
@@ -44,7 +45,10 @@ The process is:
 1. Remove the read-only user from the source service
 
 ### Migration of tables from one system to another: {#migration-of-tables-from-one-system-to-another}
+
 This example migrates one table from a self-managed ClickHouse server to ClickHouse Cloud.
+
+<CompatibilityNote/>
 
 ### On the source ClickHouse system (the system that currently hosts the data) {#on-the-source-clickhouse-system-the-system-that-currently-hosts-the-data}
 
