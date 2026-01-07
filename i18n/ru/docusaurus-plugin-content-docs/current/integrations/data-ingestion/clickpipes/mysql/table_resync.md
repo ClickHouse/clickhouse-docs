@@ -5,9 +5,10 @@ slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: 'Повторная синхронизация таблицы'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
-
-
 
 # Повторная синхронизация отдельных таблиц {#resync-tables}
 

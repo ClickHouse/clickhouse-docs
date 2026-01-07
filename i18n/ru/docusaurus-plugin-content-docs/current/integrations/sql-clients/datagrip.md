@@ -5,7 +5,7 @@ description: 'DataGrip — это IDE для баз данных с встрое
 title: 'Подключение DataGrip к ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', 'IDE для баз данных', 'JetBrains', 'SQL-клиент', 'интегрированная среда разработки']
@@ -28,6 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 DataGrip доступен на сайте https://www.jetbrains.com/datagrip/
 
 ## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2. Загрузите драйвер ClickHouse {#2-load-the-clickhouse-driver}

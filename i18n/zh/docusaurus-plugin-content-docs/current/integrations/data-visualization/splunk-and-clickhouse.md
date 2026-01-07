@@ -6,6 +6,9 @@ keywords: ['Splunk', '集成', '数据可视化']
 description: '将 Splunk 仪表板连接到 ClickHouse'
 title: '连接 Splunk 与 ClickHouse'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -63,6 +66,7 @@ Splunk 是一款广泛应用于安全和可观测性的产品，同时也是一�
 记下 `java_home` 路径：`java -XshowSettings:properties -version`。
 
 确保已在 Splunk Enterprise 上安装 DB Connect 应用。你可以在 Splunk Web UI 的 Apps 区域找到它：
+
 - 登录 Splunk Web 并前往 Apps > Find More Apps
 - 使用搜索框查找 DB Connect
 - 点击 Splunk DB Connect 旁边的绿色“Install”按钮
@@ -101,6 +105,7 @@ ui_default_catalog = $database$
 返回 DB Connect 应用，依次进入 Configuration &gt; Settings &gt; Drivers。此时应当在 ClickHouse 旁边看到一个绿色对号：
 
 <Image img={splunk_3} size="lg" border alt="Splunk DB Connect drivers page showing ClickHouse driver successfully installed" />
+
 
 ## 将 Splunk 搜索连接到 ClickHouse {#connect-splunk-search-to-clickhouse}
 
@@ -180,6 +185,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 
 <Image img={splunk_10} size="lg" border alt="最终的 Splunk 仪表板，包含纽约市出租车数据的多种可视化图表" />
 
+
 ## 时间序列数据 {#time-series-data}
 
 Splunk 提供了数百个内置函数，供仪表板用于时间序列数据的可视化和展示。此示例将结合 SQL 与 SPL，创建一个可在 Splunk 中处理时间序列数据的查询。
@@ -193,6 +199,7 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 | eval duration=round(duration/60)
 | sort - duration:
 ```
+
 
 ## 了解更多 {#learn-more}
 

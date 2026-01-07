@@ -5,13 +5,15 @@ sidebar_label: 'Удалить таблицу'
 slug: /integrations/clickpipes/mongodb/removing_tables
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import Image from '@theme/IdealImage';
 import remove_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/remove_table.png'
 
 В некоторых случаях имеет смысл исключить отдельные таблицы из MongoDB ClickPipe — например, если таблица не нужна для ваших аналитических задач, пропуск такой таблицы может снизить затраты на хранение и репликацию в ClickHouse.
-
 
 ## Шаги по удалению отдельных таблиц {#remove-tables-steps}
 
@@ -21,6 +23,7 @@ import remove_table from '@site/static/images/integrations/data-ingestion/clickp
 2. Нажмите **Edit Table Settings**.
 3. Найдите нужную таблицу — для этого используйте поле поиска.
 4. Снимите флажок с таблицы, щёлкнув по отмеченному чекбоксу.
+
 <br/>
 
 <Image img={remove_table} border size="md"/>

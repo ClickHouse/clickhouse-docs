@@ -7,7 +7,7 @@ description: 'Explo — это простой в использовании ин
 title: 'Подключение Explo к ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
 ---
 
@@ -49,6 +49,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 :::
 
 ## 1. Соберите сведения о подключении {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2.  Подключение Explo к ClickHouse {#2--connect-explo-to-clickhouse}

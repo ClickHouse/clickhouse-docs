@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/generic_maria
 title: '通用 MariaDB 数据源配置指南'
 doc_type: '指南'
 keywords: ['通用 MariaDB', 'ClickPipes', '二进制日志', 'SSL/TLS', '自托管']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # 通用 MariaDB 源设置指南 {#generic-mariadb-source-setup-guide}
@@ -58,10 +61,9 @@ expire_logs_days = 1
 必须重启 MariaDB 实例才能使更改生效。
 
 :::note
-
 对于 MariaDB &lt;= 10.4，不支持列排除功能，因为这些版本尚未引入 `binlog_row_metadata` 设置。
-
 :::
+
 
 ## 配置数据库用户 {#configure-database-user}
 

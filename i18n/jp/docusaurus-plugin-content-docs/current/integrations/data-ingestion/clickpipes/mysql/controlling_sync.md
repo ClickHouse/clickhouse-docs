@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: '同期の制御'
 keywords: ['MySQL ClickPipe', 'ClickPipe 同期制御', 'MySQL CDC レプリケーション', 'ClickHouse MySQL コネクタ', 'ClickHouse へのデータベース同期']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -14,7 +17,6 @@ import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 本ドキュメントでは、ClickPipe が **CDC（Running）モード** の場合に、MySQL ClickPipe の同期を制御する方法について説明します。
-
 
 ## 概要 {#overview}
 
@@ -38,7 +40,7 @@ MySQL ClickPipe の同期を制御する主な方法は 2 つあります。以�
 
 ### 例外: ソース側の長時間実行トランザクション {#transactions}
 
-ソースデータベース上でトランザクションが実行されている場合、ClickPipe はそのトランザクションの COMMIT を受信するまで待機し、その後で次に進みます。この挙動は、同期間隔とプルバッチサイズの両方を**上書き**します。
+ソースデータベース上でトランザクションが実行されている場合、ClickPipe はそのトランザクションの COMMIT を受信するまで待機し、その後で次に進みます。この挙動により、同期間隔とプルバッチサイズの両方が**上書き**されます。
 
 ### 同期設定の構成 {#configuring}
 
@@ -57,6 +59,6 @@ ClickPipe を作成する際は、以下のように作成ウィザードの 2 �
 
 ### 同期制御の挙動の監視 {#monitoring}
 
-各バッチにどのくらい時間がかかったかは、ClickPipe の **Metrics** タブにある **CDC Syncs** テーブルで確認できます。ここでの所要時間にはプッシュ時間も含まれます。また、受信する行がない場合、ClickPipe は待機し、その待機時間も所要時間に含まれます。
+各バッチにどのくらい時間がかかったかは、ClickPipe の **Metrics** タブにある **CDC Syncs** テーブルで確認できます。ここでの所要時間にはプッシュ時間も含まれます。また、行が流入してこない場合、ClickPipe は待機し、その待機時間も所要時間に含まれます。
 
 <Image img={cdc_syncs} alt="CDC Syncs テーブル" size="md"/>

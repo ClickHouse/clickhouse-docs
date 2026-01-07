@@ -6,6 +6,9 @@ description: 'Apache Spark 与 ClickHouse 集成简介'
 keywords: ['clickhouse', 'Apache Spark', '迁移', '数据']
 title: 'Spark 连接器'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';

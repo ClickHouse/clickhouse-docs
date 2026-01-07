@@ -68,7 +68,7 @@ LIMIT n, m
 :::note
 
 - 分数必须是大于 0 且小于 1 的 [Float64](../../data-types/float.md) 值。
-- 分数对应的行数会四舍五入到最接近的整数。
+- 分数对应的行数会向上取整到下一个整数。
 :::
 
 ## 组合限制类型 {#combining-limit-types}
