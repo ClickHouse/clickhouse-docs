@@ -15,7 +15,7 @@ doc_type: 'reference'
 :::
 
 このセクションの関数は、検索対象の文字列（このセクションでは `haystack` と呼ぶ）と検索文字列（`needle` と呼ぶ）が、1 バイトでエンコードされたテキストであることも前提としています。この前提が満たされない場合でも、例外はスローされず、結果は未定義です。UTF-8 エンコードされた文字列での検索は、通常は別の関数バリアントとして提供されます。同様に、UTF-8 用の関数バリアントを使用している場合に、入力文字列が UTF-8 エンコードされたテキストでなくても、例外はスローされず、結果は未定義です。自動的な Unicode 正規化は行われませんが、必要に応じて
-[normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 関数を使用できます。
+[normalizeUTF8*()](/sql-reference/functions/string-functions#normalizeUTF8NFC) 関数を使用できます。
 
 [一般的な文字列関数](string-functions.md)と[文字列置換用の関数](string-replace-functions.md)については別途説明します。
 

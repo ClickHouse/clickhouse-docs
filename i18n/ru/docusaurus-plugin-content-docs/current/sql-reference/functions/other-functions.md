@@ -1547,7 +1547,11 @@ FROM numbers(5);
 
 Добавлена в версии: v25.10
 
-Меняет местами координаты `Point`, `Ring`, `Polygon` или `MultiPolygon`. Для `Point` просто переставляет координаты. Для массивов рекурсивно применяет то же преобразование к каждой паре координат.
+Меняет местами координаты `x` и `y` геометрических объектов. Эта операция переставляет широту и долготу, что полезно при преобразовании между различными системами координат или исправлении порядка координат.
+
+Для `Point` она меняет местами координаты `x` и `y`. Для сложных геометрий (`LineString`, `Polygon`, `MultiPolygon`, `Ring`, `MultiLineString`) преобразование рекурсивно применяется к каждой паре координат.
+
+Функция поддерживает как отдельные типы геометрий (`Point`, `Ring`, `Polygon`, `MultiPolygon`, `LineString`, `MultiLineString`), так и вариантный тип `Geometry`.
 
 **Синтаксис**
 
@@ -1557,11 +1561,11 @@ flipCoordinates(geometry)
 
 **Аргументы**
 
-* `geometry` — Геометрия для преобразования. Поддерживаемые типы: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)).
+* `geometry` — Геометрия для преобразования. Поддерживаемые типы: Point (Tuple(Float64, Float64)), Ring (Array(Point)), Polygon (Array(Ring)), MultiPolygon (Array(Polygon)), LineString (Array(Point)), MultiLineString (Array(LineString)) или Geometry (вариантный тип, содержащий любой из этих типов).
 
 **Возвращаемое значение**
 
-Геометрия с переставленными координатами. Тип совпадает с входным типом. [`Point`](/sql-reference/data-types/geo#point) или [`Ring`](/sql-reference/data-types/geo#ring) или [`Polygon`](/sql-reference/data-types/geo#polygon) или [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)
+Геометрия с переставленными координатами. Тип совпадает с входным типом. [`Point`](/sql-reference/data-types/geo#point) или [`Ring`](/sql-reference/data-types/geo#ring) или [`Polygon`](/sql-reference/data-types/geo#polygon) или [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon) или [`LineString`](/sql-reference/data-types/geo#linestring) или [`MultiLineString`](/sql-reference/data-types/geo#multilinestring) или [`Geometry`](/sql-reference/data-types/geo)
 
 **Примеры**
 
@@ -1594,6 +1598,27 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 ```response title=Response
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
+
+**geometry&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POINT(10 20)'));
+```
+
+```response title=Response
+(20, 10)
+```
+
+**geometry&#95;polygon&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
+```
+
+```response title=Response
+[[(0, 0), (0, 5), (5, 5), (5, 0), (0, 0)]]
+```
+
 
 ## formatQuery {#formatQuery}
 

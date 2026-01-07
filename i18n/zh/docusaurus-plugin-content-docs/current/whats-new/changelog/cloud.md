@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: -9999
 sidebar_label: 'Cloud'
 title: 'Cloud 更新日志'
 slug: /whats-new/changelog/cloud
