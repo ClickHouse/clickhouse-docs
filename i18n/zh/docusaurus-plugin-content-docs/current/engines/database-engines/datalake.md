@@ -1,5 +1,5 @@
 ---
-description: 'DataLakeCatalog 数据库引擎允许你将 ClickHouse 连接到外部数据目录，并查询开放表格式数据'
+description: 'DataLakeCatalog 数据库引擎使 ClickHouse 能够连接到外部数据目录，并查询开放表格式的数据'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
@@ -18,7 +18,7 @@ doc_type: 'reference'
 - **AWS Glue Catalog** - 用于 AWS 环境中的 Iceberg 表
 - **Databricks Unity Catalog** - 用于 Delta Lake 和 Iceberg 表
 - **Hive Metastore** - 传统 Hadoop 生态系统中的目录
-- **REST Catalogs** - 任意支持 Iceberg REST 规范的目录
+- **REST Catalogs** - 任何支持 Iceberg REST 规范的目录
 
 ## 创建数据库 {#creating-a-database}
 
@@ -29,6 +29,7 @@ SET allow_experimental_database_iceberg = 1;
 SET allow_experimental_database_unity_catalog = 1;
 SET allow_experimental_database_glue_catalog = 1;
 SET allow_experimental_database_hms_catalog = 1;
+SET allow_experimental_database_paimon_rest_catalog = 1;
 ```
 
 可以使用以下语法创建使用 `DataLakeCatalog` 引擎的数据库：
@@ -56,6 +57,9 @@ catalog_type,
 | `aws_access_key_id`     | 用于访问 S3/Glue 的 AWS access key ID（如果不使用 vended credentials）           |
 | `aws_secret_access_key` | 用于访问 S3/Glue 的 AWS secret access key（如果不使用 vended credentials）       |
 | `region`                | 服务所在的 AWS 区域（例如 `us-east-1`）                                         |
+| `dlf_access_key_id`     | 用于访问 DLF 的 access key ID                                             |
+| `dlf_access_key_secret` | 用于访问 DLF 的 access key secret                                         |
+
 
 ## 示例 {#examples}
 
@@ -63,7 +67,7 @@ catalog_type,
 
 * [Unity Catalog](/use-cases/data-lake/unity-catalog)
 * [Glue Catalog](/use-cases/data-lake/glue-catalog)
-* OneLake Catalog\
+* OneLake Catalog
   可以通过启用 `allow_experimental_database_iceberg` 或 `allow_database_iceberg` 来使用。
 
 ```sql
