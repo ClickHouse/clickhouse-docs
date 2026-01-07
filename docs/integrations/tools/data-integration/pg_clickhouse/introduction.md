@@ -75,7 +75,8 @@ memory.
 
 The PostgreSQL and curl development packages include `pg_config` and
 `curl-config` in the path, so you should be able to just run `make` (or
-`gmake`), then `make install`, then in your database `CREATE EXTENSION http`.
+`gmake`), then `make install`, then in your database
+`CREATE EXTENSION pg_clickhouse`.
 
 #### Debian / Ubuntu / APT {#debian--ubuntu--apt}
 
