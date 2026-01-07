@@ -7,7 +7,7 @@ description: 'Эффективно выполняйте запросы к све
 title: 'Подключите ClickHouse к Deepnote'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_visualization'
   - website: 'https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote'
 ---
@@ -28,6 +28,7 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 В этом руководстве предполагается, что у вас уже есть аккаунт Deepnote и запущенный экземпляр ClickHouse.
 
 ## Интерактивный пример {#interactive-example}
+
 Если вы хотите изучить интерактивный пример выполнения запросов к ClickHouse из ноутбуков с данными в Deepnote, нажмите кнопку ниже, чтобы создать шаблон проекта, подключённый к [песочнице ClickHouse](../../../getting-started/playground.md).
 
 [<Image size="logo" img="https://deepnote.com/buttons/launch-in-deepnote.svg" alt="Запустить в Deepnote" />](https://deepnote.com/launch?template=ClickHouse%20and%20Deepnote)
@@ -39,11 +40,12 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 <Image size="lg" img={deepnote_01} alt="Плитка интеграции ClickHouse" border />
 
 2. Укажите параметры подключения к вашему экземпляру ClickHouse:
+
 <ConnectionDetails />
 
-   <Image size="md" img={deepnote_02} alt="Диалоговое окно с параметрами ClickHouse" border />
+<Image size="md" img={deepnote_02} alt="Диалоговое окно с параметрами ClickHouse" border />
 
-   **_ПРИМЕЧАНИЕ:_** Если ваше подключение к ClickHouse защищено списком контроля доступа по IP-адресам (IP Access List), возможно, вам потребуется разрешить IP-адреса Deepnote. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
+**_ПРИМЕЧАНИЕ:_** Если ваше подключение к ClickHouse защищено списком контроля доступа по IP-адресам (IP Access List), возможно, вам потребуется разрешить IP-адреса Deepnote. Подробнее об этом читайте в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
 
 3. Готово! ClickHouse интегрирован с Deepnote.
 

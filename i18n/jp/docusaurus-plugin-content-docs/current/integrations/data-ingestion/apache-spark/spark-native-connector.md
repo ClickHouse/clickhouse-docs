@@ -6,6 +6,9 @@ description: 'ClickHouse と連携する Apache Spark の概要'
 keywords: ['clickhouse', 'Apache Spark', '移行', 'データ']
 title: 'Spark コネクタ'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';

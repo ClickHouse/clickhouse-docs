@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mongodb
 title: '使用 CDC 将数据从 MongoDB 摄取到 ClickHouse'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
@@ -72,7 +75,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 
 #### （可选）配置 SSH 隧道 {#optional-set-up-ssh-tunneling}
 
-如果您的源 MongoDB 数据库不对公网开放，您可以指定 SSH 隧道的相关信息。
+如果您的源 MongoDB 数据库不对公网开放，您可以配置 SSH 隧道的相关信息。
 
 1. 启用 "Use SSH Tunnelling" 开关。
 2. 填写 SSH 连接详细信息。
@@ -80,7 +83,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
    <Image img={ssh_tunnel} alt="SSH 隧道" size="lg" border/>
 
 3. 若要使用基于密钥的认证，点击 "Revoke and generate key pair" 以生成新的密钥对，并将生成的公钥复制到 SSH 服务器的 `~/.ssh/authorized_keys` 中。
-4. 点击 "Verify Connection" 验证连接。
+4. 点击 "Verify Connection" 以验证连接。
 
 :::note
 请确保在 SSH 堡垒机的防火墙规则中将 [ClickPipes IP 地址](../clickpipes#list-of-static-ips) 加入允许列表，以便 ClickPipes 可以建立 SSH 隧道。
@@ -93,7 +96,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 如有需要，您可以配置高级设置。以下是每个设置的简要说明：
 
 - **Sync interval**：ClickPipes 轮询源数据库以检测变更的时间间隔。该设置会影响目标 ClickHouse 服务，对于成本敏感型用户，我们建议将其设置为较大的数值（大于 `3600`）。
-- **Pull batch size**：单次批量拉取的行数。这是一个尽力设定值，在某些情况下可能无法被严格遵守。
+- **Pull batch size**：单次批量拉取的行数。这是一个尽力而为的目标值，在某些情况下可能无法被严格遵守。
 - **Snapshot number of tables in parallel**：初始快照期间并行拉取的表数量。当您拥有大量表并希望控制并行获取的表数量时，这一选项非常有用。
 
 ### 配置表 {#configure-the-tables}

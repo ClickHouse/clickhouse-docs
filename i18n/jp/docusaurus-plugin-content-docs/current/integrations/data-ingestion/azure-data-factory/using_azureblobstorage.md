@@ -5,6 +5,9 @@ description: 'ClickHouse の azureBlobStorage テーブル関数の使用'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
 title: 'ClickHouse の azureBlobStorage テーブル関数を使用して Azure のデータを ClickHouse に取り込む'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -78,6 +81,7 @@ SELECT * FROM azureBlobStorage(
 
 これにより、中間の ETL ステップを挟むことなく、外部データを効率的に ClickHouse に取り込めます。
 
+
 ## Environmental Sensors データセットを使った簡単な例 {#simple-example-using-the-environmental-sensors-dataset}
 
 例として、Environmental Sensors データセットから 1 つのファイルをダウンロードします。
@@ -98,55 +102,56 @@ SELECT * FROM azureBlobStorage(
 
 5. 前述の手順に従って、Azure Blob Storage の接続文字列を取得します。
 
-これですべての準備が整ったので、Azure Blob Storage からデータを直接クエリを実行できます。
+これですべての準備が整ったので、Azure Blob Storage 上のデータに対して直接クエリを実行できます。
 
-```sql
-SELECT *
-FROM azureBlobStorage(
-    '<YOUR CONNECTION STRING>', 
-    'sensors',
-    '2019-06_bmp180.csv.zst', 
-    'CSVWithNames')
-LIMIT 10
-SETTINGS format_csv_delimiter = ';'
-```
+````sql
+    SELECT *
+    FROM azureBlobStorage(
+        '<YOUR CONNECTION STRING>', 
+        'sensors',
+        '2019-06_bmp180.csv.zst', 
+        'CSVWithNames')
+    LIMIT 10
+    SETTINGS format_csv_delimiter = ';'
+    ```
 
-7. テーブルにデータを読み込むには、元のデータセットで使用されている
-   スキーマの簡略版を作成します:
-
-```sql
-CREATE TABLE sensors
-(
-    sensor_id UInt16,
-    lat Float32,
-    lon Float32,
-    timestamp DateTime,
-    temperature Float32
-)
-ENGINE = MergeTree
-ORDER BY (timestamp, sensor_id);
-```
+7. To load the data into a table, create a simplified version of the
+   schema used in the original dataset:
+    ```sql
+    CREATE TABLE sensors
+    (
+        sensor_id UInt16,
+        lat Float32,
+        lon Float32,
+        timestamp DateTime,
+        temperature Float32
+    )
+    ENGINE = MergeTree
+    ORDER BY (timestamp, sensor_id);
+    ```
 
 :::info
-Azure Blob Storage のような外部ソースに対してクエリを実行する際の構成オプションや
-スキーマ推論の詳細については、[入力データからの自動スキーマ推論](https://clickhouse.com/docs/interfaces/schema-inference)
-を参照してください。
+For more information on configuration options and schema inference when
+querying external sources like Azure Blob Storage, see [Automatic schema
+inference from input data](https://clickhouse.com/docs/interfaces/schema-inference)
 :::
 
-8. 次に、Azure Blob Storage から sensors テーブルにデータを挿入します:
-```sql
-INSERT INTO sensors
-SELECT sensor_id, lat, lon, timestamp, temperature
-FROM azureBlobStorage(
-    '<YOUR CONNECTION STRING>', 
-    'sensors',
-    '2019-06_bmp180.csv.zst', 
-    'CSVWithNames')
-SETTINGS format_csv_delimiter = ';'
-```
+8. Now insert the data from Azure Blob Storage into the sensors table:
+    ```sql
+    INSERT INTO sensors
+    SELECT sensor_id, lat, lon, timestamp, temperature
+    FROM azureBlobStorage(
+        '<YOUR CONNECTION STRING>', 
+        'sensors',
+        '2019-06_bmp180.csv.zst', 
+        'CSVWithNames')
+    SETTINGS format_csv_delimiter = ';'
+    ```
 
-`sensors` テーブルには、Azure Blob Storage に保存されている `2019-06_bmp180.csv.zst`
-ファイルのデータが取り込まれました。
+Your sensors table is now populated with data from the `2019-06_bmp180.csv.zst`
+file stored in Azure Blob Storage.
+````
+
 
 ## 追加リソース {#additional-resources}
 

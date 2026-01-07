@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/generated_columns
 description: 'レプリケーション対象のテーブルで PostgreSQL の生成列を使用する際に留意すべき重要な考慮事項を説明するページ'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 レプリケーション対象となっているテーブルで PostgreSQL の生成列を使用する場合、いくつか重要な注意点があります。これらの落とし穴は、レプリケーション処理や宛先システムにおけるデータ整合性に影響を与える可能性があります。

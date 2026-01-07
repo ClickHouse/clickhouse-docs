@@ -5,9 +5,10 @@ slug: /integrations/clickpipes/postgres/table_resync
 sidebar_label: 'テーブルの再同期'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'インジェスト', 'リアルタイム同期']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
-
-
 
 # 特定のテーブルの再同期 {#resync-tables}
 

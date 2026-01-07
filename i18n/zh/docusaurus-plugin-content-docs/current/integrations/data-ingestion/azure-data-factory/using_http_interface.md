@@ -5,6 +5,9 @@ description: '使用 ClickHouse 的 HTTP 接口将 Azure Data Factory 中的数�
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
 title: '使用 ClickHouse HTTP 接口将 Azure 数据导入 ClickHouse'
 doc_type: 'guide'
+integration:
+   - support_level: 'core'
+   - category: 'data_ingestion'
 ---
 
 import Image from '@theme/IdealImage';
@@ -107,6 +110,7 @@ JSON 对象）。Azure Data Factory 使用 JSON 数组格式，这与 ClickHouse
 Service，为
 [REST sink](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest)
 定义一个 Dataset，并创建一个 Copy Data 活动，将数据从 Azure 发送到 ClickHouse。
+
 
 ## 创建 Azure Data Factory 实例 {#create-an-azure-data-factory-instance}
 
@@ -301,6 +305,7 @@ Server，或 Azure Data Factory 支持的其他文件格式。
 6. 完成后，点击 **Publish all** 以保存 pipeline 和数据集的更改。
 
 ## 其他资源 {#additional-resources-1}
+
 - [HTTP 接口](https://clickhouse.com/docs/interfaces/http)
 - [使用 Azure Data Factory 从/向 REST 终结点复制和转换数据](https://learn.microsoft.com/en-us/azure/data-factory/connector-rest?tabs=data-factory)
 - [选择插入策略](https://clickhouse.com/docs/best-practices/selecting-an-insert-strategy)

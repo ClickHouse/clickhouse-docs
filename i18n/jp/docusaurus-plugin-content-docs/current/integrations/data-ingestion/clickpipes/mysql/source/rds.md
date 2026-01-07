@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/source/rds
 title: 'RDS MySQL ソース設定ガイド'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mysql', 'cdc', 'インジェスト', 'リアルタイム同期']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import rds_backups from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/rds-backups.png';
@@ -49,7 +52,8 @@ ClickPipes がレプリケーションの再開を試みた際に、設定され
 mysql=> call mysql.rds_set_configuration('binlog retention hours', 72);
 ```
 
-この設定が行われていないか、間隔が短すぎる値に設定されていると、バイナリログに欠落が生じ、ClickPipes によるレプリケーションの再開ができなくなるおそれがあります。
+この設定が行われていないか、保持間隔が短すぎる値に設定されていると、バイナリログに欠落が生じ、ClickPipes によるレプリケーションの再開ができなくなるおそれがあります。
+
 
 ## バイナリログ設定の構成 {#binlog-settings}
 

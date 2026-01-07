@@ -6,6 +6,9 @@ keywords: ['Splunk', '連携', 'データ可視化']
 description: 'Splunk ダッシュボードを ClickHouse に接続する'
 title: 'Splunk を ClickHouse に接続する'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_visualization'
 ---
 
 import Image from '@theme/IdealImage';
@@ -50,6 +53,7 @@ ClickHouse 向けには、[Splunk DB Connect App](https://splunkbase.splunk.com/
 ## 前提条件 {#prerequisites}
 
 開始する前に、次のものが必要です:
+
 - サーチヘッド機能を使用するための Splunk Enterprise
 - OS またはコンテナ上にインストールされた、[Java Runtime Environment (JRE)](https://docs.splunk.com/Documentation/DBX/3.16.0/DeployDBX/Prerequisites) の要件を満たす環境
 - [Splunk DB Connect](https://splunkbase.splunk.com/app/2686)
@@ -101,6 +105,7 @@ ui_default_catalog = $database$
 DB Connect App に戻り、Configuration &gt; Settings &gt; Drivers に移動します。ClickHouse の横に緑色のチェックマークが表示されているはずです。
 
 <Image img={splunk_3} size="lg" border alt="ClickHouse ドライバーが正常にインストールされていることを示す Splunk DB Connect の Drivers ページ" />
+
 
 ## Splunk の検索を ClickHouse に接続する {#connect-splunk-search-to-clickhouse}
 
@@ -180,6 +185,7 @@ ORDER BY year, count(*) DESC; " connection="chc"
 
 <Image img={splunk_10} size="lg" border alt="NYC タクシーデータの複数の可視化を含む最終的な Splunk ダッシュボード" />
 
+
 ## 時系列データ {#time-series-data}
 
 Splunk には、ダッシュボードで時系列データの可視化や表示に利用できる組み込み関数が数百用意されています。ここでは、SQL と SPL を組み合わせて、Splunk で時系列データを扱えるクエリを作成する例を示します。
@@ -193,6 +199,7 @@ FROM "demo"."conn" WHERE time >= now() - interval 1 HOURS" connection="chc"
 | eval duration=round(duration/60)
 | sort - duration:
 ```
+
 
 ## さらに詳しく知る {#learn-more}
 

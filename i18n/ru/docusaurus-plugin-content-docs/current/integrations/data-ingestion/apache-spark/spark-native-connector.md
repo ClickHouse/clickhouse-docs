@@ -6,6 +6,9 @@ description: 'Введение в Apache Spark с ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'миграция данных']
 title: 'Коннектор Spark'
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'data_ingestion'
 ---
 
 import Tabs from '@theme/Tabs';

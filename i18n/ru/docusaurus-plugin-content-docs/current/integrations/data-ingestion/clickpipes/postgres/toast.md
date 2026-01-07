@@ -4,6 +4,9 @@ description: 'Узнайте, как обрабатывать столбцы TOA
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 При репликации данных из PostgreSQL в ClickHouse важно понимать ограничения и особенности работы со столбцами TOAST (The Oversized-Attribute Storage Technique). Это руководство поможет вам выявить и корректно обрабатывать столбцы TOAST в процессе репликации.
@@ -34,6 +37,7 @@ WHERE c.relname = 'your_table_name'
 
 Этот запрос вернёт имена и типы данных столбцов, которые потенциально могут быть помещены в TOAST-хранилище. Однако важно отметить, что этот запрос лишь определяет столбцы, которые являются кандидатами для хранения в TOAST на основе их типа данных и атрибутов хранения. Чтобы понять, содержат ли эти столбцы фактически данные, вынесенные в TOAST, нужно учитывать, превышают ли значения в этих столбцах соответствующий порог размера. Фактическое вынесение данных в TOAST зависит от конкретного содержимого, хранящегося в этих столбцах.
 
+
 ## Обеспечение корректной обработки столбцов TOAST {#ensuring-proper-handling-of-toast-columns}
 
 Чтобы гарантировать корректную обработку столбцов TOAST при репликации, необходимо установить для таблицы значение `REPLICA IDENTITY` в `FULL`. Это указывает PostgreSQL включать полную старую строку в WAL для операций UPDATE и DELETE, обеспечивая доступность всех значений столбцов (включая столбцы TOAST) для репликации.
@@ -45,6 +49,7 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
 См. [эту запись в блоге](https://xata.io/blog/replica-identity-full-performance) о нюансах производительности при использовании `REPLICA IDENTITY FULL`.
+
 
 ## Поведение репликации, когда REPLICA IDENTITY FULL не задан {#replication-behavior-when-replica-identity-full-is-not-set}
 

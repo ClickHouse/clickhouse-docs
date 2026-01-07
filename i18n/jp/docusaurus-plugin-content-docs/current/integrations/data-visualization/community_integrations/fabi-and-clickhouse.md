@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'Fabi.ai', '接続', '統合', 'notebook', 'UI', '分�
 description: 'Fabi.ai は、コラボレーション対応のオールインワン・データ分析プラットフォームです。SQL、Python、AI、ノーコードを活用して、これまでになく高速にダッシュボードやデータワークフローを構築できます。'
 title: 'ClickHouse を Fabi.ai に接続する'
 doc_type: 'guide'
+integration:
+   - support_level: 'community'
+   - category: 'data_visualization'
 ---
 
 import fabi_01 from '@site/static/images/integrations/data-visualization/fabi_01.png';

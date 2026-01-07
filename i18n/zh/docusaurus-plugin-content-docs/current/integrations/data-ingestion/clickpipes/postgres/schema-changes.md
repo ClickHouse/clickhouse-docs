@@ -4,6 +4,9 @@ slug: /integrations/clickpipes/postgres/schema-changes
 description: '介绍 ClickPipes 能在源表中检测到的模式变更类型的页面'
 doc_type: 'reference'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 用于 Postgres 的 ClickPipes 可以检测源表中的模式变更，并在某些情况下自动将这些变更传播到目标表。下面记录了每种 DDL 操作的处理方式：

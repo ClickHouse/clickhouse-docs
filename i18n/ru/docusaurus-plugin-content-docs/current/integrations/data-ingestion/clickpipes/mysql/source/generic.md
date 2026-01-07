@@ -4,7 +4,10 @@ description: 'Настройка любого экземпляра MySQL как 
 slug: /integrations/clickpipes/mysql/source/generic
 title: 'Руководство по настройке универсального источника MySQL'
 doc_type: 'guide'
-keywords: ['универсальный mysql', 'clickpipes', 'бинарное логирование', 'ssl/tls', 'mysql 8.x']
+keywords: ['универсальный mysql', 'clickpipes', 'бинарное логирование', 'ssl tls', 'mysql 8.x']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 # Общее руководство по настройке источника MySQL {#generic-mysql-source-setup-guide}
@@ -31,7 +34,7 @@ binlog_row_metadata = FULL
 binlog_expire_logs_seconds = 86400  -- 1 day or higher; default is 30 days
 ```
 
-Чтобы проверить эти настройки, выполните следующие SQL команды:
+Чтобы проверить эти настройки, выполните следующие команды SQL:
 
 ```sql
 SHOW VARIABLES LIKE 'log_bin';
@@ -55,6 +58,7 @@ SET PERSIST binlog_expire_logs_seconds = 86400;
 
 После изменения настроек продолжайте с [настройкой пользователя базы данных](#configure-database-user).
 
+
 ### MySQL 5.7 {#binlog-v5-x}
 
 Чтобы включить бинарное логирование в экземпляре MySQL 5.7, убедитесь, что заданы следующие параметры:
@@ -67,7 +71,7 @@ binlog_row_image = FULL  -- default value
 expire_logs_days = 1     -- or higher; 0 would mean logs are preserved forever
 ```
 
-Чтобы проверить эти настройки, выполните следующие команды SQL:
+Чтобы проверить эти настройки, выполните следующие SQL команды:
 
 ```sql
 SHOW VARIABLES LIKE 'server_id';
@@ -91,10 +95,9 @@ expire_logs_days = 1
 Необходимо перезапустить экземпляр MySQL, чтобы изменения вступили в силу.
 
 :::note
-
 Исключение столбцов не поддерживается в MySQL 5.7, так как параметр `binlog_row_metadata` в этой версии еще отсутствует.
-
 :::
+
 
 ## Настройка пользователя базы данных {#configure-database-user}
 

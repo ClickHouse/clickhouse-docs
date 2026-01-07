@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/aws-privatelink
 title: 'AWS PrivateLink для ClickPipes'
 doc_type: 'guide'
 keywords: ['aws privatelink', 'безопасность ClickPipes', 'vpc endpoint', 'приватное подключение', 'ресурс VPC']
+integration:
+   - support_level: 'основной'
+   - category: 'clickpipes'
 ---
 
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
@@ -20,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 # AWS PrivateLink для ClickPipes {#aws-privatelink-for-clickpipes}
 
-Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) для установления защищенного соединения между VPC, сервисами AWS, вашими локальными системами и ClickHouse Cloud, не выводя трафик в общедоступный интернет.
+Вы можете использовать [AWS PrivateLink](https://aws.amazon.com/privatelink/) чтобы установить защищённое соединение между VPC, сервисами AWS, вашими локальными системами и ClickHouse Cloud, не выводя трафик в общедоступный Интернет.
 
 В этом документе описана функциональность обратных приватных конечных точек (endpoint) ClickPipes, которая позволяет настроить конечную точку VPC AWS PrivateLink.
 
@@ -28,6 +31,7 @@ import Image from '@theme/IdealImage';
 
 Возможности функции reverse private endpoint в ClickPipes ограничены следующими
 типами источников данных:
+
 - Kafka
 - Postgres
 - MySQL
@@ -106,7 +110,7 @@ aws vpc-lattice create-resource-configuration \
     --name <RESOURCE_CONFIGURATION_NAME>
 ```
 
-Простейший [тип конфигурации ресурса](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) — это одиночная конфигурация ресурса. Вы можете настроить её напрямую с помощью ARN или указать IP-адрес или доменное имя, которое можно разрешить публично.
+Простейший [тип конфигурации ресурса](https://docs.aws.amazon.com/vpc-lattice/latest/ug/resource-configuration.html#resource-configuration-types) — это конфигурация одного ресурса. Вы можете настроить её напрямую по ARN или указать IP-адрес либо доменное имя, доступное из публичной сети.
 
 Например, для настройки с использованием ARN кластера RDS:
 
@@ -132,7 +136,7 @@ aws vpc-lattice create-resource-configuration \
 
 Для совместного использования вашего ресурса требуется общий ресурс. Это осуществляется через Resource Access Manager (RAM).
 
-Вы можете добавить Resource-Configuration в Resource-Share через [консоль AWS](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) или выполнив следующую команду с идентификатором учетной записи ClickPipes `072088201116` (arn:aws:iam::072088201116:root):
+Вы можете добавить конфигурацию ресурса в общий ресурс через [консоль AWS](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) или выполнив следующую команду с идентификатором учётной записи ClickPipes `072088201116` (arn:aws:iam::072088201116:root):
 
 ```bash
 aws ram create-resource-share \
@@ -141,17 +145,18 @@ aws ram create-resource-share \
     --name <RESOURCE_SHARE_NAME>
 ```
 
-В выводе команды будет содержаться ARN Resource-Share, который потребуется для настройки подключения ClickPipe с ресурсом VPC.
+Вывод будет содержать ARN общего ресурса, который потребуется для настройки подключения ClickPipe с ресурсом VPC.
 
-Теперь вы готовы [создать ClickPipe с обратной частной конечной точкой](#creating-clickpipe), используя ресурс VPC. Вам потребуется:
+Теперь вы готовы [создать ClickPipe с обратной частной конечной точкой](#creating-clickpipe) с использованием ресурса VPC. Для этого необходимо:
 
-- Установить `VPC endpoint type` в значение `VPC Resource`.
-- Установить `Resource configuration ID` в значение идентификатора Resource-Configuration, созданного на шаге 2.
-- Установить `Resource share ARN` в значение ARN Resource-Share, созданного на шаге 3.
+* Установить `VPC endpoint type` в значение `VPC Resource`.
+* Установить `Resource configuration ID` в идентификатор конфигурации ресурса Resource-Configuration, созданной на шаге 2.
+* Установить `Resource share ARN` в ARN общего ресурса Resource-Share, созданного на шаге 3.
 
-Подробнее о PrivateLink с ресурсом VPC см. в [документации AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
+Дополнительные сведения о PrivateLink с ресурсом VPC см. в [документации AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 
 </VerticalStepper>
+
 
 ### Многосетевое подключение MSK {#msk-multi-vpc}
 
@@ -160,7 +165,7 @@ aws ram create-resource-share \
 Межрегиональное подключение не поддерживается.
 
 Это рекомендуемый вариант для ClickPipes с MSK.
-Подробнее см. в руководстве [по началу работы](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html).
+Подробнее см. в руководстве [по началу работе](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html).
 
 :::info
 Обновите политику кластера MSK и добавьте `072088201116` в список разрешенных участников вашего кластера MSK.
@@ -229,16 +234,19 @@ aws ram create-resource-share \
 6. Укажите необходимые параметры для выбранного типа endpoint.
 
 <Image img={cp_rpe_step2} alt="Выбор reverse private endpoint" size="lg" border/>
+</VerticalStepper>
 
-    - Для VPC resource укажите configuration share ARN и configuration ID.
-    - Для MSK multi-VPC укажите cluster ARN и метод аутентификации, используемый с созданным endpoint.
-    - Для VPC endpoint service укажите имя сервиса.
+```
+- For VPC resource, provide the configuration share ARN and configuration ID.
+- For MSK multi-VPC, provide the cluster ARN and authentication method used with a created endpoint.
+- For VPC endpoint service, provide the service name.
+```
 
 7. Нажмите `Create` и дождитесь готовности reverse private endpoint.
 
-   Если вы создаёте новый endpoint, его настройка займёт некоторое время.
-   Страница автоматически обновится, как только endpoint будет готов.
-   Для VPC endpoint service может потребоваться принять запрос на подключение в консоли AWS.
+Если вы создаёте новый endpoint, его настройка займёт некоторое время.
+Страница автоматически обновится, как только endpoint будет готов.
+Для VPC endpoint service может потребоваться принять запрос на подключение в консоли AWS.
 
 <Image img={cp_rpe_step3} alt="Выбор reverse private endpoint" size="lg" border/>
 
@@ -254,6 +262,7 @@ aws ram create-resource-share \
    Чтобы увидеть полный список DNS-имён, откройте его в настройках облачного сервиса.
 
 </VerticalStepper>
+
 
 ## Управление существующими обратными приватными endpoint’ами {#managing-existing-endpoints}
 

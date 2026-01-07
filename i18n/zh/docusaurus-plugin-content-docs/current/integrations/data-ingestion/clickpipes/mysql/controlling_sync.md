@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/mysql/sync_control
 sidebar_label: '控制同步'
 keywords: ['MySQL ClickPipe', 'ClickPipe 同步控制', 'MySQL CDC 复制', 'ClickHouse MySQL 连接器', '数据库与 ClickHouse 的同步']
 doc_type: 'guide'
+integration:
+  - support_level: 'core'
+  - category: 'clickpipes'
 ---
 
 import edit_sync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/edit_sync_button.png'
@@ -14,7 +17,6 @@ import cdc_syncs from '@site/static/images/integrations/data-ingestion/clickpipe
 import Image from '@theme/IdealImage';
 
 本文档介绍在 MySQL ClickPipe 处于 **CDC（运行）模式** 时，如何控制其同步。
-
 
 ## 概览 {#overview}
 

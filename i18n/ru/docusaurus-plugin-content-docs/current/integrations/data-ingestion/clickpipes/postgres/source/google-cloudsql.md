@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/google-cloudsql
 title: 'Руководство по настройке источника Google Cloud SQL Postgres'
 doc_type: 'guide'
 keywords: ['google cloud sql', 'postgres', 'clickpipes', 'логическое декодирование', 'межсетевой экран']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
@@ -40,20 +43,22 @@ import Image from '@theme/IdealImage';
 2. Перейдите в раздел Flags и измените `cloudsql.logical_decoding` на on, а `wal_sender_timeout` — на 0. Для применения этих изменений потребуется перезапустить сервер Postgres.
 
 <Image img={cloudsql_logical_decoding1} alt="Изменение cloudsql.logical_decoding на on" size="lg" border/>
+
 <Image img={cloudsql_logical_decoding2} alt="Изменены cloudsql.logical_decoding и wal_sender_timeout" size="lg" border/>
+
 <Image img={cloudsql_logical_decoding3} alt="Перезапуск сервера" size="lg" border/>
 
-## Создание пользователя ClickPipes и выдача прав {#creating-clickpipes-user-and-granting-permissions}
+## Создание пользователя ClickPipes и назначение прав {#creating-clickpipes-user-and-granting-permissions}
 
-Подключитесь к вашему Cloud SQL Postgres под администраторской учетной записью и выполните следующие команды:
+Подключитесь к вашему Cloud SQL Postgres под учётной записью администратора и выполните следующие команды:
 
-1. Создайте отдельного пользователя Postgres, предназначенного исключительно для ClickPipes.
+1. Создайте выделенного пользователя для ClickPipes:
 
    ```sql
    CREATE USER clickpipes_user PASSWORD 'some-password';
    ```
 
-2. Предоставьте пользователю `clickpipes_user` доступ только для чтения к схеме, из которой вы реплицируете таблицы. Ниже приведен пример настройки прав для схемы `public`. Если вы хотите выдать доступ к нескольким схемам, выполните эти три команды для каждой схемы.
+2. Предоставьте на уровне схемы доступ только на чтение пользователю, созданному на предыдущем шаге. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
 
    ```sql
    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -61,19 +66,33 @@ import Image from '@theme/IdealImage';
    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
    ```
 
-3. Выдайте этому пользователю права на репликацию:
+3. Предоставьте пользователю права на репликацию:
 
    ```sql
    ALTER ROLE clickpipes_user REPLICATION;
    ```
 
-4. Создайте publication, которую вы в дальнейшем будете использовать для создания MIRROR (репликации).
+4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только те таблицы, которые вам действительно нужны, чтобы избежать лишней нагрузки на производительность.
 
-   ```sql
-   CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-   ```
+   :::warning
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **primary key**, _либо_ иметь настроенную **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по определению области публикаций.
+   :::
 
-[//]: # (TODO Добавить SSH-туннелирование)
+   - Чтобы создать публикацию для конкретных таблиц:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - Чтобы создать публикацию для всех таблиц в конкретной схеме:
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   Публикация `clickpipes` будет содержать набор событий изменений, генерируемых указанными таблицами, и далее будет использоваться для приёма потока репликации.
+
+[//]: # (TODO Add SSH Tunneling)
 
 ## Добавление IP-адресов ClickPipes в брандмауэр {#add-clickpipes-ips-to-firewall}
 
@@ -96,6 +115,7 @@ import Image from '@theme/IdealImage';
 3. Добавьте [публичные IP-адреса ClickPipes](../../index.md#list-of-static-ips)
 
 <Image img={firewall1} alt="Добавление сетей ClickPipes в брандмауэр" size="lg" border/>
+
 <Image img={firewall2} alt="Сети ClickPipes добавлены в брандмауэр" size="lg" border/>
 
 ## Что дальше? {#whats-next}

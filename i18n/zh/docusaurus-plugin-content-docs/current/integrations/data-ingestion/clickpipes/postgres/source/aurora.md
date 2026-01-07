@@ -5,6 +5,9 @@ slug: /integrations/clickpipes/postgres/source/aurora
 title: 'Aurora Postgres 数据源配置指南'
 doc_type: 'guide'
 keywords: ['Amazon Aurora', 'PostgreSQL', 'ClickPipes', 'AWS 数据库', '逻辑复制配置']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
@@ -65,9 +68,10 @@ postgres=> SHOW wal_sender_timeout ;
 
 <Image img={reboot_rds} alt="重启 Aurora PostgreSQL" size="lg" border />
 
+
 ## 配置数据库用户 {#configure-database-user}
 
-以管理员用户连接到你的 Aurora PostgreSQL writer 实例，并执行以下命令：
+以管理员用户身份连接到你的 Aurora PostgreSQL 写入实例，并执行以下命令：
 
 1. 为 ClickPipes 创建一个专用用户：
 
@@ -75,7 +79,7 @@ postgres=> SHOW wal_sender_timeout ;
     CREATE USER clickpipes_user PASSWORD 'some-password';
     ```
 
-2. 授予 schema 权限。以下示例演示如何为 `public` schema 授权。对于每个你希望复制的 schema，重复执行这些命令：
+2. 为你在上一步创建的用户授予 schema 级别的只读访问权限。以下示例展示了为 `public` schema 授予的权限。对于每个包含你希望复制的表的 schema，都需要重复这些命令：
 
     ```sql
     GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
@@ -83,17 +87,31 @@ postgres=> SHOW wal_sender_timeout ;
     ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
     ```
 
-3. 授予复制权限：
+3. 为该用户授予复制相关权限：
 
     ```sql
     GRANT rds_replication TO clickpipes_user;
     ```
 
-4. 为复制创建一个 publication：
+4. 创建一个仅包含你希望复制的表的 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议只在 publication 中包含实际需要的表，以避免额外的性能开销。
 
-    ```sql
-    CREATE PUBLICATION clickpipes_publication FOR ALL TABLES;
-    ```
+   :::warning
+   任何包含在 publication 中的表必须定义有**主键（primary key）**，_或者_其 **replica identity** 被配置为 `FULL`。关于 publication 范围的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   :::
+
+   - 为特定表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+      ```
+
+   - 为特定 schema 中的所有表创建 publication：
+
+      ```sql
+      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+      ```
+
+   `clickpipes` publication 将包含由指定表生成的一组变更事件，稍后将用于摄取复制流。
 
 ## 配置网络访问 {#configure-network-access}
 

@@ -15,7 +15,7 @@ doc_type: 'reference'
 :::
 
 本节中的函数还假定被搜索的字符串（在本节中称为 `haystack`）和搜索字符串（在本节中称为 `needle`）是单字节编码文本。如果不满足这一假设，将不会抛出异常，且结果未定义。对 UTF-8 编码字符串的搜索通常通过单独的函数变体提供。同样地，如果使用的是 UTF-8 函数变体，而输入字符串不是 UTF-8 编码文本，也不会抛出异常，结果未定义。请注意，不会自动执行 Unicode 规范化，不过可以使用
-[normalizeUTF8*()](https://clickhouse.com../functions/string-functions/) 函数来执行该操作。
+[normalizeUTF8*()](/sql-reference/functions/string-functions#normalizeUTF8NFC) 函数来执行该操作。
 
 [通用字符串函数](string-functions.md)和[字符串替换函数](string-replace-functions.md)在单独的章节中介绍。
 

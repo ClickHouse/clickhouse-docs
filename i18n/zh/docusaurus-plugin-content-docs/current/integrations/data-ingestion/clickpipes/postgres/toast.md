@@ -4,6 +4,9 @@ description: '了解在将数据从 PostgreSQL 复制到 ClickHouse 时如何处
 slug: /integrations/clickpipes/postgres/toast
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
 ---
 
 在将 PostgreSQL 数据复制到 ClickHouse 时，了解 TOAST（The Oversized-Attribute Storage Technique，超大属性存储技术）列的限制和特殊注意事项非常重要。本指南将帮助您在复制过程中识别并正确处理 TOAST 列。
@@ -34,6 +37,7 @@ WHERE c.relname = 'your_table_name'
 
 此查询将返回可能会被 TOAST 处理的列的名称和数据类型。不过需要注意的是，此查询仅根据列的数据类型和存储属性来识别具备使用 TOAST 存储条件的列。要判断这些列中是否实际包含已 TOAST 的数据，还需要考虑这些列中的值是否超过相应的大小阈值。数据是否真正会被 TOAST，取决于这些列中存储的具体内容。
 
+
 ## 确保正确处理 TOAST 列 {#ensuring-proper-handling-of-toast-columns}
 
 为确保在复制过程中正确处理 TOAST 列，你应当将表的 `REPLICA IDENTITY` 设置为 `FULL`。这会告诉 PostgreSQL 在执行 UPDATE 和 DELETE 操作时，在 WAL 中包含完整的旧行，从而确保所有列值（包括 TOAST 列）都可用于复制。
@@ -45,6 +49,7 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 ```
 
 有关在设置 `REPLICA IDENTITY FULL` 时的性能方面考虑，请参阅[这篇博客文章](https://xata.io/blog/replica-identity-full-performance)。
+
 
 ## 未设置 REPLICA IDENTITY FULL 时的复制行为 {#replication-behavior-when-replica-identity-full-is-not-set}
 
@@ -62,4 +67,4 @@ ALTER TABLE your_table_name REPLICA IDENTITY FULL;
 
 ## 结论 {#conclusion}
 
-在从 PostgreSQL 复制到 ClickHouse 的过程中，正确处理 TOAST 列对于维护数据完整性至关重要。通过识别 TOAST 列并设置合适的 `REPLICA IDENTITY`，你就可以确保数据得以准确、完整地复制。
+在从 PostgreSQL 复制到 ClickHouse 的过程中，正确处理 TOAST 列对于维护数据完整性至关重要。通过识别 TOAST 列并设置合适的 `REPLICA IDENTITY`，您就可以确保数据得以准确、完整地复制。

@@ -2275,6 +2275,12 @@ SHOW CREATE クエリで使用する識別子のクオートスタイルを設�
 + 0 — 無効（型の不一致があるとエラーをスローする）。
 + 1 — 有効（型の不一致があるフィールドをスキップする）。
 
+## type_json_use_partial_match_to_skip_paths_by_regexp {#type_json_use_partial_match_to_skip_paths_by_regexp}   
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+有効にすると、JSON オブジェクトを JSON 型としてパースする際に、SKIP REGEXP で指定した正規表現は、パスをスキップするために部分一致でのマッチを行います。無効にすると、完全一致でのマッチが必要になります。
+
 ## validate_experimental_and_suspicious_types_inside_nested_types {#validate_experimental_and_suspicious_types_inside_nested_types}   
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -6,6 +6,9 @@ slug: /integrations/rust
 description: 'ClickHouse 官方 Rust 客户端。'
 title: 'ClickHouse Rust 客户端'
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 # ClickHouse Rust 客户端 {#clickhouse-rust-client}

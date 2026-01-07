@@ -1547,7 +1547,11 @@ FROM numbers(5);
 
 導入バージョン: v25.10
 
-Point、Ring、Polygon、または MultiPolygon の座標を反転します。Point の場合は座標値を入れ替えます。配列の場合は、各座標ペアに対して同じ変換を再帰的に適用します。
+ジオメトリオブジェクトの x 座標と y 座標を反転します。この操作により緯度と経度が入れ替わるため、異なる座標系間の変換や座標順序の修正に役立ちます。
+
+Point の場合は x 座標と y 座標を入れ替えます。複雑なジオメトリ（LineString、Polygon、MultiPolygon、Ring、MultiLineString）の場合は、各座標ペアに対してこの変換を再帰的に適用します。
+
+この関数は、個々のジオメトリ型（Point、Ring、Polygon、MultiPolygon、LineString、MultiLineString）と Geometry バリアント型の両方をサポートします。
 
 **構文**
 
@@ -1557,11 +1561,11 @@ flipCoordinates(geometry)
 
 **引数**
 
-* `geometry` — 変換するジオメトリ。サポートされる型: Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))。
+* `geometry` — 変換するジオメトリ。サポートされる型: Point (Tuple(Float64, Float64))、Ring (Array(Point))、Polygon (Array(Ring))、MultiPolygon (Array(Polygon))、LineString (Array(Point))、MultiLineString (Array(LineString))、または Geometry (これらのいずれかの型を含む Variant 型)。
 
 **戻り値**
 
-座標が反転されたジオメトリ。型は入力と同じです。[`Point`](/sql-reference/data-types/geo#point) または [`Ring`](/sql-reference/data-types/geo#ring) または [`Polygon`](/sql-reference/data-types/geo#polygon) または [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)。
+座標が反転されたジオメトリ。型は入力と同じです。[`Point`](/sql-reference/data-types/geo#point) または [`Ring`](/sql-reference/data-types/geo#ring) または [`Polygon`](/sql-reference/data-types/geo#polygon) または [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon) または [`LineString`](/sql-reference/data-types/geo#linestring) または [`MultiLineString`](/sql-reference/data-types/geo#multilinestring) または [`Geometry`](/sql-reference/data-types/geo)。
 
 **例**
 
@@ -1594,6 +1598,27 @@ SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
 ```response title=Response
 [[(2.0, 1.0), (4.0, 3.0)], [(6.0, 5.0), (8.0, 7.0)]]
 ```
+
+**geometry&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POINT(10 20)'));
+```
+
+```response title=Response
+(20, 10)
+```
+
+**geometry&#95;polygon&#95;wkt**
+
+```sql title=Query
+SELECT flipCoordinates(readWkt('POLYGON((0 0, 5 0, 5 5, 0 5, 0 0))'));
+```
+
+```response title=Response
+[[(0, 0), (0, 5), (5, 5), (5, 0), (0, 0)]]
+```
+
 
 ## formatQuery {#formatQuery}
 

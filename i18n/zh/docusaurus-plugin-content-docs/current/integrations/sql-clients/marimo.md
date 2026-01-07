@@ -5,6 +5,9 @@ description: 'marimo 是用于数据交互的下一代 Python notebook'
 title: '将 marimo 与 ClickHouse 搭配使用'
 doc_type: 'guide'
 keywords: ['marimo', 'notebook', '数据分析', 'python', '可视化']
+integration:
+  - support_level: 'community'
+  - category: 'sql_client'
 ---
 
 import Image from '@theme/IdealImage';
@@ -33,7 +36,8 @@ pip install "marimo[sql]" clickhouse_connect
 marimo edit clickhouse_demo.py
 ```
 
-这会在本机上打开一个指向 localhost 的浏览器窗口。
+这会在本机（localhost）打开一个浏览器窗口。
+
 
 ## 2. 连接到 ClickHouse。 {#connect-to-clickhouse}
 

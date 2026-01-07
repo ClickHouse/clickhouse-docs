@@ -5,6 +5,9 @@ keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Java から ClickHouse へ接続するためのオプション'
 slug: /integrations/java
 doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,9 +16,9 @@ import CodeBlock from '@theme/CodeBlock';
 
 # Java クライアントの概要 {#java-clients-overview}
 
-- [Client 0.8+](./client/client.mdx)
+- [クライアント 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC ドライバ](./r2dbc.md)
+- [R2DBC ドライバー](./r2dbc.md)
 
 ## ClickHouse クライアント {#clickhouse-client}
 
@@ -154,9 +157,9 @@ Java クライアントはロギングに [SLF4J](https://www.slf4j.org/) を使
 </dependencies>
 ```
 
-#### ロギングの設定 {#configuring-logging}
+#### ログ出力の設定 {#configuring-logging}
 
-ロギングの設定方法は、使用しているロギングフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` という名前のファイルでロギングを設定できます。
+この設定方法は、使用しているログフレームワークによって異なります。たとえば `Logback` を使用している場合は、`logback.xml` というファイルでログ出力を設定できます。
 
 ```xml title="logback.xml"
 <configuration>

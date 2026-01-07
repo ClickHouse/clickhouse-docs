@@ -5,7 +5,7 @@ description: 'DataGrip は、ClickHouse を標準でサポートするデータ�
 title: 'DataGrip から ClickHouse へ接続する'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'sql_client'
   - website: 'https://www.jetbrains.com/datagrip/'
 keywords: ['DataGrip', 'データベース IDE', 'JetBrains', 'SQL クライアント', '統合開発環境']
@@ -28,6 +28,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードできます。
 
 ## 1. 接続情報を確認する {#1-gather-your-connection-details}
+
 <ConnectionDetails />
 
 ## 2. ClickHouse ドライバを読み込む {#2-load-the-clickhouse-driver}
@@ -38,7 +39,7 @@ DataGrip は https://www.jetbrains.com/datagrip/ からダウンロードでき�
 
   **ClickHouse** を選択します。
 
-  :::tip
+:::tip
   接続を追加していくと並び順が変わるため、ClickHouse がまだリストの先頭に表示されていない場合があります。
   :::
 
@@ -72,4 +73,4 @@ JDBC URL の設定の詳細については、[ClickHouse JDBC driver](https://gi
 
 ## さらに詳しく {#learn-more}
 
-詳しくは DataGrip のドキュメントを参照してください。
+DataGrip についての詳細な情報は、DataGrip のドキュメントを参照してください。
