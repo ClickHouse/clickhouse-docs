@@ -874,6 +874,7 @@ const sidebars = {
         'integrations/data-visualization/powerbi-and-clickhouse',
         'integrations/data-visualization/quicksight-and-clickhouse',
         'integrations/data-visualization/superset-and-clickhouse',
+        'integrations/data-visualization/splunk-and-clickhouse',
         {
           type: 'category',
           label: 'Tableau',
